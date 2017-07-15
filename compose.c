@@ -575,12 +575,13 @@ static void compose_menu_redraw(struct Menu *menu)
 }
 
 
-/*
- * cum_attachs_size: Cumulative Attachments Size
+/**
+ * cum_attachs_size - Cumulative Attachments Size
+ * @param menu Menu listing attachments
+ * @return Number of bytes in attachments
  *
- * Returns the total number of bytes used by the attachments in the
- * attachment list _after_ content-transfer-encodings have been
- * applied.
+ * Returns the total number of bytes used by the attachments in the attachment
+ * list _after_ content-transfer-encodings have been applied.
  */
 static unsigned long cum_attachs_size(struct Menu *menu)
 {

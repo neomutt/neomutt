@@ -250,16 +250,13 @@ static void mx_unlink_empty(const char *path)
   close(fd);
 }
 
-/* try to figure out what type of mailbox ``path'' is
- *
- * return values:
- *      MUTT_*  mailbox type
- *      0       not a mailbox
- *      -1      error
- */
-
 #ifdef USE_IMAP
 
+/**
+ * mx_is_imap - Is this an IMAP mailbox
+ * @param p Mailbox string to test
+ * return boolean
+ */
 bool mx_is_imap(const char *p)
 {
   enum UrlScheme scheme;
@@ -280,6 +277,11 @@ bool mx_is_imap(const char *p)
 #endif
 
 #ifdef USE_POP
+/**
+ * mx_is_pop - Is this a POP mailbox
+ * @param p Mailbox string to test
+ * return boolean
+ */
 bool mx_is_pop(const char *p)
 {
   enum UrlScheme scheme;
@@ -296,6 +298,11 @@ bool mx_is_pop(const char *p)
 #endif
 
 #ifdef USE_NNTP
+/**
+ * mx_is_nntp - Is this an NNTP mailbox
+ * @param p Mailbox string to test
+ * return boolean
+ */
 bool mx_is_nntp(const char *p)
 {
   enum UrlScheme scheme;
@@ -312,6 +319,11 @@ bool mx_is_nntp(const char *p)
 #endif
 
 #ifdef USE_NOTMUCH
+/**
+ * mx_is_notmuch - Is this a notmuch mailbox
+ * @param p Mailbox string to test
+ * return boolean
+ */
 bool mx_is_notmuch(const char *p)
 {
   enum UrlScheme scheme;
@@ -327,6 +339,13 @@ bool mx_is_notmuch(const char *p)
 }
 #endif
 
+/**
+ * mx_get_magic - Identify the type of mailbox
+ * @param path Mailbox path to test
+ * return
+ * * -1 Error, can't identify mailbox
+ * * >0 Success, e.g. #MUTT_IMAP
+ */
 int mx_get_magic(const char *path)
 {
   struct stat st;
@@ -1081,11 +1100,11 @@ void mx_update_tables(struct Context *ctx, int committing)
 }
 
 
-/* save changes to mailbox
- *
- * return values:
- *      0               success
- *      -1              error
+/**
+ * mx_sync_mailbox - Save changes to mailbox
+ * @param[in]  ctx        Context
+ * @param[out] index_hint Currently selected mailbox
+ * @return 0 on success, -1 on error
  */
 int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -1433,11 +1452,13 @@ void mx_update_context(struct Context *ctx, int new_messages)
   }
 }
 
-/*
- * Return:
- * 1 if the specified mailbox contains 0 messages.
- * 0 if the mailbox contains messages
- * -1 on error
+/**
+ * mx_check_empty - Is the mailbox empty
+ * @param path Mailbox to check
+ * @return
+ * * 1 Mailbox is empty
+ * * 0 Mailbox contains mail
+ * * -1 Error
  */
 int mx_check_empty(const char *path)
 {

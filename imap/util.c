@@ -54,15 +54,21 @@
 #include "hcache/hcache.h"
 #endif
 
-/* -- public functions -- */
-
-/* imap_expand_path: IMAP implementation of mutt_expand_path. Rewrite
- *   an IMAP path in canonical and absolute form.
- * Inputs: a buffer containing an IMAP path, and the number of bytes in
- *   that buffer.
- * Outputs: The buffer is rewritten in place with the canonical IMAP path.
- * Returns 0 on success, or -1 if imap_parse_path chokes or url_ciss_tostring
- *   fails, which it might if there isn't enough room in the buffer. */
+/**
+ * imap_expand_path - Canonicalise an IMAP path
+ * @param path Buffer containing path
+ * @param len  Buffer length
+ * @return
+ * * 0 on success
+ * * -1 on error
+ *
+ * IMAP implementation of mutt_expand_path. Rewrite an IMAP path in canonical
+ * and absolute form.  The buffer is rewritten in place with the canonical IMAP
+ * path.
+ *
+ * Function can fail if imap_parse_path() or url_ciss_tostring() fail,
+ * of if the buffer isn't large enough.
+ */
 int imap_expand_path(char *path, size_t len)
 {
   struct ImapMbox mx;

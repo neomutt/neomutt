@@ -80,9 +80,16 @@ bool mutt_is_subscribed_list(struct Address *addr)
   return false;
 }
 
-/* Search for a mailing list in the list of addresses pointed to by adr.
- * If one is found, print pfx and the name of the list into buf, then
- * return 1.  Otherwise, simply return 0.
+/**
+ * check_for_mailing_list - Search list of addresses for a mailing list
+ * @param adr     List of addreses to search
+ * @param pfx     Prefix string
+ * @param buf     Buffer to store results
+ * @param buflen  Buffer length
+ * @return 1 Mailing list found, 0 No list found
+ *
+ * Search for a mailing list in the list of addresses pointed to by adr.
+ * If one is found, print pfx and the name of the list into buf.
  */
 static bool check_for_mailing_list(struct Address *adr, const char *pfx, char *buf, int buflen)
 {
@@ -131,9 +138,14 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 }
 
 /**
- * Takes the color to embed, the buffer to manipulate and the buffer length as
- * arguments.
- * Returns the number of chars written.
+ * add_index_color - Insert a color marker into a string
+ * @param buf    Buffer to store marker
+ * @param buflen Buffer length
+ * @param flags  Flags, e.g. MUTT_FORMAT_INDEX
+ * @param color  Color, e.g. MT_COLOR_MESSAGE
+ * @return Number of characters written
+ *
+ * The colors are stored as "magic" strings embedded in the text.
  */
 static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, char color)
 {

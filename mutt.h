@@ -58,22 +58,22 @@ struct State;
 #endif
 
 /* flags for mutt_enter_string() */
-#define MUTT_ALIAS 1            /* do alias "completion" by calling up the alias-menu */
-#define MUTT_FILE     (1 << 1)  /* do file completion */
-#define MUTT_EFILE    (1 << 2)  /* do file completion, plus incoming folders */
-#define MUTT_CMD      (1 << 3)  /* do completion on previous word */
-#define MUTT_PASS     (1 << 4)  /* password mode (no echo) */
-#define MUTT_CLEAR    (1 << 5)  /* clear input if printable character is pressed */
-#define MUTT_COMMAND  (1 << 6)  /* do command completion */
-#define MUTT_PATTERN  (1 << 7)  /* pattern mode - only used for history classes */
-#define MUTT_LABEL    (1 << 8)  /* do label completion */
+#define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
+#define MUTT_FILE     (1 << 1)  /**< do file completion */
+#define MUTT_EFILE    (1 << 2)  /**< do file completion, plus incoming folders */
+#define MUTT_CMD      (1 << 3)  /**< do completion on previous word */
+#define MUTT_PASS     (1 << 4)  /**< password mode (no echo) */
+#define MUTT_CLEAR    (1 << 5)  /**< clear input if printable character is pressed */
+#define MUTT_COMMAND  (1 << 6)  /**< do command completion */
+#define MUTT_PATTERN  (1 << 7)  /**< pattern mode - only used for history classes */
+#define MUTT_LABEL    (1 << 8)  /**< do label completion */
 #ifdef USE_NOTMUCH
-#define MUTT_NM_QUERY (1 << 9)  /* Notmuch query mode. */
-#define MUTT_NM_TAG   (1 << 10) /* Notmuch tag +/- mode. */
+#define MUTT_NM_QUERY (1 << 9)  /**< Notmuch query mode. */
+#define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
 #endif
 
 /* flags for _mutt_system() */
-#define MUTT_DETACH_PROCESS 1 /* detach subprocess from group */
+#define MUTT_DETACH_PROCESS 1 /**< detach subprocess from group */
 
 /* types for mutt_add_hook() */
 #define MUTT_FOLDERHOOK   (1 << 0)
@@ -274,9 +274,9 @@ enum QuadOptionVars
 #define SENDMAILX        (1 << 6)
 #define SENDKEY          (1 << 7)
 #define SENDRESEND       (1 << 8)
-#define SENDPOSTPONEDFCC (1 << 9)  /* used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
-#define SENDNOFREEHEADER (1 << 10) /* Used by the -E flag */
-#define SENDDRAFTFILE    (1 << 11) /* Used by the -H flag */
+#define SENDPOSTPONEDFCC (1 << 9)  /**< used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
+#define SENDNOFREEHEADER (1 << 10) /**< Used by the -E flag */
+#define SENDDRAFTFILE    (1 << 11) /**< Used by the -H flag */
 #define SENDNEWS         (1 << 12)
 
 /* flags for mutt_compose_menu() */
@@ -293,10 +293,10 @@ enum QuadOptionVars
 #define MUTT_NOSPAM 2
 
 /* flags for keywords headers */
-#define MUTT_X_LABEL        (1 << 0) /* introduced to mutt in 2000 */
-#define MUTT_X_KEYWORDS     (1 << 1) /* used in c-client, dovecot */
-#define MUTT_X_MOZILLA_KEYS (1 << 2) /* tbird */
-#define MUTT_KEYWORDS       (1 << 3) /* rfc2822 */
+#define MUTT_X_LABEL        (1 << 0) /**< introduced to mutt in 2000 */
+#define MUTT_X_KEYWORDS     (1 << 1) /**< used in c-client, dovecot */
+#define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
+#define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
 void mutt_free_list(struct List **list);
 void mutt_free_rx_list(struct RxList **list);
@@ -322,14 +322,14 @@ void mutt_init(int skip_sys_rc, struct List *commands);
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
 
 /* flags for the State struct */
-#define MUTT_DISPLAY       (1 << 0) /* output is displayed to the user */
-#define MUTT_VERIFY        (1 << 1) /* perform signature verification */
-#define MUTT_PENDINGPREFIX (1 << 2) /* prefix to write, but character must follow */
-#define MUTT_WEED          (1 << 3) /* weed headers even when not in display mode */
-#define MUTT_CHARCONV      (1 << 4) /* Do character set conversions */
-#define MUTT_PRINTING      (1 << 5) /* are we printing? - MUTT_DISPLAY "light" */
-#define MUTT_REPLYING      (1 << 6) /* are we replying? */
-#define MUTT_FIRSTDONE     (1 << 7) /* the first attachment has been done */
+#define MUTT_DISPLAY       (1 << 0) /**< output is displayed to the user */
+#define MUTT_VERIFY        (1 << 1) /**< perform signature verification */
+#define MUTT_PENDINGPREFIX (1 << 2) /**< prefix to write, but character must follow */
+#define MUTT_WEED          (1 << 3) /**< weed headers even when not in display mode */
+#define MUTT_CHARCONV      (1 << 4) /**< Do character set conversions */
+#define MUTT_PRINTING      (1 << 5) /**< are we printing? - MUTT_DISPLAY "light" */
+#define MUTT_REPLYING      (1 << 6) /**< are we replying? */
+#define MUTT_FIRSTDONE     (1 << 7) /**< the first attachment has been done */
 
 #define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)

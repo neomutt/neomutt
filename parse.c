@@ -1367,23 +1367,18 @@ done:
 }
 
 
-/* mutt_read_rfc822_header() -- parses a RFC822 header
+/**
+ * mutt_read_rfc822_header - parses an RFC822 header
+ * @param f         Stream to read from
+ * @param hdr       Header structure of current message (optional)
+ * @param user_hdrs If set, store user headers
+ *                  Used for recall-message and postpone modes
+ * @param weed      If this parameter is set and the user has activated the
+ *                  $weed option, honor the header weed list for user headers.
+ *                  Used for recall-message
+ * @return newly allocated envelope structure
  *
- * Args:
- *
- * f            stream to read from
- *
- * hdr          header structure of current message (optional).
- *
- * user_hdrs    If set, store user headers.  Used for recall-message and
- *              postpone modes.
- *
- * weed         If this parameter is set and the user has activated the
- *              $weed option, honor the header weed list for user headers.
- *              Used for recall-message.
- *
- * Returns:     newly allocated envelope structure.  You should free it by
- *              mutt_free_envelope() when envelope stay unneeded.
+ * Caller should free the Envelope using mutt_free_envelope().
  */
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)

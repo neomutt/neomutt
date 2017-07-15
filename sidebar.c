@@ -419,10 +419,7 @@ static void sort_entries(void)
 
 /**
  * select_next - Selects the next unhidden mailbox
- *
- * Returns:
- *      true: Success
- *      false: Failure
+ * @return true: Success, false: Failure
  */
 static bool select_next(void)
 {
@@ -444,12 +441,9 @@ static bool select_next(void)
 
 /**
  * select_next_new - Selects the next new mailbox
+ * @return true: Success, false: Failure
  *
  * Search down the list of mail folders for one containing new mail.
- *
- * Returns:
- *      true: Success
- *      false: Failure
  */
 static int select_next_new(void)
 {
@@ -478,10 +472,7 @@ static int select_next_new(void)
 
 /**
  * select_prev - Selects the previous unhidden mailbox
- *
- * Returns:
- *      true: Success
- *      false: Failure
+ * @return true: Success, false: Failure
  */
 static bool select_prev(void)
 {
@@ -503,12 +494,9 @@ static bool select_prev(void)
 
 /**
  * select_prev_new - Selects the previous new mailbox
+ * @return true: Success, false: Failure
  *
  * Search up the list of mail folders for one containing new mail.
- *
- * Returns:
- *      true: Success
- *      false: Failure
  */
 static bool select_prev_new(void)
 {
@@ -537,10 +525,7 @@ static bool select_prev_new(void)
 
 /**
  * select_page_down - Selects the first entry in the next page of mailboxes
- *
- * Returns:
- *      1: Success
- *      0: Failure
+ * @return true: Success, false: Failure
  */
 static int select_page_down(void)
 {
@@ -560,10 +545,7 @@ static int select_page_down(void)
 
 /**
  * select_page_up - Selects the last entry in the previous page of mailboxes
- *
- * Returns:
- *      1: Success
- *      0: Failure
+ * @return true: Success, false: Failure
  */
 static int select_page_up(void)
 {
@@ -1060,11 +1042,9 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
 
 /**
  * mutt_sb_get_highlight - Get the Buffy that's highlighted in the sidebar
+ * @return mailbox path
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
- *
- * Returns:
- *      Mailbox path
  */
 const char *mutt_sb_get_highlight(void)
 {

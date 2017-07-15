@@ -43,9 +43,9 @@ struct Hash
 };
 
 /* flags for hash_create() */
-#define MUTT_HASH_STRCASECMP  (1 << 0) /* use strcasecmp() to compare keys */
-#define MUTT_HASH_STRDUP_KEYS (1 << 1) /* make a copy of the keys */
-#define MUTT_HASH_ALLOW_DUPS  (1 << 2) /* allow duplicate keys to be inserted */
+#define MUTT_HASH_STRCASECMP  (1 << 0) /**< use strcasecmp() to compare keys */
+#define MUTT_HASH_STRDUP_KEYS (1 << 1) /**< make a copy of the keys */
+#define MUTT_HASH_ALLOW_DUPS  (1 << 2) /**< allow duplicate keys to be inserted */
 
 struct Hash *hash_create(int nelem, int flags);
 struct Hash *int_hash_create(int nelem, int flags);

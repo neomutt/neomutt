@@ -1357,21 +1357,33 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
   return ch;
 }
 
-/*
- * Args:
- *      flags   MUTT_SHOWFLAT, show characters (used for displaying help)
- *              MUTT_SHOWCOLOR, show characters in color
- *                      otherwise don't show characters
- *              MUTT_HIDE, don't show quoted text
- *              MUTT_SEARCH, resolve search patterns
- *              MUTT_TYPES, compute line's type
- *              MUTT_PAGER_NSKIP, keeps leading whitespace
- *              MUTT_PAGER_MARKER, eventually show markers
+/**
+ * display_line - Print a line on screen
+ * @param f               File to read from
+ * @param last_pos        Offset into file
+ * @param line_info       Line attributes
+ * @param n               Line number
+ * @param last            Last line
+ * @param max             Maximum number of lines
+ * @param flags           See below
+ * @param quote_list      Email quoting style
+ * @param q_level         Level of quoting
+ * @param force_redraw    Force a repaint
+ * @param search_re       Regex to highlight
+ * @param pager_window    Window to draw into
+ * @return
+ * * -1 EOF was reached
+ * * 0  normal exit, line was not displayed
+ * * >0 normal exit, line was displayed
  *
- * Return values:
- *      -1      EOF was reached
- *      0       normal exit, line was not displayed
- *      >0      normal exit, line was displayed
+ * flags:
+ * * #MUTT_SHOWFLAT, show characters (used for displaying help)
+ * * #MUTT_SHOWCOLOR, show characters in color otherwise don't show characters
+ * * #MUTT_HIDE, don't show quoted text
+ * * #MUTT_SEARCH, resolve search patterns
+ * * #MUTT_TYPES, compute line's type
+ * * #MUTT_PAGER_NSKIP, keeps leading whitespace
+ * * #MUTT_PAGER_MARKER, eventually show markers
  */
 static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
                         int n, int *last, int *max, int flags,

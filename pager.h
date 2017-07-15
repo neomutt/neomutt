@@ -32,12 +32,12 @@ struct Menu;
 #define MUTT_SHOW      (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
 
 /* exported flags for mutt_(do_)?pager */
-#define MUTT_PAGER_NSKIP      (1 << 5)    /* preserve whitespace with smartwrap */
-#define MUTT_PAGER_MARKER     (1 << 6)    /* use markers if option is set */
-#define MUTT_PAGER_RETWINCH   (1 << 7)    /* need reformatting on SIGWINCH */
+#define MUTT_PAGER_NSKIP      (1 << 5)    /**< preserve whitespace with smartwrap */
+#define MUTT_PAGER_MARKER     (1 << 6)    /**< use markers if option is set */
+#define MUTT_PAGER_RETWINCH   (1 << 7)    /**< need reformatting on SIGWINCH */
 #define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
 #define MUTT_PAGER_ATTACHMENT (1 << 8)
-#define MUTT_PAGER_NOWRAP     (1 << 9)    /* format for term width, ignore $wrap */
+#define MUTT_PAGER_NOWRAP     (1 << 9)    /**< format for term width, ignore $wrap */
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
 

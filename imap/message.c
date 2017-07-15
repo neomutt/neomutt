@@ -215,12 +215,14 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   return s;
 }
 
-/* msg_parse_fetch: handle headers returned from header fetch.
- * Returns:
- *   0 on success
- *   -1 if the string is corrupted
- *   -2 if the fetch contains a body or header lines
- *      that still need to be parsed.
+/**
+ * msg_parse_fetch - handle headers returned from header fetch
+ * @param h IMAP Header
+ * @param s Command string
+ * @return
+ * *  0 Success
+ * * -1 String is corrupted
+ * * -2 Fetch contains a body or header lines that still need to be parsed
  */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {

@@ -113,8 +113,11 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
   return needspipe;
 }
 
-/* NUL terminates a rfc 1524 field,
- * returns start of next field or NULL */
+/**
+ * get_field - NUL terminate a rfc 1524 field
+ * @param s String to alter
+ * @return start of next field or NULL
+ */
 static char *get_field(char *s)
 {
   char *ch = NULL;
@@ -416,16 +419,6 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
   return found;
 }
 
-/* This routine will create a _temporary_ filename matching the
- * name template given if this needs to be done.
- *
- * Please note that only the last path element of the
- * template and/or the old file name will be used for the
- * comparison and the temporary file name.
- *
- * Returns 0 if oldfile is fine as is.
- * Returns 1 if newfile specified
- */
 static void strnfcpy(char *d, char *s, size_t siz, size_t len)
 {
   if (len > siz)
@@ -433,6 +426,23 @@ static void strnfcpy(char *d, char *s, size_t siz, size_t len)
   strfcpy(d, s, len);
 }
 
+/**
+ * rfc1524_expand_filename - Create temp filename match a template
+ * @param nametemplate Template
+ * @param oldfile      Original filename
+ * @param newfile      Buffer for new filename
+ * @param nflen        Buffer length
+ * @return
+ * * 0 oldfile is fine as is
+ * * 1 newfile specified
+ *
+ * This routine will create a _temporary_ filename matching the
+ * name template given if this needs to be done.
+ *
+ * Please note that only the last path element of the
+ * template and/or the old file name will be used for the
+ * comparison and the temporary file name.
+ */
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen)
 {
   int i, j, k, ps;

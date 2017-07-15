@@ -74,8 +74,11 @@ static bool cmd_queue_full(struct ImapData *idata)
   return false;
 }
 
-/* sets up a new command control block and adds it to the queue.
- * Returns NULL if the pipeline is full. */
+/**
+ * cmd_new - Create and queue a new command control block
+ * @param idata IMAP data
+ * @return NULL if the pipeline is full
+ */
 static struct ImapCommand *cmd_new(struct ImapData *idata)
 {
   struct ImapCommand *cmd = NULL;
@@ -941,14 +944,23 @@ const char *imap_cmd_trailer(struct ImapData *idata)
   return s;
 }
 
-/* imap_exec: execute a command, and wait for the response from the server.
+/**
+ * imap_exec - Execute a command and wait for the response from the server
+ * @param idata  IMAP data
+ * @param cmdstr Command to execute
+ * @param flags  Flags (see below)
+ * @return
+ * * 0 on success
+ * * -1 on Failure
+ * * -2 on OK Failure
+ *
  * Also, handle untagged responses.
+ *
  * Flags:
- *   IMAP_CMD_FAIL_OK: the calling procedure can handle failure. This is used
- *     for checking for a mailbox on append and login
- *   IMAP_CMD_PASS: command contains a password. Suppress logging.
- *   IMAP_CMD_QUEUE: only queue command, do not execute.
- * Return 0 on success, -1 on Failure, -2 on OK Failure
+ * * IMAP_CMD_FAIL_OK: the calling procedure can handle failure.
+ *       This is used for checking for a mailbox on append and login
+ * * IMAP_CMD_PASS: command contains a password. Suppress logging.
+ * * IMAP_CMD_QUEUE: only queue command, do not execute.
  */
 int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 {

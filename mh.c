@@ -220,10 +220,13 @@ static inline mode_t mh_umask(struct Context *ctx)
   return 0777 & ~st.st_mode;
 }
 
-/*
- * Returns 1 if the .mh_sequences last modification time is more recent than the last visit to this mailbox
- * Returns 0 if the modification time is older
- * Returns -1 on error
+/**
+ * mh_sequences_changed - Has the mailbox changed
+ * @param b Mailbox
+ * @return
+ * * 1 mh_sequences last modification time is more recent than the last visit to this mailbox
+ * * 0 modification time is older
+ * * -1 Error
  */
 static int mh_sequences_changed(struct Buffy *b)
 {
@@ -236,10 +239,14 @@ static int mh_sequences_changed(struct Buffy *b)
   return -1;
 }
 
-/*
- * Returns 1 if the modification time on the message file is older than the last visit to this mailbox
- * Returns 0 if the modtime is newer
- * Returns -1 on error
+/**
+ * mh_already_notified - Has the message changed
+ * @param b     Mailbox
+ * @param msgno Message number
+ * @return
+ * * 1 Modification time on the message file is older than the last visit to this mailbox
+ * * 0 Modification time on the message file is newer
+ * * -1 Error
  */
 static int mh_already_notified(struct Buffy *b, int msgno)
 {
@@ -252,7 +259,12 @@ static int mh_already_notified(struct Buffy *b, int msgno)
   return -1;
 }
 
-/* Ignore the garbage files.  A valid MH message consists of only
+/**
+ * mh_valid_message - Is this a valid MH message filename
+ * @param s Pathname to examine
+ * @return true name is valid, false name is invalid
+ *
+ * Ignore the garbage files.  A valid MH message consists of only
  * digits.  Deleted message get moved to a filename with a comma before
  * it.
  */
@@ -266,9 +278,11 @@ static bool mh_valid_message(const char *s)
   return true;
 }
 
-/* Checks new mail for a mh mailbox.
- * check_stats: if true, also count total, new, and flagged messages.
- * Returns 1 if the mailbox has new mail.
+/**
+ * mh_buffy - Check for new mail for a mh mailbox
+ * @param mailbox     Mailbox to check
+ * @param check_stats Also count total, new, and flagged messages
+ * @returns true if the mailbox has new mail
  */
 int mh_buffy(struct Buffy *mailbox, int check_stats)
 {
@@ -2446,11 +2460,13 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 }
 
 
-/*
- * Returns:
- * 1 if there are no messages in the mailbox
- * 0 if there are messages in the mailbox
- * -1 on error
+/**
+ * maildir_check_empty - Is the mailbox empty
+ * @param path Mailbox to check
+ * @return
+ * * 1 Mailbox is empty
+ * * 0 Mailbox contains mail
+ * * -1 Error
  */
 int maildir_check_empty(const char *path)
 {
@@ -2486,11 +2502,13 @@ int maildir_check_empty(const char *path)
   return r;
 }
 
-/*
- * Returns:
- * 1 if there are no messages in the mailbox
- * 0 if there are messages in the mailbox
- * -1 on error
+/**
+ * mh_check_empty - Is mailbox empty
+ * @param path Mailbox to check
+ * @return
+ * * 1 Mailbox is empty
+ * * 0 Mailbox contains mail
+ * * -1 Error
  */
 int mh_check_empty(const char *path)
 {

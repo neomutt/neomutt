@@ -190,8 +190,8 @@ struct ColorLine
   struct ColorLine *next;
 };
 
-#define MUTT_PROGRESS_SIZE (1 << 0) /* traffic-based progress */
-#define MUTT_PROGRESS_MSG  (1 << 1) /* message-based progress */
+#define MUTT_PROGRESS_SIZE (1 << 0) /**< traffic-based progress */
+#define MUTT_PROGRESS_MSG  (1 << 1) /**< message-based progress */
 
 struct Progress
 {

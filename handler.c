@@ -1004,11 +1004,12 @@ static int is_mmnoask(const char *buf)
   return 0;
 }
 
-/*
- * Returns:
- * 1    if the body part should be filtered by a mailcap entry prior to viewing inline.
- *
- * 0    otherwise
+/**
+ * is_autoview - Should email body be filtered by mailcap
+ * @param b Email body
+ * @return
+ * * 1 body part should be filtered by a mailcap entry prior to viewing inline.
+ * * 0 otherwise
  */
 static int is_autoview(struct Body *b)
 {

@@ -930,10 +930,18 @@ void mutt_remove_trailing_ws(char *s)
     *p = 0;
 }
 
-/*
+/**
+ * mutt_concatn_path - Concatenate directory and filename
+ * @param dst      Buffer for result
+ * @param dstlen   Buffer length
+ * @param dir      Directory
+ * @param dirlen   Directory length
+ * @param fname    Filename
+ * @param fnamelen Filename length
+ * @return NULL on error, pointer to \a dst on success
+ *
  * Write the concatenated pathname (dir + "/" + fname) into dst.
  * The slash is omitted when dir or fname is of 0 length.
- * Returns NULL on error or a pointer to dst otherwise.
  */
 char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
                         size_t dirlen, const char *fname, size_t fnamelen)

@@ -828,14 +828,16 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   return ((ctx->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL);
 }
 
-/* check to see if the mailbox has changed on disk.
- *
- * return values:
- *      MUTT_REOPENED   mailbox has been reopened
- *      MUTT_NEW_MAIL   new mail has arrived!
- *      MUTT_LOCKED     couldn't lock the file
- *      0               no change
- *      -1              error
+/**
+ * mbox_check_mailbox - Has mailbox changed on disk
+ * @param[in]  ctx        Context
+ * @param[out] index_hint Keep track of current index selection
+ * @return
+ * * #MUTT_REOPENED  Mailbox has been reopened
+ * * #MUTT_NEW_MAIL  New mail has arrived
+ * * #MUTT_LOCKED    Couldn't lock the file
+ * * 0               No change
+ * * -1              Error
  */
 static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -942,9 +944,11 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
   return -1;
 }
 
-/*
- * Returns 1 if the mailbox has at least 1 new messages (not old)
- * otherwise returns 0.
+/**
+ * mbox_has_new - Does the mailbox have new mail
+ * @param ctx Context
+ * @return true if the mailbox has at least 1 new messages (not old)
+ *         false, otherwise
  */
 static bool mbox_has_new(struct Context *ctx)
 {
@@ -1354,11 +1358,13 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
-/*
- * Returns:
- * 1 if the mailbox is not empty
- * 0 if the mailbox is empty
- * -1 on error
+/**
+ * mbox_check_empty - Is the mailbox empty
+ * @param path Path to mailbox
+ * @return
+ * * 1 mailbox is not empty
+ * * 0 mailbox is empty
+ * * -1 on error
  */
 int mbox_check_empty(const char *path)
 {

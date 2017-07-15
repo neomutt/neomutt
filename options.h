@@ -113,17 +113,17 @@ enum GlobalBool
   OPTMAILDIRCHECKCUR,
   OPTMARKERS,
   OPTMARKOLD,
-  OPTMENUSCROLL,  /* scroll menu instead of implicit next-page */
-  OPTMENUMOVEOFF, /* allow menu to scroll past last entry */
+  OPTMENUSCROLL,  /**< scroll menu instead of implicit next-page */
+  OPTMENUMOVEOFF, /**< allow menu to scroll past last entry */
 #if defined(USE_IMAP) || defined(USE_POP)
   OPTMESSAGECACHECLEAN,
 #endif
-  OPTMETAKEY, /* interpret ALT-x as ESC-x */
+  OPTMETAKEY, /**< interpret ALT-x as ESC-x */
   OPTMETOO,
   OPTMHPURGE,
   OPTMIMEFORWDECODE,
 #ifdef USE_NNTP
-  OPTMIMESUBJECT, /* encode subject line with RFC2047 */
+  OPTMIMESUBJECT, /**< encode subject line with RFC2047 */
 #endif
   OPTNARROWTREE,
   OPTPAGERSTOP,
@@ -189,7 +189,7 @@ enum GlobalBool
   OPTWEED,
   OPTWRAP,
   OPTWRAPSEARCH,
-  OPTWRITEBCC, /* write out a bcc header? */
+  OPTWRITEBCC, /**< write out a bcc header? */
   OPTXMAILER,
 
   OPTCRYPTUSEGPGME,
@@ -236,35 +236,34 @@ enum GlobalBool
 
   /* pseudo options */
 
-  OPTAUXSORT,           /* (pseudo) using auxiliary sort function */
-  OPTFORCEREFRESH,      /* (pseudo) refresh even during macros */
-  OPTLOCALES,           /* (pseudo) set if user has valid locale definition */
-  OPTNOCURSES,          /* (pseudo) when sending in batch mode */
-  OPTSEARCHREVERSE,     /* (pseudo) used by ci_search_command */
-  OPTMSGERR,            /* (pseudo) used by mutt_error/mutt_message */
-  OPTSEARCHINVALID,     /* (pseudo) used to invalidate the search pat */
-  OPTSIGNALSBLOCKED,    /* (pseudo) using by mutt_block_signals () */
-  OPTSYSSIGNALSBLOCKED, /* (pseudo) using by mutt_block_signals_system () */
-  OPTNEEDRESORT,        /* (pseudo) used to force a re-sort */
-  OPTRESORTINIT,        /* (pseudo) used to force the next resort to be from scratch */
-  OPTVIEWATTACH,        /* (pseudo) signals that we are viewing attachments */
-  OPTSORTSUBTHREADS,    /* (pseudo) used when $sort_aux changes */
-  OPTNEEDRESCORE,       /* (pseudo) set when the `score' command is used */
-  OPTATTACHMSG,         /* (pseudo) used by attach-message */
-  OPTHIDEREAD,          /* (pseudo) whether or not hide read messages */
-  OPTKEEPQUIET,         /* (pseudo) shut up the message and refresh
-                         *          functions while we are executing an
-                         *          external program.
-                         */
-  OPTMENUCALLER,        /* (pseudo) tell menu to give caller a take */
-  OPTREDRAWTREE,        /* (pseudo) redraw the thread tree */
-  OPTPGPCHECKTRUST,     /* (pseudo) used by pgp_select_key () */
-  OPTDONTHANDLEPGPKEYS, /* (pseudo) used to extract PGP keys */
-  OPTIGNOREMACROEVENTS, /* (pseudo) don't process macro/push/exec events while set */
+  OPTAUXSORT,           /**< (pseudo) using auxiliary sort function */
+  OPTFORCEREFRESH,      /**< (pseudo) refresh even during macros */
+  OPTLOCALES,           /**< (pseudo) set if user has valid locale definition */
+  OPTNOCURSES,          /**< (pseudo) when sending in batch mode */
+  OPTSEARCHREVERSE,     /**< (pseudo) used by ci_search_command */
+  OPTMSGERR,            /**< (pseudo) used by mutt_error/mutt_message */
+  OPTSEARCHINVALID,     /**< (pseudo) used to invalidate the search pat */
+  OPTSIGNALSBLOCKED,    /**< (pseudo) using by mutt_block_signals () */
+  OPTSYSSIGNALSBLOCKED, /**< (pseudo) using by mutt_block_signals_system () */
+  OPTNEEDRESORT,        /**< (pseudo) used to force a re-sort */
+  OPTRESORTINIT,        /**< (pseudo) used to force the next resort to be from scratch */
+  OPTVIEWATTACH,        /**< (pseudo) signals that we are viewing attachments */
+  OPTSORTSUBTHREADS,    /**< (pseudo) used when $sort_aux changes */
+  OPTNEEDRESCORE,       /**< (pseudo) set when the `score' command is used */
+  OPTATTACHMSG,         /**< (pseudo) used by attach-message */
+  OPTHIDEREAD,          /**< (pseudo) whether or not hide read messages */
+  OPTKEEPQUIET,         /**< (pseudo) shut up the message and refresh
+                         *            functions while we are executing an
+                         *            external program.  */
+  OPTMENUCALLER,        /**< (pseudo) tell menu to give caller a take */
+  OPTREDRAWTREE,        /**< (pseudo) redraw the thread tree */
+  OPTPGPCHECKTRUST,     /**< (pseudo) used by pgp_select_key () */
+  OPTDONTHANDLEPGPKEYS, /**< (pseudo) used to extract PGP keys */
+  OPTIGNOREMACROEVENTS, /**< (pseudo) don't process macro/push/exec events while set */
 
 #ifdef USE_NNTP
-  OPTNEWS,              /* (pseudo) used to change reader mode */
-  OPTNEWSSEND,          /* (pseudo) used to change behavior when posting */
+  OPTNEWS,              /**< (pseudo) used to change reader mode */
+  OPTNEWSSEND,          /**< (pseudo) used to change behavior when posting */
 #endif
 #ifdef USE_NOTMUCH
   OPTVIRTSPOOLFILE,

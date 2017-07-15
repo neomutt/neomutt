@@ -24,36 +24,75 @@
 struct Account;
 struct BodyCache;
 
-/*
- * Parameters:
- *   - 'account' is the current mailbox' account (required)
- *   - 'mailbox' is the path to the mailbox of the account (optional):
- *     the driver using it is responsible for ensuring that hierarchies
- *     are separated by '/' (if it knows of such a concepts like
- *     mailboxes or hierarchies)
- * Returns NULL on failure.
+/**
+ * mutt_bcache_open - Open an Email-Body Cache
+ * @param account current mailbox' account (required)
+ * @param mailbox path to the mailbox of the account (optional)
+ * @return NULL on failure
+ *
+ * The driver using it is responsible for ensuring that hierarchies are
+ * separated by '/' (if it knows of such a concepts like mailboxes or
+ * hierarchies)
  */
 struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox);
 
-/* free all memory of bcache and finally FREE() it, too */
+/**
+ * mutt_bcache_close - Close an Email-Body Cache
+ * @param bcache Body cache
+ *
+ * Free all memory of bcache and finally FREE() it, too.
+ */
 void mutt_bcache_close(struct BodyCache **bcache);
 
-/*
- * Parameters:
- *   - 'bcache' is the pointer returned by mutt_bcache_open() (required)
- *   - 'id' is a per-mailbox unique identifier for the message (required)
- * These return NULL/-1 on failure and FILE pointer/0 on success.
+/**
+ * mutt_bcache_get - Open a file in the Body Cache
+ * @param bcache Body Cache from mutt_bcache_open()
+ * @param id     Per-mailbox unique identifier for the message
+ * @return FILE* on success, NULL on failure
  */
-
 FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id);
-/* tmp: the returned FILE* is in a temporary location.
- *      if set, use mutt_bcache_commit to put it into place */
+
+/**
+ * mutt_bcache_put - Create a file in the Body Cache
+ * @param bcache Body Cache from mutt_bcache_open()
+ * @param id     Per-mailbox unique identifier for the message
+ * @param tmp    Returned FILE* is in a temporary location.
+ *               If set, use mutt_bcache_commit to put it into place
+ * @return FILE* on success, NULL on failure
+ */
 FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp);
+
+/**
+ * mutt_bcache_commit - Move a temporary file into the Body Cache
+ * @param bcache Body Cache from mutt_bcache_open()
+ * @param id     Per-mailbox unique identifier for the message
+ * @return 0 on success, -1 on failure
+ */
 int mutt_bcache_commit(struct BodyCache *bcache, const char *id);
+
+/**
+ * mutt_bcache_del - Delete a file from the Body Cache
+ * @param bcache Body Cache from mutt_bcache_open()
+ * @param id     Per-mailbox unique identifier for the message
+ * @return 0 on success, -1 on failure
+ */
 int mutt_bcache_del(struct BodyCache *bcache, const char *id);
+
+/**
+ * mutt_bcache_exists - Check if a file exists in the Body Cache
+ * @param bcache Body Cache from mutt_bcache_open()
+ * @param id     Per-mailbox unique identifier for the message
+ * @return 0 on success, -1 on failure
+ */
 int mutt_bcache_exists(struct BodyCache *bcache, const char *id);
 
-/*
+/**
+ * mutt_bcache_list - Find matching entries in the Body Cache
+ * @param bcache Body Cache from mutt_bcache_open()
+ * @param want_id Callback function called for each match
+ * @param data    Data to pass to the callback function
+ * @return -1 on failure, count (>=0) of matching items
+ *
  * This more or less "examines" the cache and calls a function with
  * each id it finds if given.
  *
@@ -64,9 +103,6 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id);
  * listing is aborted and continued otherwise. The callback is optional
  * so that this function can be used to count the items in the cache
  * (see below for return value).
- *
- * This returns -1 on failure and the count (>=0) of items processed
- * otherwise.
  */
 int mutt_bcache_list(struct BodyCache *bcache,
                      int (*want_id)(const char *id, struct BodyCache *bcache, void *data),

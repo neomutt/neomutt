@@ -33,10 +33,14 @@
 #include "nntp.h"
 #endif
 
-/* given a partial pathname, this routine fills in as much of the rest of the
- * path as is unique.
+/**
+ * mutt_complete - Attempt to complete a partial pathname
+ * @param s    Buffer containing pathname
+ * @param slen Buffer length
+ * @return 0 if ok, -1 if no matches
  *
- * return 0 if ok, -1 if no matches
+ * Given a partial pathname, fill in as much of the rest of the path as is
+ * unique.
  */
 int mutt_complete(char *s, size_t slen)
 {

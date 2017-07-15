@@ -981,16 +981,20 @@ static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
   return count;
 }
 
-/* Prepares commands for all messages matching conditions (must be flushed
- * with imap_exec)
- * Params:
- *   idata: ImapData containing context containing header set
- *   pre, post: commands are of the form "%s %s %s %s", tag,
- *     pre, message set, post
- *   flag: enum of flag type on which to filter
- *   changed: include only changed messages in message set
- *   invert: invert sense of flag, eg MUTT_READ matches unread messages
- * Returns: number of matched messages, or -1 on failure */
+/**
+ * imap_exec_msgset - Prepare commands for all messages matching conditions
+ * @param idata   ImapData containing context containing header set
+ * @param pre     prefix commands
+ * @param post    postfix commands
+ * @param flag    flag type on which to filter, e.g. MUTT_REPLIED
+ * @param changed include only changed messages in message set
+ * @param invert  invert sense of flag, eg MUTT_READ matches unread messages
+ * @return number of matched messages, or -1 on failure
+ *
+ * pre/post: commands are of the form "%s %s %s %s", tag, pre, message set, post
+ * Prepares commands for all messages matching conditions
+ * (must be flushed with imap_exec)
+ */
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, int changed, int invert)
 {
@@ -1434,13 +1438,15 @@ int imap_close_mailbox(struct Context *ctx)
   return 0;
 }
 
-/* use the NOOP or IDLE command to poll for new mail
- *
- * return values:
- *      MUTT_REOPENED   mailbox has been externally modified
- *      MUTT_NEW_MAIL   new mail has arrived!
- *      0               no change
- *      -1              error
+/**
+ * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
+ * @param ctx   Context
+ * @param force Don't wait
+ * @return
+ * * MUTT_REOPENED   mailbox has been externally modified
+ * * MUTT_NEW_MAIL   new mail has arrived!
+ * * 0               no change
+ * * -1              error
  */
 int imap_check_mailbox(struct Context *ctx, int force)
 {
@@ -1965,8 +1971,16 @@ fail:
   return -1;
 }
 
-/* trim dest to the length of the longest prefix it shares with src,
- * returning the length of the trimmed string */
+/**
+ * longest_common_prefix - Find longest prefix common to two strings
+ * @param dest  Destination buffer
+ * @param src   Source buffer
+ * @param start Starting offset into string
+ * @param dlen  Destination buffer length
+ * @return Length of the common string
+ *
+ * Trim dest to the length of the longest prefix it shares with src.
+ */
 static size_t longest_common_prefix(char *dest, const char *src, size_t start, size_t dlen)
 {
   size_t pos = start;

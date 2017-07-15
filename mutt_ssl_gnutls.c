@@ -508,8 +508,14 @@ static char *tls_make_date(time_t t, char *s, size_t len)
   return s;
 }
 
-/*
- * Returns 0 on failure, nonzero on success.
+/**
+ * tls_check_one_certificate - 
+ * @param certdata List of GnuTLS certificates
+ * @param certstat GnuTLS certificate status
+ * @param hostname Hostname
+ * @param idx      Index into certificate list
+ * @param len      Length of certificate list
+ * @return 0 on failure, nonzero on success
  */
 static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      gnutls_certificate_status_t certstat,

@@ -904,8 +904,17 @@ static int fetch_description(char *line, void *data)
   return 0;
 }
 
-/* Fetch newsgroups descriptions.
- * Returns the same code as nntp_fetch_lines() */
+/**
+ * get_description - Fetch newsgroups descriptions
+ * @param nntp_data NNTP data
+ * @param wildmat   String to match
+ * @param msg       Progress message
+ * @return
+ * *  0 Success
+ * *  1 Bad response (answer in query buffer)
+ * * -1 Connection lost
+ * * -2 Error
+ */
 static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
 {
   struct NntpServer *nserv = NULL;

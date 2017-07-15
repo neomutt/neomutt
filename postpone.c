@@ -240,19 +240,18 @@ static struct Header *select_msg(void)
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }
 
-/* args:
- *      ctx     Context info, used when recalling a message to which
- *              we reply.
- *      hdr     envelope/attachment info for recalled message
- *      cur     if message was a reply, `cur' is set to the message which
- *              `hdr' is in reply to
- *      fcc     fcc for the recalled message
- *      fcclen  max length of fcc
- *
- * return vals:
- *      -1              error/no messages
- *      0               normal exit
- *      SENDREPLY       recalled message is a reply
+/**
+ * mutt_get_postponed - Recall a postponed message
+ * @param ctx     Context info, used when recalling a message to which we reply
+ * @param hdr     envelope/attachment info for recalled message
+ * @param cur     if message was a reply, `cur' is set to the message
+ *                which `hdr' is in reply to
+ * @param fcc     fcc for the recalled message
+ * @param fcclen  max length of fcc
+ * @return
+ * * -1        Error/no messages
+ * * 0         Normal exit
+ * * SENDREPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
                        struct Header **cur, char *fcc, size_t fcclen)

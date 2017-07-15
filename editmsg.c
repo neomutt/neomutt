@@ -37,12 +37,14 @@
 #include "options.h"
 #include "protos.h"
 
-/*
- * return value:
- *
- * 1    message not modified
- * 0    message edited successfully
- * -1   error
+/**
+ * edit_one_message - Edit an email
+ * @param ctx Context
+ * @param cur Header of email
+ * @return
+ * * 1  Message not modified
+ * * 0  Message edited successfully
+ * * -1 Error
  */
 static int edit_one_message(struct Context *ctx, struct Header *cur)
 {

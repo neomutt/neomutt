@@ -120,8 +120,8 @@ void mutt_debug(int level, const char *fmt, ...);
 #define S_BKG 126
 
 /* Flags for mutt_read_line() */
-#define MUTT_CONT (1 << 0) /* \-continuation */
-#define MUTT_EOL  (1 << 1) /* don't strip \n/\r\n */
+#define MUTT_CONT (1 << 0) /**< \-continuation */
+#define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */
 
 /* The actual library functions. */
 

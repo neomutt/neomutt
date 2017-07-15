@@ -219,8 +219,12 @@ static const char *crypt_fpr(struct CryptKeyInfo *k)
   return s;
 }
 
-/* Returns the fingerprint if available, otherwise
- * returns the long keyid.
+/**
+ * crypt_fpr_or_lkeyid - Find the fingerprint of a key
+ * @param k Key to examine
+ * @return
+ * * fingerprint if available
+ * * otherwise returns the long keyid
  */
 static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
 {
@@ -2113,11 +2117,17 @@ err_ctx:
   return rc;
 }
 
-/* Check that 'b' is a complete line containing 'a' followed by either LF or CRLF.
+/**
+ * line_compare - Compare two strings ignore line endings
+ * @param a String a
+ * @param n Maximum length to compare
+ * @param b String b
+ * @return
+ * *  0 Strings match
+ * * -1 Strings differ
  *
- * returns:
- * 0 if the is a match
- * -1 otherwise
+ * Check that \a b is a complete line containing \a a followed by either LF or
+ * CRLF.
  */
 static int line_compare(const char *a, size_t n, const char *b)
 {

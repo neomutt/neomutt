@@ -1349,12 +1349,14 @@ out:
   return l;
 }
 
-/*
- * returns the number of bytes the first (multibyte) character
- * of input consumes:
- *      < 0 ... conversion error
- *      = 0 ... end of input
- *      > 0 ... length (bytes)
+/**
+ * mutt_charlen - Count the bytes in a (multibyte) character
+ * @param[in]  s     String to be examined
+ * @param[out] width Number of screen columns the character would use
+ * @return Number of bytes in the first (multibyte) character of input consumes
+ * * < 0 ... conversion error
+ * * = 0 ... end of input
+ * * > 0 ... length (bytes)
  */
 int mutt_charlen(const char *s, int *width)
 {
@@ -1373,9 +1375,10 @@ int mutt_charlen(const char *s, int *width)
   return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
 }
 
-/*
- * mutt_strwidth is like mutt_strlen except that it returns the width
- * referring to the number of character cells.
+/**
+ * mutt_strwidth - Measure a string's width in screen cells
+ * @param s String to be measured
+ * @return Number of screen cells string would use
  */
 int mutt_strwidth(const char *s)
 {

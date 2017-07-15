@@ -63,13 +63,15 @@ static int fetch_message(char *line, void *file)
   return 0;
 }
 
-/*
- * Read header
- * returns:
- *  0 on success
- * -1 - connection lost,
- * -2 - invalid command or execution error,
- * -3 - error writing to tempfile
+/**
+ * pop_read_header - Read header
+ * @param pop_data POP data
+ * @param h        Email header
+ * @return
+ * *  0 Success
+ * * -1 Connection lost,
+ * * -2 Invalid command or execution error,
+ * * -3 Error writing to tempfile
  */
 static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
@@ -235,13 +237,14 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 }
 #endif
 
-/*
- * Read headers
- * returns:
- *  0 on success
- * -1 - connection lost,
- * -2 - invalid command or execution error,
- * -3 - error writing to tempfile
+/**
+ * pop_fetch_headers - Read headers
+ * @param ctx Context
+ * @return
+ * *  0 Success
+ * * -1 Connection lost,
+ * * -2 Invalid command or execution error,
+ * * -3 Error writing to tempfile
  */
 static int pop_fetch_headers(struct Context *ctx)
 {

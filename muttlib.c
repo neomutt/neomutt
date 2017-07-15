@@ -2132,13 +2132,19 @@ bool mutt_match_rx_list(const char *s, struct RxList *l)
   return false;
 }
 
-/* Match a string against the patterns defined by the 'spam' command and output
+/**
+ * mutt_match_spam_list - Does a string match a spam pattern
+ * @param s        String to check
+ * @param l        List of spam patterns
+ * @param text     Buffer to save match
+ * @param textsize Buffer length
+ * @return true if \a s matches a pattern in \a l, false otherwise
+ *
+ * Match a string against the patterns defined by the 'spam' command and output
  * the expanded format into `text` when there is a match.  If textsize<=0, the
  * match is performed but the format is not expanded and no assumptions are made
  * about the value of `text` so it may be NULL.
- *
- * Returns true if the argument `s` matches a pattern in the spam list, otherwise
- * false. */
+ */
 bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
@@ -2220,10 +2226,14 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
   FREE(&p);
 }
 
-/*
- * Process an XDG environment variable or its fallback.
+/**
+ * mutt_set_xdg_path - Find an XDG path or its fallback
+ * @param type    Type of XDG variable, e.g. #XDG_CONFIG_HOME
+ * @param buf     Buffer to save path
+ * @param bufsize Buffer length
+ * @return 1 if an entry was found that actually exists on disk and 0 otherwise
  *
- * Return 1 if an entry was found that actually exists on disk and 0 otherwise.
+ * Process an XDG environment variable or its fallback.
  */
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 {

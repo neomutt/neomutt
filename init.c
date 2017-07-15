@@ -2990,13 +2990,14 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
  * and avoid cyclic sourcing */
 static struct List *MuttrcStack;
 
-/* Use POSIX functions to convert a path to absolute, relatively to another path
- * Args:
- *  - path: instance containing the relative path to the file we want the absolute
- *     path of. Should be at least of PATH_MAX length, will contain the full result.
- *  - reference: path to a file which directory will be set as reference for setting
- *      up the absolute path.
- * Returns: true (1) on success, false (0) otherwise.
+/**
+ * to_absolute_path - Convert relative filepath to an absolute path
+ * @param path      Relative path
+ * @param reference Absolute path that \a path is relative to
+ * @return true on success, false otherwise
+ *
+ * Use POSIX functions to convert a path to absolute, relatively to another path
+ * @note \a path should be at least of PATH_MAX length
  */
 static int to_absolute_path(char *path, const char *reference)
 {
@@ -3033,8 +3034,12 @@ static int to_absolute_path(char *path, const char *reference)
 
 #define MAXERRS 128
 
-/* reads the specified initialization file.
- * Returns negative if mutt should pause to let the user know...  */
+/**
+ * source_rc - Read an initialization file
+ * @param rcfile_path Path to initialization file
+ * @param err         Buffer for error messages
+ * @return <0 if mutt should pause to let the user know
+ */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
   FILE *f = NULL;

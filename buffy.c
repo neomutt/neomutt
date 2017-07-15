@@ -163,10 +163,15 @@ static void buffy_free(struct Buffy **mailbox)
   FREE(mailbox);
 }
 
-/* Checks the specified maildir subdir (cur or new) for new mail or mail counts.
- * check_new:   if true, check for new mail.
- * check_stats: if true, count total, new, and flagged messages.
- * Returns 1 if the dir has new mail.
+/**
+ * buffy_maildir_check_dir - Check for new mail / mail counts
+ * @param mailbox     Mailbox to check
+ * @param dir_name    Path to mailbox
+ * @param check_new   if true, check for new mail
+ * @param check_stats if true, count total, new, and flagged messages
+ * @return 1 if the dir has new mail
+ *
+ * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
 static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
                                    int check_new, int check_stats)
@@ -244,9 +249,11 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
   return rc;
 }
 
-/* Checks new mail for a maildir mailbox.
- * check_stats: if true, also count total, new, and flagged messages.
- * Returns 1 if the mailbox has new mail.
+/**
+ * buffy_maildir_check - Check for new mail in a maildir mailbox
+ * @param mailbox     Mailbox to check
+ * @param check_stats if true, also count total, new, and flagged messages
+ * @return 1 if the mailbox has new mail
  */
 static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
 {
@@ -269,9 +276,12 @@ static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
   return rc;
 }
 
-/* Checks new mail for an mbox mailbox
- * check_stats: if true, also count total, new, and flagged messages.
- * Returns 1 if the mailbox has new mail.
+/**
+ * buffy_mbox_check - Check for new mail for an mbox mailbox
+ * @param mailbox     Mailbox to check
+ * @param sb          stat(2) information about the mailbox
+ * @param check_stats if true, also count total, new, and flagged messages
+ * @return 1 if the mailbox has new mail
  */
 static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_stats)
 {

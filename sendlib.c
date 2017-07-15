@@ -641,11 +641,21 @@ static void update_content_info(struct Content *info, struct ContentState *s,
 /* Define as 1 if iconv sometimes returns -1(EILSEQ) instead of transcribing. */
 #define BUGGY_ICONV 1
 
-/*
+/**
+ * convert_file_to - Change the encoding of a file
+ * @param[in]  file       File to convert
+ * @param[in]  fromcode   Original encoding
+ * @param[in]  ncodes     Number of target encodings
+ * @param[in]  tocodes    List of target encodings
+ * @param[out] tocode     Chosen encoding
+ * @param[in]  info       Encoding information
+ * @return
+ * * -1 Error, no conversion was possible
+ * * >0 Success, number of bytes converted
+ *
  * Find the best charset conversion of the file from fromcode into one
  * of the tocodes. If successful, set *tocode and Content *info and
- * return the number of characters converted inexactly. If no
- * conversion was possible, return -1.
+ * return the number of characters converted inexactly.
  *
  * We convert via UTF-8 in order to avoid the condition -1(EINVAL),
  * which would otherwise prevent us from knowing the number of inexact
@@ -942,7 +952,13 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   return info;
 }
 
-/* Given a file with path ``s'', see if there is a registered MIME type.
+/**
+ * mutt_lookup_mime_type - Find the MIME type for an attachment
+ * @param att  Email with attachment
+ * @param path Path to attachment
+ * @return MIME type, e.g. #TYPEIMAGE
+ *
+ * Given a file with path ``s'', see if there is a registered MIME type.
  * returns the major MIME type, and copies the subtype to ``d''.  First look
  * for ~/.mime.types, then look in a system mime.types if we can find one.
  * The longest match is used so that we can match `ps.gz' when `gz' also

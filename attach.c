@@ -209,14 +209,17 @@ bailout:
   return rc;
 }
 
-/*
+/**
+ * mutt_edit_attachment - Edit an attachment
+ * @param a Email containing attachment
+ * @return 1 if editor found, 0 if not
+ *
  * Currently, this only works for send mode, as it assumes that the
  * Body->filename actually contains the information.  I'm not sure
  * we want to deal with editing attachments we've already received,
  * so this should be ok.
  *
- * Returns 1 if editor found, 0 if not (useful to tell calling menu to
- * redraw)
+ * Returning 0 is useful to tell the calling menu to redraw
  */
 int mutt_edit_attachment(struct Body *a)
 {

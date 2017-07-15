@@ -237,7 +237,16 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
   return s - s0;
 }
 
-/*
+/**
+ * try_block - Attempt to convert a block ot text
+ * @param d        String to convert
+ * @param dlen     Length of string
+ * @param fromcode Original encoding
+ * @param tocode   New encoding
+ * @param encoder  Encoding function
+ * @param wlen     Number of characters converted
+ * @return 0 string could be converted >0 maximum that could be converted
+ *
  * Return 0 if and set *encoder and *wlen if the data (d, dlen) could
  * be converted to an encoded word of length *wlen using *encoder.
  * Otherwise return an upper bound on the maximum length of the data
@@ -312,9 +321,17 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
     return dlen;
 }
 
-/*
+/**
+ * encode_block - Encode a block of text using an encoder
+ * @param s        String to convert
+ * @param d        Buffer for result
+ * @param dlen     Buffer length
+ * @param fromcode Original encoding
+ * @param tocode   New encoding
+ * @param encoder  Encoding funtion
+ * @return Length of the encoded word
+ *
  * Encode the data (d, dlen) into s using the encoder.
- * Return the length of the encoded word.
  */
 static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
                            const char *tocode, encoder_t encoder)
@@ -368,7 +385,18 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   return n;
 }
 
-/*
+/**
+ * rfc2047_encode - RFC-2047-encode a string
+ * @param[in]  d        String to be encoded
+ * @param[in]  dlen     Length of string
+ * @param[in]  col      Starting index in string
+ * @param[in]  fromcode Original encoding
+ * @param[in]  charsets List of charsets to choose from
+ * @param[out] e        Buffer to save result
+ * @param[out] elen     Buffer length
+ * @param[in]  specials Special characters to be encoded
+ *
+ *
  * Place the result of RFC-2047-encoding (d, dlen) into the dynamically
  * allocated buffer (e, elen). The input data is in charset fromcode
  * and is converted into a charset chosen from charsets.
