@@ -87,7 +87,7 @@ enum ImapFlags
   IMAP_BYE
 };
 
-enum
+enum ImapState
 {
   /* States */
   IMAP_DISCONNECTED = 0,
@@ -99,7 +99,7 @@ enum
   IMAP_IDLE
 };
 
-enum
+enum ImapNamespace
 {
   /* Namespace types */
   IMAP_NS_PERSONAL = 0,
@@ -108,7 +108,7 @@ enum
 };
 
 /* Capabilities we are interested in */
-enum
+enum ImapCaps
 {
   IMAP4 = 0,
   IMAP4REV1,

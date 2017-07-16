@@ -214,7 +214,7 @@ enum MuttMisc
 };
 
 /* possible arguments to set_quadoption() */
-enum
+enum QuadOptionResponse
 {
   MUTT_ABORT = -1,
   MUTT_NO,
@@ -224,7 +224,7 @@ enum
 };
 
 /* quad-option vars */
-enum
+enum QuadOptionVars
 {
   OPT_ABORT,
   OPT_BOUNCE,

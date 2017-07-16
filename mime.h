@@ -34,7 +34,7 @@ enum ContentType
 };
 
 /* Content-Transfer-Encoding */
-enum
+enum ContentEncoding
 {
   ENCOTHER,
   ENC7BIT,
@@ -46,7 +46,7 @@ enum
 };
 
 /* Content-Disposition values */
-enum
+enum ContentDisposition
 {
   DISPINLINE,
   DISPATTACH,

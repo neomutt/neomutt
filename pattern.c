@@ -223,7 +223,7 @@ struct RangeRegex
   regex_t cooked;  /**< compiled form */
 };
 
-enum
+enum RangeType
 {
   RANGE_K_REL,
   RANGE_K_ABS,
@@ -266,7 +266,7 @@ static struct RangeRegex range_regexps[] = {
 #define RANGE_GT '>'
 
 /* range sides: left or right */
-enum
+enum RangeSide
 {
   RANGE_S_LEFT,
   RANGE_S_RIGHT

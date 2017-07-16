@@ -40,7 +40,7 @@ extern int optind;
 
 #define BUFFSIZE 2048
 
-enum output_formats_t
+enum OutputFormats
 {
   F_CONF,
   F_MAN,
@@ -61,7 +61,7 @@ enum output_formats_t
 #define D_IL (1 << 10)
 #define D_TT (1 << 11)
 
-enum
+enum SpecialChars
 {
   SP_START_EM,
   SP_START_BF,
@@ -84,7 +84,7 @@ enum
   SP_REFER
 };
 
-enum output_formats_t OutputFormat = F_NONE;
+enum OutputFormats OutputFormat = F_NONE;
 char *Progname = NULL;
 short Debug = 0;
 
@@ -930,7 +930,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
  * following string definitions!
  */
 
-enum
+enum DataType
 {
   DT_NONE = 0,
   DT_BOOL,
