@@ -119,7 +119,8 @@ static struct Rfc2231Parameter *rfc2231_new_parameter(void)
   return safe_calloc(1, sizeof(struct Rfc2231Parameter));
 }
 
-/* insert parameter into an ordered list.
+/**
+ * rfc2231_list_insert - insert parameter into an ordered list
  *
  * Primary sorting key: attribute
  * Secondary sorting key: index
@@ -154,7 +155,9 @@ static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
   }
 }
 
-/* process continuation parameters */
+/**
+ * rfc2231_join_continuations - process continuation parameters
+ */
 static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Parameter *par)
 {
   struct Rfc2231Parameter *q = NULL;

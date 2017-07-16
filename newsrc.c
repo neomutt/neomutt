@@ -55,7 +55,9 @@
 
 struct BodyCache;
 
-/* Find NntpData for given newsgroup or add it */
+/**
+ * nntp_data_find - Find NntpData for given newsgroup or add it
+ */
 static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *group)
 {
   struct NntpData *nntp_data = hash_find(nserv->groups_hash, group);
@@ -82,7 +84,9 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
   return nntp_data;
 }
 
-/* Remove all temporarily cache files */
+/**
+ * nntp_acache_free - Remove all temporarily cache files
+ */
 void nntp_acache_free(struct NntpData *nntp_data)
 {
   for (int i = 0; i < NNTP_ACACHE_LEN; i++)
@@ -95,7 +99,9 @@ void nntp_acache_free(struct NntpData *nntp_data)
   }
 }
 
-/* Free NntpData, used to destroy hash elements */
+/**
+ * nntp_data_free - Free NntpData, used to destroy hash elements
+ */
 void nntp_data_free(void *data)
 {
   struct NntpData *nntp_data = data;
@@ -109,7 +115,9 @@ void nntp_data_free(void *data)
   FREE(&data);
 }
 
-/* Unlock and close .newsrc file */
+/**
+ * nntp_newsrc_close - Unlock and close .newsrc file
+ */
 void nntp_newsrc_close(struct NntpServer *nserv)
 {
   if (!nserv->newsrc_fp)
@@ -120,7 +128,9 @@ void nntp_newsrc_close(struct NntpServer *nserv)
   safe_fclose(&nserv->newsrc_fp);
 }
 
-/* calculate number of unread articles using .newsrc data */
+/**
+ * nntp_group_unread_stat - Count number of unread articles using .newsrc data
+ */
 void nntp_group_unread_stat(struct NntpData *nntp_data)
 {
   anum_t first, last;
@@ -143,10 +153,14 @@ void nntp_group_unread_stat(struct NntpData *nntp_data)
   }
 }
 
-/* Parse .newsrc file:
- *  0 - not changed
- *  1 - parsed
- * -1 - error */
+/**
+ * nntp_newsrc_parse - Parse .newsrc file
+ * @param nserv NNTP server
+ * @return
+ * *  0 Not changed
+ * *  1 Parsed
+ * * -1 Error
+ */
 int nntp_newsrc_parse(struct NntpServer *nserv)
 {
   char *line = NULL;
@@ -279,7 +293,9 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
   return 1;
 }
 
-/* Generate array of .newsrc entries */
+/**
+ * nntp_newsrc_gen_entries - Generate array of .newsrc entries
+ */
 void nntp_newsrc_gen_entries(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -361,7 +377,9 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
   }
 }
 
-/* Update file with new contents */
+/**
+ * update_file - Update file with new contents
+ */
 static int update_file(char *filename, char *buf)
 {
   FILE *fp = NULL;
@@ -408,7 +426,9 @@ static int update_file(char *filename, char *buf)
   return rc;
 }
 
-/* Update .newsrc file */
+/**
+ * nntp_newsrc_update - Update .newsrc file
+ */
 int nntp_newsrc_update(struct NntpServer *nserv)
 {
   char *buf = NULL;
@@ -484,7 +504,9 @@ int nntp_newsrc_update(struct NntpServer *nserv)
   return rc;
 }
 
-/* Make fully qualified cache file name */
+/**
+ * cache_expand - Make fully qualified cache file name
+ */
 static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *src)
 {
   char *c = NULL;
@@ -511,7 +533,9 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
   mutt_expand_path(dst, dstlen);
 }
 
-/* Make fully qualified url from newsgroup name */
+/**
+ * nntp_expand_path - Make fully qualified url from newsgroup name
+ */
 void nntp_expand_path(char *line, size_t len, struct Account *acct)
 {
   struct CissUrl url;
@@ -522,7 +546,9 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct)
   FREE(&url.path);
 }
 
-/* Parse newsgroup */
+/**
+ * nntp_add_group - Parse newsgroup
+ */
 int nntp_add_group(char *line, void *data)
 {
   struct NntpServer *nserv = data;
@@ -553,7 +579,9 @@ int nntp_add_group(char *line, void *data)
   return 0;
 }
 
-/* Load list of all newsgroups from cache */
+/**
+ * active_get_cache - Load list of all newsgroups from cache
+ */
 static int active_get_cache(struct NntpServer *nserv)
 {
   char buf[HUGE_STRING];
@@ -583,7 +611,9 @@ static int active_get_cache(struct NntpServer *nserv)
   return 0;
 }
 
-/* Save list of all newsgroups to cache */
+/**
+ * nntp_active_save_cache - Save list of all newsgroups to cache
+ */
 int nntp_active_save_cache(struct NntpServer *nserv)
 {
   char file[_POSIX_PATH_MAX];
@@ -626,13 +656,19 @@ int nntp_active_save_cache(struct NntpServer *nserv)
 }
 
 #ifdef USE_HCACHE
-/* Used by mutt_hcache_open() to compose hcache file name */
+/**
+ * nntp_hcache_namer - Compose hcache file names
+ *
+ * Used by mutt_hcache_open() to compose hcache file name
+ */
 static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
 {
   return snprintf(dest, destlen, "%s.hcache", path);
 }
 
-/* Open newsgroup hcache */
+/**
+ * nntp_hcache_open - Open newsgroup hcache
+ */
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 {
   struct CissUrl url;
@@ -649,7 +685,9 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
   return mutt_hcache_open(NewsCacheDir, file, nntp_hcache_namer);
 }
 
-/* Remove stale cached headers */
+/**
+ * nntp_hcache_update - Remove stale cached headers
+ */
 void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 {
   char buf[16];
@@ -694,7 +732,9 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 }
 #endif
 
-/* Remove bcache file */
+/**
+ * nntp_bcache_delete - Remove bcache file
+ */
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
   struct NntpData *nntp_data = data;
@@ -711,13 +751,17 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
   return 0;
 }
 
-/* Remove stale cached messages */
+/**
+ * nntp_bcache_update - Remove stale cached messages
+ */
 void nntp_bcache_update(struct NntpData *nntp_data)
 {
   mutt_bcache_list(nntp_data->bcache, nntp_bcache_delete, nntp_data);
 }
 
-/* Remove hcache and bcache of newsgroup */
+/**
+ * nntp_delete_group_cache - Remove hcache and bcache of newsgroup
+ */
 void nntp_delete_group_cache(struct NntpData *nntp_data)
 {
   if (!nntp_data || !nntp_data->nserv || !nntp_data->nserv->cacheable)
@@ -743,7 +787,11 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
   }
 }
 
-/* Remove hcache and bcache of all unexistent and unsubscribed newsgroups */
+/**
+ * nntp_clear_cache - Clear the NNTP cache
+ *
+ * Remove hcache and bcache of all unexistent and unsubscribed newsgroups
+ */
 void nntp_clear_cache(struct NntpServer *nserv)
 {
   char file[_POSIX_PATH_MAX];
@@ -807,15 +855,18 @@ void nntp_clear_cache(struct NntpServer *nserv)
     }
     closedir(dp);
   }
-  return;
 }
 
-/* %a = account url
+/**
+ * nntp_format_str - Format a string, like printf()
+ *
+ * %a = account url
  * %p = port
  * %P = port if specified
  * %s = news server name
  * %S = url schema
- * %u = username */
+ * %u = username
+ */
 const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *fmt,
                             const char *ifstring, const char *elsestring,
@@ -872,10 +923,14 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
   return src;
 }
 
-/* Automatically loads a newsrc into memory, if necessary.
- * Checks the size/mtime of a newsrc file, if it doesn't match, load
- * again.  Hmm, if a system has broken mtimes, this might mean the file
- * is reloaded every time, which we'd have to fix. */
+/**
+ * nntp_select_server - Open a connection to an NNTP server
+ *
+ * Automatically loads a newsrc into memory, if necessary.  Checks the
+ * size/mtime of a newsrc file, if it doesn't match, load again.  Hmm, if a
+ * system has broken mtimes, this might mean the file is reloaded every time,
+ * which we'd have to fix.
+ */
 struct NntpServer *nntp_select_server(char *server, int leave_lock)
 {
   char file[_POSIX_PATH_MAX];
@@ -1070,10 +1125,14 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   return nserv;
 }
 
-/* Full status flags are not supported by nntp, but we can fake some of them:
+/**
+ * nntp_article_status - Get status of articles from .newsrc
+ *
+ * Full status flags are not supported by nntp, but we can fake some of them:
  * Read = a read message number is in the .newsrc
  * New = not read and not cached
- * Old = not read but cached */
+ * Old = not read but cached
+ */
 void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -1105,7 +1164,9 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
     hdr->old = true;
 }
 
-/* Subscribe newsgroup */
+/**
+ * mutt_newsgroup_subscribe - Subscribe newsgroup
+ */
 struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
@@ -1125,7 +1186,9 @@ struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
   return nntp_data;
 }
 
-/* Unsubscribe newsgroup */
+/**
+ * mutt_newsgroup_unsubscribe - Unsubscribe newsgroup
+ */
 struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
@@ -1146,7 +1209,9 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
   return nntp_data;
 }
 
-/* Catchup newsgroup */
+/**
+ * mutt_newsgroup_catchup - Catchup newsgroup
+ */
 struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
@@ -1174,7 +1239,9 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
   return nntp_data;
 }
 
-/* Uncatchup newsgroup */
+/**
+ * mutt_newsgroup_uncatchup - Uncatchup newsgroup
+ */
 struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
@@ -1208,7 +1275,9 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
   return nntp_data;
 }
 
-/* Get first newsgroup with new messages */
+/**
+ * nntp_buffy - Get first newsgroup with new messages
+ */
 void nntp_buffy(char *buf, size_t len)
 {
   for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)

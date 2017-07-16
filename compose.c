@@ -192,11 +192,13 @@ static void calc_header_width_padding(int idx, const char *header, int calc_max)
 }
 
 
-/* The padding needed for each header is strlen() + max_width - strwidth().
+/**
+ * init_header_padding - Calculate how much padding the compose table will need
  *
- * calc_header_width_padding sets each entry in HeaderPadding to
- * strlen - width.  Then, afterwards, we go through and add max_width
- * to each entry.
+ * The padding needed for each header is strlen() + max_width - strwidth().
+ *
+ * calc_header_width_padding sets each entry in HeaderPadding to strlen -
+ * width.  Then, afterwards, we go through and add max_width to each entry.
  */
 static void init_header_padding(void)
 {
@@ -628,13 +630,13 @@ static unsigned long cum_attachs_size(struct Menu *menu)
   return s;
 }
 
-/*
- * compose_format_str()
+/**
+ * compose_format_str - Format strings like printf()
  *
- * %a = total number of attachments
- * %h = hostname  [option]
- * %l = approx. length of current message (in bytes)
- * %v = Mutt version
+ * * \%a Total number of attachments
+ * * \%h Hostname  [option]
+ * * \%l Approx. length of current message (in bytes)
+ * * \%v Mutt version
  *
  * This function is similar to status_format_str().  Look at that function for
  * help when modifying this function.
@@ -695,11 +697,12 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
   mutt_FormatString(buf, buflen, col, cols, p, compose_format_str, (unsigned long) menu, 0);
 }
 
-/* return values:
- *
- * 1    message should be postponed
- * 0    normal exit
- * -1   abort message
+/**
+ * mutt_compose_menu - Allow the user to edit the message envelope
+ * @return
+ * *  1 Message should be postponed
+ * *  0 Normal exit
+ * * -1 Abort message
  */
 int mutt_compose_menu(struct Header *msg, /* structure for new message */
                       char *fcc, /* where to save a copy of the message */

@@ -240,8 +240,10 @@ static void be_print_header(struct Envelope *env)
   addch('\n');
 }
 
-/* args:
- *      force   override the $ask* vars (used for the ~h command)
+/**
+ * be_edit_header - Edit the message headers
+ * @param e     Message headers
+ * @param force override the $ask* vars (used for the ~h command)
  */
 static void be_edit_header(struct Envelope *e, int force)
 {

@@ -234,7 +234,10 @@ static int ci_previous_undeleted(int msgno)
   return -1;
 }
 
-/* Return the index of the first new message, or failing that, the first
+/**
+ * ci_first_message - Get index of first new message
+ *
+ * Return the index of the first new message, or failing that, the first
  * unread message.
  */
 static int ci_first_message(void)
@@ -270,7 +273,11 @@ static int ci_first_message(void)
   return 0;
 }
 
-/* This should be in mx.c, but it only gets used here. */
+/**
+ * mx_toggle_write - Toggle the mailbox's readonly flag
+ *
+ * This should be in mx.c, but it only gets used here.
+ */
 static int mx_toggle_write(struct Context *ctx)
 {
   if (!ctx)
@@ -519,7 +526,11 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
 }
 
 
-/* terminal status capability check. terminfo must have been initialized. */
+/**
+ * mutt_ts_capability - Check terminal capabilities
+ *
+ * terminal status capability check. terminfo must have been initialized.
+ */
 bool mutt_ts_capability(void)
 {
   char *term = getenv("TERM");
@@ -885,7 +896,10 @@ static void index_menu_redraw(struct Menu *menu)
   menu->redraw = 0;
 }
 
-/* This function handles the message index window as well as commands returned
+/**
+ * mutt_index_menu - Display a list of emails
+ *
+ * This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
  */
 int mutt_index_menu(void)

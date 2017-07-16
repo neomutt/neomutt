@@ -499,6 +499,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     mutt_menu_destroy(&menu);
   }
 }
+
 int mutt_query_complete(char *buf, size_t buflen)
 {
   struct Query *results = NULL;

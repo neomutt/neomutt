@@ -206,7 +206,11 @@ static int tls_starttls_close(struct Connection *conn)
   return rc;
 }
 
-/* sanity-checking wrapper for gnutls_certificate_verify_peers */
+/**
+ * tls_verify_peers - wrapper for gnutls_certificate_verify_peers
+ *
+ * wrapper with sanity-checking
+ */
 static gnutls_certificate_status_t tls_verify_peers(gnutls_session_t tlsstate)
 {
   int verify_ret;
@@ -315,7 +319,9 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   return 0;
 }
 
-/* this bit is based on read_ca_file() in gnutls */
+/**
+ * tls_compare_certificates - Compare certificates
+ */
 static int tls_compare_certificates(const gnutls_datum_t *peercert)
 {
   gnutls_datum_t cert;
@@ -1040,8 +1046,12 @@ static int tls_set_priority(tlssockdata *data)
 }
 #endif
 
-/* tls_negotiate: After TLS state has been initialized, attempt to negotiate
- *   TLS over the wire, including certificate checks. */
+/**
+ * tls_negotiate - Negotiate TLS connection
+ *
+ * After TLS state has been initialized, attempt to negotiate TLS over the
+ * wire, including certificate checks.
+ */
 static int tls_negotiate(struct Connection *conn)
 {
   tlssockdata *data = NULL;

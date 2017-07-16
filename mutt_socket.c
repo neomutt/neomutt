@@ -70,7 +70,9 @@ static int socket_preconnect(void)
   return 0;
 }
 
-/* Wrappers */
+/**
+ * mutt_socket_open - Simple wrapper
+ */
 int mutt_socket_open(struct Connection *conn)
 {
   int rc;
@@ -137,10 +139,13 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
   return sent;
 }
 
-/* poll whether reads would block.
- *   Returns: >0 if there is data to read,
- *            0 if a read would block,
- *            -1 if this connection doesn't support polling */
+/**
+ * mutt_socket_poll - poll whether reads would block
+ * @return
+ * * >0 There is data to read,
+ * *  0 Read would block,
+ * * -1 Connection doesn't support polling
+ */
 int mutt_socket_poll(struct Connection *conn)
 {
   if (conn->bufpos < conn->available)
@@ -152,7 +157,9 @@ int mutt_socket_poll(struct Connection *conn)
   return -1;
 }
 
-/* simple read buffering to speed things up. */
+/**
+ * mutt_socket_readchar - simple read buffering to speed things up
+ */
 int mutt_socket_readchar(struct Connection *conn, char *c)
 {
   if (conn->bufpos >= conn->available)
@@ -216,7 +223,9 @@ struct Connection *mutt_socket_head(void)
   return Connections;
 }
 
-/* mutt_socket_free: remove connection from connection list and free it */
+/**
+ * mutt_socket_free - remove connection from connection list and free it
+ */
 void mutt_socket_free(struct Connection *conn)
 {
   struct Connection *iter = NULL;
@@ -245,7 +254,9 @@ void mutt_socket_free(struct Connection *conn)
   }
 }
 
-/* socket_new_conn: allocate and initialise a new connection. */
+/**
+ * socket_new_conn - allocate and initialise a new connection
+ */
 static struct Connection *socket_new_conn(void)
 {
   struct Connection *conn = NULL;
@@ -256,11 +267,15 @@ static struct Connection *socket_new_conn(void)
   return conn;
 }
 
-/* mutt_conn_find: find a connection off the list of connections whose
- *   account matches account. If start is not null, only search for
- *   connections after the given connection (allows higher level socket code
- *   to make more fine-grained searches than account info - eg in IMAP we may
- *   wish to find a connection which is not in IMAP_SELECTED state) */
+/**
+ * mutt_conn_find - Find a connection from a list
+ *
+ * find a connection off the list of connections whose account matches account.
+ * If start is not null, only search for connections after the given connection
+ * (allows higher level socket code to make more fine-grained searches than
+ * account info - eg in IMAP we may wish to find a connection which is not in
+ * IMAP_SELECTED state)
+ */
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
 {
   struct Connection *conn = NULL;
@@ -384,7 +399,9 @@ int raw_socket_poll(struct Connection *conn)
   return select(conn->fd + 1, &rfds, NULL, NULL, &tv);
 }
 
-/* socket_connect: set up to connect to a socket fd. */
+/**
+ * socket_connect - set up to connect to a socket fd
+ */
 static int socket_connect(int fd, struct sockaddr *sa)
 {
   int sa_size;

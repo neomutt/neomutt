@@ -323,7 +323,10 @@ static void save_history(enum HistoryClass hclass, const char *s)
   }
 }
 
-/* When removing dups, we want the created "blanks" to be right below the
+/**
+ * remove_history_dups - De-dupe the history
+ *
+ * When removing dups, we want the created "blanks" to be right below the
  * resulting h->last position.  See the comment section above 'struct History'.
  */
 static void remove_history_dups(enum HistoryClass hclass, const char *s)

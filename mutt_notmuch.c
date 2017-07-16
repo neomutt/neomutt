@@ -445,7 +445,7 @@ static bool query_window_check_timebase(const char *timebase)
 }
 
 /**
- * query_window_reset - restores vfolder's search window to its original position
+ * query_window_reset - Restore vfolder's search window to its original position
  *
  * After moving a vfolder search window backward and forward, calling this function
  * will reset the search position to its original value, setting to 0 the user settable

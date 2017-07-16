@@ -69,9 +69,12 @@ static short PostCount = 0;
 static struct Context *PostContext = NULL;
 static short UpdateNumPostponed = 0;
 
-/* Return the number of postponed messages.
- * if force is 0, use a cached value if it is costly to get a fresh
- * count (IMAP) - else check.
+/**
+ * mutt_num_postponed - Return the number of postponed messages
+ * @param force
+ * * 0 Use a cached value if costly to get a fresh count (IMAP)
+ * * 1 Force check
+ * @return Number of postponed messages
  */
 int mutt_num_postponed(int force)
 {
@@ -558,14 +561,16 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 }
 
 
-/* args:
- *     fp      If not NULL, file containing the template
- *     ctx     If fp is NULL, the context containing the header with the template
- *     newhdr  The template is read into this Header
- *     hdr     The message to recall/resend
- *     resend  Set if resending (as opposed to recalling a postponed msg).
- *             Resent messages enable header weeding, and also
- *             discard any existing Message-ID and Mail-Followup-To.
+/**
+ * mutt_prepare_template - Prepare a message template
+ * @param fp      If not NULL, file containing the template
+ * @param ctx     If fp is NULL, the context containing the header with the template
+ * @param newhdr  The template is read into this Header
+ * @param hdr     The message to recall/resend
+ * @param resend  Set if resending (as opposed to recalling a postponed msg).
+ *                Resent messages enable header weeding, and also
+ *                discard any existing Message-ID and Mail-Followup-To.
+ * @return 0 on success, -1 on error
  */
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
                           struct Header *hdr, short resend)

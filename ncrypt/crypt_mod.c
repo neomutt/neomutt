@@ -37,7 +37,9 @@ struct CryptModule
 
 static struct CryptModule *modules;
 
-/* Register a new crypto module. */
+/**
+ * crypto_module_register - Register a new crypto module
+ */
 void crypto_module_register(crypt_module_specs_t specs)
 {
   struct CryptModule *module_new = safe_malloc(sizeof(*module_new));
@@ -49,8 +51,12 @@ void crypto_module_register(crypt_module_specs_t specs)
   modules = module_new;
 }
 
-/* Return the crypto module specs for IDENTIFIER.  This function is
-   usually used via the CRYPT_MOD_CALL[_CHECK] macros. */
+/**
+ * crypto_module_lookup - Lookup a crypto module by name
+ *
+ * Return the crypto module specs for IDENTIFIER.
+ * This function is usually used via the CRYPT_MOD_CALL[_CHECK] macros.
+ */
 crypt_module_specs_t crypto_module_lookup(int identifier)
 {
   struct CryptModule *module = modules;

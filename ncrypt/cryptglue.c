@@ -113,7 +113,11 @@ void crypt_init(void)
 #endif
 }
 
-/* Show a message that a backend will be invoked. */
+/**
+ * crypt_invoke_message - Display an informative message
+ *
+ * Show a message that a backend will be invoked.
+ */
 void crypt_invoke_message(int type)
 {
   if ((WithCrypto & APPLICATION_PGP) && (type & APPLICATION_PGP))
@@ -123,12 +127,12 @@ void crypt_invoke_message(int type)
 }
 
 /*
+ * PGP
+ */
 
-    PGP
-
-*/
-
-/* Reset a PGP passphrase */
+/**
+ * crypt_pgp_void_passphrase - Reset a PGP passphrase
+ */
 void crypt_pgp_void_passphrase(void)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, void_passphrase))
@@ -143,7 +147,9 @@ int crypt_pgp_valid_passphrase(void)
   return 0;
 }
 
-/* Decrypt a PGP/MIME message. */
+/**
+ * crypt_pgp_decrypt_mime - Decrypt a PGP/MIME message
+ */
 int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
@@ -152,7 +158,9 @@ int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
   return -1;
 }
 
-/* MIME handler for the application/pgp content-type. */
+/**
+ * crypt_pgp_application_pgp_handler - MIME handler for the pgp content-type
+ */
 int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
@@ -161,7 +169,9 @@ int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s)
   return -1;
 }
 
-/* MIME handler for an PGP/MIME encrypted message. */
+/**
+ * crypt_pgp_encrypted_handler - MIME handler for an PGP/MIME encrypted message
+ */
 int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
@@ -170,14 +180,15 @@ int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
   return -1;
 }
 
-/* fixme: needs documentation. */
 void crypt_pgp_invoke_getkeys(struct Address *addr)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_invoke_getkeys))
     (CRYPT_MOD_CALL(PGP, pgp_invoke_getkeys))(addr);
 }
 
-/* Check for a traditional PGP message in body B. */
+/**
+ * crypt_pgp_check_traditional - Check for a traditional PGP message in body B
+ */
 int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
@@ -186,7 +197,6 @@ int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
   return 0;
 }
 
-/* fixme: needs documentation. */
 struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_traditional_encryptsign))
@@ -195,7 +205,9 @@ struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *
   return NULL;
 }
 
-/* Generate a PGP public key attachment. */
+/**
+ * crypt_pgp_make_key_attachment - Generate a PGP public key attachment
+ */
 struct Body *crypt_pgp_make_key_attachment(char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_make_key_attachment))
@@ -204,10 +216,12 @@ struct Body *crypt_pgp_make_key_attachment(char *tempf)
   return NULL;
 }
 
-/* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.
-   If oppenc_mode is true, only keys that can be determined without
-   prompting will be used.  */
+/**
+ * crypt_pgp_findkeys - Find the keyids of the recipients of the message
+ *
+ * It returns NULL if any of the keys can not be found.  If oppenc_mode is
+ * true, only keys that can be determined without prompting will be used.
+ */
 char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, findkeys))
@@ -216,7 +230,9 @@ char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
   return NULL;
 }
 
-/* Create a new body with a PGP signed message from A. */
+/**
+ * crypt_pgp_sign_message - Create a new body with a PGP signed message from A
+ */
 struct Body *crypt_pgp_sign_message(struct Body *a)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, sign_message))
@@ -225,8 +241,12 @@ struct Body *crypt_pgp_sign_message(struct Body *a)
   return NULL;
 }
 
-/* Warning: A is no longer freed in this routine, you need to free it
-   later.  This is necessary for $fcc_attach. */
+/**
+ * crypt_pgp_encrypt_message - Encrypt a message
+ *
+ * Warning: A is no longer freed in this routine, you need to free it later.
+ * This is necessary for $fcc_attach.
+ */
 struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
@@ -235,14 +255,15 @@ struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   return NULL;
 }
 
-/* Invoke the PGP command to import a key. */
+/**
+ * crypt_pgp_invoke_import - Invoke the PGP command to import a key
+ */
 void crypt_pgp_invoke_import(const char *fname)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_invoke_import))
     (CRYPT_MOD_CALL(PGP, pgp_invoke_import))(fname);
 }
 
-/* fixme: needs documentation */
 int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
@@ -259,7 +280,6 @@ int crypt_pgp_send_menu(struct Header *msg)
   return 0;
 }
 
-/* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_keys_from_attachment_list))
@@ -273,12 +293,12 @@ void crypt_pgp_set_sender(const char *sender)
 }
 
 /*
+ * S/MIME
+ */
 
-   S/MIME
-
-*/
-
-/* Reset an SMIME passphrase */
+/**
+ * crypt_smime_void_passphrase - Reset an SMIME passphrase
+ */
 void crypt_smime_void_passphrase(void)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, void_passphrase))
@@ -293,7 +313,9 @@ int crypt_smime_valid_passphrase(void)
   return 0;
 }
 
-/* Decrypt am S/MIME message. */
+/**
+ * crypt_smime_decrypt_mime - Decrypt am S/MIME message
+ */
 int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, decrypt_mime))
@@ -302,7 +324,9 @@ int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
   return -1;
 }
 
-/* MIME handler for the application/smime content-type. */
+/**
+ * crypt_smime_application_smime_handler - Handler for application/smime
+ */
 int crypt_smime_application_smime_handler(struct Body *m, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
@@ -311,21 +335,24 @@ int crypt_smime_application_smime_handler(struct Body *m, struct State *s)
   return -1;
 }
 
-/* MIME handler for an PGP/MIME encrypted message. */
+/**
+ * crypt_smime_encrypted_handler - Handler for an PGP/MIME encrypted message
+ */
 void crypt_smime_encrypted_handler(struct Body *a, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, encrypted_handler))
     (CRYPT_MOD_CALL(SMIME, encrypted_handler))(a, s);
 }
 
-/* fixme: Needs documentation. */
 void crypt_smime_getkeys(struct Envelope *env)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_getkeys))
     (CRYPT_MOD_CALL(SMIME, smime_getkeys))(env);
 }
 
-/* Check that the sender matches. */
+/**
+ * crypt_smime_verify_sender - Check that the sender matches
+ */
 int crypt_smime_verify_sender(struct Header *h)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_verify_sender))
@@ -334,10 +361,12 @@ int crypt_smime_verify_sender(struct Header *h)
   return 1;
 }
 
-/* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.
-   If oppenc_mode is true, only keys that can be determined without
-   prompting will be used.  */
+/**
+ * crypt_smime_findkeys - Find the keyids of the recipients of the message
+ *
+ * It returns NULL if any of the keys can not be found.  If oppenc_mode is
+ * true, only keys that can be determined without prompting will be used.
+ */
 char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, findkeys))
@@ -346,7 +375,6 @@ char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode)
   return NULL;
 }
 
-/* fixme: Needs documentation. */
 struct Body *crypt_smime_sign_message(struct Body *a)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
@@ -355,7 +383,6 @@ struct Body *crypt_smime_sign_message(struct Body *a)
   return NULL;
 }
 
-/* fixme: needs documentation. */
 struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_build_smime_entity))
@@ -364,14 +391,17 @@ struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist)
   return NULL;
 }
 
-/* Add a certificate and update index file (externally). */
+/**
+ * crypt_smime_invoke_import - Add a certificate and update index file
+ *
+ * This is done externally.
+ */
 void crypt_smime_invoke_import(char *infile, char *mailbox)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_invoke_import))
     (CRYPT_MOD_CALL(SMIME, smime_invoke_import))(infile, mailbox);
 }
 
-/* fixme: needs documentation */
 int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))

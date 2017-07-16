@@ -39,7 +39,9 @@
 #include "options.h"
 #include "protos.h"
 
-/* imap_auth_sasl: Default authenticator if available. */
+/**
+ * imap_auth_sasl - Default authenticator if available
+ */
 enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
 {
   sasl_conn_t *saslconn = NULL;

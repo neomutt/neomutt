@@ -113,9 +113,13 @@ struct MxOps *mx_get_ops(int magic)
 
 #define mutt_is_spool(s) (mutt_strcmp(Spoolfile, s) == 0)
 
-/* Args:
- *      excl            if excl != 0, request an exclusive lock
- *      timeout         should retry locking?
+/**
+ * mx_lock_file - (try to) lock a file
+ * @param path    Path to file
+ * @param fd      File descriptor to file
+ * @param excl    If set, try to lock exclusively
+ * @param timeout Retry after this time
+ * @return 0 on success, -1 on failure
  */
 int mx_lock_file(const char *path, int fd, int excl, int timeout)
 {
@@ -455,8 +459,8 @@ int mx_get_magic(const char *path)
   return magic;
 }
 
-/*
- * set DefaultMagic to the given value
+/**
+ * mx_set_magic - set DefaultMagic to the given value
  */
 int mx_set_magic(const char *s)
 {
@@ -474,9 +478,12 @@ int mx_set_magic(const char *s)
   return 0;
 }
 
-/* mx_access: Wrapper for access, checks permissions on a given mailbox.
- *   We may be interested in using ACL-style flags at some point, currently
- *   we use the normal access() flags. */
+/**
+ * mx_access - Wrapper for access, checks permissions on a given mailbox
+ *
+ * We may be interested in using ACL-style flags at some point, currently we
+ * use the normal access() flags.
+ */
 int mx_access(const char *path, int flags)
 {
 #ifdef USE_IMAP
@@ -530,16 +537,18 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
   return ctx->mx_ops->open_append(ctx, flags);
 }
 
-/*
- * open a mailbox and parse it
+/**
+ * mx_open_mailbox - Open a mailbox and parse it
+ * @param path  Path to the mailbox
+ * @param flags See below
+ * @param pctx  Reuse this Context (if supplied)
  *
- * Args:
- *      flags   MUTT_NOSORT     do not sort mailbox
- *              MUTT_APPEND     open mailbox for appending
- *              MUTT_READONLY   open mailbox in read-only mode
- *              MUTT_QUIET              only print error messages
- *              MUTT_PEEK               revert atime where applicable
- *      ctx     if non-null, context struct to use
+ * flags:
+ * * #MUTT_NOSORT   do not sort mailbox
+ * * #MUTT_APPEND   open mailbox for appending
+ * * #MUTT_READONLY open mailbox in read-only mode
+ * * #MUTT_QUIET    only print error messages
+ * * #MUTT_PEEK     revert atime where applicable
  */
 struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx)
 {
@@ -644,7 +653,9 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
   return ctx;
 }
 
-/* free up memory associated with the mailbox context */
+/**
+ * mx_fastclose_mailbox - free up memory associated with the mailbox context
+ */
 void mx_fastclose_mailbox(struct Context *ctx)
 {
   struct utimbuf ut;
@@ -687,7 +698,9 @@ void mx_fastclose_mailbox(struct Context *ctx)
   memset(ctx, 0, sizeof(struct Context));
 }
 
-/* save changes to disk */
+/**
+ * sync_mailbox - save changes to disk
+ */
 static int sync_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->sync)
@@ -699,7 +712,9 @@ static int sync_mailbox(struct Context *ctx, int *index_hint)
   return ctx->mx_ops->sync(ctx, index_hint);
 }
 
-/* move deleted mails to the trash folder */
+/**
+ * trash_append - move deleted mails to the trash folder
+ */
 static int trash_append(struct Context *ctx)
 {
   struct Context ctx_trash;
@@ -765,7 +780,9 @@ static int trash_append(struct Context *ctx)
   return 0;
 }
 
-/* save changes and close mailbox */
+/**
+ * mx_close_mailbox - save changes and close mailbox
+ */
 int mx_close_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
@@ -1020,7 +1037,9 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   return 0;
 }
 
-/* update a Context structure's internal tables. */
+/**
+ * mx_update_tables - Update a Context structure's internal tables
+ */
 void mx_update_tables(struct Context *ctx, int committing)
 {
   int i, j;
@@ -1233,10 +1252,13 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
   return rc;
 }
 
-/* args:
- *      dest    destination mailbox
- *      hdr     message being copied (required for maildir support, because
+/**
+ * mx_open_new_message - Open a new message
+ * @param dest  Destination mailbox
+ * @param hdr   Message being copied (required for maildir support, because
  *              the filename depends on the message flags)
+ * @param flags Flags, e.g. #MUTT_SET_DRAFT
+ * @return new Message
  */
 struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
 {
@@ -1294,7 +1316,9 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
   return msg;
 }
 
-/* check for new mail */
+/**
+ * mx_check_mailbox - check for new mail
+ */
 int mx_check_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx || !ctx->mx_ops)
@@ -1306,7 +1330,9 @@ int mx_check_mailbox(struct Context *ctx, int *index_hint)
   return ctx->mx_ops->check(ctx, index_hint);
 }
 
-/* return a stream pointer for a message */
+/**
+ * mx_open_message - return a stream pointer for a message
+ */
 struct Message *mx_open_message(struct Context *ctx, int msgno)
 {
   struct Message *msg = NULL;
@@ -1325,7 +1351,9 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
   return msg;
 }
 
-/* commit a message to a folder */
+/**
+ * mx_commit_message - commit a message to a folder
+ */
 int mx_commit_message(struct Message *msg, struct Context *ctx)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
@@ -1341,7 +1369,9 @@ int mx_commit_message(struct Message *msg, struct Context *ctx)
   return ctx->mx_ops->commit_msg(ctx, msg);
 }
 
-/* close a pointer to a message */
+/**
+ * mx_close_message - close a pointer to a message
+ */
 int mx_close_message(struct Context *ctx, struct Message **msg)
 {
   if (!ctx || !msg)
@@ -1391,8 +1421,11 @@ void mx_alloc_memory(struct Context *ctx)
   }
 }
 
-/* this routine is called to update the counts in the context structure for
- * the last message header parsed.
+/**
+ * mx_update_context - Update the Context's message counts
+ *
+ * this routine is called to update the counts in the context structure for the
+ * last message header parsed.
  */
 void mx_update_context(struct Context *ctx, int new_messages)
 {

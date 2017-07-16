@@ -94,9 +94,12 @@ struct SslSockData
   unsigned char isopen;
 };
 
-/* ssl certificate verification can behave strangely if there are expired
- * certs loaded into the trusted store.  This function filters out expired
- * certs.
+/**
+ * ssl_load_certificates - Load certificates and filter out the expired ones
+ *
+ * ssl certificate verification can behave strangely if there are expired certs
+ * loaded into the trusted store.  This function filters out expired certs.
+ *
  * Previously the code used this form:
  *     SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL);
  */
@@ -440,7 +443,9 @@ static bool check_certificate_expiration(X509 *peercert, bool silent)
   return true;
 }
 
-/* port to mutt from msmtp's tls.c */
+/**
+ * hostname_match - Does the hostname match the certificate
+ */
 static bool hostname_match(const char *hostname, const char *certname)
 {
   const char *cmp1 = NULL, *cmp2 = NULL;
@@ -477,15 +482,17 @@ static bool hostname_match(const char *hostname, const char *certname)
   return true;
 }
 
-/*
- * OpenSSL library needs to be fed with sufficient entropy. On systems
- * with /dev/urandom, this is done transparently by the library itself,
- * on other systems we need to fill the entropy pool ourselves.
+/**
+ * ssl_init - Initialist the SSL library
  *
- * Even though only OpenSSL 0.9.5 and later will complain about the
- * lack of entropy, we try to our best and fill the pool with older
- * versions also. (That's the reason for the ugly #ifdefs and macros,
- * otherwise I could have simply #ifdef'd the whole ssl_init funcion)
+ * OpenSSL library needs to be fed with sufficient entropy. On systems with
+ * /dev/urandom, this is done transparently by the library itself, on other
+ * systems we need to fill the entropy pool ourselves.
+ *
+ * Even though only OpenSSL 0.9.5 and later will complain about the lack of
+ * entropy, we try to our best and fill the pool with older versions also.
+ * (That's the reason for the ugly ifdefs and macros, otherwise I could have
+ * simply ifdef'd the whole ssl_init funcion)
  */
 static int ssl_init(void)
 {
@@ -654,7 +661,9 @@ static int check_certificate_file(X509 *peercert)
   return pass;
 }
 
-/* port to mutt from msmtp's tls.c */
+/**
+ * check_host - Check the host on the certificate
+ */
 static int check_host(X509 *x509cert, const char *hostname, char *err, size_t errlen)
 {
   int i, rc = 0;
@@ -929,9 +938,13 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   return (done == 2);
 }
 
-/* certificate verification callback, called for each certificate in the chain
- * sent by the peer, starting from the root; returning 1 means that the given
- * certificate is trusted, returning 0 immediately aborts the SSL connection */
+/**
+ * ssl_verify_callback - certificate verification callback
+ *
+ * called for each certificate in the chain sent by the peer, starting from the
+ * root; returning 1 means that the given certificate is trusted, returning 0
+ * immediately aborts the SSL connection
+ */
 static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
   char buf[STRING];
@@ -1052,8 +1065,12 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   return 1;
 }
 
-/* ssl_negotiate: After SSL state has been initialized, attempt to negotiate
- *   SSL over the wire, including certificate checks. */
+/**
+ * ssl_negotiate - Attempt to negotiate SSL over the wire
+ *
+ * After SSL state has been initialized, attempt to negotiate SSL over the
+ * wire, including certificate checks.
+ */
 static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
 {
   int err;
@@ -1213,8 +1230,11 @@ static int ssl_socket_open(struct Connection *conn)
   return 0;
 }
 
-/* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
- *   TODO: Merge this code better with ssl_socket_open. */
+/**
+ * mutt_ssl_starttls - Negotiate TLS over an already opened connection
+ *
+ * TODO: Merge this code better with ssl_socket_open.
+ */
 int mutt_ssl_starttls(struct Connection *conn)
 {
   struct SslSockData *ssldata = NULL;

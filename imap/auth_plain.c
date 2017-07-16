@@ -33,7 +33,9 @@
 #include "mutt_socket.h"
 #include "protos.h"
 
-/* imap_auth_plain: SASL PLAIN support */
+/**
+ * imap_auth_plain - SASL PLAIN support
+ */
 enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 {
   int rc;

@@ -49,6 +49,7 @@ static int _handle_panic(lua_State *l)
   lua_pop(l, 1);
   return -1;
 }
+
 static int _handle_error(lua_State *l)
 {
   mutt_debug(1, "lua runtime error: %s\n", lua_tostring(l, -1));

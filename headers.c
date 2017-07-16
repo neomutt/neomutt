@@ -270,8 +270,8 @@ static void label_ref_inc(struct Context *ctx, char *label)
   elem->data = (void *) count;
 }
 
-/*
- * add an X-Label: field.
+/**
+ * label_message - add an X-Label: field
  */
 static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 {

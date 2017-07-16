@@ -246,27 +246,26 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
   *l = d - dest;
 }
 
-/*
- * Decode an attachment encoded with quoted-printable.
+/**
+ * decode_quoted - Decode an attachment encoded with quoted-printable
  *
- * Why doesn't this overflow any buffers?  First, it's guaranteed
- * that the length of a line grows when you _en_-code it to
- * quoted-printable.  That means that we always can store the
- * result in a buffer of at most the _same_ size.
+ * Why doesn't this overflow any buffers?  First, it's guaranteed that the
+ * length of a line grows when you _en_-code it to quoted-printable.  That
+ * means that we always can store the result in a buffer of at most the _same_
+ * size.
  *
- * Now, we don't special-case if the line we read with fgets()
- * isn't terminated.  We don't care about this, since STRING > 78,
- * so corrupted input will just be corrupted a bit more.  That
- * implies that STRING+1 bytes are always sufficient to store the
- * result of qp_decode_line.
+ * Now, we don't special-case if the line we read with fgets() isn't
+ * terminated.  We don't care about this, since STRING > 78, so corrupted input
+ * will just be corrupted a bit more.  That implies that STRING+1 bytes are
+ * always sufficient to store the result of qp_decode_line.
  *
- * Finally, at soft line breaks, some part of a multibyte character
- * may have been left over by convert_to_state().  This shouldn't
- * be more than 6 characters, so STRING + 7 should be sufficient
- * memory to store the decoded data.
+ * Finally, at soft line breaks, some part of a multibyte character may have
+ * been left over by convert_to_state().  This shouldn't be more than 6
+ * characters, so STRING + 7 should be sufficient memory to store the decoded
+ * data.
  *
- * Just to make sure that I didn't make some off-by-one error
- * above, we just use STRING*2 for the target buffer's size.
+ * Just to make sure that I didn't make some off-by-one error above, we just
+ * use STRING*2 for the target buffer's size.
  */
 static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
 {
@@ -972,7 +971,9 @@ static int text_enriched_handler(struct Body *a, struct State *s)
   return 0;
 }
 
-/* for compatibility with metamail */
+/**
+ * is_mmnoask - for compatibility with metamail
+ */
 static int is_mmnoask(const char *buf)
 {
   char tmp[LONG_STRING], *p = NULL, *q = NULL;
@@ -1243,7 +1244,9 @@ static int alternative_handler(struct Body *a, struct State *s)
   return rc;
 }
 
-/* handles message/rfc822 body parts */
+/**
+ * message_handler - handles message/rfc822 body parts
+ */
 static int message_handler(struct Body *a, struct State *s)
 {
   struct stat st;
@@ -1289,7 +1292,10 @@ static int message_handler(struct Body *a, struct State *s)
   return rc;
 }
 
-/* returns 1 if decoding the attachment will produce output */
+/**
+ * mutt_can_decode - Will decoding the attachment produce any output
+ * @return 1 if decoding the attachment will produce output
+ */
 int mutt_can_decode(struct Body *a)
 {
   if (is_autoview(a))
@@ -1660,9 +1666,12 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
     iconv_close(cd);
 }
 
-/* when generating format=flowed ($text_flowed is set) from format=fixed,
- * strip all trailing spaces to improve interoperability;
- * if $text_flowed is unset, simply verbatim copy input
+/**
+ * text_plain_handler - Display plain text
+ *
+ * when generating format=flowed ($text_flowed is set) from format=fixed, strip
+ * all trailing spaces to improve interoperability; if $text_flowed is unset,
+ * simply verbatim copy input
  */
 static int text_plain_handler(struct Body *b, struct State *s)
 {

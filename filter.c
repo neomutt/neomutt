@@ -29,7 +29,10 @@
 #include "mutt_curses.h"
 #include "protos.h"
 
-/* Invokes a command on a pipe and optionally connects its stdin and stdout
+/**
+ * mutt_create_filter_fd - Run a command on a pipe
+ *
+ * Invokes a command on a pipe and optionally connects its stdin and stdout
  * to the specified handles.
  */
 pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,

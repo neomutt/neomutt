@@ -53,7 +53,11 @@
 #include "rfc822.h"
 #include "state.h"
 
-/* print the current time to avoid spoofing of the signature output */
+/**
+ * crypt_current_time - Print the current time
+ *
+ * print the current time to avoid spoofing of the signature output
+ */
 void crypt_current_time(struct State *s, char *app_name)
 {
   time_t t;
@@ -351,13 +355,17 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
   return PGPENCRYPT;
 }
 
-/*
+/**
+ * mutt_is_malformed_multipart_pgp_encrypted - Check for malformed layout
+ *
  * This checks for the malformed layout caused by MS Exchange in
  * some cases:
+ * ```
  *  <multipart/mixed>
  *     <text/plain>
  *     <application/pgp-encrypted> [BASE64-encoded]
  *     <application/octet-stream> [BASE64-encoded]
+ * ```
  * See ticket #3742
  */
 int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
@@ -830,7 +838,9 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   return 0;
 }
 
-/*
+/**
+ * crypt_opportunistic_encrypt - Can all recipients be determined
+ *
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
@@ -875,8 +885,8 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
   }
 }
 
-/*
- * This routine verifies a  "multipart/signed"  body.
+/**
+ * mutt_signed_handler - Verify a "multipart/signed" body.
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {
@@ -997,7 +1007,10 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   return rc;
 }
 
-/* Obtain pointers to fingerprint or short or long key ID, if any.
+/**
+ * crypt_get_fingerprint_or_id - Get the fingerprint or long key ID
+ *
+ * Obtain pointers to fingerprint or short or long key ID, if any.
  * See ncrypt.h for details.
  */
 const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
@@ -1078,9 +1091,10 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   return pfcopy;
 }
 
-/*
- * Used by pgp_find_keys and find_keys to check if a crypt-hook
- * value is a key id.
+/**
+ * crypt_is_numerical_keyid - Is this a numerical keyid
+ *
+ * Check if a crypt-hook value is a key id.
  */
 bool crypt_is_numerical_keyid(const char *s)
 {

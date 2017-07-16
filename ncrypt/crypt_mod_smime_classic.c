@@ -50,6 +50,7 @@ static int crypt_mod_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struc
 {
   return smime_decrypt_mime(a, b, c, d);
 }
+
 static int crypt_mod_smime_application_handler(struct Body *m, struct State *s)
 {
   return smime_application_smime_handler(m, s);

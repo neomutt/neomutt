@@ -51,6 +51,7 @@ static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct 
 {
   return pgp_decrypt_mime(a, b, c, d);
 }
+
 static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
 {
   return pgp_application_pgp_handler(m, s);

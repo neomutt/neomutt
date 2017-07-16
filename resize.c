@@ -36,7 +36,9 @@
 #endif
 #endif
 
-/* this routine should be called after receiving SIGWINCH */
+/**
+ * mutt_resize_screen - Called after receiving SIGWINCH
+ */
 void mutt_resize_screen(void)
 {
   char *cp = NULL;

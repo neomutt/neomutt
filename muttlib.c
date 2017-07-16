@@ -94,11 +94,12 @@ struct Body *mutt_new_body(void)
 }
 
 
-/* Modified by blong to accept a "suggestion" for file name.  If
- * that file exists, then construct one with unique name but
- * keep any extension.  This might fail, I guess.
- * Renamed to mutt_adv_mktemp so I only have to change where it's
- * called, and not all possible cases.
+/**
+ * mutt_adv_mktemp - Advanced mktemp(3)
+ *
+ * Modified by blong to accept a "suggestion" for file name.  If that file
+ * exists, then construct one with unique name but keep any extension.  This
+ * might fail, I guess.
  */
 void mutt_adv_mktemp(char *s, size_t l)
 {
@@ -127,7 +128,9 @@ void mutt_adv_mktemp(char *s, size_t l)
   }
 }
 
-/* create a send-mode duplicate from a receive-mode body */
+/**
+ * mutt_copy_body - create a send-mode duplicate from a receive-mode body
+ */
 int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
 {
   if (!tgt || !src)
@@ -422,7 +425,10 @@ void mutt_free_header(struct Header **h)
   FREE(h);
 }
 
-/* returns true if the header contained in "s" is in list "t" */
+/**
+ * mutt_matches_list - Is the string in the list
+ * @return true if the header contained in "s" is in list "t"
+ */
 bool mutt_matches_list(const char *s, struct List *t)
 {
   for (; t; t = t->next)
@@ -433,7 +439,11 @@ bool mutt_matches_list(const char *s, struct List *t)
   return false;
 }
 
-/* checks Ignore and UnIgnore using mutt_matches_list */
+/**
+ * mutt_matches_ignore - Does the string match the ignore list
+ *
+ * checks Ignore and UnIgnore using mutt_matches_list
+ */
 int mutt_matches_ignore(const char *s)
 {
   return mutt_matches_list(s, Ignore) && !mutt_matches_list(s, UnIgnore);
@@ -616,12 +626,13 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
   return s;
 }
 
-/* Extract the real name from /etc/passwd's GECOS field.
- * When set, honor the regular expression in GecosMask,
- * otherwise assume that the GECOS field is a
+/**
+ * mutt_gecos_name - Lookup a user's real name in /etc/passwd
+ *
+ * Extract the real name from /etc/passwd's GECOS field.  When set, honor the
+ * regular expression in GecosMask, otherwise assume that the GECOS field is a
  * comma-separated list.
- * Replace "&" by a capitalized version of the user's login
- * name.
+ * Replace "&" by a capitalized version of the user's login name.
  */
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 {
@@ -713,7 +724,12 @@ void mutt_delete_parameter(const char *attribute, struct Parameter **p)
   }
 }
 
-/* returns 1 if Mutt can't display this type of data, 0 otherwise */
+/**
+ * mutt_needs_mailcap - Does this type need a mailcap entry do display
+ * @return
+ * * true  Mutt requires a mailcap entry to display
+ * * false otherwise
+ */
 bool mutt_needs_mailcap(struct Body *m)
 {
   switch (m->type)
@@ -800,7 +816,11 @@ void mutt_free_envelope(struct Envelope **p)
   FREE(p);
 }
 
-/* move all the headers from extra not present in base into base */
+/**
+ * mutt_merge_envelopes - Merge the headers of two emails
+ *
+ * Move all the headers from extra not present in base into base
+ */
 void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
 {
 /* copies each existing element if necessary, and sets the element
@@ -953,7 +973,11 @@ void mutt_free_alias(struct Alias **p)
   }
 }
 
-/* collapse the pathname using ~ or = when possible */
+/**
+ * mutt_pretty_mailbox - Shorten a mailbox path using '~' or '='
+ *
+ * Collapse the pathname using ~ or = when possible
+ */
 void mutt_pretty_mailbox(char *s, size_t buflen)
 {
   char *p = s, *q = s;
@@ -1102,7 +1126,13 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
   }
 }
 
-/* return 0 on success, -1 on abort, 1 on error */
+/**
+ * mutt_check_overwrite - Ask the user if overwriting is necessary
+ * @return
+ * *  0 on success
+ * * -1 on abort
+ * *  1 on error
+ */
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                          size_t flen, int *append, char **directory)
 {
@@ -1121,8 +1151,8 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     {
       switch (mutt_multi_choice
               /* L10N:
-         Means "The path you specified as the destination file is a directory."
-         See the msgid "Save to file: " (alias.c, recvattach.c) */
+                 Means "The path you specified as the destination file is a directory."
+                 See the msgid "Save to file: " (alias.c, recvattach.c) */
               (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
       {
         case 3: /* all */
@@ -1202,8 +1232,12 @@ void mutt_safe_path(char *s, size_t l, struct Address *a)
       *p = '_';
 }
 
-/* Note this function uses a fixed size buffer of LONG_STRING and so
- * should only be used for visual modifications, such as disp_subj. */
+/**
+ * mutt_apply_replace - Apply replacements to a buffer
+ *
+ * Note this function uses a fixed size buffer of LONG_STRING and so
+ * should only be used for visual modifications, such as disp_subj.
+ */
 char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist)
 {
   struct ReplaceList *l = NULL;
@@ -1296,14 +1330,19 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
 }
 
 
-void mutt_FormatString(char *dest,     /* output buffer */
-                       size_t destlen, /* output buffer len */
-                       size_t col, /* starting column (nonzero when called recursively) */
-                       int cols,              /* maximum columns */
-                       const char *src,       /* template string */
-                       format_t *callback,    /* callback for processing */
-                       unsigned long data,    /* callback data */
-                       enum FormatFlag flags) /* callback flags */
+/**
+ * mutt_FormatString - Expand expandos (%x) in a string
+ * @param dest     output buffer
+ * @param destlen  output buffer len
+ * @param col      starting column (nonzero when called recursively)
+ * @param cols     maximum columns
+ * @param src      template string
+ * @param callback callback for processing
+ * @param data     callback data
+ * @param flags    callback flags
+ */
+void mutt_FormatString(char *dest, size_t destlen, size_t col, int cols, const char *src,
+                       format_t *callback, unsigned long data, enum FormatFlag flags)
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp = NULL, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
@@ -1806,9 +1845,13 @@ void mutt_FormatString(char *dest,     /* output buffer */
   *wptr = 0;
 }
 
-/* This function allows the user to specify a command to read stdout from in
-   place of a normal file.  If the last character in the string is a pipe (|),
-   then we assume it is a command to run instead of a normal file. */
+/**
+ * mutt_open_read - Run a command to read from
+ *
+ * This function allows the user to specify a command to read stdout from in
+ * place of a normal file.  If the last character in the string is a pipe (|),
+ * then we assume it is a command to run instead of a normal file.
+ */
 FILE *mutt_open_read(const char *path, pid_t *thepid)
 {
   FILE *f = NULL;
@@ -1842,7 +1885,13 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   return f;
 }
 
-/* returns 0 if OK to proceed, -1 to abort, 1 to retry */
+/**
+ * mutt_save_confirm - Ask the user to save
+ * @return
+ * *  0 if OK to proceed
+ * * -1 to abort
+ * *  1 to retry
+ */
 int mutt_save_confirm(const char *s, struct stat *st)
 {
   char tmp[_POSIX_PATH_MAX];
@@ -2014,7 +2063,9 @@ void mutt_sleep(short s)
     sleep(s);
 }
 
-/* Decrease a file's modification time by 1 second */
+/**
+ * mutt_decrease_mtime - Decrease a file's modification time by 1 second
+ */
 time_t mutt_decrease_mtime(const char *f, struct stat *st)
 {
   struct utimbuf utim;
@@ -2039,7 +2090,9 @@ time_t mutt_decrease_mtime(const char *f, struct stat *st)
   return mtime;
 }
 
-/* sets mtime of 'to' to mtime of 'from' */
+/**
+ * mutt_set_mtime - sets mtime of 'to' to mtime of 'from'
+ */
 void mutt_set_mtime(const char *from, const char *to)
 {
   struct utimbuf utim;
@@ -2053,8 +2106,12 @@ void mutt_set_mtime(const char *from, const char *to)
   }
 }
 
-/* set atime to current time, just as read() would do on !noatime.
- * Silently ignored if unsupported. */
+/**
+ * mutt_touch_atime - set atime to current time
+ *
+ * This is just as read() would do on !noatime.
+ * Silently ignored if unsupported.
+ */
 void mutt_touch_atime(int f)
 {
 #ifdef HAVE_FUTIMENS

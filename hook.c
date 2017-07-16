@@ -280,7 +280,12 @@ static void delete_hook(struct Hook *h)
   FREE(&h);
 }
 
-/* Deletes all hooks of type ``type'', or all defined hooks if ``type'' is 0 */
+/**
+ * delete_hooks - Delete matching hooks
+ * @param type
+ * * Hook type to delete, e.g. #MUTT_SENDHOOK
+ * * Or, 0 to delete all hooks
+ */
 static void delete_hooks(int type)
 {
   struct Hook *h = NULL;

@@ -173,7 +173,9 @@ static size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf
   return i;
 }
 
-/*
+/**
+ * replace_part - Search and replace on a buffer
+ *
  * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
  */
 static void replace_part(struct EnterState *state, size_t from, char *buf)

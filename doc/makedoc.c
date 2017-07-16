@@ -765,7 +765,9 @@ static int commit_buff(char *buff, char **d, FILE *out, int docstat)
  **   This is used to protect indentations in tables.
  **/
 
-/* reduce CDATA to ID */
+/**
+ * sgml_id_fputs - reduce CDATA to ID
+ */
 static int sgml_id_fputs(const char *s, FILE *out)
 {
   char id;

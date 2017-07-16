@@ -116,10 +116,14 @@ struct Hash *int_hash_create(int nelem, int flags)
   return table;
 }
 
-/* table        hash table to update
- * key          key to hash on
- * data         data to associate with `key'
- * allow_dup    if nonzero, duplicate keys are allowed in the table
+/**
+ * union_hash_insert - Insert into a hash table using a union as a key
+ * @param table     Hash table to update
+ * @param key       Key to hash on
+ * @param data      Data to associate with `key'
+ * @return
+ * * -1 on error
+ * * >=0 on success, index into the hash table
  */
 static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
 {
@@ -286,8 +290,10 @@ void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
   union_hash_delete(table, key, data, destroy);
 }
 
-/* ptr          pointer to the hash table to be freed
- * destroy()    function to call to free the ->data member (optional)
+/**
+ * hash_destroy - Destroy a hash table
+ * @param ptr     Pointer to the hash table to be freed
+ * @param destroy Function to call to free the ->data member (optional)
  */
 void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
 {

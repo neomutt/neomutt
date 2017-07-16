@@ -67,10 +67,13 @@ static int nntp_connect_error(struct NntpServer *nserv)
   return -1;
 }
 
-/* Get capabilities:
- * -1 - error, connection is closed
- *  0 - mode is reader, capabilities setted up
- *  1 - need to switch to reader mode */
+/**
+ * nntp_capabilities - Get capabilities
+ * @return
+ * * -1 Error, connection is closed
+ * *  0 Mode is reader, capabilities setted up
+ * *  1 Need to switch to reader mode
+ */
 static int nntp_capabilities(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
@@ -175,7 +178,9 @@ char *OverviewFmt = "Subject:\0"
                     "Lines:\0"
                     "\0";
 
-/* Detect supported commands */
+/**
+ * nntp_attempt_features - Detect supported commands
+ */
 static int nntp_attempt_features(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
@@ -299,7 +304,9 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   return 0;
 }
 
-/* Get login, password and authenticate */
+/**
+ * nntp_auth - Get login, password and authenticate
+ */
 static int nntp_auth(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
@@ -588,7 +595,9 @@ static int nntp_auth(struct NntpServer *nserv)
   return -1;
 }
 
-/* Connect to server, authenticate and get capabilities */
+/**
+ * nntp_open_connection - Connect to server, authenticate and get capabilities
+ */
 int nntp_open_connection(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
@@ -741,7 +750,9 @@ int nntp_open_connection(struct NntpServer *nserv)
   return 0;
 }
 
-/* Send data from buffer and receive answer to same buffer */
+/**
+ * nntp_query - Send data from buffer and receive answer to same buffer
+ */
 static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 {
   struct NntpServer *nserv = nntp_data->nserv;
@@ -801,12 +812,17 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
   return 0;
 }
 
-/* This function calls funct(*line, *data) for each received line,
+/**
+ * nntp_fetch_lines - Read lines, calling a callback function for each
+ * @return
+ * *  0 Success
+ * *  1 Bad response (answer in query buffer)
+ * * -1 Connection lost
+ * * -2 Error in funct(*line, *data)
+ *
+ * This function calls funct(*line, *data) for each received line,
  * funct(NULL, *data) if rewind(*data) needs, exits when fail or done:
- *  0 - success
- *  1 - bad response (answer in query buffer)
- * -1 - connection lost
- * -2 - error in funct(*line, *data) */
+ */
 static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen,
                             char *msg, int (*funct)(char *, void *), void *data)
 {
@@ -881,7 +897,9 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
   return rc;
 }
 
-/* Parse newsgroup description */
+/**
+ * fetch_description - Parse newsgroup description
+ */
 static int fetch_description(char *line, void *data)
 {
   struct NntpServer *nserv = data;
@@ -948,7 +966,11 @@ static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
   return rc;
 }
 
-/* Update read flag and set article number if empty */
+/**
+ * nntp_parse_xref - Parse cross-reference
+ *
+ * Update read flag and set article number if empty
+ */
 static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -984,7 +1006,9 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
   FREE(&buf);
 }
 
-/* Write line to temporarily file */
+/**
+ * fetch_tempfile - Write line to temporarily file
+ */
 static int fetch_tempfile(char *line, void *data)
 {
   FILE *fp = data;
@@ -1012,7 +1036,9 @@ struct FetchCtx
 #endif
 };
 
-/* Parse article number */
+/**
+ * fetch_numbers - Parse article number
+ */
 static int fetch_numbers(char *line, void *data)
 {
   struct FetchCtx *fc = data;
@@ -1028,7 +1054,9 @@ static int fetch_numbers(char *line, void *data)
   return 0;
 }
 
-/* Parse overview line */
+/**
+ * parse_overview_line - Parse overview line
+ */
 static int parse_overview_line(char *line, void *data)
 {
   struct FetchCtx *fc = data;
@@ -1179,7 +1207,9 @@ static int parse_overview_line(char *line, void *data)
   return 0;
 }
 
-/* Fetch headers */
+/**
+ * nntp_fetch_headers - Fetch headers
+ */
 static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
                               anum_t last, int restore)
 {
@@ -1411,7 +1441,9 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
   return 0;
 }
 
-/* Open newsgroup */
+/**
+ * nntp_open_mailbox - Open newsgroup
+ */
 static int nntp_open_mailbox(struct Context *ctx)
 {
   struct NntpServer *nserv = NULL;
@@ -1546,7 +1578,9 @@ static int nntp_open_mailbox(struct Context *ctx)
   return 0;
 }
 
-/* Fetch message */
+/**
+ * nntp_open_message - Fetch message
+ */
 static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -1668,13 +1702,17 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   return 0;
 }
 
-/* Close message */
+/**
+ * nntp_close_message - Close message
+ */
 static int nntp_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }
 
-/* Post article */
+/**
+ * nntp_post - Post article
+ */
 int nntp_post(const char *msg)
 {
   struct NntpData *nntp_data, nntp_tmp;
@@ -1746,10 +1784,13 @@ int nntp_post(const char *msg)
   return 0;
 }
 
-/* Check newsgroup for new articles:
- *  1 - new articles found
- *  0 - no change
- * -1 - lost connection */
+/**
+ * nntp_group_poll - Check newsgroup for new articles
+ * @return
+ * *  1 New articles found
+ * *  0 No change
+ * * -1 Lost connection
+ */
 static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
 {
   char buf[LONG_STRING] = "";
@@ -1788,11 +1829,16 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
   return 1;
 }
 
-/* Check current newsgroup for new articles, leave newsrc locked:
- *  MUTT_REOPENED - articles have been renumbered or removed from server
- *  MUTT_NEW_MAIL - new articles found
- *  0             - no change
- * -1             - lost connection */
+/**
+ * check_mailbox - Check current newsgroup for new articles
+ * @return
+ * * #MUTT_REOPENED Articles have been renumbered or removed from server
+ * * #MUTT_NEW_MAIL New articles found
+ * *  0             No change
+ * * -1             Lost connection
+ *
+ * Leave newsrc locked
+ */
 static int check_mailbox(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -2002,11 +2048,14 @@ static int check_mailbox(struct Context *ctx)
   return ret;
 }
 
-/* Check current newsgroup for new articles:
- *  MUTT_REOPENED - articles have been renumbered or removed from server
- *  MUTT_NEW_MAIL - new articles found
- *  0             - no change
- * -1             - lost connection */
+/**
+ * nntp_check_mailbox - Check current newsgroup for new articles
+ * @return
+ * * #MUTT_REOPENED Articles have been renumbered or removed from server
+ * * #MUTT_NEW_MAIL New articles found
+ * *  0             No change
+ * * -1             Lost connection
+ */
 static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 {
   int ret = check_mailbox(ctx);
@@ -2019,7 +2068,9 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
   return ret;
 }
 
-/* Save changes to .newsrc and cache */
+/**
+ * nntp_sync_mailbox - Save changes to .newsrc and cache
+ */
 static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -2077,7 +2128,9 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
   return 0;
 }
 
-/* Free up memory associated with the newsgroup context */
+/**
+ * nntp_close_mailbox - Free up memory associated with the newsgroup context
+ */
 static int nntp_close_mailbox(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
@@ -2097,7 +2150,9 @@ static int nntp_close_mailbox(struct Context *ctx)
   return 0;
 }
 
-/* Get date and time from server */
+/**
+ * nntp_date - Get date and time from server
+ */
 static int nntp_date(struct NntpServer *nserv, time_t *now)
 {
   if (nserv->hasDATE)
@@ -2130,7 +2185,9 @@ static int nntp_date(struct NntpServer *nserv, time_t *now)
   return 0;
 }
 
-/* Fetch list of all newsgroups from server */
+/**
+ * nntp_active_fetch - Fetch list of all newsgroups from server
+ */
 int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
 {
   struct NntpData nntp_data;
@@ -2191,10 +2248,13 @@ int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
   return 0;
 }
 
-/* Check for new groups and new articles in subscribed groups:
- *  1 - new groups found
- *  0 - no new groups
- * -1 - error */
+/**
+ * nntp_check_new_groups - Check for new groups/articles in subscribed groups
+ * @return
+ * *  1 New groups found
+ * *  0 No new groups
+ * * -1 Error
+ */
 int nntp_check_new_groups(struct NntpServer *nserv)
 {
   struct NntpData nntp_data;
@@ -2300,10 +2360,13 @@ int nntp_check_new_groups(struct NntpServer *nserv)
   return rc;
 }
 
-/* Fetch article by Message-ID:
- *  0 - success
- *  1 - no such article
- * -1 - error */
+/**
+ * nntp_check_msgid - Fetch article by Message-ID
+ * @return
+ * *  0 Success
+ * *  1 No such article
+ * * -1 Error
+ */
 int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -2381,7 +2444,9 @@ struct ChildCtx
   anum_t *child;
 };
 
-/* Parse XPAT line */
+/**
+ * fetch_children - Parse XPAT line
+ */
 static int fetch_children(char *line, void *data)
 {
   struct ChildCtx *cc = data;
@@ -2401,7 +2466,9 @@ static int fetch_children(char *line, void *data)
   return 0;
 }
 
-/* Fetch children of article with the Message-ID */
+/**
+ * nntp_check_children - Fetch children of article with the Message-ID
+ */
 int nntp_check_children(struct Context *ctx, const char *msgid)
 {
   struct NntpData *nntp_data = ctx->data;

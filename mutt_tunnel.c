@@ -186,7 +186,6 @@ static int tunnel_socket_poll(struct Connection *conn)
   return rc;
 }
 
-/* -- public functions -- */
 int mutt_tunnel_socket_setup(struct Connection *conn)
 {
   conn->conn_open = tunnel_socket_open;

@@ -247,7 +247,9 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 }
 
 
-/* Returns true if a contains at least one 8-bit character, false if none do.
+/**
+ * address_uses_unicode - Do any addresses use Unicode
+ * @return true if any of the string of addresses use 8-bit characters
  */
 static bool address_uses_unicode(const char *a)
 {
@@ -265,8 +267,9 @@ static bool address_uses_unicode(const char *a)
 }
 
 
-/* Returns 1 if any address in a contains at least one 8-bit
- * character, 0 if none do.
+/**
+ * addresses_use_unicode - Do any of a list of addresses use Unicode
+ * @return true if any use 8-bit characters
  */
 static bool addresses_use_unicode(const struct Address *a)
 {
@@ -572,6 +575,7 @@ error:
   return -1;
 }
 #endif /* USE_SASL */
+
 static int smtp_open(struct Connection *conn)
 {
   int rc;

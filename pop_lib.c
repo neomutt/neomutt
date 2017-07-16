@@ -502,15 +502,14 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 
 /**
  * pop_fetch_data - Read Headers with callback function
- *
+ * @return
+ * *  0 Successful
+ * * -1 Connection lost
+ * * -2 Invalid command or execution error
+ * * -3 Error in funct(*line, *data)
  *
  * This function calls  funct(*line, *data)  for each received line,
  * funct(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
- * Returned codes:
- *  0 - successful,
- * -1 - connection lost,
- * -2 - invalid command or execution error,
- * -3 - error in funct(*line, *data)
  */
 int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progressbar,
                    int (*funct)(char *, void *), void *data)

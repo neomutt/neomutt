@@ -195,7 +195,9 @@ static bool pgpring_string_matches_hint(const char *s, const char *hints[], int 
   return false;
 }
 
-/* The actual key ring parser */
+/**
+ * pgp_make_pgp2_fingerprint - The actual key ring parser
+ */
 static void pgp_make_pgp2_fingerprint(unsigned char *buff, unsigned char *digest)
 {
   struct Md5Ctx ctx;

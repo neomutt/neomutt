@@ -32,7 +32,11 @@
 #include "options.h"
 #include "protos.h"
 
-/* this is basically a stripped-down version of the cram-md5 method. */
+/**
+ * imap_auth_anon - Authenticate anonymously
+ *
+ * this is basically a stripped-down version of the cram-md5 method.
+ */
 enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method)
 {
   int rc;

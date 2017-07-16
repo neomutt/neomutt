@@ -673,7 +673,11 @@ done:
   *pbuf = 0;
 }
 
-/* note: it is assumed that `buf' is nul terminated! */
+/**
+ * rfc822_write_address - Write an address to a buffer
+ *
+ * Note: it is assumed that `buf' is nul terminated!
+ */
 int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display)
 {
   char *pbuf = buf;
@@ -729,7 +733,11 @@ done:
   return pbuf - buf;
 }
 
-/* this should be rfc822_cpy_adr */
+/**
+ * rfc822_cpy_adr_real - Copy the real address
+ *
+ * this should be rfc822_cpy_adr
+ */
 struct Address *rfc822_cpy_adr_real(struct Address *addr)
 {
   struct Address *p = rfc822_new_address();
@@ -742,7 +750,11 @@ struct Address *rfc822_cpy_adr_real(struct Address *addr)
   return p;
 }
 
-/* this should be rfc822_cpy_adrlist */
+/**
+ * rfc822_cpy_adr - Copy a list of addresses
+ *
+ * this should be rfc822_cpy_adrlist
+ */
 struct Address *rfc822_cpy_adr(struct Address *addr, int prune)
 {
   struct Address *top = NULL, *last = NULL;
@@ -764,7 +776,11 @@ struct Address *rfc822_cpy_adr(struct Address *addr, int prune)
   return top;
 }
 
-/* append list 'b' to list 'a' and return the last element in the new list */
+/**
+ * rfc822_append - Append one list of addresses on another
+ *
+ * append list 'b' to list 'a' and return the last element in the new list
+ */
 struct Address *rfc822_append(struct Address **a, struct Address *b, int prune)
 {
   struct Address *tmp = *a;
@@ -782,7 +798,11 @@ struct Address *rfc822_append(struct Address **a, struct Address *b, int prune)
   return tmp;
 }
 
-/* incomplete. Only used to thwart the APOP MD5 attack (#2846). */
+/**
+ * rfc822_valid_msgid - Is the message id valid
+ *
+ * incomplete. Only used to thwart the APOP MD5 attack (#2846).
+ */
 bool rfc822_valid_msgid(const char *msgid)
 {
   /* msg-id         = "<" addr-spec ">"

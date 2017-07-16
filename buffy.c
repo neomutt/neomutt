@@ -57,8 +57,10 @@ time_t BuffyDoneTime = 0; /* last time we knew for sure how much mail there was.
 static short BuffyCount = 0;  /* how many boxes with new mail */
 static short BuffyNotify = 0; /* # of unnotified new boxes */
 
-/* Find the last message in the file.
- * upon success return 0. If no message found - return -1 */
+/**
+ * fseek_last_message - Find the last message in the file
+ * @return 0 on success, -1 if no message found
+ */
 static int fseek_last_message(FILE *f)
 {
   LOFF_T pos;
@@ -104,7 +106,10 @@ static int fseek_last_message(FILE *f)
   return -1;
 }
 
-/* Return 1 if the last message is new */
+/**
+ * test_last_status_new - Is the last message new
+ * @return 1 if the last message is new
+ */
 static int test_last_status_new(FILE *f)
 {
   struct Header *hdr = NULL;
@@ -441,7 +446,9 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, int check_sta
     BuffyNotify++;
 }
 
-/* fetch buffy object for given path, if present */
+/**
+ * buffy_get - fetch buffy object for given path, if present
+ */
 static struct Buffy *buffy_get(const char *path)
 {
   struct Buffy *cur = NULL;
@@ -669,7 +676,10 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
   return 0;
 }
 
-/* Check all Incoming for new mail and total/new/flagged messages
+/**
+ * mutt_buffy_check - Check all Incoming for new mail
+ *
+ * Check all Incoming for new mail and total/new/flagged messages
  * force: if true, ignore BuffyTimeout and check for new mail anyway
  */
 int mutt_buffy_check(bool force)

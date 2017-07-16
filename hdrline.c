@@ -112,7 +112,9 @@ static bool check_for_mailing_list(struct Address *adr, const char *pfx, char *b
   return false;
 }
 
-/* Search for a mailing list in the list of addresses pointed to by adr.
+/**
+ * check_for_mailing_list_addr - Check an address list for a mailing list
+ *
  * If one is found, print the address of the list into buf, then return 1.
  * Otherwise, simply return 0.
  */
@@ -337,13 +339,15 @@ static bool user_in_addr(struct Address *a)
   return false;
 }
 
-/* Return values:
- * 0: user is not in list
- * 1: user is unique recipient
- * 2: user is in the TO list
- * 3: user is in the CC list
- * 4: user is originator
- * 5: sent to a subscribed mailinglist
+/**
+ * user_is_recipient - Is the user a recipient of the message
+ * @return
+ * * 0 User is not in list
+ * * 1 User is unique recipient
+ * * 2 User is in the TO list
+ * * 3 User is in the CC list
+ * * 4 User is originator
+ * * 5 Sent to a subscribed mailinglist
  */
 static int user_is_recipient(struct Header *h)
 {
@@ -451,47 +455,52 @@ static char *apply_subject_mods(struct Envelope *env)
 }
 
 
-/* %a = address of author
- * %A = reply-to address (if present; otherwise: address of author
- * %b = filename of the originating folder
- * %B = the list to which the letter was sent, or else the folder name (%b).
- * %c = size of message in bytes
- * %C = current message number
- * %d = date and time of message using $date_format and sender's timezone
- * %D = date and time of message using $date_format and local timezone
- * %e = current message number in thread
- * %E = number of messages in current thread
- * %f = entire from line
- * %F = like %n, unless from self
- * %g = message labels (e.g. notmuch tags)
- * %i = message-id
- * %I = initials of author
- * %K = the list to which the letter was sent (if any; otherwise: empty)
- * %l = number of lines in the message
- * %L = like %F, except `lists' are displayed first
- * %m = number of messages in the mailbox
- * %n = name of author
- * %N = score
- * %O = like %L, except using address instead of name
- * %P = progress indicator for builtin pager
- * %q = newsgroup name (if compiled with NNTP support)
- * %r = comma separated list of To: recipients
- * %R = comma separated list of Cc: recipients
- * %s = subject
- * %S = short message status (e.g., N/O/D/!/r/-)
- * %t = `to:' field (recipients)
- * %T = $to_chars
- * %u = user (login) name of author
- * %v = first name of author, unless from self
- * %W = where user is (organization)
- * %x = `x-comment-to:' field (if present and compiled with NNTP support)
- * %X = number of MIME attachments
- * %y = `x-label:' field (if present)
- * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
- * %zs = message status flags
- * %zc = message crypto flags
- * %zt = message tag flags
- * %Z = combined message flags
+/**
+ * hdr_format_str - Format a string, like printf()
+ *
+ * | Expando | Description
+ * |:--------|:-----------------------------------------------------------------
+ * | \%a     | address of author
+ * | \%A     | reply-to address (if present; otherwise: address of author
+ * | \%b     | filename of the originating folder
+ * | \%B     | the list to which the letter was sent, or else the folder name (%b).
+ * | \%c     | size of message in bytes
+ * | \%C     | current message number
+ * | \%d     | date and time of message using $date_format and sender's timezone
+ * | \%D     | date and time of message using $date_format and local timezone
+ * | \%e     | current message number in thread
+ * | \%E     | number of messages in current thread
+ * | \%f     | entire from line
+ * | \%F     | like %n, unless from self
+ * | \%g     | message labels (e.g. notmuch tags)
+ * | \%i     | message-id
+ * | \%I     | initials of author
+ * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
+ * | \%l     | number of lines in the message
+ * | \%L     | like %F, except `lists' are displayed first
+ * | \%m     | number of messages in the mailbox
+ * | \%n     | name of author
+ * | \%N     | score
+ * | \%O     | like %L, except using address instead of name
+ * | \%P     | progress indicator for builtin pager
+ * | \%q     | newsgroup name (if compiled with NNTP support)
+ * | \%r     | comma separated list of To: recipients
+ * | \%R     | comma separated list of Cc: recipients
+ * | \%s     | subject
+ * | \%S     | short message status (e.g., N/O/D/!/r/-)
+ * | \%t     | `to:' field (recipients)
+ * | \%T     | $to_chars
+ * | \%u     | user (login) name of author
+ * | \%v     | first name of author, unless from self
+ * | \%W     | where user is (organization)
+ * | \%x     | `x-comment-to:' field (if present and compiled with NNTP support)
+ * | \%X     | number of MIME attachments
+ * | \%y     | `x-label:' field (if present)
+ * | \%Y     | `x-label:' field (if present, tree unfolded, and != parent's x-label)
+ * | \%zs    | message status flags
+ * | \%zc    | message crypto flags
+ * | \%zt    | message tag flags
+ * | \%Z     | combined message flags
  */
 static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int cols,
                                   char op, const char *src, const char *prefix,

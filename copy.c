@@ -54,9 +54,12 @@
 static int address_header_decode(char **str);
 static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
 
-/* Ok, the only reason for not merging this with mutt_copy_header()
- * below is to avoid creating a Header structure in message_handler().
- * Also, this one will wrap headers much more aggressively than the other one.
+/**
+ * mutt_copy_hdr - Copy header from one file to another
+ *
+ * Ok, the only reason for not merging this with mutt_copy_header() below is to
+ * avoid creating a Header structure in message_handler().  Also, this one will
+ * wrap headers much more aggressively than the other one.
  */
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
                   int flags, const char *prefix)
@@ -345,28 +348,31 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   return 0;
 }
 
-/* flags
-        CH_DECODE       RFC2047 header decoding
-        CH_FROM         retain the "From " message separator
-        CH_FORCE_FROM   give CH_FROM precedence over CH_WEED
-        CH_MIME         ignore MIME fields
-        CH_NOLEN        don't write Content-Length: and Lines:
-        CH_NONEWLINE    don't output a newline after the header
-        CH_NOSTATUS     ignore the Status: and X-Status:
-        CH_PREFIX       quote header with $indent_string
-        CH_REORDER      output header in order specified by `hdr_order'
-        CH_TXTPLAIN     generate text/plain MIME headers [hack alert.]
-        CH_UPDATE       write new Status: and X-Status:
-        CH_UPDATE_LEN   write new Content-Length: and Lines:
-        CH_XMIT         ignore Lines: and Content-Length:
-        CH_WEED         do header weeding
-        CH_NOQFROM      ignore ">From " line
-        CH_UPDATE_IRT   update the In-Reply-To: header
-        CH_UPDATE_REFS  update the References: header
-        CH_VIRTUAL      write virtual header lines too
-
-   prefix
-        string to use if CH_PREFIX is set
+/**
+ * mutt_copy_header - Copy email header
+ *
+ * flags:
+ * * #CH_DECODE       RFC2047 header decoding
+ * * #CH_FROM         retain the "From " message separator
+ * * #CH_FORCE_FROM   give CH_FROM precedence over CH_WEED
+ * * #CH_MIME         ignore MIME fields
+ * * #CH_NOLEN        don't write Content-Length: and Lines:
+ * * #CH_NONEWLINE    don't output a newline after the header
+ * * #CH_NOSTATUS     ignore the Status: and X-Status:
+ * * #CH_PREFIX       quote header with $indent_string
+ * * #CH_REORDER      output header in order specified by `hdr_order'
+ * * #CH_TXTPLAIN     generate text/plain MIME headers [hack alert.]
+ * * #CH_UPDATE       write new Status: and X-Status:
+ * * #CH_UPDATE_LEN   write new Content-Length: and Lines:
+ * * #CH_XMIT         ignore Lines: and Content-Length:
+ * * #CH_WEED         do header weeding
+ * * #CH_NOQFROM      ignore ">From " line
+ * * #CH_UPDATE_IRT   update the In-Reply-To: header
+ * * #CH_UPDATE_REFS  update the References: header
+ * * #CH_VIRTUAL      write virtual header lines too
+ *
+ * prefix
+ * * string to use if CH_PREFIX is set
  */
 int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
 {
@@ -487,7 +493,11 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   return 0;
 }
 
-/* Count the number of lines and bytes to be deleted in this body */
+/**
+ * count_delete_lines - Count lines to be deleted in this email body
+ *
+ * Count the number of lines and bytes to be deleted in this body
+ */
 static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
@@ -519,22 +529,23 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
   return dellines;
 }
 
-/* make a copy of a message
+/**
+ * _mutt_copy_message - make a copy of a message
+ * @param fpout   Where to write output
+ * @param fpin    Where to get input
+ * @param hdr     Header of message being copied
+ * @param body    Structure of message being copied
+ * @param flags   See below
+ * @param chflags Flags to mutt_copy_header()
  *
- * fpout        where to write output
- * fpin         where to get input
- * hdr          header of message being copied
- * body         structure of message being copied
- * flags
- *      MUTT_CM_NOHEADER        don't copy header
- *      MUTT_CM_PREFIX  quote header and body
- *      MUTT_CM_DECODE  decode message body to text/plain
- *      MUTT_CM_DISPLAY displaying output to the user
- *      MUTT_CM_PRINTING   printing the message
- *      MUTT_CM_UPDATE  update structures in memory after syncing
- *      MUTT_CM_DECODE_PGP      used for decoding PGP messages
- *      MUTT_CM_CHARCONV        perform character set conversion
- * chflags      flags to mutt_copy_header()
+ * * #MUTT_CM_NOHEADER   don't copy header
+ * * #MUTT_CM_PREFIX     quote header and body
+ * * #MUTT_CM_DECODE     decode message body to text/plain
+ * * #MUTT_CM_DISPLAY    displaying output to the user
+ * * #MUTT_CM_PRINTING   printing the message
+ * * #MUTT_CM_UPDATE     update structures in memory after syncing
+ * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
+ * * #MUTT_CM_CHARCONV   perform character set conversion
  */
 int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
                        struct Body *body, int flags, int chflags)
@@ -738,8 +749,12 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
   return rc;
 }
 
-/* should be made to return -1 on fatal errors, and 1 on non-fatal errors
- * like partial decode, where it is worth displaying as much as possible */
+/**
+ * mutt_copy_message - Copy a message
+ *
+ * should be made to return -1 on fatal errors, and 1 on non-fatal errors
+ * like partial decode, where it is worth displaying as much as possible
+ */
 int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
                       int flags, int chflags)
 {
@@ -758,15 +773,16 @@ int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
   return r;
 }
 
-/* appends a copy of the given message to a mailbox
- *
- * dest         destination mailbox
- * fpin         where to get input
- * src          source mailbox
- * hdr          message being copied
- * body         structure of message being copied
- * flags        mutt_copy_message() flags
- * chflags      mutt_copy_header() flags
+/**
+ * _mutt_append_message - appends a copy of the given message to a mailbox
+ * @param dest    destination mailbox
+ * @param fpin    where to get input
+ * @param src     source mailbox
+ * @param hdr     message being copied
+ * @param body    structure of message being copied
+ * @param flags   mutt_copy_message() flags
+ * @param chflags mutt_copy_header() flags
+ * @return 0 on success, -1 on error
  */
 static int _mutt_append_message(struct Context *dest, FILE *fpin,
                                 struct Context *src, struct Header *hdr,
@@ -812,12 +828,15 @@ int mutt_append_message(struct Context *dest, struct Context *src,
   return r;
 }
 
-/*
+/**
+ * copy_delete_attach - Copy a message, deleting marked attachments
+ * @return
+ * * 0 on success
+ * * -1 on failure
+ *
  * This function copies a message body, while deleting _in_the_copy_
  * any attachments which are marked for deletion.
  * Nothing is changed in the original message -- this is left to the caller.
- *
- * The function will return 0 on success and -1 on failure.
  */
 static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date)
 {
@@ -864,11 +883,12 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
   return 0;
 }
 
-/*
- * This function is the equivalent of mutt_write_address_list(),
- * but writes to a buffer instead of writing to a stream.
- * mutt_write_address_list could be re-used if we wouldn't store
- * all the decoded headers in a huge array, first.
+/**
+ * format_address_header - Write address headers to a buffer
+ *
+ * This function is the equivalent of mutt_write_address_list(), but writes to
+ * a buffer instead of writing to a stream.  mutt_write_address_list could be
+ * re-used if we wouldn't store all the decoded headers in a huge array, first.
  *
  * XXX - fix that.
  */

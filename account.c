@@ -34,7 +34,9 @@
 #include "protos.h"
 #include "url.h"
 
-/* mutt_account_match: compare account info (host/port/user) */
+/**
+ * mutt_account_match - compare account info (host/port/user)
+ */
 int mutt_account_match(const struct Account *a1, const struct Account *a2)
 {
   const char *user = NONULL(Username);
@@ -78,7 +80,9 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
   return 1;
 }
 
-/* mutt_account_fromurl: fill account with information from url. */
+/**
+ * mutt_account_fromurl - fill account with information from url
+ */
 int mutt_account_fromurl(struct Account *account, struct CissUrl *url)
 {
   /* must be present */
@@ -106,10 +110,13 @@ int mutt_account_fromurl(struct Account *account, struct CissUrl *url)
   return 0;
 }
 
-/* mutt_account_tourl: fill URL with info from account. The URL information
- *   is a set of pointers into account - don't free or edit account until
- *   you've finished with url (make a copy of account if you need it for
- *   a while). */
+/**
+ * mutt_account_tourl - fill URL with info from account
+ *
+ * The URL information is a set of pointers into account - don't free or edit
+ * account until you've finished with url (make a copy of account if you need
+ * it for a while).
+ */
 void mutt_account_tourl(struct Account *account, struct CissUrl *url)
 {
   url->scheme = U_UNKNOWN;
@@ -167,7 +174,9 @@ void mutt_account_tourl(struct Account *account, struct CissUrl *url)
     url->pass = account->pass;
 }
 
-/* mutt_account_getuser: retrieve username into Account, if necessary */
+/**
+ * mutt_account_getuser - retrieve username into Account, if necessary
+ */
 int mutt_account_getuser(struct Account *account)
 {
   char prompt[SHORT_STRING];
@@ -231,7 +240,9 @@ int mutt_account_getlogin(struct Account *account)
   return 0;
 }
 
-/* mutt_account_getpass: fetch password into Account, if necessary */
+/**
+ * mutt_account_getpass - fetch password into Account, if necessary
+ */
 int mutt_account_getpass(struct Account *account)
 {
   char prompt[SHORT_STRING];

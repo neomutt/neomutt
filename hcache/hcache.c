@@ -633,7 +633,10 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   return hcpath;
 }
 
-/* This function transforms a header into a char so that it is useable by
+/**
+ * hcache_dump - Serialise a Header object
+ *
+ * This function transforms a header into a char so that it is useable by
  * db_store.
  */
 static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,

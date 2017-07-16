@@ -79,8 +79,11 @@
 
 #define EMAIL_WSP " \t\r\n"
 
-/* skip over WSP as defined by RFC5322.  This is used primarily for parsing
- * header fields. */
+/**
+ * skip_email_wsp - Skip over whitespace as defined by RFC5322
+ *
+ * This is used primarily for parsing header fields.
+ */
 static inline char *skip_email_wsp(const char *s)
 {
   if (s)

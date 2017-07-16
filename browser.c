@@ -105,7 +105,11 @@ struct Folder
 static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
 
-/* Frees up the memory allocated for the local-global variables.  */
+/**
+ * destroy_state - Free the BrowserState
+ *
+ * Frees up the memory allocated for the local-global variables.
+ */
 static void destroy_state(struct BrowserState *state)
 {
   for (int c = 0; c < state->entrylen; c++)
@@ -193,9 +197,12 @@ static int browser_compare_count_new(const void *a, const void *b)
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
 
-/* Wild compare function that calls the others. It's useful
- * because it provides a way to tell "../" is always on the
- * top of the list, independently of the sort method.
+/**
+ * browser_compare - Sort the items in the browser
+ *
+ * Wild compare function that calls the others. It's useful because it provides
+ * a way to tell "../" is always on the top of the list, independently of the
+ * sort method.
  */
 static int browser_compare(const void *a, const void *b)
 {
@@ -225,8 +232,11 @@ static int browser_compare(const void *a, const void *b)
   }
 }
 
-/* Call to qsort using browser_compare function. Some
- * specific sort methods are not used via NNTP.
+/**
+ * browser_sort - Sort the entries in the browser
+ *
+ * Call to qsort using browser_compare function.
+ * Some specific sort methods are not used via NNTP.
  */
 static void browser_sort(struct BrowserState *state)
 {
@@ -645,7 +655,9 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
     menu->data = state->entry;
 }
 
-/* get list of all files/newsgroups with mask */
+/**
+ * examine_directory - get list of all files/newsgroups with mask
+ */
 static int examine_directory(struct Menu *menu, struct BrowserState *state,
                              char *d, const char *prefix)
 {
@@ -768,7 +780,9 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 }
 #endif
 
-/* get list of mailboxes/subscribed newsgroups */
+/**
+ * examine_mailboxes - Get list of mailboxes/subscribed newsgroups
+ */
 static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 {
   struct stat s;
@@ -907,9 +921,11 @@ static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
 }
 #endif
 
-/*
- * This function takes a menu and a state and defines the current
- * entry that should be highlighted.
+/**
+ * browser_highlight_default - Decide which browser item should be highlighted
+ *
+ * This function takes a menu and a state and defines the current entry that
+ * should be highlighted.
  */
 static void browser_highlight_default(struct BrowserState *state, struct Menu *menu)
 {
@@ -1028,11 +1044,12 @@ static int file_tag(struct Menu *menu, int n, int m)
   return ff->tagged - ot;
 }
 
-/* Public function
+/**
+ * mutt_browser_select_dir - Remember the last directory selected
  *
- * This function helps the browser to know which directory has
- * been selected. It should be called anywhere a confirm hit is done
- * to open a new directory/file which is a maildir/mbox.
+ * This function helps the browser to know which directory has been selected.
+ * It should be called anywhere a confirm hit is done to open a new
+ * directory/file which is a maildir/mbox.
  *
  * We could check if the sort method is appropriate with this feature.
  */

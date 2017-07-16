@@ -76,7 +76,9 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
   mutt_debug(2, "((%s:%d )(%s:%d))\n", buf_maj, err_maj, buf_min, err_min);
 }
 
-/* imap_auth_gss: AUTH=GSSAPI support. */
+/**
+ * imap_auth_gss - GSS Authentication support
+ */
 enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 {
   gss_buffer_desc request_buf, send_token;

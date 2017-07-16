@@ -29,6 +29,9 @@
  * version using it.
  */
 
+/**
+ * safe_asprintf - Wrapper for vasprintf()
+ */
 #ifdef HAVE_VASPRINTF
 int safe_asprintf(char **strp, const char *fmt, ...)
 {

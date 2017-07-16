@@ -582,11 +582,13 @@ void menu_prev_line(struct Menu *menu)
     mutt_error(_("You cannot scroll up farther."));
 }
 
-/*
- * pageup:   jumplen == -pagelen
- * pagedown: jumplen == pagelen
- * halfup:   jumplen == -pagelen/2
- * halfdown: jumplen == pagelen/2
+/**
+ * menu_length_jump - Calculate the destination of a jump
+ *
+ * * pageup:   jumplen == -pagelen
+ * * pagedown: jumplen == pagelen
+ * * halfup:   jumplen == -pagelen/2
+ * * halfdown: jumplen == pagelen/2
  */
 #define DIRECTION ((neg * 2) + 1)
 static void menu_length_jump(struct Menu *menu, int jumplen)

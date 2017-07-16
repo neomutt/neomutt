@@ -156,21 +156,26 @@ struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type,
   return idx;
 }
 
-/* %c = character set: convert?
- * %C = character set
- * %D = deleted flag
- * %d = description
- * %e = MIME content-transfer-encoding
- * %F = filename for content-disposition header
- * %f = filename
- * %I = content-disposition, either I (inline) or A (attachment)
- * %t = tagged flag
- * %T = tree chars
- * %m = major MIME type
- * %M = MIME subtype
- * %n = attachment number
- * %s = size
- * %u = unlink
+/**
+ * mutt_attach_fmt - Format string for attachment menu
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%c     | character set: convert?
+ * | \%C     | character set
+ * | \%D     | deleted flag
+ * | \%d     | description
+ * | \%e     | MIME content-transfer-encoding
+ * | \%F     | filename for content-disposition header
+ * | \%f     | filename
+ * | \%I     | content-disposition, either I (inline) or A (attachment)
+ * | \%t     | tagged flag
+ * | \%T     | tree chars
+ * | \%m     | major MIME type
+ * | \%M     | MIME subtype
+ * | \%n     | attachment number
+ * | \%s     | size
+ * | \%u     | unlink
  */
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,

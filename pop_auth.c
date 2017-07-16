@@ -41,7 +41,9 @@
 #endif
 
 #ifdef USE_SASL
-/* SASL authenticator */
+/**
+ * pop_auth_sasl - POP SASL authenticator
+ */
 static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *method)
 {
   sasl_conn_t *saslconn = NULL;
@@ -191,7 +193,9 @@ bail:
 }
 #endif
 
-/* Get the server timestamp for APOP authentication */
+/**
+ * pop_apop_timestamp - Get the server timestamp for APOP authentication
+ */
 void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 {
   char *p1 = NULL, *p2 = NULL;
@@ -205,7 +209,9 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
   }
 }
 
-/* APOP authenticator */
+/**
+ * pop_auth_apop - APOP authenticator
+ */
 static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *method)
 {
   struct Md5Ctx ctx;
@@ -252,7 +258,9 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   return POP_A_FAILURE;
 }
 
-/* USER authenticator */
+/**
+ * pop_auth_user - USER authenticator
+ */
 static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *method)
 {
   char buf[LONG_STRING];
@@ -319,12 +327,13 @@ static const struct PopAuth pop_authenticators[] = {
   { NULL, NULL },
 };
 
-/*
- * Authentication
- *  0 - successful,
- * -1 - connection lost,
- * -2 - login failed,
- * -3 - authentication canceled.
+/**
+ * pop_authenticate - Authenticate with a POP server
+ * @return
+ * *  0 Successful
+ * * -1 Connection lost
+ * * -2 Login failed
+ * * -3 Authentication cancelled
 */
 int pop_authenticate(struct PopData *pop_data)
 {

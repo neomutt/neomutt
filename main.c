@@ -180,6 +180,13 @@ static void start_curses(void)
 #define MUTT_NEWS (1 << 5) /* -g and -G */
 #endif
 
+/**
+ * main - Start NeoMutt
+ * @param argc Number of command line arguments
+ * @param argv List of command line arguments
+ * @param env  Copy of the environment
+ * @return 0 on success, 1 on error
+ */
 int main(int argc, char **argv, char **env)
 {
   char folder[_POSIX_PATH_MAX] = "";

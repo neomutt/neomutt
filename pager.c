@@ -1112,7 +1112,11 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
   return pos;
 }
 
-/* trim tail of buf so that it contains complete multibyte characters */
+/**
+ * trim_incomplete_mbyte - Remove an incomplete character
+ *
+ * trim tail of buf so that it contains complete multibyte characters
+ */
 static int trim_incomplete_mbyte(unsigned char *buf, size_t len)
 {
   mbstate_t mbstate;
@@ -1999,11 +2003,15 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   pager_menu->redraw = 0;
 }
 
-/* This pager is actually not so simple as it once was.  It now operates in
-   two modes: one for viewing messages and the other for viewing help.  These
-   can be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg
-   is there so that we can do operations on the current message without the
-   need to pop back out to the main-menu.  */
+/**
+ * mutt_pager - Display a file, or help, in a window
+ *
+ * This pager is actually not so simple as it once was.  It now operates in two
+ * modes: one for viewing messages and the other for viewing help.  These can
+ * be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg is
+ * there so that we can do operations on the current message without the need
+ * to pop back out to the main-menu.
+ */
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
 {
   static char searchbuf[STRING] = "";

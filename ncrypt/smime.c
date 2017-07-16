@@ -152,7 +152,11 @@ int smime_valid_passphrase(void)
  *     The OpenSSL interface
  */
 
-/* This is almost identical to ppgp's invoking interface. */
+/**
+ * _mutt_fmt_smime_command - Format an SMIME command
+ *
+ * This is almost identical to pgp's invoking interface.
+ */
 static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t col,
                                            int cols, char op, const char *src,
                                            const char *prefix, const char *ifstring,
@@ -592,7 +596,10 @@ static struct SmimeKey *smime_get_candidates(char *search, short public)
   return results;
 }
 
-/* Returns the first matching key record, without prompting or checking of
+/**
+ * smime_get_key_by_hash - Find a key by its hash
+ *
+ * Returns the first matching key record, without prompting or checking of
  * abilities or trust.
  */
 static struct SmimeKey *smime_get_key_by_hash(char *hash, short public)
@@ -749,10 +756,12 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
   }
 }
 
-/*
-   This sets the '*ToUse' variables for an upcoming decryption, where
-   the required key is different from SmimeDefaultKey.
-*/
+/**
+ * _smime_getkeys - Get the keys for a mailbox
+ *
+ * This sets the '*ToUse' variables for an upcoming decryption, where the
+ * required key is different from SmimeDefaultKey.
+ */
 static void _smime_getkeys(char *mailbox)
 {
   struct SmimeKey *key = NULL;
@@ -841,8 +850,10 @@ void smime_getkeys(struct Envelope *env)
   }
 }
 
-/* This routine attempts to find the keyids of the recipients of a message.
- * It returns NULL if any of the keys can not be found.
+/**
+ * smime_find_keys - Find the keys of the recipients of a message
+ * @return NULL if any of the keys can not be found
+ *
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
@@ -1141,7 +1152,9 @@ static char *smime_extract_signer_certificate(char *infile)
   return safe_strdup(certfile);
 }
 
-/* Add a certificate and update index file (externally). */
+/**
+ * smime_invoke_import - Add a certificate and update index file (externally)
+ */
 void smime_invoke_import(char *infile, char *mailbox)
 {
   char tmpfname[_POSIX_PATH_MAX], *certfile = NULL, buf[STRING];
@@ -1409,7 +1422,10 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   return t;
 }
 
-/* The openssl -md doesn't want hyphens:
+/**
+ * openssl_md_to_smime_micalg - Change the algorithm names
+ *
+ * The openssl -md doesn't want hyphens:
  *   md5, sha1,  sha224,  sha256,  sha384,  sha512
  * However, the micalg does:
  *   md5, sha-1, sha-224, sha-256, sha-384, sha-512
@@ -1695,10 +1711,11 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   return badsig;
 }
 
-/*
-  This handles application/pkcs7-mime which can either be a signed
-  or an encrypted message.
-*/
+/**
+ * smime_handle_entity - Handle type application/pkcs7-mime
+ *
+ * This can either be a signed or an encrypted message.
+ */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *outFile)
 {
   int len = 0;

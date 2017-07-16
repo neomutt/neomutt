@@ -505,8 +505,12 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 }
 
-/* usage: uncolor index pattern [pattern...]
- *        unmono  index pattern [pattern...]
+/**
+ * _mutt_parse_uncolor - Parse an 'uncolor' command
+ *
+ * usage:
+ * * uncolor index pattern [pattern...]
+ * * unmono  index pattern [pattern...]
  */
 static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
                                struct Buffer *err, short parse_uncolor)
@@ -833,8 +837,11 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
     return attr;
 }
 
-/* usage: color <object> <fg> <bg> [ <regexp> ]
- *        mono  <object> <attr> [ <regexp> ]
+/**
+ * _mutt_parse_color - Parse a "color" command
+ *
+ * usage: color OBJECT FG BG [ REGEXP ]
+ *        mono  OBJECT ATTR [ REGEXP ]
  */
 static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
                              parser_callback_t callback, bool dry_run)

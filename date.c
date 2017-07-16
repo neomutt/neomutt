@@ -24,8 +24,12 @@
 #include <string.h>
 #include <time.h>
 
-/* returns the seconds east of UTC given `g' and its corresponding gmtime()
-   representation */
+/**
+ * compute_tz - Calculate the number of seconds east of UTC
+ *
+ * returns the seconds east of UTC given `g' and its corresponding gmtime()
+ * representation
+ */
 static time_t compute_tz(time_t g, struct tm *utc)
 {
   struct tm *lt = localtime(&g);
@@ -47,7 +51,10 @@ static time_t compute_tz(time_t g, struct tm *utc)
   return t;
 }
 
-/* Returns the local timezone in seconds east of UTC for the time t,
+/**
+ * mutt_local_tz - Calculate the local timezone in seconds east of UTC
+ *
+ * Returns the local timezone in seconds east of UTC for the time t,
  * or for the current time if t is zero.
  */
 time_t mutt_local_tz(time_t t)
@@ -69,8 +76,12 @@ time_t mutt_local_tz(time_t t)
 #define TM_YEAR_MAX                                                            \
   (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
 
-/* converts struct tm to time_t, but does not take the local timezone into
-   account unless ``local'' is nonzero */
+/**
+ * mutt_mktime - Convert `struct tm` to `time_t`
+ *
+ * converts struct tm to time_t, but does not take the local timezone into
+ * account unless ``local'' is nonzero
+ */
 time_t mutt_mktime(struct tm *t, int local)
 {
   time_t g;
@@ -116,7 +127,11 @@ time_t mutt_mktime(struct tm *t, int local)
   return g;
 }
 
-/* Return 1 if month is February of leap year, else 0 */
+/**
+ * is_leap_year_feb - Is it a leap year
+ * @param tm Date to be tested
+ * @return true if it's a leap year
+ */
 static int is_leap_year_feb(struct tm *tm)
 {
   if (tm->tm_mon == 1)
