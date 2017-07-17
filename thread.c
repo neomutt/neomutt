@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Create/manipulate threading in emails
+ *
+ * @authors
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -37,7 +42,9 @@
 #define VISIBLE(hdr, ctx)                                                      \
   (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
 
-/* determine whether a is a descendant of b */
+/**
+ * is_descendant - Is one thread a descendant of another
+ */
 static int is_descendant(struct MuttThread *a, struct MuttThread *b)
 {
   while (a)
@@ -49,7 +56,9 @@ static int is_descendant(struct MuttThread *a, struct MuttThread *b)
   return 0;
 }
 
-/* Determines whether to display a message's subject. */
+/**
+ * need_display_subject - Determines whether to display a message's subject
+ */
 static int need_display_subject(struct Context *ctx, struct Header *hdr)
 {
   struct MuttThread *tmp = NULL, *tree = hdr->thread;
@@ -125,7 +134,10 @@ static void linearize_tree(struct Context *ctx)
   }
 }
 
-/* this calculates whether a node is the root of a subtree that has visible
+/**
+ * calculate_visibility - Are tree nodes visible
+ *
+ * this calculates whether a node is the root of a subtree that has visible
  * nodes, whether a node itself is visible, whether, if invisible, it has
  * depth anyway, and whether any of its later siblings are roots of visible
  * subtrees.  while it's at it, it frees the old thread display, so we can
@@ -232,13 +244,16 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
   }
 }
 
-/* Since the graphics characters have a value >255, I have to resort to
- * using escape sequences to pass the information to print_enriched_string().
- * These are the macros MUTT_TREE_* defined in mutt.h.
+/**
+ * mutt_draw_tree - Draw a tree of threaded emails
+ *
+ * Since the graphics characters have a value >255, I have to resort to using
+ * escape sequences to pass the information to print_enriched_string().  These
+ * are the macros MUTT_TREE_* defined in mutt.h.
  *
  * ncurses should automatically use the default ASCII characters instead of
- * graphics chars on terminals which don't support them (see the man page
- * for curs_addch).
+ * graphics chars on terminals which don't support them (see the man page for
+ * curs_addch).
  */
 void mutt_draw_tree(struct Context *ctx)
 {
@@ -351,10 +366,14 @@ void mutt_draw_tree(struct Context *ctx)
   FREE(&arrow);
 }
 
-/* since we may be trying to attach as a pseudo-thread a MuttThread that
+/**
+ * make_subject_list - Create a list of all subjects in a thread
+ *
+ * since we may be trying to attach as a pseudo-thread a MuttThread that
  * has no message, we have to make a list of all the subjects of its
  * most immediate existing descendants.  we also note the earliest
- * date on any of the parents and put it in *dateptr. */
+ * date on any of the parents and put it in *dateptr.
+ */
 static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
 {
   struct MuttThread *start = cur;
@@ -415,9 +434,11 @@ static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
   return subjects;
 }
 
-/* find the best possible match for a parent message based upon subject.
- * if there are multiple matches, the one which was sent the latest, but
- * before the current message, is used.
+/**
+ * find_subject - Find the best possible match for a parent based on subject
+ *
+ * If there are multiple matches, the one which was sent the latest, but before
+ * the current message, is used.
  */
 static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *cur)
 {
@@ -456,9 +477,13 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
   return last;
 }
 
-/* remove cur and its descendants from their current location.
- * also make sure ancestors of cur no longer are sorted by the
- * fact that cur is their descendant. */
+/**
+ * unlink_message - Break the message out of the thread
+ *
+ * Remove cur and its descendants from their current location.  Also make sure
+ * ancestors of cur no longer are sorted by the fact that cur is their
+ * descendant.
+ */
 static void unlink_message(struct MuttThread **old, struct MuttThread *cur)
 {
   struct MuttThread *tmp = NULL;
@@ -478,7 +503,11 @@ static void unlink_message(struct MuttThread **old, struct MuttThread *cur)
   }
 }
 
-/* add cur as a prior sibling of *new, with parent newparent */
+/**
+ * insert_message - Insert a message into a thread
+ *
+ * add cur as a prior sibling of *new, with parent newparent
+ */
 static void insert_message(struct MuttThread **new,
                            struct MuttThread *newparent, struct MuttThread *cur)
 {
@@ -508,7 +537,11 @@ static struct Hash *make_subj_hash(struct Context *ctx)
   return hash;
 }
 
-/* thread by subject things that didn't get threaded by message-id */
+/**
+ * pseudo_threads - Thread messages by subject
+ *
+ * Thread by subject things that didn't get threaded by message-id
+ */
 static void pseudo_threads(struct Context *ctx)
 {
   struct MuttThread *tree = ctx->tree, *top = tree;
@@ -1030,8 +1063,12 @@ static struct Header *find_virtual(struct MuttThread *cur, int reverse)
   }
 }
 
-/* dir => true when moving forward, false when moving in reverse
- * subthreads => false when moving to next thread, true when moving to next subthread
+/**
+ * _mutt_aside_thread - Find the next/previous (sub)thread
+ * @param hdr        Search from this message
+ * @param dir        Direction to search: 'true' forwards, 'false' backwards
+ * @param subthreads Search subthreads: 'true' subthread, 'false' not
+ * @return index into the virtual email table
  */
 int _mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 {
@@ -1318,9 +1355,12 @@ int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 }
 
 
-/* if flag is 0, we want to know how many messages
- * are in the thread.  if flag is 1, we want to know
- * our position in the thread. */
+/**
+ * mutt_messages_in_thread - Count the messages in a thread
+ *
+ * If flag is 0, we want to know how many messages are in the thread.
+ * If flag is 1, we want to know our position in the thread.
+ */
 int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 {
   struct MuttThread *threads[2];

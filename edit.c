@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI basic built-in text editor
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -235,8 +240,10 @@ static void be_print_header(struct Envelope *env)
   addch('\n');
 }
 
-/* args:
- *      force   override the $ask* vars (used for the ~h command)
+/**
+ * be_edit_header - Edit the message headers
+ * @param e     Message headers
+ * @param force override the $ask* vars (used for the ~h command)
  */
 static void be_edit_header(struct Envelope *e, int force)
 {

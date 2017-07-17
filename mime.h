@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Constants and macros for managing MIME encoding
+ *
+ * @authors
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,9 +21,11 @@
  */
 
 #ifndef _MUTT_MIME_H
-#define _MUTT_MIME_H 1
+#define _MUTT_MIME_H
 
-/* Content-Type */
+/**
+ * enum ContentType - Content-Type
+ */
 enum ContentType
 {
   TYPEOTHER,
@@ -33,8 +40,10 @@ enum ContentType
   TYPEANY
 };
 
-/* Content-Transfer-Encoding */
-enum
+/**
+ * enum ContentEncoding - Content-Transfer-Encoding
+ */
+enum ContentEncoding
 {
   ENCOTHER,
   ENC7BIT,
@@ -45,8 +54,10 @@ enum
   ENCUUENCODED
 };
 
-/* Content-Disposition values */
-enum
+/**
+ * enum ContentDisposition - Content-Disposition values
+ */
+enum ContentDisposition
 {
   DISPINLINE,
   DISPATTACH,

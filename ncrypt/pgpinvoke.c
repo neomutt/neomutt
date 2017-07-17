@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Wrapper around calls to external PGP program
+ *
+ * @authors
  * Copyright (C) 1997-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -39,10 +44,11 @@
 #include "protos.h"
 #include "rfc822.h"
 
-/*
+/**
+ * struct PgpCommandContext - Data for a PGP command
+ *
  * The actual command line formatter.
  */
-
 struct PgpCommandContext
 {
   short need_passphrase; /**< %p */

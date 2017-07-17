@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Mbox local mailbox type
+ *
+ * @authors
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -49,7 +54,9 @@
 #include "sort.h"
 #include "thread.h"
 
-/* struct used by mutt_sync_mailbox() to store new offsets */
+/**
+ * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
+ */
 struct MUpdate
 {
   short valid;
@@ -59,10 +66,11 @@ struct MUpdate
   LOFF_T length;
 };
 
-/* parameters:
- * ctx - context to lock
- * excl - exclusive lock?
- * retry - should retry if unable to lock?
+/**
+ * mbox_lock_mailbox - Lock a mailbox
+ * @param ctx   Context to lock
+ * @param excl  Exclusive lock?
+ * @param retry Should retry if unable to lock?
  */
 static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
@@ -237,11 +245,14 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   return 0;
 }
 
-/* Note that this function is also called when new mail is appended to the
+/**
+ * mbox_parse_mailbox - Read a mailbox from disk
+ *
+ * Note that this function is also called when new mail is appended to the
  * currently open folder, and NOT just when the mailbox is initially read.
  *
- * NOTE: it is assumed that the mailbox being read has been locked before
- * this routine gets called.  Strange things could happen if it's not!
+ * NOTE: it is assumed that the mailbox being read has been locked before this
+ * routine gets called.  Strange things could happen if it's not!
  */
 static int mbox_parse_mailbox(struct Context *ctx)
 {
@@ -425,7 +436,9 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
 #undef PREV
 
-/* open a mbox or mmdf style mailbox */
+/**
+ * mbox_open_mailbox - open a mbox or mmdf style mailbox
+ */
 static int mbox_open_mailbox(struct Context *ctx)
 {
   int rc;
@@ -542,7 +555,10 @@ static int mbox_open_new_message(struct Message *msg, struct Context *dest, stru
   return 0;
 }
 
-/* return 1 if address lists are strictly identical */
+/**
+ * strict_addrcmp - Strictly compare two address list
+ * @return 1 if address lists are strictly identical
+ */
 static int strict_addrcmp(const struct Address *a, const struct Address *b)
 {
   while (a && b)
@@ -627,7 +643,10 @@ static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
   return 1;
 }
 
-/* return 1 if headers are strictly identical */
+/**
+ * mbox_strict_cmp_headers - Strictly compare message headers
+ * @return 1 if headers are strictly identical
+ */
 int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
 {
   if (h1 && h2)
@@ -828,14 +847,16 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   return ((ctx->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL);
 }
 
-/* check to see if the mailbox has changed on disk.
- *
- * return values:
- *      MUTT_REOPENED   mailbox has been reopened
- *      MUTT_NEW_MAIL   new mail has arrived!
- *      MUTT_LOCKED     couldn't lock the file
- *      0               no change
- *      -1              error
+/**
+ * mbox_check_mailbox - Has mailbox changed on disk
+ * @param[in]  ctx        Context
+ * @param[out] index_hint Keep track of current index selection
+ * @return
+ * * #MUTT_REOPENED  Mailbox has been reopened
+ * * #MUTT_NEW_MAIL  New mail has arrived
+ * * #MUTT_LOCKED    Couldn't lock the file
+ * * 0               No change
+ * * -1              Error
  */
 static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -942,9 +963,12 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
   return -1;
 }
 
-/*
- * Returns 1 if the mailbox has at least 1 new messages (not old)
- * otherwise returns 0.
+/**
+ * mbox_has_new - Does the mailbox have new mail
+ * @param ctx Context
+ * @return
+ * * true if the mailbox has at least 1 new messages (not old)
+ * * false otherwise
  */
 static bool mbox_has_new(struct Context *ctx)
 {
@@ -954,8 +978,12 @@ static bool mbox_has_new(struct Context *ctx)
   return false;
 }
 
-/* if mailbox has at least 1 new message, sets mtime > atime of mailbox
- * so buffy check reports new mail */
+/**
+ * mbox_reset_atime - Reset the access time on the mailbox file
+ *
+ * if mailbox has at least 1 new message, sets mtime > atime of mailbox so
+ * buffy check reports new mail
+ */
 void mbox_reset_atime(struct Context *ctx, struct stat *st)
 {
   struct utimbuf utimebuf;
@@ -981,9 +1009,11 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
   utime(ctx->path, &utimebuf);
 }
 
-/* return values:
- *      0       success
- *      -1      failure
+/**
+ * mbox_sync_mailbox - Sync a mailbox to disk
+ * @return
+ * *  0 Success
+ * * -1 Failure
  */
 static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -1354,11 +1384,13 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
-/*
- * Returns:
- * 1 if the mailbox is not empty
- * 0 if the mailbox is empty
- * -1 on error
+/**
+ * mbox_check_empty - Is the mailbox empty
+ * @param path Path to mailbox
+ * @return
+ * * 1 mailbox is not empty
+ * * 0 mailbox is empty
+ * * -1 on error
  */
 int mbox_check_empty(const char *path)
 {

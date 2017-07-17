@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI component for displaying/selecting items from a list
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,12 +21,15 @@
  */
 
 #ifndef _MUTT_BROWSER_H
-#define _MUTT_BROWSER_H 1
+#define _MUTT_BROWSER_H
 
 #include <stdbool.h>
 #include <sys/types.h>
 #include <time.h>
 
+/**
+ * struct FolderFile - Browser entry representing a folder/dir
+ */
 struct FolderFile
 {
   mode_t mode;
@@ -53,6 +61,9 @@ struct FolderFile
   bool tagged : 1;
 };
 
+/**
+ * struct BrowserState - State of the file/mailbox browser
+ */
 struct BrowserState
 {
   struct FolderFile *entry;

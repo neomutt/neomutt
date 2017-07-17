@@ -1,8 +1,13 @@
 /**
+ * @file
+ * PGP sign, encrypt, check routines
+ *
+ * @authors
  * Copyright (C) 1996-1997,2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1998-2005 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -158,7 +163,10 @@ static char *pgp_fingerprint(struct PgpKeyInfo *k)
   return k->fingerprint;
 }
 
-/* Grab the longest key identifier available: fingerprint or else
+/**
+ * pgp_fpr_or_lkeyid - Get the fingerprint or long keyid
+ *
+ * Grab the longest key identifier available: fingerprint or else
  * the long keyid.
  *
  * The longest available should be used for internally identifying
@@ -176,7 +184,9 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
  * Routines for handing PGP input.
  */
 
-/* Copy PGP output messages and look for signs of a good signature */
+/**
+ * pgp_copy_checksig - Copy PGP output and look for signs of a good signature
+ */
 static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 {
   int rv = -1;
@@ -214,9 +224,12 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
   return rv;
 }
 
-/* Checks PGP output messages to look for the $pgp_decryption_okay message.
- * This protects against messages with multipart/encrypted headers
- * but which aren't actually encrypted.  See ticket #3770
+/**
+ * pgp_check_decryption_okay - Check PGP output to look for successful outcome
+ *
+ * Checks PGP output messages to look for the $pgp_decryption_okay message.
+ * This protects against messages with multipart/encrypted headers but which
+ * aren't actually encrypted.  See ticket #3770
  */
 static int pgp_check_decryption_okay(FILE *fpin)
 {
@@ -251,17 +264,15 @@ static int pgp_check_decryption_okay(FILE *fpin)
   return rv;
 }
 
-/*
- * Copy a clearsigned message, and strip the signature and PGP's
- * dash-escaping.
+/**
+ * pgp_copy_clearsigned - Copy a clearsigned message, stripping the signature
  *
- * XXX - charset handling: We assume that it is safe to do
- * character set decoding first, dash decoding second here, while
- * we do it the other way around in the main handler.
+ * XXX - charset handling: We assume that it is safe to do character set
+ * decoding first, dash decoding second here, while we do it the other way
+ * around in the main handler.
  *
- * (Note that we aren't worse than Outlook &c in this, and also
- * note that we can successfully handle anything produced by any
- * existing versions of mutt.)
+ * (Note that we aren't worse than Outlook &c in this, and also note that we
+ * can successfully handle anything produced by any existing versions of mutt.)
  */
 static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
@@ -311,7 +322,9 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
   fgetconv_close(&fc);
 }
 
-/* Support for the Application/PGP Content Type. */
+/**
+ * pgp_application_pgp_handler - Support for the Application/PGP Content Type
+ */
 int pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
   bool could_not_decrypt = false;
@@ -746,7 +759,9 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   return badsig;
 }
 
-/* Extract pgp public keys from messages or attachments */
+/**
+ * pgp_extract_keys_from_attachment - Extract pgp keys from messages/attachments
+ */
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
   struct State s;
@@ -1001,7 +1016,9 @@ bail:
   return rv;
 }
 
-/*
+/**
+ * pgp_encrypted_handler - Handler of PGP encrypted data
+ *
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
@@ -1194,10 +1211,11 @@ struct Body *pgp_sign_message(struct Body *a)
   return a;
 }
 
-/* This routine attempts to find the keyids of the recipients of a message.
- * It returns NULL if any of the keys can not be found.
- * If oppenc_mode is true, only keys that can be determined without
- * prompting will be used.
+/**
+ * pgp_find_keys - Find the keyids of the recipients of a message
+ *
+ * It returns NULL if any of the keys can not be found.  If oppenc_mode is
+ * true, only keys that can be determined without prompting will be used.
  */
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 {
@@ -1313,8 +1331,12 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
   return keylist;
 }
 
-/* Warning: "a" is no longer freed in this routine, you need
- * to free it later.  This is necessary for $fcc_attach. */
+/**
+ * pgp_encrypt_message - Encrypt a message
+ *
+ * Warning: "a" is no longer freed in this routine, you need to free it later.
+ * This is necessary for $fcc_attach.
+ */
 struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];

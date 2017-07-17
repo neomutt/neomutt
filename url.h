@@ -1,4 +1,9 @@
 /**
+ * @file
+ * Parse and identify different URL schemes
+ *
+ * @authors
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -14,12 +19,15 @@
  */
 
 #ifndef _MUTT_URL_H
-#define _MUTT_URL_H 1
+#define _MUTT_URL_H
 
 #include <stddef.h>
 
 struct Envelope;
 
+/**
+ * enum UrlScheme - All recognised Url types
+ */
 enum UrlScheme
 {
   U_FILE,
@@ -41,6 +49,9 @@ enum UrlScheme
 #define U_DECODE_PASSWD (1)
 #define U_PATH (1 << 1)
 
+/**
+ * struct CissUrl - A parsed URL `proto://user:password@host/path`
+ */
 struct CissUrl
 {
   enum UrlScheme scheme;

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * POP network mailbox
+ *
+ * @authors
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_POP_H
-#define _MUTT_POP_H 1
+#define _MUTT_POP_H
 
 #include <stdbool.h>
 #include <time.h>
@@ -35,6 +40,9 @@ struct Progress;
 /* maximal length of the server response (RFC1939) */
 #define POP_CMD_RESPONSE 512
 
+/**
+ * enum PopStatus - POP server responses
+ */
 enum PopStatus
 {
   /* Status */
@@ -44,6 +52,9 @@ enum PopStatus
   POP_BYE
 };
 
+/**
+ * enum PopAuthRes - POP authentication responses
+ */
 enum PopAuthRes
 {
   POP_A_SUCCESS = 0,
@@ -52,12 +63,18 @@ enum PopAuthRes
   POP_A_UNAVAIL
 };
 
+/**
+ * struct PopCache - POP-specific email cache
+ */
 struct PopCache
 {
   unsigned int index;
   char *path;
 };
 
+/**
+ * struct PopData - POP-specific server data
+ */
 struct PopData
 {
   struct Connection *conn;
@@ -82,6 +99,9 @@ struct PopData
   struct PopCache cache[POP_CACHE_LEN];
 };
 
+/**
+ * struct PopAuth - POP authentication multiplexor
+ */
 struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */

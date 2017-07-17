@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Read/write command history from/to a file
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -65,6 +70,10 @@
  *                  the oldest entry in the ring
  *                  next oldest entry
  *         HistSize entry
+ */
+
+/**
+ * struct History - Saved list of user-entered commands/searches
  */
 struct History
 {
@@ -314,7 +323,10 @@ static void save_history(enum HistoryClass hclass, const char *s)
   }
 }
 
-/* When removing dups, we want the created "blanks" to be right below the
+/**
+ * remove_history_dups - De-dupe the history
+ *
+ * When removing dups, we want the created "blanks" to be right below the
  * resulting h->last position.  See the comment section above 'struct History'.
  */
 static void remove_history_dups(enum HistoryClass hclass, const char *s)

@@ -1,7 +1,12 @@
 /**
+ * @file
+ * PGP key management routines
+ *
+ * @authors
  * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (c) 1998-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -54,6 +59,9 @@
 
 struct List;
 
+/**
+ * struct PgpCache - List of cached PGP keys
+ */
 struct PgpCache
 {
   char *what;
@@ -124,6 +132,9 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
  * %[...] date of key using strftime(3)
  */
 
+/**
+ * struct PgpEntry - An entry in a PGP key menu
+ */
 struct PgpEntry
 {
   size_t num;
@@ -697,7 +708,9 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
   /* not reached */
 }
 
-/* generate a public key attachment */
+/**
+ * pgp_make_key_attachment - generate a public key attachment
+ */
 struct Body *pgp_make_key_attachment(char *tempf)
 {
   struct Body *att = NULL;

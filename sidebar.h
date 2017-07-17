@@ -1,8 +1,13 @@
 /**
+ * @file
+ * GUI display the mailboxes in a side panel
+ *
+ * @authors
  * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
  * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
  * Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -18,7 +23,7 @@
  */
 
 #ifndef _MUTT_SIDEBAR_H
-#define _MUTT_SIDEBAR_H 1
+#define _MUTT_SIDEBAR_H
 
 struct Context;
 struct Buffy;

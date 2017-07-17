@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Pass files through external commands (filters)
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins.
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -24,7 +29,10 @@
 #include "mutt_curses.h"
 #include "protos.h"
 
-/* Invokes a command on a pipe and optionally connects its stdin and stdout
+/**
+ * mutt_create_filter_fd - Run a command on a pipe
+ *
+ * Invokes a command on a pipe and optionally connects its stdin and stdout
  * to the specified handles.
  */
 pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,

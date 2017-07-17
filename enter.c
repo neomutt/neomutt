@@ -1,7 +1,12 @@
 /**
+ * @file
+ * GUI ask the user to enter a string
+ *
+ * @authors
  * Copyright (C) 1996-2000,2007,2011,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -34,7 +39,9 @@
 #include "options.h"
 #include "protos.h"
 
-/* redraw flags for mutt_enter_string() */
+/**
+ * enum RedrawFlags - redraw flags for mutt_enter_string()
+ */
 enum RedrawFlags
 {
   MUTT_REDRAW_INIT = 1, /**< go to end of line and redraw */
@@ -166,7 +173,9 @@ static size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf
   return i;
 }
 
-/*
+/**
+ * replace_part - Search and replace on a buffer
+ *
  * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
  */
 static void replace_part(struct EnterState *state, size_t from, char *buf)
@@ -201,8 +210,10 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
   state->lastchar = state->curpos + savelen;
 }
 
-/*
- * Return 1 if the character is not typically part of a pathname
+/**
+ * is_shell_char - Is character not typically part of a pathname
+ * @param ch Character to examine
+ * @return 1 if the character is not typically part of a pathname
  */
 static inline int is_shell_char(wchar_t ch)
 {
@@ -210,14 +221,18 @@ static inline int is_shell_char(wchar_t ch)
   return wcschr(shell_chars, ch) != NULL;
 }
 
-/* This function is for very basic input, currently used only by the
+/**
+ * mutt_enter_string - Ask the user for a string
+ * @param buf    Buffer to store the string
+ * @param buflen Buffer length
+ * @param col    Initial cursor position
+ * @param flags  Flags such as MUTT_FILE
+ * @return 0 if input was given, -1 if abort
+ *
+ * This function is for very basic input, currently used only by the
  * built-in editor.  It does not handle screen redrawing on resizes
  * well, because there is no active menu for the built-in editor.
  * Most callers should prefer mutt_get_field() instead.
- *
- * Returns:
- *      0 if input was given
- *      -1 if abort.
  */
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
@@ -239,11 +254,20 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
   return rv;
 }
 
-/*
- * Returns:
- *      1 need to redraw the screen and call me again
- *      0 if input was given
- *      -1 if abort.
+/**
+ * _mutt_enter_string - Ask the user for a string
+ * @param[in]  buf      Buffer to store the string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Initial cursor position
+ * @param[in]  flags    Flags such as MUTT_FILE
+ * @param[in]  multiple Allow multiple matches
+ * @param[out] files    List of files selected
+ * @param[out] numfiles Number of files selected
+ * @param[out] state    Current state (if function is called repeatedly)
+ * @return
+ * * 1 need to redraw the screen and call me again
+ * * 0 if input was given
+ * * -1 if abort.
  */
 int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
                        char ***files, int *numfiles, struct EnterState *state)

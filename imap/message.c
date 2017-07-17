@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Manage IMAP messages
+ *
+ * @authors
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -131,7 +136,9 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
   return 0;
 }
 
-/* msg_parse_flags: read a FLAGS token into an ImapHeader */
+/**
+ * msg_parse_flags - read a FLAGS token into an ImapHeader
+ */
 static char *msg_parse_flags(struct ImapHeader *h, char *s)
 {
   struct ImapHeaderData *hd = h->data;
@@ -215,12 +222,14 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   return s;
 }
 
-/* msg_parse_fetch: handle headers returned from header fetch.
- * Returns:
- *   0 on success
- *   -1 if the string is corrupted
- *   -2 if the fetch contains a body or header lines
- *      that still need to be parsed.
+/**
+ * msg_parse_fetch - handle headers returned from header fetch
+ * @param h IMAP Header
+ * @param s Command string
+ * @return
+ * *  0 Success
+ * * -1 String is corrupted
+ * * -2 Fetch contains a body or header lines that still need to be parsed
  */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
@@ -295,12 +304,15 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
   return 0;
 }
 
-/* msg_fetch_header: import IMAP FETCH response into an ImapHeader.
- *   Expects string beginning with * n FETCH.
- *   Returns:
- *      0 on success
- *     -1 if the string is not a fetch response
- *     -2 if the string is a corrupt fetch response */
+/**
+ * msg_fetch_header -import IMAP FETCH response into an ImapHeader.
+ * @return
+ * *  0 Success
+ * * -1 String is not a fetch response
+ * * -2 String is a corrupt fetch response
+ *
+ * Expects string beginning with * n FETCH.
+ */
 static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf, FILE *fp)
 {
   struct ImapData *idata = NULL;
@@ -398,7 +410,10 @@ static void imap_alloc_msn_index(struct ImapData *idata, unsigned int msn_count)
   idata->msn_index_size = new_size;
 }
 
-/* Generates a more complicated sequence set after using the header cache,
+/**
+ * imap_generate_seqset - Generate a sequence set
+ *
+ * Generates a more complicated sequence set after using the header cache,
  * in case there are missing MSNs in the middle.
  *
  * There is a suggested limit of 1000 bytes for an IMAP client request.
@@ -453,10 +468,12 @@ static void imap_generate_seqset(struct Buffer *b, struct ImapData *idata,
   }
 }
 
-/* imap_read_headers:
- * Changed to read many headers instead of just one. It will return the
- * msn of the last message read. It will return a value other than
- * msn_end if mail comes in while downloading headers (in theory).
+/**
+ * imap_read_headers - Read headers from the server
+ *
+ * Changed to read many headers instead of just one. It will return the msn of
+ * the last message read. It will return a value other than msn_end if mail
+ * comes in while downloading headers (in theory).
  */
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end)
 {
@@ -1176,12 +1193,13 @@ fail:
   return -1;
 }
 
-/* imap_copy_messages: use server COPY command to copy messages to another
- *   folder.
- *   Return codes:
- *      -1: error
- *       0: success
- *       1: non-fatal error - try fetch/append */
+/**
+ * imap_copy_messages - Server COPY messages to another folder
+ * @return
+ * * -1 Error
+ * *  0 Success
+ * *  1 Non-fatal error - try fetch/append
+ */
 int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
 {
   struct ImapData *idata = NULL;
@@ -1376,8 +1394,11 @@ int imap_cache_clean(struct ImapData *idata)
   return 0;
 }
 
-/* imap_add_keywords: concatenate custom IMAP tags to list, if they
- *   appear in the folder flags list. Why wouldn't they? */
+/**
+ * imap_add_keywords - concatenate custom IMAP tags to list
+ *
+ * If the tags appear in the folder flags list. Why wouldn't they?
+ */
 void imap_add_keywords(char *s, struct Header *h, struct List *mailbox_flags, size_t slen)
 {
   struct List *keywords = NULL;
@@ -1398,7 +1419,9 @@ void imap_add_keywords(char *s, struct Header *h, struct List *mailbox_flags, si
   }
 }
 
-/* imap_free_header_data: free ImapHeader structure */
+/**
+ * imap_free_header_data - free ImapHeader structure
+ */
 void imap_free_header_data(struct ImapHeaderData **data)
 {
   if (*data)
@@ -1409,8 +1432,11 @@ void imap_free_header_data(struct ImapHeaderData **data)
   }
 }
 
-/* imap_set_flags: fill out the message header according to the flags from
- *   the server. Expects a flags line of the form "FLAGS (flag flag ...)" */
+/**
+ * imap_set_flags - fill the message header according to the server flags
+ *
+ * Expects a flags line of the form "FLAGS (flag flag ...)"
+ */
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s)
 {
   struct Context *ctx = idata->ctx;

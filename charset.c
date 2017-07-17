@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Conversion between different character encodings
+ *
+ * @authors
  * Copyright (C) 1999-2002,2007 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -214,8 +219,12 @@ void mutt_set_langinfo_charset(void)
     Charset = safe_strdup("iso-8859-1");
 }
 
-/* this first ties off any charset extension such as //TRANSLIT,
-   canonicalizes the charset and re-adds the extension */
+/**
+ * mutt_canonical_charset - Canonicalise the charset of a string
+ *
+ * this first ties off any charset extension such as //TRANSLIT,
+ * canonicalizes the charset and re-adds the extension
+ */
 void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
 {
   char *p = NULL, *ext = NULL;
@@ -300,7 +309,9 @@ char *mutt_get_default_charset(void)
   return strcpy(fcharset, "us-ascii");
 }
 
-/*
+/**
+ * mutt_iconv_open - Set up iconv for conversions
+ *
  * Like iconv_open, but canonicalises the charsets, applies charset-hooks,
  * recanonicalises, and finally applies iconv-hooks. Parameter flags=0 skips
  * charset-hooks, while MUTT_ICONV_HOOK_FROM applies them to fromcode. Callers
@@ -345,7 +356,9 @@ iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
 }
 
 
-/*
+/**
+ * mutt_iconv - Change the encoding of a string
+ *
  * Like iconv, but keeps going even when the input is invalid
  * If you're supplying inrepls, the source charset should be stateless;
  * if you're supplying an outrepl, the target charset should be.
@@ -416,11 +429,11 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 }
 
 
-/*
- * Convert a string
- * Used in rfc2047.c, rfc2231.c, crypt_gpgme.c, mutt_idna.c, and more.
- * Parameter flags is given as-is to mutt_iconv_open(). See there
- * for its meaning and usage policy.
+/**
+ * mutt_convert_string - Convert a string between encodings
+ *
+ * Parameter flags is given as-is to mutt_iconv_open().
+ * See there for its meaning and usage policy.
  */
 int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
 {
@@ -473,6 +486,9 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
  * Used in sendlib.c for converting from mutt's Charset
  */
 
+/**
+ * struct FgetConv - Cursor for converting a file's encoding
+ */
 struct FgetConv
 {
   FILE *file;
@@ -486,15 +502,20 @@ struct FgetConv
   ICONV_CONST char **inrepls;
 };
 
+/**
+ * struct FgetConvNot - A dummy converter
+ */
 struct FgetConvNot
 {
   FILE *file;
   iconv_t cd;
 };
 
-/*
- * Parameter flags is given as-is to mutt_iconv_open(). See there for its
- * meaning and usage policy.
+/**
+ * fgetconv_open - Open a file and convert its encoding
+ *
+ * Parameter flags is given as-is to mutt_iconv_open().
+ * See there for its meaning and usage policy.
  */
 FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {

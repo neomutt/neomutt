@@ -1,6 +1,11 @@
 /**
+ * @file
+ * RFC 1524 Mailcap routines
+ *
+ * @authors
  * Copyright (C) 1996-2000,2003,2012 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -39,7 +44,10 @@
 #include "options.h"
 #include "protos.h"
 
-/* The command semantics include the following:
+/**
+ * rfc1524_expand_command - Expand expandos in a command
+ *
+ * The command semantics include the following:
  * %s is the filename that contains the mail body data
  * %t is the content type, like text/plain
  * %{parameter} is replaced by the parameter value from the content-type field
@@ -113,8 +121,11 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
   return needspipe;
 }
 
-/* NUL terminates a rfc 1524 field,
- * returns start of next field or NULL */
+/**
+ * get_field - NUL terminate a rfc 1524 field
+ * @param s String to alter
+ * @return start of next field or NULL
+ */
 static char *get_field(char *s)
 {
   char *ch = NULL;
@@ -361,11 +372,12 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
   FREE(entry);
 }
 
-/*
- * rfc1524_mailcap_lookup attempts to find the given type in the
- * list of mailcap files.  On success, this returns the entry information
- * in *entry, and returns 1.  On failure (not found), returns 0.
- * If entry == NULL just return 1 if the given type is found.
+/**
+ * rfc1524_mailcap_lookup - Find given type in the list of mailcap files
+ *
+ * On success, this returns the entry information in *entry, and returns 1.  On
+ * failure (not found), returns 0.  If entry == NULL just return 1 if the given
+ * type is found.
  */
 int rfc1524_mailcap_lookup(struct Body *a, char *type,
                            struct Rfc1524MailcapEntry *entry, int opt)
@@ -416,16 +428,6 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
   return found;
 }
 
-/* This routine will create a _temporary_ filename matching the
- * name template given if this needs to be done.
- *
- * Please note that only the last path element of the
- * template and/or the old file name will be used for the
- * comparison and the temporary file name.
- *
- * Returns 0 if oldfile is fine as is.
- * Returns 1 if newfile specified
- */
 static void strnfcpy(char *d, char *s, size_t siz, size_t len)
 {
   if (len > siz)
@@ -433,6 +435,23 @@ static void strnfcpy(char *d, char *s, size_t siz, size_t len)
   strfcpy(d, s, len);
 }
 
+/**
+ * rfc1524_expand_filename - Create temp filename match a template
+ * @param nametemplate Template
+ * @param oldfile      Original filename
+ * @param newfile      Buffer for new filename
+ * @param nflen        Buffer length
+ * @return
+ * * 0 oldfile is fine as is
+ * * 1 newfile specified
+ *
+ * This routine will create a _temporary_ filename matching the
+ * name template given if this needs to be done.
+ *
+ * Please note that only the last path element of the
+ * template and/or the old file name will be used for the
+ * comparison and the temporary file name.
+ */
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen)
 {
   int i, j, k, ps;

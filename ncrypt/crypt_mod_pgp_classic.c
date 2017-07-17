@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Wrappers for calls to CLI PGP
+ *
+ * @authors
  * Copyright (C) 2004 g10 Code GmbH
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -46,6 +51,7 @@ static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct 
 {
   return pgp_decrypt_mime(a, b, c, d);
 }
+
 static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
 {
   return pgp_application_pgp_handler(m, s);

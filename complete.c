@@ -1,6 +1,11 @@
 /**
+ * @file
+ * String auto-completion routines
+ *
+ * @authors
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -33,10 +38,14 @@
 #include "nntp.h"
 #endif
 
-/* given a partial pathname, this routine fills in as much of the rest of the
- * path as is unique.
+/**
+ * mutt_complete - Attempt to complete a partial pathname
+ * @param s    Buffer containing pathname
+ * @param slen Buffer length
+ * @return 0 if ok, -1 if no matches
  *
- * return 0 if ok, -1 if no matches
+ * Given a partial pathname, fill in as much of the rest of the path as is
+ * unique.
  */
 int mutt_complete(char *s, size_t slen)
 {

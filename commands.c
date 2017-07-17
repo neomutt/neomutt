@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Manage where the email is piped to external commands
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -382,7 +387,11 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
 }
 
 
-/* the following code is shared between printing and piping */
+/**
+ * _mutt_pipe_message - Pipe message to a command
+ *
+ * The following code is shared between printing and piping.
+ */
 static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
                               int print, int split, char *sep)
 {
@@ -590,7 +599,9 @@ int mutt_select_sort(int reverse)
   return (Sort != method ? 0 : -1); /* no need to resort if it's the same */
 }
 
-/* invoke a command in a subshell */
+/**
+ * mutt_shell_escape - invoke a command in a subshell
+ */
 void mutt_shell_escape(void)
 {
   char buf[LONG_STRING];
@@ -612,7 +623,9 @@ void mutt_shell_escape(void)
   }
 }
 
-/* enter a mutt command */
+/**
+ * mutt_enter_command - enter a mutt command
+ */
 void mutt_enter_command(void)
 {
   struct Buffer err, token;
@@ -730,7 +743,12 @@ int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int de
   return 0;
 }
 
-/* returns 0 if the copy/save was successful, or -1 on error/abort */
+/**
+ * mutt_save_message - Save an email
+ * @return
+ * * 0 if the copy/save was successful
+ * * -1 on error/abort
+ */
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {
   int i, need_buffy_cleanup;

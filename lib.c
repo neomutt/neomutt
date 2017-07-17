@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Some very miscellaneous functions
+ *
+ * @authors
  * Copyright (C) 1996-2000,2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2004,2006-2007 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -44,6 +49,9 @@
 #define EX_OK 0
 #endif
 
+/**
+ * struct SysExits - Lookup table of error messages
+ */
 static const struct SysExits
 {
   int v;
@@ -280,7 +288,9 @@ void mutt_str_adjust(char **p)
   safe_realloc(p, strlen(*p) + 1);
 }
 
-/* convert all characters in the string to lowercase */
+/**
+ * mutt_strlower - convert all characters in the string to lowercase
+ */
 char *mutt_strlower(char *s)
 {
   char *p = s;
@@ -442,8 +452,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
 }
 
 
-/*
- * This function is supposed to do nfs-safe renaming of files.
+/**
+ * safe_rename - NFS-safe renaming of files
  *
  * Warning: We don't check whether src and target are equal.
  */
@@ -544,7 +554,9 @@ int safe_rename(const char *src, const char *target)
 }
 
 
-/* Create a temporary directory next to a file name */
+/**
+ * mkwrapdir - Create a temporary directory next to a file name
+ */
 static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir, size_t ndlen)
 {
   const char *basename = NULL;
@@ -580,7 +592,9 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   return 0;
 }
 
-/* remove a directory and everything under it */
+/**
+ * mutt_rmtree - remove a directory and everything under it
+ */
 int mutt_rmtree(const char *path)
 {
   DIR *dirp = NULL;
@@ -668,8 +682,11 @@ int safe_open(const char *path, int flags)
   return fd;
 }
 
-/* when opening files for writing, make sure the file doesn't already exist
- * to avoid race conditions.
+/**
+ * safe_fopen - Call fopen() safely
+ *
+ * when opening files for writing, make sure the file doesn't already exist to
+ * avoid race conditions.
  */
 FILE *safe_fopen(const char *path, const char *mode)
 {
@@ -735,10 +752,13 @@ int mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src)
     return 0;
 }
 
-/* Read a line from ``fp'' into the dynamically allocated ``s'',
- * increasing ``s'' if necessary. The ending "\n" or "\r\n" is removed.
- * If a line ends with "\", this char and the linefeed is removed,
- * and the next line is read too.
+/**
+ * mutt_read_line - Read a line from a file
+ *
+ * Read a line from ``fp'' into the dynamically allocated ``s'', increasing
+ * ``s'' if necessary. The ending "\n" or "\r\n" is removed.  If a line ends
+ * with "\", this char and the linefeed is removed, and the next line is read
+ * too.
  */
 char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 {
@@ -826,7 +846,9 @@ char *mutt_substrdup(const char *begin, const char *end)
   return p;
 }
 
-/* prepare a file name to survive the shell's quoting rules.
+/**
+ * mutt_quote_filename - Quote a filename to survive the shell's quoting rules
+ *
  * From the Unix programming FAQ by way of Liviu.
  */
 size_t mutt_quote_filename(char *d, size_t l, const char *f)
@@ -930,10 +952,18 @@ void mutt_remove_trailing_ws(char *s)
     *p = 0;
 }
 
-/*
+/**
+ * mutt_concatn_path - Concatenate directory and filename
+ * @param dst      Buffer for result
+ * @param dstlen   Buffer length
+ * @param dir      Directory
+ * @param dirlen   Directory length
+ * @param fname    Filename
+ * @param fnamelen Filename length
+ * @return NULL on error, pointer to \a dst on success
+ *
  * Write the concatenated pathname (dir + "/" + fname) into dst.
  * The slash is omitted when dir or fname is of 0 length.
- * Returns NULL on error or a pointer to dst otherwise.
  */
 char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
                         size_t dirlen, const char *fname, size_t fnamelen)

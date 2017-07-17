@@ -1,9 +1,14 @@
 /**
+ * @file
+ * Header cache multiplexor
+ *
+ * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
  * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
  * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -19,7 +24,7 @@
  */
 
 #ifndef _MUTT_HCACHE_H
-#define _MUTT_HCACHE_H 1
+#define _MUTT_HCACHE_H
 
 #include <stddef.h>
 
@@ -93,7 +98,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d);
  * @param key         Message identification string
  * @param keylen      Length of the string pointed to by key
  * @param header      Message header to store
- * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time.
+ * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time
  * @return 0 on success, -1 otherwise
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * The "currently-open" mailbox
+ *
+ * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,14 +21,16 @@
  */
 
 #ifndef _MUTT_CONTEXT_H
-#define _MUTT_CONTEXT_H 1
+#define _MUTT_CONTEXT_H
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
 
-/* ACL Rights */
+/**
+ * enum AclRights - ACL Rights
+ */
 enum AclRights
 {
   MUTT_ACL_LOOKUP = 0,
@@ -41,6 +48,9 @@ enum AclRights
   RIGHTSMAX
 };
 
+/**
+ * struct Context - The "current" mailbox
+ */
 struct Context
 {
   char *path;

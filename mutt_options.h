@@ -1,6 +1,11 @@
 /**
+ * @file
+ * NotMuch virtual mailbox type
+ *
+ * @authors
  * Copyright (C) 2016 Bernard Pratz <z+mutt+pub@m0g.net>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,25 +21,25 @@
  */
 
 #ifndef _MUTT_OPTIONS_H
-#define _MUTT_OPTIONS_H 1
+#define _MUTT_OPTIONS_H
 
 #include <stddef.h>
 
 struct Buffer;
 
 #define DT_MASK      0x0f
-#define DT_BOOL      1    /* boolean option */
-#define DT_NUM       2    /* a number */
-#define DT_STR       3    /* a string */
-#define DT_PATH      4    /* a pathname */
-#define DT_QUAD      5    /* quad-option (yes/no/ask-yes/ask-no) */
-#define DT_SORT      6    /* sorting methods */
-#define DT_RX        7    /* regular expressions */
-#define DT_MAGIC     8    /* mailbox type */
-#define DT_SYN       9    /* synonym for another variable */
-#define DT_ADDR      10   /* e-mail address */
-#define DT_MBCHARTBL 11   /* multibyte char table */
-#define DT_HCACHE    12   /* header cache backend */
+#define DT_BOOL      1    /**< boolean option */
+#define DT_NUM       2    /**< a number */
+#define DT_STR       3    /**< a string */
+#define DT_PATH      4    /**< a pathname */
+#define DT_QUAD      5    /**< quad-option (yes/no/ask-yes/ask-no) */
+#define DT_SORT      6    /**< sorting methods */
+#define DT_RX        7    /**< regular expressions */
+#define DT_MAGIC     8    /**< mailbox type */
+#define DT_SYN       9    /**< synonym for another variable */
+#define DT_ADDR      10   /**< e-mail address */
+#define DT_MBCHARTBL 11   /**< multibyte char table */
+#define DT_HCACHE    12   /**< header cache backend */
 
 #define DTYPE(x) ((x) &DT_MASK)
 
@@ -46,12 +51,15 @@ struct Buffer;
 #define DT_SORT_AUX     0x80
 #define DT_SORT_SIDEBAR 0x100
 
+/**
+ * struct Option - Definition of a user-variable
+ */
 struct Option
 {
-  const char *option;
-  short type;
-  short flags;
-  unsigned long data;
+  const char *option; /**< user-visible name */
+  short type;         /**< varible type, e.g. *DT_STR */
+  short flags;        /**< notification flags, e.g. R_PAGER */
+  unsigned long data; /**< pointer to the global variable */
   unsigned long init; /**< initial value */
 };
 

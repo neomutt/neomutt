@@ -1,7 +1,12 @@
 /**
+ * @file
+ * GUI miscellaneous curses (window drawing) routines
+ *
+ * @authors
  * Copyright (C) 1996-2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -97,10 +102,13 @@ void mutt_refresh(void)
   refresh();
 }
 
-/* Make sure that the next refresh does a full refresh.  This could be
-   optimized by not doing it at all if DISPLAY is set as this might
-   indicate that a GUI based pinentry was used.  Having an option to
-   customize this is of course the Mutt way.  */
+/**
+ * mutt_need_hard_redraw - Force a hard refresh
+ *
+ * Make sure that the next refresh does a full refresh.  This could be
+ * optimized by not doing it at all if DISPLAY is set as this might indicate
+ * that a GUI based pinentry was used.  Having an option to customize this is
+ * of course the Mutt way.  */
 void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
@@ -370,7 +378,11 @@ int mutt_yesorno(const char *msg, int def)
   return def;
 }
 
-/* this function is called when the user presses the abort key */
+/**
+ * mutt_query_exit - Ask the user if they want to leave Mutt
+ *
+ * This function is called when the user presses the abort key.
+ */
 void mutt_query_exit(void)
 {
   mutt_flushinp();
@@ -736,8 +748,10 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
   return rv;
 }
 
-/* Assumes the cursor has already been positioned within the
- * window.
+/**
+ * mutt_window_clrtoeol - Clear to the end of the line
+ *
+ * Assumes the cursor has already been positioned within the window.
  */
 void mutt_window_clrtoeol(struct MuttWindow *win)
 {
@@ -764,9 +778,11 @@ void mutt_window_clearline(struct MuttWindow *win, int row)
   mutt_window_clrtoeol(win);
 }
 
-/* Assumes the current position is inside the window.
- * Otherwise it will happily return negative or values outside
- * the window boundaries
+/**
+ * mutt_window_getyx - Get the cursor position in the window
+ *
+ * Assumes the current position is inside the window.  Otherwise it will
+ * happily return negative or values outside the window boundaries
  */
 void mutt_window_getyx(struct MuttWindow *win, int *y, int *x)
 {
@@ -949,7 +965,9 @@ void mutt_unget_string(char *s)
   }
 }
 
-/*
+/**
+ * mutt_push_macro_event - Add the character/operation to the macro buffer
+ *
  * Adds the ch/op to the macro buffer.
  * This should be used for macros, push, and exec commands only.
  */
@@ -976,9 +994,13 @@ void mutt_flush_macro_to_endcond(void)
   }
 }
 
-/* Normally, OP_END_COND should only be in the MacroEvent buffer.
- * km_error_key() (ab)uses OP_END_COND as a barrier in the unget
- * buffer, and calls this function to flush. */
+/**
+ * mutt_flush_unget_to_endcond - Clear entries from UngetKeyEvents
+ *
+ * Normally, OP_END_COND should only be in the MacroEvent buffer.
+ * km_error_key() (ab)uses OP_END_COND as a barrier in the unget buffer, and
+ * calls this function to flush.
+ */
 void mutt_flush_unget_to_endcond(void)
 {
   while (UngetCount > 0)
@@ -996,10 +1018,12 @@ void mutt_flushinp(void)
 }
 
 #if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-/* The argument can take 3 values:
- * -1: restore the value of the last call
- *  0: make the cursor invisible
- *  1: make the cursor visible
+/**
+ * mutt_curs_set - Set the cursor position
+ * @param cursor
+ * * -1: restore the value of the last call
+ * *  0: make the cursor invisible
+ * *  1: make the cursor visible
  */
 void mutt_curs_set(int cursor)
 {
@@ -1099,8 +1123,8 @@ int mutt_multi_choice(char *prompt, char *letters)
   return choice;
 }
 
-/*
- * addwch would be provided by an up-to-date curses library
+/**
+ * mutt_addwch - addwch would be provided by an up-to-date curses library
  */
 int mutt_addwch(wchar_t wc)
 {
@@ -1116,12 +1140,12 @@ int mutt_addwch(wchar_t wc)
     return addstr(buf);
 }
 
-
-/*
- * This formats a string, a bit like
- * snprintf (dest, destlen, "%-*.*s", min_width, max_width, s),
- * except that the widths refer to the number of character cells
- * when printed.
+/**
+ * mutt_format_string - Format a string, like snprintf()
+ *
+ * This formats a string, a bit like snprintf (dest, destlen, "%-*.*s",
+ * min_width, max_width, s), except that the widths refer to the number of
+ * character cells when printed.
  */
 void mutt_format_string(char *dest, size_t destlen, int min_width, int max_width,
                         int justify, char m_pad_char, const char *s, size_t n, int arboreal)
@@ -1223,7 +1247,9 @@ void mutt_format_string(char *dest, size_t destlen, int min_width, int max_width
   }
 }
 
-/*
+/**
+ * format_s_x - Format a string like snprintf()
+ *
  * This formats a string rather like
  *   snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
  *   snprintf (dest, destlen, fmt, s);
@@ -1265,9 +1291,10 @@ void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const ch
   format_s_x(dest, destlen, prefix, s, 1);
 }
 
-/*
- * mutt_paddstr (n, s) is almost equivalent to
- * mutt_format_string (bigbuf, big, n, n, FMT_LEFT, ' ', s, big, 0), addstr (bigbuf)
+/**
+ * mutt_paddstr - Display a string on screen, padded if necessary
+ * @param n Final width of field
+ * @param s String to display
  */
 void mutt_paddstr(int n, const char *s)
 {
@@ -1302,8 +1329,17 @@ void mutt_paddstr(int n, const char *s)
     addch(' ');
 }
 
-/* See how many bytes to copy from string so it's at most maxlen bytes
- * long and maxwid columns wide */
+/**
+ * mutt_wstr_trunc - Work out how to truncate a widechar string
+ * @param[in]  src    String to measute
+ * @param[in]  maxlen Maximum length of string in bytes
+ * @param[in]  maxwid Maximum width in screen columns
+ * @param[out] width  Save the truncated screen column width
+ * @return number of bytes to use
+ *
+ * See how many bytes to copy from string so it's at most maxlen bytes long and
+ * maxwid columns wide
+ */
 size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width)
 {
   wchar_t wc;
@@ -1349,12 +1385,14 @@ out:
   return l;
 }
 
-/*
- * returns the number of bytes the first (multibyte) character
- * of input consumes:
- *      < 0 ... conversion error
- *      = 0 ... end of input
- *      > 0 ... length (bytes)
+/**
+ * mutt_charlen - Count the bytes in a (multibyte) character
+ * @param[in]  s     String to be examined
+ * @param[out] width Number of screen columns the character would use
+ * @return Number of bytes in the first (multibyte) character of input consumes
+ * * < 0 ... conversion error
+ * * = 0 ... end of input
+ * * > 0 ... length (bytes)
  */
 int mutt_charlen(const char *s, int *width)
 {
@@ -1373,9 +1411,10 @@ int mutt_charlen(const char *s, int *width)
   return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
 }
 
-/*
- * mutt_strwidth is like mutt_strlen except that it returns the width
- * referring to the number of character cells.
+/**
+ * mutt_strwidth - Measure a string's width in screen cells
+ * @param s String to be measured
+ * @return Number of screen cells string would use
  */
 int mutt_strwidth(const char *s)
 {

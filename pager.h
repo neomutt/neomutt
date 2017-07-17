@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI display a file/email/help in a viewport with paging
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_PAGER_H
-#define _MUTT_PAGER_H 1
+#define _MUTT_PAGER_H
 
 #include <stdio.h>
 
@@ -32,15 +37,18 @@ struct Menu;
 #define MUTT_SHOW      (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
 
 /* exported flags for mutt_(do_)?pager */
-#define MUTT_PAGER_NSKIP      (1 << 5)    /* preserve whitespace with smartwrap */
-#define MUTT_PAGER_MARKER     (1 << 6)    /* use markers if option is set */
-#define MUTT_PAGER_RETWINCH   (1 << 7)    /* need reformatting on SIGWINCH */
+#define MUTT_PAGER_NSKIP      (1 << 5)    /**< preserve whitespace with smartwrap */
+#define MUTT_PAGER_MARKER     (1 << 6)    /**< use markers if option is set */
+#define MUTT_PAGER_RETWINCH   (1 << 7)    /**< need reformatting on SIGWINCH */
 #define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
 #define MUTT_PAGER_ATTACHMENT (1 << 8)
-#define MUTT_PAGER_NOWRAP     (1 << 9)    /* format for term width, ignore $wrap */
+#define MUTT_PAGER_NOWRAP     (1 << 9)    /**< format for term width, ignore $wrap */
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
 
+/**
+ * struct Pager - An email being displayed
+ */
 struct Pager
 {
   struct Context *ctx;    /**< current mailbox */

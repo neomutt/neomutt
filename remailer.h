@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Support of Mixmaster anonymous remailer
+ *
+ * @authors
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -20,7 +25,7 @@
  */
 
 #ifndef _MUTT_REMAILER_H
-#define _MUTT_REMAILER_H 1
+#define _MUTT_REMAILER_H
 
 #include <stddef.h>
 
@@ -38,6 +43,9 @@ struct Header;
 
 #define MAXMIXES 19
 
+/**
+ * struct Remailer - A Mixmaster remailer
+ */
 struct Remailer
 {
   int num;
@@ -47,6 +55,9 @@ struct Remailer
   int caps;
 };
 
+/**
+ * struct MixChain - A Mixmaster chain
+ */
 struct MixChain
 {
   size_t cl;

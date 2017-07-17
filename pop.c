@@ -1,7 +1,12 @@
 /**
+ * @file
+ * POP network mailbox
+ *
+ * @authors
  * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
  * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -51,7 +56,9 @@
 #define HC_FEXT "hcache" /* extension for hcache as POP lacks paths */
 #endif
 
-/* write line to file */
+/**
+ * fetch_message - write line to file
+ */
 static int fetch_message(char *line, void *file)
 {
   FILE *f = (FILE *) file;
@@ -63,13 +70,15 @@ static int fetch_message(char *line, void *file)
   return 0;
 }
 
-/*
- * Read header
- * returns:
- *  0 on success
- * -1 - connection lost,
- * -2 - invalid command or execution error,
- * -3 - error writing to tempfile
+/**
+ * pop_read_header - Read header
+ * @param pop_data POP data
+ * @param h        Email header
+ * @return
+ * *  0 Success
+ * * -1 Connection lost,
+ * * -2 Invalid command or execution error,
+ * * -3 Error writing to tempfile
  */
 static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
@@ -147,7 +156,9 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   return ret;
 }
 
-/* parse UIDL */
+/**
+ * fetch_uidl - parse UIDL
+ */
 static int fetch_uidl(char *line, void *data)
 {
   int i, index;
@@ -235,13 +246,14 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 }
 #endif
 
-/*
- * Read headers
- * returns:
- *  0 on success
- * -1 - connection lost,
- * -2 - invalid command or execution error,
- * -3 - error writing to tempfile
+/**
+ * pop_fetch_headers - Read headers
+ * @param ctx Context
+ * @return
+ * *  0 Success
+ * * -1 Connection lost,
+ * * -2 Invalid command or execution error,
+ * * -3 Error writing to tempfile
  */
 static int pop_fetch_headers(struct Context *ctx)
 {
@@ -405,7 +417,9 @@ static int pop_fetch_headers(struct Context *ctx)
   return (new_count - old_count);
 }
 
-/* open POP mailbox - fetch only headers */
+/**
+ * pop_open_mailbox - open POP mailbox, fetch only headers
+ */
 static int pop_open_mailbox(struct Context *ctx)
 {
   int ret;
@@ -476,7 +490,9 @@ static int pop_open_mailbox(struct Context *ctx)
   }
 }
 
-/* delete all cached messages */
+/**
+ * pop_clear_cache - delete all cached messages
+ */
 static void pop_clear_cache(struct PopData *pop_data)
 {
   if (!pop_data->clear_cache)
@@ -494,7 +510,9 @@ static void pop_clear_cache(struct PopData *pop_data)
   }
 }
 
-/* close POP mailbox */
+/**
+ * pop_close_mailbox - close POP mailbox
+ */
 static int pop_close_mailbox(struct Context *ctx)
 {
   struct PopData *pop_data = (struct PopData *) ctx->data;
@@ -520,7 +538,9 @@ static int pop_close_mailbox(struct Context *ctx)
   return 0;
 }
 
-/* fetch message from POP server */
+/**
+ * pop_fetch_message - fetch message from POP server
+ */
 static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   int ret;
@@ -673,7 +693,9 @@ static int pop_close_message(struct Context *ctx, struct Message *msg)
   return safe_fclose(&msg->fp);
 }
 
-/* update POP mailbox - delete messages from server */
+/**
+ * pop_sync_mailbox - update POP mailbox, delete messages from server
+ */
 static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
@@ -751,7 +773,9 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
   }
 }
 
-/* Check for new messages and fetch headers */
+/**
+ * pop_check_mailbox - Check for new messages and fetch headers
+ */
 static int pop_check_mailbox(struct Context *ctx, int *index_hint)
 {
   int ret;
@@ -783,7 +807,9 @@ static int pop_check_mailbox(struct Context *ctx, int *index_hint)
   return 0;
 }
 
-/* Fetch messages and save them in $spoolfile */
+/**
+ * pop_fetch_mail - Fetch messages and save them in $spoolfile
+ */
 void pop_fetch_mail(void)
 {
   char buffer[LONG_STRING];

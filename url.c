@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Parse and identify different URL schemes
+ *
+ * @authors
  * Copyright (C) 2000-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -93,9 +98,12 @@ enum UrlScheme url_check_scheme(const char *s)
     return (enum UrlScheme) i;
 }
 
-/* ciss_parse_userhost: fill in components of ciss with info from src. Note
- *   these are pointers into src, which is altered with '\0's. Port of 0
- *   means no port given. */
+/**
+ * ciss_parse_userhost - fill in components of ciss with info from src
+ *
+ * Note: These are pointers into src, which is altered with '\0's.
+ *       Port of 0 means no port given.
+ */
 static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
 {
   char *t = NULL, *p = NULL;
@@ -161,8 +169,12 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
              -1;
 }
 
-/* url_parse_ciss: Fill in CissUrl. char* elements are pointers into src,
- *   which is modified by this call (duplicate it first if you need to). */
+/**
+ * url_parse_ciss - Fill in CissUrl.
+ *
+ * char* elements are pointers into src, which is modified by this call
+ * (duplicate it first if you need to).
+ */
 int url_parse_ciss(struct CissUrl *ciss, char *src)
 {
   char *tmp = NULL;
@@ -196,7 +208,9 @@ static void url_pct_encode(char *dst, size_t l, const char *src)
   *dst = 0;
 }
 
-/* url_ciss_tostring: output the URL string for a given CISS object. */
+/**
+ * url_ciss_tostring - output the URL string for a given CISS object
+ */
 int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags)
 {
   long l;

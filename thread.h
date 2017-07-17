@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Create/manipulate threading in emails
+ *
+ * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,13 +21,16 @@
  */
 
 #ifndef _MUTT_THREAD_H
-#define _MUTT_THREAD_H 1
+#define _MUTT_THREAD_H
 
 #include <stdbool.h>
 
 struct Context;
 struct Header;
 
+/**
+ * struct MuttThread - An email conversation
+ */
 struct MuttThread
 {
   bool fake_thread : 1;

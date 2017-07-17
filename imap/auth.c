@@ -1,8 +1,13 @@
 /**
+ * @file
+ * IMAP authenticator multiplexor
+ *
+ * @authors
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -46,8 +51,12 @@ static const struct ImapAuth imap_authenticators[] = {
   { NULL, NULL },
 };
 
-/* imap_authenticate: Attempt to authenticate using either user-specified
- *   authentication method if specified, or any. */
+/**
+ * imap_authenticate - Authenticate to an IMAP server
+ *
+ * Attempt to authenticate using either user-specified authentication method if
+ * specified, or any.
+ */
 int imap_authenticate(struct ImapData *idata)
 {
   const struct ImapAuth *authenticator = NULL;

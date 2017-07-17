@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Handling of email attachments
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -18,7 +23,7 @@
 /* common protos for compose / attach menus */
 
 #ifndef _MUTT_ATTACH_H
-#define _MUTT_ATTACH_H 1
+#define _MUTT_ATTACH_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -27,6 +32,9 @@ struct Menu;
 struct Header;
 struct Body;
 
+/**
+ * struct AttachPtr - An email to which things will be attached
+ */
 struct AttachPtr
 {
   struct Body *content;

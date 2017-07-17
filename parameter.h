@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Store attributes associated with a MIME part
+ *
+ * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,10 +21,13 @@
  */
 
 #ifndef _MUTT_PARAMETER_H
-#define _MUTT_PARAMETER_H 1
+#define _MUTT_PARAMETER_H
 
 #include "lib.h"
 
+/**
+ * struct Parameter - Attribute associated with a MIME part
+ */
 struct Parameter
 {
   char *attribute;

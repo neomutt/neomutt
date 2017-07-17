@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Wrapper for vasprintf()/vsnprintf()
+ *
+ * @authors
  * Copyright (C) 2010 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -24,6 +29,9 @@
  * version using it.
  */
 
+/**
+ * safe_asprintf - Wrapper for vasprintf()
+ */
 #ifdef HAVE_VASPRINTF
 int safe_asprintf(char **strp, const char *fmt, ...)
 {

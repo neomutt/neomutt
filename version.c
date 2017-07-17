@@ -1,8 +1,13 @@
 /**
+ * @file
+ * Display version and copyright about NeoMutt
+ *
+ * @authors
  * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2016-2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -88,6 +93,9 @@ static const char *Notice =
        "Mutt is free software, and you are welcome to redistribute it\n"
        "under certain conditions; type `mutt -vv' for details.\n");
 
+/**
+ * struct CompileOptions - List of built-in capabilities
+ */
 struct CompileOptions
 {
   const char *name;
@@ -336,10 +344,9 @@ static void print_compile_options(struct CompileOptions *co)
 /**
  * rstrip_in_place - Strip a trailing carriage return
  * @param s  String to be modified
+ * @return The modified string
  *
  * The string has its last carriage return set to NUL.
- * Returns:
- *      The modified string
  */
 static char *rstrip_in_place(char *s)
 {

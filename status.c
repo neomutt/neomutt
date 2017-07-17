@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI display a user-configurable status line
+ *
+ * @authors
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -44,25 +49,31 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
 static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
                               struct Menu *menu, const char *p);
 
-/* %b = number of incoming folders with unread messages [option]
- * %d = number of deleted messages [option]
- * %f = full mailbox path
- * %F = number of flagged messages [option]
- * %h = hostname
- * %l = length of mailbox (in bytes) [option]
- * %m = total number of messages [option]
- * %M = number of messages shown (virtual message count when limiting) [option]
- * %n = number of new messages [option]
- * %o = number of old unread messages [option]
- * %p = number of postponed messages [option]
- * %P = percent of way through index
- * %r = readonly/wontwrite/changed flag
- * %s = current sorting method ($sort)
- * %S = current aux sorting method ($sort_aux)
- * %t = # of tagged messages [option]
- * %u = number of unread messages [option]
- * %v = Mutt version
- * %V = currently active limit pattern [option] */
+/**
+ * status_format_str - Format a string for the status bar
+ *
+ * | Expando | Description
+ * |:--------|:----------------------------------------------------------------
+ * | \%b     | number of incoming folders with unread messages [option]
+ * | \%d     | number of deleted messages [option]
+ * | \%f     | full mailbox path
+ * | \%F     | number of flagged messages [option]
+ * | \%h     | hostname
+ * | \%l     | length of mailbox (in bytes) [option]
+ * | \%m     | total number of messages [option]
+ * | \%M     | number of messages shown (virtual message count when limiting) [option]
+ * | \%n     | number of new messages [option]
+ * | \%o     | number of old unread messages [option]
+ * | \%p     | number of postponed messages [option]
+ * | \%P     | percent of way through index
+ * | \%r     | readonly/wontwrite/changed flag
+ * | \%s     | current sorting method ($sort)
+ * | \%S     | current aux sorting method ($sort_aux)
+ * | \%t     | # of tagged messages [option]
+ * | \%u     | number of unread messages [option]
+ * | \%v     | Mutt version
+ * | \%V     | currently active limit pattern [option]
+ */
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prefix,
                                      const char *ifstring, const char *elsestring,

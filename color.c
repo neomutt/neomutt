@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Color and attribute parsing
+ *
+ * @authors
  * Copyright (C) 1996-2002,2012 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -60,6 +65,9 @@ static int ColorQuoteSize;
 
 #define COLOR_DEFAULT (-2)
 
+/**
+ * struct ColorList - A set of colors
+ */
 struct ColorList
 {
   short fg;
@@ -497,8 +505,12 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 }
 
-/* usage: uncolor index pattern [pattern...]
- *        unmono  index pattern [pattern...]
+/**
+ * _mutt_parse_uncolor - Parse an 'uncolor' command
+ *
+ * usage:
+ * * uncolor index pattern [pattern...]
+ * * unmono  index pattern [pattern...]
  */
 static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
                                struct Buffer *err, short parse_uncolor)
@@ -825,8 +837,11 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
     return attr;
 }
 
-/* usage: color <object> <fg> <bg> [ <regexp> ]
- *        mono  <object> <attr> [ <regexp> ]
+/**
+ * _mutt_parse_color - Parse a "color" command
+ *
+ * usage: color OBJECT FG BG [ REGEXP ]
+ *        mono  OBJECT ATTR [ REGEXP ]
  */
 static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
                              parser_callback_t callback, bool dry_run)

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Prepare an email to be edited
+ *
+ * @authors
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -37,12 +42,14 @@
 #include "options.h"
 #include "protos.h"
 
-/*
- * return value:
- *
- * 1    message not modified
- * 0    message edited successfully
- * -1   error
+/**
+ * edit_one_message - Edit an email
+ * @param ctx Context
+ * @param cur Header of email
+ * @return
+ * * 1  Message not modified
+ * * 0  Message edited successfully
+ * * -1 Error
  */
 static int edit_one_message(struct Context *ctx, struct Header *cur)
 {

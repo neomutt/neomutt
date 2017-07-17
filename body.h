@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Representation of the body of an email
+ *
+ * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,12 +21,15 @@
  */
 
 #ifndef _MUTT_BODY_H
-#define _MUTT_BODY_H 1
+#define _MUTT_BODY_H
 
 #include <stdbool.h>
 #include <time.h>
 #include <sys/types.h>
 
+/**
+ * struct Body - The body of an email
+ */
 struct Body
 {
   char *xtype;                  /**< content-type if x-unknown */

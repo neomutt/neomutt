@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Config/command parsing
+ *
+ * @authors
  * Copyright (C) 1996-2002,2010,2013,2016 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -77,6 +82,9 @@
     return -1;                                                                       \
   }
 
+/**
+ * struct MyVar - A user-set variable
+ */
 struct MyVar
 {
   char *name;
@@ -227,8 +235,11 @@ int query_quadoption(int opt, const char *prompt)
   /* not reached */
 }
 
-/* given the variable ``s'', return the index into the rc_vars array which
-   matches, or -1 if the variable is not found.  */
+/**
+ * mutt_option_index - Find the index (in rc_vars) of a variable name
+ * @param s Variable name to search for
+ * @return -1 on error, >0 on success
+ */
 int mutt_option_index(const char *s)
 {
   for (int i = 0; MuttVars[i].option; i++)
@@ -526,7 +537,9 @@ static void free_opt(struct Option *p)
   }
 }
 
-/* clean up before quitting */
+/**
+ * mutt_free_opts - clean up before quitting
+ */
 void mutt_free_opts(void)
 {
   for (int i = 0; MuttVars[i].option; i++)
@@ -1266,6 +1279,9 @@ bail:
   return -1;
 }
 
+/**
+ * enum GroupState - Type of email address group
+ */
 enum GroupState
 {
   GS_NONE,
@@ -1345,7 +1361,9 @@ bail:
   return -1;
 }
 
-/* always wise to do what someone else did before */
+/**
+ * _attachments_clean - always wise to do what someone else did before
+ */
 static void _attachments_clean(void)
 {
   int i;
@@ -2174,8 +2192,6 @@ char **mutt_envlist(void)
 /**
  * start_debug - prepare the debugging file
  *
- * @return nothing
- *
  * This method prepares and opens a new debug file for mutt_debug.
  */
 static void start_debug(void)
@@ -2206,8 +2222,6 @@ static void start_debug(void)
 
 /**
  * restart_debug - reload the debugging configuration
- *
- * @return nothing
  *
  * This method closes the old debug file is debug was enabled,
  * then reconfigure the debugging system from the configuration options
@@ -2990,13 +3004,14 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
  * and avoid cyclic sourcing */
 static struct List *MuttrcStack;
 
-/* Use POSIX functions to convert a path to absolute, relatively to another path
- * Args:
- *  - path: instance containing the relative path to the file we want the absolute
- *     path of. Should be at least of PATH_MAX length, will contain the full result.
- *  - reference: path to a file which directory will be set as reference for setting
- *      up the absolute path.
- * Returns: true (1) on success, false (0) otherwise.
+/**
+ * to_absolute_path - Convert relative filepath to an absolute path
+ * @param path      Relative path
+ * @param reference Absolute path that \a path is relative to
+ * @return true on success, false otherwise
+ *
+ * Use POSIX functions to convert a path to absolute, relatively to another path
+ * @note \a path should be at least of PATH_MAX length
  */
 static int to_absolute_path(char *path, const char *reference)
 {
@@ -3033,8 +3048,12 @@ static int to_absolute_path(char *path, const char *reference)
 
 #define MAXERRS 128
 
-/* reads the specified initialization file.
- * Returns negative if mutt should pause to let the user know...  */
+/**
+ * source_rc - Read an initialization file
+ * @param rcfile_path Path to initialization file
+ * @param err         Buffer for error messages
+ * @return <0 if mutt should pause to let the user know
+ */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
   FILE *f = NULL;
@@ -3183,16 +3202,17 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
   return 0;
 }
 
-/* line         command to execute
-
-   token        scratch buffer to be used by parser.  caller should free
-                token->data when finished.  the reason for this variable is
-                to avoid having to allocate and deallocate a lot of memory
-                if we are parsing many lines.  the caller can pass in the
-                memory to use, which avoids having to create new space for
-                every call to this function.
-
-   err          where to write error messages */
+/**
+ * mutt_parse_rc_line - Parse a line of user config
+ * @param line  config line to read
+ * @param token scratch buffer to be used by parser
+ * @param err   where to write error messages
+ *
+ * Caller should free token->data when finished.  the reason for this variable
+ * is to avoid having to allocate and deallocate a lot of memory if we are
+ * parsing many lines.  the caller can pass in the memory to use, which avoids
+ * having to create new space for every call to this function.
+ */
 int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err)
 {
   int i, r = 0;
@@ -3272,12 +3292,14 @@ static void matches_ensure_morespace(int current)
   }
 }
 
-/* helper function for completion.  Changes the dest buffer if
-   necessary/possible to aid completion.
-        dest == completion result gets here.
-        src == candidate for completion.
-        try == user entered data for completion.
-        len == length of dest buffer.
+/**
+ * candidate - helper function for completion
+ * @param dest Completion result gets here
+ * @param src  Candidate for completion
+ * @param try  User entered data for completion
+ * @param len  Length of dest buffer
+ *
+ * Changes the dest buffer if necessary/possible to aid completion.
 */
 static void candidate(char *dest, char *try, const char *src, int len)
 {
@@ -3522,8 +3544,8 @@ int mutt_var_value_complete(char *buffer, size_t len, int pos)
 
 #ifdef USE_NOTMUCH
 
-/* Fetch a list of all notmuch tags and insert them into the completion
- * machinery.
+/**
+ * complete_all_nm_tags - Pass a list of notmuch tags to the completion code
  */
 static int complete_all_nm_tags(const char *pt)
 {
@@ -3575,7 +3597,10 @@ done:
   return 0;
 }
 
-/* Return the last instance of needle in the haystack, or NULL.
+/**
+ * rstrnstr - Find last instance of a substring
+ *
+ * Return the last instance of needle in the haystack, or NULL.
  * Like strstr(), only backwards, and for a limited haystack length.
  */
 static const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
@@ -3598,7 +3623,11 @@ static const char *rstrnstr(const char *haystack, size_t haystack_length, const 
   return NULL;
 }
 
-/* Complete the nearest "tag:"-prefixed string previous to pos. */
+/**
+ * mutt_nm_query_complete - Complete to the nearest notmuch tag
+ *
+ * Complete the nearest "tag:"-prefixed string previous to pos.
+ */
 bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
 {
   char *pt = buffer;
@@ -3643,7 +3672,11 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
   return true;
 }
 
-/* Complete the nearest "+" or "-" -prefixed string previous to pos. */
+/**
+ * mutt_nm_tag_complete - Complete to the nearest notmuch tag
+ *
+ * Complete the nearest "+" or "-" -prefixed string previous to pos.
+ */
 bool mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs)
 {
   if (!buffer)
@@ -3786,7 +3819,9 @@ int var_to_string(int idx, char *val, size_t len)
   return 1;
 }
 
-/* Implement the -Q command line flag */
+/**
+ * mutt_query_variables - Implement the -Q command line flag
+ */
 int mutt_query_variables(struct List *queries)
 {
   struct List *p = NULL;
@@ -3821,7 +3856,9 @@ int mutt_query_variables(struct List *queries)
   return 0;
 }
 
-/* dump out the value of all the variables we have */
+/**
+ * mutt_dump_variables - Print a list of all variables with their values
+ */
 int mutt_dump_variables(int hide_sensitive)
 {
   char command[STRING];

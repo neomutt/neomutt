@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Send email to an SMTP server
+ *
+ * @authors
  * Copyright (C) 2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2005-2009 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -63,6 +68,9 @@
 #define SMTP_AUTH_UNAVAIL 1
 #define SMTP_AUTH_FAIL -1
 
+/**
+ * enum SmtpCapability - SMTP server capabilities
+ */
 enum SmtpCapability
 {
   STARTTLS,
@@ -93,10 +101,12 @@ static bool valid_smtp_code(char *buf, size_t len, int *n)
   return true;
 }
 
-/* Reads a command response from the SMTP server.
- * Returns:
- * 0    on success (2xx code) or continue (354 code)
- * -1   write error, or any other response code
+/**
+ * smtp_get_resp - Read a command response from the SMTP server
+ * @param conn SMTP connection
+ * @return
+ * *  0 Success (2xx code) or continue (354 code)
+ * * -1 Write error, or any other response code
  */
 static int smtp_get_resp(struct Connection *conn)
 {
@@ -237,7 +247,9 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 }
 
 
-/* Returns true if a contains at least one 8-bit character, false if none do.
+/**
+ * address_uses_unicode - Do any addresses use Unicode
+ * @return true if any of the string of addresses use 8-bit characters
  */
 static bool address_uses_unicode(const char *a)
 {
@@ -255,8 +267,9 @@ static bool address_uses_unicode(const char *a)
 }
 
 
-/* Returns 1 if any address in a contains at least one 8-bit
- * character, 0 if none do.
+/**
+ * addresses_use_unicode - Do any of a list of addresses use Unicode
+ * @return true if any use 8-bit characters
  */
 static bool addresses_use_unicode(const struct Address *a)
 {
@@ -562,6 +575,7 @@ error:
   return -1;
 }
 #endif /* USE_SASL */
+
 static int smtp_open(struct Connection *conn)
 {
   int rc;

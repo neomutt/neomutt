@@ -1,7 +1,12 @@
 /**
+ * @file
+ * GUI select an IMAP mailbox from a list
+ *
+ * @authors
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -37,8 +42,8 @@
 #include "options.h"
 #include "protos.h"
 
-/* imap_add_folder:
- * add a folder name to the browser list, formatting it as necessary.
+/**
+ * imap_add_folder - Format and add an IMAP folder to the browser
  *
  * The folder parameter should already be 'unmunged' via
  * imap_unmunge_mbox_name().
@@ -159,8 +164,11 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
   return rc == IMAP_CMD_OK ? 0 : -1;
 }
 
-/* imap_browse: IMAP hook into the folder browser, fills out browser_state,
- *   given a current folder to browse */
+/**
+ * imap_browse - IMAP hook into the folder browser
+ *
+ * Fill out browser_state, given a current folder to browse
+ */
 int imap_browse(char *path, struct BrowserState *state)
 {
   struct ImapData *idata = NULL;
@@ -324,7 +332,11 @@ fail:
   return -1;
 }
 
-/* imap_mailbox_create: Prompt for a new mailbox name, and try to create it */
+/**
+ * imap_mailbox_create - Create a new IMAP mailbox
+ *
+ * Prompt for a new mailbox name, and try to create it
+ */
 int imap_mailbox_create(const char *folder)
 {
   struct ImapData *idata = NULL;

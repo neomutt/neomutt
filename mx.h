@@ -1,7 +1,12 @@
 /**
+ * @file
+ * API for mailboxes
+ *
+ * @authors
  * Copyright (C) 1996-2002,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -22,7 +27,7 @@
  */
 
 #ifndef _MUTT_MX_H
-#define _MUTT_MX_H 1
+#define _MUTT_MX_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -36,8 +41,9 @@ struct Context;
 struct Message;
 struct stat;
 
-/*
+/**
  * struct MxOps - a structure to store operations on a mailbox
+ *
  * The following operations are mandatory:
  *  - open
  *  - close
@@ -59,7 +65,9 @@ struct MxOps
   int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
 };
 
-/* supported mailbox formats */
+/**
+ * enum MailboxFormat - Supported mailbox formats
+ */
 enum MailboxFormat
 {
   MUTT_MBOX = 1,

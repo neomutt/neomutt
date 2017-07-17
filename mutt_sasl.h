@@ -1,6 +1,11 @@
 /**
+ * @file
+ * SASL authentication support
+ *
+ * @authors
  * Copyright (C) 2000-2005,2008 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -18,7 +23,7 @@
 /* common SASL helper routines */
 
 #ifndef _MUTT_SASL_H
-#define _MUTT_SASL_H 1
+#define _MUTT_SASL_H
 
 #include <stddef.h>
 #include <sasl/sasl.h>
@@ -30,6 +35,9 @@ int mutt_sasl_interact(sasl_interact_t *interaction);
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
 void mutt_sasl_done(void);
 
+/**
+ * struct SaslData - SASL authentication API
+ */
 struct SaslData
 {
   sasl_conn_t *saslconn;

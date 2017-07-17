@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Match patterns to emails
+ *
+ * @authors
  * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>, and others
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -63,7 +68,9 @@
 #include "mutt_notmuch.h"
 #endif
 
-/* Error codes for eat_range_by_regexp */
+/**
+ * enum EatRangeError - Error codes for eat_range_by_regexp()
+ */
 enum EatRangeError
 {
   RANGE_E_OK,
@@ -120,10 +127,14 @@ static bool eat_regexp(struct Pattern *pat, struct Buffer *s, struct Buffer *err
   return true;
 }
 
-/* Ny   years
-   Nm   months
-   Nw   weeks
-   Nd   days */
+/**
+ * get_offset - Calculate a symbolic offset
+ *
+ * Ny   years
+ * Nm   months
+ * Nw   weeks
+ * Nd   days
+ */
 static const char *get_offset(struct tm *tm, const char *s, int sign)
 {
   char *ps = NULL;
@@ -214,6 +225,9 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
 #define RANGE_RX_GROUPS 5
 
+/**
+ * struct RangeRegex - Regular expression representing a range
+ */
 struct RangeRegex
 {
   const char *raw; /**< regexp as string */
@@ -223,7 +237,10 @@ struct RangeRegex
   regex_t cooked;  /**< compiled form */
 };
 
-enum
+/**
+ * enum RangeType - Type of range
+ */
+enum RangeType
 {
   RANGE_K_REL,
   RANGE_K_ABS,
@@ -265,8 +282,10 @@ static struct RangeRegex range_regexps[] = {
 #define RANGE_LT '<'
 #define RANGE_GT '>'
 
-/* range sides: left or right */
-enum
+/**
+ * enum RangeSide - Which side of the range
+ */
+enum RangeSide
 {
   RANGE_S_LEFT,
   RANGE_S_RIGHT
@@ -799,6 +818,9 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   return false;
 }
 
+/**
+ * struct PatternFlags - Mapping between user character and internal constant
+ */
 static const struct PatternFlags
 {
   int tag; /**< character used to represent this op */
@@ -865,7 +887,11 @@ static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
                                                     LastSearch */
 
 
-/* if no uppercase letters are given, do a case-insensitive search */
+/**
+ * mutt_which_case - Smart-case searching
+ *
+ * if no uppercase letters are given, do a case-insensitive search
+ */
 int mutt_which_case(const char *s)
 {
   wchar_t w;
@@ -1382,8 +1408,8 @@ static bool match_reference(struct Pattern *pat, struct List *refs)
   return false;
 }
 
-/*
- * Matches subscribed mailing lists
+/**
+ * mutt_is_list_recipient - Matches subscribed mailing lists
  */
 int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
 {
@@ -1396,8 +1422,9 @@ int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
   return alladdr;
 }
 
-/*
- * Matches known mailing lists
+/**
+ * mutt_is_list_cc - Matches known mailing lists
+ *
  * The function name may seem a little bit misleading: It checks all
  * recipients in To and Cc for known mailing lists, subscribed or not.
  */
@@ -1473,15 +1500,22 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
 }
 
 
-/* Sets a value in the PatternCache cache entry.
- * Normalizes the "true" value to 2. */
+/**
+ * set_pattern_cache_value - Sets a value in the PatternCache cache entry
+ *
+ * Normalizes the "true" value to 2.
+ */
 static void set_pattern_cache_value(int *cache_entry, int value)
 {
   *cache_entry = value ? 2 : 1;
 }
 
-/* Returns 1 if the cache value is set and has a true value.
- * 0 otherwise (even if unset!) */
+/**
+ * get_pattern_cache_value - Get pattern cache value
+ * @return
+ * * 1 if the cache value is set and has a true value.
+ * * 0 otherwise (even if unset!)
+ */
 static int get_pattern_cache_value(int cache_entry)
 {
   return cache_entry == 2;
@@ -1493,10 +1527,13 @@ static int is_pattern_cache_set(int cache_entry)
 }
 
 
-/*
+/**
+ * mutt_pattern_exec - Match a pattern against an email header
+ *
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
- *        store some of the cacheable pattern matches in this structure. */
+ *        store some of the cacheable pattern matches in this structure.
+ */
 int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
                       struct Context *ctx, struct Header *h, struct PatternCache *cache)
 {
@@ -1724,7 +1761,9 @@ static void quote_simple(char *tmp, size_t len, const char *p)
   tmp[i] = 0;
 }
 
-/* convert a simple search into a real request */
+/**
+ * mutt_check_simple - convert a simple search into a real request
+ */
 void mutt_check_simple(char *s, size_t len, const char *simple)
 {
   char tmp[LONG_STRING];

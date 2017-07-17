@@ -1,7 +1,12 @@
 /**
+ * @file
+ * RFC 2047 MIME extensions routines
+ *
+ * @authors
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -237,7 +242,16 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
   return s - s0;
 }
 
-/*
+/**
+ * try_block - Attempt to convert a block ot text
+ * @param d        String to convert
+ * @param dlen     Length of string
+ * @param fromcode Original encoding
+ * @param tocode   New encoding
+ * @param encoder  Encoding function
+ * @param wlen     Number of characters converted
+ * @return 0 string could be converted >0 maximum that could be converted
+ *
  * Return 0 if and set *encoder and *wlen if the data (d, dlen) could
  * be converted to an encoded word of length *wlen using *encoder.
  * Otherwise return an upper bound on the maximum length of the data
@@ -312,9 +326,17 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
     return dlen;
 }
 
-/*
+/**
+ * encode_block - Encode a block of text using an encoder
+ * @param s        String to convert
+ * @param d        Buffer for result
+ * @param dlen     Buffer length
+ * @param fromcode Original encoding
+ * @param tocode   New encoding
+ * @param encoder  Encoding funtion
+ * @return Length of the encoded word
+ *
  * Encode the data (d, dlen) into s using the encoder.
- * Return the length of the encoded word.
  */
 static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
                            const char *tocode, encoder_t encoder)
@@ -340,11 +362,13 @@ static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
     return (*encoder)(s, d, dlen, tocode);
 }
 
-/*
- * Discover how much of the data (d, dlen) can be converted into
- * a single encoded word. Return how much data can be converted,
- * and set the length *wlen of the encoded word and *encoder.
- * We start in column col, which limits the length of the word.
+/**
+ * choose_block - Calculate how much data can be converted
+ *
+ * Discover how much of the data (d, dlen) can be converted into a single
+ * encoded word. Return how much data can be converted, and set the length
+ * *wlen of the encoded word and *encoder.  We start in column col, which
+ * limits the length of the word.
  */
 static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
                            const char *tocode, encoder_t *encoder, size_t *wlen)
@@ -368,7 +392,18 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   return n;
 }
 
-/*
+/**
+ * rfc2047_encode - RFC-2047-encode a string
+ * @param[in]  d        String to be encoded
+ * @param[in]  dlen     Length of string
+ * @param[in]  col      Starting index in string
+ * @param[in]  fromcode Original encoding
+ * @param[in]  charsets List of charsets to choose from
+ * @param[out] e        Buffer to save result
+ * @param[out] elen     Buffer length
+ * @param[in]  specials Special characters to be encoded
+ *
+ *
  * Place the result of RFC-2047-encoding (d, dlen) into the dynamically
  * allocated buffer (e, elen). The input data is in charset fromcode
  * and is converted into a charset chosen from charsets.
@@ -694,11 +729,13 @@ error_out_0:
   return rv;
 }
 
-/*
- * Find the start and end of the first encoded word in the string.
- * We use the grammar in section 2 of RFC 2047, but the "encoding"
- * must be B or Q. Also, we don't require the encoded word to be
- * separated by linear-white-space (section 5(1)).
+/**
+ * find_encoded_word - Find limits of first encoded word in a string
+ *
+ * Find the start and end of the first encoded word in the string.  We use the
+ * grammar in section 2 of RFC 2047, but the "encoding" must be B or Q. Also,
+ * we don't require the encoded word to be separated by linear-white-space
+ * (section 5(1)).
  */
 static const char *find_encoded_word(const char *s, const char **x)
 {
@@ -727,7 +764,9 @@ static const char *find_encoded_word(const char *s, const char **x)
   return 0;
 }
 
-/* return length of linear-white-space */
+/**
+ * lwslen - return length of linear-white-space
+ */
 static size_t lwslen(const char *s, size_t n)
 {
   const char *p = s;
@@ -747,7 +786,9 @@ static size_t lwslen(const char *s, size_t n)
   return len;
 }
 
-/* return length of linear-white-space : reverse */
+/**
+ * lwsrlen - return length of linear-white-space : reverse
+ */
 static size_t lwsrlen(const char *s, size_t n)
 {
   const char *p = s + n - 1;
@@ -768,7 +809,10 @@ static size_t lwsrlen(const char *s, size_t n)
   return len;
 }
 
-/* try to decode anything that looks like a valid RFC2047 encoded
+/**
+ * rfc2047_decode - Decode any RFC2047-encoded header fields
+ *
+ * try to decode anything that looks like a valid RFC2047 encoded
  * header field, ignoring RFC822 parsing rules
  */
 void rfc2047_decode(char **pd)

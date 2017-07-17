@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Manage keymappings
+ *
+ * @authors
  * Copyright (C) 1996-2000,2002,2010 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_KEYMAP_H
-#define _MUTT_KEYMAP_H 1
+#define _MUTT_KEYMAP_H
 
 #include <stddef.h>
 #include "mapping.h"
@@ -32,7 +37,11 @@ int km_dokey(int menu);
 
 void init_extended_keys(void);
 
-/* entry in the keymap tree */
+/**
+ * struct Keymap - A keyboard mapping
+ *
+ * entry in the keymap tree
+ */
 struct Keymap
 {
   char *macro;         /**< macro expansion (op == OP_MACRO) */
@@ -50,6 +59,9 @@ void km_init(void);
 void km_error_key(int menu);
 void mutt_what_key(void);
 
+/**
+ * enum MenuTypes - Types of GUI selections
+ */
 enum MenuTypes
 {
   MENU_ALIAS,
@@ -62,7 +74,6 @@ enum MenuTypes
   MENU_PAGER,
   MENU_POST,
   MENU_QUERY,
-
 
   MENU_PGP,
   MENU_SMIME,
@@ -87,6 +98,9 @@ extern int LastKey;
 
 extern const struct Mapping Menus[];
 
+/**
+ * struct Binding - Mapping between a user key and a function
+ */
 struct Binding
 {
   char *name; /**< name of the function */

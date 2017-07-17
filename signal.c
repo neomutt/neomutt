@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Signal handling
+ *
+ * @authors
  * Copyright (C) 1996-2000,2012 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -32,7 +37,9 @@ static struct sigaction SysOldInt;
 static struct sigaction SysOldQuit;
 static int IsEndwin = 0;
 
-/* Attempt to catch "ordinary" signals and shut down gracefully. */
+/**
+ * exit_handler - Attempt to catch "ordinary" signals and shut down gracefully
+ */
 static void exit_handler(int sig)
 {
   curs_set(1);
@@ -164,7 +171,11 @@ void mutt_signal_init(void)
 #endif
 }
 
-/* signals which are important to block while doing critical ops */
+/**
+ * mutt_block_signals - Block signals during critical ops
+ *
+ * signals which are important to block while doing critical ops
+ */
 void mutt_block_signals(void)
 {
   if (!option(OPTSIGNALSBLOCKED))
@@ -182,7 +193,9 @@ void mutt_block_signals(void)
   }
 }
 
-/* restore the previous signal mask */
+/**
+ * mutt_unblock_signals - restore the previous signal mask
+ */
 void mutt_unblock_signals(void)
 {
   if (option(OPTSIGNALSBLOCKED))

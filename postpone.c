@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Save/restore and GUI list postponed emails
+ *
+ * @authors
  * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -64,9 +69,12 @@ static short PostCount = 0;
 static struct Context *PostContext = NULL;
 static short UpdateNumPostponed = 0;
 
-/* Return the number of postponed messages.
- * if force is 0, use a cached value if it is costly to get a fresh
- * count (IMAP) - else check.
+/**
+ * mutt_num_postponed - Return the number of postponed messages
+ * @param force
+ * * 0 Use a cached value if costly to get a fresh count (IMAP)
+ * * 1 Force check
+ * @return Number of postponed messages
  */
 int mutt_num_postponed(int force)
 {
@@ -240,19 +248,18 @@ static struct Header *select_msg(void)
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }
 
-/* args:
- *      ctx     Context info, used when recalling a message to which
- *              we reply.
- *      hdr     envelope/attachment info for recalled message
- *      cur     if message was a reply, `cur' is set to the message which
- *              `hdr' is in reply to
- *      fcc     fcc for the recalled message
- *      fcclen  max length of fcc
- *
- * return vals:
- *      -1              error/no messages
- *      0               normal exit
- *      SENDREPLY       recalled message is a reply
+/**
+ * mutt_get_postponed - Recall a postponed message
+ * @param ctx     Context info, used when recalling a message to which we reply
+ * @param hdr     envelope/attachment info for recalled message
+ * @param cur     if message was a reply, `cur' is set to the message
+ *                which `hdr' is in reply to
+ * @param fcc     fcc for the recalled message
+ * @param fcclen  max length of fcc
+ * @return
+ * * -1        Error/no messages
+ * * 0         Normal exit
+ * * SENDREPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
                        struct Header **cur, char *fcc, size_t fcclen)
@@ -554,14 +561,16 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 }
 
 
-/* args:
- *     fp      If not NULL, file containing the template
- *     ctx     If fp is NULL, the context containing the header with the template
- *     newhdr  The template is read into this Header
- *     hdr     The message to recall/resend
- *     resend  Set if resending (as opposed to recalling a postponed msg).
- *             Resent messages enable header weeding, and also
- *             discard any existing Message-ID and Mail-Followup-To.
+/**
+ * mutt_prepare_template - Prepare a message template
+ * @param fp      If not NULL, file containing the template
+ * @param ctx     If fp is NULL, the context containing the header with the template
+ * @param newhdr  The template is read into this Header
+ * @param hdr     The message to recall/resend
+ * @param resend  Set if resending (as opposed to recalling a postponed msg).
+ *                Resent messages enable header weeding, and also
+ *                discard any existing Message-ID and Mail-Followup-To.
+ * @return 0 on success, -1 on error
  */
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
                           struct Header *hdr, short resend)

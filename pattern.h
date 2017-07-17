@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Match patterns to emails
+ *
+ * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_PATTERN_H
-#define _MUTT_PATTERN_H 1
+#define _MUTT_PATTERN_H
 
 #include <regex.h>
 #include <stdbool.h>
@@ -28,6 +33,9 @@ struct Buffer;
 struct Header;
 struct Context;
 
+/**
+ * struct Pattern - A simple (non-regex) pattern
+ */
 struct Pattern
 {
   short op;
@@ -48,12 +56,18 @@ struct Pattern
   } p;
 };
 
+/**
+ * enum PatternExecFlag - Flags for mutt_pattern_exec()
+ */
 enum PatternExecFlag
 {
   MUTT_MATCH_FULL_ADDRESS = 1
 };
 
-/* This is used when a message is repeatedly pattern matched against.
+/**
+ * struct PatternCache - Cache commonly-used patterns
+ *
+ * This is used when a message is repeatedly pattern matched against.
  * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
  * operations.
  * Each entry has a value of 0 = unset, 1 = false, 2 = true

@@ -1,4 +1,7 @@
 /**
+ * @file
+ * Calculate the SHA1 checksum of a buffer
+ *
  * SHA-1 in C
  *
  * By Steve Reid <steve@edmweb.com>, with small changes to make it
@@ -55,7 +58,11 @@
   w = rol(w, 30);
 
 
-/* Hash a single 512-bit block. This is the core of the algorithm. */
+/**
+ * sha1_transform - Hash a single 512-bit block
+ *
+ * This is the core of the algorithm.
+ */
 void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 {
   uint32_t a, b, c, d, e;
@@ -175,7 +182,9 @@ void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 }
 
 
-/* sha1_init - Initialize new context */
+/**
+ * sha1_init - Initialize new context
+ */
 void sha1_init(struct Sha1Ctx *context)
 {
   /* SHA1 initialization constants */
@@ -188,7 +197,9 @@ void sha1_init(struct Sha1Ctx *context)
 }
 
 
-/* Run your data through this. */
+/**
+ * sha1_update - Run your data through this
+ */
 void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len)
 {
   uint32_t i;
@@ -215,7 +226,9 @@ void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t le
 }
 
 
-/* Add padding and return the message digest. */
+/**
+ * sha1_final - Add padding and return the message digest
+ */
 void sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
 {
   unsigned i;

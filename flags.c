@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Manipulate the flags in an email header
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -324,12 +329,16 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
     h->searched = false;
 }
 
+/**
+ * mutt_thread_set_flag - Set a flag on an entire thread
+ */
 void mutt_tag_set_flag(int flag, int bf)
 {
   for (int j = 0; j < Context->vcount; j++)
     if (Context->hdrs[Context->v2r[j]]->tagged)
       mutt_set_flag(Context, Context->hdrs[Context->v2r[j]], flag, bf);
 }
+
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
 {
   struct MuttThread *start = NULL, *cur = hdr->thread;

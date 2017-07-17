@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Calculate the MD5 checksum of a buffer
+ *
+ * @authors
  * Copyright (C) 1995-1997,1999,2000,2001,2004,2005,2006,2008
  *    Free Software Foundation, Inc.
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -23,14 +28,18 @@
  */
 
 #ifndef _MUTT_MD5_H
-#define _MUTT_MD5_H 1
+#define _MUTT_MD5_H
 
 #include <stdint.h>
 #include <stdio.h>
 
 typedef uint32_t md5_uint32;
 
-/* Structure to save state of computation between the single steps.  */
+/**
+ * struct Md5Ctx - Cursor for the MD5 hashing
+ *
+ * Structure to save state of computation between the single steps.
+ */
 struct Md5Ctx
 {
   md5_uint32 A;

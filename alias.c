@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Representation of a single alias to an email address
+ *
+ * @authors
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -153,7 +158,9 @@ void mutt_expand_aliases_env(struct Envelope *env)
 }
 
 
-/*
+/**
+ * write_safe_address - Defang malicious email addresses
+ *
  * if someone has an address like
  *      From: Michael `/bin/rm -f ~` Elkins <me@mutt.org>
  * and the user creates an alias for this, Mutt could wind up executing
@@ -233,9 +240,11 @@ static void recode_buf(char *buf, size_t buflen)
   FREE(&s);
 }
 
-/*
- * Sanity-check an alias name:  Only characters which are non-special to both
- * the RFC 822 and the mutt configuration parser are permitted.
+/**
+ * check_alias_name - Sanity-check an alias name
+ *
+ * Only characters which are non-special to both the RFC 822 and the mutt
+ * configuration parser are permitted.
  */
 int check_alias_name(const char *s, char *dest, size_t destlen)
 {
@@ -446,9 +455,8 @@ fseek_err:
   return;
 }
 
-/*
- * This routine looks to see if the user has an alias defined for the given
- * address.
+/**
+ * alias_reverse_lookup - Does the user have an alias for the given address
  */
 struct Address *alias_reverse_lookup(struct Address *a)
 {
@@ -493,7 +501,8 @@ void mutt_alias_delete_reverse(struct Alias *t)
   }
 }
 
-/* alias_complete() -- alias completion routine
+/**
+ * mutt_alias_complete - alias completion routine
  *
  * given a partial alias, this routine attempts to fill in the alias
  * from the alias list as much as possible. if given empty search string
@@ -614,7 +623,10 @@ static bool string_is_address(const char *str, const char *u, const char *d)
   return false;
 }
 
-/* returns true if the given address belongs to the user. */
+/**
+ * mutt_addr_is_user - Does the address belong to the user
+ * @return true if the given address belongs to the user
+ */
 bool mutt_addr_is_user(struct Address *addr)
 {
   const char *fqdn = NULL;

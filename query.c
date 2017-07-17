@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Routines for querying and external address book
+ *
+ * @authors
  * Copyright (C) 1996-2000,2003,2013 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -41,6 +46,9 @@
 #include "protos.h"
 #include "rfc822.h"
 
+/**
+ * struct Query - An entry from an external address-book
+ */
 struct Query
 {
   int num;
@@ -50,6 +58,9 @@ struct Query
   struct Query *next;
 };
 
+/**
+ * struct Entry - An entry in a selectable list of Query's
+ */
 struct Entry
 {
   bool tagged;
@@ -488,6 +499,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     mutt_menu_destroy(&menu);
   }
 }
+
 int mutt_query_complete(char *buf, size_t buflen)
 {
   struct Query *results = NULL;

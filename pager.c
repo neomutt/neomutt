@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI display a file/email/help in a viewport with paging
+ *
+ * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -109,6 +114,9 @@ static struct Header *OldHdr = NULL;
     break;                                                                     \
   }
 
+/**
+ * struct QClass - Style of quoted text
+ */
 struct QClass
 {
   int length;
@@ -119,6 +127,9 @@ struct QClass
   struct QClass *down, *up;
 };
 
+/**
+ * struct Syntax - Highlighting for a line of text
+ */
 struct Syntax
 {
   int color;
@@ -126,6 +137,9 @@ struct Syntax
   int last;
 };
 
+/**
+ * struct Line - A line of text in the pager
+ */
 struct Line
 {
   LOFF_T offset;
@@ -146,6 +160,9 @@ struct Line
 #define ANSI_REVERSE (1 << 4)
 #define ANSI_COLOR (1 << 5)
 
+/**
+ * struct AnsiAttr - An ANSI escape sequence
+ */
 struct AnsiAttr
 {
   int attr;
@@ -157,6 +174,9 @@ struct AnsiAttr
 static short InHelp = 0;
 
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
+/**
+ * struct Resize - Keep track of screen resizing
+ */
 static struct Resize
 {
   int line;
@@ -1092,7 +1112,11 @@ static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
   return pos;
 }
 
-/* trim tail of buf so that it contains complete multibyte characters */
+/**
+ * trim_incomplete_mbyte - Remove an incomplete character
+ *
+ * trim tail of buf so that it contains complete multibyte characters
+ */
 static int trim_incomplete_mbyte(unsigned char *buf, size_t len)
 {
   mbstate_t mbstate;
@@ -1357,21 +1381,33 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
   return ch;
 }
 
-/*
- * Args:
- *      flags   MUTT_SHOWFLAT, show characters (used for displaying help)
- *              MUTT_SHOWCOLOR, show characters in color
- *                      otherwise don't show characters
- *              MUTT_HIDE, don't show quoted text
- *              MUTT_SEARCH, resolve search patterns
- *              MUTT_TYPES, compute line's type
- *              MUTT_PAGER_NSKIP, keeps leading whitespace
- *              MUTT_PAGER_MARKER, eventually show markers
+/**
+ * display_line - Print a line on screen
+ * @param f               File to read from
+ * @param last_pos        Offset into file
+ * @param line_info       Line attributes
+ * @param n               Line number
+ * @param last            Last line
+ * @param max             Maximum number of lines
+ * @param flags           See below
+ * @param quote_list      Email quoting style
+ * @param q_level         Level of quoting
+ * @param force_redraw    Force a repaint
+ * @param search_re       Regex to highlight
+ * @param pager_window    Window to draw into
+ * @return
+ * * -1 EOF was reached
+ * * 0  normal exit, line was not displayed
+ * * >0 normal exit, line was displayed
  *
- * Return values:
- *      -1      EOF was reached
- *      0       normal exit, line was not displayed
- *      >0      normal exit, line was displayed
+ * flags:
+ * * #MUTT_SHOWFLAT, show characters (used for displaying help)
+ * * #MUTT_SHOWCOLOR, show characters in color otherwise don't show characters
+ * * #MUTT_HIDE, don't show quoted text
+ * * #MUTT_SEARCH, resolve search patterns
+ * * #MUTT_TYPES, compute line's type
+ * * #MUTT_PAGER_NSKIP, keeps leading whitespace
+ * * #MUTT_PAGER_MARKER, eventually show markers
  */
 static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
                         int n, int *last, int *max, int flags,
@@ -1655,6 +1691,9 @@ void mutt_clear_pager_position(void)
   OldHdr = NULL;
 }
 
+/**
+ * struct PagerRedrawData - Keep track when the pager needs redrawing
+ */
 struct PagerRedrawData
 {
   int flags;
@@ -1964,11 +2003,15 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   pager_menu->redraw = 0;
 }
 
-/* This pager is actually not so simple as it once was.  It now operates in
-   two modes: one for viewing messages and the other for viewing help.  These
-   can be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg
-   is there so that we can do operations on the current message without the
-   need to pop back out to the main-menu.  */
+/**
+ * mutt_pager - Display a file, or help, in a window
+ *
+ * This pager is actually not so simple as it once was.  It now operates in two
+ * modes: one for viewing messages and the other for viewing help.  These can
+ * be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg is
+ * there so that we can do operations on the current message without the need
+ * to pop back out to the main-menu.
+ */
 int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
 {
   static char searchbuf[STRING] = "";

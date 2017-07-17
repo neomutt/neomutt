@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Handling of email attachments
+ *
+ * @authors
  * Copyright (C) 1996-2000,2002,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -86,7 +91,12 @@ int mutt_get_tmp_attachment(struct Body *a)
 }
 
 
-/* return 1 if require full screen redraw, 0 otherwise */
+/**
+ * mutt_compose_attachment - Create an attachment
+ * @return
+ * * 1 if require full screen redraw
+ * * 0 otherwise
+ */
 int mutt_compose_attachment(struct Body *a)
 {
   char type[STRING];
@@ -209,14 +219,17 @@ bailout:
   return rc;
 }
 
-/*
+/**
+ * mutt_edit_attachment - Edit an attachment
+ * @param a Email containing attachment
+ * @return 1 if editor found, 0 if not
+ *
  * Currently, this only works for send mode, as it assumes that the
  * Body->filename actually contains the information.  I'm not sure
  * we want to deal with editing attachments we've already received,
  * so this should be ok.
  *
- * Returns 1 if editor found, 0 if not (useful to tell calling menu to
- * redraw)
+ * Returning 0 is useful to tell the calling menu to redraw
  */
 int mutt_edit_attachment(struct Body *a)
 {
@@ -328,7 +341,12 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
   }
 }
 
-/* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
+/**
+ * mutt_view_attachment - View an attachment
+ * @return
+ * * -1 on error
+ * * 0 or the return code from mutt_do_pager() on success
+ */
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachPtr **idx, short idxlen)
 {
@@ -600,7 +618,12 @@ return_error:
   return rc;
 }
 
-/* returns 1 on success, 0 on error */
+/**
+ * mutt_pipe_attachment - Pipe an attachment to a command
+ * @return
+ * * 1 on success
+ * * 0 on error
+ */
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
   pid_t thepid;
@@ -703,7 +726,12 @@ static FILE *save_attachment_open(char *path, int flags)
   return safe_fopen(path, "w");
 }
 
-/* returns 0 on success, -1 on error */
+/**
+ * mutt_save_attachment - Save an attachment
+ * @return
+ * * 0 on success
+ * * -1 on error
+ */
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
 {
   if (!m)
@@ -817,7 +845,10 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
   return 0;
 }
 
-/* returns 0 on success, -1 on error */
+/**
+ * mutt_decode_save_attachment - Decode, then save an attachment
+ * @return 0 on success, -1 on error
+ */
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
 {
   struct State s;
@@ -903,7 +934,10 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   return ret;
 }
 
-/* Ok, the difference between send and receive:
+/**
+ * mutt_print_attachment - Print out an attachment
+ *
+ * Ok, the difference between send and receive:
  * recv: Body->filename is a suggested name, and Context|Header points
  *       to the attachment in mailbox which is encoded
  * send: Body->filename points to the un-encoded file which contains the

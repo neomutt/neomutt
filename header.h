@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Representation of the email's header
+ *
+ * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,13 +21,16 @@
  */
 
 #ifndef _MUTT_HEADER_H
-#define _MUTT_HEADER_H 1
+#define _MUTT_HEADER_H
 
 #include <stddef.h>
 #include <stdbool.h>
 #include <time.h>
 #include "lib.h"
 
+/**
+ * struct Header - The header/envelope of an email
+ */
 struct Header
 {
   unsigned int security : 12; /**< bit 0-8: flags, bit 9,10: application.

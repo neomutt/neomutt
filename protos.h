@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Prototypes for many functions
+ *
+ * @authors
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2013 Karel Zak <kzak@redhat.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -17,7 +22,7 @@
  */
 
 #ifndef _MUTT_PROTOS_H
-#define _MUTT_PROTOS_H 1
+#define _MUTT_PROTOS_H
 
 #include <stddef.h>
 #include <ctype.h>
@@ -54,6 +59,9 @@ struct passwd;
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
                        struct Header *hdr, enum FormatFlag flags);
 
+/**
+ * struct HdrFormatInfo - Data passed to hdr_format_str()
+ */
 struct HdrFormatInfo
 {
   struct Context *ctx;
@@ -61,6 +69,9 @@ struct HdrFormatInfo
   const char *pager_progress;
 };
 
+/**
+ * enum XdgType - XDG variable types
+ */
 enum XdgType
 {
   XDG_CONFIG_HOME,

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI handle the resizing of the screen
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -31,7 +36,9 @@
 #endif
 #endif
 
-/* this routine should be called after receiving SIGWINCH */
+/**
+ * mutt_resize_screen - Called after receiving SIGWINCH
+ */
 void mutt_resize_screen(void)
 {
   char *cp = NULL;

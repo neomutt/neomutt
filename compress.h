@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Compressed mbox local mailbox type
+ *
+ * @authors
  * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -17,7 +22,7 @@
  */
 
 #ifndef _MUTT_COMPRESS_H
-#define _MUTT_COMPRESS_H 1
+#define _MUTT_COMPRESS_H
 
 #include <stdbool.h>
 #include "mx.h"

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Standalone tool to dump the contents of a PGP key ring
+ *
+ * @authors
  * Copyright (C) 1997-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -190,7 +195,9 @@ static bool pgpring_string_matches_hint(const char *s, const char *hints[], int 
   return false;
 }
 
-/* The actual key ring parser */
+/**
+ * pgp_make_pgp2_fingerprint - The actual key ring parser
+ */
 static void pgp_make_pgp2_fingerprint(unsigned char *buff, unsigned char *digest)
 {
   struct Md5Ctx ctx;

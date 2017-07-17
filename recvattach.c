@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Routines for managing attachments
+ *
+ * @authors
  * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2006 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -151,21 +156,26 @@ struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type,
   return idx;
 }
 
-/* %c = character set: convert?
- * %C = character set
- * %D = deleted flag
- * %d = description
- * %e = MIME content-transfer-encoding
- * %F = filename for content-disposition header
- * %f = filename
- * %I = content-disposition, either I (inline) or A (attachment)
- * %t = tagged flag
- * %T = tree chars
- * %m = major MIME type
- * %M = MIME subtype
- * %n = attachment number
- * %s = size
- * %u = unlink
+/**
+ * mutt_attach_fmt - Format string for attachment menu
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%c     | character set: convert?
+ * | \%C     | character set
+ * | \%D     | deleted flag
+ * | \%d     | description
+ * | \%e     | MIME content-transfer-encoding
+ * | \%F     | filename for content-disposition header
+ * | \%f     | filename
+ * | \%I     | content-disposition, either I (inline) or A (attachment)
+ * | \%t     | tagged flag
+ * | \%T     | tree chars
+ * | \%m     | major MIME type
+ * | \%M     | MIME subtype
+ * | \%n     | attachment number
+ * | \%s     | size
+ * | \%u     | unlink
  */
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,

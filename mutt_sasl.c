@@ -1,6 +1,11 @@
 /**
+ * @file
+ * SASL authentication support
+ *
+ * @authors
  * Copyright (C) 2000-2008,2012,2014 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -90,7 +95,11 @@ static sasl_callback_t mutt_sasl_callbacks[5];
 
 static sasl_secret_t *secret_ptr = NULL;
 
-/* utility function, stolen from sasl2 sample code */
+/**
+ * iptostring - Convert IP Address to string
+ *
+ * utility function, copied from sasl2 sample code
+ */
 static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out, unsigned outlen)
 {
   char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
@@ -116,7 +125,9 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
   return SASL_OK;
 }
 
-/* mutt_sasl_cb_log: callback to log SASL messages */
+/**
+ * mutt_sasl_cb_log - callback to log SASL messages
+ */
 static int mutt_sasl_cb_log(void *context, int priority, const char *message)
 {
   mutt_debug(priority, "SASL: %s\n", message);
@@ -124,8 +135,11 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
   return SASL_OK;
 }
 
-/* mutt_sasl_start: called before doing a SASL exchange - initialises library
- *   (if necessary). */
+/**
+ * mutt_sasl_start - Initialise SASL library
+ *
+ * Call before doing an SASL exchange - initialises library (if necessary).
+ */
 static int mutt_sasl_start(void)
 {
   static bool sasl_init = false;
@@ -158,7 +172,9 @@ static int mutt_sasl_start(void)
   return SASL_OK;
 }
 
-/* mutt_sasl_cb_authname: callback to retrieve authname or user from Account */
+/**
+ * mutt_sasl_cb_authname - callback to retrieve authname or user from Account
+ */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned *len)
 {
   struct Account *account = (struct Account *) context;
@@ -253,9 +269,12 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
   return mutt_sasl_callbacks;
 }
 
-/* mutt_sasl_client_new: wrapper for sasl_client_new which also sets various
- * security properties. If this turns out to be fine for POP too we can
- * probably stop exporting mutt_sasl_get_callbacks(). */
+/**
+ * mutt_sasl_client_new - wrapper for sasl_client_new
+ *
+ * which also sets various security properties. If this turns out to be fine
+ * for POP too we can probably stop exporting mutt_sasl_get_callbacks().
+ */
 int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 {
   sasl_security_properties_t secprops;
@@ -383,10 +402,13 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
   return SASL_OK;
 }
 
-/* mutt_sasl_conn_open: empty wrapper for underlying open function. We
- *   don't know in advance that a connection will use SASL, so we
- *   replace conn's methods with sasl methods when authentication
- *   is successful, using mutt_sasl_setup_conn */
+/**
+ * mutt_sasl_conn_open - empty wrapper for underlying open function
+ *
+ * We don't know in advance that a connection will use SASL, so we replace
+ * conn's methods with sasl methods when authentication is successful, using
+ * mutt_sasl_setup_conn
+ */
 static int mutt_sasl_conn_open(struct Connection *conn)
 {
   struct SaslData *sasldata = NULL;
@@ -400,8 +422,12 @@ static int mutt_sasl_conn_open(struct Connection *conn)
   return rc;
 }
 
-/* mutt_sasl_conn_close: calls underlying close function and disposes of
- *   the sasl_conn_t object, then restores connection to pre-sasl state */
+/**
+ * mutt_sasl_conn_close - close SASL connection
+ *
+ * Calls underlying close function and disposes of the sasl_conn_t object, then
+ * restores connection to pre-sasl state
+ */
 static int mutt_sasl_conn_close(struct Connection *conn)
 {
   struct SaslData *sasldata = NULL;
@@ -546,6 +572,7 @@ static int mutt_sasl_conn_poll(struct Connection *conn)
 
   return rc;
 }
+
 /* SASL can stack a protection layer on top of an existing connection.
  * To handle this, we store a saslconn_t in conn->sockdata, and write
  * wrappers which en/decode the read/write stream, then replace sockdata
@@ -559,9 +586,12 @@ static int mutt_sasl_conn_poll(struct Connection *conn)
  * abstraction problem is that there is more in Connection than there
  * needs to be. Ideally it would have only (void*)data and methods. */
 
-/* mutt_sasl_setup_conn: replace connection methods, sockdata with
- *   SASL wrappers, for protection layers. Also get ssf, as a fastpath
- *   for the read/write methods. */
+/**
+ * mutt_sasl_setup_conn - Set up an SASL connection
+ *
+ * replace connection methods, sockdata with SASL wrappers, for protection
+ * layers. Also get ssf, as a fastpath for the read/write methods.
+ */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
   struct SaslData *sasldata = safe_malloc(sizeof(struct SaslData));

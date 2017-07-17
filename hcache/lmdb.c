@@ -1,9 +1,14 @@
 /**
+ * @file
+ * LMDB backend for the header cache
+ *
+ * @authors
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
  * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
  * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -28,6 +33,9 @@
  * The file is mmap(2)'d into memory. */
 const size_t LMDB_DB_SIZE = 2147483648;
 
+/**
+ * enum MdbTxnMode - LMDB transaction state
+ */
 enum MdbTxnMode
 {
   TXN_UNINITIALIZED,
@@ -35,6 +43,9 @@ enum MdbTxnMode
   TXN_WRITE
 };
 
+/**
+ * struct HcacheLmdbCtx - LMDB context
+ */
 struct HcacheLmdbCtx
 {
   MDB_env *env;

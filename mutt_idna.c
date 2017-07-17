@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Handling of international domain names
+ *
+ * @authors
  * Copyright (C) 2003,2005,2008-2009 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -284,7 +289,9 @@ int mutt_addrlist_to_local(struct Address *a)
   return 0;
 }
 
-/* convert just for displaying purposes */
+/**
+ * mutt_addr_for_display - convert just for displaying purposes
+ */
 const char *mutt_addr_for_display(struct Address *a)
 {
   char *user = NULL, *domain = NULL;
@@ -307,7 +314,10 @@ const char *mutt_addr_for_display(struct Address *a)
   FREE(&local_mailbox);
   return buff;
 }
-/* Convert an Envelope structure */
+
+/**
+ * mutt_env_to_local - Convert an Envelope structure
+ */
 void mutt_env_to_local(struct Envelope *e)
 {
   mutt_addrlist_to_local(e->return_path);

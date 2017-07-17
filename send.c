@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Prepare and send an email
+ *
+ * @authors
  * Copyright (C) 1996-2002,2004,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -81,7 +86,12 @@ static void append_signature(FILE *f)
   }
 }
 
-/* compare two e-mail addresses and return 1 if they are equivalent */
+/**
+ * addrcmp - compare two e-mail addresses
+ * @param a Address 1
+ * @param b Address 2
+ * @return true if they are equivalent
+ */
 static bool addrcmp(struct Address *a, struct Address *b)
 {
   if (!a->mailbox || !b->mailbox)
@@ -91,7 +101,9 @@ static bool addrcmp(struct Address *a, struct Address *b)
   return true;
 }
 
-/* search an e-mail address in a list */
+/**
+ * addrsrc - search an e-mail address in a list
+ */
 static int addrsrc(struct Address *a, struct Address *lst)
 {
   for (; lst; lst = lst->next)
@@ -102,7 +114,11 @@ static int addrsrc(struct Address *a, struct Address *lst)
   return 0;
 }
 
-/* removes addresses from "b" which are contained in "a" */
+/**
+ * mutt_remove_xrefs - Remove cross-references
+ *
+ * Remove addresses from "b" which are contained in "a"
+ */
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
 {
   struct Address *top = NULL, *p = NULL, *prev = NULL;
@@ -141,8 +157,11 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
   return top;
 }
 
-/* remove any address which matches the current user.  if `leave_only' is
- * nonzero, don't remove the user's address if it is the only one in the list
+/**
+ * remove_user - Remove any address which matches the current user
+ * @param a          List of addresses
+ * @param leave_only If set, don't remove the user's address if it it the only
+ *                   one in the list
  */
 static struct Address *remove_user(struct Address *a, int leave_only)
 {
@@ -857,11 +876,17 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
   return 0;
 }
 
-static int generate_body(FILE *tempfp,        /* stream for outgoing message */
-                         struct Header *msg,  /* header for outgoing message */
-                         int flags,           /* compose mode */
-                         struct Context *ctx, /* current mailbox */
-                         struct Header *cur)  /* current message */
+/**
+ * generate_body - Create a new email body
+ * @param tempfp stream for outgoing message
+ * @param msg    header for outgoing message
+ * @param flags  compose mode
+ * @param ctx    current mailbox
+ * @param cur    current message
+ * @return 0 on success, -1 on error
+ */
+static int generate_body(FILE *tempfp, struct Header *msg, int flags,
+                         struct Context *ctx, struct Header *cur)
 {
   int i;
   struct Header *h = NULL;
@@ -1030,9 +1055,13 @@ void mutt_set_followup_to(struct Envelope *e)
 }
 
 
-/* look through the recipients of the message we are replying to, and if
-   we find an address that matches $alternates, we use that as the default
-   from field */
+/**
+ * set_reverse_name - Try to set the 'from' field from the recipients
+ *
+ * look through the recipients of the message we are replying to, and if we
+ * find an address that matches $alternates, we use that as the default from
+ * field
+ */
 static struct Address *set_reverse_name(struct Envelope *env)
 {
   struct Address *tmp = NULL;
@@ -1156,7 +1185,9 @@ static int send_message(struct Header *msg)
   return i;
 }
 
-/* rfc2047 encode the content-descriptions */
+/**
+ * mutt_encode_descriptions - rfc2047 encode the content-descriptions
+ */
 void mutt_encode_descriptions(struct Body *b, short recurse)
 {
   struct Body *t = NULL;
@@ -1172,7 +1203,9 @@ void mutt_encode_descriptions(struct Body *b, short recurse)
   }
 }
 
-/* rfc2047 decode them in case of an error */
+/**
+ * decode_descriptions - rfc2047 decode them in case of an error
+ */
 static void decode_descriptions(struct Body *b)
 {
   struct Body *t = NULL;
@@ -1305,16 +1338,21 @@ static int search_attach_keyword(char *filename)
   return found;
 }
 
-/*
- * Returns 0 if the message was successfully sent
- *        -1 if the message was aborted or an error occurred
- *         1 if the message was postponed
+/**
+ * ci_send_message - Send an email
+ * @param flags    send mode
+ * @param msg      template to use for new message
+ * @param tempfile file specified by -i or -H
+ * @param ctx      current mailbox
+ * @param cur      current message
+ * @return
+ *
+ * *  0 Message was successfully sent
+ * * -1 Message was aborted or an error occurred
+ * *  1 Message was postponed
  */
-int ci_send_message(int flags,           /* send mode */
-                    struct Header *msg,  /* template to use for new message */
-                    char *tempfile,      /* file specified by -i or -H */
-                    struct Context *ctx, /* current mailbox */
-                    struct Header *cur)  /* current message */
+int ci_send_message(int flags, struct Header *msg, char *tempfile,
+                    struct Context *ctx, struct Header *cur)
 {
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */

@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Misc PGP helper routines
+ *
+ * @authors
  * Copyright (C) 1996-1997 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -25,6 +30,9 @@
 #include <time.h>
 #include "lib.h"
 
+/**
+ * struct PgpSignature - PGP Signature
+ */
 struct PgpSignature
 {
   struct PgpSignature *next;
@@ -33,6 +41,9 @@ struct PgpSignature
   unsigned long sid2;
 };
 
+/**
+ * struct PgpUid - PGP User ID
+ */
 struct PgpUid
 {
   char *addr;
@@ -43,6 +54,9 @@ struct PgpUid
   struct PgpSignature *sigs;
 };
 
+/**
+ * struct PgpKeyInfo - Information about a PGP key
+ */
 struct PgpKeyInfo
 {
   char *keyid;

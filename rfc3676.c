@@ -1,9 +1,14 @@
 /**
+ * @file
+ * RFC 3676 Format Flowed routines
+ *
+ * @authors
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
  * Copyright (C) 2005-2009 Rocco Rutte <pdmef@gmx.net>
  * Copyright (C) 2010 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -39,6 +44,9 @@
 
 #define FLOWED_MAX 72
 
+/**
+ * struct FlowedState - State of a Format-Flowed line of text
+ */
 struct FlowedState
 {
   size_t width;
@@ -60,10 +68,13 @@ static int get_quote_level(const char *line)
   return quoted;
 }
 
-/* Determines whether to add spacing between/after each quote level:
- *    >>>foo
+/**
+ * space_quotes - Should we add spaces between quote levels
+ *
+ * Determines whether to add spacing between/after each quote level:
+ * `   >>>foo`
  * becomes
- *    > > > foo
+ * `   > > > foo`
  */
 static int space_quotes(struct State *s)
 {
@@ -76,10 +87,13 @@ static int space_quotes(struct State *s)
   return option(OPTREFLOWSPACEQUOTES);
 }
 
-/* Determines whether to add a trailing space to quotes:
- *    >>> foo
+/**
+ * add_quote_suffix - Should we add a trailing space to quotes
+ *
+ * Determines whether to add a trailing space to quotes:
+ * `   >>> foo`
  * as opposed to
- *    >>>foo
+ * `   >>>foo`
  */
 static bool add_quote_suffix(struct State *s, int ql)
 {
@@ -141,9 +155,12 @@ static void flush_par(struct State *s, struct FlowedState *fst)
   fst->spaces = 0;
 }
 
-/* Calculate the paragraph width based upon the current quote level. The start
- * of a quoted line will be ">>> ", so we need to subtract the space required
- * for the prefix from the terminal width. */
+/**
+ * quote_width - Calculate the paragraph width based upon the quote level
+ *
+ * The start of a quoted line will be ">>> ", so we need to subtract the space
+ * required for the prefix from the terminal width.
+ */
 static int quote_width(struct State *s, int ql)
 {
   int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
@@ -316,19 +333,20 @@ int rfc3676_handler(struct Body *a, struct State *s)
   return 0;
 }
 
-/*
- * This routine does RfC3676 space stuffing since it's a MUST.
+/**
+ * rfc3676_space_stuff - Perform required RFC3676 space stuffing
+ *
  * Space stuffing means that we have to add leading spaces to
  * certain lines:
  *   - lines starting with a space
  *   - lines starting with 'From '
- * This routine is only called once right after editing the
- * initial message so it's up to the user to take care of stuffing
- * when editing the message several times before actually sending it
+ * This routine is only called once right after editing the initial message so
+ * it's up to the user to take care of stuffing when editing the message
+ * several times before actually sending it
  *
- * This is more or less a hack as it replaces the message's content with
- * a freshly created copy in a tempfile and modifies the file's mtime
- * so we don't trigger code paths watching for mtime changes
+ * This is more or less a hack as it replaces the message's content with a
+ * freshly created copy in a tempfile and modifies the file's mtime so we don't
+ * trigger code paths watching for mtime changes
  */
 void rfc3676_space_stuff(struct Header *hdr)
 {

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Send/reply with an attachment
+ *
+ * @authors
  * Copyright (C) 1999-2004 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -36,8 +41,11 @@
 #include "rfc822.h"
 #include "state.h"
 
-/* some helper functions to verify that we are exclusively operating
- * on message/rfc822 attachments
+/**
+ * check_msg - Are we working with an RFC822 message
+ *
+ * some helper functions to verify that we are exclusively operating on
+ * message/rfc822 attachments
  */
 static bool check_msg(struct Body *b, bool err)
 {
@@ -69,7 +77,9 @@ static bool check_all_msg(struct AttachPtr **idx, short idxlen, struct Body *cur
 }
 
 
-/* can we decode all tagged attachments? */
+/**
+ * check_can_decode - can we decode all tagged attachments?
+ */
 static short check_can_decode(struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
   if (cur)
@@ -92,8 +102,8 @@ static short count_tagged(struct AttachPtr **idx, short idxlen)
   return count;
 }
 
-/* count the number of tagged children below a multipart or message
- * attachment.
+/**
+ * count_tagged_children - tagged children below a multipart/message attachment
  */
 static short count_tagged_children(struct AttachPtr **idx, short idxlen, short i)
 {
@@ -109,10 +119,8 @@ static short count_tagged_children(struct AttachPtr **idx, short idxlen, short i
 
 
 /**
- **
- ** The bounce function, from the attachment menu
- **
- **/
+ * mutt_attach_bounce - Bounce function, from the attachment menu
+ */
 void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
                         short idxlen, struct Body *cur)
 {
@@ -232,11 +240,8 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 
 
 /**
- **
- ** resend-message, from the attachment menu
- **
- **
- **/
+ * mutt_attach_resend - resend-message, from the attachment menu
+ */
 void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
                         short idxlen, struct Body *cur)
 {
@@ -255,12 +260,12 @@ void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 
 
 /**
- **
  ** forward-message, from the attachment menu
- **
  **/
 
-/* try to find a common parent message for the tagged attachments. */
+/**
+ * find_common_parent - find a common parent message for the tagged attachments
+ */
 static struct Header *find_common_parent(struct AttachPtr **idx, short idxlen, short nattach)
 {
   short i;
@@ -283,12 +288,13 @@ static struct Header *find_common_parent(struct AttachPtr **idx, short idxlen, s
   return NULL;
 }
 
-/*
- * check whether attachment #i is a parent of the attachment
- * pointed to by cur
+/**
+ * is_parent - Check whether one attachment is the parent of another
  *
- * Note: This and the calling procedure could be optimized quite a
- * bit.  For now, it's not worth the effort.
+ * check whether attachment i is a parent of the attachment pointed to by cur
+ *
+ * Note: This and the calling procedure could be optimized quite a bit.
+ * For now, it's not worth the effort.
  */
 static bool is_parent(short i, struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
@@ -348,8 +354,11 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
   mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix : NULL);
 }
 
-/* Attach all the body parts which can't be decoded.
- * This code is shared by forwarding and replying. */
+/**
+ * copy_problematic_attachments - Attach the body parts which can't be decoded
+ *
+ * This code is shared by forwarding and replying.
+ */
 static struct Body **copy_problematic_attachments(FILE *fp, struct Body **last,
                                                   struct AttachPtr **idx,
                                                   short idxlen, short force)
@@ -366,8 +375,9 @@ static struct Body **copy_problematic_attachments(FILE *fp, struct Body **last,
   return last;
 }
 
-/*
- * forward one or several MIME bodies
+/**
+ * attach_forward_bodies - forward one or several MIME bodies
+ *
  * (non-message types)
  */
 static void attach_forward_bodies(FILE *fp, struct Header *hdr,
@@ -529,15 +539,15 @@ bail:
 }
 
 
-/*
- * Forward one or several message-type attachments. This
- * is different from the previous function
- * since we want to mimic the index menu's behavior.
+/**
+ * attach_forward_msgs - Forward one or several message-type attachments
  *
- * Code reuse from ci_send_message is not possible here -
- * ci_send_message relies on a context structure to find messages,
- * while, on the attachment menu, messages are referenced through
- * the attachment index.
+ * This is different from the previous function since we want to mimic the
+ * index menu's behavior.
+ *
+ * Code reuse from ci_send_message is not possible here - ci_send_message
+ * relies on a context structure to find messages, while, on the attachment
+ * menu, messages are referenced through the attachment index.
  */
 static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
                                 short idxlen, struct Body *cur, int flags)
@@ -660,13 +670,11 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 
 
 /**
- **
  ** the various reply functions, from the attachment menu
- **
- **
  **/
 
-/* Create the envelope defaults for a reply.
+/**
+ * attach_reply_envelope_defaults - Create the envelope defaults for a reply
  *
  * This function can be invoked in two ways.
  *
@@ -676,7 +684,7 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
  * Or, parent is non-NULL.  In this case, cur is the common parent of all the
  * tagged attachments.
  *
- * Note that this code is horribly similar to envelope_defaults () from send.c.
+ * Note that this code is horribly similar to envelope_defaults() from send.c.
  */
 static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr **idx,
                                           short idxlen, struct Header *parent, int flags)
@@ -761,7 +769,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
 }
 
 
-/*  This is _very_ similar to send.c's include_reply(). */
+/**
+ * attach_include_reply - This is _very_ similar to send.c's include_reply()
+ */
 static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int flags)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;

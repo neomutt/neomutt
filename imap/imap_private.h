@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Shared constants/structs that are private to IMAP
+ *
+ * @authors
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -17,7 +22,7 @@
  */
 
 #ifndef _MUTT_IMAP_PRIVATE_H
-#define _MUTT_IMAP_PRIVATE_H 1
+#define _MUTT_IMAP_PRIVATE_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -81,13 +86,19 @@ struct Progress;
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
 #define IMAP_DATELEN 27
 
+/**
+ * enum ImapFlags - IMAP server responses
+ */
 enum ImapFlags
 {
   IMAP_FATAL = 1,
   IMAP_BYE
 };
 
-enum
+/**
+ * enum ImapState - IMAP connection state
+ */
+enum ImapState
 {
   /* States */
   IMAP_DISCONNECTED = 0,
@@ -99,31 +110,35 @@ enum
   IMAP_IDLE
 };
 
-enum
+/**
+ * enum ImapNamespace - IMAP namespace types
+ */
+enum ImapNamespace
 {
-  /* Namespace types */
   IMAP_NS_PERSONAL = 0,
   IMAP_NS_OTHER,
   IMAP_NS_SHARED
 };
 
-/* Capabilities we are interested in */
-enum
+/**
+ * enum ImapCaps - Capabilities we are interested in
+ */
+enum ImapCaps
 {
   IMAP4 = 0,
   IMAP4REV1,
   STATUS,
-  ACL,           /* RFC 2086: IMAP4 ACL extension */
-  NAMESPACE,     /* RFC 2342: IMAP4 Namespace */
-  ACRAM_MD5,     /* RFC 2195: CRAM-MD5 authentication */
-  AGSSAPI,       /* RFC 1731: GSSAPI authentication */
-  AUTH_ANON,     /* AUTH=ANONYMOUS */
-  STARTTLS,      /* RFC 2595: STARTTLS */
-  LOGINDISABLED, /*           LOGINDISABLED */
-  IDLE,          /* RFC 2177: IDLE */
-  SASL_IR,       /* SASL initial response draft */
-  ENABLE,        /* RFC 5161 */
-  X_GM_EXT1,     /* https://developers.google.com/gmail/imap/imap-extensions */
+  ACL,           /**< RFC 2086: IMAP4 ACL extension */
+  NAMESPACE,     /**< RFC 2342: IMAP4 Namespace */
+  ACRAM_MD5,     /**< RFC 2195: CRAM-MD5 authentication */
+  AGSSAPI,       /**< RFC 1731: GSSAPI authentication */
+  AUTH_ANON,     /**< AUTH=ANONYMOUS */
+  STARTTLS,      /**< RFC 2595: STARTTLS */
+  LOGINDISABLED, /**<           LOGINDISABLED */
+  IDLE,          /**< RFC 2177: IDLE */
+  SASL_IR,       /**< SASL initial response draft */
+  ENABLE,        /**< RFC 5161 */
+  X_GM_EXT1,     /**< https://developers.google.com/gmail/imap/imap-extensions */
 
   CAPMAX
 };
@@ -132,13 +147,18 @@ enum
 #define MUTT_IMAP_CONN_NONEW    (1 << 0)
 #define MUTT_IMAP_CONN_NOSELECT (1 << 1)
 
-/* -- data structures -- */
+/**
+ * struct ImapCache - IMAP-specific message cache
+ */
 struct ImapCache
 {
   unsigned int uid;
   char *path;
 };
 
+/**
+ * struct ImapStatus - Status of an IMAP mailbox
+ */
 struct ImapStatus
 {
   char *name;
@@ -150,6 +170,9 @@ struct ImapStatus
   unsigned int unseen;
 };
 
+/**
+ * struct ImapList - Items in an IMAP browser
+ */
 struct ImapList
 {
   char *name;
@@ -158,13 +181,18 @@ struct ImapList
   bool noinferiors;
 };
 
-/* IMAP command structure */
+/**
+ * struct ImapCommand - IMAP command structure
+ */
 struct ImapCommand
 {
   char seq[SEQLEN + 1];
   int state;
 };
 
+/**
+ * enum ImapCommandType - IMAP command type
+ */
 enum ImapCommandType
 {
   IMAP_CT_NONE = 0,
@@ -172,9 +200,13 @@ enum ImapCommandType
   IMAP_CT_STATUS
 };
 
+/**
+ * struct ImapData - IMAP-specific server data
+ *
+ * This data is specific to a Connection to an IMAP server
+ */
 struct ImapData
 {
-  /* This data is specific to a Connection to an IMAP server */
   struct Connection *conn;
   bool recovering;
   unsigned char state;

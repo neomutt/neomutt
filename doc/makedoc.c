@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Read nroff-like comments in the code and convert them into documentation
+ *
+ * @authors
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -40,7 +45,10 @@ extern int optind;
 
 #define BUFFSIZE 2048
 
-enum output_formats_t
+/**
+ * enum OutputFormats - Documentation output formats
+ */
+enum OutputFormats
 {
   F_CONF,
   F_MAN,
@@ -61,7 +69,10 @@ enum output_formats_t
 #define D_IL (1 << 10)
 #define D_TT (1 << 11)
 
-enum
+/**
+ * enum SpecialChars - All specially-treated characters
+ */
+enum SpecialChars
 {
   SP_START_EM,
   SP_START_BF,
@@ -84,7 +95,7 @@ enum
   SP_REFER
 };
 
-enum output_formats_t OutputFormat = F_NONE;
+enum OutputFormats OutputFormat = F_NONE;
 char *Progname = NULL;
 short Debug = 0;
 
@@ -754,7 +765,9 @@ static int commit_buff(char *buff, char **d, FILE *out, int docstat)
  **   This is used to protect indentations in tables.
  **/
 
-/* reduce CDATA to ID */
+/**
+ * sgml_id_fputs - reduce CDATA to ID
+ */
 static int sgml_id_fputs(const char *s, FILE *out)
 {
   char id;
@@ -930,7 +943,10 @@ static int handle_docline(char *l, FILE *out, int docstat)
  * following string definitions!
  */
 
-enum
+/**
+ * enum DataType - User-variable types
+ */
+enum DataType
 {
   DT_NONE = 0,
   DT_BOOL,
@@ -946,7 +962,7 @@ enum
   DT_MBCHARTBL
 };
 
-struct
+struct VariableTypes
 {
   char *machine;
   char *human;

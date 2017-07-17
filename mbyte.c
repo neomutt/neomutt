@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Convert strings between multibyte and utf8 encodings
+ *
+ * @authors
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -180,15 +185,17 @@ static size_t utf8rtowc(wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
   return (size_t) -2;
 }
 
-/*
- * For systems that don't have them, we provide here our own
- * implementations of wcrtomb(), mbrtowc(), iswprint() and wcwidth().
- * Instead of using the locale, as these functions normally would,
- * we use Mutt's Charset variable. We support 3 types of charset:
- * (1) For 8-bit charsets, wchar_t uses the same encoding as char.
- * (2) For UTF-8, wchar_t uses UCS.
- * (3) For stateless Japanese encodings, we use UCS and convert
- *     via UTF-8 using iconv.
+/**
+ * wcrtomb_iconv - Convert wide characters to multibyte characters
+ *
+ * For systems that don't have them, we provide here our own implementations of
+ * wcrtomb(), mbrtowc(), iswprint() and wcwidth().  Instead of using the
+ * locale, as these functions normally would, we use Mutt's Charset variable.
+ * We support 3 types of charset:
+ * 1. For 8-bit charsets, wchar_t uses the same encoding as char.
+ * 2. For UTF-8, wchar_t uses UCS.
+ * 3. For stateless Japanese encodings, we use UCS and convert via UTF-8 using
+ *    iconv.
  * Unfortunately, we can't handle non-stateless encodings.
  */
 static size_t wcrtomb_iconv(char *s, wchar_t wc, iconv_t cd)
@@ -475,8 +482,10 @@ int iswupper(wint_t wc)
     return (0 <= wc && wc < 256) ? isupper(wc) : 0;
 }
 
-/*
- * l10n for Japanese:
+/**
+ * wcwidth_ja - Calculate character widths for Japanese
+ *
+ * L10N for Japanese:
  *   Symbols, Greek and Cyrillic in JIS X 0208, Japanese Kanji
  *   Character Set, have a column width of 2.
  */

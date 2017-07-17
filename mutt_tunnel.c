@@ -1,7 +1,12 @@
 /**
+ * @file
+ * Support for network tunnelling
+ *
+ * @authors
  * Copyright (C) 2000 Manoj Kasichainula <manoj@io.com>
  * Copyright (C) 2001,2005 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -33,7 +38,9 @@
 #include "mutt_socket.h"
 #include "protos.h"
 
-/* -- data types -- */
+/**
+ * struct TunnelData - A network tunnel (pair of sockets)
+ */
 struct TunnelData
 {
   pid_t pid;
@@ -179,7 +186,6 @@ static int tunnel_socket_poll(struct Connection *conn)
   return rc;
 }
 
-/* -- public functions -- */
 int mutt_tunnel_socket_setup(struct Connection *conn)
 {
   conn->conn_open = tunnel_socket_open;

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI present the user with a selectable list
+ *
+ * @authors
  * Copyright (C) 1996-2000,2002,2012 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -577,11 +582,13 @@ void menu_prev_line(struct Menu *menu)
     mutt_error(_("You cannot scroll up farther."));
 }
 
-/*
- * pageup:   jumplen == -pagelen
- * pagedown: jumplen == pagelen
- * halfup:   jumplen == -pagelen/2
- * halfdown: jumplen == pagelen/2
+/**
+ * menu_length_jump - Calculate the destination of a jump
+ *
+ * * pageup:   jumplen == -pagelen
+ * * pagedown: jumplen == pagelen
+ * * halfup:   jumplen == -pagelen/2
+ * * halfdown: jumplen == pagelen/2
  */
 #define DIRECTION ((neg * 2) + 1)
 static void menu_length_jump(struct Menu *menu, int jumplen)
