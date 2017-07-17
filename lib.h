@@ -63,9 +63,9 @@
  * definition, it obviously won't produce a correct result. */
 #define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
-/* For mutt_format_string() justifications */
+/* For mutt_simple_format() justifications */
 /* Making left 0 and center -1 is of course completely nonsensical, but
- * it retains compatibility for any patches that call mutt_format_string.
+ * it retains compatibility for any patches that call mutt_simple_format.
  * Once patches are updated to use FMT_*, these can be made sane. */
 #define FMT_LEFT   0
 #define FMT_RIGHT  1

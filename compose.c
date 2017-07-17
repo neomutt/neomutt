@@ -227,7 +227,7 @@ static void init_header_padding(void)
 
 static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
-  mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
+  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
                     (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
@@ -694,7 +694,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p)
 {
-  mutt_FormatString(buf, buflen, col, cols, p, compose_format_str, (unsigned long) menu, 0);
+  mutt_expando_format(buf, buflen, col, cols, p, compose_format_str, (unsigned long) menu, 0);
 }
 
 /**

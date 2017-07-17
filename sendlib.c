@@ -2471,7 +2471,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   {
     char cmd[LONG_STRING];
 
-    mutt_FormatString(cmd, sizeof(cmd), 0, MuttIndexWindow->cols, NONULL(Inews),
+    mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols, NONULL(Inews),
                       nntp_format_str, 0, 0);
     if (!*cmd)
     {

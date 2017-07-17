@@ -26,7 +26,7 @@
 #include <stddef.h>
 
 /**
- * enum FormatFlag - Control the behaviour of mutt_FormatString()
+ * enum FormatFlag - Control the behaviour of mutt_expando_format()
  */
 enum FormatFlag
 {
@@ -45,7 +45,7 @@ typedef const char *format_t(char *dest, size_t destlen, size_t col, int cols,
                              const char *ifstring, const char *elsestring,
                              unsigned long data, enum FormatFlag flags);
 
-void mutt_FormatString(char *dest,         /* output buffer */
+void mutt_expando_format(char *dest,         /* output buffer */
                        size_t destlen,     /* output buffer len */
                        size_t col,         /* starting column (nonzero when called recursively) */
                        int cols,           /* maximum columns */

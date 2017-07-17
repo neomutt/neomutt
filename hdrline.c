@@ -1338,10 +1338,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   }
 
   if (optional)
-    mutt_FormatString(dest, destlen, col, cols, ifstring, hdr_format_str,
+    mutt_expando_format(dest, destlen, col, cols, ifstring, hdr_format_str,
                       (unsigned long) hfi, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_FormatString(dest, destlen, col, cols, elsestring, hdr_format_str,
+    mutt_expando_format(dest, destlen, col, cols, elsestring, hdr_format_str,
                       (unsigned long) hfi, flags);
 
   return src;
@@ -1358,12 +1358,12 @@ void _mutt_make_string(char *dest, size_t destlen, const char *s,
   hfi.ctx = ctx;
   hfi.pager_progress = 0;
 
-  mutt_FormatString(dest, destlen, 0, MuttIndexWindow->cols, s, hdr_format_str,
+  mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s, hdr_format_str,
                     (unsigned long) &hfi, flags);
 }
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags)
 {
-  mutt_FormatString(dst, dstlen, 0, cols, s, hdr_format_str, (unsigned long) hfi, flags);
+  mutt_expando_format(dst, dstlen, 0, cols, s, hdr_format_str, (unsigned long) hfi, flags);
 }

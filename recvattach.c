@@ -382,15 +382,15 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
   }
 
   if (optional)
-    mutt_FormatString(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_FormatString(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
   return src;
 }
 
 static void attach_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
-  mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
+  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
                     (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_ARROWCURSOR);
 }

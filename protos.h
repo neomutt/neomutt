@@ -199,7 +199,7 @@ void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const cha
 void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
 void mutt_fix_reply_recipients(struct Envelope *env);
 void mutt_folder_hook(char *path);
-void mutt_format_string(char *dest, size_t destlen, int min_width, int max_width, int justify,
+void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width, int justify,
                         char m_pad_char, const char *s, size_t n, int arboreal);
 void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s);
 void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);

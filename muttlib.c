@@ -1331,7 +1331,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
 
 
 /**
- * mutt_FormatString - Expand expandos (%x) in a string
+ * mutt_expando_format - Expand expandos (%x) in a string
  * @param dest     output buffer
  * @param destlen  output buffer len
  * @param col      starting column (nonzero when called recursively)
@@ -1341,8 +1341,9 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
  * @param data     callback data
  * @param flags    callback flags
  */
-void mutt_FormatString(char *dest, size_t destlen, size_t col, int cols, const char *src,
-                       format_t *callback, unsigned long data, enum FormatFlag flags)
+void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
+                         const char *src, format_t *callback,
+                         unsigned long data, enum FormatFlag flags)
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp = NULL, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
@@ -1408,7 +1409,7 @@ void mutt_FormatString(char *dest, size_t destlen, size_t col, int cols, const c
         mutt_extract_token(word, srcbuf, 0);
         mutt_debug(3, "fmtpipe %2d: %s\n", i++, word->data);
         mutt_buffer_addch(command, '\'');
-        mutt_FormatString(buf, sizeof(buf), 0, cols, word->data, callback, data,
+        mutt_expando_format(buf, sizeof(buf), 0, cols, word->data, callback, data,
                           flags | MUTT_FORMAT_NOFILTER);
         for (p = buf; p && *p; p++)
         {
@@ -1448,7 +1449,7 @@ void mutt_FormatString(char *dest, size_t destlen, size_t col, int cols, const c
 
           /* If the result ends with '%', this indicates that the filter
            * generated %-tokens that mutt can expand.  Eliminate the '%'
-           * marker and recycle the string through mutt_FormatString().
+           * marker and recycle the string through mutt_expando_format().
            * To literally end with "%", use "%%". */
           if ((n > 0) && dest[n - 1] == '%')
           {
@@ -1464,7 +1465,7 @@ void mutt_FormatString(char *dest, size_t destlen, size_t col, int cols, const c
                  * it back for the recursive call since the expansion of
                  * format pipes does not try to append a nul itself.
                  */
-                mutt_FormatString(dest, destlen + 1, col, cols, recycler,
+                mutt_expando_format(dest, destlen + 1, col, cols, recycler,
                                   callback, data, flags);
                 FREE(&recycler);
               }
@@ -1667,7 +1668,7 @@ void mutt_FormatString(char *dest, size_t destlen, size_t col, int cols, const c
           int pad;
 
           /* get contents after padding */
-          mutt_FormatString(buf, sizeof(buf), 0, cols, src + pl, callback, data, flags);
+          mutt_expando_format(buf, sizeof(buf), 0, cols, src + pl, callback, data, flags);
           len = mutt_strlen(buf);
           wid = mutt_strwidth(buf);
 
