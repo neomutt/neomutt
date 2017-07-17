@@ -281,8 +281,12 @@ if test $ISPELL != no; then
 	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
 fi
 
+want_slang=no
 AC_ARG_WITH(slang, AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
-	[AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
+	[want_slang=$withval])
+if test $want_slang != no; then
+	withval=$want_slang
+	AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
 		[AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <sys/param.h>
 #include <stdlib.h>
@@ -340,10 +344,8 @@ main ()
 	AC_CHECK_LIB(slang, SLtt_get_terminfo,
 		[LIBS="$LIBS -lslang -lm"],
 		[AC_MSG_ERROR(unable to compile.  check config.log)], -lm)
-
-	],
-
-	[mutt_cv_curses=/usr
+else
+	mutt_cv_curses=/usr
 	AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
 		[if test x$withval != xyes; then
 			mutt_cv_curses=$withval
@@ -391,7 +393,7 @@ main ()
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
 	fi
 	AC_CHECK_FUNCS([use_extended_names])
-	])
+fi
 
 AC_HEADER_STDC
 
