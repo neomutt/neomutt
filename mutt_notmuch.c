@@ -204,6 +204,9 @@ static void debug_print_tags(notmuch_message_t *msg)
 /**
  * url_free_tags - Free a list of tags
  * @param tags List of tags
+ *
+ * Tags are stored as a singly-linked list.
+ * Free all the strings and the list, itself.
  */
 static void url_free_tags(struct UriTag *tags)
 {
@@ -302,6 +305,13 @@ err:
   return false;
 }
 
+/**
+ * free_tag_list - Free a list of tags
+ * @param tag_list List of tags
+ *
+ * Take a nm_hdrtag struct (a singly-linked list) and free the attached strings
+ * and the list itself.
+ */
 static void free_tag_list(struct NmHdrTag **tag_list)
 {
   struct NmHdrTag *tmp = NULL;
@@ -317,6 +327,14 @@ static void free_tag_list(struct NmHdrTag **tag_list)
   *tag_list = 0;
 }
 
+/**
+ * free_hdrdata - Free header data attached to an email
+ * @param data Header data
+ *
+ * Each email can have an attached nm_hdrdata struct, which contains things
+ * like the tags (labels).  This function frees all the resources and the
+ * nm_hdrdata struct itself.
+ */
 static void free_hdrdata(struct NmHdrData *data)
 {
   if (!data)
@@ -332,6 +350,14 @@ static void free_hdrdata(struct NmHdrData *data)
   FREE(&data);
 }
 
+/**
+ * free_ctxdata - Free data attached to the context
+ * @param data A mailbox CONTEXT
+ *
+ * The nm_ctxdata struct stores global NotMuch data, such as the connection to
+ * the database.  This function will close the database, free the resources and
+ * the struct itself.
+ */
 static void free_ctxdata(struct NmCtxData *data)
 {
   if (!data)
@@ -353,6 +379,14 @@ static void free_ctxdata(struct NmCtxData *data)
   FREE(&data);
 }
 
+/**
+ * new_ctxdata - Create a new nm_ctxdata object from a query
+ * @param uri NotMuch query string
+ * @return a new nm_ctxdata struct
+ *
+ * A new nm_ctxdata struct is created, then the query is parsed and saved
+ * within it.  This should be freed using free_ctxdata().
+ */
 static struct NmCtxData *new_ctxdata(char *uri)
 {
   struct NmCtxData *data = NULL;
@@ -375,6 +409,17 @@ static struct NmCtxData *new_ctxdata(char *uri)
   return data;
 }
 
+/**
+ * init_context - Add NotMuch data to the Context
+ * @param ctx A mailbox CONTEXT
+ * @return
+ * *  0 Success
+ * * -1 Error: Bad format
+ *
+ * Create a new nm_ctxdata struct and add it CONTEXT::data.
+ * NotMuch-specific data will be stored in this struct.
+ * This struct can be freed using free_hdrdata().
+ */
 static int init_context(struct Context *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_NOTMUCH))
@@ -706,6 +751,14 @@ static int release_db(struct NmCtxData *data)
   return -1;
 }
 
+/**
+ * db_trans_begin - Start a NotMuch database transaction
+ * @param data Header data
+ * @return
+ * * < 0 = error
+ * * 1 = new transaction started
+ * * 0 = already within transaction
+ */
 static int db_trans_begin(struct NmCtxData *data)
 {
   if (!data || !data->db)
@@ -739,11 +792,27 @@ static int db_trans_end(struct NmCtxData *data)
   return 0;
 }
 
+/**
+ * is_longrun - Is NotMuch in the middle of a long-running transaction
+ * @param data Header data
+ * @return true if it is
+ */
 static int is_longrun(struct NmCtxData *data)
 {
   return data && data->longrun;
 }
 
+/**
+ * get_database_mtime - Get the database modification time
+ * @param[in]  data  Struct holding database info
+ * @param[out] mtime Save the modification time
+ * @return
+ * *  0 Success (result in mtime)
+ * * -1 Error
+ *
+ * Get the "mtime" (modification time) of the database file.
+ * This is the time of the last update.
+ */
 static int get_database_mtime(struct NmCtxData *data, time_t *mtime)
 {
   char path[_POSIX_PATH_MAX];
@@ -969,6 +1038,13 @@ static void deinit_header(struct Header *h)
   }
 }
 
+/**
+ * nm2mutt_message_id - converts notmuch message Id to mutt message Id
+ * @param id NotMuch ID to convert
+ * @return Mutt message ID
+ *
+ * Caller must free the Mutt Message ID
+ */
 static char *nm2mutt_message_id(const char *id)
 {
   size_t sz;
@@ -1194,6 +1270,11 @@ done:
   FREE(&newpath);
 }
 
+/**
+ * append_replies - add all the replies to a given messages into the display
+ *
+ * Careful, this calls itself recursively to make sure we get everything.
+ */
 static void append_replies(struct Context *ctx, notmuch_query_t *q,
                            notmuch_message_t *top, int dedup)
 {
@@ -1210,6 +1291,12 @@ static void append_replies(struct Context *ctx, notmuch_query_t *q,
   }
 }
 
+/**
+ * append_thread - add each top level reply in the thread
+ *
+ * add each top level reply in the thread, and then add each reply to the top
+ * level replies
+ */
 static void append_thread(struct Context *ctx, notmuch_query_t *q,
                           notmuch_thread_t *thread, int dedup)
 {
@@ -1375,6 +1462,13 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
   return 0;
 }
 
+/**
+ * update_header_flags - Update the header flags
+ *
+ * TODO: extract parsing of string to separate function, join
+ * update_header_tags and update_header_flags, which are given an array of
+ * tags.
+ */
 static int update_header_flags(struct Context *ctx, struct Header *hdr, const char *tags)
 {
   char *tag = NULL, *end = NULL, *p = NULL;
@@ -1845,7 +1939,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 void nm_query_window_forward(void)
 {
   if (NotmuchQueryWindowCurrentPosition != 0)
-    NotmuchQueryWindowCurrentPosition -= 1;
+    NotmuchQueryWindowCurrentPosition--;
 
   mutt_debug(2, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition);
 }
@@ -1860,7 +1954,7 @@ void nm_query_window_forward(void)
  */
 void nm_query_window_backward(void)
 {
-  NotmuchQueryWindowCurrentPosition += 1;
+  NotmuchQueryWindowCurrentPosition++;
   mutt_debug(2, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition);
 }
 
@@ -2136,6 +2230,11 @@ done:
   return rc;
 }
 
+/**
+ * nm_get_all_tags - Fill a list with all notmuch tags
+ *
+ * If tag_list is NULL, just count the tags.
+ */
 int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
@@ -2178,6 +2277,14 @@ done:
   return rc;
 }
 
+
+/**
+ * nm_open_mailbox - Open a notmuch virtual mailbox
+ * @param ctx A mailbox CONTEXT
+ * @return
+ * *  0 Success
+ * * -1 Error
+ */
 
 static int nm_open_mailbox(struct Context *ctx)
 {
@@ -2226,6 +2333,13 @@ static int nm_open_mailbox(struct Context *ctx)
   return rc;
 }
 
+/**
+ * nm_close_mailbox - Close a notmuch virtual mailbox
+ * @param ctx A mailbox CONTEXT
+ * @return
+ * *  0 Success
+ * * -1 Error
+ */
 static int nm_close_mailbox(struct Context *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_NOTMUCH))
@@ -2247,6 +2361,17 @@ static int nm_close_mailbox(struct Context *ctx)
   return 0;
 }
 
+/**
+ * nm_check_mailbox - Check a notmuch mailbox for new mail
+ * @param ctx         A mailbox CONTEXT
+ * @param index_hint  Remeber our place in the index
+ * @return
+ * * -1 Error
+ * *  0 QWQ
+ * * #MUTT_NEW_MAIL - new mail has arrived
+ * * #MUTT_REOPENED - mailbox closed and reopened
+ * * #MUTT_FLAGS - QWQ
+ */
 static int nm_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
@@ -2307,8 +2432,8 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
     /* message already exists, merge flags */
     h->active = true;
 
-    /* check to see if the message has moved to a different
-     * subdirectory.  If so, update the associated filename.
+    /* Check to see if the message has moved to a different subdirectory.
+     * If so, update the associated filename.
      */
     new = get_message_last_filename(m);
     header_get_fullpath(h, old, sizeof(old));
@@ -2362,6 +2487,11 @@ done:
                                                         new_flags ? MUTT_FLAGS : 0;
 }
 
+/**
+ * nm_sync_mailbox - Sync a notmuch mailbox
+ * @param ctx        A mailbox CONTEXT
+ * @param index_hint Remember our place in the index
+ */
 static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
@@ -2442,6 +2572,15 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
   return rc;
 }
 
+/**
+ * nm_open_message - Open a message from a notmuch mailbox
+ * @param ctx   A mailbox CONTEXT
+ * @param msg   Message to open
+ * @param msgno Index of message to open
+ * @return
+ * * 0 Success
+ * * 1 Error
+ */
 static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx || !msg)
@@ -2462,6 +2601,14 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
   return !msg->fp;
 }
 
+/**
+ * nm_close_message - Close a message
+ * @param ctx A mailbox CONTEXT
+ * @param msg Message to close
+ * @return
+ * * 0 Success
+ * * 1 Error
+ */
 static int nm_close_message(struct Context *ctx, struct Message *msg)
 {
   if (!msg)

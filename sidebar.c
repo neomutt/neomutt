@@ -54,28 +54,28 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[STRING]; /**< formatted mailbox name */
-  struct Buffy *buffy;
-  bool is_hidden;
+  char box[STRING];    /**< formatted mailbox name */
+  struct Buffy *buffy; /**< Mailbox this represents */
+  bool is_hidden;      /**< Don't show, e.g. $sidebar_new_mail_only */
 };
 
 static int EntryCount = 0;
 static int EntryLen = 0;
 static struct SbEntry **Entries = NULL;
 
-static int TopIndex = -1; /* First mailbox visible in sidebar */
-static int OpnIndex = -1; /* Current (open) mailbox */
-static int HilIndex = -1; /* Highlighted mailbox */
-static int BotIndex = -1; /* Last mailbox visible in sidebar */
+static int TopIndex = -1; /**< First mailbox visible in sidebar */
+static int OpnIndex = -1; /**< Current (open) mailbox */
+static int HilIndex = -1; /**< Highlighted mailbox */
+static int BotIndex = -1; /**< Last mailbox visible in sidebar */
 
 /**
  * enum DivType - Source of the sidebar divider character
  */
 enum DivType
 {
-  SB_DIV_USER,
-  SB_DIV_ASCII,
-  SB_DIV_UTF8
+  SB_DIV_USER,  /**< User configured using $sidebar_divider_char */
+  SB_DIV_ASCII, /**< An ASCII vertical bar (pipe) */
+  SB_DIV_UTF8   /**< A unicode line-drawing character */
 };
 
 /**
@@ -83,23 +83,23 @@ enum DivType
  */
 enum SidebarSrc
 {
-  SB_SRC_INCOMING,
-  SB_SRC_VIRT,
+  SB_SRC_INCOMING, /**< Display real mailboxes */
+  SB_SRC_VIRT,     /**< Display virtual mailboxes */
 } sidebar_source = SB_SRC_INCOMING;
 
 /**
  * cb_format_str - Create the string to show in the sidebar
- * @param dest        Buffer in which to save string
- * @param destlen     Buffer length
- * @param col         Starting column, UNUSED
- * @param cols        Maximum columns, UNUSED
- * @param op          printf-like operator, e.g. 'B'
- * @param src         printf-like format string
- * @param prefix      Field formatting string, UNUSED
- * @param ifstring    If condition is met, display this string
- * @param elsestring  Otherwise, display this string
- * @param data        Pointer to our sidebar_entry
- * @param flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
+ * @param[out] dest        Buffer in which to save string
+ * @param[in]  destlen     Buffer length
+ * @param[in]  col         Starting column, UNUSED
+ * @param[in]  cols        Maximum columns, UNUSED
+ * @param[in]  op          printf-like operator, e.g. 'B'
+ * @param[in]  src         printf-like format string
+ * @param[in]  prefix      Field formatting string, UNUSED
+ * @param[in]  ifstring    If condition is met, display this string
+ * @param[in]  elsestring  Otherwise, display this string
+ * @param[in]  data        Pointer to our sidebar_entry
+ * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
  * @return src (unchanged)
  *
  * cb_format_str is a callback function for mutt_expando_format.  It understands
@@ -234,11 +234,11 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
 
 /**
  * make_sidebar_entry - Turn mailbox data into a sidebar string
- * @param buf     Buffer in which to save string
- * @param buflen  Buffer length
- * @param width   Desired width in screen cells
- * @param box     Mailbox name
- * @param sbe     Mailbox object
+ * @param[out] buf     Buffer in which to save string
+ * @param[in]  buflen  Buffer length
+ * @param[in]  width   Desired width in screen cells
+ * @param[in]  box     Mailbox name
+ * @param[in]  sbe     Mailbox object
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
@@ -334,11 +334,11 @@ static int cb_qsort_sbe(const void *a, const void *b)
  *
  * For each SbEntry in the Entries array, check whether we should display it.
  * This is determined by several criteria.  If the Buffy:
- *      is the currently open mailbox
- *      is the currently highlighted mailbox
- *      has unread messages
- *      has flagged messages
- *      is whitelisted
+ * * is the currently open mailbox
+ * * is the currently highlighted mailbox
+ * * has unread messages
+ * * has flagged messages
+ * * is whitelisted
  */
 static void update_entries_visibility(void)
 {
@@ -662,8 +662,8 @@ static bool prepare_sidebar(int page_size)
  * @param num_rows   Height of the Sidebar
  * @param num_cols   Width of the Sidebar
  * @return
- * *    0:  Empty string
- * *    n:  Character occupies n screen columns
+ * * 0: Empty string
+ * * n: Character occupies n screen columns
  *
  * Draw a divider using characters from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.
@@ -775,7 +775,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 }
 
 /**
- * draw_sidebar - Write out a list of mailboxes, on the left
+ * draw_sidebar - Write out a list of mailboxes, in a panel
  * @param num_rows   Height of the Sidebar
  * @param num_cols   Width of the Sidebar
  * @param div_width  Width in screen characters taken by the divider

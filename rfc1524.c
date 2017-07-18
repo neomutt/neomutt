@@ -384,7 +384,7 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * rfc1524_mailcap_lookup - Find given type in the list of mailcap files
  * @param a      Message body
  * @param type   Text type in "type/subtype" format
- * @param struct Rfc1524MailcapEntry pointer to an struct Rfc1524MailcapEntry to populate with results
+ * @param entry  struct Rfc1524MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup
  * @return
  * * 1 on success. If *entry is not NULL it poplates it with the mailcap entry
