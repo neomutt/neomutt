@@ -404,6 +404,14 @@ int mutt_tag_attach(struct Menu *menu, int n, int m)
   return cur->tagged - ot;
 }
 
+/**
+ * mutt_is_message_type - Determine if a mime type matches a message or not
+ * @param type    Message type enum value
+ * @param subtype Message subtype
+ * @return
+ * * true  Type is message/news or message/rfc822
+ * * false Otherwise
+ */
 bool mutt_is_message_type(int type, const char *subtype)
 {
   if (type != TYPEMESSAGE)

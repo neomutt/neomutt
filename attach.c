@@ -301,6 +301,12 @@ bailout:
 }
 
 
+/**
+ * mutt_check_lookup_list - Update the mime type
+ * @param b    Message attachment body
+ * @param type Buffer with mime type of attachment in "type/subtype" format
+ * @param len  Buffer length
+ */
 void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
   struct List *t = MimeLookupList;
@@ -343,9 +349,25 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
 
 /**
  * mutt_view_attachment - View an attachment
+ * @param fp     Source file stream. Can be NULL
+ * @param a      The message body containing the attachment
+ * @param flag   Option flag for how the attachment should be viewed
+ * @param hdr    Message header for the current message. Can be NULL
+ * @param idx    Attachment
+ * @param idxlen Number of attachments
  * @return
+ * * 0 if the viewer is run and exited succesfully
  * * -1 on error
- * * 0 or the return code from mutt_do_pager() on success
+ * * The return value of mutt_do_pager() when it is used
+ *
+ * flag can be one of: #MUTT_MAILCAP, #MUTT_REGULAR, #MUTT_AS_TEXT
+ *
+ * Display a message attachment using the viewer program configured in mailcap.
+ * If there is no mailcap entry for a file type, view the image as text.
+ * Viewer processes are opened and waited on synchronously so viewing an
+ * attachment this way will block the main mutt process until the viewer process
+ * exits.
+ *
  */
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachPtr **idx, short idxlen)

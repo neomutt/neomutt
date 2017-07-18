@@ -30,10 +30,26 @@
 #include "protos.h"
 
 /**
- * mutt_create_filter_fd - Run a command on a pipe
+ * mutt_create_filter_fd - Run a command on a pipe (optionally connect stdin/stdout)
+ * @param cmd   Command line to invoke using `sh -c`
+ * @param in    File stream pointing to stdin for the command process, can be NULL
+ * @param out   File stream pointing to stdout for the command process, can be NULL
+ * @param err   File stream pointing to stderr for the command process, can be NULL
+ * @param fdin  If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
+ * @param fdout If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
+ * @param fderr If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
+ * @return Pid of the created process or -1 on any error creating pipes or forking
  *
- * Invokes a command on a pipe and optionally connects its stdin and stdout
- * to the specified handles.
+ * This function provides multiple mechanisms to handle IO sharing for the
+ * command process. File streams are prioritized over file descriptors if
+ * present.
+ *
+ * @code{.c}
+ *    mutt_create_filter_fd(commandline, NULL, NULL, NULL, -1, -1, -1);
+ * @endcode
+ *
+ * Additionally, in, out, and err will point to FILE* streams representing the
+ * processes stdin, stdout, and stderr.
  */
 pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
                             int fdin, int fdout, int fderr)
@@ -183,6 +199,11 @@ pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err)
   return (mutt_create_filter_fd(s, in, out, err, -1, -1, -1));
 }
 
+/**
+ * mutt_wait_filter - Wait for the exit of a process and return its status
+ * @param pid Process id of the process to wait for
+ * @return Exit status of the process identified by pid or -1 in the event of an error
+ */
 int mutt_wait_filter(pid_t pid)
 {
   int rc;

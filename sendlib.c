@@ -972,8 +972,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * @param path Path to attachment
  * @return MIME type, e.g. #TYPEIMAGE
  *
- * Given a file with path ``s'', see if there is a registered MIME type.
- * returns the major MIME type, and copies the subtype to ``d''.  First look
+ * Given a file at `path`, see if there is a registered MIME type.
+ * Returns the major MIME type, and copies the subtype to ``d''.  First look
  * for ~/.mime.types, then look in a system mime.types if we can find one.
  * The longest match is used so that we can match `ps.gz' when `gz' also
  * exists.

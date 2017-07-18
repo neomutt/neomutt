@@ -726,6 +726,7 @@ void mutt_delete_parameter(const char *attribute, struct Parameter **p)
 
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
+ * @param m Attachment body to be displayed
  * @return
  * * true  Mutt requires a mailcap entry to display
  * * false otherwise

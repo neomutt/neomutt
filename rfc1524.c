@@ -353,11 +353,19 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
   return found;
 }
 
+/**
+ * rfc1524_new_entry - Allocate memory for a new rfc1524 entry
+ * @return Pointer to an un-initialized struct Rfc1524MailcapEntry
+ */
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
 {
   return safe_calloc(1, sizeof(struct Rfc1524MailcapEntry));
 }
 
+/**
+ * rfc1524_free_entry - Deallocate an struct Rfc1524MailcapEntry
+ * @param entry Rfc1524MailcapEntry to deallocate.
+ */
 void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 {
   struct Rfc1524MailcapEntry *p = *entry;
@@ -374,10 +382,17 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 
 /**
  * rfc1524_mailcap_lookup - Find given type in the list of mailcap files
+ * @param a      Message body
+ * @param type   Text type in "type/subtype" format
+ * @param struct Rfc1524MailcapEntry pointer to an struct Rfc1524MailcapEntry to populate with results
+ * @param opt    Type of mailcap entry to lookup
+ * @return
+ * * 1 on success. If *entry is not NULL it poplates it with the mailcap entry
+ * * 0 if no matching entry is found
  *
- * On success, this returns the entry information in *entry, and returns 1.  On
- * failure (not found), returns 0.  If entry == NULL just return 1 if the given
- * type is found.
+ * opt can be one of: #MUTT_EDIT, #MUTT_COMPOSE, #MUTT_PRINT, #MUTT_AUTOVIEW
+ *
+ * Find the given type in the list of mailcap files.
  */
 int rfc1524_mailcap_lookup(struct Body *a, char *type,
                            struct Rfc1524MailcapEntry *entry, int opt)
@@ -436,21 +451,25 @@ static void strnfcpy(char *d, char *s, size_t siz, size_t len)
 }
 
 /**
- * rfc1524_expand_filename - Create temp filename match a template
+ * rfc1524_expand_filename - Expand a new filename from a template or existing filename
  * @param nametemplate Template
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
  * @param nflen        Buffer length
  * @return
- * * 0 oldfile is fine as is
- * * 1 newfile specified
+ * * 0 if the left and right components of the oldfile and newfile match.
+ * * 1 otherwise.
+
+ * If there is no nametemplate, the stripped oldfile name is used as the
+ * template for newfile.
  *
- * This routine will create a _temporary_ filename matching the
- * name template given if this needs to be done.
+ * If there is no oldfile, the stripped nametemplate name is used as the
+ * template for newfile.
  *
- * Please note that only the last path element of the
- * template and/or the old file name will be used for the
- * comparison and the temporary file name.
+ * If both a nametemplate and oldfile are specified, the template is checked
+ * for a "%s". If none is found, the nametemplate is used as the template for
+ * newfile.  The first path component of the nametemplate and oldfile are ignored.
+ *
  */
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen)
 {
