@@ -356,33 +356,32 @@ else
 		fi])
 
 	AC_CHECK_FUNC(initscr,,[
-	cf_ncurses=""
-	for lib in ncursesw ncurses curses
-	do
-		AC_CHECK_LIB($lib, waddnwstr, [cf_ncurses="$lib"; break])
-	done
-	if test -z $cf_ncurses; then
-		AC_MSG_ERROR([Unable to find ncursesw library])
-	fi
-	AC_CHECK_LIB($cf_ncurses, initscr,
-		[LIBS="$LIBS -l$cf_ncurses"
+		cf_ncurses=""
+		for lib in ncursesw ncurses curses
+		do
+			AC_CHECK_LIB($lib, waddnwstr, [cf_ncurses="$lib"; break])
+		done
+		if test -z $cf_ncurses; then
+			AC_MSG_ERROR([Unable to find ncursesw library])
+		fi
+		AC_CHECK_LIB($cf_ncurses, initscr,[
+			LIBS="$LIBS -l$cf_ncurses"
+			AC_CHECK_LIB($cf_ncurses, tgetent, [:], [
+				AC_CHECK_LIB(tinfo, tgetent, [LIBS="$LIBS -ltinfo"])
+			])
 
-		AC_CHECK_LIB($cf_ncurses, tgetent, [:], [
-			AC_CHECK_LIB(tinfo, tgetent, [LIBS="$LIBS -ltinfo"])
-		])
-
-		if test "$cf_ncurses" = ncursesw; then
 			AC_CHECK_HEADERS(ncursesw/ncurses.h,
 				[cf_cv_ncurses_header="ncursesw/ncurses.h"],
-				[AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])]
+				AC_CHECK_HEADERS(ncurses/ncurses.h,
+					[cf_cv_ncurses_header="ncurses/ncurses.h"],
+					AC_CHECK_HEADERS(ncurses.h,
+						[cf_cv_ncurses_header="ncurses.h"],
+						AC_MSG_ERROR(Unable to find ncurses headers)
+					)
+				)
 			)
-		else
-			AC_CHECK_HEADERS(ncurses/ncurses.h,[cf_cv_ncurses_header="ncurses/ncurses.h"],
-			[AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
-		fi],
-
-		)
-		])
+		],)
+	])
 
 	CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>],
 		[start_color typeahead bkgdset curs_set meta use_default_colors resizeterm])
