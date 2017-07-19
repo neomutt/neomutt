@@ -911,8 +911,17 @@ int imap_cmd_step(struct ImapData *idata)
   if (idata->buf[0] == '+')
     return IMAP_CMD_RESPOND;
 
-  /* look for tagged command completions */
-  rc = IMAP_CMD_CONTINUE;
+  /* Look for tagged command completions.
+   *
+   * Some response handlers can end up recursively calling
+   * imap_cmd_step() and end up handling all tagged command
+   * completions.
+   * (e.g. FETCH->set_flag->set_header_color->~h pattern match.)
+   *
+   * Other callers don't even create an idata->cmds entry.
+   *
+   * For both these cases, we default to returning OK */
+  rc = IMAP_CMD_OK;
   c = idata->lastcmd;
   do
   {

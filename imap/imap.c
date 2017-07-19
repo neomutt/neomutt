@@ -454,7 +454,7 @@ int imap_open_connection(struct ImapData *idata)
 
   idata->state = IMAP_CONNECTED;
 
-  if (imap_cmd_step(idata) != IMAP_CMD_CONTINUE)
+  if (imap_cmd_step(idata) != IMAP_CMD_OK)
   {
     imap_close_connection(idata);
     return -1;
