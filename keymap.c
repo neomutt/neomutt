@@ -824,7 +824,7 @@ void km_init(void)
   km_bindkey("<home>", MENU_EDITOR, OP_EDITOR_BOL);
   km_bindkey("<end>", MENU_EDITOR, OP_EDITOR_EOL);
   km_bindkey("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
-  km_bindkey("<delete>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
+  km_bindkey("<delete>", MENU_EDITOR, OP_EDITOR_DELETE_CHAR);
   km_bindkey("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
 
   /* generic menu keymap */
