@@ -549,11 +549,11 @@ bool mutt_ts_capability(void)
   if (tcaps && tcaps != (char *) -1 && *tcaps)
   {
     /* update the static defns of tsl/fsl from terminfo */
-    tsl = safe_strdup(tcaps);
+    tsl = tcaps;
 
     tcaps = tigetstr("fsl");
     if (tcaps && tcaps != (char *) -1 && *tcaps)
-      fsl = safe_strdup(tcaps);
+      fsl = tcaps;
 
     return true;
   }
