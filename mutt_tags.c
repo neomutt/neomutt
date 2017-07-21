@@ -1,20 +1,23 @@
-/*
+/**
+ * @file
+ * Email tags/keywords/labels
+ *
+ * @authors
  * Copyright (C) 2017 Mehdi Abaakouk <sileht@sileht.net>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -30,7 +33,7 @@
 
 /**
  * hdr_tags_free_tag_list - free tag
- * @param[in] h: pointer to a header struct
+ * @param[in] h: pointer to a Header struct
  *
  * Free tag
  */
@@ -81,7 +84,7 @@ const char *hdr_tags_get_transformed(struct Header *h)
   return HEADER_TAGS(h)->tags_transformed;
 }
 
-/*
+/**
  * hdr_tags_get - Get tags from a header
  * @param[in] h: pointer to a header struct
  *
@@ -97,8 +100,8 @@ const char *hdr_tags_get(struct Header *h)
   return HEADER_TAGS(h)->tags;
 }
 
-/*
- * hdr_tags_get - Get tags with hiddens from a header
+/**
+ * hdr_tags_get_with_hidden - Get tags with hiddens from a header
  * @param[in] h: pointer to a header struct
  *
  * @return string tags
@@ -146,8 +149,9 @@ void hdr_tags_init(struct Header *h)
   HEADER_TAGS(h)->tags_with_hidden = NULL;
   HEADER_TAGS(h)->tag_list = NULL;
 }
+
 /**
- * hdr_tags_replace - Add a tag to header
+ * hdr_tags_add - Add a tag to header
  * @param[in] h: pointer to a header struct
  * @param[in] new_tag: string representing the new tag
  *
@@ -175,7 +179,7 @@ void hdr_tags_add(struct Header *h, char *new_tag)
   if (HiddenTags)
   {
     char *p = strstr(HiddenTags, new_tag);
-    size_t xsz = p ? strlen(new_tag) : 0;
+    size_t xsz = p ? mutt_strlen(new_tag) : 0;
 
     if (p && ((p == HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
         ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
@@ -196,7 +200,6 @@ void hdr_tags_add(struct Header *h, char *new_tag)
  *
  * @retval  0 If no change are made
  * @retval  1 If tags are updated
- *
  *
  * Free current tags structures and replace it by
  * new tags
@@ -221,7 +224,6 @@ int hdr_tags_replace(struct Header *h, char *tags)
   return 1;
 }
 
-
 int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf)
 {
   if (ctx->mx_ops->edit_msg_tags)
@@ -230,7 +232,6 @@ int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf)
   mutt_message(_("Folder doesn't support tagging, aborting."));
   return -1;
 }
-
 
 int hdr_tags_commit(struct Context *ctx, struct Header *h, char *tags)
 {

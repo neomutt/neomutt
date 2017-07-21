@@ -2183,10 +2183,10 @@ struct Option MuttVars[] = {
   */
   { "hidden_tags", DT_STRING, R_NONE, UL &HiddenTags, UL "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
   /*
-   ** .pp
-   ** This variable specifies private notmuch tags which should not be printed
-   ** on screen.
-   */
+  ** .pp
+  ** This variable specifies private notmuch/imap tags which should not be printed
+  ** on screen.
+  */
   { "pager_context",    DT_NUMBER,  R_NONE, UL &PagerContext, 0 },
   /*
   ** .pp

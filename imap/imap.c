@@ -1258,12 +1258,12 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
   return count;
 }
 
-
-/* imap_edit_message_tags: Prompt and validate new messages tags
+/**
+ * imap_edit_message_tags - Prompt and validate new messages tags
  *
  * @retval 0: no valid user input
  * @retval 1: buf set
- **/
+ */
 static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *buf)
 {
   char *new = NULL;
@@ -1317,7 +1317,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
         *checker == 91 ||                   // [
         *checker == 93)                     // ]
     {
-      mutt_error(_("Invalid IMAP keyworks"));
+      mutt_error(_("Invalid IMAP keywords"));
       mutt_sleep(2);
       return 0;
     }

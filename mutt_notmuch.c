@@ -837,7 +837,9 @@ err:
 
 static int update_header_tags(struct Header *h, notmuch_message_t *msg)
 {
+#ifdef DEBUG
   struct NmHdrData *data = h->data;
+#endif
   notmuch_tags_t *tags = NULL;
   char *new_tags = NULL;
 
@@ -1852,7 +1854,6 @@ static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf
   *buf = '\0';
   return (mutt_get_field("Add/remove labels: ", buf, sizeof(buf), MUTT_NM_TAG) || !*buf);
 }
-
 
 static int nm_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
 {
