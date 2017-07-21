@@ -87,11 +87,11 @@ typedef gnutls_x509_crt gnutls_x509_crt_t;
 /**
  * struct TlsSockData - TLS socket data
  */
-typedef struct TlsSockData
+struct TlsSockData
 {
   gnutls_session_t state;
   gnutls_certificate_credentials_t xcred;
-} tlssockdata;
+};
 
 static int tls_init(void)
 {
@@ -115,7 +115,7 @@ static int tls_init(void)
 
 static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   int ret;
 
   if (!data)
@@ -141,7 +141,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 
 static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   int ret;
   size_t sent = 0;
 
@@ -173,7 +173,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t len
 
 static int tls_socket_close(struct Connection *conn)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   if (data)
   {
     /* shut down only the write half to avoid hanging waiting for the remote to respond.
@@ -817,7 +817,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
 static int tls_check_certificate(struct Connection *conn)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   gnutls_session_t state = data->state;
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
@@ -895,7 +895,7 @@ static int tls_check_certificate(struct Connection *conn)
 
 static void tls_get_client_cert(struct Connection *conn)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   const gnutls_datum_t *crtdata = NULL;
   gnutls_x509_crt_t clientcrt;
   char *dn = NULL;
@@ -949,7 +949,7 @@ err_crt:
 }
 
 #ifdef HAVE_GNUTLS_PRIORITY_SET_DIRECT
-static int tls_set_priority(tlssockdata *data)
+static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 4;
   char *priority = NULL;
@@ -1012,7 +1012,7 @@ static int tls_set_priority(tlssockdata *data)
 static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
                                    GNUTLS_SSL3, 0 };
 
-static int tls_set_priority(tlssockdata *data)
+static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
@@ -1055,10 +1055,10 @@ static int tls_set_priority(tlssockdata *data)
  */
 static int tls_negotiate(struct Connection *conn)
 {
-  tlssockdata *data = NULL;
+  struct TlsSockData *data = NULL;
   int err;
 
-  data = safe_calloc(1, sizeof(tlssockdata));
+  data = safe_calloc(1, sizeof(struct TlsSockData));
   conn->sockdata = data;
   err = gnutls_certificate_allocate_credentials(&data->xcred);
   if (err < 0)

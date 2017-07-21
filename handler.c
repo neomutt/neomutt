@@ -58,7 +58,7 @@
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
 
-typedef int (*handler_t)(struct Body *, struct State *);
+typedef int (*handler_t)(struct Body *b, struct State *s);
 
 // clang-format off
 const int Index_hex[128] = {

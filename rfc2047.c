@@ -53,7 +53,7 @@
 
 extern char RFC822Specials[];
 
-typedef size_t (*encoder_t)(char *, ICONV_CONST char *, size_t, const char *);
+typedef size_t (*encoder_t)(char *s, ICONV_CONST char *d, size_t dlen, const char *tocode);
 
 static size_t convert_string(ICONV_CONST char *f, size_t flen, const char *from,
                              const char *to, char **t, size_t *tlen)

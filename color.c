@@ -750,8 +750,8 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
   return 0;
 }
 
-typedef int (*parser_callback_t)(struct Buffer *, struct Buffer *, int *, int *,
-                                 int *, struct Buffer *);
+typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, int *fg,
+                                 int *bg, int *attr, struct Buffer *err);
 
 #ifdef HAVE_COLOR
 
