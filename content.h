@@ -34,6 +34,7 @@ struct Content
 {
   long hibin;      /**< 8-bit characters */
   long lobin;      /**< unprintable 7-bit chars (eg., control chars) */
+  long nulbin;     /**< null characters (0x0) */
   long crlf;       /**< `\r` and `\n` characters */
   long ascii;      /**< number of ascii chars */
   long linemax;    /**< length of the longest line in the file */
