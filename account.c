@@ -20,8 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* remote host account manipulation (POP/IMAP) */
-
 #include "config.h"
 #include <stdio.h>
 #include <string.h>

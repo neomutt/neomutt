@@ -911,7 +911,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 }
 
 /**
- * mutt_signed_handler - Verify a "multipart/signed" body.
+ * mutt_signed_handler - Verify a "multipart/signed" body
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {

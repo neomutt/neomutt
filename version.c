@@ -295,7 +295,7 @@ static struct CompileOptions comp_opts[] = {
 };
 
 /**
- * print_compile_options - Print a list of enabled/disabled features.
+ * print_compile_options - Print a list of enabled/disabled features
  *
  * Two lists are generated and passed to this function:
  *

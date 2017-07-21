@@ -1142,7 +1142,7 @@ int mutt_addwch(wchar_t wc)
 }
 
 /**
- * mutt_format_string - Format a string, like snprintf()
+ * mutt_simple_format - Format a string, like snprintf()
  *
  * This formats a string, a bit like snprintf (dest, destlen, "%-*.*s",
  * min_width, max_width, s), except that the widths refer to the number of

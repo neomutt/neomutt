@@ -274,7 +274,7 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
 }
 
 /**
- * cb_qsort_sbe - qsort callback to sort SBENTRYs
+ * cb_qsort_sbe - qsort callback to sort SbEntry's
  * @param a First  SbEntry to compare
  * @param b Second SbEntry to compare
  * @retval -1 a precedes b
@@ -579,7 +579,7 @@ static int select_page_up(void)
 }
 
 /**
- * prepare_sidebar - Prepare the list of SBENTRYs for the sidebar display
+ * prepare_sidebar - Prepare the list of SbEntry's for the sidebar display
  * @param page_size  The number of lines on a page
  * @retval false No, don't draw the sidebar
  * @retval true  Yes, draw the sidebar

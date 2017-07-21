@@ -328,7 +328,6 @@ struct Option MuttVars[] = {
   ** message.  The send-menu may still be accessed once you have finished
   ** editing the body of your message.
   ** .pp
-  ** .pp
   ** \fBNote:\fP when this option is \fIset\fP, you cannot use send-hooks that depend
   ** on the recipients when composing a new (non-reply) message, as the initial
   ** list of recipients is empty.

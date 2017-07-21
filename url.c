@@ -169,7 +169,7 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
 }
 
 /**
- * url_parse_ciss - Fill in CissUrl.
+ * url_parse_ciss - Fill in CissUrl
  *
  * char* elements are pointers into src, which is modified by this call
  * (duplicate it first if you need to).
