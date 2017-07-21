@@ -308,7 +308,7 @@ char *mutt_strlower(char *s)
  * mutt_strchrnul - find first occurrence of character in string
  * @param s Haystack
  * @param c Needle
- * @return Pointer to the first occurrence if found or to the NULL character
+ * @retval ptr First occurrence if found or to the NULL character
  *
  * This function is like GNU's strchrnul, which is similar to the standard
  * strchr function: it looks for the c character in the NULL-terminated string
@@ -960,7 +960,8 @@ void mutt_remove_trailing_ws(char *s)
  * @param dirlen   Directory length
  * @param fname    Filename
  * @param fnamelen Filename length
- * @return NULL on error, pointer to \a dst on success
+ * @retval NULL Error
+ * @retval ptr  Pointer to \a dst on success
  *
  * Write the concatenated pathname (dir + "/" + fname) into dst.
  * The slash is omitted when dir or fname is of 0 length.
@@ -1127,7 +1128,9 @@ int mutt_atoi(const char *str, int *dst)
  * mutt_inbox_cmp - do two folders share the same path and one is an inbox
  * @param a First path
  * @param b Second path
- * @return -1 if a is INBOX of b, 0 if none is INBOX, 1 if b is INBOX for a
+ * @retval -1 if a is INBOX of b
+ * @retval 0 if none is INBOX
+ * @retval 1 if b is INBOX for a
  *
  * This function compares two folder paths. It first looks for the position of
  * the last common '/' character. If a valid position is found and it's not the
@@ -1195,9 +1198,8 @@ char *strfcpy(char *dest, const char *src, size_t dlen)
  * mutt_mkdir - Recursively create directories
  * @param path Directories to create
  * @param mode Permissions for final directory
- * @return
- * *    0  Success
- * *   -1  Error (errno set)
+ * @retval    0  Success
+ * @retval   -1  Error (errno set)
  *
  * Create a directory, creating the parents if necessary. (like mkdir -p)
  *

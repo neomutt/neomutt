@@ -131,7 +131,7 @@ void crypt_invoke_message(int type)
  */
 
 /**
- * crypt_pgp_void_passphrase - Reset a PGP passphrase
+ * crypt_pgp_void_passphrase - Silently, reset a PGP passphrase
  */
 void crypt_pgp_void_passphrase(void)
 {
@@ -297,7 +297,7 @@ void crypt_pgp_set_sender(const char *sender)
  */
 
 /**
- * crypt_smime_void_passphrase - Reset an SMIME passphrase
+ * crypt_smime_void_passphrase - Silently, reset an SMIME passphrase
  */
 void crypt_smime_void_passphrase(void)
 {

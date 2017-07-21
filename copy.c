@@ -313,7 +313,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   {
     if (headers[x])
     {
-      /* We couldn't do the prefixing when reading because RFC 2047
+      /* We couldn't do the prefixing when reading because RFC2047
        * decoding may have concatenated lines.
        */
 
@@ -782,7 +782,8 @@ int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
  * @param body    structure of message being copied
  * @param flags   mutt_copy_message() flags
  * @param chflags mutt_copy_header() flags
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 static int _mutt_append_message(struct Context *dest, FILE *fpin,
                                 struct Context *src, struct Header *hdr,
@@ -830,9 +831,8 @@ int mutt_append_message(struct Context *dest, struct Context *src,
 
 /**
  * copy_delete_attach - Copy a message, deleting marked attachments
- * @return
- * * 0 on success
- * * -1 on failure
+ * @retval 0 on success
+ * @retval -1 on failure
  *
  * This function copies a message body, while deleting _in_the_copy_
  * any attachments which are marked for deletion.

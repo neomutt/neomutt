@@ -74,11 +74,10 @@ static int fetch_message(char *line, void *file)
  * pop_read_header - Read header
  * @param pop_data POP data
  * @param h        Email header
- * @return
- * *  0 Success
- * * -1 Connection lost,
- * * -2 Invalid command or execution error,
- * * -3 Error writing to tempfile
+ * @retval  0 Success
+ * @retval -1 Connection lost
+ * @retval -2 Invalid command or execution error
+ * @retval -3 Error writing to tempfile
  */
 static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
@@ -249,11 +248,10 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 /**
  * pop_fetch_headers - Read headers
  * @param ctx Context
- * @return
- * *  0 Success
- * * -1 Connection lost,
- * * -2 Invalid command or execution error,
- * * -3 Error writing to tempfile
+ * @retval  0 Success
+ * @retval -1 Connection lost
+ * @retval -2 Invalid command or execution error
+ * @retval -3 Error writing to tempfile
  */
 static int pop_fetch_headers(struct Context *ctx)
 {

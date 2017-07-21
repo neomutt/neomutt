@@ -1133,7 +1133,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
       }
       else if (ascii_strcasecmp(line + 1, "ist-Post") == 0)
       {
-        /* RFC 2369.  FIXME: We should ignore whitespace, but don't. */
+        /* RFC2369.  FIXME: We should ignore whitespace, but don't. */
         if (strncmp(p, "NO", 2) != 0)
         {
           char *beg = NULL, *end = NULL;
@@ -1383,7 +1383,7 @@ done:
  * @param weed      If this parameter is set and the user has activated the
  *                  $weed option, honor the header weed list for user headers.
  *                  Used for recall-message
- * @return newly allocated envelope structure
+ * @retval ptr Newly allocated envelope structure
  *
  * Caller should free the Envelope using mutt_free_envelope().
  */
@@ -1410,7 +1410,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
       hdr->content->encoding = ENC7BIT;
       hdr->content->length = -1;
 
-      /* RFC 2183 says this is arbitrary */
+      /* RFC2183 says this is arbitrary */
       hdr->content->disposition = DISPINLINE;
     }
   }

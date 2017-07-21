@@ -590,7 +590,7 @@ static void compose_menu_redraw(struct Menu *menu)
 /**
  * cum_attachs_size - Cumulative Attachments Size
  * @param menu Menu listing attachments
- * @return Number of bytes in attachments
+ * @retval n Number of bytes in attachments
  *
  * Returns the total number of bytes used by the attachments in the attachment
  * list _after_ content-transfer-encodings have been applied.
@@ -699,10 +699,9 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 
 /**
  * mutt_compose_menu - Allow the user to edit the message envelope
- * @return
- * *  1 Message should be postponed
- * *  0 Normal exit
- * * -1 Abort message
+ * @retval  1 Message should be postponed
+ * @retval  0 Normal exit
+ * @retval -1 Abort message
  */
 int mutt_compose_menu(struct Header *msg, /* structure for new message */
                       char *fcc, /* where to save a copy of the message */

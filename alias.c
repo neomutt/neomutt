@@ -243,7 +243,7 @@ static void recode_buf(char *buf, size_t buflen)
 /**
  * check_alias_name - Sanity-check an alias name
  *
- * Only characters which are non-special to both the RFC 822 and the mutt
+ * Only characters which are non-special to both the RFC822 and the mutt
  * configuration parser are permitted.
  */
 int check_alias_name(const char *s, char *dest, size_t destlen)
@@ -625,7 +625,7 @@ static bool string_is_address(const char *str, const char *u, const char *d)
 
 /**
  * mutt_addr_is_user - Does the address belong to the user
- * @return true if the given address belongs to the user
+ * @retval true if the given address belongs to the user
  */
 bool mutt_addr_is_user(struct Address *addr)
 {

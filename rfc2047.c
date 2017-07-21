@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 2047 MIME extensions routines
+ * RFC2047 MIME extensions routines
  *
  * @authors
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
@@ -250,7 +250,7 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
  * @param tocode   New encoding
  * @param encoder  Encoding function
  * @param wlen     Number of characters converted
- * @return 0 string could be converted >0 maximum that could be converted
+ * @retval 0 string could be converted >0 maximum that could be converted
  *
  * Return 0 if and set *encoder and *wlen if the data (d, dlen) could
  * be converted to an encoded word of length *wlen using *encoder.
@@ -306,7 +306,7 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
   len_b = len + (((ob - buf1) + 2) / 3) * 4;
   len_q = len + (ob - buf1) + 2 * count;
 
-  /* Apparently RFC 1468 says to use B encoding for iso-2022-jp. */
+  /* Apparently RFC1468 says to use B encoding for iso-2022-jp. */
   if (ascii_strcasecmp(tocode, "ISO-2022-JP") == 0)
     len_q = ENCWORD_LEN_MAX + 1;
 
@@ -334,7 +334,7 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
  * @param fromcode Original encoding
  * @param tocode   New encoding
  * @param encoder  Encoding funtion
- * @return Length of the encoded word
+ * @retval n Length of the encoded word
  *
  * Encode the data (d, dlen) into s using the encoder.
  */
@@ -658,7 +658,7 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
     switch (count)
     {
       case 2:
-        /* ignore language specification a la RFC 2231 */
+        /* ignore language specification a la RFC2231 */
         t = pp1;
         if ((t1 = memchr(pp, '*', t - pp)))
           t = t1;
@@ -733,7 +733,7 @@ error_out_0:
  * find_encoded_word - Find limits of first encoded word in a string
  *
  * Find the start and end of the first encoded word in the string.  We use the
- * grammar in section 2 of RFC 2047, but the "encoding" must be B or Q. Also,
+ * grammar in section 2 of RFC2047, but the "encoding" must be B or Q. Also,
  * we don't require the encoded word to be separated by linear-white-space
  * (section 5(1)).
  */

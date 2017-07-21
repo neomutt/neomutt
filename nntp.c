@@ -69,10 +69,9 @@ static int nntp_connect_error(struct NntpServer *nserv)
 
 /**
  * nntp_capabilities - Get capabilities
- * @return
- * * -1 Error, connection is closed
- * *  0 Mode is reader, capabilities setted up
- * *  1 Need to switch to reader mode
+ * @retval -1 Error, connection is closed
+ * @retval  0 Mode is reader, capabilities setted up
+ * @retval  1 Need to switch to reader mode
  */
 static int nntp_capabilities(struct NntpServer *nserv)
 {
@@ -814,11 +813,10 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 
 /**
  * nntp_fetch_lines - Read lines, calling a callback function for each
- * @return
- * *  0 Success
- * *  1 Bad response (answer in query buffer)
- * * -1 Connection lost
- * * -2 Error in funct(*line, *data)
+ * @retval  0 Success
+ * @retval  1 Bad response (answer in query buffer)
+ * @retval -1 Connection lost
+ * @retval -2 Error in funct(*line, *data)
  *
  * This function calls funct(*line, *data) for each received line,
  * funct(NULL, *data) if rewind(*data) needs, exits when fail or done:
@@ -932,11 +930,10 @@ static int fetch_description(char *line, void *data)
  * @param nntp_data NNTP data
  * @param wildmat   String to match
  * @param msg       Progress message
- * @return
- * *  0 Success
- * *  1 Bad response (answer in query buffer)
- * * -1 Connection lost
- * * -2 Error
+ * @retval  0 Success
+ * @retval  1 Bad response (answer in query buffer)
+ * @retval -1 Connection lost
+ * @retval -2 Error
  */
 static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
 {
@@ -1786,10 +1783,9 @@ int nntp_post(const char *msg)
 
 /**
  * nntp_group_poll - Check newsgroup for new articles
- * @return
- * *  1 New articles found
- * *  0 No change
- * * -1 Lost connection
+ * @retval  1 New articles found
+ * @retval  0 No change
+ * @retval -1 Lost connection
  */
 static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
 {
@@ -1831,11 +1827,10 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
 
 /**
  * check_mailbox - Check current newsgroup for new articles
- * @return
- * * #MUTT_REOPENED Articles have been renumbered or removed from server
- * * #MUTT_NEW_MAIL New articles found
- * *  0             No change
- * * -1             Lost connection
+ * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
+ * @retval #MUTT_NEW_MAIL New articles found
+ * @retval  0             No change
+ * @retval -1             Lost connection
  *
  * Leave newsrc locked
  */
@@ -2050,11 +2045,10 @@ static int check_mailbox(struct Context *ctx)
 
 /**
  * nntp_check_mailbox - Check current newsgroup for new articles
- * @return
- * * #MUTT_REOPENED Articles have been renumbered or removed from server
- * * #MUTT_NEW_MAIL New articles found
- * *  0             No change
- * * -1             Lost connection
+ * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
+ * @retval #MUTT_NEW_MAIL New articles found
+ * @retval  0             No change
+ * @retval -1             Lost connection
  */
 static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -2250,10 +2244,9 @@ int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
 
 /**
  * nntp_check_new_groups - Check for new groups/articles in subscribed groups
- * @return
- * *  1 New groups found
- * *  0 No new groups
- * * -1 Error
+ * @retval  1 New groups found
+ * @retval  0 No new groups
+ * @retval -1 Error
  */
 int nntp_check_new_groups(struct NntpServer *nserv)
 {
@@ -2362,10 +2355,9 @@ int nntp_check_new_groups(struct NntpServer *nserv)
 
 /**
  * nntp_check_msgid - Fetch article by Message-ID
- * @return
- * *  0 Success
- * *  1 No such article
- * * -1 Error
+ * @retval  0 Success
+ * @retval  1 No such article
+ * @retval -1 Error
  */
 int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {

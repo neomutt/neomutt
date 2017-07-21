@@ -29,7 +29,7 @@
 #include "backend.h"
 #include "lib.h"
 
-/* The maximum size of the database file (2GiB).
+/** The maximum size of the database file (2GiB).
  * The file is mmap(2)'d into memory. */
 const size_t LMDB_DB_SIZE = 2147483648;
 

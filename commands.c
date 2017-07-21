@@ -69,7 +69,7 @@
 
 static const char *ExtPagerProgress = "all";
 
-/* The folder the user last saved to.  Used by ci_save_message() */
+/** The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[_POSIX_PATH_MAX] = "";
 
 int mutt_display_message(struct Header *cur)
@@ -267,7 +267,7 @@ void ci_bounce_message(struct Header *h)
   char *err = NULL;
   int rc;
 
-  /* RfC 5322 mandates a From: header, so warn before bouncing
+  /* RFC5322 mandates a From: header, so warn before bouncing
   * messages without one */
   if (h)
   {
@@ -708,7 +708,7 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
 
     if (!decrypt) /* If decode doesn't kick in for decrypt, */
     {
-      *chflags |= CH_DECODE; /* then decode RFC 2047 headers, */
+      *chflags |= CH_DECODE; /* then decode RFC2047 headers, */
 
       if (option(OPTWEED))
       {
@@ -745,9 +745,8 @@ int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int de
 
 /**
  * mutt_save_message - Save an email
- * @return
- * * 0 if the copy/save was successful
- * * -1 on error/abort
+ * @retval 0 if the copy/save was successful
+ * @retval -1 on error/abort
  */
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {

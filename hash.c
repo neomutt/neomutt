@@ -121,9 +121,8 @@ struct Hash *int_hash_create(int nelem, int flags)
  * @param table     Hash table to update
  * @param key       Key to hash on
  * @param data      Data to associate with `key'
- * @return
- * * -1 on error
- * * >=0 on success, index into the hash table
+ * @retval -1 on error
+ * @retval >=0 on success, index into the hash table
  */
 static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
 {

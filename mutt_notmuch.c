@@ -225,9 +225,8 @@ static void url_free_tags(struct UriTag *tags)
  * @param[in]  url      URI to parse
  * @param[out] filename Save the filename
  * @param[out] tags     Save the list of tags
- * @return
- * * true  Success
- * * false Error: Bad format
+ * @retval true  Success
+ * @retval false Error Bad format
  *
  * Parse a NotMuch URI, such as:
  * *    notmuch:///path/to/db?query=tag:lkml&limit=1000
@@ -382,7 +381,7 @@ static void free_ctxdata(struct NmCtxData *data)
 /**
  * new_ctxdata - Create a new nm_ctxdata object from a query
  * @param uri NotMuch query string
- * @return a new nm_ctxdata struct
+ * @retval ptr New nm_ctxdata struct
  *
  * A new nm_ctxdata struct is created, then the query is parsed and saved
  * within it.  This should be freed using free_ctxdata().
@@ -412,9 +411,8 @@ static struct NmCtxData *new_ctxdata(char *uri)
 /**
  * init_context - Add NotMuch data to the Context
  * @param ctx A mailbox CONTEXT
- * @return
- * *  0 Success
- * * -1 Error: Bad format
+ * @retval  0 Success
+ * @retval -1 Error Bad format
  *
  * Create a new nm_ctxdata struct and add it CONTEXT::data.
  * NotMuch-specific data will be stored in this struct.
@@ -473,7 +471,7 @@ static int string_to_query_type(const char *str)
 /**
  * query_window_check_timebase - Checks if a given timebase string is valid
  * @param[in] timebase: string containing a time base
- * @return true if the given time base is valid
+ * @retval true if the given time base is valid
  *
  * This function returns whether a given timebase string is valid or not,
  * which is used to validate the user settable configuration setting:
@@ -509,8 +507,8 @@ static void query_window_reset(void)
  * @param[in]  query vfolder search string
  * @param[out] buf   allocated string buffer to receive the modified search query
  * @param[in]  bufsz allocated maximum size of the buf string buffer
- * @return boolean value set to true if a transformed search query is available as
- *         a string in buf, otherwise if the search query shall not be transformed.
+ * @retval true  Transformed search query is available as a string in buf
+ * @retval false Search query shall not be transformed
  *
  * This is where the magic of windowed queries happens. Taking a vfolder search
  * query string as parameter, it will use the following two user settings:
@@ -585,8 +583,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
  * get_query_string - builds the notmuch vfolder search string
  * @param data   internal notmuch context
  * @param window if true enable application of the window on the search string
- * @return string containing a notmuch search query, or a NULL pointer
- *         if none can be generated.
+ * @retval string Containing a notmuch search query
+ * @retval NULL   If none can be generated
  *
  * This function parses the internal representation of a search, and returns
  * a search query string ready to be fed to the notmuch API, given the search
@@ -754,10 +752,9 @@ static int release_db(struct NmCtxData *data)
 /**
  * db_trans_begin - Start a NotMuch database transaction
  * @param data Header data
- * @return
- * * < 0 = error
- * * 1 = new transaction started
- * * 0 = already within transaction
+ * @retval <0 error
+ * @retval 1  new transaction started
+ * @retval 0  already within transaction
  */
 static int db_trans_begin(struct NmCtxData *data)
 {
@@ -795,7 +792,7 @@ static int db_trans_end(struct NmCtxData *data)
 /**
  * is_longrun - Is NotMuch in the middle of a long-running transaction
  * @param data Header data
- * @return true if it is
+ * @retval true if it is
  */
 static int is_longrun(struct NmCtxData *data)
 {
@@ -806,9 +803,8 @@ static int is_longrun(struct NmCtxData *data)
  * get_database_mtime - Get the database modification time
  * @param[in]  data  Struct holding database info
  * @param[out] mtime Save the modification time
- * @return
- * *  0 Success (result in mtime)
- * * -1 Error
+ * @retval  0 Success (result in mtime)
+ * @retval -1 Error
  *
  * Get the "mtime" (modification time) of the database file.
  * This is the time of the last update.
@@ -1041,7 +1037,7 @@ static void deinit_header(struct Header *h)
 /**
  * nm2mutt_message_id - converts notmuch message Id to mutt message Id
  * @param id NotMuch ID to convert
- * @return Mutt message ID
+ * @retval string Mutt message ID
  *
  * Caller must free the Mutt Message ID
  */
@@ -1870,9 +1866,8 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
  * @param new_uri    allocated string receiving the reformatted URI
  * @param orig_uri   original URI to be parsed
  * @param new_uri_sz size of the allocated new_uri string
- * @return
- * * true if new_uri contains a normalized version of the query
- * * false if orig_uri contains an invalid query
+ * @retval true if new_uri contains a normalized version of the query
+ * @retval false if orig_uri contains an invalid query
  *
  * This function aims at making notmuch searches URI representations deterministic,
  * so that when comparing two equivalent searches they will be the same. It works
@@ -2281,9 +2276,8 @@ done:
 /**
  * nm_open_mailbox - Open a notmuch virtual mailbox
  * @param ctx A mailbox CONTEXT
- * @return
- * *  0 Success
- * * -1 Error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 
 static int nm_open_mailbox(struct Context *ctx)
@@ -2336,9 +2330,8 @@ static int nm_open_mailbox(struct Context *ctx)
 /**
  * nm_close_mailbox - Close a notmuch virtual mailbox
  * @param ctx A mailbox CONTEXT
- * @return
- * *  0 Success
- * * -1 Error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int nm_close_mailbox(struct Context *ctx)
 {
@@ -2365,12 +2358,11 @@ static int nm_close_mailbox(struct Context *ctx)
  * nm_check_mailbox - Check a notmuch mailbox for new mail
  * @param ctx         A mailbox CONTEXT
  * @param index_hint  Remeber our place in the index
- * @return
- * * -1 Error
- * *  0 QWQ
- * * #MUTT_NEW_MAIL - new mail has arrived
- * * #MUTT_REOPENED - mailbox closed and reopened
- * * #MUTT_FLAGS - QWQ
+ * @retval -1 Error
+ * @retval  0 Success
+ * @retval #MUTT_NEW_MAIL - new mail has arrived
+ * @retval #MUTT_REOPENED - mailbox closed and reopened
+ * @retval #MUTT_FLAGS - flags have changed
  */
 static int nm_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -2577,9 +2569,8 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
  * @param ctx   A mailbox CONTEXT
  * @param msg   Message to open
  * @param msgno Index of message to open
- * @return
- * * 0 Success
- * * 1 Error
+ * @retval 0 Success
+ * @retval 1 Error
  */
 static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
@@ -2605,9 +2596,8 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
  * nm_close_message - Close a message
  * @param ctx A mailbox CONTEXT
  * @param msg Message to close
- * @return
- * * 0 Success
- * * 1 Error
+ * @retval 0 Success
+ * @retval 1 Error
  */
 static int nm_close_message(struct Context *ctx, struct Message *msg)
 {

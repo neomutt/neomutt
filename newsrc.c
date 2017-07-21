@@ -156,10 +156,9 @@ void nntp_group_unread_stat(struct NntpData *nntp_data)
 /**
  * nntp_newsrc_parse - Parse .newsrc file
  * @param nserv NNTP server
- * @return
- * *  0 Not changed
- * *  1 Parsed
- * * -1 Error
+ * @retval  0 Not changed
+ * @retval  1 Parsed
+ * @retval -1 Error
  */
 int nntp_newsrc_parse(struct NntpServer *nserv)
 {

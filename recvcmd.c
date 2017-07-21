@@ -137,7 +137,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
   /* one or more messages? */
   p = (cur || count_tagged(idx, idxlen) == 1);
 
-  /* RfC 5322 mandates a From: header, so warn before bouncing
+  /* RFC5322 mandates a From: header, so warn before bouncing
    * messages without one */
   if (cur)
   {

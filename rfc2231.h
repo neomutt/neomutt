@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 2231 MIME Charset routines
+ * RFC2231 MIME Charset routines
  *
  * @authors
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>

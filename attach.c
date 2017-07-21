@@ -93,9 +93,8 @@ int mutt_get_tmp_attachment(struct Body *a)
 
 /**
  * mutt_compose_attachment - Create an attachment
- * @return
- * * 1 if require full screen redraw
- * * 0 otherwise
+ * @retval 1 if require full screen redraw
+ * @retval 0 otherwise
  */
 int mutt_compose_attachment(struct Body *a)
 {
@@ -222,7 +221,8 @@ bailout:
 /**
  * mutt_edit_attachment - Edit an attachment
  * @param a Email containing attachment
- * @return 1 if editor found, 0 if not
+ * @retval 1 if editor found
+ * @retval 0 if not
  *
  * Currently, this only works for send mode, as it assumes that the
  * Body->filename actually contains the information.  I'm not sure
@@ -355,10 +355,9 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  * @param hdr    Message header for the current message. Can be NULL
  * @param idx    Attachment
  * @param idxlen Number of attachments
- * @return
- * * 0 if the viewer is run and exited succesfully
- * * -1 on error
- * * The return value of mutt_do_pager() when it is used
+ * @retval 0  If the viewer is run and exited succesfully
+ * @retval -1 Error
+ * @retval n  Return value of mutt_do_pager() when it is used
  *
  * flag can be one of: #MUTT_MAILCAP, #MUTT_REGULAR, #MUTT_AS_TEXT
  *
@@ -642,9 +641,8 @@ return_error:
 
 /**
  * mutt_pipe_attachment - Pipe an attachment to a command
- * @return
- * * 1 on success
- * * 0 on error
+ * @retval 1 on success
+ * @retval 0 on error
  */
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
@@ -750,9 +748,8 @@ static FILE *save_attachment_open(char *path, int flags)
 
 /**
  * mutt_save_attachment - Save an attachment
- * @return
- * * 0 on success
- * * -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
 {
@@ -869,7 +866,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
 /**
  * mutt_decode_save_attachment - Decode, then save an attachment
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
 {

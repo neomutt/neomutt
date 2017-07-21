@@ -119,7 +119,8 @@ struct MxOps *mx_get_ops(int magic)
  * @param fd      File descriptor to file
  * @param excl    If set, try to lock exclusively
  * @param timeout Retry after this time
- * @return 0 on success, -1 on failure
+ * @retval 0 on success
+ * @retval -1 on failure
  */
 int mx_lock_file(const char *path, int fd, int excl, int timeout)
 {
@@ -1128,7 +1129,8 @@ void mx_update_tables(struct Context *ctx, int committing)
  * mx_sync_mailbox - Save changes to mailbox
  * @param[in]  ctx        Context
  * @param[out] index_hint Currently selected mailbox
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -1258,7 +1260,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
  * @param hdr   Message being copied (required for maildir support, because
  *              the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
- * @return new Message
+ * @retval ptr new Message
  */
 struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
 {
@@ -1493,10 +1495,9 @@ void mx_update_context(struct Context *ctx, int new_messages)
 /**
  * mx_check_empty - Is the mailbox empty
  * @param path Mailbox to check
- * @return
- * * 1 Mailbox is empty
- * * 0 Mailbox contains mail
- * * -1 Error
+ * @retval 1 Mailbox is empty
+ * @retval 0 Mailbox contains mail
+ * @retval -1 Error
  */
 int mx_check_empty(const char *path)
 {

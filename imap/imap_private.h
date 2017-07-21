@@ -51,18 +51,12 @@ struct Progress;
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */
-/* <tag> OK ... */
-#define IMAP_CMD_OK       (0)
-/* <tag> BAD ... */
-#define IMAP_CMD_BAD      (-1)
-/* <tag> NO ... */
-#define IMAP_CMD_NO       (-2)
-/* * ... */
-#define IMAP_CMD_CONTINUE (1)
-/* + */
-#define IMAP_CMD_RESPOND  (2)
-/* ImapCommand.state additions */
-#define IMAP_CMD_NEW      (3)
+#define IMAP_CMD_OK       (0)  /**< <tag> OK ... */
+#define IMAP_CMD_BAD      (-1) /**< <tag> BAD ... */
+#define IMAP_CMD_NO       (-2) /**< <tag> NO ... */
+#define IMAP_CMD_CONTINUE (1)  /**< \* ... */
+#define IMAP_CMD_RESPOND  (2)  /**< \+ */
+#define IMAP_CMD_NEW      (3)  /**< ImapCommand.state additions */
 
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
@@ -128,16 +122,16 @@ enum ImapCaps
   IMAP4 = 0,
   IMAP4REV1,
   STATUS,
-  ACL,           /**< RFC 2086: IMAP4 ACL extension */
-  NAMESPACE,     /**< RFC 2342: IMAP4 Namespace */
-  ACRAM_MD5,     /**< RFC 2195: CRAM-MD5 authentication */
-  AGSSAPI,       /**< RFC 1731: GSSAPI authentication */
+  ACL,           /**< RFC2086: IMAP4 ACL extension */
+  NAMESPACE,     /**< RFC2342: IMAP4 Namespace */
+  ACRAM_MD5,     /**< RFC2195: CRAM-MD5 authentication */
+  AGSSAPI,       /**< RFC1731: GSSAPI authentication */
   AUTH_ANON,     /**< AUTH=ANONYMOUS */
-  STARTTLS,      /**< RFC 2595: STARTTLS */
+  STARTTLS,      /**< RFC2595: STARTTLS */
   LOGINDISABLED, /**<           LOGINDISABLED */
-  IDLE,          /**< RFC 2177: IDLE */
+  IDLE,          /**< RFC2177: IDLE */
   SASL_IR,       /**< SASL initial response draft */
-  ENABLE,        /**< RFC 5161 */
+  ENABLE,        /**< RFC5161 */
   X_GM_EXT1,     /**< https://developers.google.com/gmail/imap/imap-extensions */
 
   CAPMAX

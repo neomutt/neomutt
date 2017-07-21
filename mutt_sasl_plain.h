@@ -33,7 +33,7 @@
  * @param authz  Authorization identity
  * @param user   Authentication identity (username)
  * @param pass   Password
- * @return The number of bytes written to buf
+ * @retval Number Bytes written to buf
  *
  * This function can be used to build a protocol-specific SASL Response message
  * using the PLAIN mechanism. The protocol specific command is given in the cmd

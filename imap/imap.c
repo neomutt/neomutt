@@ -494,7 +494,7 @@ int imap_open_connection(struct ImapData *idata)
           }
           else
           {
-            /* RFC 2595 demands we recheck CAPABILITY after TLS completes. */
+            /* RFC2595 demands we recheck CAPABILITY after TLS completes. */
             if (imap_exec(idata, "CAPABILITY", 0))
               goto bail;
           }
@@ -892,8 +892,11 @@ static int imap_open_new_message(struct Message *msg, struct Context *dest, stru
   return 0;
 }
 
-/* imap_set_flag: append str to flags if we currently have permission
- *   according to aclbit */
+/**
+ * imap_set_flag - append str to flags if we currently have permission
+ *
+ * according to aclbit
+ */
 static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
                           const char *str, char *flags, size_t flsize)
 {
@@ -904,7 +907,7 @@ static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
 
 /**
  * imap_has_flag - Does the flag exist in the list
- * @return boolean
+ * @retval boolean
  *
  * Do a caseless comparison of the flag against a flag list, return true if
  * found or flag list has '\*'.
@@ -933,7 +936,8 @@ bool imap_has_flag(struct List *flag_list, const char *flag)
  * imap_make_msg_set - Make a message set
  *
  * Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
- * Pos is an opaque pointer a la strtok. It should be 0 at first call. */
+ * Pos is an opaque pointer a la strtok. It should be 0 at first call.
+ */
 static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
                              int flag, bool changed, bool invert, int *pos)
 {
@@ -1025,7 +1029,8 @@ static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
  * @param flag    flag type on which to filter, e.g. MUTT_REPLIED
  * @param changed include only changed messages in message set
  * @param invert  invert sense of flag, eg MUTT_READ matches unread messages
- * @return number of matched messages, or -1 on failure
+ * @retval n  Number of matched messages
+ * @retval -1 Failure
  *
  * pre/post: commands are of the form "%s %s %s %s", tag, pre, message set, post
  * Prepares commands for all messages matching conditions
@@ -1097,7 +1102,7 @@ out:
 
 /**
  * compare_flags - Compare local flags against the server
- * @return 0 if mutt's flags match cached server flags
+ * @retval 0 if mutt's flags match cached server flags
  */
 static bool compare_flags(struct Header *h)
 {
@@ -1224,7 +1229,8 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
  * imap_sync_mailbox - Sync all the changes to the server
  * @param ctx     the current context
  * @param expunge 0 or 1 - do expunge?
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 int imap_sync_mailbox(struct Context *ctx, int expunge)
 {
@@ -1486,11 +1492,10 @@ int imap_close_mailbox(struct Context *ctx)
  * imap_check_mailbox - use the NOOP or IDLE command to poll for new mail
  * @param ctx   Context
  * @param force Don't wait
- * @return
- * * MUTT_REOPENED   mailbox has been externally modified
- * * MUTT_NEW_MAIL   new mail has arrived!
- * * 0               no change
- * * -1              error
+ * @retval #MUTT_REOPENED  mailbox has been externally modified
+ * @retval #MUTT_NEW_MAIL  new mail has arrived
+ * @retval 0               no change
+ * @retval -1              error
  */
 int imap_check_mailbox(struct Context *ctx, int force)
 {
@@ -1684,11 +1689,12 @@ int imap_buffy_check(int force, int check_stats)
 
 /**
  * imap_status - Get the status of a mailbox
- * @return
- * * -1 on error
- * * >=0 count of messages in mailbox
+ * @retval -1 on error
+ * @retval >=0 count of messages in mailbox
+ *
  * if queue != 0, queue the command and expect it to have been run
- * on the next call (for pipelining the postponed count) */
+ * on the next call (for pipelining the postponed count)
+ */
 int imap_status(char *path, int queue)
 {
   static int queued = 0;
@@ -2043,7 +2049,7 @@ fail:
  * @param src   Source buffer
  * @param start Starting offset into string
  * @param dlen  Destination buffer length
- * @return Length of the common string
+ * @retval n Length of the common string
  *
  * Trim dest to the length of the longest prefix it shares with src.
  */
@@ -2209,10 +2215,9 @@ int imap_complete(char *dest, size_t dlen, char *path)
 
 /**
  * imap_fast_trash - Use server COPY command to copy deleted messages to trash
- * @return
- * * -1: error
- * *  0: success
- * *  1: non-fatal error - try fetch/append
+ * @retval -1 error
+ * @retval  0 success
+ * @retval  1 non-fatal error - try fetch/append
  */
 int imap_fast_trash(struct Context *ctx, char *dest)
 {

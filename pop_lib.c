@@ -49,7 +49,8 @@
  * pop_parse_path - Parse a POP mailbox name
  * @param path Path to parse
  * @param acct Account to store details
- * @return 0 success, -1 error
+ * @retval 0 success
+ * @retval -1 error
  *
  * Split a POP path into host, port, username and password
  */
@@ -120,7 +121,7 @@ static void pop_error(struct PopData *pop_data, char *msg)
  * fetch_capa - Parse CAPA output
  * @param line List of capabilities
  * @param data POP data
- * @return 0 (always)
+ * @retval 0 (always)
  */
 static int fetch_capa(char *line, void *data)
 {
@@ -153,7 +154,7 @@ static int fetch_capa(char *line, void *data)
  * fetch_auth - Fetch list of the authentication mechanisms
  * @param line List of authentication methods
  * @param data POP data
- * @return 0 (always)
+ * @retval 0 (always)
  */
 static int fetch_auth(char *line, void *data)
 {
@@ -178,10 +179,9 @@ static int fetch_auth(char *line, void *data)
  * pop_capabilities - Get capabilities from a POP server
  * @param pop_data POP data
  * @param mode     Initial capabilities
- * @return
- * *  0 Successful
- * * -1 Connection lost
- * * -2 Execution error
+ * @retval  0 Successful
+ * @retval -1 Connection lost
+ * @retval -2 Execution error
 */
 static int pop_capabilities(struct PopData *pop_data, int mode)
 {
@@ -258,10 +258,9 @@ static int pop_capabilities(struct PopData *pop_data, int mode)
 /**
  * pop_connect - Open connection
  * @param pop_data POP data
- * @return
- * *  0 Successful
- * * -1 Connection lost
- * * -2 Invalid response
+ * @retval  0 Successful
+ * @retval -1 Connection lost
+ * @retval -2 Invalid response
 */
 int pop_connect(struct PopData *pop_data)
 {
@@ -293,11 +292,10 @@ int pop_connect(struct PopData *pop_data)
 /**
  * pop_open_connection - Open connection and authenticate
  * @param pop_data POP data
- * @return
- * *  0 Successful
- * * -1 Connection lost
- * * -2 Invalid command or execution error
- * * -3 Authentication cancelled
+ * @retval  0 Successful
+ * @retval -1 Connection lost
+ * @retval -2 Invalid command or execution error
+ * @retval -3 Authentication cancelled
 */
 int pop_open_connection(struct PopData *pop_data)
 {
@@ -459,10 +457,9 @@ void pop_logout(struct Context *ctx)
  * @param buf      Buffer to send/store data
  * @param buflen   Buffer length
  * @param msg      Progress message
- * @return
- * *  0 Successful
- * * -1 Connection lost
- * * -2 Invalid command or execution error
+ * @retval  0 Successful
+ * @retval -1 Connection lost
+ * @retval -2 Invalid command or execution error
 */
 int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 {
@@ -502,11 +499,10 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 
 /**
  * pop_fetch_data - Read Headers with callback function
- * @return
- * *  0 Successful
- * * -1 Connection lost
- * * -2 Invalid command or execution error
- * * -3 Error in funct(*line, *data)
+ * @retval  0 Successful
+ * @retval -1 Connection lost
+ * @retval -2 Invalid command or execution error
+ * @retval -3 Error in funct(*line, *data)
  *
  * This function calls  funct(*line, *data)  for each received line,
  * funct(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
@@ -574,7 +570,8 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
  * check_uidl - find message with this UIDL and set refno
  * @param line String containing UIDL
  * @param data POP data
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 static int check_uidl(char *line, void *data)
 {
@@ -605,7 +602,8 @@ static int check_uidl(char *line, void *data)
 /**
  * pop_reconnect - reconnect and verify indexes if connection was lost
  * @param ctx Context
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 int pop_reconnect(struct Context *ctx)
 {

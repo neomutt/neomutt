@@ -78,6 +78,9 @@ void crypt_current_time(struct State *s, char *app_name)
   state_attach_puts(tmp, s);
 }
 
+/**
+ * crypt_forget_passphrase - Forget a passphrase and display a message
+ */
 void crypt_forget_passphrase(void)
 {
   if ((WithCrypto & APPLICATION_PGP))
@@ -107,6 +110,9 @@ static void disable_coredumps(void)
 
 #endif
 
+/**
+ * crypt_valid_passphrase - Check that we have a usable passphrase, ask if not
+ */
 int crypt_valid_passphrase(int flags)
 {
   int ret = 0;
@@ -513,6 +519,11 @@ int mutt_is_application_smime(struct Body *m)
   return 0;
 }
 
+/**
+ * crypt_query - Check out the type of encryption used
+ *
+ * Set the cached status values if there are any.
+ */
 int crypt_query(struct Body *m)
 {
   int t = 0;
@@ -577,6 +588,11 @@ int crypt_query(struct Body *m)
   return t;
 }
 
+/**
+ * crypt_write_signed - Write the message body/part
+ *
+ * Body/part A described by state S to the given TEMPFILE.
+ */
 int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
   FILE *fp = NULL;
@@ -774,6 +790,15 @@ void crypt_extract_keys_from_messages(struct Header *h)
     unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
+/**
+ * crypt_get_keys - Check we have all the keys we need
+ *
+ * Do a quick check to make sure that we can find all of the
+ * encryption keys if the user has requested this service.
+ * Return the list of keys in KEYLIST.
+ * If oppenc_mode is true, only keys that can be determined without
+ * prompting will be used.
+ */
 int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 {
   struct Address *adrlist = NULL, *last = NULL;
@@ -1009,9 +1034,18 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
 /**
  * crypt_get_fingerprint_or_id - Get the fingerprint or long key ID
+ * @param pphint  Start of string to be passed to pgp_add_string_to_hints() or
+ *                crypt_add_string_to_hints()
+ * @param ppl     Start of long key ID if detected, else NULL
+ * @param pps     Start of short key ID if detected, else NULL
+ * @retval  string Copy of fingerprint, if any, stripped of all spaces
+ *                 Must be FREE'd by caller
+ * @retval  NULL   Otherwise
  *
  * Obtain pointers to fingerprint or short or long key ID, if any.
- * See ncrypt.h for details.
+ *
+ * Upon return, at most one of return, *ppl and *pps pointers is non-NULL,
+ * indicating the longest fingerprint or ID found, if any.
  */
 const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
                                         const char **ppl, const char **pps)

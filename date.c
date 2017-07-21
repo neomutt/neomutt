@@ -130,7 +130,7 @@ time_t mutt_mktime(struct tm *t, int local)
 /**
  * is_leap_year_feb - Is it a leap year
  * @param tm Date to be tested
- * @return true if it's a leap year
+ * @retval true if it's a leap year
  */
 static int is_leap_year_feb(struct tm *tm)
 {

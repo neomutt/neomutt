@@ -68,16 +68,16 @@ WHERE short BuffyCheckStatsInterval INITVAL(60);
 void mutt_buffy_vfolder(char *s, size_t slen);
 #endif
 
-extern time_t BuffyDoneTime; /* last time we knew for sure how much mail there was */
+extern time_t BuffyDoneTime; /**< last time we knew for sure how much mail there was */
 
 struct Buffy *mutt_find_mailbox(const char *path);
 void mutt_update_mailbox(struct Buffy *b);
 
-/* fixes up atime + mtime after mbox/mmdf mailbox was modified
-   according to stat() info taken before a modification */
+/** fixes up atime + mtime after mbox/mmdf mailbox was modified
+ * according to stat() info taken before a modification */
 void mutt_buffy_cleanup(const char *buf, struct stat *st);
 
-/* mark mailbox just left as already notified */
+/** mark mailbox just left as already notified */
 void mutt_buffy_setnotified(const char *path);
 
 int mh_buffy(struct Buffy *mailbox, int check_stats);

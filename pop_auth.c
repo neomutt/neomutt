@@ -329,12 +329,11 @@ static const struct PopAuth pop_authenticators[] = {
 
 /**
  * pop_authenticate - Authenticate with a POP server
- * @return
- * *  0 Successful
- * * -1 Connection lost
- * * -2 Login failed
- * * -3 Authentication cancelled
-*/
+ * @retval  0 Successful
+ * @retval -1 Connection lost
+ * @retval -2 Login failed
+ * @retval -3 Authentication cancelled
+ */
 int pop_authenticate(struct PopData *pop_data)
 {
   struct Account *acct = &pop_data->conn->account;

@@ -557,7 +557,7 @@ static int mbox_open_new_message(struct Message *msg, struct Context *dest, stru
 
 /**
  * strict_addrcmp - Strictly compare two address list
- * @return 1 if address lists are strictly identical
+ * @retval 1 if address lists are strictly identical
  */
 static int strict_addrcmp(const struct Address *a, const struct Address *b)
 {
@@ -645,7 +645,7 @@ static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
 
 /**
  * mbox_strict_cmp_headers - Strictly compare message headers
- * @return 1 if headers are strictly identical
+ * @retval 1 if headers are strictly identical
  */
 int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
 {
@@ -851,12 +851,11 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
  * mbox_check_mailbox - Has mailbox changed on disk
  * @param[in]  ctx        Context
  * @param[out] index_hint Keep track of current index selection
- * @return
- * * #MUTT_REOPENED  Mailbox has been reopened
- * * #MUTT_NEW_MAIL  New mail has arrived
- * * #MUTT_LOCKED    Couldn't lock the file
- * * 0               No change
- * * -1              Error
+ * @retval #MUTT_REOPENED  Mailbox has been reopened
+ * @retval #MUTT_NEW_MAIL  New mail has arrived
+ * @retval #MUTT_LOCKED    Couldn't lock the file
+ * @retval 0               No change
+ * @retval -1              Error
  */
 static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -966,9 +965,8 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 /**
  * mbox_has_new - Does the mailbox have new mail
  * @param ctx Context
- * @return
- * * true if the mailbox has at least 1 new messages (not old)
- * * false otherwise
+ * @retval true if the mailbox has at least 1 new messages (not old)
+ * @retval false otherwise
  */
 static bool mbox_has_new(struct Context *ctx)
 {
@@ -1011,9 +1009,8 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
 
 /**
  * mbox_sync_mailbox - Sync a mailbox to disk
- * @return
- * *  0 Success
- * * -1 Failure
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -1387,10 +1384,9 @@ bail: /* Come here in case of disaster */
 /**
  * mbox_check_empty - Is the mailbox empty
  * @param path Path to mailbox
- * @return
- * * 1 mailbox is not empty
- * * 0 mailbox is empty
- * * -1 on error
+ * @retval 1 mailbox is not empty
+ * @retval 0 mailbox is empty
+ * @retval -1 on error
  */
 int mbox_check_empty(const char *path)
 {

@@ -90,7 +90,7 @@ static void append_signature(FILE *f)
  * addrcmp - compare two e-mail addresses
  * @param a Address 1
  * @param b Address 2
- * @return true if they are equivalent
+ * @retval true if they are equivalent
  */
 static bool addrcmp(struct Address *a, struct Address *b)
 {
@@ -883,7 +883,8 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
  * @param flags  compose mode
  * @param ctx    current mailbox
  * @param cur    current message
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 static int generate_body(FILE *tempfp, struct Header *msg, int flags,
                          struct Context *ctx, struct Header *cur)
@@ -1345,11 +1346,9 @@ static int search_attach_keyword(char *filename)
  * @param tempfile file specified by -i or -H
  * @param ctx      current mailbox
  * @param cur      current message
- * @return
- *
- * *  0 Message was successfully sent
- * * -1 Message was aborted or an error occurred
- * *  1 Message was postponed
+ * @retval  0 Message was successfully sent
+ * @retval -1 Message was aborted or an error occurred
+ * @retval  1 Message was postponed
  */
 int ci_send_message(int flags, struct Header *msg, char *tempfile,
                     struct Context *ctx, struct Header *cur)

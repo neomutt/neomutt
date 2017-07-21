@@ -123,14 +123,14 @@ typedef struct CryptModuleSpecs
 void crypto_module_register(crypt_module_specs_t specs);
 crypt_module_specs_t crypto_module_lookup(int identifier);
 
-/* If the crypto module identifier by IDENTIFIER has been registered,
+/** If the crypto module identifier by IDENTIFIER has been registered,
    call its function FUNC.  Do nothing else.  This may be used as an
    expression. */
 #define CRYPT_MOD_CALL_CHECK(identifier, func)                                 \
   (crypto_module_lookup(APPLICATION_##identifier) &&                           \
    (crypto_module_lookup(APPLICATION_##identifier))->functions.func)
 
-/* Call the function FUNC in the crypto module identified by
+/** Call the function FUNC in the crypto module identified by
    IDENTIFIER. This may be used as an expression. */
 #define CRYPT_MOD_CALL(identifier, func)                                       \
   *(crypto_module_lookup(APPLICATION_##identifier))->functions.func

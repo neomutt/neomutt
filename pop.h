@@ -45,7 +45,6 @@ struct Progress;
  */
 enum PopStatus
 {
-  /* Status */
   POP_NONE = 0,
   POP_CONNECTED,
   POP_DISCONNECTED,

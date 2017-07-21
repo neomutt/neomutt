@@ -50,25 +50,15 @@ struct SmimeKey
 
 void smime_void_passphrase(void);
 int smime_valid_passphrase(void);
-
 int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
-
 int smime_application_smime_handler(struct Body *m, struct State *s);
-
 struct Body *smime_sign_message(struct Body *a);
-
 struct Body *smime_build_smime_entity(struct Body *a, char *certlist);
-
 int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
-
 int smime_verify_sender(struct Header *h);
-
 void smime_getkeys(struct Envelope *env);
-
 char *smime_find_keys(struct Address *adrlist, int oppenc_mode);
-
 void smime_invoke_import(char *infile, char *mailbox);
-
 int smime_send_menu(struct Header *msg);
 
 #endif

@@ -528,7 +528,8 @@ static char *tls_make_date(time_t t, char *s, size_t len)
  * @param hostname Hostname
  * @param idx      Index into certificate list
  * @param len      Length of certificate list
- * @return 0 on failure, nonzero on success
+ * @retval 0  on failure
+ * @retval >0 on success
  */
 static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      gnutls_certificate_status_t certstat,

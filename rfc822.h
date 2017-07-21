@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 822 Email format routines
+ * RFC822 Email format routines
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>

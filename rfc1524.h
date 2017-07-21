@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 1524 Mailcap routines
+ * RFC1524 Mailcap routines
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>

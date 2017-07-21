@@ -852,7 +852,7 @@ void smime_getkeys(struct Envelope *env)
 
 /**
  * smime_find_keys - Find the keys of the recipients of a message
- * @return NULL if any of the keys can not be found
+ * @retval NULL if any of the keys can not be found
  *
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.

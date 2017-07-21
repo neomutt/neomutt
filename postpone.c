@@ -74,7 +74,7 @@ static short UpdateNumPostponed = 0;
  * @param force
  * * 0 Use a cached value if costly to get a fresh count (IMAP)
  * * 1 Force check
- * @return Number of postponed messages
+ * @retval n Number of postponed messages
  */
 int mutt_num_postponed(int force)
 {
@@ -256,10 +256,9 @@ static struct Header *select_msg(void)
  *                which `hdr' is in reply to
  * @param fcc     fcc for the recalled message
  * @param fcclen  max length of fcc
- * @return
- * * -1        Error/no messages
- * * 0         Normal exit
- * * SENDREPLY Recalled message is a reply
+ * @retval -1         Error/no messages
+ * @retval 0          Normal exit
+ * @retval #SENDREPLY Recalled message is a reply
  */
 int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
                        struct Header **cur, char *fcc, size_t fcclen)
@@ -570,7 +569,8 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  * @param resend  Set if resending (as opposed to recalling a postponed msg).
  *                Resent messages enable header weeding, and also
  *                discard any existing Message-ID and Mail-Followup-To.
- * @return 0 on success, -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  */
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
                           struct Header *hdr, short resend)

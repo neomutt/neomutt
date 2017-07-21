@@ -46,10 +46,9 @@
  * edit_one_message - Edit an email
  * @param ctx Context
  * @param cur Header of email
- * @return
- * * 1  Message not modified
- * * 0  Message edited successfully
- * * -1 Error
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
  */
 static int edit_one_message(struct Context *ctx, struct Header *cur)
 {

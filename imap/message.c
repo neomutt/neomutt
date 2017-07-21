@@ -226,10 +226,9 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
  * msg_parse_fetch - handle headers returned from header fetch
  * @param h IMAP Header
  * @param s Command string
- * @return
- * *  0 Success
- * * -1 String is corrupted
- * * -2 Fetch contains a body or header lines that still need to be parsed
+ * @retval  0 Success
+ * @retval -1 String is corrupted
+ * @retval -2 Fetch contains a body or header lines that still need to be parsed
  */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
@@ -306,10 +305,9 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 
 /**
  * msg_fetch_header -import IMAP FETCH response into an ImapHeader.
- * @return
- * *  0 Success
- * * -1 String is not a fetch response
- * * -2 String is a corrupt fetch response
+ * @retval  0 Success
+ * @retval -1 String is not a fetch response
+ * @retval -2 String is a corrupt fetch response
  *
  * Expects string beginning with * n FETCH.
  */
@@ -1195,10 +1193,9 @@ fail:
 
 /**
  * imap_copy_messages - Server COPY messages to another folder
- * @return
- * * -1 Error
- * *  0 Success
- * *  1 Non-fatal error - try fetch/append
+ * @retval -1 Error
+ * @retval  0 Success
+ * @retval  1 Non-fatal error - try fetch/append
  */
 int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
 {

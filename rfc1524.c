@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 1524 Mailcap routines
+ * RFC1524 Mailcap routines
  *
  * @authors
  * Copyright (C) 1996-2000,2003,2012 Michael R. Elkins <me@mutt.org>
@@ -122,9 +122,10 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
 }
 
 /**
- * get_field - NUL terminate a rfc 1524 field
+ * get_field - NUL terminate a RFC1524 field
  * @param s String to alter
- * @return start of next field or NULL
+ * @retval ptr  Start of next field
+ * @retval NULL Error
  */
 static char *get_field(char *s)
 {
@@ -355,7 +356,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
 
 /**
  * rfc1524_new_entry - Allocate memory for a new rfc1524 entry
- * @return Pointer to an un-initialized struct Rfc1524MailcapEntry
+ * @retval ptr An un-initialized struct Rfc1524MailcapEntry
  */
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
 {
@@ -364,7 +365,7 @@ struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
 
 /**
  * rfc1524_free_entry - Deallocate an struct Rfc1524MailcapEntry
- * @param entry Rfc1524MailcapEntry to deallocate.
+ * @param entry Rfc1524MailcapEntry to deallocate
  */
 void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 {
@@ -386,9 +387,8 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * @param type   Text type in "type/subtype" format
  * @param entry  struct Rfc1524MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup
- * @return
- * * 1 on success. If *entry is not NULL it poplates it with the mailcap entry
- * * 0 if no matching entry is found
+ * @retval 1 on success. If *entry is not NULL it poplates it with the mailcap entry
+ * @retval 0 if no matching entry is found
  *
  * opt can be one of: #MUTT_EDIT, #MUTT_COMPOSE, #MUTT_PRINT, #MUTT_AUTOVIEW
  *
@@ -456,10 +456,9 @@ static void strnfcpy(char *d, char *s, size_t siz, size_t len)
  * @param oldfile      Original filename
  * @param newfile      Buffer for new filename
  * @param nflen        Buffer length
- * @return
- * * 0 if the left and right components of the oldfile and newfile match.
- * * 1 otherwise.
-
+ * @retval 0 if the left and right components of the oldfile and newfile match
+ * @retval 1 otherwise
+ *
  * If there is no nametemplate, the stripped oldfile name is used as the
  * template for newfile.
  *
@@ -481,8 +480,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
 
   newfile[0] = 0;
 
-  /* first, ignore leading path components.
-   */
+  /* first, ignore leading path components */
 
   if (nametemplate && (s = strrchr(nametemplate, '/')))
     nametemplate = s + 1;
@@ -502,8 +500,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   else /* oldfile && nametemplate */
   {
     /* first, compare everything left from the "%s"
-     * (if there is one).
-     */
+     * (if there is one).  */
 
     lmatch = true;
     ps = 0;

@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 3676 Format Flowed routines
+ * RFC3676 Format Flowed routines
  *
  * @authors
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
@@ -31,10 +31,7 @@ struct Body;
 struct Header;
 struct State;
 
-/* body handler implementing RfC 3676 for format=flowed */
 int rfc3676_handler(struct Body *a, struct State *s);
-
-/* this does the space-stuffing for RfC3676 style messages */
 void rfc3676_space_stuff(struct Header *hdr);
 
 #endif /* _MUTT_RFC3676_H */

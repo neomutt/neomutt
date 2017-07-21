@@ -63,9 +63,8 @@
  * imap_expand_path - Canonicalise an IMAP path
  * @param path Buffer containing path
  * @param len  Buffer length
- * @return
- * * 0 on success
- * * -1 on error
+ * @retval 0 on success
+ * @retval -1 on error
  *
  * IMAP implementation of mutt_expand_path. Rewrite an IMAP path in canonical
  * and absolute form.  The buffer is rewritten in place with the canonical IMAP
@@ -504,7 +503,7 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_new_idata - Allocate and initialise a new ImapData structure
- * @return NULL on failure (no mem)
+ * @retval NULL on failure (no mem)
  */
 struct ImapData *imap_new_idata(void)
 {
@@ -612,7 +611,8 @@ void imap_cachepath(struct ImapData *idata, const char *mailbox, char *dest, siz
 
 /**
  * imap_get_literal_count - write number of bytes in an IMAP literal into bytes
- * @return 0 on success, -1 on failure
+ * @retval 0 on success
+ * @retval -1 on failure
  */
 int imap_get_literal_count(const char *buf, long *bytes)
 {
@@ -730,7 +730,8 @@ time_t imap_parse_date(char *s)
 /**
  * imap_make_date - format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
  *
- * Caller should provide a buffer of IMAP_DATELEN bytes */
+ * Caller should provide a buffer of IMAP_DATELEN bytes
+ */
 void imap_make_date(char *buf, time_t timestamp)
 {
   struct tm *tm = localtime(&timestamp);

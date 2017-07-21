@@ -51,15 +51,16 @@
 #include "mutt_notmuch.h"
 #endif
 
-static time_t BuffyTime = 0;      /* last time we started checking for mail */
-static time_t BuffyStatsTime = 0; /* last time we check performed mail_check_stats */
-time_t BuffyDoneTime = 0; /* last time we knew for sure how much mail there was. */
-static short BuffyCount = 0;  /* how many boxes with new mail */
-static short BuffyNotify = 0; /* # of unnotified new boxes */
+static time_t BuffyTime = 0; /**< last time we started checking for mail */
+static time_t BuffyStatsTime = 0; /**< last time we check performed mail_check_stats */
+time_t BuffyDoneTime = 0; /**< last time we knew for sure how much mail there was. */
+static short BuffyCount = 0;  /**< how many boxes with new mail */
+static short BuffyNotify = 0; /**< # of unnotified new boxes */
 
 /**
  * fseek_last_message - Find the last message in the file
- * @return 0 on success, -1 if no message found
+ * @retval 0 on success
+ * @retval -1 if no message found
  */
 static int fseek_last_message(FILE *f)
 {
@@ -108,7 +109,7 @@ static int fseek_last_message(FILE *f)
 
 /**
  * test_last_status_new - Is the last message new
- * @return 1 if the last message is new
+ * @retval 1 if the last message is new
  */
 static int test_last_status_new(FILE *f)
 {
@@ -179,7 +180,7 @@ static void buffy_free(struct Buffy **mailbox)
  * @param dir_name    Path to mailbox
  * @param check_new   if true, check for new mail
  * @param check_stats if true, count total, new, and flagged messages
- * @return 1 if the dir has new mail
+ * @retval 1 if the dir has new mail
  *
  * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
@@ -263,7 +264,7 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
  * buffy_maildir_check - Check for new mail in a maildir mailbox
  * @param mailbox     Mailbox to check
  * @param check_stats if true, also count total, new, and flagged messages
- * @return 1 if the mailbox has new mail
+ * @retval 1 if the mailbox has new mail
  */
 static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
 {
@@ -291,7 +292,7 @@ static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
  * @param mailbox     Mailbox to check
  * @param sb          stat(2) information about the mailbox
  * @param check_stats if true, also count total, new, and flagged messages
- * @return 1 if the mailbox has new mail
+ * @retval 1 if the mailbox has new mail
  */
 static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_stats)
 {

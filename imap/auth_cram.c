@@ -64,11 +64,11 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
 
   imap_cmd_start(idata, "AUTHENTICATE CRAM-MD5");
 
-  /* From RFC 2195:
+  /* From RFC2195:
    * The data encoded in the first ready response contains a presumptively
    * arbitrary string of random digits, a timestamp, and the fully-qualified
    * primary host name of the server. The syntax of the unencoded form must
-   * correspond to that of an RFC 822 'msg-id' [RFC822] as described in [POP3].
+   * correspond to that of an RFC822 'msg-id' [RFC822] as described in [POP3].
    */
   do
     rc = imap_cmd_step(idata);

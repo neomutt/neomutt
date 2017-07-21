@@ -58,7 +58,7 @@ struct Md5Ctx
  */
 
 /* Initialize structure containing state of computation.
- * (RFC 1321, 3.3: Step 3)  */
+ * (RFC1321, 3.3: Step 3)  */
 void md5_init_ctx(struct Md5Ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the

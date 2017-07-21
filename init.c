@@ -238,7 +238,8 @@ int query_quadoption(int opt, const char *prompt)
 /**
  * mutt_option_index - Find the index (in rc_vars) of a variable name
  * @param s Variable name to search for
- * @return -1 on error, >0 on success
+ * @retval -1 on error
+ * @retval >0 on success
  */
 int mutt_option_index(const char *s)
 {
@@ -802,9 +803,8 @@ static void remove_from_list(struct List **l, const char *str)
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
  * @param err  Buffer for any error message
- * @return
- * *  1 Stop processing the current file
- * * -1 Failed
+ * @retval  1 Stop processing the current file
+ * @retval -1 Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */
@@ -826,9 +826,8 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
  * @param err  Buffer for any error message
- * @return
- * *  0 Success
- * * -1 Failed
+ * @retval  0 Success
+ * @retval -1 Failed
  *
  * The 'ifdef' command allows conditional elements in the config file.
  * If a given variable, function, command or compile-time symbol exists, then
@@ -3008,7 +3007,8 @@ static struct List *MuttrcStack;
  * to_absolute_path - Convert relative filepath to an absolute path
  * @param path      Relative path
  * @param reference Absolute path that \a path is relative to
- * @return true on success, false otherwise
+ * @retval true on success
+ * @retval false otherwise
  *
  * Use POSIX functions to convert a path to absolute, relatively to another path
  * @note \a path should be at least of PATH_MAX length
@@ -3052,7 +3052,7 @@ static int to_absolute_path(char *path, const char *reference)
  * source_rc - Read an initialization file
  * @param rcfile_path Path to initialization file
  * @param err         Buffer for error messages
- * @return <0 if mutt should pause to let the user know
+ * @retval <0 if mutt should pause to let the user know
  */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
@@ -4217,7 +4217,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
    * The creator of a mailto URL cannot expect the resolver of a URL to
    * understand more than the "subject" and "body" headers. Clients that
    * resolve mailto URLs into mail messages should be able to correctly
-   * create RFC 822-compliant mail messages using the "subject" and "body"
+   * create RFC822-compliant mail messages using the "subject" and "body"
    * headers.
    */
   add_to_list(&MailtoAllow, "body");

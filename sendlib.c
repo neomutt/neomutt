@@ -660,9 +660,8 @@ static void update_content_info(struct Content *info, struct ContentState *s,
  * @param[in]  tocodes    List of target encodings
  * @param[out] tocode     Chosen encoding
  * @param[in]  info       Encoding information
- * @return
- * * -1 Error, no conversion was possible
- * * >0 Success, number of bytes converted
+ * @retval -1 Error, no conversion was possible
+ * @retval >0 Success, number of bytes converted
  *
  * Find the best charset conversion of the file from fromcode into one
  * of the tocodes. If successful, set *tocode and Content *info and
@@ -970,7 +969,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  * mutt_lookup_mime_type - Find the MIME type for an attachment
  * @param att  Email with attachment
  * @param path Path to attachment
- * @return MIME type, e.g. #TYPEIMAGE
+ * @retval n MIME type, e.g. #TYPEIMAGE
  *
  * Given a file at `path`, see if there is a registered MIME type.
  * Returns the major MIME type, and copies the subtype to ``d''.  First look
@@ -1473,7 +1472,7 @@ static int get_toplevel_encoding(struct Body *a)
 
 /**
  * check_boundary - check for duplicate boundary
- * @return true if duplicate found
+ * @retval true if duplicate found
  */
 static bool check_boundary(const char *boundary, struct Body *b)
 {

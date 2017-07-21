@@ -100,7 +100,7 @@ enum SidebarSrc
  * @param[in]  elsestring  Otherwise, display this string
  * @param[in]  data        Pointer to our sidebar_entry
  * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
- * @return src (unchanged)
+ * @retval src (unchanged)
  *
  * cb_format_str is a callback function for mutt_expando_format.  It understands
  * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
@@ -277,10 +277,9 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
  * cb_qsort_sbe - qsort callback to sort SBENTRYs
  * @param a First  SbEntry to compare
  * @param b Second SbEntry to compare
- * @return
- * * -1: a precedes b
- * *  0: a and b are identical
- * *  1: b precedes a
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
  */
 static int cb_qsort_sbe(const void *a, const void *b)
 {
@@ -429,7 +428,8 @@ static void sort_entries(void)
 
 /**
  * select_next - Selects the next unhidden mailbox
- * @return true: Success, false: Failure
+ * @retval true  Success
+ * @retval false Failure
  */
 static bool select_next(void)
 {
@@ -451,7 +451,8 @@ static bool select_next(void)
 
 /**
  * select_next_new - Selects the next new mailbox
- * @return true: Success, false: Failure
+ * @retval true  Success
+ * @retval false Failure
  *
  * Search down the list of mail folders for one containing new mail.
  */
@@ -482,7 +483,8 @@ static int select_next_new(void)
 
 /**
  * select_prev - Selects the previous unhidden mailbox
- * @return true: Success, false: Failure
+ * @retval true  Success
+ * @retval false Failure
  */
 static bool select_prev(void)
 {
@@ -504,7 +506,8 @@ static bool select_prev(void)
 
 /**
  * select_prev_new - Selects the previous new mailbox
- * @return true: Success, false: Failure
+ * @retval true  Success
+ * @retval false Failure
  *
  * Search up the list of mail folders for one containing new mail.
  */
@@ -535,7 +538,8 @@ static bool select_prev_new(void)
 
 /**
  * select_page_down - Selects the first entry in the next page of mailboxes
- * @return true: Success, false: Failure
+ * @retval true  Success
+ * @retval false Failure
  */
 static int select_page_down(void)
 {
@@ -555,7 +559,8 @@ static int select_page_down(void)
 
 /**
  * select_page_up - Selects the last entry in the previous page of mailboxes
- * @return true: Success, false: Failure
+ * @retval true  Success
+ * @retval false Failure
  */
 static int select_page_up(void)
 {
@@ -576,9 +581,8 @@ static int select_page_up(void)
 /**
  * prepare_sidebar - Prepare the list of SBENTRYs for the sidebar display
  * @param page_size  The number of lines on a page
- * @return
- * * false: No, don't draw the sidebar
- * * true: Yes, draw the sidebar
+ * @retval false No, don't draw the sidebar
+ * @retval true  Yes, draw the sidebar
  *
  * Before painting the sidebar, we determine which are visible, sort
  * them and set up our page pointers.
@@ -661,9 +665,8 @@ static bool prepare_sidebar(int page_size)
  * draw_divider - Draw a line between the sidebar and the rest of mutt
  * @param num_rows   Height of the Sidebar
  * @param num_cols   Width of the Sidebar
- * @return
- * * 0: Empty string
- * * n: Character occupies n screen columns
+ * @retval 0 Empty string
+ * @retval n Character occupies n screen columns
  *
  * Draw a divider using characters from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.
@@ -785,10 +788,10 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  * On the first run they'll be NULL, so we display the top of Mutt's list
  * (Incoming).
  *
- * TopBuffy - first visible mailbox
- * BotBuffy - last  visible mailbox
- * OpnBuffy - mailbox shown in Mutt's Index Panel
- * HilBuffy - Unselected mailbox (the paging follows this)
+ * * TopBuffy - first visible mailbox
+ * * BotBuffy - last  visible mailbox
+ * * OpnBuffy - mailbox shown in Mutt's Index Panel
+ * * HilBuffy - Unselected mailbox (the paging follows this)
  *
  * The entries are formatted using "sidebar_format" and may be abbreviated:
  * "sidebar_short_path", indented: "sidebar_folder_indent",
@@ -1052,7 +1055,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
 
 /**
  * mutt_sb_get_highlight - Get the Buffy that's highlighted in the sidebar
- * @return mailbox path
+ * @retval string Mailbox path
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
  */

@@ -284,7 +284,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
       mutt_debug(1, "Error releasing credentials\n");
 
     /* send_token may contain a notification to the server to flush
-     * credentials. RFC 1731 doesn't specify what to do, and since this
+     * credentials. RFC1731 doesn't specify what to do, and since this
      * support is only for authentication, we'll assume the server knows
      * enough to flush its own credentials */
     gss_release_buffer(&min_stat, &send_token);

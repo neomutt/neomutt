@@ -86,7 +86,7 @@ static bool cmd_queue_full(struct ImapData *idata)
 /**
  * cmd_new - Create and queue a new command control block
  * @param idata IMAP data
- * @return NULL if the pipeline is full
+ * @retval NULL if the pipeline is full
  */
 static struct ImapCommand *cmd_new(struct ImapData *idata)
 {
@@ -955,7 +955,9 @@ int imap_cmd_step(struct ImapData *idata)
 
 /**
  * imap_code - Was the command successful
- * @return 1 if the command result was OK, or 0 if NO or BAD
+ * @param s IMAP command status
+ * @retval 1 if the command result was OK
+ * @retval 0 if NO or BAD
  */
 int imap_code(const char *s)
 {
@@ -996,10 +998,9 @@ const char *imap_cmd_trailer(struct ImapData *idata)
  * @param idata  IMAP data
  * @param cmdstr Command to execute
  * @param flags  Flags (see below)
- * @return
- * * 0 on success
- * * -1 on Failure
- * * -2 on OK Failure
+ * @retval 0 on success
+ * @retval -1 on Failure
+ * @retval -2 on OK Failure
  *
  * Also, handle untagged responses.
  *

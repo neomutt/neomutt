@@ -108,7 +108,8 @@ void mutt_refresh(void)
  * Make sure that the next refresh does a full refresh.  This could be
  * optimized by not doing it at all if DISPLAY is set as this might indicate
  * that a GUI based pinentry was used.  Having an option to customize this is
- * of course the Mutt way.  */
+ * of course the Mutt way.
+ */
 void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
@@ -1335,7 +1336,7 @@ void mutt_paddstr(int n, const char *s)
  * @param[in]  maxlen Maximum length of string in bytes
  * @param[in]  maxwid Maximum width in screen columns
  * @param[out] width  Save the truncated screen column width
- * @return number of bytes to use
+ * @retval n Number of bytes to use
  *
  * See how many bytes to copy from string so it's at most maxlen bytes long and
  * maxwid columns wide
@@ -1389,10 +1390,10 @@ out:
  * mutt_charlen - Count the bytes in a (multibyte) character
  * @param[in]  s     String to be examined
  * @param[out] width Number of screen columns the character would use
- * @return Number of bytes in the first (multibyte) character of input consumes
- * * < 0 ... conversion error
- * * = 0 ... end of input
- * * > 0 ... length (bytes)
+ * @retval n  Number of bytes in the first (multibyte) character of input consumes
+ * @retval <0 Conversion error
+ * @retval =0 End of input
+ * @retval >0 Length (bytes)
  */
 int mutt_charlen(const char *s, int *width)
 {
@@ -1414,7 +1415,7 @@ int mutt_charlen(const char *s, int *width)
 /**
  * mutt_strwidth - Measure a string's width in screen cells
  * @param s String to be measured
- * @return Number of screen cells string would use
+ * @retval n Number of screen cells string would use
  */
 int mutt_strwidth(const char *s)
 {

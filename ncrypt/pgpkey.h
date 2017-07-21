@@ -32,8 +32,8 @@ struct PgpKeyInfo;
  */
 enum PgpRing
 {
-  PGP_PUBRING,
-  PGP_SECRING,
+  PGP_PUBRING, /**< Public keys */
+  PGP_SECRING, /**< Secret keys */
 };
 
 struct Body *pgp_make_key_attachment(char *tempf);

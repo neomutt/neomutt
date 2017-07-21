@@ -1512,9 +1512,8 @@ static void set_pattern_cache_value(int *cache_entry, int value)
 
 /**
  * get_pattern_cache_value - Get pattern cache value
- * @return
- * * 1 if the cache value is set and has a true value.
- * * 0 otherwise (even if unset!)
+ * @retval 1 if the cache value is set and has a true value
+ * @retval 0 otherwise (even if unset!)
  */
 static int get_pattern_cache_value(int cache_entry)
 {
@@ -1818,9 +1817,8 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
 /**
  * top_of_thread - Find the first email in the current thread
  * @param h Header of current email
- * @return
- * * MuttThread*: success, email found
- * * NULL:    on error
+ * @retval ptr  Success, email found
+ * @retval NULL On error
  */
 static struct MuttThread *top_of_thread(struct Header *h)
 {
@@ -1840,9 +1838,8 @@ static struct MuttThread *top_of_thread(struct Header *h)
 /**
  * mutt_limit_current_thread - Limit the email view to the current thread
  * @param h Header of current email
- * @return
- * * true: Success
- * * false: Failure
+ * @retval true Success
+ * @retval false Failure
  */
 bool mutt_limit_current_thread(struct Header *h)
 {

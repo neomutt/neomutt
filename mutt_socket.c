@@ -141,10 +141,9 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 
 /**
  * mutt_socket_poll - poll whether reads would block
- * @return
- * * >0 There is data to read,
- * *  0 Read would block,
- * * -1 Connection doesn't support polling
+ * @retval >0 There is data to read
+ * @retval  0 Read would block
+ * @retval -1 Connection doesn't support polling
  */
 int mutt_socket_poll(struct Connection *conn)
 {

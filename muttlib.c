@@ -427,7 +427,7 @@ void mutt_free_header(struct Header **h)
 
 /**
  * mutt_matches_list - Is the string in the list
- * @return true if the header contained in "s" is in list "t"
+ * @retval true if the header contained in "s" is in list "t"
  */
 bool mutt_matches_list(const char *s, struct List *t)
 {
@@ -727,9 +727,8 @@ void mutt_delete_parameter(const char *attribute, struct Parameter **p)
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
  * @param m Attachment body to be displayed
- * @return
- * * true  Mutt requires a mailcap entry to display
- * * false otherwise
+ * @retval true  Mutt requires a mailcap entry to display
+ * @retval false otherwise
  */
 bool mutt_needs_mailcap(struct Body *m)
 {
@@ -1129,10 +1128,9 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
 
 /**
  * mutt_check_overwrite - Ask the user if overwriting is necessary
- * @return
- * *  0 on success
- * * -1 on abort
- * *  1 on error
+ * @retval  0 on success
+ * @retval -1 on abort
+ * @retval  1 on error
  */
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                          size_t flen, int *append, char **directory)
@@ -1889,10 +1887,9 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
 /**
  * mutt_save_confirm - Ask the user to save
- * @return
- * *  0 if OK to proceed
- * * -1 to abort
- * *  1 to retry
+ * @retval  0 if OK to proceed
+ * @retval -1 to abort
+ * @retval  1 to retry
  */
 int mutt_save_confirm(const char *s, struct stat *st)
 {
@@ -2202,7 +2199,8 @@ bool mutt_match_rx_list(const char *s, struct RxList *l)
  * @param l        List of spam patterns
  * @param text     Buffer to save match
  * @param textsize Buffer length
- * @return true if \a s matches a pattern in \a l, false otherwise
+ * @retval true if \a s matches a pattern in \a l
+ * @retval false otherwise
  *
  * Match a string against the patterns defined by the 'spam' command and output
  * the expanded format into `text` when there is a match.  If textsize<=0, the
@@ -2295,7 +2293,7 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
  * @param type    Type of XDG variable, e.g. #XDG_CONFIG_HOME
  * @param buf     Buffer to save path
  * @param bufsize Buffer length
- * @return 1 if an entry was found that actually exists on disk and 0 otherwise
+ * @retval 1 if an entry was found that actually exists on disk and 0 otherwise
  *
  * Process an XDG environment variable or its fallback.
  */

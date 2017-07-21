@@ -38,7 +38,8 @@
  * @param fdin  If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
  * @param fdout If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
  * @param fderr If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
- * @return Pid of the created process or -1 on any error creating pipes or forking
+ * @retval n  pid of the created process
+ * @retval -1 on any error creating pipes or forking
  *
  * This function provides multiple mechanisms to handle IO sharing for the
  * command process. File streams are prioritized over file descriptors if
@@ -202,7 +203,8 @@ pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err)
 /**
  * mutt_wait_filter - Wait for the exit of a process and return its status
  * @param pid Process id of the process to wait for
- * @return Exit status of the process identified by pid or -1 in the event of an error
+ * @retval n  Exit status of the process identified by pid
+ * @retval -1 Error
  */
 int mutt_wait_filter(pid_t pid)
 {

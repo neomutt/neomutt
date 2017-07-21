@@ -535,9 +535,8 @@ static int crc_matches(const char *d, unsigned int crc)
 /**
  * create_hcache_dir - Create parent dirs for the hcache database
  * @param path Database filename
- * @return
- * * true Success
- * * false Failure (errno set)
+ * @retval true Success
+ * @retval false Failure (errno set)
  */
 static bool create_hcache_dir(const char *path)
 {
@@ -565,16 +564,16 @@ static bool create_hcache_dir(const char *path)
  * @param path   Base directory, from $header_cache
  * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename
- * @return Full pathname to the database (to be generated)
- *         (path must be freed by the caller)
+ * @retval ptr Full pathname to the database (to be generated)
+ *             (path must be freed by the caller)
  *
  * Generate the pathname for the hcache database, it will be of the form:
  *     BASE/FOLDER/NAME-SUFFIX
  *
- * BASE :  Base directory (@a path)
- * FOLDER: Mailbox name (@a folder)
- * NAME:   Create by @a namer, or md5sum of @a folder
- * SUFFIX: Character set (if ICONV isn't being used)
+ * * BASE:  Base directory (@a path)
+ * * FOLDER: Mailbox name (@a folder)
+ * * NAME:   Create by @a namer, or md5sum of @a folder
+ * * SUFFIX: Character set (if ICONV isn't being used)
  *
  * This function will create any parent directories needed, so the caller just
  * needs to create the database file.

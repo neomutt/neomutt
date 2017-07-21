@@ -1395,10 +1395,9 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  * @param force_redraw    Force a repaint
  * @param search_re       Regex to highlight
  * @param pager_window    Window to draw into
- * @return
- * * -1 EOF was reached
- * * 0  normal exit, line was not displayed
- * * >0 normal exit, line was displayed
+ * @retval -1 EOF was reached
+ * @retval 0  normal exit, line was not displayed
+ * @retval >0 normal exit, line was displayed
  *
  * flags:
  * * #MUTT_SHOWFLAT, show characters (used for displaying help)

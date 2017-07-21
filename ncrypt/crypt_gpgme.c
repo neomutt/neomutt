@@ -153,7 +153,7 @@ static void redraw_if_needed(gpgme_ctx_t ctx)
 /**
  * digit_or_letter - Is the character a number or letter
  * @param s Only the first character of this string is tested
- * @return true when s points to a digit or letter
+ * @retval true when s points to a digit or letter
  */
 static int digit_or_letter(const unsigned char *s)
 {
@@ -257,9 +257,8 @@ static const char *crypt_fpr(struct CryptKeyInfo *k)
 /**
  * crypt_fpr_or_lkeyid - Find the fingerprint of a key
  * @param k Key to examine
- * @return
- * * fingerprint if available
- * * otherwise returns the long keyid
+ * @retval string fingerprint if available
+ * @retval string otherwise the long keyid
  */
 static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
 {
@@ -364,7 +363,7 @@ static void crypt_free_key(struct CryptKeyInfo **keylist)
 
 /**
  * crypt_key_is_valid - Is the key valid
- * @return true when key K is valid
+ * @retval true when key K is valid
  */
 static bool crypt_key_is_valid(struct CryptKeyInfo *k)
 {
@@ -375,7 +374,7 @@ static bool crypt_key_is_valid(struct CryptKeyInfo *k)
 
 /**
  * crypt_id_is_strong - Is the key strong
- * @return true when validity of KEY is sufficient
+ * @retval true when validity of KEY is sufficient
  */
 static int crypt_id_is_strong(struct CryptKeyInfo *key)
 {
@@ -776,7 +775,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
 
 /**
  * set_signer - Make sure that the correct signer is set
- * @return 0 on success
+ * @retval 0 on success
  */
 static int set_signer(gpgme_ctx_t ctx, int for_smime)
 {
@@ -924,13 +923,13 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
     {
       if (use_smime)
       {
-        /* convert GPGME raw hash name to RFC 2633 format */
+        /* convert GPGME raw hash name to RFC2633 format */
         snprintf(buf, buflen, "%s", algorithm_name);
         ascii_strlower(buf);
       }
       else
       {
-        /* convert GPGME raw hash name to RFC 3156 format */
+        /* convert GPGME raw hash name to RFC3156 format */
         snprintf(buf, buflen, "pgp-%s", algorithm_name);
         ascii_strlower(buf + 4);
       }
@@ -956,7 +955,8 @@ static void print_time(time_t t, struct State *s)
  * sign_message - Sign a message
  * @param a         Message to sign
  * @param use_smime If set, use SMIME instead of PGP
- * @return the new body or NULL on error
+ * @retval ptr  new Body
+ * @retval NULL error
  */
 static struct Body *sign_message(struct Body *a, int use_smime)
 {
@@ -1215,7 +1215,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 
 /**
  * show_sig_summary - Show a signature summary
- * @return 1 if there is is a severe warning
+ * @retval 1 if there is is a severe warning
  *
  * Display the common attributes of the signature summary SUM.
  */
@@ -1488,11 +1488,10 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
 
 /**
  * show_one_sig_status - Show information about one signature
- * @return
- * *  0 Normal procession
- * *  1 A bad signature
- * *  2 A signature with a warning
- * * -1 No more signature
+ * @retval  0 Normal procession
+ * @retval  1 A bad signature
+ * @retval  2 A signature with a warning
+ * @retval -1 No more signature
  *
  * This function is called with the context CTX of a successful verification
  * operation and the enumerator IDX which should start at 0 and increment for
@@ -1911,7 +1910,7 @@ restart:
 
 /**
  * pgp_gpgme_decrypt_mime - Decrypt a PGP/MIME message
- * @return 0 on success
+ * @retval 0 on success
  *
  * The message in FPIN and B and return a new body and the stream in CUR and
  * FPOUT.
@@ -2001,7 +2000,7 @@ bail:
 
 /**
  * smime_gpgme_decrypt_mime - Decrypt a S/MIME message
- * @returns 0 on success
+ * @retval 0 on success
  *
  * The message in FPIN and B and return a new body and
  * the stream in CUR and FPOUT.
@@ -2247,9 +2246,8 @@ err_ctx:
  * @param a String a
  * @param n Maximum length to compare
  * @param b String b
- * @return
- * *  0 Strings match
- * * -1 Strings differ
+ * @retval  0 Strings match
+ * @retval -1 Strings differ
  *
  * Check that \a b is a complete line containing \a a followed by either LF or
  * CRLF.
@@ -4541,7 +4539,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
 
 /**
  * find_keys - Find keys of the recipients of the message
- * @return NULL if any of the keys can not be found
+ * @retval NULL if any of the keys can not be found
  *
  * If oppenc_mode is true, only keys that can be determined without prompting
  * will be used.
@@ -5004,7 +5002,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
             /*
              * Assume address is 'mailbox@domainname'.
              * The mailbox part is case-sensitive,
-             * the domainname is not. (RFC 2821)
+             * the domainname is not. (RFC2821)
              */
             const char *tmp_email = uid->email + 1;
             const char *tmp_sender = sender->mailbox;

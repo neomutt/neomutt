@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 2047 MIME extensions routines
+ * RFC2047 MIME extensions routines
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>

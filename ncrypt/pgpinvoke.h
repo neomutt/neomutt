@@ -30,7 +30,7 @@
 struct Address;
 struct List;
 
-/* The PGP invocation interface - not really beautiful. */
+/* The PGP invocation interface */
 
 void pgp_invoke_import(const char *fname);
 void pgp_invoke_getkeys(struct Address *addr);

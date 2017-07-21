@@ -20,7 +20,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * md5.c - Functions to compute MD5 message digest of files or memory blocks
- * according to the definition of MD5 in RFC 1321 from April 1992.
+ * according to the definition of MD5 in RFC1321 from April 1992.
  *
  * NOTE: The canonical source of this file is maintained with the GNU C
  * Library.  Bugs can be reported to bug-glibc@prep.ai.mit.edu.
@@ -44,13 +44,13 @@
 #define BLOCKSIZE 4096
 
 /* This array contains the bytes used to pad the buffer to the next
-   64-byte boundary.  (RFC 1321, 3.1: Step 1)  */
+   64-byte boundary.  (RFC1321, 3.1: Step 1)  */
 static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ...  */ };
 
 /**
  * md5_init_ctx - Initialise the MD5 computation
  *
- * (RFC 1321, 3.3: Step 3)
+ * (RFC1321, 3.3: Step 3)
  */
 void md5_init_ctx(struct Md5Ctx *ctx)
 {
@@ -275,7 +275,7 @@ void md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
 
 
 /* These are the four functions used in the four steps of the MD5 algorithm
-   and defined in the RFC 1321.  The first function is a little bit optimized
+   and defined in the RFC1321.  The first function is a little bit optimized
    (as found in Colin Plumbs public domain implementation).  */
 /* #define FF(b, c, d) ((b & c) | (~b & d)) */
 #define FF(b, c, d) (d ^ (b & (c ^ d)))
@@ -300,7 +300,7 @@ void md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
   md5_uint32 C = ctx->C;
   md5_uint32 D = ctx->D;
 
-  /* First increment the byte count.  RFC 1321 specifies the possible length of
+  /* First increment the byte count.  RFC1321 specifies the possible length of
    * the file up to 2^64 bits.  Here we only compute the number of bytes.  Do a
    * double word increment.  */
   ctx->total[0] += len;
@@ -337,7 +337,7 @@ void md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
 #define CYCLIC(w, s) (w = (w << s) | (w >> (32 - s)))
 
     /* Before we start, one word to the strange constants.
-     * They are defined in RFC 1321 as
+     * They are defined in RFC1321 as
      * T[i] = (int) (4294967296.0 * fabs (sin (i))), i=1..64
      * Here is an equivalent invocation using Perl:
      * perl -e 'foreach(1..64){printf "0x%08x\n", int (4294967296 * abs (sin $_))}'

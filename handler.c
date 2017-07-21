@@ -1019,9 +1019,8 @@ static int is_mmnoask(const char *buf)
 /**
  * is_autoview - Should email body be filtered by mailcap
  * @param b Email body
- * @return
- * * 1 body part should be filtered by a mailcap entry prior to viewing inline.
- * * 0 otherwise
+ * @retval 1 body part should be filtered by a mailcap entry prior to viewing inline
+ * @retval 0 otherwise
  */
 static int is_autoview(struct Body *b)
 {
@@ -1294,7 +1293,7 @@ static int message_handler(struct Body *a, struct State *s)
 
 /**
  * mutt_can_decode - Will decoding the attachment produce any output
- * @return 1 if decoding the attachment will produce output
+ * @retval 1 if decoding the attachment will produce output
  */
 int mutt_can_decode(struct Body *a)
 {

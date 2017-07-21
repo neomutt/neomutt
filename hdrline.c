@@ -93,7 +93,8 @@ bool mutt_is_subscribed_list(struct Address *addr)
  * @param pfx     Prefix string
  * @param buf     Buffer to store results
  * @param buflen  Buffer length
- * @return 1 Mailing list found, 0 No list found
+ * @retval 1 Mailing list found
+ * @retval 0 No list found
  *
  * Search for a mailing list in the list of addresses pointed to by adr.
  * If one is found, print pfx and the name of the list into buf.
@@ -152,7 +153,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  * @param buflen Buffer length
  * @param flags  Flags, e.g. MUTT_FORMAT_INDEX
  * @param color  Color, e.g. MT_COLOR_MESSAGE
- * @return Number of characters written
+ * @retval n Number of characters written
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
@@ -201,7 +202,7 @@ enum FieldType
  * get_nth_wchar - Extract one char from a multi-byte table
  * @param table  Multi-byte table
  * @param index  Select this character
- * @return String pointer to the character
+ * @retval ptr String pointer to the character
  *
  * Extract one multi-byte character from a string table.
  * If the index is invalid, then a space character will be returned.
@@ -221,7 +222,7 @@ static char *get_nth_wchar(struct MbCharTable *table, int index)
 /**
  * make_from_prefix - Create a prefix for an author field
  * @param disp   Type of field
- * @return Prefix string (do not free it)
+ * @retval string Prefix string (do not free it)
  *
  * If $from_chars is set, pick an appropriate character from it.
  * If not, use the default prefix: "To", "Cc", etc
@@ -341,13 +342,12 @@ static bool user_in_addr(struct Address *a)
 
 /**
  * user_is_recipient - Is the user a recipient of the message
- * @return
- * * 0 User is not in list
- * * 1 User is unique recipient
- * * 2 User is in the TO list
- * * 3 User is in the CC list
- * * 4 User is originator
- * * 5 Sent to a subscribed mailinglist
+ * @retval 0 User is not in list
+ * @retval 1 User is unique recipient
+ * @retval 2 User is in the TO list
+ * @retval 3 User is in the CC list
+ * @retval 4 User is originator
+ * @retval 5 Sent to a subscribed mailinglist
  */
 static int user_is_recipient(struct Header *h)
 {
@@ -387,7 +387,8 @@ static int user_is_recipient(struct Header *h)
  * @param name   String to be converted
  * @param buf    Buffer for the result
  * @param buflen Size of the buffer
- * @return 1 on Success, 0 on Failure
+ * @retval 1 on Success
+ * @retval 0 on Failure
  *
  * Take a name, e.g. "John F. Kennedy" and reduce it to initials "JFK".
  * The function saves the first character from each word.  Words are delimited

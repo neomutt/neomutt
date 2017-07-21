@@ -185,7 +185,8 @@ static void start_curses(void)
  * @param argc Number of command line arguments
  * @param argv List of command line arguments
  * @param env  Copy of the environment
- * @return 0 on success, 1 on error
+ * @retval 0 on success
+ * @retval 1 on error
  */
 int main(int argc, char **argv, char **env)
 {

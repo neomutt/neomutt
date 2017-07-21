@@ -779,9 +779,9 @@ struct Option MuttVars[] = {
   ** along with the body of your message.
   ** .pp
   ** Although the compose menu may have localized header labels, the
-  ** labels passed to your editor will be standard RFC 2822 headers,
+  ** labels passed to your editor will be standard RFC2822 headers,
   ** (e.g. To:, Cc:, Subject:).  Headers added in your editor must
-  ** also be RFC 2822 headers, or one of the pseudo headers listed in
+  ** also be RFC2822 headers, or one of the pseudo headers listed in
   ** ``$edit-header''.  Mutt will not understand localized header
   ** labels, just as it would not when parsing an actual email.
   ** .pp
@@ -1290,7 +1290,7 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, Mutt will encode international domain names using
-  ** IDN.  Unset this if your SMTP server can handle newer (RFC 6531)
+  ** IDN.  Unset this if your SMTP server can handle newer (RFC6531)
   ** UTF-8 encoded domains. (IDN only)
   */
 #endif /* HAVE_LIBIDN */

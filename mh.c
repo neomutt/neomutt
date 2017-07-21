@@ -237,10 +237,9 @@ static inline mode_t mh_umask(struct Context *ctx)
 /**
  * mh_sequences_changed - Has the mailbox changed
  * @param b Mailbox
- * @return
- * * 1 mh_sequences last modification time is more recent than the last visit to this mailbox
- * * 0 modification time is older
- * * -1 Error
+ * @retval 1 mh_sequences last modification time is more recent than the last visit to this mailbox
+ * @retval 0 modification time is older
+ * @retval -1 Error
  */
 static int mh_sequences_changed(struct Buffy *b)
 {
@@ -257,10 +256,9 @@ static int mh_sequences_changed(struct Buffy *b)
  * mh_already_notified - Has the message changed
  * @param b     Mailbox
  * @param msgno Message number
- * @return
- * * 1 Modification time on the message file is older than the last visit to this mailbox
- * * 0 Modification time on the message file is newer
- * * -1 Error
+ * @retval 1 Modification time on the message file is older than the last visit to this mailbox
+ * @retval 0 Modification time on the message file is newer
+ * @retval -1 Error
  */
 static int mh_already_notified(struct Buffy *b, int msgno)
 {
@@ -276,7 +274,8 @@ static int mh_already_notified(struct Buffy *b, int msgno)
 /**
  * mh_valid_message - Is this a valid MH message filename
  * @param s Pathname to examine
- * @return true name is valid, false name is invalid
+ * @retval true name is valid
+ * @retval false name is invalid
  *
  * Ignore the garbage files.  A valid MH message consists of only
  * digits.  Deleted message get moved to a filename with a comma before
@@ -296,7 +295,7 @@ static bool mh_valid_message(const char *s)
  * mh_buffy - Check for new mail for a mh mailbox
  * @param mailbox     Mailbox to check
  * @param check_stats Also count total, new, and flagged messages
- * @returns true if the mailbox has new mail
+ * @retval true if the mailbox has new mail
  */
 int mh_buffy(struct Buffy *mailbox, int check_stats)
 {
@@ -2498,10 +2497,9 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 /**
  * maildir_check_empty - Is the mailbox empty
  * @param path Mailbox to check
- * @return
- * * 1 Mailbox is empty
- * * 0 Mailbox contains mail
- * * -1 Error
+ * @retval 1 Mailbox is empty
+ * @retval 0 Mailbox contains mail
+ * @retval -1 Error
  */
 int maildir_check_empty(const char *path)
 {
@@ -2540,10 +2538,9 @@ int maildir_check_empty(const char *path)
 /**
  * mh_check_empty - Is mailbox empty
  * @param path Mailbox to check
- * @return
- * * 1 Mailbox is empty
- * * 0 Mailbox contains mail
- * * -1 Error
+ * @retval 1 Mailbox is empty
+ * @retval 0 Mailbox contains mail
+ * @retval -1 Error
  */
 int mh_check_empty(const char *path)
 {

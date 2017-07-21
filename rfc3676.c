@@ -1,6 +1,6 @@
 /**
  * @file
- * RFC 3676 Format Flowed routines
+ * RFC3676 Format Flowed routines
  *
  * @authors
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
@@ -265,6 +265,9 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
   fst->spaces = 0;
 }
 
+/**
+ * rfc3676_handler - body handler implementing RFC3676 for format=flowed
+ */
 int rfc3676_handler(struct Body *a, struct State *s)
 {
   char *buf = NULL, *t = NULL;
@@ -291,7 +294,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
     newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
-     * changes (should not but can happen, see RFC 3676, sec. 4.5.)
+     * changes (should not but can happen, see RFC3676, sec. 4.5.)
      */
     if (newql != quotelevel)
       flush_par(s, &fst);

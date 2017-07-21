@@ -342,7 +342,7 @@ static void print_compile_options(struct CompileOptions *co)
 /**
  * rstrip_in_place - Strip a trailing carriage return
  * @param s  String to be modified
- * @return The modified string
+ * @retval string The modified string
  *
  * The string has its last carriage return set to NUL.
  */
@@ -457,9 +457,8 @@ void print_copyright(void)
 /**
  * feature_enabled - Test if a compile-time feature is enabled
  * @param name  Compile-time symbol of the feature
- * @return
- * * true:  Feature enabled
- * * false: Feature not enabled, or not compiled in
+ * @retval true  Feature enabled
+ * @retval false Feature not enabled, or not compiled in
  *
  * Many of the larger features of mutt can be disabled at compile time.
  * They define a symbol and use ifdef's around their code.

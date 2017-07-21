@@ -471,11 +471,10 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 
 /**
  * km_dokey - Determine what a keypress should do
- * @return
- * * >0      Function to execute
- * * OP_NULL No function bound to key sequence
- * * -1      Error occurred while reading input
- * * -2      A timeout or sigwinch occurred
+ * @retval >0       Function to execute
+ * @retval #OP_NULL No function bound to key sequence
+ * @retval -1       Error occurred while reading input
+ * @retval -2       A timeout or sigwinch occurred
  */
 int km_dokey(int menu)
 {
