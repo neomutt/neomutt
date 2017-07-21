@@ -190,7 +190,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     mix_add_entry(&type2_list, p, &slots, &used);
     continue;
 
-  problem:
+problem:
     mix_free_remailer(&p);
   }
 

@@ -619,7 +619,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
     {
-    err:
+err:
       mx_close_message(ctx, &msg);
       mutt_free_envelope(&newhdr->env);
       mutt_free_body(&newhdr->content);

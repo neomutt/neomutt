@@ -1486,7 +1486,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       }
     }
 
-  bail:
+bail:
     safe_fclose(&fpout);
     safe_fclose(&fperr);
 

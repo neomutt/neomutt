@@ -1091,7 +1091,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
-  bail0:
+bail0:
     safe_fclose(&ifp);
     safe_fclose(&fpout);
     mutt_unlink(newfile);

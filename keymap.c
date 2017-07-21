@@ -517,7 +517,7 @@ int km_dokey(int menu)
     timeout(-1);
 
 #ifdef USE_IMAP
-  gotkey:
+gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)
