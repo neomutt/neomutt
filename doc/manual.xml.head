@@ -7786,16 +7786,17 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
 
     <sect1 id="using-imap-keywords">
       <title>IMAP Keyword Management</title>
-      <para>Mutt also support IMAP keywords, their are more limited than keywords in term
-      of allow character (only a subset of ascii) but it could be usefull, when the
-      IMAP server doesn't support to edit headers with its mail filters and only allow
-      to add custom IMAP flags.</para>
+      <para>Mutt also supports IMAP keywords. They are more limited than keywords in term
+      of allow character (only a subset of ASCII) but it could be useful, when the
+      IMAP server doesn't support to edit headers with its mail filters and only allows
+      adding custom IMAP flags.</para>
       <para>To use it, you have the &lt;modify-lebels&gt; binding to edit IMAP
       keywords, and that you can search for keywords using the <literal>~g</literal>
-      pattern, and use the <literal>%g</literal> or <literal>%J</literal> expando to
+      pattern, and use the <literal>%g</literal> or <literal>%J</literal> expandos to
       display it in your <literal>$index_format</literal>.</para>
-      <para>Like notmuch backend, <literal>hidden_tags</literal>, <literal>tag-tranforms</literal>
-      and <literal>tag-formats</literal> to customize the UI.</para>
+      <para>Like the notmuch backend, <literal>hidden_tags</literal>,
+      <literal>tag-tranforms</literal> and <literal>tag-formats</literal> to
+      customize the UI.</para>
     </sect1>
 
     <sect1 id="display-munging">
