@@ -477,7 +477,7 @@ static void imap_generate_seqset(struct Buffer *b, struct ImapData *idata,
   }
 }
 
-/*
+/**
  * imap_read_headers - Read headers from the server
  *
  * Changed to read many headers instead of just one. It will return the msn of
@@ -721,7 +721,6 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
         /* make sure we don't get remnants from older larger message headers */
         fputs("\n\n", fp);
-
 
         if (h.data->msn < 1 || h.data->msn > fetch_msn_end)
         {
