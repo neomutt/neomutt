@@ -1398,11 +1398,14 @@ static int match_adrlist(struct Pattern *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static bool match_reference(struct Pattern *pat, struct List *refs)
+static bool match_reference(struct Pattern *pat, struct STailQHead *refs)
 {
-  for (; refs; refs = refs->next)
-    if (patmatch(pat, refs->data) == 0)
+  struct STailQNode *np = NULL;
+  STAILQ_FOREACH(np, refs, entries)
+  {
+    if (patmatch(pat, np->data) == 0)
       return true;
+  }
   return false;
 }
 
@@ -1631,8 +1634,8 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return (pat->not ^ (h->content->length >= pat->min &&
                           (pat->max == MUTT_MAXRANGE || h->content->length <= pat->max)));
     case MUTT_REFERENCE:
-      return (pat->not ^ (match_reference(pat, h->env->references) ||
-                          match_reference(pat, h->env->in_reply_to)));
+      return (pat->not ^ (match_reference(pat, &h->env->references) ||
+                          match_reference(pat, &h->env->in_reply_to)));
     case MUTT_ADDRESS:
       return (pat->not ^ match_adrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 4,
                                        h->env->from, h->env->sender, h->env->to,

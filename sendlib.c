@@ -1586,33 +1586,33 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
  * need to write the list in reverse because they are stored in reverse order
  * when parsed to speed up threading
  */
-void mutt_write_references(struct List *r, FILE *f, int trim)
+void mutt_write_references(const struct STailQHead *r, FILE *f, size_t trim)
 {
-  struct List **ref = NULL;
-  int refcnt = 0, refmax = 0;
-  int multiline = 1;
-  int space = 0;
+  struct STailQNode *np;
+  size_t length = 0;
 
-  if (trim < 0)
+  STAILQ_FOREACH(np, r, entries)
   {
-    trim = -trim;
-    multiline = 0;
+    if (++length == trim)
+      break;
   }
 
-  for (; (trim == 0 || refcnt < trim) && r; r = r->next)
+  struct STailQNode **ref = safe_calloc(length, sizeof(struct STailQNode*));
+
+  // store in reverse order
+  STAILQ_FOREACH(np, r, entries)
   {
-    if (refcnt == refmax)
-      safe_realloc(&ref, (refmax += REF_INC) * sizeof(struct List *));
-    ref[refcnt++] = r;
+    ref[--length] = np;
+    if (length == 0)
+      break;
   }
 
-  while (refcnt-- > 0)
+  for (size_t i = 0; i < length; ++i)
   {
-    if (multiline || space)
+    if (i != 0)
       fputc(' ', f);
-    space = 1;
-    fputs(ref[refcnt]->data, f);
-    if (multiline && refcnt >= 1)
+    fputs(ref[i]->data, f);
+    if (i != length - 1)
       fputc('\n', f);
   }
 
@@ -2104,10 +2104,10 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 
   if (mode <= 0)
   {
-    if (env->references)
+    if (!STAILQ_EMPTY(&env->references))
     {
       fputs("References:", fp);
-      mutt_write_references(env->references, fp, 10);
+      mutt_write_references(&env->references, fp, 10);
       fputc('\n', fp);
     }
 
@@ -2116,10 +2116,10 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
     mutt_write_mime_header(attach, fp);
   }
 
-  if (env->in_reply_to)
+  if (!STAILQ_EMPTY(&env->in_reply_to))
   {
     fputs("In-Reply-To:", fp);
-    mutt_write_references(env->in_reply_to, fp, 0);
+    mutt_write_references(&env->in_reply_to, fp, 0);
     fputc('\n', fp);
   }
 

@@ -37,4 +37,17 @@ static inline struct List *mutt_new_list(void)
   return safe_calloc(1, sizeof(struct List));
 }
 
+/**
+ * New implementation using macros from queue.h
+ */
+
+#include "queue.h"
+
+STAILQ_HEAD(STailQHead, STailQNode);
+struct STailQNode
+{
+    char *data;
+    STAILQ_ENTRY(STailQNode) entries;
+};
+
 #endif /* _MUTT_LIST_H */

@@ -741,15 +741,13 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
   mutt_make_misc_reply_headers(env, Context, curhdr, curenv);
 
   if (parent)
-    mutt_add_to_reference_headers(env, curenv, NULL, NULL);
+    mutt_add_to_reference_headers(env, curenv);
   else
   {
-    struct List **p = NULL, **q = NULL;
-
     for (short i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
-        mutt_add_to_reference_headers(env, idx[i]->content->hdr->env, &p, &q);
+        mutt_add_to_reference_headers(env, idx[i]->content->hdr->env);
     }
   }
 

@@ -287,6 +287,19 @@ struct List *mutt_find_list(struct List *l, const char *data)
   return NULL;
 }
 
+struct STailQNode *mutt_find_stailq(struct STailQHead *h, const char *data)
+{
+  struct STailQNode *np = NULL;
+  STAILQ_FOREACH(np, h, entries)
+  {
+    if (np->data == data)
+      return np;
+    if (data && np->data && (mutt_strcmp(np->data, data) == 0))
+      return np;
+  }
+  return NULL;
+}
+
 void mutt_push_list(struct List **head, const char *data)
 {
   struct List *tmp = NULL;
@@ -365,24 +378,16 @@ void mutt_free_list(struct List **list)
   }
 }
 
-struct List *mutt_copy_list(struct List *p)
+void mutt_free_stailq(struct STailQHead *h)
 {
-  struct List *t = NULL, *r = NULL, *l = NULL;
-
-  for (; p; p = p->next)
-  {
-    t = safe_malloc(sizeof(struct List));
-    t->data = safe_strdup(p->data);
-    t->next = NULL;
-    if (l)
+    struct STailQNode *np = NULL;
+    while (!STAILQ_EMPTY(h))
     {
-      r->next = t;
-      r = r->next;
+        np = STAILQ_FIRST(h);
+        STAILQ_REMOVE_HEAD(h, entries);
+        FREE(&np->data);
+        FREE(&np);
     }
-    else
-      l = r = t;
-  }
-  return l;
 }
 
 void mutt_free_header(struct Header **h)
@@ -738,8 +743,8 @@ void mutt_free_envelope(struct Envelope **p)
 
   mutt_buffer_free(&(*p)->spam);
 
-  mutt_free_list(&(*p)->references);
-  mutt_free_list(&(*p)->in_reply_to);
+  mutt_free_stailq(&(*p)->references);
+  mutt_free_stailq(&(*p)->in_reply_to);
   mutt_free_list(&(*p)->userhdrs);
   FREE(p);
 }
@@ -760,6 +765,13 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
     base->h = (*extra)->h;                                                     \
     (*extra)->h = NULL;                                                        \
   }
+
+#define MOVE_STAILQ(h)                                                         \
+  if (STAILQ_EMPTY(&base->h))                                                  \
+  {                                                                            \
+    STAILQ_SWAP(&base->h, &((*extra))->h, STailQNode);                         \
+  }
+
   MOVE_ELEM(return_path);
   MOVE_ELEM(from);
   MOVE_ELEM(to);
@@ -776,11 +788,11 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   MOVE_ELEM(x_original_to);
   if (!base->refs_changed)
   {
-    MOVE_ELEM(references);
+    MOVE_STAILQ(references);
   }
   if (!base->irt_changed)
   {
-    MOVE_ELEM(in_reply_to);
+    MOVE_STAILQ(in_reply_to);
   }
 
   /* real_subj is subordinate to subject */

@@ -114,24 +114,20 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static struct List *parse_references(char *s, int in_reply_to)
+static void parse_references(struct STailQHead *head, char *s)
 {
-  struct List *t = NULL, *lst = NULL;
+  struct STailQNode *np = NULL;
   char *m = NULL;
   const char *sp = NULL;
 
   m = mutt_extract_message_id(s, &sp);
   while (m)
   {
-    t = safe_malloc(sizeof(struct List));
-    t->data = m;
-    t->next = lst;
-    lst = t;
-
+    np  = safe_malloc(sizeof(struct STailQNode));
+    np->data = m;
+    STAILQ_INSERT_HEAD(head, np, entries);
     m = mutt_extract_message_id(NULL, &sp);
   }
-
-  return lst;
 }
 
 int mutt_check_encoding(const char *c)
@@ -1108,8 +1104,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'i':
       if (mutt_strcasecmp(line + 1, "n-reply-to") == 0)
       {
-        mutt_free_list(&e->in_reply_to);
-        e->in_reply_to = parse_references(p, 1);
+        mutt_free_stailq(&e->in_reply_to);
+        parse_references(&e->in_reply_to, p);
         matched = 1;
       }
       break;
@@ -1209,8 +1205,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'r':
       if (mutt_strcasecmp(line + 1, "eferences") == 0)
       {
-        mutt_free_list(&e->references);
-        e->references = parse_references(p, 0);
+        mutt_free_stailq(&e->references);
+        parse_references(&e->references, p);
         matched = 1;
       }
       else if (mutt_strcasecmp(line + 1, "eply-to") == 0)

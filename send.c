@@ -655,24 +655,28 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   return 0;
 }
 
-static struct List *make_references(struct Envelope *e)
+static void add_references(struct STailQHead *head, struct Envelope *e)
 {
-  struct List *t = NULL, *l = NULL;
+  struct STailQHead *src;
+  struct STailQNode *np, *new;
 
-  if (e->references)
-    l = mutt_copy_list(e->references);
-  else
-    l = mutt_copy_list(e->in_reply_to);
+  src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
+  STAILQ_FOREACH(np, src, entries)
+  {
+    new = safe_calloc(1, sizeof(struct STailQNode));
+    new->data = safe_strdup(np->data);
+    STAILQ_INSERT_TAIL(head, new, entries);
+  }
+}
 
+static void add_message_id(struct STailQHead *head, struct Envelope *e)
+{
   if (e->message_id)
   {
-    t = mutt_new_list();
-    t->data = safe_strdup(e->message_id);
-    t->next = l;
-    l = t;
+    struct STailQNode *new = safe_calloc(1, sizeof(struct STailQNode));
+    new->data = safe_strdup(e->message_id);
+    STAILQ_INSERT_HEAD(head, new, entries);
   }
-
-  return l;
 }
 
 void mutt_fix_reply_recipients(struct Envelope *env)
@@ -729,38 +733,11 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx,
     env->subject = safe_strdup(EmptySubject);
 }
 
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv,
-                                   struct List ***pp, struct List ***qq)
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv)
 {
-  struct List **p = NULL, **q = NULL;
-
-  if (pp)
-    p = *pp;
-  if (qq)
-    q = *qq;
-
-  if (!p)
-    p = &env->references;
-  if (!q)
-    q = &env->in_reply_to;
-
-  while (*p)
-    p = &(*p)->next;
-  while (*q)
-    q = &(*q)->next;
-
-  *p = make_references(curenv);
-
-  if (curenv->message_id)
-  {
-    *q = mutt_new_list();
-    (*q)->data = safe_strdup(curenv->message_id);
-  }
-
-  if (pp)
-    *pp = p;
-  if (qq)
-    *qq = q;
+  add_references(&env->references, curenv);
+  add_message_id(&env->references, curenv);
+  add_message_id(&env->in_reply_to, curenv);
 
 #ifdef USE_NNTP
   if (option(OPT_NEWS_SEND) && option(OPT_XCOMMENT_TO) && curenv->from)
@@ -774,28 +751,25 @@ static void make_reference_headers(struct Envelope *curenv,
   if (!env || !ctx)
     return;
 
-  env->references = NULL;
-  env->in_reply_to = NULL;
-
   if (!curenv)
   {
     struct Header *h = NULL;
-    struct List **p = NULL, **q = NULL;
     for (int i = 0; i < ctx->vcount; i++)
     {
       h = ctx->hdrs[ctx->v2r[i]];
       if (h->tagged)
-        mutt_add_to_reference_headers(env, h->env, &p, &q);
+        mutt_add_to_reference_headers(env, h->env);
     }
   }
   else
-    mutt_add_to_reference_headers(env, curenv, NULL, NULL);
+    mutt_add_to_reference_headers(env, curenv);
 
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
      discouraged by RfC2822, sect. 3.6.4 */
-  if (ctx->tagged > 0 && env->in_reply_to && env->in_reply_to->next)
-    mutt_free_list(&env->references);
+  if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
+      STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
+    mutt_free_stailq(&env->references);
 }
 
 static int envelope_defaults(struct Envelope *env, struct Context *ctx,
@@ -1293,8 +1267,8 @@ static int is_reply(struct Header *reply, struct Header *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
     return 0;
-  return mutt_find_list(orig->env->references, reply->env->message_id) ||
-         mutt_find_list(orig->env->in_reply_to, reply->env->message_id);
+  return mutt_find_stailq(&orig->env->references, reply->env->message_id) ||
+         mutt_find_stailq(&orig->env->in_reply_to, reply->env->message_id);
 }
 
 static int has_recips(struct Address *a)

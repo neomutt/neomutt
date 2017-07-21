@@ -34,6 +34,7 @@ struct List;
 struct ReplaceList;
 struct RxList;
 struct State;
+struct STailQHead;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -313,9 +314,9 @@ enum QuadOptionVars
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
 void mutt_free_list(struct List **list);
+void mutt_free_stailq(struct STailQHead *list);
 void mutt_free_rx_list(struct RxList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
-struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
 bool mutt_matches_list(const char *s, struct List *t);
 
@@ -323,6 +324,7 @@ bool mutt_matches_list(const char *s, struct List *t);
 struct List *mutt_add_list(struct List *head, const char *data);
 struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
 struct List *mutt_find_list(struct List *l, const char *data);
+struct STailQNode *mutt_find_stailq(struct STailQHead *h, const char *data);
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
 /* handle stack */

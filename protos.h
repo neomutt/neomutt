@@ -49,6 +49,7 @@ struct Regex;
 struct ReplaceList;
 struct RxList;
 struct State;
+struct STailQHead;
 
 struct stat;
 struct passwd;
@@ -149,8 +150,7 @@ const char *mutt_fqdn(short may_hide_host);
 struct Regex *mutt_compile_regexp(const char *s, int flags);
 
 void mutt_account_hook(const char *url);
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp,
-                                   struct List ***qq);
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 void mutt_adv_mktemp(char *s, size_t l);
 void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases);
 void mutt_allow_interrupt(int disposition);
@@ -367,7 +367,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f);
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, int flags);
 int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy);
-void mutt_write_references(struct List *r, FILE *f, int trim);
+void mutt_write_references(const struct STailQHead *r, FILE *f, size_t trim);
 int mutt_yesorno(const char *msg, int def);
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr);
 void mutt_sleep(short s);

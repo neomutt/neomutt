@@ -130,15 +130,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 #ifdef USE_NNTP
   if (!option(OPT_NEWS_SEND))
 #endif
-    if (msg->env->in_reply_to &&
-        (!n->in_reply_to ||
-         (mutt_strcmp(n->in_reply_to->data, msg->env->in_reply_to->data) != 0)))
-      mutt_free_list(&msg->env->references);
+    if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
+        (STAILQ_EMPTY(&n->in_reply_to) ||
+         (mutt_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
+                      STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
+      mutt_free_stailq(&msg->env->references);
 
   /* restore old info. */
-  mutt_free_list(&n->references);
-  n->references = msg->env->references;
-  msg->env->references = NULL;
+  mutt_free_stailq(&n->references);
+  STAILQ_SWAP(&n->references, &msg->env->references, STailQNode);
 
   mutt_free_envelope(&msg->env);
   msg->env = n;

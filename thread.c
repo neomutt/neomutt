@@ -799,7 +799,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
   int i, oldsort, using_refs = 0;
   struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset(&top, 0, sizeof(top));
-  struct List *ref = NULL;
+  struct STailQNode *ref = NULL;
 
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
@@ -933,11 +933,11 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (using_refs == 0)
       {
         /* look at the beginning of in-reply-to: */
-        if ((ref = cur->env->in_reply_to) != NULL)
+        if ((ref = STAILQ_FIRST(&cur->env->in_reply_to)) != NULL)
           using_refs = 1;
         else
         {
-          ref = cur->env->references;
+          ref = STAILQ_FIRST(&cur->env->references);
           using_refs = 2;
         }
       }
@@ -949,20 +949,20 @@ void mutt_sort_threads(struct Context *ctx, int init)
          * the second reference (since at least eudora puts the most
          * recent reference in in-reply-to and the rest in references)
          */
-        if (!cur->env->references)
-          ref = ref->next;
+        if (STAILQ_EMPTY(&cur->env->references))
+          ref = STAILQ_NEXT(ref, entries);
         else
         {
-          if (mutt_strcmp(ref->data, cur->env->references->data) != 0)
-            ref = cur->env->references;
+          if (mutt_strcmp(ref->data, STAILQ_FIRST(&cur->env->references)->data) != 0)
+            ref = STAILQ_FIRST(&cur->env->references);
           else
-            ref = cur->env->references->next;
+            ref = STAILQ_NEXT(STAILQ_FIRST(&cur->env->references), entries);
 
           using_refs = 2;
         }
       }
       else
-        ref = ref->next; /* go on with references */
+        ref = STAILQ_NEXT(ref, entries); /* go on with references */
 
       if (!ref)
         break;
@@ -1409,7 +1409,7 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
 static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
   struct MuttThread *p = NULL;
-  struct List *ref = NULL;
+  struct STailQNode *ref = NULL;
   bool done = false;
 
   for (; cur; cur = cur->next, done = false)
@@ -1424,19 +1424,31 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
      * Optimal since Mutt stores the references in reverse order, and the
      * first loop should match immediately for mails respecting RFC2822. */
     for (p = brk; !done && p; p = p->parent)
-      for (ref = cur->message->env->references; p->message && ref; ref = ref->next)
+    {
+      for (ref = STAILQ_FIRST(&cur->message->env->references);
+           p->message && ref;
+           ref = STAILQ_NEXT(ref, entries))
+      {
         if (mutt_strcasecmp(ref->data, p->message->env->message_id) == 0)
         {
           done = true;
           break;
         }
+      }
+    }
 
     if (done)
     {
       struct Header *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
-      mutt_free_list(&ref->next);
+      struct STailQNode *np = NULL;
+      while ((np = STAILQ_NEXT(ref, entries)) != NULL)
+      {
+        STAILQ_REMOVE_AFTER(&cur->message->env->references, ref, entries);
+        FREE(&np->data);
+        FREE(&np);
+      }
 
       h->env->refs_changed = h->changed = true;
     }
@@ -1445,8 +1457,8 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
 void mutt_break_thread(struct Header *hdr)
 {
-  mutt_free_list(&hdr->env->in_reply_to);
-  mutt_free_list(&hdr->env->references);
+  mutt_free_stailq(&hdr->env->in_reply_to);
+  mutt_free_stailq(&hdr->env->references);
   hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = true;
 
   clean_references(hdr->thread, hdr->thread->child);
@@ -1459,8 +1471,10 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
 
   mutt_break_thread(child);
 
-  child->env->in_reply_to = mutt_new_list();
-  child->env->in_reply_to->data = safe_strdup(parent->env->message_id);
+  STAILQ_INIT(&child->env->in_reply_to);
+  struct STailQNode *new = safe_calloc(1, sizeof(struct STailQNode));
+  new->data = safe_strdup(parent->env->message_id);
+  STAILQ_INSERT_HEAD(&child->env->in_reply_to, new, entries);
 
   mutt_set_flag(ctx, child, MUTT_TAG, 0);
 

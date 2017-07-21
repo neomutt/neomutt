@@ -397,22 +397,22 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputc('\n', out);
   }
 
-  if ((flags & CH_UPDATE_IRT) && h->env->in_reply_to)
+  if ((flags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&h->env->in_reply_to))
   {
-    struct List *listp = h->env->in_reply_to;
     fputs("In-Reply-To:", out);
-    for (; listp; listp = listp->next)
+    struct STailQNode *np;
+    STAILQ_FOREACH(np, &h->env->in_reply_to, entries)
     {
       fputc(' ', out);
-      fputs(listp->data, out);
+      fputs(np->data, out);
     }
     fputc('\n', out);
   }
 
-  if ((flags & CH_UPDATE_REFS) && h->env->references)
+  if ((flags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&h->env->references))
   {
     fputs("References:", out);
-    mutt_write_references(h->env->references, out, 0);
+    mutt_write_references(&h->env->references, out, 0);
     fputc('\n', out);
   }
 
