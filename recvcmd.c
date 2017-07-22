@@ -76,7 +76,6 @@ static bool check_all_msg(struct AttachPtr **idx, short idxlen, struct Body *cur
   return true;
 }
 
-
 /**
  * check_can_decode - can we decode all tagged attachments?
  */
@@ -116,7 +115,6 @@ static short count_tagged_children(struct AttachPtr **idx, short idxlen, short i
 
   return count;
 }
-
 
 /**
  * mutt_attach_bounce - Bounce function, from the attachment menu
@@ -238,7 +236,6 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
                    _("Error bouncing messages!"));
 }
 
-
 /**
  * mutt_attach_resend - resend-message, from the attachment menu
  */
@@ -257,7 +254,6 @@ void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
         mutt_resend_message(fp, Context, idx[i]->content->hdr);
   }
 }
-
 
 /**
  ** forward-message, from the attachment menu
@@ -404,11 +400,9 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
    * putting the following lines into an if block.
    */
 
-
   parent = find_parent(idx, idxlen, cur, nattach);
   if (!parent)
     parent = hdr;
-
 
   tmphdr = mutt_new_header();
   tmphdr->env = mutt_new_envelope();
@@ -435,7 +429,6 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
   }
 
   include_header(option(OPTFORWQUOTE), fp, parent, tmpfp, prefix);
-
 
   /*
    * Now, we have prepared the first part of the message body: The
@@ -538,7 +531,6 @@ bail:
   mutt_free_header(&tmphdr);
 }
 
-
 /**
  * attach_forward_msgs - Forward one or several message-type attachments
  *
@@ -579,7 +571,6 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
   tmphdr->env = mutt_new_envelope();
   mutt_make_forward_subject(tmphdr->env, Context, curhdr);
 
-
   tmpbody[0] = '\0';
 
   if ((rc = query_quadoption(OPT_MIMEFWD, _("Forward MIME encapsulated?"))) == MUTT_NO)
@@ -609,7 +600,6 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
         cmflags |= MUTT_CM_WEED;
       }
     }
-
 
     if (cur)
     {
@@ -658,7 +648,6 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 {
   short nattach;
 
-
   if (check_all_msg(idx, idxlen, cur, false))
     attach_forward_msgs(fp, hdr, idx, idxlen, cur, flags);
   else
@@ -667,7 +656,6 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
     attach_forward_bodies(fp, hdr, idx, idxlen, cur, nattach, flags);
   }
 }
-
 
 /**
  ** the various reply functions, from the attachment menu
@@ -767,7 +755,6 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
 
   return 0;
 }
-
 
 /**
  * attach_include_reply - This is _very_ similar to send.c's include_reply()

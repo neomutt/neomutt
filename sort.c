@@ -207,7 +207,6 @@ static int compare_spam(const void *a, const void *b)
     return (SORTCODE(result));
   }
 
-
   /* Both have spam attrs. */
 
   /* preliminary numeric examination */

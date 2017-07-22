@@ -192,7 +192,6 @@ WHERE char *XlabelDelim;
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
-
 WHERE const char *GitVer;
 
 WHERE struct Hash *Groups;
@@ -223,7 +222,6 @@ WHERE struct RxList *UnSubscribedLists INITVAL(0);
 WHERE struct ReplaceList *SpamList INITVAL(0);
 WHERE struct RxList *NoSpamList INITVAL(0);
 WHERE struct ReplaceList *SubjectRxList INITVAL(0);
-
 
 /* bit vector for the yes/no/ask variable type */
 #ifdef MAIN_C

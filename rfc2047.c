@@ -488,7 +488,6 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   if (t < t0)
     t0 = t;
 
-
   /* Adjust t0 until we can encode a character after a space. */
   for (; t0 > u; t0--)
   {

@@ -155,7 +155,6 @@ void mutt_expand_aliases_env(struct Envelope *env)
   env->mail_followup_to = mutt_expand_aliases(env->mail_followup_to);
 }
 
-
 /**
  * write_safe_address - Defang malicious email addresses
  *

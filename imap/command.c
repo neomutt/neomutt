@@ -946,7 +946,6 @@ int imap_cmd_step(struct ImapData *idata)
     imap_cmd_finish(idata);
   }
 
-
   return rc;
 }
 

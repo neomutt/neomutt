@@ -58,7 +58,6 @@
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
 
-
 typedef int (*handler_t)(struct Body *, struct State *);
 
 // clang-format off
@@ -650,7 +649,6 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
     enriched_wrap(stte);
   fflush(stte->s->fpout);
 }
-
 
 static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
 {

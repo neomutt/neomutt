@@ -354,7 +354,6 @@ iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
   return (iconv_t) -1;
 }
 
-
 /**
  * mutt_iconv - Change the encoding of a string
  *
@@ -427,7 +426,6 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
   }
 }
 
-
 /**
  * mutt_convert_string - Convert a string between encodings
  *
@@ -478,7 +476,6 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
   else
     return -1;
 }
-
 
 /*
  * FGETCONV stuff for converting a file while reading it.

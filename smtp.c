@@ -244,7 +244,6 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   return 0;
 }
 
-
 /**
  * address_uses_unicode - Do any addresses use Unicode
  * @retval true if any of the string of addresses use 8-bit characters
@@ -264,7 +263,6 @@ static bool address_uses_unicode(const char *a)
   return false;
 }
 
-
 /**
  * addresses_use_unicode - Do any of a list of addresses use Unicode
  * @retval true if any use 8-bit characters
@@ -279,7 +277,6 @@ static bool addresses_use_unicode(const struct Address *a)
   }
   return false;
 }
-
 
 static int smtp_fill_account(struct Account *account)
 {

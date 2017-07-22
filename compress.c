@@ -63,7 +63,6 @@ struct CompressInfo
   FILE *lockfp;            /**< fp used for locking */
 };
 
-
 /**
  * lock_realpath - Try to lock the ctx->realpath
  * @param ctx  Mailbox to lock
@@ -698,7 +697,6 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
   return ops->check(ctx, index_hint);
 }
 
-
 /**
  * comp_open_message - Delegated to mbox handler
  */
@@ -778,7 +776,6 @@ static int comp_open_new_message(struct Message *msg, struct Context *ctx, struc
   /* Delegate */
   return ops->open_new_msg(msg, ctx, hdr);
 }
-
 
 /**
  * mutt_comp_can_append - Can we append to this path?
@@ -905,7 +902,6 @@ int mutt_comp_valid_command(const char *cmd)
 
   return (strstr(cmd, "%f") && strstr(cmd, "%t"));
 }
-
 
 /**
  * mx_comp_ops - Mailbox callback functions

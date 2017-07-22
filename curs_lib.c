@@ -87,7 +87,6 @@ struct MuttWindow *MuttSidebarWindow = NULL;
 
 static void reflow_message_window_rows(int mw_rows);
 
-
 void mutt_refresh(void)
 {
   /* don't refresh when we are waiting for a child. */
@@ -795,7 +794,6 @@ void mutt_window_getyx(struct MuttWindow *win, int *y, int *x)
   if (x)
     *x = col - win->col_offset;
 }
-
 
 void mutt_show_error(void)
 {

@@ -913,7 +913,6 @@ void mutt_current_menu_redraw()
   }
 }
 
-
 #define MUTT_SEARCH_UP 1
 #define MUTT_SEARCH_DOWN 2
 
@@ -1107,7 +1106,6 @@ int mutt_menu_loop(struct Menu *menu)
     }
 
     menu->oldcurrent = menu->current;
-
 
     /* move the cursor out of the way */
     if (option(OPTARROWCURSOR))

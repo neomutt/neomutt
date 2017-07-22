@@ -447,7 +447,6 @@ void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
   }
 }
 
-
 static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
@@ -1055,7 +1054,6 @@ void mutt_set_followup_to(struct Envelope *e)
   }
 }
 
-
 /**
  * set_reverse_name - Try to set the 'from' field from the recipients
  *
@@ -1392,7 +1390,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if (i == MUTT_YES)
       flags |= SENDPOSTPONED;
   }
-
 
   if (flags & SENDPOSTPONED)
   {
@@ -1852,7 +1849,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
   }
 
-
   mutt_update_encoding(msg->content);
 
   if (!(flags & (SENDMAILX | SENDBATCH)))
@@ -2004,7 +2000,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     goto main_loop;
   }
 
-
   if (msg->content->next)
     msg->content = mutt_make_multipart(msg->content);
 
@@ -2068,7 +2063,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   /* save a copy of the message, if necessary. */
 
   mutt_expand_path(fcc, sizeof(fcc));
-
 
 /* Don't save a copy when we are in batch-mode, and the FCC
    * folder is on an IMAP server: This would involve possibly lots
@@ -2170,7 +2164,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
   }
 
-
   /*
    * Don't attempt to send the message if the FCC failed.  Just pretend
    * the send failed as well so we give the user a chance to fix the
@@ -2237,7 +2230,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
                         is_reply(ctx->hdrs[ctx->v2r[i]], msg));
     }
   }
-
 
   rv = 0;
 

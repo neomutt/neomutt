@@ -1371,7 +1371,6 @@ done:
   return matched;
 }
 
-
 /**
  * mutt_read_rfc822_header - parses an RFC822 header
  * @param f         Stream to read from

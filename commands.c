@@ -123,7 +123,6 @@ int mutt_display_message(struct Header *cur)
       crypt_invoke_message(APPLICATION_SMIME);
   }
 
-
   mutt_mktemp(tempfile, sizeof(tempfile));
   if ((fpout = safe_fopen(tempfile, "w")) == NULL)
   {
@@ -183,7 +182,6 @@ int mutt_display_message(struct Header *cur)
     mutt_any_key_to_continue(NULL);
 
   safe_fclose(&fpfilterout); /* XXX - check result? */
-
 
   if (WithCrypto)
   {
@@ -384,7 +382,6 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
   mutt_copy_message(fp, Context, h, cmflags, chflags);
 }
 
-
 /**
  * _mutt_pipe_message - Pipe message to a command
  *
@@ -526,7 +523,6 @@ void mutt_print_message(struct Header *h)
     mutt_message(h ? _("Message could not be printed") :
                      _("Messages could not be printed"));
 }
-
 
 int mutt_select_sort(int reverse)
 {
@@ -763,7 +759,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
                                          _("Copy%s to mailbox"))),
            h ? "" : _(" tagged"));
 
-
   if (h)
   {
     if (WithCrypto)
@@ -786,7 +781,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
         break;
       }
     }
-
 
     if (h)
     {
@@ -939,7 +933,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   return -1;
 }
 
-
 void mutt_version(void)
 {
   mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
@@ -984,7 +977,6 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   FREE(&b->subtype);
 
   mutt_parse_content_type(buf, b);
-
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = ascii_strcasecmp(tmp, obuf);
@@ -1037,7 +1029,6 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     h->security |= crypt_query(b);
   }
 }
-
 
 static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {

@@ -224,7 +224,6 @@ int mutt_edit_message(struct Context *ctx, struct Header *hdr)
   if (hdr)
     return edit_one_message(ctx, hdr);
 
-
   for (int i = 0; i < ctx->vcount; i++)
   {
     j = ctx->v2r[i];

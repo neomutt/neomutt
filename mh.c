@@ -477,7 +477,6 @@ static void mh_update_sequences(struct Context *ctx)
   char seq_replied[STRING];
   char seq_flagged[STRING];
 
-
   struct MhSequences mhs;
   memset(&mhs, 0, sizeof(mhs));
 
@@ -492,7 +491,6 @@ static void mh_update_sequences(struct Context *ctx)
   }
 
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", ctx->path);
-
 
   /* first, copy unknown sequences */
   if ((ofp = fopen(sequences, "r")))
@@ -551,7 +549,6 @@ static void mh_update_sequences(struct Context *ctx)
     mhs_write_one_sequence(nfp, &mhs, MH_SEQ_REPLIED, NONULL(MhReplied));
 
   mhs_free_sequences(&mhs);
-
 
   /* try to commit the changes - no guarantee here */
   safe_fclose(&nfp);
@@ -1402,7 +1399,6 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
   return 0;
 }
 
-
 /*
  * Open a new (temporary) message in an MH folder.
  */
@@ -1551,7 +1547,6 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   return 0;
 }
 
-
 /**
  * _maildir_commit_message - Commit a message to a maildir folder
  *
@@ -1657,7 +1652,6 @@ static int maildir_commit_message(struct Context *ctx, struct Message *msg)
  * commit a message to an MH folder.
  */
 
-
 static int _mh_commit_message(struct Context *ctx, struct Message *msg,
                               struct Header *hdr, short updseq)
 {
@@ -1738,7 +1732,6 @@ static int mh_commit_message(struct Context *ctx, struct Message *msg)
 {
   return _mh_commit_message(ctx, msg, NULL, 1);
 }
-
 
 /**
  * mh_rewrite_message - Sync a message in an MH folder
@@ -2404,7 +2397,6 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
   return header_changed;
 }
 
-
 /**
  * _maildir_open_find_message - Find a message in a maildir folder
  *
@@ -2491,7 +2483,6 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 
   return NULL;
 }
-
 
 /**
  * maildir_check_empty - Is the mailbox empty

@@ -131,7 +131,6 @@ static bool check_for_mailing_list_addr(struct Address *adr, char *buf, int bufl
   return false;
 }
 
-
 static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 {
   for (; a; a = a->next)
@@ -452,7 +451,6 @@ static char *apply_subject_mods(struct Envelope *env)
   env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
   return env->disp_subj;
 }
-
 
 /**
  * hdr_format_str - Format a string, like printf()

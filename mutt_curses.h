@@ -260,7 +260,6 @@ void mutt_window_clrtoeol(struct MuttWindow *win);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_getyx(struct MuttWindow *win, int *y, int *x);
 
-
 static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
 {
   if (wrap < 0)

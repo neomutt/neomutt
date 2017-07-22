@@ -133,7 +133,6 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, enum FormatFlag flags);
 
-
 char *mutt_charset_hook(const char *chs);
 char *mutt_iconv_hook(const char *chs);
 char *mutt_expand_path(char *s, size_t slen);
@@ -385,7 +384,6 @@ void mutt_get_parent_path(char *output, char *path, size_t olen);
 void mutt_rand_base32(void *out, size_t len);
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
-
 
 struct Address *alias_reverse_lookup(struct Address *a);
 

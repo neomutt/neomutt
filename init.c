@@ -114,7 +114,6 @@ static void myvar_del(const char *var)
   struct MyVar **cur = NULL;
   struct MyVar *tmp = NULL;
 
-
   for (cur = &MyVars; *cur; cur = &((*cur)->next))
     if (mutt_strcmp((*cur)->name, var) == 0)
       break;
@@ -129,12 +128,10 @@ static void myvar_del(const char *var)
   }
 }
 
-
 #ifdef USE_NOTMUCH
 /* List of tags found in last call to mutt_nm_query_complete(). */
 static char **nm_tags;
 #endif
-
 
 extern char **envlist;
 
@@ -195,7 +192,6 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   }
   return 0;
 }
-
 
 void set_quadoption(int opt, int flag)
 {
@@ -963,7 +959,6 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   return 0;
 }
 
-
 static void remove_from_list(struct List **l, const char *str)
 {
   struct List *p = NULL, *last = NULL;
@@ -1272,7 +1267,6 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-
 static void clear_subject_mods(void)
 {
   int i;
@@ -1282,7 +1276,6 @@ static void clear_subject_mods(void)
       FREE(&Context->hdrs[i]->env->disp_subj);
   }
 }
-
 
 static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
@@ -1295,7 +1288,6 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
   return rc;
 }
 
-
 static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
 {
@@ -1306,7 +1298,6 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
     clear_subject_mods();
   return rc;
 }
-
 
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -1382,7 +1373,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   strfcpy(err->data, "This is no good at all.", err->dsize);
   return -1;
 }
-
 
 static int parse_unlist(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
@@ -1742,7 +1732,6 @@ static int print_attach_list(struct List *lp, char op, char *name)
 
   return 0;
 }
-
 
 static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
@@ -3460,7 +3449,6 @@ finish:
   return r;
 }
 
-
 #define NUMVARS (sizeof(MuttVars) / sizeof(MuttVars[0]))
 #define NUMCOMMANDS (sizeof(Commands) / sizeof(Commands[0]))
 /* initial string that starts completion. No telling how much crap
@@ -4393,7 +4381,6 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   }
 
   CurrentMenu = MENU_MAIN;
-
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */

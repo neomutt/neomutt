@@ -62,7 +62,6 @@ const struct Mapping Menus[] = {
   { "mix", MENU_MIX },
 #endif
 
-
   { "query", MENU_QUERY },
   { "generic", MENU_GENERIC },
   { NULL, 0 },
@@ -791,7 +790,6 @@ void km_init(void)
   create_bindings(OpPost, MENU_POST);
   create_bindings(OpQuery, MENU_QUERY);
   create_bindings(OpAlias, MENU_ALIAS);
-
 
   if ((WithCrypto & APPLICATION_PGP))
     create_bindings(OpPgp, MENU_PGP);

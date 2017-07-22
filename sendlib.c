@@ -141,7 +141,6 @@ static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)
       linelen = 3;
     }
 
-
     if (c == '\n' && istext)
     {
       /* Check to make sure there is no trailing space on this line. */
@@ -267,7 +266,6 @@ static void b64_flush(struct B64Context *ctx, FILE *fout)
   ctx->size = 0;
 }
 
-
 static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
 {
   if (ctx->size == 3)
@@ -275,7 +273,6 @@ static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
 
   ctx->buffer[ctx->size++] = c;
 }
-
 
 static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
 {
@@ -314,7 +311,6 @@ static void encode_8bit(FGETCONV *fc, FILE *fout, int istext)
     fputc(ch, fout);
   }
 }
-
 
 int mutt_write_mime_header(struct Body *a, FILE *f)
 {
@@ -525,7 +521,6 @@ struct ContentState
   int linelen;
   int was_cr;
 };
-
 
 static void update_content_info(struct Content *info, struct ContentState *s,
                                 char *d, size_t dlen)
@@ -1293,7 +1288,6 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
   return d;
 }
 
-
 /**
  * mutt_update_encoding - Update the encoding type
  *
@@ -1988,7 +1982,6 @@ out:
   return rc;
 }
 
-
 /* Note: all RFC2047 encoding should be done outside of this routine, except
  * for the "real name."  This will allow this routine to be used more than
  * once, if necessary.
@@ -2003,7 +1996,6 @@ out:
  *               Output generated is suitable for being sent through
  *               anonymous remailer chains.
  */
-
 
 int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, int mode, int privacy)
@@ -2805,7 +2797,6 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 
   return ret;
 }
-
 
 /**
  * mutt_remove_duplicates - Remove duplicate addresses

@@ -90,7 +90,6 @@ int mutt_get_tmp_attachment(struct Body *a)
   return a->unlink ? 0 : -1;
 }
 
-
 /**
  * mutt_compose_attachment - Create an attachment
  * @retval 1 if require full screen redraw
@@ -299,7 +298,6 @@ bailout:
   rfc1524_free_entry(&entry);
   return rc;
 }
-
 
 /**
  * mutt_check_lookup_list - Update the mime type

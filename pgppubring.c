@@ -288,7 +288,6 @@ static struct PgpKeyInfo *pgp_parse_pgp2_key(unsigned char *buff, size_t l)
   if (expl < 4)
     goto bailout;
 
-
   j += expl - 8;
 
   for (int k = 0; k < 2; k++)
@@ -445,7 +444,6 @@ static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l,
   for (i = 0; i < 4; i++)
     signerid2 = (signerid2 << 8) + buff[j++];
 
-
   if (sigtype == 0x20 || sigtype == 0x28)
     p->flags |= KEYFLAG_REVOKED;
 
@@ -594,7 +592,6 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
     s->sid2 = signerid2;
   }
 
-
   return 0;
 }
 
@@ -717,7 +714,6 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
       case PT_NAME:
       {
         char *chr = NULL;
-
 
         if (!addr)
           break;

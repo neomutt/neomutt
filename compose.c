@@ -191,7 +191,6 @@ static void calc_header_width_padding(int idx, const char *header, int calc_max)
   HeaderPadding[idx] -= width;
 }
 
-
 /**
  * init_header_padding - Calculate how much padding the compose table will need
  *
@@ -316,7 +315,6 @@ static void redraw_crypt_lines(struct Header *msg)
     printw("%s", NONULL(SmimeCryptAlg));
   }
 }
-
 
 #ifdef MIXMASTER
 
@@ -585,7 +583,6 @@ static void compose_menu_redraw(struct Menu *menu)
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);
 }
-
 
 /**
  * cum_attachs_size - Cumulative Attachments Size
@@ -948,7 +945,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
 
-
       case OP_COMPOSE_ATTACH_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
           break;
@@ -971,7 +967,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
-
 
       case OP_COMPOSE_ATTACH_FILE:
       {
@@ -1285,7 +1280,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
         }
 
-
 #ifdef MIXMASTER
         if (msg->chain && mix_check_message(msg) != 0)
           break;
@@ -1584,7 +1578,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         break;
 
-
       case OP_COMPOSE_PGP_MENU:
         if (!(WithCrypto & APPLICATION_PGP))
           break;
@@ -1610,11 +1603,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
 
-
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
         break;
-
 
       case OP_COMPOSE_SMIME_MENU:
         if (!(WithCrypto & APPLICATION_SMIME))
@@ -1640,7 +1631,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         redraw_crypt_lines(msg);
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
-
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:

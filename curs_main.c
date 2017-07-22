@@ -110,7 +110,6 @@ static const char *No_visible = N_("No visible messages.");
     break;                                                                     \
   }
 
-
 #define CHECK_READONLY                                                         \
   if (Context->readonly)                                                       \
   {                                                                            \
@@ -523,7 +522,6 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
 
   return 0;
 }
-
 
 /**
  * mutt_ts_capability - Check terminal capabilities
@@ -2874,7 +2872,6 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_FULL;
         break;
 
-
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
         break;
@@ -2939,7 +2936,6 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_FULL;
         break;
 
-
       case OP_EXTRACT_KEYS:
         if (!WithCrypto)
           break;
@@ -2948,7 +2944,6 @@ int mutt_index_menu(void)
         crypt_extract_keys_from_messages(tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
-
 
       case OP_CHECK_TRADITIONAL:
         if (!(WithCrypto & APPLICATION_PGP))
@@ -3029,7 +3024,6 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
-
 
       case OP_MARK_MSG:
 

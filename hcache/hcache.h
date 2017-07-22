@@ -145,5 +145,4 @@ const char *mutt_hcache_backend_list(void);
  */
 int mutt_hcache_is_valid_backend(const char *s);
 
-
 #endif /* _MUTT_HCACHE_H */

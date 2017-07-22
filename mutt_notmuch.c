@@ -159,7 +159,6 @@ struct NmCtxData
   bool progress_ready : 1; /**< A progress bar has been initialised */
 };
 
-
 #if 0
 /**
  * debug_print_filenames - Show a message's filenames
@@ -1721,7 +1720,6 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   return res;
 }
 
-
 char *nm_header_get_folder(struct Header *h)
 {
   return (h && h->data) ? ((struct NmHdrData *) h->data)->folder : NULL;
@@ -2271,7 +2269,6 @@ done:
   return rc;
 }
 
-
 /**
  * nm_open_mailbox - Open a notmuch virtual mailbox
  * @param ctx A mailbox CONTEXT
@@ -2611,7 +2608,6 @@ static int nm_commit_message(struct Context *ctx, struct Message *msg)
   mutt_error(_("Can't write to virtual folder."));
   return -1;
 }
-
 
 /**
  * struct mx_notmuch_ops - Mailbox API

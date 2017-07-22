@@ -63,7 +63,6 @@ static const struct Mapping PostponeHelp[] = {
   { NULL, 0 },
 };
 
-
 static short PostCount = 0;
 static struct Context *PostContext = NULL;
 static short UpdateNumPostponed = 0;
@@ -444,7 +443,6 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   return code;
 }
 
-
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 {
   char smime_cryptalg[LONG_STRING] = "\0";
@@ -509,7 +507,6 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
         break;
 
-
       case 'c':
       case 'C':
         q = smime_cryptalg;
@@ -557,7 +554,6 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
   return flags;
 }
-
 
 /**
  * mutt_prepare_template - Prepare a message template
@@ -657,7 +653,6 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     newhdr->content = mutt_remove_multipart(newhdr->content);
   }
 
-
   /*
    * We don't need no primary multipart.
    * Note: We _do_ preserve messages!
@@ -712,7 +707,6 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_adv_mktemp(file, sizeof(file));
     if ((s.fpout = safe_fopen(file, "w")) == NULL)
       goto bail;
-
 
     if ((WithCrypto & APPLICATION_PGP) &&
         ((sec_type = mutt_is_application_pgp(b)) & (ENCRYPT | SIGN)))

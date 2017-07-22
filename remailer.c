@@ -214,11 +214,9 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
   FREE(type2_list);
 }
 
-
 #define MIX_HOFFSET 2
 #define MIX_VOFFSET (MuttIndexWindow->rows - 4)
 #define MIX_MAXROW (MuttIndexWindow->rows - 1)
-
 
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
@@ -243,7 +241,6 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
     r = MIX_VOFFSET;
     c = MIX_HOFFSET;
   }
-
 
   for (; i < chain->cl; i++)
   {
@@ -412,7 +409,6 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
   return src;
 }
 
-
 static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
@@ -455,7 +451,6 @@ static const struct Mapping RemailerHelp[] = {
   { N_("Delete"), OP_MIX_DELETE }, { N_("Abort"), OP_EXIT },
   { N_("OK"), OP_MIX_USE },        { NULL, 0 },
 };
-
 
 void mix_make_chain(struct List **chainp)
 {

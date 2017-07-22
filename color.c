@@ -399,7 +399,6 @@ void mutt_free_color(int fg, int bg)
 
 #endif /* HAVE_COLOR */
 
-
 #ifdef HAVE_COLOR
 
 static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struct Buffer *err)
@@ -452,7 +451,6 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 }
 
 #endif
-
 
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
                        struct ColorLine **cl, int *do_cache, bool parse_uncolor)
@@ -612,7 +610,6 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
-
 
 static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int fg,
                        int bg, int attr, struct Buffer *err, int is_index, int match)
@@ -885,7 +882,6 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
     *s->dptr = '\0'; /* fake that we're done parsing */
     return 0;
   }
-
 
 #ifdef HAVE_COLOR
 #ifdef HAVE_USE_DEFAULT_COLORS

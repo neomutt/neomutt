@@ -932,7 +932,6 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
   fill_empty_space(row, num_rows - row, div_width, w);
 }
 
-
 /**
  * mutt_sb_draw - Completely redraw the sidebar
  *

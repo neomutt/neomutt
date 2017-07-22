@@ -117,7 +117,6 @@ void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, int committing);
 
-
 int mx_lock_file(const char *path, int fd, int excl, int timeout);
 int mx_unlock_file(const char *path, int fd);
 

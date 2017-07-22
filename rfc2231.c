@@ -75,7 +75,6 @@ static void purge_empty_parameters(struct Parameter **headp)
   }
 }
 
-
 static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
 {
   char *t = NULL, *u = NULL;

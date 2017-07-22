@@ -885,7 +885,6 @@ static char LastSearch[STRING] = { 0 };          /* last pattern searched for */
 static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
                                                     LastSearch */
 
-
 /**
  * mutt_which_case - Smart-case searching
  *
@@ -1498,7 +1497,6 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
   return 0;
 }
 
-
 /**
  * set_pattern_cache_value - Sets a value in the PatternCache cache entry
  *
@@ -1523,7 +1521,6 @@ static int is_pattern_cache_set(int cache_entry)
 {
   return cache_entry != 0;
 }
-
 
 /**
  * mutt_pattern_exec - Match a pattern against an email header

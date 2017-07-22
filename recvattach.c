@@ -750,7 +750,6 @@ static void print_attachment_list(FILE *fp, int tag, struct Body *top, struct St
 {
   char type[STRING];
 
-
   for (; top; top = top->next)
   {
     if (!tag || top->tagged)
@@ -836,7 +835,6 @@ static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp,
   menu_check_recenter(menu);
   menu->redraw |= REDRAW_INDEX;
 }
-
 
 int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr,
                              struct Body *cur, struct AttachPtr ***idxp,
@@ -947,7 +945,6 @@ static const char *Function_not_permitted =
     break;                                                                     \
   }
 
-
 void mutt_view_attachments(struct Header *hdr)
 {
   bool secured = false;
@@ -971,7 +968,6 @@ void mutt_view_attachments(struct Header *hdr)
 
   if ((msg = mx_open_message(Context, hdr->msgno)) == NULL)
     return;
-
 
   if (WithCrypto && ((hdr->security & ENCRYPT) ||
                      (mutt_is_application_smime(hdr->content) & SMIMEOPAQUE)))

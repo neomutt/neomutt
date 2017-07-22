@@ -91,7 +91,6 @@ struct Body *mutt_new_body(void)
   return p;
 }
 
-
 /**
  * mutt_adv_mktemp - Advanced mktemp(3)
  *
@@ -200,7 +199,6 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
 
   return 0;
 }
-
 
 void mutt_free_body(struct Body **p)
 {
@@ -654,7 +652,6 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
   return dest;
 }
 
-
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
  * @param m Attachment body to be displayed
@@ -871,7 +868,6 @@ uint64_t mutt_rand64(void)
   mutt_randbuf(&ret, sizeof(ret));
   return ret;
 }
-
 
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line)
@@ -1258,7 +1254,6 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
     dbuf = safe_strdup(dst);
   return dbuf;
 }
-
 
 /**
  * mutt_expando_format - Expand expandos (%x) in a string

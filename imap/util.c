@@ -757,7 +757,6 @@ void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
   url_ciss_tostring(&url, dest, len, 0);
 }
 
-
 /**
  * imap_quote_string - quote string according to IMAP rules
  *
@@ -828,7 +827,6 @@ void imap_unquote_string(char *s)
   }
   *d = '\0';
 }
-
 
 /**
  * imap_munge_mbox_name - Quoting and UTF-7 conversion

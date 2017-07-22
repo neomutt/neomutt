@@ -1122,7 +1122,6 @@ void mx_update_tables(struct Context *ctx, int committing)
   ctx->msgcount = j;
 }
 
-
 /**
  * mx_sync_mailbox - Save changes to mailbox
  * @param[in]  ctx        Context

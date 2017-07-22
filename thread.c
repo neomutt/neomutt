@@ -601,7 +601,6 @@ static void pseudo_threads(struct Context *ctx)
   ctx->tree = top;
 }
 
-
 void mutt_clear_threads(struct Context *ctx)
 {
   for (int i = 0; i < ctx->msgcount; i++)
@@ -1294,7 +1293,6 @@ int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
         }
       }
 
-
       if (!cur->read && CHECK_LIMIT)
       {
         if (cur->old)
@@ -1353,7 +1351,6 @@ int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 #undef CHECK_LIMIT
 }
 
-
 /**
  * mutt_messages_in_thread - Count the messages in a thread
  *
@@ -1391,7 +1388,6 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 
   return rc;
 }
-
 
 struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
