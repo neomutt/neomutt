@@ -112,7 +112,7 @@ static struct ImapCommand *cmd_new(struct ImapData *idata)
  *
  * If the queue is full, attempts to drain it.
  */
-static int cmd_queue(struct ImapData *idata, const char *cmdstr)
+static int cmd_queue(struct ImapData *idata, const char *cmdstr, int flags)
 {
   struct ImapCommand *cmd = NULL;
   int rc;
@@ -121,7 +121,7 @@ static int cmd_queue(struct ImapData *idata, const char *cmdstr)
   {
     mutt_debug(3, "Draining IMAP command pipeline\n");
 
-    rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK);
+    rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
 
     if (rc < 0 && rc != -2)
       return rc;
@@ -171,7 +171,7 @@ static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
     return -1;
   }
 
-  if (cmdstr && ((rc = cmd_queue(idata, cmdstr)) < 0))
+  if (cmdstr && ((rc = cmd_queue(idata, cmdstr, flags)) < 0))
     return rc;
 
   if (flags & IMAP_CMD_QUEUE)
@@ -1014,6 +1014,7 @@ const char *imap_cmd_trailer(struct ImapData *idata)
  *       This is used for checking for a mailbox on append and login
  * * IMAP_CMD_PASS: command contains a password. Suppress logging.
  * * IMAP_CMD_QUEUE: only queue command, do not execute.
+ * * IMAP_CMD_POLL: poll the socket for a response before running imap_cmd_step.
  */
 int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 {
@@ -1027,6 +1028,15 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 
   if (flags & IMAP_CMD_QUEUE)
     return 0;
+
+  if ((flags & IMAP_CMD_POLL) && (ImapPollTimeout > 0) &&
+      (mutt_socket_poll(idata->conn, ImapPollTimeout)) == 0)
+  {
+    mutt_error(_("Connection to %s timed out"), idata->conn->account.host);
+    mutt_sleep(2);
+    cmd_handle_fatal(idata);
+    return -1;
+  }
 
   /* Allow interruptions, particularly useful if there are network problems. */
   mutt_allow_interrupt(1);
