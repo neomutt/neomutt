@@ -172,7 +172,7 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
   return rc;
 }
 
-static int tunnel_socket_poll(struct Connection *conn)
+static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
   int ofd;
@@ -180,7 +180,7 @@ static int tunnel_socket_poll(struct Connection *conn)
 
   ofd = conn->fd;
   conn->fd = tunnel->readfd;
-  rc = raw_socket_poll(conn);
+  rc = raw_socket_poll(conn, wait_secs);
   conn->fd = ofd;
 
   return rc;
