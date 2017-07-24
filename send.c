@@ -250,7 +250,6 @@ static int edit_address(struct Address **a, /* const */ char *field)
 static int edit_envelope(struct Envelope *en, int flags)
 {
   char buf[HUGE_STRING];
-  struct List *uh = UserHeader;
 
 #ifdef USE_NNTP
   if (option(OPT_NEWS_SEND))
@@ -309,7 +308,8 @@ static int edit_envelope(struct Envelope *en, int flags)
     const char *p = NULL;
 
     buf[0] = 0;
-    for (; uh; uh = uh->next)
+    struct STailQNode *uh;
+    STAILQ_FOREACH(uh, &UserHeader, entries)
     {
       if (mutt_strncasecmp("subject:", uh->data, 8) == 0)
       {
@@ -340,9 +340,8 @@ static char *nntp_get_header(const char *s)
 
 static void process_user_recips(struct Envelope *env)
 {
-  struct List *uh = UserHeader;
-
-  for (; uh; uh = uh->next)
+  struct STailQNode *uh;
+  STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_strncasecmp("to:", uh->data, 3) == 0)
       env->to = rfc822_parse_adrlist(env->to, uh->data + 3);
@@ -363,9 +362,8 @@ static void process_user_recips(struct Envelope *env)
 
 static void process_user_header(struct Envelope *env)
 {
-  struct List *uh = UserHeader;
-
-  for (; uh; uh = uh->next)
+  struct STailQNode *uh;
+  STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_strncasecmp("from:", uh->data, 5) == 0)
     {

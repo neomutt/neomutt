@@ -25,6 +25,7 @@
 
 #include <signal.h>
 #include "lib/lib.h"
+#include "list.h"
 #include "where.h"
 #include "mutt_regex.h"
 
@@ -282,7 +283,7 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
 WHERE int CurrentMenu;
 
 WHERE struct Alias *Aliases;
-WHERE struct List *UserHeader;
+WHERE struct STailQHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
 
 /* -- formerly in pgp.h -- */
 WHERE struct Regex PgpGoodSign;

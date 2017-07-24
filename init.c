@@ -2035,43 +2035,29 @@ bail:
 static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
-  struct List *last = NULL;
-  struct List *tmp = UserHeader;
-  struct List *ptr = NULL;
+  struct STailQNode *np, *tmp;
   size_t l;
 
   do
   {
     mutt_extract_token(buf, s, 0);
     if (mutt_strcmp("*", buf->data) == 0)
-      mutt_free_list(&UserHeader);
-    else
     {
-      tmp = UserHeader;
-      last = NULL;
+      mutt_free_stailq(&UserHeader);
+      continue;
+    }
 
-      l = mutt_strlen(buf->data);
-      if (buf->data[l - 1] == ':')
-        l--;
+    l = mutt_strlen(buf->data);
+    if (buf->data[l - 1] == ':')
+      l--;
 
-      while (tmp)
+    STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)
+    {
+      if ((mutt_strncasecmp(buf->data, np->data, l) == 0) && np->data[l] == ':')
       {
-        if ((mutt_strncasecmp(buf->data, tmp->data, l) == 0) && tmp->data[l] == ':')
-        {
-          ptr = tmp;
-          if (last)
-            last->next = tmp->next;
-          else
-            UserHeader = tmp->next;
-          tmp = tmp->next;
-          ptr->next = NULL;
-          mutt_free_list(&ptr);
-        }
-        else
-        {
-          last = tmp;
-          tmp = tmp->next;
-        }
+        STAILQ_REMOVE(&UserHeader, np, STailQNode, entries);
+        FREE(&np->data);
+        FREE(&np);
       }
     }
   } while (MoreArgs(s));
@@ -2081,7 +2067,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
-  struct List *tmp = NULL;
+  struct STailQNode *n = NULL;
   size_t keylen;
   char *p = NULL;
 
@@ -2093,32 +2079,30 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   }
   keylen = p - buf->data + 1;
 
-  if (UserHeader)
+  STAILQ_FOREACH(n, &UserHeader, entries)
   {
-    for (tmp = UserHeader;; tmp = tmp->next)
+    /* see if there is already a field by this name */
+    if (mutt_strncasecmp(buf->data, n->data, keylen) == 0)
     {
-      /* see if there is already a field by this name */
-      if (mutt_strncasecmp(buf->data, tmp->data, keylen) == 0)
-      {
-        /* replace the old value */
-        FREE(&tmp->data);
-        tmp->data = buf->data;
-        mutt_buffer_init(buf);
-        return 0;
-      }
-      if (!tmp->next)
-        break;
+      break;
     }
-    tmp->next = mutt_new_list();
-    tmp = tmp->next;
+  }
+
+  if (!n)
+  {
+    /* not found, allocate memory for a new node and add it to the list */
+    n = safe_calloc(1, sizeof(struct STailQNode));
+    STAILQ_INSERT_TAIL(&UserHeader, n, entries);
   }
   else
   {
-    tmp = mutt_new_list();
-    UserHeader = tmp;
+    /* found, free the existing data */
+    FREE(&n->data);
   }
-  tmp->data = buf->data;
+
+  n->data = buf->data;
   mutt_buffer_init(buf);
+
   return 0;
 }
 
