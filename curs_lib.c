@@ -1159,7 +1159,7 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
 
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
-  --destlen;
+  destlen--;
   p = dest;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
@@ -1264,9 +1264,15 @@ static void format_s_x(char *dest, size_t destlen, const char *prefix,
   int max_width = INT_MAX;
 
   if (*prefix == '-')
-    ++prefix, justify = FMT_LEFT;
+  {
+    prefix++;
+    justify = FMT_LEFT;
+  }
   else if (*prefix == '=')
-    ++prefix, justify = FMT_CENTER;
+  {
+    prefix++;
+    justify = FMT_CENTER;
+  }
   min_width = strtol(prefix, &p, 10);
   if (*p == '.')
   {

@@ -73,7 +73,8 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
   {
     if (*u7 == '&')
     {
-      u7++, u7len--;
+      u7++;
+      u7len--;
 
       if (u7len && *u7 == '-')
       {
@@ -172,23 +173,42 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     unsigned char c = *u8;
 
     if (c < 0x80)
-      ch = c, n = 0;
+    {
+      ch = c;
+      n = 0;
+    }
     else if (c < 0xc2)
       goto bail;
     else if (c < 0xe0)
-      ch = c & 0x1f, n = 1;
+    {
+      ch = c & 0x1f;
+      n = 1;
+    }
     else if (c < 0xf0)
-      ch = c & 0x0f, n = 2;
+    {
+      ch = c & 0x0f;
+      n = 2;
+    }
     else if (c < 0xf8)
-      ch = c & 0x07, n = 3;
+    {
+      ch = c & 0x07;
+      n = 3;
+    }
     else if (c < 0xfc)
-      ch = c & 0x03, n = 4;
+    {
+      ch = c & 0x03;
+      n = 4;
+    }
     else if (c < 0xfe)
-      ch = c & 0x01, n = 5;
+    {
+      ch = c & 0x01;
+      n = 5;
+    }
     else
       goto bail;
 
-    u8++, u8len--;
+    u8++;
+    u8len--;
     if (n > u8len)
       goto bail;
     for (i = 0; i < n; i++)
@@ -199,7 +219,8 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     }
     if (n > 1 && !(ch >> (n * 5 + 1)))
       goto bail;
-    u8 += n, u8len -= n;
+    u8 += n;
+    u8len -= n;
 
     if (ch < 0x20 || ch >= 0x7f)
     {

@@ -229,7 +229,8 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             addch('?');
             break;
         }
-        s++, n--;
+        s++;
+        n--;
       }
       if (do_color)
         ATTRSET(attr);
@@ -261,7 +262,8 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
     else if ((k = mbrtowc(&wc, (char *) s, n, &mbstate)) > 0)
     {
       addnstr((char *) s, k);
-      s += k, n -= k;
+      s += k;
+      n -= k;
     }
     else
       break;

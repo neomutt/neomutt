@@ -279,7 +279,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
         {
           n += col - MuttIndexWindow->cols;
           if (option(OPTMARKERS))
-            ++n;
+            n++;
         }
         col = pad(f, n, col_b);
       }

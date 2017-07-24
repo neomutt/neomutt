@@ -335,10 +335,15 @@ int rfc2231_encode_string(char **pd)
     encode = 1;
 
   for (s = d, slen = dlen; slen; s++, slen--)
+  {
     if (*s < 0x20 || *s >= 0x7f)
-      encode = 1, ++ext;
+    {
+      encode = 1;
+      ext++;
+    }
     else if (strchr(MimeSpecials, *s) || strchr("*'%", *s))
-      ++ext;
+      ext++;
+  }
 
   if (encode)
   {

@@ -174,7 +174,7 @@ static int parse_keycode(const char *s)
   long int result = strtol(s + 1, &endChar, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
   while (ISSPACE(*endChar))
-    ++endChar;
+    endChar++;
   /* negative keycodes don't make sense, also detect overflow */
   if (*endChar != '>' || result < 0 || result == LONG_MAX)
   {
@@ -998,7 +998,7 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
         snprintf(err->data, err->dsize, _("%s: no such menu"), p);
         goto error;
       }
-      ++i;
+      i++;
       if (q)
         p = q + 1;
       else

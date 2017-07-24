@@ -695,8 +695,11 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     if (ascii_strcasecmp(tocodes[i], "utf-8") != 0)
       cd[i] = mutt_iconv_open(tocodes[i], "utf-8", 0);
     else
+    {
       /* Special case for conversion to UTF-8 */
-      cd[i] = (iconv_t)(-1), score[i] = (size_t)(-1);
+      cd[i] = (iconv_t)(-1);
+      score[i] = (size_t)(-1);
+    }
 
   rewind(file);
   ibl = 0;
@@ -708,7 +711,8 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 
     /* Convert to UTF-8 */
     ib = bufi;
-    ob = bufu, obl = sizeof(bufu);
+    ob = bufu;
+    obl = sizeof(bufu);
     n = iconv(cd1, ibl ? &ib : 0, &ibl, &ob, &obl);
     assert(n == (size_t)(-1) || !n);
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
@@ -723,8 +727,10 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     for (i = 0; i < ncodes; i++)
       if (cd[i] != (iconv_t)(-1) && score[i] != (size_t)(-1))
       {
-        ub = bufu, ubl = ubl1;
-        ob = bufo, obl = sizeof(bufo);
+        ub = bufu;
+        ubl = ubl1;
+        ob = bufo;
+        obl = sizeof(bufo);
         n = iconv(cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
         if (n == (size_t)(-1))
         {
@@ -822,7 +828,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
   {
     if ((c1 = strchr(c, ':')) == c)
       continue;
-    ++ncodes;
+    ncodes++;
   }
 
   /* Copy them */
@@ -1875,7 +1881,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     {
       tagbuf = mutt_substrdup(start, t);
       /* skip over the colon separating the header field name and value */
-      ++t;
+      t++;
 
       /* skip over any leading whitespace (WSP, as defined in RFC5322)
        * NOTE: skip_email_wsp() does the wrong thing here.

@@ -105,7 +105,7 @@ static int _lua_mutt_call(lua_State *l)
     if (lua_pushstring(l, err.data) == NULL)
       _handle_error(l);
     else
-      ++rv;
+      rv++;
   }
 
   FREE(&err.data);
@@ -286,7 +286,7 @@ static int _lua_mutt_enter(lua_State *l)
     if (lua_pushstring(l, err.data) == NULL)
       _handle_error(l);
     else
-      ++rv;
+      rv++;
   }
 
   FREE(&buffer);

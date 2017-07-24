@@ -1092,7 +1092,7 @@ void mx_update_tables(struct Context *ctx, int committing)
       {
         ctx->unread++;
         if (!ctx->hdrs[j]->old)
-          ctx->new ++;
+          ctx->new++;
       }
 
       j++;
@@ -1484,7 +1484,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       ctx->unread++;
       if (!h->old)
-        ctx->new ++;
+        ctx->new++;
     }
   }
 }

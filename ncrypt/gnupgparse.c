@@ -99,7 +99,10 @@ static void fix_uid(char *uid)
     size_t ibl, obl;
 
     buf = safe_malloc(n + 1);
-    ib = uid, ibl = d - uid + 1, ob = buf, obl = n;
+    ib = uid;
+    ibl = d - uid + 1;
+    ob = buf;
+    obl = n;
     iconv(cd, &ib, &ibl, &ob, &obl);
     if (!ibl)
     {

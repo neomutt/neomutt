@@ -302,7 +302,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
           t_fmt = NONULL(DateFmt);
           if (*t_fmt == '!')
           {
-            ++t_fmt;
+            t_fmt++;
             do_locales = false;
           }
         }

@@ -145,7 +145,9 @@ static size_t utf8rtowc(wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
       errno = EILSEQ;
       return (size_t) -1;
     }
-    ++s, --n, ++k;
+    s++;
+    n--;
+    k++;
   }
   else
   {
@@ -166,7 +168,8 @@ static size_t utf8rtowc(wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
         *ps = 0;
         return wc ? k : 0;
       }
-      --count, --wc;
+      count--;
+      wc--;
       if (!(wc >> (11 + count * 5)))
       {
         errno = count < 4 ? EILSEQ : EINVAL;
@@ -296,14 +299,14 @@ static size_t mbrtowc_iconv(wchar_t *pwc, const char *s, size_t n, mbstate_t *ps
     {
       if (ib + ibl < ibmax)
         /* try using more input */
-        ++ibl;
+        ibl++;
       else if (k && ib > bufi + k && bufi + k + n > ibmax)
       {
         /* switch to using real input */
         ib = (ICONV_CONST char *) s + (ib - bufi - k);
         ibmax = (ICONV_CONST char *) s + n;
         k = 0;
-        ++ibl;
+        ibl++;
       }
       else
       {

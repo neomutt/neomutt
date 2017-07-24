@@ -114,7 +114,8 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
     return;
   }
 
-  ib = bufi, ibl = *l;
+  ib = bufi;
+  ibl = *l;
   for (;;)
   {
     ob = bufo, obl = sizeof(bufo);

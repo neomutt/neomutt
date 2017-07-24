@@ -119,7 +119,7 @@ void mutt_adv_mktemp(char *s, size_t l)
     if ((suffix = strrchr(prefix, '.')) != NULL)
     {
       *suffix = 0;
-      ++suffix;
+      suffix++;
     }
     mutt_mktemp_pfx_sfx(s, l, prefix, suffix);
   }
@@ -1232,7 +1232,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
             {
               n = strtoul(p, &p, 10);             /* get subst number */
               while (isdigit((unsigned char) *p)) /* skip subst token */
-                ++p;
+                p++;
               for (i = pmatch[n].rm_so;
                    (i < pmatch[n].rm_eo) && (tlen < LONG_STRING - 1); i++)
                 dst[tlen++] = src[i];
@@ -1378,7 +1378,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
            * To literally end with "%", use "%%". */
           if ((n > 0) && dest[n - 1] == '%')
           {
-            --n;
+            n--;
             dest[n] = '\0'; /* remove '%' */
             if ((n > 0) && dest[n - 1] != '%')
             {
@@ -2091,7 +2091,7 @@ bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int 
           char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
           int n;
 
-          ++p; /* skip over % char */
+          p++; /* skip over % char */
           n = strtol(p, &e, 10);
           /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
            * should not strictly be necessary since add_to_spam_list() finds the largest value, and

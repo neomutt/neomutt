@@ -861,7 +861,7 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
       FREE(&cur->template);
       FREE(&cur);
       cur = prev->next;
-      ++nremoved;
+      nremoved++;
     }
     else
       cur = cur->next;
@@ -940,10 +940,10 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
       if (n > t->nmatch)
         t->nmatch = n;
       while (*p && isdigit((int) *p))
-        ++p;
+        p++;
     }
     else
-      ++p;
+      p++;
   }
 
   if (t->nmatch > t->rx->rx->re_nsub)
@@ -1601,7 +1601,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     if ((p = strchr(a->major, '/')))
     {
       *p = '\0';
-      ++p;
+      p++;
       a->minor = p;
     }
     else
@@ -1673,7 +1673,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     if ((minor = strchr(tmp, '/')))
     {
       *minor = '\0';
-      ++minor;
+      minor++;
     }
     else
     {

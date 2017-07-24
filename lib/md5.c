@@ -131,7 +131,7 @@ void *md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
   /* Now count remaining bytes. */
   ctx->total[0] += bytes;
   if (ctx->total[0] < bytes)
-    ++ctx->total[1];
+    ctx->total[1]++;
 
   /* Put the 64-bit file length in *bits* at the end of the buffer. */
   ctx->buffer[size - 2] = SWAP(ctx->total[0] << 3);
@@ -348,7 +348,7 @@ void md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
    * double word increment. */
   ctx->total[0] += len;
   if (ctx->total[0] < len)
-    ++ctx->total[1];
+    ctx->total[1]++;
 
   /* Process all bytes in the buffer with 64 bytes in each round of the loop. */
   while (words < endp)
@@ -370,7 +370,7 @@ void md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
   do                                                                           \
   {                                                                            \
     a += FF(b, c, d) + (*cwp++ = SWAP(*words)) + T;                            \
-    ++words;                                                                   \
+    words++;                                                                   \
     CYCLIC(a, s);                                                              \
     a += b;                                                                    \
   } while (0)

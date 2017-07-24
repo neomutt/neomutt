@@ -193,9 +193,12 @@ static size_t b_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
 {
   char *s0 = s;
 
-  memcpy(s, "=?", 2), s += 2;
-  memcpy(s, tocode, strlen(tocode)), s += strlen(tocode);
-  memcpy(s, "?B?", 3), s += 3;
+  memcpy(s, "=?", 2);
+  s += 2;
+  memcpy(s, tocode, strlen(tocode));
+  s += strlen(tocode);
+  memcpy(s, "?B?", 3);
+  s += 3;
 
   while (dlen)
   {
@@ -211,7 +214,8 @@ static size_t b_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
     d += in_len;
   }
 
-  memcpy(s, "?=", 2), s += 2;
+  memcpy(s, "?=", 2);
+  s += 2;
   return s - s0;
 }
 
@@ -220,9 +224,12 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
   static const char hex[] = "0123456789ABCDEF";
   char *s0 = s;
 
-  memcpy(s, "=?", 2), s += 2;
-  memcpy(s, tocode, strlen(tocode)), s += strlen(tocode);
-  memcpy(s, "?Q?", 3), s += 3;
+  memcpy(s, "=?", 2);
+  s += 2;
+  memcpy(s, tocode, strlen(tocode));
+  s += strlen(tocode);
+  memcpy(s, "?Q?", 3);
+  s += 3;
   while (dlen--)
   {
     unsigned char c = *d++;
@@ -237,7 +244,8 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
     else
       *s++ = c;
   }
-  memcpy(s, "?=", 2), s += 2;
+  memcpy(s, "?=", 2);
+  s += 2;
   return s - s0;
 }
 
@@ -273,7 +281,10 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
   {
     cd = mutt_iconv_open(tocode, fromcode, 0);
     assert(cd != (iconv_t)(-1));
-    ib = d, ibl = dlen, ob = buf1, obl = sizeof(buf1) - strlen(tocode);
+    ib = d;
+    ibl = dlen;
+    ob = buf1;
+    obl = sizeof(buf1) - strlen(tocode);
     if (iconv(cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
         iconv(cd, 0, 0, &ob, &obl) == (size_t)(-1))
     {
@@ -298,7 +309,7 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
     unsigned char c = *p;
     assert(strchr(MimeSpecials, '?'));
     if (c >= 0x7f || c < 0x20 || *p == '_' || (c != ' ' && strchr(MimeSpecials, *p)))
-      ++count;
+      count++;
   }
 
   len = ENCWORD_LEN_MIN - 2 + strlen(tocode);
@@ -350,7 +361,10 @@ static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
   {
     cd = mutt_iconv_open(tocode, fromcode, 0);
     assert(cd != (iconv_t)(-1));
-    ib = d, ibl = dlen, ob = buf1, obl = sizeof(buf1) - strlen(tocode);
+    ib = d;
+    ibl = dlen;
+    ob = buf1;
+    obl = sizeof(buf1) - strlen(tocode);
     n1 = iconv(cd, &ib, &ibl, &ob, &obl);
     n2 = iconv(cd, 0, 0, &ob, &obl);
     assert(n1 != (size_t)(-1) && n2 != (size_t)(-1));
@@ -386,7 +400,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
     assert(n > 0);
     if (utf8)
       while (n > 1 && CONTINUATION_BYTE(d[n]))
-        --n;
+        n--;
   }
   return n;
 }
@@ -474,7 +488,10 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     if ((tocode1 = mutt_choose_charset(icode, charsets, u, ulen, 0, 0)))
       tocode = tocode1;
     else
-      ret = 2, icode = 0;
+    {
+      ret = 2;
+      icode = 0;
+    }
   }
 
   /* Hack to avoid labelling 8-bit data as us-ascii. */
@@ -496,7 +513,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     t = t0 + 1;
     if (icode)
       while (t < u + ulen && CONTINUATION_BYTE(*t))
-        ++t;
+        t++;
     if (!try_block(t0, t - t0, icode, tocode, &encoder, &wlen) &&
         col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
       break;
@@ -510,7 +527,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     t = t1 - 1;
     if (icode)
       while (CONTINUATION_BYTE(*t))
-        --t;
+        t--;
     if (!try_block(t, t1 - t, icode, tocode, &encoder, &wlen) &&
         1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
       break;
@@ -539,7 +556,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
       n = t1 - t - 1;
       if (icode)
         while (CONTINUATION_BYTE(t[n]))
-          --n;
+          n--;
       assert(t + n >= t);
       if (!n)
       {
@@ -750,7 +767,7 @@ static const char *find_encoded_word(const char *s, const char **x)
       ;
     if (q[0] != '?' || q[1] != '=')
     {
-      --q;
+      q--;
       continue;
     }
 
@@ -838,7 +855,11 @@ void rfc2047_decode(char **pd)
         if (found_encoded && (m = lwslen(s, n)) != 0)
         {
           if (m != n)
-            *d = ' ', d++, dlen--;
+          {
+            *d = ' ';
+            d++;
+            dlen--;
+          }
           s += m;
         }
       }
@@ -872,8 +893,13 @@ void rfc2047_decode(char **pd)
         if (found_encoded && (m = lwslen(s, n)) != 0)
         {
           if (m != n)
-            *d = ' ', d++, dlen--;
-          n -= m, s += m;
+          {
+            *d = ' ';
+            d++;
+            dlen--;
+          }
+          n -= m;
+          s += m;
         }
 
         if ((m = n - lwsrlen(s, n)) != 0)
@@ -884,7 +910,11 @@ void rfc2047_decode(char **pd)
           d += m;
           dlen -= m;
           if (m != n)
-            *d = ' ', d++, dlen--;
+          {
+            *d = ' ';
+            d++;
+            dlen--;
+          }
         }
       }
       else if (!found_encoded || strspn(s, " \t\r\n") != n)

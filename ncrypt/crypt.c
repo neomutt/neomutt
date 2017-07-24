@@ -1078,7 +1078,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
     c = *(s1++);
     if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f'))
     {
-      ++hexdigits;
+      hexdigits++;
       if (isid == 2)
         isid = 1; /* it is an ID so far */
     }
