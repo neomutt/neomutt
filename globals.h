@@ -202,7 +202,7 @@ WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 #endif
 
-WHERE struct List *AutoViewList;
+WHERE struct STailQHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
 WHERE struct List *AlternativeOrderList;
 WHERE struct List *AttachAllow;
 WHERE struct List *AttachExclude;

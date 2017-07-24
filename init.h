@@ -4493,9 +4493,13 @@ const struct Mapping SortSidebarMethods[] = {
 
 static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err);
+static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                      struct Buffer *err);
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err);
 static int parse_unlist(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err);
+static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err);
 #ifdef USE_SIDEBAR
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
@@ -4576,7 +4580,7 @@ const struct Command Commands[] = {
   { "alias",            parse_alias,            0 },
   { "attachments",      parse_attachments,      0 },
   { "unattachments",parse_unattachments,0 },
-  { "auto_view",        parse_list,             UL &AutoViewList },
+  { "auto_view",        parse_stailq,           UL &AutoViewList },
   { "alternative_order",        parse_list,     UL &AlternativeOrderList },
   { "bind",             mutt_parse_bind,        0 },
   { "charset-hook",     mutt_parse_hook,        MUTT_CHARSETHOOK },
@@ -4650,7 +4654,7 @@ const struct Command Commands[] = {
   { "toggle",           parse_set,              MUTT_SET_INV },
   { "unalias",          parse_unalias,          0 },
   { "unalternative_order",parse_unlist,         UL &AlternativeOrderList },
-  { "unauto_view",      parse_unlist,           UL &AutoViewList },
+  { "unauto_view",      parse_unstailq,         UL &AutoViewList },
   { "unhdr_order",      parse_unlist,           UL &HeaderOrderList },
   { "unhook",           mutt_parse_unhook,      0 },
   { "unignore",         parse_unignore,         0 },

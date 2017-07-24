@@ -783,6 +783,26 @@ static void add_to_list(struct List **list, const char *str)
   }
 }
 
+static void add_to_stailq(struct STailQHead *head, const char *str)
+{
+  /* don't add a NULL or empty string to the list */
+  if (!str || *str == '\0')
+    return;
+
+  /* check to make sure the item is not already on this list */
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, head, entries)
+  {
+    if (mutt_strcasecmp(str, np->data) == 0)
+    {
+      return;
+    }
+  }
+  np = safe_calloc(1, sizeof(struct STailQNode));
+  np->data = safe_strdup(str);
+  STAILQ_INSERT_TAIL(head, np, entries);
+}
+
 static struct RxList *new_rx_list(void)
 {
   return safe_calloc(1, sizeof(struct RxList));
@@ -1144,6 +1164,59 @@ static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     mutt_extract_token(buf, s, 0);
     add_to_list((struct List **) data, buf->data);
+  } while (MoreArgs(s));
+
+  return 0;
+}
+
+static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                      struct Buffer *err)
+{
+
+  do
+  {
+    mutt_extract_token(buf, s, 0);
+    add_to_stailq((struct STailQHead *)data, buf->data);
+  } while (MoreArgs(s));
+
+  return 0;
+}
+
+static void remove_from_stailq(struct STailQHead *head, const char *str)
+{
+  if (mutt_strcmp("*", str) == 0)
+    mutt_free_stailq(head); /* ``unCMD *'' means delete all current entries */
+  else
+  {
+    struct STailQNode *np, *tmp;
+    STAILQ_FOREACH_SAFE(np, head, entries, tmp)
+    {
+      if (mutt_strcasecmp(str, np->data) == 0)
+      {
+        STAILQ_REMOVE(head, np, STailQNode, entries);
+        FREE(&np->data);
+        FREE(&np);
+        break;
+      }
+    }
+  }
+}
+
+static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
+{
+  do
+  {
+    mutt_extract_token(buf, s, 0);
+    /*
+     * Check for deletion of entire list
+     */
+    if (mutt_strcmp(buf->data, "*") == 0)
+    {
+      mutt_free_stailq((struct STailQHead *)data);
+      break;
+    }
+    remove_from_stailq((struct STailQHead *)data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
