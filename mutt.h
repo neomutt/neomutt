@@ -327,11 +327,6 @@ struct List *mutt_find_list(struct List *l, const char *data);
 struct STailQNode *mutt_find_stailq(struct STailQHead *h, const char *data);
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
-/* handle stack */
-void mutt_push_list(struct List **head, const char *data);
-bool mutt_pop_list(struct List **head);
-const char *mutt_front_list(struct List *head);
-
 void mutt_init(int skip_sys_rc, struct List *commands);
 
 /* flag to mutt_pattern_comp() */

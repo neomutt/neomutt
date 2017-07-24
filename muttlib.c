@@ -300,33 +300,6 @@ struct STailQNode *mutt_find_stailq(struct STailQHead *h, const char *data)
   return NULL;
 }
 
-void mutt_push_list(struct List **head, const char *data)
-{
-  struct List *tmp = NULL;
-  tmp = safe_malloc(sizeof(struct List));
-  tmp->data = safe_strdup(data);
-  tmp->next = *head;
-  *head = tmp;
-}
-
-bool mutt_pop_list(struct List **head)
-{
-  struct List *elt = *head;
-  if (!elt)
-    return false;
-  *head = elt->next;
-  FREE(&elt->data);
-  FREE(&elt);
-  return true;
-}
-
-const char *mutt_front_list(struct List *head)
-{
-  if (!head || !head->data)
-    return "";
-  return head->data;
-}
-
 int mutt_remove_from_rx_list(struct RxList **l, const char *str)
 {
   struct RxList *p = NULL, *last = NULL;

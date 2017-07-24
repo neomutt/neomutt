@@ -3168,10 +3168,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return r;
 }
 
-/* Stack structure
- * FILO designed to contain the list of config files that have been sourced
- * and avoid cyclic sourcing */
-static struct List *MuttrcStack;
+/* FILO designed to contain the list of config files that have been sourced and
+ * avoid cyclic sourcing */
+static struct STailQHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
 /**
  * to_absolute_path - Convert relative filepath to an absolute path
@@ -3245,15 +3244,25 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   if (rcfile[rcfilelen - 1] != '|')
   {
-    if (!to_absolute_path(rcfile, mutt_front_list(MuttrcStack)))
+    struct STailQNode *np = STAILQ_FIRST(&MuttrcStack);
+    if (!to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
     {
       mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
       return -1;
     }
 
-    if (!MuttrcStack || mutt_find_list(MuttrcStack, rcfile) == NULL)
+    STAILQ_FOREACH(np, &MuttrcStack, entries)
     {
-      mutt_push_list(&MuttrcStack, rcfile);
+      if (mutt_strcmp(np->data, rcfile) == 0)
+      {
+        break;
+      }
+    }
+    if (!np)
+    {
+      np = safe_calloc(1, sizeof(struct STailQNode));
+      np->data = safe_strdup(rcfile);
+      STAILQ_INSERT_HEAD(&MuttrcStack, np, entries);
     }
     else
     {
@@ -3338,7 +3347,10 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
   }
 
-  mutt_pop_list(&MuttrcStack);
+  if (!STAILQ_EMPTY(&MuttrcStack))
+  {
+    STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+  }
 
   return rc;
 }
