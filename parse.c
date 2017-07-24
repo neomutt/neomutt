@@ -987,14 +987,9 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 }
 
 int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
-                           char *p, short user_hdrs, short weed, short do_2047,
-                           struct List **lastp)
+                           char *p, short user_hdrs, short weed, short do_2047)
 {
   int matched = 0;
-  struct List *last = NULL;
-
-  if (lastp)
-    last = *lastp;
 
   switch (tolower(line[0]))
   {
@@ -1345,25 +1340,16 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (weed && option(OPT_WEED) && mutt_matches_ignore(line))
-      goto done;
-
-    if (last)
+    if (!(weed && option(OPT_WEED) && mutt_matches_ignore(line)))
     {
-      last->next = mutt_new_list();
-      last = last->next;
+      struct STailQNode *np = calloc(1, sizeof(struct STailQNode));
+      np->data = safe_strdup(line);
+      STAILQ_INSERT_TAIL(&e->userhdrs, np, entries);
+      if (do_2047)
+        rfc2047_decode(&np->data);
     }
-    else
-      last = e->userhdrs = mutt_new_list();
-    last->data = safe_strdup(line);
-    if (do_2047)
-      rfc2047_decode(&last->data);
   }
 
-done:
-
-  if (lastp)
-    *lastp = last;
   return matched;
 }
 
@@ -1384,7 +1370,6 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)
 {
   struct Envelope *e = mutt_new_envelope();
-  struct List *last = NULL;
   char *line = safe_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
@@ -1480,7 +1465,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     if (!*p)
       continue; /* skip empty header fields */
 
-    mutt_parse_rfc822_line(e, hdr, line, p, user_hdrs, weed, 1, &last);
+    mutt_parse_rfc822_line(e, hdr, line, p, user_hdrs, weed, 1);
   }
 
   FREE(&line);

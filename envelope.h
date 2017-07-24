@@ -59,7 +59,7 @@ struct Envelope
   struct Buffer *spam;
   struct STailQHead references;  /**< message references (in reverse order) */
   struct STailQHead in_reply_to; /**< in-reply-to header content */
-  struct List *userhdrs;    /**< user defined headers */
+  struct STailQHead userhdrs;    /**< user defined headers */
   int kwtypes;
 
   bool irt_changed : 1;  /**< In-Reply-To changed to link/break threads */
@@ -71,6 +71,7 @@ static inline struct Envelope *mutt_new_envelope(void)
   struct Envelope *e = safe_calloc(1, sizeof(struct Envelope));
   STAILQ_INIT(&e->references);
   STAILQ_INIT(&e->in_reply_to);
+  STAILQ_INIT(&e->userhdrs);
   return e;
 }
 

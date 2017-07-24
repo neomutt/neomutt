@@ -286,25 +286,6 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   *a = NULL;
 }
 
-static unsigned char *dump_list(struct List *l, unsigned char *d, int *off, int convert)
-{
-  unsigned int counter = 0;
-  unsigned int start_off = *off;
-
-  d = dump_int(0xdeadbeef, d, off);
-
-  while (l)
-  {
-    d = dump_char(l->data, d, off, convert);
-    l = l->next;
-    counter++;
-  }
-
-  memcpy(d + start_off, &counter, sizeof(int));
-
-  return d;
-}
-
 static unsigned char *dump_stailq(struct STailQHead *l, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
@@ -322,23 +303,6 @@ static unsigned char *dump_stailq(struct STailQHead *l, unsigned char *d, int *o
   memcpy(d + start_off, &counter, sizeof(int));
 
   return d;
-}
-
-static void restore_list(struct List **l, const unsigned char *d, int *off, int convert)
-{
-  unsigned int counter;
-
-  restore_int(&counter, d, off);
-
-  while (counter)
-  {
-    *l = safe_malloc(sizeof(struct List));
-    restore_char(&(*l)->data, d, off, convert);
-    l = &(*l)->next;
-    counter--;
-  }
-
-  *l = NULL;
 }
 
 static void restore_stailq(struct STailQHead *l, const unsigned char *d, int *off, int convert)
@@ -510,7 +474,7 @@ static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *o
 
   d = dump_stailq(&e->references, d, off, 0);
   d = dump_stailq(&e->in_reply_to, d, off, 0);
-  d = dump_list(e->userhdrs, d, off, convert);
+  d = dump_stailq(&e->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
   d = dump_char(e->xref, d, off, 0);
@@ -552,7 +516,7 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
 
   restore_stailq(&e->references, d, off, 0);
   restore_stailq(&e->in_reply_to, d, off, 0);
-  restore_list(&e->userhdrs, d, off, convert);
+  restore_stailq(&e->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
   restore_char(&e->xref, d, off, 0);

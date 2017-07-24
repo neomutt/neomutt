@@ -273,8 +273,6 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   int rc = -1;
 
-  struct List *last = NULL;
-
   if (!(t = strchr(src, ':')))
     return -1;
 
@@ -330,7 +328,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
         safe_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
         value = skip_email_wsp(&scratch[taglen + 1]);
-        mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1, &last);
+        mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1);
         FREE(&scratch);
       }
     }

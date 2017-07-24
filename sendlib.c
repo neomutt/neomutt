@@ -2000,7 +2000,6 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
-  struct List *tmp = env->userhdrs;
   bool has_agent = false; /* user defined user-agent header field exists */
 
   if (mode == 0 && !privacy)
@@ -2124,7 +2123,8 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
 
   /* Add any user defined headers */
-  for (; tmp; tmp = tmp->next)
+  struct STailQNode *tmp;
+  STAILQ_FOREACH(tmp, &env->userhdrs, entries)
   {
     if ((p = strchr(tmp->data, ':')))
     {
@@ -2164,18 +2164,19 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   return (ferror(fp) == 0 ? 0 : -1);
 }
 
-static void encode_headers(struct List *h)
+static void encode_headers(struct STailQHead *h)
 {
   char *tmp = NULL;
   char *p = NULL;
   int i;
 
-  for (; h; h = h->next)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, h, entries)
   {
-    if (!(p = strchr(h->data, ':')))
+    if (!(p = strchr(np->data, ':')))
       continue;
 
-    i = p - h->data;
+    i = p - np->data;
     p = skip_email_wsp(p + 1);
     tmp = safe_strdup(p);
 
@@ -2183,9 +2184,9 @@ static void encode_headers(struct List *h)
       continue;
 
     rfc2047_encode_string(&tmp);
-    safe_realloc(&h->data, mutt_strlen(h->data) + 2 + mutt_strlen(tmp) + 1);
+    safe_realloc(&np->data, mutt_strlen(np->data) + 2 + mutt_strlen(tmp) + 1);
 
-    sprintf(h->data + i, ": %s", NONULL(tmp));
+    sprintf(np->data + i, ": %s", NONULL(tmp));
 
     FREE(&tmp);
   }
@@ -2657,15 +2658,16 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
     {
       rfc2047_encode_string(&env->subject);
     }
-  encode_headers(env->userhdrs);
+  encode_headers(&env->userhdrs);
 }
 
 void mutt_unprepare_envelope(struct Envelope *env)
 {
-  struct List *item = NULL;
-
-  for (item = env->userhdrs; item; item = item->next)
+  struct STailQNode *item;
+  STAILQ_FOREACH(item, &env->userhdrs, entries)
+  {
     rfc2047_decode(&item->data);
+  }
 
   rfc822_free_address(&env->mail_followup_to);
 

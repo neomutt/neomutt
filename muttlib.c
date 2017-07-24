@@ -745,7 +745,7 @@ void mutt_free_envelope(struct Envelope **p)
 
   mutt_free_stailq(&(*p)->references);
   mutt_free_stailq(&(*p)->in_reply_to);
-  mutt_free_list(&(*p)->userhdrs);
+  mutt_free_stailq(&(*p)->userhdrs);
   FREE(p);
 }
 
@@ -808,9 +808,9 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   /* spam and user headers should never be hashed, and the new envelope may
     * have better values. Use new versions regardless. */
   mutt_buffer_free(&base->spam);
-  mutt_free_list(&base->userhdrs);
+  mutt_free_stailq(&base->userhdrs);
   MOVE_ELEM(spam);
-  MOVE_ELEM(userhdrs);
+  MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM
 
   mutt_free_envelope(extra);

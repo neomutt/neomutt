@@ -364,11 +364,6 @@ static void process_user_recips(struct Envelope *env)
 static void process_user_header(struct Envelope *env)
 {
   struct List *uh = UserHeader;
-  struct List *last = env->userhdrs;
-
-  if (last)
-    while (last->next)
-      last = last->next;
 
   for (; uh; uh = uh->next)
   {
@@ -406,14 +401,9 @@ static void process_user_header(struct Envelope *env)
              (mutt_strncasecmp("subject:", uh->data, 8) != 0) &&
              (mutt_strncasecmp("return-path:", uh->data, 12) != 0))
     {
-      if (last)
-      {
-        last->next = mutt_new_list();
-        last = last->next;
-      }
-      else
-        last = env->userhdrs = mutt_new_list();
-      last->data = safe_strdup(uh->data);
+      struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+      np->data = safe_strdup(uh->data);
+      STAILQ_INSERT_TAIL(&env->userhdrs, np, entries);
     }
   }
 }

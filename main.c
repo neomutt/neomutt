@@ -688,7 +688,6 @@ int main(int argc, char **argv, char **env)
         struct Header *context_hdr = NULL;
         struct Envelope *opts_env = msg->env;
         struct stat st;
-        struct List *uh = NULL, **last_uhp = NULL;
 
         sendflags |= SENDDRAFTFILE;
 
@@ -708,19 +707,18 @@ int main(int argc, char **argv, char **env)
         mutt_prepare_template(fin, NULL, msg, context_hdr, 0);
 
         /* Scan for mutt header to set OPT_RESUME_DRAFT_FILES */
-        for (last_uhp = &msg->env->userhdrs, uh = *last_uhp; uh; uh = *last_uhp)
+        struct STailQNode *np, *tmp;
+        STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
-          if (mutt_strncasecmp("X-Mutt-Resume-Draft:", uh->data, 20) == 0)
+          if (mutt_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
           {
             if (option(OPT_RESUME_EDITED_DRAFT_FILES))
               set_option(OPT_RESUME_DRAFT_FILES);
 
-            *last_uhp = uh->next;
-            uh->next = NULL;
-            mutt_free_list(&uh);
+            STAILQ_REMOVE(&msg->env->userhdrs, np, STailQNode, entries);
+            FREE(&np->data);
+            FREE(&np);
           }
-          else
-            last_uhp = &uh->next;
         }
 
         rfc822_append(&msg->env->to, opts_env->to, 0);
