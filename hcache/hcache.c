@@ -686,7 +686,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
   nh.tree = NULL;
   nh.thread = NULL;
 #ifdef MIXMASTER
-  nh.chain = NULL;
+  STAILQ_INIT(&nh.chain);
 #endif
 #if defined(USE_POP) || defined(USE_IMAP)
   nh.data = NULL;

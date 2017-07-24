@@ -400,7 +400,7 @@ void mutt_free_header(struct Header **h)
   FREE(&(*h)->tree);
   FREE(&(*h)->path);
 #ifdef MIXMASTER
-  mutt_free_list(&(*h)->chain);
+  mutt_free_stailq(&(*h)->chain);
 #endif
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)

@@ -1103,7 +1103,7 @@ static int send_message(struct Header *msg)
     unset_option(OPT_WRITE_BCC);
 #endif
 #ifdef MIXMASTER
-  mutt_write_rfc822_header(tempfp, msg->env, msg->content, 0, msg->chain ? 1 : 0);
+  mutt_write_rfc822_header(tempfp, msg->env, msg->content, 0, !STAILQ_EMPTY(&msg->chain));
 #endif
 #ifndef MIXMASTER
   mutt_write_rfc822_header(tempfp, msg->env, msg->content, 0, 0);
@@ -1130,8 +1130,8 @@ static int send_message(struct Header *msg)
   }
 
 #ifdef MIXMASTER
-  if (msg->chain)
-    return mix_send_message(msg->chain, tempfile);
+  if (!STAILQ_EMPTY(&msg->chain))
+    return mix_send_message(&msg->chain, tempfile);
 #endif
 
 #ifdef USE_SMTP

@@ -369,12 +369,15 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     else if (mutt_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
     {
       char *t = NULL;
-      mutt_free_list(&hdr->chain);
+      mutt_free_stailq(&hdr->chain);
 
       t = strtok(np->data + 11, " \t\n");
+      struct STailQNode *n;
       while (t)
       {
-        hdr->chain = mutt_add_list(hdr->chain, t);
+        n = safe_calloc(1, sizeof(struct STailQNode));
+        n->data = safe_strdup(t);
+        STAILQ_INSERT_TAIL(&hdr->chain, n, entries);
         t = strtok(NULL, " \t\n");
       }
     }

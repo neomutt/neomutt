@@ -452,9 +452,8 @@ static const struct Mapping RemailerHelp[] = {
   { N_("OK"), OP_MIX_USE },        { NULL, 0 },
 };
 
-void mix_make_chain(struct List **chainp)
+void mix_make_chain(struct STailQHead *chainhead)
 {
-  struct List *p = NULL;
   struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;
@@ -479,10 +478,13 @@ void mix_make_chain(struct List **chainp)
   }
 
   chain = safe_calloc(1, sizeof(struct MixChain));
-  for (p = *chainp; p; p = p->next)
-    mix_chain_add(chain, (char *) p->data, type2_list);
 
-  mutt_free_list(chainp);
+  struct STailQNode *p;
+  STAILQ_FOREACH(p, chainhead, entries)
+  {
+    mix_chain_add(chain, p->data, type2_list);
+  }
+  mutt_free_stailq(chainhead);
 
   /* safety check */
   for (i = 0; i < chain->cl; i++)
@@ -644,6 +646,7 @@ void mix_make_chain(struct List **chainp)
 
   if (chain->cl)
   {
+    struct STailQNode *n = NULL;
     for (i = 0; i < chain->cl; i++)
     {
       if ((j = chain->ch[i]))
@@ -651,7 +654,9 @@ void mix_make_chain(struct List **chainp)
       else
         t = "*";
 
-      *chainp = mutt_add_list(*chainp, t);
+      n = safe_calloc(1, sizeof(struct STailQNode));
+      n->data = safe_strdup(t);
+      STAILQ_INSERT_TAIL(chainhead, n, entries);
     }
   }
 
@@ -708,7 +713,7 @@ int mix_check_message(struct Header *msg)
   return 0;
 }
 
-int mix_send_message(struct List *chain, const char *tempfile)
+int mix_send_message(struct STailQHead *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
   char tmp[HUGE_STRING];
@@ -717,11 +722,13 @@ int mix_send_message(struct List *chain, const char *tempfile)
 
   snprintf(cmd, sizeof(cmd), "cat %s | %s -m ", tempfile, Mixmaster);
 
-  for (i = 0; chain; chain = chain->next, i = 1)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, chain, entries)
   {
     strfcpy(tmp, cmd, sizeof(tmp));
-    mutt_quote_filename(cd_quoted, sizeof(cd_quoted), (char *) chain->data);
-    snprintf(cmd, sizeof(cmd), "%s%s%s", tmp, i ? "," : " -l ", cd_quoted);
+    mutt_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
+    snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
+        (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
 
   if (!option(OPT_NO_CURSES))

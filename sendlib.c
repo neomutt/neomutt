@@ -3024,13 +3024,14 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
    * chain, save that information
    */
 
-  if (post && hdr->chain && hdr->chain)
+  if (post && !STAILQ_EMPTY(&hdr->chain))
   {
-    struct List *p = NULL;
-
     fputs("X-Mutt-Mix:", msg->fp);
-    for (p = hdr->chain; p; p = p->next)
+    struct STailQNode *p;
+    STAILQ_FOREACH(p, &hdr->chain, entries)
+    {
       fprintf(msg->fp, " %s", (char *) p->data);
+    }
 
     fputc('\n', msg->fp);
   }

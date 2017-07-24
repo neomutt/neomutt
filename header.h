@@ -26,6 +26,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <time.h>
+#include "lib/lib.h"
+#include "list.h"
 
 /**
  * struct Header - The header/envelope of an email
@@ -99,7 +101,7 @@ struct Header
   short attach_total;
 
 #ifdef MIXMASTER
-  struct List *chain;
+  struct STailQHead chain;
 #endif
 
 #ifdef USE_POP
@@ -116,7 +118,11 @@ struct Header
 
 static inline struct Header *mutt_new_header(void)
 {
-  return safe_calloc(1, sizeof(struct Header));
+  struct Header *h = safe_calloc(1, sizeof(struct Header));
+#ifdef MIXMASTER
+  STAILQ_INIT(&h->chain);
+#endif
+  return h;
 }
 
 #endif /* _MUTT_HEADER_H */

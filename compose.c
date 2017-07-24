@@ -318,7 +318,7 @@ static void redraw_crypt_lines(struct Header *msg)
 
 #ifdef MIXMASTER
 
-static void redraw_mix_line(struct List *chain)
+static void redraw_mix_line(struct STailQHead *chain)
 {
   char *t = NULL;
 
@@ -327,16 +327,18 @@ static void redraw_mix_line(struct List *chain)
                        HeaderPadding[HDR_MIX], _(Prompts[HDR_MIX]));
   NORMAL_COLOR;
 
-  if (!chain)
+  if (STAILQ_EMPTY(chain))
   {
     addstr(_("<no chain defined>"));
     mutt_window_clrtoeol(MuttIndexWindow);
     return;
   }
 
-  for (int c = 12; chain; chain = chain->next)
+  int c = 12;
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, chain, entries)
   {
-    t = chain->data;
+    t = np->data;
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
 
@@ -344,7 +346,7 @@ static void redraw_mix_line(struct List *chain)
       break;
 
     addstr(NONULL(t));
-    if (chain->next)
+    if (STAILQ_NEXT(np, entries))
       addstr(", ");
 
     c += mutt_strlen(t) + 2;
@@ -443,7 +445,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
     redraw_crypt_lines(msg);
 
 #ifdef MIXMASTER
-  redraw_mix_line(msg->chain);
+  redraw_mix_line(&msg->chain);
 #endif
 
   SETCOLOR(MT_COLOR_STATUS);
@@ -1281,7 +1283,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
 
 #ifdef MIXMASTER
-        if (msg->chain && mix_check_message(msg) != 0)
+        if (!STAILQ_EMPTY(&msg->chain) && mix_check_message(msg) != 0)
           break;
 #endif
 
