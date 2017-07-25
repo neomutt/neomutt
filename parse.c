@@ -1538,20 +1538,20 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 /**
  * count_body_parts_check - Compares mime types to the ok and except lists
  */
-static bool count_body_parts_check(struct List **checklist, struct Body *b, bool dflt)
+static bool count_body_parts_check(struct STailQHead *checklist, struct Body *b, bool dflt)
 {
-  struct List *type = NULL;
   struct AttachMatch *a = NULL;
 
   /* If list is null, use default behavior. */
-  if (!*checklist)
+  if (!checklist || STAILQ_EMPTY(checklist))
   {
     return false;
   }
 
-  for (type = *checklist; type; type = type->next)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, checklist, entries)
   {
-    a = (struct AttachMatch *) type->data;
+    a = (struct AttachMatch *) np->data;
     mutt_debug(5, "cbpc: %s %d/%s ?? %s/%s [%d]... ",
                dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
@@ -1684,8 +1684,11 @@ int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
   else
     mutt_parse_mime_message(ctx, hdr);
 
-  if (AttachAllow || AttachExclude || InlineAllow || InlineExclude)
+  if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
+      !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
+  {
     hdr->attach_total = count_body_parts(hdr->content, MUTT_PARTS_TOPLEVEL);
+  }
   else
     hdr->attach_total = 0;
 

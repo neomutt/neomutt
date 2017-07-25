@@ -203,11 +203,11 @@ WHERE struct Hash *TagFormats;
 #endif
 
 WHERE struct STailQHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
-WHERE struct List *AlternativeOrderList;
-WHERE struct List *AttachAllow;
-WHERE struct List *AttachExclude;
-WHERE struct List *InlineAllow;
-WHERE struct List *InlineExclude;
+WHERE struct STailQHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
+WHERE struct STailQHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
+WHERE struct STailQHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
+WHERE struct STailQHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
+WHERE struct STailQHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
 WHERE struct List *HeaderOrderList;
 WHERE struct List *Ignore;
 WHERE struct List *MailToAllow;

@@ -4581,7 +4581,7 @@ const struct Command Commands[] = {
   { "attachments",      parse_attachments,      0 },
   { "unattachments",parse_unattachments,0 },
   { "auto_view",        parse_stailq,           UL &AutoViewList },
-  { "alternative_order",        parse_list,     UL &AlternativeOrderList },
+  { "alternative_order",parse_stailq,           UL &AlternativeOrderList },
   { "bind",             mutt_parse_bind,        0 },
   { "charset-hook",     mutt_parse_hook,        MUTT_CHARSETHOOK },
 #ifdef HAVE_COLOR
@@ -4653,7 +4653,7 @@ const struct Command Commands[] = {
   { "timeout-hook",     mutt_parse_hook,        MUTT_TIMEOUTHOOK | MUTT_GLOBALHOOK },
   { "toggle",           parse_set,              MUTT_SET_INV },
   { "unalias",          parse_unalias,          0 },
-  { "unalternative_order",parse_unlist,         UL &AlternativeOrderList },
+  { "unalternative_order",parse_unstailq,       UL &AlternativeOrderList },
   { "unauto_view",      parse_unstailq,         UL &AutoViewList },
   { "unhdr_order",      parse_unlist,           UL &HeaderOrderList },
   { "unhook",           mutt_parse_unhook,      0 },

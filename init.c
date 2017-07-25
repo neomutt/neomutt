@@ -1632,25 +1632,13 @@ static void _attachments_clean(void)
 }
 
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
-                             struct List **ldata, struct Buffer *err)
+                             struct STailQHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
-  struct List *listp = NULL, *lastp = NULL;
   char *p = NULL;
   char *tmpminor = NULL;
   int len;
   int ret;
-
-  /* Find the last item in the list that data points to. */
-  lastp = NULL;
-  mutt_debug(5, "parse_attach_list: ldata = %p, *ldata = %p\n", (void *) ldata,
-             (void *) *ldata);
-  for (listp = *ldata; listp; listp = listp->next)
-  {
-    a = (struct AttachMatch *) listp->data;
-    mutt_debug(5, "parse_attach_list: skipping %s/%s\n", a->major, a->minor);
-    lastp = listp;
-  }
 
   do
   {
@@ -1702,18 +1690,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 
     mutt_debug(5, "parse_attach_list: added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
-    listp = safe_malloc(sizeof(struct List));
-    listp->data = (char *) a;
-    listp->next = NULL;
-    if (lastp)
-    {
-      lastp->next = listp;
-    }
-    else
-    {
-      *ldata = listp;
-    }
-    lastp = listp;
+    mutt_stailq_insert_tail(head, (char *)a);
   } while (MoreArgs(s));
 
   _attachments_clean();
@@ -1721,10 +1698,9 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 }
 
 static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
-                               struct List **ldata, struct Buffer *err)
+                               struct STailQHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
-  struct List *lp = NULL, *lastp = NULL, *newlp = NULL;
   char *tmp = NULL;
   int major;
   char *minor = NULL;
@@ -1752,12 +1728,10 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     }
     major = mutt_check_mime_type(tmp);
 
-    /* We must do our own walk here because remove_from_list() will only
-     * remove the List->data, not anything pointed to by the List->data. */
-    lastp = NULL;
-    for (lp = *ldata; lp;)
+    struct STailQNode *np, *tmp2;
+    STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
-      a = (struct AttachMatch *) lp->data;
+      a = (struct AttachMatch *) np->data;
       mutt_debug(5, "parse_unattach_list: check %s/%s [%d] : %s/%s [%d]\n",
                  a->major, a->minor, a->major_int, tmp, minor, major);
       if (a->major_int == major && (mutt_strcasecmp(minor, a->minor) == 0))
@@ -1766,22 +1740,10 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
                    a->minor, a->major_int);
         regfree(&a->minor_rx);
         FREE(&a->major);
-
-        /* Relink backward */
-        if (lastp)
-          lastp->next = lp->next;
-        else
-          *ldata = lp->next;
-
-        newlp = lp->next;
-        FREE(&lp->data); /* same as a */
-        FREE(&lp);
-        lp = newlp;
-        continue;
+        STAILQ_REMOVE(head, np, STailQNode, entries);
+        FREE(&np->data);
+        FREE(&np);
       }
-
-      lastp = lp;
-      lp = lp->next;
     }
 
   } while (MoreArgs(s));
@@ -1791,14 +1753,14 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-static int print_attach_list(struct List *lp, char op, char *name)
+static int print_attach_list(struct STailQHead *h, char op, char *name)
 {
-  while (lp)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, h, entries)
   {
     printf("attachments %c%s %s/%s\n", op, name,
-           ((struct AttachMatch *) lp->data)->major,
-           ((struct AttachMatch *) lp->data)->minor);
-    lp = lp->next;
+           ((struct AttachMatch *) np->data)->major,
+           ((struct AttachMatch *) np->data)->minor);
   }
 
   return 0;
@@ -1808,7 +1770,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
-  struct List **listp = NULL;
+  struct STailQHead *headp = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1825,10 +1787,10 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     mutt_endwin(NULL);
     fflush(stdout);
     printf(_("\nCurrent attachments settings:\n\n"));
-    print_attach_list(AttachAllow, '+', "A");
-    print_attach_list(AttachExclude, '-', "A");
-    print_attach_list(InlineAllow, '+', "I");
-    print_attach_list(InlineExclude, '-', "I");
+    print_attach_list(&AttachAllow, '+', "A");
+    print_attach_list(&AttachExclude, '-', "A");
+    print_attach_list(&InlineAllow, '+', "I");
+    print_attach_list(&InlineExclude, '-', "I");
     mutt_any_key_to_continue(NULL);
     return 0;
   }
@@ -1841,16 +1803,16 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   if (mutt_strncasecmp(category, "attachment", strlen(category)) == 0)
   {
     if (op == '+')
-      listp = &AttachAllow;
+      headp = &AttachAllow;
     else
-      listp = &AttachExclude;
+      headp = &AttachExclude;
   }
   else if (mutt_strncasecmp(category, "inline", strlen(category)) == 0)
   {
     if (op == '+')
-      listp = &InlineAllow;
+      headp = &InlineAllow;
     else
-      listp = &InlineExclude;
+      headp = &InlineExclude;
   }
   else
   {
@@ -1858,14 +1820,14 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     return -1;
   }
 
-  return parse_attach_list(buf, s, listp, err);
+  return parse_attach_list(buf, s, headp, err);
 }
 
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
-  struct List **listp = NULL;
+  struct STailQHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1884,16 +1846,16 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   if (mutt_strncasecmp(p, "attachment", strlen(p)) == 0)
   {
     if (op == '+')
-      listp = &AttachAllow;
+      head = &AttachAllow;
     else
-      listp = &AttachExclude;
+      head = &AttachExclude;
   }
   else if (mutt_strncasecmp(p, "inline", strlen(p)) == 0)
   {
     if (op == '+')
-      listp = &InlineAllow;
+      head = &InlineAllow;
     else
-      listp = &InlineExclude;
+      head = &InlineExclude;
   }
   else
   {
@@ -1901,7 +1863,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
     return -1;
   }
 
-  return parse_unattach_list(buf, s, listp, err);
+  return parse_unattach_list(buf, s, head, err);
 }
 
 static int parse_unlists(struct Buffer *buf, struct Buffer *s,
