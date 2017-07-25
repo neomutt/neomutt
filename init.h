@@ -3287,7 +3287,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $sidebar_whitelist.
   */
-  { "sidebar_next_new_wrap", DT_BOOL, R_NONE, UL OPTSIDEBARNEXTNEWWRAP, 0 },
+  { "sidebar_next_new_wrap", DT_BOOL, R_NONE, OPTSIDEBARNEXTNEWWRAP, 0 },
   /*
   ** .pp
   ** When set, the \fC<sidebar-next-new>\fP command will not stop and the end of
@@ -3295,7 +3295,7 @@ struct Option MuttVars[] = {
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
   */
-  { "sidebar_on_right", DT_BOOL, R_BOTH|R_REFLOW, UL OPTSIDEBARONRIGHT, 0 },
+  { "sidebar_on_right", DT_BOOL, R_BOTH|R_REFLOW, OPTSIDEBARONRIGHT, 0 },
   /*
   ** .pp
   ** When set, the sidebar will appear on the right-hand side of the screen.
