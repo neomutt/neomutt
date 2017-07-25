@@ -1457,8 +1457,8 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
 void mutt_break_thread(struct Header *hdr)
 {
-  mutt_free_stailq(&hdr->env->in_reply_to);
-  mutt_free_stailq(&hdr->env->references);
+  mutt_stailq_free(&hdr->env->in_reply_to);
+  mutt_stailq_free(&hdr->env->references);
   hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = true;
 
   clean_references(hdr->thread, hdr->thread->child);
@@ -1470,12 +1470,7 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
     return false;
 
   mutt_break_thread(child);
-
-  STAILQ_INIT(&child->env->in_reply_to);
-  struct STailQNode *new = safe_calloc(1, sizeof(struct STailQNode));
-  new->data = safe_strdup(parent->env->message_id);
-  STAILQ_INSERT_HEAD(&child->env->in_reply_to, new, entries);
-
+  mutt_stailq_insert_head(&child->env->in_reply_to, safe_strdup(parent->env->message_id));
   mutt_set_flag(ctx, child, MUTT_TAG, 0);
 
   child->env->irt_changed = child->changed = true;

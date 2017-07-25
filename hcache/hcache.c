@@ -314,9 +314,8 @@ static void restore_stailq(struct STailQHead *l, const unsigned char *d, int *of
   struct STailQNode *np;
   while (counter)
   {
-    np = safe_malloc(sizeof(struct STailQNode));
+    np = mutt_stailq_insert_tail(l, NULL);
     restore_char(&np->data, d, off, convert);
-    STAILQ_INSERT_TAIL(l, np, entries);
     counter--;
   }
 }

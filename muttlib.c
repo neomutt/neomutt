@@ -287,19 +287,6 @@ struct List *mutt_find_list(struct List *l, const char *data)
   return NULL;
 }
 
-struct STailQNode *mutt_find_stailq(struct STailQHead *h, const char *data)
-{
-  struct STailQNode *np = NULL;
-  STAILQ_FOREACH(np, h, entries)
-  {
-    if (np->data == data)
-      return np;
-    if (data && np->data && (mutt_strcmp(np->data, data) == 0))
-      return np;
-  }
-  return NULL;
-}
-
 int mutt_remove_from_rx_list(struct RxList **l, const char *str)
 {
   struct RxList *p = NULL, *last = NULL;
@@ -351,18 +338,6 @@ void mutt_free_list(struct List **list)
   }
 }
 
-void mutt_free_stailq(struct STailQHead *h)
-{
-    struct STailQNode *np = NULL;
-    while (!STAILQ_EMPTY(h))
-    {
-        np = STAILQ_FIRST(h);
-        STAILQ_REMOVE_HEAD(h, entries);
-        FREE(&np->data);
-        FREE(&np);
-    }
-}
-
 void mutt_free_header(struct Header **h)
 {
   if (!h || !*h)
@@ -373,7 +348,7 @@ void mutt_free_header(struct Header **h)
   FREE(&(*h)->tree);
   FREE(&(*h)->path);
 #ifdef MIXMASTER
-  mutt_free_stailq(&(*h)->chain);
+  mutt_stailq_free(&(*h)->chain);
 #endif
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
@@ -716,9 +691,9 @@ void mutt_free_envelope(struct Envelope **p)
 
   mutt_buffer_free(&(*p)->spam);
 
-  mutt_free_stailq(&(*p)->references);
-  mutt_free_stailq(&(*p)->in_reply_to);
-  mutt_free_stailq(&(*p)->userhdrs);
+  mutt_stailq_free(&(*p)->references);
+  mutt_stailq_free(&(*p)->in_reply_to);
+  mutt_stailq_free(&(*p)->userhdrs);
   FREE(p);
 }
 
@@ -781,7 +756,7 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   /* spam and user headers should never be hashed, and the new envelope may
     * have better values. Use new versions regardless. */
   mutt_buffer_free(&base->spam);
-  mutt_free_stailq(&base->userhdrs);
+  mutt_stailq_free(&base->userhdrs);
   MOVE_ELEM(spam);
   MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM

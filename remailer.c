@@ -484,7 +484,7 @@ void mix_make_chain(struct STailQHead *chainhead)
   {
     mix_chain_add(chain, p->data, type2_list);
   }
-  mutt_free_stailq(chainhead);
+  mutt_stailq_free(chainhead);
 
   /* safety check */
   for (i = 0; i < chain->cl; i++)
@@ -646,7 +646,6 @@ void mix_make_chain(struct STailQHead *chainhead)
 
   if (chain->cl)
   {
-    struct STailQNode *n = NULL;
     for (i = 0; i < chain->cl; i++)
     {
       if ((j = chain->ch[i]))
@@ -654,9 +653,7 @@ void mix_make_chain(struct STailQHead *chainhead)
       else
         t = "*";
 
-      n = safe_calloc(1, sizeof(struct STailQNode));
-      n->data = safe_strdup(t);
-      STAILQ_INSERT_TAIL(chainhead, n, entries);
+      mutt_stailq_insert_tail(chainhead, safe_strdup(t));
     }
   }
 

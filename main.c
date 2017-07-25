@@ -290,7 +290,7 @@ int main(int argc, char **argv, char **env)
 
         case 'F':
           /* mutt_str_replace (&Muttrc, optarg); */
-          Muttrc = mutt_add_list(Muttrc, optarg);
+          mutt_stailq_insert_tail(&Muttrc, safe_strdup(optarg));
           break;
 
         case 'f':

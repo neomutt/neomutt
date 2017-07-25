@@ -399,9 +399,7 @@ static void process_user_header(struct Envelope *env)
              (mutt_strncasecmp("subject:", uh->data, 8) != 0) &&
              (mutt_strncasecmp("return-path:", uh->data, 12) != 0))
     {
-      struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
-      np->data = safe_strdup(uh->data);
-      STAILQ_INSERT_TAIL(&env->userhdrs, np, entries);
+      mutt_stailq_insert_tail(&env->userhdrs, safe_strdup(uh->data));
     }
   }
 }
@@ -646,14 +644,12 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 static void add_references(struct STailQHead *head, struct Envelope *e)
 {
   struct STailQHead *src;
-  struct STailQNode *np, *new;
+  struct STailQNode *np;
 
   src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
   STAILQ_FOREACH(np, src, entries)
   {
-    new = safe_calloc(1, sizeof(struct STailQNode));
-    new->data = safe_strdup(np->data);
-    STAILQ_INSERT_TAIL(head, new, entries);
+    mutt_stailq_insert_tail(head, safe_strdup(np->data));
   }
 }
 
@@ -661,9 +657,7 @@ static void add_message_id(struct STailQHead *head, struct Envelope *e)
 {
   if (e->message_id)
   {
-    struct STailQNode *new = safe_calloc(1, sizeof(struct STailQNode));
-    new->data = safe_strdup(e->message_id);
-    STAILQ_INSERT_HEAD(head, new, entries);
+    mutt_stailq_insert_head(head, safe_strdup(e->message_id));
   }
 }
 
@@ -757,7 +751,7 @@ static void make_reference_headers(struct Envelope *curenv,
      discouraged by RfC2822, sect. 3.6.4 */
   if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
-    mutt_free_stailq(&env->references);
+    mutt_stailq_free(&env->references);
 }
 
 static int envelope_defaults(struct Envelope *env, struct Context *ctx,
@@ -1255,8 +1249,8 @@ static int is_reply(struct Header *reply, struct Header *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
     return 0;
-  return mutt_find_stailq(&orig->env->references, reply->env->message_id) ||
-         mutt_find_stailq(&orig->env->in_reply_to, reply->env->message_id);
+  return mutt_stailq_find(&orig->env->references, reply->env->message_id) ||
+         mutt_stailq_find(&orig->env->in_reply_to, reply->env->message_id);
 }
 
 static int has_recips(struct Address *a)

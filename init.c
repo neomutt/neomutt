@@ -798,9 +798,7 @@ static void add_to_stailq(struct STailQHead *head, const char *str)
       return;
     }
   }
-  np = safe_calloc(1, sizeof(struct STailQNode));
-  np->data = safe_strdup(str);
-  STAILQ_INSERT_TAIL(head, np, entries);
+  mutt_stailq_insert_tail(head, safe_strdup(str));
 }
 
 static struct RxList *new_rx_list(void)
@@ -1185,7 +1183,7 @@ static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data
 static void remove_from_stailq(struct STailQHead *head, const char *str)
 {
   if (mutt_strcmp("*", str) == 0)
-    mutt_free_stailq(head); /* ``unCMD *'' means delete all current entries */
+    mutt_stailq_free(head); /* ``unCMD *'' means delete all current entries */
   else
   {
     struct STailQNode *np, *tmp;
@@ -1213,7 +1211,7 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_free_stailq((struct STailQHead *)data);
+      mutt_stailq_free((struct STailQHead *)data);
       break;
     }
     remove_from_stailq((struct STailQHead *)data, buf->data);
@@ -2116,7 +2114,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     if (mutt_strcmp("*", buf->data) == 0)
     {
-      mutt_free_stailq(&UserHeader);
+      mutt_stailq_free(&UserHeader);
       continue;
     }
 
@@ -2164,8 +2162,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   if (!n)
   {
     /* not found, allocate memory for a new node and add it to the list */
-    n = safe_calloc(1, sizeof(struct STailQNode));
-    STAILQ_INSERT_TAIL(&UserHeader, n, entries);
+    n = mutt_stailq_insert_tail(&UserHeader, NULL);
   }
   else
   {
@@ -3333,9 +3330,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
     if (!np)
     {
-      np = safe_calloc(1, sizeof(struct STailQNode));
-      np->data = safe_strdup(rcfile);
-      STAILQ_INSERT_HEAD(&MuttrcStack, np, entries);
+      mutt_stailq_insert_head(&MuttrcStack, safe_strdup(rcfile));
     }
     else
     {
@@ -4481,7 +4476,8 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   add_to_list(&MailToAllow, "in-reply-to");
   add_to_list(&MailToAllow, "references");
 
-  if (!Muttrc)
+  struct STailQNode *np = NULL;
+  if (STAILQ_EMPTY(&Muttrc))
   {
     char *xdg_cfg_home = getenv("XDG_CONFIG_HOME");
 
@@ -4494,31 +4490,30 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     char *config = find_cfg(HomeDir, xdg_cfg_home);
     if (config)
     {
-      Muttrc = mutt_add_list(Muttrc, config);
-      FREE(&config);
+      mutt_stailq_insert_tail(&Muttrc, config);
     }
   }
   else
   {
-    for (struct List *config = Muttrc; config != NULL; config = config->next)
+    STAILQ_FOREACH(np, &Muttrc, entries)
     {
-      strfcpy(buffer, config->data, sizeof(buffer));
-      FREE(&config->data);
+      strfcpy(buffer, np->data, sizeof(buffer));
+      FREE(&np->data);
       mutt_expand_path(buffer, sizeof(buffer));
-      config->data = safe_strdup(buffer);
-      if (access(config->data, F_OK))
+      np->data = safe_strdup(buffer);
+      if (access(np->data, F_OK))
       {
-        snprintf(buffer, sizeof(buffer), "%s: %s", config->data, strerror(errno));
+        snprintf(buffer, sizeof(buffer), "%s: %s", np->data, strerror(errno));
         mutt_endwin(buffer);
         exit(1);
       }
     }
   }
 
-  if (Muttrc && Muttrc->data)
+  if (!STAILQ_EMPTY(&Muttrc))
   {
     FREE(&AliasFile);
-    AliasFile = safe_strdup(Muttrc->data);
+    AliasFile = safe_strdup(STAILQ_FIRST(&Muttrc)->data);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicitly
@@ -4572,13 +4567,13 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   }
 
   /* Read the user's initialization file.  */
-  for (struct List *config = Muttrc; config != NULL; config = config->next)
+  STAILQ_FOREACH(np, &Muttrc, entries)
   {
-    if (config->data)
+    if (np->data)
     {
       if (!option(OPT_NO_CURSES))
         endwin();
-      if (source_rc(config->data, &err) != 0)
+      if (source_rc(np->data, &err) != 0)
       {
         fputs(err.data, stderr);
         fputc('\n', stderr);

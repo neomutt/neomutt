@@ -50,4 +50,46 @@ struct STailQNode
     STAILQ_ENTRY(STailQNode) entries;
 };
 
+static inline struct STailQNode* mutt_stailq_insert_head(struct STailQHead *h, char *s)
+{
+  struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+  np->data = s;
+  STAILQ_INSERT_HEAD(h, np, entries);
+  return np;
+}
+
+static inline struct STailQNode* mutt_stailq_insert_tail(struct STailQHead *h, char * s)
+{
+  struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+  np->data = s;
+  STAILQ_INSERT_TAIL(h, np, entries);
+  return np;
+}
+
+static inline struct STailQNode *mutt_stailq_find(struct STailQHead *h, const char *data)
+{
+  struct STailQNode *np = NULL;
+  STAILQ_FOREACH(np, h, entries)
+  {
+    if (np->data == data || mutt_strcmp(np->data, data) == 0)
+    {
+      return np;
+    }
+  }
+  return NULL;
+}
+
+static inline void mutt_stailq_free(struct STailQHead *h)
+{
+  struct STailQNode *np = STAILQ_FIRST(h), *next = NULL;
+  while (np)
+  {
+      next = STAILQ_NEXT(np, entries);
+      FREE(&np->data);
+      FREE(&np);
+      np = next;
+  }
+  STAILQ_INIT(h);
+}
+
 #endif /* _MUTT_LIST_H */
