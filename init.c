@@ -1770,7 +1770,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
-  struct STailQHead *headp = NULL;
+  struct STailQHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1803,16 +1803,16 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   if (mutt_strncasecmp(category, "attachment", strlen(category)) == 0)
   {
     if (op == '+')
-      headp = &AttachAllow;
+      head = &AttachAllow;
     else
-      headp = &AttachExclude;
+      head = &AttachExclude;
   }
   else if (mutt_strncasecmp(category, "inline", strlen(category)) == 0)
   {
     if (op == '+')
-      headp = &InlineAllow;
+      head = &InlineAllow;
     else
-      headp = &InlineExclude;
+      head = &InlineExclude;
   }
   else
   {
@@ -1820,7 +1820,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     return -1;
   }
 
-  return parse_attach_list(buf, s, headp, err);
+  return parse_attach_list(buf, s, head, err);
 }
 
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
