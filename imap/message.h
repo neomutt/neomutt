@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "list.h"
 
 /**
  * struct ImapHeaderData - IMAP-specific header data
@@ -46,7 +47,7 @@ struct ImapHeaderData
 
   unsigned int uid; /**< 32-bit Message UID */
   unsigned int msn; /**< Message Sequence Number */
-  struct List *keywords;
+  struct STailQHead keywords;
 };
 
 /**
