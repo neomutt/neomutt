@@ -54,36 +54,6 @@
 
 #define CERT_SEP "-----BEGIN"
 
-/* deprecated types compatibility */
-
-#ifndef HAVE_GNUTLS_CERTIFICATE_CREDENTIALS_T
-typedef gnutls_certificate_credentials gnutls_certificate_credentials_t;
-#endif
-
-#ifndef HAVE_GNUTLS_CERTIFICATE_STATUS_T
-typedef gnutls_certificate_status gnutls_certificate_status_t;
-#endif
-
-#ifndef HAVE_GNUTLS_DATUM_T
-typedef gnutls_datum gnutls_datum_t;
-#endif
-
-#ifndef HAVE_GNUTLS_DIGEST_ALGORITHM_T
-typedef gnutls_digest_algorithm gnutls_digest_algorithm_t;
-#endif
-
-#ifndef HAVE_GNUTLS_SESSION_T
-typedef gnutls_session gnutls_session_t;
-#endif
-
-#ifndef HAVE_GNUTLS_TRANSPORT_PTR_T
-typedef gnutls_transport_ptr gnutls_transport_ptr_t;
-#endif
-
-#ifndef HAVE_GNUTLS_X509_CRT_T
-typedef gnutls_x509_crt gnutls_x509_crt_t;
-#endif
-
 /**
  * struct TlsSockData - TLS socket data
  */
