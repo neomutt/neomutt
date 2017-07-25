@@ -317,7 +317,6 @@ void mutt_free_list(struct List **list);
 void mutt_free_rx_list(struct RxList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
 int mutt_matches_ignore(const char *s);
-bool mutt_matches_list(const char *s, struct List *t);
 
 /* add an element to a list */
 struct List *mutt_add_list(struct List *head, const char *data);

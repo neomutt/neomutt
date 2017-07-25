@@ -359,23 +359,9 @@ void mutt_free_header(struct Header **h)
 }
 
 /**
- * mutt_matches_list - Is the string in the list
- * @retval true if the header contained in "s" is in list "t"
- */
-bool mutt_matches_list(const char *s, struct List *t)
-{
-  for (; t; t = t->next)
-  {
-    if ((mutt_strncasecmp(s, t->data, mutt_strlen(t->data)) == 0) || *t->data == '*')
-      return true;
-  }
-  return false;
-}
-
-/**
  * mutt_matches_ignore - Does the string match the ignore list
  *
- * checks Ignore and UnIgnore using mutt_matches_list
+ * checks Ignore and UnIgnore using mutt_stailq_match
  */
 int mutt_matches_ignore(const char *s)
 {

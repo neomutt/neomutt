@@ -94,6 +94,10 @@ static inline void mutt_stailq_free(struct STailQHead *h)
   STAILQ_INIT(h);
 }
 
+/**
+ * mutt_stailq_match - Is the string in the list
+ * @return true if the header contained in "s" is in list "h"
+ */
 static inline bool mutt_stailq_match(const char *s, struct STailQHead *h)
 {
   struct STailQNode *np;
