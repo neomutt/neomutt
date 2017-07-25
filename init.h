@@ -4491,14 +4491,10 @@ const struct Mapping SortSidebarMethods[] = {
 
 /* functions used to parse commands in a rc file */
 
-static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err);
 static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err);
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err);
-static int parse_unlist(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err);
 static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err);
 #ifdef USE_SIDEBAR
@@ -4619,12 +4615,12 @@ const struct Command Commands[] = {
   { "tag-transforms",   parse_tag_transforms,   0 },
   { "tag-formats",      parse_tag_formats,      0 },
 #endif
-  { "mailto_allow",     parse_list,             UL &MailToAllow },
-  { "unmailto_allow",   parse_unlist,           UL &MailToAllow },
+  { "mailto_allow",     parse_stailq,           UL &MailToAllow },
+  { "unmailto_allow",   parse_unstailq,         UL &MailToAllow },
   { "message-hook",     mutt_parse_hook,        MUTT_MESSAGEHOOK },
   { "mbox-hook",        mutt_parse_hook,        MUTT_MBOXHOOK },
-  { "mime_lookup",      parse_list,     UL &MimeLookupList },
-  { "unmime_lookup",    parse_unlist,   UL &MimeLookupList },
+  { "mime_lookup",      parse_stailq,           UL &MimeLookupList },
+  { "unmime_lookup",    parse_unstailq,         UL &MimeLookupList },
   { "mono",             mutt_parse_mono,        0 },
   { "my_hdr",           parse_my_hdr,           0 },
   { "pgp-hook",         mutt_parse_hook,        MUTT_CRYPTHOOK },

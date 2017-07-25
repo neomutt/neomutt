@@ -307,15 +307,15 @@ bailout:
  */
 void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
-  struct List *t = MimeLookupList;
   int i;
 
-  for (; t; t = t->next)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
-    i = mutt_strlen(t->data) - 1;
-    if ((i > 0 && t->data[i - 1] == '/' && t->data[i] == '*' &&
-         (mutt_strncasecmp(type, t->data, i) == 0)) ||
-        (mutt_strcasecmp(type, t->data) == 0))
+    i = mutt_strlen(np->data) - 1;
+    if ((i > 0 && np->data[i - 1] == '/' && np->data[i] == '*' &&
+         (mutt_strncasecmp(type, np->data, i) == 0)) ||
+        (mutt_strcasecmp(type, np->data) == 0))
     {
       struct Body tmp = { 0 };
       int n;

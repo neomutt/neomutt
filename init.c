@@ -748,41 +748,6 @@ void mutt_free_opts(void)
   mutt_free_rx_list(&NoSpamList);
 }
 
-static void add_to_list(struct List **list, const char *str)
-{
-  struct List *t = NULL, *last = NULL;
-
-  /* don't add a NULL or empty string to the list */
-  if (!str || *str == '\0')
-    return;
-
-  /* check to make sure the item is not already on this list */
-  for (last = *list; last; last = last->next)
-  {
-    if (mutt_strcasecmp(str, last->data) == 0)
-    {
-      /* already on the list, so just ignore it */
-      last = NULL;
-      break;
-    }
-    if (!last->next)
-      break;
-  }
-
-  if (!*list || last)
-  {
-    t = safe_calloc(1, sizeof(struct List));
-    t->data = safe_strdup(str);
-    if (last)
-    {
-      last->next = t;
-      last = last->next;
-    }
-    else
-      *list = last = t;
-  }
-}
-
 static void add_to_stailq(struct STailQHead *head, const char *str)
 {
   /* don't add a NULL or empty string to the list */
@@ -977,36 +942,6 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   return 0;
 }
 
-static void remove_from_list(struct List **l, const char *str)
-{
-  struct List *p = NULL, *last = NULL;
-
-  if (mutt_strcmp("*", str) == 0)
-    mutt_free_list(l); /* ``unCMD *'' means delete all current entries */
-  else
-  {
-    p = *l;
-    last = NULL;
-    while (p)
-    {
-      if (mutt_strcasecmp(str, p->data) == 0)
-      {
-        FREE(&p->data);
-        if (last)
-          last->next = p->next;
-        else
-          (*l) = p->next;
-        FREE(&p);
-      }
-      else
-      {
-        last = p;
-        p = p->next;
-      }
-    }
-  }
-}
-
 /**
  * finish_source - 'finish' command: stop processing current config file
  * @param tmp  Temporary space shared by all command handlers
@@ -1170,18 +1105,6 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     remove_from_stailq(&UnIgnore, buf->data);
     add_to_stailq(&Ignore, buf->data);
-  } while (MoreArgs(s));
-
-  return 0;
-}
-
-static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
-{
-  do
-  {
-    mutt_extract_token(buf, s, 0);
-    add_to_list((struct List **) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1445,26 +1368,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   return -1;
 }
 
-static int parse_unlist(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
-{
-  do
-  {
-    mutt_extract_token(buf, s, 0);
-    /*
-     * Check for deletion of entire list
-     */
-    if (mutt_strcmp(buf->data, "*") == 0)
-    {
-      mutt_free_list((struct List **) data);
-      break;
-    }
-    remove_from_list((struct List **) data, buf->data);
-  } while (MoreArgs(s));
-
-  return 0;
-}
-
 #ifdef USE_SIDEBAR
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -1476,7 +1379,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    add_to_list((struct List **) data, path);
+    add_to_stailq((struct STailQHead *) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1495,12 +1398,12 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_free_list((struct List **) data);
+      mutt_stailq_free((struct STailQHead *) data);
       break;
     }
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    remove_from_list((struct List **) data, path);
+    remove_from_stailq((struct STailQHead *) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -4430,13 +4333,13 @@ void mutt_init(int skip_sys_rc, struct List *commands)
    * create RFC822-compliant mail messages using the "subject" and "body"
    * headers.
    */
-  add_to_list(&MailToAllow, "body");
-  add_to_list(&MailToAllow, "subject");
+  add_to_stailq(&MailToAllow, "body");
+  add_to_stailq(&MailToAllow, "subject");
   /* Cc, In-Reply-To, and References help with not breaking threading on
    * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
-  add_to_list(&MailToAllow, "cc");
-  add_to_list(&MailToAllow, "in-reply-to");
-  add_to_list(&MailToAllow, "references");
+  add_to_stailq(&MailToAllow, "cc");
+  add_to_stailq(&MailToAllow, "in-reply-to");
+  add_to_stailq(&MailToAllow, "references");
 
   struct STailQNode *np = NULL;
   if (STAILQ_EMPTY(&Muttrc))

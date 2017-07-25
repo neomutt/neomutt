@@ -369,8 +369,8 @@ static void update_entries_visibility(void)
       /* Spool directory */
       continue;
 
-    if (mutt_find_list(SidebarWhitelist, sbe->buffy->path) ||
-        mutt_find_list(SidebarWhitelist, sbe->buffy->desc))
+    if (mutt_stailq_find(&SidebarWhitelist, sbe->buffy->path) ||
+        mutt_stailq_find(&SidebarWhitelist, sbe->buffy->desc))
       /* Explicitly asked to be visible */
       continue;
 

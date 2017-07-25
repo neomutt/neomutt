@@ -313,7 +313,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      * choose to create a message with only a subset of the headers given in
      * the URL.
      */
-    if (mutt_matches_list(tag, MailToAllow))
+    if (mutt_stailq_match(tag, &MailToAllow))
     {
       if (mutt_strcasecmp(tag, "body") == 0)
       {
