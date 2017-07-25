@@ -1219,7 +1219,8 @@ struct Body *pgp_sign_message(struct Body *a)
  */
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 {
-  struct List *crypt_hook_list = NULL, *crypt_hook = NULL;
+  struct STailQHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
+  struct STailQNode *crypt_hook = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
@@ -1235,7 +1236,8 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
   for (p = adrlist; p; p = p->next)
   {
     key_selected = false;
-    crypt_hook_list = crypt_hook = mutt_crypt_hook(p);
+    mutt_crypt_hook(&crypt_hook_list, p);
+    crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
     {
       q = p;
@@ -1273,9 +1275,9 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         }
         else if (r == MUTT_NO)
         {
-          if (key_selected || crypt_hook->next)
+          if (key_selected || STAILQ_NEXT(crypt_hook, entries))
           {
-            crypt_hook = crypt_hook->next;
+            crypt_hook = STAILQ_NEXT(crypt_hook, entries);
             continue;
           }
         }
@@ -1283,7 +1285,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         {
           FREE(&keylist);
           rfc822_free_address(&addr);
-          mutt_free_list(&crypt_hook_list);
+          mutt_stailq_free(&crypt_hook_list);
           return NULL;
         }
       }
@@ -1304,7 +1306,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       {
         FREE(&keylist);
         rfc822_free_address(&addr);
-        mutt_free_list(&crypt_hook_list);
+        mutt_stailq_free(&crypt_hook_list);
         return NULL;
       }
 
@@ -1322,11 +1324,11 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       rfc822_free_address(&addr);
 
       if (crypt_hook)
-        crypt_hook = crypt_hook->next;
+        crypt_hook = STAILQ_NEXT(crypt_hook, entries);
 
     } while (crypt_hook);
 
-    mutt_free_list(&crypt_hook_list);
+    mutt_stailq_free(&crypt_hook_list);
   }
   return keylist;
 }

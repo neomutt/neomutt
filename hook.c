@@ -530,18 +530,16 @@ static char *_mutt_string_hook(const char *match, int hook)
   return NULL;
 }
 
-static struct List *_mutt_list_hook(const char *match, int hook)
+static void _mutt_list_hook(struct STailQHead *matches, const char *match, int hook)
 {
   struct Hook *tmp = Hooks;
-  struct List *matches = NULL;
 
   for (; tmp; tmp = tmp->next)
   {
     if ((tmp->type & hook) &&
         ((match && regexec(tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
-      matches = mutt_add_list(matches, tmp->command);
+      mutt_stailq_insert_tail(matches, safe_strdup(tmp->command));
   }
-  return matches;
 }
 
 char *mutt_charset_hook(const char *chs)
@@ -554,9 +552,9 @@ char *mutt_iconv_hook(const char *chs)
   return _mutt_string_hook(chs, MUTT_ICONVHOOK);
 }
 
-struct List *mutt_crypt_hook(struct Address *adr)
+void mutt_crypt_hook(struct STailQHead *list, struct Address *adr)
 {
-  return _mutt_list_hook(adr->mailbox, MUTT_CRYPTHOOK);
+  _mutt_list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
 }
 
 #ifdef USE_SOCKET

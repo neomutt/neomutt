@@ -28,7 +28,7 @@
 #include "pgpkey.h"
 
 struct Address;
-struct List;
+struct STailQHead;
 
 /* The PGP invocation interface */
 
@@ -51,7 +51,8 @@ pid_t pgp_invoke_export(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                             int pgpoutfd, int pgperrfd, const char *uids);
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
-                           int pgpoutfd, int pgperrfd, enum PgpRing keyring, struct List *hints);
+                           int pgpoutfd, int pgperrfd, enum PgpRing keyring,
+                           struct STailQHead *hints);
 pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                              int pgpinfd, int pgpoutfd, int pgperrfd,
                              const char *fname, const char *uids, int flags);

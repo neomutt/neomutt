@@ -35,7 +35,6 @@
 struct Address;
 struct Body;
 struct Header;
-struct List;
 struct PgpKeyInfo;
 struct State;
 
