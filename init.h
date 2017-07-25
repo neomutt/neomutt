@@ -4599,7 +4599,7 @@ const struct Command Commands[] = {
 #endif
   { "group",            parse_group,            MUTT_GROUP },
   { "ungroup",          parse_group,            MUTT_UNGROUP },
-  { "hdr_order",        parse_list,             UL &HeaderOrderList },
+  { "hdr_order",        parse_stailq,           UL &HeaderOrderList },
   { "ifdef",            parse_ifdef,            0 },
   { "ifndef",           parse_ifdef,            1 },
   { "finish",           finish_source,          0 },
@@ -4655,7 +4655,7 @@ const struct Command Commands[] = {
   { "unalias",          parse_unalias,          0 },
   { "unalternative_order",parse_unstailq,       UL &AlternativeOrderList },
   { "unauto_view",      parse_unstailq,         UL &AutoViewList },
-  { "unhdr_order",      parse_unlist,           UL &HeaderOrderList },
+  { "unhdr_order",      parse_unstailq,         UL &HeaderOrderList },
   { "unhook",           mutt_parse_unhook,      0 },
   { "unignore",         parse_unignore,         0 },
   { "unlists",          parse_unlists,          0 },

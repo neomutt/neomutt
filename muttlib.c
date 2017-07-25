@@ -379,7 +379,7 @@ bool mutt_matches_list(const char *s, struct List *t)
  */
 int mutt_matches_ignore(const char *s)
 {
-  return mutt_matches_list(s, Ignore) && !mutt_matches_list(s, UnIgnore);
+  return mutt_stailq_match(s, &Ignore) && !mutt_stailq_match(s, &UnIgnore);
 }
 
 char *mutt_expand_path(char *s, size_t slen)

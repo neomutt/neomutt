@@ -68,7 +68,6 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   bool ignore = false;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
-  struct List *t = NULL;
   char **headers = NULL;
   int hdr_count;
   int x;
@@ -157,9 +156,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
    */
   if (flags & CH_REORDER)
   {
-    for (t = HeaderOrderList; t; t = t->next)
+    struct STailQNode *np;
+    STAILQ_FOREACH(np, &HeaderOrderList, entries)
     {
-      mutt_debug(3, "Reorder list: %s\n", t->data);
+      mutt_debug(3, "Reorder list: %s\n", np->data);
       hdr_count++;
     }
   }
@@ -251,11 +251,14 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       /* Find x -- the array entry where this header is to be saved */
       if (flags & CH_REORDER)
       {
-        for (t = HeaderOrderList, x = 0; (t); t = t->next, x++)
+        struct STailQNode *np;
+        x = 0;
+        STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
-          if (mutt_strncasecmp(buf, t->data, mutt_strlen(t->data)) == 0)
+          ++x;
+          if (mutt_strncasecmp(buf, np->data, mutt_strlen(np->data)) == 0)
           {
-            mutt_debug(2, "Reorder: %s matches %s\n", t->data, buf);
+            mutt_debug(2, "Reorder: %s matches %s\n", np->data, buf);
             break;
           }
         }

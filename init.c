@@ -1125,6 +1125,26 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return 0;
 }
 
+static void remove_from_stailq(struct STailQHead *head, const char *str)
+{
+  if (mutt_strcmp("*", str) == 0)
+    mutt_stailq_free(head); /* ``unCMD *'' means delete all current entries */
+  else
+  {
+    struct STailQNode *np, *tmp;
+    STAILQ_FOREACH_SAFE(np, head, entries, tmp)
+    {
+      if (mutt_strcasecmp(str, np->data) == 0)
+      {
+        STAILQ_REMOVE(head, np, STailQNode, entries);
+        FREE(&np->data);
+        FREE(&np);
+        break;
+      }
+    }
+  }
+}
+
 static int parse_unignore(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
@@ -1134,9 +1154,9 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s,
 
     /* don't add "*" to the unignore list */
     if (strcmp(buf->data, "*") != 0)
-      add_to_list(&UnIgnore, buf->data);
+      add_to_stailq(&UnIgnore, buf->data);
 
-    remove_from_list(&Ignore, buf->data);
+    remove_from_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1148,8 +1168,8 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    remove_from_list(&UnIgnore, buf->data);
-    add_to_list(&Ignore, buf->data);
+    remove_from_stailq(&UnIgnore, buf->data);
+    add_to_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1178,26 +1198,6 @@ static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data
   } while (MoreArgs(s));
 
   return 0;
-}
-
-static void remove_from_stailq(struct STailQHead *head, const char *str)
-{
-  if (mutt_strcmp("*", str) == 0)
-    mutt_stailq_free(head); /* ``unCMD *'' means delete all current entries */
-  else
-  {
-    struct STailQNode *np, *tmp;
-    STAILQ_FOREACH_SAFE(np, head, entries, tmp)
-    {
-      if (mutt_strcasecmp(str, np->data) == 0)
-      {
-        STAILQ_REMOVE(head, np, STailQNode, entries);
-        FREE(&np->data);
-        FREE(&np);
-        break;
-      }
-    }
-  }
 }
 
 static int parse_unstailq(struct Buffer *buf, struct Buffer *s,

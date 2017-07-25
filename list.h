@@ -23,6 +23,8 @@
 #ifndef _MUTT_LIST_H
 #define _MUTT_LIST_H
 
+#include <string.h>
+
 /**
  * struct List - Singly-linked List type
  */
@@ -90,6 +92,17 @@ static inline void mutt_stailq_free(struct STailQHead *h)
       np = next;
   }
   STAILQ_INIT(h);
+}
+
+static inline bool mutt_stailq_match(const char *s, struct STailQHead *h)
+{
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, h, entries)
+  {
+    if (*np->data == '*' || mutt_strncasecmp(s, np->data, strlen(np->data)) == 0)
+      return true;
+  }
+  return false;
 }
 
 #endif /* _MUTT_LIST_H */
