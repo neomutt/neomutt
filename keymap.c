@@ -442,13 +442,6 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
   }
 }
 
-/* This should be used for macros, push, and exec commands only. */
-#define tokenize_push_macro_string(s)                                          \
-  generic_tokenize_push_string(s, mutt_push_macro_event)
-/* This should be used for other unget operations. */
-#define tokenize_unget_string(s)                                               \
-  generic_tokenize_push_string(s, mutt_unget_event)
-
 static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 {
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
@@ -599,7 +592,7 @@ gotkey:
         return -1;
       }
 
-      tokenize_push_macro_string(map->macro);
+      generic_tokenize_push_string(map->macro, mutt_push_macro_event);
       map = Keymaps[menu];
       pos = 0;
     }
@@ -964,7 +957,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
     r = -1;
   }
   else
-    tokenize_push_macro_string(buf->data);
+    generic_tokenize_push_string(buf->data, mutt_push_macro_event);
   return r;
 }
 
