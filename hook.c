@@ -50,7 +50,7 @@
 /**
  * struct Hook - A list of user hooks
  */
-TAILQ_HEAD(HookHead, Hook);
+static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 struct Hook
 {
   int type;                /**< hook type */
@@ -59,8 +59,6 @@ struct Hook
   struct Pattern *pattern; /**< used for fcc,save,send-hook */
   TAILQ_ENTRY(Hook) entries;
 };
-
-static struct HookHead Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static int current_hook_type = 0;
 
