@@ -81,7 +81,7 @@ enum MailboxFormat
   MUTT_COMPRESSED,
 };
 
-WHERE short DefaultMagic INITVAL(MUTT_MBOX);
+WHERE short DefaultMagic;
 
 #define MMDF_SEP "\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5

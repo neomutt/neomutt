@@ -180,7 +180,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, enum FormatFlag flags);
 
-struct NntpServer *CurrentNewsSrv INITVAL(NULL);
+struct NntpServer *CurrentNewsSrv;
 
 #ifdef USE_HCACHE
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);

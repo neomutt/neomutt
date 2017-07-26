@@ -60,9 +60,9 @@ struct Buffy
   time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
-WHERE struct Buffy *Incoming INITVAL(0);
-WHERE short BuffyTimeout INITVAL(3);
-WHERE short BuffyCheckStatsInterval INITVAL(60);
+WHERE struct Buffy *Incoming;
+WHERE short BuffyTimeout;
+WHERE short BuffyCheckStatsInterval;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen);
