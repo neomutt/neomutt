@@ -710,7 +710,7 @@ static void free_opt(struct Option *p)
 {
   struct Regex *pp = NULL;
 
-  switch (p->type & DT_MASK)
+  switch (DTYPE(p->type))
   {
     case DT_ADDR:
       rfc822_free_address((struct Address **) p->data);
@@ -2124,7 +2124,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 
 static void set_default(struct Option *p)
 {
-  switch (p->type & DT_MASK)
+  switch (DTYPE(p->type))
   {
     case DT_STR:
       if (!p->init && *((char **) p->data))
@@ -2159,7 +2159,7 @@ static void set_default(struct Option *p)
 
 static void restore_default(struct Option *p)
 {
-  switch (p->type & DT_MASK)
+  switch (DTYPE(p->type))
   {
     case DT_STR:
       mutt_str_replace((char **) p->data, (char *) p->init);
