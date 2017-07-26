@@ -319,7 +319,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 
   FREE(&PostContext);
 
-  struct STailQNode *np, *tmp;
+  struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
     if (mutt_strncasecmp("X-Mutt-References:", np->data, 18) == 0)
@@ -369,12 +369,12 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     else if (mutt_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
     {
       char *t = NULL;
-      mutt_stailq_free(&hdr->chain);
+      mutt_list_free(&hdr->chain);
 
       t = strtok(np->data + 11, " \t\n");
       while (t)
       {
-        mutt_stailq_insert_tail(&hdr->chain, safe_strdup(t));
+        mutt_list_insert_tail(&hdr->chain, safe_strdup(t));
         t = strtok(NULL, " \t\n");
       }
     }
@@ -387,7 +387,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     }
 
     // remove the header
-    STAILQ_REMOVE(&hdr->env->userhdrs, np, STailQNode, entries);
+    STAILQ_REMOVE(&hdr->env->userhdrs, np, ListNode, entries);
     FREE(&np->data);
     FREE(&np);
   }

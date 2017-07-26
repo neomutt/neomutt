@@ -290,7 +290,7 @@ void mutt_free_header(struct Header **h)
   FREE(&(*h)->tree);
   FREE(&(*h)->path);
 #ifdef MIXMASTER
-  mutt_stailq_free(&(*h)->chain);
+  mutt_list_free(&(*h)->chain);
 #endif
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
@@ -303,11 +303,11 @@ void mutt_free_header(struct Header **h)
 /**
  * mutt_matches_ignore - Does the string match the ignore list
  *
- * checks Ignore and UnIgnore using mutt_stailq_match
+ * checks Ignore and UnIgnore using mutt_list_match
  */
 int mutt_matches_ignore(const char *s)
 {
-  return mutt_stailq_match(s, &Ignore) && !mutt_stailq_match(s, &UnIgnore);
+  return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
 }
 
 char *mutt_expand_path(char *s, size_t slen)
@@ -619,9 +619,9 @@ void mutt_free_envelope(struct Envelope **p)
 
   mutt_buffer_free(&(*p)->spam);
 
-  mutt_stailq_free(&(*p)->references);
-  mutt_stailq_free(&(*p)->in_reply_to);
-  mutt_stailq_free(&(*p)->userhdrs);
+  mutt_list_free(&(*p)->references);
+  mutt_list_free(&(*p)->in_reply_to);
+  mutt_list_free(&(*p)->userhdrs);
   FREE(p);
 }
 
@@ -645,7 +645,7 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
 #define MOVE_STAILQ(h)                                                         \
   if (STAILQ_EMPTY(&base->h))                                                  \
   {                                                                            \
-    STAILQ_SWAP(&base->h, &((*extra))->h, STailQNode);                         \
+    STAILQ_SWAP(&base->h, &((*extra))->h, ListNode);                         \
   }
 
   MOVE_ELEM(return_path);
@@ -684,7 +684,7 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   /* spam and user headers should never be hashed, and the new envelope may
     * have better values. Use new versions regardless. */
   mutt_buffer_free(&base->spam);
-  mutt_stailq_free(&base->userhdrs);
+  mutt_list_free(&base->userhdrs);
   MOVE_ELEM(spam);
   MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM

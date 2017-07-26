@@ -33,7 +33,7 @@
 struct ReplaceList;
 struct RxList;
 struct State;
-struct STailQHead;
+struct ListHead;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -319,7 +319,7 @@ int mutt_matches_ignore(const char *s);
 /* add an element to a list */
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
-void mutt_init(int skip_sys_rc, struct STailQHead *commands);
+void mutt_init(int skip_sys_rc, struct ListHead *commands);
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */

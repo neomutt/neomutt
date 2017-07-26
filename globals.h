@@ -115,7 +115,7 @@ WHERE char *Mixmaster;
 WHERE char *MixEntryFormat;
 #endif
 
-WHERE struct STailQHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
+WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
 #ifdef USE_NNTP
 WHERE char *GroupFormat;
 WHERE char *Inews;
@@ -202,17 +202,17 @@ WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 #endif
 
-WHERE struct STailQHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
-WHERE struct STailQHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
-WHERE struct STailQHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
-WHERE struct STailQHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
-WHERE struct STailQHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
-WHERE struct STailQHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
-WHERE struct STailQHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
-WHERE struct STailQHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
-WHERE struct STailQHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
-WHERE struct STailQHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
-WHERE struct STailQHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
+WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
+WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
+WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
+WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
+WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
+WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
+WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
+WHERE struct ListHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
+WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
+WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
+WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
 
 WHERE struct RxList *Alternates;
 WHERE struct RxList *UnAlternates;
@@ -266,7 +266,7 @@ WHERE short ScoreThresholdFlag;
 
 #ifdef USE_SIDEBAR
 WHERE short SidebarWidth;
-WHERE struct STailQHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
+WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
 #endif
 
 #ifdef USE_IMAP
@@ -283,7 +283,7 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
 WHERE int CurrentMenu;
 
 WHERE struct Alias *Aliases;
-WHERE struct STailQHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
+WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
 
 /* -- formerly in pgp.h -- */
 WHERE struct Regex PgpGoodSign;

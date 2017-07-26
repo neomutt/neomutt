@@ -32,44 +32,45 @@
 
 #include "queue.h"
 
-STAILQ_HEAD(STailQHead, STailQNode);
-struct STailQNode
+STAILQ_HEAD(ListHead, ListNode);
+struct ListNode
 {
     char *data;
-    STAILQ_ENTRY(STailQNode) entries;
+    STAILQ_ENTRY(ListNode) entries;
 };
 
-static inline struct STailQNode* mutt_stailq_insert_head(struct STailQHead *h,
-                                                         char *s)
+static inline struct ListNode* mutt_list_insert_head(struct ListHead *h,
+                                                     char *s)
 {
-  struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+  struct ListNode *np = safe_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_HEAD(h, np, entries);
   return np;
 }
 
-static inline struct STailQNode* mutt_stailq_insert_tail(struct STailQHead *h,
-                                                         char *s)
+static inline struct ListNode* mutt_list_insert_tail(struct ListHead *h,
+                                                     char *s)
 {
-  struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+  struct ListNode *np = safe_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_TAIL(h, np, entries);
   return np;
 }
 
-static inline struct STailQNode* mutt_stailq_insert_after(struct STailQHead *h,
-                                                          struct STailQNode *n,
-                                                          char *s)
+static inline struct ListNode* mutt_list_insert_after(struct ListHead *h,
+                                                      struct ListNode *n,
+                                                      char *s)
 {
-  struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+  struct ListNode *np = safe_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_AFTER(h, n, np, entries);
   return np;
 }
 
-static inline struct STailQNode *mutt_stailq_find(struct STailQHead *h, const char *data)
+static inline struct ListNode *mutt_list_find(struct ListHead *h,
+                                              const char *data)
 {
-  struct STailQNode *np = NULL;
+  struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
     if (np->data == data || mutt_strcmp(np->data, data) == 0)
@@ -80,9 +81,9 @@ static inline struct STailQNode *mutt_stailq_find(struct STailQHead *h, const ch
   return NULL;
 }
 
-static inline void mutt_stailq_free(struct STailQHead *h)
+static inline void mutt_list_free(struct ListHead *h)
 {
-  struct STailQNode *np = STAILQ_FIRST(h), *next = NULL;
+  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
   while (np)
   {
       next = STAILQ_NEXT(np, entries);
@@ -93,9 +94,9 @@ static inline void mutt_stailq_free(struct STailQHead *h)
   STAILQ_INIT(h);
 }
 
-static inline void mutt_stailq_clear(struct STailQHead *h)
+static inline void mutt_list_clear(struct ListHead *h)
 {
-  struct STailQNode *np = STAILQ_FIRST(h), *next = NULL;
+  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
   while (np)
   {
       next = STAILQ_NEXT(np, entries);
@@ -106,12 +107,12 @@ static inline void mutt_stailq_clear(struct STailQHead *h)
 }
 
 /**
- * mutt_stailq_match - Is the string in the list
+ * mutt_list_match - Is the string in the list
  * @return true if the header contained in "s" is in list "h"
  */
-static inline bool mutt_stailq_match(const char *s, struct STailQHead *h)
+static inline bool mutt_list_match(const char *s, struct ListHead *h)
 {
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
     if (*np->data == '*' || mutt_strncasecmp(s, np->data, strlen(np->data)) == 0)

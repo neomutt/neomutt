@@ -784,7 +784,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   return att;
 }
 
-static void pgp_add_string_to_hints(struct STailQHead *hints, const char *str)
+static void pgp_add_string_to_hints(struct ListHead *hints, const char *str)
 {
   char *scratch = NULL;
   char *t = NULL;
@@ -795,7 +795,7 @@ static void pgp_add_string_to_hints(struct STailQHead *hints, const char *str)
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      mutt_stailq_insert_tail(hints, safe_strdup(t));
+      mutt_list_insert_tail(hints, safe_strdup(t));
   }
 
   FREE(&scratch);
@@ -814,7 +814,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
                                     enum PgpRing keyring, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
-  struct STailQHead hints = STAILQ_HEAD_INITIALIZER(hints);
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
   bool multi = false;
 
@@ -834,7 +834,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
     mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
   keys = pgp_get_candidates(keyring, &hints);
 
-  mutt_stailq_free(&hints);
+  mutt_list_free(&hints);
 
   if (!keys)
     return NULL;
@@ -940,7 +940,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
 
 struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring)
 {
-  struct STailQHead hints = STAILQ_HEAD_INITIALIZER(hints);
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct PgpKeyInfo *keys = NULL;
   struct PgpKeyInfo *matches = NULL;
   struct PgpKeyInfo **last = &matches;
@@ -957,7 +957,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyrin
   pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
   pgp_add_string_to_hints(&hints, phint);
   keys = pgp_get_candidates(keyring, &hints);
-  mutt_stailq_free(&hints);
+  mutt_list_free(&hints);
 
   if (!keys)
     goto out;

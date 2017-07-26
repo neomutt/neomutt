@@ -101,7 +101,7 @@ struct Header
   short attach_total;
 
 #ifdef MIXMASTER
-  struct STailQHead chain;
+  struct ListHead chain;
 #endif
 
 #ifdef USE_POP

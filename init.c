@@ -748,14 +748,14 @@ void mutt_free_opts(void)
   mutt_free_rx_list(&NoSpamList);
 }
 
-static void add_to_stailq(struct STailQHead *head, const char *str)
+static void add_to_stailq(struct ListHead *head, const char *str)
 {
   /* don't add a NULL or empty string to the list */
   if (!str || *str == '\0')
     return;
 
   /* check to make sure the item is not already on this list */
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, head, entries)
   {
     if (mutt_strcasecmp(str, np->data) == 0)
@@ -763,7 +763,7 @@ static void add_to_stailq(struct STailQHead *head, const char *str)
       return;
     }
   }
-  mutt_stailq_insert_tail(head, safe_strdup(str));
+  mutt_list_insert_tail(head, safe_strdup(str));
 }
 
 static struct RxList *new_rx_list(void)
@@ -1060,18 +1060,18 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return 0;
 }
 
-static void remove_from_stailq(struct STailQHead *head, const char *str)
+static void remove_from_stailq(struct ListHead *head, const char *str)
 {
   if (mutt_strcmp("*", str) == 0)
-    mutt_stailq_free(head); /* ``unCMD *'' means delete all current entries */
+    mutt_list_free(head); /* ``unCMD *'' means delete all current entries */
   else
   {
-    struct STailQNode *np, *tmp;
+    struct ListNode *np, *tmp;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp)
     {
       if (mutt_strcasecmp(str, np->data) == 0)
       {
-        STAILQ_REMOVE(head, np, STailQNode, entries);
+        STAILQ_REMOVE(head, np, ListNode, entries);
         FREE(&np->data);
         FREE(&np);
         break;
@@ -1117,7 +1117,7 @@ static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data
   do
   {
     mutt_extract_token(buf, s, 0);
-    add_to_stailq((struct STailQHead *)data, buf->data);
+    add_to_stailq((struct ListHead *)data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1134,10 +1134,10 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_stailq_free((struct STailQHead *)data);
+      mutt_list_free((struct ListHead *)data);
       break;
     }
-    remove_from_stailq((struct STailQHead *)data, buf->data);
+    remove_from_stailq((struct ListHead *)data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1379,7 +1379,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    add_to_stailq((struct STailQHead *) data, path);
+    add_to_stailq((struct ListHead *) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1398,12 +1398,12 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_stailq_free((struct STailQHead *) data);
+      mutt_list_free((struct ListHead *) data);
       break;
     }
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    remove_from_stailq((struct STailQHead *) data, path);
+    remove_from_stailq((struct ListHead *) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1535,7 +1535,7 @@ static void _attachments_clean(void)
 }
 
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
-                             struct STailQHead *head, struct Buffer *err)
+                             struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   char *p = NULL;
@@ -1593,7 +1593,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 
     mutt_debug(5, "parse_attach_list: added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
-    mutt_stailq_insert_tail(head, (char *)a);
+    mutt_list_insert_tail(head, (char *)a);
   } while (MoreArgs(s));
 
   _attachments_clean();
@@ -1601,7 +1601,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 }
 
 static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
-                               struct STailQHead *head, struct Buffer *err)
+                               struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   char *tmp = NULL;
@@ -1631,7 +1631,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     }
     major = mutt_check_mime_type(tmp);
 
-    struct STailQNode *np, *tmp2;
+    struct ListNode *np, *tmp2;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
       a = (struct AttachMatch *) np->data;
@@ -1643,7 +1643,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
                    a->minor, a->major_int);
         regfree(&a->minor_rx);
         FREE(&a->major);
-        STAILQ_REMOVE(head, np, STailQNode, entries);
+        STAILQ_REMOVE(head, np, ListNode, entries);
         FREE(&np->data);
         FREE(&np);
       }
@@ -1656,9 +1656,9 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-static int print_attach_list(struct STailQHead *h, char op, char *name)
+static int print_attach_list(struct ListHead *h, char op, char *name)
 {
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
     printf("attachments %c%s %s/%s\n", op, name,
@@ -1673,7 +1673,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
-  struct STailQHead *head = NULL;
+  struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1730,7 +1730,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
-  struct STailQHead *head = NULL;
+  struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1971,7 +1971,7 @@ bail:
 static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
-  struct STailQNode *np, *tmp;
+  struct ListNode *np, *tmp;
   size_t l;
 
   do
@@ -1979,7 +1979,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     if (mutt_strcmp("*", buf->data) == 0)
     {
-      mutt_stailq_free(&UserHeader);
+      mutt_list_free(&UserHeader);
       continue;
     }
 
@@ -1991,7 +1991,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     {
       if ((mutt_strncasecmp(buf->data, np->data, l) == 0) && np->data[l] == ':')
       {
-        STAILQ_REMOVE(&UserHeader, np, STailQNode, entries);
+        STAILQ_REMOVE(&UserHeader, np, ListNode, entries);
         FREE(&np->data);
         FREE(&np);
       }
@@ -2003,7 +2003,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
-  struct STailQNode *n = NULL;
+  struct ListNode *n = NULL;
   size_t keylen;
   char *p = NULL;
 
@@ -2027,7 +2027,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   if (!n)
   {
     /* not found, allocate memory for a new node and add it to the list */
-    n = mutt_stailq_insert_tail(&UserHeader, NULL);
+    n = mutt_list_insert_tail(&UserHeader, NULL);
   }
   else
   {
@@ -3105,7 +3105,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
 /* FILO designed to contain the list of config files that have been sourced and
  * avoid cyclic sourcing */
-static struct STailQHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
+static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
 /**
  * to_absolute_path - Convert relative filepath to an absolute path
@@ -3179,7 +3179,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   if (rcfile[rcfilelen - 1] != '|')
   {
-    struct STailQNode *np = STAILQ_FIRST(&MuttrcStack);
+    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
     if (!to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
     {
       mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
@@ -3195,7 +3195,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
     if (!np)
     {
-      mutt_stailq_insert_head(&MuttrcStack, safe_strdup(rcfile));
+      mutt_list_insert_head(&MuttrcStack, safe_strdup(rcfile));
     }
     else
     {
@@ -3936,7 +3936,7 @@ int var_to_string(int idx, char *val, size_t len)
 /**
  * mutt_query_variables - Implement the -Q command line flag
  */
-int mutt_query_variables(struct STailQHead *queries)
+int mutt_query_variables(struct ListHead *queries)
 {
   char command[STRING];
 
@@ -3948,7 +3948,7 @@ int mutt_query_variables(struct STailQHead *queries)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, queries, entries)
   {
     snprintf(command, sizeof(command), "set ?%s\n", np->data);
@@ -4028,7 +4028,7 @@ int mutt_getvaluebyname(const char *name, const struct Mapping *map)
   return -1;
 }
 
-static int execute_commands(struct STailQHead *p)
+static int execute_commands(struct ListHead *p)
 {
   struct Buffer err, token;
 
@@ -4036,7 +4036,7 @@ static int execute_commands(struct STailQHead *p)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
   mutt_buffer_init(&token);
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, p, entries)
   {
     if (mutt_parse_rc_line(np->data, &token, &err) == -1)
@@ -4091,7 +4091,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   return NULL;
 }
 
-void mutt_init(int skip_sys_rc, struct STailQHead *commands)
+void mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
   struct passwd *pw = NULL;
   struct utsname utsname;
@@ -4341,7 +4341,6 @@ void mutt_init(int skip_sys_rc, struct STailQHead *commands)
   add_to_stailq(&MailToAllow, "in-reply-to");
   add_to_stailq(&MailToAllow, "references");
 
-  struct STailQNode *np = NULL;
   if (STAILQ_EMPTY(&Muttrc))
   {
     char *xdg_cfg_home = getenv("XDG_CONFIG_HOME");
@@ -4355,11 +4354,12 @@ void mutt_init(int skip_sys_rc, struct STailQHead *commands)
     char *config = find_cfg(HomeDir, xdg_cfg_home);
     if (config)
     {
-      mutt_stailq_insert_tail(&Muttrc, config);
+      mutt_list_insert_tail(&Muttrc, config);
     }
   }
   else
   {
+    struct ListNode *np;
     STAILQ_FOREACH(np, &Muttrc, entries)
     {
       strfcpy(buffer, np->data, sizeof(buffer));
@@ -4432,6 +4432,7 @@ void mutt_init(int skip_sys_rc, struct STailQHead *commands)
   }
 
   /* Read the user's initialization file.  */
+  struct ListNode *np;
   STAILQ_FOREACH(np, &Muttrc, entries)
   {
     if (np->data)

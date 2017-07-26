@@ -47,7 +47,7 @@ struct ImapHeaderData
 
   unsigned int uid; /**< 32-bit Message UID */
   unsigned int msn; /**< Message Sequence Number */
-  struct STailQHead keywords;
+  struct ListHead keywords;
 };
 
 /**

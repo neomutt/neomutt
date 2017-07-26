@@ -48,7 +48,7 @@ struct Regex;
 struct ReplaceList;
 struct RxList;
 struct State;
-struct STailQHead;
+struct ListHead;
 
 struct stat;
 struct passwd;
@@ -137,7 +137,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx);
 char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
-void mutt_crypt_hook(struct STailQHead *list, struct Address *adr);
+void mutt_crypt_hook(struct ListHead *list, struct Address *adr);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
@@ -342,7 +342,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, 
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_query_complete(char *buf, size_t buflen);
-int mutt_query_variables(struct STailQHead *queries);
+int mutt_query_variables(struct ListHead *queries);
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
 int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt);
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt);
@@ -366,7 +366,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f);
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, int flags);
 int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy);
-void mutt_write_references(const struct STailQHead *r, FILE *f, size_t trim);
+void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim);
 int mutt_yesorno(const char *msg, int def);
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr);
 void mutt_sleep(short s);

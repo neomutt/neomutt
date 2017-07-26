@@ -98,7 +98,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   }
 
   mutt_unlink(body);
-  mutt_stailq_free(&msg->env->userhdrs);
+  mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
   if ((ifp = fopen(path, "r")) == NULL)
@@ -133,11 +133,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
         (STAILQ_EMPTY(&n->in_reply_to) ||
          (mutt_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
                       STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
-      mutt_stailq_free(&msg->env->references);
+      mutt_list_free(&msg->env->references);
 
   /* restore old info. */
-  mutt_stailq_free(&n->references);
-  STAILQ_SWAP(&n->references, &msg->env->references, STailQNode);
+  mutt_list_free(&n->references);
+  STAILQ_SWAP(&n->references, &msg->env->references, ListNode);
 
   mutt_free_envelope(&msg->env);
   msg->env = n;
@@ -149,7 +149,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
    * fcc: or attach: or pgp: was specified
    */
 
-  struct STailQNode *np, *tmp;
+  struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
   {
     keep = true;
@@ -214,7 +214,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 
     if (!keep)
     {
-      STAILQ_REMOVE(&msg->env->userhdrs, np, STailQNode, entries);
+      STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
       FREE(&np->data);
       FREE(&np);
     }

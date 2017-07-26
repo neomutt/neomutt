@@ -3862,14 +3862,14 @@ leave:
  *
  * We need to convert spaces in an item into a '+' and '%' into "%25".
  */
-static char *list_to_pattern(struct STailQHead *list)
+static char *list_to_pattern(struct ListHead *list)
 {
   char *pattern = NULL, *p = NULL;
   const char *s = NULL;
   size_t n;
 
   n = 0;
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, list, entries)
   {
     for (s = np->data; *s; s++)
@@ -3919,7 +3919,7 @@ static char *list_to_pattern(struct STailQHead *list)
  *
  * Select by looking at the HINTS list.
  */
-static struct CryptKeyInfo *get_candidates(struct STailQHead *hints, unsigned int app, int secret)
+static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int app, int secret)
 {
   struct CryptKeyInfo *db = NULL, *k = NULL, **kend = NULL;
   char *pattern = NULL;
@@ -3951,7 +3951,7 @@ static struct CryptKeyInfo *get_candidates(struct STailQHead *hints, unsigned in
          escaped pappert but simple strings passed in an array to the
          keylist_ext_start function. */
     size_t n = 0;
-    struct STailQNode *np;
+    struct ListNode *np;
     STAILQ_FOREACH(np, hints, entries)
     {
       if (np->data && *np->data)
@@ -4069,7 +4069,7 @@ static struct CryptKeyInfo *get_candidates(struct STailQHead *hints, unsigned in
  *
  * This list is later used to match addresses.
  */
-static void crypt_add_string_to_hints(struct STailQHead *hints, const char *str)
+static void crypt_add_string_to_hints(struct ListHead *hints, const char *str)
 {
   char *scratch = NULL;
   char *t = NULL;
@@ -4080,7 +4080,7 @@ static void crypt_add_string_to_hints(struct STailQHead *hints, const char *str)
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      mutt_stailq_insert_tail(hints, safe_strdup(t));
+      mutt_list_insert_tail(hints, safe_strdup(t));
   }
 
   FREE(&scratch);
@@ -4293,7 +4293,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
                                                int *forced_valid, bool oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
-  struct STailQHead hints = STAILQ_HEAD_INITIALIZER(hints);
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
   int multi = false;
   int this_key_has_strong = false;
@@ -4317,7 +4317,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
   keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
 
-  mutt_stailq_free(&hints);
+  mutt_list_free(&hints);
 
   if (!keys)
     return NULL;
@@ -4417,7 +4417,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
                                               unsigned int app, int *forced_valid)
 {
-  struct STailQHead hints = STAILQ_HEAD_INITIALIZER(hints);
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct CryptKeyInfo *keys = NULL;
   struct CryptKeyInfo *matches = NULL;
   struct CryptKeyInfo **matches_endp = &matches;
@@ -4431,7 +4431,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
   pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
   crypt_add_string_to_hints(&hints, phint);
   keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
-  mutt_stailq_free(&hints);
+  mutt_list_free(&hints);
 
   if (!keys)
   {
@@ -4550,8 +4550,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
  */
 static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mode)
 {
-  struct STailQHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
-  struct STailQNode *crypt_hook = NULL;
+  struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
+  struct ListNode *crypt_hook = NULL;
   char *crypt_hook_val = NULL;
   const char *keyID = NULL;
   char *keylist = NULL, *t = NULL;
@@ -4622,7 +4622,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         {
           FREE(&keylist);
           rfc822_free_address(&addr);
-          mutt_stailq_free(&crypt_hook_list);
+          mutt_list_free(&crypt_hook_list);
           return NULL;
         }
       }
@@ -4643,7 +4643,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       {
         FREE(&keylist);
         rfc822_free_address(&addr);
-        mutt_stailq_free(&crypt_hook_list);
+        mutt_list_free(&crypt_hook_list);
         return NULL;
       }
 
@@ -4666,7 +4666,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
 
     } while (crypt_hook);
 
-    mutt_stailq_free(&crypt_hook_list);
+    mutt_list_free(&crypt_hook_list);
   }
   return keylist;
 }

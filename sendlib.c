@@ -1586,9 +1586,9 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
  * need to write the list in reverse because they are stored in reverse order
  * when parsed to speed up threading
  */
-void mutt_write_references(const struct STailQHead *r, FILE *f, size_t trim)
+void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 {
-  struct STailQNode *np;
+  struct ListNode *np;
   size_t length = 0;
 
   STAILQ_FOREACH(np, r, entries)
@@ -1597,7 +1597,7 @@ void mutt_write_references(const struct STailQHead *r, FILE *f, size_t trim)
       break;
   }
 
-  struct STailQNode **ref = safe_calloc(length, sizeof(struct STailQNode*));
+  struct ListNode **ref = safe_calloc(length, sizeof(struct ListNode*));
 
   // store in reverse order
   STAILQ_FOREACH(np, r, entries)
@@ -2123,7 +2123,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
 
   /* Add any user defined headers */
-  struct STailQNode *tmp;
+  struct ListNode *tmp;
   STAILQ_FOREACH(tmp, &env->userhdrs, entries)
   {
     if ((p = strchr(tmp->data, ':')))
@@ -2164,13 +2164,13 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   return (ferror(fp) == 0 ? 0 : -1);
 }
 
-static void encode_headers(struct STailQHead *h)
+static void encode_headers(struct ListHead *h)
 {
   char *tmp = NULL;
   char *p = NULL;
   int i;
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
     if (!(p = strchr(np->data, ':')))
@@ -2663,7 +2663,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
 
 void mutt_unprepare_envelope(struct Envelope *env)
 {
-  struct STailQNode *item;
+  struct ListNode *item;
   STAILQ_FOREACH(item, &env->userhdrs, entries)
   {
     rfc2047_decode(&item->data);
@@ -3027,7 +3027,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (post && !STAILQ_EMPTY(&hdr->chain))
   {
     fputs("X-Mutt-Mix:", msg->fp);
-    struct STailQNode *p;
+    struct ListNode *p;
     STAILQ_FOREACH(p, &hdr->chain, entries)
     {
       fprintf(msg->fp, " %s", (char *) p->data);

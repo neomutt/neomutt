@@ -1398,9 +1398,9 @@ static int match_adrlist(struct Pattern *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static bool match_reference(struct Pattern *pat, struct STailQHead *refs)
+static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 {
-  struct STailQNode *np = NULL;
+  struct ListNode *np;
   STAILQ_FOREACH(np, refs, entries)
   {
     if (patmatch(pat, np->data) == 0)

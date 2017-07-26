@@ -575,10 +575,10 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   return 1;
 }
 
-static int strict_cmp_stailq(const struct STailQHead *ah, const struct STailQHead *bh)
+static int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
 {
-  struct STailQNode *a = STAILQ_FIRST(ah);
-  struct STailQNode *b = STAILQ_FIRST(bh);
+  struct ListNode *a = STAILQ_FIRST(ah);
+  struct ListNode *b = STAILQ_FIRST(bh);
 
   while (a && b)
   {

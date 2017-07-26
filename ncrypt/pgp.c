@@ -1219,8 +1219,8 @@ struct Body *pgp_sign_message(struct Body *a)
  */
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 {
-  struct STailQHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
-  struct STailQNode *crypt_hook = NULL;
+  struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
+  struct ListNode *crypt_hook = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
@@ -1285,7 +1285,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         {
           FREE(&keylist);
           rfc822_free_address(&addr);
-          mutt_stailq_free(&crypt_hook_list);
+          mutt_list_free(&crypt_hook_list);
           return NULL;
         }
       }
@@ -1306,7 +1306,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       {
         FREE(&keylist);
         rfc822_free_address(&addr);
-        mutt_stailq_free(&crypt_hook_list);
+        mutt_list_free(&crypt_hook_list);
         return NULL;
       }
 
@@ -1328,7 +1328,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 
     } while (crypt_hook);
 
-    mutt_stailq_free(&crypt_hook_list);
+    mutt_list_free(&crypt_hook_list);
   }
   return keylist;
 }

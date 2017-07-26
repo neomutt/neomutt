@@ -29,7 +29,7 @@
 
 #include <stddef.h>
 
-struct STailQHead;
+struct ListHead;
 struct Header;
 
 #ifdef MIXMASTER
@@ -64,9 +64,9 @@ struct MixChain
   int ch[MAXMIXES];
 };
 
-int mix_send_message(struct STailQHead *chain, const char *tempfile);
+int mix_send_message(struct ListHead *chain, const char *tempfile);
 int mix_check_message(struct Header *msg);
-void mix_make_chain(struct STailQHead *chain);
+void mix_make_chain(struct ListHead *chain);
 
 #endif /* MIXMASTER */
 

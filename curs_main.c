@@ -1318,7 +1318,7 @@ int mutt_index_menu(void)
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
           {
-            struct STailQNode *ref;
+            struct ListNode *ref;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
               if (hash_find(Context->id_hash, ref->data) == NULL)

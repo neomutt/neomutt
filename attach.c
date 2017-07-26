@@ -309,7 +309,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
   int i;
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
     i = mutt_strlen(np->data) - 1;

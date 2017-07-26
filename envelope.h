@@ -57,9 +57,9 @@ struct Envelope
   char *x_comment_to;
 #endif
   struct Buffer *spam;
-  struct STailQHead references;  /**< message references (in reverse order) */
-  struct STailQHead in_reply_to; /**< in-reply-to header content */
-  struct STailQHead userhdrs;    /**< user defined headers */
+  struct ListHead references;  /**< message references (in reverse order) */
+  struct ListHead in_reply_to; /**< in-reply-to header content */
+  struct ListHead userhdrs;    /**< user defined headers */
   int kwtypes;
 
   bool irt_changed : 1;  /**< In-Reply-To changed to link/break threads */

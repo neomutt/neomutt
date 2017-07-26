@@ -114,14 +114,14 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static void parse_references(struct STailQHead *head, char *s)
+static void parse_references(struct ListHead *head, char *s)
 {
   char *m = NULL;
   const char *sp = NULL;
 
   while ((m = mutt_extract_message_id(s, &sp)))
   {
-    mutt_stailq_insert_head(head, m);
+    mutt_list_insert_head(head, m);
     s = NULL;
   }
 }
@@ -1095,7 +1095,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'i':
       if (mutt_strcasecmp(line + 1, "n-reply-to") == 0)
       {
-        mutt_stailq_free(&e->in_reply_to);
+        mutt_list_free(&e->in_reply_to);
         parse_references(&e->in_reply_to, p);
         matched = 1;
       }
@@ -1196,7 +1196,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'r':
       if (mutt_strcasecmp(line + 1, "eferences") == 0)
       {
-        mutt_stailq_free(&e->references);
+        mutt_list_free(&e->references);
         parse_references(&e->references, p);
         matched = 1;
       }
@@ -1338,7 +1338,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
 
     if (!(weed && option(OPT_WEED) && mutt_matches_ignore(line)))
     {
-      struct STailQNode *np = mutt_stailq_insert_tail(&e->userhdrs, safe_strdup(line));
+      struct ListNode *np = mutt_list_insert_tail(&e->userhdrs, safe_strdup(line));
       if (do_2047)
         rfc2047_decode(&np->data);
     }
@@ -1538,7 +1538,7 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 /**
  * count_body_parts_check - Compares mime types to the ok and except lists
  */
-static bool count_body_parts_check(struct STailQHead *checklist, struct Body *b, bool dflt)
+static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool dflt)
 {
   struct AttachMatch *a = NULL;
 
@@ -1548,7 +1548,7 @@ static bool count_body_parts_check(struct STailQHead *checklist, struct Body *b,
     return false;
   }
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, checklist, entries)
   {
     a = (struct AttachMatch *) np->data;

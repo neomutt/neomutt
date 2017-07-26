@@ -513,7 +513,7 @@ static char *_mutt_string_hook(const char *match, int hook)
   return NULL;
 }
 
-static void _mutt_list_hook(struct STailQHead *matches, const char *match, int hook)
+static void _mutt_list_hook(struct ListHead *matches, const char *match, int hook)
 {
   struct Hook *tmp = NULL;
 
@@ -521,7 +521,7 @@ static void _mutt_list_hook(struct STailQHead *matches, const char *match, int h
   {
     if ((tmp->type & hook) &&
         ((match && regexec(tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
-      mutt_stailq_insert_tail(matches, safe_strdup(tmp->command));
+      mutt_list_insert_tail(matches, safe_strdup(tmp->command));
   }
 }
 
@@ -535,7 +535,7 @@ char *mutt_iconv_hook(const char *chs)
   return _mutt_string_hook(chs, MUTT_ICONVHOOK);
 }
 
-void mutt_crypt_hook(struct STailQHead *list, struct Address *adr)
+void mutt_crypt_hook(struct ListHead *list, struct Address *adr)
 {
   _mutt_list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
 }

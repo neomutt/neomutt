@@ -1017,7 +1017,7 @@ static int is_autoview(struct Body *b)
   {
     /* determine if this type is on the user's auto_view list */
     mutt_check_lookup_list(b, type, sizeof(type));
-    struct STailQNode *np;
+    struct ListNode *np;
     STAILQ_FOREACH(np, &AutoViewList, entries)
     {
       int i = mutt_strlen(np->data) - 1;
@@ -1073,7 +1073,7 @@ static int alternative_handler(struct Body *a, struct State *s)
   a = b;
 
   /* First, search list of preferred types */
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, &AlternativeOrderList, entries)
   {
     char *c = NULL;

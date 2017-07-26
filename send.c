@@ -308,7 +308,7 @@ static int edit_envelope(struct Envelope *en, int flags)
     const char *p = NULL;
 
     buf[0] = 0;
-    struct STailQNode *uh;
+    struct ListNode *uh;
     STAILQ_FOREACH(uh, &UserHeader, entries)
     {
       if (mutt_strncasecmp("subject:", uh->data, 8) == 0)
@@ -340,7 +340,7 @@ static char *nntp_get_header(const char *s)
 
 static void process_user_recips(struct Envelope *env)
 {
-  struct STailQNode *uh;
+  struct ListNode *uh;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_strncasecmp("to:", uh->data, 3) == 0)
@@ -362,7 +362,7 @@ static void process_user_recips(struct Envelope *env)
 
 static void process_user_header(struct Envelope *env)
 {
-  struct STailQNode *uh;
+  struct ListNode *uh;
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_strncasecmp("from:", uh->data, 5) == 0)
@@ -399,7 +399,7 @@ static void process_user_header(struct Envelope *env)
              (mutt_strncasecmp("subject:", uh->data, 8) != 0) &&
              (mutt_strncasecmp("return-path:", uh->data, 12) != 0))
     {
-      mutt_stailq_insert_tail(&env->userhdrs, safe_strdup(uh->data));
+      mutt_list_insert_tail(&env->userhdrs, safe_strdup(uh->data));
     }
   }
 }
@@ -641,23 +641,23 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   return 0;
 }
 
-static void add_references(struct STailQHead *head, struct Envelope *e)
+static void add_references(struct ListHead *head, struct Envelope *e)
 {
-  struct STailQHead *src;
-  struct STailQNode *np;
+  struct ListHead *src;
+  struct ListNode *np;
 
   src = !STAILQ_EMPTY(&e->references) ? &e->references : &e->in_reply_to;
   STAILQ_FOREACH(np, src, entries)
   {
-    mutt_stailq_insert_tail(head, safe_strdup(np->data));
+    mutt_list_insert_tail(head, safe_strdup(np->data));
   }
 }
 
-static void add_message_id(struct STailQHead *head, struct Envelope *e)
+static void add_message_id(struct ListHead *head, struct Envelope *e)
 {
   if (e->message_id)
   {
-    mutt_stailq_insert_head(head, safe_strdup(e->message_id));
+    mutt_list_insert_head(head, safe_strdup(e->message_id));
   }
 }
 
@@ -751,7 +751,7 @@ static void make_reference_headers(struct Envelope *curenv,
      discouraged by RfC2822, sect. 3.6.4 */
   if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
-    mutt_stailq_free(&env->references);
+    mutt_list_free(&env->references);
 }
 
 static int envelope_defaults(struct Envelope *env, struct Context *ctx,
@@ -1249,8 +1249,8 @@ static int is_reply(struct Header *reply, struct Header *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
     return 0;
-  return mutt_stailq_find(&orig->env->references, reply->env->message_id) ||
-         mutt_stailq_find(&orig->env->in_reply_to, reply->env->message_id);
+  return mutt_list_find(&orig->env->references, reply->env->message_id) ||
+         mutt_list_find(&orig->env->in_reply_to, reply->env->message_id);
 }
 
 static int has_recips(struct Address *a)

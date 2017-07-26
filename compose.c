@@ -318,7 +318,7 @@ static void redraw_crypt_lines(struct Header *msg)
 
 #ifdef MIXMASTER
 
-static void redraw_mix_line(struct STailQHead *chain)
+static void redraw_mix_line(struct ListHead *chain)
 {
   char *t = NULL;
 
@@ -335,7 +335,7 @@ static void redraw_mix_line(struct STailQHead *chain)
   }
 
   int c = 12;
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, chain, entries)
   {
     t = np->data;

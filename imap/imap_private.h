@@ -238,7 +238,7 @@ struct ImapData
   struct Buffer *cmdbuf;
 
   /* cache ImapStatus of visited mailboxes */
-  struct STailQHead mboxcache;
+  struct ListHead mboxcache;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
@@ -257,7 +257,7 @@ struct ImapData
   struct BodyCache *bcache;
 
   /* all folder flags - system flags AND keywords */
-  struct STailQHead flags;
+  struct ListHead flags;
 #ifdef USE_HCACHE
   header_cache_t *hcache;
 #endif
@@ -280,7 +280,7 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progr
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
 int imap_sync_message(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
-bool imap_has_flag(struct STailQHead *flag_list, const char *flag);
+bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 
 /* auth.c */
 int imap_authenticate(struct ImapData *idata);
@@ -295,7 +295,7 @@ int imap_exec(struct ImapData *idata, const char *cmd, int flags);
 int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
-void imap_add_keywords(char *s, struct Header *keywords, struct STailQHead *mailbox_flags, size_t slen);
+void imap_add_keywords(char *s, struct Header *keywords, struct ListHead *mailbox_flags, size_t slen);
 void imap_free_header_data(struct ImapHeaderData **data);
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end);
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s);

@@ -373,7 +373,7 @@ void mutt_draw_tree(struct Context *ctx)
  * most immediate existing descendants.  we also note the earliest
  * date on any of the parents and put it in *dateptr.
  */
-static void make_subject_list(struct STailQHead *subjects, struct MuttThread *cur, time_t *dateptr)
+static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur, time_t *dateptr)
 {
   struct MuttThread *start = cur;
   struct Envelope *env = NULL;
@@ -396,7 +396,7 @@ static void make_subject_list(struct STailQHead *subjects, struct MuttThread *cu
     env = cur->message->env;
     if (env->real_subj && ((env->real_subj != env->subject) || (!option(OPT_SORT_RE))))
     {
-      struct STailQNode *np;
+      struct ListNode *np;
       STAILQ_FOREACH(np, subjects, entries)
       {
         rc = mutt_strcmp(env->real_subj, np->data);
@@ -404,9 +404,9 @@ static void make_subject_list(struct STailQHead *subjects, struct MuttThread *cu
           break;
       }
       if (!np)
-          mutt_stailq_insert_head(subjects, env->real_subj);
+          mutt_list_insert_head(subjects, env->real_subj);
       else if (rc > 0)
-          mutt_stailq_insert_after(subjects, np, env->real_subj);
+          mutt_list_insert_after(subjects, np, env->real_subj);
     }
 
     while (!cur->next && cur != start)
@@ -429,12 +429,12 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
 {
   struct HashElem *ptr = NULL;
   struct MuttThread *tmp = NULL, *last = NULL;
-  struct STailQHead subjects = STAILQ_HEAD_INITIALIZER(subjects);
+  struct ListHead subjects = STAILQ_HEAD_INITIALIZER(subjects);
   time_t date = 0;
 
   make_subject_list(&subjects, cur, &date);
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, &subjects, entries)
   {
     for (ptr = hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
@@ -457,7 +457,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
     }
   }
 
-  mutt_stailq_clear(&subjects);
+  mutt_list_clear(&subjects);
   return last;
 }
 
@@ -784,7 +784,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
   int i, oldsort, using_refs = 0;
   struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset(&top, 0, sizeof(top));
-  struct STailQNode *ref = NULL;
+  struct ListNode *ref = NULL;
 
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
@@ -1394,7 +1394,7 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
 static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
   struct MuttThread *p = NULL;
-  struct STailQNode *ref = NULL;
+  struct ListNode *ref = NULL;
   bool done = false;
 
   for (; cur; cur = cur->next, done = false)
@@ -1427,7 +1427,7 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       struct Header *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
-      struct STailQNode *np = NULL;
+      struct ListNode *np;
       while ((np = STAILQ_NEXT(ref, entries)) != NULL)
       {
         STAILQ_REMOVE_AFTER(&cur->message->env->references, ref, entries);
@@ -1442,8 +1442,8 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
 void mutt_break_thread(struct Header *hdr)
 {
-  mutt_stailq_free(&hdr->env->in_reply_to);
-  mutt_stailq_free(&hdr->env->references);
+  mutt_list_free(&hdr->env->in_reply_to);
+  mutt_list_free(&hdr->env->references);
   hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = true;
 
   clean_references(hdr->thread, hdr->thread->child);
@@ -1455,7 +1455,7 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
     return false;
 
   mutt_break_thread(child);
-  mutt_stailq_insert_head(&child->env->in_reply_to, safe_strdup(parent->env->message_id));
+  mutt_list_insert_head(&child->env->in_reply_to, safe_strdup(parent->env->message_id));
   mutt_set_flag(ctx, child, MUTT_TAG, 0);
 
   child->env->irt_changed = child->changed = true;

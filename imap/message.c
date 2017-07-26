@@ -162,7 +162,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   }
   s++;
 
-  mutt_stailq_free(&hd->keywords);
+  mutt_list_free(&hd->keywords);
   hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = false;
 
   /* start parsing */
@@ -205,7 +205,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
         s++;
       ctmp = *s;
       *s = '\0';
-      mutt_stailq_insert_tail(&hd->keywords, safe_strdup(flag_word));
+      mutt_list_insert_tail(&hd->keywords, safe_strdup(flag_word));
       *s = ctmp;
     }
     SKIPWS(s);
@@ -1397,14 +1397,14 @@ int imap_cache_clean(struct ImapData *idata)
  *
  * If the tags appear in the folder flags list. Why wouldn't they?
  */
-void imap_add_keywords(char *s, struct Header *h, struct STailQHead *mailbox_flags, size_t slen)
+void imap_add_keywords(char *s, struct Header *h, struct ListHead *mailbox_flags, size_t slen)
 {
-  struct STailQHead *keywords = &HEADER_DATA(h)->keywords;
+  struct ListHead *keywords = &HEADER_DATA(h)->keywords;
 
   if (STAILQ_EMPTY(mailbox_flags) || !HEADER_DATA(h) || STAILQ_EMPTY(keywords))
     return;
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, keywords, entries)
   {
     if (imap_has_flag(mailbox_flags, np->data))
@@ -1423,7 +1423,7 @@ void imap_free_header_data(struct ImapHeaderData **data)
   if (*data)
   {
     /* this should be safe even if the list wasn't used */
-    mutt_stailq_free(&(*data)->keywords);
+    mutt_list_free(&(*data)->keywords);
     FREE(data);
   }
 }

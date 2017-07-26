@@ -286,14 +286,14 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   *a = NULL;
 }
 
-static unsigned char *dump_stailq(struct STailQHead *l, unsigned char *d, int *off, int convert)
+static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
 
   d = dump_int(0xdeadbeef, d, off);
 
-  struct STailQNode *np;
+  struct ListNode *np;
   STAILQ_FOREACH(np, l, entries)
   {
     d = dump_char(np->data, d, off, convert);
@@ -305,16 +305,16 @@ static unsigned char *dump_stailq(struct STailQHead *l, unsigned char *d, int *o
   return d;
 }
 
-static void restore_stailq(struct STailQHead *l, const unsigned char *d, int *off, int convert)
+static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
   restore_int(&counter, d, off);
 
-  struct STailQNode *np;
+  struct ListNode *np;
   while (counter)
   {
-    np = mutt_stailq_insert_tail(l, NULL);
+    np = mutt_list_insert_tail(l, NULL);
     restore_char(&np->data, d, off, convert);
     counter--;
   }
