@@ -54,7 +54,11 @@
 #include "protos.h"
 #include "sort.h"
 #include "thread.h"
-#ifndef USE_SLANG_CURSES
+#ifdef HAVE_NCURSESW_NCURSES_H
+#include <ncursesw/term.h>
+#elif defined(HAVE_NCURSES_NCURSES_H)
+#include <ncurses/term.h>
+#elif defined(HAVE_NCURSES_H)
 #include <term.h>
 #endif
 #ifdef USE_SIDEBAR
