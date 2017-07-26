@@ -43,7 +43,6 @@ struct Context;
 struct EnterState;
 struct Envelope;
 struct Header;
-struct List;
 struct Parameter;
 struct Regex;
 struct ReplaceList;
@@ -343,7 +342,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, 
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_query_complete(char *buf, size_t buflen);
-int mutt_query_variables(struct List *queries);
+int mutt_query_variables(struct STailQHead *queries);
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
 int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt);
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt);

@@ -324,7 +324,7 @@ struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
 struct List *mutt_find_list(struct List *l, const char *data);
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
-void mutt_init(int skip_sys_rc, struct List *commands);
+void mutt_init(int skip_sys_rc, struct STailQHead *commands);
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */

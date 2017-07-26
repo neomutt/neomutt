@@ -3936,10 +3936,8 @@ int var_to_string(int idx, char *val, size_t len)
 /**
  * mutt_query_variables - Implement the -Q command line flag
  */
-int mutt_query_variables(struct List *queries)
+int mutt_query_variables(struct STailQHead *queries)
 {
-  struct List *p = NULL;
-
   char command[STRING];
 
   struct Buffer err, token;
@@ -3950,9 +3948,10 @@ int mutt_query_variables(struct List *queries)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
 
-  for (p = queries; p; p = p->next)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, queries, entries)
   {
-    snprintf(command, sizeof(command), "set ?%s\n", p->data);
+    snprintf(command, sizeof(command), "set ?%s\n", np->data);
     if (mutt_parse_rc_line(command, &token, &err) == -1)
     {
       fprintf(stderr, "%s\n", err.data);
@@ -4029,7 +4028,7 @@ int mutt_getvaluebyname(const char *name, const struct Mapping *map)
   return -1;
 }
 
-static int execute_commands(struct List *p)
+static int execute_commands(struct STailQHead *p)
 {
   struct Buffer err, token;
 
@@ -4037,9 +4036,10 @@ static int execute_commands(struct List *p)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
   mutt_buffer_init(&token);
-  for (; p; p = p->next)
+  struct STailQNode *np;
+  STAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_parse_rc_line(p->data, &token, &err) == -1)
+    if (mutt_parse_rc_line(np->data, &token, &err) == -1)
     {
       fprintf(stderr, _("Error in command line: %s\n"), err.data);
       FREE(&token.data);
@@ -4091,7 +4091,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   return NULL;
 }
 
-void mutt_init(int skip_sys_rc, struct List *commands)
+void mutt_init(int skip_sys_rc, struct STailQHead *commands)
 {
   struct passwd *pw = NULL;
   struct utsname utsname;
