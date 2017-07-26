@@ -244,49 +244,6 @@ void mutt_free_body(struct Body **p)
   *p = 0;
 }
 
-struct List *mutt_add_list(struct List *head, const char *data)
-{
-  size_t len = mutt_strlen(data);
-
-  return mutt_add_list_n(head, data, len ? len + 1 : 0);
-}
-
-struct List *mutt_add_list_n(struct List *head, const void *data, size_t len)
-{
-  struct List *tmp = NULL;
-
-  for (tmp = head; tmp && tmp->next; tmp = tmp->next)
-    ;
-  if (tmp)
-  {
-    tmp->next = safe_malloc(sizeof(struct List));
-    tmp = tmp->next;
-  }
-  else
-    head = tmp = safe_malloc(sizeof(struct List));
-
-  tmp->data = safe_malloc(len);
-  if (len)
-    memcpy(tmp->data, data, len);
-  tmp->next = NULL;
-  return head;
-}
-
-struct List *mutt_find_list(struct List *l, const char *data)
-{
-  struct List *p = l;
-
-  while (p)
-  {
-    if (data == p->data)
-      return p;
-    if (data && p->data && (mutt_strcmp(p->data, data) == 0))
-      return p;
-    p = p->next;
-  }
-  return NULL;
-}
-
 int mutt_remove_from_rx_list(struct RxList **l, const char *str)
 {
   struct RxList *p = NULL, *last = NULL;
@@ -321,21 +278,6 @@ int mutt_remove_from_rx_list(struct RxList **l, const char *str)
     }
   }
   return rv;
-}
-
-void mutt_free_list(struct List **list)
-{
-  struct List *p = NULL;
-
-  if (!list)
-    return;
-  while (*list)
-  {
-    p = *list;
-    *list = (*list)->next;
-    FREE(&p->data);
-    FREE(&p);
-  }
 }
 
 void mutt_free_header(struct Header **h)

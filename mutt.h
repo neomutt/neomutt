@@ -30,7 +30,6 @@
 #include <stddef.h>
 #include <stdio.h>
 
-struct List;
 struct ReplaceList;
 struct RxList;
 struct State;
@@ -313,15 +312,11 @@ enum QuadOptionVars
 #define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
-void mutt_free_list(struct List **list);
 void mutt_free_rx_list(struct RxList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
 int mutt_matches_ignore(const char *s);
 
 /* add an element to a list */
-struct List *mutt_add_list(struct List *head, const char *data);
-struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
-struct List *mutt_find_list(struct List *l, const char *data);
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
 void mutt_init(int skip_sys_rc, struct STailQHead *commands);

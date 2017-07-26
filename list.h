@@ -27,20 +27,6 @@
 #include "lib/lib.h"
 
 /**
- * struct List - Singly-linked List type
- */
-struct List
-{
-  char *data;
-  struct List *next;
-};
-
-static inline struct List *mutt_new_list(void)
-{
-  return safe_calloc(1, sizeof(struct List));
-}
-
-/**
  * New implementation using macros from queue.h
  */
 
@@ -53,7 +39,8 @@ struct STailQNode
     STAILQ_ENTRY(STailQNode) entries;
 };
 
-static inline struct STailQNode* mutt_stailq_insert_head(struct STailQHead *h, char *s)
+static inline struct STailQNode* mutt_stailq_insert_head(struct STailQHead *h,
+                                                         char *s)
 {
   struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
   np->data = s;
@@ -61,11 +48,22 @@ static inline struct STailQNode* mutt_stailq_insert_head(struct STailQHead *h, c
   return np;
 }
 
-static inline struct STailQNode* mutt_stailq_insert_tail(struct STailQHead *h, char * s)
+static inline struct STailQNode* mutt_stailq_insert_tail(struct STailQHead *h,
+                                                         char *s)
 {
   struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
   np->data = s;
   STAILQ_INSERT_TAIL(h, np, entries);
+  return np;
+}
+
+static inline struct STailQNode* mutt_stailq_insert_after(struct STailQHead *h,
+                                                          struct STailQNode *n,
+                                                          char *s)
+{
+  struct STailQNode *np = safe_calloc(1, sizeof(struct STailQNode));
+  np->data = s;
+  STAILQ_INSERT_AFTER(h, n, np, entries);
   return np;
 }
 
@@ -95,6 +93,22 @@ static inline void mutt_stailq_free(struct STailQHead *h)
   STAILQ_INIT(h);
 }
 
+static inline void mutt_stailq_clear(struct STailQHead *h)
+{
+  struct STailQNode *np = STAILQ_FIRST(h), *next = NULL;
+  while (np)
+  {
+      next = STAILQ_NEXT(np, entries);
+      FREE(&np);
+      np = next;
+  }
+  STAILQ_INIT(h);
+}
+
+/**
+ * mutt_stailq_match - Is the string in the list
+ * @return true if the header contained in "s" is in list "h"
+ */
 static inline bool mutt_stailq_match(const char *s, struct STailQHead *h)
 {
   struct STailQNode *np;
