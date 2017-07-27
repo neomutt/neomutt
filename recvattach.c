@@ -1252,7 +1252,7 @@ void mutt_view_attachments(struct Header *hdr)
 
         if (!idx[menu->current]->content->hdr->env->followup_to ||
             (mutt_strcasecmp(idx[menu->current]->content->hdr->env->followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOWUPTOPOSTER,
+            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           mutt_attach_reply(fp, hdr, idx, idxlen,

@@ -641,7 +641,7 @@ struct Option MuttVars[] = {
   ** verification (only supported by the GPGME backend).
   */
   { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0 },
-  { "crypt_verify_sig", DT_QUAD, R_NONE, OPT_VERIFYSIG, MUTT_YES },
+  { "crypt_verify_sig", DT_QUAD, R_NONE, OPT_VERIFY_SIG, MUTT_YES },
   /*
   ** .pp
   ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
@@ -852,7 +852,7 @@ struct Option MuttVars[] = {
   ** \fBNote:\fP this variable has no effect when the $$autoedit
   ** variable is \fIset\fP.
   */
-  { "fcc_attach",       DT_QUAD, R_NONE, OPT_FCCATTACH, MUTT_YES },
+  { "fcc_attach",       DT_QUAD, R_NONE, OPT_FCC_ATTACH, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not attachments on outgoing messages
@@ -938,7 +938,7 @@ struct Option MuttVars[] = {
   ** of the same email for you.
   */
 #ifdef USE_NNTP
-  { "followup_to_poster", DT_QUAD, R_NONE, OPT_FOLLOWUPTOPOSTER, MUTT_ASKYES },
+  { "followup_to_poster", DT_QUAD, R_NONE, OPT_FOLLOW_UP_TO_POSTER, MUTT_ASKYES },
   /*
   ** .pp
   ** If this variable is \fIset\fP and the keyword "poster" is present in
@@ -995,7 +995,7 @@ struct Option MuttVars[] = {
   { "forw_decrypt",     DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
   */
-  { "forward_edit",     DT_QUAD, R_NONE, OPT_FORWEDIT, MUTT_YES },
+  { "forward_edit",     DT_QUAD, R_NONE, OPT_FORW_EDIT, MUTT_YES },
   /*
   ** .pp
   ** This quadoption controls whether or not the user is automatically
@@ -1253,7 +1253,7 @@ struct Option MuttVars[] = {
   ** If \fIunset\fP, Mutt will render all MIME parts it can
   ** properly transform to plain text.
   */
-  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, MUTT_YES },
+  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MF_UP_TO, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not a Mail-Followup-To header is
@@ -1875,7 +1875,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** The name of the MH sequence used for unseen messages.
   */
-  { "mime_forward",     DT_QUAD, R_NONE, OPT_MIMEFWD, MUTT_NO },
+  { "mime_forward",     DT_QUAD, R_NONE, OPT_MIME_FWD, MUTT_NO },
   /*
   ** .pp
   ** When \fIset\fP, the message you are forwarding will be attached as a
@@ -1897,7 +1897,7 @@ struct Option MuttVars[] = {
   { "mime_fwd",         DT_SYN,  R_NONE, UL "mime_forward", 0 },
   /*
   */
-  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, MUTT_YES },
+  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIME_FWD_REST, MUTT_YES },
   /*
   ** .pp
   ** When forwarding multiple attachments of a MIME message from the attachment
@@ -2426,7 +2426,7 @@ struct Option MuttVars[] = {
   ** in the key selection menu and a few other places.
   ** (PGP only)
   */
-  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, MUTT_ASKYES },
+  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGP_MIME_AUTO, MUTT_ASKYES },
   /*
   ** .pp
   ** This option controls whether Mutt will prompt you for
@@ -2627,7 +2627,7 @@ struct Option MuttVars[] = {
   ** This variable configures how often (in seconds) mutt should look for
   ** new mail in the currently selected mailbox if it is a POP mailbox.
   */
-  { "pop_delete",       DT_QUAD, R_NONE, OPT_POPDELETE, MUTT_ASKNO },
+  { "pop_delete",       DT_QUAD, R_NONE, OPT_POP_DELETE, MUTT_ASKNO },
   /*
   ** .pp
   ** If \fIset\fP, Mutt will delete successfully downloaded messages from the POP
@@ -2662,7 +2662,7 @@ struct Option MuttVars[] = {
   ** fairly secure machine, because the superuser can read your muttrc
   ** even if you are the only one who can read the file.
   */
-  { "pop_reconnect",    DT_QUAD, R_NONE, OPT_POPRECONNECT, MUTT_ASKYES },
+  { "pop_reconnect",    DT_QUAD, R_NONE, OPT_POP_RECONNECT, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not Mutt will try to reconnect to the POP server if
@@ -2686,7 +2686,7 @@ struct Option MuttVars[] = {
   /*
   */
 #ifdef USE_NNTP
-  { "post_moderated",   DT_QUAD, R_NONE, OPT_TOMODERATED, MUTT_ASKYES },
+  { "post_moderated",   DT_QUAD, R_NONE, OPT_TO_MODERATED, MUTT_ASKYES },
   /*
   ** .pp
   ** If set to \fIyes\fP, Mutt will post article to newsgroup that have
@@ -2951,7 +2951,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see the ``$alternates'' command.
   */
-  { "reply_to",         DT_QUAD, R_NONE, OPT_REPLYTO, MUTT_ASKYES },
+  { "reply_to",         DT_QUAD, R_NONE, OPT_REPLY_TO, MUTT_ASKYES },
   /*
   ** .pp
   ** If \fIset\fP, when replying to a message, Mutt will use the address listed
@@ -3831,7 +3831,7 @@ struct Option MuttVars[] = {
   ** the default from the GNUTLS library.
   */
 # endif /* USE_SSL_GNUTLS */
-  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, MUTT_YES },
+  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSL_START_TLS, MUTT_YES },
   /*
   ** .pp
   ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
@@ -4400,8 +4400,8 @@ struct Option MuttVars[] = {
   ** When \fIset\fP, Mutt will collapse all threads when entering a folder.
   */
   /*--*/
-  { "pgp_encrypt_self",   DT_QUAD, R_NONE, OPT_PGPENCRYPTSELF,   MUTT_NO },
-  { "smime_encrypt_self", DT_QUAD, R_NONE, OPT_SMIMEENCRYPTSELF, MUTT_NO },
+  { "pgp_encrypt_self",   DT_QUAD, R_NONE, OPT_PGP_ENCRYPT_SELF,   MUTT_NO },
+  { "smime_encrypt_self", DT_QUAD, R_NONE, OPT_SMIME_ENCRYPT_SELF, MUTT_NO },
   { NULL, 0, 0, 0, 0 },
 };
 

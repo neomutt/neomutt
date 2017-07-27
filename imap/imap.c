@@ -474,7 +474,7 @@ int imap_open_connection(struct ImapData *idata)
 
       if (option(OPT_SSL_FORCE_TLS))
         rc = MUTT_YES;
-      else if ((rc = query_quadoption(OPT_SSLSTARTTLS,
+      else if ((rc = query_quadoption(OPT_SSL_START_TLS,
                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
         goto err_close_conn;
       if (rc == MUTT_YES)

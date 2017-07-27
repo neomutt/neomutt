@@ -579,7 +579,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
       rfc822_append(to, env->from, 0);
     }
     else if (!(addrcmp(env->from, env->reply_to) && !env->reply_to->next) &&
-             quadoption(OPT_REPLYTO) != MUTT_YES)
+             quadoption(OPT_REPLY_TO) != MUTT_YES)
     {
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
@@ -591,7 +591,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
          If she says no, mutt will reply to the from header's address instead. */
       snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"),
                env->reply_to->mailbox, env->reply_to->next ? ",..." : "");
-      switch (query_quadoption(OPT_REPLYTO, prompt))
+      switch (query_quadoption(OPT_REPLY_TO, prompt))
       {
         case MUTT_YES:
           rfc822_append(to, env->reply_to, 0);
@@ -626,7 +626,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
              in->mail_followup_to->mailbox,
              in->mail_followup_to->next ? ",..." : "");
 
-    if ((hmfupto = query_quadoption(OPT_MFUPTO, prompt)) == MUTT_ABORT)
+    if ((hmfupto = query_quadoption(OPT_MF_UP_TO, prompt)) == MUTT_ABORT)
       return -1;
   }
 
@@ -922,7 +922,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
   }
   else if (flags & SENDFORWARD)
   {
-    if ((i = query_quadoption(OPT_MIMEFWD, _("Forward as attachment?"))) == MUTT_YES)
+    if ((i = query_quadoption(OPT_MIME_FWD, _("Forward as attachment?"))) == MUTT_YES)
     {
       struct Body *last = msg->content;
 
@@ -1677,7 +1677,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
      */
     if (!(flags & SENDKEY) &&
         ((flags & SENDFORWARD) == 0 || (option(OPT_EDIT_HDRS) && option(OPT_AUTO_EDIT)) ||
-         query_quadoption(OPT_FORWEDIT, _("Edit forwarded message?")) == MUTT_YES))
+         query_quadoption(OPT_FORW_EDIT, _("Edit forwarded message?")) == MUTT_YES))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap(msg->content))
@@ -2088,7 +2088,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
-    if (query_quadoption(OPT_FCCATTACH, _("Save attachments in Fcc?")) != MUTT_YES &&
+    if (query_quadoption(OPT_FCC_ATTACH, _("Save attachments in Fcc?")) != MUTT_YES &&
         msg->content->type == TYPEMULTIPART)
     {
       if (WithCrypto && (msg->security & (ENCRYPT | SIGN)) &&

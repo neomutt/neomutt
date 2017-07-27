@@ -225,7 +225,7 @@ WHERE struct ReplaceList *SubjectRxList;
 
 /* bit vector for the yes/no/ask variable type */
 #ifdef MAIN_C
-unsigned char QuadOptions[(OPT_MAX * 2 + 7) / 8];
+unsigned char QuadOptions[(OPT_QUAD_MAX * 2 + 7) / 8];
 #else
 extern unsigned char QuadOptions[];
 #endif

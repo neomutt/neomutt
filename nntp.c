@@ -671,7 +671,7 @@ int nntp_open_connection(struct NntpServer *nserv)
     if (nserv->use_tls == 0)
       nserv->use_tls =
           option(OPT_SSL_FORCE_TLS) ||
-                  query_quadoption(OPT_SSLSTARTTLS,
+                  query_quadoption(OPT_SSL_START_TLS,
                                    _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
               1;

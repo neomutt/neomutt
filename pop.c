@@ -893,7 +893,7 @@ void pop_fetch_mail(void)
     goto finish;
 
   delanswer =
-      query_quadoption(OPT_POPDELETE, _("Delete messages from server?"));
+      query_quadoption(OPT_POP_DELETE, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf), _("Reading new messages (%d bytes)..."), bytes);
   mutt_message("%s", msgbuf);

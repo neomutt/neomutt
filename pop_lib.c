@@ -326,7 +326,7 @@ int pop_open_connection(struct PopData *pop_data)
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret = query_quadoption(OPT_SSLSTARTTLS, _("Secure connection with TLS?"));
+      ret = query_quadoption(OPT_SSL_START_TLS, _("Secure connection with TLS?"));
       if (ret == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;
@@ -645,7 +645,7 @@ int pop_reconnect(struct Context *ctx)
     if (ret < -1)
       return -1;
 
-    if (query_quadoption(OPT_POPRECONNECT,
+    if (query_quadoption(OPT_POP_RECONNECT,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
       return -1;
   }

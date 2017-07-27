@@ -151,7 +151,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     if ((msg->content->type != TYPETEXT) ||
         (ascii_strcasecmp(msg->content->subtype, "plain") != 0))
     {
-      if (query_quadoption(OPT_PGPMIMEAUTO,
+      if (query_quadoption(OPT_PGP_MIME_AUTO,
                            _("Inline PGP can't be used with attachments.  "
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
@@ -174,7 +174,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption(
-              OPT_PGPMIMEAUTO,
+              OPT_PGP_MIME_AUTO,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent."));
@@ -836,7 +836,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         return -1;
       }
       unset_option(OPT_PGP_CHECK_TRUST);
-      if (option(OPT_PGP_SELF_ENCRYPT) || (quadoption(OPT_PGPENCRYPTSELF) == MUTT_YES))
+      if (option(OPT_PGP_SELF_ENCRYPT) || (quadoption(OPT_PGP_ENCRYPT_SELF) == MUTT_YES))
         self_encrypt = PgpSelfEncryptAs;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
@@ -846,7 +846,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         rfc822_free_address(&adrlist);
         return -1;
       }
-      if (option(OPT_SMIME_SELF_ENCRYPT) || (quadoption(OPT_SMIMEENCRYPTSELF) == MUTT_YES))
+      if (option(OPT_SMIME_SELF_ENCRYPT) || (quadoption(OPT_SMIME_ENCRYPT_SELF) == MUTT_YES))
         self_encrypt = SmimeSelfEncryptAs;
     }
   }
