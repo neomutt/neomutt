@@ -241,7 +241,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
        * Internet Gateways.  So we actually decode it.
        */
 
-      if (option(OPTRFC2047PARAMS) && p->value && strstr(p->value, "=?"))
+      if (option(OPT_RFC2047_PARAMS) && p->value && strstr(p->value, "=?"))
         rfc2047_decode(&p->value);
       else if (AssumedCharset && *AssumedCharset)
         convert_nonmime_string(&p->value);

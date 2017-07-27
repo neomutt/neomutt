@@ -128,7 +128,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
      we can simply compare strings as we don't generate References for
      multiple Message-Ids in IRT anyways */
 #ifdef USE_NNTP
-  if (!option(OPTNEWSSEND))
+  if (!option(OPT_NEWS_SEND))
 #endif
     if (msg->env->in_reply_to &&
         (!n->in_reply_to ||

@@ -332,14 +332,14 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
   int chflags = CH_DECODE;
   char prefix[SHORT_STRING];
 
-  if (option(OPTWEED))
+  if (option(OPT_WEED))
     chflags |= CH_WEED | CH_REORDER;
 
   if (quote)
   {
     if (_prefix)
       strfcpy(prefix, _prefix, sizeof(prefix));
-    else if (!option(OPTTEXTFLOWED))
+    else if (!option(OPT_TEXT_FLOWED))
       _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
@@ -420,15 +420,15 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
 
   /* prepare the prefix here since we'll need it later. */
 
-  if (option(OPTFORWQUOTE))
+  if (option(OPT_FORW_QUOTE))
   {
-    if (!option(OPTTEXTFLOWED))
+    if (!option(OPT_TEXT_FLOWED))
       _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, parent, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
   }
 
-  include_header(option(OPTFORWQUOTE), fp, parent, tmpfp, prefix);
+  include_header(option(OPT_FORW_QUOTE), fp, parent, tmpfp, prefix);
 
   /*
    * Now, we have prepared the first part of the message body: The
@@ -463,10 +463,10 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
 
   memset(&st, 0, sizeof(st));
 
-  if (option(OPTFORWQUOTE))
+  if (option(OPT_FORW_QUOTE))
     st.prefix = prefix;
   st.flags = MUTT_CHARCONV;
-  if (option(OPTWEED))
+  if (option(OPT_WEED))
     st.flags |= MUTT_WEED;
   st.fpin = fp;
   st.fpout = tmpfp;
@@ -585,16 +585,16 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
       return;
     }
 
-    if (option(OPTFORWQUOTE))
+    if (option(OPT_FORW_QUOTE))
     {
       chflags |= CH_PREFIX;
       cmflags |= MUTT_CM_PREFIX;
     }
 
-    if (option(OPTFORWDECODE))
+    if (option(OPT_FORW_DECODE))
     {
       cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-      if (option(OPTWEED))
+      if (option(OPT_WEED))
       {
         chflags |= CH_WEED | CH_REORDER;
         cmflags |= MUTT_CM_WEED;
@@ -766,9 +766,9 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int 
 
   mutt_make_attribution(Context, cur, tmpfp);
 
-  if (!option(OPTHEADER))
+  if (!option(OPT_HEADER))
     cmflags |= MUTT_CM_NOHEADER;
-  if (option(OPTWEED))
+  if (option(OPT_WEED))
   {
     chflags |= CH_WEED;
     cmflags |= MUTT_CM_WEED;
@@ -796,9 +796,9 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
-    set_option(OPTNEWSSEND);
+    set_option(OPT_NEWS_SEND);
   else
-    unset_option(OPTNEWSSEND);
+    unset_option(OPT_NEWS_SEND);
 #endif
 
   if (!check_all_msg(idx, idxlen, cur, false))
@@ -859,7 +859,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
     st.fpin = fp;
     st.fpout = tmpfp;
 
-    if (!option(OPTTEXTFLOWED))
+    if (!option(OPT_TEXT_FLOWED))
       _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, parent, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
@@ -867,10 +867,10 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
     st.prefix = prefix;
     st.flags = MUTT_CHARCONV;
 
-    if (option(OPTWEED))
+    if (option(OPT_WEED))
       st.flags |= MUTT_WEED;
 
-    if (option(OPTHEADER))
+    if (option(OPT_HEADER))
       include_header(1, fp, parent, tmpfp, prefix);
 
     if (cur)

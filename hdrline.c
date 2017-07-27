@@ -992,7 +992,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (!optional)
       {
         make_from_addr(hdr->env, buf2, sizeof(buf2), 1);
-        if (!option(OPTSAVEADDRESS) && (p = strpbrk(buf2, "%@")))
+        if (!option(OPT_SAVE_ADDRESS) && (p = strpbrk(buf2, "%@")))
           *p = 0;
         mutt_format_s(dest, destlen, prefix, buf2);
       }

@@ -385,7 +385,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     return -1;
   }
 
-  if (option(OPTSSLVERIFYDATES) != MUTT_NO)
+  if (option(OPT_SSL_VERIFY_DATES) != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
       *certerr |= CERTERR_EXPIRED;
@@ -393,7 +393,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && option(OPTSSLVERIFYHOST) != MUTT_NO &&
+  if (chainidx == 0 && option(OPT_SSL_VERIFY_HOST) != MUTT_NO &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;
@@ -726,7 +726,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu->help = helpstr;
 
   done = 0;
-  set_option(OPTIGNOREMACROEVENTS);
+  set_option(OPT_IGNORE_MACRO_EVENTS);
   while (!done)
   {
     switch (mutt_menu_loop(menu))
@@ -777,7 +777,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
     }
   }
-  unset_option(OPTIGNOREMACROEVENTS);
+  unset_option(OPT_IGNORE_MACRO_EVENTS);
   mutt_pop_current_menu(menu);
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
@@ -935,22 +935,22 @@ static int tls_set_priority(struct TlsSockData *data)
   else
     safe_strcat(priority, priority_size, "NORMAL");
 
-  if (!option(OPTTLSV1_2))
+  if (!option(OPT_TLSV1_2))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
-  if (!option(OPTTLSV1_1))
+  if (!option(OPT_TLSV1_1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
-  if (!option(OPTTLSV1))
+  if (!option(OPT_TLSV1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
-  if (!option(OPTSSLV3))
+  if (!option(OPT_SSLV3))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-SSL3.0");
@@ -986,13 +986,13 @@ static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  if (option(OPTTLSV1_2))
+  if (option(OPT_TLSV1_2))
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  if (option(OPTTLSV1_1))
+  if (option(OPT_TLSV1_1))
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
-  if (option(OPTTLSV1))
+  if (option(OPT_TLSV1))
     protocol_priority[nproto++] = GNUTLS_TLS1;
-  if (option(OPTSSLV3))
+  if (option(OPT_SSLV3))
     protocol_priority[nproto++] = GNUTLS_SSL3;
   protocol_priority[nproto] = 0;
 
@@ -1123,7 +1123,7 @@ static int tls_negotiate(struct Connection *conn)
 
   tls_get_client_cert(conn);
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
   {
     mutt_message(_("SSL/TLS connection using %s (%s/%s/%s)"),
                  gnutls_protocol_get_name(gnutls_protocol_get_version(data->state)),

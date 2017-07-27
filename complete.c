@@ -64,7 +64,7 @@ int mutt_complete(char *s, size_t slen)
   mutt_debug(2, "mutt_complete: completing %s\n", s);
 
 #ifdef USE_NNTP
-  if (option(OPTNEWS))
+  if (option(OPT_NEWS))
   {
     struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int n = 0;

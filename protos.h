@@ -396,8 +396,8 @@ int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 #else
 #define IsPrint(c)                                                             \
   (isprint((unsigned char) (c)) ||                                             \
-   (option(OPTLOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
-#define IsWPrint(wc) (iswprint(wc) || (option(OPTLOCALES) ? 0 : (wc >= 0xa0)))
+   (option(OPT_LOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
+#define IsWPrint(wc) (iswprint(wc) || (option(OPT_LOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
 int getdnsdomainname(char *d, size_t len);

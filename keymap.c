@@ -579,7 +579,7 @@ gotkey:
       if (map->op != OP_MACRO)
         return map->op;
 
-      if (option(OPTIGNOREMACROEVENTS))
+      if (option(OPT_IGNORE_MACRO_EVENTS))
       {
         mutt_error(_("Macros are currently disabled."));
         return -1;

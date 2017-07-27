@@ -389,7 +389,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';
-    if (option(OPTNOCURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
+    if (option(OPT_NO_CURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
       return SASL_FAIL;
 
     interaction->len = mutt_strlen(resp) + 1;

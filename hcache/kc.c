@@ -38,7 +38,7 @@ static void *hcache_kyotocabinet_open(const char *path)
 
   printfresult =
       snprintf(kcdbpath, sizeof(kcdbpath), "%s#type=kct#opts=%s#rcomp=lex",
-               path, option(OPTHCACHECOMPRESS) ? "lc" : "l");
+               path, option(OPT_HCACHE_COMPRESS) ? "lc" : "l");
   if ((printfresult < 0) || (printfresult >= sizeof(kcdbpath)))
   {
     return NULL;

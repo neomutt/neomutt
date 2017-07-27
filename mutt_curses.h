@@ -80,7 +80,7 @@
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
-    if (option(OPTBEEP))                                                       \
+    if (option(OPT_BEEP))                                                       \
       beep();                                                                  \
   } while (0)
 

@@ -607,7 +607,7 @@ static int comp_close_mailbox(struct Context *ctx)
   if (!ctx->append)
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(ctx->path, F_OK) != 0) && !option(OPTSAVEEMPTY))
+    if ((access(ctx->path, F_OK) != 0) && !option(OPT_SAVE_EMPTY))
     {
       remove(ctx->realpath);
     }

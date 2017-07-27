@@ -341,7 +341,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
  */
 static void update_entries_visibility(void)
 {
-  short new_only = option(OPTSIDEBARNEWMAILONLY);
+  short new_only = option(OPT_SIDEBAR_NEWMAIL_ONLY);
   struct SbEntry *sbe = NULL;
   for (int i = 0; i < EntryCount; i++)
   {
@@ -468,7 +468,7 @@ static int select_next_new(void)
     entry++;
     if (entry == EntryCount)
     {
-      if (option(OPTSIDEBARNEXTNEWWRAP))
+      if (option(OPT_SIDEBAR_NEXT_NEW_WRAP))
         entry = 0;
       else
         return false;
@@ -523,7 +523,7 @@ static bool select_prev_new(void)
     entry--;
     if (entry < 0)
     {
-      if (option(OPTSIDEBARNEXTNEWWRAP))
+      if (option(OPT_SIDEBAR_NEXT_NEW_WRAP))
         entry = EntryCount - 1;
       else
         return false;
@@ -630,7 +630,7 @@ static bool prepare_sidebar(int page_size)
 
   /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
    * need to scan for the framing interval */
-  if (option(OPTSIDEBARNEWMAILONLY))
+  if (option(OPT_SIDEBAR_NEWMAIL_ONLY))
   {
     TopIndex = BotIndex = -1;
     while (BotIndex < HilIndex)
@@ -702,7 +702,7 @@ static int draw_divider(int num_rows, int num_cols)
     altchar = SB_DIV_USER; /* User config */
   }
 
-  if (option(OPTASCIICHARS) && (altchar != SB_DIV_ASCII))
+  if (option(OPT_ASCII_CHARS) && (altchar != SB_DIV_ASCII))
   {
     /* $ascii_chars overrides Unicode divider chars */
     if (altchar == SB_DIV_UTF8)
@@ -728,7 +728,7 @@ static int draw_divider(int num_rows, int num_cols)
 
   SETCOLOR(MT_COLOR_DIVIDER);
 
-  int col = option(OPTSIDEBARONRIGHT) ? 0 : (SidebarWidth - delim_len);
+  int col = option(OPT_SIDEBAR_ON_RIGHT) ? 0 : (SidebarWidth - delim_len);
 
   for (i = 0; i < num_rows; i++)
   {
@@ -765,7 +765,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
   /* Fill the remaining rows with blank space */
   SETCOLOR(MT_COLOR_NORMAL);
 
-  if (!option(OPTSIDEBARONRIGHT))
+  if (!option(OPT_SIDEBAR_ON_RIGHT))
     div_width = 0;
   for (int r = 0; r < num_rows; r++)
   {
@@ -839,7 +839,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
 
     int col = 0;
-    if (option(OPTSIDEBARONRIGHT))
+    if (option(OPT_SIDEBAR_ON_RIGHT))
       col = div_width;
 
     mutt_window_move(MuttSidebarWindow, row, col);
@@ -874,7 +874,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     int sidebar_folder_depth = 0;
     char *sidebar_folder_name = NULL;
     int i;
-    if (option(OPTSIDEBARSHORTPATH))
+    if (option(OPT_SIDEBAR_SHORT_PATH))
     {
       /* disregard a trailing separator, so strlen() - 2 */
       sidebar_folder_name = b->path;
@@ -894,7 +894,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     {
       sidebar_folder_name = b->desc;
     }
-    else if (maildir_is_prefix && option(OPTSIDEBARFOLDERINDENT))
+    else if (maildir_is_prefix && option(OPT_SIDEBAR_FOLDER_INDENT))
     {
       const char *tmp_folder_name = NULL;
       int lastsep = 0;
@@ -910,7 +910,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       }
       if (sidebar_folder_depth > 0)
       {
-        if (option(OPTSIDEBARSHORTPATH))
+        if (option(OPT_SIDEBAR_SHORT_PATH))
           tmp_folder_name += lastsep; /* basename */
         int sfn_len = mutt_strlen(tmp_folder_name) +
                       sidebar_folder_depth * mutt_strlen(SidebarIndentString) + 1;
@@ -940,7 +940,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
  */
 void mutt_sb_draw(void)
 {
-  if (!option(OPTSIDEBAR))
+  if (!option(OPT_SIDEBAR))
     return;
 
 #ifdef USE_SLANG_CURSES
@@ -987,7 +987,7 @@ void mutt_sb_draw(void)
  */
 void mutt_sb_change_mailbox(int op)
 {
-  if (!option(OPTSIDEBAR))
+  if (!option(OPT_SIDEBAR))
     return;
 
   if (HilIndex < 0) /* It'll get reset on the next draw */
@@ -1060,7 +1060,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
  */
 const char *mutt_sb_get_highlight(void)
 {
-  if (!option(OPTSIDEBAR))
+  if (!option(OPT_SIDEBAR))
     return NULL;
 
   if (!EntryCount || HilIndex < 0)

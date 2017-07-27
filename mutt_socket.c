@@ -466,7 +466,7 @@ int raw_socket_open(struct Connection *conn)
   /* we accept v4 or v6 STREAM sockets */
   memset(&hints, 0, sizeof(hints));
 
-  if (option(OPTUSEIPV6))
+  if (option(OPT_USE_IPV6))
     hints.ai_family = AF_UNSPEC;
   else
     hints.ai_family = AF_INET;
@@ -485,7 +485,7 @@ int raw_socket_open(struct Connection *conn)
   host_idna = conn->account.host;
 #endif
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Looking up %s..."), conn->account.host);
 
   rc = getaddrinfo(host_idna, port, &hints, &res);
@@ -501,7 +501,7 @@ int raw_socket_open(struct Connection *conn)
     return -1;
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
@@ -543,7 +543,7 @@ int raw_socket_open(struct Connection *conn)
   host_idna = conn->account.host;
 #endif
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Looking up %s..."), conn->account.host);
 
   he = gethostbyname(host_idna);
@@ -559,7 +559,7 @@ int raw_socket_open(struct Connection *conn)
     return -1;
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;

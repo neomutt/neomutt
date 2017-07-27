@@ -517,7 +517,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                    _("---Command: %-30.30s Attachment: %s"), command, type);
       }
 
-      if ((mutt_wait_filter(thepid) || (entry->needsterminal && option(OPTWAITKEY))) && !use_pager)
+      if ((mutt_wait_filter(thepid) || (entry->needsterminal && option(OPT_WAIT_KEY))) && !use_pager)
         mutt_any_key_to_continue(NULL);
 
       if (tempfd != -1)
@@ -528,7 +528,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* interactive command */
-      if (mutt_system(command) || (entry->needsterminal && option(OPTWAITKEY)))
+      if (mutt_system(command) || (entry->needsterminal && option(OPT_WAIT_KEY)))
         mutt_any_key_to_continue(NULL);
     }
   }
@@ -578,14 +578,14 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* Use built-in handler */
-      set_option(OPTVIEWATTACH); /* disable the "use 'v' to view this part"
+      set_option(OPT_VIEW_ATTACH); /* disable the "use 'v' to view this part"
                                    * message in case of error */
       if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, 0))
       {
-        unset_option(OPTVIEWATTACH);
+        unset_option(OPT_VIEW_ATTACH);
         goto return_error;
       }
-      unset_option(OPTVIEWATTACH);
+      unset_option(OPT_VIEW_ATTACH);
     }
 
     if (a->description)
@@ -729,7 +729,7 @@ bail:
   if (mutt_wait_filter(thepid) != 0)
     rv = 0;
 
-  if (rv == 0 || option(OPTWAITKEY))
+  if (rv == 0 || option(OPT_WAIT_KEY))
     mutt_any_key_to_continue(NULL);
   return rv;
 }
@@ -1028,12 +1028,12 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_copy_stream(ifp, fpout);
       safe_fclose(&fpout);
       safe_fclose(&ifp);
-      if (mutt_wait_filter(thepid) || option(OPTWAITKEY))
+      if (mutt_wait_filter(thepid) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
     }
     else
     {
-      if (mutt_system(command) || option(OPTWAITKEY))
+      if (mutt_system(command) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
     }
 
@@ -1087,7 +1087,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       safe_fclose(&fpout);
       safe_fclose(&ifp);
 
-      if (mutt_wait_filter(thepid) != 0 || option(OPTWAITKEY))
+      if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }

@@ -724,13 +724,13 @@ int mix_send_message(struct List *chain, const char *tempfile)
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp, i ? "," : " -l ", cd_quoted);
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_endwin(NULL);
 
   if ((i = mutt_system(cmd)))
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
-    if (!option(OPTNOCURSES))
+    if (!option(OPT_NO_CURSES))
     {
       mutt_any_key_to_continue(NULL);
       mutt_error(_("Error sending message."));

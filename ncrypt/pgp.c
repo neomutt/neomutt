@@ -107,7 +107,7 @@ bool pgp_use_gpg_agent(void)
   char *tty = NULL;
 
   /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
-  if (!option(OPTUSEGPGAGENT))
+  if (!option(OPT_USE_GPG_AGENT))
     return false;
 
   if ((tty = ttyname(0)))
@@ -121,7 +121,7 @@ bool pgp_use_gpg_agent(void)
 
 static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
 {
-  if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPTPGPIGNORESUB))
+  if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPT_PGP_IGNORE_SUB))
     k = k->parent;
 
   return k;
@@ -150,7 +150,7 @@ char *pgp_keyid(struct PgpKeyInfo *k)
 
 char *_pgp_keyid(struct PgpKeyInfo *k)
 {
-  if (option(OPTPGPLONGIDS))
+  if (option(OPT_PGP_LONG_IDS))
     return k->keyid;
   else
     return (k->keyid + 8);
@@ -799,7 +799,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
   }
 
   mutt_endwin(NULL);
-  set_option(OPTDONTHANDLEPGPKEYS);
+  set_option(OPT_DONT_HANDLE_PGP_KEYS);
 
   for (; top; top = top->next)
   {
@@ -810,7 +810,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
       break;
   }
 
-  unset_option(OPTDONTHANDLEPGPKEYS);
+  unset_option(OPT_DONT_HANDLE_PGP_KEYS);
 }
 
 static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
@@ -1159,7 +1159,7 @@ struct Body *pgp_sign_message(struct Body *a)
     fputs(buffer, stdout);
   }
 
-  if (mutt_wait_filter(thepid) && option(OPTPGPCHECKEXIT))
+  if (mutt_wait_filter(thepid) && option(OPT_PGP_CHECK_EXIT))
     empty = true;
 
   safe_fclose(&pgperr);
@@ -1245,7 +1245,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       {
         keyID = crypt_hook->data;
         r = MUTT_YES;
-        if (!oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
+        if (!oppenc_mode && option(OPT_CRYPT_CONFIRM_HOOK))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
           r = mutt_yesorno(buf, MUTT_YES);
@@ -1400,7 +1400,7 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   }
   safe_fclose(&pgpin);
 
-  if (mutt_wait_filter(thepid) && option(OPTPGPCHECKEXIT))
+  if (mutt_wait_filter(thepid) && option(OPT_PGP_CHECK_EXIT))
     empty = 1;
 
   unlink(pgpinfile);
@@ -1573,7 +1573,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
     fprintf(pgpin, "%s\n", PgpPass);
   safe_fclose(&pgpin);
 
-  if (mutt_wait_filter(thepid) && option(OPTPGPCHECKEXIT))
+  if (mutt_wait_filter(thepid) && option(OPT_PGP_CHECK_EXIT))
     empty = true;
 
   mutt_unlink(pgpinfile);
@@ -1646,7 +1646,7 @@ int pgp_send_menu(struct Header *msg)
     return msg->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  if (option(OPTPGPAUTOINLINE) &&
+  if (option(OPT_PGP_AUTO_INLINE) &&
       !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN | ENCRYPT))))
     msg->security |= INLINE;
 
@@ -1671,7 +1671,7 @@ int pgp_send_menu(struct Header *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (option(OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
+  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
   {
     if (msg->security & (ENCRYPT | SIGN))
     {
@@ -1699,7 +1699,7 @@ int pgp_send_menu(struct Header *msg)
    * Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
-  else if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+  else if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
   {
     /* When the message is not selected for signing or encryption, the toggle
     * between PGP/MIME and Traditional doesn't make sense.
@@ -1775,7 +1775,7 @@ int pgp_send_menu(struct Header *msg)
         break;
 
       case 'a': /* sign (a)s */
-        unset_option(OPTPGPCHECKTRUST);
+        unset_option(OPT_PGP_CHECK_TRUST);
 
         if ((p = pgp_ask_for_key(_("Sign as: "), NULL, 0, PGP_SECRING)))
         {

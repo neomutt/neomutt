@@ -36,7 +36,7 @@ static void *hcache_tokyocabinet_open(const char *path)
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (option(OPTHCACHECOMPRESS))
+  if (option(OPT_HCACHE_COMPRESS))
     tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
     return db;

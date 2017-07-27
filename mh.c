@@ -306,7 +306,7 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
    * since the last mailbox visit, there is no "new mail" */
-  if (option(OPTMAILCHECKRECENT) && mh_sequences_changed(mailbox) <= 0)
+  if (option(OPT_MAIL_CHECK_RECENT) && mh_sequences_changed(mailbox) <= 0)
   {
     rc = 0;
     check_new = 0;
@@ -338,7 +338,7 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
       {
         /* if the first unseen message we encounter was in the mailbox during the
            last visit, don't notify about it */
-        if (!option(OPTMAILCHECKRECENT) || mh_already_notified(mailbox, i) == 0)
+        if (!option(OPT_MAIL_CHECK_RECENT) || mh_already_notified(mailbox, i) == 0)
         {
           mailbox->new = true;
           rc = 1;
@@ -720,7 +720,7 @@ void maildir_parse_flags(struct Header *h, const char *path)
           break;
 
         case 'T': /* trashed */
-          if (!h->flagged || !option(OPTFLAGSAFE))
+          if (!h->flagged || !option(OPT_FLAG_SAFE))
           {
             h->trash = true;
             h->deleted = true;
@@ -839,7 +839,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
   if (subdir)
   {
     snprintf(buf, sizeof(buf), "%s/%s", ctx->path, subdir);
-    is_old = option(OPTMARKOLD) ? (mutt_strcmp("cur", subdir) == 0) : false;
+    is_old = option(OPT_MARK_OLD) ? (mutt_strcmp("cur", subdir) == 0) : false;
   }
   else
     strfcpy(buf, ctx->path, sizeof(buf));
@@ -1164,7 +1164,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
     snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
 
 #ifdef USE_HCACHE
-    if (option(OPTHCACHEVERIFY))
+    if (option(OPT_HCACHE_VERIFY))
     {
       ret = stat(fn, &lastchanged);
     }
@@ -1895,10 +1895,10 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
   struct Header *h = ctx->hdrs[msgno];
 
-  if (h->deleted && (ctx->magic != MUTT_MAILDIR || !option(OPTMAILDIRTRASH)))
+  if (h->deleted && (ctx->magic != MUTT_MAILDIR || !option(OPT_MAILDIR_TRASH)))
   {
     snprintf(path, sizeof(path), "%s/%s", ctx->path, h->path);
-    if (ctx->magic == MUTT_MAILDIR || (option(OPTMHPURGE) && ctx->magic == MUTT_MH))
+    if (ctx->magic == MUTT_MAILDIR || (option(OPT_MH_PURGE) && ctx->magic == MUTT_MH))
     {
 #ifdef USE_HCACHE
       if (hc)
@@ -1931,7 +1931,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
   }
   else if (h->changed || h->attach_del || h->xlabel_changed ||
            (ctx->magic == MUTT_MAILDIR &&
-            (option(OPTMAILDIRTRASH) || h->trash) && (h->deleted != h->trash)))
+            (option(OPT_MAILDIR_TRASH) || h->trash) && (h->deleted != h->trash)))
   {
     if (ctx->magic == MUTT_MAILDIR)
     {
@@ -2036,7 +2036,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   /* XXX seems like this check belongs in mx_check_mailbox()
    * rather than here.
    */
-  if (!option(OPTCHECKNEW))
+  if (!option(OPT_CHECK_NEW))
     return 0;
 
   snprintf(buf, sizeof(buf), "%s/new", ctx->path);
@@ -2185,7 +2185,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   int i;
   struct MhData *data = mh_data(ctx);
 
-  if (!option(OPTCHECKNEW))
+  if (!option(OPT_CHECK_NEW))
     return 0;
 
   strfcpy(buf, ctx->path, sizeof(buf));
@@ -2342,7 +2342,7 @@ static int mh_sync_mailbox(struct Context *ctx, int *index_hint)
   {
     for (i = 0, j = 0; i < ctx->msgcount; i++)
     {
-      if (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && option(OPTMAILDIRTRASH)))
+      if (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
         ctx->hdrs[i]->index = j++;
     }
   }

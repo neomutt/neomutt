@@ -376,7 +376,7 @@ static int pop_fetch_headers(struct Context *ctx)
       {
         if (bcached)
           ctx->hdrs[i]->read = true;
-        else if (option(OPTMARKOLD))
+        else if (option(OPT_MARK_OLD))
           ctx->hdrs[i]->old = true;
       }
       else
@@ -407,7 +407,7 @@ static int pop_fetch_headers(struct Context *ctx)
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache
    */
-  if (option(OPTMESSAGECACHECLEAN))
+  if (option(OPT_MESSAGE_CACHE_CLEAN))
     mutt_bcache_list(pop_data->bcache, msg_cache_check, (void *) ctx);
 
   mutt_clear_error();
@@ -873,7 +873,7 @@ void pop_fetch_mail(void)
   sscanf(buffer, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if (msgs > 0 && option(OPTPOPLAST))
+  if (msgs > 0 && option(OPT_POP_LAST))
   {
     strfcpy(buffer, "LAST\r\n", sizeof(buffer));
     ret = pop_query(pop_data, buffer, sizeof(buffer));

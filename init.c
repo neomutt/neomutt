@@ -1979,7 +1979,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     tmp->name = safe_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
-      set_option(OPTMENUCALLER);
+      set_option(OPT_MENU_CALLER);
   }
   else
   {
@@ -2262,13 +2262,13 @@ static void restore_default(struct Option *p)
     mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
   }
   if (p->flags & R_RESORT_SUB)
-    set_option(OPTSORTSUBTHREADS);
+    set_option(OPT_SORT_SUBTHREADS);
   if (p->flags & R_RESORT)
-    set_option(OPTNEEDRESORT);
+    set_option(OPT_NEED_RESORT);
   if (p->flags & R_RESORT_INIT)
-    set_option(OPTRESORTINIT);
+    set_option(OPT_RESORT_INIT);
   if (p->flags & R_TREE)
-    set_option(OPTREDRAWTREE);
+    set_option(OPT_REDRAW_TREE);
   if (p->flags & R_REFLOW)
     mutt_reflow_windows();
 #ifdef USE_SIDEBAR
@@ -2660,10 +2660,10 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         for (idx = 0; MuttVars[idx].option; idx++)
           restore_default(&MuttVars[idx]);
         mutt_set_current_menu_redraw_full();
-        set_option(OPTSORTSUBTHREADS);
-        set_option(OPTNEEDRESORT);
-        set_option(OPTRESORTINIT);
-        set_option(OPTREDRAWTREE);
+        set_option(OPT_SORT_SUBTHREADS);
+        set_option(OPT_NEED_RESORT);
+        set_option(OPT_RESORT_INIT);
+        set_option(OPT_REDRAW_TREE);
         return 0;
       }
       else
@@ -2871,7 +2871,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      if (option(OPTATTACHMSG) &&
+      if (option(OPT_ATTACH_MSG) &&
           (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
       {
         snprintf(err->data, err->dsize,
@@ -3164,13 +3164,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
       }
       if (MuttVars[idx].flags & R_RESORT_SUB)
-        set_option(OPTSORTSUBTHREADS);
+        set_option(OPT_SORT_SUBTHREADS);
       if (MuttVars[idx].flags & R_RESORT)
-        set_option(OPTNEEDRESORT);
+        set_option(OPT_NEED_RESORT);
       if (MuttVars[idx].flags & R_RESORT_INIT)
-        set_option(OPTRESORTINIT);
+        set_option(OPT_RESORT_INIT);
       if (MuttVars[idx].flags & R_TREE)
-        set_option(OPTREDRAWTREE);
+        set_option(OPT_REDRAW_TREE);
       if (MuttVars[idx].flags & R_REFLOW)
         mutt_reflow_windows();
 #ifdef USE_SIDEBAR
@@ -4386,13 +4386,13 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   /* Do we have a locale definition? */
   if (((p = getenv("LC_ALL")) != NULL && p[0]) || ((p = getenv("LANG")) != NULL && p[0]) ||
       ((p = getenv("LC_CTYPE")) != NULL && p[0]))
-    set_option(OPTLOCALES);
+    set_option(OPT_LOCALES);
 #endif
 
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    unset_option(OPTSUSPEND);
+    unset_option(OPT_SUSPEND);
 #endif
 
   mutt_init_history();
@@ -4507,7 +4507,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   {
     if (config->data)
     {
-      if (!option(OPTNOCURSES))
+      if (!option(OPT_NO_CURSES))
         endwin();
       if (source_rc(config->data, &err) != 0)
       {
@@ -4521,7 +4521,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   if (execute_commands(commands) != 0)
     need_pause = 1;
 
-  if (need_pause && !option(OPTNOCURSES))
+  if (need_pause && !option(OPT_NO_CURSES))
   {
     if (mutt_any_key_to_continue(NULL) == -1)
       mutt_exit(1);
@@ -4532,7 +4532,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   mutt_read_histfile();
 
 #ifdef USE_NOTMUCH
-  if (option(OPTVIRTSPOOLFILE))
+  if (option(OPT_VIRT_SPOOL_FILE))
   {
     /* Find the first virtual folder and open it */
     for (struct Buffy *b = Incoming; b; b = b->next)
