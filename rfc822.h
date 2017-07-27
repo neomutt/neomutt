@@ -51,7 +51,6 @@ struct Address *rfc822_cpy_adr_real(struct Address *addr);
 struct Address *rfc822_append(struct Address **a, struct Address *b, int prune);
 int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
 void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
-void rfc822_free_address(struct Address **p);
 void rfc822_cat(char *buf, size_t buflen, const char *value, const char *specials);
 bool rfc822_valid_msgid(const char *msgid);
 int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox);
