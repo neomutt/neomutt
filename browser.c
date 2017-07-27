@@ -1221,8 +1221,8 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             case MUTT_IMAP:
               if (Maildir)
                 strfcpy(LastDir, NONULL(Maildir), sizeof(LastDir));
-              else if (Spoolfile)
-                mutt_browser_select_dir(Spoolfile);
+              else if (SpoolFile)
+                mutt_browser_select_dir(SpoolFile);
               break;
             default:
               mutt_browser_select_dir(CurrentFolder);
@@ -1429,7 +1429,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
               strfcpy(LastDir, OldLastDir, sizeof(LastDir));
               if (examine_directory(menu, &state, LastDir, prefix) == -1)
               {
-                strfcpy(LastDir, NONULL(Homedir), sizeof(LastDir));
+                strfcpy(LastDir, NONULL(HomeDir), sizeof(LastDir));
                 goto bail;
               }
             }

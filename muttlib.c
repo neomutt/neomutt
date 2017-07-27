@@ -112,7 +112,7 @@ void mutt_adv_mktemp(char *s, size_t l)
   {
     strfcpy(prefix, s, sizeof(prefix));
     mutt_sanitize_filename(prefix, 1);
-    snprintf(s, l, "%s/%s", NONULL(Tempdir), prefix);
+    snprintf(s, l, "%s/%s", NONULL(TempDir), prefix);
     if (lstat(s, &sb) == -1 && errno == ENOENT)
       return;
 
@@ -455,7 +455,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
       {
         if (*(s + 1) == '/' || *(s + 1) == 0)
         {
-          strfcpy(p, NONULL(Homedir), sizeof(p));
+          strfcpy(p, NONULL(HomeDir), sizeof(p));
           tail = s + 1;
         }
         else
@@ -558,7 +558,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
         }
         else
         {
-          strfcpy(p, NONULL(Spoolfile), sizeof(p));
+          strfcpy(p, NONULL(SpoolFile), sizeof(p));
           tail = s + 1;
         }
       }
@@ -872,7 +872,7 @@ uint64_t mutt_rand64(void)
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line)
 {
-  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tempdir),
+  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(TempDir),
                       NONULL(prefix), NONULL(Hostname), (int) getuid(), (int) getpid(),
                       mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= slen)
@@ -969,7 +969,7 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     *s++ = '=';
     memmove(s, s + len, mutt_strlen(s + len) + 1);
   }
-  else if ((mutt_strncmp(s, Homedir, (len = mutt_strlen(Homedir))) == 0) && s[len] == '/')
+  else if ((mutt_strncmp(s, HomeDir, (len = mutt_strlen(HomeDir))) == 0) && s[len] == '/')
   {
     *s++ = '~';
     memmove(s, s + len - 1, mutt_strlen(s + len - 1) + 1);

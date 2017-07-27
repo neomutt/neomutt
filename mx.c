@@ -109,7 +109,7 @@ struct MxOps *mx_get_ops(int magic)
   }
 }
 
-#define mutt_is_spool(s) (mutt_strcmp(Spoolfile, s) == 0)
+#define mutt_is_spool(s) (mutt_strcmp(SpoolFile, s) == 0)
 
 /**
  * mx_lock_file - (try to) lock a file

@@ -511,7 +511,7 @@ static int ssl_init(void)
 /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
     add_entropy(getenv("EGDSOCKET"));
-    snprintf(path, sizeof(path), "%s/.entropy", NONULL(Homedir));
+    snprintf(path, sizeof(path), "%s/.entropy", NONULL(HomeDir));
     add_entropy(path);
     add_entropy("/tmp/entropy");
 #endif

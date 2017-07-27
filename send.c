@@ -1648,7 +1648,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
   if (msg->env->from && !msg->env->from->personal && !(flags & (SENDRESEND | SENDPOSTPONED)))
-    msg->env->from->personal = safe_strdup(Realname);
+    msg->env->from->personal = safe_strdup(RealName);
 
   if (!((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY)))
     safe_fclose(&tempfp);

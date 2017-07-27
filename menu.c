@@ -471,7 +471,7 @@ static void menu_redraw_prompt(struct Menu *menu)
       unset_option(OPT_MSG_ERR);
     }
 
-    if (*Errorbuf)
+    if (*ErrorBuf)
       mutt_clear_error();
 
     mutt_window_mvaddstr(menu->messagewin, 0, 0, menu->prompt);

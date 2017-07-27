@@ -1038,7 +1038,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This setting defaults to the contents of the environment variable \fC$$$EMAIL\fP.
   */
-  { "from_chars",               DT_MBCHARTBL,    R_BOTH, UL &Fromchars, 0 },
+  { "from_chars",               DT_MBCHARTBL,    R_BOTH, UL &FromChars, 0 },
   /*
   ** .pp
   ** Controls the character used to prefix the %F and %L fields in the
@@ -2870,7 +2870,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If \fIset\fP, all folders are opened in read-only mode.
   */
-  { "realname",         DT_STR,  R_BOTH, UL &Realname, 0 },
+  { "realname",         DT_STR,  R_BOTH, UL &RealName, 0 },
   /*
   ** .pp
   ** This variable specifies what ``real'' or ``personal'' name should be used
@@ -3784,7 +3784,7 @@ struct Option MuttVars[] = {
   ** match will append to the previous, using this variable's value as a
   ** separator.
   */
-  { "spoolfile",        DT_PATH, R_NONE, UL &Spoolfile, 0 },
+  { "spoolfile",        DT_PATH, R_NONE, UL &SpoolFile, 0 },
   /*
   ** .pp
   ** If your spool mailbox is in a non-default place where Mutt cannot find
@@ -4106,7 +4106,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** A value of zero or less will cause Mutt to never time out.
   */
-  { "tmpdir",           DT_PATH, R_NONE, UL &Tempdir, 0 },
+  { "tmpdir",           DT_PATH, R_NONE, UL &TempDir, 0 },
   /*
   ** .pp
   ** This variable allows you to specify where Mutt will place its
@@ -4114,7 +4114,7 @@ struct Option MuttVars[] = {
   ** this variable is not set, the environment variable \fC$$$TMPDIR\fP is
   ** used.  If \fC$$$TMPDIR\fP is not set then ``\fC/tmp\fP'' is used.
   */
-  { "to_chars",         DT_MBCHARTBL, R_BOTH, UL &Tochars, UL " +TCFL" },
+  { "to_chars",         DT_MBCHARTBL, R_BOTH, UL &ToChars, UL " +TCFL" },
   /*
   ** .pp
   ** Controls the character used to indicate mail addressed to you.
@@ -4128,7 +4128,7 @@ struct Option MuttVars[] = {
   ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
   ** .de
   */
-  { "flag_chars",       DT_MBCHARTBL,    R_BOTH, UL &Flagchars, UL "*!DdrONon- " },
+  { "flag_chars",       DT_MBCHARTBL,    R_BOTH, UL &FlagChars, UL "*!DdrONon- " },
   /*
    ** .pp
    ** Controls the characters used in several flags.
@@ -4607,8 +4607,8 @@ const struct Command Commands[] = {
   { "tag-transforms",   parse_tag_transforms,   0 },
   { "tag-formats",      parse_tag_formats,      0 },
 #endif
-  { "mailto_allow",     parse_list,             UL &MailtoAllow },
-  { "unmailto_allow",   parse_unlist,           UL &MailtoAllow },
+  { "mailto_allow",     parse_list,             UL &MailToAllow },
+  { "unmailto_allow",   parse_unlist,           UL &MailToAllow },
   { "message-hook",     mutt_parse_hook,        MUTT_MESSAGEHOOK },
   { "mbox-hook",        mutt_parse_hook,        MUTT_MBOXHOOK },
   { "mime_lookup",      parse_list,     UL &MimeLookupList },

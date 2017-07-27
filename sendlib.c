@@ -1014,7 +1014,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         strfcpy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
       case 3:
-        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(Homedir));
+        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
         break;
       default:
         mutt_debug(1, "mutt_lookup_mime_type: Internal error, count = %d.\n", count);
@@ -2770,7 +2770,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * upon message criteria.
    */
   if (!from->personal)
-    from->personal = safe_strdup(Realname);
+    from->personal = safe_strdup(RealName);
 
   if (fqdn)
     rfc822_qualify(from, fqdn);

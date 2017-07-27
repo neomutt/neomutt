@@ -218,7 +218,7 @@ int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags)
 
 void mutt_clear_error(void)
 {
-  Errorbuf[0] = 0;
+  ErrorBuf[0] = 0;
   if (!option(OPT_NO_CURSES))
     mutt_window_clearline(MuttMessageWindow, 0);
 }
@@ -406,7 +406,7 @@ static void curses_message(int error, const char *fmt, va_list ap)
   vsnprintf(scratch, sizeof(scratch), fmt, ap);
 
   mutt_debug(1, "%s\n", scratch);
-  mutt_simple_format(Errorbuf, sizeof(Errorbuf), 0, MuttMessageWindow->cols,
+  mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, MuttMessageWindow->cols,
                      FMT_LEFT, 0, scratch, sizeof(scratch), 0);
 
   if (!option(OPT_KEEP_QUIET))
@@ -414,7 +414,7 @@ static void curses_message(int error, const char *fmt, va_list ap)
     if (error)
       BEEP();
     SETCOLOR(error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
-    mutt_window_mvaddstr(MuttMessageWindow, 0, 0, Errorbuf);
+    mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
     NORMAL_COLOR;
     mutt_window_clrtoeol(MuttMessageWindow);
     mutt_refresh();
@@ -801,7 +801,7 @@ void mutt_show_error(void)
     return;
 
   SETCOLOR(option(OPT_MSG_ERR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
-  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, Errorbuf);
+  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
   NORMAL_COLOR;
   mutt_window_clrtoeol(MuttMessageWindow);
 }

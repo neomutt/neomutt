@@ -38,7 +38,7 @@
 
 WHERE struct Context *Context;
 
-WHERE char Errorbuf[STRING];
+WHERE char ErrorBuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
 WHERE struct Address *EnvFrom;
@@ -70,10 +70,10 @@ WHERE char *ForwardAttrIntro;
 WHERE char *ForwardAttrTrailer;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
-WHERE struct MbCharTable *Fromchars;
+WHERE struct MbCharTable *FromChars;
 WHERE char *HdrFmt;
 WHERE char *HistFile;
-WHERE char *Homedir;
+WHERE char *HomeDir;
 WHERE char *Hostname;
 #ifdef USE_IMAP
 WHERE char *ImapAuthenticators;
@@ -145,7 +145,7 @@ WHERE char *PrintCmd;
 WHERE char *NewMailCmd;
 WHERE char *QueryCmd;
 WHERE char *QueryFormat;
-WHERE char *Realname;
+WHERE char *RealName;
 WHERE short SearchContext;
 WHERE char *SendCharset;
 WHERE char *Sendmail;
@@ -164,7 +164,7 @@ WHERE char *SmtpAuthenticators;
 WHERE char *SmtpPass;
 WHERE char *SmtpUrl;
 #endif /* USE_SMTP */
-WHERE char *Spoolfile;
+WHERE char *SpoolFile;
 WHERE char *SpamSep;
 #ifdef USE_SSL
 WHERE char *SslCertFile;
@@ -178,9 +178,9 @@ WHERE char *SslCACertFile;
 #endif
 WHERE struct MbCharTable *StChars;
 WHERE char *Status;
-WHERE char *Tempdir;
-WHERE struct MbCharTable *Tochars;
-WHERE struct MbCharTable *Flagchars;
+WHERE char *TempDir;
+WHERE struct MbCharTable *ToChars;
+WHERE struct MbCharTable *FlagChars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
@@ -209,7 +209,7 @@ WHERE struct List *InlineAllow;
 WHERE struct List *InlineExclude;
 WHERE struct List *HeaderOrderList;
 WHERE struct List *Ignore;
-WHERE struct List *MailtoAllow;
+WHERE struct List *MailToAllow;
 WHERE struct List *MimeLookupList;
 WHERE struct List *UnIgnore;
 

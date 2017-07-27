@@ -864,7 +864,7 @@ int main(int argc, char **argv, char **env)
         set_option(OPT_NEWS);
         if (!(CurrentNewsSrv = nntp_select_server(NewsServer, 0)))
         {
-          mutt_endwin(Errorbuf);
+          mutt_endwin(ErrorBuf);
           exit(1);
         }
       }
@@ -886,8 +886,8 @@ int main(int argc, char **argv, char **env)
 
     if (!folder[0])
     {
-      if (Spoolfile)
-        strfcpy(folder, NONULL(Spoolfile), sizeof(folder));
+      if (SpoolFile)
+        strfcpy(folder, NONULL(SpoolFile), sizeof(folder));
       else if (Maildir)
         strfcpy(folder, NONULL(Maildir), sizeof(folder));
       /* else no folder */
@@ -942,7 +942,7 @@ int main(int argc, char **argv, char **env)
 #endif
     mutt_free_opts();
     mutt_free_windows();
-    mutt_endwin(Errorbuf);
+    mutt_endwin(ErrorBuf);
   }
 
   exit(0);

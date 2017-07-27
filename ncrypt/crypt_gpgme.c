@@ -2153,7 +2153,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 
   if (dryrun)
   {
-    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", Tempdir);
+    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", TempDir);
     if (!mkdtemp(tmpdir))
     {
       mutt_debug(1, "Error creating temporary GPGME home\n");

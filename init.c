@@ -4191,7 +4191,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   /* on one of the systems I use, getcwd() does not return the same prefix
      as is listed in the passwd file */
   if ((p = getenv("HOME")))
-    Homedir = safe_strdup(p);
+    HomeDir = safe_strdup(p);
 
   /* Get some information about the user */
   if ((pw = getpwuid(getuid())))
@@ -4199,16 +4199,16 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     char rnbuf[STRING];
 
     Username = safe_strdup(pw->pw_name);
-    if (!Homedir)
-      Homedir = safe_strdup(pw->pw_dir);
+    if (!HomeDir)
+      HomeDir = safe_strdup(pw->pw_dir);
 
-    Realname = safe_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
+    RealName = safe_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
     Shell = safe_strdup(pw->pw_shell);
     endpwent();
   }
   else
   {
-    if (!Homedir)
+    if (!HomeDir)
     {
       mutt_endwin(NULL);
       fputs(_("unable to determine home directory"), stderr);
@@ -4315,17 +4315,17 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 #endif
 
   if ((p = getenv("MAIL")))
-    Spoolfile = safe_strdup(p);
+    SpoolFile = safe_strdup(p);
   else if ((p = getenv("MAILDIR")))
-    Spoolfile = safe_strdup(p);
+    SpoolFile = safe_strdup(p);
   else
   {
 #ifdef HOMESPOOL
-    mutt_concat_path(buffer, NONULL(Homedir), MAILPATH, sizeof(buffer));
+    mutt_concat_path(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
 #else
     mutt_concat_path(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
 #endif
-    Spoolfile = safe_strdup(buffer);
+    SpoolFile = safe_strdup(buffer);
   }
 
   if ((p = getenv("MAILCAPS")))
@@ -4338,7 +4338,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
         "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
   }
 
-  Tempdir = safe_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
+  TempDir = safe_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
 
   p = getenv("VISUAL");
   if (!p)
@@ -4404,25 +4404,25 @@ void mutt_init(int skip_sys_rc, struct List *commands)
    * create RFC822-compliant mail messages using the "subject" and "body"
    * headers.
    */
-  add_to_list(&MailtoAllow, "body");
-  add_to_list(&MailtoAllow, "subject");
+  add_to_list(&MailToAllow, "body");
+  add_to_list(&MailToAllow, "subject");
   /* Cc, In-Reply-To, and References help with not breaking threading on
    * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
-  add_to_list(&MailtoAllow, "cc");
-  add_to_list(&MailtoAllow, "in-reply-to");
-  add_to_list(&MailtoAllow, "references");
+  add_to_list(&MailToAllow, "cc");
+  add_to_list(&MailToAllow, "in-reply-to");
+  add_to_list(&MailToAllow, "references");
 
   if (!Muttrc)
   {
     char *xdg_cfg_home = getenv("XDG_CONFIG_HOME");
 
-    if (!xdg_cfg_home && Homedir)
+    if (!xdg_cfg_home && HomeDir)
     {
-      snprintf(buffer, sizeof(buffer), "%s/.config", Homedir);
+      snprintf(buffer, sizeof(buffer), "%s/.config", HomeDir);
       xdg_cfg_home = buffer;
     }
 
-    char *config = find_cfg(Homedir, xdg_cfg_home);
+    char *config = find_cfg(HomeDir, xdg_cfg_home);
     if (config)
     {
       Muttrc = mutt_add_list(Muttrc, config);
@@ -4527,7 +4527,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
       mutt_exit(1);
   }
 
-  mutt_mkdir(Tempdir, S_IRWXU);
+  mutt_mkdir(TempDir, S_IRWXU);
 
   mutt_read_histfile();
 
@@ -4539,7 +4539,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     {
       if (b->magic == MUTT_NOTMUCH)
       {
-        mutt_str_replace(&Spoolfile, b->path);
+        mutt_str_replace(&SpoolFile, b->path);
         mutt_sb_toggle_virtual();
         break;
       }
