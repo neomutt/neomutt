@@ -47,13 +47,6 @@ struct State;
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
-#ifndef HAVE_WC_FUNCS
-#ifdef MB_LEN_MAX
-#undef MB_LEN_MAX
-#endif
-#define MB_LEN_MAX 16
-#endif
-
 #ifdef HAVE_FGETS_UNLOCKED
 #define fgets fgets_unlocked
 #endif

@@ -286,11 +286,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "typeahead", 0 },
 #endif
-#ifdef HAVE_WC_FUNCS
-  { "wc_funcs", 1 },
-#else
-  { "wc_funcs", 0 },
-#endif
   { NULL, 0 },
 };
 
