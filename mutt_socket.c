@@ -32,6 +32,7 @@
 #include <string.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include "mutt_socket.h"
 #include "globals.h"
@@ -387,25 +388,26 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   fd_set rfds;
-  struct timeval tv;
-  struct timespec pre_t, post_t;
-  time_t sleep_secs;
+  unsigned long wait_millis, post_t_millis;
+  struct timeval tv, pre_t, post_t;
   int rv;
 
   if (conn->fd < 0)
     return -1;
 
+  wait_millis = wait_secs * 1000UL;
+
   while (true)
   {
-    tv.tv_sec = wait_secs;
-    tv.tv_usec = 0;
+    tv.tv_sec = wait_millis / 1000;
+    tv.tv_usec = (wait_millis % 1000) * 1000;
 
     FD_ZERO(&rfds);
     FD_SET(conn->fd, &rfds);
 
-    clock_gettime(CLOCK_MONOTONIC, &pre_t);
+    gettimeofday(&pre_t, NULL);
     rv = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
-    clock_gettime(CLOCK_MONOTONIC, &post_t);
+    gettimeofday(&post_t, NULL);
 
     if (rv > 0 || (rv < 0 && errno != EINTR))
       return rv;
@@ -413,10 +415,11 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     if (SigInt)
       mutt_query_exit();
 
-    sleep_secs = post_t.tv_sec - pre_t.tv_sec;
-    if (wait_secs <= sleep_secs)
+    wait_millis += (pre_t.tv_sec * 1000UL) + (pre_t.tv_usec / 1000);
+    post_t_millis = (post_t.tv_sec * 1000UL) + (post_t.tv_usec / 1000);
+    if (wait_millis <= post_t_millis)
       return 0;
-    wait_secs -= sleep_secs;
+    wait_millis -= post_t_millis;
   }
 }
 
