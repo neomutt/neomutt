@@ -22,7 +22,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--with-sasl \
 	--with-tokyocabinet
 
-SUBDIRS = m4 contrib imap ncrypt
+SUBDIRS = m4 contrib imap ncrypt lib
 
 if BUILD_HCACHE
 SUBDIRS += hcache
@@ -64,11 +64,14 @@ nodist_mutt_SOURCES = $(BUILT_SOURCES)
 LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
+LIBLIB = -Llib -llib
+LIBLIBDEPS = $(top_srcdir)/lib/lib.h lib/liblib.a
+
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
-	$(LIBIMAP) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
+	$(LIBIMAP) $(LIBLIB) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
+	$(LIBLIBDEPS) $(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
@@ -96,12 +99,13 @@ EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 EXTRA_SCRIPTS =
 
 pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
-pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS)
-pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS)
+pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBLIB)
+pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBLIBDEPS)
 
 mutt_md5_SOURCES = md5.c
 mutt_md5_CFLAGS = -DMD5UTIL
-mutt_md5_LDADD =
+mutt_md5_LDADD = $(LIBLIB)
+mutt_md5_DEPENDENCIES = $(LIBLIBDEPS)
 
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =
