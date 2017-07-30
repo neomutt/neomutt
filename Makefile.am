@@ -56,7 +56,7 @@ mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \
-	smtp.c sort.c state.h status.c system.c thread.c thread.h url.c \
+	smtp.c sort.c state.c state.h status.c system.c thread.c thread.h url.c \
 	version.c where.h
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)

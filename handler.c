@@ -100,15 +100,6 @@ static void print_part_line(struct State *s, struct Body *b, int n)
                ENCODING(b->encoding), length);
 }
 
-static void state_prefix_put(const char *d, size_t dlen, struct State *s)
-{
-  if (s->prefix)
-    while (dlen--)
-      state_prefix_putc(*d++, s);
-  else
-    fwrite(d, dlen, 1, s->fpout);
-}
-
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 {
   char bufo[BUFO_SIZE];

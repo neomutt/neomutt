@@ -66,7 +66,6 @@
 #include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
-#include "state.h"
 #include "url.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
@@ -1976,82 +1975,6 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   mutt_window_clearline(MuttMessageWindow, 0);
   return ret;
-}
-
-void state_prefix_putc(char c, struct State *s)
-{
-  if (s->flags & MUTT_PENDINGPREFIX)
-  {
-    state_reset_prefix(s);
-    if (s->prefix)
-      state_puts(s->prefix, s);
-  }
-
-  state_putc(c, s);
-
-  if (c == '\n')
-    state_set_prefix(s);
-}
-
-int state_printf(struct State *s, const char *fmt, ...)
-{
-  int rv;
-  va_list ap;
-
-  va_start(ap, fmt);
-  rv = vfprintf(s->fpout, fmt, ap);
-  va_end(ap);
-
-  return rv;
-}
-
-void state_mark_attach(struct State *s)
-{
-  if (!s || !s->fpout)
-    return;
-  if ((s->flags & MUTT_DISPLAY) && (mutt_strcmp(Pager, "builtin") == 0))
-    state_puts(AttachmentMarker, s);
-}
-
-void state_attach_puts(const char *t, struct State *s)
-{
-  if (!t || !s || !s->fpout)
-    return;
-
-  if (*t != '\n')
-    state_mark_attach(s);
-  while (*t)
-  {
-    state_putc(*t, s);
-    if (*t++ == '\n' && *t)
-      if (*t != '\n')
-        state_mark_attach(s);
-  }
-}
-
-static int state_putwc(wchar_t wc, struct State *s)
-{
-  char mb[MB_LEN_MAX] = "";
-  int rc;
-
-  if ((rc = wcrtomb(mb, wc, NULL)) < 0)
-    return rc;
-  if (fputs(mb, s->fpout) == EOF)
-    return -1;
-  return 0;
-}
-
-int state_putws(const wchar_t *ws, struct State *s)
-{
-  const wchar_t *p = ws;
-
-  while (p && *p != L'\0')
-  {
-    if (state_putwc(*p, s) < 0)
-      return -1;
-    p++;
-  }
-  return 0;
 }
 
 void mutt_sleep(short s)
