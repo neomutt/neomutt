@@ -52,7 +52,7 @@ mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
 	handler.c hash.c hdrline.c header.h headers.c help.c history.c hook.c \
 	init.c keymap.c lib.c list.h main.c mbox.c mbyte.c mbyte_table.h md5.c \
 	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
-	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.h \
+	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \

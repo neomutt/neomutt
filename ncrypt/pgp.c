@@ -59,6 +59,7 @@
 #include "mutt_regex.h"
 #include "ncrypt.h"
 #include "options.h"
+#include "parameter.h"
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "pgpmicalg.h"

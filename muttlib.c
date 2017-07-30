@@ -247,22 +247,6 @@ void mutt_free_body(struct Body **p)
   *p = 0;
 }
 
-void mutt_free_parameter(struct Parameter **p)
-{
-  struct Parameter *t = *p;
-  struct Parameter *o = NULL;
-
-  while (t)
-  {
-    FREE(&t->attribute);
-    FREE(&t->value);
-    o = t;
-    t = t->next;
-    FREE(&o);
-  }
-  *p = 0;
-}
-
 struct List *mutt_add_list(struct List *head, const char *data)
 {
   size_t len = mutt_strlen(data);
@@ -671,57 +655,6 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
   return dest;
 }
 
-
-char *mutt_get_parameter(const char *s, struct Parameter *p)
-{
-  for (; p; p = p->next)
-    if (ascii_strcasecmp(s, p->attribute) == 0)
-      return p->value;
-
-  return NULL;
-}
-
-void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p)
-{
-  struct Parameter *q = NULL;
-
-  if (!value)
-  {
-    mutt_delete_parameter(attribute, p);
-    return;
-  }
-
-  for (q = *p; q; q = q->next)
-  {
-    if (ascii_strcasecmp(attribute, q->attribute) == 0)
-    {
-      mutt_str_replace(&q->value, value);
-      return;
-    }
-  }
-
-  q = mutt_new_parameter();
-  q->attribute = safe_strdup(attribute);
-  q->value = safe_strdup(value);
-  q->next = *p;
-  *p = q;
-}
-
-void mutt_delete_parameter(const char *attribute, struct Parameter **p)
-{
-  struct Parameter *q = NULL;
-
-  for (q = *p; q; p = &q->next, q = q->next)
-  {
-    if (ascii_strcasecmp(attribute, q->attribute) == 0)
-    {
-      *p = q->next;
-      q->next = NULL;
-      mutt_free_parameter(&q);
-      return;
-    }
-  }
-}
 
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display

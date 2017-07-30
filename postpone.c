@@ -48,6 +48,7 @@
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 #include "sort.h"
 #include "state.h"

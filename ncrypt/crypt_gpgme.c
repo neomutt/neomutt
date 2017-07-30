@@ -64,6 +64,7 @@
 #include "ncrypt.h"
 #include "options.h"
 #include "pager.h"
+#include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
 #include "sort.h"

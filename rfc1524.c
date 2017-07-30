@@ -42,6 +42,7 @@
 #include "globals.h"
 #include "lib.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 
 /**

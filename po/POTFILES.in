@@ -95,6 +95,7 @@ ncrypt/smime.c
 newsrc.c
 nntp.c
 pager.c
+parameter.c
 parse.c
 pattern.c
 pgpewrap.c
