@@ -186,7 +186,7 @@ int url_parse_ciss(struct CissUrl *ciss, char *src)
   return ciss_parse_userhost(ciss, tmp);
 }
 
-static void url_pct_encode(char *dst, size_t l, const char *src)
+void url_pct_encode(char *dst, size_t l, const char *src)
 {
   static const char *alph = "0123456789ABCDEF";
 
@@ -194,7 +194,7 @@ static void url_pct_encode(char *dst, size_t l, const char *src)
   l--;
   while (src && *src && l)
   {
-    if (strchr("/:%", *src) && l > 3)
+    if (strchr("/:&%", *src) && l > 3)
     {
       *dst++ = '%';
       *dst++ = alph[(*src >> 4) & 0xf];

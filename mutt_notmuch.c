@@ -1841,15 +1841,24 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
   mutt_debug(2, "nm_uri_from_query (%s)\n", buf);
   struct NmCtxData *data = get_ctxdata(ctx);
   char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
+  int added;
 
   if (data)
-    snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", get_db_filename(data), buf);
+    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", get_db_filename(data));
   else if (NotmuchDefaultUri)
-    snprintf(uri, sizeof(uri), "%s?query=%s", NotmuchDefaultUri, buf);
+    added = snprintf(uri, sizeof(uri), "%s?query=", NotmuchDefaultUri);
   else if (Maildir)
-    snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", Maildir, buf);
+    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", Maildir);
   else
     return NULL;
+
+  if (added >= sizeof(uri))
+  {
+    // snprintf output was truncated, so can't create URI
+    return NULL;
+  }
+
+  url_pct_encode(&uri[added], sizeof(uri) - added, buf);
 
   strncpy(buf, uri, bufsz);
   buf[bufsz - 1] = '\0';
