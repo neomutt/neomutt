@@ -1038,11 +1038,11 @@ msgstr "Šifrovacie heslo bolo zabudnuté."
 
 #: ncrypt/crypt.c:140
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "PGP sa v texte s prílohami nedá použiť. Použiť PGP/MIME?"
+msgstr "PGP sa v texte s prílohami nedá použiť. Použiť PGP/MIME?"
 
 #: ncrypt/crypt.c:144
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "Správa nebola odoslaná: PGP sa v texte s prílohami nedá použiť."
+msgstr "Správa nebola odoslaná: PGP sa v texte s prílohami nedá použiť."
 
 #: ncrypt/crypt.c:152 ncrypt/cryptglue.c:115 ncrypt/pgpkey.c:561
 #: ncrypt/pgpkey.c:742
@@ -4488,7 +4488,7 @@ msgstr "Chyba pri podpisovaní dát: %s\n"
 #: ncrypt/crypt_gpgme.c:925
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr ""
-"$pgp_sign_as nie je nastavený a v ~/.gnupg/gpg.conf nie je určený východzí "
+"$pgp_sign_as nie je nastavený a v ~/.gnupg/gpg.conf nie je určený východzí "
 "kľúč"
 
 #: ncrypt/crypt_gpgme.c:1126

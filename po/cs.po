@@ -105,7 +105,7 @@ msgstr "Uložit jako: "
 
 #: alias.c:412
 msgid "Error reading alias file"
-msgstr "Chyba při čtení souboru s přezdívkami"
+msgstr "Chyba při čtení souboru s přezdívkami"
 
 #: alias.c:436
 msgid "Alias added."
@@ -113,7 +113,7 @@ msgstr "Přezdívka zavedena."
 
 #: alias.c:444
 msgid "Error seeking in alias file"
-msgstr "Chyba při pohybu v souboru s přezdívkami"
+msgstr "Chyba při pohybu v souboru s přezdívkami"
 
 #: attach.c:113 attach.c:241 attach.c:399 attach.c:938
 msgid "Can't match nametemplate, continue?"
@@ -281,7 +281,7 @@ msgstr "Vytváření funguje pouze u IMAP schránek."
 
 #: browser.c:1514
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Přejmenování funguje pouze u IMAP schránek."
+msgstr "Přejmenování funguje pouze u IMAP schránek."
 
 #: browser.c:1535
 msgid "Delete is only supported for IMAP mailboxes"
@@ -900,7 +900,7 @@ msgstr "Uložit kopii této zprávy?"
 
 #: compose.c:1339
 msgid "Send attachment with name: "
-msgstr "Poslat přílohu pod názvem: "
+msgstr "Poslat přílohu pod názvem: "
 
 #: compose.c:1356
 msgid "Rename to: "
@@ -990,12 +990,12 @@ msgstr "Kompresní příkaz selhal: %s"
 
 #: compress.c:556
 msgid "Unsupported mailbox type for appending."
-msgstr "U tohoto druhu schránky není připojování podporováno."
+msgstr "U tohoto druhu schránky není připojování podporováno."
 
 #: compress.c:632
 #, c-format
 msgid "Compressed-appending to %s..."
-msgstr "Komprimuje se a připojuje k %s…"
+msgstr "Komprimuje se a připojuje k %s…"
 
 #: compress.c:637
 #, c-format
@@ -1036,11 +1036,11 @@ msgstr "Šifrovací heslo(a) zapomenuto(a)."
 
 #: ncrypt/crypt.c:140
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "PGP v textu nelze použít s přílohami. Použít PGP/MIME?"
+msgstr "PGP v textu nelze použít s přílohami. Použít PGP/MIME?"
 
 #: ncrypt/crypt.c:144
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "E-mail neodeslán: PGP v textu nelze použít s přílohami."
+msgstr "E-mail neodeslán: PGP v textu nelze použít s přílohami."
 
 #: ncrypt/crypt.c:152 ncrypt/cryptglue.c:115 ncrypt/pgpkey.c:561
 #: ncrypt/pgpkey.c:742
@@ -1049,7 +1049,7 @@ msgstr "Spouští se PGP…"
 
 #: ncrypt/crypt.c:163
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Zprávu nelze poslat vloženou do textu. Použít PGP/MIME?"
+msgstr "Zprávu nelze poslat vloženou do textu. Použít PGP/MIME?"
 
 #: ncrypt/crypt.c:165 send.c:1837
 msgid "Mail not sent."
@@ -1119,7 +1119,7 @@ msgstr ""
 
 #: ncrypt/cryptglue.c:94
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "„crypt_use_gpgme“ nastaveno, ale nepřeloženo s podporou GPGME."
+msgstr "„crypt_use_gpgme“ nastaveno, ale nepřeloženo s podporou GPGME."
 
 #: ncrypt/cryptglue.c:117
 msgid "Invoking S/MIME..."
@@ -1173,7 +1173,7 @@ msgstr "Žádné viditelné zprávy."
 #: curs_main.c:123 pager.c:108
 #, c-format
 msgid "%s: Operation not permitted by ACL"
-msgstr "%s: Operace je v rozporu s ACL"
+msgstr "%s: Operace je v rozporu s ACL"
 
 #: curs_main.c:276
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -1253,7 +1253,7 @@ msgstr ""
 #: curs_main.c:1259
 #, fuzzy
 msgid "Message is not visible in limited view."
-msgstr "Kořenová zpráva není v omezeném zobrazení viditelná."
+msgstr "Kořenová zpráva není v omezeném zobrazení viditelná."
 
 #: curs_main.c:1265
 #, fuzzy, c-format
@@ -1344,7 +1344,7 @@ msgstr "Odznačit zprávy shodující se s: "
 
 #: curs_main.c:1705
 msgid "Logged out of IMAP servers."
-msgstr "Odhlášeno z IMAP serverů."
+msgstr "Odhlášeno z IMAP serverů."
 
 #: curs_main.c:1802 curs_main.c:1841
 #, fuzzy
@@ -1401,7 +1401,7 @@ msgstr "Otevřít schránku"
 
 #: curs_main.c:2014
 msgid "No mailboxes have new mail"
-msgstr "V žádné schránce není nová pošta"
+msgstr "V žádné schránce není nová pošta"
 
 #: curs_main.c:2056
 #, fuzzy
@@ -1478,7 +1478,7 @@ msgstr "Hledání pokračuje od konce."
 
 #: curs_main.c:2461
 msgid "No new messages in this limited view."
-msgstr "Žádné nové zprávy v tomto omezeném zobrazení."
+msgstr "Žádné nové zprávy v tomto omezeném zobrazení."
 
 #: curs_main.c:2463
 msgid "No new messages."
@@ -1486,7 +1486,7 @@ msgstr "Žádné nové zprávy."
 
 #: curs_main.c:2468
 msgid "No unread messages in this limited view."
-msgstr "Žádné nepřečtené zprávy v tomto omezeném zobrazení."
+msgstr "Žádné nepřečtené zprávy v tomto omezeném zobrazení."
 
 #: curs_main.c:2470
 msgid "No unread messages."
@@ -1844,7 +1844,7 @@ msgstr "(pro zobrazení této části použijte „%s“)"
 
 #: handler.c:1960
 msgid "(need 'view-attachments' bound to key!)"
-msgstr "(je třeba svázat funkci „view-attachments“ s nějakou klávesou!)"
+msgstr "(je třeba svázat funkci „view-attachments“ s nějakou klávesou!)"
 
 #: hcache/hcache.c:550 main.c:528 newsrc.c:967
 #, c-format
@@ -1892,7 +1892,7 @@ msgstr "Nápověda pro %s"
 #: history.c:120 history.c:204 history.c:242
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr "Špatný formát souboru s historií (řádek %d)"
+msgstr "Špatný formát souboru s historií (řádek %d)"
 
 #: hook.c:114
 msgid "current mailbox shortcut '^' is unset"
@@ -1908,7 +1908,7 @@ msgstr "špatně utvořený řetězec s příkazem"
 
 #: hook.c:313
 msgid "unhook: Can't do unhook * from within a hook."
-msgstr "unhook: unhook * nelze provést z jiného háčku."
+msgstr "unhook: unhook * nelze provést z jiného háčku."
 
 #: hook.c:324
 #, c-format
@@ -2041,7 +2041,7 @@ msgstr "Nelze navázat TLS spojení"
 
 #: imap/imap.c:484 pop_lib.c:340
 msgid "Encrypted connection unavailable"
-msgstr "Šifrované spojení není k dispozici"
+msgstr "Šifrované spojení není k dispozici"
 
 #: imap/imap.c:625 nntp.c:1442
 #, c-format
@@ -2073,7 +2073,7 @@ msgstr "Ukládám změněné zprávy… [%d/%d]"
 
 #: imap/imap.c:1313
 msgid "Error saving flags. Close anyway?"
-msgstr "Došlo k chybě při ukládání příznaků. Přesto uzavřít?"
+msgstr "Došlo k chybě při ukládání příznaků. Přesto uzavřít?"
 
 #: imap/imap.c:1321
 msgid "Error saving flags"
@@ -2090,7 +2090,7 @@ msgstr "při volání imap_sync_mailbox: EXPUNGE selhalo"
 #: imap/imap.c:1840
 #, c-format
 msgid "Header search without header name: %s"
-msgstr "Hledám v hlavičkách bez udání položky: %s"
+msgstr "Hledám v hlavičkách bez udání položky: %s"
 
 #: imap/imap.c:1870
 #, c-format
@@ -2128,7 +2128,7 @@ msgstr "Kopíruji zprávy (%d) do %s…"
 
 #: imap/message.c:381 mx.c:1342
 msgid "Integer overflow -- can't allocate memory."
-msgstr "Přetečení celočíselné proměnné – nelze alokovat paměť."
+msgstr "Přetečení celočíselné proměnné – nelze alokovat paměť."
 
 #: imap/message.c:502
 msgid "Unable to fetch headers from this IMAP server version."
@@ -2272,11 +2272,11 @@ msgstr "Proměnná %s není známa."
 
 #: init.c:2443
 msgid "prefix is illegal with reset"
-msgstr "Prefix není s „reset“ povolen."
+msgstr "Prefix není s „reset“ povolen."
 
 #: init.c:2449
 msgid "value is illegal with reset"
-msgstr "Hodnota není s „reset“ povolena."
+msgstr "Hodnota není s „reset“ povolena."
 
 #: init.c:2486 init.c:2499
 msgid "Usage: set variable=yes|no"
@@ -2351,7 +2351,7 @@ msgstr "source: chyby v %s"
 #: init.c:3138
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
+msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
 
 #: init.c:3147
 #, fuzzy, c-format
@@ -2546,7 +2546,7 @@ msgstr "zjistit zda schránky obsahují novou poštu"
 
 #: keymap_alldefs.h:26
 msgid "attach file(s) to this message"
-msgstr "připojit soubor(-y) k této zprávě"
+msgstr "připojit soubor(-y) k této zprávě"
 
 #: keymap_alldefs.h:27
 msgid "attach message(s) to this message"
@@ -2555,7 +2555,7 @@ msgstr "připojit zprávy k této zprávě"
 #: keymap_alldefs.h:28
 #, fuzzy
 msgid "attach news article(s) to this message"
-msgstr "připojit soubor(-y) k této zprávě"
+msgstr "připojit soubor(-y) k této zprávě"
 
 #: keymap_alldefs.h:29
 msgid "edit the BCC list"
@@ -2654,7 +2654,7 @@ msgstr "odložit zprávu pro pozdější použití"
 
 #: keymap_alldefs.h:52
 msgid "send attachment with a different name"
-msgstr "poslat přílohu pod jiným názvem"
+msgstr "poslat přílohu pod jiným názvem"
 
 #: keymap_alldefs.h:53
 msgid "rename/move an attached file"
@@ -2969,7 +2969,7 @@ msgstr "vynutit stažení pošty z IMAP serveru"
 
 #: keymap_alldefs.h:129
 msgid "logout from all IMAP servers"
-msgstr "odhlásit ze všech IMAP serverů"
+msgstr "odhlásit ze všech IMAP serverů"
 
 #: keymap_alldefs.h:130
 msgid "retrieve mail from POP server"
@@ -2981,11 +2981,11 @@ msgstr "zobrazovat pouze zprávy shodující se se vzorem"
 
 #: keymap_alldefs.h:132
 msgid "link tagged message to the current one"
-msgstr "k aktuální zprávě připojit označené zprávy"
+msgstr "k aktuální zprávě připojit označené zprávy"
 
 #: keymap_alldefs.h:133
 msgid "open next mailbox with new mail"
-msgstr "otevřít další schránku s novou poštou"
+msgstr "otevřít další schránku s novou poštou"
 
 #: keymap_alldefs.h:134
 msgid "jump to the next new message"
@@ -3328,7 +3328,7 @@ msgstr "přesunout zvýraznění na další schránku"
 
 #: keymap_alldefs.h:217
 msgid "move the highlight to next mailbox with new mail"
-msgstr "přesunout zvýraznění na další schránku s novou poštou"
+msgstr "přesunout zvýraznění na další schránku s novou poštou"
 
 #: keymap_alldefs.h:218
 msgid "open highlighted mailbox"
@@ -3336,7 +3336,7 @@ msgstr "otevřít zvýrazněnou schránku"
 
 #: keymap_alldefs.h:219
 msgid "scroll the sidebar down 1 page"
-msgstr "rolovat postranní panel o 1 stránku dolů"
+msgstr "rolovat postranní panel o 1 stránku dolů"
 
 #: keymap_alldefs.h:220
 msgid "scroll the sidebar up 1 page"
@@ -3348,7 +3348,7 @@ msgstr "přesunout zvýraznění na předchozí schránku"
 
 #: keymap_alldefs.h:222
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "přesunout zvýraznění na další schránku s novou poštou"
+msgstr "přesunout zvýraznění na další schránku s novou poštou"
 
 #: keymap_alldefs.h:223
 #, fuzzy
@@ -3396,7 +3396,7 @@ msgstr "přijmout sestavený řetěz"
 
 #: keymap_alldefs.h:233
 msgid "append a remailer to the chain"
-msgstr "připojit remailer k řetězu"
+msgstr "připojit remailer k řetězu"
 
 #: keymap_alldefs.h:234
 msgid "insert a remailer into the chain"
@@ -3404,7 +3404,7 @@ msgstr "vložit remailer do řetězu"
 
 #: keymap_alldefs.h:235
 msgid "delete a remailer from the chain"
-msgstr "odstranit remailer z řetězu"
+msgstr "odstranit remailer z řetězu"
 
 #: keymap_alldefs.h:236
 msgid "select the previous element of the chain"
@@ -3464,7 +3464,7 @@ msgstr "extrahovat všechny podporované veřejné klíče"
 
 #: lib.c:120
 msgid "Integer overflow -- can't allocate memory!"
-msgstr "Přetečení celočíselné proměnné – nelze alokovat paměť!"
+msgstr "Přetečení celočíselné proměnné – nelze alokovat paměť!"
 
 #: lib.c:127 lib.c:142 lib.c:167 safe_asprintf.c:42
 msgid "Out of memory!"
@@ -3542,11 +3542,11 @@ msgstr ""
 "  -e <příkaz>   příkaz bude vykonán po inicializaci\n"
 "  -f <soubor>   čte z této schránky\n"
 "  -F <soubor>   alternativní soubor muttrc\n"
-"  -H <soubor>   ze souboru s konceptem budou načteny hlavičky a tělo\n"
+"  -H <soubor>   ze souboru s konceptem budou načteny hlavičky a tělo\n"
 "  -i <soubor>   tento soubor Mutt vloží do těla odpovědi\n"
 "  -m <typ>      určí výchozí typ schránky\n"
 "  -n            Mutt nebude číst systémový soubor Muttrc\n"
-"  -p            vrátí se k odložené zprávě"
+"  -p            vrátí se k odložené zprávě"
 
 #: main.c:117
 msgid ""
@@ -3766,7 +3766,7 @@ msgstr "Zprávu nebylo možné bezpečně uložit (flush) na disk"
 
 #: mh.c:1582
 msgid "_maildir_commit_message(): unable to set time on file"
-msgstr "při volání _maildir_commit_message(): nelze nastavit čas na souboru"
+msgstr "při volání _maildir_commit_message(): nelze nastavit čas na souboru"
 
 #: muttlib.c:860
 #, c-format
@@ -3886,7 +3886,7 @@ msgstr "Posílám zprávu…"
 #: mutt_notmuch.c:1743
 #, fuzzy
 msgid "No more messages in the thread."
-msgstr "Žádné nové zprávy v tomto omezeném zobrazení."
+msgstr "Žádné nové zprávy v tomto omezeném zobrazení."
 
 #: mutt_notmuch.c:2475
 #, fuzzy
@@ -4049,7 +4049,7 @@ msgstr "Otisk MD5 klíče: %s"
 #: mutt_ssl.c:827 mutt_ssl_gnutls.c:703
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
+msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -4167,7 +4167,7 @@ msgstr "POZOR: Certifikátu serveru byl odvolán"
 
 #: mutt_ssl_gnutls.c:693
 msgid "WARNING: Server hostname does not match certificate"
-msgstr "POZOR: Jméno serveru se neshoduje s jménem v certifikátu"
+msgstr "POZOR: Jméno serveru se neshoduje s jménem v certifikátu"
 
 #: mutt_ssl_gnutls.c:699
 msgid "WARNING: Signer of server certificate is not a CA"
@@ -4210,7 +4210,7 @@ msgstr "SSL/TLS spojení pomocí %s (%s/%s/%s)"
 #: mutt_tunnel.c:55
 #, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Připojuji se s „%s“…"
+msgstr "Připojuji se s „%s“…"
 
 #: mutt_tunnel.c:129
 #, c-format
@@ -4220,7 +4220,7 @@ msgstr "Tunel do %s vrátil chybu %d (%s)"
 #: mutt_tunnel.c:146 mutt_tunnel.c:161
 #, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Chyba při komunikaci tunelem s %s (%s)"
+msgstr "Chyba při komunikaci tunelem s %s (%s)"
 
 #: mx.c:152
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -4387,15 +4387,15 @@ msgstr "chyba při podepisování dat: %s\n"
 #: ncrypt/crypt_gpgme.c:925
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr ""
-"$pgp_sign_as není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
+"$pgp_sign_as není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
 
 #: ncrypt/crypt_gpgme.c:1126
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Pozor: Jeden z klíčů byl zneplatněn\n"
+msgstr "Pozor: Jeden z klíčů byl zneplatněn\n"
 
 #: ncrypt/crypt_gpgme.c:1135
 msgid "Warning: The key used to create the signature expired at: "
-msgstr "Pozor: Klíči použitému k podepsání vypršela platnost: "
+msgstr "Pozor: Klíči použitému k podepsání vypršela platnost: "
 
 #: ncrypt/crypt_gpgme.c:1142
 msgid "Warning: At least one certification key has expired\n"
@@ -4423,11 +4423,11 @@ msgstr "Požadavky bezpečnostní politiky nebyly splněny\n"
 
 #: ncrypt/crypt_gpgme.c:1190
 msgid "A system error occurred"
-msgstr "Došlo k systémové chybě"
+msgstr "Došlo k systémové chybě"
 
 #: ncrypt/crypt_gpgme.c:1221
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "POZOR: Položka PKA se neshoduje s adresou podepsaného: "
+msgstr "POZOR: Položka PKA se neshoduje s adresou podepsaného: "
 
 #: ncrypt/crypt_gpgme.c:1229
 msgid "PKA verified signer's address is: "
@@ -4469,7 +4469,7 @@ msgstr "vytvořen: "
 #: ncrypt/crypt_gpgme.c:1448
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
-msgstr "Chyba při získávání podrobností o klíči s ID %s: %s\n"
+msgstr "Chyba při získávání podrobností o klíči s ID %s: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1455 ncrypt/crypt_gpgme.c:1470
 msgid "Good signature from:"
@@ -4493,7 +4493,7 @@ msgstr "                vyprší: "
 #: ncrypt/crypt_gpgme.c:1531 ncrypt/crypt_gpgme.c:1752
 #: ncrypt/crypt_gpgme.c:2451
 msgid "[-- Begin signature information --]\n"
-msgstr "[-- Začátek podrobností o podpisu --]\n"
+msgstr "[-- Začátek podrobností o podpisu --]\n"
 
 #: ncrypt/crypt_gpgme.c:1542
 #, c-format
@@ -4503,7 +4503,7 @@ msgstr "Chyba: ověření selhalo: %s\n"
 #: ncrypt/crypt_gpgme.c:1594
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr "*** Začátek zápisu (podepsáno: %s) ***\n"
+msgstr "*** Začátek zápisu (podepsáno: %s) ***\n"
 
 #: ncrypt/crypt_gpgme.c:1613
 msgid "*** End Notation ***\n"
@@ -4515,7 +4515,7 @@ msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
-"[-- Konec podrobností o podpisu --]\n"
+"[-- Konec podrobností o podpisu --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:1721
@@ -4529,7 +4529,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2242
 msgid "Error extracting key data!\n"
-msgstr "Chyba při získávání podrobností o klíči!\n"
+msgstr "Chyba při získávání podrobností o klíči!\n"
 
 #: ncrypt/crypt_gpgme.c:2428
 #, c-format
@@ -4589,7 +4589,7 @@ msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Následující data jsou podepsána a zašifrována ve formátu PGP/MIME --]\n"
+"[-- Následující data jsou podepsána a zašifrována ve formátu PGP/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2597 ncrypt/pgp.c:1030
@@ -4602,7 +4602,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2619
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr "[-- Konec dat podepsaných a zašifrovaných ve formátu PGP/MIME --]\n"
+msgstr "[-- Konec dat podepsaných a zašifrovaných ve formátu PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2620 ncrypt/pgp.c:1050
 msgid "[-- End of PGP/MIME encrypted data --]\n"
@@ -4757,7 +4757,7 @@ msgstr "Chyba při vyhledávání klíče vydavatele: %s\n"
 
 #: ncrypt/crypt_gpgme.c:3654
 msgid "Error: certification chain too long - stopping here\n"
-msgstr "Chyba: řetězec certifikátů je příliš dlouhý – zde se končí\n"
+msgstr "Chyba: řetězec certifikátů je příliš dlouhý – zde se končí\n"
 
 #: ncrypt/crypt_gpgme.c:3664 ncrypt/pgpkey.c:579
 #, c-format
@@ -4989,7 +4989,7 @@ msgstr ""
 
 #: ncrypt/pgp.c:782
 msgid "Internal error.  Please submit a bug report."
-msgstr "Vnitřní chyba. Prosím, zašlete hlášení o chybě."
+msgstr "Vnitřní chyba. Prosím, zašlete hlášení o chybě."
 
 #: ncrypt/pgp.c:848
 msgid ""
@@ -5819,7 +5819,7 @@ msgstr "Mazání příloh ze zašifrovaných zpráv není podporováno."
 #: recvattach.c:1140
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "Mazání příloh z podepsaných zpráv může zneplatnit podpis."
+msgstr "Mazání příloh z podepsaných zpráv může zneplatnit podpis."
 
 #: recvattach.c:1158 recvattach.c:1175
 msgid "Only deletion of multipart attachments is supported."
@@ -5827,7 +5827,7 @@ msgstr "Podporováno je pouze mazání příloh o více částech."
 
 #: recvcmd.c:47
 msgid "You may only bounce message/rfc822 parts."
-msgstr "Přeposílat v nezměněné podobě lze pouze části typu „message/rfc822“."
+msgstr "Přeposílat v nezměněné podobě lze pouze části typu „message/rfc822“."
 
 #: recvcmd.c:229
 msgid "Error bouncing message!"
@@ -5944,7 +5944,7 @@ msgstr "Chyba při zasílání zprávy."
 #: rfc1524.c:159
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
-msgstr "Nesprávně formátovaná položka pro typ %s v „%s“ na řádku %d"
+msgstr "Nesprávně formátovaná položka pro typ %s v „%s“ na řádku %d"
 
 #: rfc1524.c:386
 msgid "No mailcap path specified"
@@ -6210,11 +6210,11 @@ msgstr "Rodičovská zpráva není dostupná."
 
 #: thread.c:1125
 msgid "Root message is not visible in this limited view."
-msgstr "Kořenová zpráva není v omezeném zobrazení viditelná."
+msgstr "Kořenová zpráva není v omezeném zobrazení viditelná."
 
 #: thread.c:1127
 msgid "Parent message is not visible in this limited view."
-msgstr "Rodičovská zpráva není v omezeném zobrazení viditelná."
+msgstr "Rodičovská zpráva není v omezeném zobrazení viditelná."
 
 #: version.c:48
 #, fuzzy
@@ -6241,7 +6241,7 @@ msgstr ""
 "Copyright © 1999–2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright © 2000–2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright © 2006–2009 Rocco Rutte <pdmef@gmx.net>\n"
-"Copyright © 2014–2016 Kevin J. McCarthy <kevin@8t8.us>\n"
+"Copyright © 2014–2016 Kevin J. McCarthy <kevin@8t8.us>\n"
 "\n"
 "Mnoho dalších zde nezmíněných přispělo kódem, opravami a nápady.\n"
 
@@ -6262,9 +6262,9 @@ msgstr ""
 "    Free Software Foundation a to buď ve verzi 2 nebo (dle vaší volby)\n"
 "    libovolné novější.\n"
 "\n"
-"    Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
+"    Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
 "    ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
-"    JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"    JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
 
 #: version.c:74
 msgid ""
@@ -6275,7 +6275,7 @@ msgid ""
 msgstr ""
 "    S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
 "    nestalo, obraťte se na Free Software Foundation, Inc.,\n"
-"    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
+"    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
 #: version.c:80
 msgid ""
@@ -6292,7 +6292,7 @@ msgid ""
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright © 1996–2016 Michael R. Elkins a další.\n"
+"Copyright © 1996–2016 Michael R. Elkins a další.\n"
 "Mutt je rozšiřován BEZ JAKÉKOLI ZÁRUKY; podrobnosti získáte příkazem\n"
 "„mutt -vv“.\n"
 "Mutt je volné programové vybavení. Rozšiřování tohoto programu je vítáno,\n"
