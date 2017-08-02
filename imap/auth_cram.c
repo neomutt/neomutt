@@ -30,6 +30,7 @@
 #include "auth.h"
 #include "globals.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "md5.h"
 #include "mutt_socket.h"
 #include "options.h"

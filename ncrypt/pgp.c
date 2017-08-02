@@ -53,6 +53,7 @@
 #include "globals.h"
 #include "header.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"

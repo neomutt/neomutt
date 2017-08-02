@@ -26,6 +26,7 @@
 #include "charset.h"
 #include "globals.h"
 #include "lib.h"
+#include "lib/lib.h"
 
 // clang-format off
 static const int Index_64[128] = {

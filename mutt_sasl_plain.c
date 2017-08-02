@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "mutt_sasl_plain.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "protos.h"
 
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,

@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 #include "lib.h"
+#include "lib/lib.h"
 
 /**
  * struct EnterState - Keep our place when entering a string

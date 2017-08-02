@@ -37,6 +37,7 @@
 #include "globals.h"
 #include "header.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "options.h"
 #include "parameter.h"

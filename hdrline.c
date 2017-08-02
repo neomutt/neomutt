@@ -41,6 +41,7 @@
 #include "hash.h"
 #include "header.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mbyte_table.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"

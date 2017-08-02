@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "pgppacket.h"
 #include "protos.h"
 #include "state.h"

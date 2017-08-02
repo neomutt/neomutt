@@ -30,6 +30,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"

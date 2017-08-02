@@ -47,6 +47,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"

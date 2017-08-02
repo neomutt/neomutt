@@ -34,6 +34,7 @@
 #include "keymap.h"
 #include "keymap_defs.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "options.h"

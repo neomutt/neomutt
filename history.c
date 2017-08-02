@@ -31,6 +31,7 @@
 #include "globals.h"
 #include "hash.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "protos.h"
 
 /* This history ring grows from 0..HistSize, with last marking the

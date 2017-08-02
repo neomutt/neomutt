@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "backend.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 static void *hcache_kyotocabinet_open(const char *path)

@@ -37,6 +37,7 @@
 #include "crypt_mod.h"
 #include "globals.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "protos.h"

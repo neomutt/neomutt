@@ -34,6 +34,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

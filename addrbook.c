@@ -32,6 +32,7 @@
 #include "keymap.h"
 #include "keymap_defs.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

@@ -28,6 +28,7 @@
 #include <lmdb.h>
 #include "backend.h"
 #include "lib.h"
+#include "lib/lib.h"
 
 /** The maximum size of the database file (2GiB).
  * The file is mmap(2)'d into memory. */

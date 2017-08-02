@@ -45,6 +45,7 @@
 #include "keymap.h"
 #include "keymap_defs.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"

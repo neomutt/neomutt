@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "lib.h"
+#include "lib/lib.h"
 
 struct Address;
 struct Buffer;

@@ -49,6 +49,7 @@
 #include "header.h"
 #include "imap/imap.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "message.h"

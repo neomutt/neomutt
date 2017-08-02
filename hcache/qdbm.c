@@ -29,6 +29,7 @@
 #include <villa.h>
 #include "backend.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 static void *hcache_qdbm_open(const char *path)

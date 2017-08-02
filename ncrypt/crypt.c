@@ -45,6 +45,7 @@
 #include "globals.h"
 #include "header.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"

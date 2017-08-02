@@ -33,6 +33,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"

@@ -43,6 +43,7 @@
 #include "header.h"
 #include "imap/imap.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_menu.h"

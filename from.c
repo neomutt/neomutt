@@ -29,6 +29,7 @@
 #include "ascii.h"
 #include "globals.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "protos.h"
 
 static const char *next_word(const char *s)
