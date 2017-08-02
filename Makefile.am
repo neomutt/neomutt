@@ -80,7 +80,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
 EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
-	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c
+	remailer.c remailer.h resize.c url.h utf8.c wcwidth.c
 
 EXTRA_DIST = account.h attach.h bcache.h browser.h buffer.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
@@ -92,13 +92,13 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffer.h buffy.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
-	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h \
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
 	sort.h txt2c.c txt2c.sh version.h \
 	keymap_alldefs.h
 
 EXTRA_SCRIPTS =
 
-pgpring_SOURCES = extlib.c lib.c pgppubring.c sha1.c
+pgpring_SOURCES = extlib.c lib.c pgppubring.c
 pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBLIB)
 pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBLIBDEPS)
 
