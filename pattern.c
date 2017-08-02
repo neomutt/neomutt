@@ -39,7 +39,6 @@
 #include "mutt.h"
 #include "pattern.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "buffer.h"
 #include "context.h"

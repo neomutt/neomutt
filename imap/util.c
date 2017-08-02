@@ -39,7 +39,6 @@
 #include "imap_private.h"
 #include "mutt.h"
 #include "account.h"
-#include "ascii.h"
 #include "bcache.h"
 #include "buffer.h"
 #include "context.h"
@@ -374,7 +373,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
         mx->account.flags |= MUTT_ACCT_PORT;
       if (sscanf(tmp, "/%s", tmp) == 1)
       {
-        if (ascii_strncmp(tmp, "ssl", 3) == 0)
+        if (mutt_strncmp(tmp, "ssl", 3) == 0)
           mx->account.flags |= MUTT_ACCT_SSL;
         else
         {

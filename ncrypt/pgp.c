@@ -44,7 +44,6 @@
 #include "mutt.h"
 #include "pgp.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "charset.h"
 #include "crypt.h"

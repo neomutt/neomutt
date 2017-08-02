@@ -28,7 +28,6 @@
 #include "mutt.h"
 #include "copy.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"

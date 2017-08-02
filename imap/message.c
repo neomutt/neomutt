@@ -34,7 +34,6 @@
 #include "mutt.h"
 #include "message.h"
 #include "account.h"
-#include "ascii.h"
 #include "bcache.h"
 #include "body.h"
 #include "buffer.h"

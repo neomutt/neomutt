@@ -26,7 +26,6 @@
 #include <stdlib.h>
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"

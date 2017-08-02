@@ -37,7 +37,6 @@
 #include "mutt.h"
 #include "imap.h"
 #include "account.h"
-#include "ascii.h"
 #include "bcache.h"
 #include "body.h"
 #include "buffer.h"
@@ -102,7 +101,7 @@ int imap_access(const char *path)
     strfcpy(mailbox, "INBOX", sizeof(mailbox));
 
   /* we may already be in the folder we're checking */
-  if (ascii_strcmp(idata->mailbox, mx.mbox) == 0)
+  if (mutt_strcmp(idata->mailbox, mx.mbox) == 0)
   {
     FREE(&mx.mbox);
     return 0;
@@ -924,7 +923,7 @@ bool imap_has_flag(struct List *flag_list, const char *flag)
     if (ascii_strncasecmp(flag_list->data, flag, strlen(flag_list->data)) == 0)
       return true;
 
-    if (ascii_strncmp(flag_list->data, "\\*", strlen(flag_list->data)) == 0)
+    if (mutt_strncmp(flag_list->data, "\\*", strlen(flag_list->data)) == 0)
       return true;
 
     flag_list = flag_list->next;

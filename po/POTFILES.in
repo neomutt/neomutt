@@ -1,7 +1,6 @@
 account.c
 addrbook.c
 alias.c
-ascii.c
 attach.c
 base64.c
 bcache.c
@@ -62,6 +61,7 @@ init.c
 keymap.c
 keymap_alldefs.h
 lib.c
+lib/lib_ascii.c
 main.c
 mbox.c
 mbyte.c

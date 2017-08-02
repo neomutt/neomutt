@@ -37,7 +37,6 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "rfc1524.h"
-#include "ascii.h"
 #include "body.h"
 #include "globals.h"
 #include "lib.h"

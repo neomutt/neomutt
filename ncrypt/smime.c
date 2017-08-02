@@ -34,7 +34,6 @@
 #include "smime.h"
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
 #include "copy.h"
 #include "crypt.h"

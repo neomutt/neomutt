@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "ascii.h"
 #include "globals.h"
 #include "lib.h"
 #include "lib/lib.h"

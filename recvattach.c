@@ -30,7 +30,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "attach.h"
 #include "body.h"
 #include "context.h"

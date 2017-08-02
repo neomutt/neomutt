@@ -33,7 +33,6 @@
 #include "mutt.h"
 #include "alias.h"
 #include "address.h"
-#include "ascii.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"

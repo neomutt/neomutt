@@ -21,31 +21,14 @@
  */
 
 /*
- * Versions of the string comparison functions which are
- * locale-insensitive.
+ * Versions of the string comparison functions which are locale-insensitive.
  */
 
-#ifndef _MUTT_ASCII_H
-#define _MUTT_ASCII_H
-
-#include <ctype.h>
+#ifndef _LIB_ASCII_H
+#define _LIB_ASCII_H
 
 int ascii_strcasecmp(const char *a, const char *b);
 int ascii_strncasecmp(const char *a, const char *b, int n);
+char *ascii_strlower(char *s);
 
-#define ascii_strcmp(a, b) mutt_strcmp(a, b)
-#define ascii_strncmp(a, b, c) mutt_strncmp(a, b, c)
-
-static inline char *ascii_strlower(char *s)
-{
-  char *p = s;
-
-  for (; *p; ++p)
-  {
-    *p = tolower(*p);
-  }
-
-  return s;
-}
-
-#endif /* _MUTT_ASCII_H */
+#endif /* _LIB_ASCII_H */

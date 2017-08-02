@@ -30,7 +30,6 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "attach.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "copy.h"

@@ -36,7 +36,6 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
 #include "charset.h"
 #include "copy.h"

@@ -28,10 +28,12 @@
  * The library is self-contained -- some files may depend on others in the
  * library, but none depends on source from outside.
  *
+ * -# @subpage ascii
  */
 
 #ifndef _LIB_LIB_H
 #define _LIB_LIB_H
 
+#include "lib_ascii.h"
 
 #endif /* _LIB_LIB_H */

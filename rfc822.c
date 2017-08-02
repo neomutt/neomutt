@@ -25,7 +25,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "rfc822.h"
-#include "ascii.h"
 #include "lib/lib.h"
 
 #ifdef TESTING
@@ -623,12 +622,12 @@ void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr,
   {
     if (!buflen)
       goto done;
-    if ((ascii_strcmp(addr->mailbox, "@") != 0) && !display)
+    if ((mutt_strcmp(addr->mailbox, "@") != 0) && !display)
     {
       strfcpy(pbuf, addr->mailbox, buflen);
       len = mutt_strlen(pbuf);
     }
-    else if ((ascii_strcmp(addr->mailbox, "@") != 0) && display)
+    else if ((mutt_strcmp(addr->mailbox, "@") != 0) && display)
     {
       strfcpy(pbuf, mutt_addr_for_display(addr), buflen);
       len = mutt_strlen(pbuf);

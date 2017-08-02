@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include "parameter.h"
-#include "ascii.h"
 
 void mutt_free_parameter(struct Parameter **p)
 {

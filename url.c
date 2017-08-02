@@ -30,7 +30,6 @@
 #include <string.h>
 #include "mutt.h"
 #include "url.h"
-#include "ascii.h"
 #include "envelope.h"
 #include "globals.h"
 #include "lib.h"

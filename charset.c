@@ -29,7 +29,6 @@
 #include <string.h>
 #include "mutt.h"
 #include "charset.h"
-#include "ascii.h"
 #include "globals.h"
 #include "lib.h"
 #include "lib/lib.h"

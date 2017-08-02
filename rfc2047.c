@@ -28,7 +28,6 @@
 #include <string.h>
 #include "rfc2047.h"
 #include "address.h"
-#include "ascii.h"
 #include "charset.h"
 #include "globals.h"
 #include "lib.h"

@@ -27,7 +27,6 @@
 #include <string.h>
 #include "mutt.h"
 #include "account.h"
-#include "ascii.h"
 #include "globals.h"
 #include "lib.h"
 #include "lib/lib.h"

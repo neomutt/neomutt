@@ -44,7 +44,7 @@ BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
-mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
+mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
 	base64.c bcache.c body.h browser.c buffer.c buffy.c charset.c color.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
 	curs_lib.c curs_main.c date.c edit.c editmsg.c enter.c enter_state.h \
@@ -82,7 +82,7 @@ EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
 	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c
 
-EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
+EXTRA_DIST = account.h attach.h bcache.h browser.h buffer.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
 	COPYRIGHT extlib.c filter.h functions.h gen_defs globals.h \
 	group.h hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
@@ -98,7 +98,7 @@ EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 
 EXTRA_SCRIPTS =
 
-pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
+pgpring_SOURCES = extlib.c lib.c md5.c pgppubring.c sha1.c
 pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBLIB)
 pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBLIBDEPS)
 

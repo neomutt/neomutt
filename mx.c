@@ -35,7 +35,6 @@
 #include "mutt.h"
 #include "mx.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "buffy.h"
 #include "context.h"

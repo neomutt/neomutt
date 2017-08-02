@@ -30,7 +30,6 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"

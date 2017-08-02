@@ -30,7 +30,6 @@
 #include <string.h>
 #include "mutt.h"
 #include "account.h"
-#include "ascii.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"

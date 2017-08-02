@@ -29,7 +29,6 @@
 #include <string.h>
 #include <time.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
 #include "buffer.h"
 #include "charset.h"

@@ -35,7 +35,6 @@
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "copy.h"
