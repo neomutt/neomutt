@@ -67,6 +67,7 @@ lib/lib_md5.c
 lib/lib_memory.c
 lib/lib_message.c
 lib/lib_sha1.c
+lib/lib_string.c
 main.c
 mbox.c
 mbyte.c

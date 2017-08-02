@@ -37,6 +37,7 @@
  * -# @subpage memory
  * -# @subpage message
  * -# @subpage sha1
+ * -# @subpage string
  */
 
 #ifndef _LIB_LIB_H
@@ -51,5 +52,6 @@
 #include "lib_memory.h"
 #include "lib_message.h"
 #include "lib_sha1.h"
+#include "lib_string.h"
 
 #endif /* _LIB_LIB_H */
