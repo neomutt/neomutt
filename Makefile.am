@@ -3,7 +3,7 @@
 include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = mutt_md5 pgpewrap pgpring
+EXTRA_PROGRAMS = pgpewrap pgpring
 
 # Test the .tar file by building everything
 AM_DISTCHECK_CONFIGURE_FLAGS = \
@@ -102,14 +102,10 @@ pgpring_SOURCES = pgppubring.c
 pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBMUTT)
 pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBMUTTDEPS)
 
-mutt_md5_SOURCES = md5.c
-mutt_md5_LDADD = $(LIBMUTT)
-mutt_md5_DEPENDENCIES = $(LIBMUTTDEPS)
-
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =
 
-noinst_PROGRAMS = $(MUTT_MD5) txt2c
+noinst_PROGRAMS = txt2c
 
 conststrings.c: txt2c config.status
 	( \

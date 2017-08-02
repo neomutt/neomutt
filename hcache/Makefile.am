@@ -2,6 +2,7 @@
 include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
+EXTRA_PROGRAMS = mutt_md5
 
 EXTRA_DIST = bdb.c gdbm.c hcache.c kc.c lmdb.c qdbm.c tc.c hcachever.sh
 
@@ -9,6 +10,7 @@ AM_CPPFLAGS = -I$(top_srcdir)
 
 noinst_LIBRARIES = libhcache.a
 noinst_HEADERS = backend.h hcache.h
+noinst_PROGRAMS = $(MUTT_MD5)
 
 libhcache_a_SOURCES =
 
@@ -36,10 +38,14 @@ if BUILD_HC_TC
 libhcache_a_SOURCES += tc.c
 endif
 
-BUILT_SOURCES = $(HCVERSION)
+LIBMUTT = -L../lib -lmutt
+LIBMUTTDEPS = $(top_srcdir)/lib/lib.h ../lib/libmutt.a
 
-../$(MUTT_MD5):
-	+$(MAKE) -C .. $(MUTT_MD5)
+mutt_md5_SOURCES = mutt_md5.c
+mutt_md5_LDADD = $(LIBMUTT)
+mutt_md5_DEPENDENCIES = $(LIBMUTTDEPS)
+
+BUILT_SOURCES = $(HCVERSION)
 
 $(top_srcdir)/keymap_defs.h:
 	+$(MAKE) -C $(top_srcdir) keymap_defs.h
@@ -47,7 +53,7 @@ $(top_srcdir)/keymap_defs.h:
 hcversion.h: $(top_srcdir)/mutt.h $(top_srcdir)/address.h $(top_srcdir)/list.h \
 		$(top_srcdir)/lib/buffer.h $(top_srcdir)/parameter.h \
 		$(top_srcdir)/body.h $(top_srcdir)/envelope.h \
-		$(top_srcdir)/header.h $(srcdir)/hcachever.sh ../$(MUTT_MD5)
+		$(top_srcdir)/header.h $(srcdir)/hcachever.sh $(MUTT_MD5)
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
 	echo '#include "address.h"'; echo '#include "list.h"'; \
 	echo '#include "lib/buffer.h"'; echo '#include "parameter.h"'; \

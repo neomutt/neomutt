@@ -70,7 +70,7 @@ lib/string.c
 main.c
 mbox.c
 mbyte.c
-md5.c
+hcache/mutt_md5.c
 menu.c
 mh.c
 muttlib.c
