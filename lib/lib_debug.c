@@ -1,6 +1,6 @@
 /**
  * @file
- * Convenience wrapper for the library headers
+ * Debug messages
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -21,35 +21,32 @@
  */
 
 /**
- * @page lib Library of shared functions
+ * @page debug Debug messages
  *
- * Each source file in the library provides a group of related functions.
+ * Output debugging messages, suitable for a developer.
  *
- * The library is self-contained -- some files may depend on others in the
- * library, but none depends on source from outside.
- *
- * -# @subpage ascii
- * -# @subpage base64
- * -# @subpage date
- * -# @subpage debug
- * -# @subpage exit
- * -# @subpage md5
- * -# @subpage memory
- * -# @subpage message
- * -# @subpage sha1
+ * | Function     | Description
+ * | :----------- | :--------------------------------
+ * | mutt_debug() | Output some debugging information
  */
 
-#ifndef _LIB_LIB_H
-#define _LIB_LIB_H
+#include "config.h"
+#include <stdarg.h>
+#include <stdio.h>
 
-#include "lib_ascii.h"
-#include "lib_base64.h"
-#include "lib_date.h"
-#include "lib_debug.h"
-#include "lib_exit.h"
-#include "lib_md5.h"
-#include "lib_memory.h"
-#include "lib_message.h"
-#include "lib_sha1.h"
-
-#endif /* _LIB_LIB_H */
+/**
+ * mutt_debug - Output some debugging information
+ * @param level Debug level
+ * @param fmt   printf-like formatting string
+ * @param ...   Arguments to be formatted
+ *
+ * This stub function ignores the logging level and outputs all information to
+ * stderr.
+ */
+void mutt_debug(int level, const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  vfprintf(stderr, fmt, ap);
+  va_end(ap);
+}
