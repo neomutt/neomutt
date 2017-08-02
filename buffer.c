@@ -28,6 +28,7 @@
 #include "buffer.h"
 #include "filter.h"
 #include "lib.h"
+#include "lib/lib.h"
 #include "myvar.h"
 
 /**

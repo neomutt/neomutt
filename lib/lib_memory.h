@@ -1,6 +1,6 @@
 /**
  * @file
- * Convenience wrapper for the library headers
+ * Memory management wrappers
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,32 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page lib Library of shared functions
- *
- * Each source file in the library provides a group of related functions.
- *
- * The library is self-contained -- some files may depend on others in the
- * library, but none depends on source from outside.
- *
- * -# @subpage ascii
- * -# @subpage base64
- * -# @subpage date
- * -# @subpage exit
- * -# @subpage md5
- * -# @subpage memory
- * -# @subpage sha1
- */
+#ifndef _LIB_MEMORY_H
+#define _LIB_MEMORY_H
 
-#ifndef _LIB_LIB_H
-#define _LIB_LIB_H
+#include <stdio.h>
 
-#include "lib_ascii.h"
-#include "lib_base64.h"
-#include "lib_date.h"
-#include "lib_exit.h"
-#include "lib_md5.h"
-#include "lib_memory.h"
-#include "lib_sha1.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#define _(a) gettext(a)
+#ifdef gettext_noop
+#define N_(a) gettext_noop(a)
+#else
+#define N_(a) (a)
+#endif
+#else
+#define _(a) (a)
+#define N_(a) a
+#endif
 
-#endif /* _LIB_LIB_H */
+void *safe_calloc(size_t nmemb, size_t size);
+void  safe_free(void *ptr);
+void *safe_malloc(size_t size);
+void  safe_realloc(void *ptr, size_t size);
+
+#define FREE(x) safe_free(x)
+
+#endif /* _LIB_MEMORY_H */

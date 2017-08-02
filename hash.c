@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include "hash.h"
 #include "lib.h"
+#include "lib/lib.h"
 
 #define SOMEPRIME 149711
 
