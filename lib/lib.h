@@ -30,6 +30,7 @@
  *
  * -# @subpage ascii
  * -# @subpage base64
+ * -# @subpage buffer
  * -# @subpage date
  * -# @subpage debug
  * -# @subpage exit
@@ -46,6 +47,7 @@
 
 #include "lib_ascii.h"
 #include "lib_base64.h"
+#include "lib_buffer.h"
 #include "lib_date.h"
 #include "lib_debug.h"
 #include "lib_exit.h"

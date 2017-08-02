@@ -30,7 +30,6 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "address.h"
-#include "buffer.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
@@ -39,6 +38,7 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
+#include "mutt.h"
 #include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

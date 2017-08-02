@@ -78,6 +78,8 @@ enum XdgType
   XDG_CONFIG_DIRS,
 };
 
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
+
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags);
 

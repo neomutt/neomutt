@@ -28,13 +28,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "keymap.h"
-#include "buffer.h"
 #include "functions.h"
 #include "globals.h"
 #include "keymap_defs.h"
 #include "lib.h"
 #include "lib/lib.h"
 #include "mapping.h"
+#include "mutt.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

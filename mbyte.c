@@ -31,7 +31,6 @@
 #include <string.h>
 #include <wchar.h>
 #include "mbyte.h"
-#include "buffer.h"
 #include "charset.h"
 #include "lib.h"
 #include "lib/lib.h"

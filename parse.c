@@ -30,7 +30,6 @@
 #include <time.h>
 #include "mutt.h"
 #include "body.h"
-#include "buffer.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"

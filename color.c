@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt.h"
-#include "buffer.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"

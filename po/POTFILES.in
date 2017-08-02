@@ -4,7 +4,6 @@ alias.c
 attach.c
 bcache.c
 browser.c
-buffer.c
 buffy.c
 charset.c
 color.c
@@ -60,6 +59,7 @@ keymap_alldefs.h
 lib.c
 lib/lib_ascii.c
 lib/lib_base64.c
+lib/lib_buffer.c
 lib/lib_date.c
 lib/lib_debug.c
 lib/lib_exit.c

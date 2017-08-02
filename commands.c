@@ -35,7 +35,6 @@
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
-#include "buffer.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"

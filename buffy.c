@@ -30,13 +30,13 @@
 #include <sys/stat.h>
 #include <utime.h>
 #include "buffy.h"
-#include "buffer.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "lib.h"
 #include "lib/lib.h"
 #include "mailbox.h"
+#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"

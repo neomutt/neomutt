@@ -39,7 +39,6 @@
 #include "account.h"
 #include "bcache.h"
 #include "body.h"
-#include "buffer.h"
 #include "buffy.h"
 #include "context.h"
 #include "envelope.h"

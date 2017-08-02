@@ -42,7 +42,6 @@
 #include "address.h"
 #include "backend.h"
 #include "body.h"
-#include "buffer.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"

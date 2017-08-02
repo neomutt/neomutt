@@ -33,7 +33,6 @@
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
-#include "buffer.h"
 #include "context.h"
 #include "envelope.h"
 #include "format_flags.h"
