@@ -1,9 +1,9 @@
 /**
  * @file
- * Helper function for standalone tools
+ * Leave the program NOW
  *
  * @authors
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,17 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Some simple dummies, so we can reuse the routines from
- * lib.c in external programs.
- */
+#ifndef _LIB_EXIT_H
+#define _LIB_EXIT_H
 
-#define WHERE
-#define _EXTLIB_C
+void mutt_exit(int code);
 
-#include "config.h"
-#include <stdlib.h>
-#include "lib.h"
-
-void (*mutt_error)(const char *, ...) = mutt_nocurses_error;
-
+#endif /* _LIB_EXIT_H */

@@ -42,6 +42,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "lib.h"
+#include "lib/lib.h"
 
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>

@@ -62,6 +62,7 @@ lib.c
 lib/lib_ascii.c
 lib/lib_base64.c
 lib/lib_date.c
+lib/lib_exit.c
 main.c
 mbox.c
 mbyte.c
