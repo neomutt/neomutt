@@ -831,7 +831,7 @@ void mutt_endwin(const char *msg)
   errno = e;
 }
 
-void mutt_perror(const char *s)
+void mutt_perror_debug(const char *s)
 {
   char *p = strerror(errno);
 

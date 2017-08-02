@@ -37,9 +37,6 @@
 #include "sort.h"
 #endif /* MAIN_C */
 
-WHERE void (*mutt_error)(const char *, ...);
-WHERE void (*mutt_message)(const char *, ...);
-
 WHERE struct Context *Context;
 
 WHERE char Errorbuf[STRING];

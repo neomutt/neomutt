@@ -34,6 +34,7 @@
  * -# @subpage exit
  * -# @subpage md5
  * -# @subpage memory
+ * -# @subpage message
  * -# @subpage sha1
  */
 
@@ -46,6 +47,7 @@
 #include "lib_exit.h"
 #include "lib_md5.h"
 #include "lib_memory.h"
+#include "lib_message.h"
 #include "lib_sha1.h"
 
 #endif /* _LIB_LIB_H */

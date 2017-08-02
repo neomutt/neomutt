@@ -22,7 +22,6 @@ doc/makedoc.c
 edit.c
 editmsg.c
 enter.c
-extlib.c
 filter.c
 flags.c
 from.c
@@ -65,6 +64,7 @@ lib/lib_date.c
 lib/lib_exit.c
 lib/lib_md5.c
 lib/lib_memory.c
+lib/lib_message.c
 lib/lib_sha1.c
 main.c
 mbox.c

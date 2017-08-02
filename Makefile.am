@@ -84,7 +84,7 @@ EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 
 EXTRA_DIST = account.h attach.h bcache.h browser.h buffer.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
-	COPYRIGHT extlib.c filter.h functions.h gen_defs globals.h \
+	COPYRIGHT filter.h functions.h gen_defs globals.h \
 	group.h hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
 	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
@@ -98,7 +98,7 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffer.h buffy.h \
 
 EXTRA_SCRIPTS =
 
-pgpring_SOURCES = extlib.c lib.c pgppubring.c
+pgpring_SOURCES = lib.c pgppubring.c
 pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBLIB)
 pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBLIBDEPS)
 

@@ -41,8 +41,7 @@
 #include <unistd.h>
 #include "lib_memory.h"
 #include "lib_exit.h"
-// #include "lib_message.h"
-void mutt_error(const char *, ...);
+#include "lib_message.h"
 
 /**
  * safe_calloc - Allocate zeroed memory on the heap

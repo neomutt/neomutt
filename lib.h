@@ -91,10 +91,6 @@ static inline int is_email_wsp(char c)
  */
 
 
-#ifndef _EXTLIB_C
-extern void (*mutt_error)(const char *, ...);
-#endif
-
 #ifdef DEBUG
 extern char debugfilename[_POSIX_PATH_MAX];
 extern FILE *debugfile;
