@@ -390,10 +390,6 @@ uint64_t mutt_rand64(void);
 
 struct Address *alias_reverse_lookup(struct Address *a);
 
-/* base64.c */
-size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen);
-int mutt_from_base64(char *out, const char *in);
-
 /* utf8.c */
 int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 

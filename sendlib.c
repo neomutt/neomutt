@@ -20,8 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _SENDLIB_C 1
-
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>

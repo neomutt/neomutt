@@ -2,7 +2,6 @@ account.c
 addrbook.c
 alias.c
 attach.c
-base64.c
 bcache.c
 browser.c
 buffer.c
@@ -62,6 +61,7 @@ keymap.c
 keymap_alldefs.h
 lib.c
 lib/lib_ascii.c
+lib/lib_base64.c
 main.c
 mbox.c
 mbyte.c
