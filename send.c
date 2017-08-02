@@ -42,7 +42,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"

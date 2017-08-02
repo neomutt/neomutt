@@ -24,7 +24,6 @@
 #define _MUTT_ENVELOPE_H
 
 #include <stdbool.h>
-#include "lib.h"
 #include "lib/lib.h"
 
 /**

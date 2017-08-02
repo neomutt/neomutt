@@ -31,7 +31,6 @@
 #include "functions.h"
 #include "globals.h"
 #include "keymap_defs.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mapping.h"
 #include "mutt.h"

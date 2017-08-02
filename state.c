@@ -23,7 +23,6 @@
 #include "config.h"
 #include <stdarg.h>
 #include "state.h"
-#include "lib.h"
 #include "globals.h"
 #include "mbyte.h"
 

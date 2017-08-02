@@ -30,7 +30,6 @@
 #include "mutt.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "protos.h"
 

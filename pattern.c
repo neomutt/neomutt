@@ -47,7 +47,6 @@
 #include "group.h"
 #include "header.h"
 #include "keymap_defs.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"

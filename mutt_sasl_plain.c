@@ -23,7 +23,6 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt_sasl_plain.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "protos.h"
 

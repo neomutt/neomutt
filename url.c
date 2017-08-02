@@ -32,7 +32,6 @@
 #include "url.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mapping.h"
 #include "mime.h"

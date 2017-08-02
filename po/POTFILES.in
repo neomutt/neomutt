@@ -55,7 +55,6 @@ imap/util.c
 init.c
 keymap.c
 keymap_alldefs.h
-lib.c
 lib/lib_ascii.c
 lib/lib_base64.c
 lib/lib_buffer.c

@@ -42,7 +42,6 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib.h"
 #include "lib/lib.h"
 #include "ncrypt/ncrypt.h"
 #include "ncrypt/pgplib.h"

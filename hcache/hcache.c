@@ -48,7 +48,6 @@
 #include "hcache.h"
 #include "hcversion.h"
 #include "header.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "list.h"
 #include "mbyte.h"

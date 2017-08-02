@@ -23,7 +23,6 @@
 #ifndef _MUTT_PARAMETER_H
 #define _MUTT_PARAMETER_H
 
-#include "lib.h"
 #include "lib/lib.h"
 
 /**

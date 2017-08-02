@@ -359,4 +359,34 @@ struct AttachMatch
 
 #define EXECSHELL "/bin/sh"
 
+/* Use this with care.  If the compiler can't see the array
+ * definition, it obviously won't produce a correct result. */
+#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
+
+/* For mutt_simple_format() justifications */
+/* Making left 0 and center -1 is of course completely nonsensical, but
+ * it retains compatibility for any patches that call mutt_simple_format.
+ * Once patches are updated to use FMT_*, these can be made sane. */
+#define FMT_LEFT   0
+#define FMT_RIGHT  1
+#define FMT_CENTER -1
+
+/* Exit values used in send_msg() */
+#define S_ERR 127
+#define S_BKG 126
+
+int safe_asprintf(char **, const char *, ...);
+
+int mutt_inbox_cmp(const char *a, const char *b);
+
+const char *mutt_strsysexit(int e);
+
+#ifdef DEBUG
+extern char debugfilename[_POSIX_PATH_MAX];
+extern FILE *debugfile;
+extern int debuglevel;
+extern char *debugfile_cmdline;
+extern int debuglevel_cmdline;
+#endif
+
 #endif /* _MUTT_H */

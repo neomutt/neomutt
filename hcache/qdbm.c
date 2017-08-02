@@ -28,7 +28,6 @@
 #include <depot.h>
 #include <villa.h>
 #include "backend.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "options.h"
 

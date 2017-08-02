@@ -43,7 +43,6 @@
 #include "gnupgparse.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mime.h"
 #include "mutt_curses.h"

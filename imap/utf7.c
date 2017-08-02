@@ -25,7 +25,6 @@
 #include "imap_private.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib.h"
 #include "lib/lib.h"
 
 // clang-format off

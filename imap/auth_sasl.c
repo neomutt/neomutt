@@ -32,7 +32,6 @@
 #include "account.h"
 #include "auth.h"
 #include "globals.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mutt_sasl.h"
 #include "mutt_socket.h"

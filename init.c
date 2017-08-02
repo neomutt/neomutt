@@ -50,7 +50,6 @@
 #include "header.h"
 #include "history.h"
 #include "keymap.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"

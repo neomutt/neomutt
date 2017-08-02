@@ -36,7 +36,6 @@
 #include "copy.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mailbox.h"
 #include "mx.h"

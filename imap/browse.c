@@ -37,7 +37,6 @@
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mutt_regex.h"
 #include "options.h"

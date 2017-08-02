@@ -38,7 +38,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mbyte_table.h"
 #include "mutt_curses.h"

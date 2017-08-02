@@ -29,7 +29,6 @@
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "options.h"
 

@@ -47,7 +47,6 @@
 #include "globals.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
 #include "lib/lib.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"

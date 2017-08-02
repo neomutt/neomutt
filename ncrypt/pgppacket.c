@@ -24,7 +24,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib.h"
 #include "lib/lib.h"
 
 #define CHUNKSIZE 1024

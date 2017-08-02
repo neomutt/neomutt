@@ -25,7 +25,6 @@
 #define _MUTT_CURSES_H
 
 #include <regex.h>
-#include "lib.h"
 #include "lib/lib.h"
 #include "options.h"
 
