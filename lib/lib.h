@@ -33,6 +33,7 @@
  * -# @subpage date
  * -# @subpage debug
  * -# @subpage exit
+ * -# @subpage file
  * -# @subpage md5
  * -# @subpage memory
  * -# @subpage message
@@ -48,6 +49,7 @@
 #include "lib_date.h"
 #include "lib_debug.h"
 #include "lib_exit.h"
+#include "lib_file.h"
 #include "lib_md5.h"
 #include "lib_memory.h"
 #include "lib_message.h"
