@@ -20,14 +20,34 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page date Time and date handling routines
+ *
+ * Some commonly used time and date functions.
+ *
+ * | Function              | Description
+ * | :-------------------- | :--------------------------------------------------
+ * | mutt_local_tz()       | Calculate the local timezone in seconds east of UTC
+ * | mutt_mktime()         | Convert `struct tm` to `time_t`
+ * | mutt_normalize_time() | Fix the contents of a struct tm
+ */
+
 #include "config.h"
 #include <string.h>
 #include <time.h>
 
+/* theoretically time_t can be float but it is integer on most (if not all) systems */
+#define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
+#define TM_YEAR_MAX                                                            \
+  (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+
 /**
  * compute_tz - Calculate the number of seconds east of UTC
+ * @param g   Local time
+ * @param utc UTC time
+ * @retval number Seconds east of UTC
  *
- * returns the seconds east of UTC given `g' and its corresponding gmtime()
+  * returns the seconds east of UTC given 'g' and its corresponding gmtime()
  * representation
  */
 static time_t compute_tz(time_t g, struct tm *utc)
@@ -41,18 +61,35 @@ static time_t compute_tz(time_t g, struct tm *utc)
   if ((yday = (lt->tm_yday - utc->tm_yday)))
   {
     /* This code is optimized to negative timezones (West of Greenwich) */
-    if (yday == -1 || /* UTC passed midnight before localtime */
-        yday > 1)     /* UTC passed new year before localtime */
-      t -= 24 * 60 * 60;
+    if ((yday == -1) || /* UTC passed midnight before localtime */
+        (yday > 1))     /* UTC passed new year before localtime */
+      t -= (24 * 60 * 60);
     else
-      t += 24 * 60 * 60;
+      t += (24 * 60 * 60);
   }
 
   return t;
 }
 
 /**
+ * is_leap_year_feb - Is a given February in a leap year
+ * @param tm Date to be tested
+ * @retval true if it's a leap year
+ */
+static int is_leap_year_feb(struct tm *tm)
+{
+  if (tm->tm_mon == 1)
+  {
+    int y = tm->tm_year + 1900;
+    return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
+  }
+  return 0;
+}
+
+/**
  * mutt_local_tz - Calculate the local timezone in seconds east of UTC
+ * @param t Time to examine
+ * @retval num Seconds east of UTC
  *
  * Returns the local timezone in seconds east of UTC for the time t,
  * or for the current time if t is zero.
@@ -71,15 +108,13 @@ time_t mutt_local_tz(time_t t)
   return (compute_tz(t, &utc));
 }
 
-/* theoretically time_t can be float but it is integer on most (if not all) systems */
-#define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
-#define TM_YEAR_MAX                                                            \
-  (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
-
 /**
  * mutt_mktime - Convert `struct tm` to `time_t`
+ * @param t     Time to convert
+ * @param local Should the local timezone be considered
+ * @retval num Time in Unix format
  *
- * converts struct tm to time_t, but does not take the local timezone into
+ * Convert a struct tm to time_t, but don't take the local timezone into
  * account unless ``local'' is nonzero
  */
 time_t mutt_mktime(struct tm *t, int local)
@@ -128,20 +163,14 @@ time_t mutt_mktime(struct tm *t, int local)
 }
 
 /**
- * is_leap_year_feb - Is it a leap year
- * @param tm Date to be tested
- * @retval true if it's a leap year
+ * mutt_normalize_time - Fix the contents of a struct tm
+ * @param tm Time to correct
+ *
+ * If values have been added/subtracted from a struct tm, it can lead to
+ * invalid dates, e.g.  Adding 10 days to the 25th of a month.
+ *
+ * This function will correct any over/under-flow.
  */
-static int is_leap_year_feb(struct tm *tm)
-{
-  if (tm->tm_mon == 1)
-  {
-    int y = tm->tm_year + 1900;
-    return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
-  }
-  return 0;
-}
-
 void mutt_normalize_time(struct tm *tm)
 {
   static const char DaysPerMonth[12] = {

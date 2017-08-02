@@ -122,8 +122,6 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user
 
 void mutt_set_mtime(const char *from, const char *to);
 time_t mutt_decrease_mtime(const char *f, struct stat *st);
-time_t mutt_local_tz(time_t t);
-time_t mutt_mktime(struct tm *t, int local);
 time_t mutt_parse_date(const char *s, struct Header *h);
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 void mutt_touch_atime(int f);
@@ -222,7 +220,6 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp);
 #define mutt_mktemp_pfx_sfx(a, b, c, d) _mutt_mktemp(a, b, c, d, __FILE__, __LINE__)
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line);
-void mutt_normalize_time(struct tm *tm);
 void mutt_paddstr(int n, const char *s);
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 void mutt_parse_part(FILE *fp, struct Body *b);

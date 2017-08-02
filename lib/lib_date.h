@@ -1,9 +1,9 @@
 /**
  * @file
- * Convenience wrapper for the library headers
+ * Time and date handling routines
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,24 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @page lib Library of shared functions
- *
- * Each source file in the library provides a group of related functions.
- *
- * The library is self-contained -- some files may depend on others in the
- * library, but none depends on source from outside.
- *
- * -# @subpage ascii
- * -# @subpage base64
- * -# @subpage date
- */
+#ifndef _LIB_DATE_H
+#define _LIB_DATE_H
 
-#ifndef _LIB_LIB_H
-#define _LIB_LIB_H
+#include <time.h>
 
-#include "lib_ascii.h"
-#include "lib_base64.h"
-#include "lib_date.h"
+time_t mutt_local_tz(time_t t);
+time_t mutt_mktime(struct tm *t, int local);
+void mutt_normalize_time(struct tm *tm);
 
-#endif /* _LIB_LIB_H */
+#endif /* _LIB_DATE_H */
