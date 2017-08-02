@@ -41,7 +41,6 @@
 #include "copy.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"

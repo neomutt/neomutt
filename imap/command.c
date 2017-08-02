@@ -37,7 +37,6 @@
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "imap/imap.h"
 #include "lib.h"

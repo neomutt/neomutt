@@ -49,7 +49,7 @@ mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
 	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
 	envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
-	handler.c hash.c hdrline.c header.h headers.c help.c history.c hook.c \
+	handler.c hdrline.c header.h headers.c help.c history.c hook.c \
 	init.c keymap.c lib.c list.h main.c mbox.c mbyte.c mbyte_table.h \
 	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
 	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
@@ -85,7 +85,7 @@ EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
 	COPYRIGHT filter.h functions.h gen_defs globals.h \
-	group.h hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
+	group.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
 	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \

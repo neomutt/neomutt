@@ -38,7 +38,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "lib.h"
 #include "lib/lib.h"

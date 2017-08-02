@@ -31,7 +31,6 @@
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
-#include "hash.h"
 #include "keymap.h"
 #include "keymap_defs.h"
 #include "lib.h"

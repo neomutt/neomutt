@@ -36,7 +36,6 @@
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
 #include "lib.h"
 #include "lib/lib.h"
 #include "list.h"

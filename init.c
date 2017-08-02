@@ -46,7 +46,6 @@
 #include "envelope.h"
 #include "filter.h"
 #include "group.h"
-#include "hash.h"
 #include "hcache/hcache.h"
 #include "header.h"
 #include "history.h"

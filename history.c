@@ -29,7 +29,6 @@
 #include "history.h"
 #include "charset.h"
 #include "globals.h"
-#include "hash.h"
 #include "lib.h"
 #include "lib/lib.h"
 #include "protos.h"
