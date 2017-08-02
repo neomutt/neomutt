@@ -53,7 +53,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mbyte.h"
-#include "md5.h"
 #include "mutt_regex.h"
 #include "parameter.h"
 #include "protos.h"

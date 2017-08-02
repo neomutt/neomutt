@@ -32,6 +32,7 @@
  * -# @subpage base64
  * -# @subpage date
  * -# @subpage exit
+ * -# @subpage md5
  */
 
 #ifndef _LIB_LIB_H
@@ -41,5 +42,6 @@
 #include "lib_base64.h"
 #include "lib_date.h"
 #include "lib_exit.h"
+#include "lib_md5.h"
 
 #endif /* _LIB_LIB_H */
