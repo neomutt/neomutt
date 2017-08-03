@@ -77,6 +77,15 @@ struct State;
 #define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
 #endif
 
+/* flags for mutt_get_token() */
+#define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
+#define MUTT_TOKEN_CONDENSE   (1<<1)  /* ^(char) to control chars (macros) */
+#define MUTT_TOKEN_SPACE      (1<<2)  /* don't treat whitespace as a term */
+#define MUTT_TOKEN_QUOTE      (1<<3)  /* don't interpret quotes */
+#define MUTT_TOKEN_PATTERN    (1<<4)  /* !)|~ are terms (for patterns) */
+#define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
+#define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
+
 /* flags for _mutt_system() */
 #define MUTT_DETACH_PROCESS 1 /**< detach subprocess from group */
 
@@ -333,27 +342,6 @@ void mutt_init(int skip_sys_rc, struct List *commands);
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
 
-/* flags for the State struct */
-#define MUTT_DISPLAY       (1 << 0) /**< output is displayed to the user */
-#define MUTT_VERIFY        (1 << 1) /**< perform signature verification */
-#define MUTT_PENDINGPREFIX (1 << 2) /**< prefix to write, but character must follow */
-#define MUTT_WEED          (1 << 3) /**< weed headers even when not in display mode */
-#define MUTT_CHARCONV      (1 << 4) /**< Do character set conversions */
-#define MUTT_PRINTING      (1 << 5) /**< are we printing? - MUTT_DISPLAY "light" */
-#define MUTT_REPLYING      (1 << 6) /**< are we replying? */
-#define MUTT_FIRSTDONE     (1 << 7) /**< the first attachment has been done */
-
-#define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
-#define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(x, y) fputs(x, (y)->fpout)
-#define state_putc(x, y) fputc(x, (y)->fpout)
-
-void state_mark_attach(struct State *s);
-void state_attach_puts(const char *t, struct State *s);
-void state_prefix_putc(char c, struct State *s);
-int state_printf(struct State *s, const char *fmt, ...);
-int state_putws(const wchar_t *ws, struct State *s);
-
 /**
  * struct AttachMatch - An attachment matching a regex
  *
@@ -370,5 +358,35 @@ struct AttachMatch
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
 #define EXECSHELL "/bin/sh"
+
+/* Use this with care.  If the compiler can't see the array
+ * definition, it obviously won't produce a correct result. */
+#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
+
+/* For mutt_simple_format() justifications */
+/* Making left 0 and center -1 is of course completely nonsensical, but
+ * it retains compatibility for any patches that call mutt_simple_format.
+ * Once patches are updated to use FMT_*, these can be made sane. */
+#define FMT_LEFT   0
+#define FMT_RIGHT  1
+#define FMT_CENTER -1
+
+/* Exit values used in send_msg() */
+#define S_ERR 127
+#define S_BKG 126
+
+int safe_asprintf(char **, const char *, ...);
+
+int mutt_inbox_cmp(const char *a, const char *b);
+
+const char *mutt_strsysexit(int e);
+
+#ifdef DEBUG
+extern char debugfilename[_POSIX_PATH_MAX];
+extern FILE *debugfile;
+extern int debuglevel;
+extern char *debugfile_cmdline;
+extern int debuglevel_cmdline;
+#endif
 
 #endif /* _MUTT_H */

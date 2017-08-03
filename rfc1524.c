@@ -37,11 +37,11 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "rfc1524.h"
-#include "ascii.h"
 #include "body.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 
 /**

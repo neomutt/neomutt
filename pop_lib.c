@@ -30,11 +30,10 @@
 #include <string.h>
 #include "mutt.h"
 #include "account.h"
-#include "ascii.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"

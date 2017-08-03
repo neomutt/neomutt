@@ -36,7 +36,6 @@
 #include <wchar.h>
 #include <wctype.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
 #include "charset.h"
 #include "copy.h"
@@ -44,12 +43,13 @@
 #include "globals.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 #include "rfc1524.h"
 #include "rfc3676.h"
@@ -72,17 +72,6 @@ const int Index_hex[128] = {
     -1,10,11,12, 13,14,15,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1
 };
-
-const int Index_64[128] = {
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,62, -1,-1,-1,63,
-    52,53,54,55, 56,57,58,59, 60,61,-1,-1, -1,-1,-1,-1,
-    -1, 0, 1, 2,  3, 4, 5, 6,  7, 8, 9,10, 11,12,13,14,
-    15,16,17,18, 19,20,21,22, 23,24,25,-1, -1,-1,-1,-1,
-    -1,26,27,28, 29,30,31,32, 33,34,35,36, 37,38,39,40,
-    41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1
-};
 // clang-format on
 
 static void print_part_line(struct State *s, struct Body *b, int n)
@@ -98,15 +87,6 @@ static void print_part_line(struct State *s, struct Body *b, int n)
   state_printf(s, _("%s/%s%s%s, Encoding: %s, Size: %s --]\n"), TYPE(b),
                b->subtype, charset ? "; charset=" : "", charset ? charset : "",
                ENCODING(b->encoding), length);
-}
-
-static void state_prefix_put(const char *d, size_t dlen, struct State *s)
-{
-  if (s->prefix)
-    while (dlen--)
-      state_prefix_putc(*d++, s);
-  else
-    fwrite(d, dlen, 1, s->fpout);
 }
 
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)

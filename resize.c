@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>

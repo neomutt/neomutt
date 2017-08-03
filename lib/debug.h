@@ -1,9 +1,9 @@
 /**
  * @file
- * ASCII string comparison routines
+ * Debug messages
  *
  * @authors
- * Copyright (C) 2001-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,32 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Versions of the string comparison functions which are
- * locale-insensitive.
- */
+#ifndef _LIB_DEBUG_H
+#define _LIB_DEBUG_H
 
-#ifndef _MUTT_ASCII_H
-#define _MUTT_ASCII_H
+#include <limits.h>
 
-#include <ctype.h>
+#ifdef DEBUG
+void mutt_debug(int level, const char *fmt, ...);
+#else
+#define mutt_debug(...) do { } while (0)
+#endif
 
-int ascii_strcasecmp(const char *a, const char *b);
-int ascii_strncasecmp(const char *a, const char *b, int n);
-
-#define ascii_strcmp(a, b) mutt_strcmp(a, b)
-#define ascii_strncmp(a, b, c) mutt_strncmp(a, b, c)
-
-static inline char *ascii_strlower(char *s)
-{
-  char *p = s;
-
-  for (; *p; ++p)
-  {
-    *p = tolower(*p);
-  }
-
-  return s;
-}
-
-#endif /* _MUTT_ASCII_H */
+#endif /* _LIB_DEBUG_H */

@@ -31,7 +31,7 @@
 #include <sys/socket.h>
 #include "mutt_sasl.h"
 #include "account.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"

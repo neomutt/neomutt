@@ -32,13 +32,13 @@
 #include <string.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 #include "state.h"
 
@@ -307,7 +307,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
       buf_off++;
 
     /* test for signature separator */
-    sigsep = (ascii_strcmp(buf + buf_off, "-- ") == 0);
+    sigsep = (mutt_strcmp(buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
@@ -379,7 +379,7 @@ void rfc3676_space_stuff(struct Header *hdr)
 
   while (fgets(buf, sizeof(buf), in))
   {
-    if ((ascii_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
+    if ((mutt_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
     {
       fputc(' ', out);
 #ifdef DEBUG

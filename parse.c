@@ -29,14 +29,12 @@
 #include <string.h>
 #include <time.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
-#include "buffer.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"

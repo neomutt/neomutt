@@ -30,7 +30,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "attach.h"
 #include "body.h"
 #include "context.h"
@@ -41,7 +40,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "mime.h"

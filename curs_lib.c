@@ -43,7 +43,7 @@
 #include "enter_state.h"
 #include "globals.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -830,7 +830,7 @@ void mutt_endwin(const char *msg)
   errno = e;
 }
 
-void mutt_perror(const char *s)
+void mutt_perror_debug(const char *s)
 {
   char *p = strerror(errno);
 

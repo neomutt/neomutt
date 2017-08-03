@@ -20,6 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page ascii ASCII string comparison routines
+ *
+ * Simple ASCII string comparisons.
+ *
+ * | Function            | Description
+ * | :------------------ | :---------------------------------
+ * | ascii_strcasecmp()  | Compare strings, ignoring the case
+ * | ascii_strlower()    | Lowercase a string
+ * | ascii_strncasecmp() | Compare strings, ignoring the case
+ */
 
 /*
  * Versions of the string comparison functions which are
@@ -27,13 +38,20 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <stdio.h>
 #include "ascii.h"
 
+/**
+ * ascii_strcasecmp - Compare strings, ignoring the case
+ * @param a First string to compare
+ * @param b Second string to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int ascii_strcasecmp(const char *a, const char *b)
 {
-  int i;
-
   if (a == b)
     return 0;
   if (a == NULL && b)
@@ -43,11 +61,11 @@ int ascii_strcasecmp(const char *a, const char *b)
 
   for (;; a++, b++)
   {
-    if ((i = tolower(*a) - tolower(*b)))
+    int i = tolower(*a) - tolower(*b);
+    if (i)
       return i;
-    /* test for NUL here rather that in the for loop in order to detect unequal
-     * length strings (see http://dev.mutt.org/trac/ticket/3601)
-     */
+    /* test for NUL here rather than in the for loop in order to detect unequal
+     * length strings */
     if (!*a)
       break;
   }
@@ -55,10 +73,17 @@ int ascii_strcasecmp(const char *a, const char *b)
   return 0;
 }
 
+/**
+ * ascii_strncasecmp - Compare strings, ignoring the case
+ * @param a First string to compare
+ * @param b Second string to compare
+ * @param n Maximum number of characters to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 int ascii_strncasecmp(const char *a, const char *b, int n)
 {
-  int i;
-
   if (a == b)
     return 0;
   if (a == NULL && b)
@@ -68,9 +93,27 @@ int ascii_strncasecmp(const char *a, const char *b, int n)
 
   for (int j = 0; (*a || *b) && j < n; a++, b++, j++)
   {
-    if ((i = tolower(*a) - tolower(*b)))
+    int i = tolower(*a) - tolower(*b);
+    if (i)
       return i;
   }
 
   return 0;
+}
+
+/**
+ * ascii_strlower - Lowercase a string
+ * @param s String to transform
+ * @retval ptr Transformed string
+ *
+ * The string is transformed in place.
+ */
+char *ascii_strlower(char *s)
+{
+  char *p = s;
+
+  for (; *p; ++p)
+    *p = tolower(*p);
+
+  return s;
 }

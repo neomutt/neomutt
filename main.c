@@ -38,14 +38,13 @@
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
 #include "buffy.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -235,8 +234,8 @@ int main(int argc, char **argv, char **env)
   }
 #endif
 
-  mutt_error = mutt_nocurses_error;
-  mutt_message = mutt_nocurses_error;
+  mutt_message = mutt_error; /* send messages to stderr, too */
+  mutt_perror = mutt_perror_debug;
   (void) mutt_rand32();
   umask(077);
 

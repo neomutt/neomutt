@@ -20,8 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _SENDLIB_C 1
-
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>
@@ -42,7 +40,6 @@
 #include <wchar.h>
 #include "mutt.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "buffy.h"
 #include "charset.h"
@@ -53,7 +50,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -1484,7 +1481,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
   if (b->next && check_boundary(boundary, b->next))
     return true;
 
-  if ((p = mutt_get_parameter("boundary", b->parameter)) && (ascii_strcmp(p, boundary) == 0))
+  if ((p = mutt_get_parameter("boundary", b->parameter)) && (mutt_strcmp(p, boundary) == 0))
     return true;
   return false;
 }

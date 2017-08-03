@@ -42,12 +42,10 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib.h"
-#include "md5.h"
+#include "lib/lib.h"
 #include "ncrypt/ncrypt.h"
 #include "ncrypt/pgplib.h"
 #include "ncrypt/pgppacket.h"
-#include "sha1.h"
 
 extern char *optarg;
 extern int optind;

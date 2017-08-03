@@ -1,10 +1,8 @@
 /**
  * @file
- * Helper function for standalone tools
+ * Conversion to/from base64 encoding
  *
  * @authors
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
- *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -20,21 +18,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Some simple dummies, so we can reuse the routines from
- * lib.c in external programs.
- */
+#ifndef _LIB_BASE64_H
+#define _LIB_BASE64_H
 
-#define WHERE
-#define _EXTLIB_C
+#include <stdio.h>
 
-#include "config.h"
-#include <stdlib.h>
-#include "lib.h"
+extern const int Index_64[];
 
-void (*mutt_error)(const char *, ...) = mutt_nocurses_error;
+#define base64val(c) Index_64[(unsigned int) (c)]
 
-void mutt_exit(int code)
-{
-  exit(code);
-}
+size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen);
+int mutt_from_base64(char *out, const char *in);
+
+#endif /* _LIB_BASE64_H */

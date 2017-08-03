@@ -30,10 +30,9 @@
 #include <string.h>
 #include "imap_private.h"
 #include "account.h"
-#include "ascii.h"
 #include "auth.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_sasl.h"
 #include "mutt_socket.h"
 #include "options.h"
@@ -77,7 +76,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
 
     if (mutt_bit_isset(idata->capabilities, AUTH_ANON) &&
         (!idata->conn->account.user[0] ||
-         (ascii_strncmp(idata->conn->account.user, "anonymous", 9) == 0)))
+         (mutt_strncmp(idata->conn->account.user, "anonymous", 9) == 0)))
       rc = sasl_client_start(saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, &mech);
   }
   else if ((ascii_strcasecmp("login", method) == 0) &&

@@ -35,7 +35,6 @@
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
 #include "content.h"
 #include "context.h"
@@ -44,11 +43,12 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
 #include "state.h"
@@ -1034,6 +1034,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
 /**
  * crypt_get_fingerprint_or_id - Get the fingerprint or long key ID
+ * @param p       String to examine
  * @param pphint  Start of string to be passed to pgp_add_string_to_hints() or
  *                crypt_add_string_to_hints()
  * @param ppl     Start of long key ID if detected, else NULL

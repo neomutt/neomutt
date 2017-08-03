@@ -51,11 +51,11 @@ struct Progress;
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */
-#define IMAP_CMD_OK       (0)  /**< <tag> OK ... */
-#define IMAP_CMD_BAD      (-1) /**< <tag> BAD ... */
-#define IMAP_CMD_NO       (-2) /**< <tag> NO ... */
-#define IMAP_CMD_CONTINUE (1)  /**< \* ... */
-#define IMAP_CMD_RESPOND  (2)  /**< \+ */
+#define IMAP_CMD_OK       (0)  /**< `<tag> OK ...` */
+#define IMAP_CMD_BAD      (-1) /**< `<tag> BAD ...` */
+#define IMAP_CMD_NO       (-2) /**< `<tag> NO ...` */
+#define IMAP_CMD_CONTINUE (1)  /**< `* ...` */
+#define IMAP_CMD_RESPOND  (2)  /**< `+` */
 #define IMAP_CMD_NEW      (3)  /**< ImapCommand.state additions */
 
 /* number of entries in the hash table */

@@ -24,7 +24,7 @@
 #define _MUTT_GLOBALS_H
 
 #include <signal.h>
-#include "lib.h"
+#include "lib/lib.h"
 #include "where.h"
 #include "mutt_regex.h"
 
@@ -35,9 +35,6 @@
 #include "ncrypt/ncrypt.h"
 #include "sort.h"
 #endif /* MAIN_C */
-
-WHERE void (*mutt_error)(const char *, ...);
-WHERE void (*mutt_message)(const char *, ...);
 
 WHERE struct Context *Context;
 

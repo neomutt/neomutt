@@ -25,10 +25,15 @@
 #include "imap_private.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 
 // clang-format off
-static const int Index_64[128] = {
+/* This is very similar to the table in lib/lib_base64.c
+ * Encoding chars:
+ *   utf7 A-Za-z0-9+,
+ *   mime A-Za-z0-9+/
+ */
+const int Index_64u[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,62, 63,-1,-1,-1,
@@ -80,7 +85,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
       k = 10;
       for (; u7len; u7++, u7len--)
       {
-        if ((*u7 & 0x80) || (b = Index_64[(int) *u7]) == -1)
+        if ((*u7 & 0x80) || (b = Index_64u[(int) *u7]) == -1)
           break;
         if (k > 0)
         {

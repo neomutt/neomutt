@@ -28,7 +28,7 @@
 #include <tcbdb.h>
 #include <tcutil.h>
 #include "backend.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 static void *hcache_tokyocabinet_open(const char *path)

@@ -34,9 +34,7 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
-#include "buffer.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
@@ -46,7 +44,7 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"

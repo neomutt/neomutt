@@ -22,7 +22,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--with-sasl \
 	--with-tokyocabinet
 
-SUBDIRS = m4 contrib imap ncrypt
+SUBDIRS = m4 contrib imap ncrypt lib
 
 if BUILD_HCACHE
 SUBDIRS += hcache
@@ -44,19 +44,19 @@ BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
-mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
-	base64.c bcache.c body.h browser.c buffer.c buffy.c charset.c color.c \
+mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
+	bcache.c body.h browser.c buffy.c charset.c color.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
-	curs_lib.c curs_main.c date.c edit.c editmsg.c enter.c enter_state.h \
+	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
 	envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
-	handler.c hash.c hdrline.c header.h headers.c help.c history.c hook.c \
-	init.c keymap.c lib.c list.h main.c mbox.c mbyte.c mbyte_table.h md5.c \
+	handler.c hdrline.c header.h headers.c help.c history.c hook.c \
+	init.c keymap.c list.h main.c mbox.c mbyte.c mbyte_table.h \
 	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
-	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.h \
+	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \
-	smtp.c sort.c state.h status.c system.c thread.c thread.h url.c \
+	smtp.c sort.c state.c state.h status.c system.c thread.c thread.h url.c \
 	version.c where.h
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
@@ -64,11 +64,14 @@ nodist_mutt_SOURCES = $(BUILT_SOURCES)
 LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
+LIBMUTT = -Llib -lmutt
+LIBMUTTDEPS = $(top_srcdir)/lib/lib.h lib/libmutt.a
+
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
-	$(LIBIMAP) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
+	$(LIBIMAP) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
+	$(LIBMUTTDEPS) $(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
@@ -77,31 +80,31 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
 EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
-	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c
+	remailer.c remailer.h resize.c url.h utf8.c wcwidth.c
 
-EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
+EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
-	COPYRIGHT extlib.c filter.h functions.h gen_defs globals.h \
-	group.h hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
-	mapping.h mbyte.h md5.h mime.h mime.types mutt.h mutt_commands.h \
+	COPYRIGHT filter.h functions.h gen_defs globals.h \
+	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
+	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
-	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h \
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
 	sort.h txt2c.c txt2c.sh version.h \
 	keymap_alldefs.h
 
 EXTRA_SCRIPTS =
 
-pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
-pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS)
-pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS)
+pgpring_SOURCES = pgppubring.c
+pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBMUTT)
+pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBMUTTDEPS)
 
 mutt_md5_SOURCES = md5.c
-mutt_md5_CFLAGS = -DMD5UTIL
-mutt_md5_LDADD =
+mutt_md5_LDADD = $(LIBMUTT)
+mutt_md5_DEPENDENCIES = $(LIBMUTTDEPS)
 
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =

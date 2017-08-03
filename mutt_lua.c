@@ -31,9 +31,8 @@
 #include <string.h>
 #include "mutt.h"
 #include "mutt_lua.h"
-#include "buffer.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mbyte_table.h"
 #include "mutt_commands.h"

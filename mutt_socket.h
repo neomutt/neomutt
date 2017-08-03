@@ -26,7 +26,7 @@
 
 #include <stddef.h>
 #include "account.h"
-#include "lib.h"
+#include "lib/lib.h"
 
 /* logging levels */
 #define MUTT_SOCK_LOG_CMD  2
