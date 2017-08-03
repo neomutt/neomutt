@@ -55,7 +55,7 @@ struct SaslData
   int (*msasl_close)(struct Connection *conn);
   int (*msasl_read)(struct Connection *conn, char *buf, size_t len);
   int (*msasl_write)(struct Connection *conn, const char *buf, size_t count);
-  int (*msasl_poll)(struct Connection *conn);
+  int (*msasl_poll)(struct Connection *conn, time_t wait_secs);
 };
 
 #endif /* _MUTT_SASL_H */

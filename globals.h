@@ -271,6 +271,7 @@ WHERE struct List *SidebarWhitelist;
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
 WHERE short ImapPipelineDepth;
+WHERE short ImapPollTimeout;
 #endif
 
 /* flags for received signals */

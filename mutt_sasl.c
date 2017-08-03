@@ -561,13 +561,13 @@ fail:
   return -1;
 }
 
-static int mutt_sasl_conn_poll(struct Connection *conn)
+static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {
   struct SaslData *sasldata = conn->sockdata;
   int rc;
 
   conn->sockdata = sasldata->sockdata;
-  rc = sasldata->msasl_poll(conn);
+  rc = sasldata->msasl_poll(conn, wait_secs);
   conn->sockdata = sasldata;
 
   return rc;
