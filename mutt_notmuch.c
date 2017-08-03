@@ -2167,7 +2167,7 @@ int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
 
   for (struct Buffy *b = Incoming; b; b = b->next)
   {
-    if ((b->magic != MUTT_NOTMUCH) && b->desc && (strcmp(desc, b->desc) == 0))
+    if ((b->magic == MUTT_NOTMUCH) && b->desc && (strcmp(desc, b->desc) == 0))
     {
       strncpy(buf, b->path, bufsz);
       buf[bufsz - 1] = '\0';
