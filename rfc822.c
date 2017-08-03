@@ -3,8 +3,7 @@
  * RFC822 Email format routines
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2011-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2011-2013 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,24 +25,6 @@
 #include <string.h>
 #include "rfc822.h"
 #include "lib/lib.h"
-
-#ifdef TESTING
-#define safe_strdup strdup
-#define safe_malloc malloc
-#define FREE(x) safe_free(x)
-#define strfcpy(DST, SRC, LEN)                                                 \
-  do                                                                           \
-  {                                                                            \
-    if ((LEN) > 0)                                                             \
-    {                                                                          \
-      *(DST + (LEN) -1) = 0;                                                   \
-      strncpy(DST, SRC, (LEN) -1);                                             \
-    }                                                                          \
-  } while (0)
-#define LONG_STRING 1024
-#include "rfc822.h"
-#endif
-
 #include "mutt_idna.h"
 
 #define terminate_string(a, b, c)                                              \
@@ -846,25 +827,3 @@ bool rfc822_valid_msgid(const char *msgid)
 
   return true;
 }
-
-#ifdef TESTING
-int safe_free(void **p)
-{
-  free(*p);
-  *p = 0;
-}
-
-int main(int argc, char **argv)
-{
-  struct Address *list = NULL;
-  char buf[256];
-  char *str = "a b c ";
-
-  list = rfc822_parse_adrlist(NULL, str);
-  buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), list);
-  rfc822_free_address(&list);
-  puts(buf);
-  exit(0);
-}
-#endif
