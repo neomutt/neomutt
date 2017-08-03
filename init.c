@@ -114,7 +114,6 @@ static void myvar_del(const char *var)
   struct MyVar **cur = NULL;
   struct MyVar *tmp = NULL;
 
-
   for (cur = &MyVars; *cur; cur = &((*cur)->next))
     if (mutt_strcmp((*cur)->name, var) == 0)
       break;
@@ -129,12 +128,10 @@ static void myvar_del(const char *var)
   }
 }
 
-
 #ifdef USE_NOTMUCH
 /* List of tags found in last call to mutt_nm_query_complete(). */
 static char **nm_tags;
 #endif
-
 
 extern char **envlist;
 
@@ -195,7 +192,6 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   }
   return 0;
 }
-
 
 void set_quadoption(int opt, int flag)
 {
@@ -714,7 +710,7 @@ static void free_opt(struct Option *p)
 {
   struct Regex *pp = NULL;
 
-  switch (p->type & DT_MASK)
+  switch (DTYPE(p->type))
   {
     case DT_ADDR:
       rfc822_free_address((struct Address **) p->data);
@@ -865,7 +861,7 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
       FREE(&cur->template);
       FREE(&cur);
       cur = prev->next;
-      ++nremoved;
+      nremoved++;
     }
     else
       cur = cur->next;
@@ -944,10 +940,10 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
       if (n > t->nmatch)
         t->nmatch = n;
       while (*p && isdigit((int) *p))
-        ++p;
+        p++;
     }
     else
-      ++p;
+      p++;
   }
 
   if (t->nmatch > t->rx->rx->re_nsub)
@@ -962,7 +958,6 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
 
   return 0;
 }
-
 
 static void remove_from_list(struct List **l, const char *str)
 {
@@ -1272,7 +1267,6 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-
 static void clear_subject_mods(void)
 {
   int i;
@@ -1282,7 +1276,6 @@ static void clear_subject_mods(void)
       FREE(&Context->hdrs[i]->env->disp_subj);
   }
 }
-
 
 static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
@@ -1295,7 +1288,6 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
   return rc;
 }
 
-
 static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
                                   unsigned long data, struct Buffer *err)
 {
@@ -1306,7 +1298,6 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
     clear_subject_mods();
   return rc;
 }
-
 
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -1382,7 +1373,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   strfcpy(err->data, "This is no good at all.", err->dsize);
   return -1;
 }
-
 
 static int parse_unlist(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
@@ -1611,7 +1601,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     if ((p = strchr(a->major, '/')))
     {
       *p = '\0';
-      ++p;
+      p++;
       a->minor = p;
     }
     else
@@ -1683,7 +1673,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     if ((minor = strchr(tmp, '/')))
     {
       *minor = '\0';
-      ++minor;
+      minor++;
     }
     else
     {
@@ -1742,7 +1732,6 @@ static int print_attach_list(struct List *lp, char op, char *name)
 
   return 0;
 }
-
 
 static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
@@ -1990,7 +1979,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     tmp->name = safe_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
-      set_option(OPTMENUCALLER);
+      set_option(OPT_MENU_CALLER);
   }
   else
   {
@@ -2135,7 +2124,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 
 static void set_default(struct Option *p)
 {
-  switch (p->type & DT_MASK)
+  switch (DTYPE(p->type))
   {
     case DT_STR:
       if (!p->init && *((char **) p->data))
@@ -2170,7 +2159,7 @@ static void set_default(struct Option *p)
 
 static void restore_default(struct Option *p)
 {
-  switch (p->type & DT_MASK)
+  switch (DTYPE(p->type))
   {
     case DT_STR:
       mutt_str_replace((char **) p->data, (char *) p->init);
@@ -2273,13 +2262,13 @@ static void restore_default(struct Option *p)
     mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
   }
   if (p->flags & R_RESORT_SUB)
-    set_option(OPTSORTSUBTHREADS);
+    set_option(OPT_SORT_SUBTHREADS);
   if (p->flags & R_RESORT)
-    set_option(OPTNEEDRESORT);
+    set_option(OPT_NEED_RESORT);
   if (p->flags & R_RESORT_INIT)
-    set_option(OPTRESORTINIT);
+    set_option(OPT_RESORT_INIT);
   if (p->flags & R_TREE)
-    set_option(OPTREDRAWTREE);
+    set_option(OPT_REDRAW_TREE);
   if (p->flags & R_REFLOW)
     mutt_reflow_windows();
 #ifdef USE_SIDEBAR
@@ -2671,10 +2660,10 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         for (idx = 0; MuttVars[idx].option; idx++)
           restore_default(&MuttVars[idx]);
         mutt_set_current_menu_redraw_full();
-        set_option(OPTSORTSUBTHREADS);
-        set_option(OPTNEEDRESORT);
-        set_option(OPTRESORTINIT);
-        set_option(OPTREDRAWTREE);
+        set_option(OPT_SORT_SUBTHREADS);
+        set_option(OPT_NEED_RESORT);
+        set_option(OPT_RESORT_INIT);
+        set_option(OPT_REDRAW_TREE);
         return 0;
       }
       else
@@ -2882,7 +2871,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      if (option(OPTATTACHMSG) &&
+      if (option(OPT_ATTACH_MSG) &&
           (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
       {
         snprintf(err->data, err->dsize,
@@ -3175,13 +3164,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
       }
       if (MuttVars[idx].flags & R_RESORT_SUB)
-        set_option(OPTSORTSUBTHREADS);
+        set_option(OPT_SORT_SUBTHREADS);
       if (MuttVars[idx].flags & R_RESORT)
-        set_option(OPTNEEDRESORT);
+        set_option(OPT_NEED_RESORT);
       if (MuttVars[idx].flags & R_RESORT_INIT)
-        set_option(OPTRESORTINIT);
+        set_option(OPT_RESORT_INIT);
       if (MuttVars[idx].flags & R_TREE)
-        set_option(OPTREDRAWTREE);
+        set_option(OPT_REDRAW_TREE);
       if (MuttVars[idx].flags & R_REFLOW)
         mutt_reflow_windows();
 #ifdef USE_SIDEBAR
@@ -3459,7 +3448,6 @@ finish:
     FREE(&expn.data);
   return r;
 }
-
 
 #define NUMVARS (sizeof(MuttVars) / sizeof(MuttVars[0]))
 #define NUMCOMMANDS (sizeof(Commands) / sizeof(Commands[0]))
@@ -4203,7 +4191,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   /* on one of the systems I use, getcwd() does not return the same prefix
      as is listed in the passwd file */
   if ((p = getenv("HOME")))
-    Homedir = safe_strdup(p);
+    HomeDir = safe_strdup(p);
 
   /* Get some information about the user */
   if ((pw = getpwuid(getuid())))
@@ -4211,16 +4199,16 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     char rnbuf[STRING];
 
     Username = safe_strdup(pw->pw_name);
-    if (!Homedir)
-      Homedir = safe_strdup(pw->pw_dir);
+    if (!HomeDir)
+      HomeDir = safe_strdup(pw->pw_dir);
 
-    Realname = safe_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
+    RealName = safe_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
     Shell = safe_strdup(pw->pw_shell);
     endpwent();
   }
   else
   {
-    if (!Homedir)
+    if (!HomeDir)
     {
       mutt_endwin(NULL);
       fputs(_("unable to determine home directory"), stderr);
@@ -4327,17 +4315,17 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 #endif
 
   if ((p = getenv("MAIL")))
-    Spoolfile = safe_strdup(p);
+    SpoolFile = safe_strdup(p);
   else if ((p = getenv("MAILDIR")))
-    Spoolfile = safe_strdup(p);
+    SpoolFile = safe_strdup(p);
   else
   {
 #ifdef HOMESPOOL
-    mutt_concat_path(buffer, NONULL(Homedir), MAILPATH, sizeof(buffer));
+    mutt_concat_path(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
 #else
     mutt_concat_path(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
 #endif
-    Spoolfile = safe_strdup(buffer);
+    SpoolFile = safe_strdup(buffer);
   }
 
   if ((p = getenv("MAILCAPS")))
@@ -4350,7 +4338,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
         "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
   }
 
-  Tempdir = safe_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
+  TempDir = safe_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
 
   p = getenv("VISUAL");
   if (!p)
@@ -4394,18 +4382,17 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 
   CurrentMenu = MENU_MAIN;
 
-
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
   if (((p = getenv("LC_ALL")) != NULL && p[0]) || ((p = getenv("LANG")) != NULL && p[0]) ||
       ((p = getenv("LC_CTYPE")) != NULL && p[0]))
-    set_option(OPTLOCALES);
+    set_option(OPT_LOCALES);
 #endif
 
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    unset_option(OPTSUSPEND);
+    unset_option(OPT_SUSPEND);
 #endif
 
   mutt_init_history();
@@ -4417,25 +4404,25 @@ void mutt_init(int skip_sys_rc, struct List *commands)
    * create RFC822-compliant mail messages using the "subject" and "body"
    * headers.
    */
-  add_to_list(&MailtoAllow, "body");
-  add_to_list(&MailtoAllow, "subject");
+  add_to_list(&MailToAllow, "body");
+  add_to_list(&MailToAllow, "subject");
   /* Cc, In-Reply-To, and References help with not breaking threading on
    * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
-  add_to_list(&MailtoAllow, "cc");
-  add_to_list(&MailtoAllow, "in-reply-to");
-  add_to_list(&MailtoAllow, "references");
+  add_to_list(&MailToAllow, "cc");
+  add_to_list(&MailToAllow, "in-reply-to");
+  add_to_list(&MailToAllow, "references");
 
   if (!Muttrc)
   {
     char *xdg_cfg_home = getenv("XDG_CONFIG_HOME");
 
-    if (!xdg_cfg_home && Homedir)
+    if (!xdg_cfg_home && HomeDir)
     {
-      snprintf(buffer, sizeof(buffer), "%s/.config", Homedir);
+      snprintf(buffer, sizeof(buffer), "%s/.config", HomeDir);
       xdg_cfg_home = buffer;
     }
 
-    char *config = find_cfg(Homedir, xdg_cfg_home);
+    char *config = find_cfg(HomeDir, xdg_cfg_home);
     if (config)
     {
       Muttrc = mutt_add_list(Muttrc, config);
@@ -4520,7 +4507,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   {
     if (config->data)
     {
-      if (!option(OPTNOCURSES))
+      if (!option(OPT_NO_CURSES))
         endwin();
       if (source_rc(config->data, &err) != 0)
       {
@@ -4534,25 +4521,25 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   if (execute_commands(commands) != 0)
     need_pause = 1;
 
-  if (need_pause && !option(OPTNOCURSES))
+  if (need_pause && !option(OPT_NO_CURSES))
   {
     if (mutt_any_key_to_continue(NULL) == -1)
       mutt_exit(1);
   }
 
-  mutt_mkdir(Tempdir, S_IRWXU);
+  mutt_mkdir(TempDir, S_IRWXU);
 
   mutt_read_histfile();
 
 #ifdef USE_NOTMUCH
-  if (option(OPTVIRTSPOOLFILE))
+  if (option(OPT_VIRT_SPOOL_FILE))
   {
     /* Find the first virtual folder and open it */
     for (struct Buffy *b = Incoming; b; b = b->next)
     {
       if (b->magic == MUTT_NOTMUCH)
       {
-        mutt_str_replace(&Spoolfile, b->path);
+        mutt_str_replace(&SpoolFile, b->path);
         mutt_sb_toggle_virtual();
         break;
       }

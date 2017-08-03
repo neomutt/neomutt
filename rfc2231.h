@@ -28,5 +28,4 @@ struct Parameter;
 void rfc2231_decode_parameters(struct Parameter **headp);
 int rfc2231_encode_string(char **pd);
 
-
 #endif /* _MUTT_RFC2231_H */

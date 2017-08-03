@@ -142,7 +142,8 @@ static size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf
   wchar_t *wbuf = NULL;
   size_t wbuflen;
 
-  wbuf = *pwbuf, wbuflen = *pwbuflen;
+  wbuf = *pwbuf;
+  wbuflen = *pwbuflen;
 
   while (*buf)
   {
@@ -169,7 +170,8 @@ static size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf
       buf++;
     }
   }
-  *pwbuf = wbuf, *pwbuflen = wbuflen;
+  *pwbuf = wbuf;
+  *pwbuflen = wbuflen;
   return i;
 }
 
@@ -391,9 +393,9 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
           {
             i = state->curpos;
             while (i && COMB_CHAR(state->wbuf[i - 1]))
-              --i;
+              i--;
             if (i)
-              --i;
+              i--;
             memmove(state->wbuf + i, state->wbuf + state->curpos,
                     (state->lastchar - state->curpos) * sizeof(wchar_t));
             state->lastchar -= state->curpos - i;
@@ -434,10 +436,10 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
             BEEP();
           else
           {
-            ++state->curpos;
+            state->curpos++;
             while (state->curpos < state->lastchar &&
                    COMB_CHAR(state->wbuf[state->curpos]))
-              ++state->curpos;
+              state->curpos++;
           }
           break;
 
@@ -447,9 +449,9 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
           else
           {
             while (state->curpos && iswspace(state->wbuf[state->curpos - 1]))
-              --state->curpos;
+              state->curpos--;
             while (state->curpos && !iswspace(state->wbuf[state->curpos - 1]))
-              --state->curpos;
+              state->curpos--;
           }
           break;
 
@@ -459,10 +461,10 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
           else
           {
             while (state->curpos < state->lastchar && iswspace(state->wbuf[state->curpos]))
-              ++state->curpos;
+              state->curpos++;
             while (state->curpos < state->lastchar &&
                    !iswspace(state->wbuf[state->curpos]))
-              ++state->curpos;
+              state->curpos++;
           }
           break;
 
@@ -475,9 +477,9 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
             break;
           }
           while (state->curpos && !iswspace(state->wbuf[state->curpos]))
-            --state->curpos;
+            state->curpos--;
           while (state->curpos < state->lastchar && iswspace(state->wbuf[state->curpos]))
-            ++state->curpos;
+            state->curpos++;
           while (state->curpos < state->lastchar && !iswspace(state->wbuf[state->curpos]))
           {
             if (ch == OP_EDITOR_DOWNCASE_WORD)
@@ -499,11 +501,11 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
           {
             i = state->curpos;
             while (i < state->lastchar && COMB_CHAR(state->wbuf[i]))
-              ++i;
+              i++;
             if (i < state->lastchar)
-              ++i;
+              i++;
             while (i < state->lastchar && COMB_CHAR(state->wbuf[i]))
-              ++i;
+              i++;
             memmove(state->wbuf + state->curpos, state->wbuf + i,
                     (state->lastchar - i) * sizeof(wchar_t));
             state->lastchar -= i - state->curpos;
@@ -516,7 +518,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
           {
             i = state->curpos;
             while (i && iswspace(state->wbuf[i - 1]))
-              --i;
+              i--;
             if (i)
             {
               if (iswalnum(state->wbuf[i - 1]))
@@ -525,7 +527,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
                   ;
               }
               else
-                --i;
+                i--;
             }
             memmove(state->wbuf + i, state->wbuf + state->curpos,
                     (state->lastchar - state->curpos) * sizeof(wchar_t));
@@ -554,7 +556,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
             else
             {
               /* skip over one non-alphanumeric character */
-              ++i;
+              i++;
             }
           }
 
@@ -770,7 +772,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
             if (state->curpos == 0)
               state->curpos = 2;
             else if (state->curpos < state->lastchar)
-              ++state->curpos;
+              state->curpos++;
 
             t = state->wbuf[state->curpos - 2];
             state->wbuf[state->curpos - 2] = state->wbuf[state->curpos - 1];

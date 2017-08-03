@@ -73,14 +73,14 @@ sort_t *mutt_get_sort_func(int method);
 void mutt_sort_headers(struct Context *ctx, int init);
 int mutt_select_sort(int reverse);
 
-WHERE short BrowserSort INITVAL(SORT_SUBJECT);
-WHERE short Sort INITVAL(SORT_DATE);
-WHERE short SortAux INITVAL(SORT_DATE); /* auxiliary sorting method */
-WHERE short SortAlias INITVAL(SORT_ALIAS);
-WHERE short SidebarSortMethod INITVAL(SORT_ORDER);
+WHERE short BrowserSort;
+WHERE short Sort;
+WHERE short SortAux; /* auxiliary sorting method */
+WHERE short SortAlias;
+WHERE short SidebarSortMethod;
 
 /* FIXME: This one does not belong to here */
-WHERE short PgpSortKeys INITVAL(SORT_ADDRESS);
+WHERE short PgpSortKeys;
 
 extern const struct Mapping SortMethods[];
 

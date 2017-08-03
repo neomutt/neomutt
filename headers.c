@@ -128,7 +128,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
      we can simply compare strings as we don't generate References for
      multiple Message-Ids in IRT anyways */
 #ifdef USE_NNTP
-  if (!option(OPTNEWSSEND))
+  if (!option(OPT_NEWS_SEND))
 #endif
     if (msg->env->in_reply_to &&
         (!n->in_reply_to ||
@@ -315,7 +315,7 @@ int mutt_label_message(struct Header *hdr)
   {
     if (label_message(Context, hdr, new))
     {
-      ++changed;
+      changed++;
       mutt_set_header_color(Context, hdr);
     }
   }
@@ -327,7 +327,7 @@ int mutt_label_message(struct Header *hdr)
       if (HDR_OF(i)->tagged)
         if (label_message(Context, HDR_OF(i), new))
         {
-          ++changed;
+          changed++;
           mutt_set_flag(Context, HDR_OF(i), MUTT_TAG, 0);
           /* mutt_set_flag re-evals the header color */
         }

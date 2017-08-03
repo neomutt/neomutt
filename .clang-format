@@ -35,7 +35,7 @@ DerivePointerAlignment:           false
 IndentCaseLabels:                 true
 IndentWrappedFunctionNames:       false
 KeepEmptyLinesAtTheStartOfBlocks: false
-MaxEmptyLinesToKeep:              2
+MaxEmptyLinesToKeep:              1
 PointerAlignment:                 Right
 ReflowComments:                   false
 SortIncludes:                     true

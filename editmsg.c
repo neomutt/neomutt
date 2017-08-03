@@ -105,9 +105,7 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  /*
-   * 2002-09-05 me@sigpipe.org
-   * The file the user is going to edit is not a real mbox, so we need to
+  /* The file the user is going to edit is not a real mbox, so we need to
    * truncate the last newline in the temp file, which is logically part of
    * the message separator, and not the body of the message.  If we fail to
    * remove it, the message will grow by one line each time the user edits
@@ -169,11 +167,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
   else
     of = MUTT_ADD_FROM;
 
-  /*
-   * XXX - we have to play games with the message flags to avoid
-   * problematic behavior with maildir folders.
-   *
-   */
+  /* XXX - we have to play games with the message flags to avoid
+   * problematic behavior with maildir folders.  */
 
   o_read = cur->read;
   o_old = cur->old;
@@ -213,12 +208,11 @@ bail:
     mutt_set_flag(Context, cur, MUTT_PURGE, 1);
     mutt_set_flag(Context, cur, MUTT_READ, 1);
 
-    if (option(OPTDELETEUNTAG))
+    if (option(OPT_DELETE_UNTAG))
       mutt_set_flag(Context, cur, MUTT_TAG, 0);
   }
   else if (rc == -1)
     mutt_message(_("Error. Preserving temporary file: %s"), tmp);
-
 
   return rc;
 }
@@ -229,7 +223,6 @@ int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 
   if (hdr)
     return edit_one_message(ctx, hdr);
-
 
   for (int i = 0; i < ctx->vcount; i++)
   {

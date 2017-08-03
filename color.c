@@ -348,7 +348,7 @@ int mutt_combine_color(int fg_attr, int bg_attr)
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
 #ifdef HAVE_USE_DEFAULT_COLORS
-  if (!option(OPTNOCURSES) && has_colors() &&
+  if (!option(OPT_NO_CURSES) && has_colors() &&
       ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT)) && use_default_colors() != OK)
   {
     mutt_error(_("default colors not supported."));
@@ -399,7 +399,6 @@ void mutt_free_color(int fg, int bg)
 
 #endif /* HAVE_COLOR */
 
-
 #ifdef HAVE_COLOR
 
 static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struct Buffer *err)
@@ -418,7 +417,7 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !option(OPTNOCURSES) && has_colors()))
+    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !option(OPT_NO_CURSES) && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;
@@ -452,7 +451,6 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 }
 
 #endif
-
 
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
                        struct ColorLine **cl, int *do_cache, bool parse_uncolor)
@@ -550,7 +548,7 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
   if (
 #ifdef HAVE_COLOR
       /* we're running without curses */
-      option(OPTNOCURSES) || /* we're parsing an uncolor command, and have no colors */
+      option(OPT_NO_CURSES) || /* we're parsing an uncolor command, and have no colors */
       (parse_uncolor && !has_colors())
       /* we're parsing an unmono command, and have colors */
       || (!parse_uncolor && has_colors())
@@ -587,7 +585,7 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
     do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
 #endif
 
-  if (do_cache && !option(OPTNOCURSES))
+  if (do_cache && !option(OPT_NO_CURSES))
   {
     mutt_set_menu_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
@@ -612,7 +610,6 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
-
 
 static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int fg,
                        int bg, int attr, struct Buffer *err, int is_index, int match)
@@ -753,8 +750,8 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
   return 0;
 }
 
-typedef int (*parser_callback_t)(struct Buffer *, struct Buffer *, int *, int *,
-                                 int *, struct Buffer *);
+typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, int *fg,
+                                 int *bg, int *attr, struct Buffer *err);
 
 #ifdef HAVE_COLOR
 
@@ -886,10 +883,9 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
     return 0;
   }
 
-
 #ifdef HAVE_COLOR
 #ifdef HAVE_USE_DEFAULT_COLORS
-  if (!option(OPTNOCURSES) && has_colors()
+  if (!option(OPT_NO_CURSES) && has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
       && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT) && use_default_colors() != OK)
   {
@@ -999,7 +995,7 @@ int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data,
 {
   bool dry_run = false;
 
-  if (option(OPTNOCURSES) || !has_colors())
+  if (option(OPT_NO_CURSES) || !has_colors())
     dry_run = true;
 
   return _mutt_parse_color(buff, s, err, parse_color_pair, dry_run);
@@ -1013,10 +1009,10 @@ int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data,
   bool dry_run = false;
 
 #ifdef HAVE_COLOR
-  if (option(OPTNOCURSES) || has_colors())
+  if (option(OPT_NO_CURSES) || has_colors())
     dry_run = true;
 #else
-  if (option(OPTNOCURSES))
+  if (option(OPT_NO_CURSES))
     dry_run = true;
 #endif
 

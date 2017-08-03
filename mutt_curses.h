@@ -80,7 +80,7 @@
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
-    if (option(OPTBEEP))                                                       \
+    if (option(OPT_BEEP))                                                       \
       beep();                                                                  \
   } while (0)
 
@@ -121,7 +121,6 @@ void mutt_unget_event(int ch, int op);
 void mutt_unget_string(char *s);
 void mutt_push_macro_event(int ch, int op);
 void mutt_flush_macro_to_endcond(void);
-void mutt_flush_unget_to_endcond(void);
 void mutt_flush_unget_to_endcond(void);
 void mutt_need_hard_redraw(void);
 
@@ -259,7 +258,6 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
 void mutt_window_clrtoeol(struct MuttWindow *win);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_getyx(struct MuttWindow *win, int *y, int *x);
-
 
 static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
 {

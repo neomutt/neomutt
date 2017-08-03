@@ -91,7 +91,6 @@ struct Body *mutt_new_body(void)
   return p;
 }
 
-
 /**
  * mutt_adv_mktemp - Advanced mktemp(3)
  *
@@ -113,14 +112,14 @@ void mutt_adv_mktemp(char *s, size_t l)
   {
     strfcpy(prefix, s, sizeof(prefix));
     mutt_sanitize_filename(prefix, 1);
-    snprintf(s, l, "%s/%s", NONULL(Tempdir), prefix);
+    snprintf(s, l, "%s/%s", NONULL(TempDir), prefix);
     if (lstat(s, &sb) == -1 && errno == ENOENT)
       return;
 
     if ((suffix = strrchr(prefix, '.')) != NULL)
     {
       *suffix = 0;
-      ++suffix;
+      suffix++;
     }
     mutt_mktemp_pfx_sfx(s, l, prefix, suffix);
   }
@@ -200,7 +199,6 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
 
   return 0;
 }
-
 
 void mutt_free_body(struct Body **p)
 {
@@ -457,7 +455,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
       {
         if (*(s + 1) == '/' || *(s + 1) == 0)
         {
-          strfcpy(p, NONULL(Homedir), sizeof(p));
+          strfcpy(p, NONULL(HomeDir), sizeof(p));
           tail = s + 1;
         }
         else
@@ -560,7 +558,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
         }
         else
         {
-          strfcpy(p, NONULL(Spoolfile), sizeof(p));
+          strfcpy(p, NONULL(SpoolFile), sizeof(p));
           tail = s + 1;
         }
       }
@@ -653,7 +651,6 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   return dest;
 }
-
 
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
@@ -872,11 +869,10 @@ uint64_t mutt_rand64(void)
   return ret;
 }
 
-
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line)
 {
-  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tempdir),
+  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(TempDir),
                       NONULL(prefix), NONULL(Hostname), (int) getuid(), (int) getpid(),
                       mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= slen)
@@ -973,7 +969,7 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     *s++ = '=';
     memmove(s, s + len, mutt_strlen(s + len) + 1);
   }
-  else if ((mutt_strncmp(s, Homedir, (len = mutt_strlen(Homedir))) == 0) && s[len] == '/')
+  else if ((mutt_strncmp(s, HomeDir, (len = mutt_strlen(HomeDir))) == 0) && s[len] == '/')
   {
     *s++ = '~';
     memmove(s, s + len - 1, mutt_strlen(s + len - 1) + 1);
@@ -1139,7 +1135,7 @@ void mutt_save_path(char *d, size_t dsize, struct Address *a)
   if (a && a->mailbox)
   {
     strfcpy(d, a->mailbox, dsize);
-    if (!option(OPTSAVEADDRESS))
+    if (!option(OPT_SAVE_ADDRESS))
     {
       char *p = NULL;
 
@@ -1236,7 +1232,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
             {
               n = strtoul(p, &p, 10);             /* get subst number */
               while (isdigit((unsigned char) *p)) /* skip subst token */
-                ++p;
+                p++;
               for (i = pmatch[n].rm_so;
                    (i < pmatch[n].rm_eo) && (tlen < LONG_STRING - 1); i++)
                 dst[tlen++] = src[i];
@@ -1258,7 +1254,6 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
     dbuf = safe_strdup(dst);
   return dbuf;
 }
-
 
 /**
  * mutt_expando_format - Expand expandos (%x) in a string
@@ -1289,7 +1284,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPTARROWCURSOR)) ? 3 : 0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
   col += wlen;
 
   if ((flags & MUTT_FORMAT_NOFILTER) == 0)
@@ -1360,7 +1355,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
 
       col -= wlen; /* reset to passed in value */
       wptr = dest; /* reset write ptr */
-      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPTARROWCURSOR)) ? 3 : 0;
+      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
       if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)) != -1)
       {
         int rc;
@@ -1383,7 +1378,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
            * To literally end with "%", use "%%". */
           if ((n > 0) && dest[n - 1] == '%')
           {
-            --n;
+            n--;
             dest[n] = '\0'; /* remove '%' */
             if ((n > 0) && dest[n - 1] != '%')
             {
@@ -1631,7 +1626,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
           else if (soft && pad < 0)
           {
             int offset =
-                ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPTARROWCURSOR)) ? 3 : 0;
+                ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate dest for length computation in mutt_wstr_trunc() */
             *wptr = 0;
@@ -1841,7 +1836,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if (magic > 0 && !mx_access(s, W_OK))
   {
-    if (option(OPTCONFIRMAPPEND))
+    if (option(OPT_CONFIRM_APPEND))
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
       if ((rc = mutt_yesorno(tmp, MUTT_YES)) == MUTT_NO)
@@ -1875,7 +1870,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      if (option(OPTCONFIRMCREATE))
+      if (option(OPT_CONFIRM_CREATE))
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
         if ((rc = mutt_yesorno(tmp, MUTT_YES)) == MUTT_NO)
@@ -1884,7 +1879,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
           ret = -1;
       }
 
-      /* user confirmed with MUTT_YES or set OPTCONFIRMCREATE */
+      /* user confirmed with MUTT_YES or set OPT_CONFIRM_CREATE */
       if (ret == 0)
       {
         strncpy(tmp, s, sizeof(tmp) - 1);
@@ -2096,7 +2091,7 @@ bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int 
           char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
           int n;
 
-          ++p; /* skip over % char */
+          p++; /* skip over % char */
           n = strtol(p, &e, 10);
           /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
            * should not strictly be necessary since add_to_spam_list() finds the largest value, and

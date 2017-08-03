@@ -179,7 +179,7 @@ static struct Parameter *parse_parameters(const char *s)
       i = p - s;
       /* remove whitespace from the end of the attribute name */
       while (i > 0 && is_email_wsp(s[i - 1]))
-        --i;
+        i--;
 
       /* the check for the missing parameter token is here so that we can skip
        * over any quoted value that may be present.
@@ -1137,7 +1137,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
           char *beg = NULL, *end = NULL;
           for (beg = strchr(p, '<'); beg; beg = strchr(end, ','))
           {
-            ++beg;
+            beg++;
             if (!(end = strchr(beg, '>')))
               break;
 
@@ -1259,7 +1259,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
                 hdr->replied = true;
                 break;
               case 'O':
-                hdr->old = option(OPTMARKOLD) ? true : false;
+                hdr->old = option(OPT_MARK_OLD) ? true : false;
                 break;
               case 'R':
                 hdr->read = true;
@@ -1349,7 +1349,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (weed && option(OPTWEED) && mutt_matches_ignore(line))
+    if (weed && option(OPT_WEED) && mutt_matches_ignore(line))
       goto done;
 
     if (last)
@@ -1370,7 +1370,6 @@ done:
     *lastp = last;
   return matched;
 }
-
 
 /**
  * mutt_read_rfc822_header - parses an RFC822 header

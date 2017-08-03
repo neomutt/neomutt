@@ -110,7 +110,6 @@ static const char *No_visible = N_("No visible messages.");
     break;                                                                     \
   }
 
-
 #define CHECK_READONLY                                                         \
   if (Context->readonly)                                                       \
   {                                                                            \
@@ -129,7 +128,7 @@ static const char *No_visible = N_("No visible messages.");
   }
 
 #define CHECK_ATTACH                                                           \
-  if (option(OPTATTACHMSG))                                                    \
+  if (option(OPT_ATTACH_MSG))                                                    \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
@@ -141,8 +140,8 @@ static const char *No_visible = N_("No visible messages.");
 #define FLAGGED(h) mutt_thread_contains_flagged(Context, h)
 
 #define CAN_COLLAPSE(header)                                                   \
-  ((option(OPTCOLLAPSEUNREAD) || !UNREAD(header)) &&                           \
-   (option(OPTCOLLAPSEFLAGGED) || !FLAGGED(header)))
+  ((option(OPT_COLLAPSE_UNREAD) || !UNREAD(header)) &&                           \
+   (option(OPT_COLLAPSE_FLAGGED) || !FLAGGED(header)))
 
 /* de facto standard escapes for tsl/fsl */
 static char *tsl = "\033]0;";
@@ -154,7 +153,7 @@ static char *fsl = "\007";
  * @param toggle toggle collapsed state
  *
  * This function is called by the OP_MAIN_COLLAPSE_ALL command and on folder
- * enter if the OPTCOLLAPSEALL option is set. In the first case, the @a toggle
+ * enter if the OPT_COLLAPSE_ALL option is set. In the first case, the @a toggle
  * parameter is 1 to actually toggle collapsed/uncollapsed state on all
  * threads. In the second case, the @a toggle parameter is 0, actually turning
  * this function into a one-way collapse.
@@ -373,7 +372,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   }
 
   /* save the list of new messages */
-  if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED &&
+  if (option(OPT_UNCOLLAPSE_NEW) && oldcount && check != MUTT_REOPENED &&
       ((Sort & SORT_MASK) == SORT_THREADS))
   {
     save_new = safe_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
@@ -385,7 +384,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   mutt_sort_headers(ctx, (check == MUTT_REOPENED));
 
   /* uncollapse threads with new mail */
-  if (option(OPTUNCOLLAPSENEW) && ((Sort & SORT_MASK) == SORT_THREADS))
+  if (option(OPT_UNCOLLAPSE_NEW) && ((Sort & SORT_MASK) == SORT_THREADS))
   {
     if (check == MUTT_REOPENED)
     {
@@ -441,9 +440,9 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
                               int *oldcount, int *index_hint, int flags)
 {
 #ifdef USE_NNTP
-  if (option(OPTNEWS))
+  if (option(OPT_NEWS))
   {
-    unset_option(OPTNEWS);
+    unset_option(OPT_NEWS);
     nntp_expand_path(buf, bufsz, &CurrentNewsSrv->conn->account);
   }
   else
@@ -478,7 +477,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
         update_index(menu, Context, check, *oldcount, *index_hint);
 
       FREE(&new_last_folder);
-      set_option(OPTSEARCHINVALID);
+      set_option(OPT_SEARCH_INVALID);
       menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
       return 0;
     }
@@ -501,7 +500,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
   mutt_folder_hook(buf);
 
   if ((Context = mx_open_mailbox(
-           buf, (option(OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ? MUTT_READONLY : 0,
+           buf, (option(OPT_READONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ? MUTT_READONLY : 0,
            NULL)) != NULL)
   {
     menu->current = ci_first_message();
@@ -509,7 +508,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
   else
     menu->current = 0;
 
-  if (((Sort & SORT_MASK) == SORT_THREADS) && option(OPTCOLLAPSEALL))
+  if (((Sort & SORT_MASK) == SORT_THREADS) && option(OPT_COLLAPSE_ALL))
     collapse_all(menu, 0);
 
 #ifdef USE_SIDEBAR
@@ -519,11 +518,10 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
   mutt_clear_error();
   mutt_buffy_check(true); /* force the buffy check after we have changed the folder */
   menu->redraw = REDRAW_FULL;
-  set_option(OPTSEARCHINVALID);
+  set_option(OPT_SEARCH_INVALID);
 
   return 0;
 }
-
 
 /**
  * mutt_ts_capability - Check terminal capabilities
@@ -883,7 +881,7 @@ static void index_menu_redraw(struct Menu *menu)
     mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
     NORMAL_COLOR;
     menu->redraw &= ~REDRAW_STATUS;
-    if (option(OPTTSENABLED) && TSSupported)
+    if (option(OPT_TS_ENABLED) && TSSupported)
     {
       menu_status_line(buf, sizeof(buf), menu, NONULL(TSStatusFormat));
       mutt_ts_status(buf);
@@ -917,7 +915,7 @@ int mutt_index_menu(void)
   int index_hint;  /* used to restore cursor position */
   bool do_buffy_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
-  int attach_msg = option(OPTATTACHMSG);
+  int attach_msg = option(OPT_ATTACH_MSG);
 
   menu = mutt_new_menu(MENU_MAIN);
   menu->make_entry = index_make_entry;
@@ -935,7 +933,7 @@ int mutt_index_menu(void)
   if (!attach_msg)
     mutt_buffy_check(true); /* force the buffy check after we enter the folder */
 
-  if (((Sort & SORT_MASK) == SORT_THREADS) && option(OPTCOLLAPSEALL))
+  if (((Sort & SORT_MASK) == SORT_THREADS) && option(OPT_COLLAPSE_ALL))
   {
     collapse_all(menu, 0);
     menu->redraw = REDRAW_FULL;
@@ -953,17 +951,17 @@ int mutt_index_menu(void)
      * any 'op' below could do mutt_enter_command(), either here or
      * from any new menu launched, and change $sort/$sort_aux
      */
-    if (option(OPTNEEDRESORT) && Context && Context->msgcount && menu->current >= 0)
+    if (option(OPT_NEED_RESORT) && Context && Context->msgcount && menu->current >= 0)
       resort_index(menu);
 
     menu->max = Context ? Context->vcount : 0;
     oldcount = Context ? Context->msgcount : 0;
 
-    if (option(OPTREDRAWTREE) && Context && Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
+    if (option(OPT_REDRAW_TREE) && Context && Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
     {
       mutt_draw_tree(Context);
       menu->redraw |= REDRAW_STATUS;
-      unset_option(OPTREDRAWTREE);
+      unset_option(OPT_REDRAW_TREE);
     }
 
     if (Context)
@@ -991,7 +989,7 @@ int mutt_index_menu(void)
           menu->redraw = REDRAW_FULL;
         }
 
-        set_option(OPTSEARCHINVALID);
+        set_option(OPT_SEARCH_INVALID);
       }
       else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED || check == MUTT_FLAGS)
       {
@@ -1006,7 +1004,7 @@ int mutt_index_menu(void)
             if (!Context->hdrs[i]->read)
             {
               mutt_message(_("New mail in this mailbox."));
-              if (option(OPTBEEPNEW))
+              if (option(OPT_BEEP_NEW))
                 beep();
               if (NewMailCmd)
               {
@@ -1032,7 +1030,7 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_FULL;
         menu->max = Context->vcount;
 
-        set_option(OPTSEARCHINVALID);
+        set_option(OPT_SEARCH_INVALID);
       }
     }
 
@@ -1047,7 +1045,7 @@ int mutt_index_menu(void)
         if (mutt_buffy_notify())
         {
           menu->redraw |= REDRAW_STATUS;
-          if (option(OPTBEEPNEW))
+          if (option(OPT_BEEP_NEW))
             beep();
           if (NewMailCmd)
           {
@@ -1080,9 +1078,9 @@ int mutt_index_menu(void)
       else
         menu->oldcurrent = -1;
 
-      if (option(OPTARROWCURSOR))
+      if (option(OPT_ARROW_CURSOR))
         mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset, 2);
-      else if (option(OPTBRAILLEFRIENDLY))
+      else if (option(OPT_BRAILLE_FRIENDLY))
         mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset, 0);
       else
         mutt_window_move(MuttIndexWindow, menu->current - menu->top + menu->offset,
@@ -1153,7 +1151,7 @@ int mutt_index_menu(void)
         tag = true;
         continue;
       }
-      else if (option(OPTAUTOTAG) && Context && Context->tagged)
+      else if (option(OPT_AUTO_TAG) && Context && Context->tagged)
         tag = true;
 
       mutt_clear_error();
@@ -1169,7 +1167,7 @@ int mutt_index_menu(void)
     }
 
 #ifdef USE_NNTP
-    unset_option(OPTNEWS); /* for any case */
+    unset_option(OPT_NEWS); /* for any case */
 #endif
 
 #ifdef USE_NOTMUCH
@@ -1522,14 +1520,14 @@ int mutt_index_menu(void)
           {
             snprintf(buf2, sizeof(buf2), "!~R!~D~s%s",
                      Context->pattern ? Context->pattern : ".*");
-            set_option(OPTHIDEREAD);
+            set_option(OPT_HIDE_READ);
           }
           else
           {
             strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
             if (!*buf2 || (strncmp(buf2, ".*", 2) == 0))
               snprintf(buf2, sizeof(buf2), "~A");
-            unset_option(OPTHIDEREAD);
+            unset_option(OPT_HIDE_READ);
           }
           FREE(&Context->pattern);
           Context->pattern = safe_strdup(buf2);
@@ -1588,7 +1586,7 @@ int mutt_index_menu(void)
               update_index(menu, Context, check, oldcount, index_hint);
 
             menu->redraw = REDRAW_FULL; /* new mail arrived? */
-            set_option(OPTSEARCHINVALID);
+            set_option(OPT_SEARCH_INVALID);
           }
         }
         break;
@@ -1620,7 +1618,7 @@ int mutt_index_menu(void)
           if (Context && Context->msgcount)
           {
             resort_index(menu);
-            set_option(OPTSEARCHINVALID);
+            set_option(OPT_SEARCH_INVALID);
           }
           if (menu->menu == MENU_PAGER)
           {
@@ -1635,7 +1633,7 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (tag && !option(OPTAUTOTAG))
+        if (tag && !option(OPT_AUTO_TAG))
         {
           for (j = 0; j < Context->vcount; j++)
             mutt_set_flag(Context, Context->hdrs[Context->v2r[j]], MUTT_TAG, 0);
@@ -1651,7 +1649,7 @@ int mutt_index_menu(void)
                                              Context->last_tag);
 
           menu->redraw |= REDRAW_STATUS;
-          if (option(OPTRESOLVE) && menu->current < Context->vcount - 1)
+          if (option(OPT_RESOLVE) && menu->current < Context->vcount - 1)
           {
             menu->current++;
             menu->redraw |= REDRAW_MOTION_RESYNCH;
@@ -1713,7 +1711,7 @@ int mutt_index_menu(void)
         {
           if (mx_close_mailbox(Context, &index_hint) != 0)
           {
-            set_option(OPTSEARCHINVALID);
+            set_option(OPT_SEARCH_INVALID);
             menu->redraw = REDRAW_FULL;
             break;
           }
@@ -1721,7 +1719,7 @@ int mutt_index_menu(void)
         }
         imap_logout_all();
         mutt_message(_("Logged out of IMAP servers."));
-        set_option(OPTSEARCHINVALID);
+        set_option(OPT_SEARCH_INVALID);
         menu->redraw = REDRAW_FULL;
         break;
 #endif
@@ -1764,7 +1762,7 @@ int mutt_index_menu(void)
                   break;
                 }
               }
-            set_option(OPTSEARCHINVALID);
+            set_option(OPT_SEARCH_INVALID);
           }
           else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
             update_index(menu, Context, check, oc, index_hint);
@@ -1917,7 +1915,7 @@ int mutt_index_menu(void)
             op = OP_DISPLAY_MESSAGE;
             continue;
           }
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
             {
@@ -2001,9 +1999,9 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_MAIN_CHANGE_GROUP:
       case OP_MAIN_CHANGE_GROUP_READONLY:
-        unset_option(OPTNEWS);
+        unset_option(OPT_NEWS);
 #endif
-        if (attach_msg || option(OPTREADONLY) ||
+        if (attach_msg || option(OPT_READONLY) ||
 #ifdef USE_NNTP
             op == OP_MAIN_CHANGE_GROUP_READONLY ||
 #endif
@@ -2066,7 +2064,7 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
-            set_option(OPTNEWS);
+            set_option(OPT_NEWS);
             CurrentNewsSrv = nntp_select_server(NewsServer, 0);
             if (!CurrentNewsSrv)
               break;
@@ -2126,19 +2124,19 @@ int mutt_index_menu(void)
          * again while reading the message.
          */
         if (op == OP_DISPLAY_HEADERS)
-          toggle_option(OPTWEED);
+          toggle_option(OPT_WEED);
 
-        unset_option(OPTNEEDRESORT);
+        unset_option(OPT_NEED_RESORT);
 
         if ((Sort & SORT_MASK) == SORT_THREADS && CURHDR->collapsed)
         {
           mutt_uncollapse_thread(Context, CURHDR);
           mutt_set_virtual(Context);
-          if (option(OPTUNCOLLAPSEJUMP))
+          if (option(OPT_UNCOLLAPSE_JUMP))
             menu->current = mutt_thread_next_unread(Context, CURHDR);
         }
 
-        if (option(OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
@@ -2149,7 +2147,7 @@ int mutt_index_menu(void)
 
         if ((op = mutt_display_message(CURHDR)) < 0)
         {
-          unset_option(OPTNEEDRESORT);
+          unset_option(OPT_NEED_RESORT);
           break;
         }
 
@@ -2385,7 +2383,7 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
           if (tag)
             menu->redraw |= REDRAW_INDEX;
-          else if (option(OPTRESOLVE))
+          else if (option(OPT_RESOLVE))
           {
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
             {
@@ -2519,7 +2517,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_set_flag(Context, CURHDR, MUTT_FLAG, !CURHDR->flagged);
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
             {
@@ -2565,7 +2563,7 @@ int mutt_index_menu(void)
           else
             mutt_set_flag(Context, CURHDR, MUTT_READ, 1);
 
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
             {
@@ -2663,7 +2661,7 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
           if (tag)
             menu->redraw |= REDRAW_INDEX;
-          else if (option(OPTRESOLVE))
+          else if (option(OPT_RESOLVE))
           {
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
             {
@@ -2692,7 +2690,7 @@ int mutt_index_menu(void)
         {
           menu->current = mutt_uncollapse_thread(Context, CURHDR);
           mutt_set_virtual(Context);
-          if (option(OPTUNCOLLAPSEJUMP))
+          if (option(OPT_UNCOLLAPSE_JUMP))
             menu->current = mutt_thread_next_unread(Context, CURHDR);
         }
         else if (CAN_COLLAPSE(CURHDR))
@@ -2758,7 +2756,7 @@ int mutt_index_menu(void)
         {
           mutt_tag_set_flag(MUTT_DELETE, 1);
           mutt_tag_set_flag(MUTT_PURGE, (op == OP_PURGE_MESSAGE));
-          if (option(OPTDELETEUNTAG))
+          if (option(OPT_DELETE_UNTAG))
             mutt_tag_set_flag(MUTT_TAG, 0);
           menu->redraw |= REDRAW_INDEX;
         }
@@ -2766,9 +2764,9 @@ int mutt_index_menu(void)
         {
           mutt_set_flag(Context, CURHDR, MUTT_DELETE, 1);
           mutt_set_flag(Context, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
-          if (option(OPTDELETEUNTAG))
+          if (option(OPT_DELETE_UNTAG))
             mutt_set_flag(Context, CURHDR, MUTT_TAG, 0);
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
             {
@@ -2811,9 +2809,9 @@ int mutt_index_menu(void)
               break;
           }
 
-          if (option(OPTDELETEUNTAG))
+          if (option(OPT_DELETE_UNTAG))
             mutt_thread_set_flag(CURHDR, MUTT_TAG, 0, subthread);
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
             if ((menu->current = ci_next_undeleted(menu->current)) == -1)
               menu->current = menu->oldcurrent;
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
@@ -2856,7 +2854,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
 
-        if (option(OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         mutt_edit_message(Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2868,12 +2866,11 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (option(OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
-
 
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
@@ -2884,7 +2881,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (option(OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2918,7 +2915,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (option(OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2939,7 +2936,6 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_FULL;
         break;
 
-
       case OP_EXTRACT_KEYS:
         if (!WithCrypto)
           break;
@@ -2948,7 +2944,6 @@ int mutt_index_menu(void)
         crypt_extract_keys_from_messages(tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
-
 
       case OP_CHECK_TRADITIONAL:
         if (!(WithCrypto & APPLICATION_PGP))
@@ -2975,7 +2970,7 @@ int mutt_index_menu(void)
         /* in an IMAP folder index with imap_peek=no, piping could change
          * new or old messages status to read. Redraw what's needed.
          */
-        if (Context->magic == MUTT_IMAP && !option(OPTIMAPPEEK))
+        if (Context->magic == MUTT_IMAP && !option(OPT_IMAP_PEEK))
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
         }
@@ -2993,7 +2988,7 @@ int mutt_index_menu(void)
         /* in an IMAP folder index with imap_peek=no, printing could change
          * new or old messages status to read. Redraw what's needed.
          */
-        if (Context->magic == MUTT_IMAP && !option(OPTIMAPPEEK))
+        if (Context->magic == MUTT_IMAP && !option(OPT_IMAP_PEEK))
         {
           menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
         }
@@ -3014,7 +3009,7 @@ int mutt_index_menu(void)
 
         if (rc != -1)
         {
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if ((menu->current = (op == OP_MAIN_READ_THREAD ?
                                       mutt_next_thread(CURHDR) :
@@ -3029,7 +3024,6 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
-
 
       case OP_MARK_MSG:
 
@@ -3106,11 +3100,11 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
             (mutt_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOWUPTOPOSTER,
+            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (Context && Context->magic == MUTT_NNTP &&
-              !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (op == OP_POST)
             ci_send_message(SENDNEWS, NULL, NULL, Context, NULL);
@@ -3130,7 +3124,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (option(OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -3151,7 +3145,7 @@ int mutt_index_menu(void)
 
         if (rc != -1)
         {
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if (op == OP_TAG_THREAD)
               menu->current = mutt_next_thread(CURHDR);
@@ -3183,7 +3177,7 @@ int mutt_index_menu(void)
         {
           mutt_set_flag(Context, CURHDR, MUTT_DELETE, 0);
           mutt_set_flag(Context, CURHDR, MUTT_PURGE, 0);
-          if (option(OPTRESOLVE) && menu->current < Context->vcount - 1)
+          if (option(OPT_RESOLVE) && menu->current < Context->vcount - 1)
           {
             menu->current++;
             menu->redraw |= REDRAW_MOTION_RESYNCH;
@@ -3209,7 +3203,7 @@ int mutt_index_menu(void)
                                     op == OP_UNDELETE_THREAD ? 0 : 1);
         if (rc != -1)
         {
-          if (option(OPTRESOLVE))
+          if (option(OPT_RESOLVE))
           {
             if (op == OP_UNDELETE_THREAD)
               menu->current = mutt_next_thread(CURHDR);
@@ -3258,7 +3252,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        toggle_option(OPTSIDEBAR);
+        toggle_option(OPT_SIDEBAR);
         mutt_reflow_windows();
         break;
 

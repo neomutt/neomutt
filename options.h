@@ -28,256 +28,256 @@
  */
 enum GlobalBool
 {
-  OPTALLOW8BIT,
-  OPTALLOWANSI,
-  OPTARROWCURSOR,
-  OPTASCIICHARS,
-  OPTASKBCC,
-  OPTASKCC,
-  OPTASKFOLLOWUP,
-  OPTASKXCOMMENTTO,
-  OPTATTACHSPLIT,
-  OPTAUTOEDIT,
-  OPTAUTOTAG,
-  OPTBEEP,
-  OPTBEEPNEW,
-  OPTBOUNCEDELIVERED,
-  OPTBRAILLEFRIENDLY,
-  OPTCHECKMBOXSIZE,
-  OPTCHECKNEW,
-  OPTCOLLAPSEALL,
-  OPTCOLLAPSEUNREAD,
-  OPTCOLLAPSEFLAGGED,
-  OPTCONFIRMAPPEND,
-  OPTCONFIRMCREATE,
-  OPTDELETEUNTAG,
-  OPTDIGESTCOLLAPSE,
-  OPTDUPTHREADS,
-  OPTEDITHDRS,
-  OPTENCODEFROM,
-  OPTENVFROM,
-  OPTFASTREPLY,
-  OPTFCCCLEAR,
-  OPTFLAGSAFE,
-  OPTFOLLOWUPTO,
-  OPTFORCENAME,
-  OPTFORWDECODE,
-  OPTFORWQUOTE,
-  OPTFORWREF,
+  OPT_ALLOW_8BIT,
+  OPT_ALLOW_ANSI,
+  OPT_ARROW_CURSOR,
+  OPT_ASCII_CHARS,
+  OPT_ASK_BCC,
+  OPT_ASK_CC,
+  OPT_ASK_FOLLOWUP,
+  OPT_ASK_XCOMMENTTO,
+  OPT_ATTACH_SPLIT,
+  OPT_AUTO_EDIT,
+  OPT_AUTO_TAG,
+  OPT_BEEP,
+  OPT_BEEP_NEW,
+  OPT_BOUNCE_DELIVERED,
+  OPT_BRAILLE_FRIENDLY,
+  OPT_CHECK_MBOX_SIZE,
+  OPT_CHECK_NEW,
+  OPT_COLLAPSE_ALL,
+  OPT_COLLAPSE_UNREAD,
+  OPT_COLLAPSE_FLAGGED,
+  OPT_CONFIRM_APPEND,
+  OPT_CONFIRM_CREATE,
+  OPT_DELETE_UNTAG,
+  OPT_DIGEST_COLLAPSE,
+  OPT_DUP_THREADS,
+  OPT_EDIT_HDRS,
+  OPT_ENCODE_FROM,
+  OPT_ENV_FROM,
+  OPT_FAST_REPLY,
+  OPT_FCC_CLEAR,
+  OPT_FLAG_SAFE,
+  OPT_FOLLOW_UP_TO,
+  OPT_FORCE_NAME,
+  OPT_FORW_DECODE,
+  OPT_FORW_QUOTE,
+  OPT_FORW_REF,
 #ifdef USE_HCACHE
-  OPTHCACHEVERIFY,
+  OPT_HCACHE_VERIFY,
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  OPTHCACHECOMPRESS,
+  OPT_HCACHE_COMPRESS,
 #endif /* HAVE_QDBM */
 #endif
-  OPTHDRS,
-  OPTHEADER,
-  OPTHEADERCOLORPARTIAL,
-  OPTHELP,
-  OPTHIDDENHOST,
-  OPTHIDELIMITED,
-  OPTHIDEMISSING,
-  OPTHIDETHREADSUBJECT,
-  OPTHIDETOPLIMITED,
-  OPTHIDETOPMISSING,
-  OPTHISTREMOVEDUPS,
-  OPTHONORDISP,
-  OPTIGNORELWS,
-  OPTIGNORELISTREPLYTO,
+  OPT_HDRS,
+  OPT_HEADER,
+  OPT_HEADER_COLOR_PARTIAL,
+  OPT_HELP,
+  OPT_HIDDEN_HOST,
+  OPT_HIDE_LIMITED,
+  OPT_HIDE_MISSING,
+  OPT_HIDE_THREAD_SUBJECT,
+  OPT_HIDE_TOP_LIMITED,
+  OPT_HIDE_TOP_MISSING,
+  OPT_HIST_REMOVE_DUPS,
+  OPT_HONOR_DISP,
+  OPT_IGNORE_LWS,
+  OPT_IGNORE_LIST_REPLY_TO,
 #ifdef USE_IMAP
-  OPTIMAPCHECKSUBSCRIBED,
-  OPTIMAPIDLE,
-  OPTIMAPLSUB,
-  OPTIMAPPASSIVE,
-  OPTIMAPPEEK,
-  OPTIMAPSERVERNOISE,
+  OPT_IMAP_CHECK_SUBSCRIBED,
+  OPT_IMAP_IDLE,
+  OPT_IMAP_LSUB,
+  OPT_IMAP_PASSIVE,
+  OPT_IMAP_PEEK,
+  OPT_IMAP_SERVER_NOISE,
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS
-  OPTSSLSYSTEMCERTS,
-  OPTSSLV2,
+  OPT_SSL_SYSTEM_CERTS,
+  OPT_SSLV2,
 #endif /* USE_SSL_GNUTLS */
-  OPTSSLV3,
-  OPTTLSV1,
-  OPTTLSV1_1,
-  OPTTLSV1_2,
-  OPTSSLFORCETLS,
-  OPTSSLVERIFYDATES,
-  OPTSSLVERIFYHOST,
+  OPT_SSLV3,
+  OPT_TLSV1,
+  OPT_TLSV1_1,
+  OPT_TLSV1_2,
+  OPT_SSL_FORCE_TLS,
+  OPT_SSL_VERIFY_DATES,
+  OPT_SSL_VERIFY_HOST,
 #if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
-  OPTSSLVERIFYPARTIAL,
+  OPT_SSL_VERIFY_PARTIAL,
 #endif /* USE_SSL_OPENSSL */
 #endif /* defined(USE_SSL) */
-  OPTIMPLICITAUTOVIEW,
-  OPTINCLUDEONLYFIRST,
-  OPTKEEPFLAGGED,
-  OPTKEYWORDSLEGACY,
-  OPTKEYWORDSSTANDARD,
-  OPTMAILCAPSANITIZE,
-  OPTMAILCHECKRECENT,
-  OPTMAILCHECKSTATS,
-  OPTMAILDIRTRASH,
-  OPTMAILDIRCHECKCUR,
-  OPTMARKERS,
-  OPTMARKOLD,
-  OPTMENUSCROLL,  /**< scroll menu instead of implicit next-page */
-  OPTMENUMOVEOFF, /**< allow menu to scroll past last entry */
+  OPT_IMPLICIT_AUTOVIEW,
+  OPT_INCLUDE_ONLY_FIRST,
+  OPT_KEEP_FLAGGED,
+  OPT_KEYWORDS_LEGACY,
+  OPT_KEYWORDS_STANDARD,
+  OPT_MAILCAP_SANITIZE,
+  OPT_MAIL_CHECK_RECENT,
+  OPT_MAIL_CHECK_STATS,
+  OPT_MAILDIR_TRASH,
+  OPT_MAILDIR_CHECK_CUR,
+  OPT_MARKERS,
+  OPT_MARK_OLD,
+  OPT_MENU_SCROLL,  /**< scroll menu instead of implicit next-page */
+  OPT_MENU_MOVE_OFF, /**< allow menu to scroll past last entry */
 #if defined(USE_IMAP) || defined(USE_POP)
-  OPTMESSAGECACHECLEAN,
+  OPT_MESSAGE_CACHE_CLEAN,
 #endif
-  OPTMETAKEY, /**< interpret ALT-x as ESC-x */
-  OPTMETOO,
-  OPTMHPURGE,
-  OPTMIMEFORWDECODE,
+  OPT_METAKEY, /**< interpret ALT-x as ESC-x */
+  OPT_ME_TOO,
+  OPT_MH_PURGE,
+  OPT_MIME_FORW_DECODE,
 #ifdef USE_NNTP
-  OPTMIMESUBJECT, /**< encode subject line with RFC2047 */
+  OPT_MIME_SUBJECT, /**< encode subject line with RFC2047 */
 #endif
-  OPTNARROWTREE,
-  OPTPAGERSTOP,
-  OPTPIPEDECODE,
-  OPTPIPESPLIT,
+  OPT_NARROW_TREE,
+  OPT_PAGER_STOP,
+  OPT_PIPE_DECODE,
+  OPT_PIPE_SPLIT,
 #ifdef USE_POP
-  OPTPOPAUTHTRYALL,
-  OPTPOPLAST,
+  OPT_POP_AUTH_TRY_ALL,
+  OPT_POP_LAST,
 #endif
-  OPTPOSTPONEENCRYPT,
-  OPTPRINTDECODE,
-  OPTPRINTSPLIT,
-  OPTPROMPTAFTER,
-  OPTREADONLY,
-  OPTREFLOWSPACEQUOTES,
-  OPTREFLOWTEXT,
-  OPTREPLYSELF,
-  OPTREPLYWITHXORIG,
-  OPTRESOLVE,
-  OPTRESUMEDRAFTFILES,
-  OPTRESUMEEDITEDDRAFTFILES,
-  OPTREVALIAS,
-  OPTREVNAME,
-  OPTREVREAL,
-  OPTRFC2047PARAMS,
-  OPTSAVEADDRESS,
-  OPTSAVEEMPTY,
-  OPTSAVENAME,
-  OPTSCORE,
+  OPT_POSTPONE_ENCRYPT,
+  OPT_PRINT_DECODE,
+  OPT_PRINT_SPLIT,
+  OPT_PROMPT_AFTER,
+  OPT_READONLY,
+  OPT_REFLOW_SPACE_QUOTES,
+  OPT_REFLOW_TEXT,
+  OPT_REPLY_SELF,
+  OPT_REPLY_WITH_XORIG,
+  OPT_RESOLVE,
+  OPT_RESUME_DRAFT_FILES,
+  OPT_RESUME_EDITED_DRAFT_FILES,
+  OPT_REV_ALIAS,
+  OPT_REV_NAME,
+  OPT_REV_REAL,
+  OPT_RFC2047_PARAMS,
+  OPT_SAVE_ADDRESS,
+  OPT_SAVE_EMPTY,
+  OPT_SAVE_NAME,
+  OPT_SCORE,
 #ifdef USE_SIDEBAR
-  OPTSIDEBAR,
-  OPTSIDEBARFOLDERINDENT,
-  OPTSIDEBARNEWMAILONLY,
-  OPTSIDEBARNEXTNEWWRAP,
-  OPTSIDEBARSHORTPATH,
-  OPTSIDEBARONRIGHT,
+  OPT_SIDEBAR,
+  OPT_SIDEBAR_FOLDER_INDENT,
+  OPT_SIDEBAR_NEWMAIL_ONLY,
+  OPT_SIDEBAR_NEXT_NEW_WRAP,
+  OPT_SIDEBAR_SHORT_PATH,
+  OPT_SIDEBAR_ON_RIGHT,
 #endif
-  OPTSIGDASHES,
-  OPTSIGONTOP,
-  OPTSORTRE,
-  OPTSTATUSONTOP,
-  OPTSTRICTTHREADS,
-  OPTSUSPEND,
-  OPTTEXTFLOWED,
-  OPTTHOROUGHSRC,
-  OPTTHREADRECEIVED,
-  OPTTILDE,
-  OPTTSENABLED,
-  OPTUNCOLLAPSEJUMP,
-  OPTUNCOLLAPSENEW,
-  OPTUSE8BITMIME,
-  OPTUSEDOMAIN,
-  OPTUSEFROM,
-  OPTUSEGPGAGENT,
+  OPT_SIG_DASHES,
+  OPT_SIG_ON_TOP,
+  OPT_SORT_RE,
+  OPT_STATUS_ON_TOP,
+  OPT_STRICT_THREADS,
+  OPT_SUSPEND,
+  OPT_TEXT_FLOWED,
+  OPT_THOROUGH_SRC,
+  OPT_THREAD_RECEIVED,
+  OPT_TILDE,
+  OPT_TS_ENABLED,
+  OPT_UNCOLLAPSE_JUMP,
+  OPT_UNCOLLAPSE_NEW,
+  OPT_USE_8BIT_MIME,
+  OPT_USE_DOMAIN,
+  OPT_USE_FROM,
+  OPT_USE_GPG_AGENT,
 #ifdef HAVE_LIBIDN
-  OPTIDNDECODE,
-  OPTIDNENCODE,
+  OPT_IDN_DECODE,
+  OPT_IDN_ENCODE,
 #endif
 #ifdef HAVE_GETADDRINFO
-  OPTUSEIPV6,
+  OPT_USE_IPV6,
 #endif
-  OPTWAITKEY,
-  OPTWEED,
-  OPTWRAP,
-  OPTWRAPSEARCH,
-  OPTWRITEBCC, /**< write out a bcc header? */
-  OPTXMAILER,
+  OPT_WAIT_KEY,
+  OPT_WEED,
+  OPT_WRAP,
+  OPT_WRAP_SEARCH,
+  OPT_WRITE_BCC, /**< write out a bcc header? */
+  OPT_XMAILER,
 
-  OPTCRYPTUSEGPGME,
-  OPTCRYPTUSEPKA,
+  OPT_CRYPT_USE_GPGME,
+  OPT_CRYPT_USE_PKA,
 
   /* PGP options */
 
-  OPTCRYPTAUTOSIGN,
-  OPTCRYPTAUTOENCRYPT,
-  OPTCRYPTAUTOPGP,
-  OPTCRYPTAUTOSMIME,
-  OPTCRYPTCONFIRMHOOK,
-  OPTCRYPTOPPORTUNISTICENCRYPT,
-  OPTCRYPTREPLYENCRYPT,
-  OPTCRYPTREPLYSIGN,
-  OPTCRYPTREPLYSIGNENCRYPTED,
-  OPTCRYPTTIMESTAMP,
-  OPTSMIMEISDEFAULT,
-  OPTSMIMESELFENCRYPT,
-  OPTASKCERTLABEL,
-  OPTSDEFAULTDECRYPTKEY,
-  OPTPGPIGNORESUB,
-  OPTPGPCHECKEXIT,
-  OPTPGPLONGIDS,
-  OPTPGPAUTODEC,
-  OPTPGPRETAINABLESIG,
-  OPTPGPSELFENCRYPT,
-  OPTPGPSTRICTENC,
-  OPTFORWDECRYPT,
-  OPTPGPSHOWUNUSABLE,
-  OPTPGPAUTOINLINE,
-  OPTPGPREPLYINLINE,
+  OPT_CRYPT_AUTO_SIGN,
+  OPT_CRYPT_AUTO_ENCRYPT,
+  OPT_CRYPT_AUTO_PGP,
+  OPT_CRYPT_AUTO_SMIME,
+  OPT_CRYPT_CONFIRM_HOOK,
+  OPT_CRYPT_OPPORTUNISTIC_ENCRYPT,
+  OPT_CRYPT_REPLY_ENCRYPT,
+  OPT_CRYPT_REPLY_SIGN,
+  OPT_CRYPT_REPLY_SIGN_ENCRYPTED,
+  OPT_CRYPT_TIMESTAMP,
+  OPT_SMIME_IS_DEFAULT,
+  OPT_SMIME_SELF_ENCRYPT,
+  OPT_ASK_CERT_LABEL,
+  OPT_SDEFAULT_DECRYPT_KEY,
+  OPT_PGP_IGNORE_SUB,
+  OPT_PGP_CHECK_EXIT,
+  OPT_PGP_LONG_IDS,
+  OPT_PGP_AUTO_DEC,
+  OPT_PGP_RETAINABLE_SIG,
+  OPT_PGP_SELF_ENCRYPT,
+  OPT_PGP_STRICT_ENC,
+  OPT_FORW_DECRYPT,
+  OPT_PGP_SHOW_UNUSABLE,
+  OPT_PGP_AUTO_INLINE,
+  OPT_PGP_REPLY_INLINE,
 
 /* news options */
 
 #ifdef USE_NNTP
-  OPTSHOWNEWNEWS,
-  OPTSHOWONLYUNREAD,
-  OPTSAVEUNSUB,
-  OPTLISTGROUP,
-  OPTLOADDESC,
-  OPTXCOMMENTTO,
+  OPT_SHOW_NEW_NEWS,
+  OPT_SHOW_ONLY_UNREAD,
+  OPT_SAVE_UNSUB,
+  OPT_LIST_GROUP,
+  OPT_LOAD_DESC,
+  OPT_XCOMMENT_TO,
 #endif
 
   /* pseudo options */
 
-  OPTAUXSORT,           /**< (pseudo) using auxiliary sort function */
-  OPTFORCEREFRESH,      /**< (pseudo) refresh even during macros */
-  OPTLOCALES,           /**< (pseudo) set if user has valid locale definition */
-  OPTNOCURSES,          /**< (pseudo) when sending in batch mode */
-  OPTSEARCHREVERSE,     /**< (pseudo) used by ci_search_command */
-  OPTMSGERR,            /**< (pseudo) used by mutt_error/mutt_message */
-  OPTSEARCHINVALID,     /**< (pseudo) used to invalidate the search pat */
-  OPTSIGNALSBLOCKED,    /**< (pseudo) using by mutt_block_signals () */
-  OPTSYSSIGNALSBLOCKED, /**< (pseudo) using by mutt_block_signals_system () */
-  OPTNEEDRESORT,        /**< (pseudo) used to force a re-sort */
-  OPTRESORTINIT,        /**< (pseudo) used to force the next resort to be from scratch */
-  OPTVIEWATTACH,        /**< (pseudo) signals that we are viewing attachments */
-  OPTSORTSUBTHREADS,    /**< (pseudo) used when $sort_aux changes */
-  OPTNEEDRESCORE,       /**< (pseudo) set when the `score' command is used */
-  OPTATTACHMSG,         /**< (pseudo) used by attach-message */
-  OPTHIDEREAD,          /**< (pseudo) whether or not hide read messages */
-  OPTKEEPQUIET,         /**< (pseudo) shut up the message and refresh
+  OPT_AUX_SORT,           /**< (pseudo) using auxiliary sort function */
+  OPT_FORCE_REFRESH,      /**< (pseudo) refresh even during macros */
+  OPT_LOCALES,           /**< (pseudo) set if user has valid locale definition */
+  OPT_NO_CURSES,          /**< (pseudo) when sending in batch mode */
+  OPT_SEARCH_REVERSE,     /**< (pseudo) used by ci_search_command */
+  OPT_MSG_ERR,            /**< (pseudo) used by mutt_error/mutt_message */
+  OPT_SEARCH_INVALID,     /**< (pseudo) used to invalidate the search pat */
+  OPT_SIGNALS_BLOCKED,    /**< (pseudo) using by mutt_block_signals () */
+  OPT_SYS_SIGNALS_BLOCKED, /**< (pseudo) using by mutt_block_signals_system () */
+  OPT_NEED_RESORT,        /**< (pseudo) used to force a re-sort */
+  OPT_RESORT_INIT,        /**< (pseudo) used to force the next resort to be from scratch */
+  OPT_VIEW_ATTACH,        /**< (pseudo) signals that we are viewing attachments */
+  OPT_SORT_SUBTHREADS,    /**< (pseudo) used when $sort_aux changes */
+  OPT_NEED_RESCORE,       /**< (pseudo) set when the `score' command is used */
+  OPT_ATTACH_MSG,         /**< (pseudo) used by attach-message */
+  OPT_HIDE_READ,          /**< (pseudo) whether or not hide read messages */
+  OPT_KEEP_QUIET,         /**< (pseudo) shut up the message and refresh
                          *            functions while we are executing an
                          *            external program.  */
-  OPTMENUCALLER,        /**< (pseudo) tell menu to give caller a take */
-  OPTREDRAWTREE,        /**< (pseudo) redraw the thread tree */
-  OPTPGPCHECKTRUST,     /**< (pseudo) used by pgp_select_key () */
-  OPTDONTHANDLEPGPKEYS, /**< (pseudo) used to extract PGP keys */
-  OPTIGNOREMACROEVENTS, /**< (pseudo) don't process macro/push/exec events while set */
+  OPT_MENU_CALLER,        /**< (pseudo) tell menu to give caller a take */
+  OPT_REDRAW_TREE,        /**< (pseudo) redraw the thread tree */
+  OPT_PGP_CHECK_TRUST,     /**< (pseudo) used by pgp_select_key () */
+  OPT_DONT_HANDLE_PGP_KEYS, /**< (pseudo) used to extract PGP keys */
+  OPT_IGNORE_MACRO_EVENTS, /**< (pseudo) don't process macro/push/exec events while set */
 
 #ifdef USE_NNTP
-  OPTNEWS,              /**< (pseudo) used to change reader mode */
-  OPTNEWSSEND,          /**< (pseudo) used to change behavior when posting */
+  OPT_NEWS,              /**< (pseudo) used to change reader mode */
+  OPT_NEWS_SEND,          /**< (pseudo) used to change behavior when posting */
 #endif
 #ifdef USE_NOTMUCH
-  OPTVIRTSPOOLFILE,
-  OPTNOTMUCHRECORD,
+  OPT_VIRT_SPOOL_FILE,
+  OPT_NOTMUCH_RECORD,
 #endif
 
-  OPTMAX
+  OPT_GLOBAL_MAX
 };
 
 #define mutt_bit_set(v, n)    v[n / 8] |= (1 << (n % 8))
@@ -287,7 +287,7 @@ enum GlobalBool
 
 /* bit vector for boolean variables */
 #ifdef MAIN_C
-unsigned char Options[(OPTMAX + 7) / 8];
+unsigned char Options[(OPT_GLOBAL_MAX + 7) / 8];
 #else
 extern unsigned char Options[];
 #endif

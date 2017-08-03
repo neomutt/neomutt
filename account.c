@@ -20,8 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* remote host account manipulation (POP/IMAP) */
-
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
@@ -195,7 +193,7 @@ int mutt_account_getuser(struct Account *account)
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
     strfcpy(account->user, NntpUser, sizeof(account->user));
 #endif
-  else if (option(OPTNOCURSES))
+  else if (option(OPT_NO_CURSES))
     return -1;
   /* prompt (defaults to unix username), copy into account->user */
   else
@@ -264,7 +262,7 @@ int mutt_account_getpass(struct Account *account)
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpPass)
     strfcpy(account->pass, NntpPass, sizeof(account->pass));
 #endif
-  else if (option(OPTNOCURSES))
+  else if (option(OPT_NO_CURSES))
     return -1;
   else
   {

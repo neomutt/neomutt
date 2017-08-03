@@ -503,12 +503,12 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 
   if (addr_hook(path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
   {
-    if ((option(OPTSAVENAME) || option(OPTFORCENAME)) && (env->to || env->cc || env->bcc))
+    if ((option(OPT_SAVE_NAME) || option(OPT_FORCE_NAME)) && (env->to || env->cc || env->bcc))
     {
       adr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
       mutt_safe_path(buf, sizeof(buf), adr);
       mutt_concat_path(path, NONULL(Maildir), buf, pathlen);
-      if (!option(OPTFORCENAME) && mx_access(path, W_OK) != 0)
+      if (!option(OPT_FORCE_NAME) && mx_access(path, W_OK) != 0)
         strfcpy(path, NONULL(Outbox), pathlen);
     }
     else

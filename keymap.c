@@ -62,7 +62,6 @@ const struct Mapping Menus[] = {
   { "mix", MENU_MIX },
 #endif
 
-
   { "query", MENU_QUERY },
   { "generic", MENU_GENERIC },
   { NULL, 0 },
@@ -175,7 +174,7 @@ static int parse_keycode(const char *s)
   long int result = strtol(s + 1, &endChar, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
   while (ISSPACE(*endChar))
-    ++endChar;
+    endChar++;
   /* negative keycodes don't make sense, also detect overflow */
   if (*endChar != '>' || result < 0 || result == LONG_MAX)
   {
@@ -443,13 +442,6 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
   }
 }
 
-/* This should be used for macros, push, and exec commands only. */
-#define tokenize_push_macro_string(s)                                          \
-  generic_tokenize_push_string(s, mutt_push_macro_event)
-/* This should be used for other unget operations. */
-#define tokenize_unget_string(s)                                               \
-  generic_tokenize_push_string(s, mutt_unget_event)
-
 static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 {
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
@@ -518,7 +510,7 @@ int km_dokey(int menu)
     timeout(-1);
 
 #ifdef USE_IMAP
-  gotkey:
+gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)
@@ -587,7 +579,7 @@ int km_dokey(int menu)
       if (map->op != OP_MACRO)
         return map->op;
 
-      if (option(OPTIGNOREMACROEVENTS))
+      if (option(OPT_IGNORE_MACRO_EVENTS))
       {
         mutt_error(_("Macros are currently disabled."));
         return -1;
@@ -600,7 +592,7 @@ int km_dokey(int menu)
         return -1;
       }
 
-      tokenize_push_macro_string(map->macro);
+      generic_tokenize_push_string(map->macro, mutt_push_macro_event);
       map = Keymaps[menu];
       pos = 0;
     }
@@ -792,7 +784,6 @@ void km_init(void)
   create_bindings(OpQuery, MENU_QUERY);
   create_bindings(OpAlias, MENU_ALIAS);
 
-
   if ((WithCrypto & APPLICATION_PGP))
     create_bindings(OpPgp, MENU_PGP);
 
@@ -966,7 +957,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
     r = -1;
   }
   else
-    tokenize_push_macro_string(buf->data);
+    generic_tokenize_push_string(buf->data, mutt_push_macro_event);
   return r;
 }
 
@@ -1000,7 +991,7 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
         snprintf(err->data, err->dsize, _("%s: no such menu"), p);
         goto error;
       }
-      ++i;
+      i++;
       if (q)
         p = q + 1;
       else

@@ -244,7 +244,6 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   return 0;
 }
 
-
 /**
  * address_uses_unicode - Do any addresses use Unicode
  * @retval true if any of the string of addresses use 8-bit characters
@@ -264,7 +263,6 @@ static bool address_uses_unicode(const char *a)
   return false;
 }
 
-
 /**
  * addresses_use_unicode - Do any of a list of addresses use Unicode
  * @retval true if any use 8-bit characters
@@ -279,7 +277,6 @@ static bool addresses_use_unicode(const struct Address *a)
   }
   return false;
 }
-
 
 static int smtp_fill_account(struct Account *account)
 {
@@ -343,7 +340,7 @@ static int smtp_helo(struct Connection *conn)
     if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option(OPTSSLFORCETLS) || quadoption(OPT_SSLSTARTTLS) != MUTT_NO)
+    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_START_TLS) != MUTT_NO)
       Esmtp = 1;
 #endif
   }
@@ -390,7 +387,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;
@@ -591,10 +588,10 @@ static int smtp_open(struct Connection *conn)
 #ifdef USE_SSL
   if (conn->ssf)
     rc = MUTT_NO;
-  else if (option(OPTSSLFORCETLS))
+  else if (option(OPT_SSL_FORCE_TLS))
     rc = MUTT_YES;
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
-           (rc = query_quadoption(OPT_SSLSTARTTLS,
+           (rc = query_quadoption(OPT_SSL_START_TLS,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 

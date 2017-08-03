@@ -66,7 +66,7 @@ void crypt_current_time(struct State *s, char *app_name)
   if (!WithCrypto)
     return;
 
-  if (option(OPTCRYPTTIMESTAMP))
+  if (option(OPT_CRYPT_TIMESTAMP))
   {
     t = time(NULL);
     strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
@@ -151,7 +151,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     if ((msg->content->type != TYPETEXT) ||
         (ascii_strcasecmp(msg->content->subtype, "plain") != 0))
     {
-      if (query_quadoption(OPT_PGPMIMEAUTO,
+      if (query_quadoption(OPT_PGP_MIME_AUTO,
                            _("Inline PGP can't be used with attachments.  "
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
@@ -174,7 +174,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption(
-              OPT_PGPMIMEAUTO,
+              OPT_PGP_MIME_AUTO,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent."));
@@ -193,7 +193,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   if ((WithCrypto & APPLICATION_PGP))
     tmp_pgp_pbody = msg->content;
 
-  if (option(OPTCRYPTUSEPKA) && (msg->security & SIGN))
+  if (option(OPT_CRYPT_USE_PKA) && (msg->security & SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -225,7 +225,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPTPGPRETAINABLESIG)))
+        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIG)))
     {
       if (!(tmp_pbody = crypt_pgp_sign_message(msg->content)))
         return -1;
@@ -650,7 +650,7 @@ void convert_to_7bit(struct Body *a)
         a->encoding = ENC7BIT;
         convert_to_7bit(a->parts);
       }
-      else if ((WithCrypto & APPLICATION_PGP) && option(OPTPGPSTRICTENC))
+      else if ((WithCrypto & APPLICATION_PGP) && option(OPT_PGP_STRICT_ENC))
         convert_to_7bit(a->parts);
     }
     else if (a->type == TYPEMESSAGE &&
@@ -664,7 +664,7 @@ void convert_to_7bit(struct Body *a)
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
     else if (a->content && a->encoding != ENCBASE64 &&
-             (a->content->from || (a->content->space && option(OPTPGPSTRICTENC))))
+             (a->content->from || (a->content->space && option(OPT_PGP_STRICT_ENC))))
       a->encoding = ENCQUOTEDPRINTABLE;
     a = a->next;
   }
@@ -688,7 +688,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   }
 
   if ((WithCrypto & APPLICATION_PGP))
-    set_option(OPTDONTHANDLEPGPKEYS);
+    set_option(OPT_DONT_HANDLE_PGP_KEYS);
 
   if (!h)
   {
@@ -787,7 +787,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   mutt_unlink(tempfname);
 
   if ((WithCrypto & APPLICATION_PGP))
-    unset_option(OPTDONTHANDLEPGPKEYS);
+    unset_option(OPT_DONT_HANDLE_PGP_KEYS);
 }
 
 /**
@@ -814,7 +814,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     return 0;
 
   if ((WithCrypto & APPLICATION_PGP))
-    set_option(OPTPGPCHECKTRUST);
+    set_option(OPT_PGP_CHECK_TRUST);
 
   last = rfc822_append(&adrlist, msg->env->to, 0);
   last = rfc822_append(last ? &last : &adrlist, msg->env->cc, 0);
@@ -835,8 +835,8 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         rfc822_free_address(&adrlist);
         return -1;
       }
-      unset_option(OPTPGPCHECKTRUST);
-      if (option(OPTPGPSELFENCRYPT) || (quadoption(OPT_PGPENCRYPTSELF) == MUTT_YES))
+      unset_option(OPT_PGP_CHECK_TRUST);
+      if (option(OPT_PGP_SELF_ENCRYPT) || (quadoption(OPT_PGP_ENCRYPT_SELF) == MUTT_YES))
         self_encrypt = PgpSelfEncryptAs;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
@@ -846,7 +846,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         rfc822_free_address(&adrlist);
         return -1;
       }
-      if (option(OPTSMIMESELFENCRYPT) || (quadoption(OPT_SMIMEENCRYPTSELF) == MUTT_YES))
+      if (option(OPT_SMIME_SELF_ENCRYPT) || (quadoption(OPT_SMIME_ENCRYPT_SELF) == MUTT_YES))
         self_encrypt = SmimeSelfEncryptAs;
     }
   }
@@ -876,7 +876,7 @@ void crypt_opportunistic_encrypt(struct Header *msg)
   if (!WithCrypto)
     return;
 
-  if (!(option(OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT)))
+  if (!(option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT)))
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
@@ -911,7 +911,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 }
 
 /**
- * mutt_signed_handler - Verify a "multipart/signed" body.
+ * mutt_signed_handler - Verify a "multipart/signed" body
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {
@@ -1058,7 +1058,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   size_t hexdigits;
 
   /* User input may be partial name, fingerprint or short or long key ID,
-   * independent of OPTPGPLONGIDS.
+   * independent of OPT_PGP_LONG_IDS.
    * Fingerprint without spaces is 40 hex digits (SHA-1) or 32 hex digits (MD5).
    * Strip leading "0x" for key ID detection and prepare pl and ps to indicate
    * if an ID was found and to simplify logic in the key loop's inner
@@ -1078,7 +1078,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
     c = *(s1++);
     if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f'))
     {
-      ++hexdigits;
+      hexdigits++;
       if (isid == 2)
         isid = 1; /* it is an ID so far */
     }

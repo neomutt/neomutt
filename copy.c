@@ -451,7 +451,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_header_get_folder(h);
-    if (folder && !(option(OPTWEED) && mutt_matches_ignore("folder")))
+    if (folder && !(option(OPT_WEED) && mutt_matches_ignore("folder")))
     {
       char buf[LONG_STRING];
       strfcpy(buf, folder, sizeof(buf));
@@ -462,7 +462,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
       fputc('\n', out);
     }
     char *tags = nm_header_get_tags(h);
-    if (tags && !(option(OPTWEED) && mutt_matches_ignore("tags")))
+    if (tags && !(option(OPT_WEED) && mutt_matches_ignore("tags")))
     {
       fputs("Tags: ", out);
       fputs(tags, out);
@@ -556,7 +556,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
 
   if (flags & MUTT_CM_PREFIX)
   {
-    if (option(OPTTEXTFLOWED))
+    if (option(OPT_TEXT_FLOWED))
       strfcpy(prefix, ">", sizeof(prefix));
     else
       _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, hdr, 0);

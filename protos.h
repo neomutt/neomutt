@@ -133,7 +133,6 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, enum FormatFlag flags);
 
-
 char *mutt_charset_hook(const char *chs);
 char *mutt_iconv_hook(const char *chs);
 char *mutt_expand_path(char *s, size_t slen);
@@ -386,7 +385,6 @@ void mutt_rand_base32(void *out, size_t len);
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
-
 struct Address *alias_reverse_lookup(struct Address *a);
 
 /* utf8.c */
@@ -398,8 +396,8 @@ int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 #else
 #define IsPrint(c)                                                             \
   (isprint((unsigned char) (c)) ||                                             \
-   (option(OPTLOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
-#define IsWPrint(wc) (iswprint(wc) || (option(OPTLOCALES) ? 0 : (wc >= 0xa0)))
+   (option(OPT_LOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
+#define IsWPrint(wc) (iswprint(wc) || (option(OPT_LOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
 int getdnsdomainname(char *d, size_t len);

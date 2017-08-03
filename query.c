@@ -123,7 +123,6 @@ static struct Query *run_query(char *s, int quiet)
   char *p = NULL;
   pid_t thepid;
 
-
   mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCmd, s);
 
   if ((thepid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
@@ -343,7 +342,6 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
                 queryp->next = newresults;
               }
-
 
               menu->current = 0;
               mutt_pop_current_menu(menu);

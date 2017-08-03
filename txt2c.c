@@ -44,7 +44,6 @@ static void txt2c(char *sym, FILE *fp)
   printf("\t0x00\n};\n");
 }
 
-
 int main(int argc, char *argv[])
 {
   if (argc != 2)

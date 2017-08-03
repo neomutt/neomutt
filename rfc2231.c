@@ -75,7 +75,6 @@ static void purge_empty_parameters(struct Parameter **headp)
   }
 }
 
-
 static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
 {
   char *t = NULL, *u = NULL;
@@ -242,7 +241,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
        * Internet Gateways.  So we actually decode it.
        */
 
-      if (option(OPTRFC2047PARAMS) && p->value && strstr(p->value, "=?"))
+      if (option(OPT_RFC2047_PARAMS) && p->value && strstr(p->value, "=?"))
         rfc2047_decode(&p->value);
       else if (AssumedCharset && *AssumedCharset)
         convert_nonmime_string(&p->value);
@@ -336,10 +335,15 @@ int rfc2231_encode_string(char **pd)
     encode = 1;
 
   for (s = d, slen = dlen; slen; s++, slen--)
+  {
     if (*s < 0x20 || *s >= 0x7f)
-      encode = 1, ++ext;
+    {
+      encode = 1;
+      ext++;
+    }
     else if (strchr(MimeSpecials, *s) || strchr("*'%", *s))
-      ++ext;
+      ext++;
+  }
 
   if (encode)
   {

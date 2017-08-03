@@ -1000,7 +1000,7 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
    * When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
-  if (!option(OPTMAILCHECKRECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
+  if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
     utimebuf.actime = utimebuf.modtime - 1;
 
   utime(ctx->path, &utimebuf);
@@ -1288,7 +1288,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
     char savefile[_POSIX_PATH_MAX];
 
-    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(Tempdir),
+    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(TempDir),
              NONULL(Username), NONULL(Hostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_unblock_signals();
@@ -1332,7 +1332,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   unlink(tempfile); /* remove partial copy of the mailbox */
   mutt_unblock_signals();
 
-  if (option(OPTCHECKMBOXSIZE))
+  if (option(OPT_CHECK_MBOX_SIZE))
   {
     tmp = mutt_find_mailbox(ctx->path);
     if (tmp && tmp->new == false)

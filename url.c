@@ -169,7 +169,7 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
 }
 
 /**
- * url_parse_ciss - Fill in CissUrl.
+ * url_parse_ciss - Fill in CissUrl
  *
  * char* elements are pointers into src, which is modified by this call
  * (duplicate it first if you need to).
@@ -315,7 +315,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      * choose to create a message with only a subset of the headers given in
      * the URL.
      */
-    if (mutt_matches_list(tag, MailtoAllow))
+    if (mutt_matches_list(tag, MailToAllow))
     {
       if (ascii_strcasecmp(tag, "body") == 0)
       {

@@ -51,7 +51,6 @@ struct Address;
 #endif
 #endif /* HAVE_LIBIDN */
 
-
 int mutt_addrlist_to_intl(struct Address *a, char **err);
 int mutt_addrlist_to_local(struct Address *a);
 

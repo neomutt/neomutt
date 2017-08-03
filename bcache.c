@@ -36,8 +36,6 @@
 #include "protos.h"
 #include "url.h"
 
-static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid);
-
 /**
  * struct BodyCache - Local cache of email bodies
  */
@@ -88,6 +86,22 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   mutt_debug(3, "bcache_path: directory: '%s'\n", dst);
 
   return 0;
+}
+
+static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
+{
+  char path[_POSIX_PATH_MAX];
+  char newpath[_POSIX_PATH_MAX];
+
+  if (!bcache || !id || !*id || !newid || !*newid)
+    return -1;
+
+  snprintf(path, sizeof(path), "%s%s", bcache->path, id);
+  snprintf(newpath, sizeof(newpath), "%s%s", bcache->path, newid);
+
+  mutt_debug(3, "bcache: mv: '%s' '%s'\n", path, newpath);
+
+  return rename(path, newpath);
 }
 
 struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox)
@@ -174,22 +188,6 @@ int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
   snprintf(tmpid, sizeof(tmpid), "%s.tmp", id);
 
   return mutt_bcache_move(bcache, tmpid, id);
-}
-
-static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
-{
-  char path[_POSIX_PATH_MAX];
-  char newpath[_POSIX_PATH_MAX];
-
-  if (!bcache || !id || !*id || !newid || !*newid)
-    return -1;
-
-  snprintf(path, sizeof(path), "%s%s", bcache->path, id);
-  snprintf(newpath, sizeof(newpath), "%s%s", bcache->path, newid);
-
-  mutt_debug(3, "bcache: mv: '%s' '%s'\n", path, newpath);
-
-  return rename(path, newpath);
 }
 
 int mutt_bcache_del(struct BodyCache *bcache, const char *id)

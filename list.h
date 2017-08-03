@@ -23,7 +23,6 @@
 #ifndef _MUTT_LIST_H
 #define _MUTT_LIST_H
 
-
 /**
  * struct List - Singly-linked List type
  */

@@ -141,7 +141,6 @@ static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)
       linelen = 3;
     }
 
-
     if (c == '\n' && istext)
     {
       /* Check to make sure there is no trailing space on this line. */
@@ -267,7 +266,6 @@ static void b64_flush(struct B64Context *ctx, FILE *fout)
   ctx->size = 0;
 }
 
-
 static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
 {
   if (ctx->size == 3)
@@ -275,7 +273,6 @@ static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
 
   ctx->buffer[ctx->size++] = c;
 }
-
 
 static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
 {
@@ -314,7 +311,6 @@ static void encode_8bit(FGETCONV *fc, FILE *fout, int istext)
     fputc(ch, fout);
   }
 }
-
 
 int mutt_write_mime_header(struct Body *a, FILE *f)
 {
@@ -526,7 +522,6 @@ struct ContentState
   int was_cr;
 };
 
-
 static void update_content_info(struct Content *info, struct ContentState *s,
                                 char *d, size_t dlen)
 {
@@ -700,8 +695,11 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     if (ascii_strcasecmp(tocodes[i], "utf-8") != 0)
       cd[i] = mutt_iconv_open(tocodes[i], "utf-8", 0);
     else
+    {
       /* Special case for conversion to UTF-8 */
-      cd[i] = (iconv_t)(-1), score[i] = (size_t)(-1);
+      cd[i] = (iconv_t)(-1);
+      score[i] = (size_t)(-1);
+    }
 
   rewind(file);
   ibl = 0;
@@ -713,7 +711,8 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 
     /* Convert to UTF-8 */
     ib = bufi;
-    ob = bufu, obl = sizeof(bufu);
+    ob = bufu;
+    obl = sizeof(bufu);
     n = iconv(cd1, ibl ? &ib : 0, &ibl, &ob, &obl);
     assert(n == (size_t)(-1) || !n);
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
@@ -728,8 +727,10 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     for (i = 0; i < ncodes; i++)
       if (cd[i] != (iconv_t)(-1) && score[i] != (size_t)(-1))
       {
-        ub = bufu, ubl = ubl1;
-        ob = bufo, obl = sizeof(bufo);
+        ub = bufu;
+        ubl = ubl1;
+        ob = bufo;
+        obl = sizeof(bufo);
         n = iconv(cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
         if (n == (size_t)(-1))
         {
@@ -827,7 +828,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
   {
     if ((c1 = strchr(c, ':')) == c)
       continue;
-    ++ncodes;
+    ncodes++;
   }
 
   /* Copy them */
@@ -1013,7 +1014,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         strfcpy(buf, PKGDATADIR "/mime.types", sizeof(buf));
         break;
       case 3:
-        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(Homedir));
+        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
         break;
       default:
         mutt_debug(1, "mutt_lookup_mime_type: Internal error, count = %d.\n", count);
@@ -1234,10 +1235,10 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     char *chsname = mutt_get_body_charset(send_charset, sizeof(send_charset), b);
     if ((info->lobin && (ascii_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
-        info->linemax > 990 || (info->from && option(OPTENCODEFROM)))
+        info->linemax > 990 || (info->from && option(OPT_ENCODE_FROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
-      b->encoding = option(OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
+      b->encoding = option(OPT_ALLOW_8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
     else
       b->encoding = ENC7BIT;
   }
@@ -1245,7 +1246,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     if (info->lobin || info->hibin)
     {
-      if (option(OPTALLOW8BIT) && !info->lobin)
+      if (option(OPT_ALLOW_8BIT) && !info->lobin)
         b->encoding = ENC8BIT;
       else
         mutt_message_to_7bit(b, NULL);
@@ -1293,7 +1294,6 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
   return d;
 }
 
-
 /**
  * mutt_update_encoding - Update the encoding type
  *
@@ -1331,7 +1331,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
 
   if (WithCrypto)
   {
-    if ((option(OPTMIMEFORWDECODE) || option(OPTFORWDECRYPT)) && (hdr->security & ENCRYPT))
+    if ((option(OPT_MIME_FORW_DECODE) || option(OPT_FORW_DECRYPT)) && (hdr->security & ENCRYPT))
     {
       if (!crypt_valid_passphrase(hdr->security))
         return NULL;
@@ -1356,8 +1356,8 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   chflags = CH_XMIT;
   cmflags = 0;
 
-  /* If we are attaching a message, ignore OPTMIMEFORWDECODE */
-  if (!attach_msg && option(OPTMIMEFORWDECODE))
+  /* If we are attaching a message, ignore OPT_MIME_FORW_DECODE */
+  if (!attach_msg && option(OPT_MIME_FORW_DECODE))
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -1366,7 +1366,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
     if ((WithCrypto & APPLICATION_SMIME))
       pgp &= ~SMIMEENCRYPT;
   }
-  else if (WithCrypto && option(OPTFORWDECRYPT) && (hdr->security & ENCRYPT))
+  else if (WithCrypto && option(OPT_FORW_DECRYPT) && (hdr->security & ENCRYPT))
   {
     if ((WithCrypto & APPLICATION_PGP) && mutt_is_multipart_encrypted(hdr->content))
     {
@@ -1881,7 +1881,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     {
       tagbuf = mutt_substrdup(start, t);
       /* skip over the colon separating the header field name and value */
-      ++t;
+      t++;
 
       /* skip over any leading whitespace (WSP, as defined in RFC5322)
        * NOTE: skip_email_wsp() does the wrong thing here.
@@ -1919,7 +1919,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   int pfxw = mutt_strwidth(pfx);
   char *v = safe_strdup(value);
 
-  if (!(flags & CH_DISPLAY) || option(OPTWEED))
+  if (!(flags & CH_DISPLAY) || option(OPT_WEED))
     v = unfold_header(v);
 
   /* when not displaying, use sane wrap value */
@@ -1988,7 +1988,6 @@ out:
   return rc;
 }
 
-
 /* Note: all RFC2047 encoding should be done outside of this routine, except
  * for the "real name."  This will allow this routine to be used more than
  * once, if necessary.
@@ -2004,7 +2003,6 @@ out:
  *               anonymous remailer chains.
  */
 
-
 int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, int mode, int privacy)
 {
@@ -2016,7 +2014,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   if (mode == 0 && !privacy)
     fputs(mutt_make_date(buffer, sizeof(buffer)), fp);
 
-  /* OPTUSEFROM is not consulted here so that we can still write a From:
+  /* OPT_USE_FROM is not consulted here so that we can still write a From:
    * field if the user sets it with the `my_hdr' command
    */
   if (env->from && !privacy)
@@ -2040,7 +2038,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!option(OPTNEWSSEND))
+    if (!option(OPT_NEWS_SEND))
 #endif
       fputs("To: \n", fp);
 
@@ -2051,13 +2049,13 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!option(OPTNEWSSEND))
+    if (!option(OPT_NEWS_SEND))
 #endif
       fputs("Cc: \n", fp);
 
   if (env->bcc)
   {
-    if (mode != 0 || option(OPTWRITEBCC))
+    if (mode != 0 || option(OPT_WRITE_BCC))
     {
       fputs("Bcc: ", fp);
       mutt_write_address_list(env->bcc, fp, 5, 0);
@@ -2065,24 +2063,24 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!option(OPTNEWSSEND))
+    if (!option(OPT_NEWS_SEND))
 #endif
       fputs("Bcc: \n", fp);
 
 #ifdef USE_NNTP
   if (env->newsgroups)
     fprintf(fp, "Newsgroups: %s\n", env->newsgroups);
-  else if (mode == 1 && option(OPTNEWSSEND))
+  else if (mode == 1 && option(OPT_NEWS_SEND))
     fputs("Newsgroups: \n", fp);
 
   if (env->followup_to)
     fprintf(fp, "Followup-To: %s\n", env->followup_to);
-  else if (mode == 1 && option(OPTNEWSSEND))
+  else if (mode == 1 && option(OPT_NEWS_SEND))
     fputs("Followup-To: \n", fp);
 
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if (mode == 1 && option(OPTNEWSSEND) && option(OPTXCOMMENTTO))
+  else if (mode == 1 && option(OPT_NEWS_SEND) && option(OPT_XCOMMENT_TO))
     fputs("X-Comment-To: \n", fp);
 #endif
 
@@ -2105,7 +2103,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 
   if (env->mail_followup_to)
 #ifdef USE_NNTP
-    if (!option(OPTNEWSSEND))
+    if (!option(OPT_NEWS_SEND))
 #endif
     {
       fputs("Mail-Followup-To: ", fp);
@@ -2165,7 +2163,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
     }
   }
 
-  if (mode == 0 && !privacy && option(OPTXMAILER) && !has_agent)
+  if (mode == 0 && !privacy && option(OPT_XMAILER) && !has_agent)
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s (%s)\n", PACKAGE_VERSION, GitVer, MUTT_VERSION);
@@ -2209,7 +2207,7 @@ const char *mutt_fqdn(short may_hide_host)
   {
     p = Fqdn;
 
-    if (may_hide_host && option(OPTHIDDENHOST))
+    if (may_hide_host && option(OPT_HIDDEN_HOST))
     {
       if ((p = strchr(Fqdn, '.')))
         p++;
@@ -2463,7 +2461,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   int i;
 
 #ifdef USE_NNTP
-  if (option(OPTNEWSSEND))
+  if (option(OPT_NEWS_SEND))
   {
     char cmd[LONG_STRING];
 
@@ -2517,7 +2515,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   }
 
 #ifdef USE_NNTP
-  if (!option(OPTNEWSSEND))
+  if (!option(OPT_NEWS_SEND))
   {
 #endif
     /* If Sendmail contained a "--", we save the recipients to append to
@@ -2535,10 +2533,10 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       }
     }
 
-    if (eightbit && option(OPTUSE8BITMIME))
+    if (eightbit && option(OPT_USE_8BIT_MIME))
       args = add_option(args, &argslen, &argsmax, "-B8BITMIME");
 
-    if (option(OPTENVFROM))
+    if (option(OPT_ENV_FROM))
     {
       if (EnvFrom)
       {
@@ -2581,10 +2579,10 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
    * and is set up to prompt using ncurses pinentry.  If we
    * mutt_endwin() it leaves other users staring at a blank screen.
    * So instead, just force a hard redraw on the next refresh. */
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_need_hard_redraw();
 
-  if ((i = send_msg(path, args, msg, option(OPTNOCURSES) ? NULL : &childout)) != (EX_OK & 0xff))
+  if ((i = send_msg(path, args, msg, option(OPT_NO_CURSES) ? NULL : &childout)) != (EX_OK & 0xff))
   {
     if (i != S_BKG)
     {
@@ -2662,7 +2660,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
 
   if (env->subject)
 #ifdef USE_NNTP
-    if (!option(OPTNEWSSEND) || option(OPTMIMESUBJECT))
+    if (!option(OPT_NEWS_SEND) || option(OPT_MIME_SUBJECT))
 #endif
     {
       rfc2047_encode_string(&env->subject);
@@ -2718,7 +2716,7 @@ static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
     char *msgid_str = NULL;
 
-    if (!option(OPTBOUNCEDELIVERED))
+    if (!option(OPT_BOUNCE_DELIVERED))
       ch_flags |= CH_WEED_DELIVERED;
 
     fseeko(fp, h->offset, SEEK_SET);
@@ -2772,7 +2770,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * upon message criteria.
    */
   if (!from->personal)
-    from->personal = safe_strdup(Realname);
+    from->personal = safe_strdup(RealName);
 
   if (fqdn)
     rfc822_qualify(from, fqdn);
@@ -2787,7 +2785,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   rfc822_write_address(resent_from, sizeof(resent_from), from, 0);
 
 #ifdef USE_NNTP
-  unset_option(OPTNEWSSEND);
+  unset_option(OPT_NEWS_SEND);
 #endif
 
   /*
@@ -2805,7 +2803,6 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 
   return ret;
 }
-
 
 /**
  * mutt_remove_duplicates - Remove duplicate addresses

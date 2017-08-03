@@ -91,7 +91,7 @@ static int getnameinfo_err(int ret)
 
 #define IP_PORT_BUFLEN 1024
 
-static sasl_callback_t mutt_sasl_callbacks[5];
+static sasl_callback_t MuttSaslCallbacks[5];
 
 static sasl_secret_t *secret_ptr = NULL;
 
@@ -240,7 +240,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
 {
   sasl_callback_t *callback = NULL;
 
-  callback = mutt_sasl_callbacks;
+  callback = MuttSaslCallbacks;
 
   callback->id = SASL_CB_USER;
   callback->proc = (int (*)(void)) mutt_sasl_cb_authname;
@@ -266,7 +266,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
   callback->proc = NULL;
   callback->context = NULL;
 
-  return mutt_sasl_callbacks;
+  return MuttSaslCallbacks;
 }
 
 /**
@@ -389,7 +389,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';
-    if (option(OPTNOCURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
+    if (option(OPT_NO_CURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
       return SASL_FAIL;
 
     interaction->len = mutt_strlen(resp) + 1;

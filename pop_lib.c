@@ -320,13 +320,13 @@ int pop_open_connection(struct PopData *pop_data)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPTSSLFORCETLS)))
+  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPT_SSL_FORCE_TLS)))
   {
-    if (option(OPTSSLFORCETLS))
+    if (option(OPT_SSL_FORCE_TLS))
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret = query_quadoption(OPT_SSLSTARTTLS, _("Secure connection with TLS?"));
+      ret = query_quadoption(OPT_SSL_START_TLS, _("Secure connection with TLS?"));
       if (ret == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;
@@ -365,7 +365,7 @@ int pop_open_connection(struct PopData *pop_data)
     }
   }
 
-  if (option(OPTSSLFORCETLS) && !pop_data->conn->ssf)
+  if (option(OPT_SSL_FORCE_TLS) && !pop_data->conn->ssf)
   {
     mutt_error(_("Encrypted connection unavailable"));
     mutt_sleep(1);
@@ -645,7 +645,7 @@ int pop_reconnect(struct Context *ctx)
     if (ret < -1)
       return -1;
 
-    if (query_quadoption(OPT_POPRECONNECT,
+    if (query_quadoption(OPT_POP_RECONNECT,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
       return -1;
   }

@@ -354,7 +354,6 @@ iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
   return (iconv_t) -1;
 }
 
-
 /**
  * mutt_iconv - Change the encoding of a string
  *
@@ -392,9 +391,11 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
           iconv(cd, &ib1, &ibl1, &ob1, &obl1);
           if (!ibl1)
           {
-            ++ib, --ibl;
-            ob = ob1, obl = obl1;
-            ++ret;
+            ib++;
+            ibl--;
+            ob = ob1;
+            obl = obl1;
+            ret++;
             break;
           }
         }
@@ -414,19 +415,22 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
           n = 1;
         }
         memcpy(ob, outrepl, n);
-        ++ib, --ibl;
-        ob += n, obl -= n;
-        ++ret;
+        ib++;
+        ibl--;
+        ob += n;
+        obl -= n;
+        ret++;
         iconv(cd, 0, 0, 0, 0); /* for good measure */
         continue;
       }
     }
-    *inbuf = ib, *inbytesleft = ibl;
-    *outbuf = ob, *outbytesleft = obl;
+    *inbuf = ib;
+    *inbytesleft = ibl;
+    *outbuf = ob;
+    *outbytesleft = obl;
     return ret;
   }
 }
-
 
 /**
  * mutt_convert_string - Convert a string between encodings
@@ -460,7 +464,8 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
       outrepl = "?";
 
     len = strlen(s);
-    ib = s, ibl = len + 1;
+    ib = s;
+    ibl = len + 1;
     obl = MB_LEN_MAX * ibl;
     ob = buf = safe_malloc(obl + 1);
 
@@ -478,7 +483,6 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
   else
     return -1;
 }
-
 
 /*
  * FGETCONV stuff for converting a file while reading it.

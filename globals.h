@@ -38,7 +38,7 @@
 
 WHERE struct Context *Context;
 
-WHERE char Errorbuf[STRING];
+WHERE char ErrorBuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
 WHERE struct Address *EnvFrom;
@@ -70,18 +70,18 @@ WHERE char *ForwardAttrIntro;
 WHERE char *ForwardAttrTrailer;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
-WHERE struct MbCharTable *Fromchars;
+WHERE struct MbCharTable *FromChars;
 WHERE char *HdrFmt;
 WHERE char *HistFile;
-WHERE char *Homedir;
+WHERE char *HomeDir;
 WHERE char *Hostname;
 #ifdef USE_IMAP
-WHERE char *ImapAuthenticators INITVAL(NULL);
-WHERE char *ImapDelimChars INITVAL(NULL);
+WHERE char *ImapAuthenticators;
+WHERE char *ImapDelimChars;
 WHERE char *ImapHeaders;
-WHERE char *ImapLogin INITVAL(NULL);
-WHERE char *ImapPass INITVAL(NULL);
-WHERE char *ImapUser INITVAL(NULL);
+WHERE char *ImapLogin;
+WHERE char *ImapPass;
+WHERE char *ImapUser;
 #endif
 WHERE char *Inbox;
 WHERE char *Ispell;
@@ -104,8 +104,8 @@ WHERE char *MhUnseen;
 WHERE char *MsgFmt;
 
 #ifdef USE_SOCKET
-WHERE char *Preconnect INITVAL(NULL);
-WHERE char *Tunnel INITVAL(NULL);
+WHERE char *Preconnect;
+WHERE char *Tunnel;
 WHERE short NetInc;
 #endif /* USE_SOCKET */
 
@@ -114,7 +114,7 @@ WHERE char *Mixmaster;
 WHERE char *MixEntryFormat;
 #endif
 
-WHERE struct List *Muttrc INITVAL(0);
+WHERE struct List *Muttrc;
 #ifdef USE_NNTP
 WHERE char *GroupFormat;
 WHERE char *Inews;
@@ -131,11 +131,11 @@ WHERE char *Pager;
 WHERE char *PagerFmt;
 WHERE char *PipeSep;
 #ifdef USE_POP
-WHERE char *PopAuthenticators INITVAL(NULL);
+WHERE char *PopAuthenticators;
 WHERE short PopCheckTimeout;
 WHERE char *PopHost;
-WHERE char *PopPass INITVAL(NULL);
-WHERE char *PopUser INITVAL(NULL);
+WHERE char *PopPass;
+WHERE char *PopUser;
 #endif
 WHERE char *PostIndentString;
 WHERE char *Postponed;
@@ -145,7 +145,7 @@ WHERE char *PrintCmd;
 WHERE char *NewMailCmd;
 WHERE char *QueryCmd;
 WHERE char *QueryFormat;
-WHERE char *Realname;
+WHERE char *RealName;
 WHERE short SearchContext;
 WHERE char *SendCharset;
 WHERE char *Sendmail;
@@ -160,27 +160,27 @@ WHERE char *SidebarIndentString;
 WHERE char *Signature;
 WHERE char *SimpleSearch;
 #ifdef USE_SMTP
-WHERE char *SmtpAuthenticators INITVAL(NULL);
-WHERE char *SmtpPass INITVAL(NULL);
-WHERE char *SmtpUrl INITVAL(NULL);
+WHERE char *SmtpAuthenticators;
+WHERE char *SmtpPass;
+WHERE char *SmtpUrl;
 #endif /* USE_SMTP */
-WHERE char *Spoolfile;
+WHERE char *SpoolFile;
 WHERE char *SpamSep;
 #ifdef USE_SSL
-WHERE char *SslCertFile INITVAL(NULL);
-WHERE char *SslClientCert INITVAL(NULL);
-WHERE char *SslEntropyFile INITVAL(NULL);
-WHERE char *SslCiphers INITVAL(NULL);
+WHERE char *SslCertFile;
+WHERE char *SslClientCert;
+WHERE char *SslEntropyFile;
+WHERE char *SslCiphers;
 #ifdef USE_SSL_GNUTLS
 WHERE short SslDHPrimeBits;
-WHERE char *SslCACertFile INITVAL(NULL);
+WHERE char *SslCACertFile;
 #endif
 #endif
 WHERE struct MbCharTable *StChars;
 WHERE char *Status;
-WHERE char *Tempdir;
-WHERE struct MbCharTable *Tochars;
-WHERE struct MbCharTable *Flagchars;
+WHERE char *TempDir;
+WHERE struct MbCharTable *ToChars;
+WHERE struct MbCharTable *FlagChars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
@@ -192,7 +192,6 @@ WHERE char *XlabelDelim;
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
-
 WHERE const char *GitVer;
 
 WHERE struct Hash *Groups;
@@ -202,37 +201,36 @@ WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 #endif
 
-WHERE struct List *AutoViewList INITVAL(0);
-WHERE struct List *AlternativeOrderList INITVAL(0);
-WHERE struct List *AttachAllow INITVAL(0);
-WHERE struct List *AttachExclude INITVAL(0);
-WHERE struct List *InlineAllow INITVAL(0);
-WHERE struct List *InlineExclude INITVAL(0);
-WHERE struct List *HeaderOrderList INITVAL(0);
-WHERE struct List *Ignore INITVAL(0);
-WHERE struct List *MailtoAllow INITVAL(0);
-WHERE struct List *MimeLookupList INITVAL(0);
-WHERE struct List *UnIgnore INITVAL(0);
+WHERE struct List *AutoViewList;
+WHERE struct List *AlternativeOrderList;
+WHERE struct List *AttachAllow;
+WHERE struct List *AttachExclude;
+WHERE struct List *InlineAllow;
+WHERE struct List *InlineExclude;
+WHERE struct List *HeaderOrderList;
+WHERE struct List *Ignore;
+WHERE struct List *MailToAllow;
+WHERE struct List *MimeLookupList;
+WHERE struct List *UnIgnore;
 
-WHERE struct RxList *Alternates INITVAL(0);
-WHERE struct RxList *UnAlternates INITVAL(0);
-WHERE struct RxList *MailLists INITVAL(0);
-WHERE struct RxList *UnMailLists INITVAL(0);
-WHERE struct RxList *SubscribedLists INITVAL(0);
-WHERE struct RxList *UnSubscribedLists INITVAL(0);
-WHERE struct ReplaceList *SpamList INITVAL(0);
-WHERE struct RxList *NoSpamList INITVAL(0);
-WHERE struct ReplaceList *SubjectRxList INITVAL(0);
-
+WHERE struct RxList *Alternates;
+WHERE struct RxList *UnAlternates;
+WHERE struct RxList *MailLists;
+WHERE struct RxList *UnMailLists;
+WHERE struct RxList *SubscribedLists;
+WHERE struct RxList *UnSubscribedLists;
+WHERE struct ReplaceList *SpamList;
+WHERE struct RxList *NoSpamList;
+WHERE struct ReplaceList *SubjectRxList;
 
 /* bit vector for the yes/no/ask variable type */
 #ifdef MAIN_C
-unsigned char QuadOptions[(OPT_MAX * 2 + 7) / 8];
+unsigned char QuadOptions[(OPT_QUAD_MAX * 2 + 7) / 8];
 #else
 extern unsigned char QuadOptions[];
 #endif
 
-WHERE unsigned short Counter INITVAL(0);
+WHERE unsigned short Counter;
 
 #ifdef USE_NNTP
 WHERE short NewsPollTimeout;
@@ -253,7 +251,7 @@ WHERE short ReadInc;
 WHERE short ReflowWrap;
 WHERE short SaveHist;
 WHERE short SendmailWait;
-WHERE short SleepTime INITVAL(1);
+WHERE short SleepTime;
 WHERE short SkipQuotedOffset;
 WHERE short TimeInc;
 WHERE short Timeout;
@@ -266,8 +264,8 @@ WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
 
 #ifdef USE_SIDEBAR
-WHERE short SidebarWidth INITVAL(0);
-WHERE struct List *SidebarWhitelist INITVAL(0);
+WHERE short SidebarWidth;
+WHERE struct List *SidebarWhitelist;
 #endif
 
 #ifdef USE_IMAP
@@ -276,14 +274,14 @@ WHERE short ImapPipelineDepth;
 #endif
 
 /* flags for received signals */
-WHERE SIG_ATOMIC_VOLATILE_T SigAlrm INITVAL(0);
-WHERE SIG_ATOMIC_VOLATILE_T SigInt INITVAL(0);
-WHERE SIG_ATOMIC_VOLATILE_T SigWinch INITVAL(0);
+WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
+WHERE SIG_ATOMIC_VOLATILE_T SigInt;
+WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
 
 WHERE int CurrentMenu;
 
-WHERE struct Alias *Aliases INITVAL(0);
-WHERE struct List *UserHeader INITVAL(0);
+WHERE struct Alias *Aliases;
+WHERE struct List *UserHeader;
 
 /* -- formerly in pgp.h -- */
 WHERE struct Regex PgpGoodSign;

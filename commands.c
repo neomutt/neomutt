@@ -102,7 +102,7 @@ int mutt_display_message(struct Header *cur)
     else if (cur->security & SIGN)
     {
       /* find out whether or not the verify signature */
-      if (query_quadoption(OPT_VERIFYSIG, _("Verify PGP signature?")) == MUTT_YES)
+      if (query_quadoption(OPT_VERIFY_SIG, _("Verify PGP signature?")) == MUTT_YES)
       {
         cmflags |= MUTT_CM_VERIFY;
       }
@@ -122,7 +122,6 @@ int mutt_display_message(struct Header *cur)
     if (cur->security & APPLICATION_SMIME)
       crypt_invoke_message(APPLICATION_SMIME);
   }
-
 
   mutt_mktemp(tempfile, sizeof(tempfile));
   if ((fpout = safe_fopen(tempfile, "w")) == NULL)
@@ -160,7 +159,7 @@ int mutt_display_message(struct Header *cur)
     fputs("\n\n", fpout);
   }
 
-  chflags = (option(OPTWEED) ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
+  chflags = (option(OPT_WEED) ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
   if (Context->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
@@ -183,7 +182,6 @@ int mutt_display_message(struct Header *cur)
     mutt_any_key_to_continue(NULL);
 
   safe_fclose(&fpfilterout); /* XXX - check result? */
-
 
   if (WithCrypto)
   {
@@ -240,11 +238,11 @@ int mutt_display_message(struct Header *cur)
     if ((r = mutt_system(buf)) == -1)
       mutt_error(_("Error running \"%s\"!"), buf);
     unlink(tempfile);
-    if (!option(OPTNOCURSES))
+    if (!option(OPT_NO_CURSES))
       keypad(stdscr, true);
     if (r != -1)
       mutt_set_flag(Context, cur, MUTT_READ, 1);
-    if (r != -1 && option(OPTPROMPTAFTER))
+    if (r != -1 && option(OPT_PROMPT_AFTER))
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
       rc = km_dokey(MENU_PAGER);
@@ -353,7 +351,7 @@ static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     *chflags |= CH_DECODE | CH_REORDER;
 
-    if (option(OPTWEED))
+    if (option(OPT_WEED))
     {
       *chflags |= CH_WEED;
       *cmflags |= MUTT_CM_WEED;
@@ -383,7 +381,6 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
 
   mutt_copy_message(fp, Context, h, cmflags, chflags);
 }
-
 
 /**
  * _mutt_pipe_message - Pipe message to a command
@@ -415,11 +412,11 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
       return 1;
     }
 
-    set_option(OPTKEEPQUIET);
+    set_option(OPT_KEEP_QUIET);
     pipe_msg(h, fpout, decode, print);
     safe_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
-    unset_option(OPTKEEPQUIET);
+    unset_option(OPT_KEEP_QUIET);
   }
   else
   { /* handle tagged messages */
@@ -450,7 +447,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
             mutt_perror(_("Can't create filter process"));
             return 1;
           }
-          set_option(OPTKEEPQUIET);
+          set_option(OPT_KEEP_QUIET);
           pipe_msg(Context->hdrs[Context->v2r[i]], fpout, decode, print);
           /* add the message separator */
           if (sep)
@@ -458,7 +455,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
           safe_fclose(&fpout);
           if (mutt_wait_filter(thepid) != 0)
             rc = 1;
-          unset_option(OPTKEEPQUIET);
+          unset_option(OPT_KEEP_QUIET);
         }
       }
     }
@@ -470,7 +467,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
         mutt_perror(_("Can't create filter process"));
         return 1;
       }
-      set_option(OPTKEEPQUIET);
+      set_option(OPT_KEEP_QUIET);
       for (i = 0; i < Context->vcount; i++)
       {
         if (Context->hdrs[Context->v2r[i]]->tagged)
@@ -485,11 +482,11 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
       safe_fclose(&fpout);
       if (mutt_wait_filter(thepid) != 0)
         rc = 1;
-      unset_option(OPTKEEPQUIET);
+      unset_option(OPT_KEEP_QUIET);
     }
   }
 
-  if (rc || option(OPTWAITKEY))
+  if (rc || option(OPT_WAIT_KEY))
     mutt_any_key_to_continue(NULL);
   return rc;
 }
@@ -504,7 +501,7 @@ void mutt_pipe_message(struct Header *h)
     return;
 
   mutt_expand_path(buffer, sizeof(buffer));
-  _mutt_pipe_message(h, buffer, option(OPTPIPEDECODE), 0, option(OPTPIPESPLIT), PipeSep);
+  _mutt_pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
 }
 
 void mutt_print_message(struct Header *h)
@@ -519,14 +516,13 @@ void mutt_print_message(struct Header *h)
                        h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
     return;
 
-  if (_mutt_pipe_message(h, PrintCmd, option(OPTPRINTDECODE), 1,
-                         option(OPTPRINTSPLIT), "\f") == 0)
+  if (_mutt_pipe_message(h, PrintCmd, option(OPT_PRINT_DECODE), 1,
+                         option(OPT_PRINT_SPLIT), "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));
   else
     mutt_message(h ? _("Message could not be printed") :
                      _("Messages could not be printed"));
 }
-
 
 int mutt_select_sort(int reverse)
 {
@@ -614,7 +610,7 @@ void mutt_shell_escape(void)
       mutt_window_clearline(MuttMessageWindow, 0);
       mutt_endwin(NULL);
       fflush(stdout);
-      if (mutt_system(buf) != 0 || option(OPTWAITKEY))
+      if (mutt_system(buf) != 0 || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
       mutt_buffy_check(true);
     }
@@ -708,7 +704,7 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
     {
       *chflags |= CH_DECODE; /* then decode RFC2047 headers, */
 
-      if (option(OPTWEED))
+      if (option(OPT_WEED))
       {
         *chflags |= CH_WEED; /* and respect $weed. */
         *cmflags |= MUTT_CM_WEED;
@@ -734,7 +730,7 @@ int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int de
   {
     mutt_set_flag(Context, h, MUTT_DELETE, 1);
     mutt_set_flag(Context, h, MUTT_PURGE, 1);
-    if (option(OPTDELETEUNTAG))
+    if (option(OPT_DELETE_UNTAG))
       mutt_set_flag(Context, h, MUTT_TAG, 0);
   }
 
@@ -763,7 +759,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
                                          _("Copy%s to mailbox"))),
            h ? "" : _(" tagged"));
 
-
   if (h)
   {
     if (WithCrypto)
@@ -786,7 +781,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
         break;
       }
     }
-
 
     if (h)
     {
@@ -939,7 +933,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   return -1;
 }
 
-
 void mutt_version(void)
 {
   mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
@@ -984,7 +977,6 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   FREE(&b->subtype);
 
   mutt_parse_content_type(buf, b);
-
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = ascii_strcasecmp(tmp, obuf);
@@ -1037,7 +1029,6 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     h->security |= crypt_query(b);
   }
 }
-
 
 static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
