@@ -58,8 +58,8 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib_string.h"
-#include "lib_memory.h"
+#include "string2.h"
+#include "memory.h"
 
 /**
  * mutt_atol - Convert ASCII string to a long

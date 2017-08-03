@@ -39,7 +39,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib_memory.h"
+#include "memory.h"
 
 /**
  * default_error - Display an error message

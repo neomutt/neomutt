@@ -59,10 +59,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "lib_file.h"
-#include "lib_debug.h"
-#include "lib_memory.h"
-#include "lib_string.h"
+#include "file.h"
+#include "debug.h"
+#include "memory.h"
+#include "string2.h"
 
 /* these characters must be escaped in regular expressions */
 static const char rx_special_chars[] = "^.[$()|*+?{\\";

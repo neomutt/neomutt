@@ -64,14 +64,14 @@ nodist_mutt_SOURCES = $(BUILT_SOURCES)
 LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
-LIBLIB = -Llib -llib
-LIBLIBDEPS = $(top_srcdir)/lib/lib.h lib/liblib.a
+LIBMUTT = -Llib -lmutt
+LIBMUTTDEPS = $(top_srcdir)/lib/lib.h lib/libmutt.a
 
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
-	$(LIBIMAP) $(LIBLIB) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
+	$(LIBIMAP) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(LIBLIBDEPS) $(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
+	$(LIBMUTTDEPS) $(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
@@ -99,12 +99,12 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 EXTRA_SCRIPTS =
 
 pgpring_SOURCES = pgppubring.c
-pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBLIB)
-pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBLIBDEPS)
+pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS) $(LIBMUTT)
+pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBMUTTDEPS)
 
 mutt_md5_SOURCES = md5.c
-mutt_md5_LDADD = $(LIBLIB)
-mutt_md5_DEPENDENCIES = $(LIBLIBDEPS)
+mutt_md5_LDADD = $(LIBMUTT)
+mutt_md5_DEPENDENCIES = $(LIBMUTTDEPS)
 
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =

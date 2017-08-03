@@ -37,7 +37,7 @@
  */
 
 #include "config.h"
-#include "lib_base64.h"
+#include "base64.h"
 
 #define BAD -1
 

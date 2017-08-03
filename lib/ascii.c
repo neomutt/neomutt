@@ -40,7 +40,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdio.h>
-#include "lib_ascii.h"
+#include "ascii.h"
 
 /**
  * ascii_strcasecmp - Compare strings, ignoring the case

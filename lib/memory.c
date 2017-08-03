@@ -39,9 +39,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "lib_memory.h"
-#include "lib_exit.h"
-#include "lib_message.h"
+#include "memory.h"
+#include "exit.h"
+#include "message.h"
 
 /**
  * safe_calloc - Allocate zeroed memory on the heap

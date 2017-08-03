@@ -40,9 +40,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib_buffer.h"
-#include "lib_memory.h"
-#include "lib_string.h"
+#include "buffer.h"
+#include "memory.h"
+#include "string2.h"
 
 /**
  * mutt_buffer_new - Create and initialise a Buffer
