@@ -23,6 +23,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hcache Header cache API
+ *
+ * This module defines the user-visible header cache API, which is used within
+ * neomutt to cache and restore mail header data.
+ *
+ * @subpage hc_hcache
+ *
+ * Backends:
+ *
+ * -# @subpage hc_bdb
+ * -# @subpage hc_gdbm
+ * -# @subpage hc_kc
+ * -# @subpage hc_lmdb
+ * -# @subpage hc_qdbm
+ * -# @subpage hc_tc
+ */
+
 #ifndef _MUTT_HCACHE_H
 #define _MUTT_HCACHE_H
 

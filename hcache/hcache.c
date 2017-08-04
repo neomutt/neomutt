@@ -23,6 +23,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_hcache Header cache multiplexor
+ *
+ * This module implements the gateway between the user visible part of the
+ * header cache API and the backend specific API. Also, this module implements
+ * the serialization/deserialization routines for the Header structure.
+ */
+
 #include "config.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \

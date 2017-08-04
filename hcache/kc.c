@@ -23,6 +23,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_kc Kyoto Cabinet
+ *
+ * This module implements the header cache functionality using a Kyoto Cabinet
+ * file as a backend.
+ */
+
 #include "config.h"
 #include <kclangc.h>
 #include <limits.h>

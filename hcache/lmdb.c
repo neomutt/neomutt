@@ -23,6 +23,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_lmdb LMDB
+ *
+ * This module implements the header cache functionality using a Lightning
+ * Memory-Mapped Database file as a backend.
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <lmdb.h>
