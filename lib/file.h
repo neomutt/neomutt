@@ -25,6 +25,9 @@
 
 #include <stdio.h>
 #include <sys/types.h>
+#include <time.h>
+
+struct stat;
 
 #undef MAX
 #undef MIN
@@ -40,12 +43,15 @@ char *      mutt_concatn_path(char *dst, size_t dstlen, const char *dir, size_t 
 char *      mutt_concat_path(char *d, const char *dir, const char *fname, size_t l);                                                
 int         mutt_copy_bytes(FILE *in, FILE *out, size_t size);                                                                      
 int         mutt_copy_stream(FILE *fin, FILE *fout);                                                                                
+time_t      mutt_decrease_mtime(const char *f, struct stat *st);
 int         mutt_mkdir(const char *path, mode_t mode);                                                                              
 size_t      mutt_quote_filename(char *d, size_t l, const char *f);                                                                  
 char *      mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags);                                                  
 int         mutt_rmtree(const char *path);                                                                                          
 int         mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src);                                                   
 void        mutt_sanitize_filename(char *f, short slash);                                                                           
+void        mutt_set_mtime(const char *from, const char *to);
+void        mutt_touch_atime(int f);
 void        mutt_unlink(const char *s);                                                                                             
 int         safe_fclose(FILE **f);                                                                                                  
 FILE *      safe_fopen(const char *path, const char *mode);                                                                         

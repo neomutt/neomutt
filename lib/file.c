@@ -32,12 +32,15 @@
  * | mutt_concat_path()        | Join a directory name and a filename
  * | mutt_copy_bytes()         | Copy some content from one file to another
  * | mutt_copy_stream()        | Copy the contents of one file into another
+ * | mutt_decrease_mtime()     | Decrease a file's modification time by 1 second
  * | mutt_mkdir()              | Recursively create directories
  * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
  * | mutt_read_line()          | Read a line from a file
  * | mutt_rmtree()             | Recursively remove a directory
  * | mutt_rx_sanitize_string() | Escape any regex-magic characters in a string
  * | mutt_sanitize_filename()  | Replace unsafe characters in a filename
+ * | mutt_set_mtime()          | Set the modification time of one file from another
+ * | mutt_touch_atime()        | Set the access time to current time
  * | mutt_unlink()             | Delete a file, carefully
  * | safe_fclose()             | Close a FILE handle (and NULL the pointer)
  * | safe_fopen()              | Call fopen() safely
@@ -59,6 +62,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <utime.h>
 #include "file.h"
 #include "debug.h"
 #include "memory.h"
@@ -870,3 +874,71 @@ int mutt_mkdir(const char *path, mode_t mode)
 
   return 0;
 }
+
+/**
+ * mutt_decrease_mtime - Decrease a file's modification time by 1 second
+ * @param f  Filename
+ * @param st struct stat for the file (optional)
+ * @retval num Updated Unix mtime
+ * @retval -1  Error, see errno
+ *
+ * If a file's mtime is NOW, then set it to 1 second in the past.
+ */
+time_t mutt_decrease_mtime(const char *f, struct stat *st)
+{
+  struct utimbuf utim;
+  struct stat _st;
+  time_t mtime;
+
+  if (!st)
+  {
+    if (stat(f, &_st) == -1)
+      return -1;
+    st = &_st;
+  }
+
+  mtime = st->st_mtime;
+  if (mtime == time(NULL))
+  {
+    mtime -= 1;
+    utim.actime = mtime;
+    utim.modtime = mtime;
+    utime(f, &utim);
+  }
+
+  return mtime;
+}
+
+/**
+ * mutt_set_mtime - Set the modification time of one file from another
+ * @param from Filename whose mtime should be copied
+ * @param to   Filename to update
+ */
+void mutt_set_mtime(const char *from, const char *to)
+{
+  struct utimbuf utim;
+  struct stat st;
+
+  if (stat(from, &st) != -1)
+  {
+    utim.actime = st.st_mtime;
+    utim.modtime = st.st_mtime;
+    utime(to, &utim);
+  }
+}
+
+/**
+ * mutt_touch_atime - Set the access time to current time
+ * @param f File descriptor of the file to alter
+ *
+ * This is just as read() would do on !noatime.
+ * Silently ignored if futimens() isn't supported.
+ */
+void mutt_touch_atime(int f)
+{
+#ifdef HAVE_FUTIMENS
+  struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
+  futimens(f, times);
+#endif
+}
+

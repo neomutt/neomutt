@@ -122,11 +122,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen);
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user_hdrs, short weed);
 
-void mutt_set_mtime(const char *from, const char *to);
-time_t mutt_decrease_mtime(const char *f, struct stat *st);
 time_t mutt_parse_date(const char *s, struct Header *h);
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
-void mutt_touch_atime(int f);
 
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,

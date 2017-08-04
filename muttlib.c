@@ -1912,63 +1912,6 @@ void mutt_sleep(short s)
     sleep(s);
 }
 
-/**
- * mutt_decrease_mtime - Decrease a file's modification time by 1 second
- */
-time_t mutt_decrease_mtime(const char *f, struct stat *st)
-{
-  struct utimbuf utim;
-  struct stat _st;
-  time_t mtime;
-
-  if (!st)
-  {
-    if (stat(f, &_st) == -1)
-      return -1;
-    st = &_st;
-  }
-
-  if ((mtime = st->st_mtime) == time(NULL))
-  {
-    mtime -= 1;
-    utim.actime = mtime;
-    utim.modtime = mtime;
-    utime(f, &utim);
-  }
-
-  return mtime;
-}
-
-/**
- * mutt_set_mtime - sets mtime of 'to' to mtime of 'from'
- */
-void mutt_set_mtime(const char *from, const char *to)
-{
-  struct utimbuf utim;
-  struct stat st;
-
-  if (stat(from, &st) != -1)
-  {
-    utim.actime = st.st_mtime;
-    utim.modtime = st.st_mtime;
-    utime(to, &utim);
-  }
-}
-
-/**
- * mutt_touch_atime - set atime to current time
- *
- * This is just as read() would do on !noatime.
- * Silently ignored if unsupported.
- */
-void mutt_touch_atime(int f)
-{
-#ifdef HAVE_FUTIMENS
-  struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
-  futimens(f, times);
-#endif
-}
-
 const char *mutt_make_version(void)
 {
   static char vstring[STRING];
