@@ -23,6 +23,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_gdbm GDMB
+ *
+ * This module implements the header cache functionality using a GNU dbm file
+ * as a backend.
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <gdbm.h>

@@ -23,6 +23,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_bdb Berkeley DB
+ *
+ * This module implements the header cache functionality using a Berkeley DB
+ * file as a backend.
+ */
+
 #include "config.h"
 #include <db.h>
 #include <errno.h>
