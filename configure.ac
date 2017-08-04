@@ -891,10 +891,15 @@ AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
 #include <wchar.h>
 #include <wctype.h>]],
 [[
-mbrtowc(0, 0, 0, 0);wctomb(0, 0); wcwidth(0);
-iswprint(0); iswspace(0); towlower(0);
-towupper(0); iswalnum(0)]]
-)],[mutt_cv_wc_funcs=yes],[]))
+mbrtowc(0, 0, 0, 0);
+wctomb(0, 0);
+wcwidth(0);
+if (iswprint(0)){}
+if (iswspace(0)){}
+if (towlower(0)){}
+if (towupper(0)){}
+if (iswalnum(0)){}
+]])],[mutt_cv_wc_funcs=yes],[]))
 
 if test $mutt_cv_wc_funcs != yes; then
 	AC_MSG_ERROR([wchar_t functions not found])
