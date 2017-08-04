@@ -28,11 +28,14 @@
  * | Function              | Description
  * | :-------------------- | :--------------------------------------------------
  * | mutt_local_tz()       | Calculate the local timezone in seconds east of UTC
+ * | mutt_make_date()      | Write a date in RFC822 format to a buffer
  * | mutt_mktime()         | Convert `struct tm` to `time_t`
  * | mutt_normalize_time() | Fix the contents of a struct tm
  */
 
 #include "config.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
@@ -40,6 +43,14 @@
 #define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
 #define TM_YEAR_MAX                                                            \
   (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+
+const char *const Weekdays[] = {
+    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+};
+const char *const Months[] = {
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+    "Aug", "Sep", "Oct", "Nov", "Dec", "ERR",
+};
 
 /**
  * compute_tz - Calculate the number of seconds east of UTC
@@ -242,3 +253,24 @@ void mutt_normalize_time(struct tm *tm)
     }
   }
 }
+
+/**
+ * mutt_make_date - Write a date in RFC822 format to a buffer
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
+ * @retval ptr Buffer containing result
+ */
+char *mutt_make_date(char *buf, size_t buflen)
+{
+  time_t t = time(NULL);
+  struct tm *l = localtime(&t);
+  time_t tz = mutt_local_tz(t);
+
+  tz /= 60;
+
+  snprintf(buf, buflen, "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
+           Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon], l->tm_year + 1900,
+           l->tm_hour, l->tm_min, l->tm_sec, (int) tz / 60, (int) abs((int) tz) % 60);
+  return buf;
+}
+

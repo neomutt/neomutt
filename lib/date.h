@@ -25,8 +25,12 @@
 
 #include <time.h>
 
+extern const char *const Weekdays[];
+extern const char *const Months[];
+
 time_t mutt_local_tz(time_t t);
 time_t mutt_mktime(struct tm *t, int local);
 void mutt_normalize_time(struct tm *tm);
+char *mutt_make_date(char *buf, size_t buflen);
 
 #endif /* _LIB_DATE_H */

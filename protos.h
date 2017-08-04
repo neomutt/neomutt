@@ -141,7 +141,6 @@ char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
 struct List *mutt_crypt_hook(struct Address *adr);
-char *mutt_make_date(char *s, size_t len);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
