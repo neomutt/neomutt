@@ -84,7 +84,7 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
   TCBDB *db = ctx;
   if (!tcbdbput(db, key, keylen, data, dlen))
   {
-    int ecode = tchdbecode(db);
+    int ecode = tcbdbecode(db);
     return ecode ? ecode : -1;
   }
   return 0;
@@ -98,7 +98,7 @@ static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
   TCBDB *db = ctx;
   if (!tcbdbout(db, key, keylen))
   {
-    int ecode = tchdbecode(db);
+    int ecode = tcbdbecode(db);
     return ecode ? ecode : -1;
   }
   return 0;
