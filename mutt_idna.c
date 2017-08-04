@@ -38,12 +38,12 @@ static bool check_idn(char *domain)
   if (!domain)
     return false;
 
-  if (ascii_strncasecmp(domain, "xn--", 4) == 0)
+  if (mutt_strncasecmp(domain, "xn--", 4) == 0)
     return true;
 
   while ((domain = strchr(domain, '.')) != NULL)
   {
-    if (ascii_strncasecmp(++domain, "xn--", 4) == 0)
+    if (mutt_strncasecmp(++domain, "xn--", 4) == 0)
       return true;
   }
 
@@ -139,7 +139,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
       goto cleanup;
     }
 
-    if (ascii_strcasecmp(orig_user, reversed_user) != 0)
+    if (mutt_strcasecmp(orig_user, reversed_user) != 0)
     {
       mutt_debug(
           1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
@@ -175,7 +175,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (ascii_strcasecmp(orig_domain, reversed_domain) != 0)
+    if (mutt_strcasecmp(orig_domain, reversed_domain) != 0)
     {
       mutt_debug(
           1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",

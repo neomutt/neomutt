@@ -233,26 +233,26 @@ void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
   if ((ext = strchr(in, '/')))
     *ext++ = 0;
 
-  if ((ascii_strcasecmp(in, "utf-8") == 0) || (ascii_strcasecmp(in, "utf8") == 0))
+  if ((mutt_strcasecmp(in, "utf-8") == 0) || (mutt_strcasecmp(in, "utf8") == 0))
   {
     strfcpy(dest, "utf-8", dlen);
     goto out;
   }
 
   /* catch some common iso-8859-something misspellings */
-  if ((ascii_strncasecmp(in, "8859", 4) == 0) && in[4] != '-')
+  if ((mutt_strncasecmp(in, "8859", 4) == 0) && in[4] != '-')
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + 4);
-  else if (ascii_strncasecmp(in, "8859-", 5) == 0)
+  else if (mutt_strncasecmp(in, "8859-", 5) == 0)
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + 5);
-  else if ((ascii_strncasecmp(in, "iso8859", 7) == 0) && in[7] != '-')
+  else if ((mutt_strncasecmp(in, "iso8859", 7) == 0) && in[7] != '-')
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + 7);
-  else if (ascii_strncasecmp(in, "iso8859-", 8) == 0)
+  else if (mutt_strncasecmp(in, "iso8859-", 8) == 0)
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + 8);
   else
     strfcpy(scratch, in, sizeof(scratch));
 
   for (size_t i = 0; PreferredMIMENames[i].key; i++)
-    if ((ascii_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
+    if ((mutt_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
         (mutt_strcasecmp(scratch, PreferredMIMENames[i].key) == 0))
     {
       strfcpy(dest, PreferredMIMENames[i].pref, dlen);
@@ -290,7 +290,7 @@ int mutt_chscmp(const char *s, const char *chs)
   mutt_canonical_charset(buffer, sizeof(buffer), s);
   a = mutt_strlen(buffer);
   b = mutt_strlen(chs);
-  return (ascii_strncasecmp(a > b ? buffer : chs, a > b ? chs : buffer, MIN(a, b)) == 0);
+  return (mutt_strncasecmp(a > b ? buffer : chs, a > b ? chs : buffer, MIN(a, b)) == 0);
 }
 
 char *mutt_get_default_charset(void)
@@ -638,8 +638,8 @@ bool mutt_check_charset(const char *s, bool strict)
   if (!strict)
     for (i = 0; PreferredMIMENames[i].key; i++)
     {
-      if ((ascii_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
-          (ascii_strcasecmp(PreferredMIMENames[i].pref, s) == 0))
+      if ((mutt_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
+          (mutt_strcasecmp(PreferredMIMENames[i].pref, s) == 0))
         return true;
     }
 

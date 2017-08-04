@@ -897,6 +897,12 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
   return outfile;
 }
 
+static void strlower(char *s)
+{
+    for (; *s; ++s)
+        *s = tolower(*s);
+}
+
 /**
  * get_micalg - Find the "micalg" parameter from the last GPGME operation
  *
@@ -925,13 +931,13 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
       {
         /* convert GPGME raw hash name to RFC2633 format */
         snprintf(buf, buflen, "%s", algorithm_name);
-        ascii_strlower(buf);
+        strlower(buf);
       }
       else
       {
         /* convert GPGME raw hash name to RFC3156 format */
         snprintf(buf, buflen, "pgp-%s", algorithm_name);
-        ascii_strlower(buf + 4);
+        strlower(buf + 4);
       }
     }
   }

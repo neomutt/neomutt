@@ -759,7 +759,7 @@ static void add_to_list(struct List **list, const char *str)
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
-    if (ascii_strcasecmp(str, last->data) == 0)
+    if (mutt_strcasecmp(str, last->data) == 0)
     {
       /* already on the list, so just ignore it */
       last = NULL;
@@ -805,7 +805,7 @@ int mutt_add_to_rx_list(struct RxList **list, const char *s, int flags, struct B
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
-    if (ascii_strcasecmp(rx->pattern, last->rx->pattern) == 0)
+    if (mutt_strcasecmp(rx->pattern, last->rx->pattern) == 0)
     {
       /* already on the list, so just ignore it */
       last = NULL;
@@ -895,7 +895,7 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
-    if (ascii_strcasecmp(rx->pattern, last->rx->pattern) == 0)
+    if (mutt_strcasecmp(rx->pattern, last->rx->pattern) == 0)
     {
       /* Already on the list. Formerly we just skipped this case, but
        * now we're supporting removals, which means we're supporting
@@ -971,7 +971,7 @@ static void remove_from_list(struct List **l, const char *str)
     last = NULL;
     while (p)
     {
-      if (ascii_strcasecmp(str, p->data) == 0)
+      if (mutt_strcasecmp(str, p->data) == 0)
       {
         FREE(&p->data);
         if (last)
@@ -1591,9 +1591,9 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     a = safe_malloc(sizeof(struct AttachMatch));
 
     /* some cheap hacks that I expect to remove */
-    if (ascii_strcasecmp(buf->data, "any") == 0)
+    if (mutt_strcasecmp(buf->data, "any") == 0)
       a->major = safe_strdup("*/.*");
-    else if (ascii_strcasecmp(buf->data, "none") == 0)
+    else if (mutt_strcasecmp(buf->data, "none") == 0)
       a->major = safe_strdup("cheap_hack/this_should_never_match");
     else
       a->major = safe_strdup(buf->data);
@@ -1663,9 +1663,9 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     FREE(&tmp);
 
-    if (ascii_strcasecmp(buf->data, "any") == 0)
+    if (mutt_strcasecmp(buf->data, "any") == 0)
       tmp = safe_strdup("*/.*");
-    else if (ascii_strcasecmp(buf->data, "none") == 0)
+    else if (mutt_strcasecmp(buf->data, "none") == 0)
       tmp = safe_strdup("cheap_hack/this_should_never_match");
     else
       tmp = safe_strdup(buf->data);
@@ -1767,14 +1767,14 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     op = '+';
     category--;
   }
-  if (ascii_strncasecmp(category, "attachment", strlen(category)) == 0)
+  if (mutt_strncasecmp(category, "attachment", strlen(category)) == 0)
   {
     if (op == '+')
       listp = &AttachAllow;
     else
       listp = &AttachExclude;
   }
-  else if (ascii_strncasecmp(category, "inline", strlen(category)) == 0)
+  else if (mutt_strncasecmp(category, "inline", strlen(category)) == 0)
   {
     if (op == '+')
       listp = &InlineAllow;
@@ -1810,14 +1810,14 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
     op = '+';
     p--;
   }
-  if (ascii_strncasecmp(p, "attachment", strlen(p)) == 0)
+  if (mutt_strncasecmp(p, "attachment", strlen(p)) == 0)
   {
     if (op == '+')
       listp = &AttachAllow;
     else
       listp = &AttachExclude;
   }
-  else if (ascii_strncasecmp(p, "inline", strlen(p)) == 0)
+  else if (mutt_strncasecmp(p, "inline", strlen(p)) == 0)
   {
     if (op == '+')
       listp = &InlineAllow;
@@ -2056,7 +2056,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 
       while (tmp)
       {
-        if ((ascii_strncasecmp(buf->data, tmp->data, l) == 0) && tmp->data[l] == ':')
+        if ((mutt_strncasecmp(buf->data, tmp->data, l) == 0) && tmp->data[l] == ':')
         {
           ptr = tmp;
           if (last)
@@ -2098,7 +2098,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
     for (tmp = UserHeader;; tmp = tmp->next)
     {
       /* see if there is already a field by this name */
-      if (ascii_strncasecmp(buf->data, tmp->data, keylen) == 0)
+      if (mutt_strncasecmp(buf->data, tmp->data, keylen) == 0)
       {
         /* replace the old value */
         FREE(&tmp->data);
@@ -2688,9 +2688,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
         s->dptr++;
         mutt_extract_token(tmp, s, 0);
-        if (ascii_strcasecmp("yes", tmp->data) == 0)
+        if (mutt_strcasecmp("yes", tmp->data) == 0)
           unset = inv = 0;
-        else if (ascii_strcasecmp("no", tmp->data) == 0)
+        else if (mutt_strcasecmp("no", tmp->data) == 0)
           unset = 1;
         else
         {
@@ -3039,13 +3039,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         s->dptr++;
         mutt_extract_token(tmp, s, 0);
-        if (ascii_strcasecmp("yes", tmp->data) == 0)
+        if (mutt_strcasecmp("yes", tmp->data) == 0)
           set_quadoption(MuttVars[idx].data, MUTT_YES);
-        else if (ascii_strcasecmp("no", tmp->data) == 0)
+        else if (mutt_strcasecmp("no", tmp->data) == 0)
           set_quadoption(MuttVars[idx].data, MUTT_NO);
-        else if (ascii_strcasecmp("ask-yes", tmp->data) == 0)
+        else if (mutt_strcasecmp("ask-yes", tmp->data) == 0)
           set_quadoption(MuttVars[idx].data, MUTT_ASKYES);
-        else if (ascii_strcasecmp("ask-no", tmp->data) == 0)
+        else if (mutt_strcasecmp("ask-no", tmp->data) == 0)
           set_quadoption(MuttVars[idx].data, MUTT_ASKNO);
         else
         {
@@ -4095,7 +4095,7 @@ const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
 int mutt_getvaluebyname(const char *name, const struct Mapping *map)
 {
   for (int i = 0; map[i].name; i++)
-    if (ascii_strcasecmp(map[i].name, name) == 0)
+    if (mutt_strcasecmp(map[i].name, name) == 0)
       return map[i].value;
   return -1;
 }
@@ -4555,7 +4555,7 @@ int mutt_get_hook_type(const char *name)
   const struct Command *c = NULL;
 
   for (c = Commands; c->name; c++)
-    if (c->func == mutt_parse_hook && (ascii_strcasecmp(c->name, name) == 0))
+    if (c->func == mutt_parse_hook && (mutt_strcasecmp(c->name, name) == 0))
       return c->data;
   return 0;
 }

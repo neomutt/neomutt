@@ -217,8 +217,8 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
 
       /* check type */
       ch = get_field(buf);
-      if ((ascii_strcasecmp(buf, type) != 0) &&
-          ((ascii_strncasecmp(buf, type, btlen) != 0) ||
+      if ((mutt_strcasecmp(buf, type) != 0) &&
+          ((mutt_strncasecmp(buf, type, btlen) != 0) ||
            (buf[btlen] != 0 &&                       /* implicit wild */
             (mutt_strcmp(buf + btlen, "/*") != 0)))) /* wildsubtype */
         continue;
@@ -242,51 +242,51 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         ch = get_field(ch);
         mutt_debug(2, "field: %s\n", field);
 
-        if (ascii_strcasecmp(field, "needsterminal") == 0)
+        if (mutt_strcasecmp(field, "needsterminal") == 0)
         {
           if (entry)
             entry->needsterminal = true;
         }
-        else if (ascii_strcasecmp(field, "copiousoutput") == 0)
+        else if (mutt_strcasecmp(field, "copiousoutput") == 0)
         {
           copiousoutput = true;
           if (entry)
             entry->copiousoutput = true;
         }
-        else if (ascii_strncasecmp(field, "composetyped", 12) == 0)
+        else if (mutt_strncasecmp(field, "composetyped", 12) == 0)
         {
           /* this compare most occur before compose to match correctly */
           if (get_field_text(field + 12, entry ? &entry->composetypecommand : NULL,
                              type, filename, line))
             composecommand = true;
         }
-        else if (ascii_strncasecmp(field, "compose", 7) == 0)
+        else if (mutt_strncasecmp(field, "compose", 7) == 0)
         {
           if (get_field_text(field + 7, entry ? &entry->composecommand : NULL,
                              type, filename, line))
             composecommand = true;
         }
-        else if (ascii_strncasecmp(field, "print", 5) == 0)
+        else if (mutt_strncasecmp(field, "print", 5) == 0)
         {
           if (get_field_text(field + 5, entry ? &entry->printcommand : NULL,
                              type, filename, line))
             printcommand = true;
         }
-        else if (ascii_strncasecmp(field, "edit", 4) == 0)
+        else if (mutt_strncasecmp(field, "edit", 4) == 0)
         {
           if (get_field_text(field + 4, entry ? &entry->editcommand : NULL, type, filename, line))
             editcommand = true;
         }
-        else if (ascii_strncasecmp(field, "nametemplate", 12) == 0)
+        else if (mutt_strncasecmp(field, "nametemplate", 12) == 0)
         {
           get_field_text(field + 12, entry ? &entry->nametemplate : NULL, type,
                          filename, line);
         }
-        else if (ascii_strncasecmp(field, "x-convert", 9) == 0)
+        else if (mutt_strncasecmp(field, "x-convert", 9) == 0)
         {
           get_field_text(field + 9, entry ? &entry->convert : NULL, type, filename, line);
         }
-        else if (ascii_strncasecmp(field, "test", 4) == 0)
+        else if (mutt_strncasecmp(field, "test", 4) == 0)
         {
           /*
            * This routine executes the given test command to determine

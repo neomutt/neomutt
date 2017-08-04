@@ -131,7 +131,7 @@ static int alias_sort_address(const void *a, const void *b)
   else if (pb->personal)
     r = -1;
   else
-    r = ascii_strcasecmp(pa->mailbox, pb->mailbox);
+    r = mutt_strcasecmp(pa->mailbox, pb->mailbox);
   return (RSORT(r));
 }
 

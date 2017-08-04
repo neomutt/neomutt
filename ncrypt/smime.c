@@ -1684,7 +1684,7 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
       rewind(smimeerr);
 
       line = mutt_read_line(line, &linelen, smimeerr, &lineno, 0);
-      if (linelen && (ascii_strcasecmp(line, "verification successful") == 0))
+      if (linelen && (mutt_strcasecmp(line, "verification successful") == 0))
         badsig = 0;
 
       FREE(&line);
@@ -1901,7 +1901,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     rewind(smimeerr);
 
     line = mutt_read_line(line, &linelen, smimeerr, &lineno, 0);
-    if (linelen && (ascii_strcasecmp(line, "verification successful") == 0))
+    if (linelen && (mutt_strcasecmp(line, "verification successful") == 0))
       m->goodsig = true;
     FREE(&line);
   }

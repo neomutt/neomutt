@@ -28,7 +28,6 @@
  * The library is self-contained -- some files may depend on others in the
  * library, but none depends on source from outside.
  *
- * -# @subpage ascii
  * -# @subpage base64
  * -# @subpage buffer
  * -# @subpage date
@@ -46,7 +45,6 @@
 #ifndef _LIB_LIB_H
 #define _LIB_LIB_H
 
-#include "ascii.h"
 #include "base64.h"
 #include "buffer.h"
 #include "date.h"

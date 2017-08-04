@@ -127,23 +127,23 @@ static int fetch_capa(char *line, void *data)
   struct PopData *pop_data = (struct PopData *) data;
   char *c = NULL;
 
-  if (ascii_strncasecmp(line, "SASL", 4) == 0)
+  if (mutt_strncasecmp(line, "SASL", 4) == 0)
   {
     FREE(&pop_data->auth_list);
     c = skip_email_wsp(line + 4);
     pop_data->auth_list = safe_strdup(c);
   }
 
-  else if (ascii_strncasecmp(line, "STLS", 4) == 0)
+  else if (mutt_strncasecmp(line, "STLS", 4) == 0)
     pop_data->cmd_stls = true;
 
-  else if (ascii_strncasecmp(line, "USER", 4) == 0)
+  else if (mutt_strncasecmp(line, "USER", 4) == 0)
     pop_data->cmd_user = 1;
 
-  else if (ascii_strncasecmp(line, "UIDL", 4) == 0)
+  else if (mutt_strncasecmp(line, "UIDL", 4) == 0)
     pop_data->cmd_uidl = 1;
 
-  else if (ascii_strncasecmp(line, "TOP", 3) == 0)
+  else if (mutt_strncasecmp(line, "TOP", 3) == 0)
     pop_data->cmd_top = 1;
 
   return 0;

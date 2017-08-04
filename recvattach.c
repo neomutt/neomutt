@@ -122,7 +122,7 @@ struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type,
     }
 
     if (m->type == TYPEMULTIPART && m->parts &&
-        (compose || (parent_type == -1 && (ascii_strcasecmp("alternative", m->subtype) != 0))) &&
+        (compose || (parent_type == -1 && (mutt_strcasecmp("alternative", m->subtype) != 0))) &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
     {
       idx = mutt_gen_attach_list(m->parts, m->type, idx, idxlen, idxmax, level, compose);
@@ -416,8 +416,8 @@ bool mutt_is_message_type(int type, const char *subtype)
     return false;
 
   subtype = NONULL(subtype);
-  return ((ascii_strcasecmp(subtype, "rfc822") == 0) ||
-          (ascii_strcasecmp(subtype, "news") == 0));
+  return ((mutt_strcasecmp(subtype, "rfc822") == 0) ||
+          (mutt_strcasecmp(subtype, "news") == 0));
 }
 
 static void prepend_curdir(char *dst, size_t dstlen)
@@ -727,8 +727,8 @@ static int can_print(struct Body *top, int tag)
     {
       if (!rfc1524_mailcap_lookup(top, type, NULL, MUTT_PRINT))
       {
-        if ((ascii_strcasecmp("text/plain", top->subtype) != 0) &&
-            (ascii_strcasecmp("application/postscript", top->subtype) != 0))
+        if ((mutt_strcasecmp("text/plain", top->subtype) != 0) &&
+            (mutt_strcasecmp("application/postscript", top->subtype) != 0))
         {
           if (!mutt_can_decode(top))
           {
@@ -757,8 +757,8 @@ static void print_attachment_list(FILE *fp, int tag, struct Body *top, struct St
       snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
       if (!option(OPT_ATTACH_SPLIT) && !rfc1524_mailcap_lookup(top, type, NULL, MUTT_PRINT))
       {
-        if ((ascii_strcasecmp("text/plain", top->subtype) == 0) ||
-            (ascii_strcasecmp("application/postscript", top->subtype) == 0))
+        if ((mutt_strcasecmp("text/plain", top->subtype) == 0) ||
+            (mutt_strcasecmp("application/postscript", top->subtype) == 0))
           pipe_attachment(fp, top, state);
         else if (mutt_can_decode(top))
         {
@@ -913,7 +913,7 @@ static void attach_collapse(struct Body *b, short collapse, short init, short ju
   {
     i = init || b->collapsed;
     if (i && option(OPT_DIGEST_COLLAPSE) && b->type == TYPEMULTIPART &&
-        (ascii_strcasecmp(b->subtype, "digest") == 0))
+        (mutt_strcasecmp(b->subtype, "digest") == 0))
       attach_collapse(b->parts, 1, 1, 0);
     else if (b->type == TYPEMULTIPART || mutt_is_message_type(b->type, b->subtype))
       attach_collapse(b->parts, collapse, i, 0);

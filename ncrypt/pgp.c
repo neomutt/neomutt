@@ -1485,7 +1485,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
 
   if (a->type != TYPETEXT)
     return NULL;
-  if (ascii_strcasecmp(a->subtype, "plain") != 0)
+  if (mutt_strcasecmp(a->subtype, "plain") != 0)
     return NULL;
 
   if ((fp = fopen(a->filename, "r")) == NULL)

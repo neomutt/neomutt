@@ -79,7 +79,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
          (mutt_strncmp(idata->conn->account.user, "anonymous", 9) == 0)))
       rc = sasl_client_start(saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, &mech);
   }
-  else if ((ascii_strcasecmp("login", method) == 0) &&
+  else if ((mutt_strcasecmp("login", method) == 0) &&
            !strstr(NONULL(idata->capstr), "AUTH=LOGIN"))
     /* do not use SASL login for regular IMAP login (#3556) */
     return IMAP_AUTH_UNAVAIL;

@@ -354,7 +354,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
   for (int i = 0; bindings[i].name; i++)
   {
-    if ((ascii_strncasecmp(start, bindings[i].name, len) == 0) &&
+    if ((mutt_strncasecmp(start, bindings[i].name, len) == 0) &&
         mutt_strlen(bindings[i].name) == len)
       return bindings[i].op;
   }
@@ -406,7 +406,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
         l = p - pp + 1;
         for (i = 0; KeyNames[i].name; i++)
         {
-          if (ascii_strncasecmp(pp, KeyNames[i].name, l) == 0)
+          if (mutt_strncasecmp(pp, KeyNames[i].name, l) == 0)
             break;
         }
         if (KeyNames[i].name)
@@ -1101,7 +1101,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
     strfcpy(err->data, _("bind: too many arguments"), err->dsize);
     r = -1;
   }
-  else if (ascii_strcasecmp("noop", buf->data) == 0)
+  else if (mutt_strcasecmp("noop", buf->data) == 0)
   {
     for (i = 0; i < nummenus; ++i)
     {

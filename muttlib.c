@@ -330,7 +330,7 @@ int mutt_remove_from_rx_list(struct RxList **l, const char *str)
     last = NULL;
     while (p)
     {
-      if (ascii_strcasecmp(str, p->rx->pattern) == 0)
+      if (mutt_strcasecmp(str, p->rx->pattern) == 0)
       {
         mutt_free_regexp(&p->rx);
         if (last)
@@ -413,7 +413,7 @@ bool mutt_matches_list(const char *s, struct List *t)
 {
   for (; t; t = t->next)
   {
-    if ((ascii_strncasecmp(s, t->data, mutt_strlen(t->data)) == 0) || *t->data == '*')
+    if ((mutt_strncasecmp(s, t->data, mutt_strlen(t->data)) == 0) || *t->data == '*')
       return true;
   }
   return false;
@@ -663,7 +663,7 @@ bool mutt_needs_mailcap(struct Body *m)
   switch (m->type)
   {
     case TYPETEXT:
-      if (ascii_strcasecmp("plain", m->subtype) == 0)
+      if (mutt_strcasecmp("plain", m->subtype) == 0)
         return false;
       break;
     case TYPEAPPLICATION:
@@ -694,13 +694,13 @@ bool mutt_is_text_part(struct Body *b)
 
   if (t == TYPEMESSAGE)
   {
-    if (ascii_strcasecmp("delivery-status", s) == 0)
+    if (mutt_strcasecmp("delivery-status", s) == 0)
       return true;
   }
 
   if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
   {
-    if (ascii_strcasecmp("pgp-keys", s) == 0)
+    if (mutt_strcasecmp("pgp-keys", s) == 0)
       return true;
   }
 

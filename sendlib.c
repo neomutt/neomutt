@@ -347,7 +347,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
        * even when they aren't needed.
        */
 
-      if ((ascii_strcasecmp(p->attribute, "boundary") == 0) && (strcmp(buffer, tmp) == 0))
+      if ((mutt_strcasecmp(p->attribute, "boundary") == 0) && (strcmp(buffer, tmp) == 0))
         snprintf(buffer, sizeof(buffer), "\"%s\"", tmp);
 
       FREE(&tmp);
@@ -697,7 +697,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   infos = safe_calloc(ncodes, sizeof(struct Content));
 
   for (i = 0; i < ncodes; i++)
-    if (ascii_strcasecmp(tocodes[i], "utf-8") != 0)
+    if (mutt_strcasecmp(tocodes[i], "utf-8") != 0)
       cd[i] = mutt_iconv_open(tocodes[i], "utf-8", 0);
     else
     {
@@ -1052,7 +1052,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
           sze = mutt_strlen(p);
           if ((sze > cur_sze) && (szf >= sze) &&
               ((mutt_strcasecmp(path + szf - sze, p) == 0) ||
-               (ascii_strcasecmp(path + szf - sze, p) == 0)) &&
+               (mutt_strcasecmp(path + szf - sze, p) == 0)) &&
               (szf == sze || path[szf - sze - 1] == '.'))
           {
             /* get the content-type */
@@ -1239,7 +1239,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   if (b->type == TYPETEXT)
   {
     char *chsname = mutt_get_body_charset(send_charset, sizeof(send_charset), b);
-    if ((info->lobin && (ascii_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
+    if ((info->lobin && (mutt_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
         info->linemax > 990 || (info->from && option(OPT_ENCODE_FROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
@@ -1260,7 +1260,7 @@ static void set_encoding(struct Body *b, struct Content *info)
       b->encoding = ENC7BIT;
   }
   else if (b->type == TYPEAPPLICATION &&
-           (ascii_strcasecmp(b->subtype, "pgp-keys") == 0))
+           (mutt_strcasecmp(b->subtype, "pgp-keys") == 0))
     b->encoding = ENC7BIT;
   else
   {
@@ -1838,7 +1838,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
                             const char *start, const char *end, int flags)
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
-  int is_from = ((end - start) > 5 && (ascii_strncasecmp(start, "from ", 5) == 0));
+  int is_from = ((end - start) > 5 && (mutt_strncasecmp(start, "from ", 5) == 0));
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */
@@ -2154,7 +2154,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
       }
 
       /* check to see if the user has overridden the user-agent field */
-      if (ascii_strncasecmp("user-agent", tmp->data, 10) == 0)
+      if (mutt_strncasecmp("user-agent", tmp->data, 10) == 0)
       {
         has_agent = true;
         if (privacy)
@@ -2827,7 +2827,7 @@ struct Address *mutt_remove_duplicates(struct Address *addr)
     for (tmp = top, dup = false; tmp && tmp != addr; tmp = tmp->next)
     {
       if (tmp->mailbox && addr->mailbox &&
-          (ascii_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
+          (mutt_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
       {
         dup = true;
         break;
