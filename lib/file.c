@@ -33,6 +33,7 @@
  * | mutt_copy_bytes()         | Copy some content from one file to another
  * | mutt_copy_stream()        | Copy the contents of one file into another
  * | mutt_decrease_mtime()     | Decrease a file's modification time by 1 second
+ * | mutt_lock_file()          | (try to) lock a file
  * | mutt_mkdir()              | Recursively create directories
  * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
  * | mutt_read_line()          | Read a line from a file
@@ -42,6 +43,8 @@
  * | mutt_set_mtime()          | Set the modification time of one file from another
  * | mutt_touch_atime()        | Set the access time to current time
  * | mutt_unlink()             | Delete a file, carefully
+ * | mutt_unlink_empty()       | Delete a file if it's empty
+ * | mutt_unlock_file()        | Unlock a file previously locked by mutt_lock_file()
  * | safe_fclose()             | Close a FILE handle (and NULL the pointer)
  * | safe_fopen()              | Call fopen() safely
  * | safe_fsync_close()        | Flush the data, before closing a file (and NULL the pointer)
@@ -59,6 +62,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -66,6 +70,7 @@
 #include "file.h"
 #include "debug.h"
 #include "memory.h"
+#include "message.h"
 #include "string2.h"
 
 /* these characters must be escaped in regular expressions */
@@ -73,6 +78,8 @@ static const char rx_special_chars[] = "^.[$()|*+?{\\";
 
 static const char safe_chars[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
+
+#define MAX_LOCK_ATTEMPTS 5
 
 /**
  * compare_stat - Compare the struct stat's of two files/dirs
@@ -940,5 +947,167 @@ void mutt_touch_atime(int f)
   struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
   futimens(f, times);
 #endif
+}
+
+/**
+ * mutt_lock_file - (try to) lock a file
+ * @param path    Path to file
+ * @param fd      File descriptor to file
+ * @param excl    If set, try to lock exclusively
+ * @param timeout Retry after this time
+ * @retval 0 on success
+ * @retval -1 on failure
+ *
+ * The type of file locking depends on how NeoMutt was compiled.
+ * It could use fcntl() or flock() to perform the locking.
+ *
+ * Use mutt_unlock_file() to unlock the file.
+ */
+int mutt_lock_file(const char *path, int fd, int excl, int timeout)
+{
+#if defined(USE_FCNTL) || defined(USE_FLOCK)
+  int count;
+  int attempt;
+  struct stat sb = { 0 }, prev_sb = { 0 };
+#endif
+  int r = 0;
+
+#ifdef USE_FCNTL
+  struct flock lck;
+
+  memset(&lck, 0, sizeof(struct flock));
+  lck.l_type = excl ? F_WRLCK : F_RDLCK;
+  lck.l_whence = SEEK_SET;
+
+  count = 0;
+  attempt = 0;
+  while (fcntl(fd, F_SETLK, &lck) == -1)
+  {
+    mutt_debug(1, "mutt_lock_file(): fcntl errno %d.\n", errno);
+    if ((errno != EAGAIN) && (errno != EACCES))
+    {
+      mutt_perror("fcntl");
+      return -1;
+    }
+
+    if (fstat(fd, &sb) != 0)
+      sb.st_size = 0;
+
+    if (count == 0)
+      prev_sb = sb;
+
+    /* only unlock file if it is unchanged */
+    if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
+    {
+      if (timeout)
+        mutt_error(_("Timeout exceeded while attempting fcntl lock!"));
+      return -1;
+    }
+
+    prev_sb = sb;
+
+    mutt_message(_("Waiting for fcntl lock... %d"), ++attempt);
+    sleep(1);
+  }
+#endif /* USE_FCNTL */
+
+#ifdef USE_FLOCK
+  count = 0;
+  attempt = 0;
+  while (flock(fd, (excl ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
+  {
+    if (errno != EWOULDBLOCK)
+    {
+      mutt_perror("flock");
+      r = -1;
+      break;
+    }
+
+    if (fstat(fd, &sb) != 0)
+      sb.st_size = 0;
+
+    if (count == 0)
+      prev_sb = sb;
+
+    /* only unlock file if it is unchanged */
+    if ((prev_sb.st_size == sb.st_size) && (++count >= (timeout ? MAX_LOCK_ATTEMPTS : 0)))
+    {
+      if (timeout)
+        mutt_error(_("Timeout exceeded while attempting flock lock!"));
+      r = -1;
+      break;
+    }
+
+    prev_sb = sb;
+
+    mutt_message(_("Waiting for flock attempt... %d"), ++attempt);
+    sleep(1);
+  }
+#endif /* USE_FLOCK */
+
+  /* release any other locks obtained in this routine */
+  if (r != 0)
+  {
+#ifdef USE_FCNTL
+    lck.l_type = F_UNLCK;
+    fcntl(fd, F_SETLK, &lck);
+#endif /* USE_FCNTL */
+
+#ifdef USE_FLOCK
+    flock(fd, LOCK_UN);
+#endif /* USE_FLOCK */
+  }
+
+  return r;
+}
+
+/**
+ * mutt_unlock_file - Unlock a file previously locked by mutt_lock_file()
+ * @param path Path to file
+ * @param fd   File descriptor to file
+ * @retval 0 Always
+ */
+int mutt_unlock_file(const char *path, int fd)
+{
+#ifdef USE_FCNTL
+  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
+
+  memset(&unlockit, 0, sizeof(struct flock));
+  unlockit.l_type = F_UNLCK;
+  unlockit.l_whence = SEEK_SET;
+  fcntl(fd, F_SETLK, &unlockit);
+#endif
+
+#ifdef USE_FLOCK
+  flock(fd, LOCK_UN);
+#endif
+
+  return 0;
+}
+
+/**
+ * mutt_unlink_empty - Delete a file if it's empty
+ * @param path File to delete
+ */
+void mutt_unlink_empty(const char *path)
+{
+  int fd;
+  struct stat sb;
+
+  fd = open(path, O_RDWR);
+  if (fd == -1)
+    return;
+
+  if (mutt_lock_file(path, fd, 1, 1) == -1)
+  {
+    close(fd);
+    return;
+  }
+
+  if (fstat(fd, &sb) == 0 && sb.st_size == 0)
+    unlink(path);
+
+  mutt_unlock_file(path, fd);
+  close(fd);
 }
 
