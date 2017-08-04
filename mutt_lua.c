@@ -320,7 +320,7 @@ static void _lua_expose_command(void *p, const struct Command *cmd)
   snprintf(buf, LONG_STRING,
            "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
-  luaL_dostring(l, buf);
+  (void) luaL_dostring(l, buf);
 }
 
 static const luaL_Reg luaMuttDecl[] = {
@@ -352,7 +352,7 @@ static int luaopen_mutt_decl(lua_State *l)
 static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
-  luaL_dostring(l, "mutt.command = {}");
+  (void) luaL_dostring(l, "mutt.command = {}");
   mutt_commands_apply((void *) l, &_lua_expose_command);
 }
 
