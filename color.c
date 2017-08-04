@@ -347,14 +347,6 @@ int mutt_combine_color(int fg_attr, int bg_attr)
   mutt_lookup_color(bg_attr, NULL, &bg);
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
-#ifdef HAVE_USE_DEFAULT_COLORS
-  if (!option(OPT_NO_CURSES) && has_colors() &&
-      ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT)) && use_default_colors() != OK)
-  {
-    mutt_error(_("default colors not supported."));
-    return A_NORMAL;
-  }
-#endif
   return mutt_alloc_color(fg, bg);
 }
 
@@ -887,7 +879,13 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
 #ifdef HAVE_USE_DEFAULT_COLORS
   if (!option(OPT_NO_CURSES) && has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
-      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT) && use_default_colors() != OK)
+      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE)
+      && use_default_colors() != OK)
+      /* the case of the tree object is special, because a non-default
+       * fg color of the tree element may be combined dynamically with
+       * the default bg color of an index line, not necessarily defined in
+       * a rc file.
+       */
   {
     strfcpy(err->data, _("default colors not supported"), err->dsize);
     return -1;
