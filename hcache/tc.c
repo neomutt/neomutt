@@ -82,7 +82,8 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
     return -1;
 
   TCBDB *db = ctx;
-  return tcbdbput(db, key, keylen, data, dlen);
+  bool success = tcbdbput(db, key, keylen, data, dlen);
+  return success ? 0 : -1; /* TODO - how to get error code? */
 }
 
 static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
@@ -91,7 +92,8 @@ static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   TCBDB *db = ctx;
-  return tcbdbout(db, key, keylen);
+  bool success = tcbdbout(db, key, keylen);
+  return success ? 0 : -1; /* TODO - how to get error code? */
 }
 
 static void hcache_tokyocabinet_close(void **ctx)
