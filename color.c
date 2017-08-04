@@ -406,14 +406,14 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
   char *eptr = NULL;
   int is_bright = 0;
 
-  if (ascii_strncasecmp(s, "bright", 6) == 0)
+  if (mutt_strncasecmp(s, "bright", 6) == 0)
   {
     is_bright = 1;
     s += 6;
   }
 
   /* allow aliases for xterm color resources */
-  if (ascii_strncasecmp(s, "color", 5) == 0)
+  if (mutt_strncasecmp(s, "color", 5) == 0)
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
@@ -725,7 +725,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
 
     *o = MT_COLOR_QUOTED;
   }
-  else if (!ascii_strcasecmp(buf->data, "compose"))
+  else if (!mutt_strcasecmp(buf->data, "compose"))
   {
     if (!MoreArgs(s))
     {
@@ -801,17 +801,17 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
 
   mutt_extract_token(buf, s, 0);
 
-  if (ascii_strcasecmp("bold", buf->data) == 0)
+  if (mutt_strcasecmp("bold", buf->data) == 0)
     *attr |= A_BOLD;
-  else if (ascii_strcasecmp("underline", buf->data) == 0)
+  else if (mutt_strcasecmp("underline", buf->data) == 0)
     *attr |= A_UNDERLINE;
-  else if (ascii_strcasecmp("none", buf->data) == 0)
+  else if (mutt_strcasecmp("none", buf->data) == 0)
     *attr = A_NORMAL;
-  else if (ascii_strcasecmp("reverse", buf->data) == 0)
+  else if (mutt_strcasecmp("reverse", buf->data) == 0)
     *attr |= A_REVERSE;
-  else if (ascii_strcasecmp("standout", buf->data) == 0)
+  else if (mutt_strcasecmp("standout", buf->data) == 0)
     *attr |= A_STANDOUT;
-  else if (ascii_strcasecmp("normal", buf->data) == 0)
+  else if (mutt_strcasecmp("normal", buf->data) == 0)
     *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
   else
   {

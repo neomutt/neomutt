@@ -460,9 +460,9 @@ int imap_open_connection(struct ImapData *idata)
     return -1;
   }
 
-  if (ascii_strncasecmp("* OK", idata->buf, 4) == 0)
+  if (mutt_strncasecmp("* OK", idata->buf, 4) == 0)
   {
-    if ((ascii_strncasecmp("* OK [CAPABILITY", idata->buf, 16) != 0) &&
+    if ((mutt_strncasecmp("* OK [CAPABILITY", idata->buf, 16) != 0) &&
         imap_check_capabilities(idata))
       goto bail;
 #ifdef USE_SSL
@@ -507,7 +507,7 @@ int imap_open_connection(struct ImapData *idata)
     }
 #endif
   }
-  else if (ascii_strncasecmp("* PREAUTH", idata->buf, 9) == 0)
+  else if (mutt_strncasecmp("* PREAUTH", idata->buf, 9) == 0)
   {
     idata->state = IMAP_AUTHENTICATED;
     if (imap_check_capabilities(idata) != 0)
@@ -554,7 +554,7 @@ static char *imap_get_flags(struct List **hflags, char *s)
   char ctmp;
 
   /* sanity-check string */
-  if (ascii_strncasecmp("FLAGS", s, 5) != 0)
+  if (mutt_strncasecmp("FLAGS", s, 5) != 0)
   {
     mutt_debug(1, "imap_get_flags: not a FLAGS response: %s\n", s);
     return NULL;
@@ -693,7 +693,7 @@ static int imap_open_mailbox(struct Context *ctx)
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
-    if (ascii_strncasecmp("FLAGS", pc, 5) == 0)
+    if (mutt_strncasecmp("FLAGS", pc, 5) == 0)
     {
       /* don't override PERMANENTFLAGS */
       if (!idata->flags)
@@ -704,7 +704,7 @@ static int imap_open_mailbox(struct Context *ctx)
       }
     }
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
-    else if (ascii_strncasecmp("OK [PERMANENTFLAGS", pc, 18) == 0)
+    else if (mutt_strncasecmp("OK [PERMANENTFLAGS", pc, 18) == 0)
     {
       mutt_debug(3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
@@ -715,7 +715,7 @@ static int imap_open_mailbox(struct Context *ctx)
         goto fail;
     }
     /* save UIDVALIDITY for the header cache */
-    else if (ascii_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
+    else if (mutt_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
     {
       mutt_debug(3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
@@ -723,7 +723,7 @@ static int imap_open_mailbox(struct Context *ctx)
       idata->uid_validity = strtol(pc, NULL, 10);
       status->uidvalidity = idata->uid_validity;
     }
-    else if (ascii_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
+    else if (mutt_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
     {
       mutt_debug(3, "Getting mailbox UIDNEXT\n");
       pc += 3;
@@ -734,7 +734,7 @@ static int imap_open_mailbox(struct Context *ctx)
     else
     {
       pc = imap_next_word(pc);
-      if (ascii_strncasecmp("EXISTS", pc, 6) == 0)
+      if (mutt_strncasecmp("EXISTS", pc, 6) == 0)
       {
         count = idata->new_mail_count;
         idata->new_mail_count = 0;
@@ -756,7 +756,7 @@ static int imap_open_mailbox(struct Context *ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if ((ascii_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) == 0) &&
+  if ((mutt_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) == 0) &&
       !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
@@ -920,7 +920,7 @@ bool imap_has_flag(struct List *flag_list, const char *flag)
   flag_list = flag_list->next;
   while (flag_list)
   {
-    if (ascii_strncasecmp(flag_list->data, flag, strlen(flag_list->data)) == 0)
+    if (mutt_strncasecmp(flag_list->data, flag, strlen(flag_list->data)) == 0)
       return true;
 
     if (mutt_strncmp(flag_list->data, "\\*", strlen(flag_list->data)) == 0)
@@ -2284,7 +2284,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (ascii_strncasecmp(imap_get_qualifier(idata->buf), "[TRYCREATE]", 11) != 0)
+      if (mutt_strncasecmp(imap_get_qualifier(idata->buf), "[TRYCREATE]", 11) != 0)
         break;
       mutt_debug(3, "imap_fast_trash: server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);

@@ -404,8 +404,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx1 = "INBOX";
   if (!mx2 || !*mx2)
     mx2 = "INBOX";
-  if ((ascii_strcasecmp(mx1, "INBOX") == 0) &&
-      (ascii_strcasecmp(mx2, "INBOX") == 0))
+  if ((mutt_strcasecmp(mx1, "INBOX") == 0) &&
+      (mutt_strcasecmp(mx2, "INBOX") == 0))
     return 0;
 
   b1 = safe_malloc(strlen(mx1) + 1);
@@ -880,7 +880,7 @@ int imap_wordcasecmp(const char *a, const char *b)
   }
   tmp[i + 1] = 0;
 
-  return ascii_strcasecmp(a, tmp);
+  return mutt_strcasecmp(a, tmp);
 }
 
 /*

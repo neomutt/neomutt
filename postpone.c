@@ -324,7 +324,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 
   for (tmp = hdr->env->userhdrs; tmp;)
   {
-    if (ascii_strncasecmp("X-Mutt-References:", tmp->data, 18) == 0)
+    if (mutt_strncasecmp("X-Mutt-References:", tmp->data, 18) == 0)
     {
       if (ctx)
       {
@@ -348,7 +348,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       if (*cur)
         code |= SENDREPLY;
     }
-    else if (ascii_strncasecmp("X-Mutt-Fcc:", tmp->data, 11) == 0)
+    else if (mutt_strncasecmp("X-Mutt-Fcc:", tmp->data, 11) == 0)
     {
       p = skip_email_wsp(tmp->data + 11);
       strfcpy(fcc, p, fcclen);
@@ -642,7 +642,7 @@ err:
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
-        (ascii_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
+        (mutt_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
                           "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
@@ -693,7 +693,7 @@ err:
 
     if (b->type == TYPETEXT)
     {
-      if (ascii_strcasecmp("yes", mutt_get_parameter("x-mutt-noconv", b->parameter)) == 0)
+      if (mutt_strcasecmp("yes", mutt_get_parameter("x-mutt-noconv", b->parameter)) == 0)
         b->noconv = true;
       else
       {

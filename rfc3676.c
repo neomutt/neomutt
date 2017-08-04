@@ -281,7 +281,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   /* respect DelSp of RfC3676 only with f=f parts */
   if ((t = (char *) mutt_get_parameter("delsp", a->parameter)))
   {
-    delsp = mutt_strlen(t) == 3 && (ascii_strncasecmp(t, "yes", 3) == 0);
+    delsp = mutt_strlen(t) == 3 && (mutt_strncasecmp(t, "yes", 3) == 0);
     t = NULL;
     fst.delsp = 1;
   }

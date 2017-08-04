@@ -423,7 +423,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
   if (chain->cl >= MAXMIXES)
     return -1;
 
-  if ((mutt_strcmp(s, "0") == 0) || (ascii_strcasecmp(s, "<random>") == 0))
+  if ((mutt_strcmp(s, "0") == 0) || (mutt_strcasecmp(s, "<random>") == 0))
   {
     chain->ch[chain->cl++] = 0;
     return 0;
@@ -431,7 +431,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (ascii_strcasecmp(s, type2_list[i]->shortname) == 0)
+    if (mutt_strcasecmp(s, type2_list[i]->shortname) == 0)
     {
       chain->ch[chain->cl++] = i;
       return 0;

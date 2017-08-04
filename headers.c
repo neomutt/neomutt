@@ -156,7 +156,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   {
     keep = true;
 
-    if (fcc && (ascii_strncasecmp("fcc:", cur->data, 4) == 0))
+    if (fcc && (mutt_strncasecmp("fcc:", cur->data, 4) == 0))
     {
       p = skip_email_wsp(cur->data + 4);
       if (*p)
@@ -166,7 +166,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       }
       keep = false;
     }
-    else if (ascii_strncasecmp("attach:", cur->data, 7) == 0)
+    else if (mutt_strncasecmp("attach:", cur->data, 7) == 0)
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
@@ -206,7 +206,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       keep = false;
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
-             (ascii_strncasecmp("pgp:", cur->data, 4) == 0))
+             (mutt_strncasecmp("pgp:", cur->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr(cur->data + 4, 0, APPLICATION_PGP);
       if (msg->security)

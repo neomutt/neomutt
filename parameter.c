@@ -42,7 +42,7 @@ void mutt_free_parameter(struct Parameter **p)
 char *mutt_get_parameter(const char *s, struct Parameter *p)
 {
   for (; p; p = p->next)
-    if (ascii_strcasecmp(s, p->attribute) == 0)
+    if (mutt_strcasecmp(s, p->attribute) == 0)
       return p->value;
 
   return NULL;
@@ -60,7 +60,7 @@ void mutt_set_parameter(const char *attribute, const char *value, struct Paramet
 
   for (q = *p; q; q = q->next)
   {
-    if (ascii_strcasecmp(attribute, q->attribute) == 0)
+    if (mutt_strcasecmp(attribute, q->attribute) == 0)
     {
       mutt_str_replace(&q->value, value);
       return;
@@ -80,7 +80,7 @@ void mutt_delete_parameter(const char *attribute, struct Parameter **p)
 
   for (q = *p; q; p = &q->next, q = q->next)
   {
-    if (ascii_strcasecmp(attribute, q->attribute) == 0)
+    if (mutt_strcasecmp(attribute, q->attribute) == 0)
     {
       *p = q->next;
       q->next = NULL;

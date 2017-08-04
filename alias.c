@@ -614,7 +614,7 @@ static bool string_is_address(const char *str, const char *u, const char *d)
   char buf[LONG_STRING];
 
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
-  if (ascii_strcasecmp(str, buf) == 0)
+  if (mutt_strcasecmp(str, buf) == 0)
     return true;
 
   return false;
@@ -640,7 +640,7 @@ bool mutt_addr_is_user(struct Address *addr)
     return false;
   }
 
-  if (ascii_strcasecmp(addr->mailbox, Username) == 0)
+  if (mutt_strcasecmp(addr->mailbox, Username) == 0)
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username);
     return true;
@@ -665,7 +665,7 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (From && (ascii_strcasecmp(From->mailbox, addr->mailbox) == 0))
+  if (From && (mutt_strcasecmp(From->mailbox, addr->mailbox) == 0))
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox);
     return true;

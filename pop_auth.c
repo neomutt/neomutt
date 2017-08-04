@@ -363,7 +363,7 @@ int pop_authenticate(struct PopData *pop_data)
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (ascii_strcasecmp(authenticator->method, method) == 0))
+        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
         {
           ret = authenticator->authenticate(pop_data, method);
           if (ret == POP_A_SOCKET)

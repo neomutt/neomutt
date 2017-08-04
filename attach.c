@@ -314,8 +314,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
   {
     i = mutt_strlen(t->data) - 1;
     if ((i > 0 && t->data[i - 1] == '/' && t->data[i] == '*' &&
-         (ascii_strncasecmp(type, t->data, i) == 0)) ||
-        (ascii_strcasecmp(type, t->data) == 0))
+         (mutt_strncasecmp(type, t->data, i) == 0)) ||
+        (mutt_strcasecmp(type, t->data) == 0))
     {
       struct Body tmp = { 0 };
       int n;
@@ -1046,8 +1046,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     return 1;
   }
 
-  if ((ascii_strcasecmp("text/plain", type) == 0) ||
-      (ascii_strcasecmp("application/postscript", type) == 0))
+  if ((mutt_strcasecmp("text/plain", type) == 0) ||
+      (mutt_strcasecmp("application/postscript", type) == 0))
   {
     return (mutt_pipe_attachment(fp, a, NONULL(PrintCmd), NULL));
   }

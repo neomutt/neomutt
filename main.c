@@ -710,7 +710,7 @@ int main(int argc, char **argv, char **env)
         /* Scan for mutt header to set OPT_RESUME_DRAFT_FILES */
         for (last_uhp = &msg->env->userhdrs, uh = *last_uhp; uh; uh = *last_uhp)
         {
-          if (ascii_strncasecmp("X-Mutt-Resume-Draft:", uh->data, 20) == 0)
+          if (mutt_strncasecmp("X-Mutt-Resume-Draft:", uh->data, 20) == 0)
           {
             if (option(OPT_RESUME_EDITED_DRAFT_FILES))
               set_option(OPT_RESUME_DRAFT_FILES);

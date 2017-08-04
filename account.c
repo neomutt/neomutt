@@ -40,7 +40,7 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 
   if (a1->type != a2->type)
     return 0;
-  if (ascii_strcasecmp(a1->host, a2->host) != 0)
+  if (mutt_strcasecmp(a1->host, a2->host) != 0)
     return 0;
   if (a1->port != a2->port)
     return 0;

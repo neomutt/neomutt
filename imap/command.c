@@ -198,9 +198,9 @@ static int cmd_status(const char *s)
 {
   s = imap_next_word((char *) s);
 
-  if (ascii_strncasecmp("OK", s, 2) == 0)
+  if (mutt_strncasecmp("OK", s, 2) == 0)
     return IMAP_CMD_OK;
-  if (ascii_strncasecmp("NO", s, 2) == 0)
+  if (mutt_strncasecmp("NO", s, 2) == 0)
     return IMAP_CMD_NO;
 
   return IMAP_CMD_BAD;
@@ -288,7 +288,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
   }
   s++;
 
-  if (ascii_strncasecmp("FLAGS", s, 5) != 0)
+  if (mutt_strncasecmp("FLAGS", s, 5) != 0)
   {
     mutt_debug(2, "Only handle FLAGS updates\n");
     return;
@@ -375,12 +375,12 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   s++;
   while (*s)
   {
-    if (ascii_strncasecmp(s, "\\NoSelect", 9) == 0)
+    if (mutt_strncasecmp(s, "\\NoSelect", 9) == 0)
       list->noselect = true;
-    else if (ascii_strncasecmp(s, "\\NoInferiors", 12) == 0)
+    else if (mutt_strncasecmp(s, "\\NoInferiors", 12) == 0)
       list->noinferiors = true;
     /* See draft-gahrns-imap-child-mailbox-?? */
-    else if (ascii_strncasecmp(s, "\\HasNoChildren", 14) == 0)
+    else if (mutt_strncasecmp(s, "\\HasNoChildren", 14) == 0)
       list->noinferiors = true;
 
     s = imap_next_word(s);
@@ -389,7 +389,7 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   }
 
   /* Delimiter */
-  if (ascii_strncasecmp(s, "NIL", 3) != 0)
+  if (mutt_strncasecmp(s, "NIL", 3) != 0)
   {
     delimbuf[0] = '\0';
     safe_strcat(delimbuf, 5, s);
@@ -723,8 +723,8 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && *s != '\0')
   {
-    if ((ascii_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
-        (ascii_strncasecmp(s, "UTF8=ONLY", 9) == 0))
+    if ((mutt_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
+        (mutt_strncasecmp(s, "UTF8=ONLY", 9) == 0))
       idata->unicode = 1;
   }
 }
@@ -749,7 +749,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
     /* EXISTS and EXPUNGE are always related to the SELECTED mailbox for the
      * connection, so update that one.
      */
-    if (ascii_strncasecmp("EXISTS", s, 6) == 0)
+    if (mutt_strncasecmp("EXISTS", s, 6) == 0)
     {
       mutt_debug(2, "Handling EXISTS\n");
 
@@ -780,30 +780,30 @@ static int cmd_handle_untagged(struct ImapData *idata)
       }
     }
     /* pn vs. s: need initial seqno */
-    else if (ascii_strncasecmp("EXPUNGE", s, 7) == 0)
+    else if (mutt_strncasecmp("EXPUNGE", s, 7) == 0)
       cmd_parse_expunge(idata, pn);
-    else if (ascii_strncasecmp("FETCH", s, 5) == 0)
+    else if (mutt_strncasecmp("FETCH", s, 5) == 0)
       cmd_parse_fetch(idata, pn);
   }
-  else if (ascii_strncasecmp("CAPABILITY", s, 10) == 0)
+  else if (mutt_strncasecmp("CAPABILITY", s, 10) == 0)
     cmd_parse_capability(idata, s);
-  else if (ascii_strncasecmp("OK [CAPABILITY", s, 14) == 0)
+  else if (mutt_strncasecmp("OK [CAPABILITY", s, 14) == 0)
     cmd_parse_capability(idata, pn);
-  else if (ascii_strncasecmp("OK [CAPABILITY", pn, 14) == 0)
+  else if (mutt_strncasecmp("OK [CAPABILITY", pn, 14) == 0)
     cmd_parse_capability(idata, imap_next_word(pn));
-  else if (ascii_strncasecmp("LIST", s, 4) == 0)
+  else if (mutt_strncasecmp("LIST", s, 4) == 0)
     cmd_parse_list(idata, s);
-  else if (ascii_strncasecmp("LSUB", s, 4) == 0)
+  else if (mutt_strncasecmp("LSUB", s, 4) == 0)
     cmd_parse_lsub(idata, s);
-  else if (ascii_strncasecmp("MYRIGHTS", s, 8) == 0)
+  else if (mutt_strncasecmp("MYRIGHTS", s, 8) == 0)
     cmd_parse_myrights(idata, s);
-  else if (ascii_strncasecmp("SEARCH", s, 6) == 0)
+  else if (mutt_strncasecmp("SEARCH", s, 6) == 0)
     cmd_parse_search(idata, s);
-  else if (ascii_strncasecmp("STATUS", s, 6) == 0)
+  else if (mutt_strncasecmp("STATUS", s, 6) == 0)
     cmd_parse_status(idata, s);
-  else if (ascii_strncasecmp("ENABLED", s, 7) == 0)
+  else if (mutt_strncasecmp("ENABLED", s, 7) == 0)
     cmd_parse_enabled(idata, s);
-  else if (ascii_strncasecmp("BYE", s, 3) == 0)
+  else if (mutt_strncasecmp("BYE", s, 3) == 0)
   {
     mutt_debug(2, "Handling BYE\n");
 
@@ -820,7 +820,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
 
     return -1;
   }
-  else if (option(OPT_IMAP_SERVER_NOISE) && (ascii_strncasecmp("NO", s, 2) == 0))
+  else if (option(OPT_IMAP_SERVER_NOISE) && (mutt_strncasecmp("NO", s, 2) == 0))
   {
     mutt_debug(2, "Handling untagged NO\n");
 
@@ -984,8 +984,8 @@ const char *imap_cmd_trailer(struct ImapData *idata)
   }
 
   s = imap_next_word((char *) s);
-  if (!s || ((ascii_strncasecmp(s, "OK", 2) != 0) && (ascii_strncasecmp(s, "NO", 2) != 0) &&
-             (ascii_strncasecmp(s, "BAD", 3) != 0)))
+  if (!s || ((mutt_strncasecmp(s, "OK", 2) != 0) && (mutt_strncasecmp(s, "NO", 2) != 0) &&
+             (mutt_strncasecmp(s, "BAD", 3) != 0)))
   {
     mutt_debug(2, "imap_cmd_trailer: not a command completion: %s\n", idata->buf);
     return notrailer;

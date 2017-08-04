@@ -96,7 +96,7 @@ static bool addrcmp(struct Address *a, struct Address *b)
 {
   if (!a->mailbox || !b->mailbox)
     return false;
-  if (ascii_strcasecmp(a->mailbox, b->mailbox) != 0)
+  if (mutt_strcasecmp(a->mailbox, b->mailbox) != 0)
     return false;
   return true;
 }
@@ -311,7 +311,7 @@ static int edit_envelope(struct Envelope *en, int flags)
     buf[0] = 0;
     for (; uh; uh = uh->next)
     {
-      if (ascii_strncasecmp("subject:", uh->data, 8) == 0)
+      if (mutt_strncasecmp("subject:", uh->data, 8) == 0)
       {
         p = skip_email_wsp(uh->data + 8);
         strfcpy(buf, p, sizeof(buf));
@@ -344,18 +344,18 @@ static void process_user_recips(struct Envelope *env)
 
   for (; uh; uh = uh->next)
   {
-    if (ascii_strncasecmp("to:", uh->data, 3) == 0)
+    if (mutt_strncasecmp("to:", uh->data, 3) == 0)
       env->to = rfc822_parse_adrlist(env->to, uh->data + 3);
-    else if (ascii_strncasecmp("cc:", uh->data, 3) == 0)
+    else if (mutt_strncasecmp("cc:", uh->data, 3) == 0)
       env->cc = rfc822_parse_adrlist(env->cc, uh->data + 3);
-    else if (ascii_strncasecmp("bcc:", uh->data, 4) == 0)
+    else if (mutt_strncasecmp("bcc:", uh->data, 4) == 0)
       env->bcc = rfc822_parse_adrlist(env->bcc, uh->data + 4);
 #ifdef USE_NNTP
-    else if (ascii_strncasecmp("newsgroups:", uh->data, 11) == 0)
+    else if (mutt_strncasecmp("newsgroups:", uh->data, 11) == 0)
       env->newsgroups = nntp_get_header(uh->data + 11);
-    else if (ascii_strncasecmp("followup-to:", uh->data, 12) == 0)
+    else if (mutt_strncasecmp("followup-to:", uh->data, 12) == 0)
       env->followup_to = nntp_get_header(uh->data + 12);
-    else if (ascii_strncasecmp("x-comment-to:", uh->data, 13) == 0)
+    else if (mutt_strncasecmp("x-comment-to:", uh->data, 13) == 0)
       env->x_comment_to = nntp_get_header(uh->data + 13);
 #endif
   }
@@ -372,18 +372,18 @@ static void process_user_header(struct Envelope *env)
 
   for (; uh; uh = uh->next)
   {
-    if (ascii_strncasecmp("from:", uh->data, 5) == 0)
+    if (mutt_strncasecmp("from:", uh->data, 5) == 0)
     {
       /* User has specified a default From: address.  Remove default address */
       rfc822_free_address(&env->from);
       env->from = rfc822_parse_adrlist(env->from, uh->data + 5);
     }
-    else if (ascii_strncasecmp("reply-to:", uh->data, 9) == 0)
+    else if (mutt_strncasecmp("reply-to:", uh->data, 9) == 0)
     {
       rfc822_free_address(&env->reply_to);
       env->reply_to = rfc822_parse_adrlist(env->reply_to, uh->data + 9);
     }
-    else if (ascii_strncasecmp("message-id:", uh->data, 11) == 0)
+    else if (mutt_strncasecmp("message-id:", uh->data, 11) == 0)
     {
       char *tmp = mutt_extract_message_id(uh->data + 11, NULL);
       if (rfc822_valid_msgid(tmp))
@@ -394,17 +394,17 @@ static void process_user_header(struct Envelope *env)
       else
         FREE(&tmp);
     }
-    else if ((ascii_strncasecmp("to:", uh->data, 3) != 0) &&
-             (ascii_strncasecmp("cc:", uh->data, 3) != 0) &&
-             (ascii_strncasecmp("bcc:", uh->data, 4) != 0) &&
+    else if ((mutt_strncasecmp("to:", uh->data, 3) != 0) &&
+             (mutt_strncasecmp("cc:", uh->data, 3) != 0) &&
+             (mutt_strncasecmp("bcc:", uh->data, 4) != 0) &&
 #ifdef USE_NNTP
-             (ascii_strncasecmp("newsgroups:", uh->data, 11) != 0) &&
-             (ascii_strncasecmp("followup-to:", uh->data, 12) != 0) &&
-             (ascii_strncasecmp("x-comment-to:", uh->data, 13) != 0) &&
+             (mutt_strncasecmp("newsgroups:", uh->data, 11) != 0) &&
+             (mutt_strncasecmp("followup-to:", uh->data, 12) != 0) &&
+             (mutt_strncasecmp("x-comment-to:", uh->data, 13) != 0) &&
 #endif
-             (ascii_strncasecmp("supersedes:", uh->data, 11) != 0) &&
-             (ascii_strncasecmp("subject:", uh->data, 8) != 0) &&
-             (ascii_strncasecmp("return-path:", uh->data, 12) != 0))
+             (mutt_strncasecmp("supersedes:", uh->data, 11) != 0) &&
+             (mutt_strncasecmp("subject:", uh->data, 8) != 0) &&
+             (mutt_strncasecmp("return-path:", uh->data, 12) != 0))
     {
       if (last)
       {
@@ -1605,7 +1605,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if (!(flags & SENDKEY))
     {
       if (option(OPT_TEXT_FLOWED) && msg->content->type == TYPETEXT &&
-          (ascii_strcasecmp(msg->content->subtype, "plain") == 0))
+          (mutt_strcasecmp(msg->content->subtype, "plain") == 0))
         mutt_set_parameter("format", "flowed", &msg->content->parameter);
     }
 
@@ -1711,10 +1711,10 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
        * parameter will be present.
        */
       if (option(OPT_TEXT_FLOWED) && msg->content->type == TYPETEXT &&
-          (ascii_strcasecmp("plain", msg->content->subtype) == 0))
+          (mutt_strcasecmp("plain", msg->content->subtype) == 0))
       {
         char *p = mutt_get_parameter("format", msg->content->parameter);
-        if (ascii_strcasecmp("flowed", NONULL(p)) != 0)
+        if (mutt_strcasecmp("flowed", NONULL(p)) != 0)
           rfc3676_space_stuff(msg);
       }
 

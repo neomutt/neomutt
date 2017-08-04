@@ -87,7 +87,7 @@ int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
   last = NULL;
   while (p)
   {
-    if (ascii_strcasecmp(mailbox, p->mailbox) == 0)
+    if (mutt_strcasecmp(mailbox, p->mailbox) == 0)
     {
       if (last)
         last->next = p->next;

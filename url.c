@@ -317,7 +317,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      */
     if (mutt_matches_list(tag, MailToAllow))
     {
-      if (ascii_strcasecmp(tag, "body") == 0)
+      if (mutt_strcasecmp(tag, "body") == 0)
       {
         if (body)
           mutt_str_replace(body, value);

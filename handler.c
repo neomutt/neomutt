@@ -972,12 +972,12 @@ static int is_mmnoask(const char *buf)
       {
         if (*(q + 1) == '*')
         {
-          if (ascii_strncasecmp(buf, p, q - p) == 0)
+          if (mutt_strncasecmp(buf, p, q - p) == 0)
             return 1;
         }
         else
         {
-          if (ascii_strcasecmp(buf, p) == 0)
+          if (mutt_strcasecmp(buf, p) == 0)
             return 1;
         }
       }
@@ -1023,8 +1023,8 @@ static int is_autoview(struct Body *b)
     {
       int i = mutt_strlen(t->data) - 1;
       if ((i > 0 && t->data[i - 1] == '/' && t->data[i] == '*' &&
-           (ascii_strncasecmp(type, t->data, i) == 0)) ||
-          (ascii_strcasecmp(type, t->data) == 0))
+           (mutt_strncasecmp(type, t->data, i) == 0)) ||
+          (mutt_strcasecmp(type, t->data) == 0))
         is_av = 1;
     }
 
@@ -1064,7 +1064,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(s->fpin, mutt_get_parameter("boundary", a->parameter),
                                     (long) st.st_size,
-                                    (ascii_strcasecmp("digest", a->subtype) == 0));
+                                    (mutt_strcasecmp("digest", a->subtype) == 0));
   }
   else
     b = a;
@@ -1098,10 +1098,10 @@ static int alternative_handler(struct Body *a, struct State *s)
     while (b)
     {
       const char *bt = TYPE(b);
-      if ((ascii_strncasecmp(bt, t->data, btlen) == 0) && (bt[btlen] == 0))
+      if ((mutt_strncasecmp(bt, t->data, btlen) == 0) && (bt[btlen] == 0))
       {
         /* the basetype matches */
-        if (wild || (ascii_strcasecmp(t->data + btlen + 1, b->subtype) == 0))
+        if (wild || (mutt_strcasecmp(t->data + btlen + 1, b->subtype) == 0))
         {
           choice = b;
         }
@@ -1137,17 +1137,17 @@ static int alternative_handler(struct Body *a, struct State *s)
     {
       if (b->type == TYPETEXT)
       {
-        if ((ascii_strcasecmp("plain", b->subtype) == 0) && type <= TXTPLAIN)
+        if ((mutt_strcasecmp("plain", b->subtype) == 0) && type <= TXTPLAIN)
         {
           choice = b;
           type = TXTPLAIN;
         }
-        else if ((ascii_strcasecmp("enriched", b->subtype) == 0) && type <= TXTENRICHED)
+        else if ((mutt_strcasecmp("enriched", b->subtype) == 0) && type <= TXTENRICHED)
         {
           choice = b;
           type = TXTENRICHED;
         }
-        else if ((ascii_strcasecmp("html", b->subtype) == 0) && type <= TXTHTML)
+        else if ((mutt_strcasecmp("html", b->subtype) == 0) && type <= TXTHTML)
         {
           choice = b;
           type = TXTHTML;
@@ -1288,8 +1288,8 @@ int mutt_can_decode(struct Body *a)
 
     if (WithCrypto)
     {
-      if ((ascii_strcasecmp(a->subtype, "signed") == 0) ||
-          (ascii_strcasecmp(a->subtype, "encrypted") == 0))
+      if ((mutt_strcasecmp(a->subtype, "signed") == 0) ||
+          (mutt_strcasecmp(a->subtype, "encrypted") == 0))
         return 1;
     }
 
@@ -1324,7 +1324,7 @@ static int multipart_handler(struct Body *a, struct State *s)
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(s->fpin, mutt_get_parameter("boundary", a->parameter),
                                     (long) st.st_size,
-                                    (ascii_strcasecmp("digest", a->subtype) == 0));
+                                    (mutt_strcasecmp("digest", a->subtype) == 0));
   }
   else
     b = a;
@@ -1532,7 +1532,7 @@ static int external_body_handler(struct Body *b, struct State *s)
   else
     expire = -1;
 
-  if (ascii_strcasecmp(access_type, "x-mutt-deleted") == 0)
+  if (mutt_strcasecmp(access_type, "x-mutt-deleted") == 0)
   {
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
@@ -1858,7 +1858,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (b->type == TYPETEXT)
   {
-    if (ascii_strcasecmp("plain", b->subtype) == 0)
+    if (mutt_strcasecmp("plain", b->subtype) == 0)
     {
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
@@ -1866,12 +1866,12 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_pgp_handler;
       else if (option(OPT_REFLOW_TEXT) &&
-               (ascii_strcasecmp("flowed", mutt_get_parameter("format", b->parameter)) == 0))
+               (mutt_strcasecmp("flowed", mutt_get_parameter("format", b->parameter)) == 0))
         handler = rfc3676_handler;
       else
         handler = text_plain_handler;
     }
-    else if (ascii_strcasecmp("enriched", b->subtype) == 0)
+    else if (mutt_strcasecmp("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
     else /* text body type without a handler */
       plaintext = false;
@@ -1880,9 +1880,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
   {
     if (mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
-    else if (ascii_strcasecmp("delivery-status", b->subtype) == 0)
+    else if (mutt_strcasecmp("delivery-status", b->subtype) == 0)
       plaintext = true;
-    else if (ascii_strcasecmp("external-body", b->subtype) == 0)
+    else if (mutt_strcasecmp("external-body", b->subtype) == 0)
       handler = external_body_handler;
   }
   else if (b->type == TYPEMULTIPART)
@@ -1890,9 +1890,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
     char *p = NULL;
 
     if ((mutt_strcmp("inline", ShowMultipartAlternative) != 0) &&
-        (ascii_strcasecmp("alternative", b->subtype) == 0))
+        (mutt_strcasecmp("alternative", b->subtype) == 0))
       handler = alternative_handler;
-    else if (WithCrypto && (ascii_strcasecmp("signed", b->subtype) == 0))
+    else if (WithCrypto && (mutt_strcasecmp("signed", b->subtype) == 0))
     {
       p = mutt_get_parameter("protocol", b->parameter);
 
@@ -1919,7 +1919,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (WithCrypto && b->type == TYPEAPPLICATION)
   {
-    if (option(OPT_DONT_HANDLE_PGP_KEYS) && (ascii_strcasecmp("pgp-keys", b->subtype) == 0))
+    if (option(OPT_DONT_HANDLE_PGP_KEYS) && (mutt_strcasecmp("pgp-keys", b->subtype) == 0))
     {
       /* pass raw part through for key extraction */
       plaintext = true;
