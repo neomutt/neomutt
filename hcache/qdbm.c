@@ -68,7 +68,10 @@ static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *da
     return -1;
 
   VILLA *db = ctx;
-  return vlput(db, key, keylen, data, dlen, VL_DOVER);
+  /* Not sure if dbecode is reset on success, so better to explicitely return 0
+   * on success */
+  bool success = vlput(db, key, keylen, data, dlen, VL_DOVER);
+  return success ? 0 : dpecode;
 }
 
 static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
@@ -77,7 +80,10 @@ static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   VILLA *db = ctx;
-  return vlout(db, key, keylen);
+  /* Not sure if dbecode is reset on success, so better to explicitely return 0
+   * on success */
+  bool success = vlout(db, key, keylen);
+  return success ? 0 : dpecode;
 }
 
 static void hcache_qdbm_close(void **ctx)

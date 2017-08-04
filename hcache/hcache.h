@@ -120,7 +120,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d);
  * @param header      Message header to store
  * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time
  * @retval 0 on success
- * @retval -1 otherwise
+ * @return A generic or backend-specific error code otherwise
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
                       struct Header *header, unsigned int uidvalidity);
@@ -133,7 +133,7 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
  * @param data   Payload to associate with key
  * @param dlen   Length of the buffer pointed to by the @a data parameter
  * @retval 0 on success
- * @retval -1 otherwise
+ * @return A generic or backend-specific error code otherwise
  */
 int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
                           void *data, size_t dlen);
@@ -144,7 +144,7 @@ int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0 on success
- * @retval -1 otherwise
+ * @return A generic or backend-specific error code otherwise
  */
 int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
 

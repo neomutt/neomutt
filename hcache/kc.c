@@ -92,7 +92,8 @@ static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
     return -1;
 
   KCDB *db = ctx;
-  return kcdbset(db, key, keylen, data, dlen);
+  kcdbset(db, key, keylen, data, dlen);
+  return kcdbecode(db);
 }
 
 static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
@@ -101,7 +102,8 @@ static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   KCDB *db = ctx;
-  return kcdbremove(db, key, keylen);
+  kcdbremove(db, key, keylen);
+  return kcdbecode(db);
 }
 
 static void hcache_kyotocabinet_close(void **ctx)
