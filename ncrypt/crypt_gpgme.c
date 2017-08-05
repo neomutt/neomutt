@@ -4322,7 +4322,8 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "crypt_getkeybyaddr: looking for %s <%s>.\n", a->personal, a->mailbox);
+  mutt_debug(5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
+            a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {

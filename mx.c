@@ -1226,7 +1226,7 @@ int mx_commit_message(struct Message *msg, struct Context *ctx)
  */
 int mx_close_message(struct Context *ctx, struct Message **msg)
 {
-  if (!ctx || !msg)
+  if (!ctx || !msg || !*msg)
     return 0;
   int r = 0;
 
