@@ -1734,6 +1734,9 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   struct PagerRedrawData *rd = pager_menu->redraw_data;
   int i, j;
   char buffer[LONG_STRING];
+#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
+  int err;
+#endif
 
   if (!rd)
     return;
@@ -1803,9 +1806,18 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     {
       if ((rd->search_compiled = Resize->search_compiled))
       {
-        REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | mutt_which_case(rd->searchbuf));
-        rd->search_flag = MUTT_SEARCH;
-        rd->search_back = Resize->search_back;
+        if ((err = REGCOMP(&rd->search_re, rd->searchbuf,
+                           REG_NEWLINE | mutt_which_case(rd->searchbuf))) != 0)
+        {
+          regerror(err, &rd->search_re, buffer, sizeof(buffer));
+          mutt_error("%s", buffer);
+          rd->search_compiled = 0;
+        }
+        else
+        {
+          rd->search_flag = MUTT_SEARCH;
+          rd->search_back = Resize->search_back;
+        }
       }
       rd->lines = Resize->line;
       pager_menu->redraw |= REDRAW_FLOW;
