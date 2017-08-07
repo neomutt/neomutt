@@ -575,15 +575,18 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   return 1;
 }
 
-static int strict_cmp_lists(const struct List *a, const struct List *b)
+static int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
 {
+  struct ListNode *a = STAILQ_FIRST(ah);
+  struct ListNode *b = STAILQ_FIRST(bh);
+
   while (a && b)
   {
     if (mutt_strcmp(a->data, b->data) != 0)
       return 0;
 
-    a = a->next;
-    b = b->next;
+    a = STAILQ_NEXT(a, entries);
+    b = STAILQ_NEXT(b, entries);
   }
   if (a || b)
     return 0;
@@ -597,7 +600,7 @@ static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope
   {
     if ((mutt_strcmp(e1->message_id, e2->message_id) != 0) ||
         (mutt_strcmp(e1->subject, e2->subject) != 0) ||
-        !strict_cmp_lists(e1->references, e2->references) ||
+        !strict_cmp_stailq(&e1->references, &e2->references) ||
         !strict_addrcmp(e1->from, e2->from) || !strict_addrcmp(e1->sender, e2->sender) ||
         !strict_addrcmp(e1->reply_to, e2->reply_to) ||
         !strict_addrcmp(e1->to, e2->to) || !strict_addrcmp(e1->cc, e2->cc) ||

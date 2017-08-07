@@ -4491,11 +4491,11 @@ const struct Mapping SortSidebarMethods[] = {
 
 /* functions used to parse commands in a rc file */
 
-static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
+static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err);
 static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err);
-static int parse_unlist(struct Buffer *buf, struct Buffer *s,
+static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err);
 #ifdef USE_SIDEBAR
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
@@ -4576,8 +4576,8 @@ const struct Command Commands[] = {
   { "alias",            parse_alias,            0 },
   { "attachments",      parse_attachments,      0 },
   { "unattachments",parse_unattachments,0 },
-  { "auto_view",        parse_list,             UL &AutoViewList },
-  { "alternative_order",        parse_list,     UL &AlternativeOrderList },
+  { "auto_view",        parse_stailq,           UL &AutoViewList },
+  { "alternative_order",parse_stailq,           UL &AlternativeOrderList },
   { "bind",             mutt_parse_bind,        0 },
   { "charset-hook",     mutt_parse_hook,        MUTT_CHARSETHOOK },
 #ifdef HAVE_COLOR
@@ -4595,7 +4595,7 @@ const struct Command Commands[] = {
 #endif
   { "group",            parse_group,            MUTT_GROUP },
   { "ungroup",          parse_group,            MUTT_UNGROUP },
-  { "hdr_order",        parse_list,             UL &HeaderOrderList },
+  { "hdr_order",        parse_stailq,           UL &HeaderOrderList },
   { "ifdef",            parse_ifdef,            0 },
   { "ifndef",           parse_ifdef,            1 },
   { "finish",           finish_source,          0 },
@@ -4615,12 +4615,12 @@ const struct Command Commands[] = {
   { "tag-transforms",   parse_tag_transforms,   0 },
   { "tag-formats",      parse_tag_formats,      0 },
 #endif
-  { "mailto_allow",     parse_list,             UL &MailToAllow },
-  { "unmailto_allow",   parse_unlist,           UL &MailToAllow },
+  { "mailto_allow",     parse_stailq,           UL &MailToAllow },
+  { "unmailto_allow",   parse_unstailq,         UL &MailToAllow },
   { "message-hook",     mutt_parse_hook,        MUTT_MESSAGEHOOK },
   { "mbox-hook",        mutt_parse_hook,        MUTT_MBOXHOOK },
-  { "mime_lookup",      parse_list,     UL &MimeLookupList },
-  { "unmime_lookup",    parse_unlist,   UL &MimeLookupList },
+  { "mime_lookup",      parse_stailq,           UL &MimeLookupList },
+  { "unmime_lookup",    parse_unstailq,         UL &MimeLookupList },
   { "mono",             mutt_parse_mono,        0 },
   { "my_hdr",           parse_my_hdr,           0 },
   { "pgp-hook",         mutt_parse_hook,        MUTT_CRYPTHOOK },
@@ -4649,9 +4649,9 @@ const struct Command Commands[] = {
   { "timeout-hook",     mutt_parse_hook,        MUTT_TIMEOUTHOOK | MUTT_GLOBALHOOK },
   { "toggle",           parse_set,              MUTT_SET_INV },
   { "unalias",          parse_unalias,          0 },
-  { "unalternative_order",parse_unlist,         UL &AlternativeOrderList },
-  { "unauto_view",      parse_unlist,           UL &AutoViewList },
-  { "unhdr_order",      parse_unlist,           UL &HeaderOrderList },
+  { "unalternative_order",parse_unstailq,       UL &AlternativeOrderList },
+  { "unauto_view",      parse_unstailq,         UL &AutoViewList },
+  { "unhdr_order",      parse_unstailq,         UL &HeaderOrderList },
   { "unhook",           mutt_parse_unhook,      0 },
   { "unignore",         parse_unignore,         0 },
   { "unlists",          parse_unlists,          0 },

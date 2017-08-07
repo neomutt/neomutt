@@ -263,9 +263,6 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 {
   struct Header *h = NULL;
   int code = SENDPOSTPONED;
-  struct List *tmp = NULL;
-  struct List *last = NULL;
-  struct List *next = NULL;
   const char *p = NULL;
   int opt_delete;
 
@@ -322,47 +319,29 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 
   FREE(&PostContext);
 
-  for (tmp = hdr->env->userhdrs; tmp;)
+  struct ListNode *np, *tmp;
+  STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
-    if (mutt_strncasecmp("X-Mutt-References:", tmp->data, 18) == 0)
+    if (mutt_strncasecmp("X-Mutt-References:", np->data, 18) == 0)
     {
       if (ctx)
       {
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
-        p = skip_email_wsp(tmp->data + 18);
+        p = skip_email_wsp(np->data + 18);
         if (!ctx->id_hash)
           ctx->id_hash = mutt_make_id_hash(ctx);
         *cur = hash_find(ctx->id_hash, p);
       }
-
-      /* Remove the X-Mutt-References: header field. */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
       if (*cur)
         code |= SENDREPLY;
     }
-    else if (mutt_strncasecmp("X-Mutt-Fcc:", tmp->data, 11) == 0)
+    else if (mutt_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
     {
-      p = skip_email_wsp(tmp->data + 11);
+      p = skip_email_wsp(np->data + 11);
       strfcpy(fcc, p, fcclen);
       mutt_pretty_mailbox(fcc, fcclen);
 
-      /* remove the X-Mutt-Fcc: header field */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
       /* note that x-mutt-fcc was present.  we do this because we want to add a
       * default fcc if the header was missing, but preserve the request of the
       * user to not make a copy if the header field is present, but empty.
@@ -371,70 +350,46 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       code |= SENDPOSTPONEDFCC;
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
-             ((mutt_strncmp("Pgp:", tmp->data, 4) == 0) /* this is generated
-                                                       * by old mutt versions
-                                                       */
-              || (mutt_strncmp("X-Mutt-PGP:", tmp->data, 11) == 0)))
+             ((mutt_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
+                                                        * by old mutt versions
+                                                        */
+              || (mutt_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
     {
-      hdr->security = mutt_parse_crypt_hdr(strchr(tmp->data, ':') + 1, 1, APPLICATION_PGP);
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
-
-      /* remove the pgp field */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
     }
     else if ((WithCrypto & APPLICATION_SMIME) &&
-             (mutt_strncmp("X-Mutt-SMIME:", tmp->data, 13) == 0))
+             (mutt_strncmp("X-Mutt-SMIME:", np->data, 13) == 0))
     {
-      hdr->security = mutt_parse_crypt_hdr(strchr(tmp->data, ':') + 1, 1, APPLICATION_SMIME);
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
-
-      /* remove the smime field */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
     }
 
 #ifdef MIXMASTER
-    else if (mutt_strncmp("X-Mutt-Mix:", tmp->data, 11) == 0)
+    else if (mutt_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
     {
       char *t = NULL;
-      mutt_free_list(&hdr->chain);
+      mutt_list_free(&hdr->chain);
 
-      t = strtok(tmp->data + 11, " \t\n");
+      t = strtok(np->data + 11, " \t\n");
       while (t)
       {
-        hdr->chain = mutt_add_list(hdr->chain, t);
+        mutt_list_insert_tail(&hdr->chain, safe_strdup(t));
         t = strtok(NULL, " \t\n");
       }
-
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
     }
 #endif
 
     else
     {
-      last = tmp;
-      tmp = tmp->next;
+      // skip header removal
+      continue;
     }
+
+    // remove the header
+    STAILQ_REMOVE(&hdr->env->userhdrs, np, ListNode, entries);
+    FREE(&np->data);
+    FREE(&np);
   }
 
   if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))

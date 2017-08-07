@@ -50,16 +50,15 @@
 /**
  * struct Hook - A list of user hooks
  */
+static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 struct Hook
 {
   int type;                /**< hook type */
   struct Regex rx;         /**< regular expression */
   char *command;           /**< filename, command or pattern to execute */
   struct Pattern *pattern; /**< used for fcc,save,send-hook */
-  struct Hook *next;
+  TAILQ_ENTRY(Hook) entries;
 };
-
-static struct Hook *Hooks = NULL;
 
 static int current_hook_type = 0;
 
@@ -175,7 +174,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   }
 
   /* check to make sure that a matching hook doesn't already exist */
-  for (ptr = Hooks; ptr; ptr = ptr->next)
+  TAILQ_FOREACH(ptr, &Hooks, entries)
   {
     if (data & MUTT_GLOBALHOOK)
     {
@@ -216,8 +215,6 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         return 0;
       }
     }
-    if (!ptr->next)
-      break;
   }
 
   if (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_SAVEHOOK | MUTT_FCCHOOK |
@@ -246,19 +243,14 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
 
-  if (ptr)
-  {
-    ptr->next = safe_calloc(1, sizeof(struct Hook));
-    ptr = ptr->next;
-  }
-  else
-    Hooks = ptr = safe_calloc(1, sizeof(struct Hook));
+  ptr = safe_calloc(1, sizeof(struct Hook));
   ptr->type = data;
   ptr->command = command.data;
   ptr->pattern = pat;
   ptr->rx.pattern = pattern.data;
   ptr->rx.rx = rx;
   ptr->rx.not = not;
+  TAILQ_INSERT_TAIL(&Hooks, ptr, entries);
   return 0;
 
 error:
@@ -289,26 +281,15 @@ static void delete_hook(struct Hook *h)
 static void delete_hooks(int type)
 {
   struct Hook *h = NULL;
-  struct Hook *prev = NULL;
+  struct Hook *tmp = NULL;
 
-  while (h = Hooks, h && (type == 0 || type == h->type))
+  TAILQ_FOREACH_SAFE(h, &Hooks, entries, tmp)
   {
-    Hooks = h->next;
-    delete_hook(h);
-  }
-
-  prev = h; /* Unused assignment to avoid compiler warnings */
-
-  while (h)
-  {
-    if (type == h->type)
+    if (type == 0 || type == h->type)
     {
-      prev->next = h->next;
+      TAILQ_REMOVE(&Hooks, h, entries);
       delete_hook(h);
     }
-    else
-      prev = h;
-    h = prev->next;
   }
 }
 
@@ -351,7 +332,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 void mutt_folder_hook(char *path)
 {
-  struct Hook *tmp = Hooks;
+  struct Hook *tmp = NULL;
   struct Buffer err, token;
 
   current_hook_type = MUTT_FOLDERHOOK;
@@ -360,7 +341,7 @@ void mutt_folder_hook(char *path)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
   mutt_buffer_init(&token);
-  for (; tmp; tmp = tmp->next)
+  TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if (!tmp->command)
       continue;
@@ -390,14 +371,16 @@ void mutt_folder_hook(char *path)
 
 char *mutt_find_hook(int type, const char *pat)
 {
-  struct Hook *tmp = Hooks;
+  struct Hook *tmp = NULL;
 
-  for (; tmp; tmp = tmp->next)
+  TAILQ_FOREACH(tmp, &Hooks, entries)
+  {
     if (tmp->type & type)
     {
       if (regexec(tmp->rx.rx, pat, 0, NULL, 0) == 0)
         return tmp->command;
     }
+  }
   return NULL;
 }
 
@@ -414,7 +397,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
   err.data = safe_malloc(err.dsize);
   mutt_buffer_init(&token);
   memset(&cache, 0, sizeof(cache));
-  for (hook = Hooks; hook; hook = hook->next)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!hook->command)
       continue;
@@ -451,7 +434,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 
   memset(&cache, 0, sizeof(cache));
   /* determine if a matching hook exists */
-  for (hook = Hooks; hook; hook = hook->next)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!hook->command)
       continue;
@@ -519,9 +502,9 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 
 static char *_mutt_string_hook(const char *match, int hook)
 {
-  struct Hook *tmp = Hooks;
+  struct Hook *tmp = NULL;
 
-  for (; tmp; tmp = tmp->next)
+  TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if ((tmp->type & hook) &&
         ((match && regexec(tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
@@ -530,18 +513,16 @@ static char *_mutt_string_hook(const char *match, int hook)
   return NULL;
 }
 
-static struct List *_mutt_list_hook(const char *match, int hook)
+static void _mutt_list_hook(struct ListHead *matches, const char *match, int hook)
 {
-  struct Hook *tmp = Hooks;
-  struct List *matches = NULL;
+  struct Hook *tmp = NULL;
 
-  for (; tmp; tmp = tmp->next)
+  TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if ((tmp->type & hook) &&
         ((match && regexec(tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
-      matches = mutt_add_list(matches, tmp->command);
+      mutt_list_insert_tail(matches, safe_strdup(tmp->command));
   }
-  return matches;
 }
 
 char *mutt_charset_hook(const char *chs)
@@ -554,9 +535,9 @@ char *mutt_iconv_hook(const char *chs)
   return _mutt_string_hook(chs, MUTT_ICONVHOOK);
 }
 
-struct List *mutt_crypt_hook(struct Address *adr)
+void mutt_crypt_hook(struct ListHead *list, struct Address *adr)
 {
-  return _mutt_list_hook(adr->mailbox, MUTT_CRYPTHOOK);
+  _mutt_list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
 }
 
 #ifdef USE_SOCKET
@@ -579,7 +560,7 @@ void mutt_account_hook(const char *url)
   err.data = safe_malloc(err.dsize);
   mutt_buffer_init(&token);
 
-  for (hook = Hooks; hook; hook = hook->next)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & MUTT_ACCOUNTHOOK)))
       continue;
@@ -619,7 +600,7 @@ void mutt_timeout_hook(void)
   err.dsize = sizeof(buf);
   mutt_buffer_init(&token);
 
-  for (hook = Hooks; hook; hook = hook->next)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & MUTT_TIMEOUTHOOK)))
       continue;
@@ -654,7 +635,7 @@ void mutt_startup_shutdown_hook(int type)
   err.dsize = sizeof(buf);
   mutt_buffer_init(&token);
 
-  for (hook = Hooks; hook; hook = hook->next)
+  TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & type)))
       continue;

@@ -1586,33 +1586,33 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
  * need to write the list in reverse because they are stored in reverse order
  * when parsed to speed up threading
  */
-void mutt_write_references(struct List *r, FILE *f, int trim)
+void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 {
-  struct List **ref = NULL;
-  int refcnt = 0, refmax = 0;
-  int multiline = 1;
-  int space = 0;
+  struct ListNode *np;
+  size_t length = 0;
 
-  if (trim < 0)
+  STAILQ_FOREACH(np, r, entries)
   {
-    trim = -trim;
-    multiline = 0;
+    if (++length == trim)
+      break;
   }
 
-  for (; (trim == 0 || refcnt < trim) && r; r = r->next)
+  struct ListNode **ref = safe_calloc(length, sizeof(struct ListNode*));
+
+  // store in reverse order
+  STAILQ_FOREACH(np, r, entries)
   {
-    if (refcnt == refmax)
-      safe_realloc(&ref, (refmax += REF_INC) * sizeof(struct List *));
-    ref[refcnt++] = r;
+    ref[--length] = np;
+    if (length == 0)
+      break;
   }
 
-  while (refcnt-- > 0)
+  for (size_t i = 0; i < length; ++i)
   {
-    if (multiline || space)
+    if (i != 0)
       fputc(' ', f);
-    space = 1;
-    fputs(ref[refcnt]->data, f);
-    if (multiline && refcnt >= 1)
+    fputs(ref[i]->data, f);
+    if (i != length - 1)
       fputc('\n', f);
   }
 
@@ -2000,7 +2000,6 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
-  struct List *tmp = env->userhdrs;
   bool has_agent = false; /* user defined user-agent header field exists */
 
   if (mode == 0 && !privacy)
@@ -2104,10 +2103,10 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 
   if (mode <= 0)
   {
-    if (env->references)
+    if (!STAILQ_EMPTY(&env->references))
     {
       fputs("References:", fp);
-      mutt_write_references(env->references, fp, 10);
+      mutt_write_references(&env->references, fp, 10);
       fputc('\n', fp);
     }
 
@@ -2116,15 +2115,16 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
     mutt_write_mime_header(attach, fp);
   }
 
-  if (env->in_reply_to)
+  if (!STAILQ_EMPTY(&env->in_reply_to))
   {
     fputs("In-Reply-To:", fp);
-    mutt_write_references(env->in_reply_to, fp, 0);
+    mutt_write_references(&env->in_reply_to, fp, 0);
     fputc('\n', fp);
   }
 
   /* Add any user defined headers */
-  for (; tmp; tmp = tmp->next)
+  struct ListNode *tmp;
+  STAILQ_FOREACH(tmp, &env->userhdrs, entries)
   {
     if ((p = strchr(tmp->data, ':')))
     {
@@ -2164,18 +2164,19 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   return (ferror(fp) == 0 ? 0 : -1);
 }
 
-static void encode_headers(struct List *h)
+static void encode_headers(struct ListHead *h)
 {
   char *tmp = NULL;
   char *p = NULL;
   int i;
 
-  for (; h; h = h->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, h, entries)
   {
-    if (!(p = strchr(h->data, ':')))
+    if (!(p = strchr(np->data, ':')))
       continue;
 
-    i = p - h->data;
+    i = p - np->data;
     p = skip_email_wsp(p + 1);
     tmp = safe_strdup(p);
 
@@ -2183,9 +2184,9 @@ static void encode_headers(struct List *h)
       continue;
 
     rfc2047_encode_string(&tmp);
-    safe_realloc(&h->data, mutt_strlen(h->data) + 2 + mutt_strlen(tmp) + 1);
+    safe_realloc(&np->data, mutt_strlen(np->data) + 2 + mutt_strlen(tmp) + 1);
 
-    sprintf(h->data + i, ": %s", NONULL(tmp));
+    sprintf(np->data + i, ": %s", NONULL(tmp));
 
     FREE(&tmp);
   }
@@ -2657,15 +2658,16 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
     {
       rfc2047_encode_string(&env->subject);
     }
-  encode_headers(env->userhdrs);
+  encode_headers(&env->userhdrs);
 }
 
 void mutt_unprepare_envelope(struct Envelope *env)
 {
-  struct List *item = NULL;
-
-  for (item = env->userhdrs; item; item = item->next)
+  struct ListNode *item;
+  STAILQ_FOREACH(item, &env->userhdrs, entries)
+  {
     rfc2047_decode(&item->data);
+  }
 
   rfc822_free_address(&env->mail_followup_to);
 
@@ -3022,13 +3024,14 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
    * chain, save that information
    */
 
-  if (post && hdr->chain && hdr->chain)
+  if (post && !STAILQ_EMPTY(&hdr->chain))
   {
-    struct List *p = NULL;
-
     fputs("X-Mutt-Mix:", msg->fp);
-    for (p = hdr->chain; p; p = p->next)
+    struct ListNode *p;
+    STAILQ_FOREACH(p, &hdr->chain, entries)
+    {
       fprintf(msg->fp, " %s", (char *) p->data);
+    }
 
     fputc('\n', msg->fp);
   }

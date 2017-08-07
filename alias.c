@@ -54,10 +54,9 @@ struct Address *mutt_lookup_alias(const char *s)
   return NULL; /* no such alias */
 }
 
-static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
+static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn)
 {
   struct Address *head = NULL, *last = NULL, *t = NULL, *w = NULL;
-  struct List *u = NULL;
   bool i;
   const char *fqdn = NULL;
 
@@ -70,9 +69,10 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
       if (t)
       {
         i = false;
-        for (u = *expn; u; u = u->next)
+        struct ListNode *np;
+        STAILQ_FOREACH(np, expn, entries)
         {
-          if (mutt_strcmp(a->mailbox, u->data) == 0) /* alias already found */
+          if (mutt_strcmp(a->mailbox, np->data) == 0) /* alias already found */
           {
             mutt_debug(1, "expand_aliases_r(): loop in alias found for '%s'\n", a->mailbox);
             i = true;
@@ -82,10 +82,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 
         if (!i)
         {
-          u = safe_malloc(sizeof(struct List));
-          u->data = safe_strdup(a->mailbox);
-          u->next = *expn;
-          *expn = u;
+          mutt_list_insert_head(expn, safe_strdup(a->mailbox));
           w = rfc822_cpy_adr(t, 0);
           w = expand_aliases_r(w, expn);
           if (head)
@@ -138,10 +135,11 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 struct Address *mutt_expand_aliases(struct Address *a)
 {
   struct Address *t = NULL;
-  struct List *expn = NULL; /* previously expanded aliases to avoid loops */
+  struct ListHead expn; /* previously expanded aliases to avoid loops */
 
+  STAILQ_INIT(&expn);
   t = expand_aliases_r(a, &expn);
-  mutt_free_list(&expn);
+  mutt_list_free(&expn);
   return (mutt_remove_duplicates(t));
 }
 

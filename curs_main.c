@@ -1246,13 +1246,12 @@ int mutt_index_menu(void)
           }
           else
           {
-            struct List *ref = CURHDR->env->references;
-            if (!ref)
+            if (STAILQ_EMPTY(&CURHDR->env->references))
             {
               mutt_error(_("Article has no parent reference."));
               break;
             }
-            strfcpy(buf, ref->data, sizeof(buf));
+            strfcpy(buf, STAILQ_FIRST(&CURHDR->env->references)->data, sizeof(buf));
           }
           if (!Context->id_hash)
             Context->id_hash = mutt_make_id_hash(Context);
@@ -1319,8 +1318,8 @@ int mutt_index_menu(void)
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
           {
-            struct List *ref = CURHDR->env->references;
-            while (ref)
+            struct ListNode *ref;
+            STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
               if (hash_find(Context->id_hash, ref->data) == NULL)
               {
@@ -1330,9 +1329,8 @@ int mutt_index_menu(void)
               }
 
               /* the last msgid in References is the root message */
-              if (!ref->next)
+              if (!STAILQ_NEXT(ref, entries))
                 strfcpy(buf, ref->data, sizeof(buf));
-              ref = ref->next;
             }
           }
 
@@ -2191,7 +2189,8 @@ int mutt_index_menu(void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
           mutt_error(_("Threading is not enabled."));
-        else if (CURHDR->env->in_reply_to || CURHDR->env->references)
+        else if (!STAILQ_EMPTY(&CURHDR->env->in_reply_to) ||
+                 !STAILQ_EMPTY(&CURHDR->env->references))
         {
           {
             struct Header *oldcur = CURHDR;

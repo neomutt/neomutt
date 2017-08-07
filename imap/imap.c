@@ -65,7 +65,7 @@
 #endif
 
 /* imap forward declarations */
-static char *imap_get_flags(struct List **hflags, char *s);
+static char *imap_get_flags(struct ListHead *hflags, char *s);
 static int imap_check_capabilities(struct ImapData *idata);
 static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
                           const char *str, char *flags, size_t flsize);
@@ -547,9 +547,8 @@ void imap_close_connection(struct ImapData *idata)
  *
  * return stream following FLAGS response
  */
-static char *imap_get_flags(struct List **hflags, char *s)
+static char *imap_get_flags(struct ListHead *hflags, char *s)
 {
-  struct List *flags = NULL;
   char *flag_word = NULL;
   char ctmp;
 
@@ -567,10 +566,7 @@ static char *imap_get_flags(struct List **hflags, char *s)
     return NULL;
   }
 
-  /* create list, update caller's flags handle */
-  flags = mutt_new_list();
-  *hflags = flags;
-
+  /* update caller's flags handle */
   while (*s && *s != ')')
   {
     s++;
@@ -581,7 +577,7 @@ static char *imap_get_flags(struct List **hflags, char *s)
     ctmp = *s;
     *s = '\0';
     if (*flag_word)
-      mutt_add_list(flags, flag_word);
+      mutt_list_insert_tail(hflags, safe_strdup(flag_word));
     *s = ctmp;
   }
 
@@ -589,7 +585,7 @@ static char *imap_get_flags(struct List **hflags, char *s)
   if (*s != ')')
   {
     mutt_debug(1, "imap_get_flags: Unterminated FLAGS response: %s\n", s);
-    mutt_free_list(hflags);
+    mutt_list_free(hflags);
 
     return NULL;
   }
@@ -696,10 +692,10 @@ static int imap_open_mailbox(struct Context *ctx)
     if (mutt_strncasecmp("FLAGS", pc, 5) == 0)
     {
       /* don't override PERMANENTFLAGS */
-      if (!idata->flags)
+      if (STAILQ_EMPTY(&idata->flags))
       {
         mutt_debug(3, "Getting mailbox FLAGS\n");
-        if ((pc = imap_get_flags(&(idata->flags), pc)) == NULL)
+        if ((pc = imap_get_flags(&idata->flags, pc)) == NULL)
           goto fail;
       }
     }
@@ -708,7 +704,7 @@ static int imap_open_mailbox(struct Context *ctx)
     {
       mutt_debug(3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
-      mutt_free_list(&(idata->flags));
+      mutt_list_free(&idata->flags);
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
       pc += 13;
       if ((pc = imap_get_flags(&(idata->flags), pc)) == NULL)
@@ -767,19 +763,15 @@ static int imap_open_mailbox(struct Context *ctx)
   /* dump the mailbox flags we've found */
   if (debuglevel > 2)
   {
-    if (!idata->flags)
+    if (STAILQ_EMPTY(&idata->flags))
       mutt_debug(3, "No folder flags found\n");
     else
     {
-      struct List *t = idata->flags;
-
       mutt_debug(3, "Mailbox flags: ");
-
-      t = t->next;
-      while (t)
+      struct ListNode *np;
+      STAILQ_FOREACH(np, &idata->flags, entries)
       {
-        mutt_debug(3, "[%s] ", t->data);
-        t = t->next;
+        mutt_debug(3, "[%s] ", np->data);
       }
       mutt_debug(3, "\n");
     }
@@ -901,7 +893,7 @@ static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
                           const char *str, char *flags, size_t flsize)
 {
   if (mutt_bit_isset(idata->ctx->rights, aclbit))
-    if (flag && imap_has_flag(idata->flags, str))
+    if (flag && imap_has_flag(&idata->flags, str))
       safe_strcat(flags, flsize, str);
 }
 
@@ -912,21 +904,19 @@ static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
  * Do a caseless comparison of the flag against a flag list, return true if
  * found or flag list has '\*'.
  */
-bool imap_has_flag(struct List *flag_list, const char *flag)
+bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 {
-  if (!flag_list)
+  if (STAILQ_EMPTY(flag_list))
     return false;
 
-  flag_list = flag_list->next;
-  while (flag_list)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, flag_list, entries)
   {
-    if (mutt_strncasecmp(flag_list->data, flag, strlen(flag_list->data)) == 0)
+    if (mutt_strncasecmp(np->data, flag, strlen(np->data)) == 0)
       return true;
 
-    if (mutt_strncmp(flag_list->data, "\\*", strlen(flag_list->data)) == 0)
+    if (mutt_strncmp(np->data, "\\*", strlen(np->data)) == 0)
       return true;
-
-    flag_list = flag_list->next;
   }
 
   return false;
@@ -1154,7 +1144,7 @@ int imap_sync_message(struct ImapData *idata, struct Header *hdr,
 
   /* now make sure we don't lose custom tags */
   if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
-    imap_add_keywords(flags, hdr, idata->flags, sizeof(flags));
+    imap_add_keywords(flags, hdr, &idata->flags, sizeof(flags));
 
   mutt_remove_trailing_ws(flags);
 
@@ -1209,7 +1199,7 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
   if (!mutt_bit_isset(idata->ctx->rights, right))
     return 0;
 
-  if (right == MUTT_ACL_WRITE && !imap_has_flag(idata->flags, name))
+  if (right == MUTT_ACL_WRITE && !imap_has_flag(&idata->flags, name))
     return 0;
 
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
@@ -1459,7 +1449,7 @@ int imap_close_mailbox(struct Context *ctx)
 
     idata->reopen &= IMAP_REOPEN_ALLOW;
     FREE(&(idata->mailbox));
-    mutt_free_list(&idata->flags);
+    mutt_list_free(&idata->flags);
     idata->ctx = NULL;
 
     hash_destroy(&idata->uid_hash, NULL);
@@ -1748,18 +1738,17 @@ int imap_status(char *path, int queue)
  */
 struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create)
 {
-  struct List *cur = NULL;
   struct ImapStatus *status = NULL;
-  struct ImapStatus scache;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
   void *uidvalidity = NULL;
   void *uidnext = NULL;
 #endif
 
-  for (cur = idata->mboxcache; cur; cur = cur->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, &idata->mboxcache, entries)
   {
-    status = (struct ImapStatus *) cur->data;
+    status = (struct ImapStatus *) np->data;
 
     if (imap_mxcmp(mbox, status->name) == 0)
       return status;
@@ -1769,9 +1758,9 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   /* lame */
   if (create)
   {
-    memset(&scache, 0, sizeof(scache));
-    scache.name = (char *) mbox;
-    idata->mboxcache = mutt_add_list_n(idata->mboxcache, &scache, sizeof(scache));
+    struct ImapStatus *scache = safe_calloc(1, sizeof(struct ImapStatus));
+    scache->name = (char *) mbox;
+    mutt_list_insert_tail(&idata->mboxcache, (char *)scache);
     status = imap_mboxcache_get(idata, mbox, 0);
     status->name = safe_strdup(mbox);
   }
@@ -1807,17 +1796,16 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
 
 void imap_mboxcache_free(struct ImapData *idata)
 {
-  struct List *cur = NULL;
   struct ImapStatus *status = NULL;
 
-  for (cur = idata->mboxcache; cur; cur = cur->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, &idata->mboxcache, entries)
   {
-    status = (struct ImapStatus *) cur->data;
-
+    status = (struct ImapStatus *) np->data;
     FREE(&status->name);
   }
 
-  mutt_free_list(&idata->mboxcache);
+  mutt_list_free(&idata->mboxcache);
 }
 
 /**

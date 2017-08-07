@@ -273,8 +273,6 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   int rc = -1;
 
-  struct List *last = NULL;
-
   if (!(t = strchr(src, ':')))
     return -1;
 
@@ -315,7 +313,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      * choose to create a message with only a subset of the headers given in
      * the URL.
      */
-    if (mutt_matches_list(tag, MailToAllow))
+    if (mutt_list_match(tag, &MailToAllow))
     {
       if (mutt_strcasecmp(tag, "body") == 0)
       {
@@ -330,7 +328,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
         safe_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
         value = skip_email_wsp(&scratch[taglen + 1]);
-        mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1, &last);
+        mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1);
         FREE(&scratch);
       }
     }

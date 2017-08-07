@@ -244,76 +244,6 @@ void mutt_free_body(struct Body **p)
   *p = 0;
 }
 
-struct List *mutt_add_list(struct List *head, const char *data)
-{
-  size_t len = mutt_strlen(data);
-
-  return mutt_add_list_n(head, data, len ? len + 1 : 0);
-}
-
-struct List *mutt_add_list_n(struct List *head, const void *data, size_t len)
-{
-  struct List *tmp = NULL;
-
-  for (tmp = head; tmp && tmp->next; tmp = tmp->next)
-    ;
-  if (tmp)
-  {
-    tmp->next = safe_malloc(sizeof(struct List));
-    tmp = tmp->next;
-  }
-  else
-    head = tmp = safe_malloc(sizeof(struct List));
-
-  tmp->data = safe_malloc(len);
-  if (len)
-    memcpy(tmp->data, data, len);
-  tmp->next = NULL;
-  return head;
-}
-
-struct List *mutt_find_list(struct List *l, const char *data)
-{
-  struct List *p = l;
-
-  while (p)
-  {
-    if (data == p->data)
-      return p;
-    if (data && p->data && (mutt_strcmp(p->data, data) == 0))
-      return p;
-    p = p->next;
-  }
-  return NULL;
-}
-
-void mutt_push_list(struct List **head, const char *data)
-{
-  struct List *tmp = NULL;
-  tmp = safe_malloc(sizeof(struct List));
-  tmp->data = safe_strdup(data);
-  tmp->next = *head;
-  *head = tmp;
-}
-
-bool mutt_pop_list(struct List **head)
-{
-  struct List *elt = *head;
-  if (!elt)
-    return false;
-  *head = elt->next;
-  FREE(&elt->data);
-  FREE(&elt);
-  return true;
-}
-
-const char *mutt_front_list(struct List *head)
-{
-  if (!head || !head->data)
-    return "";
-  return head->data;
-}
-
 int mutt_remove_from_rx_list(struct RxList **l, const char *str)
 {
   struct RxList *p = NULL, *last = NULL;
@@ -350,41 +280,6 @@ int mutt_remove_from_rx_list(struct RxList **l, const char *str)
   return rv;
 }
 
-void mutt_free_list(struct List **list)
-{
-  struct List *p = NULL;
-
-  if (!list)
-    return;
-  while (*list)
-  {
-    p = *list;
-    *list = (*list)->next;
-    FREE(&p->data);
-    FREE(&p);
-  }
-}
-
-struct List *mutt_copy_list(struct List *p)
-{
-  struct List *t = NULL, *r = NULL, *l = NULL;
-
-  for (; p; p = p->next)
-  {
-    t = safe_malloc(sizeof(struct List));
-    t->data = safe_strdup(p->data);
-    t->next = NULL;
-    if (l)
-    {
-      r->next = t;
-      r = r->next;
-    }
-    else
-      l = r = t;
-  }
-  return l;
-}
-
 void mutt_free_header(struct Header **h)
 {
   if (!h || !*h)
@@ -395,7 +290,7 @@ void mutt_free_header(struct Header **h)
   FREE(&(*h)->tree);
   FREE(&(*h)->path);
 #ifdef MIXMASTER
-  mutt_free_list(&(*h)->chain);
+  mutt_list_free(&(*h)->chain);
 #endif
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
@@ -406,27 +301,13 @@ void mutt_free_header(struct Header **h)
 }
 
 /**
- * mutt_matches_list - Is the string in the list
- * @retval true if the header contained in "s" is in list "t"
- */
-bool mutt_matches_list(const char *s, struct List *t)
-{
-  for (; t; t = t->next)
-  {
-    if ((mutt_strncasecmp(s, t->data, mutt_strlen(t->data)) == 0) || *t->data == '*')
-      return true;
-  }
-  return false;
-}
-
-/**
  * mutt_matches_ignore - Does the string match the ignore list
  *
- * checks Ignore and UnIgnore using mutt_matches_list
+ * checks Ignore and UnIgnore using mutt_list_match
  */
 int mutt_matches_ignore(const char *s)
 {
-  return mutt_matches_list(s, Ignore) && !mutt_matches_list(s, UnIgnore);
+  return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
 }
 
 char *mutt_expand_path(char *s, size_t slen)
@@ -738,9 +619,9 @@ void mutt_free_envelope(struct Envelope **p)
 
   mutt_buffer_free(&(*p)->spam);
 
-  mutt_free_list(&(*p)->references);
-  mutt_free_list(&(*p)->in_reply_to);
-  mutt_free_list(&(*p)->userhdrs);
+  mutt_list_free(&(*p)->references);
+  mutt_list_free(&(*p)->in_reply_to);
+  mutt_list_free(&(*p)->userhdrs);
   FREE(p);
 }
 
@@ -760,6 +641,13 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
     base->h = (*extra)->h;                                                     \
     (*extra)->h = NULL;                                                        \
   }
+
+#define MOVE_STAILQ(h)                                                         \
+  if (STAILQ_EMPTY(&base->h))                                                  \
+  {                                                                            \
+    STAILQ_SWAP(&base->h, &((*extra))->h, ListNode);                         \
+  }
+
   MOVE_ELEM(return_path);
   MOVE_ELEM(from);
   MOVE_ELEM(to);
@@ -776,11 +664,11 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   MOVE_ELEM(x_original_to);
   if (!base->refs_changed)
   {
-    MOVE_ELEM(references);
+    MOVE_STAILQ(references);
   }
   if (!base->irt_changed)
   {
-    MOVE_ELEM(in_reply_to);
+    MOVE_STAILQ(in_reply_to);
   }
 
   /* real_subj is subordinate to subject */
@@ -796,9 +684,9 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   /* spam and user headers should never be hashed, and the new envelope may
     * have better values. Use new versions regardless. */
   mutt_buffer_free(&base->spam);
-  mutt_free_list(&base->userhdrs);
+  mutt_list_free(&base->userhdrs);
   MOVE_ELEM(spam);
-  MOVE_ELEM(userhdrs);
+  MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM
 
   mutt_free_envelope(extra);

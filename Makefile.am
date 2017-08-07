@@ -91,7 +91,7 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
-	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
+	pgpewrap.c pop.h protos.h queue.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
 	sort.h txt2c.c txt2c.sh version.h \
 	keymap_alldefs.h

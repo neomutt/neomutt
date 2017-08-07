@@ -517,6 +517,9 @@ struct ImapData *imap_new_idata(void)
     FREE(&idata);
   }
 
+  STAILQ_INIT(&idata->flags);
+  STAILQ_INIT(&idata->mboxcache);
+
   return idata;
 }
 
@@ -529,7 +532,7 @@ void imap_free_idata(struct ImapData **idata)
     return;
 
   FREE(&(*idata)->capstr);
-  mutt_free_list(&(*idata)->flags);
+  mutt_list_free(&(*idata)->flags);
   imap_mboxcache_free(*idata);
   mutt_buffer_free(&(*idata)->cmdbuf);
   FREE(&(*idata)->buf);

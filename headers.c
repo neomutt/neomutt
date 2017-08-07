@@ -54,7 +54,6 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct Envelope *n = NULL;
   time_t mtime;
   struct stat st;
-  struct List *cur = NULL, **last = NULL, *tmp = NULL;
 
   mutt_mktemp(path, sizeof(path));
   if ((ofp = safe_fopen(path, "w")) == NULL)
@@ -99,7 +98,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   }
 
   mutt_unlink(body);
-  mutt_free_list(&msg->env->userhdrs);
+  mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
   if ((ifp = fopen(path, "r")) == NULL)
@@ -130,15 +129,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 #ifdef USE_NNTP
   if (!option(OPT_NEWS_SEND))
 #endif
-    if (msg->env->in_reply_to &&
-        (!n->in_reply_to ||
-         (mutt_strcmp(n->in_reply_to->data, msg->env->in_reply_to->data) != 0)))
-      mutt_free_list(&msg->env->references);
+    if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
+        (STAILQ_EMPTY(&n->in_reply_to) ||
+         (mutt_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
+                      STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
+      mutt_list_free(&msg->env->references);
 
   /* restore old info. */
-  mutt_free_list(&n->references);
-  n->references = msg->env->references;
-  msg->env->references = NULL;
+  mutt_list_free(&n->references);
+  STAILQ_SWAP(&n->references, &msg->env->references, ListNode);
 
   mutt_free_envelope(&msg->env);
   msg->env = n;
@@ -150,15 +149,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
    * fcc: or attach: or pgp: was specified
    */
 
-  cur = msg->env->userhdrs;
-  last = &msg->env->userhdrs;
-  while (cur)
+  struct ListNode *np, *tmp;
+  STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
   {
     keep = true;
 
-    if (fcc && (mutt_strncasecmp("fcc:", cur->data, 4) == 0))
+    if (fcc && (mutt_strncasecmp("fcc:", np->data, 4) == 0))
     {
-      p = skip_email_wsp(cur->data + 4);
+      p = skip_email_wsp(np->data + 4);
       if (*p)
       {
         strfcpy(fcc, p, fcclen);
@@ -166,13 +164,13 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       }
       keep = false;
     }
-    else if (mutt_strncasecmp("attach:", cur->data, 7) == 0)
+    else if (mutt_strncasecmp("attach:", np->data, 7) == 0)
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
       size_t l = 0;
 
-      p = skip_email_wsp(cur->data + 7);
+      p = skip_email_wsp(np->data + 7);
       if (*p)
       {
         for (; *p && *p != ' ' && *p != '\t'; p++)
@@ -206,26 +204,19 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       keep = false;
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
-             (mutt_strncasecmp("pgp:", cur->data, 4) == 0))
+             (mutt_strncasecmp("pgp:", np->data, 4) == 0))
     {
-      msg->security = mutt_parse_crypt_hdr(cur->data + 4, 0, APPLICATION_PGP);
+      msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
         msg->security |= APPLICATION_PGP;
       keep = false;
     }
 
-    if (keep)
+    if (!keep)
     {
-      last = &cur->next;
-      cur = cur->next;
-    }
-    else
-    {
-      tmp = cur;
-      *last = cur->next;
-      cur = cur->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
+      STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
+      FREE(&np->data);
+      FREE(&np);
     }
   }
 }

@@ -373,12 +373,11 @@ void mutt_draw_tree(struct Context *ctx)
  * most immediate existing descendants.  we also note the earliest
  * date on any of the parents and put it in *dateptr.
  */
-static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
+static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur, time_t *dateptr)
 {
   struct MuttThread *start = cur;
   struct Envelope *env = NULL;
   time_t thisdate;
-  struct List *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
   int rc = 0;
 
   while (true)
@@ -397,28 +396,17 @@ static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
     env = cur->message->env;
     if (env->real_subj && ((env->real_subj != env->subject) || (!option(OPT_SORT_RE))))
     {
-      for (curlist = subjects, oldlist = NULL; curlist;
-           oldlist = curlist, curlist = curlist->next)
+      struct ListNode *np;
+      STAILQ_FOREACH(np, subjects, entries)
       {
-        rc = mutt_strcmp(env->real_subj, curlist->data);
+        rc = mutt_strcmp(env->real_subj, np->data);
         if (rc >= 0)
           break;
       }
-      if (!curlist || rc > 0)
-      {
-        newlist = safe_calloc(1, sizeof(struct List));
-        newlist->data = env->real_subj;
-        if (oldlist)
-        {
-          newlist->next = oldlist->next;
-          oldlist->next = newlist;
-        }
-        else
-        {
-          newlist->next = subjects;
-          subjects = newlist;
-        }
-      }
+      if (!np)
+          mutt_list_insert_head(subjects, env->real_subj);
+      else if (rc > 0)
+          mutt_list_insert_after(subjects, np, env->real_subj);
     }
 
     while (!cur->next && cur != start)
@@ -429,8 +417,6 @@ static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
       break;
     cur = cur->next;
   }
-
-  return subjects;
 }
 
 /**
@@ -443,14 +429,15 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
 {
   struct HashElem *ptr = NULL;
   struct MuttThread *tmp = NULL, *last = NULL;
-  struct List *subjects = NULL, *oldlist = NULL;
+  struct ListHead subjects = STAILQ_HEAD_INITIALIZER(subjects);
   time_t date = 0;
 
-  subjects = make_subject_list(cur, &date);
+  make_subject_list(&subjects, cur, &date);
 
-  while (subjects)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, &subjects, entries)
   {
-    for (ptr = hash_find_bucket(ctx->subj_hash, subjects->data); ptr; ptr = ptr->next)
+    for (ptr = hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
     {
       tmp = ((struct Header *) ptr->data)->thread;
       if (tmp != cur &&                    /* don't match the same message */
@@ -463,16 +450,14 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
                          (last->message->received < tmp->message->received) :
                          (last->message->date_sent < tmp->message->date_sent))) &&
           tmp->message->env->real_subj &&
-          (mutt_strcmp(subjects->data, tmp->message->env->real_subj) == 0))
+          (mutt_strcmp(np->data, tmp->message->env->real_subj) == 0))
       {
         last = tmp; /* best match so far */
       }
     }
-
-    oldlist = subjects;
-    subjects = subjects->next;
-    FREE(&oldlist);
   }
+
+  mutt_list_clear(&subjects);
   return last;
 }
 
@@ -799,7 +784,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
   int i, oldsort, using_refs = 0;
   struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset(&top, 0, sizeof(top));
-  struct List *ref = NULL;
+  struct ListNode *ref = NULL;
 
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
@@ -933,11 +918,11 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (using_refs == 0)
       {
         /* look at the beginning of in-reply-to: */
-        if ((ref = cur->env->in_reply_to) != NULL)
+        if ((ref = STAILQ_FIRST(&cur->env->in_reply_to)) != NULL)
           using_refs = 1;
         else
         {
-          ref = cur->env->references;
+          ref = STAILQ_FIRST(&cur->env->references);
           using_refs = 2;
         }
       }
@@ -949,20 +934,20 @@ void mutt_sort_threads(struct Context *ctx, int init)
          * the second reference (since at least eudora puts the most
          * recent reference in in-reply-to and the rest in references)
          */
-        if (!cur->env->references)
-          ref = ref->next;
+        if (STAILQ_EMPTY(&cur->env->references))
+          ref = STAILQ_NEXT(ref, entries);
         else
         {
-          if (mutt_strcmp(ref->data, cur->env->references->data) != 0)
-            ref = cur->env->references;
+          if (mutt_strcmp(ref->data, STAILQ_FIRST(&cur->env->references)->data) != 0)
+            ref = STAILQ_FIRST(&cur->env->references);
           else
-            ref = cur->env->references->next;
+            ref = STAILQ_NEXT(STAILQ_FIRST(&cur->env->references), entries);
 
           using_refs = 2;
         }
       }
       else
-        ref = ref->next; /* go on with references */
+        ref = STAILQ_NEXT(ref, entries); /* go on with references */
 
       if (!ref)
         break;
@@ -1409,7 +1394,7 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
 static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
   struct MuttThread *p = NULL;
-  struct List *ref = NULL;
+  struct ListNode *ref = NULL;
   bool done = false;
 
   for (; cur; cur = cur->next, done = false)
@@ -1424,19 +1409,31 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
      * Optimal since Mutt stores the references in reverse order, and the
      * first loop should match immediately for mails respecting RFC2822. */
     for (p = brk; !done && p; p = p->parent)
-      for (ref = cur->message->env->references; p->message && ref; ref = ref->next)
+    {
+      for (ref = STAILQ_FIRST(&cur->message->env->references);
+           p->message && ref;
+           ref = STAILQ_NEXT(ref, entries))
+      {
         if (mutt_strcasecmp(ref->data, p->message->env->message_id) == 0)
         {
           done = true;
           break;
         }
+      }
+    }
 
     if (done)
     {
       struct Header *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
-      mutt_free_list(&ref->next);
+      struct ListNode *np;
+      while ((np = STAILQ_NEXT(ref, entries)) != NULL)
+      {
+        STAILQ_REMOVE_AFTER(&cur->message->env->references, ref, entries);
+        FREE(&np->data);
+        FREE(&np);
+      }
 
       h->env->refs_changed = h->changed = true;
     }
@@ -1445,8 +1442,8 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 
 void mutt_break_thread(struct Header *hdr)
 {
-  mutt_free_list(&hdr->env->in_reply_to);
-  mutt_free_list(&hdr->env->references);
+  mutt_list_free(&hdr->env->in_reply_to);
+  mutt_list_free(&hdr->env->references);
   hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = true;
 
   clean_references(hdr->thread, hdr->thread->child);
@@ -1458,10 +1455,7 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
     return false;
 
   mutt_break_thread(child);
-
-  child->env->in_reply_to = mutt_new_list();
-  child->env->in_reply_to->data = safe_strdup(parent->env->message_id);
-
+  mutt_list_insert_head(&child->env->in_reply_to, safe_strdup(parent->env->message_id));
   mutt_set_flag(ctx, child, MUTT_TAG, 0);
 
   child->env->irt_changed = child->changed = true;

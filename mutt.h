@@ -30,10 +30,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
-struct List;
 struct ReplaceList;
 struct RxList;
 struct State;
+struct ListHead;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -312,25 +312,14 @@ enum QuadOptionVars
 #define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
-void mutt_free_list(struct List **list);
 void mutt_free_rx_list(struct RxList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
-struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
-bool mutt_matches_list(const char *s, struct List *t);
 
 /* add an element to a list */
-struct List *mutt_add_list(struct List *head, const char *data);
-struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
-struct List *mutt_find_list(struct List *l, const char *data);
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
-/* handle stack */
-void mutt_push_list(struct List **head, const char *data);
-bool mutt_pop_list(struct List **head);
-const char *mutt_front_list(struct List *head);
-
-void mutt_init(int skip_sys_rc, struct List *commands);
+void mutt_init(int skip_sys_rc, struct ListHead *commands);
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */

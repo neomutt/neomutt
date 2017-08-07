@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "lib/lib.h"
+#include "list.h"
 
 /**
  * struct Envelope - The header of an email
@@ -56,9 +57,9 @@ struct Envelope
   char *x_comment_to;
 #endif
   struct Buffer *spam;
-  struct List *references;  /**< message references (in reverse order) */
-  struct List *in_reply_to; /**< in-reply-to header content */
-  struct List *userhdrs;    /**< user defined headers */
+  struct ListHead references;  /**< message references (in reverse order) */
+  struct ListHead in_reply_to; /**< in-reply-to header content */
+  struct ListHead userhdrs;    /**< user defined headers */
   int kwtypes;
 
   bool irt_changed : 1;  /**< In-Reply-To changed to link/break threads */
@@ -67,7 +68,11 @@ struct Envelope
 
 static inline struct Envelope *mutt_new_envelope(void)
 {
-  return safe_calloc(1, sizeof(struct Envelope));
+  struct Envelope *e = safe_calloc(1, sizeof(struct Envelope));
+  STAILQ_INIT(&e->references);
+  STAILQ_INIT(&e->in_reply_to);
+  STAILQ_INIT(&e->userhdrs);
+  return e;
 }
 
 #endif /* _MUTT_ENVELOPE_H */

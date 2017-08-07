@@ -114,24 +114,16 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static struct List *parse_references(char *s, int in_reply_to)
+static void parse_references(struct ListHead *head, char *s)
 {
-  struct List *t = NULL, *lst = NULL;
   char *m = NULL;
   const char *sp = NULL;
 
-  m = mutt_extract_message_id(s, &sp);
-  while (m)
+  while ((m = mutt_extract_message_id(s, &sp)))
   {
-    t = safe_malloc(sizeof(struct List));
-    t->data = m;
-    t->next = lst;
-    lst = t;
-
-    m = mutt_extract_message_id(NULL, &sp);
+    mutt_list_insert_head(head, m);
+    s = NULL;
   }
-
-  return lst;
 }
 
 int mutt_check_encoding(const char *c)
@@ -991,14 +983,9 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 }
 
 int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
-                           char *p, short user_hdrs, short weed, short do_2047,
-                           struct List **lastp)
+                           char *p, short user_hdrs, short weed, short do_2047)
 {
   int matched = 0;
-  struct List *last = NULL;
-
-  if (lastp)
-    last = *lastp;
 
   switch (tolower(line[0]))
   {
@@ -1108,8 +1095,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'i':
       if (mutt_strcasecmp(line + 1, "n-reply-to") == 0)
       {
-        mutt_free_list(&e->in_reply_to);
-        e->in_reply_to = parse_references(p, 1);
+        mutt_list_free(&e->in_reply_to);
+        parse_references(&e->in_reply_to, p);
         matched = 1;
       }
       break;
@@ -1209,8 +1196,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'r':
       if (mutt_strcasecmp(line + 1, "eferences") == 0)
       {
-        mutt_free_list(&e->references);
-        e->references = parse_references(p, 0);
+        mutt_list_free(&e->references);
+        parse_references(&e->references, p);
         matched = 1;
       }
       else if (mutt_strcasecmp(line + 1, "eply-to") == 0)
@@ -1349,25 +1336,14 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (weed && option(OPT_WEED) && mutt_matches_ignore(line))
-      goto done;
-
-    if (last)
+    if (!(weed && option(OPT_WEED) && mutt_matches_ignore(line)))
     {
-      last->next = mutt_new_list();
-      last = last->next;
+      struct ListNode *np = mutt_list_insert_tail(&e->userhdrs, safe_strdup(line));
+      if (do_2047)
+        rfc2047_decode(&np->data);
     }
-    else
-      last = e->userhdrs = mutt_new_list();
-    last->data = safe_strdup(line);
-    if (do_2047)
-      rfc2047_decode(&last->data);
   }
 
-done:
-
-  if (lastp)
-    *lastp = last;
   return matched;
 }
 
@@ -1388,7 +1364,6 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)
 {
   struct Envelope *e = mutt_new_envelope();
-  struct List *last = NULL;
   char *line = safe_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
@@ -1484,7 +1459,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     if (!*p)
       continue; /* skip empty header fields */
 
-    mutt_parse_rfc822_line(e, hdr, line, p, user_hdrs, weed, 1, &last);
+    mutt_parse_rfc822_line(e, hdr, line, p, user_hdrs, weed, 1);
   }
 
   FREE(&line);
@@ -1563,20 +1538,20 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 /**
  * count_body_parts_check - Compares mime types to the ok and except lists
  */
-static bool count_body_parts_check(struct List **checklist, struct Body *b, bool dflt)
+static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool dflt)
 {
-  struct List *type = NULL;
   struct AttachMatch *a = NULL;
 
   /* If list is null, use default behavior. */
-  if (!*checklist)
+  if (!checklist || STAILQ_EMPTY(checklist))
   {
     return false;
   }
 
-  for (type = *checklist; type; type = type->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, checklist, entries)
   {
-    a = (struct AttachMatch *) type->data;
+    a = (struct AttachMatch *) np->data;
     mutt_debug(5, "cbpc: %s %d/%s ?? %s/%s [%d]... ",
                dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
@@ -1709,8 +1684,11 @@ int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
   else
     mutt_parse_mime_message(ctx, hdr);
 
-  if (AttachAllow || AttachExclude || InlineAllow || InlineExclude)
+  if (!STAILQ_EMPTY(&AttachAllow) || !STAILQ_EMPTY(&AttachExclude) ||
+      !STAILQ_EMPTY(&InlineAllow) || !STAILQ_EMPTY(&InlineExclude))
+  {
     hdr->attach_total = count_body_parts(hdr->content, MUTT_PARTS_TOPLEVEL);
+  }
   else
     hdr->attach_total = 0;
 

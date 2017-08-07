@@ -195,10 +195,10 @@ int main(int argc, char **argv, char **env)
   char *draftFile = NULL;
   char *newMagic = NULL;
   struct Header *msg = NULL;
-  struct List *attach = NULL;
-  struct List *commands = NULL;
-  struct List *queries = NULL;
-  struct List *alias_queries = NULL;
+  struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
+  struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
+  struct ListHead queries = STAILQ_HEAD_INITIALIZER(queries);
+  struct ListHead alias_queries = STAILQ_HEAD_INITIALIZER(alias_queries);
   int sendflags = 0;
   int flags = 0;
   int version = 0;
@@ -270,8 +270,8 @@ int main(int argc, char **argv, char **env)
       }
 
       /* non-option, either an attachment or address */
-      if (attach)
-        attach = mutt_add_list(attach, argv[optind]);
+      if (!STAILQ_EMPTY(&attach))
+        mutt_list_insert_tail(&attach, safe_strdup(argv[optind]));
       else
         argv[nargc++] = argv[optind];
     }
@@ -282,15 +282,15 @@ int main(int argc, char **argv, char **env)
       switch (i)
       {
         case 'A':
-          alias_queries = mutt_add_list(alias_queries, optarg);
+          mutt_list_insert_tail(&alias_queries, safe_strdup(optarg));
           break;
         case 'a':
-          attach = mutt_add_list(attach, optarg);
+          mutt_list_insert_tail(&attach, safe_strdup(optarg));
           break;
 
         case 'F':
           /* mutt_str_replace (&Muttrc, optarg); */
-          Muttrc = mutt_add_list(Muttrc, optarg);
+          mutt_list_insert_tail(&Muttrc, safe_strdup(optarg));
           break;
 
         case 'f':
@@ -337,7 +337,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'e':
-          commands = mutt_add_list(commands, optarg);
+          mutt_list_insert_tail(&commands, safe_strdup(optarg));
           break;
 
         case 'H':
@@ -371,7 +371,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'Q':
-          queries = mutt_add_list(queries, optarg);
+          mutt_list_insert_tail(&queries, safe_strdup(optarg));
           break;
 
         case 'R':
@@ -404,7 +404,7 @@ int main(int argc, char **argv, char **env)
           char buf[LONG_STRING];
 
           snprintf(buf, sizeof(buf), "set news_server=%s", optarg);
-          commands = mutt_add_list(commands, buf);
+          mutt_list_insert_tail(&commands, safe_strdup(buf));
         }
 
         case 'G': /* List of newsgroups */
@@ -444,7 +444,8 @@ int main(int argc, char **argv, char **env)
   }
 
   /* Check for a batch send. */
-  if (!isatty(0) || queries || alias_queries || dump_variables || batch_mode)
+  if (!isatty(0) || !STAILQ_EMPTY(&queries) || !STAILQ_EMPTY(&alias_queries) ||
+      dump_variables || batch_mode)
   {
     set_option(OPT_NO_CURSES);
     sendflags = SENDBATCH;
@@ -465,8 +466,8 @@ int main(int argc, char **argv, char **env)
   }
 
   /* set defaults and read init files */
-  mutt_init(flags & MUTT_NOSYSRC, commands);
-  mutt_free_list(&commands);
+  mutt_init(flags & MUTT_NOSYSRC, &commands);
+  mutt_list_free(&commands);
 
   /* Initialize crypto backends.  */
   crypt_init();
@@ -474,24 +475,25 @@ int main(int argc, char **argv, char **env)
   if (newMagic)
     mx_set_magic(newMagic);
 
-  if (queries)
+  if (!STAILQ_EMPTY(&queries))
   {
     for (; optind < argc; optind++)
-      queries = mutt_add_list(queries, argv[optind]);
-    return mutt_query_variables(queries);
+      mutt_list_insert_tail(&queries, safe_strdup(argv[optind]));
+    return mutt_query_variables(&queries);
   }
   if (dump_variables)
     return mutt_dump_variables(hide_sensitive);
 
-  if (alias_queries)
+  if (!STAILQ_EMPTY(&alias_queries))
   {
     int rv = 0;
     struct Address *a = NULL;
     for (; optind < argc; optind++)
-      alias_queries = mutt_add_list(alias_queries, argv[optind]);
-    for (; alias_queries; alias_queries = alias_queries->next)
+      mutt_list_insert_tail(&alias_queries, safe_strdup(argv[optind]));
+    struct ListNode *np;
+    STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      if ((a = mutt_lookup_alias(alias_queries->data)))
+      if ((a = mutt_lookup_alias(np->data)))
       {
         /* output in machine-readable form */
         mutt_addrlist_to_intl(a, NULL);
@@ -500,9 +502,10 @@ int main(int argc, char **argv, char **env)
       else
       {
         rv = 1;
-        printf("%s\n", alias_queries->data);
+        printf("%s\n", np->data);
       }
     }
+    mutt_list_free(&alias_queries);
     return rv;
   }
 
@@ -553,7 +556,8 @@ int main(int argc, char **argv, char **env)
     mutt_free_windows();
     mutt_endwin(NULL);
   }
-  else if (subject || msg || sendflags || draftFile || includeFile || attach || optind < argc)
+  else if (subject || msg || sendflags || draftFile || includeFile ||
+          !STAILQ_EMPTY(&attach) || optind < argc)
   {
     FILE *fin = NULL;
     FILE *fout = NULL;
@@ -688,7 +692,6 @@ int main(int argc, char **argv, char **env)
         struct Header *context_hdr = NULL;
         struct Envelope *opts_env = msg->env;
         struct stat st;
-        struct List *uh = NULL, **last_uhp = NULL;
 
         sendflags |= SENDDRAFTFILE;
 
@@ -708,19 +711,18 @@ int main(int argc, char **argv, char **env)
         mutt_prepare_template(fin, NULL, msg, context_hdr, 0);
 
         /* Scan for mutt header to set OPT_RESUME_DRAFT_FILES */
-        for (last_uhp = &msg->env->userhdrs, uh = *last_uhp; uh; uh = *last_uhp)
+        struct ListNode *np, *tmp;
+        STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
-          if (mutt_strncasecmp("X-Mutt-Resume-Draft:", uh->data, 20) == 0)
+          if (mutt_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
           {
             if (option(OPT_RESUME_EDITED_DRAFT_FILES))
               set_option(OPT_RESUME_DRAFT_FILES);
 
-            *last_uhp = uh->next;
-            uh->next = NULL;
-            mutt_free_list(&uh);
+            STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
+            FREE(&np->data);
+            FREE(&np);
           }
-          else
-            last_uhp = &uh->next;
         }
 
         rfc822_append(&msg->env->to, opts_env->to, 0);
@@ -748,34 +750,33 @@ int main(int argc, char **argv, char **env)
 
     FREE(&bodytext);
 
-    if (attach)
+    if (!STAILQ_EMPTY(&attach))
     {
-      struct List *t = attach;
       struct Body *a = msg->content;
 
       while (a && a->next)
         a = a->next;
 
-      while (t)
+      struct ListNode *np;
+      STAILQ_FOREACH(np, &attach, entries)
       {
         if (a)
         {
-          a->next = mutt_make_file_attach(t->data);
+          a->next = mutt_make_file_attach(np->data);
           a = a->next;
         }
         else
-          msg->content = a = mutt_make_file_attach(t->data);
+          msg->content = a = mutt_make_file_attach(np->data);
         if (!a)
         {
           if (!option(OPT_NO_CURSES))
             mutt_endwin(NULL);
-          fprintf(stderr, _("%s: unable to attach file.\n"), t->data);
-          mutt_free_list(&attach);
+          fprintf(stderr, _("%s: unable to attach file.\n"), np->data);
+          mutt_list_free(&attach);
           exit(1);
         }
-        t = t->next;
       }
-      mutt_free_list(&attach);
+      mutt_list_free(&attach);
     }
 
     rv = ci_send_message(sendflags, msg, bodyfile, NULL, NULL);

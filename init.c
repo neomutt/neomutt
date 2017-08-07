@@ -748,39 +748,22 @@ void mutt_free_opts(void)
   mutt_free_rx_list(&NoSpamList);
 }
 
-static void add_to_list(struct List **list, const char *str)
+static void add_to_stailq(struct ListHead *head, const char *str)
 {
-  struct List *t = NULL, *last = NULL;
-
   /* don't add a NULL or empty string to the list */
   if (!str || *str == '\0')
     return;
 
   /* check to make sure the item is not already on this list */
-  for (last = *list; last; last = last->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, head, entries)
   {
-    if (mutt_strcasecmp(str, last->data) == 0)
+    if (mutt_strcasecmp(str, np->data) == 0)
     {
-      /* already on the list, so just ignore it */
-      last = NULL;
-      break;
+      return;
     }
-    if (!last->next)
-      break;
   }
-
-  if (!*list || last)
-  {
-    t = safe_calloc(1, sizeof(struct List));
-    t->data = safe_strdup(str);
-    if (last)
-    {
-      last->next = t;
-      last = last->next;
-    }
-    else
-      *list = last = t;
-  }
+  mutt_list_insert_tail(head, safe_strdup(str));
 }
 
 static struct RxList *new_rx_list(void)
@@ -959,36 +942,6 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   return 0;
 }
 
-static void remove_from_list(struct List **l, const char *str)
-{
-  struct List *p = NULL, *last = NULL;
-
-  if (mutt_strcmp("*", str) == 0)
-    mutt_free_list(l); /* ``unCMD *'' means delete all current entries */
-  else
-  {
-    p = *l;
-    last = NULL;
-    while (p)
-    {
-      if (mutt_strcasecmp(str, p->data) == 0)
-      {
-        FREE(&p->data);
-        if (last)
-          last->next = p->next;
-        else
-          (*l) = p->next;
-        FREE(&p);
-      }
-      else
-      {
-        last = p;
-        p = p->next;
-      }
-    }
-  }
-}
-
 /**
  * finish_source - 'finish' command: stop processing current config file
  * @param tmp  Temporary space shared by all command handlers
@@ -1107,6 +1060,26 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return 0;
 }
 
+static void remove_from_stailq(struct ListHead *head, const char *str)
+{
+  if (mutt_strcmp("*", str) == 0)
+    mutt_list_free(head); /* ``unCMD *'' means delete all current entries */
+  else
+  {
+    struct ListNode *np, *tmp;
+    STAILQ_FOREACH_SAFE(np, head, entries, tmp)
+    {
+      if (mutt_strcasecmp(str, np->data) == 0)
+      {
+        STAILQ_REMOVE(head, np, ListNode, entries);
+        FREE(&np->data);
+        FREE(&np);
+        break;
+      }
+    }
+  }
+}
+
 static int parse_unignore(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
@@ -1116,9 +1089,9 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s,
 
     /* don't add "*" to the unignore list */
     if (strcmp(buf->data, "*") != 0)
-      add_to_list(&UnIgnore, buf->data);
+      add_to_stailq(&UnIgnore, buf->data);
 
-    remove_from_list(&Ignore, buf->data);
+    remove_from_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1130,20 +1103,41 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    remove_from_list(&UnIgnore, buf->data);
-    add_to_list(&Ignore, buf->data);
+    remove_from_stailq(&UnIgnore, buf->data);
+    add_to_stailq(&Ignore, buf->data);
   } while (MoreArgs(s));
 
   return 0;
 }
 
-static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
+static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
+{
+
+  do
+  {
+    mutt_extract_token(buf, s, 0);
+    add_to_stailq((struct ListHead *)data, buf->data);
+  } while (MoreArgs(s));
+
+  return 0;
+}
+
+static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
   do
   {
     mutt_extract_token(buf, s, 0);
-    add_to_list((struct List **) data, buf->data);
+    /*
+     * Check for deletion of entire list
+     */
+    if (mutt_strcmp(buf->data, "*") == 0)
+    {
+      mutt_list_free((struct ListHead *)data);
+      break;
+    }
+    remove_from_stailq((struct ListHead *)data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1374,26 +1368,6 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
   return -1;
 }
 
-static int parse_unlist(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
-{
-  do
-  {
-    mutt_extract_token(buf, s, 0);
-    /*
-     * Check for deletion of entire list
-     */
-    if (mutt_strcmp(buf->data, "*") == 0)
-    {
-      mutt_free_list((struct List **) data);
-      break;
-    }
-    remove_from_list((struct List **) data, buf->data);
-  } while (MoreArgs(s));
-
-  return 0;
-}
-
 #ifdef USE_SIDEBAR
 static int parse_path_list(struct Buffer *buf, struct Buffer *s,
                            unsigned long data, struct Buffer *err)
@@ -1405,7 +1379,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s,
     mutt_extract_token(buf, s, 0);
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    add_to_list((struct List **) data, path);
+    add_to_stailq((struct ListHead *) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1424,12 +1398,12 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_free_list((struct List **) data);
+      mutt_list_free((struct ListHead *) data);
       break;
     }
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    remove_from_list((struct List **) data, path);
+    remove_from_stailq((struct ListHead *) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1561,25 +1535,13 @@ static void _attachments_clean(void)
 }
 
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
-                             struct List **ldata, struct Buffer *err)
+                             struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
-  struct List *listp = NULL, *lastp = NULL;
   char *p = NULL;
   char *tmpminor = NULL;
   int len;
   int ret;
-
-  /* Find the last item in the list that data points to. */
-  lastp = NULL;
-  mutt_debug(5, "parse_attach_list: ldata = %p, *ldata = %p\n", (void *) ldata,
-             (void *) *ldata);
-  for (listp = *ldata; listp; listp = listp->next)
-  {
-    a = (struct AttachMatch *) listp->data;
-    mutt_debug(5, "parse_attach_list: skipping %s/%s\n", a->major, a->minor);
-    lastp = listp;
-  }
 
   do
   {
@@ -1631,18 +1593,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 
     mutt_debug(5, "parse_attach_list: added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
-    listp = safe_malloc(sizeof(struct List));
-    listp->data = (char *) a;
-    listp->next = NULL;
-    if (lastp)
-    {
-      lastp->next = listp;
-    }
-    else
-    {
-      *ldata = listp;
-    }
-    lastp = listp;
+    mutt_list_insert_tail(head, (char *)a);
   } while (MoreArgs(s));
 
   _attachments_clean();
@@ -1650,10 +1601,9 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 }
 
 static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
-                               struct List **ldata, struct Buffer *err)
+                               struct ListHead *head, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
-  struct List *lp = NULL, *lastp = NULL, *newlp = NULL;
   char *tmp = NULL;
   int major;
   char *minor = NULL;
@@ -1681,12 +1631,10 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     }
     major = mutt_check_mime_type(tmp);
 
-    /* We must do our own walk here because remove_from_list() will only
-     * remove the List->data, not anything pointed to by the List->data. */
-    lastp = NULL;
-    for (lp = *ldata; lp;)
+    struct ListNode *np, *tmp2;
+    STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
     {
-      a = (struct AttachMatch *) lp->data;
+      a = (struct AttachMatch *) np->data;
       mutt_debug(5, "parse_unattach_list: check %s/%s [%d] : %s/%s [%d]\n",
                  a->major, a->minor, a->major_int, tmp, minor, major);
       if (a->major_int == major && (mutt_strcasecmp(minor, a->minor) == 0))
@@ -1695,22 +1643,10 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
                    a->minor, a->major_int);
         regfree(&a->minor_rx);
         FREE(&a->major);
-
-        /* Relink backward */
-        if (lastp)
-          lastp->next = lp->next;
-        else
-          *ldata = lp->next;
-
-        newlp = lp->next;
-        FREE(&lp->data); /* same as a */
-        FREE(&lp);
-        lp = newlp;
-        continue;
+        STAILQ_REMOVE(head, np, ListNode, entries);
+        FREE(&np->data);
+        FREE(&np);
       }
-
-      lastp = lp;
-      lp = lp->next;
     }
 
   } while (MoreArgs(s));
@@ -1720,14 +1656,14 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-static int print_attach_list(struct List *lp, char op, char *name)
+static int print_attach_list(struct ListHead *h, char op, char *name)
 {
-  while (lp)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, h, entries)
   {
     printf("attachments %c%s %s/%s\n", op, name,
-           ((struct AttachMatch *) lp->data)->major,
-           ((struct AttachMatch *) lp->data)->minor);
-    lp = lp->next;
+           ((struct AttachMatch *) np->data)->major,
+           ((struct AttachMatch *) np->data)->minor);
   }
 
   return 0;
@@ -1737,7 +1673,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
-  struct List **listp = NULL;
+  struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1754,10 +1690,10 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     mutt_endwin(NULL);
     fflush(stdout);
     printf(_("\nCurrent attachments settings:\n\n"));
-    print_attach_list(AttachAllow, '+', "A");
-    print_attach_list(AttachExclude, '-', "A");
-    print_attach_list(InlineAllow, '+', "I");
-    print_attach_list(InlineExclude, '-', "I");
+    print_attach_list(&AttachAllow, '+', "A");
+    print_attach_list(&AttachExclude, '-', "A");
+    print_attach_list(&InlineAllow, '+', "I");
+    print_attach_list(&InlineExclude, '-', "I");
     mutt_any_key_to_continue(NULL);
     return 0;
   }
@@ -1770,16 +1706,16 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   if (mutt_strncasecmp(category, "attachment", strlen(category)) == 0)
   {
     if (op == '+')
-      listp = &AttachAllow;
+      head = &AttachAllow;
     else
-      listp = &AttachExclude;
+      head = &AttachExclude;
   }
   else if (mutt_strncasecmp(category, "inline", strlen(category)) == 0)
   {
     if (op == '+')
-      listp = &InlineAllow;
+      head = &InlineAllow;
     else
-      listp = &InlineExclude;
+      head = &InlineExclude;
   }
   else
   {
@@ -1787,14 +1723,14 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
     return -1;
   }
 
-  return parse_attach_list(buf, s, listp, err);
+  return parse_attach_list(buf, s, head, err);
 }
 
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
-  struct List **listp = NULL;
+  struct ListHead *head = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1813,16 +1749,16 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
   if (mutt_strncasecmp(p, "attachment", strlen(p)) == 0)
   {
     if (op == '+')
-      listp = &AttachAllow;
+      head = &AttachAllow;
     else
-      listp = &AttachExclude;
+      head = &AttachExclude;
   }
   else if (mutt_strncasecmp(p, "inline", strlen(p)) == 0)
   {
     if (op == '+')
-      listp = &InlineAllow;
+      head = &InlineAllow;
     else
-      listp = &InlineExclude;
+      head = &InlineExclude;
   }
   else
   {
@@ -1830,7 +1766,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
     return -1;
   }
 
-  return parse_unattach_list(buf, s, listp, err);
+  return parse_unattach_list(buf, s, head, err);
 }
 
 static int parse_unlists(struct Buffer *buf, struct Buffer *s,
@@ -2035,43 +1971,29 @@ bail:
 static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err)
 {
-  struct List *last = NULL;
-  struct List *tmp = UserHeader;
-  struct List *ptr = NULL;
+  struct ListNode *np, *tmp;
   size_t l;
 
   do
   {
     mutt_extract_token(buf, s, 0);
     if (mutt_strcmp("*", buf->data) == 0)
-      mutt_free_list(&UserHeader);
-    else
     {
-      tmp = UserHeader;
-      last = NULL;
+      mutt_list_free(&UserHeader);
+      continue;
+    }
 
-      l = mutt_strlen(buf->data);
-      if (buf->data[l - 1] == ':')
-        l--;
+    l = mutt_strlen(buf->data);
+    if (buf->data[l - 1] == ':')
+      l--;
 
-      while (tmp)
+    STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)
+    {
+      if ((mutt_strncasecmp(buf->data, np->data, l) == 0) && np->data[l] == ':')
       {
-        if ((mutt_strncasecmp(buf->data, tmp->data, l) == 0) && tmp->data[l] == ':')
-        {
-          ptr = tmp;
-          if (last)
-            last->next = tmp->next;
-          else
-            UserHeader = tmp->next;
-          tmp = tmp->next;
-          ptr->next = NULL;
-          mutt_free_list(&ptr);
-        }
-        else
-        {
-          last = tmp;
-          tmp = tmp->next;
-        }
+        STAILQ_REMOVE(&UserHeader, np, ListNode, entries);
+        FREE(&np->data);
+        FREE(&np);
       }
     }
   } while (MoreArgs(s));
@@ -2081,7 +2003,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
 static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
-  struct List *tmp = NULL;
+  struct ListNode *n = NULL;
   size_t keylen;
   char *p = NULL;
 
@@ -2093,32 +2015,29 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   }
   keylen = p - buf->data + 1;
 
-  if (UserHeader)
+  STAILQ_FOREACH(n, &UserHeader, entries)
   {
-    for (tmp = UserHeader;; tmp = tmp->next)
+    /* see if there is already a field by this name */
+    if (mutt_strncasecmp(buf->data, n->data, keylen) == 0)
     {
-      /* see if there is already a field by this name */
-      if (mutt_strncasecmp(buf->data, tmp->data, keylen) == 0)
-      {
-        /* replace the old value */
-        FREE(&tmp->data);
-        tmp->data = buf->data;
-        mutt_buffer_init(buf);
-        return 0;
-      }
-      if (!tmp->next)
-        break;
+      break;
     }
-    tmp->next = mutt_new_list();
-    tmp = tmp->next;
+  }
+
+  if (!n)
+  {
+    /* not found, allocate memory for a new node and add it to the list */
+    n = mutt_list_insert_tail(&UserHeader, NULL);
   }
   else
   {
-    tmp = mutt_new_list();
-    UserHeader = tmp;
+    /* found, free the existing data */
+    FREE(&n->data);
   }
-  tmp->data = buf->data;
+
+  n->data = buf->data;
   mutt_buffer_init(buf);
+
   return 0;
 }
 
@@ -3184,10 +3103,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return r;
 }
 
-/* Stack structure
- * FILO designed to contain the list of config files that have been sourced
- * and avoid cyclic sourcing */
-static struct List *MuttrcStack;
+/* FILO designed to contain the list of config files that have been sourced and
+ * avoid cyclic sourcing */
+static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
 /**
  * to_absolute_path - Convert relative filepath to an absolute path
@@ -3261,15 +3179,23 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   if (rcfile[rcfilelen - 1] != '|')
   {
-    if (!to_absolute_path(rcfile, mutt_front_list(MuttrcStack)))
+    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+    if (!to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
     {
       mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
       return -1;
     }
 
-    if (!MuttrcStack || mutt_find_list(MuttrcStack, rcfile) == NULL)
+    STAILQ_FOREACH(np, &MuttrcStack, entries)
     {
-      mutt_push_list(&MuttrcStack, rcfile);
+      if (mutt_strcmp(np->data, rcfile) == 0)
+      {
+        break;
+      }
+    }
+    if (!np)
+    {
+      mutt_list_insert_head(&MuttrcStack, safe_strdup(rcfile));
     }
     else
     {
@@ -3354,7 +3280,10 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
   }
 
-  mutt_pop_list(&MuttrcStack);
+  if (!STAILQ_EMPTY(&MuttrcStack))
+  {
+    STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
+  }
 
   return rc;
 }
@@ -4007,10 +3936,8 @@ int var_to_string(int idx, char *val, size_t len)
 /**
  * mutt_query_variables - Implement the -Q command line flag
  */
-int mutt_query_variables(struct List *queries)
+int mutt_query_variables(struct ListHead *queries)
 {
-  struct List *p = NULL;
-
   char command[STRING];
 
   struct Buffer err, token;
@@ -4021,9 +3948,10 @@ int mutt_query_variables(struct List *queries)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
 
-  for (p = queries; p; p = p->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, queries, entries)
   {
-    snprintf(command, sizeof(command), "set ?%s\n", p->data);
+    snprintf(command, sizeof(command), "set ?%s\n", np->data);
     if (mutt_parse_rc_line(command, &token, &err) == -1)
     {
       fprintf(stderr, "%s\n", err.data);
@@ -4100,7 +4028,7 @@ int mutt_getvaluebyname(const char *name, const struct Mapping *map)
   return -1;
 }
 
-static int execute_commands(struct List *p)
+static int execute_commands(struct ListHead *p)
 {
   struct Buffer err, token;
 
@@ -4108,9 +4036,10 @@ static int execute_commands(struct List *p)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
   mutt_buffer_init(&token);
-  for (; p; p = p->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_parse_rc_line(p->data, &token, &err) == -1)
+    if (mutt_parse_rc_line(np->data, &token, &err) == -1)
     {
       fprintf(stderr, _("Error in command line: %s\n"), err.data);
       FREE(&token.data);
@@ -4162,7 +4091,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   return NULL;
 }
 
-void mutt_init(int skip_sys_rc, struct List *commands)
+void mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
   struct passwd *pw = NULL;
   struct utsname utsname;
@@ -4404,15 +4333,15 @@ void mutt_init(int skip_sys_rc, struct List *commands)
    * create RFC822-compliant mail messages using the "subject" and "body"
    * headers.
    */
-  add_to_list(&MailToAllow, "body");
-  add_to_list(&MailToAllow, "subject");
+  add_to_stailq(&MailToAllow, "body");
+  add_to_stailq(&MailToAllow, "subject");
   /* Cc, In-Reply-To, and References help with not breaking threading on
    * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
-  add_to_list(&MailToAllow, "cc");
-  add_to_list(&MailToAllow, "in-reply-to");
-  add_to_list(&MailToAllow, "references");
+  add_to_stailq(&MailToAllow, "cc");
+  add_to_stailq(&MailToAllow, "in-reply-to");
+  add_to_stailq(&MailToAllow, "references");
 
-  if (!Muttrc)
+  if (STAILQ_EMPTY(&Muttrc))
   {
     char *xdg_cfg_home = getenv("XDG_CONFIG_HOME");
 
@@ -4425,31 +4354,31 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     char *config = find_cfg(HomeDir, xdg_cfg_home);
     if (config)
     {
-      Muttrc = mutt_add_list(Muttrc, config);
-      FREE(&config);
+      mutt_list_insert_tail(&Muttrc, config);
     }
   }
   else
   {
-    for (struct List *config = Muttrc; config != NULL; config = config->next)
+    struct ListNode *np;
+    STAILQ_FOREACH(np, &Muttrc, entries)
     {
-      strfcpy(buffer, config->data, sizeof(buffer));
-      FREE(&config->data);
+      strfcpy(buffer, np->data, sizeof(buffer));
+      FREE(&np->data);
       mutt_expand_path(buffer, sizeof(buffer));
-      config->data = safe_strdup(buffer);
-      if (access(config->data, F_OK))
+      np->data = safe_strdup(buffer);
+      if (access(np->data, F_OK))
       {
-        snprintf(buffer, sizeof(buffer), "%s: %s", config->data, strerror(errno));
+        snprintf(buffer, sizeof(buffer), "%s: %s", np->data, strerror(errno));
         mutt_endwin(buffer);
         exit(1);
       }
     }
   }
 
-  if (Muttrc && Muttrc->data)
+  if (!STAILQ_EMPTY(&Muttrc))
   {
     FREE(&AliasFile);
-    AliasFile = safe_strdup(Muttrc->data);
+    AliasFile = safe_strdup(STAILQ_FIRST(&Muttrc)->data);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicitly
@@ -4503,13 +4432,14 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   }
 
   /* Read the user's initialization file.  */
-  for (struct List *config = Muttrc; config != NULL; config = config->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, &Muttrc, entries)
   {
-    if (config->data)
+    if (np->data)
     {
       if (!option(OPT_NO_CURSES))
         endwin();
-      if (source_rc(config->data, &err) != 0)
+      if (source_rc(np->data, &err) != 0)
       {
         fputs(err.data, stderr);
         fputc('\n', stderr);
