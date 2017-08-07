@@ -24,8 +24,8 @@
 #define _MUTT_BODY_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
-#include <sys/types.h>
 
 /**
  * struct Body - The body of an email
@@ -97,5 +97,9 @@ struct Body
   bool attach_qualifies : 1;
 
 };
+
+struct Body *mutt_new_body(void);
+int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src);
+void mutt_free_body(struct Body **p);
 
 #endif /* _MUTT_BODY_H */

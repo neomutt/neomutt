@@ -109,7 +109,6 @@ struct Body *mutt_make_file_attach(const char *path);
 struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg);
 struct Body *mutt_remove_multipart(struct Body *b);
 struct Body *mutt_make_multipart(struct Body *b);
-struct Body *mutt_new_body(void);
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest);
 struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent);
 struct Body *mutt_read_mime_header(FILE *fp, int digest);
@@ -193,7 +192,6 @@ void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const ch
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_free_alias(struct Alias **p);
-void mutt_free_body(struct Body **p);
 void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(struct EnterState **esp);
 void mutt_free_envelope(struct Envelope **p);
@@ -276,7 +274,6 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs);
 #endif
 int mutt_complete(char *s, size_t slen);
 int mutt_compose_attachment(struct Body *a);
-int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src);
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags);
 int mutt_display_message(struct Header *cur);
 int mutt_dump_variables(int hide_sensitive);

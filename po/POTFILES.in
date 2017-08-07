@@ -3,6 +3,7 @@ addrbook.c
 alias.c
 attach.c
 bcache.c
+body.c
 browser.c
 buffy.c
 charset.c

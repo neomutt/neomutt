@@ -41,6 +41,7 @@
 #include "browser.h"
 #include "account.h"
 #include "attach.h"
+#include "body.h"
 #include "buffy.h"
 #include "charset.h"
 #include "context.h"
