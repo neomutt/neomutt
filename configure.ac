@@ -826,9 +826,6 @@ AM_CONDITIONAL(BUILD_HC_QDBM, test "x$build_hc_qdbm" = "xyes")
 AM_CONDITIONAL(BUILD_HC_TC,   test "x$build_hc_tc"   = "xyes")
 dnl -- end cache --
 
-MUTT_MD5="mutt_md5$EXEEXT"
-
-AC_SUBST(MUTT_MD5)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(HCACHE_LIBS)
 AC_SUBST(HCACHE_DEPS)

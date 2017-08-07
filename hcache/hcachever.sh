@@ -77,7 +77,12 @@ do
 done
 echo " */" >> $TMPD
 
-MD5TEXT=`echo "$TEXT" | ./mutt_md5`
+MD5CMD=`which md5sum || which md5` # Try both md5sum (Linux) and md5 (BSD)
+if [ $? != 0 ]; then
+    echo "Could not find md5 program"
+    exit 1
+fi
+MD5TEXT=`echo "$TEXT" | $MD5CMD`
 echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
 
 # TODO: validate we have all structs
