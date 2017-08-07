@@ -31,6 +31,7 @@ struct Buffer;
 struct Command
 {
   char *name;
+  int uniq_length;
   int (*func)(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
   unsigned long data;
 };
