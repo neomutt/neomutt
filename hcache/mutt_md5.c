@@ -32,7 +32,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "lib/md5.h"
 
 /* local md5 equivalent for header cache versioning */
 int main(void)
