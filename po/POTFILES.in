@@ -22,6 +22,7 @@ doc/makedoc.c
 edit.c
 editmsg.c
 enter.c
+envelope.c
 filter.c
 flags.c
 from.c

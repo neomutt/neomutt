@@ -194,7 +194,6 @@ void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_free_alias(struct Alias **p);
 void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(struct EnterState **esp);
-void mutt_free_envelope(struct Envelope **p);
 void mutt_free_header(struct Header **h);
 void mutt_free_regexp(struct Regex **pp);
 void mutt_help(int menu);
@@ -204,7 +203,6 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
 void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, struct Header *cur, struct Envelope *curenv);
 void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out);
-void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra);
 void mutt_message_to_7bit(struct Body *a, FILE *fp);
 #define mutt_mktemp(a, b) mutt_mktemp_pfx_sfx(a, b, "mutt", NULL)
 #define mutt_mktemp_pfx_sfx(a, b, c, d) _mutt_mktemp(a, b, c, d, __FILE__, __LINE__)
