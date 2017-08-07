@@ -58,8 +58,6 @@ md5prog () {
   prog=""
   case "`uname`" in
     SunOS)
-      ;&
-    Solaris)
       prog="digest -a md5"
       ;;
     *BSD)
