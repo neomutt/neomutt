@@ -54,6 +54,25 @@ getstruct () {
   return
 }
 
+md5prog () {
+  prog=""
+  case "`uname`" in
+    SunOS)
+      ;&
+    Solaris)
+      prog="digest -a md5"
+      ;;
+    *BSD)
+      prog="md5"
+      ;;
+    *)
+      prog="md5sum"
+      ;;
+  esac
+
+  echo $prog
+}
+
 DEST="$1"
 TMPD="$DEST.tmp"
 
@@ -77,12 +96,8 @@ do
 done
 echo " */" >> $TMPD
 
-MD5CMD=`which md5sum || which md5` # Try both md5sum (Linux) and md5 (BSD)
-if [ $? != 0 ]; then
-    echo "Could not find md5 program"
-    exit 1
-fi
-MD5TEXT=`echo "$TEXT" | $MD5CMD | cut -c-8`
+MD5PROG=$(md5prog)
+MD5TEXT=`echo "$TEXT" | $MD5PROG | cut -c-8`
 echo "#define HCACHEVER 0x$MD5TEXT" >> $TMPD
 
 # TODO: validate we have all structs
