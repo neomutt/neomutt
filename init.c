@@ -3317,16 +3317,15 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
 
 /**
  * find_command - Find a command matching a (partial) string
- * @param cmd String to compare
+ * @param cmd     String to compare
+ * @param cmd_len Length of string
  * @retval num Index into Commands
  * @retval  -1 Error, no match
  */
-static int find_command(const char *cmd)
+static int find_command(const char *cmd, int cmd_len)
 {
   if (!cmd)
     return -1;
-
-  int cmd_len = mutt_strlen(cmd);
 
   for (int i = 0; Commands[i].name; i++)
   {
@@ -3375,7 +3374,7 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
       continue;
     }
     mutt_extract_token(token, &expn, 0);
-    int idx = find_command(token->data);
+    int idx = find_command(token->data, mutt_strlen(token->data));
     if (idx < 0)
     {
       snprintf(err->data, err->dsize, _("%s: unknown command"), NONULL(token->data));
@@ -3482,6 +3481,15 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
   while ((pt > buffer) && !isspace((unsigned char) *pt))
     pt--;
 
+  const char *cmd = buffer;
+  if (pt)
+  {
+    /* we may not have a complete command, so look up what we can */
+    int idx = find_command(cmd, (pt - buffer));
+    if (idx >= 0)
+      cmd = Commands[idx].name;
+  }
+
   if (pt == buffer) /* complete cmd */
   {
     /* first TAB. Collect all the matches */
@@ -3516,16 +3524,16 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
     /* return the completed command */
     strncpy(buffer, Completed, len - spaces);
   }
-  else if ((mutt_strncmp(buffer, "set", 3) == 0) ||
-           (mutt_strncmp(buffer, "unset", 5) == 0) ||
-           (mutt_strncmp(buffer, "reset", 5) == 0) ||
-           (mutt_strncmp(buffer, "toggle", 6) == 0))
+  else if ((mutt_strncmp(cmd, "set", 3) == 0) ||
+           (mutt_strncmp(cmd, "unset", 5) == 0) ||
+           (mutt_strncmp(cmd, "reset", 5) == 0) ||
+           (mutt_strncmp(cmd, "toggle", 6) == 0))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_strncmp(buffer, "set", 3) == 0)
+    if (mutt_strncmp(cmd, "set", 3) == 0)
     {
       for (num = 0; prefixes[num]; num++)
       {
@@ -3570,7 +3578,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
 
     strncpy(pt, Completed, buffer + len - pt - spaces);
   }
-  else if (mutt_strncmp(buffer, "exec", 4) == 0)
+  else if (mutt_strncmp(cmd, "exec", 4) == 0)
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 
