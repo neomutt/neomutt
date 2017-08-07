@@ -68,14 +68,14 @@
  * and absolute form.  The buffer is rewritten in place with the canonical IMAP
  * path.
  *
- * Function can fail if imap_parse_path() or url_ciss_tostring() fail,
+ * Function can fail if imap_parse_path() or url_tostring() fail,
  * of if the buffer isn't large enough.
  */
 int imap_expand_path(char *path, size_t len)
 {
   struct ImapMbox mx;
   struct ImapData *idata = NULL;
-  struct CissUrl url;
+  struct Url url;
   char fixedpath[LONG_STRING];
   int rc;
 
@@ -87,7 +87,7 @@ int imap_expand_path(char *path, size_t len)
   imap_fix_path(idata, mx.mbox, fixedpath, sizeof(fixedpath));
   url.path = fixedpath;
 
-  rc = url_ciss_tostring(&url, path, len, U_DECODE_PASSWD);
+  rc = url_tostring(&url, path, len, U_DECODE_PASSWD);
   FREE(&mx.mbox);
 
   return rc;
@@ -202,7 +202,7 @@ static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
 header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
 {
   struct ImapMbox mx;
-  struct CissUrl url;
+  struct Url url;
   char cachepath[LONG_STRING];
   char mbox[LONG_STRING];
 
@@ -219,7 +219,7 @@ header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
 
   mutt_account_tourl(&idata->conn->account, &url);
   url.path = mbox;
-  url_ciss_tostring(&url, cachepath, sizeof(cachepath), U_PATH);
+  url_tostring(&url, cachepath, sizeof(cachepath), U_PATH);
 
   return mutt_hcache_open(HeaderCache, cachepath, imap_hcache_namer);
 }
@@ -291,7 +291,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
   char tmp[128];
-  struct CissUrl url;
+  struct Url url;
   char *c = NULL;
   int n;
 
@@ -320,7 +320,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
   mx->account.type = MUTT_ACCT_TYPE_IMAP;
 
   c = safe_strdup(path);
-  url_parse_ciss(&url, c);
+  url_parse(&url, c);
   if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
     if (mutt_account_fromurl(&mx->account, &url) < 0 || !*mx->account.host)
@@ -429,7 +429,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
 void imap_pretty_mailbox(char *path)
 {
   struct ImapMbox home, target;
-  struct CissUrl url;
+  struct Url url;
   char *delim = NULL;
   int tlen;
   int hlen = 0;
@@ -473,7 +473,7 @@ void imap_pretty_mailbox(char *path)
     /* FIXME: That hard-coded constant is bogus. But we need the actual
      *   size of the buffer from mutt_pretty_mailbox. And these pretty
      *   operations usually shrink the result. Still... */
-    url_ciss_tostring(&url, path, 1024, 0);
+    url_tostring(&url, path, 1024, 0);
   }
 
   FREE(&target.mbox);
@@ -752,12 +752,12 @@ void imap_make_date(char *buf, time_t timestamp)
  */
 void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
 {
-  struct CissUrl url;
+  struct Url url;
 
   mutt_account_tourl(&mx->account, &url);
   url.path = path;
 
-  url_ciss_tostring(&url, dest, len, 0);
+  url_tostring(&url, dest, len, 0);
 }
 
 /**

@@ -98,30 +98,30 @@ enum UrlScheme url_check_scheme(const char *s)
 }
 
 /**
- * ciss_parse_userhost - fill in components of ciss with info from src
+ * parse_userhost - fill in components of Url with info from src
  *
  * Note: These are pointers into src, which is altered with '\0's.
  *       Port of 0 means no port given.
  */
-static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
+static int parse_userhost(struct Url *u, char *src)
 {
   char *t = NULL, *p = NULL;
 
-  ciss->user = NULL;
-  ciss->pass = NULL;
-  ciss->host = NULL;
-  ciss->port = 0;
+  u->user = NULL;
+  u->pass = NULL;
+  u->host = NULL;
+  u->port = 0;
 
   if (strncmp(src, "//", 2) != 0)
   {
-    ciss->path = src;
-    return url_pct_decode(ciss->path);
+    u->path = src;
+    return url_pct_decode(u->path);
   }
 
   src += 2;
 
-  if ((ciss->path = strchr(src, '/')))
-    *ciss->path++ = '\0';
+  if ((u->path = strchr(src, '/')))
+    *u->path++ = '\0';
 
   if ((t = strrchr(src, '@')))
   {
@@ -129,12 +129,12 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
     if ((p = strchr(src, ':')))
     {
       *p = '\0';
-      ciss->pass = p + 1;
-      if (url_pct_decode(ciss->pass) < 0)
+      u->pass = p + 1;
+      if (url_pct_decode(u->pass) < 0)
         return -1;
     }
-    ciss->user = src;
-    if (url_pct_decode(ciss->user) < 0)
+    u->user = src;
+    if (url_pct_decode(u->user) < 0)
       return -1;
     src = t + 1;
   }
@@ -156,34 +156,31 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
     *p++ = '\0';
     if (mutt_atoi(p, &num) < 0 || num < 0 || num > 0xffff)
       return -1;
-    ciss->port = (unsigned short) num;
+    u->port = (unsigned short) num;
   }
   else
-    ciss->port = 0;
+    u->port = 0;
 
-  ciss->host = src;
-  return url_pct_decode(ciss->host) >= 0 &&
-                 (!ciss->path || url_pct_decode(ciss->path) >= 0) ?
-             0 :
-             -1;
+  u->host = src;
+  return url_pct_decode(u->host) >= 0 && (!u->path || url_pct_decode(u->path) >= 0) ? 0 : -1;
 }
 
 /**
- * url_parse_ciss - Fill in CissUrl
+ * url_parse - Fill in Url
  *
  * char* elements are pointers into src, which is modified by this call
  * (duplicate it first if you need to).
  */
-int url_parse_ciss(struct CissUrl *ciss, char *src)
+int url_parse(struct Url *u, char *src)
 {
   char *tmp = NULL;
 
-  if ((ciss->scheme = url_check_scheme(src)) == U_UNKNOWN)
+  if ((u->scheme = url_check_scheme(src)) == U_UNKNOWN)
     return -1;
 
   tmp = strchr(src, ':') + 1;
 
-  return ciss_parse_userhost(ciss, tmp);
+  return parse_userhost(u, tmp);
 }
 
 void url_pct_encode(char *dst, size_t l, const char *src)
@@ -208,58 +205,58 @@ void url_pct_encode(char *dst, size_t l, const char *src)
 }
 
 /**
- * url_ciss_tostring - output the URL string for a given CISS object
+ * url_tostring - output the URL string for a given Url object
  */
-int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags)
+int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 {
   long l;
 
-  if (ciss->scheme == U_UNKNOWN)
+  if (u->scheme == U_UNKNOWN)
     return -1;
 
-  snprintf(dest, len, "%s:", mutt_getnamebyvalue(ciss->scheme, UrlMap));
+  snprintf(dest, len, "%s:", mutt_getnamebyvalue(u->scheme, UrlMap));
 
-  if (ciss->host)
+  if (u->host)
   {
     if (!(flags & U_PATH))
       safe_strcat(dest, len, "//");
     len -= (l = strlen(dest));
     dest += l;
 
-    if (ciss->user && (ciss->user[0] || !(flags & U_PATH)))
+    if (u->user && (u->user[0] || !(flags & U_PATH)))
     {
-      char u[STRING];
-      url_pct_encode(u, sizeof(u), ciss->user);
+      char str[STRING];
+      url_pct_encode(str, sizeof(str), u->user);
 
-      if (flags & U_DECODE_PASSWD && ciss->pass)
+      if (flags & U_DECODE_PASSWD && u->pass)
       {
         char p[STRING];
-        url_pct_encode(p, sizeof(p), ciss->pass);
-        snprintf(dest, len, "%s:%s@", u, p);
+        url_pct_encode(p, sizeof(p), u->pass);
+        snprintf(dest, len, "%s:%s@", str, p);
       }
       else
-        snprintf(dest, len, "%s@", u);
+        snprintf(dest, len, "%s@", str);
 
       len -= (l = strlen(dest));
       dest += l;
     }
 
-    if (strchr(ciss->host, ':'))
-      snprintf(dest, len, "[%s]", ciss->host);
+    if (strchr(u->host, ':'))
+      snprintf(dest, len, "[%s]", u->host);
     else
-      snprintf(dest, len, "%s", ciss->host);
+      snprintf(dest, len, "%s", u->host);
 
     len -= (l = strlen(dest));
     dest += l;
 
-    if (ciss->port)
-      snprintf(dest, len, ":%hu/", ciss->port);
+    if (u->port)
+      snprintf(dest, len, ":%hu/", u->port);
     else
       snprintf(dest, len, "/");
   }
 
-  if (ciss->path)
-    safe_strcat(dest, len, ciss->path);
+  if (u->path)
+    safe_strcat(dest, len, u->path);
 
   return 0;
 }

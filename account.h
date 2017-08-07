@@ -25,7 +25,7 @@
 #ifndef _MUTT_ACCOUNT_H
 #define _MUTT_ACCOUNT_H
 
-struct CissUrl;
+struct Url;
 
 /**
  * enum AccountType - account types
@@ -61,8 +61,8 @@ struct Account
 };
 
 int mutt_account_match(const struct Account *a1, const struct Account *m2);
-int mutt_account_fromurl(struct Account *account, struct CissUrl *url);
-void mutt_account_tourl(struct Account *account, struct CissUrl *url);
+int mutt_account_fromurl(struct Account *account, struct Url *url);
+void mutt_account_tourl(struct Account *account, struct Url *url);
 int mutt_account_getuser(struct Account *account);
 int mutt_account_getlogin(struct Account *account);
 int mutt_account_getpass(struct Account *account);

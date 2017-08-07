@@ -2082,7 +2082,7 @@ static int imap_complete_hosts(char *dest, size_t len)
 
   for (conn = mutt_socket_head(); conn; conn = conn->next)
   {
-    struct CissUrl url;
+    struct Url url;
     char urlstr[LONG_STRING];
 
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)
@@ -2092,7 +2092,7 @@ static int imap_complete_hosts(char *dest, size_t len)
     /* FIXME: how to handle multiple users on the same host? */
     url.user = NULL;
     url.path = NULL;
-    url_ciss_tostring(&url, urlstr, sizeof(urlstr), 0);
+    url_tostring(&url, urlstr, sizeof(urlstr), 0);
     if (mutt_strncmp(dest, urlstr, matchlen) == 0)
     {
       if (rc)

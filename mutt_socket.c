@@ -279,13 +279,13 @@ static struct Connection *socket_new_conn(void)
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
 {
   struct Connection *conn = NULL;
-  struct CissUrl url;
+  struct Url url;
   char hook[LONG_STRING];
 
   /* account isn't actually modified, since url isn't either */
   mutt_account_tourl((struct Account *) account, &url);
   url.path = NULL;
-  url_ciss_tostring(&url, hook, sizeof(hook), 0);
+  url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
   conn = start ? start->next : Connections;

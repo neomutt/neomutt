@@ -49,21 +49,21 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 {
   char host[STRING];
   char path[_POSIX_PATH_MAX];
-  struct CissUrl url;
+  struct Url url;
   int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
     return -1;
 
-  /* make up a CissUrl we can turn into a string */
-  memset(&url, 0, sizeof(struct CissUrl));
+  /* make up a Url we can turn into a string */
+  memset(&url, 0, sizeof(struct Url));
   mutt_account_tourl(account, &url);
   /*
    * mutt_account_tourl() just sets up some pointers;
    * if this ever changes, we have a memleak here
    */
   url.path = NULL;
-  if (url_ciss_tostring(&url, host, sizeof(host), U_PATH) < 0)
+  if (url_tostring(&url, host, sizeof(host), U_PATH) < 0)
   {
     mutt_debug(1, "bcache_path: URL to string failed\n");
     return -1;

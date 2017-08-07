@@ -513,11 +513,11 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
   /* server subdirectory */
   if (acct)
   {
-    struct CissUrl url;
+    struct Url url;
 
     mutt_account_tourl(acct, &url);
     url.path = src;
-    url_ciss_tostring(&url, file, sizeof(file), U_PATH);
+    url_tostring(&url, file, sizeof(file), U_PATH);
   }
   else
     strfcpy(file, src ? src : "", sizeof(file));
@@ -536,11 +536,11 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
  */
 void nntp_expand_path(char *line, size_t len, struct Account *acct)
 {
-  struct CissUrl url;
+  struct Url url;
 
   mutt_account_tourl(acct, &url);
   url.path = safe_strdup(line);
-  url_ciss_tostring(&url, line, len, 0);
+  url_tostring(&url, line, len, 0);
   FREE(&url.path);
 }
 
@@ -669,7 +669,7 @@ static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
  */
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 {
-  struct CissUrl url;
+  struct Url url;
   char file[_POSIX_PATH_MAX];
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
@@ -679,7 +679,7 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 
   mutt_account_tourl(&nntp_data->nserv->conn->account, &url);
   url.path = nntp_data->group;
-  url_ciss_tostring(&url, file, sizeof(file), U_PATH);
+  url_tostring(&url, file, sizeof(file), U_PATH);
   return mutt_hcache_open(NewsCacheDir, file, nntp_hcache_namer);
 }
 
@@ -872,14 +872,14 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;
-  struct CissUrl url;
+  struct Url url;
   char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
 
   switch (op)
   {
     case 'a':
       mutt_account_tourl(acct, &url);
-      url_ciss_tostring(&url, fn, sizeof(fn), U_PATH);
+      url_tostring(&url, fn, sizeof(fn), U_PATH);
       p = strchr(fn, '/');
       if (p)
         *p = '\0';
@@ -906,7 +906,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
       break;
     case 'S':
       mutt_account_tourl(acct, &url);
-      url_ciss_tostring(&url, fn, sizeof(fn), U_PATH);
+      url_tostring(&url, fn, sizeof(fn), U_PATH);
       p = strchr(fn, ':');
       if (p)
         *p = '\0';
@@ -940,7 +940,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
   struct Connection *conn = NULL;
-  struct CissUrl url;
+  struct Url url;
 
   if (!server || !*server)
   {
@@ -954,7 +954,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   acct.port = NNTP_PORT;
   acct.type = MUTT_ACCT_TYPE_NNTP;
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
-  if (url_parse_ciss(&url, file) < 0 || (url.path && *url.path) ||
+  if (url_parse(&url, file) < 0 || (url.path && *url.path) ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS) ||
       mutt_account_fromurl(&acct, &url) < 0)
   {
