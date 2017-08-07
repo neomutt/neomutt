@@ -4649,7 +4649,7 @@ const struct Command Commands[] = {
   { "score",               2,  mutt_parse_score,       0 },
   { "send-hook",           5,  mutt_parse_hook,        MUTT_SENDHOOK },
   { "send2-hook",          5,  mutt_parse_hook,        MUTT_SEND2HOOK },
-  { "set",                 3,  parse_set,              0 },
+  { "set",                 2,  parse_set,              0 },
   { "setenv",              4,  parse_setenv,           0 },
   { "shutdown-hook",       2,  mutt_parse_hook,        MUTT_SHUTDOWNHOOK | MUTT_GLOBALHOOK },
 #ifdef USE_SIDEBAR             

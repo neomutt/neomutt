@@ -3316,6 +3316,30 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
 }
 
 /**
+ * find_command - Find a command matching a (partial) string
+ * @param cmd String to compare
+ * @retval num Index into Commands
+ * @retval  -1 Error, no match
+ */
+static int find_command(const char *cmd)
+{
+  if (!cmd)
+    return -1;
+
+  int cmd_len = mutt_strlen(cmd);
+
+  for (int i = 0; Commands[i].name; i++)
+  {
+    int cmp_len = MAX(cmd_len, Commands[i].uniq_length);
+
+    if (mutt_strncmp(cmd, Commands[i].name, cmp_len) == 0)
+      return i;
+  }
+
+  return -1;
+}
+
+/**
  * mutt_parse_rc_line - Parse a line of user config
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
@@ -3328,7 +3352,7 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
  */
 int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err)
 {
-  int i, r = 0;
+  int r = 0;
   struct Buffer expn;
 
   if (!line || !*line)
@@ -3351,26 +3375,19 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
       continue;
     }
     mutt_extract_token(token, &expn, 0);
-    for (i = 0; Commands[i].name; i++)
-    {
-      if (mutt_strcmp(token->data, Commands[i].name) == 0)
-      {
-        r = Commands[i].func(token, &expn, Commands[i].data, err);
-        if (r != 0)
-        {              /* -1 Error, +1 Finish */
-          goto finish; /* Propagate return code */
-        }
-        break; /* Continue with next command */
-      }
-    }
-    if (!Commands[i].name)
+    int idx = find_command(token->data);
+    if (idx < 0)
     {
       snprintf(err->data, err->dsize, _("%s: unknown command"), NONULL(token->data));
       r = -1;
       break; /* Ignore the rest of the line */
     }
+
+    r = Commands[idx].func(token, &expn, Commands[idx].data, err);
+    if (r != 0) /* -1 Error, +1 Finish */
+      break;    /* Propagate return code */
   }
-finish:
+
   if (expn.destroy)
     FREE(&expn.data);
   return r;
