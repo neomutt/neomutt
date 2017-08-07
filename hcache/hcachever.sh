@@ -82,8 +82,8 @@ if [ $? != 0 ]; then
     echo "Could not find md5 program"
     exit 1
 fi
-MD5TEXT=`echo "$TEXT" | $MD5CMD`
-echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
+MD5TEXT=`echo "$TEXT" | $MD5CMD | cut -c-8`
+echo "#define HCACHEVER 0x$MD5TEXT" >> $TMPD
 
 # TODO: validate we have all structs
 
