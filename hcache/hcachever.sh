@@ -56,14 +56,26 @@ getstruct () {
 
 md5prog () {
   prog=""
+
+  # Use OpenSSL if it's installed
+  openssl=`which openssl`
+  if [ $? = 0 ];then
+    echo "$openssl md5 -r"
+    return
+  fi
+
+  # Fallback to looking for a system-specific utility
   case "`uname`" in
     SunOS)
+      # This matches most of the Solaris family
       prog="digest -a md5"
       ;;
     *BSD)
+      # FreeBSD, NetBSD, and OpenBSD all have md5
       prog="md5"
       ;;
     *)
+      # Assume anything else has binutils' md5sum
       prog="md5sum"
       ;;
   esac
