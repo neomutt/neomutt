@@ -79,9 +79,6 @@ struct ListHead;
 #define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
 #define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
 
-/* flags for _mutt_system() */
-#define MUTT_DETACH_PROCESS 1 /**< detach subprocess from group */
-
 /* types for mutt_add_hook() */
 #define MUTT_FOLDERHOOK   (1 << 0)
 #define MUTT_MBOXHOOK     (1 << 1)

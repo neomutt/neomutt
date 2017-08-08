@@ -83,8 +83,7 @@ void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
 
 void mutt_free_opts(void);
 
-int _mutt_system(const char *cmd, int flags);
-#define mutt_system(x) _mutt_system(x, 0)
+int mutt_system(const char *cmd);
 
 void mutt_parse_content_type(char *s, struct Body *ct);
 void mutt_generate_boundary(struct Parameter **parm);
