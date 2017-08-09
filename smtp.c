@@ -34,9 +34,8 @@
 #include "mutt.h"
 #include "account.h"
 #include "address.h"
-#include "ascii.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
@@ -121,19 +120,19 @@ static int smtp_get_resp(struct Connection *conn)
       return SMTP_ERR_READ;
     }
 
-    if (ascii_strncasecmp("8BITMIME", buf + 4, 8) == 0)
+    if (mutt_strncasecmp("8BITMIME", buf + 4, 8) == 0)
       mutt_bit_set(Capabilities, EIGHTBITMIME);
-    else if (ascii_strncasecmp("AUTH ", buf + 4, 5) == 0)
+    else if (mutt_strncasecmp("AUTH ", buf + 4, 5) == 0)
     {
       mutt_bit_set(Capabilities, AUTH);
       FREE(&AuthMechs);
       AuthMechs = safe_strdup(buf + 9);
     }
-    else if (ascii_strncasecmp("DSN", buf + 4, 3) == 0)
+    else if (mutt_strncasecmp("DSN", buf + 4, 3) == 0)
       mutt_bit_set(Capabilities, DSN);
-    else if (ascii_strncasecmp("STARTTLS", buf + 4, 8) == 0)
+    else if (mutt_strncasecmp("STARTTLS", buf + 4, 8) == 0)
       mutt_bit_set(Capabilities, STARTTLS);
-    else if (ascii_strncasecmp("SMTPUTF8", buf + 4, 8) == 0)
+    else if (mutt_strncasecmp("SMTPUTF8", buf + 4, 8) == 0)
       mutt_bit_set(Capabilities, SMTPUTF8);
 
     if (!valid_smtp_code(buf, n, &n))
@@ -245,7 +244,6 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   return 0;
 }
 
-
 /**
  * address_uses_unicode - Do any addresses use Unicode
  * @retval true if any of the string of addresses use 8-bit characters
@@ -265,7 +263,6 @@ static bool address_uses_unicode(const char *a)
   return false;
 }
 
-
 /**
  * addresses_use_unicode - Do any of a list of addresses use Unicode
  * @retval true if any use 8-bit characters
@@ -280,7 +277,6 @@ static bool addresses_use_unicode(const struct Address *a)
   }
   return false;
 }
-
 
 static int smtp_fill_account(struct Account *account)
 {
@@ -344,7 +340,7 @@ static int smtp_helo(struct Connection *conn)
     if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option(OPTSSLFORCETLS) || quadoption(OPT_SSLSTARTTLS) != MUTT_NO)
+    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_START_TLS) != MUTT_NO)
       Esmtp = 1;
 #endif
   }
@@ -391,7 +387,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;
@@ -537,7 +533,7 @@ static int smtp_auth_plain(struct Connection *conn)
   for (method = delim = SmtpAuthenticators;
        *delim && (delim = mutt_strchrnul(method, ':')); method = delim + 1)
   {
-    if (ascii_strncasecmp(method, "plain", 5) == 0)
+    if (mutt_strncasecmp(method, "plain", 5) == 0)
     {
       /* Get username and password. Bail out of any cannot be retrieved. */
       if (mutt_account_getuser(&conn->account) || mutt_account_getpass(&conn->account))
@@ -592,10 +588,10 @@ static int smtp_open(struct Connection *conn)
 #ifdef USE_SSL
   if (conn->ssf)
     rc = MUTT_NO;
-  else if (option(OPTSSLFORCETLS))
+  else if (option(OPT_SSL_FORCE_TLS))
     rc = MUTT_YES;
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
-           (rc = query_quadoption(OPT_SSLSTARTTLS,
+           (rc = query_quadoption(OPT_SSL_START_TLS,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 

@@ -38,7 +38,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -122,7 +122,6 @@ static struct Query *run_query(char *s, int quiet)
   char msg[STRING];
   char *p = NULL;
   pid_t thepid;
-
 
   mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCmd, s);
 
@@ -343,7 +342,6 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
                 queryp->next = newresults;
               }
-
 
               menu->current = 0;
               mutt_pop_current_menu(menu);

@@ -26,11 +26,10 @@
 #include <string.h>
 #include "mutt_idna.h"
 #include "address.h"
-#include "ascii.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 #ifdef HAVE_LIBIDN
@@ -39,12 +38,12 @@ static bool check_idn(char *domain)
   if (!domain)
     return false;
 
-  if (ascii_strncasecmp(domain, "xn--", 4) == 0)
+  if (mutt_strncasecmp(domain, "xn--", 4) == 0)
     return true;
 
   while ((domain = strchr(domain, '.')) != NULL)
   {
-    if (ascii_strncasecmp(++domain, "xn--", 4) == 0)
+    if (mutt_strncasecmp(++domain, "xn--", 4) == 0)
       return true;
   }
 
@@ -108,7 +107,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
 
 #ifdef HAVE_LIBIDN
   is_idn_encoded = check_idn(local_domain);
-  if (is_idn_encoded && option(OPTIDNDECODE))
+  if (is_idn_encoded && option(OPT_IDN_DECODE))
   {
     if (idna_to_unicode_8z8z(local_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       goto cleanup;
@@ -140,7 +139,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
       goto cleanup;
     }
 
-    if (ascii_strcasecmp(orig_user, reversed_user) != 0)
+    if (mutt_strcasecmp(orig_user, reversed_user) != 0)
     {
       mutt_debug(
           1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
@@ -163,7 +162,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
      * produce a non-matching domain!  Thus we only want to do the
      * idna_to_ascii_8z() if the original domain was IDNA encoded.
      */
-    if (is_idn_encoded && option(OPTIDNDECODE))
+    if (is_idn_encoded && option(OPT_IDN_DECODE))
     {
       if (idna_to_ascii_8z(reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       {
@@ -176,7 +175,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (ascii_strcasecmp(orig_domain, reversed_domain) != 0)
+    if (mutt_strcasecmp(orig_domain, reversed_domain) != 0)
     {
       mutt_debug(
           1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
@@ -215,7 +214,7 @@ static char *local_to_intl(char *user, char *domain)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN
-  if (option(OPTIDNENCODE))
+  if (option(OPT_IDN_ENCODE))
   {
     if (idna_to_ascii_8z(intl_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       goto cleanup;

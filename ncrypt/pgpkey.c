@@ -43,7 +43,8 @@
 #include "gnupgparse.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
+#include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -56,8 +57,6 @@
 #include "protos.h"
 #include "rfc822.h"
 #include "sort.h"
-
-struct List;
 
 /**
  * struct PgpCache - List of cached PGP keys
@@ -473,7 +472,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
-    if (!option(OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
+    if (!option(OPT_PGP_SHOW_UNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -481,7 +480,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
     for (a = kp->address; a; a = a->next)
     {
-      if (!option(OPTPGPSHOWUNUSABLE) && (a->flags & KEYFLAG_CANTUSE))
+      if (!option(OPT_PGP_SHOW_UNUSABLE) && (a->flags & KEYFLAG_CANTUSE))
       {
         unusable = true;
         continue;
@@ -603,14 +602,14 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
         /* XXX make error reporting more verbose */
 
-        if (option(OPTPGPCHECKTRUST))
+        if (option(OPT_PGP_CHECK_TRUST))
           if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
           {
             mutt_error(_("This key can't be used: expired/disabled/revoked."));
             break;
           }
 
-        if (option(OPTPGPCHECKTRUST) && (!pgp_id_is_valid(KeyTable[menu->current]) ||
+        if (option(OPT_PGP_CHECK_TRUST) && (!pgp_id_is_valid(KeyTable[menu->current]) ||
                                          !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
@@ -721,7 +720,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   struct stat sb;
   pid_t thepid;
   struct PgpKeyInfo *key = NULL;
-  unset_option(OPTPGPCHECKTRUST);
+  unset_option(OPT_PGP_CHECK_TRUST);
 
   key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
@@ -785,22 +784,21 @@ struct Body *pgp_make_key_attachment(char *tempf)
   return att;
 }
 
-static struct List *pgp_add_string_to_hints(struct List *hints, const char *str)
+static void pgp_add_string_to_hints(struct ListHead *hints, const char *str)
 {
   char *scratch = NULL;
   char *t = NULL;
 
   if ((scratch = safe_strdup(str)) == NULL)
-    return hints;
+    return;
 
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      hints = mutt_add_list(hints, t);
+      mutt_list_insert_tail(hints, safe_strdup(t));
   }
 
   FREE(&scratch);
-  return hints;
 }
 
 static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
@@ -816,7 +814,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
                                     enum PgpRing keyring, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
-  struct List *hints = NULL;
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
   bool multi = false;
 
@@ -828,15 +826,15 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
   struct PgpUid *q = NULL;
 
   if (a && a->mailbox)
-    hints = pgp_add_string_to_hints(hints, a->mailbox);
+    pgp_add_string_to_hints(&hints, a->mailbox);
   if (a && a->personal)
-    hints = pgp_add_string_to_hints(hints, a->personal);
+    pgp_add_string_to_hints(&hints, a->personal);
 
   if (!oppenc_mode)
     mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
-  keys = pgp_get_candidates(keyring, hints);
+  keys = pgp_get_candidates(keyring, &hints);
 
-  mutt_free_list(&hints);
+  mutt_list_free(&hints);
 
   if (!keys)
     return NULL;
@@ -942,7 +940,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
 
 struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring)
 {
-  struct List *hints = NULL;
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct PgpKeyInfo *keys = NULL;
   struct PgpKeyInfo *matches = NULL;
   struct PgpKeyInfo **last = &matches;
@@ -957,9 +955,9 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyrin
   mutt_message(_("Looking for keys matching \"%s\"..."), p);
 
   pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
-  hints = pgp_add_string_to_hints(hints, phint);
-  keys = pgp_get_candidates(keyring, hints);
-  mutt_free_list(&hints);
+  pgp_add_string_to_hints(&hints, phint);
+  keys = pgp_get_candidates(keyring, &hints);
+  mutt_list_free(&hints);
 
   if (!keys)
     goto out;

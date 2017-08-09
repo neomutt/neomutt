@@ -23,6 +23,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_hcache Header cache multiplexor
+ *
+ * This module implements the gateway between the user visible part of the
+ * header cache API and the backend specific API. Also, this module implements
+ * the serialization/deserialization routines for the Header structure.
+ */
+
 #include "config.h"
 
 #if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) ||           \
@@ -42,17 +50,15 @@
 #include "address.h"
 #include "backend.h"
 #include "body.h"
-#include "buffer.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "hcache.h"
 #include "hcversion.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mbyte.h"
-#include "md5.h"
 #include "mutt_regex.h"
 #include "parameter.h"
 #include "protos.h"
@@ -280,17 +286,17 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   *a = NULL;
 }
 
-static unsigned char *dump_list(struct List *l, unsigned char *d, int *off, int convert)
+static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
 
   d = dump_int(0xdeadbeef, d, off);
 
-  while (l)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, l, entries)
   {
-    d = dump_char(l->data, d, off, convert);
-    l = l->next;
+    d = dump_char(np->data, d, off, convert);
     counter++;
   }
 
@@ -299,22 +305,21 @@ static unsigned char *dump_list(struct List *l, unsigned char *d, int *off, int 
   return d;
 }
 
-static void restore_list(struct List **l, const unsigned char *d, int *off, int convert)
+static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
   restore_int(&counter, d, off);
 
+  struct ListNode *np;
   while (counter)
   {
-    *l = safe_malloc(sizeof(struct List));
-    restore_char(&(*l)->data, d, off, convert);
-    l = &(*l)->next;
+    np = mutt_list_insert_tail(l, NULL);
+    restore_char(&np->data, d, off, convert);
     counter--;
   }
-
-  *l = NULL;
 }
+
 
 static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, int convert)
 {
@@ -466,9 +471,9 @@ static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *o
 
   d = dump_buffer(e->spam, d, off, convert);
 
-  d = dump_list(e->references, d, off, 0);
-  d = dump_list(e->in_reply_to, d, off, 0);
-  d = dump_list(e->userhdrs, d, off, convert);
+  d = dump_stailq(&e->references, d, off, 0);
+  d = dump_stailq(&e->in_reply_to, d, off, 0);
+  d = dump_stailq(&e->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
   d = dump_char(e->xref, d, off, 0);
@@ -508,9 +513,9 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
 
   restore_buffer(&e->spam, d, off, convert);
 
-  restore_list(&e->references, d, off, 0);
-  restore_list(&e->in_reply_to, d, off, 0);
-  restore_list(&e->userhdrs, d, off, convert);
+  restore_stailq(&e->references, d, off, 0);
+  restore_stailq(&e->in_reply_to, d, off, 0);
+  restore_stailq(&e->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
   restore_char(&e->xref, d, off, 0);
@@ -680,7 +685,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
   nh.tree = NULL;
   nh.thread = NULL;
 #ifdef MIXMASTER
-  nh.chain = NULL;
+  STAILQ_INIT(&nh.chain);
 #endif
 #if defined(USE_POP) || defined(USE_IMAP)
   nh.data = NULL;

@@ -3,8 +3,7 @@
  * RFC822 Email format routines
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2011-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2011-2013 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,25 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "rfc822.h"
-#include "ascii.h"
-
-#ifdef TESTING
-#define safe_strdup strdup
-#define safe_malloc malloc
-#define FREE(x) safe_free(x)
-#define strfcpy(DST, SRC, LEN)                                                 \
-  do                                                                           \
-  {                                                                            \
-    if ((LEN) > 0)                                                             \
-    {                                                                          \
-      *(DST + (LEN) -1) = 0;                                                   \
-      strncpy(DST, SRC, (LEN) -1);                                             \
-    }                                                                          \
-  } while (0)
-#define LONG_STRING 1024
-#include "rfc822.h"
-#endif
-
+#include "lib/lib.h"
 #include "mutt_idna.h"
 
 #define terminate_string(a, b, c)                                              \
@@ -106,7 +87,7 @@ int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
   last = NULL;
   while (p)
   {
-    if (ascii_strcasecmp(mailbox, p->mailbox) == 0)
+    if (mutt_strcasecmp(mailbox, p->mailbox) == 0)
     {
       if (last)
         last->next = p->next;
@@ -622,12 +603,12 @@ void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr,
   {
     if (!buflen)
       goto done;
-    if ((ascii_strcmp(addr->mailbox, "@") != 0) && !display)
+    if ((mutt_strcmp(addr->mailbox, "@") != 0) && !display)
     {
       strfcpy(pbuf, addr->mailbox, buflen);
       len = mutt_strlen(pbuf);
     }
-    else if ((ascii_strcmp(addr->mailbox, "@") != 0) && display)
+    else if ((mutt_strcmp(addr->mailbox, "@") != 0) && display)
     {
       strfcpy(pbuf, mutt_addr_for_display(addr), buflen);
       len = mutt_strlen(pbuf);
@@ -846,25 +827,3 @@ bool rfc822_valid_msgid(const char *msgid)
 
   return true;
 }
-
-#ifdef TESTING
-int safe_free(void **p)
-{
-  free(*p);
-  *p = 0;
-}
-
-int main(int argc, char **argv)
-{
-  struct Address *list = NULL;
-  char buf[256];
-  char *str = "a b c ";
-
-  list = rfc822_parse_adrlist(NULL, str);
-  buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), list);
-  rfc822_free_address(&list);
-  puts(buf);
-  exit(0);
-}
-#endif

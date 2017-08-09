@@ -23,11 +23,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_lmdb LMDB
+ *
+ * This module implements the header cache functionality using a Lightning
+ * Memory-Mapped Database file as a backend.
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <lmdb.h>
 #include "backend.h"
-#include "lib.h"
+#include "lib/lib.h"
 
 /** The maximum size of the database file (2GiB).
  * The file is mmap(2)'d into memory. */
@@ -220,7 +227,6 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
     mdb_txn_abort(ctx->txn);
     ctx->txn_mode = TXN_UNINITIALIZED;
     ctx->txn = NULL;
-    return rc;
   }
   return rc;
 }
@@ -244,16 +250,12 @@ static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
     return rc;
   }
   rc = mdb_del(ctx->txn, ctx->db, &dkey, NULL);
-  if (rc != MDB_SUCCESS)
+  if (rc != MDB_SUCCESS && rc != MDB_NOTFOUND)
   {
-    if (rc != MDB_NOTFOUND)
-    {
-      mutt_debug(2, "hcache_lmdb_delete: mdb_del: %s\n", mdb_strerror(rc));
-      mdb_txn_abort(ctx->txn);
-      ctx->txn_mode = TXN_UNINITIALIZED;
-      ctx->txn = NULL;
-    }
-    return rc;
+    mutt_debug(2, "hcache_lmdb_delete: mdb_del: %s\n", mdb_strerror(rc));
+    mdb_txn_abort(ctx->txn);
+    ctx->txn_mode = TXN_UNINITIALIZED;
+    ctx->txn = NULL;
   }
 
   return rc;

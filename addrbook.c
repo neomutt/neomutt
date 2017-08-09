@@ -26,12 +26,11 @@
 #include <stdlib.h>
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -132,7 +131,7 @@ static int alias_sort_address(const void *a, const void *b)
   else if (pb->personal)
     r = -1;
   else
-    r = ascii_strcasecmp(pa->mailbox, pb->mailbox);
+    r = mutt_strcasecmp(pa->mailbox, pb->mailbox);
   return (RSORT(r));
 }
 
@@ -218,7 +217,7 @@ new_aliases:
         {
           AliasTable[menu->current]->self->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
-          if (option(OPTRESOLVE) && menu->current < menu->max - 1)
+          if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;

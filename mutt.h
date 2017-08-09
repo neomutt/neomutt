@@ -30,10 +30,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
-struct List;
 struct ReplaceList;
 struct RxList;
 struct State;
+struct ListHead;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -45,13 +45,6 @@ struct State;
 /* PATH_MAX is undefined on the hurd */
 #if !defined(PATH_MAX) && defined(_POSIX_PATH_MAX)
 #define PATH_MAX _POSIX_PATH_MAX
-#endif
-
-#ifndef HAVE_WC_FUNCS
-#ifdef MB_LEN_MAX
-#undef MB_LEN_MAX
-#endif
-#define MB_LEN_MAX 16
 #endif
 
 #ifdef HAVE_FGETS_UNLOCKED
@@ -76,6 +69,15 @@ struct State;
 #define MUTT_NM_QUERY (1 << 9)  /**< Notmuch query mode. */
 #define MUTT_NM_TAG   (1 << 10) /**< Notmuch tag +/- mode. */
 #endif
+
+/* flags for mutt_get_token() */
+#define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
+#define MUTT_TOKEN_CONDENSE   (1<<1)  /* ^(char) to control chars (macros) */
+#define MUTT_TOKEN_SPACE      (1<<2)  /* don't treat whitespace as a term */
+#define MUTT_TOKEN_QUOTE      (1<<3)  /* don't interpret quotes */
+#define MUTT_TOKEN_PATTERN    (1<<4)  /* !)|~ are terms (for patterns) */
+#define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
+#define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
 
 /* flags for _mutt_system() */
 #define MUTT_DETACH_PROCESS 1 /**< detach subprocess from group */
@@ -242,38 +244,38 @@ enum QuadOptionVars
   OPT_BOUNCE,
   OPT_COPY,
   OPT_DELETE,
-  OPT_FORWEDIT,
-  OPT_FCCATTACH,
+  OPT_FORW_EDIT,
+  OPT_FCC_ATTACH,
   OPT_INCLUDE,
-  OPT_MFUPTO,
-  OPT_MIMEFWD,
-  OPT_MIMEFWDREST,
+  OPT_MF_UP_TO,
+  OPT_MIME_FWD,
+  OPT_MIME_FWD_REST,
   OPT_MOVE,
-  OPT_PGPMIMEAUTO, /* ask to revert to PGP/MIME when inline fails */
-  OPT_SMIMEENCRYPTSELF,
-  OPT_PGPENCRYPTSELF,
+  OPT_PGP_MIME_AUTO, /* ask to revert to PGP/MIME when inline fails */
+  OPT_SMIME_ENCRYPT_SELF,
+  OPT_PGP_ENCRYPT_SELF,
 #ifdef USE_POP
-  OPT_POPDELETE,
-  OPT_POPRECONNECT,
+  OPT_POP_DELETE,
+  OPT_POP_RECONNECT,
 #endif
   OPT_POSTPONE,
   OPT_PRINT,
   OPT_QUIT,
-  OPT_REPLYTO,
+  OPT_REPLY_TO,
   OPT_RECALL,
 #ifdef USE_SSL
-  OPT_SSLSTARTTLS,
+  OPT_SSL_START_TLS,
 #endif
   OPT_SUBJECT,
-  OPT_VERIFYSIG, /* verify PGP signatures */
+  OPT_VERIFY_SIG, /* verify PGP signatures */
 #ifdef USE_NNTP
-  OPT_TOMODERATED,
+  OPT_TO_MODERATED,
   OPT_CATCHUP,
-  OPT_FOLLOWUPTOPOSTER,
+  OPT_FOLLOW_UP_TO_POSTER,
 #endif
   OPT_ATTACH, /* forgotten attachment detector */
   /* THIS MUST BE THE LAST VALUE. */
-  OPT_MAX
+  OPT_QUAD_MAX,
 };
 
 /* flags to ci_send_message() */
@@ -310,49 +312,17 @@ enum QuadOptionVars
 #define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
-void mutt_free_list(struct List **list);
 void mutt_free_rx_list(struct RxList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
-struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
-bool mutt_matches_list(const char *s, struct List *t);
 
 /* add an element to a list */
-struct List *mutt_add_list(struct List *head, const char *data);
-struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
-struct List *mutt_find_list(struct List *l, const char *data);
 int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
-/* handle stack */
-void mutt_push_list(struct List **head, const char *data);
-bool mutt_pop_list(struct List **head);
-const char *mutt_front_list(struct List *head);
-
-void mutt_init(int skip_sys_rc, struct List *commands);
+void mutt_init(int skip_sys_rc, struct ListHead *commands);
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
-
-/* flags for the State struct */
-#define MUTT_DISPLAY       (1 << 0) /**< output is displayed to the user */
-#define MUTT_VERIFY        (1 << 1) /**< perform signature verification */
-#define MUTT_PENDINGPREFIX (1 << 2) /**< prefix to write, but character must follow */
-#define MUTT_WEED          (1 << 3) /**< weed headers even when not in display mode */
-#define MUTT_CHARCONV      (1 << 4) /**< Do character set conversions */
-#define MUTT_PRINTING      (1 << 5) /**< are we printing? - MUTT_DISPLAY "light" */
-#define MUTT_REPLYING      (1 << 6) /**< are we replying? */
-#define MUTT_FIRSTDONE     (1 << 7) /**< the first attachment has been done */
-
-#define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
-#define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(x, y) fputs(x, (y)->fpout)
-#define state_putc(x, y) fputc(x, (y)->fpout)
-
-void state_mark_attach(struct State *s);
-void state_attach_puts(const char *t, struct State *s);
-void state_prefix_putc(char c, struct State *s);
-int state_printf(struct State *s, const char *fmt, ...);
-int state_putws(const wchar_t *ws, struct State *s);
 
 /**
  * struct AttachMatch - An attachment matching a regex
@@ -370,5 +340,35 @@ struct AttachMatch
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
 #define EXECSHELL "/bin/sh"
+
+/* Use this with care.  If the compiler can't see the array
+ * definition, it obviously won't produce a correct result. */
+#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
+
+/* For mutt_simple_format() justifications */
+/* Making left 0 and center -1 is of course completely nonsensical, but
+ * it retains compatibility for any patches that call mutt_simple_format.
+ * Once patches are updated to use FMT_*, these can be made sane. */
+#define FMT_LEFT   0
+#define FMT_RIGHT  1
+#define FMT_CENTER -1
+
+/* Exit values used in send_msg() */
+#define S_ERR 127
+#define S_BKG 126
+
+int safe_asprintf(char **, const char *, ...);
+
+int mutt_inbox_cmp(const char *a, const char *b);
+
+const char *mutt_strsysexit(int e);
+
+#ifdef DEBUG
+extern char debugfilename[_POSIX_PATH_MAX];
+extern FILE *debugfile;
+extern int debuglevel;
+extern char *debugfile_cmdline;
+extern int debuglevel_cmdline;
+#endif
 
 #endif /* _MUTT_H */

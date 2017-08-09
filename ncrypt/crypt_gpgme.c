@@ -46,7 +46,6 @@
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
 #include "charset.h"
 #include "crypt.h"
@@ -56,7 +55,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -64,6 +63,7 @@
 #include "ncrypt.h"
 #include "options.h"
 #include "pager.h"
+#include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
 #include "sort.h"
@@ -199,7 +199,7 @@ static const char *crypt_keyid(struct CryptKeyInfo *k)
   if (k->kobj && k->kobj->subkeys)
   {
     s = k->kobj->subkeys->keyid;
-    if ((!option(OPTPGPLONGIDS)) && (strlen(s) == 16))
+    if ((!option(OPT_PGP_LONG_IDS)) && (strlen(s) == 16))
       /* Return only the short keyID.  */
       s += 8;
   }
@@ -866,7 +866,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
       return NULL;
     }
 
-    if (option(OPTCRYPTUSEPKA))
+    if (option(OPT_CRYPT_USE_PKA))
     {
       err = set_pka_sig_notation(ctx);
       if (err)
@@ -897,6 +897,12 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
   return outfile;
 }
 
+static void strlower(char *s)
+{
+    for (; *s; ++s)
+        *s = tolower(*s);
+}
+
 /**
  * get_micalg - Find the "micalg" parameter from the last GPGME operation
  *
@@ -925,13 +931,13 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
       {
         /* convert GPGME raw hash name to RFC2633 format */
         snprintf(buf, buflen, "%s", algorithm_name);
-        ascii_strlower(buf);
+        strlower(buf);
       }
       else
       {
         /* convert GPGME raw hash name to RFC3156 format */
         snprintf(buf, buflen, "pgp-%s", algorithm_name);
-        ascii_strlower(buf + 4);
+        strlower(buf + 4);
       }
     }
   }
@@ -987,7 +993,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
     return NULL;
   }
 
-  if (option(OPTCRYPTUSEPKA))
+  if (option(OPT_CRYPT_USE_PKA))
   {
     err = set_pka_sig_notation(ctx);
     if (err)
@@ -1320,7 +1326,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     state_puts("\n", s);
   }
 
-  if (option(OPTCRYPTUSEPKA))
+  if (option(OPT_CRYPT_USE_PKA))
   {
     if (sig->pka_trust == 1 && sig->pka_address)
     {
@@ -2153,7 +2159,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 
   if (dryrun)
   {
-    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", Tempdir);
+    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", TempDir);
     if (!mkdtemp(tmpdir))
     {
       mutt_debug(1, "Error creating temporary GPGME home\n");
@@ -3852,21 +3858,21 @@ leave:
  */
 
 /**
- * list_to_pattern - Convert List to GPGME-compatible pattern
+ * list_to_pattern - Convert STailQ to GPGME-compatible pattern
  *
  * We need to convert spaces in an item into a '+' and '%' into "%25".
  */
-static char *list_to_pattern(struct List *list)
+static char *list_to_pattern(struct ListHead *list)
 {
-  struct List *l = NULL;
   char *pattern = NULL, *p = NULL;
   const char *s = NULL;
   size_t n;
 
   n = 0;
-  for (l = list; l; l = l->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, list, entries)
   {
-    for (s = l->data; *s; s++)
+    for (s = np->data; *s; s++)
     {
       if (*s == '%' || *s == '+')
         n += 2;
@@ -3876,14 +3882,14 @@ static char *list_to_pattern(struct List *list)
   }
   n++; /* make sure to allocate at least one byte */
   pattern = p = safe_calloc(1, n);
-  for (l = list; l; l = l->next)
+  STAILQ_FOREACH(np, list, entries)
   {
-    s = l->data;
+    s = np->data;
     if (*s)
     {
-      if (l != list)
+      if (np != STAILQ_FIRST(list))
         *p++ = ' ';
-      for (s = l->data; *s; s++)
+      for (s = np->data; *s; s++)
       {
         if (*s == '%')
         {
@@ -3913,7 +3919,7 @@ static char *list_to_pattern(struct List *list)
  *
  * Select by looking at the HINTS list.
  */
-static struct CryptKeyInfo *get_candidates(struct List *hints, unsigned int app, int secret)
+static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int app, int secret)
 {
   struct CryptKeyInfo *db = NULL, *k = NULL, **kend = NULL;
   char *pattern = NULL;
@@ -3944,23 +3950,22 @@ static struct CryptKeyInfo *get_candidates(struct List *hints, unsigned int app,
          depending on the protocol.  For gpg we don't need percent
          escaped pappert but simple strings passed in an array to the
          keylist_ext_start function. */
-    struct List *l = NULL;
-    size_t n;
-    char **patarr = NULL;
-
-    for (l = hints, n = 0; l; l = l->next)
+    size_t n = 0;
+    struct ListNode *np;
+    STAILQ_FOREACH(np, hints, entries)
     {
-      if (l->data && *l->data)
+      if (np->data && *np->data)
         n++;
     }
     if (!n)
       goto no_pgphints;
 
-    patarr = safe_calloc(n + 1, sizeof(*patarr));
-    for (l = hints, n = 0; l; l = l->next)
+    char **patarr = safe_calloc(n + 1, sizeof(*patarr));
+    n = 0;
+    STAILQ_FOREACH(np, hints, entries)
     {
-      if (l->data && *l->data)
-        patarr[n++] = safe_strdup(l->data);
+      if (np->data && *np->data)
+        patarr[n++] = safe_strdup(np->data);
     }
     patarr[n] = NULL;
     err = gpgme_op_keylist_ext_start(ctx, (const char **) patarr, secret, 0);
@@ -4064,22 +4069,21 @@ static struct CryptKeyInfo *get_candidates(struct List *hints, unsigned int app,
  *
  * This list is later used to match addresses.
  */
-static struct List *crypt_add_string_to_hints(struct List *hints, const char *str)
+static void crypt_add_string_to_hints(struct ListHead *hints, const char *str)
 {
   char *scratch = NULL;
   char *t = NULL;
 
   if ((scratch = safe_strdup(str)) == NULL)
-    return hints;
+    return;
 
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      hints = mutt_add_list(hints, t);
+      mutt_list_insert_tail(hints, safe_strdup(t));
   }
 
   FREE(&scratch);
-  return hints;
 }
 
 /**
@@ -4110,7 +4114,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   key_table = NULL;
   for (k = keys; k; k = k->next)
   {
-    if (!option(OPTPGPSHOWUNUSABLE) && (k->flags & KEYFLAG_CANTUSE))
+    if (!option(OPT_PGP_SHOW_UNUSABLE) && (k->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -4216,7 +4220,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
              easy because gpgme provides more information */
-        if (option(OPTPGPCHECKTRUST))
+        if (option(OPT_PGP_CHECK_TRUST))
         {
           if (!crypt_key_is_valid(key_table[menu->current]))
           {
@@ -4226,7 +4230,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (option(OPTPGPCHECKTRUST) && (!crypt_id_is_valid(key_table[menu->current]) ||
+        if (option(OPT_PGP_CHECK_TRUST) && (!crypt_id_is_valid(key_table[menu->current]) ||
                                          !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
@@ -4289,7 +4293,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
                                                int *forced_valid, bool oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
-  struct List *hints = NULL;
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
   int multi = false;
   int this_key_has_strong = false;
@@ -4305,15 +4309,15 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   *forced_valid = 0;
 
   if (a && a->mailbox)
-    hints = crypt_add_string_to_hints(hints, a->mailbox);
+    crypt_add_string_to_hints(&hints, a->mailbox);
   if (a && a->personal)
-    hints = crypt_add_string_to_hints(hints, a->personal);
+    crypt_add_string_to_hints(&hints, a->personal);
 
   if (!oppenc_mode)
     mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
-  keys = get_candidates(hints, app, (abilities & KEYFLAG_CANSIGN));
+  keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
 
-  mutt_free_list(&hints);
+  mutt_list_free(&hints);
 
   if (!keys)
     return NULL;
@@ -4413,7 +4417,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
                                               unsigned int app, int *forced_valid)
 {
-  struct List *hints = NULL;
+  struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
   struct CryptKeyInfo *keys = NULL;
   struct CryptKeyInfo *matches = NULL;
   struct CryptKeyInfo **matches_endp = &matches;
@@ -4425,9 +4429,9 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
   *forced_valid = 0;
 
   pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
-  hints = crypt_add_string_to_hints(hints, phint);
-  keys = get_candidates(hints, app, (abilities & KEYFLAG_CANSIGN));
-  mutt_free_list(&hints);
+  crypt_add_string_to_hints(&hints, phint);
+  keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
+  mutt_list_free(&hints);
 
   if (!keys)
   {
@@ -4546,7 +4550,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
  */
 static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mode)
 {
-  struct List *crypt_hook_list = NULL, *crypt_hook = NULL;
+  struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
+  struct ListNode *crypt_hook = NULL;
   char *crypt_hook_val = NULL;
   const char *keyID = NULL;
   char *keylist = NULL, *t = NULL;
@@ -4564,7 +4569,8 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
   for (p = adrlist; p; p = p->next)
   {
     key_selected = false;
-    crypt_hook_list = crypt_hook = mutt_crypt_hook(p);
+    mutt_crypt_hook(&crypt_hook_list, p);
+    crypt_hook = STAILQ_FIRST(&crypt_hook_list);
     do
     {
       q = p;
@@ -4575,7 +4581,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       {
         crypt_hook_val = crypt_hook->data;
         r = MUTT_YES;
-        if (!oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
+        if (!oppenc_mode && option(OPT_CRYPT_CONFIRM_HOOK))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"),
                    crypt_hook_val, p->mailbox);
@@ -4606,9 +4612,9 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         }
         else if (r == MUTT_NO)
         {
-          if (key_selected || crypt_hook->next)
+          if (key_selected || STAILQ_NEXT(crypt_hook, entries))
           {
-            crypt_hook = crypt_hook->next;
+            crypt_hook = STAILQ_NEXT(crypt_hook, entries);
             continue;
           }
         }
@@ -4616,7 +4622,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         {
           FREE(&keylist);
           rfc822_free_address(&addr);
-          mutt_free_list(&crypt_hook_list);
+          mutt_list_free(&crypt_hook_list);
           return NULL;
         }
       }
@@ -4637,7 +4643,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       {
         FREE(&keylist);
         rfc822_free_address(&addr);
-        mutt_free_list(&crypt_hook_list);
+        mutt_list_free(&crypt_hook_list);
         return NULL;
       }
 
@@ -4656,11 +4662,11 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       rfc822_free_address(&addr);
 
       if (crypt_hook)
-        crypt_hook = crypt_hook->next;
+        crypt_hook = STAILQ_NEXT(crypt_hook, entries);
 
     } while (crypt_hook);
 
-    mutt_free_list(&crypt_hook_list);
+    mutt_list_free(&crypt_hook_list);
   }
   return keylist;
 }
@@ -4687,7 +4693,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   char buff[LONG_STRING];
   struct stat sb;
 
-  unset_option(OPTPGPCHECKTRUST);
+  unset_option(OPT_PGP_CHECK_TRUST);
 
   key = crypt_ask_for_key(_("Please enter the key ID: "), NULL, 0, APPLICATION_PGP, NULL);
   if (!key)
@@ -4805,7 +4811,7 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (option(OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
+  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
   {
     if (is_smime)
     {
@@ -4830,7 +4836,7 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
    * Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
-  else if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+  else if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
   {
     if (is_smime)
     {

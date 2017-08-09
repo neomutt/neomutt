@@ -40,9 +40,8 @@
 #include "copy.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -76,7 +75,7 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
-  if ((r = mx_lock_file(ctx->path, fileno(ctx->fp), excl, retry)) == 0)
+  if ((r = mutt_lock_file(ctx->path, fileno(ctx->fp), excl, retry)) == 0)
     ctx->locked = true;
   else if (retry && !excl)
   {
@@ -93,7 +92,7 @@ static void mbox_unlock_mailbox(struct Context *ctx)
   {
     fflush(ctx->fp);
 
-    mx_unlock_file(ctx->path, fileno(ctx->fp));
+    mutt_unlock_file(ctx->path, fileno(ctx->fp));
     ctx->locked = false;
   }
 }
@@ -498,7 +497,7 @@ static int mbox_close_mailbox(struct Context *ctx)
 
   if (ctx->append)
   {
-    mx_unlock_file(ctx->path, fileno(ctx->fp));
+    mutt_unlock_file(ctx->path, fileno(ctx->fp));
     mutt_unblock_signals();
   }
 
@@ -576,15 +575,18 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   return 1;
 }
 
-static int strict_cmp_lists(const struct List *a, const struct List *b)
+static int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
 {
+  struct ListNode *a = STAILQ_FIRST(ah);
+  struct ListNode *b = STAILQ_FIRST(bh);
+
   while (a && b)
   {
     if (mutt_strcmp(a->data, b->data) != 0)
       return 0;
 
-    a = a->next;
-    b = b->next;
+    a = STAILQ_NEXT(a, entries);
+    b = STAILQ_NEXT(b, entries);
   }
   if (a || b)
     return 0;
@@ -598,7 +600,7 @@ static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope
   {
     if ((mutt_strcmp(e1->message_id, e2->message_id) != 0) ||
         (mutt_strcmp(e1->subject, e2->subject) != 0) ||
-        !strict_cmp_lists(e1->references, e2->references) ||
+        !strict_cmp_stailq(&e1->references, &e2->references) ||
         !strict_addrcmp(e1->from, e2->from) || !strict_addrcmp(e1->sender, e2->sender) ||
         !strict_addrcmp(e1->reply_to, e2->reply_to) ||
         !strict_addrcmp(e1->to, e2->to) || !strict_addrcmp(e1->cc, e2->cc) ||
@@ -1001,7 +1003,7 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
    * When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
-  if (!option(OPTMAILCHECKRECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
+  if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
     utimebuf.actime = utimebuf.modtime - 1;
 
   utime(ctx->path, &utimebuf);
@@ -1289,7 +1291,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
     char savefile[_POSIX_PATH_MAX];
 
-    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(Tempdir),
+    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(TempDir),
              NONULL(Username), NONULL(Hostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_unblock_signals();
@@ -1333,7 +1335,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   unlink(tempfile); /* remove partial copy of the mailbox */
   mutt_unblock_signals();
 
-  if (option(OPTCHECKMBOXSIZE))
+  if (option(OPT_CHECK_MBOX_SIZE))
   {
     tmp = mutt_find_mailbox(ctx->path);
     if (tmp && tmp->new == false)

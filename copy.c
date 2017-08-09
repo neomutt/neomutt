@@ -28,13 +28,12 @@
 #include "mutt.h"
 #include "copy.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -69,7 +68,6 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   bool ignore = false;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
-  struct List *t = NULL;
   char **headers = NULL;
   int hdr_count;
   int x;
@@ -109,25 +107,25 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
             continue;
           from = true;
         }
-        else if (flags & (CH_NOQFROM) && (ascii_strncasecmp(">From ", buf, 6) == 0))
+        else if (flags & (CH_NOQFROM) && (mutt_strncasecmp(">From ", buf, 6) == 0))
           continue;
 
         else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
           break; /* end of header */
 
         if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-            ((ascii_strncasecmp("Status:", buf, 7) == 0) ||
-             (ascii_strncasecmp("X-Status:", buf, 9) == 0)))
+            ((mutt_strncasecmp("Status:", buf, 7) == 0) ||
+             (mutt_strncasecmp("X-Status:", buf, 9) == 0)))
           continue;
         if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-            ((ascii_strncasecmp("Content-Length:", buf, 15) == 0) ||
-             (ascii_strncasecmp("Lines:", buf, 6) == 0)))
+            ((mutt_strncasecmp("Content-Length:", buf, 15) == 0) ||
+             (mutt_strncasecmp("Lines:", buf, 6) == 0)))
           continue;
-        if ((flags & CH_UPDATE_REFS) && (ascii_strncasecmp("References:", buf, 11) == 0))
+        if ((flags & CH_UPDATE_REFS) && (mutt_strncasecmp("References:", buf, 11) == 0))
           continue;
-        if ((flags & CH_UPDATE_IRT) && (ascii_strncasecmp("In-Reply-To:", buf, 12) == 0))
+        if ((flags & CH_UPDATE_IRT) && (mutt_strncasecmp("In-Reply-To:", buf, 12) == 0))
           continue;
-        if (flags & CH_UPDATE_LABEL && (ascii_strncasecmp("X-Label:", buf, 8) == 0))
+        if (flags & CH_UPDATE_LABEL && (mutt_strncasecmp("X-Label:", buf, 8) == 0))
           continue;
 
         ignore = false;
@@ -158,9 +156,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
    */
   if (flags & CH_REORDER)
   {
-    for (t = HeaderOrderList; t; t = t->next)
+    struct ListNode *np;
+    STAILQ_FOREACH(np, &HeaderOrderList, entries)
     {
-      mutt_debug(3, "Reorder list: %s\n", t->data);
+      mutt_debug(3, "Reorder list: %s\n", np->data);
       hdr_count++;
     }
   }
@@ -228,35 +227,38 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       if (!((flags & CH_FROM) && (flags & CH_FORCE_FROM) && this_is_from) &&
           (flags & CH_WEED) && mutt_matches_ignore(buf))
         continue;
-      if ((flags & CH_WEED_DELIVERED) && (ascii_strncasecmp("Delivered-To:", buf, 13) == 0))
+      if ((flags & CH_WEED_DELIVERED) && (mutt_strncasecmp("Delivered-To:", buf, 13) == 0))
         continue;
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-          ((ascii_strncasecmp("Status:", buf, 7) == 0) ||
-           (ascii_strncasecmp("X-Status:", buf, 9) == 0)))
+          ((mutt_strncasecmp("Status:", buf, 7) == 0) ||
+           (mutt_strncasecmp("X-Status:", buf, 9) == 0)))
         continue;
       if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-          ((ascii_strncasecmp("Content-Length:", buf, 15) == 0) ||
-           (ascii_strncasecmp("Lines:", buf, 6) == 0)))
+          ((mutt_strncasecmp("Content-Length:", buf, 15) == 0) ||
+           (mutt_strncasecmp("Lines:", buf, 6) == 0)))
         continue;
       if ((flags & CH_MIME) &&
-          (((ascii_strncasecmp("content-", buf, 8) == 0) &&
-            ((ascii_strncasecmp("transfer-encoding:", buf + 8, 18) == 0) ||
-             (ascii_strncasecmp("type:", buf + 8, 5) == 0))) ||
-           (ascii_strncasecmp("mime-version:", buf, 13) == 0)))
+          (((mutt_strncasecmp("content-", buf, 8) == 0) &&
+            ((mutt_strncasecmp("transfer-encoding:", buf + 8, 18) == 0) ||
+             (mutt_strncasecmp("type:", buf + 8, 5) == 0))) ||
+           (mutt_strncasecmp("mime-version:", buf, 13) == 0)))
         continue;
-      if ((flags & CH_UPDATE_REFS) && (ascii_strncasecmp("References:", buf, 11) == 0))
+      if ((flags & CH_UPDATE_REFS) && (mutt_strncasecmp("References:", buf, 11) == 0))
         continue;
-      if ((flags & CH_UPDATE_IRT) && (ascii_strncasecmp("In-Reply-To:", buf, 12) == 0))
+      if ((flags & CH_UPDATE_IRT) && (mutt_strncasecmp("In-Reply-To:", buf, 12) == 0))
         continue;
 
       /* Find x -- the array entry where this header is to be saved */
       if (flags & CH_REORDER)
       {
-        for (t = HeaderOrderList, x = 0; (t); t = t->next, x++)
+        struct ListNode *np;
+        x = 0;
+        STAILQ_FOREACH(np, &HeaderOrderList, entries)
         {
-          if (ascii_strncasecmp(buf, t->data, mutt_strlen(t->data)) == 0)
+          ++x;
+          if (mutt_strncasecmp(buf, np->data, mutt_strlen(np->data)) == 0)
           {
-            mutt_debug(2, "Reorder: %s matches %s\n", t->data, buf);
+            mutt_debug(2, "Reorder: %s matches %s\n", np->data, buf);
             break;
           }
         }
@@ -398,22 +400,22 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputc('\n', out);
   }
 
-  if ((flags & CH_UPDATE_IRT) && h->env->in_reply_to)
+  if ((flags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&h->env->in_reply_to))
   {
-    struct List *listp = h->env->in_reply_to;
     fputs("In-Reply-To:", out);
-    for (; listp; listp = listp->next)
+    struct ListNode *np;
+    STAILQ_FOREACH(np, &h->env->in_reply_to, entries)
     {
       fputc(' ', out);
-      fputs(listp->data, out);
+      fputs(np->data, out);
     }
     fputc('\n', out);
   }
 
-  if ((flags & CH_UPDATE_REFS) && h->env->references)
+  if ((flags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&h->env->references))
   {
     fputs("References:", out);
-    mutt_write_references(h->env->references, out, 0);
+    mutt_write_references(&h->env->references, out, 0);
     fputc('\n', out);
   }
 
@@ -452,7 +454,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_header_get_folder(h);
-    if (folder && !(option(OPTWEED) && mutt_matches_ignore("folder")))
+    if (folder && !(option(OPT_WEED) && mutt_matches_ignore("folder")))
     {
       char buf[LONG_STRING];
       strfcpy(buf, folder, sizeof(buf));
@@ -463,7 +465,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
       fputc('\n', out);
     }
     char *tags = nm_header_get_tags(h);
-    if (tags && !(option(OPTWEED) && mutt_matches_ignore("tags")))
+    if (tags && !(option(OPT_WEED) && mutt_matches_ignore("tags")))
     {
       fputs("Tags: ", out);
       fputs(tags, out);
@@ -557,7 +559,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
 
   if (flags & MUTT_CM_PREFIX)
   {
-    if (option(OPTTEXTFLOWED))
+    if (option(OPT_TEXT_FLOWED))
       strfcpy(prefix, ">", sizeof(prefix));
     else
       _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, hdr, 0);
@@ -964,13 +966,13 @@ static int address_header_decode(char **h)
   {
     case 'r':
     {
-      if (ascii_strncasecmp(s, "return-path:", 12) == 0)
+      if (mutt_strncasecmp(s, "return-path:", 12) == 0)
       {
         l = 12;
         rp = true;
         break;
       }
-      else if (ascii_strncasecmp(s, "reply-to:", 9) == 0)
+      else if (mutt_strncasecmp(s, "reply-to:", 9) == 0)
       {
         l = 9;
         break;
@@ -979,42 +981,42 @@ static int address_header_decode(char **h)
     }
     case 'f':
     {
-      if (ascii_strncasecmp(s, "from:", 5) != 0)
+      if (mutt_strncasecmp(s, "from:", 5) != 0)
         return 0;
       l = 5;
       break;
     }
     case 'c':
     {
-      if (ascii_strncasecmp(s, "cc:", 3) != 0)
+      if (mutt_strncasecmp(s, "cc:", 3) != 0)
         return 0;
       l = 3;
       break;
     }
     case 'b':
     {
-      if (ascii_strncasecmp(s, "bcc:", 4) != 0)
+      if (mutt_strncasecmp(s, "bcc:", 4) != 0)
         return 0;
       l = 4;
       break;
     }
     case 's':
     {
-      if (ascii_strncasecmp(s, "sender:", 7) != 0)
+      if (mutt_strncasecmp(s, "sender:", 7) != 0)
         return 0;
       l = 7;
       break;
     }
     case 't':
     {
-      if (ascii_strncasecmp(s, "to:", 3) != 0)
+      if (mutt_strncasecmp(s, "to:", 3) != 0)
         return 0;
       l = 3;
       break;
     }
     case 'm':
     {
-      if (ascii_strncasecmp(s, "mail-followup-to:", 17) != 0)
+      if (mutt_strncasecmp(s, "mail-followup-to:", 17) != 0)
         return 0;
       l = 17;
       break;

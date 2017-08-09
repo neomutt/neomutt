@@ -826,9 +826,6 @@ AM_CONDITIONAL(BUILD_HC_QDBM, test "x$build_hc_qdbm" = "xyes")
 AM_CONDITIONAL(BUILD_HC_TC,   test "x$build_hc_tc"   = "xyes")
 dnl -- end cache --
 
-MUTT_MD5="mutt_md5$EXEEXT"
-
-AC_SUBST(MUTT_MD5)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(HCACHE_LIBS)
 AC_SUBST(HCACHE_DEPS)
@@ -882,28 +879,27 @@ if test "x$with_idn" != "xno"; then
 fi
 
 dnl -- locales --
-
-wc_funcs=maybe
-AC_ARG_WITH(wc-funcs, AS_HELP_STRING([--without-wc-funcs],[Do not use the system's wchar_t functions]),
-	wc_funcs=$withval)
-
-if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
-	AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
-		mutt_cv_wc_funcs=no
-		AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
+	mutt_cv_wc_funcs=no
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #define _XOPEN_SOURCE 600
 #include <stddef.h>
 #include <stdlib.h>
 #include <wchar.h>
-#include <wctype.h>]], [[mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);
-	iswprint(0); iswspace(0); towlower(0); towupper(0); iswalnum(0)]])],[mutt_cv_wc_funcs=yes],[]))
-	wc_funcs=$mutt_cv_wc_funcs
-fi
+#include <wctype.h>]],
+[[
+mbrtowc(0, 0, 0, 0);
+wctomb(0, 0);
+wcwidth(0);
+if (iswprint(0)){}
+if (iswspace(0)){}
+if (towlower(0)){}
+if (towupper(0)){}
+if (iswalnum(0)){}
+]])],[mutt_cv_wc_funcs=yes],[]))
 
-if test $wc_funcs = yes; then
-	AC_DEFINE(HAVE_WC_FUNCS,1,[ Define if you are using the system's wchar_t functions. ])
-else
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS utf8.o wcwidth.o"
+if test $mutt_cv_wc_funcs != yes; then
+	AC_MSG_ERROR([wchar_t functions not found])
 fi
 
 # Only enable fmemopen if both fmemopen() and open_memstream()
@@ -946,7 +942,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile)
+	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile lib/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

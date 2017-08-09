@@ -53,9 +53,8 @@
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -159,7 +158,6 @@ struct NmCtxData
   bool trans : 1;          /**< Atomic transaction in progress */
   bool progress_ready : 1; /**< A progress bar has been initialised */
 };
-
 
 #if 0
 /**
@@ -1722,7 +1720,6 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   return res;
 }
 
-
 char *nm_header_get_folder(struct Header *h)
 {
   return (h && h->data) ? ((struct NmHdrData *) h->data)->folder : NULL;
@@ -1844,15 +1841,24 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
   mutt_debug(2, "nm_uri_from_query (%s)\n", buf);
   struct NmCtxData *data = get_ctxdata(ctx);
   char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
+  int added;
 
   if (data)
-    snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", get_db_filename(data), buf);
+    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", get_db_filename(data));
   else if (NotmuchDefaultUri)
-    snprintf(uri, sizeof(uri), "%s?query=%s", NotmuchDefaultUri, buf);
+    added = snprintf(uri, sizeof(uri), "%s?query=", NotmuchDefaultUri);
   else if (Maildir)
-    snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", Maildir, buf);
+    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", Maildir);
   else
     return NULL;
+
+  if (added >= sizeof(uri))
+  {
+    // snprintf output was truncated, so can't create URI
+    return NULL;
+  }
+
+  url_pct_encode(&uri[added], sizeof(uri) - added, buf);
 
   strncpy(buf, uri, bufsz);
   buf[bufsz - 1] = '\0';
@@ -2272,7 +2278,6 @@ done:
   return rc;
 }
 
-
 /**
  * nm_open_mailbox - Open a notmuch virtual mailbox
  * @param ctx A mailbox CONTEXT
@@ -2612,7 +2617,6 @@ static int nm_commit_message(struct Context *ctx, struct Message *msg)
   mutt_error(_("Can't write to virtual folder."));
   return -1;
 }
-
 
 /**
  * struct mx_notmuch_ops - Mailbox API

@@ -34,15 +34,12 @@
 #include <time.h>
 #include "imap_private.h"
 #include "account.h"
-#include "ascii.h"
-#include "buffer.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_menu.h"
@@ -115,7 +112,7 @@ static struct ImapCommand *cmd_new(struct ImapData *idata)
  *
  * If the queue is full, attempts to drain it.
  */
-static int cmd_queue(struct ImapData *idata, const char *cmdstr)
+static int cmd_queue(struct ImapData *idata, const char *cmdstr, int flags)
 {
   struct ImapCommand *cmd = NULL;
   int rc;
@@ -124,7 +121,7 @@ static int cmd_queue(struct ImapData *idata, const char *cmdstr)
   {
     mutt_debug(3, "Draining IMAP command pipeline\n");
 
-    rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK);
+    rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
 
     if (rc < 0 && rc != -2)
       return rc;
@@ -174,7 +171,7 @@ static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
     return -1;
   }
 
-  if (cmdstr && ((rc = cmd_queue(idata, cmdstr)) < 0))
+  if (cmdstr && ((rc = cmd_queue(idata, cmdstr, flags)) < 0))
     return rc;
 
   if (flags & IMAP_CMD_QUEUE)
@@ -201,9 +198,9 @@ static int cmd_status(const char *s)
 {
   s = imap_next_word((char *) s);
 
-  if (ascii_strncasecmp("OK", s, 2) == 0)
+  if (mutt_strncasecmp("OK", s, 2) == 0)
     return IMAP_CMD_OK;
-  if (ascii_strncasecmp("NO", s, 2) == 0)
+  if (mutt_strncasecmp("NO", s, 2) == 0)
     return IMAP_CMD_NO;
 
   return IMAP_CMD_BAD;
@@ -291,7 +288,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
   }
   s++;
 
-  if (ascii_strncasecmp("FLAGS", s, 5) != 0)
+  if (mutt_strncasecmp("FLAGS", s, 5) != 0)
   {
     mutt_debug(2, "Only handle FLAGS updates\n");
     return;
@@ -378,12 +375,12 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   s++;
   while (*s)
   {
-    if (ascii_strncasecmp(s, "\\NoSelect", 9) == 0)
+    if (mutt_strncasecmp(s, "\\NoSelect", 9) == 0)
       list->noselect = true;
-    else if (ascii_strncasecmp(s, "\\NoInferiors", 12) == 0)
+    else if (mutt_strncasecmp(s, "\\NoInferiors", 12) == 0)
       list->noinferiors = true;
     /* See draft-gahrns-imap-child-mailbox-?? */
-    else if (ascii_strncasecmp(s, "\\HasNoChildren", 14) == 0)
+    else if (mutt_strncasecmp(s, "\\HasNoChildren", 14) == 0)
       list->noinferiors = true;
 
     s = imap_next_word(s);
@@ -392,7 +389,7 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   }
 
   /* Delimiter */
-  if (ascii_strncasecmp(s, "NIL", 3) != 0)
+  if (mutt_strncasecmp(s, "NIL", 3) != 0)
   {
     delimbuf[0] = '\0';
     safe_strcat(delimbuf, 5, s);
@@ -440,7 +437,7 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
     return;
   }
 
-  if (!option(OPTIMAPCHECKSUBSCRIBED))
+  if (!option(OPT_IMAP_CHECK_SUBSCRIBED))
     return;
 
   idata->cmdtype = IMAP_CT_LIST;
@@ -614,18 +611,18 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
     value = imap_next_word(s);
     count = strtol(value, &value, 10);
 
-    if (ascii_strncmp("MESSAGES", s, 8) == 0)
+    if (mutt_strncmp("MESSAGES", s, 8) == 0)
     {
       status->messages = count;
       new_msg_count = 1;
     }
-    else if (ascii_strncmp("RECENT", s, 6) == 0)
+    else if (mutt_strncmp("RECENT", s, 6) == 0)
       status->recent = count;
-    else if (ascii_strncmp("UIDNEXT", s, 7) == 0)
+    else if (mutt_strncmp("UIDNEXT", s, 7) == 0)
       status->uidnext = count;
-    else if (ascii_strncmp("UIDVALIDITY", s, 11) == 0)
+    else if (mutt_strncmp("UIDVALIDITY", s, 11) == 0)
       status->uidvalidity = count;
-    else if (ascii_strncmp("UNSEEN", s, 6) == 0)
+    else if (mutt_strncmp("UNSEEN", s, 6) == 0)
       status->unseen = count;
 
     s = value;
@@ -675,7 +672,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
         mutt_debug(3, "Found %s in buffy list (OV: %d ON: %d U: %d)\n", mailbox,
                    olduv, oldun, status->unseen);
 
-        if (option(OPTMAILCHECKRECENT))
+        if (option(OPT_MAIL_CHECK_RECENT))
         {
           if (olduv && olduv == status->uidvalidity)
           {
@@ -726,8 +723,8 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && *s != '\0')
   {
-    if ((ascii_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
-        (ascii_strncasecmp(s, "UTF8=ONLY", 9) == 0))
+    if ((mutt_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
+        (mutt_strncasecmp(s, "UTF8=ONLY", 9) == 0))
       idata->unicode = 1;
   }
 }
@@ -752,7 +749,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
     /* EXISTS and EXPUNGE are always related to the SELECTED mailbox for the
      * connection, so update that one.
      */
-    if (ascii_strncasecmp("EXISTS", s, 6) == 0)
+    if (mutt_strncasecmp("EXISTS", s, 6) == 0)
     {
       mutt_debug(2, "Handling EXISTS\n");
 
@@ -783,30 +780,30 @@ static int cmd_handle_untagged(struct ImapData *idata)
       }
     }
     /* pn vs. s: need initial seqno */
-    else if (ascii_strncasecmp("EXPUNGE", s, 7) == 0)
+    else if (mutt_strncasecmp("EXPUNGE", s, 7) == 0)
       cmd_parse_expunge(idata, pn);
-    else if (ascii_strncasecmp("FETCH", s, 5) == 0)
+    else if (mutt_strncasecmp("FETCH", s, 5) == 0)
       cmd_parse_fetch(idata, pn);
   }
-  else if (ascii_strncasecmp("CAPABILITY", s, 10) == 0)
+  else if (mutt_strncasecmp("CAPABILITY", s, 10) == 0)
     cmd_parse_capability(idata, s);
-  else if (ascii_strncasecmp("OK [CAPABILITY", s, 14) == 0)
+  else if (mutt_strncasecmp("OK [CAPABILITY", s, 14) == 0)
     cmd_parse_capability(idata, pn);
-  else if (ascii_strncasecmp("OK [CAPABILITY", pn, 14) == 0)
+  else if (mutt_strncasecmp("OK [CAPABILITY", pn, 14) == 0)
     cmd_parse_capability(idata, imap_next_word(pn));
-  else if (ascii_strncasecmp("LIST", s, 4) == 0)
+  else if (mutt_strncasecmp("LIST", s, 4) == 0)
     cmd_parse_list(idata, s);
-  else if (ascii_strncasecmp("LSUB", s, 4) == 0)
+  else if (mutt_strncasecmp("LSUB", s, 4) == 0)
     cmd_parse_lsub(idata, s);
-  else if (ascii_strncasecmp("MYRIGHTS", s, 8) == 0)
+  else if (mutt_strncasecmp("MYRIGHTS", s, 8) == 0)
     cmd_parse_myrights(idata, s);
-  else if (ascii_strncasecmp("SEARCH", s, 6) == 0)
+  else if (mutt_strncasecmp("SEARCH", s, 6) == 0)
     cmd_parse_search(idata, s);
-  else if (ascii_strncasecmp("STATUS", s, 6) == 0)
+  else if (mutt_strncasecmp("STATUS", s, 6) == 0)
     cmd_parse_status(idata, s);
-  else if (ascii_strncasecmp("ENABLED", s, 7) == 0)
+  else if (mutt_strncasecmp("ENABLED", s, 7) == 0)
     cmd_parse_enabled(idata, s);
-  else if (ascii_strncasecmp("BYE", s, 3) == 0)
+  else if (mutt_strncasecmp("BYE", s, 3) == 0)
   {
     mutt_debug(2, "Handling BYE\n");
 
@@ -823,7 +820,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
 
     return -1;
   }
-  else if (option(OPTIMAPSERVERNOISE) && (ascii_strncasecmp("NO", s, 2) == 0))
+  else if (option(OPT_IMAP_SERVER_NOISE) && (mutt_strncasecmp("NO", s, 2) == 0))
   {
     mutt_debug(2, "Handling untagged NO\n");
 
@@ -905,8 +902,8 @@ int imap_cmd_step(struct ImapData *idata)
   idata->lastread = time(NULL);
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if (((ascii_strncmp(idata->buf, "* ", 2) == 0) ||
-       (ascii_strncmp(imap_next_word(idata->buf), "OK [", 4) == 0)) &&
+  if (((mutt_strncmp(idata->buf, "* ", 2) == 0) ||
+       (mutt_strncmp(imap_next_word(idata->buf), "OK [", 4) == 0)) &&
       cmd_handle_untagged(idata))
     return IMAP_CMD_BAD;
 
@@ -914,15 +911,24 @@ int imap_cmd_step(struct ImapData *idata)
   if (idata->buf[0] == '+')
     return IMAP_CMD_RESPOND;
 
-  /* look for tagged command completions */
-  rc = IMAP_CMD_CONTINUE;
+  /* Look for tagged command completions.
+   *
+   * Some response handlers can end up recursively calling
+   * imap_cmd_step() and end up handling all tagged command
+   * completions.
+   * (e.g. FETCH->set_flag->set_header_color->~h pattern match.)
+   *
+   * Other callers don't even create an idata->cmds entry.
+   *
+   * For both these cases, we default to returning OK */
+  rc = IMAP_CMD_OK;
   c = idata->lastcmd;
   do
   {
     cmd = &idata->cmds[c];
     if (cmd->state == IMAP_CMD_NEW)
     {
-      if (ascii_strncmp(idata->buf, cmd->seq, SEQLEN) == 0)
+      if (mutt_strncmp(idata->buf, cmd->seq, SEQLEN) == 0)
       {
         if (!stillrunning)
         {
@@ -948,7 +954,6 @@ int imap_cmd_step(struct ImapData *idata)
     mutt_debug(3, "IMAP queue drained\n");
     imap_cmd_finish(idata);
   }
-
 
   return rc;
 }
@@ -979,8 +984,8 @@ const char *imap_cmd_trailer(struct ImapData *idata)
   }
 
   s = imap_next_word((char *) s);
-  if (!s || ((ascii_strncasecmp(s, "OK", 2) != 0) && (ascii_strncasecmp(s, "NO", 2) != 0) &&
-             (ascii_strncasecmp(s, "BAD", 3) != 0)))
+  if (!s || ((mutt_strncasecmp(s, "OK", 2) != 0) && (mutt_strncasecmp(s, "NO", 2) != 0) &&
+             (mutt_strncasecmp(s, "BAD", 3) != 0)))
   {
     mutt_debug(2, "imap_cmd_trailer: not a command completion: %s\n", idata->buf);
     return notrailer;
@@ -1009,6 +1014,7 @@ const char *imap_cmd_trailer(struct ImapData *idata)
  *       This is used for checking for a mailbox on append and login
  * * IMAP_CMD_PASS: command contains a password. Suppress logging.
  * * IMAP_CMD_QUEUE: only queue command, do not execute.
+ * * IMAP_CMD_POLL: poll the socket for a response before running imap_cmd_step.
  */
 int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 {
@@ -1022,6 +1028,15 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 
   if (flags & IMAP_CMD_QUEUE)
     return 0;
+
+  if ((flags & IMAP_CMD_POLL) && (ImapPollTimeout > 0) &&
+      (mutt_socket_poll(idata->conn, ImapPollTimeout)) == 0)
+  {
+    mutt_error(_("Connection to %s timed out"), idata->conn->account.host);
+    mutt_sleep(2);
+    cmd_handle_fatal(idata);
+    return -1;
+  }
 
   /* Allow interruptions, particularly useful if there are network problems. */
   mutt_allow_interrupt(1);

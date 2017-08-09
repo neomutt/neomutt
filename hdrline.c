@@ -33,14 +33,12 @@
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
-#include "buffer.h"
 #include "context.h"
 #include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mbyte_table.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -132,7 +130,6 @@ static bool check_for_mailing_list_addr(struct Address *adr, char *buf, int bufl
   }
   return false;
 }
-
 
 static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 {
@@ -235,10 +232,10 @@ static const char *make_from_prefix(enum FieldType disp)
         [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ", [DISP_FROM] = "",
   };
 
-  if (!Fromchars || !Fromchars->chars || (Fromchars->len == 0))
+  if (!FromChars || !FromChars->chars || (FromChars->len == 0))
     return long_prefixes[disp];
 
-  char *pchar = get_nth_wchar(Fromchars, disp);
+  char *pchar = get_nth_wchar(FromChars, disp);
   if (mutt_strlen(pchar) == 0)
     return "";
 
@@ -454,7 +451,6 @@ static char *apply_subject_mods(struct Envelope *env)
   env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
   return env->disp_subj;
 }
-
 
 /**
  * hdr_format_str - Format a string, like printf()
@@ -996,7 +992,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (!optional)
       {
         make_from_addr(hdr->env, buf2, sizeof(buf2), 1);
-        if (!option(OPTSAVEADDRESS) && (p = strpbrk(buf2, "%@")))
+        if (!option(OPT_SAVE_ADDRESS) && (p = strpbrk(buf2, "%@")))
           *p = 0;
         mutt_format_s(dest, destlen, prefix, buf2);
       }
@@ -1066,21 +1062,21 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
     case 'S':
       if (hdr->deleted)
-        wch = get_nth_wchar(Flagchars, FlagCharDeleted);
+        wch = get_nth_wchar(FlagChars, FlagCharDeleted);
       else if (hdr->attach_del)
-        wch = get_nth_wchar(Flagchars, FlagCharDeletedAttach);
+        wch = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
       else if (hdr->tagged)
-        wch = get_nth_wchar(Flagchars, FlagCharTagged);
+        wch = get_nth_wchar(FlagChars, FlagCharTagged);
       else if (hdr->flagged)
-        wch = get_nth_wchar(Flagchars, FlagCharImportant);
+        wch = get_nth_wchar(FlagChars, FlagCharImportant);
       else if (hdr->replied)
-        wch = get_nth_wchar(Flagchars, FlagCharReplied);
+        wch = get_nth_wchar(FlagChars, FlagCharReplied);
       else if (hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
-        wch = get_nth_wchar(Flagchars, FlagCharSEmpty);
+        wch = get_nth_wchar(FlagChars, FlagCharSEmpty);
       else if (hdr->old)
-        wch = get_nth_wchar(Flagchars, FlagCharOld);
+        wch = get_nth_wchar(FlagChars, FlagCharOld);
       else
-        wch = get_nth_wchar(Flagchars, FlagCharNew);
+        wch = get_nth_wchar(FlagChars, FlagCharNew);
 
       snprintf(buf2, sizeof(buf2), "%s", wch);
       colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
@@ -1104,8 +1100,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'T':
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
       snprintf(dest, destlen, fmt,
-               (Tochars && ((i = user_is_recipient(hdr))) < Tochars->len) ?
-                   Tochars->chars[i] :
+               (ToChars && ((i = user_is_recipient(hdr))) < ToChars->len) ?
+                   ToChars->chars[i] :
                    " ");
       break;
 
@@ -1213,26 +1209,26 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       {
         char *ch = NULL;
         if (hdr->deleted)
-          ch = get_nth_wchar(Flagchars, FlagCharDeleted);
+          ch = get_nth_wchar(FlagChars, FlagCharDeleted);
         else if (hdr->attach_del)
-          ch = get_nth_wchar(Flagchars, FlagCharDeletedAttach);
+          ch = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
         else if (THREAD_NEW)
-          ch = get_nth_wchar(Flagchars, FlagCharNewThread);
+          ch = get_nth_wchar(FlagChars, FlagCharNewThread);
         else if (THREAD_OLD)
-          ch = get_nth_wchar(Flagchars, FlagCharOldThread);
+          ch = get_nth_wchar(FlagChars, FlagCharOldThread);
         else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
         {
           if (hdr->replied)
-            ch = get_nth_wchar(Flagchars, FlagCharReplied);
+            ch = get_nth_wchar(FlagChars, FlagCharReplied);
           else
-            ch = get_nth_wchar(Flagchars, FlagCharZEmpty);
+            ch = get_nth_wchar(FlagChars, FlagCharZEmpty);
         }
         else
         {
           if (hdr->old)
-            ch = get_nth_wchar(Flagchars, FlagCharOld);
+            ch = get_nth_wchar(FlagChars, FlagCharOld);
           else
-            ch = get_nth_wchar(Flagchars, FlagCharNew);
+            ch = get_nth_wchar(FlagChars, FlagCharNew);
         }
 
         snprintf(buf2, sizeof(buf2), "%s", ch);
@@ -1259,11 +1255,11 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       {
         char *ch = NULL;
         if (hdr->tagged)
-          ch = get_nth_wchar(Flagchars, FlagCharTagged);
+          ch = get_nth_wchar(FlagChars, FlagCharTagged);
         else if (hdr->flagged)
-          ch = get_nth_wchar(Flagchars, FlagCharImportant);
+          ch = get_nth_wchar(FlagChars, FlagCharImportant);
         else
-          ch = get_nth_wchar(Tochars, user_is_recipient(hdr));
+          ch = get_nth_wchar(ToChars, user_is_recipient(hdr));
 
         snprintf(buf2, sizeof(buf2), "%s", ch);
         src++;
@@ -1281,30 +1277,30 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       /* New/Old for threads; replied; New/Old for messages */
       char *first = NULL;
       if (THREAD_NEW)
-        first = get_nth_wchar(Flagchars, FlagCharNewThread);
+        first = get_nth_wchar(FlagChars, FlagCharNewThread);
       else if (THREAD_OLD)
-        first = get_nth_wchar(Flagchars, FlagCharOldThread);
+        first = get_nth_wchar(FlagChars, FlagCharOldThread);
       else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
       {
         if (hdr->replied)
-          first = get_nth_wchar(Flagchars, FlagCharReplied);
+          first = get_nth_wchar(FlagChars, FlagCharReplied);
         else
-          first = get_nth_wchar(Flagchars, FlagCharZEmpty);
+          first = get_nth_wchar(FlagChars, FlagCharZEmpty);
       }
       else
       {
         if (hdr->old)
-          first = get_nth_wchar(Flagchars, FlagCharOld);
+          first = get_nth_wchar(FlagChars, FlagCharOld);
         else
-          first = get_nth_wchar(Flagchars, FlagCharNew);
+          first = get_nth_wchar(FlagChars, FlagCharNew);
       }
 
       /* Marked for deletion; deleted attachments; crypto */
       char *second = NULL;
       if (hdr->deleted)
-        second = get_nth_wchar(Flagchars, FlagCharDeleted);
+        second = get_nth_wchar(FlagChars, FlagCharDeleted);
       else if (hdr->attach_del)
-        second = get_nth_wchar(Flagchars, FlagCharDeletedAttach);
+        second = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
       else if (WithCrypto && (hdr->security & GOODSIGN))
         second = "S";
       else if (WithCrypto && (hdr->security & ENCRYPT))
@@ -1319,11 +1315,11 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       /* Tagged, flagged and recipient flag */
       char *third = NULL;
       if (hdr->tagged)
-        third = get_nth_wchar(Flagchars, FlagCharTagged);
+        third = get_nth_wchar(FlagChars, FlagCharTagged);
       else if (hdr->flagged)
-        third = get_nth_wchar(Flagchars, FlagCharImportant);
+        third = get_nth_wchar(FlagChars, FlagCharImportant);
       else
-        third = get_nth_wchar(Tochars, user_is_recipient(hdr));
+        third = get_nth_wchar(ToChars, user_is_recipient(hdr));
 
       snprintf(buf2, sizeof(buf2), "%s%s%s", first, second, third);
     }

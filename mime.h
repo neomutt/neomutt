@@ -67,13 +67,9 @@ enum ContentDisposition
 
 /* MIME encoding/decoding global vars */
 
-#ifndef _SENDLIB_C
 extern const int Index_hex[];
-extern const int Index_64[];
-#endif
 
 #define hexval(c) Index_hex[(unsigned int) (c)]
-#define base64val(c) Index_64[(unsigned int) (c)]
 
 #define is_multipart(x)                                                        \
   ((x)->type == TYPEMULTIPART ||                                               \
@@ -88,8 +84,6 @@ extern const char *BodyEncodings[];
 #define ENCODING(X) BodyEncodings[(X)]
 
 /* other MIME-related global variables */
-#ifndef _SENDLIB_C
-extern char MimeSpecials[];
-#endif
+extern const char MimeSpecials[];
 
 #endif /* _MUTT_MIME_H */

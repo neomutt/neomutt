@@ -39,14 +39,12 @@
 #include "imap_private.h"
 #include "mutt.h"
 #include "account.h"
-#include "ascii.h"
 #include "bcache.h"
-#include "buffer.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "message.h"
@@ -373,7 +371,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
         mx->account.flags |= MUTT_ACCT_PORT;
       if (sscanf(tmp, "/%s", tmp) == 1)
       {
-        if (ascii_strncmp(tmp, "ssl", 3) == 0)
+        if (mutt_strncmp(tmp, "ssl", 3) == 0)
           mx->account.flags |= MUTT_ACCT_SSL;
         else
         {
@@ -406,8 +404,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx1 = "INBOX";
   if (!mx2 || !*mx2)
     mx2 = "INBOX";
-  if ((ascii_strcasecmp(mx1, "INBOX") == 0) &&
-      (ascii_strcasecmp(mx2, "INBOX") == 0))
+  if ((mutt_strcasecmp(mx1, "INBOX") == 0) &&
+      (mutt_strcasecmp(mx2, "INBOX") == 0))
     return 0;
 
   b1 = safe_malloc(strlen(mx1) + 1);
@@ -519,6 +517,9 @@ struct ImapData *imap_new_idata(void)
     FREE(&idata);
   }
 
+  STAILQ_INIT(&idata->flags);
+  STAILQ_INIT(&idata->mboxcache);
+
   return idata;
 }
 
@@ -531,7 +532,7 @@ void imap_free_idata(struct ImapData **idata)
     return;
 
   FREE(&(*idata)->capstr);
-  mutt_free_list(&(*idata)->flags);
+  mutt_list_free(&(*idata)->flags);
   imap_mboxcache_free(*idata);
   mutt_buffer_free(&(*idata)->cmdbuf);
   FREE(&(*idata)->buf);
@@ -759,7 +760,6 @@ void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
   url_ciss_tostring(&url, dest, len, 0);
 }
 
-
 /**
  * imap_quote_string - quote string according to IMAP rules
  *
@@ -831,7 +831,6 @@ void imap_unquote_string(char *s)
   *d = '\0';
 }
 
-
 /**
  * imap_munge_mbox_name - Quoting and UTF-7 conversion
  */
@@ -884,7 +883,7 @@ int imap_wordcasecmp(const char *a, const char *b)
   }
   tmp[i + 1] = 0;
 
-  return ascii_strcasecmp(a, tmp);
+  return mutt_strcasecmp(a, tmp);
 }
 
 /*
@@ -923,10 +922,10 @@ int imap_wait_keepalive(pid_t pid)
   sigset_t oldmask;
   int rc;
 
-  short imap_passive = option(OPTIMAPPASSIVE);
+  short imap_passive = option(OPT_IMAP_PASSIVE);
 
-  set_option(OPTIMAPPASSIVE);
-  set_option(OPTKEEPQUIET);
+  set_option(OPT_IMAP_PASSIVE);
+  set_option(OPT_KEEP_QUIET);
 
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
 
@@ -953,9 +952,9 @@ int imap_wait_keepalive(pid_t pid)
   sigaction(SIGALRM, &oldalrm, NULL);
   sigprocmask(SIG_SETMASK, &oldmask, NULL);
 
-  unset_option(OPTKEEPQUIET);
+  unset_option(OPT_KEEP_QUIET);
   if (!imap_passive)
-    unset_option(OPTIMAPPASSIVE);
+    unset_option(OPT_IMAP_PASSIVE);
 
   return rc;
 }

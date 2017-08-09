@@ -23,19 +23,26 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_qdbm QDBM
+ *
+ * This module implements the header cache functionality using a Quick DataBase
+ * Manager file as a backend.
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <depot.h>
 #include <villa.h>
 #include "backend.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 static void *hcache_qdbm_open(const char *path)
 {
   int flags = VL_OWRITER | VL_OCREAT;
 
-  if (option(OPTHCACHECOMPRESS))
+  if (option(OPT_HCACHE_COMPRESS))
     flags |= VL_OZCOMP;
 
   return vlopen(path, flags, VL_CMPLEX);
@@ -61,7 +68,10 @@ static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *da
     return -1;
 
   VILLA *db = ctx;
-  return vlput(db, key, keylen, data, dlen, VL_DOVER);
+  /* Not sure if dbecode is reset on success, so better to explicitely return 0
+   * on success */
+  bool success = vlput(db, key, keylen, data, dlen, VL_DOVER);
+  return success ? 0 : dpecode ? dpecode : -1;
 }
 
 static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
@@ -70,7 +80,10 @@ static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   VILLA *db = ctx;
-  return vlout(db, key, keylen);
+  /* Not sure if dbecode is reset on success, so better to explicitely return 0
+   * on success */
+  bool success = vlout(db, key, keylen);
+  return success ? 0 : dpecode ? dpecode : -1;
 }
 
 static void hcache_qdbm_close(void **ctx)

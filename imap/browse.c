@@ -37,7 +37,7 @@
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_regex.h"
 #include "options.h"
 #include "protos.h"
@@ -189,9 +189,9 @@ int imap_browse(char *path, struct BrowserState *state)
     return -1;
   }
 
-  save_lsub = option(OPTIMAPCHECKSUBSCRIBED);
-  unset_option(OPTIMAPCHECKSUBSCRIBED);
-  strfcpy(list_cmd, option(OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof(list_cmd));
+  save_lsub = option(OPT_IMAP_CHECK_SUBSCRIBED);
+  unset_option(OPT_IMAP_CHECK_SUBSCRIBED);
+  strfcpy(list_cmd, option(OPT_IMAP_LSUB) ? "LSUB" : "LIST", sizeof(list_cmd));
 
   if (!(idata = imap_conn_find(&(mx.account), 0)))
     goto fail;
@@ -320,14 +320,14 @@ int imap_browse(char *path, struct BrowserState *state)
   mutt_clear_error();
 
   if (save_lsub)
-    set_option(OPTIMAPCHECKSUBSCRIBED);
+    set_option(OPT_IMAP_CHECK_SUBSCRIBED);
 
   FREE(&mx.mbox);
   return 0;
 
 fail:
   if (save_lsub)
-    set_option(OPTIMAPCHECKSUBSCRIBED);
+    set_option(OPT_IMAP_CHECK_SUBSCRIBED);
   FREE(&mx.mbox);
   return -1;
 }

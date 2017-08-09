@@ -25,7 +25,7 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
 #include "mbyte_table.h"
 #include "mutt_curses.h"
@@ -243,7 +243,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (Context)
       {
-        i = option(OPTATTACHMSG) ?
+        i = option(OPT_ATTACH_MSG) ?
                 3 :
                 ((Context->readonly || Context->dontwrite) ?
                      2 :

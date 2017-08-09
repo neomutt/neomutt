@@ -272,7 +272,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
             docstat |= D_NL;
           }
           if (docstat & D_DL)
-            ++Continuation;
+            Continuation++;
           break;
         }
         case SP_NEWPAR:
@@ -907,11 +907,11 @@ static int handle_docline(char *l, FILE *out, int docstat)
       char *ref = NULL;
       char save;
 
-      ++s;
+      s++;
       if (*s == '$')
       {
         output_dollar = true;
-        ++s;
+        s++;
       }
       if (*s == '$')
       {
@@ -921,14 +921,14 @@ static int handle_docline(char *l, FILE *out, int docstat)
       {
         ref = s;
         while (isalnum((unsigned char) *s) || (*s && strchr("-_<>", *s)))
-          ++s;
+          s++;
 
         docstat = commit_buff(buff, &d, out, docstat);
         save = *s;
         *s = 0;
         print_ref(out, output_dollar, ref);
         *s = save;
-        --s;
+        s--;
       }
     }
     else

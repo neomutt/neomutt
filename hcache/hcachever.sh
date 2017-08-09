@@ -46,12 +46,41 @@ getstruct () {
   done
 
   case $STRUCT in
-    Address|List|Buffer|Parameter|Body|Envelope|Header)
+    Address|ListNode|Buffer|Parameter|Body|Envelope|Header)
       BODY=`cleanbody "$BODY"`
       echo "$STRUCT: $BODY"
     ;;
   esac
   return
+}
+
+md5prog () {
+  prog=""
+
+  # Use OpenSSL if it's installed
+  openssl=`which openssl`
+  if [ $? = 0 ];then
+    echo "$openssl md5 -r"
+    return
+  fi
+
+  # Fallback to looking for a system-specific utility
+  case "`uname`" in
+    SunOS)
+      # This matches most of the Solaris family
+      prog="digest -a md5"
+      ;;
+    *BSD)
+      # FreeBSD, NetBSD, and OpenBSD all have md5
+      prog="md5"
+      ;;
+    *)
+      # Assume anything else has binutils' md5sum
+      prog="md5sum"
+      ;;
+  esac
+
+  echo $prog
 }
 
 DEST="$1"
@@ -77,8 +106,9 @@ do
 done
 echo " */" >> $TMPD
 
-MD5TEXT=`echo "$TEXT" | ../mutt_md5`
-echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
+MD5PROG=$(md5prog)
+MD5TEXT=`echo "$TEXT" | $MD5PROG | cut -c-8`
+echo "#define HCACHEVER 0x$MD5TEXT" >> $TMPD
 
 # TODO: validate we have all structs
 

@@ -42,7 +42,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mapping.h"
@@ -191,7 +191,6 @@ static void calc_header_width_padding(int idx, const char *header, int calc_max)
   HeaderPadding[idx] -= width;
 }
 
-
 /**
  * init_header_padding - Calculate how much padding the compose table will need
  *
@@ -281,7 +280,7 @@ static void redraw_crypt_lines(struct Header *msg)
       addstr(_(" (S/MIME)"));
   }
 
-  if (option(OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
+  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
     addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(MuttIndexWindow);
@@ -317,10 +316,9 @@ static void redraw_crypt_lines(struct Header *msg)
   }
 }
 
-
 #ifdef MIXMASTER
 
-static void redraw_mix_line(struct List *chain)
+static void redraw_mix_line(struct ListHead *chain)
 {
   char *t = NULL;
 
@@ -329,16 +327,18 @@ static void redraw_mix_line(struct List *chain)
                        HeaderPadding[HDR_MIX], _(Prompts[HDR_MIX]));
   NORMAL_COLOR;
 
-  if (!chain)
+  if (STAILQ_EMPTY(chain))
   {
     addstr(_("<no chain defined>"));
     mutt_window_clrtoeol(MuttIndexWindow);
     return;
   }
 
-  for (int c = 12; chain; chain = chain->next)
+  int c = 12;
+  struct ListNode *np;
+  STAILQ_FOREACH(np, chain, entries)
   {
-    t = chain->data;
+    t = np->data;
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
 
@@ -346,7 +346,7 @@ static void redraw_mix_line(struct List *chain)
       break;
 
     addstr(NONULL(t));
-    if (chain->next)
+    if (STAILQ_NEXT(np, entries))
       addstr(", ");
 
     c += mutt_strlen(t) + 2;
@@ -402,7 +402,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
-  if (!option(OPTNEWSSEND))
+  if (!option(OPT_NEWS_SEND))
   {
 #endif
     draw_envelope_addr(HDR_TO, msg->env->to);
@@ -418,7 +418,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
     mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s",
                          HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
     mutt_paddstr(W, NONULL(msg->env->followup_to));
-    if (option(OPTXCOMMENTTO))
+    if (option(OPT_XCOMMENT_TO))
     {
       mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s",
                            HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
@@ -445,7 +445,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
     redraw_crypt_lines(msg);
 
 #ifdef MIXMASTER
-  redraw_mix_line(msg->chain);
+  redraw_mix_line(&msg->chain);
 #endif
 
   SETCOLOR(MT_COLOR_STATUS);
@@ -585,7 +585,6 @@ static void compose_menu_redraw(struct Menu *menu)
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current(menu);
 }
-
 
 /**
  * cum_attachs_size - Cumulative Attachments Size
@@ -728,7 +727,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 #ifdef USE_NNTP
   int news = 0; /* is it a news article ? */
 
-  if (option(OPTNEWSSEND))
+  if (option(OPT_NEWS_SEND))
     news++;
 #endif
 
@@ -759,7 +758,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   while (loop)
   {
 #ifdef USE_NNTP
-    unset_option(OPTNEWS); /* for any case */
+    unset_option(OPT_NEWS); /* for any case */
 #endif
     switch (op = mutt_menu_loop(menu))
     {
@@ -773,7 +772,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_TO, &msg->env->to);
-        if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+        if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -786,7 +785,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_BCC, &msg->env->bcc);
-        if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+        if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -799,7 +798,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_CC, &msg->env->cc);
-        if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+        if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -844,7 +843,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         break;
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
-        if (news && option(OPTXCOMMENTTO))
+        if (news && option(OPT_XCOMMENT_TO))
         {
           if (msg->env->x_comment_to)
             strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
@@ -895,7 +894,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (Editor && (mutt_strcmp("builtin", Editor) != 0) && !option(OPTEDITHDRS))
+        if (Editor && (mutt_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HDRS))
         {
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
@@ -907,7 +906,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS ||
-             (op == OP_COMPOSE_EDIT_MESSAGE && option(OPTEDITHDRS))))
+             (op == OP_COMPOSE_EDIT_MESSAGE && option(OPT_EDIT_HDRS))))
         {
           char *tag = NULL, *err = NULL;
           mutt_env_to_local(msg->env);
@@ -917,7 +916,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
             mutt_error(_("Bad IDN in \"%s\": '%s'"), tag, err);
             FREE(&err);
           }
-          if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+          if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
             crypt_opportunistic_encrypt(msg);
         }
         else
@@ -948,7 +947,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
 
-
       case OP_COMPOSE_ATTACH_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
           break;
@@ -971,7 +969,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
-
 
       case OP_COMPOSE_ATTACH_FILE:
       {
@@ -1035,14 +1032,14 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         prompt = _("Open mailbox to attach message from");
 
 #ifdef USE_NNTP
-        unset_option(OPTNEWS);
+        unset_option(OPT_NEWS);
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
           if (!(CurrentNewsSrv = nntp_select_server(NewsServer, 0)))
             break;
 
           prompt = _("Open newsgroup to attach message from");
-          set_option(OPTNEWS);
+          set_option(OPT_NEWS);
         }
 #endif
 
@@ -1059,7 +1056,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 
 #ifdef USE_NNTP
-        if (option(OPTNEWS))
+        if (option(OPT_NEWS))
           nntp_expand_path(fname, sizeof(fname), &CurrentNewsSrv->conn->account);
         else
 #endif
@@ -1071,7 +1068,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           if (!mx_is_pop(fname))
 #endif
 #ifdef USE_NNTP
-            if (!mx_is_nntp(fname) && !option(OPTNEWS))
+            if (!mx_is_nntp(fname) && !option(OPT_NEWS))
 #endif
               /* check to make sure the file exists and is readable */
               if (access(fname, R_OK) == -1)
@@ -1102,10 +1099,10 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         oldSortAux = SortAux;
 
         Context = ctx;
-        set_option(OPTATTACHMSG);
+        set_option(OPT_ATTACH_MSG);
         mutt_message(_("Tag the messages you want to attach!"));
         close = mutt_index_menu();
-        unset_option(OPTATTACHMSG);
+        unset_option(OPT_ATTACH_MSG);
 
         if (!Context)
         {
@@ -1285,9 +1282,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
         }
 
-
 #ifdef MIXMASTER
-        if (msg->chain && mix_check_message(msg) != 0)
+        if (!STAILQ_EMPTY(&msg->chain) && mix_check_message(msg) != 0)
           break;
 #endif
 
@@ -1584,7 +1580,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         break;
 
-
       case OP_COMPOSE_PGP_MENU:
         if (!(WithCrypto & APPLICATION_PGP))
           break;
@@ -1610,11 +1605,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
 
-
       case OP_FORGET_PASSPHRASE:
         crypt_forget_passphrase();
         break;
-
 
       case OP_COMPOSE_SMIME_MENU:
         if (!(WithCrypto & APPLICATION_SMIME))
@@ -1640,7 +1633,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         redraw_crypt_lines(msg);
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
-
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:

@@ -33,7 +33,6 @@
 #include "mutt.h"
 #include "remailer.h"
 #include "address.h"
-#include "ascii.h"
 #include "envelope.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -41,7 +40,7 @@
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mapping.h"
 #include "mutt_curses.h"
@@ -191,7 +190,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     mix_add_entry(&type2_list, p, &slots, &used);
     continue;
 
-  problem:
+problem:
     mix_free_remailer(&p);
   }
 
@@ -215,11 +214,9 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
   FREE(type2_list);
 }
 
-
 #define MIX_HOFFSET 2
 #define MIX_VOFFSET (MuttIndexWindow->rows - 4)
 #define MIX_MAXROW (MuttIndexWindow->rows - 1)
-
 
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
@@ -244,7 +241,6 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
     r = MIX_VOFFSET;
     c = MIX_HOFFSET;
   }
-
 
   for (; i < chain->cl; i++)
   {
@@ -413,7 +409,6 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
   return src;
 }
 
-
 static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
@@ -428,7 +423,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
   if (chain->cl >= MAXMIXES)
     return -1;
 
-  if ((mutt_strcmp(s, "0") == 0) || (ascii_strcasecmp(s, "<random>") == 0))
+  if ((mutt_strcmp(s, "0") == 0) || (mutt_strcasecmp(s, "<random>") == 0))
   {
     chain->ch[chain->cl++] = 0;
     return 0;
@@ -436,7 +431,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (ascii_strcasecmp(s, type2_list[i]->shortname) == 0)
+    if (mutt_strcasecmp(s, type2_list[i]->shortname) == 0)
     {
       chain->ch[chain->cl++] = i;
       return 0;
@@ -457,10 +452,8 @@ static const struct Mapping RemailerHelp[] = {
   { N_("OK"), OP_MIX_USE },        { NULL, 0 },
 };
 
-
-void mix_make_chain(struct List **chainp)
+void mix_make_chain(struct ListHead *chainhead)
 {
-  struct List *p = NULL;
   struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;
@@ -485,10 +478,13 @@ void mix_make_chain(struct List **chainp)
   }
 
   chain = safe_calloc(1, sizeof(struct MixChain));
-  for (p = *chainp; p; p = p->next)
-    mix_chain_add(chain, (char *) p->data, type2_list);
 
-  mutt_free_list(chainp);
+  struct ListNode *p;
+  STAILQ_FOREACH(p, chainhead, entries)
+  {
+    mix_chain_add(chain, p->data, type2_list);
+  }
+  mutt_list_free(chainhead);
 
   /* safety check */
   for (i = 0; i < chain->cl; i++)
@@ -657,7 +653,7 @@ void mix_make_chain(struct List **chainp)
       else
         t = "*";
 
-      *chainp = mutt_add_list(*chainp, t);
+      mutt_list_insert_tail(chainhead, safe_strdup(t));
     }
   }
 
@@ -714,7 +710,7 @@ int mix_check_message(struct Header *msg)
   return 0;
 }
 
-int mix_send_message(struct List *chain, const char *tempfile)
+int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
   char tmp[HUGE_STRING];
@@ -723,20 +719,22 @@ int mix_send_message(struct List *chain, const char *tempfile)
 
   snprintf(cmd, sizeof(cmd), "cat %s | %s -m ", tempfile, Mixmaster);
 
-  for (i = 0; chain; chain = chain->next, i = 1)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, chain, entries)
   {
     strfcpy(tmp, cmd, sizeof(tmp));
-    mutt_quote_filename(cd_quoted, sizeof(cd_quoted), (char *) chain->data);
-    snprintf(cmd, sizeof(cmd), "%s%s%s", tmp, i ? "," : " -l ", cd_quoted);
+    mutt_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
+    snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
+        (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_endwin(NULL);
 
   if ((i = mutt_system(cmd)))
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
-    if (!option(OPTNOCURSES))
+    if (!option(OPT_NO_CURSES))
     {
       mutt_any_key_to_continue(NULL);
       mutt_error(_("Error sending message."));

@@ -81,10 +81,9 @@ enum MailboxFormat
   MUTT_COMPRESSED,
 };
 
-WHERE short DefaultMagic INITVAL(MUTT_MBOX);
+WHERE short DefaultMagic;
 
 #define MMDF_SEP "\001\001\001\001\n"
-#define MAXLOCKATTEMPT 5
 
 int mbox_check_empty(const char *path);
 void mbox_reset_atime(struct Context *ctx, struct stat *st);
@@ -116,10 +115,6 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, int committing);
-
-
-int mx_lock_file(const char *path, int fd, int excl, int timeout);
-int mx_unlock_file(const char *path, int fd);
 
 struct MxOps *mx_get_ops(int magic);
 extern struct MxOps mx_maildir_ops;

@@ -43,12 +43,12 @@ struct Context;
 struct EnterState;
 struct Envelope;
 struct Header;
-struct List;
 struct Parameter;
 struct Regex;
 struct ReplaceList;
 struct RxList;
 struct State;
+struct ListHead;
 
 struct stat;
 struct passwd;
@@ -78,6 +78,8 @@ enum XdgType
   XDG_CONFIG_DIRS,
 };
 
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
+
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags);
 
@@ -88,8 +90,6 @@ int _mutt_system(const char *cmd, int flags);
 
 void mutt_parse_content_type(char *s, struct Body *ct);
 void mutt_generate_boundary(struct Parameter **parm);
-void mutt_delete_parameter(const char *attribute, struct Parameter **p);
-void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p);
 
 #ifdef USE_NOTMUCH
 int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -122,19 +122,13 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen);
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user_hdrs, short weed);
 
-void mutt_set_mtime(const char *from, const char *to);
-time_t mutt_decrease_mtime(const char *f, struct stat *st);
-time_t mutt_local_tz(time_t t);
-time_t mutt_mktime(struct tm *t, int local);
 time_t mutt_parse_date(const char *s, struct Header *h);
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
-void mutt_touch_atime(int f);
 
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, enum FormatFlag flags);
-
 
 char *mutt_charset_hook(const char *chs);
 char *mutt_iconv_hook(const char *chs);
@@ -143,9 +137,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx);
 char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
-char *mutt_get_parameter(const char *s, struct Parameter *p);
-struct List *mutt_crypt_hook(struct Address *adr);
-char *mutt_make_date(char *s, size_t len);
+void mutt_crypt_hook(struct ListHead *list, struct Address *adr);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
@@ -157,8 +149,7 @@ const char *mutt_fqdn(short may_hide_host);
 struct Regex *mutt_compile_regexp(const char *s, int flags);
 
 void mutt_account_hook(const char *url);
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp,
-                                   struct List ***qq);
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv);
 void mutt_adv_mktemp(char *s, size_t l);
 void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases);
 void mutt_allow_interrupt(int disposition);
@@ -211,7 +202,6 @@ void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(struct EnterState **esp);
 void mutt_free_envelope(struct Envelope **p);
 void mutt_free_header(struct Header **h);
-void mutt_free_parameter(struct Parameter **p);
 void mutt_free_regexp(struct Regex **pp);
 void mutt_help(int menu);
 void mutt_check_lookup_list(struct Body *b, char *type, int len);
@@ -226,11 +216,10 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp);
 #define mutt_mktemp_pfx_sfx(a, b, c, d) _mutt_mktemp(a, b, c, d, __FILE__, __LINE__)
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line);
-void mutt_normalize_time(struct tm *tm);
 void mutt_paddstr(int n, const char *s);
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur);
 void mutt_parse_part(FILE *fp, struct Body *b);
-void mutt_perror(const char *s);
+void mutt_perror_debug(const char *s);
 void mutt_prepare_envelope(struct Envelope *env, int final);
 void mutt_unprepare_envelope(struct Envelope *env);
 void mutt_pretty_mailbox(char *s, size_t buflen);
@@ -346,14 +335,14 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, 
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
 int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line, char *p,
-                           short user_hdrs, short weed, short do_2047, struct List **lastp);
+                           short user_hdrs, short weed, short do_2047);
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_query_complete(char *buf, size_t buflen);
-int mutt_query_variables(struct List *queries);
+int mutt_query_variables(struct ListHead *queries);
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
 int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt);
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt);
@@ -377,7 +366,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f);
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, int flags);
 int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy);
-void mutt_write_references(struct List *r, FILE *f, int trim);
+void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim);
 int mutt_yesorno(const char *msg, int def);
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr);
 void mutt_sleep(short s);
@@ -391,12 +380,7 @@ void mutt_rand_base32(void *out, size_t len);
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
-
 struct Address *alias_reverse_lookup(struct Address *a);
-
-/* base64.c */
-size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen);
-int mutt_from_base64(char *out, const char *in);
 
 /* utf8.c */
 int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
@@ -407,8 +391,8 @@ int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 #else
 #define IsPrint(c)                                                             \
   (isprint((unsigned char) (c)) ||                                             \
-   (option(OPTLOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
-#define IsWPrint(wc) (iswprint(wc) || (option(OPTLOCALES) ? 0 : (wc >= 0xa0)))
+   (option(OPT_LOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
+#define IsWPrint(wc) (iswprint(wc) || (option(OPT_LOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
 int getdnsdomainname(char *d, size_t len);

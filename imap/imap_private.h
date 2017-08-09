@@ -30,6 +30,7 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+#include "list.h"
 
 struct Account;
 struct Buffer;
@@ -37,7 +38,6 @@ struct Context;
 struct Header;
 struct ImapHeaderData;
 struct ImapMbox;
-struct List;
 struct Message;
 struct Progress;
 
@@ -51,11 +51,11 @@ struct Progress;
 #define IMAP_LOG_PASS 5
 
 /* IMAP command responses. Used in ImapCommand.state too */
-#define IMAP_CMD_OK       (0)  /**< <tag> OK ... */
-#define IMAP_CMD_BAD      (-1) /**< <tag> BAD ... */
-#define IMAP_CMD_NO       (-2) /**< <tag> NO ... */
-#define IMAP_CMD_CONTINUE (1)  /**< \* ... */
-#define IMAP_CMD_RESPOND  (2)  /**< \+ */
+#define IMAP_CMD_OK       (0)  /**< `<tag> OK ...` */
+#define IMAP_CMD_BAD      (-1) /**< `<tag> BAD ...` */
+#define IMAP_CMD_NO       (-2) /**< `<tag> NO ...` */
+#define IMAP_CMD_CONTINUE (1)  /**< `* ...` */
+#define IMAP_CMD_RESPOND  (2)  /**< `+` */
 #define IMAP_CMD_NEW      (3)  /**< ImapCommand.state additions */
 
 /* number of entries in the hash table */
@@ -76,6 +76,7 @@ struct Progress;
 #define IMAP_CMD_FAIL_OK (1 << 0)
 #define IMAP_CMD_PASS    (1 << 1)
 #define IMAP_CMD_QUEUE   (1 << 2)
+#define IMAP_CMD_POLL    (1 << 3)
 
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
 #define IMAP_DATELEN 27
@@ -237,7 +238,7 @@ struct ImapData
   struct Buffer *cmdbuf;
 
   /* cache ImapStatus of visited mailboxes */
-  struct List *mboxcache;
+  struct ListHead mboxcache;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
@@ -256,7 +257,7 @@ struct ImapData
   struct BodyCache *bcache;
 
   /* all folder flags - system flags AND keywords */
-  struct List *flags;
+  struct ListHead flags;
 #ifdef USE_HCACHE
   header_cache_t *hcache;
 #endif
@@ -279,7 +280,7 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progr
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
 int imap_sync_message(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
-bool imap_has_flag(struct List *flag_list, const char *flag);
+bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 
 /* auth.c */
 int imap_authenticate(struct ImapData *idata);
@@ -294,7 +295,7 @@ int imap_exec(struct ImapData *idata, const char *cmd, int flags);
 int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
-void imap_add_keywords(char *s, struct Header *keywords, struct List *mailbox_flags, size_t slen);
+void imap_add_keywords(char *s, struct Header *keywords, struct ListHead *mailbox_flags, size_t slen);
 void imap_free_header_data(struct ImapHeaderData **data);
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end);
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s);

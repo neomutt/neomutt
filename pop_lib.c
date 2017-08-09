@@ -30,11 +30,10 @@
 #include <string.h>
 #include "mutt.h"
 #include "account.h"
-#include "ascii.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
@@ -128,23 +127,23 @@ static int fetch_capa(char *line, void *data)
   struct PopData *pop_data = (struct PopData *) data;
   char *c = NULL;
 
-  if (ascii_strncasecmp(line, "SASL", 4) == 0)
+  if (mutt_strncasecmp(line, "SASL", 4) == 0)
   {
     FREE(&pop_data->auth_list);
     c = skip_email_wsp(line + 4);
     pop_data->auth_list = safe_strdup(c);
   }
 
-  else if (ascii_strncasecmp(line, "STLS", 4) == 0)
+  else if (mutt_strncasecmp(line, "STLS", 4) == 0)
     pop_data->cmd_stls = true;
 
-  else if (ascii_strncasecmp(line, "USER", 4) == 0)
+  else if (mutt_strncasecmp(line, "USER", 4) == 0)
     pop_data->cmd_user = 1;
 
-  else if (ascii_strncasecmp(line, "UIDL", 4) == 0)
+  else if (mutt_strncasecmp(line, "UIDL", 4) == 0)
     pop_data->cmd_uidl = 1;
 
-  else if (ascii_strncasecmp(line, "TOP", 3) == 0)
+  else if (mutt_strncasecmp(line, "TOP", 3) == 0)
     pop_data->cmd_top = 1;
 
   return 0;
@@ -321,13 +320,13 @@ int pop_open_connection(struct PopData *pop_data)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPTSSLFORCETLS)))
+  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPT_SSL_FORCE_TLS)))
   {
-    if (option(OPTSSLFORCETLS))
+    if (option(OPT_SSL_FORCE_TLS))
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret = query_quadoption(OPT_SSLSTARTTLS, _("Secure connection with TLS?"));
+      ret = query_quadoption(OPT_SSL_START_TLS, _("Secure connection with TLS?"));
       if (ret == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;
@@ -366,7 +365,7 @@ int pop_open_connection(struct PopData *pop_data)
     }
   }
 
-  if (option(OPTSSLFORCETLS) && !pop_data->conn->ssf)
+  if (option(OPT_SSL_FORCE_TLS) && !pop_data->conn->ssf)
   {
     mutt_error(_("Encrypted connection unavailable"));
     mutt_sleep(1);
@@ -646,7 +645,7 @@ int pop_reconnect(struct Context *ctx)
     if (ret < -1)
       return -1;
 
-    if (query_quadoption(OPT_POPRECONNECT,
+    if (query_quadoption(OPT_POP_RECONNECT,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
       return -1;
   }

@@ -32,7 +32,7 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -62,7 +62,6 @@ struct CompressInfo
   int locked;              /**< if realpath is locked */
   FILE *lockfp;            /**< fp used for locking */
 };
-
 
 /**
  * lock_realpath - Try to lock the ctx->realpath
@@ -97,7 +96,7 @@ static int lock_realpath(struct Context *ctx, int excl)
     return 0;
   }
 
-  int r = mx_lock_file(ctx->realpath, fileno(ci->lockfp), excl, 1);
+  int r = mutt_lock_file(ctx->realpath, fileno(ci->lockfp), excl, 1);
 
   if (r == 0)
     ci->locked = 1;
@@ -129,7 +128,7 @@ static void unlock_realpath(struct Context *ctx)
   if (!ci->locked)
     return;
 
-  mx_unlock_file(ctx->realpath, fileno(ci->lockfp));
+  mutt_unlock_file(ctx->realpath, fileno(ci->lockfp));
 
   ci->locked = 0;
   safe_fclose(&ci->lockfp);
@@ -608,7 +607,7 @@ static int comp_close_mailbox(struct Context *ctx)
   if (!ctx->append)
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(ctx->path, F_OK) != 0) && !option(OPTSAVEEMPTY))
+    if ((access(ctx->path, F_OK) != 0) && !option(OPT_SAVE_EMPTY))
     {
       remove(ctx->realpath);
     }
@@ -698,7 +697,6 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
   return ops->check(ctx, index_hint);
 }
 
-
 /**
  * comp_open_message - Delegated to mbox handler
  */
@@ -778,7 +776,6 @@ static int comp_open_new_message(struct Message *msg, struct Context *ctx, struc
   /* Delegate */
   return ops->open_new_msg(msg, ctx, hdr);
 }
-
 
 /**
  * mutt_comp_can_append - Can we append to this path?
@@ -905,7 +902,6 @@ int mutt_comp_valid_command(const char *cmd)
 
   return (strstr(cmd, "%f") && strstr(cmd, "%t"));
 }
-
 
 /**
  * mx_comp_ops - Mailbox callback functions

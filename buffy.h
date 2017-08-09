@@ -48,7 +48,7 @@ struct Buffy
   struct Buffy *next;
   bool new; /**< mailbox has new mail */
 
-  /* These next three are only set when OPTMAILCHECKSTATS is set */
+  /* These next three are only set when OPT_MAIL_CHECK_STATS is set */
   int msg_count;             /**< total number of messages */
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */
@@ -60,9 +60,9 @@ struct Buffy
   time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
-WHERE struct Buffy *Incoming INITVAL(0);
-WHERE short BuffyTimeout INITVAL(3);
-WHERE short BuffyCheckStatsInterval INITVAL(60);
+WHERE struct Buffy *Incoming;
+WHERE short BuffyTimeout;
+WHERE short BuffyCheckStatsInterval;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen);

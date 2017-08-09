@@ -38,9 +38,8 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -124,7 +123,7 @@ void nntp_newsrc_close(struct NntpServer *nserv)
     return;
 
   mutt_debug(1, "Unlocking %s\n", nserv->newsrc_file);
-  mx_unlock_file(nserv->newsrc_file, fileno(nserv->newsrc_fp));
+  mutt_unlock_file(nserv->newsrc_file, fileno(nserv->newsrc_fp));
   safe_fclose(&nserv->newsrc_fp);
 }
 
@@ -188,7 +187,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
 
   /* lock it */
   mutt_debug(1, "Locking %s\n", nserv->newsrc_file);
-  if (mx_lock_file(nserv->newsrc_file, fileno(nserv->newsrc_fp), 0, 1))
+  if (mutt_lock_file(nserv->newsrc_file, fileno(nserv->newsrc_fp), 0, 1))
   {
     safe_fclose(&nserv->newsrc_fp);
     return -1;
@@ -675,7 +674,7 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
       !nntp_data->nserv->conn || !nntp_data->group ||
-      !(nntp_data->newsrc_ent || nntp_data->subscribed || option(OPTSAVEUNSUB)))
+      !(nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUB)))
     return NULL;
 
   mutt_account_tourl(&nntp_data->nserv->conn->account, &url);
@@ -842,7 +841,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
         nntp_data->group = group;
         nntp_data->bcache = NULL;
       }
-      else if (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPTSAVEUNSUB))
+      else if (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUB))
         continue;
 
       nntp_delete_group_cache(nntp_data);
@@ -1159,7 +1158,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
     return;
 
   /* article isn't read but cached, it's old */
-  if (option(OPTMARKOLD))
+  if (option(OPT_MARK_OLD))
     hdr->old = true;
 }
 
@@ -1200,7 +1199,7 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
     return NULL;
 
   nntp_data->subscribed = false;
-  if (!option(OPTSAVEUNSUB))
+  if (!option(OPT_SAVE_UNSUB))
   {
     nntp_data->newsrc_len = 0;
     FREE(&nntp_data->newsrc_ent);

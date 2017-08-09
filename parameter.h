@@ -23,7 +23,7 @@
 #ifndef _MUTT_PARAMETER_H
 #define _MUTT_PARAMETER_H
 
-#include "lib.h"
+#include "lib/lib.h"
 
 /**
  * struct Parameter - Attribute associated with a MIME part
@@ -39,5 +39,10 @@ static inline struct Parameter *mutt_new_parameter(void)
 {
   return safe_calloc(1, sizeof(struct Parameter));
 }
+
+void mutt_delete_parameter(const char *attribute, struct Parameter **p);
+void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p);
+void mutt_free_parameter(struct Parameter **p);
+char *mutt_get_parameter(const char *s, struct Parameter *p);
 
 #endif /* _MUTT_PARAMETER_H */

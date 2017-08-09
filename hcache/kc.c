@@ -23,12 +23,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_kc Kyoto Cabinet
+ *
+ * This module implements the header cache functionality using a Kyoto Cabinet
+ * file as a backend.
+ */
+
 #include "config.h"
 #include <kclangc.h>
 #include <limits.h>
 #include <stdio.h>
 #include "backend.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 static void *hcache_kyotocabinet_open(const char *path)
@@ -38,7 +45,7 @@ static void *hcache_kyotocabinet_open(const char *path)
 
   printfresult =
       snprintf(kcdbpath, sizeof(kcdbpath), "%s#type=kct#opts=%s#rcomp=lex",
-               path, option(OPTHCACHECOMPRESS) ? "lc" : "l");
+               path, option(OPT_HCACHE_COMPRESS) ? "lc" : "l");
   if ((printfresult < 0) || (printfresult >= sizeof(kcdbpath)))
   {
     return NULL;
@@ -85,7 +92,12 @@ static int hcache_kyotocabinet_store(void *ctx, const char *key, size_t keylen,
     return -1;
 
   KCDB *db = ctx;
-  return kcdbset(db, key, keylen, data, dlen);
+  if (!kcdbset(db, key, keylen, data, dlen))
+  {
+    int ecode = kcdbecode(db);
+    return ecode ? ecode : -1;
+  }
+  return 0;
 }
 
 static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
@@ -94,7 +106,12 @@ static int hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   KCDB *db = ctx;
-  return kcdbremove(db, key, keylen);
+  if (!kcdbremove(db, key, keylen))
+  {
+    int ecode = kcdbecode(db);
+    return ecode ? ecode : -1;
+  }
+  return 0;
 }
 
 static void hcache_kyotocabinet_close(void **ctx)

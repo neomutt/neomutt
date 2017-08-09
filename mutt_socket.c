@@ -32,6 +32,7 @@
 #include <string.h>
 #include <sys/select.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include "mutt_socket.h"
 #include "globals.h"
@@ -145,13 +146,13 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
  * @retval  0 Read would block
  * @retval -1 Connection doesn't support polling
  */
-int mutt_socket_poll(struct Connection *conn)
+int mutt_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   if (conn->bufpos < conn->available)
     return conn->available - conn->bufpos;
 
   if (conn->conn_poll)
-    return conn->conn_poll(conn);
+    return conn->conn_poll(conn, wait_secs);
 
   return -1;
 }
@@ -384,18 +385,42 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
   return rc;
 }
 
-int raw_socket_poll(struct Connection *conn)
+int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   fd_set rfds;
-  struct timeval tv = { 0, 0 };
+  unsigned long wait_millis, post_t_millis;
+  struct timeval tv, pre_t, post_t;
+  int rv;
 
   if (conn->fd < 0)
     return -1;
 
-  FD_ZERO(&rfds);
-  FD_SET(conn->fd, &rfds);
+  wait_millis = wait_secs * 1000UL;
 
-  return select(conn->fd + 1, &rfds, NULL, NULL, &tv);
+  while (true)
+  {
+    tv.tv_sec = wait_millis / 1000;
+    tv.tv_usec = (wait_millis % 1000) * 1000;
+
+    FD_ZERO(&rfds);
+    FD_SET(conn->fd, &rfds);
+
+    gettimeofday(&pre_t, NULL);
+    rv = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
+    gettimeofday(&post_t, NULL);
+
+    if (rv > 0 || (rv < 0 && errno != EINTR))
+      return rv;
+
+    if (SigInt)
+      mutt_query_exit();
+
+    wait_millis += (pre_t.tv_sec * 1000UL) + (pre_t.tv_usec / 1000);
+    post_t_millis = (post_t.tv_sec * 1000UL) + (post_t.tv_usec / 1000);
+    if (wait_millis <= post_t_millis)
+      return 0;
+    wait_millis -= post_t_millis;
+  }
 }
 
 /**
@@ -466,7 +491,7 @@ int raw_socket_open(struct Connection *conn)
   /* we accept v4 or v6 STREAM sockets */
   memset(&hints, 0, sizeof(hints));
 
-  if (option(OPTUSEIPV6))
+  if (option(OPT_USE_IPV6))
     hints.ai_family = AF_UNSPEC;
   else
     hints.ai_family = AF_INET;
@@ -485,7 +510,7 @@ int raw_socket_open(struct Connection *conn)
   host_idna = conn->account.host;
 #endif
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Looking up %s..."), conn->account.host);
 
   rc = getaddrinfo(host_idna, port, &hints, &res);
@@ -501,7 +526,7 @@ int raw_socket_open(struct Connection *conn)
     return -1;
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
@@ -543,7 +568,7 @@ int raw_socket_open(struct Connection *conn)
   host_idna = conn->account.host;
 #endif
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Looking up %s..."), conn->account.host);
 
   he = gethostbyname(host_idna);
@@ -559,7 +584,7 @@ int raw_socket_open(struct Connection *conn)
     return -1;
   }
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;

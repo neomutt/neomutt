@@ -25,15 +25,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "account.h"
-#include "ascii.h"
 #include "globals.h"
-#include "lib.h"
-#include "md5.h"
+#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
 #include "rfc822.h"
+#include "mutt.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -364,7 +363,7 @@ int pop_authenticate(struct PopData *pop_data)
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (ascii_strcasecmp(authenticator->method, method) == 0))
+        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
         {
           ret = authenticator->authenticate(pop_data, method);
           if (ret == POP_A_SOCKET)
@@ -382,7 +381,7 @@ int pop_authenticate(struct PopData *pop_data)
           if (ret != POP_A_UNAVAIL)
             attempts++;
           if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-              (ret == POP_A_FAILURE && !option(OPTPOPAUTHTRYALL)))
+              (ret == POP_A_FAILURE && !option(OPT_POP_AUTH_TRY_ALL)))
           {
             comma = NULL;
             break;
@@ -420,7 +419,7 @@ int pop_authenticate(struct PopData *pop_data)
       if (ret != POP_A_UNAVAIL)
         attempts++;
       if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-          (ret == POP_A_FAILURE && !option(OPTPOPAUTHTRYALL)))
+          (ret == POP_A_FAILURE && !option(OPT_POP_AUTH_TRY_ALL)))
         break;
 
       authenticator++;

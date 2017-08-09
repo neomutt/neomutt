@@ -28,13 +28,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "keymap.h"
-#include "ascii.h"
-#include "buffer.h"
 #include "functions.h"
 #include "globals.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
+#include "mutt.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -62,7 +61,6 @@ const struct Mapping Menus[] = {
 #ifdef MIXMASTER
   { "mix", MENU_MIX },
 #endif
-
 
   { "query", MENU_QUERY },
   { "generic", MENU_GENERIC },
@@ -176,7 +174,7 @@ static int parse_keycode(const char *s)
   long int result = strtol(s + 1, &endChar, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
   while (ISSPACE(*endChar))
-    ++endChar;
+    endChar++;
   /* negative keycodes don't make sense, also detect overflow */
   if (*endChar != '>' || result < 0 || result == LONG_MAX)
   {
@@ -356,7 +354,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
   for (int i = 0; bindings[i].name; i++)
   {
-    if ((ascii_strncasecmp(start, bindings[i].name, len) == 0) &&
+    if ((mutt_strncasecmp(start, bindings[i].name, len) == 0) &&
         mutt_strlen(bindings[i].name) == len)
       return bindings[i].op;
   }
@@ -408,7 +406,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
         l = p - pp + 1;
         for (i = 0; KeyNames[i].name; i++)
         {
-          if (ascii_strncasecmp(pp, KeyNames[i].name, l) == 0)
+          if (mutt_strncasecmp(pp, KeyNames[i].name, l) == 0)
             break;
         }
         if (KeyNames[i].name)
@@ -443,13 +441,6 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
     generic_push((unsigned char) *p--, 0); /* independent 8 bits chars */
   }
 }
-
-/* This should be used for macros, push, and exec commands only. */
-#define tokenize_push_macro_string(s)                                          \
-  generic_tokenize_push_string(s, mutt_push_macro_event)
-/* This should be used for other unget operations. */
-#define tokenize_unget_string(s)                                               \
-  generic_tokenize_push_string(s, mutt_unget_event)
 
 static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 {
@@ -519,7 +510,7 @@ int km_dokey(int menu)
     timeout(-1);
 
 #ifdef USE_IMAP
-  gotkey:
+gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)
@@ -588,7 +579,7 @@ int km_dokey(int menu)
       if (map->op != OP_MACRO)
         return map->op;
 
-      if (option(OPTIGNOREMACROEVENTS))
+      if (option(OPT_IGNORE_MACRO_EVENTS))
       {
         mutt_error(_("Macros are currently disabled."));
         return -1;
@@ -601,7 +592,7 @@ int km_dokey(int menu)
         return -1;
       }
 
-      tokenize_push_macro_string(map->macro);
+      generic_tokenize_push_string(map->macro, mutt_push_macro_event);
       map = Keymaps[menu];
       pos = 0;
     }
@@ -793,7 +784,6 @@ void km_init(void)
   create_bindings(OpQuery, MENU_QUERY);
   create_bindings(OpAlias, MENU_ALIAS);
 
-
   if ((WithCrypto & APPLICATION_PGP))
     create_bindings(OpPgp, MENU_PGP);
 
@@ -967,7 +957,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
     r = -1;
   }
   else
-    tokenize_push_macro_string(buf->data);
+    generic_tokenize_push_string(buf->data, mutt_push_macro_event);
   return r;
 }
 
@@ -1001,7 +991,7 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
         snprintf(err->data, err->dsize, _("%s: no such menu"), p);
         goto error;
       }
-      ++i;
+      i++;
       if (q)
         p = q + 1;
       else
@@ -1111,7 +1101,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
     strfcpy(err->data, _("bind: too many arguments"), err->dsize);
     r = -1;
   }
-  else if (ascii_strcasecmp("noop", buf->data) == 0)
+  else if (mutt_strcasecmp("noop", buf->data) == 0)
   {
     for (i = 0; i < nummenus; ++i)
     {

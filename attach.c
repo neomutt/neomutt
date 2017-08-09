@@ -30,14 +30,13 @@
 #include <unistd.h>
 #include "mutt.h"
 #include "attach.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "copy.h"
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -46,6 +45,7 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
+#include "parameter.h"
 #include "protos.h"
 #include "rfc1524.h"
 #include "state.h"
@@ -89,7 +89,6 @@ int mutt_get_tmp_attachment(struct Body *a)
 
   return a->unlink ? 0 : -1;
 }
-
 
 /**
  * mutt_compose_attachment - Create an attachment
@@ -300,7 +299,6 @@ bailout:
   return rc;
 }
 
-
 /**
  * mutt_check_lookup_list - Update the mime type
  * @param b    Message attachment body
@@ -309,15 +307,15 @@ bailout:
  */
 void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
-  struct List *t = MimeLookupList;
   int i;
 
-  for (; t; t = t->next)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
-    i = mutt_strlen(t->data) - 1;
-    if ((i > 0 && t->data[i - 1] == '/' && t->data[i] == '*' &&
-         (ascii_strncasecmp(type, t->data, i) == 0)) ||
-        (ascii_strcasecmp(type, t->data) == 0))
+    i = mutt_strlen(np->data) - 1;
+    if ((i > 0 && np->data[i - 1] == '/' && np->data[i] == '*' &&
+         (mutt_strncasecmp(type, np->data, i) == 0)) ||
+        (mutt_strcasecmp(type, np->data) == 0))
     {
       struct Body tmp = { 0 };
       int n;
@@ -519,7 +517,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                    _("---Command: %-30.30s Attachment: %s"), command, type);
       }
 
-      if ((mutt_wait_filter(thepid) || (entry->needsterminal && option(OPTWAITKEY))) && !use_pager)
+      if ((mutt_wait_filter(thepid) || (entry->needsterminal && option(OPT_WAIT_KEY))) && !use_pager)
         mutt_any_key_to_continue(NULL);
 
       if (tempfd != -1)
@@ -530,7 +528,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* interactive command */
-      if (mutt_system(command) || (entry->needsterminal && option(OPTWAITKEY)))
+      if (mutt_system(command) || (entry->needsterminal && option(OPT_WAIT_KEY)))
         mutt_any_key_to_continue(NULL);
     }
   }
@@ -580,14 +578,14 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* Use built-in handler */
-      set_option(OPTVIEWATTACH); /* disable the "use 'v' to view this part"
+      set_option(OPT_VIEW_ATTACH); /* disable the "use 'v' to view this part"
                                    * message in case of error */
       if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, 0))
       {
-        unset_option(OPTVIEWATTACH);
+        unset_option(OPT_VIEW_ATTACH);
         goto return_error;
       }
-      unset_option(OPTVIEWATTACH);
+      unset_option(OPT_VIEW_ATTACH);
     }
 
     if (a->description)
@@ -731,7 +729,7 @@ bail:
   if (mutt_wait_filter(thepid) != 0)
     rv = 0;
 
-  if (rv == 0 || option(OPTWAITKEY))
+  if (rv == 0 || option(OPT_WAIT_KEY))
     mutt_any_key_to_continue(NULL);
   return rv;
 }
@@ -1030,12 +1028,12 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_copy_stream(ifp, fpout);
       safe_fclose(&fpout);
       safe_fclose(&ifp);
-      if (mutt_wait_filter(thepid) || option(OPTWAITKEY))
+      if (mutt_wait_filter(thepid) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
     }
     else
     {
-      if (mutt_system(command) || option(OPTWAITKEY))
+      if (mutt_system(command) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
     }
 
@@ -1048,8 +1046,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     return 1;
   }
 
-  if ((ascii_strcasecmp("text/plain", type) == 0) ||
-      (ascii_strcasecmp("application/postscript", type) == 0))
+  if ((mutt_strcasecmp("text/plain", type) == 0) ||
+      (mutt_strcasecmp("application/postscript", type) == 0))
   {
     return (mutt_pipe_attachment(fp, a, NONULL(PrintCmd), NULL));
   }
@@ -1089,11 +1087,11 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       safe_fclose(&fpout);
       safe_fclose(&ifp);
 
-      if (mutt_wait_filter(thepid) != 0 || option(OPTWAITKEY))
+      if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
-  bail0:
+bail0:
     safe_fclose(&ifp);
     safe_fclose(&fpout);
     mutt_unlink(newfile);

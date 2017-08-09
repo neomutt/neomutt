@@ -25,8 +25,8 @@
 
 #include "pgpkey.h"
 
-struct List;
+struct ListHead;
 
-struct PgpKeyInfo * pgp_get_candidates(enum PgpRing keyring, struct List *hints);
+struct PgpKeyInfo * pgp_get_candidates(enum PgpRing keyring, struct ListHead *hints);
 
 #endif /* _NCRYPT_GNUPGPARSE_H */

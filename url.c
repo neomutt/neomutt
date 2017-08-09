@@ -30,10 +30,9 @@
 #include <string.h>
 #include "mutt.h"
 #include "url.h"
-#include "ascii.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mapping.h"
 #include "mime.h"
 #include "protos.h"
@@ -170,7 +169,7 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
 }
 
 /**
- * url_parse_ciss - Fill in CissUrl.
+ * url_parse_ciss - Fill in CissUrl
  *
  * char* elements are pointers into src, which is modified by this call
  * (duplicate it first if you need to).
@@ -187,7 +186,7 @@ int url_parse_ciss(struct CissUrl *ciss, char *src)
   return ciss_parse_userhost(ciss, tmp);
 }
 
-static void url_pct_encode(char *dst, size_t l, const char *src)
+void url_pct_encode(char *dst, size_t l, const char *src)
 {
   static const char *alph = "0123456789ABCDEF";
 
@@ -195,7 +194,7 @@ static void url_pct_encode(char *dst, size_t l, const char *src)
   l--;
   while (src && *src && l)
   {
-    if (strchr("/:%", *src) && l > 3)
+    if (strchr("/:&%", *src) && l > 3)
     {
       *dst++ = '%';
       *dst++ = alph[(*src >> 4) & 0xf];
@@ -274,8 +273,6 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   int rc = -1;
 
-  struct List *last = NULL;
-
   if (!(t = strchr(src, ':')))
     return -1;
 
@@ -316,9 +313,9 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      * choose to create a message with only a subset of the headers given in
      * the URL.
      */
-    if (mutt_matches_list(tag, MailtoAllow))
+    if (mutt_list_match(tag, &MailToAllow))
     {
-      if (ascii_strcasecmp(tag, "body") == 0)
+      if (mutt_strcasecmp(tag, "body") == 0)
       {
         if (body)
           mutt_str_replace(body, value);
@@ -331,7 +328,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
         safe_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
         value = skip_email_wsp(&scratch[taglen + 1]);
-        mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1, &last);
+        mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1);
         FREE(&scratch);
       }
     }

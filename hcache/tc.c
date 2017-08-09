@@ -23,12 +23,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hc_tc Tokyo Cabinet
+ *
+ * This module implements the header cache functionality using a Tokyo Cabinet
+ * file as a backend.
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <tcbdb.h>
 #include <tcutil.h>
 #include "backend.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 
 static void *hcache_tokyocabinet_open(const char *path)
@@ -36,7 +43,7 @@ static void *hcache_tokyocabinet_open(const char *path)
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (option(OPTHCACHECOMPRESS))
+  if (option(OPT_HCACHE_COMPRESS))
     tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
     return db;
@@ -75,7 +82,12 @@ static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
     return -1;
 
   TCBDB *db = ctx;
-  return tcbdbput(db, key, keylen, data, dlen);
+  if (!tcbdbput(db, key, keylen, data, dlen))
+  {
+    int ecode = tcbdbecode(db);
+    return ecode ? ecode : -1;
+  }
+  return 0;
 }
 
 static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
@@ -84,7 +96,12 @@ static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   TCBDB *db = ctx;
-  return tcbdbout(db, key, keylen);
+  if (!tcbdbout(db, key, keylen))
+  {
+    int ecode = tcbdbecode(db);
+    return ecode ? ecode : -1;
+  }
+  return 0;
 }
 
 static void hcache_tokyocabinet_close(void **ctx)

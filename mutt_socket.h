@@ -26,7 +26,7 @@
 
 #include <stddef.h>
 #include "account.h"
-#include "lib.h"
+#include "lib/lib.h"
 
 /* logging levels */
 #define MUTT_SOCK_LOG_CMD  2
@@ -55,12 +55,12 @@ struct Connection
   int (*conn_write)(struct Connection *conn, const char *buf, size_t count);
   int (*conn_open)(struct Connection *conn);
   int (*conn_close)(struct Connection *conn);
-  int (*conn_poll)(struct Connection *conn);
+  int (*conn_poll)(struct Connection *conn, time_t wait_secs);
 };
 
 int mutt_socket_open(struct Connection *conn);
 int mutt_socket_close(struct Connection *conn);
-int mutt_socket_poll(struct Connection *conn);
+int mutt_socket_poll(struct Connection *conn, time_t wait_secs);
 int mutt_socket_readchar(struct Connection *conn, char *c);
 #define mutt_socket_readln(A, B, C) mutt_socket_readln_d(A, B, C, MUTT_SOCK_LOG_CMD)
 int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg);
@@ -77,6 +77,6 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t len);
 int raw_socket_write(struct Connection *conn, const char *buf, size_t count);
 int raw_socket_open(struct Connection *conn);
 int raw_socket_close(struct Connection *conn);
-int raw_socket_poll(struct Connection *conn);
+int raw_socket_poll(struct Connection *conn, time_t wait_secs);
 
 #endif /* _MUTT_SOCKET_H */

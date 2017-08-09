@@ -1,6 +1,6 @@
 /**
  * @file
- * Flags to control mutt_FormatString()
+ * Flags to control mutt_expando_format()
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -45,13 +45,8 @@ typedef const char *format_t(char *dest, size_t destlen, size_t col, int cols,
                              const char *ifstring, const char *elsestring,
                              unsigned long data, enum FormatFlag flags);
 
-void mutt_expando_format(char *dest,         /* output buffer */
-                       size_t destlen,     /* output buffer len */
-                       size_t col,         /* starting column (nonzero when called recursively) */
-                       int cols,           /* maximum columns */
-                       const char *src,    /* template string */
-                       format_t *callback, /* callback for processing */
-                       unsigned long data, /* callback data */
-                       enum FormatFlag flags); /* callback flags */
+void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
+                         const char *src, format_t *callback,
+                         unsigned long data, enum FormatFlag flags);
 
 #endif /* _MUTT_FORMAT_FLAGS_H */

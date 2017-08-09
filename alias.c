@@ -33,12 +33,10 @@
 #include "mutt.h"
 #include "alias.h"
 #include "address.h"
-#include "ascii.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -56,10 +54,9 @@ struct Address *mutt_lookup_alias(const char *s)
   return NULL; /* no such alias */
 }
 
-static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
+static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn)
 {
   struct Address *head = NULL, *last = NULL, *t = NULL, *w = NULL;
-  struct List *u = NULL;
   bool i;
   const char *fqdn = NULL;
 
@@ -72,9 +69,10 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
       if (t)
       {
         i = false;
-        for (u = *expn; u; u = u->next)
+        struct ListNode *np;
+        STAILQ_FOREACH(np, expn, entries)
         {
-          if (mutt_strcmp(a->mailbox, u->data) == 0) /* alias already found */
+          if (mutt_strcmp(a->mailbox, np->data) == 0) /* alias already found */
           {
             mutt_debug(1, "expand_aliases_r(): loop in alias found for '%s'\n", a->mailbox);
             i = true;
@@ -84,10 +82,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 
         if (!i)
         {
-          u = safe_malloc(sizeof(struct List));
-          u->data = safe_strdup(a->mailbox);
-          u->next = *expn;
-          *expn = u;
+          mutt_list_insert_head(expn, safe_strdup(a->mailbox));
           w = rfc822_cpy_adr(t, 0);
           w = expand_aliases_r(w, expn);
           if (head)
@@ -128,7 +123,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
     last->next = NULL;
   }
 
-  if (option(OPTUSEDOMAIN) && (fqdn = mutt_fqdn(1)))
+  if (option(OPT_USE_DOMAIN) && (fqdn = mutt_fqdn(1)))
   {
     /* now qualify all local addresses */
     rfc822_qualify(head, fqdn);
@@ -140,10 +135,11 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 struct Address *mutt_expand_aliases(struct Address *a)
 {
   struct Address *t = NULL;
-  struct List *expn = NULL; /* previously expanded aliases to avoid loops */
+  struct ListHead expn; /* previously expanded aliases to avoid loops */
 
+  STAILQ_INIT(&expn);
   t = expand_aliases_r(a, &expn);
-  mutt_free_list(&expn);
+  mutt_list_free(&expn);
   return (mutt_remove_duplicates(t));
 }
 
@@ -156,7 +152,6 @@ void mutt_expand_aliases_env(struct Envelope *env)
   env->reply_to = mutt_expand_aliases(env->reply_to);
   env->mail_followup_to = mutt_expand_aliases(env->mail_followup_to);
 }
-
 
 /**
  * write_safe_address - Defang malicious email addresses
@@ -617,7 +612,7 @@ static bool string_is_address(const char *str, const char *u, const char *d)
   char buf[LONG_STRING];
 
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
-  if (ascii_strcasecmp(str, buf) == 0)
+  if (mutt_strcasecmp(str, buf) == 0)
     return true;
 
   return false;
@@ -643,7 +638,7 @@ bool mutt_addr_is_user(struct Address *addr)
     return false;
   }
 
-  if (ascii_strcasecmp(addr->mailbox, Username) == 0)
+  if (mutt_strcasecmp(addr->mailbox, Username) == 0)
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username);
     return true;
@@ -668,7 +663,7 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (From && (ascii_strcasecmp(From->mailbox, addr->mailbox) == 0))
+  if (From && (mutt_strcasecmp(From->mailbox, addr->mailbox) == 0))
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox);
     return true;

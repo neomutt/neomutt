@@ -30,17 +30,15 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "ascii.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mapping.h"
@@ -48,6 +46,7 @@
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 #include "sort.h"
 #include "state.h"
@@ -63,7 +62,6 @@ static const struct Mapping PostponeHelp[] = {
   { N_("Help"), OP_HELP },
   { NULL, 0 },
 };
-
 
 static short PostCount = 0;
 static struct Context *PostContext = NULL;
@@ -147,7 +145,7 @@ int mutt_num_postponed(int force)
   if (LastModify < st.st_mtime)
   {
 #ifdef USE_NNTP
-    int optnews = option(OPTNEWS);
+    int optnews = option(OPT_NEWS);
 #endif
     LastModify = st.st_mtime;
 
@@ -155,7 +153,7 @@ int mutt_num_postponed(int force)
       return (PostCount = 0);
 #ifdef USE_NNTP
     if (optnews)
-      unset_option(OPTNEWS);
+      unset_option(OPT_NEWS);
 #endif
     if (mx_open_mailbox(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
       PostCount = 0;
@@ -164,7 +162,7 @@ int mutt_num_postponed(int force)
     mx_fastclose_mailbox(&ctx);
 #ifdef USE_NNTP
     if (optnews)
-      set_option(OPTNEWS);
+      set_option(OPT_NEWS);
 #endif
   }
 
@@ -215,7 +213,7 @@ static struct Header *select_msg(void)
         mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->msgcount - PostContext->deleted;
-        if (option(OPTRESOLVE) && menu->current < menu->max - 1)
+        if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
           menu->current++;
@@ -265,9 +263,6 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 {
   struct Header *h = NULL;
   int code = SENDPOSTPONED;
-  struct List *tmp = NULL;
-  struct List *last = NULL;
-  struct List *next = NULL;
   const char *p = NULL;
   int opt_delete;
 
@@ -324,47 +319,29 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
 
   FREE(&PostContext);
 
-  for (tmp = hdr->env->userhdrs; tmp;)
+  struct ListNode *np, *tmp;
+  STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
-    if (ascii_strncasecmp("X-Mutt-References:", tmp->data, 18) == 0)
+    if (mutt_strncasecmp("X-Mutt-References:", np->data, 18) == 0)
     {
       if (ctx)
       {
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
-        p = skip_email_wsp(tmp->data + 18);
+        p = skip_email_wsp(np->data + 18);
         if (!ctx->id_hash)
           ctx->id_hash = mutt_make_id_hash(ctx);
         *cur = hash_find(ctx->id_hash, p);
       }
-
-      /* Remove the X-Mutt-References: header field. */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
       if (*cur)
         code |= SENDREPLY;
     }
-    else if (ascii_strncasecmp("X-Mutt-Fcc:", tmp->data, 11) == 0)
+    else if (mutt_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
     {
-      p = skip_email_wsp(tmp->data + 11);
+      p = skip_email_wsp(np->data + 11);
       strfcpy(fcc, p, fcclen);
       mutt_pretty_mailbox(fcc, fcclen);
 
-      /* remove the X-Mutt-Fcc: header field */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
       /* note that x-mutt-fcc was present.  we do this because we want to add a
       * default fcc if the header was missing, but preserve the request of the
       * user to not make a copy if the header field is present, but empty.
@@ -373,78 +350,53 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       code |= SENDPOSTPONEDFCC;
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
-             ((mutt_strncmp("Pgp:", tmp->data, 4) == 0) /* this is generated
-                                                       * by old mutt versions
-                                                       */
-              || (mutt_strncmp("X-Mutt-PGP:", tmp->data, 11) == 0)))
+             ((mutt_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
+                                                        * by old mutt versions
+                                                        */
+              || (mutt_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
     {
-      hdr->security = mutt_parse_crypt_hdr(strchr(tmp->data, ':') + 1, 1, APPLICATION_PGP);
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
-
-      /* remove the pgp field */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
     }
     else if ((WithCrypto & APPLICATION_SMIME) &&
-             (mutt_strncmp("X-Mutt-SMIME:", tmp->data, 13) == 0))
+             (mutt_strncmp("X-Mutt-SMIME:", np->data, 13) == 0))
     {
-      hdr->security = mutt_parse_crypt_hdr(strchr(tmp->data, ':') + 1, 1, APPLICATION_SMIME);
+      hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
-
-      /* remove the smime field */
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
     }
 
 #ifdef MIXMASTER
-    else if (mutt_strncmp("X-Mutt-Mix:", tmp->data, 11) == 0)
+    else if (mutt_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
     {
       char *t = NULL;
-      mutt_free_list(&hdr->chain);
+      mutt_list_free(&hdr->chain);
 
-      t = strtok(tmp->data + 11, " \t\n");
+      t = strtok(np->data + 11, " \t\n");
       while (t)
       {
-        hdr->chain = mutt_add_list(hdr->chain, t);
+        mutt_list_insert_tail(&hdr->chain, safe_strdup(t));
         t = strtok(NULL, " \t\n");
       }
-
-      next = tmp->next;
-      if (last)
-        last->next = tmp->next;
-      else
-        hdr->env->userhdrs = tmp->next;
-      tmp->next = NULL;
-      mutt_free_list(&tmp);
-      tmp = next;
     }
 #endif
 
     else
     {
-      last = tmp;
-      tmp = tmp->next;
+      // skip header removal
+      continue;
     }
+
+    // remove the header
+    STAILQ_REMOVE(&hdr->env->userhdrs, np, ListNode, entries);
+    FREE(&np->data);
+    FREE(&np);
   }
 
-  if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
     crypt_opportunistic_encrypt(hdr);
 
   return code;
 }
-
 
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 {
@@ -510,7 +462,6 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
         break;
 
-
       case 'c':
       case 'C':
         q = smime_cryptalg;
@@ -558,7 +509,6 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
   return flags;
 }
-
 
 /**
  * mutt_prepare_template - Prepare a message template
@@ -624,7 +574,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
     {
-    err:
+err:
       mx_close_message(ctx, &msg);
       mutt_free_envelope(&newhdr->env);
       mutt_free_body(&newhdr->content);
@@ -647,7 +597,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
-        (ascii_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
+        (mutt_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
                           "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
@@ -657,7 +607,6 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_free_body(&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart(newhdr->content);
   }
-
 
   /*
    * We don't need no primary multipart.
@@ -699,7 +648,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     if (b->type == TYPETEXT)
     {
-      if (ascii_strcasecmp("yes", mutt_get_parameter("x-mutt-noconv", b->parameter)) == 0)
+      if (mutt_strcasecmp("yes", mutt_get_parameter("x-mutt-noconv", b->parameter)) == 0)
         b->noconv = true;
       else
       {
@@ -713,7 +662,6 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_adv_mktemp(file, sizeof(file));
     if ((s.fpout = safe_fopen(file, "w")) == NULL)
       goto bail;
-
 
     if ((WithCrypto & APPLICATION_PGP) &&
         ((sec_type = mutt_is_application_pgp(b)) & (ENCRYPT | SIGN)))
@@ -763,7 +711,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
   {
-    if (option(OPTSMIMEISDEFAULT))
+    if (option(OPT_SMIME_IS_DEFAULT))
       newhdr->security &= ~APPLICATION_PGP;
     else
       newhdr->security &= ~APPLICATION_SMIME;

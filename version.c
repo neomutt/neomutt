@@ -28,7 +28,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <unistd.h>
-#include "lib.h"
+#include "lib/lib.h"
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)
@@ -286,16 +286,11 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "typeahead", 0 },
 #endif
-#ifdef HAVE_WC_FUNCS
-  { "wc_funcs", 1 },
-#else
-  { "wc_funcs", 0 },
-#endif
   { NULL, 0 },
 };
 
 /**
- * print_compile_options - Print a list of enabled/disabled features.
+ * print_compile_options - Print a list of enabled/disabled features
  *
  * Two lists are generated and passed to this function:
  *

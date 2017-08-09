@@ -39,9 +39,7 @@
 #include "mutt.h"
 #include "pattern.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
-#include "buffer.h"
 #include "context.h"
 #include "copy.h"
 #include "envelope.h"
@@ -49,9 +47,10 @@
 #include "group.h"
 #include "header.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
+#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
@@ -886,7 +885,6 @@ static char LastSearch[STRING] = { 0 };          /* last pattern searched for */
 static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
                                                     LastSearch */
 
-
 /**
  * mutt_which_case - Smart-case searching
  *
@@ -943,7 +941,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   if ((msg = mx_open_message(ctx, msgno)) != NULL)
   {
-    if (option(OPTTHOROUGHSRC))
+    if (option(OPT_THOROUGH_SRC))
     {
       /* decode the header / body */
       memset(&s, 0, sizeof(s));
@@ -1063,7 +1061,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
     mx_close_message(ctx, &msg);
 
-    if (option(OPTTHOROUGHSRC))
+    if (option(OPT_THOROUGH_SRC))
     {
       safe_fclose(&fp);
 #ifdef USE_FMEMOPEN
@@ -1400,11 +1398,14 @@ static int match_adrlist(struct Pattern *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static bool match_reference(struct Pattern *pat, struct List *refs)
+static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 {
-  for (; refs; refs = refs->next)
-    if (patmatch(pat, refs->data) == 0)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, refs, entries)
+  {
+    if (patmatch(pat, np->data) == 0)
       return true;
+  }
   return false;
 }
 
@@ -1499,7 +1500,6 @@ static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
   return 0;
 }
 
-
 /**
  * set_pattern_cache_value - Sets a value in the PatternCache cache entry
  *
@@ -1524,7 +1524,6 @@ static int is_pattern_cache_set(int cache_entry)
 {
   return cache_entry != 0;
 }
-
 
 /**
  * mutt_pattern_exec - Match a pattern against an email header
@@ -1635,8 +1634,8 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return (pat->not ^ (h->content->length >= pat->min &&
                           (pat->max == MUTT_MAXRANGE || h->content->length <= pat->max)));
     case MUTT_REFERENCE:
-      return (pat->not ^ (match_reference(pat, h->env->references) ||
-                          match_reference(pat, h->env->in_reply_to)));
+      return (pat->not ^ (match_reference(pat, &h->env->references) ||
+                          match_reference(pat, &h->env->in_reply_to)));
     case MUTT_ADDRESS:
       return (pat->not ^ match_adrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 4,
                                        h->env->from, h->env->sender, h->env->to,
@@ -1780,31 +1779,31 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     }
   }
 
-  /* XXX - is ascii_strcasecmp() right here, or should we use locale's
+  /* XXX - is mutt_strcasecmp() right here, or should we use locale's
    * equivalences?
    */
 
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if ((ascii_strcasecmp("all", s) == 0) || (mutt_strcmp("^", s) == 0) ||
+    if ((mutt_strcasecmp("all", s) == 0) || (mutt_strcmp("^", s) == 0) ||
         (mutt_strcmp(".", s) == 0)) /* ~A is more efficient */
       strfcpy(s, "~A", len);
-    else if (ascii_strcasecmp("del", s) == 0)
+    else if (mutt_strcasecmp("del", s) == 0)
       strfcpy(s, "~D", len);
-    else if (ascii_strcasecmp("flag", s) == 0)
+    else if (mutt_strcasecmp("flag", s) == 0)
       strfcpy(s, "~F", len);
-    else if (ascii_strcasecmp("new", s) == 0)
+    else if (mutt_strcasecmp("new", s) == 0)
       strfcpy(s, "~N", len);
-    else if (ascii_strcasecmp("old", s) == 0)
+    else if (mutt_strcasecmp("old", s) == 0)
       strfcpy(s, "~O", len);
-    else if (ascii_strcasecmp("repl", s) == 0)
+    else if (mutt_strcasecmp("repl", s) == 0)
       strfcpy(s, "~Q", len);
-    else if (ascii_strcasecmp("read", s) == 0)
+    else if (mutt_strcasecmp("read", s) == 0)
       strfcpy(s, "~R", len);
-    else if (ascii_strcasecmp("tag", s) == 0)
+    else if (mutt_strcasecmp("tag", s) == 0)
       strfcpy(s, "~T", len);
-    else if (ascii_strcasecmp("unread", s) == 0)
+    else if (mutt_strcasecmp("unread", s) == 0)
       strfcpy(s, "~U", len);
     else
     {
@@ -2016,9 +2015,9 @@ int mutt_search_command(int cur, int op)
       return -1;
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
-      unset_option(OPTSEARCHREVERSE);
+      unset_option(OPT_SEARCH_REVERSE);
     else
-      set_option(OPTSEARCHREVERSE);
+      set_option(OPT_SEARCH_REVERSE);
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
@@ -2029,7 +2028,7 @@ int mutt_search_command(int cur, int op)
     {
       struct Buffer err;
       mutt_buffer_init(&err);
-      set_option(OPTSEARCHINVALID);
+      set_option(OPT_SEARCH_INVALID);
       strfcpy(LastSearch, buf, sizeof(LastSearch));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
@@ -2046,7 +2045,7 @@ int mutt_search_command(int cur, int op)
     }
   }
 
-  if (option(OPTSEARCHINVALID))
+  if (option(OPT_SEARCH_INVALID))
   {
     for (i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = false;
@@ -2054,10 +2053,10 @@ int mutt_search_command(int cur, int op)
     if (Context->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
       return -1;
 #endif
-    unset_option(OPTSEARCHINVALID);
+    unset_option(OPT_SEARCH_INVALID);
   }
 
-  incr = (option(OPTSEARCHREVERSE)) ? -1 : 1;
+  incr = (option(OPT_SEARCH_REVERSE)) ? -1 : 1;
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
@@ -2070,7 +2069,7 @@ int mutt_search_command(int cur, int op)
     if (i > Context->vcount - 1)
     {
       i = 0;
-      if (option(OPTWRAPSEARCH))
+      if (option(OPT_WRAP_SEARCH))
         msg = _("Search wrapped to top.");
       else
       {
@@ -2081,7 +2080,7 @@ int mutt_search_command(int cur, int op)
     else if (i < 0)
     {
       i = Context->vcount - 1;
-      if (option(OPTWRAPSEARCH))
+      if (option(OPT_WRAP_SEARCH))
         msg = _("Search wrapped to bottom.");
       else
       {

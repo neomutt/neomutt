@@ -27,7 +27,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP
@@ -64,7 +64,7 @@ int mutt_complete(char *s, size_t slen)
   mutt_debug(2, "mutt_complete: completing %s\n", s);
 
 #ifdef USE_NNTP
-  if (option(OPTNEWS))
+  if (option(OPT_NEWS))
   {
     struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int n = 0;
@@ -127,7 +127,7 @@ int mutt_complete(char *s, size_t slen)
   if (*s == '=' || *s == '+' || *s == '!')
   {
     if (*s == '!')
-      p = NONULL(Spoolfile);
+      p = NONULL(SpoolFile);
     else
       p = NONULL(Maildir);
 
@@ -145,7 +145,7 @@ int mutt_complete(char *s, size_t slen)
     dirpart[0] = *s;
     dirpart[1] = 0;
     if (*s == '!')
-      strfcpy(exp_dirpart, NONULL(Spoolfile), sizeof(exp_dirpart));
+      strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
     else
       strfcpy(exp_dirpart, NONULL(Maildir), sizeof(exp_dirpart));
     if ((p = strrchr(s, '/')))

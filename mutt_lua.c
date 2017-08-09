@@ -31,9 +31,8 @@
 #include <string.h>
 #include "mutt.h"
 #include "mutt_lua.h"
-#include "buffer.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "mbyte_table.h"
 #include "mutt_commands.h"
@@ -106,7 +105,7 @@ static int _lua_mutt_call(lua_State *l)
     if (lua_pushstring(l, err.data) == NULL)
       _handle_error(l);
     else
-      ++rv;
+      rv++;
   }
 
   FREE(&err.data);
@@ -287,7 +286,7 @@ static int _lua_mutt_enter(lua_State *l)
     if (lua_pushstring(l, err.data) == NULL)
       _handle_error(l);
     else
-      ++rv;
+      rv++;
   }
 
   FREE(&buffer);
@@ -321,7 +320,7 @@ static void _lua_expose_command(void *p, const struct Command *cmd)
   snprintf(buf, LONG_STRING,
            "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
-  luaL_dostring(l, buf);
+  (void) luaL_dostring(l, buf);
 }
 
 static const luaL_Reg luaMuttDecl[] = {
@@ -353,7 +352,7 @@ static int luaopen_mutt_decl(lua_State *l)
 static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
-  luaL_dostring(l, "mutt.command = {}");
+  (void) luaL_dostring(l, "mutt.command = {}");
   mutt_commands_apply((void *) l, &_lua_expose_command);
 }
 

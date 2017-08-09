@@ -27,9 +27,8 @@
 #include "config.h"
 #include <string.h>
 #include "auth.h"
-#include "ascii.h"
 #include "globals.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "protos.h"
 
 static const struct ImapAuth imap_authenticators[] = {
@@ -83,7 +82,7 @@ int imap_authenticate(struct ImapData *idata)
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (ascii_strcasecmp(authenticator->method, method) == 0))
+        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
           if ((r = authenticator->authenticate(idata, method)) != IMAP_AUTH_UNAVAIL)
           {
             FREE(&methods);

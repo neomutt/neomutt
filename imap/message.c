@@ -34,17 +34,14 @@
 #include "mutt.h"
 #include "message.h"
 #include "account.h"
-#include "ascii.h"
 #include "bcache.h"
 #include "body.h"
-#include "buffer.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -55,6 +52,13 @@
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+static struct ImapHeaderData* imap_new_header_data(void)
+{
+    struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
+    STAILQ_INIT(&d->keywords);
+    return d;
+}
 
 static void imap_update_context(struct ImapData *idata, int oldmsgcount)
 {
@@ -144,7 +148,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   struct ImapHeaderData *hd = h->data;
 
   /* sanity-check string */
-  if (ascii_strncasecmp("FLAGS", s, 5) != 0)
+  if (mutt_strncasecmp("FLAGS", s, 5) != 0)
   {
     mutt_debug(1, "msg_parse_flags: not a FLAGS response: %s\n", s);
     return NULL;
@@ -158,38 +162,38 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   }
   s++;
 
-  mutt_free_list(&hd->keywords);
+  mutt_list_free(&hd->keywords);
   hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = false;
 
   /* start parsing */
   while (*s && *s != ')')
   {
-    if (ascii_strncasecmp("\\deleted", s, 8) == 0)
+    if (mutt_strncasecmp("\\deleted", s, 8) == 0)
     {
       s += 8;
       hd->deleted = true;
     }
-    else if (ascii_strncasecmp("\\flagged", s, 8) == 0)
+    else if (mutt_strncasecmp("\\flagged", s, 8) == 0)
     {
       s += 8;
       hd->flagged = true;
     }
-    else if (ascii_strncasecmp("\\answered", s, 9) == 0)
+    else if (mutt_strncasecmp("\\answered", s, 9) == 0)
     {
       s += 9;
       hd->replied = true;
     }
-    else if (ascii_strncasecmp("\\seen", s, 5) == 0)
+    else if (mutt_strncasecmp("\\seen", s, 5) == 0)
     {
       s += 5;
       hd->read = true;
     }
-    else if (ascii_strncasecmp("\\recent", s, 7) == 0)
+    else if (mutt_strncasecmp("\\recent", s, 7) == 0)
       s += 7;
-    else if (ascii_strncasecmp("old", s, 3) == 0)
+    else if (mutt_strncasecmp("old", s, 3) == 0)
     {
       s += 3;
-      hd->old = option(OPTMARKOLD) ? true : false;
+      hd->old = option(OPT_MARK_OLD) ? true : false;
     }
     else
     {
@@ -197,14 +201,11 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       char ctmp;
       char *flag_word = s;
 
-      if (!hd->keywords)
-        hd->keywords = mutt_new_list();
-
       while (*s && !ISSPACE(*s) && *s != ')')
         s++;
       ctmp = *s;
       *s = '\0';
-      mutt_add_list(hd->keywords, flag_word);
+      mutt_list_insert_tail(&hd->keywords, safe_strdup(flag_word));
       *s = ctmp;
     }
     SKIPWS(s);
@@ -242,12 +243,12 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
   {
     SKIPWS(s);
 
-    if (ascii_strncasecmp("FLAGS", s, 5) == 0)
+    if (mutt_strncasecmp("FLAGS", s, 5) == 0)
     {
       if ((s = msg_parse_flags(h, s)) == NULL)
         return -1;
     }
-    else if (ascii_strncasecmp("UID", s, 3) == 0)
+    else if (mutt_strncasecmp("UID", s, 3) == 0)
     {
       s += 3;
       SKIPWS(s);
@@ -255,7 +256,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 
       s = imap_next_word(s);
     }
-    else if (ascii_strncasecmp("INTERNALDATE", s, 12) == 0)
+    else if (mutt_strncasecmp("INTERNALDATE", s, 12) == 0)
     {
       s += 12;
       SKIPWS(s);
@@ -274,7 +275,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       *ptmp = 0;
       h->received = imap_parse_date(tmp);
     }
-    else if (ascii_strncasecmp("RFC822.SIZE", s, 11) == 0)
+    else if (mutt_strncasecmp("RFC822.SIZE", s, 11) == 0)
     {
       s += 11;
       SKIPWS(s);
@@ -284,8 +285,8 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       *ptmp = 0;
       h->content_length = atoi(tmp);
     }
-    else if ((ascii_strncasecmp("BODY", s, 4) == 0) ||
-             (ascii_strncasecmp("RFC822.HEADER", s, 13) == 0))
+    else if ((mutt_strncasecmp("BODY", s, 4) == 0) ||
+             (mutt_strncasecmp("RFC822.HEADER", s, 13) == 0))
     {
       /* handle above, in msg_fetch_header */
       return -2;
@@ -329,7 +330,7 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
 
   /* find FETCH tag */
   buf = imap_next_word(buf);
-  if (ascii_strncasecmp("FETCH", buf, 5) != 0)
+  if (mutt_strncasecmp("FETCH", buf, 5) != 0)
     return rc;
 
   rc = -2; /* we've got a FETCH response, for better or worse */
@@ -573,7 +574,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
       mutt_progress_update(&progress, msgno, -1);
 
       memset(&h, 0, sizeof(h));
-      h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
+      h.data = imap_new_header_data();
       do
       {
         rc = imap_cmd_step(idata);
@@ -684,7 +685,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
       rewind(fp);
       memset(&h, 0, sizeof(h));
-      h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
+      h.data = imap_new_header_data();
 
       /* this DO loop does two things:
        * 1. handles untagged messages, so we can try again on the same msg
@@ -911,7 +912,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 
   snprintf(buf, sizeof(buf), "UID FETCH %u %s", HEADER_DATA(h)->uid,
            (mutt_bit_isset(idata->capabilities, IMAP4REV1) ?
-                (option(OPTIMAPPEEK) ? "BODY.PEEK[]" : "BODY[]") :
+                (option(OPT_IMAP_PEEK) ? "BODY.PEEK[]" : "BODY[]") :
                 "RFC822"));
 
   imap_cmd_start(idata, buf);
@@ -924,14 +925,14 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
     pc = imap_next_word(pc);
     pc = imap_next_word(pc);
 
-    if (ascii_strncasecmp("FETCH", pc, 5) == 0)
+    if (mutt_strncasecmp("FETCH", pc, 5) == 0)
     {
       while (*pc)
       {
         pc = imap_next_word(pc);
         if (pc[0] == '(')
           pc++;
-        if (ascii_strncasecmp("UID", pc, 3) == 0)
+        if (mutt_strncasecmp("UID", pc, 3) == 0)
         {
           pc = imap_next_word(pc);
           uid = atoi(pc);
@@ -939,8 +940,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
             mutt_error(_(
                 "The message index is incorrect. Try reopening the mailbox."));
         }
-        else if ((ascii_strncasecmp("RFC822", pc, 6) == 0) ||
-                 (ascii_strncasecmp("BODY[]", pc, 6) == 0))
+        else if ((mutt_strncasecmp("RFC822", pc, 6) == 0) ||
+                 (mutt_strncasecmp("BODY[]", pc, 6) == 0))
         {
           pc = imap_next_word(pc);
           if (imap_get_literal_count(pc, &bytes) < 0)
@@ -967,7 +968,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
          * change (eg from \Unseen to \Seen).
          * Uncommitted changes in mutt take precedence. If we decide to
          * incrementally update flags later, this won't stop us syncing */
-        else if ((ascii_strncasecmp("FLAGS", pc, 5) == 0) && !h->changed)
+        else if ((mutt_strncasecmp("FLAGS", pc, 5) == 0) && !h->changed)
         {
           if ((pc = imap_set_flags(idata, h, pc)) == NULL)
             goto bail;
@@ -1315,11 +1316,11 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (ascii_strncasecmp(imap_get_qualifier(idata->buf), "[TRYCREATE]", 11) != 0)
+      if (mutt_strncasecmp(imap_get_qualifier(idata->buf), "[TRYCREATE]", 11) != 0)
         break;
       mutt_debug(3, "imap_copy_messages: server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (option(OPTCONFIRMCREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (option(OPT_CONFIRM_CREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
@@ -1346,7 +1347,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
         {
           mutt_set_flag(ctx, ctx->hdrs[n], MUTT_DELETE, 1);
           mutt_set_flag(ctx, ctx->hdrs[n], MUTT_PURGE, 1);
-          if (option(OPTDELETEUNTAG))
+          if (option(OPT_DELETE_UNTAG))
             mutt_set_flag(ctx, ctx->hdrs[n], MUTT_TAG, 0);
         }
       }
@@ -1354,7 +1355,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
     {
       mutt_set_flag(ctx, h, MUTT_DELETE, 1);
       mutt_set_flag(ctx, h, MUTT_PURGE, 1);
-      if (option(OPTDELETEUNTAG))
+      if (option(OPT_DELETE_UNTAG))
         mutt_set_flag(ctx, h, MUTT_TAG, 0);
     }
   }
@@ -1396,23 +1397,21 @@ int imap_cache_clean(struct ImapData *idata)
  *
  * If the tags appear in the folder flags list. Why wouldn't they?
  */
-void imap_add_keywords(char *s, struct Header *h, struct List *mailbox_flags, size_t slen)
+void imap_add_keywords(char *s, struct Header *h, struct ListHead *mailbox_flags, size_t slen)
 {
-  struct List *keywords = NULL;
+  struct ListHead *keywords = &HEADER_DATA(h)->keywords;
 
-  if (!mailbox_flags || !HEADER_DATA(h) || !HEADER_DATA(h)->keywords)
+  if (STAILQ_EMPTY(mailbox_flags) || !HEADER_DATA(h) || STAILQ_EMPTY(keywords))
     return;
 
-  keywords = HEADER_DATA(h)->keywords->next;
-
-  while (keywords)
+  struct ListNode *np;
+  STAILQ_FOREACH(np, keywords, entries)
   {
-    if (imap_has_flag(mailbox_flags, keywords->data))
+    if (imap_has_flag(mailbox_flags, np->data))
     {
-      safe_strcat(s, slen, keywords->data);
+      safe_strcat(s, slen, np->data);
       safe_strcat(s, slen, " ");
     }
-    keywords = keywords->next;
   }
 }
 
@@ -1424,7 +1423,7 @@ void imap_free_header_data(struct ImapHeaderData **data)
   if (*data)
   {
     /* this should be safe even if the list wasn't used */
-    mutt_free_list(&((*data)->keywords));
+    mutt_list_free(&(*data)->keywords);
     FREE(data);
   }
 }

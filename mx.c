@@ -35,18 +35,16 @@
 #include "mutt.h"
 #include "mx.h"
 #include "address.h"
-#include "ascii.h"
 #include "body.h"
 #include "buffy.h"
 #include "context.h"
 #include "copy.h"
 #include "envelope.h"
 #include "globals.h"
-#include "hash.h"
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mailbox.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -111,154 +109,7 @@ struct MxOps *mx_get_ops(int magic)
   }
 }
 
-#define mutt_is_spool(s) (mutt_strcmp(Spoolfile, s) == 0)
-
-/**
- * mx_lock_file - (try to) lock a file
- * @param path    Path to file
- * @param fd      File descriptor to file
- * @param excl    If set, try to lock exclusively
- * @param timeout Retry after this time
- * @retval 0 on success
- * @retval -1 on failure
- */
-int mx_lock_file(const char *path, int fd, int excl, int timeout)
-{
-#if defined(USE_FCNTL) || defined(USE_FLOCK)
-  int count;
-  int attempt;
-  struct stat sb = { 0 }, prev_sb = { 0 }; /* silence gcc warnings */
-#endif
-  int r = 0;
-
-#ifdef USE_FCNTL
-  struct flock lck;
-
-  memset(&lck, 0, sizeof(struct flock));
-  lck.l_type = excl ? F_WRLCK : F_RDLCK;
-  lck.l_whence = SEEK_SET;
-
-  count = 0;
-  attempt = 0;
-  while (fcntl(fd, F_SETLK, &lck) == -1)
-  {
-    mutt_debug(1, "mx_lock_file(): fcntl errno %d.\n", errno);
-    if (errno != EAGAIN && errno != EACCES)
-    {
-      mutt_perror("fcntl");
-      return -1;
-    }
-
-    if (fstat(fd, &sb) != 0)
-      sb.st_size = 0;
-
-    if (count == 0)
-      prev_sb = sb;
-
-    /* only unlock file if it is unchanged */
-    if (prev_sb.st_size == sb.st_size && ++count >= (timeout ? MAXLOCKATTEMPT : 0))
-    {
-      if (timeout)
-        mutt_error(_("Timeout exceeded while attempting fcntl lock!"));
-      return -1;
-    }
-
-    prev_sb = sb;
-
-    mutt_message(_("Waiting for fcntl lock... %d"), ++attempt);
-    sleep(1);
-  }
-#endif /* USE_FCNTL */
-
-#ifdef USE_FLOCK
-  count = 0;
-  attempt = 0;
-  while (flock(fd, (excl ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
-  {
-    if (errno != EWOULDBLOCK)
-    {
-      mutt_perror("flock");
-      r = -1;
-      break;
-    }
-
-    if (fstat(fd, &sb) != 0)
-      sb.st_size = 0;
-
-    if (count == 0)
-      prev_sb = sb;
-
-    /* only unlock file if it is unchanged */
-    if (prev_sb.st_size == sb.st_size && ++count >= (timeout ? MAXLOCKATTEMPT : 0))
-    {
-      if (timeout)
-        mutt_error(_("Timeout exceeded while attempting flock lock!"));
-      r = -1;
-      break;
-    }
-
-    prev_sb = sb;
-
-    mutt_message(_("Waiting for flock attempt... %d"), ++attempt);
-    sleep(1);
-  }
-#endif /* USE_FLOCK */
-
-  if (r != 0)
-  {
-/* release any other locks obtained in this routine */
-
-#ifdef USE_FCNTL
-    lck.l_type = F_UNLCK;
-    fcntl(fd, F_SETLK, &lck);
-#endif /* USE_FCNTL */
-
-#ifdef USE_FLOCK
-    flock(fd, LOCK_UN);
-#endif /* USE_FLOCK */
-  }
-
-  return r;
-}
-
-int mx_unlock_file(const char *path, int fd)
-{
-#ifdef USE_FCNTL
-  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
-
-  memset(&unlockit, 0, sizeof(struct flock));
-  unlockit.l_type = F_UNLCK;
-  unlockit.l_whence = SEEK_SET;
-  fcntl(fd, F_SETLK, &unlockit);
-#endif
-
-#ifdef USE_FLOCK
-  flock(fd, LOCK_UN);
-#endif
-
-  return 0;
-}
-
-static void mx_unlink_empty(const char *path)
-{
-  int fd;
-  struct stat sb;
-
-  if ((fd = open(path, O_RDWR)) == -1)
-    return;
-
-  if (mx_lock_file(path, fd, 1, 1) == -1)
-  {
-    close(fd);
-    return;
-  }
-
-  if (fstat(fd, &sb) == 0 && sb.st_size == 0)
-    unlink(path);
-
-  mx_unlock_file(path, fd);
-  close(fd);
-}
+#define mutt_is_spool(s) (mutt_strcmp(SpoolFile, s) == 0)
 
 #ifdef USE_IMAP
 
@@ -434,7 +285,7 @@ int mx_get_magic(const char *path)
     }
     safe_fclose(&f);
 
-    if (!option(OPTCHECKMBOXSIZE))
+    if (!option(OPT_CHECK_MBOX_SIZE))
     {
       /* need to restore the times here, the file was not really accessed,
        * only the type was accessed.  This is important, because detection
@@ -465,13 +316,13 @@ int mx_get_magic(const char *path)
  */
 int mx_set_magic(const char *s)
 {
-  if (ascii_strcasecmp(s, "mbox") == 0)
+  if (mutt_strcasecmp(s, "mbox") == 0)
     DefaultMagic = MUTT_MBOX;
-  else if (ascii_strcasecmp(s, "mmdf") == 0)
+  else if (mutt_strcasecmp(s, "mmdf") == 0)
     DefaultMagic = MUTT_MMDF;
-  else if (ascii_strcasecmp(s, "mh") == 0)
+  else if (mutt_strcasecmp(s, "mh") == 0)
     DefaultMagic = MUTT_MH;
-  else if (ascii_strcasecmp(s, "maildir") == 0)
+  else if (mutt_strcasecmp(s, "maildir") == 0)
     DefaultMagic = MUTT_MAILDIR;
   else
     return -1;
@@ -621,7 +472,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.
    */
-  set_option(OPTFORCEREFRESH);
+  set_option(OPT_FORCE_REFRESH);
 
   if (!ctx->quiet)
     mutt_message(_("Reading %s..."), ctx->path);
@@ -634,8 +485,8 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     {
       /* avoid unnecessary work since the mailbox is completely unthreaded
          to begin with */
-      unset_option(OPTSORTSUBTHREADS);
-      unset_option(OPTNEEDRESCORE);
+      unset_option(OPT_SORT_SUBTHREADS);
+      unset_option(OPT_NEED_RESCORE);
       mutt_sort_headers(ctx, 1);
     }
     if (!ctx->quiet)
@@ -650,7 +501,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
       FREE(&ctx);
   }
 
-  unset_option(OPTFORCEREFRESH);
+  unset_option(OPT_FORCE_REFRESH);
   return ctx;
 }
 
@@ -723,7 +574,7 @@ static int trash_append(struct Context *ctx)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!TrashPath || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && option(OPTMAILDIRTRASH)))
+  if (!TrashPath || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
     return 0;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -733,12 +584,12 @@ static int trash_append(struct Context *ctx)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = option(OPTCONFIRMAPPEND);
+  opt_confappend = option(OPT_CONFIRM_APPEND);
   if (opt_confappend)
-    unset_option(OPTCONFIRMAPPEND);
+    unset_option(OPT_CONFIRM_APPEND);
   rc = mutt_save_confirm(TrashPath, &st);
   if (opt_confappend)
-    set_option(OPTCONFIRMAPPEND);
+    set_option(OPT_CONFIRM_APPEND);
   if (rc != 0)
   {
     mutt_error(_("message(s) not deleted"));
@@ -826,7 +677,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   for (i = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read &&
-        !(ctx->hdrs[i]->flagged && option(OPTKEEPFLAGGED)))
+        !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
       read_msgs++;
   }
 
@@ -867,7 +718,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
    * There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && option(OPTMAILDIRTRASH)))
+  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
   {
     snprintf(buf, sizeof(buf),
              ctx->deleted == 1 ? _("Purge %d deleted message?") :
@@ -880,7 +731,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     }
   }
 
-  if (option(OPTMARKOLD))
+  if (option(OPT_MARK_OLD))
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
@@ -903,7 +754,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
-            !(ctx->hdrs[i]->flagged && option(OPTKEEPFLAGGED)))
+            !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
           ctx->hdrs[i]->tagged = true;
         else
           ctx->hdrs[i]->tagged = false;
@@ -930,7 +781,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       for (i = 0; i < ctx->msgcount; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
-            !(ctx->hdrs[i]->flagged && option(OPTKEEPFLAGGED)))
+            !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
         {
           if (mutt_append_message(&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
@@ -1012,8 +863,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   }
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
-      !mutt_is_spool(ctx->path) && !option(OPTSAVEEMPTY))
-    mx_unlink_empty(ctx->path);
+      !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
+    mutt_unlink_empty(ctx->path);
 
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)
@@ -1059,7 +910,7 @@ void mx_update_tables(struct Context *ctx, int committing)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
         ((committing && (!ctx->hdrs[i]->deleted ||
-                         (ctx->magic == MUTT_MAILDIR && option(OPTMAILDIRTRASH)))) ||
+                         (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))) ||
          (!committing && ctx->hdrs[i]->active)))
     {
       if (i != j)
@@ -1080,7 +931,7 @@ void mx_update_tables(struct Context *ctx, int committing)
       else if (ctx->hdrs[j]->changed)
         ctx->changed = true;
 
-      if (!committing || (ctx->magic == MUTT_MAILDIR && option(OPTMAILDIRTRASH)))
+      if (!committing || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
       {
         if (ctx->hdrs[j]->deleted)
           ctx->deleted++;
@@ -1094,7 +945,7 @@ void mx_update_tables(struct Context *ctx, int committing)
       {
         ctx->unread++;
         if (!ctx->hdrs[j]->old)
-          ctx->new ++;
+          ctx->new++;
       }
 
       j++;
@@ -1123,7 +974,6 @@ void mx_update_tables(struct Context *ctx, int committing)
 #undef this_body
   ctx->msgcount = j;
 }
-
 
 /**
  * mx_sync_mailbox - Save changes to mailbox
@@ -1226,7 +1076,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     mutt_sleep(0);
 
     if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) &&
-        !mutt_is_spool(ctx->path) && !option(OPTSAVEEMPTY))
+        !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
     {
       unlink(ctx->path);
       mx_fastclose_mailbox(ctx);
@@ -1462,7 +1312,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       if (h2)
       {
         h2->superseded = true;
-        if (option(OPTSCORE))
+        if (option(OPT_SCORE))
           mutt_score_message(ctx, h2, 1);
       }
     }
@@ -1474,7 +1324,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       hash_insert(ctx->subj_hash, h->env->real_subj, h);
     mutt_label_hash_add(ctx, h);
 
-    if (option(OPTSCORE))
+    if (option(OPT_SCORE))
       mutt_score_message(ctx, h, 0);
 
     if (h->changed)
@@ -1487,7 +1337,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       ctx->unread++;
       if (!h->old)
-        ctx->new ++;
+        ctx->new++;
     }
   }
 }

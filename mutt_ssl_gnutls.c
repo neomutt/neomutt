@@ -35,7 +35,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mutt_socket.h"
@@ -54,44 +54,14 @@
 
 #define CERT_SEP "-----BEGIN"
 
-/* deprecated types compatibility */
-
-#ifndef HAVE_GNUTLS_CERTIFICATE_CREDENTIALS_T
-typedef gnutls_certificate_credentials gnutls_certificate_credentials_t;
-#endif
-
-#ifndef HAVE_GNUTLS_CERTIFICATE_STATUS_T
-typedef gnutls_certificate_status gnutls_certificate_status_t;
-#endif
-
-#ifndef HAVE_GNUTLS_DATUM_T
-typedef gnutls_datum gnutls_datum_t;
-#endif
-
-#ifndef HAVE_GNUTLS_DIGEST_ALGORITHM_T
-typedef gnutls_digest_algorithm gnutls_digest_algorithm_t;
-#endif
-
-#ifndef HAVE_GNUTLS_SESSION_T
-typedef gnutls_session gnutls_session_t;
-#endif
-
-#ifndef HAVE_GNUTLS_TRANSPORT_PTR_T
-typedef gnutls_transport_ptr gnutls_transport_ptr_t;
-#endif
-
-#ifndef HAVE_GNUTLS_X509_CRT_T
-typedef gnutls_x509_crt gnutls_x509_crt_t;
-#endif
-
 /**
  * struct TlsSockData - TLS socket data
  */
-typedef struct TlsSockData
+struct TlsSockData
 {
   gnutls_session_t state;
   gnutls_certificate_credentials_t xcred;
-} tlssockdata;
+};
 
 static int tls_init(void)
 {
@@ -115,7 +85,7 @@ static int tls_init(void)
 
 static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   int ret;
 
   if (!data)
@@ -141,7 +111,7 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 
 static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   int ret;
   size_t sent = 0;
 
@@ -173,7 +143,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t len
 
 static int tls_socket_close(struct Connection *conn)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   if (data)
   {
     /* shut down only the write half to avoid hanging waiting for the remote to respond.
@@ -415,7 +385,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     return -1;
   }
 
-  if (option(OPTSSLVERIFYDATES) != MUTT_NO)
+  if (option(OPT_SSL_VERIFY_DATES) != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
       *certerr |= CERTERR_EXPIRED;
@@ -423,7 +393,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && option(OPTSSLVERIFYHOST) != MUTT_NO &&
+  if (chainidx == 0 && option(OPT_SSL_VERIFY_HOST) != MUTT_NO &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;
@@ -756,7 +726,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu->help = helpstr;
 
   done = 0;
-  set_option(OPTIGNOREMACROEVENTS);
+  set_option(OPT_IGNORE_MACRO_EVENTS);
   while (!done)
   {
     switch (mutt_menu_loop(menu))
@@ -807,7 +777,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
     }
   }
-  unset_option(OPTIGNOREMACROEVENTS);
+  unset_option(OPT_IGNORE_MACRO_EVENTS);
   mutt_pop_current_menu(menu);
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
@@ -817,7 +787,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
 static int tls_check_certificate(struct Connection *conn)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   gnutls_session_t state = data->state;
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
@@ -895,7 +865,7 @@ static int tls_check_certificate(struct Connection *conn)
 
 static void tls_get_client_cert(struct Connection *conn)
 {
-  tlssockdata *data = conn->sockdata;
+  struct TlsSockData *data = conn->sockdata;
   const gnutls_datum_t *crtdata = NULL;
   gnutls_x509_crt_t clientcrt;
   char *dn = NULL;
@@ -949,7 +919,7 @@ err_crt:
 }
 
 #ifdef HAVE_GNUTLS_PRIORITY_SET_DIRECT
-static int tls_set_priority(tlssockdata *data)
+static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 4;
   char *priority = NULL;
@@ -965,22 +935,22 @@ static int tls_set_priority(tlssockdata *data)
   else
     safe_strcat(priority, priority_size, "NORMAL");
 
-  if (!option(OPTTLSV1_2))
+  if (!option(OPT_TLSV1_2))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
-  if (!option(OPTTLSV1_1))
+  if (!option(OPT_TLSV1_1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
-  if (!option(OPTTLSV1))
+  if (!option(OPT_TLSV1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
-  if (!option(OPTSSLV3))
+  if (!option(OPT_SSLV3))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-SSL3.0");
@@ -1012,17 +982,17 @@ static int tls_set_priority(tlssockdata *data)
 static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
                                    GNUTLS_SSL3, 0 };
 
-static int tls_set_priority(tlssockdata *data)
+static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  if (option(OPTTLSV1_2))
+  if (option(OPT_TLSV1_2))
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  if (option(OPTTLSV1_1))
+  if (option(OPT_TLSV1_1))
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
-  if (option(OPTTLSV1))
+  if (option(OPT_TLSV1))
     protocol_priority[nproto++] = GNUTLS_TLS1;
-  if (option(OPTSSLV3))
+  if (option(OPT_SSLV3))
     protocol_priority[nproto++] = GNUTLS_SSL3;
   protocol_priority[nproto] = 0;
 
@@ -1055,10 +1025,10 @@ static int tls_set_priority(tlssockdata *data)
  */
 static int tls_negotiate(struct Connection *conn)
 {
-  tlssockdata *data = NULL;
+  struct TlsSockData *data = NULL;
   int err;
 
-  data = safe_calloc(1, sizeof(tlssockdata));
+  data = safe_calloc(1, sizeof(struct TlsSockData));
   conn->sockdata = data;
   err = gnutls_certificate_allocate_credentials(&data->xcred);
   if (err < 0)
@@ -1153,7 +1123,7 @@ static int tls_negotiate(struct Connection *conn)
 
   tls_get_client_cert(conn);
 
-  if (!option(OPTNOCURSES))
+  if (!option(OPT_NO_CURSES))
   {
     mutt_message(_("SSL/TLS connection using %s (%s/%s/%s)"),
                  gnutls_protocol_get_name(gnutls_protocol_get_version(data->state)),

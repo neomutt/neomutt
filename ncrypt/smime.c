@@ -34,7 +34,6 @@
 #include "smime.h"
 #include "address.h"
 #include "alias.h"
-#include "ascii.h"
 #include "body.h"
 #include "copy.h"
 #include "crypt.h"
@@ -46,12 +45,13 @@
 #include "header.h"
 #include "keymap.h"
 #include "keymap_defs.h"
-#include "lib.h"
+#include "lib/lib.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"
 #include "options.h"
+#include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
 #include "state.h"
@@ -821,7 +821,7 @@ void smime_getkeys(struct Envelope *env)
   struct Address *t = NULL;
   bool found = false;
 
-  if (option(OPTSDEFAULTDECRYPTKEY) && SmimeDefaultKey && *SmimeDefaultKey)
+  if (option(OPT_SDEFAULT_DECRYPT_KEY) && SmimeDefaultKey && *SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
 
@@ -1179,7 +1179,7 @@ void smime_invoke_import(char *infile, char *mailbox)
   mutt_unlink(tmpfname);
 
   buf[0] = '\0';
-  if (option(OPTASKCERTLABEL))
+  if (option(OPT_ASK_CERT_LABEL))
   {
     if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), 0) != 0) ||
         (buf[0] == 0))
@@ -1684,7 +1684,7 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
       rewind(smimeerr);
 
       line = mutt_read_line(line, &linelen, smimeerr, &lineno, 0);
-      if (linelen && (ascii_strcasecmp(line, "verification successful") == 0))
+      if (linelen && (mutt_strcasecmp(line, "verification successful") == 0))
         badsig = 0;
 
       FREE(&line);
@@ -1901,7 +1901,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     rewind(smimeerr);
 
     line = mutt_read_line(line, &linelen, smimeerr, &lineno, 0);
-    if (linelen && (ascii_strcasecmp(line, "verification successful") == 0))
+    if (linelen && (mutt_strcasecmp(line, "verification successful") == 0))
       m->goodsig = true;
     FREE(&line);
   }
@@ -2002,7 +2002,7 @@ int smime_send_menu(struct Header *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (option(OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
+  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
@@ -2015,7 +2015,7 @@ int smime_send_menu(struct Header *msg)
    * Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
-  else if (option(OPTCRYPTOPPORTUNISTICENCRYPT))
+  else if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
