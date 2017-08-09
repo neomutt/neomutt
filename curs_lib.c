@@ -915,7 +915,9 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
   {
     mutt_refresh();
     buf[0] = 0;
-    flags = MUTT_SEL_FOLDER;
+
+    if (!flags)
+      flags = MUTT_SEL_FOLDER;
     if (multiple)
       flags |= MUTT_SEL_MULTI;
     if (buffy)
