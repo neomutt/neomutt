@@ -36,12 +36,7 @@ if test "$CC" = "gcc"; then
 	CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
 fi
 
-CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
-
-AC_SEARCH_LIBS([strerror],[cposix])
-if test "x$U" != "x"; then
-	AC_MSG_ERROR(Compiler not ANSI compliant)
-fi
+CFLAGS="-Wall -pedantic $CFLAGS"
 
 AC_PROG_CPP
 AC_PROG_MAKE_SET
@@ -91,8 +86,6 @@ AH_BOTTOM([/* fseeko portability defines */
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
 AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on your system.])
-
-OPS='$(srcdir)/OPS $(srcdir)/OPS.SIDEBAR'
 
 dnl Define the option to enable everything before any feature / option is declared
 dnl This is important because it allows us to set a default value for the options
@@ -170,6 +163,10 @@ AC_ARG_ENABLE(notmuch,
 AC_ARG_WITH(mixmaster,
 	AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
 	[alongwith_mixmaster=$withval], [alongwith_mixmaster=no])
+
+AC_ARG_WITH(slang,
+	AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
+	[use_slang=$withval], [use_slang=no])
 
 dnl == End of Features and Options Definitions ==
 
@@ -270,7 +267,7 @@ AS_IF([test "$alongwith_mixmaster" != "no"], [
 ])
 
 # We now require all OPS
-OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
+OPS="\$(srcdir)/OPS $OPS \$(srcdir)/OPS.SIDEBAR \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT"
 AC_SUBST([OPS])
 
 AC_SUBST(PGPAUX_TARGET)
@@ -278,14 +275,12 @@ AC_SUBST(SMIMEAUX_TARGET)
 
 AC_PATH_PROG(ISPELL, ispell, no)
 if test $ISPELL != no; then
-	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
+	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[Where to find ispell on your system.])
 fi
 
-want_slang=no
-AC_ARG_WITH(slang, AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
-	[want_slang=$withval])
-if test $want_slang != no; then
-	withval=$want_slang
+dnl --with-slang
+if test $use_slang != no; then
+	withval=$use_slang
 	AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
 		[AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <sys/param.h>
@@ -345,6 +340,7 @@ main ()
 		[LIBS="$LIBS -lslang -lm"],
 		[AC_MSG_ERROR(unable to compile.  check config.log)], -lm)
 else
+dnl --- ncurses
 	mutt_cv_curses=/usr
 	AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
 		[if test x$withval != xyes; then
