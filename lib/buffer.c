@@ -3,6 +3,7 @@
  * General purpose object for storing and parsing strings
  *
  * @authors
+ * Copyright (C) 2017 Ian Zimmerman <itz@primate.net>
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright

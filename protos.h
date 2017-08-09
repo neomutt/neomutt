@@ -53,8 +53,6 @@ struct ListHead;
 struct stat;
 struct passwd;
 
-#define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
-
 #define mutt_make_string(A, B, C, D, E) _mutt_make_string(A, B, C, D, E, 0)
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
                        struct Header *hdr, enum FormatFlag flags);
@@ -122,7 +120,6 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen);
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user_hdrs, short weed);
 
-time_t mutt_parse_date(const char *s, struct Header *h);
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,

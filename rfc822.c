@@ -27,17 +27,6 @@
 #include "lib/lib.h"
 #include "mutt_idna.h"
 
-#define terminate_string(a, b, c)                                              \
-  do                                                                           \
-  {                                                                            \
-    if ((b) < (c))                                                             \
-      a[(b)] = 0;                                                              \
-    else                                                                       \
-      a[(c)] = 0;                                                              \
-  } while (0)
-
-#define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
-
 const char RFC822Specials[] = "@.,:;<>[]\\\"()";
 #define is_special(x) strchr(RFC822Specials, x)
 
@@ -48,28 +37,6 @@ const char *const RFC822Errors[] = {
   "out of memory",   "mismatched parenthesis", "mismatched quotes",
   "bad route in <>", "bad address in <>",      "bad address spec",
 };
-
-void rfc822_dequote_comment(char *s)
-{
-  char *w = s;
-
-  for (; *s; s++)
-  {
-    if (*s == '\\')
-    {
-      if (!*++s)
-        break; /* error? */
-      *w++ = *s;
-    }
-    else if (*s != '\"')
-    {
-      if (w != s)
-        *w = *s;
-      w++;
-    }
-  }
-  *w = 0;
-}
 
 static void free_address(struct Address *a)
 {

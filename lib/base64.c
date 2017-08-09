@@ -30,6 +30,10 @@
  * @note RFC3548 obsoletes RFC2045.
  * @note RFC4648 obsoletes RFC3548.
  *
+ * | Data               | Description
+ * | :----------------- | :--------------------------------------------------
+ * | #Index_64          | Lookup table for Base64 encoding characters
+ *
  * | Function           | Description
  * | :----------------- | :-------------------------------------------------
  * | mutt_from_base64() | convert null-terminated base64 string to raw bytes
@@ -50,10 +54,14 @@ static const char B64Chars[64] = {
 };
 
 // clang-format off
-/* This is very similar to the table in imap/utf7.c
+/**
+ * Index_64 - Lookup table for Base64 encoding characters
+ *
+ * @note This is very similar to the table in imap/utf7.c
+ *
  * Encoding chars:
- *   utf7 A-Za-z0-9+,
- *   mime A-Za-z0-9+/
+ * * utf7 A-Za-z0-9+,
+ * * mime A-Za-z0-9+/
  */
 const int Index_64[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,

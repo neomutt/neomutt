@@ -36,7 +36,7 @@
  * | safe_realloc() | Resize a block of memory on the heap
  */
 
-#include <stdio.h>
+#include "config.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include "memory.h"
