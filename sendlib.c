@@ -1600,10 +1600,11 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
   struct ListNode **ref = safe_calloc(length, sizeof(struct ListNode*));
 
   // store in reverse order
+  size_t tmp = length;
   STAILQ_FOREACH(np, r, entries)
   {
-    ref[--length] = np;
-    if (length == 0)
+    ref[--tmp] = np;
+    if (tmp == 0)
       break;
   }
 
