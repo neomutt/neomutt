@@ -36,12 +36,7 @@ if test "$CC" = "gcc"; then
 	CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
 fi
 
-CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
-
-AC_SEARCH_LIBS([strerror],[cposix])
-if test "x$U" != "x"; then
-	AC_MSG_ERROR(Compiler not ANSI compliant)
-fi
+CFLAGS="-Wall -pedantic $CFLAGS"
 
 AC_PROG_CPP
 AC_PROG_MAKE_SET
@@ -91,8 +86,6 @@ AH_BOTTOM([/* fseeko portability defines */
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
 AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on your system.])
-
-OPS='$(srcdir)/OPS $(srcdir)/OPS.SIDEBAR'
 
 dnl Define the option to enable everything before any feature / option is declared
 dnl This is important because it allows us to set a default value for the options
@@ -169,7 +162,32 @@ AC_ARG_ENABLE(notmuch,
 
 AC_ARG_WITH(mixmaster,
 	AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
-	[alongwith_mixmaster=$withval], [alongwith_mixmaster=no])
+	[with_mixmaster=$withval], [with_mixmaster=no])
+
+AC_ARG_WITH(slang,
+	AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
+	[with_slang=$withval], [with_slang=no])
+
+AC_ARG_WITH(curses,
+	AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
+	[with_curses=$withval], [with_curses=no])
+
+AC_ARG_WITH(homespool,
+	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user home where new mail is spooled]),
+	[with_homespool=${withval}], [with_homespool=no])
+
+AC_ARG_WITH(mailpath,
+	AS_HELP_STRING([--with-mailpath=DIR],[Directory where spool mailboxes are located]),
+	[with_mailpath=$withval], [with_mailpath=/var/mail])
+
+AC_ARG_WITH(docdir,
+	AS_HELP_STRING([--with-docdir=PATH],[Specify where to put the documentation]),
+	[mutt_cv_docdir=$withval],
+	[mutt_cv_docdir='${datarootdir}/doc/mutt'])
+
+AC_ARG_WITH(domain,
+	AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS domain name]),
+	[with_domain=$withval],[with_domain=no])
 
 dnl == End of Features and Options Definitions ==
 
@@ -262,15 +280,15 @@ AS_IF([test x$use_notmuch = "xyes"], [
 ])
 
 dnl --with-mixmaster
-AS_IF([test "$alongwith_mixmaster" != "no"], [
-	AS_IF([test -x "$alongwith_mixmaster"], [MIXMASTER="$alongwith_mixmaster"], [MIXMASTER="mixmaster"])
+AS_IF([test "$with_mixmaster" != "no"], [
+	AS_IF([test -x "$with_mixmaster"], [MIXMASTER="$with_mixmaster"], [MIXMASTER="mixmaster"])
 	OPS="$OPS \$(srcdir)/OPS.MIX"
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
 	AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
 ])
 
 # We now require all OPS
-OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
+OPS="\$(srcdir)/OPS \$(srcdir)/OPS.SIDEBAR $OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT"
 AC_SUBST([OPS])
 
 AC_SUBST(PGPAUX_TARGET)
@@ -278,14 +296,12 @@ AC_SUBST(SMIMEAUX_TARGET)
 
 AC_PATH_PROG(ISPELL, ispell, no)
 if test $ISPELL != no; then
-	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
+	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[Where to find ispell on your system.])
 fi
 
-want_slang=no
-AC_ARG_WITH(slang, AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
-	[want_slang=$withval])
-if test $want_slang != no; then
-	withval=$want_slang
+dnl --with-slang
+if test $with_slang != no; then
+	withval=$with_slang
 	AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
 		[AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <sys/param.h>
@@ -345,16 +361,19 @@ main ()
 		[LIBS="$LIBS -lslang -lm"],
 		[AC_MSG_ERROR(unable to compile.  check config.log)], -lm)
 else
+dnl --- ncurses
+	dnl Plese note that --with-slang=no --with-curses=no will result in
+	dnl configure trying to locate curses at /no/include first. The mutual
+	dnl exclusion of slang and curses and the requirement that one (and only
+	dnl one) is chosen could be improved.
+    if test x$with_curses != xyes; then
+        mutt_cv_curses=$withval
+    fi
+    if test x$mutt_cv_curses != x/usr; then
+        LDFLAGS="$LDFLAGS -L${with_curses}/lib"
+        CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
+    fi
 	mutt_cv_curses=/usr
-	AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
-		[if test x$withval != xyes; then
-			mutt_cv_curses=$withval
-		fi
-		if test x$mutt_cv_curses != x/usr; then
-			LDFLAGS="$LDFLAGS -L${mutt_cv_curses}/lib"
-			CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
-		fi])
-
 	AC_CHECK_FUNC(initscr,,[
 		cf_ncurses=""
 		for lib in ncursesw ncurses curses
@@ -422,23 +441,18 @@ AC_REPLACE_FUNCS([wcscasecmp])
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)
 
-AC_ARG_WITH(homespool,
-	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user's directory where new mail is spooled]), with_homespool=${withval})
-
-if test x$with_homespool != x; then
+if test $with_homespool != no; then
 	if test $with_homespool = yes; then
 		with_homespool=mailbox
 	fi
 	AC_DEFINE_UNQUOTED(MAILPATH,"$with_homespool",[ Where new mail is spooled. ])
 	AC_DEFINE(HOMESPOOL,1,
-		[Is mail spooled to the user's home directory?  If defined,
-		MAILPATH should be set to the filename of the spool mailbox
-		relative the the home directory.
+		[Is mail spooled to the user home directory?  If defined, MAILPATH
+		 should be set to the filename of the spool mailbox relative the the
+		 home directory.
 		use: configure --with-homespool=FILE])
 else
-	AC_ARG_WITH(mailpath, AS_HELP_STRING([--with-mailpath=DIR],[Directory where spool mailboxes are located]),
-		[mutt_cv_mailpath=$withval], [mutt_cv_mailpath=/var/mail])
-	AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
+	AC_DEFINE_UNQUOTED(MAILPATH,"$with_mailpath",[ Where new mail is spooled. ])
 fi
 
 dnl autoconf <2.60 compatibility
@@ -448,21 +462,15 @@ fi
 AC_SUBST([datarootdir])
 
 AC_MSG_CHECKING(where to put the documentation)
-AC_ARG_WITH(docdir, AS_HELP_STRING([--with-docdir=PATH],[Specify where to put the documentation]),
-	[mutt_cv_docdir=$withval],
-	[mutt_cv_docdir='${datarootdir}/doc/mutt'])
 AC_MSG_RESULT($mutt_cv_docdir)
 if test -z "$docdir" -o -n "$with_docdir"; then
 	docdir=$mutt_cv_docdir
 fi
 AC_SUBST(docdir)
 
-AC_ARG_WITH(domain, AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS domain name]),
-	[if test $withval != yes; then
-		if test $withval != no; then
-			AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[ Define your domain name. ])
-		fi
-	fi])
+if test $with_domain != yes -a $with_domain != no; then
+	AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[Define your domain name.])
+fi
 
 dnl -- socket dependencies --
 
