@@ -45,10 +45,10 @@ BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
 mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
-	bcache.c body.h browser.c buffy.c charset.c color.c \
+	bcache.c body.c body.h browser.c buffy.c charset.c color.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
 	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
-	envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
+	envelope.c envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
 	handler.c hdrline.c header.h headers.c help.c history.c hook.c \
 	init.c keymap.c list.h main.c mbox.c mbyte.c mbyte_table.h \
 	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \

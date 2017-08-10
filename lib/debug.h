@@ -23,8 +23,6 @@
 #ifndef _LIB_DEBUG_H
 #define _LIB_DEBUG_H
 
-#include <limits.h>
-
 #ifdef DEBUG
 void mutt_debug(int level, const char *fmt, ...);
 #else

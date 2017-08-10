@@ -283,7 +283,7 @@ static int smtp_fill_account(struct Account *account)
   static unsigned short SmtpPort = 0;
 
   struct servent *service = NULL;
-  struct CissUrl url;
+  struct Url url;
   char *urlstr = NULL;
 
   account->flags = 0;
@@ -291,7 +291,7 @@ static int smtp_fill_account(struct Account *account)
   account->type = MUTT_ACCT_TYPE_SMTP;
 
   urlstr = safe_strdup(SmtpUrl);
-  url_parse_ciss(&url, urlstr);
+  url_parse(&url, urlstr);
   if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) ||
       mutt_account_fromurl(account, &url) < 0)
   {

@@ -23,14 +23,30 @@
 #ifndef _LIB_DATE_H
 #define _LIB_DATE_H
 
+#include <stdbool.h>
 #include <time.h>
+
+/**
+ * struct Tz - List of recognised Timezones
+ */
+struct Tz
+{
+  char tzname[5];         /**< Name, e.g. UTC */
+  unsigned char zhours;   /**< Hours away from UTC */
+  unsigned char zminutes; /**< Minutes away from UTC */
+  bool zoccident;         /**< True if west of UTC, False if East */
+};
 
 extern const char *const Weekdays[];
 extern const char *const Months[];
+extern const struct Tz TimeZones[];
 
 time_t mutt_local_tz(time_t t);
 time_t mutt_mktime(struct tm *t, int local);
 void mutt_normalize_time(struct tm *tm);
 char *mutt_make_date(char *buf, size_t buflen);
+time_t mutt_parse_date(const char *s, const struct Tz **tz_out);
+bool is_day_name(const char *s);
+int mutt_check_month(const char *s);
 
 #endif /* _LIB_DATE_H */

@@ -30,32 +30,6 @@
 #include "lib/lib.h"
 #include "protos.h"
 
-static const char *next_word(const char *s)
-{
-  while (*s && !ISSPACE(*s))
-    s++;
-  SKIPWS(s);
-  return s;
-}
-
-int mutt_check_month(const char *s)
-{
-  for (int i = 0; i < 12; i++)
-    if (mutt_strncasecmp(s, Months[i], 3) == 0)
-      return i;
-  return -1; /* error */
-}
-
-static bool is_day_name(const char *s)
-{
-  if ((strlen(s) < 3) || !*(s + 3) || !ISSPACE(*(s + 3)))
-    return false;
-  for (int i = 0; i < 7; i++)
-    if (mutt_strncasecmp(s, Weekdays[i], 3) == 0)
-      return true;
-  return false;
-}
-
 /*
  * A valid message separator looks like:
  *

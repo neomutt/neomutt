@@ -41,6 +41,7 @@
 #include "browser.h"
 #include "account.h"
 #include "attach.h"
+#include "body.h"
 #include "buffy.h"
 #include "charset.h"
 #include "context.h"
@@ -1382,14 +1383,14 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             else if (state.imap_browse)
             {
               int n;
-              struct CissUrl url;
+              struct Url url;
 
               strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               /* tack on delimiter here */
               n = strlen(LastDir) + 1;
 
               /* special case "" needs no delimiter */
-              url_parse_ciss(&url, state.entry[menu->current].name);
+              url_parse(&url, state.entry[menu->current].name);
               if (url.path && (state.entry[menu->current].delim != '\0') &&
                   (n < sizeof(LastDir)))
               {

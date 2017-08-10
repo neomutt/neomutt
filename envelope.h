@@ -24,7 +24,6 @@
 #define _MUTT_ENVELOPE_H
 
 #include <stdbool.h>
-#include "lib/lib.h"
 #include "list.h"
 
 /**
@@ -66,13 +65,8 @@ struct Envelope
   bool refs_changed : 1; /**< References changed to break thread */
 };
 
-static inline struct Envelope *mutt_new_envelope(void)
-{
-  struct Envelope *e = safe_calloc(1, sizeof(struct Envelope));
-  STAILQ_INIT(&e->references);
-  STAILQ_INIT(&e->in_reply_to);
-  STAILQ_INIT(&e->userhdrs);
-  return e;
-}
+struct Envelope *mutt_new_envelope(void);
+void mutt_free_envelope(struct Envelope **p);
+void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra);
 
 #endif /* _MUTT_ENVELOPE_H */

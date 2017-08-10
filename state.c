@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdarg.h>
 #include "state.h"
 #include "globals.h"

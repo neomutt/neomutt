@@ -28,6 +28,8 @@
  * | Function                  | Description
  * | :------------------------ | :---------------------------------------------------------
  * | is_email_wsp()            | Is this a whitespace character (for an email header)
+ * | lwslen()                  | Measure the linear-white-space at the beginning of a string
+ * | lwsrlen()                 | Measure the linear-white-space at the end of a string
  * | mutt_atoi()               | Convert ASCII string to an integer
  * | mutt_atos()               | Convert ASCII string to a short
  * | mutt_remove_trailing_ws() | Trim trailing whitespace from a string
@@ -45,11 +47,13 @@
  * | mutt_str_replace()        | Replace one string with another
  * | mutt_substrcpy()          | Copy a sub-string into a buffer
  * | mutt_substrdup()          | Duplicate a sub-string
+ * | rfc822_dequote_comment()  | Un-escape characters in an email address comment
  * | safe_strcat()             | Concatenate two strings
  * | safe_strdup()             | Copy a string, safely
  * | safe_strncat()            | Concatenate two strings
  * | skip_email_wsp()          | Skip over whitespace as defined by RFC5322
  * | strfcpy()                 | Copy a string into a buffer (guaranteeing NUL-termination)
+ * | strnfcpy()                | Copy a limited string into a buffer (guaranteeing NUL-termination)
  */
 
 #include "config.h"
@@ -58,8 +62,8 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
-#include "string2.h"
 #include "memory.h"
+#include "string2.h"
 
 /**
  * mutt_atol - Convert ASCII string to a long
@@ -516,4 +520,128 @@ char *skip_email_wsp(const char *s)
 int is_email_wsp(char c)
 {
   return c && (strchr(EMAIL_WSP, c) != NULL);
+}
+
+/**
+ * strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
+ * @param dest Buffer for the result
+ * @param src  String to copy
+ * @param size Maximum number of characters to copy
+ * @param dlen Length of buffer
+ * @retval ptr Destination buffer
+ */
+char *strnfcpy(char *dest, char *src, size_t size, size_t dlen)
+{
+  if (dlen > size)
+    dlen = size - 1;
+  return strfcpy(dest, src, dlen);
+}
+
+/**
+ * lwslen - Measure the linear-white-space at the beginning of a string
+ * @param s String to check
+ * @param n Maximum number of characters to check
+ * @retval num Count of whitespace characters
+ *
+ * Count the number of whitespace characters at the beginning of a string.
+ * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
+ */
+size_t lwslen(const char *s, size_t n)
+{
+  const char *p = s;
+  size_t len = n;
+
+  if (n <= 0)
+    return 0;
+
+  for (; p < (s + n); p++)
+  {
+    if (!strchr(" \t\r\n", *p))
+    {
+      len = p - s;
+      break;
+    }
+  }
+
+  if (strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
+    len = 0;
+  return len;
+}
+
+/**
+ * lwsrlen - Measure the linear-white-space at the end of a string
+ * @param s String to check
+ * @param n Maximum number of characters to check
+ * @retval num Count of whitespace characters
+ *
+ * Count the number of whitespace characters at the end of a string.
+ * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
+ */
+size_t lwsrlen(const char *s, size_t n)
+{
+  const char *p = s + n - 1;
+  size_t len = n;
+
+  if (n <= 0)
+    return 0;
+
+  if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
+    return 0;
+
+  for (; p >= s; p--)
+  {
+    if (!strchr(" \t\r\n", *p))
+    {
+      len = s + n - 1 - p;
+      break;
+    }
+  }
+
+  return len;
+}
+
+/**
+ * rfc822_dequote_comment - Un-escape characters in an email address comment
+ * @param s String to the un-escaped
+ *
+ * @note The string is changed in-place
+ */
+void rfc822_dequote_comment(char *s)
+{
+  char *w = s;
+
+  for (; *s; s++)
+  {
+    if (*s == '\\')
+    {
+      if (!*++s)
+        break; /* error? */
+      *w++ = *s;
+    }
+    else if (*s != '\"')
+    {
+      if (w != s)
+        *w = *s;
+      w++;
+    }
+  }
+  *w = 0;
+}
+
+/**
+ * next_word - Find the next word in a string
+ * @param s String to examine
+ * @retval ptr Next word
+ *
+ * If the s is pointing to a word (non-space) is is skipped over.
+ * Then, any whitespace is skipped over.
+ *
+ * @note What is/isn't a word is determined by isspace()
+ */
+const char *next_word(const char *s)
+{
+  while (*s && !ISSPACE(*s))
+    s++;
+  SKIPWS(s);
+  return s;
 }

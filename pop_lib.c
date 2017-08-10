@@ -55,7 +55,7 @@
  */
 int pop_parse_path(const char *path, struct Account *acct)
 {
-  struct CissUrl url;
+  struct Url url;
   char *c = NULL;
   struct servent *service = NULL;
 
@@ -65,7 +65,7 @@ int pop_parse_path(const char *path, struct Account *acct)
   acct->port = 0;
 
   c = safe_strdup(path);
-  url_parse_ciss(&url, c);
+  url_parse(&url, c);
 
   if ((url.scheme != U_POP && url.scheme != U_POPS) || mutt_account_fromurl(acct, &url) < 0)
   {

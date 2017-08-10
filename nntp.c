@@ -1450,10 +1450,10 @@ static int nntp_open_mailbox(struct Context *ctx)
   int rc;
   void *hc = NULL;
   anum_t first, last, count = 0;
-  struct CissUrl url;
+  struct Url url;
 
   strfcpy(buf, ctx->path, sizeof(buf));
-  if (url_parse_ciss(&url, buf) < 0 || !url.path ||
+  if (url_parse(&url, buf) < 0 || !url.path ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
     mutt_error(_("%s is an invalid newsgroup specification!"), ctx->path);
@@ -1463,7 +1463,7 @@ static int nntp_open_mailbox(struct Context *ctx)
 
   group = url.path;
   url.path = strchr(url.path, '\0');
-  url_ciss_tostring(&url, server, sizeof(server), 0);
+  url_tostring(&url, server, sizeof(server), 0);
   nserv = nntp_select_server(server, 1);
   if (!nserv)
     return -1;

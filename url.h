@@ -50,9 +50,9 @@ enum UrlScheme
 #define U_PATH (1 << 1)
 
 /**
- * struct CissUrl - A parsed URL `proto://user:password@host/path`
+ * struct Url - A parsed URL `proto://user:password@host:port/path`
  */
-struct CissUrl
+struct Url
 {
   enum UrlScheme scheme;
   char *user;
@@ -63,8 +63,8 @@ struct CissUrl
 };
 
 enum UrlScheme url_check_scheme(const char *s);
-int url_parse_ciss(struct CissUrl *ciss, char *src);
-int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags);
+int url_parse(struct Url *u, char *src);
+int url_tostring(struct Url *u, char *dest, size_t len, int flags);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int url_pct_decode(char *s);
 void url_pct_encode(char *dest, size_t len, const char *src);

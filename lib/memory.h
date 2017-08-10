@@ -23,7 +23,7 @@
 #ifndef _LIB_MEMORY_H
 #define _LIB_MEMORY_H
 
-#include <stdio.h>
+#include <stddef.h>
 
 #ifdef ENABLE_NLS
 #include <libintl.h>

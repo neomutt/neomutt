@@ -3,6 +3,7 @@ addrbook.c
 alias.c
 attach.c
 bcache.c
+body.c
 browser.c
 buffy.c
 charset.c
@@ -21,6 +22,7 @@ doc/makedoc.c
 edit.c
 editmsg.c
 enter.c
+envelope.c
 filter.c
 flags.c
 from.c

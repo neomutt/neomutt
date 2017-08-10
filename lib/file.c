@@ -344,7 +344,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
       return -1;
   }
 
-  if ((stat(oldpath, &osb) == -1) || (stat(newpath, &nsb) == -1) || !compare_stat(&osb, &nsb))
+  if ((stat(oldpath, &osb) == -1) || (stat(newpath, &nsb) == -1) ||
+      !compare_stat(&osb, &nsb))
   {
     unlink(newpath);
     return -1;
@@ -1110,4 +1111,3 @@ void mutt_unlink_empty(const char *path)
   mutt_unlock_file(path, fd);
   close(fd);
 }
-

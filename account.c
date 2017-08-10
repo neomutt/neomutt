@@ -80,7 +80,7 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 /**
  * mutt_account_fromurl - fill account with information from url
  */
-int mutt_account_fromurl(struct Account *account, struct CissUrl *url)
+int mutt_account_fromurl(struct Account *account, struct Url *url)
 {
   /* must be present */
   if (url->host)
@@ -114,7 +114,7 @@ int mutt_account_fromurl(struct Account *account, struct CissUrl *url)
  * account until you've finished with url (make a copy of account if you need
  * it for a while).
  */
-void mutt_account_tourl(struct Account *account, struct CissUrl *url)
+void mutt_account_tourl(struct Account *account, struct Url *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;

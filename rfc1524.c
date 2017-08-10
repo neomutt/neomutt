@@ -443,13 +443,6 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
   return found;
 }
 
-static void strnfcpy(char *d, char *s, size_t siz, size_t len)
-{
-  if (len > siz)
-    len = siz - 1;
-  strfcpy(d, s, len);
-}
-
 /**
  * rfc1524_expand_filename - Expand a new filename from a template or existing filename
  * @param nametemplate Template

@@ -427,7 +427,7 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
   char buf[STRING];
   char errstr[STRING];
   struct Buffer err, token;
-  struct CissUrl url;
+  struct Url url;
   struct ImapList list;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
@@ -458,7 +458,7 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
   url.path[strlen(url.path) - 1] = '\0';
   if (mutt_strcmp(url.user, ImapUser) == 0)
     url.user = NULL;
-  url_ciss_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
+  url_tostring(&url, buf + 11, sizeof(buf) - 11, 0);
   safe_strcat(buf, sizeof(buf), "\"");
   mutt_buffer_init(&token);
   mutt_buffer_init(&err);

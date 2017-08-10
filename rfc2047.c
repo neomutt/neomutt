@@ -779,51 +779,6 @@ static const char *find_encoded_word(const char *s, const char **x)
 }
 
 /**
- * lwslen - return length of linear-white-space
- */
-static size_t lwslen(const char *s, size_t n)
-{
-  const char *p = s;
-  size_t len = n;
-
-  if (n <= 0)
-    return 0;
-
-  for (; p < s + n; p++)
-    if (!strchr(" \t\r\n", *p))
-    {
-      len = (size_t)(p - s);
-      break;
-    }
-  if (strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
-    len = (size_t) 0;
-  return len;
-}
-
-/**
- * lwsrlen - return length of linear-white-space : reverse
- */
-static size_t lwsrlen(const char *s, size_t n)
-{
-  const char *p = s + n - 1;
-  size_t len = n;
-
-  if (n <= 0)
-    return 0;
-
-  if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
-    return (size_t) 0;
-
-  for (; p >= s; p--)
-    if (!strchr(" \t\r\n", *p))
-    {
-      len = (size_t)(s + n - 1 - p);
-      break;
-    }
-  return len;
-}
-
-/**
  * rfc2047_decode - Decode any RFC2047-encoded header fields
  *
  * try to decode anything that looks like a valid RFC2047 encoded
