@@ -288,7 +288,7 @@ AS_IF([test "$with_mixmaster" != "no"], [
 ])
 
 # We now require all OPS
-OPS="\$(srcdir)/OPS $OPS \$(srcdir)/OPS.SIDEBAR \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT"
+OPS="\$(srcdir)/OPS \$(srcdir)/OPS.SIDEBAR $OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT"
 AC_SUBST([OPS])
 
 AC_SUBST(PGPAUX_TARGET)
