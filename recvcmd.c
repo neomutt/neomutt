@@ -840,7 +840,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   tmphdr->env = mutt_new_envelope();
 
   if (attach_reply_envelope_defaults(
-          tmphdr->env, actx, parent ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)
+          tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)
   {
     mutt_free_header(&tmphdr);
     return;
@@ -854,7 +854,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     return;
   }
 
-  if (!parent)
+  if (!parent_hdr)
   {
     if (cur)
       attach_include_reply(fp, tmpfp, cur->hdr, flags);
@@ -926,6 +926,6 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   safe_fclose(&tmpfp);
 
   if (ci_send_message(flags, tmphdr, tmpbody, NULL,
-                      parent ? parent_hdr : (cur ? cur->hdr : NULL)) == 0)
+                      parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL)) == 0)
     mutt_set_flag(Context, hdr, MUTT_REPLIED, 1);
 }
