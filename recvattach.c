@@ -818,6 +818,37 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, int tag, struc
     print_attachment_list(actx, fp, tag, top, &state);
 }
 
+static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
+{
+  int i;
+
+  if (!menu->tagprefix)
+    crypt_pgp_extract_keys_from_attachment_list(CURATTACH->fp, 0, CURATTACH->content);
+  else
+  {
+    for (i = 0; i < actx->idxlen; i++)
+      if (actx->idx[i]->content->tagged)
+        crypt_pgp_extract_keys_from_attachment_list(actx->idx[i]->fp, 0,
+                                                    actx->idx[i]->content);
+  }
+}
+
+static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu *menu)
+{
+  int i, rv = 0;
+
+  if (!menu->tagprefix)
+    rv = crypt_pgp_check_traditional(CURATTACH->fp, CURATTACH->content, 1);
+  else
+  {
+    for (i = 0; i < actx->idxlen; i++)
+      if (actx->idx[i]->content->tagged)
+        rv = rv || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->content, 1);
+  }
+
+  return rv;
+}
+
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
                              struct AttachCtx *actx, int recv)
 {
@@ -1130,16 +1161,13 @@ void mutt_view_attachments(struct Header *hdr)
       case OP_EXTRACT_KEYS:
         if ((WithCrypto & APPLICATION_PGP))
         {
-          crypt_pgp_extract_keys_from_attachment_list(
-              fp, menu->tagprefix, menu->tagprefix ? cur : CURATTACH->content);
+          recvattach_extract_pgp_keys(actx, menu);
           menu->redraw = REDRAW_FULL;
         }
         break;
 
       case OP_CHECK_TRADITIONAL:
-        if ((WithCrypto & APPLICATION_PGP) &&
-            crypt_pgp_check_traditional(fp, menu->tagprefix ? cur : CURATTACH->content,
-                                        menu->tagprefix))
+        if ((WithCrypto & APPLICATION_PGP) && recvattach_pgp_check_traditional(actx, menu))
         {
           hdr->security = crypt_query(cur);
           menu->redraw = REDRAW_FULL;
