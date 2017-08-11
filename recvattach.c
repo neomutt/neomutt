@@ -978,7 +978,11 @@ void mutt_attach_init(struct AttachCtx *actx)
   for (i = 0; i < actx->idxlen; i++)
   {
     actx->idx[i]->content->tagged = 0;
-    actx->idx[i]->content->collapsed = 0;
+    if (option(OPT_DIGEST_COLLAPSE) && actx->idx[i]->content->type == TYPEMULTIPART &&
+        !mutt_strcasecmp(actx->idx[i]->content->subtype, "digest"))
+      actx->idx[i]->content->collapsed = 1;
+    else
+      actx->idx[i]->content->collapsed = 0;
   }
 }
 
@@ -1002,21 +1006,26 @@ static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *men
   menu->redraw |= REDRAW_INDEX;
 }
 
-/* TODO: fix this to use the index */
-static void attach_collapse(struct Body *b, short collapse, short init, short just_one)
+static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 {
-  short i;
-  for (; b; b = b->next)
+  int rindex, curlevel;
+
+  CURATTACH->content->collapsed = !CURATTACH->content->collapsed;
+  /* When expanding, expand all the children too */
+  if (CURATTACH->content->collapsed)
+    return;
+
+  curlevel = CURATTACH->level;
+  rindex = actx->v2r[menu->current] + 1;
+
+  while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
   {
-    i = init || b->collapsed;
-    if (i && option(OPT_DIGEST_COLLAPSE) && b->type == TYPEMULTIPART &&
-        (mutt_strcasecmp(b->subtype, "digest") == 0))
-      attach_collapse(b->parts, 1, 1, 0);
-    else if (b->type == TYPEMULTIPART || mutt_is_message_type(b->type, b->subtype))
-      attach_collapse(b->parts, collapse, i, 0);
-    b->collapsed = collapse;
-    if (just_one)
-      return;
+    if (option(OPT_DIGEST_COLLAPSE) && actx->idx[rindex]->content->type == TYPEMULTIPART &&
+        !mutt_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
+      actx->idx[rindex]->content->collapsed = true;
+    else
+      actx->idx[rindex]->content->collapsed = false;
+    rindex++;
   }
 }
 
@@ -1093,10 +1102,7 @@ void mutt_view_attachments(struct Header *hdr)
           mutt_error(_("There are no subparts to show!"));
           break;
         }
-        if (!CURATTACH->content->collapsed)
-          attach_collapse(CURATTACH->content, 1, 0, 1);
-        else
-          attach_collapse(CURATTACH->content, 0, 1, 1);
+        attach_collapse(actx, menu);
         mutt_update_recvattach_menu(actx, menu, 0);
         break;
 
