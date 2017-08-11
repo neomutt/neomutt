@@ -849,6 +849,27 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
   return rv;
 }
 
+static void recvattach_edit_content_type(struct AttachCtx *actx,
+                                         struct Menu *menu, struct Header *hdr)
+{
+  if (mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp) == 1)
+  {
+    /* The mutt_update_recvattach_menu() will overwrite any changes
+     * made to a decrypted CURATTACH->content, so warn the user. */
+    if (CURATTACH->decrypted)
+    {
+      mutt_message(
+          _("Structural changes to decrypted attachments are not supported"));
+      mutt_sleep(1);
+    }
+    /* Editing the content type can rewrite the body structure. */
+    for (int i = 0; i < actx->idxlen; i++)
+      actx->idx[i]->content = NULL;
+    mutt_actx_free_entries(actx);
+    mutt_update_recvattach_menu(actx, menu, 1);
+  }
+}
+
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
                              struct AttachCtx *actx, int recv)
 {
@@ -889,13 +910,11 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
            immediately */
         mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp);
         if (recv)
-        {
-          /* Editing the content type can rewrite the body structure. */
-          for (int i = 0; i < actx->idxlen; i++)
-            actx->idx[i]->content = NULL;
-          mutt_actx_free_entries(actx);
-          mutt_update_recvattach_menu(actx, menu, 1);
-        }
+          recvattach_edit_content_type(actx, menu, hdr);
+        else
+          mutt_edit_content_type(hdr, CURATTACH->content, CURATTACH->fp);
+
+        menu->redraw |= REDRAW_INDEX;
         op = OP_VIEW_ATTACH;
         break;
       /* functions which are passed through from the pager */
@@ -1094,7 +1113,6 @@ void mutt_view_attachments(struct Header *hdr)
   struct Menu *menu = NULL;
   struct Body *cur = NULL;
   struct Message *msg = NULL;
-  FILE *fp = NULL;
   struct AttachCtx *actx = NULL;
   int flags = 0;
   int op = OP_NULL;
@@ -1313,7 +1331,7 @@ void mutt_view_attachments(struct Header *hdr)
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content, SENDNEWS);
+        mutt_attach_forward(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content, SENDNEWS);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1325,7 +1343,7 @@ void mutt_view_attachments(struct Header *hdr)
             query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
-          mutt_attach_reply(fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content,
+          mutt_attach_reply(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content,
                             SENDNEWS | SENDREPLY);
           menu->redraw = REDRAW_FULL;
           break;
@@ -1345,12 +1363,8 @@ void mutt_view_attachments(struct Header *hdr)
         break;
 
       case OP_EDIT_TYPE:
-        mutt_edit_content_type(hdr, CURATTACH->content, fp);
-        /* Editing the content type can rewrite the body structure. */
-        for (i = 0; i < actx->idxlen; i++)
-          actx->idx[i]->content = NULL;
-        mutt_actx_free_entries(actx);
-        mutt_update_recvattach_menu(actx, menu, 1);
+        recvattach_edit_content_type(actx, menu, hdr);
+        menu->redraw |= REDRAW_INDEX;
         break;
 
       case OP_EXIT:
