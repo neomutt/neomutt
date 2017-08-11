@@ -71,6 +71,8 @@ void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
 void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
 
+void mutt_actx_add_attach (struct AttachCtx *actx, struct AttachPtr *attach, struct Menu *menu);
+void mutt_actx_free_entries (struct AttachCtx *actx);
 void mutt_free_attach_context(struct AttachCtx **pactx);
 
 #endif /* _MUTT_ATTACH_H */

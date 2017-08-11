@@ -41,6 +41,7 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -1103,15 +1104,26 @@ bail0:
   }
 }
 
-void mutt_free_attach_context(struct AttachCtx **pactx)
+void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach, struct Menu *menu)
 {
   int i;
-  struct AttachCtx *actx = NULL;
 
-  if (!pactx || !*pactx)
-    return;
+  if (actx->idxlen == actx->idxmax)
+  {
+    actx->idxmax += 5;
+    safe_realloc(&actx->idx, sizeof(struct AttachPtr *) * actx->idxmax);
+    for (i = actx->idxlen; i < actx->idxmax; i++)
+      actx->idx[i] = NULL;
+    if (menu)
+      menu->data = actx->idx;
+  }
 
-  actx = *pactx;
+  actx->idx[actx->idxlen++] = attach;
+}
+
+void mutt_actx_free_entries(struct AttachCtx *actx)
+{
+  int i;
 
   for (i = 0; i < actx->idxlen; i++)
   {
@@ -1120,7 +1132,19 @@ void mutt_free_attach_context(struct AttachCtx **pactx)
     FREE(&actx->idx[i]->tree);
     FREE(&actx->idx[i]);
   }
-  FREE(&actx->idx);
 
+  actx->idxlen = 0;
+}
+
+void mutt_free_attach_context(struct AttachCtx **pactx)
+{
+  struct AttachCtx *actx = NULL;
+
+  if (!pactx || !*pactx)
+    return;
+
+  actx = *pactx;
+  mutt_actx_free_entries(actx);
+  FREE(&actx->idx);
   FREE(pactx);
 }

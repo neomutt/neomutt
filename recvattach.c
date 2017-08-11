@@ -116,13 +116,6 @@ void mutt_gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_typ
 
   for (; m; m = m->next)
   {
-    if (actx->idxlen == actx->idxmax)
-    {
-      safe_realloc(&actx->idx, sizeof(struct AttachPtr *) * (actx->idxmax += 5));
-      for (int i = actx->idxlen; i < actx->idxmax; i++)
-        actx->idx[i] = NULL;
-    }
-
     if (m->type == TYPEMULTIPART && m->parts &&
         (compose || (parent_type == -1 && (mutt_strcasecmp("alternative", m->subtype) != 0))) &&
         (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
@@ -131,10 +124,8 @@ void mutt_gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_typ
     }
     else
     {
-      if (!actx->idx[actx->idxlen])
-        actx->idx[actx->idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
-
-      new = actx->idx[actx->idxlen++];
+      new = safe_calloc(1, sizeof(struct AttachPtr));
+      mutt_actx_add_attach(actx, new, NULL);
       new->content = m;
       m->aptr = new;
       new->parent_type = parent_type;
@@ -819,10 +810,7 @@ void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top)
 
 static void update_attach_index(struct AttachCtx *actx, struct Body *cur, struct Menu *menu)
 {
-  while (--(actx->idxlen) >= 0)
-    actx->idx[actx->idxlen]->content = NULL;
-  actx->idxlen = 0;
-
+  mutt_actx_free_entries(actx);
   mutt_gen_attach_list(actx, cur, -1, 0, 0);
 
   menu->max = actx->idxlen;
