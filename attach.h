@@ -74,12 +74,12 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachCtx *actx);
 
 int mutt_tag_attach(struct Menu *menu, int n, int m);
-int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr,
-                             struct Body *cur, struct AttachCtx *actx, int recv);
+int mutt_attach_display_loop (struct Menu *menu, int op, struct Header *hdr,
+                              struct AttachCtx *acvtx, int recv);
 
-void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, struct Menu *menu);
-void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter);
-void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top);
+void mutt_save_attachment_list (struct AttachCtx *actx, FILE *fp, int tag, struct Body *top, struct Header *hdr, struct Menu *menu);
+void mutt_pipe_attachment_list (struct AttachCtx *actx, FILE *fp, int tag, struct Body *top, int filter);
+void mutt_print_attachment_list (struct AttachCtx *actx, FILE *fp, int tag, struct Body *top);
 
 void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur);

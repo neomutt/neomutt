@@ -1473,32 +1473,29 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       case OP_VIEW_ATTACH:
       case OP_DISPLAY_HEADERS:
         CHECK_COUNT;
-        mutt_attach_display_loop(menu, op, NULL, NULL, NULL, actx, 0);
+        mutt_attach_display_loop(menu, op, NULL, actx, 0);
         menu->redraw = REDRAW_FULL;
         /* no send2hook, since this doesn't modify the message */
         break;
 
       case OP_SAVE:
         CHECK_COUNT;
-        mutt_save_attachment_list(NULL, menu->tagprefix,
-                                  menu->tagprefix ? msg->content : CURATTACH->content,
-                                  NULL, menu);
+        mutt_save_attachment_list(actx, NULL, menu->tagprefix,
+                                  CURATTACH->content, NULL, menu);
         /* no send2hook, since this doesn't modify the message */
         break;
 
       case OP_PRINT:
         CHECK_COUNT;
-        mutt_print_attachment_list(NULL, menu->tagprefix,
-                                   menu->tagprefix ? msg->content : CURATTACH->content);
+        mutt_print_attachment_list(actx, NULL, menu->tagprefix, CURATTACH->content);
         /* no send2hook, since this doesn't modify the message */
         break;
 
       case OP_PIPE:
       case OP_FILTER:
         CHECK_COUNT;
-        mutt_pipe_attachment_list(NULL, menu->tagprefix,
-                                  menu->tagprefix ? msg->content : CURATTACH->content,
-                                  op == OP_FILTER);
+        mutt_pipe_attachment_list(actx, NULL, menu->tagprefix,
+                                  CURATTACH->content, op == OP_FILTER);
         if (op == OP_FILTER) /* cte might have changed */
           menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT;
         menu->redraw |= REDRAW_STATUS;
