@@ -148,7 +148,6 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 void mutt_adv_mktemp(char *s, size_t l);
 void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases);
 void mutt_allow_interrupt(int disposition);
-void mutt_attach_init(struct Body *b);
 void mutt_block_signals(void);
 void mutt_block_signals_system(void);
 int mutt_body_handler(struct Body *b, struct State *s);
