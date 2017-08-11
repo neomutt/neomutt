@@ -56,6 +56,9 @@ struct AttachCtx
   short idxlen;
   short idxmax;
 
+  short *v2r;   /**< mapping from virtual to real attachment */
+  short vcount; /**< the number of virtual attachments */
+
   FILE **fp_idx; /**< Extra FILE* used for decryption */
   short fp_len;
   short fp_max;
@@ -83,7 +86,7 @@ void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
 void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
 
-void mutt_actx_add_attach (struct AttachCtx *actx, struct AttachPtr *attach, struct Menu *menu);
+void mutt_actx_add_attach (struct AttachCtx *actx, struct AttachPtr *attach);
 void mutt_actx_add_fp (struct AttachCtx *actx, FILE *new_fp);
 void mutt_actx_add_body (struct AttachCtx *actx, struct Body *new_body);
 void mutt_actx_free_entries (struct AttachCtx *actx);
