@@ -1103,3 +1103,20 @@ bail0:
     return 0;
   }
 }
+
+void mutt_free_attach_context(struct AttachCtx **pactx)
+{
+  int i;
+  struct AttachCtx *actx = *pactx;
+
+  for (i = 0; i < actx->idxlen; i++)
+  {
+    if (actx->idx[i]->content)
+      actx->idx[i]->content->aptr = NULL;
+    FREE(&actx->idx[i]->tree);
+    FREE(&actx->idx[i]);
+  }
+  FREE(&actx->idx);
+
+  FREE(pactx);
+}
