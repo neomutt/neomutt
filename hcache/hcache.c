@@ -55,7 +55,7 @@
 #include "envelope.h"
 #include "globals.h"
 #include "hcache.h"
-#include "hcversion.h"
+#include "hcache/hcversion.h"
 #include "header.h"
 #include "list.h"
 #include "mbyte.h"

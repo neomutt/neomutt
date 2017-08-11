@@ -1,0 +1,873 @@
+# vim: set ft=tcl syntax=tcl ts=2 sw=2 expandtab:
+
+# Make sure we use /usr as a default prefix on Linux; we can't use $host_
+# variables because this needs to go before the inclusion of the system module.
+if {![catch {exec uname} out] && $out eq {Linux}} {
+  define defaultprefix /usr
+}
+
+# Standard autosetup modules and our own modules
+use system cc cc-lib mutt-gettext mutt-iconv
+
+###############################################################################
+# Names and versions
+define PACKAGE          "neomutt"
+define PACKAGE_VERSION  "20170912"
+define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
+
+# Subdirectories that contain additional Makefile.autosetup files
+set subdirs {po doc contrib}
+###############################################################################
+
+###############################################################################
+# Add any user options here
+options {
+# Curses / S-Lang
+  with-ui:=ncurses          => "Select ncurses or slang for the UI"
+  with-ncurses:path         => "Location of ncurses"
+  with-slang:path           => "Location of S-Lang"
+# Features w/o 3rd party dependencies
+  logging=0                 => "Enable debug logging"
+  doc=1                     => "Disable building the documentation"
+  full-doc=0                => "Build the full documentation set"
+  flock=0                   => "Use flock() to lock files"
+  fcntl=1                   => "Do NOT use fcntl() to lock files"
+  fmemopen=0                => "Use fmemopen() for temporary in-memory files"
+  locales-fix=0             => "Enable locales fix"
+  pgp=1                     => "Disable PGP support"
+  smime=1                   => "Disable SMIME support"
+  mixmaster=0               => "Enable Mixmaster support"
+  with-mixmaster:=mixmaster => "Location of the mixmaster executable"
+  homespool=0               => "Enable new mail spooling in the user's HOME"
+  with-homespool:mailbox    => "File in the user's HOME where new mail is spooled"
+  with-mailpath:/var/mail   => "Directory where spool mailboxes are located"
+  with-domain:domain        => "Specify your DNS domain name"
+# Crypto
+  # OpenSSL or GnuTLS
+  ssl=0                     => "Enable TLS support using OpenSSL"
+  with-ssl:path             => "Location of OpenSSL"
+  gnutls=0                  => "Enable TLS support using GnuTLS"
+  with-gnutls:path          => "Location of GnuTLS"
+  # GPGME
+  gpgme=0                   => "Enable GPGME support"
+  with-gpgme:path           => "Location of GPGME"
+  # GSS (IMAP auth)
+  gss=0                     => "Use GSSAPI authentication for IMAP"
+  with-gss:path             => "Location of GSSAPI library"
+  # SASL (IMAP and POP auth)
+  sasl=0                    => "Use the SASL network security library"
+  with-sasl:path            => "Location of the SASL network security library"
+# Lua
+  lua=0                     => "Enable Lua scripting support"
+  with-lua:path             => "Location of Lua"
+# Notmuch
+  notmuch=0                 => "Enable Notmuch support"
+  with-notmuch:path         => "Location of Notmuch"
+# NLS
+  nls=1                     => "Disable Native Language Support"
+  with-nls:path             => "Location of libintl"
+# IDN
+  idn=1                     => "Disable GNU libidn for internationalized domain names"
+  with-idn:path             => "Location of GNU libidn"
+# Header cache
+  bdb=0                     => "Use BerkeleyDB for the header cache"
+  with-bdb:path             => "Location of BerkeleyDB"
+  gdbm=0                    => "Use GNU dbm for the header cache"
+  with-gdbm:path            => "Location of GNU dbm"
+  kyotocabinet=0            => "Use KyotoCabinet for the header cache"
+  with-kyotocabinet:path    => "Location of KyotoCabinet"
+  lmdb=0                    => "Use LMDB for the header cache"
+  with-lmdb:path            => "Location of LMDB"
+  qdbm=0                    => "Use QDBM for the header cache"
+  with-qdbm:path            => "Location of QDBM"
+  tokyocabinet=0            => "Use TokyoCabinet for the header cache"
+  with-tokyocabinet:path    => "Location of TokyoCabinet"
+# Enable all options
+  everything=0              => "Enable all options"
+}
+###############################################################################
+
+###############################################################################
+# All boolean options are converted to want-* definitions here. Further down,
+# their values is checked with [get-define opt].  This facilitates the handling
+# of dependencies among options (see "everything").
+if {1} {
+  # Keep sorted, please.
+  foreach opt {
+    bdb doc everything fcntl flock fmemopen full-doc gdbm gnutls gpgme gss
+    homespool idn kyotocabinet lmdb locales-fix logging lua mixmaster nls
+    notmuch pgp qdbm sasl smime ssl tokyocabinet
+  } {
+    define want-$opt [opt-bool $opt]
+  }
+
+  # These options support a --with-opt parameter. If that is set, force the
+  # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
+  # a shortcut for "--opt --with-opt=/usr".
+  foreach opt {
+    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster 
+    ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
+  } {
+    if {[opt-val with-$opt] ne {}} {
+      define want-$opt 1
+    }
+  }
+
+  # No more usage of [opt-bool] below this point.
+  proc opt-bool {args} {
+    user-error "opt-bool should not be called here"
+  }
+}
+###############################################################################
+
+###############################################################################
+# Paths
+define BINDIR           [get-define bindir]
+define MUTTLOCALEDIR    [get-define datadir]/locale
+define PKGDATADIR       [get-define datadir]/neomutt
+define PKGDOCDIR        [get-define datadir]/doc/neomutt
+define SYSCONFDIR       [get-define sysconfdir]
+###############################################################################
+
+###############################################################################
+# Helper functions
+if {1} {
+  # Check for a header file and a function in a library
+  proc check-inc-and-lib {name prefix header fun lib} {
+    cc-with [list -cflags -I$prefix/include -libs -L$prefix/lib] {
+      if {[cc-check-includes $header] && [cc-check-function-in-lib $fun $lib]} {
+        define-append CFLAGS  -I$prefix/include
+        define-append LDFLAGS -L$prefix/lib
+        define-feature $name
+      }
+    }
+    have-feature $name
+  }
+
+  # Get the value of a macro by preprocessing a header file that defines it
+  proc check-define-value {incfile macro} {
+    set code "#include \"$incfile\"\n$macro"
+    if {[catch {exec [get-define CC] -xc - -E | tail -1 << $code} out]} {
+      set out ""
+    }
+    set out
+  }
+
+  # Convert a string into a representation suitable for a C char[]
+  proc text2c {s} {
+    set result "\n  "
+    set i 0
+    foreach c [split $s {}] {
+      append result "0x[format %02x [scan $c %c]], "
+      if {[expr {[incr i] % 12 == 0}]} {
+        append result "\n  "
+        set i 0
+      }
+    }
+    append result "0x00\n";
+  }
+
+  # Guess what..
+  proc yesno val {
+    expr {$val ? "yes" : "no"}
+  }
+}
+###############################################################################
+
+###############################################################################
+# C compiler definitions and related tools
+if {1} {
+
+  # First off, require c99
+  if {[cc-check-standards c99] eq {}} {
+    user-error "C99 is required"
+  }
+
+  # Check for tools and programs
+  cc-check-tools ar ranlib strip
+  cc-check-progs install
+  cc-path-progs sendmail
+  if {![is-defined SENDMAIL]} {
+    define SENDMAIL /usr/sbin/sendmail
+  }
+
+  # Version of the C compiler
+  set CC [get-define CC]
+  if {[catch {exec $CC -v} cc_version]} {
+    if {[catch {exec $CC --version} cc_version]} {
+      if {[catch {exec $CC -V} cc_version]} {
+        set cc_version "unknown compiler"
+      }
+    }
+  }
+
+  # Endianess
+  cc-check-endian
+
+  # GCC-specifc CFLAGS
+  if {![catch {exec [get-define CC] --version} res]} {
+    if {[regexp -nocase gcc $res]} {
+      define-append CFLAGS "-fno-delete-null-pointer-checks"
+    }
+  }
+
+  # Enable extensions (reverse-engineered from AC_SYSTEM_EXTENSIONS)
+  if {1} {
+    if {[cc-check-includes minix/config.h]} {
+      define-append CFLAGS -D_POSIX_SOURCE=1
+      define-append CFLAGS -D_POSIX_1_SOURCE=2
+      define-append CFLAGS -D_MINIX=1
+    }
+    define-append CFLAGS -D_ALL_SOURCE=1
+    define-append CFLAGS -D_GNU_SOURCE=1
+    define-append CFLAGS -D__EXTENSIONS__
+  }
+  cc-with [list -cflags [get-define CFLAGS]]
+
+  # Large file support
+  cc-with {-includes sys/types.h} {
+    if {[cc-check-sizeof off_t] eq {8}} {
+      define OFF_T_FMT {"%" PRId64}
+    } else {
+      define OFF_T_FMT {"%" PRId32}
+    }
+    define LOFF_T off_t
+  }
+
+  # Let's always use volatile for sig_atomic_t
+  cc-check-includes signal.h
+  define SIG_ATOMIC_VOLATILE_T "volatile sig_atomic_t"
+}
+###############################################################################
+
+###############################################################################
+# Check for includes and functions that in the code are surrounded by
+# '#ifdef HAVE_FOO_H' and '#ifdef HAVE_FUNCTION' and for functions that might
+# be in different libraries
+if {1} {
+  cc-check-includes \
+    ioctl.h \
+    sys/ioctl.h \
+    sys/syscall.h \
+    sysexits.h
+
+  cc-check-functions \
+    fgetc_unlocked \
+    futimens \
+    getaddrinfo \
+    getsid \
+    iswblank \
+    mkdtemp \
+    strsep \
+    vasprintf
+
+  cc-check-function-in-lib gethostent nsl
+  cc-check-function-in-lib setsockopt socket
+  cc-check-function-in-lib getaddrinfo_a anl
+}
+###############################################################################
+
+###############################################################################
+# Various unconditional defines
+define USE_COMPRESSED
+define USE_IMAP
+define USE_NNTP
+define USE_POP
+define USE_SIDEBAR
+define USE_SMTP
+define USE_SOCKET
+define SUN_ATTACHMENT
+###############################################################################
+
+set prefix [get-define prefix]
+
+###############################################################################
+# Everything
+if {[get-define want-everything]} {
+  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb 
+               gdbm qdbm lmdb} {
+    define want-$opt
+  }
+}
+
+###############################################################################
+# Debug
+if {[get-define want-logging]} {define DEBUG}
+
+###############################################################################
+# flock(1)
+if {[get-define want-flock]} {define USE_FLOCK}
+
+###############################################################################
+# fcntl(1)
+if {[get-define want-fcntl]} {define USE_FCNTL}
+
+###############################################################################
+# Locales fix
+if {[get-define want-locales-fix]} {define LOCALES_HACK}
+
+###############################################################################
+# Documentation
+if {[get-define want-doc]} {
+  if {![cc-check-progs xsltproc]} {
+    user-error "Unable to find xsltproc"
+  }
+  define BUILD_DOC
+}
+if {[get-define want-full-doc]} {define MAKEDOC_FULL}
+
+###############################################################################
+# GPGME
+if {[get-define want-gpgme]} {
+  if {![check-inc-and-lib gpgme [opt-val with-gpgme $prefix] \
+                          gpgme.h gpgme_new gpgme]} {
+    user-error "Unable to find GPGME"
+  }
+  cc-check-functions gpgme_op_export_keys
+  define CRYPT_BACKEND_GPGME
+}
+
+###############################################################################
+# PGP
+if {[get-define want-pgp]} {
+  define-feature PGP
+  define CRYPT_BACKEND_CLASSIC_PGP
+}
+
+###############################################################################
+# SMIME
+if {[get-define want-smime]} {
+  define-feature SMIME
+  define CRYPT_BACKEND_CLASSIC_SMIME
+}
+
+###############################################################################
+# SASL
+if {[get-define want-sasl]} {
+  foreach sasl_lib {sasl2 sasl} {
+    if {[check-inc-and-lib sasl [opt-val with-sasl $prefix] \
+                           sasl/sasl.h sasl_encode64 $sasl_lib]} {
+      define USE_SASL
+      break
+    }
+  }
+  if {![get-define USE_SASL]} {
+    user-error "Unable to find SASL"
+  }
+}
+
+###############################################################################
+# Lua
+if {[get-define want-lua]} {
+  set lua_versions { 5.3 5.2 } ;# Will be checked in order
+
+  apply {{lua_prefix lua_versions} {
+    foreach ver $lua_versions {
+      lassign [split $ver .] maj min
+
+      foreach lua_suffix [list /lua${maj}${min} /lua${maj}.${min} /lua {}] {
+        msg-checking "Checking for include$lua_suffix/lua.h..."
+        if {[file exists $lua_prefix/include$lua_suffix/lua.h]} {
+          msg-result "yes"
+          set libs [list lua-${maj}.${min} lua${maj}.${min} lua]
+          cc-with [list -libs "-L$lua_prefix/lib"] {
+            if {![cc-check-function-in-lib luaL_openlibs $libs]} {
+              continue
+            }
+          }
+          define-append CFLAGS -I$lua_prefix/include$lua_suffix
+          define-append LDFLAGS -L$lua_prefix/lib
+          define USE_LUA
+          return
+        }
+        msg-result "no"
+      }
+    }
+    user-error "Unable to find Lua"
+  }} [opt-val with-lua $prefix] $lua_versions
+}
+
+###############################################################################
+# Notmuch
+if {[get-define want-notmuch]} {
+  if {![check-inc-and-lib notmuch [opt-val with-notmuch $prefix] \
+                          notmuch.h notmuch_database_open notmuch]} {
+    user-error "Unable to find Notmuch"
+  }
+  define USE_NOTMUCH
+  msg-checking "Checking for Notmuch API version 3..."
+  if {[cctest -includes {notmuch.h} \
+              -code {
+                notmuch_database_open("/path",
+                                      NOTMUCH_DATABASE_MODE_READ_ONLY,
+                                      (notmuch_database_t**)NULL);
+              }]} {
+    define NOTMUCH_API_3
+    msg-result "yes"
+  } else {
+    msg-result "no"
+  }
+}
+
+###############################################################################
+# Native Language Support (NLS)
+if {[get-define want-nls]} {
+ if {![check-gettext [opt-val with-nls $prefix]]} {
+   user-error "Unable to find gettext. Consider --disable-nls"
+ }
+ if {![cc-check-progs msgfmt msgmerge xgettext]} {
+   user-error "Unable to find gettext tools (msgfmt, msgmerge, xgettext).\
+               Consider --disable-nls"
+ }
+}
+
+###############################################################################
+# fmemopen(3)
+if {[get-define want-fmemopen] && [cc-check-functions fmemopen open_memstream]} {
+  # Temporarily disable fmemopen, due to this bug:
+  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=834408
+  define USE_FMEMOPEN 0
+} else {
+  define USE_FMEMOPEN 0
+}
+
+###############################################################################
+# Ncurses / S-Lang
+switch [opt-val with-ui ncurses] {
+  ncurses {
+    # Locate the library defining waddnwstr()
+    set ncurses_prefix [opt-val with-ncurses $prefix]
+    cc-with [list -libs -L$ncurses_prefix/lib] {
+      foreach ncurses_lib {ncursesw ncurses curses} {
+        if {[cc-check-function-in-lib waddnwstr $ncurses_lib]} {
+          break
+        }
+      }
+    }
+    if {![have-feature waddnwstr]} {
+      user-error "Unable to find ncursesw library"
+    }
+
+    # Locate the directory containing ncurses.h
+    # See https://github.com/neomutt/neomutt/pull/679
+    set found 0
+    cc-with [list -cflags -I$ncurses_prefix/include] {
+      foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
+        if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
+            [cc-check-includes ${ncurses_inc}curses.h]} {
+          set found 1
+          break
+        }
+      }
+    }
+    if {!$found} {
+      user-error "Unable to find ncurses headers"
+    }
+
+    cc-with [list -libs -L$ncurses_prefix/lib] {
+      if {![cc-check-function-in-lib tgetent $ncurses_lib]} {
+        cc-check-function-in-lib tgetent tinfo
+      }
+      foreach f {start_color typeahead bkgdset curs_set meta use_default_colors resizeterm} {
+        cc-check-function-in-lib $f $ncurses_lib
+      }
+      cc-check-functions use_extended_names
+    }
+
+    if {[have-feature start_color]} {
+      define-feature COLOR
+    }
+  }
+
+  slang {
+    cc-with {-includes sys/param.h} {
+      if {[cc-check-defines BSD]} {
+        cc-check-function-in-lib initscr termlib
+      }
+    }
+    if {![check-inc-and-lib slang [opt-val with-slang $prefix] \
+                            slcurses.h SLtt_get_terminfo slang]} {
+      user-error "Unable to find S-Lang"
+    }
+    define USE_SLANG_CURSES
+    define-feature COLOR
+    define-feature RESIZETERM
+  }
+
+  default {
+    user-error "Invalid value for --with-ui=[opt-val with-ui], select ncurses\
+                or slang"
+  }
+}
+
+###############################################################################
+# Iconv - try to mimic AM_ICONV by preferring an installed libiconv
+if {![check-iconv $prefix]} {
+  user-error "Unable to find iconv()"
+}
+
+###############################################################################
+# Mailpath and homespool
+if {[get-define want-homespool]} {
+  define MAILPATH [opt-val with-homespool mailbox]
+  define HOMESPOOL 1
+} else {
+  define MAILPATH [opt-val with-mailpath /var/mail]
+}
+
+###############################################################################
+# Mixmaster
+if {[get-define want-mixmaster]} {
+  define MIXMASTER [opt-val with-mixmaster mixmaster]
+}
+
+###############################################################################
+# Domain
+if {[opt-val with-domain] ne {}} {
+  define DOMAIN [opt-val with-domain]
+}
+
+###############################################################################
+# TLS support
+if {[get-define want-ssl] && ![get-define want-gnutls]} {
+  # OpenSSL
+  set ssl_prefix [opt-val with-ssl $prefix]
+  set ssl_ldflags -L$ssl_prefix/lib
+  cc-with [list -libs $ssl_ldflags] {
+    if {![cc-check-includes openssl/bio.h openssl/err.h openssl/ssl.h] ||
+        ![cc-check-function-in-lib X509_STORE_CTX_new crypto] ||
+        ![cc-check-function-in-lib SSL_new ssl] ||
+        ![cc-check-function-in-lib deflate z] ||
+        ![cc-with {-includes openssl/ssl.h} {cc-check-decls SSL_set_mode}]} {
+      user-error "Unable to find OpenSSL"
+    }
+    cc-check-functions RAND_status RAND_egd
+  }
+  define USE_SSL
+  define USE_SSL_OPENSSL
+  if {[cc-with {-includes openssl/ssl.h} {
+      cc-check-decls X509_V_FLAG_PARTIAL_CHAIN}]} {
+    define-feature SSL_PARTIAL_CHAIN
+  }
+} elseif {[get-define want-gnutls]} {
+  # GnuTLS
+  set gnutls_prefix [opt-val with-gnutls $prefix]
+  cc-with [list -cflags -I$gnutls_prefix/include -libs -L$gnutls_prefix/lib] {
+    if {![cc-check-function-in-lib gnutls_check_version gnutls]} {
+      user-error "Unable to find GnuTLS"
+    }
+    define-append CFLAGS -I$gnutls_prefix/include
+    define-append LDFLAGS -L$gnutls_prefix/lib
+    cc-check-function-in-lib gnutls_priority_set_direct gnutls
+    cc-with {-includes {gnutls/x509.h gnutls/gnutls.h}} {
+      cc-check-decls GNUTLS_VERIFY_DISABLE_TIME_CHECKS
+      cc-check-types gnutls_certificate_credentials_t \
+                     gnutls_certificate_status_t \
+                     gnutls_datum_t \
+                     gnutls_digest_algorithm_t \
+                     gnutls_session_t \
+                     gnutls_transport_ptr_t \
+                     gnutls_x509_crt_t
+    }
+  }
+  define USE_SSL
+  define USE_SSL_GNUTLS
+}
+
+###############################################################################
+# GNU libidn
+if {[get-define want-idn]} {
+  set idn_prefix [opt-val with-idn $prefix]
+  set sprep 0
+  set idna 0
+  cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
+    incr sprep [cc-check-includes stringprep.h]
+    incr sprep [cc-check-includes idn/stringprep.h]
+    incr idna  [cc-check-includes idna.h]
+    incr idna  [cc-check-includes idn/idna.h]
+    set  sprcv [cc-check-function-in-lib stringprep_check_version idn]
+    if {$sprep == 0 || $idna == 0 || $sprcv == 0} {
+      user-error "Unable to find GNU libidn"
+    }
+    define-feature libidn
+    define-append CFLAGS -I$idn_prefix/include
+    define-append LDFLAGS -L$idn_prefix/lib
+    cc-check-functions idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z
+    cc-check-functions idna_to_ascii_from_utf8 idna_to_ascii_8z
+    cc-check-functions idna_to_ascii_lz idna_to_ascii_from_locale
+  }
+}
+
+###############################################################################
+# Header cache - bdb
+if {[get-define want-bdb]} {
+  set bdb_versions { 5.3 6.2 4.8 } ;# Will be checked in order
+  set bdb_prefix [opt-val with-bdb $prefix]
+
+  foreach ver $bdb_versions {
+    lassign [split $ver .] maj min
+    # This is ugly, but it allows us to not have an inner loop
+    lappend bdb_majors   $maj $maj         $maj           $maj        $maj    $maj
+    lappend bdb_minors   $min $min         $min           $min        $min    $min
+    lappend bdb_exploded ""   db-$maj-$min db${maj}${min} db$maj.$min db-$maj db$maj
+  }
+
+  foreach maj $bdb_majors min $bdb_minors ver $bdb_exploded {
+    set ver_inc_dir $bdb_prefix/include/$ver
+    set ver_lib_dir $bdb_prefix/lib/$ver
+    set ver_inc_file $ver_inc_dir/db.h
+    set ver_lib_file  db-$maj.$min
+
+    # File exists?
+    msg-checking "Checking for BerkeleyDB in $ver_inc_dir..."
+    if {![file exists $ver_inc_file]} {
+      msg-result "no"
+      continue
+    }
+
+    # Version is coherent?
+    set inc_maj [check-define-value $ver_inc_file DB_VERSION_MAJOR]
+    set inc_min [check-define-value $ver_inc_file DB_VERSION_MINOR]
+    if {$inc_maj eq {}   || $inc_min eq {} ||
+        $inc_maj != $maj || $inc_min != $min} {
+      msg-result "no (expecting $maj.$min, got $inc_maj.$inc_min)"
+      continue
+    }
+    msg-result "yes"
+
+    # Can link?
+    cc-with [list -libs -L$ver_lib_dir -cflags -I$ver_inc_dir] {
+      if {![check-inc-and-lib bdb {} db.h db_env_create db-$maj.$min]} {
+        msg-result "no"
+        continue
+      }
+    }
+    define-append CFLAGS  -I$ver_inc_dir
+    define-append LDFLAGS -L$ver_lib_dir
+    define-append LIBS    -ldb-$maj.$min
+    define-append HCACHE_BACKENDS "bdb"
+    define-append HCACHE_LIBS -ldb-$maj.$min
+    define USE_HCACHE
+    break
+  }
+
+  if {![have-feature bdb]} {
+    user-error "Unable to find BerkeleyDB"
+  }
+}
+
+###############################################################################
+# Header Cache - GNU dbm
+if {[get-define want-gdbm]} {
+  if {![check-inc-and-lib gdbm [opt-val with-gdbm $prefix] \
+                          gdbm.h gdbm_open gdbm]} {
+    user-error "Unable to find GNU dbm"
+  }
+  define-append HCACHE_BACKENDS "gdbm"
+  define-append HCACHE_LIBS [get-define lib_gdbm_open]
+  define USE_HCACHE
+}
+
+###############################################################################
+# Header cache - LMDB
+if {[get-define want-lmdb]} {
+  if {![check-inc-and-lib lmdb [opt-val with-lmdb $prefix] \
+                          lmdb.h mdb_env_create lmdb]} {
+    user-error "Unable to find LMDB"
+  }
+  define-append HCACHE_BACKENDS "lmdb"
+  define-append HCACHE_LIBS [get-define lib_mdb_env_create]
+  define USE_HCACHE
+}
+
+###############################################################################
+# Header cache - KyotoCabinet
+if {[get-define want-kyotocabinet]} {
+  if {![check-inc-and-lib kc [opt-val with-kyotocabinet $prefix] \
+                          kclangc.h kcdbopen kyotocabinet]} {
+    user-error "Unable to find KyotoCabinet"
+  }
+  define-append HCACHE_BACKENDS "kyotocabinet"
+  define-append HCACHE_LIBS [get-define lib_kcdbopen]
+  define USE_HCACHE
+}
+
+###############################################################################
+# Header cache - QDBM
+if {[get-define want-qdbm]} {
+  # On Linux, headers are in a dedicated subdirectory
+  set qdbm_prefix [opt-val with-qdbm $prefix]
+  if {[file isdirectory $qdbm_prefix/include/qdbm]} {
+    set qdbm_inc_subdir qdbm/
+  } else {
+    set qdbm_inc_subdir ""
+  }
+  if {[check-inc-and-lib qdbm [opt-val with-qdbm $qdbm_prefix] \
+                          ${qdbm_inc_subdir}villa.h vlopen qdbm]} {
+    define-append CFLAGS -I$qdbm_prefix/include/$qdbm_inc_subdir
+  } else {
+    user-error "Unable to find QDBM"
+  }
+  define-append HCACHE_BACKENDS "qdbm"
+  define-append HCACHE_LIBS [get-define lib_vlopen]
+  define USE_HCACHE
+}
+
+###############################################################################
+# Header Cache - TokyoCabinet
+if {[get-define want-tokyocabinet]} {
+  if {![check-inc-and-lib tc [opt-val with-tokyocabinet $prefix] \
+                          tcbdb.h tcbdbopen tokyocabinet]} {
+    user-error "Unable to find TokyoCabinet"
+  }
+  define-append HCACHE_BACKENDS "tokyocabinet"
+  define-append HCACHE_LIBS [get-define lib_tcbdbopen]
+  define USE_HCACHE
+}
+
+###############################################################################
+# GSS
+if {[get-define want-gss]} {
+
+  # TODO - Use krb5-config only, which should be enough in any moderately
+  # modern OS. If people report breakage, I'll implement the manual logic
+  # later.
+  set gss_prefix [opt-val with-gss $prefix]
+  set krb5_config_guess [file join $gss_prefix bin krb5-config]
+  if {[file-isexec $krb5_config_guess]} {
+    define KRB5-CONFIG $krb5_config_guess
+  } else {
+    if {![cc-check-progs krb5-config]} {
+      user-error "Unable to find krb5-config"
+    }
+  }
+
+  msg-checking "Checking for a GSSAPI implementation..."
+
+  # Cflags
+  set krb5_config [get-define KRB5-CONFIG]
+  if {[catch {exec-with-stderr $krb5_config --cflags gssapi} res err]} {
+    user-error "Could not derive --cflags from $krb5_config"
+  }
+  define-append CFLAGS $res
+
+  # Libs
+  if {[catch {exec-with-stderr $krb5_config --libs gssapi} res err]} {
+    user-error "Could not derive --libs from $krb5_config"
+  }
+  define-append LDFLAGS $res
+
+  # Implementation
+  if {[catch {exec-with-stderr $krb5_config --version} res err]} {
+    user-error "Could not derive --version from $krb5_config"
+  }
+  switch -glob $res {
+    "Kerberos 5 *" { set GSSAPI_IMPL "MIT" }
+    "*eimdal*"     { set GSSAPI_IMPL "Heimdal" }
+    "Solaris*"     { set GSSAPI_IMPL "Solaris" }
+    default        { set GSSAPI_IMPL "Unknown" }
+  }
+  msg-result $GSSAPI_IMPL
+
+  if {$GSSAPI_IMPL in {Heimdal Solaris}} {
+    define HAVE_HEIMDAL
+  }
+  define USE_GSS
+}
+
+###############################################################################
+# Generate conststrings.c
+set conststrings "\
+  unsigned char cc_version\[\] = {[text2c $cc_version]};\n\
+  unsigned char cc_cflags\[\] = {[text2c [get-define CFLAGS]]};\n\
+  unsigned char configure_options\[\] = {[text2c $::argv]};\n"
+if {[catch {set fd [open conststrings.c w]
+            puts $fd $conststrings
+            close $fd} msg]} {
+  user-error "Cannot write conststrings.c: $msg"
+}
+
+###############################################################################
+# Definitions that are going to be substituted in Makefiles and config.h
+set auto_rep {
+  _*
+  *_TARGETS
+  BINDIR
+  BUILD_DOC
+  CRYPT_*
+  DEBUG
+  DOMAIN
+  ENABLE_*
+  HAVE_*
+  HOMESPOOL
+  LOCALES_HACK
+  MAILPATH
+  MAKEDOC_FULL
+  MIXMASTER
+  MUTTLOCALEDIR
+  NOTMUCH_API_3
+  PACKAGE
+  PKGDATADIR
+  PKGDOCDIR
+  SENDMAIL
+  SUN_ATTACHMENT
+  SYSCONFDIR
+  USE_*
+}
+set bare_rep {
+  ICONV_CONST
+  LOFF_T
+  OFF_T_FMT
+  SIG_ATOMIC_VOLATILE_T
+}
+set str_rep {
+  PACKAGE_VERSION
+}
+
+###############################################################################
+# Use ccache - don't do it earlier than here
+if {[get-define CCACHE] ne {none}} {
+  define CC "[get-define CCACHE] [get-define CC]"
+}
+
+###############################################################################
+# Generate targets and Makefiles for subdirectories
+foreach dir $subdirs {
+  define-append ALL_TARGETS all-$dir
+  define-append CLEAN_TARGETS clean-$dir
+  define-append INSTALL_TARGETS install-$dir
+  define-append UNINSTALL_TARGETS uninstall-$dir
+  make-template $dir/Makefile.autosetup $dir/Makefile
+}
+
+###############################################################################
+# Generate Makefile and config.h
+make-template Makefile.autosetup Makefile
+make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
+
+###############################################################################
+# Generate doc/mutt.1
+define bindir [get-define BINDIR]
+define docdir [get-define PKGDOCDIR]
+make-template doc/neomutt.man doc/neomutt.1
+
+###############################################################################
+# Print a summary
+user-notice "Summary of build options:
+
+  Version:           [get-define PACKAGE_VERSION]
+  Host OS:           [get-define host_os]
+  Install prefix:    [get-define prefix]
+  Compiler:          [get-define CC]
+  CFlags:            [get-define CFLAGS]
+  LDFlags:           [get-define LDFLAGS]
+  Libs:              [get-define LIBS]
+  Header cache libs: [get-define HCACHE_LIBS {}]
+
+  GPGME:             [yesno [get-define CRYPT_BACKEND_GPGME]]
+  PGP:               [yesno [get-define CRYPT_BACKEND_CLASSIC_PGP]]
+  SMIME:             [yesno [get-define CRYPT_BACKEND_CLASSIC_SMIME]]
+  Notmuch:           [yesno [get-define USE_NOTMUCH]]
+  Header Cache(s):   [get-define HCACHE_BACKENDS {}]
+  Lua:               [yesno [get-define USE_LUA]]
+"

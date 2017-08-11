@@ -4,11 +4,15 @@
 *.in
 tags
 
+# Autosetup's jimsh
+autosetup/jimsh0
+
 # Ignore these files in all subdirectories
 **/Makefile
 
 # Ignore directories
 **/.deps/
+**/*.Po
 autom4te.cache/
 .build-aux/
 
@@ -36,6 +40,7 @@ doc/manual.xml
 doc/neomuttrc
 doc/neomuttrc.man
 po/*.gmo
+po/*.mo
 po/POTFILES
 po/stamp-po
 
