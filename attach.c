@@ -367,7 +367,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  *
  */
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
-                         struct AttachPtr **idx, short idxlen)
+                         struct AttachCtx *actx)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -606,8 +606,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     info.fp = fp;
     info.bdy = a;
     info.ctx = Context;
-    info.idx = idx;
-    info.idxlen = idxlen;
+    info.actx = actx;
     info.hdr = hdr;
 
     rc = mutt_do_pager(descrip, pagerfile,
@@ -1107,7 +1106,12 @@ bail0:
 void mutt_free_attach_context(struct AttachCtx **pactx)
 {
   int i;
-  struct AttachCtx *actx = *pactx;
+  struct AttachCtx *actx = NULL;
+
+  if (!pactx || !*pactx)
+    return;
+
+  actx = *pactx;
 
   for (i = 0; i < actx->idxlen; i++)
   {

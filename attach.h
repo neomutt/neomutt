@@ -56,7 +56,7 @@ void mutt_gen_attach_list(struct AttachCtx *actx, struct Body *m,
                           int parent_type, int level, int compose);
 void mutt_update_tree(struct AttachCtx *actx);
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
-                         struct AttachPtr **idx, short idxlen);
+                         struct AttachCtx *actx);
 
 int mutt_tag_attach(struct Menu *menu, int n, int m);
 int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr,
@@ -66,11 +66,10 @@ void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Heade
 void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter);
 void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top);
 
-void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
-void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
-void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur, int flags);
-void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen,
-                       struct Body *cur, int flags);
+void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur);
+void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur);
+void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
+void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur, int flags);
 
 void mutt_free_attach_context(struct AttachCtx **pactx);
 

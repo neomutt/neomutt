@@ -847,7 +847,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header 
 
       case OP_VIEW_ATTACH:
         op = mutt_view_attachment(fp, actx->idx[menu->current]->content,
-                                  MUTT_REGULAR, hdr, actx->idx, actx->idxlen);
+                                  MUTT_REGULAR, hdr, actx);
         break;
 
       case OP_NEXT_ENTRY:
@@ -1040,14 +1040,12 @@ void mutt_view_attachments(struct Header *hdr)
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
-        mutt_view_attachment(fp, actx->idx[menu->current]->content,
-                             MUTT_MAILCAP, hdr, actx->idx, actx->idxlen);
+        mutt_view_attachment(fp, actx->idx[menu->current]->content, MUTT_MAILCAP, hdr, actx);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_ATTACH_VIEW_TEXT:
-        mutt_view_attachment(fp, actx->idx[menu->current]->content,
-                             MUTT_AS_TEXT, hdr, actx->idx, actx->idxlen);
+        mutt_view_attachment(fp, actx->idx[menu->current]->content, MUTT_AS_TEXT, hdr, actx);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1217,30 +1215,26 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(fp, hdr, actx->idx, actx->idxlen,
-                           menu->tagprefix ? NULL : actx->idx[menu->current]->content);
+        mutt_attach_resend(fp, hdr, actx, menu->tagprefix ? NULL : actx->idx[menu->current]->content);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_BOUNCE_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_bounce(fp, hdr, actx->idx, actx->idxlen,
-                           menu->tagprefix ? NULL : actx->idx[menu->current]->content);
+        mutt_attach_bounce(fp, hdr, actx, menu->tagprefix ? NULL : actx->idx[menu->current]->content);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(fp, hdr, actx->idx, actx->idxlen,
-                            menu->tagprefix ? NULL : actx->idx[menu->current]->content, 0);
+        mutt_attach_forward(fp, hdr, actx, menu->tagprefix ? NULL : actx->idx[menu->current]->content, 0);
         menu->redraw = REDRAW_FULL;
         break;
 
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(fp, hdr, actx->idx, actx->idxlen,
-                            menu->tagprefix ? NULL : actx->idx[menu->current]->content, SENDNEWS);
+        mutt_attach_forward(fp, hdr, actx, menu->tagprefix ? NULL : actx->idx[menu->current]->content, SENDNEWS);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1252,8 +1246,7 @@ void mutt_view_attachments(struct Header *hdr)
             query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
-          mutt_attach_reply(fp, hdr, actx->idx, actx->idxlen,
-                            menu->tagprefix ? NULL : actx->idx[menu->current]->content,
+          mutt_attach_reply(fp, hdr, actx, menu->tagprefix ? NULL : actx->idx[menu->current]->content,
                             SENDNEWS | SENDREPLY);
           menu->redraw = REDRAW_FULL;
           break;
@@ -1268,7 +1261,7 @@ void mutt_view_attachments(struct Header *hdr)
 
         flags = SENDREPLY | (op == OP_GROUP_REPLY ? SENDGROUPREPLY : 0) |
                 (op == OP_LIST_REPLY ? SENDLISTREPLY : 0);
-        mutt_attach_reply(fp, hdr, actx->idx, actx->idxlen,
+        mutt_attach_reply(fp, hdr, actx,
                           menu->tagprefix ? NULL : actx->idx[menu->current]->content, flags);
         menu->redraw = REDRAW_FULL;
         break;

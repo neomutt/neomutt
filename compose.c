@@ -1513,18 +1513,13 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
           if (!(flags & MUTT_COMPOSE_NOFREEHEADER))
           {
-            while (actx->idxlen-- > 0)
+            for (i = 0; i < actx->idxlen; i++)
             {
               /* avoid freeing other attachments */
-              actx->idx[actx->idxlen]->content->next = NULL;
-              actx->idx[actx->idxlen]->content->parts = NULL;
-              mutt_free_body(&actx->idx[actx->idxlen]->content);
-              FREE(&actx->idx[actx->idxlen]->tree);
-              FREE(&actx->idx[actx->idxlen]);
+              actx->idx[i]->content->next = NULL;
+              actx->idx[i]->content->parts = NULL;
+              mutt_free_body(&actx->idx[i]->content);
             }
-            FREE(&actx->idx);
-            actx->idxlen = 0;
-            actx->idxmax = 0;
           }
           r = -1;
           loop = 0;
@@ -1653,20 +1648,11 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   mutt_menu_destroy(&menu);
 
   if (actx->idxlen)
-  {
     msg->content = actx->idx[0]->content;
-    for (i = 0; i < actx->idxlen; i++)
-    {
-      actx->idx[i]->content->aptr = NULL;
-      FREE(&actx->idx[i]->tree);
-      FREE(&actx->idx[i]);
-    }
-  }
   else
     msg->content = NULL;
 
-  FREE(&actx->idx);
-  FREE(&actx);
+  mutt_free_attach_context(&actx);
 
   return r;
 }

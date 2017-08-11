@@ -55,8 +55,7 @@ struct Pager
   struct Header *hdr;     /**< current message */
   struct Body *bdy;       /**< current attachment */
   FILE *fp;               /**< source stream */
-  struct AttachPtr **idx; /**< attachment information */
-  short idxlen;
+  struct AttachCtx *actx; /**< attachment information */
 };
 
 int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);

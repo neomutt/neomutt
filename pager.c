@@ -2699,8 +2699,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_bounce(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                             extra->bdy);
+          mutt_attach_bounce(extra->fp, extra->hdr, extra->actx, extra->bdy);
         else
           ci_bounce_message(extra->hdr);
         break;
@@ -2709,8 +2708,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_resend(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                             extra->bdy);
+          mutt_attach_resend(extra->fp, extra->hdr, extra->actx, extra->bdy);
         else
           mutt_resend_message(NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2901,8 +2899,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                              extra->bdy, SENDNEWS);
+          mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS);
         else
           ci_send_message(SENDNEWS | SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2925,8 +2922,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (IsMsgAttach(extra))
-            mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                              extra->bdy, SENDNEWS | SENDREPLY);
+            mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS | SENDREPLY);
           else
             ci_send_message(SENDNEWS | SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
           pager_menu->redraw = REDRAW_FULL;
@@ -2938,8 +2934,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                            extra->bdy, SENDREPLY);
+          mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDREPLY);
         else
           ci_send_message(SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2956,8 +2951,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                            extra->bdy, SENDREPLY | SENDGROUPREPLY);
+          mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
+                            SENDREPLY | SENDGROUPREPLY);
         else
           ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, extra->ctx,
                           extra->hdr);
@@ -2968,8 +2963,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                            extra->bdy, SENDREPLY | SENDLISTREPLY);
+          mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
+                            SENDREPLY | SENDLISTREPLY);
         else
           ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, extra->ctx,
                           extra->hdr);
@@ -2980,8 +2975,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                              extra->bdy, 0);
+          mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, 0);
         else
           ci_send_message(SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;

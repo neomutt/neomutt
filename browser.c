@@ -1900,7 +1900,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
           b = mutt_make_file_attach(buf2);
           if (b)
           {
-            mutt_view_attachment(NULL, b, MUTT_REGULAR, NULL, NULL, 0);
+            mutt_view_attachment(NULL, b, MUTT_REGULAR, NULL, NULL);
             mutt_free_body(&b);
             menu->redraw = REDRAW_FULL;
           }
