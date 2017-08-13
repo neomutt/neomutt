@@ -24,7 +24,9 @@
 /* Mutt browser support routines */
 
 #include "config.h"
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>

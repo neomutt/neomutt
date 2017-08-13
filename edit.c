@@ -25,7 +25,9 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
