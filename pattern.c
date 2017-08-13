@@ -23,7 +23,9 @@
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdarg.h>

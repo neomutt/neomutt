@@ -23,7 +23,9 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>

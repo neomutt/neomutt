@@ -27,7 +27,9 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <libgen.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <pwd.h>
 #include <regex.h>

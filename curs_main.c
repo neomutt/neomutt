@@ -23,7 +23,9 @@
 #include "config.h"
 #include <assert.h>
 #include <ctype.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>

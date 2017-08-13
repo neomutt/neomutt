@@ -22,7 +22,9 @@
  */
 
 #include "config.h"
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>

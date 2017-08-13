@@ -31,7 +31,9 @@
  */
 
 #include "config.h"
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
