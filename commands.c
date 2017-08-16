@@ -801,8 +801,13 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   if (mutt_enter_fname(prompt, buf, sizeof(buf), 0) == -1)
     return -1;
 
-  if (!buf[0])
+  size_t pathlen = strlen(buf);
+  if (pathlen == 0)
     return -1;
+
+  /* Trim any trailing '/' */
+  if (buf[pathlen - 1] == '/')
+    buf[pathlen - 1] = '\0';
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
@@ -811,15 +816,6 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
     strfcpy(buf, LastSaveFolder, sizeof(buf));
   else
     strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
-
-  /* check if path is a filename by comparing last character
-   * (mboxes need filenames, not directories)
-   */
-  if (DefaultMagic == MUTT_MBOX && buf[strlen(buf) - 1] == '/')
-  {
-    mutt_error(_("'%s' is a directory, need a filename for mbox."), buf);
-    return -1;
-  }
 
   mutt_expand_path(buf, sizeof(buf));
 
