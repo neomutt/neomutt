@@ -1921,6 +1921,32 @@ struct Option MuttVars[] = {
   ** is Usenet article, because MIME for news is nonstandard feature.
   */
 #endif
+  { "mime_type_query_command", DT_STR, R_NONE, UL &MimeTypeQueryCmd, UL "" },
+  /*
+  ** .pp
+  ** This specifies a command to run, to determine the mime type of a
+  ** new attachment when composing a message.  Unless
+  ** $$mime_type_query_first is set, this will only be run if the
+  ** attachment's extension is not found in the mime.types file.
+  ** .pp
+  ** The string may contain a ``%s'', which will be substituted with the
+  ** attachment filename.  Mutt will add quotes around the string substituted
+  ** for ``%s'' automatically according to shell quoting rules, so you should
+  ** avoid adding your own.  If no ``%s'' is found in the string, Mutt will
+  ** append the attachment filename to the end of the string.
+  ** .pp
+  ** The command should output a single line containing the
+  ** attachment's mime type.
+  ** .pp
+  ** Suggested values are ``xdg-mime query filetype'' or
+  ** ``file -bi''.
+  */
+  { "mime_type_query_first", DT_BOOL, R_NONE, OPT_MIME_TYPE_QUERY_FIRST, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, the $$mime_type_query_command will be run before the
+  ** mime.types lookup.
+  */
 #ifdef MIXMASTER
   { "mix_entry_format", DT_STR,  R_NONE, UL &MixEntryFormat, UL "%4n %c %-16s %a" },
   /*

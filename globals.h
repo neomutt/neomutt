@@ -102,6 +102,7 @@ WHERE char *MarkMacroPrefix;
 WHERE char *MhFlagged;
 WHERE char *MhReplied;
 WHERE char *MhUnseen;
+WHERE char *MimeTypeQueryCmd;
 WHERE char *MsgFmt;
 
 #ifdef USE_SOCKET

@@ -309,7 +309,7 @@ static struct MbCharTable *parse_mbchar_table(const char *s)
 
   t->orig_str = safe_strdup(s);
   /* This could be more space efficient.  However, being used on tiny
-   * strings (Tochars and StChars), the overhead is not great. */
+   * strings (ToChars and StChars), the overhead is not great. */
   t->chars = safe_calloc(slen, sizeof(char *));
   d = t->segmented_str = safe_calloc(slen * 2, sizeof(char));
 
