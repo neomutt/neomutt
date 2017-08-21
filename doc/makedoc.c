@@ -141,7 +141,7 @@ static char *get_token(char *d, size_t l, char *s)
       fprintf(stderr, "%s: found single character token `%c'.\n", Progname, *s);
     }
     d[0] = *s++;
-    d[1] = 0;
+    d[1] = '\0';
     return s;
   }
 
@@ -925,7 +925,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
 
         docstat = commit_buff(buff, &d, out, docstat);
         save = *s;
-        *s = 0;
+        *s = '\0';
         print_ref(out, output_dollar, ref);
         *s = save;
         s--;

@@ -555,7 +555,7 @@ static bool create_hcache_dir(const char *path)
   if (!p)
     return true;
 
-  *p = 0;
+  *p = '\0';
   if (mutt_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
     return true;
 

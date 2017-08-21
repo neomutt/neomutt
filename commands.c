@@ -313,7 +313,7 @@ void ci_bounce_message(struct Header *h)
     return;
   }
 
-  buf[0] = 0;
+  buf[0] = '\0';
   rfc822_write_address(buf, sizeof(buf), adr, 1);
 
 #define EXTRA_SPACE (15 + 7 + 2)
@@ -497,7 +497,7 @@ void mutt_pipe_message(struct Header *h)
 {
   char buffer[LONG_STRING];
 
-  buffer[0] = 0;
+  buffer[0] = '\0';
   if (mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0 ||
       !buffer[0])
     return;
@@ -602,7 +602,7 @@ void mutt_shell_escape(void)
 {
   char buf[LONG_STRING];
 
-  buf[0] = 0;
+  buf[0] = '\0';
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) == 0)
   {
     if (!buf[0] && Shell)
@@ -628,7 +628,7 @@ void mutt_enter_command(void)
   char buffer[LONG_STRING];
   int r;
 
-  buffer[0] = 0;
+  buffer[0] = '\0';
   if (mutt_get_field(":", buffer, sizeof(buffer), MUTT_COMMAND) != 0 || !buffer[0])
     return;
   mutt_buffer_init(&err);
@@ -669,7 +669,7 @@ void mutt_display_address(struct Envelope *env)
    * software.
    */
 
-  buf[0] = 0;
+  buf[0] = '\0';
   rfc822_write_address(buf, sizeof(buf), adr, 0);
   mutt_message("%s: %s", pfx, buf);
 }

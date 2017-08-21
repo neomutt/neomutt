@@ -656,9 +656,9 @@ char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
         (*line)++;
       if (flags & MUTT_EOL)
         return s;
-      *ch = 0;
+      *ch = '\0';
       if ((ch > s) && (*(ch - 1) == '\r'))
-        *--ch = 0;
+        *--ch = '\0';
       if (!(flags & MUTT_CONT) || (ch == s) || (*(ch - 1) != '\\'))
         return s;
       offset = ch - s - 1;
@@ -768,7 +768,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
      * It doesn't appear that the return value is actually checked anywhere mutt_concat_path()
      * is called, so we should just copy set dst to nul and let the calling function fail later.
      */
-    dst[0] = 0; /* safe since we bail out early if dstlen == 0 */
+    dst[0] = '\0'; /* safe since we bail out early if dstlen == 0 */
     return NULL;
   }
 
@@ -784,7 +784,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
     memcpy(dst + offset, fname, fnamelen);
     offset += fnamelen;
   }
-  dst[offset] = 0;
+  dst[offset] = '\0';
   return dst;
 }
 

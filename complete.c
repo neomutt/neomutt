@@ -103,11 +103,11 @@ int mutt_complete(char *s, size_t slen)
           {
             if (filepart[i] != nntp_data->group[i])
             {
-              filepart[i] = 0;
+              filepart[i] = '\0';
               break;
             }
           }
-          filepart[i] = 0;
+          filepart[i] = '\0';
         }
         else
         {
@@ -143,7 +143,7 @@ int mutt_complete(char *s, size_t slen)
   if (*s == '=' || *s == '+' || *s == '!')
   {
     dirpart[0] = *s;
-    dirpart[1] = 0;
+    dirpart[1] = '\0';
     if (*s == '!')
       strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
     else
@@ -172,7 +172,7 @@ int mutt_complete(char *s, size_t slen)
       {
         p = s + 1;
         strfcpy(dirpart, "/", sizeof(dirpart));
-        exp_dirpart[0] = 0;
+        exp_dirpart[0] = '\0';
         strfcpy(filepart, p, sizeof(filepart));
         dirp = opendir(dirpart);
       }
@@ -188,7 +188,7 @@ int mutt_complete(char *s, size_t slen)
     else
     {
       /* no directory name, so assume current directory. */
-      dirpart[0] = 0;
+      dirpart[0] = '\0';
       strfcpy(filepart, s, sizeof(filepart));
       dirp = opendir(".");
     }
@@ -228,11 +228,11 @@ int mutt_complete(char *s, size_t slen)
         {
           if (filepart[i] != de->d_name[i])
           {
-            filepart[i] = 0;
+            filepart[i] = '\0';
             break;
           }
         }
-        filepart[i] = 0;
+        filepart[i] = '\0';
       }
       else
       {

@@ -1854,7 +1854,7 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
 
     /* kill the previous flags */
     if ((p = strchr(newpath, ':')) != NULL)
-      *p = 0;
+      *p = '\0';
 
     maildir_flags(suffix, sizeof(suffix), h);
 

@@ -231,7 +231,7 @@ void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
 
   strfcpy(in, name, sizeof(in));
   if ((ext = strchr(in, '/')))
-    *ext++ = 0;
+    *ext++ = '\0';
 
   if ((mutt_strcasecmp(in, "utf-8") == 0) || (mutt_strcasecmp(in, "utf8") == 0))
   {

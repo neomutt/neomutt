@@ -279,7 +279,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
     }
   }
   if (!dry)
-    *dest = 0;
+    *dest = '\0';
   return rv;
 }
 
@@ -305,7 +305,7 @@ void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
   {
     strfcpy(tmp, adr->mailbox, sizeof(tmp));
     if ((pc = strchr(tmp, '@')))
-      *pc = 0;
+      *pc = '\0';
   }
   else
     tmp[0] = '\0';
@@ -346,7 +346,7 @@ retry_name:
   if (adr && adr->mailbox)
     strfcpy(buf, adr->mailbox, sizeof(buf));
   else
-    buf[0] = 0;
+    buf[0] = '\0';
 
   mutt_addrlist_to_intl(adr, NULL);
 
@@ -371,7 +371,7 @@ retry_name:
   if (adr && adr->personal && !mutt_is_mail_list(adr))
     strfcpy(buf, adr->personal, sizeof(buf));
   else
-    buf[0] = 0;
+    buf[0] = '\0';
 
   if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), 0) != 0)
   {
@@ -380,7 +380,7 @@ retry_name:
   }
   new->addr->personal = safe_strdup(buf);
 
-  buf[0] = 0;
+  buf[0] = '\0';
   rfc822_write_address(buf, sizeof(buf), new->addr, 1);
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
@@ -431,7 +431,7 @@ retry_name:
       strfcpy(buf, new->name, sizeof(buf));
     recode_buf(buf, sizeof(buf));
     fprintf(rc, "alias %s ", buf);
-    buf[0] = 0;
+    buf[0] = '\0';
     rfc822_write_address(buf, sizeof(buf), new->addr, 0);
     recode_buf(buf, sizeof(buf));
     write_safe_address(rc, buf);
@@ -530,7 +530,7 @@ int mutt_alias_complete(char *s, size_t buflen)
         {
           for (i = 0; a->name[i] && a->name[i] == bestname[i]; i++)
             ;
-          bestname[i] = 0;
+          bestname[i] = '\0';
         }
       }
       a = a->next;
@@ -567,7 +567,7 @@ int mutt_alias_complete(char *s, size_t buflen)
     }
   }
 
-  bestname[0] = 0;
+  bestname[0] = '\0';
   mutt_alias_menu(bestname, sizeof(bestname), a_list ? a_list : Aliases);
   if (bestname[0] != 0)
     strfcpy(s, bestname, buflen);

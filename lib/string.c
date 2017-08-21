@@ -319,7 +319,7 @@ char *mutt_substrcpy(char *dest, const char *begin, const char *end, size_t dest
   if (len > (destlen - 1))
     len = destlen - 1;
   memcpy(dest, begin, len);
-  dest[len] = 0;
+  dest[len] = '\0';
   return dest;
 }
 
@@ -345,7 +345,7 @@ char *mutt_substrdup(const char *begin, const char *end)
 
   p = safe_malloc(len + 1);
   memcpy(p, begin, len);
-  p[len] = 0;
+  p[len] = '\0';
   return p;
 }
 
@@ -477,7 +477,7 @@ void mutt_remove_trailing_ws(char *s)
   char *p = NULL;
 
   for (p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
-    *p = 0;
+    *p = '\0';
 }
 
 /**
@@ -625,7 +625,7 @@ void rfc822_dequote_comment(char *s)
       w++;
     }
   }
-  *w = 0;
+  *w = '\0';
 }
 
 /**

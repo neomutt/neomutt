@@ -65,7 +65,7 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
       mutt_format_s(dest, destlen, fmt, alias->name);
       break;
     case 'r':
-      adr[0] = 0;
+      adr[0] = '\0';
       rfc822_write_address(adr, sizeof(adr), alias->addr, 1);
       snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
       snprintf(dest, destlen, tmp, adr);
@@ -76,7 +76,7 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
       break;
     case 't':
       dest[0] = alias->tagged ? '*' : ' ';
-      dest[1] = 0;
+      dest[1] = '\0';
       break;
   }
 

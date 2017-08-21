@@ -80,7 +80,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   char *p = tmp;
   int tmplen = sizeof(tmp);
 
-  tmp[sizeof(tmp) - 1] = 0;
+  tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
     strfcpy(tmp, NONULL(Prefix), sizeof(tmp));
@@ -212,7 +212,7 @@ static void be_print_header(struct Envelope *env)
   if (env->to)
   {
     addstr("To: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     rfc822_write_address(tmp, sizeof(tmp), env->to, 1);
     addstr(tmp);
     addch('\n');
@@ -220,7 +220,7 @@ static void be_print_header(struct Envelope *env)
   if (env->cc)
   {
     addstr("Cc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     rfc822_write_address(tmp, sizeof(tmp), env->cc, 1);
     addstr(tmp);
     addch('\n');
@@ -228,7 +228,7 @@ static void be_print_header(struct Envelope *env)
   if (env->bcc)
   {
     addstr("Bcc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     rfc822_write_address(tmp, sizeof(tmp), env->bcc, 1);
     addstr(tmp);
     addch('\n');
@@ -254,7 +254,7 @@ static void be_edit_header(struct Envelope *e, int force)
   mutt_window_move(MuttMessageWindow, 0, 0);
 
   addstr("To: ");
-  tmp[0] = 0;
+  tmp[0] = '\0';
   mutt_addrlist_to_local(e->to);
   rfc822_write_address(tmp, sizeof(tmp), e->to, 0);
   if (!e->to || force)
@@ -265,7 +265,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->to = mutt_parse_adrlist(e->to, tmp);
       e->to = mutt_expand_aliases(e->to);
       mutt_addrlist_to_intl(e->to, NULL); /* XXX - IDNA error reporting? */
-      tmp[0] = 0;
+      tmp[0] = '\0';
       rfc822_write_address(tmp, sizeof(tmp), e->to, 1);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
@@ -289,7 +289,7 @@ static void be_edit_header(struct Envelope *e, int force)
   if ((!e->cc && option(OPT_ASK_CC)) || force)
   {
     addstr("Cc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     mutt_addrlist_to_local(e->cc);
     rfc822_write_address(tmp, sizeof(tmp), e->cc, 0);
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
@@ -297,7 +297,7 @@ static void be_edit_header(struct Envelope *e, int force)
       rfc822_free_address(&e->cc);
       e->cc = mutt_parse_adrlist(e->cc, tmp);
       e->cc = mutt_expand_aliases(e->cc);
-      tmp[0] = 0;
+      tmp[0] = '\0';
       mutt_addrlist_to_intl(e->cc, NULL);
       rfc822_write_address(tmp, sizeof(tmp), e->cc, 1);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
@@ -310,7 +310,7 @@ static void be_edit_header(struct Envelope *e, int force)
   if (option(OPT_ASK_BCC) || force)
   {
     addstr("Bcc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     mutt_addrlist_to_local(e->bcc);
     rfc822_write_address(tmp, sizeof(tmp), e->bcc, 0);
     if (mutt_enter_string(tmp, sizeof(tmp), 5, 0) == 0)
@@ -319,7 +319,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->bcc = mutt_parse_adrlist(e->bcc, tmp);
       e->bcc = mutt_expand_aliases(e->bcc);
       mutt_addrlist_to_intl(e->bcc, NULL);
-      tmp[0] = 0;
+      tmp[0] = '\0';
       rfc822_write_address(tmp, sizeof(tmp), e->bcc, 1);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 5, tmp);
     }
@@ -346,12 +346,12 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
 
   buf = be_snarf_file(path, buf, &bufmax, &buflen, 0);
 
-  tmp[0] = 0;
+  tmp[0] = '\0';
   while (!done)
   {
     if (mutt_enter_string(tmp, sizeof(tmp), 0, 0) == -1)
     {
-      tmp[0] = 0;
+      tmp[0] = '\0';
       continue;
     }
     addch('\n');
@@ -361,7 +361,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
       /* remove trailing whitespace from the line */
       p = tmp + mutt_strlen(tmp) - 1;
       while (p >= tmp && ISSPACE(*p))
-        *p-- = 0;
+        *p-- = '\0';
 
       p = tmp + 2;
       SKIPWS(p);
@@ -440,7 +440,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           {
             buflen--;
             strfcpy(tmp, buf[buflen], sizeof(tmp));
-            tmp[mutt_strlen(tmp) - 1] = 0;
+            tmp[mutt_strlen(tmp) - 1] = '\0';
             FREE(&buf[buflen]);
             buf[buflen] = NULL;
             continue;
@@ -497,7 +497,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
       buf[buflen++] = safe_strdup(tmp[1] == '~' ? tmp + 1 : tmp);
     }
 
-    tmp[0] = 0;
+    tmp[0] = '\0';
   }
 
   if (!abort)

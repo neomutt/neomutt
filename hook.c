@@ -452,7 +452,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
 
 void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 {
-  *path = 0;
+  *path = '\0';
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];

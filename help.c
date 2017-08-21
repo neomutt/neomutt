@@ -72,7 +72,7 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
       km_expand_key(buf, sizeof(buf), km_find_func(MENU_GENERIC, op)))
     snprintf(d, dlen, "%s:%s", buf, txt);
   else
-    d[0] = 0;
+    d[0] = '\0';
 }
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)

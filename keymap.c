@@ -625,7 +625,7 @@ static const char *km_keyname(int c)
     {
       buf[0] = '^';
       buf[1] = (c + '@') & 0x7f;
-      buf[2] = 0;
+      buf[2] = '\0';
     }
     else
       snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);

@@ -2254,7 +2254,7 @@ static void pretty_var(char *dst, size_t len, const char *option, const char *va
   p += escape_string(p, len - (p - dst) + 1, val); /* \0 terminate it */
   if (p - dst < len)
     *p++ = '"';
-  *p = 0;
+  *p = '\0';
 }
 
 static int check_charset(struct Option *opt, const char *val)
@@ -3432,7 +3432,7 @@ static void candidate(char *dest, char *try, const char *src, int len)
     {
       for (l = 0; src[l] && src[l] == dest[l]; l++)
         ;
-      dest[l] = 0;
+      dest[l] = '\0';
     }
   }
 }
@@ -3637,7 +3637,7 @@ int mutt_var_value_complete(char *buffer, size_t len, int pos)
     if (vlen == 0)
       return 0;
 
-    var[vlen - 1] = 0;
+    var[vlen - 1] = '\0';
     if ((idx = mutt_option_index(var)) == -1)
     {
       if ((myvarval = myvar_get(var)) != NULL)

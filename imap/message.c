@@ -272,7 +272,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       if (*s != '\"')
         return -1;
       s++; /* skip past the trailing " */
-      *ptmp = 0;
+      *ptmp = '\0';
       h->received = imap_parse_date(tmp);
     }
     else if (mutt_strncasecmp("RFC822.SIZE", s, 11) == 0)
@@ -282,7 +282,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       ptmp = tmp;
       while (isdigit((unsigned char) *s))
         *ptmp++ = *s++;
-      *ptmp = 0;
+      *ptmp = '\0';
       h->content_length = atoi(tmp);
     }
     else if ((mutt_strncasecmp("BODY", s, 4) == 0) ||

@@ -748,7 +748,7 @@ int mutt_buffy_list(void)
 
   int have_unnotified = BuffyNotify;
 
-  buffylist[0] = 0;
+  buffylist[0] = '\0';
   pos += strlen(strncat(buffylist, _("New mail in "), sizeof(buffylist) - 1 - pos));
   for (b = Incoming; b; b = b->next)
   {

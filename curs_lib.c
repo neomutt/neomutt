@@ -262,7 +262,7 @@ int mutt_yesorno(const char *msg, int def)
   int reno_ok;
   char answer[2];
 
-  answer[1] = 0;
+  answer[1] = '\0';
 
   reyes_ok = (expr = nl_langinfo(YESEXPR)) && expr[0] == '^' &&
              !REGCOMP(&reyes, expr, REG_NOSUB);
@@ -532,7 +532,7 @@ static void message_bar(int percent, const char *fmt, ...)
       int off = mutt_wstr_trunc(buf2, sizeof(buf2), w, NULL);
 
       ch = buf2[off];
-      buf2[off] = 0;
+      buf2[off] = '\0';
       SETCOLOR(MT_COLOR_PROGRESS);
       addstr(buf2);
       buf2[off] = ch;
@@ -916,7 +916,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
   else if (ch.ch == '?')
   {
     mutt_refresh();
-    buf[0] = 0;
+    buf[0] = '\0';
 
     if (!flags)
       flags = MUTT_SEL_FOLDER;
@@ -934,7 +934,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (_mutt_get_field(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                         multiple, files, numfiles) != 0)
-      buf[0] = 0;
+      buf[0] = '\0';
     FREE(&pc);
 #ifdef USE_NOTMUCH
     if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))

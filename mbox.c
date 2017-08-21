@@ -119,7 +119,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   ctx->mtime = sb.st_mtime;
   ctx->size = sb.st_size;
 
-  buf[sizeof(buf) - 1] = 0;
+  buf[sizeof(buf) - 1] = '\0';
 
   if (!ctx->quiet)
   {
@@ -158,7 +158,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         break;
       }
 
-      return_path[0] = 0;
+      return_path[0] = '\0';
 
       if (!is_from(buf, return_path, sizeof(return_path), &t))
       {

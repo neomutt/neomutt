@@ -83,7 +83,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       return -1;
 
   buf[0] = '\n';
-  buf[1] = 0;
+  buf[1] = '\0';
 
   if ((flags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX | CH_WEED_DELIVERED)) == 0)
   {
@@ -194,7 +194,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
               (this_one[this_one_len - 1] == '\n'))
           {
             this_one[this_one_len - 2] = '\n';
-            this_one[this_one_len - 1] = 0;
+            this_one[this_one_len - 1] = '\0';
           }
         }
 

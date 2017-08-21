@@ -185,7 +185,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
             path[l++] = *p;
         }
         p = skip_email_wsp(p);
-        path[l] = 0;
+        path[l] = '\0';
 
         mutt_expand_path(path, sizeof(path));
         if ((body2 = mutt_make_file_attach(path)))

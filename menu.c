@@ -290,7 +290,7 @@ static void menu_pad_string(struct Menu *menu, char *s, size_t n)
   int cols = menu->indexwin->cols - shift;
 
   mutt_simple_format(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_strlen(scratch), 1);
-  s[n - 1] = 0;
+  s[n - 1] = '\0';
   FREE(&scratch);
 }
 
@@ -535,7 +535,7 @@ static void menu_jump(struct Menu *menu)
   if (menu->max)
   {
     mutt_unget_event(LastKey, 0);
-    buf[0] = 0;
+    buf[0] = '\0';
     if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
     {
       if (mutt_atoi(buf, &n) == 0 && n > 0 && n < menu->max + 1)

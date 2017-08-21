@@ -627,7 +627,7 @@ int imap_get_literal_count(const char *buf, long *bytes)
   pn = pc;
   while (isdigit((unsigned char) *pc))
     pc++;
-  *pc = 0;
+  *pc = '\0';
   *bytes = atoi(pn);
 
   return 0;
@@ -795,7 +795,7 @@ void imap_quote_string(char *dest, size_t dlen, const char *src)
     }
   }
   *pt++ = '"';
-  *pt = 0;
+  *pt = '\0';
 }
 
 /**
@@ -871,17 +871,17 @@ int imap_wordcasecmp(const char *a, const char *b)
   char *s = (char *) b;
   int i;
 
-  tmp[SHORT_STRING - 1] = 0;
+  tmp[SHORT_STRING - 1] = '\0';
   for (i = 0; i < SHORT_STRING - 2; i++, s++)
   {
     if (!*s || ISSPACE(*s))
     {
-      tmp[i] = 0;
+      tmp[i] = '\0';
       break;
     }
     tmp[i] = *s;
   }
-  tmp[i + 1] = 0;
+  tmp[i + 1] = '\0';
 
   return mutt_strcasecmp(a, tmp);
 }

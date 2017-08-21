@@ -290,7 +290,7 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
     {
       while (linelen > 0 && ISSPACE(line[linelen - 1]))
         linelen--;
-      line[linelen] = 0;
+      line[linelen] = '\0';
     }
 
     /* decode and do character set conversion */
@@ -310,7 +310,7 @@ void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
   char bufi[BUFI_SIZE];
   size_t l = 0;
 
-  buf[4] = 0;
+  buf[4] = '\0';
 
   if (istext)
     state_set_prefix(s);
@@ -1667,7 +1667,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
     {
       l = mutt_strlen(buf);
       while (l > 0 && buf[l - 1] == ' ')
-        buf[--l] = 0;
+        buf[--l] = '\0';
     }
     if (s->prefix)
       state_puts(s->prefix, s);

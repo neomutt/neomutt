@@ -41,7 +41,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   int yr;
 
   if (path)
-    *path = 0;
+    *path = '\0';
 
   if (mutt_strncmp("From ", s, 5) != 0)
     return 0;
@@ -93,7 +93,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       if (len + 1 > pathlen)
         len = pathlen - 1;
       memcpy(path, s, len);
-      path[len] = 0;
+      path[len] = '\0';
       mutt_debug(3, "is_from(): got return path: %s\n", path);
     }
 
