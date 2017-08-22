@@ -58,7 +58,7 @@
 #include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/term.h>
-#elif defined(HAVE_NCURSES_H)
+#else
 #include <term.h>
 #endif
 #ifdef USE_SIDEBAR
