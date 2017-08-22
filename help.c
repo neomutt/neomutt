@@ -32,11 +32,11 @@
 #include <wchar.h>
 #include "globals.h"
 #include "keymap.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "mapping.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
+#include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"

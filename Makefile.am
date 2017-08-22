@@ -40,7 +40,7 @@ bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = conststrings.c git_ver.h keymap_defs.h
+BUILT_SOURCES = conststrings.c git_ver.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
@@ -84,7 +84,7 @@ EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 
 EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
-	COPYRIGHT filter.h functions.h gen_defs globals.h \
+	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
 	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
@@ -130,9 +130,6 @@ LDADD = $(LIBOBJS) $(INTLLIBS)
 
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
-
-keymap_defs.h: $(OPS) $(srcdir)/gen_defs
-	$(srcdir)/gen_defs $(OPS) > $@
 
 git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \

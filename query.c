@@ -39,12 +39,12 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
+#include "opcodes.h"
 #include "protos.h"
 #include "rfc822.h"
 
