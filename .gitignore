@@ -16,7 +16,6 @@ autom4te.cache/
 conststrings.c
 git_ver.h
 hcache/hcversion.h
-keymap_defs.h
 mutt
 mutt_md5
 pgpewrap

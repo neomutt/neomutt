@@ -42,7 +42,7 @@
 #else
 #include <stddef.h>
 #include "keymap.h"
-#include "keymap_defs.h"
+#include "opcodes.h"
 #endif
 
 // clang-format off

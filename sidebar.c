@@ -34,11 +34,11 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
@@ -975,8 +975,7 @@ void mutt_sb_draw(void)
  * @param op Operation code
  *
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
- * with new mail". The operations are listed OPS.SIDEBAR which is built
- * into an enum in keymap_defs.h.
+ * with new mail". The operations are listed in opcodes.h.
  *
  * If the operation is successful, HilBuffy will be set to the new mailbox.
  * This function only *selects* the mailbox, doesn't *open* it.

@@ -32,10 +32,10 @@
 #include "globals.h"
 #include "history.h"
 #include "keymap.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 

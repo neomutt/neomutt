@@ -30,12 +30,12 @@
 #include "keymap.h"
 #include "functions.h"
 #include "globals.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "mapping.h"
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP
