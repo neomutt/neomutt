@@ -26,6 +26,7 @@
 #define _MUTT_SASL_H
 
 #include <stddef.h>
+#include <time.h>
 #include <sasl/sasl.h>
 
 struct Connection;
