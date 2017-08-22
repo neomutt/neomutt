@@ -40,7 +40,7 @@ bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
+BUILT_SOURCES = conststrings.c git_ver.h keymap_defs.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
@@ -89,12 +89,11 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
-	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
+	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h opcodes.h OPS \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
 	pgpewrap.c pop.h protos.h queue.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
-	sort.h txt2c.c txt2c.sh version.h \
-	keymap_alldefs.h
+	sort.h txt2c.c txt2c.sh version.h
 
 EXTRA_SCRIPTS =
 
@@ -121,7 +120,7 @@ conststrings.c: txt2c config.status
 		${srcdir}/txt2c.sh configure_options >> conststrings_c
 	mv -f conststrings_c conststrings.c
 
-CLEANFILES = keymap_alldefs.h $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 DISTCLEANFILES= txt2c
 
@@ -134,11 +133,6 @@ dist-hook:
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > $@
-
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs config.h
-	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
-		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
-		> $@
 
 git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
