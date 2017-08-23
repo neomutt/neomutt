@@ -3856,7 +3856,7 @@ struct Option MuttVars[] = {
    ** since it would otherwise have to abort the connection anyway. This
    ** option supersedes $$ssl_starttls.
    */
-# ifdef USE_SSL_GNUTLS
+#ifdef USE_SSL_GNUTLS
   { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
   /*
   ** .pp
@@ -3864,7 +3864,7 @@ struct Option MuttVars[] = {
   ** for use in any Diffie-Hellman key exchange. A value of 0 will use
   ** the default from the GNUTLS library.
   */
-# endif /* USE_SSL_GNUTLS */
+#endif /* USE_SSL_GNUTLS */
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSL_START_TLS, MUTT_YES },
   /*
   ** .pp
@@ -3872,7 +3872,7 @@ struct Option MuttVars[] = {
   ** advertising the capability. When \fIunset\fP, mutt will not attempt to
   ** use \fCSTARTTLS\fP regardless of the server's capabilities.
   */
-# ifdef USE_SSL_OPENSSL
+#ifdef USE_SSL_OPENSSL
   { "ssl_use_sslv2", DT_BOOL, R_NONE, OPT_SSLV2, 0 },
   /*
   ** .pp
@@ -3880,7 +3880,7 @@ struct Option MuttVars[] = {
   ** SSL authentication process. Note that SSLv2 and SSLv3 are now
   ** considered fundamentally insecure and are no longer recommended.
   */
-# endif /* defined USE_SSL_OPENSSL */
+#endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPT_SSLV3, 0 },
   /*
   ** .pp
@@ -3931,8 +3931,8 @@ struct Option MuttVars[] = {
   ** URL. You should only unset this for particular known hosts, using
   ** the \fC$<account-hook>\fP function.
   */
-# ifdef USE_SSL_OPENSSL
-#  ifdef HAVE_SSL_PARTIAL_CHAIN
+#ifdef USE_SSL_OPENSSL
+#ifdef HAVE_SSL_PARTIAL_CHAIN
   { "ssl_verify_partial_chains", DT_BOOL, R_NONE, OPT_SSL_VERIFY_PARTIAL, 0 },
   /*
   ** .pp
@@ -3947,8 +3947,8 @@ struct Option MuttVars[] = {
   ** .pp
   ** (OpenSSL 1.0.2b and newer only).
   */
-#  endif /* defined HAVE_SSL_PARTIAL_CHAIN */
-# endif /* defined USE_SSL_OPENSSL */
+#endif /* defined HAVE_SSL_PARTIAL_CHAIN */
+#endif /* defined USE_SSL_OPENSSL */
   { "ssl_ciphers", DT_STR, R_NONE, UL &SslCiphers, UL 0 },
   /*
   ** .pp
@@ -4596,23 +4596,23 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 const struct Command Commands[] = {
 #ifdef USE_SOCKET
   { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNTHOOK },
-#endif                     
+#endif
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
   { "alternative_order",   parse_stailq,           UL &AlternativeOrderList },
-#ifdef USE_COMPRESSED      
+#ifdef USE_COMPRESSED
   { "append-hook",         mutt_parse_hook,        MUTT_APPENDHOOK },
-#endif                     
+#endif
   { "attachments",         parse_attachments,      0 },
   { "auto_view",           parse_stailq,           UL &AutoViewList },
   { "bind",                mutt_parse_bind,        0 },
   { "charset-hook",        mutt_parse_hook,        MUTT_CHARSETHOOK },
-#ifdef USE_COMPRESSED      
+#ifdef USE_COMPRESSED
   { "close-hook",          mutt_parse_hook,        MUTT_CLOSEHOOK },
-#endif                     
-#ifdef HAVE_COLOR          
+#endif
+#ifdef HAVE_COLOR
   { "color",               mutt_parse_color,       0 },
-#endif                     
+#endif
   { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPTHOOK },
   { "exec",                mutt_parse_exec,        0 },
   { "fcc-hook",            mutt_parse_hook,        MUTT_FCCHOOK },
@@ -4626,10 +4626,10 @@ const struct Command Commands[] = {
   { "ifndef",              parse_ifdef,            1 },
   { "ignore",              parse_ignore,           0 },
   { "lists",               parse_lists,            0 },
-#ifdef USE_LUA             
+#ifdef USE_LUA
   { "lua",                 mutt_lua_parse,         0 },
   { "lua-source",          mutt_lua_source_file,   0 },
-#endif                     
+#endif
   { "macro",               mutt_parse_macro,       0 },
   { "mailboxes",           mutt_parse_mailboxes,   0 },
   { "mailto_allow",        parse_stailq,           UL &MailToAllow },
@@ -4639,9 +4639,9 @@ const struct Command Commands[] = {
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
   { "nospam",              parse_spam_list,        MUTT_NOSPAM },
-#ifdef USE_COMPRESSED      
+#ifdef USE_COMPRESSED
   { "open-hook",           mutt_parse_hook,        MUTT_OPENHOOK },
-#endif                     
+#endif
   { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPTHOOK },
   { "push",                mutt_parse_push,        0 },
   { "reply-hook",          mutt_parse_hook,        MUTT_REPLYHOOK },
@@ -4653,18 +4653,18 @@ const struct Command Commands[] = {
   { "set",                 parse_set,              0 },
   { "setenv",              parse_setenv,           0 },
   { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWNHOOK | MUTT_GLOBALHOOK },
-#ifdef USE_SIDEBAR         
+#ifdef USE_SIDEBAR
   { "sidebar_whitelist",   parse_path_list,        UL &SidebarWhitelist },
-#endif                     
+#endif
   { "source",              parse_source,           0 },
   { "spam",                parse_spam_list,        MUTT_SPAM },
   { "startup-hook",        mutt_parse_hook,        MUTT_STARTUPHOOK | MUTT_GLOBALHOOK },
   { "subjectrx",           parse_subjectrx_list,   UL &SubjectRxList },
   { "subscribe",           parse_subscribe,        0 },
-#ifdef USE_NOTMUCH         
+#ifdef USE_NOTMUCH
   { "tag-formats",         parse_tag_formats,      0 },
   { "tag-transforms",      parse_tag_transforms,   0 },
-#endif                     
+#endif
   { "timeout-hook",        mutt_parse_hook,        MUTT_TIMEOUTHOOK | MUTT_GLOBALHOOK },
   { "toggle",              parse_set,              MUTT_SET_INV },
   { "unalias",             parse_unalias,          0 },
@@ -4672,9 +4672,9 @@ const struct Command Commands[] = {
   { "unalternative_order", parse_unstailq,         UL &AlternativeOrderList },
   { "unattachments",       parse_unattachments,    0 },
   { "unauto_view",         parse_unstailq,         UL &AutoViewList },
-#ifdef HAVE_COLOR          
+#ifdef HAVE_COLOR
   { "uncolor",             mutt_parse_uncolor,     0 },
-#endif                     
+#endif
   { "ungroup",             parse_group,            MUTT_UNGROUP },
   { "unhdr_order",         parse_unstailq,         UL &HeaderOrderList },
   { "unhook",              mutt_parse_unhook,      0 },
@@ -4688,15 +4688,15 @@ const struct Command Commands[] = {
   { "unscore",             mutt_parse_unscore,     0 },
   { "unset",               parse_set,              MUTT_SET_UNSET },
   { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
-#ifdef USE_SIDEBAR         
+#ifdef USE_SIDEBAR
   { "unsidebar_whitelist", parse_path_unlist,      UL &SidebarWhitelist },
-#endif                     
+#endif
   { "unsubjectrx",         parse_unsubjectrx_list, UL &SubjectRxList },
   { "unsubscribe",         parse_unsubscribe,      0 },
-#ifdef USE_NOTMUCH         
+#ifdef USE_NOTMUCH
   { "unvirtual-mailboxes", mutt_parse_unmailboxes, MUTT_VIRTUAL },
   { "virtual-mailboxes",   mutt_parse_mailboxes,   MUTT_VIRTUAL | MUTT_NAMED },
-#endif                     
+#endif
   { NULL,                  NULL,                   0 },
 };
 
