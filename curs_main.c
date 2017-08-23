@@ -60,7 +60,7 @@
 #include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
 #include <ncurses/term.h>
-#else
+#elif !defined(USE_SLANG_CURSES)
 #include <term.h>
 #endif
 #ifdef USE_SIDEBAR
