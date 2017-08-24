@@ -8,10 +8,16 @@ my $xml = shift @ARGV;
 
 open F, "cat @ARGV |" or die "OPS*: $!";
 while (<F>) {
-  /(\w+) "(.+)"/ or die "$.: parse error";
-  $OPS{$1} = $2;
+  if ( /^\s+_fmt\((\w+),\s+N_\("(.+)"\)\)/ ) {
+    $OPS{$1} = $2;
+  }
 }
 close F;
+
+my $num_ops = scalar(keys(%OPS));
+if ( $num_ops == 0 ) {
+  die "No OPS found. Has the syntax changed?";
+}
 
 while (<STDIN>) {
   if (/^const struct Binding Op.*{ \/\* map: (.*) \*\//) {

@@ -264,7 +264,6 @@ AS_IF([test x$use_notmuch = "xyes"], [
 	AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_notmuch.o"
 	LIBS="$LIBS -lnotmuch"
-	OPS="$OPS \$(srcdir)/OPS.NOTMUCH"
 
 	AC_MSG_CHECKING([for notmuch api version 3])
 	AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
@@ -282,14 +281,9 @@ AS_IF([test x$use_notmuch = "xyes"], [
 dnl --with-mixmaster
 AS_IF([test "$with_mixmaster" != "no"], [
 	AS_IF([test -x "$with_mixmaster"], [MIXMASTER="$with_mixmaster"], [MIXMASTER="mixmaster"])
-	OPS="$OPS \$(srcdir)/OPS.MIX"
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
 	AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
 ])
-
-# We now require all OPS
-OPS="\$(srcdir)/OPS \$(srcdir)/OPS.SIDEBAR $OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT"
-AC_SUBST([OPS])
 
 AC_SUBST(PGPAUX_TARGET)
 AC_SUBST(SMIMEAUX_TARGET)
