@@ -4218,6 +4218,12 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 #endif
 
 #ifdef USE_NNTP
+  if ((p = getenv("NNTPSERVER")))
+  {
+    FREE(&NewsServer);
+    NewsServer = safe_strdup(p);
+  }
+  else
   {
     FILE *f = NULL;
     char *c = NULL;
@@ -4235,11 +4241,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       NewsServer = safe_strdup(p);
       fclose(f);
     }
-  }
-  if ((p = getenv("NNTPSERVER")))
-  {
-    FREE(&NewsServer);
-    NewsServer = safe_strdup(p);
   }
 #endif
 
