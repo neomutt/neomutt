@@ -10,7 +10,13 @@ AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
-AC_DEFINE(MUTT_VERSION, "1.8.3", [Version of upstream Mutt])
+dnl AC_DEFINE_SUBST(NAME, VALUE, DESCRIPTION)
+AC_DEFUN([AC_DEFINE_SUBST], [
+	AC_DEFINE([$1], [$2], [$3])
+	AC_SUBST([$1], ['$2'])
+])
+
+AC_DEFINE_SUBST(MUTT_VERSION, "1.8.3", [Version of upstream Mutt])
 
 AC_USE_SYSTEM_EXTENSIONS
 
