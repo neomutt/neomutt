@@ -64,7 +64,10 @@
   _fmt(OP_COMPOSE_EDIT_TO,                N_("edit the TO list")) \
   _fmt(OP_COMPOSE_EDIT_X_COMMENT_TO,      N_("edit the X-Comment-To field")) \
   _fmt(OP_COMPOSE_GET_ATTACHMENT,         N_("get a temporary copy of an attachment")) \
+  _fmt(OP_COMPOSE_GROUP_ALTS,             N_("group tagged attachments as multipart/alternative")) \
   _fmt(OP_COMPOSE_ISPELL,                 N_("run ispell on the message")) \
+  _fmt(OP_COMPOSE_MOVE_DOWN,              N_("move an attachment down in the attachment list")) \
+  _fmt(OP_COMPOSE_MOVE_UP,                N_("move an attachment up in the attachment list")) \
   _fmt(OP_COMPOSE_NEW_MIME,               N_("compose new attachment using mailcap entry")) \
   _fmt(OP_COMPOSE_POSTPONE_MESSAGE,       N_("save this message to send later")) \
   _fmt(OP_COMPOSE_RENAME_ATTACHMENT,      N_("send attachment with a different name")) \

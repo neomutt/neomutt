@@ -451,10 +451,13 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "filter-entry",          OP_FILTER,                      "F" },
   { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006" },
   { "get-attachment",        OP_COMPOSE_GET_ATTACHMENT,      "G" },
+  { "group-alternatives",    OP_COMPOSE_GROUP_ALTS,          "&" },
   { "ispell",                OP_COMPOSE_ISPELL,              "i" },
 #ifdef MIXMASTER
   { "mix",                   OP_COMPOSE_MIX,                 "M" },
 #endif
+  { "move-down",             OP_COMPOSE_MOVE_DOWN,           "+" },
+  { "move-up",               OP_COMPOSE_MOVE_UP,             "-" },
   { "new-mime",              OP_COMPOSE_NEW_MIME,            "n" },
   { "pgp-menu",              OP_COMPOSE_PGP_MENU,            "p" },
   { "pipe-entry",            OP_PIPE,                        "|" },

@@ -9079,6 +9079,22 @@ echo "Sourcing muttrc file" unset confirmappend macro index ,a "&lt;save-message
           See table <xref linkend="tab-attachment-bindings" /> for all
           available functions.
         </para>
+        <para>
+          Mutt includes some primitive ability to compose multipart/alternative
+          parts. In the Compose menu, attach the two (or more) alternatives as
+          usual.  For example, attach "invitation.html" and then
+          "invitation.txt". (You can reorder them using the &lt;move-up&gt; (-)
+          and &lt;move-down&gt; (+) bindings.) Edit the descriptions, if you
+          wish. Then tag the attachments that are alternatives, and press the
+          &lt;group-alternatives&gt; (&amp;) binding to group them together. The
+          separate parts will be replaced by a single new part with the
+          multipart/alternative type. From this point on, the alternatives must
+          be manipulated or deleted as a group.
+        </para>
+        <para>
+          Beware that such messages cannot be postponed. Once two attachments
+          are grouped as alternatives, they must be sent or lost.
+        </para>
       </sect2>
 
       <sect2 id="compose-menu">
