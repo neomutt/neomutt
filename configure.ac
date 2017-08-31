@@ -70,9 +70,6 @@ AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
 	[Some systems declare sig_atomic_t as volatile, some others -- no.
 	This define will have value `sig_atomic_t' or
 	`volatile sig_atomic_t' accordingly.])
-AH_TEMPLATE([ICONV_NONTRANS],
-	[Define as 1 if iconv() only converts exactly and we should treat
-	all return values other than (size_t)(-1) as equivalent.])
 
 AH_BOTTOM([/* fseeko portability defines */
 #define LOFF_T off_t

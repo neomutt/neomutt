@@ -208,11 +208,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "homespool", 0 },
 #endif
-#ifdef ICONV_NONTRANS
-  { "iconv_nontrans", 1 },
-#else
-  { "iconv_nontrans", 0 },
-#endif
 #ifdef HAVE_LIBIDN
   { "idn", 1 },
 #else
