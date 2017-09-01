@@ -34,6 +34,7 @@ struct ReplaceList;
 struct RxList;
 struct State;
 struct ListHead;
+struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -338,10 +339,6 @@ struct AttachMatch
 
 #define EXECSHELL "/bin/sh"
 
-/* Use this with care.  If the compiler can't see the array
- * definition, it obviously won't produce a correct result. */
-#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
-
 /* For mutt_simple_format() justifications */
 /* Making left 0 and center -1 is of course completely nonsensical, but
  * it retains compatibility for any patches that call mutt_simple_format.
@@ -359,6 +356,8 @@ int safe_asprintf(char **, const char *, ...);
 int mutt_inbox_cmp(const char *a, const char *b);
 
 const char *mutt_strsysexit(int e);
+
+char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
 #ifdef DEBUG
 extern char debugfilename[_POSIX_PATH_MAX];

@@ -38,6 +38,8 @@
 #define N_(a) a
 #endif
 
+#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
+
 void *safe_calloc(size_t nmemb, size_t size);
 void  safe_free(void *ptr);
 void *safe_malloc(size_t size);

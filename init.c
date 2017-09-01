@@ -53,7 +53,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mbyte.h"
 #include "mbyte_table.h"
 #include "mutt.h"
@@ -4010,22 +4009,6 @@ int mutt_dump_variables(int hide_sensitive)
   FREE(&err.data);
 
   return 0;
-}
-
-const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
-{
-  for (int i = 0; map[i].name; i++)
-    if (map[i].value == val)
-      return map[i].name;
-  return NULL;
-}
-
-int mutt_getvaluebyname(const char *name, const struct Mapping *map)
-{
-  for (int i = 0; map[i].name; i++)
-    if (mutt_strcasecmp(map[i].name, name) == 0)
-      return map[i].value;
-  return -1;
 }
 
 static int execute_commands(struct ListHead *p)

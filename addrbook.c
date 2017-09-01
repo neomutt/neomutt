@@ -30,7 +30,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "lib/lib.h"
-#include "mapping.h"
+#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "opcodes.h"

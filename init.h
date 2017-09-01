@@ -33,7 +33,6 @@
 #include "buffy.h"
 #include "globals.h"
 #include "group.h"
-#include "mapping.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
 #include "mutt_regex.h"

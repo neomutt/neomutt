@@ -23,8 +23,8 @@
 #ifndef _MUTT_SORT_H
 #define _MUTT_SORT_H
 
-#include "mapping.h"
 #include "where.h"
+#include "lib/mapping.h"
 
 struct Address;
 struct Context;

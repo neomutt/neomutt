@@ -40,7 +40,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mime.h"
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"

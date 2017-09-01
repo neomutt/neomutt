@@ -44,7 +44,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"

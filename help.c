@@ -31,7 +31,6 @@
 #include "globals.h"
 #include "keymap.h"
 #include "lib/lib.h"
-#include "mapping.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "opcodes.h"

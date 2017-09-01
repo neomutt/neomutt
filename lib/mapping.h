@@ -1,6 +1,6 @@
 /**
  * @file
- * Store links between user-readable string and a constant
+ * Store links between a user-readable string and a constant
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
@@ -35,8 +35,6 @@ struct Mapping
 };
 
 const char *mutt_getnamebyvalue(int val, const struct Mapping *map);
-char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
-
 int mutt_getvaluebyname(const char *name, const struct Mapping *map);
 
 #endif /* _MUTT_MAPPING_H */

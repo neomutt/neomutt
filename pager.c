@@ -48,7 +48,6 @@
 #include "keymap.h"
 #include "lib/lib.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
