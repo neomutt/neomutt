@@ -238,7 +238,7 @@ int mutt_option_index(const char *s)
 {
   for (int i = 0; MuttVars[i].option; i++)
     if (mutt_strcmp(s, MuttVars[i].option) == 0)
-      return (MuttVars[i].type == DT_SYN ?
+      return (MuttVars[i].type == DT_SYNONYM ?
                   mutt_option_index((char *) MuttVars[i].data) :
                   i);
   return -1;
@@ -275,7 +275,7 @@ bool mutt_option_get(const char *s, struct Option *opt)
     {
       memset(opt, 0, sizeof(*opt));
       opt->option = s;
-      opt->type = DT_STR;
+      opt->type = DT_STRING;
     }
     return true;
   }
@@ -371,7 +371,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
   {
     switch (DTYPE(MuttVars[idx].type))
     {
-      case DT_RX:
+      case DT_REGEX:
       {
         char err_str[LONG_STRING] = "";
         struct Buffer err2;
@@ -450,14 +450,14 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         }
       }
       break;
-      case DT_MBCHARTBL:
+      case DT_MBTABLE:
       {
         struct MbCharTable **tbl = (struct MbCharTable **) MuttVars[idx].data;
         free_mbchar_table(tbl);
         *tbl = parse_mbchar_table((const char *) val->data);
       }
       break;
-      case DT_ADDR:
+      case DT_ADDRESS:
         rfc822_free_address((struct Address **) MuttVars[idx].data);
         *((struct Address **) MuttVars[idx].data) =
             rfc822_parse_adrlist(NULL, (const char *) val->data);
@@ -473,7 +473,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         *((char **) MuttVars[idx].data) = safe_strdup(scratch);
         break;
       }
-      case DT_STR:
+      case DT_STRING:
       {
         /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
           * so cast to 'void*' is okay */
@@ -490,7 +490,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
       case DT_QUAD:
         set_quadoption(MuttVars[idx].data, val->data);
         break;
-      case DT_NUM:
+      case DT_NUMBER:
         *((short *) MuttVars[idx].data) = val->data;
         break;
       default:
@@ -711,10 +711,10 @@ static void free_opt(struct Option *p)
 
   switch (DTYPE(p->type))
   {
-    case DT_ADDR:
+    case DT_ADDRESS:
       rfc822_free_address((struct Address **) p->data);
       break;
-    case DT_RX:
+    case DT_REGEX:
       pp = (struct Regex *) p->data;
       FREE(&pp->pattern);
       if (pp->rx)
@@ -724,7 +724,7 @@ static void free_opt(struct Option *p)
       }
       break;
     case DT_PATH:
-    case DT_STR:
+    case DT_STRING:
       FREE((char **) p->data);
       break;
   }
@@ -2044,7 +2044,7 @@ static void set_default(struct Option *p)
 {
   switch (DTYPE(p->type))
   {
-    case DT_STR:
+    case DT_STRING:
       if (!p->init && *((char **) p->data))
         p->init = (unsigned long) safe_strdup(*((char **) p->data));
       break;
@@ -2056,7 +2056,7 @@ static void set_default(struct Option *p)
         p->init = (unsigned long) cp;
       }
       break;
-    case DT_ADDR:
+    case DT_ADDRESS:
       if (!p->init && *((struct Address **) p->data))
       {
         char tmp[HUGE_STRING];
@@ -2065,7 +2065,7 @@ static void set_default(struct Option *p)
         p->init = (unsigned long) safe_strdup(tmp);
       }
       break;
-    case DT_RX:
+    case DT_REGEX:
     {
       struct Regex *pp = (struct Regex *) p->data;
       if (!p->init && pp->pattern)
@@ -2079,10 +2079,10 @@ static void restore_default(struct Option *p)
 {
   switch (DTYPE(p->type))
   {
-    case DT_STR:
+    case DT_STRING:
       mutt_str_replace((char **) p->data, (char *) p->init);
       break;
-    case DT_MBCHARTBL:
+    case DT_MBTABLE:
       free_mbchar_table((struct MbCharTable **) p->data);
       *((struct MbCharTable **) p->data) = parse_mbchar_table((char *) p->init);
       break;
@@ -2103,7 +2103,7 @@ static void restore_default(struct Option *p)
         *((char **) p->data) = safe_strdup(path);
       }
       break;
-    case DT_ADDR:
+    case DT_ADDRESS:
       rfc822_free_address((struct Address **) p->data);
       if (p->init)
         *((struct Address **) p->data) = rfc822_parse_adrlist(NULL, (char *) p->init);
@@ -2117,7 +2117,7 @@ static void restore_default(struct Option *p)
     case DT_QUAD:
       set_quadoption(p->data, p->init);
       break;
-    case DT_NUM:
+    case DT_NUMBER:
     case DT_SORT:
     case DT_MAGIC:
 #ifdef DEBUG
@@ -2127,7 +2127,7 @@ static void restore_default(struct Option *p)
 #endif
         *((short *) p->data) = p->init;
       break;
-    case DT_RX:
+    case DT_REGEX:
     {
       struct Regex *pp = (struct Regex *) p->data;
       int flags = 0;
@@ -2634,18 +2634,18 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       else
         set_option(MuttVars[idx].data);
     }
-    else if (myvar || DTYPE(MuttVars[idx].type) == DT_STR ||
-             DTYPE(MuttVars[idx].type) == DT_PATH || DTYPE(MuttVars[idx].type) == DT_ADDR ||
-             DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
+    else if (myvar || DTYPE(MuttVars[idx].type) == DT_STRING ||
+             DTYPE(MuttVars[idx].type) == DT_PATH || DTYPE(MuttVars[idx].type) == DT_ADDRESS ||
+             DTYPE(MuttVars[idx].type) == DT_MBTABLE)
     {
       if (unset)
       {
         CHECK_PAGER;
         if (myvar)
           myvar_del(myvar);
-        else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
+        else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
           rfc822_free_address((struct Address **) MuttVars[idx].data);
-        else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
+        else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
           free_mbchar_table((struct MbCharTable **) MuttVars[idx].data);
         else
           /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
@@ -2670,7 +2670,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             return -1;
           }
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
+        else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
         {
           _tmp[0] = '\0';
           rfc822_write_address(_tmp, sizeof(_tmp),
@@ -2684,7 +2684,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           mutt_pretty_mailbox(_tmp, sizeof(_tmp));
           val = _tmp;
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
+        else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {
           struct MbCharTable *mbt = (*((struct MbCharTable **) MuttVars[idx].data));
           val = mbt ? NONULL(mbt->orig_str) : "";
@@ -2738,7 +2738,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             restart_debug();
 #endif
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_STR)
+        else if (DTYPE(MuttVars[idx].type) == DT_STRING)
         {
           if ((strstr(MuttVars[idx].option, "charset") &&
                check_charset(&MuttVars[idx], tmp->data) < 0) |
@@ -2766,7 +2766,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             return -1;
           }
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
+        else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {
           free_mbchar_table((struct MbCharTable **) MuttVars[idx].data);
           *((struct MbCharTable **) MuttVars[idx].data) = parse_mbchar_table(tmp->data);
@@ -2779,7 +2779,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_RX)
+    else if (DTYPE(MuttVars[idx].type) == DT_REGEX)
     {
       if (query || *s->dptr != '=')
       {
@@ -2864,7 +2864,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_NUM)
+    else if (DTYPE(MuttVars[idx].type) == DT_NUMBER)
     {
       short *ptr = (short *) MuttVars[idx].data;
       short val;
@@ -3843,25 +3843,25 @@ int var_to_string(int idx, char *val, size_t len)
 
   tmp[0] = '\0';
 
-  if ((DTYPE(MuttVars[idx].type) == DT_STR) ||
-      (DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_RX))
+  if ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
+      (DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_REGEX))
   {
     strfcpy(tmp, NONULL(*((char **) MuttVars[idx].data)), sizeof(tmp));
     if (DTYPE(MuttVars[idx].type) == DT_PATH)
       mutt_pretty_mailbox(tmp, sizeof(tmp));
   }
-  else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
+  else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
   {
     struct MbCharTable *mbt = (*((struct MbCharTable **) MuttVars[idx].data));
     strfcpy(tmp, mbt ? NONULL(mbt->orig_str) : "", sizeof(tmp));
   }
-  else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
+  else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
   {
     rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].data), 0);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
     strfcpy(tmp, vals[quadoption(MuttVars[idx].data)], sizeof(tmp));
-  else if (DTYPE(MuttVars[idx].type) == DT_NUM)
+  else if (DTYPE(MuttVars[idx].type) == DT_NUMBER)
   {
     short sval = *((short *) MuttVars[idx].data);
 
@@ -3985,7 +3985,7 @@ int mutt_dump_variables(int hide_sensitive)
 
   for (int i = 0; MuttVars[i].option; i++)
   {
-    if (MuttVars[i].type == DT_SYN)
+    if (MuttVars[i].type == DT_SYNONYM)
       continue;
 
     if (hide_sensitive && IS_SENSITIVE(MuttVars[i]))

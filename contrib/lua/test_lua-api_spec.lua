@@ -30,25 +30,25 @@ end
 
 describe('lua API', function()
   describe('test get/set', function()
-    it('works with DT_STR', function()
+    it('works with DT_STRING', function()
       test_config_type("visual", "vim", "fubar")
     end)
 
-    it('works with DT_NUM and positive ints', function()
+    it('works with DT_NUMBER and positive ints', function()
       test_config_type("connect_timeout", 69, 42)
       test_config_type("connect_timeout", 42, 69)
     end)
 
-    it('works with DT_NUM and negative ints', function()
+    it('works with DT_NUMBER and negative ints', function()
       test_config_type("connect_timeout", 69, -42)
       test_config_type("connect_timeout", -42, 69)
     end)
 
-    it('works with DT_NUM and does not accept positive int overflow', function()
+    it('works with DT_NUMBER and does not accept positive int overflow', function()
       assert.has_error(function() test_config_type("connect_timeout", 69, 33000) end)
     end)
 
-    it('works with DT_NUM and does not accept negative int overflow', function()
+    it('works with DT_NUMBER and does not accept negative int overflow', function()
       assert.has_error(function() test_config_type("connect_timeout", 69, -33000) end)
     end)
 
@@ -72,7 +72,7 @@ describe('lua API', function()
       test_config_type("sort", "from", "date")
     end)
 
-    it('works with DT_RX', function()
+    it('works with DT_REGEX', function()
       test_config_type("mask", "!^\\\\.[^.]", ".*")
     end)
 
@@ -80,15 +80,15 @@ describe('lua API', function()
       test_config_type("to_chars", "+TCFL", "+T")
     end)
 
-    it('works with DT_ADR', function()
+    it('works with DT_ADDRESS', function()
       test_config_type("from", "fubar@example.org", "barfu@example.com")
     end)
 
-    it('works with custom my_ variable DT_STR', function()
+    it('works with custom my_ variable DT_STRING', function()
       test_config_type("my_fubar", "Ford Prefect", "Zaphod Beeblebrox")
     end)
 
-    it('detects a non-existent my_ variable DT_STR', function()
+    it('detects a non-existent my_ variable DT_STRING', function()
       assert.has_error(function() mutt.get("my_doesnotexists") end)
     end)
 
