@@ -535,10 +535,10 @@ void mx_fastclose_mailbox(struct Context *ctx)
     ctx->mx_ops->close(ctx);
 
   if (ctx->subj_hash)
-    mutt_hash_destroy(&ctx->subj_hash, NULL);
+    mutt_hash_destroy(&ctx->subj_hash);
   if (ctx->id_hash)
-    mutt_hash_destroy(&ctx->id_hash, NULL);
-  mutt_hash_destroy(&ctx->label_hash, NULL);
+    mutt_hash_destroy(&ctx->id_hash);
+  mutt_hash_destroy(&ctx->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->msgcount; i++)
     mutt_free_header(&ctx->hdrs[i]);
@@ -980,9 +980,9 @@ void mx_update_tables(struct Context *ctx, bool committing)
                       ctx->hdrs[i]->content->hdr_offset);
       /* remove message from the hash tables */
       if (ctx->subj_hash && ctx->hdrs[i]->env->real_subj)
-        mutt_hash_delete(ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
+        mutt_hash_delete(ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i]);
       if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
-        mutt_hash_delete(ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
+        mutt_hash_delete(ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i]);
       mutt_label_hash_remove(ctx, ctx->hdrs[i]);
       /* The path mx_check_mailbox() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()

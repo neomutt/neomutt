@@ -1681,9 +1681,9 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   /* replace envelope with new one
    * hash elements must be updated because pointers will be changed */
   if (ctx->id_hash && hdr->env->message_id)
-    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr, NULL);
+    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr);
   if (ctx->subj_hash && hdr->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr, NULL);
+    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr);
 
   mutt_env_free(&hdr->env);
   hdr->env = mutt_read_rfc822_header(msg->fp, hdr, 0, 0);
@@ -2015,9 +2015,9 @@ static int check_mailbox(struct Context *ctx)
   if (ret == MUTT_REOPENED)
   {
     if (ctx->subj_hash)
-      mutt_hash_destroy(&ctx->subj_hash, NULL);
+      mutt_hash_destroy(&ctx->subj_hash);
     if (ctx->id_hash)
-      mutt_hash_destroy(&ctx->id_hash, NULL);
+      mutt_hash_destroy(&ctx->id_hash);
     mutt_clear_threads(ctx);
 
     ctx->vcount = 0;
@@ -2245,7 +2245,7 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
     if (data && data->deleted && !data->newsrc_ent)
     {
       nntp_delete_group_cache(data);
-      mutt_hash_delete(nserv->groups_hash, data->group, NULL, nntp_data_free);
+      mutt_hash_delete(nserv->groups_hash, data->group, NULL);
       nserv->groups_list[i] = NULL;
     }
   }

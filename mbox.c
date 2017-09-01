@@ -621,10 +621,10 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 
   /* simulate a close */
   if (ctx->id_hash)
-    mutt_hash_destroy(&ctx->id_hash, NULL);
+    mutt_hash_destroy(&ctx->id_hash);
   if (ctx->subj_hash)
-    mutt_hash_destroy(&ctx->subj_hash, NULL);
-  mutt_hash_destroy(&ctx->label_hash, NULL);
+    mutt_hash_destroy(&ctx->subj_hash);
+  mutt_hash_destroy(&ctx->label_hash);
   mutt_clear_threads(ctx);
   FREE(&ctx->v2r);
   if (ctx->readonly)

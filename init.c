@@ -3893,7 +3893,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   /* reverse alias keys need to be strdup'ed because of idna conversions */
   ReverseAliases = mutt_hash_create(
       1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
-  TagTransforms = mutt_hash_create(64, 1);
+  TagTransforms = mutt_hash_create(64, MUTT_HASH_STRCASECMP);
   TagFormats = mutt_hash_create(64, 0);
 
   mutt_menu_init();

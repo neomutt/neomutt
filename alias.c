@@ -495,7 +495,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      mutt_hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
+      mutt_hash_delete(ReverseAliases, ap->mailbox, ap);
   }
 }
 

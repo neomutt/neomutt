@@ -237,7 +237,7 @@ static void label_ref_dec(struct Context *ctx, char *label)
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(ctx->label_hash, label, NULL, NULL);
+    mutt_hash_delete(ctx->label_hash, label, NULL);
     return;
   }
 

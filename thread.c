@@ -604,7 +604,7 @@ void mutt_clear_threads(struct Context *ctx)
   ctx->tree = NULL;
 
   if (ctx->thread_hash)
-    mutt_hash_destroy(&ctx->thread_hash, *free);
+    mutt_hash_destroy(&ctx->thread_hash);
 }
 
 static int compare_threads(const void *a, const void *b)
@@ -782,6 +782,11 @@ static void check_subjects(struct Context *ctx, int init)
   }
 }
 
+void thread_hash_destructor(int type, void *obj, intptr_t data)
+{
+  FREE(&obj);
+}
+
 void mutt_sort_threads(struct Context *ctx, int init)
 {
   struct Header *cur = NULL;
@@ -801,7 +806,10 @@ void mutt_sort_threads(struct Context *ctx, int init)
     init = 1;
 
   if (init)
+  {
     ctx->thread_hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+    mutt_hash_set_destructor(ctx->thread_hash, thread_hash_destructor, 0);
+  }
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top

@@ -903,7 +903,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
         FREE(&idata->cache[cacheno].path);
       }
 
-      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
+      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(h)->uid, h);
 
       imap_free_header_data((struct ImapHeaderData **) &h->data);
     }
@@ -2329,7 +2329,7 @@ static int imap_close_mailbox(struct Context *ctx)
     mutt_list_free(&idata->flags);
     idata->ctx = NULL;
 
-    mutt_hash_destroy(&idata->uid_hash, NULL);
+    mutt_hash_destroy(&idata->uid_hash);
     FREE(&idata->msn_index);
     idata->msn_index_size = 0;
     idata->max_msn = 0;
