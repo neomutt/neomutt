@@ -47,6 +47,7 @@
 #include "context.h"
 #include "copy.h"
 #include "envelope.h"
+#include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
@@ -1414,6 +1415,35 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   return body;
 }
 
+static void run_mime_type_query(struct Body *att)
+{
+  FILE *fp, *fperr;
+  char cmd[HUGE_STRING];
+  char *buf = NULL;
+  size_t buflen;
+  int dummy = 0;
+  pid_t thepid;
+
+  mutt_expand_file_fmt(cmd, sizeof(cmd), MimeTypeQueryCmd, att->filename);
+
+  if ((thepid = mutt_create_filter(cmd, NULL, &fp, &fperr)) < 0)
+  {
+    mutt_error(_("Error running \"%s\"!"), cmd);
+    return;
+  }
+
+  if ((buf = mutt_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  {
+    if (strchr(buf, '/'))
+      mutt_parse_content_type(buf, att);
+    FREE(&buf);
+  }
+
+  safe_fclose(&fp);
+  safe_fclose(&fperr);
+  mutt_wait_filter(thepid);
+}
+
 struct Body *mutt_make_file_attach(const char *path)
 {
   struct Body *att = NULL;
@@ -1422,11 +1452,17 @@ struct Body *mutt_make_file_attach(const char *path)
   att = mutt_new_body();
   att->filename = safe_strdup(path);
 
+  if (MimeTypeQueryCmd && *MimeTypeQueryCmd && option(OPT_MIME_TYPE_QUERY_FIRST))
+    run_mime_type_query(att);
+
   /* Attempt to determine the appropriate content-type based on the filename
    * suffix.
    */
+  if (!att->subtype)
+    mutt_lookup_mime_type(att, path);
 
-  mutt_lookup_mime_type(att, path);
+  if (!att->subtype && MimeTypeQueryCmd && *MimeTypeQueryCmd && !option(OPT_MIME_TYPE_QUERY_FIRST))
+    run_mime_type_query(att);
 
   if ((info = mutt_get_content_info(path, att)) == NULL)
   {

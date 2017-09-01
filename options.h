@@ -129,6 +129,7 @@ enum GlobalBool
   OPT_ME_TOO,
   OPT_MH_PURGE,
   OPT_MIME_FORW_DECODE,
+  OPT_MIME_TYPE_QUERY_FIRST,
 #ifdef USE_NNTP
   OPT_MIME_SUBJECT, /**< encode subject line with RFC2047 */
 #endif

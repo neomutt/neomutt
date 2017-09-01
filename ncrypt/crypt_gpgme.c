@@ -2281,7 +2281,7 @@ static int line_compare(const char *a, size_t n, const char *b)
 /*
  * Implementation of `pgp_check_traditional'.
  */
-static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_only)
+static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
@@ -2291,9 +2291,6 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_o
   short enc = 0;
 
   if (b->type != TYPETEXT)
-    return 0;
-
-  if (tagged_only && !b->tagged)
     return 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -2339,21 +2336,24 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_o
   return 1;
 }
 
-int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int tagged_only)
+int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
   int rv = 0;
   int r;
   for (; b; b = b->next)
   {
-    if (is_multipart(b))
-      rv = (pgp_gpgme_check_traditional(fp, b->parts, tagged_only) || rv);
+    if (!just_one && is_multipart(b))
+      rv = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rv);
     else if (b->type == TYPETEXT)
     {
       if ((r = mutt_is_application_pgp(b)))
         rv = (rv || r);
       else
-        rv = (pgp_check_traditional_one_body(fp, b, tagged_only) || rv);
+        rv = (pgp_check_traditional_one_body(fp, b) || rv);
     }
+
+    if (just_one)
+      break;
   }
   return rv;
 }

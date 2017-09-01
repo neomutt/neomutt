@@ -936,7 +936,13 @@ void mutt_version(void)
   mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
 }
 
-void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
+/*
+ * Returns:
+ *   1 when a structural change is made.
+ *     recvattach requires this to know when to regenerate the actx.
+ *   0 otherwise.
+ */
+int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 {
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
@@ -948,6 +954,7 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
   short charset_changed = 0;
   short type_changed = 0;
+  short structure_changed = 0;
 
   cp = mutt_get_parameter("charset", b->parameter);
   strfcpy(charset, NONULL(cp), sizeof(charset));
@@ -968,7 +975,7 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   }
 
   if (mutt_get_field("Content-Type: ", buf, sizeof(buf), 0) != 0 || buf[0] == 0)
-    return;
+    return 0;
 
   /* clean up previous junk */
   mutt_free_parameter(&b->parameter);
@@ -1009,15 +1016,22 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   b->force_charset |= charset_changed ? 1 : 0;
 
   if (!is_multipart(b) && b->parts)
+  {
+    structure_changed = 1;
     mutt_free_body(&b->parts);
+  }
   if (!mutt_is_message_type(b->type, b->subtype) && b->hdr)
   {
+    structure_changed = 1;
     b->hdr->content = NULL;
     mutt_free_header(&b->hdr);
   }
 
-  if (fp && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))
+  if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))
+  {
+    structure_changed = 1;
     mutt_parse_part(fp, b);
+  }
 
   if (WithCrypto && h)
   {
@@ -1026,6 +1040,8 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
     h->security |= crypt_query(b);
   }
+
+  return structure_changed;
 }
 
 static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
