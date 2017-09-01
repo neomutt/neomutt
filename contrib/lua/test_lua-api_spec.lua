@@ -76,7 +76,7 @@ describe('lua API', function()
       test_config_type("mask", "!^\\\\.[^.]", ".*")
     end)
 
-    it('works with DT_MBCHARTBL', function()
+    it('works with DT_MBTABLE', function()
       test_config_type("to_chars", "+TCFL", "+T")
     end)
 

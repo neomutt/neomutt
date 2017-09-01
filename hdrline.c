@@ -39,7 +39,7 @@
 #include "globals.h"
 #include "header.h"
 #include "lib/lib.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
@@ -205,7 +205,7 @@ enum FieldType
  * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
  */
-static char *get_nth_wchar(struct MbCharTable *table, int index)
+static char *get_nth_wchar(struct MbTable *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";

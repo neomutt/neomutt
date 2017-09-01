@@ -34,7 +34,7 @@
 #include "globals.h"
 #include "lib/lib.h"
 #include "mailbox.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
 #include "options.h"
@@ -211,7 +211,7 @@ static int _lua_mutt_get(lua_State *l)
       }
       case DT_MBTABLE:
       {
-        struct MbCharTable *tbl = *(struct MbCharTable **) opt.data;
+        struct MbTable *tbl = *(struct MbTable **) opt.data;
         lua_pushstring(l, tbl->orig_str);
         return 1;
       }

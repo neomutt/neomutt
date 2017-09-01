@@ -71,7 +71,7 @@ WHERE char *ForwardAttrIntro;
 WHERE char *ForwardAttrTrailer;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
-WHERE struct MbCharTable *FromChars;
+WHERE struct MbTable *FromChars;
 WHERE char *HdrFmt;
 WHERE char *HistFile;
 WHERE char *HomeDir;
@@ -178,11 +178,11 @@ WHERE short SslDHPrimeBits;
 WHERE char *SslCACertFile;
 #endif
 #endif
-WHERE struct MbCharTable *StChars;
+WHERE struct MbTable *StChars;
 WHERE char *Status;
 WHERE char *TempDir;
-WHERE struct MbCharTable *ToChars;
-WHERE struct MbCharTable *FlagChars;
+WHERE struct MbTable *ToChars;
+WHERE struct MbTable *FlagChars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;

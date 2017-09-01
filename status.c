@@ -26,7 +26,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "lib/lib.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
