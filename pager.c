@@ -796,7 +796,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       {
         for (color_line = ColorHdrList; color_line; color_line = color_line->next)
         {
-          if (REGEXEC(color_line->rx, buf) == 0)
+          if (REGEXEC(color_line->regex, buf) == 0)
           {
             line_info[n].type = MT_COLOR_HEADER;
             line_info[n].syntax[0].color = color_line->pair;
@@ -847,9 +847,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (regexec((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0)
+  else if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
   {
-    if (regexec((regex_t *) Smileys.rx, buf, 1, smatch, 0) == 0)
+    if (regexec((regex_t *) Smileys.regex, buf, 1, smatch, 0) == 0)
     {
       if (smatch[0].rm_so > 0)
       {
@@ -859,7 +859,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         c = buf[smatch[0].rm_so];
         buf[smatch[0].rm_so] = 0;
 
-        if (regexec((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0)
+        if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
         {
           if (q_classify && line_info[n].quote == NULL)
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
@@ -914,7 +914,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         color_line = ColorBodyList;
       while (color_line)
       {
-        if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+        if (regexec(&color_line->regex, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -982,7 +982,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       null_rx = false;
       for (color_line = ColorAttachList; color_line; color_line = color_line->next)
       {
-        if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+        if (regexec(&color_line->regex, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1488,7 +1488,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (regexec((regex_t *) QuoteRegexp.rx, (char *) fmt, 1, pmatch, 0) != 0)
+    if (regexec((regex_t *) QuoteRegexp.regex, (char *) fmt, 1, pmatch, 0) != 0)
       goto out;
     (*line_info)[n].quote =
         classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,

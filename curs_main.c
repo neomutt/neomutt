@@ -727,7 +727,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
     {
       regmatch_t pmatch[cl->match + 1];
 
-      if (regexec(&cl->rx, buf + offset, cl->match + 1, pmatch, 0) != 0)
+      if (regexec(&cl->regex, buf + offset, cl->match + 1, pmatch, 0) != 0)
         continue; /* regex doesn't match the status bar */
 
       int first = pmatch[cl->match].rm_so + offset;

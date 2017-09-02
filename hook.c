@@ -54,7 +54,7 @@ static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 struct Hook
 {
   int type;                /**< hook type */
-  struct Regex rx;         /**< regular expression */
+  struct Regex regex;      /**< regular expression */
   char *command;           /**< filename, command or pattern to execute */
   struct Pattern *pattern; /**< used for fcc,save,send-hook */
   TAILQ_ENTRY(Hook) entries;
@@ -186,7 +186,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
     }
     else if (ptr->type == data &&
-             ptr->rx.not == not&&(mutt_strcmp(pattern.data, ptr->rx.pattern) == 0))
+             ptr->regex.not == not&&(mutt_strcmp(pattern.data, ptr->regex.pattern) == 0))
     {
       if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK |
                   MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK |
@@ -247,9 +247,9 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   ptr->type = data;
   ptr->command = command.data;
   ptr->pattern = pat;
-  ptr->rx.pattern = pattern.data;
-  ptr->rx.rx = rx;
-  ptr->rx.not = not;
+  ptr->regex.pattern = pattern.data;
+  ptr->regex.regex = rx;
+  ptr->regex.not = not;
   TAILQ_INSERT_TAIL(&Hooks, ptr, entries);
   return 0;
 
@@ -263,10 +263,10 @@ error:
 static void delete_hook(struct Hook *h)
 {
   FREE(&h->command);
-  FREE(&h->rx.pattern);
-  if (h->rx.rx)
+  FREE(&h->regex.pattern);
+  if (h->regex.regex)
   {
-    regfree(h->rx.rx);
+    regfree(h->regex.regex);
   }
   mutt_pattern_free(&h->pattern);
   FREE(&h);
@@ -348,7 +348,7 @@ void mutt_folder_hook(char *path)
 
     if (tmp->type & MUTT_FOLDERHOOK)
     {
-      if ((regexec(tmp->rx.rx, path, 0, NULL, 0) == 0) ^ tmp->rx.not)
+      if ((regexec(tmp->regex.regex, path, 0, NULL, 0) == 0) ^ tmp->regex.not)
       {
         if (mutt_parse_rc_line(tmp->command, &token, &err) == -1)
         {
@@ -377,7 +377,7 @@ char *mutt_find_hook(int type, const char *pat)
   {
     if (tmp->type & type)
     {
-      if (regexec(tmp->rx.rx, pat, 0, NULL, 0) == 0)
+      if (regexec(tmp->regex.regex, pat, 0, NULL, 0) == 0)
         return tmp->command;
     }
   }
@@ -403,7 +403,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->rx.not)
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
         {
@@ -440,7 +440,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->rx.not)
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->regex.not)
       {
         mutt_make_string(path, pathlen, hook->command, ctx, hdr);
         return 0;
@@ -507,7 +507,7 @@ static char *_mutt_string_hook(const char *match, int hook)
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if ((tmp->type & hook) &&
-        ((match && regexec(tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
+        ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^ tmp->regex.not))
       return tmp->command;
   }
   return NULL;
@@ -520,7 +520,7 @@ static void _mutt_list_hook(struct ListHead *matches, const char *match, int hoo
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
     if ((tmp->type & hook) &&
-        ((match && regexec(tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
+        ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^ tmp->regex.not))
       mutt_list_insert_tail(matches, safe_strdup(tmp->command));
   }
 }
@@ -565,7 +565,7 @@ void mutt_account_hook(const char *url)
     if (!(hook->command && (hook->type & MUTT_ACCOUNTHOOK)))
       continue;
 
-    if ((regexec(hook->rx.rx, url, 0, NULL, 0) == 0) ^ hook->rx.not)
+    if ((regexec(hook->regex.regex, url, 0, NULL, 0) == 0) ^ hook->regex.not)
     {
       inhook = true;
 

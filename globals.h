@@ -215,15 +215,15 @@ WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
 WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
 WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
 
-WHERE struct RxList *Alternates;
-WHERE struct RxList *UnAlternates;
-WHERE struct RxList *MailLists;
-WHERE struct RxList *UnMailLists;
-WHERE struct RxList *SubscribedLists;
-WHERE struct RxList *UnSubscribedLists;
+WHERE struct RegexList *Alternates;
+WHERE struct RegexList *UnAlternates;
+WHERE struct RegexList *MailLists;
+WHERE struct RegexList *UnMailLists;
+WHERE struct RegexList *SubscribedLists;
+WHERE struct RegexList *UnSubscribedLists;
 WHERE struct ReplaceList *SpamList;
-WHERE struct RxList *NoSpamList;
-WHERE struct ReplaceList *SubjectRxList;
+WHERE struct RegexList *NoSpamList;
+WHERE struct ReplaceList *SubjectRegexList;
 
 /* bit vector for the yes/no/ask variable type */
 #ifdef MAIN_C

@@ -671,10 +671,10 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (mutt_match_rx_list(addr->mailbox, Alternates))
+  if (mutt_match_regex_list(addr->mailbox, Alternates))
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox);
-    if (mutt_match_rx_list(addr->mailbox, UnAlternates))
+    if (mutt_match_regex_list(addr->mailbox, UnAlternates))
       mutt_debug(5, "mutt_addr_is_user: but, %s matched by unalternates.\n", addr->mailbox);
     else
       return true;

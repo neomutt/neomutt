@@ -112,14 +112,14 @@ static bool eat_regexp(struct Pattern *pat, struct Buffer *s, struct Buffer *err
   }
   else
   {
-    pat->p.rx = safe_malloc(sizeof(regex_t));
-    r = REGCOMP(pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
+    pat->p.regex = safe_malloc(sizeof(regex_t));
+    r = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
     if (r)
     {
-      regerror(r, pat->p.rx, errmsg, sizeof(errmsg));
+      regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
       mutt_buffer_printf(err, "'%s': %s", buf.data, errmsg);
       FREE(&buf.data);
-      FREE(&pat->p.rx);
+      FREE(&pat->p.regex);
       return false;
     }
     FREE(&buf.data);
@@ -920,7 +920,7 @@ static int patmatch(const struct Pattern *pat, const char *buf)
   else if (pat->groupmatch)
     return !mutt_group_match(pat->p.g, buf);
   else
-    return regexec(pat->p.rx, buf, 0, NULL, 0);
+    return regexec(pat->p.regex, buf, 0, NULL, 0);
 }
 
 static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
@@ -1117,10 +1117,10 @@ void mutt_pattern_free(struct Pattern **pat)
       FREE(&tmp->p.str);
     else if (tmp->groupmatch)
       tmp->p.g = NULL;
-    else if (tmp->p.rx)
+    else if (tmp->p.regex)
     {
-      regfree(tmp->p.rx);
-      FREE(&tmp->p.rx);
+      regfree(tmp->p.regex);
+      FREE(&tmp->p.regex);
     }
 
     if (tmp->child)

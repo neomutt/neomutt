@@ -31,7 +31,7 @@
 #include <stdio.h>
 
 struct ReplaceList;
-struct RxList;
+struct RegexList;
 struct State;
 struct ListHead;
 struct Mapping;
@@ -310,12 +310,12 @@ enum QuadOptionVars
 #define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
-void mutt_free_rx_list(struct RxList **list);
+void mutt_free_regex_list(struct RegexList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
 int mutt_matches_ignore(const char *s);
 
 /* add an element to a list */
-int mutt_remove_from_rx_list(struct RxList **l, const char *str);
+int mutt_remove_from_regex_list(struct RegexList **l, const char *str);
 
 void mutt_init(int skip_sys_rc, struct ListHead *commands);
 
@@ -332,7 +332,7 @@ struct AttachMatch
   char *major;
   int major_int;
   char *minor;
-  regex_t minor_rx;
+  regex_t minor_regex;
 };
 
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */

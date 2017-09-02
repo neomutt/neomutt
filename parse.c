@@ -1197,7 +1197,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
     if (mutt_match_spam_list(line, SpamList, buf, sizeof(buf)))
     {
-      if (!mutt_match_rx_list(line, NoSpamList))
+      if (!mutt_match_regex_list(line, NoSpamList))
       {
         /* if spam tag already exists, figure out how to amend it */
         if (e->spam && *buf)
@@ -1267,7 +1267,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
       rfc2047_decode(&e->subject);
 
-      if (regexec(ReplyRegexp.rx, e->subject, 1, pmatch, 0) == 0)
+      if (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0) == 0)
         e->real_subj = e->subject + pmatch[0].rm_eo;
       else
         e->real_subj = e->subject;
@@ -1337,7 +1337,7 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
                dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
     if ((a->major_int == TYPEANY || a->major_int == b->type) &&
-        (!b->subtype || !regexec(&a->minor_rx, b->subtype, 0, NULL, 0)))
+        (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
     {
       mutt_debug(5, "yes\n");
       return true;

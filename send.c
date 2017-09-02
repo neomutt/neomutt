@@ -1269,7 +1269,7 @@ static int has_recips(struct Address *a)
 static int search_attach_keyword(char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
-  if (!AttachKeyword.rx)
+  if (!AttachKeyword.regex)
     return 0;
 
   FILE *attf = safe_fopen(filename, "r");
@@ -1281,8 +1281,8 @@ static int search_attach_keyword(char *filename)
   while (!feof(attf))
   {
     fgets(inputline, LONG_STRING, attf);
-    if (regexec(QuoteRegexp.rx, inputline, 0, NULL, 0) != 0 &&
-        regexec(AttachKeyword.rx, inputline, 0, NULL, 0) == 0)
+    if (regexec(QuoteRegexp.regex, inputline, 0, NULL, 0) != 0 &&
+        regexec(AttachKeyword.regex, inputline, 0, NULL, 0) == 0)
     {
       found = 1;
       break;

@@ -4658,7 +4658,7 @@ const struct Command Commands[] = {
   { "source",              parse_source,           0 },
   { "spam",                parse_spam_list,        MUTT_SPAM },
   { "startup-hook",        mutt_parse_hook,        MUTT_STARTUPHOOK | MUTT_GLOBALHOOK },
-  { "subjectrx",           parse_subjectrx_list,   UL &SubjectRxList },
+  { "subjectrx",           parse_subjectrx_list,   UL &SubjectRegexList },
   { "subscribe",           parse_subscribe,        0 },
 #ifdef USE_NOTMUCH
   { "tag-formats",         parse_tag_formats,      0 },
@@ -4690,7 +4690,7 @@ const struct Command Commands[] = {
 #ifdef USE_SIDEBAR
   { "unsidebar_whitelist", parse_path_unlist,      UL &SidebarWhitelist },
 #endif
-  { "unsubjectrx",         parse_unsubjectrx_list, UL &SubjectRxList },
+  { "unsubjectrx",         parse_unsubjectrx_list, UL &SubjectRegexList },
   { "unsubscribe",         parse_unsubscribe,      0 },
 #ifdef USE_NOTMUCH
   { "unvirtual-mailboxes", mutt_parse_unmailboxes, MUTT_VIRTUAL },

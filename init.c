@@ -179,12 +179,12 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
     if (ptr->pattern)
     {
       FREE(&ptr->pattern);
-      regfree((regex_t *) ptr->rx);
-      FREE(&ptr->rx);
+      regfree((regex_t *) ptr->regex);
+      FREE(&ptr->regex);
     }
 
     ptr->pattern = safe_strdup(tmp->data);
-    ptr->rx = rx;
+    ptr->regex = rx;
     ptr->not = not;
 
     return 1;
@@ -396,7 +396,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               if (CUR_ENV && CUR_ENV->subject)
               {
                 CUR_ENV->real_subj =
-                    (regexec(ReplyRegexp.rx, CUR_ENV->subject, 1, pmatch, 0)) ?
+                    (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
                         CUR_ENV->subject :
                         CUR_ENV->subject + pmatch[0].rm_eo;
               }
@@ -717,10 +717,10 @@ static void free_opt(struct Option *p)
     case DT_REGEX:
       pp = (struct Regex *) p->data;
       FREE(&pp->pattern);
-      if (pp->rx)
+      if (pp->regex)
       {
-        regfree(pp->rx);
-        FREE(&pp->rx);
+        regfree(pp->regex);
+        FREE(&pp->regex);
       }
       break;
     case DT_PATH:
@@ -738,13 +738,13 @@ void mutt_free_opts(void)
   for (int i = 0; MuttVars[i].option; i++)
     free_opt(MuttVars + i);
 
-  mutt_free_rx_list(&Alternates);
-  mutt_free_rx_list(&UnAlternates);
-  mutt_free_rx_list(&MailLists);
-  mutt_free_rx_list(&UnMailLists);
-  mutt_free_rx_list(&SubscribedLists);
-  mutt_free_rx_list(&UnSubscribedLists);
-  mutt_free_rx_list(&NoSpamList);
+  mutt_free_regex_list(&Alternates);
+  mutt_free_regex_list(&UnAlternates);
+  mutt_free_regex_list(&MailLists);
+  mutt_free_regex_list(&UnMailLists);
+  mutt_free_regex_list(&SubscribedLists);
+  mutt_free_regex_list(&UnSubscribedLists);
+  mutt_free_regex_list(&NoSpamList);
 }
 
 static void add_to_stailq(struct ListHead *head, const char *str)
@@ -765,14 +765,14 @@ static void add_to_stailq(struct ListHead *head, const char *str)
   mutt_list_insert_tail(head, safe_strdup(str));
 }
 
-static struct RxList *new_rx_list(void)
+static struct RegexList *new_regex_list(void)
 {
-  return safe_calloc(1, sizeof(struct RxList));
+  return safe_calloc(1, sizeof(struct RegexList));
 }
 
-int mutt_add_to_rx_list(struct RxList **list, const char *s, int flags, struct Buffer *err)
+int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags, struct Buffer *err)
 {
-  struct RxList *t = NULL, *last = NULL;
+  struct RegexList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
 
   if (!s || !*s)
@@ -787,7 +787,7 @@ int mutt_add_to_rx_list(struct RxList **list, const char *s, int flags, struct B
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
-    if (mutt_strcasecmp(rx->pattern, last->rx->pattern) == 0)
+    if (mutt_strcasecmp(rx->pattern, last->regex->pattern) == 0)
     {
       /* already on the list, so just ignore it */
       last = NULL;
@@ -799,8 +799,8 @@ int mutt_add_to_rx_list(struct RxList **list, const char *s, int flags, struct B
 
   if (!*list || last)
   {
-    t = new_rx_list();
-    t->rx = rx;
+    t = new_regex_list();
+    t->regex = rx;
     if (last)
     {
       last->next = t;
@@ -824,10 +824,10 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
   cur = *list;
   if (!cur)
     return 0;
-  if (cur->rx && (mutt_strcmp(cur->rx->pattern, pat) == 0))
+  if (cur->regex && (mutt_strcmp(cur->regex->pattern, pat) == 0))
   {
     *list = cur->next;
-    mutt_free_regexp(&cur->rx);
+    mutt_free_regexp(&cur->regex);
     FREE(&cur->template);
     FREE(&cur);
     return 1;
@@ -836,10 +836,10 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
   prev = cur;
   for (cur = prev->next; cur;)
   {
-    if (mutt_strcmp(cur->rx->pattern, pat) == 0)
+    if (mutt_strcmp(cur->regex->pattern, pat) == 0)
     {
       prev->next = cur->next;
-      mutt_free_regexp(&cur->rx);
+      mutt_free_regexp(&cur->regex);
       FREE(&cur->template);
       FREE(&cur);
       cur = prev->next;
@@ -877,7 +877,7 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   /* check to make sure the item is not already on this list */
   for (last = *list; last; last = last->next)
   {
-    if (mutt_strcasecmp(rx->pattern, last->rx->pattern) == 0)
+    if (mutt_strcasecmp(rx->pattern, last->regex->pattern) == 0)
     {
       /* Already on the list. Formerly we just skipped this case, but
        * now we're supporting removals, which means we're supporting
@@ -899,7 +899,7 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   if (!t)
   {
     t = new_replace_list();
-    t->rx = rx;
+    t->regex = rx;
     rx = NULL;
     if (last)
       last->next = t;
@@ -928,7 +928,7 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
       p++;
   }
 
-  if (t->nmatch > t->rx->rx->re_nsub)
+  if (t->nmatch > t->regex->regex->re_nsub)
   {
     snprintf(err->data, err->dsize, "%s", _("Not enough subexpressions for "
                                             "template"));
@@ -1166,12 +1166,12 @@ static int parse_alternates(struct Buffer *buf, struct Buffer *s,
     if (parse_group_context(&gc, buf, s, data, err) == -1)
       goto bail;
 
-    mutt_remove_from_rx_list(&UnAlternates, buf->data);
+    mutt_remove_from_regex_list(&UnAlternates, buf->data);
 
-    if (mutt_add_to_rx_list(&Alternates, buf->data, REG_ICASE, err) != 0)
+    if (mutt_add_to_regex_list(&Alternates, buf->data, REG_ICASE, err) != 0)
       goto bail;
 
-    if (mutt_group_context_add_rx(gc, buf->data, REG_ICASE, err) != 0)
+    if (mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 
@@ -1190,10 +1190,10 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    mutt_remove_from_rx_list(&Alternates, buf->data);
+    mutt_remove_from_regex_list(&Alternates, buf->data);
 
     if ((mutt_strcmp(buf->data, "*") != 0) &&
-        mutt_add_to_rx_list(&UnAlternates, buf->data, REG_ICASE, err) != 0)
+        mutt_add_to_regex_list(&UnAlternates, buf->data, REG_ICASE, err) != 0)
       return -1;
 
   } while (MoreArgs(s));
@@ -1332,7 +1332,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
     /* If not, try to remove from the nospam list. */
     else
     {
-      mutt_remove_from_rx_list(&NoSpamList, buf->data);
+      mutt_remove_from_regex_list(&NoSpamList, buf->data);
     }
 
     return 0;
@@ -1347,7 +1347,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
     if (mutt_strcmp(buf->data, "*") == 0)
     {
       mutt_free_replace_list(&SpamList);
-      mutt_free_rx_list(&NoSpamList);
+      mutt_free_regex_list(&NoSpamList);
       return 0;
     }
 
@@ -1356,7 +1356,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
       return 0;
 
     /* Otherwise, add it to the nospam list. */
-    if (mutt_add_to_rx_list(&NoSpamList, buf->data, REG_ICASE, err) != 0)
+    if (mutt_add_to_regex_list(&NoSpamList, buf->data, REG_ICASE, err) != 0)
       return -1;
 
     return 0;
@@ -1421,12 +1421,12 @@ static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (parse_group_context(&gc, buf, s, data, err) == -1)
       goto bail;
 
-    mutt_remove_from_rx_list(&UnMailLists, buf->data);
+    mutt_remove_from_regex_list(&UnMailLists, buf->data);
 
-    if (mutt_add_to_rx_list(&MailLists, buf->data, REG_ICASE, err) != 0)
+    if (mutt_add_to_regex_list(&MailLists, buf->data, REG_ICASE, err) != 0)
       goto bail;
 
-    if (mutt_group_context_add_rx(gc, buf->data, REG_ICASE, err) != 0)
+    if (mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 
@@ -1484,9 +1484,9 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
         case GS_RX:
           if (data == MUTT_GROUP &&
-              mutt_group_context_add_rx(gc, buf->data, REG_ICASE, err) != 0)
+              mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
             goto bail;
-          else if (data == MUTT_UNGROUP && mutt_group_context_remove_rx(gc, buf->data) < 0)
+          else if (data == MUTT_UNGROUP && mutt_group_context_remove_regex(gc, buf->data) < 0)
             goto bail;
           break;
 
@@ -1578,13 +1578,13 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     tmpminor[len + 2] = '\0';
 
     a->major_int = mutt_check_mime_type(a->major);
-    ret = REGCOMP(&a->minor_rx, tmpminor, REG_ICASE);
+    ret = REGCOMP(&a->minor_regex, tmpminor, REG_ICASE);
 
     FREE(&tmpminor);
 
     if (ret)
     {
-      regerror(ret, &a->minor_rx, err->data, err->dsize);
+      regerror(ret, &a->minor_regex, err->data, err->dsize);
       FREE(&a->major);
       FREE(&a);
       return -1;
@@ -1640,7 +1640,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
       {
         mutt_debug(5, "parse_unattach_list: removed %s/%s [%d]\n", a->major,
                    a->minor, a->major_int);
-        regfree(&a->minor_rx);
+        regfree(&a->minor_regex);
         FREE(&a->major);
         STAILQ_REMOVE(head, np, ListNode, entries);
         FREE(&np->data);
@@ -1774,11 +1774,11 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    mutt_remove_from_rx_list(&SubscribedLists, buf->data);
-    mutt_remove_from_rx_list(&MailLists, buf->data);
+    mutt_remove_from_regex_list(&SubscribedLists, buf->data);
+    mutt_remove_from_regex_list(&MailLists, buf->data);
 
     if ((mutt_strcmp(buf->data, "*") != 0) &&
-        mutt_add_to_rx_list(&UnMailLists, buf->data, REG_ICASE, err) != 0)
+        mutt_add_to_regex_list(&UnMailLists, buf->data, REG_ICASE, err) != 0)
       return -1;
   } while (MoreArgs(s));
 
@@ -1797,14 +1797,14 @@ static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
     if (parse_group_context(&gc, buf, s, data, err) == -1)
       goto bail;
 
-    mutt_remove_from_rx_list(&UnMailLists, buf->data);
-    mutt_remove_from_rx_list(&UnSubscribedLists, buf->data);
+    mutt_remove_from_regex_list(&UnMailLists, buf->data);
+    mutt_remove_from_regex_list(&UnSubscribedLists, buf->data);
 
-    if (mutt_add_to_rx_list(&MailLists, buf->data, REG_ICASE, err) != 0)
+    if (mutt_add_to_regex_list(&MailLists, buf->data, REG_ICASE, err) != 0)
       goto bail;
-    if (mutt_add_to_rx_list(&SubscribedLists, buf->data, REG_ICASE, err) != 0)
+    if (mutt_add_to_regex_list(&SubscribedLists, buf->data, REG_ICASE, err) != 0)
       goto bail;
-    if (mutt_group_context_add_rx(gc, buf->data, REG_ICASE, err) != 0)
+    if (mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
       goto bail;
   } while (MoreArgs(s));
 
@@ -1822,10 +1822,10 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
   do
   {
     mutt_extract_token(buf, s, 0);
-    mutt_remove_from_rx_list(&SubscribedLists, buf->data);
+    mutt_remove_from_regex_list(&SubscribedLists, buf->data);
 
     if ((mutt_strcmp(buf->data, "*") != 0) &&
-        mutt_add_to_rx_list(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
+        mutt_add_to_regex_list(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
       return -1;
   } while (MoreArgs(s));
 
@@ -2133,10 +2133,10 @@ static void restore_default(struct Option *p)
       int flags = 0;
 
       FREE(&pp->pattern);
-      if (pp->rx)
+      if (pp->regex)
       {
-        regfree(pp->rx);
-        FREE(&pp->rx);
+        regfree(pp->regex);
+        FREE(&pp->regex);
       }
 
       if (p->init)
@@ -2144,7 +2144,7 @@ static void restore_default(struct Option *p)
         int retval;
         char *s = (char *) p->init;
 
-        pp->rx = safe_calloc(1, sizeof(regex_t));
+        pp->regex = safe_calloc(1, sizeof(regex_t));
         pp->pattern = safe_strdup((char *) p->init);
         if (mutt_strcmp(p->option, "mask") != 0)
           flags |= mutt_which_case((const char *) p->init);
@@ -2153,17 +2153,17 @@ static void restore_default(struct Option *p)
           s++;
           pp->not = 1;
         }
-        retval = REGCOMP(pp->rx, s, flags);
+        retval = REGCOMP(pp->regex, s, flags);
         if (retval != 0)
         {
           char msgbuf[STRING];
-          regerror(retval, pp->rx, msgbuf, sizeof(msgbuf));
+          regerror(retval, pp->regex, msgbuf, sizeof(msgbuf));
           fprintf(stderr, _("restore_default(%s): error in regexp: %s\n"),
                   p->option, pp->pattern);
           fprintf(stderr, "%s\n", msgbuf);
           mutt_sleep(0);
           FREE(&pp->pattern);
-          FREE(&pp->rx);
+          FREE(&pp->regex);
         }
       }
     }
@@ -2818,7 +2818,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             if (CUR_ENV && CUR_ENV->subject)
             {
               CUR_ENV->real_subj =
-                  (regexec(ReplyRegexp.rx, CUR_ENV->subject, 1, pmatch, 0)) ?
+                  (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
                       CUR_ENV->subject :
                       CUR_ENV->subject + pmatch[0].rm_eo;
             }

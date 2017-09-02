@@ -72,16 +72,16 @@ enum FlagChars
 
 bool mutt_is_mail_list(struct Address *addr)
 {
-  if (!mutt_match_rx_list(addr->mailbox, UnMailLists))
-    return mutt_match_rx_list(addr->mailbox, MailLists);
+  if (!mutt_match_regex_list(addr->mailbox, UnMailLists))
+    return mutt_match_regex_list(addr->mailbox, MailLists);
   return false;
 }
 
 bool mutt_is_subscribed_list(struct Address *addr)
 {
-  if (!mutt_match_rx_list(addr->mailbox, UnMailLists) &&
-      !mutt_match_rx_list(addr->mailbox, UnSubscribedLists))
-    return mutt_match_rx_list(addr->mailbox, SubscribedLists);
+  if (!mutt_match_regex_list(addr->mailbox, UnMailLists) &&
+      !mutt_match_regex_list(addr->mailbox, UnSubscribedLists))
+    return mutt_match_regex_list(addr->mailbox, SubscribedLists);
   return false;
 }
 
@@ -442,13 +442,13 @@ static char *apply_subject_mods(struct Envelope *env)
   if (!env)
     return NULL;
 
-  if (!SubjectRxList)
+  if (!SubjectRegexList)
     return env->subject;
 
   if (env->subject == NULL || *env->subject == '\0')
     return env->disp_subj = NULL;
 
-  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
+  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRegexList);
   return env->disp_subj;
 }
 
@@ -1034,7 +1034,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       char *subj = NULL;
       if (hdr->env->disp_subj)
         subj = hdr->env->disp_subj;
-      else if (SubjectRxList)
+      else if (SubjectRegexList)
         subj = apply_subject_mods(hdr->env);
       else
         subj = hdr->env->subject;
