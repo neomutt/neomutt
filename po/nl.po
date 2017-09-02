@@ -4079,21 +4079,19 @@ msgstr "SSL-certificaatcontrole (certificaat %d van %d in keten)"
 #.
 #: mutt_ssl.c:866
 msgid "roas"
-msgstr ""
+msgstr "weas"
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten"
+msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten, (s)kip"
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten"
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(w)eigeren, (e)enmalig toelaten"
+msgstr "(w)eigeren, (e)enmalig toelaten, (s)kip"
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"

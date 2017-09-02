@@ -4082,21 +4082,19 @@ msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
 #.
 #: mutt_ssl.c:866
 msgid "roas"
-msgstr ""
+msgstr "otvs"
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy "
+msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy, (s)kip "
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy "
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(o)dmítnout, akceptovat pouze (t)eď "
+msgstr "(o)dmítnout, akceptovat pouze (t)eď, (s)kip "
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"

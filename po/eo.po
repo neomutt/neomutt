@@ -4069,21 +4069,19 @@ msgstr "Kontrolo de SSL-atestilo (%d de %d en ĉeno)"
 #.
 #: mutt_ssl.c:866
 msgid "roas"
-msgstr ""
+msgstr "muas"
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam"
+msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam, (s)kip"
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam"
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(m)alakcepti, akcepti (u)nufoje"
+msgstr "(m)alakcepti, akcepti (u)nufoje, (s)kip"
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"
