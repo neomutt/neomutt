@@ -1577,8 +1577,6 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
           {
             if (!imap_delete_mailbox(Context, &mx))
             {
-              /* Unsubscribe to prevent dangling subscriptions */
-              imap_subscribe(state.entry[menu->current].name, 0);
               /* free the mailbox from the browser */
               FREE(&((state.entry)[nentry].name));
               FREE(&((state.entry)[nentry].desc));
