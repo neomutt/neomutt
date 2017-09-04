@@ -936,22 +936,22 @@ static int tls_set_priority(struct TlsSockData *data)
   else
     safe_strcat(priority, priority_size, "NORMAL");
 
-  if (!option(OPT_TLSV1_2))
+  if (!option(OPT_SSL_USE_TLSV1_2))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
-  if (!option(OPT_TLSV1_1))
+  if (!option(OPT_SSL_USE_TLSV1_1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
-  if (!option(OPT_TLSV1))
+  if (!option(OPT_SSL_USE_TLSV1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
-  if (!option(OPT_SSLV3))
+  if (!option(OPT_SSL_USE_SSLV3))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-SSL3.0");
@@ -987,13 +987,13 @@ static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  if (option(OPT_TLSV1_2))
+  if (option(OPT_SSL_USE_TLSV1_2))
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  if (option(OPT_TLSV1_1))
+  if (option(OPT_SSL_USE_TLSV1_1))
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
-  if (option(OPT_TLSV1))
+  if (option(OPT_SSL_USE_TLSV1))
     protocol_priority[nproto++] = GNUTLS_TLS1;
-  if (option(OPT_SSLV3))
+  if (option(OPT_SSL_USE_SSLV3))
     protocol_priority[nproto++] = GNUTLS_SSL3;
   protocol_priority[nproto] = 0;
 

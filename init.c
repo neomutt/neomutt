@@ -4446,7 +4446,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   mutt_read_histfile();
 
 #ifdef USE_NOTMUCH
-  if (option(OPT_VIRT_SPOOL_FILE))
+  if (option(OPT_VIRTUAL_SPOOLFILE))
   {
     /* Find the first virtual folder and open it */
     for (struct Buffy *b = Incoming; b; b = b->next)

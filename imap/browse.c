@@ -193,7 +193,7 @@ int imap_browse(char *path, struct BrowserState *state)
 
   save_lsub = option(OPT_IMAP_CHECK_SUBSCRIBED);
   unset_option(OPT_IMAP_CHECK_SUBSCRIBED);
-  strfcpy(list_cmd, option(OPT_IMAP_LSUB) ? "LSUB" : "LIST", sizeof(list_cmd));
+  strfcpy(list_cmd, option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", sizeof(list_cmd));
 
   if (!(idata = imap_conn_find(&(mx.account), 0)))
     goto fail;

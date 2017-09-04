@@ -584,12 +584,12 @@ static int trash_append(struct Context *ctx)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = option(OPT_CONFIRM_APPEND);
+  opt_confappend = option(OPT_CONFIRMAPPEND);
   if (opt_confappend)
-    unset_option(OPT_CONFIRM_APPEND);
+    unset_option(OPT_CONFIRMAPPEND);
   rc = mutt_save_confirm(TrashPath, &st);
   if (opt_confappend)
-    set_option(OPT_CONFIRM_APPEND);
+    set_option(OPT_CONFIRMAPPEND);
   if (rc != 0)
   {
     mutt_error(_("message(s) not deleted"));
@@ -662,7 +662,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
-      int rc = query_quadoption(OPT_CATCHUP, _("Mark all articles read?"));
+      int rc = query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
       {
         ctx->closing = false;

@@ -823,7 +823,7 @@ void smime_getkeys(struct Envelope *env)
   struct Address *t = NULL;
   bool found = false;
 
-  if (option(OPT_SDEFAULT_DECRYPT_KEY) && SmimeDefaultKey && *SmimeDefaultKey)
+  if (option(OPT_SMIME_DECRYPT_USE_DEFAULT_KEY) && SmimeDefaultKey && *SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
 
@@ -1181,7 +1181,7 @@ void smime_invoke_import(char *infile, char *mailbox)
   mutt_unlink(tmpfname);
 
   buf[0] = '\0';
-  if (option(OPT_ASK_CERT_LABEL))
+  if (option(OPT_SMIME_ASK_CERT_LABEL))
   {
     if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), 0) != 0) ||
         (buf[0] == 0))

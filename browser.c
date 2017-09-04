@@ -1505,10 +1505,10 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
-        if (option(OPT_IMAP_LSUB))
-          unset_option(OPT_IMAP_LSUB);
+        if (option(OPT_IMAP_LIST_SUBSCRIBED))
+          unset_option(OPT_IMAP_LIST_SUBSCRIBED);
         else
-          set_option(OPT_IMAP_LSUB);
+          set_option(OPT_IMAP_LIST_SUBSCRIBED);
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;

@@ -199,7 +199,7 @@ static void shrink_histfile(void)
   if ((f = fopen(HistFile, "r")) == NULL)
     return;
 
-  if (option(OPT_HIST_REMOVE_DUPS))
+  if (option(OPT_HISTORY_REMOVE_DUPS))
     for (hclass = 0; hclass < HC_LAST; hclass++)
       dup_hashes[hclass] = hash_create(MAX(10, SaveHist * 2), MUTT_HASH_STRDUP_KEYS);
 
@@ -216,7 +216,7 @@ static void shrink_histfile(void)
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
-    if (option(OPT_HIST_REMOVE_DUPS) && (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
+    if (option(OPT_HISTORY_REMOVE_DUPS) && (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
     {
       regen_file = true;
       continue;
@@ -253,7 +253,7 @@ static void shrink_histfile(void)
       if (hclass >= HC_LAST)
         continue;
       *p = '\0';
-      if (option(OPT_HIST_REMOVE_DUPS) &&
+      if (option(OPT_HISTORY_REMOVE_DUPS) &&
           (dup_hash_dec(dup_hashes[hclass], linebuf + read) > 0))
         continue;
       *p = '|';
@@ -276,7 +276,7 @@ cleanup:
     safe_fclose(&tmp);
     unlink(tmpfname);
   }
-  if (option(OPT_HIST_REMOVE_DUPS))
+  if (option(OPT_HISTORY_REMOVE_DUPS))
     for (hclass = 0; hclass < HC_LAST; hclass++)
       hash_destroy(&dup_hashes[hclass], NULL);
 }
@@ -401,7 +401,7 @@ void mutt_history_add(enum HistoryClass hclass, const char *s, int save)
      */
     if (*s != ' ' && (!h->hist[prev] || (mutt_strcmp(h->hist[prev], s) != 0)))
     {
-      if (option(OPT_HIST_REMOVE_DUPS))
+      if (option(OPT_HISTORY_REMOVE_DUPS))
         remove_history_dups(hclass, s);
       if (save && SaveHist)
         save_history(hclass, s);

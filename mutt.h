@@ -238,16 +238,16 @@ enum QuadOptionResponse
  */
 enum QuadOptionVars
 {
-  OPT_ABORT,
+  OPT_ABORT_UNMODIFIED,
   OPT_BOUNCE,
   OPT_COPY,
   OPT_DELETE,
-  OPT_FORW_EDIT,
+  OPT_FORWARD_EDIT,
   OPT_FCC_ATTACH,
   OPT_INCLUDE,
-  OPT_MF_UP_TO,
-  OPT_MIME_FWD,
-  OPT_MIME_FWD_REST,
+  OPT_HONOR_FOLLOWUP_TO,
+  OPT_MIME_FORWARD,
+  OPT_MIME_FORWARD_REST,
   OPT_MOVE,
   OPT_PGP_MIME_AUTO, /* ask to revert to PGP/MIME when inline fails */
   OPT_SMIME_ENCRYPT_SELF,
@@ -262,16 +262,16 @@ enum QuadOptionVars
   OPT_REPLY_TO,
   OPT_RECALL,
 #ifdef USE_SSL
-  OPT_SSL_START_TLS,
+  OPT_SSL_STARTTLS,
 #endif
-  OPT_SUBJECT,
-  OPT_VERIFY_SIG, /* verify PGP signatures */
+  OPT_ABORT_NOSUBJECT,
+  OPT_CRYPT_VERIFY_SIG, /* verify PGP signatures */
 #ifdef USE_NNTP
-  OPT_TO_MODERATED,
-  OPT_CATCHUP,
-  OPT_FOLLOW_UP_TO_POSTER,
+  OPT_POST_MODERATED,
+  OPT_CATCHUP_NEWSGROUP,
+  OPT_FOLLOWUP_TO_POSTER,
 #endif
-  OPT_ATTACH, /* forgotten attachment detector */
+  OPT_ABORT_NOATTACH, /* forgotten attachment detector */
   /* THIS MUST BE THE LAST VALUE. */
   OPT_QUAD_MAX,
 };

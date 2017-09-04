@@ -109,7 +109,7 @@ bool pgp_use_gpg_agent(void)
   char *tty = NULL;
 
   /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
-  if (!option(OPT_USE_GPG_AGENT))
+  if (!option(OPT_PGP_USE_GPG_AGENT))
     return false;
 
   if ((tty = ttyname(0)))
@@ -123,7 +123,7 @@ bool pgp_use_gpg_agent(void)
 
 static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
 {
-  if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPT_PGP_IGNORE_SUB))
+  if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPT_PGP_IGNORE_SUBKEYS))
     k = k->parent;
 
   return k;
@@ -1249,7 +1249,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       {
         keyID = crypt_hook->data;
         r = MUTT_YES;
-        if (!oppenc_mode && option(OPT_CRYPT_CONFIRM_HOOK))
+        if (!oppenc_mode && option(OPT_CRYPT_CONFIRMHOOK))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
           r = mutt_yesorno(buf, MUTT_YES);
@@ -1650,7 +1650,7 @@ int pgp_send_menu(struct Header *msg)
     return msg->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  if (option(OPT_PGP_AUTO_INLINE) &&
+  if (option(OPT_PGP_AUTOINLINE) &&
       !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN | ENCRYPT))))
     msg->security |= INLINE;
 

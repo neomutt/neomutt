@@ -1320,7 +1320,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
         break;
       mutt_debug(3, "imap_copy_messages: server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (option(OPT_CONFIRM_CREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (option(OPT_CONFIRMCREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;

@@ -1339,7 +1339,7 @@ void mutt_view_attachments(struct Header *hdr)
 
         if (!CURATTACH->content->hdr->env->followup_to ||
             (mutt_strcasecmp(CURATTACH->content->hdr->env->followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
+            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           mutt_attach_reply(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content,

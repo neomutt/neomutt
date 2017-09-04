@@ -1555,7 +1555,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
-  if (option(OPT_WRAP))
+  if (option(OPT_SMART_WRAP))
   {
     if (cnt < b_read)
     {
@@ -2885,7 +2885,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
@@ -2895,7 +2895,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS);
@@ -2914,11 +2914,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           followup_to = extra->hdr->env->followup_to;
 
         if (!followup_to || (mutt_strcasecmp(followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
+            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (IsMsgAttach(extra))
             mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS | SENDREPLY);
@@ -3188,7 +3188,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        toggle_option(OPT_SIDEBAR);
+        toggle_option(OPT_SIDEBAR_VISIBLE);
         mutt_reflow_windows();
         break;
 #endif

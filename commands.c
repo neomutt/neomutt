@@ -104,7 +104,7 @@ int mutt_display_message(struct Header *cur)
     else if (cur->security & SIGN)
     {
       /* find out whether or not the verify signature */
-      if (query_quadoption(OPT_VERIFY_SIG, _("Verify PGP signature?")) == MUTT_YES)
+      if (query_quadoption(OPT_CRYPT_VERIFY_SIG, _("Verify PGP signature?")) == MUTT_YES)
       {
         cmflags |= MUTT_CM_VERIFY;
       }

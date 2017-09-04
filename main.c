@@ -593,7 +593,7 @@ int main(int argc, char **argv, char **env)
         msg->env->to = rfc822_parse_adrlist(msg->env->to, argv[i]);
     }
 
-    if (!draftFile && option(OPT_AUTO_EDIT) && !msg->env->to && !msg->env->cc)
+    if (!draftFile && option(OPT_AUTOEDIT) && !msg->env->to && !msg->env->cc)
     {
       if (!option(OPT_NO_CURSES))
         mutt_endwin(NULL);
@@ -927,7 +927,7 @@ int main(int argc, char **argv, char **env)
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
     if ((Context = mx_open_mailbox(
-             folder, ((flags & MUTT_RO) || option(OPT_READONLY)) ? MUTT_READONLY : 0, NULL)) ||
+             folder, ((flags & MUTT_RO) || option(OPT_READ_ONLY)) ? MUTT_READONLY : 0, NULL)) ||
         !explicit_folder)
     {
 #ifdef USE_SIDEBAR

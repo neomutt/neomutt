@@ -341,7 +341,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
  */
 static void update_entries_visibility(void)
 {
-  short new_only = option(OPT_SIDEBAR_NEWMAIL_ONLY);
+  short new_only = option(OPT_SIDEBAR_NEW_MAIL_ONLY);
   struct SbEntry *sbe = NULL;
   for (int i = 0; i < EntryCount; i++)
   {
@@ -630,7 +630,7 @@ static bool prepare_sidebar(int page_size)
 
   /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
    * need to scan for the framing interval */
-  if (option(OPT_SIDEBAR_NEWMAIL_ONLY))
+  if (option(OPT_SIDEBAR_NEW_MAIL_ONLY))
   {
     TopIndex = BotIndex = -1;
     while (BotIndex < HilIndex)
@@ -940,7 +940,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
  */
 void mutt_sb_draw(void)
 {
-  if (!option(OPT_SIDEBAR))
+  if (!option(OPT_SIDEBAR_VISIBLE))
     return;
 
 #ifdef USE_SLANG_CURSES
@@ -986,7 +986,7 @@ void mutt_sb_draw(void)
  */
 void mutt_sb_change_mailbox(int op)
 {
-  if (!option(OPT_SIDEBAR))
+  if (!option(OPT_SIDEBAR_VISIBLE))
     return;
 
   if (HilIndex < 0) /* It'll get reset on the next draw */
@@ -1059,7 +1059,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
  */
 const char *mutt_sb_get_highlight(void)
 {
-  if (!option(OPT_SIDEBAR))
+  if (!option(OPT_SIDEBAR_VISIBLE))
     return NULL;
 
   if (!EntryCount || HilIndex < 0)

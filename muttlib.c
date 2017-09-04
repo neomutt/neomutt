@@ -1494,7 +1494,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if (magic > 0 && !mx_access(s, W_OK))
   {
-    if (option(OPT_CONFIRM_APPEND))
+    if (option(OPT_CONFIRMAPPEND))
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
       if ((rc = mutt_yesorno(tmp, MUTT_YES)) == MUTT_NO)
@@ -1528,7 +1528,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      if (option(OPT_CONFIRM_CREATE))
+      if (option(OPT_CONFIRMCREATE))
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
         if ((rc = mutt_yesorno(tmp, MUTT_YES)) == MUTT_NO)
@@ -1537,7 +1537,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
           ret = -1;
       }
 
-      /* user confirmed with MUTT_YES or set OPT_CONFIRM_CREATE */
+      /* user confirmed with MUTT_YES or set OPT_CONFIRMCREATE */
       if (ret == 0)
       {
         strncpy(tmp, s, sizeof(tmp) - 1);

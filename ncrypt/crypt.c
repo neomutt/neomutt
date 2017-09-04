@@ -235,7 +235,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIG)))
+        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
     {
       if (!(tmp_pbody = crypt_pgp_sign_message(msg->content)))
         return -1;

@@ -820,7 +820,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
 
     return -1;
   }
-  else if (option(OPT_IMAP_SERVER_NOISE) && (mutt_strncasecmp("NO", s, 2) == 0))
+  else if (option(OPT_IMAP_SERVERNOISE) && (mutt_strncasecmp("NO", s, 2) == 0))
   {
     mutt_debug(2, "Handling untagged NO\n");
 

@@ -1366,7 +1366,7 @@ static int multipart_handler(struct Body *a, struct State *s)
                  NONULL(p->subtype));
     }
 
-    if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLY_FIRST)) && (s->flags & MUTT_FIRSTDONE))
+    if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLYFIRST)) && (s->flags & MUTT_FIRSTDONE))
       break;
   }
 
@@ -1937,7 +1937,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!option(OPT_HONOR_DISP) || (b->disposition != DISPATTACH || option(OPT_VIEW_ATTACH))) &&
+  if ((!option(OPT_HONOR_DISPOSITION) || (b->disposition != DISPATTACH || option(OPT_VIEW_ATTACH))) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
@@ -1946,10 +1946,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
      if we're not already being called from there */
   else if ((s->flags & MUTT_DISPLAY) ||
            (b->disposition == DISPATTACH && !option(OPT_VIEW_ATTACH) &&
-            option(OPT_HONOR_DISP) && (plaintext || handler)))
+            option(OPT_HONOR_DISPOSITION) && (plaintext || handler)))
   {
     state_mark_attach(s);
-    if (option(OPT_HONOR_DISP) && b->disposition == DISPATTACH)
+    if (option(OPT_HONOR_DISPOSITION) && b->disposition == DISPATTACH)
       fputs(_("[-- This is an attachment "), s->fpout);
     else
       state_printf(s, _("[-- %s/%s is unsupported "), TYPE(b), b->subtype);

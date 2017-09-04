@@ -817,7 +817,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
 
     if (!cur->thread)
     {
-      if ((!init || option(OPT_DUP_THREADS)) && cur->env->message_id)
+      if ((!init || option(OPT_DUPLICATE_THREADS)) && cur->env->message_id)
         thread = hash_find(ctx->thread_hash, cur->env->message_id);
       else
         thread = NULL;
@@ -861,7 +861,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
       }
       else
       {
-        new = (option(OPT_DUP_THREADS) ? thread : NULL);
+        new = (option(OPT_DUPLICATE_THREADS) ? thread : NULL);
 
         thread = safe_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;

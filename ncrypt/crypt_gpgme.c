@@ -4584,7 +4584,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       {
         crypt_hook_val = crypt_hook->data;
         r = MUTT_YES;
-        if (!oppenc_mode && option(OPT_CRYPT_CONFIRM_HOOK))
+        if (!oppenc_mode && option(OPT_CRYPT_CONFIRMHOOK))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"),
                    crypt_hook_val, p->mailbox);

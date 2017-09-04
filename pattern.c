@@ -943,7 +943,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
   if ((msg = mx_open_message(ctx, msgno)) != NULL)
   {
-    if (option(OPT_THOROUGH_SRC))
+    if (option(OPT_THOROUGH_SEARCH))
     {
       /* decode the header / body */
       memset(&s, 0, sizeof(s));
@@ -1063,7 +1063,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
     mx_close_message(ctx, &msg);
 
-    if (option(OPT_THOROUGH_SRC))
+    if (option(OPT_THOROUGH_SEARCH))
     {
       safe_fclose(&fp);
 #ifdef USE_FMEMOPEN

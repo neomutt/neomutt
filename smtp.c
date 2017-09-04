@@ -340,7 +340,7 @@ static int smtp_helo(struct Connection *conn)
     if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_START_TLS) != MUTT_NO)
+    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_STARTTLS) != MUTT_NO)
       Esmtp = 1;
 #endif
   }
@@ -591,7 +591,7 @@ static int smtp_open(struct Connection *conn)
   else if (option(OPT_SSL_FORCE_TLS))
     rc = MUTT_YES;
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
-           (rc = query_quadoption(OPT_SSL_START_TLS,
+           (rc = query_quadoption(OPT_SSL_STARTTLS,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 

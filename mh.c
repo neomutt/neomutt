@@ -1164,7 +1164,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
     snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
 
 #ifdef USE_HCACHE
-    if (option(OPT_HCACHE_VERIFY))
+    if (option(OPT_MAILDIR_HEADER_CACHE_VERIFY))
     {
       ret = stat(fn, &lastchanged);
     }
