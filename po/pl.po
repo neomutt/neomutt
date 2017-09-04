@@ -2523,7 +2523,7 @@ msgid "view attachment as text"
 msgstr "obejrzyj załącznik jako tekst"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "przełącza podgląd pod-listów listów złożonych"
 
 #: keymap_alldefs.h:13
@@ -3177,11 +3177,11 @@ msgid "print the current entry"
 msgstr "wydrukuj obecną pozycję"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
 #: keymap_alldefs.h:172
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
 #: keymap_alldefs.h:173

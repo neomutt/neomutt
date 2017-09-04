@@ -2484,7 +2484,7 @@ msgid "view attachment as text"
 msgstr "дивитись додаток як текст"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "вимк./ввімкн. відображення підчастин"
 
 #: keymap_alldefs.h:13
@@ -3134,12 +3134,12 @@ msgid "print the current entry"
 msgstr "друкувати поточну позицію"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr "дійсно видалити поточну позицію не використовуючи кошик"
 
 #: keymap_alldefs.h:172
 #, fuzzy
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr "дійсно видалити поточну позицію не використовуючи кошик"
 
 #: keymap_alldefs.h:173

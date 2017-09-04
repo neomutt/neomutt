@@ -2569,7 +2569,7 @@ msgstr "показва приложението като текст"
 
 #: keymap_alldefs.h:12
 #, fuzzy
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "показва/скрива подчасти"
 
 #: keymap_alldefs.h:13
@@ -3227,11 +3227,11 @@ msgid "print the current entry"
 msgstr "отпечатва текущото писмо"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
 #: keymap_alldefs.h:172
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
 #: keymap_alldefs.h:173

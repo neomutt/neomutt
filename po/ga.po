@@ -2530,7 +2530,7 @@ msgid "view attachment as text"
 msgstr "féach ar an iatán mar théacs"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "Scoránaigh taispeáint na bhfopháirteanna"
 
 #: keymap_alldefs.h:13
@@ -3189,11 +3189,11 @@ msgid "print the current entry"
 msgstr "priontáil an iontráil reatha"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
 #: keymap_alldefs.h:172
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
 #: keymap_alldefs.h:173

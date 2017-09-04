@@ -2479,7 +2479,7 @@ msgid "view attachment as text"
 msgstr "vis denne del som tekst"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "Slå visning af underdele fra eller til"
 
 #: keymap_alldefs.h:13
