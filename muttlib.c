@@ -105,7 +105,7 @@ void mutt_adv_mktemp(char *s, size_t l)
   {
     strfcpy(prefix, s, sizeof(prefix));
     mutt_sanitize_filename(prefix, 1);
-    snprintf(s, l, "%s/%s", NONULL(TempDir), prefix);
+    snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
     if (lstat(s, &sb) == -1 && errno == ENOENT)
       return;
 
@@ -247,20 +247,20 @@ char *_mutt_expand_path(char *s, size_t slen, int regex)
       {
 #ifdef USE_IMAP
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if (mx_is_imap(NONULL(Maildir)) && (Maildir[strlen(Maildir) - 1] == '}' ||
-                                            Maildir[strlen(Maildir) - 1] == '/'))
-          strfcpy(p, NONULL(Maildir), sizeof(p));
+        if (mx_is_imap(NONULL(Folder)) && (Folder[strlen(Folder) - 1] == '}' ||
+                                            Folder[strlen(Folder) - 1] == '/'))
+          strfcpy(p, NONULL(Folder), sizeof(p));
         else
 #endif
 #ifdef USE_NOTMUCH
-            if (mx_is_notmuch(NONULL(Maildir)))
-          strfcpy(p, NONULL(Maildir), sizeof(p));
+            if (mx_is_notmuch(NONULL(Folder)))
+          strfcpy(p, NONULL(Folder), sizeof(p));
         else
 #endif
-            if (Maildir && *Maildir && Maildir[strlen(Maildir) - 1] == '/')
-          strfcpy(p, NONULL(Maildir), sizeof(p));
+            if (Folder && *Folder && Folder[strlen(Folder) - 1] == '/')
+          strfcpy(p, NONULL(Folder), sizeof(p));
         else
-          snprintf(p, sizeof(p), "%s/", NONULL(Maildir));
+          snprintf(p, sizeof(p), "%s/", NONULL(Folder));
 
         tail = s + 1;
       }
@@ -292,14 +292,14 @@ char *_mutt_expand_path(char *s, size_t slen, int regex)
 
       case '>':
       {
-        strfcpy(p, NONULL(Inbox), sizeof(p));
+        strfcpy(p, NONULL(Mbox), sizeof(p));
         tail = s + 1;
       }
       break;
 
       case '<':
       {
-        strfcpy(p, NONULL(Outbox), sizeof(p));
+        strfcpy(p, NONULL(Record), sizeof(p));
         tail = s + 1;
       }
       break;
@@ -530,8 +530,8 @@ uint64_t mutt_rand64(void)
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line)
 {
-  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(TempDir),
-                      NONULL(prefix), NONULL(Hostname), (int) getuid(), (int) getpid(),
+  size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
+                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(), (int) getpid(),
                       mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= slen)
     mutt_debug(1, "%s:%d: ERROR: insufficient buffer space to hold temporary "
@@ -622,7 +622,7 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
     strfcpy(p, tmp, buflen - (p - s));
 
-  if ((mutt_strncmp(s, Maildir, (len = mutt_strlen(Maildir))) == 0) && s[len] == '/')
+  if ((mutt_strncmp(s, Folder, (len = mutt_strlen(Folder))) == 0) && s[len] == '/')
   {
     *s++ = '=';
     memmove(s, s + len, mutt_strlen(s + len) + 1);
@@ -1809,7 +1809,7 @@ void mutt_get_parent_path(char *output, char *path, size_t olen)
 #endif
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch(path))
-    strfcpy(output, NONULL(Maildir), olen);
+    strfcpy(output, NONULL(Folder), olen);
   else
 #endif
   {

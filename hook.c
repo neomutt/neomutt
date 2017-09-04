@@ -490,12 +490,12 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
     {
       adr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
       mutt_safe_path(buf, sizeof(buf), adr);
-      mutt_concat_path(path, NONULL(Maildir), buf, pathlen);
+      mutt_concat_path(path, NONULL(Folder), buf, pathlen);
       if (!option(OPT_FORCE_NAME) && mx_access(path, W_OK) != 0)
-        strfcpy(path, NONULL(Outbox), pathlen);
+        strfcpy(path, NONULL(Record), pathlen);
     }
     else
-      strfcpy(path, NONULL(Outbox), pathlen);
+      strfcpy(path, NONULL(Record), pathlen);
   }
   mutt_pretty_mailbox(path, pathlen);
 }

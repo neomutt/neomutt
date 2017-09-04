@@ -408,10 +408,10 @@ void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 {
   char buffer[LONG_STRING];
 
-  if (ForwardAttrIntro)
+  if (ForwardAttributionIntro)
   {
     setlocale(LC_TIME, NONULL(AttributionLocale));
-    mutt_make_string(buffer, sizeof(buffer), ForwardAttrIntro, ctx, cur);
+    mutt_make_string(buffer, sizeof(buffer), ForwardAttributionIntro, ctx, cur);
     setlocale(LC_TIME, "");
     fputs(buffer, fp);
     fputs("\n\n", fp);
@@ -422,10 +422,10 @@ void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
 {
   char buffer[LONG_STRING];
 
-  if (ForwardAttrTrailer)
+  if (ForwardAttributionTrailer)
   {
     setlocale(LC_TIME, NONULL(AttributionLocale));
-    mutt_make_string(buffer, sizeof(buffer), ForwardAttrTrailer, ctx, cur);
+    mutt_make_string(buffer, sizeof(buffer), ForwardAttributionTrailer, ctx, cur);
     setlocale(LC_TIME, "");
     fputc('\n', fp);
     fputs(buffer, fp);
@@ -692,7 +692,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   char buffer[STRING];
 
   /* set the default subject for the message. */
-  mutt_make_string(buffer, sizeof(buffer), NONULL(ForwFmt), ctx, cur);
+  mutt_make_string(buffer, sizeof(buffer), NONULL(ForwardFormat), ctx, cur);
   mutt_str_replace(&env->subject, buffer);
 }
 

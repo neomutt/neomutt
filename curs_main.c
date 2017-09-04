@@ -664,7 +664,7 @@ void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
     }
   }
 
-  _mutt_make_string(s, l, NONULL(HdrFmt), Context, h, flag);
+  _mutt_make_string(s, l, NONULL(IndexFormat), Context, h, flag);
 }
 
 int index_color(int index_no)
@@ -880,7 +880,7 @@ static void index_menu_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
-    menu_status_line(buf, sizeof(buf), menu, NONULL(Status));
+    menu_status_line(buf, sizeof(buf), menu, NONULL(StatusFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
     mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
@@ -1011,10 +1011,10 @@ int mutt_index_menu(void)
               mutt_message(_("New mail in this mailbox."));
               if (option(OPT_BEEP_NEW))
                 beep();
-              if (NewMailCmd)
+              if (NewMailCommand)
               {
                 char cmd[LONG_STRING];
-                menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
+                menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
                 mutt_system(cmd);
               }
               break;
@@ -1052,10 +1052,10 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
           if (option(OPT_BEEP_NEW))
             beep();
-          if (NewMailCmd)
+          if (NewMailCommand)
           {
             char cmd[LONG_STRING];
-            menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
+            menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
             mutt_system(cmd);
           }
         }
@@ -1950,18 +1950,18 @@ int mutt_index_menu(void)
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
         mutt_debug(2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
-        if (NotmuchQueryWindowDuration <= 0)
+        if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled."));
           break;
         }
-        if (!NotmuchQueryWindowCurrentSearch)
+        if (!NmQueryWindowCurrentSearch)
         {
           mutt_message(_("No notmuch vfolder currently loaded."));
           break;
         }
         nm_query_window_backward();
-        strncpy(buf, NotmuchQueryWindowCurrentSearch, sizeof(buf));
+        strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
@@ -1969,18 +1969,18 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
-        if (NotmuchQueryWindowDuration <= 0)
+        if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled."));
           break;
         }
-        if (!NotmuchQueryWindowCurrentSearch)
+        if (!NmQueryWindowCurrentSearch)
         {
           mutt_message(_("No notmuch vfolder currently loaded."));
           break;
         }
         nm_query_window_forward();
-        strncpy(buf, NotmuchQueryWindowCurrentSearch, sizeof(buf));
+        strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else

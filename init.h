@@ -127,7 +127,7 @@ struct Option MuttVars[] = {
   ** The default for this option is the currently used muttrc file, or
   ** ``~/.muttrc'' if no user muttrc was found.
   */
-  { "alias_format",     DT_STRING,  R_NONE, UL &AliasFmt, UL "%4n %2f %t %-10a   %r" },
+  { "alias_format",     DT_STRING,  R_NONE, UL &AliasFormat, UL "%4n %2f %t %-10a   %r" },
   /*
   ** .pp
   ** Specifies the format of the data displayed for the ``$alias'' menu.  The
@@ -377,7 +377,7 @@ struct Option MuttVars[] = {
   */
 #endif
 #ifdef USE_SSL
-  { "certificate_file", DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
+  { "certificate_file", DT_PATH, R_NONE, UL &CertificateFile, UL "~/.mutt_certificates" },
   /*
   ** .pp
   ** This variable specifies the file where the certificates you trust
@@ -648,7 +648,7 @@ struct Option MuttVars[] = {
   ** If \fI``no''\fP, never attempt to verify cryptographic signatures.
   ** (Crypto only)
   */
-  { "date_format",      DT_STRING,  R_MENU, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
+  { "date_format",      DT_STRING,  R_MENU, UL &DateFormat, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
   ** .pp
   ** This variable controls the format of the date printed by the ``%d''
@@ -823,20 +823,20 @@ struct Option MuttVars[] = {
   ** misinterpreting the line as a mbox message separator).
   */
 #ifdef USE_SSL_OPENSSL
-  { "entropy_file",     DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
+  { "entropy_file",     DT_PATH, R_NONE, UL &EntropyFile, 0 },
   /*
   ** .pp
   ** The file which includes random data that is used to initialize SSL
   ** library functions.
   */
 #endif
-  { "envelope_from_address", DT_ADDRESS, R_NONE, UL &EnvFrom, 0 },
+  { "envelope_from_address", DT_ADDRESS, R_NONE, UL &EnvelopeFromAddress, 0 },
   /*
   ** .pp
   ** Manually sets the \fIenvelope\fP sender for outgoing messages.
   ** This value is ignored if $$use_envelope_from is \fIunset\fP.
   */
-  { "escape",           DT_STRING,  R_NONE, UL &EscChar, UL "~" },
+  { "escape",           DT_STRING,  R_NONE, UL &Escape, UL "~" },
   /*
   ** .pp
   ** Escape character to use for functions in the built-in editor.
@@ -870,7 +870,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If set, flagged messages cannot be deleted.
   */
-  { "folder",           DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
+  { "folder",           DT_PATH, R_NONE, UL &Folder, UL "~/Mail" },
   /*
   ** .pp
   ** Specifies the default location of your mailboxes.  A ``+'' or ``='' at the
@@ -955,7 +955,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see the $$record variable.
   */
-  { "forward_attribution_intro", DT_STRING, R_NONE, UL &ForwardAttrIntro, UL "----- Forwarded message from %f -----" },
+  { "forward_attribution_intro", DT_STRING, R_NONE, UL &ForwardAttributionIntro, UL "----- Forwarded message from %f -----" },
   /*
   ** .pp
   ** This is the string that will precede a message which has been forwarded
@@ -963,7 +963,7 @@ struct Option MuttVars[] = {
   ** For a full listing of defined \fCprintf(3)\fP-like sequences see
   ** the section on $$index_format.  See also $$attribution_locale.
   */
-  { "forward_attribution_trailer", DT_STRING, R_NONE, UL &ForwardAttrTrailer, UL "----- End forwarded message -----" },
+  { "forward_attribution_trailer", DT_STRING, R_NONE, UL &ForwardAttributionTrailer, UL "----- End forwarded message -----" },
   /*
   ** .pp
   ** This is the string that will follow a message which has been forwarded
@@ -1001,7 +1001,7 @@ struct Option MuttVars[] = {
   ** placed in the editor when forwarding messages.  For those who always want
   ** to forward with no modification, use a setting of ``no''.
   */
-  { "forward_format",   DT_STRING,  R_NONE, UL &ForwFmt, UL "[%a: %s]" },
+  { "forward_format",   DT_STRING,  R_NONE, UL &ForwardFormat, UL "[%a: %s]" },
   /*
   ** .pp
   ** This variable controls the default subject when forwarding a message.
@@ -1077,7 +1077,7 @@ struct Option MuttVars[] = {
   ** ``Franklin'' to ``Franklin, Steve''.
   */
 #ifdef USE_NNTP
-  { "group_index_format", DT_STRING, R_BOTH, UL &GroupFormat, UL "%4C %M%N %5s  %-45.45f %d" },
+  { "group_index_format", DT_STRING, R_BOTH, UL &GroupIndexFormat, UL "%4C %M%N %5s  %-45.45f %d" },
   /*
   ** .pp
   ** This variable allows you to customize the newsgroup browser display to
@@ -1125,7 +1125,7 @@ struct Option MuttVars[] = {
   ** caching will be used.
   ** .pp
   ** Header caching can greatly improve speed when opening POP, IMAP
-  ** MH or Maildir folders, see ``$caching'' for details.
+  ** MH or Folder folders, see ``$caching'' for details.
   */
   { "header_cache_backend", DT_HCACHE, R_NONE, UL &HeaderCacheBackend, UL 0 },
   /*
@@ -1220,14 +1220,14 @@ struct Option MuttVars[] = {
   ** top of threads in the thread tree.  Note that when $$hide_missing is
   ** \fIset\fP, this option will have no effect.
   */
-  { "history",          DT_NUMBER,  R_NONE, UL &HistSize, 10 },
+  { "history",          DT_NUMBER,  R_NONE, UL &History, 10 },
   /*
   ** .pp
   ** This variable controls the size (in number of strings remembered) of
   ** the string history buffer per category. The buffer is cleared each time the
   ** variable is set.
   */
-  { "history_file",     DT_PATH, R_NONE, UL &HistFile, UL "~/.mutthistory" },
+  { "history_file",     DT_PATH, R_NONE, UL &HistoryFile, UL "~/.mutthistory" },
   /*
   ** .pp
   ** The file in which Mutt will save its history.
@@ -1258,7 +1258,7 @@ struct Option MuttVars[] = {
   ** This variable controls whether or not a Mail-Followup-To header is
   ** honored when group-replying to a message.
   */
-  { "hostname",         DT_STRING,  R_NONE, UL &Fqdn, 0 },
+  { "hostname",         DT_STRING,  R_NONE, UL &Hostname, 0 },
   /*
   ** .pp
   ** Specifies the fully-qualified hostname of the system mutt is running on
@@ -1490,7 +1490,7 @@ struct Option MuttVars[] = {
   ** Controls whether or not Mutt includes only the first attachment
   ** of the message you are replying.
   */
-  { "indent_string",    DT_STRING,  R_NONE, UL &Prefix, UL "> " },
+  { "indent_string",    DT_STRING,  R_NONE, UL &IndentString, UL "> " },
   /*
   ** .pp
   ** Specifies the string to prepend to each line of text quoted in a
@@ -1506,7 +1506,7 @@ struct Option MuttVars[] = {
   { "indent_str",       DT_SYNONYM,  R_NONE, UL "indent_string", 0 },
   /*
   */
-  { "index_format",     DT_STRING,  R_BOTH, UL &HdrFmt, UL "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
+  { "index_format",     DT_STRING,  R_BOTH, UL &IndexFormat, UL "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
   /*
   ** .pp
   ** This variable allows you to customize the message index display to
@@ -1662,7 +1662,7 @@ struct Option MuttVars[] = {
   ** ``$$keywords_standard'' are \fCfalse\fP, mutt will save keywords
   ** to legacy headers to ensure that it does not lose your labels.
   */
-  { "mail_check",       DT_NUMBER,  R_NONE, UL &BuffyTimeout, 5 },
+  { "mail_check",       DT_NUMBER,  R_NONE, UL &MailCheck, 5 },
   /*
   ** .pp
   ** This variable configures how often (in seconds) mutt should look for
@@ -1689,7 +1689,7 @@ struct Option MuttVars[] = {
   ** \fIunset\fP, and has a separate option, $$mail_check_stats_interval, to
   ** control how often to update these counts.
   */
-  { "mail_check_stats_interval", DT_NUMBER, R_NONE, UL &BuffyCheckStatsInterval, 60 },
+  { "mail_check_stats_interval", DT_NUMBER, R_NONE, UL &MailCheckStatsInterval, 60 },
   /*
   ** .pp
   ** When $$mail_check_stats is \fIset\fP, this variable configures
@@ -1742,7 +1742,7 @@ struct Option MuttVars[] = {
   { "mark_macro_prefix",DT_STRING, R_NONE, UL &MarkMacroPrefix, UL "'" },
   /*
   ** .pp
-  ** Prefix for macros created using mark-message.  A new macro
+  ** IndentString for macros created using mark-message.  A new macro
   ** automatically generated with \fI<mark-message>a\fP will be composed
   ** from this prefix and the letter \fIa\fP.
   */
@@ -1770,7 +1770,7 @@ struct Option MuttVars[] = {
   ** the \fInot\fP operator ``!''.  Only files whose names match this mask
   ** will be shown. The match is always case-sensitive.
   */
-  { "mbox",             DT_PATH, R_BOTH, UL &Inbox, UL "~/mbox" },
+  { "mbox",             DT_PATH, R_BOTH, UL &Mbox, UL "~/mbox" },
   /*
   ** .pp
   ** This specifies the folder into which read mail in your $$spoolfile
@@ -1778,11 +1778,11 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see the $$move variable.
   */
-  { "mbox_type",        DT_MAGIC,R_NONE, UL &DefaultMagic, MUTT_MBOX },
+  { "mbox_type",        DT_MAGIC,R_NONE, UL &MboxType, MUTT_MBOX },
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
-  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overridden by the
+  ** ``mbox'', ``MMDF'', ``MH'' and ``Folder''. This is overridden by the
   ** \fC-m\fP command-line option.
   */
   { "menu_context",     DT_NUMBER,  R_NONE, UL &MenuContext, 0 },
@@ -1829,7 +1829,7 @@ struct Option MuttVars[] = {
   ** Also see the $$message_cache_clean variable.
   */
 #endif
-  { "message_format",   DT_STRING,  R_NONE, UL &MsgFmt, UL "%s" },
+  { "message_format",   DT_STRING,  R_NONE, UL &MessageFormat, UL "%s" },
   /*
   ** .pp
   ** This is the string displayed in the ``attachment'' menu for
@@ -1867,17 +1867,17 @@ struct Option MuttVars[] = {
   ** .pp
   ** This option is similar to $$maildir_trash for Maildir folders.
   */
-  { "mh_seq_flagged",   DT_STRING, R_NONE, UL &MhFlagged, UL "flagged" },
+  { "mh_seq_flagged",   DT_STRING, R_NONE, UL &MhSeqFlagged, UL "flagged" },
   /*
   ** .pp
   ** The name of the MH sequence used for flagged messages.
   */
-  { "mh_seq_replied",   DT_STRING, R_NONE, UL &MhReplied, UL "replied" },
+  { "mh_seq_replied",   DT_STRING, R_NONE, UL &MhSeqReplied, UL "replied" },
   /*
   ** .pp
   ** The name of the MH sequence used to tag replied messages.
   */
-  { "mh_seq_unseen",    DT_STRING, R_NONE, UL &MhUnseen, UL "unseen" },
+  { "mh_seq_unseen",    DT_STRING, R_NONE, UL &MhSeqUnseen, UL "unseen" },
   /*
   ** .pp
   ** The name of the MH sequence used for unseen messages.
@@ -1920,7 +1920,7 @@ struct Option MuttVars[] = {
   ** is Usenet article, because MIME for news is nonstandard feature.
   */
 #endif
-  { "mime_type_query_command", DT_STRING, R_NONE, UL &MimeTypeQueryCmd, UL "" },
+  { "mime_type_query_command", DT_STRING, R_NONE, UL &MimeTypeQueryCommand, UL "" },
   /*
   ** .pp
   ** This specifies a command to run, to determine the mime type of a
@@ -1993,7 +1993,7 @@ struct Option MuttVars[] = {
    ** See also $$read_inc, $$write_inc and $$net_inc.
    */
 #endif
-  { "new_mail_command", DT_PATH, R_NONE, UL &NewMailCmd, UL NULL },
+  { "new_mail_command", DT_PATH, R_NONE, UL &NewMailCommand, UL NULL },
   /*
   ** .pp
   ** If \fIset\fP, Mutt will call this command after a new message is received.
@@ -2091,7 +2091,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Your password for NNTP account.
   */
-  { "nntp_poll",        DT_NUMBER, R_NONE, UL &NewsPollTimeout, 60 },
+  { "nntp_poll",        DT_NUMBER, R_NONE, UL &NntpPoll, 60 },
   /*
   ** .pp
   ** The time in seconds until any operations on newsgroup except post new
@@ -2101,42 +2101,42 @@ struct Option MuttVars[] = {
   */
 #endif
 #ifdef USE_NOTMUCH
-  { "nm_open_timeout", DT_NUMBER, R_NONE, UL &NotmuchOpenTimeout, 5 },
+  { "nm_open_timeout", DT_NUMBER, R_NONE, UL &NmOpenTimeout, 5 },
   /*
    ** .pp
    ** This variable specifies the timeout for database open in seconds.
    */
-  { "nm_default_uri", DT_STRING, R_NONE, UL &NotmuchDefaultUri, 0 },
+  { "nm_default_uri", DT_STRING, R_NONE, UL &NmDefaultUri, 0 },
   /*
    ** .pp
    ** This variable specifies the default Notmuch database in format
    ** notmuch://<absolute path>.
    */
-  { "nm_hidden_tags", DT_STRING, R_NONE, UL &NotmuchHiddenTags, UL "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
+  { "nm_hidden_tags", DT_STRING, R_NONE, UL &NmHiddenTags, UL "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
   /*
    ** .pp
    ** This variable specifies private notmuch tags which should not be printed
    ** on screen.
    */
-  { "nm_exclude_tags", DT_STRING,  R_NONE, UL &NotmuchExcludeTags, 0 },
+  { "nm_exclude_tags", DT_STRING,  R_NONE, UL &NmExcludeTags, 0 },
   /*
    ** .pp
    ** The messages tagged with these tags are excluded and not loaded
    ** from notmuch DB to mutt unless specified explicitly.
    */
-  { "nm_unread_tag", DT_STRING, R_NONE, UL &NotmuchUnreadTag, UL "unread" },
+  { "nm_unread_tag", DT_STRING, R_NONE, UL &NmUnreadTag, UL "unread" },
   /*
    ** .pp
    ** This variable specifies notmuch tag which is used for unread messages. The
    ** variable is used to count unread messages in DB only. All other mutt commands
    ** use standard (e.g. maildir) flags.
    */
-  { "nm_db_limit", DT_NUMBER, R_NONE, UL &NotmuchDBLimit, 0 },
+  { "nm_db_limit", DT_NUMBER, R_NONE, UL &NmDbLimit, 0 },
   /*
    ** .pp
    ** This variable specifies the default limit used in notmuch queries.
    */
-  { "nm_query_type", DT_STRING, R_NONE, UL &NotmuchQueryType, UL "messages" },
+  { "nm_query_type", DT_STRING, R_NONE, UL &NmQueryType, UL "messages" },
   /*
    ** .pp
    ** This variable specifies the default query type (threads or messages) used in notmuch queries.
@@ -2146,31 +2146,31 @@ struct Option MuttVars[] = {
    ** .pp
    ** This variable specifies if the mutt record should indexed by notmuch.
    */
-  { "nm_record_tags", DT_STRING, R_NONE, UL &NotmuchRecordTags, 0 },
+  { "nm_record_tags", DT_STRING, R_NONE, UL &NmRecordTags, 0 },
   /*
    ** .pp
    ** This variable specifies the default tags applied to messages stored to the mutt record.
    ** When set to 0 this variable disable the window feature.
    */
-  { "nm_query_window_duration", DT_NUMBER, R_NONE, UL &NotmuchQueryWindowDuration, 0 },
+  { "nm_query_window_duration", DT_NUMBER, R_NONE, UL &NmQueryWindowDuration, 0 },
   /*
    ** .pp
    ** This variable sets the time base of a windowed notmuch query.
    ** Accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
    */
-  { "nm_query_window_timebase", DT_STRING, R_NONE, UL &NotmuchQueryWindowTimebase, UL "week" },
+  { "nm_query_window_timebase", DT_STRING, R_NONE, UL &NmQueryWindowTimebase, UL "week" },
   /*
    ** .pp
    ** This variable sets the time duration of a windowed notmuch query.
    ** Accepted values all non negative integers. A value of 0 disables the feature.
    */
-  { "nm_query_window_current_search", DT_STRING, R_NONE, UL &NotmuchQueryWindowCurrentSearch, UL "" },
+  { "nm_query_window_current_search", DT_STRING, R_NONE, UL &NmQueryWindowCurrentSearch, UL "" },
   /*
    ** .pp
    ** This variable sets the time duration of a windowed notmuch query.
    ** Accepted values all non negative integers. A value of 0 disables the feature.
    */
-  { "nm_query_window_current_position", DT_NUMBER, R_NONE, UL &NotmuchQueryWindowCurrentPosition, 0 },
+  { "nm_query_window_current_position", DT_NUMBER, R_NONE, UL &NmQueryWindowCurrentPosition, 0 },
   /*
    ** .pp
    ** This variable contains the currently setup notmuch search for window based vfolder.
@@ -2201,7 +2201,7 @@ struct Option MuttVars[] = {
   ** results. If positive, this many lines will be given before a match,
   ** if 0, the match will be top-aligned.
   */
-  { "pager_format",     DT_STRING,  R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
+  { "pager_format",     DT_STRING,  R_PAGER, UL &PagerFormat, UL "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   /*
   ** .pp
   ** This variable controls the format of the one-line message ``status''
@@ -2654,7 +2654,7 @@ struct Option MuttVars[] = {
   ** set pop_authenticators="digest-md5:apop:user"
   ** .te
   */
-  { "pop_checkinterval", DT_NUMBER, R_NONE, UL &PopCheckTimeout, 60 },
+  { "pop_checkinterval", DT_NUMBER, R_NONE, UL &PopCheckinterval, 60 },
   /*
   ** .pp
   ** This variable configures how often (in seconds) mutt should look for
@@ -2788,7 +2788,7 @@ struct Option MuttVars[] = {
   ** This is set to ``ask-no'' by default, because some people
   ** accidentally hit ``p'' often.
   */
-  { "print_command",    DT_PATH, R_NONE, UL &PrintCmd, UL "lpr" },
+  { "print_command",    DT_PATH, R_NONE, UL &PrintCommand, UL "lpr" },
   /*
   ** .pp
   ** This specifies the command pipe that should be used to print messages.
@@ -2828,7 +2828,7 @@ struct Option MuttVars[] = {
   ** than returning to the index menu.  If \fIunset\fP, Mutt will return to the
   ** index menu when the external pager exits.
   */
-  { "query_command",    DT_PATH, R_NONE, UL &QueryCmd, UL "" },
+  { "query_command",    DT_PATH, R_NONE, UL &QueryCommand, UL "" },
   /*
   ** .pp
   ** This specifies the command Mutt will use to make external address
@@ -2925,7 +2925,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see $$postponed variable.
   */
-  { "record",           DT_PATH, R_NONE, UL &Outbox, UL "~/sent" },
+  { "record",           DT_PATH, R_NONE, UL &Record, UL "~/sent" },
   /*
   ** .pp
   ** This specifies the file into which your outgoing messages should be
@@ -3116,7 +3116,7 @@ struct Option MuttVars[] = {
   ** \fBNote:\fP This only applies to mbox and MMDF folders, Mutt does not
   ** delete MH and Maildir directories.
   */
-  { "save_history",     DT_NUMBER,  R_NONE, UL &SaveHist, 0 },
+  { "save_history",     DT_NUMBER,  R_NONE, UL &SaveHistory, 0 },
   /*
   ** .pp
   ** This variable controls the size of the history (per category) saved in the
@@ -3536,7 +3536,7 @@ struct Option MuttVars[] = {
   ** Encrypt the message to $$smime_default_key too.
   ** (S/MIME only)
   */
-  { "smime_encrypt_with",       DT_STRING,  R_NONE, UL &SmimeCryptAlg, UL "aes256" },
+  { "smime_encrypt_with",       DT_STRING,  R_NONE, UL &SmimeEncryptWith, UL "aes256" },
   /*
   ** .pp
   ** This sets the algorithm that should be used for encryption.
@@ -3640,7 +3640,7 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
-  { "smime_sign_digest_alg",    DT_STRING,  R_NONE, UL &SmimeDigestAlg, UL "sha256" },
+  { "smime_sign_digest_alg",    DT_STRING,  R_NONE, UL &SmimeSignDigestAlg, UL "sha256" },
   /*
   ** .pp
   ** This sets the algorithm that should be used for the signature message digest.
@@ -3777,7 +3777,7 @@ struct Option MuttVars[] = {
   ** order $$sort_aux is reversed again (which is not the right thing to do,
   ** but kept to not break any existing configuration setting).
   */
-  { "sort_browser",     DT_SORT|DT_SORT_BROWSER, R_NONE, UL &BrowserSort, SORT_ALPHA },
+  { "sort_browser",     DT_SORT|DT_SORT_BROWSER, R_NONE, UL &SortBrowser, SORT_ALPHA },
   /*
   ** .pp
   ** Specifies how to sort entries in the file browser.  By default, the
@@ -3808,7 +3808,7 @@ struct Option MuttVars[] = {
   ** .dd unsorted
   ** .ie
   */
-  { "spam_separator",   DT_STRING, R_NONE, UL &SpamSep, UL "," },
+  { "spam_separator",   DT_STRING, R_NONE, UL &SpamSeparator, UL "," },
   /*
   ** .pp
   ** This variable controls what happens when multiple spam headers
@@ -3827,7 +3827,7 @@ struct Option MuttVars[] = {
   */
 #ifdef USE_SSL
 #ifdef USE_SSL_GNUTLS
-  { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
+  { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCaCertificatesFile, 0 },
   /*
   ** .pp
   ** This variable specifies a file containing trusted CA certificates.
@@ -3856,7 +3856,7 @@ struct Option MuttVars[] = {
    ** option supersedes $$ssl_starttls.
    */
 #ifdef USE_SSL_GNUTLS
-  { "ssl_min_dh_prime_bits", DT_NUMBER, R_NONE, UL &SslDHPrimeBits, 0 },
+  { "ssl_min_dh_prime_bits", DT_NUMBER, R_NONE, UL &SslMinDhPrimeBits, 0 },
   /*
   ** .pp
   ** This variable specifies the minimum acceptable prime size (in bits)
@@ -3960,7 +3960,7 @@ struct Option MuttVars[] = {
   ** required.)
   */
 #endif /* defined(USE_SSL) */
-  { "status_chars",     DT_MBTABLE, R_BOTH, UL &StChars, UL "-*%A" },
+  { "status_chars",     DT_MBTABLE, R_BOTH, UL &StatusChars, UL "-*%A" },
   /*
   ** .pp
   ** Controls the characters used by the ``%r'' indicator in $$status_format.
@@ -3977,7 +3977,7 @@ struct Option MuttVars[] = {
   **                 forwarding, etc. are not permitted in this mode)
   ** .de
   */
-  { "status_format",    DT_STRING,  R_BOTH, UL &Status, UL "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",    DT_STRING,  R_BOTH, UL &StatusFormat, UL "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``index''
@@ -4139,7 +4139,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** A value of zero or less will cause Mutt to never time out.
   */
-  { "tmpdir",           DT_PATH, R_NONE, UL &TempDir, 0 },
+  { "tmpdir",           DT_PATH, R_NONE, UL &Tmpdir, 0 },
   /*
   ** .pp
   ** This variable allows you to specify where Mutt will place its
@@ -4180,7 +4180,7 @@ struct Option MuttVars[] = {
    ** .dt 11 .dd <space> .dd The mail is read - %Z expando.
    ** .de
    */
-  { "trash",            DT_PATH, R_NONE, UL &TrashPath, 0 },
+  { "trash",            DT_PATH, R_NONE, UL &Trash, 0 },
   /*
   ** .pp
   ** If set, this variable specifies the path of the trash folder where the
@@ -4308,7 +4308,7 @@ struct Option MuttVars[] = {
   ** given in the built-in editor.
   */
 #ifdef USE_NOTMUCH
-  { "vfolder_format",   DT_STRING,  R_INDEX, UL &VirtFolderFormat, UL "%2C %?n?%4n/&     ?%4m %f" },
+  { "vfolder_format",   DT_STRING,  R_INDEX, UL &VfolderFormat, UL "%2C %?n?%4n/&     ?%4m %f" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display for virtual
@@ -4405,7 +4405,7 @@ struct Option MuttVars[] = {
   { "xterm_set_titles",  DT_SYNONYM,  R_NONE, UL "ts_enabled", 0 },
   /*
   */
-  { "xlabel_delimiter", DT_STRING, R_NONE, UL &XlabelDelim, UL "" },
+  { "xlabel_delimiter", DT_STRING, R_NONE, UL &XlabelDelimiter, UL "" },
   /*
   ** .pp
   ** The character used to delimit distinct keywords in X-Label headers.

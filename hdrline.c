@@ -719,7 +719,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         p = dest;
 
-        cp = (op == 'd' || op == 'D') ? (NONULL(DateFmt)) : src;
+        cp = (op == 'd' || op == 'D') ? (NONULL(DateFormat)) : src;
         if (*cp == '!')
         {
           do_locales = 0;

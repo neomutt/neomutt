@@ -1842,7 +1842,7 @@ static int check_mailbox(struct Context *ctx)
   int rc, ret = 0;
   void *hc = NULL;
 
-  if (nserv->check_time + NewsPollTimeout > now)
+  if (nserv->check_time + NntpPoll > now)
     return 0;
 
   mutt_message(_("Checking for new messages..."));

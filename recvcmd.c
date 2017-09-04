@@ -340,7 +340,7 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
     if (_prefix)
       strfcpy(prefix, _prefix, sizeof(prefix));
     else if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
 
@@ -431,7 +431,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (option(OPT_FORWARD_QUOTE))
   {
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, parent_hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
   }
@@ -875,7 +875,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     st.fpout = tmpfp;
 
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, parent_hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
 

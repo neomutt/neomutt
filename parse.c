@@ -1202,10 +1202,10 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
         /* if spam tag already exists, figure out how to amend it */
         if (e->spam && *buf)
         {
-          /* If SpamSep defined, append with separator */
-          if (SpamSep)
+          /* If SpamSeparator defined, append with separator */
+          if (SpamSeparator)
           {
-            mutt_buffer_addstr(e->spam, SpamSep);
+            mutt_buffer_addstr(e->spam, SpamSeparator);
             mutt_buffer_addstr(e->spam, buf);
           }
 

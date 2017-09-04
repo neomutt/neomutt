@@ -124,7 +124,7 @@ static struct Query *run_query(char *s, int quiet)
   char *p = NULL;
   pid_t thepid;
 
-  mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCmd, s);
+  mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCommand, s);
 
   if ((thepid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
   {
@@ -504,7 +504,7 @@ int mutt_query_complete(char *buf, size_t buflen)
   struct Query *results = NULL;
   struct Address *tmpa = NULL;
 
-  if (!QueryCmd)
+  if (!QueryCommand)
   {
     mutt_error(_("Query command not defined."));
     return 0;
@@ -533,7 +533,7 @@ int mutt_query_complete(char *buf, size_t buflen)
 
 void mutt_query_menu(char *buf, size_t buflen)
 {
-  if (!QueryCmd)
+  if (!QueryCommand)
   {
     mutt_error(_("Query command not defined."));
     return;

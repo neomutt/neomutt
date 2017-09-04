@@ -81,7 +81,7 @@ enum MailboxFormat
   MUTT_COMPRESSED,
 };
 
-WHERE short DefaultMagic;
+WHERE short MboxType;
 
 #define MMDF_SEP "\001\001\001\001\n"
 

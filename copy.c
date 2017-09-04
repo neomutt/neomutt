@@ -562,7 +562,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
     if (option(OPT_TEXT_FLOWED))
       strfcpy(prefix, ">", sizeof(prefix));
     else
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
   }
 
   if (hdr->xlabel_changed)

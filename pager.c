@@ -1977,7 +1977,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       size_t l2 = sizeof(buffer);
       hfi.hdr = (IsHeader(rd->extra)) ? rd->extra->hdr : rd->extra->bdy->hdr;
       mutt_make_string_info(buffer, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
-                            NONULL(PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
+                            NONULL(PagerFormat), &hfi, MUTT_FORMAT_MAKEPRINT);
       mutt_draw_statusline(rd->pager_status_window->cols, buffer, l2);
     }
     else
@@ -2004,7 +2004,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       menu_redraw_current(rd->index);
 
     /* print out the index status bar */
-    menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(Status));
+    menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
@@ -2227,10 +2227,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       {
         if (option(OPT_BEEP_NEW))
           beep();
-        if (NewMailCmd)
+        if (NewMailCommand)
         {
           char cmd[LONG_STRING];
-          menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(NewMailCmd));
+          menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(NewMailCommand));
           mutt_system(cmd);
         }
       }

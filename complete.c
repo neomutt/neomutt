@@ -129,7 +129,7 @@ int mutt_complete(char *s, size_t slen)
     if (*s == '!')
       p = NONULL(SpoolFile);
     else
-      p = NONULL(Maildir);
+      p = NONULL(Folder);
 
     mutt_concat_path(imap_path, p, s + 1, sizeof(imap_path));
   }
@@ -147,7 +147,7 @@ int mutt_complete(char *s, size_t slen)
     if (*s == '!')
       strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
     else
-      strfcpy(exp_dirpart, NONULL(Maildir), sizeof(exp_dirpart));
+      strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
     if ((p = strrchr(s, '/')))
     {
       char buf[_POSIX_PATH_MAX];

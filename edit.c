@@ -83,7 +83,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    strfcpy(tmp, NONULL(Prefix), sizeof(tmp));
+    strfcpy(tmp, NONULL(IndentString), sizeof(tmp));
     tmplen = mutt_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
@@ -356,7 +356,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
     }
     addch('\n');
 
-    if (EscChar && tmp[0] == EscChar[0] && tmp[1] != EscChar[0])
+    if (Escape && tmp[0] == Escape[0] && tmp[1] != Escape[0])
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_strlen(tmp) - 1;

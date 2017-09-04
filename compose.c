@@ -311,13 +311,13 @@ static void redraw_crypt_lines(struct Header *msg)
   }
 
   if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME) &&
-      (msg->security & ENCRYPT) && SmimeCryptAlg && *SmimeCryptAlg)
+      (msg->security & ENCRYPT) && SmimeEncryptWith && *SmimeEncryptWith)
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s",
                          _("Encrypt with: "));
     NORMAL_COLOR;
-    printw("%s", NONULL(SmimeCryptAlg));
+    printw("%s", NONULL(SmimeEncryptWith));
   }
 }
 
@@ -686,7 +686,7 @@ static unsigned long cum_attachs_size(struct Menu *menu)
  * compose_format_str - Format strings like printf()
  *
  * * \%a Total number of attachments
- * * \%h Hostname  [option]
+ * * \%h ShortHostname  [option]
  * * \%l Approx. length of current message (in bytes)
  * * \%v Mutt version
  *
@@ -712,7 +712,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 
     case 'h': /* hostname */
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(buf, buflen, fmt, NONULL(Hostname));
+      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l': /* approx length of current message in bytes */

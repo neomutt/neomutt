@@ -308,7 +308,7 @@ static struct MbTable *parse_mbtable(const char *s)
 
   t->orig_str = safe_strdup(s);
   /* This could be more space efficient.  However, being used on tiny
-   * strings (ToChars and StChars), the overhead is not great. */
+   * strings (ToChars and StatusChars), the overhead is not great. */
   t->chars = safe_calloc(slen, sizeof(char *));
   d = t->segmented_str = safe_calloc(slen * 2, sizeof(char));
 
@@ -2830,7 +2830,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (query || *s->dptr != '=')
       {
-        switch (DefaultMagic)
+        switch (MboxType)
         {
           case MUTT_MBOX:
             p = "mbox";
@@ -2842,7 +2842,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             p = "MH";
             break;
           case MUTT_MAILDIR:
-            p = "Maildir";
+            p = "Folder";
             break;
           default:
             p = "unknown";
@@ -3903,7 +3903,7 @@ int var_to_string(int idx, char *val, size_t len)
   {
     char *p = NULL;
 
-    switch (DefaultMagic)
+    switch (MboxType)
     {
       case MUTT_MBOX:
         p = "mbox";
@@ -3915,7 +3915,7 @@ int var_to_string(int idx, char *val, size_t len)
         p = "MH";
         break;
       case MUTT_MAILDIR:
-        p = "Maildir";
+        p = "Folder";
         break;
       default:
         p = "unknown";
@@ -4089,7 +4089,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   Groups = hash_create(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAlias = hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
+  ReverseAliases = hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create(64, 1);
   TagFormats = hash_create(64, 0);
@@ -4172,20 +4172,20 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   /* some systems report the FQDN instead of just the hostname */
   if ((p = strchr(utsname.nodename, '.')))
-    Hostname = mutt_substrdup(utsname.nodename, p);
+    ShortHostname = mutt_substrdup(utsname.nodename, p);
   else
-    Hostname = safe_strdup(utsname.nodename);
+    ShortHostname = safe_strdup(utsname.nodename);
 
 /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
-  /* we have a compile-time domain name, use that for Fqdn */
-  Fqdn = safe_malloc(mutt_strlen(DOMAIN) + mutt_strlen(Hostname) + 2);
-  sprintf(Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);
+  /* we have a compile-time domain name, use that for Hostname */
+  Hostname = safe_malloc(mutt_strlen(DOMAIN) + mutt_strlen(ShortHostname) + 2);
+  sprintf(Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
   if (!(getdnsdomainname(buffer, sizeof(buffer))))
   {
-    Fqdn = safe_malloc(mutt_strlen(buffer) + mutt_strlen(Hostname) + 2);
-    sprintf(Fqdn, "%s.%s", NONULL(Hostname), buffer);
+    Hostname = safe_malloc(mutt_strlen(buffer) + mutt_strlen(ShortHostname) + 2);
+    sprintf(Hostname, "%s.%s", NONULL(ShortHostname), buffer);
   }
   else
     /*
@@ -4197,7 +4197,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
      * user to provide the correct hostname if the nodename won't work in their
      * network.
      */
-    Fqdn = safe_strdup(utsname.nodename);
+    Hostname = safe_strdup(utsname.nodename);
 #endif
 
 #ifdef USE_NNTP
@@ -4251,7 +4251,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
         "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
   }
 
-  TempDir = safe_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
+  Tmpdir = safe_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
 
   p = getenv("VISUAL");
   if (!p)
@@ -4441,7 +4441,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       mutt_exit(1);
   }
 
-  mutt_mkdir(TempDir, S_IRWXU);
+  mutt_mkdir(Tmpdir, S_IRWXU);
 
   mutt_read_histfile();
 

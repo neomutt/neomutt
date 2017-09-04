@@ -145,7 +145,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'h':
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(buf, buflen, fmt, NONULL(Hostname));
+      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l':
@@ -253,12 +253,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                      0);
       }
 
-      if (!StChars || !StChars->len)
+      if (!StatusChars || !StatusChars->len)
         buf[0] = 0;
-      else if (i >= StChars->len)
-        snprintf(buf, buflen, "%s", StChars->chars[0]);
+      else if (i >= StatusChars->len)
+        snprintf(buf, buflen, "%s", StatusChars->chars[0]);
       else
-        snprintf(buf, buflen, "%s", StChars->chars[i]);
+        snprintf(buf, buflen, "%s", StatusChars->chars[i]);
       break;
     }
 

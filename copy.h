@@ -50,7 +50,7 @@ struct Context;
 #define CH_DECODE         (1 << 2)  /**< do RFC1522 decoding? */
 #define CH_XMIT           (1 << 3)  /**< transmitting this message? */
 #define CH_FROM           (1 << 4)  /**< retain the "From " message separator? */
-#define CH_PREFIX         (1 << 5)  /**< use Prefix string? */
+#define CH_PREFIX         (1 << 5)  /**< use IndentString string? */
 #define CH_NOSTATUS       (1 << 6)  /**< suppress the status and x-status fields */
 #define CH_REORDER        (1 << 7)  /**< Re-order output of headers */
 #define CH_NONEWLINE      (1 << 8)  /**< don't output terminating newline */

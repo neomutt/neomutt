@@ -857,16 +857,16 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       b->msg_flagged = Context->flagged;
     }
 
-    /* compute length of Maildir without trailing separator */
-    size_t maildirlen = mutt_strlen(Maildir);
+    /* compute length of Folder without trailing separator */
+    size_t maildirlen = mutt_strlen(Folder);
     if (maildirlen && SidebarDelimChars &&
-        strchr(SidebarDelimChars, Maildir[maildirlen - 1]))
+        strchr(SidebarDelimChars, Folder[maildirlen - 1]))
       maildirlen--;
 
-    /* check whether Maildir is a prefix of the current folder's path */
+    /* check whether Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
     if ((mutt_strlen(b->path) > maildirlen) &&
-        (mutt_strncmp(Maildir, b->path, maildirlen) == 0) &&
+        (mutt_strncmp(Folder, b->path, maildirlen) == 0) &&
         SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
       maildir_is_prefix = true;
 

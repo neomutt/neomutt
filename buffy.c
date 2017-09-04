@@ -682,7 +682,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
  * mutt_buffy_check - Check all Incoming for new mail
  *
  * Check all Incoming for new mail and total/new/flagged messages
- * force: if true, ignore BuffyTimeout and check for new mail anyway
+ * force: if true, ignore MailCheck and check for new mail anyway
  */
 int mutt_buffy_check(bool force)
 {
@@ -703,10 +703,10 @@ int mutt_buffy_check(bool force)
     return 0;
 
   t = time(NULL);
-  if (!force && (t - BuffyTime < BuffyTimeout))
+  if (!force && (t - BuffyTime < MailCheck))
     return BuffyCount;
 
-  if (option(OPT_MAIL_CHECK_STATS) && (t - BuffyStatsTime >= BuffyCheckStatsInterval))
+  if (option(OPT_MAIL_CHECK_STATS) && (t - BuffyStatsTime >= MailCheckStatsInterval))
   {
     check_stats = true;
     BuffyStatsTime = t;

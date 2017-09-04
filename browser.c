@@ -134,7 +134,7 @@ static int browser_compare_subject(const void *a, const void *b)
   int r = mutt_inbox_cmp(pa->name, pb->name);
   if (r == 0)
     r = mutt_strcoll(pa->name, pb->name);
-  return ((BrowserSort & SORT_REVERSE) ? -r : r);
+  return ((SortBrowser & SORT_REVERSE) ? -r : r);
 }
 
 static int browser_compare_desc(const void *a, const void *b)
@@ -144,7 +144,7 @@ static int browser_compare_desc(const void *a, const void *b)
 
   int r = mutt_strcoll(pa->desc, pb->desc);
 
-  return ((BrowserSort & SORT_REVERSE) ? -r : r);
+  return ((SortBrowser & SORT_REVERSE) ? -r : r);
 }
 
 static int browser_compare_date(const void *a, const void *b)
@@ -154,7 +154,7 @@ static int browser_compare_date(const void *a, const void *b)
 
   int r = pa->mtime - pb->mtime;
 
-  return ((BrowserSort & SORT_REVERSE) ? -r : r);
+  return ((SortBrowser & SORT_REVERSE) ? -r : r);
 }
 
 static int browser_compare_size(const void *a, const void *b)
@@ -164,7 +164,7 @@ static int browser_compare_size(const void *a, const void *b)
 
   int r = pa->size - pb->size;
 
-  return ((BrowserSort & SORT_REVERSE) ? -r : r);
+  return ((SortBrowser & SORT_REVERSE) ? -r : r);
 }
 
 static int browser_compare_count(const void *a, const void *b)
@@ -180,7 +180,7 @@ static int browser_compare_count(const void *a, const void *b)
   else
     r = 1;
 
-  return ((BrowserSort & SORT_REVERSE) ? -r : r);
+  return ((SortBrowser & SORT_REVERSE) ? -r : r);
 }
 
 static int browser_compare_count_new(const void *a, const void *b)
@@ -196,7 +196,7 @@ static int browser_compare_count_new(const void *a, const void *b)
   else
     r = 1;
 
-  return ((BrowserSort & SORT_REVERSE) ? -r : r);
+  return ((SortBrowser & SORT_REVERSE) ? -r : r);
 }
 
 /**
@@ -216,7 +216,7 @@ static int browser_compare(const void *a, const void *b)
   if ((mutt_strcoll(pb->desc, "../") == 0) || (mutt_strcoll(pb->desc, "..") == 0))
     return 1;
 
-  switch (BrowserSort & SORT_MASK)
+  switch (SortBrowser & SORT_MASK)
   {
     case SORT_DATE:
       return browser_compare_date(a, b);
@@ -242,7 +242,7 @@ static int browser_compare(const void *a, const void *b)
  */
 static void browser_sort(struct BrowserState *state)
 {
-  switch (BrowserSort & SORT_MASK)
+  switch (SortBrowser & SORT_MASK)
   {
     /* Also called "I don't care"-sort-method. */
     case SORT_ORDER:
@@ -301,7 +301,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
 
         if (op == 'D')
         {
-          t_fmt = NONULL(DateFmt);
+          t_fmt = NONULL(DateFormat);
           if (*t_fmt == '!')
           {
             t_fmt++;
@@ -902,7 +902,7 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 
 #ifdef USE_NNTP
   if (option(OPT_NEWS))
-    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(GroupFormat), newsgroup_format_str,
+    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(GroupIndexFormat), newsgroup_format_str,
                       (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   else
 #endif
@@ -918,7 +918,7 @@ static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
   folder.ff = &((struct FolderFile *) menu->data)[num];
   folder.num = num;
 
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(VirtFolderFormat),
+  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(VfolderFormat),
                     folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 #endif
@@ -1079,7 +1079,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
   int buffy = (flags & MUTT_SEL_BUFFY) ? 1 : 0;
 
   /* Keeps in memory the directory we were in when hitting '='
-   * to go directly to $folder (Maildir)
+   * to go directly to $folder (Folder)
    */
   char GotoSwapper[_POSIX_PATH_MAX] = "";
 
@@ -1179,7 +1179,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
        */
       short browser_track;
 
-      switch (BrowserSort & SORT_MASK)
+      switch (SortBrowser & SORT_MASK)
       {
         case SORT_DESC:
         case SORT_SUBJECT:
@@ -1221,8 +1221,8 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             case MUTT_MH:
             case MUTT_MAILDIR:
             case MUTT_IMAP:
-              if (Maildir)
-                strfcpy(LastDir, NONULL(Maildir), sizeof(LastDir));
+              if (Folder)
+                strfcpy(LastDir, NONULL(Folder), sizeof(LastDir));
               else if (SpoolFile)
                 mutt_browser_select_dir(SpoolFile);
               break;
@@ -1761,37 +1761,37 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             break;
 
           case 1: /* (d)ate */
-            BrowserSort = SORT_DATE;
+            SortBrowser = SORT_DATE;
             break;
 
           case 2: /* (a)lpha */
-            BrowserSort = SORT_SUBJECT;
+            SortBrowser = SORT_SUBJECT;
             break;
 
           case 3: /* si(z)e */
-            BrowserSort = SORT_SIZE;
+            SortBrowser = SORT_SIZE;
             break;
 
           case 4: /* d(e)scription */
-            BrowserSort = SORT_DESC;
+            SortBrowser = SORT_DESC;
             break;
 
           case 5: /* (c)ount */
-            BrowserSort = SORT_COUNT;
+            SortBrowser = SORT_COUNT;
             break;
 
           case 6: /* ne(w) count */
-            BrowserSort = SORT_UNREAD;
+            SortBrowser = SORT_UNREAD;
             break;
 
           case 7: /* do(n)'t sort */
-            BrowserSort = SORT_ORDER;
+            SortBrowser = SORT_ORDER;
             resort = 0;
             break;
         }
         if (resort)
         {
-          BrowserSort |= reverse ? SORT_REVERSE : 0;
+          SortBrowser |= reverse ? SORT_REVERSE : 0;
           browser_sort(&state);
           browser_highlight_default(&state, menu);
           menu->redraw = REDRAW_FULL;
@@ -1808,17 +1808,17 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         if (i == OP_BROWSER_GOTO_FOLDER)
         {
           /* When in mailboxes mode, disables this feature */
-          if (Maildir)
+          if (Folder)
           {
-            mutt_debug(5, "= hit! Maildir: %s, LastDir: %s\n", Maildir, LastDir);
+            mutt_debug(5, "= hit! Folder: %s, LastDir: %s\n", Folder, LastDir);
             if (!GotoSwapper[0])
             {
-              if (mutt_strcmp(LastDir, Maildir) != 0)
+              if (mutt_strcmp(LastDir, Folder) != 0)
               {
-                /* Stores into GotoSwapper LastDir, and swaps to Maildir */
+                /* Stores into GotoSwapper LastDir, and swaps to Folder */
                 strfcpy(GotoSwapper, LastDir, sizeof(GotoSwapper));
                 strfcpy(OldLastDir, LastDir, sizeof(OldLastDir));
-                strfcpy(LastDir, Maildir, sizeof(LastDir));
+                strfcpy(LastDir, Folder, sizeof(LastDir));
               }
             }
             else

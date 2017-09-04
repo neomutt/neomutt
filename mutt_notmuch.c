@@ -136,7 +136,7 @@ struct NmHdrData
  *
  * This stores the global NotMuch data, such as the database connection.
  *
- * @sa Context#data, NotmuchDBLimit, NM_QUERY_TYPE_MESGS
+ * @sa Context#data, NmDbLimit, NM_QUERY_TYPE_MESGS
  */
 struct NmCtxData
 {
@@ -394,7 +394,7 @@ static struct NmCtxData *new_ctxdata(char *uri)
   data = safe_calloc(1, sizeof(struct NmCtxData));
   mutt_debug(1, "nm: initialize context data %p\n", (void *) data);
 
-  data->db_limit = NotmuchDBLimit;
+  data->db_limit = NmDbLimit;
 
   if (!url_parse_query(uri, &data->db_filename, &data->query_items))
   {
@@ -453,7 +453,7 @@ static struct NmCtxData *get_ctxdata(struct Context *ctx)
 static int string_to_query_type(const char *str)
 {
   if (!str)
-    str = NotmuchQueryType; /* user's default */
+    str = NmQueryType; /* user's default */
   if (!str)
     return NM_QUERY_TYPE_MESGS; /* hardcoded default */
 
@@ -497,7 +497,7 @@ static bool query_window_check_timebase(const char *timebase)
 static void query_window_reset(void)
 {
   mutt_debug(2, "query_window_reset ()\n");
-  NotmuchQueryWindowCurrentPosition = 0;
+  NmQueryWindowCurrentPosition = 0;
 }
 
 /**
@@ -542,22 +542,22 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
 {
   mutt_debug(2, "nm: windowed_query_from_query (%s)\n", query);
 
-  int beg = NotmuchQueryWindowDuration * (NotmuchQueryWindowCurrentPosition + 1);
-  int end = NotmuchQueryWindowDuration * NotmuchQueryWindowCurrentPosition;
+  int beg = NmQueryWindowDuration * (NmQueryWindowCurrentPosition + 1);
+  int end = NmQueryWindowDuration * NmQueryWindowCurrentPosition;
 
   /* if the duration is a non positive integer, disable the window */
-  if (NotmuchQueryWindowDuration <= 0)
+  if (NmQueryWindowDuration <= 0)
   {
     query_window_reset();
     return false;
   }
 
   /* if the query has changed, reset the window position */
-  if (NotmuchQueryWindowCurrentSearch == NULL ||
-      (strcmp(query, NotmuchQueryWindowCurrentSearch) != 0))
+  if (NmQueryWindowCurrentSearch == NULL ||
+      (strcmp(query, NmQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
-  if (!query_window_check_timebase(NotmuchQueryWindowTimebase))
+  if (!query_window_check_timebase(NmQueryWindowTimebase))
   {
     mutt_message(_("Invalid nm_query_window_timebase value (valid values are: "
                    "hour, day, week, month or year)."));
@@ -567,10 +567,10 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
 
   if (end == 0)
     snprintf(buf, bufsz, "date:%d%s..now and %s", beg,
-             NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
+             NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
   else
-    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, NotmuchQueryWindowTimebase,
-             end, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
+    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
+             end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
 
   mutt_debug(2, "nm: windowed_query_from_query (%s) -> %s\n", query, buf);
 
@@ -630,7 +630,7 @@ static char *get_query_string(struct NmCtxData *data, int window)
   if (window)
   {
     char buf[LONG_STRING];
-    mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
+    mutt_str_replace(&NmQueryWindowCurrentSearch, data->db_query);
 
     /* if a date part is defined, do not apply windows (to avoid the risk of
      * having a non-intersected date frame). A good improvement would be to
@@ -665,9 +665,9 @@ static const char *get_db_filename(struct NmCtxData *data)
   if (!data)
     return NULL;
 
-  db_filename = data->db_filename ? data->db_filename : NotmuchDefaultUri;
+  db_filename = data->db_filename ? data->db_filename : NmDefaultUri;
   if (!db_filename)
-    db_filename = Maildir;
+    db_filename = Folder;
   if (!db_filename)
     return NULL;
   if (strncmp(db_filename, "notmuch://", 10) == 0)
@@ -684,7 +684,7 @@ static notmuch_database_t *do_database_open(const char *filename, int writable, 
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
 
   mutt_debug(1, "nm: db open '%s' %s (timeout %d)\n", filename,
-             writable ? "[WRITE]" : "[READ]", NotmuchOpenTimeout);
+             writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
   do
   {
 #ifdef NOTMUCH_API_3
@@ -695,7 +695,7 @@ static notmuch_database_t *do_database_open(const char *filename, int writable, 
                                writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
                                           NOTMUCH_DATABASE_MODE_READ_ONLY);
 #endif
-    if (db || !NotmuchOpenTimeout || ((ct / 2) > NotmuchOpenTimeout))
+    if (db || !NmOpenTimeout || ((ct / 2) > NmOpenTimeout))
       break;
 
     if (verbose && ct && ((ct % 2) == 0))
@@ -831,9 +831,9 @@ static void apply_exclude_tags(notmuch_query_t *query)
 {
   char *buf = NULL, *p = NULL, *end = NULL, *tag = NULL;
 
-  if (!NotmuchExcludeTags || !*NotmuchExcludeTags)
+  if (!NmExcludeTags || !*NmExcludeTags)
     return;
-  buf = safe_strdup(NotmuchExcludeTags);
+  buf = safe_strdup(NmExcludeTags);
 
   for (p = buf; p && *p; p++)
   {
@@ -931,12 +931,12 @@ static int update_header_tags(struct Header *h, notmuch_message_t *msg)
     tag_list = tmp;
 
     /* filter out hidden tags */
-    if (NotmuchHiddenTags)
+    if (NmHiddenTags)
     {
-      char *p = strstr(NotmuchHiddenTags, t);
+      char *p = strstr(NmHiddenTags, t);
       size_t xsz = p ? strlen(t) : 0;
 
-      if (p && ((p == NotmuchHiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
+      if (p && ((p == NmHiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
           ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
         continue;
     }
@@ -1845,10 +1845,10 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
 
   if (data)
     added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", get_db_filename(data));
-  else if (NotmuchDefaultUri)
-    added = snprintf(uri, sizeof(uri), "%s?query=", NotmuchDefaultUri);
-  else if (Maildir)
-    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", Maildir);
+  else if (NmDefaultUri)
+    added = snprintf(uri, sizeof(uri), "%s?query=", NmDefaultUri);
+  else if (Folder)
+    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", Folder);
   else
     return NULL;
 
@@ -1939,10 +1939,10 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
  */
 void nm_query_window_forward(void)
 {
-  if (NotmuchQueryWindowCurrentPosition != 0)
-    NotmuchQueryWindowCurrentPosition--;
+  if (NmQueryWindowCurrentPosition != 0)
+    NmQueryWindowCurrentPosition--;
 
-  mutt_debug(2, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition);
+  mutt_debug(2, "nm_query_window_forward (%d)\n", NmQueryWindowCurrentPosition);
 }
 
 /**
@@ -1955,8 +1955,8 @@ void nm_query_window_forward(void)
  */
 void nm_query_window_backward(void)
 {
-  NotmuchQueryWindowCurrentPosition++;
-  mutt_debug(2, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition);
+  NmQueryWindowCurrentPosition++;
+  mutt_debug(2, "nm_query_window_backward (%d)\n", NmQueryWindowCurrentPosition);
 }
 
 int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
@@ -2106,15 +2106,15 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   if (!db_filename)
   {
-    if (NotmuchDefaultUri)
+    if (NmDefaultUri)
     {
-      if (strncmp(NotmuchDefaultUri, "notmuch://", 10) == 0)
-        db_filename = NotmuchDefaultUri + 10;
+      if (strncmp(NmDefaultUri, "notmuch://", 10) == 0)
+        db_filename = NmDefaultUri + 10;
       else
-        db_filename = NotmuchDefaultUri;
+        db_filename = NmDefaultUri;
     }
-    else if (Maildir)
-      db_filename = Maildir;
+    else if (Folder)
+      db_filename = Folder;
     dflt = true;
   }
 
@@ -2133,7 +2133,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   {
     char *qstr = NULL;
 
-    safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NotmuchUnreadTag);
+    safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NmUnreadTag);
     *new = count_query(db, qstr);
     FREE(&qstr);
   }
@@ -2216,8 +2216,8 @@ int nm_record_message(struct Context *ctx, char *path, struct Header *h)
     notmuch_message_maildir_flags_to_tags(msg);
     if (h)
       update_tags(msg, nm_header_get_tags(h));
-    if (NotmuchRecordTags)
-      update_tags(msg, NotmuchRecordTags);
+    if (NmRecordTags)
+      update_tags(msg, NmRecordTags);
   }
 
   rc = 0;

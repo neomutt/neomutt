@@ -73,7 +73,7 @@ sort_t *mutt_get_sort_func(int method);
 void mutt_sort_headers(struct Context *ctx, int init);
 int mutt_select_sort(int reverse);
 
-WHERE short BrowserSort;
+WHERE short SortBrowser;
 WHERE short Sort;
 WHERE short SortAux; /* auxiliary sorting method */
 WHERE short SortAlias;

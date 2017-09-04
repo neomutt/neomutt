@@ -101,7 +101,7 @@ struct SslSockData
  * loaded into the trusted store.  This function filters out expired certs.
  *
  * Previously the code used this form:
- *     SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL);
+ *     SSL_CTX_load_verify_locations (ssldata->ctx, CertificateFile, NULL);
  */
 static int ssl_load_certificates(SSL_CTX *ctx)
 {
@@ -121,7 +121,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     SSL_CTX_set_cert_store(ctx, store);
   }
 
-  if ((fp = fopen(SslCertFile, "rt")) == NULL)
+  if ((fp = fopen(CertificateFile, "rt")) == NULL)
     return 0;
 
   while (NULL != PEM_read_X509(fp, &cert, NULL, NULL))
@@ -505,7 +505,7 @@ static int ssl_init(void)
   if (!HAVE_ENTROPY())
   {
     /* load entropy from files */
-    add_entropy(SslEntropyFile);
+    add_entropy(EntropyFile);
     add_entropy(RAND_file_name(path, sizeof(path)));
 
 /* load entropy from egd sockets */
@@ -631,10 +631,10 @@ static int check_certificate_file(X509 *peercert)
   int pass = 0;
   FILE *fp = NULL;
 
-  if (!SslCertFile)
+  if (!CertificateFile)
     return 0;
 
-  if ((fp = fopen(SslCertFile, "rt")) == NULL)
+  if ((fp = fopen(CertificateFile, "rt")) == NULL)
     return 0;
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen))
@@ -855,7 +855,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
    * true, then check_certificate_file() must be false.  Therefore we don't need
    * to also scan the certificate file here.
    */
-  allow_always = allow_always && SslCertFile && check_certificate_expiration(cert, true);
+  allow_always = allow_always && CertificateFile && check_certificate_expiration(cert, true);
 
   /* L10N:
    * These four letters correspond to the choices in the next four strings:
@@ -901,7 +901,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
         if (!allow_always)
           break;
         done = 0;
-        if ((fp = fopen(SslCertFile, "a")))
+        if ((fp = fopen(CertificateFile, "a")))
         {
           if (PEM_write_X509(fp, cert))
             done = 1;
@@ -1042,7 +1042,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   if (!preverify_ok || skip_mode)
   {
     /* automatic check from user's database */
-    if (SslCertFile && check_certificate_by_digest(cert))
+    if (CertificateFile && check_certificate_by_digest(cert))
     {
       mutt_debug(2, "ssl_verify_callback: digest check passed\n");
       SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
@@ -1198,7 +1198,7 @@ static int ssl_socket_open(struct Connection *conn)
     }
   }
 
-  if (SslCertFile && !ssl_load_certificates(data->ctx))
+  if (CertificateFile && !ssl_load_certificates(data->ctx))
     mutt_debug(1, "ssl_socket_open: Error loading trusted certificates\n");
 
   ssl_get_client_cert(data, conn);
@@ -1291,7 +1291,7 @@ int mutt_ssl_starttls(struct Connection *conn)
     }
   }
 
-  if (SslCertFile && !ssl_load_certificates(ssldata->ctx))
+  if (CertificateFile && !ssl_load_certificates(ssldata->ctx))
     mutt_debug(1, "mutt_ssl_starttls: Error loading trusted certificates\n");
 
   ssl_get_client_cert(ssldata, conn);
