@@ -2002,14 +2002,13 @@ msgstr "Omdøbning slog fejl: %s"
 msgid "Mailbox renamed."
 msgstr "Brevbakke omdøbt."
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "Forbindelse til %s fik timeout"
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "Brevbakke lukket"
-
-#: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "Forbindelse til %s er lukket"
 
 #: imap/imap.c:144
 #, c-format
@@ -3129,15 +3128,13 @@ msgstr "gå til den forrige side"
 msgid "print the current entry"
 msgstr "udskriv den aktuelle listning"
 
-# msgid: missing question mark -MBJ
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
-msgstr "skal den aktuelle listning virkelig slettes, uden om papirkurven?"
+msgid "delete the current entry, bypassing the trash folder"
+msgstr "Om det aktuelle brev virkelig skal slettes, uden om papirkurven"
 
-# msgid: missing question mark -MBJ
 #: keymap_alldefs.h:172
 #, fuzzy
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr "skal den aktuelle listning virkelig slettes, uden om papirkurven?"
 
 #: keymap_alldefs.h:173
@@ -4644,44 +4641,36 @@ msgstr "[Kan ikke vise denne bruger-id (ugyldig DN)]"
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Name: "
-msgstr "Navn ......: "
+msgstr "Navn: "
 
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid From: "
-msgstr "Gyldig fra ......: %s\n"
+msgstr "Gyldig fra: "
 
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid To: "
-msgstr "Gyldig til ......: %s\n"
+msgstr "Gyldig til: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Type: "
-msgstr "Nøgleanvendelse .: "
+msgstr "Nøgletype: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Usage: "
-msgstr "Nøgleanvendelse .: "
+msgstr "Nøgleanvendelse: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Serial-No: "
-msgstr "Serienummer .....: 0x%s\n"
+msgstr "Serienummer: "
 
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Issued By: "
-msgstr "Udstedt af ......: "
+msgstr "Udstedt af: "
 
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Subkey: "
-msgstr "Delnøgle ........: 0x%s"
+msgstr "Delnøgle: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -4692,9 +4681,9 @@ msgstr "[Ugyldigt]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3625 ncrypt/crypt_gpgme.c:3764
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
-msgstr "Nøgletype .......: %s, %lu bit %s\n"
+msgstr "%s, %lu-bit %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3633 ncrypt/crypt_gpgme.c:3771
@@ -5780,6 +5769,9 @@ msgstr "Udskriv udvalgte brevdel(e)?"
 #: recvattach.c:801
 msgid "Print attachment?"
 msgstr "Udskriv brevdel?"
+
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr "Strukturelle ændringer i dekrypterede bilag understøttes ikke"
 
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
