@@ -2016,15 +2016,15 @@ msgstr "リネーム (移動) 失敗: %s"
 msgid "Mailbox renamed."
 msgstr "メールボックスがリネーム (移動) された。"
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "%s への接続がタイムアウトした"
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "メールボックスを閉じた"
 
 #: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "%s への接続を終了した"
-
 #: imap/imap.c:144
 #, c-format
 msgid "CREATE failed: %s"
@@ -5771,6 +5771,9 @@ msgstr "タグ付き添付ファイルを印刷?"
 #: recvattach.c:801
 msgid "Print attachment?"
 msgstr "添付ファイルを印刷?"
+
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr "復号化されたメッセージの構造変更はサポートされていない"
 
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
