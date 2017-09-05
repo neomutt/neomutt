@@ -1997,14 +1997,13 @@ msgstr "Umbenennung fehlgeschlagen: %s"
 msgid "Mailbox renamed."
 msgstr "Mailbox umbenannt."
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "Verbindung zu %s beendet"
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "Mailbox geschlossen"
-
-#: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "Verbindung zu %s beendet"
 
 #: imap/imap.c:144
 #, c-format
@@ -5751,6 +5750,9 @@ msgstr "Drucke markierte Anhänge?"
 #: recvattach.c:801
 msgid "Print attachment?"
 msgstr "Drucke Anhang?"
+
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr ""
 
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
