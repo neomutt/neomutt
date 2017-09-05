@@ -724,40 +724,37 @@ msgstr "No hi ha cap adjunció."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116
 msgid "From: "
-msgstr ""
+msgstr "Remitent: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:118 send.c:289
 msgid "To: "
-msgstr ""
+msgstr "Destinatari: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120 send.c:291
 msgid "Cc: "
-msgstr ""
+msgstr "En còpia: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 send.c:293
 msgid "Bcc: "
-msgstr ""
+msgstr "En còpia oculta: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:124 compose.c:867 send.c:322
 msgid "Subject: "
-msgstr ""
+msgstr "Assumpte: "
 
-# ivb (2001/12/08)
-# ivb  Menú superpoblat: mantenir _molt_ curt!
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:126
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Respon"
+msgstr "Respostes a: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:128 compose.c:884
 msgid "Fcc: "
-msgstr ""
+msgstr "Còpia a fitxer: "
 
 # Ho deixe tal qual perquè és curt i a les altres cadenes traduïdes apareix «Mixmaster».  ivb
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
@@ -768,7 +765,7 @@ msgstr "Mix: "
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:134
 msgid "Security: "
-msgstr ""
+msgstr "Seguretat: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -803,6 +800,9 @@ msgstr "Voleu escriure un seguiment a %s%s?"
 msgid "X-Comment-To: "
 msgstr "Edita el camp de resposta (Reply-To)."
 
+# Línia completa (78 caràcters):
+#
+#     y:Envia  q:Avorta  t:Dest.  c:Còpia  s:Assumpte  a:Ajunta  d:Descriu  ?:Ajuda
 #: compose.c:156 compose.c:172
 msgid "Send"
 msgstr "Envia"
@@ -814,21 +814,21 @@ msgstr "Avorta"
 #. L10N: compose menu help line entry
 #: compose.c:159
 msgid "To"
-msgstr ""
+msgstr "Dest."
 
 #. L10N: compose menu help line entry
 #: compose.c:161
 msgid "CC"
-msgstr ""
+msgstr "Còpia"
 
 #. L10N: compose menu help line entry
 #: compose.c:163 compose.c:175
 msgid "Subj"
-msgstr ""
+msgstr "Assumpte"
 
 #: compose.c:164 compose.c:176 compose.c:977
 msgid "Attach file"
-msgstr "Ajunta fitxer"
+msgstr "Ajunta"
 
 #: compose.c:165 compose.c:177
 msgid "Descrip"
@@ -2149,14 +2149,13 @@ msgstr "El reanomenament ha fallat: %s"
 msgid "Mailbox renamed."
 msgstr "S’ha reanomenat la bústia."
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "La connexió amb «%s» ha expirat."
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "S’ha tancat la bústia."
-
-#: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "S’ha tancat la connexió amb «%s»."
 
 #: imap/imap.c:144
 #, c-format
@@ -2726,7 +2725,7 @@ msgstr "Adjunta fitxers a aquest missatge."
 
 #: keymap_alldefs.h:29
 msgid "edit the BCC list"
-msgstr "Edita la llista de còpia cega (Bcc)."
+msgstr "Edita la llista de còpia oculta (Bcc)."
 
 #: keymap_alldefs.h:30
 msgid "edit the CC list"
@@ -3716,10 +3715,9 @@ msgid ""
 msgstr ""
 "Opcions:\n"
 "  -A ÀLIES             Expandeix l’ÀLIES indicat.\n"
-"  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de "
-"fitxers\n"
+"  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de fitxers\n"
 "                       ha d’acabar amb l’argument «--».\n"
-"  -b ADREÇA            Indica una ADREÇA per a la còpia cega (Bcc).\n"
+"  -b ADREÇA            Indica una ADREÇA per a la còpia oculta (Bcc).\n"
 "  -c ADREÇA            Indica una ADREÇA per a la còpia (Cc).\n"
 "  -D                   Mostra el valor de totes les variables a l’eixida\n"
 "                       estàndard."
@@ -4298,18 +4296,16 @@ msgid "roas"
 msgstr ""
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
+msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre, sal(t)a"
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)ebutja, accepta (u)na sola volta"
+msgstr "(r)ebutja, accepta (u)na sola volta, sal(t)a"
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"
@@ -4338,7 +4334,7 @@ msgstr "La comprovació de l’amfitrió del certificat ha fallat: %s"
 #. * the correct certificate if it supports multiple hosts.
 #: mutt_ssl.c:1111 mutt_ssl_gnutls.c:1076
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Avís: No s’ha pogut establir el nom d’estació per a SNI de TLS."
 
 #: mutt_ssl.c:1122
 msgid "I/O error"
@@ -4358,7 +4354,7 @@ msgstr "No s’ha pogut crear el context SSL."
 
 #: mutt_ssl.c:1213 mutt_ssl.c:1310
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Avís: Error en habilitar «ssl_verify_partial_chains»."
 
 #: mutt_ssl_gnutls.c:93 mutt_ssl_gnutls.c:120
 msgid "Error: no TLS socket open"
@@ -4900,59 +4896,43 @@ msgstr "[No es mostra l’ID d’usuari (codificació no vàlida).]"
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[No es mostra l’ID d’usuari (DN desconegut).]"
 
-# Alineat amb «  també conegut com a : ».  ivb
 #. L10N:
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Name: "
-msgstr "Nom ..................: "
+msgstr "Nom: "
 
 # Es refereix a una clau.  ivb
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid From: "
-msgstr "Vàlida des de ........: %s\n"
+msgstr "Vàlida des de: "
 
 # Es refereix a una clau.  ivb
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid To: "
-msgstr "Vàlida fins a ........: %s\n"
+msgstr "Vàlida fins a: "
 
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Type: "
-msgstr "Utilitat de la clau ..: "
+msgstr "Tipus de la clau: "
 
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Usage: "
-msgstr "Utilitat de la clau ..: "
+msgstr "Utilitat de la clau: "
 
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Serial-No: "
-msgstr "Número de sèrie ......: 0x%s\n"
+msgstr "Número de sèrie: "
 
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Issued By: "
-msgstr "Lliurada per .........: "
+msgstr "Lliurada per: "
 
-# Alineat amb «  també conegut com a : ».  ivb
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Subkey: "
-msgstr "Subclau ..............: 0x%s"
+msgstr "Subclau: "
 
 # Es refereix a un identificador d’usuari.  ivb
 #. L10N: comes after the Name or aka if the key is invalid
@@ -4961,14 +4941,13 @@ msgstr "Subclau ..............: 0x%s"
 msgid "[Invalid]"
 msgstr "[No és vàlid]"
 
-# Alineat amb «  també conegut com a : ».  ivb
 # Tipus de certificat, bits de l’algorisme, tipus d’algorisme.  ivb
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3625 ncrypt/crypt_gpgme.c:3764
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
-msgstr "Tipus de clau ........: %1$s, %3$s de %2$lu bits\n"
+msgstr "%1$s, %3$s de %2$lu bits\n"
 
 # Capacitats d’una clau.  ivb
 #. L10N: value in Key Usage: field
@@ -6133,6 +6112,9 @@ msgstr "Voleu imprimir les adjuncions seleccionades?"
 msgid "Print attachment?"
 msgstr "Voleu imprimir l’adjunció?"
 
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr "No es permeten els canvis estructurals als adjunts desxifrats."
+
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
 msgstr "No s’ha pogut desxifrar el missatge xifrat."
@@ -6429,10 +6411,9 @@ msgstr ""
 msgid "Sending message..."
 msgstr "S’està enviant el missatge…"
 
-# El nom «Fcc» és bastant entenedor per a l’usuari si l’ha especificat.  ivb
 #: send.c:2091
 msgid "Save attachments in Fcc?"
-msgstr "Voleu desar les adjuncions a l’Fcc?"
+msgstr "Voleu desar les adjuncions al fitxer de còpia?"
 
 #: send.c:2198
 msgid "Could not send the message."
