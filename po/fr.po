@@ -1085,12 +1085,11 @@ msgstr "Phrase(s) de passe oubliée(s)."
 
 #: ncrypt/crypt.c:155
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "PGP en ligne est impossible avec des attachements. Utiliser PGP/MIME ?"
+msgstr "PGP en ligne est impossible avec format=flowed. Utiliser PGP/MIME ?"
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-"Message non envoyé : PGP en ligne est impossible avec des attachements."
+msgstr "Message non envoyé : PGP en ligne est impossible avec format=flowed."
 
 #: ncrypt/crypt.c:167 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:572
 #: ncrypt/pgpkey.c:755
@@ -3268,12 +3267,12 @@ msgstr "imprimer l'entrée courante"
 
 #: keymap_alldefs.h:171
 msgid "delete the current entry, bypassing the trash folder"
-msgstr "supprimer réellement l'entrée courante, sans utiliser la corbeille"
+msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
 
 #: keymap_alldefs.h:172
 #, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
-msgstr "supprimer réellement l'entrée courante, sans utiliser la corbeille"
+msgstr "supprimer l'entrée courante, sans utiliser la corbeille"
 
 #: keymap_alldefs.h:173
 msgid "query external program for addresses"
