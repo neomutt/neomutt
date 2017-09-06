@@ -37,6 +37,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -46,7 +47,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -559,7 +559,7 @@ int main(int argc, char **argv, char **env)
     mutt_endwin(NULL);
   }
   else if (subject || msg || sendflags || draftFile || includeFile ||
-          !STAILQ_EMPTY(&attach) || optind < argc)
+           !STAILQ_EMPTY(&attach) || optind < argc)
   {
     FILE *fin = NULL;
     FILE *fout = NULL;

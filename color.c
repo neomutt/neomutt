@@ -26,12 +26,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
@@ -408,7 +408,8 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !option(OPT_NO_CURSES) && has_colors()))
+    if (!*s || *eptr || *col < 0 ||
+        (*col >= COLORS && !option(OPT_NO_CURSES) && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;
@@ -878,9 +879,9 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
 #ifdef HAVE_USE_DEFAULT_COLORS
   if (!option(OPT_NO_CURSES) && has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
-      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE)
-      && use_default_colors() != OK)
-      /* the case of the tree object is special, because a non-default
+      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
+      use_default_colors() != OK)
+  /* the case of the tree object is special, because a non-default
        * fg color of the tree element may be combined dynamically with
        * the default bg color of an index line, not necessarily defined in
        * a rc file.

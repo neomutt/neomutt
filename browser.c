@@ -39,18 +39,18 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "browser.h"
 #include "account.h"
 #include "attach.h"
 #include "body.h"
+#include "browser.h"
 #include "buffy.h"
 #include "charset.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
@@ -538,10 +538,10 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
       {
         if (folder->ff->nd->unread != 0)
           mutt_expando_format(dest, destlen, col, cols, ifstring,
-                            newsgroup_format_str, data, flags);
+                              newsgroup_format_str, data, flags);
         else
           mutt_expando_format(dest, destlen, col, cols, elsestring,
-                            newsgroup_format_str, data, flags);
+                              newsgroup_format_str, data, flags);
       }
       else if (Context && Context->data == folder->ff->nd)
       {
@@ -902,12 +902,13 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 
 #ifdef USE_NNTP
   if (option(OPT_NEWS))
-    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(GroupIndexFormat), newsgroup_format_str,
-                      (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols,
+                        NONULL(GroupIndexFormat), newsgroup_format_str,
+                        (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   else
 #endif
     mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(FolderFormat),
-                      folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+                        folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 
 #ifdef USE_NOTMUCH
@@ -919,7 +920,7 @@ static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
   folder.num = num;
 
   mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(VfolderFormat),
-                    folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+                      folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 #endif
 
@@ -1307,7 +1308,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 #ifdef USE_NNTP
                                  option(OPT_NEWS) ? FolderNewsHelp :
 #endif
-                                                   FolderHelp);
+                                                    FolderHelp);
   mutt_push_current_menu(menu);
 
   init_menu(&state, menu, title, sizeof(title), buffy);

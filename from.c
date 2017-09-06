@@ -26,8 +26,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "globals.h"
 #include "lib/lib.h"
+#include "globals.h"
 #include "protos.h"
 
 /*

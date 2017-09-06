@@ -41,10 +41,10 @@
 #include <termios.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "enter_state.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -740,7 +740,7 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
   va_list ap;
   int rv;
 
-  if ((rv = mutt_window_move (win, row, col)) != ERR)
+  if ((rv = mutt_window_move(win, row, col)) != ERR)
   {
     va_start(ap, fmt);
     rv = vw_printw(stdscr, fmt, ap);

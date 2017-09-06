@@ -31,6 +31,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "attach.h"
 #include "body.h"
@@ -41,7 +42,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -1311,26 +1311,30 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content);
+        mutt_attach_resend(CURATTACH->fp, hdr, actx,
+                           menu->tagprefix ? NULL : CURATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_BOUNCE_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_bounce(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content);
+        mutt_attach_bounce(CURATTACH->fp, hdr, actx,
+                           menu->tagprefix ? NULL : CURATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
 
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_forward(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content, 0);
+        mutt_attach_forward(CURATTACH->fp, hdr, actx,
+                            menu->tagprefix ? NULL : CURATTACH->content, 0);
         menu->redraw = REDRAW_FULL;
         break;
 
 #ifdef USE_NNTP
       case OP_FORWARD_TO_GROUP:
         CHECK_ATTACH;
-        mutt_attach_forward(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content, SENDNEWS);
+        mutt_attach_forward(CURATTACH->fp, hdr, actx,
+                            menu->tagprefix ? NULL : CURATTACH->content, SENDNEWS);
         menu->redraw = REDRAW_FULL;
         break;
 
@@ -1338,11 +1342,13 @@ void mutt_view_attachments(struct Header *hdr)
         CHECK_ATTACH;
 
         if (!CURATTACH->content->hdr->env->followup_to ||
-            (mutt_strcasecmp(CURATTACH->content->hdr->env->followup_to, "poster") != 0) ||
+            (mutt_strcasecmp(CURATTACH->content->hdr->env->followup_to,
+                             "poster") != 0) ||
             query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
-          mutt_attach_reply(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content,
+          mutt_attach_reply(CURATTACH->fp, hdr, actx,
+                            menu->tagprefix ? NULL : CURATTACH->content,
                             SENDNEWS | SENDREPLY);
           menu->redraw = REDRAW_FULL;
           break;
@@ -1357,7 +1363,8 @@ void mutt_view_attachments(struct Header *hdr)
 
         flags = SENDREPLY | (op == OP_GROUP_REPLY ? SENDGROUPREPLY : 0) |
                 (op == OP_LIST_REPLY ? SENDLISTREPLY : 0);
-        mutt_attach_reply(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content, flags);
+        mutt_attach_reply(CURATTACH->fp, hdr, actx,
+                          menu->tagprefix ? NULL : CURATTACH->content, flags);
         menu->redraw = REDRAW_FULL;
         break;
 

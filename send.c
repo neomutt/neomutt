@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -42,7 +43,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -267,7 +267,8 @@ static int edit_envelope(struct Envelope *en, int flags)
       strfcpy(buf, en->followup_to, sizeof(buf));
     else
       buf[0] = 0;
-    if (option(OPT_ASK_FOLLOW_UP) && mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0)
+    if (option(OPT_ASK_FOLLOW_UP) &&
+        mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0)
       return -1;
     FREE(&en->followup_to);
     en->followup_to = safe_strdup(buf);
@@ -291,7 +292,8 @@ static int edit_envelope(struct Envelope *en, int flags)
       return -1;
     if (option(OPT_ASKBCC) && edit_address(&en->bcc, _("Bcc: ")) == -1)
       return -1;
-    if (option(OPT_REPLY_WITH_XORIG) && (flags & (SENDREPLY | SENDLISTREPLY | SENDGROUPREPLY)) &&
+    if (option(OPT_REPLY_WITH_XORIG) &&
+        (flags & (SENDREPLY | SENDLISTREPLY | SENDGROUPREPLY)) &&
         (edit_address(&en->from, "From: ") == -1))
       return -1;
   }
@@ -320,7 +322,8 @@ static int edit_envelope(struct Envelope *en, int flags)
   }
 
   if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0 ||
-      (!buf[0] && query_quadoption(OPT_ABORT_NOSUBJECT, _("No subject, abort?")) != MUTT_NO))
+      (!buf[0] &&
+       query_quadoption(OPT_ABORT_NOSUBJECT, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message(_("No subject, aborting."));
     return -1;
@@ -1472,7 +1475,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
           msg->env->from->mailbox);
     msg->env->from = set_reverse_name(cur->env);
   }
-  if (cur && option(OPT_REPLY_WITH_XORIG) && !(flags & (SENDPOSTPONED | SENDRESEND | SENDFORWARD)))
+  if (cur && option(OPT_REPLY_WITH_XORIG) &&
+      !(flags & (SENDPOSTPONED | SENDRESEND | SENDFORWARD)))
   {
     /* We shouldn't have to worry about freeing `msg->env->from' before
      * setting it here since this code will only execute when doing some
@@ -1515,7 +1519,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->env->newsgroups = safe_strdup(((struct NntpData *) ctx->data)->group);
 #endif
 
-    if (!(flags & (SENDMAILX | SENDBATCH)) && !(option(OPT_AUTOEDIT) && option(OPT_EDIT_HEADERS)) &&
+    if (!(flags & (SENDMAILX | SENDBATCH)) &&
+        !(option(OPT_AUTOEDIT) && option(OPT_EDIT_HEADERS)) &&
         !((flags & SENDREPLY) && option(OPT_FAST_REPLY)))
     {
       if (edit_envelope(msg->env, flags) == -1)
@@ -1683,7 +1688,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       {
         /* if the file was not modified, bail out now */
         if (mtime == st.st_mtime && !msg->content->next &&
-            query_quadoption(OPT_ABORT_UNMODIFIED, _("Abort unmodified message?")) == MUTT_YES)
+            query_quadoption(OPT_ABORT_UNMODIFIED,
+                             _("Abort unmodified message?")) == MUTT_YES)
         {
           mutt_message(_("Aborted unmodified message."));
           goto cleanup;
@@ -1922,7 +1928,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   }
 
   if (!msg->env->subject && !(flags & SENDBATCH) &&
-      (i = query_quadoption(OPT_ABORT_NOSUBJECT, _("No subject, abort sending?"))) != MUTT_NO)
+      (i = query_quadoption(OPT_ABORT_NOSUBJECT,
+                            _("No subject, abort sending?"))) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
     if (quadoption(OPT_ABORT_NOSUBJECT) == MUTT_YES)
@@ -1945,7 +1952,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
   if (quadoption(OPT_ABORT_NOATTACH) != MUTT_NO && !msg->content->next &&
       search_attach_keyword(msg->content->filename) &&
-      query_quadoption(OPT_ABORT_NOATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
+      query_quadoption(OPT_ABORT_NOATTACH,
+                       _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
     if (quadoption(OPT_ABORT_NOATTACH) == MUTT_YES)

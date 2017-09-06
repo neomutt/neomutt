@@ -38,11 +38,11 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "charset.h"
 #include "filter.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mime.h"
 #include "ncrypt.h"
 #include "options.h"

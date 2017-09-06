@@ -26,8 +26,8 @@
 #include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "globals.h"
 #include "lib/lib.h"
+#include "globals.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP

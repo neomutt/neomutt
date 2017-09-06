@@ -32,8 +32,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "smime.h"
 #include "address.h"
 #include "alias.h"
 #include "body.h"
@@ -46,7 +46,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -56,6 +55,7 @@
 #include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
+#include "smime.h"
 #include "state.h"
 
 /**
@@ -286,10 +286,11 @@ static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t co
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, _mutt_fmt_smime_command, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring,
+                        _mutt_fmt_smime_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_expando_format(dest, destlen, col, cols, elsestring,
-                      _mutt_fmt_smime_command, data, 0);
+                        _mutt_fmt_smime_command, data, 0);
 
   return src;
 }
@@ -298,7 +299,7 @@ static void smime_command(char *d, size_t dlen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
-                    _mutt_fmt_smime_command, (unsigned long) cctx, 0);
+                      _mutt_fmt_smime_command, (unsigned long) cctx, 0);
   mutt_debug(2, "smime_command: %s\n", d);
 }
 
@@ -1293,15 +1294,15 @@ static pid_t smime_invoke_encrypt(FILE **smimein, FILE **smimeout, FILE **smimee
                                   const char *fname, const char *uids)
 {
   return smime_invoke(smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-                      smimeerrfd, fname, NULL, SmimeEncryptWith, NULL, NULL, uids,
-                      NULL, SmimeEncryptCommand);
+                      smimeerrfd, fname, NULL, SmimeEncryptWith, NULL, NULL,
+                      uids, NULL, SmimeEncryptCommand);
 }
 
 static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr, int smimeinfd,
                                int smimeoutfd, int smimeerrfd, const char *fname)
 {
-  return smime_invoke(smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-                      smimeerrfd, fname, NULL, NULL, SmimeSignDigestAlg, SmimeKeyToUse,
+  return smime_invoke(smimein, smimeout, smimeerr, smimeinfd, smimeoutfd, smimeerrfd,
+                      fname, NULL, NULL, SmimeSignDigestAlg, SmimeKeyToUse,
                       SmimeCertToUse, SmimeIntermediateToUse, SmimeSignCommand);
 }
 

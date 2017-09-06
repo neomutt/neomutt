@@ -27,11 +27,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
+#include "mutt.h"
 #include "keymap.h"
 #include "functions.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "mutt.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -509,7 +509,7 @@ int km_dokey(int menu)
     timeout(-1);
 
 #ifdef USE_IMAP
-gotkey:
+  gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)

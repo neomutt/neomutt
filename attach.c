@@ -28,6 +28,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "attach.h"
 #include "body.h"
@@ -36,7 +37,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -1091,7 +1091,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
-bail0:
+  bail0:
     safe_fclose(&ifp);
     safe_fclose(&fpout);
     mutt_unlink(newfile);

@@ -27,12 +27,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "compress.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"

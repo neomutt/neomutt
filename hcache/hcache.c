@@ -47,6 +47,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "address.h"
 #include "backend.h"
 #include "body.h"
@@ -56,7 +57,6 @@
 #include "hcache.h"
 #include "hcversion.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
@@ -319,7 +319,6 @@ static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
     counter--;
   }
 }
-
 
 static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, int convert)
 {

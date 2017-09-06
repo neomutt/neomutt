@@ -32,13 +32,13 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "alias.h"
 #include "address.h"
+#include "alias.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -647,7 +647,8 @@ bool mutt_addr_is_user(struct Address *addr)
   }
   if (string_is_address(addr->mailbox, Username, ShortHostname))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, ShortHostname);
+    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox,
+               Username, ShortHostname);
     return true;
   }
   fqdn = mutt_fqdn(0);

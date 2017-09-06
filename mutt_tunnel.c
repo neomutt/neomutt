@@ -30,11 +30,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mutt_tunnel.h"
 #include "account.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "protos.h"
 

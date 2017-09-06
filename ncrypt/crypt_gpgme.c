@@ -45,6 +45,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -56,7 +57,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -901,8 +901,8 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
 
 static void strlower(char *s)
 {
-    for (; *s; ++s)
-        *s = tolower(*s);
+  for (; *s; ++s)
+    *s = tolower(*s);
 }
 
 /**
@@ -3091,7 +3091,7 @@ static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.num = num + 1;
 
   mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
-                    crypt_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+                      crypt_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -4232,8 +4232,9 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (option(OPT_PGP_CHECK_TRUST) && (!crypt_id_is_valid(key_table[menu->current]) ||
-                                         !crypt_id_is_strong(key_table[menu->current])))
+        if (option(OPT_PGP_CHECK_TRUST) &&
+            (!crypt_id_is_valid(key_table[menu->current]) ||
+             !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
           char buff[LONG_STRING];
@@ -4325,7 +4326,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     return NULL;
 
   mutt_debug(5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
-            a ? a->personal : "", a ? a->mailbox : "");
+             a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {

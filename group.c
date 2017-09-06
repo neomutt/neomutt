@@ -23,11 +23,11 @@
 
 #include "config.h"
 #include <stdlib.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "group.h"
 #include "address.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -165,7 +165,7 @@ int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *
 }
 
 int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
-                              int flags, struct Buffer *err)
+                                 int flags, struct Buffer *err)
 {
   int rv = 0;
 

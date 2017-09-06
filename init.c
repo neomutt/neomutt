@@ -37,6 +37,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "init.h"
 #include "address.h"
@@ -50,12 +51,10 @@
 #include "header.h"
 #include "history.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mbyte.h"
 #include "mbtable.h"
-#include "mutt.h"
+#include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
@@ -317,9 +316,8 @@ static struct MbTable *parse_mbtable(const char *s)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      mutt_debug(
-          1, "parse_mbtable: mbrtowc returned %d converting %s in %s\n",
-          (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
+      mutt_debug(1, "parse_mbtable: mbrtowc returned %d converting %s in %s\n",
+                 (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : slen;
@@ -770,7 +768,8 @@ static struct RegexList *new_regex_list(void)
   return safe_calloc(1, sizeof(struct RegexList));
 }
 
-int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags, struct Buffer *err)
+int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
+                           struct Buffer *err)
 {
   struct RegexList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
@@ -1109,21 +1108,20 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
+static int parse_stailq(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
-
   do
   {
     mutt_extract_token(buf, s, 0);
-    add_to_stailq((struct ListHead *)data, buf->data);
+    add_to_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
 }
 
 static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+                          unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1133,10 +1131,10 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_list_free((struct ListHead *)data);
+      mutt_list_free((struct ListHead *) data);
       break;
     }
-    remove_from_stailq((struct ListHead *)data, buf->data);
+    remove_from_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1486,7 +1484,8 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
           if (data == MUTT_GROUP &&
               mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
             goto bail;
-          else if (data == MUTT_UNGROUP && mutt_group_context_remove_regex(gc, buf->data) < 0)
+          else if (data == MUTT_UNGROUP &&
+                   mutt_group_context_remove_regex(gc, buf->data) < 0)
             goto bail;
           break;
 
@@ -1592,7 +1591,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 
     mutt_debug(5, "parse_attach_list: added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
-    mutt_list_insert_tail(head, (char *)a);
+    mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
 
   _attachments_clean();
@@ -4089,7 +4088,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   Groups = hash_create(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases = hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
+  ReverseAliases =
+      hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create(64, 1);
   TagFormats = hash_create(64, 0);

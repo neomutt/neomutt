@@ -27,10 +27,10 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "protos.h"
 
 #ifndef EILSEQ

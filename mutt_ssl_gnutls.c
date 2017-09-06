@@ -30,11 +30,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mutt_socket.h"
@@ -1045,7 +1045,8 @@ static int tls_negotiate(struct Connection *conn)
 
   if (SslCaCertificatesFile)
   {
-    gnutls_certificate_set_x509_trust_file(data->xcred, SslCaCertificatesFile, GNUTLS_X509_FMT_PEM);
+    gnutls_certificate_set_x509_trust_file(data->xcred, SslCaCertificatesFile,
+                                           GNUTLS_X509_FMT_PEM);
   }
 
   if (SslClientCert)

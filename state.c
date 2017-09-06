@@ -111,4 +111,3 @@ void state_prefix_put(const char *d, size_t dlen, struct State *s)
   else
     fwrite(d, dlen, 1, s->fpout);
 }
-

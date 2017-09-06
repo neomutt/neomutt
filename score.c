@@ -23,12 +23,12 @@
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"

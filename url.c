@@ -28,11 +28,11 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "url.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"

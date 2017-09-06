@@ -43,6 +43,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "buffy.h"
@@ -51,7 +52,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -1513,8 +1513,8 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   omask = umask(mh_umask(dest));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path,
-             subdir, (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
+    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path, subdir,
+             (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "maildir_open_new_message (): Trying %s.\n", path);
 

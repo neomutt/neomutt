@@ -27,12 +27,12 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "history.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "opcodes.h"

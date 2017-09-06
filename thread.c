@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "thread.h"
 #include "body.h"
@@ -32,7 +33,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "options.h"
 #include "protos.h"
@@ -388,7 +388,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
     if (dateptr)
     {
       thisdate = option(OPT_THREAD_RECEIVED) ? cur->message->received :
-                                             cur->message->date_sent;
+                                               cur->message->date_sent;
       if (!*dateptr || thisdate < *dateptr)
         *dateptr = thisdate;
     }
@@ -404,9 +404,9 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
           break;
       }
       if (!np)
-          mutt_list_insert_head(subjects, env->real_subj);
+        mutt_list_insert_head(subjects, env->real_subj);
       else if (rc > 0)
-          mutt_list_insert_after(subjects, np, env->real_subj);
+        mutt_list_insert_after(subjects, np, env->real_subj);
     }
 
     while (!cur->next && cur != start)
@@ -445,7 +445,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
           tmp->message->subject_changed && /* only match interesting replies */
           !is_descendant(tmp, cur) &&      /* don't match in the same thread */
           (date >= (option(OPT_THREAD_RECEIVED) ? tmp->message->received :
-                                                tmp->message->date_sent)) &&
+                                                  tmp->message->date_sent)) &&
           (!last || (option(OPT_THREAD_RECEIVED) ?
                          (last->message->received < tmp->message->received) :
                          (last->message->date_sent < tmp->message->date_sent))) &&
@@ -1411,8 +1411,7 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
     for (p = brk; !done && p; p = p->parent)
     {
       for (ref = STAILQ_FIRST(&cur->message->env->references);
-           p->message && ref;
-           ref = STAILQ_NEXT(ref, entries))
+           p->message && ref; ref = STAILQ_NEXT(ref, entries))
       {
         if (mutt_strcasecmp(ref->data, p->message->env->message_id) == 0)
         {

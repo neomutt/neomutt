@@ -25,14 +25,14 @@
 #include "config.h"
 #include <stdio.h>
 #include "imap_private.h"
+#include "lib/lib.h"
+#include "mutt.h"
 #include "account.h"
 #include "auth.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"
-#include "mutt.h"
 
 /**
  * imap_auth_login - Plain LOGIN support

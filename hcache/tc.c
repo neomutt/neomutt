@@ -34,8 +34,8 @@
 #include <stddef.h>
 #include <tcbdb.h>
 #include <tcutil.h>
-#include "backend.h"
 #include "lib/lib.h"
+#include "backend.h"
 #include "options.h"
 
 static void *hcache_tokyocabinet_open(const char *path)

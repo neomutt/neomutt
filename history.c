@@ -26,10 +26,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "history.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "protos.h"
 
 /* This history ring grows from 0..History, with last marking the
@@ -216,7 +216,8 @@ static void shrink_histfile(void)
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
-    if (option(OPT_HISTORY_REMOVE_DUPS) && (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
+    if (option(OPT_HISTORY_REMOVE_DUPS) &&
+        (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
     {
       regen_file = true;
       continue;

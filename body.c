@@ -24,14 +24,14 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/debug.h"
+#include "lib/memory.h"
+#include "lib/string2.h"
 #include "body.h"
 #include "header.h"
 #include "mime.h"
 #include "parameter.h"
 #include "protos.h"
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/string2.h"
 
 struct Body *mutt_new_body(void)
 {
@@ -160,4 +160,3 @@ void mutt_free_body(struct Body **p)
 
   *p = 0;
 }
-
