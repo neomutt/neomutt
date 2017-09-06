@@ -4,7 +4,7 @@ dnl     autoreconf -i
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], [20170714], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
+AC_INIT([NeoMutt], [20170907], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE
@@ -16,7 +16,7 @@ AC_DEFUN([AC_DEFINE_SUBST], [
 	AC_SUBST([$1], ['$2'])
 ])
 
-AC_DEFINE_SUBST(MUTT_VERSION, "1.8.3", [Version of upstream Mutt])
+AC_DEFINE_SUBST(MUTT_VERSION, "1.9.0", [Version of upstream Mutt])
 
 AC_USE_SYSTEM_EXTENSIONS
 

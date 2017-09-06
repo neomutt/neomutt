@@ -1,3 +1,46 @@
+2017-09-07  Richard Russon  <rich@flatcap.org>
+* Contrib
+  - Add guix build support
+* Bug Fixes
+  - Only match real mailboxes when looking for new mail
+  - Fix the printing of ncurses version in -v output
+  - Bind editor \<delete\> to delete-char
+  - Fix overflowing colours
+  - Fix empty In-Reply-To generation
+  - Trim trailing slash from completed dirs
+  - Add guix-neomutt.scm
+  - Fix setting custom query_type in notmuch query
+* Website
+  - New technical documentation LINK
+  - Improve Gentoo distro page
+* Build
+  - Better curses identification
+  - Use the system's wchar_t support
+  - Use the system's md5 tool (or equivalent)
+  - Clean up configure.ac
+  - Teach gen-map-doc about the new opcode header
+* Source
+  - Rename functions (snake_case)
+  - Rename constants/defines (UPPER_CASE)
+  - Create library of shared functions
+  - Much tidying
+  - Rename globals to match user config
+  - Drop unnecessary functions/macros
+  - Use a standard list implementation
+  - Coverity fixes
+  - Use explicit NUL for string terminators
+  - Drop OPS\* in favour of opcodes.h
+* Upstream
+  - Fix menu color calls to occur before positioning the cursor
+  - When guessing an attachment type, don't allow text/plain if there is a null character
+  - Add $imap_poll_timeout to allow mailbox polling to time out
+  - Handle error if REGCOMP in pager fails when resizing
+  - Change recvattach to allow nested encryption
+  - Fix attachment check_traditional and extract_keys operations
+  - Add edit-content-type helper and warning for decrypted attachments
+  - Add option to run command to query attachment mime type
+  - Add warning about using inline pgp with format=flowed
+
 2017-07-14  Richard Russon  <rich@flatcap.org>
 * Translations
   - Update German translation
