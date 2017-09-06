@@ -116,7 +116,6 @@ static struct CompileOptions comp_opts_default[] = {
   { "initials", 1 },
   { "keywords", 1 },
   { "limit_current_thread", 1 },
-  { "lmdb", 1 },
   { "multiple_fcc", 1 },
   { "nested_if", 1 },
   { "new_mail", 1 },
@@ -275,6 +274,8 @@ static struct CompileOptions comp_opts[] = {
 #endif
 #ifdef SUN_ATTACHMENT
   { "sun_attachment", 1 },
+#else
+  { "sun_attachment", 0 },
 #endif
 #ifdef HAVE_TYPEAHEAD
   { "typeahead", 1 },
