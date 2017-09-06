@@ -8,7 +8,7 @@
   _fmt(OP_END_COND,                       N_("end of conditional execution (noop)")) \
   _fmt(OP_ATTACH_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
   _fmt(OP_ATTACH_VIEW_TEXT,               N_("view attachment as text")) \
-  _fmt(OP_ATTACH_COLLAPSE,                N_("Toggle display of subparts")) \
+  _fmt(OP_ATTACH_COLLAPSE,                N_("toggle display of subparts")) \
   _fmt(OP_BOTTOM_PAGE,                    N_("move to the bottom of the page")) \
   _fmt(OP_BOUNCE_MESSAGE,                 N_("remail a message to another user")) \
   _fmt(OP_BROWSER_GOTO_FOLDER,            N_("swap the current folder position with $folder if it exists")) \
@@ -167,8 +167,8 @@
   _fmt(OP_PREV_LINE,                      N_("scroll up one line")) \
   _fmt(OP_PREV_PAGE,                      N_("move to the previous page")) \
   _fmt(OP_PRINT,                          N_("print the current entry")) \
-  _fmt(OP_PURGE_MESSAGE,                  N_("really delete the current entry, bypassing the trash folder")) \
-  _fmt(OP_PURGE_THREAD,                   N_("really delete the current thread, bypassing the trash folder")) \
+  _fmt(OP_PURGE_MESSAGE,                  N_("delete the current entry, bypassing the trash folder")) \
+  _fmt(OP_PURGE_THREAD,                   N_("delete the current thread, bypassing the trash folder")) \
   _fmt(OP_QUERY,                          N_("query external program for addresses")) \
   _fmt(OP_QUERY_APPEND,                   N_("append new query results to current results")) \
   _fmt(OP_QUIT,                           N_("save changes to mailbox and quit")) \

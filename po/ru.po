@@ -661,38 +661,37 @@ msgstr "Вложений нет."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116
 msgid "From: "
-msgstr ""
+msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:118 send.c:289
 msgid "To: "
-msgstr ""
+msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120 send.c:291
 msgid "Cc: "
-msgstr ""
+msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 send.c:293
 msgid "Bcc: "
-msgstr ""
+msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:124 compose.c:867 send.c:322
 msgid "Subject: "
-msgstr ""
+msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:126
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Ответить"
+msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:128 compose.c:884
 msgid "Fcc: "
-msgstr ""
+msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:131
@@ -702,7 +701,7 @@ msgstr "Mix: "
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:134
 msgid "Security: "
-msgstr ""
+msgstr "Безопасность: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -746,17 +745,17 @@ msgstr "Прервать"
 #. L10N: compose menu help line entry
 #: compose.c:159
 msgid "To"
-msgstr ""
+msgstr "To"
 
 #. L10N: compose menu help line entry
 #: compose.c:161
 msgid "CC"
-msgstr ""
+msgstr "CC"
 
 #. L10N: compose menu help line entry
 #: compose.c:163 compose.c:175
 msgid "Subj"
-msgstr ""
+msgstr "Subj"
 
 #: compose.c:164 compose.c:176 compose.c:977
 msgid "Attach file"
@@ -2020,14 +2019,13 @@ msgstr "Не удалось переименовать: %s"
 msgid "Mailbox renamed."
 msgstr "Почтовый ящик переименован."
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "Превышено время ожидания соединение с %s"
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "Почтовый ящик закрыт"
-
-#: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "Соединение с %s закрыто"
 
 #: imap/imap.c:144
 #, c-format
@@ -2504,7 +2502,7 @@ msgid "view attachment as text"
 msgstr "показать вложение как текст"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "Разрешить/запретить отображение частей дайджеста"
 
 #: keymap_alldefs.h:13
@@ -3157,12 +3155,12 @@ msgid "print the current entry"
 msgstr "напечатать текущую запись"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr "действительно удалить текущую запись не используя мусорную корзину"
 
 #: keymap_alldefs.h:172
 #, fuzzy
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr "действительно удалить текущую запись не используя мусорную корзину"
 
 #: keymap_alldefs.h:173
@@ -3488,7 +3486,7 @@ msgstr "извлечь поддерживаемые открытые ключи"
 
 #: lib/file.c:1003
 msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Тайм-аут fcntl-блокировки!"
+msgstr "Превышено время ожидания fcntl-блокировки!"
 
 #: lib/file.c:1009
 #, c-format
@@ -3497,7 +3495,7 @@ msgstr "Попытка fcntl-блокировки файла... %d"
 
 #: lib/file.c:1036
 msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Тайм-аут flock-блокировки!"
+msgstr "Превышено время ожидания flock-блокировки!"
 
 #: lib/file.c:1043
 #, c-format
@@ -4103,18 +4101,16 @@ msgid "roas"
 msgstr ""
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
+msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить, (s)пропустить"
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)отвергнуть, (o)принять"
+msgstr "(r)отвергнуть, (o)принять, (s)пропустить"
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"
@@ -4143,7 +4139,7 @@ msgstr "Не удалось выполнить проверку хоста се�
 #. * the correct certificate if it supports multiple hosts.
 #: mutt_ssl.c:1111 mutt_ssl_gnutls.c:1076
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Предупреждение: не удалось установить имя хоста TLS SNI"
 
 #: mutt_ssl.c:1122
 msgid "I/O error"
@@ -4163,7 +4159,7 @@ msgstr "Не удалось создать SSL контекст"
 
 #: mutt_ssl.c:1213 mutt_ssl.c:1310
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Предупреждение: ошибка влкючения ssl_verify_partial_chains"
 
 #: mutt_ssl_gnutls.c:93 mutt_ssl_gnutls.c:120
 msgid "Error: no TLS socket open"
@@ -4686,44 +4682,36 @@ msgstr "[Не возможно отобразить ID этого пользов
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Name: "
-msgstr "Имя .......: "
+msgstr "Имя: "
 
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid From: "
-msgstr "Действ. с .: %s\n"
+msgstr "Действ. с: "
 
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid To: "
-msgstr "Действ. до : %s\n"
+msgstr "Действ. до: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Type: "
-msgstr "Использован: "
+msgstr "Тип ключа: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Usage: "
-msgstr "Использован: "
+msgstr "Использование: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Serial-No: "
-msgstr "Сер. номер : 0x%s\n"
+msgstr "Сер. номер: "
 
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Issued By: "
-msgstr "Издан .....: "
+msgstr "Издан: "
 
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Subkey: "
-msgstr "Подключ ...: 0x%s"
+msgstr "Подключ: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -4734,9 +4722,8 @@ msgstr "[Неправильное значение]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3625 ncrypt/crypt_gpgme.c:3764
-#, fuzzy, c-format
 msgid "%s, %lu bit %s\n"
-msgstr "Тип ключа .: %s, %lu бит %s\n"
+msgstr "%s, %lu бит %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3633 ncrypt/crypt_gpgme.c:3771
@@ -5814,6 +5801,9 @@ msgstr "Напечатать отмеченные вложения?"
 msgid "Print attachment?"
 msgstr "Напечатать вложение?"
 
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr "Изменение структуры расшифрованных вложений не поддерживается"
+
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
 msgstr "Не удалось расшифровать зашифрованное сообщение!"
@@ -6343,19 +6333,3 @@ msgstr ""
 "\n"
 "Параметры компиляции:"
 
-#~ msgid "sign as: "
-#~ msgstr "подписать как: "
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "Невозможно заблокировать файл, удалить файл блокировки для %s?"
-
-#~ msgid " aka ......: "
-#~ msgstr " aka ......: "
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Предупреждение: некорректный IDN \"%s\" в псевдониме \"%s\".\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Предупреждение: некорректный IDN \"%s\" в псевдониме \"%s\".\n"

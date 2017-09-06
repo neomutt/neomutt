@@ -2575,7 +2575,7 @@ msgid "view attachment as text"
 msgstr "mostrar archivos adjuntos como texto"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "Cambiar muestra de subpartes"
 
 #: keymap_alldefs.h:13
@@ -3235,11 +3235,11 @@ msgid "print the current entry"
 msgstr "imprimir la entrada actual"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr "borrar la entrada actual, sin pasar por la papelera de reciclaje"
 
 #: keymap_alldefs.h:172
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr "borrar el hilo actual, sin pasar por la papelera de reciclaje"
 
 #: keymap_alldefs.h:173

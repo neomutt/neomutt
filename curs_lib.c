@@ -740,7 +740,7 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
   va_list ap;
   int rv;
 
-  if ((rv = mutt_window_move(win, row, col) != ERR))
+  if ((rv = mutt_window_move (win, row, col)) != ERR)
   {
     va_start(ap, fmt);
     rv = vw_printw(stdscr, fmt, ap);

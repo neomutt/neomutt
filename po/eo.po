@@ -2481,7 +2481,7 @@ msgid "view attachment as text"
 msgstr "vidigi parton kiel tekston"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "ŝalti aŭ malŝalti montradon de subpartoj"
 
 #: keymap_alldefs.h:13
@@ -3131,12 +3131,12 @@ msgid "print the current entry"
 msgstr "presi la aktualan registron"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
 
 #: keymap_alldefs.h:172
 #, fuzzy
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
 
 #: keymap_alldefs.h:173
@@ -4069,21 +4069,19 @@ msgstr "Kontrolo de SSL-atestilo (%d de %d en ĉeno)"
 #.
 #: mutt_ssl.c:866
 msgid "roas"
-msgstr ""
+msgstr "muas"
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam"
+msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam, (s)kip"
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam"
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(m)alakcepti, akcepti (u)nufoje"
+msgstr "(m)alakcepti, akcepti (u)nufoje, (s)kip"
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"

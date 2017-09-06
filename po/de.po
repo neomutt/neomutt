@@ -1997,14 +1997,13 @@ msgstr "Umbenennung fehlgeschlagen: %s"
 msgid "Mailbox renamed."
 msgstr "Mailbox umbenannt."
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "Verbindung zu %s beendet"
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "Mailbox geschlossen"
-
-#: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "Verbindung zu %s beendet"
 
 #: imap/imap.c:144
 #, c-format
@@ -2482,7 +2481,7 @@ msgid "view attachment as text"
 msgstr "Zeige Anhang als Text an"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "Schalte Anzeige von Teilen ein/aus"
 
 #: keymap_alldefs.h:13
@@ -3119,12 +3118,12 @@ msgid "print the current entry"
 msgstr "Drucke aktuellen Eintrag"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 "Lösche den aktuellen Beitrag in echt, statt ihn in den Papierkorb zu legen"
 
 #: keymap_alldefs.h:172
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 "Lösche den aktuellen Diskussionsfaden in echt, statt ihn in den Papierkorb "
 "zu legen"
@@ -5751,6 +5750,9 @@ msgstr "Drucke markierte Anhänge?"
 #: recvattach.c:801
 msgid "Print attachment?"
 msgstr "Drucke Anhang?"
+
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr ""
 
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
