@@ -1,9 +1,9 @@
 /**
  * @file
- * Structure for managing a table of multibyte characters
+ * Store links between a user-readable string and a constant
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,22 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MBYTE_TABLE_H
-#define _MUTT_MBYTE_TABLE_H
+#ifndef _MUTT_MAPPING_H
+#define _MUTT_MAPPING_H
+
+#include <stddef.h>
 
 /**
- * struct MbCharTable - multibyte character table
- *
- * Allows for direct access to the individual multibyte characters in a
- * string.  This is used for the FlagChars, FromChars, StChars and ToChars
- * option types.
+ * struct Mapping - Mapping between user-readable string and a constant
  */
-struct MbCharTable
+struct Mapping
 {
-  int len;             /**< number of characters */
-  char **chars;        /**< the array of multibyte character strings */
-  char *segmented_str; /**< each chars entry points inside this string */
-  char *orig_str;
+  const char *name;
+  int value;
 };
 
-#endif /* _MUTT_MBYTE_TABLE_H */
+const char *mutt_getnamebyvalue(int val, const struct Mapping *map);
+int mutt_getvaluebyname(const char *name, const struct Mapping *map);
+
+#endif /* _MUTT_MAPPING_H */

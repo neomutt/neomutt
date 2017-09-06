@@ -159,7 +159,7 @@ struct Event mutt_getch(void)
     return timeout;
   }
 
-  if ((ch & 0x80) && option(OPT_METAKEY))
+  if ((ch & 0x80) && option(OPT_META_KEY))
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
@@ -664,7 +664,7 @@ void mutt_reflow_windows(void)
       option(OPT_STATUS_ON_TOP) ? MuttStatusWindow->rows : MuttHelpWindow->rows;
 
 #ifdef USE_SIDEBAR
-  if (option(OPT_SIDEBAR))
+  if (option(OPT_SIDEBAR_VISIBLE))
   {
     memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
     MuttSidebarWindow->cols = SidebarWidth;
@@ -700,7 +700,7 @@ static void reflow_message_window_rows(int mw_rows)
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
 
 #ifdef USE_SIDEBAR
-  if (option(OPT_SIDEBAR))
+  if (option(OPT_SIDEBAR_VISIBLE))
     MuttSidebarWindow->rows = MuttIndexWindow->rows;
 #endif
 

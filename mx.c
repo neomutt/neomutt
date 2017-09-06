@@ -254,8 +254,8 @@ int mx_get_magic(const char *path)
   else if (st.st_size == 0)
   {
     /* hard to tell what zero-length files are, so assume the default magic */
-    if (DefaultMagic == MUTT_MBOX || DefaultMagic == MUTT_MMDF)
-      return DefaultMagic;
+    if (MboxType == MUTT_MBOX || MboxType == MUTT_MMDF)
+      return MboxType;
     else
       return MUTT_MBOX;
   }
@@ -312,18 +312,18 @@ int mx_get_magic(const char *path)
 }
 
 /**
- * mx_set_magic - set DefaultMagic to the given value
+ * mx_set_magic - set MboxType to the given value
  */
 int mx_set_magic(const char *s)
 {
   if (mutt_strcasecmp(s, "mbox") == 0)
-    DefaultMagic = MUTT_MBOX;
+    MboxType = MUTT_MBOX;
   else if (mutt_strcasecmp(s, "mmdf") == 0)
-    DefaultMagic = MUTT_MMDF;
+    MboxType = MUTT_MMDF;
   else if (mutt_strcasecmp(s, "mh") == 0)
-    DefaultMagic = MUTT_MH;
+    MboxType = MUTT_MH;
   else if (mutt_strcasecmp(s, "maildir") == 0)
-    DefaultMagic = MUTT_MAILDIR;
+    MboxType = MUTT_MAILDIR;
   else
     return -1;
 
@@ -369,7 +369,7 @@ static int mx_open_mailbox_append(struct Context *ctx, int flags)
           ctx->magic = MUTT_COMPRESSED;
         else
 #endif
-          ctx->magic = DefaultMagic;
+          ctx->magic = MboxType;
         flags |= MUTT_APPENDNEW;
       }
       else
@@ -574,7 +574,7 @@ static int trash_append(struct Context *ctx)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!TrashPath || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
+  if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
     return 0;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -584,12 +584,12 @@ static int trash_append(struct Context *ctx)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = option(OPT_CONFIRM_APPEND);
+  opt_confappend = option(OPT_CONFIRMAPPEND);
   if (opt_confappend)
-    unset_option(OPT_CONFIRM_APPEND);
-  rc = mutt_save_confirm(TrashPath, &st);
+    unset_option(OPT_CONFIRMAPPEND);
+  rc = mutt_save_confirm(Trash, &st);
   if (opt_confappend)
-    set_option(OPT_CONFIRM_APPEND);
+    set_option(OPT_CONFIRMAPPEND);
   if (rc != 0)
   {
     mutt_error(_("message(s) not deleted"));
@@ -601,14 +601,14 @@ static int trash_append(struct Context *ctx)
     return 0; /* we are in the trash folder: simple sync */
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && mx_is_imap(TrashPath))
+  if (Context->magic == MUTT_IMAP && mx_is_imap(Trash))
   {
-    if (!imap_fast_trash(Context, TrashPath))
+    if (!imap_fast_trash(Context, Trash))
       return 0;
   }
 #endif
 
-  if (mx_open_mailbox(TrashPath, MUTT_APPEND, &ctx_trash) != NULL)
+  if (mx_open_mailbox(Trash, MUTT_APPEND, &ctx_trash) != NULL)
   {
     /* continue from initial scan above */
     for (; i < ctx->msgcount; i++)
@@ -662,7 +662,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
-      int rc = query_quadoption(OPT_CATCHUP, _("Mark all articles read?"));
+      int rc = query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
       {
         ctx->closing = false;
@@ -698,7 +698,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     }
     else
     {
-      strfcpy(mbox, NONULL(Inbox), sizeof(mbox));
+      strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
       isSpool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
     }
 
@@ -811,7 +811,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, TrashPath) != 0))
+  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
     {
@@ -1046,7 +1046,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
   msgcount = ctx->msgcount;
   deleted = ctx->deleted;
 
-  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, TrashPath) != 0))
+  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
       return -1;

@@ -73,12 +73,12 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
 
   mutt_mktemp(tmp, sizeof(tmp));
 
-  omagic = DefaultMagic;
-  DefaultMagic = MUTT_MBOX;
+  omagic = MboxType;
+  MboxType = MUTT_MBOX;
 
   rc = (mx_open_mailbox(tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
 
-  DefaultMagic = omagic;
+  MboxType = omagic;
 
   if (rc == -1)
   {

@@ -41,7 +41,6 @@
 #include "keymap.h"
 #include "lib/lib.h"
 #include "list.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "opcodes.h"

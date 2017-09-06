@@ -44,7 +44,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
@@ -506,7 +505,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
   mutt_folder_hook(buf);
 
   if ((Context = mx_open_mailbox(
-           buf, (option(OPT_READONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ? MUTT_READONLY : 0,
+           buf, (option(OPT_READ_ONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ? MUTT_READONLY : 0,
            NULL)) != NULL)
   {
     menu->current = ci_first_message();
@@ -665,7 +664,7 @@ void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
     }
   }
 
-  _mutt_make_string(s, l, NONULL(HdrFmt), Context, h, flag);
+  _mutt_make_string(s, l, NONULL(IndexFormat), Context, h, flag);
 }
 
 int index_color(int index_no)
@@ -728,7 +727,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
     {
       regmatch_t pmatch[cl->match + 1];
 
-      if (regexec(&cl->rx, buf + offset, cl->match + 1, pmatch, 0) != 0)
+      if (regexec(&cl->regex, buf + offset, cl->match + 1, pmatch, 0) != 0)
         continue; /* regex doesn't match the status bar */
 
       int first = pmatch[cl->match].rm_so + offset;
@@ -881,7 +880,7 @@ static void index_menu_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
-    menu_status_line(buf, sizeof(buf), menu, NONULL(Status));
+    menu_status_line(buf, sizeof(buf), menu, NONULL(StatusFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
     mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
@@ -1012,10 +1011,10 @@ int mutt_index_menu(void)
               mutt_message(_("New mail in this mailbox."));
               if (option(OPT_BEEP_NEW))
                 beep();
-              if (NewMailCmd)
+              if (NewMailCommand)
               {
                 char cmd[LONG_STRING];
-                menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
+                menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
                 mutt_system(cmd);
               }
               break;
@@ -1053,10 +1052,10 @@ int mutt_index_menu(void)
           menu->redraw |= REDRAW_STATUS;
           if (option(OPT_BEEP_NEW))
             beep();
-          if (NewMailCmd)
+          if (NewMailCommand)
           {
             char cmd[LONG_STRING];
-            menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
+            menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
             mutt_system(cmd);
           }
         }
@@ -1951,18 +1950,18 @@ int mutt_index_menu(void)
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
         mutt_debug(2, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n");
-        if (NotmuchQueryWindowDuration <= 0)
+        if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled."));
           break;
         }
-        if (!NotmuchQueryWindowCurrentSearch)
+        if (!NmQueryWindowCurrentSearch)
         {
           mutt_message(_("No notmuch vfolder currently loaded."));
           break;
         }
         nm_query_window_backward();
-        strncpy(buf, NotmuchQueryWindowCurrentSearch, sizeof(buf));
+        strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
@@ -1970,18 +1969,18 @@ int mutt_index_menu(void)
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
-        if (NotmuchQueryWindowDuration <= 0)
+        if (NmQueryWindowDuration <= 0)
         {
           mutt_message(_("Windowed queries disabled."));
           break;
         }
-        if (!NotmuchQueryWindowCurrentSearch)
+        if (!NmQueryWindowCurrentSearch)
         {
           mutt_message(_("No notmuch vfolder currently loaded."));
           break;
         }
         nm_query_window_forward();
-        strncpy(buf, NotmuchQueryWindowCurrentSearch, sizeof(buf));
+        strncpy(buf, NmQueryWindowCurrentSearch, sizeof(buf));
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
@@ -2005,7 +2004,7 @@ int mutt_index_menu(void)
       case OP_MAIN_CHANGE_GROUP_READONLY:
         unset_option(OPT_NEWS);
 #endif
-        if (attach_msg || option(OPT_READONLY) ||
+        if (attach_msg || option(OPT_READ_ONLY) ||
 #ifdef USE_NNTP
             op == OP_MAIN_CHANGE_GROUP_READONLY ||
 #endif
@@ -2140,7 +2139,7 @@ int mutt_index_menu(void)
             menu->current = mutt_thread_next_unread(Context, CURHDR);
         }
 
-        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
@@ -2859,7 +2858,7 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
 
-        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         mutt_edit_message(Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2871,7 +2870,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2886,7 +2885,7 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2920,7 +2919,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -3105,11 +3104,11 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
             (mutt_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
+            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (Context && Context->magic == MUTT_NNTP &&
-              !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (op == OP_POST)
             ci_send_message(SENDNEWS, NULL, NULL, Context, NULL);
@@ -3129,7 +3128,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (option(OPT_PGP_AUTO_DEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -3257,7 +3256,7 @@ int mutt_index_menu(void)
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        toggle_option(OPT_SIDEBAR);
+        toggle_option(OPT_SIDEBAR_VISIBLE);
         mutt_reflow_windows();
         break;
 

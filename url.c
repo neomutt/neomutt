@@ -33,7 +33,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "lib/lib.h"
-#include "mapping.h"
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"

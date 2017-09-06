@@ -61,8 +61,8 @@ struct Buffy
 };
 
 WHERE struct Buffy *Incoming;
-WHERE short BuffyTimeout;
-WHERE short BuffyCheckStatsInterval;
+WHERE short MailCheck;
+WHERE short MailCheckStatsInterval;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen);

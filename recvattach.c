@@ -43,7 +43,6 @@
 #include "keymap.h"
 #include "lib/lib.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -208,10 +207,10 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
           break;
         }
         if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
-            MsgFmt && aptr->content->hdr)
+            MessageFormat && aptr->content->hdr)
         {
           char s[SHORT_STRING];
-          _mutt_make_string(s, sizeof(s), MsgFmt, NULL, aptr->content->hdr,
+          _mutt_make_string(s, sizeof(s), MessageFormat, NULL, aptr->content->hdr,
                             MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR);
           if (*s)
           {
@@ -227,7 +226,7 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
       }
       else if (aptr->content->description ||
                (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
-                MsgFmt && aptr->content->hdr))
+                MessageFormat && aptr->content->hdr))
         break;
     /* FALLS THROUGH TO 'F' */
     case 'F':
@@ -808,7 +807,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, int tag, struc
       return;
     mutt_endwin(NULL);
     memset(&state, 0, sizeof(struct State));
-    thepid = mutt_create_filter(NONULL(PrintCmd), &state.fpout, NULL, NULL);
+    thepid = mutt_create_filter(NONULL(PrintCommand), &state.fpout, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     safe_fclose(&state.fpout);
     if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
@@ -1340,7 +1339,7 @@ void mutt_view_attachments(struct Header *hdr)
 
         if (!CURATTACH->content->hdr->env->followup_to ||
             (mutt_strcasecmp(CURATTACH->content->hdr->env->followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
+            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           mutt_attach_reply(CURATTACH->fp, hdr, actx, menu->tagprefix ? NULL : CURATTACH->content,

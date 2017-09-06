@@ -545,7 +545,7 @@ static int comp_open_append_mailbox(struct Context *ctx, int flags)
     ctx->magic = mx_get_magic(ctx->path);
   }
   else
-    ctx->magic = DefaultMagic;
+    ctx->magic = MboxType;
 
   /* We can only deal with mbox and mmdf mailboxes */
   if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))

@@ -104,7 +104,7 @@ int mutt_display_message(struct Header *cur)
     else if (cur->security & SIGN)
     {
       /* find out whether or not the verify signature */
-      if (query_quadoption(OPT_VERIFY_SIG, _("Verify PGP signature?")) == MUTT_YES)
+      if (query_quadoption(OPT_CRYPT_VERIFY_SIG, _("Verify PGP signature?")) == MUTT_YES)
       {
         cmflags |= MUTT_CM_VERIFY;
       }
@@ -156,7 +156,7 @@ int mutt_display_message(struct Header *cur)
     hfi.pager_progress = ExtPagerProgress;
     hfi.hdr = cur;
     mutt_make_string_info(buf, sizeof(buf), MuttIndexWindow->cols,
-                          NONULL(PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
+                          NONULL(PagerFormat), &hfi, MUTT_FORMAT_MAKEPRINT);
     fputs(buf, fpout);
     fputs("\n\n", fpout);
   }
@@ -508,7 +508,7 @@ void mutt_pipe_message(struct Header *h)
 
 void mutt_print_message(struct Header *h)
 {
-  if (quadoption(OPT_PRINT) && (!PrintCmd || !*PrintCmd))
+  if (quadoption(OPT_PRINT) && (!PrintCommand || !*PrintCommand))
   {
     mutt_message(_("No printing command has been defined."));
     return;
@@ -518,7 +518,7 @@ void mutt_print_message(struct Header *h)
                        h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
     return;
 
-  if (_mutt_pipe_message(h, PrintCmd, option(OPT_PRINT_DECODE), 1,
+  if (_mutt_pipe_message(h, PrintCommand, option(OPT_PRINT_DECODE), 1,
                          option(OPT_PRINT_SPLIT), "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));
   else

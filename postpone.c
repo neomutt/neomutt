@@ -40,7 +40,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mime.h"
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"
@@ -178,7 +177,7 @@ static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
 {
   struct Context *ctx = (struct Context *) menu->data;
 
-  _mutt_make_string(s, slen, NONULL(HdrFmt), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
+  _mutt_make_string(s, slen, NONULL(IndexFormat), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
 }
 
 static struct Header *select_msg(void)
@@ -495,7 +494,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
   /* the cryptalg field must not be empty */
   if ((WithCrypto & APPLICATION_SMIME) && *smime_cryptalg)
-    mutt_str_replace(&SmimeCryptAlg, smime_cryptalg);
+    mutt_str_replace(&SmimeEncryptWith, smime_cryptalg);
 
   /* Set {Smime,Pgp}SignAs, if desired. */
 

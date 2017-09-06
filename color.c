@@ -32,7 +32,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "lib/lib.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
@@ -179,7 +178,7 @@ static void free_color_line(struct ColorLine **l, int free_colors)
    * type for regular expressions.
    */
 
-  regfree(&tmp->rx);
+  regfree(&tmp->regex);
   mutt_pattern_free(&tmp->color_pattern);
   FREE(&tmp->pattern);
   FREE(l);
@@ -664,9 +663,9 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
       for (int i = 0; Context && i < Context->msgcount; i++)
         Context->hdrs[i]->pair = 0;
     }
-    else if ((r = REGCOMP(&tmp->rx, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)
+    else if ((r = REGCOMP(&tmp->regex, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)
     {
-      regerror(r, &tmp->rx, err->data, err->dsize);
+      regerror(r, &tmp->regex, err->data, err->dsize);
       free_color_line(&tmp, 1);
       return -1;
     }

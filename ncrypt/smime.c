@@ -823,7 +823,7 @@ void smime_getkeys(struct Envelope *env)
   struct Address *t = NULL;
   bool found = false;
 
-  if (option(OPT_SDEFAULT_DECRYPT_KEY) && SmimeDefaultKey && *SmimeDefaultKey)
+  if (option(OPT_SMIME_DECRYPT_USE_DEFAULT_KEY) && SmimeDefaultKey && *SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
 
@@ -1181,7 +1181,7 @@ void smime_invoke_import(char *infile, char *mailbox)
   mutt_unlink(tmpfname);
 
   buf[0] = '\0';
-  if (option(OPT_ASK_CERT_LABEL))
+  if (option(OPT_SMIME_ASK_CERT_LABEL))
   {
     if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), 0) != 0) ||
         (buf[0] == 0))
@@ -1293,7 +1293,7 @@ static pid_t smime_invoke_encrypt(FILE **smimein, FILE **smimeout, FILE **smimee
                                   const char *fname, const char *uids)
 {
   return smime_invoke(smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-                      smimeerrfd, fname, NULL, SmimeCryptAlg, NULL, NULL, uids,
+                      smimeerrfd, fname, NULL, SmimeEncryptWith, NULL, NULL, uids,
                       NULL, SmimeEncryptCommand);
 }
 
@@ -1301,7 +1301,7 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                                int smimeoutfd, int smimeerrfd, const char *fname)
 {
   return smime_invoke(smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-                      smimeerrfd, fname, NULL, NULL, SmimeDigestAlg, SmimeKeyToUse,
+                      smimeerrfd, fname, NULL, NULL, SmimeSignDigestAlg, SmimeKeyToUse,
                       SmimeCertToUse, SmimeIntermediateToUse, SmimeSignCommand);
 }
 
@@ -1564,7 +1564,7 @@ struct Body *smime_sign_message(struct Body *a)
 
   mutt_generate_boundary(&t->parameter);
 
-  micalg = openssl_md_to_smime_micalg(SmimeDigestAlg);
+  micalg = openssl_md_to_smime_micalg(SmimeSignDigestAlg);
   mutt_set_parameter("micalg", micalg, &t->parameter);
   FREE(&micalg);
 
@@ -2064,10 +2064,10 @@ int smime_send_menu(struct Header *msg)
               switch (choice = mutt_multi_choice(_("1: DES, 2: Triple-DES "), _("dt")))
               {
                 case 1:
-                  mutt_str_replace(&SmimeCryptAlg, "des");
+                  mutt_str_replace(&SmimeEncryptWith, "des");
                   break;
                 case 2:
-                  mutt_str_replace(&SmimeCryptAlg, "des3");
+                  mutt_str_replace(&SmimeEncryptWith, "des3");
                   break;
               }
               break;
@@ -2077,13 +2077,13 @@ int smime_send_menu(struct Header *msg)
                           _("1: RC2-40, 2: RC2-64, 3: RC2-128 "), _("468")))
               {
                 case 1:
-                  mutt_str_replace(&SmimeCryptAlg, "rc2-40");
+                  mutt_str_replace(&SmimeEncryptWith, "rc2-40");
                   break;
                 case 2:
-                  mutt_str_replace(&SmimeCryptAlg, "rc2-64");
+                  mutt_str_replace(&SmimeEncryptWith, "rc2-64");
                   break;
                 case 3:
-                  mutt_str_replace(&SmimeCryptAlg, "rc2-128");
+                  mutt_str_replace(&SmimeEncryptWith, "rc2-128");
                   break;
               }
               break;
@@ -2093,19 +2093,19 @@ int smime_send_menu(struct Header *msg)
                           _("1: AES128, 2: AES192, 3: AES256 "), _("895")))
               {
                 case 1:
-                  mutt_str_replace(&SmimeCryptAlg, "aes128");
+                  mutt_str_replace(&SmimeEncryptWith, "aes128");
                   break;
                 case 2:
-                  mutt_str_replace(&SmimeCryptAlg, "aes192");
+                  mutt_str_replace(&SmimeEncryptWith, "aes192");
                   break;
                 case 3:
-                  mutt_str_replace(&SmimeCryptAlg, "aes256");
+                  mutt_str_replace(&SmimeEncryptWith, "aes256");
                   break;
               }
               break;
 
             case 4: /* (c)lear */
-              FREE(&SmimeCryptAlg);
+              FREE(&SmimeEncryptWith);
             /* fallback */
             case -1: /* Ctrl-G or Enter */
               choice = 0;

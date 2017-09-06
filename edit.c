@@ -83,7 +83,7 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    strfcpy(tmp, NONULL(Prefix), sizeof(tmp));
+    strfcpy(tmp, NONULL(IndentString), sizeof(tmp));
     tmplen = mutt_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
@@ -286,7 +286,7 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if ((!e->cc && option(OPT_ASK_CC)) || force)
+  if ((!e->cc && option(OPT_ASKCC)) || force)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
@@ -307,7 +307,7 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if (option(OPT_ASK_BCC) || force)
+  if (option(OPT_ASKBCC) || force)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
@@ -356,7 +356,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
     }
     addch('\n');
 
-    if (EscChar && tmp[0] == EscChar[0] && tmp[1] != EscChar[0])
+    if (Escape && tmp[0] == Escape[0] && tmp[1] != Escape[0])
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_strlen(tmp) - 1;
@@ -458,7 +458,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             buf = NULL;
             bufmax = buflen = 0;
 
-            if (option(OPT_EDIT_HDRS))
+            if (option(OPT_EDIT_HEADERS))
             {
               mutt_env_to_local(msg->env);
               mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);

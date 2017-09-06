@@ -1049,7 +1049,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if ((mutt_strcasecmp("text/plain", type) == 0) ||
       (mutt_strcasecmp("application/postscript", type) == 0))
   {
-    return (mutt_pipe_attachment(fp, a, NONULL(PrintCmd), NULL));
+    return (mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL));
   }
   else if (mutt_can_decode(a))
   {
@@ -1074,7 +1074,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin(NULL);
-      if ((thepid = mutt_create_filter(NONULL(PrintCmd), &fpout, NULL, NULL)) < 0)
+      if ((thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL)) < 0)
       {
         mutt_perror(_("Can't create filter"));
         goto bail0;

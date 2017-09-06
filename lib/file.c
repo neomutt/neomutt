@@ -38,7 +38,7 @@
  * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
  * | mutt_read_line()          | Read a line from a file
  * | mutt_rmtree()             | Recursively remove a directory
- * | mutt_rx_sanitize_string() | Escape any regex-magic characters in a string
+ * | mutt_regex_sanitize_string() | Escape any regex-magic characters in a string
  * | mutt_sanitize_filename()  | Replace unsafe characters in a filename
  * | mutt_set_mtime()          | Set the modification time of one file from another
  * | mutt_touch_atime()        | Set the access time to current time
@@ -591,14 +591,14 @@ void mutt_sanitize_filename(char *f, short slash)
 }
 
 /**
- * mutt_rx_sanitize_string - Escape any regex-magic characters in a string
+ * mutt_regex_sanitize_string - Escape any regex-magic characters in a string
  * @param dest    Buffer for result
  * @param destlen Length of buffer
  * @param src     String to transform
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src)
+int mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src)
 {
   while (*src && (--destlen > 2))
   {

@@ -340,13 +340,13 @@ static int smtp_helo(struct Connection *conn)
     if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_START_TLS) != MUTT_NO)
+    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_STARTTLS) != MUTT_NO)
       Esmtp = 1;
 #endif
   }
 
   if (!(fqdn = mutt_fqdn(0)))
-    fqdn = NONULL(Hostname);
+    fqdn = NONULL(ShortHostname);
 
   snprintf(buf, sizeof(buf), "%s %s\r\n", Esmtp ? "EHLO" : "HELO", fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
@@ -591,7 +591,7 @@ static int smtp_open(struct Connection *conn)
   else if (option(OPT_SSL_FORCE_TLS))
     rc = MUTT_YES;
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
-           (rc = query_quadoption(OPT_SSL_START_TLS,
+           (rc = query_quadoption(OPT_SSL_STARTTLS,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 
@@ -646,8 +646,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (EnvFrom)
-    envfrom = EnvFrom->mailbox;
+  if (EnvelopeFromAddress)
+    envfrom = EnvelopeFromAddress->mailbox;
   else if (from)
     envfrom = from->mailbox;
   else

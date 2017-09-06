@@ -1337,7 +1337,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
 
   if (WithCrypto)
   {
-    if ((option(OPT_MIME_FORW_DECODE) || option(OPT_FORW_DECRYPT)) && (hdr->security & ENCRYPT))
+    if ((option(OPT_MIME_FORWARD_DECODE) || option(OPT_FORWARD_DECRYPT)) && (hdr->security & ENCRYPT))
     {
       if (!crypt_valid_passphrase(hdr->security))
         return NULL;
@@ -1362,8 +1362,8 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   chflags = CH_XMIT;
   cmflags = 0;
 
-  /* If we are attaching a message, ignore OPT_MIME_FORW_DECODE */
-  if (!attach_msg && option(OPT_MIME_FORW_DECODE))
+  /* If we are attaching a message, ignore OPT_MIME_FORWARD_DECODE */
+  if (!attach_msg && option(OPT_MIME_FORWARD_DECODE))
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -1372,7 +1372,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
     if ((WithCrypto & APPLICATION_SMIME))
       pgp &= ~SMIMEENCRYPT;
   }
-  else if (WithCrypto && option(OPT_FORW_DECRYPT) && (hdr->security & ENCRYPT))
+  else if (WithCrypto && option(OPT_FORWARD_DECRYPT) && (hdr->security & ENCRYPT))
   {
     if ((WithCrypto & APPLICATION_PGP) && mutt_is_multipart_encrypted(hdr->content))
     {
@@ -1424,7 +1424,7 @@ static void run_mime_type_query(struct Body *att)
   int dummy = 0;
   pid_t thepid;
 
-  mutt_expand_file_fmt(cmd, sizeof(cmd), MimeTypeQueryCmd, att->filename);
+  mutt_expand_file_fmt(cmd, sizeof(cmd), MimeTypeQueryCommand, att->filename);
 
   if ((thepid = mutt_create_filter(cmd, NULL, &fp, &fperr)) < 0)
   {
@@ -1452,7 +1452,7 @@ struct Body *mutt_make_file_attach(const char *path)
   att = mutt_new_body();
   att->filename = safe_strdup(path);
 
-  if (MimeTypeQueryCmd && *MimeTypeQueryCmd && option(OPT_MIME_TYPE_QUERY_FIRST))
+  if (MimeTypeQueryCommand && *MimeTypeQueryCommand && option(OPT_MIME_TYPE_QUERY_FIRST))
     run_mime_type_query(att);
 
   /* Attempt to determine the appropriate content-type based on the filename
@@ -1461,7 +1461,7 @@ struct Body *mutt_make_file_attach(const char *path)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && MimeTypeQueryCmd && *MimeTypeQueryCmd && !option(OPT_MIME_TYPE_QUERY_FIRST))
+  if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand && !option(OPT_MIME_TYPE_QUERY_FIRST))
     run_mime_type_query(att);
 
   if ((info = mutt_get_content_info(path, att)) == NULL)
@@ -2108,7 +2108,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if (mode == 1 && option(OPT_NEWS_SEND) && option(OPT_XCOMMENT_TO))
+  else if (mode == 1 && option(OPT_NEWS_SEND) && option(OPT_X_COMMENT_TO))
     fputs("X-Comment-To: \n", fp);
 #endif
 
@@ -2192,7 +2192,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
     }
   }
 
-  if (mode == 0 && !privacy && option(OPT_XMAILER) && !has_agent)
+  if (mode == 0 && !privacy && option(OPT_USER_AGENT) && !has_agent)
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s (%s)\n", PACKAGE_VERSION, GitVer, MUTT_VERSION);
@@ -2233,13 +2233,13 @@ const char *mutt_fqdn(short may_hide_host)
 {
   char *p = NULL;
 
-  if (Fqdn && Fqdn[0] != '@')
+  if (Hostname && Hostname[0] != '@')
   {
-    p = Fqdn;
+    p = Hostname;
 
     if (may_hide_host && option(OPT_HIDDEN_HOST))
     {
-      if ((p = strchr(Fqdn, '.')))
+      if ((p = strchr(Hostname, '.')))
         p++;
 
       /* sanity check: don't hide the host if
@@ -2247,7 +2247,7 @@ const char *mutt_fqdn(short may_hide_host)
        */
 
       if (!p || !strchr(p, '.'))
-        p = Fqdn;
+        p = Hostname;
     }
   }
 
@@ -2267,7 +2267,7 @@ static char *gen_msgid(void)
   now = time(NULL);
   tm = gmtime(&now);
   if (!(fqdn = mutt_fqdn(0)))
-    fqdn = NONULL(Hostname);
+    fqdn = NONULL(ShortHostname);
 
   snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm->tm_year + 1900,
            tm->tm_mon + 1, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec, rndid, fqdn);
@@ -2563,15 +2563,15 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       }
     }
 
-    if (eightbit && option(OPT_USE_8BIT_MIME))
+    if (eightbit && option(OPT_USE_8BITMIME))
       args = add_option(args, &argslen, &argsmax, "-B8BITMIME");
 
-    if (option(OPT_ENV_FROM))
+    if (option(OPT_USE_ENVELOPE_FROM))
     {
-      if (EnvFrom)
+      if (EnvelopeFromAddress)
       {
         args = add_option(args, &argslen, &argsmax, "-f");
-        args = add_args(args, &argslen, &argsmax, EnvFrom);
+        args = add_args(args, &argslen, &argsmax, EnvelopeFromAddress);
       }
       else if (from && !from->next)
       {
@@ -3040,8 +3040,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     if (hdr->security & ENCRYPT)
     {
       fputc('E', msg->fp);
-      if (SmimeCryptAlg && *SmimeCryptAlg)
-        fprintf(msg->fp, "C<%s>", SmimeCryptAlg);
+      if (SmimeEncryptWith && *SmimeEncryptWith)
+        fprintf(msg->fp, "C<%s>", SmimeEncryptWith);
     }
     if (hdr->security & OPPENCRYPT)
       fputc('O', msg->fp);

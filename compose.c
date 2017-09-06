@@ -46,7 +46,6 @@
 #include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -312,13 +311,13 @@ static void redraw_crypt_lines(struct Header *msg)
   }
 
   if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME) &&
-      (msg->security & ENCRYPT) && SmimeCryptAlg && *SmimeCryptAlg)
+      (msg->security & ENCRYPT) && SmimeEncryptWith && *SmimeEncryptWith)
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s",
                          _("Encrypt with: "));
     NORMAL_COLOR;
-    printw("%s", NONULL(SmimeCryptAlg));
+    printw("%s", NONULL(SmimeEncryptWith));
   }
 }
 
@@ -424,7 +423,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
     mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s",
                          HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
     mutt_paddstr(W, NONULL(msg->env->followup_to));
-    if (option(OPT_XCOMMENT_TO))
+    if (option(OPT_X_COMMENT_TO))
     {
       mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s",
                            HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
@@ -687,7 +686,7 @@ static unsigned long cum_attachs_size(struct Menu *menu)
  * compose_format_str - Format strings like printf()
  *
  * * \%a Total number of attachments
- * * \%h Hostname  [option]
+ * * \%h ShortHostname  [option]
  * * \%l Approx. length of current message (in bytes)
  * * \%v Mutt version
  *
@@ -713,7 +712,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 
     case 'h': /* hostname */
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(buf, buflen, fmt, NONULL(Hostname));
+      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l': /* approx length of current message in bytes */
@@ -895,7 +894,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         break;
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
-        if (news && option(OPT_XCOMMENT_TO))
+        if (news && option(OPT_X_COMMENT_TO))
         {
           if (msg->env->x_comment_to)
             strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
@@ -946,7 +945,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (Editor && (mutt_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HDRS))
+        if (Editor && (mutt_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HEADERS))
         {
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
@@ -958,7 +957,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS ||
-             (op == OP_COMPOSE_EDIT_MESSAGE && option(OPT_EDIT_HDRS))))
+             (op == OP_COMPOSE_EDIT_MESSAGE && option(OPT_EDIT_HEADERS))))
         {
           char *tag = NULL, *err = NULL;
           mutt_env_to_local(msg->env);

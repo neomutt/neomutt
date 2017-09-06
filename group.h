@@ -38,7 +38,7 @@ struct Buffer;
 struct Group
 {
   struct Address *as;
-  struct RxList *rs;
+  struct RegexList *rs;
   char *name;
 };
 
@@ -54,12 +54,12 @@ struct GroupContext
 void mutt_group_context_add(struct GroupContext **ctx, struct Group *group);
 void mutt_group_context_destroy(struct GroupContext **ctx);
 void mutt_group_context_add_adrlist(struct GroupContext *ctx, struct Address *a);
-int mutt_group_context_add_rx(struct GroupContext *ctx, const char *s, int flags, struct Buffer *err);
+int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s, int flags, struct Buffer *err);
 
 bool mutt_group_match(struct Group *g, const char *s);
 
 int mutt_group_context_clear(struct GroupContext **ctx);
-int mutt_group_context_remove_rx(struct GroupContext *ctx, const char *s);
+int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s);
 int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *a);
 
 struct Group *mutt_pattern_group(const char *k);

@@ -213,8 +213,8 @@ int mutt_protect(struct Header *msg, char *keylist)
       from = mutt_default_from();
 
     mailbox = from->mailbox;
-    if (!mailbox && EnvFrom)
-      mailbox = EnvFrom->mailbox;
+    if (!mailbox && EnvelopeFromAddress)
+      mailbox = EnvelopeFromAddress->mailbox;
 
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
@@ -235,7 +235,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIG)))
+        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
     {
       if (!(tmp_pbody = crypt_pgp_sign_message(msg->content)))
         return -1;

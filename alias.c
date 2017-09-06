@@ -460,7 +460,7 @@ struct Address *alias_reverse_lookup(struct Address *a)
   if (!a || !a->mailbox)
     return NULL;
 
-  return hash_find(ReverseAlias, a->mailbox);
+  return hash_find(ReverseAliases, a->mailbox);
 }
 
 void mutt_alias_add_reverse(struct Alias *t)
@@ -477,7 +477,7 @@ void mutt_alias_add_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_insert(ReverseAlias, ap->mailbox, ap);
+      hash_insert(ReverseAliases, ap->mailbox, ap);
   }
 }
 
@@ -494,7 +494,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_delete(ReverseAlias, ap->mailbox, ap, NULL);
+      hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
   }
 }
 
@@ -645,9 +645,9 @@ bool mutt_addr_is_user(struct Address *addr)
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username);
     return true;
   }
-  if (string_is_address(addr->mailbox, Username, Hostname))
+  if (string_is_address(addr->mailbox, Username, ShortHostname))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, Hostname);
+    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, ShortHostname);
     return true;
   }
   fqdn = mutt_fqdn(0);
@@ -671,10 +671,10 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (mutt_match_rx_list(addr->mailbox, Alternates))
+  if (mutt_match_regex_list(addr->mailbox, Alternates))
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox);
-    if (mutt_match_rx_list(addr->mailbox, UnAlternates))
+    if (mutt_match_regex_list(addr->mailbox, UnAlternates))
       mutt_debug(5, "mutt_addr_is_user: but, %s matched by unalternates.\n", addr->mailbox);
     else
       return true;

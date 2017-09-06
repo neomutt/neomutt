@@ -192,7 +192,7 @@ enum ColorId
  */
 struct ColorLine
 {
-  regex_t rx;
+  regex_t regex;
   int match; /**< which substringmap 0 for old behaviour */
   char *pattern;
   struct Pattern *color_pattern; /**< compiled pattern to speed up index color
