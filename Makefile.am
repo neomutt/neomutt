@@ -86,7 +86,7 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
 	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
-	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
+	mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h opcodes.h pager.h \
