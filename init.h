@@ -1125,7 +1125,7 @@ struct Option MuttVars[] = {
   ** caching will be used.
   ** .pp
   ** Header caching can greatly improve speed when opening POP, IMAP
-  ** MH or Folder folders, see ``$caching'' for details.
+  ** MH or Maildir folders, see ``$caching'' for details.
   */
   { "header_cache_backend", DT_HCACHE, R_NONE, UL &HeaderCacheBackend, UL 0 },
   /*
@@ -1742,7 +1742,7 @@ struct Option MuttVars[] = {
   { "mark_macro_prefix",DT_STRING, R_NONE, UL &MarkMacroPrefix, UL "'" },
   /*
   ** .pp
-  ** IndentString for macros created using mark-message.  A new macro
+  ** Prefix for macros created using mark-message.  A new macro
   ** automatically generated with \fI<mark-message>a\fP will be composed
   ** from this prefix and the letter \fIa\fP.
   */
@@ -1782,7 +1782,7 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
-  ** ``mbox'', ``MMDF'', ``MH'' and ``Folder''. This is overridden by the
+  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overridden by the
   ** \fC-m\fP command-line option.
   */
   { "menu_context",     DT_NUMBER,  R_NONE, UL &MenuContext, 0 },

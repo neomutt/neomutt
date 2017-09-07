@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "pgpkey.h"
 #include "address.h"
@@ -42,7 +43,6 @@
 #include "globals.h"
 #include "gnupgparse.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -305,7 +305,7 @@ static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.num = num + 1;
 
   mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
-                    pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+                      pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int _pgp_compare_address(const void *a, const void *b)
@@ -610,7 +610,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           }
 
         if (option(OPT_PGP_CHECK_TRUST) && (!pgp_id_is_valid(KeyTable[menu->current]) ||
-                                         !pgp_id_is_strong(KeyTable[menu->current])))
+                                            !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
           char buff[LONG_STRING];

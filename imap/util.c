@@ -37,6 +37,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "bcache.h"
@@ -44,7 +45,6 @@
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "message.h"
@@ -404,8 +404,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx1 = "INBOX";
   if (!mx2 || !*mx2)
     mx2 = "INBOX";
-  if ((mutt_strcasecmp(mx1, "INBOX") == 0) &&
-      (mutt_strcasecmp(mx2, "INBOX") == 0))
+  if ((mutt_strcasecmp(mx1, "INBOX") == 0) && (mutt_strcasecmp(mx2, "INBOX") == 0))
     return 0;
 
   b1 = safe_malloc(strlen(mx1) + 1);

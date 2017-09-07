@@ -43,8 +43,8 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "pgp.h"
 #include "address.h"
 #include "body.h"
 #include "charset.h"
@@ -53,7 +53,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -61,6 +60,7 @@
 #include "ncrypt.h"
 #include "options.h"
 #include "parameter.h"
+#include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "pgpmicalg.h"

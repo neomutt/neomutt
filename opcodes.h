@@ -218,7 +218,7 @@
   _fmt(OP_DECRYPT_COPY,                   N_("make decrypted copy")) \
   _fmt(OP_FORGET_PASSPHRASE,              N_("wipe passphrase(s) from memory")) \
   _fmt(OP_EXTRACT_KEYS,                   N_("extract supported public keys")) \
-  
+
 #ifdef MIXMASTER
 #define OPS_MIX(_fmt) \
   _fmt(OP_MIX_USE,                        N_("accept the chain constructed")) \

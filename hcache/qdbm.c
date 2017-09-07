@@ -34,8 +34,8 @@
 #include <stddef.h>
 #include <depot.h>
 #include <villa.h>
-#include "backend.h"
 #include "lib/lib.h"
+#include "backend.h"
 #include "options.h"
 
 static void *hcache_qdbm_open(const char *path)

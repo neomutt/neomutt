@@ -23,6 +23,7 @@
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "sort.h"
 #include "address.h"
@@ -31,7 +32,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
@@ -47,11 +47,11 @@
 static sort_t *AuxSort = NULL;
 
 #define AUXSORT(code, a, b)                                                    \
-  if (!code && AuxSort && !option(OPT_AUX_SORT))                                 \
+  if (!code && AuxSort && !option(OPT_AUX_SORT))                               \
   {                                                                            \
-    set_option(OPT_AUX_SORT);                                                    \
+    set_option(OPT_AUX_SORT);                                                  \
     code = AuxSort(a, b);                                                      \
-    unset_option(OPT_AUX_SORT);                                                  \
+    unset_option(OPT_AUX_SORT);                                                \
   }                                                                            \
   if (!code)                                                                   \
     code = (*((struct Header **) a))->index - (*((struct Header **) b))->index;

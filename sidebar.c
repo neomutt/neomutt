@@ -28,13 +28,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "sidebar.h"
 #include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -222,11 +222,11 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring, cb_format_str,
-                      (unsigned long) sbe, flags);
+    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring,
+                        cb_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
-                      cb_format_str, (unsigned long) sbe, flags);
+                        cb_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
   return src;
@@ -252,8 +252,8 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
 
   strfcpy(sbe->box, box, sizeof(sbe->box));
 
-  mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat), cb_format_str,
-                    (unsigned long) sbe, 0);
+  mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat),
+                      cb_format_str, (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
@@ -859,15 +859,14 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
     /* compute length of Folder without trailing separator */
     size_t maildirlen = mutt_strlen(Folder);
-    if (maildirlen && SidebarDelimChars &&
-        strchr(SidebarDelimChars, Folder[maildirlen - 1]))
+    if (maildirlen && SidebarDelimChars && strchr(SidebarDelimChars, Folder[maildirlen - 1]))
       maildirlen--;
 
     /* check whether Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
     if ((mutt_strlen(b->path) > maildirlen) &&
-        (mutt_strncmp(Folder, b->path, maildirlen) == 0) &&
-        SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
+        (mutt_strncmp(Folder, b->path, maildirlen) == 0) && SidebarDelimChars &&
+        strchr(SidebarDelimChars, b->path[maildirlen]))
       maildir_is_prefix = true;
 
     /* calculate depth of current folder and generate its display name with indented spaces */

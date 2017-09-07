@@ -26,11 +26,11 @@
 #include <errno.h>
 #include <iconv.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "rfc2047.h"
 #include "address.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mime.h"
 #include "options.h"

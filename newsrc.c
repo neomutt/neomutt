@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "bcache.h"
@@ -39,7 +40,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -1029,7 +1029,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   if (rc >= 0)
   {
     mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
-                      NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
+                        NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
     mutt_expand_path(file, sizeof(file));
     nserv->newsrc_file = safe_strdup(file);
     rc = nntp_newsrc_parse(nserv);

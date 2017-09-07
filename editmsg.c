@@ -31,12 +31,12 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mx.h"
 #include "options.h"

@@ -32,8 +32,8 @@
  * | mutt_getvaluebyname() | Lookup the constant for a string
  */
 
-#include "string2.h"
 #include "mapping.h"
+#include "string2.h"
 
 /**
  * mutt_getnamebyvalue - Lookup a string for a constant
@@ -64,4 +64,3 @@ int mutt_getvaluebyname(const char *name, const struct Mapping *map)
       return map[i].value;
   return -1;
 }
-

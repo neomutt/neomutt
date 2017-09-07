@@ -32,6 +32,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "attach.h"
@@ -43,7 +44,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -746,7 +746,8 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
                                 struct Menu *menu, const char *p)
 {
-  mutt_expando_format(buf, buflen, col, cols, p, compose_format_str, (unsigned long) menu, 0);
+  mutt_expando_format(buf, buflen, col, cols, p, compose_format_str,
+                      (unsigned long) menu, 0);
 }
 
 /**

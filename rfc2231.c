@@ -34,10 +34,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "rfc2231.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mime.h"
 #include "options.h"

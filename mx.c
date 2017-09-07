@@ -32,6 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mx.h"
 #include "address.h"
@@ -43,7 +44,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -662,7 +662,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
-      int rc = query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
+      int rc =
+          query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
       {
         ctx->closing = false;
@@ -945,7 +946,7 @@ void mx_update_tables(struct Context *ctx, int committing)
       {
         ctx->unread++;
         if (!ctx->hdrs[j]->old)
-          ctx->new++;
+          ctx->new ++;
       }
 
       j++;
@@ -1337,7 +1338,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       ctx->unread++;
       if (!h->old)
-        ctx->new++;
+        ctx->new ++;
     }
   }
 }

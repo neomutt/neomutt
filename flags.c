@@ -23,11 +23,11 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -131,7 +131,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
           update = true;
           h->old = false;
           if (upd_ctx)
-            ctx->new++;
+            ctx->new ++;
           if (h->read)
           {
             h->read = false;
@@ -148,7 +148,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
         update = true;
         if (!h->old)
           if (upd_ctx)
-            ctx->new--;
+            ctx->new --;
         h->read = true;
         if (upd_ctx)
           ctx->unread--;
@@ -171,7 +171,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
           h->old = true;
           if (!h->read)
             if (upd_ctx)
-              ctx->new--;
+              ctx->new --;
           h->changed = true;
           if (upd_ctx)
             ctx->changed = true;
@@ -183,7 +183,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
         h->old = false;
         if (!h->read)
           if (upd_ctx)
-            ctx->new++;
+            ctx->new ++;
         h->changed = true;
         if (upd_ctx)
           ctx->changed = true;
@@ -205,7 +205,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
             ctx->unread--;
           if (!h->old)
             if (upd_ctx)
-              ctx->new--;
+              ctx->new --;
           h->changed = true;
           if (upd_ctx)
             ctx->changed = true;
@@ -219,7 +219,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
           ctx->unread++;
         if (!h->old)
           if (upd_ctx)
-            ctx->new++;
+            ctx->new ++;
         h->changed = true;
         if (upd_ctx)
           ctx->changed = true;
@@ -244,7 +244,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
               ctx->unread--;
             if (!h->old)
               if (upd_ctx)
-                ctx->new--;
+                ctx->new --;
           }
           h->changed = true;
           if (upd_ctx)

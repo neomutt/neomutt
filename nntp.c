@@ -27,6 +27,7 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "nntp.h"
 #include "account.h"
@@ -36,7 +37,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
@@ -1453,8 +1453,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   struct Url url;
 
   strfcpy(buf, ctx->path, sizeof(buf));
-  if (url_parse(&url, buf) < 0 || !url.path ||
-      !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
+  if (url_parse(&url, buf) < 0 || !url.path || !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
     mutt_error(_("%s is an invalid newsgroup specification!"), ctx->path);
     mutt_sleep(2);
@@ -1540,8 +1539,8 @@ static int nntp_open_mailbox(struct Context *ctx)
 
   time(&nserv->check_time);
   ctx->data = nntp_data;
-  if (!nntp_data->bcache &&
-      (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED)))
+  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed ||
+                             option(OPT_SAVE_UNSUBSCRIBED)))
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */

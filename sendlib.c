@@ -38,6 +38,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -51,7 +52,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -1337,7 +1337,8 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
 
   if (WithCrypto)
   {
-    if ((option(OPT_MIME_FORWARD_DECODE) || option(OPT_FORWARD_DECRYPT)) && (hdr->security & ENCRYPT))
+    if ((option(OPT_MIME_FORWARD_DECODE) || option(OPT_FORWARD_DECRYPT)) &&
+        (hdr->security & ENCRYPT))
     {
       if (!crypt_valid_passphrase(hdr->security))
         return NULL;
@@ -1461,7 +1462,8 @@ struct Body *mutt_make_file_attach(const char *path)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand && !option(OPT_MIME_TYPE_QUERY_FIRST))
+  if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand &&
+      !option(OPT_MIME_TYPE_QUERY_FIRST))
     run_mime_type_query(att);
 
   if ((info = mutt_get_content_info(path, att)) == NULL)
@@ -1633,7 +1635,7 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
       break;
   }
 
-  struct ListNode **ref = safe_calloc(length, sizeof(struct ListNode*));
+  struct ListNode **ref = safe_calloc(length, sizeof(struct ListNode *));
 
   // store in reverse order
   size_t tmp = length;
@@ -2495,8 +2497,8 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   {
     char cmd[LONG_STRING];
 
-    mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols, NONULL(Inews),
-                      nntp_format_str, 0, 0);
+    mutt_expando_format(cmd, sizeof(cmd), 0, MuttIndexWindow->cols,
+                        NONULL(Inews), nntp_format_str, 0, 0);
     if (!*cmd)
     {
       i = nntp_post(msg);
@@ -2612,7 +2614,8 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   if (!option(OPT_NO_CURSES))
     mutt_need_hard_redraw();
 
-  if ((i = send_msg(path, args, msg, option(OPT_NO_CURSES) ? NULL : &childout)) != (EX_OK & 0xff))
+  if ((i = send_msg(path, args, msg, option(OPT_NO_CURSES) ? NULL : &childout)) !=
+      (EX_OK & 0xff))
   {
     if (i != S_BKG)
     {

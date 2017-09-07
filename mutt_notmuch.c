@@ -46,6 +46,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "body.h"
@@ -54,7 +55,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -556,8 +556,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   }
 
   /* if the query has changed, reset the window position */
-  if (NmQueryWindowCurrentSearch == NULL ||
-      (strcmp(query, NmQueryWindowCurrentSearch) != 0))
+  if (NmQueryWindowCurrentSearch == NULL || (strcmp(query, NmQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
   if (!query_window_check_timebase(NmQueryWindowTimebase))
@@ -569,8 +568,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   }
 
   if (end == 0)
-    snprintf(buf, bufsz, "date:%d%s..now and %s", beg,
-             NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
+    snprintf(buf, bufsz, "date:%d%s..now and %s", beg, NmQueryWindowTimebase,
+             NmQueryWindowCurrentSearch);
   else
     snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
              end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);

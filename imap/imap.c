@@ -34,6 +34,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "mutt.h"
 #include "imap.h"
 #include "account.h"
@@ -45,7 +46,6 @@
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "message.h"
@@ -1760,7 +1760,7 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   {
     struct ImapStatus *scache = safe_calloc(1, sizeof(struct ImapStatus));
     scache->name = (char *) mbox;
-    mutt_list_insert_tail(&idata->mboxcache, (char *)scache);
+    mutt_list_insert_tail(&idata->mboxcache, (char *) scache);
     status = imap_mboxcache_get(idata, mbox, 0);
     status->name = safe_strdup(mbox);
   }
@@ -2150,7 +2150,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
     list[0] = '\0';
 
   /* fire off command */
-  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"", option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", list);
+  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"",
+           option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", list);
 
   imap_cmd_start(idata, buf);
 

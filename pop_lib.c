@@ -28,12 +28,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
@@ -326,7 +326,8 @@ int pop_open_connection(struct PopData *pop_data)
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret = query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
+      ret =
+          query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
       if (ret == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;

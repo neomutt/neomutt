@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -39,7 +40,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
@@ -259,7 +259,7 @@ static void query_entry(char *s, size_t slen, struct Menu *m, int num)
 
   entry->data->num = num;
   mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
-                    query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
+                      query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int query_tag(struct Menu *menu, int n, int m)

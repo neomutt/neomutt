@@ -29,9 +29,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
+#include "lib/lib.h"
 #include "mutt_sasl.h"
 #include "account.h"
-#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"

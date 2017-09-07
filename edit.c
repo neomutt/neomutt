@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
@@ -40,7 +41,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"

@@ -25,6 +25,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "attach.h"
@@ -33,7 +34,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"
@@ -431,7 +431,8 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (option(OPT_FORWARD_QUOTE))
   {
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, parent_hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                        parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
   }
@@ -581,7 +582,8 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
 
   tmpbody[0] = '\0';
 
-  if ((rc = query_quadoption(OPT_MIME_FORWARD, _("Forward MIME encapsulated?"))) == MUTT_NO)
+  if ((rc = query_quadoption(OPT_MIME_FORWARD,
+                             _("Forward MIME encapsulated?"))) == MUTT_NO)
   {
     /* no MIME encapsulation */
 
@@ -875,7 +877,8 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     st.fpout = tmpfp;
 
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, parent_hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                        parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
 

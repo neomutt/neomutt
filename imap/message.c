@@ -31,6 +31,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "mutt.h"
 #include "message.h"
 #include "account.h"
@@ -41,7 +42,6 @@
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -53,11 +53,11 @@
 #include "hcache/hcache.h"
 #endif
 
-static struct ImapHeaderData* imap_new_header_data(void)
+static struct ImapHeaderData *imap_new_header_data(void)
 {
-    struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
-    STAILQ_INIT(&d->keywords);
-    return d;
+  struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
+  STAILQ_INIT(&d->keywords);
+  return d;
 }
 
 static void imap_update_context(struct ImapData *idata, int oldmsgcount)

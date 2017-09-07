@@ -31,8 +31,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "mutt.h"
 #include "lib/lib.h"
+#include "mutt.h"
 #include "pgppacket.h"
 #include "protos.h"
 #include "state.h"

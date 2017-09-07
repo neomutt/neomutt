@@ -23,9 +23,9 @@
 #include "config.h"
 #include <string.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 
 // clang-format off
 /* This is very similar to the table in lib/lib_base64.c

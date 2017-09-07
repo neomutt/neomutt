@@ -31,11 +31,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "options.h"
 #include "parameter.h"

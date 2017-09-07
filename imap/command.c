@@ -33,13 +33,13 @@
 #include <string.h>
 #include <time.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "account.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_menu.h"
