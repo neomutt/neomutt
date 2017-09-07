@@ -388,16 +388,16 @@ dnl --- ncurses
 
 			AC_CHECK_HEADERS(ncursesw/ncurses.h,
 				[cf_cv_ncurses_header="ncursesw/ncurses.h"],
-				AC_CHECK_HEADERS(ncurses/ncurses.h,
+				[AC_CHECK_HEADERS(ncurses/ncurses.h,
 					[cf_cv_ncurses_header="ncurses/ncurses.h"],
-					AC_CHECK_HEADERS(ncurses.h,
+					[AC_CHECK_HEADERS(ncurses.h,
 						[cf_cv_ncurses_header="ncurses.h"],
-						AC_CHECK_HEADERS(curses.h,
+						[AC_CHECK_HEADERS(curses.h,
 							[cf_cv_ncurses_header="curses.h"],
-							AC_MSG_ERROR(Unable to find ncurses headers)
-						)
-					)
-				)
+							[AC_MSG_ERROR([Unable to find ncurses headers])]
+						])
+					])
+				])
 			)
 		],)
 	])
