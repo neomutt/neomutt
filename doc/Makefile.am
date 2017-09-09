@@ -14,7 +14,7 @@ noinst_PROGRAMS = makedoc
 
 EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
-	mutt-1.7.0-syntax.vim mutt.css mutt.man mutt.xsl Muttrc Muttrc.head \
+	mutt-1.7.0-syntax.vim mutt.css neomutt.man mutt.xsl Muttrc Muttrc.head \
 	muttrc.man.head muttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
 	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1
 
@@ -33,14 +33,14 @@ topsrcdir_DOCFILES = ChangeLog.md CODE_OF_CONDUCT.md COPYRIGHT INSTALL \
 
 all: makedoc-all
 
-makedoc-all: $(CHUNKED_DOCFILES) index.html manual.html manual.txt mutt.1 \
+makedoc-all: $(CHUNKED_DOCFILES) index.html manual.html manual.txt neomutt.1 \
 	Muttrc muttrc.man neomutt-syntax.vim
 
 install-data-local: makedoc-all
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
+	$(INSTALL) -m 644 neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	$(INSTALL) -m 644 $(srcdir)/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
 	$(INSTALL) -m 644 $(srcdir)/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
@@ -69,7 +69,7 @@ install-data-local: makedoc-all
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
 
 uninstall-local:
-	for f in mutt.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
+	for f in neomutt.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f; \
 	done
 	for f in muttrc.5 mbox.5 mmdf.5; do \
@@ -120,7 +120,7 @@ sortcheck: manual.xml
 	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
-	rm -f *.html mutt.1 muttrc.man
+	rm -f *.html neomutt.1 muttrc.man
 
 DISTCLEANFILES = manual.txt manual.html manual.xml Muttrc
 
@@ -133,8 +133,8 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 	-e 's,@bindir\@,$(bindir),g' \
 	-e 's,@docdir\@,$(docdir),g'
 
-mutt.1: $(srcdir)/mutt.man
-	$(EDIT) $(srcdir)/mutt.man > $@
+neomutt.1: $(srcdir)/neomutt.man
+	$(EDIT) $(srcdir)/neomutt.man > $@
 
 manual.xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
 	manual.xml.head $(top_srcdir)/functions.h manual.xml.tail \
