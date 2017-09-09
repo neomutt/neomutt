@@ -94,7 +94,7 @@
   _fmt(OP_EDITOR_CAPITALIZE_WORD,         N_("capitalize the word")) \
   _fmt(OP_EDITOR_DOWNCASE_WORD,           N_("convert the word to lower case")) \
   _fmt(OP_EDITOR_UPCASE_WORD,             N_("convert the word to upper case")) \
-  _fmt(OP_ENTER_COMMAND,                  N_("enter a muttrc command")) \
+  _fmt(OP_ENTER_COMMAND,                  N_("enter a neomuttrc command")) \
   _fmt(OP_ENTER_MASK,                     N_("enter a file mask")) \
   _fmt(OP_EXIT,                           N_("exit this menu")) \
   _fmt(OP_FILTER,                         N_("filter attachment through a shell command")) \
@@ -149,7 +149,7 @@
   _fmt(OP_MAIN_SET_FLAG,                  N_("set a status flag on a message")) \
   _fmt(OP_MAIN_SYNC_FOLDER,               N_("save changes to mailbox")) \
   _fmt(OP_MAIN_TAG_PATTERN,               N_("tag messages matching a pattern")) \
-  _fmt(OP_MAIN_QUASI_DELETE,              N_("delete from mutt, don't touch on disk")) \
+  _fmt(OP_MAIN_QUASI_DELETE,              N_("delete from NeoMutt, don't touch on disk")) \
   _fmt(OP_MAIN_UNDELETE_PATTERN,          N_("undelete messages matching a pattern")) \
   _fmt(OP_MAIN_UNTAG_PATTERN,             N_("untag messages matching a pattern")) \
   _fmt(OP_MARK_MSG,                       N_("create a hotkey macro for the current message")) \
@@ -204,7 +204,7 @@
   _fmt(OP_UNDELETE_THREAD,                N_("undelete all messages in thread")) \
   _fmt(OP_UNDELETE_SUBTHREAD,             N_("undelete all messages in subthread")) \
   _fmt(OP_UNSUBSCRIBE_PATTERN,            N_("unsubscribe from newsgroups matching a pattern")) \
-  _fmt(OP_VERSION,                        N_("show the Mutt version number and date")) \
+  _fmt(OP_VERSION,                        N_("show the NeoMutt version number and date")) \
   _fmt(OP_VIEW_ATTACH,                    N_("view attachment using mailcap entry if necessary")) \
   _fmt(OP_VIEW_ATTACHMENTS,               N_("show MIME attachments")) \
   _fmt(OP_WHAT_KEY,                       N_("display the keycode for a key press")) \
