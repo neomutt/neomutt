@@ -23,8 +23,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file was originally part of mutt-ng */
-
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

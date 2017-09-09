@@ -2288,7 +2288,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_QUIT:
-        if (query_quadoption(OPT_QUIT, _("Quit Mutt?")) == MUTT_YES)
+        if (query_quadoption(OPT_QUIT, _("Quit NeoMutt?")) == MUTT_YES)
         {
           /* avoid prompting again in the index menu */
           set_quadoption(OPT_QUIT, MUTT_YES);

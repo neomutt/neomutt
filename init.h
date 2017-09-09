@@ -112,7 +112,7 @@ struct Option MuttVars[] = {
   ** check only happens after the \fIfirst\fP edit of the file).  When set
   ** to \fIno\fP, composition will never be aborted.
   */
-  { "alias_file",       DT_PATH, R_NONE, UL &AliasFile, UL "~/.muttrc" },
+  { "alias_file",       DT_PATH, R_NONE, UL &AliasFile, UL "~/.neomuttrc" },
   /*
   ** .pp
   ** The default file in which to save aliases created by the
@@ -124,8 +124,8 @@ struct Option MuttVars[] = {
   ** explicitly use the ``$source'' command for it to be executed in case
   ** this option points to a dedicated alias file.
   ** .pp
-  ** The default for this option is the currently used muttrc file, or
-  ** ``~/.muttrc'' if no user muttrc was found.
+  ** The default for this option is the currently used neomuttrc file, or
+  ** ``~/.neomuttrc'' if no user neomuttrc was found.
   */
   { "alias_format",     DT_STRING,  R_NONE, UL &AliasFormat, UL "%4n %2f %t %-10a   %r" },
   /*
@@ -392,7 +392,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Example:
   ** .ts
-  ** set certificate_file=~/.mutt/certificates
+  ** set certificate_file=~/.neomutt/certificates
   ** .te
   **
   */
@@ -626,7 +626,7 @@ struct Option MuttVars[] = {
   ** This variable controls the use of the GPGME-enabled crypto backends.
   ** If it is \fIset\fP and NeoMutt was built with gpgme support, the gpgme code for
   ** S/MIME and PGP will be used instead of the classic code.  Note that
-  ** you need to set this option in .muttrc; it won't have any effect when
+  ** you need to set this option in .neomuttrc; it won't have any effect when
   ** used interactively.
   ** .pp
   ** Note that the GPGME backend does not support creating old-style inline
@@ -1412,7 +1412,7 @@ struct Option MuttVars[] = {
   ** or try to open an IMAP folder.
   ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
-  ** fairly secure machine, because the superuser can read your muttrc even
+  ** fairly secure machine, because the superuser can read your neomuttrc even
   ** if you are the only one who can read the file.
   */
   { "imap_passive",             DT_BOOL, R_NONE, OPT_IMAP_PASSIVE, 1 },
@@ -2001,7 +2001,7 @@ struct Option MuttVars[] = {
   ** into this command.
   */
 #ifdef USE_NNTP
-  { "news_cache_dir",   DT_PATH, R_NONE, UL &NewsCacheDir, UL "~/.mutt" },
+  { "news_cache_dir",   DT_PATH, R_NONE, UL &NewsCacheDir, UL "~/.neomutt" },
   /*
   ** .pp
   ** This variable pointing to directory where NeoMutt will save cached news
@@ -2692,7 +2692,7 @@ struct Option MuttVars[] = {
   ** prompt you for your password when you open a POP mailbox.
   ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
-  ** fairly secure machine, because the superuser can read your muttrc
+  ** fairly secure machine, because the superuser can read your neomuttrc
   ** even if you are the only one who can read the file.
   */
   { "pop_reconnect",    DT_QUAD, R_NONE, OPT_POP_RECONNECT, MUTT_ASKYES },
@@ -3700,7 +3700,7 @@ struct Option MuttVars[] = {
   ** See $$smtp_url to configure NeoMutt to send mail via SMTP.
   ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
-  ** fairly secure machine, because the superuser can read your muttrc even
+  ** fairly secure machine, because the superuser can read your neomuttrc even
   ** if you are the only one who can read the file.
   */
   { "smtp_url",         DT_STRING, R_NONE|F_SENSITIVE, UL &SmtpUrl, UL 0 },
@@ -3751,7 +3751,7 @@ struct Option MuttVars[] = {
   ** .il
   ** .dd address (sort alphabetically by email address)
   ** .dd alias (sort alphabetically by alias name)
-  ** .dd unsorted (leave in order specified in .muttrc)
+  ** .dd unsorted (leave in order specified in .neomuttrc)
   ** .ie
   */
   { "sort_aux",         DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, UL &SortAux, SORT_DATE },
@@ -4074,7 +4074,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** When \fIunset\fP, NeoMutt won't stop when the user presses the terminal's
   ** \fIsusp\fP key, usually ``^Z''. This is useful if you run NeoMutt
-  ** inside an xterm using a command like ``\fCxterm -e mutt\fP''.
+  ** inside an xterm using a command like ``\fCxterm -e neomutt\fP''.
   */
   { "text_flowed",      DT_BOOL, R_NONE, OPT_TEXT_FLOWED,  0 },
   /*

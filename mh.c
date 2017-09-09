@@ -1562,7 +1562,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
  *
  * msg->path looks like this:
  *
- *    tmp/{cur,new}.mutt-HOSTNAME-PID-COUNTER:flags
+ *    tmp/{cur,new}.neomutt-HOSTNAME-PID-COUNTER:flags
  *
  * See also maildir_open_new_message().
  */
@@ -1782,10 +1782,10 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
      *
      * Note that there is a race condition against programs which
      * use the first free slot instead of the maximum message
-     * number.  Mutt does _not_ behave like this.
+     * number.  NeoMutt does _not_ behave like this.
      *
      * Anyway, if this fails, the message is in the folder, so
-     * all what happens is that a concurrently running mutt will
+     * all what happens is that a concurrently running neomutt will
      * lose flag modifications.
      */
 

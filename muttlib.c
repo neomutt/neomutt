@@ -409,7 +409,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
  * @param m Attachment body to be displayed
- * @retval true  Mutt requires a mailcap entry to display
+ * @retval true  NeoMutt requires a mailcap entry to display
  * @retval false otherwise
  */
 bool mutt_needs_mailcap(struct Body *m)
@@ -1030,7 +1030,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
           mutt_debug(3, "fmtpipe < %s\n", dest);
 
           /* If the result ends with '%', this indicates that the filter
-           * generated %-tokens that mutt can expand.  Eliminate the '%'
+           * generated %-tokens that neomutt can expand.  Eliminate the '%'
            * marker and recycle the string through mutt_expando_format().
            * To literally end with "%", use "%%". */
           if ((n > 0) && dest[n - 1] == '%')

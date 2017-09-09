@@ -128,7 +128,7 @@ void mutt_read_histfile(void)
       mutt_error(_("Bad history file format (line %d)"), line);
       break;
     }
-    /* silently ignore too high class (probably newer mutt) */
+    /* silently ignore too high class (probably newer neomutt) */
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
@@ -212,7 +212,7 @@ static void shrink_histfile(void)
       mutt_error(_("Bad history file format (line %d)"), line);
       goto cleanup;
     }
-    /* silently ignore too high class (probably newer mutt) */
+    /* silently ignore too high class (probably newer neomutt) */
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';

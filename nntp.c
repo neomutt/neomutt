@@ -1680,7 +1680,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   fseek(msg->fp, 0, SEEK_END);
   hdr->content->length = ftell(msg->fp) - hdr->content->offset;
 
-  /* this is called in mutt before the open which fetches the message,
+  /* this is called in neomutt before the open which fetches the message,
    * which is probably wrong, but we just call it again here to handle
    * the problem instead of fixing it */
   NHDR(hdr)->parsed = true;

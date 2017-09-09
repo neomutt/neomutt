@@ -54,7 +54,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
 
   if (n == 0)
   {
-    /* Mutt convention is to use NULL for 0-length strings */
+    /* NeoMutt convention is to use NULL for 0-length strings */
     FREE(strp);
   }
 

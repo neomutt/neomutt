@@ -70,7 +70,7 @@ static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
  * | \%S     | current aux sorting method ($sort_aux)
  * | \%t     | # of tagged messages [option]
  * | \%u     | number of unread messages [option]
- * | \%v     | Mutt version
+ * | \%v     | NeoMutt version
  * | \%V     | currently active limit pattern [option]
  */
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,

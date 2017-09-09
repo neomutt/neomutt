@@ -662,7 +662,7 @@ static bool prepare_sidebar(int page_size)
 }
 
 /**
- * draw_divider - Draw a line between the sidebar and the rest of mutt
+ * draw_divider - Draw a line between the sidebar and the rest of neomutt
  * @param num_rows   Height of the Sidebar
  * @param num_cols   Width of the Sidebar
  * @retval 0 Empty string
@@ -785,12 +785,12 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
- * On the first run they'll be NULL, so we display the top of Mutt's list
+ * On the first run they'll be NULL, so we display the top of NeoMutt's list
  * (Incoming).
  *
  * * TopBuffy - first visible mailbox
  * * BotBuffy - last  visible mailbox
- * * OpnBuffy - mailbox shown in Mutt's Index Panel
+ * * OpnBuffy - mailbox shown in NeoMutt's Index Panel
  * * HilBuffy - Unselected mailbox (the paging follows this)
  *
  * The entries are formatted using "sidebar_format" and may be abbreviated:

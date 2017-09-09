@@ -334,7 +334,7 @@ static int ssl_socket_close(struct Connection *conn)
     if (data->isopen)
       SSL_shutdown(data->ssl);
 
-    /* hold onto this for the life of mutt, in case we want to reconnect.
+    /* hold onto this for the life of neomutt, in case we want to reconnect.
      * The purist in me wants a mutt_exit hook. */
     SSL_free(data->ssl);
     SSL_CTX_free(data->ctx);

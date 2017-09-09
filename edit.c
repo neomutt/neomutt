@@ -412,7 +412,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
              This entry is shown AFTER the message content,
              not IN the middle of the content.
              So it doesn't mean "(message will continue)"
-             but means "(press any key to continue using mutt)". */
+             but means "(press any key to continue using neomutt)". */
           addstr(_("(continue)\n"));
           break;
         case 'q':

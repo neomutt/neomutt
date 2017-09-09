@@ -620,7 +620,7 @@ void mutt_shell_escape(void)
 }
 
 /**
- * mutt_enter_command - enter a mutt command
+ * mutt_enter_command - enter a neomutt command
  */
 void mutt_enter_command(void)
 {

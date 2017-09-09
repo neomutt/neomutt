@@ -21,7 +21,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Mutt browser support routines */
+/* NeoMutt browser support routines */
 
 #include "config.h"
 #ifdef ENABLE_NLS

@@ -42,7 +42,7 @@ struct Header
   bool tagged          : 1;
   bool deleted         : 1;
   bool purge           : 1; /**< skip trash folder when deleting */
-  bool quasi_deleted   : 1; /**< deleted from mutt, but not modified on disk */
+  bool quasi_deleted   : 1; /**< deleted from neomutt, but not modified on disk */
   bool changed         : 1;
   bool attach_del      : 1; /**< has an attachment marked for deletion */
   bool old             : 1;

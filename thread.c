@@ -1406,7 +1406,7 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       break; /* skip pseudo-message */
 
     /* Looking for the first bad reference according to the new threading.
-     * Optimal since Mutt stores the references in reverse order, and the
+     * Optimal since NeoMutt stores the references in reverse order, and the
      * first loop should match immediately for mails respecting RFC2822. */
     for (p = brk; !done && p; p = p->parent)
     {

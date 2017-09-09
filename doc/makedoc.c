@@ -21,10 +21,10 @@
  */
 
 /**
- ** This program parses mutt's init.h and generates documentation in
+ ** This program parses neomutt's init.h and generates documentation in
  ** three different formats:
  **
- ** -> a commented muttrc configuration file
+ ** -> a commented neomuttrc configuration file
  ** -> nroff, suitable for inclusion in a manual page
  ** -> docbook-xml, suitable for inclusion in the
  **    SGML-based manual
@@ -744,7 +744,7 @@ static int commit_buff(char *buff, char **d, FILE *out, int docstat)
  **
  ** The format is very remotely inspired by nroff. Most important, it's
  ** easy to parse and convert, and it was easy to generate from the SGML
- ** source of mutt's original manual.
+ ** source of neomutt's original manual.
  **
  ** - \fI switches to italics
  ** - \fB switches to boldface

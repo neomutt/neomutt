@@ -1092,7 +1092,7 @@ out:
 
 /**
  * compare_flags - Compare local flags against the server
- * @retval 0 if mutt's flags match cached server flags
+ * @retval 0 if neomutt's flags match cached server flags
  */
 static bool compare_flags(struct Header *h)
 {
@@ -1845,10 +1845,10 @@ static int do_search(const struct Pattern *search, int allpats)
 }
 
 /**
- * imap_compile_search - Convert Mutt pattern to IMAP search
+ * imap_compile_search - Convert NeoMutt pattern to IMAP search
  *
- * Convert mutt Pattern to IMAP SEARCH command containing only elements
- * that require full-text search (mutt already has what it needs for most
+ * Convert neomutt Pattern to IMAP SEARCH command containing only elements
+ * that require full-text search (neomutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexps).
  */
 static int imap_compile_search(struct Context *ctx, const struct Pattern *pat,

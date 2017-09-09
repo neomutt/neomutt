@@ -21,7 +21,7 @@
  */
 
 /*
- * Mixmaster support for Mutt
+ * Mixmaster support for NeoMutt
  */
 
 #ifndef _MUTT_REMAILER_H

@@ -1029,11 +1029,11 @@ static void deinit_header(struct Header *h)
 }
 
 /**
- * nm2mutt_message_id - converts notmuch message Id to mutt message Id
+ * nm2mutt_message_id - converts notmuch message Id to neomutt message Id
  * @param id NotMuch ID to convert
- * @retval string Mutt message ID
+ * @retval string NeoMutt message ID
  *
- * Caller must free the Mutt Message ID
+ * Caller must free the NeoMutt Message ID
  */
 static char *nm2mutt_message_id(const char *id)
 {
@@ -1063,7 +1063,7 @@ static int init_header(struct Header *h, const char *path, notmuch_message_t *ms
 
   /*
    * Notmuch ensures that message Id exists (if not notmuch Notmuch will
-   * generate an ID), so it's more safe than use mutt Header->env->id
+   * generate an ID), so it's more safe than use neomutt Header->env->id
    */
   ((struct NmHdrData *) h->data)->virtual_id = safe_strdup(id);
 
@@ -1157,7 +1157,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
   if (!id)
     return NULL;
 
-  mutt_debug(2, "nm: mutt header, id='%s'\n", id);
+  mutt_debug(2, "nm: neomutt header, id='%s'\n", id);
 
   if (!ctx->id_hash)
   {
@@ -1168,7 +1168,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
   }
 
   mid = nm2mutt_message_id(id);
-  mutt_debug(2, "nm: mutt id='%s'\n", mid);
+  mutt_debug(2, "nm: neomutt id='%s'\n", mid);
 
   h = hash_find(ctx->id_hash, mid);
   FREE(&mid);

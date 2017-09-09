@@ -966,7 +966,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
         }
         /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
          * change (eg from \Unseen to \Seen).
-         * Uncommitted changes in mutt take precedence. If we decide to
+         * Uncommitted changes in neomutt take precedence. If we decide to
          * incrementally update flags later, this won't stop us syncing */
         else if ((mutt_strncasecmp("FLAGS", pc, 5) == 0) && !h->changed)
         {

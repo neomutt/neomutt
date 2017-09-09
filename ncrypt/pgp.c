@@ -274,7 +274,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
  * around in the main handler.
  *
  * (Note that we aren't worse than Outlook &c in this, and also note that we
- * can successfully handle anything produced by any existing versions of mutt.)
+ * can successfully handle anything produced by any existing versions of neomutt.)
  */
 static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
@@ -494,7 +494,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         }
 
         /* treat empty result as sign of failure */
-        /* TODO: maybe on failure mutt should include the original undecoded text. */
+        /* TODO: maybe on failure neomutt should include the original undecoded text. */
         if (pgpout)
         {
           rewind(pgpout);

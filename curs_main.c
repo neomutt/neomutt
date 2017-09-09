@@ -1573,7 +1573,7 @@ int mutt_index_menu(void)
           break;
         }
 
-        if (query_quadoption(OPT_QUIT, _("Quit Mutt?")) == MUTT_YES)
+        if (query_quadoption(OPT_QUIT, _("Quit NeoMutt?")) == MUTT_YES)
         {
           int check;
 
@@ -2042,7 +2042,7 @@ int mutt_index_menu(void)
             break;
           strncpy(buf, path, sizeof(buf));
 
-          /* Mark the selected dir for the mutt browser */
+          /* Mark the selected dir for the neomutt browser */
           mutt_browser_select_dir(buf);
         }
 #endif

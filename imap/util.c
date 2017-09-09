@@ -543,7 +543,7 @@ void imap_free_idata(struct ImapData **idata)
 /**
  * imap_fix_path - Fix up the imap path
  *
- * This is necessary because the rest of mutt assumes a hierarchy delimiter of
+ * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem
  * converts multiple hierarchy delimiters into a single one, ie "///" is equal
  * to "/".  IMAP servers are not required to do this.

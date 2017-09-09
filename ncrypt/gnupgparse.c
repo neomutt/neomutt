@@ -293,7 +293,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
          * We allow an empty field for a pub record type because it is
          * possible for a primary uid record to have an empty User-ID
          * field.  Without any address records, it is not possible to
-         * use the key in mutt.
+         * use the key in neomutt.
          */
         if (!(pend && (*p || is_pub)))
           break;

@@ -298,7 +298,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
     if (url_pct_decode(value) < 0)
       goto out;
 
-    /* Determine if this header field is on the allowed list.  Since Mutt
+    /* Determine if this header field is on the allowed list.  Since NeoMutt
      * interprets some header fields specially (such as
      * "Attach: ~/.gnupg/secring.gpg"), care must be taken to ensure that
      * only safe fields are allowed.
