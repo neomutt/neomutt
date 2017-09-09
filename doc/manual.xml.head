@@ -296,7 +296,7 @@
         know NeoMutt you could skip ahead to the main
         <link linkend="sidebar">Sidebar guide</link>. If you just want to get
         started, you could use the sample
-        <link linkend="sidebar-muttrc">Sidebar muttrc</link>.</para>
+        <link linkend="sidebar-neomuttrc">Sidebar neomuttrc</link>.</para>
         <para>To check if NeoMutt supports
         <quote>Sidebar</quote>, look for the string
         <literal>+sidebar</literal> in the neomutt version.</para>
@@ -532,7 +532,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
             <title>Sidebar Basics</title>
             <para>The most important variable is
             <literal>$sidebar_visible</literal>. You can set this in your
-            <quote>muttrc</quote>, or bind a key to the function
+            <quote>neomuttrc</quote>, or bind a key to the function
             <literal>&lt;sidebar-toggle-visible&gt;</literal>.</para>
             <screen>
 set sidebar_visible                         <emphasis role="comment"># Make the Sidebar visible by default</emphasis>
@@ -1373,7 +1373,7 @@ color sidebar_divider   color8  default
         <itemizedlist>
           <listitem>
             <para>
-            <literal>.muttrc</literal> commands</para>
+            <literal>.neomuttrc</literal> commands</para>
           </listitem>
           <listitem>
             <para>addresses and aliases</para>
@@ -2893,7 +2893,7 @@ color sidebar_divider   color8  default
       config. It looks for NeoMutt config files before NeoMutt config files and
       versioned config before plain config. For example:</para>
 
-      <table id="muttrc-order">
+      <table id="neomuttrc-order">
         <title>NeoMutt config file search order</title>
         <tgroup cols="1">
           <tbody>
@@ -2912,7 +2912,7 @@ color sidebar_divider   color8  default
       <para>This allows the user to create separate NeoMutt and NeoMutt config
       files on the same system.</para>
 
-      <sect2 id="muttrc-system">
+      <sect2 id="neomuttrc-system">
         <title>Location of system config files</title>
         <para>NeoMutt will search for a system config file in a
         <literal>neomutt</literal> directory in several places. First it searches
@@ -2928,7 +2928,7 @@ color sidebar_divider   color8  default
         <para>NeoMutt will read just one file, the first file it finds, from the
         list below.</para>
 
-        <table id="muttrc-system-files">
+        <table id="neomuttrc-system-files">
           <title>NeoMutt system config file locations</title>
           <tgroup cols="2">
             <thead>
@@ -2950,14 +2950,14 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/etc/neomutt/neomuttrc-20170912</entry>
+                <entry>/etc/neomuttrc-20170912</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
-                <entry>/etc/neomutt/neomuttrc</entry>
+                <entry>/etc/neomuttrc</entry>
               </row>
               <row>
-                <entry>/etc/neomutt/Muttrc</entry>
+                <entry>/etc/Muttrc</entry>
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
@@ -2976,7 +2976,7 @@ color sidebar_divider   color8  default
         </table>
       </sect2>
 
-      <sect2 id="muttrc-user">
+      <sect2 id="neomuttrc-user">
         <title>Location of user config files</title>
         <para>NeoMutt will search for a user config file in several places. First
         it looks in the directory specified in the
@@ -2992,7 +2992,7 @@ color sidebar_divider   color8  default
         <para>NeoMutt will read just one file, the first file it finds, from the
         list below.</para>
 
-        <table id="muttrc-user-files">
+        <table id="neomuttrc-user-files">
           <title>NeoMutt user config file locations</title>
           <tgroup cols="2">
             <thead>
@@ -3013,16 +3013,6 @@ color sidebar_divider   color8  default
                 <entry>~/.config/neomutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
-                <entry>~/.neomuttrc</entry>
-              </row>
-              <row>
-                <entry>~/.muttrc</entry>
-              </row>
-              <row>
                 <entry>~/.neomutt/neomuttrc-20170912</entry>
                 <entry>NeoMutt release version</entry>
               </row>
@@ -3032,13 +3022,33 @@ color sidebar_divider   color8  default
               <row>
                 <entry>~/.neomutt/muttrc</entry>
               </row>
+              <row>
+                <entry>~/.mutt/neomuttrc-20170912</entry>
+                <entry>NeoMutt release version</entry>
+              </row>
+              <row>
+                <entry>~/.mutt/neomuttrc</entry>
+              </row>
+              <row>
+                <entry>~/.mutt/muttrc</entry>
+              </row>
+              <row>
+                <entry>~/.neomuttrc-20170912</entry>
+                <entry>NeoMutt release version</entry>
+              </row>
+              <row>
+                <entry>~/.neomuttrc</entry>
+              </row>
+              <row>
+                <entry>~/.muttrc</entry>
+              </row>
             </tbody>
           </tgroup>
         </table>
       </sect2>
     </sect1>
 
-    <sect1 id="muttrc-syntax" xreflabel="Syntax of Initialization Files">
+    <sect1 id="neomuttrc-syntax" xreflabel="Syntax of Initialization Files">
       <title>Syntax of Initialization Files</title>
       <para>An initialization file consists of a series of
       <link linkend="commands">commands</link>. Each line of the file may
@@ -3329,13 +3339,13 @@ alias theguys manny, moe, jack
       <link linkend="source">
       <command>source</command>d</link>. Consequently, you can have multiple
       alias files, or you can have all aliases defined in your
-      <literal>.muttrc</literal>.</para>
+      <literal>.neomuttrc</literal>.</para>
       <para>On the other hand, the
       <link linkend="create-alias">
         <literal>&lt;create-alias&gt;</literal>
       </link>function can use only one file, the one pointed to by the
       <link linkend="alias-file">$alias_file</link> variable (which is
-      <literal>~/.muttrc</literal> by default). This file is not special either,
+      <literal>~/.neomuttrc</literal> by default). This file is not special either,
       in the sense that NeoMutt will happily append aliases to any file, but in
       order for the new aliases to take effect you need to explicitly
       <link linkend="source">
@@ -3408,7 +3418,7 @@ set alias_file=~/.mail_aliases
           <listitem>
             <para>The alias menu is the list of your personal aliases as
             defined in your
-            <literal>.muttrc</literal>. It is the mapping from a short alias
+            <literal>.neomuttrc</literal>. It is the mapping from a short alias
             name to the full email address(es) of the recipient(s).</para>
           </listitem>
         </varlistentry>
@@ -3712,7 +3722,7 @@ bind index gg first-entry</screen>
       <emphasis>command</emphasis> before loading. If a mailbox matches multiple
       <command>folder-hook</command>s, they are executed in the order given in
       the
-      <literal>.muttrc</literal>.</para>
+      <literal>.neomuttrc</literal>.</para>
       <para>The regexp parameter has
       <link linkend="shortcuts">mailbox shortcut</link> expansion performed on
       the first character. See
@@ -3812,7 +3822,7 @@ folder-hook work "set sort=threads"
       will work regardless of the current key bindings, so they are not
       dependent on the user having particular key definitions. This makes them
       more robust and portable, and also facilitates defining of macros in
-      files used by more than one user (e.g., the system Muttrc).</para>
+      files used by more than one user (e.g., the system neomuttrc).</para>
       <para>Optionally you can specify a descriptive text after
       <emphasis>sequence</emphasis>, which is shown in the help screens if they
       contain a description.</para>
@@ -4653,7 +4663,7 @@ unignore posted-to:
       <quote>Organization:</quote>header field to all of your outgoing
       messages, you can put the command something like shown in
       <xref linkend="ex-my-hdr" />in your
-      <literal>.muttrc</literal>.</para>
+      <literal>.neomuttrc</literal>.</para>
       <example id="ex-my-hdr">
         <title>Defining custom headers</title>
         <screen>my_hdr Organization: A Really Big Company, Anytown, USA</screen>
@@ -4846,7 +4856,7 @@ save-hook aol\\.com$ +spam
       <command>send-hook</command> or
       <command>reply-hook</command>, when multiple matches occur, commands are
       executed in the order they are specified in the
-      <literal>.muttrc</literal>(for that type of hook).</para>
+      <literal>.neomuttrc</literal>(for that type of hook).</para>
       <para>Example:
       <literal>
       <command>send-hook</command> work "
@@ -4893,7 +4903,7 @@ save-hook aol\\.com$ +spam
       <emphasis>pattern</emphasis> matches the message to be displayed. When
       multiple matches occur, commands are executed in the order they are
       specified in the
-      <literal>.muttrc</literal>.</para>
+      <literal>.neomuttrc</literal>.</para>
       <para>See
       <xref linkend="pattern-hook" />for information on the exact format of
       <emphasis>pattern</emphasis>.</para>
@@ -5569,7 +5579,7 @@ mailboxes $my_mx +mailbox3</screen>
       <para>This command allows the inclusion of initialization commands from
       other files. For example, I place all of my aliases in
       <literal>~/.mail_aliases</literal> so that I can make my
-      <literal>~/.muttrc</literal> readable and keep my aliases private.</para>
+      <literal>~/.neomuttrc</literal> readable and keep my aliases private.</para>
       <para>If the filename begins with a tilde (
       <quote>~</quote>), it will be expanded to the path of your home
       directory.</para>
@@ -5936,7 +5946,7 @@ mailboxes $my_mx +mailbox3</screen>
         <para>The regular expression can be enclosed/delimited by either " or '
         which is useful if the regular expression includes a white-space
         character. See
-        <xref linkend="muttrc-syntax" />for more information on " and '
+        <xref linkend="neomuttrc-syntax" />for more information on " and '
         delimiter processing. To match a literal " or ' you must preface it
         with \ (backslash).</para>
       </note>
@@ -7376,7 +7386,7 @@ folder-hook '\@imap.example.com' "set sort=threads"
         <para>Keep in mind that mailbox shortcut expansion on the regexp
         parameter takes place when the hook is initially parsed, not when the
         hook is matching against a mailbox. When NeoMutt starts up and is reading
-        the .muttrc, some mailbox shortcuts may not be usable. For example, the
+        the .neomuttrc, some mailbox shortcuts may not be usable. For example, the
         "current mailbox" shortcut, ^, will expand to an empty string because
         no mailbox has been opened yet. NeoMutt will issue an error for this case
         or if the mailbox shortcut results in an empty regexp.</para>
@@ -7597,7 +7607,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
       <link linkend="lists">
       <command>lists</command> and
       <command>subscribe</command></link>commands in your
-      <literal>.muttrc</literal>.</para>
+      <literal>.neomuttrc</literal>.</para>
       <para>Now that NeoMutt knows what your mailing lists are, it can do several
       things, the first of which is the ability to show the name of a list
       through which you received a message (i.e., of a subscribed list) in the
@@ -9044,7 +9054,7 @@ attachments   -I message/external-body
       <para>Entering the command
       <quote>
       <command>attachments</command>?</quote>as a command will list your
-      current settings in Muttrc format, so that it can be pasted
+      current settings in neomuttrc format, so that it can be pasted
       elsewhere.</para>
     </sect1>
 
@@ -9088,7 +9098,7 @@ attachments   -I message/external-body
       <literal>unmime_lookup</literal> command may be used to disable this
       feature for any particular MIME type if it had been set, for example, in
       a global
-      <literal>.muttrc</literal>.</para>
+      <literal>.neomuttrc</literal>.</para>
     </sect1>
   </chapter>
 
@@ -9606,8 +9616,8 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         <screen>color attach_headers foreground background pattern</screen>
       </sect2>
 
-      <sect2 id="attach-headers-color-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="attach-headers-color-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the attach-headers-color feature.
 
@@ -9631,7 +9641,7 @@ color   attach_headers     brightmagenta   default        "can't handle these mu
 color   attach_headers     brightmagenta   default        "signature verification suppressed"
 color   attach_headers     brightmagenta   default        "invalid node with packet of type"
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -9717,8 +9727,8 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
         </table>
       </sect2>
 
-      <sect2 id="compose-to-sender-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="compose-to-sender-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the compose-to-sender feature.
 
@@ -9728,7 +9738,7 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
 # Compose a new email (not a reply) to the sender</emphasis>
 bind index,pager @ compose-to-sender
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -10032,8 +10042,8 @@ bind index,pager @ compose-to-sender
         </sect3>
       </sect2>
 
-      <sect2 id="compress-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="compress-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the compress feature.
 
@@ -10067,7 +10077,7 @@ close-hook  '\.pgp$' "pgp -fe YourPgpUserIdOrKeyId &lt; '%t' &gt; '%f'"
 open-hook   '\.gpg$' "gpg --decrypt &lt; '%f' &gt; '%t'"
 close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &gt; '%f'"
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -10458,8 +10468,8 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
         It modifies the behavior of the format strings.</para>
       </sect2>
 
-      <sect2 id="cond-date-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="cond-date-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the cond-date feature.
 
@@ -10475,7 +10485,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 # %[m   This month  %[%a %d]       Thu 12
 # %[y   This year   %[%b %d]       Dec 10
 # -     Older       %[%m/%y ]      06/15
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -10614,8 +10624,8 @@ set pgp_self_encrypt_as = A4AF18C5582473BD35A1E9CE78BB3D480042198E
         </table>
       </sect2>
 
-      <sect2 id="encrypt-to-self-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="encrypt-to-self-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the encrypt-to-self feature.
 
@@ -10630,7 +10640,7 @@ set smime_self_encrypt = "no"
 set pgp_self_encrypt = "no"
 <emphasis role="comment">set pgp_self_encrypt_as = "PGP-KEY"
 
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -10799,8 +10809,8 @@ set pgp_self_encrypt = "no"
         </table>
       </sect2>
 
-      <sect2 id="forgotten-attachment-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="forgotten-attachment-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the forgotten-attachment feature.
 
@@ -10825,7 +10835,7 @@ set attach_keyword = "\\&lt;attach(|ed|ments?)\\&gt;"
 # set attach_keyword = "\\&lt;(anhängen|angehängt|anhang|anhänge|hängt an)\\&gt;"
 # Français:
 # set attach_keyword = "\\&lt;(attaché|attachés|attache|attachons|joint|jointe|joints|jointes|joins|joignons)\\&gt;"
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -10957,8 +10967,8 @@ set attach_keyword = "\\&lt;attach(|ed|ments?)\\&gt;"
         </cmdsynopsis>
       </sect2>
 
-      <sect2 id="global-hooks-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="global-hooks-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the global hooks feature.
 
@@ -10972,7 +10982,7 @@ startup-hook 'exec sync-mailbox'
 <emphasis role="comment"># When NeoMutt quits, run this NeoMutt command</emphasis>
 shutdown-hook 'exec sync-mailbox'
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -11074,8 +11084,8 @@ ifndef sidebar finish
         </cmdsynopsis>
       </sect2>
 
-      <sect2 id="ifdef-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="ifdef-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the ifdef feature.
 
@@ -11105,7 +11115,7 @@ ifdef imap-fetch-mail 'source ~/.neomutt/imap.rc'
 # stop reading the current config file.</emphasis>
 ifndef sidebar finish
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -11260,8 +11270,8 @@ color index-object foreground background pattern
         </table>
       </sect2>
 
-      <sect2 id="index-color-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="index-color-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the index-color feature.
 
@@ -11289,7 +11299,7 @@ color index_number red default
 <emphasis role="comment"># Message size, %c %l</emphasis>
 color index_size cyan default
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -11397,8 +11407,8 @@ color index_size cyan default
         <link linkend="index-format">$index_format</link> variable.</para>
       </sect2>
 
-      <sect2 id="initials-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="initials-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the initials feature.
 
@@ -11422,7 +11432,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
 #       2   ! Nov 17 SN Rumours         ( 555)
 #       3   + Nov 16 JH Voodoo Child    ( 263)
 #       4   + Nov 16 DH Parallel Lines  ( 540)
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -11615,8 +11625,8 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
         </table>
       </sect2>
 
-      <sect2 id="keywords-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="keywords-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the keywords feature.
 
@@ -11635,7 +11645,7 @@ set xlabel_delimiter = ""
 # Bind 'y' to edit labels/keywords</emphasis>
 bind index,pager y edit-label
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -11810,15 +11820,15 @@ bind index,pager y edit-label
         </table>
       </sect2>
 
-      <sect2 id="limit-current-thread-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="limit-current-thread-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the limit-current-thread feature.
 
 # Limit view to current thread</emphasis>
 bind index &lt;esc&gt;L limit-current-thread
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -11929,7 +11939,7 @@ bind index &lt;esc&gt;L limit-current-thread
           <listitem>
             <para>Creating a
             <literal>fcc-hook</literal> in your
-            <literal>.muttrc</literal></para>
+            <literal>.neomuttrc</literal></para>
           </listitem>
         </itemizedlist>
       </sect2>
@@ -12056,8 +12066,8 @@ else display the subject (%s) and the size of the message in bytes (%c)</literal
         modifies the behavior of the format strings.</para>
       </sect2>
 
-      <sect2 id="nested-if-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="nested-if-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the nested-if feature.
 
@@ -12081,7 +12091,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l
 #       display the size of the message in bytes (%c)</emphasis>
 set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -12186,8 +12196,8 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
         </table>
       </sect2>
 
-      <sect2 id="new-mail-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="new-mail-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the new-mail feature.
 
@@ -12201,7 +12211,7 @@ set new_mail_command = ""
 # OS X example:
 # set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 # --------------------------------------------------------------------------
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -12642,8 +12652,8 @@ set new_mail_command = ""
         </table>
       </sect2>
 
-      <sect2 id="nntp-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="nntp-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the nntp feature.
 
@@ -12715,7 +12725,7 @@ bind index \eG get-parent
 # get message with Message-Id</emphasis>
 bind index \CG get-message
 <emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -13220,8 +13230,8 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
         </table>
       </sect2>
 
-      <sect2 id="notmuch-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="notmuch-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the notmuch feature.
 
@@ -13342,7 +13352,7 @@ color index_tag red white "inbox"
 # this symbol does not use a pattern</emphasis>
 color index_tags green default
 <emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -13515,8 +13525,8 @@ color index_tags green default
         </table>
       </sect2>
 
-      <sect2 id="progress-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="progress-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the progress feature.
 
@@ -13527,7 +13537,7 @@ color index_tags green default
 # White text on a red background</emphasis>
 color progress white red
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -13623,8 +13633,8 @@ color progress white red
         </table>
       </sect2>
 
-      <sect2 id="quasi-delete-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="quasi-delete-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the quasi-delete feature.
 
@@ -13632,7 +13642,7 @@ color progress white red
 # from the index, but NOT deleted.</emphasis>
 bind index,pager Q quasi-delete
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -13715,8 +13725,8 @@ bind index,pager Q quasi-delete
         </table>
       </sect2>
 
-      <sect2 id="reply-with-xorig-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="reply-with-xorig-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the reply-with-xorig feature.
 
@@ -13727,7 +13737,7 @@ bind index,pager Q quasi-delete
 # is found.</emphasis>
 set reply_with_xorig = "yes"
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -13860,7 +13870,7 @@ set sort_browser="reverse-size"
         simple introduction with examples see the
         <link linkend="intro-sidebar">Sidebar Howto</link>. If you just want to
         get started, you could use the sample
-        <link linkend="sidebar-muttrc">Sidebar muttrc</link>.</para>
+        <link linkend="sidebar-neomuttrc">Sidebar neomuttrc</link>.</para>
       </sect2>
 
       <sect2 id="sidebar-variables">
@@ -14243,8 +14253,8 @@ set sort_browser="reverse-size"
         </table>
       </sect2>
 
-      <sect2 id="sidebar-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="sidebar-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the sidebar feature.
 
@@ -14336,7 +14346,7 @@ color sidebar_new green black
 <emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc</emphasis>
 color sidebar_ordinary color245 default
 <emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -14471,8 +14481,8 @@ color sidebar_ordinary color245 default
         </table>
       </sect2>
 
-      <sect2 id="skip-quoted-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="skip-quoted-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the skip-quoted feature.
 
@@ -14483,7 +14493,7 @@ color sidebar_ordinary color245 default
 # Show three quoted lines before the reply</emphasis>
 set skip_quoted_offset = 3
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -14587,8 +14597,8 @@ set skip_quoted_offset = 3
         </table>
       </sect2>
 
-      <sect2 id="status-color-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="status-color-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the status-color feature.
 
@@ -14625,7 +14635,7 @@ color status red default '\[([^]]+)\]' 1
 # Highlight the mailbox</emphasis>
 color status brightwhite default 'NeoMutt: ([^ ]+)' 1
 <emphasis role="comment"># Search for 'NeoMutt: ' but only highlight what comes after it
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -14850,8 +14860,8 @@ color status brightwhite default 'NeoMutt: ([^ ]+)' 1
         </table>
       </sect2>
 
-      <sect2 id="trash-folder-muttrc">
-        <title>Muttrc</title>
+      <sect2 id="trash-folder-neomuttrc">
+        <title>neomuttrc</title>
         <screen>
 <emphasis role="comment"># Example NeoMutt config file for the 'trash' feature.
 
@@ -14867,7 +14877,7 @@ set trash='/home/flatcap/Mail/Trash'
 bind index D purge-message
 <emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.
 
-# vim: syntax=muttrc</emphasis>
+# vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
 
@@ -15175,7 +15185,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
             </row>
             <row>
               <entry>-n</entry>
-              <entry>do not read the system Muttrc</entry>
+              <entry>do not read the system neomuttrc</entry>
             </row>
             <row>
               <entry>-p</entry>
@@ -15228,7 +15238,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <replaceable>muttrc</replaceable>
+          <replaceable>neomuttrc</replaceable>
         </arg>
         <arg choice="opt">
           <option>-m</option>
@@ -15247,7 +15257,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <replaceable>muttrc</replaceable>
+          <replaceable>neomuttrc</replaceable>
         </arg>
         <arg choice="opt">
           <option>-c</option>
