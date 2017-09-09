@@ -2317,8 +2317,8 @@ static void start_debug(void)
   if ((debugfile = safe_fopen(debugfilename, "w")) != NULL)
   {
     setbuf(debugfile, NULL); /* don't buffer the debugging output! */
-    mutt_debug(1, "NeoMutt/%s (%s) debugging at level %d\n", PACKAGE_VERSION,
-               MUTT_VERSION, debuglevel);
+    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION,
+               debuglevel);
   }
 }
 
@@ -2339,13 +2339,13 @@ static void restart_debug(void)
 
   if (disable_debug || file_changed)
   {
-    mutt_debug(1, "NeoMutt/%s (%s) stop debugging\n", PACKAGE_VERSION, MUTT_VERSION);
+    mutt_debug(1, "NeoMutt/%s stop debugging\n", PACKAGE_VERSION);
     safe_fclose(&debugfile);
   }
 
   if (!enable_debug && !disable_debug && debuglevel != DebugLevel)
-    mutt_debug(1, "NeoMutt/%s (%s) debugging at level %d\n", PACKAGE_VERSION,
-               MUTT_VERSION, DebugLevel);
+    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION,
+               DebugLevel);
 
   debuglevel = DebugLevel;
 
@@ -4039,7 +4039,7 @@ static int execute_commands(struct ListHead *p)
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
-    "neomuttrc-" PACKAGE_VERSION, "neomuttrc", "muttrc-" MUTT_VERSION, "muttrc", NULL,
+    "neomuttrc-" PACKAGE_VERSION, "neomuttrc", "muttrc", NULL,
   };
 
   const char *locations[][2] = {
@@ -4382,10 +4382,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       if (access(buffer, F_OK) == 0)
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
-      if (access(buffer, F_OK) == 0)
-        break;
-
       snprintf(buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
       if (access(buffer, F_OK) == 0)
         break;
@@ -4395,10 +4391,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
         break;
 
       snprintf(buffer, sizeof(buffer), "%s/neomuttrc", PKGDATADIR);
-      if (access(buffer, F_OK) == 0)
-        break;
-
-      snprintf(buffer, sizeof(buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
       if (access(buffer, F_OK) == 0)
         break;
 

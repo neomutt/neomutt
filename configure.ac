@@ -16,8 +16,6 @@ AC_DEFUN([AC_DEFINE_SUBST], [
 	AC_SUBST([$1], ['$2'])
 ])
 
-AC_DEFINE_SUBST(MUTT_VERSION, "1.9.0", [Version of upstream Mutt])
-
 AC_USE_SYSTEM_EXTENSIONS
 
 ALL_LINGUAS="bg ca cs da de el en_GB eo es et eu fr ga gl hu id it ja ko lt nl pl pt_BR ru sk sv tr uk zh_CN zh_TW"

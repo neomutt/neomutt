@@ -933,7 +933,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 
 void mutt_version(void)
 {
-  mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
+  mutt_message("NeoMutt %s%s", PACKAGE_VERSION, GitVer);
 }
 
 /*

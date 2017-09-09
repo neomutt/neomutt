@@ -139,7 +139,7 @@ mutt.1: $(srcdir)/mutt.man
 manual.xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
 	manual.xml.head $(top_srcdir)/functions.h manual.xml.tail \
 	$(srcdir)/gen-map-doc $(top_srcdir)/opcodes.h
-	( sed -e "s/@VERSION\@/$(PACKAGE_VERSION) $(MUTT_VERSION)/" $(srcdir)/manual.xml.head && \
+	( sed -e "s/@VERSION\@/$(PACKAGE_VERSION)/" $(srcdir)/manual.xml.head && \
 		$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 		$(MAKEDOC_CPP) $(top_srcdir)/functions.h | perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/opcodes.h \
 	) > $@
