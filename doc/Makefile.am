@@ -14,7 +14,7 @@ noinst_PROGRAMS = makedoc
 
 EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
-	mutt-1.7.0-syntax.vim mutt.css neomutt.man mutt.xsl neomuttrc neomuttrc.head \
+	mutt-1.7.0-syntax.vim neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
 	neomuttrc.man.head neomuttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
 	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1
 
@@ -97,21 +97,21 @@ neomuttrc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/neomuttrc.head
 	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/neomuttrc.head > neomuttrc
 	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> neomuttrc
 
-manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/mutt.xsl $(srcdir)/mutt.css
+manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/neomutt.xsl $(srcdir)/neomutt.css
 	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
 $(CHUNKED_DOCFILES): index.html
 
-index.html: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl manual.xml $(srcdir)/mutt.css
+index.html: $(srcdir)/chunk.xsl $(srcdir)/neomutt.xsl manual.xml $(srcdir)/neomutt.css
 	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
 
 validate: manual.xml
 	xmllint --noout --noblanks --postvalid $<
 
 spellcheck:
-	-aspell -d american --mode=sgml  --encoding=utf-8 -p $(srcdir)/mutt.pwl check manual.xml.head
-	-aspell -d american --mode=nroff --encoding=utf-8 -p $(srcdir)/mutt.pwl check neomuttrc.man.head
-	-aspell -d american --mode=ccpp  --encoding=utf-8 -p $(srcdir)/mutt.pwl check $(top_srcdir)/init.h
+	-aspell -d american --mode=sgml  --encoding=utf-8 -p $(srcdir)/neomutt.pwl check manual.xml.head
+	-aspell -d american --mode=nroff --encoding=utf-8 -p $(srcdir)/neomutt.pwl check neomuttrc.man.head
+	-aspell -d american --mode=ccpp  --encoding=utf-8 -p $(srcdir)/neomutt.pwl check $(top_srcdir)/init.h
 
 sortcheck: manual.xml
 	sed -n -e '1,/^<sect1 id="variables">/d' -e '1,/^<sect1 id="functions">/s/<sect2 id="\([^"]*\)">/\1/p' < manual.xml > vars.tmp.1
