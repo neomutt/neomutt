@@ -14,7 +14,7 @@ noinst_PROGRAMS = makedoc
 
 EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
-	mutt-1.7.0-syntax.vim neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
+	neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
 	neomuttrc.man.head neomuttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
 	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1
 
