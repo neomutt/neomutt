@@ -647,7 +647,7 @@
   - Rework OpenSSL certificate verification to support alternative chains. (closes #3903)
   - Add option to control whether threads uncollapse when new mail arrives.
   - In the manual, replaced 2 para by example (similar to the first example).
-  - Create mbchar_table type for multibyte character arrays. (see #3024)
+  - Create MbTable type for multibyte character arrays. (see #3024)
   - Make to_chars and status_chars accept mulitibyte characters. (closes #3024)
 
 2016-11-26  Richard Russon  <rich@flatcap.org>

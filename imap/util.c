@@ -440,7 +440,7 @@ void imap_pretty_mailbox(char *path)
 
   tlen = mutt_strlen(target.mbox);
   /* check whether we can do '=' substitution */
-  if (mx_is_imap(Maildir) && !imap_parse_path(Maildir, &home))
+  if (mx_is_imap(Folder) && !imap_parse_path(Folder, &home))
   {
     hlen = mutt_strlen(home.mbox);
     if (tlen && mutt_account_match(&home.account, &target.account) &&

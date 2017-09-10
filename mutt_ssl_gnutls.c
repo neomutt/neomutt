@@ -34,11 +34,11 @@
 #include "account.h"
 #include "globals.h"
 #include "keymap.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mutt_socket.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 
@@ -250,12 +250,13 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
-  if ((fp = fopen(SslCertFile, "r")))
+  if ((fp = fopen(CertificateFile, "r")))
   {
     if (REGCOMP(&preg,
                 "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
                 REG_ICASE) != 0)
     {
+      safe_fclose(&fp);
       return 0;
     }
 
@@ -302,7 +303,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   unsigned char *b64_data_data = NULL;
   struct stat filestat;
 
-  if (stat(SslCertFile, &filestat) == -1)
+  if (stat(CertificateFile, &filestat) == -1)
     return 0;
 
   b64_data.size = filestat.st_size + 1;
@@ -310,7 +311,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   b64_data_data[b64_data.size - 1] = '\0';
   b64_data.data = b64_data_data;
 
-  fd1 = fopen(SslCertFile, "r");
+  fd1 = fopen(CertificateFile, "r");
   if (!fd1)
   {
     return 0;
@@ -694,7 +695,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu->title = title;
   /* certificates with bad dates, or that are revoked, must be
    accepted manually each and every time */
-  if (SslCertFile && !savedcert &&
+  if (CertificateFile && !savedcert &&
       !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)))
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
@@ -738,7 +739,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
       case OP_MAX + 3: /* accept always */
         done = 0;
-        if ((fp = fopen(SslCertFile, "a")))
+        if ((fp = fopen(CertificateFile, "a")))
         {
           /* save hostname if necessary */
           if (certerr & CERTERR_HOSTNAME)
@@ -935,22 +936,22 @@ static int tls_set_priority(struct TlsSockData *data)
   else
     safe_strcat(priority, priority_size, "NORMAL");
 
-  if (!option(OPT_TLSV1_2))
+  if (!option(OPT_SSL_USE_TLSV1_2))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
-  if (!option(OPT_TLSV1_1))
+  if (!option(OPT_SSL_USE_TLSV1_1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
-  if (!option(OPT_TLSV1))
+  if (!option(OPT_SSL_USE_TLSV1))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
-  if (!option(OPT_SSLV3))
+  if (!option(OPT_SSL_USE_SSLV3))
   {
     nproto--;
     safe_strcat(priority, priority_size, ":-VERS-SSL3.0");
@@ -986,13 +987,13 @@ static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  if (option(OPT_TLSV1_2))
+  if (option(OPT_SSL_USE_TLSV1_2))
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  if (option(OPT_TLSV1_1))
+  if (option(OPT_SSL_USE_TLSV1_1))
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
-  if (option(OPT_TLSV1))
+  if (option(OPT_SSL_USE_TLSV1))
     protocol_priority[nproto++] = GNUTLS_TLS1;
-  if (option(OPT_SSLV3))
+  if (option(OPT_SSL_USE_SSLV3))
     protocol_priority[nproto++] = GNUTLS_SSL3;
   protocol_priority[nproto] = 0;
 
@@ -1039,12 +1040,12 @@ static int tls_negotiate(struct Connection *conn)
     return -1;
   }
 
-  gnutls_certificate_set_x509_trust_file(data->xcred, SslCertFile, GNUTLS_X509_FMT_PEM);
+  gnutls_certificate_set_x509_trust_file(data->xcred, CertificateFile, GNUTLS_X509_FMT_PEM);
   /* ignore errors, maybe file doesn't exist yet */
 
-  if (SslCACertFile)
+  if (SslCaCertificatesFile)
   {
-    gnutls_certificate_set_x509_trust_file(data->xcred, SslCACertFile, GNUTLS_X509_FMT_PEM);
+    gnutls_certificate_set_x509_trust_file(data->xcred, SslCaCertificatesFile, GNUTLS_X509_FMT_PEM);
   }
 
   if (SslClientCert)
@@ -1082,9 +1083,9 @@ static int tls_negotiate(struct Connection *conn)
     goto fail;
   }
 
-  if (SslDHPrimeBits > 0)
+  if (SslMinDhPrimeBits > 0)
   {
-    gnutls_dh_set_prime_bits(data->state, SslDHPrimeBits);
+    gnutls_dh_set_prime_bits(data->state, SslMinDhPrimeBits);
   }
 
   /*

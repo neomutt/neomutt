@@ -56,7 +56,6 @@ imap/utf7.c
 imap/util.c
 init.c
 keymap.c
-keymap_alldefs.h
 lib/base64.c
 lib/buffer.c
 lib/date.c
@@ -100,6 +99,7 @@ ncrypt/pgppacket.c
 ncrypt/smime.c
 newsrc.c
 nntp.c
+opcodes.h
 pager.c
 parameter.c
 parse.c

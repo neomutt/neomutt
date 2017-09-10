@@ -26,8 +26,7 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "lib/lib.h"
-#include "mapping.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -146,7 +145,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'h':
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(buf, buflen, fmt, NONULL(Hostname));
+      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l':
@@ -254,12 +253,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                      0);
       }
 
-      if (!StChars || !StChars->len)
+      if (!StatusChars || !StatusChars->len)
         buf[0] = 0;
-      else if (i >= StChars->len)
-        snprintf(buf, buflen, "%s", StChars->chars[0]);
+      else if (i >= StatusChars->len)
+        snprintf(buf, buflen, "%s", StatusChars->chars[0]);
       else
-        snprintf(buf, buflen, "%s", StChars->chars[i]);
+        snprintf(buf, buflen, "%s", StatusChars->chars[i]);
       break;
     }
 

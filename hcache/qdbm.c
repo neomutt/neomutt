@@ -42,7 +42,7 @@ static void *hcache_qdbm_open(const char *path)
 {
   int flags = VL_OWRITER | VL_OCREAT;
 
-  if (option(OPT_HCACHE_COMPRESS))
+  if (option(OPT_HEADER_CACHE_COMPRESS))
     flags |= VL_OZCOMP;
 
   return vlopen(path, flags, VL_CMPLEX);

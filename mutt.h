@@ -31,9 +31,10 @@
 #include <stdio.h>
 
 struct ReplaceList;
-struct RxList;
+struct RegexList;
 struct State;
 struct ListHead;
+struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -237,16 +238,16 @@ enum QuadOptionResponse
  */
 enum QuadOptionVars
 {
-  OPT_ABORT,
+  OPT_ABORT_UNMODIFIED,
   OPT_BOUNCE,
   OPT_COPY,
   OPT_DELETE,
-  OPT_FORW_EDIT,
+  OPT_FORWARD_EDIT,
   OPT_FCC_ATTACH,
   OPT_INCLUDE,
-  OPT_MF_UP_TO,
-  OPT_MIME_FWD,
-  OPT_MIME_FWD_REST,
+  OPT_HONOR_FOLLOWUP_TO,
+  OPT_MIME_FORWARD,
+  OPT_MIME_FORWARD_REST,
   OPT_MOVE,
   OPT_PGP_MIME_AUTO, /* ask to revert to PGP/MIME when inline fails */
   OPT_SMIME_ENCRYPT_SELF,
@@ -261,16 +262,16 @@ enum QuadOptionVars
   OPT_REPLY_TO,
   OPT_RECALL,
 #ifdef USE_SSL
-  OPT_SSL_START_TLS,
+  OPT_SSL_STARTTLS,
 #endif
-  OPT_SUBJECT,
-  OPT_VERIFY_SIG, /* verify PGP signatures */
+  OPT_ABORT_NOSUBJECT,
+  OPT_CRYPT_VERIFY_SIG, /* verify PGP signatures */
 #ifdef USE_NNTP
-  OPT_TO_MODERATED,
-  OPT_CATCHUP,
-  OPT_FOLLOW_UP_TO_POSTER,
+  OPT_POST_MODERATED,
+  OPT_CATCHUP_NEWSGROUP,
+  OPT_FOLLOWUP_TO_POSTER,
 #endif
-  OPT_ATTACH, /* forgotten attachment detector */
+  OPT_ABORT_NOATTACH, /* forgotten attachment detector */
   /* THIS MUST BE THE LAST VALUE. */
   OPT_QUAD_MAX,
 };
@@ -309,12 +310,12 @@ enum QuadOptionVars
 #define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */
 
-void mutt_free_rx_list(struct RxList **list);
+void mutt_free_regex_list(struct RegexList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
 int mutt_matches_ignore(const char *s);
 
 /* add an element to a list */
-int mutt_remove_from_rx_list(struct RxList **l, const char *str);
+int mutt_remove_from_regex_list(struct RegexList **l, const char *str);
 
 void mutt_init(int skip_sys_rc, struct ListHead *commands);
 
@@ -331,16 +332,12 @@ struct AttachMatch
   char *major;
   int major_int;
   char *minor;
-  regex_t minor_rx;
+  regex_t minor_regex;
 };
 
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
 #define EXECSHELL "/bin/sh"
-
-/* Use this with care.  If the compiler can't see the array
- * definition, it obviously won't produce a correct result. */
-#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
 /* For mutt_simple_format() justifications */
 /* Making left 0 and center -1 is of course completely nonsensical, but
@@ -359,6 +356,8 @@ int safe_asprintf(char **, const char *, ...);
 int mutt_inbox_cmp(const char *a, const char *b);
 
 const char *mutt_strsysexit(int e);
+
+char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
 #ifdef DEBUG
 extern char debugfilename[_POSIX_PATH_MAX];

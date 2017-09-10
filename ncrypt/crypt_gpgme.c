@@ -56,13 +56,13 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "keymap_defs.h"
 #include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "parameter.h"
@@ -2161,7 +2161,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 
   if (dryrun)
   {
-    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", TempDir);
+    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", Tmpdir);
     if (!mkdtemp(tmpdir))
     {
       mutt_debug(1, "Error creating temporary GPGME home\n");
@@ -2281,7 +2281,7 @@ static int line_compare(const char *a, size_t n, const char *b)
 /*
  * Implementation of `pgp_check_traditional'.
  */
-static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_only)
+static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
@@ -2291,9 +2291,6 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_o
   short enc = 0;
 
   if (b->type != TYPETEXT)
-    return 0;
-
-  if (tagged_only && !b->tagged)
     return 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -2339,21 +2336,24 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_o
   return 1;
 }
 
-int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int tagged_only)
+int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
   int rv = 0;
   int r;
   for (; b; b = b->next)
   {
-    if (is_multipart(b))
-      rv = (pgp_gpgme_check_traditional(fp, b->parts, tagged_only) || rv);
+    if (!just_one && is_multipart(b))
+      rv = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rv);
     else if (b->type == TYPETEXT)
     {
       if ((r = mutt_is_application_pgp(b)))
         rv = (rv || r);
       else
-        rv = (pgp_check_traditional_one_body(fp, b, tagged_only) || rv);
+        rv = (pgp_check_traditional_one_body(fp, b) || rv);
     }
+
+    if (just_one)
+      break;
   }
   return rv;
 }
@@ -4584,7 +4584,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       {
         crypt_hook_val = crypt_hook->data;
         r = MUTT_YES;
-        if (!oppenc_mode && option(OPT_CRYPT_CONFIRM_HOOK))
+        if (!oppenc_mode && option(OPT_CRYPT_CONFIRMHOOK))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"),
                    crypt_hook_val, p->mailbox);

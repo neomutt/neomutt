@@ -186,11 +186,11 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
     if (!(t = strtok(buff, " \t:")))
       continue;
 
-    if (mutt_strcmp(t, MhUnseen) == 0)
+    if (mutt_strcmp(t, MhSeqUnseen) == 0)
       f = MH_SEQ_UNSEEN;
-    else if (mutt_strcmp(t, MhFlagged) == 0)
+    else if (mutt_strcmp(t, MhSeqFlagged) == 0)
       f = MH_SEQ_FLAGGED;
-    else if (mutt_strcmp(t, MhReplied) == 0)
+    else if (mutt_strcmp(t, MhSeqReplied) == 0)
       f = MH_SEQ_REPLIED;
     else /* unknown sequence */
       continue;
@@ -382,7 +382,7 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
   while (true)
   {
     snprintf(path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%" PRIu64, dest->path,
-             NONULL(Hostname), (int) getpid(), mutt_rand64());
+             NONULL(ShortHostname), (int) getpid(), mutt_rand64());
     if ((fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
     {
       if (errno != EEXIST)
@@ -480,9 +480,9 @@ static void mh_update_sequences(struct Context *ctx)
   struct MhSequences mhs;
   memset(&mhs, 0, sizeof(mhs));
 
-  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhUnseen));
-  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhReplied));
-  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(MhFlagged));
+  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhSeqUnseen));
+  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhSeqReplied));
+  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(MhSeqFlagged));
 
   if (mh_mkstemp(ctx, &nfp, &tmpfname) != 0)
   {
@@ -542,11 +542,11 @@ static void mh_update_sequences(struct Context *ctx)
 
   /* write out the new sequences */
   if (unseen)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_UNSEEN, NONULL(MhUnseen));
+    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_UNSEEN, NONULL(MhSeqUnseen));
   if (flagged)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_FLAGGED, NONULL(MhFlagged));
+    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_FLAGGED, NONULL(MhSeqFlagged));
   if (replied)
-    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_REPLIED, NONULL(MhReplied));
+    mhs_write_one_sequence(nfp, &mhs, MH_SEQ_REPLIED, NONULL(MhSeqReplied));
 
   mhs_free_sequences(&mhs);
 
@@ -586,9 +586,9 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   if (mh_mkstemp(ctx, &nfp, &tmpfname) == -1)
     return;
 
-  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhUnseen));
-  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhReplied));
-  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(MhFlagged));
+  snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhSeqUnseen));
+  snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(MhSeqReplied));
+  snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(MhSeqFlagged));
 
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", ctx->path);
   if ((ofp = fopen(sequences, "r")))
@@ -618,11 +618,11 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   FREE(&buff);
 
   if (!unseen_done && unseen)
-    fprintf(nfp, "%s: %d\n", NONULL(MhUnseen), n);
+    fprintf(nfp, "%s: %d\n", NONULL(MhSeqUnseen), n);
   if (!flagged_done && flagged)
-    fprintf(nfp, "%s: %d\n", NONULL(MhFlagged), n);
+    fprintf(nfp, "%s: %d\n", NONULL(MhSeqFlagged), n);
   if (!replied_done && replied)
-    fprintf(nfp, "%s: %d\n", NONULL(MhReplied), n);
+    fprintf(nfp, "%s: %d\n", NONULL(MhSeqReplied), n);
 
   safe_fclose(&nfp);
 
@@ -1164,7 +1164,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
     snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
 
 #ifdef USE_HCACHE
-    if (option(OPT_HCACHE_VERIFY))
+    if (option(OPT_MAILDIR_HEADER_CACHE_VERIFY))
     {
       ret = stat(fn, &lastchanged);
     }
@@ -1514,7 +1514,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   while (true)
   {
     snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path,
-             subdir, (long long) time(NULL), mutt_rand64(), NONULL(Hostname), suffix);
+             subdir, (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "maildir_open_new_message (): Trying %s.\n", path);
 
@@ -1594,7 +1594,7 @@ static int _maildir_commit_message(struct Context *ctx, struct Message *msg, str
   while (true)
   {
     snprintf(path, _POSIX_PATH_MAX, "%s/%lld.R%" PRIu64 ".%s%s", subdir,
-             (long long) time(NULL), mutt_rand64(), NONULL(Hostname), suffix);
+             (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
     snprintf(full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
     mutt_debug(2, "_maildir_commit_message (): renaming %s to %s.\n", msg->path, full);

@@ -2465,8 +2465,8 @@ msgid "view attachment as text"
 msgstr "view attachment as text"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
-msgstr "Toggle display of subparts"
+msgid "toggle display of subparts"
+msgstr "toggle display of subparts"
 
 #: keymap_alldefs.h:13
 msgid "move to the bottom of the page"
@@ -3101,12 +3101,12 @@ msgid "print the current entry"
 msgstr "print the current entry"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
-msgstr "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
+msgstr "delete the current entry, bypassing the trash folder"
 
 #: keymap_alldefs.h:172
-msgid "really delete the current thread, bypassing the trash folder"
-msgstr "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
+msgstr "delete the current thread, bypassing the trash folder"
 
 #: keymap_alldefs.h:173
 msgid "query external program for addresses"

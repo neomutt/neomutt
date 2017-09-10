@@ -474,7 +474,7 @@ int imap_open_connection(struct ImapData *idata)
 
       if (option(OPT_SSL_FORCE_TLS))
         rc = MUTT_YES;
-      else if ((rc = query_quadoption(OPT_SSL_START_TLS,
+      else if ((rc = query_quadoption(OPT_SSL_STARTTLS,
                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
         goto err_close_conn;
       if (rc == MUTT_YES)
@@ -842,7 +842,7 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
     return -1;
 
   snprintf(buf, sizeof(buf), _("Create %s?"), mailbox);
-  if (option(OPT_CONFIRM_CREATE) && mutt_yesorno(buf, 1) != MUTT_YES)
+  if (option(OPT_CONFIRMCREATE) && mutt_yesorno(buf, 1) != MUTT_YES)
     return -1;
 
   if (imap_create_mailbox(idata, mailbox) < 0)
@@ -2150,7 +2150,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
     list[0] = '\0';
 
   /* fire off command */
-  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"", option(OPT_IMAP_LSUB) ? "LSUB" : "LIST", list);
+  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"", option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", list);
 
   imap_cmd_start(idata, buf);
 
@@ -2276,7 +2276,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
         break;
       mutt_debug(3, "imap_fast_trash: server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (option(OPT_CONFIRM_CREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (option(OPT_CONFIRMCREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;

@@ -41,6 +41,7 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -367,7 +368,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  *
  */
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
-                         struct AttachPtr **idx, short idxlen)
+                         struct AttachCtx *actx)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -606,8 +607,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     info.fp = fp;
     info.bdy = a;
     info.ctx = Context;
-    info.idx = idx;
-    info.idxlen = idxlen;
+    info.actx = actx;
     info.hdr = hdr;
 
     rc = mutt_do_pager(descrip, pagerfile,
@@ -1049,7 +1049,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if ((mutt_strcasecmp("text/plain", type) == 0) ||
       (mutt_strcasecmp("application/postscript", type) == 0))
   {
-    return (mutt_pipe_attachment(fp, a, NONULL(PrintCmd), NULL));
+    return (mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL));
   }
   else if (mutt_can_decode(a))
   {
@@ -1074,7 +1074,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin(NULL);
-      if ((thepid = mutt_create_filter(NONULL(PrintCmd), &fpout, NULL, NULL)) < 0)
+      if ((thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL)) < 0)
       {
         mutt_perror(_("Can't create filter"));
         goto bail0;
@@ -1102,4 +1102,89 @@ bail0:
     mutt_error(_("I don't know how to print that!"));
     return 0;
   }
+}
+
+void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
+{
+  int i;
+
+  if (actx->idxlen == actx->idxmax)
+  {
+    actx->idxmax += 5;
+    safe_realloc(&actx->idx, sizeof(struct AttachPtr *) * actx->idxmax);
+    safe_realloc(&actx->v2r, sizeof(short) * actx->idxmax);
+    for (i = actx->idxlen; i < actx->idxmax; i++)
+      actx->idx[i] = NULL;
+  }
+
+  actx->idx[actx->idxlen++] = attach;
+}
+
+void mutt_actx_add_fp(struct AttachCtx *actx, FILE *new_fp)
+{
+  int i;
+
+  if (actx->fp_len == actx->fp_max)
+  {
+    actx->fp_max += 5;
+    safe_realloc(&actx->fp_idx, sizeof(FILE *) * actx->fp_max);
+    for (i = actx->fp_len; i < actx->fp_max; i++)
+      actx->fp_idx[i] = NULL;
+  }
+
+  actx->fp_idx[actx->fp_len++] = new_fp;
+}
+
+void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
+{
+  int i;
+
+  if (actx->body_len == actx->body_max)
+  {
+    actx->body_max += 5;
+    safe_realloc(&actx->body_idx, sizeof(struct Body *) * actx->body_max);
+    for (i = actx->body_len; i < actx->body_max; i++)
+      actx->body_idx[i] = NULL;
+  }
+
+  actx->body_idx[actx->body_len++] = new_body;
+}
+
+void mutt_actx_free_entries(struct AttachCtx *actx)
+{
+  int i;
+
+  for (i = 0; i < actx->idxlen; i++)
+  {
+    if (actx->idx[i]->content)
+      actx->idx[i]->content->aptr = NULL;
+    FREE(&actx->idx[i]->tree);
+    FREE(&actx->idx[i]);
+  }
+  actx->idxlen = 0;
+  actx->vcount = 0;
+
+  for (i = 0; i < actx->fp_len; i++)
+    safe_fclose(&actx->fp_idx[i]);
+  actx->fp_len = 0;
+
+  for (i = 0; i < actx->body_len; i++)
+    mutt_free_body(&actx->body_idx[i]);
+  actx->body_len = 0;
+}
+
+void mutt_free_attach_context(struct AttachCtx **pactx)
+{
+  struct AttachCtx *actx = NULL;
+
+  if (!pactx || !*pactx)
+    return;
+
+  actx = *pactx;
+  mutt_actx_free_entries(actx);
+  FREE(&actx->idx);
+  FREE(&actx->v2r);
+  FREE(&actx->fp_idx);
+  FREE(&actx->body_idx);
+  FREE(pactx);
 }

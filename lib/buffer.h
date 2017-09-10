@@ -41,6 +41,7 @@ struct Buffer
 
 struct Buffer *mutt_buffer_new(void);
 struct Buffer *mutt_buffer_init(struct Buffer *b);
+void mutt_buffer_reset(struct Buffer *b);
 struct Buffer *mutt_buffer_from(char *seed);
 void mutt_buffer_free(struct Buffer **p);
 int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...);

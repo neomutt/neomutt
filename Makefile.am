@@ -40,7 +40,7 @@ bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
+BUILT_SOURCES = conststrings.c git_ver.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
@@ -50,7 +50,7 @@ mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
 	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
 	envelope.c envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
 	handler.c hdrline.c header.h headers.c help.c history.c hook.c \
-	init.c keymap.c list.h main.c mbox.c mbyte.c mbyte_table.h \
+	init.c keymap.c list.h main.c mbox.c mbyte.c mbtable.h \
 	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
 	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
@@ -84,17 +84,15 @@ EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 
 EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
-	COPYRIGHT filter.h functions.h gen_defs globals.h \
+	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
 	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
-	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
-	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
+	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h opcodes.h pager.h \
 	pgpewrap.c pop.h protos.h queue.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
-	sort.h txt2c.c txt2c.sh version.h \
-	keymap_alldefs.h
+	sort.h txt2c.c txt2c.sh version.h
 
 EXTRA_SCRIPTS =
 
@@ -121,7 +119,7 @@ conststrings.c: txt2c config.status
 		${srcdir}/txt2c.sh configure_options >> conststrings_c
 	mv -f conststrings_c conststrings.c
 
-CLEANFILES = keymap_alldefs.h $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 DISTCLEANFILES= txt2c
 
@@ -131,14 +129,6 @@ LDADD = $(LIBOBJS) $(INTLLIBS)
 
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
-
-keymap_defs.h: $(OPS) $(srcdir)/gen_defs
-	$(srcdir)/gen_defs $(OPS) > $@
-
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs config.h
-	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
-		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
-		> $@
 
 git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \

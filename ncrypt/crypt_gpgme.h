@@ -42,7 +42,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist);
 int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
-int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int tagged_only);
+int pgp_gpgme_check_traditional (FILE *fp, struct Body *b, int just_one);
 void pgp_gpgme_invoke_import(const char *fname);
 
 int pgp_gpgme_application_handler(struct Body *m, struct State *s);

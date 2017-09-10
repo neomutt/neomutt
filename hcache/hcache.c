@@ -760,7 +760,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     } digest;
     struct Md5Ctx ctx;
     struct ReplaceList *spam = NULL;
-    struct RxList *nospam = NULL;
+    struct RegexList *nospam = NULL;
 
     hcachever = HCACHEVER;
 
@@ -772,14 +772,14 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     /* Mix in user's spam list */
     for (spam = SpamList; spam; spam = spam->next)
     {
-      md5_process_bytes(spam->rx->pattern, strlen(spam->rx->pattern), &ctx);
+      md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
       md5_process_bytes(spam->template, strlen(spam->template), &ctx);
     }
 
     /* Mix in user's nospam list */
     for (nospam = NoSpamList; nospam; nospam = nospam->next)
     {
-      md5_process_bytes(nospam->rx->pattern, strlen(nospam->rx->pattern), &ctx);
+      md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */

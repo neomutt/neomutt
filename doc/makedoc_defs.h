@@ -84,6 +84,9 @@
 #ifndef USE_LUA
 #define USE_LUA
 #endif
+#ifndef USE_NOTMUCH
+#define USE_NOTMUCH
+#endif
 #endif
 
 #endif /* _MUTT_MAKEDOC_DEFS_H */

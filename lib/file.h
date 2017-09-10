@@ -49,7 +49,7 @@ int         mutt_mkdir(const char *path, mode_t mode);
 size_t      mutt_quote_filename(char *d, size_t l, const char *f);
 char *      mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags);
 int         mutt_rmtree(const char *path);
-int         mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src);
+int         mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src);
 void        mutt_sanitize_filename(char *f, short slash);
 void        mutt_set_mtime(const char *from, const char *to);
 void        mutt_touch_atime(int f);

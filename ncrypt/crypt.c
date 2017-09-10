@@ -160,6 +160,16 @@ int mutt_protect(struct Header *msg, char *keylist)
         return -1;
       }
     }
+    else if (!mutt_strcasecmp ("flowed",
+                               mutt_get_parameter ("format", msg->content->parameter)))
+    {
+      if ((query_quadoption (OPT_PGP_MIME_AUTO,
+              _("Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"))) != MUTT_YES)
+      {
+        mutt_error(_("Mail not sent: inline PGP can't be used with format=flowed."));
+        return -1;
+      }
+    }
     else
     {
       /* they really want to send it inline... go for it */
@@ -203,8 +213,8 @@ int mutt_protect(struct Header *msg, char *keylist)
       from = mutt_default_from();
 
     mailbox = from->mailbox;
-    if (!mailbox && EnvFrom)
-      mailbox = EnvFrom->mailbox;
+    if (!mailbox && EnvelopeFromAddress)
+      mailbox = EnvelopeFromAddress->mailbox;
 
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
@@ -225,7 +235,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIG)))
+        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
     {
       if (!(tmp_pbody = crypt_pgp_sign_message(msg->content)))
         return -1;

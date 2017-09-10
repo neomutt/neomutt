@@ -136,13 +136,11 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-manual.xml: makedoc$(EXEEXT) ../config.h $(top_srcdir)/init.h \
-	manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
-	$(srcdir)/gen-map-doc
-	( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' ../config.h` && \
-		sed -e "s/@VERSION\@/$(PACKAGE_VERSION) ($$mutt_ver)/" $(srcdir)/manual.xml.head && \
+manual.xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
+	manual.xml.head $(top_srcdir)/functions.h manual.xml.tail \
+	$(srcdir)/gen-map-doc $(top_srcdir)/opcodes.h
+	( sed -e "s/@VERSION\@/$(PACKAGE_VERSION) $(MUTT_VERSION)/" $(srcdir)/manual.xml.head && \
 		$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
-		$(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
-		perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/OPS* \
+		$(MAKEDOC_CPP) $(top_srcdir)/functions.h | perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/opcodes.h \
 	) > $@
 

@@ -950,16 +950,16 @@ enum DataType
 {
   DT_NONE = 0,
   DT_BOOL,
-  DT_NUM,
-  DT_STR,
+  DT_NUMBER,
+  DT_STRING,
   DT_PATH,
   DT_QUAD,
   DT_SORT,
-  DT_RX,
+  DT_REGEX,
   DT_MAGIC,
-  DT_SYN,
-  DT_ADDR,
-  DT_MBCHARTBL
+  DT_SYNONYM,
+  DT_ADDRESS,
+  DT_MBTABLE
 };
 
 struct VariableTypes
@@ -969,16 +969,16 @@ struct VariableTypes
 } types[] = {
   { "DT_NONE", "-none-" },
   { "DT_BOOL", "boolean" },
-  { "DT_NUM", "number" },
-  { "DT_STR", "string" },
+  { "DT_NUMBER", "number" },
+  { "DT_STRING", "string" },
   { "DT_PATH", "path" },
   { "DT_QUAD", "quadoption" },
   { "DT_SORT", "sort order" },
-  { "DT_RX", "regular expression" },
+  { "DT_REGEX", "regular expression" },
   { "DT_MAGIC", "folder magic" },
-  { "DT_SYN", NULL },
-  { "DT_ADDR", "e-mail address" },
-  { "DT_MBCHARTBL", "string" },
+  { "DT_SYNONYM", NULL },
+  { "DT_ADDRESS", "e-mail address" },
+  { "DT_MBTABLE", "string" },
   { NULL, NULL },
 };
 
@@ -1042,11 +1042,11 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
         *t = tolower((unsigned char) *t);
       break;
     }
-    case DT_STR:
-    case DT_RX:
-    case DT_ADDR:
+    case DT_STRING:
+    case DT_REGEX:
+    case DT_ADDRESS:
     case DT_PATH:
-    case DT_MBCHARTBL:
+    case DT_MBTABLE:
     {
       if (strcmp(s, "0") == 0)
         break;
@@ -1157,7 +1157,7 @@ static void sgml_print_strval(const char *v, FILE *out)
 
 static void print_confline(const char *varname, int type, const char *val, FILE *out)
 {
-  if (type == DT_SYN)
+  if (type == DT_SYNONYM)
     return;
 
   switch (OutputFormat)
@@ -1165,20 +1165,20 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
     /* configuration file */
     case F_CONF:
     {
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR ||
-          type == DT_PATH || type == DT_MBCHARTBL)
+      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
+          type == DT_PATH || type == DT_MBTABLE)
       {
         fprintf(out, "\n# set %s=\"", varname);
         conf_print_strval(val, out);
         fputs("\"", out);
       }
-      else if (type != DT_SYN)
+      else if (type != DT_SYNONYM)
         fprintf(out, "\n# set %s=%s", varname, val);
 
       fprintf(out, "\n#\n# Name: %s", varname);
       fprintf(out, "\n# Type: %s", type2human(type));
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR ||
-          type == DT_PATH || type == DT_MBCHARTBL)
+      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
+          type == DT_PATH || type == DT_MBTABLE)
       {
         fputs("\n# Default: \"", out);
         conf_print_strval(val, out);
@@ -1197,8 +1197,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       fprintf(out, "\n.TP\n.B %s\n", varname);
       fputs(".nf\n", out);
       fprintf(out, "Type: %s\n", type2human(type));
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR ||
-          type == DT_PATH || type == DT_MBCHARTBL)
+      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
+          type == DT_PATH || type == DT_MBTABLE)
       {
         fputs("Default: \"", out);
         man_print_strval(val, out);
@@ -1225,8 +1225,8 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
       sgml_fputs(varname, out);
       fprintf(out, "</title>\n<literallayout>Type: %s", type2human(type));
 
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR ||
-          type == DT_PATH || type == DT_MBCHARTBL)
+      if (type == DT_STRING || type == DT_REGEX || type == DT_ADDRESS ||
+          type == DT_PATH || type == DT_MBTABLE)
       {
         if (val && *val)
         {

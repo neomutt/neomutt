@@ -45,18 +45,18 @@
  */
 struct Regex
 {
-  char *pattern; /**< printable version */
-  regex_t *rx;   /**< compiled expression */
-  int not;       /**< do not match */
+  char *pattern;  /**< printable version */
+  regex_t *regex; /**< compiled expression */
+  int not;        /**< do not match */
 };
 
 /**
- * struct RxList - List of regular expressions
+ * struct RegexList - List of regular expressions
  */
-struct RxList
+struct RegexList
 {
-  struct Regex *rx;
-  struct RxList *next;
+  struct Regex *regex;
+  struct RegexList *next;
 };
 
 /**
@@ -64,7 +64,7 @@ struct RxList
  */
 struct ReplaceList
 {
-  struct Regex *rx;
+  struct Regex *regex;
   int nmatch;
   char *template;
   struct ReplaceList *next;

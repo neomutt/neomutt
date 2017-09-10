@@ -655,38 +655,37 @@ msgstr "Додатків немає."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116
 msgid "From: "
-msgstr ""
+msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:118 send.c:289
 msgid "To: "
-msgstr ""
+msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120 send.c:291
 msgid "Cc: "
-msgstr ""
+msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 send.c:293
 msgid "Bcc: "
-msgstr ""
+msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:124 compose.c:867 send.c:322
 msgid "Subject: "
-msgstr ""
+msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:126
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Відп."
+msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:128 compose.c:884
 msgid "Fcc: "
-msgstr ""
+msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:131
@@ -696,7 +695,7 @@ msgstr "Mix: "
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:134
 msgid "Security: "
-msgstr ""
+msgstr "Безпека: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -740,17 +739,17 @@ msgstr "Відміна"
 #. L10N: compose menu help line entry
 #: compose.c:159
 msgid "To"
-msgstr ""
+msgstr "To"
 
 #. L10N: compose menu help line entry
 #: compose.c:161
 msgid "CC"
-msgstr ""
+msgstr "CC"
 
 #. L10N: compose menu help line entry
 #: compose.c:163 compose.c:175
 msgid "Subj"
-msgstr ""
+msgstr "Subj"
 
 #: compose.c:164 compose.c:176 compose.c:977
 msgid "Attach file"
@@ -2008,14 +2007,13 @@ msgstr "Помилка переіменування: %s"
 msgid "Mailbox renamed."
 msgstr "Поштову скриньку переіменовано."
 
+#, c-format
+msgid "Connection to %s timed out"
+msgstr "Вичерпано час очікування з’єднання з %s"
+
 #: imap/command.c:149
 msgid "Mailbox closed"
 msgstr "Поштову скриньку закрито"
-
-#: imap/command.c:1035
-#, fuzzy, c-format
-msgid "Connection to %s timed out"
-msgstr "З’єднання з %s закрито"
 
 #: imap/imap.c:144
 #, c-format
@@ -2486,7 +2484,7 @@ msgid "view attachment as text"
 msgstr "дивитись додаток як текст"
 
 #: keymap_alldefs.h:12
-msgid "Toggle display of subparts"
+msgid "toggle display of subparts"
 msgstr "вимк./ввімкн. відображення підчастин"
 
 #: keymap_alldefs.h:13
@@ -3136,12 +3134,12 @@ msgid "print the current entry"
 msgstr "друкувати поточну позицію"
 
 #: keymap_alldefs.h:171
-msgid "really delete the current entry, bypassing the trash folder"
+msgid "delete the current entry, bypassing the trash folder"
 msgstr "дійсно видалити поточну позицію не використовуючи кошик"
 
 #: keymap_alldefs.h:172
 #, fuzzy
-msgid "really delete the current thread, bypassing the trash folder"
+msgid "delete the current thread, bypassing the trash folder"
 msgstr "дійсно видалити поточну позицію не використовуючи кошик"
 
 #: keymap_alldefs.h:173
@@ -3463,7 +3461,7 @@ msgstr "розпакувати підтримувані відкриті клю�
 
 #: lib/file.c:1003
 msgid "Timeout exceeded while attempting fcntl lock!"
-msgstr "Вичерпано час на блокування через fctnl!"
+msgstr "Вичерпано час очікування блокування через fctnl!"
 
 #: lib/file.c:1009
 #, c-format
@@ -3472,7 +3470,7 @@ msgstr "Чекання блокування fctnl... %d"
 
 #: lib/file.c:1036
 msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Вичерпано час блокування через flock"
+msgstr "Вичерпано час очікування блокування через flock!"
 
 #: lib/file.c:1043
 #, c-format
@@ -4075,18 +4073,16 @@ msgid "roas"
 msgstr ""
 
 #: mutt_ssl.c:870
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)не приймати, прийняти (o)одноразово або (a)завжди"
+msgstr "(r)не приймати, прийняти (o)одноразово або (a)завжди, (s)пропустити"
 
 #: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)не приймати, прийняти (o)одноразово або (a)завжди"
 
 #: mutt_ssl.c:877
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)не приймати, (o)прийняти одноразово"
+msgstr "(r)не приймати, (o)прийняти одноразово, (s)пропустити"
 
 #: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
 msgid "(r)eject, accept (o)nce"
@@ -4115,7 +4111,7 @@ msgstr "Не вдалось перевірити хост сертифікату
 #. * the correct certificate if it supports multiple hosts.
 #: mutt_ssl.c:1111 mutt_ssl_gnutls.c:1076
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Попередження: не вдалось встановити ім’я хоста TLS SNI"
 
 #: mutt_ssl.c:1122
 msgid "I/O error"
@@ -4135,7 +4131,7 @@ msgstr "Неможливо створити SSL контекст"
 
 #: mutt_ssl.c:1213 mutt_ssl.c:1310
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Попередження: помилка ввімкнення ssl_verify_partial_chains"
 
 #: mutt_ssl_gnutls.c:93 mutt_ssl_gnutls.c:120
 msgid "Error: no TLS socket open"
@@ -4650,44 +4646,36 @@ msgstr "[Неможливо відобразити ID цього користу�
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Name: "
-msgstr "Ім’я ......: "
+msgstr "Ім’я: "
 
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid From: "
-msgstr "Дійсно з...: %s\n"
+msgstr "Дійсний з: "
 
 #: ncrypt/crypt_gpgme.c:3526
-#, fuzzy
 msgid "Valid To: "
-msgstr "Дійсно до..: %s\n"
+msgstr "Дійсний до: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Type: "
-msgstr "Використано: "
+msgstr "Тип ключа: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Key Usage: "
-msgstr "Використано: "
+msgstr "Використання: "
 
 #: ncrypt/crypt_gpgme.c:3527
-#, fuzzy
 msgid "Serial-No: "
-msgstr "Сер. номер : 0x%s\n"
+msgstr "Сер. номер: "
 
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Issued By: "
-msgstr "Видано ....: "
+msgstr "Виданий: "
 
 #: ncrypt/crypt_gpgme.c:3528
-#, fuzzy
 msgid "Subkey: "
-msgstr "Підключ ...: 0x%s"
+msgstr "Підключ: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -4698,9 +4686,9 @@ msgstr "[Неправильно]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3625 ncrypt/crypt_gpgme.c:3764
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
-msgstr "Тип ключа .: %s, %lu біт %s\n"
+msgstr "%s, %lu біт %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3633 ncrypt/crypt_gpgme.c:3771
@@ -5773,6 +5761,9 @@ msgstr "Друкувати виділені додатки?"
 msgid "Print attachment?"
 msgstr "Друкувати додаток?"
 
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr "Змінення структури розшифрованих додатків не підтримується"
+
 #: recvattach.c:1020
 msgid "Can't decrypt encrypted message!"
 msgstr "Не можу розшифрувати листа!"
@@ -6298,19 +6289,3 @@ msgstr ""
 "\n"
 "Параметри компіляції:"
 
-#~ msgid "sign as: "
-#~ msgstr "підписати як:"
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "Всі спроби блокування вичерпано, зняти блокування з %s?"
-
-#~ msgid " aka ......: "
-#~ msgstr " aka ......: "
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Попередження: Погане IDN \"%s\" в псевдонімі \"%s\".\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Попередження: Погане IDN \"%s\" в псевдонімі \"%s\".\n"

@@ -34,7 +34,7 @@
 #include "globals.h"
 #include "lib/lib.h"
 #include "mailbox.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
 #include "options.h"
@@ -133,12 +133,12 @@ static int _lua_mutt_set(lua_State *l)
   rv = 0;
   switch (DTYPE(opt.type))
   {
-    case DT_ADDR:
-    case DT_MBCHARTBL:
-    case DT_RX:
+    case DT_ADDRESS:
+    case DT_MBTABLE:
+    case DT_REGEX:
     case DT_PATH:
     case DT_SORT:
-    case DT_STR:
+    case DT_STRING:
       opt.data = (long) safe_strdup(lua_tostring(l, -1));
       rv = mutt_option_set(&opt, &err);
       FREE(&opt.data);
@@ -164,7 +164,7 @@ static int _lua_mutt_set(lua_State *l)
         rv = -1;
       }
       break;
-    case DT_NUM:
+    case DT_NUMBER:
     {
       lua_Integer i = lua_tointeger(l, -1);
       if ((i > SHRT_MIN) && (i < SHRT_MAX))
@@ -202,21 +202,21 @@ static int _lua_mutt_get(lua_State *l)
   {
     switch (DTYPE(opt.type))
     {
-      case DT_ADDR:
+      case DT_ADDRESS:
       {
         char value[LONG_STRING] = "";
         rfc822_write_address(value, LONG_STRING, *((struct Address **) opt.data), 0);
         lua_pushstring(l, value);
         return 1;
       }
-      case DT_MBCHARTBL:
+      case DT_MBTABLE:
       {
-        struct MbCharTable *tbl = *(struct MbCharTable **) opt.data;
+        struct MbTable *tbl = *(struct MbTable **) opt.data;
         lua_pushstring(l, tbl->orig_str);
         return 1;
       }
       case DT_PATH:
-      case DT_STR:
+      case DT_STRING:
         if (mutt_strncmp("my_", param, 3) == 0)
         {
           char *option = (char *) opt.option;
@@ -234,7 +234,7 @@ static int _lua_mutt_get(lua_State *l)
       case DT_QUAD:
         lua_pushinteger(l, quadoption(opt.data));
         return 1;
-      case DT_RX:
+      case DT_REGEX:
       case DT_MAGIC:
       case DT_SORT:
       {
@@ -247,7 +247,7 @@ static int _lua_mutt_get(lua_State *l)
         lua_pushstring(l, buf);
         return 1;
       }
-      case DT_NUM:
+      case DT_NUMBER:
         lua_pushinteger(l, (signed short) *((unsigned long *) opt.data));
         return 1;
       case DT_BOOL:

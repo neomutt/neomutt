@@ -519,14 +519,14 @@ int main(int argc, char **argv, char **env)
     mutt_message = mutt_curses_message;
   }
 
-  /* Create the Maildir directory if it doesn't exist. */
-  if (!option(OPT_NO_CURSES) && Maildir)
+  /* Create the Folder directory if it doesn't exist. */
+  if (!option(OPT_NO_CURSES) && Folder)
   {
     struct stat sb;
     char fpath[_POSIX_PATH_MAX];
     char msg2[STRING];
 
-    strfcpy(fpath, Maildir, sizeof(fpath));
+    strfcpy(fpath, Folder, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
     bool skip = false;
 #ifdef USE_IMAP
@@ -538,11 +538,11 @@ int main(int argc, char **argv, char **env)
 #endif
     if (!skip && stat(fpath, &sb) == -1 && errno == ENOENT)
     {
-      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Maildir);
+      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if (mkdir(fpath, 0700) == -1 && errno != EEXIST)
-          mutt_error(_("Can't create %s: %s."), Maildir, strerror(errno));
+          mutt_error(_("Can't create %s: %s."), Folder, strerror(errno));
       }
     }
   }
@@ -593,7 +593,7 @@ int main(int argc, char **argv, char **env)
         msg->env->to = rfc822_parse_adrlist(msg->env->to, argv[i]);
     }
 
-    if (!draftFile && option(OPT_AUTO_EDIT) && !msg->env->to && !msg->env->cc)
+    if (!draftFile && option(OPT_AUTOEDIT) && !msg->env->to && !msg->env->cc)
     {
       if (!option(OPT_NO_CURSES))
         mutt_endwin(NULL);
@@ -891,8 +891,8 @@ int main(int argc, char **argv, char **env)
     {
       if (SpoolFile)
         strfcpy(folder, NONULL(SpoolFile), sizeof(folder));
-      else if (Maildir)
-        strfcpy(folder, NONULL(Maildir), sizeof(folder));
+      else if (Folder)
+        strfcpy(folder, NONULL(Folder), sizeof(folder));
       /* else no folder */
     }
 
@@ -927,7 +927,7 @@ int main(int argc, char **argv, char **env)
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
     if ((Context = mx_open_mailbox(
-             folder, ((flags & MUTT_RO) || option(OPT_READONLY)) ? MUTT_READONLY : 0, NULL)) ||
+             folder, ((flags & MUTT_RO) || option(OPT_READ_ONLY)) ? MUTT_READONLY : 0, NULL)) ||
         !explicit_folder)
     {
 #ifdef USE_SIDEBAR
