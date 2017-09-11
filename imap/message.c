@@ -1465,7 +1465,7 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s)
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */
   h->changed = false;
-  ctx->changed &= ~readonly;
+  ctx->changed &= !readonly;
   ctx->readonly = readonly;
 
   return s;

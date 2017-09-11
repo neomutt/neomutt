@@ -858,7 +858,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       if (mx_is_maildir(tmp->path))
       {
         struct stat st2;
-        char md[_POSIX_PATH_MAX];
+        char md[LONG_STRING];
 
         snprintf(md, sizeof(md), "%s/new", tmp->path);
         if (stat(md, &s) < 0)

@@ -870,7 +870,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
 
     if (subdir)
     {
-      char tmp[_POSIX_PATH_MAX];
+      char tmp[LONG_STRING];
       snprintf(tmp, sizeof(tmp), "%s/%s", subdir, de->d_name);
       h->path = safe_strdup(tmp);
     }
@@ -2409,7 +2409,7 @@ static FILE *_maildir_open_find_message(const char *folder, const char *unique,
 {
   char dir[_POSIX_PATH_MAX];
   char tunique[_POSIX_PATH_MAX];
-  char fname[_POSIX_PATH_MAX];
+  char fname[LONG_STRING];
 
   DIR *dp = NULL;
   struct dirent *de = NULL;
