@@ -457,7 +457,7 @@ static enum NmQueryType string_to_query_type(const char *str)
   else if (mutt_strcmp(str, "messages") == 0)
     return NM_QUERY_TYPE_MESGS;
 
-  mutt_error(_("failed to parse notmuch query type: %s"), str);
+  mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
   return NM_QUERY_TYPE_MESGS;
 }
 
@@ -1857,10 +1857,10 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
                      query_type_to_string(data->query_type));
   else if (NmDefaultUri)
     added = snprintf(uri, sizeof(uri), "%s?type=%s&query=", NmDefaultUri,
-                     query_type_to_string(data->query_type));
+                     query_type_to_string(string_to_query_type(NmQueryType)));
   else if (Folder)
     added = snprintf(uri, sizeof(uri), "notmuch://%s?type=%s&query=", Folder,
-                     query_type_to_string(data->query_type));
+                     query_type_to_string(string_to_query_type(NmQueryType)));
   else
     return NULL;
 
