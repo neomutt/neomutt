@@ -3,15 +3,15 @@
 # Copyright (c) 1999-2007 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2007
+# Ronny Haryanto <ronny-neomutt-po-file@haryan.to>, 1999-2007
 #
 # http://www.linux.or.id
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20170714\n"
+"Project-Id-Version: neomutt-20170912\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-09-12 15:41+0100\n"
+"POT-Creation-Date: 2017-09-12 17:42+0100\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -52,7 +52,7 @@ msgstr "Pilih"
 
 #: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
 #: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
-#: ncrypt/crypt_gpgme.c:4171 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
+#: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
 #: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
 msgstr "Bantuan"
@@ -702,7 +702,7 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4909 ncrypt/pgp.c:1784
+#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
 #: ncrypt/smime.c:2123 ncrypt/smime.c:2138
 msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
@@ -1141,8 +1141,8 @@ msgid "no"
 msgstr "nggak"
 
 #: curs_lib.c:394
-msgid "Exit Mutt?"
-msgstr "Keluar dari Mutt?"
+msgid "Exit NeoMutt?"
+msgstr "Keluar dari NeoMutt?"
 
 #: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
 msgid "unknown error"
@@ -1332,8 +1332,8 @@ msgid "To view all messages, limit to \"all\"."
 msgstr "Utk melihat semua pesan, batasi dengan \"semua\"."
 
 #: curs_main.c:1576 pager.c:2291
-msgid "Quit Mutt?"
-msgstr "Keluar dari Mutt?"
+msgid "Quit NeoMutt?"
+msgstr "Keluar dari NeoMutt?"
 
 #: curs_main.c:1669
 msgid "Tag messages matching: "
@@ -1426,7 +1426,7 @@ msgstr ""
 #: curs_main.c:2178
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
-msgstr "Keluar dari Mutt tanpa menyimpan?"
+msgstr "Keluar dari NeoMutt tanpa menyimpan?"
 
 #: curs_main.c:2194
 #, fuzzy
@@ -1676,7 +1676,7 @@ msgstr "Surat berisi:\n"
 #. This entry is shown AFTER the message content,
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
-#. but means "(press any key to continue using mutt)".
+#. but means "(press any key to continue using neomutt)".
 #: edit.c:416 edit.c:475
 msgid "(continue)\n"
 msgstr "(lanjut)\n"
@@ -2063,7 +2063,7 @@ msgstr "Menutup hubungan ke %s..."
 #: imap/imap.c:350
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
-msgstr "IMAP server ini sudah kuno. Mutt tidak bisa menggunakannya."
+msgstr "IMAP server ini sudah kuno. NeoMutt tidak bisa menggunakannya."
 
 #: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
@@ -2412,24 +2412,24 @@ msgstr "%s: perintah tidak dikenali"
 msgid "Error in command line: %s\n"
 msgstr "Error di baris perintah: %s\n"
 
-#: init.c:4126
+#: init.c:4133
 msgid "unable to determine home directory"
 msgstr "tidak bisa menentukan home direktori"
 
-#: init.c:4134
+#: init.c:4141
 msgid "unable to determine username"
 msgstr "tidak bisa menentukan username"
 
-#: init.c:4169
+#: init.c:4176
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "tidak bisa menentukan username"
 
-#: init.c:4484
+#: init.c:4483
 msgid "-group: no group name"
 msgstr "-group: tidak ada nama group"
 
-#: init.c:4494
+#: init.c:4493
 msgid "out of arguments"
 msgstr "parameternya kurang"
 
@@ -2533,17 +2533,17 @@ msgstr "Buset, memory abis!"
 
 #: main.c:88
 msgid ""
-"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -B\n"
-"       mutt [<options>] -D [-S]\n"
-"       mutt -v[v]\n"
+"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"       neomutt [<options>] -p\n"
+"       neomutt [<options>] -A <alias> [...]\n"
+"       neomutt [<options>] -Q <query> [...]\n"
+"       neomutt [<options>] -B\n"
+"       neomutt [<options>] -D [-S]\n"
+"       neomutt -v[v]\n"
 msgstr ""
 
 #: main.c:98
@@ -2577,22 +2577,22 @@ msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
 "  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate muttrc file\n"
+"  -F <file>     specify an alternate neomuttrc file\n"
 "  -g <server>   specify a news server (if compiled with NNTP)\n"
 "  -G            select a newsgroup (if compiled with NNTP)\n"
 "  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which Mutt should include in the body\n"
+"  -i <file>     specify a file which NeoMutt should include in the body\n"
 "  -m <type>     specify a default mailbox type\n"
-"  -n            causes Mutt not to read the system Muttrc\n"
+"  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
 "  -e <perintah> perintah yang dijalankan setelah inisialisasi\n"
 "  -f <file>     kotak surat yang dibaca\n"
-"  -F <file>     file muttrc alternatif\n"
+"  -F <file>     file neomuttrc alternatif\n"
 "  -H <file>     file draft sebagai sumber header dan badan\n"
 "  -i <file>     file yang disertakan dalam badan surat\n"
 "  -m <jenis>    jenis kotak surat yang digunakan\n"
-"  -n            menyuruh Mutt untuk tidak membaca Muttrc dari sistem\n"
+"  -n            menyuruh NeoMutt untuk tidak membaca neomuttrc dari sistem\n"
 "  -p            lanjutkan surat yang ditunda"
 
 #: main.c:123
@@ -3130,7 +3130,7 @@ msgstr "(t)olak, terima (s)ekali"
 msgid "(r)eject, accept (o)nce"
 msgstr "(t)olak, terima (s)ekali"
 
-#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4165
+#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4166
 #: ncrypt/pgpkey.c:525 ncrypt/smime.c:418
 msgid "Exit  "
 msgstr "Keluar  "
@@ -3379,7 +3379,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "error saat membaca objek data: %s\n"
 
-#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3807 ncrypt/pgpkey.c:567
+#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
 #: ncrypt/pgpkey.c:741
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
@@ -3470,7 +3470,7 @@ msgstr "PERHATIAN: Masukan PKA tidak cocok dengan alamat penandatangan: "
 msgid "PKA verified signer's address is: "
 msgstr "Alamat penandatangan PKA yang sudah diverifikasi adalah: "
 
-#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3530
 msgid "Fingerprint: "
 msgstr "Cap jari: "
 
@@ -3497,7 +3497,7 @@ msgstr ""
 "yang namanya tertera di atas\n"
 
 #: ncrypt/crypt_gpgme.c:1462 ncrypt/crypt_gpgme.c:1467
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "aka: "
 msgstr ""
 
@@ -3690,15 +3690,15 @@ msgstr "[-- Akhir data yg ditandatangani dg S/MIME --]\n"
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:3444
+#: ncrypt/crypt_gpgme.c:3445
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak diketahui)]"
 
-#: ncrypt/crypt_gpgme.c:3446
+#: ncrypt/crypt_gpgme.c:3447
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak valid)]"
 
-#: ncrypt/crypt_gpgme.c:3451
+#: ncrypt/crypt_gpgme.c:3452
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Tidak bisa menampilkan user ID ini (DN tidak valid)]"
 
@@ -3706,154 +3706,154 @@ msgstr "[Tidak bisa menampilkan user ID ini (DN tidak valid)]"
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Name: "
 msgstr "Nama ......: "
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid From: "
 msgstr "Berlaku Dari..: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid To: "
 msgstr "Berlaku Sampai: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Type: "
 msgstr "Penggunaan Kunci: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Usage: "
 msgstr "Penggunaan Kunci: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Serial-No: "
 msgstr "Nomer Seri .: 0x%s\n"
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Issued By: "
 msgstr "Dikeluarkan oleh: "
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Subkey: "
 msgstr "Sub kunci..: 0x%s"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3584 ncrypt/crypt_gpgme.c:3725
+#: ncrypt/crypt_gpgme.c:3585 ncrypt/crypt_gpgme.c:3726
 msgid "[Invalid]"
 msgstr "[Tidak valid]"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3627 ncrypt/crypt_gpgme.c:3766
+#: ncrypt/crypt_gpgme.c:3628 ncrypt/crypt_gpgme.c:3767
 #, fuzzy, c-format
 msgid "%s, %lu bit %s\n"
 msgstr "Jenis Kunci: %s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3635 ncrypt/crypt_gpgme.c:3773
+#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3774
 msgid "encryption"
 msgstr "enkripsi"
 
-#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3642
-#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3774
-#: ncrypt/crypt_gpgme.c:3779 ncrypt/crypt_gpgme.c:3784
+#: ncrypt/crypt_gpgme.c:3637 ncrypt/crypt_gpgme.c:3643
+#: ncrypt/crypt_gpgme.c:3649 ncrypt/crypt_gpgme.c:3775
+#: ncrypt/crypt_gpgme.c:3780 ncrypt/crypt_gpgme.c:3785
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3641 ncrypt/crypt_gpgme.c:3778
+#: ncrypt/crypt_gpgme.c:3642 ncrypt/crypt_gpgme.c:3779
 msgid "signing"
 msgstr "menandatangani"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3647 ncrypt/crypt_gpgme.c:3783
+#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3784
 msgid "certification"
 msgstr "sertifikasi"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3719
+#: ncrypt/crypt_gpgme.c:3720
 msgid "[Revoked]"
 msgstr "[Dicabut]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3731
+#: ncrypt/crypt_gpgme.c:3732
 msgid "[Expired]"
 msgstr "[Kadaluwarsa]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3737
+#: ncrypt/crypt_gpgme.c:3738
 msgid "[Disabled]"
 msgstr "[Tidak aktif]"
 
-#: ncrypt/crypt_gpgme.c:3810
+#: ncrypt/crypt_gpgme.c:3811
 msgid "Collecting data..."
 msgstr "Mengumpulkan data ..."
 
-#: ncrypt/crypt_gpgme.c:3835
+#: ncrypt/crypt_gpgme.c:3836
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Error saat mencari kunci yg mengeluarkan: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3844
+#: ncrypt/crypt_gpgme.c:3845
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Error: rantai sertifikasi terlalu panjang - berhenti di sini\n"
 
-#: ncrypt/crypt_gpgme.c:3854 ncrypt/pgpkey.c:589
+#: ncrypt/crypt_gpgme.c:3855 ncrypt/pgpkey.c:589
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Identifikasi kunci: 0x%s"
 
-#: ncrypt/crypt_gpgme.c:3941
+#: ncrypt/crypt_gpgme.c:3942
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new gagal: %s"
 
-#: ncrypt/crypt_gpgme.c:3979 ncrypt/crypt_gpgme.c:4030
+#: ncrypt/crypt_gpgme.c:3980 ncrypt/crypt_gpgme.c:4031
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start gagal: %s"
 
-#: ncrypt/crypt_gpgme.c:4018 ncrypt/crypt_gpgme.c:4060
+#: ncrypt/crypt_gpgme.c:4019 ncrypt/crypt_gpgme.c:4061
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next gagal: %s"
 
-#: ncrypt/crypt_gpgme.c:4136
+#: ncrypt/crypt_gpgme.c:4137
 msgid "All matching keys are marked expired/revoked."
 msgstr "Semua kunci yang cocok ditandai kadaluwarsa/dicabut."
 
-#: ncrypt/crypt_gpgme.c:4167 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
+#: ncrypt/crypt_gpgme.c:4168 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
 msgid "Select  "
 msgstr "Pilih  "
 
-#: ncrypt/crypt_gpgme.c:4169 ncrypt/pgpkey.c:529
+#: ncrypt/crypt_gpgme.c:4170 ncrypt/pgpkey.c:529
 msgid "Check key  "
 msgstr "Cek key  "
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4186
 msgid "PGP and S/MIME keys matching"
 msgstr "Kunci-kunci PGP dan S/MIME cocok"
 
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4188
 msgid "PGP keys matching"
 msgstr "Kunci-kunci PGP cocok"
 
-#: ncrypt/crypt_gpgme.c:4189
+#: ncrypt/crypt_gpgme.c:4190
 msgid "S/MIME keys matching"
 msgstr "Kunci-kunci S/MIME cocok"
 
-#: ncrypt/crypt_gpgme.c:4191
+#: ncrypt/crypt_gpgme.c:4192
 msgid "keys matching"
 msgstr "kunci-kunci cocok"
 
@@ -3861,65 +3861,65 @@ msgstr "kunci-kunci cocok"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4198
+#: ncrypt/crypt_gpgme.c:4199
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4202
+#: ncrypt/crypt_gpgme.c:4203
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:608
+#: ncrypt/crypt_gpgme.c:4230 ncrypt/pgpkey.c:608
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
-#: ncrypt/crypt_gpgme.c:4243 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
+#: ncrypt/crypt_gpgme.c:4244 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
 msgid "ID is expired/disabled/revoked."
 msgstr "ID telah kadaluwarsa/disabled/dicabut."
 
-#: ncrypt/crypt_gpgme.c:4251 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
+#: ncrypt/crypt_gpgme.c:4252 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
 msgid "ID has undefined validity."
 msgstr "Validitas ID tidak terdifinisikan."
 
-#: ncrypt/crypt_gpgme.c:4254 ncrypt/pgpkey.c:627
+#: ncrypt/crypt_gpgme.c:4255 ncrypt/pgpkey.c:627
 msgid "ID is not valid."
 msgstr "ID tidak valid."
 
-#: ncrypt/crypt_gpgme.c:4257 ncrypt/pgpkey.c:630
+#: ncrypt/crypt_gpgme.c:4258 ncrypt/pgpkey.c:630
 msgid "ID is only marginally valid."
 msgstr "ID hanya valid secara marginal."
 
-#: ncrypt/crypt_gpgme.c:4266 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
+#: ncrypt/crypt_gpgme.c:4267 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Anda yakin mau menggunakan kunci tsb?"
 
-#: ncrypt/crypt_gpgme.c:4320 ncrypt/crypt_gpgme.c:4431 ncrypt/pgpkey.c:834
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
 #: ncrypt/pgpkey.c:955
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:4590 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Gunakan keyID = '%s' untuk %s?"
 
-#: ncrypt/crypt_gpgme.c:4641 ncrypt/pgp.c:1303 ncrypt/smime.c:778
+#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
 #: ncrypt/smime.c:880
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Masukkan keyID untuk %s: "
 
-#: ncrypt/crypt_gpgme.c:4702 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: ncrypt/crypt_gpgme.c:4714
+#: ncrypt/crypt_gpgme.c:4715
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Error saat mengambil informasi tentang kunci: "
@@ -3928,20 +3928,20 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4734
+#: ncrypt/crypt_gpgme.c:4735
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "Kunci PGP %s."
 
-#: ncrypt/crypt_gpgme.c:4777
+#: ncrypt/crypt_gpgme.c:4778
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4785
+#: ncrypt/crypt_gpgme.c:4786
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4824
+#: ncrypt/crypt_gpgme.c:4825
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -3949,11 +3949,11 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4826
+#: ncrypt/crypt_gpgme.c:4827
 msgid "sapco"
 msgstr "etsdpb"
 
-#: ncrypt/crypt_gpgme.c:4833
+#: ncrypt/crypt_gpgme.c:4834
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -3961,12 +3961,12 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4835
+#: ncrypt/crypt_gpgme.c:4836
 msgid "samco"
 msgstr "etsdmb"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4848
+#: ncrypt/crypt_gpgme.c:4849
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -3976,13 +3976,13 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4851
+#: ncrypt/crypt_gpgme.c:4852
 #, fuzzy
 msgid "esabpco"
 msgstr "etsdpb"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4857
+#: ncrypt/crypt_gpgme.c:4858
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -3992,12 +3992,12 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4860
+#: ncrypt/crypt_gpgme.c:4861
 #, fuzzy
 msgid "esabmco"
 msgstr "etsdmb"
 
-#: ncrypt/crypt_gpgme.c:4873
+#: ncrypt/crypt_gpgme.c:4874
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
@@ -4005,12 +4005,12 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4875
+#: ncrypt/crypt_gpgme.c:4876
 #, fuzzy
 msgid "esabpc"
 msgstr "etsdpb"
 
-#: ncrypt/crypt_gpgme.c:4882
+#: ncrypt/crypt_gpgme.c:4883
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
@@ -4018,16 +4018,16 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4884
+#: ncrypt/crypt_gpgme.c:4885
 #, fuzzy
 msgid "esabmc"
 msgstr "etsdmb"
 
-#: ncrypt/crypt_gpgme.c:5036
+#: ncrypt/crypt_gpgme.c:5037
 msgid "Failed to verify sender"
 msgstr "Gagal memverifikasi pengirim"
 
-#: ncrypt/crypt_gpgme.c:5039
+#: ncrypt/crypt_gpgme.c:5040
 msgid "Failed to figure out sender"
 msgstr "Gagal menentukan pengirim"
 
@@ -4489,1009 +4489,1009 @@ msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: opcodes.h:7
+#: opcodes.h:29
 msgid "null operation"
 msgstr "null operation"
 
-#: opcodes.h:8
+#: opcodes.h:30
 msgid "end of conditional execution (noop)"
 msgstr "akhir eksekusi bersyarat (noop)"
 
-#: opcodes.h:9
+#: opcodes.h:31
 msgid "force viewing of attachment using mailcap"
 msgstr "paksa menampilkan lampiran menggunakan mailcap"
 
-#: opcodes.h:10
+#: opcodes.h:32
 msgid "view attachment as text"
 msgstr "tampilkan lampiran sebagai teks"
 
-#: opcodes.h:11
+#: opcodes.h:33
 msgid "toggle display of subparts"
 msgstr "Tampilkan atau tidak sub-bagian"
 
-#: opcodes.h:12
+#: opcodes.h:34
 msgid "move to the bottom of the page"
 msgstr "ke akhir halaman"
 
-#: opcodes.h:13
+#: opcodes.h:35
 msgid "remail a message to another user"
 msgstr "kirim surat ke user lain"
 
-#: opcodes.h:14
+#: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:15
+#: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "pilih file baru di direktori ini"
 
-#: opcodes.h:16
+#: opcodes.h:38
 msgid "view file"
 msgstr "tampilkan file"
 
-#: opcodes.h:17
+#: opcodes.h:39
 msgid "display the currently selected file's name"
 msgstr "tampilkan nama file yang sedang dipilih"
 
-#: opcodes.h:18
+#: opcodes.h:40
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "berlangganan ke kotak surat ini (untuk IMAP)"
 
-#: opcodes.h:19
+#: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "berhenti langganan dari kotak surat ini (untuk IMAP)"
 
-#: opcodes.h:20
+#: opcodes.h:42
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "tampilkan semua kotak surat atau hanya yang langganan? (untuk IMAP)"
 
-#: opcodes.h:21
+#: opcodes.h:43
 msgid "list mailboxes with new mail"
 msgstr "tampilkan daftar kotak surat dengan surat baru"
 
-#: opcodes.h:22
+#: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:23
+#: opcodes.h:45
 msgid "change directories"
 msgstr "pindah direktori"
 
-#: opcodes.h:24
+#: opcodes.h:46
 msgid "check mailboxes for new mail"
 msgstr "periksa kotak surat apakah ada surat baru"
 
-#: opcodes.h:25
+#: opcodes.h:47
 msgid "attach file(s) to this message"
 msgstr "lampirkan file ke surat ini"
 
-#: opcodes.h:26
+#: opcodes.h:48
 msgid "attach message(s) to this message"
 msgstr "lampirkan surat lain ke surat ini"
 
-#: opcodes.h:27
+#: opcodes.h:49
 #, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "lampirkan file ke surat ini"
 
-#: opcodes.h:28
+#: opcodes.h:50
 msgid "edit the BCC list"
 msgstr "edit daftar BCC"
 
-#: opcodes.h:29
+#: opcodes.h:51
 msgid "edit the CC list"
 msgstr "edit daftar CC"
 
-#: opcodes.h:30
+#: opcodes.h:52
 msgid "edit attachment description"
 msgstr "edit keterangan lampiran"
 
-#: opcodes.h:31
+#: opcodes.h:53
 msgid "edit attachment transfer-encoding"
 msgstr "edit transfer-encoding dari lampiran"
 
-#: opcodes.h:32
+#: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
 msgstr "masukkan nama file di mana salinan surat ini mau disimpan"
 
-#: opcodes.h:33
+#: opcodes.h:55
 msgid "edit the file to be attached"
 msgstr "edit file yang akan dilampirkan"
 
-#: opcodes.h:34
+#: opcodes.h:56
 msgid "edit the from field"
 msgstr "edit kolom From"
 
-#: opcodes.h:35
+#: opcodes.h:57
 msgid "edit the message with headers"
 msgstr "edit surat berikut dengan headers"
 
-#: opcodes.h:36
+#: opcodes.h:58
 msgid "edit the message"
 msgstr "edit surat"
 
-#: opcodes.h:37
+#: opcodes.h:59
 msgid "edit attachment using mailcap entry"
 msgstr "edit lampiran berdasarkan mailcap"
 
-#: opcodes.h:38
+#: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "edit daftar CC"
 
-#: opcodes.h:39
+#: opcodes.h:61
 msgid "edit the Reply-To field"
 msgstr "edit kolom Reply-To"
 
-#: opcodes.h:40
+#: opcodes.h:62
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "edit kolom Reply-To"
 
-#: opcodes.h:41
+#: opcodes.h:63
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "edit kolom Reply-To"
 
-#: opcodes.h:42
+#: opcodes.h:64
 msgid "edit the subject of this message"
 msgstr "edit subjek dari surat ini"
 
-#: opcodes.h:43
+#: opcodes.h:65
 msgid "edit the TO list"
 msgstr "edit daftar TO"
 
-#: opcodes.h:44
+#: opcodes.h:66
 msgid "create a new mailbox (IMAP only)"
 msgstr "buat kotak surat baru (untuk IMAP)"
 
-#: opcodes.h:45
+#: opcodes.h:67
 msgid "edit attachment content type"
 msgstr "edit jenis isi (content-type) lampiran"
 
-#: opcodes.h:46
+#: opcodes.h:68
 msgid "get a temporary copy of an attachment"
 msgstr "ambil salinan sementara dari lampiran"
 
-#: opcodes.h:47
+#: opcodes.h:69
 msgid "run ispell on the message"
 msgstr "jalankan ispell ke surat"
 
-#: opcodes.h:48
+#: opcodes.h:70
 msgid "compose new attachment using mailcap entry"
 msgstr "buat lampiran berdasarkan mailcap"
 
-#: opcodes.h:49
+#: opcodes.h:71
 msgid "toggle recoding of this attachment"
 msgstr "peng-coding-an ulang dari lampiran ini"
 
-#: opcodes.h:50
+#: opcodes.h:72
 msgid "save this message to send later"
 msgstr "simpan surat ini untuk dikirim nanti"
 
-#: opcodes.h:51
+#: opcodes.h:73
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "edit transfer-encoding dari lampiran"
 
-#: opcodes.h:52
+#: opcodes.h:74
 msgid "rename/move an attached file"
 msgstr "ganti nama/pindahkan file lampiran"
 
-#: opcodes.h:53
+#: opcodes.h:75
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "menulis surat baru"
 
-#: opcodes.h:54
+#: opcodes.h:76
 msgid "send the message"
 msgstr "kirim suratnya"
 
-#: opcodes.h:55
+#: opcodes.h:77
 msgid "toggle disposition between inline/attachment"
 msgstr "penampilan inline atau sebagai attachment"
 
-#: opcodes.h:56
+#: opcodes.h:78
 msgid "toggle whether to delete file after sending it"
 msgstr "hapus atau tidak setelah suratnya dikirim"
 
-#: opcodes.h:57
+#: opcodes.h:79
 msgid "update an attachment's encoding info"
 msgstr "betulkan encoding info dari lampiran"
 
-#: opcodes.h:58
+#: opcodes.h:80
 msgid "write the message to a folder"
 msgstr "simpan surat ke sebuah folder"
 
-#: opcodes.h:59
+#: opcodes.h:81
 msgid "copy a message to a file/mailbox"
 msgstr "simpan surat ke file/kotak surat"
 
-#: opcodes.h:60
+#: opcodes.h:82
 msgid "create an alias from a message sender"
 msgstr "buat alias dari pengirim surat"
 
-#: opcodes.h:61
+#: opcodes.h:83
 msgid "move entry to bottom of screen"
 msgstr "pindahkan entry ke akhir layar"
 
-#: opcodes.h:62
+#: opcodes.h:84
 msgid "move entry to middle of screen"
 msgstr "pindahkan entry ke tengah layar"
 
-#: opcodes.h:63
+#: opcodes.h:85
 msgid "move entry to top of screen"
 msgstr "pindahkan entry ke awal layar"
 
-#: opcodes.h:64
+#: opcodes.h:86
 msgid "make decoded (text/plain) copy"
 msgstr "buat salinan (text/plain) yang sudah di-decode"
 
-#: opcodes.h:65
+#: opcodes.h:87
 msgid "make decoded copy (text/plain) and delete"
 msgstr "buat salinan (text/plain) yang sudah di-decode dan hapus"
 
-#: opcodes.h:66
+#: opcodes.h:88
 msgid "delete the current entry"
 msgstr "hapus entry ini"
 
-#: opcodes.h:67
+#: opcodes.h:89
 msgid "delete the current mailbox (IMAP only)"
 msgstr "hapus kotak surat ini (untuk IMAP)"
 
-#: opcodes.h:68
+#: opcodes.h:90
 msgid "delete all messages in subthread"
 msgstr "hapus semua surat di subthread"
 
-#: opcodes.h:69
+#: opcodes.h:91
 msgid "delete all messages in thread"
 msgstr "hapus semua surat di thread"
 
-#: opcodes.h:70
+#: opcodes.h:92
 msgid "display full address of sender"
 msgstr "tampilkan alamat lengkap pengirim"
 
-#: opcodes.h:71
+#: opcodes.h:93
 msgid "display message and toggle header weeding"
 msgstr "tampilkan surat dan pilih penghapusan header"
 
-#: opcodes.h:72
+#: opcodes.h:94
 msgid "display a message"
 msgstr "tampilkan surat"
 
-#: opcodes.h:73
+#: opcodes.h:95
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: opcodes.h:74
+#: opcodes.h:96
 msgid "edit the raw message"
 msgstr "edit keseluruhan surat"
 
-#: opcodes.h:75
+#: opcodes.h:97
 msgid "delete the char in front of the cursor"
 msgstr "hapus karakter di depan kursor"
 
-#: opcodes.h:76
+#: opcodes.h:98
 msgid "move the cursor one character to the left"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
-#: opcodes.h:77
+#: opcodes.h:99
 msgid "move the cursor to the beginning of the word"
 msgstr "ke awal kata"
 
-#: opcodes.h:78
+#: opcodes.h:100
 msgid "jump to the beginning of the line"
 msgstr "ke awal baris"
 
-#: opcodes.h:79
+#: opcodes.h:101
 msgid "cycle among incoming mailboxes"
 msgstr "cycle antara kotak surat yang menerima surat"
 
-#: opcodes.h:80
+#: opcodes.h:102
 msgid "complete filename or alias"
 msgstr "lengkapi nama file atau alias"
 
-#: opcodes.h:81
+#: opcodes.h:103
 msgid "complete address with query"
 msgstr "lengkapi alamat dengan query"
 
-#: opcodes.h:82
+#: opcodes.h:104
 msgid "delete the char under the cursor"
 msgstr "hapus karakter di bawah kursor"
 
-#: opcodes.h:83
+#: opcodes.h:105
 msgid "jump to the end of the line"
 msgstr "ke akhir baris"
 
-#: opcodes.h:84
+#: opcodes.h:106
 msgid "move the cursor one character to the right"
 msgstr "pindahkan kursor satu karakter ke kanan"
 
-#: opcodes.h:85
+#: opcodes.h:107
 msgid "move the cursor to the end of the word"
 msgstr "pindahkan kursor ke akhir kata"
 
-#: opcodes.h:86
+#: opcodes.h:108
 msgid "scroll down through the history list"
 msgstr "scroll daftar history ke bawah"
 
-#: opcodes.h:87
+#: opcodes.h:109
 msgid "scroll up through the history list"
 msgstr "scroll daftar history ke atas"
 
-#: opcodes.h:88
+#: opcodes.h:110
 msgid "delete chars from cursor to end of line"
 msgstr "hapus dari kursor sampai akhir baris"
 
-#: opcodes.h:89
+#: opcodes.h:111
 msgid "delete chars from the cursor to the end of the word"
 msgstr "hapus dari kursor sampai akhir kata"
 
-#: opcodes.h:90
+#: opcodes.h:112
 msgid "delete all chars on the line"
 msgstr "hapus baris"
 
-#: opcodes.h:91
+#: opcodes.h:113
 msgid "delete the word in front of the cursor"
 msgstr "hapus kata di depan kursor"
 
-#: opcodes.h:92
+#: opcodes.h:114
 msgid "quote the next typed key"
 msgstr "kutip tombol yang akan ditekan berikut"
 
-#: opcodes.h:93
+#: opcodes.h:115
 msgid "transpose character under cursor with previous"
 msgstr "tukar karakter di bawah kursor dg yg sebelumnya"
 
-#: opcodes.h:94
+#: opcodes.h:116
 msgid "capitalize the word"
 msgstr "ubah kata ke huruf kapital"
 
-#: opcodes.h:95
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "ubah kata ke huruf kecil"
 
-#: opcodes.h:96
+#: opcodes.h:118
 msgid "convert the word to upper case"
 msgstr "ubah kata ke huruf besar"
 
-#: opcodes.h:97
-msgid "enter a muttrc command"
-msgstr "menjalankan perintah muttrc"
+#: opcodes.h:119
+msgid "enter a neomuttrc command"
+msgstr "menjalankan perintah neomuttrc"
 
-#: opcodes.h:98
+#: opcodes.h:120
 msgid "enter a file mask"
 msgstr "menentukan file mask"
 
-#: opcodes.h:99
+#: opcodes.h:121
 msgid "exit this menu"
 msgstr "keluar dari menu ini"
 
-#: opcodes.h:100
+#: opcodes.h:122
 msgid "filter attachment through a shell command"
 msgstr "mem-filter lampiran melalui perintah shell"
 
-#: opcodes.h:101
+#: opcodes.h:123
 msgid "move to the first entry"
 msgstr "ke entry pertama"
 
-#: opcodes.h:102
+#: opcodes.h:124
 msgid "toggle a message's 'important' flag"
 msgstr "menandai surat penting atau tidak ('important' flag)"
 
-#: opcodes.h:103
+#: opcodes.h:125
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Balas ke %s%s?"
 
-#: opcodes.h:104
+#: opcodes.h:126
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:105
+#: opcodes.h:127
 msgid "forward a message with comments"
 msgstr "forward surat dengan komentar"
 
-#: opcodes.h:106
+#: opcodes.h:128
 msgid "select the current entry"
 msgstr "pilih entry ini"
 
-#: opcodes.h:107
+#: opcodes.h:129
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Anda sudah di surat yang pertama."
 
-#: opcodes.h:108
+#: opcodes.h:130
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "edit surat berikut dengan headers"
 
-#: opcodes.h:109
+#: opcodes.h:131
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Anda sudah di surat yang pertama."
 
-#: opcodes.h:110
+#: opcodes.h:132
 msgid "reply to all recipients"
 msgstr "balas ke semua penerima"
 
-#: opcodes.h:111
+#: opcodes.h:133
 msgid "scroll down 1/2 page"
 msgstr "geser ke bawah setengah layar"
 
-#: opcodes.h:112
+#: opcodes.h:134
 msgid "scroll up 1/2 page"
 msgstr "geser ke atas setengah layar"
 
-#: opcodes.h:113
+#: opcodes.h:135
 msgid "this screen"
 msgstr "layar ini"
 
-#: opcodes.h:114
+#: opcodes.h:136
 msgid "jump to an index number"
 msgstr "ke nomer indeks"
 
-#: opcodes.h:115
+#: opcodes.h:137
 msgid "move to the last entry"
 msgstr "ke entry terakhir"
 
-#: opcodes.h:116
+#: opcodes.h:138
 msgid "reply to specified mailing list"
 msgstr "balas ke mailing list yang disebut"
 
-#: opcodes.h:117
+#: opcodes.h:139
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:118
+#: opcodes.h:140
 msgid "execute a macro"
 msgstr "menjalankan macro"
 
-#: opcodes.h:119
+#: opcodes.h:141
 msgid "compose a new mail message"
 msgstr "menulis surat baru"
 
-#: opcodes.h:120
+#: opcodes.h:142
 msgid "break the thread in two"
 msgstr "pecahkan thread jadi dua"
 
-#: opcodes.h:121
+#: opcodes.h:143
 msgid "open a different folder"
 msgstr "membuka folder lain"
 
-#: opcodes.h:122
+#: opcodes.h:144
 msgid "open a different folder in read only mode"
 msgstr "membuka folder lain dengan mode read-only"
 
-#: opcodes.h:123
+#: opcodes.h:145
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "membuka folder lain"
 
-#: opcodes.h:124
+#: opcodes.h:146
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "membuka folder lain dengan mode read-only"
 
-#: opcodes.h:125
+#: opcodes.h:147
 msgid "clear a status flag from a message"
 msgstr "bersihkan suatu tanda status pada surat"
 
-#: opcodes.h:126
+#: opcodes.h:148
 msgid "delete messages matching a pattern"
 msgstr "hapus surat yang cocok dengan suatu kriteria"
 
-#: opcodes.h:127
+#: opcodes.h:149
 msgid "force retrieval of mail from IMAP server"
 msgstr "paksa mengambil surat dari server IMAP"
 
-#: opcodes.h:128
+#: opcodes.h:150
 msgid "logout from all IMAP servers"
 msgstr ""
 
-#: opcodes.h:129
+#: opcodes.h:151
 msgid "retrieve mail from POP server"
 msgstr "mengambil surat dari server POP"
 
-#: opcodes.h:130
+#: opcodes.h:152
 msgid "show only messages matching a pattern"
 msgstr "hanya tunjukkan surat yang cocok dengan suatu kriteria"
 
-#: opcodes.h:131
+#: opcodes.h:153
 msgid "link tagged message to the current one"
 msgstr "hubungkan surat yang telah ditandai ke yang sedang dipilih"
 
-#: opcodes.h:132
+#: opcodes.h:154
 msgid "open next mailbox with new mail"
 msgstr "buka kotak surat dengan surat baru"
 
-#: opcodes.h:133
+#: opcodes.h:155
 msgid "jump to the next new message"
 msgstr "ke surat berikutnya yang baru"
 
-#: opcodes.h:134
+#: opcodes.h:156
 msgid "jump to the next new or unread message"
 msgstr "ke surat berikutnya yang baru atau belum dibaca"
 
-#: opcodes.h:135
+#: opcodes.h:157
 msgid "jump to the next subthread"
 msgstr "ke subthread berikutnya"
 
-#: opcodes.h:136
+#: opcodes.h:158
 msgid "jump to the next thread"
 msgstr "ke thread berikutnya"
 
-#: opcodes.h:137
+#: opcodes.h:159
 msgid "move to the next undeleted message"
 msgstr "ke surat berikutnya yang tidak dihapus"
 
-#: opcodes.h:138
+#: opcodes.h:160
 msgid "jump to the next unread message"
 msgstr "ke surat berikutnya yang belum dibaca"
 
-#: opcodes.h:139
+#: opcodes.h:161
 msgid "jump to parent message in thread"
 msgstr "loncat ke surat induk di thread ini"
 
-#: opcodes.h:140
+#: opcodes.h:162
 msgid "jump to previous thread"
 msgstr "ke thread sebelumnya"
 
-#: opcodes.h:141
+#: opcodes.h:163
 msgid "jump to previous subthread"
 msgstr "ke subthread sebelumnya"
 
-#: opcodes.h:142
+#: opcodes.h:164
 msgid "move to the previous undeleted message"
 msgstr "ke surat sebelumnya yang tidak dihapus"
 
-#: opcodes.h:143
+#: opcodes.h:165
 msgid "jump to the previous new message"
 msgstr "ke surat sebelumnya yang baru"
 
-#: opcodes.h:144
+#: opcodes.h:166
 msgid "jump to the previous new or unread message"
 msgstr "ke surat sebelumnya yang baru atau belum dibaca"
 
-#: opcodes.h:145
+#: opcodes.h:167
 msgid "jump to the previous unread message"
 msgstr "ke surat sebelumnya yang belum dibaca"
 
-#: opcodes.h:146
+#: opcodes.h:168
 msgid "mark the current thread as read"
 msgstr "tandai thread ini 'sudah dibaca'"
 
-#: opcodes.h:147
+#: opcodes.h:169
 msgid "mark the current subthread as read"
 msgstr "tandai subthread ini 'sudah dibaca'"
 
-#: opcodes.h:148
+#: opcodes.h:170
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "loncat ke surat induk di thread ini"
 
-#: opcodes.h:149
+#: opcodes.h:171
 msgid "set a status flag on a message"
 msgstr "tandai status dari surat"
 
-#: opcodes.h:150
+#: opcodes.h:172
 msgid "save changes to mailbox"
 msgstr "simpan perubahan ke kotak surat"
 
-#: opcodes.h:151
+#: opcodes.h:173
 msgid "tag messages matching a pattern"
 msgstr "tandai surat-surat yang cocok dengan kriteria"
 
-#: opcodes.h:152
-msgid "delete from mutt, don't touch on disk"
+#: opcodes.h:174
+msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:153
+#: opcodes.h:175
 msgid "undelete messages matching a pattern"
 msgstr "tidak jadi menghapus surat-surat yang cocok dengan kriteria"
 
-#: opcodes.h:154
+#: opcodes.h:176
 msgid "untag messages matching a pattern"
 msgstr "tidak jadi menandai surat-surat yang cocok dengan kriteria"
 
-#: opcodes.h:155
+#: opcodes.h:177
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "Anda sudah di surat yang pertama."
 
-#: opcodes.h:156
+#: opcodes.h:178
 msgid "move to the middle of the page"
 msgstr "ke tengah halaman"
 
-#: opcodes.h:157
+#: opcodes.h:179
 msgid "move to the next entry"
 msgstr "ke entry berikutnya"
 
-#: opcodes.h:158
+#: opcodes.h:180
 msgid "scroll down one line"
 msgstr "geser ke bawah satu baris"
 
-#: opcodes.h:159
+#: opcodes.h:181
 msgid "move to the next page"
 msgstr "ke halaman berikutnya"
 
-#: opcodes.h:160
+#: opcodes.h:182
 msgid "jump to the bottom of the message"
 msgstr "ke akhir surat"
 
-#: opcodes.h:161
+#: opcodes.h:183
 msgid "toggle display of quoted text"
 msgstr "tampilkan atau tidak teks yang dikutip"
 
-#: opcodes.h:162
+#: opcodes.h:184
 msgid "skip beyond quoted text"
 msgstr "lompati setelah teks yang dikutip"
 
-#: opcodes.h:163
+#: opcodes.h:185
 msgid "jump to the top of the message"
 msgstr "ke awal surat"
 
-#: opcodes.h:164
+#: opcodes.h:186
 msgid "pipe message/attachment to a shell command"
 msgstr "pipe surat/lampiran ke perintah shell"
 
-#: opcodes.h:165
+#: opcodes.h:187
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Bounce surat ke %s"
 
-#: opcodes.h:166
+#: opcodes.h:188
 msgid "move to the previous entry"
 msgstr "ke entry sebelumnya"
 
-#: opcodes.h:167
+#: opcodes.h:189
 msgid "scroll up one line"
 msgstr "geser ke atas satu baris"
 
-#: opcodes.h:168
+#: opcodes.h:190
 msgid "move to the previous page"
 msgstr "ke halaman sebelumnya"
 
-#: opcodes.h:169
+#: opcodes.h:191
 msgid "print the current entry"
 msgstr "cetak entry ini"
 
-#: opcodes.h:170
+#: opcodes.h:192
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:171
+#: opcodes.h:193
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:172
+#: opcodes.h:194
 msgid "query external program for addresses"
 msgstr "gunakan program lain untuk mencari alamat"
 
-#: opcodes.h:173
+#: opcodes.h:195
 msgid "append new query results to current results"
 msgstr "tambahkan hasil pencarian baru ke hasil yang sudah ada"
 
-#: opcodes.h:174
+#: opcodes.h:196
 msgid "save changes to mailbox and quit"
 msgstr "simpan perubahan ke kotak surat dan keluar"
 
-#: opcodes.h:175
+#: opcodes.h:197
 msgid "recall a postponed message"
 msgstr "lanjutkan surat yang ditunda"
 
-#: opcodes.h:176
+#: opcodes.h:198
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "Thread berisi surat yang belum dibaca."
 
-#: opcodes.h:177
+#: opcodes.h:199
 msgid "clear and redraw the screen"
 msgstr "bersihkan layar dan redraw"
 
-#: opcodes.h:178
+#: opcodes.h:200
 msgid "{internal}"
 msgstr "{jerohan}"
 
-#: opcodes.h:179
+#: opcodes.h:201
 msgid "rename the current mailbox (IMAP only)"
 msgstr "ganti nama kotak surat ini (untuk IMAP)"
 
-#: opcodes.h:180
+#: opcodes.h:202
 msgid "reply to a message"
 msgstr "balas surat"
 
-#: opcodes.h:181
+#: opcodes.h:203
 msgid "use the current message as a template for a new one"
 msgstr "gunakan surat ini sebagai template"
 
-#: opcodes.h:182
+#: opcodes.h:204
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "simpan surat/lampiran ke suatu file"
 
-#: opcodes.h:183
+#: opcodes.h:205
 msgid "search for a regular expression"
 msgstr "cari dengan regular expression"
 
-#: opcodes.h:184
+#: opcodes.h:206
 msgid "search backwards for a regular expression"
 msgstr "cari mundur dengan regular expression"
 
-#: opcodes.h:185
+#: opcodes.h:207
 msgid "search for next match"
 msgstr "cari yang cocok berikutnya"
 
-#: opcodes.h:186
+#: opcodes.h:208
 msgid "search for next match in opposite direction"
 msgstr "cari mundur yang cocok berikutnya"
 
-#: opcodes.h:187
+#: opcodes.h:209
 msgid "toggle search pattern coloring"
 msgstr "diwarnai atau tidak jika ketemu"
 
-#: opcodes.h:188
+#: opcodes.h:210
 msgid "invoke a command in a subshell"
 msgstr "jalankan perintah di subshell"
 
-#: opcodes.h:189
+#: opcodes.h:211
 msgid "sort messages"
 msgstr "urutkan surat-surat"
 
-#: opcodes.h:190
+#: opcodes.h:212
 msgid "sort messages in reverse order"
 msgstr "urutkan terbalik surat-surat"
 
-#: opcodes.h:191
+#: opcodes.h:213
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "tidak jadi menandai surat-surat yang cocok dengan kriteria"
 
-#: opcodes.h:192
+#: opcodes.h:214
 msgid "tag the current entry"
 msgstr "tandai entry ini"
 
-#: opcodes.h:193
+#: opcodes.h:215
 msgid "apply next function to tagged messages"
 msgstr "lakukan fungsi berikutnya ke surat-surat yang ditandai"
 
-#: opcodes.h:194
+#: opcodes.h:216
 msgid "apply next function ONLY to tagged messages"
 msgstr "lakukan fungsi berikutnya HANYA ke surat-surat yang ditandai"
 
-#: opcodes.h:195
+#: opcodes.h:217
 msgid "tag the current subthread"
 msgstr "tandai subthread ini"
 
-#: opcodes.h:196
+#: opcodes.h:218
 msgid "tag the current thread"
 msgstr "tandai thread ini"
 
-#: opcodes.h:197
+#: opcodes.h:219
 msgid "toggle a message's 'new' flag"
 msgstr "tandai atau tidak sebuah surat 'baru'"
 
-#: opcodes.h:198
+#: opcodes.h:220
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "ke surat sebelumnya yang baru atau belum dibaca"
 
-#: opcodes.h:199
+#: opcodes.h:221
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "apakah kotak surat akan ditulis ulang"
 
-#: opcodes.h:200
+#: opcodes.h:222
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "apakah menjelajahi kotak-kotak surat saja atau semua file"
 
-#: opcodes.h:201
+#: opcodes.h:223
 msgid "move to the top of the page"
 msgstr "ke awal halaman"
 
-#: opcodes.h:202
+#: opcodes.h:224
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:203
+#: opcodes.h:225
 msgid "undelete the current entry"
 msgstr "tidak jadi hapus entry ini"
 
-#: opcodes.h:204
+#: opcodes.h:226
 msgid "undelete all messages in thread"
 msgstr "tidak jadi hapus semua surat di thread"
 
-#: opcodes.h:205
+#: opcodes.h:227
 msgid "undelete all messages in subthread"
 msgstr "tidak jadi hapus semua surat di subthread"
 
-#: opcodes.h:206
+#: opcodes.h:228
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "tidak jadi menandai surat-surat yang cocok dengan kriteria"
 
-#: opcodes.h:207
-msgid "show the Mutt version number and date"
-msgstr "tunjukkan versi dan tanggal dari Mutt"
+#: opcodes.h:229
+msgid "show the NeoMutt version number and date"
+msgstr "tunjukkan versi dan tanggal dari NeoMutt"
 
-#: opcodes.h:208
+#: opcodes.h:230
 msgid "view attachment using mailcap entry if necessary"
 msgstr "tampilkan lampiran berdasarkan mailcap jika perlu"
 
-#: opcodes.h:209
+#: opcodes.h:231
 msgid "show MIME attachments"
 msgstr "tampilkan lampiran MIME"
 
-#: opcodes.h:210
+#: opcodes.h:232
 msgid "display the keycode for a key press"
 msgstr "tampilkan keycode untuk penekanan tombol"
 
-#: opcodes.h:211
+#: opcodes.h:233
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "tandai thread ini"
 
-#: opcodes.h:212
+#: opcodes.h:234
 msgid "show currently active limit pattern"
 msgstr "tampilkan kriteria batas yang sedang aktif"
 
-#: opcodes.h:213
+#: opcodes.h:235
 msgid "collapse/uncollapse current thread"
 msgstr "collapse/uncollapse thread ini"
 
-#: opcodes.h:214
+#: opcodes.h:236
 msgid "collapse/uncollapse all threads"
 msgstr "collapse/uncollapse semua thread"
 
-#: opcodes.h:217
+#: opcodes.h:239
 msgid "make decrypted copy and delete"
 msgstr "buat salinan yang sudah di-decrypt dan hapus"
 
-#: opcodes.h:218
+#: opcodes.h:240
 msgid "make decrypted copy"
 msgstr "buat salinan yang sudah di-decrypt"
 
-#: opcodes.h:219
+#: opcodes.h:241
 msgid "wipe passphrase(s) from memory"
 msgstr "hapus passphrase dari memory"
 
-#: opcodes.h:220
+#: opcodes.h:242
 msgid "extract supported public keys"
 msgstr "ekstrak kunci2 publik yg didukung"
 
-#: opcodes.h:224
+#: opcodes.h:246
 #, fuzzy
 msgid "accept the chain constructed"
 msgstr "Terima rangkaian yang dibentuk"
 
-#: opcodes.h:225
+#: opcodes.h:247
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "Tambahkan remailer ke rangkaian"
 
-#: opcodes.h:226
+#: opcodes.h:248
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "Sisipkan remailer ke rangkaian"
 
-#: opcodes.h:227
+#: opcodes.h:249
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "Hapus remailer dari rangkaian"
 
-#: opcodes.h:228
+#: opcodes.h:250
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "Pilih elemen sebelumnya dalam rangkaian"
 
-#: opcodes.h:229
+#: opcodes.h:251
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "Pilih elemen berikutnya dalam rangkaian"
 
-#: opcodes.h:230
+#: opcodes.h:252
 msgid "send the message through a mixmaster remailer chain"
 msgstr "kirim surat melalui sebuah rangkaian remailer mixmaster"
 
-#: opcodes.h:237
+#: opcodes.h:259
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "membuka folder lain"
 
-#: opcodes.h:238
+#: opcodes.h:260
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:239
+#: opcodes.h:261
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:240
+#: opcodes.h:262
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:241
+#: opcodes.h:263
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: opcodes.h:242
+#: opcodes.h:264
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "Anda sudah di surat yang pertama."
 
-#: opcodes.h:243
+#: opcodes.h:265
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: opcodes.h:249
+#: opcodes.h:271
 msgid "attach a PGP public key"
 msgstr "lampirkan PGP public key"
 
-#: opcodes.h:250
+#: opcodes.h:272
 msgid "show PGP options"
 msgstr "tunjukan opsi2 PGP"
 
-#: opcodes.h:251
+#: opcodes.h:273
 msgid "mail a PGP public key"
 msgstr "kirim PGP public key lewat surat"
 
-#: opcodes.h:252
+#: opcodes.h:274
 msgid "verify a PGP public key"
 msgstr "periksa PGP public key"
 
-#: opcodes.h:253
+#: opcodes.h:275
 msgid "view the key's user id"
 msgstr "tampilkan user ID dari key"
 
-#: opcodes.h:254
+#: opcodes.h:276
 msgid "check for classic PGP"
 msgstr "periksa PGP klasik"
 
-#: opcodes.h:257
+#: opcodes.h:279
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: opcodes.h:258
+#: opcodes.h:280
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "buka kotak surat dengan surat baru"
 
-#: opcodes.h:259
+#: opcodes.h:281
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Membuka kembali kotak surat..."
 
-#: opcodes.h:260
+#: opcodes.h:282
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "geser ke bawah setengah layar"
 
-#: opcodes.h:261
+#: opcodes.h:283
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "geser ke atas setengah layar"
 
-#: opcodes.h:262
+#: opcodes.h:284
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "ke halaman sebelumnya"
 
-#: opcodes.h:263
+#: opcodes.h:285
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "buka kotak surat dengan surat baru"
 
-#: opcodes.h:264
+#: opcodes.h:286
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "apakah menjelajahi kotak-kotak surat saja atau semua file"
 
-#: opcodes.h:265
+#: opcodes.h:287
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: opcodes.h:268
+#: opcodes.h:290
 msgid "show S/MIME options"
 msgstr "tunjukan opsi2 S/MIME"
 
@@ -6056,7 +6056,7 @@ msgstr "Tidak ada subjek, batal."
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
-#. If she says no, mutt will reply to the from header's address instead.
+#. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:581
 #, c-format
 msgid "Reply to %s%s?"
@@ -6314,7 +6314,7 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Hak Cipta (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Hak Cipta (C) 1996-2016 Michael R. Elkins <me@mutt.org>\n"
 "Hak Cipta (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Hak Cipta (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Hak Cipta (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
@@ -6358,14 +6358,14 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `neomutt -vv' for details.\n"
 msgstr ""
-"Hak Cipta (C) 1996-2007 Michael R. Elkins dan kawan-kawan.\n"
-"Mutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'mutt -vv'.\n"
-"Mutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
-"dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
+"Hak Cipta (C) 1996-2016 Michael R. Elkins dan kawan-kawan.\n"
+"NeoMutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'neomutt -vv'.\n"
+"NeoMutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
+"dengan beberapa persyaratan; baca 'neomutt -vv' utk jelasnya.\n"
 
 #: version.c:409
 #, fuzzy
@@ -6383,25 +6383,3 @@ msgid ""
 msgstr ""
 "\n"
 "Opsi2 saat kompilasi:"
-
-#, fuzzy
-#~ msgid "default colors not supported."
-#~ msgstr "warna default tidak didukung"
-
-#, fuzzy
-#~ msgid "sign as: "
-#~ msgstr " tandatangan sebagai: "
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "Jumlah lock terlalu banyak, hapus lock untuk %s?"
-
-#~ msgid " aka ......: "
-#~ msgstr " alias.....: "
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar.\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar.\n"

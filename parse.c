@@ -888,7 +888,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         if (hdr)
         {
           /*
-         * HACK - mutt has, for a very short time, produced negative
+         * HACK - neomutt has, for a very short time, produced negative
          * Lines header values.  Ignore them.
          */
           if (mutt_atoi(p, &hdr->lines) < 0 || hdr->lines < 0)

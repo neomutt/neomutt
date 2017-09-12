@@ -720,7 +720,7 @@ static const struct Extkey ExtKeys[] = {
 /**
  * find_ext_name - Find the curses name for a key
  *
- * Look up Mutt's name for a key and find the ncurses extended name for it
+ * Look up NeoMutt's name for a key and find the ncurses extended name for it
  */
 static const char *find_ext_name(const char *key)
 {

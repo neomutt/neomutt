@@ -350,7 +350,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
              ((mutt_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
-                                                        * by old mutt versions
+                                                        * by old neomutt versions
                                                         */
               || (mutt_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
     {

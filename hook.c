@@ -113,7 +113,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (data & (MUTT_FOLDERHOOK | MUTT_MBOXHOOK))
   {
-    /* Accidentally using the ^ mailbox shortcut in the .muttrc is a
+    /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
      * common mistake */
     if ((*pattern.data == '^') && (!CurrentFolder))
     {

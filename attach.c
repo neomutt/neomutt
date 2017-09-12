@@ -363,7 +363,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  * Display a message attachment using the viewer program configured in mailcap.
  * If there is no mailcap entry for a file type, view the image as text.
  * Viewer processes are opened and waited on synchronously so viewing an
- * attachment this way will block the main mutt process until the viewer process
+ * attachment this way will block the main neomutt process until the viewer process
  * exits.
  *
  */

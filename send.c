@@ -577,7 +577,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
        */
       /* L10N:
          Asks whether the user respects the reply-to header.
-         If she says no, mutt will reply to the from header's address instead. */
+         If she says no, neomutt will reply to the from header's address instead. */
       snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"),
                env->reply_to->mailbox, env->reply_to->next ? ",..." : "");
       switch (query_quadoption(OPT_REPLY_TO, prompt))

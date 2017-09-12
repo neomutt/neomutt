@@ -294,7 +294,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     return;
   }
 
-  /* If server flags could conflict with mutt's flags, reopen the mailbox. */
+  /* If server flags could conflict with neomutt's flags, reopen the mailbox. */
   if (h->changed)
     idata->reopen |= IMAP_EXPUNGE_PENDING;
   else

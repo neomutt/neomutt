@@ -14,8 +14,8 @@ noinst_PROGRAMS = makedoc
 
 EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
-	mutt-1.7.0-syntax.vim mutt.css mutt.man mutt.xsl Muttrc Muttrc.head \
-	muttrc.man.head muttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
+	neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
+	neomuttrc.man.head neomuttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
 	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1
 
 CHUNKED_DOCFILES = advancedusage.html configuration.html gettingstarted.html \
@@ -33,15 +33,15 @@ topsrcdir_DOCFILES = ChangeLog.md CODE_OF_CONDUCT.md COPYRIGHT INSTALL \
 
 all: makedoc-all
 
-makedoc-all: $(CHUNKED_DOCFILES) index.html manual.html manual.txt mutt.1 \
-	Muttrc muttrc.man neomutt-syntax.vim
+makedoc-all: $(CHUNKED_DOCFILES) index.html manual.html manual.txt neomutt.1 \
+	neomuttrc neomuttrc.man neomutt-syntax.vim
 
 install-data-local: makedoc-all
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
+	$(INSTALL) -m 644 neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
+	$(INSTALL) -m 644 neomuttrc.man $(DESTDIR)$(mandir)/man5/neomuttrc.5
 	$(INSTALL) -m 644 $(srcdir)/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
 	$(INSTALL) -m 644 $(srcdir)/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
 	$(INSTALL) -m 644 $(srcdir)/pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
@@ -58,28 +58,28 @@ install-data-local: makedoc-all
 	-for f in $(HTML_DOCFILES); do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir); \
 	done
-	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
-	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ]; then \
-		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir); \
-	elif [ -f $(DESTDIR)$(pkgdatadir)/../Muttrc ]; then \
-		mv $(DESTDIR)$(pkgdatadir)/../Muttrc* $(DESTDIR)$(sysconfdir); \
-	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ]; then \
-		$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir); \
+	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc.dist
+	-if [ -f $(DESTDIR)$(pkgdatadir)/neomuttrc ]; then \
+		mv $(DESTDIR)$(pkgdatadir)/neomuttrc* $(DESTDIR)$(sysconfdir); \
+	elif [ -f $(DESTDIR)$(pkgdatadir)/../neomuttrc ]; then \
+		mv $(DESTDIR)$(pkgdatadir)/../neomuttrc* $(DESTDIR)$(sysconfdir); \
+	elif [ ! -f $(DESTDIR)$(sysconfdir)/neomuttrc ]; then \
+		$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir); \
 	fi
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
 
 uninstall-local:
-	for f in mutt.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
+	for f in neomutt.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f; \
 	done
-	for f in muttrc.5 mbox.5 mmdf.5; do \
+	for f in neomuttrc.5 mbox.5 mmdf.5; do \
 		rm -f $(DESTDIR)$(mandir)/man5/$$f; \
 	done
 	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES); do \
 		rm -f $(DESTDIR)$(docdir)/$$f; \
 	done
 	-rm -f $(DESTDIR)$(docdir)/manual.txt
-	for i in Muttrc; do \
+	for i in neomuttrc; do \
 		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
 			rm $(DESTDIR)$(sysconfdir)/$$i; \
 		fi; \
@@ -93,25 +93,25 @@ manual.txt: manual.html
 	LC_ALL=C lynx -dump -nolist -with_backspaces -display_charset=us-ascii manual.html > $@ || \
 	LC_ALL=C elinks -dump -no-numbering -no-references manual.html | sed -e 's,\\001, ,g' > $@
 
-Muttrc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
-	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
-	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
+neomuttrc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/neomuttrc.head
+	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/neomuttrc.head > neomuttrc
+	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> neomuttrc
 
-manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/mutt.xsl $(srcdir)/mutt.css
+manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/neomutt.xsl $(srcdir)/neomutt.css
 	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
 $(CHUNKED_DOCFILES): index.html
 
-index.html: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl manual.xml $(srcdir)/mutt.css
+index.html: $(srcdir)/chunk.xsl $(srcdir)/neomutt.xsl manual.xml $(srcdir)/neomutt.css
 	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
 
 validate: manual.xml
 	xmllint --noout --noblanks --postvalid $<
 
 spellcheck:
-	-aspell -d american --mode=sgml  --encoding=utf-8 -p $(srcdir)/mutt.pwl check manual.xml.head
-	-aspell -d american --mode=nroff --encoding=utf-8 -p $(srcdir)/mutt.pwl check muttrc.man.head
-	-aspell -d american --mode=ccpp  --encoding=utf-8 -p $(srcdir)/mutt.pwl check $(top_srcdir)/init.h
+	-aspell -d american --mode=sgml  --encoding=utf-8 -p $(srcdir)/neomutt.pwl check manual.xml.head
+	-aspell -d american --mode=nroff --encoding=utf-8 -p $(srcdir)/neomutt.pwl check neomuttrc.man.head
+	-aspell -d american --mode=ccpp  --encoding=utf-8 -p $(srcdir)/neomutt.pwl check $(top_srcdir)/init.h
 
 sortcheck: manual.xml
 	sed -n -e '1,/^<sect1 id="variables">/d' -e '1,/^<sect1 id="functions">/s/<sect2 id="\([^"]*\)">/\1/p' < manual.xml > vars.tmp.1
@@ -120,26 +120,26 @@ sortcheck: manual.xml
 	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
-	rm -f *.html mutt.1 muttrc.man
+	rm -f *.html neomutt.1 neomuttrc.man
 
-DISTCLEANFILES = manual.txt manual.html manual.xml Muttrc
+DISTCLEANFILES = manual.txt manual.html manual.xml neomuttrc
 
-muttrc.man: makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
+neomuttrc.man: makedoc$(EXEEXT) $(top_srcdir)/init.h neomuttrc.man.head neomuttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | \
 		./makedoc$(EXEEXT) -m | \
-		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail > $@
+		cat $(srcdir)/neomuttrc.man.head - $(srcdir)/neomuttrc.man.tail > $@
 
 EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 	-e 's,@bindir\@,$(bindir),g' \
 	-e 's,@docdir\@,$(docdir),g'
 
-mutt.1: $(srcdir)/mutt.man
-	$(EDIT) $(srcdir)/mutt.man > $@
+neomutt.1: $(srcdir)/neomutt.man
+	$(EDIT) $(srcdir)/neomutt.man > $@
 
 manual.xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
 	manual.xml.head $(top_srcdir)/functions.h manual.xml.tail \
 	$(srcdir)/gen-map-doc $(top_srcdir)/opcodes.h
-	( sed -e "s/@VERSION\@/$(PACKAGE_VERSION) $(MUTT_VERSION)/" $(srcdir)/manual.xml.head && \
+	( sed -e "s/@VERSION\@/$(PACKAGE_VERSION)/" $(srcdir)/manual.xml.head && \
 		$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 		$(MAKEDOC_CPP) $(top_srcdir)/functions.h | perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/opcodes.h \
 	) > $@

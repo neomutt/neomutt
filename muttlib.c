@@ -409,7 +409,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
  * @param m Attachment body to be displayed
- * @retval true  Mutt requires a mailcap entry to display
+ * @retval true  NeoMutt requires a mailcap entry to display
  * @retval false otherwise
  */
 bool mutt_needs_mailcap(struct Body *m)
@@ -1030,7 +1030,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
           mutt_debug(3, "fmtpipe < %s\n", dest);
 
           /* If the result ends with '%', this indicates that the filter
-           * generated %-tokens that mutt can expand.  Eliminate the '%'
+           * generated %-tokens that neomutt can expand.  Eliminate the '%'
            * marker and recycle the string through mutt_expando_format().
            * To literally end with "%", use "%%". */
           if ((n > 0) && dest[n - 1] == '%')
@@ -1572,7 +1572,7 @@ void mutt_sleep(short s)
 const char *mutt_make_version(void)
 {
   static char vstring[STRING];
-  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
+  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
   return vstring;
 }
 
@@ -1768,15 +1768,6 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
     }
 
     if (snprintf(buf, bufsize, "%s/%s/neomuttrc", token, PACKAGE) < 0)
-      continue;
-    mutt_expand_path(buf, bufsize);
-    if (access(buf, F_OK) == 0)
-    {
-      rc = 1;
-      break;
-    }
-
-    if (snprintf(buf, bufsize, "%s/%s/Muttrc-%s", token, PACKAGE, MUTT_VERSION) < 0)
       continue;
     mutt_expand_path(buf, bufsize);
     if (access(buf, F_OK) == 0)

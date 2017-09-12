@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20170714\n"
+"Project-Id-Version: neomutt-20170912\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-09-12 15:41+0100\n"
+"POT-Creation-Date: 2017-09-12 17:42+0100\n"
 "PO-Revision-Date: 2006-01-11 04:13+0200\n"
 "Last-Translator: Recai Oktaş <roktas@debian.org>\n"
 "Language-Team: Debian L10n Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -51,7 +51,7 @@ msgstr "Seç"
 
 #: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
 #: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
-#: ncrypt/crypt_gpgme.c:4171 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
+#: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
 #: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
 msgstr "Yardım"
@@ -700,7 +700,7 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4909 ncrypt/pgp.c:1784
+#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
 #: ncrypt/smime.c:2123 ncrypt/smime.c:2138
 msgid "Sign as: "
 msgstr "Farklı imzala: "
@@ -1145,8 +1145,8 @@ msgid "no"
 msgstr "hayır"
 
 #: curs_lib.c:394
-msgid "Exit Mutt?"
-msgstr "Mutt'tan çıkılsın mı?"
+msgid "Exit NeoMutt?"
+msgstr "NeoMutt'tan çıkılsın mı?"
 
 #: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
 msgid "unknown error"
@@ -1335,8 +1335,8 @@ msgid "To view all messages, limit to \"all\"."
 msgstr "İletilerin hepsini görmek için \"all\" tabirini kullanın."
 
 #: curs_main.c:1576 pager.c:2291
-msgid "Quit Mutt?"
-msgstr "Mutt'tan çıkılsın mı?"
+msgid "Quit NeoMutt?"
+msgstr "NeoMutt'tan çıkılsın mı?"
 
 #: curs_main.c:1669
 msgid "Tag messages matching: "
@@ -1430,7 +1430,7 @@ msgstr ""
 #: curs_main.c:2178
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
-msgstr "Mutt'tan kaydedilmeden çıkılsın mı?"
+msgstr "NeoMutt'tan kaydedilmeden çıkılsın mı?"
 
 #: curs_main.c:2194
 #, fuzzy
@@ -1678,7 +1678,7 @@ msgstr "İleti içeriği:\n"
 #. This entry is shown AFTER the message content,
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
-#. but means "(press any key to continue using mutt)".
+#. but means "(press any key to continue using neomutt)".
 #: edit.c:416 edit.c:475
 msgid "(continue)\n"
 msgstr "(devam et)\n"
@@ -2066,7 +2066,7 @@ msgstr "%s bağlantısı kapatılıyor..."
 #: imap/imap.c:350
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
-msgstr "Bu IMAP sunucusu çok eski. Mutt bu sunucuyla çalışmaz."
+msgstr "Bu IMAP sunucusu çok eski. NeoMutt bu sunucuyla çalışmaz."
 
 #: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
@@ -2417,24 +2417,24 @@ msgstr "%s: bilinmeyen komut"
 msgid "Error in command line: %s\n"
 msgstr "Komut satırında hata: %s\n"
 
-#: init.c:4126
+#: init.c:4133
 msgid "unable to determine home directory"
 msgstr "ev dizini belirlenemedi"
 
-#: init.c:4134
+#: init.c:4141
 msgid "unable to determine username"
 msgstr "kullanıcı adı belirlenemedi"
 
-#: init.c:4169
+#: init.c:4176
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "kullanıcı adı belirlenemedi"
 
-#: init.c:4484
+#: init.c:4483
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4494
+#: init.c:4493
 #, fuzzy
 msgid "out of arguments"
 msgstr "eksik argüman"
@@ -2539,17 +2539,17 @@ msgstr "Bellek tükendi!"
 
 #: main.c:88
 msgid ""
-"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -B\n"
-"       mutt [<options>] -D [-S]\n"
-"       mutt -v[v]\n"
+"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"       neomutt [<options>] -p\n"
+"       neomutt [<options>] -A <alias> [...]\n"
+"       neomutt [<options>] -Q <query> [...]\n"
+"       neomutt [<options>] -B\n"
+"       neomutt [<options>] -D [-S]\n"
+"       neomutt -v[v]\n"
 msgstr ""
 
 #: main.c:98
@@ -2583,22 +2583,22 @@ msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
 "  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate muttrc file\n"
+"  -F <file>     specify an alternate neomuttrc file\n"
 "  -g <server>   specify a news server (if compiled with NNTP)\n"
 "  -G            select a newsgroup (if compiled with NNTP)\n"
 "  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which Mutt should include in the body\n"
+"  -i <file>     specify a file which NeoMutt should include in the body\n"
 "  -m <type>     specify a default mailbox type\n"
-"  -n            causes Mutt not to read the system Muttrc\n"
+"  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
 "  -e <komut>    başlangıçta çalıştırılacak komut\n"
 "  -f <dosya>    okunacak eposta kutusu\n"
-"  -F <dosya>    yapılandırma dosyası (muttrc'ye alternatif)\n"
+"  -F <dosya>    yapılandırma dosyası (neomuttrc'ye alternatif)\n"
 "  -H <dosya>    başlık ve gövdenin okunacağı örnek dosya\n"
 "  -i <dosya>    ileti gövdesine eklenecek dosya\n"
 "  -m <tip>      öntanımlı eposta kutusu tipi\n"
-"  -n            sistem geneli Muttrc dosyasıno okuma\n"
+"  -n            sistem geneli neomuttrc dosyasıno okuma\n"
 "  -p            gönderilmesi ertelenmiş iletiyi çağır"
 
 #: main.c:123
@@ -3144,7 +3144,7 @@ msgstr "(r)eddet, (s)adece bu defalığına kabul et"
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)eddet, (s)adece bu defalığına kabul et"
 
-#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4165
+#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4166
 #: ncrypt/pgpkey.c:525 ncrypt/smime.c:418
 msgid "Exit  "
 msgstr "Çık  "
@@ -3393,7 +3393,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "veri nesnesi okunurken hata: %s\n"
 
-#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3807 ncrypt/pgpkey.c:567
+#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
 #: ncrypt/pgpkey.c:741
 msgid "Can't create temporary file"
 msgstr "Geçici dosya oluşturulamıyor"
@@ -3483,7 +3483,7 @@ msgstr "UYARI: Sunucu makine adı ile sertifika uyuşmuyor"
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3530
 msgid "Fingerprint: "
 msgstr "Parmak izi: %s"
 
@@ -3507,7 +3507,7 @@ msgstr ""
 "UYARI: Anahtarın yukarıda gösterilen isimdeki kişiye ait olduğu kesin DEĞİL\n"
 
 #: ncrypt/crypt_gpgme.c:1462 ncrypt/crypt_gpgme.c:1467
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "aka: "
 msgstr ""
 
@@ -3698,15 +3698,15 @@ msgstr "[-- S/MIME ile imzalanmış bilginin sonu --]\n"
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- S/MIME ile şifrelenmiş bilginin sonu --]\n"
 
-#: ncrypt/crypt_gpgme.c:3444
+#: ncrypt/crypt_gpgme.c:3445
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Bu kullanıcının kimliği görüntülenemiyor (bilinmeyen kodlama)]"
 
-#: ncrypt/crypt_gpgme.c:3446
+#: ncrypt/crypt_gpgme.c:3447
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Bu kullanıcının kimliği görüntülenemiyor (geçersiz kodlama)]"
 
-#: ncrypt/crypt_gpgme.c:3451
+#: ncrypt/crypt_gpgme.c:3452
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Bu kullanıcının kimliği görüntülenemiyor (geçersiz DN)]"
 
@@ -3714,154 +3714,154 @@ msgstr "[Bu kullanıcının kimliği görüntülenemiyor (geçersiz DN)]"
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Name: "
 msgstr "Adı .................: "
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid From: "
 msgstr "Geçerlilik Başlangıcı: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid To: "
 msgstr "Geçerlilik Sonu .....: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Type: "
 msgstr "Anahtar Kullanımı ...: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Usage: "
 msgstr "Anahtar Kullanımı ...: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Serial-No: "
 msgstr "Seri-No .............: 0x%s\n"
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Issued By: "
 msgstr "Yayımcı .............: "
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Subkey: "
 msgstr "Alt anahtar .........: 0x%s"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3584 ncrypt/crypt_gpgme.c:3725
+#: ncrypt/crypt_gpgme.c:3585 ncrypt/crypt_gpgme.c:3726
 msgid "[Invalid]"
 msgstr "[Geçersiz]"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3627 ncrypt/crypt_gpgme.c:3766
+#: ncrypt/crypt_gpgme.c:3628 ncrypt/crypt_gpgme.c:3767
 #, fuzzy, c-format
 msgid "%s, %lu bit %s\n"
 msgstr "Anahtar Tipi ........: %s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3635 ncrypt/crypt_gpgme.c:3773
+#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3774
 msgid "encryption"
 msgstr "şifreleme"
 
-#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3642
-#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3774
-#: ncrypt/crypt_gpgme.c:3779 ncrypt/crypt_gpgme.c:3784
+#: ncrypt/crypt_gpgme.c:3637 ncrypt/crypt_gpgme.c:3643
+#: ncrypt/crypt_gpgme.c:3649 ncrypt/crypt_gpgme.c:3775
+#: ncrypt/crypt_gpgme.c:3780 ncrypt/crypt_gpgme.c:3785
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3641 ncrypt/crypt_gpgme.c:3778
+#: ncrypt/crypt_gpgme.c:3642 ncrypt/crypt_gpgme.c:3779
 msgid "signing"
 msgstr "imza"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3647 ncrypt/crypt_gpgme.c:3783
+#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3784
 msgid "certification"
 msgstr "sertifikasyon"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3719
+#: ncrypt/crypt_gpgme.c:3720
 msgid "[Revoked]"
 msgstr "[Hükümsüz]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3731
+#: ncrypt/crypt_gpgme.c:3732
 msgid "[Expired]"
 msgstr "[Süresi Dolmuş]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3737
+#: ncrypt/crypt_gpgme.c:3738
 msgid "[Disabled]"
 msgstr "[Etkin Değil]"
 
-#: ncrypt/crypt_gpgme.c:3810
+#: ncrypt/crypt_gpgme.c:3811
 msgid "Collecting data..."
 msgstr "Veri toplanıyor..."
 
-#: ncrypt/crypt_gpgme.c:3835
+#: ncrypt/crypt_gpgme.c:3836
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Yayımcının anahtarı bulunamadı: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3844
+#: ncrypt/crypt_gpgme.c:3845
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Hata: sertifika zinciri çok uzun - burada duruldu\n"
 
-#: ncrypt/crypt_gpgme.c:3854 ncrypt/pgpkey.c:589
+#: ncrypt/crypt_gpgme.c:3855 ncrypt/pgpkey.c:589
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Anahtar kimliği: 0x%s"
 
-#: ncrypt/crypt_gpgme.c:3941
+#: ncrypt/crypt_gpgme.c:3942
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new başarısız: %s"
 
-#: ncrypt/crypt_gpgme.c:3979 ncrypt/crypt_gpgme.c:4030
+#: ncrypt/crypt_gpgme.c:3980 ncrypt/crypt_gpgme.c:4031
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start başarısız: %s"
 
-#: ncrypt/crypt_gpgme.c:4018 ncrypt/crypt_gpgme.c:4060
+#: ncrypt/crypt_gpgme.c:4019 ncrypt/crypt_gpgme.c:4061
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next başarısız: %s"
 
-#: ncrypt/crypt_gpgme.c:4136
+#: ncrypt/crypt_gpgme.c:4137
 msgid "All matching keys are marked expired/revoked."
 msgstr "Bulunan bütün anahtarların süresi bitmiş veya hükümsüzleştirilmiş."
 
-#: ncrypt/crypt_gpgme.c:4167 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
+#: ncrypt/crypt_gpgme.c:4168 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
 msgid "Select  "
 msgstr "Seç  "
 
-#: ncrypt/crypt_gpgme.c:4169 ncrypt/pgpkey.c:529
+#: ncrypt/crypt_gpgme.c:4170 ncrypt/pgpkey.c:529
 msgid "Check key  "
 msgstr "Anahtarı denetle  "
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4186
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP ve S/MIME anahtarları uyuşuyor"
 
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4188
 msgid "PGP keys matching"
 msgstr "PGP anahtarları uyuşuyor"
 
-#: ncrypt/crypt_gpgme.c:4189
+#: ncrypt/crypt_gpgme.c:4190
 msgid "S/MIME keys matching"
 msgstr "S/MIME anahtarları uyuşuyor"
 
-#: ncrypt/crypt_gpgme.c:4191
+#: ncrypt/crypt_gpgme.c:4192
 msgid "keys matching"
 msgstr "anahtarlar uyuşuyor"
 
@@ -3869,65 +3869,65 @@ msgstr "anahtarlar uyuşuyor"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4198
+#: ncrypt/crypt_gpgme.c:4199
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4202
+#: ncrypt/crypt_gpgme.c:4203
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:608
+#: ncrypt/crypt_gpgme.c:4230 ncrypt/pgpkey.c:608
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Bu anahtar kullanılamaz: süresi dolmuş/etkin değil/hükümsüz."
 
-#: ncrypt/crypt_gpgme.c:4243 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
+#: ncrypt/crypt_gpgme.c:4244 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
 msgid "ID is expired/disabled/revoked."
 msgstr "Kimlik (ID), süresi dolmuş/etkin değil/hükümsüz durumda."
 
-#: ncrypt/crypt_gpgme.c:4251 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
+#: ncrypt/crypt_gpgme.c:4252 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
 msgid "ID has undefined validity."
 msgstr "Kimliğin (ID) geçerliliği belirsiz."
 
-#: ncrypt/crypt_gpgme.c:4254 ncrypt/pgpkey.c:627
+#: ncrypt/crypt_gpgme.c:4255 ncrypt/pgpkey.c:627
 msgid "ID is not valid."
 msgstr "Kimlik (ID) geçerli değil."
 
-#: ncrypt/crypt_gpgme.c:4257 ncrypt/pgpkey.c:630
+#: ncrypt/crypt_gpgme.c:4258 ncrypt/pgpkey.c:630
 msgid "ID is only marginally valid."
 msgstr "Kimlik (ID) çok az güvenilir."
 
-#: ncrypt/crypt_gpgme.c:4266 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
+#: ncrypt/crypt_gpgme.c:4267 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Gerçekten bu anahtarı kullanmak istiyor musunuz?"
 
-#: ncrypt/crypt_gpgme.c:4320 ncrypt/crypt_gpgme.c:4431 ncrypt/pgpkey.c:834
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
 #: ncrypt/pgpkey.c:955
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" tabirine uyan anahtarlar aranıyor..."
 
-#: ncrypt/crypt_gpgme.c:4590 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "%2$s için anahtar NO = \"%1$s\" kullanılsın mı?"
 
-#: ncrypt/crypt_gpgme.c:4641 ncrypt/pgp.c:1303 ncrypt/smime.c:778
+#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
 #: ncrypt/smime.c:880
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s için anahtar NO'yu girin: "
 
-#: ncrypt/crypt_gpgme.c:4702 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Lütfen anahtar numarasını girin: "
 
-#: ncrypt/crypt_gpgme.c:4714
+#: ncrypt/crypt_gpgme.c:4715
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Anahtar bilgisi alınırken hata: "
@@ -3936,43 +3936,43 @@ msgstr "Anahtar bilgisi alınırken hata: "
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4734
+#: ncrypt/crypt_gpgme.c:4735
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP anahtarı %s."
 
-#: ncrypt/crypt_gpgme.c:4777
+#: ncrypt/crypt_gpgme.c:4778
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4785
+#: ncrypt/crypt_gpgme.c:4786
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4824
+#: ncrypt/crypt_gpgme.c:4825
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4826
+#: ncrypt/crypt_gpgme.c:4827
 msgid "sapco"
 msgstr "rmfkgp"
 
-#: ncrypt/crypt_gpgme.c:4833
+#: ncrypt/crypt_gpgme.c:4834
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4835
+#: ncrypt/crypt_gpgme.c:4836
 msgid "samco"
 msgstr "rmfksp"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4848
+#: ncrypt/crypt_gpgme.c:4849
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -3981,13 +3981,13 @@ msgstr ""
 "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4851
+#: ncrypt/crypt_gpgme.c:4852
 #, fuzzy
 msgid "esabpco"
 msgstr "rmfkgp"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4857
+#: ncrypt/crypt_gpgme.c:4858
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -3996,40 +3996,40 @@ msgstr ""
 "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4860
+#: ncrypt/crypt_gpgme.c:4861
 #, fuzzy
 msgid "esabmco"
 msgstr "rmfksp"
 
-#: ncrypt/crypt_gpgme.c:4873
+#: ncrypt/crypt_gpgme.c:4874
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4875
+#: ncrypt/crypt_gpgme.c:4876
 #, fuzzy
 msgid "esabpc"
 msgstr "rmfkgp"
 
-#: ncrypt/crypt_gpgme.c:4882
+#: ncrypt/crypt_gpgme.c:4883
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4884
+#: ncrypt/crypt_gpgme.c:4885
 #, fuzzy
 msgid "esabmc"
 msgstr "rmfksp"
 
-#: ncrypt/crypt_gpgme.c:5036
+#: ncrypt/crypt_gpgme.c:5037
 msgid "Failed to verify sender"
 msgstr "Gönderici doğrulanamadı"
 
-#: ncrypt/crypt_gpgme.c:5039
+#: ncrypt/crypt_gpgme.c:5040
 msgid "Failed to figure out sender"
 msgstr "Göndericinin kim olduğu belirlenemedi"
 
@@ -4483,1017 +4483,1017 @@ msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: opcodes.h:7
+#: opcodes.h:29
 msgid "null operation"
 msgstr "belirtilmemiş işlem"
 
-#: opcodes.h:8
+#: opcodes.h:30
 msgid "end of conditional execution (noop)"
 msgstr "koşullu çalıştırma sonu (noop)"
 
-#: opcodes.h:9
+#: opcodes.h:31
 msgid "force viewing of attachment using mailcap"
 msgstr "mailcap kullanarak ekin görüntülenmesini sağla"
 
-#: opcodes.h:10
+#: opcodes.h:32
 msgid "view attachment as text"
 msgstr "eki metin olarak göster"
 
-#: opcodes.h:11
+#: opcodes.h:33
 msgid "toggle display of subparts"
 msgstr "Alt bölümlerin görüntülenmesini aç/kapat"
 
-#: opcodes.h:12
+#: opcodes.h:34
 msgid "move to the bottom of the page"
 msgstr "sayfanın sonuna geç"
 
-#: opcodes.h:13
+#: opcodes.h:35
 msgid "remail a message to another user"
 msgstr "iletiyi başka bir kullanıcıya yeniden gönder"
 
-#: opcodes.h:14
+#: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:15
+#: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "bu dizinde yeni bir dosya seç"
 
-#: opcodes.h:16
+#: opcodes.h:38
 msgid "view file"
 msgstr "dosyayı görüntüle"
 
-#: opcodes.h:17
+#: opcodes.h:39
 msgid "display the currently selected file's name"
 msgstr "seçili dosyanın ismini göster"
 
-#: opcodes.h:18
+#: opcodes.h:40
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "geçerli eposta kutusuna abone ol (sadece IMAP)"
 
-#: opcodes.h:19
+#: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "geçerli eposta kutusuna olan aboneliği iptal et (sadece IMAP)"
 
-#: opcodes.h:20
+#: opcodes.h:42
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr ""
 "görüntüleme kipleri arasında geçiş yap: hepsi/abone olunanlar (sadece IMAP)"
 
-#: opcodes.h:21
+#: opcodes.h:43
 msgid "list mailboxes with new mail"
 msgstr "yeni eposta içeren eposta kutularını listele"
 
-#: opcodes.h:22
+#: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:23
+#: opcodes.h:45
 msgid "change directories"
 msgstr "dizin değiştir"
 
-#: opcodes.h:24
+#: opcodes.h:46
 msgid "check mailboxes for new mail"
 msgstr "eposta kutularını yeni eposta için denetle"
 
-#: opcodes.h:25
+#: opcodes.h:47
 #, fuzzy
 msgid "attach file(s) to this message"
 msgstr "bu iletiye dosya ekle"
 
-#: opcodes.h:26
+#: opcodes.h:48
 msgid "attach message(s) to this message"
 msgstr "bu iletiye ileti ekle"
 
-#: opcodes.h:27
+#: opcodes.h:49
 #, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "bu iletiye dosya ekle"
 
-#: opcodes.h:28
+#: opcodes.h:50
 msgid "edit the BCC list"
 msgstr "BCC listesini düzenle"
 
-#: opcodes.h:29
+#: opcodes.h:51
 msgid "edit the CC list"
 msgstr "CC listesini düzenle"
 
-#: opcodes.h:30
+#: opcodes.h:52
 msgid "edit attachment description"
 msgstr "ek açıklamasını düzenle"
 
-#: opcodes.h:31
+#: opcodes.h:53
 msgid "edit attachment transfer-encoding"
 msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
 
-#: opcodes.h:32
+#: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
 msgstr "bu iletinin bir kopyasının kaydedileceği dosyayı gir"
 
-#: opcodes.h:33
+#: opcodes.h:55
 msgid "edit the file to be attached"
 msgstr "eklenecek dosyayı düzenle"
 
-#: opcodes.h:34
+#: opcodes.h:56
 msgid "edit the from field"
 msgstr "gönderen alanını düzenle"
 
-#: opcodes.h:35
+#: opcodes.h:57
 msgid "edit the message with headers"
 msgstr "iletiyi başlıklarıyla düzenle"
 
-#: opcodes.h:36
+#: opcodes.h:58
 msgid "edit the message"
 msgstr "iletiyi düzenle"
 
-#: opcodes.h:37
+#: opcodes.h:59
 msgid "edit attachment using mailcap entry"
 msgstr "mailcap kaydını kullanarak eki düzenle"
 
-#: opcodes.h:38
+#: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "CC listesini düzenle"
 
-#: opcodes.h:39
+#: opcodes.h:61
 msgid "edit the Reply-To field"
 msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
 
-#: opcodes.h:40
+#: opcodes.h:62
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
 
-#: opcodes.h:41
+#: opcodes.h:63
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
 
-#: opcodes.h:42
+#: opcodes.h:64
 msgid "edit the subject of this message"
 msgstr "bu iletinin konusunu düzenle"
 
-#: opcodes.h:43
+#: opcodes.h:65
 msgid "edit the TO list"
 msgstr "gönderilen (TO) listesini düzenle"
 
-#: opcodes.h:44
+#: opcodes.h:66
 msgid "create a new mailbox (IMAP only)"
 msgstr "yeni bir eposta kutusu yarat (sadece IMAP)"
 
-#: opcodes.h:45
+#: opcodes.h:67
 msgid "edit attachment content type"
 msgstr "ekin içerik tipini düzenle"
 
-#: opcodes.h:46
+#: opcodes.h:68
 msgid "get a temporary copy of an attachment"
 msgstr "eke ait geçici bir kopya elde et"
 
-#: opcodes.h:47
+#: opcodes.h:69
 msgid "run ispell on the message"
 msgstr "iletiye ispell komutunu uygula"
 
-#: opcodes.h:48
+#: opcodes.h:70
 msgid "compose new attachment using mailcap entry"
 msgstr "mailcap kaydını kullanarak yeni bir ek düzenle"
 
-#: opcodes.h:49
+#: opcodes.h:71
 msgid "toggle recoding of this attachment"
 msgstr "Bu ekin yeniden kodlanması özelliğini aç/kapat"
 
-#: opcodes.h:50
+#: opcodes.h:72
 msgid "save this message to send later"
 msgstr "bu iletiyi daha sonra göndermek üzere kaydet"
 
-#: opcodes.h:51
+#: opcodes.h:73
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
 
-#: opcodes.h:52
+#: opcodes.h:74
 msgid "rename/move an attached file"
 msgstr "ekli bir dosyayı yeniden adlandır/taşı"
 
-#: opcodes.h:53
+#: opcodes.h:75
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "yeni bir eposta iletisi yarat"
 
-#: opcodes.h:54
+#: opcodes.h:76
 msgid "send the message"
 msgstr "iletiyi gönder"
 
-#: opcodes.h:55
+#: opcodes.h:77
 msgid "toggle disposition between inline/attachment"
 msgstr "satıriçi/ek olarak dispozisyon kipleri arasında geçiş yap"
 
-#: opcodes.h:56
+#: opcodes.h:78
 msgid "toggle whether to delete file after sending it"
 msgstr "dosyanın gönderildikten sonra silinmesi özelliğini aç/kapat"
 
-#: opcodes.h:57
+#: opcodes.h:79
 msgid "update an attachment's encoding info"
 msgstr "eke ait kodlama bilgisini güncelle"
 
-#: opcodes.h:58
+#: opcodes.h:80
 msgid "write the message to a folder"
 msgstr "iletiyi bir klasöre yaz"
 
-#: opcodes.h:59
+#: opcodes.h:81
 msgid "copy a message to a file/mailbox"
 msgstr "iletiyi bir dosyaya/eposta kutusuna kopyala"
 
-#: opcodes.h:60
+#: opcodes.h:82
 msgid "create an alias from a message sender"
 msgstr "gönderenden türetilen bir lâkap yarat"
 
-#: opcodes.h:61
+#: opcodes.h:83
 msgid "move entry to bottom of screen"
 msgstr "birimi ekran sonuna taşı"
 
-#: opcodes.h:62
+#: opcodes.h:84
 msgid "move entry to middle of screen"
 msgstr "birimi ekran ortasına taşı"
 
-#: opcodes.h:63
+#: opcodes.h:85
 msgid "move entry to top of screen"
 msgstr "birimi ekran başına taşı"
 
-#: opcodes.h:64
+#: opcodes.h:86
 msgid "make decoded (text/plain) copy"
 msgstr "çözülmüş (düz metin) kopya yarat"
 
-#: opcodes.h:65
+#: opcodes.h:87
 msgid "make decoded copy (text/plain) and delete"
 msgstr "çözülmüş (düz metin) kopya yarat ve diğerini sil"
 
-#: opcodes.h:66
+#: opcodes.h:88
 msgid "delete the current entry"
 msgstr "geçerli ögeyi sil"
 
-#: opcodes.h:67
+#: opcodes.h:89
 msgid "delete the current mailbox (IMAP only)"
 msgstr "geçerli eposta kutusunu sil (sadece IMAP)"
 
-#: opcodes.h:68
+#: opcodes.h:90
 msgid "delete all messages in subthread"
 msgstr "alt ilmekteki bütün iletileri sil"
 
-#: opcodes.h:69
+#: opcodes.h:91
 msgid "delete all messages in thread"
 msgstr "ilmekteki bütün iletileri sil"
 
-#: opcodes.h:70
+#: opcodes.h:92
 msgid "display full address of sender"
 msgstr "gönderenin tam adresini göster"
 
-#: opcodes.h:71
+#: opcodes.h:93
 msgid "display message and toggle header weeding"
 msgstr "iletiyi görüntüle ve başlıkların görüntülenmesini aç/kapat"
 
-#: opcodes.h:72
+#: opcodes.h:94
 msgid "display a message"
 msgstr "iletiyi göster"
 
-#: opcodes.h:73
+#: opcodes.h:95
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: opcodes.h:74
+#: opcodes.h:96
 msgid "edit the raw message"
 msgstr "kaynak iletiyi düzenle"
 
-#: opcodes.h:75
+#: opcodes.h:97
 msgid "delete the char in front of the cursor"
 msgstr "imlecin önündeki harfi sil"
 
-#: opcodes.h:76
+#: opcodes.h:98
 msgid "move the cursor one character to the left"
 msgstr "imleci bir harf sola taşı"
 
-#: opcodes.h:77
+#: opcodes.h:99
 msgid "move the cursor to the beginning of the word"
 msgstr "imleci kelime başına taşı"
 
-#: opcodes.h:78
+#: opcodes.h:100
 msgid "jump to the beginning of the line"
 msgstr "satır başına geç"
 
-#: opcodes.h:79
+#: opcodes.h:101
 msgid "cycle among incoming mailboxes"
 msgstr "eposta kutuları arasında gezin"
 
-#: opcodes.h:80
+#: opcodes.h:102
 msgid "complete filename or alias"
 msgstr "dosya adını ya da lâkabı tamamla"
 
-#: opcodes.h:81
+#: opcodes.h:103
 msgid "complete address with query"
 msgstr "adresi bir sorgulama yaparak tamamla"
 
-#: opcodes.h:82
+#: opcodes.h:104
 msgid "delete the char under the cursor"
 msgstr "imlecin altındaki harfi sil"
 
-#: opcodes.h:83
+#: opcodes.h:105
 msgid "jump to the end of the line"
 msgstr "satır sonuna geç"
 
-#: opcodes.h:84
+#: opcodes.h:106
 msgid "move the cursor one character to the right"
 msgstr "imleci bir harf sağa taşı"
 
-#: opcodes.h:85
+#: opcodes.h:107
 msgid "move the cursor to the end of the word"
 msgstr "imleci kelime sonuna taşı"
 
-#: opcodes.h:86
+#: opcodes.h:108
 msgid "scroll down through the history list"
 msgstr "tarihçe listesinde aşağıya in"
 
-#: opcodes.h:87
+#: opcodes.h:109
 msgid "scroll up through the history list"
 msgstr "tarihçe listesinde yukarıya çık"
 
-#: opcodes.h:88
+#: opcodes.h:110
 msgid "delete chars from cursor to end of line"
 msgstr "imleçten satır sonuna kadar olan harfleri sil"
 
-#: opcodes.h:89
+#: opcodes.h:111
 msgid "delete chars from the cursor to the end of the word"
 msgstr "imleçten kelime sonuna kadar olan harfleri sil"
 
-#: opcodes.h:90
+#: opcodes.h:112
 msgid "delete all chars on the line"
 msgstr "satırdaki bütün harfleri sil"
 
-#: opcodes.h:91
+#: opcodes.h:113
 msgid "delete the word in front of the cursor"
 msgstr "imlecin önündeki kelimeyi sil"
 
-#: opcodes.h:92
+#: opcodes.h:114
 msgid "quote the next typed key"
 msgstr "girilen karakteri tırnak içine al"
 
-#: opcodes.h:93
+#: opcodes.h:115
 msgid "transpose character under cursor with previous"
 msgstr "imlecin üzerinde bulunduğu karakteri öncekiyle değiştir"
 
-#: opcodes.h:94
+#: opcodes.h:116
 msgid "capitalize the word"
 msgstr "kelimenin ilk harfini büyük yaz"
 
-#: opcodes.h:95
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "kelimeyi küçük harfe çevir"
 
-#: opcodes.h:96
+#: opcodes.h:118
 msgid "convert the word to upper case"
 msgstr "kelimeyi büyük harfe çevir"
 
-#: opcodes.h:97
-msgid "enter a muttrc command"
-msgstr "bir muttrc komutu gir"
+#: opcodes.h:119
+msgid "enter a neomuttrc command"
+msgstr "bir neomuttrc komutu gir"
 
-#: opcodes.h:98
+#: opcodes.h:120
 msgid "enter a file mask"
 msgstr "bir dosya maskesi gir"
 
-#: opcodes.h:99
+#: opcodes.h:121
 msgid "exit this menu"
 msgstr "bu menüden çık"
 
-#: opcodes.h:100
+#: opcodes.h:122
 msgid "filter attachment through a shell command"
 msgstr "eki bir kabuk komut komutundan geçir"
 
-#: opcodes.h:101
+#: opcodes.h:123
 msgid "move to the first entry"
 msgstr "ilk ögeye geç"
 
-#: opcodes.h:102
+#: opcodes.h:124
 msgid "toggle a message's 'important' flag"
 msgstr "iletinin 'önemli' (important) bayrağını aç/kapat"
 
-#: opcodes.h:103
+#: opcodes.h:125
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Cevap adresi olarak %s%s kullanılsın mı? [Mail-Followup-To]"
 
-#: opcodes.h:104
+#: opcodes.h:126
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:105
+#: opcodes.h:127
 msgid "forward a message with comments"
 msgstr "iletiyi düzenleyerek ilet"
 
-#: opcodes.h:106
+#: opcodes.h:128
 msgid "select the current entry"
 msgstr "geçerli ögeye geç"
 
-#: opcodes.h:107
+#: opcodes.h:129
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "İlk iletidesiniz."
 
-#: opcodes.h:108
+#: opcodes.h:130
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "iletiyi başlıklarıyla düzenle"
 
-#: opcodes.h:109
+#: opcodes.h:131
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "İlk iletidesiniz."
 
-#: opcodes.h:110
+#: opcodes.h:132
 msgid "reply to all recipients"
 msgstr "bütün alıcılara cevap ver"
 
-#: opcodes.h:111
+#: opcodes.h:133
 msgid "scroll down 1/2 page"
 msgstr "yarım sayfa aşağıya in"
 
-#: opcodes.h:112
+#: opcodes.h:134
 msgid "scroll up 1/2 page"
 msgstr "yarım sayfa yukarıya çık"
 
-#: opcodes.h:113
+#: opcodes.h:135
 msgid "this screen"
 msgstr "bu ekran"
 
-#: opcodes.h:114
+#: opcodes.h:136
 msgid "jump to an index number"
 msgstr "indeks sayısına geç"
 
-#: opcodes.h:115
+#: opcodes.h:137
 msgid "move to the last entry"
 msgstr "son ögeye geç"
 
-#: opcodes.h:116
+#: opcodes.h:138
 msgid "reply to specified mailing list"
 msgstr "belirtilen eposta listesine cevap ver"
 
-#: opcodes.h:117
+#: opcodes.h:139
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:118
+#: opcodes.h:140
 msgid "execute a macro"
 msgstr "bir makro çalıştır"
 
-#: opcodes.h:119
+#: opcodes.h:141
 msgid "compose a new mail message"
 msgstr "yeni bir eposta iletisi yarat"
 
-#: opcodes.h:120
+#: opcodes.h:142
 msgid "break the thread in two"
 msgstr "ilmeği ikiye böl"
 
-#: opcodes.h:121
+#: opcodes.h:143
 msgid "open a different folder"
 msgstr "başka bir dizin aç"
 
-#: opcodes.h:122
+#: opcodes.h:144
 msgid "open a different folder in read only mode"
 msgstr "başka bir dizini salt okunur aç"
 
-#: opcodes.h:123
+#: opcodes.h:145
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "başka bir dizin aç"
 
-#: opcodes.h:124
+#: opcodes.h:146
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "başka bir dizini salt okunur aç"
 
-#: opcodes.h:125
+#: opcodes.h:147
 msgid "clear a status flag from a message"
 msgstr "iletinin durum bayrağını temizle"
 
-#: opcodes.h:126
+#: opcodes.h:148
 msgid "delete messages matching a pattern"
 msgstr "tabire uyan iletileri sil"
 
-#: opcodes.h:127
+#: opcodes.h:149
 msgid "force retrieval of mail from IMAP server"
 msgstr "IMAP sunucularından eposta alımını zorla"
 
-#: opcodes.h:128
+#: opcodes.h:150
 msgid "logout from all IMAP servers"
 msgstr ""
 
-#: opcodes.h:129
+#: opcodes.h:151
 msgid "retrieve mail from POP server"
 msgstr "POP sunucusundan epostaları al"
 
-#: opcodes.h:130
+#: opcodes.h:152
 msgid "show only messages matching a pattern"
 msgstr "sadece tabire uyan iletileri göster"
 
-#: opcodes.h:131
+#: opcodes.h:153
 msgid "link tagged message to the current one"
 msgstr "işaretlenmiş iletileri geçerli iletiye bağla"
 
-#: opcodes.h:132
+#: opcodes.h:154
 #, fuzzy
 msgid "open next mailbox with new mail"
 msgstr "Yeni eposta içeren bir eposta kutusu yok."
 
-#: opcodes.h:133
+#: opcodes.h:155
 msgid "jump to the next new message"
 msgstr "bir sonraki yeni iletiye geç"
 
-#: opcodes.h:134
+#: opcodes.h:156
 msgid "jump to the next new or unread message"
 msgstr "bir sonraki yeni veya okunmamış iletiye geç"
 
-#: opcodes.h:135
+#: opcodes.h:157
 msgid "jump to the next subthread"
 msgstr "bir sonraki alt ilmeğe geç"
 
-#: opcodes.h:136
+#: opcodes.h:158
 msgid "jump to the next thread"
 msgstr "bir sonraki ilmeğe geç"
 
-#: opcodes.h:137
+#: opcodes.h:159
 msgid "move to the next undeleted message"
 msgstr "bir sonraki silinmemiş iletiye geç"
 
-#: opcodes.h:138
+#: opcodes.h:160
 msgid "jump to the next unread message"
 msgstr "bir sonraki okunmamış iletiye geç"
 
-#: opcodes.h:139
+#: opcodes.h:161
 msgid "jump to parent message in thread"
 msgstr "ilmeği başlatan ana iletiye geç"
 
-#: opcodes.h:140
+#: opcodes.h:162
 msgid "jump to previous thread"
 msgstr "bir önceki ilmeğe geç"
 
-#: opcodes.h:141
+#: opcodes.h:163
 msgid "jump to previous subthread"
 msgstr "bir önceki alt ilmeğe geç"
 
-#: opcodes.h:142
+#: opcodes.h:164
 msgid "move to the previous undeleted message"
 msgstr "bir önceki silinmemiş iletiye geç"
 
-#: opcodes.h:143
+#: opcodes.h:165
 msgid "jump to the previous new message"
 msgstr "bir önceki yeni iletiye geç"
 
-#: opcodes.h:144
+#: opcodes.h:166
 msgid "jump to the previous new or unread message"
 msgstr "bir önceki yeni veya okunmamış iletiye geç"
 
-#: opcodes.h:145
+#: opcodes.h:167
 msgid "jump to the previous unread message"
 msgstr "bir önceki okunmamış iletiye geç"
 
-#: opcodes.h:146
+#: opcodes.h:168
 msgid "mark the current thread as read"
 msgstr "geçerli ilmeği okunmuş olarak işaretle"
 
-#: opcodes.h:147
+#: opcodes.h:169
 msgid "mark the current subthread as read"
 msgstr "geçerli alt ilmeği okunmuş olarak işaretle"
 
-#: opcodes.h:148
+#: opcodes.h:170
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "ilmeği başlatan ana iletiye geç"
 
-#: opcodes.h:149
+#: opcodes.h:171
 msgid "set a status flag on a message"
 msgstr "iletinin durum bayrağını ayarla"
 
-#: opcodes.h:150
+#: opcodes.h:172
 msgid "save changes to mailbox"
 msgstr "eposta kutusuna yapılan değişiklikleri kaydet"
 
-#: opcodes.h:151
+#: opcodes.h:173
 msgid "tag messages matching a pattern"
 msgstr "tabire uyan iletileri işaretle"
 
-#: opcodes.h:152
-msgid "delete from mutt, don't touch on disk"
+#: opcodes.h:174
+msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:153
+#: opcodes.h:175
 msgid "undelete messages matching a pattern"
 msgstr "tabire uyan silinmiş iletileri kurtar"
 
-#: opcodes.h:154
+#: opcodes.h:176
 msgid "untag messages matching a pattern"
 msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
 
-#: opcodes.h:155
+#: opcodes.h:177
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "İlk iletidesiniz."
 
-#: opcodes.h:156
+#: opcodes.h:178
 msgid "move to the middle of the page"
 msgstr "sayfanın ortasına geç"
 
-#: opcodes.h:157
+#: opcodes.h:179
 msgid "move to the next entry"
 msgstr "bir sonraki ögeye geç"
 
-#: opcodes.h:158
+#: opcodes.h:180
 msgid "scroll down one line"
 msgstr "bir satır aşağıya in"
 
-#: opcodes.h:159
+#: opcodes.h:181
 msgid "move to the next page"
 msgstr "bir sonraki sayfaya geç"
 
-#: opcodes.h:160
+#: opcodes.h:182
 msgid "jump to the bottom of the message"
 msgstr "iletinin sonuna geç"
 
-#: opcodes.h:161
+#: opcodes.h:183
 msgid "toggle display of quoted text"
 msgstr "alıntı metnin görüntülenmesi özelliğini aç/kapat"
 
-#: opcodes.h:162
+#: opcodes.h:184
 msgid "skip beyond quoted text"
 msgstr "alıntı metni atla"
 
-#: opcodes.h:163
+#: opcodes.h:185
 msgid "jump to the top of the message"
 msgstr "iletinin başına geç"
 
-#: opcodes.h:164
+#: opcodes.h:186
 msgid "pipe message/attachment to a shell command"
 msgstr "iletiyi/eki bir kabuk komutundan geçir"
 
-#: opcodes.h:165
+#: opcodes.h:187
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "İletiyi %s adresine geri gönder"
 
-#: opcodes.h:166
+#: opcodes.h:188
 msgid "move to the previous entry"
 msgstr "bir önceki ögeye geç"
 
-#: opcodes.h:167
+#: opcodes.h:189
 msgid "scroll up one line"
 msgstr "bir satır yukarıya çık"
 
-#: opcodes.h:168
+#: opcodes.h:190
 msgid "move to the previous page"
 msgstr "bir önceki sayfaya geç"
 
-#: opcodes.h:169
+#: opcodes.h:191
 msgid "print the current entry"
 msgstr "geçerli ögeyi yazdır"
 
-#: opcodes.h:170
+#: opcodes.h:192
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:171
+#: opcodes.h:193
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:172
+#: opcodes.h:194
 msgid "query external program for addresses"
 msgstr "adresler için başka bir uygulamayı sorgula"
 
-#: opcodes.h:173
+#: opcodes.h:195
 msgid "append new query results to current results"
 msgstr "yeni sorgulama sonuçlarını geçerli sonuçlara ekle"
 
-#: opcodes.h:174
+#: opcodes.h:196
 msgid "save changes to mailbox and quit"
 msgstr "eposta kutusuna yapılan değişiklikleri kaydet ve çık"
 
-#: opcodes.h:175
+#: opcodes.h:197
 msgid "recall a postponed message"
 msgstr "gönderilmesi ertelenmiş iletiyi yeniden düzenle"
 
-#: opcodes.h:176
+#: opcodes.h:198
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "İlmek okunmamış iletiler içeriyor."
 
-#: opcodes.h:177
+#: opcodes.h:199
 msgid "clear and redraw the screen"
 msgstr "ekranı temizle ve güncelle"
 
-#: opcodes.h:178
+#: opcodes.h:200
 msgid "{internal}"
 msgstr "{dahili}"
 
-#: opcodes.h:179
+#: opcodes.h:201
 msgid "rename the current mailbox (IMAP only)"
 msgstr "geçerli eposta kutusunu yeniden isimlendir (sadece IMAP)"
 
-#: opcodes.h:180
+#: opcodes.h:202
 msgid "reply to a message"
 msgstr "iletiye cevap ver"
 
-#: opcodes.h:181
+#: opcodes.h:203
 msgid "use the current message as a template for a new one"
 msgstr "geçerli iletiyi yeni bir ileti için örnek olarak kullan"
 
-#: opcodes.h:182
+#: opcodes.h:204
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "iletiyi/eki bir dosyaya kaydet"
 
-#: opcodes.h:183
+#: opcodes.h:205
 msgid "search for a regular expression"
 msgstr "düzenli ifade ara"
 
-#: opcodes.h:184
+#: opcodes.h:206
 msgid "search backwards for a regular expression"
 msgstr "ters yönde düzenli ifade ara"
 
-#: opcodes.h:185
+#: opcodes.h:207
 msgid "search for next match"
 msgstr "bir sonraki eşleşmeyi bul"
 
-#: opcodes.h:186
+#: opcodes.h:208
 msgid "search for next match in opposite direction"
 msgstr "bir sonraki eşleşmeyi ters yönde bul"
 
-#: opcodes.h:187
+#: opcodes.h:209
 msgid "toggle search pattern coloring"
 msgstr "arama tabirinin renklendirilmesi özellğini aç/kapat"
 
-#: opcodes.h:188
+#: opcodes.h:210
 msgid "invoke a command in a subshell"
 msgstr "alt kabukta bir komut çalıştır"
 
-#: opcodes.h:189
+#: opcodes.h:211
 msgid "sort messages"
 msgstr "iletileri sırala"
 
-#: opcodes.h:190
+#: opcodes.h:212
 msgid "sort messages in reverse order"
 msgstr "iletileri ters sırala"
 
-#: opcodes.h:191
+#: opcodes.h:213
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
 
-#: opcodes.h:192
+#: opcodes.h:214
 msgid "tag the current entry"
 msgstr "geçerli ögeyi işaretle"
 
-#: opcodes.h:193
+#: opcodes.h:215
 msgid "apply next function to tagged messages"
 msgstr "işaretlenmiş iletilere verilecek işlevi uygula"
 
-#: opcodes.h:194
+#: opcodes.h:216
 msgid "apply next function ONLY to tagged messages"
 msgstr "verilecek işlevi SADECE işaretlenmiş iletilere uygula"
 
-#: opcodes.h:195
+#: opcodes.h:217
 msgid "tag the current subthread"
 msgstr "geçerli alt ilmeği işaretle"
 
-#: opcodes.h:196
+#: opcodes.h:218
 msgid "tag the current thread"
 msgstr "geçerli ilmeği işaretle"
 
-#: opcodes.h:197
+#: opcodes.h:219
 msgid "toggle a message's 'new' flag"
 msgstr "iletinin 'yeni' (new) bayrağını aç/kapat"
 
-#: opcodes.h:198
+#: opcodes.h:220
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "bir önceki yeni veya okunmamış iletiye geç"
 
-#: opcodes.h:199
+#: opcodes.h:221
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "eposta kutusunun yeniden yazılması özelliğini aç/kapat"
 
-#: opcodes.h:200
+#: opcodes.h:222
 msgid "toggle whether to browse mailboxes or all files"
 msgstr ""
 "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş "
 "yap"
 
-#: opcodes.h:201
+#: opcodes.h:223
 msgid "move to the top of the page"
 msgstr "sayfanın başına geç"
 
-#: opcodes.h:202
+#: opcodes.h:224
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:203
+#: opcodes.h:225
 msgid "undelete the current entry"
 msgstr "geçerli ögeyi kurtar"
 
-#: opcodes.h:204
+#: opcodes.h:226
 msgid "undelete all messages in thread"
 msgstr "ilmekteki bütün iletileri kurtar"
 
-#: opcodes.h:205
+#: opcodes.h:227
 msgid "undelete all messages in subthread"
 msgstr "alt ilmekteki bütün iletileri kurtar"
 
-#: opcodes.h:206
+#: opcodes.h:228
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
 
-#: opcodes.h:207
-msgid "show the Mutt version number and date"
-msgstr "Mutt sürümünü ve tarihini göster"
+#: opcodes.h:229
+msgid "show the NeoMutt version number and date"
+msgstr "NeoMutt sürümünü ve tarihini göster"
 
-#: opcodes.h:208
+#: opcodes.h:230
 msgid "view attachment using mailcap entry if necessary"
 msgstr "eki, gerekiyorsa, mailcap kaydını kullanarak görüntüle"
 
-#: opcodes.h:209
+#: opcodes.h:231
 msgid "show MIME attachments"
 msgstr "MIME eklerini göster"
 
-#: opcodes.h:210
+#: opcodes.h:232
 msgid "display the keycode for a key press"
 msgstr "girilen tuşun tuş kodunu göster"
 
-#: opcodes.h:211
+#: opcodes.h:233
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "geçerli ilmeği işaretle"
 
-#: opcodes.h:212
+#: opcodes.h:234
 msgid "show currently active limit pattern"
 msgstr "etkin durumdaki sınırlama tabirini göster"
 
-#: opcodes.h:213
+#: opcodes.h:235
 msgid "collapse/uncollapse current thread"
 msgstr "geçerli ilmeği göster/gizle"
 
-#: opcodes.h:214
+#: opcodes.h:236
 msgid "collapse/uncollapse all threads"
 msgstr "bütün ilmekleri göster/gizle"
 
-#: opcodes.h:217
+#: opcodes.h:239
 msgid "make decrypted copy and delete"
 msgstr "çözülmüş kopyasını yarat ve sil"
 
-#: opcodes.h:218
+#: opcodes.h:240
 msgid "make decrypted copy"
 msgstr "çözülmüş kopya yarat"
 
-#: opcodes.h:219
+#: opcodes.h:241
 msgid "wipe passphrase(s) from memory"
 msgstr "bellekteki parolaları sil"
 
-#: opcodes.h:220
+#: opcodes.h:242
 msgid "extract supported public keys"
 msgstr "desteklenen genel anahtarları çıkar"
 
-#: opcodes.h:224
+#: opcodes.h:246
 #, fuzzy
 msgid "accept the chain constructed"
 msgstr "Oluşturulan zinciri kabul et"
 
-#: opcodes.h:225
+#: opcodes.h:247
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "Zincirin sonuna yeni bir postacı ekle"
 
-#: opcodes.h:226
+#: opcodes.h:248
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "Zincire yeni bir postacı ekle"
 
-#: opcodes.h:227
+#: opcodes.h:249
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "Zincirdeki bir postacıyı sil"
 
-#: opcodes.h:228
+#: opcodes.h:250
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "Zincirde bir önceki ögeyi seç"
 
-#: opcodes.h:229
+#: opcodes.h:251
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "Zincirde bir sonraki ögeyi seç"
 
-#: opcodes.h:230
+#: opcodes.h:252
 msgid "send the message through a mixmaster remailer chain"
 msgstr "iletiyi bir \"mixmaster\" postacı zinciri üzerinden gönder"
 
-#: opcodes.h:237
+#: opcodes.h:259
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "başka bir dizin aç"
 
-#: opcodes.h:238
+#: opcodes.h:260
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:239
+#: opcodes.h:261
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:240
+#: opcodes.h:262
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:241
+#: opcodes.h:263
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: opcodes.h:242
+#: opcodes.h:264
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "İlk iletidesiniz."
 
-#: opcodes.h:243
+#: opcodes.h:265
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: opcodes.h:249
+#: opcodes.h:271
 msgid "attach a PGP public key"
 msgstr "bir PGP genel anahtarı ekle"
 
-#: opcodes.h:250
+#: opcodes.h:272
 msgid "show PGP options"
 msgstr "PGP seçeneklerini göster"
 
-#: opcodes.h:251
+#: opcodes.h:273
 msgid "mail a PGP public key"
 msgstr "bir PGP genel anahtarı gönder"
 
-#: opcodes.h:252
+#: opcodes.h:274
 msgid "verify a PGP public key"
 msgstr "bir PGP genel anahtarı doğrula"
 
-#: opcodes.h:253
+#: opcodes.h:275
 msgid "view the key's user id"
 msgstr "anahtarın kullanıcı kimliğini göster"
 
-#: opcodes.h:254
+#: opcodes.h:276
 #, fuzzy
 msgid "check for classic PGP"
 msgstr "klasik pgp için denetle"
 
-#: opcodes.h:257
+#: opcodes.h:279
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: opcodes.h:258
+#: opcodes.h:280
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Yeni eposta içeren bir eposta kutusu yok."
 
-#: opcodes.h:259
+#: opcodes.h:281
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Eposta kutusu yeniden açılıyor..."
 
-#: opcodes.h:260
+#: opcodes.h:282
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "yarım sayfa aşağıya in"
 
-#: opcodes.h:261
+#: opcodes.h:283
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "yarım sayfa yukarıya çık"
 
-#: opcodes.h:262
+#: opcodes.h:284
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "bir önceki sayfaya geç"
 
-#: opcodes.h:263
+#: opcodes.h:285
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Yeni eposta içeren bir eposta kutusu yok."
 
-#: opcodes.h:264
+#: opcodes.h:286
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr ""
 "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş "
 "yap"
 
-#: opcodes.h:265
+#: opcodes.h:287
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: opcodes.h:268
+#: opcodes.h:290
 msgid "show S/MIME options"
 msgstr "S/MIME seçeneklerini göster"
 
@@ -6063,7 +6063,7 @@ msgstr "Konu girilmedi, iptal ediliyor."
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
-#. If she says no, mutt will reply to the from header's address instead.
+#. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:581
 #, c-format
 msgid "Reply to %s%s?"
@@ -6322,7 +6322,7 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Telif hakkı (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Telif hakkı (C) 1996-2016 Michael R. Elkins <me@mutt.org>\n"
 "Telif hakkı (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Telif hakkı (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Telif hakkı (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
@@ -6381,15 +6381,15 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `neomutt -vv' for details.\n"
 msgstr ""
-"Telif hakkı (C) 1996-2002 Michael R. Elkins ve diğerleri.\n"
-"Mutt HİÇBİR GARANTİ vadetmez; daha fazla bilgi için 'mutt -vv'\n"
+"Telif hakkı (C) 1996-2016 Michael R. Elkins ve diğerleri.\n"
+"NeoMutt HİÇBİR GARANTİ vadetmez; daha fazla bilgi için 'neomutt -vv'\n"
 "komutunu çalıştırın.\n"
-"Mutt bir özgür yazılımdır.  Bu programı belirli şartlar altında\n"
-"yeniden dağıtabilirsiniz.  Ayrıntılı bilgi için 'mutt -vv' komutunu\n"
+"NeoMutt bir özgür yazılımdır.  Bu programı belirli şartlar altında\n"
+"yeniden dağıtabilirsiniz.  Ayrıntılı bilgi için 'neomutt -vv' komutunu\n"
 "kullanabilirsiniz.\n"
 
 #: version.c:409
@@ -6408,25 +6408,3 @@ msgid ""
 msgstr ""
 "\n"
 "İnşa seçenekleri:"
-
-#, fuzzy
-#~ msgid "default colors not supported."
-#~ msgstr "varsayılan renkler desteklenmiyor"
-
-#, fuzzy
-#~ msgid "sign as: "
-#~ msgstr " farklı imzala: "
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "Maksimum kilit sayısı aşıldı, %s için varolan kilit silinsin mi?"
-
-#~ msgid " aka ......: "
-#~ msgstr "nam-ı diğer .........: "
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Uyarı: '%2$s' adresindeki '%1$s' IDN'si hatalı.\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Uyarı: '%2$s' adresindeki '%1$s' IDN'si hatalı.\n"

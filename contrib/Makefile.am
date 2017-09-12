@@ -1,7 +1,7 @@
 subdir = contrib
 
 SAMPLES = colors.default colors.linux gpg.rc Mush.rc pgp2.rc pgp5.rc pgp6.rc \
-	Pine.rc sample.mailcap sample.muttrc sample.muttrc-tlr smime.rc \
+	Pine.rc sample.mailcap sample.neomuttrc sample.neomuttrc-tlr smime.rc \
 	smime_keys_test.pl Tin.rc
 
 EXTRA_DIST = $(SAMPLES) colorschemes hcache-bench \

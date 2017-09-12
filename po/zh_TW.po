@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20170714\n"
+"Project-Id-Version: neomutt-20170912\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-09-12 15:41+0100\n"
+"POT-Creation-Date: 2017-09-12 17:42+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -52,7 +52,7 @@ msgstr "選擇"
 
 #: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
 #: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
-#: ncrypt/crypt_gpgme.c:4171 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
+#: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
 #: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
 msgstr "求助"
@@ -708,7 +708,7 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4909 ncrypt/pgp.c:1784
+#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
 #: ncrypt/smime.c:2123 ncrypt/smime.c:2138
 msgid "Sign as: "
 msgstr "簽名的身份是："
@@ -1151,8 +1151,8 @@ msgid "no"
 msgstr ""
 
 #: curs_lib.c:394
-msgid "Exit Mutt?"
-msgstr "離開 Mutt？"
+msgid "Exit NeoMutt?"
+msgstr "離開 NeoMutt？"
 
 #: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
 msgid "unknown error"
@@ -1342,8 +1342,8 @@ msgid "To view all messages, limit to \"all\"."
 msgstr ""
 
 #: curs_main.c:1576 pager.c:2291
-msgid "Quit Mutt?"
-msgstr "離開 Mutt？"
+msgid "Quit NeoMutt?"
+msgstr "離開 NeoMutt？"
 
 #: curs_main.c:1669
 msgid "Tag messages matching: "
@@ -1438,7 +1438,7 @@ msgstr ""
 #: curs_main.c:2178
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
-msgstr "不儲存便離開 Mutt 嗎？"
+msgstr "不儲存便離開 NeoMutt 嗎？"
 
 #: curs_main.c:2194
 #, fuzzy
@@ -1706,7 +1706,7 @@ msgstr "信件包含：\n"
 #. This entry is shown AFTER the message content,
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
-#. but means "(press any key to continue using mutt)".
+#. but means "(press any key to continue using neomutt)".
 #: edit.c:416 edit.c:475
 msgid "(continue)\n"
 msgstr "（繼續）\n"
@@ -2097,7 +2097,7 @@ msgstr "正在關閉與 %s 的連線…"
 #: imap/imap.c:350
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
-msgstr "這個 IMAP 伺服器已過時，Mutt 無法使用它。"
+msgstr "這個 IMAP 伺服器已過時，NeoMutt 無法使用它。"
 
 #: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
@@ -2455,24 +2455,24 @@ msgstr "%s：不明的指令"
 msgid "Error in command line: %s\n"
 msgstr "指令行有錯：%s\n"
 
-#: init.c:4126
+#: init.c:4133
 msgid "unable to determine home directory"
 msgstr "無法決定 home 目錄"
 
-#: init.c:4134
+#: init.c:4141
 msgid "unable to determine username"
 msgstr "無法決定使用者名稱"
 
-#: init.c:4169
+#: init.c:4176
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "無法決定使用者名稱"
 
-#: init.c:4484
+#: init.c:4483
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4494
+#: init.c:4493
 #, fuzzy
 msgid "out of arguments"
 msgstr "太少參數"
@@ -2578,17 +2578,17 @@ msgstr "記憶體不足！"
 
 #: main.c:88
 msgid ""
-"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -B\n"
-"       mutt [<options>] -D [-S]\n"
-"       mutt -v[v]\n"
+"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"       neomutt [<options>] -p\n"
+"       neomutt [<options>] -A <alias> [...]\n"
+"       neomutt [<options>] -Q <query> [...]\n"
+"       neomutt [<options>] -B\n"
+"       neomutt [<options>] -D [-S]\n"
+"       neomutt -v[v]\n"
 msgstr ""
 
 #: main.c:98
@@ -2615,21 +2615,21 @@ msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
 "  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate muttrc file\n"
+"  -F <file>     specify an alternate neomuttrc file\n"
 "  -g <server>   specify a news server (if compiled with NNTP)\n"
 "  -G            select a newsgroup (if compiled with NNTP)\n"
 "  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which Mutt should include in the body\n"
+"  -i <file>     specify a file which NeoMutt should include in the body\n"
 "  -m <type>     specify a default mailbox type\n"
-"  -n            causes Mutt not to read the system Muttrc\n"
+"  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
-"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
+"用法: neomutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
 "> ]\n"
-"        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] "
-"[ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
-"        mutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
-"        mutt -v[v]\n"
+"        neomutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案"
+"> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+"        neomutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
+"        neomutt -v[v]\n"
 "\n"
 "參數：\n"
 "  -a <檔案>     將檔案附在信件中\n"
@@ -2637,11 +2637,11 @@ msgstr ""
 "  -c <地址>     指定一個 複製 (CC) 的地址\n"
 "  -e <命令>     指定一個初始化後要被執行的命令\n"
 "  -f <檔案>     指定要閱讀那一個郵筒\n"
-"  -F <檔案>     指定另一個 muttrc 檔案\n"
+"  -F <檔案>     指定另一個 neomuttrc 檔案\n"
 "  -H <檔案>     指定一個範本檔案以讀取標題來源\n"
 "  -i <檔案>     指定一個包括在回覆中的檔案\n"
 "  -m <類型>     指定一個預設的郵筒類型\n"
-"  -n            使 Mutt 不去讀取系統的 Muttrc 檔\n"
+"  -n            使 NeoMutt 不去讀取系統的 neomuttrc 檔\n"
 "  -p            叫回一個延後寄送的信件\n"
 "  -R            以唯讀模式開啟郵筒\n"
 "  -s <主題>     指定一個主題 (如果有空白的話必須被包括在引言中)\n"
@@ -2666,16 +2666,16 @@ msgid ""
 "none\n"
 "  -h            this help message"
 msgstr ""
-"用法: mutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
+"用法: neomutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
 "> ]\n"
-"       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] "
+"       neomutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] "
 "[...]\n"
-"       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] "
+"       neomutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] "
 "[...]\n"
-"       mutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] "
-"[ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
-"       mutt [ -n ] [ -e <指令> ] [ -F <檔案> ] -p\n"
-"       mutt -v[v]\n"
+"       neomutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案"
+"> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+"       neomutt [ -n ] [ -e <指令> ] [ -F <檔案> ] -p\n"
+"       neomutt -v[v]\n"
 "\n"
 "參數：\n"
 "  -A <alias>    expand the given alias\n"
@@ -2684,11 +2684,11 @@ msgstr ""
 "  -c <地址>     指定一個 複製 (CC) 的地址\n"
 "  -e <命令>     指定一個初始化後要被執行的命令\n"
 "  -f <檔案>     指定要閱讀那一個郵筒\n"
-"  -F <檔案>     指定另一個 muttrc 檔案\n"
+"  -F <檔案>     指定另一個 neomuttrc 檔案\n"
 "  -H <檔案>     指定一個範本檔案以讀取標題來源\n"
 "  -i <檔案>     指定一個包括在回覆中的檔案\n"
 "  -m <類型>     指定一個預設的郵筒類型\n"
-"  -n            使 Mutt 不去讀取系統的 Muttrc 檔\n"
+"  -n            使 NeoMutt 不去讀取系統的 neomuttrc 檔\n"
 "  -p            叫回一個延後寄送的信件\n"
 "  -Q <變數>     查詢一個設定變數\n"
 "  -R            以唯讀模式開啟郵筒\n"
@@ -3210,7 +3210,7 @@ msgstr "(1)不接受，(2)只是這次接受"
 msgid "(r)eject, accept (o)nce"
 msgstr "(1)不接受，(2)只是這次接受"
 
-#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4165
+#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4166
 #: ncrypt/pgpkey.c:525 ncrypt/smime.c:418
 msgid "Exit  "
 msgstr "離開  "
@@ -3466,7 +3466,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "在樣式上有錯誤：%s"
 
-#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3807 ncrypt/pgpkey.c:567
+#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
 #: ncrypt/pgpkey.c:741
 msgid "Can't create temporary file"
 msgstr "無法建立暫存檔"
@@ -3556,7 +3556,7 @@ msgstr ""
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Fingerprint: "
 msgstr "指模：%s"
@@ -3578,7 +3578,7 @@ msgid ""
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1462 ncrypt/crypt_gpgme.c:1467
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "aka: "
 msgstr ""
 
@@ -3789,15 +3789,15 @@ msgstr ""
 "\n"
 "[-- S/MIME 加密資料結束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:3444
+#: ncrypt/crypt_gpgme.c:3445
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3446
+#: ncrypt/crypt_gpgme.c:3447
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3451
+#: ncrypt/crypt_gpgme.c:3452
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr ""
 
@@ -3805,158 +3805,158 @@ msgstr ""
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "Name: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid From: "
 msgstr "無效的月份：%s"
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid To: "
 msgstr "無效的月份：%s"
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 msgid "Key Type: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 msgid "Key Usage: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 msgid "Serial-No: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 msgid "Issued By: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Subkey: "
 msgstr "鑰匙 ID：0x%s"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3584 ncrypt/crypt_gpgme.c:3725
+#: ncrypt/crypt_gpgme.c:3585 ncrypt/crypt_gpgme.c:3726
 #, fuzzy
 msgid "[Invalid]"
 msgstr "無效的月份：%s"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3627 ncrypt/crypt_gpgme.c:3766
+#: ncrypt/crypt_gpgme.c:3628 ncrypt/crypt_gpgme.c:3767
 #, c-format
 msgid "%s, %lu bit %s\n"
 msgstr ""
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3635 ncrypt/crypt_gpgme.c:3773
+#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3774
 #, fuzzy
 msgid "encryption"
 msgstr "加密"
 
-#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3642
-#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3774
-#: ncrypt/crypt_gpgme.c:3779 ncrypt/crypt_gpgme.c:3784
+#: ncrypt/crypt_gpgme.c:3637 ncrypt/crypt_gpgme.c:3643
+#: ncrypt/crypt_gpgme.c:3649 ncrypt/crypt_gpgme.c:3775
+#: ncrypt/crypt_gpgme.c:3780 ncrypt/crypt_gpgme.c:3785
 msgid ", "
 msgstr ""
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3641 ncrypt/crypt_gpgme.c:3778
+#: ncrypt/crypt_gpgme.c:3642 ncrypt/crypt_gpgme.c:3779
 msgid "signing"
 msgstr ""
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3647 ncrypt/crypt_gpgme.c:3783
+#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3784
 #, fuzzy
 msgid "certification"
 msgstr "驗証已儲存"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3719
+#: ncrypt/crypt_gpgme.c:3720
 msgid "[Revoked]"
 msgstr ""
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3731
+#: ncrypt/crypt_gpgme.c:3732
 #, fuzzy
 msgid "[Expired]"
 msgstr "離開  "
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3737
+#: ncrypt/crypt_gpgme.c:3738
 msgid "[Disabled]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3810
+#: ncrypt/crypt_gpgme.c:3811
 #, fuzzy
 msgid "Collecting data..."
 msgstr "正連接到 %s…"
 
-#: ncrypt/crypt_gpgme.c:3835
+#: ncrypt/crypt_gpgme.c:3836
 #, fuzzy, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "連線到 %s 時失敗"
 
-#: ncrypt/crypt_gpgme.c:3844
+#: ncrypt/crypt_gpgme.c:3845
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "指令行有錯：%s\n"
 
-#: ncrypt/crypt_gpgme.c:3854 ncrypt/pgpkey.c:589
+#: ncrypt/crypt_gpgme.c:3855 ncrypt/pgpkey.c:589
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "鑰匙 ID：0x%s"
 
-#: ncrypt/crypt_gpgme.c:3941
+#: ncrypt/crypt_gpgme.c:3942
 #, fuzzy, c-format
 msgid "gpgme_new failed: %s"
 msgstr "登入失敗： %s"
 
-#: ncrypt/crypt_gpgme.c:3979 ncrypt/crypt_gpgme.c:4030
+#: ncrypt/crypt_gpgme.c:3980 ncrypt/crypt_gpgme.c:4031
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4018 ncrypt/crypt_gpgme.c:4060
+#: ncrypt/crypt_gpgme.c:4019 ncrypt/crypt_gpgme.c:4061
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4136
+#: ncrypt/crypt_gpgme.c:4137
 #, fuzzy
 msgid "All matching keys are marked expired/revoked."
 msgstr "所有符合的鑰匙經已過期或取消。"
 
-#: ncrypt/crypt_gpgme.c:4167 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
+#: ncrypt/crypt_gpgme.c:4168 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
 msgid "Select  "
 msgstr "選擇    "
 
-#: ncrypt/crypt_gpgme.c:4169 ncrypt/pgpkey.c:529
+#: ncrypt/crypt_gpgme.c:4170 ncrypt/pgpkey.c:529
 msgid "Check key  "
 msgstr "檢查鑰匙   "
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4186
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP 鑰匙符合 <%s>。"
 
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4188
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "PGP 鑰匙符合 <%s>。"
 
-#: ncrypt/crypt_gpgme.c:4189
+#: ncrypt/crypt_gpgme.c:4190
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "S/MIME 鑰匙符合 <%s>。"
 
-#: ncrypt/crypt_gpgme.c:4191
+#: ncrypt/crypt_gpgme.c:4192
 #, fuzzy
 msgid "keys matching"
 msgstr "PGP 鑰匙符合 <%s>。"
@@ -3965,68 +3965,68 @@ msgstr "PGP 鑰匙符合 <%s>。"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4198
+#: ncrypt/crypt_gpgme.c:4199
 #, fuzzy, c-format
 msgid "%s <%s>."
 msgstr "%s 【%s】\n"
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4202
+#: ncrypt/crypt_gpgme.c:4203
 #, fuzzy, c-format
 msgid "%s \"%s\"."
 msgstr "%s 【%s】\n"
 
-#: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:608
+#: ncrypt/crypt_gpgme.c:4230 ncrypt/pgpkey.c:608
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "這個鑰匙不能使用：過期/停用/已取消。"
 
-#: ncrypt/crypt_gpgme.c:4243 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
+#: ncrypt/crypt_gpgme.c:4244 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
 #, fuzzy
 msgid "ID is expired/disabled/revoked."
 msgstr "這個 ID 已過期/停用/取消。"
 
-#: ncrypt/crypt_gpgme.c:4251 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
+#: ncrypt/crypt_gpgme.c:4252 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
 msgid "ID has undefined validity."
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4254 ncrypt/pgpkey.c:627
+#: ncrypt/crypt_gpgme.c:4255 ncrypt/pgpkey.c:627
 #, fuzzy
 msgid "ID is not valid."
 msgstr "這個 ID 不可接受。"
 
-#: ncrypt/crypt_gpgme.c:4257 ncrypt/pgpkey.c:630
+#: ncrypt/crypt_gpgme.c:4258 ncrypt/pgpkey.c:630
 #, fuzzy
 msgid "ID is only marginally valid."
 msgstr "此 ID 只是勉強可接受。"
 
-#: ncrypt/crypt_gpgme.c:4266 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
+#: ncrypt/crypt_gpgme.c:4267 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s 您真的要使用這個鑰匙？"
 
-#: ncrypt/crypt_gpgme.c:4320 ncrypt/crypt_gpgme.c:4431 ncrypt/pgpkey.c:834
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
 #: ncrypt/pgpkey.c:955
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "正找尋匹配 \"%s\" 的鑰匙…"
 
-#: ncrypt/crypt_gpgme.c:4590 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "要為 %2$s 使用鑰匙 ID = \"%1$s\"？"
 
-#: ncrypt/crypt_gpgme.c:4641 ncrypt/pgp.c:1303 ncrypt/smime.c:778
+#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
 #: ncrypt/smime.c:880
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "請輸入 %s 的鑰匙 ID："
 
-#: ncrypt/crypt_gpgme.c:4702 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "請輸入這把鑰匙的 ID："
 
-#: ncrypt/crypt_gpgme.c:4714
+#: ncrypt/crypt_gpgme.c:4715
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "在樣式上有錯誤：%s"
@@ -4035,41 +4035,41 @@ msgstr "在樣式上有錯誤：%s"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4734
+#: ncrypt/crypt_gpgme.c:4735
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP 鑰匙 %s。"
 
-#: ncrypt/crypt_gpgme.c:4777
+#: ncrypt/crypt_gpgme.c:4778
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4785
+#: ncrypt/crypt_gpgme.c:4786
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4824
+#: ncrypt/crypt_gpgme.c:4825
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4826
+#: ncrypt/crypt_gpgme.c:4827
 msgid "sapco"
 msgstr "12345"
 
-#: ncrypt/crypt_gpgme.c:4833
+#: ncrypt/crypt_gpgme.c:4834
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4835
+#: ncrypt/crypt_gpgme.c:4836
 msgid "samco"
 msgstr "12345"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4848
+#: ncrypt/crypt_gpgme.c:4849
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4077,13 +4077,13 @@ msgid ""
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4851
+#: ncrypt/crypt_gpgme.c:4852
 #, fuzzy
 msgid "esabpco"
 msgstr "12345"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4857
+#: ncrypt/crypt_gpgme.c:4858
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4091,38 +4091,38 @@ msgid ""
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4860
+#: ncrypt/crypt_gpgme.c:4861
 #, fuzzy
 msgid "esabmco"
 msgstr "12345"
 
-#: ncrypt/crypt_gpgme.c:4873
+#: ncrypt/crypt_gpgme.c:4874
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4875
+#: ncrypt/crypt_gpgme.c:4876
 #, fuzzy
 msgid "esabpc"
 msgstr "12345"
 
-#: ncrypt/crypt_gpgme.c:4882
+#: ncrypt/crypt_gpgme.c:4883
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4884
+#: ncrypt/crypt_gpgme.c:4885
 #, fuzzy
 msgid "esabmc"
 msgstr "12345"
 
-#: ncrypt/crypt_gpgme.c:5036
+#: ncrypt/crypt_gpgme.c:5037
 msgid "Failed to verify sender"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:5039
+#: ncrypt/crypt_gpgme.c:5040
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "開啟檔案來分析檔頭失敗。"
@@ -4593,1023 +4593,1023 @@ msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: opcodes.h:7
+#: opcodes.h:29
 msgid "null operation"
 msgstr "空的運算"
 
-#: opcodes.h:8
+#: opcodes.h:30
 msgid "end of conditional execution (noop)"
 msgstr ""
 
-#: opcodes.h:9
+#: opcodes.h:31
 msgid "force viewing of attachment using mailcap"
 msgstr "強迫使用 mailcap 瀏覽附件"
 
-#: opcodes.h:10
+#: opcodes.h:32
 msgid "view attachment as text"
 msgstr "用文字方式顯示附件內容"
 
-#: opcodes.h:11
+#: opcodes.h:33
 msgid "toggle display of subparts"
 msgstr "切換部件顯示"
 
-#: opcodes.h:12
+#: opcodes.h:34
 msgid "move to the bottom of the page"
 msgstr "移到本頁的最後面"
 
-#: opcodes.h:13
+#: opcodes.h:35
 msgid "remail a message to another user"
 msgstr "重新寄信給另外一個使用者"
 
-#: opcodes.h:14
+#: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:15
+#: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "請選擇本目錄中一個新的檔案"
 
-#: opcodes.h:16
+#: opcodes.h:38
 msgid "view file"
 msgstr "顯示檔案"
 
-#: opcodes.h:17
+#: opcodes.h:39
 msgid "display the currently selected file's name"
 msgstr "顯示所選擇的檔案"
 
-#: opcodes.h:18
+#: opcodes.h:40
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "訂閱現在這個郵箱 (只適用於 IMAP)"
 
-#: opcodes.h:19
+#: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "取消訂閱現在這個郵箱 (只適用於 IMAP)"
 
-#: opcodes.h:20
+#: opcodes.h:42
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "切換顯示 全部/已訂閱 的郵箱 (只適用於 IMAP)"
 
-#: opcodes.h:21
+#: opcodes.h:43
 #, fuzzy
 msgid "list mailboxes with new mail"
 msgstr "沒有信箱有新信件。"
 
-#: opcodes.h:22
+#: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:23
+#: opcodes.h:45
 msgid "change directories"
 msgstr "改變目錄"
 
-#: opcodes.h:24
+#: opcodes.h:46
 msgid "check mailboxes for new mail"
 msgstr "檢查信箱是否有新信件"
 
-#: opcodes.h:25
+#: opcodes.h:47
 #, fuzzy
 msgid "attach file(s) to this message"
 msgstr "在這封信件中夾帶檔案"
 
-#: opcodes.h:26
+#: opcodes.h:48
 msgid "attach message(s) to this message"
 msgstr "在這封信件中夾帶信件"
 
-#: opcodes.h:27
+#: opcodes.h:49
 #, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "在這封信件中夾帶檔案"
 
-#: opcodes.h:28
+#: opcodes.h:50
 msgid "edit the BCC list"
 msgstr "編輯 BCC 列表"
 
-#: opcodes.h:29
+#: opcodes.h:51
 msgid "edit the CC list"
 msgstr "編輯 CC 列表"
 
-#: opcodes.h:30
+#: opcodes.h:52
 msgid "edit attachment description"
 msgstr "編輯附件的說明"
 
-#: opcodes.h:31
+#: opcodes.h:53
 msgid "edit attachment transfer-encoding"
 msgstr "編輯附件的傳輸編碼"
 
-#: opcodes.h:32
+#: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
 msgstr "輸入用來儲存這封信件拷貝的檔案名稱"
 
-#: opcodes.h:33
+#: opcodes.h:55
 msgid "edit the file to be attached"
 msgstr "編輯附件的檔案名稱"
 
-#: opcodes.h:34
+#: opcodes.h:56
 msgid "edit the from field"
 msgstr "編輯發信人欄位"
 
-#: opcodes.h:35
+#: opcodes.h:57
 msgid "edit the message with headers"
 msgstr "編輯信件與標頭"
 
-#: opcodes.h:36
+#: opcodes.h:58
 msgid "edit the message"
 msgstr "編輯信件內容"
 
-#: opcodes.h:37
+#: opcodes.h:59
 msgid "edit attachment using mailcap entry"
 msgstr "使用 mailcap 編輯附件"
 
-#: opcodes.h:38
+#: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "編輯 CC 列表"
 
-#: opcodes.h:39
+#: opcodes.h:61
 msgid "edit the Reply-To field"
 msgstr "編輯 Reply-To 欄位"
 
-#: opcodes.h:40
+#: opcodes.h:62
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "編輯 Reply-To 欄位"
 
-#: opcodes.h:41
+#: opcodes.h:63
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "編輯 Reply-To 欄位"
 
-#: opcodes.h:42
+#: opcodes.h:64
 msgid "edit the subject of this message"
 msgstr "編輯信件的標題"
 
-#: opcodes.h:43
+#: opcodes.h:65
 msgid "edit the TO list"
 msgstr "編輯 TO 列表"
 
-#: opcodes.h:44
+#: opcodes.h:66
 msgid "create a new mailbox (IMAP only)"
 msgstr "建立新郵箱 (只適用於 IMAP)"
 
-#: opcodes.h:45
+#: opcodes.h:67
 msgid "edit attachment content type"
 msgstr "編輯附件的 content type"
 
-#: opcodes.h:46
+#: opcodes.h:68
 msgid "get a temporary copy of an attachment"
 msgstr "取得附件的暫存拷貝"
 
-#: opcodes.h:47
+#: opcodes.h:69
 msgid "run ispell on the message"
 msgstr "於信件執行 ispell"
 
-#: opcodes.h:48
+#: opcodes.h:70
 msgid "compose new attachment using mailcap entry"
 msgstr "使用 mailcap 來組合新的附件"
 
-#: opcodes.h:49
+#: opcodes.h:71
 msgid "toggle recoding of this attachment"
 msgstr "切換是否再為附件重新編碼"
 
-#: opcodes.h:50
+#: opcodes.h:72
 msgid "save this message to send later"
 msgstr "儲存信件以便稍後寄出"
 
-#: opcodes.h:51
+#: opcodes.h:73
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "編輯附件的傳輸編碼"
 
-#: opcodes.h:52
+#: opcodes.h:74
 msgid "rename/move an attached file"
 msgstr "更改檔名∕移動 已被附帶的檔案"
 
-#: opcodes.h:53
+#: opcodes.h:75
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "撰寫一封新的信件"
 
-#: opcodes.h:54
+#: opcodes.h:76
 msgid "send the message"
 msgstr "寄出信件"
 
-#: opcodes.h:55
+#: opcodes.h:77
 msgid "toggle disposition between inline/attachment"
 msgstr "切換 合拼∕附件式 觀看模式"
 
-#: opcodes.h:56
+#: opcodes.h:78
 msgid "toggle whether to delete file after sending it"
 msgstr "切換寄出後是否刪除檔案"
 
-#: opcodes.h:57
+#: opcodes.h:79
 msgid "update an attachment's encoding info"
 msgstr "更新附件的編碼資訊"
 
-#: opcodes.h:58
+#: opcodes.h:80
 msgid "write the message to a folder"
 msgstr "存入一封信件到某個檔案夾"
 
-#: opcodes.h:59
+#: opcodes.h:81
 msgid "copy a message to a file/mailbox"
 msgstr "拷貝一封信件到某個檔案或信箱"
 
-#: opcodes.h:60
+#: opcodes.h:82
 msgid "create an alias from a message sender"
 msgstr "建立某封信件寄信人的別名"
 
-#: opcodes.h:61
+#: opcodes.h:83
 msgid "move entry to bottom of screen"
 msgstr "移至螢幕結尾"
 
-#: opcodes.h:62
+#: opcodes.h:84
 msgid "move entry to middle of screen"
 msgstr "移至螢幕中央"
 
-#: opcodes.h:63
+#: opcodes.h:85
 msgid "move entry to top of screen"
 msgstr "移至螢幕開頭"
 
-#: opcodes.h:64
+#: opcodes.h:86
 msgid "make decoded (text/plain) copy"
 msgstr "製作解碼的 (text/plain) 拷貝"
 
-#: opcodes.h:65
+#: opcodes.h:87
 msgid "make decoded copy (text/plain) and delete"
 msgstr "製作解碼的拷貝 (text/plain) 並且刪除之"
 
-#: opcodes.h:66
+#: opcodes.h:88
 msgid "delete the current entry"
 msgstr "刪除所在的資料"
 
-#: opcodes.h:67
+#: opcodes.h:89
 msgid "delete the current mailbox (IMAP only)"
 msgstr "刪除所在的郵箱 (只適用於 IMAP)"
 
-#: opcodes.h:68
+#: opcodes.h:90
 msgid "delete all messages in subthread"
 msgstr "刪除所有在子序列中的信件"
 
-#: opcodes.h:69
+#: opcodes.h:91
 msgid "delete all messages in thread"
 msgstr "刪除所有在序列中的信件"
 
-#: opcodes.h:70
+#: opcodes.h:92
 msgid "display full address of sender"
 msgstr "顯示寄信人的完整位址"
 
-#: opcodes.h:71
+#: opcodes.h:93
 msgid "display message and toggle header weeding"
 msgstr "顯示信件並切換是否顯示所有標頭資料"
 
-#: opcodes.h:72
+#: opcodes.h:94
 msgid "display a message"
 msgstr "顯示信件"
 
-#: opcodes.h:73
+#: opcodes.h:95
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: opcodes.h:74
+#: opcodes.h:96
 msgid "edit the raw message"
 msgstr "編輯信件的真正內容"
 
-#: opcodes.h:75
+#: opcodes.h:97
 msgid "delete the char in front of the cursor"
 msgstr "刪除游標所在位置之前的字元"
 
-#: opcodes.h:76
+#: opcodes.h:98
 msgid "move the cursor one character to the left"
 msgstr "向左移動一個字元"
 
-#: opcodes.h:77
+#: opcodes.h:99
 msgid "move the cursor to the beginning of the word"
 msgstr "移動至字的開頭"
 
-#: opcodes.h:78
+#: opcodes.h:100
 msgid "jump to the beginning of the line"
 msgstr "跳到行首"
 
-#: opcodes.h:79
+#: opcodes.h:101
 msgid "cycle among incoming mailboxes"
 msgstr "圈選進入的郵筒"
 
-#: opcodes.h:80
+#: opcodes.h:102
 msgid "complete filename or alias"
 msgstr "完整的檔名或別名"
 
-#: opcodes.h:81
+#: opcodes.h:103
 msgid "complete address with query"
 msgstr "附上完整的位址查詢"
 
-#: opcodes.h:82
+#: opcodes.h:104
 msgid "delete the char under the cursor"
 msgstr "刪除游標所在的字母"
 
-#: opcodes.h:83
+#: opcodes.h:105
 msgid "jump to the end of the line"
 msgstr "跳到行尾"
 
-#: opcodes.h:84
+#: opcodes.h:106
 msgid "move the cursor one character to the right"
 msgstr "向游標向右移動一個字元"
 
-#: opcodes.h:85
+#: opcodes.h:107
 msgid "move the cursor to the end of the word"
 msgstr "移動至字的最後"
 
-#: opcodes.h:86
+#: opcodes.h:108
 #, fuzzy
 msgid "scroll down through the history list"
 msgstr "向上捲動使用紀錄清單"
 
-#: opcodes.h:87
+#: opcodes.h:109
 msgid "scroll up through the history list"
 msgstr "向上捲動使用紀錄清單"
 
-#: opcodes.h:88
+#: opcodes.h:110
 msgid "delete chars from cursor to end of line"
 msgstr "由游標所在位置刪除至行尾所有的字元"
 
-#: opcodes.h:89
+#: opcodes.h:111
 msgid "delete chars from the cursor to the end of the word"
 msgstr "由游標所在位置刪除至字尾所有的字元"
 
-#: opcodes.h:90
+#: opcodes.h:112
 msgid "delete all chars on the line"
 msgstr "刪除某行上所有的字母"
 
-#: opcodes.h:91
+#: opcodes.h:113
 msgid "delete the word in front of the cursor"
 msgstr "刪除游標之前的字"
 
-#: opcodes.h:92
+#: opcodes.h:114
 msgid "quote the next typed key"
 msgstr "用下一個輸入的鍵值作引言"
 
-#: opcodes.h:93
+#: opcodes.h:115
 msgid "transpose character under cursor with previous"
 msgstr "把遊標上的字母與前一個字交換"
 
-#: opcodes.h:94
+#: opcodes.h:116
 msgid "capitalize the word"
 msgstr "把字的第一個字母轉成大寫"
 
-#: opcodes.h:95
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "把字串轉成小寫"
 
-#: opcodes.h:96
+#: opcodes.h:118
 msgid "convert the word to upper case"
 msgstr "把字串轉成大寫"
 
-#: opcodes.h:97
-msgid "enter a muttrc command"
-msgstr "輸入 muttrc 指令"
+#: opcodes.h:119
+msgid "enter a neomuttrc command"
+msgstr "輸入 neomuttrc 指令"
 
-#: opcodes.h:98
+#: opcodes.h:120
 msgid "enter a file mask"
 msgstr "輸入檔案遮罩"
 
-#: opcodes.h:99
+#: opcodes.h:121
 msgid "exit this menu"
 msgstr "離開這個選單"
 
-#: opcodes.h:100
+#: opcodes.h:122
 msgid "filter attachment through a shell command"
 msgstr "透過 shell 指令來過濾附件"
 
-#: opcodes.h:101
+#: opcodes.h:123
 msgid "move to the first entry"
 msgstr "移到第一項資料"
 
-#: opcodes.h:102
+#: opcodes.h:124
 msgid "toggle a message's 'important' flag"
 msgstr "切換信件的「重要」旗標"
 
-#: opcodes.h:103
+#: opcodes.h:125
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "以後的回覆都寄至 %s%s?"
 
-#: opcodes.h:104
+#: opcodes.h:126
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:105
+#: opcodes.h:127
 msgid "forward a message with comments"
 msgstr "轉寄訊息並加上額外文字"
 
-#: opcodes.h:106
+#: opcodes.h:128
 msgid "select the current entry"
 msgstr "選擇所在的資料記錄"
 
-#: opcodes.h:107
+#: opcodes.h:129
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "您已經在第一封信了。"
 
-#: opcodes.h:108
+#: opcodes.h:130
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "編輯信件與標頭"
 
-#: opcodes.h:109
+#: opcodes.h:131
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "您已經在第一封信了。"
 
-#: opcodes.h:110
+#: opcodes.h:132
 msgid "reply to all recipients"
 msgstr "回覆給所有收件人"
 
-#: opcodes.h:111
+#: opcodes.h:133
 msgid "scroll down 1/2 page"
 msgstr "向下捲動半頁"
 
-#: opcodes.h:112
+#: opcodes.h:134
 msgid "scroll up 1/2 page"
 msgstr "向上捲動半頁"
 
-#: opcodes.h:113
+#: opcodes.h:135
 msgid "this screen"
 msgstr "這個畫面"
 
-#: opcodes.h:114
+#: opcodes.h:136
 msgid "jump to an index number"
 msgstr "跳到某一個索引號碼"
 
-#: opcodes.h:115
+#: opcodes.h:137
 msgid "move to the last entry"
 msgstr "移動到最後一項資料"
 
-#: opcodes.h:116
+#: opcodes.h:138
 msgid "reply to specified mailing list"
 msgstr "回覆給某一個指定的郵件列表"
 
-#: opcodes.h:117
+#: opcodes.h:139
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:118
+#: opcodes.h:140
 msgid "execute a macro"
 msgstr "執行一個巨集"
 
-#: opcodes.h:119
+#: opcodes.h:141
 msgid "compose a new mail message"
 msgstr "撰寫一封新的信件"
 
-#: opcodes.h:120
+#: opcodes.h:142
 msgid "break the thread in two"
 msgstr ""
 
-#: opcodes.h:121
+#: opcodes.h:143
 msgid "open a different folder"
 msgstr "開啟另一個檔案夾"
 
-#: opcodes.h:122
+#: opcodes.h:144
 msgid "open a different folder in read only mode"
 msgstr "用唯讀模式開啟另一個檔案夾"
 
-#: opcodes.h:123
+#: opcodes.h:145
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "開啟另一個檔案夾"
 
-#: opcodes.h:124
+#: opcodes.h:146
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "用唯讀模式開啟另一個檔案夾"
 
-#: opcodes.h:125
+#: opcodes.h:147
 msgid "clear a status flag from a message"
 msgstr "清除某封信件上的狀態旗標"
 
-#: opcodes.h:126
+#: opcodes.h:148
 msgid "delete messages matching a pattern"
 msgstr "刪除符合某個格式的信件"
 
-#: opcodes.h:127
+#: opcodes.h:149
 msgid "force retrieval of mail from IMAP server"
 msgstr "強行取回 IMAP 伺服器上的信件"
 
-#: opcodes.h:128
+#: opcodes.h:150
 msgid "logout from all IMAP servers"
 msgstr ""
 
-#: opcodes.h:129
+#: opcodes.h:151
 msgid "retrieve mail from POP server"
 msgstr "取回 POP 伺服器上的信件"
 
-#: opcodes.h:130
+#: opcodes.h:152
 msgid "show only messages matching a pattern"
 msgstr "只顯示符合某個格式的信件"
 
-#: opcodes.h:131
+#: opcodes.h:153
 #, fuzzy
 msgid "link tagged message to the current one"
 msgstr "無法傳送已標記的郵件至："
 
-#: opcodes.h:132
+#: opcodes.h:154
 #, fuzzy
 msgid "open next mailbox with new mail"
 msgstr "沒有信箱有新信件。"
 
-#: opcodes.h:133
+#: opcodes.h:155
 msgid "jump to the next new message"
 msgstr "跳到下一封新的信件"
 
-#: opcodes.h:134
+#: opcodes.h:156
 #, fuzzy
 msgid "jump to the next new or unread message"
 msgstr "跳到下一個未讀取的信件"
 
-#: opcodes.h:135
+#: opcodes.h:157
 msgid "jump to the next subthread"
 msgstr "跳到下一個子序列"
 
-#: opcodes.h:136
+#: opcodes.h:158
 msgid "jump to the next thread"
 msgstr "跳到下一個序列"
 
-#: opcodes.h:137
+#: opcodes.h:159
 msgid "move to the next undeleted message"
 msgstr "移動到下一個未刪除的信件"
 
-#: opcodes.h:138
+#: opcodes.h:160
 msgid "jump to the next unread message"
 msgstr "跳到下一個未讀取的信件"
 
-#: opcodes.h:139
+#: opcodes.h:161
 msgid "jump to parent message in thread"
 msgstr "跳到這個序列的主信件"
 
-#: opcodes.h:140
+#: opcodes.h:162
 msgid "jump to previous thread"
 msgstr "跳到上一個序列"
 
-#: opcodes.h:141
+#: opcodes.h:163
 msgid "jump to previous subthread"
 msgstr "跳到上一個子序列"
 
-#: opcodes.h:142
+#: opcodes.h:164
 msgid "move to the previous undeleted message"
 msgstr "移動到上一個未刪除的信件"
 
-#: opcodes.h:143
+#: opcodes.h:165
 msgid "jump to the previous new message"
 msgstr "跳到上一個新的信件"
 
-#: opcodes.h:144
+#: opcodes.h:166
 #, fuzzy
 msgid "jump to the previous new or unread message"
 msgstr "跳到上一個未讀取的信件"
 
-#: opcodes.h:145
+#: opcodes.h:167
 msgid "jump to the previous unread message"
 msgstr "跳到上一個未讀取的信件"
 
-#: opcodes.h:146
+#: opcodes.h:168
 msgid "mark the current thread as read"
 msgstr "標記現在的序列為已讀取"
 
-#: opcodes.h:147
+#: opcodes.h:169
 msgid "mark the current subthread as read"
 msgstr "標記現在的子序列為已讀取"
 
-#: opcodes.h:148
+#: opcodes.h:170
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "跳到這個序列的主信件"
 
-#: opcodes.h:149
+#: opcodes.h:171
 msgid "set a status flag on a message"
 msgstr "設定某一封信件的狀態旗標"
 
-#: opcodes.h:150
+#: opcodes.h:172
 msgid "save changes to mailbox"
 msgstr "儲存變動到信箱"
 
-#: opcodes.h:151
+#: opcodes.h:173
 msgid "tag messages matching a pattern"
 msgstr "標記符合某個格式的信件"
 
-#: opcodes.h:152
-msgid "delete from mutt, don't touch on disk"
+#: opcodes.h:174
+msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:153
+#: opcodes.h:175
 msgid "undelete messages matching a pattern"
 msgstr "反刪除符合某個格式的信件"
 
-#: opcodes.h:154
+#: opcodes.h:176
 msgid "untag messages matching a pattern"
 msgstr "反標記符合某個格式的信件"
 
-#: opcodes.h:155
+#: opcodes.h:177
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "您已經在第一封信了。"
 
-#: opcodes.h:156
+#: opcodes.h:178
 msgid "move to the middle of the page"
 msgstr "移動到本頁的中間"
 
-#: opcodes.h:157
+#: opcodes.h:179
 msgid "move to the next entry"
 msgstr "移動到下一項資料"
 
-#: opcodes.h:158
+#: opcodes.h:180
 msgid "scroll down one line"
 msgstr "向下捲動一行"
 
-#: opcodes.h:159
+#: opcodes.h:181
 msgid "move to the next page"
 msgstr "移到下一頁"
 
-#: opcodes.h:160
+#: opcodes.h:182
 msgid "jump to the bottom of the message"
 msgstr "跳到信件的最後面"
 
-#: opcodes.h:161
+#: opcodes.h:183
 msgid "toggle display of quoted text"
 msgstr "切換引言顯示"
 
-#: opcodes.h:162
+#: opcodes.h:184
 msgid "skip beyond quoted text"
 msgstr "跳過引言"
 
-#: opcodes.h:163
+#: opcodes.h:185
 msgid "jump to the top of the message"
 msgstr "跳到信件的最上面"
 
-#: opcodes.h:164
+#: opcodes.h:186
 msgid "pipe message/attachment to a shell command"
 msgstr "輸出導向 訊息/附件 至命令解譯器"
 
-#: opcodes.h:165
+#: opcodes.h:187
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "把郵件直接傳送至 %s"
 
-#: opcodes.h:166
+#: opcodes.h:188
 msgid "move to the previous entry"
 msgstr "移到上一項資料"
 
-#: opcodes.h:167
+#: opcodes.h:189
 msgid "scroll up one line"
 msgstr "向上捲動一行"
 
-#: opcodes.h:168
+#: opcodes.h:190
 msgid "move to the previous page"
 msgstr "移到上一頁"
 
-#: opcodes.h:169
+#: opcodes.h:191
 msgid "print the current entry"
 msgstr "列印現在的資料"
 
-#: opcodes.h:170
+#: opcodes.h:192
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:171
+#: opcodes.h:193
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: opcodes.h:172
+#: opcodes.h:194
 msgid "query external program for addresses"
 msgstr "利用外部應用程式查詢地址"
 
-#: opcodes.h:173
+#: opcodes.h:195
 msgid "append new query results to current results"
 msgstr "附加新的查詢結果至現今的查詢結果"
 
-#: opcodes.h:174
+#: opcodes.h:196
 msgid "save changes to mailbox and quit"
 msgstr "儲存變動過的資料到信箱並且離開"
 
-#: opcodes.h:175
+#: opcodes.h:197
 msgid "recall a postponed message"
 msgstr "重新叫出一封被延遲寄出的信件"
 
-#: opcodes.h:176
+#: opcodes.h:198
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "序列中有尚未讀取的信件。"
 
-#: opcodes.h:177
+#: opcodes.h:199
 msgid "clear and redraw the screen"
 msgstr "清除並重新繪製畫面"
 
-#: opcodes.h:178
+#: opcodes.h:200
 msgid "{internal}"
 msgstr "{內部的}"
 
-#: opcodes.h:179
+#: opcodes.h:201
 #, fuzzy
 msgid "rename the current mailbox (IMAP only)"
 msgstr "刪除所在的郵箱 (只適用於 IMAP)"
 
-#: opcodes.h:180
+#: opcodes.h:202
 msgid "reply to a message"
 msgstr "回覆一封信件"
 
-#: opcodes.h:181
+#: opcodes.h:203
 msgid "use the current message as a template for a new one"
 msgstr "用這封信件作為新信件的範本"
 
-#: opcodes.h:182
+#: opcodes.h:204
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "儲存信件/附件到某個檔案"
 
-#: opcodes.h:183
+#: opcodes.h:205
 msgid "search for a regular expression"
 msgstr "用正規表示式尋找"
 
-#: opcodes.h:184
+#: opcodes.h:206
 msgid "search backwards for a regular expression"
 msgstr "向後搜尋一個正規表示式"
 
-#: opcodes.h:185
+#: opcodes.h:207
 msgid "search for next match"
 msgstr "尋找下一個符合的資料"
 
-#: opcodes.h:186
+#: opcodes.h:208
 msgid "search for next match in opposite direction"
 msgstr "返方向搜尋下一個符合的資料"
 
-#: opcodes.h:187
+#: opcodes.h:209
 msgid "toggle search pattern coloring"
 msgstr "切換搜尋格式的顏色"
 
-#: opcodes.h:188
+#: opcodes.h:210
 msgid "invoke a command in a subshell"
 msgstr "在子 shell 執行指令"
 
-#: opcodes.h:189
+#: opcodes.h:211
 msgid "sort messages"
 msgstr "信件排序"
 
-#: opcodes.h:190
+#: opcodes.h:212
 msgid "sort messages in reverse order"
 msgstr "以相反的次序來做訊息排序"
 
-#: opcodes.h:191
+#: opcodes.h:213
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "反標記符合某個格式的信件"
 
-#: opcodes.h:192
+#: opcodes.h:214
 msgid "tag the current entry"
 msgstr "標記現在的記錄"
 
-#: opcodes.h:193
+#: opcodes.h:215
 msgid "apply next function to tagged messages"
 msgstr "應用下一個功能到已標記的訊息"
 
-#: opcodes.h:194
+#: opcodes.h:216
 #, fuzzy
 msgid "apply next function ONLY to tagged messages"
 msgstr "應用下一個功能到已標記的訊息"
 
-#: opcodes.h:195
+#: opcodes.h:217
 msgid "tag the current subthread"
 msgstr "標記目前的子序列"
 
-#: opcodes.h:196
+#: opcodes.h:218
 msgid "tag the current thread"
 msgstr "標記目前的序列"
 
-#: opcodes.h:197
+#: opcodes.h:219
 msgid "toggle a message's 'new' flag"
 msgstr "切換信件的 'new' 旗標"
 
-#: opcodes.h:198
+#: opcodes.h:220
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "跳到上一個未讀取的信件"
 
-#: opcodes.h:199
+#: opcodes.h:221
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "切換是否重新寫入郵箱中"
 
-#: opcodes.h:200
+#: opcodes.h:222
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "切換瀏覽郵箱抑或所有的檔案"
 
-#: opcodes.h:201
+#: opcodes.h:223
 msgid "move to the top of the page"
 msgstr "移到頁首"
 
-#: opcodes.h:202
+#: opcodes.h:224
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:203
+#: opcodes.h:225
 msgid "undelete the current entry"
 msgstr "取消刪除所在的記錄"
 
-#: opcodes.h:204
+#: opcodes.h:226
 msgid "undelete all messages in thread"
 msgstr "取消刪除序列中的所有信件"
 
 # XXX weird translation
-#: opcodes.h:205
+#: opcodes.h:227
 msgid "undelete all messages in subthread"
 msgstr "取消刪除子序列中的所有信件"
 
-#: opcodes.h:206
+#: opcodes.h:228
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "反標記符合某個格式的信件"
 
-#: opcodes.h:207
-msgid "show the Mutt version number and date"
-msgstr "顯示 Mutt 的版本號碼與日期"
+#: opcodes.h:229
+msgid "show the NeoMutt version number and date"
+msgstr "顯示 NeoMutt 的版本號碼與日期"
 
-#: opcodes.h:208
+#: opcodes.h:230
 msgid "view attachment using mailcap entry if necessary"
 msgstr "如果需要的話使用 mailcap 瀏覽附件"
 
-#: opcodes.h:209
+#: opcodes.h:231
 msgid "show MIME attachments"
 msgstr "顯示 MIME 附件"
 
-#: opcodes.h:210
+#: opcodes.h:232
 msgid "display the keycode for a key press"
 msgstr ""
 
-#: opcodes.h:211
+#: opcodes.h:233
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "標記目前的序列"
 
-#: opcodes.h:212
+#: opcodes.h:234
 msgid "show currently active limit pattern"
 msgstr "顯示目前有作用的限制樣式"
 
-#: opcodes.h:213
+#: opcodes.h:235
 msgid "collapse/uncollapse current thread"
 msgstr "打開/關閉 目前的序列"
 
-#: opcodes.h:214
+#: opcodes.h:236
 msgid "collapse/uncollapse all threads"
 msgstr "打開/關閉 所有的序列"
 
-#: opcodes.h:217
+#: opcodes.h:239
 msgid "make decrypted copy and delete"
 msgstr "製作解密的拷貝並且刪除之"
 
-#: opcodes.h:218
+#: opcodes.h:240
 msgid "make decrypted copy"
 msgstr "製作一份解密的拷貝"
 
-#: opcodes.h:219
+#: opcodes.h:241
 #, fuzzy
 msgid "wipe passphrase(s) from memory"
 msgstr "清除記憶體中的 PGP 通行密碼"
 
-#: opcodes.h:220
+#: opcodes.h:242
 #, fuzzy
 msgid "extract supported public keys"
 msgstr "擷取 PGP 公共鑰匙"
 
-#: opcodes.h:224
+#: opcodes.h:246
 #, fuzzy
 msgid "accept the chain constructed"
 msgstr "同意已建好的鏈結"
 
-#: opcodes.h:225
+#: opcodes.h:247
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "在鏈結的後面加上郵件轉接器"
 
-#: opcodes.h:226
+#: opcodes.h:248
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "在鏈結中加入郵件轉接器"
 
-#: opcodes.h:227
+#: opcodes.h:249
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "從鏈結中刪除郵件轉接器"
 
-#: opcodes.h:228
+#: opcodes.h:250
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "選擇鏈結裏對上一個部份"
 
-#: opcodes.h:229
+#: opcodes.h:251
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "選擇鏈結裏跟著的一個部份"
 
-#: opcodes.h:230
+#: opcodes.h:252
 msgid "send the message through a mixmaster remailer chain"
 msgstr "利用 mixmaster 郵件轉接器把郵件寄出"
 
-#: opcodes.h:237
+#: opcodes.h:259
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "開啟另一個檔案夾"
 
-#: opcodes.h:238
+#: opcodes.h:260
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:239
+#: opcodes.h:261
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:240
+#: opcodes.h:262
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:241
+#: opcodes.h:263
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: opcodes.h:242
+#: opcodes.h:264
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "您已經在第一封信了。"
 
-#: opcodes.h:243
+#: opcodes.h:265
 msgid "read entire thread of the current message"
 msgstr ""
 
 # XXX strange translation
-#: opcodes.h:249
+#: opcodes.h:271
 msgid "attach a PGP public key"
 msgstr "附帶一把 PGP 公共鑰匙"
 
-#: opcodes.h:250
+#: opcodes.h:272
 msgid "show PGP options"
 msgstr "顯示 PGP 選項"
 
-#: opcodes.h:251
+#: opcodes.h:273
 msgid "mail a PGP public key"
 msgstr "寄出 PGP 公共鑰匙"
 
-#: opcodes.h:252
+#: opcodes.h:274
 msgid "verify a PGP public key"
 msgstr "檢驗 PGP 公共鑰匙"
 
-#: opcodes.h:253
+#: opcodes.h:275
 msgid "view the key's user id"
 msgstr "檢閱這把鑰匙的使用者 id"
 
-#: opcodes.h:254
+#: opcodes.h:276
 #, fuzzy
 msgid "check for classic PGP"
 msgstr "檢查古老的pgp格式"
 
-#: opcodes.h:257
+#: opcodes.h:279
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: opcodes.h:258
+#: opcodes.h:280
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "沒有信箱有新信件。"
 
-#: opcodes.h:259
+#: opcodes.h:281
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "重新開啟信箱中…"
 
-#: opcodes.h:260
+#: opcodes.h:282
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "向下捲動半頁"
 
-#: opcodes.h:261
+#: opcodes.h:283
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "向上捲動半頁"
 
-#: opcodes.h:262
+#: opcodes.h:284
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "移到上一頁"
 
-#: opcodes.h:263
+#: opcodes.h:285
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "沒有信箱有新信件。"
 
-#: opcodes.h:264
+#: opcodes.h:286
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "切換瀏覽郵箱抑或所有的檔案"
 
-#: opcodes.h:265
+#: opcodes.h:287
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: opcodes.h:268
+#: opcodes.h:290
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "顯示 S/MIME 選項"
@@ -6182,7 +6182,7 @@ msgstr "沒有標題，正在中斷中。"
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
-#. If she says no, mutt will reply to the from header's address instead.
+#. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:581
 #, c-format
 msgid "Reply to %s%s?"
@@ -6476,14 +6476,14 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `neomutt -vv' for details.\n"
 msgstr ""
-"版權所有 (C) 1996-2001 Michael R. Elkins 及其他人仕。\n"
-"Mutt 不提供任何保證：需要更詳細的資料，請鍵入 `mutt -vv'。\n"
-"Mutt 是一個自由軟體, 歡迎您在某些特定的條件上，重新將它分發。\n"
-"若需要更詳細的資料, 請鍵入 `mutt -vv'\n"
+"版權所有 (C) 1996-2016 Michael R. Elkins 及其他人仕。\n"
+"NeoMutt 不提供任何保證：需要更詳細的資料，請鍵入 `neomutt -vv'。\n"
+"NeoMutt 是一個自由軟體, 歡迎您在某些特定的條件上，重新將它分發。\n"
+"若需要更詳細的資料, 請鍵入 `neomutt -vv'\n"
 
 #: version.c:409
 #, fuzzy
@@ -6501,22 +6501,3 @@ msgid ""
 msgstr ""
 "\n"
 "編譯選項："
-
-#, fuzzy
-#~ msgid "default colors not supported."
-#~ msgstr "不支援預設的色彩"
-
-#, fuzzy
-#~ msgid "sign as: "
-#~ msgstr " 簽名的身份是： "
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "鎖進數量超過限額，將 %s 的鎖移除？"
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN。\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN。\n"

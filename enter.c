@@ -219,7 +219,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
  */
 static inline int is_shell_char(wchar_t ch)
 {
-  static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in Mutt */
+  static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in NeoMutt */
   return wcschr(shell_chars, ch) != NULL;
 }
 

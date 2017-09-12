@@ -160,7 +160,7 @@ void mutt_expand_aliases_env(struct Envelope *env)
  *
  * if someone has an address like
  *      From: Michael `/bin/rm -f ~` Elkins <me@mutt.org>
- * and the user creates an alias for this, Mutt could wind up executing
+ * and the user creates an alias for this, NeoMutt could wind up executing
  * the backticks because it writes aliases like
  *      alias me Michael `/bin/rm -f ~` Elkins <me@mutt.org>
  * To avoid this problem, use a backslash (\) to quote any backticks.  We also
@@ -171,7 +171,7 @@ void mutt_expand_aliases_env(struct Envelope *env)
  *      alias me Michael \\`/bin/rm -f ~\\` Elkins <me@mutt.org>
  * which still gets evaluated because the double backslash is not a quote.
  *
- * Additionally, we need to quote ' and " characters - otherwise, mutt will
+ * Additionally, we need to quote ' and " characters - otherwise, neomutt will
  * interpret them on the wrong parsing step.
  *
  * $ wants to be quoted since it may indicate the start of an environment
@@ -240,7 +240,7 @@ static void recode_buf(char *buf, size_t buflen)
 /**
  * check_alias_name - Sanity-check an alias name
  *
- * Only characters which are non-special to both the RFC822 and the mutt
+ * Only characters which are non-special to both the RFC822 and the neomutt
  * configuration parser are permitted.
  */
 int check_alias_name(const char *s, char *dest, size_t destlen)

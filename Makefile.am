@@ -38,13 +38,13 @@ endif
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
-distdir = neo$(PACKAGE)-$(VERSION)
+distdir = $(PACKAGE)-$(VERSION)
 
 BUILT_SOURCES = conststrings.c git_ver.h
 
-bin_PROGRAMS = mutt $(PGPAUX_TARGET)
+bin_PROGRAMS = neomutt $(PGPAUX_TARGET)
 
-mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
+neomutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
 	bcache.c body.c body.h browser.c buffy.c charset.c color.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
 	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
@@ -59,7 +59,7 @@ mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
 	smtp.c sort.c state.c state.h status.c system.c thread.c thread.h url.c \
 	version.c where.h
 
-nodist_mutt_SOURCES = $(BUILT_SOURCES)
+nodist_neomutt_SOURCES = $(BUILT_SOURCES)
 
 LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
@@ -67,10 +67,10 @@ LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 LIBMUTT = -Llib -lmutt
 LIBMUTTDEPS = $(top_srcdir)/lib/lib.h lib/libmutt.a
 
-mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
+neomutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
 	$(LIBIMAP) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
 
-mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
+neomutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
 	$(LIBMUTTDEPS) $(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
@@ -78,7 +78,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
+EXTRA_neomutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
 	remailer.c remailer.h resize.c url.h
 
@@ -130,7 +130,7 @@ LDADD = $(LIBOBJS) $(INTLLIBS)
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 
-git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
+git_ver.h: $(neomutt_SOURCES) $(SUBDIRS)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
 	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \

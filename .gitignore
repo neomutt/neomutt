@@ -16,8 +16,7 @@ autom4te.cache/
 conststrings.c
 git_ver.h
 hcache/hcversion.h
-mutt
-mutt_md5
+neomutt
 pgpewrap
 pgpring
 txt2c
@@ -29,13 +28,13 @@ config.status
 stamp-h1
 
 # Ignored within subdirectories
-doc/mutt.1
+doc/neomutt.1
 doc/*.html
 doc/makedoc
 doc/manual.txt
 doc/manual.xml
-doc/Muttrc
-doc/muttrc.man
+doc/neomuttrc
+doc/neomuttrc.man
 po/*.gmo
 po/POTFILES
 po/stamp-po

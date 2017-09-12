@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20170714\n"
+"Project-Id-Version: neomutt-20170912\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-09-12 15:41+0100\n"
+"POT-Creation-Date: 2017-09-12 17:42+0100\n"
 "PO-Revision-Date: 2017-02-22 20:12+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -51,7 +51,7 @@ msgstr "Selecteren"
 
 #: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
 #: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
-#: ncrypt/crypt_gpgme.c:4171 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
+#: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
 #: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
 msgstr "Hulp"
@@ -695,7 +695,7 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4909 ncrypt/pgp.c:1784
+#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
 #: ncrypt/smime.c:2123 ncrypt/smime.c:2138
 msgid "Sign as: "
 msgstr "Ondertekenen als: "
@@ -1131,8 +1131,8 @@ msgid "no"
 msgstr "nee"
 
 #: curs_lib.c:394
-msgid "Exit Mutt?"
-msgstr "Mutt afsluiten?"
+msgid "Exit NeoMutt?"
+msgstr "NeoMutt afsluiten?"
 
 #: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
 msgid "unknown error"
@@ -1320,8 +1320,8 @@ msgid "To view all messages, limit to \"all\"."
 msgstr "Beperk op \"all\" om alle berichten te bekijken."
 
 #: curs_main.c:1576 pager.c:2291
-msgid "Quit Mutt?"
-msgstr "Mutt afsluiten?"
+msgid "Quit NeoMutt?"
+msgstr "NeoMutt afsluiten?"
 
 #: curs_main.c:1669
 msgid "Tag messages matching: "
@@ -1413,7 +1413,7 @@ msgstr ""
 #: curs_main.c:2178
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
-msgstr "Mutt verlaten zonder op te slaan?"
+msgstr "NeoMutt verlaten zonder op te slaan?"
 
 #: curs_main.c:2194
 #, fuzzy
@@ -1648,7 +1648,7 @@ msgstr "Bericht bevat:\n"
 #. This entry is shown AFTER the message content,
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
-#. but means "(press any key to continue using mutt)".
+#. but means "(press any key to continue using neomutt)".
 #: edit.c:416 edit.c:475
 msgid "(continue)\n"
 msgstr "(verder)\n"
@@ -2033,7 +2033,7 @@ msgstr "Verbinding met %s wordt gesloten..."
 #: imap/imap.c:350
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
-msgstr "Mutt kan niet overweg met deze antieke IMAP-server."
+msgstr "NeoMutt kan niet overweg met deze antieke IMAP-server."
 
 #: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
@@ -2380,23 +2380,23 @@ msgstr "%s: onbekend commando"
 msgid "Error in command line: %s\n"
 msgstr "Fout in opdrachtregel: %s\n"
 
-#: init.c:4126
+#: init.c:4133
 msgid "unable to determine home directory"
 msgstr "Kan persoonlijke map niet achterhalen"
 
-#: init.c:4134
+#: init.c:4141
 msgid "unable to determine username"
 msgstr "Kan gebruikersnaam niet achterhalen"
 
-#: init.c:4169
+#: init.c:4176
 msgid "unable to determine nodename via uname()"
 msgstr "Kan hostnaam niet achterhalen via uname()"
 
-#: init.c:4484
+#: init.c:4483
 msgid "-group: no group name"
 msgstr "-group: geen groepsnaam"
 
-#: init.c:4494
+#: init.c:4493
 msgid "out of arguments"
 msgstr "te weinig argumenten"
 
@@ -2501,28 +2501,28 @@ msgstr "Onvoldoende geheugen!"
 #: main.c:88
 #, fuzzy
 msgid ""
-"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -B\n"
-"       mutt [<options>] -D [-S]\n"
-"       mutt -v[v]\n"
+"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"       neomutt [<options>] -p\n"
+"       neomutt [<options>] -A <alias> [...]\n"
+"       neomutt [<options>] -Q <query> [...]\n"
+"       neomutt [<options>] -B\n"
+"       neomutt [<options>] -D [-S]\n"
+"       neomutt -v[v]\n"
 msgstr ""
-"Gebruik:  mutt [<opties>] [-z] [-f <bestand> | -yZ]\n"
-"          mutt [<opties>] [-Ex] [-Hi <bestand>] [-s <onderwerp>]\n"
+"Gebruik:  neomutt [<opties>] [-z] [-f <bestand> | -yZ]\n"
+"          neomutt [<opties>] [-Ex] [-Hi <bestand>] [-s <onderwerp>]\n"
 "               [-bc <adres>] [-a <bestand> [...] --] <adres> [...]\n"
-"          mutt [<opties>] [-x] [-s <onderwerp>] [-bc <adres>]\n"
+"          neomutt [<opties>] [-x] [-s <onderwerp>] [-bc <adres>]\n"
 "               [-a <bestand> [...] --] <adres> [...] < bericht\n"
-"          mutt [<opties>] -p\n"
-"          mutt [<opties>] -A <afkorting> [...]\n"
-"          mutt [<opties>] -Q <vraag> [...]\n"
-"          mutt [<opties>] -D\n"
-"          mutt -v[v]\n"
+"          neomutt [<opties>] -p\n"
+"          neomutt [<opties>] -A <afkorting> [...]\n"
+"          neomutt [<opties>] -Q <vraag> [...]\n"
+"          neomutt [<opties>] -D\n"
+"          neomutt -v[v]\n"
 
 #: main.c:98
 #, fuzzy
@@ -2556,24 +2556,24 @@ msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
 "  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate muttrc file\n"
+"  -F <file>     specify an alternate neomuttrc file\n"
 "  -g <server>   specify a news server (if compiled with NNTP)\n"
 "  -G            select a newsgroup (if compiled with NNTP)\n"
 "  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which Mutt should include in the body\n"
+"  -i <file>     specify a file which NeoMutt should include in the body\n"
 "  -m <type>     specify a default mailbox type\n"
-"  -n            causes Mutt not to read the system Muttrc\n"
+"  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
 "  -E            het concept (-H) of het ingevoegde bestand (-i) bewerken\n"
 "  -e <opdracht> specificeer een uit te voeren opdracht na initialisatie\n"
-"  -F <file>     specificeer een alternatieve muttrc\n"
+"  -F <file>     specificeer een alternatieve neomuttrc\n"
 "  -f <file>     specificeer het te lezen postvak\n"
 "  -H <file>     specificeer een bestand om de headers uit te lezen\n"
-"  -i <file>     specificeer een bestand dat Mutt moet invoegen in het "
+"  -i <file>     specificeer een bestand dat NeoMutt moet invoegen in het "
 "bericht\n"
 "  -m <type>     specificeer een standaard postvaktype\n"
-"  -n            zorgt dat Mutt de systeem Muttrc niet inleest\n"
+"  -n            zorgt dat NeoMutt de systeem neomuttrc niet inleest\n"
 "  -p            roept een uitgesteld bericht op"
 
 #: main.c:123
@@ -3104,7 +3104,7 @@ msgstr "(w)eigeren, (e)enmalig toelaten, (s)kip"
 msgid "(r)eject, accept (o)nce"
 msgstr "(w)eigeren, (e)enmalig toelaten"
 
-#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4165
+#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4166
 #: ncrypt/pgpkey.c:525 ncrypt/smime.c:418
 msgid "Exit  "
 msgstr "Einde "
@@ -3354,7 +3354,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "fout bij het lezen van het gegevensobject: %s\n"
 
-#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3807 ncrypt/pgpkey.c:567
+#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
 #: ncrypt/pgpkey.c:741
 msgid "Can't create temporary file"
 msgstr "Kan tijdelijk bestand niet aanmaken"
@@ -3444,7 +3444,7 @@ msgstr "WAARSCHUWING: PKA-item komt niet overeen met adres van ondertekenaar: "
 msgid "PKA verified signer's address is: "
 msgstr "Adres van PKA-geverifieerde ondertekenaar is: "
 
-#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3530
 msgid "Fingerprint: "
 msgstr "Vingerafdruk: "
 
@@ -3469,7 +3469,7 @@ msgstr ""
 "zoals hierboven aangegeven\n"
 
 #: ncrypt/crypt_gpgme.c:1462 ncrypt/crypt_gpgme.c:1467
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "aka: "
 msgstr "ook bekend als: "
 
@@ -3654,15 +3654,15 @@ msgstr "[-- Einde van S/MIME-ondertekende gegevens --]\n"
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Einde van S/MIME-versleutelde data --]\n"
 
-#: ncrypt/crypt_gpgme.c:3444
+#: ncrypt/crypt_gpgme.c:3445
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Kan dit gebruikers-ID niet weergeven (onbekende codering)]"
 
-#: ncrypt/crypt_gpgme.c:3446
+#: ncrypt/crypt_gpgme.c:3447
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Kan dit gebruikers-ID niet weergeven (ongeldige codering)]"
 
-#: ncrypt/crypt_gpgme.c:3451
+#: ncrypt/crypt_gpgme.c:3452
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Kan dit gebruikers-ID niet weergeven (ongeldige DN)]"
 
@@ -3670,153 +3670,153 @@ msgstr "[Kan dit gebruikers-ID niet weergeven (ongeldige DN)]"
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Name: "
 msgstr "Naam ......: "
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid From: "
 msgstr "Geldig van : %s\n"
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid To: "
 msgstr "Geldig tot : %s\n"
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Type: "
 msgstr "Slt.gebruik: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Usage: "
 msgstr "Slt.gebruik: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Serial-No: "
 msgstr "Serienummer: 0x%s\n"
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Issued By: "
 msgstr "Uitg. door : "
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Subkey: "
 msgstr "Subsleutel : 0x%s"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3584 ncrypt/crypt_gpgme.c:3725
+#: ncrypt/crypt_gpgme.c:3585 ncrypt/crypt_gpgme.c:3726
 msgid "[Invalid]"
 msgstr "[Ongeldig]"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3627 ncrypt/crypt_gpgme.c:3766
+#: ncrypt/crypt_gpgme.c:3628 ncrypt/crypt_gpgme.c:3767
 #, fuzzy, c-format
 msgid "%s, %lu bit %s\n"
 msgstr "Sltl.type .: %s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3635 ncrypt/crypt_gpgme.c:3773
+#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3774
 msgid "encryption"
 msgstr "versleuteling "
 
-#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3642
-#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3774
-#: ncrypt/crypt_gpgme.c:3779 ncrypt/crypt_gpgme.c:3784
+#: ncrypt/crypt_gpgme.c:3637 ncrypt/crypt_gpgme.c:3643
+#: ncrypt/crypt_gpgme.c:3649 ncrypt/crypt_gpgme.c:3775
+#: ncrypt/crypt_gpgme.c:3780 ncrypt/crypt_gpgme.c:3785
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3641 ncrypt/crypt_gpgme.c:3778
+#: ncrypt/crypt_gpgme.c:3642 ncrypt/crypt_gpgme.c:3779
 msgid "signing"
 msgstr "ondertekening"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3647 ncrypt/crypt_gpgme.c:3783
+#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3784
 msgid "certification"
 msgstr "certificering"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3719
+#: ncrypt/crypt_gpgme.c:3720
 msgid "[Revoked]"
 msgstr "[Herroepen]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3731
+#: ncrypt/crypt_gpgme.c:3732
 msgid "[Expired]"
 msgstr "[Verlopen]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3737
+#: ncrypt/crypt_gpgme.c:3738
 msgid "[Disabled]"
 msgstr "[Uitgeschakeld]"
 
-#: ncrypt/crypt_gpgme.c:3810
+#: ncrypt/crypt_gpgme.c:3811
 msgid "Collecting data..."
 msgstr "Data aan het vergaren..."
 
-#: ncrypt/crypt_gpgme.c:3835
+#: ncrypt/crypt_gpgme.c:3836
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Fout bij het vinden van uitgever van sleutel: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3844
+#: ncrypt/crypt_gpgme.c:3845
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Fout: certificeringsketen is te lang -- gestopt\n"
 
-#: ncrypt/crypt_gpgme.c:3854 ncrypt/pgpkey.c:589
+#: ncrypt/crypt_gpgme.c:3855 ncrypt/pgpkey.c:589
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Sleutel-ID: 0x%s"
 
-#: ncrypt/crypt_gpgme.c:3941
+#: ncrypt/crypt_gpgme.c:3942
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new() is mislukt: %s"
 
-#: ncrypt/crypt_gpgme.c:3979 ncrypt/crypt_gpgme.c:4030
+#: ncrypt/crypt_gpgme.c:3980 ncrypt/crypt_gpgme.c:4031
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start() is mislukt: %s"
 
-#: ncrypt/crypt_gpgme.c:4018 ncrypt/crypt_gpgme.c:4060
+#: ncrypt/crypt_gpgme.c:4019 ncrypt/crypt_gpgme.c:4061
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next() is mislukt: %s"
 
-#: ncrypt/crypt_gpgme.c:4136
+#: ncrypt/crypt_gpgme.c:4137
 msgid "All matching keys are marked expired/revoked."
 msgstr "Alle overeenkomende sleutels zijn verlopen/ingetrokken."
 
-#: ncrypt/crypt_gpgme.c:4167 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
+#: ncrypt/crypt_gpgme.c:4168 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
 msgid "Select  "
 msgstr "Selecteer  "
 
-#: ncrypt/crypt_gpgme.c:4169 ncrypt/pgpkey.c:529
+#: ncrypt/crypt_gpgme.c:4170 ncrypt/pgpkey.c:529
 msgid "Check key  "
 msgstr "Controleer sleutel  "
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4186
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP- en S/MIME-sleutels voor"
 
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4188
 msgid "PGP keys matching"
 msgstr "PGP-sleutels voor"
 
-#: ncrypt/crypt_gpgme.c:4189
+#: ncrypt/crypt_gpgme.c:4190
 msgid "S/MIME keys matching"
 msgstr "S/MIME-certficaten voor"
 
-#: ncrypt/crypt_gpgme.c:4191
+#: ncrypt/crypt_gpgme.c:4192
 msgid "keys matching"
 msgstr "sleutels voor"
 
@@ -3824,65 +3824,65 @@ msgstr "sleutels voor"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4198
+#: ncrypt/crypt_gpgme.c:4199
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4202
+#: ncrypt/crypt_gpgme.c:4203
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:608
+#: ncrypt/crypt_gpgme.c:4230 ncrypt/pgpkey.c:608
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Deze sleutel is onbruikbaar: verlopen/ingetrokken."
 
-#: ncrypt/crypt_gpgme.c:4243 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
+#: ncrypt/crypt_gpgme.c:4244 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
 msgid "ID is expired/disabled/revoked."
 msgstr "Dit ID is verlopen/uitgeschakeld/ingetrokken."
 
-#: ncrypt/crypt_gpgme.c:4251 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
+#: ncrypt/crypt_gpgme.c:4252 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
 msgid "ID has undefined validity."
 msgstr "Dit ID heeft een ongedefinieerde geldigheid."
 
-#: ncrypt/crypt_gpgme.c:4254 ncrypt/pgpkey.c:627
+#: ncrypt/crypt_gpgme.c:4255 ncrypt/pgpkey.c:627
 msgid "ID is not valid."
 msgstr "Dit ID is niet geldig."
 
-#: ncrypt/crypt_gpgme.c:4257 ncrypt/pgpkey.c:630
+#: ncrypt/crypt_gpgme.c:4258 ncrypt/pgpkey.c:630
 msgid "ID is only marginally valid."
 msgstr "Dit ID is slechts marginaal vertrouwd."
 
-#: ncrypt/crypt_gpgme.c:4266 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
+#: ncrypt/crypt_gpgme.c:4267 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Wilt U deze sleutel gebruiken?"
 
-#: ncrypt/crypt_gpgme.c:4320 ncrypt/crypt_gpgme.c:4431 ncrypt/pgpkey.c:834
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
 #: ncrypt/pgpkey.c:955
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Zoeken naar sleutels voor \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:4590 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Sleutel-ID = \"%s\" gebruiken voor %s?"
 
-#: ncrypt/crypt_gpgme.c:4641 ncrypt/pgp.c:1303 ncrypt/smime.c:778
+#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
 #: ncrypt/smime.c:880
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Sleutel-ID voor %s: "
 
-#: ncrypt/crypt_gpgme.c:4702 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Geef Key-ID in: "
 
-#: ncrypt/crypt_gpgme.c:4714
+#: ncrypt/crypt_gpgme.c:4715
 #, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Fout bij exporteren van sleutel: %s\n"
@@ -3891,39 +3891,39 @@ msgstr "Fout bij exporteren van sleutel: %s\n"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4734
+#: ncrypt/crypt_gpgme.c:4735
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP-sleutel 0x%s."
 
-#: ncrypt/crypt_gpgme.c:4777
+#: ncrypt/crypt_gpgme.c:4778
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: OpenPGP-protocol is niet beschikbaar"
 
-#: ncrypt/crypt_gpgme.c:4785
+#: ncrypt/crypt_gpgme.c:4786
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS-protocol is niet beschikbaar"
 
-#: ncrypt/crypt_gpgme.c:4824
+#: ncrypt/crypt_gpgme.c:4825
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (o)nderteken, ondert. (a)ls, (p)gp, (g)een, of oppenc (u)it? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4826
+#: ncrypt/crypt_gpgme.c:4827
 msgid "sapco"
 msgstr "oapgu"
 
-#: ncrypt/crypt_gpgme.c:4833
+#: ncrypt/crypt_gpgme.c:4834
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (o)nderteken, ondert. (a)ls, s/(m)ime, (g)een, of oppenc (u)it? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4835
+#: ncrypt/crypt_gpgme.c:4836
 msgid "samco"
 msgstr "oamgu"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4848
+#: ncrypt/crypt_gpgme.c:4849
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
@@ -3932,13 +3932,13 @@ msgstr ""
 "opp(e)nc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4851
+#: ncrypt/crypt_gpgme.c:4852
 #, fuzzy
 msgid "esabpco"
 msgstr "voabpge"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4857
+#: ncrypt/crypt_gpgme.c:4858
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
@@ -3947,38 +3947,38 @@ msgstr ""
 "opp(e)nc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4860
+#: ncrypt/crypt_gpgme.c:4861
 #, fuzzy
 msgid "esabmco"
 msgstr "voabmge"
 
-#: ncrypt/crypt_gpgme.c:4873
+#: ncrypt/crypt_gpgme.c:4874
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (p)gp, of (g)een? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4875
+#: ncrypt/crypt_gpgme.c:4876
 #, fuzzy
 msgid "esabpc"
 msgstr "voabpg"
 
-#: ncrypt/crypt_gpgme.c:4882
+#: ncrypt/crypt_gpgme.c:4883
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, s/(m)ime, of (g)een? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4884
+#: ncrypt/crypt_gpgme.c:4885
 #, fuzzy
 msgid "esabmc"
 msgstr "voabmg"
 
-#: ncrypt/crypt_gpgme.c:5036
+#: ncrypt/crypt_gpgme.c:5037
 msgid "Failed to verify sender"
 msgstr "Verifiëren van afzender is mislukt"
 
-#: ncrypt/crypt_gpgme.c:5039
+#: ncrypt/crypt_gpgme.c:5040
 msgid "Failed to figure out sender"
 msgstr "Kan afzender niet bepalen"
 
@@ -4433,996 +4433,996 @@ msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: opcodes.h:7
+#: opcodes.h:29
 msgid "null operation"
 msgstr "lege functie"
 
-#: opcodes.h:8
+#: opcodes.h:30
 msgid "end of conditional execution (noop)"
 msgstr "einde van conditionele uitvoering (noop)"
 
-#: opcodes.h:9
+#: opcodes.h:31
 msgid "force viewing of attachment using mailcap"
 msgstr "weergave van bijlage via mailcap afdwingen"
 
-#: opcodes.h:10
+#: opcodes.h:32
 msgid "view attachment as text"
 msgstr "toon bijlage als tekst"
 
 # FIXME: undo capital?
-#: opcodes.h:11
+#: opcodes.h:33
 msgid "toggle display of subparts"
 msgstr "schakel weergeven van onderdelen aan/uit"
 
-#: opcodes.h:12
+#: opcodes.h:34
 msgid "move to the bottom of the page"
 msgstr "naar het einde van deze pagina"
 
-#: opcodes.h:13
+#: opcodes.h:35
 msgid "remail a message to another user"
 msgstr "bericht opnieuw versturen naar een andere gebruiker"
 
-#: opcodes.h:14
+#: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:15
+#: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "kies een nieuw bestand in deze map"
 
-#: opcodes.h:16
+#: opcodes.h:38
 msgid "view file"
 msgstr "toon bestand"
 
-#: opcodes.h:17
+#: opcodes.h:39
 msgid "display the currently selected file's name"
 msgstr "toon de bestandsnaam van het huidige bestand"
 
-#: opcodes.h:18
+#: opcodes.h:40
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "aanmelden voor huidig postvak (alleen met IMAP)"
 
-#: opcodes.h:19
+#: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "afmelden voor huidig postvak (alleen met IMAP)"
 
-#: opcodes.h:20
+#: opcodes.h:42
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "omschakelen van weergave alle/aangemelde postvakken (alleen met IMAP)"
 
-#: opcodes.h:21
+#: opcodes.h:43
 msgid "list mailboxes with new mail"
 msgstr "toon postvakken met nieuwe berichten"
 
-#: opcodes.h:22
+#: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:23
+#: opcodes.h:45
 msgid "change directories"
 msgstr "verander directories"
 
-#: opcodes.h:24
+#: opcodes.h:46
 msgid "check mailboxes for new mail"
 msgstr "controleer postvakken op nieuwe berichten"
 
-#: opcodes.h:25
+#: opcodes.h:47
 msgid "attach file(s) to this message"
 msgstr "voeg bestand(en) aan dit bericht toe"
 
-#: opcodes.h:26
+#: opcodes.h:48
 msgid "attach message(s) to this message"
 msgstr "voeg bericht(en) aan dit bericht toe"
 
-#: opcodes.h:27
+#: opcodes.h:49
 #, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "voeg bestand(en) aan dit bericht toe"
 
-#: opcodes.h:28
+#: opcodes.h:50
 msgid "edit the BCC list"
 msgstr "bewerk de BCC-lijst"
 
-#: opcodes.h:29
+#: opcodes.h:51
 msgid "edit the CC list"
 msgstr "bewerk de CC-lijst"
 
-#: opcodes.h:30
+#: opcodes.h:52
 msgid "edit attachment description"
 msgstr "bewerk de omschrijving van een bijlage"
 
-#: opcodes.h:31
+#: opcodes.h:53
 msgid "edit attachment transfer-encoding"
 msgstr "bewerk de transport-codering van een bijlage"
 
-#: opcodes.h:32
+#: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
 msgstr "kopieer bericht naar bestand"
 
-#: opcodes.h:33
+#: opcodes.h:55
 msgid "edit the file to be attached"
 msgstr "bewerk het bij te voegen bestand"
 
-#: opcodes.h:34
+#: opcodes.h:56
 msgid "edit the from field"
 msgstr "bewerk het From-veld"
 
-#: opcodes.h:35
+#: opcodes.h:57
 msgid "edit the message with headers"
 msgstr "bewerk het bericht (inclusief header)"
 
-#: opcodes.h:36
+#: opcodes.h:58
 msgid "edit the message"
 msgstr "bewerk het bericht"
 
-#: opcodes.h:37
+#: opcodes.h:59
 msgid "edit attachment using mailcap entry"
 msgstr "bewerk bijlage volgens mailcap"
 
-#: opcodes.h:38
+#: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "bewerk de CC-lijst"
 
-#: opcodes.h:39
+#: opcodes.h:61
 msgid "edit the Reply-To field"
 msgstr "bewerk Reply-To-veld"
 
-#: opcodes.h:40
+#: opcodes.h:62
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "bewerk Reply-To-veld"
 
-#: opcodes.h:41
+#: opcodes.h:63
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "bewerk Reply-To-veld"
 
-#: opcodes.h:42
+#: opcodes.h:64
 msgid "edit the subject of this message"
 msgstr "bewerk onderwerp (Subject) van dit bericht"
 
-#: opcodes.h:43
+#: opcodes.h:65
 msgid "edit the TO list"
 msgstr "bewerk ontvangers (To-veld)"
 
-#: opcodes.h:44
+#: opcodes.h:66
 msgid "create a new mailbox (IMAP only)"
 msgstr "maak een nieuw postvak aan (alleen met IMAP)"
 
-#: opcodes.h:45
+#: opcodes.h:67
 msgid "edit attachment content type"
 msgstr "bewerk type van bijlage"
 
-#: opcodes.h:46
+#: opcodes.h:68
 msgid "get a temporary copy of an attachment"
 msgstr "maak een tijdelijke kopie van de bijlage"
 
-#: opcodes.h:47
+#: opcodes.h:69
 msgid "run ispell on the message"
 msgstr "controleer spelling via ispell"
 
-#: opcodes.h:48
+#: opcodes.h:70
 msgid "compose new attachment using mailcap entry"
 msgstr "maak nieuwe bijlage aan volgens mailcap"
 
-#: opcodes.h:49
+#: opcodes.h:71
 msgid "toggle recoding of this attachment"
 msgstr "hercodering van deze bijlage omschakelen"
 
-#: opcodes.h:50
+#: opcodes.h:72
 msgid "save this message to send later"
 msgstr "sla dit bericht op om later te versturen"
 
-#: opcodes.h:51
+#: opcodes.h:73
 msgid "send attachment with a different name"
 msgstr "verstuur bijlage met andere naam"
 
-#: opcodes.h:52
+#: opcodes.h:74
 msgid "rename/move an attached file"
 msgstr "hernoem/verplaats een toegevoegd bestand"
 
-#: opcodes.h:53
+#: opcodes.h:75
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "maak nieuw bericht aan"
 
-#: opcodes.h:54
+#: opcodes.h:76
 msgid "send the message"
 msgstr "verstuur het bericht"
 
-#: opcodes.h:55
+#: opcodes.h:77
 msgid "toggle disposition between inline/attachment"
 msgstr "bijvoeging omschakelen tussen in bericht/als bijlage"
 
-#: opcodes.h:56
+#: opcodes.h:78
 msgid "toggle whether to delete file after sending it"
 msgstr "kies of bestand na versturen gewist wordt"
 
-#: opcodes.h:57
+#: opcodes.h:79
 msgid "update an attachment's encoding info"
 msgstr "coderingsinfo van een bijlage bijwerken"
 
-#: opcodes.h:58
+#: opcodes.h:80
 msgid "write the message to a folder"
 msgstr "schrijf het bericht naar een postvak"
 
-#: opcodes.h:59
+#: opcodes.h:81
 msgid "copy a message to a file/mailbox"
 msgstr "kopieer bericht naar bestand/postvak"
 
-#: opcodes.h:60
+#: opcodes.h:82
 msgid "create an alias from a message sender"
 msgstr "maak een afkorting van de afzender"
 
-#: opcodes.h:61
+#: opcodes.h:83
 msgid "move entry to bottom of screen"
 msgstr "verplaats item naar onderkant van scherm"
 
-#: opcodes.h:62
+#: opcodes.h:84
 msgid "move entry to middle of screen"
 msgstr "verplaats item naar midden van scherm"
 
-#: opcodes.h:63
+#: opcodes.h:85
 msgid "move entry to top of screen"
 msgstr "verplaats item naar bovenkant van scherm"
 
-#: opcodes.h:64
+#: opcodes.h:86
 msgid "make decoded (text/plain) copy"
 msgstr "maak gedecodeerde (text/plain) kopie"
 
-#: opcodes.h:65
+#: opcodes.h:87
 msgid "make decoded copy (text/plain) and delete"
 msgstr "maak gedecodeerde kopie (text/plain) en verwijder"
 
-#: opcodes.h:66
+#: opcodes.h:88
 msgid "delete the current entry"
 msgstr "verwijder huidig item"
 
-#: opcodes.h:67
+#: opcodes.h:89
 msgid "delete the current mailbox (IMAP only)"
 msgstr "verwijder het huidige postvak (alleen met IMAP)"
 
-#: opcodes.h:68
+#: opcodes.h:90
 msgid "delete all messages in subthread"
 msgstr "verwijder alle berichten in subthread"
 
-#: opcodes.h:69
+#: opcodes.h:91
 msgid "delete all messages in thread"
 msgstr "wis alle berichten in thread"
 
-#: opcodes.h:70
+#: opcodes.h:92
 msgid "display full address of sender"
 msgstr "toon volledig adres van afzender"
 
-#: opcodes.h:71
+#: opcodes.h:93
 msgid "display message and toggle header weeding"
 msgstr "toon bericht en schakel kopfiltering om"
 
-#: opcodes.h:72
+#: opcodes.h:94
 msgid "display a message"
 msgstr "toon bericht"
 
-#: opcodes.h:73
+#: opcodes.h:95
 msgid "add, change, or delete a message's label"
 msgstr "berichtlabel toevoegen, wijzigen, of verwijderen"
 
-#: opcodes.h:74
+#: opcodes.h:96
 msgid "edit the raw message"
 msgstr "bewerk het bericht"
 
-#: opcodes.h:75
+#: opcodes.h:97
 msgid "delete the char in front of the cursor"
 msgstr "wis teken voor de cursor"
 
-#: opcodes.h:76
+#: opcodes.h:98
 msgid "move the cursor one character to the left"
 msgstr "verplaats cursor een teken naar links"
 
-#: opcodes.h:77
+#: opcodes.h:99
 msgid "move the cursor to the beginning of the word"
 msgstr "verplaats cursor naar begin van het woord"
 
-#: opcodes.h:78
+#: opcodes.h:100
 msgid "jump to the beginning of the line"
 msgstr "ga naar begin van de regel"
 
-#: opcodes.h:79
+#: opcodes.h:101
 msgid "cycle among incoming mailboxes"
 msgstr "roteer door postvakken"
 
-#: opcodes.h:80
+#: opcodes.h:102
 msgid "complete filename or alias"
 msgstr "complete bestandsnaam of afkorting"
 
-#: opcodes.h:81
+#: opcodes.h:103
 msgid "complete address with query"
 msgstr "compleet adres met vraag"
 
-#: opcodes.h:82
+#: opcodes.h:104
 msgid "delete the char under the cursor"
 msgstr "wis teken onder de cursor"
 
-#: opcodes.h:83
+#: opcodes.h:105
 msgid "jump to the end of the line"
 msgstr "ga naar regeleinde"
 
-#: opcodes.h:84
+#: opcodes.h:106
 msgid "move the cursor one character to the right"
 msgstr "verplaats cursor een teken naar rechts"
 
-#: opcodes.h:85
+#: opcodes.h:107
 msgid "move the cursor to the end of the word"
 msgstr "verplaats cursor naar einde van het woord"
 
-#: opcodes.h:86
+#: opcodes.h:108
 msgid "scroll down through the history list"
 msgstr "ga omhoog in history lijst"
 
-#: opcodes.h:87
+#: opcodes.h:109
 msgid "scroll up through the history list"
 msgstr "ga omhoog in history list"
 
-#: opcodes.h:88
+#: opcodes.h:110
 msgid "delete chars from cursor to end of line"
 msgstr "wis alle tekens tot einde van de regel"
 
-#: opcodes.h:89
+#: opcodes.h:111
 msgid "delete chars from the cursor to the end of the word"
 msgstr "wis alle tekens tot einde van het woord"
 
-#: opcodes.h:90
+#: opcodes.h:112
 msgid "delete all chars on the line"
 msgstr "wis regel"
 
-#: opcodes.h:91
+#: opcodes.h:113
 msgid "delete the word in front of the cursor"
 msgstr "wis woord voor de cursor"
 
-#: opcodes.h:92
+#: opcodes.h:114
 msgid "quote the next typed key"
 msgstr "voeg volgende toets onveranderd in"
 
-#: opcodes.h:93
+#: opcodes.h:115
 msgid "transpose character under cursor with previous"
 msgstr "transponeer teken onder cursor naar de vorige"
 
-#: opcodes.h:94
+#: opcodes.h:116
 msgid "capitalize the word"
 msgstr "begin het woord met een hoofdletter"
 
-#: opcodes.h:95
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "verander het woord in kleine letters"
 
-#: opcodes.h:96
+#: opcodes.h:118
 msgid "convert the word to upper case"
 msgstr "verander het woord in hoofdletters"
 
-#: opcodes.h:97
-msgid "enter a muttrc command"
-msgstr "geef een muttrc commando in"
+#: opcodes.h:119
+msgid "enter a neomuttrc command"
+msgstr "geef een neomuttrc commando in"
 
-#: opcodes.h:98
+#: opcodes.h:120
 msgid "enter a file mask"
 msgstr "geef bestandsmasker in"
 
-#: opcodes.h:99
+#: opcodes.h:121
 msgid "exit this menu"
 msgstr "menu verlaten"
 
-#: opcodes.h:100
+#: opcodes.h:122
 msgid "filter attachment through a shell command"
 msgstr "filter bijlage door een shell commando"
 
-#: opcodes.h:101
+#: opcodes.h:123
 msgid "move to the first entry"
 msgstr "ga naar eerste item"
 
-#: opcodes.h:102
+#: opcodes.h:124
 msgid "toggle a message's 'important' flag"
 msgstr "markeer bericht als belangrijk"
 
-#: opcodes.h:103
+#: opcodes.h:125
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Reactie sturen naar %s%s?"
 
-#: opcodes.h:104
+#: opcodes.h:126
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:105
+#: opcodes.h:127
 msgid "forward a message with comments"
 msgstr "stuur bericht door met commentaar"
 
-#: opcodes.h:106
+#: opcodes.h:128
 msgid "select the current entry"
 msgstr "selecteer het huidige item"
 
-#: opcodes.h:107
+#: opcodes.h:129
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "een sneltoetsmacro aanmaken voor huidig bericht"
 
-#: opcodes.h:108
+#: opcodes.h:130
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "bewerk het bericht (inclusief header)"
 
-#: opcodes.h:109
+#: opcodes.h:131
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "een sneltoetsmacro aanmaken voor huidig bericht"
 
-#: opcodes.h:110
+#: opcodes.h:132
 msgid "reply to all recipients"
 msgstr "antwoord aan alle ontvangers"
 
-#: opcodes.h:111
+#: opcodes.h:133
 msgid "scroll down 1/2 page"
 msgstr "ga 1/2 pagina naar beneden"
 
-#: opcodes.h:112
+#: opcodes.h:134
 msgid "scroll up 1/2 page"
 msgstr "ga 1/2 pagina omhoog"
 
-#: opcodes.h:113
+#: opcodes.h:135
 msgid "this screen"
 msgstr "dit scherm"
 
-#: opcodes.h:114
+#: opcodes.h:136
 msgid "jump to an index number"
 msgstr "ga naar een index nummer"
 
-#: opcodes.h:115
+#: opcodes.h:137
 msgid "move to the last entry"
 msgstr "ga naar laatste item"
 
-#: opcodes.h:116
+#: opcodes.h:138
 msgid "reply to specified mailing list"
 msgstr "stuur antwoord naar mailing-list"
 
-#: opcodes.h:117
+#: opcodes.h:139
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:118
+#: opcodes.h:140
 msgid "execute a macro"
 msgstr "Voer macro uit"
 
-#: opcodes.h:119
+#: opcodes.h:141
 msgid "compose a new mail message"
 msgstr "maak nieuw bericht aan"
 
-#: opcodes.h:120
+#: opcodes.h:142
 msgid "break the thread in two"
 msgstr "splits de thread in tweeën"
 
-#: opcodes.h:121
+#: opcodes.h:143
 msgid "open a different folder"
 msgstr "open een ander postvak"
 
-#: opcodes.h:122
+#: opcodes.h:144
 msgid "open a different folder in read only mode"
 msgstr "open een ander postvak in alleen-lezen-modus"
 
-#: opcodes.h:123
+#: opcodes.h:145
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "open een ander postvak"
 
-#: opcodes.h:124
+#: opcodes.h:146
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "open een ander postvak in alleen-lezen-modus"
 
-#: opcodes.h:125
+#: opcodes.h:147
 msgid "clear a status flag from a message"
 msgstr "verwijder een status-vlag"
 
-#: opcodes.h:126
+#: opcodes.h:148
 msgid "delete messages matching a pattern"
 msgstr "verwijder berichten volgens patroon"
 
-#: opcodes.h:127
+#: opcodes.h:149
 msgid "force retrieval of mail from IMAP server"
 msgstr "forceer ophalen van mail vanaf IMAP-server"
 
-#: opcodes.h:128
+#: opcodes.h:150
 msgid "logout from all IMAP servers"
 msgstr "uitloggen uit alle IMAP-servers"
 
-#: opcodes.h:129
+#: opcodes.h:151
 msgid "retrieve mail from POP server"
 msgstr "haal mail vanaf POP-server"
 
-#: opcodes.h:130
+#: opcodes.h:152
 msgid "show only messages matching a pattern"
 msgstr "geef alleen berichten weer volgens patroon"
 
-#: opcodes.h:131
+#: opcodes.h:153
 msgid "link tagged message to the current one"
 msgstr "koppel gemarkeerd bericht met het huidige"
 
-#: opcodes.h:132
+#: opcodes.h:154
 msgid "open next mailbox with new mail"
 msgstr "open volgend postvak met nieuwe berichten"
 
-#: opcodes.h:133
+#: opcodes.h:155
 msgid "jump to the next new message"
 msgstr "spring naar het volgende nieuwe bericht"
 
-#: opcodes.h:134
+#: opcodes.h:156
 msgid "jump to the next new or unread message"
 msgstr "spring naar het volgende nieuwe of ongelezen bericht"
 
-#: opcodes.h:135
+#: opcodes.h:157
 msgid "jump to the next subthread"
 msgstr "spring naar de volgende subthread"
 
-#: opcodes.h:136
+#: opcodes.h:158
 msgid "jump to the next thread"
 msgstr "spring naar de volgende thread"
 
-#: opcodes.h:137
+#: opcodes.h:159
 msgid "move to the next undeleted message"
 msgstr "spring naar het volgende ongewiste bericht"
 
-#: opcodes.h:138
+#: opcodes.h:160
 msgid "jump to the next unread message"
 msgstr "spring naar het volgende ongelezen bericht"
 
-#: opcodes.h:139
+#: opcodes.h:161
 msgid "jump to parent message in thread"
 msgstr "spring naar het vorige bericht in de thread"
 
-#: opcodes.h:140
+#: opcodes.h:162
 msgid "jump to previous thread"
 msgstr "spring naar de vorige thread"
 
-#: opcodes.h:141
+#: opcodes.h:163
 msgid "jump to previous subthread"
 msgstr "spring naar de vorige subthread"
 
-#: opcodes.h:142
+#: opcodes.h:164
 msgid "move to the previous undeleted message"
 msgstr "spring naar het volgende ongewiste bericht"
 
-#: opcodes.h:143
+#: opcodes.h:165
 msgid "jump to the previous new message"
 msgstr "spring naar het vorige nieuwe bericht"
 
-#: opcodes.h:144
+#: opcodes.h:166
 msgid "jump to the previous new or unread message"
 msgstr "spring naar het vorige nieuwe of ongelezen bericht"
 
-#: opcodes.h:145
+#: opcodes.h:167
 msgid "jump to the previous unread message"
 msgstr "spring naar het vorige ongelezen bericht"
 
-#: opcodes.h:146
+#: opcodes.h:168
 msgid "mark the current thread as read"
 msgstr "markeer de huidige thread als gelezen"
 
-#: opcodes.h:147
+#: opcodes.h:169
 msgid "mark the current subthread as read"
 msgstr "markeer de huidige subthread als gelezen"
 
-#: opcodes.h:148
+#: opcodes.h:170
 msgid "jump to root message in thread"
 msgstr "spring naar eerste bericht in thread"
 
-#: opcodes.h:149
+#: opcodes.h:171
 msgid "set a status flag on a message"
 msgstr "zet een status-vlag in een bericht"
 
-#: opcodes.h:150
+#: opcodes.h:172
 msgid "save changes to mailbox"
 msgstr "sla wijzigingen in postvak op"
 
-#: opcodes.h:151
+#: opcodes.h:173
 msgid "tag messages matching a pattern"
 msgstr "markeer berichten volgens patroon"
 
-#: opcodes.h:152
-msgid "delete from mutt, don't touch on disk"
+#: opcodes.h:174
+msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:153
+#: opcodes.h:175
 msgid "undelete messages matching a pattern"
 msgstr "herstel berichten volgens patroon"
 
-#: opcodes.h:154
+#: opcodes.h:176
 msgid "untag messages matching a pattern"
 msgstr "verwijder markering volgens patroon"
 
-#: opcodes.h:155
+#: opcodes.h:177
 msgid "create a hotkey macro for the current message"
 msgstr "een sneltoetsmacro aanmaken voor huidig bericht"
 
-#: opcodes.h:156
+#: opcodes.h:178
 msgid "move to the middle of the page"
 msgstr "ga naar het midden van de pagina"
 
-#: opcodes.h:157
+#: opcodes.h:179
 msgid "move to the next entry"
 msgstr "ga naar het volgende item"
 
-#: opcodes.h:158
+#: opcodes.h:180
 msgid "scroll down one line"
 msgstr "ga een regel naar beneden"
 
-#: opcodes.h:159
+#: opcodes.h:181
 msgid "move to the next page"
 msgstr "ga naar de volgende pagina"
 
-#: opcodes.h:160
+#: opcodes.h:182
 msgid "jump to the bottom of the message"
 msgstr "spring naar het einde van het bericht"
 
-#: opcodes.h:161
+#: opcodes.h:183
 msgid "toggle display of quoted text"
 msgstr "schakel weergeven van geciteerde tekst aan/uit"
 
-#: opcodes.h:162
+#: opcodes.h:184
 msgid "skip beyond quoted text"
 msgstr "sla geciteerde tekst over"
 
-#: opcodes.h:163
+#: opcodes.h:185
 msgid "jump to the top of the message"
 msgstr "spring naar het begin van het bericht"
 
-#: opcodes.h:164
+#: opcodes.h:186
 msgid "pipe message/attachment to a shell command"
 msgstr "bewerk (pipe) bericht/bijlage met een shell-commando"
 
-#: opcodes.h:165
+#: opcodes.h:187
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Kan geen ID van dit bericht vinden in de index."
 
-#: opcodes.h:166
+#: opcodes.h:188
 msgid "move to the previous entry"
 msgstr "ga naar het vorige item"
 
-#: opcodes.h:167
+#: opcodes.h:189
 msgid "scroll up one line"
 msgstr "ga een regel omhoog"
 
-#: opcodes.h:168
+#: opcodes.h:190
 msgid "move to the previous page"
 msgstr "ga naar de vorige pagina"
 
-#: opcodes.h:169
+#: opcodes.h:191
 msgid "print the current entry"
 msgstr "druk het huidige item af"
 
-#: opcodes.h:170
+#: opcodes.h:192
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "huidig item echt verwijderen, voorbijgaand aan prullenmap"
 
-#: opcodes.h:171
+#: opcodes.h:193
 #, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "huidig item echt verwijderen, voorbijgaand aan prullenmap"
 
-#: opcodes.h:172
+#: opcodes.h:194
 msgid "query external program for addresses"
 msgstr "vraag een extern programma om adressen"
 
-#: opcodes.h:173
+#: opcodes.h:195
 msgid "append new query results to current results"
 msgstr "voeg resultaten van zoekopdracht toe aan huidige resultaten"
 
-#: opcodes.h:174
+#: opcodes.h:196
 msgid "save changes to mailbox and quit"
-msgstr "sla wijzigingen in postvak op en verlaat Mutt"
+msgstr "sla wijzigingen in postvak op en verlaat NeoMutt"
 
-#: opcodes.h:175
+#: opcodes.h:197
 msgid "recall a postponed message"
 msgstr "bewerk een uitgesteld bericht"
 
-#: opcodes.h:176
+#: opcodes.h:198
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "Thread bevat ongelezen berichten"
 
-#: opcodes.h:177
+#: opcodes.h:199
 msgid "clear and redraw the screen"
 msgstr "wis scherm en bouw het opnieuw op"
 
-#: opcodes.h:178
+#: opcodes.h:200
 msgid "{internal}"
 msgstr "(intern)"
 
-#: opcodes.h:179
+#: opcodes.h:201
 msgid "rename the current mailbox (IMAP only)"
 msgstr "hernoem het huidige postvak (alleen met IMAP)"
 
-#: opcodes.h:180
+#: opcodes.h:202
 msgid "reply to a message"
 msgstr "beantwoord een bericht"
 
-#: opcodes.h:181
+#: opcodes.h:203
 msgid "use the current message as a template for a new one"
 msgstr "gebruik het huidige bericht als sjabloon voor een nieuw bericht"
 
-#: opcodes.h:182
+#: opcodes.h:204
 msgid "save message/attachment to a mailbox/file"
 msgstr "sla bericht/bijlage op in een postvak/bestand"
 
-#: opcodes.h:183
+#: opcodes.h:205
 msgid "search for a regular expression"
 msgstr "zoek naar een reguliere expressie"
 
-#: opcodes.h:184
+#: opcodes.h:206
 msgid "search backwards for a regular expression"
 msgstr "zoek achteruit naar een reguliere expressie"
 
-#: opcodes.h:185
+#: opcodes.h:207
 msgid "search for next match"
 msgstr "zoek volgende match"
 
-#: opcodes.h:186
+#: opcodes.h:208
 msgid "search for next match in opposite direction"
 msgstr "zoek achteruit naar volgende match"
 
-#: opcodes.h:187
+#: opcodes.h:209
 msgid "toggle search pattern coloring"
 msgstr "schakel het kleuren van zoekpatronen aan/uit"
 
-#: opcodes.h:188
+#: opcodes.h:210
 msgid "invoke a command in a subshell"
 msgstr "roep een commando in een shell aan"
 
-#: opcodes.h:189
+#: opcodes.h:211
 msgid "sort messages"
 msgstr "sorteer berichten"
 
-#: opcodes.h:190
+#: opcodes.h:212
 msgid "sort messages in reverse order"
 msgstr "sorteer berichten in omgekeerde volgorde"
 
-#: opcodes.h:191
+#: opcodes.h:213
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "verwijder markering volgens patroon"
 
-#: opcodes.h:192
+#: opcodes.h:214
 msgid "tag the current entry"
 msgstr "markeer huidig item"
 
-#: opcodes.h:193
+#: opcodes.h:215
 msgid "apply next function to tagged messages"
 msgstr "voer volgende functie uit op gemarkeerde berichten"
 
-#: opcodes.h:194
+#: opcodes.h:216
 msgid "apply next function ONLY to tagged messages"
 msgstr "voer volgende functie ALLEEN uit op gemarkeerde berichten"
 
-#: opcodes.h:195
+#: opcodes.h:217
 msgid "tag the current subthread"
 msgstr "markeer de huidige subthread"
 
-#: opcodes.h:196
+#: opcodes.h:218
 msgid "tag the current thread"
 msgstr "markeer de huidige thread"
 
-#: opcodes.h:197
+#: opcodes.h:219
 msgid "toggle a message's 'new' flag"
 msgstr "zet/wis de 'nieuw'-markering van een bericht"
 
-#: opcodes.h:198
+#: opcodes.h:220
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "spring naar het vorige nieuwe of ongelezen bericht"
 
-#: opcodes.h:199
+#: opcodes.h:221
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "schakel het opslaan van wijzigingen aan/uit"
 
-#: opcodes.h:200
+#: opcodes.h:222
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "schakel tussen het doorlopen van postvakken of alle bestanden"
 
-#: opcodes.h:201
+#: opcodes.h:223
 msgid "move to the top of the page"
 msgstr "spring naar het begin van de pagina"
 
-#: opcodes.h:202
+#: opcodes.h:224
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:203
+#: opcodes.h:225
 msgid "undelete the current entry"
 msgstr "verwijder wismarkering van huidig item"
 
-#: opcodes.h:204
+#: opcodes.h:226
 msgid "undelete all messages in thread"
 msgstr "verwijder wismarkering van alle berichten in thread"
 
-#: opcodes.h:205
+#: opcodes.h:227
 msgid "undelete all messages in subthread"
 msgstr "verwijder wismarkering van alle berichten in subthread"
 
-#: opcodes.h:206
+#: opcodes.h:228
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "verwijder markering volgens patroon"
 
-#: opcodes.h:207
-msgid "show the Mutt version number and date"
-msgstr "toon versienummer van Mutt en uitgavedatum"
+#: opcodes.h:229
+msgid "show the NeoMutt version number and date"
+msgstr "toon versienummer van NeoMutt en uitgavedatum"
 
-#: opcodes.h:208
+#: opcodes.h:230
 msgid "view attachment using mailcap entry if necessary"
 msgstr "geef bijlage weer, zo nodig via mailcap"
 
-#: opcodes.h:209
+#: opcodes.h:231
 msgid "show MIME attachments"
 msgstr "geef MIME-bijlagen weer"
 
-#: opcodes.h:210
+#: opcodes.h:232
 msgid "display the keycode for a key press"
 msgstr "toon de code voor een toets"
 
-#: opcodes.h:211
+#: opcodes.h:233
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "markeer de huidige thread"
 
-#: opcodes.h:212
+#: opcodes.h:234
 msgid "show currently active limit pattern"
 msgstr "geef het momenteel actieve limietpatroon weer"
 
-#: opcodes.h:213
+#: opcodes.h:235
 msgid "collapse/uncollapse current thread"
 msgstr "comprimeer/expandeer huidige thread"
 
-#: opcodes.h:214
+#: opcodes.h:236
 msgid "collapse/uncollapse all threads"
 msgstr "comprimeer/expandeer alle threads"
 
-#: opcodes.h:217
+#: opcodes.h:239
 msgid "make decrypted copy and delete"
 msgstr "maak een gedecodeerde kopie en wis"
 
-#: opcodes.h:218
+#: opcodes.h:240
 msgid "make decrypted copy"
 msgstr "maak een gedecodeerde kopie"
 
-#: opcodes.h:219
+#: opcodes.h:241
 msgid "wipe passphrase(s) from memory"
 msgstr "verwijder wachtwoord(en) uit geheugen"
 
-#: opcodes.h:220
+#: opcodes.h:242
 msgid "extract supported public keys"
 msgstr "extraheer ondersteunde publieke sleutels"
 
-#: opcodes.h:224
+#: opcodes.h:246
 msgid "accept the chain constructed"
 msgstr "accepteer de gemaakte lijst"
 
-#: opcodes.h:225
+#: opcodes.h:247
 msgid "append a remailer to the chain"
 msgstr "voeg een remailer toe aan het einde van de lijst"
 
-#: opcodes.h:226
+#: opcodes.h:248
 msgid "insert a remailer into the chain"
 msgstr "voeg een remailer toe in de lijst"
 
-#: opcodes.h:227
+#: opcodes.h:249
 msgid "delete a remailer from the chain"
 msgstr "verwijder een remailer van de lijst"
 
-#: opcodes.h:228
+#: opcodes.h:250
 msgid "select the previous element of the chain"
 msgstr "kies het vorige item uit de lijst"
 
-#: opcodes.h:229
+#: opcodes.h:251
 msgid "select the next element of the chain"
 msgstr "kies het volgende item uit de lijst"
 
-#: opcodes.h:230
+#: opcodes.h:252
 msgid "send the message through a mixmaster remailer chain"
 msgstr "verstuur het bericht via een \"mixmaster remailer\" lijst"
 
-#: opcodes.h:237
+#: opcodes.h:259
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "open een ander postvak"
 
-#: opcodes.h:238
+#: opcodes.h:260
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:239
+#: opcodes.h:261
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:240
+#: opcodes.h:262
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:241
+#: opcodes.h:263
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: opcodes.h:242
+#: opcodes.h:264
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "Dit is het eerste bericht."
 
-#: opcodes.h:243
+#: opcodes.h:265
 #, fuzzy
 msgid "read entire thread of the current message"
 msgstr "een sneltoetsmacro aanmaken voor huidig bericht"
 
-#: opcodes.h:249
+#: opcodes.h:271
 msgid "attach a PGP public key"
 msgstr "voeg een PGP publieke sleutel toe"
 
-#: opcodes.h:250
+#: opcodes.h:272
 msgid "show PGP options"
 msgstr "geef PGP-opties weer"
 
-#: opcodes.h:251
+#: opcodes.h:273
 msgid "mail a PGP public key"
 msgstr "mail een PGP publieke sleutel"
 
-#: opcodes.h:252
+#: opcodes.h:274
 msgid "verify a PGP public key"
 msgstr "controleer een PGP publieke sleutel"
 
-#: opcodes.h:253
+#: opcodes.h:275
 msgid "view the key's user id"
 msgstr "geef gebruikers-ID van sleutel weer"
 
-#: opcodes.h:254
+#: opcodes.h:276
 msgid "check for classic PGP"
 msgstr "controleer op klassieke PGP"
 
-#: opcodes.h:257
+#: opcodes.h:279
 msgid "move the highlight to next mailbox"
 msgstr "verplaats markering naar volgend postvak"
 
-#: opcodes.h:258
+#: opcodes.h:280
 msgid "move the highlight to next mailbox with new mail"
 msgstr "verplaats markering naar volgend postvak met nieuwe mail"
 
-#: opcodes.h:259
+#: opcodes.h:281
 msgid "open highlighted mailbox"
 msgstr "gemarkeerd postvak openen"
 
-#: opcodes.h:260
+#: opcodes.h:282
 msgid "scroll the sidebar down 1 page"
 msgstr "de zijbalk een pagina omlaag scrollen"
 
-#: opcodes.h:261
+#: opcodes.h:283
 msgid "scroll the sidebar up 1 page"
 msgstr "de zijbalk een pagina omhoog scrollen"
 
-#: opcodes.h:262
+#: opcodes.h:284
 msgid "move the highlight to previous mailbox"
 msgstr "verplaats markering naar voorgaand postvak"
 
-#: opcodes.h:263
+#: opcodes.h:285
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "verplaats markering naar voorgaand postvak met nieuwe mail"
 
-#: opcodes.h:264
+#: opcodes.h:286
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "schakel tussen het doorlopen van postvakken of alle bestanden"
 
-#: opcodes.h:265
+#: opcodes.h:287
 msgid "make the sidebar (in)visible"
 msgstr "de zijbalk tonen/verbergen"
 
-#: opcodes.h:268
+#: opcodes.h:290
 msgid "show S/MIME options"
 msgstr "geef S/MIME-opties weer"
 
@@ -5985,7 +5985,7 @@ msgstr "Geen onderwerp. Operatie afgebroken."
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
-#. If she says no, mutt will reply to the from header's address instead.
+#. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:581
 #, c-format
 msgid "Reply to %s%s?"
@@ -6144,7 +6144,7 @@ msgstr "Ongeldige IDN %s tijdens maken resent-from header."
 #: signal.c:53
 #, c-format
 msgid "%s...  Exiting.\n"
-msgstr "%s... Mutt wordt afgesloten.\n"
+msgstr "%s... NeoMutt wordt afgesloten.\n"
 
 #: signal.c:55 signal.c:57
 #, c-format
@@ -6299,14 +6299,14 @@ msgstr ""
 #: version.c:89
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins en anderen.\n"
-"Mutt komt ABSOLUUT ZONDER GARANTIE; voor meer informatie 'mutt -vv'.\n"
-"Mutt is vrije software, en u bent vrij om het te verspreiden\n"
-"onder bepaalde voorwaarden; type 'mutt -vv' voor meer informatie.\n"
+"NeoMutt komt ABSOLUUT ZONDER GARANTIE; voor meer informatie 'neomutt -vv'.\n"
+"NeoMutt is vrije software, en u bent vrij om het te verspreiden\n"
+"onder bepaalde voorwaarden; type 'neomutt -vv' voor meer informatie.\n"
 
 #: version.c:409
 #, fuzzy
@@ -6324,24 +6324,3 @@ msgid ""
 msgstr ""
 "\n"
 "Opties tijdens compileren:"
-
-#, fuzzy
-#~ msgid "default colors not supported."
-#~ msgstr "standaardkleuren worden niet ondersteund"
-
-#~ msgid "sign as: "
-#~ msgstr "ondertekenen als: "
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "Claim-timeout overschreden, oude claim voor %s verwijderen?"
-
-#~ msgid " aka ......: "
-#~ msgstr " alias ....: "
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'.\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'.\n"

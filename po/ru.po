@@ -9,17 +9,17 @@
 # Alexey Vyskubov <alexey@pepper.spb.ru>, 2001-2010,2012,2014,2016
 # Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2017
 #
-# To contact translators, please use mutt-ru mailing list:
-#   http://woe.spb.ru/mailman/listinfo/mutt-ru
+# To contact translators, please use neomutt-ru mailing list:
+#   http://woe.spb.ru/mailman/listinfo/neomutt-ru
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20170714\n"
+"Project-Id-Version: neomutt-20170912\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-09-12 15:41+0100\n"
+"POT-Creation-Date: 2017-09-12 17:42+0100\n"
 "PO-Revision-Date: 2017-02-15 23:39+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
-"Language-Team: mutt-ru@woe.spb.ru\n"
+"Language-Team: neomutt-ru@woe.spb.ru\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,7 +58,7 @@ msgstr "Выбрать"
 
 #: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
 #: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
-#: ncrypt/crypt_gpgme.c:4171 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
+#: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
 #: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
 msgstr "Помощь"
@@ -702,7 +702,7 @@ msgstr "Безопасность: "
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4909 ncrypt/pgp.c:1784
+#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
 #: ncrypt/smime.c:2123 ncrypt/smime.c:2138
 msgid "Sign as: "
 msgstr "Подписать как: "
@@ -1139,8 +1139,8 @@ msgid "no"
 msgstr "нет"
 
 #: curs_lib.c:394
-msgid "Exit Mutt?"
-msgstr "Завершить работу с Mutt?"
+msgid "Exit NeoMutt?"
+msgstr "Завершить работу с NeoMutt?"
 
 #: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
 msgid "unknown error"
@@ -1329,8 +1329,8 @@ msgid "To view all messages, limit to \"all\"."
 msgstr "Используйте \"all\" для просмотра всех сообщений."
 
 #: curs_main.c:1576 pager.c:2291
-msgid "Quit Mutt?"
-msgstr "Выйти из Mutt?"
+msgid "Quit NeoMutt?"
+msgstr "Выйти из NeoMutt?"
 
 #: curs_main.c:1669
 msgid "Tag messages matching: "
@@ -1422,7 +1422,7 @@ msgstr ""
 #: curs_main.c:2178
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
-msgstr "Выйти из Mutt без сохранения изменений?"
+msgstr "Выйти из NeoMutt без сохранения изменений?"
 
 #: curs_main.c:2194
 #, fuzzy
@@ -1657,7 +1657,7 @@ msgstr "Сообщение содержит:\n"
 #. This entry is shown AFTER the message content,
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
-#. but means "(press any key to continue using mutt)".
+#. but means "(press any key to continue using neomutt)".
 #: edit.c:416 edit.c:475
 msgid "(continue)\n"
 msgstr "(продолжить)\n"
@@ -2038,13 +2038,13 @@ msgstr "Не удалось выполнить команду CREATE: %s"
 msgid "Closing connection to %s..."
 msgstr "Закрытие соединения с сервером %s..."
 
-# "mutt не поддерживает версию протокола, используемый на этом сервере"
+# "neomutt не поддерживает версию протокола, используемый на этом сервере"
 #: imap/imap.c:350
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr ""
-"Этот IMAP-сервер использует устаревший протокол. Mutt не сможет работать с "
-"ним."
+"Этот IMAP-сервер использует устаревший протокол. NeoMutt не сможет работать "
+"с ним."
 
 #: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
@@ -2394,23 +2394,23 @@ msgstr "%s: неизвестная команда"
 msgid "Error in command line: %s\n"
 msgstr "Ошибка в командной строке: %s\n"
 
-#: init.c:4126
+#: init.c:4133
 msgid "unable to determine home directory"
 msgstr "не удалось определить домашний каталог"
 
-#: init.c:4134
+#: init.c:4141
 msgid "unable to determine username"
 msgstr "не удалось определить имя пользователя"
 
-#: init.c:4169
+#: init.c:4176
 msgid "unable to determine nodename via uname()"
 msgstr "не удалось определить имя узла с помощью uname()"
 
-#: init.c:4484
+#: init.c:4483
 msgid "-group: no group name"
 msgstr "-group: имя группы отсутствует"
 
-#: init.c:4494
+#: init.c:4493
 msgid "out of arguments"
 msgstr "слишком мало аргументов"
 
@@ -2515,28 +2515,28 @@ msgstr "Нехватка памяти!"
 #: main.c:88
 #, fuzzy
 msgid ""
-"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -B\n"
-"       mutt [<options>] -D [-S]\n"
-"       mutt -v[v]\n"
+"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"       neomutt [<options>] -p\n"
+"       neomutt [<options>] -A <alias> [...]\n"
+"       neomutt [<options>] -Q <query> [...]\n"
+"       neomutt [<options>] -B\n"
+"       neomutt [<options>] -D [-S]\n"
+"       neomutt -v[v]\n"
 msgstr ""
-"запуск: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"        mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"запуск: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"        neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"        mutt [<options>] -p\n"
-"        mutt [<options>] -A <alias> [...]\n"
-"        mutt [<options>] -Q <query> [...]\n"
-"        mutt [<options>] -D\n"
-"        mutt -v[v]\n"
+"        neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"        neomutt [<options>] -p\n"
+"        neomutt [<options>] -A <alias> [...]\n"
+"        neomutt [<options>] -Q <query> [...]\n"
+"        neomutt [<options>] -D\n"
+"        neomutt -v[v]\n"
 
 #: main.c:98
 #, fuzzy
@@ -2570,24 +2570,24 @@ msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
 "  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate muttrc file\n"
+"  -F <file>     specify an alternate neomuttrc file\n"
 "  -g <server>   specify a news server (if compiled with NNTP)\n"
 "  -G            select a newsgroup (if compiled with NNTP)\n"
 "  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which Mutt should include in the body\n"
+"  -i <file>     specify a file which NeoMutt should include in the body\n"
 "  -m <type>     specify a default mailbox type\n"
-"  -n            causes Mutt not to read the system Muttrc\n"
+"  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
 "  -E            редактировать шаблон (-H) или вставляемый файл (-i)\n"
 "  -e <command>  указать команду, которая будет выполнена после "
 "инициализации\n"
 "  -f <file>     указать почтовый ящик для работы\n"
-"  -F <file>     указать альтернативный muttrc\n"
+"  -F <file>     указать альтернативный neomuttrc\n"
 "  -H <file>     указать файл, содержащий шаблон заголовка и тела письма\n"
 "  -i <file>     указать файл для вставки в тело письма\n"
 "  -m <тип>      указать тип почтового ящика по умолчанию\n"
-"  -n            запретить чтение системного Muttrc\n"
+"  -n            запретить чтение системного neomuttrc\n"
 "  -p            продолжить отложенное сообщение"
 
 #: main.c:123
@@ -3118,7 +3118,7 @@ msgstr "(r)отвергнуть, (o)принять, (s)пропустить"
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)отвергнуть, (o)принять"
 
-#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4165
+#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4166
 #: ncrypt/pgpkey.c:525 ncrypt/smime.c:418
 msgid "Exit  "
 msgstr "Выход "
@@ -3365,7 +3365,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "ошибка чтения объекта данных: %s\n"
 
-#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3807 ncrypt/pgpkey.c:567
+#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
 #: ncrypt/pgpkey.c:741
 msgid "Can't create temporary file"
 msgstr "Не удалось создать временный файл"
@@ -3454,7 +3454,7 @@ msgstr "ПРЕДУПРЕЖДЕНИЕ: PKA запись не соответств
 msgid "PKA verified signer's address is: "
 msgstr "Адрес, проверенный при помощи PKA: "
 
-#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3530
 msgid "Fingerprint: "
 msgstr "Отпечаток пальца: "
 
@@ -3479,7 +3479,7 @@ msgstr ""
 "персоне\n"
 
 #: ncrypt/crypt_gpgme.c:1462 ncrypt/crypt_gpgme.c:1467
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "aka: "
 msgstr "aka: "
 
@@ -3666,16 +3666,16 @@ msgstr "[-- Конец данных, подписанных в формате S/
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:3444
+#: ncrypt/crypt_gpgme.c:3445
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неизвестная кодировка)]"
 
-#: ncrypt/crypt_gpgme.c:3446
+#: ncrypt/crypt_gpgme.c:3447
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr ""
 "[Не возможно отобразить ID этого пользователя (неправильная кодировка)]"
 
-#: ncrypt/crypt_gpgme.c:3451
+#: ncrypt/crypt_gpgme.c:3452
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неправильный DN)"
 
@@ -3683,145 +3683,145 @@ msgstr "[Не возможно отобразить ID этого пользов
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "Name: "
 msgstr "Имя: "
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "Valid From: "
 msgstr "Действ. с: "
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3529
 msgid "Valid To: "
 msgstr "Действ. до: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 msgid "Key Type: "
 msgstr "Тип ключа: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 msgid "Key Usage: "
 msgstr "Использование: "
 
-#: ncrypt/crypt_gpgme.c:3529
+#: ncrypt/crypt_gpgme.c:3530
 msgid "Serial-No: "
 msgstr "Сер. номер: "
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 msgid "Issued By: "
 msgstr "Издан: "
 
-#: ncrypt/crypt_gpgme.c:3530
+#: ncrypt/crypt_gpgme.c:3531
 msgid "Subkey: "
 msgstr "Подключ: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3584 ncrypt/crypt_gpgme.c:3725
+#: ncrypt/crypt_gpgme.c:3585 ncrypt/crypt_gpgme.c:3726
 msgid "[Invalid]"
 msgstr "[Неправильное значение]"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3627 ncrypt/crypt_gpgme.c:3766
+#: ncrypt/crypt_gpgme.c:3628 ncrypt/crypt_gpgme.c:3767
 #, c-format
 msgid "%s, %lu bit %s\n"
 msgstr "%s, %lu бит %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3635 ncrypt/crypt_gpgme.c:3773
+#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3774
 msgid "encryption"
 msgstr "шифрование"
 
-#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3642
-#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3774
-#: ncrypt/crypt_gpgme.c:3779 ncrypt/crypt_gpgme.c:3784
+#: ncrypt/crypt_gpgme.c:3637 ncrypt/crypt_gpgme.c:3643
+#: ncrypt/crypt_gpgme.c:3649 ncrypt/crypt_gpgme.c:3775
+#: ncrypt/crypt_gpgme.c:3780 ncrypt/crypt_gpgme.c:3785
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3641 ncrypt/crypt_gpgme.c:3778
+#: ncrypt/crypt_gpgme.c:3642 ncrypt/crypt_gpgme.c:3779
 msgid "signing"
 msgstr "подпись"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3647 ncrypt/crypt_gpgme.c:3783
+#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3784
 msgid "certification"
 msgstr "сертификация"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3719
+#: ncrypt/crypt_gpgme.c:3720
 msgid "[Revoked]"
 msgstr "[Отозван]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3731
+#: ncrypt/crypt_gpgme.c:3732
 msgid "[Expired]"
 msgstr "[Просрочен]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3737
+#: ncrypt/crypt_gpgme.c:3738
 msgid "[Disabled]"
 msgstr "[Запрещён]"
 
-#: ncrypt/crypt_gpgme.c:3810
+#: ncrypt/crypt_gpgme.c:3811
 msgid "Collecting data..."
 msgstr "Сбор данных..."
 
-#: ncrypt/crypt_gpgme.c:3835
+#: ncrypt/crypt_gpgme.c:3836
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Ошибка поиска ключа издателя: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3844
+#: ncrypt/crypt_gpgme.c:3845
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Ошибка: цепь сертификации слишком длинная - поиск прекращён\n"
 
-#: ncrypt/crypt_gpgme.c:3854 ncrypt/pgpkey.c:589
+#: ncrypt/crypt_gpgme.c:3855 ncrypt/pgpkey.c:589
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Идентификатор ключа: 0x%s"
 
-#: ncrypt/crypt_gpgme.c:3941
+#: ncrypt/crypt_gpgme.c:3942
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "Ошибка gpgme_new: %s"
 
-#: ncrypt/crypt_gpgme.c:3979 ncrypt/crypt_gpgme.c:4030
+#: ncrypt/crypt_gpgme.c:3980 ncrypt/crypt_gpgme.c:4031
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "Ошибка gpgme_op_keylist_start: %s"
 
-#: ncrypt/crypt_gpgme.c:4018 ncrypt/crypt_gpgme.c:4060
+#: ncrypt/crypt_gpgme.c:4019 ncrypt/crypt_gpgme.c:4061
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "Ошибка gpgme_op_keylist_next: %s"
 
-#: ncrypt/crypt_gpgme.c:4136
+#: ncrypt/crypt_gpgme.c:4137
 msgid "All matching keys are marked expired/revoked."
 msgstr "Все подходящие ключи помечены как просроченные или отозванные."
 
-#: ncrypt/crypt_gpgme.c:4167 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
+#: ncrypt/crypt_gpgme.c:4168 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
 msgid "Select  "
 msgstr "Выбрать "
 
-#: ncrypt/crypt_gpgme.c:4169 ncrypt/pgpkey.c:529
+#: ncrypt/crypt_gpgme.c:4170 ncrypt/pgpkey.c:529
 msgid "Check key  "
 msgstr "Тест ключа "
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4186
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP и S/MIME-ключи, соответствующие"
 
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4188
 msgid "PGP keys matching"
 msgstr "PGP-ключи, соответствующие"
 
-#: ncrypt/crypt_gpgme.c:4189
+#: ncrypt/crypt_gpgme.c:4190
 msgid "S/MIME keys matching"
 msgstr "S/MIME-ключи, соответствующие"
 
-#: ncrypt/crypt_gpgme.c:4191
+#: ncrypt/crypt_gpgme.c:4192
 msgid "keys matching"
 msgstr "ключи, соответствующие"
 
@@ -3829,65 +3829,65 @@ msgstr "ключи, соответствующие"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4198
+#: ncrypt/crypt_gpgme.c:4199
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4202
+#: ncrypt/crypt_gpgme.c:4203
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:608
+#: ncrypt/crypt_gpgme.c:4230 ncrypt/pgpkey.c:608
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Этот ключ не может быть использован: просрочен, запрещен или отозван."
 
-#: ncrypt/crypt_gpgme.c:4243 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
+#: ncrypt/crypt_gpgme.c:4244 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
 msgid "ID is expired/disabled/revoked."
 msgstr "ID просрочен, запрещен или отозван."
 
-#: ncrypt/crypt_gpgme.c:4251 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
+#: ncrypt/crypt_gpgme.c:4252 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
 msgid "ID has undefined validity."
 msgstr "Степень доверия для ID не определена."
 
-#: ncrypt/crypt_gpgme.c:4254 ncrypt/pgpkey.c:627
+#: ncrypt/crypt_gpgme.c:4255 ncrypt/pgpkey.c:627
 msgid "ID is not valid."
 msgstr "ID недействителен."
 
-#: ncrypt/crypt_gpgme.c:4257 ncrypt/pgpkey.c:630
+#: ncrypt/crypt_gpgme.c:4258 ncrypt/pgpkey.c:630
 msgid "ID is only marginally valid."
 msgstr "ID действителен только частично."
 
-#: ncrypt/crypt_gpgme.c:4266 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
+#: ncrypt/crypt_gpgme.c:4267 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Использовать этот ключ?"
 
-#: ncrypt/crypt_gpgme.c:4320 ncrypt/crypt_gpgme.c:4431 ncrypt/pgpkey.c:834
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
 #: ncrypt/pgpkey.c:955
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Поиск ключей, соответствующих \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:4590 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Использовать ключ \"%s\" для %s?"
 
-#: ncrypt/crypt_gpgme.c:4641 ncrypt/pgp.c:1303 ncrypt/smime.c:778
+#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
 #: ncrypt/smime.c:880
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введите идентификатор ключа для %s: "
 
-#: ncrypt/crypt_gpgme.c:4702 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Введите, пожалуйста, идентификатор ключа: "
 
-#: ncrypt/crypt_gpgme.c:4714
+#: ncrypt/crypt_gpgme.c:4715
 #, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Ошибка экспорта ключа: %s\n"
@@ -3896,41 +3896,41 @@ msgstr "Ошибка экспорта ключа: %s\n"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4734
+#: ncrypt/crypt_gpgme.c:4735
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP-ключ 0x%s."
 
-#: ncrypt/crypt_gpgme.c:4777
+#: ncrypt/crypt_gpgme.c:4778
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: Протокол OpenPGP не доступен"
 
-#: ncrypt/crypt_gpgme.c:4785
+#: ncrypt/crypt_gpgme.c:4786
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: Протокол CMS не доступен"
 
-#: ncrypt/crypt_gpgme.c:4824
+#: ncrypt/crypt_gpgme.c:4825
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "S/MIME (s)подпись, (a)подпись как, (p)gp, (c)отказаться, отключить (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4826
+#: ncrypt/crypt_gpgme.c:4827
 msgid "sapco"
 msgstr "sapco"
 
-#: ncrypt/crypt_gpgme.c:4833
+#: ncrypt/crypt_gpgme.c:4834
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "PGP (s)подпись, (a)подпись как, s/(m)ime, (c)отказаться, отключить (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4835
+#: ncrypt/crypt_gpgme.c:4836
 msgid "samco"
 msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4848
+#: ncrypt/crypt_gpgme.c:4849
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
@@ -3939,13 +3939,13 @@ msgstr ""
 "(o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4851
+#: ncrypt/crypt_gpgme.c:4852
 #, fuzzy
 msgid "esabpco"
 msgstr "esabpc"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4857
+#: ncrypt/crypt_gpgme.c:4858
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
@@ -3954,38 +3954,38 @@ msgstr ""
 "(o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4860
+#: ncrypt/crypt_gpgme.c:4861
 #, fuzzy
 msgid "esabmco"
 msgstr "esabmco"
 
-#: ncrypt/crypt_gpgme.c:4873
+#: ncrypt/crypt_gpgme.c:4874
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4875
+#: ncrypt/crypt_gpgme.c:4876
 #, fuzzy
 msgid "esabpc"
 msgstr "esabpc"
 
-#: ncrypt/crypt_gpgme.c:4882
+#: ncrypt/crypt_gpgme.c:4883
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4884
+#: ncrypt/crypt_gpgme.c:4885
 #, fuzzy
 msgid "esabmc"
 msgstr "esabmc"
 
-#: ncrypt/crypt_gpgme.c:5036
+#: ncrypt/crypt_gpgme.c:5037
 msgid "Failed to verify sender"
 msgstr "Не удалось проверить отправителя"
 
-#: ncrypt/crypt_gpgme.c:5039
+#: ncrypt/crypt_gpgme.c:5040
 msgid "Failed to figure out sender"
 msgstr "Не удалось вычислить отправителя"
 
@@ -4436,1002 +4436,1002 @@ msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: opcodes.h:7
+#: opcodes.h:29
 msgid "null operation"
 msgstr "пустая операция"
 
-#: opcodes.h:8
+#: opcodes.h:30
 msgid "end of conditional execution (noop)"
 msgstr "завершение выполнения по условию"
 
-#: opcodes.h:9
+#: opcodes.h:31
 msgid "force viewing of attachment using mailcap"
 msgstr "форсировать использование базы mailcap для просмотра вложения"
 
-#: opcodes.h:10
+#: opcodes.h:32
 msgid "view attachment as text"
 msgstr "показать вложение как текст"
 
-#: opcodes.h:11
+#: opcodes.h:33
 msgid "toggle display of subparts"
 msgstr "Разрешить/запретить отображение частей дайджеста"
 
-#: opcodes.h:12
+#: opcodes.h:34
 msgid "move to the bottom of the page"
 msgstr "конец страницы"
 
-#: opcodes.h:13
+#: opcodes.h:35
 msgid "remail a message to another user"
 msgstr "переслать сообщение другому пользователю"
 
-#: opcodes.h:14
+#: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:15
+#: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "указать новый файл в этом каталоге"
 
-#: opcodes.h:16
+#: opcodes.h:38
 msgid "view file"
 msgstr "просмотреть файл"
 
-#: opcodes.h:17
+#: opcodes.h:39
 msgid "display the currently selected file's name"
 msgstr "показать имя текущего файла"
 
-#: opcodes.h:18
+#: opcodes.h:40
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "подключиться к текущему почтовому ящику (только IMAP)"
 
-#: opcodes.h:19
+#: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "отключиться от текущего почтового ящика (только IMAP)"
 
-#: opcodes.h:20
+#: opcodes.h:42
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr ""
 "переключиться между режимами просмотра всех/подключенных почтовых ящиков "
 "(только IMAP)"
 
-#: opcodes.h:21
+#: opcodes.h:43
 msgid "list mailboxes with new mail"
 msgstr "список почтовых ящиков с новой почтой"
 
-#: opcodes.h:22
+#: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:23
+#: opcodes.h:45
 msgid "change directories"
 msgstr "изменить каталог"
 
-#: opcodes.h:24
+#: opcodes.h:46
 msgid "check mailboxes for new mail"
 msgstr "проверить почтовые ящики на наличие новой почты"
 
-#: opcodes.h:25
+#: opcodes.h:47
 msgid "attach file(s) to this message"
 msgstr "вложить файлы в это сообщение"
 
-#: opcodes.h:26
+#: opcodes.h:48
 msgid "attach message(s) to this message"
 msgstr "вложить сообщения в это сообщение"
 
-#: opcodes.h:27
+#: opcodes.h:49
 #, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "вложить файлы в это сообщение"
 
-#: opcodes.h:28
+#: opcodes.h:50
 msgid "edit the BCC list"
 msgstr "изменить список \"BCC:\""
 
-#: opcodes.h:29
+#: opcodes.h:51
 msgid "edit the CC list"
 msgstr "изменить список \"CC:\""
 
-#: opcodes.h:30
+#: opcodes.h:52
 msgid "edit attachment description"
 msgstr "изменить описание вложения"
 
-#: opcodes.h:31
+#: opcodes.h:53
 msgid "edit attachment transfer-encoding"
 msgstr "изменить транспортную кодировку для вложения"
 
-#: opcodes.h:32
+#: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
 msgstr "укажите файл, в котором будет сохранена копия этого сообщения"
 
-#: opcodes.h:33
+#: opcodes.h:55
 msgid "edit the file to be attached"
 msgstr "изменить вложенный файл"
 
-#: opcodes.h:34
+#: opcodes.h:56
 msgid "edit the from field"
 msgstr "изменить поле \"From:\""
 
-#: opcodes.h:35
+#: opcodes.h:57
 msgid "edit the message with headers"
 msgstr "редактировать сообщение вместе с заголовками"
 
-#: opcodes.h:36
+#: opcodes.h:58
 msgid "edit the message"
 msgstr "редактировать сообщение"
 
-#: opcodes.h:37
+#: opcodes.h:59
 msgid "edit attachment using mailcap entry"
 msgstr "редактировать вложение в соответствии с записью в mailcap"
 
-#: opcodes.h:38
+#: opcodes.h:60
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "изменить список \"CC:\""
 
-#: opcodes.h:39
+#: opcodes.h:61
 msgid "edit the Reply-To field"
 msgstr "изменить поле \"Reply-To:\""
 
-#: opcodes.h:40
+#: opcodes.h:62
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "изменить поле \"Reply-To:\""
 
-#: opcodes.h:41
+#: opcodes.h:63
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "изменить поле \"Reply-To:\""
 
-#: opcodes.h:42
+#: opcodes.h:64
 msgid "edit the subject of this message"
 msgstr "редактировать тему сообщения"
 
-#: opcodes.h:43
+#: opcodes.h:65
 msgid "edit the TO list"
 msgstr "изменить список \"To:\""
 
-#: opcodes.h:44
+#: opcodes.h:66
 msgid "create a new mailbox (IMAP only)"
 msgstr "создать новый почтовый ящик (только IMAP)"
 
-#: opcodes.h:45
+#: opcodes.h:67
 msgid "edit attachment content type"
 msgstr "изменить тип вложения (content-type)"
 
-#: opcodes.h:46
+#: opcodes.h:68
 msgid "get a temporary copy of an attachment"
 msgstr "создать временную копию вложения"
 
-#: opcodes.h:47
+#: opcodes.h:69
 msgid "run ispell on the message"
 msgstr "проверить правописание"
 
-#: opcodes.h:48
+#: opcodes.h:70
 msgid "compose new attachment using mailcap entry"
 msgstr "создать новое вложение в соответствии с записью в mailcap"
 
-#: opcodes.h:49
+#: opcodes.h:71
 msgid "toggle recoding of this attachment"
 msgstr "включить/выключить перекодирование вложения"
 
-#: opcodes.h:50
+#: opcodes.h:72
 msgid "save this message to send later"
 msgstr "сохранить это сообщение для отправки позднее"
 
-#: opcodes.h:51
+#: opcodes.h:73
 msgid "send attachment with a different name"
 msgstr "отправить вложение с другим именем"
 
-#: opcodes.h:52
+#: opcodes.h:74
 msgid "rename/move an attached file"
 msgstr "переименовать/переместить вложенный файл"
 
-#: opcodes.h:53
+#: opcodes.h:75
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "создать новое сообщение"
 
-#: opcodes.h:54
+#: opcodes.h:76
 msgid "send the message"
 msgstr "отправить сообщение"
 
-#: opcodes.h:55
+#: opcodes.h:77
 msgid "toggle disposition between inline/attachment"
 msgstr "установить поле disposition в inline/attachment"
 
-#: opcodes.h:56
+#: opcodes.h:78
 msgid "toggle whether to delete file after sending it"
 msgstr "удалить/оставить файл после отправки"
 
-#: opcodes.h:57
+#: opcodes.h:79
 msgid "update an attachment's encoding info"
 msgstr "обновить информацию о кодировке вложения"
 
-#: opcodes.h:58
+#: opcodes.h:80
 msgid "write the message to a folder"
 msgstr "записать сообщение в файл/почтовый ящик"
 
-#: opcodes.h:59
+#: opcodes.h:81
 msgid "copy a message to a file/mailbox"
 msgstr "копировать сообщение в файл/почтовый ящик"
 
-#: opcodes.h:60
+#: opcodes.h:82
 msgid "create an alias from a message sender"
 msgstr "создать псевдоним для отправителя сообщения"
 
-#: opcodes.h:61
+#: opcodes.h:83
 msgid "move entry to bottom of screen"
 msgstr "поместить запись в низ экрана"
 
-#: opcodes.h:62
+#: opcodes.h:84
 msgid "move entry to middle of screen"
 msgstr "поместить запись в середину экрана"
 
-#: opcodes.h:63
+#: opcodes.h:85
 msgid "move entry to top of screen"
 msgstr "поместить запись в верх экрана"
 
-#: opcodes.h:64
+#: opcodes.h:86
 msgid "make decoded (text/plain) copy"
 msgstr "создать декодированную (text/plain) копию"
 
-#: opcodes.h:65
+#: opcodes.h:87
 msgid "make decoded copy (text/plain) and delete"
 msgstr "создать декодированную (text/plain) копию и удалить оригинал"
 
-#: opcodes.h:66
+#: opcodes.h:88
 msgid "delete the current entry"
 msgstr "удалить текущую запись"
 
-#: opcodes.h:67
+#: opcodes.h:89
 msgid "delete the current mailbox (IMAP only)"
 msgstr "удалить текущий почтовый ящик (только IMAP)"
 
-#: opcodes.h:68
+#: opcodes.h:90
 msgid "delete all messages in subthread"
 msgstr "удалить все сообщения в поддискуссии"
 
-#: opcodes.h:69
+#: opcodes.h:91
 msgid "delete all messages in thread"
 msgstr "удалить все сообщения в дискуссии"
 
-#: opcodes.h:70
+#: opcodes.h:92
 msgid "display full address of sender"
 msgstr "показать полный адрес отправителя"
 
-#: opcodes.h:71
+#: opcodes.h:93
 msgid "display message and toggle header weeding"
 msgstr "показать сообщение со всеми заголовками"
 
-#: opcodes.h:72
+#: opcodes.h:94
 msgid "display a message"
 msgstr "показать сообщение"
 
-#: opcodes.h:73
+#: opcodes.h:95
 msgid "add, change, or delete a message's label"
 msgstr "добавить, изменить или удалить метку сообщения"
 
-#: opcodes.h:74
+#: opcodes.h:96
 msgid "edit the raw message"
 msgstr "\"низкоуровневое\" редактирование сообщения"
 
-#: opcodes.h:75
+#: opcodes.h:97
 msgid "delete the char in front of the cursor"
 msgstr "удалить символ перед курсором"
 
-#: opcodes.h:76
+#: opcodes.h:98
 msgid "move the cursor one character to the left"
 msgstr "передвинуть курсор влево на один символ"
 
-#: opcodes.h:77
+#: opcodes.h:99
 msgid "move the cursor to the beginning of the word"
 msgstr "передвинуть курсор в начало слова"
 
-#: opcodes.h:78
+#: opcodes.h:100
 msgid "jump to the beginning of the line"
 msgstr "перейти в начало строки"
 
-#: opcodes.h:79
+#: opcodes.h:101
 msgid "cycle among incoming mailboxes"
 msgstr "переключиться между почтовыми ящиками со входящими письмами"
 
-#: opcodes.h:80
+#: opcodes.h:102
 msgid "complete filename or alias"
 msgstr "дописать имя файла или псевдонима"
 
-#: opcodes.h:81
+#: opcodes.h:103
 msgid "complete address with query"
 msgstr "дописать адрес, используя внешнюю программу"
 
-#: opcodes.h:82
+#: opcodes.h:104
 msgid "delete the char under the cursor"
 msgstr "удалить символ под курсором"
 
-#: opcodes.h:83
+#: opcodes.h:105
 msgid "jump to the end of the line"
 msgstr "перейти в конец строки"
 
-#: opcodes.h:84
+#: opcodes.h:106
 msgid "move the cursor one character to the right"
 msgstr "передвинуть курсор на один символ вправо"
 
-#: opcodes.h:85
+#: opcodes.h:107
 msgid "move the cursor to the end of the word"
 msgstr "передвинуть курсор в конец слова"
 
-#: opcodes.h:86
+#: opcodes.h:108
 msgid "scroll down through the history list"
 msgstr "прокрутить вниз список истории"
 
-#: opcodes.h:87
+#: opcodes.h:109
 msgid "scroll up through the history list"
 msgstr "прокрутить вверх список истории"
 
-#: opcodes.h:88
+#: opcodes.h:110
 msgid "delete chars from cursor to end of line"
 msgstr "удалить символы от курсора и до конца строки"
 
-#: opcodes.h:89
+#: opcodes.h:111
 msgid "delete chars from the cursor to the end of the word"
 msgstr "удалить символы от курсора и до конца слова"
 
-#: opcodes.h:90
+#: opcodes.h:112
 msgid "delete all chars on the line"
 msgstr "удалить все символы в строке"
 
-#: opcodes.h:91
+#: opcodes.h:113
 msgid "delete the word in front of the cursor"
 msgstr "удалить слово перед курсором"
 
-#: opcodes.h:92
+#: opcodes.h:114
 msgid "quote the next typed key"
 msgstr "ввести следующую нажатую клавишу \"как есть\""
 
-#: opcodes.h:93
+#: opcodes.h:115
 msgid "transpose character under cursor with previous"
 msgstr "поменять символ под курсором с предыдущим"
 
-#: opcodes.h:94
+#: opcodes.h:116
 msgid "capitalize the word"
 msgstr ""
 "перевести первую букву слова в верхний регистр, а остальные -- в нижний"
 
-#: opcodes.h:95
+#: opcodes.h:117
 msgid "convert the word to lower case"
 msgstr "преобразовать слово в нижний регистр"
 
-#: opcodes.h:96
+#: opcodes.h:118
 msgid "convert the word to upper case"
 msgstr "преобразовать слово в верхний регистр"
 
-#: opcodes.h:97
-msgid "enter a muttrc command"
-msgstr "ввести команду muttrc"
+#: opcodes.h:119
+msgid "enter a neomuttrc command"
+msgstr "ввести команду neomuttrc"
 
-#: opcodes.h:98
+#: opcodes.h:120
 msgid "enter a file mask"
 msgstr "ввести маску файла"
 
-#: opcodes.h:99
+#: opcodes.h:121
 msgid "exit this menu"
 msgstr "выйти из этого меню"
 
-#: opcodes.h:100
+#: opcodes.h:122
 msgid "filter attachment through a shell command"
 msgstr "передать вложение внешней программе"
 
-#: opcodes.h:101
+#: opcodes.h:123
 msgid "move to the first entry"
 msgstr "первая запись"
 
-#: opcodes.h:102
+#: opcodes.h:124
 msgid "toggle a message's 'important' flag"
 msgstr "установить/сбросить флаг \"важное\" для сообщения"
 
-#: opcodes.h:103
+#: opcodes.h:125
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Отвечать по %s%s?"
 
-#: opcodes.h:104
+#: opcodes.h:126
 msgid "forward to newsgroup"
 msgstr ""
 
-#: opcodes.h:105
+#: opcodes.h:127
 msgid "forward a message with comments"
 msgstr "переслать сообщение с комментариями"
 
-#: opcodes.h:106
+#: opcodes.h:128
 msgid "select the current entry"
 msgstr "выбрать текущую запись"
 
-#: opcodes.h:107
+#: opcodes.h:129
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "создать макрос для текущего сообщения"
 
-#: opcodes.h:108
+#: opcodes.h:130
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "редактировать сообщение вместе с заголовками"
 
-#: opcodes.h:109
+#: opcodes.h:131
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "создать макрос для текущего сообщения"
 
-#: opcodes.h:110
+#: opcodes.h:132
 msgid "reply to all recipients"
 msgstr "ответить всем адресатам"
 
-#: opcodes.h:111
+#: opcodes.h:133
 msgid "scroll down 1/2 page"
 msgstr "на полстраницы вперед"
 
-#: opcodes.h:112
+#: opcodes.h:134
 msgid "scroll up 1/2 page"
 msgstr "на полстраницы назад"
 
-#: opcodes.h:113
+#: opcodes.h:135
 msgid "this screen"
 msgstr "этот текст"
 
-#: opcodes.h:114
+#: opcodes.h:136
 msgid "jump to an index number"
 msgstr "перейти по последовательному номеру"
 
-#: opcodes.h:115
+#: opcodes.h:137
 msgid "move to the last entry"
 msgstr "последняя запись"
 
-#: opcodes.h:116
+#: opcodes.h:138
 msgid "reply to specified mailing list"
 msgstr "ответить в указанный список рассылки"
 
-#: opcodes.h:117
+#: opcodes.h:139
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: opcodes.h:118
+#: opcodes.h:140
 msgid "execute a macro"
 msgstr "выполнить макрос"
 
-#: opcodes.h:119
+#: opcodes.h:141
 msgid "compose a new mail message"
 msgstr "создать новое сообщение"
 
-#: opcodes.h:120
+#: opcodes.h:142
 msgid "break the thread in two"
 msgstr "резделить дикуссию на две части"
 
-#: opcodes.h:121
+#: opcodes.h:143
 msgid "open a different folder"
 msgstr "открыть другой почтовый ящик/файл"
 
-#: opcodes.h:122
+#: opcodes.h:144
 msgid "open a different folder in read only mode"
 msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
 
-#: opcodes.h:123
+#: opcodes.h:145
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "открыть другой почтовый ящик/файл"
 
-#: opcodes.h:124
+#: opcodes.h:146
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
 
-#: opcodes.h:125
+#: opcodes.h:147
 msgid "clear a status flag from a message"
 msgstr "сбросить у сообщения флаг состояния"
 
-#: opcodes.h:126
+#: opcodes.h:148
 msgid "delete messages matching a pattern"
 msgstr "удалить сообщения по образцу"
 
-#: opcodes.h:127
+#: opcodes.h:149
 msgid "force retrieval of mail from IMAP server"
 msgstr "забрать почту с IMAP-сервера"
 
-#: opcodes.h:128
+#: opcodes.h:150
 msgid "logout from all IMAP servers"
 msgstr "отключение от всех IMAP-серверов"
 
-#: opcodes.h:129
+#: opcodes.h:151
 msgid "retrieve mail from POP server"
 msgstr "забрать почту с POP-сервера"
 
-#: opcodes.h:130
+#: opcodes.h:152
 msgid "show only messages matching a pattern"
 msgstr "показывать только сообщения, соответствующие образцу"
 
-#: opcodes.h:131
+#: opcodes.h:153
 msgid "link tagged message to the current one"
 msgstr "подсоединить помеченное сообщение к текущему"
 
-#: opcodes.h:132
+#: opcodes.h:154
 msgid "open next mailbox with new mail"
 msgstr "открыть следующий почтовый ящик с новой почтой"
 
-#: opcodes.h:133
+#: opcodes.h:155
 msgid "jump to the next new message"
 msgstr "следующее новое сообщение"
 
-#: opcodes.h:134
+#: opcodes.h:156
 msgid "jump to the next new or unread message"
 msgstr "следующее новое или непрочитанное сообщение"
 
-#: opcodes.h:135
+#: opcodes.h:157
 msgid "jump to the next subthread"
 msgstr "следующая поддискуссия"
 
-#: opcodes.h:136
+#: opcodes.h:158
 msgid "jump to the next thread"
 msgstr "следующая дискуссия"
 
-#: opcodes.h:137
+#: opcodes.h:159
 msgid "move to the next undeleted message"
 msgstr "следующее неудаленное сообщение"
 
-#: opcodes.h:138
+#: opcodes.h:160
 msgid "jump to the next unread message"
 msgstr "следующее непрочитанное сообщение"
 
-#: opcodes.h:139
+#: opcodes.h:161
 msgid "jump to parent message in thread"
 msgstr "перейти к родительскому сообщению дискуссии"
 
-#: opcodes.h:140
+#: opcodes.h:162
 msgid "jump to previous thread"
 msgstr "предыдущая дискуссия"
 
-#: opcodes.h:141
+#: opcodes.h:163
 msgid "jump to previous subthread"
 msgstr "предыдущая поддискуссия"
 
-#: opcodes.h:142
+#: opcodes.h:164
 msgid "move to the previous undeleted message"
 msgstr "предыдущее неудаленное сообщение"
 
-#: opcodes.h:143
+#: opcodes.h:165
 msgid "jump to the previous new message"
 msgstr "предыдущее новое сообщение"
 
-#: opcodes.h:144
+#: opcodes.h:166
 msgid "jump to the previous new or unread message"
 msgstr "предыдущее новое или непрочитанное сообщение"
 
-#: opcodes.h:145
+#: opcodes.h:167
 msgid "jump to the previous unread message"
 msgstr "предыдущее непрочитанное сообщение"
 
-#: opcodes.h:146
+#: opcodes.h:168
 msgid "mark the current thread as read"
 msgstr "пометить текущую дискуссию как прочитанную"
 
-#: opcodes.h:147
+#: opcodes.h:169
 msgid "mark the current subthread as read"
 msgstr "пометить текущую поддискуссию как прочитанную"
 
-#: opcodes.h:148
+#: opcodes.h:170
 msgid "jump to root message in thread"
 msgstr "перейти к корневому сообщению дискуссии"
 
-#: opcodes.h:149
+#: opcodes.h:171
 msgid "set a status flag on a message"
 msgstr "установить флаг состояния для сообщения"
 
-#: opcodes.h:150
+#: opcodes.h:172
 msgid "save changes to mailbox"
 msgstr "сохранить изменения почтового ящика"
 
-#: opcodes.h:151
+#: opcodes.h:173
 msgid "tag messages matching a pattern"
 msgstr "пометить сообщения по образцу"
 
-#: opcodes.h:152
-msgid "delete from mutt, don't touch on disk"
+#: opcodes.h:174
+msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: opcodes.h:153
+#: opcodes.h:175
 msgid "undelete messages matching a pattern"
 msgstr "восстановить сообщения по образцу"
 
-#: opcodes.h:154
+#: opcodes.h:176
 msgid "untag messages matching a pattern"
 msgstr "снять пометку с сообщений по образцу"
 
-#: opcodes.h:155
+#: opcodes.h:177
 msgid "create a hotkey macro for the current message"
 msgstr "создать макрос для текущего сообщения"
 
-#: opcodes.h:156
+#: opcodes.h:178
 msgid "move to the middle of the page"
 msgstr "середина страницы"
 
-#: opcodes.h:157
+#: opcodes.h:179
 msgid "move to the next entry"
 msgstr "следующая запись"
 
-#: opcodes.h:158
+#: opcodes.h:180
 msgid "scroll down one line"
 msgstr "вниз на одну строку"
 
-#: opcodes.h:159
+#: opcodes.h:181
 msgid "move to the next page"
 msgstr "следующая страница"
 
-#: opcodes.h:160
+#: opcodes.h:182
 msgid "jump to the bottom of the message"
 msgstr "конец сообщения"
 
-#: opcodes.h:161
+#: opcodes.h:183
 msgid "toggle display of quoted text"
 msgstr "разрешить/запретить отображение цитируемого текста"
 
-#: opcodes.h:162
+#: opcodes.h:184
 msgid "skip beyond quoted text"
 msgstr "пропустить цитируемый текст"
 
-#: opcodes.h:163
+#: opcodes.h:185
 msgid "jump to the top of the message"
 msgstr "в начало сообщения"
 
-#: opcodes.h:164
+#: opcodes.h:186
 msgid "pipe message/attachment to a shell command"
 msgstr "передать сообщение/вложение внешней программе"
 
-#: opcodes.h:165
+#: opcodes.h:187
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Нет Message-ID для создания макроса."
 
-#: opcodes.h:166
+#: opcodes.h:188
 msgid "move to the previous entry"
 msgstr "предыдущая запись"
 
-#: opcodes.h:167
+#: opcodes.h:189
 msgid "scroll up one line"
 msgstr "вверх на одну строку"
 
-#: opcodes.h:168
+#: opcodes.h:190
 msgid "move to the previous page"
 msgstr "предыдущая страница"
 
-#: opcodes.h:169
+#: opcodes.h:191
 msgid "print the current entry"
 msgstr "напечатать текущую запись"
 
-#: opcodes.h:170
+#: opcodes.h:192
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "действительно удалить текущую запись не используя мусорную корзину"
 
-#: opcodes.h:171
+#: opcodes.h:193
 #, fuzzy
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "действительно удалить текущую запись не используя мусорную корзину"
 
-#: opcodes.h:172
+#: opcodes.h:194
 msgid "query external program for addresses"
 msgstr "запросить адреса у внешней программы"
 
-#: opcodes.h:173
+#: opcodes.h:195
 msgid "append new query results to current results"
 msgstr "добавить результаты нового запроса к текущим результатам"
 
-#: opcodes.h:174
+#: opcodes.h:196
 msgid "save changes to mailbox and quit"
 msgstr "сохранить изменения почтового ящика и выйти"
 
-#: opcodes.h:175
+#: opcodes.h:197
 msgid "recall a postponed message"
 msgstr "продолжить отложенное сообщение"
 
-#: opcodes.h:176
+#: opcodes.h:198
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "В дискуссии присутствуют непрочитанные сообщения."
 
-#: opcodes.h:177
+#: opcodes.h:199
 msgid "clear and redraw the screen"
 msgstr "очистить и перерисовать экран"
 
-#: opcodes.h:178
+#: opcodes.h:200
 msgid "{internal}"
 msgstr "{внутренний}"
 
-#: opcodes.h:179
+#: opcodes.h:201
 msgid "rename the current mailbox (IMAP only)"
 msgstr "переименовать текущий почтовый ящик (только IMAP)"
 
-#: opcodes.h:180
+#: opcodes.h:202
 msgid "reply to a message"
 msgstr "ответить на сообщение"
 
-#: opcodes.h:181
+#: opcodes.h:203
 msgid "use the current message as a template for a new one"
 msgstr "использовать текущее сообщение в качестве шаблона для нового"
 
-#: opcodes.h:182
+#: opcodes.h:204
 msgid "save message/attachment to a mailbox/file"
 msgstr "сохранить сообщение/вложение в ящик/файл"
 
-#: opcodes.h:183
+#: opcodes.h:205
 msgid "search for a regular expression"
 msgstr "поиск по образцу"
 
-#: opcodes.h:184
+#: opcodes.h:206
 msgid "search backwards for a regular expression"
 msgstr "обратный поиск по образцу"
 
-#: opcodes.h:185
+#: opcodes.h:207
 msgid "search for next match"
 msgstr "поиск следующего совпадения"
 
-#: opcodes.h:186
+#: opcodes.h:208
 msgid "search for next match in opposite direction"
 msgstr "поиск предыдущего совпадения"
 
-#: opcodes.h:187
+#: opcodes.h:209
 msgid "toggle search pattern coloring"
 msgstr "установить/сбросить режим выделения образца цветом"
 
-#: opcodes.h:188
+#: opcodes.h:210
 msgid "invoke a command in a subshell"
 msgstr "запустить внешнюю программу"
 
-#: opcodes.h:189
+#: opcodes.h:211
 msgid "sort messages"
 msgstr "сортировать сообщения"
 
-#: opcodes.h:190
+#: opcodes.h:212
 msgid "sort messages in reverse order"
 msgstr "сортировать сообщения в обратном порядке"
 
-#: opcodes.h:191
+#: opcodes.h:213
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "снять пометку с сообщений по образцу"
 
-#: opcodes.h:192
+#: opcodes.h:214
 msgid "tag the current entry"
 msgstr "пометить текущую запись"
 
-#: opcodes.h:193
+#: opcodes.h:215
 msgid "apply next function to tagged messages"
 msgstr "применить следующую функцию к помеченным сообщениям"
 
-#: opcodes.h:194
+#: opcodes.h:216
 msgid "apply next function ONLY to tagged messages"
 msgstr "выполнить операцию ТОЛЬКО для помеченных сообщений"
 
-#: opcodes.h:195
+#: opcodes.h:217
 msgid "tag the current subthread"
 msgstr "пометить текущую поддискуссию"
 
-#: opcodes.h:196
+#: opcodes.h:218
 msgid "tag the current thread"
 msgstr "пометить текущую дискуссию"
 
-#: opcodes.h:197
+#: opcodes.h:219
 msgid "toggle a message's 'new' flag"
 msgstr "установить/сбросить флаг \"новое\" для сообщения"
 
-#: opcodes.h:198
+#: opcodes.h:220
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "предыдущее новое или непрочитанное сообщение"
 
-#: opcodes.h:199
+#: opcodes.h:221
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "разрешить/запретить перезапись почтового ящика"
 
-#: opcodes.h:200
+#: opcodes.h:222
 msgid "toggle whether to browse mailboxes or all files"
 msgstr ""
 "переключиться между режимами просмотра всех файлов и просмотра почтовых "
 "ящиков"
 
-#: opcodes.h:201
+#: opcodes.h:223
 msgid "move to the top of the page"
 msgstr "начало страницы"
 
-#: opcodes.h:202
+#: opcodes.h:224
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: opcodes.h:203
+#: opcodes.h:225
 msgid "undelete the current entry"
 msgstr "восстановить текущую запись"
 
-#: opcodes.h:204
+#: opcodes.h:226
 msgid "undelete all messages in thread"
 msgstr "восстановить все сообщения в дискуссии"
 
-#: opcodes.h:205
+#: opcodes.h:227
 msgid "undelete all messages in subthread"
 msgstr "восстановить все сообщения в поддискуссии"
 
-#: opcodes.h:206
+#: opcodes.h:228
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "снять пометку с сообщений по образцу"
 
-#: opcodes.h:207
-msgid "show the Mutt version number and date"
-msgstr "вывести номер версии Mutt и дату"
+#: opcodes.h:229
+msgid "show the NeoMutt version number and date"
+msgstr "вывести номер версии NeoMutt и дату"
 
-#: opcodes.h:208
+#: opcodes.h:230
 msgid "view attachment using mailcap entry if necessary"
 msgstr "просмотреть вложение, используя при необходимости mailcap"
 
-#: opcodes.h:209
+#: opcodes.h:231
 msgid "show MIME attachments"
 msgstr "показать вложения"
 
-#: opcodes.h:210
+#: opcodes.h:232
 msgid "display the keycode for a key press"
 msgstr "показать код нажатой клавиши"
 
-#: opcodes.h:211
+#: opcodes.h:233
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "пометить текущую дискуссию"
 
-#: opcodes.h:212
+#: opcodes.h:234
 msgid "show currently active limit pattern"
 msgstr "показать текущий шаблон ограничения"
 
-#: opcodes.h:213
+#: opcodes.h:235
 msgid "collapse/uncollapse current thread"
 msgstr "свернуть/развернуть текущую дискуссию"
 
-#: opcodes.h:214
+#: opcodes.h:236
 msgid "collapse/uncollapse all threads"
 msgstr "свернуть/развернуть все дискуссии"
 
-#: opcodes.h:217
+#: opcodes.h:239
 msgid "make decrypted copy and delete"
 msgstr "создать расшифрованную копию и удалить оригинал"
 
-#: opcodes.h:218
+#: opcodes.h:240
 msgid "make decrypted copy"
 msgstr "создать расшифрованную копию"
 
-#: opcodes.h:219
+#: opcodes.h:241
 msgid "wipe passphrase(s) from memory"
 msgstr "удалить фразы-пароли из памяти"
 
-#: opcodes.h:220
+#: opcodes.h:242
 msgid "extract supported public keys"
 msgstr "извлечь поддерживаемые открытые ключи"
 
-#: opcodes.h:224
+#: opcodes.h:246
 msgid "accept the chain constructed"
 msgstr "использовать созданную цепочку"
 
-#: opcodes.h:225
+#: opcodes.h:247
 msgid "append a remailer to the chain"
 msgstr "добавить remailer в цепочку"
 
-#: opcodes.h:226
+#: opcodes.h:248
 msgid "insert a remailer into the chain"
 msgstr "вставить remailer в цепочку"
 
-#: opcodes.h:227
+#: opcodes.h:249
 msgid "delete a remailer from the chain"
 msgstr "удалить remailer из цепочки"
 
-#: opcodes.h:228
+#: opcodes.h:250
 msgid "select the previous element of the chain"
 msgstr "выбрать предыдущий элемент в цепочке"
 
-#: opcodes.h:229
+#: opcodes.h:251
 msgid "select the next element of the chain"
 msgstr "выбрать следующий элемент в цепочке"
 
-#: opcodes.h:230
+#: opcodes.h:252
 msgid "send the message through a mixmaster remailer chain"
 msgstr "послать сообщение через цепочку remailer"
 
-#: opcodes.h:237
+#: opcodes.h:259
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "открыть другой почтовый ящик/файл"
 
-#: opcodes.h:238
+#: opcodes.h:260
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:239
+#: opcodes.h:261
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:240
+#: opcodes.h:262
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: opcodes.h:241
+#: opcodes.h:263
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: opcodes.h:242
+#: opcodes.h:264
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "Это первое сообщение."
 
-#: opcodes.h:243
+#: opcodes.h:265
 #, fuzzy
 msgid "read entire thread of the current message"
 msgstr "создать макрос для текущего сообщения"
 
-#: opcodes.h:249
+#: opcodes.h:271
 msgid "attach a PGP public key"
 msgstr "вложить открытый PGP-ключ"
 
-#: opcodes.h:250
+#: opcodes.h:272
 msgid "show PGP options"
 msgstr "вывести параметры PGP"
 
-#: opcodes.h:251
+#: opcodes.h:273
 msgid "mail a PGP public key"
 msgstr "отправить открытый PGP-ключ"
 
-#: opcodes.h:252
+#: opcodes.h:274
 msgid "verify a PGP public key"
 msgstr "проверить открытый PGP-ключ"
 
-#: opcodes.h:253
+#: opcodes.h:275
 msgid "view the key's user id"
 msgstr "показать идентификатор владельца ключа"
 
-#: opcodes.h:254
+#: opcodes.h:276
 msgid "check for classic PGP"
 msgstr "проверить PGP-сообщение в текстовом формате"
 
-#: opcodes.h:257
+#: opcodes.h:279
 msgid "move the highlight to next mailbox"
 msgstr "переместить указатель на следующий почтовый ящик"
 
-#: opcodes.h:258
+#: opcodes.h:280
 msgid "move the highlight to next mailbox with new mail"
 msgstr "переместить указатель на следующий ящик с новой почтой"
 
-#: opcodes.h:259
+#: opcodes.h:281
 msgid "open highlighted mailbox"
 msgstr "открыть выбранный почтовый ящик"
 
-#: opcodes.h:260
+#: opcodes.h:282
 msgid "scroll the sidebar down 1 page"
 msgstr "прокрутка бокового списка на страницу вниз"
 
-#: opcodes.h:261
+#: opcodes.h:283
 msgid "scroll the sidebar up 1 page"
 msgstr "прокрутка бокового списка на страницу вверх"
 
-#: opcodes.h:262
+#: opcodes.h:284
 msgid "move the highlight to previous mailbox"
 msgstr "переместить указатель на предыдущий почтовый ящик"
 
-#: opcodes.h:263
+#: opcodes.h:285
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "переместить указатель на предыдущий ящик с новой почтой"
 
-#: opcodes.h:264
+#: opcodes.h:286
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr ""
 "переключиться между режимами просмотра всех файлов и просмотра почтовых "
 "ящиков"
 
-#: opcodes.h:265
+#: opcodes.h:287
 msgid "make the sidebar (in)visible"
 msgstr "скрыть/показать боковой список"
 
-#: opcodes.h:268
+#: opcodes.h:290
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
 
@@ -5994,7 +5994,7 @@ msgstr "Нет темы письма, отказ."
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
-#. If she says no, mutt will reply to the from header's address instead.
+#. If she says no, neomutt will reply to the from header's address instead.
 #: send.c:581
 #, c-format
 msgid "Reply to %s%s?"
@@ -6308,16 +6308,16 @@ msgstr ""
 #: version.c:89
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins и другие.\n"
-"Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
-"подробной информации введите \"mutt -vv\".\n"
-"Mutt является свободным программным обеспечением.  Вы можете\n"
+"NeoMutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
+"подробной информации введите \"neomutt -vv\".\n"
+"NeoMutt является свободным программным обеспечением.  Вы можете\n"
 "распространять его при соблюдении определенных условий; для получения\n"
-"более подробной информации введите \"mutt -vv\".\n"
+"более подробной информации введите \"neomutt -vv\".\n"
 
 #: version.c:409
 #, fuzzy
@@ -6335,7 +6335,3 @@ msgid ""
 msgstr ""
 "\n"
 "Параметры компиляции:"
-
-#, fuzzy
-#~ msgid "default colors not supported."
-#~ msgstr "цвета по умолчанию не поддерживаются"
