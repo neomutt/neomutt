@@ -1,3 +1,12 @@
+2017-09-12  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - broken check on resend message
+  - crash in vfolder-from-query
+* Build
+  - Be more formal about quoting in m4 macros
+  - fix warnings raised by gcc7
+  - notmuch: add support for the v5 API
+
 2017-09-07  Richard Russon  <rich@flatcap.org>
 * Contrib
   - Add guix build support
