@@ -3166,6 +3166,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   char rcfile[PATH_MAX];
   size_t buflen;
   size_t rcfilelen;
+  bool ispipe;
 
   pid_t pid;
 
@@ -3175,7 +3176,9 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   if (rcfilelen == 0)
     return -1;
 
-  if (rcfile[rcfilelen - 1] != '|')
+  ispipe = rcfile[rcfilelen -1] == '|';
+
+  if (!ispipe)
   {
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
     if (!to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
@@ -3278,7 +3281,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     }
   }
 
-  if (!STAILQ_EMPTY(&MuttrcStack))
+  if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
   {
     STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
   }
