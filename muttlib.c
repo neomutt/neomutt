@@ -1866,25 +1866,29 @@ int debuglevel;
 char *debugfile_cmdline = NULL;
 int debuglevel_cmdline;
 
-void mutt_debug(int level, const char *fmt, ...)
+int mutt_debug_real(const char *function, const char *file, int line, int level, ...)
 {
   va_list ap;
   time_t now = time(NULL);
   static char buf[23] = "";
   static time_t last = 0;
+  int ret = 0;
 
-  if (debuglevel < level || !debugfile)
-    return;
+  if ((debuglevel < level) || !debugfile)
+    return 0;
 
   if (now > last)
   {
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
+    ret += strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
     last = now;
   }
-  fprintf(debugfile, "[%s] ", buf);
-  va_start(ap, fmt);
-  vfprintf(debugfile, fmt, ap);
+  ret += fprintf(debugfile, "[%s] %s() ", buf, function);
+
+  va_start(ap, level);
+  const char *fmt = va_arg(ap, const char *);
+  ret += vfprintf(debugfile, fmt, ap);
   va_end(ap);
+  return ret;
 }
 #endif
 
