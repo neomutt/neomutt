@@ -1091,10 +1091,11 @@ out:
 }
 
 /**
- * compare_flags - Compare local flags against the server
+ * compare_flags_for_copy - Compare local flags against the server
  * @retval 0 if neomutt's flags match cached server flags
+ * EXCLUDING the deleted flag.
  */
-static bool compare_flags(struct Header *h)
+static bool compare_flags_for_copy(struct Header *h)
 {
   struct ImapHeaderData *hd = (struct ImapHeaderData *) h->data;
 
@@ -1106,26 +1107,31 @@ static bool compare_flags(struct Header *h)
     return true;
   if (h->replied != hd->replied)
     return true;
-  if (h->deleted != hd->deleted)
-    return true;
 
   return false;
 }
 
 /**
- * imap_sync_message - Update server to reflect the flags of a single message
+ * imap_sync_message_for_copy - Update server to reflect the flags of a single message
+ *
+ * Update the IMAP server to reflect the flags for a single message before
+ * performing a "UID COPY".
+ * NOTE: This does not sync the "deleted" flag state, because it is not
+ *       desirable to propagate that flag into the copy.
  */
-int imap_sync_message(struct ImapData *idata, struct Header *hdr,
+int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
                       struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char uid[11];
 
-  hdr->changed = false;
-
-  if (!compare_flags(hdr))
+  if (!compare_flags_for_copy(hdr))
   {
-    idata->ctx->changed = false;
+    if (hdr->deleted == HEADER_DATA(hdr)->deleted)
+    {
+      hdr->changed = false;
+      idata->ctx->changed = false;
+    }
     return 0;
   }
 
@@ -1140,7 +1146,7 @@ int imap_sync_message(struct ImapData *idata, struct Header *hdr,
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->old, "Old ", flags, sizeof(flags));
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->flagged, "\\Flagged ", flags, sizeof(flags));
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->replied, "\\Answered ", flags, sizeof(flags));
-  imap_set_flag(idata, MUTT_ACL_DELETE, hdr->deleted, "\\Deleted ", flags, sizeof(flags));
+  imap_set_flag (idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ", flags, sizeof (flags));
 
   /* now make sure we don't lose custom tags */
   if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
@@ -1156,7 +1162,7 @@ int imap_sync_message(struct ImapData *idata, struct Header *hdr,
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_DELETE, 1, "\\Deleted ", flags, sizeof(flags));
+    imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted, "\\Deleted ", flags, sizeof (flags));
 
     mutt_remove_trailing_ws(flags);
 
@@ -1178,11 +1184,18 @@ int imap_sync_message(struct ImapData *idata, struct Header *hdr,
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", idata->buf);
     if (*err_continue != MUTT_YES)
+    {
+      hdr->active = true;
       return -1;
+    }
   }
 
   hdr->active = true;
-  idata->ctx->changed = false;
+  if (hdr->deleted == HEADER_DATA(hdr)->deleted)
+  {
+    hdr->changed = false;
+    idata->ctx->changed = false;
+  }
 
   return 0;
 }
@@ -2214,9 +2227,11 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
-  int rc;
+  int n, rc;
   struct ImapMbox mx;
   bool triedcreate = false;
+  struct Buffer *sync_cmd = NULL;
+  int err_continue = MUTT_NO;
 
   idata = ctx->data;
 
@@ -2237,6 +2252,21 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   if (!*mbox)
     strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
+
+  sync_cmd = mutt_buffer_new ();
+  for (n = 0; n < ctx->msgcount; n++)
+  {
+    if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed &&
+        ctx->hdrs[n]->deleted && !ctx->hdrs[n]->purge)
+    {
+      rc = imap_sync_message_for_copy (idata, ctx->hdrs[n], sync_cmd, &err_continue);
+      if (rc < 0)
+      {
+        mutt_debug (1, "imap_fast_trash: could not sync\n");
+        goto out;
+      }
+    }
+  }
 
   /* loop in case of TRYCREATE */
   do
@@ -2290,6 +2320,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   rc = 0;
 
 out:
+  mutt_buffer_free (&sync_cmd);
   FREE(&mx.mbox);
 
   return rc < 0 ? -1 : rc;
