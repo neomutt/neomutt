@@ -1927,7 +1927,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
 #: hook.c:144
@@ -2216,8 +2216,8 @@ msgstr "%s: Jenis tidak dikenali."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
-msgstr "Regexp tidak benar: %s"
+msgid "Bad regex: %s"
+msgstr "Regex tidak benar: %s"
 
 #: init.c:932
 #, fuzzy
@@ -2291,8 +2291,8 @@ msgstr "kolom header tidak dikenali"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default(%s): error pada regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
+msgstr "mutt_restore_default(%s): error pada regex: %s\n"
 
 #: init.c:2452 init.c:2623
 #, c-format

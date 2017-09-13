@@ -111,8 +111,8 @@ Once defined, these address groups can be used in patterns to search for and lim
 display to messages matching a group.
 .PP
 .nf
-\fBalternates\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fIregexp\fP [ ... ]]
-\fBunalternates\fP [\fB * \fP | \fIregexp\fP [ \fIregexp\fP [ ... ]] ]
+\fBalternates\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP [ ... ]]
+\fBunalternates\fP [\fB * \fP | \fIregex\fP [ \fIregex\fP [ ... ]] ]
 .fi
 .IP
 \fBalternates\fP is used to inform mutt about alternate addresses
@@ -177,7 +177,7 @@ For more information on keys and functions, please consult the Mutt
 Manual. Note that the function name is to be specified without
 angle brackets.
 .TP
-\fBaccount-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
+\fBaccount-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
 This hook is executed whenever you access a remote mailbox. Useful
 to adjust configuration settings to different IMAP or POP servers.
 .TP
@@ -219,10 +219,10 @@ startup hook for the given \fIcommand\fP.
 Before mutt is about to exit, and before the mailbox is closed, mutt will run
 the shutdown hook for the given \fIcommand\fP.
 .TP
-\fBfolder-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
-When mutt enters a folder which matches \fIregexp\fP (or, when
-\fIregexp\fP is preceded by an exclamation mark, does not match
-\fIregexp\fP), the given \fIcommand\fP is executed.
+\fBfolder-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
+When mutt enters a folder which matches \fIregex\fP (or, when
+\fIregex\fP is preceded by an exclamation mark, does not match
+\fIregex\fP), the given \fIcommand\fP is executed.
 .IP
 When several \fBfolder-hook\fPs match a given mail folder, they are
 executed in the order given in the configuration file.
@@ -233,7 +233,7 @@ This command binds the given \fIsequence\fP of keys to the given
 specify multiple maps, put only a comma between the maps.
 .PP
 .nf
-\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fIregexp\fP ]
+\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fIregex\fP ]
 \fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fIpattern\fP ]
 \fBuncolor\fP index \fIpattern\fP [ \fIpattern\fP ... ]
 .fi
@@ -260,7 +260,7 @@ Valid colors include:
 .BR cyan ", " yellow ", " red ", " default ", " color\fIN\fP .
 .PP
 .nf
-\fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregexp\fP ]
+\fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregex\fP ]
 \fBmono\fP index \fIattribute\fP [ \fIpattern\fP ]
 .fi
 .IP
@@ -278,10 +278,10 @@ The \fBunignore\fP command permits you to define exceptions from
 the above mentioned list of ignored headers.
 .PP
 .nf
-\fBlists\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fIregexp\fP ... ]
-\fBunlists\fP \fIregexp\fP [ \fIregexp\fP ... ]
-\fBsubscribe\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fIregexp\fP ... ]
-\fBunsubscribe\fP \fIregexp\fP [ \fIregexp\fP ... ]
+\fBlists\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP ... ]
+\fBunlists\fP \fIregex\fP [ \fIregex\fP ... ]
+\fBsubscribe\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP ... ]
+\fBunsubscribe\fP \fIregex\fP [ \fIregex\fP ... ]
 .fi
 .IP
 Mutt maintains two lists of mailing list address patterns, a list of
@@ -296,8 +296,8 @@ and subscribed mailing lists.  The \fBunsubscribe\fP command removes
 it from the list of subscribed mailing lists. The \fB-group\fP flag
 adds all of the subsequent regular expressions to the named group.
 .TP
-\fBmbox-hook\fP [\fB!\fP]\fIregexp\fP \fImailbox\fP
-When mutt changes to a mail folder which matches \fIregexp\fP,
+\fBmbox-hook\fP [\fB!\fP]\fIregex\fP \fImailbox\fP
+When mutt changes to a mail folder which matches \fIregex\fP,
 \fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
 messages will be moved to that folder when the mail folder is left.
 .IP
@@ -363,25 +363,25 @@ in the order in which they occur in the configuration file, but all
 \fBreply-hook\fPs are matched and executed before \fBsend-hook\fPs,
 regardless of their order in the configuration file.
 .TP
-\fBcrypt-hook\fP \fIregexp\fP \fIkey-id\fP
+\fBcrypt-hook\fP \fIregex\fP \fIkey-id\fP
 The crypt-hook command provides a method by which you can
 specify the ID of the public key to be used when encrypting messages
 to a certain recipient.  The meaning of "key ID" is to be taken
 broadly: This can be a different e-mail address, a numerical key ID,
 or even just an arbitrary search string.
 You may use multiple
-\fBcrypt-hook\fPs with the same \fIregexp\fP; multiple matching
+\fBcrypt-hook\fPs with the same \fIregex\fP; multiple matching
 \fBcrypt-hook\fPs result in the use of multiple \fIkey-id\fPs for
 a recipient.
 .PP
 .nf
-\fBopen-hook\fP \fIregexp\fP "\fIcommand\fP"
-\fBclose-hook\fP \fIregexp\fP "\fIcommand\fP"
-\fBappend-hook\fP \fIregexp\fP "\fIcommand\fP"
+\fBopen-hook\fP \fIregex\fP "\fIcommand\fP"
+\fBclose-hook\fP \fIregex\fP "\fIcommand\fP"
+\fBappend-hook\fP \fIregex\fP "\fIcommand\fP"
 .fi
 .IP
 These commands provide a way to handle compressed folders. The given
-\fBregexp\fP specifies which folders are taken as compressed (e.g.
+\fBregex\fP specifies which folders are taken as compressed (e.g.
 "\fI\\\\.gz$\fP"). The commands tell Mutt how to uncompress a folder
 (\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a
 compressed mail to a compressed folder (\fBappend-hook\fP). The

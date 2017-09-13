@@ -203,11 +203,11 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
     {
       if (regexec(PgpGoodSign.regex, line, 0, NULL, 0) == 0)
       {
-        mutt_debug(2, "pgp_copy_checksig: \"%s\" matches regexp.\n", line);
+        mutt_debug(2, "pgp_copy_checksig: \"%s\" matches regex.\n", line);
         rv = 0;
       }
       else
-        mutt_debug(2, "pgp_copy_checksig: \"%s\" doesn't match regexp.\n", line);
+        mutt_debug(2, "pgp_copy_checksig: \"%s\" doesn't match regex.\n", line);
 
       if (strncmp(line, "[GNUPG:] ", 9) == 0)
         continue;
@@ -247,13 +247,13 @@ static int pgp_check_decryption_okay(FILE *fpin)
     {
       if (regexec(PgpDecryptionOkay.regex, line, 0, NULL, 0) == 0)
       {
-        mutt_debug(2, "pgp_check_decryption_okay: \"%s\" matches regexp.\n", line);
+        mutt_debug(2, "pgp_check_decryption_okay: \"%s\" matches regex.\n", line);
         rv = 0;
         break;
       }
       else
         mutt_debug(2,
-                   "pgp_check_decryption_okay: \"%s\" doesn't match regexp.\n", line);
+                   "pgp_check_decryption_okay: \"%s\" doesn't match regex.\n", line);
     }
     FREE(&line);
   }

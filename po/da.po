@@ -1890,7 +1890,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "genvejstasten '^' til den aktuelle brebakke er inaktiv"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "genvejstaste til brevbakke udfoldet til tomt regulært udtryk"
 
 #: hook.c:144
@@ -2178,7 +2178,7 @@ msgstr "%s: Ukendt type."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Fejl i regulært udtryk: %s"
 
 #: init.c:932
@@ -2251,7 +2251,7 @@ msgstr "ugyldig linje i brevhoved"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): Fejl i regulært udtryk: %s\n"
 
 #: init.c:2452 init.c:2623

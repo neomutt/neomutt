@@ -847,7 +847,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
+  else if (regexec((regex_t *) QuoteRegex.regex, buf, 1, pmatch, 0) == 0)
   {
     if (regexec((regex_t *) Smileys.regex, buf, 1, smatch, 0) == 0)
     {
@@ -859,7 +859,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         c = buf[smatch[0].rm_so];
         buf[smatch[0].rm_so] = 0;
 
-        if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
+        if (regexec((regex_t *) QuoteRegex.regex, buf, 1, pmatch, 0) == 0)
         {
           if (q_classify && line_info[n].quote == NULL)
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
@@ -947,7 +947,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             null_rx = false;
           }
           else
-            null_rx = true; /* empty regexp; don't add it, but keep looking */
+            null_rx = true; /* empty regex; don't add it, but keep looking */
         }
         color_line = color_line->next;
       }
@@ -1009,7 +1009,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             null_rx = 0;
           }
           else
-            null_rx = 1; /* empty regexp; don't add it, but keep looking */
+            null_rx = 1; /* empty regex; don't add it, but keep looking */
         }
       }
 
@@ -1490,7 +1490,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (regexec((regex_t *) QuoteRegexp.regex, (char *) fmt, 1, pmatch, 0) != 0)
+    if (regexec((regex_t *) QuoteRegex.regex, (char *) fmt, 1, pmatch, 0) != 0)
       goto out;
     (*line_info)[n].quote =
         classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,

@@ -67,12 +67,12 @@ set postponed=+postponed	# mailbox to store postponed messages in
 #set print=ask-yes		# ask me if I really want to print messages
 set print_command=/bin/false	# how to print things (I like to save trees)
 set noprompt_after	# ask me for a command after the external pager exits
-#set quote_regexp="^ *[a-zA-Z]*[>:#}]"	# how to catch quoted text
+#set quote_regex="^ *[a-zA-Z]*[>:#}]"	# how to catch quoted text
 set read_inc=25			# show progress when reading a mailbox
 #set recall			# prompt to recall postponed messages
 set record=+outbox		# default location to save outgoing mail
 set reply_to			# always use reply-to if present
-#set reply_regexp="^(re:[ \t]*)+"# how to identify replies in the subject:
+#set reply_regex="^(re:[ \t]*)+"# how to identify replies in the subject:
 #set resolve		# move to the next message when an action is performed
 #set reverse_alias		# attempt to look up my names for people
 set reverse_name		# use my address as it appears in the message
@@ -254,12 +254,12 @@ save-hook ^judge +diplomacy
 #folder-hook mutt	'set index_format="%4C %Z %02m/%02N %-20.20F (%4l) %s"'
 #folder-hook =mutt	my_hdr Revolution: \#9 # real comment
 
-#folder-hook .		'set reply_regexp="^re:[ \t]*"'
+#folder-hook .		'set reply_regex="^re:[ \t]*"'
 
 # this mailing list prepends "[WM]" to all non reply subjects, so set
-# $reply_regexp to ignore it
+# $reply_regex to ignore it
 # Warning: May break threads for other people.
-#folder-hook +wmaker	'set reply_regexp="^(re:[ \t]*)?\[WM\][ \t]*"'
+#folder-hook +wmaker	'set reply_regex="^(re:[ \t]*)?\[WM\][ \t]*"'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #

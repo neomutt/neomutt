@@ -1960,7 +1960,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
 #: hook.c:144
@@ -2255,7 +2255,7 @@ msgstr "%s: άγνωστος τύπος."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "λανθασμένη κανονική έκφραση: %s"
 
 #: init.c:932
@@ -2334,8 +2334,8 @@ msgstr "μη έγκυρο πεδίο επικεφαλίδας"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default(%s): λάθος στο regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
+msgstr "mutt_restore_default(%s): λάθος στο regex: %s\n"
 
 #: init.c:2452 init.c:2623
 #, c-format

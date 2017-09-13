@@ -684,7 +684,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable controls how ``$message-hook'', ``$reply-hook'', ``$send-hook'',
   ** ``$send2-hook'', ``$save-hook'', and ``$fcc-hook'' will
-  ** be interpreted if they are specified with only a simple regexp,
+  ** be interpreted if they are specified with only a simple regex,
   ** instead of a matching pattern.  The hooks are expanded when they are
   ** declared, so a hook will be interpreted according to the value of this
   ** variable at the time the hook is declared.
@@ -1159,8 +1159,8 @@ struct Option MuttVars[] = {
   { "header_color_partial", DT_BOOL, R_PAGER_FLOW, OPT_HEADER_COLOR_PARTIAL, 0 },
   /*
   ** .pp
-  ** When \fIset\fP, color header regexps behave like color body regexps:
-  ** color is applied to the exact text matched by the regexp.  When
+  ** When \fIset\fP, color header regexes behave like color body regexes:
+  ** color is applied to the exact text matched by the regex.  When
   ** \fIunset\fP, color is applied to the entire header.
   ** .pp
   ** One use of this option might be to apply color to just the header labels.
@@ -2867,7 +2867,7 @@ struct Option MuttVars[] = {
   ** have no effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are
   ** prompted for confirmation when you try to quit.
   */
-  { "quote_regexp",     DT_REGEX,   R_PAGER, UL &QuoteRegexp, UL "^([ \t]*[|>:}#])+" },
+  { "quote_regex",     DT_REGEX,   R_PAGER, UL &QuoteRegex, UL "^([ \t]*[|>:}#])+" },
   /*
   ** .pp
   ** A regular expression used in the internal pager to determine quoted
@@ -2968,7 +2968,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see $$wrap.
   */
-  { "reply_regexp",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
+  { "reply_regex",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegex, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
   /*
   ** .pp
   ** A regular expression used to recognize reply messages when threading
@@ -3448,7 +3448,7 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** The \fIpager\fP uses this variable to catch some common false
-  ** positives of $$quote_regexp, most notably smileys and not consider
+  ** positives of $$quote_regex, most notably smileys and not consider
   ** a line quoted text if it also matches $$smileys. This mostly
   ** happens at the beginning of a line.
   */

@@ -1862,7 +1862,7 @@ static int do_search(const struct Pattern *search, int allpats)
  *
  * Convert neomutt Pattern to IMAP SEARCH command containing only elements
  * that require full-text search (neomutt already has what it needs for most
- * match types, and does a better job (eg server doesn't support regexps).
+ * match types, and does a better job (eg server doesn't support regexes).
  */
 static int imap_compile_search(struct Context *ctx, const struct Pattern *pat,
                                struct Buffer *buf)

@@ -1898,7 +1898,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "sneltoets '^' voor huidige mailbox is uitgezet"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "sneltoets voor mailbox expandeerde tot lege reguliere expressie"
 
 #: hook.c:144
@@ -2186,7 +2186,7 @@ msgstr "%s: Onbekend type."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Ongeldige reguliere expressie: %s"
 
 #: init.c:932
@@ -2259,7 +2259,7 @@ msgstr "ongeldig veld in berichtenkop"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): fout in reguliere expressie: %s\n"
 
 #: init.c:2452 init.c:2623

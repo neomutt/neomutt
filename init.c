@@ -382,9 +382,9 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 
         if (parse_regex(idx, &tmp, &err2))
         {
-          /* $reply_regexp and $alternates require special treatment */
+          /* $reply_regex and $alternates require special treatment */
           if (Context && Context->msgcount &&
-              (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
+              (mutt_strcmp(MuttVars[idx].option, "reply_regex") == 0))
           {
             regmatch_t pmatch[1];
 
@@ -394,7 +394,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               if (CUR_ENV && CUR_ENV->subject)
               {
                 CUR_ENV->real_subj =
-                    (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
+                    (regexec(ReplyRegex.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
                         CUR_ENV->subject :
                         CUR_ENV->subject + pmatch[0].rm_eo;
               }
@@ -777,9 +777,9 @@ int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
   if (!s || !*s)
     return 0;
 
-  if (!(rx = mutt_compile_regexp(s, flags)))
+  if (!(rx = mutt_compile_regex(s, flags)))
   {
-    snprintf(err->data, err->dsize, "Bad regexp: %s\n", s);
+    snprintf(err->data, err->dsize, "Bad regex: %s\n", s);
     return -1;
   }
 
@@ -809,7 +809,7 @@ int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
       *list = last = t;
   }
   else /* duplicate */
-    mutt_free_regexp(&rx);
+    mutt_free_regex(&rx);
 
   return 0;
 }
@@ -826,7 +826,7 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
   if (cur->regex && (mutt_strcmp(cur->regex->pattern, pat) == 0))
   {
     *list = cur->next;
-    mutt_free_regexp(&cur->regex);
+    mutt_free_regex(&cur->regex);
     FREE(&cur->template);
     FREE(&cur);
     return 1;
@@ -838,7 +838,7 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
     if (mutt_strcmp(cur->regex->pattern, pat) == 0)
     {
       prev->next = cur->next;
-      mutt_free_regexp(&cur->regex);
+      mutt_free_regex(&cur->regex);
       FREE(&cur->template);
       FREE(&cur);
       cur = prev->next;
@@ -867,9 +867,9 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   if (!pat || !*pat || !templ)
     return 0;
 
-  if (!(rx = mutt_compile_regexp(pat, REG_ICASE)))
+  if (!(rx = mutt_compile_regex(pat, REG_ICASE)))
   {
-    snprintf(err->data, err->dsize, _("Bad regexp: %s"), pat);
+    snprintf(err->data, err->dsize, _("Bad regex: %s"), pat);
     return -1;
   }
 
@@ -906,7 +906,7 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
       *list = t;
   }
   else
-    mutt_free_regexp(&rx);
+    mutt_free_regex(&rx);
 
   /* Now t is the ReplaceList* that we want to modify. It is prepared. */
   t->template = safe_strdup(templ);
@@ -1207,7 +1207,7 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
 
   memset(&templ, 0, sizeof(templ));
 
-  /* First token is a regexp. */
+  /* First token is a regex. */
   if (!MoreArgs(s))
   {
     strfcpy(err->data, _("not enough arguments"), err->dsize);
@@ -1238,7 +1238,7 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
 {
   struct ReplaceList **list = (struct ReplaceList **) data;
 
-  /* First token is a regexp. */
+  /* First token is a regex. */
   if (!MoreArgs(s))
   {
     strfcpy(err->data, _("not enough arguments"), err->dsize);
@@ -1307,7 +1307,7 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
     return -1;
   }
 
-  /* Extract the first token, a regexp */
+  /* Extract the first token, a regex */
   mutt_extract_token(buf, s, 0);
 
   /* data should be either MUTT_SPAM or MUTT_NOSPAM. MUTT_SPAM is for spam commands. */
@@ -2157,7 +2157,7 @@ static void restore_default(struct Option *p)
         {
           char msgbuf[STRING];
           regerror(retval, pp->regex, msgbuf, sizeof(msgbuf));
-          fprintf(stderr, _("restore_default(%s): error in regexp: %s\n"),
+          fprintf(stderr, _("restore_default(%s): error in regex: %s\n"),
                   p->option, pp->pattern);
           fprintf(stderr, "%s\n", msgbuf);
           mutt_sleep(0);
@@ -2789,7 +2789,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
 
       if (option(OPT_ATTACH_MSG) &&
-          (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
+          (mutt_strcmp(MuttVars[idx].option, "reply_regex") == 0))
       {
         snprintf(err->data, err->dsize,
                  "Operation not permitted when in attach-message mode.");
@@ -2804,9 +2804,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       mutt_extract_token(tmp, s, 0);
 
       if (parse_regex(idx, tmp, err))
-        /* $reply_regexp and $alternates require special treatment */
+        /* $reply_regex and $alternates require special treatment */
         if (Context && Context->msgcount &&
-            (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
+            (mutt_strcmp(MuttVars[idx].option, "reply_regex") == 0))
         {
           regmatch_t pmatch[1];
           int i;
@@ -2817,7 +2817,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             if (CUR_ENV && CUR_ENV->subject)
             {
               CUR_ENV->real_subj =
-                  (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
+                  (regexec(ReplyRegex.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
                       CUR_ENV->subject :
                       CUR_ENV->subject + pmatch[0].rm_eo;
             }

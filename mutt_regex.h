@@ -71,8 +71,8 @@ struct ReplaceList
 };
 
 WHERE struct Regex Mask;
-WHERE struct Regex QuoteRegexp;
-WHERE struct Regex ReplyRegexp;
+WHERE struct Regex QuoteRegex;
+WHERE struct Regex ReplyRegex;
 WHERE struct Regex Smileys;
 WHERE struct Regex GecosMask;
 

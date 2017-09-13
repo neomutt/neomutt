@@ -1885,7 +1885,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "Kein Kurzbefehl '^' für die aktuelle Mailbox gesetzt"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "Mailbox-Kurzbefehl führte in leeren regulären Ausdruck"
 
 #: hook.c:144
@@ -2176,7 +2176,7 @@ msgstr "%s: Unbekannter Typ."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Fehlerhafter regulärer Ausdruck: %s"
 
 #: init.c:932
@@ -2252,7 +2252,7 @@ msgstr "my_hdr: Ungültiges Kopf-Feld"
 
 #: init.c:2160
 #, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "restore_default(%s): Fehler in regulärem Ausdruck: %s\n"
 
 #: init.c:2452 init.c:2623

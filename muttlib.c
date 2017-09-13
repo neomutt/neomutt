@@ -135,7 +135,7 @@ int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
     {
       if (mutt_strcasecmp(str, p->regex->pattern) == 0)
       {
-        mutt_free_regexp(&p->regex);
+        mutt_free_regex(&p->regex);
         if (last)
           last->next = p->next;
         else
@@ -1576,18 +1576,18 @@ const char *mutt_make_version(void)
   return vstring;
 }
 
-struct Regex *mutt_compile_regexp(const char *s, int flags)
+struct Regex *mutt_compile_regex(const char *s, int flags)
 {
   struct Regex *pp = safe_calloc(1, sizeof(struct Regex));
   pp->pattern = safe_strdup(s);
   pp->regex = safe_calloc(1, sizeof(regex_t));
   if (REGCOMP(pp->regex, NONULL(s), flags) != 0)
-    mutt_free_regexp(&pp);
+    mutt_free_regex(&pp);
 
   return pp;
 }
 
-void mutt_free_regexp(struct Regex **pp)
+void mutt_free_regex(struct Regex **pp)
 {
   FREE(&(*pp)->pattern);
   regfree((*pp)->regex);
@@ -1605,7 +1605,7 @@ void mutt_free_regex_list(struct RegexList **list)
   {
     p = *list;
     *list = (*list)->next;
-    mutt_free_regexp(&p->regex);
+    mutt_free_regex(&p->regex);
     FREE(&p);
   }
 }
@@ -1620,7 +1620,7 @@ void mutt_free_replace_list(struct ReplaceList **list)
   {
     p = *list;
     *list = (*list)->next;
-    mutt_free_regexp(&p->regex);
+    mutt_free_regex(&p->regex);
     FREE(&p->template);
     FREE(&p);
   }

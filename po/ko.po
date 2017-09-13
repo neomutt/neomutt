@@ -1936,7 +1936,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
 #: hook.c:144
@@ -2229,7 +2229,7 @@ msgstr "%s: 알 수 없는 형식"
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr ""
 
 #: init.c:932
@@ -2308,7 +2308,7 @@ msgstr "잘못된 헤더 필드"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): 정규표현식 오류: %s\n"
 
 #: init.c:2452 init.c:2623

@@ -369,8 +369,8 @@ syn keyword muttrcVarStr	contained skipwhite
 			\ pgp_mime_signature_description pgp_mime_signature_filename pgp_sign_as
 			\ pgp_sort_keys pipe_sep pop_authenticators pop_host pop_pass pop_user
 			\ post_indent_string postpone_encrypt_as postponed preconnect
-			\ print_command query_command quote_regexp realname record
-			\ reply_regexp send_charset sendmail shell sidebar_delim sidebar_delim_chars
+			\ print_command query_command quote_regex realname record
+			\ reply_regex send_charset sendmail shell sidebar_delim sidebar_delim_chars
 			\ sidebar_divider_char sidebar_format sidebar_indent_string sidebar_sort_method
 			\ signature simple_search smileys smime_ca_location smime_certificates
 			\ smime_default_key smime_encrypt_with smime_keys
@@ -563,7 +563,7 @@ syn match muttrcPattern contained skipwhite /[.]/
 syn region muttrcPatternInner contained keepend start=+"[~=%!(^]+ms=s+1 skip=+\\"+ end=+"+me=e-1 contains=muttrcSimplePat,muttrcUnHighlightSpace,muttrcSimplePatMetas
 syn region muttrcPatternInner contained keepend start=+'[~=%!(^]+ms=s+1 skip=+\\'+ end=+'+me=e-1 contains=muttrcSimplePat,muttrcUnHighlightSpace,muttrcSimplePatMetas
 
-" Colour definitions takes object, foreground and background arguments (regexps excluded).
+" Colour definitions takes object, foreground and background arguments (regexes excluded).
 syn match muttrcColorMatchCount	contained "[0-9]\+"
 syn match muttrcColorMatchCountNL contained skipwhite skipnl "\s*\\$" nextgroup=muttrcColorMatchCount,muttrcColorMatchCountNL
 syn region muttrcColorRXPat	contained start=+\s*'+ skip=+\\'+ end=+'\s*+ keepend skipwhite contains=muttrcRXString2 nextgroup=muttrcColorMatchCount,muttrcColorMatchCountNL

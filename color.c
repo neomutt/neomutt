@@ -827,8 +827,8 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 /**
  * _mutt_parse_color - Parse a "color" command
  *
- * usage: color OBJECT FG BG [ REGEXP ]
- *        mono  OBJECT ATTR [ REGEXP ]
+ * usage: color OBJECT FG BG [ REGEX ]
+ *        mono  OBJECT ATTR [ REGEX ]
  */
 static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
                              parser_callback_t callback, bool dry_run)

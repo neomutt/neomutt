@@ -1812,7 +1812,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
 #: hook.c:144
@@ -2099,7 +2099,7 @@ msgstr ""
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr ""
 
 #: init.c:932
@@ -2172,7 +2172,7 @@ msgstr ""
 
 #: init.c:2160
 #, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr ""
 
 #: init.c:2452 init.c:2623

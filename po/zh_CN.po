@@ -1924,8 +1924,8 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "目前信箱快捷键 '^' 没有设置"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
-msgstr "信箱快捷键扩展到空白的regexp"
+msgid "mailbox shortcut expanded to empty regex"
+msgstr "信箱快捷键扩展到空白的regex"
 
 #: hook.c:144
 msgid "badly formatted command string"
@@ -2213,7 +2213,7 @@ msgstr "%s：未知类型。"
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "错误的正则表达式：%s"
 
 #: init.c:932
@@ -2288,7 +2288,7 @@ msgstr "无效的标头域"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_defualt(%s)：正则表达式有错误：%s\n"
 
 #: init.c:2452 init.c:2623
