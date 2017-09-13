@@ -23,10 +23,10 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "options.h"
 #include "protos.h"
 #include "url.h"

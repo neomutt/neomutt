@@ -23,19 +23,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file was originally part of mutt-ng */
-
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "options.h"
 #include "parameter.h"

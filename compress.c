@@ -27,12 +27,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "compress.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -402,7 +402,7 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
  * @retval 1 Success
  * @retval 0 Failure
  *
- * Run the supplied command, taking care of all the Mutt requirements,
+ * Run the supplied command, taking care of all the NeoMutt requirements,
  * such as locking files and blocking signals.
  */
 static int execute_command(struct Context *ctx, const char *command, const char *progress)
@@ -659,9 +659,9 @@ static int comp_close_mailbox(struct Context *ctx)
  * @retval -1             Mailbox bad
  *
  * If the compressed file changes in size but the mailbox hasn't been changed
- * in Mutt, then we can close and reopen the mailbox.
+ * in NeoMutt, then we can close and reopen the mailbox.
  *
- * If the mailbox has been changed in Mutt, warn the user.
+ * If the mailbox has been changed in NeoMutt, warn the user.
  *
  * The return codes are picked to match mx_check_mailbox().
  */
@@ -835,7 +835,7 @@ bool mutt_comp_can_read(const char *path)
  * @retval  0 Success
  * @retval -1 Failure
  *
- * Changes in Mutt only affect the tmp file.  Calling comp_sync_mailbox()
+ * Changes in NeoMutt only affect the tmp file.  Calling comp_sync_mailbox()
  * will commit them to the compressed file.
  */
 static int comp_sync_mailbox(struct Context *ctx, int *index_hint)

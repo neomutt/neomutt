@@ -28,9 +28,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "opcodes.h"
@@ -42,7 +42,7 @@ static const char *HelpStrings[] = {
 #define DEFINE_HELP_MESSAGE(opcode, help_string) help_string,
   OPS(DEFINE_HELP_MESSAGE)
 #undef DEFINE_HELP_MESSAGE
-  NULL,
+      NULL,
 };
 
 static const struct Binding *help_lookup_function(int op, int menu)

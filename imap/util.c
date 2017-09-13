@@ -37,6 +37,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "bcache.h"
@@ -44,7 +45,6 @@
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "message.h"
@@ -404,8 +404,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx1 = "INBOX";
   if (!mx2 || !*mx2)
     mx2 = "INBOX";
-  if ((mutt_strcasecmp(mx1, "INBOX") == 0) &&
-      (mutt_strcasecmp(mx2, "INBOX") == 0))
+  if ((mutt_strcasecmp(mx1, "INBOX") == 0) && (mutt_strcasecmp(mx2, "INBOX") == 0))
     return 0;
 
   b1 = safe_malloc(strlen(mx1) + 1);
@@ -544,7 +543,7 @@ void imap_free_idata(struct ImapData **idata)
 /**
  * imap_fix_path - Fix up the imap path
  *
- * This is necessary because the rest of mutt assumes a hierarchy delimiter of
+ * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem
  * converts multiple hierarchy delimiters into a single one, ie "///" is equal
  * to "/".  IMAP servers are not required to do this.

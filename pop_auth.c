@@ -24,15 +24,15 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
+#include "mutt.h"
 #include "account.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
 #include "rfc822.h"
-#include "mutt.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

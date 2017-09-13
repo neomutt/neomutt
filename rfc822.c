@@ -23,8 +23,8 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include "rfc822.h"
 #include "lib/lib.h"
+#include "rfc822.h"
 #include "mutt_idna.h"
 
 const char RFC822Specials[] = "@.,:;<>[]\\\"()";

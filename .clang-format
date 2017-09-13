@@ -8,15 +8,17 @@ ColumnLimit:       80
 BreakBeforeBraces: Allman
 
 IncludeCategories:
-  - Regex:      '"config.h"'
+  - Regex:      '"config\.h"'
     Priority:   -10
-  - Regex:      '<stddef.h>'
-    Priority:   -5
+  - Regex:      '<stddef\.h>'
+    Priority:   -8
   - Regex:      '<.*>'
+    Priority:   -7
+  - Regex:      '".*_private\.h"'
+    Priority:   -6
+  - Regex:      '"lib/.*\.h"'
     Priority:   -4
-  - Regex:      '".*_private.h"'
-    Priority:   -3
-  - Regex:      '"mutt.h"'
+  - Regex:      '"mutt\.h"'
     Priority:   -2
   # Main Header 0
   - Regex:      '".*"'

@@ -21,7 +21,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Mutt browser support routines */
+/* NeoMutt browser support routines */
 
 #include "config.h"
 #ifdef ENABLE_NLS
@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "browser.h"
@@ -39,7 +40,6 @@
 #include "context.h"
 #include "globals.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "mutt_regex.h"
 #include "options.h"
 #include "protos.h"

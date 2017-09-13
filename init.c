@@ -37,6 +37,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "init.h"
 #include "address.h"
@@ -50,12 +51,10 @@
 #include "header.h"
 #include "history.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mbyte.h"
 #include "mbtable.h"
-#include "mutt.h"
+#include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
@@ -320,9 +319,8 @@ static struct MbTable *parse_mbtable(const char *s)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      mutt_debug(
-          1, "parse_mbtable: mbrtowc returned %d converting %s in %s\n",
-          (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
+      mutt_debug(1, "parse_mbtable: mbrtowc returned %d converting %s in %s\n",
+                 (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : slen;
@@ -691,7 +689,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
           mutt_buffer_addstr(dest, env);
         else if ((idx = mutt_option_index(var)) != -1)
         {
-          /* expand settable mutt variables */
+          /* expand settable neomutt variables */
           char val[LONG_STRING];
 
           if (var_to_string(idx, val, sizeof(val)))
@@ -773,7 +771,8 @@ static struct RegexList *new_regex_list(void)
   return safe_calloc(1, sizeof(struct RegexList));
 }
 
-int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags, struct Buffer *err)
+int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
+                           struct Buffer *err)
 {
   struct RegexList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
@@ -980,7 +979,7 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
  * If a given variable, function, command or compile-time symbol exists, then
  * read the rest of the line of config commands.
  * e.g.
- *      ifdef sidebar source ~/.mutt/sidebar.rc
+ *      ifdef sidebar source ~/.neomutt/sidebar.rc
  *
  * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
  * e.g.
@@ -1112,21 +1111,20 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-static int parse_stailq(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
+static int parse_stailq(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
-
   do
   {
     mutt_extract_token(buf, s, 0);
-    add_to_stailq((struct ListHead *)data, buf->data);
+    add_to_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
 }
 
 static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
-                        unsigned long data, struct Buffer *err)
+                          unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1136,10 +1134,10 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_list_free((struct ListHead *)data);
+      mutt_list_free((struct ListHead *) data);
       break;
     }
-    remove_from_stailq((struct ListHead *)data, buf->data);
+    remove_from_stailq((struct ListHead *) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1489,7 +1487,8 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
           if (data == MUTT_GROUP &&
               mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
             goto bail;
-          else if (data == MUTT_UNGROUP && mutt_group_context_remove_regex(gc, buf->data) < 0)
+          else if (data == MUTT_UNGROUP &&
+                   mutt_group_context_remove_regex(gc, buf->data) < 0)
             goto bail;
           break;
 
@@ -1595,7 +1594,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 
     mutt_debug(5, "parse_attach_list: added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
-    mutt_list_insert_tail(head, (char *)a);
+    mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
 
   _attachments_clean();
@@ -2321,8 +2320,8 @@ static void start_debug(void)
   if ((debugfile = safe_fopen(debugfilename, "w")) != NULL)
   {
     setbuf(debugfile, NULL); /* don't buffer the debugging output! */
-    mutt_debug(1, "NeoMutt/%s (%s) debugging at level %d\n", PACKAGE_VERSION,
-               MUTT_VERSION, debuglevel);
+    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION,
+               debuglevel);
   }
 }
 
@@ -2343,13 +2342,13 @@ static void restart_debug(void)
 
   if (disable_debug || file_changed)
   {
-    mutt_debug(1, "NeoMutt/%s (%s) stop debugging\n", PACKAGE_VERSION, MUTT_VERSION);
+    mutt_debug(1, "NeoMutt/%s stop debugging\n", PACKAGE_VERSION);
     safe_fclose(&debugfile);
   }
 
   if (!enable_debug && !disable_debug && debuglevel != DebugLevel)
-    mutt_debug(1, "NeoMutt/%s (%s) debugging at level %d\n", PACKAGE_VERSION,
-               MUTT_VERSION, DebugLevel);
+    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION,
+               DebugLevel);
 
   debuglevel = DebugLevel;
 
@@ -2363,7 +2362,7 @@ static void restart_debug(void)
  * @param value     Value the envionment variable should have
  * @param overwrite Whether the environment variable should be overwritten
  *
- * It's broken out because some other parts of mutt (filter.c) need
+ * It's broken out because some other parts of neomutt (filter.c) need
  * to set/overwrite environment variables in envlist before execing.
  */
 void mutt_envlist_set(const char *name, const char *value, bool overwrite)
@@ -3158,7 +3157,7 @@ static int to_absolute_path(char *path, const char *reference)
  * source_rc - Read an initialization file
  * @param rcfile_path Path to initialization file
  * @param err         Buffer for error messages
- * @retval <0 if mutt should pause to let the user know
+ * @retval <0 if neomutt should pause to let the user know
  */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
@@ -3264,7 +3263,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
     mutt_wait_filter(pid);
   if (rc)
   {
-    /* the muttrc source keyword */
+    /* the neomuttrc source keyword */
     snprintf(err->data, err->dsize,
              rc >= -MAXERRS ?
                  _("source: errors in %s") :
@@ -4043,18 +4042,25 @@ static int execute_commands(struct ListHead *p)
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
-    "neomuttrc-" PACKAGE_VERSION, "neomuttrc", "muttrc-" MUTT_VERSION, "muttrc", NULL,
+    "neomuttrc-" PACKAGE_VERSION, "neomuttrc", "muttrc", NULL,
   };
 
   const char *locations[][2] = {
     {
-        xdg_cfg_home, "mutt/",
+        xdg_cfg_home, "neomutt/",
+    },
+    {
+        home, ".neomutt/",
+    },
+    {
+        home, ".mutt/",
     },
     {
         home, ".",
     },
-    { home, ".mutt/" },
-    { NULL, NULL },
+    {
+        NULL, NULL,
+    },
   };
   for (int i = 0; locations[i][0] || locations[i][1]; i++)
   {
@@ -4092,7 +4098,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   Groups = hash_create(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases = hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
+  ReverseAliases =
+      hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create(64, 1);
   TagFormats = hash_create(64, 0);
@@ -4385,10 +4392,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       if (access(buffer, F_OK) == 0)
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
-      if (access(buffer, F_OK) == 0)
-        break;
-
       snprintf(buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
       if (access(buffer, F_OK) == 0)
         break;
@@ -4398,10 +4401,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
         break;
 
       snprintf(buffer, sizeof(buffer), "%s/neomuttrc", PKGDATADIR);
-      if (access(buffer, F_OK) == 0)
-        break;
-
-      snprintf(buffer, sizeof(buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
       if (access(buffer, F_OK) == 0)
         break;
 

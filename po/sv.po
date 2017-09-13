@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20170714\n"
+"Project-Id-Version: neomutt-20170912\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-08-05 14:51+0100\n"
+"POT-Creation-Date: 2017-09-12 17:42+0100\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -29,17 +29,17 @@ msgstr "Användarnamn på %s: "
 msgid "Password for %s@%s: "
 msgstr "Lösenord för %s@%s: "
 
-#: addrbook.c:45 browser.c:75 browser.c:85 pager.c:1667 postpone.c:59
-#: query.c:71 recvattach.c:67
+#: addrbook.c:45 browser.c:77 browser.c:87 pager.c:1670 postpone.c:58
+#: query.c:72 recvattach.c:72
 msgid "Exit"
 msgstr "Avsluta"
 
-#: addrbook.c:45 curs_main.c:819 curs_main.c:832 pager.c:1671 pager.c:1681
-#: postpone.c:60
+#: addrbook.c:45 curs_main.c:824 curs_main.c:837 pager.c:1674 pager.c:1684
+#: postpone.c:59
 msgid "Del"
 msgstr "Ta bort"
 
-#: addrbook.c:46 curs_main.c:820 curs_main.c:833 postpone.c:61
+#: addrbook.c:46 curs_main.c:825 curs_main.c:838 postpone.c:60
 msgid "Undel"
 msgstr "Återställ"
 
@@ -47,10 +47,10 @@ msgstr "Återställ"
 msgid "Select"
 msgstr "Välj"
 
-#: addrbook.c:47 browser.c:79 browser.c:91 compose.c:166 compose.c:178
-#: curs_main.c:825 curs_main.c:838 mutt_ssl.c:885 mutt_ssl_gnutls.c:724
-#: ncrypt/crypt_gpgme.c:4171 ncrypt/pgpkey.c:532 ncrypt/smime.c:419
-#: pager.c:2097 postpone.c:62 query.c:76 recvattach.c:68
+#: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
+#: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
+#: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
+#: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
 msgstr "Hjälp"
 
@@ -93,8 +93,8 @@ msgstr "Namn: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Godkänn?"
 
-#: alias.c:404 recvattach.c:465 recvattach.c:488 recvattach.c:502
-#: recvattach.c:516 recvattach.c:547
+#: alias.c:404 recvattach.c:452 recvattach.c:475 recvattach.c:489
+#: recvattach.c:503 recvattach.c:539
 msgid "Save to file: "
 msgstr "Spara till fil: "
 
@@ -112,82 +112,82 @@ msgstr "Lade till alias."
 msgid "Error seeking in alias file"
 msgstr "Fel vid försök att visa fil"
 
-#: attach.c:121 attach.c:253 attach.c:436 attach.c:990
+#: attach.c:122 attach.c:254 attach.c:437 attach.c:990
 msgid "Can't match nametemplate, continue?"
 msgstr "Kan inte para ihop namnmall, fortsätt?"
 
-#: attach.c:133
+#: attach.c:134
 #, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "\"compose\"-posten i mailcap kräver %%s"
 
-#: attach.c:141 attach.c:273 commands.c:239 compose.c:1547 compress.c:429
-#: curs_lib.c:234 curs_lib.c:883
+#: attach.c:142 attach.c:274 commands.c:241 compose.c:1547 compress.c:429
+#: curs_lib.c:236 curs_lib.c:885 sendlib.c:1432
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Fel uppstod vid körning av \"%s\"!"
 
-#: attach.c:151
+#: attach.c:152
 msgid "Failure to open file to parse headers."
 msgstr "Misslyckades med att öpppna fil för att tolka huvuden."
 
-#: attach.c:183
+#: attach.c:184
 msgid "Failure to open file to strip headers."
 msgstr "Misslyckades med att öppna fil för att ta bort huvuden."
 
-#: attach.c:192
+#: attach.c:193
 msgid "Failure to rename file."
 msgstr "Misslyckades med att döpa om fil."
 
-#: attach.c:205
+#: attach.c:206
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
 msgstr "Ingen \"compose\"-post i mailcap för %s, skapar tom fil."
 
-#: attach.c:265
+#: attach.c:266
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "\"edit\"-posten i mailcap kräver %%s"
 
-#: attach.c:287
+#: attach.c:288
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "Ingen \"edit\"-post i mailcap för %s"
 
-#: attach.c:403
+#: attach.c:404
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Ingen matchande mailcap-post hittades. Visar som text."
 
-#: attach.c:416
+#: attach.c:417
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME-typ ej definierad. Kan inte visa bilaga."
 
-#: attach.c:506
+#: attach.c:507
 msgid "Cannot create filter"
 msgstr "Kan inte skapa filter"
 
-#: attach.c:514
+#: attach.c:515
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
 msgstr ""
 
-#: attach.c:517
+#: attach.c:518
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
 msgstr ""
 
-#: attach.c:594
+#: attach.c:595
 #, fuzzy, c-format
 msgid "---Attachment: %s: %s"
 msgstr "-- Bilagor"
 
-#: attach.c:596
+#: attach.c:597
 #, fuzzy, c-format
 msgid "---Attachment: %s"
 msgstr "-- Bilagor"
 
-#: attach.c:677 attach.c:709 attach.c:1023 attach.c:1079 handler.c:1438
-#: ncrypt/pgpkey.c:580 ncrypt/pgpkey.c:760
+#: attach.c:677 attach.c:709 attach.c:1023 attach.c:1079 handler.c:1444
+#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:759
 msgid "Can't create filter"
 msgstr "Kan inte skapa filter"
 
@@ -209,112 +209,112 @@ msgstr "%s är inte en katalog."
 msgid "Can't create %s %s"
 msgstr "Kan inte skapa %s: %s."
 
-#: browser.c:76
+#: browser.c:78
 msgid "Chdir"
 msgstr "Ändra katalog"
 
-#: browser.c:77
+#: browser.c:79
 msgid "Goto"
 msgstr ""
 
-#: browser.c:78 browser.c:90
+#: browser.c:80 browser.c:92
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:86
+#: browser.c:88
 msgid "List"
 msgstr ""
 
-#: browser.c:87
+#: browser.c:89
 #, fuzzy
 msgid "Subscribe"
 msgstr "Prenumererar på %s..."
 
-#: browser.c:88
+#: browser.c:90
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Avslutar prenumeration på %s"
 
-#: browser.c:89 curs_main.c:837
+#: browser.c:91 curs_main.c:842
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:711 browser.c:1666
+#: browser.c:713 browser.c:1669
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s är inte en katalog."
 
-#: browser.c:965
+#: browser.c:968
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Prenumererar på %s..."
 
-#: browser.c:967
+#: browser.c:970
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser.c:976
+#: browser.c:979
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Brevlådor [%d]"
 
-#: browser.c:983
+#: browser.c:986
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalog [%s], filmask: %s"
 
-#: browser.c:1037
+#: browser.c:1040
 msgid "Can't attach a directory!"
 msgstr "Kan inte bifoga en katalog!"
 
-#: browser.c:1321 browser.c:1732 browser.c:1871
+#: browser.c:1324 browser.c:1735 browser.c:1874
 msgid "No files match the file mask"
 msgstr "Inga filer matchar filmasken"
 
-#: browser.c:1517
+#: browser.c:1520
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan skapas"
 
-#: browser.c:1539
+#: browser.c:1542
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan döpas om"
 
-#: browser.c:1560
+#: browser.c:1563
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan tas bort"
 
-#: browser.c:1570
+#: browser.c:1573
 msgid "Cannot delete root folder"
 msgstr "Kan inte ta bort rotfolder"
 
-#: browser.c:1573
+#: browser.c:1576
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Ta bort brevlådan \"%s\"?"
 
-#: browser.c:1587
+#: browser.c:1590
 msgid "Mailbox deleted."
 msgstr "Brevlådan har tagits bort."
 
-#: browser.c:1592
+#: browser.c:1595
 msgid "Mailbox not deleted."
 msgstr "Brevlådan togs inte bort."
 
-#: browser.c:1619
+#: browser.c:1622
 msgid "Chdir to: "
 msgstr "Ändra katalog till: "
 
-#: browser.c:1656 browser.c:1726
+#: browser.c:1659 browser.c:1729
 msgid "Error scanning directory."
 msgstr "Fel vid läsning av katalog."
 
-#: browser.c:1677
+#: browser.c:1680
 msgid "File Mask: "
 msgstr "Filmask: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1749
+#: browser.c:1752
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -322,7 +322,7 @@ msgid ""
 msgstr "Sortera omvänt efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1752
+#: browser.c:1755
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -330,229 +330,224 @@ msgid ""
 msgstr "Sortera efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1755
+#: browser.c:1758
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1860
+#: browser.c:1863
 msgid "New file name: "
 msgstr "Nytt filnamn: "
 
-#: browser.c:1888
+#: browser.c:1891
 msgid "Can't view a directory"
 msgstr "Kan inte visa en katalog"
 
-#: browser.c:1905
+#: browser.c:1908
 msgid "Error trying to view file"
 msgstr "Fel vid försök att visa fil"
 
-#: browser.c:1990
+#: browser.c:1993
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Prenumererar på %s..."
 
-#: browser.c:1992
+#: browser.c:1995
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Avslutar prenumeration på %s"
 
-#: browser.c:2013
+#: browser.c:2016
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Inga filer matchar filmasken"
 
-#: buffy.c:751
+#: buffy.c:752
 msgid "New mail in "
 msgstr "Nytt brev i "
 
-#: color.c:354
-#, fuzzy
-msgid "default colors not supported."
-msgstr "standardfärgerna stöds inte"
-
-#: color.c:422
+#: color.c:414
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: färgen stöds inte av terminalen"
 
-#: color.c:428
+#: color.c:420
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: färgen saknas"
 
-#: color.c:520 color.c:719 color.c:740 color.c:746
+#: color.c:512 color.c:711 color.c:732 color.c:738
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: objektet finns inte"
 
-#: color.c:536
+#: color.c:528
 #, fuzzy, c-format
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: kommandot är endast giltigt för index-objekt"
 
-#: color.c:543 init.c:1088
+#: color.c:535 init.c:1039
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: för få parametrar"
 
-#: color.c:707 color.c:732
+#: color.c:699 color.c:724
 msgid "Missing arguments."
 msgstr "Parametrar saknas."
 
-#: color.c:763 color.c:774
+#: color.c:755 color.c:766
 msgid "color: too few arguments"
 msgstr "color: för få parametrar"
 
-#: color.c:798
+#: color.c:790
 msgid "mono: too few arguments"
 msgstr "mono: för få parametrar"
 
-#: color.c:818
+#: color.c:810
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: attributet finns inte"
 
-#: color.c:865 hook.c:93 hook.c:106 init.c:2498 init.c:2573 keymap.c:1013
+#: color.c:857 hook.c:91 hook.c:104 init.c:2415 init.c:2490 keymap.c:1012
 msgid "too few arguments"
 msgstr "för få parametrar"
 
-#: color.c:874 color.c:924 hook.c:112
+#: color.c:866 color.c:922 hook.c:110
 msgid "too many arguments"
 msgstr "för många parametrar"
 
-#: color.c:892
+#: color.c:890
 msgid "default colors not supported"
 msgstr "standardfärgerna stöds inte"
 
-#: commands.c:105
+#: commands.c:107
 msgid "Verify PGP signature?"
 msgstr "Verifiera PGP-signatur?"
 
-#: commands.c:129 mbox.c:1082
+#: commands.c:131 mbox.c:1086
 msgid "Could not create temporary file!"
 msgstr "Kunde inte skapa tillfällig fil!"
 
-#: commands.c:141
+#: commands.c:143
 msgid "Cannot create display filter"
 msgstr "Kan inte skapa filter för visning"
 
-#: commands.c:171
+#: commands.c:173
 msgid "Could not copy message"
 msgstr "Kunde inte kopiera meddelande"
 
-#: commands.c:206
+#: commands.c:208
 msgid "S/MIME signature successfully verified."
 msgstr "S/MIME-signaturen verifierades framgångsrikt."
 
-#: commands.c:208
+#: commands.c:210
 msgid "S/MIME certificate owner does not match sender."
 msgstr "Ägarens S/MIME-certifikat matchar inte avsändarens."
 
-#: commands.c:211 commands.c:221
+#: commands.c:213 commands.c:223
 msgid "Warning: Part of this message has not been signed."
 msgstr "Varning: En del av detta meddelande har inte blivit signerat."
 
-#: commands.c:213
+#: commands.c:215
 msgid "S/MIME signature could NOT be verified."
 msgstr "S/MIME-signaturen kunde INTE verifieras."
 
-#: commands.c:219
+#: commands.c:221
 msgid "PGP signature successfully verified."
 msgstr "PGP-signaturen verifierades framgångsrikt."
 
-#: commands.c:223
+#: commands.c:225
 msgid "PGP signature could NOT be verified."
 msgstr "PGP-signaturen kunde INTE verifieras."
 
-#: commands.c:247
+#: commands.c:249
 msgid "Command: "
 msgstr "Kommando: "
 
-#: commands.c:272 commands.c:282 recvcmd.c:144 recvcmd.c:157
+#: commands.c:274 commands.c:284 recvcmd.c:143 recvcmd.c:156
 msgid "Warning: message contains no From: header"
 msgstr ""
 
-#: commands.c:290 recvcmd.c:167
+#: commands.c:292 recvcmd.c:166
 msgid "Bounce message to: "
 msgstr "Återsänd meddelandet till: "
 
-#: commands.c:292 recvcmd.c:169
+#: commands.c:294 recvcmd.c:168
 msgid "Bounce tagged messages to: "
 msgstr "Återsänd märkta meddelanden till: "
 
-#: commands.c:300 recvcmd.c:177
+#: commands.c:302 recvcmd.c:176
 msgid "Error parsing address!"
 msgstr "Fel vid tolkning av adress!"
 
-#: commands.c:308 recvcmd.c:185
+#: commands.c:310 recvcmd.c:184
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Felaktigt IDN: \"%s\""
 
-#: commands.c:319 recvcmd.c:199
+#: commands.c:321 recvcmd.c:198
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Återsänd meddelande till %s"
 
-#: commands.c:319 recvcmd.c:199
+#: commands.c:321 recvcmd.c:198
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Återsänd meddelanden till %s"
 
-#: commands.c:334 recvcmd.c:214
+#: commands.c:336 recvcmd.c:213
 msgid "Message not bounced."
 msgstr "Meddelande återsändes inte."
 
-#: commands.c:334 recvcmd.c:214
+#: commands.c:336 recvcmd.c:213
 msgid "Messages not bounced."
 msgstr "Meddelanden återsändes inte."
 
-#: commands.c:344 recvcmd.c:233
+#: commands.c:346 recvcmd.c:232
 msgid "Message bounced."
 msgstr "Meddelande återsänt."
 
-#: commands.c:344 recvcmd.c:233
+#: commands.c:346 recvcmd.c:232
 msgid "Messages bounced."
 msgstr "Meddelanden återsända."
 
-#: commands.c:411 commands.c:447 commands.c:467
+#: commands.c:413 commands.c:449 commands.c:469
 msgid "Can't create filter process"
 msgstr "Kan inte skapa filterprocess"
 
-#: commands.c:499
+#: commands.c:501
 msgid "Pipe to command: "
 msgstr "Öppna rör till kommando: "
 
-#: commands.c:511
+#: commands.c:513
 msgid "No printing command has been defined."
 msgstr "Inget utskriftskommando har definierats."
 
-#: commands.c:516
+#: commands.c:518
 msgid "Print message?"
 msgstr "Skriv ut meddelande?"
 
-#: commands.c:516
+#: commands.c:518
 msgid "Print tagged messages?"
 msgstr "Skriv ut märkta meddelanden?"
 
-#: commands.c:521
+#: commands.c:523
 msgid "Message printed"
 msgstr "Meddelande har skrivits ut"
 
-#: commands.c:521
+#: commands.c:523
 msgid "Messages printed"
 msgstr "Meddelanden har skrivits ut"
 
-#: commands.c:523
+#: commands.c:525
 msgid "Message could not be printed"
 msgstr "Meddelandet kunde inte skrivas ut"
 
-#: commands.c:524
+#: commands.c:526
 msgid "Messages could not be printed"
 msgstr "Meddelanden kunde inte skrivas ut"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: commands.c:533
+#: commands.c:535
 #, fuzzy
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
@@ -562,7 +557,7 @@ msgstr ""
 "sp(a)m?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: commands.c:537
+#: commands.c:539
 #, fuzzy
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/"
@@ -572,129 +567,124 @@ msgstr ""
 "sp(a)m?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: commands.c:541
+#: commands.c:543
 #, fuzzy
 msgid "dfrsotuzcpl"
 msgstr "dfmätrospa"
 
-#: commands.c:604
+#: commands.c:606
 msgid "Shell command: "
 msgstr "Skalkommando: "
 
-#: commands.c:754
+#: commands.c:756
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Avkoda-spara%s till brevlåda"
 
-#: commands.c:755
+#: commands.c:757
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Avkoda-kopiera%s till brevlåda"
 
-#: commands.c:756
+#: commands.c:758
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Dekryptera-spara%s till brevlåda"
 
-#: commands.c:757
+#: commands.c:759
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Dekryptera-kopiera%s till brevlåda"
 
-#: commands.c:758
+#: commands.c:760
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Spara%s till brevlåda"
 
-#: commands.c:759
+#: commands.c:761
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Kopiera%s till brevlåda"
 
-#: commands.c:760
+#: commands.c:762
 msgid " tagged"
 msgstr " märkt"
 
-#: commands.c:818
-#, c-format
-msgid "'%s' is a directory, need a filename for mbox."
-msgstr ""
-
-#: commands.c:831
+#: commands.c:829
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopierar till %s..."
 
-#: commands.c:991
+#: commands.c:995
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Konvertera till %s vid sändning?"
 
-#: commands.c:1001
+#: commands.c:1005
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "\"Content-Type\" ändrade till %s."
 
-#: commands.c:1006
+#: commands.c:1010
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Teckenuppsättning ändrad till %s; %s."
 
-#: commands.c:1008
+#: commands.c:1012
 msgid "not converting"
 msgstr "konverterar inte"
 
-#: commands.c:1008
+#: commands.c:1012
 msgid "converting"
 msgstr "konverterar"
 
-#: compose.c:70
+#: compose.c:71
 msgid "There are no attachments."
 msgstr "Det finns inga bilagor."
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:116
+#: compose.c:119
 msgid "From: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:118 send.c:289
+#: compose.c:121 send.c:289
 msgid "To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:120 send.c:291
+#: compose.c:123 send.c:291
 msgid "Cc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:122 send.c:293
+#: compose.c:125 send.c:293
 msgid "Bcc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:124 compose.c:867 send.c:322
+#: compose.c:127 compose.c:921 send.c:324
 msgid "Subject: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:126
+#: compose.c:129
 #, fuzzy
 msgid "Reply-To: "
 msgstr "Svara"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:128 compose.c:884
+#: compose.c:131 compose.c:938
 msgid "Fcc: "
 msgstr ""
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose.c:131
+#: compose.c:134
 msgid "Mix: "
 msgstr ""
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: compose.c:134
+#: compose.c:137
 msgid "Security: "
 msgstr ""
 
@@ -707,237 +697,237 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:144 ncrypt/crypt_gpgme.c:4905 ncrypt/pgp.c:1780
-#: ncrypt/smime.c:2120 ncrypt/smime.c:2135
+#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
+#: ncrypt/smime.c:2123 ncrypt/smime.c:2138
 msgid "Sign as: "
 msgstr "Signera som: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:147
+#: compose.c:150
 msgid "Newsgroups: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:149
+#: compose.c:152
 #, fuzzy
 msgid "Followup-To: "
 msgstr "Svara till %s%s?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:151
+#: compose.c:154
 #, fuzzy
 msgid "X-Comment-To: "
 msgstr "redigera Reply-To-fältet"
 
-#: compose.c:156 compose.c:172
+#: compose.c:159 compose.c:175
 msgid "Send"
 msgstr "Skicka"
 
-#: compose.c:157 compose.c:173 remailer.c:451
+#: compose.c:160 compose.c:176 remailer.c:450
 msgid "Abort"
 msgstr "Avbryt"
 
 #. L10N: compose menu help line entry
-#: compose.c:159
+#: compose.c:162
 msgid "To"
 msgstr ""
 
 #. L10N: compose menu help line entry
-#: compose.c:161
+#: compose.c:164
 msgid "CC"
 msgstr ""
 
 #. L10N: compose menu help line entry
-#: compose.c:163 compose.c:175
+#: compose.c:166 compose.c:178
 msgid "Subj"
 msgstr ""
 
-#: compose.c:164 compose.c:176 compose.c:977
+#: compose.c:167 compose.c:179 compose.c:1018
 msgid "Attach file"
 msgstr "Bifoga fil"
 
-#: compose.c:165 compose.c:177
+#: compose.c:168 compose.c:180
 msgid "Descrip"
 msgstr "Beskriv"
 
-#: compose.c:174
+#: compose.c:177
 #, fuzzy
 msgid "Newsgroups"
 msgstr "Inget ärende angivet."
 
-#: compose.c:243
+#: compose.c:248
 #, fuzzy
 msgid "Not supported"
 msgstr "Märkning stöds inte."
 
-#: compose.c:250
+#: compose.c:255
 msgid "Sign, Encrypt"
 msgstr "Signera, Kryptera"
 
-#: compose.c:255
+#: compose.c:260
 msgid "Encrypt"
 msgstr "Kryptera"
 
-#: compose.c:260
+#: compose.c:265
 msgid "Sign"
 msgstr "Signera"
 
-#: compose.c:266
+#: compose.c:271
 msgid "None"
 msgstr ""
 
-#: compose.c:275
+#: compose.c:280
 #, fuzzy
 msgid " (inline PGP)"
 msgstr " (infogat)"
 
-#: compose.c:277
+#: compose.c:282
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:280
+#: compose.c:285
 #, fuzzy
 msgid " (S/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:284
+#: compose.c:289
 msgid " (OppEnc mode)"
 msgstr ""
 
-#: compose.c:296 compose.c:305
+#: compose.c:301 compose.c:310
 msgid "<default>"
 msgstr "<standard>"
 
-#: compose.c:313
+#: compose.c:318
 msgid "Encrypt with: "
 msgstr "Kryptera med: "
 
-#: compose.c:332
+#: compose.c:337
 msgid "<no chain defined>"
 msgstr ""
 
-#: compose.c:367
+#: compose.c:374
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] existerar inte längre!"
 
-#: compose.c:374
+#: compose.c:381
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] modifierad. Uppdatera kodning?"
 
-#: compose.c:450
+#: compose.c:457
 msgid "-- Attachments"
 msgstr "-- Bilagor"
 
-#: compose.c:472
+#: compose.c:479
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
 msgstr "Varning: \"%s\" är ett felaktigt IDN."
 
-#: compose.c:492
+#: compose.c:498
 msgid "You may not delete the only attachment."
 msgstr "Du får inte ta bort den enda bilagan."
 
-#: compose.c:914 send.c:1960
+#: compose.c:968 send.c:1922
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Felaktigt IDN i \"%s\": \"%s\""
 
-#: compose.c:994
+#: compose.c:1029
 msgid "Attaching selected files..."
 msgstr "Bifogar valda filer..."
 
-#: compose.c:1006
+#: compose.c:1041
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Kunde inte bifoga %s!"
 
-#: compose.c:1030
+#: compose.c:1065
 msgid "Open mailbox to attach message from"
 msgstr "Öppna brevlåda att bifoga meddelande från"
 
-#: compose.c:1039
+#: compose.c:1074
 #, fuzzy
 msgid "Open newsgroup to attach message from"
 msgstr "Öppna brevlåda att bifoga meddelande från"
 
-#: compose.c:1083
+#: compose.c:1118
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Kunde inte låsa brevlåda!"
 
-#: compose.c:1091
+#: compose.c:1126
 msgid "No messages in that folder."
 msgstr "Inga meddelanden i den foldern."
 
-#: compose.c:1101
+#: compose.c:1136
 msgid "Tag the messages you want to attach!"
 msgstr "Märk de meddelanden du vill bifoga!"
 
-#: compose.c:1133
+#: compose.c:1162
 msgid "Unable to attach!"
 msgstr "Kunde inte bifoga!"
 
-#: compose.c:1184
+#: compose.c:1202
 msgid "Recoding only affects text attachments."
 msgstr "Omkodning påverkar bara textbilagor."
 
-#: compose.c:1189
+#: compose.c:1207
 msgid "The current attachment won't be converted."
 msgstr "Den aktiva bilagan kommer inte att bli konverterad."
 
-#: compose.c:1191
+#: compose.c:1209
 msgid "The current attachment will be converted."
 msgstr "Den aktiva bilagan kommer att bli konverterad."
 
-#: compose.c:1266
+#: compose.c:1280
 msgid "Invalid encoding."
 msgstr "Ogiltig kodning."
 
-#: compose.c:1291
+#: compose.c:1305
 msgid "Save a copy of this message?"
 msgstr "Spara en kopia detta meddelande?"
 
-#: compose.c:1346
+#: compose.c:1360
 #, fuzzy
 msgid "Send attachment with name: "
 msgstr "visa bilaga som text"
 
-#: compose.c:1363
+#: compose.c:1377
 msgid "Rename to: "
 msgstr "Byt namn till: "
 
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1370 editmsg.c:104 editmsg.c:126 sendlib.c:912
+#: compose.c:1384 editmsg.c:104 editmsg.c:126 sendlib.c:913
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Kan inte ta status på %s: %s"
 
-#: compose.c:1396
+#: compose.c:1410
 msgid "New file: "
 msgstr "Ny fil: "
 
-#: compose.c:1408
+#: compose.c:1422
 msgid "Content-Type is of the form base/sub"
 msgstr "\"Content-Type\" har formen bas/undertyp"
 
-#: compose.c:1414
+#: compose.c:1428
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Okänd \"Content-Type\" %s"
 
-#: compose.c:1426
+#: compose.c:1435
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kan inte skapa fil %s"
 
-#: compose.c:1434
+#: compose.c:1443
 msgid "What we have here is a failure to make an attachment"
 msgstr "Vad vi har här är ett misslyckande att skapa en bilaga."
 
-#: compose.c:1501
+#: compose.c:1506
 msgid "Postpone this message?"
 msgstr "Skjut upp det här meddelandet?"
 
@@ -962,7 +952,7 @@ msgstr "S/MIME redan valt. Rensa och fortsätt? "
 msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP redan valt. Rensa och fortsätt? "
 
-#: compress.c:465 compress.c:532 compress.c:687 compress.c:862 mbox.c:1056
+#: compress.c:465 compress.c:532 compress.c:687 compress.c:862 mbox.c:1060
 msgid "Unable to lock mailbox!"
 msgstr "Kunde inte låsa brevlåda!"
 
@@ -1018,7 +1008,7 @@ msgstr ""
 msgid "Compressing %s"
 msgstr "Kopierar till %s..."
 
-#: copy.c:700
+#: copy.c:703
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -1045,32 +1035,41 @@ msgstr "Meddelande kan inte skickas infogat. Återgå till att använda PGP/MIME
 msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr ""
 
-#: ncrypt/crypt.c:167 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:572
-#: ncrypt/pgpkey.c:755
+#: ncrypt/crypt.c:167
+#, fuzzy
+msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
+msgstr "Meddelande kan inte skickas infogat. Återgå till att använda PGP/MIME?"
+
+#: ncrypt/crypt.c:171
+msgid "Mail not sent: inline PGP can't be used with format=flowed."
+msgstr ""
+
+#: ncrypt/crypt.c:179 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:571
+#: ncrypt/pgpkey.c:754
 msgid "Invoking PGP..."
 msgstr "Startar PGP..."
 
-#: ncrypt/crypt.c:178
+#: ncrypt/crypt.c:190
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Meddelande kan inte skickas infogat. Återgå till att använda PGP/MIME?"
 
-#: ncrypt/crypt.c:180 send.c:1870
+#: ncrypt/crypt.c:192 send.c:1832
 msgid "Mail not sent."
 msgstr "Brevet skickades inte."
 
-#: ncrypt/crypt.c:500
+#: ncrypt/crypt.c:512
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "S/MIME-meddelanden utan ledtrådar till innehållet stöds ej."
 
-#: ncrypt/crypt.c:714 ncrypt/crypt.c:755
+#: ncrypt/crypt.c:726 ncrypt/crypt.c:767
 msgid "Trying to extract PGP keys...\n"
 msgstr "Försöker att extrahera PGP-nycklar...\n"
 
-#: ncrypt/crypt.c:736 ncrypt/crypt.c:776
+#: ncrypt/crypt.c:748 ncrypt/crypt.c:788
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Försöker att extrahera S/MIME-certifikat...\n"
 
-#: ncrypt/crypt.c:937
+#: ncrypt/crypt.c:949
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1079,7 +1078,7 @@ msgstr ""
 "[-- Fel: Okänt \"multipart/signed\" protokoll %s! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:971
+#: ncrypt/crypt.c:983
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -1087,7 +1086,7 @@ msgstr ""
 "[-- Fel: Inkonsekvent \"multipart/signed\" struktur! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1007
+#: ncrypt/crypt.c:1019
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1096,7 +1095,7 @@ msgstr ""
 "[-- Varning: Vi kan inte verifiera %s/%s signaturer. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1019
+#: ncrypt/crypt.c:1031
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1104,7 +1103,7 @@ msgstr ""
 "[-- Följande data är signerat --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1024
+#: ncrypt/crypt.c:1036
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1112,7 +1111,7 @@ msgstr ""
 "[-- Varning: Kan inte hitta några signaturer. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1030
+#: ncrypt/crypt.c:1042
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -1128,420 +1127,420 @@ msgstr "\"crypt_use_gpgme\" satt men inte byggd med GPGME-stöd."
 msgid "Invoking S/MIME..."
 msgstr "Startar S/MIME..."
 
-#: curs_lib.c:248
+#: curs_lib.c:250
 msgid "yes"
 msgstr "ja"
 
-#: curs_lib.c:249
+#: curs_lib.c:251
 msgid "no"
 msgstr "nej"
 
-#: curs_lib.c:392
-msgid "Exit Mutt?"
-msgstr "Avsluta Mutt?"
+#: curs_lib.c:394
+msgid "Exit NeoMutt?"
+msgstr "Avsluta NeoMutt?"
 
-#: curs_lib.c:836 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1128
+#: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
 msgid "unknown error"
 msgstr "okänt fel"
 
-#: curs_lib.c:858
+#: curs_lib.c:860
 msgid "Press any key to continue..."
 msgstr "Tryck på valfri tangent för att fortsätta..."
 
-#: curs_lib.c:901
+#: curs_lib.c:903
 msgid " ('?' for list): "
 msgstr " (\"?\" för lista): "
 
-#: curs_main.c:76 curs_main.c:1134
+#: curs_main.c:81 curs_main.c:1139
 msgid "No mailbox is open."
 msgstr "Ingen brevlåda är öppen."
 
-#: curs_main.c:77
+#: curs_main.c:82
 msgid "There are no messages."
 msgstr "Inga meddelanden."
 
-#: curs_main.c:78 mx.c:1004 pager.c:76 recvattach.c:56
+#: curs_main.c:83 mx.c:1005 pager.c:77 recvattach.c:59
 msgid "Mailbox is read-only."
 msgstr "Brevlådan är skrivskyddad."
 
-#: curs_main.c:80 pager.c:78 recvattach.c:938
+#: curs_main.c:85 pager.c:79 recvattach.c:1099
 msgid "Function not permitted in attach-message mode."
 msgstr "Funktionen ej tillåten i \"bifoga-meddelande\"-läge."
 
-#: curs_main.c:81
+#: curs_main.c:86
 msgid "No visible messages."
 msgstr "Inga synliga meddelanden."
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: curs_main.c:126 pager.c:113
+#: curs_main.c:131 pager.c:114
 #, fuzzy, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "Kan inte %s: Operation tillåts inte av ACL"
 
-#: curs_main.c:286
+#: curs_main.c:291
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Kan inte växla till skrivläge på en skrivskyddad brevlåda!"
 
-#: curs_main.c:293
+#: curs_main.c:298
 msgid "Changes to folder will be written on folder exit."
 msgstr "Ändringarna i foldern skrivs när foldern lämnas."
 
-#: curs_main.c:298
+#: curs_main.c:303
 msgid "Changes to folder will not be written."
 msgstr "Ändringarna i foldern kommer inte att skrivas."
 
-#: curs_main.c:453 mx.c:357 mx.c:460
+#: curs_main.c:458 mx.c:357 mx.c:460
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s är inte en brevlåda."
 
-#: curs_main.c:818 curs_main.c:831
+#: curs_main.c:823 curs_main.c:836
 msgid "Quit"
 msgstr "Avsluta"
 
-#: curs_main.c:821 curs_main.c:834 recvattach.c:67
+#: curs_main.c:826 curs_main.c:839 recvattach.c:72
 msgid "Save"
 msgstr "Spara"
 
-#: curs_main.c:822 query.c:72
+#: curs_main.c:827 query.c:73
 msgid "Mail"
 msgstr "Brev"
 
-#: curs_main.c:823 pager.c:1672
+#: curs_main.c:828 pager.c:1675
 msgid "Reply"
 msgstr "Svara"
 
-#: curs_main.c:824
+#: curs_main.c:829
 msgid "Group"
 msgstr "Grupp"
 
-#: curs_main.c:835 pager.c:1679
+#: curs_main.c:840 pager.c:1682
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:836 pager.c:1680
+#: curs_main.c:841 pager.c:1683
 #, fuzzy
 msgid "Followup"
 msgstr "Svara till %s%s?"
 
-#: curs_main.c:999
+#: curs_main.c:1004
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Brevlådan har ändrats externt. Flaggor kan vara felaktiga."
 
-#: curs_main.c:1006 pager.c:2178
+#: curs_main.c:1011 pager.c:2193
 msgid "New mail in this mailbox."
 msgstr "Nya brev i den här brevlådan."
 
-#: curs_main.c:1020
+#: curs_main.c:1025
 msgid "Mailbox was externally modified."
 msgstr "Brevlådan har ändrats externt."
 
-#: curs_main.c:1141
+#: curs_main.c:1146
 msgid "No tagged messages."
 msgstr "Inga märkta meddelanden."
 
-#: curs_main.c:1145 menu.c:1154
+#: curs_main.c:1150 menu.c:1156
 msgid "Nothing to do."
 msgstr "Ingenting att göra."
 
-#: curs_main.c:1243
+#: curs_main.c:1248
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Ange nyckel-ID: "
 
-#: curs_main.c:1252
+#: curs_main.c:1256
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1275
+#: curs_main.c:1279
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: curs_main.c:1281
+#: curs_main.c:1285
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Raderar meddelanden från server..."
 
-#: curs_main.c:1291
+#: curs_main.c:1295
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1310
+#: curs_main.c:1314
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1314 imap/message.c:653 nntp.c:1283 pop.c:300
+#: curs_main.c:1318 imap/message.c:657 nntp.c:1283 pop.c:300
 msgid "Fetching message headers..."
 msgstr "Hämtar meddelandehuvuden..."
 
-#: curs_main.c:1390
+#: curs_main.c:1393
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "radera alla meddelanden i tråd"
 
-#: curs_main.c:1410
+#: curs_main.c:1413
 msgid "Jump to message: "
 msgstr "Hoppa till meddelande: "
 
-#: curs_main.c:1422
+#: curs_main.c:1425
 msgid "Argument must be a message number."
 msgstr "Parametern måste vara ett meddelandenummer."
 
-#: curs_main.c:1454
+#: curs_main.c:1457
 msgid "That message is not visible."
 msgstr "Det meddelandet är inte synligt."
 
-#: curs_main.c:1457
+#: curs_main.c:1460
 msgid "Invalid message number."
 msgstr "Ogiltigt meddelandenummer."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1471 curs_main.c:2798 pager.c:2768
+#: curs_main.c:1474 curs_main.c:2803 pager.c:2781
 #, fuzzy
 msgid "Cannot delete message(s)"
 msgstr "återställ meddelande(n)"
 
-#: curs_main.c:1474
+#: curs_main.c:1477
 msgid "Delete messages matching: "
 msgstr "Radera meddelanden som matchar: "
 
-#: curs_main.c:1496
+#: curs_main.c:1499
 msgid "No limit pattern is in effect."
 msgstr "Inget avgränsande mönster är aktivt."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1501
+#: curs_main.c:1504
 #, c-format
 msgid "Limit: %s"
 msgstr "Gräns: %s"
 
-#: curs_main.c:1539
+#: curs_main.c:1542
 msgid "Limit to messages matching: "
 msgstr "Visa endast meddelanden som matchar: "
 
-#: curs_main.c:1561
+#: curs_main.c:1564
 msgid "To view all messages, limit to \"all\"."
 msgstr "För att visa alla meddelanden, begränsa till \"all\"."
 
-#: curs_main.c:1573 pager.c:2276
-msgid "Quit Mutt?"
-msgstr "Avsluta Mutt?"
+#: curs_main.c:1576 pager.c:2291
+msgid "Quit NeoMutt?"
+msgstr "Avsluta NeoMutt?"
 
-#: curs_main.c:1666
+#: curs_main.c:1669
 msgid "Tag messages matching: "
 msgstr "Märk meddelanden som matchar: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1676 curs_main.c:3198 pager.c:3083
+#: curs_main.c:1679 curs_main.c:3208 pager.c:3093
 #, fuzzy
 msgid "Cannot undelete message(s)"
 msgstr "återställ meddelande(n)"
 
-#: curs_main.c:1679
+#: curs_main.c:1682
 msgid "Undelete messages matching: "
 msgstr "Återställ meddelanden som matchar: "
 
-#: curs_main.c:1687
+#: curs_main.c:1690
 msgid "Untag messages matching: "
 msgstr "Avmarkera meddelanden som matchar: "
 
-#: curs_main.c:1721
+#: curs_main.c:1724
 msgid "Logged out of IMAP servers."
 msgstr ""
 
-#: curs_main.c:1818 curs_main.c:1857
+#: curs_main.c:1821 curs_main.c:1860
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Inget ämne, avbryter."
 
-#: curs_main.c:1826
+#: curs_main.c:1829
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1865
+#: curs_main.c:1868
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "Inget ämne, avbryter."
 
-#: curs_main.c:1876
+#: curs_main.c:1879
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1904
+#: curs_main.c:1907
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1939
+#: curs_main.c:1942
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Inget ämne, avbryter."
 
-#: curs_main.c:1943 curs_main.c:1963 curs_main.c:1982
+#: curs_main.c:1946 curs_main.c:1966 curs_main.c:1985
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1952 curs_main.c:1971
+#: curs_main.c:1955 curs_main.c:1974
 msgid "Windowed queries disabled."
 msgstr ""
 
-#: curs_main.c:1957 curs_main.c:1976
+#: curs_main.c:1960 curs_main.c:1979
 msgid "No notmuch vfolder currently loaded."
 msgstr ""
 
-#: curs_main.c:2014
+#: curs_main.c:2017
 msgid "Open mailbox in read-only mode"
 msgstr "Öppna brevlåda i skrivskyddat läge"
 
-#: curs_main.c:2017
+#: curs_main.c:2020
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "öppna en annan folder"
 
-#: curs_main.c:2020
+#: curs_main.c:2023
 msgid "Open mailbox"
 msgstr "Öppna brevlåda"
 
-#: curs_main.c:2030
+#: curs_main.c:2033
 msgid "No mailboxes have new mail"
 msgstr "Inga brevlådor har nya brev."
 
-#: curs_main.c:2072
+#: curs_main.c:2075
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Öppna brevlåda i skrivskyddat läge"
 
-#: curs_main.c:2074
+#: curs_main.c:2077
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2174
+#: curs_main.c:2178
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
-msgstr "Avsluta Mutt utan att spara?"
+msgstr "Avsluta NeoMutt utan att spara?"
 
-#: curs_main.c:2190
+#: curs_main.c:2194
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "länka trådar"
 
-#: curs_main.c:2193 curs_main.c:2230 curs_main.c:2685 curs_main.c:2717
-#: flags.c:348 thread.c:1078 thread.c:1134 thread.c:1201
+#: curs_main.c:2197 curs_main.c:2235 curs_main.c:2690 curs_main.c:2722
+#: flags.c:348 thread.c:1063 thread.c:1119 thread.c:1186
 msgid "Threading is not enabled."
 msgstr "Trådning ej aktiverat."
 
-#: curs_main.c:2205
+#: curs_main.c:2210
 msgid "Thread broken"
 msgstr "Tråd bruten"
 
-#: curs_main.c:2217
+#: curs_main.c:2222
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2227
+#: curs_main.c:2232
 #, fuzzy
 msgid "Cannot link threads"
 msgstr "länka trådar"
 
-#: curs_main.c:2232
+#: curs_main.c:2237
 msgid "No Message-ID: header available to link thread"
 msgstr "Inget Message-ID: huvud tillgängligt för att länka tråd"
 
-#: curs_main.c:2234
+#: curs_main.c:2239
 msgid "First, please tag a message to be linked here"
 msgstr "Var vänlig att först markera ett meddelande som ska länkas här"
 
-#: curs_main.c:2245
+#: curs_main.c:2250
 msgid "Threads linked"
 msgstr "Trådar länkade"
 
-#: curs_main.c:2248
+#: curs_main.c:2253
 msgid "No thread linked"
 msgstr "Ingen tråd länkad"
 
-#: curs_main.c:2284 curs_main.c:2309
+#: curs_main.c:2289 curs_main.c:2314
 msgid "You are on the last message."
 msgstr "Du är på det sista meddelandet."
 
-#: curs_main.c:2291 curs_main.c:2335
+#: curs_main.c:2296 curs_main.c:2340
 msgid "No undeleted messages."
 msgstr "Inga återställda meddelanden."
 
-#: curs_main.c:2328 curs_main.c:2353
+#: curs_main.c:2333 curs_main.c:2358
 msgid "You are on the first message."
 msgstr "Du är på det första meddelandet."
 
-#: curs_main.c:2425 menu.c:969 pager.c:2396 pattern.c:2070
+#: curs_main.c:2430 menu.c:971 pager.c:2411 pattern.c:2075
 msgid "Search wrapped to top."
 msgstr "Sökning fortsatte från början."
 
-#: curs_main.c:2434 pager.c:2417 pattern.c:2081
+#: curs_main.c:2439 pager.c:2432 pattern.c:2086
 msgid "Search wrapped to bottom."
 msgstr "Sökning fortsatte från slutet."
 
-#: curs_main.c:2477
+#: curs_main.c:2482
 #, fuzzy
 msgid "No new messages in this limited view."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: curs_main.c:2479
+#: curs_main.c:2484
 #, fuzzy
 msgid "No new messages."
 msgstr "Inga nya meddelanden"
 
-#: curs_main.c:2484
+#: curs_main.c:2489
 #, fuzzy
 msgid "No unread messages in this limited view."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: curs_main.c:2486
+#: curs_main.c:2491
 #, fuzzy
 msgid "No unread messages."
 msgstr "Inga olästa meddelanden"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2504
+#: curs_main.c:2509
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "flagga meddelande"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2542 pager.c:3046
+#: curs_main.c:2547 pager.c:3056
 #, fuzzy
 msgid "Cannot toggle new"
 msgstr "växla ny"
 
-#: curs_main.c:2619
+#: curs_main.c:2624
 msgid "No more threads."
 msgstr "Inga fler trådar."
 
-#: curs_main.c:2621
+#: curs_main.c:2626
 msgid "You are on the first thread."
 msgstr "Du är på den första tråden."
 
-#: curs_main.c:2703
+#: curs_main.c:2708
 #, fuzzy
 msgid "Thread contains unread or flagged messages."
 msgstr "Tråden innehåller olästa meddelanden."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2753 pager.c:2734
+#: curs_main.c:2758 pager.c:2747
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "återställ meddelande(n)"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2855
+#: curs_main.c:2860
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "Kan inte skriva meddelande"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2902 pager.c:3146
+#: curs_main.c:2910 pager.c:3156
 #, fuzzy, c-format
 msgid "%d labels changed."
 msgstr "Brevlåda är oförändrad."
@@ -1549,13 +1548,13 @@ msgstr "Brevlåda är oförändrad."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:2909 pager.c:3150
+#: curs_main.c:2917 pager.c:3160
 #, fuzzy
 msgid "No labels changed."
 msgstr "Brevlåda är oförändrad."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3006
+#: curs_main.c:3015
 #, fuzzy
 msgid "Cannot mark message(s) as read"
 msgstr "markera meddelande(n) som lästa"
@@ -1563,14 +1562,14 @@ msgstr "markera meddelande(n) som lästa"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3041
+#: curs_main.c:3050
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Ange nyckel-ID: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3048
+#: curs_main.c:3057
 #, fuzzy
 msgid "message hotkey"
 msgstr "Meddelande uppskjutet."
@@ -1578,33 +1577,33 @@ msgstr "Meddelande uppskjutet."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3053
+#: curs_main.c:3062
 #, fuzzy, c-format
 msgid "Message bound to %s."
 msgstr "Meddelande återsänt."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3061
+#: curs_main.c:3070
 #, fuzzy
 msgid "No message ID to macro."
 msgstr "Inga meddelanden i den foldern."
 
-#: curs_main.c:3104 pager.c:2908 recvattach.c:1256
+#: curs_main.c:3113 pager.c:2920 recvattach.c:1348
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3107 pager.c:2877 pager.c:2887 pager.c:2911
+#: curs_main.c:3116 pager.c:2890 pager.c:2900 pager.c:2923
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3168 pager.c:3066
+#: curs_main.c:3178 pager.c:3076
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "återställ meddelande(n)"
 
-#: edit.c:53
+#: edit.c:55
 #, fuzzy
 msgid ""
 "~~              insert a line beginning with a single ~\n"
@@ -1627,7 +1626,7 @@ msgstr ""
 "~M meddelanden  samma som ~m, fast inkludera huvuden\n"
 "~p              skriv ut meddelandet\n"
 
-#: edit.c:64
+#: edit.c:66
 msgid ""
 "~q              write file and quit editor\n"
 "~r file         read a file into the editor\n"
@@ -1649,20 +1648,20 @@ msgstr ""
 "~?              det här meddelandet\n"
 ".               ensam på en rad avslutar inmatning\n"
 
-#: edit.c:200
+#: edit.c:202
 #, c-format
 msgid "%d: invalid message number.\n"
 msgstr "%d: ogiltigt meddelandenummer.\n"
 
-#: edit.c:343
+#: edit.c:345
 msgid "(End message with a . on a line by itself)\n"
 msgstr "(Avsluta meddelande med en . på en egen rad)\n"
 
-#: edit.c:401
+#: edit.c:403
 msgid "No mailbox.\n"
 msgstr "Ingen brevlåda.\n"
 
-#: edit.c:405
+#: edit.c:407
 msgid "Message contains:\n"
 msgstr "Meddelande innehåller:\n"
 
@@ -1670,25 +1669,25 @@ msgstr "Meddelande innehåller:\n"
 #. This entry is shown AFTER the message content,
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
-#. but means "(press any key to continue using mutt)".
-#: edit.c:414 edit.c:473
+#. but means "(press any key to continue using neomutt)".
+#: edit.c:416 edit.c:475
 msgid "(continue)\n"
 msgstr "(fortsätt)\n"
 
-#: edit.c:427
+#: edit.c:429
 msgid "missing filename.\n"
 msgstr "saknar filnamn.\n"
 
-#: edit.c:447
+#: edit.c:449
 msgid "No lines in message.\n"
 msgstr "Inga rader i meddelandet.\n"
 
-#: edit.c:464
+#: edit.c:466
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
 msgstr "Felaktigt IDN i %s: \"%s\"\n"
 
-#: edit.c:484
+#: edit.c:486
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: okänt redigeringskommando (~? för hjälp)\n"
@@ -1735,89 +1734,89 @@ msgstr "Sätt flagga"
 msgid "Clear flag"
 msgstr "Ta bort flagga"
 
-#: handler.c:83
+#: handler.c:85
 #, c-format
 msgid "[-- Alternative Type #%d: "
 msgstr ""
 
-#: handler.c:85
+#: handler.c:87
 msgid "[-- Type: "
 msgstr ""
 
-#: handler.c:86
+#: handler.c:88
 #, fuzzy, c-format
 msgid "%s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kodning: %s, Storlek: %s --]\n"
 
-#: handler.c:1213
+#: handler.c:1218
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Fel : Kan inte visa någon del av \"Multipart/Alternative\"! --]\n"
 
-#: handler.c:1337
+#: handler.c:1342
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Bilaga #%d"
 
-#: handler.c:1359
+#: handler.c:1364
 #, fuzzy
 msgid "One or more parts of this message could not be displayed"
 msgstr "Varning: En del av detta meddelande har inte blivit signerat."
 
-#: handler.c:1410
+#: handler.c:1416
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatisk visning med %s --]\n"
 
-#: handler.c:1411
+#: handler.c:1417
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Kommando för automatisk visning: %s"
 
-#: handler.c:1442
+#: handler.c:1448
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Kan inte köra %s. --]\n"
 
-#: handler.c:1461 handler.c:1482
+#: handler.c:1467 handler.c:1488
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automatisk visning av standardfel gällande %s --]\n"
 
-#: handler.c:1520
+#: handler.c:1526
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Fel: \"message/external-body\" har ingen åtkomsttypsparameter --]\n"
 
-#: handler.c:1543
+#: handler.c:1549
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Den här %s/%s bilagan "
 
-#: handler.c:1548
+#: handler.c:1554
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(storlek %s byte)"
 
-#: handler.c:1550
+#: handler.c:1556
 msgid "has been deleted --]\n"
 msgstr "har raderats --]\n"
 
-#: handler.c:1555
+#: handler.c:1561
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- på %s --]\n"
 
-#: handler.c:1560
+#: handler.c:1566
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- namn: %s --]\n"
 
-#: handler.c:1572 handler.c:1588
+#: handler.c:1578 handler.c:1594
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 
-#: handler.c:1574
+#: handler.c:1580
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -1825,67 +1824,67 @@ msgstr ""
 "[-- och den angivna externa källan har --]\n"
 "[-- utgått. --]\n"
 
-#: handler.c:1592
+#: handler.c:1598
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
-#: handler.c:1716
+#: handler.c:1722
 #, fuzzy
 msgid "Unable to open memory stream!"
 msgstr "Kunde inte öppna tillfällig fil!"
 
-#: handler.c:1724
+#: handler.c:1730
 msgid "Unable to open temporary file!"
 msgstr "Kunde inte öppna tillfällig fil!"
 
-#: handler.c:1774
+#: handler.c:1780
 #, fuzzy
 msgid "failed to re-open memstream!"
 msgstr "Kunde inte öppna tillfällig fil!"
 
-#: handler.c:1900
+#: handler.c:1906
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fel: \"multipart/signed\" har inget protokoll."
 
-#: handler.c:1948
+#: handler.c:1955
 #, fuzzy
 msgid "[-- This is an attachment "
 msgstr "[-- Den här %s/%s bilagan "
 
-#: handler.c:1950
+#: handler.c:1957
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s stöds inte "
 
-#: handler.c:1957
+#: handler.c:1964
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(använd \"%s\" för att visa den här delen)"
 
-#: handler.c:1959
+#: handler.c:1966
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(\"view-attachments\" måste knytas till tangent!)"
 
-#: hcache/hcache.c:563 main.c:540 newsrc.c:1022
+#: hcache/hcache.c:561 main.c:545 newsrc.c:1022
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
 
-#: headers.c:203
+#: headers.c:201
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kunde inte bifoga fil"
 
-#: help.c:317
+#: help.c:321
 msgid "ERROR: please report this bug"
 msgstr "FEL: var vänlig rapportera den här buggen"
 
-#: help.c:354
+#: help.c:358
 msgid "<UNKNOWN>"
 msgstr "<OKÄND>"
 
-#: help.c:367
+#: help.c:371
 msgid ""
 "\n"
 "Generic bindings:\n"
@@ -1895,7 +1894,7 @@ msgstr ""
 "Allmänna knytningar:\n"
 "\n"
 
-#: help.c:371
+#: help.c:375
 msgid ""
 "\n"
 "Unbound functions:\n"
@@ -1905,38 +1904,38 @@ msgstr ""
 "Oknutna funktioner:\n"
 "\n"
 
-#: help.c:379
+#: help.c:383
 #, c-format
 msgid "Help for %s"
 msgstr "Hjälp för %s"
 
-#: history.c:128 history.c:212 history.c:250
+#: history.c:128 history.c:212 history.c:251
 #, c-format
 msgid "Bad history file format (line %d)"
 msgstr "Felaktigt filformat för historik (rad %d)"
 
-#: hook.c:122
+#: hook.c:120
 msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
-#: hook.c:133
+#: hook.c:131
 msgid "mailbox shortcut expanded to empty regexp"
 msgstr ""
 
-#: hook.c:146
+#: hook.c:144
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:326
+#: hook.c:306
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "\"unhook\": Kan inte göra \"unhook *\" inifrån en \"hook\"."
 
-#: hook.c:337
+#: hook.c:317
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "\"unhook\": okänd \"hook\"-typ: %s"
 
-#: hook.c:343
+#: hook.c:323
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "\"unhook\": Kan inte ta bort en %s inifrån en %s."
@@ -1990,47 +1989,47 @@ msgstr "Verifierar (%s)..."
 msgid "SASL authentication failed."
 msgstr "SASL-verifiering misslyckades."
 
-#: imap/browse.c:188 imap/imap.c:614
+#: imap/browse.c:190 imap/imap.c:610
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s är en ogiltig IMAP-sökväg"
 
-#: imap/browse.c:199
+#: imap/browse.c:201
 msgid "Getting folder list..."
 msgstr "Hämtar folderlista..."
 
-#: imap/browse.c:316
+#: imap/browse.c:318
 msgid "No such folder"
 msgstr "Ingen sådan folder"
 
-#: imap/browse.c:370
+#: imap/browse.c:372
 msgid "Create mailbox: "
 msgstr "Skapa brevlåda: "
 
-#: imap/browse.c:375 imap/browse.c:428
+#: imap/browse.c:377 imap/browse.c:430
 msgid "Mailbox must have a name."
 msgstr "Brevlådan måste ha ett namn."
 
-#: imap/browse.c:383
+#: imap/browse.c:385
 msgid "Mailbox created."
 msgstr "Brevlåda skapad."
 
-#: imap/browse.c:416
+#: imap/browse.c:418
 #, fuzzy
 msgid "Cannot rename root folder"
 msgstr "Kan inte ta bort rotfolder"
 
-#: imap/browse.c:420
+#: imap/browse.c:422
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Döp om brevlådan %s till: "
 
-#: imap/browse.c:437
+#: imap/browse.c:439
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Kunde ej döpa om: %s"
 
-#: imap/browse.c:442
+#: imap/browse.c:444
 msgid "Mailbox renamed."
 msgstr "Brevlåda omdöpt."
 
@@ -2056,200 +2055,200 @@ msgstr "Stänger anslutning till %s..."
 #: imap/imap.c:350
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
-msgstr "Den här IMAP-servern är uråldrig. Mutt fungerar inte med den."
+msgstr "Den här IMAP-servern är uråldrig. NeoMutt fungerar inte med den."
 
-#: imap/imap.c:478 nntp.c:675 pop_lib.c:329 smtp.c:595
+#: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
 msgstr "Säker anslutning med TLS?"
 
-#: imap/imap.c:488 nntp.c:694 pop_lib.c:349 smtp.c:607
+#: imap/imap.c:488 nntp.c:694 pop_lib.c:350 smtp.c:607
 msgid "Could not negotiate TLS connection"
 msgstr "Kunde inte förhandla fram TLS-anslutning"
 
-#: imap/imap.c:504 pop_lib.c:370
+#: imap/imap.c:504 pop_lib.c:371
 msgid "Encrypted connection unavailable"
 msgstr "Krypterad anslutning otillgänglig"
 
-#: imap/imap.c:648 nntp.c:1487
+#: imap/imap.c:644 nntp.c:1486
 #, c-format
 msgid "Selecting %s..."
 msgstr "Väljer %s..."
 
-#: imap/imap.c:802
+#: imap/imap.c:794
 msgid "Error opening mailbox"
 msgstr "Fel vid öppning av brevlåda"
 
-#: imap/imap.c:852 imap/imap.c:2290 imap/message.c:1318 muttlib.c:1875
+#: imap/imap.c:844 imap/imap.c:2279 imap/message.c:1322 muttlib.c:1532
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
 
-#: imap/imap.c:1266
+#: imap/imap.c:1256
 msgid "Expunge failed"
 msgstr "Radering misslyckades"
 
-#: imap/imap.c:1278
+#: imap/imap.c:1268
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Märker %d meddelanden som raderade..."
 
-#: imap/imap.c:1310
+#: imap/imap.c:1300
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Sparar ändrade meddelanden... [%d/%d]"
 
-#: imap/imap.c:1365
+#: imap/imap.c:1355
 msgid "Error saving flags. Close anyway?"
 msgstr "Fel vid sparande av flaggor. Stäng ändå?"
 
-#: imap/imap.c:1373
+#: imap/imap.c:1363
 msgid "Error saving flags"
 msgstr "Fel vid sparande av flaggor"
 
-#: imap/imap.c:1395
+#: imap/imap.c:1385
 msgid "Expunging messages from server..."
 msgstr "Raderar meddelanden från server..."
 
-#: imap/imap.c:1401
+#: imap/imap.c:1391
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE misslyckades"
 
-#: imap/imap.c:1918
+#: imap/imap.c:1906
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Huvudsökning utan huvudnamn: %s"
 
-#: imap/imap.c:1948
+#: imap/imap.c:1936
 #, c-format
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/imap.c:2000
+#: imap/imap.c:1988
 msgid "Bad mailbox name"
 msgstr "Felaktigt namn på brevlåda"
 
-#: imap/imap.c:2023
+#: imap/imap.c:2011
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Prenumererar på %s..."
 
-#: imap/imap.c:2025
+#: imap/imap.c:2013
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Avslutar prenumeration på %s..."
 
-#: imap/imap.c:2035
+#: imap/imap.c:2023
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Prenumererar på %s..."
 
-#: imap/imap.c:2037
+#: imap/imap.c:2025
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Avslutar prenumeration på %s"
 
-#: imap/imap.c:2275 imap/message.c:1282
+#: imap/imap.c:2264 imap/message.c:1286
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopierar %d meddelanden till %s..."
 
-#: imap/message.c:388 mx.c:1254
+#: imap/message.c:392 mx.c:1255
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Heltalsöverflödning -- kan inte allokera minne."
 
-#: imap/message.c:514
+#: imap/message.c:518
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Kunde inte hämta huvuden från den versionen av IMAP-servern."
 
-#: imap/message.c:524
+#: imap/message.c:528
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Kunde inte skapa tillfällig fil %s"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:560
+#: imap/message.c:564
 msgid "Evaluating cache..."
 msgstr "Utvärderar cache..."
 
-#: imap/message.c:890 imap/message.c:950 nntp.c:1587 pop.c:598
+#: imap/message.c:894 imap/message.c:954 nntp.c:1586 pop.c:598
 msgid "Fetching message..."
 msgstr "Hämtar meddelande..."
 
-#: imap/message.c:937 pop.c:593
+#: imap/message.c:941 pop.c:593
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Brevindexet är fel. Försök att öppna brevlådan igen."
 
-#: imap/message.c:1105
+#: imap/message.c:1109
 msgid "Uploading message..."
 msgstr "Laddar upp meddelande..."
 
-#: imap/message.c:1286
+#: imap/message.c:1290
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopierar meddelande %d till %s..."
 
-#: imap/util.c:490
+#: imap/util.c:489
 msgid "Continue?"
 msgstr "Fortsätt?"
 
-#: init.c:79 init.c:2657 pager.c:75
+#: init.c:77 init.c:2574 pager.c:76
 msgid "Not available in this menu."
 msgstr "Inte tillgänglig i den här menyn."
 
-#: init.c:357
+#: init.c:354
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: okänd sorteringsmetod"
 
-#: init.c:410 init.c:444 init.c:3096
+#: init.c:407 init.c:441 init.c:3013
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Okänd typ."
 
-#: init.c:891
+#: init.c:872
 #, c-format
 msgid "Bad regexp: %s"
 msgstr "Felaktigt reguljärt uttryck: %s"
 
-#: init.c:951
+#: init.c:932
 #, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "Inte tillräckligt med deluttryck för spam-mall"
 
-#: init.c:1008
+#: init.c:959
 #, fuzzy, c-format
 msgid "finish: too many arguments"
 msgstr "push: för många parametrar"
 
-#: init.c:1222 init.c:1230 init.c:1253
+#: init.c:1213 init.c:1221 init.c:1244
 #, fuzzy
 msgid "not enough arguments"
 msgstr "slut på parametrar"
 
-#: init.c:1313
+#: init.c:1304
 msgid "spam: no matching pattern"
 msgstr "spam: inget matchande mönster"
 
-#: init.c:1315
+#: init.c:1306
 msgid "nospam: no matching pattern"
 msgstr "nospam: inget matchande mönster"
 
-#: init.c:1508
+#: init.c:1479
 #, fuzzy, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "Saknar -rx eller -addr."
 
-#: init.c:1526
+#: init.c:1498
 #, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "Varning: Felaktigtt IDN \"%s\".\n"
 
-#: init.c:1745
+#: init.c:1679
 msgid "attachments: no disposition"
 msgstr "bilagor: ingen disposition"
 
-#: init.c:1756
+#: init.c:1690
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2257,1267 +2256,261 @@ msgid ""
 "\n"
 msgstr "redigera bilagebeskrivning"
 
-#: init.c:1786
+#: init.c:1720
 msgid "attachments: invalid disposition"
 msgstr "bilagor: ogiltig disposition"
 
-#: init.c:1802
+#: init.c:1736
 msgid "unattachments: no disposition"
 msgstr "gamla bilagor: ingen disposition"
 
-#: init.c:1829
+#: init.c:1763
 msgid "unattachments: invalid disposition"
 msgstr "gamla bilagor: ogiltigt disposition"
 
-#: init.c:1957
+#: init.c:1891
 msgid "alias: no address"
 msgstr "alias: ingen adress"
 
-#: init.c:2004
+#: init.c:1938
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\".\n"
 
-#: init.c:2091
+#: init.c:2011
 msgid "invalid header field"
 msgstr "ogiltigt huvudfält"
 
-#: init.c:2243
+#: init.c:2160
 #, fuzzy, c-format
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): fel i reguljärt uttryck: %s\n"
 
-#: init.c:2535 init.c:2706
+#: init.c:2452 init.c:2623
 #, c-format
 msgid "%s is unset"
 msgstr "%s är inte satt"
 
-#: init.c:2632 init.c:2751
+#: init.c:2549 init.c:2668
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: okänd variabel"
 
-#: init.c:2642
+#: init.c:2559
 msgid "prefix is illegal with reset"
 msgstr "prefix är otillåtet med \"reset\""
 
-#: init.c:2648
+#: init.c:2565
 msgid "value is illegal with reset"
 msgstr "värde är otillåtet med \"reset\""
 
-#: init.c:2685 init.c:2698
+#: init.c:2602 init.c:2615
 msgid "Usage: set variable=yes|no"
 msgstr "Användning: set variable=yes|no"
 
-#: init.c:2706
+#: init.c:2623
 #, c-format
 msgid "%s is set"
 msgstr "%s är satt"
 
-#: init.c:2806
+#: init.c:2723
 msgid "set debug_file ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2831 init.c:2846
+#: init.c:2748 init.c:2763
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Ogiltig dag i månaden: %s"
 
-#: init.c:2944
+#: init.c:2861
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ogiltig typ av brevlåda"
 
-#: init.c:2975
+#: init.c:2892
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2976
+#: init.c:2893
 msgid "format error"
 msgstr ""
 
-#: init.c:2976
+#: init.c:2893
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2984
+#: init.c:2901
 msgid "set debug_level ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:3052
+#: init.c:2969
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:3142
+#: init.c:3059
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:3150
+#: init.c:3067
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: okänd typ"
 
-#: init.c:3306
+#: init.c:3230
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
-#: init.c:3317
+#: init.c:3241
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
-#: init.c:3342
+#: init.c:3266
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fel i %s"
 
-#: init.c:3343
+#: init.c:3267
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: läsningen avbruten pga för många fel i %s"
 
-#: init.c:3352
+#: init.c:3276
 #, fuzzy, c-format
 msgid "source: %d warnings in %s"
 msgstr "source: fel i %s"
 
-#: init.c:3373 mutt_lua.c:414
+#: init.c:3300 mutt_lua.c:414
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fel vid %s"
 
-#: init.c:3382
+#: init.c:3309
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Meddelanden kunde inte skrivas ut"
 
-#: init.c:3441
+#: init.c:3368
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: okänt kommando"
 
-#: init.c:4115
+#: init.c:4026
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fel i kommandorad: %s\n"
 
-#: init.c:4214
+#: init.c:4133
 msgid "unable to determine home directory"
 msgstr "kunde inte avgöra hemkatalog"
 
-#: init.c:4222
+#: init.c:4141
 msgid "unable to determine username"
 msgstr "kunde inte avgöra användarnamn"
 
-#: init.c:4257
+#: init.c:4176
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "kunde inte avgöra användarnamn"
 
-#: init.c:4570
+#: init.c:4483
 msgid "-group: no group name"
 msgstr "-group: inget gruppnamn"
 
-#: init.c:4580
+#: init.c:4493
 msgid "out of arguments"
 msgstr "slut på parametrar"
 
-#: keymap.c:280 keymap.c:288
+#: keymap.c:279 keymap.c:287
 #, c-format
 msgid ""
 "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
 "neomutt.org/guide/configuration.html#bind-warnings"
 msgstr ""
 
-#: keymap.c:584
+#: keymap.c:583
 msgid "Macros are currently disabled."
 msgstr ""
 
-#: keymap.c:591
+#: keymap.c:590
 msgid "Macro loop detected."
 msgstr "Oändlig slinga i macro upptäckt."
 
-#: keymap.c:904 keymap.c:939
+#: keymap.c:903 keymap.c:938
 msgid "Key is not bound."
 msgstr "Tangenten är inte knuten."
 
-#: keymap.c:944
+#: keymap.c:943
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Tangenten är inte knuten. Tryck \"%s\" för hjälp."
 
-#: keymap.c:956
+#: keymap.c:955
 msgid "push: too many arguments"
 msgstr "push: för många parametrar"
 
-#: keymap.c:991
+#: keymap.c:990
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: ingen sådan meny"
 
-#: keymap.c:1006
+#: keymap.c:1005
 msgid "null key sequence"
 msgstr "tom tangentsekvens"
 
-#: keymap.c:1033
+#: keymap.c:1032
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1101
+#: keymap.c:1100
 msgid "bind: too many arguments"
 msgstr "bind: för många parametrar"
 
-#: keymap.c:1158
+#: keymap.c:1157
 msgid "macro: empty key sequence"
 msgstr "macro: tom tangentsekvens"
 
-#: keymap.c:1169
+#: keymap.c:1168
 msgid "macro: too many arguments"
 msgstr "macro: för många parametrar"
 
-#: keymap.c:1206
+#: keymap.c:1205
 msgid "exec: no arguments"
 msgstr "exec: inga parametrar"
 
-#: keymap.c:1225
+#: keymap.c:1224
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: ingen sådan funktion"
 
-#: keymap.c:1247
+#: keymap.c:1246
 msgid "Enter keys (^G to abort): "
 msgstr "Ange nycklar (^G för att avbryta): "
 
-#: keymap.c:1253
+#: keymap.c:1252
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Tecken = %s, Oktal = %o, Decimal = %d"
 
-#: keymap_alldefs.h:8
-msgid "null operation"
-msgstr "effektlös operation"
-
-#: keymap_alldefs.h:9
-msgid "end of conditional execution (noop)"
-msgstr "slut på villkorlig exekvering (noop)"
-
-#: keymap_alldefs.h:10
-msgid "force viewing of attachment using mailcap"
-msgstr "tvinga visning av bilagor med \"mailcap\""
-
-#: keymap_alldefs.h:11
-msgid "view attachment as text"
-msgstr "visa bilaga som text"
-
-#: keymap_alldefs.h:12
-msgid "toggle display of subparts"
-msgstr "Växla visning av underdelar"
-
-#: keymap_alldefs.h:13
-msgid "move to the bottom of the page"
-msgstr "flytta till slutet av sidan"
-
-#: keymap_alldefs.h:14
-msgid "remail a message to another user"
-msgstr "återsänd ett meddelande till en annan användare"
-
-#: keymap_alldefs.h:15
-msgid "swap the current folder position with $folder if it exists"
-msgstr ""
-
-#: keymap_alldefs.h:16
-msgid "select a new file in this directory"
-msgstr "välj en ny fil i den här katalogen"
-
-#: keymap_alldefs.h:17
-msgid "view file"
-msgstr "visa fil"
-
-#: keymap_alldefs.h:18
-msgid "display the currently selected file's name"
-msgstr "visa namnet på den valda filen"
-
-#: keymap_alldefs.h:19
-#, fuzzy
-msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "prenumerera på aktuell brevlåda (endast IMAP)"
-
-#: keymap_alldefs.h:20
-#, fuzzy
-msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "avsluta prenumereration på aktuell brevlåda (endast IMAP)"
-
-#: keymap_alldefs.h:21
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "växla vy av alla/prenumererade brevlådor (endast IMAP)"
-
-#: keymap_alldefs.h:22
-msgid "list mailboxes with new mail"
-msgstr "lista brevlådor med nya brev"
-
-#: keymap_alldefs.h:23
-msgid "mark all articles in newsgroup as read"
-msgstr ""
-
-#: keymap_alldefs.h:24
-msgid "change directories"
-msgstr "byt kataloger"
-
-#: keymap_alldefs.h:25
-msgid "check mailboxes for new mail"
-msgstr "kolla brevlådor efter nya brev"
-
-#: keymap_alldefs.h:26
-msgid "attach file(s) to this message"
-msgstr "bifoga fil(er) till det här meddelandet"
-
-#: keymap_alldefs.h:27
-msgid "attach message(s) to this message"
-msgstr "bifoga meddelande(n) till det här meddelandet"
-
-#: keymap_alldefs.h:28
-#, fuzzy
-msgid "attach news article(s) to this message"
-msgstr "bifoga fil(er) till det här meddelandet"
-
-#: keymap_alldefs.h:29
-msgid "edit the BCC list"
-msgstr "redigera BCC-listan"
-
-#: keymap_alldefs.h:30
-msgid "edit the CC list"
-msgstr "redigera CC-listan"
-
-#: keymap_alldefs.h:31
-msgid "edit attachment description"
-msgstr "redigera bilagebeskrivning"
-
-#: keymap_alldefs.h:32
-msgid "edit attachment transfer-encoding"
-msgstr "redigera transportkodning för bilagan"
-
-#: keymap_alldefs.h:33
-msgid "enter a file to save a copy of this message in"
-msgstr "ange en fil att spara en kopia av det här meddelandet till"
-
-#: keymap_alldefs.h:34
-msgid "edit the file to be attached"
-msgstr "redigera filen som ska bifogas"
-
-#: keymap_alldefs.h:35
-msgid "edit the from field"
-msgstr "redigera avsändarfältet"
-
-#: keymap_alldefs.h:36
-msgid "edit the message with headers"
-msgstr "redigera meddelandet med huvuden"
-
-#: keymap_alldefs.h:37
-msgid "edit the message"
-msgstr "redigera meddelandet"
-
-#: keymap_alldefs.h:38
-msgid "edit attachment using mailcap entry"
-msgstr "redigera bilaga med \"mailcap\"-posten"
-
-#: keymap_alldefs.h:39
-#, fuzzy
-msgid "edit the newsgroups list"
-msgstr "redigera CC-listan"
-
-#: keymap_alldefs.h:40
-msgid "edit the Reply-To field"
-msgstr "redigera Reply-To-fältet"
-
-#: keymap_alldefs.h:41
-#, fuzzy
-msgid "edit the Followup-To field"
-msgstr "redigera Reply-To-fältet"
-
-#: keymap_alldefs.h:42
-#, fuzzy
-msgid "edit the X-Comment-To field"
-msgstr "redigera Reply-To-fältet"
-
-#: keymap_alldefs.h:43
-msgid "edit the subject of this message"
-msgstr "redigera ämnet på det här meddelandet"
-
-#: keymap_alldefs.h:44
-msgid "edit the TO list"
-msgstr "redigera TO-listan"
-
-#: keymap_alldefs.h:45
-msgid "create a new mailbox (IMAP only)"
-msgstr "skapa en ny brevlåda (endast IMAP)"
-
-#: keymap_alldefs.h:46
-msgid "edit attachment content type"
-msgstr "redigera \"content type\" för bilaga"
-
-#: keymap_alldefs.h:47
-msgid "get a temporary copy of an attachment"
-msgstr "hämta en tillfällig kopia av en bilaga"
-
-#: keymap_alldefs.h:48
-msgid "run ispell on the message"
-msgstr "kör ispell på meddelandet"
-
-#: keymap_alldefs.h:49
-msgid "compose new attachment using mailcap entry"
-msgstr "komponera ny bilaga med \"mailcap\"-post"
-
-#: keymap_alldefs.h:50
-msgid "toggle recoding of this attachment"
-msgstr "växla omkodning av den här bilagan"
-
-#: keymap_alldefs.h:51
-msgid "save this message to send later"
-msgstr "spara det här meddelandet för att skicka senare"
-
-#: keymap_alldefs.h:52
-#, fuzzy
-msgid "send attachment with a different name"
-msgstr "redigera transportkodning för bilagan"
-
-#: keymap_alldefs.h:53
-msgid "rename/move an attached file"
-msgstr "byt namn på/flytta en bifogad fil"
-
-#: keymap_alldefs.h:54
-#, fuzzy
-msgid "compose a new message to the sender"
-msgstr "komponera ett nytt brevmeddelande"
-
-#: keymap_alldefs.h:55
-msgid "send the message"
-msgstr "skicka meddelandet"
-
-#: keymap_alldefs.h:56
-msgid "toggle disposition between inline/attachment"
-msgstr "växla dispositionen mellan integrerat/bifogat"
-
-#: keymap_alldefs.h:57
-msgid "toggle whether to delete file after sending it"
-msgstr "växla om fil ska tas bort efter att den har sänts"
-
-#: keymap_alldefs.h:58
-msgid "update an attachment's encoding info"
-msgstr "uppdatera en bilagas kodningsinformation"
-
-#: keymap_alldefs.h:59
-msgid "write the message to a folder"
-msgstr "skriv meddelandet till en folder"
-
-#: keymap_alldefs.h:60
-msgid "copy a message to a file/mailbox"
-msgstr "kopiera ett meddelande till en fil/brevlåda"
-
-#: keymap_alldefs.h:61
-msgid "create an alias from a message sender"
-msgstr "skapa ett alias från avsändaren av ett meddelande"
-
-#: keymap_alldefs.h:62
-msgid "move entry to bottom of screen"
-msgstr "flytta post till slutet av skärmen"
-
-#: keymap_alldefs.h:63
-msgid "move entry to middle of screen"
-msgstr "flytta post till mitten av skärmen"
-
-#: keymap_alldefs.h:64
-msgid "move entry to top of screen"
-msgstr "flytta post till början av skärmen"
-
-#: keymap_alldefs.h:65
-msgid "make decoded (text/plain) copy"
-msgstr "skapa avkodad (text/plain) kopia"
-
-#: keymap_alldefs.h:66
-msgid "make decoded copy (text/plain) and delete"
-msgstr "skapa avkodad kopia (text/plain) och radera"
-
-#: keymap_alldefs.h:67
-msgid "delete the current entry"
-msgstr "radera den aktuella posten"
-
-#: keymap_alldefs.h:68
-msgid "delete the current mailbox (IMAP only)"
-msgstr "radera den aktuella brevlådan (endast för IMAP)"
-
-#: keymap_alldefs.h:69
-msgid "delete all messages in subthread"
-msgstr "radera alla meddelanden i undertråd"
-
-#: keymap_alldefs.h:70
-msgid "delete all messages in thread"
-msgstr "radera alla meddelanden i tråd"
-
-#: keymap_alldefs.h:71
-msgid "display full address of sender"
-msgstr "visa avsändarens fullständiga adress"
-
-#: keymap_alldefs.h:72
-msgid "display message and toggle header weeding"
-msgstr "visa meddelande och växla rensning av huvud"
-
-#: keymap_alldefs.h:73
-msgid "display a message"
-msgstr "visa ett meddelande"
-
-#: keymap_alldefs.h:74
-msgid "add, change, or delete a message's label"
-msgstr ""
-
-#: keymap_alldefs.h:75
-msgid "edit the raw message"
-msgstr "ändra i själva meddelandet"
-
-#: keymap_alldefs.h:76
-msgid "delete the char in front of the cursor"
-msgstr "radera tecknet före markören"
-
-#: keymap_alldefs.h:77
-msgid "move the cursor one character to the left"
-msgstr "flytta markören ett tecken till vänster"
-
-#: keymap_alldefs.h:78
-msgid "move the cursor to the beginning of the word"
-msgstr "flytta markören till början av ordet"
-
-#: keymap_alldefs.h:79
-msgid "jump to the beginning of the line"
-msgstr "hoppa till början av raden"
-
-#: keymap_alldefs.h:80
-msgid "cycle among incoming mailboxes"
-msgstr "rotera bland inkomna brevlådor"
-
-#: keymap_alldefs.h:81
-msgid "complete filename or alias"
-msgstr "komplettera filnamn eller alias"
-
-#: keymap_alldefs.h:82
-msgid "complete address with query"
-msgstr "komplettera adress med fråga"
-
-#: keymap_alldefs.h:83
-msgid "delete the char under the cursor"
-msgstr "radera tecknet under markören"
-
-#: keymap_alldefs.h:84
-msgid "jump to the end of the line"
-msgstr "hoppa till slutet av raden"
-
-#: keymap_alldefs.h:85
-msgid "move the cursor one character to the right"
-msgstr "flytta markören ett tecken till höger"
-
-#: keymap_alldefs.h:86
-msgid "move the cursor to the end of the word"
-msgstr "flytta markören till slutet av ordet"
-
-#: keymap_alldefs.h:87
-msgid "scroll down through the history list"
-msgstr "rulla ner genom historielistan"
-
-#: keymap_alldefs.h:88
-msgid "scroll up through the history list"
-msgstr "rulla upp genom historielistan"
-
-#: keymap_alldefs.h:89
-msgid "delete chars from cursor to end of line"
-msgstr "radera tecknen från markören till slutet på raden"
-
-#: keymap_alldefs.h:90
-msgid "delete chars from the cursor to the end of the word"
-msgstr "radera tecknen från markören till slutet på ordet"
-
-#: keymap_alldefs.h:91
-msgid "delete all chars on the line"
-msgstr "radera alla tecken på raden"
-
-#: keymap_alldefs.h:92
-msgid "delete the word in front of the cursor"
-msgstr "radera ordet framför markören"
-
-#: keymap_alldefs.h:93
-msgid "quote the next typed key"
-msgstr "citera nästa tryckta tangent"
-
-#: keymap_alldefs.h:94
-msgid "transpose character under cursor with previous"
-msgstr "byt tecknet under markören med föregående"
-
-#: keymap_alldefs.h:95
-msgid "capitalize the word"
-msgstr "skriv ordet med versaler"
-
-#: keymap_alldefs.h:96
-msgid "convert the word to lower case"
-msgstr "konvertera ordet till gemener"
-
-#: keymap_alldefs.h:97
-msgid "convert the word to upper case"
-msgstr "konvertera ordet till versaler"
-
-#: keymap_alldefs.h:98
-msgid "enter a muttrc command"
-msgstr "ange ett muttrc-kommando"
-
-#: keymap_alldefs.h:99
-msgid "enter a file mask"
-msgstr "ange en filmask"
-
-#: keymap_alldefs.h:100
-msgid "exit this menu"
-msgstr "avsluta den här menyn"
-
-#: keymap_alldefs.h:101
-msgid "filter attachment through a shell command"
-msgstr "filtrera bilaga genom ett skalkommando"
-
-#: keymap_alldefs.h:102
-msgid "move to the first entry"
-msgstr "flytta till den första posten"
-
-#: keymap_alldefs.h:103
-msgid "toggle a message's 'important' flag"
-msgstr "växla ett meddelandes \"important\"-flagga"
-
-#: keymap_alldefs.h:104
-#, fuzzy
-msgid "followup to newsgroup"
-msgstr "Svara till %s%s?"
-
-#: keymap_alldefs.h:105
-msgid "forward to newsgroup"
-msgstr ""
-
-#: keymap_alldefs.h:106
-msgid "forward a message with comments"
-msgstr "vidarebefordra ett meddelande med kommentarer"
-
-#: keymap_alldefs.h:107
-msgid "select the current entry"
-msgstr "välj den aktuella posten"
-
-#: keymap_alldefs.h:108
-#, fuzzy
-msgid "get all children of the current message"
-msgstr "Du är på det första meddelandet."
-
-#: keymap_alldefs.h:109
-#, fuzzy
-msgid "get message with Message-Id"
-msgstr "redigera meddelandet med huvuden"
-
-#: keymap_alldefs.h:110
-#, fuzzy
-msgid "get parent of the current message"
-msgstr "Du är på det första meddelandet."
-
-#: keymap_alldefs.h:111
-msgid "reply to all recipients"
-msgstr "svara till alla mottagare"
-
-#: keymap_alldefs.h:112
-msgid "scroll down 1/2 page"
-msgstr "rulla ner en halv sida"
-
-#: keymap_alldefs.h:113
-msgid "scroll up 1/2 page"
-msgstr "rulla upp en halv sida"
-
-#: keymap_alldefs.h:114
-msgid "this screen"
-msgstr "den här skärmen"
-
-#: keymap_alldefs.h:115
-msgid "jump to an index number"
-msgstr "hoppa till ett indexnummer"
-
-#: keymap_alldefs.h:116
-msgid "move to the last entry"
-msgstr "flytta till den sista posten"
-
-#: keymap_alldefs.h:117
-msgid "reply to specified mailing list"
-msgstr "svara till angiven sändlista"
-
-#: keymap_alldefs.h:118
-msgid "load list of all newsgroups from NNTP server"
-msgstr ""
-
-#: keymap_alldefs.h:119
-msgid "execute a macro"
-msgstr "kör ett makro"
-
-#: keymap_alldefs.h:120
-msgid "compose a new mail message"
-msgstr "komponera ett nytt brevmeddelande"
-
-#: keymap_alldefs.h:121
-msgid "break the thread in two"
-msgstr "dela tråden i två"
-
-#: keymap_alldefs.h:122
-msgid "open a different folder"
-msgstr "öppna en annan folder"
-
-#: keymap_alldefs.h:123
-msgid "open a different folder in read only mode"
-msgstr "öppna en annan folder i skrivskyddat läge"
-
-#: keymap_alldefs.h:124
-#, fuzzy
-msgid "open a different newsgroup"
-msgstr "öppna en annan folder"
-
-#: keymap_alldefs.h:125
-#, fuzzy
-msgid "open a different newsgroup in read only mode"
-msgstr "öppna en annan folder i skrivskyddat läge"
-
-#: keymap_alldefs.h:126
-msgid "clear a status flag from a message"
-msgstr "rensa en statusflagga från ett meddelande"
-
-#: keymap_alldefs.h:127
-msgid "delete messages matching a pattern"
-msgstr "radera meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:128
-msgid "force retrieval of mail from IMAP server"
-msgstr "tvinga hämtning av brev från IMAP-server"
-
-#: keymap_alldefs.h:129
-msgid "logout from all IMAP servers"
-msgstr ""
-
-#: keymap_alldefs.h:130
-msgid "retrieve mail from POP server"
-msgstr "hämta brev från POP-server"
-
-#: keymap_alldefs.h:131
-msgid "show only messages matching a pattern"
-msgstr "visa endast meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:132
-msgid "link tagged message to the current one"
-msgstr "länka markerade meddelande till det aktuella"
-
-#: keymap_alldefs.h:133
-msgid "open next mailbox with new mail"
-msgstr "öppna nästa brevlåda med nya brev"
-
-#: keymap_alldefs.h:134
-msgid "jump to the next new message"
-msgstr "hoppa till nästa nya meddelande"
-
-#: keymap_alldefs.h:135
-msgid "jump to the next new or unread message"
-msgstr "hoppa till nästa nya eller olästa meddelande"
-
-#: keymap_alldefs.h:136
-msgid "jump to the next subthread"
-msgstr "hoppa till nästa undertråd"
-
-#: keymap_alldefs.h:137
-msgid "jump to the next thread"
-msgstr "hoppa till nästa tråd"
-
-#: keymap_alldefs.h:138
-msgid "move to the next undeleted message"
-msgstr "flytta till nästa icke raderade meddelande"
-
-#: keymap_alldefs.h:139
-msgid "jump to the next unread message"
-msgstr "hoppa till nästa olästa meddelande"
-
-#: keymap_alldefs.h:140
-msgid "jump to parent message in thread"
-msgstr "hoppa till första meddelandet i tråden"
-
-#: keymap_alldefs.h:141
-msgid "jump to previous thread"
-msgstr "hoppa till föregående tråd"
-
-#: keymap_alldefs.h:142
-msgid "jump to previous subthread"
-msgstr "hoppa till föregående undertråd"
-
-#: keymap_alldefs.h:143
-msgid "move to the previous undeleted message"
-msgstr "flytta till föregående icke raderade meddelande"
-
-#: keymap_alldefs.h:144
-msgid "jump to the previous new message"
-msgstr "hoppa till föregående nya meddelande"
-
-#: keymap_alldefs.h:145
-msgid "jump to the previous new or unread message"
-msgstr "hoppa till föregående nya eller olästa meddelande"
-
-#: keymap_alldefs.h:146
-msgid "jump to the previous unread message"
-msgstr "hoppa till föregående olästa meddelande"
-
-#: keymap_alldefs.h:147
-msgid "mark the current thread as read"
-msgstr "märk den aktuella tråden som läst"
-
-#: keymap_alldefs.h:148
-msgid "mark the current subthread as read"
-msgstr "märk den aktuella undertråden som läst"
-
-#: keymap_alldefs.h:149
-#, fuzzy
-msgid "jump to root message in thread"
-msgstr "hoppa till första meddelandet i tråden"
-
-#: keymap_alldefs.h:150
-msgid "set a status flag on a message"
-msgstr "sätt en statusflagga på ett meddelande"
-
-#: keymap_alldefs.h:151
-msgid "save changes to mailbox"
-msgstr "spara ändringar av brevlåda"
-
-#: keymap_alldefs.h:152
-msgid "tag messages matching a pattern"
-msgstr "märk meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:153
-msgid "delete from mutt, don't touch on disk"
-msgstr ""
-
-#: keymap_alldefs.h:154
-msgid "undelete messages matching a pattern"
-msgstr "återställ meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:155
-msgid "untag messages matching a pattern"
-msgstr "avmarkera meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:156
-#, fuzzy
-msgid "create a hotkey macro for the current message"
-msgstr "Du är på det första meddelandet."
-
-#: keymap_alldefs.h:157
-msgid "move to the middle of the page"
-msgstr "flytta till mitten av sidan"
-
-#: keymap_alldefs.h:158
-msgid "move to the next entry"
-msgstr "flytta till nästa post"
-
-#: keymap_alldefs.h:159
-msgid "scroll down one line"
-msgstr "rulla ner en rad"
-
-#: keymap_alldefs.h:160
-msgid "move to the next page"
-msgstr "flytta till nästa sida"
-
-#: keymap_alldefs.h:161
-msgid "jump to the bottom of the message"
-msgstr "hoppa till slutet av meddelandet"
-
-#: keymap_alldefs.h:162
-msgid "toggle display of quoted text"
-msgstr "växla visning av citerad text"
-
-#: keymap_alldefs.h:163
-msgid "skip beyond quoted text"
-msgstr "hoppa över citerad text"
-
-#: keymap_alldefs.h:164
-msgid "jump to the top of the message"
-msgstr "hoppa till början av meddelandet"
-
-#: keymap_alldefs.h:165
-msgid "pipe message/attachment to a shell command"
-msgstr "skicka meddelandet/bilagan genom rör till ett skalkommando"
-
-#: keymap_alldefs.h:166
-#, fuzzy
-msgid "post message to newsgroup"
-msgstr "Återsänd meddelande till %s"
-
-#: keymap_alldefs.h:167
-msgid "move to the previous entry"
-msgstr "flytta till föregående post"
-
-#: keymap_alldefs.h:168
-msgid "scroll up one line"
-msgstr "rulla upp en rad"
-
-#: keymap_alldefs.h:169
-msgid "move to the previous page"
-msgstr "flytta till föregående sida"
-
-#: keymap_alldefs.h:170
-msgid "print the current entry"
-msgstr "skriv ut den aktuella posten"
-
-#: keymap_alldefs.h:171
-msgid "delete the current entry, bypassing the trash folder"
-msgstr ""
-
-#: keymap_alldefs.h:172
-msgid "delete the current thread, bypassing the trash folder"
-msgstr ""
-
-#: keymap_alldefs.h:173
-msgid "query external program for addresses"
-msgstr "fråga ett externt program efter adresser"
-
-#: keymap_alldefs.h:174
-msgid "append new query results to current results"
-msgstr "lägg till nya förfrågningsresultat till aktuellt resultat"
-
-#: keymap_alldefs.h:175
-msgid "save changes to mailbox and quit"
-msgstr "spara ändringar till brevlåda och avsluta"
-
-#: keymap_alldefs.h:176
-msgid "recall a postponed message"
-msgstr "återkalla ett uppskjutet meddelande"
-
-#: keymap_alldefs.h:177
-#, fuzzy
-msgid "reconstruct thread containing current message"
-msgstr "Tråden innehåller olästa meddelanden."
-
-#: keymap_alldefs.h:178
-msgid "clear and redraw the screen"
-msgstr "rensa och rita om skärmen"
-
-#: keymap_alldefs.h:179
-msgid "{internal}"
-msgstr "{internt}"
-
-#: keymap_alldefs.h:180
-msgid "rename the current mailbox (IMAP only)"
-msgstr "döp om den aktuella brevlådan (endast för IMAP)"
-
-#: keymap_alldefs.h:181
-msgid "reply to a message"
-msgstr "svara på ett meddelande"
-
-#: keymap_alldefs.h:182
-msgid "use the current message as a template for a new one"
-msgstr "använd det aktuella meddelande som mall för ett nytt"
-
-#: keymap_alldefs.h:183
-#, fuzzy
-msgid "save message/attachment to a mailbox/file"
-msgstr "spara meddelande/bilaga till fil"
-
-#: keymap_alldefs.h:184
-msgid "search for a regular expression"
-msgstr "sök efter ett reguljärt uttryck"
-
-#: keymap_alldefs.h:185
-msgid "search backwards for a regular expression"
-msgstr "sök bakåt efter ett reguljärt uttryck"
-
-#: keymap_alldefs.h:186
-msgid "search for next match"
-msgstr "sök efter nästa matchning"
-
-#: keymap_alldefs.h:187
-msgid "search for next match in opposite direction"
-msgstr "sök efter nästa matchning i motsatt riktning"
-
-#: keymap_alldefs.h:188
-msgid "toggle search pattern coloring"
-msgstr "växla färg på sökmönster"
-
-#: keymap_alldefs.h:189
-msgid "invoke a command in a subshell"
-msgstr "starta ett kommando i ett underskal"
-
-#: keymap_alldefs.h:190
-msgid "sort messages"
-msgstr "sortera meddelanden"
-
-#: keymap_alldefs.h:191
-msgid "sort messages in reverse order"
-msgstr "sortera meddelanden i omvänd ordning"
-
-#: keymap_alldefs.h:192
-#, fuzzy
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "avmarkera meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:193
-msgid "tag the current entry"
-msgstr "märk den aktuella posten"
-
-#: keymap_alldefs.h:194
-msgid "apply next function to tagged messages"
-msgstr "applicera nästa funktion på märkta meddelanden"
-
-#: keymap_alldefs.h:195
-msgid "apply next function ONLY to tagged messages"
-msgstr "applicera nästa funktion ENDAST på märkta meddelanden"
-
-#: keymap_alldefs.h:196
-msgid "tag the current subthread"
-msgstr "märk den aktuella undertråden"
-
-#: keymap_alldefs.h:197
-msgid "tag the current thread"
-msgstr "märk den aktuella tråden"
-
-#: keymap_alldefs.h:198
-msgid "toggle a message's 'new' flag"
-msgstr "växla ett meddelandes \"nytt\" flagga"
-
-#: keymap_alldefs.h:199
-#, fuzzy
-msgid "toggle view of read messages"
-msgstr "hoppa till föregående nya eller olästa meddelande"
-
-#: keymap_alldefs.h:200
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "växla huruvida brevlådan ska skrivas om"
-
-#: keymap_alldefs.h:201
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "växla bläddring över brevlådor eller alla filer"
-
-#: keymap_alldefs.h:202
-msgid "move to the top of the page"
-msgstr "flytta till början av sidan"
-
-#: keymap_alldefs.h:203
-msgid "mark all articles in newsgroup as unread"
-msgstr ""
-
-#: keymap_alldefs.h:204
-msgid "undelete the current entry"
-msgstr "återställ den aktuella posten"
-
-#: keymap_alldefs.h:205
-msgid "undelete all messages in thread"
-msgstr "återställ all meddelanden i tråden"
-
-#: keymap_alldefs.h:206
-msgid "undelete all messages in subthread"
-msgstr "återställ alla meddelanden i undertråden"
-
-#: keymap_alldefs.h:207
-#, fuzzy
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "avmarkera meddelanden som matchar ett mönster"
-
-#: keymap_alldefs.h:208
-msgid "show the Mutt version number and date"
-msgstr "visa Mutts versionsnummer och datum"
-
-#: keymap_alldefs.h:209
-msgid "view attachment using mailcap entry if necessary"
-msgstr "visa bilaga med \"mailcap\"-posten om nödvändigt"
-
-#: keymap_alldefs.h:210
-msgid "show MIME attachments"
-msgstr "visa MIME-bilagor"
-
-#: keymap_alldefs.h:211
-msgid "display the keycode for a key press"
-msgstr "visa tangentkoden för en tangenttryckning"
-
-#: keymap_alldefs.h:212
-#, fuzzy
-msgid "limit view to current thread"
-msgstr "märk den aktuella tråden"
-
-#: keymap_alldefs.h:213
-msgid "show currently active limit pattern"
-msgstr "visa aktivt begränsningsmönster"
-
-#: keymap_alldefs.h:214
-msgid "collapse/uncollapse current thread"
-msgstr "komprimera/expandera aktuell tråd"
-
-#: keymap_alldefs.h:215
-msgid "collapse/uncollapse all threads"
-msgstr "komprimera/expandera alla trådar"
-
-#: keymap_alldefs.h:216
-msgid "move the highlight to next mailbox"
-msgstr ""
-
-#: keymap_alldefs.h:217
-#, fuzzy
-msgid "move the highlight to next mailbox with new mail"
-msgstr "öppna nästa brevlåda med nya brev"
-
-#: keymap_alldefs.h:218
-#, fuzzy
-msgid "open highlighted mailbox"
-msgstr "Återöppnar brevlåda..."
-
-#: keymap_alldefs.h:219
-#, fuzzy
-msgid "scroll the sidebar down 1 page"
-msgstr "rulla ner en halv sida"
-
-#: keymap_alldefs.h:220
-#, fuzzy
-msgid "scroll the sidebar up 1 page"
-msgstr "rulla upp en halv sida"
-
-#: keymap_alldefs.h:221
-#, fuzzy
-msgid "move the highlight to previous mailbox"
-msgstr "flytta till föregående sida"
-
-#: keymap_alldefs.h:222
-#, fuzzy
-msgid "move the highlight to previous mailbox with new mail"
-msgstr "öppna nästa brevlåda med nya brev"
-
-#: keymap_alldefs.h:223
-#, fuzzy
-msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "växla bläddring över brevlådor eller alla filer"
-
-#: keymap_alldefs.h:224
-msgid "make the sidebar (in)visible"
-msgstr ""
-
-#: keymap_alldefs.h:225
-#, fuzzy
-msgid "open a different virtual folder"
-msgstr "öppna en annan folder"
-
-#: keymap_alldefs.h:226
-msgid "generate virtual folder from query"
-msgstr ""
-
-#: keymap_alldefs.h:227
-msgid "shifts virtual folder time window forwards"
-msgstr ""
-
-#: keymap_alldefs.h:228
-msgid "shifts virtual folder time window backwards"
-msgstr ""
-
-#: keymap_alldefs.h:229
-msgid "modify (notmuch) tags"
-msgstr ""
-
-#: keymap_alldefs.h:230
-#, fuzzy
-msgid "modify labels and then hide message"
-msgstr "Du är på det första meddelandet."
-
-#: keymap_alldefs.h:231
-msgid "read entire thread of the current message"
-msgstr ""
-
-#: keymap_alldefs.h:232
-#, fuzzy
-msgid "accept the chain constructed"
-msgstr "Godkänn den konstruerade kedjan"
-
-#: keymap_alldefs.h:233
-#, fuzzy
-msgid "append a remailer to the chain"
-msgstr "Lägg till en \"remailer\" till kedjan"
-
-#: keymap_alldefs.h:234
-#, fuzzy
-msgid "insert a remailer into the chain"
-msgstr "Infoga en \"remailer\" i kedjan"
-
-#: keymap_alldefs.h:235
-#, fuzzy
-msgid "delete a remailer from the chain"
-msgstr "Radera en \"remailer\" från kedjan"
-
-#: keymap_alldefs.h:236
-#, fuzzy
-msgid "select the previous element of the chain"
-msgstr "Välj föregående element i kedjan"
-
-#: keymap_alldefs.h:237
-#, fuzzy
-msgid "select the next element of the chain"
-msgstr "Välj nästa element i kedjan"
-
-#: keymap_alldefs.h:238
-msgid "send the message through a mixmaster remailer chain"
-msgstr "skicka meddelandet genom en \"mixmaster remailer\" kedja"
-
-#: keymap_alldefs.h:239
-msgid "attach a PGP public key"
-msgstr "bifoga en publik nyckel (PGP)"
-
-#: keymap_alldefs.h:240
-msgid "show PGP options"
-msgstr "visa PGP-flaggor"
-
-#: keymap_alldefs.h:241
-msgid "mail a PGP public key"
-msgstr "skicka en publik nyckel (PGP)"
-
-#: keymap_alldefs.h:242
-msgid "verify a PGP public key"
-msgstr "verifiera en publik nyckel (PGP)"
-
-#: keymap_alldefs.h:243
-msgid "view the key's user id"
-msgstr "visa nyckelns användaridentitet"
-
-#: keymap_alldefs.h:244
-msgid "check for classic PGP"
-msgstr "kolla efter klassisk PGP"
-
-#: keymap_alldefs.h:245
-msgid "show S/MIME options"
-msgstr "visa S/MIME-flaggor"
-
-#: keymap_alldefs.h:246
-msgid "make decrypted copy and delete"
-msgstr "skapa avkrypterad kopia och radera"
-
-#: keymap_alldefs.h:247
-msgid "make decrypted copy"
-msgstr "skapa avkrypterad kopia"
-
-#: keymap_alldefs.h:248
-msgid "wipe passphrase(s) from memory"
-msgstr "rensa lösenfras(er) från minnet"
-
-#: keymap_alldefs.h:249
-msgid "extract supported public keys"
-msgstr "extrahera stödda publika nycklar"
-
-#: lib/file.c:1003
+#: lib/file.c:1004
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Maxtiden överskreds när \"fcntl\"-låsning försöktes!"
 
-#: lib/file.c:1009
+#: lib/file.c:1010
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Väntar på fcntl-låsning... %d"
 
-#: lib/file.c:1036
+#: lib/file.c:1037
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Maxtiden överskreds när \"flock\"-låsning försöktes!"
 
-#: lib/file.c:1043
+#: lib/file.c:1044
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Väntar på \"flock\"-försök... %d"
@@ -3530,31 +2523,31 @@ msgstr "Heltalsöverflödning -- kan inte allokera minne!"
 msgid "Out of memory!"
 msgstr "Slut på minne!"
 
-#: main.c:86
+#: main.c:88
 #, fuzzy
 msgid ""
-"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -B\n"
-"       mutt [<options>] -D [-S]\n"
-"       mutt -v[v]\n"
+"       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] "
+"--] <addr> [...] < message\n"
+"       neomutt [<options>] -p\n"
+"       neomutt [<options>] -A <alias> [...]\n"
+"       neomutt [<options>] -Q <query> [...]\n"
+"       neomutt [<options>] -B\n"
+"       neomutt [<options>] -D [-S]\n"
+"       neomutt -v[v]\n"
 msgstr ""
-"användning: mutt [<flaggor>] [-z] [-f <fil> | -yZ]\n"
-"       mutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-a "
+"användning: neomutt [<flaggor>] [-z] [-f <fil> | -yZ]\n"
+"       neomutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-a "
 "<file> [...]] [--] <adress> [...]\n"
-"       mutt [<flaggor>] -p\n"
-"       mutt [<flaggor>] -A <alias> [...]\n"
-"       mutt [<flaggor>] -Q <förfrågan> [...]\n"
-"       mutt [<flaggor>] -D\n"
-"       mutt -v[v]\n"
+"       neomutt [<flaggor>] -p\n"
+"       neomutt [<flaggor>] -A <alias> [...]\n"
+"       neomutt [<flaggor>] -Q <förfrågan> [...]\n"
+"       neomutt [<flaggor>] -D\n"
+"       neomutt -v[v]\n"
 
-#: main.c:96
+#: main.c:98
 #, fuzzy
 msgid ""
 "options:\n"
@@ -3575,35 +2568,35 @@ msgstr ""
 "  -c <adress>   ange en \"carbon-copy\" (CC) adress\n"
 "  -D            skriv ut värdet på alla variabler på stdout"
 
-#: main.c:106
+#: main.c:108
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
 msgstr "  -d <nivå>     logga debug-utskrifter till ~/.muttdebug0"
 
-#: main.c:109
+#: main.c:111
 #, fuzzy
 msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
 "  -f <file>     specify which mailbox to read\n"
-"  -F <file>     specify an alternate muttrc file\n"
+"  -F <file>     specify an alternate neomuttrc file\n"
 "  -g <server>   specify a news server (if compiled with NNTP)\n"
 "  -G            select a newsgroup (if compiled with NNTP)\n"
 "  -H <file>     specify a draft file to read header and body from\n"
-"  -i <file>     specify a file which Mutt should include in the body\n"
+"  -i <file>     specify a file which NeoMutt should include in the body\n"
 "  -m <type>     specify a default mailbox type\n"
-"  -n            causes Mutt not to read the system Muttrc\n"
+"  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
 "  -e <kommando> ange ett kommando som ska köras efter initiering\n"
 "  -f <fil>      ange vilken brevlåda som ska läsas\n"
-"  -F <fil>      ange en alternativ muttrc-fil\n"
+"  -F <fil>      ange en alternativ neomuttrc-fil\n"
 "  -H <fil>      ange en filmall att läsa huvud från\n"
-"  -i <fil>      ange en fil som Mutt ska inkludera i svaret\n"
+"  -i <fil>      ange en fil som NeoMutt ska inkludera i svaret\n"
 "  -m <typ>      ange standardtyp för brevlådan\n"
-"  -n            gör så att Mutt inte läser systemets Muttrc\n"
+"  -n            gör så att NeoMutt inte läser systemets neomuttrc\n"
 "  -p            återkalla ett uppskjutet meddelande"
 
-#: main.c:121
+#: main.c:123
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -3629,66 +2622,66 @@ msgstr ""
 "omedelbart om inget finns\n"
 "  -h            den här hjälptexten"
 
-#: main.c:153
+#: main.c:155
 msgid "Error initializing terminal."
 msgstr "Fel vid initiering av terminalen."
 
-#: main.c:325
+#: main.c:327
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
 msgstr "Fel: '%s' är ett dåligt IDN."
 
-#: main.c:328
+#: main.c:330
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Avlusning på nivå %d.\n"
 
-#: main.c:331
+#: main.c:333
 #, fuzzy
 msgid "DEBUG was not defined during compilation. -d Ignored.\n"
 msgstr "DEBUG var inte valt vid kompilering. Ignoreras.\n"
 
-#: main.c:354
+#: main.c:356
 #, fuzzy, c-format
 msgid "Debugging at file %s.\n"
 msgstr "Avlusning på nivå %d.\n"
 
-#: main.c:356
+#: main.c:358
 #, fuzzy, c-format
 msgid "DEBUG was not defined during compilation. -l Ignored.\n"
 msgstr "DEBUG var inte valt vid kompilering. Ignoreras.\n"
 
-#: main.c:536
+#: main.c:541
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s finns inte. Skapa den?"
 
-#: main.c:582
+#: main.c:588
 msgid "Failed to parse mailto: link\n"
 msgstr "Misslyckades att tolka mailto:-länk\n"
 
-#: main.c:594
+#: main.c:600
 msgid "No recipients specified.\n"
 msgstr "Inga mottagare angivna.\n"
 
-#: main.c:620
+#: main.c:626
 msgid "Cannot use -E flag with stdin\n"
 msgstr ""
 
-#: main.c:772
+#: main.c:776
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kunde inte bifoga fil.\n"
 
-#: main.c:853
+#: main.c:856
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda med nya brev."
 
-#: main.c:875
+#: main.c:878
 msgid "No incoming mailboxes defined."
 msgstr "Inga inkommande brevlådor definierade."
 
-#: main.c:918
+#: main.c:921
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
@@ -3710,104 +2703,104 @@ msgstr "Kunde inte låsa %s\n"
 msgid "Can't write message"
 msgstr "Kan inte skriva meddelande"
 
-#: mbox.c:686
+#: mbox.c:689
 msgid "Reopening mailbox..."
 msgstr "Återöppnar brevlåda..."
 
-#: mbox.c:960
+#: mbox.c:963
 msgid "Mailbox was corrupted!"
 msgstr "Brevlådan blev skadad!"
 
-#: mbox.c:1047 mbox.c:1313
+#: mbox.c:1051 mbox.c:1317
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fatalt fel! Kunde inte öppna brevlådan igen!"
 
-#: mbox.c:1101
+#: mbox.c:1105
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: mbox modifierad, men inga modifierade meddelanden! (rapportera det här "
 "felet)"
 
-#: mbox.c:1125 mh.c:2309 mutt_notmuch.c:2509 mx.c:562
+#: mbox.c:1129 mh.c:2309 mutt_notmuch.c:2530 mx.c:562
 #, c-format
 msgid "Writing %s..."
 msgstr "Skriver %s..."
 
-#: mbox.c:1262
+#: mbox.c:1266
 msgid "Committing changes..."
 msgstr "Skriver ändringar..."
 
-#: mbox.c:1297
+#: mbox.c:1301
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Skrivning misslyckades! Sparade del av brevlåda i %s"
 
-#: mbox.c:1370
+#: mbox.c:1374
 msgid "Could not reopen mailbox!"
 msgstr "Kunde inte återöppna brevlåda!"
 
-#: menu.c:537
+#: menu.c:539
 msgid "Jump to: "
 msgstr "Hoppa till: "
 
-#: menu.c:546
+#: menu.c:548
 msgid "Invalid index number."
 msgstr "Ogiltigt indexnummer."
 
-#: menu.c:550 menu.c:572 menu.c:636 menu.c:679 menu.c:695 menu.c:706 menu.c:717
-#: menu.c:728 menu.c:741 menu.c:754 menu.c:1285
+#: menu.c:552 menu.c:574 menu.c:638 menu.c:681 menu.c:697 menu.c:708 menu.c:719
+#: menu.c:730 menu.c:743 menu.c:756 menu.c:1287
 msgid "No entries."
 msgstr "Inga poster."
 
-#: menu.c:569
+#: menu.c:571
 msgid "You cannot scroll down farther."
 msgstr "Du kan inte rulla längre ner."
 
-#: menu.c:587
+#: menu.c:589
 msgid "You cannot scroll up farther."
 msgstr "Du kan inte rulla längre upp."
 
-#: menu.c:629
+#: menu.c:631
 msgid "You are on the first page."
 msgstr "Du är på den första sidan."
 
-#: menu.c:630
+#: menu.c:632
 msgid "You are on the last page."
 msgstr "Du är på den sista sidan."
 
-#: menu.c:765
+#: menu.c:767
 msgid "You are on the last entry."
 msgstr "Du är på den sista posten."
 
-#: menu.c:776
+#: menu.c:778
 msgid "You are on the first entry."
 msgstr "Du är på den första posten."
 
-#: menu.c:938 pager.c:2439 pattern.c:2008
+#: menu.c:940 pager.c:2454 pattern.c:2013
 msgid "Search for: "
 msgstr "Sök efter: "
 
-#: menu.c:939 pager.c:2440 pattern.c:2009
+#: menu.c:941 pager.c:2455 pattern.c:2014
 msgid "Reverse search for: "
 msgstr "Sök i omvänd ordning efter: "
 
-#: menu.c:987 pager.c:2393 pager.c:2414 pager.c:2537 pattern.c:2125
+#: menu.c:989 pager.c:2408 pager.c:2429 pager.c:2552 pattern.c:2130
 msgid "Not found."
 msgstr "Hittades inte."
 
-#: menu.c:1148
+#: menu.c:1150
 msgid "No tagged entries."
 msgstr "Inga märkta poster."
 
-#: menu.c:1249
+#: menu.c:1251
 msgid "Search is not implemented for this menu."
 msgstr "Sökning är inte implementerad för den här menyn."
 
-#: menu.c:1254
+#: menu.c:1256
 msgid "Jumping is not implemented for dialogs."
 msgstr "Hoppning är inte implementerad för dialoger."
 
-#: menu.c:1288
+#: menu.c:1290
 msgid "Tagging is not supported."
 msgstr "Märkning stöds inte."
 
@@ -3826,17 +2819,17 @@ msgstr "Kunde inte skicka meddelandet."
 msgid "_maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kunde inte sätta tid på fil"
 
-#: muttlib.c:813
+#: muttlib.c:470
 #, c-format
 msgid "mutt_randbuf len=%zu"
 msgstr ""
 
-#: muttlib.c:833
+#: muttlib.c:490
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr ""
 
-#: muttlib.c:840
+#: muttlib.c:497
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr ""
@@ -3844,48 +2837,48 @@ msgstr ""
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:1082
+#: muttlib.c:739
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Filen är en katalog, spara i den? [(j)a, n(ej), (a)lla]"
 
-#: muttlib.c:1082
+#: muttlib.c:739
 msgid "yna"
 msgstr "jna"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:1101
+#: muttlib.c:758
 msgid "File is a directory, save under it?"
 msgstr "Filen är en katalog, spara i den?"
 
-#: muttlib.c:1105
+#: muttlib.c:762
 msgid "File under directory: "
 msgstr "Fil i katalog: "
 
-#: muttlib.c:1115
+#: muttlib.c:772
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen finns, skriv (ö)ver, (l)ägg till, eller (a)vbryt?"
 
-#: muttlib.c:1115
+#: muttlib.c:772
 msgid "oac"
 msgstr "öla"
 
-#: muttlib.c:1832
+#: muttlib.c:1489
 msgid "Can't save message to POP mailbox."
 msgstr "Kan inte spara meddelande till POP-brevlåda."
 
-#: muttlib.c:1841
+#: muttlib.c:1498
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lägg till meddelanden till %s?"
 
-#: muttlib.c:1852
+#: muttlib.c:1509
 #, fuzzy
 msgid "Can't save message to news server."
 msgstr "Kunde inte lämna meddelanden på server."
 
-#: muttlib.c:1861
+#: muttlib.c:1518
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s är inte en brevlåda!"
@@ -3899,54 +2892,54 @@ msgstr ""
 msgid "source: too many arguments"
 msgstr "source: för många parametrar"
 
-#: mutt_notmuch.c:401 mutt_notmuch.c:1900 mutt_notmuch.c:1909
-#: mutt_notmuch.c:1920 mutt_notmuch.c:2089
+#: mutt_notmuch.c:401 mutt_notmuch.c:1912 mutt_notmuch.c:1921
+#: mutt_notmuch.c:1932 mutt_notmuch.c:2107
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "Misslyckades att tolka mailto:-länk\n"
 
-#: mutt_notmuch.c:465
+#: mutt_notmuch.c:460
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: mutt_notmuch.c:562
+#: mutt_notmuch.c:564
 msgid ""
 "Invalid nm_query_window_timebase value (valid values are: hour, day, week, "
 "month or year)."
 msgstr ""
 
-#: mutt_notmuch.c:615
+#: mutt_notmuch.c:619
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "Misslyckades att tolka mailto:-länk\n"
 
-#: mutt_notmuch.c:702
+#: mutt_notmuch.c:698
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Väntar på fcntl-låsning... %d"
 
-#: mutt_notmuch.c:710
+#: mutt_notmuch.c:706
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
 msgstr ""
 
-#: mutt_notmuch.c:711
+#: mutt_notmuch.c:707
 #, fuzzy
 msgid "unknown reason"
 msgstr "okänt fel"
 
-#: mutt_notmuch.c:1131
+#: mutt_notmuch.c:1127
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Skickar meddelande..."
 
-#: mutt_notmuch.c:1830
+#: mutt_notmuch.c:1838
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: mutt_notmuch.c:2617
+#: mutt_notmuch.c:2638
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Kan inte lägga till folder: %s"
@@ -4043,7 +3036,7 @@ msgstr "Okänd"
 msgid "[unable to calculate]"
 msgstr "[kan inte beräkna]"
 
-#: mutt_ssl.c:383 mutt_ssl_gnutls.c:489
+#: mutt_ssl.c:383 mutt_ssl_gnutls.c:490
 msgid "[invalid date]"
 msgstr "[ogiltigt datum]"
 
@@ -4074,40 +3067,40 @@ msgstr "Kunde inte hämta certifikat från \"peer\""
 msgid "certificate owner does not match hostname %s"
 msgstr "Ägarens S/MIME-certifikat matchar inte avsändarens."
 
-#: mutt_ssl.c:812 mutt_ssl_gnutls.c:568
+#: mutt_ssl.c:812 mutt_ssl_gnutls.c:569
 msgid "This certificate belongs to:"
 msgstr "Det här certifikatet tillhör:"
 
-#: mutt_ssl.c:820 mutt_ssl_gnutls.c:606
+#: mutt_ssl.c:820 mutt_ssl_gnutls.c:607
 msgid "This certificate was issued by:"
 msgstr "Det här certifikatet utfärdades av:"
 
-#: mutt_ssl.c:829 mutt_ssl_gnutls.c:645
+#: mutt_ssl.c:829 mutt_ssl_gnutls.c:646
 #, c-format
 msgid "This certificate is valid"
 msgstr "Det här certifikatet är giltigt"
 
-#: mutt_ssl.c:830 mutt_ssl_gnutls.c:648
+#: mutt_ssl.c:830 mutt_ssl_gnutls.c:649
 #, c-format
 msgid "   from %s"
 msgstr "   från %s"
 
-#: mutt_ssl.c:832 mutt_ssl_gnutls.c:652
+#: mutt_ssl.c:832 mutt_ssl_gnutls.c:653
 #, c-format
 msgid "     to %s"
 msgstr "     till %s"
 
-#: mutt_ssl.c:838 mutt_ssl_gnutls.c:657
+#: mutt_ssl.c:838 mutt_ssl_gnutls.c:658
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 Fingeravtryck: %s"
 
-#: mutt_ssl.c:841 mutt_ssl_gnutls.c:660
+#: mutt_ssl.c:841 mutt_ssl_gnutls.c:661
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 Fingeravtryck: %s"
 
-#: mutt_ssl.c:844 mutt_ssl_gnutls.c:693
+#: mutt_ssl.c:844 mutt_ssl_gnutls.c:694
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr ""
@@ -4118,42 +3111,42 @@ msgstr ""
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: mutt_ssl.c:866
+#: mutt_ssl.c:867
 msgid "roas"
 msgstr ""
 
-#: mutt_ssl.c:870
+#: mutt_ssl.c:871
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: mutt_ssl.c:872 mutt_ssl_gnutls.c:700
+#: mutt_ssl.c:873 mutt_ssl_gnutls.c:701
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
 
-#: mutt_ssl.c:877
+#: mutt_ssl.c:878
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: mutt_ssl.c:879 mutt_ssl_gnutls.c:711
+#: mutt_ssl.c:880 mutt_ssl_gnutls.c:712
 msgid "(r)eject, accept (o)nce"
 msgstr "(f)örkasta, (g)odkänn den här gången"
 
-#: mutt_ssl.c:883 mutt_ssl_gnutls.c:722 ncrypt/crypt_gpgme.c:4165
-#: ncrypt/pgpkey.c:526 ncrypt/smime.c:415
+#: mutt_ssl.c:884 mutt_ssl_gnutls.c:723 ncrypt/crypt_gpgme.c:4166
+#: ncrypt/pgpkey.c:525 ncrypt/smime.c:418
 msgid "Exit  "
 msgstr "Avsluta "
 
-#: mutt_ssl.c:912 mutt_ssl_gnutls.c:766
+#: mutt_ssl.c:913 mutt_ssl_gnutls.c:767
 msgid "Warning: Couldn't save certificate"
 msgstr "Varning: kunde inte spara certifikat"
 
-#: mutt_ssl.c:917 mutt_ssl_gnutls.c:771
+#: mutt_ssl.c:918 mutt_ssl_gnutls.c:772
 msgid "Certificate saved"
 msgstr "Certifikat sparat"
 
-#: mutt_ssl.c:1033
+#: mutt_ssl.c:1034
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Certifikat sparat"
@@ -4161,15 +3154,15 @@ msgstr "Certifikat sparat"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: mutt_ssl.c:1111 mutt_ssl_gnutls.c:1076
+#: mutt_ssl.c:1112 mutt_ssl_gnutls.c:1078
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: mutt_ssl.c:1122
+#: mutt_ssl.c:1123
 msgid "I/O error"
 msgstr "I/O-fel"
 
-#: mutt_ssl.c:1131
+#: mutt_ssl.c:1132
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL misslyckades: %s"
@@ -4177,12 +3170,12 @@ msgstr "SSL misslyckades: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: mutt_ssl.c:1156
+#: mutt_ssl.c:1157
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Fel: kunde inte skapa OpenSSL-underprocess!"
 
-#: mutt_ssl.c:1213 mutt_ssl.c:1310
+#: mutt_ssl.c:1214 mutt_ssl.c:1311
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -4190,7 +3183,7 @@ msgstr ""
 msgid "Error: no TLS socket open"
 msgstr "Fel: ingen TLS-socket öppen"
 
-#: mutt_ssl_gnutls.c:195 mutt_ssl_gnutls.c:800 mutt_ssl_gnutls.c:810
+#: mutt_ssl_gnutls.c:195 mutt_ssl_gnutls.c:801 mutt_ssl_gnutls.c:811
 msgid "Unable to get certificate from peer"
 msgstr "Kunde inte hämta certifikat från \"peer\""
 
@@ -4203,35 +3196,35 @@ msgstr "Certifikatverifieringsfel (%s)"
 msgid "Certificate is not X.509"
 msgstr "Certifikat är inte X.509"
 
-#: mutt_ssl_gnutls.c:375 mutt_ssl_gnutls.c:547
+#: mutt_ssl_gnutls.c:376 mutt_ssl_gnutls.c:548
 msgid "Error initialising gnutls certificate data"
 msgstr "Fel vid initiering av gnutls certifikatdata"
 
-#: mutt_ssl_gnutls.c:382 mutt_ssl_gnutls.c:554
+#: mutt_ssl_gnutls.c:383 mutt_ssl_gnutls.c:555
 msgid "Error processing certificate data"
 msgstr "Fel vid bearbeting av certifikatdata"
 
-#: mutt_ssl_gnutls.c:537
+#: mutt_ssl_gnutls.c:538
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:666
+#: mutt_ssl_gnutls.c:667
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "VARNING: Servercertifikat är inte giltigt än"
 
-#: mutt_ssl_gnutls.c:671
+#: mutt_ssl_gnutls.c:672
 msgid "WARNING: Server certificate has expired"
 msgstr "VARNING: Servercertifikat har utgått"
 
-#: mutt_ssl_gnutls.c:677
+#: mutt_ssl_gnutls.c:678
 msgid "WARNING: Server certificate has been revoked"
 msgstr "VARNING: Servercertifikat har återkallats"
 
-#: mutt_ssl_gnutls.c:683
+#: mutt_ssl_gnutls.c:684
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "VARNING: Servervärdnamnet matchar inte certifikat"
 
-#: mutt_ssl_gnutls.c:689
+#: mutt_ssl_gnutls.c:690
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "VARNING: Signerare av servercertifikat är inte en CA"
 
@@ -4241,7 +3234,7 @@ msgstr "VARNING: Signerare av servercertifikat är inte en CA"
 #. * This is an interactive certificate confirmation prompt for
 #. * a GNUTLS connection.
 #.
-#: mutt_ssl_gnutls.c:707
+#: mutt_ssl_gnutls.c:708
 msgid "roa"
 msgstr "fgv"
 
@@ -4251,19 +3244,19 @@ msgstr "fgv"
 #. * These is an interactive certificate confirmation prompt for
 #. * a GNUTLS connection.
 #.
-#: mutt_ssl_gnutls.c:718
+#: mutt_ssl_gnutls.c:719
 msgid "ro"
 msgstr "fg"
 
-#: mutt_ssl_gnutls.c:961 mutt_ssl_gnutls.c:1001
+#: mutt_ssl_gnutls.c:962 mutt_ssl_gnutls.c:1002
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Alla tillgängliga protokoll för TLS/SSL-anslutning inaktiverade"
 
-#: mutt_ssl_gnutls.c:1008
+#: mutt_ssl_gnutls.c:1009
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:1128
+#: mutt_ssl_gnutls.c:1130
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS-anslutning använder %s (%s/%s/%s)"
@@ -4298,190 +3291,190 @@ msgstr "Markerar raderade meddelanden..."
 msgid "Can't open trash folder"
 msgstr "Kan inte lägga till folder: %s"
 
-#: mx.c:665
+#: mx.c:666
 msgid "Mark all articles read?"
 msgstr ""
 
-#: mx.c:708
+#: mx.c:709
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Flytta lästa meddelanden till %s?"
 
-#: mx.c:724 mx.c:1020
+#: mx.c:725 mx.c:1021
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Rensa %d raderat meddelande?"
 
-#: mx.c:725 mx.c:1021
+#: mx.c:726 mx.c:1022
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Rensa %d raderade meddelanden?"
 
-#: mx.c:746
+#: mx.c:747
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Flyttar lästa meddelanden till %s..."
 
-#: mx.c:806 mx.c:1011
+#: mx.c:807 mx.c:1012
 msgid "Mailbox is unchanged."
 msgstr "Brevlåda är oförändrad."
 
-#: mx.c:859
+#: mx.c:860
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d behölls, %d flyttades, %d raderades."
 
-#: mx.c:862 mx.c:1073
+#: mx.c:863 mx.c:1074
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d behölls, %d raderades."
 
-#: mx.c:995
+#: mx.c:996
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Tryck \"%s\" för att växla skrivning"
 
-#: mx.c:997
+#: mx.c:998
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Använd \"toggle-write\" för att återaktivera skrivning!"
 
-#: mx.c:999
+#: mx.c:1000
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Brevlåda är märkt som ej skrivbar. %s"
 
-#: mx.c:1067
+#: mx.c:1068
 msgid "Mailbox checkpointed."
 msgstr "Brevlåda är synkroniserad."
 
-#: ncrypt/crypt_gpgme.c:457
+#: ncrypt/crypt_gpgme.c:459
 #, c-format
 msgid "error creating gpgme context: %s\n"
 msgstr "fel vid skapande av gpgme-kontext: %s\n"
 
-#: ncrypt/crypt_gpgme.c:467
+#: ncrypt/crypt_gpgme.c:469
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
 msgstr "fel vid aktivering av CMS-protokoll: %s\n"
 
-#: ncrypt/crypt_gpgme.c:489
+#: ncrypt/crypt_gpgme.c:491
 #, c-format
 msgid "error creating gpgme data object: %s\n"
 msgstr "fel vid skapande av gpgme dataobjekt: %s\n"
 
-#: ncrypt/crypt_gpgme.c:558 ncrypt/crypt_gpgme.c:579 ncrypt/crypt_gpgme.c:1644
-#: ncrypt/crypt_gpgme.c:2374
+#: ncrypt/crypt_gpgme.c:560 ncrypt/crypt_gpgme.c:581 ncrypt/crypt_gpgme.c:1646
+#: ncrypt/crypt_gpgme.c:2376
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "fel vid allokering av dataobjekt: %s\n"
 
-#: ncrypt/crypt_gpgme.c:598
+#: ncrypt/crypt_gpgme.c:600
 #, c-format
 msgid "error rewinding data object: %s\n"
 msgstr "fel vid tillbakaspolning av dataobjekt: %s\n"
 
-#: ncrypt/crypt_gpgme.c:614
+#: ncrypt/crypt_gpgme.c:616
 msgid "[tempfile]"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:620 ncrypt/crypt_gpgme.c:674
+#: ncrypt/crypt_gpgme.c:622 ncrypt/crypt_gpgme.c:676
 #, c-format
 msgid "error reading data object: %s\n"
 msgstr "fel vid läsning av dataobjekt: %s\n"
 
-#: ncrypt/crypt_gpgme.c:648 ncrypt/crypt_gpgme.c:3805 ncrypt/pgpkey.c:568
-#: ncrypt/pgpkey.c:742
+#: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
+#: ncrypt/pgpkey.c:741
 msgid "Can't create temporary file"
 msgstr "Kan inte skapa tillfällig fil"
 
-#: ncrypt/crypt_gpgme.c:756
+#: ncrypt/crypt_gpgme.c:758
 #, c-format
 msgid "error adding recipient `%s': %s\n"
 msgstr "fel vid tilläggning av mottagare `%s': %s\n"
 
-#: ncrypt/crypt_gpgme.c:797
+#: ncrypt/crypt_gpgme.c:799
 #, c-format
 msgid "secret key `%s' not found: %s\n"
 msgstr "hemlig nyckel `%s' hittades inte: %s\n"
 
-#: ncrypt/crypt_gpgme.c:806
+#: ncrypt/crypt_gpgme.c:808
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
 msgstr "otydlig specifikation av hemlig nyckel `%s'\n"
 
-#: ncrypt/crypt_gpgme.c:817
+#: ncrypt/crypt_gpgme.c:819
 #, c-format
 msgid "error setting secret key `%s': %s\n"
 msgstr "fel vid sättning av hemlig nyckel `%s': %s\n"
 
-#: ncrypt/crypt_gpgme.c:831
+#: ncrypt/crypt_gpgme.c:833
 #, c-format
 msgid "error setting PKA signature notation: %s\n"
 msgstr "fel vid sättning av notation för PKA-signatur: %s\n"
 
-#: ncrypt/crypt_gpgme.c:887
+#: ncrypt/crypt_gpgme.c:889
 #, c-format
 msgid "error encrypting data: %s\n"
 msgstr "fel vid kryptering av data: %s\n"
 
-#: ncrypt/crypt_gpgme.c:1015
+#: ncrypt/crypt_gpgme.c:1017
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "fel vid signering av data: %s\n"
 
-#: ncrypt/crypt_gpgme.c:1026
+#: ncrypt/crypt_gpgme.c:1028
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1238
+#: ncrypt/crypt_gpgme.c:1240
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Varning: En av nycklarna har blivit återkallad\n"
 
-#: ncrypt/crypt_gpgme.c:1247
+#: ncrypt/crypt_gpgme.c:1249
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Varning: Nyckeln som användes för att skapa signaturen utgick vid: "
 
-#: ncrypt/crypt_gpgme.c:1254
+#: ncrypt/crypt_gpgme.c:1256
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Varning: Åtminstone en certifikatsnyckel har utgått\n"
 
-#: ncrypt/crypt_gpgme.c:1270
+#: ncrypt/crypt_gpgme.c:1272
 msgid "Warning: The signature expired at: "
 msgstr "Varning: Signaturen utgick vid: "
 
-#: ncrypt/crypt_gpgme.c:1276
+#: ncrypt/crypt_gpgme.c:1278
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Kan inte verifiera på grund av saknad nyckel eller certifikat\n"
 
-#: ncrypt/crypt_gpgme.c:1282
+#: ncrypt/crypt_gpgme.c:1284
 msgid "The CRL is not available\n"
 msgstr "CRL:en är inte tillgänglig\n"
 
-#: ncrypt/crypt_gpgme.c:1288
+#: ncrypt/crypt_gpgme.c:1290
 msgid "Available CRL is too old\n"
 msgstr "Tillgänglig CRL är för gammal\n"
 
-#: ncrypt/crypt_gpgme.c:1293
+#: ncrypt/crypt_gpgme.c:1295
 msgid "A policy requirement was not met\n"
 msgstr "Ett policykrav blev inte uppfyllt\n"
 
-#: ncrypt/crypt_gpgme.c:1302
+#: ncrypt/crypt_gpgme.c:1304
 msgid "A system error occurred"
 msgstr "Ett systemfel inträffade"
 
-#: ncrypt/crypt_gpgme.c:1333
+#: ncrypt/crypt_gpgme.c:1335
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "VARNING: PKA-post matchar inte signerarens adress: "
 
-#: ncrypt/crypt_gpgme.c:1341
+#: ncrypt/crypt_gpgme.c:1343
 msgid "PKA verified signer's address is: "
 msgstr "PKA verifierade att signerarens adress är: "
 
-#: ncrypt/crypt_gpgme.c:1355 ncrypt/crypt_gpgme.c:3527
+#: ncrypt/crypt_gpgme.c:1357 ncrypt/crypt_gpgme.c:3530
 msgid "Fingerprint: "
 msgstr "Fingeravtryck: "
 
-#: ncrypt/crypt_gpgme.c:1418
+#: ncrypt/crypt_gpgme.c:1420
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -4489,11 +3482,11 @@ msgstr ""
 "VARNING: Vi har INGEN indikation hurvida nyckeln tillhör personen med namnet "
 "som visas ovanför\n"
 
-#: ncrypt/crypt_gpgme.c:1425
+#: ncrypt/crypt_gpgme.c:1427
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "VARNING: Nyckeln TILLHÖR INTE personen med namnet som visas ovanför\n"
 
-#: ncrypt/crypt_gpgme.c:1429
+#: ncrypt/crypt_gpgme.c:1431
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
@@ -4501,36 +3494,36 @@ msgstr ""
 "VARNING: Det är INTE säkert att nyckeln tillhör personen med namnet som "
 "visas ovanför\n"
 
-#: ncrypt/crypt_gpgme.c:1460 ncrypt/crypt_gpgme.c:1465
-#: ncrypt/crypt_gpgme.c:3526
+#: ncrypt/crypt_gpgme.c:1462 ncrypt/crypt_gpgme.c:1467
+#: ncrypt/crypt_gpgme.c:3529
 msgid "aka: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1475
+#: ncrypt/crypt_gpgme.c:1477
 msgid "KeyID "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1484 ncrypt/crypt_gpgme.c:1489
+#: ncrypt/crypt_gpgme.c:1486 ncrypt/crypt_gpgme.c:1491
 #, fuzzy
 msgid "created: "
 msgstr "Skapa %s?"
 
-#: ncrypt/crypt_gpgme.c:1566
+#: ncrypt/crypt_gpgme.c:1568
 #, fuzzy, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "Fel vid hämtning av nyckelinformation: "
 
-#: ncrypt/crypt_gpgme.c:1573 ncrypt/crypt_gpgme.c:1588
+#: ncrypt/crypt_gpgme.c:1575 ncrypt/crypt_gpgme.c:1590
 #, fuzzy
 msgid "Good signature from:"
 msgstr "Bra signatur från: "
 
-#: ncrypt/crypt_gpgme.c:1580
+#: ncrypt/crypt_gpgme.c:1582
 #, fuzzy
 msgid "*BAD* signature from:"
 msgstr "Bra signatur från: "
 
-#: ncrypt/crypt_gpgme.c:1596
+#: ncrypt/crypt_gpgme.c:1598
 #, fuzzy
 msgid "Problem signature from:"
 msgstr "Bra signatur från: "
@@ -4538,32 +3531,32 @@ msgstr "Bra signatur från: "
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: ncrypt/crypt_gpgme.c:1603
+#: ncrypt/crypt_gpgme.c:1605
 #, fuzzy
 msgid "               expires: "
 msgstr "                aka: "
 
-#: ncrypt/crypt_gpgme.c:1652 ncrypt/crypt_gpgme.c:1876
-#: ncrypt/crypt_gpgme.c:2593
+#: ncrypt/crypt_gpgme.c:1654 ncrypt/crypt_gpgme.c:1878
+#: ncrypt/crypt_gpgme.c:2595
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Signaturinformation börjar --]\n"
 
-#: ncrypt/crypt_gpgme.c:1663
+#: ncrypt/crypt_gpgme.c:1665
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Fel: verifiering misslyckades: %s\n"
 
-#: ncrypt/crypt_gpgme.c:1715
+#: ncrypt/crypt_gpgme.c:1717
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Notation börjar (signatur av: %s) ***\n"
 
-#: ncrypt/crypt_gpgme.c:1734
+#: ncrypt/crypt_gpgme.c:1736
 msgid "*** End Notation ***\n"
 msgstr "*** Notation slutar ***\n"
 
-#: ncrypt/crypt_gpgme.c:1742 ncrypt/crypt_gpgme.c:1890
-#: ncrypt/crypt_gpgme.c:2605
+#: ncrypt/crypt_gpgme.c:1744 ncrypt/crypt_gpgme.c:1892
+#: ncrypt/crypt_gpgme.c:2607
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -4571,7 +3564,7 @@ msgstr ""
 "[-- Slut på signaturinformation --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:1845
+#: ncrypt/crypt_gpgme.c:1847
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -4580,21 +3573,21 @@ msgstr ""
 "[-- Fel: avkryptering misslyckades: %s --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2381
+#: ncrypt/crypt_gpgme.c:2383
 #, fuzzy
 msgid "Error extracting key data!\n"
 msgstr "Fel vid hämtning av nyckelinformation: "
 
-#: ncrypt/crypt_gpgme.c:2570
+#: ncrypt/crypt_gpgme.c:2572
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Fel: avkryptering/verifiering misslyckades: %s\n"
 
-#: ncrypt/crypt_gpgme.c:2614
+#: ncrypt/crypt_gpgme.c:2616
 msgid "Error: copy data failed\n"
 msgstr "Fel: datakopiering misslyckades\n"
 
-#: ncrypt/crypt_gpgme.c:2635 ncrypt/pgp.c:524
+#: ncrypt/crypt_gpgme.c:2637 ncrypt/pgp.c:526
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4602,11 +3595,11 @@ msgstr ""
 "[-- PGP-MEDDELANDE BÖRJAR --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2637 ncrypt/pgp.c:526
+#: ncrypt/crypt_gpgme.c:2639 ncrypt/pgp.c:528
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- START PÅ BLOCK MED PUBLIK PGP-NYCKEL --]\n"
 
-#: ncrypt/crypt_gpgme.c:2639 ncrypt/pgp.c:528
+#: ncrypt/crypt_gpgme.c:2641 ncrypt/pgp.c:530
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4614,19 +3607,19 @@ msgstr ""
 "[-- START PÅ PGP-SIGNERAT MEDDELANDE --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2665 ncrypt/pgp.c:571
+#: ncrypt/crypt_gpgme.c:2667 ncrypt/pgp.c:573
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGP-MEDDELANDE SLUTAR --]\n"
 
-#: ncrypt/crypt_gpgme.c:2667 ncrypt/pgp.c:578
+#: ncrypt/crypt_gpgme.c:2669 ncrypt/pgp.c:580
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- SLUT PÅ BLOCK MED PUBLIK PGP-NYCKEL --]\n"
 
-#: ncrypt/crypt_gpgme.c:2669 ncrypt/pgp.c:580
+#: ncrypt/crypt_gpgme.c:2671 ncrypt/pgp.c:582
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- SLUT PÅ PGP-SIGNERAT MEDDELANDE --]\n"
 
-#: ncrypt/crypt_gpgme.c:2692 ncrypt/pgp.c:614
+#: ncrypt/crypt_gpgme.c:2694 ncrypt/pgp.c:616
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -4634,11 +3627,11 @@ msgstr ""
 "[-- Fel: kunde inte hitta början av PGP-meddelande! --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2726 ncrypt/crypt_gpgme.c:2803 ncrypt/pgp.c:1036
+#: ncrypt/crypt_gpgme.c:2728 ncrypt/crypt_gpgme.c:2805 ncrypt/pgp.c:1038
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Fel: kunde inte skapa tillfällig fil! --]\n"
 
-#: ncrypt/crypt_gpgme.c:2739
+#: ncrypt/crypt_gpgme.c:2741
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -4646,7 +3639,7 @@ msgstr ""
 "[-- Följande data är PGP/MIME-signerad och krypterad --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2741 ncrypt/pgp.c:1047
+#: ncrypt/crypt_gpgme.c:2743 ncrypt/pgp.c:1049
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4654,24 +3647,24 @@ msgstr ""
 "[-- Följande data är PGP/MIME-krypterad --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2763
+#: ncrypt/crypt_gpgme.c:2765
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Slut på PGP/MIME-signerad och krypterad data --]\n"
 
-#: ncrypt/crypt_gpgme.c:2764 ncrypt/pgp.c:1067
+#: ncrypt/crypt_gpgme.c:2766 ncrypt/pgp.c:1069
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Slut på PGP/MIME-krypterad data --]\n"
 
-#: ncrypt/crypt_gpgme.c:2769 ncrypt/pgp.c:575 ncrypt/pgp.c:1072
+#: ncrypt/crypt_gpgme.c:2771 ncrypt/pgp.c:577 ncrypt/pgp.c:1074
 msgid "PGP message successfully decrypted."
 msgstr "PGP-meddelande avkrypterades framgångsrikt."
 
-#: ncrypt/crypt_gpgme.c:2773 ncrypt/pgp.c:510 ncrypt/pgp.c:573
-#: ncrypt/pgp.c:1076
+#: ncrypt/crypt_gpgme.c:2775 ncrypt/pgp.c:512 ncrypt/pgp.c:575
+#: ncrypt/pgp.c:1078
 msgid "Could not decrypt PGP message"
 msgstr "Kunde inte avkryptera PGP-meddelande"
 
-#: ncrypt/crypt_gpgme.c:2816
+#: ncrypt/crypt_gpgme.c:2818
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -4679,7 +3672,7 @@ msgstr ""
 "[-- Följande data är S/MIME-signerad --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2817
+#: ncrypt/crypt_gpgme.c:2819
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -4687,23 +3680,23 @@ msgstr ""
 "[-- Följande data är S/MIME-krypterad --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2846
+#: ncrypt/crypt_gpgme.c:2848
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Slut på S/MIME-signerad data --]\n"
 
-#: ncrypt/crypt_gpgme.c:2847
+#: ncrypt/crypt_gpgme.c:2849
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Slut på S/MIME-krypterad data --]\n"
 
-#: ncrypt/crypt_gpgme.c:3442
+#: ncrypt/crypt_gpgme.c:3445
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Kan inte visa det här användar-ID:t (okänd kodning)]"
 
-#: ncrypt/crypt_gpgme.c:3444
+#: ncrypt/crypt_gpgme.c:3447
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Kan inte visa det här användar-ID:t (felaktig kodning)]"
 
-#: ncrypt/crypt_gpgme.c:3449
+#: ncrypt/crypt_gpgme.c:3452
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Kan inte visa det här användar-ID:t (felaktig DN)]"
 
@@ -4711,154 +3704,154 @@ msgstr "[Kan inte visa det här användar-ID:t (felaktig DN)]"
 #. * The following are the headers for the "verify key" output from the
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
-#: ncrypt/crypt_gpgme.c:3526
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Name: "
 msgstr "Namn ......: "
 
-#: ncrypt/crypt_gpgme.c:3526
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid From: "
 msgstr "Giltig From : %s\n"
 
-#: ncrypt/crypt_gpgme.c:3526
+#: ncrypt/crypt_gpgme.c:3529
 #, fuzzy
 msgid "Valid To: "
 msgstr "Giltig To ..: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3527
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Type: "
 msgstr "Nyckel-användning .: "
 
-#: ncrypt/crypt_gpgme.c:3527
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Key Usage: "
 msgstr "Nyckel-användning .: "
 
-#: ncrypt/crypt_gpgme.c:3527
+#: ncrypt/crypt_gpgme.c:3530
 #, fuzzy
 msgid "Serial-No: "
 msgstr "Serie-nr .: 0x%s\n"
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Issued By: "
 msgstr "Utfärdad av .: "
 
-#: ncrypt/crypt_gpgme.c:3528
+#: ncrypt/crypt_gpgme.c:3531
 #, fuzzy
 msgid "Subkey: "
 msgstr "Undernyckel ....: 0x%s"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3582 ncrypt/crypt_gpgme.c:3723
+#: ncrypt/crypt_gpgme.c:3585 ncrypt/crypt_gpgme.c:3726
 msgid "[Invalid]"
 msgstr "[Ogiltig]"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
-#: ncrypt/crypt_gpgme.c:3625 ncrypt/crypt_gpgme.c:3764
+#: ncrypt/crypt_gpgme.c:3628 ncrypt/crypt_gpgme.c:3767
 #, fuzzy, c-format
 msgid "%s, %lu bit %s\n"
 msgstr "Nyckel-typ ..: %s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3633 ncrypt/crypt_gpgme.c:3771
+#: ncrypt/crypt_gpgme.c:3636 ncrypt/crypt_gpgme.c:3774
 msgid "encryption"
 msgstr "kryptering"
 
-#: ncrypt/crypt_gpgme.c:3634 ncrypt/crypt_gpgme.c:3640
-#: ncrypt/crypt_gpgme.c:3646 ncrypt/crypt_gpgme.c:3772
-#: ncrypt/crypt_gpgme.c:3777 ncrypt/crypt_gpgme.c:3782
+#: ncrypt/crypt_gpgme.c:3637 ncrypt/crypt_gpgme.c:3643
+#: ncrypt/crypt_gpgme.c:3649 ncrypt/crypt_gpgme.c:3775
+#: ncrypt/crypt_gpgme.c:3780 ncrypt/crypt_gpgme.c:3785
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3639 ncrypt/crypt_gpgme.c:3776
+#: ncrypt/crypt_gpgme.c:3642 ncrypt/crypt_gpgme.c:3779
 msgid "signing"
 msgstr "signering"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/crypt_gpgme.c:3645 ncrypt/crypt_gpgme.c:3781
+#: ncrypt/crypt_gpgme.c:3648 ncrypt/crypt_gpgme.c:3784
 msgid "certification"
 msgstr "certifikat"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3717
+#: ncrypt/crypt_gpgme.c:3720
 msgid "[Revoked]"
 msgstr "[Återkallad]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3729
+#: ncrypt/crypt_gpgme.c:3732
 msgid "[Expired]"
 msgstr "[Utgången]"
 
 #. L10N: describes a subkey
-#: ncrypt/crypt_gpgme.c:3735
+#: ncrypt/crypt_gpgme.c:3738
 msgid "[Disabled]"
 msgstr "[Inaktiverad]"
 
-#: ncrypt/crypt_gpgme.c:3808
+#: ncrypt/crypt_gpgme.c:3811
 msgid "Collecting data..."
 msgstr "Samlar data..."
 
-#: ncrypt/crypt_gpgme.c:3833
+#: ncrypt/crypt_gpgme.c:3836
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Fel vid sökning av utfärdarnyckel: %s\n"
 
-#: ncrypt/crypt_gpgme.c:3842
+#: ncrypt/crypt_gpgme.c:3845
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Fel: certifikatskedje för lång - stannar här\n"
 
-#: ncrypt/crypt_gpgme.c:3852 ncrypt/pgpkey.c:590
+#: ncrypt/crypt_gpgme.c:3855 ncrypt/pgpkey.c:589
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Nyckel-ID: 0x%s"
 
-#: ncrypt/crypt_gpgme.c:3939
+#: ncrypt/crypt_gpgme.c:3942
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new misslyckades: %s"
 
-#: ncrypt/crypt_gpgme.c:3978 ncrypt/crypt_gpgme.c:4029
+#: ncrypt/crypt_gpgme.c:3980 ncrypt/crypt_gpgme.c:4031
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start misslyckades: %s"
 
-#: ncrypt/crypt_gpgme.c:4017 ncrypt/crypt_gpgme.c:4059
+#: ncrypt/crypt_gpgme.c:4019 ncrypt/crypt_gpgme.c:4061
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next misslyckades: %s"
 
-#: ncrypt/crypt_gpgme.c:4136
+#: ncrypt/crypt_gpgme.c:4137
 msgid "All matching keys are marked expired/revoked."
 msgstr "Alla matchande nycklar är markerade utgångna/återkallade."
 
-#: ncrypt/crypt_gpgme.c:4167 ncrypt/pgpkey.c:528 ncrypt/smime.c:417
+#: ncrypt/crypt_gpgme.c:4168 ncrypt/pgpkey.c:527 ncrypt/smime.c:420
 msgid "Select  "
 msgstr "Välj  "
 
-#: ncrypt/crypt_gpgme.c:4169 ncrypt/pgpkey.c:530
+#: ncrypt/crypt_gpgme.c:4170 ncrypt/pgpkey.c:529
 msgid "Check key  "
 msgstr "Kontrollera nyckel "
 
-#: ncrypt/crypt_gpgme.c:4185
+#: ncrypt/crypt_gpgme.c:4186
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP- och S/MIME-nycklar som matchar"
 
-#: ncrypt/crypt_gpgme.c:4187
+#: ncrypt/crypt_gpgme.c:4188
 msgid "PGP keys matching"
 msgstr "PGP-nycklar som matchar"
 
-#: ncrypt/crypt_gpgme.c:4189
+#: ncrypt/crypt_gpgme.c:4190
 msgid "S/MIME keys matching"
 msgstr "S/MIME-nycklar som matchar"
 
-#: ncrypt/crypt_gpgme.c:4191
+#: ncrypt/crypt_gpgme.c:4192
 msgid "keys matching"
 msgstr "nycklar som matchar"
 
@@ -4866,65 +3859,65 @@ msgstr "nycklar som matchar"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: ncrypt/crypt_gpgme.c:4198
+#: ncrypt/crypt_gpgme.c:4199
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: ncrypt/crypt_gpgme.c:4202
+#: ncrypt/crypt_gpgme.c:4203
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:609
+#: ncrypt/crypt_gpgme.c:4230 ncrypt/pgpkey.c:608
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Den här nyckeln kan inte användas: utgången/inaktiverad/återkallad."
 
-#: ncrypt/crypt_gpgme.c:4242 ncrypt/pgpkey.c:620 ncrypt/smime.c:447
+#: ncrypt/crypt_gpgme.c:4244 ncrypt/pgpkey.c:619 ncrypt/smime.c:450
 msgid "ID is expired/disabled/revoked."
 msgstr "ID:t är utgånget/inaktiverat/återkallat."
 
-#: ncrypt/crypt_gpgme.c:4250 ncrypt/pgpkey.c:625 ncrypt/smime.c:450
+#: ncrypt/crypt_gpgme.c:4252 ncrypt/pgpkey.c:624 ncrypt/smime.c:453
 msgid "ID has undefined validity."
 msgstr "ID:t har odefinierad giltighet."
 
-#: ncrypt/crypt_gpgme.c:4253 ncrypt/pgpkey.c:628
+#: ncrypt/crypt_gpgme.c:4255 ncrypt/pgpkey.c:627
 msgid "ID is not valid."
 msgstr "ID:t är inte giltigt."
 
-#: ncrypt/crypt_gpgme.c:4256 ncrypt/pgpkey.c:631
+#: ncrypt/crypt_gpgme.c:4258 ncrypt/pgpkey.c:630
 msgid "ID is only marginally valid."
 msgstr "ID:t är endast marginellt giltigt."
 
-#: ncrypt/crypt_gpgme.c:4265 ncrypt/pgpkey.c:636 ncrypt/smime.c:457
+#: ncrypt/crypt_gpgme.c:4267 ncrypt/pgpkey.c:635 ncrypt/smime.c:460
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Vill du verkligen använda nyckeln?"
 
-#: ncrypt/crypt_gpgme.c:4319 ncrypt/crypt_gpgme.c:4429 ncrypt/pgpkey.c:836
-#: ncrypt/pgpkey.c:957
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
+#: ncrypt/pgpkey.c:955
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Söker efter nycklar som matchar \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:4586 ncrypt/pgp.c:1250
+#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Använd nyckel-ID = \"%s\" för %s?"
 
-#: ncrypt/crypt_gpgme.c:4637 ncrypt/pgp.c:1299 ncrypt/smime.c:775
-#: ncrypt/smime.c:877
+#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
+#: ncrypt/smime.c:880
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Ange nyckel-ID för %s: "
 
-#: ncrypt/crypt_gpgme.c:4698 ncrypt/pgpkey.c:726
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Var vänlig ange nyckel-ID: "
 
-#: ncrypt/crypt_gpgme.c:4710
+#: ncrypt/crypt_gpgme.c:4715
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Fel vid hämtning av nyckelinformation: "
@@ -4933,43 +3926,43 @@ msgstr "Fel vid hämtning av nyckelinformation: "
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4730
+#: ncrypt/crypt_gpgme.c:4735
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP-nyckel %s."
 
-#: ncrypt/crypt_gpgme.c:4773
+#: ncrypt/crypt_gpgme.c:4778
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4781
+#: ncrypt/crypt_gpgme.c:4786
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4820
+#: ncrypt/crypt_gpgme.c:4825
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4822
+#: ncrypt/crypt_gpgme.c:4827
 msgid "sapco"
 msgstr "ksobpr"
 
-#: ncrypt/crypt_gpgme.c:4829
+#: ncrypt/crypt_gpgme.c:4834
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4831
+#: ncrypt/crypt_gpgme.c:4836
 msgid "samco"
 msgstr "ksobmr"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4844
+#: ncrypt/crypt_gpgme.c:4849
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4978,13 +3971,13 @@ msgstr ""
 "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4847
+#: ncrypt/crypt_gpgme.c:4852
 #, fuzzy
 msgid "esabpco"
 msgstr "ksobpr"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4853
+#: ncrypt/crypt_gpgme.c:4858
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4993,52 +3986,52 @@ msgstr ""
 "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4856
+#: ncrypt/crypt_gpgme.c:4861
 #, fuzzy
 msgid "esabmco"
 msgstr "ksobmr"
 
-#: ncrypt/crypt_gpgme.c:4869
+#: ncrypt/crypt_gpgme.c:4874
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4871
+#: ncrypt/crypt_gpgme.c:4876
 #, fuzzy
 msgid "esabpc"
 msgstr "ksobpr"
 
-#: ncrypt/crypt_gpgme.c:4878
+#: ncrypt/crypt_gpgme.c:4883
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4880
+#: ncrypt/crypt_gpgme.c:4885
 #, fuzzy
 msgid "esabmc"
 msgstr "ksobmr"
 
-#: ncrypt/crypt_gpgme.c:5032
+#: ncrypt/crypt_gpgme.c:5037
 msgid "Failed to verify sender"
 msgstr "Misslyckades att verifiera sändare"
 
-#: ncrypt/crypt_gpgme.c:5035
+#: ncrypt/crypt_gpgme.c:5040
 msgid "Failed to figure out sender"
 msgstr "Misslyckades att ta reda på sändare"
 
-#: ncrypt/pgp.c:94
+#: ncrypt/pgp.c:96
 msgid "Enter PGP passphrase:"
 msgstr "Mata in PGP-lösenfras:"
 
-#: ncrypt/pgp.c:451
+#: ncrypt/pgp.c:453
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Fel: kunde inte skapa PGP-underprocess! --]\n"
 
-#: ncrypt/pgp.c:488 ncrypt/pgp.c:752 ncrypt/pgp.c:907
+#: ncrypt/pgp.c:490 ncrypt/pgp.c:754 ncrypt/pgp.c:909
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -5046,11 +4039,11 @@ msgstr ""
 "[-- Slut på PGP-utdata --]\n"
 "\n"
 
-#: ncrypt/pgp.c:797
+#: ncrypt/pgp.c:799
 msgid "Internal error.  Please submit a bug report."
 msgstr ""
 
-#: ncrypt/pgp.c:863
+#: ncrypt/pgp.c:865
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -5058,55 +4051,55 @@ msgstr ""
 "[-- Fel: kunde inte skapa en PGP-underprocess! --]\n"
 "\n"
 
-#: ncrypt/pgp.c:894 ncrypt/pgp.c:919
+#: ncrypt/pgp.c:896 ncrypt/pgp.c:921
 msgid "Decryption failed"
 msgstr "Avkryptering misslyckades"
 
-#: ncrypt/pgp.c:1127
+#: ncrypt/pgp.c:1129
 msgid "Can't open PGP subprocess!"
 msgstr "Kan inte öppna PGP-underprocess!"
 
-#: ncrypt/pgp.c:1562
+#: ncrypt/pgp.c:1566
 msgid "Can't invoke PGP"
 msgstr "Kan inte starta PGP"
 
 #. L10N: These next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1660
+#: ncrypt/pgp.c:1664
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: These previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1666
+#: ncrypt/pgp.c:1670
 msgid "(i)nline"
 msgstr "(i)nfogat"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1680
+#: ncrypt/pgp.c:1684
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1686
+#: ncrypt/pgp.c:1690
 msgid "saico"
 msgstr "ksobr"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1692
+#: ncrypt/pgp.c:1696
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1694
+#: ncrypt/pgp.c:1698
 msgid "saco"
 msgstr "ksobr"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1711
+#: ncrypt/pgp.c:1715
 #, fuzzy, c-format
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
@@ -5115,157 +4108,157 @@ msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1717
+#: ncrypt/pgp.c:1721
 #, fuzzy
 msgid "esabico"
 msgstr "ksobr"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1723
+#: ncrypt/pgp.c:1727
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1726
+#: ncrypt/pgp.c:1730
 #, fuzzy
 msgid "esabco"
 msgstr "ksobr"
 
 #. L10N: PGP options (inline)
-#: ncrypt/pgp.c:1739
+#: ncrypt/pgp.c:1743
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1745
+#: ncrypt/pgp.c:1749
 #, fuzzy
 msgid "esabic"
 msgstr "ksobir"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1751
+#: ncrypt/pgp.c:1755
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1753
+#: ncrypt/pgp.c:1757
 #, fuzzy
 msgid "esabc"
 msgstr "ksobr"
 
-#: ncrypt/pgpinvoke.c:291
+#: ncrypt/pgpinvoke.c:292
 msgid "Fetching PGP key..."
 msgstr "Hämtar PGP-nyckel..."
 
-#: ncrypt/pgpkey.c:502
+#: ncrypt/pgpkey.c:501
 msgid "All matching keys are expired, revoked, or disabled."
 msgstr "Alla matchande nycklar är utgångna, återkallade, eller inaktiverade."
 
-#: ncrypt/pgpkey.c:543
+#: ncrypt/pgpkey.c:542
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP-nycklar som matchar <%s>."
 
-#: ncrypt/pgpkey.c:545
+#: ncrypt/pgpkey.c:544
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP-nycklar som matchar \"%s\"."
 
-#: ncrypt/pgpkey.c:562 ncrypt/pgpkey.c:748
+#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:747
 msgid "Can't open /dev/null"
 msgstr "Kan inte öppna /dev/null"
 
-#: ncrypt/pgpkey.c:778
+#: ncrypt/pgpkey.c:777
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP-nyckel %s."
 
-#: ncrypt/smime.c:140
+#: ncrypt/smime.c:142
 msgid "Enter S/MIME passphrase:"
 msgstr "Mata in S/MIME-lösenfras:"
 
-#: ncrypt/smime.c:362
+#: ncrypt/smime.c:365
 msgid "Trusted   "
 msgstr "Betrodd   "
 
-#: ncrypt/smime.c:365
+#: ncrypt/smime.c:368
 msgid "Verified  "
 msgstr "Verifierad   "
 
-#: ncrypt/smime.c:368
+#: ncrypt/smime.c:371
 msgid "Unverified"
 msgstr "Overifierad"
 
-#: ncrypt/smime.c:371
+#: ncrypt/smime.c:374
 msgid "Expired   "
 msgstr "Utgången   "
 
-#: ncrypt/smime.c:374
+#: ncrypt/smime.c:377
 msgid "Revoked   "
 msgstr "Återkallad   "
 
-#: ncrypt/smime.c:377
+#: ncrypt/smime.c:380
 msgid "Invalid   "
 msgstr "Ogiltig   "
 
-#: ncrypt/smime.c:380
+#: ncrypt/smime.c:383
 msgid "Unknown   "
 msgstr "Okänd   "
 
-#: ncrypt/smime.c:411
+#: ncrypt/smime.c:414
 #, c-format
 msgid "S/MIME certificates matching \"%s\"."
 msgstr "S/MIME-certifikat som matchar \"%s\"."
 
-#: ncrypt/smime.c:453
+#: ncrypt/smime.c:456
 #, fuzzy
 msgid "ID is not trusted."
 msgstr "ID:t är inte giltigt."
 
-#: ncrypt/smime.c:742
+#: ncrypt/smime.c:745
 msgid "Enter keyID: "
 msgstr "Ange nyckel-ID: "
 
-#: ncrypt/smime.c:883
+#: ncrypt/smime.c:886
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Inga (giltiga) certifikat hittades för %s."
 
-#: ncrypt/smime.c:930 ncrypt/smime.c:959 ncrypt/smime.c:1023
-#: ncrypt/smime.c:1062 ncrypt/smime.c:1123 ncrypt/smime.c:1202
+#: ncrypt/smime.c:933 ncrypt/smime.c:962 ncrypt/smime.c:1026
+#: ncrypt/smime.c:1065 ncrypt/smime.c:1126 ncrypt/smime.c:1205
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Fel: kunde inte skapa OpenSSL-underprocess!"
 
-#: ncrypt/smime.c:1184
+#: ncrypt/smime.c:1187
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "Kunde inte hämta certifikat från \"peer\""
 
-#: ncrypt/smime.c:1276
+#: ncrypt/smime.c:1279
 msgid "no certfile"
 msgstr "ingen certifikatfil"
 
-#: ncrypt/smime.c:1279
+#: ncrypt/smime.c:1282
 msgid "no mbox"
 msgstr "ingen mbox"
 
-#: ncrypt/smime.c:1403 ncrypt/smime.c:1551
+#: ncrypt/smime.c:1406 ncrypt/smime.c:1554
 msgid "No output from OpenSSL..."
 msgstr "Ingen utdata från OpenSSL..."
 
-#: ncrypt/smime.c:1470
+#: ncrypt/smime.c:1473
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Kan inte signera: Inget nyckel angiven. Använd signera som."
 
-#: ncrypt/smime.c:1516
+#: ncrypt/smime.c:1519
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Kan inte öppna OpenSSL-underprocess!"
 
-#: ncrypt/smime.c:1699 ncrypt/smime.c:1818
+#: ncrypt/smime.c:1702 ncrypt/smime.c:1821
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -5273,23 +4266,23 @@ msgstr ""
 "[-- Slut på utdata från OpenSSL --]\n"
 "\n"
 
-#: ncrypt/smime.c:1777 ncrypt/smime.c:1789
+#: ncrypt/smime.c:1780 ncrypt/smime.c:1792
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Fel: kunde inte skapa OpenSSL-underprocess! --]\n"
 
-#: ncrypt/smime.c:1822
+#: ncrypt/smime.c:1825
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
 "[-- Följande data är S/MIME-krypterad --]\n"
 "\n"
 
-#: ncrypt/smime.c:1826
+#: ncrypt/smime.c:1829
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
 "[-- Följande data är S/MIME-signerad --]\n"
 "\n"
 
-#: ncrypt/smime.c:1890
+#: ncrypt/smime.c:1893
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -5297,7 +4290,7 @@ msgstr ""
 "\n"
 "[-- Slut på S/MIME-krypterad data. --]\n"
 
-#: ncrypt/smime.c:1892
+#: ncrypt/smime.c:1895
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -5306,7 +4299,7 @@ msgstr ""
 "[-- Slut på S/MIME-signerad data. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2008
+#: ncrypt/smime.c:2011
 #, fuzzy
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
@@ -5315,12 +4308,12 @@ msgstr ""
 "(r)ensa? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2011
+#: ncrypt/smime.c:2014
 msgid "swaco"
 msgstr "ksmobr"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2021
+#: ncrypt/smime.c:2024
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
@@ -5330,13 +4323,13 @@ msgstr ""
 "(r)ensa? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2024
+#: ncrypt/smime.c:2027
 #, fuzzy
 msgid "eswabco"
 msgstr "ksmobr"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2033
+#: ncrypt/smime.c:2036
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
@@ -5344,40 +4337,40 @@ msgstr ""
 "(r)ensa? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2036
+#: ncrypt/smime.c:2039
 #, fuzzy
 msgid "eswabc"
 msgstr "ksmobr"
 
-#: ncrypt/smime.c:2056
+#: ncrypt/smime.c:2059
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Välj algoritmfamilj: 1: DES, 2: RC2, 3: AES, eller r(e)nsa? "
 
-#: ncrypt/smime.c:2059
+#: ncrypt/smime.c:2062
 msgid "drac"
 msgstr "drae"
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2065
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2065
 msgid "dt"
 msgstr "dt"
 
-#: ncrypt/smime.c:2075
+#: ncrypt/smime.c:2078
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: ncrypt/smime.c:2075
+#: ncrypt/smime.c:2078
 msgid "468"
 msgstr "468"
 
-#: ncrypt/smime.c:2091
+#: ncrypt/smime.c:2094
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: ncrypt/smime.c:2091
+#: ncrypt/smime.c:2094
 msgid "895"
 msgstr "895"
 
@@ -5394,7 +4387,7 @@ msgstr ""
 msgid "%s is an invalid news server specification!"
 msgstr "%s är en ogilitig POP-sökväg"
 
-#: nntp.c:64 nntp.c:588 pop.c:967 pop_lib.c:412
+#: nntp.c:64 nntp.c:588 pop.c:967 pop_lib.c:413
 msgid "Server closed connection!"
 msgstr "Servern stängde förbindelsen!"
 
@@ -5437,215 +4430,1221 @@ msgstr "Anslutning till %s stängd"
 msgid "Fetching list of articles..."
 msgstr "Hämtar lista över meddelanden..."
 
-#: nntp.c:1459
+#: nntp.c:1458
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification!"
 msgstr "%s är en ogilitig POP-sökväg"
 
-#: nntp.c:1477
+#: nntp.c:1476
 #, c-format
 msgid "Newsgroup %s not found on the server."
 msgstr ""
 
-#: nntp.c:1498
+#: nntp.c:1497
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
 msgstr ""
 
-#: nntp.c:1653
+#: nntp.c:1652
 #, c-format
 msgid "Article %d not found on the server."
 msgstr ""
 
-#: nntp.c:1747 nntp.c:1777
+#: nntp.c:1746 nntp.c:1776
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "Kan inte ta status på %s: %s"
 
-#: nntp.c:1848 nntp.c:2266 pop.c:793 pop.c:860
+#: nntp.c:1847 nntp.c:2265 pop.c:793 pop.c:860
 msgid "Checking for new messages..."
 msgstr "Kollar efter nya meddelanden..."
 
-#: nntp.c:2192
+#: nntp.c:2191
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Raderar meddelanden från server..."
 
-#: nntp.c:2235 nntp.c:2335
+#: nntp.c:2234 nntp.c:2334
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Loggar in..."
 
-#: nntp.c:2256
+#: nntp.c:2255
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Kollar efter nya meddelanden..."
 
-#: nntp.c:2495
+#: nntp.c:2494
 msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: pager.c:1667
+#: opcodes.h:29
+msgid "null operation"
+msgstr "effektlös operation"
+
+#: opcodes.h:30
+msgid "end of conditional execution (noop)"
+msgstr "slut på villkorlig exekvering (noop)"
+
+#: opcodes.h:31
+msgid "force viewing of attachment using mailcap"
+msgstr "tvinga visning av bilagor med \"mailcap\""
+
+#: opcodes.h:32
+msgid "view attachment as text"
+msgstr "visa bilaga som text"
+
+#: opcodes.h:33
+msgid "toggle display of subparts"
+msgstr "Växla visning av underdelar"
+
+#: opcodes.h:34
+msgid "move to the bottom of the page"
+msgstr "flytta till slutet av sidan"
+
+#: opcodes.h:35
+msgid "remail a message to another user"
+msgstr "återsänd ett meddelande till en annan användare"
+
+#: opcodes.h:36
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: opcodes.h:37
+msgid "select a new file in this directory"
+msgstr "välj en ny fil i den här katalogen"
+
+#: opcodes.h:38
+msgid "view file"
+msgstr "visa fil"
+
+#: opcodes.h:39
+msgid "display the currently selected file's name"
+msgstr "visa namnet på den valda filen"
+
+#: opcodes.h:40
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "prenumerera på aktuell brevlåda (endast IMAP)"
+
+#: opcodes.h:41
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "avsluta prenumereration på aktuell brevlåda (endast IMAP)"
+
+#: opcodes.h:42
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "växla vy av alla/prenumererade brevlådor (endast IMAP)"
+
+#: opcodes.h:43
+msgid "list mailboxes with new mail"
+msgstr "lista brevlådor med nya brev"
+
+#: opcodes.h:44
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: opcodes.h:45
+msgid "change directories"
+msgstr "byt kataloger"
+
+#: opcodes.h:46
+msgid "check mailboxes for new mail"
+msgstr "kolla brevlådor efter nya brev"
+
+#: opcodes.h:47
+msgid "attach file(s) to this message"
+msgstr "bifoga fil(er) till det här meddelandet"
+
+#: opcodes.h:48
+msgid "attach message(s) to this message"
+msgstr "bifoga meddelande(n) till det här meddelandet"
+
+#: opcodes.h:49
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "bifoga fil(er) till det här meddelandet"
+
+#: opcodes.h:50
+msgid "edit the BCC list"
+msgstr "redigera BCC-listan"
+
+#: opcodes.h:51
+msgid "edit the CC list"
+msgstr "redigera CC-listan"
+
+#: opcodes.h:52
+msgid "edit attachment description"
+msgstr "redigera bilagebeskrivning"
+
+#: opcodes.h:53
+msgid "edit attachment transfer-encoding"
+msgstr "redigera transportkodning för bilagan"
+
+#: opcodes.h:54
+msgid "enter a file to save a copy of this message in"
+msgstr "ange en fil att spara en kopia av det här meddelandet till"
+
+#: opcodes.h:55
+msgid "edit the file to be attached"
+msgstr "redigera filen som ska bifogas"
+
+#: opcodes.h:56
+msgid "edit the from field"
+msgstr "redigera avsändarfältet"
+
+#: opcodes.h:57
+msgid "edit the message with headers"
+msgstr "redigera meddelandet med huvuden"
+
+#: opcodes.h:58
+msgid "edit the message"
+msgstr "redigera meddelandet"
+
+#: opcodes.h:59
+msgid "edit attachment using mailcap entry"
+msgstr "redigera bilaga med \"mailcap\"-posten"
+
+#: opcodes.h:60
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "redigera CC-listan"
+
+#: opcodes.h:61
+msgid "edit the Reply-To field"
+msgstr "redigera Reply-To-fältet"
+
+#: opcodes.h:62
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "redigera Reply-To-fältet"
+
+#: opcodes.h:63
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "redigera Reply-To-fältet"
+
+#: opcodes.h:64
+msgid "edit the subject of this message"
+msgstr "redigera ämnet på det här meddelandet"
+
+#: opcodes.h:65
+msgid "edit the TO list"
+msgstr "redigera TO-listan"
+
+#: opcodes.h:66
+msgid "create a new mailbox (IMAP only)"
+msgstr "skapa en ny brevlåda (endast IMAP)"
+
+#: opcodes.h:67
+msgid "edit attachment content type"
+msgstr "redigera \"content type\" för bilaga"
+
+#: opcodes.h:68
+msgid "get a temporary copy of an attachment"
+msgstr "hämta en tillfällig kopia av en bilaga"
+
+#: opcodes.h:69
+msgid "run ispell on the message"
+msgstr "kör ispell på meddelandet"
+
+#: opcodes.h:70
+msgid "compose new attachment using mailcap entry"
+msgstr "komponera ny bilaga med \"mailcap\"-post"
+
+#: opcodes.h:71
+msgid "toggle recoding of this attachment"
+msgstr "växla omkodning av den här bilagan"
+
+#: opcodes.h:72
+msgid "save this message to send later"
+msgstr "spara det här meddelandet för att skicka senare"
+
+#: opcodes.h:73
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "redigera transportkodning för bilagan"
+
+#: opcodes.h:74
+msgid "rename/move an attached file"
+msgstr "byt namn på/flytta en bifogad fil"
+
+#: opcodes.h:75
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "komponera ett nytt brevmeddelande"
+
+#: opcodes.h:76
+msgid "send the message"
+msgstr "skicka meddelandet"
+
+#: opcodes.h:77
+msgid "toggle disposition between inline/attachment"
+msgstr "växla dispositionen mellan integrerat/bifogat"
+
+#: opcodes.h:78
+msgid "toggle whether to delete file after sending it"
+msgstr "växla om fil ska tas bort efter att den har sänts"
+
+#: opcodes.h:79
+msgid "update an attachment's encoding info"
+msgstr "uppdatera en bilagas kodningsinformation"
+
+#: opcodes.h:80
+msgid "write the message to a folder"
+msgstr "skriv meddelandet till en folder"
+
+#: opcodes.h:81
+msgid "copy a message to a file/mailbox"
+msgstr "kopiera ett meddelande till en fil/brevlåda"
+
+#: opcodes.h:82
+msgid "create an alias from a message sender"
+msgstr "skapa ett alias från avsändaren av ett meddelande"
+
+#: opcodes.h:83
+msgid "move entry to bottom of screen"
+msgstr "flytta post till slutet av skärmen"
+
+#: opcodes.h:84
+msgid "move entry to middle of screen"
+msgstr "flytta post till mitten av skärmen"
+
+#: opcodes.h:85
+msgid "move entry to top of screen"
+msgstr "flytta post till början av skärmen"
+
+#: opcodes.h:86
+msgid "make decoded (text/plain) copy"
+msgstr "skapa avkodad (text/plain) kopia"
+
+#: opcodes.h:87
+msgid "make decoded copy (text/plain) and delete"
+msgstr "skapa avkodad kopia (text/plain) och radera"
+
+#: opcodes.h:88
+msgid "delete the current entry"
+msgstr "radera den aktuella posten"
+
+#: opcodes.h:89
+msgid "delete the current mailbox (IMAP only)"
+msgstr "radera den aktuella brevlådan (endast för IMAP)"
+
+#: opcodes.h:90
+msgid "delete all messages in subthread"
+msgstr "radera alla meddelanden i undertråd"
+
+#: opcodes.h:91
+msgid "delete all messages in thread"
+msgstr "radera alla meddelanden i tråd"
+
+#: opcodes.h:92
+msgid "display full address of sender"
+msgstr "visa avsändarens fullständiga adress"
+
+#: opcodes.h:93
+msgid "display message and toggle header weeding"
+msgstr "visa meddelande och växla rensning av huvud"
+
+#: opcodes.h:94
+msgid "display a message"
+msgstr "visa ett meddelande"
+
+#: opcodes.h:95
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: opcodes.h:96
+msgid "edit the raw message"
+msgstr "ändra i själva meddelandet"
+
+#: opcodes.h:97
+msgid "delete the char in front of the cursor"
+msgstr "radera tecknet före markören"
+
+#: opcodes.h:98
+msgid "move the cursor one character to the left"
+msgstr "flytta markören ett tecken till vänster"
+
+#: opcodes.h:99
+msgid "move the cursor to the beginning of the word"
+msgstr "flytta markören till början av ordet"
+
+#: opcodes.h:100
+msgid "jump to the beginning of the line"
+msgstr "hoppa till början av raden"
+
+#: opcodes.h:101
+msgid "cycle among incoming mailboxes"
+msgstr "rotera bland inkomna brevlådor"
+
+#: opcodes.h:102
+msgid "complete filename or alias"
+msgstr "komplettera filnamn eller alias"
+
+#: opcodes.h:103
+msgid "complete address with query"
+msgstr "komplettera adress med fråga"
+
+#: opcodes.h:104
+msgid "delete the char under the cursor"
+msgstr "radera tecknet under markören"
+
+#: opcodes.h:105
+msgid "jump to the end of the line"
+msgstr "hoppa till slutet av raden"
+
+#: opcodes.h:106
+msgid "move the cursor one character to the right"
+msgstr "flytta markören ett tecken till höger"
+
+#: opcodes.h:107
+msgid "move the cursor to the end of the word"
+msgstr "flytta markören till slutet av ordet"
+
+#: opcodes.h:108
+msgid "scroll down through the history list"
+msgstr "rulla ner genom historielistan"
+
+#: opcodes.h:109
+msgid "scroll up through the history list"
+msgstr "rulla upp genom historielistan"
+
+#: opcodes.h:110
+msgid "delete chars from cursor to end of line"
+msgstr "radera tecknen från markören till slutet på raden"
+
+#: opcodes.h:111
+msgid "delete chars from the cursor to the end of the word"
+msgstr "radera tecknen från markören till slutet på ordet"
+
+#: opcodes.h:112
+msgid "delete all chars on the line"
+msgstr "radera alla tecken på raden"
+
+#: opcodes.h:113
+msgid "delete the word in front of the cursor"
+msgstr "radera ordet framför markören"
+
+#: opcodes.h:114
+msgid "quote the next typed key"
+msgstr "citera nästa tryckta tangent"
+
+#: opcodes.h:115
+msgid "transpose character under cursor with previous"
+msgstr "byt tecknet under markören med föregående"
+
+#: opcodes.h:116
+msgid "capitalize the word"
+msgstr "skriv ordet med versaler"
+
+#: opcodes.h:117
+msgid "convert the word to lower case"
+msgstr "konvertera ordet till gemener"
+
+#: opcodes.h:118
+msgid "convert the word to upper case"
+msgstr "konvertera ordet till versaler"
+
+#: opcodes.h:119
+msgid "enter a neomuttrc command"
+msgstr "ange ett neomuttrc-kommando"
+
+#: opcodes.h:120
+msgid "enter a file mask"
+msgstr "ange en filmask"
+
+#: opcodes.h:121
+msgid "exit this menu"
+msgstr "avsluta den här menyn"
+
+#: opcodes.h:122
+msgid "filter attachment through a shell command"
+msgstr "filtrera bilaga genom ett skalkommando"
+
+#: opcodes.h:123
+msgid "move to the first entry"
+msgstr "flytta till den första posten"
+
+#: opcodes.h:124
+msgid "toggle a message's 'important' flag"
+msgstr "växla ett meddelandes \"important\"-flagga"
+
+#: opcodes.h:125
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Svara till %s%s?"
+
+#: opcodes.h:126
+msgid "forward to newsgroup"
+msgstr ""
+
+#: opcodes.h:127
+msgid "forward a message with comments"
+msgstr "vidarebefordra ett meddelande med kommentarer"
+
+#: opcodes.h:128
+msgid "select the current entry"
+msgstr "välj den aktuella posten"
+
+#: opcodes.h:129
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "Du är på det första meddelandet."
+
+#: opcodes.h:130
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "redigera meddelandet med huvuden"
+
+#: opcodes.h:131
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "Du är på det första meddelandet."
+
+#: opcodes.h:132
+msgid "reply to all recipients"
+msgstr "svara till alla mottagare"
+
+#: opcodes.h:133
+msgid "scroll down 1/2 page"
+msgstr "rulla ner en halv sida"
+
+#: opcodes.h:134
+msgid "scroll up 1/2 page"
+msgstr "rulla upp en halv sida"
+
+#: opcodes.h:135
+msgid "this screen"
+msgstr "den här skärmen"
+
+#: opcodes.h:136
+msgid "jump to an index number"
+msgstr "hoppa till ett indexnummer"
+
+#: opcodes.h:137
+msgid "move to the last entry"
+msgstr "flytta till den sista posten"
+
+#: opcodes.h:138
+msgid "reply to specified mailing list"
+msgstr "svara till angiven sändlista"
+
+#: opcodes.h:139
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: opcodes.h:140
+msgid "execute a macro"
+msgstr "kör ett makro"
+
+#: opcodes.h:141
+msgid "compose a new mail message"
+msgstr "komponera ett nytt brevmeddelande"
+
+#: opcodes.h:142
+msgid "break the thread in two"
+msgstr "dela tråden i två"
+
+#: opcodes.h:143
+msgid "open a different folder"
+msgstr "öppna en annan folder"
+
+#: opcodes.h:144
+msgid "open a different folder in read only mode"
+msgstr "öppna en annan folder i skrivskyddat läge"
+
+#: opcodes.h:145
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "öppna en annan folder"
+
+#: opcodes.h:146
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "öppna en annan folder i skrivskyddat läge"
+
+#: opcodes.h:147
+msgid "clear a status flag from a message"
+msgstr "rensa en statusflagga från ett meddelande"
+
+#: opcodes.h:148
+msgid "delete messages matching a pattern"
+msgstr "radera meddelanden som matchar ett mönster"
+
+#: opcodes.h:149
+msgid "force retrieval of mail from IMAP server"
+msgstr "tvinga hämtning av brev från IMAP-server"
+
+#: opcodes.h:150
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: opcodes.h:151
+msgid "retrieve mail from POP server"
+msgstr "hämta brev från POP-server"
+
+#: opcodes.h:152
+msgid "show only messages matching a pattern"
+msgstr "visa endast meddelanden som matchar ett mönster"
+
+#: opcodes.h:153
+msgid "link tagged message to the current one"
+msgstr "länka markerade meddelande till det aktuella"
+
+#: opcodes.h:154
+msgid "open next mailbox with new mail"
+msgstr "öppna nästa brevlåda med nya brev"
+
+#: opcodes.h:155
+msgid "jump to the next new message"
+msgstr "hoppa till nästa nya meddelande"
+
+#: opcodes.h:156
+msgid "jump to the next new or unread message"
+msgstr "hoppa till nästa nya eller olästa meddelande"
+
+#: opcodes.h:157
+msgid "jump to the next subthread"
+msgstr "hoppa till nästa undertråd"
+
+#: opcodes.h:158
+msgid "jump to the next thread"
+msgstr "hoppa till nästa tråd"
+
+#: opcodes.h:159
+msgid "move to the next undeleted message"
+msgstr "flytta till nästa icke raderade meddelande"
+
+#: opcodes.h:160
+msgid "jump to the next unread message"
+msgstr "hoppa till nästa olästa meddelande"
+
+#: opcodes.h:161
+msgid "jump to parent message in thread"
+msgstr "hoppa till första meddelandet i tråden"
+
+#: opcodes.h:162
+msgid "jump to previous thread"
+msgstr "hoppa till föregående tråd"
+
+#: opcodes.h:163
+msgid "jump to previous subthread"
+msgstr "hoppa till föregående undertråd"
+
+#: opcodes.h:164
+msgid "move to the previous undeleted message"
+msgstr "flytta till föregående icke raderade meddelande"
+
+#: opcodes.h:165
+msgid "jump to the previous new message"
+msgstr "hoppa till föregående nya meddelande"
+
+#: opcodes.h:166
+msgid "jump to the previous new or unread message"
+msgstr "hoppa till föregående nya eller olästa meddelande"
+
+#: opcodes.h:167
+msgid "jump to the previous unread message"
+msgstr "hoppa till föregående olästa meddelande"
+
+#: opcodes.h:168
+msgid "mark the current thread as read"
+msgstr "märk den aktuella tråden som läst"
+
+#: opcodes.h:169
+msgid "mark the current subthread as read"
+msgstr "märk den aktuella undertråden som läst"
+
+#: opcodes.h:170
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "hoppa till första meddelandet i tråden"
+
+#: opcodes.h:171
+msgid "set a status flag on a message"
+msgstr "sätt en statusflagga på ett meddelande"
+
+#: opcodes.h:172
+msgid "save changes to mailbox"
+msgstr "spara ändringar av brevlåda"
+
+#: opcodes.h:173
+msgid "tag messages matching a pattern"
+msgstr "märk meddelanden som matchar ett mönster"
+
+#: opcodes.h:174
+msgid "delete from NeoMutt, don't touch on disk"
+msgstr ""
+
+#: opcodes.h:175
+msgid "undelete messages matching a pattern"
+msgstr "återställ meddelanden som matchar ett mönster"
+
+#: opcodes.h:176
+msgid "untag messages matching a pattern"
+msgstr "avmarkera meddelanden som matchar ett mönster"
+
+#: opcodes.h:177
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Du är på det första meddelandet."
+
+#: opcodes.h:178
+msgid "move to the middle of the page"
+msgstr "flytta till mitten av sidan"
+
+#: opcodes.h:179
+msgid "move to the next entry"
+msgstr "flytta till nästa post"
+
+#: opcodes.h:180
+msgid "scroll down one line"
+msgstr "rulla ner en rad"
+
+#: opcodes.h:181
+msgid "move to the next page"
+msgstr "flytta till nästa sida"
+
+#: opcodes.h:182
+msgid "jump to the bottom of the message"
+msgstr "hoppa till slutet av meddelandet"
+
+#: opcodes.h:183
+msgid "toggle display of quoted text"
+msgstr "växla visning av citerad text"
+
+#: opcodes.h:184
+msgid "skip beyond quoted text"
+msgstr "hoppa över citerad text"
+
+#: opcodes.h:185
+msgid "jump to the top of the message"
+msgstr "hoppa till början av meddelandet"
+
+#: opcodes.h:186
+msgid "pipe message/attachment to a shell command"
+msgstr "skicka meddelandet/bilagan genom rör till ett skalkommando"
+
+#: opcodes.h:187
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Återsänd meddelande till %s"
+
+#: opcodes.h:188
+msgid "move to the previous entry"
+msgstr "flytta till föregående post"
+
+#: opcodes.h:189
+msgid "scroll up one line"
+msgstr "rulla upp en rad"
+
+#: opcodes.h:190
+msgid "move to the previous page"
+msgstr "flytta till föregående sida"
+
+#: opcodes.h:191
+msgid "print the current entry"
+msgstr "skriv ut den aktuella posten"
+
+#: opcodes.h:192
+msgid "delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: opcodes.h:193
+msgid "delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: opcodes.h:194
+msgid "query external program for addresses"
+msgstr "fråga ett externt program efter adresser"
+
+#: opcodes.h:195
+msgid "append new query results to current results"
+msgstr "lägg till nya förfrågningsresultat till aktuellt resultat"
+
+#: opcodes.h:196
+msgid "save changes to mailbox and quit"
+msgstr "spara ändringar till brevlåda och avsluta"
+
+#: opcodes.h:197
+msgid "recall a postponed message"
+msgstr "återkalla ett uppskjutet meddelande"
+
+#: opcodes.h:198
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Tråden innehåller olästa meddelanden."
+
+#: opcodes.h:199
+msgid "clear and redraw the screen"
+msgstr "rensa och rita om skärmen"
+
+#: opcodes.h:200
+msgid "{internal}"
+msgstr "{internt}"
+
+#: opcodes.h:201
+msgid "rename the current mailbox (IMAP only)"
+msgstr "döp om den aktuella brevlådan (endast för IMAP)"
+
+#: opcodes.h:202
+msgid "reply to a message"
+msgstr "svara på ett meddelande"
+
+#: opcodes.h:203
+msgid "use the current message as a template for a new one"
+msgstr "använd det aktuella meddelande som mall för ett nytt"
+
+#: opcodes.h:204
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "spara meddelande/bilaga till fil"
+
+#: opcodes.h:205
+msgid "search for a regular expression"
+msgstr "sök efter ett reguljärt uttryck"
+
+#: opcodes.h:206
+msgid "search backwards for a regular expression"
+msgstr "sök bakåt efter ett reguljärt uttryck"
+
+#: opcodes.h:207
+msgid "search for next match"
+msgstr "sök efter nästa matchning"
+
+#: opcodes.h:208
+msgid "search for next match in opposite direction"
+msgstr "sök efter nästa matchning i motsatt riktning"
+
+#: opcodes.h:209
+msgid "toggle search pattern coloring"
+msgstr "växla färg på sökmönster"
+
+#: opcodes.h:210
+msgid "invoke a command in a subshell"
+msgstr "starta ett kommando i ett underskal"
+
+#: opcodes.h:211
+msgid "sort messages"
+msgstr "sortera meddelanden"
+
+#: opcodes.h:212
+msgid "sort messages in reverse order"
+msgstr "sortera meddelanden i omvänd ordning"
+
+#: opcodes.h:213
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "avmarkera meddelanden som matchar ett mönster"
+
+#: opcodes.h:214
+msgid "tag the current entry"
+msgstr "märk den aktuella posten"
+
+#: opcodes.h:215
+msgid "apply next function to tagged messages"
+msgstr "applicera nästa funktion på märkta meddelanden"
+
+#: opcodes.h:216
+msgid "apply next function ONLY to tagged messages"
+msgstr "applicera nästa funktion ENDAST på märkta meddelanden"
+
+#: opcodes.h:217
+msgid "tag the current subthread"
+msgstr "märk den aktuella undertråden"
+
+#: opcodes.h:218
+msgid "tag the current thread"
+msgstr "märk den aktuella tråden"
+
+#: opcodes.h:219
+msgid "toggle a message's 'new' flag"
+msgstr "växla ett meddelandes \"nytt\" flagga"
+
+#: opcodes.h:220
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "hoppa till föregående nya eller olästa meddelande"
+
+#: opcodes.h:221
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "växla huruvida brevlådan ska skrivas om"
+
+#: opcodes.h:222
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "växla bläddring över brevlådor eller alla filer"
+
+#: opcodes.h:223
+msgid "move to the top of the page"
+msgstr "flytta till början av sidan"
+
+#: opcodes.h:224
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: opcodes.h:225
+msgid "undelete the current entry"
+msgstr "återställ den aktuella posten"
+
+#: opcodes.h:226
+msgid "undelete all messages in thread"
+msgstr "återställ all meddelanden i tråden"
+
+#: opcodes.h:227
+msgid "undelete all messages in subthread"
+msgstr "återställ alla meddelanden i undertråden"
+
+#: opcodes.h:228
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "avmarkera meddelanden som matchar ett mönster"
+
+#: opcodes.h:229
+msgid "show the NeoMutt version number and date"
+msgstr "visa NeoMutts versionsnummer och datum"
+
+#: opcodes.h:230
+msgid "view attachment using mailcap entry if necessary"
+msgstr "visa bilaga med \"mailcap\"-posten om nödvändigt"
+
+#: opcodes.h:231
+msgid "show MIME attachments"
+msgstr "visa MIME-bilagor"
+
+#: opcodes.h:232
+msgid "display the keycode for a key press"
+msgstr "visa tangentkoden för en tangenttryckning"
+
+#: opcodes.h:233
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "märk den aktuella tråden"
+
+#: opcodes.h:234
+msgid "show currently active limit pattern"
+msgstr "visa aktivt begränsningsmönster"
+
+#: opcodes.h:235
+msgid "collapse/uncollapse current thread"
+msgstr "komprimera/expandera aktuell tråd"
+
+#: opcodes.h:236
+msgid "collapse/uncollapse all threads"
+msgstr "komprimera/expandera alla trådar"
+
+#: opcodes.h:239
+msgid "make decrypted copy and delete"
+msgstr "skapa avkrypterad kopia och radera"
+
+#: opcodes.h:240
+msgid "make decrypted copy"
+msgstr "skapa avkrypterad kopia"
+
+#: opcodes.h:241
+msgid "wipe passphrase(s) from memory"
+msgstr "rensa lösenfras(er) från minnet"
+
+#: opcodes.h:242
+msgid "extract supported public keys"
+msgstr "extrahera stödda publika nycklar"
+
+#: opcodes.h:246
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Godkänn den konstruerade kedjan"
+
+#: opcodes.h:247
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Lägg till en \"remailer\" till kedjan"
+
+#: opcodes.h:248
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Infoga en \"remailer\" i kedjan"
+
+#: opcodes.h:249
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Radera en \"remailer\" från kedjan"
+
+#: opcodes.h:250
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "Välj föregående element i kedjan"
+
+#: opcodes.h:251
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "Välj nästa element i kedjan"
+
+#: opcodes.h:252
+msgid "send the message through a mixmaster remailer chain"
+msgstr "skicka meddelandet genom en \"mixmaster remailer\" kedja"
+
+#: opcodes.h:259
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "öppna en annan folder"
+
+#: opcodes.h:260
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: opcodes.h:261
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: opcodes.h:262
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: opcodes.h:263
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: opcodes.h:264
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Du är på det första meddelandet."
+
+#: opcodes.h:265
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: opcodes.h:271
+msgid "attach a PGP public key"
+msgstr "bifoga en publik nyckel (PGP)"
+
+#: opcodes.h:272
+msgid "show PGP options"
+msgstr "visa PGP-flaggor"
+
+#: opcodes.h:273
+msgid "mail a PGP public key"
+msgstr "skicka en publik nyckel (PGP)"
+
+#: opcodes.h:274
+msgid "verify a PGP public key"
+msgstr "verifiera en publik nyckel (PGP)"
+
+#: opcodes.h:275
+msgid "view the key's user id"
+msgstr "visa nyckelns användaridentitet"
+
+#: opcodes.h:276
+msgid "check for classic PGP"
+msgstr "kolla efter klassisk PGP"
+
+#: opcodes.h:279
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: opcodes.h:280
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "öppna nästa brevlåda med nya brev"
+
+#: opcodes.h:281
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Återöppnar brevlåda..."
+
+#: opcodes.h:282
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "rulla ner en halv sida"
+
+#: opcodes.h:283
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "rulla upp en halv sida"
+
+#: opcodes.h:284
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "flytta till föregående sida"
+
+#: opcodes.h:285
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "öppna nästa brevlåda med nya brev"
+
+#: opcodes.h:286
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "växla bläddring över brevlådor eller alla filer"
+
+#: opcodes.h:287
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: opcodes.h:290
+msgid "show S/MIME options"
+msgstr "visa S/MIME-flaggor"
+
+#: pager.c:1670
 msgid "PrevPg"
 msgstr "Föreg. sida"
 
-#: pager.c:1667
+#: pager.c:1670
 msgid "NextPg"
 msgstr "Nästa sida"
 
-#: pager.c:1670
+#: pager.c:1673
 msgid "View Attachm."
 msgstr "Visa bilaga"
 
-#: pager.c:1673 pager.c:1682
+#: pager.c:1676 pager.c:1685
 msgid "Next"
 msgstr "Nästa"
 
-#: pager.c:2292 pager.c:2323 pager.c:2357 pager.c:2667
+#: pager.c:2307 pager.c:2338 pager.c:2372 pager.c:2682
 msgid "Bottom of message is shown."
 msgstr "Slutet av meddelande visas."
 
-#: pager.c:2309 pager.c:2330 pager.c:2337 pager.c:2345
+#: pager.c:2324 pager.c:2345 pager.c:2352 pager.c:2360
 msgid "Top of message is shown."
 msgstr "Början av meddelande visas."
 
-#: pager.c:2583
+#: pager.c:2598
 msgid "Help is currently being shown."
 msgstr "Hjälp visas just nu."
 
-#: pager.c:2631
+#: pager.c:2646
 msgid "No more quoted text."
 msgstr "Ingen mer citerad text."
 
-#: pager.c:2646
+#: pager.c:2661
 msgid "No more unquoted text after quoted text."
 msgstr "Ingen mer ociterad text efter citerad text."
 
-#: parse.c:596
+#: parse.c:588
 msgid "multipart message has no boundary parameter!"
 msgstr "\"multipart\"-meddelande har ingen avgränsningsparameter!"
 
-#: pattern.c:91 pattern.c:411
+#: pattern.c:92 pattern.c:413
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fel i uttryck: %s"
 
-#: pattern.c:96 pattern.c:416
+#: pattern.c:97 pattern.c:418
 msgid "Empty expression"
 msgstr "Tomt uttryck"
 
-#: pattern.c:174
+#: pattern.c:176
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ogiltig dag i månaden: %s"
 
-#: pattern.c:188
+#: pattern.c:190
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ogiltig månad: %s"
 
-#: pattern.c:369
+#: pattern.c:371
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Ogiltigt relativt datum: %s"
 
-#: pattern.c:657 pattern.c:764
+#: pattern.c:659 pattern.c:766
 #, fuzzy
 msgid "No current message"
 msgstr "Inga olästa meddelanden"
 
-#: pattern.c:785
+#: pattern.c:787
 msgid "No Context"
 msgstr ""
 
-#: pattern.c:954
+#: pattern.c:956
 #, fuzzy
 msgid "Error opening memstream"
 msgstr "Fel vid öppning av brevlåda"
 
-#: pattern.c:1001
+#: pattern.c:1003
 #, fuzzy
 msgid "Error re-opening memstream"
 msgstr "Fel vid öppning av brevlåda"
 
-#: pattern.c:1010
+#: pattern.c:1012
 #, fuzzy
 msgid "Error opening /dev/null"
 msgstr "Kan inte öppna /dev/null"
 
-#: pattern.c:1172 pattern.c:1340
+#: pattern.c:1174 pattern.c:1342
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "fel i mönster vid: %s"
 
-#: pattern.c:1199
+#: pattern.c:1201
 #, fuzzy, c-format
 msgid "missing pattern: %s"
 msgstr "saknar parameter"
 
-#: pattern.c:1218
+#: pattern.c:1220
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "missmatchande hakparenteser: %s"
 
-#: pattern.c:1278
+#: pattern.c:1280
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: felaktig mönstermodifierare"
 
-#: pattern.c:1284
+#: pattern.c:1286
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: stöds inte i det här läget"
 
-#: pattern.c:1297
+#: pattern.c:1299
 msgid "missing parameter"
 msgstr "saknar parameter"
 
-#: pattern.c:1313
+#: pattern.c:1315
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "missmatchande parentes: %s"
 
-#: pattern.c:1347
+#: pattern.c:1349
 msgid "empty pattern"
 msgstr "tomt mönster"
 
-#: pattern.c:1605 pattern.c:1608
+#: pattern.c:1610 pattern.c:1613
 msgid "error: server custom search only supported with IMAP."
 msgstr ""
 
-#: pattern.c:1740
+#: pattern.c:1745
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fel: okänd operation %d (rapportera det här felet)."
 
-#: pattern.c:1888 pattern.c:2030
+#: pattern.c:1893 pattern.c:2035
 msgid "Compiling search pattern..."
 msgstr "Kompilerar sökmönster..."
 
-#: pattern.c:1909
+#: pattern.c:1914
 msgid "Executing command on matching messages..."
 msgstr "Kör kommando på matchande meddelanden..."
 
-#: pattern.c:1977
+#: pattern.c:1982
 msgid "No messages matched criteria."
 msgstr "Inga meddelanden matchade kriteriet."
 
-#: pattern.c:2060
+#: pattern.c:2065
 msgid "Searching..."
 msgstr "Söker..."
 
-#: pattern.c:2073
+#: pattern.c:2078
 msgid "Search hit bottom without finding match"
 msgstr "Sökning nådde slutet utan att hitta träff"
 
-#: pattern.c:2084
+#: pattern.c:2089
 msgid "Search hit top without finding match"
 msgstr "Sökning nådde början utan att hitta träff"
 
-#: pattern.c:2117
+#: pattern.c:2122
 msgid "Search interrupted."
 msgstr "Sökning avbruten."
 
@@ -5743,105 +5742,105 @@ msgstr "Kunde inte lämna meddelanden på server."
 msgid "Error connecting to server: %s"
 msgstr "Fel vid anslutning till server: %s"
 
-#: pop_lib.c:429
+#: pop_lib.c:430
 msgid "Closing connection to POP server..."
 msgstr "Stänger anslutning till POP-server..."
 
-#: pop_lib.c:627
+#: pop_lib.c:628
 msgid "Verifying message indexes..."
 msgstr "Verifierar meddelandeindex..."
 
-#: pop_lib.c:649
+#: pop_lib.c:650
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Anslutning tappad. Återanslut till POP-server?"
 
-#: postpone.c:195
+#: postpone.c:194
 msgid "Postponed Messages"
 msgstr "Uppskjutna meddelanden"
 
-#: postpone.c:278 postpone.c:287
+#: postpone.c:274 postpone.c:283
 msgid "No postponed messages."
 msgstr "Inga uppskjutna meddelanden."
 
-#: postpone.c:482 postpone.c:503 postpone.c:536
+#: postpone.c:436 postpone.c:457 postpone.c:490
 msgid "Illegal crypto header"
 msgstr "Otillåtet krypto-huvud"
 
-#: postpone.c:522
+#: postpone.c:476
 msgid "Illegal S/MIME header"
 msgstr "Otillåtet S/MIME-huvud"
 
-#: postpone.c:619
+#: postpone.c:573
 msgid "Decrypting message..."
 msgstr "Avkrypterar meddelande..."
 
-#: postpone.c:626
+#: postpone.c:580
 msgid "Decryption failed."
 msgstr "Avkryptering misslyckades."
 
-#: query.c:73
+#: query.c:74
 msgid "New Query"
 msgstr "Ny sökning"
 
-#: query.c:74
+#: query.c:75
 msgid "Make Alias"
 msgstr "Skapa alias"
 
-#: query.c:75
+#: query.c:76
 msgid "Search"
 msgstr "Sök"
 
-#: query.c:134
+#: query.c:135
 msgid "Waiting for response..."
 msgstr "Väntar på svar..."
 
-#: query.c:287 query.c:320
+#: query.c:288 query.c:321
 msgid "Query: "
 msgstr "Sökning: "
 
-#: query.c:295 query.c:329
+#: query.c:296 query.c:330
 #, c-format
 msgid "Query '%s'"
 msgstr "Sökning \"%s\""
 
-#: query.c:508 query.c:537
+#: query.c:509 query.c:538
 msgid "Query command not defined."
 msgstr "Sökkommando ej definierat."
 
-#: recvattach.c:67
+#: recvattach.c:72
 msgid "Pipe"
 msgstr "Rör"
 
-#: recvattach.c:68
+#: recvattach.c:73
 msgid "Print"
 msgstr "Skriv ut"
 
-#: recvattach.c:507
+#: recvattach.c:494
 msgid "Saving..."
 msgstr "Sparar..."
 
-#: recvattach.c:511 recvattach.c:602
+#: recvattach.c:498 recvattach.c:592
 msgid "Attachment saved."
 msgstr "Bilaga sparad."
 
-#: recvattach.c:613
+#: recvattach.c:603
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "VARNING! Du är på väg att skriva över %s, fortsätt?"
 
-#: recvattach.c:631
+#: recvattach.c:621
 msgid "Attachment filtered."
 msgstr "Bilaga filtrerad."
 
-#: recvattach.c:699
+#: recvattach.c:695
 msgid "Filter through: "
 msgstr "Filtrera genom: "
 
-#: recvattach.c:699
+#: recvattach.c:695
 msgid "Pipe to: "
 msgstr "Skicka genom rör till: "
 
-#: recvattach.c:735
+#: recvattach.c:733
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments!"
 msgstr "Jag vet inte hur %s bilagor ska skrivas ut!"
@@ -5854,38 +5853,42 @@ msgstr "Skriv ut märkta bilagor?"
 msgid "Print attachment?"
 msgstr "Skriv ut bilaga?"
 
-#: recvattach.c:1020
+#: recvattach.c:861
+msgid "Structural changes to decrypted attachments are not supported"
+msgstr ""
+
+#: recvattach.c:1008
 msgid "Can't decrypt encrypted message!"
 msgstr "Kan inte avkryptera krypterat meddelande!"
 
-#: recvattach.c:1032
+#: recvattach.c:1129
 msgid "Attachments"
 msgstr "Bilagor"
 
-#: recvattach.c:1069
+#: recvattach.c:1167
 msgid "There are no subparts to show!"
 msgstr "Det finns inga underdelar att visa!"
 
-#: recvattach.c:1130
+#: recvattach.c:1221
 msgid "Can't delete attachment from POP server."
 msgstr "Kan inte radera bilaga från POP-server."
 
-#: recvattach.c:1139
+#: recvattach.c:1230
 #, fuzzy
 msgid "Can't delete attachment from news server."
 msgstr "Kan inte radera bilaga från POP-server."
 
-#: recvattach.c:1146
+#: recvattach.c:1237
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Radering av bilagor från krypterade meddelanden stöds ej."
 
-#: recvattach.c:1152
+#: recvattach.c:1243
 #, fuzzy
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Radering av bilagor från krypterade meddelanden stöds ej."
 
-#: recvattach.c:1170 recvattach.c:1187
+#: recvattach.c:1261 recvattach.c:1278
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Endast radering av \"multipart\"-bilagor stöds."
 
@@ -5893,115 +5896,115 @@ msgstr "Endast radering av \"multipart\"-bilagor stöds."
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Du kan bara återsända \"message/rfc822\"-delar."
 
-#: recvcmd.c:235
+#: recvcmd.c:234
 msgid "Error bouncing message!"
 msgstr "Fel vid återsändning av meddelande!"
 
-#: recvcmd.c:236
+#: recvcmd.c:235
 msgid "Error bouncing messages!"
 msgstr "Fel vid återsändning av meddelanden!"
 
-#: recvcmd.c:414
+#: recvcmd.c:422
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Kan inte öppna tillfällig fil %s."
 
-#: recvcmd.c:442
+#: recvcmd.c:451
 msgid "Forward as attachments?"
 msgstr "Vidarebefordra som bilagor?"
 
-#: recvcmd.c:455
+#: recvcmd.c:464
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Kan inte avkoda alla märkta bilagor. MIME-vidarebefordra de övriga?"
 
-#: recvcmd.c:576
+#: recvcmd.c:586
 msgid "Forward MIME encapsulated?"
 msgstr "Vidarebefordra MIME inkapslat?"
 
-#: recvcmd.c:583 recvcmd.c:836
+#: recvcmd.c:593 recvcmd.c:854
 #, c-format
 msgid "Can't create %s."
 msgstr "Kan inte skapa %s."
 
-#: recvcmd.c:703
+#: recvcmd.c:713
 msgid "Can't find any tagged messages."
 msgstr "Kan inte hitta några märkta meddelanden."
 
-#: recvcmd.c:735 send.c:861
+#: recvcmd.c:745 send.c:820
 msgid "No mailing lists found!"
 msgstr "Inga sändlistor hittades!"
 
-#: recvcmd.c:814
+#: recvcmd.c:832
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Kan inte avkoda alla märkta bilagor. MIME-inkapsla de övriga?"
 
-#: remailer.c:160
+#: remailer.c:159
 msgid "<random>"
 msgstr ""
 
-#: remailer.c:450
+#: remailer.c:449
 msgid "Append"
 msgstr "Lägg till"
 
-#: remailer.c:450
+#: remailer.c:449
 msgid "Insert"
 msgstr "Infoga"
 
-#: remailer.c:451
+#: remailer.c:450
 msgid "Delete"
 msgstr "Radera"
 
-#: remailer.c:452
+#: remailer.c:451
 msgid "OK"
 msgstr "OK"
 
-#: remailer.c:477
+#: remailer.c:475
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Kan inte hämta mixmasters type2.list!"
 
-#: remailer.c:500
+#: remailer.c:501
 msgid "Select a remailer chain."
 msgstr "Välj en återpostarkedja."
 
-#: remailer.c:561
+#: remailer.c:562
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Fel: %s kan inte användas som den sista återpostaren i en kedja."
 
-#: remailer.c:591
+#: remailer.c:592
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Mixmaster-kedjor är begränsade till %d element."
 
-#: remailer.c:613
+#: remailer.c:614
 msgid "The remailer chain is already empty."
 msgstr "Återpostarkedjan är redan tom."
 
-#: remailer.c:623
+#: remailer.c:624
 msgid "You already have the first chain element selected."
 msgstr "Du har redan valt det första kedjeelementet."
 
-#: remailer.c:633
+#: remailer.c:634
 msgid "You already have the last chain element selected."
 msgstr "Du har redan valt det sista kedjeelementet."
 
-#: remailer.c:674
+#: remailer.c:675
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster accepterar inte Cc eller Bcc-huvuden."
 
-#: remailer.c:697
+#: remailer.c:698
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 "Var vänlig och sätt \"hostname\"-variabeln till ett passande värde vid "
 "användande av mixmaster!"
 
-#: remailer.c:732
+#: remailer.c:735
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Fel vid sändning av meddelande, barn returnerade %d.\n"
 
-#: remailer.c:736
+#: remailer.c:739
 msgid "Error sending message."
 msgstr "Fel vid sändning av meddelande."
 
@@ -6031,169 +6034,169 @@ msgstr "score: för många parametrar"
 msgid "Error: score: invalid number"
 msgstr ""
 
-#: send.c:323
+#: send.c:326
 msgid "No subject, abort?"
 msgstr "Inget ämne, avbryt?"
 
-#: send.c:325
+#: send.c:328
 msgid "No subject, aborting."
 msgstr "Inget ämne, avbryter."
 
 #. L10N:
 #. Asks whether the user respects the reply-to header.
-#. If she says no, mutt will reply to the from header's address instead.
-#: send.c:592
+#. If she says no, neomutt will reply to the from header's address instead.
+#: send.c:581
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Svara till %s%s?"
 
-#: send.c:625
+#: send.c:614
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Svara till %s%s?"
 
-#: send.c:824
+#: send.c:783
 msgid "No tagged messages are visible!"
 msgstr "Inga märkta meddelanden är synliga!"
 
-#: send.c:897
+#: send.c:856
 msgid "Include message in reply?"
 msgstr "Inkludera meddelande i svar?"
 
-#: send.c:902
+#: send.c:861
 msgid "Including quoted message..."
 msgstr "Inkluderar citerat meddelande..."
 
-#: send.c:912
+#: send.c:871
 msgid "Could not include all requested messages!"
 msgstr "Kunde inte inkludera alla begärda meddelanden!"
 
-#: send.c:925
+#: send.c:884
 msgid "Forward as attachment?"
 msgstr "Vidarebefordra som bilaga?"
 
-#: send.c:929
+#: send.c:888
 msgid "Preparing forwarded message..."
 msgstr "Förbereder vidarebefordrat meddelande..."
 
-#: send.c:1387
+#: send.c:1346
 msgid "Recall postponed message?"
 msgstr "Återkalla uppskjutet meddelande?"
 
-#: send.c:1680
+#: send.c:1641
 msgid "Edit forwarded message?"
 msgstr "Redigera vidarebefordrat meddelande?"
 
-#: send.c:1730
+#: send.c:1692
 msgid "Abort unmodified message?"
 msgstr "Meddelandet har inte ändrats. Avbryt?"
 
-#: send.c:1732
+#: send.c:1694
 msgid "Aborted unmodified message."
 msgstr "Meddelandet har inte ändrats. Avbröt."
 
-#: send.c:1867
+#: send.c:1829
 #, fuzzy
 msgid "Article not posted."
 msgstr "Brevet skickades inte."
 
-#: send.c:1934
+#: send.c:1896
 msgid "Message postponed."
 msgstr "Meddelande uppskjutet."
 
-#: send.c:1948
+#: send.c:1910
 msgid "No recipients are specified!"
 msgstr "Inga mottagare är angivna!"
 
-#: send.c:1953
+#: send.c:1915
 msgid "No recipients were specified."
 msgstr "Inga mottagare blev angivna."
 
-#: send.c:1969
+#: send.c:1932
 msgid "No subject, abort sending?"
 msgstr "Inget ärende, avbryt sändning?"
 
-#: send.c:1973 send.c:1979
+#: send.c:1936 send.c:1942
 msgid "No subject specified."
 msgstr "Inget ärende angivet."
 
-#: send.c:1985
+#: send.c:1948
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Inget ärende angivet."
 
-#: send.c:1992
+#: send.c:1956
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "redigera transportkodning för bilagan"
 
-#: send.c:1998
+#: send.c:1962
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
 msgstr ""
 
-#: send.c:2059 smtp.c:194
+#: send.c:2023 smtp.c:194
 msgid "Sending message..."
 msgstr "Skickar meddelande..."
 
-#: send.c:2091
+#: send.c:2055
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "visa bilaga som text"
 
-#: send.c:2198
+#: send.c:2162
 msgid "Could not send the message."
 msgstr "Kunde inte skicka meddelandet."
 
-#: send.c:2204
+#: send.c:2168
 msgid "Sending in background."
 msgstr "Skickar i bakgrunden."
 
-#: send.c:2205
+#: send.c:2169
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2206
+#: send.c:2170
 msgid "Mail sent."
 msgstr "Brevet skickat."
 
-#: sendlib.c:441
+#: sendlib.c:442
 msgid "No boundary parameter found! [report this error]"
 msgstr "Ingen begränsningsparameter hittad! [Rapportera det här felet]"
 
-#: sendlib.c:470
+#: sendlib.c:471
 #, c-format
 msgid "%s no longer exists!"
 msgstr "%s existerar inte längre!"
 
-#: sendlib.c:918
+#: sendlib.c:919
 #, c-format
 msgid "%s isn't a regular file."
 msgstr "%s är inte en normal fil."
 
-#: sendlib.c:1089
+#: sendlib.c:1090
 #, fuzzy
 msgid "Could not find any mime.types file."
 msgstr "Kunde inte skicka meddelandet."
 
-#: sendlib.c:1168
+#: sendlib.c:1169
 #, c-format
 msgid "Could not open %s"
 msgstr "Kunde inte öppna %s"
 
-#: sendlib.c:2478
+#: sendlib.c:2518
 msgid "$sendmail must be set in order to send mail."
 msgstr ""
 
-#: sendlib.c:2584
+#: sendlib.c:2625
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fel vid sändning av meddelande, barn returnerade %d (%s)."
 
-#: sendlib.c:2590
+#: sendlib.c:2631
 msgid "Output of the delivery process"
 msgstr "Utdata från sändprocessen"
 
-#: sendlib.c:2773
+#: sendlib.c:2815
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Felaktigt IDN %s vid förberedning av \"resent-from\"."
@@ -6265,20 +6268,20 @@ msgstr "Sorterar brevlåda..."
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Kunde inte hitta sorteringsfunktion! [Rapportera det här felet]"
 
-#: status.c:131
+#: status.c:130
 msgid "(no mailbox)"
 msgstr "(ingen brevlåda)"
 
-#: thread.c:1154
+#: thread.c:1139
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
 
-#: thread.c:1160
+#: thread.c:1145
 #, fuzzy
 msgid "Root message is not visible in this limited view."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
-#: thread.c:1162
+#: thread.c:1147
 msgid "Parent message is not visible in this limited view."
 msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 
@@ -6299,7 +6302,7 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Upphovsrätt (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Upphovsrätt (C) 1996-2016 Michael R. Elkins <me@mutt.org>\n"
 "Upphovsrätt (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Upphovsrätt (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Upphovsrätt (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
@@ -6359,16 +6362,16 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-"Mutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `mutt -vv' for details.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `neomutt -vv' for details.\n"
 msgstr ""
-"Upphovsrätt (C) 1996-2007 Michael R. Elkins med fler.\n"
-"Mutt levereras HELT UTAN GARANTI; för detaljer kör `mutt -vv'.\n"
-"Mutt är fri mjukvara, och du är välkommen att sprida det vidare\n"
-"under vissa villkor; kör `mutt -vv' för detaljer.\n"
+"Upphovsrätt (C) 1996-2016 Michael R. Elkins med fler.\n"
+"NeoMutt levereras HELT UTAN GARANTI; för detaljer kör `neomutt -vv'.\n"
+"NeoMutt är fri mjukvara, och du är välkommen att sprida det vidare\n"
+"under vissa villkor; kör `neomutt -vv' för detaljer.\n"
 
-#: version.c:413
+#: version.c:409
 #, fuzzy
 msgid ""
 "\n"
@@ -6377,28 +6380,10 @@ msgstr ""
 "\n"
 "Kompileringsval:"
 
-#: version.c:416
+#: version.c:412
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Kompileringsval:"
-
-#, fuzzy
-#~ msgid "sign as: "
-#~ msgstr " signera som: "
-
-#~ msgid "Lock count exceeded, remove lock for %s?"
-#~ msgstr "Låsningsantal överskridet, ta bort låsning för %s?"
-
-#~ msgid " aka ......: "
-#~ msgstr " aka ......: "
-
-#, fuzzy
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\".\n"
-
-#, fuzzy
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\".\n"

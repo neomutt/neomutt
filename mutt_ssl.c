@@ -41,12 +41,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mutt_ssl.h"
 #include "account.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
@@ -334,7 +334,7 @@ static int ssl_socket_close(struct Connection *conn)
     if (data->isopen)
       SSL_shutdown(data->ssl);
 
-    /* hold onto this for the life of mutt, in case we want to reconnect.
+    /* hold onto this for the life of neomutt, in case we want to reconnect.
      * The purist in me wants a mutt_exit hook. */
     SSL_free(data->ssl);
     SSL_CTX_free(data->ctx);
@@ -855,7 +855,8 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
    * true, then check_certificate_file() must be false.  Therefore we don't need
    * to also scan the certificate file here.
    */
-  allow_always = allow_always && CertificateFile && check_certificate_expiration(cert, true);
+  allow_always =
+      allow_always && CertificateFile && check_certificate_expiration(cert, true);
 
   /* L10N:
    * These four letters correspond to the choices in the next four strings:

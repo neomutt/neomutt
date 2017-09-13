@@ -1,5 +1,27 @@
+/**
+ * @file
+ * GUI display the mailboxes in a side panel
+ *
+ * @authors
+ * Copyright (C) 2017 Damien Riegel <damien.riegel@gmail.com>
+ *
+ * @copyright
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef _MUTT_OPCODES_H
-#define _MUTT_OPCODES_H 1
+#define _MUTT_OPCODES_H
 
 #include "config.h"
 
@@ -94,7 +116,7 @@
   _fmt(OP_EDITOR_CAPITALIZE_WORD,         N_("capitalize the word")) \
   _fmt(OP_EDITOR_DOWNCASE_WORD,           N_("convert the word to lower case")) \
   _fmt(OP_EDITOR_UPCASE_WORD,             N_("convert the word to upper case")) \
-  _fmt(OP_ENTER_COMMAND,                  N_("enter a muttrc command")) \
+  _fmt(OP_ENTER_COMMAND,                  N_("enter a neomuttrc command")) \
   _fmt(OP_ENTER_MASK,                     N_("enter a file mask")) \
   _fmt(OP_EXIT,                           N_("exit this menu")) \
   _fmt(OP_FILTER,                         N_("filter attachment through a shell command")) \
@@ -149,7 +171,7 @@
   _fmt(OP_MAIN_SET_FLAG,                  N_("set a status flag on a message")) \
   _fmt(OP_MAIN_SYNC_FOLDER,               N_("save changes to mailbox")) \
   _fmt(OP_MAIN_TAG_PATTERN,               N_("tag messages matching a pattern")) \
-  _fmt(OP_MAIN_QUASI_DELETE,              N_("delete from mutt, don't touch on disk")) \
+  _fmt(OP_MAIN_QUASI_DELETE,              N_("delete from NeoMutt, don't touch on disk")) \
   _fmt(OP_MAIN_UNDELETE_PATTERN,          N_("undelete messages matching a pattern")) \
   _fmt(OP_MAIN_UNTAG_PATTERN,             N_("untag messages matching a pattern")) \
   _fmt(OP_MARK_MSG,                       N_("create a hotkey macro for the current message")) \
@@ -204,7 +226,7 @@
   _fmt(OP_UNDELETE_THREAD,                N_("undelete all messages in thread")) \
   _fmt(OP_UNDELETE_SUBTHREAD,             N_("undelete all messages in subthread")) \
   _fmt(OP_UNSUBSCRIBE_PATTERN,            N_("unsubscribe from newsgroups matching a pattern")) \
-  _fmt(OP_VERSION,                        N_("show the Mutt version number and date")) \
+  _fmt(OP_VERSION,                        N_("show the NeoMutt version number and date")) \
   _fmt(OP_VIEW_ATTACH,                    N_("view attachment using mailcap entry if necessary")) \
   _fmt(OP_VIEW_ATTACHMENTS,               N_("show MIME attachments")) \
   _fmt(OP_WHAT_KEY,                       N_("display the keycode for a key press")) \
@@ -218,7 +240,7 @@
   _fmt(OP_DECRYPT_COPY,                   N_("make decrypted copy")) \
   _fmt(OP_FORGET_PASSPHRASE,              N_("wipe passphrase(s) from memory")) \
   _fmt(OP_EXTRACT_KEYS,                   N_("extract supported public keys")) \
-  
+
 #ifdef MIXMASTER
 #define OPS_MIX(_fmt) \
   _fmt(OP_MIX_USE,                        N_("accept the chain constructed")) \

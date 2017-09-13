@@ -44,6 +44,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -54,11 +55,9 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
-#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
 #include "mx.h"
@@ -247,8 +246,8 @@ char *_mutt_expand_path(char *s, size_t slen, int regex)
       {
 #ifdef USE_IMAP
         /* if folder = {host} or imap[s]://host/: don't append slash */
-        if (mx_is_imap(NONULL(Folder)) && (Folder[strlen(Folder) - 1] == '}' ||
-                                            Folder[strlen(Folder) - 1] == '/'))
+        if (mx_is_imap(NONULL(Folder)) &&
+            (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
           strfcpy(p, NONULL(Folder), sizeof(p));
         else
 #endif
@@ -410,7 +409,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
  * @param m Attachment body to be displayed
- * @retval true  Mutt requires a mailcap entry to display
+ * @retval true  NeoMutt requires a mailcap entry to display
  * @retval false otherwise
  */
 bool mutt_needs_mailcap(struct Body *m)
@@ -531,8 +530,8 @@ void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line)
 {
   size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
-                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(), (int) getpid(),
-                      mutt_rand64(), suffix ? "." : "", NONULL(suffix));
+                      NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
+                      (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
   if (n >= slen)
     mutt_debug(1, "%s:%d: ERROR: insufficient buffer space to hold temporary "
                   "filename! slen=%zu but need %zu\n",
@@ -992,8 +991,8 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
         mutt_extract_token(word, srcbuf, 0);
         mutt_debug(3, "fmtpipe %2d: %s\n", i++, word->data);
         mutt_buffer_addch(command, '\'');
-        mutt_expando_format(buf, sizeof(buf), 0, cols, word->data, callback, data,
-                          flags | MUTT_FORMAT_NOFILTER);
+        mutt_expando_format(buf, sizeof(buf), 0, cols, word->data, callback,
+                            data, flags | MUTT_FORMAT_NOFILTER);
         for (p = buf; p && *p; p++)
         {
           if (*p == '\'')
@@ -1031,7 +1030,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
           mutt_debug(3, "fmtpipe < %s\n", dest);
 
           /* If the result ends with '%', this indicates that the filter
-           * generated %-tokens that mutt can expand.  Eliminate the '%'
+           * generated %-tokens that neomutt can expand.  Eliminate the '%'
            * marker and recycle the string through mutt_expando_format().
            * To literally end with "%", use "%%". */
           if ((n > 0) && dest[n - 1] == '%')
@@ -1049,7 +1048,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
                  * format pipes does not try to append a nul itself.
                  */
                 mutt_expando_format(dest, destlen + 1, col, cols, recycler,
-                                  callback, data, flags);
+                                    callback, data, flags);
                 FREE(&recycler);
               }
             }
@@ -1573,7 +1572,7 @@ void mutt_sleep(short s)
 const char *mutt_make_version(void)
 {
   static char vstring[STRING];
-  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
+  snprintf(vstring, sizeof(vstring), "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
   return vstring;
 }
 
@@ -1769,15 +1768,6 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
     }
 
     if (snprintf(buf, bufsize, "%s/%s/neomuttrc", token, PACKAGE) < 0)
-      continue;
-    mutt_expand_path(buf, bufsize);
-    if (access(buf, F_OK) == 0)
-    {
-      rc = 1;
-      break;
-    }
-
-    if (snprintf(buf, bufsize, "%s/%s/Muttrc-%s", token, PACKAGE, MUTT_VERSION) < 0)
       continue;
     mutt_expand_path(buf, bufsize);
     if (access(buf, F_OK) == 0)
@@ -1994,4 +1984,3 @@ int mutt_inbox_cmp(const char *a, const char *b)
 
   return 0;
 }
-

@@ -43,6 +43,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "buffy.h"
@@ -51,7 +52,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -870,7 +870,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
 
     if (subdir)
     {
-      char tmp[_POSIX_PATH_MAX];
+      char tmp[LONG_STRING];
       snprintf(tmp, sizeof(tmp), "%s/%s", subdir, de->d_name);
       h->path = safe_strdup(tmp);
     }
@@ -1513,8 +1513,8 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   omask = umask(mh_umask(dest));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path,
-             subdir, (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
+    snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path, subdir,
+             (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
     mutt_debug(2, "maildir_open_new_message (): Trying %s.\n", path);
 
@@ -1562,7 +1562,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
  *
  * msg->path looks like this:
  *
- *    tmp/{cur,new}.mutt-HOSTNAME-PID-COUNTER:flags
+ *    tmp/{cur,new}.neomutt-HOSTNAME-PID-COUNTER:flags
  *
  * See also maildir_open_new_message().
  */
@@ -1782,10 +1782,10 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
      *
      * Note that there is a race condition against programs which
      * use the first free slot instead of the maximum message
-     * number.  Mutt does _not_ behave like this.
+     * number.  NeoMutt does _not_ behave like this.
      *
      * Anyway, if this fails, the message is in the folder, so
-     * all what happens is that a concurrently running mutt will
+     * all what happens is that a concurrently running neomutt will
      * lose flag modifications.
      */
 
@@ -2409,7 +2409,7 @@ static FILE *_maildir_open_find_message(const char *folder, const char *unique,
 {
   char dir[_POSIX_PATH_MAX];
   char tunique[_POSIX_PATH_MAX];
-  char fname[_POSIX_PATH_MAX];
+  char fname[LONG_STRING];
 
   DIR *dp = NULL;
   struct dirent *de = NULL;

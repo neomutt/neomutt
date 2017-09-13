@@ -29,10 +29,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "bcache.h"
 #include "account.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "protos.h"
 #include "url.h"
 

@@ -31,6 +31,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "mutt.h"
 #include "message.h"
 #include "account.h"
@@ -41,7 +42,6 @@
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -53,11 +53,11 @@
 #include "hcache/hcache.h"
 #endif
 
-static struct ImapHeaderData* imap_new_header_data(void)
+static struct ImapHeaderData *imap_new_header_data(void)
 {
-    struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
-    STAILQ_INIT(&d->keywords);
-    return d;
+  struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
+  STAILQ_INIT(&d->keywords);
+  return d;
 }
 
 static void imap_update_context(struct ImapData *idata, int oldmsgcount)
@@ -966,7 +966,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
         }
         /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
          * change (eg from \Unseen to \Seen).
-         * Uncommitted changes in mutt take precedence. If we decide to
+         * Uncommitted changes in neomutt take precedence. If we decide to
          * incrementally update flags later, this won't stop us syncing */
         else if ((mutt_strncasecmp("FLAGS", pc, 5) == 0) && !h->changed)
         {
@@ -1465,7 +1465,7 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s)
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */
   h->changed = false;
-  ctx->changed &= ~readonly;
+  ctx->changed &= !readonly;
   ctx->readonly = readonly;
 
   return s;

@@ -24,8 +24,8 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "pgplib.h"
 #include "lib/lib.h"
+#include "pgplib.h"
 
 const char *pgp_pkalgbytype(unsigned char type)
 {

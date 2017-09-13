@@ -32,6 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mx.h"
 #include "address.h"
@@ -43,7 +44,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -265,7 +265,7 @@ int mx_get_magic(const char *path)
     int ch;
 
     /* Some mailbox creation tools erroneously append a blank line to
-     * a file before appending a mail message.  This allows mutt to
+     * a file before appending a mail message.  This allows neomutt to
      * detect magic for and thus open those files. */
     while ((ch = fgetc(f)) != EOF)
     {
@@ -467,7 +467,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
 
   mutt_make_label_hash(ctx);
 
-  /* if the user has a `push' command in their .muttrc, or in a folder-hook,
+  /* if the user has a `push' command in their .neomuttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.
@@ -662,7 +662,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
-      int rc = query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
+      int rc =
+          query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
       {
         ctx->closing = false;
@@ -945,7 +946,7 @@ void mx_update_tables(struct Context *ctx, int committing)
       {
         ctx->unread++;
         if (!ctx->hdrs[j]->old)
-          ctx->new++;
+          ctx->new ++;
       }
 
       j++;
@@ -1337,7 +1338,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
     {
       ctx->unread++;
       if (!h->old)
-        ctx->new++;
+        ctx->new ++;
     }
   }
 }

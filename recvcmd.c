@@ -25,6 +25,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "attach.h"
@@ -33,7 +34,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"
@@ -58,7 +58,7 @@ static bool check_msg(struct Body *b, bool err)
   return true;
 }
 
-static short check_all_msg(struct AttachCtx *actx, struct Body *cur, short err)
+static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, short err)
 {
   if (cur && !check_msg(cur, err))
     return false;
@@ -128,7 +128,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
   int ret = 0;
   int p = 0;
 
-  if (check_all_msg(actx, cur, 1) == -1)
+  if (!check_all_msg(actx, cur, 1))
     return;
 
   /* one or more messages? */
@@ -242,7 +242,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
  */
 void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur)
 {
-  if (check_all_msg(actx, cur, 1) == -1)
+  if (!check_all_msg(actx, cur, 1))
     return;
 
   if (cur)
@@ -431,7 +431,8 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (option(OPT_FORWARD_QUOTE))
   {
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, parent_hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                        parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
   }
@@ -581,7 +582,8 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
 
   tmpbody[0] = '\0';
 
-  if ((rc = query_quadoption(OPT_MIME_FORWARD, _("Forward MIME encapsulated?"))) == MUTT_NO)
+  if ((rc = query_quadoption(OPT_MIME_FORWARD,
+                             _("Forward MIME encapsulated?"))) == MUTT_NO)
   {
     /* no MIME encapsulation */
 
@@ -656,7 +658,7 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 {
   short nattach;
 
-  if (check_all_msg(actx, cur, 0) == 0)
+  if (check_all_msg(actx, cur, 0))
     attach_forward_msgs(fp, hdr, actx, cur, flags);
   else
   {
@@ -809,7 +811,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     unset_option(OPT_NEWS_SEND);
 #endif
 
-  if (check_all_msg(actx, cur, false) == -1)
+  if (!check_all_msg(actx, cur, false))
   {
     nattach = count_tagged(actx);
     if ((parent = find_parent(actx, cur, nattach)) != NULL)
@@ -875,7 +877,8 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     st.fpout = tmpfp;
 
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, parent_hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
+                        parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
 

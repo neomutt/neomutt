@@ -21,10 +21,10 @@
  */
 
 #include "config.h"
-#include "envelope.h"
 #include <stddef.h>
 #include "lib/buffer.h"
 #include "lib/memory.h"
+#include "envelope.h"
 #include "queue.h"
 #include "rfc822.h"
 
@@ -94,7 +94,7 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
 #define MOVE_STAILQ(h)                                                         \
   if (STAILQ_EMPTY(&base->h))                                                  \
   {                                                                            \
-    STAILQ_SWAP(&base->h, &((*extra))->h, ListNode);                         \
+    STAILQ_SWAP(&base->h, &((*extra))->h, ListNode);                           \
   }
 
   MOVE_ELEM(return_path);
@@ -140,4 +140,3 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
 
   mutt_free_envelope(extra);
 }
-

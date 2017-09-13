@@ -46,6 +46,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mutt_notmuch.h"
 #include "body.h"
@@ -54,7 +55,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -142,10 +142,10 @@ struct NmCtxData
 {
   notmuch_database_t *db;
 
-  char *db_filename; /**< Filename of the NotMuch database */
-  char *db_query;    /**< Previous query */
-  int db_limit;      /**< Maximum number of results to return */
-  int query_type;    /**< Messages or Threads */
+  char *db_filename;           /**< Filename of the NotMuch database */
+  char *db_query;              /**< Previous query */
+  int db_limit;                /**< Maximum number of results to return */
+  enum NmQueryType query_type; /**< Messages or Threads */
 
   struct UriTag *query_items;
 
@@ -450,20 +450,23 @@ static struct NmCtxData *get_ctxdata(struct Context *ctx)
   return NULL;
 }
 
-static int string_to_query_type(const char *str)
+static enum NmQueryType string_to_query_type(const char *str)
 {
-  if (!str)
-    str = NmQueryType; /* user's default */
-  if (!str)
-    return NM_QUERY_TYPE_MESGS; /* hardcoded default */
-
-  if (strcmp(str, "threads") == 0)
+  if (mutt_strcmp(str, "threads") == 0)
     return NM_QUERY_TYPE_THREADS;
-  else if (strcmp(str, "messages") == 0)
+  else if (mutt_strcmp(str, "messages") == 0)
     return NM_QUERY_TYPE_MESGS;
 
-  mutt_error(_("failed to parse notmuch query type: %s"), str);
+  mutt_error(_("failed to parse notmuch query type: %s"), NONULL(str));
   return NM_QUERY_TYPE_MESGS;
+}
+
+static char *query_type_to_string(enum NmQueryType query_type)
+{
+  if (query_type == NM_QUERY_TYPE_THREADS)
+    return "threads";
+  else
+    return "messages";
 }
 
 /**
@@ -553,8 +556,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   }
 
   /* if the query has changed, reset the window position */
-  if (NmQueryWindowCurrentSearch == NULL ||
-      (strcmp(query, NmQueryWindowCurrentSearch) != 0))
+  if (NmQueryWindowCurrentSearch == NULL || (strcmp(query, NmQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
   if (!query_window_check_timebase(NmQueryWindowTimebase))
@@ -566,8 +568,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   }
 
   if (end == 0)
-    snprintf(buf, bufsz, "date:%d%s..now and %s", beg,
-             NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
+    snprintf(buf, bufsz, "date:%d%s..now and %s", beg, NmQueryWindowTimebase,
+             NmQueryWindowCurrentSearch);
   else
     snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
              end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
@@ -604,6 +606,8 @@ static char *get_query_string(struct NmCtxData *data, int window)
   if (data->db_query)
     return data->db_query;
 
+  data->query_type = string_to_query_type(NmQueryType); /* user's default */
+
   for (item = data->query_items; item; item = item->next)
   {
     if (!item->value || !item->name)
@@ -623,9 +627,6 @@ static char *get_query_string(struct NmCtxData *data, int window)
 
   if (!data->db_query)
     return NULL;
-
-  if (!data->query_type)
-    data->query_type = string_to_query_type(NULL);
 
   if (window)
   {
@@ -651,11 +652,6 @@ static char *get_query_string(struct NmCtxData *data, int window)
 static int get_limit(struct NmCtxData *data)
 {
   return data ? data->db_limit : 0;
-}
-
-static int get_query_type(struct NmCtxData *data)
-{
-  return (data && data->query_type) ? data->query_type : string_to_query_type(NULL);
 }
 
 static const char *get_db_filename(struct NmCtxData *data)
@@ -1033,11 +1029,11 @@ static void deinit_header(struct Header *h)
 }
 
 /**
- * nm2mutt_message_id - converts notmuch message Id to mutt message Id
+ * nm2mutt_message_id - converts notmuch message Id to neomutt message Id
  * @param id NotMuch ID to convert
- * @retval string Mutt message ID
+ * @retval string NeoMutt message ID
  *
- * Caller must free the Mutt Message ID
+ * Caller must free the NeoMutt Message ID
  */
 static char *nm2mutt_message_id(const char *id)
 {
@@ -1067,7 +1063,7 @@ static int init_header(struct Header *h, const char *path, notmuch_message_t *ms
 
   /*
    * Notmuch ensures that message Id exists (if not notmuch Notmuch will
-   * generate an ID), so it's more safe than use mutt Header->env->id
+   * generate an ID), so it's more safe than use neomutt Header->env->id
    */
   ((struct NmHdrData *) h->data)->virtual_id = safe_strdup(id);
 
@@ -1130,7 +1126,10 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
     static char msg[STRING];
     snprintf(msg, sizeof(msg), _("Reading messages..."));
 
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+    if (notmuch_query_count_messages(q, &count) != NOTMUCH_STATUS_SUCCESS)
+      count = 0; /* may not be defined on error */
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
     if (notmuch_query_count_messages_st(q, &count) != NOTMUCH_STATUS_SUCCESS)
       count = 0; /* may not be defined on error */
 #else
@@ -1158,7 +1157,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
   if (!id)
     return NULL;
 
-  mutt_debug(2, "nm: mutt header, id='%s'\n", id);
+  mutt_debug(2, "nm: neomutt header, id='%s'\n", id);
 
   if (!ctx->id_hash)
   {
@@ -1169,7 +1168,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
   }
 
   mid = nm2mutt_message_id(id);
-  mutt_debug(2, "nm: mutt id='%s'\n", mid);
+  mutt_debug(2, "nm: neomutt id='%s'\n", mid);
 
   h = hash_find(ctx->id_hash, mid);
   FREE(&mid);
@@ -1317,7 +1316,10 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, int dedup)
 
   limit = get_limit(data);
 
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_messages(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
     return false;
 #else
@@ -1347,7 +1349,10 @@ static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, int dedu
   if (!data)
     return false;
 
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_threads(q, &threads) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
     return false;
 #else
@@ -1708,7 +1713,10 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   if (q)
   {
     apply_exclude_tags(q);
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+    if (notmuch_query_count_messages(q, &res) != NOTMUCH_STATUS_SUCCESS)
+      res = 0; /* may not be defined on error */
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
     if (notmuch_query_count_messages_st(q, &res) != NOTMUCH_STATUS_SUCCESS)
       res = 0; /* may not be defined on error */
 #else
@@ -1844,11 +1852,15 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
   int added;
 
   if (data)
-    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", get_db_filename(data));
+    added = snprintf(uri, sizeof(uri),
+                     "notmuch://%s?type=%s&query=", get_db_filename(data),
+                     query_type_to_string(data->query_type));
   else if (NmDefaultUri)
-    added = snprintf(uri, sizeof(uri), "%s?query=", NmDefaultUri);
+    added = snprintf(uri, sizeof(uri), "%s?type=%s&query=", NmDefaultUri,
+                     query_type_to_string(string_to_query_type(NmQueryType)));
   else if (Folder)
-    added = snprintf(uri, sizeof(uri), "notmuch://%s?query=", Folder);
+    added = snprintf(uri, sizeof(uri), "notmuch://%s?type=%s&query=", Folder,
+                     query_type_to_string(string_to_query_type(NmQueryType)));
   else
     return NULL;
 
@@ -2012,12 +2024,15 @@ bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr)
 
   q = notmuch_query_create(db, new_str);
 
-  switch (get_query_type(data))
+  switch (data->query_type)
   {
     case NM_QUERY_TYPE_MESGS:
     {
       notmuch_messages_t *messages = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+      if (notmuch_query_search_messages(q, &messages) != NOTMUCH_STATUS_SUCCESS)
+        return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
       if (notmuch_query_search_messages_st(q, &messages) != NOTMUCH_STATUS_SUCCESS)
         return false;
 #else
@@ -2030,7 +2045,10 @@ bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr)
     case NM_QUERY_TYPE_THREADS:
     {
       notmuch_threads_t *threads = NULL;
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+      if (notmuch_query_search_threads(q, &threads) != NOTMUCH_STATUS_SUCCESS)
+        return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
       if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
         return false;
 #else
@@ -2306,7 +2324,7 @@ static int nm_open_mailbox(struct Context *ctx)
   if (q)
   {
     rc = 0;
-    switch (get_query_type(data))
+    switch (data->query_type)
     {
       case NM_QUERY_TYPE_MESGS:
         if (!read_mesgs_query(ctx, q, 0))
@@ -2402,7 +2420,10 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
 
   limit = get_limit(data);
 
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+#if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
+  if (notmuch_query_search_messages(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+    return false;
+#elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
     goto done;
 #else

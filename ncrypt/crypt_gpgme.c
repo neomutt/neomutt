@@ -45,6 +45,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -56,7 +57,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -901,8 +901,8 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
 
 static void strlower(char *s)
 {
-    for (; *s; ++s)
-        *s = tolower(*s);
+  for (; *s; ++s)
+    *s = tolower(*s);
 }
 
 /**
@@ -2161,7 +2161,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 
   if (dryrun)
   {
-    snprintf(tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", Tmpdir);
+    snprintf(tmpdir, sizeof(tmpdir), "%s/neomutt-gpgme-XXXXXX", Tmpdir);
     if (!mkdtemp(tmpdir))
     {
       mutt_debug(1, "Error creating temporary GPGME home\n");
@@ -2402,7 +2402,7 @@ void pgp_gpgme_invoke_import(const char *fname)
  * around in the main handler.
  *
  * (Note that we aren't worse than Outlook & Cie in this, and also note that we
- * can successfully handle anything produced by any existing versions of mutt.)
+ * can successfully handle anything produced by any existing versions of neomutt.)
  */
 static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
@@ -3091,7 +3091,7 @@ static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.num = num + 1;
 
   mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
-                    crypt_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+                      crypt_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
@@ -3382,7 +3382,8 @@ static struct DnArray *parse_dn(const char *string)
     if (!*string)
       break; /* ready */
     if (arrayidx >= arraysize)
-    { /* mutt lacks a real safe_realoc - so we need to copy */
+    {
+      /* neomutt lacks a real safe_realloc - so we need to copy */
       struct DnArray *a2 = NULL;
 
       arraysize += 5;
@@ -4232,8 +4233,9 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (option(OPT_PGP_CHECK_TRUST) && (!crypt_id_is_valid(key_table[menu->current]) ||
-                                         !crypt_id_is_strong(key_table[menu->current])))
+        if (option(OPT_PGP_CHECK_TRUST) &&
+            (!crypt_id_is_valid(key_table[menu->current]) ||
+             !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
           char buff[LONG_STRING];
@@ -4325,7 +4327,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     return NULL;
 
   mutt_debug(5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
-            a ? a->personal : "", a ? a->mailbox : "");
+             a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {

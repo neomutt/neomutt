@@ -26,10 +26,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "history.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "protos.h"
 
 /* This history ring grows from 0..History, with last marking the
@@ -128,7 +128,7 @@ void mutt_read_histfile(void)
       mutt_error(_("Bad history file format (line %d)"), line);
       break;
     }
-    /* silently ignore too high class (probably newer mutt) */
+    /* silently ignore too high class (probably newer neomutt) */
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
@@ -212,11 +212,12 @@ static void shrink_histfile(void)
       mutt_error(_("Bad history file format (line %d)"), line);
       goto cleanup;
     }
-    /* silently ignore too high class (probably newer mutt) */
+    /* silently ignore too high class (probably newer neomutt) */
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
-    if (option(OPT_HISTORY_REMOVE_DUPS) && (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
+    if (option(OPT_HISTORY_REMOVE_DUPS) &&
+        (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
     {
       regen_file = true;
       continue;

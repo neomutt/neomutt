@@ -29,14 +29,14 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <utime.h>
+#include "lib/lib.h"
+#include "mutt.h"
 #include "buffy.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
-#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -188,8 +188,8 @@ static void buffy_free(struct Buffy **mailbox)
 static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
                                    int check_new, int check_stats)
 {
-  char path[_POSIX_PATH_MAX];
-  char msgpath[_POSIX_PATH_MAX];
+  char path[LONG_STRING];
+  char msgpath[LONG_STRING];
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;

@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "context.h"
@@ -37,7 +38,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -350,7 +350,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
              ((mutt_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
-                                                        * by old mutt versions
+                                                        * by old neomutt versions
                                                         */
               || (mutt_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
     {
@@ -573,7 +573,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
     {
-err:
+    err:
       mx_close_message(ctx, &msg);
       mutt_free_envelope(&newhdr->env);
       mutt_free_body(&newhdr->content);
@@ -597,7 +597,7 @@ err:
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
         (mutt_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
-                          "application/pgp-signature") == 0))
+                         "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;

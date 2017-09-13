@@ -28,6 +28,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "attach.h"
 #include "body.h"
@@ -36,7 +37,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
@@ -363,7 +363,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  * Display a message attachment using the viewer program configured in mailcap.
  * If there is no mailcap entry for a file type, view the image as text.
  * Viewer processes are opened and waited on synchronously so viewing an
- * attachment this way will block the main mutt process until the viewer process
+ * attachment this way will block the main neomutt process until the viewer process
  * exits.
  *
  */
@@ -1091,7 +1091,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
-bail0:
+  bail0:
     safe_fclose(&ifp);
     safe_fclose(&fpout);
     mutt_unlink(newfile);

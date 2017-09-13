@@ -30,11 +30,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "account.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mutt_socket.h"
@@ -977,7 +977,7 @@ static int tls_set_priority(struct TlsSockData *data)
 }
 #else
 /* This array needs to be large enough to hold all the possible values support
- * by Mutt.  The initialized values are just placeholders--the array gets
+ * by NeoMutt.  The initialized values are just placeholders--the array gets
  * overwritten in tls_negotiate() depending on the $ssl_use_* options.
  */
 static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
@@ -1045,7 +1045,8 @@ static int tls_negotiate(struct Connection *conn)
 
   if (SslCaCertificatesFile)
   {
-    gnutls_certificate_set_x509_trust_file(data->xcred, SslCaCertificatesFile, GNUTLS_X509_FMT_PEM);
+    gnutls_certificate_set_x509_trust_file(data->xcred, SslCaCertificatesFile,
+                                           GNUTLS_X509_FMT_PEM);
   }
 
   if (SslClientCert)

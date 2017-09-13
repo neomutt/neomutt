@@ -34,9 +34,9 @@
 
 #include "config.h"
 #include <stdio.h>
+#include "lib/lib.h"
 #include "crypt_mod.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "protos.h"

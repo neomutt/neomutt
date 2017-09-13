@@ -35,8 +35,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "pager.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -46,7 +46,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
@@ -56,6 +55,7 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pager.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
@@ -99,7 +99,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_ATTACH                                                           \
-  if (option(OPT_ATTACH_MSG))                                                    \
+  if (option(OPT_ATTACH_MSG))                                                  \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
@@ -914,7 +914,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         color_line = ColorBodyList;
       while (color_line)
       {
-        if (regexec(&color_line->regex, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+        if (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                    (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -982,7 +983,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       null_rx = false;
       for (color_line = ColorAttachList; color_line; color_line = color_line->next)
       {
-        if (regexec(&color_line->regex, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+        if (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                    (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -2286,7 +2288,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_QUIT:
-        if (query_quadoption(OPT_QUIT, _("Quit Mutt?")) == MUTT_YES)
+        if (query_quadoption(OPT_QUIT, _("Quit NeoMutt?")) == MUTT_YES)
         {
           /* avoid prompting again in the index menu */
           set_quadoption(OPT_QUIT, MUTT_YES);
@@ -2921,7 +2923,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (IsMsgAttach(extra))
-            mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS | SENDREPLY);
+            mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
+                              SENDNEWS | SENDREPLY);
           else
             ci_send_message(SENDNEWS | SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
           pager_menu->redraw = REDRAW_FULL;

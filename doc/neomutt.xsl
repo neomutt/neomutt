@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE xsl:stylesheet [
-<!ENTITY css SYSTEM "mutt.css">
+<!ENTITY css SYSTEM "neomutt.css">
 ]>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
   <xsl:param name="section.autolabel" select="1"></xsl:param>

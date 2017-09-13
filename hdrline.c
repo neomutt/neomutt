@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -38,7 +39,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -1336,10 +1336,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
   if (optional)
     mutt_expando_format(dest, destlen, col, cols, ifstring, hdr_format_str,
-                      (unsigned long) hfi, flags);
+                        (unsigned long) hfi, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_expando_format(dest, destlen, col, cols, elsestring, hdr_format_str,
-                      (unsigned long) hfi, flags);
+                        (unsigned long) hfi, flags);
 
   return src;
 #undef THREAD_NEW
@@ -1355,8 +1355,8 @@ void _mutt_make_string(char *dest, size_t destlen, const char *s,
   hfi.ctx = ctx;
   hfi.pager_progress = 0;
 
-  mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s, hdr_format_str,
-                    (unsigned long) &hfi, flags);
+  mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s,
+                      hdr_format_str, (unsigned long) &hfi, flags);
 }
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,

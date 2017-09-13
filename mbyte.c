@@ -30,9 +30,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mbyte.h"
 #include "charset.h"
-#include "lib/lib.h"
 #include "options.h"
 #include "protos.h"
 

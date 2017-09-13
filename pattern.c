@@ -38,8 +38,8 @@
 #include <unistd.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "pattern.h"
 #include "address.h"
 #include "body.h"
 #include "context.h"
@@ -48,16 +48,15 @@
 #include "globals.h"
 #include "group.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pattern.h"
 #include "protos.h"
 #include "state.h"
 #include "thread.h"
@@ -113,7 +112,8 @@ static bool eat_regexp(struct Pattern *pat, struct Buffer *s, struct Buffer *err
   else
   {
     pat->p.regex = safe_malloc(sizeof(regex_t));
-    r = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
+    r = REGCOMP(pat->p.regex, buf.data,
+                REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
     if (r)
     {
       regerror(r, pat->p.regex, errmsg, sizeof(errmsg));

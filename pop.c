@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "pop.h"
 #include "account.h"
@@ -37,7 +38,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
@@ -51,7 +51,7 @@
 #endif
 
 #ifdef USE_HCACHE
-#define HC_FNAME "mutt"  /* filename for hcache as POP lacks paths */
+#define HC_FNAME "neomutt"  /* filename for hcache as POP lacks paths */
 #define HC_FEXT "hcache" /* extension for hcache as POP lacks paths */
 #endif
 

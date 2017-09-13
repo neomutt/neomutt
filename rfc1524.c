@@ -35,11 +35,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "rfc1524.h"
 #include "body.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
@@ -53,7 +53,7 @@
  * %{parameter} is replaced by the parameter value from the content-type field
  * \% is %
  * Unsupported rfc1524 parameters: these would probably require some doing
- * by mutt, and can probably just be done by piping the message to metamail
+ * by neomutt, and can probably just be done by piping the message to metamail
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  *
@@ -406,7 +406,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
    * joy.  They say
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
-   * we'll make it specifiable in .muttrc
+   * we'll make it specifiable in .neomuttrc
    */
   if (!curr || !*curr)
   {
@@ -488,7 +488,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   }
   else if (!oldfile)
   {
-    mutt_expand_fmt(newfile, nflen, nametemplate, "mutt");
+    mutt_expand_fmt(newfile, nflen, nametemplate, "neomutt");
   }
   else /* oldfile && nametemplate */
   {

@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
@@ -41,7 +42,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -133,7 +133,7 @@ static const char *No_visible = N_("No visible messages.");
   }
 
 #define CHECK_ATTACH                                                           \
-  if (option(OPT_ATTACH_MSG))                                                    \
+  if (option(OPT_ATTACH_MSG))                                                  \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
@@ -145,7 +145,7 @@ static const char *No_visible = N_("No visible messages.");
 #define FLAGGED(h) mutt_thread_contains_flagged(Context, h)
 
 #define CAN_COLLAPSE(header)                                                   \
-  ((option(OPT_COLLAPSE_UNREAD) || !UNREAD(header)) &&                           \
+  ((option(OPT_COLLAPSE_UNREAD) || !UNREAD(header)) &&                         \
    (option(OPT_COLLAPSE_FLAGGED) || !FLAGGED(header)))
 
 /* de facto standard escapes for tsl/fsl */
@@ -1573,7 +1573,7 @@ int mutt_index_menu(void)
           break;
         }
 
-        if (query_quadoption(OPT_QUIT, _("Quit Mutt?")) == MUTT_YES)
+        if (query_quadoption(OPT_QUIT, _("Quit NeoMutt?")) == MUTT_YES)
         {
           int check;
 
@@ -2042,7 +2042,7 @@ int mutt_index_menu(void)
             break;
           strncpy(buf, path, sizeof(buf));
 
-          /* Mark the selected dir for the mutt browser */
+          /* Mark the selected dir for the neomutt browser */
           mutt_browser_select_dir(buf);
         }
 #endif
@@ -2139,7 +2139,8 @@ int mutt_index_menu(void)
             menu->current = mutt_thread_next_unread(Context, CURHDR);
         }
 
-        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) &&
+            (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
@@ -2858,7 +2859,8 @@ int mutt_index_menu(void)
         /* L10N: CHECK_ACL */
         CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
 
-        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) &&
+            (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         mutt_edit_message(Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2870,7 +2872,8 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) &&
+            (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2885,7 +2888,8 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_ATTACH;
-        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) &&
+            (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -2919,7 +2923,8 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) &&
+            (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
@@ -3128,7 +3133,8 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (option(OPT_PGP_AUTO_DECODE) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        if (option(OPT_PGP_AUTO_DECODE) &&
+            (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
         ci_send_message(SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;

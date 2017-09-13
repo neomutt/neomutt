@@ -305,7 +305,7 @@ enum QuadOptionVars
 #define MUTT_NOSPAM 2
 
 /* flags for keywords headers */
-#define MUTT_X_LABEL        (1 << 0) /**< introduced to mutt in 2000 */
+#define MUTT_X_LABEL        (1 << 0) /**< introduced to neomutt in 2000 */
 #define MUTT_X_KEYWORDS     (1 << 1) /**< used in c-client, dovecot */
 #define MUTT_X_MOZILLA_KEYS (1 << 2) /**< tbird */
 #define MUTT_KEYWORDS       (1 << 3) /**< rfc2822 */

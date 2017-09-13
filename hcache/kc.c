@@ -34,8 +34,8 @@
 #include <kclangc.h>
 #include <limits.h>
 #include <stdio.h>
-#include "backend.h"
 #include "lib/lib.h"
+#include "backend.h"
 #include "options.h"
 
 static void *hcache_kyotocabinet_open(const char *path)

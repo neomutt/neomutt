@@ -27,10 +27,10 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "protos.h"
 
 #ifndef EILSEQ
@@ -196,7 +196,7 @@ PreferredMIMENames[] =
   /*
    * If you happen to encounter system-specific brain-damage with respect to
    * character set naming, please add it above this comment, and submit a patch
-   * to <mutt-dev@mutt.org>.
+   * to <neomutt-devel@neomutt.org>.
    */
 
   /* End of aliases.  Please keep this line last. */
@@ -282,7 +282,7 @@ int mutt_chscmp(const char *s, const char *chs)
     return 0;
 
   /* charsets may have extensions mutt_canonical_charset()
-     leaves intact; we expect `chs' to originate from mutt
+     leaves intact; we expect `chs' to originate from neomutt
      code, not user input (i.e. `chs' does _not_ have any
      extension)
      we simply check if the shorter string is a prefix for
@@ -486,7 +486,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
 
 /*
  * FGETCONV stuff for converting a file while reading it.
- * Used in sendlib.c for converting from mutt's Charset
+ * Used in sendlib.c for converting from neomutt's Charset
  */
 
 /**

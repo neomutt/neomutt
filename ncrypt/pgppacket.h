@@ -22,7 +22,7 @@
 
 /*
  * Definitions for a rudimentary PGP packet parser which is shared
- * by mutt proper and the PGP public key ring lister.
+ * by neomutt proper and the PGP public key ring lister.
  */
 
 #ifndef _NCRYPT_PGPPACKET_H

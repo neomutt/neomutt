@@ -33,13 +33,13 @@
 #include <string.h>
 #include <time.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "account.h"
 #include "buffy.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_menu.h"
@@ -294,7 +294,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     return;
   }
 
-  /* If server flags could conflict with mutt's flags, reopen the mailbox. */
+  /* If server flags could conflict with neomutt's flags, reopen the mailbox. */
   if (h->changed)
     idata->reopen |= IMAP_EXPUNGE_PENDING;
   else

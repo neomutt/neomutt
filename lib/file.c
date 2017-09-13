@@ -454,7 +454,7 @@ int mutt_rmtree(const char *path)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
-  char cur[_POSIX_PATH_MAX];
+  char cur[LONG_STRING];
   struct stat statbuf;
   int rc = 0;
 

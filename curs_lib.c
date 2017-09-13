@@ -41,10 +41,10 @@
 #include <termios.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "enter_state.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -109,7 +109,7 @@ void mutt_refresh(void)
  * Make sure that the next refresh does a full refresh.  This could be
  * optimized by not doing it at all if DISPLAY is set as this might indicate
  * that a GUI based pinentry was used.  Having an option to customize this is
- * of course the Mutt way.
+ * of course the NeoMutt way.
  */
 void mutt_need_hard_redraw(void)
 {
@@ -381,7 +381,7 @@ int mutt_yesorno(const char *msg, int def)
 }
 
 /**
- * mutt_query_exit - Ask the user if they want to leave Mutt
+ * mutt_query_exit - Ask the user if they want to leave NeoMutt
  *
  * This function is called when the user presses the abort key.
  */
@@ -391,7 +391,7 @@ void mutt_query_exit(void)
   curs_set(1);
   if (Timeout)
     timeout(-1); /* restore blocking operation */
-  if (mutt_yesorno(_("Exit Mutt?"), MUTT_YES) == MUTT_YES)
+  if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
   {
     endwin();
     exit(1);
@@ -740,7 +740,7 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
   va_list ap;
   int rv;
 
-  if ((rv = mutt_window_move (win, row, col)) != ERR)
+  if ((rv = mutt_window_move(win, row, col)) != ERR)
   {
     va_start(ap, fmt);
     rv = vw_printw(stdscr, fmt, ap);

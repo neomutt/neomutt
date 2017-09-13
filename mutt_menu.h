@@ -43,7 +43,7 @@
 #define REDRAW_SIDEBAR        (1 << 8)
 #endif
 
-#define MUTT_MODEFMT "-- Mutt: %s"
+#define MUTT_MODEFMT "-- NeoMutt: %s"
 
 /**
  * struct Menu - GUI selectable list of items

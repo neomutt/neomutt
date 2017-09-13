@@ -21,7 +21,7 @@
  */
 
 /*
- * Mixmaster support for Mutt
+ * Mixmaster support for NeoMutt
  */
 
 #include "config.h"
@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "remailer.h"
 #include "address.h"
@@ -39,7 +40,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -189,7 +189,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     mix_add_entry(&type2_list, p, &slots, &used);
     continue;
 
-problem:
+  problem:
     mix_free_remailer(&p);
   }
 
@@ -412,7 +412,7 @@ static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
   mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
-                    (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
+                      (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer **type2_list)
@@ -724,7 +724,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
     strfcpy(tmp, cmd, sizeof(tmp));
     mutt_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
-        (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
+             (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
 
   if (!option(OPT_NO_CURSES))

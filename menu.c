@@ -30,11 +30,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -432,7 +432,7 @@ void menu_redraw_motion(struct Menu *menu)
     print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
 
     /* now draw the new one to reflect the change */
-    cur_color = menu->color (menu->current);
+    cur_color = menu->color(menu->current);
     menu_make_entry(buf, sizeof(buf), menu, menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
     SETCOLOR(MT_COLOR_INDICATOR);

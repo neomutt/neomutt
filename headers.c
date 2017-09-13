@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
@@ -35,7 +36,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
@@ -203,8 +203,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       }
       keep = false;
     }
-    else if ((WithCrypto & APPLICATION_PGP) &&
-             (mutt_strncasecmp("pgp:", np->data, 4) == 0))
+    else if ((WithCrypto & APPLICATION_PGP) && (mutt_strncasecmp("pgp:", np->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
       if (msg->security)

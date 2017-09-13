@@ -37,6 +37,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -46,7 +47,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -85,15 +85,15 @@ static void usage(void)
 {
   puts(mutt_make_version());
 
-  puts(_("usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-         "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-         "       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-         "       mutt [<options>] -p\n"
-         "       mutt [<options>] -A <alias> [...]\n"
-         "       mutt [<options>] -Q <query> [...]\n"
-         "       mutt [<options>] -B\n"
-         "       mutt [<options>] -D [-S]\n"
-         "       mutt -v[v]\n"));
+  puts(_("usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+         "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+         "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+         "       neomutt [<options>] -p\n"
+         "       neomutt [<options>] -A <alias> [...]\n"
+         "       neomutt [<options>] -Q <query> [...]\n"
+         "       neomutt [<options>] -B\n"
+         "       neomutt [<options>] -D [-S]\n"
+         "       neomutt -v[v]\n"));
 
   puts(_("options:\n"
          "  -A <alias>    expand the given alias\n"
@@ -111,13 +111,13 @@ static void usage(void)
          "  -E            edit the draft (-H) or include (-i) file\n"
          "  -e <command>  specify a command to be executed after initialization\n"
          "  -f <file>     specify which mailbox to read\n"
-         "  -F <file>     specify an alternate muttrc file\n"
+         "  -F <file>     specify an alternate neomuttrc file\n"
          "  -g <server>   specify a news server (if compiled with NNTP)\n"
          "  -G            select a newsgroup (if compiled with NNTP)\n"
          "  -H <file>     specify a draft file to read header and body from\n"
-         "  -i <file>     specify a file which Mutt should include in the body\n"
+         "  -i <file>     specify a file which NeoMutt should include in the body\n"
          "  -m <type>     specify a default mailbox type\n"
-         "  -n            causes Mutt not to read the system Muttrc\n"
+         "  -n            causes NeoMutt not to read the system neomuttrc\n"
          "  -p            recall a postponed message"));
 
   puts(_("  -Q <variable> query a configuration variable\n"
@@ -360,7 +360,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'm':
-          /* should take precedence over .muttrc setting, so save it for later */
+          /* should take precedence over .neomuttrc setting, so save it for later */
           newMagic = optarg;
           break;
 
@@ -559,7 +559,7 @@ int main(int argc, char **argv, char **env)
     mutt_endwin(NULL);
   }
   else if (subject || msg || sendflags || draftFile || includeFile ||
-          !STAILQ_EMPTY(&attach) || optind < argc)
+           !STAILQ_EMPTY(&attach) || optind < argc)
   {
     FILE *fin = NULL;
     FILE *fout = NULL;
@@ -712,7 +712,7 @@ int main(int argc, char **argv, char **env)
 
         mutt_prepare_template(fin, NULL, msg, context_hdr, 0);
 
-        /* Scan for mutt header to set OPT_RESUME_DRAFT_FILES */
+        /* Scan for neomutt header to set OPT_RESUME_DRAFT_FILES */
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {

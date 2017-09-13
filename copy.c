@@ -25,6 +25,7 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "copy.h"
 #include "address.h"
@@ -33,7 +34,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"

@@ -37,6 +37,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "charset.h"
@@ -44,7 +45,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -1366,7 +1366,8 @@ static int multipart_handler(struct Body *a, struct State *s)
                  NONULL(p->subtype));
     }
 
-    if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLYFIRST)) && (s->flags & MUTT_FIRSTDONE))
+    if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLYFIRST)) &&
+        (s->flags & MUTT_FIRSTDONE))
       break;
   }
 
@@ -1492,7 +1493,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       }
     }
 
-bail:
+  bail:
     safe_fclose(&fpout);
     safe_fclose(&fperr);
 
@@ -1937,7 +1938,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!option(OPT_HONOR_DISPOSITION) || (b->disposition != DISPATTACH || option(OPT_VIEW_ATTACH))) &&
+  if ((!option(OPT_HONOR_DISPOSITION) ||
+       (b->disposition != DISPATTACH || option(OPT_VIEW_ATTACH))) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);

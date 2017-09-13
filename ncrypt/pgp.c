@@ -43,8 +43,8 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "pgp.h"
 #include "address.h"
 #include "body.h"
 #include "charset.h"
@@ -53,7 +53,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -61,6 +60,7 @@
 #include "ncrypt.h"
 #include "options.h"
 #include "parameter.h"
+#include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "pgpmicalg.h"
@@ -274,7 +274,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
  * around in the main handler.
  *
  * (Note that we aren't worse than Outlook &c in this, and also note that we
- * can successfully handle anything produced by any existing versions of mutt.)
+ * can successfully handle anything produced by any existing versions of neomutt.)
  */
 static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
@@ -494,7 +494,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         }
 
         /* treat empty result as sign of failure */
-        /* TODO: maybe on failure mutt should include the original undecoded text. */
+        /* TODO: maybe on failure neomutt should include the original undecoded text. */
         if (pgpout)
         {
           rewind(pgpout);

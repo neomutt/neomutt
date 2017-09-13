@@ -24,12 +24,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt_idna.h"
 #include "address.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "options.h"
 
 #ifdef HAVE_LIBIDN

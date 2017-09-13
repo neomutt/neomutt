@@ -32,6 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -41,7 +42,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
@@ -1003,7 +1003,8 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
    * When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
-  if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
+  if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime &&
+      mbox_has_new(ctx))
     utimebuf.actime = utimebuf.modtime - 1;
 
   utime(ctx->path, &utimebuf);
@@ -1098,7 +1099,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   {
     /* this means ctx->changed or ctx->deleted was set, but no
      * messages were found to be changed or deleted.  This should
-     * never happen, is we presume it is a bug in mutt.
+     * never happen, is we presume it is a bug in neomutt.
      */
     mutt_error(
         _("sync: mbox modified, but no modified messages! (report this bug)"));

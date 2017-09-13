@@ -34,6 +34,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
@@ -46,7 +47,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
@@ -620,7 +620,7 @@ void mutt_shell_escape(void)
 }
 
 /**
- * mutt_enter_command - enter a mutt command
+ * mutt_enter_command - enter a neomutt command
  */
 void mutt_enter_command(void)
 {
@@ -933,7 +933,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 
 void mutt_version(void)
 {
-  mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
+  mutt_message("NeoMutt %s%s", PACKAGE_VERSION, GitVer);
 }
 
 /*
@@ -985,8 +985,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = mutt_strcasecmp(tmp, obuf);
-  charset_changed =
-      mutt_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
+  charset_changed = mutt_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
 
   /* if in send mode, check for conversion - current setting is default. */
 

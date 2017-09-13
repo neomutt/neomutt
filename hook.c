@@ -28,16 +28,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "list.h"
 #include "mailbox.h"
-#include "mutt.h"
 #include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -114,7 +113,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (data & (MUTT_FOLDERHOOK | MUTT_MBOXHOOK))
   {
-    /* Accidentally using the ^ mailbox shortcut in the .muttrc is a
+    /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
      * common mistake */
     if ((*pattern.data == '^') && (!CurrentFolder))
     {
@@ -403,7 +402,8 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->regex.not)
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
+          hook->regex.not)
       {
         if (mutt_parse_rc_line(hook->command, &token, &err) == -1)
         {
@@ -440,7 +440,8 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->regex.not)
+      if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
+          hook->regex.not)
       {
         mutt_make_string(path, pathlen, hook->command, ctx, hdr);
         return 0;
@@ -506,8 +507,8 @@ static char *_mutt_string_hook(const char *match, int hook)
 
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
-    if ((tmp->type & hook) &&
-        ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^ tmp->regex.not))
+    if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
+                               tmp->regex.not))
       return tmp->command;
   }
   return NULL;
@@ -519,8 +520,8 @@ static void _mutt_list_hook(struct ListHead *matches, const char *match, int hoo
 
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
-    if ((tmp->type & hook) &&
-        ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^ tmp->regex.not))
+    if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
+                               tmp->regex.not))
       mutt_list_insert_tail(matches, safe_strdup(tmp->command));
   }
 }

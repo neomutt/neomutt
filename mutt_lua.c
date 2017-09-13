@@ -29,10 +29,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "mutt_lua.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mbtable.h"
 #include "mutt_commands.h"
@@ -97,7 +97,7 @@ static int _lua_mutt_call(lua_State *l)
 
   if (command->func(&token, &expn, command->data, &err))
   {
-    luaL_error(l, "Mutt error: %s", err.data);
+    luaL_error(l, "NeoMutt error: %s", err.data);
     rv = -1;
   }
   else
@@ -184,7 +184,7 @@ static int _lua_mutt_set(lua_State *l)
       rv = mutt_option_set(&opt, &err);
       break;
     default:
-      luaL_error(l, "Unsupported Mutt parameter type %d for %s", opt.type, param);
+      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", opt.type, param);
       rv = -1;
       break;
   }
@@ -254,12 +254,12 @@ static int _lua_mutt_get(lua_State *l)
         lua_pushboolean(l, option(opt.data));
         return 1;
       default:
-        luaL_error(l, "Mutt parameter type %d unknown for %s", opt.type, param);
+        luaL_error(l, "NeoMutt parameter type %d unknown for %s", opt.type, param);
         return -1;
     }
   }
   mutt_debug(2, " * _lua_mutt_get() -> error\n");
-  luaL_error(l, "Mutt parameter not found %s", param);
+  luaL_error(l, "NeoMutt parameter not found %s", param);
   return -1;
 }
 
@@ -278,7 +278,7 @@ static int _lua_mutt_enter(lua_State *l)
 
   if (mutt_parse_rc_line(buffer, &token, &err))
   {
-    luaL_error(l, "Mutt error: %s", err.data);
+    luaL_error(l, "NeoMutt error: %s", err.data);
     rv = -1;
   }
   else

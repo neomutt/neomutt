@@ -89,4 +89,3 @@ void mutt_delete_parameter(const char *attribute, struct Parameter **p)
     }
   }
 }
-

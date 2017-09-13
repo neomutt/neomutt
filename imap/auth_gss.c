@@ -27,14 +27,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
+#include "lib/lib.h"
+#include "mutt.h"
 #include "account.h"
 #include "auth.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"
-#include "mutt.h"
 #ifdef HAVE_HEIMDAL
 #include <gssapi/gssapi.h>
 #define gss_nt_service_name GSS_C_NT_HOSTBASED_SERVICE
