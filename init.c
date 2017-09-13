@@ -2841,7 +2841,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             p = "MH";
             break;
           case MUTT_MAILDIR:
-            p = "Folder";
+            p = "Maildir";
             break;
           default:
             p = "unknown";
@@ -3914,7 +3914,7 @@ int var_to_string(int idx, char *val, size_t len)
         p = "MH";
         break;
       case MUTT_MAILDIR:
-        p = "Folder";
+        p = "Maildir";
         break;
       default:
         p = "unknown";
