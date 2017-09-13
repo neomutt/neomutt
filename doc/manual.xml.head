@@ -2890,7 +2890,7 @@ color sidebar_divider   color8  default
       <quote>system</quote> file and one
       <quote>user</quote> file.</para>
       <para>NeoMutt searches for several different file names when looking for
-      config. It looks for NeoMutt config files before NeoMutt config files and
+      config. It looks for NeoMutt config files before Mutt config files and
       versioned config before plain config. For example:</para>
 
       <table id="neomuttrc-order">
@@ -2909,7 +2909,7 @@ color sidebar_divider   color8  default
           </tbody>
         </tgroup>
       </table>
-      <para>This allows the user to create separate NeoMutt and NeoMutt config
+      <para>This allows the user to create separate NeoMutt and Mutt config
       files on the same system.</para>
 
       <sect2 id="neomuttrc-system">
