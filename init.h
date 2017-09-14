@@ -1584,8 +1584,6 @@ struct Option MuttVars[] = {
   ** .dt %(fmt) .dd the local date and time when the message was received.
   **                ``fmt'' is expanded by the library function \fCstrftime(3)\fP;
   **                a leading bang disables locales
-  ** .dt %<fmt> .dd the current local time. ``fmt'' is expanded by the library
-  **                function \fCstrftime(3)\fP; a leading bang disables locales.
   ** .dt %>X    .dd right justify the rest of the string and pad with character ``X''
   ** .dt %|X    .dd pad to the end of the line with character ``X''
   ** .dt %*X    .dd soft-fill with character ``X'' as pad

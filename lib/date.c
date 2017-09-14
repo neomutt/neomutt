@@ -432,7 +432,7 @@ bool is_day_name(const char *s)
  *
  * The 'timezone' field is optional; it defaults to +0000 if missing.
  */
-time_t mutt_parse_date(const char *s, const struct Tz **tz_out)
+time_t mutt_parse_date(const char *s, struct Tz *tz_out)
 {
   int count = 0;
   char *t = NULL;
@@ -537,9 +537,6 @@ time_t mutt_parse_date(const char *s, const struct Tz **tz_out)
             zhours = tz->zhours;
             zminutes = tz->zminutes;
             zoccident = tz->zoccident;
-
-            if (tz_out)
-              *tz_out = tz;
           }
 
           /* ad hoc support for the European MET (now officially CET) TZ */
@@ -566,6 +563,13 @@ time_t mutt_parse_date(const char *s, const struct Tz **tz_out)
     mutt_debug(
         1, "parse_date(): error parsing date format, using received time\n");
     return -1;
+  }
+
+  if (tz_out)
+  {
+    tz_out->zhours = zhours;
+    tz_out->zminutes = zminutes;
+    tz_out->zoccident = zoccident;
   }
 
   return (mutt_mktime(&tm, 0) + tz_offset);
