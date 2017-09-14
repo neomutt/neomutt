@@ -1444,7 +1444,7 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s)
   hd = h->data;
   newh.data = hd;
 
-  mutt_debug(2, "imap_fetch_message: parsing FLAGS\n");
+  mutt_debug(2, "imap_set_flags: parsing FLAGS\n");
   if ((s = msg_parse_flags(&newh, s)) == NULL)
     return NULL;
 
