@@ -1849,10 +1849,10 @@ void nm_query_window_backward(void)
   mutt_debug(2, "nm_query_window_backward (%d)\n", NmQueryWindowCurrentPosition);
 }
 
-static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf)
+static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   *buf = '\0';
-  return (mutt_get_field("Add/remove labels: ", buf, sizeof(buf), MUTT_NM_TAG) || !*buf);
+  return (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) || !*buf);
 }
 
 static int nm_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
