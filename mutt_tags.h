@@ -66,7 +66,7 @@ const char *hdr_tags_get_transformed_for(char *name, struct Header *h);
 void hdr_tags_init(struct Header *h);
 void hdr_tags_add(struct Header *h, char *new_tag);
 int hdr_tags_replace(struct Header *h, char *tags);
-int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf);
+int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
 int hdr_tags_commit(struct Context *ctx, struct Header *h, char *tags);
 
 #endif /* _MUTT_TAG_H */

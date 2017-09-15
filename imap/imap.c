@@ -1249,7 +1249,7 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
  * @retval 0: no valid user input
  * @retval 1: buf set
  */
-static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *buf)
+static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   char *new = NULL;
   char *checker = NULL;
@@ -1264,9 +1264,9 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
 
   *buf = '\0';
   if (tags)
-    strncpy(buf, tags, LONG_STRING);
+    strncpy(buf, tags, buflen);
 
-  if (mutt_get_field("Keywords: ", buf, LONG_STRING, 0) != 0)
+  if (mutt_get_field("Keywords: ", buf, buflen, 0) != 0)
     return -1;
 
   /* each keyword must be atom defined by rfc822 as:
