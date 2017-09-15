@@ -2203,7 +2203,7 @@ color sidebar_divider   color8  default
             <anchor id="toggle-quoted" />(default: T)</term>
             <listitem>
               <para>The pager uses the
-              <link linkend="quote-regex">$quote_regex</link> variable to
+              <link linkend="quote-regexp">$quote_regexp</link> variable to
               detect quoted text when displaying the body of the message. This
               function toggles the display of the quoted material in the
               message. It is particularly useful when being interested in just
@@ -4001,7 +4001,7 @@ folder-hook work "set sort=threads"
         </listitem>
         <listitem>
           <para>quoted (text matching
-          <link linkend="quote-regex">$quote_regex</link> in the body of a
+          <link linkend="quote-regexp">$quote_regexp</link> in the body of a
           message)</para>
         </listitem>
         <listitem>
@@ -10768,7 +10768,7 @@ set pgp_self_encrypt = "no"
         certain keyword but there are no attachments added. This is meant to
         ensure that the user does not forget to attach a file after promising
         to do so in the mail.  The attachment keyword will not be scanned in
-        text matched by <link linkend="quote-regex">$quote_regex</link>.
+        text matched by <link linkend="quote-regexp">$quote_regexp</link>.
         </para>
       </sect2>
 

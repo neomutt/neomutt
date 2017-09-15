@@ -382,9 +382,9 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 
         if (parse_regex(idx, &tmp, &err2))
         {
-          /* $reply_regex and $alternates require special treatment */
+          /* $reply_regexp and $alternates require special treatment */
           if (Context && Context->msgcount &&
-              (mutt_strcmp(MuttVars[idx].option, "reply_regex") == 0))
+              (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
           {
             regmatch_t pmatch[1];
 
@@ -394,7 +394,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               if (CUR_ENV && CUR_ENV->subject)
               {
                 CUR_ENV->real_subj =
-                    (regexec(ReplyRegex.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
+                    (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
                         CUR_ENV->subject :
                         CUR_ENV->subject + pmatch[0].rm_eo;
               }
@@ -2789,7 +2789,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
 
       if (option(OPT_ATTACH_MSG) &&
-          (mutt_strcmp(MuttVars[idx].option, "reply_regex") == 0))
+          (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
       {
         snprintf(err->data, err->dsize,
                  "Operation not permitted when in attach-message mode.");
@@ -2804,9 +2804,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       mutt_extract_token(tmp, s, 0);
 
       if (parse_regex(idx, tmp, err))
-        /* $reply_regex and $alternates require special treatment */
+        /* $reply_regexp and $alternates require special treatment */
         if (Context && Context->msgcount &&
-            (mutt_strcmp(MuttVars[idx].option, "reply_regex") == 0))
+            (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
         {
           regmatch_t pmatch[1];
           int i;
@@ -2817,7 +2817,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             if (CUR_ENV && CUR_ENV->subject)
             {
               CUR_ENV->real_subj =
-                  (regexec(ReplyRegex.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
+                  (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
                       CUR_ENV->subject :
                       CUR_ENV->subject + pmatch[0].rm_eo;
             }

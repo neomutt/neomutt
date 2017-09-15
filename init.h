@@ -2865,7 +2865,7 @@ struct Option MuttVars[] = {
   ** have no effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are
   ** prompted for confirmation when you try to quit.
   */
-  { "quote_regex",     DT_REGEX,   R_PAGER, UL &QuoteRegex, UL "^([ \t]*[|>:}#])+" },
+  { "quote_regexp",     DT_REGEX,   R_PAGER, UL &QuoteRegexp, UL "^([ \t]*[|>:}#])+" },
   /*
   ** .pp
   ** A regular expression used in the internal pager to determine quoted
@@ -2966,7 +2966,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see $$wrap.
   */
-  { "reply_regex",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegex, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
+  { "reply_regexp",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
   /*
   ** .pp
   ** A regular expression used to recognize reply messages when threading
@@ -3446,7 +3446,7 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** The \fIpager\fP uses this variable to catch some common false
-  ** positives of $$quote_regex, most notably smileys and not consider
+  ** positives of $$quote_regexp, most notably smileys and not consider
   ** a line quoted text if it also matches $$smileys. This mostly
   ** happens at the beginning of a line.
   */
