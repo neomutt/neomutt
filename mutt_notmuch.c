@@ -1849,7 +1849,7 @@ void nm_query_window_backward(void)
 
 static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf)
 {
-  *buf = '\0';
+  buf[0] = '\0';
   return (mutt_get_field("Add/remove labels: ", buf, sizeof(buf), MUTT_NM_TAG) || !*buf);
 }
 
