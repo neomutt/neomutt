@@ -1867,7 +1867,7 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
 
-        rc = hdr_tags_editor(Context, tag ? NULL : hdr_tags_get_with_hidden(CURHDR), buf);
+        rc = hdr_tags_editor(Context, tag ? NULL : hdr_tags_get_with_hidden(CURHDR), buf, sizeof(buf));
         if (rc < 0)
           break;
         else if (rc == 0)

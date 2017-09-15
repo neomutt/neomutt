@@ -224,10 +224,10 @@ int hdr_tags_replace(struct Header *h, char *tags)
   return 1;
 }
 
-int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf)
+int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   if (ctx->mx_ops->edit_msg_tags)
-    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf);
+    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf, buflen);
 
   mutt_message(_("Folder doesn't support tagging, aborting."));
   return -1;
