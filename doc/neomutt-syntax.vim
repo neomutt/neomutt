@@ -892,7 +892,7 @@ syntax keyword muttrcVarNum     contained skipwhite nm_query_window_timebase nex
 
 syntax keyword muttrcVarStr     contained skipwhite nm_default_uri        nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_exclude_tags       nextgroup=muttrcVarEqualsIdxFmt
-syntax keyword muttrcVarStr     contained skipwhite nm_hidden_tags        nextgroup=muttrcVarEqualsIdxFmt
+syntax keyword muttrcVarStr     contained skipwhite hidden_tags           nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_query_type         nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_record_tags        nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_unread_tag         nextgroup=muttrcVarEqualsIdxFmt
@@ -910,6 +910,15 @@ syntax match muttrcFunction     contained "\<sidebar-toggle-virtual\>"
 syntax match muttrcFunction     contained "\<vfolder-from-query\>"
 syntax match muttrcFunction     contained "\<vfolder-window-forward\>"
 syntax match muttrcFunction     contained "\<vfolder-window-backward\>"
+
+" Vim syntax file for the NeoMutt imap keywords feature.
+"
+syntax match muttrcFunction     contained "\<modify-labels\>"
+
+syntax keyword muttrcVarStr     contained skipwhite hidden_tags        nextgroup=muttrcVarEqualsIdxFmt
+
+syntax keyword muttrcCommand    tag-transforms
+syntax keyword muttrcCommand    tag-formats
 
 " Vim syntax file for the NeoMutt progress feature.
 

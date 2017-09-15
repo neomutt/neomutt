@@ -60,6 +60,10 @@
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
+#if defined USE_IMAP || defined USE_NOTMUCH
+#include "mutt_tags.h"
+#endif
+
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -165,6 +169,8 @@ void mutt_free_header(struct Header **h)
 #ifdef MIXMASTER
   mutt_list_free(&(*h)->chain);
 #endif
+  hdr_tags_free(*h);
+  FREE(&(*h)->tags);
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
     (*h)->free_cb(*h);

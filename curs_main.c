@@ -47,6 +47,7 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
+#include "mutt_tags.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -1852,22 +1853,29 @@ int mutt_index_menu(void)
         break;
       }
 
+#endif
+#if defined(USE_NOTMUCH) || defined(USE_IMAP)
       case OP_MAIN_MODIFY_LABELS:
       case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
       {
-        if (!Context || (Context->magic != MUTT_NOTMUCH))
+        if (!Context || ((Context->magic != MUTT_NOTMUCH) && (Context->magic != MUTT_IMAP)))
         {
           mutt_message(_("No virtual folder, aborting."));
           break;
         }
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        *buf = '\0';
-        if (mutt_get_field("Add/remove labels: ", buf, sizeof(buf), MUTT_NM_TAG) || !*buf)
+        CHECK_READONLY;
+
+        rc = hdr_tags_editor(Context, tag ? NULL : hdr_tags_get_with_hidden(CURHDR), buf);
+        if (rc < 0)
+          break;
+        else if (rc == 0)
         {
           mutt_message(_("No label specified, aborting."));
           break;
         }
+
         if (tag)
         {
           char msgbuf[STRING];
@@ -1879,38 +1887,47 @@ int mutt_index_menu(void)
             snprintf(msgbuf, sizeof(msgbuf), _("Update labels..."));
             mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->tagged);
           }
-          nm_longrun_init(Context, true);
+
+#ifdef USE_NOTMUCH
+          if (Context->magic == MUTT_NOTMUCH)
+            nm_longrun_init(Context, true);
+#endif
           for (px = 0, j = 0; j < Context->vcount; j++)
           {
             if (Context->hdrs[Context->v2r[j]]->tagged)
             {
               if (!Context->quiet)
                 mutt_progress_update(&progress, ++px, -1);
-              nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf);
-
-              bool still_queried =
-                  nm_message_is_still_queried(Context, Context->hdrs[Context->v2r[j]]);
+              hdr_tags_commit(Context, Context->hdrs[Context->v2r[j]], buf);
               if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
               {
+                bool still_queried = false;
+#ifdef USE_NOTMUCH
+                if (Context->magic == MUTT_NOTMUCH)
+                  still_queried = nm_message_is_still_queried(
+                      Context, Context->hdrs[Context->v2r[j]]);
+#endif
                 Context->hdrs[Context->v2r[j]]->quasi_deleted = !still_queried;
                 Context->changed = true;
               }
             }
           }
-          nm_longrun_done(Context);
+#ifdef USE_NOTMUCH
+          if (Context->magic == MUTT_NOTMUCH)
+            nm_longrun_done(Context);
+#endif
           menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
         }
         else
         {
-          if (nm_modify_message_tags(Context, CURHDR, buf))
+          if (hdr_tags_commit(Context, CURHDR, buf))
           {
             mutt_message(_("Failed to modify labels, aborting."));
             break;
           }
           if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
           {
-            bool still_queried = nm_message_is_still_queried(Context, CURHDR);
-            CURHDR->quasi_deleted = !still_queried;
+            CURHDR->quasi_deleted = true;
             Context->changed = true;
           }
           if (menu->menu == MENU_PAGER)
@@ -1935,6 +1952,8 @@ int mutt_index_menu(void)
         break;
       }
 
+#endif
+#ifdef USE_NOTMUCH
       case OP_MAIN_VFOLDER_FROM_QUERY:
         buf[0] = '\0';
         if (mutt_get_field("Query: ", buf, sizeof(buf), MUTT_NM_QUERY) != 0 || !buf[0])

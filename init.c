@@ -4100,10 +4100,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   /* reverse alias keys need to be strdup'ed because of idna conversions */
   ReverseAliases =
       hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
-#ifdef USE_NOTMUCH
   TagTransforms = hash_create(64, 1);
   TagFormats = hash_create(64, 0);
-#endif
 
   mutt_menu_init();
 
@@ -4507,7 +4505,6 @@ bail:
   return -1;
 }
 
-#ifdef USE_NOTMUCH
 static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
 {
@@ -4579,7 +4576,6 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
   }
   return 0;
 }
-#endif
 
 const char *myvar_get(const char *var)
 {
