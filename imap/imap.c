@@ -1392,7 +1392,10 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
      * continue to add new keywords *
      */
     if (imap_exec(idata, cmd->data, 0) != 0)
+    {
+      mutt_buffer_free(&cmd);
       return -1;
+    }
 
     mutt_buffer_free(&cmd);
   }
@@ -1415,6 +1418,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     if (imap_exec(idata, cmd->data, 0) != 0)
     {
       mutt_debug(1, "imap_commit_message_tags: fail to add new keywords\n");
+      mutt_buffer_free(&cmd);
       return -1;
     }
 
