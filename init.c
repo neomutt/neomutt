@@ -4042,34 +4042,24 @@ static int execute_commands(struct ListHead *p)
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
-    "neomuttrc-" PACKAGE_VERSION, "neomuttrc", "muttrc", NULL,
+    "neomuttrc", "muttrc", NULL,
   };
 
   const char *locations[][2] = {
-    {
-        xdg_cfg_home, "neomutt/",
-    },
-    {
-        home, ".neomutt/",
-    },
-    {
-        home, ".mutt/",
-    },
-    {
-        home, ".",
-    },
-    {
-        NULL, NULL,
-    },
+    { xdg_cfg_home, "neomutt/" },
+    { xdg_cfg_home, "mutt/" },
+    { home, ".neomutt/" },
+    { home, ".mutt/" },
+    { home, "." },
+    { NULL, NULL },
   };
+
   for (int i = 0; locations[i][0] || locations[i][1]; i++)
   {
-    int j;
-
     if (!locations[i][0])
       continue;
 
-    for (j = 0; names[j]; j++)
+    for (int j = 0; names[j]; j++)
     {
       char buffer[STRING];
 
@@ -4384,19 +4374,11 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buffer, sizeof(buffer)))
         break;
 
-      snprintf(buffer, sizeof(buffer), "%s/neomuttrc-%s", SYSCONFDIR, PACKAGE_VERSION);
-      if (access(buffer, F_OK) == 0)
-        break;
-
       snprintf(buffer, sizeof(buffer), "%s/neomuttrc", SYSCONFDIR);
       if (access(buffer, F_OK) == 0)
         break;
 
       snprintf(buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
-      if (access(buffer, F_OK) == 0)
-        break;
-
-      snprintf(buffer, sizeof(buffer), "%s/neomuttrc-%s", PKGDATADIR, PACKAGE_VERSION);
       if (access(buffer, F_OK) == 0)
         break;
 

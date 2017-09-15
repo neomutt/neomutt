@@ -1758,15 +1758,6 @@ int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 
   while ((token = strsep(&xdg, ":")))
   {
-    if (snprintf(buf, bufsize, "%s/%s/neomuttrc-%s", token, PACKAGE, PACKAGE_VERSION) < 0)
-      continue;
-    mutt_expand_path(buf, bufsize);
-    if (access(buf, F_OK) == 0)
-    {
-      rc = 1;
-      break;
-    }
-
     if (snprintf(buf, bufsize, "%s/%s/neomuttrc", token, PACKAGE) < 0)
       continue;
     mutt_expand_path(buf, bufsize);

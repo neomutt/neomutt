@@ -2898,9 +2898,6 @@ color sidebar_divider   color8  default
         <tgroup cols="1">
           <tbody>
             <row>
-              <entry>neomuttrc-20170912</entry>
-            </row>
-            <row>
               <entry>neomuttrc</entry>
             </row>
             <row>
@@ -2939,10 +2936,6 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>/etc/xdg/neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
                 <entry>/etc/xdg/neomutt/neomuttrc</entry>
               </row>
               <row>
@@ -2950,19 +2943,11 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/etc/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
                 <entry>/etc/neomuttrc</entry>
               </row>
               <row>
                 <entry>/etc/Muttrc</entry>
                 <entry>Note the case of the filename</entry>
-              </row>
-              <row>
-                <entry>/usr/share/neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>/usr/share/neomutt/neomuttrc</entry>
@@ -2983,7 +2968,7 @@ color sidebar_divider   color8  default
         <literal>XDG_CONFIG_HOME</literal> environment variable, which defaults
         to
         <literal>~/.config/neomutt</literal>. Next, it looks in
-        <literal>~</literal>(your home directory). Finally, it tries
+        <literal>~</literal> (your home directory). Finally, it tries
         <literal>~/.neomutt</literal>.</para>
         <para>You may specify your own location for the user config file using
         the
@@ -2994,18 +2979,13 @@ color sidebar_divider   color8  default
 
         <table id="neomuttrc-user-files">
           <title>NeoMutt user config file locations</title>
-          <tgroup cols="2">
+          <tgroup cols="1">
             <thead>
               <row>
                 <entry>File Location</entry>
-                <entry>Notes</entry>
               </row>
             </thead>
             <tbody>
-              <row>
-                <entry>~/.config/neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
               <row>
                 <entry>~/.config/neomutt/neomuttrc</entry>
               </row>
@@ -3013,8 +2993,10 @@ color sidebar_divider   color8  default
                 <entry>~/.config/neomutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
+                <entry>~/.config/mutt/neomuttrc</entry>
+              </row>
+              <row>
+                <entry>~/.config/mutt/muttrc</entry>
               </row>
               <row>
                 <entry>~/.neomutt/neomuttrc</entry>
@@ -3023,18 +3005,10 @@ color sidebar_divider   color8  default
                 <entry>~/.neomutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
                 <entry>~/.mutt/neomuttrc</entry>
               </row>
               <row>
                 <entry>~/.mutt/muttrc</entry>
-              </row>
-              <row>
-                <entry>~/.neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>~/.neomuttrc</entry>
