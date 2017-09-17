@@ -4583,6 +4583,38 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
 
 #ifdef USE_IMAP
 /**
+ * parse_subscribe_to - 'subscribe-to' command: Add IMAP subscriptions
+ * @param tmp  Temporary space shared by all command handlers
+ * @param s    Current line of the config file
+ * @param data Data field from init.h:struct Command
+ * @param err  Buffer for any error message
+ * @retval  0 Success
+ * @retval -1 Failed
+ *
+ * The 'subscribe-to' command allows to subscribe to a list of IMAP-Mailboxes.
+ * Patterns are not supported.
+ * Use it as follows: subscribe-to +folder =folder/subfolder +folder.subfolder
+ */
+static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, unsigned long data,
+                       struct Buffer *err)
+{
+  if (!b || !s)
+    return -1;
+
+  while (MoreArgs(s))
+  {
+    mutt_extract_token(b, s, 0);
+    if (b->data && *b->data)
+	    /* Expand and subscribe */
+	    imap_subscribe(mutt_expand_path(b->data, b->dsize), 1);
+    else
+      continue;
+  }
+
+  return 0;
+}
+
+/**
  * parse_unsubscribe_from - 'unsubscribe-from' command: Cancel IMAP subscriptions
  * @param tmp  Temporary space shared by all command handlers
  * @param s    Current line of the config file
@@ -4593,7 +4625,7 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
  *
  * The 'unsubscribe-from' command allows to unsubscribe from a list of IMAP-Mailboxes.
  * Patterns are not supported.
- * Use it as follows: unsubscribe-from +/folder1 =/folder2
+ * Use it as follows: unsubscribe-from +folder =folder/subfolder +folder.subfolder
  */
 static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
@@ -4605,7 +4637,7 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned l
   {
     mutt_extract_token(b, s, 0);
     if (b->data && *b->data)
-	    /* Expand and Unsubscribe */
+	    /* Expand and unsubscribe */
 	    imap_subscribe(mutt_expand_path(b->data, b->dsize), 0);
     else
       continue;
