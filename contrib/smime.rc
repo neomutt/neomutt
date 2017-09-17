@@ -52,7 +52,7 @@ set smime_get_signer_cert_command="openssl smime -verify -in %f -noverify -signe
 set smime_get_cert_email_command="openssl x509 -in %f -noout -email"
 
 # Add a certificate to the database using smime_keys.
-set smime_import_cert_command="smime_keys add_cert %f"
+set smime_import_cert_command="/usr/lib/neomutt/smime_keys add_cert %f"
 
 
 

@@ -36,13 +36,11 @@ if BUILD_PO
 SUBDIRS += po
 endif
 
-bin_SCRIPTS = $(SMIMEAUX_TARGET)
-
 distdir = $(PACKAGE)-$(VERSION)
 
 BUILT_SOURCES = conststrings.c git_ver.h
 
-bin_PROGRAMS = neomutt $(PGPAUX_TARGET)
+bin_PROGRAMS = neomutt
 
 neomutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
 	bcache.c body.c body.h browser.c buffy.c charset.c color.c \
@@ -103,7 +101,7 @@ pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBMUTTDEPS)
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =
 
-noinst_PROGRAMS = txt2c
+noinst_PROGRAMS = txt2c $(SMIMEAUX_TARGET) $(PGPAUX_TARGET)
 
 conststrings.c: txt2c config.status
 	( \
@@ -141,6 +139,18 @@ install-data-local:
 	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
 	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
+	fi
+	-if test -n "$(SMIMEAUX_TARGET)"; then \
+		$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE); \
+		for i in $(SMIMEAUX_TARGET); do \
+			$(INSTALL) -m 755 $(srcdir)/$$i $(DESTDIR)$(libdir)/$(PACKAGE); \
+		done \
+	fi
+	-if test -n "$(PGPAUX_TARGET)"; then \
+		$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE); \
+		for i in $(PGPAUX_TARGET); do \
+			$(INSTALL) -m 755 $$i $(DESTDIR)$(libdir)/$(PACKAGE); \
+		done \
 	fi
 
 uninstall-local:
