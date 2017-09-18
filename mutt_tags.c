@@ -29,8 +29,6 @@
 #include "header.h"
 #include "mx.h"
 
-#define HEADER_TAGS(ph) ((struct HeaderTags *) ((ph)->tags))
-
 /**
  * hdr_tags_free_tag_list - free tag
  * @param[in] h: pointer to a Header struct
@@ -60,12 +58,13 @@ void hdr_tags_free_tag_list(struct HeaderTag **kw_list)
  */
 void hdr_tags_free(struct Header *h)
 {
-  if (!HEADER_TAGS(h))
+  if (!h->tags)
     return;
-  FREE(&HEADER_TAGS(h)->tags);
-  FREE(&HEADER_TAGS(h)->tags_transformed);
-  FREE(&HEADER_TAGS(h)->tags_with_hidden);
-  hdr_tags_free_tag_list(&HEADER_TAGS(h)->tag_list);
+  FREE(&h->tags->tags);
+  FREE(&h->tags->tags_transformed);
+  FREE(&h->tags->tags_with_hidden);
+  hdr_tags_free_tag_list(&h->tags->tag_list);
+  FREE(h->tags);
 }
 
 /**
@@ -79,9 +78,9 @@ void hdr_tags_free(struct Header *h)
  */
 const char *hdr_tags_get_transformed(struct Header *h)
 {
-  if (!h || !HEADER_TAGS(h) || !HEADER_TAGS(h)->tags_transformed)
+  if (!h || !h->tags || !h->tags->tags_transformed)
     return NULL;
-  return HEADER_TAGS(h)->tags_transformed;
+  return h->tags->tags_transformed;
 }
 
 /**
@@ -95,9 +94,9 @@ const char *hdr_tags_get_transformed(struct Header *h)
  */
 const char *hdr_tags_get(struct Header *h)
 {
-  if (!h || !HEADER_TAGS(h) || !HEADER_TAGS(h)->tags)
+  if (!h || !h->tags || !h->tags->tags)
     return NULL;
-  return HEADER_TAGS(h)->tags;
+  return h->tags->tags;
 }
 
 /**
@@ -111,9 +110,9 @@ const char *hdr_tags_get(struct Header *h)
  */
 const char *hdr_tags_get_with_hidden(struct Header *h)
 {
-  if (!h || !HEADER_TAGS(h) || !HEADER_TAGS(h)->tags_with_hidden)
+  if (!h || !h->tags || !h->tags->tags_with_hidden)
     return NULL;
-  return HEADER_TAGS(h)->tags_with_hidden;
+  return h->tags->tags_with_hidden;
 }
 
 /**
@@ -128,10 +127,10 @@ const char *hdr_tags_get_with_hidden(struct Header *h)
  */
 const char *hdr_tags_get_transformed_for(char *name, struct Header *h)
 {
-  if (!h || !HEADER_TAGS(h) || !HEADER_TAGS(h)->tag_list)
+  if (!h || !h->tags || !h->tags->tag_list)
     return NULL;
 
-  struct HeaderTag *tag = HEADER_TAGS(h)->tag_list;
+  struct HeaderTag *tag = h->tags->tag_list;
   while (tag)
   {
     if (strcmp(tag->name, name) == 0)
@@ -144,10 +143,10 @@ const char *hdr_tags_get_transformed_for(char *name, struct Header *h)
 void hdr_tags_init(struct Header *h)
 {
   h->tags = safe_calloc(1, sizeof(struct HeaderTags));
-  HEADER_TAGS(h)->tags = NULL;
-  HEADER_TAGS(h)->tags_transformed = NULL;
-  HEADER_TAGS(h)->tags_with_hidden = NULL;
-  HEADER_TAGS(h)->tag_list = NULL;
+  h->tags->tags = NULL;
+  h->tags->tags_transformed = NULL;
+  h->tags->tags_with_hidden = NULL;
+  h->tags->tag_list = NULL;
 }
 
 /**
@@ -169,11 +168,11 @@ void hdr_tags_add(struct Header *h, char *new_tag)
   ttmp = safe_calloc(1, sizeof(*ttmp));
   ttmp->name = safe_strdup(new_tag);
   ttmp->transformed = safe_strdup(new_tag_transformed);
-  ttmp->next = HEADER_TAGS(h)->tag_list;
-  HEADER_TAGS(h)->tag_list = ttmp;
+  ttmp->next = h->tags->tag_list;
+  h->tags->tag_list = ttmp;
 
   /* expand the all un-transformed tag string */
-  mutt_str_append_item(&HEADER_TAGS(h)->tags_with_hidden, new_tag, ' ');
+  mutt_str_append_item(&h->tags->tags_with_hidden, new_tag, ' ');
 
   /* filter out hidden tags */
   if (HiddenTags)
@@ -187,10 +186,10 @@ void hdr_tags_add(struct Header *h, char *new_tag)
   }
 
   /* expand the visible un-transformed tag string */
-  mutt_str_append_item(&HEADER_TAGS(h)->tags, new_tag, ' ');
+  mutt_str_append_item(&h->tags->tags, new_tag, ' ');
 
   /* expand the transformed tag string */
-  mutt_str_append_item(&HEADER_TAGS(h)->tags_transformed, new_tag_transformed, ' ');
+  mutt_str_append_item(&h->tags->tags_transformed, new_tag_transformed, ' ');
 }
 
 /**
@@ -208,11 +207,12 @@ int hdr_tags_replace(struct Header *h, char *tags)
 {
   if (!h)
     return 0;
-  if (tags && HEADER_TAGS(h) && HEADER_TAGS(h)->tags &&
-      mutt_strcmp(HEADER_TAGS(h)->tags, tags) == 0)
+  if (tags && h->tags && h->tags->tags &&
+      mutt_strcmp(h->tags->tags, tags) == 0)
     return 0;
 
   hdr_tags_free(h);
+  hdr_tags_init(h);
 
   if (tags)
   {
