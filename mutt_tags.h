@@ -57,14 +57,12 @@ struct HeaderTags
   struct HeaderTag *tag_list;
 };
 
-void hdr_tags_free_tag_list(struct HeaderTag **kw_list);
 void hdr_tags_free(struct Header *h);
 const char *hdr_tags_get(struct Header *h);
 const char *hdr_tags_get_with_hidden(struct Header *h);
 const char *hdr_tags_get_transformed(struct Header *h);
 const char *hdr_tags_get_transformed_for(char *name, struct Header *h);
 void hdr_tags_init(struct Header *h);
-void hdr_tags_add(struct Header *h, char *new_tag);
 int hdr_tags_replace(struct Header *h, char *tags);
 int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
 int hdr_tags_commit(struct Context *ctx, struct Header *h, char *tags);

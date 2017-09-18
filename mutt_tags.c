@@ -35,7 +35,7 @@
  *
  * Free tag
  */
-void hdr_tags_free_tag_list(struct HeaderTag **kw_list)
+static void hdr_tags_free_tag_list(struct HeaderTag **kw_list)
 {
   struct HeaderTag *tmp = NULL;
 
@@ -156,7 +156,7 @@ void hdr_tags_init(struct Header *h)
  *
  * Add a tag to the header tags
  */
-void hdr_tags_add(struct Header *h, char *new_tag)
+static void hdr_tags_add(struct Header *h, char *new_tag)
 {
   struct HeaderTag *ttmp = NULL;
   char *new_tag_transformed = NULL;
