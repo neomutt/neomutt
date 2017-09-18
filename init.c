@@ -4592,7 +4592,10 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, unsigned long 
     if (b->data && *b->data)
 	  /* Expand and subscribe */
 	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0) 
+	  {
 		mutt_message(_("Could not subscribe to %s"), b->data);
+		return -1;
+	  }
     else
       continue;
   }
@@ -4625,7 +4628,10 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned l
     if (b->data && *b->data)
 	  /* Expand and unsubscribe */
 	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 0) != 0)
+	  {
 	    mutt_message(_("Could not unsubscribe from %s"), b->data);
+		return -1;
+	  }
     else
       continue;
   }
