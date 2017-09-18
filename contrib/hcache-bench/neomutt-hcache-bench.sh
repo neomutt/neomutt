@@ -25,9 +25,9 @@
 
 usage()
 {
-    echo "Usage: $(basename "$0") -e <mutt> -m <mdir> -t <times> -b <backends>"
+    echo "Usage: $(basename "$0") -e <neomutt> -m <mdir> -t <times> -b <backends>"
     echo ""
-    echo "   -e Path to the mutt executable"
+    echo "   -e Path to the neomutt executable"
     echo "   -m Path to a maildir directory"
     echo "   -t Number of times to repeat the test"
     echo "   -b List of backends to test"
@@ -37,7 +37,7 @@ usage()
 while getopts e:m:t:b: OPT; do
     case "$OPT" in
         e)
-            MUTT="$OPTARG"
+            NEOMUTT="$OPTARG"
             ;;
         m)
             MAILDIR="$OPTARG"
@@ -54,7 +54,7 @@ while getopts e:m:t:b: OPT; do
     esac
 done
 
-if [ -z "$MAILDIR" ] || [ -z "$MUTT" ] || [ -z "$TIMES" ] || [ -z "$BACKENDS" ]; then
+if [ -z "$MAILDIR" ] || [ -z "$NEOMUTT" ] || [ -z "$TIMES" ] || [ -z "$BACKENDS" ]; then
     usage
     exit 1
 fi
@@ -69,7 +69,7 @@ exe()
     export my_backend=$1
     export my_maildir=$MAILDIR
     export my_tmpdir=$TMPDIR
-    t=$(time -p $MUTT -F "$CWD"/muttrc 2>&1 > /dev/null)
+    t=$(time -p $NEOMUTT -F "$CWD"/muttrc 2>&1 > /dev/null)
     echo "$t" | xargs
 }
 

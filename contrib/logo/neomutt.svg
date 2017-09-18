@@ -138,7 +138,7 @@
             <dc:title>Malcolm Locke &lt;malc@wholemeal.co.nz&gt;</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:description>Based on the XPM format icon provided with the Mutt Debian package</dc:description>
+        <dc:description>Based on the XPM format icon provided with the NeoMutt Debian package</dc:description>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">

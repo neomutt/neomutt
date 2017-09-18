@@ -21,7 +21,7 @@
 #       configuration variable $pgp_sign_as.  You probably need to
 #       use this within a conditional % sequence.
 #
-# %r    In many contexts, mutt passes key IDs to pgp.  %r expands to
+# %r    In many contexts, neomutt passes key IDs to pgp.  %r expands to
 #       a list of key IDs.
 
 # Note that we explicitly set the comment armor header since GnuPG, when used
