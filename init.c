@@ -4605,8 +4605,9 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, unsigned long 
   {
     mutt_extract_token(b, s, 0);
     if (b->data && *b->data)
-	    /* Expand and subscribe */
-	    imap_subscribe(mutt_expand_path(b->data, b->dsize), 1);
+	  /* Expand and subscribe */
+	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0) 
+		mutt_message(_("Could not subscribe to %s"), b->data);
     else
       continue;
   }
@@ -4637,8 +4638,9 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned l
   {
     mutt_extract_token(b, s, 0);
     if (b->data && *b->data)
-	    /* Expand and unsubscribe */
-	    imap_subscribe(mutt_expand_path(b->data, b->dsize), 0);
+	  /* Expand and unsubscribe */
+	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 0) != 0)
+	    mutt_message(_("Could not unsubscribe from %s"), b->data);
     else
       continue;
   }
