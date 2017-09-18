@@ -51,9 +51,7 @@ struct ColorLine *ColorIndexList = NULL;
 struct ColorLine *ColorIndexAuthorList = NULL;
 struct ColorLine *ColorIndexFlagsList = NULL;
 struct ColorLine *ColorIndexSubjectList = NULL;
-#ifdef USE_NOTMUCH
 struct ColorLine *ColorIndexTagList = NULL;
-#endif
 
 /* local to this file */
 static int ColorQuoteSize;
@@ -123,10 +121,8 @@ static const struct Mapping Fields[] = {
   { "index_number", MT_COLOR_INDEX_NUMBER },
   { "index_size", MT_COLOR_INDEX_SIZE },
   { "index_subject", MT_COLOR_INDEX_SUBJECT },
-#ifdef USE_NOTMUCH
   { "index_tag", MT_COLOR_INDEX_TAG },
   { "index_tags", MT_COLOR_INDEX_TAGS },
-#endif
   { "prompt", MT_COLOR_PROMPT },
 #ifdef USE_SIDEBAR
   { "sidebar_divider", MT_COLOR_DIVIDER },
@@ -572,10 +568,8 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
     do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
     do_uncolor(buf, s, &ColorIndexSubjectList, &do_cache, parse_uncolor);
-#ifdef USE_NOTMUCH
   else if (object == MT_COLOR_INDEX_TAG)
     do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
-#endif
 
   if (do_cache && !option(OPT_NO_CURSES))
   {
@@ -847,10 +841,7 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
   if ((object == MT_COLOR_BODY) || (object == MT_COLOR_HEADER) ||
       (object == MT_COLOR_ATTACH_HEADERS) || (object == MT_COLOR_INDEX) ||
       (object == MT_COLOR_INDEX_AUTHOR) || (object == MT_COLOR_INDEX_FLAGS) ||
-#ifdef USE_NOTMUCH
-      (object == MT_COLOR_INDEX_TAG) ||
-#endif
-      (object == MT_COLOR_INDEX_SUBJECT))
+      (object == MT_COLOR_INDEX_TAG) || (object == MT_COLOR_INDEX_SUBJECT))
   {
     if (!MoreArgs(s))
     {
@@ -945,13 +936,11 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
     r = add_pattern(&ColorIndexSubjectList, buf->data, 1, fg, bg, attr, err, 1, match);
     mutt_set_menu_redraw_full(MENU_MAIN);
   }
-#ifdef USE_NOTMUCH
   else if (object == MT_COLOR_INDEX_TAG)
   {
     r = add_pattern(&ColorIndexTagList, buf->data, 1, fg, bg, attr, err, 1, match);
     mutt_set_menu_redraw_full(MENU_MAIN);
   }
-#endif
   else if (object == MT_COLOR_QUOTED)
   {
     if (q_level >= ColorQuoteSize)
