@@ -57,10 +57,6 @@ int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
 
-char *nm_header_get_tag_transformed(char *tag, struct Header *h);
-char *nm_header_get_tags_transformed(struct Header *h);
-char *nm_header_get_tags(struct Header *h);
-
 extern struct MxOps mx_notmuch_ops;
 
 #endif /* _MUTT_NOTMUCH_H */
