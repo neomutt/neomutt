@@ -170,7 +170,6 @@ void mutt_free_header(struct Header **h)
   mutt_list_free(&(*h)->chain);
 #endif
   hdr_tags_free(*h);
-  FREE(&(*h)->tags);
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
     (*h)->free_cb(*h);
