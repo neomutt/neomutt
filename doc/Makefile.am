@@ -16,7 +16,7 @@ EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
 	neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
 	neomuttrc.man.head neomuttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
-	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1
+	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1 mime.types
 
 CHUNKED_DOCFILES = advancedusage.html configuration.html gettingstarted.html \
 	intro.html mimesupport.html miscellany.html optionalfeatures.html \
@@ -67,6 +67,7 @@ install-data-local: makedoc-all
 		$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir); \
 	fi
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
+	-$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(docdir)/mime.types
 
 uninstall-local:
 	for f in neomutt.1 smime_keys_$(PACKAGE).1 pgpewrap_$(PACKAGE).1 pgpring_$(PACKAGE).1; do \
@@ -86,6 +87,7 @@ uninstall-local:
 		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
 	done
 	rm -f $(DESTDIR)$(docdir)/neomutt-syntax.vim
+	rm -f $(DESTDIR)$(docdir)/mime.types
 
 check:
 manual.txt: manual.html

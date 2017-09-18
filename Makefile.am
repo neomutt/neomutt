@@ -84,7 +84,7 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
 	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
-	mbyte.h mime.h mime.types mutt.h mutt_commands.h \
+	mbyte.h mime.h mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h opcodes.h pager.h \
@@ -101,7 +101,7 @@ pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBMUTTDEPS)
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =
 
-noinst_PROGRAMS = txt2c $(SMIMEAUX_TARGET) $(PGPAUX_TARGET)
+noinst_PROGRAMS = txt2c $(PGPAUX_TARGET)
 
 conststrings.c: txt2c config.status
 	( \
@@ -136,10 +136,6 @@ git_ver.h: $(neomutt_SOURCES) $(SUBDIRS)
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
-	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
-		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
-	fi
 	-if test -n "$(SMIMEAUX_TARGET)"; then \
 		$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE); \
 		for i in $(SMIMEAUX_TARGET); do \
@@ -154,11 +150,8 @@ install-data-local:
 	fi
 
 uninstall-local:
-	for i in mime.types; do \
-		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
-			rm $(DESTDIR)$(sysconfdir)/$$i; \
-		fi; \
-		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
+	for i in smime_keys $(PGPAUX_TARGET); do \
+		rm -fr $(DESTDIR)$(libdir)/$(PACKAGE)/$$i; \
 	done
 
 distclean-local:
