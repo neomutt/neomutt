@@ -35,9 +35,9 @@
  *
  * Free tag
  */
-static void hdr_tags_free_tag_list(struct HeaderTag **kw_list)
+static void hdr_tags_free_tag_list(struct TagList **kw_list)
 {
-  struct HeaderTag *tmp = NULL;
+  struct TagList *tmp = NULL;
 
   while ((tmp = *kw_list) != NULL)
   {
@@ -130,7 +130,7 @@ const char *hdr_tags_get_transformed_for(char *name, struct Header *h)
   if (!h || !h->tags || !h->tags->tag_list)
     return NULL;
 
-  struct HeaderTag *tag = h->tags->tag_list;
+  struct TagList *tag = h->tags->tag_list;
   while (tag)
   {
     if (strcmp(tag->name, name) == 0)
@@ -158,7 +158,7 @@ void hdr_tags_init(struct Header *h)
  */
 static void hdr_tags_add(struct Header *h, char *new_tag)
 {
-  struct HeaderTag *ttmp = NULL;
+  struct TagList *ttmp = NULL;
   char *new_tag_transformed = NULL;
 
   new_tag_transformed = hash_find(TagTransforms, new_tag);

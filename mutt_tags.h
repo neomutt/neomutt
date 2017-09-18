@@ -27,18 +27,18 @@
 #include "context.h"
 
 /**
- * struct HeaderTag - Mail Header Tags
+ * struct TagList - Mail Header Tags
  *
  * Keep a linked list of header tags and their transformed values.
  * Textual tags can be transformed to symbols to save space.
  *
- * @sa HeaderTags#tag_list
+ * @sa TagLists#tag_list
  */
-struct HeaderTag
+struct TagList
 {
   char *name;
   char *transformed;
-  struct HeaderTag *next;
+  struct TagList *next;
 };
 
 /**
@@ -54,7 +54,7 @@ struct HeaderTags
 
   /* With hidden tags */
   char *tags_with_hidden;
-  struct HeaderTag *tag_list;
+  struct TagList *tag_list;
 };
 
 void hdr_tags_free(struct Header *h);
