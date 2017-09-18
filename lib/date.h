@@ -45,7 +45,7 @@ time_t mutt_local_tz(time_t t);
 time_t mutt_mktime(struct tm *t, int local);
 void mutt_normalize_time(struct tm *tm);
 char *mutt_make_date(char *buf, size_t buflen);
-time_t mutt_parse_date(const char *s, const struct Tz **tz_out);
+time_t mutt_parse_date(const char *s, struct Tz *tz_out);
 bool is_day_name(const char *s);
 int mutt_check_month(const char *s);
 

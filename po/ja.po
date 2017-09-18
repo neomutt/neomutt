@@ -1902,7 +1902,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "現在のメールボックスが未設定なのに記号 '^' を使っている"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "メールボックス記号ショートカットが空の正規表現に展開される"
 
 # %f と %t の両方が存在する必要がある
@@ -2193,7 +2193,7 @@ msgstr "%s は不明なタイプ"
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "不正な正規表現: %s"
 
 # 前の引数で (...) と括弧でくくった部分を後の引数で %1 や %2 として参照するやつ
@@ -2267,7 +2267,7 @@ msgstr "不正なへッダフィールド"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): 正規表現でエラー: %s\n"
 
 #: init.c:2452 init.c:2623

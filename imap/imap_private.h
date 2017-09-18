@@ -279,7 +279,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags);
 int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
-int imap_sync_message(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
+int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 
 /* auth.c */

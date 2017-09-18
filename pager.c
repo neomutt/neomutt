@@ -947,7 +947,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             null_rx = false;
           }
           else
-            null_rx = true; /* empty regexp; don't add it, but keep looking */
+            null_rx = true; /* empty regex; don't add it, but keep looking */
         }
         color_line = color_line->next;
       }
@@ -1009,7 +1009,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             null_rx = 0;
           }
           else
-            null_rx = 1; /* empty regexp; don't add it, but keep looking */
+            null_rx = 1; /* empty regex; don't add it, but keep looking */
         }
       }
 

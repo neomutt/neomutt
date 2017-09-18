@@ -1963,7 +1963,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "el atajo '^' no está definido"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "atajo expandido a expresión regular vacía"
 
 #: hook.c:144
@@ -2261,7 +2261,7 @@ msgstr "%s: tipo desconocido"
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Expresión regular incorrecta: %s"
 
 #: init.c:932
@@ -2341,7 +2341,7 @@ msgstr "encabezado erróneo"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): error en expresión regular: %s\n"
 
 #: init.c:2452 init.c:2623

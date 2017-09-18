@@ -1890,7 +1890,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "fulmklavo '^' por nuna poŝtfako malŝaltiĝis"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "poŝtfaka fulmklavo malvolvis al vaka regulesprimo"
 
 #: hook.c:144
@@ -2178,7 +2178,7 @@ msgstr "%s: Nekonata speco."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Malbona regulesprimo: %s"
 
 #: init.c:932
@@ -2251,7 +2251,7 @@ msgstr "nevalida ĉaplinio"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): eraro en regula esprimo: %s\n"
 
 #: init.c:2452 init.c:2623

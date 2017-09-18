@@ -684,7 +684,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable controls how ``$message-hook'', ``$reply-hook'', ``$send-hook'',
   ** ``$send2-hook'', ``$save-hook'', and ``$fcc-hook'' will
-  ** be interpreted if they are specified with only a simple regexp,
+  ** be interpreted if they are specified with only a simple regex,
   ** instead of a matching pattern.  The hooks are expanded when they are
   ** declared, so a hook will be interpreted according to the value of this
   ** variable at the time the hook is declared.
@@ -1159,8 +1159,8 @@ struct Option MuttVars[] = {
   { "header_color_partial", DT_BOOL, R_PAGER_FLOW, OPT_HEADER_COLOR_PARTIAL, 0 },
   /*
   ** .pp
-  ** When \fIset\fP, color header regexps behave like color body regexps:
-  ** color is applied to the exact text matched by the regexp.  When
+  ** When \fIset\fP, color header regexes behave like color body regexes:
+  ** color is applied to the exact text matched by the regex.  When
   ** \fIunset\fP, color is applied to the entire header.
   ** .pp
   ** One use of this option might be to apply color to just the header labels.
@@ -1584,8 +1584,6 @@ struct Option MuttVars[] = {
   ** .dt %(fmt) .dd the local date and time when the message was received.
   **                ``fmt'' is expanded by the library function \fCstrftime(3)\fP;
   **                a leading bang disables locales
-  ** .dt %<fmt> .dd the current local time. ``fmt'' is expanded by the library
-  **                function \fCstrftime(3)\fP; a leading bang disables locales.
   ** .dt %>X    .dd right justify the rest of the string and pad with character ``X''
   ** .dt %|X    .dd pad to the end of the line with character ``X''
   ** .dt %*X    .dd soft-fill with character ``X'' as pad

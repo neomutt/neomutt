@@ -1899,7 +1899,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "zkratka „^“ pro aktuální schránku není nastavena"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "zkratka pro schránku expandována na prázdný regulární výraz"
 
 #: hook.c:144
@@ -2187,7 +2187,7 @@ msgstr "neznámý typ %s"
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Chybný regulární výraz: %s"
 
 #: init.c:932
@@ -2262,7 +2262,7 @@ msgstr "neplatná hlavička"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): chybný regulární výraz %s\n"
 
 #: init.c:2452 init.c:2623

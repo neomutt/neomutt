@@ -909,7 +909,7 @@
 
 2016-09-10  Richard Russon  <rich@flatcap.org>
 * New Features
-  - Colouring Attachments with Regexp
+  - Colouring Attachments with Regex
     Guillaume Brogi
   - PGP Encrypt to Self
     Guillaume Brogi

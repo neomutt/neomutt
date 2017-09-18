@@ -2039,7 +2039,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "La drecera «^» a la bústia actual no està establerta."
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "La drecera a bústia s’ha expandit a l’expressió regular buida."
 
 #: hook.c:144
@@ -2328,7 +2328,7 @@ msgstr "%s: El tipus no és conegut."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "L’expressió regular no és vàlida: %s"
 
 # Vol dir que a::
@@ -2413,7 +2413,7 @@ msgstr "El camp de capçalera no és vàlid."
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): Error a l’expressió regular: %s\n"
 
 # ivb (2001/11/24)

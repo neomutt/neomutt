@@ -1982,7 +1982,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "le raccourci de boîte aux lettres courante '^' n'a pas de valeur"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 "le raccourci de boîte aux lettres a donné une expression rationnelle vide"
 
@@ -2289,7 +2289,7 @@ msgstr "%s : type inconnu."
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Mauvaise expression rationnelle : %s"
 
 #: init.c:932
@@ -2363,7 +2363,7 @@ msgstr "en-tête invalide"
 # , c-format
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s) : erreur dans l'expression rationnelle : %s\n"
 
 # , c-format

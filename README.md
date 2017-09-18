@@ -22,7 +22,7 @@ sorted through them, fixed them up and documented them.
 
 | Name                 | Description
 | -------------------- | ------------------------------------------------------
-| Attach Headers Color | Color attachment headers using regexp, just like mail bodies
+| Attach Headers Color | Color attachment headers using regex, just like mail bodies
 | Compose to Sender    | Send new mail to the sender of the current mail
 | Compressed Folders   | Read from/write to compressed mailboxes
 | Conditional Dates    | Use rules to choose date format

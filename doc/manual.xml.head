@@ -2890,16 +2890,13 @@ color sidebar_divider   color8  default
       <quote>system</quote> file and one
       <quote>user</quote> file.</para>
       <para>NeoMutt searches for several different file names when looking for
-      config. It looks for NeoMutt config files before NeoMutt config files and
+      config. It looks for NeoMutt config files before Mutt config files and
       versioned config before plain config. For example:</para>
 
       <table id="neomuttrc-order">
         <title>NeoMutt config file search order</title>
         <tgroup cols="1">
           <tbody>
-            <row>
-              <entry>neomuttrc-20170912</entry>
-            </row>
             <row>
               <entry>neomuttrc</entry>
             </row>
@@ -2909,7 +2906,7 @@ color sidebar_divider   color8  default
           </tbody>
         </tgroup>
       </table>
-      <para>This allows the user to create separate NeoMutt and NeoMutt config
+      <para>This allows the user to create separate NeoMutt and Mutt config
       files on the same system.</para>
 
       <sect2 id="neomuttrc-system">
@@ -2939,10 +2936,6 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>/etc/xdg/neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
                 <entry>/etc/xdg/neomutt/neomuttrc</entry>
               </row>
               <row>
@@ -2950,19 +2943,11 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/etc/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
                 <entry>/etc/neomuttrc</entry>
               </row>
               <row>
                 <entry>/etc/Muttrc</entry>
                 <entry>Note the case of the filename</entry>
-              </row>
-              <row>
-                <entry>/usr/share/neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>/usr/share/neomutt/neomuttrc</entry>
@@ -2983,7 +2968,7 @@ color sidebar_divider   color8  default
         <literal>XDG_CONFIG_HOME</literal> environment variable, which defaults
         to
         <literal>~/.config/neomutt</literal>. Next, it looks in
-        <literal>~</literal>(your home directory). Finally, it tries
+        <literal>~</literal> (your home directory). Finally, it tries
         <literal>~/.neomutt</literal>.</para>
         <para>You may specify your own location for the user config file using
         the
@@ -2994,18 +2979,13 @@ color sidebar_divider   color8  default
 
         <table id="neomuttrc-user-files">
           <title>NeoMutt user config file locations</title>
-          <tgroup cols="2">
+          <tgroup cols="1">
             <thead>
               <row>
                 <entry>File Location</entry>
-                <entry>Notes</entry>
               </row>
             </thead>
             <tbody>
-              <row>
-                <entry>~/.config/neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
               <row>
                 <entry>~/.config/neomutt/neomuttrc</entry>
               </row>
@@ -3013,8 +2993,10 @@ color sidebar_divider   color8  default
                 <entry>~/.config/neomutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.neomutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
+                <entry>~/.config/mutt/neomuttrc</entry>
+              </row>
+              <row>
+                <entry>~/.config/mutt/muttrc</entry>
               </row>
               <row>
                 <entry>~/.neomutt/neomuttrc</entry>
@@ -3023,18 +3005,10 @@ color sidebar_divider   color8  default
                 <entry>~/.neomutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
-              </row>
-              <row>
                 <entry>~/.mutt/neomuttrc</entry>
               </row>
               <row>
                 <entry>~/.mutt/muttrc</entry>
-              </row>
-              <row>
-                <entry>~/.neomuttrc-20170912</entry>
-                <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>~/.neomuttrc</entry>
@@ -3707,7 +3681,7 @@ bind index gg first-entry</screen>
       <cmdsynopsis>
         <command>folder-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]regexp</replaceable>
+          <replaceable class="parameter">[!]regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -3717,13 +3691,13 @@ bind index gg first-entry</screen>
       are reading. The
       <command>folder-hook</command> command provides a method by which you can
       execute any configuration command.
-      <emphasis>regexp</emphasis> is a regular expression specifying in which
+      <emphasis>regex</emphasis> is a regular expression specifying in which
       mailboxes to execute
       <emphasis>command</emphasis> before loading. If a mailbox matches multiple
       <command>folder-hook</command>s, they are executed in the order given in
       the
       <literal>.neomuttrc</literal>.</para>
-      <para>The regexp parameter has
+      <para>The regex parameter has
       <link linkend="shortcuts">mailbox shortcut</link> expansion performed on
       the first character. See
       <xref linkend="mailbox-hook" />for more details.</para>
@@ -3862,7 +3836,7 @@ folder-hook work "set sort=threads"
           <replaceable class="parameter">background</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <command>color</command>
         <arg choice="plain">
@@ -3919,7 +3893,7 @@ folder-hook work "set sort=threads"
       <para>
       <emphasis>header</emphasis> and
       <emphasis>body</emphasis> match
-      <emphasis>regexp</emphasis> in the header/body of a message,
+      <emphasis>regex</emphasis> in the header/body of a message,
       <emphasis>index-object</emphasis> can match
       <emphasis>pattern</emphasis>(see
       <xref linkend="patterns" />) in the message index. Note that IMAP
@@ -3929,9 +3903,9 @@ folder-hook work "set sort=threads"
       <link linkend="header-color-partial">$header_color_partial</link> is unset
       (the default), a
       <emphasis>header</emphasis> matched by
-      <emphasis>regexp</emphasis> will have color applied to the entire header.
+      <emphasis>regex</emphasis> will have color applied to the entire header.
       When set, color is applied only to the exact text matched by
-      <emphasis>regexp</emphasis>.</para>
+      <emphasis>regex</emphasis>.</para>
       <para>
       <emphasis>object</emphasis> can be one of:</para>
       <itemizedlist>
@@ -4198,7 +4172,7 @@ export COLORFGBG
           <replaceable class="parameter">attribute</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <command>mono</command>
         <arg choice="plain">
@@ -4366,10 +4340,10 @@ unignore posted-to:
           <replaceable>name</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable>regexp</replaceable>
+          <replaceable>regex</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>regexp</replaceable>
+          <replaceable>regex</replaceable>
         </arg>
         <command>unalternates</command>
         <arg choice="opt" rep="repeat">
@@ -4381,7 +4355,7 @@ unignore posted-to:
             <replaceable>*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable>regexp</replaceable>
+            <replaceable>regex</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
@@ -4422,12 +4396,12 @@ unignore posted-to:
       <para>To remove a regular expression from the
       <command>alternates</command> list, use the
       <command>unalternates</command> command with exactly the same
-      <emphasis>regexp</emphasis>. Likewise, if the
-      <emphasis>regexp</emphasis> for an
+      <emphasis>regex</emphasis>. Likewise, if the
+      <emphasis>regex</emphasis> for an
       <command>alternates</command> command matches an entry on the
       <command>unalternates</command> list, that
       <command>unalternates</command> entry will be removed. If the
-      <emphasis>regexp</emphasis> for
+      <emphasis>regex</emphasis> for
       <command>unalternates</command> is
       <quote>*</quote>,
       <emphasis>all entries</emphasis> on
@@ -4445,10 +4419,10 @@ unignore posted-to:
           <replaceable class="parameter">name</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <command>unlists</command>
         <group choice="req">
@@ -4456,7 +4430,7 @@ unignore posted-to:
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable class="parameter">regexp</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
         </group>
         <command>subscribe</command>
@@ -4465,10 +4439,10 @@ unignore posted-to:
           <replaceable class="parameter">name</replaceable>
         </arg>
         <arg choice="plain">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <command>unsubscribe</command>
         <group choice="req">
@@ -4476,7 +4450,7 @@ unignore posted-to:
             <replaceable class="parameter">*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable class="parameter">regexp</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
         </group>
       </cmdsynopsis>
@@ -4553,7 +4527,7 @@ unignore posted-to:
       <cmdsynopsis>
         <command>mbox-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]regexp</replaceable>
+          <replaceable class="parameter">[!]regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -4561,12 +4535,12 @@ unignore posted-to:
       </cmdsynopsis>
       <para>This command is used to move read messages from a specified mailbox
       to a different mailbox automatically when you quit or change folders.
-      <emphasis>regexp</emphasis> is a regular expression specifying the mailbox
+      <emphasis>regex</emphasis> is a regular expression specifying the mailbox
       to treat as a
       <quote>spool</quote> mailbox and
       <emphasis>mailbox</emphasis> specifies where mail should be saved when
       read.</para>
-      <para>The regexp parameter has
+      <para>The regex parameter has
       <link linkend="shortcuts">mailbox shortcut</link> expansion performed on
       the first character. See
       <xref linkend="mailbox-hook" />for more details.</para>
@@ -4575,7 +4549,7 @@ unignore posted-to:
       <quote>no</quote>(the default), mbox-hooks will not be executed.</para>
       <para>Unlike some of the other
       <emphasis>hook</emphasis> commands, only the
-      <emphasis>first</emphasis> matching regexp is used (it is not possible to
+      <emphasis>first</emphasis> matching regex is used (it is not possible to
       save read mail in more than a single mailbox).</para>
     </sect1>
 
@@ -4920,7 +4894,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
       <cmdsynopsis>
         <command>crypt-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">keyid</replaceable>
@@ -4933,7 +4907,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
       would normally use. The
       <command>crypt-hook</command> command provides a method by which you can
       specify the ID of the public key to be used when encrypting messages to a
-      certain recipient. You may use multiple crypt-hooks with the same regexp;
+      certain recipient. You may use multiple crypt-hooks with the same regex;
       multiple matching crypt-hooks result in the use of multiple keyids for a
       recipient. During key selection, NeoMutt will confirm whether each
       crypt-hook is to be used (unless the
@@ -5286,7 +5260,7 @@ set spam_separator=", "
             <term>regular expression</term>
             <listitem>
               <para>A regular expression, see
-              <xref linkend="regexp" />for an introduction.</para>
+              <xref linkend="regex" />for an introduction.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -5922,11 +5896,11 @@ mailboxes $my_mx +mailbox3</screen>
       <literal>locale -a</literal>.</para>
     </sect1>
 
-    <sect1 id="regexp">
+    <sect1 id="regex">
       <title>Regular Expressions</title>
       <para>All string patterns in NeoMutt including those in more complex
       <link linkend="patterns">patterns</link> must be specified using regular
-      expressions (regexp) in the
+      expressions (regex) in the
       <quote>POSIX extended</quote> syntax (which is more or less the syntax
       used by egrep and GNU awk). For your convenience, we have included below
       a brief description of this syntax.</para>
@@ -6072,9 +6046,9 @@ mailboxes $my_mx +mailbox3</screen>
             <quote>[.</quote>and
             <quote>.]</quote>. For example, if
             <quote>ch</quote> is a collating element, then
-            <emphasis>[[.ch.]]</emphasis>is a regexp that matches this
+            <emphasis>[[.ch.]]</emphasis>is a regex that matches this
             collating element, while
-            <emphasis>[ch]</emphasis>is a regexp that matches either
+            <emphasis>[ch]</emphasis>is a regex that matches either
             <quote>c</quote> or
             <quote>h</quote>.</para>
           </listitem>
@@ -6092,7 +6066,7 @@ mailboxes $my_mx +mailbox3</screen>
             <quote>e</quote> with acute (
             <quote>é</quote>) and
             <quote>e</quote>. In this case,
-            <emphasis>[[=e=]]</emphasis>is a regexp that matches any of:
+            <emphasis>[[=e=]]</emphasis>is a regex that matches any of:
             <quote>e</quote> with grave (
             <quote>è</quote>),
             <quote>e</quote> with acute (
@@ -6600,7 +6574,7 @@ mailboxes $my_mx +mailbox3</screen>
         </table>
         <para>Where
         <emphasis>EXPR</emphasis> is a
-        <link linkend="regexp">regular expression</link>, and
+        <link linkend="regex">regular expression</link>, and
         <emphasis>GROUP</emphasis> is an
         <link linkend="addrgroup">address group</link>.</para>
         <para>*) The forms
@@ -7181,7 +7155,7 @@ mailboxes $my_mx +mailbox3</screen>
       upon which mailbox you are reading, or to whom you are sending mail. In
       the NeoMutt world, a
       <emphasis>hook</emphasis> consists of a
-      <link linkend="regexp">regular expression</link> or
+      <link linkend="regex">regular expression</link> or
       <link linkend="patterns">pattern</link> along with a configuration
       option/command. See:
       <itemizedlist>
@@ -7332,7 +7306,7 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
         <command>save-hook</command>,
         <command>fcc-hook</command>) are evaluated in a slightly different
         manner. For the other types of hooks, a
-        <link linkend="regexp">regular expression</link> is sufficient. But in
+        <link linkend="regex">regular expression</link> is sufficient. But in
         dealing with messages a finer grain of control is needed for matching
         since for different purposes you want to match different
         criteria.</para>
@@ -7366,15 +7340,15 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
         <para>Hooks that match against mailboxes (
         <command>folder-hook</command>,
         <command>mbox-hook</command>) apply both
-        <link linkend="regexp">regular expression</link> syntax as well as
+        <link linkend="regex">regular expression</link> syntax as well as
         <link linkend="shortcuts">mailbox shortcut</link> expansion on the
-        regexp parameter. There is some overlap between these, so special
-        attention should be paid to the first character of the regexp.</para>
+        regex parameter. There is some overlap between these, so special
+        attention should be paid to the first character of the regex.</para>
         <screen>
 # Here, ^ will expand to "the current mailbox" not "beginning of string":
 folder-hook ^/home/user/Mail/bar "set sort=threads"
 # If you want ^ to be interpreted as "beginning of string", one workaround
-# is to enclose the regexp in parenthesis:
+# is to enclose the regex in parenthesis:
 folder-hook (^/home/user/Mail/bar) "set sort=threads"
 # This will expand to the default save folder for the alias "imap.example.com", which
 # is probably not what you want:
@@ -7383,13 +7357,13 @@ folder-hook @imap.example.com "set sort=threads"
 folder-hook (@imap.example.com) "set sort=threads"
 folder-hook '\@imap.example.com' "set sort=threads"
 </screen>
-        <para>Keep in mind that mailbox shortcut expansion on the regexp
+        <para>Keep in mind that mailbox shortcut expansion on the regex
         parameter takes place when the hook is initially parsed, not when the
         hook is matching against a mailbox. When NeoMutt starts up and is reading
         the .neomuttrc, some mailbox shortcuts may not be usable. For example, the
         "current mailbox" shortcut, ^, will expand to an empty string because
         no mailbox has been opened yet. NeoMutt will issue an error for this case
-        or if the mailbox shortcut results in an empty regexp.</para>
+        or if the mailbox shortcut results in an empty regex.</para>
       </sect2>
     </sect1>
 
@@ -9376,7 +9350,7 @@ set timeout=15
       <cmdsynopsis>
         <command>account-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">regexp</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -9586,7 +9560,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
 
     <sect1 id="attach-headers-color">
       <title>Attach Headers Color Feature</title>
-      <subtitle>Color attachment headers using regexp, just like mail
+      <subtitle>Color attachment headers using regex, just like mail
       bodies</subtitle>
 
       <sect2 id="attach-headers-color-support">
@@ -9599,12 +9573,12 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
 
       <sect2 id="attach-headers-color-intro">
         <title>Introduction</title>
-        <para>This feature allows specifying regexps to color attachment
+        <para>This feature allows specifying regexes to color attachment
         headers just like the mail body would. The headers are the parts
         colored by the
         <literal>attachment</literal> color. Coloring them is useful to
         highlight the results of GPGME's signature checks or simply the
-        mimetype or size of the attachment. Only the part matched by the regexp
+        mimetype or size of the attachment. Only the part matched by the regex
         is colored.</para>
       </sect2>
 
@@ -9655,7 +9629,7 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
           </listitem>
           <listitem>
             <para>
-              <link linkend="regexp">Regular Expressions</link>
+              <link linkend="regex">Regular Expressions</link>
             </para>
           </listitem>
         </itemizedlist>
@@ -9890,12 +9864,12 @@ bind index,pager @ compose-to-sender
 
         <sect3 id="open-hook">
           <title>Read from compressed mailbox</title>
-          <screen>open-hook regexp shell-command</screen>
+          <screen>open-hook regex shell-command</screen>
           <para>If NeoMutt is unable to open a file, it then looks for
           <literal>open-hook</literal> that matches the filename.</para>
           <para>If your compression program doesn't have a well-defined
           extension, then you can use
-          <literal>.</literal>as the regexp.</para>
+          <literal>.</literal>as the regex.</para>
 
           <sect4 id="compress-open-hook-example">
             <title>Example of
@@ -9908,7 +9882,7 @@ bind index,pager @ compose-to-sender
               </listitem>
               <listitem>
                 <para>NeoMutt has an
-                <literal>open-hook</literal> whose regexp matches the filename:
+                <literal>open-hook</literal> whose regex matches the filename:
                 <literal>\.gz$</literal></para>
               </listitem>
               <listitem>
@@ -9922,7 +9896,7 @@ bind index,pager @ compose-to-sender
 
         <sect3 id="close-hook">
           <title>Write to a compressed mailbox</title>
-          <screen>close-hook regexp shell-command</screen>
+          <screen>close-hook regex shell-command</screen>
           <para>When NeoMutt has finished with a compressed mail folder, it will
           look for a matching
           <literal>close-hook</literal> to recompress the file. This hook is
@@ -9947,7 +9921,7 @@ bind index,pager @ compose-to-sender
               </listitem>
               <listitem>
                 <para>NeoMutt has a
-                <literal>close-hook</literal> whose regexp matches the filename:
+                <literal>close-hook</literal> whose regex matches the filename:
                 <literal>\.gz$</literal></para>
               </listitem>
               <listitem>
@@ -9967,7 +9941,7 @@ bind index,pager @ compose-to-sender
 
         <sect3 id="append-hook">
           <title>Append to a compressed mailbox</title>
-          <screen>append-hook regexp shell-command</screen>
+          <screen>append-hook regex shell-command</screen>
           <para>When NeoMutt wants to append an email to a compressed mail folder,
           it will look for a matching
           <literal>append-hook</literal>. This hook is
@@ -10002,7 +9976,7 @@ bind index,pager @ compose-to-sender
               </listitem>
               <listitem>
                 <para>NeoMutt has an
-                <literal>append-hook</literal> whose regexp matches the
+                <literal>append-hook</literal> whose regex matches the
                 filename:
                 <literal>\.gz$</literal></para>
               </listitem>
@@ -10051,9 +10025,9 @@ bind index,pager @ compose-to-sender
 # work with compressed, or encrypted, mailboxes.
 
 # The hooks are of the form:
-#       open-hook   regexp "shell-command"
-#       close-hook  regexp "shell-command"
-#       append-hook regexp "shell-command"
+#       open-hook   regex "shell-command"
+#       close-hook  regex "shell-command"
+#       append-hook regex "shell-command"
 # The 'append-hook' is optional.
 
 # Handler for gzip compressed mailboxes</emphasis>
@@ -10092,7 +10066,7 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
           </listitem>
           <listitem>
             <para>
-              <link linkend="regexp">Regular Expressions</link>
+              <link linkend="regex">Regular Expressions</link>
             </para>
           </listitem>
           <listitem>
@@ -11308,7 +11282,7 @@ color index_size cyan default
         <itemizedlist>
           <listitem>
             <para>
-              <link linkend="regexp">Regular Expressions</link>
+              <link linkend="regex">Regular Expressions</link>
             </para>
           </listitem>
           <listitem>
@@ -14355,7 +14329,7 @@ color sidebar_ordinary color245 default
         <itemizedlist>
           <listitem>
             <para>
-              <link linkend="regexp">Regular Expressions</link>
+              <link linkend="regex">Regular Expressions</link>
             </para>
           </listitem>
           <listitem>
@@ -14617,7 +14591,7 @@ set sort_aux=last-date-received
 color status blue white
 <emphasis role="comment"># 1 extra parameter
 # Set the color for a matching pattern
-# color status foreground background regexp
+# color status foreground background regex
 # Highlight New, Deleted, or Flagged emails</emphasis>
 color status brightred white '(New|Del|Flag):[0-9]+'
 <emphasis role="comment"># Highlight mailbox ordering if it's different from the default
@@ -14627,7 +14601,7 @@ color status brightred default '\([^)]+/[^)]+\)'
 color status default   default '\(threads/last-date-received\)'
 <emphasis role="comment"># 2 extra parameters
 # Set the color for the nth submatch of a pattern
-# color status foreground background regexp num
+# color status foreground background regex num
 # Highlight the contents of the []s but not the [] themselves</emphasis>
 color status red default '\[([^]]+)\]' 1
 <emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner
@@ -14650,7 +14624,7 @@ color status brightwhite default 'NeoMutt: ([^ ]+)' 1
           </listitem>
           <listitem>
             <para>
-              <link linkend="regexp">Regular Expressions</link>
+              <link linkend="regex">Regular Expressions</link>
             </para>
           </listitem>
           <listitem>
@@ -15337,7 +15311,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <link linkend="account-hook">account-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable>regexp</replaceable>
+              <replaceable>regex</replaceable>
               <replaceable>command</replaceable>
             </arg>
           </cmdsynopsis>
@@ -15387,10 +15361,10 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <replaceable>name</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable>regexp</replaceable>
+              <replaceable>regex</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>regexp</replaceable>
+              <replaceable>regex</replaceable>
             </arg>
             <command>
               <link linkend="alternates">unalternates</link>
@@ -15404,7 +15378,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>regexp</replaceable>
+                <replaceable>regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -15579,7 +15553,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <replaceable class="parameter">background</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <command>
               <link linkend="color">color</link>
@@ -15639,7 +15613,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <link linkend="crypt-hook">crypt-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">keyid</replaceable>
@@ -15691,7 +15665,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <link linkend="folder-hook">folder-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]regexp</replaceable>
+              <replaceable class="parameter">[!]regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -15809,10 +15783,10 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <replaceable class="parameter">name</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <command>
               <link linkend="lists">unlists</link>
@@ -15826,7 +15800,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>regexp</replaceable>
+                <replaceable>regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -15906,7 +15880,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <link linkend="mbox-hook">mbox-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]regexp</replaceable>
+              <replaceable class="parameter">[!]regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -15976,7 +15950,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <replaceable class="parameter">attribute</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <command>
               <link linkend="mono">mono</link>
@@ -16283,10 +16257,10 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <replaceable class="parameter">name</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">regexp</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <command>
               <link linkend="subscribe">unsubscribe</link>
@@ -16300,7 +16274,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
                 <replaceable class="parameter">*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable class="parameter">regexp</replaceable>
+                <replaceable class="parameter">regex</replaceable>
               </arg>
             </group>
           </cmdsynopsis>

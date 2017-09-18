@@ -559,7 +559,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
           break;
         case 4:  /* exportable */
         case 5:  /* trust */
-        case 6:  /* regexp */
+        case 6:  /* regex */
         case 7:  /* revocable */
         case 11: /* Pref. symm. alg. */
         case 12: /* revocation key */

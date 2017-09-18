@@ -1894,7 +1894,7 @@ msgid "current mailbox shortcut '^' is unset"
 msgstr "скорочення \"^\" для поточної скриньки не встановлено"
 
 #: hook.c:131
-msgid "mailbox shortcut expanded to empty regexp"
+msgid "mailbox shortcut expanded to empty regex"
 msgstr "скорочення для скриньки перетворене на пустий регулярний вираз"
 
 #: hook.c:144
@@ -2182,7 +2182,7 @@ msgstr "%s: Невідомий тип"
 
 #: init.c:872
 #, c-format
-msgid "Bad regexp: %s"
+msgid "Bad regex: %s"
 msgstr "Поганий регулярний вираз: %s"
 
 #: init.c:932
@@ -2255,7 +2255,7 @@ msgstr "неправильне поле заголовку"
 
 #: init.c:2160
 #, fuzzy, c-format
-msgid "restore_default(%s): error in regexp: %s\n"
+msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): помилка регулярного виразу: %s\n"
 
 #: init.c:2452 init.c:2623
