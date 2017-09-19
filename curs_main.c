@@ -1854,7 +1854,6 @@ int mutt_index_menu(void)
       }
 
 #endif
-#if defined(USE_NOTMUCH) || defined(USE_IMAP)
       case OP_MAIN_MODIFY_LABELS:
       case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
       {
@@ -1952,7 +1951,6 @@ int mutt_index_menu(void)
         break;
       }
 
-#endif
 #ifdef USE_NOTMUCH
       case OP_MAIN_VFOLDER_FROM_QUERY:
         buf[0] = '\0';

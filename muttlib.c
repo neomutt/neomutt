@@ -60,9 +60,7 @@
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
-#if defined USE_IMAP || defined USE_NOTMUCH
 #include "mutt_tags.h"
-#endif
 
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
