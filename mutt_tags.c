@@ -78,8 +78,10 @@ void hdr_tags_free(struct Header *h)
  */
 const char *hdr_tags_get_transformed(struct Header *h)
 {
-  if (!h || !h->tags || !h->tags->tags_transformed)
+  if (!h || !h->tags)
     return NULL;
+  if(!h->tags->tags_transformed)
+    return h->tags->tags;
   return h->tags->tags_transformed;
 }
 
@@ -133,8 +135,12 @@ const char *hdr_tags_get_transformed_for(char *name, struct Header *h)
   struct TagList *tag = h->tags->tag_list;
   while (tag)
   {
-    if (strcmp(tag->name, name) == 0)
-      return tag->transformed;
+    if (strcmp(tag->name, name) == 0) {
+      if (!tag->transformed)
+        return tag->name;
+      else
+        return tag->transformed;
+    }
     tag = tag->next;
   }
   return NULL;
@@ -162,12 +168,11 @@ static void hdr_tags_add(struct Header *h, char *new_tag)
   char *new_tag_transformed = NULL;
 
   new_tag_transformed = hash_find(TagTransforms, new_tag);
-  if (!new_tag_transformed)
-    new_tag_transformed = new_tag;
 
   ttmp = safe_calloc(1, sizeof(*ttmp));
   ttmp->name = safe_strdup(new_tag);
-  ttmp->transformed = safe_strdup(new_tag_transformed);
+  if (new_tag_transformed)
+    ttmp->transformed = safe_strdup(new_tag_transformed);
   ttmp->next = h->tags->tag_list;
   h->tags->tag_list = ttmp;
 
@@ -189,7 +194,10 @@ static void hdr_tags_add(struct Header *h, char *new_tag)
   mutt_str_append_item(&h->tags->tags, new_tag, ' ');
 
   /* expand the transformed tag string */
-  mutt_str_append_item(&h->tags->tags_transformed, new_tag_transformed, ' ');
+  if (new_tag_transformed)
+    mutt_str_append_item(&h->tags->tags_transformed, new_tag_transformed, ' ');
+  else
+    mutt_str_append_item(&h->tags->tags_transformed, new_tag, ' ');
 }
 
 /**
