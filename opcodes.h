@@ -234,8 +234,8 @@
   _fmt(OP_MAIN_SHOW_LIMIT,                N_("show currently active limit pattern")) \
   _fmt(OP_MAIN_COLLAPSE_THREAD,           N_("collapse/uncollapse current thread")) \
   _fmt(OP_MAIN_COLLAPSE_ALL,              N_("collapse/uncollapse all threads")) \
-  _fmt(OP_MAIN_MODIFY_LABELS,             N_("modify (notmuch) tags")) \
-  _fmt(OP_MAIN_MODIFY_LABELS_THEN_HIDE,   N_("modify labels and then hide message")) \
+  _fmt(OP_MAIN_MODIFY_TAGS,             N_("modify (notmuch/imap) tags")) \
+  _fmt(OP_MAIN_MODIFY_TAGS_THEN_HIDE,   N_("modify (notmuch/imap) tags and then hide message")) \
 
 #define OPS_CRYPT(_fmt) \
   _fmt(OP_DECRYPT_SAVE,                   N_("make decrypted copy and delete")) \

@@ -1854,8 +1854,8 @@ int mutt_index_menu(void)
       }
 
 #endif
-      case OP_MAIN_MODIFY_LABELS:
-      case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
+      case OP_MAIN_MODIFY_TAGS:
+      case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
       {
         if (!Context || ((Context->magic != MUTT_NOTMUCH) && (Context->magic != MUTT_IMAP)))
         {
@@ -1871,7 +1871,7 @@ int mutt_index_menu(void)
           break;
         else if (rc == 0)
         {
-          mutt_message(_("No label specified, aborting."));
+          mutt_message(_("No tag specified, aborting."));
           break;
         }
 
@@ -1883,7 +1883,7 @@ int mutt_index_menu(void)
 
           if (!Context->quiet)
           {
-            snprintf(msgbuf, sizeof(msgbuf), _("Update labels..."));
+            snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
             mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->tagged);
           }
 
@@ -1898,7 +1898,7 @@ int mutt_index_menu(void)
               if (!Context->quiet)
                 mutt_progress_update(&progress, ++px, -1);
               hdr_tags_commit(Context, Context->hdrs[Context->v2r[j]], buf);
-              if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
+              if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
               {
                 bool still_queried = false;
 #ifdef USE_NOTMUCH
@@ -1921,10 +1921,10 @@ int mutt_index_menu(void)
         {
           if (hdr_tags_commit(Context, CURHDR, buf))
           {
-            mutt_message(_("Failed to modify labels, aborting."));
+            mutt_message(_("Failed to modify tags, aborting."));
             break;
           }
-          if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
+          if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
           {
             CURHDR->quasi_deleted = true;
             Context->changed = true;
