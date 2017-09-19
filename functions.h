@@ -213,6 +213,9 @@ const struct Binding OpMain[] = { /* map: index */
   { "sidebar-toggle-virtual",    OP_SIDEBAR_TOGGLE_VIRTUAL,         NULL },
   { "sidebar-toggle-visible",    OP_SIDEBAR_TOGGLE_VISIBLE,         NULL },
 #endif
+  { "modify-tags",               OP_MAIN_MODIFY_TAGS,             NULL },
+  { "modify-tags-then-hide",     OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL },
+/* NOTE(sileht): kept for backward compatibility */
   { "modify-labels",             OP_MAIN_MODIFY_TAGS,             NULL },
   { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL },
 
@@ -350,8 +353,11 @@ const struct Binding OpPager[] = { /* map: pager */
   { "sidebar-toggle-virtual",    OP_SIDEBAR_TOGGLE_VIRTUAL,       NULL },
   { "sidebar-toggle-visible",    OP_SIDEBAR_TOGGLE_VISIBLE,       NULL },
 #endif
-  { "modify-labels",             OP_MAIN_MODIFY_TAGS,           NULL },
-  { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE, NULL },
+  { "modify-tags",               OP_MAIN_MODIFY_TAGS,             NULL },
+  { "modify-tags-then-hide",     OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL },
+/* NOTE(sileht): kept for backward compatibility */
+  { "modify-labels",             OP_MAIN_MODIFY_TAGS,             NULL },
+  { "modify-labels-then-hide",   OP_MAIN_MODIFY_TAGS_THEN_HIDE,   NULL },
 
 #ifdef USE_NOTMUCH
   { "change-vfolder",            OP_MAIN_CHANGE_VFOLDER,          NULL },
