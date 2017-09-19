@@ -474,7 +474,7 @@ static char *apply_subject_mods(struct Envelope *env)
  * | \%Gx    | individual message tag (e.g. notmuch tags/imap flags)
  * | \%i     | message-id
  * | \%I     | initials of author
- * | \%J     | message tags (if present, tree unfolded, and != parent's keywords)
+ * | \%J     | message tags (if present, tree unfolded, and != parent's tags)
  * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
  * | \%l     | number of lines in the message
  * | \%L     | like %F, except `lists' are displayed first

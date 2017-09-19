@@ -256,7 +256,7 @@ struct ImapData
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
-  /* all folder flags - system flags AND keywords */
+  /* all folder flags - system AND custom flags */
   struct ListHead flags;
 #ifdef USE_HCACHE
   header_cache_t *hcache;

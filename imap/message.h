@@ -48,8 +48,8 @@ struct ImapHeaderData
   unsigned int uid; /**< 32-bit Message UID */
   unsigned int msn; /**< Message Sequence Number */
 
-  char *keywords_system;
-  char *keywords_remote;
+  char *flags_system;
+  char *flags_remote;
 };
 
 /**

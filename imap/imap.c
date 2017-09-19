@@ -1168,10 +1168,10 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
 
   if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
   {
-    /* restore system keywords */
-    if (HEADER_DATA(hdr)->keywords_system)
-      safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->keywords_system);
-    /* set custom keywords */
+    /* restore system flags */
+    if (HEADER_DATA(hdr)->flags_system)
+      safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_system);
+    /* set custom flags */
     if (hdr_tags_get_with_hidden(hdr))
       safe_strcat(flags, sizeof(flags), hdr_tags_get_with_hidden(hdr));
   }
@@ -1189,9 +1189,9 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
     imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted,
                   "\\Deleted ", flags, sizeof(flags));
 
-    /* erase custom keywords */
-    if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) && HEADER_DATA(hdr)->keywords_remote)
-      safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->keywords_remote);
+    /* erase custom flags */
+    if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) && HEADER_DATA(hdr)->flags_remote)
+      safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_remote);
 
     mutt_remove_trailing_ws(flags);
 
@@ -1219,9 +1219,9 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
     }
   }
 
-  /* server have now the updated keywords */
-  FREE(&HEADER_DATA(hdr)->keywords_remote);
-  HEADER_DATA(hdr)->keywords_remote = safe_strdup(hdr_tags_get_with_hidden(hdr));
+  /* server have now the updated flags */
+  FREE(&HEADER_DATA(hdr)->flags_remote);
+  HEADER_DATA(hdr)->flags_remote = safe_strdup(hdr_tags_get_with_hidden(hdr));
 
   hdr->active = true;
   if (hdr->deleted == HEADER_DATA(hdr)->deleted)
@@ -1273,7 +1273,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
   /* Check for \* flags capability */
   if (!imap_has_flag(&idata->flags, NULL))
   {
-    mutt_error(_("IMAP server doesn't support custom keywords"));
+    mutt_error(_("IMAP server doesn't support custom flags"));
     return -1;
   }
 
@@ -1281,7 +1281,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
   if (tags)
     strncpy(buf, tags, buflen);
 
-  if (mutt_get_field("Keywords: ", buf, buflen, 0) != 0)
+  if (mutt_get_field("Tags: ", buf, buflen, 0) != 0)
     return -1;
 
   /* each keyword must be atom defined by rfc822 as:
@@ -1317,7 +1317,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
         *checker == 91 ||                   // [
         *checker == 93)                     // ]
     {
-      mutt_error(_("Invalid IMAP keywords"));
+      mutt_error(_("Invalid IMAP flags"));
       mutt_sleep(2);
       return 0;
     }
@@ -1340,7 +1340,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
 
 
 /**
- * imap_commit_message_tags - Add/Change/Remove keywords from headers
+ * imap_commit_message_tags - Add/Change/Remove flags from headers
  * @param idata: pointer to a struct ImapData
  * @param h: pointer to a header struct
  *
@@ -1348,13 +1348,13 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
  * @retval -1 Error
  *
  * This method update the server flags on the server by
- * removing the last know custom keywords of a header
- * and adds the local keywords
+ * removing the last know custom flags of a header
+ * and adds the local flags
  *
- * If everything success we push the local keywords to the
- * last know custom keywords (keywords_remote).
+ * If everything success we push the local flags to the
+ * last know custom flags (flags_remote).
  *
- * Also this method check that each keywords is support by the server
+ * Also this method check that each flags is support by the server
  * first and remove unsupported one.
  */
 static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char *tags)
@@ -1373,8 +1373,8 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
 
   snprintf(uid, sizeof(uid), "%u", HEADER_DATA(h)->uid);
 
-  /* Remove old custom keywords */
-  if (HEADER_DATA(h)->keywords_remote)
+  /* Remove old custom flags */
+  if (HEADER_DATA(h)->flags_remote)
   {
     if (!(cmd = mutt_buffer_new()))
     {
@@ -1385,11 +1385,11 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     mutt_buffer_addstr(cmd, "UID STORE ");
     mutt_buffer_addstr(cmd, uid);
     mutt_buffer_addstr(cmd, " -FLAGS.SILENT (");
-    mutt_buffer_addstr(cmd, HEADER_DATA(h)->keywords_remote);
+    mutt_buffer_addstr(cmd, HEADER_DATA(h)->flags_remote);
     mutt_buffer_addstr(cmd, ")");
 
     /* Should we return here, or we are fine and we could
-     * continue to add new keywords *
+     * continue to add new flags *
      */
     if (imap_exec(idata, cmd->data, 0) != 0)
     {
@@ -1400,12 +1400,12 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     mutt_buffer_free(&cmd);
   }
 
-  /* Add new custom keywords */
+  /* Add new custom flags */
   if (tags)
   {
     if (!(cmd = mutt_buffer_new()))
     {
-      mutt_debug(1, "imap_commit_message_tags: fail to remove old keywords\n");
+      mutt_debug(1, "imap_commit_message_tags: fail to remove old flags\n");
       return -1;
     }
     cmd->dptr = cmd->data;
@@ -1417,7 +1417,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
 
     if (imap_exec(idata, cmd->data, 0) != 0)
     {
-      mutt_debug(1, "imap_commit_message_tags: fail to add new keywords\n");
+      mutt_debug(1, "imap_commit_message_tags: fail to add new flags\n");
       mutt_buffer_free(&cmd);
       return -1;
     }
@@ -1428,8 +1428,8 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
   /* We are good sync them */
   mutt_debug(1, "NEW TAGS: %d\n", tags);
   hdr_tags_replace(h, tags);
-  FREE(&HEADER_DATA(h)->keywords_remote);
-  HEADER_DATA(h)->keywords_remote = safe_strdup(hdr_tags_get_with_hidden(h));
+  FREE(&HEADER_DATA(h)->flags_remote);
+  HEADER_DATA(h)->flags_remote = safe_strdup(hdr_tags_get_with_hidden(h));
   return 0;
 }
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * Email tags/keywords/labels
+ * Driver based email tags
  *
  * @authors
  * Copyright (C) 2017 Mehdi Abaakouk <sileht@sileht.net>

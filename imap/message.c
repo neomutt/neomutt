@@ -162,8 +162,8 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   }
   s++;
 
-  FREE(&hd->keywords_system);
-  FREE(&hd->keywords_remote);
+  FREE(&hd->flags_system);
+  FREE(&hd->flags_remote);
 
   hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = false;
 
@@ -211,10 +211,10 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
 
       /* store other system flags as well (mainly \\Draft) */
       if (is_system_keyword)
-        mutt_str_append_item(&hd->keywords_system, flag_word, 32);
+        mutt_str_append_item(&hd->flags_system, flag_word, 32);
       /* store custom flags as well */
       else
-        mutt_str_append_item(&hd->keywords_remote, flag_word, 32);
+        mutt_str_append_item(&hd->flags_remote, flag_word, 32);
 
       *s = ctmp;
     }
@@ -637,7 +637,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
           ctx->hdrs[idx]->data = (void *) (h.data);
           hdr_tags_init(ctx->hdrs[idx]);
-          hdr_tags_replace(ctx->hdrs[idx], safe_strdup(h.data->keywords_remote));
+          hdr_tags_replace(ctx->hdrs[idx], safe_strdup(h.data->flags_remote));
 
           ctx->msgcount++;
           ctx->size += ctx->hdrs[idx]->content->length;
@@ -757,7 +757,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         ctx->hdrs[idx]->received = h.received;
         ctx->hdrs[idx]->data = (void *) (h.data);
         hdr_tags_init(ctx->hdrs[idx]);
-        hdr_tags_replace(ctx->hdrs[idx], safe_strdup(h.data->keywords_remote));
+        hdr_tags_replace(ctx->hdrs[idx], safe_strdup(h.data->flags_remote));
 
         if (maxuid < h.data->uid)
           maxuid = h.data->uid;
@@ -1414,8 +1414,8 @@ void imap_free_header_data(struct ImapHeaderData **data)
   if (*data)
   {
     /* this should be safe even if the list wasn't used */
-    FREE(&((*data)->keywords_system));
-    FREE(&((*data)->keywords_remote));
+    FREE(&((*data)->flags_system));
+    FREE(&((*data)->flags_remote));
     FREE(data);
   }
 }
@@ -1480,7 +1480,7 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *ser
     return NULL;
 
   /* Update tags system */
-  hdr_tags_replace(h, safe_strdup(hd->keywords_remote));
+  hdr_tags_replace(h, safe_strdup(hd->flags_remote));
 
   /* YAUH (yet another ugly hack): temporarily set context to
    * read-write even if it's read-only, so *server* updates of
