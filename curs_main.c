@@ -1857,16 +1857,16 @@ int mutt_index_menu(void)
       case OP_MAIN_MODIFY_TAGS:
       case OP_MAIN_MODIFY_TAGS_THEN_HIDE:
       {
-        if (!Context || ((Context->magic != MUTT_NOTMUCH) && (Context->magic != MUTT_IMAP)))
+        if (!Context || !mx_tags_is_supported(Context))
         {
-          mutt_message(_("No virtual folder, aborting."));
+          mutt_message(_("Folder doesn't support tagging, aborting."));
           break;
         }
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
         CHECK_READONLY;
 
-        rc = driver_tags_editor(Context, tag ? NULL : driver_tags_get_with_hidden(CURHDR), buf, sizeof(buf));
+        rc = mx_tags_editor(Context, tag ? NULL : driver_tags_get_with_hidden(CURHDR), buf, sizeof(buf));
         if (rc < 0)
           break;
         else if (rc == 0)
@@ -1897,7 +1897,7 @@ int mutt_index_menu(void)
             {
               if (!Context->quiet)
                 mutt_progress_update(&progress, ++px, -1);
-              driver_tags_commit(Context, Context->hdrs[Context->v2r[j]], buf);
+              mx_tags_commit(Context, Context->hdrs[Context->v2r[j]], buf);
               if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
               {
                 bool still_queried = false;
@@ -1919,7 +1919,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (driver_tags_commit(Context, CURHDR, buf))
+          if (mx_tags_commit(Context, CURHDR, buf))
           {
             mutt_message(_("Failed to modify tags, aborting."));
             break;

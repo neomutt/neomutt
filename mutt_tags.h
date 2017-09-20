@@ -24,7 +24,6 @@
 #define _MUTT_TAG_H
 
 #include "header.h"
-#include "context.h"
 
 /**
  * struct TagList - Mail Header Tags
@@ -64,7 +63,5 @@ const char *driver_tags_get_transformed(struct Header *h);
 const char *driver_tags_get_transformed_for(char *name, struct Header *h);
 void driver_tags_init(struct Header *h);
 int driver_tags_replace(struct Header *h, char *tags);
-int driver_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
-int driver_tags_commit(struct Context *ctx, struct Header *h, char *tags);
 
 #endif /* _MUTT_TAG_H */

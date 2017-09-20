@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include "mutt_tags.h"
-#include "context.h"
 #include "globals.h"
 #include "lib/hash.h"
 #include "lib/string2.h"
@@ -230,22 +229,4 @@ int driver_tags_replace(struct Header *h, char *tags)
     FREE(&tags);
   }
   return 1;
-}
-
-int driver_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen)
-{
-  if (ctx->mx_ops->edit_msg_tags)
-    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf, buflen);
-
-  mutt_message(_("Folder doesn't support tagging, aborting."));
-  return -1;
-}
-
-int driver_tags_commit(struct Context *ctx, struct Header *h, char *tags)
-{
-  if (ctx->mx_ops->commit_msg_tags)
-    return ctx->mx_ops->commit_msg_tags(ctx, h, tags);
-
-  mutt_message(_("Folder doesn't support tagging, aborting."));
-  return -1;
 }
