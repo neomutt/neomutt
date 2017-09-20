@@ -1866,7 +1866,7 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
 
-        rc = hdr_tags_editor(Context, tag ? NULL : hdr_tags_get_with_hidden(CURHDR), buf, sizeof(buf));
+        rc = driver_tags_editor(Context, tag ? NULL : driver_tags_get_with_hidden(CURHDR), buf, sizeof(buf));
         if (rc < 0)
           break;
         else if (rc == 0)
@@ -1897,7 +1897,7 @@ int mutt_index_menu(void)
             {
               if (!Context->quiet)
                 mutt_progress_update(&progress, ++px, -1);
-              hdr_tags_commit(Context, Context->hdrs[Context->v2r[j]], buf);
+              driver_tags_commit(Context, Context->hdrs[Context->v2r[j]], buf);
               if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
               {
                 bool still_queried = false;
@@ -1919,7 +1919,7 @@ int mutt_index_menu(void)
         }
         else
         {
-          if (hdr_tags_commit(Context, CURHDR, buf))
+          if (driver_tags_commit(Context, CURHDR, buf))
           {
             mutt_message(_("Failed to modify tags, aborting."));
             break;
