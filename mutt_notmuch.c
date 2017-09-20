@@ -856,7 +856,7 @@ static int update_header_tags(struct Header *h, notmuch_message_t *msg)
     mutt_str_append_item(&new_tags, t, ' ');
   }
 
-  if (driver_tags_get(h) && new_tags && (strcmp(driver_tags_get(h), new_tags) == 0))
+  if (driver_tags_get(h->tags) && new_tags && (strcmp(driver_tags_get(h->tags), new_tags) == 0))
   {
     FREE(&new_tags);
     mutt_debug(2, "nm: tags unchanged\n");
@@ -864,9 +864,9 @@ static int update_header_tags(struct Header *h, notmuch_message_t *msg)
   }
 
   /* new version */
-  driver_tags_replace(h, new_tags);
-  mutt_debug(2, "nm: new tags: '%s'\n", driver_tags_get(h));
-  mutt_debug(2, "nm: new tag transforms: '%s'\n", driver_tags_get_transformed(h));
+  driver_tags_replace(h->tags, new_tags);
+  mutt_debug(2, "nm: new tags: '%s'\n", driver_tags_get(h->tags));
+  mutt_debug(2, "nm: new tag transforms: '%s'\n", driver_tags_get_transformed(h->tags));
 
   return 0;
 }
@@ -962,7 +962,7 @@ static int init_header(struct Header *h, const char *path, notmuch_message_t *ms
 
   h->data = safe_calloc(1, sizeof(struct NmHdrData));
   h->free_cb = deinit_header;
-  driver_tags_init(h);
+  driver_tags_init(h->tags);
 
   /*
    * Notmuch ensures that message Id exists (if not notmuch Notmuch will
@@ -1597,7 +1597,7 @@ static int rename_filename(struct NmCtxData *data, const char *old,
   {
     notmuch_message_maildir_flags_to_tags(msg);
     update_header_tags(h, msg);
-    update_tags(msg, driver_tags_get(h));
+    update_tags(msg, driver_tags_get(h->tags));
   }
 
   rc = 0;
@@ -2117,7 +2117,7 @@ int nm_record_message(struct Context *ctx, char *path, struct Header *h)
   {
     notmuch_message_maildir_flags_to_tags(msg);
     if (h)
-      update_tags(msg, driver_tags_get(h));
+      update_tags(msg, driver_tags_get(h->tags));
     if (NmRecordTags)
       update_tags(msg, NmRecordTags);
   }

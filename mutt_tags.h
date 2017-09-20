@@ -23,29 +23,27 @@
 #ifndef _MUTT_TAG_H
 #define _MUTT_TAG_H
 
-#include "header.h"
-
 /**
- * struct TagList - Mail Header Tags
+ * struct TagNode - Tag element
  *
  * Keep a linked list of header tags and their transformed values.
  * Textual tags can be transformed to symbols to save space.
  *
- * @sa TagLists#tag_list
+ * @sa TagNodes
  */
-struct TagList
+struct TagNode
 {
   char *name;
   char *transformed;
-  struct TagList *next;
+  struct TagNode *next;
 };
 
 /**
- * struct HeaderTags - tags data attached to an email
+ * struct TagHead - tags data attached to an email
  *
  * This stores all tags data associated with an email.
  */
-struct HeaderTags
+struct TagHead
 {
   /* Without hidden tags */
   char *tags;
@@ -53,15 +51,15 @@ struct HeaderTags
 
   /* With hidden tags */
   char *tags_with_hidden;
-  struct TagList *tag_list;
+  struct TagNode *tag_list;
 };
 
-void driver_tags_free(struct Header *h);
-const char *driver_tags_get(struct Header *h);
-const char *driver_tags_get_with_hidden(struct Header *h);
-const char *driver_tags_get_transformed(struct Header *h);
-const char *driver_tags_get_transformed_for(char *name, struct Header *h);
-void driver_tags_init(struct Header *h);
-int driver_tags_replace(struct Header *h, char *tags);
+void driver_tags_free(struct TagHead *head);
+const char *driver_tags_get(struct TagHead *head);
+const char *driver_tags_get_with_hidden(struct TagHead *head);
+const char *driver_tags_get_transformed(struct TagHead *head);
+const char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
+void driver_tags_init(struct TagHead *head);
+int driver_tags_replace(struct TagHead *head, char *tags);
 
 #endif /* _MUTT_TAG_H */

@@ -636,8 +636,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           ctx->hdrs[idx]->changed = h.data->changed;
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
           ctx->hdrs[idx]->data = (void *) (h.data);
-          driver_tags_init(ctx->hdrs[idx]);
-          driver_tags_replace(ctx->hdrs[idx], safe_strdup(h.data->flags_remote));
+          driver_tags_init(ctx->hdrs[idx]->tags);
+          driver_tags_replace(ctx->hdrs[idx]->tags, safe_strdup(h.data->flags_remote));
 
           ctx->msgcount++;
           ctx->size += ctx->hdrs[idx]->content->length;
@@ -756,8 +756,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         ctx->hdrs[idx]->changed = h.data->changed;
         ctx->hdrs[idx]->received = h.received;
         ctx->hdrs[idx]->data = (void *) (h.data);
-        driver_tags_init(ctx->hdrs[idx]);
-        driver_tags_replace(ctx->hdrs[idx], safe_strdup(h.data->flags_remote));
+        driver_tags_init(ctx->hdrs[idx]->tags);
+        driver_tags_replace(ctx->hdrs[idx]->tags, safe_strdup(h.data->flags_remote));
 
         if (maxuid < h.data->uid)
           maxuid = h.data->uid;
@@ -1480,7 +1480,7 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *ser
     return NULL;
 
   /* Update tags system */
-  driver_tags_replace(h, safe_strdup(hd->flags_remote));
+  driver_tags_replace(h->tags, safe_strdup(hd->flags_remote));
 
   /* YAUH (yet another ugly hack): temporarily set context to
    * read-write even if it's read-only, so *server* updates of

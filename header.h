@@ -28,6 +28,7 @@
 #include <time.h>
 #include "lib/lib.h"
 #include "list.h"
+#include "mutt_tags.h"
 
 /**
  * struct Header - The header/envelope of an email
@@ -108,7 +109,7 @@ struct Header
   int refno; /**< message number on server */
 #endif
 
-  struct HeaderTags *tags; /**< for drivers that support server tagging */
+  struct TagHead *tags; /**< for drivers that support server tagging */
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;                       /**< driver-specific data */
   void (*free_cb)(struct Header *); /**< driver-specific data free function */

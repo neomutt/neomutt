@@ -25,7 +25,6 @@
 #include "globals.h"
 #include "lib/hash.h"
 #include "lib/string2.h"
-#include "header.h"
 #include "mx.h"
 
 /**
@@ -34,9 +33,9 @@
  *
  * Free tag
  */
-static void driver_tags_free_tag_list(struct TagList **kw_list)
+static void driver_tags_free_tag_list(struct TagNode **kw_list)
 {
-  struct TagList *tmp = NULL;
+  struct TagNode *tmp = NULL;
 
   while ((tmp = *kw_list) != NULL)
   {
@@ -55,15 +54,15 @@ static void driver_tags_free_tag_list(struct TagList **kw_list)
  *
  * Free the whole tags structure
  */
-void driver_tags_free(struct Header *h)
+void driver_tags_free(struct TagHead *head)
 {
-  if (!h->tags)
+  if (!head)
     return;
-  FREE(&h->tags->tags);
-  FREE(&h->tags->tags_transformed);
-  FREE(&h->tags->tags_with_hidden);
-  driver_tags_free_tag_list(&h->tags->tag_list);
-  FREE(h->tags);
+  FREE(&head->tags);
+  FREE(&head->tags_transformed);
+  FREE(&head->tags_with_hidden);
+  driver_tags_free_tag_list(&head->tag_list);
+  FREE(head);
 }
 
 /**
@@ -75,13 +74,13 @@ void driver_tags_free(struct Header *h)
  * Return a string containing all transformed tags separated by space
  * without hidden tags
  */
-const char *driver_tags_get_transformed(struct Header *h)
+const char *driver_tags_get_transformed(struct TagHead *head)
 {
-  if (!h || !h->tags)
+  if (!head)
     return NULL;
-  if(!h->tags->tags_transformed)
-    return h->tags->tags;
-  return h->tags->tags_transformed;
+  if(!head->tags_transformed)
+    return head->tags;
+  return head->tags_transformed;
 }
 
 /**
@@ -93,11 +92,11 @@ const char *driver_tags_get_transformed(struct Header *h)
  * Return a string containing all tags separated by space with
  * hidden tags
  */
-const char *driver_tags_get(struct Header *h)
+const char *driver_tags_get(struct TagHead *head)
 {
-  if (!h || !h->tags || !h->tags->tags)
+  if (!head || !head->tags)
     return NULL;
-  return h->tags->tags;
+  return head->tags;
 }
 
 /**
@@ -109,11 +108,11 @@ const char *driver_tags_get(struct Header *h)
  * Return a string containing all tags separated by space
  * even the hiddens.
  */
-const char *driver_tags_get_with_hidden(struct Header *h)
+const char *driver_tags_get_with_hidden(struct TagHead *head)
 {
-  if (!h || !h->tags || !h->tags->tags_with_hidden)
+  if (!head || !head->tags_with_hidden)
     return NULL;
-  return h->tags->tags_with_hidden;
+  return head->tags_with_hidden;
 }
 
 /**
@@ -126,12 +125,12 @@ const char *driver_tags_get_with_hidden(struct Header *h)
  * Return a string containing transformed tag that match the tag
  * even if this is a hidden tags
  */
-const char *driver_tags_get_transformed_for(char *name, struct Header *h)
+const char *driver_tags_get_transformed_for(char *name, struct TagHead *head)
 {
-  if (!h || !h->tags || !h->tags->tag_list)
+  if (!head || !head->tag_list)
     return NULL;
 
-  struct TagList *tag = h->tags->tag_list;
+  struct TagNode *tag = head->tag_list;
   while (tag)
   {
     if (strcmp(tag->name, name) == 0) {
@@ -145,13 +144,13 @@ const char *driver_tags_get_transformed_for(char *name, struct Header *h)
   return NULL;
 }
 
-void driver_tags_init(struct Header *h)
+void driver_tags_init(struct TagHead *head)
 {
-  h->tags = safe_calloc(1, sizeof(struct HeaderTags));
-  h->tags->tags = NULL;
-  h->tags->tags_transformed = NULL;
-  h->tags->tags_with_hidden = NULL;
-  h->tags->tag_list = NULL;
+  head = safe_calloc(1, sizeof(struct TagHead));
+  head->tags = NULL;
+  head->tags_transformed = NULL;
+  head->tags_with_hidden = NULL;
+  head->tag_list = NULL;
 }
 
 /**
@@ -161,9 +160,9 @@ void driver_tags_init(struct Header *h)
  *
  * Add a tag to the header tags
  */
-static void driver_tags_add(struct Header *h, char *new_tag)
+static void driver_tags_add(struct TagHead *head, char *new_tag)
 {
-  struct TagList *ttmp = NULL;
+  struct TagNode *ttmp = NULL;
   char *new_tag_transformed = NULL;
 
   new_tag_transformed = hash_find(TagTransforms, new_tag);
@@ -172,11 +171,11 @@ static void driver_tags_add(struct Header *h, char *new_tag)
   ttmp->name = safe_strdup(new_tag);
   if (new_tag_transformed)
     ttmp->transformed = safe_strdup(new_tag_transformed);
-  ttmp->next = h->tags->tag_list;
-  h->tags->tag_list = ttmp;
+  ttmp->next = head->tag_list;
+  head->tag_list = ttmp;
 
   /* expand the all un-transformed tag string */
-  mutt_str_append_item(&h->tags->tags_with_hidden, new_tag, ' ');
+  mutt_str_append_item(&head->tags_with_hidden, new_tag, ' ');
 
   /* filter out hidden tags */
   if (HiddenTags)
@@ -190,13 +189,13 @@ static void driver_tags_add(struct Header *h, char *new_tag)
   }
 
   /* expand the visible un-transformed tag string */
-  mutt_str_append_item(&h->tags->tags, new_tag, ' ');
+  mutt_str_append_item(&head->tags, new_tag, ' ');
 
   /* expand the transformed tag string */
   if (new_tag_transformed)
-    mutt_str_append_item(&h->tags->tags_transformed, new_tag_transformed, ' ');
+    mutt_str_append_item(&head->tags_transformed, new_tag_transformed, ' ');
   else
-    mutt_str_append_item(&h->tags->tags_transformed, new_tag, ' ');
+    mutt_str_append_item(&head->tags_transformed, new_tag, ' ');
 }
 
 /**
@@ -210,22 +209,20 @@ static void driver_tags_add(struct Header *h, char *new_tag)
  * Free current tags structures and replace it by
  * new tags
  */
-int driver_tags_replace(struct Header *h, char *tags)
+int driver_tags_replace(struct TagHead *head, char *tags)
 {
-  if (!h)
-    return 0;
-  if (tags && h->tags && h->tags->tags &&
-      mutt_strcmp(h->tags->tags, tags) == 0)
+  if (tags && head && head->tags &&
+      mutt_strcmp(head->tags, tags) == 0)
     return 0;
 
-  driver_tags_free(h);
-  driver_tags_init(h);
+  driver_tags_free(head);
+  driver_tags_init(head);
 
   if (tags)
   {
     char *tag;
     while ((tag = strsep(&tags, " ")))
-      driver_tags_add(h, tag);
+      driver_tags_add(head, tag);
     FREE(&tags);
   }
   return 1;

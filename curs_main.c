@@ -1866,7 +1866,7 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         CHECK_READONLY;
 
-        rc = mx_tags_editor(Context, tag ? NULL : driver_tags_get_with_hidden(CURHDR), buf, sizeof(buf));
+        rc = mx_tags_editor(Context, tag ? NULL : driver_tags_get_with_hidden(CURHDR->tags), buf, sizeof(buf));
         if (rc < 0)
           break;
         else if (rc == 0)

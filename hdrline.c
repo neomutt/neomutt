@@ -845,10 +845,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       {
         colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
         mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      driver_tags_get_transformed(hdr));
+                      driver_tags_get_transformed(hdr->tags));
         add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!driver_tags_get_transformed(hdr))
+      else if (!driver_tags_get_transformed(hdr->tags))
         optional = 0;
       break;
 
@@ -866,7 +866,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         tag = hash_find(TagFormats, format);
         if (tag)
         {
-          tag_transformed = driver_tags_get_transformed_for(tag, hdr);
+          tag_transformed = driver_tags_get_transformed_for(tag, hdr->tags);
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
           mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
                         (tag_transformed) ? tag_transformed : "");
@@ -882,7 +882,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         tag = hash_find(TagFormats, format);
         if (tag)
-          if (driver_tags_get_transformed_for(tag, hdr) == NULL)
+          if (driver_tags_get_transformed_for(tag, hdr->tags) == NULL)
             optional = 0;
       }
       break;
@@ -904,7 +904,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       break;
 
     case 'J':;
-      const char *tags = driver_tags_get_transformed(hdr);
+      const char *tags = driver_tags_get_transformed(hdr->tags);
       if (tags)
       {
         i = 1; /* reduce reuse recycle */
@@ -912,13 +912,13 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         if (flags & MUTT_FORMAT_TREE &&
             (hdr->thread->prev && hdr->thread->prev->message &&
-             driver_tags_get_transformed(hdr->thread->prev->message)))
+             driver_tags_get_transformed(hdr->thread->prev->message->tags)))
           htmp = hdr->thread->prev->message;
         else if (flags & MUTT_FORMAT_TREE &&
                  (hdr->thread->parent && hdr->thread->parent->message &&
-                  driver_tags_get_transformed(hdr->thread->parent->message)))
+                  driver_tags_get_transformed(hdr->thread->parent->message->tags)))
           htmp = hdr->thread->parent->message;
-        if (htmp && mutt_strcasecmp(tags, driver_tags_get_transformed(htmp)) == 0)
+        if (htmp && mutt_strcasecmp(tags, driver_tags_get_transformed(htmp->tags)) == 0)
           i = 0;
       }
       else
