@@ -4605,7 +4605,7 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, unsigned long 
 	  epath[_POSIX_PATH_MAX-1] = '\0';
 	  if (imap_subscribe(mutt_expand_path(epath, b->dsize), 1) != 0) 
 	  {
-	    mutt_message(_("Successfull: %sCould not subscribe to %s")
+	    mutt_message(_("Successful: %sCould not subscribe to %s")
 						, subs->data ? subs->data : "None "
 			            , b->data);
 		goto bail;
@@ -4666,7 +4666,7 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned l
 	  /* Expand and unsubscribe */
 	  if (imap_subscribe(mutt_expand_path(epath, b->dsize), 0) != 0)
 	  {
-	    mutt_message(_("Successfull: %sCould not unsubscribe from %s")
+	    mutt_message(_("Successful: %sCould not unsubscribe from %s")
 						, unsubs->data ? unsubs->data : "None "
 						, b->data);
 		goto bail;
