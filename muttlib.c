@@ -167,7 +167,7 @@ void mutt_free_header(struct Header **h)
 #ifdef MIXMASTER
   mutt_list_free(&(*h)->chain);
 #endif
-  driver_tags_free((*h)->tags);
+  driver_tags_free(&(*h)->tags);
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   if ((*h)->free_cb)
     (*h)->free_cb(*h);

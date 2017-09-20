@@ -465,13 +465,14 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
       fputs(buf, out);
       fputc('\n', out);
     }
-    const char *tags = driver_tags_get(h->tags);
+    char *tags = driver_tags_get(&h->tags);
     if (tags && !(option(OPT_WEED) && mutt_matches_ignore("tags")))
     {
       fputs("Tags: ", out);
       fputs(tags, out);
       fputc('\n', out);
     }
+    FREE(&tags);
   }
 #endif
 

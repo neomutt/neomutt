@@ -109,7 +109,8 @@ struct Header
   int refno; /**< message number on server */
 #endif
 
-  struct TagHead *tags; /**< for drivers that support server tagging */
+  struct TagHead tags; /**< for drivers that support server tagging */
+
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;                       /**< driver-specific data */
   void (*free_cb)(struct Header *); /**< driver-specific data free function */
@@ -124,6 +125,7 @@ static inline struct Header *mutt_new_header(void)
 #ifdef MIXMASTER
   STAILQ_INIT(&h->chain);
 #endif
+  STAILQ_INIT(&h->tags);
   return h;
 }
 

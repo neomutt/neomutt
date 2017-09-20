@@ -1714,8 +1714,10 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return (pat->not ^ (h->env->x_label && patmatch(pat, h->env->x_label) == 0));
     case MUTT_DRIVER_LABEL:
     {
-      const char *tags = driver_tags_get(h->tags);
-      return (pat->not ^ (tags && patmatch(pat, tags) == 0));
+      char *tags = driver_tags_get(&h->tags);
+      bool ret = (pat->not ^ (tags && patmatch(pat, tags) == 0));
+      FREE(&tags);
+      return ret;
     }
     case MUTT_HORMEL:
       return (pat->not ^ (h->env->spam && h->env->spam->data &&

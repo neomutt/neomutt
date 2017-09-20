@@ -23,43 +23,33 @@
 #ifndef _MUTT_TAG_H
 #define _MUTT_TAG_H
 
+#include <stdbool.h>
+#include <stddef.h>
+#include "queue.h"
+
 /**
- * struct TagNode - Tag element
+ * struct TagNode - LinkedList Tag Element
  *
  * Keep a linked list of header tags and their transformed values.
  * Textual tags can be transformed to symbols to save space.
  *
- * @sa TagNodes
+ * @sa TagNode
  */
+
+STAILQ_HEAD(TagHead, TagNode);
 struct TagNode
 {
-  char *name;
-  char *transformed;
-  struct TagNode *next;
-};
-
-/**
- * struct TagHead - tags data attached to an email
- *
- * This stores all tags data associated with an email.
- */
-struct TagHead
-{
-  /* Without hidden tags */
-  char *tags;
-  char *tags_transformed;
-
-  /* With hidden tags */
-  char *tags_with_hidden;
-  struct TagNode *tag_list;
+    char *name;
+    char *transformed;
+    bool hidden;
+    STAILQ_ENTRY(TagNode) entries;
 };
 
 void driver_tags_free(struct TagHead *head);
-const char *driver_tags_get(struct TagHead *head);
-const char *driver_tags_get_with_hidden(struct TagHead *head);
-const char *driver_tags_get_transformed(struct TagHead *head);
-const char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
-void driver_tags_init(struct TagHead *head);
+char *driver_tags_get(struct TagHead *head);
+char *driver_tags_get_with_hidden(struct TagHead *head);
+char *driver_tags_get_transformed(struct TagHead *head);
+char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
 int driver_tags_replace(struct TagHead *head, char *tags);
 
 #endif /* _MUTT_TAG_H */

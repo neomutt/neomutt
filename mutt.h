@@ -34,6 +34,7 @@ struct ReplaceList;
 struct RegexList;
 struct State;
 struct ListHead;
+struct TagHead;
 struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking

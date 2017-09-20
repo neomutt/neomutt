@@ -510,7 +510,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
   struct Context *ctx = NULL;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], *p, *tags = NULL;
   char *wch = NULL;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -840,20 +840,20 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         optional = 0;
       break;
 
-    case 'g':
+    case 'g':;
+      tags = driver_tags_get_transformed(&hdr->tags);
       if (!optional)
       {
         colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      driver_tags_get_transformed(hdr->tags));
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
         add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!driver_tags_get_transformed(hdr->tags))
+      else if (!tags)
         optional = 0;
+      FREE(&tags);
       break;
 
     case 'G':;
-      const char *tag_transformed = NULL;
       char format[3];
       char *tag = NULL;
 
@@ -866,11 +866,11 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         tag = hash_find(TagFormats, format);
         if (tag)
         {
-          tag_transformed = driver_tags_get_transformed_for(tag, hdr->tags);
+          tags = driver_tags_get_transformed_for(tag, &hdr->tags);
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                        (tag_transformed) ? tag_transformed : "");
+          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
           add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          FREE(&tags);
         }
         src++;
       }
@@ -881,9 +881,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[2] = 0;
 
         tag = hash_find(TagFormats, format);
-        if (tag)
-          if (driver_tags_get_transformed_for(tag, hdr->tags) == NULL)
+        if (tag) {
+          tags = driver_tags_get_transformed_for(tag, &hdr->tags);
+          if (!tags)
             optional = 0;
+          FREE(&tags);
+        }
       }
       break;
 
@@ -904,22 +907,20 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       break;
 
     case 'J':;
-      const char *tags = driver_tags_get_transformed(hdr->tags);
+      tags = driver_tags_get_transformed(&hdr->tags);
       if (tags)
       {
         i = 1; /* reduce reuse recycle */
-        htmp = NULL;
-
-        if (flags & MUTT_FORMAT_TREE &&
-            (hdr->thread->prev && hdr->thread->prev->message &&
-             driver_tags_get_transformed(hdr->thread->prev->message->tags)))
-          htmp = hdr->thread->prev->message;
-        else if (flags & MUTT_FORMAT_TREE &&
-                 (hdr->thread->parent && hdr->thread->parent->message &&
-                  driver_tags_get_transformed(hdr->thread->parent->message->tags)))
-          htmp = hdr->thread->parent->message;
-        if (htmp && mutt_strcasecmp(tags, driver_tags_get_transformed(htmp->tags)) == 0)
-          i = 0;
+        if (flags & MUTT_FORMAT_TREE){
+          char *parent_tags = NULL;
+          if (hdr->thread->prev && hdr->thread->prev->message)
+            parent_tags = driver_tags_get_transformed(&hdr->thread->prev->message->tags);
+          if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
+            parent_tags = driver_tags_get_transformed(&hdr->thread->parent->message->tags);
+          if (parent_tags && mutt_strcasecmp(tags, parent_tags) == 0)
+            i = 0;
+          FREE(&parent_tags);
+        }
       }
       else
         i = 0;
@@ -933,6 +934,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       else
         mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
       add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      FREE(&tags);
       break;
 
     case 'l':

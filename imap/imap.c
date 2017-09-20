@@ -1143,6 +1143,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
                                struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
+  char *tags;
   char uid[11];
 
   if (!compare_flags_for_copy(hdr))
@@ -1172,8 +1173,11 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
     if (HEADER_DATA(hdr)->flags_system)
       safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_system);
     /* set custom flags */
-    if (driver_tags_get_with_hidden(hdr->tags))
-      safe_strcat(flags, sizeof(flags), driver_tags_get_with_hidden(hdr->tags));
+    tags = driver_tags_get_with_hidden(&hdr->tags);
+    if (tags) {
+      safe_strcat(flags, sizeof(flags), tags);
+      FREE(&tags);
+    }
   }
 
   mutt_remove_trailing_ws(flags);
@@ -1221,7 +1225,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
 
   /* server have now the updated flags */
   FREE(&HEADER_DATA(hdr)->flags_remote);
-  HEADER_DATA(hdr)->flags_remote = safe_strdup(driver_tags_get_with_hidden(hdr->tags));
+  HEADER_DATA(hdr)->flags_remote = driver_tags_get_with_hidden(&hdr->tags);
 
   hdr->active = true;
   if (hdr->deleted == HEADER_DATA(hdr)->deleted)
@@ -1427,9 +1431,9 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
 
   /* We are good sync them */
   mutt_debug(1, "NEW TAGS: %d\n", tags);
-  driver_tags_replace(h->tags, tags);
+  driver_tags_replace(&h->tags, tags);
   FREE(&HEADER_DATA(h)->flags_remote);
-  HEADER_DATA(h)->flags_remote = safe_strdup(driver_tags_get_with_hidden(h->tags));
+  HEADER_DATA(h)->flags_remote = driver_tags_get_with_hidden(&h->tags);
   return 0;
 }
 
