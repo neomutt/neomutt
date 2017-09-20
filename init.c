@@ -4586,23 +4586,46 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, unsigned long 
   if (!b || !s)
     return -1;
 
+  struct Buffer *subs = mutt_buffer_new();
+  char epath[_POSIX_PATH_MAX] = "";
+
   while (MoreArgs(s))
   {
     mutt_extract_token(b, s, 0);
+	if (b->dsize >= _POSIX_PATH_MAX)
+	{
+			mutt_message(_("Path to long"));
+			goto bail;
+	}
+
     if (b->data && *b->data)
 	{
 	  /* Expand and subscribe */
-	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0) 
+	  strncpy(epath, b->data, b->dsize);
+	  epath[_POSIX_PATH_MAX-1] = '\0';
+	  if (imap_subscribe(mutt_expand_path(epath, b->dsize), 1) != 0) 
 	  {
-		mutt_message(_("Could not subscribe to %s"), b->data);
-		return -1;
+	    mutt_message(_("Successfull: %sCould not subscribe to %s")
+						, subs->data ? subs->data : "None "
+			            , b->data);
+		goto bail;
 	  }
+
+	  mutt_buffer_addstr(subs, b->data);
+	  mutt_buffer_addch(subs, ' ');
 	}
     else
       continue;
   }
 
+  mutt_message(_("Subscribed to %s"), subs->data);
+  mutt_buffer_free(&subs);
+
   return 0;
+
+bail:
+  mutt_buffer_free(&subs);
+  return -1;
 }
 
 /**
@@ -4624,23 +4647,45 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned l
   if (!b || !s)
     return -1;
 
+  struct Buffer *unsubs = mutt_buffer_new();
+  char epath[_POSIX_PATH_MAX] = "";
+
   while (MoreArgs(s))
   {
     mutt_extract_token(b, s, 0);
+	if (b->dsize >= _POSIX_PATH_MAX)
+	{
+			mutt_message(_("Path to long"));
+			goto bail;
+	}
+
     if (b->data && *b->data)
 	{
+	  strncpy(epath, b->data, b->dsize);
+	  epath[_POSIX_PATH_MAX-1] = '\0';
 	  /* Expand and unsubscribe */
-	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 0) != 0)
+	  if (imap_subscribe(mutt_expand_path(epath, b->dsize), 0) != 0)
 	  {
-	    mutt_message(_("Could not unsubscribe from %s"), b->data);
-		return -1;
+	    mutt_message(_("Successfull: %sCould not unsubscribe from %s")
+						, unsubs->data ? unsubs->data : "None "
+						, b->data);
+		goto bail;
 	  }
+	  mutt_buffer_addstr(unsubs, b->data);
+	  mutt_buffer_addch(unsubs, ' ');
 	}
     else
       continue;
   }
 
+  mutt_message(_("Unsubscribed from %s"), unsubs->data);
+  mutt_buffer_free(&unsubs);
+
   return 0;
+
+bail:
+  mutt_buffer_free(&unsubs);
+  return -1;
 }
 #endif
 
