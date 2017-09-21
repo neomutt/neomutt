@@ -4583,8 +4583,10 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
 static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, 
 				unsigned long data, struct Buffer *err)
 {
-  if (!b || !s)
+  if (!b || !s || !err)
     return -1;
+
+  mutt_buffer_reset(err);
 
   if (MoreArgs(s))
   {
@@ -4592,7 +4594,7 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
 
 	if (MoreArgs(s))
 	{
-      strfcpy(err->data, _("Too many arguments"), err->dsize);
+	  mutt_buffer_addstr(err, _("Too many arguments"));
 	  return -1;
 	}
 
@@ -4613,12 +4615,12 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
 	} 
 	else 
 	{
-      strfcpy(err->data, _("Corrupted buffer"), err->dsize);
+	  mutt_buffer_addstr(err, _("Corrupted buffer"));
 	  return -1;
 	}
   }
 
-  strfcpy(err->data, _("No folder specified"), err->dsize);
+  mutt_buffer_addstr(err, _("No folder specified"));
   return -1;
 }
 
@@ -4638,7 +4640,8 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
 static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s , 
 				unsigned long data, struct Buffer *err)
 {
-  if (!b || !s)
+
+  if (!b || !s || !err)
     return -1;
 
   if (MoreArgs(s))
@@ -4647,7 +4650,7 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s ,
 
 	if (MoreArgs(s))
 	{
-      strfcpy(err->data, _("Too many arguments"), err->dsize);
+	  mutt_buffer_addstr(err, _("Too many arguments"));
 	  return -1;
 	}
 
@@ -4668,12 +4671,12 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s ,
 	} 
 	else 
 	{
-      strfcpy(err->data, _("Corrupted buffer"), err->dsize);
+	  mutt_buffer_addstr(err, _("Corrupted buffer"));
 	  return -1;
 	}
   }
 
-  strfcpy(err->data, _("No folder specified"), err->dsize);
+  mutt_buffer_addstr(err, _("No folder specified"));
   return -1;
 }
 #endif
