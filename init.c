@@ -4580,8 +4580,8 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
  * Patterns are not supported.
  * Use it as follows: subscribe-to =folder
  */
-static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, 
-				unsigned long data, struct Buffer *err)
+static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
+                              unsigned long data, struct Buffer *err)
 {
   if (!b || !s || !err)
     return -1;
@@ -4592,32 +4592,31 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
   {
     mutt_extract_token(b, s, 0);
 
-	if (MoreArgs(s))
-	{
-	  mutt_buffer_addstr(err, _("Too many arguments"));
-	  return -1;
-	}
+    if (MoreArgs(s))
+    {
+      mutt_buffer_addstr(err, _("Too many arguments"));
+      return -1;
+    }
 
     if (b->data && *b->data)
-	{
-	  /* Expand and subscribe */
-	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0) 
-	  {
-	    mutt_buffer_addstr(err, "Could not subscribe to ");
-	    mutt_buffer_addstr(err, b->data);
-		return -1;
-	  }
-	  else
-	  {
+    {
+      /* Expand and subscribe */
+      if (imap_subscribe(mutt_expand_path(b->data, b->dsize), true) != 0)
+      {
+        mutt_buffer_printf(err, _("Could not subscribe to %s"), b->data);
+        return -1;
+      }
+      else
+      {
         mutt_message(_("Subscribed to %s"), b->data);
         return 0;
-	  }
-	} 
-	else 
-	{
-	  mutt_buffer_addstr(err, _("Corrupted buffer"));
-	  return -1;
-	}
+      }
+    }
+    else
+    {
+      mutt_debug(5, "Corrupted buffer");
+      return -1;
+    }
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
@@ -4637,10 +4636,9 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
  * Patterns are not supported.
  * Use it as follows: unsubscribe-from =folder
  */
-static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s , 
-				unsigned long data, struct Buffer *err)
+static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s,
+                                  unsigned long data, struct Buffer *err)
 {
-
   if (!b || !s || !err)
     return -1;
 
@@ -4648,32 +4646,31 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s ,
   {
     mutt_extract_token(b, s, 0);
 
-	if (MoreArgs(s))
-	{
-	  mutt_buffer_addstr(err, _("Too many arguments"));
-	  return -1;
-	}
+    if (MoreArgs(s))
+    {
+      mutt_buffer_addstr(err, _("Too many arguments"));
+      return -1;
+    }
 
     if (b->data && *b->data)
-	{
-	  /* Expand and subscribe */
-	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 0) != 0) 
-	  {
-	    mutt_buffer_addstr(err, "Could not unsubscribe from ");
-	    mutt_buffer_addstr(err, b->data);
-		return -1;
-	  }
-	  else
-	  {
+    {
+      /* Expand and subscribe */
+      if (imap_subscribe(mutt_expand_path(b->data, b->dsize), false) != 0)
+      {
+        mutt_buffer_printf(err, _("Could not unsubscribe from %s"), b->data);
+        return -1;
+      }
+      else
+      {
         mutt_message(_("Unsubscribed from %s"), b->data);
         return 0;
-	  }
-	} 
-	else 
-	{
-	  mutt_buffer_addstr(err, _("Corrupted buffer"));
-	  return -1;
-	}
+      }
+    }
+    else
+    {
+      mutt_debug(5, "Corrupted buffer");
+      return -1;
+    }
   }
 
   mutt_buffer_addstr(err, _("No folder specified"));
