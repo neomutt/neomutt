@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   char **opts = NULL, **opt = NULL, *pfx = NULL;
   int i;
 
-  if (argc <= 1)
+  if (argc < 2)
   {
     print_usage(argv[0]);
   }
@@ -34,12 +34,6 @@ int main(int argc, char **argv)
   {
     perror(argv[0]);
     exit(2);
-  }
-
-  if (argc < 2)
-  {
-    fprintf(stderr, "Command line usage: %s [flags] -- prefix [recipients]\n", argv[0]);
-    return 1;
   }
 
   opt = opts;
