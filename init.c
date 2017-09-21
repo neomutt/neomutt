@@ -4568,123 +4568,112 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
 
 #ifdef USE_IMAP
 /**
- * parse_subscribe_to - 'subscribe-to' command: Add IMAP subscriptions
- * @param tmp  Temporary space shared by all command handlers
+ * parse_subscribe_to - 'subscribe-to' command: Add an IMAP subscription.
+ * @param b    Buffer space shared by all command handlers
  * @param s    Current line of the config file
  * @param data Data field from init.h:struct Command
  * @param err  Buffer for any error message
  * @retval  0 Success
  * @retval -1 Failed
  *
- * The 'subscribe-to' command allows to subscribe to a list of IMAP-Mailboxes.
+ * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
  * Patterns are not supported.
- * Use it as follows: subscribe-to +folder =folder/subfolder +folder.subfolder
+ * Use it as follows: subscribe-to =folder
  */
-static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+static int parse_subscribe_to(struct Buffer *b, struct Buffer *s, 
+				unsigned long data, struct Buffer *err)
 {
   if (!b || !s)
     return -1;
 
-  struct Buffer *subs = mutt_buffer_new();
-  char epath[_POSIX_PATH_MAX] = "";
-
-  while (MoreArgs(s))
+  if (MoreArgs(s))
   {
     mutt_extract_token(b, s, 0);
-	if (b->dsize >= _POSIX_PATH_MAX)
+
+	if (MoreArgs(s))
 	{
-			mutt_message(_("Path to long"));
-			goto bail;
+      strfcpy(err->data, _("Too many arguments"), err->dsize);
+	  return -1;
 	}
 
     if (b->data && *b->data)
 	{
 	  /* Expand and subscribe */
-	  strncpy(epath, b->data, b->dsize);
-	  epath[_POSIX_PATH_MAX-1] = '\0';
-	  if (imap_subscribe(mutt_expand_path(epath, b->dsize), 1) != 0) 
+	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0) 
 	  {
-	    mutt_message(_("Successful: %sCould not subscribe to %s")
-						, subs->data ? subs->data : "None "
-			            , b->data);
-		goto bail;
+	    mutt_buffer_addstr(err, "Could not subscribe to ");
+	    mutt_buffer_addstr(err, b->data);
+		return -1;
 	  }
-
-	  mutt_buffer_addstr(subs, b->data);
-	  mutt_buffer_addch(subs, ' ');
+	  else
+	  {
+        mutt_message(_("Subscribed to %s"), b->data);
+        return 0;
+	  }
+	} 
+	else 
+	{
+      strfcpy(err->data, _("Corrupted buffer"), err->dsize);
+	  return -1;
 	}
-    else
-      continue;
   }
 
-  mutt_message(_("Subscribed to %s"), subs->data);
-  mutt_buffer_free(&subs);
-
-  return 0;
-
-bail:
-  mutt_buffer_free(&subs);
+  strfcpy(err->data, _("No folder specified"), err->dsize);
   return -1;
 }
 
 /**
- * parse_unsubscribe_from - 'unsubscribe-from' command: Cancel IMAP subscriptions
- * @param tmp  Temporary space shared by all command handlers
+ * parse_unsubscribe_from - 'unsubscribe-from' command: Cancel an IMAP subscription.
+ * @param b    Buffer space shared by all command handlers
  * @param s    Current line of the config file
  * @param data Data field from init.h:struct Command
  * @param err  Buffer for any error message
  * @retval  0 Success
  * @retval -1 Failed
  *
- * The 'unsubscribe-from' command allows to unsubscribe from a list of IMAP-Mailboxes.
+ * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
  * Patterns are not supported.
- * Use it as follows: unsubscribe-from +folder =folder/subfolder +folder.subfolder
+ * Use it as follows: unsubscribe-from =folder
  */
-static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s , 
+				unsigned long data, struct Buffer *err)
 {
   if (!b || !s)
     return -1;
 
-  struct Buffer *unsubs = mutt_buffer_new();
-  char epath[_POSIX_PATH_MAX] = "";
-
-  while (MoreArgs(s))
+  if (MoreArgs(s))
   {
     mutt_extract_token(b, s, 0);
-	if (b->dsize >= _POSIX_PATH_MAX)
+
+	if (MoreArgs(s))
 	{
-			mutt_message(_("Path to long"));
-			goto bail;
+      strfcpy(err->data, _("Too many arguments"), err->dsize);
+	  return -1;
 	}
 
     if (b->data && *b->data)
 	{
-	  strncpy(epath, b->data, b->dsize);
-	  epath[_POSIX_PATH_MAX-1] = '\0';
-	  /* Expand and unsubscribe */
-	  if (imap_subscribe(mutt_expand_path(epath, b->dsize), 0) != 0)
+	  /* Expand and subscribe */
+	  if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0) 
 	  {
-	    mutt_message(_("Successful: %sCould not unsubscribe from %s")
-						, unsubs->data ? unsubs->data : "None "
-						, b->data);
-		goto bail;
+	    mutt_buffer_addstr(err, "Could not unsubscribe from ");
+	    mutt_buffer_addstr(err, b->data);
+		return -1;
 	  }
-	  mutt_buffer_addstr(unsubs, b->data);
-	  mutt_buffer_addch(unsubs, ' ');
+	  else
+	  {
+        mutt_message(_("Unsubscribed from %s"), b->data);
+        return 0;
+	  }
+	} 
+	else 
+	{
+      strfcpy(err->data, _("Corrupted buffer"), err->dsize);
+	  return -1;
 	}
-    else
-      continue;
   }
 
-  mutt_message(_("Unsubscribed from %s"), unsubs->data);
-  mutt_buffer_free(&unsubs);
-
-  return 0;
-
-bail:
-  mutt_buffer_free(&unsubs);
+  strfcpy(err->data, _("No folder specified"), err->dsize);
   return -1;
 }
 #endif
