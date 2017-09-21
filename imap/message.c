@@ -211,10 +211,10 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
 
       /* store other system flags as well (mainly \\Draft) */
       if (is_system_keyword)
-        mutt_str_append_item(&hd->flags_system, flag_word, 32);
+        mutt_str_append_item(&hd->flags_system, flag_word, ' ');
       /* store custom flags as well */
       else
-        mutt_str_append_item(&hd->flags_remote, flag_word, 32);
+        mutt_str_append_item(&hd->flags_remote, flag_word, ' ');
 
       *s = ctmp;
     }

@@ -1704,8 +1704,8 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   id = notmuch_message_get_thread_id(msg);
   if (!id)
     goto done;
-  mutt_str_append_item(&qstr, "thread:", 0);
-  mutt_str_append_item(&qstr, id, 0);
+  mutt_str_append_item(&qstr, "thread:", '\0');
+  mutt_str_append_item(&qstr, id, '\0');
 
   q = notmuch_query_create(db, qstr);
   FREE(&qstr);
