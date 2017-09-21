@@ -1863,10 +1863,19 @@ void nm_query_window_backward(void)
   mutt_debug(2, "nm_query_window_backward (%d)\n", NmQueryWindowCurrentPosition);
 }
 
+/**
+ * nm_edit_message_tags - Prompt new messages tags
+ *
+ * @retval -1: error
+ * @retval 0: no valid user input
+ * @retval 1: buf set
+ */
 static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
   *buf = '\0';
-  return (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) || !*buf);
+  if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)
+    return -1;
+  return 1;
 }
 
 static int nm_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)

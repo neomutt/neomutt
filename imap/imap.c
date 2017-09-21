@@ -1265,6 +1265,7 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
 /**
  * imap_edit_message_tags - Prompt and validate new messages tags
  *
+ * @retval -1: error
  * @retval 0: no valid user input
  * @retval 1: buf set
  */
