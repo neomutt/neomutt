@@ -47,6 +47,7 @@ int main(int argc, char **argv)
       i += 2;
       if (i > argc)
       {
+        free(opts);
         print_usage(argv[0]);
       }
       pfx = argv[i - 1];
@@ -59,5 +60,6 @@ int main(int argc, char **argv)
 
   execvp(opts[0], opts);
   perror(argv[0]);
+  free(opts);
   return 2;
 }
