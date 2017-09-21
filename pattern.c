@@ -872,7 +872,7 @@ static const struct PatternFlags
   { 'x', MUTT_REFERENCE, 0, eat_regex },
   { 'X', MUTT_MIMEATTACH, 0, eat_range },
   { 'y', MUTT_XLABEL, 0, eat_regex },
-  { 'Y', MUTT_DRIVER_LABEL, 0, eat_regex },
+  { 'Y', MUTT_DRIVER_TAGS, 0, eat_regex },
   { 'z', MUTT_SIZE, 0, eat_range },
   { '=', MUTT_DUPLICATED, 0, NULL },
   { '$', MUTT_UNREFERENCED, 0, NULL },
@@ -1712,7 +1712,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
     case MUTT_XLABEL:
       return (pat->not ^ (h->env->x_label && patmatch(pat, h->env->x_label) == 0));
-    case MUTT_DRIVER_LABEL:
+    case MUTT_DRIVER_TAGS:
     {
       char *tags = driver_tags_get(&h->tags);
       bool ret = (pat->not ^ (tags && patmatch(pat, tags) == 0));
