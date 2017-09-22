@@ -70,6 +70,9 @@
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
+#ifdef USE_IMAP
+#include "imap/imap.h" /* for imap_subscribe() */
+#endif
 
 #define CHECK_PAGER                                                                  \
   if ((CurrentMenu == MENU_PAGER) && (idx >= 0) && (MuttVars[idx].flags & R_RESORT)) \
@@ -4560,6 +4563,118 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
     hash_insert(TagFormats, format, tag);
   }
   return 0;
+}
+#endif
+
+#ifdef USE_IMAP
+/**
+ * parse_subscribe_to - 'subscribe-to' command: Add an IMAP subscription.
+ * @param b    Buffer space shared by all command handlers
+ * @param s    Current line of the config file
+ * @param data Data field from init.h:struct Command
+ * @param err  Buffer for any error message
+ * @retval  0 Success
+ * @retval -1 Failed
+ *
+ * The 'subscribe-to' command allows to subscribe to an IMAP-Mailbox.
+ * Patterns are not supported.
+ * Use it as follows: subscribe-to =folder
+ */
+static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
+                              unsigned long data, struct Buffer *err)
+{
+  if (!b || !s || !err)
+    return -1;
+
+  mutt_buffer_reset(err);
+
+  if (MoreArgs(s))
+  {
+    mutt_extract_token(b, s, 0);
+
+    if (MoreArgs(s))
+    {
+      mutt_buffer_addstr(err, _("Too many arguments"));
+      return -1;
+    }
+
+    if (b->data && *b->data)
+    {
+      /* Expand and subscribe */
+      if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 1) != 0)
+      {
+        mutt_buffer_printf(err, _("Could not subscribe to %s"), b->data);
+        return -1;
+      }
+      else
+      {
+        mutt_message(_("Subscribed to %s"), b->data);
+        return 0;
+      }
+    }
+    else
+    {
+      mutt_debug(5, "Corrupted buffer");
+      return -1;
+    }
+  }
+
+  mutt_buffer_addstr(err, _("No folder specified"));
+  return -1;
+}
+
+/**
+ * parse_unsubscribe_from - 'unsubscribe-from' command: Cancel an IMAP subscription.
+ * @param b    Buffer space shared by all command handlers
+ * @param s    Current line of the config file
+ * @param data Data field from init.h:struct Command
+ * @param err  Buffer for any error message
+ * @retval  0 Success
+ * @retval -1 Failed
+ *
+ * The 'unsubscribe-from' command allows to unsubscribe from an IMAP-Mailbox.
+ * Patterns are not supported.
+ * Use it as follows: unsubscribe-from =folder
+ */
+static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s,
+                                  unsigned long data, struct Buffer *err)
+{
+  if (!b || !s || !err)
+    return -1;
+
+  if (MoreArgs(s))
+  {
+    mutt_extract_token(b, s, 0);
+
+    if (MoreArgs(s))
+    {
+      mutt_buffer_addstr(err, _("Too many arguments"));
+      return -1;
+    }
+
+    if (b->data && *b->data)
+    {
+      /* Expand and subscribe */
+      if (imap_subscribe(mutt_expand_path(b->data, b->dsize), 0) != 0)
+      {
+        mutt_buffer_printf(err, _("Could not unsubscribe from %s"), b->data);
+        return -1;
+      }
+      else
+      {
+        mutt_message(_("Unsubscribed from %s"), b->data);
+        return 0;
+      }
+    }
+    else
+    {
+      mutt_debug(5, "Corrupted buffer");
+      return -1;
+    }
+  }
+
+  mutt_buffer_addstr(err, _("No folder specified"));
+  return -1;
 }
 #endif
 
