@@ -1671,7 +1671,7 @@ int imap_buffy_check(int force, int check_stats)
     {
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
-      if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK) == -1)
+      if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1)
         mutt_debug(1, "Error polling mailboxes\n");
 
       lastdata = NULL;
