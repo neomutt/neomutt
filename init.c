@@ -3319,6 +3319,29 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
 }
 
 /**
+ * find_command - Find a command matching a (partial) string
+ * @param cmd     String to compare
+ * @param cmd_len Length of string
+ * @retval num Index into Commands
+ * @retval  -1 Error, no match
+ */
+static int find_command(const char *cmd, int cmd_len)
+{
+  if (!cmd)
+    return -1;
+
+  for (int i = 0; Commands[i].name; i++)
+  {
+    int cmp_len = MAX(cmd_len, Commands[i].uniq_length);
+
+    if (mutt_strncmp(cmd, Commands[i].name, cmp_len) == 0)
+      return i;
+  }
+
+  return -1;
+}
+
+/**
  * mutt_parse_rc_line - Parse a line of user config
  * @param line  config line to read
  * @param token scratch buffer to be used by parser
@@ -3331,7 +3354,7 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
  */
 int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err)
 {
-  int i, r = 0;
+  int r = 0;
   struct Buffer expn;
 
   if (!line || !*line)
@@ -3354,26 +3377,19 @@ int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buff
       continue;
     }
     mutt_extract_token(token, &expn, 0);
-    for (i = 0; Commands[i].name; i++)
-    {
-      if (mutt_strcmp(token->data, Commands[i].name) == 0)
-      {
-        r = Commands[i].func(token, &expn, Commands[i].data, err);
-        if (r != 0)
-        {              /* -1 Error, +1 Finish */
-          goto finish; /* Propagate return code */
-        }
-        break; /* Continue with next command */
-      }
-    }
-    if (!Commands[i].name)
+    int idx = find_command(token->data, mutt_strlen(token->data));
+    if (idx < 0)
     {
       snprintf(err->data, err->dsize, _("%s: unknown command"), NONULL(token->data));
       r = -1;
       break; /* Ignore the rest of the line */
     }
+
+    r = Commands[idx].func(token, &expn, Commands[idx].data, err);
+    if (r != 0) /* -1 Error, +1 Finish */
+      break;    /* Propagate return code */
   }
-finish:
+
   if (expn.destroy)
     FREE(&expn.data);
   return r;
@@ -3468,6 +3484,15 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
   while ((pt > buffer) && !isspace((unsigned char) *pt))
     pt--;
 
+  const char *cmd = buffer;
+  if (pt)
+  {
+    /* we may not have a complete command, so look up what we can */
+    int idx = find_command(cmd, (pt - buffer));
+    if (idx >= 0)
+      cmd = Commands[idx].name;
+  }
+
   if (pt == buffer) /* complete cmd */
   {
     /* first TAB. Collect all the matches */
@@ -3502,16 +3527,16 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
     /* return the completed command */
     strncpy(buffer, Completed, len - spaces);
   }
-  else if ((mutt_strncmp(buffer, "set", 3) == 0) ||
-           (mutt_strncmp(buffer, "unset", 5) == 0) ||
-           (mutt_strncmp(buffer, "reset", 5) == 0) ||
-           (mutt_strncmp(buffer, "toggle", 6) == 0))
+  else if ((mutt_strncmp(cmd, "set", 3) == 0) ||
+           (mutt_strncmp(cmd, "unset", 5) == 0) ||
+           (mutt_strncmp(cmd, "reset", 5) == 0) ||
+           (mutt_strncmp(cmd, "toggle", 6) == 0))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_strncmp(buffer, "set", 3) == 0)
+    if (mutt_strncmp(cmd, "set", 3) == 0)
     {
       for (num = 0; prefixes[num]; num++)
       {
@@ -3556,7 +3581,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
 
     strncpy(pt, Completed, buffer + len - pt - spaces);
   }
-  else if (mutt_strncmp(buffer, "exec", 4) == 0)
+  else if (mutt_strncmp(cmd, "exec", 4) == 0)
   {
     const struct Binding *menu = km_get_table(CurrentMenu);
 

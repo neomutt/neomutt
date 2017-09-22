@@ -4592,109 +4592,109 @@ static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
 
 const struct Command Commands[] = {
 #ifdef USE_SOCKET
-  { "account-hook",        mutt_parse_hook,        MUTT_ACCOUNTHOOK },
-#endif
-  { "alias",               parse_alias,            0 },
-  { "alternates",          parse_alternates,       0 },
-  { "alternative_order",   parse_stailq,           UL &AlternativeOrderList },
-#ifdef USE_COMPRESSED
-  { "append-hook",         mutt_parse_hook,        MUTT_APPENDHOOK },
-#endif
-  { "attachments",         parse_attachments,      0 },
-  { "auto_view",           parse_stailq,           UL &AutoViewList },
-  { "bind",                mutt_parse_bind,        0 },
-  { "charset-hook",        mutt_parse_hook,        MUTT_CHARSETHOOK },
-#ifdef USE_COMPRESSED
-  { "close-hook",          mutt_parse_hook,        MUTT_CLOSEHOOK },
-#endif
-#ifdef HAVE_COLOR
-  { "color",               mutt_parse_color,       0 },
-#endif
-  { "crypt-hook",          mutt_parse_hook,        MUTT_CRYPTHOOK },
-  { "exec",                mutt_parse_exec,        0 },
-  { "fcc-hook",            mutt_parse_hook,        MUTT_FCCHOOK },
-  { "fcc-save-hook",       mutt_parse_hook,        MUTT_FCCHOOK | MUTT_SAVEHOOK },
-  { "finish",              finish_source,          0 },
-  { "folder-hook",         mutt_parse_hook,        MUTT_FOLDERHOOK },
-  { "group",               parse_group,            MUTT_GROUP },
-  { "hdr_order",           parse_stailq,           UL &HeaderOrderList },
-  { "iconv-hook",          mutt_parse_hook,        MUTT_ICONVHOOK },
-  { "ifdef",               parse_ifdef,            0 },
-  { "ifndef",              parse_ifdef,            1 },
-  { "ignore",              parse_ignore,           0 },
-  { "lists",               parse_lists,            0 },
-#ifdef USE_LUA
-  { "lua",                 mutt_lua_parse,         0 },
-  { "lua-source",          mutt_lua_source_file,   0 },
-#endif
-  { "macro",               mutt_parse_macro,       0 },
-  { "mailboxes",           mutt_parse_mailboxes,   0 },
-  { "mailto_allow",        parse_stailq,           UL &MailToAllow },
-  { "mbox-hook",           mutt_parse_hook,        MUTT_MBOXHOOK },
-  { "message-hook",        mutt_parse_hook,        MUTT_MESSAGEHOOK },
-  { "mime_lookup",         parse_stailq,           UL &MimeLookupList },
-  { "mono",                mutt_parse_mono,        0 },
-  { "my_hdr",              parse_my_hdr,           0 },
-  { "nospam",              parse_spam_list,        MUTT_NOSPAM },
-#ifdef USE_COMPRESSED
-  { "open-hook",           mutt_parse_hook,        MUTT_OPENHOOK },
-#endif
-  { "pgp-hook",            mutt_parse_hook,        MUTT_CRYPTHOOK },
-  { "push",                mutt_parse_push,        0 },
-  { "reply-hook",          mutt_parse_hook,        MUTT_REPLYHOOK },
-  { "reset",               parse_set,              MUTT_SET_RESET },
-  { "save-hook",           mutt_parse_hook,        MUTT_SAVEHOOK },
-  { "score",               mutt_parse_score,       0 },
-  { "send-hook",           mutt_parse_hook,        MUTT_SENDHOOK },
-  { "send2-hook",          mutt_parse_hook,        MUTT_SEND2HOOK },
-  { "set",                 parse_set,              0 },
-  { "setenv",              parse_setenv,           0 },
-  { "shutdown-hook",       mutt_parse_hook,        MUTT_SHUTDOWNHOOK | MUTT_GLOBALHOOK },
-#ifdef USE_SIDEBAR
-  { "sidebar_whitelist",   parse_path_list,        UL &SidebarWhitelist },
-#endif
-  { "source",              parse_source,           0 },
-  { "spam",                parse_spam_list,        MUTT_SPAM },
-  { "startup-hook",        mutt_parse_hook,        MUTT_STARTUPHOOK | MUTT_GLOBALHOOK },
-  { "subjectrx",           parse_subjectrx_list,   UL &SubjectRegexList },
-  { "subscribe",           parse_subscribe,        0 },
-#ifdef USE_NOTMUCH
-  { "tag-formats",         parse_tag_formats,      0 },
-  { "tag-transforms",      parse_tag_transforms,   0 },
-#endif
-  { "timeout-hook",        mutt_parse_hook,        MUTT_TIMEOUTHOOK | MUTT_GLOBALHOOK },
-  { "toggle",              parse_set,              MUTT_SET_INV },
-  { "unalias",             parse_unalias,          0 },
-  { "unalternates",        parse_unalternates,     0 },
-  { "unalternative_order", parse_unstailq,         UL &AlternativeOrderList },
-  { "unattachments",       parse_unattachments,    0 },
-  { "unauto_view",         parse_unstailq,         UL &AutoViewList },
-#ifdef HAVE_COLOR
-  { "uncolor",             mutt_parse_uncolor,     0 },
-#endif
-  { "ungroup",             parse_group,            MUTT_UNGROUP },
-  { "unhdr_order",         parse_unstailq,         UL &HeaderOrderList },
-  { "unhook",              mutt_parse_unhook,      0 },
-  { "unignore",            parse_unignore,         0 },
-  { "unlists",             parse_unlists,          0 },
-  { "unmailboxes",         mutt_parse_unmailboxes, 0 },
-  { "unmailto_allow",      parse_unstailq,         UL &MailToAllow },
-  { "unmime_lookup",       parse_unstailq,         UL &MimeLookupList },
-  { "unmono",              mutt_parse_unmono,      0 },
-  { "unmy_hdr",            parse_unmy_hdr,         0 },
-  { "unscore",             mutt_parse_unscore,     0 },
-  { "unset",               parse_set,              MUTT_SET_UNSET },
-  { "unsetenv",            parse_setenv,           MUTT_SET_UNSET },
-#ifdef USE_SIDEBAR
-  { "unsidebar_whitelist", parse_path_unlist,      UL &SidebarWhitelist },
-#endif
-  { "unsubjectrx",         parse_unsubjectrx_list, UL &SubjectRegexList },
-  { "unsubscribe",         parse_unsubscribe,      0 },
-#ifdef USE_NOTMUCH
-  { "unvirtual-mailboxes", mutt_parse_unmailboxes, MUTT_VIRTUAL },
-  { "virtual-mailboxes",   mutt_parse_mailboxes,   MUTT_VIRTUAL | MUTT_NAMED },
-#endif
-  { NULL,                  NULL,                   0 },
+  { "account-hook",        2,  mutt_parse_hook,        MUTT_ACCOUNTHOOK },
+#endif                         
+  { "alias",               3,  parse_alias,            0 },
+  { "alternates",          9,  parse_alternates,       0 },
+  { "alternative_order",   9,  parse_stailq,           UL &AlternativeOrderList },
+#ifdef USE_COMPRESSED          
+  { "append-hook",         2,  mutt_parse_hook,        MUTT_APPENDHOOK },
+#endif                         
+  { "attachments",         2,  parse_attachments,      0 },
+  { "auto_view",           2,  parse_stailq,           UL &AutoViewList },
+  { "bind",                1,  mutt_parse_bind,        0 },
+  { "charset-hook",        2,  mutt_parse_hook,        MUTT_CHARSETHOOK },
+#ifdef USE_COMPRESSED          
+  { "close-hook",          2,  mutt_parse_hook,        MUTT_CLOSEHOOK },
+#endif                         
+#ifdef HAVE_COLOR              
+  { "color",               2,  mutt_parse_color,       0 },
+#endif                         
+  { "crypt-hook",          2,  mutt_parse_hook,        MUTT_CRYPTHOOK },
+  { "exec",                1,  mutt_parse_exec,        0 },
+  { "fcc-hook",            5,  mutt_parse_hook,        MUTT_FCCHOOK },
+  { "fcc-save-hook",       5,  mutt_parse_hook,        MUTT_FCCHOOK | MUTT_SAVEHOOK },
+  { "finish",              2,  finish_source,          0 },
+  { "folder-hook",         2,  mutt_parse_hook,        MUTT_FOLDERHOOK },
+  { "group",               1,  parse_group,            MUTT_GROUP },
+  { "hdr_order",           2,  parse_stailq,           UL &HeaderOrderList },
+  { "iconv-hook",          2,  mutt_parse_hook,        MUTT_ICONVHOOK },
+  { "ifdef",               3,  parse_ifdef,            0 },
+  { "ifndef",              3,  parse_ifdef,            1 },
+  { "ignore",              2,  parse_ignore,           0 },
+  { "lists",               2,  parse_lists,            0 },
+#ifdef USE_LUA                 
+  { "lua",                 3,  mutt_lua_parse,         0 },
+  { "lua-source",          4,  mutt_lua_source_file,   0 },
+#endif                         
+  { "macro",               3,  mutt_parse_macro,       0 },
+  { "mailboxes",           5,  mutt_parse_mailboxes,   0 },
+  { "mailto_allow",        5,  parse_stailq,           UL &MailToAllow },
+  { "mbox-hook",           2,  mutt_parse_hook,        MUTT_MBOXHOOK },
+  { "message-hook",        2,  mutt_parse_hook,        MUTT_MESSAGEHOOK },
+  { "mime_lookup",         2,  parse_stailq,           UL &MimeLookupList },
+  { "mono",                2,  mutt_parse_mono,        0 },
+  { "my_hdr",              2,  parse_my_hdr,           0 },
+  { "nospam",              1,  parse_spam_list,        MUTT_NOSPAM },
+#ifdef USE_COMPRESSED          
+  { "open-hook",           1,  mutt_parse_hook,        MUTT_OPENHOOK },
+#endif                         
+  { "pgp-hook",            2,  mutt_parse_hook,        MUTT_CRYPTHOOK },
+  { "push",                2,  mutt_parse_push,        0 },
+  { "reply-hook",          3,  mutt_parse_hook,        MUTT_REPLYHOOK },
+  { "reset",               3,  parse_set,              MUTT_SET_RESET },
+  { "save-hook",           2,  mutt_parse_hook,        MUTT_SAVEHOOK },
+  { "score",               2,  mutt_parse_score,       0 },
+  { "send-hook",           5,  mutt_parse_hook,        MUTT_SENDHOOK },
+  { "send2-hook",          5,  mutt_parse_hook,        MUTT_SEND2HOOK },
+  { "set",                 2,  parse_set,              0 },
+  { "setenv",              4,  parse_setenv,           0 },
+  { "shutdown-hook",       2,  mutt_parse_hook,        MUTT_SHUTDOWNHOOK | MUTT_GLOBALHOOK },
+#ifdef USE_SIDEBAR             
+  { "sidebar_whitelist",   2,  parse_path_list,        UL &SidebarWhitelist },
+#endif                         
+  { "source",              2,  parse_source,           0 },
+  { "spam",                2,  parse_spam_list,        MUTT_SPAM },
+  { "startup-hook",        2,  mutt_parse_hook,        MUTT_STARTUPHOOK | MUTT_GLOBALHOOK },
+  { "subjectrx",           4,  parse_subjectrx_list,   UL &SubjectRegexList },
+  { "subscribe",           4,  parse_subscribe,        0 },
+#ifdef USE_NOTMUCH             
+  { "tag-formats",         5,  parse_tag_formats,      0 },
+  { "tag-transforms",      5,  parse_tag_transforms,   0 },
+#endif                         
+  { "timeout-hook",        2,  mutt_parse_hook,        MUTT_TIMEOUTHOOK | MUTT_GLOBALHOOK },
+  { "toggle",              2,  parse_set,              MUTT_SET_INV },
+  { "unalias",             5,  parse_unalias,          0 },
+  { "unalternates",        11, parse_unalternates,     0 },
+  { "unalternative_order", 11, parse_unstailq,         UL &AlternativeOrderList },
+  { "unattachments",       4,  parse_unattachments,    0 },
+  { "unauto_view",         4,  parse_unstailq,         UL &AutoViewList },
+#ifdef HAVE_COLOR              
+  { "uncolor",             3,  mutt_parse_uncolor,     0 },
+#endif                         
+  { "ungroup",             3,  parse_group,            MUTT_UNGROUP },
+  { "unhdr_order",         4,  parse_unstailq,         UL &HeaderOrderList },
+  { "unhook",              4,  mutt_parse_unhook,      0 },
+  { "unignore",            3,  parse_unignore,         0 },
+  { "unlists",             3,  parse_unlists,          0 },
+  { "unmailboxes",         7,  mutt_parse_unmailboxes, 0 },
+  { "unmailto_allow",      7,  parse_unstailq,         UL &MailToAllow },
+  { "unmime_lookup",       4,  parse_unstailq,         UL &MimeLookupList },
+  { "unmono",              4,  mutt_parse_unmono,      0 },
+  { "unmy_hdr",            4,  parse_unmy_hdr,         0 },
+  { "unscore",             4,  mutt_parse_unscore,     0 },
+  { "unset",               5,  parse_set,              MUTT_SET_UNSET },
+  { "unsetenv",            6,  parse_setenv,           MUTT_SET_UNSET },
+#ifdef USE_SIDEBAR             
+  { "unsidebar_whitelist", 4,  parse_path_unlist,      UL &SidebarWhitelist },
+#endif                         
+  { "unsubjectrx",         6,  parse_unsubjectrx_list, UL &SubjectRegexList },
+  { "unsubscribe",         6,  parse_unsubscribe,      0 },
+#ifdef USE_NOTMUCH             
+  { "unvirtual-mailboxes", 3,  mutt_parse_unmailboxes, MUTT_VIRTUAL },
+  { "virtual-mailboxes",   1,  mutt_parse_mailboxes,   MUTT_VIRTUAL | MUTT_NAMED },
+#endif                         
+  { NULL,                  0,  NULL,                   0 },
 };
 
 #endif /* _MUTT_INIT_H */
