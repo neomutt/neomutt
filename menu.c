@@ -1099,7 +1099,7 @@ int mutt_menu_loop(struct Menu *menu)
      * the prefix on a timeout (i==-2), but do clear on an abort (i==-1)
      */
     if (menu->tagprefix && i != OP_TAG_PREFIX && i != OP_TAG_PREFIX_COND && i != -2)
-      menu->tagprefix = 0;
+      menu->tagprefix = false;
 
     mutt_curs_set(0);
 
@@ -1135,14 +1135,14 @@ int mutt_menu_loop(struct Menu *menu)
     {
       if (menu->tagprefix)
       {
-        menu->tagprefix = 0;
+        menu->tagprefix = false;
         mutt_window_clearline(menu->messagewin, 0);
         continue;
       }
 
       if (menu->tagged)
       {
-        menu->tagprefix = 1;
+        menu->tagprefix = true;
         continue;
       }
       else if (i == OP_TAG_PREFIX)
@@ -1158,7 +1158,7 @@ int mutt_menu_loop(struct Menu *menu)
       }
     }
     else if (menu->tagged && option(OPT_AUTO_TAG))
-      menu->tagprefix = 1;
+      menu->tagprefix = true;
 
     mutt_curs_set(1);
 

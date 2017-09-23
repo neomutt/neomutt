@@ -507,7 +507,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   return 0;
 }
 
-void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, int tag,
+void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                struct Body *top, struct Header *hdr, struct Menu *menu)
 {
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
@@ -592,7 +592,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, int tag,
     mutt_message(_("Attachment saved."));
 }
 
-static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, int filter)
+static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bool filter)
 {
   char tfile[_POSIX_PATH_MAX];
   char warning[STRING + _POSIX_PATH_MAX];
@@ -653,8 +653,8 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   }
 }
 
-static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp, int tag,
-                                 struct Body *top, int filter, struct State *state)
+static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp, bool tag,
+                                 struct Body *top, bool filter, struct State *state)
 {
   int i;
 
@@ -677,15 +677,15 @@ static void pipe_attachment_list(char *command, struct AttachCtx *actx, FILE *fp
   }
 }
 
-void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, int tag,
-                               struct Body *top, int filter)
+void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
+                               struct Body *top, bool filter)
 {
   struct State state;
   char buf[SHORT_STRING];
   pid_t thepid;
 
   if (fp)
-    filter = 0; /* sanity check: we can't filter in the recv case yet */
+    filter = false; /* sanity check: we can't filter in the recv case yet */
 
   buf[0] = 0;
   memset(&state, 0, sizeof(struct State));
@@ -712,7 +712,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, int tag,
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
 }
 
-static int can_print(struct AttachCtx *actx, struct Body *top, int tag)
+static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
 {
   char type[STRING];
 
@@ -731,7 +731,7 @@ static int can_print(struct AttachCtx *actx, struct Body *top, int tag)
           if (!mutt_can_decode(top))
           {
             mutt_error(_("I don't know how to print %s attachments!"), type);
-            return 0;
+            return false;
           }
         }
       }
@@ -739,10 +739,10 @@ static int can_print(struct AttachCtx *actx, struct Body *top, int tag)
     if (!tag)
       break;
   }
-  return 1;
+  return true;
 }
 
-static void print_attachment_list(struct AttachCtx *actx, FILE *fp, int tag,
+static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                   struct Body *top, struct State *state)
 {
   char type[STRING];
@@ -791,7 +791,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, int tag,
   }
 }
 
-void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, int tag, struct Body *top)
+void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
 {
   struct State state;
 
@@ -870,7 +870,7 @@ static void recvattach_edit_content_type(struct AttachCtx *actx,
 }
 
 int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
-                             struct AttachCtx *actx, int recv)
+                             struct AttachCtx *actx, bool recv)
 {
   do
   {
@@ -1157,7 +1157,7 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_DISPLAY_HEADERS:
       case OP_VIEW_ATTACH:
-        op = mutt_attach_display_loop(menu, op, hdr, actx, 1);
+        op = mutt_attach_display_loop(menu, op, hdr, actx, true);
         menu->redraw = REDRAW_FULL;
         continue;
 
@@ -1198,7 +1198,7 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_PIPE:
         mutt_pipe_attachment_list(actx, CURATTACH->fp, menu->tagprefix,
-                                  CURATTACH->content, 0);
+                                  CURATTACH->content, false);
         break;
 
       case OP_SAVE:

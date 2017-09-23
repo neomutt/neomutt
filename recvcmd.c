@@ -58,7 +58,7 @@ static bool check_msg(struct Body *b, bool err)
   return true;
 }
 
-static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, short err)
+static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, bool err)
 {
   if (cur && !check_msg(cur, err))
     return false;
@@ -79,16 +79,16 @@ static bool check_all_msg(struct AttachCtx *actx, struct Body *cur, short err)
 /**
  * check_can_decode - can we decode all tagged attachments?
  */
-static short check_can_decode(struct AttachCtx *actx, struct Body *cur)
+static bool check_can_decode(struct AttachCtx *actx, struct Body *cur)
 {
   if (cur)
     return mutt_can_decode(cur);
 
   for (short i = 0; i < actx->idxlen; i++)
     if (actx->idx[i]->content->tagged && !mutt_can_decode(actx->idx[i]->content))
-      return 0;
+      return false;
 
-  return 1;
+  return true;
 }
 
 static short count_tagged(struct AttachCtx *actx)
@@ -128,7 +128,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
   int ret = 0;
   int p = 0;
 
-  if (!check_all_msg(actx, cur, 1))
+  if (!check_all_msg(actx, cur, true))
     return;
 
   /* one or more messages? */
@@ -242,7 +242,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
  */
 void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur)
 {
-  if (!check_all_msg(actx, cur, 1))
+  if (!check_all_msg(actx, cur, true))
     return;
 
   if (cur)
@@ -658,7 +658,7 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 {
   short nattach;
 
-  if (check_all_msg(actx, cur, 0))
+  if (check_all_msg(actx, cur, false))
     attach_forward_msgs(fp, hdr, actx, cur, flags);
   else
   {
