@@ -173,7 +173,7 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
     buflen -= len;
   }
 
-  if (buflen < 2)
+  if (buflen <= 2)
     return 0;
 
   buf[0] = MUTT_SPECIAL_INDEX;
