@@ -57,6 +57,8 @@ static int mbox_to_udomain(const char *mbx, char **user, char **domain)
   char *p = NULL;
 
   mutt_str_replace(&buff, mbx);
+  if (!buff)
+    return -1;
 
   p = strchr(buff, '@');
   if (!p || !p[1])
