@@ -62,6 +62,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include "debug.h"
 #include "memory.h"
 #include "string2.h"
 
@@ -338,10 +339,22 @@ char *mutt_substrdup(const char *begin, const char *end)
   size_t len;
   char *p = NULL;
 
+  if (!begin)
+  {
+    mutt_debug(1, "%s: ERROR: 'begin' is NULL\n", __func__);
+    return NULL;
+  }
+
   if (end)
+  {
+    if (begin > end)
+      return NULL;
     len = end - begin;
+  }
   else
+  {
     len = strlen(begin);
+  }
 
   p = safe_malloc(len + 1);
   memcpy(p, begin, len);
