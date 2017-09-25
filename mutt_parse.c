@@ -32,7 +32,10 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
+#include "core/lib.h"
 #include "mutt_parse.h"
+#include "context.h"
+#include "globals.h"
 #include "mx.h"
 #include "ncrypt/lib.h"
 
@@ -53,7 +56,9 @@ void mutt_parse_mime_message(struct Mailbox *m, struct Email *e)
     if ((e->content->type != TYPE_MESSAGE) && (e->content->type != TYPE_MULTIPART))
       break; /* nothing to do */
 
-    if (e->content->parts)
+    /* FIXME(sileht): We read the message for getting hdr_offset and offset
+     * for imap */
+    if (e->content->parts && (m->magic != MUTT_IMAP))
       break; /* The message was parsed earlier. */
 
     struct Message *msg = mx_msg_open(m, e->msgno);

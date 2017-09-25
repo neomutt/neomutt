@@ -778,6 +778,62 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 }
 
 /**
+ * imap_read_literal_string - Read bytes bytes from server into file
+ * @param[out] dest  Output buffer (will be malloc'd)
+ * @param[in]  adata Server data
+ * @param[in]  bytes Number of bytes to read
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * Not explicitly buffered, relies on FILE buffering.
+ *
+ * @note Caller must free dest
+ *
+ * @note Strips `\r` from `\r\n`.
+ *       Apparently even literals use `\r\n`-terminated strings ?!
+ */
+int imap_read_literal_string(char **dest, struct ImapAccountData *adata, long bytes)
+{
+  char c;
+  bool r = false;
+
+  *dest = mutt_mem_malloc(bytes + 1);
+
+  char *cur = *dest;
+  cur[bytes] = '\0';
+
+  mutt_debug(2, "imap_read_literal: reading %ld bytes\n", bytes);
+
+  for (long pos = 0; pos < bytes; pos++)
+  {
+    if (mutt_socket_readchar(adata->conn, &c) != 1)
+    {
+      mutt_debug(1, "imap_read_literal: error during read, %ld bytes read\n", pos);
+      adata->status = IMAP_FATAL;
+      return -1;
+    }
+
+    if (r && (c != '\n'))
+    {
+      *cur = '\r';
+      cur++;
+    }
+
+    if (c == '\r')
+    {
+      r = true;
+      continue;
+    }
+    else
+      r = false;
+
+    *cur = c;
+    cur++;
+  }
+
+  return 0;
+}
+/**
  * imap_expunge_mailbox - Purge messages from the server
  * @param m Mailbox
  *
