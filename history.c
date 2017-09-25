@@ -136,7 +136,7 @@ void mutt_read_histfile(void)
     if (p)
     {
       mutt_convert_string(&p, "utf-8", Charset, 0);
-      mutt_history_add(hclass, p, 0);
+      mutt_history_add(hclass, p, false);
       FREE(&p);
     }
   }
@@ -382,7 +382,7 @@ void mutt_init_history(void)
   OldSize = History;
 }
 
-void mutt_history_add(enum HistoryClass hclass, const char *s, int save)
+void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
 {
   int prev;
   struct History *h = GET_HISTORY(hclass);
@@ -468,12 +468,12 @@ void mutt_reset_history_state(enum HistoryClass hclass)
   h->cur = h->last;
 }
 
-int mutt_history_at_scratch(enum HistoryClass hclass)
+bool mutt_history_at_scratch(enum HistoryClass hclass)
 {
   struct History *h = GET_HISTORY(hclass);
 
   if (!History || !h)
-    return 0; /* disabled */
+    return false; /* disabled */
 
   return h->cur == h->last;
 }

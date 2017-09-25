@@ -705,7 +705,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
               {
                 mutt_pretty_mailbox(buf, buflen);
                 if (!pass)
-                  mutt_history_add(hclass, buf, 1);
+                  mutt_history_add(hclass, buf, true);
                 rv = 0;
                 goto bye;
               }
@@ -824,7 +824,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
         /* Convert from wide characters */
         my_wcstombs(buf, buflen, state->wbuf, state->lastchar);
         if (!pass)
-          mutt_history_add(hclass, buf, 1);
+          mutt_history_add(hclass, buf, true);
 
         if (multiple)
         {

@@ -23,6 +23,8 @@
 #ifndef _MUTT_HISTORY_H
 #define _MUTT_HISTORY_H
 
+#include <stdbool.h>
+
 /**
  * enum HistoryClass - Type to differentiate different histories
  */
@@ -43,11 +45,11 @@ enum HistoryClass
 
 void mutt_init_history(void);
 void mutt_read_histfile(void);
-void mutt_history_add(enum HistoryClass hclass, const char *s, int save);
+void mutt_history_add(enum HistoryClass hclass, const char *s, bool save);
 char *mutt_history_next(enum HistoryClass hclass);
 char *mutt_history_prev(enum HistoryClass hclass);
 void mutt_reset_history_state(enum HistoryClass hclass);
-int mutt_history_at_scratch(enum HistoryClass hclass);
+bool mutt_history_at_scratch(enum HistoryClass hclass);
 void mutt_history_save_scratch(enum HistoryClass hclass, const char *s);
 
 #endif /* _MUTT_HISTORY_H */
