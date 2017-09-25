@@ -152,7 +152,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 
 FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[LONG_STRING];
   struct stat sb;
 
   if (!id || !*id || !bcache)

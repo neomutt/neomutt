@@ -2183,7 +2183,7 @@ static int nntp_date(struct NntpServer *nserv, time_t *now)
 int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
 {
   struct NntpData nntp_data;
-  char msg[SHORT_STRING];
+  char msg[STRING];
   char buf[LONG_STRING];
   unsigned int i;
   int rc;

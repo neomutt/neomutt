@@ -176,7 +176,7 @@ void mutt_account_tourl(struct Account *account, struct Url *url)
  */
 int mutt_account_getuser(struct Account *account)
 {
-  char prompt[SHORT_STRING];
+  char prompt[STRING];
 
   /* already set */
   if (account->flags & MUTT_ACCT_USER)
@@ -242,7 +242,7 @@ int mutt_account_getlogin(struct Account *account)
  */
 int mutt_account_getpass(struct Account *account)
 {
-  char prompt[SHORT_STRING];
+  char prompt[STRING];
 
   if (account->flags & MUTT_ACCT_PASS)
     return 0;

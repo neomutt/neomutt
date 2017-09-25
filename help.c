@@ -196,7 +196,7 @@ static int get_wrapped_width(const char *t, size_t wid)
 
 static int pad(FILE *f, int col, int i)
 {
-  char fmt[8];
+  char fmt[32] = "";
 
   if (col < i)
   {
