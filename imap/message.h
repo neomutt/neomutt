@@ -57,6 +57,7 @@ struct ImapHeader
 
   time_t received;
   long content_length;
+  struct Body *content;
 };
 
 #endif /* MUTT_IMAP_MESSAGE_H */

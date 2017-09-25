@@ -44,6 +44,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "message.h"
+#include "bodystructure.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -53,6 +54,7 @@
 #include "protos.h"
 #include "bcache/lib.h"
 #include "imap/lib.h"
+#include "ncrypt/lib.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -319,13 +321,15 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
 
 /**
  * msg_parse_fetch - handle headers returned from header fetch
- * @param h IMAP Header
- * @param s Command string
+ * @param adata Server data
+ * @param h     IMAP Header
+ * @param s     Command string
+ * @param fp    FILE where to store the body or headers bytes
  * @retval  0 Success
  * @retval -1 String is corrupted
  * @retval -2 Fetch contains a body or header lines that still need to be parsed
  */
-static int msg_parse_fetch(struct ImapHeader *h, char *s)
+static int msg_parse_fetch(struct ImapAccountData *adata, struct ImapHeader *h, char *s, FILE *fp)
 {
   if (!s)
     return -1;
@@ -343,6 +347,20 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       s = msg_parse_flags(h, s);
       if (!s)
         return -1;
+    }
+    else if (mutt_str_strncasecmp("BODYSTRUCTURE", s, 13) == 0)
+    {
+      s += 13;
+      SKIPWS(s);
+      mutt_debug(1, "BODYSTRUCTURE START: %s\n", s);
+      h->content = mutt_body_new();
+      s = body_struct_parse(adata, h->content, s);
+      if (!s)
+      {
+        mutt_body_free(&h->content);
+        return -1;
+      }
+      mutt_debug(1, "BODYSTRUCTURE LEFTOVER: %s\n", s);
     }
     else if ((plen = mutt_str_startswith(s, "UID", CASE_IGNORE)))
     {
@@ -386,8 +404,24 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
     else if (mutt_str_startswith(s, "BODY", CASE_IGNORE) ||
              mutt_str_startswith(s, "RFC822.HEADER", CASE_IGNORE))
     {
-      /* handle above, in msg_fetch_header */
-      return -2;
+      unsigned int bytes = 0;
+      if (imap_get_literal_count(s, &bytes) == 0)
+      {
+        imap_read_literal(fp, adata, bytes, NULL);
+
+        /* we may have other fields of the FETCH _after_ the literal
+         * (eg Domino puts FLAGS here). Nothing wrong with that, either.
+         * This all has to go - we should accept literals and nonliterals
+         * interchangeably at any time. */
+        if (imap_cmd_step(adata) != IMAP_RES_CONTINUE)
+          return -1;
+
+        s = adata->buf;
+      }
+
+      /* subtract headers from message size - unfortunately only the subset of
+       * headers we've requested. */
+      h->content_length -= bytes;
     }
     else if ((plen = mutt_str_startswith(s, "MODSEQ", CASE_IGNORE)))
     {
@@ -459,37 +493,12 @@ static int msg_fetch_header(struct Mailbox *m, struct ImapHeader *ih, char *buf,
     return rc;
   buf++;
 
-  /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
-   *   read header lines and call it again. Silly. */
-  int parse_rc = msg_parse_fetch(ih, buf);
+  int parse_rc = msg_parse_fetch(adata, ih, buf, fp);
   if (parse_rc == 0)
     return 0;
-  if ((parse_rc != -2) || !fp)
+  if (!fp)
     return rc;
-
-  unsigned int bytes = 0;
-  if (imap_get_literal_count(buf, &bytes) == 0)
-  {
-    imap_read_literal(fp, adata, bytes, NULL);
-
-    /* we may have other fields of the FETCH _after_ the literal
-     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
-     * This all has to go - we should accept literals and nonliterals
-     * interchangeably at any time. */
-    if (imap_cmd_step(adata) != IMAP_RES_CONTINUE)
-      return rc;
-
-    if (msg_parse_fetch(ih, adata->buf) == -1)
-      return rc;
-  }
-
-  rc = 0; /* success */
-
-  /* subtract headers from message size - unfortunately only the subset of
-   * headers we've requested. */
-  ih->content_length -= bytes;
-
-  return rc;
+  return 0;
 }
 
 /**
@@ -820,7 +829,6 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
           e->replied = h.edata->replied;
         }
 
-        /*  mailbox->emails[msgno]->received is restored from mutt_hcache_restore */
         e->edata = h.edata;
         e->free_edata = imap_edata_free;
         STAILQ_INIT(&e->tags);
@@ -829,6 +837,10 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
         char *tags_copy = mutt_str_strdup(h.edata->flags_remote);
         driver_tags_replace(&e->tags, tags_copy);
         FREE(&tags_copy);
+
+        m->emails[idx]->content = h.content;
+        if (WithCrypto)
+          m->emails[idx]->security = crypt_query(m->emails[idx]->content);
 
         m->msg_count++;
         mailbox_size_add(m, e);
@@ -1113,7 +1125,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
          imap_fetch_msn_seqset(buf, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
   {
     char *cmd = NULL;
-    mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
+    mutt_str_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE BODYSTRUCTURE %s)",
                       mutt_b2s(buf), hdrreq);
     imap_cmd_start(adata, cmd);
     FREE(&cmd);
@@ -1193,6 +1205,10 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         char *tags_copy = mutt_str_strdup(h.edata->flags_remote);
         driver_tags_replace(&e->tags, tags_copy);
         FREE(&tags_copy);
+
+        m->emails[idx]->content = h.content;
+        if (WithCrypto)
+          m->emails[idx]->security = crypt_query(m->emails[idx]->content);
 
         if (*maxuid < h.edata->uid)
           *maxuid = h.edata->uid;

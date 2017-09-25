@@ -273,7 +273,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
  * @param head List to receive the references
  * @param s    String to parse
  */
-static void parse_references(struct ListHead *head, const char *s)
+void parse_references(struct ListHead *head, const char *s)
 {
   char *m = NULL;
   const char *sp = NULL;
