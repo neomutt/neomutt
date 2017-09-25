@@ -1618,7 +1618,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
 
     /* create new cache file */
     mutt_message(fetch_msg);
-    msg->fp = mutt_bcache_put(nntp_data->bcache, article, 1);
+    msg->fp = mutt_bcache_put(nntp_data->bcache, article, true);
     if (!msg->fp)
     {
       mutt_mktemp(buf, sizeof(buf));

@@ -599,7 +599,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
                        NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
-    if (!(msg->fp = mutt_bcache_put(pop_data->bcache, h->data, 1)))
+    if (!(msg->fp = mutt_bcache_put(pop_data->bcache, h->data, true)))
     {
       /* no */
       bcache = 0;

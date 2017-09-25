@@ -24,6 +24,7 @@
 #ifndef _MUTT_BCACHE_H
 #define _MUTT_BCACHE_H
 
+#include <stdbool.h>
 #include <stdio.h>
 
 struct Account;
@@ -67,7 +68,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id);
  * @retval FILE* on success
  * @retval NULL on failure
  */
-FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp);
+FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, bool tmp);
 
 /**
  * mutt_bcache_commit - Move a temporary file into the Body Cache

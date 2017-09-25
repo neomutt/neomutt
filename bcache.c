@@ -150,7 +150,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
   return fp;
 }
 
-FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp)
+FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, bool tmp)
 {
   char path[LONG_STRING];
   struct stat sb;
