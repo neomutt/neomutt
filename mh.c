@@ -296,11 +296,11 @@ static bool mh_valid_message(const char *s)
  * @param check_stats Also count total, new, and flagged messages
  * @retval true if the mailbox has new mail
  */
-int mh_buffy(struct Buffy *mailbox, int check_stats)
+bool mh_buffy(struct Buffy *mailbox, bool check_stats)
 {
   struct MhSequences mhs;
-  int check_new = 1;
-  int rc = 0;
+  bool check_new = true;
+  bool rc = false;
   DIR *dirp = NULL;
   struct dirent *de = NULL;
 
@@ -308,8 +308,8 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
    * since the last mailbox visit, there is no "new mail" */
   if (option(OPT_MAIL_CHECK_RECENT) && mh_sequences_changed(mailbox) <= 0)
   {
-    rc = 0;
-    check_new = 0;
+    rc = false;
+    check_new = false;
   }
 
   if (!(check_new || check_stats))
@@ -317,7 +317,7 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
 
   memset(&mhs, 0, sizeof(mhs));
   if (mh_read_sequences(&mhs, mailbox->path) < 0)
-    return 0;
+    return false;
 
   if (check_stats)
   {
@@ -341,12 +341,12 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
         if (!option(OPT_MAIL_CHECK_RECENT) || mh_already_notified(mailbox, i) == 0)
         {
           mailbox->new = true;
-          rc = 1;
+          rc = true;
         }
         /* Because we are traversing from high to low, we can stop
          * checking for new mail after the first unseen message.
          * Whether it resulted in "new mail" or not. */
-        check_new = 0;
+        check_new = false;
         if (!check_stats)
           break;
       }

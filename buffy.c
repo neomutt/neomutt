@@ -186,7 +186,7 @@ static void buffy_free(struct Buffy **mailbox)
  * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
 static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
-                                   int check_new, int check_stats)
+                                   bool check_new, bool check_stats)
 {
   char path[LONG_STRING];
   char msgpath[LONG_STRING];
@@ -206,7 +206,7 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
     if (stat(path, &sb) == 0 && sb.st_mtime < mailbox->last_visited)
     {
       rc = 0;
-      check_new = 0;
+      check_new = false;
     }
   }
 
@@ -249,7 +249,7 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
         }
         mailbox->new = true;
         rc = 1;
-        check_new = 0;
+        check_new = false;
         if (!check_stats)
           break;
       }
@@ -267,9 +267,10 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
  * @param check_stats if true, also count total, new, and flagged messages
  * @retval 1 if the mailbox has new mail
  */
-static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
+static int buffy_maildir_check(struct Buffy *mailbox, bool check_stats)
 {
-  int rc, check_new = 1;
+  int rc = 1;
+  bool check_new = true;
 
   if (check_stats)
   {
@@ -295,7 +296,7 @@ static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
  * @param check_stats if true, also count total, new, and flagged messages
  * @retval 1 if the mailbox has new mail
  */
-static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_stats)
+static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, bool check_stats)
 {
   int rc = 0;
   int new_or_changed;
@@ -341,7 +342,7 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_st
   return rc;
 }
 
-static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, int check_stats)
+static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_stats)
 {
   struct stat sb;
 #ifdef USE_SIDEBAR
@@ -415,7 +416,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, int check_sta
         break;
 
       case MUTT_MH:
-        if (mh_buffy(tmp, check_stats) > 0)
+        if (mh_buffy(tmp, check_stats))
           BuffyCount++;
         break;
 #ifdef USE_NOTMUCH
