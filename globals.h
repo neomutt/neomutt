@@ -346,7 +346,7 @@ WHERE char *NmQueryWindowCurrentSearch;
 #ifdef MAIN_C
 const char *const BodyTypes[] = {
     "x-unknown", "audio",     "application", "image", "message",
-    "model",     "multipart", "text",        "video",
+    "model",     "multipart", "text",        "video", "*",
 };
 const char *const BodyEncodings[] = {
     "x-unknown", "7bit",   "8bit",        "quoted-printable",
