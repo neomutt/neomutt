@@ -1590,6 +1590,8 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
               mutt_message(_("Mailbox deleted."));
               init_menu(&state, menu, title, sizeof(title), buffy);
             }
+            else
+              mutt_error(_("Mailbox deletion failed."));
           }
           else
             mutt_message(_("Mailbox not deleted."));

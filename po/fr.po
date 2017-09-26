@@ -322,6 +322,9 @@ msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 msgid "Mailbox deleted."
 msgstr "Boîte aux lettres supprimée."
 
+msgid "Mailbox deletion failed."
+msgstr "La suppression de la boîte aux lettres a échoué."
+
 #: browser.c:1595
 msgid "Mailbox not deleted."
 msgstr "Boîte aux lettres non supprimée."
@@ -1082,12 +1085,10 @@ msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr "Message non envoyé : PGP en ligne est impossible avec format=flowed."
 
 #: ncrypt/crypt.c:167
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "PGP en ligne est impossible avec format=flowed. Utiliser PGP/MIME ?"
 
 #: ncrypt/crypt.c:171
-#, fuzzy
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr "Message non envoyé : PGP en ligne est impossible avec format=flowed."
 

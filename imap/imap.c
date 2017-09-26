@@ -318,7 +318,26 @@ void imap_expunge_mailbox(struct ImapData *idata)
       imap_free_header_data((struct ImapHeaderData **) &h->data);
     }
     else
+    {
       h->index = i;
+      /* Mutt has several places where it turns off h->active as a
+       * hack.  For example to avoid FLAG updates, or to exclude from
+       * imap_exec_msgset.
+       *
+       * Unfortunately, when a reopen is allowed and the IMAP_EXPUNGE_PENDING
+       * flag becomes set (e.g. a flag update to a modified header),
+       * this function will be called by imap_cmd_finish().
+       *
+       * The mx_update_tables() will free and remove these "inactive" headers,
+       * despite that an EXPUNGE was not received for them.
+       * This would result in memory leaks and segfaults due to dangling
+       * pointers in the msn_index and uid_hash.
+       *
+       * So this is another hack to work around the hacks.  We don't want to
+       * remove the messages, so make sure active is on.
+       */
+      h->active = true;
+    }
   }
 
 #ifdef USE_HCACHE
@@ -1120,7 +1139,7 @@ static bool compare_flags_for_copy(struct Header *h)
  *       desirable to propagate that flag into the copy.
  */
 int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
-                      struct Buffer *cmd, int *err_continue)
+                               struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char uid[11];
@@ -1146,7 +1165,8 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->old, "Old ", flags, sizeof(flags));
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->flagged, "\\Flagged ", flags, sizeof(flags));
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->replied, "\\Answered ", flags, sizeof(flags));
-  imap_set_flag (idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ", flags, sizeof (flags));
+  imap_set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ",
+                flags, sizeof(flags));
 
   /* now make sure we don't lose custom tags */
   if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
@@ -1162,7 +1182,8 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted, "\\Deleted ", flags, sizeof (flags));
+    imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted,
+                  "\\Deleted ", flags, sizeof(flags));
 
     mutt_remove_trailing_ws(flags);
 
@@ -1650,7 +1671,7 @@ int imap_buffy_check(int force, int check_stats)
     {
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
-      if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK) == -1)
+      if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1)
         mutt_debug(1, "Error polling mailboxes\n");
 
       lastdata = NULL;
@@ -2253,16 +2274,16 @@ int imap_fast_trash(struct Context *ctx, char *dest)
     strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
 
-  sync_cmd = mutt_buffer_new ();
+  sync_cmd = mutt_buffer_new();
   for (n = 0; n < ctx->msgcount; n++)
   {
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed &&
         ctx->hdrs[n]->deleted && !ctx->hdrs[n]->purge)
     {
-      rc = imap_sync_message_for_copy (idata, ctx->hdrs[n], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(idata, ctx->hdrs[n], sync_cmd, &err_continue);
       if (rc < 0)
       {
-        mutt_debug (1, "imap_fast_trash: could not sync\n");
+        mutt_debug(1, "imap_fast_trash: could not sync\n");
         goto out;
       }
     }
@@ -2320,7 +2341,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   rc = 0;
 
 out:
-  mutt_buffer_free (&sync_cmd);
+  mutt_buffer_free(&sync_cmd);
   FREE(&mx.mbox);
 
   return rc < 0 ? -1 : rc;

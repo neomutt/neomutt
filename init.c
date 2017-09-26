@@ -2320,8 +2320,7 @@ static void start_debug(void)
   if ((debugfile = safe_fopen(debugfilename, "w")) != NULL)
   {
     setbuf(debugfile, NULL); /* don't buffer the debugging output! */
-    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION,
-               debuglevel);
+    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION, debuglevel);
   }
 }
 
@@ -2347,8 +2346,7 @@ static void restart_debug(void)
   }
 
   if (!enable_debug && !disable_debug && debuglevel != DebugLevel)
-    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION,
-               DebugLevel);
+    mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION, DebugLevel);
 
   debuglevel = DebugLevel;
 
@@ -3179,7 +3177,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   if (rcfilelen == 0)
     return -1;
 
-  ispipe = rcfile[rcfilelen -1] == '|';
+  ispipe = rcfile[rcfilelen - 1] == '|';
 
   if (!ispipe)
   {

@@ -146,6 +146,7 @@ static void cmd_handle_fatal(struct ImapData *idata)
   if ((idata->state >= IMAP_SELECTED) && (idata->reopen & IMAP_REOPEN_ALLOW))
   {
     mx_fastclose_mailbox(idata->ctx);
+    mutt_socket_close(idata->conn);
     mutt_error(_("Mailbox closed"));
     mutt_sleep(1);
     idata->state = IMAP_DISCONNECTED;
