@@ -1120,7 +1120,7 @@ static bool compare_flags_for_copy(struct Header *h)
  *       desirable to propagate that flag into the copy.
  */
 int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
-                      struct Buffer *cmd, int *err_continue)
+                               struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char uid[11];
@@ -1146,7 +1146,8 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->old, "Old ", flags, sizeof(flags));
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->flagged, "\\Flagged ", flags, sizeof(flags));
   imap_set_flag(idata, MUTT_ACL_WRITE, hdr->replied, "\\Answered ", flags, sizeof(flags));
-  imap_set_flag (idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ", flags, sizeof (flags));
+  imap_set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ",
+                flags, sizeof(flags));
 
   /* now make sure we don't lose custom tags */
   if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
@@ -1162,7 +1163,8 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
     imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted, "\\Deleted ", flags, sizeof (flags));
+    imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted,
+                  "\\Deleted ", flags, sizeof(flags));
 
     mutt_remove_trailing_ws(flags);
 
@@ -2253,16 +2255,16 @@ int imap_fast_trash(struct Context *ctx, char *dest)
     strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
 
-  sync_cmd = mutt_buffer_new ();
+  sync_cmd = mutt_buffer_new();
   for (n = 0; n < ctx->msgcount; n++)
   {
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed &&
         ctx->hdrs[n]->deleted && !ctx->hdrs[n]->purge)
     {
-      rc = imap_sync_message_for_copy (idata, ctx->hdrs[n], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(idata, ctx->hdrs[n], sync_cmd, &err_continue);
       if (rc < 0)
       {
-        mutt_debug (1, "imap_fast_trash: could not sync\n");
+        mutt_debug(1, "imap_fast_trash: could not sync\n");
         goto out;
       }
     }
@@ -2320,7 +2322,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   rc = 0;
 
 out:
-  mutt_buffer_free (&sync_cmd);
+  mutt_buffer_free(&sync_cmd);
   FREE(&mx.mbox);
 
   return rc < 0 ? -1 : rc;

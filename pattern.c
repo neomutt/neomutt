@@ -729,7 +729,7 @@ static void order_range(struct Pattern *pat)
 }
 
 static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
-                               struct Buffer *err)
+                              struct Buffer *err)
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
