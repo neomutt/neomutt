@@ -2029,6 +2029,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct Maildir *md = NULL;  /* list of messages in the mailbox */
   struct Maildir **last = NULL, *p = NULL;
+  int count = 0;
   struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                    for a maildir message */
   struct MhData *data = mh_data(ctx);
@@ -2066,15 +2067,15 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   md = NULL;
   last = &md;
   if (changed & 1)
-    maildir_parse_dir(ctx, &last, "new", NULL, NULL);
+    maildir_parse_dir(ctx, &last, "new", &count, NULL);
   if (changed & 2)
-    maildir_parse_dir(ctx, &last, "cur", NULL, NULL);
+    maildir_parse_dir(ctx, &last, "cur", &count, NULL);
 
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.
    */
-  fnames = hash_create(1031, 0);
+  fnames = hash_create(count, 0);
 
   for (p = md; p; p = p->next)
   {
@@ -2181,6 +2182,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   struct Maildir *md = NULL, *p = NULL;
   struct Maildir **last = NULL;
   struct MhSequences mhs;
+  int count = 0;
   struct Hash *fnames = NULL;
   int i;
   struct MhData *data = mh_data(ctx);
@@ -2225,7 +2227,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   md = NULL;
   last = &md;
 
-  maildir_parse_dir(ctx, &last, NULL, NULL, NULL);
+  maildir_parse_dir(ctx, &last, NULL, &count, NULL);
   maildir_delayed_parsing(ctx, &md, NULL);
 
   if (mh_read_sequences(&mhs, ctx->path) < 0)
@@ -2234,7 +2236,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   mhs_free_sequences(&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = hash_create(1031, 0);
+  fnames = hash_create(count, 0);
 
   for (p = md; p; p = p->next)
   {
