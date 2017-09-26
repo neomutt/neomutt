@@ -58,14 +58,7 @@ install-data-local: makedoc-all
 	-for f in $(HTML_DOCFILES); do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir); \
 	done
-	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc.dist
-	-if [ -f $(DESTDIR)$(pkgdatadir)/neomuttrc ]; then \
-		mv $(DESTDIR)$(pkgdatadir)/neomuttrc* $(DESTDIR)$(sysconfdir); \
-	elif [ -f $(DESTDIR)$(pkgdatadir)/../neomuttrc ]; then \
-		mv $(DESTDIR)$(pkgdatadir)/../neomuttrc* $(DESTDIR)$(sysconfdir); \
-	elif [ ! -f $(DESTDIR)$(sysconfdir)/neomuttrc ]; then \
-		$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir); \
-	fi
+	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
 	-$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(docdir)/mime.types
 
@@ -79,13 +72,8 @@ uninstall-local:
 	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES); do \
 		rm -f $(DESTDIR)$(docdir)/$$f; \
 	done
-	-rm -f $(DESTDIR)$(docdir)/manual.txt
-	for i in neomuttrc; do \
-		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
-			rm $(DESTDIR)$(sysconfdir)/$$i; \
-		fi; \
-		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
-	done
+	rm -f $(DESTDIR)$(docdir)/manual.txt
+	rm -f $(DESTDIR)$(sysconfdir)/neomuttrc
 	rm -f $(DESTDIR)$(docdir)/neomutt-syntax.vim
 	rm -f $(DESTDIR)$(docdir)/mime.types
 
