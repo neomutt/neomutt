@@ -16,7 +16,7 @@ EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
 	neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
 	neomuttrc.man.head neomuttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
-	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1
+	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1 mime.types
 
 CHUNKED_DOCFILES = advancedusage.html configuration.html gettingstarted.html \
 	intro.html mimesupport.html miscellany.html optionalfeatures.html \
@@ -42,11 +42,11 @@ install-data-local: makedoc-all
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
 	$(INSTALL) -m 644 neomuttrc.man $(DESTDIR)$(mandir)/man5/neomuttrc.5
-	$(INSTALL) -m 644 $(srcdir)/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
-	$(INSTALL) -m 644 $(srcdir)/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
-	$(INSTALL) -m 644 $(srcdir)/pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
-	$(INSTALL) -m 644 $(srcdir)/mbox.5 $(DESTDIR)$(mandir)/man5/mbox.5
-	$(INSTALL) -m 644 $(srcdir)/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf.5
+	$(INSTALL) -m 644 $(srcdir)/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
+	$(INSTALL) -m 644 $(srcdir)/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
+	$(INSTALL) -m 644 $(srcdir)/pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring_$(PACKAGE).1
+	$(INSTALL) -m 644 $(srcdir)/mbox.5 $(DESTDIR)$(mandir)/man5/mbox_$(PACKAGE).5
+	$(INSTALL) -m 644 $(srcdir)/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf_$(PACKAGE).5
 	$(MKDIR_P) $(DESTDIR)$(docdir)
 	for f in $(topsrcdir_DOCFILES); do \
 		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir); \
@@ -58,34 +58,24 @@ install-data-local: makedoc-all
 	-for f in $(HTML_DOCFILES); do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir); \
 	done
-	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc.dist
-	-if [ -f $(DESTDIR)$(pkgdatadir)/neomuttrc ]; then \
-		mv $(DESTDIR)$(pkgdatadir)/neomuttrc* $(DESTDIR)$(sysconfdir); \
-	elif [ -f $(DESTDIR)$(pkgdatadir)/../neomuttrc ]; then \
-		mv $(DESTDIR)$(pkgdatadir)/../neomuttrc* $(DESTDIR)$(sysconfdir); \
-	elif [ ! -f $(DESTDIR)$(sysconfdir)/neomuttrc ]; then \
-		$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir); \
-	fi
+	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
+	-$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(docdir)/mime.types
 
 uninstall-local:
-	for f in neomutt.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
+	for f in neomutt.1 smime_keys_$(PACKAGE).1 pgpewrap_$(PACKAGE).1 pgpring_$(PACKAGE).1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f; \
 	done
-	for f in neomuttrc.5 mbox.5 mmdf.5; do \
+	for f in neomuttrc.5 mbox_$(PACKAGE).5 mmdf_$(PACKAGE).5; do \
 		rm -f $(DESTDIR)$(mandir)/man5/$$f; \
 	done
 	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES); do \
 		rm -f $(DESTDIR)$(docdir)/$$f; \
 	done
-	-rm -f $(DESTDIR)$(docdir)/manual.txt
-	for i in neomuttrc; do \
-		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
-			rm $(DESTDIR)$(sysconfdir)/$$i; \
-		fi; \
-		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
-	done
+	rm -f $(DESTDIR)$(docdir)/manual.txt
+	rm -f $(DESTDIR)$(sysconfdir)/neomuttrc
 	rm -f $(DESTDIR)$(docdir)/neomutt-syntax.vim
+	rm -f $(DESTDIR)$(docdir)/mime.types
 
 check:
 manual.txt: manual.html

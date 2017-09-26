@@ -1,13 +1,13 @@
 # Screenshot http://trovao.droplinegnome.org/stuff/mutt-zenburnt.png
 #
-# This is a zenburn-based mutt color scheme that is not (even by far)
+# This is a zenburn-based neomutt color scheme that is not (even by far)
 # complete. There's no copyright involved. Do whatever you want with it.
 # Just be aware that I won't be held responsible if the current color-scheme
 # explodes your mail client. ;)
 #
 # Do notice that this color scheme requires a terminal emulator that supports
 # 256 color. Any modern X terminal emulator should have support for that and
-# you can enable it by calling mutt as "TERM=xterm-256color mutt" or, if you
+# you can enable it by calling neomutt as "TERM=xterm-256color neomutt" or, if you
 # use screen, by adding "term screen-256color" to your .screenrc.
 #
 # This file is in the public domain.

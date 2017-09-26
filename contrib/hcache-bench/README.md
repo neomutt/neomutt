@@ -6,31 +6,31 @@ The shell script and the configuration file in this directory can be used to ben
 
 ## Preparation
 
-In order to run the benchmark, you must have a directory in maildir format at hand. Mutt will load messages from there and populate the header cache with them. Please note that you'll need a reasonable large number of messages - >50k - to see anything interesting.
+In order to run the benchmark, you must have a directory in maildir format at hand. NeoMutt will load messages from there and populate the header cache with them. Please note that you'll need a reasonable large number of messages - >50k - to see anything interesting.
 
 ## Running the benchmark
 
 The script accepts the following arguments
 
 ```
--e Path to the mutt executable
+-e Path to the neomutt executable
 -m Path to the maildir directory
 -t Number of times to repeat the test
 -b List of backends to test
 ```
 
-Example: `./neomutt-hcache-bench.sh -e /usr/local/bin/mutt -m ../maildir -t 10 -b "lmdb qdbm bdb kyotocabinet"`
+Example: `./neomutt-hcache-bench.sh -e /usr/local/bin/neomutt -m ../maildir -t 10 -b "lmdb qdbm bdb kyotocabinet"`
 
 ## Operation
 
-The benchmark works by instructing mutt to use the backends specified with `-b` one by one and to load the messages from the maildir specified with `-m`. Mutt is launched twice with the same configuration. The first time, no header cache storage exists, so mutt populates it. The second time, the previously populated header cache storage is used to reload the headers. The times taken to execute these two operations are kept track of independently.
+The benchmark works by instructing neomutt to use the backends specified with `-b` one by one and to load the messages from the maildir specified with `-m`. NeoMutt is launched twice with the same configuration. The first time, no header cache storage exists, so neomutt populates it. The second time, the previously populated header cache storage is used to reload the headers. The times taken to execute these two operations are kept track of independently.
 
 At the end, a summary with the average times is provided.
 
 ## Sample output
 
 ```sh
-$ sh neomutt-hcache-bench.sh -m ~/maildir -e ../../mutt -t 10 -b "bdb gdbm qdbm lmdb kyotocabinet tokyocabinet"
+$ sh neomutt-hcache-bench.sh -m ~/maildir -e ../../neomutt -t 10 -b "bdb gdbm qdbm lmdb kyotocabinet tokyocabinet"
 Running in /tmp/tmp.TFHQ8iPy
  1 - populating - bdb
  1 - reloading  - bdb

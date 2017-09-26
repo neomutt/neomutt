@@ -1,6 +1,6 @@
 # Vim Keys
 
-This Mutt config file sets up some keyboard mappings that make Mutt more
+This NeoMutt config file sets up some keyboard mappings that make NeoMutt more
 friendly for Vim users.  For example:
 
 - gg  Move to top of Index

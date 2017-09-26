@@ -22,14 +22,14 @@ set smime_keys="$tmpdir/keys"
 EOF
 close TMP;
 
-$ENV{MUTT_CMDLINE} = "mutt -F $tmpdir/muttrc";
+$ENV{MUTT_CMDLINE} = "neomutt -F $tmpdir/muttrc";
 
 # make a user key
 run 'smime_keys init';
 run 'openssl genrsa -out user.key 1024';
 
 # make a request for this key to be signed
-run 'openssl req -new -key user.key -out newreq.pem', "\n\nx\n\nx\nx\nuser\@smime.mutt\n\nx\n";
+run 'openssl req -new -key user.key -out newreq.pem', "\n\nx\n\nx\nx\nuser\@smime.neomutt\n\nx\n";
 
 mkdir 'demoCA' or die;
 mkdir 'demoCA/certs' or die;
@@ -94,7 +94,7 @@ run 'smime_keys list > list';
 
 open IN, 'list' or die;
 <IN> eq "\n" or die;
-<IN> =~ /^$keyid\: Issued for\: user\@smime\.mutt \"new_label\" \(Trusted\)\n/ or die;
+<IN> =~ /^$keyid\: Issued for\: user\@smime\.neomutt \"new_label\" \(Trusted\)\n/ or die;
 close IN;
 
 unlink 'list' or die;
