@@ -109,7 +109,7 @@ static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
 
   idata->bcache = msg_cache_open(idata);
   snprintf(id, sizeof(id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
-  return mutt_bcache_put(idata->bcache, id, true);
+  return mutt_bcache_put(idata->bcache, id);
 }
 
 static int msg_cache_commit(struct ImapData *idata, struct Header *h)

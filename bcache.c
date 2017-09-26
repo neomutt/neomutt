@@ -150,13 +150,19 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
   return fp;
 }
 
-FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, bool tmp)
+FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 {
   char path[LONG_STRING];
   struct stat sb;
 
   if (!id || !*id || !bcache)
     return NULL;
+
+  if (snprintf(path, sizeof(path), "%s%s%s", bcache->path, id, ".tmp") >= sizeof(path))
+  {
+    mutt_error(_("Path too long: %s%s%s"), bcache->path, id, ".tmp");
+    return NULL;
+  }
 
   if (stat(bcache->path, &sb) == 0)
   {
@@ -175,7 +181,6 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, bool tmp)
     }
   }
 
-  snprintf(path, sizeof(path), "%s%s%s", bcache->path, id, tmp ? ".tmp" : "");
   mutt_debug(3, "bcache: put: '%s'\n", path);
 
   return safe_fopen(path, "w+");
