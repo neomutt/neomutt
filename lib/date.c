@@ -54,8 +54,10 @@
 
 /* theoretically time_t can be float but it is integer on most (if not all) systems */
 #define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
+#define TIME_T_MIN (-TIME_T_MAX - 1)
 #define TM_YEAR_MAX                                                            \
   (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+#define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
 
 /**
  * Weekdays - Day of the week (abbreviated)
@@ -247,8 +249,10 @@ time_t mutt_mktime(struct tm *t, int local)
 
   /* Prevent an integer overflow.
    * The time_t cast is an attempt to silence a clang range warning. */
-  if ((time_t) t->tm_year > TM_YEAR_MAX)
+  if ((time_t) t->tm_year > (TM_YEAR_MAX - 1900))
     return TIME_T_MAX;
+  if ((time_t) t->tm_year < (TM_YEAR_MIN - 1900))
+    return TIME_T_MIN;
 
   /* Compute the number of days since January 1 in the same year */
   g = AccumDaysPerMonth[t->tm_mon % 12];
