@@ -361,13 +361,13 @@ dnl --- ncurses
 	dnl configure trying to locate curses at /no/include first. The mutual
 	dnl exclusion of slang and curses and the requirement that one (and only
 	dnl one) is chosen could be improved.
-    if test x$with_curses != xyes; then
-        mutt_cv_curses=$withval
-    fi
-    if test x$mutt_cv_curses != x/usr; then
-        LDFLAGS="$LDFLAGS -L${with_curses}/lib"
-        CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
-    fi
+	if test x$with_curses != xyes; then
+		mutt_cv_curses=$withval
+	fi
+	if test x$mutt_cv_curses != x/usr; then
+		LDFLAGS="$LDFLAGS -L${with_curses}/lib"
+		CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
+	fi
 	mutt_cv_curses=/usr
 	AC_CHECK_FUNC(initscr,,[
 		cf_ncurses=""
@@ -843,7 +843,7 @@ AM_GNU_GETTEXT([external])
 
 AM_ICONV
 if test "$am_cv_func_iconv" != yes; then
-    AC_MSG_ERROR([An iconv implementation is required])
+	AC_MSG_ERROR([An iconv implementation is required])
 fi
 
 AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for internationalized domain names]),
@@ -858,29 +858,29 @@ AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for int
 		[with_idn=auto])
 
 if test "x$with_idn" != "xno"; then
-    dnl Solaris 11 has /usr/include/idn
-    have_stringprep_h=no
-    AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
-                have_stringprep_h=yes
-                break])
-    have_idna_h=no
-    AC_CHECK_HEADERS([idna.h idn/idna.h], [
-                have_idna_h=yes
-                break])
+	dnl Solaris 11 has /usr/include/idn
+	have_stringprep_h=no
+	AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
+		have_stringprep_h=yes
+		break])
+	have_idna_h=no
+	AC_CHECK_HEADERS([idna.h idn/idna.h], [
+		have_idna_h=yes
+		break])
 
-    AC_SEARCH_LIBS([stringprep_check_version], [idn], [
-        AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
+	AC_SEARCH_LIBS([stringprep_check_version], [idn], [
+		AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
 
-        LIBS="$LIBS $LIBICONV"
-        AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-        AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-        AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
-    ])
+		LIBS="$LIBS $LIBICONV"
+		AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+		AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+		AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+	])
 
-    if test "$with_idn" != auto; then
-        if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
-            AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
-        fi
+	if test "$with_idn" != auto; then
+		if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
+			AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
+		fi
 	fi
 fi
 
