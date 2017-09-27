@@ -137,21 +137,21 @@ git_ver.h: $(neomutt_SOURCES) $(SUBDIRS)
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	-if test -n "$(SMIMEAUX_TARGET)"; then \
-		$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE); \
+		$(MKDIR_P) $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
 		for i in $(SMIMEAUX_TARGET); do \
-			$(INSTALL) -m 755 $(srcdir)/$$i $(DESTDIR)$(libdir)/$(PACKAGE); \
+			$(INSTALL) -m 755 $$i $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
 		done \
 	fi
 	-if test -n "$(PGPAUX_TARGET)"; then \
-		$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE); \
+		$(MKDIR_P) $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
 		for i in $(PGPAUX_TARGET); do \
-			$(INSTALL) -m 755 $$i $(DESTDIR)$(libdir)/$(PACKAGE); \
+			$(INSTALL) -m 755 $$i $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
 		done \
 	fi
 
 uninstall-local:
 	for i in smime_keys $(PGPAUX_TARGET); do \
-		rm -fr $(DESTDIR)$(libdir)/$(PACKAGE)/$$i; \
+		rm -fr $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE)/$$i; \
 	done
 
 distclean-local:

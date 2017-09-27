@@ -218,7 +218,7 @@ AS_IF([test x$use_pgp != "xno"], [
 dnl --enable-smime
 AS_IF([test x$use_smime != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	SMIMEAUX_TARGET='$(top_srcdir)/contrib/smime_keys'
+	SMIMEAUX_TARGET='$(srcdir)/contrib/smime_keys'
 	build_ncrypt_smime="yes"
 ])
 
