@@ -357,16 +357,16 @@ main ()
 		[AC_MSG_ERROR(unable to compile.  check config.log)], -lm)
 else
 dnl --- ncurses
-	dnl Plese note that --with-slang=no --with-curses=no will result in
+	dnl Please note that --with-slang=no --with-curses=no will result in
 	dnl configure trying to locate curses at /no/include first. The mutual
 	dnl exclusion of slang and curses and the requirement that one (and only
 	dnl one) is chosen could be improved.
-	if test x$with_curses != xyes; then
+	if test x$with_curses != xyes -a x$with_curses != xno; then
 		mutt_cv_curses=$withval
 	fi
-	if test x$mutt_cv_curses != x/usr; then
-		LDFLAGS="$LDFLAGS -L${with_curses}/lib"
-		CPPFLAGS="$CPPFLAGS -I${with_curses}/include"
+	if test x$mutt_cv_curses != x/usr -a x$mutt_cv_curses != x; then
+		LDFLAGS="$LDFLAGS -L${mutt_cv_curses}/lib"
+		CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
 	fi
 	mutt_cv_curses=/usr
 	AC_CHECK_FUNC(initscr,,[
