@@ -1147,10 +1147,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
   if (!compare_flags_for_copy(hdr))
   {
     if (hdr->deleted == HEADER_DATA(hdr)->deleted)
-    {
       hdr->changed = false;
-      idata->ctx->changed = false;
-    }
     return 0;
   }
 
@@ -1213,10 +1210,7 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
 
   hdr->active = true;
   if (hdr->deleted == HEADER_DATA(hdr)->deleted)
-  {
     hdr->changed = false;
-    idata->ctx->changed = false;
-  }
 
   return 0;
 }
