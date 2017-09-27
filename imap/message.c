@@ -499,7 +499,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   static const char *const want_headers =
       "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
-      "X-KEYWORDS X-MOZILLA-KEYS KEYWORDS X-ORIGINAL-TO";
+      "X-ORIGINAL-TO";
   struct Progress progress;
   int retval = -1;
   bool evalhc = false;

@@ -189,7 +189,6 @@ WHERE char *TSIconFormat;
 WHERE short TSSupported;
 WHERE char *Username;
 WHERE char *Visual;
-WHERE char *XlabelDelimiter;
 
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;

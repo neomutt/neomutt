@@ -116,7 +116,6 @@ static struct CompileOptions comp_opts_default[] = {
   { "imap", 1 },
   { "index_color", 1 },
   { "initials", 1 },
-  { "keywords", 1 },
   { "limit_current_thread", 1 },
   { "multiple_fcc", 1 },
   { "nested_if", 1 },

@@ -33,7 +33,6 @@ sorted through them, fixed them up and documented them.
 | Ifdef                | Conditional config options
 | Index Color          | Custom rules for theming the email index
 | Initials Expando     | Expando for author's initials
-| Keywords             | Labels/Tagging for emails
 | Kyoto Cabinet        | Kyoto Cabinet backend for the header cache
 | Limit Current Thread | Focus on one Email Thread
 | LMDB                 | LMDB backend for the header cache

@@ -59,7 +59,6 @@ struct Envelope
   struct ListHead references;  /**< message references (in reverse order) */
   struct ListHead in_reply_to; /**< in-reply-to header content */
   struct ListHead userhdrs;    /**< user defined headers */
-  int kwtypes;
 
   bool irt_changed : 1;  /**< In-Reply-To changed to link/break threads */
   bool refs_changed : 1; /**< References changed to break thread */

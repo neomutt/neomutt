@@ -132,15 +132,6 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         ignore = false;
       }
 
-      if (flags & CH_UPDATE_LABEL)
-      {
-        if ((mutt_strncasecmp("X-Label:", buf, 8) == 0) ||
-            (mutt_strncasecmp("X-Keywords:", buf, 11) == 0) ||
-            (mutt_strncasecmp("X-Mozilla-Keys:", buf, 15) == 0) ||
-            (mutt_strncasecmp("Keywords:", buf, 9) == 0))
-          continue;
-      }
-
       if (!ignore && fputs(buf, out) == EOF)
         return -1;
     }
