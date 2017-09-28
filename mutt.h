@@ -312,7 +312,7 @@ enum QuadOptionVars
 
 void mutt_free_regex_list(struct RegexList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
-int mutt_matches_ignore(const char *s);
+bool mutt_matches_ignore(const char *s);
 
 /* add an element to a list */
 int mutt_remove_from_regex_list(struct RegexList **l, const char *str);

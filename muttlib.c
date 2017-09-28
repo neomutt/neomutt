@@ -178,7 +178,7 @@ void mutt_free_header(struct Header **h)
  *
  * checks Ignore and UnIgnore using mutt_list_match
  */
-int mutt_matches_ignore(const char *s)
+bool mutt_matches_ignore(const char *s)
 {
   return mutt_list_match(s, &Ignore) && !mutt_list_match(s, &UnIgnore);
 }
