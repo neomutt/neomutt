@@ -2231,7 +2231,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
               break;
             }
           }
+        }
 
+        if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED))
+        {
           if (rd.index && Context)
           {
             /* After the mailbox has been updated,
@@ -2247,7 +2250,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             rd.index->max = Context->vcount;
 
             /* If these header pointers don't match, then our email may have
-             * been deleted.  Make the pointer safe, then leave the pager */
+             * been deleted.  Make the pointer safe, then leave the pager.
+             * This have a unpleasant behaviour to close the pager even the
+             * deleted message is not the opened one, but at least it's safe. */
             if (extra->hdr != Context->hdrs[Context->v2r[rd.index->current]])
             {
               extra->hdr = Context->hdrs[Context->v2r[rd.index->current]];
