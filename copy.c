@@ -761,6 +761,8 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
+  if (!hdr->content)
+    return -1;
   r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
