@@ -672,7 +672,7 @@ void mutt_fix_reply_recipients(struct Envelope *env)
      * the user is the only recipient, it ends up on the TO: field
      */
     env->cc = remove_user(env->cc, (env->to == NULL));
-    env->to = remove_user(env->to, (env->cc == NULL));
+    env->to = remove_user(env->to, (env->cc == NULL) || option(OPT_REPLY_SELF));
   }
 
   /* the CC field can get cluttered, especially with lists */
