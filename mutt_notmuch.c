@@ -92,11 +92,13 @@ enum NmQueryType
  *
  * @sa NmCtxData#query_items
  */
+
+STAILQ_HEAD(UriTagHead, UriTag);
 struct UriTag
 {
   char *name;
   char *value;
-  struct UriTag *next;
+  STAILQ_ENTRY(UriTag) entries;
 };
 
 /**
@@ -130,7 +132,7 @@ struct NmCtxData
   int db_limit;                /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */
 
-  struct UriTag *query_items;
+  struct UriTagHead *query_items;
 
   struct Progress progress; /**< A progress bar */
   int oldmsgcount;
@@ -184,21 +186,26 @@ static void debug_print_tags(notmuch_message_t *msg)
 
 /**
  * url_free_tags - Free a list of tags
- * @param tags List of tags
+ * @param head List of tags
  *
  * Tags are stored as a singly-linked list.
  * Free all the strings and the list, itself.
  */
-static void url_free_tags(struct UriTag *tags)
+static void url_free_tags(struct UriTagHead *head)
 {
-  while (tags)
+  if (!head)
+    return;
+
+  struct UriTag *tag = STAILQ_FIRST(head), *next = NULL;
+  while (tag)
   {
-    struct UriTag *next = tags->next;
-    FREE(&tags->name);
-    FREE(&tags->value);
-    FREE(&tags);
-    tags = next;
+    next = STAILQ_NEXT(tag, entries);
+    FREE(&tag->name);
+    FREE(&tag->value);
+    FREE(&tag);
+    tag = next;
   }
+  STAILQ_INIT(head);
 }
 
 /**
@@ -216,11 +223,11 @@ static void url_free_tags(struct UriTag *tags)
  * Extract the database filename (optional) and any search parameters (tags).
  * The tags will be saved in a linked list (#UriTag).
  */
-static bool url_parse_query(const char *url, char **filename, struct UriTag **tags)
+static bool url_parse_query(const char *url, char **filename, struct UriTagHead **tags)
 {
   char *p = strstr(url, "://"); /* remote unsupported */
   char *e = NULL;
-  struct UriTag *tag, *last = NULL;
+  struct UriTag *tag;
 
   *filename = NULL;
   *tags = NULL;
@@ -247,13 +254,7 @@ static bool url_parse_query(const char *url, char **filename, struct UriTag **ta
   {
     tag = safe_calloc(1, sizeof(struct UriTag));
 
-    if (!*tags)
-      last = *tags = tag;
-    else
-    {
-      last->next = tag;
-      last = tag;
-    }
+    STAILQ_INSERT_TAIL(*tags, tag, entries);
 
     e = strchr(p, '=');
     if (!e)
@@ -558,7 +559,7 @@ static char *get_query_string(struct NmCtxData *data, bool window)
 
   data->query_type = string_to_query_type(NmQueryType); /* user's default */
 
-  for (item = data->query_items; item; item = item->next)
+  STAILQ_FOREACH(item, data->query_items, entries)
   {
     if (!item->value || !item->name)
       continue;
@@ -2009,7 +2010,8 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new,
 
 int nm_nonctx_get_count(char *path, int *all, int *new)
 {
-  struct UriTag *query_items = NULL, *item = NULL;
+  struct UriTagHead *query_items = NULL;
+  struct UriTag *item = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1;
@@ -2025,7 +2027,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   if (!query_items)
     goto done;
 
-  for (item = query_items; item; item = item->next)
+  STAILQ_FOREACH(item, query_items, entries)
   {
     if (item->value && (strcmp(item->name, "query") == 0))
     {
