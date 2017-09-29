@@ -2993,7 +2993,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_SAVE:
         if (IsAttach(extra))
         {
-          mutt_save_attachment_list(extra->actx, extra->fp, false, extra->bdy, extra->hdr, NULL);
+          mutt_save_attachment_list(extra->actx, extra->fp, false, extra->bdy,
+                                    extra->hdr, NULL);
           break;
         }
       /* fall through */

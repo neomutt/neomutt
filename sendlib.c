@@ -1747,7 +1747,8 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   char buf[HUGE_STRING] = "";
   int first = 1, enc, col = 0, w, l = 0, fold;
 
-  mutt_debug(4, "mwoh: pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
+  mutt_debug(4, "mwoh: pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag,
+             flags, NONULL(value));
 
   if (tag && *tag && fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0)
     return -1;
