@@ -1039,16 +1039,20 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
 
 void mutt_attach_init(struct AttachCtx *actx)
 {
-  int i;
+  /* Collapse the attachments if '$digest_collapse' is set AND if...
+   * the outer container is of type 'multipart/digest' */
+  bool digest = (mutt_strcasecmp(actx->hdr->content->subtype, "digest") == 0);
 
-  for (i = 0; i < actx->idxlen; i++)
+  for (int i = 0; i < actx->idxlen; i++)
   {
-    actx->idx[i]->content->tagged = 0;
-    if (option(OPT_DIGEST_COLLAPSE) && actx->idx[i]->content->type == TYPEMULTIPART &&
-        !mutt_strcasecmp(actx->idx[i]->content->subtype, "digest"))
-      actx->idx[i]->content->collapsed = 1;
-    else
-      actx->idx[i]->content->collapsed = 0;
+    actx->idx[i]->content->tagged = false;
+
+    /*OR an inner container is of type 'multipart/digest' */
+    actx->idx[i]->content->collapsed =
+        (option(OPT_DIGEST_COLLAPSE) &&
+         (digest ||
+          ((actx->idx[i]->content->type == TYPEMULTIPART) &&
+              (mutt_strcasecmp(actx->idx[i]->content->subtype, "digest") == 0))));
   }
 }
 
