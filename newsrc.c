@@ -955,6 +955,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
   if (url_parse(&url, file) < 0 || (url.path && *url.path) ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS) ||
+      !url.host ||
       mutt_account_fromurl(&acct, &url) < 0)
   {
     mutt_error(_("%s is an invalid news server specification!"), server);

@@ -67,7 +67,7 @@ int pop_parse_path(const char *path, struct Account *acct)
   c = safe_strdup(path);
   url_parse(&url, c);
 
-  if ((url.scheme != U_POP && url.scheme != U_POPS) || mutt_account_fromurl(acct, &url) < 0)
+  if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host || mutt_account_fromurl(acct, &url) < 0)
   {
     FREE(&c);
     mutt_error(_("Invalid POP URL: %s\n"), path);

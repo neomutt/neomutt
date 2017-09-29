@@ -22,6 +22,7 @@
 #define _MUTT_URL_H
 
 #include <stddef.h>
+#include "lib/queue.h"
 
 struct Envelope;
 
@@ -50,7 +51,22 @@ enum UrlScheme
 #define U_PATH (1 << 1)
 
 /**
- * struct Url - A parsed URL `proto://user:password@host:port/path`
+ * struct UrlQueryString - Parsed Query String
+ *
+ * The arguments in a URL are saved in a linked list.
+ *
+ */
+
+STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
+struct UrlQueryString
+{
+  char *name;
+  char *value;
+  STAILQ_ENTRY(UrlQueryString) entries;
+};
+
+/**
+ * struct Url - A parsed URL `proto://user:password@host:port/path?a=1&b=2`
  */
 struct Url
 {
@@ -60,10 +76,13 @@ struct Url
   char *host;
   unsigned short port;
   char *path;
+  struct UrlQueryStringHead query_strings;
 };
 
 enum UrlScheme url_check_scheme(const char *s);
 int url_parse(struct Url *u, char *src);
+int url_parse_with_qs(struct Url *u, char *src);
+void url_qs_free(struct UrlQueryStringHead *h);
 int url_tostring(struct Url *u, char *dest, size_t len, int flags);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int url_pct_decode(char *s);
