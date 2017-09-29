@@ -54,9 +54,9 @@ install-data-local: makedoc-all
 	for f in $(srcdir_DOCFILES); do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir); \
 	done
-	-$(INSTALL) -m 644 $(srcdir)/manual.txt $(DESTDIR)$(docdir)
+	-$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir)
 	-for f in $(HTML_DOCFILES); do \
-		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir); \
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir); \
 	done
 	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
