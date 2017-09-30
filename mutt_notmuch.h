@@ -42,7 +42,7 @@ bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
 void nm_query_window_backward(void);
 void nm_query_window_forward(void);
 
-void nm_longrun_init(struct Context *ctx, int writable);
+void nm_longrun_init(struct Context *ctx, bool writable);
 void nm_longrun_done(struct Context *ctx);
 
 char *nm_get_description(struct Context *ctx);

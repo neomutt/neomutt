@@ -595,9 +595,9 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
  * result in buffy) or not (for the count in the sidebar). It is not aimed at
  * enabling/disabling the feature.
  */
-static char *get_query_string(struct NmCtxData *data, int window)
+static char *get_query_string(struct NmCtxData *data, bool window)
 {
-  mutt_debug(2, "nm: get_query_string(%d)\n", window);
+  mutt_debug(2, "nm: get_query_string(%s)\n", window ? "true" : "false");
 
   struct UriTag *item = NULL;
 
@@ -673,7 +673,8 @@ static const char *get_db_filename(struct NmCtxData *data)
   return db_filename;
 }
 
-static notmuch_database_t *do_database_open(const char *filename, int writable, int verbose)
+static notmuch_database_t *do_database_open(const char *filename,
+                                            bool writable, bool verbose)
 {
   notmuch_database_t *db = NULL;
   int ct = 0;
@@ -711,7 +712,7 @@ static notmuch_database_t *do_database_open(const char *filename, int writable, 
   return db;
 }
 
-static notmuch_database_t *get_db(struct NmCtxData *data, int writable)
+static notmuch_database_t *get_db(struct NmCtxData *data, bool writable)
 {
   if (!data)
     return NULL;
@@ -788,7 +789,7 @@ static int db_trans_end(struct NmCtxData *data)
  * @param data Header data
  * @retval true if it is
  */
-static int is_longrun(struct NmCtxData *data)
+static bool is_longrun(struct NmCtxData *data)
 {
   return data && data->longrun;
 }
@@ -855,7 +856,7 @@ static void apply_exclude_tags(notmuch_query_t *query)
   FREE(&buf);
 }
 
-static notmuch_query_t *get_query(struct NmCtxData *data, int writable)
+static notmuch_query_t *get_query(struct NmCtxData *data, bool writable)
 {
   notmuch_database_t *db = NULL;
   notmuch_query_t *q = NULL;
@@ -1176,7 +1177,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
 }
 
 static void append_message(struct Context *ctx, notmuch_query_t *q,
-                           notmuch_message_t *msg, int dedup)
+                           notmuch_message_t *msg, bool dedup)
 {
   char *newpath = NULL;
   const char *path = NULL;
@@ -1269,7 +1270,7 @@ done:
  * Careful, this calls itself recursively to make sure we get everything.
  */
 static void append_replies(struct Context *ctx, notmuch_query_t *q,
-                           notmuch_message_t *top, int dedup)
+                           notmuch_message_t *top, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1291,7 +1292,7 @@ static void append_replies(struct Context *ctx, notmuch_query_t *q,
  * level replies
  */
 static void append_thread(struct Context *ctx, notmuch_query_t *q,
-                          notmuch_thread_t *thread, int dedup)
+                          notmuch_thread_t *thread, bool dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1305,7 +1306,7 @@ static void append_thread(struct Context *ctx, notmuch_query_t *q,
   }
 }
 
-static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, int dedup)
+static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   int limit;
@@ -1341,7 +1342,8 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, int dedup)
   return true;
 }
 
-static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, int dedup, int limit)
+static bool read_threads_query(struct Context *ctx, notmuch_query_t *q,
+                               bool dedup, int limit)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   notmuch_threads_t *threads = NULL;
@@ -1759,7 +1761,7 @@ char *nm_header_get_tag_transformed(char *tag, struct Header *h)
   return NULL;
 }
 
-void nm_longrun_init(struct Context *ctx, int writable)
+void nm_longrun_init(struct Context *ctx, bool writable)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
 
@@ -1822,7 +1824,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h)
   apply_exclude_tags(q);
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
-  read_threads_query(ctx, q, 1, 0);
+  read_threads_query(ctx, q, true, 0);
   ctx->mtime = time(NULL);
   rc = 0;
 
@@ -2327,11 +2329,11 @@ static int nm_open_mailbox(struct Context *ctx)
     switch (data->query_type)
     {
       case NM_QUERY_TYPE_MESGS:
-        if (!read_mesgs_query(ctx, q, 0))
+        if (!read_mesgs_query(ctx, q, false))
           rc = -2;
         break;
       case NM_QUERY_TYPE_THREADS:
-        if (!read_threads_query(ctx, q, 0, get_limit(data)))
+        if (!read_threads_query(ctx, q, false, get_limit(data)))
           rc = -2;
         break;
     }
