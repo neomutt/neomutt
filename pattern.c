@@ -1611,7 +1611,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return 0;
 #else
       mutt_error(_("error: server custom search only supported with IMAP."));
-      return (-1);
+      return -1;
 #endif
     case MUTT_SENDER:
       return (pat->not ^ match_adrlist(pat, flags & MUTT_MATCH_FULL_ADDRESS, 1,
@@ -1715,10 +1715,15 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return (pat->not ^ (h->env->x_label && patmatch(pat, h->env->x_label) == 0));
 #ifdef USE_NOTMUCH
     case MUTT_NOTMUCH_LABEL:
-    {
-      char *tags = nm_header_get_tags(h);
-      return (pat->not ^ (tags && patmatch(pat, tags) == 0));
-    }
+      if (ctx && (ctx->magic == MUTT_NOTMUCH))
+      {
+        char *tags = nm_header_get_tags(h);
+        return (pat->not ^ (tags && patmatch(pat, tags) == 0));
+      }
+      else
+      {
+        return 0;
+      }
 #endif
     case MUTT_HORMEL:
       return (pat->not ^ (h->env->spam && h->env->spam->data &&
