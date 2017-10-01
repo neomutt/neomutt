@@ -166,6 +166,7 @@ void imap_get_parent_path(char *output, const char *path, size_t olen)
 
   /* Returns a fully qualified IMAP url */
   imap_qualify_path(output, olen, &mx, mbox);
+  FREE(&mx.mbox);
 }
 
 /**
