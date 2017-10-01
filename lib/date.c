@@ -254,6 +254,14 @@ time_t mutt_mktime(struct tm *t, int local)
   if ((time_t) t->tm_year < (TM_YEAR_MIN - 1900))
     return TIME_T_MIN;
 
+  if ((t->tm_mday < 1) || (t->tm_mday > 31))
+    return TIME_T_MIN;
+  if ((t->tm_hour < 0) || (t->tm_hour > 23) || (t->tm_min < 0) ||
+      (t->tm_min > 59) || (t->tm_sec < 0) || (t->tm_sec > 60))
+    return TIME_T_MIN;
+  if (t->tm_year > 9999)
+    return TIME_T_MAX;
+
   /* Compute the number of days since January 1 in the same year */
   g = AccumDaysPerMonth[t->tm_mon % 12];
 
@@ -479,13 +487,15 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
 
       case 1: /* month of the year */
         i = mutt_check_month(t);
-        if (i < 0)
+        if ((i < 0) || (i > 11))
           return -1;
         tm.tm_mon = i;
         break;
 
       case 2: /* year */
         if ((mutt_atoi(t, &tm.tm_year) < 0) || (tm.tm_year < 0))
+          return -1;
+        if ((tm.tm_year < 0) || (tm.tm_year > 9999))
           return -1;
         if (tm.tm_year < 50)
           tm.tm_year += 100;
@@ -503,6 +513,9 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
           mutt_debug(1, "parse_date: could not process time format: %s\n", t);
           return -1;
         }
+        if ((hour < 0) || (hour > 23) || (min < 0) ||
+            (min > 59) || (sec < 0) || (sec > 60))
+          return -1;
         tm.tm_hour = hour;
         tm.tm_min = min;
         tm.tm_sec = sec;

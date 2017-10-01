@@ -134,6 +134,8 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     return 0;
   if (sscanf(s, "%d", &tm.tm_mday) != 1)
     return 0;
+  if ((tm.tm_mday < 1) || (tm.tm_mday > 31))
+    return 0;
 
   /* time */
   s = next_word(s);
@@ -146,6 +148,10 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   else if (sscanf(s, "%d:%d", &tm.tm_hour, &tm.tm_min) == 2)
     tm.tm_sec = 0;
   else
+    return 0;
+
+  if ((tm.tm_hour < 0) || (tm.tm_hour > 23) || (tm.tm_min < 0) ||
+      (tm.tm_min > 59) || (tm.tm_sec < 0) || (tm.tm_sec > 60))
     return 0;
 
   s = next_word(s);
@@ -173,6 +179,8 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 
   /* year */
   if (sscanf(s, "%d", &yr) != 1)
+    return 0;
+  if ((yr < 0) || (yr > 9999))
     return 0;
   tm.tm_year = yr > 1900 ? yr - 1900 : (yr < 70 ? yr + 100 : yr);
 
