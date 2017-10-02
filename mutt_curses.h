@@ -27,6 +27,7 @@
 #include <regex.h>
 #include "lib/lib.h"
 #include "options.h"
+#include "queue.h"
 
 #ifdef USE_SLANG_CURSES
 
@@ -186,6 +187,7 @@ enum ColorId
 /**
  * struct ColorLine - A regular expression and a color to highlight a line
  */
+STAILQ_HEAD(ColorLineHead, ColorLine);
 struct ColorLine
 {
   regex_t regex;
@@ -196,7 +198,7 @@ struct ColorLine
   short fg;
   short bg;
   int pair;
-  struct ColorLine *next;
+  STAILQ_ENTRY(ColorLine) entries;
 };
 
 #define MUTT_PROGRESS_SIZE (1 << 0) /**< traffic-based progress */
@@ -268,15 +270,15 @@ static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];
-extern struct ColorLine *ColorHdrList;
-extern struct ColorLine *ColorBodyList;
-extern struct ColorLine *ColorAttachList;
-extern struct ColorLine *ColorStatusList;
-extern struct ColorLine *ColorIndexList;
-extern struct ColorLine *ColorIndexAuthorList;
-extern struct ColorLine *ColorIndexFlagsList;
-extern struct ColorLine *ColorIndexSubjectList;
-extern struct ColorLine *ColorIndexTagList;
+extern struct ColorLineHead ColorHdrList;
+extern struct ColorLineHead ColorBodyList;
+extern struct ColorLineHead ColorAttachList;
+extern struct ColorLineHead ColorStatusList;
+extern struct ColorLineHead ColorIndexList;
+extern struct ColorLineHead ColorIndexAuthorList;
+extern struct ColorLineHead ColorIndexFlagsList;
+extern struct ColorLineHead ColorIndexSubjectList;
+extern struct ColorLineHead ColorIndexTagList;
 
 void ci_start_color(void);
 

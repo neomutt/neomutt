@@ -724,7 +724,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
       break;
 
     /* loop through each "color status regex" */
-    for (cl = ColorStatusList; cl; cl = cl->next)
+    STAILQ_FOREACH(cl, &ColorStatusList, entries)
     {
       regmatch_t pmatch[cl->match + 1];
 
@@ -3326,11 +3326,13 @@ void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 
   memset(&cache, 0, sizeof(cache));
 
-  for (color = ColorIndexList; color; color = color->next)
+  STAILQ_FOREACH(color, &ColorIndexList, entries)
+  {
     if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, curhdr, &cache))
     {
       curhdr->pair = color->pair;
       return;
     }
+  }
   curhdr->pair = ColorDefs[MT_COLOR_NORMAL];
 }
