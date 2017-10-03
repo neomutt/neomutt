@@ -1,5 +1,9 @@
 notifications:
-  email: false
+  email:
+    recipients:
+      - rich@flatcap.org
+    on_success: change
+    on_failure: always
 
 sudo: false
 dist: trusty
@@ -38,7 +42,7 @@ git:
   depth: 3
 
 install:
-  - git clone --branch autosetup --depth 1 https://github.com/neomutt/travis-build.git ~/config
+  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
 
 before_script:
   - ccache --zero-stats
