@@ -81,8 +81,7 @@ struct Url
 
 enum UrlScheme url_check_scheme(const char *s);
 int url_parse(struct Url *u, char *src);
-int url_parse_with_qs(struct Url *u, char *src);
-void url_qs_free(struct UrlQueryStringHead *h);
+void url_free(struct Url *u);
 int url_tostring(struct Url *u, char *dest, size_t len, int flags);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int url_pct_decode(char *s);

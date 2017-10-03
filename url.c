@@ -136,7 +136,7 @@ static int parse_query_string(struct Url *u, char *src)
 
 
 /**
- * _url_parse - Fill in Url
+ * url_parse - Fill in Url
  *
  * @param u        struct Url where the result of stored
  * @param src      pointer to the string to parse
@@ -148,14 +148,12 @@ static int parse_query_string(struct Url *u, char *src)
  * (duplicate it first if you need to).
  *
  * This method doesn't allocated any additional char* of the Url and
- * UrlQueryString structs. It allocated only pointed for the u.query_strings is
- * parse_qs is true.
+ * UrlQueryString structs.
  *
- * To free Url, caller must free "src" and if parse_qs is true, it must
- * call url_qs_free(&u.query_strings);
+ * To free Url, caller must free "src" and call url_free(u);
  *
  */
-static int _url_parse(struct Url *u, char *src, bool parse_qs)
+int url_parse(struct Url *u, char *src)
 {
   char *t = NULL, *p = NULL;
 
@@ -182,7 +180,7 @@ static int _url_parse(struct Url *u, char *src, bool parse_qs)
   if ((t = strchr(src, '?')))
   {
     *t++ = '\0';
-    if (parse_qs && (parse_query_string(u, t) < 0))
+    if (parse_query_string(u, t) < 0)
       goto err;
   }
 
@@ -247,32 +245,22 @@ static int _url_parse(struct Url *u, char *src, bool parse_qs)
   return 0;
 
 err:
-  url_qs_free(&u->query_strings);
+  url_free(u);
   return -1;
 }
 
-int url_parse(struct Url *u, char *src)
+void url_free(struct Url *u)
 {
-  return _url_parse(u, src, false);
-}
-
-int url_parse_with_qs(struct Url *u, char *src)
-{
-  return _url_parse(u, src, true);
-}
-
-void url_qs_free(struct UrlQueryStringHead *h)
-{
-  struct UrlQueryString *np = STAILQ_FIRST(h), *next = NULL;
+  struct UrlQueryString *np = STAILQ_FIRST(&u->query_strings), *next = NULL;
   while (np)
   {
       next = STAILQ_NEXT(np, entries);
       /* NOTE(sileht): We don't free members, they will be freed when
-       * the src char* passed to _url_parse() is freed */
+       * the src char* passed to url_parse() is freed */
       FREE(&np);
       np = next;
   }
-  STAILQ_INIT(h);
+  STAILQ_INIT(&u->query_strings);
 }
 
 void url_pct_encode(char *dst, size_t l, const char *src)

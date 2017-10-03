@@ -296,11 +296,13 @@ static int smtp_fill_account(struct Account *account)
       !url.host ||
       mutt_account_fromurl(account, &url) < 0)
   {
+    url_free(&url);
     FREE(&urlstr);
     mutt_error(_("Invalid SMTP URL: %s"), SmtpUrl);
     mutt_sleep(1);
     return -1;
   }
+  url_free(&url);
   FREE(&urlstr);
 
   if (url.scheme == U_SMTPS)

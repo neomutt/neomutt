@@ -1455,6 +1455,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   strfcpy(buf, ctx->path, sizeof(buf));
   if (url_parse(&url, buf) < 0 || !url.host || !url.path || !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
+    url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification!"), ctx->path);
     mutt_sleep(2);
     return -1;
@@ -1464,6 +1465,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   url.path = strchr(url.path, '\0');
   url_tostring(&url, server, sizeof(server), 0);
   nserv = nntp_select_server(server, true);
+  url_free(&url);
   if (!nserv)
     return -1;
   CurrentNewsSrv = nserv;

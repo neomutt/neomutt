@@ -69,6 +69,7 @@ int pop_parse_path(const char *path, struct Account *acct)
 
   if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host || mutt_account_fromurl(acct, &url) < 0)
   {
+    url_free(&url);
     FREE(&c);
     mutt_error(_("Invalid POP URL: %s\n"), path);
     mutt_sleep(1);
@@ -88,6 +89,7 @@ int pop_parse_path(const char *path, struct Account *acct)
     ;
   }
 
+  url_free(&url);
   FREE(&c);
   return 0;
 }

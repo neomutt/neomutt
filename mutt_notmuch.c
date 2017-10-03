@@ -211,7 +211,7 @@ static void free_ctxdata(struct NmCtxData *data)
 #endif
   data->db = NULL;
 
-  url_qs_free(&data->db_url.query_strings);
+  url_free(&data->db_url);
   FREE(&data->db_url_holder);
   FREE(&data->db_query);
   FREE(&data);
@@ -238,7 +238,7 @@ static struct NmCtxData *new_ctxdata(const char *uri)
   data->db_limit = NmDbLimit;
   data->db_url_holder = safe_strdup(uri);
 
-  if (url_parse_with_qs(&data->db_url, data->db_url_holder) < 0)
+  if (url_parse(&data->db_url, data->db_url_holder) < 0)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), uri);
     FREE(&data);
@@ -1722,7 +1722,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 
   rc = 0;
 gone:
-  url_qs_free(&tmp_ctxdata->db_url.query_strings);
+  url_free(&tmp_ctxdata->db_url);
   FREE(&tmp_ctxdata->db_url_holder);
   FREE(&tmp_ctxdata);
   if (rc < 0)
@@ -1913,7 +1913,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   memset(&url, 0, sizeof(struct Url));
 
-  if (url_parse_with_qs(&url, url_holder) < 0)
+  if (url_parse(&url, url_holder) < 0)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), path);
     goto done;
@@ -1976,7 +1976,7 @@ done:
 #endif
     mutt_debug(1, "nm: count close DB\n");
   }
-  url_qs_free(&url.query_strings);
+  url_free(&url);
   FREE(&url_holder);
 
   mutt_debug(1, "nm: count done [rc=%d]\n", rc);
