@@ -198,10 +198,9 @@ WHERE const char *GitVer;
 
 WHERE struct Hash *Groups;
 WHERE struct Hash *ReverseAliases;
-#ifdef USE_NOTMUCH
+WHERE char *HiddenTags;
 WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
-#endif
 
 WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
@@ -332,7 +331,6 @@ WHERE int NmOpenTimeout;
 WHERE char *NmDefaultUri;
 WHERE char *NmExcludeTags;
 WHERE char *NmUnreadTag;
-WHERE char *NmHiddenTags;
 WHERE char *VfolderFormat;
 WHERE int NmDbLimit;
 WHERE char *NmQueryType;

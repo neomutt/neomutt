@@ -256,7 +256,7 @@ struct ImapData
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
-  /* all folder flags - system flags AND keywords */
+  /* all folder flags - system AND custom flags */
   struct ListHead flags;
 #ifdef USE_HCACHE
   header_cache_t *hcache;
@@ -295,7 +295,6 @@ int imap_exec(struct ImapData *idata, const char *cmd, int flags);
 int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
-void imap_add_keywords(char *s, struct Header *keywords, struct ListHead *mailbox_flags, size_t slen);
 void imap_free_header_data(struct ImapHeaderData **data);
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end);
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes);

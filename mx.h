@@ -63,6 +63,8 @@ struct MxOps
   int (*close_msg)(struct Context *ctx, struct Message *msg);
   int (*commit_msg)(struct Context *ctx, struct Message *msg);
   int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
+  int (*edit_msg_tags)(struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*commit_msg_tags)(struct Context *msg, struct Header *hdr, char *buf);
 };
 
 /**
@@ -107,6 +109,10 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno);
 #ifdef USE_NOTMUCH
 bool mx_is_notmuch(const char *p);
 #endif
+
+int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
+int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags);
+int mx_tags_is_supported(struct Context *ctx);
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 

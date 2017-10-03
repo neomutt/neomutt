@@ -62,8 +62,9 @@
 #include "thread.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
-#include "mx.h"
 #endif
+#include "mutt_tags.h"
+#include "mx.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
@@ -871,9 +872,7 @@ static const struct PatternFlags
   { 'x', MUTT_REFERENCE, 0, eat_regex },
   { 'X', MUTT_MIMEATTACH, 0, eat_range },
   { 'y', MUTT_XLABEL, 0, eat_regex },
-#ifdef USE_NOTMUCH
-  { 'Y', MUTT_NOTMUCH_LABEL, 0, eat_regex },
-#endif
+  { 'Y', MUTT_DRIVER_TAGS, 0, eat_regex },
   { 'z', MUTT_SIZE, 0, eat_range },
   { '=', MUTT_DUPLICATED, 0, NULL },
   { '$', MUTT_UNREFERENCED, 0, NULL },
@@ -1713,18 +1712,13 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
       return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
     case MUTT_XLABEL:
       return (pat->not ^ (h->env->x_label && patmatch(pat, h->env->x_label) == 0));
-#ifdef USE_NOTMUCH
-    case MUTT_NOTMUCH_LABEL:
-      if (ctx && (ctx->magic == MUTT_NOTMUCH))
-      {
-        char *tags = nm_header_get_tags(h);
-        return (pat->not ^ (tags && patmatch(pat, tags) == 0));
-      }
-      else
-      {
-        return 0;
-      }
-#endif
+    case MUTT_DRIVER_TAGS:
+    {
+      char *tags = driver_tags_get(&h->tags);
+      bool ret = (pat->not ^ (tags && patmatch(pat, tags) == 0));
+      FREE(&tags);
+      return ret;
+    }
     case MUTT_HORMEL:
       return (pat->not ^ (h->env->spam && h->env->spam->data &&
                           patmatch(pat, h->env->spam->data) == 0));

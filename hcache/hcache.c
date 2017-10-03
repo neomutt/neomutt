@@ -60,6 +60,7 @@
 #include "list.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
+#include "mutt_tags.h"
 #include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -685,6 +686,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
   nh.path = NULL;
   nh.tree = NULL;
   nh.thread = NULL;
+  STAILQ_INIT(&nh.tags);
 #ifdef MIXMASTER
   STAILQ_INIT(&nh.chain);
 #endif

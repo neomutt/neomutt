@@ -46,6 +46,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
+#include "mutt_tags.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
@@ -56,7 +57,6 @@
 static struct ImapHeaderData *imap_new_header_data(void)
 {
   struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
-  STAILQ_INIT(&d->keywords);
   return d;
 }
 
@@ -162,7 +162,9 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   }
   s++;
 
-  mutt_list_free(&hd->keywords);
+  FREE(&hd->flags_system);
+  FREE(&hd->flags_remote);
+
   hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = false;
 
   /* start parsing */
@@ -197,15 +199,23 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     }
     else
     {
-      /* store custom flags as well */
       char ctmp;
       char *flag_word = s;
+      bool is_system_keyword = (mutt_strncasecmp("\\", s, 1) == 0);
 
       while (*s && !ISSPACE(*s) && *s != ')')
         s++;
+
       ctmp = *s;
       *s = '\0';
-      mutt_list_insert_tail(&hd->keywords, safe_strdup(flag_word));
+
+      /* store other system flags as well (mainly \\Draft) */
+      if (is_system_keyword)
+        mutt_str_append_item(&hd->flags_system, flag_word, ' ');
+      /* store custom flags as well */
+      else
+        mutt_str_append_item(&hd->flags_remote, flag_word, ' ');
+
       *s = ctmp;
     }
     SKIPWS(s);
@@ -626,6 +636,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           ctx->hdrs[idx]->changed = h.data->changed;
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
           ctx->hdrs[idx]->data = (void *) (h.data);
+          STAILQ_INIT(&ctx->hdrs[idx]->tags);
+          driver_tags_replace(&ctx->hdrs[idx]->tags, safe_strdup(h.data->flags_remote));
 
           ctx->msgcount++;
           ctx->size += ctx->hdrs[idx]->content->length;
@@ -744,6 +756,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         ctx->hdrs[idx]->changed = h.data->changed;
         ctx->hdrs[idx]->received = h.received;
         ctx->hdrs[idx]->data = (void *) (h.data);
+        STAILQ_INIT(&ctx->hdrs[idx]->tags);
+        driver_tags_replace(&ctx->hdrs[idx]->tags, safe_strdup(h.data->flags_remote));
 
         if (maxuid < h.data->uid)
           maxuid = h.data->uid;
@@ -1393,29 +1407,6 @@ int imap_cache_clean(struct ImapData *idata)
 }
 
 /**
- * imap_add_keywords - concatenate custom IMAP tags to list
- *
- * If the tags appear in the folder flags list. Why wouldn't they?
- */
-void imap_add_keywords(char *s, struct Header *h, struct ListHead *mailbox_flags, size_t slen)
-{
-  struct ListHead *keywords = &HEADER_DATA(h)->keywords;
-
-  if (STAILQ_EMPTY(mailbox_flags) || !HEADER_DATA(h) || STAILQ_EMPTY(keywords))
-    return;
-
-  struct ListNode *np;
-  STAILQ_FOREACH(np, keywords, entries)
-  {
-    if (imap_has_flag(mailbox_flags, np->data))
-    {
-      safe_strcat(s, slen, np->data);
-      safe_strcat(s, slen, " ");
-    }
-  }
-}
-
-/**
  * imap_free_header_data - free ImapHeader structure
  */
 void imap_free_header_data(struct ImapHeaderData **data)
@@ -1423,7 +1414,8 @@ void imap_free_header_data(struct ImapHeaderData **data)
   if (*data)
   {
     /* this should be safe even if the list wasn't used */
-    mutt_list_free(&(*data)->keywords);
+    FREE(&((*data)->flags_system));
+    FREE(&((*data)->flags_remote));
     FREE(data);
   }
 }
@@ -1486,6 +1478,9 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *ser
   mutt_debug(2, "imap_set_flags: parsing FLAGS\n");
   if ((s = msg_parse_flags(&newh, s)) == NULL)
     return NULL;
+
+  /* Update tags system */
+  driver_tags_replace(&h->tags, safe_strdup(hd->flags_remote));
 
   /* YAUH (yet another ugly hack): temporarily set context to
    * read-write even if it's read-only, so *server* updates of

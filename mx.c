@@ -1367,3 +1367,36 @@ int mx_check_empty(const char *path)
   }
   /* not reached */
 }
+
+/**
+ * mx_tags_editor - start the tag editor of the mailbox
+ * @retval -1 Error
+ */
+int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+{
+  if (ctx->mx_ops->edit_msg_tags)
+    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf, buflen);
+
+  mutt_message(_("Folder doesn't support tagging, aborting."));
+  return -1;
+}
+
+/**
+ * mx_tags_commit - save tags to the mailbox
+ */
+int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags)
+{
+  if (ctx->mx_ops->commit_msg_tags)
+    return ctx->mx_ops->commit_msg_tags(ctx, h, tags);
+
+  mutt_message(_("Folder doesn't support tagging, aborting."));
+  return -1;
+}
+
+/**
+ * mx_tags_is_supported - return true if mailbox support tagging
+ */
+int mx_tags_is_supported(struct Context *ctx)
+{
+  return ctx->mx_ops->commit_msg_tags && ctx->mx_ops->edit_msg_tags;
+}

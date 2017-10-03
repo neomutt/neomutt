@@ -42,6 +42,7 @@
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "mutt_tags.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -469,9 +470,11 @@ static char *apply_subject_mods(struct Envelope *env)
  * | \%E     | number of messages in current thread
  * | \%f     | entire from line
  * | \%F     | like %n, unless from self
- * | \%g     | message labels (e.g. notmuch tags)
+ * | \%g     | message tags (e.g. notmuch tags/imap flags)
+ * | \%Gx    | individual message tag (e.g. notmuch tags/imap flags)
  * | \%i     | message-id
  * | \%I     | initials of author
+ * | \%J     | message tags (if present, tree unfolded, and != parent's tags)
  * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
  * | \%l     | number of lines in the message
  * | \%L     | like %F, except `lists' are displayed first
@@ -507,7 +510,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
   struct Context *ctx = NULL;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], *p, *tags = NULL;
   char *wch = NULL;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -837,22 +840,20 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         optional = 0;
       break;
 
-#ifdef USE_NOTMUCH
-    case 'g':
+    case 'g':;
+      tags = driver_tags_get_transformed(&hdr->tags);
       if (!optional)
       {
         colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      nm_header_get_tags_transformed(hdr));
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
         add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!nm_header_get_tags_transformed(hdr))
+      else if (!tags)
         optional = 0;
+      FREE(&tags);
       break;
 
-    case 'G':
-    {
-      char *tag_transformed = NULL;
+    case 'G':;
       char format[3];
       char *tag = NULL;
 
@@ -865,14 +866,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         tag = hash_find(TagFormats, format);
         if (tag)
         {
-          tag_transformed = nm_header_get_tag_transformed(tag, hdr);
-
+          tags = driver_tags_get_transformed_for(tag, &hdr->tags);
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                        (tag_transformed) ? tag_transformed : "");
+          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
           add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          FREE(&tags);
         }
-
         src++;
       }
       else
@@ -882,13 +881,14 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[2] = 0;
 
         tag = hash_find(TagFormats, format);
-        if (tag)
-          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
+        if (tag) {
+          tags = driver_tags_get_transformed_for(tag, &hdr->tags);
+          if (!tags)
             optional = 0;
+          FREE(&tags);
+        }
       }
       break;
-    }
-#endif
 
     case 'H':
       /* (Hormel) spam score */
@@ -904,6 +904,37 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'i':
       mutt_format_s(dest, destlen, prefix,
                     hdr->env->message_id ? hdr->env->message_id : "<no.id>");
+      break;
+
+    case 'J':;
+      tags = driver_tags_get_transformed(&hdr->tags);
+      if (tags)
+      {
+        i = 1; /* reduce reuse recycle */
+        if (flags & MUTT_FORMAT_TREE){
+          char *parent_tags = NULL;
+          if (hdr->thread->prev && hdr->thread->prev->message)
+            parent_tags = driver_tags_get_transformed(&hdr->thread->prev->message->tags);
+          if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
+            parent_tags = driver_tags_get_transformed(&hdr->thread->parent->message->tags);
+          if (parent_tags && mutt_strcasecmp(tags, parent_tags) == 0)
+            i = 0;
+          FREE(&parent_tags);
+        }
+      }
+      else
+        i = 0;
+
+      if (optional)
+        optional = i;
+
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
+      if (i)
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
+      else
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
+      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      FREE(&tags);
       break;
 
     case 'l':
