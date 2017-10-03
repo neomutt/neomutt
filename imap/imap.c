@@ -200,24 +200,18 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
  */
 void imap_logout_all(void)
 {
-  struct Connection *conn = NULL;
-  struct Connection *tmp = NULL;
-
-  conn = mutt_socket_head();
-
-  while (conn)
+  struct ConnectionList *head = mutt_socket_head();
+  struct Connection *np, *tmp;
+  TAILQ_FOREACH_SAFE(np, head, entries, tmp)
   {
-    tmp = conn->next;
-
-    if (conn->account.type == MUTT_ACCT_TYPE_IMAP && conn->fd >= 0)
+    if (np->account.type == MUTT_ACCT_TYPE_IMAP && np->fd >= 0)
     {
-      mutt_message(_("Closing connection to %s..."), conn->account.host);
-      imap_logout((struct ImapData **) (void *) &conn->data);
+      TAILQ_REMOVE(head, np, entries);
+      mutt_message(_("Closing connection to %s..."), np->account.host);
+      imap_logout((struct ImapData **) (void *) &np->data);
       mutt_clear_error();
-      mutt_socket_free(conn);
+      mutt_socket_free(np);
     }
-
-    conn = tmp;
   }
 }
 
@@ -2303,7 +2297,7 @@ static int imap_complete_hosts(char *dest, size_t len)
     }
   }
 
-  for (conn = mutt_socket_head(); conn; conn = conn->next)
+  TAILQ_FOREACH(conn, mutt_socket_head(), entries)
   {
     struct Url url;
     char urlstr[LONG_STRING];

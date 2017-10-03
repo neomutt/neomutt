@@ -46,7 +46,7 @@
 #endif
 
 /* support for multiple socket connections */
-static struct Connection *Connections = NULL;
+static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
 
 static int socket_preconnect(void)
 {
@@ -218,9 +218,9 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
   return i + 1;
 }
 
-struct Connection *mutt_socket_head(void)
+struct ConnectionList *mutt_socket_head(void)
 {
-  return Connections;
+  return &Connections;
 }
 
 /**
@@ -228,29 +228,15 @@ struct Connection *mutt_socket_head(void)
  */
 void mutt_socket_free(struct Connection *conn)
 {
-  struct Connection *iter = NULL;
-  struct Connection *tmp = NULL;
-
-  iter = Connections;
-
-  /* head is special case, doesn't need prev updated */
-  if (iter == conn)
+  struct Connection *np = NULL;
+  TAILQ_FOREACH(np, &Connections, entries)
   {
-    Connections = iter->next;
-    FREE(&iter);
-    return;
-  }
-
-  while (iter->next)
-  {
-    if (iter->next == conn)
+    if (np == conn)
     {
-      tmp = iter->next;
-      iter->next = tmp->next;
-      FREE(&tmp);
+      TAILQ_REMOVE(&Connections, np, entries);
+      FREE(&np);
       return;
     }
-    iter = iter->next;
   }
 }
 
@@ -288,19 +274,18 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
-  conn = start ? start->next : Connections;
+  conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(&Connections);
   while (conn)
   {
     if (mutt_account_match(account, &(conn->account)))
       return conn;
-    conn = conn->next;
+    conn = TAILQ_NEXT(conn, entries);
   }
 
   conn = socket_new_conn();
   memcpy(&conn->account, account, sizeof(struct Account));
 
-  conn->next = Connections;
-  Connections = conn;
+  TAILQ_INSERT_HEAD(&Connections, conn, entries);
 
   if (Tunnel && *Tunnel)
     mutt_tunnel_socket_setup(conn);

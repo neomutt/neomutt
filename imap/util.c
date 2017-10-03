@@ -902,7 +902,7 @@ void imap_keepalive(void)
   struct ImapData *idata = NULL;
   time_t now = time(NULL);
 
-  for (conn = mutt_socket_head(); conn; conn = conn->next)
+  TAILQ_FOREACH(conn, mutt_socket_head(), entries)
   {
     if (conn->account.type == MUTT_ACCT_TYPE_IMAP)
     {

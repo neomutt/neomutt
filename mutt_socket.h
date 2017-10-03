@@ -26,12 +26,18 @@
 
 #include <stddef.h>
 #include "account.h"
+#include "list.h"
 #include "lib/lib.h"
 
 /* logging levels */
 #define MUTT_SOCK_LOG_CMD  2
 #define MUTT_SOCK_LOG_HDR  3
 #define MUTT_SOCK_LOG_FULL 4
+
+/**
+ * struct ConnectionList - A list of connections
+ */
+TAILQ_HEAD(ConnectionList, Connection);
 
 /**
  * struct Connection - An open network connection (socket)
@@ -48,7 +54,7 @@ struct Connection
   int fd;
   int available;
 
-  struct Connection *next;
+  TAILQ_ENTRY(Connection) entries;
 
   void *sockdata;
   int (*conn_read)(struct Connection *conn, char *buf, size_t len);
@@ -69,7 +75,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
 int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int dbg);
 
 /* stupid hack for imap_logout_all */
-struct Connection *mutt_socket_head(void);
+struct ConnectionList *mutt_socket_head(void);
 void mutt_socket_free(struct Connection *conn);
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account);
 
