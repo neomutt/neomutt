@@ -334,9 +334,9 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
  */
 void mutt_tag_set_flag(int flag, int bf)
 {
-  for (int i = 0; i < Context->vcount; i++)
-    if (Context->hdrs[Context->v2r[i]]->tagged)
-      mutt_set_flag(Context, Context->hdrs[Context->v2r[i]], flag, bf);
+  for (int i = 0; i < Context->msgcount; i++)
+    if (message_is_tagged(Context, i))
+      mutt_set_flag(Context, Context->hdrs[i], flag, bf);
 }
 
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)

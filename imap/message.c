@@ -1275,14 +1275,14 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
        * remainder. */
       for (int i = 0; i < ctx->msgcount; i++)
       {
-        if (ctx->hdrs[i]->tagged && ctx->hdrs[i]->attach_del)
+        if (message_is_tagged(ctx, i) && ctx->hdrs[i]->attach_del)
         {
           mutt_debug(3, "imap_copy_messages: Message contains attachments to "
                         "be deleted\n");
           return 1;
         }
 
-        if (ctx->hdrs[i]->tagged && ctx->hdrs[i]->active && ctx->hdrs[i]->changed)
+        if (message_is_tagged(ctx, i) && ctx->hdrs[i]->active && ctx->hdrs[i]->changed)
         {
           rc = imap_sync_message_for_copy(idata, ctx->hdrs[i], &sync_cmd, &err_continue);
           if (rc < 0)
@@ -1368,7 +1368,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
     {
       for (int i = 0; i < ctx->msgcount; i++)
       {
-        if (ctx->hdrs[i]->tagged)
+        if (message_is_tagged(ctx, i))
         {
           mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
           mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);

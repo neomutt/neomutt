@@ -281,7 +281,7 @@ void ci_bounce_message(struct Header *h)
   {
     for (rc = 0; rc < Context->msgcount; rc++)
     {
-      if (Context->hdrs[rc]->tagged && !Context->hdrs[rc]->env->from)
+      if (message_is_tagged(Context, rc) && !Context->hdrs[rc]->env->from)
       {
         mutt_error(_("Warning: message contains no From: header"));
         mutt_sleep(2);
@@ -429,24 +429,24 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
 
     if (WithCrypto && decode)
     {
-      for (int i = 0; i < Context->vcount; i++)
-        if (Context->hdrs[Context->v2r[i]]->tagged)
+      for (int i = 0; i < Context->msgcount; i++)
+        if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
-          mutt_parse_mime_message(Context, Context->hdrs[Context->v2r[i]]);
-          if (Context->hdrs[Context->v2r[i]]->security & ENCRYPT &&
-              !crypt_valid_passphrase(Context->hdrs[Context->v2r[i]]->security))
+          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+          mutt_parse_mime_message(Context, Context->hdrs[i]);
+          if (Context->hdrs[i]->security & ENCRYPT &&
+              !crypt_valid_passphrase(Context->hdrs[i]->security))
             return 1;
         }
     }
 
     if (split)
     {
-      for (int i = 0; i < Context->vcount; i++)
+      for (int i = 0; i < Context->msgcount; i++)
       {
-        if (Context->hdrs[Context->v2r[i]]->tagged)
+        if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
+          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
           mutt_endwin(NULL);
           thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
           if (thepid < 0)
@@ -455,7 +455,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
             return 1;
           }
           set_option(OPT_KEEP_QUIET);
-          pipe_msg(Context->hdrs[Context->v2r[i]], fpout, decode, print);
+          pipe_msg(Context->hdrs[i], fpout, decode, print);
           /* add the message separator */
           if (sep)
             fputs(sep, fpout);
@@ -476,12 +476,12 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
         return 1;
       }
       set_option(OPT_KEEP_QUIET);
-      for (int i = 0; i < Context->vcount; i++)
+      for (int i = 0; i < Context->msgcount; i++)
       {
-        if (Context->hdrs[Context->v2r[i]]->tagged)
+        if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
-          pipe_msg(Context->hdrs[Context->v2r[i]], fpout, decode, print);
+          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+          pipe_msg(Context->hdrs[i], fpout, decode, print);
           /* add the message separator */
           if (sep)
             fputs(sep, fpout);
@@ -782,11 +782,11 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   {
     /* look for the first tagged message */
 
-    for (int i = 0; i < Context->vcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
     {
-      if (Context->hdrs[Context->v2r[i]]->tagged)
+      if (message_is_tagged(Context, i))
       {
-        h = Context->hdrs[Context->v2r[i]];
+        h = Context->hdrs[i];
         break;
       }
     }
@@ -892,18 +892,18 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
       if (Context->magic == MUTT_NOTMUCH)
         nm_longrun_init(Context, true);
 #endif
-      for (int i = 0; i < Context->vcount; i++)
+      for (int i = 0; i < Context->msgcount; i++)
       {
-        if (Context->hdrs[Context->v2r[i]]->tagged)
+        if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
-          if ((rc = _mutt_save_message(Context->hdrs[Context->v2r[i]], &ctx,
-                                       delete, decode, decrypt) != 0))
+          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+          if ((rc = _mutt_save_message(Context->hdrs[i], &ctx,
+                                      delete, decode, decrypt) != 0))
             break;
 #ifdef USE_COMPRESSED
           if (cm)
           {
-            struct Header *h2 = Context->hdrs[Context->v2r[i]];
+            struct Header *h2 = Context->hdrs[i];
             cm->msg_count++;
             if (!h2->read)
               cm->msg_unread++;
@@ -1081,11 +1081,11 @@ int mutt_check_traditional_pgp(struct Header *h, int *redraw)
     rv = _mutt_check_traditional_pgp(h, redraw);
   else
   {
-    for (int i = 0; i < Context->vcount; i++)
-      if (Context->hdrs[Context->v2r[i]]->tagged &&
-          !(Context->hdrs[Context->v2r[i]]->security & PGP_TRADITIONAL_CHECKED))
+    for (int i = 0; i < Context->msgcount; i++)
+      if (message_is_tagged(Context, i) &&
+          !(Context->hdrs[i]->security & PGP_TRADITIONAL_CHECKED))
       {
-        rv = _mutt_check_traditional_pgp(Context->hdrs[Context->v2r[i]], redraw) || rv;
+        rv = _mutt_check_traditional_pgp(Context->hdrs[i], redraw) || rv;
       }
   }
   return rv;

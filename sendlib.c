@@ -2759,7 +2759,7 @@ static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
   {
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->msgcount; i++)
-      if (Context->hdrs[i]->tagged)
+      if (message_is_tagged(Context, i))
         ret |= _mutt_bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
     return ret;
   }
