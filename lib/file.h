@@ -29,11 +29,6 @@
 
 struct stat;
 
-#undef MAX
-#undef MIN
-#define MAX(a, b) ((a) < (b) ? (b) : (a))
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-
 /* Flags for mutt_read_line() */
 #define MUTT_CONT (1 << 0) /**< \-continuation */
 #define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */

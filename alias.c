@@ -512,10 +512,6 @@ int mutt_alias_complete(char *s, size_t buflen)
   char bestname[HUGE_STRING];
   int i;
 
-#ifndef min
-#define min(a, b) ((a < b) ? a : b)
-#endif
-
   if (s[0] != 0) /* avoid empty string as strstr argument */
   {
     memset(bestname, 0, sizeof(bestname));
@@ -525,7 +521,7 @@ int mutt_alias_complete(char *s, size_t buflen)
       if (a->name && strstr(a->name, s) == a->name)
       {
         if (!bestname[0]) /* init */
-          strfcpy(bestname, a->name, min(mutt_strlen(a->name) + 1, sizeof(bestname)));
+          strfcpy(bestname, a->name, MIN(mutt_strlen(a->name) + 1, sizeof(bestname)));
         else
         {
           for (i = 0; a->name[i] && a->name[i] == bestname[i]; i++)
