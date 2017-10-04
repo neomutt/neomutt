@@ -775,13 +775,13 @@ static int get_database_mtime(struct NmCtxData *data, time_t *mtime)
 
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  char *buf = NULL, *p = NULL, *end = NULL, *tag = NULL;
+  char *buf = NULL, *end = NULL, *tag = NULL;
 
   if (!NmExcludeTags || !*NmExcludeTags)
     return;
   buf = safe_strdup(NmExcludeTags);
 
-  for (p = buf; p && *p; p++)
+  for (char *p = buf; p && *p; p++)
   {
     if (!tag && isspace(*p))
       continue;
@@ -1382,13 +1382,13 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
  */
 static int update_header_flags(struct Context *ctx, struct Header *hdr, const char *tags)
 {
-  char *tag = NULL, *end = NULL, *p = NULL;
+  char *tag = NULL, *end = NULL;
   char *buf = safe_strdup(tags);
 
   if (!buf)
     return -1;
 
-  for (p = buf; p && *p; p++)
+  for (char *p = buf; p && *p; p++)
   {
     if (!tag && isspace(*p))
       continue;
@@ -2301,7 +2301,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
   time_t mtime = 0;
   notmuch_query_t *q = NULL;
   notmuch_messages_t *msgs = NULL;
-  int i, limit, new_flags = 0;
+  int limit, new_flags = 0;
   bool occult = false;
 
   if (!data || (get_database_mtime(data, &mtime) != 0))
@@ -2323,7 +2323,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
   data->oldmsgcount = ctx->msgcount;
   data->noprogress = true;
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
     ctx->hdrs[i]->active = false;
 
   limit = get_limit(data);
@@ -2338,7 +2338,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
   msgs = notmuch_query_search_messages(q);
 #endif
 
-  for (i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
+  for (int i = 0; notmuch_messages_valid(msgs) && ((limit == 0) || (i < limit));
        notmuch_messages_move_to_next(msgs), i++)
   {
     char old[_POSIX_PATH_MAX];
@@ -2385,7 +2385,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
     notmuch_message_destroy(m);
   }
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->active)
     {

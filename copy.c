@@ -496,13 +496,12 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
-  long l;
   int ch;
 
   if (b->deleted)
   {
     fseeko(fp, b->offset, SEEK_SET);
-    for (l = b->length; l; l--)
+    for (long l = b->length; l; l--)
     {
       ch = getc(fp);
       if (ch == EOF)
@@ -513,7 +512,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
     dellines -= 3;
     *length -= b->length - (84 + datelen);
     /* Count the number of digits exceeding the first one to write the size */
-    for (l = 10; b->length >= l; l *= 10)
+    for (long l = 10; b->length >= l; l *= 10)
       (*length)++;
   }
   else

@@ -280,7 +280,6 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 int mutt_label_message(struct Header *hdr)
 {
   char buf[LONG_STRING], *new = NULL;
-  int i;
   int changed;
 
   if (!Context || !Context->label_hash)
@@ -312,7 +311,7 @@ int mutt_label_message(struct Header *hdr)
   else
   {
 #define HDR_OF(index) Context->hdrs[Context->v2r[(index)]]
-    for (i = 0; i < Context->vcount; ++i)
+    for (int i = 0; i < Context->vcount; ++i)
     {
       if (HDR_OF(i)->tagged)
         if (label_message(Context, HDR_OF(i), new))

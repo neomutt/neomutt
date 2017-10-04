@@ -987,7 +987,7 @@ void mx_update_tables(struct Context *ctx, int committing)
  */
 int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 {
-  int rc, i;
+  int rc;
   int purge = 1;
   int msgcount, deleted;
 
@@ -1032,7 +1032,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
       /* let IMAP servers hold on to D flags */
       if (ctx->magic != MUTT_IMAP)
       {
-        for (i = 0; i < ctx->msgcount; i++)
+        for (int i = 0; i < ctx->msgcount; i++)
         {
           ctx->hdrs[i]->deleted = false;
           ctx->hdrs[i]->purge = false;

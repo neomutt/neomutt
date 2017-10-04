@@ -629,14 +629,13 @@ void fgetconv_close(FGETCONV **_fc)
 
 bool mutt_check_charset(const char *s, bool strict)
 {
-  int i;
   iconv_t cd;
 
   if (mutt_is_utf8(s))
     return true;
 
   if (!strict)
-    for (i = 0; PreferredMIMENames[i].key; i++)
+    for (int i = 0; PreferredMIMENames[i].key; i++)
     {
       if ((mutt_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
           (mutt_strcasecmp(PreferredMIMENames[i].pref, s) == 0))

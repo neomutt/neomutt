@@ -1379,12 +1379,11 @@ static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
 static int match_adrlist(struct Pattern *pat, int match_personal, int n, ...)
 {
   va_list ap;
-  struct Address *a = NULL;
 
   va_start(ap, n);
   for (; n; n--)
   {
-    for (a = va_arg(ap, struct Address *); a; a = a->next)
+    for (struct Address *a = va_arg(ap, struct Address *); a; a = a->next)
     {
       if (pat->alladdr ^ ((!pat->isalias || alias_reverse_lookup(a)) &&
                           ((a->mailbox && !patmatch(pat, a->mailbox)) ||
@@ -1767,9 +1766,8 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
 {
   char tmp[LONG_STRING];
   bool do_simple = true;
-  char *p = NULL;
 
-  for (p = s; p && *p; p++)
+  for (char *p = s; p && *p; p++)
   {
     if (*p == '\\' && *(p + 1))
       p++;
@@ -1994,7 +1992,6 @@ int mutt_pattern_func(int op, char *prompt)
 
 int mutt_search_command(int cur, int op)
 {
-  int i, j;
   char buf[STRING];
   char temp[LONG_STRING];
   int incr;
@@ -2045,7 +2042,7 @@ int mutt_search_command(int cur, int op)
 
   if (option(OPT_SEARCH_INVALID))
   {
-    for (i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = false;
 #ifdef USE_IMAP
     if (Context->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
@@ -2061,7 +2058,7 @@ int mutt_search_command(int cur, int op)
   mutt_progress_init(&progress, _("Searching..."), MUTT_PROGRESS_MSG, ReadInc,
                      Context->vcount);
 
-  for (i = cur + incr, j = 0; j != Context->vcount; j++)
+  for (int i = cur + incr, j = 0; j != Context->vcount; j++)
   {
     mutt_progress_update(&progress, j, -1);
     if (i > Context->vcount - 1)

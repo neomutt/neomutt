@@ -823,11 +823,9 @@ struct Menu *mutt_new_menu(int menu)
 
 void mutt_menu_destroy(struct Menu **p)
 {
-  int i;
-
   if ((*p)->dialog)
   {
-    for (i = 0; i < (*p)->max; i++)
+    for (int i = 0; i < (*p)->max; i++)
       FREE(&(*p)->dialog[i]);
 
     FREE(&(*p)->dialog);

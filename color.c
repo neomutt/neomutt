@@ -207,7 +207,6 @@ void ci_start_color(void)
 static char *get_color_name(char *dest, size_t destlen, int val)
 {
   static const char *const missing[3] = { "brown", "lightgray", "default" };
-  int i;
 
   switch (val)
   {
@@ -224,7 +223,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
       return dest;
   }
 
-  for (i = 0; Colors[i].name; i++)
+  for (int i = 0; Colors[i].name; i++)
   {
     if (Colors[i].value == val)
     {

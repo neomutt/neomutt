@@ -334,7 +334,6 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
  */
 static void cmd_parse_capability(struct ImapData *idata, char *s)
 {
-  int x;
   bool found;
   char *bracket = NULL;
 
@@ -351,23 +350,25 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
   while (*s)
   {
     found = false;
-    for (x = 0; x < CAPMAX; x++)
-      if (imap_wordcasecmp(Capabilities[x], s) == 0)
+    for (int i = 0; i < CAPMAX; i++)
+    {
+      if (imap_wordcasecmp(Capabilities[i], s) == 0)
       {
-        mutt_bit_set(idata->capabilities, x);
-        mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[x], x);
+        mutt_bit_set(idata->capabilities, i);
+        mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[i], i);
         found = true;
         break;
       }
+    }
     if (!found)
     {
-      for (x = 0; CapabilityAliases[x].name != NULL; x++)
+      for (int i = 0; CapabilityAliases[i].name != NULL; i++)
       {
-        if (imap_wordcasecmp(CapabilityAliases[x].name, s) == 0)
+        if (imap_wordcasecmp(CapabilityAliases[i].name, s) == 0)
         {
-          mutt_bit_set(idata->capabilities, CapabilityAliases[x].value);
+          mutt_bit_set(idata->capabilities, CapabilityAliases[i].value);
           mutt_debug(4, " Found capability \"%s\": %d\n",
-                     CapabilityAliases[x].name, CapabilityAliases[x].value);
+                     CapabilityAliases[i].name, CapabilityAliases[i].value);
           break;
         }
       }

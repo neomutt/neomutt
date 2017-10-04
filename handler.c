@@ -1289,8 +1289,6 @@ int mutt_can_decode(struct Body *a)
     return 1;
   else if (a->type == TYPEMULTIPART)
   {
-    struct Body *p = NULL;
-
     if (WithCrypto)
     {
       if ((mutt_strcasecmp(a->subtype, "signed") == 0) ||
@@ -1298,9 +1296,9 @@ int mutt_can_decode(struct Body *a)
         return 1;
     }
 
-    for (p = a->parts; p; p = p->next)
+    for (struct Body *b = a->parts; b; b = b->next)
     {
-      if (mutt_can_decode(p))
+      if (mutt_can_decode(b))
         return 1;
     }
   }

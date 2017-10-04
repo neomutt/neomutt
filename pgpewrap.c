@@ -22,7 +22,6 @@ static void print_usage(const char *progname)
 int main(int argc, char **argv)
 {
   char **opts = NULL, **opt = NULL, *pfx = NULL;
-  int i;
 
   if (argc < 2)
   {
@@ -40,7 +39,7 @@ int main(int argc, char **argv)
   *opt++ = argv[1];
   pfx = NULL;
 
-  for (i = 2; i < argc;)
+  for (int i = 2; i < argc;)
   {
     if (strcmp(argv[i], "--") == 0)
     {

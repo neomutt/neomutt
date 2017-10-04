@@ -1220,7 +1220,6 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
   int rc;
-  int n;
   struct ImapMbox mx;
   int err_continue = MUTT_NO;
   int triedcreate = 0;
@@ -1264,18 +1263,18 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
        * remainder. */
-      for (n = 0; n < ctx->msgcount; n++)
+      for (int i = 0; i < ctx->msgcount; i++)
       {
-        if (ctx->hdrs[n]->tagged && ctx->hdrs[n]->attach_del)
+        if (ctx->hdrs[i]->tagged && ctx->hdrs[i]->attach_del)
         {
           mutt_debug(3, "imap_copy_messages: Message contains attachments to "
                         "be deleted\n");
           return 1;
         }
 
-        if (ctx->hdrs[n]->tagged && ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
+        if (ctx->hdrs[i]->tagged && ctx->hdrs[i]->active && ctx->hdrs[i]->changed)
         {
-          rc = imap_sync_message_for_copy(idata, ctx->hdrs[n], &sync_cmd, &err_continue);
+          rc = imap_sync_message_for_copy(idata, ctx->hdrs[i], &sync_cmd, &err_continue);
           if (rc < 0)
           {
             mutt_debug(1, "imap_copy_messages: could not sync\n");
@@ -1355,16 +1354,18 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
   if (delete)
   {
     if (!h)
-      for (n = 0; n < ctx->msgcount; n++)
+    {
+      for (int i = 0; i < ctx->msgcount; i++)
       {
-        if (ctx->hdrs[n]->tagged)
+        if (ctx->hdrs[i]->tagged)
         {
-          mutt_set_flag(ctx, ctx->hdrs[n], MUTT_DELETE, 1);
-          mutt_set_flag(ctx, ctx->hdrs[n], MUTT_PURGE, 1);
+          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
+          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);
           if (option(OPT_DELETE_UNTAG))
-            mutt_set_flag(ctx, ctx->hdrs[n], MUTT_TAG, 0);
+            mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, 0);
         }
       }
+    }
     else
     {
       mutt_set_flag(ctx, h, MUTT_DELETE, 1);

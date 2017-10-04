@@ -305,7 +305,6 @@ sort_t *mutt_get_sort_func(int method)
 
 void mutt_sort_headers(struct Context *ctx, int init)
 {
-  int i;
   struct Header *h = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
@@ -331,7 +330,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
 
   if (option(OPT_NEED_RESCORE) && option(OPT_SCORE))
   {
-    for (i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->msgcount; i++)
       mutt_score_message(ctx, ctx->hdrs[i], 1);
   }
   unset_option(OPT_NEED_RESCORE);
@@ -352,7 +351,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
        subthreads need to be resorted */
     if (option(OPT_SORT_SUBTHREADS))
     {
-      i = Sort;
+      int i = Sort;
       Sort = SortAux;
       if (ctx->tree)
         ctx->tree = mutt_sort_subthreads(ctx->tree, 1);
@@ -373,7 +372,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
 
   /* adjust the virtual message numbers */
   ctx->vcount = 0;
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     struct Header *cur = ctx->hdrs[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))

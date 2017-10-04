@@ -205,8 +205,7 @@ static void collapse_all(struct Menu *menu, int toggle)
 
   /* Restore the cursor */
   mutt_set_virtual(Context);
-  int j;
-  for (j = 0; j < Context->vcount; j++)
+  for (int j = 0; j < Context->vcount; j++)
   {
     if (Context->hdrs[Context->v2r[j]]->index == base->index)
     {
@@ -220,9 +219,7 @@ static void collapse_all(struct Menu *menu, int toggle)
 
 static int ci_next_undeleted(int msgno)
 {
-  int i;
-
-  for (i = msgno + 1; i < Context->vcount; i++)
+  for (int i = msgno + 1; i < Context->vcount; i++)
     if (!Context->hdrs[Context->v2r[i]]->deleted)
       return i;
   return -1;
@@ -230,9 +227,7 @@ static int ci_next_undeleted(int msgno)
 
 static int ci_previous_undeleted(int msgno)
 {
-  int i;
-
-  for (i = msgno - 1; i >= 0; i--)
+  for (int i = msgno - 1; i >= 0; i--)
     if (!Context->hdrs[Context->v2r[i]]->deleted)
       return i;
   return -1;
@@ -246,11 +241,11 @@ static int ci_previous_undeleted(int msgno)
  */
 static int ci_first_message(void)
 {
-  int old = -1, i;
+  int old = -1;
 
   if (Context && Context->msgcount)
   {
-    for (i = 0; i < Context->vcount; i++)
+    for (int i = 0; i < Context->vcount; i++)
     {
       if (!Context->hdrs[Context->v2r[i]]->read &&
           !Context->hdrs[Context->v2r[i]]->deleted)
@@ -309,14 +304,13 @@ static int mx_toggle_write(struct Context *ctx)
 
 static void resort_index(struct Menu *menu)
 {
-  int i;
   struct Header *current = CURHDR;
 
   menu->current = -1;
   mutt_sort_headers(Context, 0);
   /* Restore the current message */
 
-  for (i = 0; i < Context->vcount; i++)
+  for (int i = 0; i < Context->vcount; i++)
   {
     if (Context->hdrs[Context->v2r[i]] == current)
     {
@@ -338,7 +332,6 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 {
   /* store pointers to the newly added messages */
   struct Header **save_new = NULL;
-  int j;
 
   if (!menu || !ctx)
     return;
@@ -357,20 +350,20 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
    * they will be visible in the limited view */
   if (ctx->pattern)
   {
-    for (j = (check == MUTT_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
+    for (int i = (check == MUTT_REOPENED) ? 0 : oldcount; i < ctx->msgcount; i++)
     {
-      if (!j)
+      if (!i)
         ctx->vcount = 0;
 
       if (mutt_pattern_exec(ctx->limit_pattern, MUTT_MATCH_FULL_ADDRESS, ctx,
-                            ctx->hdrs[j], NULL))
+                            ctx->hdrs[i], NULL))
       {
         assert(ctx->vcount < ctx->msgcount);
-        ctx->hdrs[j]->virtual = ctx->vcount;
-        ctx->v2r[ctx->vcount] = j;
-        ctx->hdrs[j]->limited = true;
+        ctx->hdrs[i]->virtual = ctx->vcount;
+        ctx->v2r[ctx->vcount] = i;
+        ctx->hdrs[i]->limited = true;
         ctx->vcount++;
-        struct Body *b = ctx->hdrs[j]->content;
+        struct Body *b = ctx->hdrs[i]->content;
         ctx->vsize += b->length + b->offset - b->hdr_offset;
       }
     }
@@ -381,8 +374,8 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
       ((Sort & SORT_MASK) == SORT_THREADS))
   {
     save_new = safe_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
-    for (j = oldcount; j < ctx->msgcount; j++)
-      save_new[j - oldcount] = ctx->hdrs[j];
+    for (int i = oldcount; i < ctx->msgcount; i++)
+      save_new[i - oldcount] = ctx->hdrs[i];
   }
 
   /* if the mailbox was reopened, need to rethread from scratch */
@@ -407,14 +400,12 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     }
     else if (oldcount)
     {
-      for (j = 0; j < ctx->msgcount - oldcount; j++)
+      for (int i = 0; i < ctx->msgcount - oldcount; i++)
       {
-        int k;
-
-        for (k = 0; k < ctx->msgcount; k++)
+        for (int k = 0; k < ctx->msgcount; k++)
         {
           struct Header *h = ctx->hdrs[k];
-          if (h == save_new[j] && (!ctx->pattern || h->limited))
+          if (h == save_new[i] && (!ctx->pattern || h->limited))
             mutt_uncollapse_thread(ctx, h);
         }
       }
@@ -427,11 +418,11 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   if (oldcount)
   {
     /* restore the current message to the message it was pointing to */
-    for (j = 0; j < ctx->vcount; j++)
+    for (int i = 0; i < ctx->vcount; i++)
     {
-      if (ctx->hdrs[ctx->v2r[j]]->index == menu->oldcurrent)
+      if (ctx->hdrs[ctx->v2r[i]]->index == menu->oldcurrent)
       {
-        menu->current = j;
+        menu->current = i;
         break;
       }
     }
@@ -1348,7 +1339,6 @@ int mutt_index_menu(void)
           {
             struct Header *oldcur = CURHDR;
             struct Header *hdr = NULL;
-            int k;
             bool quiet = Context->quiet;
 
             if (rc2 < 0)
@@ -1374,7 +1364,7 @@ int mutt_index_menu(void)
             /* try to restore old position */
             else
             {
-              for (k = 0; k < Context->msgcount; k++)
+              for (int k = 0; k < Context->msgcount; k++)
               {
                 if (Context->hdrs[k]->index == oldindex)
                 {

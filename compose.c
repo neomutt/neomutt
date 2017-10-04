@@ -205,13 +205,12 @@ static void calc_header_width_padding(int idx, const char *header, int calc_max)
 static void init_header_padding(void)
 {
   static short done = 0;
-  int i;
 
   if (done)
     return;
   done = 1;
 
-  for (i = 0; i <= HDR_XCOMMENTTO; i++)
+  for (int i = 0; i <= HDR_XCOMMENTTO; i++)
     calc_header_width_padding(i, _(Prompts[i]), 1);
 
   /* Don't include "Sign as: " in the MaxHeaderWidth calculation.  It
@@ -219,7 +218,7 @@ static void init_header_padding(void)
    * the other fields look funny. */
   calc_header_width_padding(HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), 0);
 
-  for (i = 0; i <= HDR_XCOMMENTTO; i++)
+  for (int i = 0; i <= HDR_XCOMMENTTO; i++)
   {
     HeaderPadding[i] += MaxHeaderWidth;
     if (HeaderPadding[i] < 0)
@@ -648,14 +647,13 @@ static void compose_menu_redraw(struct Menu *menu)
  */
 static unsigned long cum_attachs_size(struct Menu *menu)
 {
-  size_t s;
-  unsigned short i;
+  size_t s = 0;
   struct AttachCtx *actx = menu->data;
   struct AttachPtr **idx = actx->idx;
   struct Content *info = NULL;
   struct Body *b = NULL;
 
-  for (i = 0, s = 0; i < actx->idxlen; i++)
+  for (unsigned short i = 0; i < actx->idxlen; i++)
   {
     b = idx[i]->content;
 

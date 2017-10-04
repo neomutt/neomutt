@@ -96,13 +96,11 @@ static struct History *get_history(enum HistoryClass hclass)
 
 static void init_history(struct History *h)
 {
-  int i;
-
   if (OldSize)
   {
     if (h->hist)
     {
-      for (i = 0; i <= OldSize; i++)
+      for (int i = 0; i <= OldSize; i++)
         FREE(&h->hist[i]);
       FREE(&h->hist);
     }
@@ -292,7 +290,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
 {
   static int n = 0;
   FILE *f = NULL;
-  char *tmp = NULL, *p = NULL;
+  char *tmp = NULL;
 
   if (!s || !*s) /* This shouldn't happen, but it's safer. */
     return;
@@ -309,7 +307,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
   /* Format of a history item (1 line): "<histclass>:<string>|".
      We add a '|' in order to avoid lines ending with '\'. */
   fprintf(f, "%d:", (int) hclass);
-  for (p = tmp; *p; p++)
+  for (char *p = tmp; *p; p++)
   {
     /* Don't copy \n as a history item must fit on one line. The string
        shouldn't contain such a character anyway, but as this can happen

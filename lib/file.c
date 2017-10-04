@@ -846,7 +846,6 @@ int mutt_mkdir(const char *path, mode_t mode)
   }
 
   errno = 0;
-  char *p = NULL;
   char _path[PATH_MAX];
   const size_t len = strlen(path);
 
@@ -863,7 +862,7 @@ int mutt_mkdir(const char *path, mode_t mode)
   /* Create a mutable copy */
   strfcpy(_path, path, sizeof(_path));
 
-  for (p = _path + 1; *p; p++)
+  for (char *p = _path + 1; *p; p++)
   {
     if (*p != '/')
       continue;

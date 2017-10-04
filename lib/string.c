@@ -514,9 +514,7 @@ char *mutt_skip_whitespace(char *p)
  */
 void mutt_remove_trailing_ws(char *s)
 {
-  char *p = NULL;
-
-  for (p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
+  for (char *p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
     *p = '\0';
 }
 
@@ -701,9 +699,8 @@ const char *rstrnstr(const char *haystack, size_t haystack_length, const char *n
 {
   int needle_length = strlen(needle);
   const char *haystack_end = haystack + haystack_length - needle_length;
-  const char *p = NULL;
 
-  for (p = haystack_end; p >= haystack; --p)
+  for (const char *p = haystack_end; p >= haystack; --p)
   {
     for (size_t i = 0; i < needle_length; ++i)
     {

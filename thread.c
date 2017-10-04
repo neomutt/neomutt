@@ -1395,7 +1395,6 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
 
 static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
-  struct MuttThread *p = NULL;
   struct ListNode *ref = NULL;
   bool done = false;
 
@@ -1410,7 +1409,7 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
     /* Looking for the first bad reference according to the new threading.
      * Optimal since NeoMutt stores the references in reverse order, and the
      * first loop should match immediately for mails respecting RFC2822. */
-    for (p = brk; !done && p; p = p->parent)
+    for (struct MuttThread *p = brk; !done && p; p = p->parent)
     {
       for (ref = STAILQ_FIRST(&cur->message->env->references);
            p->message && ref; ref = STAILQ_NEXT(ref, entries))
@@ -1465,12 +1464,11 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
 
 int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *ctx)
 {
-  int i;
   bool changed = false;
 
   if (!last)
   {
-    for (i = 0; i < ctx->vcount; i++)
+    for (int i = 0; i < ctx->vcount; i++)
       if (ctx->hdrs[Context->v2r[i]]->tagged)
         changed |= link_threads(cur, ctx->hdrs[Context->v2r[i]], ctx);
   }

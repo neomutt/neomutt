@@ -226,7 +226,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   int color;             /* final color */
   static int last_color; /* last color set */
   bool search = false;
-  int i, m;
+  int m;
 
   if (!cnt)
     last_color = -1; /* force attrset() */
@@ -270,7 +270,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   color = def_color;
   if (flags & MUTT_SHOWCOLOR)
   {
-    for (i = 0; i < line_info[m].chunks; i++)
+    for (int i = 0; i < line_info[m].chunks; i++)
     {
       /* we assume the chunks are sorted */
       if (cnt > (line_info[m].syntax)[i].last)
@@ -289,7 +289,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
 
   if (flags & MUTT_SEARCH)
   {
-    for (i = 0; i < line_info[m].search_cnt; i++)
+    for (int i = 0; i < line_info[m].search_cnt; i++)
     {
       if (cnt > (line_info[m].search)[i].last)
         continue;

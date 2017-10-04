@@ -1446,7 +1446,6 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   struct Header *h = NULL;
   struct Header **hdrs = NULL;
   int oldsort;
-  int n;
   int rc;
 
   idata = ctx->data;
@@ -1479,9 +1478,9 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
     {
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
-      for (n = 0; n < ctx->msgcount; n++)
-        if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
-          ctx->hdrs[n]->active = false;
+      for (int i = 0; i < ctx->msgcount; i++)
+        if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->changed)
+          ctx->hdrs[i]->active = false;
       mutt_message(_("Marking %d messages deleted..."), rc);
     }
   }
@@ -1491,9 +1490,9 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
 #endif
 
   /* save messages with real (non-flag) changes */
-  for (n = 0; n < ctx->msgcount; n++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
-    h = ctx->hdrs[n];
+    h = ctx->hdrs[i];
 
     if (h->deleted)
     {
@@ -1514,7 +1513,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
       if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
           h->attach_del || h->xlabel_changed)
       {
-        mutt_message(_("Saving changed messages... [%d/%d]"), n + 1, ctx->msgcount);
+        mutt_message(_("Saving changed messages... [%d/%d]"), i + 1, ctx->msgcount);
         if (!appendctx)
           appendctx = mx_open_mailbox(ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
         if (!appendctx)
@@ -1585,14 +1584,14 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   /* Update local record of server state to reflect the synchronization just
    * completed.  imap_read_headers always overwrites hcache-origin flags, so
    * there is no need to mutate the hcache after flag-only changes. */
-  for (n = 0; n < ctx->msgcount; n++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
-    HEADER_DATA(ctx->hdrs[n])->deleted = ctx->hdrs[n]->deleted;
-    HEADER_DATA(ctx->hdrs[n])->flagged = ctx->hdrs[n]->flagged;
-    HEADER_DATA(ctx->hdrs[n])->old = ctx->hdrs[n]->old;
-    HEADER_DATA(ctx->hdrs[n])->read = ctx->hdrs[n]->read;
-    HEADER_DATA(ctx->hdrs[n])->replied = ctx->hdrs[n]->replied;
-    ctx->hdrs[n]->changed = false;
+    HEADER_DATA(ctx->hdrs[i])->deleted = ctx->hdrs[i]->deleted;
+    HEADER_DATA(ctx->hdrs[i])->flagged = ctx->hdrs[i]->flagged;
+    HEADER_DATA(ctx->hdrs[i])->old = ctx->hdrs[i]->old;
+    HEADER_DATA(ctx->hdrs[i])->read = ctx->hdrs[i]->read;
+    HEADER_DATA(ctx->hdrs[i])->replied = ctx->hdrs[i]->replied;
+    ctx->hdrs[i]->changed = false;
   }
   ctx->changed = false;
 
@@ -1638,7 +1637,6 @@ out:
 int imap_close_mailbox(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
-  int i;
 
   idata = ctx->data;
   /* Check to see if the mailbox is actually open */
@@ -1674,7 +1672,7 @@ int imap_close_mailbox(struct Context *ctx)
     idata->msn_index_size = 0;
     idata->max_msn = 0;
 
-    for (i = 0; i < IMAP_CACHE_LEN; i++)
+    for (int i = 0; i < IMAP_CACHE_LEN; i++)
     {
       if (idata->cache[i].path)
       {
@@ -1687,10 +1685,12 @@ int imap_close_mailbox(struct Context *ctx)
   }
 
   /* free IMAP part of headers */
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
+  {
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data((struct ImapHeaderData **) &(ctx->hdrs[i]->data));
+  }
 
   return 0;
 }
@@ -2431,7 +2431,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
-  int n, rc;
+  int rc;
   struct ImapMbox mx;
   bool triedcreate = false;
   struct Buffer *sync_cmd = NULL;
@@ -2458,12 +2458,12 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
 
   sync_cmd = mutt_buffer_new();
-  for (n = 0; n < ctx->msgcount; n++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
-    if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed &&
-        ctx->hdrs[n]->deleted && !ctx->hdrs[n]->purge)
+    if (ctx->hdrs[i]->active && ctx->hdrs[i]->changed &&
+        ctx->hdrs[i]->deleted && !ctx->hdrs[i]->purge)
     {
-      rc = imap_sync_message_for_copy(idata, ctx->hdrs[n], sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(idata, ctx->hdrs[i], sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(1, "imap_fast_trash: could not sync\n");

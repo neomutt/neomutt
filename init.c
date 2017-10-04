@@ -987,7 +987,6 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
 static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
-  int i, j;
   bool res = 0;
   struct Buffer token;
 
@@ -1006,13 +1005,13 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   /* or a function? */
   if (!res)
   {
-    for (i = 0; !res && (i < MENU_MAX); i++)
+    for (int i = 0; !res && (i < MENU_MAX); i++)
     {
       const struct Binding *b = km_get_table(Menus[i].value);
       if (!b)
         continue;
 
-      for (j = 0; b[j].name; j++)
+      for (int j = 0; b[j].name; j++)
       {
         if (mutt_strcmp(tmp->data, b[j].name) == 0)
         {
@@ -1026,7 +1025,7 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   /* or a command? */
   if (!res)
   {
-    for (i = 0; Commands[i].name; i++)
+    for (int i = 0; Commands[i].name; i++)
     {
       if (mutt_strcmp(tmp->data, Commands[i].name) == 0)
       {
@@ -1144,10 +1143,9 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
 
 static void _alternates_clean(void)
 {
-  int i;
   if (Context && Context->msgcount)
   {
-    for (i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->recip_valid = false;
   }
 }
@@ -1262,10 +1260,9 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
 
 static void clear_subject_mods(void)
 {
-  int i;
   if (Context && Context->msgcount)
   {
-    for (i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
       FREE(&Context->hdrs[i]->env->disp_subj);
   }
 }
@@ -1526,10 +1523,9 @@ bail:
  */
 static void _attachments_clean(void)
 {
-  int i;
   if (Context && Context->msgcount)
   {
-    for (i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->attach_valid = false;
   }
 }
@@ -1949,9 +1945,8 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
 #ifdef DEBUG
   if (debuglevel >= 2)
   {
-    struct Address *a = NULL;
     /* A group is terminated with an empty address, so check a->mailbox */
-    for (a = tmp->addr; a && a->mailbox; a = a->next)
+    for (struct Address *a = tmp->addr; a && a->mailbox; a = a->next)
     {
       if (!a->group)
         mutt_debug(3, "parse_alias:   %s\n", a->mailbox);
@@ -2259,14 +2254,14 @@ static void pretty_var(char *dst, size_t len, const char *option, const char *va
 
 static int check_charset(struct Option *opt, const char *val)
 {
-  char *p = NULL, *q = NULL, *s = safe_strdup(val);
+  char *q = NULL, *s = safe_strdup(val);
   int rc = 0;
   bool strict = (strcmp(opt->option, "send_charset") == 0);
 
   if (!s)
     return rc;
 
-  for (p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
+  for (char *p = strtok_r(s, ":", &q); p; p = strtok_r(NULL, ":", &q))
   {
     if (!*p)
       continue;
@@ -2809,9 +2804,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
         {
           regmatch_t pmatch[1];
-          int i;
 
-          for (i = 0; i < Context->msgcount; i++)
+          for (int i = 0; i < Context->msgcount; i++)
           {
             struct Envelope *e = Context->hdrs[i]->env;
             if (e && e->subject)
@@ -3421,8 +3415,6 @@ static void candidate(char *dest, char *try, const char *src, int len)
   if (!dest || !try || !src)
     return;
 
-  int l;
-
   if (strstr(src, try) == src)
   {
     matches_ensure_morespace(Num_matched);
@@ -3431,6 +3423,7 @@ static void candidate(char *dest, char *try, const char *src, int len)
       strfcpy(dest, src, len);
     else
     {
+      int l;
       for (l = 0; src[l] && src[l] == dest[l]; l++)
         ;
       dest[l] = '\0';
@@ -4422,9 +4415,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
 int mutt_get_hook_type(const char *name)
 {
-  const struct Command *c = NULL;
-
-  for (c = Commands; c->name; c++)
+  for (const struct Command *c = Commands; c->name; c++)
     if (c->func == mutt_parse_hook && (mutt_strcasecmp(c->name, name) == 0))
       return c->data;
   return 0;

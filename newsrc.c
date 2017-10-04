@@ -444,7 +444,6 @@ int nntp_newsrc_update(struct NntpServer *nserv)
   for (unsigned int i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *nntp_data = nserv->groups_list[i];
-    unsigned int n;
 
     if (!nntp_data || !nntp_data->newsrc_ent)
       continue;
@@ -460,20 +459,20 @@ int nntp_newsrc_update(struct NntpServer *nserv)
     off += strlen(buf + off);
 
     /* write entries */
-    for (n = 0; n < nntp_data->newsrc_len; n++)
+    for (unsigned int i = 0; i < nntp_data->newsrc_len; i++)
     {
       if (off + LONG_STRING > buflen)
       {
         buflen *= 2;
         safe_realloc(&buf, buflen);
       }
-      if (n)
+      if (i)
         buf[off++] = ',';
-      if (nntp_data->newsrc_ent[n].first == nntp_data->newsrc_ent[n].last)
-        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[n].first);
-      else if (nntp_data->newsrc_ent[n].first < nntp_data->newsrc_ent[n].last)
+      if (nntp_data->newsrc_ent[i].first == nntp_data->newsrc_ent[i].last)
+        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[i].first);
+      else if (nntp_data->newsrc_ent[i].first < nntp_data->newsrc_ent[i].last)
         snprintf(buf + off, buflen - off, "%d-%d",
-                 nntp_data->newsrc_ent[n].first, nntp_data->newsrc_ent[n].last);
+                 nntp_data->newsrc_ent[i].first, nntp_data->newsrc_ent[i].last);
       off += strlen(buf + off);
     }
     buf[off++] = '\n';
@@ -1288,9 +1287,9 @@ void nntp_buffy(char *buf, size_t len)
     if (Context && Context->magic == MUTT_NNTP &&
         (mutt_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
     {
-      unsigned int j, unread = 0;
+      unsigned int unread = 0;
 
-      for (j = 0; j < Context->msgcount; j++)
+      for (unsigned int j = 0; j < Context->msgcount; j++)
         if (!Context->hdrs[j]->read && !Context->hdrs[j]->deleted)
           unread++;
       if (!unread)

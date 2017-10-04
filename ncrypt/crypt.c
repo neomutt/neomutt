@@ -579,15 +579,14 @@ int crypt_query(struct Body *m)
 
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
-    struct Body *p = NULL;
     int u, v, w;
 
     u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
     w = 0;                         /* Bits set in any part  */
 
-    for (p = m->parts; p; p = p->next)
+    for (struct Body *b = m->parts; b; b = b->next)
     {
-      v = crypt_query(p);
+      v = crypt_query(b);
       u &= v;
       w |= v;
     }
@@ -684,7 +683,6 @@ void convert_to_7bit(struct Body *a)
 
 void crypt_extract_keys_from_messages(struct Header *h)
 {
-  int i;
   char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
   FILE *fpout = NULL;
@@ -704,7 +702,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
 
   if (!h)
   {
-    for (i = 0; i < Context->vcount; i++)
+    for (int i = 0; i < Context->vcount; i++)
     {
       if (Context->hdrs[Context->v2r[i]]->tagged)
       {
@@ -934,7 +932,6 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   struct Body *b = a;
   struct Body **signatures = NULL;
   int sigcnt = 0;
-  int i;
   bool goodsig = true;
   int rc = 0;
 
@@ -995,7 +992,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       mutt_mktemp(tempfile, sizeof(tempfile));
       if (crypt_write_signed(a, s, tempfile) == 0)
       {
-        for (i = 0; i < sigcnt; i++)
+        for (int i = 0; i < sigcnt; i++)
         {
           if ((WithCrypto & APPLICATION_PGP) && signatures[i]->type == TYPEAPPLICATION &&
               (mutt_strcasecmp(signatures[i]->subtype, "pgp-signature") == 0))

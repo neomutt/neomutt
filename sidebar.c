@@ -680,7 +680,6 @@ static int draw_divider(int num_rows, int num_cols)
   if ((num_rows < 1) || (num_cols < 1))
     return 0;
 
-  int i;
   int delim_len;
   enum DivType altchar = SB_DIV_UTF8;
 
@@ -711,7 +710,7 @@ static int draw_divider(int num_rows, int num_cols)
     }
     else if (SidebarDividerChar)
     {
-      for (i = 0; i < delim_len; i++)
+      for (int i = 0; i < delim_len; i++)
       {
         if (SidebarDividerChar[i] & ~0x7F) /* high-bit is set */
         {
@@ -730,7 +729,7 @@ static int draw_divider(int num_rows, int num_cols)
 
   int col = option(OPT_SIDEBAR_ON_RIGHT) ? 0 : (SidebarWidth - delim_len);
 
-  for (i = 0; i < num_rows; i++)
+  for (int i = 0; i < num_rows; i++)
   {
     mutt_window_move(MuttSidebarWindow, i, col);
 
@@ -771,8 +770,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
   {
     mutt_window_move(MuttSidebarWindow, first_row + r, div_width);
 
-    int i;
-    for (i = 0; i < num_cols; i++)
+    for (int i = 0; i < num_cols; i++)
       addch(' ');
   }
 }
@@ -872,12 +870,11 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
     char *sidebar_folder_name = NULL;
-    int i;
     if (option(OPT_SIDEBAR_SHORT_PATH))
     {
       /* disregard a trailing separator, so strlen() - 2 */
       sidebar_folder_name = b->path;
-      for (i = mutt_strlen(sidebar_folder_name) - 2; i >= 0; i--)
+      for (int i = mutt_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, sidebar_folder_name[i]))
         {
@@ -899,7 +896,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       int lastsep = 0;
       tmp_folder_name = b->path + maildirlen + 1;
       int tmplen = (int) mutt_strlen(tmp_folder_name) - 1;
-      for (i = 0; i < tmplen; i++)
+      for (int i = 0; i < tmplen; i++)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, tmp_folder_name[i]))
         {
@@ -915,7 +912,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
                       sidebar_folder_depth * mutt_strlen(SidebarIndentString) + 1;
         sidebar_folder_name = safe_malloc(sfn_len);
         sidebar_folder_name[0] = 0;
-        for (i = 0; i < sidebar_folder_depth; i++)
+        for (int i = 0; i < sidebar_folder_depth; i++)
           safe_strcat(sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
         safe_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
       }

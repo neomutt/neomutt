@@ -315,7 +315,6 @@ static void encode_8bit(FGETCONV *fc, FILE *fout, int istext)
 
 int mutt_write_mime_header(struct Body *a, FILE *f)
 {
-  struct Parameter *p = NULL;
   char buffer[STRING];
   char *t = NULL;
   char *fn = NULL;
@@ -329,7 +328,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   {
     len = 25 + mutt_strlen(a->subtype); /* approximate len. of content-type */
 
-    for (p = a->parameter; p; p = p->next)
+    for (struct Parameter *p = a->parameter; p; p = p->next)
     {
       char *tmp = NULL;
 
@@ -432,7 +431,6 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   char *p, boundary[SHORT_STRING];
   char send_charset[SHORT_STRING];
   FILE *fpin = NULL;
-  struct Body *t = NULL;
   FGETCONV *fc = NULL;
 
   if (a->type == TYPEMULTIPART)
@@ -446,7 +444,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     }
     strfcpy(boundary, p, sizeof(boundary));
 
-    for (t = a->parts; t; t = t->next)
+    for (struct Body *t = a->parts; t; t = t->next)
     {
       fprintf(f, "\n--%s\n", boundary);
       if (mutt_write_mime_header(t, f) == -1)
@@ -685,7 +683,6 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   ICONV_CONST char *ib = NULL, *ub = NULL;
   char *ob = NULL;
   size_t ibl, obl, ubl, ubl1, n, ret;
-  int i;
   struct Content *infos = NULL;
   struct ContentState *states = NULL;
   size_t *score = NULL;
@@ -699,7 +696,8 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   states = safe_calloc(ncodes, sizeof(struct ContentState));
   infos = safe_calloc(ncodes, sizeof(struct Content));
 
-  for (i = 0; i < ncodes; i++)
+  for (int i = 0; i < ncodes; i++)
+  {
     if (mutt_strcasecmp(tocodes[i], "utf-8") != 0)
       cd[i] = mutt_iconv_open(tocodes[i], "utf-8", 0);
     else
@@ -708,6 +706,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
       cd[i] = (iconv_t)(-1);
       score[i] = (size_t)(-1);
     }
+  }
 
   rewind(file);
   ibl = 0;
@@ -732,7 +731,8 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     ubl1 = ob - bufu;
 
     /* Convert from UTF-8 */
-    for (i = 0; i < ncodes; i++)
+    for (int i = 0; i < ncodes; i++)
+    {
       if (cd[i] != (iconv_t)(-1) && score[i] != (size_t)(-1))
       {
         ub = bufu;
@@ -754,6 +754,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
       else if (cd[i] == (iconv_t)(-1) && score[i] == (size_t)(-1))
         /* Special case for conversion to UTF-8 */
         update_content_info(&infos[i], &states[i], bufu, ubl1);
+    }
 
     if (ibl)
       /* Save unused input */
@@ -769,7 +770,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   {
     /* Find best score */
     ret = (size_t)(-1);
-    for (i = 0; i < ncodes; i++)
+    for (int i = 0; i < ncodes; i++)
     {
       if (cd[i] == (iconv_t)(-1) && score[i] == (size_t)(-1))
       {
@@ -795,7 +796,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     }
   }
 
-  for (i = 0; i < ncodes; i++)
+  for (int i = 0; i < ncodes; i++)
     if (cd[i] != (iconv_t)(-1))
       iconv_close(cd[i]);
 
@@ -2726,7 +2727,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
 static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
                                 const char *resent_from, struct Address *env_from)
 {
-  int i, ret = 0;
+  int ret = 0;
   FILE *f = NULL;
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
   struct Message *msg = NULL;
@@ -2734,7 +2735,7 @@ static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
   if (!h)
   {
     /* Try to bounce each message out, aborting if we get any failures. */
-    for (i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
       if (Context->hdrs[i]->tagged)
         ret |= _mutt_bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
     return ret;

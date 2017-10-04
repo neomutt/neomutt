@@ -26,7 +26,6 @@
 static void txt2c(char *sym, FILE *fp)
 {
   unsigned char buf[PER_LINE];
-  int i;
   int sz = 0;
 
   printf("unsigned char %s[] = {\n", sym);
@@ -36,7 +35,7 @@ static void txt2c(char *sym, FILE *fp)
     if (sz == 0)
       break;
     printf("\t");
-    for (i = 0; i < sz; i++)
+    for (int i = 0; i < sz; i++)
       printf("0x%02x, ", buf[i]);
     printf("\n");
   }
