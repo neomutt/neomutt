@@ -946,6 +946,12 @@ int mutt_index_menu(void)
     menu->redraw = REDRAW_FULL;
   }
 
+  /* On SIGWINCH, we clear the input buffer and redraw the screen.
+   * We don't want this to happening the first time we enter the loop.
+   * The startup hook puts commands into the keyboard buffer which we don't
+   * want to lose. */
+  SigWinch = 0;
+
   while (true)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
