@@ -3714,32 +3714,6 @@ done:
 }
 
 /**
- * rstrnstr - Find last instance of a substring
- *
- * Return the last instance of needle in the haystack, or NULL.
- * Like strstr(), only backwards, and for a limited haystack length.
- */
-static const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
-{
-  int needle_length = strlen(needle);
-  const char *haystack_end = haystack + haystack_length - needle_length;
-  const char *p = NULL;
-
-  for (p = haystack_end; p >= haystack; --p)
-  {
-    for (size_t i = 0; i < needle_length; ++i)
-    {
-      if (p[i] != needle[i])
-        goto next;
-    }
-    return p;
-
-  next:;
-  }
-  return NULL;
-}
-
-/**
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
  *
  * Complete the nearest "tag:"-prefixed string previous to pos.

@@ -324,14 +324,11 @@ int imap_get_literal_count(const char *buf, long *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
-time_t imap_parse_date(char *s);
-void imap_make_date(char *buf, time_t timestamp);
 void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path);
 void imap_quote_string(char *dest, size_t slen, const char *src);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
-int imap_wordcasecmp(const char *a, const char *b);
 
 /* utf7.c */
 void imap_utf_encode(struct ImapData *idata, char **s);

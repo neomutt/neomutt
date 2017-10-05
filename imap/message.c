@@ -1124,7 +1124,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
                      MUTT_PROGRESS_SIZE, NetInc, len);
 
   imap_munge_mbox_name(idata, mbox, sizeof(mbox), mailbox);
-  imap_make_date(internaldate, msg->received);
+  imap_make_date(internaldate, sizeof(internaldate), msg->received);
 
   imap_flags[0] = imap_flags[1] = 0;
   if (msg->flags.read)

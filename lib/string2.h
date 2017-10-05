@@ -56,6 +56,7 @@
 
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 
+int         imap_wordcasecmp(const char *a, const char *b);
 int         is_email_wsp(char c);
 size_t      lwslen(const char *s, size_t n);
 size_t      lwsrlen(const char *s, size_t n);
@@ -79,6 +80,7 @@ char *      mutt_substrcpy(char *dest, const char *begin, const char *end, size_
 char *      mutt_substrdup(const char *begin, const char *end);
 const char *next_word(const char *s);
 void        rfc822_dequote_comment(char *s);
+const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
 char *      safe_strcat(char *d, size_t l, const char *s);
 char *      safe_strdup(const char *s);
 char *      safe_strncat(char *d, size_t l, const char *s, size_t sl);
