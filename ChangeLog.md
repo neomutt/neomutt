@@ -1,3 +1,48 @@
+2017-10-06  Richard Russon  <rich@flatcap.org>
+* Features
+  - Add IMAP keywords support
+* Bug Fixes
+  - set mbox_type
+  - %{fmt} date format
+  - Fix off-by-one buffer overflow in add_index_color
+  - crash in mbox_to_udomain
+  - crash in mutt_substrdup
+  - crash looking up mime body type
+  - digest_collapse was broken
+  - crash using notmuch expando with imap
+  - imap: Fix mx.mbox leak in imap_get_parent_path
+  - overflow in mutt_mktime()
+  - add more range-checking on dates/times
+  - Remove spurious error message
+  - Unsubscribe after deleting an imap folder
+  - Do not pop from MuttrcStack what wasn't pushed
+* Docs
+  - replace mutt refs with neomutt
+  - drop old vim syntax file
+* Code
+  - convert functions to use 'bool'
+  - convert structs to use STAILQ
+* Build
+  - Autosetup-based configuration
+  - drop upstream mutt references
+  - rename everything 'mutt' to 'neomutt'
+  - move helper programs to lib dir
+  - rename regexp to regex
+  - expand buffers to avoid gcc7 warnings
+* Upstream
+  - Remove \Seen flag setting for imap trash
+  - Change imap copy/save and trash to sync flags, excluding deleted
+  - Improve imap fetch handler to accept an initial UID
+  - Display an error message when delete mailbox fails
+  - Updated French translation
+  - Fix imap sync segfault due to inactive headers during an expunge
+  - Close the imap socket for the selected mailbox on error
+  - Add missing IMAP_CMD_POLL flag in imap buffy check
+  - Change maildir and mh check_mailbox to use dynamic sized hash
+  - Fix uses of context->changed as a counter
+  - Make cmd_parse_fetch() more precise about setting reopen/check flags
+  - Enable $reply_self for group-reply, even with $metoo unset
+
 2017-09-12  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - broken check on resend message
