@@ -184,7 +184,7 @@ AC_ARG_WITH(mailpath,
 AC_ARG_WITH(docdir,
 	AS_HELP_STRING([--with-docdir=PATH],[Specify where to put the documentation]),
 	[mutt_cv_docdir=$withval],
-	[mutt_cv_docdir='${datarootdir}/doc/mutt'])
+	[mutt_cv_docdir='${datarootdir}/doc/neomutt'])
 
 AC_ARG_WITH(domain,
 	AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS domain name]),
