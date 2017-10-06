@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20171006\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-10-06 17:42+0100\n"
+"POT-Creation-Date: 2017-10-06 15:30+0100\n"
 "PO-Revision-Date: 2017-02-15 23:39+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: neomutt-ru@woe.spb.ru\n"
@@ -43,12 +43,12 @@ msgstr "Пароль для %s@%s: "
 msgid "Exit"
 msgstr "Выход"
 
-#: addrbook.c:45 curs_main.c:824 curs_main.c:837 pager.c:1674 pager.c:1684
+#: addrbook.c:45 curs_main.c:825 curs_main.c:838 pager.c:1674 pager.c:1684
 #: postpone.c:59
 msgid "Del"
 msgstr "Удалить"
 
-#: addrbook.c:46 curs_main.c:825 curs_main.c:838 postpone.c:60
+#: addrbook.c:46 curs_main.c:826 curs_main.c:839 postpone.c:60
 msgid "Undel"
 msgstr "Восстановить"
 
@@ -57,7 +57,7 @@ msgid "Select"
 msgstr "Выбрать"
 
 #: addrbook.c:47 browser.c:81 browser.c:93 compose.c:169 compose.c:181
-#: curs_main.c:830 curs_main.c:843 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
+#: curs_main.c:831 curs_main.c:844 mutt_ssl.c:886 mutt_ssl_gnutls.c:725
 #: ncrypt/crypt_gpgme.c:4172 ncrypt/pgpkey.c:531 ncrypt/smime.c:422
 #: pager.c:2112 postpone.c:61 query.c:77 recvattach.c:73
 msgid "Help"
@@ -207,12 +207,17 @@ msgstr "Ошибка записи!"
 msgid "I don't know how to print that!"
 msgstr "Неизвестно, как это печатать!"
 
-#: bcache.c:165
+#: bcache.c:163
+#, c-format
+msgid "Path too long: %s%s%s"
+msgstr ""
+
+#: bcache.c:171
 #, fuzzy, c-format
 msgid "Message cache isn't a directory: %s."
 msgstr "%s не является каталогом."
 
-#: bcache.c:173
+#: bcache.c:179
 #, fuzzy, c-format
 msgid "Can't create %s %s"
 msgstr "Не удалось создать %s: %s"
@@ -243,11 +248,11 @@ msgstr "Подключено к %s"
 msgid "Unsubscribe"
 msgstr "Отключено от %s"
 
-#: browser.c:91 curs_main.c:842
+#: browser.c:91 curs_main.c:843
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:713 browser.c:1669
+#: browser.c:713 browser.c:1671
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не является каталогом."
@@ -276,7 +281,7 @@ msgstr "Каталог [%s], маска файла: %s"
 msgid "Can't attach a directory!"
 msgstr "Вложение каталогов не поддерживается!"
 
-#: browser.c:1324 browser.c:1735 browser.c:1874
+#: browser.c:1324 browser.c:1737 browser.c:1876
 msgid "No files match the file mask"
 msgstr "Нет файлов, удовлетворяющих данной маске"
 
@@ -306,24 +311,29 @@ msgstr "Удалить почтовый ящик \"%s\"?"
 msgid "Mailbox deleted."
 msgstr "Почтовый ящик удален."
 
-#: browser.c:1595
+#: browser.c:1594
+#, fuzzy
+msgid "Mailbox deletion failed."
+msgstr "Почтовый ящик удален."
+
+#: browser.c:1597
 msgid "Mailbox not deleted."
 msgstr "Почтовый ящик не удален."
 
-#: browser.c:1622
+#: browser.c:1624
 msgid "Chdir to: "
 msgstr "Перейти в: "
 
-#: browser.c:1659 browser.c:1729
+#: browser.c:1661 browser.c:1731
 msgid "Error scanning directory."
 msgstr "Ошибка просмотра каталога."
 
-#: browser.c:1680
+#: browser.c:1682
 msgid "File Mask: "
 msgstr "Маска файла: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1752
+#: browser.c:1754
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -331,7 +341,7 @@ msgid ""
 msgstr "Обратный порядок по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1755
+#: browser.c:1757
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -339,92 +349,92 @@ msgid ""
 msgstr "Упорядочить по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1758
+#: browser.c:1760
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1863
+#: browser.c:1865
 msgid "New file name: "
 msgstr "Новое имя файла: "
 
-#: browser.c:1891
+#: browser.c:1893
 msgid "Can't view a directory"
 msgstr "Не удалось просмотреть каталог"
 
-#: browser.c:1908
+#: browser.c:1910
 msgid "Error trying to view file"
 msgstr "Ошибка при попытке просмотра файла"
 
-#: browser.c:1993
+#: browser.c:1995
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Подключено к %s"
 
-#: browser.c:1995
+#: browser.c:1997
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Отключено от %s"
 
-#: browser.c:2016
+#: browser.c:2018
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Нет файлов, удовлетворяющих данной маске"
 
-#: buffy.c:752
+#: buffy.c:753
 msgid "New mail in "
 msgstr "Новая почта в "
 
-#: color.c:414
+#: color.c:406
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: цвет не поддерживается терминалом"
 
-#: color.c:420
+#: color.c:412
 #, c-format
 msgid "%s: no such color"
 msgstr "%s: нет такого цвета"
 
-#: color.c:512 color.c:711 color.c:732 color.c:738
+#: color.c:503 color.c:698 color.c:719 color.c:725
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: нет такого объекта"
 
-#: color.c:528
+#: color.c:519
 #, c-format
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: команда доступна только для индекса, заголовка и тела письма"
 
-#: color.c:535 init.c:1039
+#: color.c:526 init.c:1042
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: слишком мало аргументов"
 
-#: color.c:699 color.c:724
+#: color.c:686 color.c:711
 msgid "Missing arguments."
 msgstr "Необходимые аргументы отсутствуют."
 
-#: color.c:755 color.c:766
+#: color.c:742 color.c:753
 msgid "color: too few arguments"
 msgstr "color: слишком мало аргументов"
 
-#: color.c:790
+#: color.c:777
 msgid "mono: too few arguments"
 msgstr "mono: слишком мало аргументов"
 
-#: color.c:810
+#: color.c:797
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: нет такого атрибута"
 
-#: color.c:857 hook.c:91 hook.c:104 init.c:2415 init.c:2490 keymap.c:1012
+#: color.c:841 hook.c:91 hook.c:104 init.c:2416 init.c:2491 keymap.c:1012
 msgid "too few arguments"
 msgstr "слишком мало аргументов"
 
-#: color.c:866 color.c:922 hook.c:110
+#: color.c:850 color.c:906 hook.c:110
 msgid "too many arguments"
 msgstr "слишком много аргументов"
 
-#: color.c:890
+#: color.c:874
 msgid "default colors not supported"
 msgstr "цвета по умолчанию не поддерживаются"
 
@@ -1009,7 +1019,7 @@ msgstr "Невозможно синхронизировать упакованн
 msgid "Compressing %s"
 msgstr "Упаковывается %s"
 
-#: copy.c:703
+#: copy.c:696
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -1142,7 +1152,7 @@ msgstr "нет"
 msgid "Exit NeoMutt?"
 msgstr "Завершить работу с NeoMutt?"
 
-#: curs_lib.c:838 lib/message.c:90 mutt_socket.c:613 mutt_ssl.c:1129
+#: curs_lib.c:838 lib/message.c:90 mutt_socket.c:598 mutt_ssl.c:1129
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
@@ -1154,388 +1164,393 @@ msgstr "Чтобы продолжить, нажмите любую клавиш�
 msgid " ('?' for list): "
 msgstr " (\"?\" -- список): "
 
-#: curs_main.c:81 curs_main.c:1139
+#: curs_main.c:82 curs_main.c:1140
 msgid "No mailbox is open."
 msgstr "Нет открытого почтового ящика."
 
-#: curs_main.c:82
+#: curs_main.c:83
 msgid "There are no messages."
 msgstr "Сообщений нет."
 
-#: curs_main.c:83 mx.c:1005 pager.c:77 recvattach.c:59
+#: curs_main.c:84 mx.c:1005 pager.c:77 recvattach.c:59
 msgid "Mailbox is read-only."
 msgstr "Почтовый ящик немодифицируем."
 
-#: curs_main.c:85 pager.c:79 recvattach.c:1099
+#: curs_main.c:86 pager.c:79 recvattach.c:1103
 msgid "Function not permitted in attach-message mode."
 msgstr "В режиме \"вложить сообщение\" функция недоступна."
 
-#: curs_main.c:86
+#: curs_main.c:87
 msgid "No visible messages."
 msgstr "Нет видимых сообщений."
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: curs_main.c:131 pager.c:114
+#: curs_main.c:132 pager.c:114
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Операция запрещена ACL"
 
-#: curs_main.c:291
+#: curs_main.c:292
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr ""
 "Не удалось разрешить запись в почтовый ящик, открытый только для чтения!"
 
-#: curs_main.c:298
+#: curs_main.c:299
 msgid "Changes to folder will be written on folder exit."
 msgstr "Изменения в состояние почтового ящика будут внесены при его закрытии."
 
-#: curs_main.c:303
+#: curs_main.c:304
 msgid "Changes to folder will not be written."
 msgstr "Изменения в состояние почтового ящика не будут внесены."
 
-#: curs_main.c:458 mx.c:357 mx.c:460
+#: curs_main.c:459 mx.c:357 mx.c:460
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не является почтовым ящиком."
 
-#: curs_main.c:823 curs_main.c:836
+#: curs_main.c:824 curs_main.c:837
 msgid "Quit"
 msgstr "Выход"
 
-#: curs_main.c:826 curs_main.c:839 recvattach.c:72
+#: curs_main.c:827 curs_main.c:840 recvattach.c:72
 msgid "Save"
 msgstr "Сохранить"
 
-#: curs_main.c:827 query.c:73
+#: curs_main.c:828 query.c:73
 msgid "Mail"
 msgstr "Создать"
 
-#: curs_main.c:828 pager.c:1675
+#: curs_main.c:829 pager.c:1675
 msgid "Reply"
 msgstr "Ответить"
 
-#: curs_main.c:829
+#: curs_main.c:830
 msgid "Group"
 msgstr "Всем"
 
-#: curs_main.c:840 pager.c:1682
+#: curs_main.c:841 pager.c:1682
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:841 pager.c:1683
+#: curs_main.c:842 pager.c:1683
 #, fuzzy
 msgid "Followup"
 msgstr "Отвечать по %s%s?"
 
-#: curs_main.c:1004
+#: curs_main.c:1005
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "Ящик был изменен внешней программой.  Значения флагов могут быть некорректны."
 
-#: curs_main.c:1011 pager.c:2193
+#: curs_main.c:1012 pager.c:2193
 msgid "New mail in this mailbox."
 msgstr "Новая почта в этом ящике."
 
-#: curs_main.c:1025
+#: curs_main.c:1026
 msgid "Mailbox was externally modified."
 msgstr "Ящик был изменен внешней программой."
 
-#: curs_main.c:1146
+#: curs_main.c:1147
 msgid "No tagged messages."
 msgstr "Нет отмеченных сообщений."
 
-#: curs_main.c:1150 menu.c:1156
+#: curs_main.c:1151 menu.c:1157
 msgid "Nothing to do."
 msgstr "Нет помеченных сообщений."
 
-#: curs_main.c:1248
+#: curs_main.c:1249
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Введите идентификатор ключа: "
 
-#: curs_main.c:1256
+#: curs_main.c:1257
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1279
+#: curs_main.c:1280
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "Корневое сообщение не видимо при просмотре с ограничением."
 
-#: curs_main.c:1285
+#: curs_main.c:1286
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: curs_main.c:1295
+#: curs_main.c:1296
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1314
+#: curs_main.c:1315
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1318 imap/message.c:657 nntp.c:1283 pop.c:300
+#: curs_main.c:1319 imap/message.c:669 nntp.c:1283 pop.c:300
 msgid "Fetching message headers..."
 msgstr "Получение заголовков сообщений..."
 
-#: curs_main.c:1393
+#: curs_main.c:1394
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "удалить все сообщения в дискуссии"
 
-#: curs_main.c:1413
+#: curs_main.c:1414
 msgid "Jump to message: "
 msgstr "Перейти к сообщению: "
 
-#: curs_main.c:1425
+#: curs_main.c:1426
 msgid "Argument must be a message number."
 msgstr "Аргумент должен быть номером сообщения."
 
-#: curs_main.c:1457
+#: curs_main.c:1458
 msgid "That message is not visible."
 msgstr "Это сообщение невидимо."
 
-#: curs_main.c:1460
+#: curs_main.c:1461
 msgid "Invalid message number."
 msgstr "Неверный номер сообщения."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1474 curs_main.c:2803 pager.c:2781
+#: curs_main.c:1475 curs_main.c:2823 pager.c:2781
 msgid "Cannot delete message(s)"
 msgstr "Не удалось удалить сообщения"
 
-#: curs_main.c:1477
+#: curs_main.c:1478
 msgid "Delete messages matching: "
 msgstr "Удалить сообщения по образцу: "
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No limit pattern is in effect."
 msgstr "Шаблон ограничения списка отсутствует."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1504
+#: curs_main.c:1505
 #, c-format
 msgid "Limit: %s"
 msgstr "Шаблон ограничения: %s"
 
-#: curs_main.c:1542
+#: curs_main.c:1543
 msgid "Limit to messages matching: "
 msgstr "Ограничиться сообщениями, соответствующими: "
 
-#: curs_main.c:1564
+#: curs_main.c:1565
 msgid "To view all messages, limit to \"all\"."
 msgstr "Используйте \"all\" для просмотра всех сообщений."
 
-#: curs_main.c:1576 pager.c:2291
+#: curs_main.c:1577 pager.c:2291
 msgid "Quit NeoMutt?"
 msgstr "Выйти из NeoMutt?"
 
-#: curs_main.c:1669
+#: curs_main.c:1670
 msgid "Tag messages matching: "
 msgstr "Пометить сообщения по образцу: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1679 curs_main.c:3208 pager.c:3093
+#: curs_main.c:1680 curs_main.c:3228 pager.c:3094
 msgid "Cannot undelete message(s)"
 msgstr "Не удалось восстановить сообщения"
 
-#: curs_main.c:1682
+#: curs_main.c:1683
 msgid "Undelete messages matching: "
 msgstr "Восстановить сообщения по образцу: "
 
-#: curs_main.c:1690
+#: curs_main.c:1691
 msgid "Untag messages matching: "
 msgstr "Снять пометку с сообщений по образцу: "
 
-#: curs_main.c:1724
+#: curs_main.c:1725
 msgid "Logged out of IMAP servers."
 msgstr "Соединения с IMAP-серверами отключены."
 
-#: curs_main.c:1821 curs_main.c:1860
+#: curs_main.c:1822
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Нет темы письма, отказ."
 
-#: curs_main.c:1829
+#: curs_main.c:1830
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1868
+#: curs_main.c:1862 mx.c:1380 mx.c:1392
 #, fuzzy
-msgid "No label specified, aborting."
+msgid "Folder doesn't support tagging, aborting."
+msgstr "SMTP сервер не поддерживает аутентификацию"
+
+#: curs_main.c:1877
+#, fuzzy
+msgid "No tag specified, aborting."
 msgstr "Нет темы письма, отказ."
 
-#: curs_main.c:1879
+#: curs_main.c:1889
 #, c-format
-msgid "Update labels..."
+msgid "Update tags..."
 msgstr ""
 
-#: curs_main.c:1907
-msgid "Failed to modify labels, aborting."
+#: curs_main.c:1927
+msgid "Failed to modify tags, aborting."
 msgstr ""
 
-#: curs_main.c:1942
+#: curs_main.c:1962
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Нет темы письма, отказ."
 
-#: curs_main.c:1946 curs_main.c:1966 curs_main.c:1985
+#: curs_main.c:1966 curs_main.c:1986 curs_main.c:2005
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1955 curs_main.c:1974
+#: curs_main.c:1975 curs_main.c:1994
 msgid "Windowed queries disabled."
 msgstr ""
 
-#: curs_main.c:1960 curs_main.c:1979
+#: curs_main.c:1980 curs_main.c:1999
 msgid "No notmuch vfolder currently loaded."
 msgstr ""
 
-#: curs_main.c:2017
+#: curs_main.c:2037
 msgid "Open mailbox in read-only mode"
 msgstr "Открыть почтовый ящик только для чтения"
 
-#: curs_main.c:2020
+#: curs_main.c:2040
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "открыть другой почтовый ящик/файл"
 
-#: curs_main.c:2023
+#: curs_main.c:2043
 msgid "Open mailbox"
 msgstr "Открыть почтовый ящик"
 
-#: curs_main.c:2033
+#: curs_main.c:2053
 msgid "No mailboxes have new mail"
 msgstr "Нет почтовых ящиков с новой почтой"
 
-#: curs_main.c:2075
+#: curs_main.c:2095
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Открыть почтовый ящик только для чтения"
 
-#: curs_main.c:2077
+#: curs_main.c:2097
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2178
+#: curs_main.c:2198
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Выйти из NeoMutt без сохранения изменений?"
 
-#: curs_main.c:2194
+#: curs_main.c:2214
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "Не удалось соединить дискуссии"
 
-#: curs_main.c:2197 curs_main.c:2235 curs_main.c:2690 curs_main.c:2722
+#: curs_main.c:2217 curs_main.c:2255 curs_main.c:2710 curs_main.c:2742
 #: flags.c:348 thread.c:1063 thread.c:1119 thread.c:1186
 msgid "Threading is not enabled."
 msgstr "Группировка по дискуссиям не включена."
 
-#: curs_main.c:2210
+#: curs_main.c:2230
 msgid "Thread broken"
 msgstr "Дискуссия разделена"
 
-#: curs_main.c:2222
+#: curs_main.c:2242
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 "Дискуссия не может быть разделена, сообщение не является частью дискуссии"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2232
+#: curs_main.c:2252
 msgid "Cannot link threads"
 msgstr "Не удалось соединить дискуссии"
 
-#: curs_main.c:2237
+#: curs_main.c:2257
 msgid "No Message-ID: header available to link thread"
 msgstr "Отсутствует заголовок Message-ID: для соединения дискуссии"
 
-#: curs_main.c:2239
+#: curs_main.c:2259
 msgid "First, please tag a message to be linked here"
 msgstr "Сначала необходимо пометить сообщение, которое нужно соединить здесь"
 
-#: curs_main.c:2250
+#: curs_main.c:2270
 msgid "Threads linked"
 msgstr "Дискуссии соединены"
 
-#: curs_main.c:2253
+#: curs_main.c:2273
 msgid "No thread linked"
 msgstr "Дискуссии не соединены"
 
-#: curs_main.c:2289 curs_main.c:2314
+#: curs_main.c:2309 curs_main.c:2334
 msgid "You are on the last message."
 msgstr "Это последнее сообщение."
 
-#: curs_main.c:2296 curs_main.c:2340
+#: curs_main.c:2316 curs_main.c:2360
 msgid "No undeleted messages."
 msgstr "Нет восстановленных сообщений."
 
-#: curs_main.c:2333 curs_main.c:2358
+#: curs_main.c:2353 curs_main.c:2378
 msgid "You are on the first message."
 msgstr "Это первое сообщение."
 
-#: curs_main.c:2430 menu.c:971 pager.c:2411 pattern.c:2075
+#: curs_main.c:2450 menu.c:972 pager.c:2411 pattern.c:2074
 msgid "Search wrapped to top."
 msgstr "Достигнут конец; продолжаем поиск с начала."
 
-#: curs_main.c:2439 pager.c:2432 pattern.c:2086
+#: curs_main.c:2459 pager.c:2432 pattern.c:2085
 msgid "Search wrapped to bottom."
 msgstr "Достигнуто начало; продолжаем поиск с конца."
 
-#: curs_main.c:2482
+#: curs_main.c:2502
 msgid "No new messages in this limited view."
 msgstr "Нет новых сообщений при просмотре с ограничением."
 
-#: curs_main.c:2484
+#: curs_main.c:2504
 msgid "No new messages."
 msgstr "Нет новых сообщений."
 
-#: curs_main.c:2489
+#: curs_main.c:2509
 msgid "No unread messages in this limited view."
 msgstr "Нет непрочитанных сообщений при просмотре с ограничением."
 
-#: curs_main.c:2491
+#: curs_main.c:2511
 msgid "No unread messages."
 msgstr "Нет непрочитанных сообщений."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2509
+#: curs_main.c:2529
 msgid "Cannot flag message"
 msgstr "Не удалось переключить флаг сообщения"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2547 pager.c:3056
+#: curs_main.c:2567 pager.c:3057
 msgid "Cannot toggle new"
 msgstr "Не удалось переключить флаг \"новое\""
 
-#: curs_main.c:2624
+#: curs_main.c:2644
 msgid "No more threads."
 msgstr "Нет больше дискуссий."
 
-#: curs_main.c:2626
+#: curs_main.c:2646
 msgid "You are on the first thread."
 msgstr "Это первая дискуссия"
 
-#: curs_main.c:2708
+#: curs_main.c:2728
 #, fuzzy
 msgid "Thread contains unread or flagged messages."
 msgstr "В дискуссии присутствуют непрочитанные сообщения."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2758 pager.c:2747
+#: curs_main.c:2778 pager.c:2747
 msgid "Cannot delete message"
 msgstr "Не удалось удалить сообщение"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2860
+#: curs_main.c:2880
 msgid "Cannot edit message"
 msgstr "Не удалось отредактировать сообщение"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2910 pager.c:3156
+#: curs_main.c:2930 pager.c:3157
 #, c-format
 msgid "%d labels changed."
 msgstr "Метки были изменены: %d"
@@ -1543,52 +1558,52 @@ msgstr "Метки были изменены: %d"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:2917 pager.c:3160
+#: curs_main.c:2937 pager.c:3161
 msgid "No labels changed."
 msgstr "Ни одна метка не была изменена."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3015
+#: curs_main.c:3035
 msgid "Cannot mark message(s) as read"
 msgstr "Не удалось пометить сообщения как прочитанные"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3050
+#: curs_main.c:3070
 msgid "Enter macro stroke: "
 msgstr "Введите макрос сообщения: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3057
+#: curs_main.c:3077
 msgid "message hotkey"
 msgstr "макрос сообщения"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3062
+#: curs_main.c:3082
 #, c-format
 msgid "Message bound to %s."
 msgstr "Сообщение связяно с %s."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3070
+#: curs_main.c:3090
 msgid "No message ID to macro."
 msgstr "Нет Message-ID для создания макроса."
 
-#: curs_main.c:3113 pager.c:2920 recvattach.c:1348
+#: curs_main.c:3133 pager.c:2920 recvattach.c:1352
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3116 pager.c:2890 pager.c:2900 pager.c:2923
+#: curs_main.c:3136 pager.c:2890 pager.c:2900 pager.c:2923
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3178 pager.c:3076
+#: curs_main.c:3198 pager.c:3077
 msgid "Cannot undelete message"
 msgstr "Не удалось восстановить сообщение"
 
@@ -1853,7 +1868,7 @@ msgstr "(используйте \"%s\" для просмотра этой час
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(функция view-attachments не назначена ни одной клавише!)"
 
-#: hcache/hcache.c:561 main.c:545 newsrc.c:1022
+#: hcache/hcache.c:564 main.c:545 newsrc.c:1022
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Не удалось создать %s: %s"
@@ -1976,7 +1991,7 @@ msgstr "Аутентификация (%s)..."
 msgid "SASL authentication failed."
 msgstr "Ошибка SASL-аутентификации."
 
-#: imap/browse.c:190 imap/imap.c:610
+#: imap/browse.c:190 imap/imap.c:624
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "Неверно указано имя IMAP-ящика: %s"
@@ -2019,226 +2034,236 @@ msgstr "Не удалось переименовать: %s"
 msgid "Mailbox renamed."
 msgstr "Почтовый ящик переименован."
 
-#: imap/command.c:149
+#: imap/command.c:150
 msgid "Mailbox closed"
 msgstr "Почтовый ящик закрыт"
 
-#: imap/command.c:1035
+#: imap/command.c:1060
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "Превышено время ожидания соединение с %s"
 
-#: imap/imap.c:144
+#: imap/imap.c:145
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "Не удалось выполнить команду CREATE: %s"
 
-#: imap/imap.c:213
+#: imap/imap.c:210
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Закрытие соединения с сервером %s..."
 
 # "neomutt не поддерживает версию протокола, используемый на этом сервере"
-#: imap/imap.c:350
+#: imap/imap.c:364
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr ""
 "Этот IMAP-сервер использует устаревший протокол. NeoMutt не сможет работать "
 "с ним."
 
-#: imap/imap.c:478 nntp.c:675 pop_lib.c:330 smtp.c:595
+#: imap/imap.c:492 nntp.c:675 pop_lib.c:330 smtp.c:595
 msgid "Secure connection with TLS?"
 msgstr "Использовать безопасное TLS-соединение?"
 
-#: imap/imap.c:488 nntp.c:694 pop_lib.c:350 smtp.c:607
+#: imap/imap.c:502 nntp.c:694 pop_lib.c:350 smtp.c:607
 msgid "Could not negotiate TLS connection"
 msgstr "Не удалось установить TLS-соединение"
 
-#: imap/imap.c:504 pop_lib.c:371
+#: imap/imap.c:518 pop_lib.c:371
 msgid "Encrypted connection unavailable"
 msgstr "Зашифрованное соединение не доступно"
 
-#: imap/imap.c:644 nntp.c:1486
+#: imap/imap.c:658 nntp.c:1486
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбирается %s..."
 
-#: imap/imap.c:794
+#: imap/imap.c:808
 msgid "Error opening mailbox"
 msgstr "Ошибка открытия почтового ящика"
 
-#: imap/imap.c:844 imap/imap.c:2279 imap/message.c:1322 muttlib.c:1532
+#: imap/imap.c:858 imap/imap.c:2506 imap/message.c:1336 muttlib.c:1535
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap/imap.c:1256
+#: imap/imap.c:1276
+#, fuzzy
+msgid "IMAP server doesn't support custom flags"
+msgstr "SMTP сервер не поддерживает аутентификацию"
+
+#: imap/imap.c:1320
+#, fuzzy
+msgid "Invalid IMAP flags"
+msgstr "Неправильный "
+
+#: imap/imap.c:1473
 msgid "Expunge failed"
 msgstr "Не удалось очистить почтовый ящик"
 
-#: imap/imap.c:1268
+#: imap/imap.c:1485
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d сообщений помечаются как удаленные..."
 
-#: imap/imap.c:1300
+#: imap/imap.c:1517
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Сохранение изменённых сообщений... [%d/%d]"
 
-#: imap/imap.c:1355
+#: imap/imap.c:1572
 msgid "Error saving flags. Close anyway?"
 msgstr "Ошибка сохранения флагов. Закрыть почтовый ящик?"
 
-#: imap/imap.c:1363
+#: imap/imap.c:1580
 msgid "Error saving flags"
 msgstr "Ошибка сохранения флагов"
 
-#: imap/imap.c:1385
+#: imap/imap.c:1602
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1391
+#: imap/imap.c:1608
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: ошибка выполнения команды EXPUNGE"
 
-#: imap/imap.c:1906
+#: imap/imap.c:2123
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Не указано имя заголовка при поиске заголовка: %s"
 
-#: imap/imap.c:1936
+#: imap/imap.c:2153
 #, c-format
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/imap.c:1988
+#: imap/imap.c:2205
 msgid "Bad mailbox name"
 msgstr "Недопустимое имя почтового ящика"
 
-#: imap/imap.c:2011
+#: imap/imap.c:2228
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
-#: imap/imap.c:2013
+#: imap/imap.c:2230
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Отключение от %s..."
 
-#: imap/imap.c:2023
+#: imap/imap.c:2240 init.c:4605
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Подключено к %s"
 
-#: imap/imap.c:2025
+#: imap/imap.c:2242 init.c:4659
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отключено от %s"
 
-#: imap/imap.c:2264 imap/message.c:1286
+#: imap/imap.c:2491 imap/message.c:1300
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d сообщений копируются в %s..."
 
-#: imap/message.c:392 mx.c:1255
+#: imap/message.c:402 mx.c:1255
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Переполнение -- не удалось выделить память."
 
-#: imap/message.c:518
+#: imap/message.c:528
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Получение списка заголовков не поддерживается этим IMAP-сервером."
 
-#: imap/message.c:528
+#: imap/message.c:538
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Не удалось создать временный файл %s"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:564
+#: imap/message.c:574
 msgid "Evaluating cache..."
 msgstr "Загрузка кэша..."
 
-#: imap/message.c:894 imap/message.c:954 nntp.c:1586 pop.c:598
+#: imap/message.c:908 imap/message.c:968 nntp.c:1586 pop.c:598
 msgid "Fetching message..."
 msgstr "Получение сообщения..."
 
-#: imap/message.c:941 pop.c:593
+#: imap/message.c:955 pop.c:593
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "Нумерация сообщений изменилась. Требуется повторно открыть почтовый ящик."
 
 # или "на сервер" убрать??
-#: imap/message.c:1109
+#: imap/message.c:1123
 msgid "Uploading message..."
 msgstr "Сообщение загружается на сервер..."
 
-#: imap/message.c:1290
+#: imap/message.c:1304
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Сообщение %d копируется в %s..."
 
-#: imap/util.c:489
+#: imap/util.c:490
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: init.c:77 init.c:2574 pager.c:76
+#: init.c:80 init.c:2575 pager.c:76
 msgid "Not available in this menu."
 msgstr "В этом меню недоступно."
 
-#: init.c:354
+#: init.c:357
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: неизвестный метод сортировки"
 
-#: init.c:407 init.c:441 init.c:3013
+#: init.c:410 init.c:444 init.c:3014
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: неизвестный тип."
 
-#: init.c:872
+#: init.c:875
 #, c-format
 msgid "Bad regex: %s"
 msgstr "Некорректное регулярное выражение: %s"
 
-#: init.c:932
+#: init.c:935
 #, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "Не достаточно подвыражений для шаблона"
 
-#: init.c:959
+#: init.c:962
 #, fuzzy, c-format
 msgid "finish: too many arguments"
 msgstr "push: слишком много аргументов"
 
-#: init.c:1213 init.c:1221 init.c:1244
+#: init.c:1216 init.c:1224 init.c:1247
 msgid "not enough arguments"
 msgstr "слишком мало аргументов"
 
-#: init.c:1304
+#: init.c:1307
 msgid "spam: no matching pattern"
 msgstr "спам: образец не найден"
 
-#: init.c:1306
+#: init.c:1309
 msgid "nospam: no matching pattern"
 msgstr "не спам: образец не найден"
 
-#: init.c:1479
+#: init.c:1482
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: отсутствует -rx или -addr."
 
-#: init.c:1498
+#: init.c:1501
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: предупреждение: некорректный IDN \"%s\".\n"
 
-#: init.c:1679
+#: init.c:1682
 msgid "attachments: no disposition"
 msgstr "attachments: отсутствует параметр disposition"
 
-#: init.c:1690
+#: init.c:1693
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2246,173 +2271,193 @@ msgid ""
 "\n"
 msgstr "изменить описание вложения"
 
-#: init.c:1720
+#: init.c:1723
 msgid "attachments: invalid disposition"
 msgstr "attachments: неверное значение параметра disposition"
 
-#: init.c:1736
+#: init.c:1739
 msgid "unattachments: no disposition"
 msgstr "unattachments: отсутствует параметр disposition"
 
-#: init.c:1763
+#: init.c:1766
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: неверное значение параметра disposition"
 
-#: init.c:1891
+#: init.c:1894
 msgid "alias: no address"
 msgstr "псевдоним: отсутствует адрес"
 
-#: init.c:1938
+#: init.c:1941
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Предупреждение: некорректный IDN \"%s\" в псевдониме \"%s\".\n"
 
-#: init.c:2011
+#: init.c:2014
 msgid "invalid header field"
 msgstr "недопустимое поле в заголовке"
 
-#: init.c:2160
+#: init.c:2163
 #, fuzzy, c-format
 msgid "restore_default(%s): error in regex: %s\n"
 msgstr "mutt_restore_default(%s): ошибка в регулярном выражении: %s\n"
 
-#: init.c:2452 init.c:2623
+#: init.c:2453 init.c:2624
 #, c-format
 msgid "%s is unset"
 msgstr "%s: значение не определено"
 
-#: init.c:2549 init.c:2668
+#: init.c:2550 init.c:2669
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: неизвестная переменная"
 
-#: init.c:2559
+#: init.c:2560
 msgid "prefix is illegal with reset"
 msgstr "префикс недопустим при сбросе значений"
 
-#: init.c:2565
+#: init.c:2566
 msgid "value is illegal with reset"
 msgstr "значение недопустимо при сбросе значений"
 
-#: init.c:2602 init.c:2615
+#: init.c:2603 init.c:2616
 msgid "Usage: set variable=yes|no"
 msgstr "Использование: set variable=yes|no"
 
-#: init.c:2623
+#: init.c:2624
 #, c-format
 msgid "%s is set"
 msgstr "%s: значение установлено"
 
-#: init.c:2723
+#: init.c:2724
 msgid "set debug_file ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2748 init.c:2763
+#: init.c:2749 init.c:2764
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Неверное значение для параметра %s: \"%s\""
 
-#: init.c:2861
+#: init.c:2862
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: недопустимый тип почтового ящика"
 
-#: init.c:2892
+#: init.c:2893
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: недопустимое значение (%s)"
 
-#: init.c:2893
+#: init.c:2894
 msgid "format error"
 msgstr "ошибка формата"
 
-#: init.c:2893
+#: init.c:2894
 msgid "number overflow"
 msgstr "переполнение числового значения"
 
-#: init.c:2901
+#: init.c:2902
 msgid "set debug_level ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2969
+#: init.c:2970
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: недопустимое значение"
 
-#: init.c:3059
+#: init.c:3060
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: недопустимое значение"
 
-#: init.c:3067
+#: init.c:3068
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: неизвестный тип"
 
-#: init.c:3230
+#: init.c:3234
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Ошибка в %s: строка %d: %s"
 
-#: init.c:3241
+#: init.c:3245
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Ошибка в %s: строка %d: %s"
 
-#: init.c:3266
+#: init.c:3270
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: ошибки в %s"
 
-#: init.c:3267
+#: init.c:3271
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: чтение прервано из-за большого количества ошибок в %s"
 
-#: init.c:3276
+#: init.c:3280
 #, fuzzy, c-format
 msgid "source: %d warnings in %s"
 msgstr "source: ошибки в %s"
 
-#: init.c:3300 mutt_lua.c:414
+#: init.c:3304 mutt_lua.c:414
 #, c-format
 msgid "source: error at %s"
 msgstr "source: ошибка в %s"
 
-#: init.c:3309
+#: init.c:3313
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
 msgstr "Не удалось напечатать сообщения"
 
-#: init.c:3368
+#: init.c:3372
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: неизвестная команда"
 
-#: init.c:4026
+#: init.c:4030
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Ошибка в командной строке: %s\n"
 
-#: init.c:4133
+#: init.c:4125
 msgid "unable to determine home directory"
 msgstr "не удалось определить домашний каталог"
 
-#: init.c:4141
+#: init.c:4133
 msgid "unable to determine username"
 msgstr "не удалось определить имя пользователя"
 
-#: init.c:4176
+#: init.c:4168
 msgid "unable to determine nodename via uname()"
 msgstr "не удалось определить имя узла с помощью uname()"
 
-#: init.c:4483
+#: init.c:4467
 msgid "-group: no group name"
 msgstr "-group: имя группы отсутствует"
 
-#: init.c:4493
+#: init.c:4477
 msgid "out of arguments"
 msgstr "слишком мало аргументов"
+
+#: init.c:4591 init.c:4645
+#, fuzzy
+msgid "Too many arguments"
+msgstr "слишком много аргументов"
+
+#: init.c:4600
+#, fuzzy, c-format
+msgid "Could not subscribe to %s"
+msgstr "Подключено к %s"
+
+#: init.c:4616 init.c:4670
+#, fuzzy
+msgid "No folder specified"
+msgstr "Тема сообщения не указана."
+
+#: init.c:4654
+#, fuzzy, c-format
+msgid "Could not unsubscribe from %s"
+msgstr "Отключено от %s"
 
 #: keymap.c:279 keymap.c:287
 #, c-format
@@ -2713,7 +2758,7 @@ msgstr "Критическая ошибка!  Не удалось заново �
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: почтовый ящик изменен, но измененные сообщения отсутствуют!"
 
-#: mbox.c:1129 mh.c:2309 mutt_notmuch.c:2530 mx.c:562
+#: mbox.c:1129 mh.c:2311 mutt_notmuch.c:2438 mx.c:562
 #, c-format
 msgid "Writing %s..."
 msgstr "Пишется %s..."
@@ -2731,68 +2776,68 @@ msgstr "Запись не удалась!  Неполный почтовый я�
 msgid "Could not reopen mailbox!"
 msgstr "Не удалось заново открыть почтовый ящик!"
 
-#: menu.c:539
+#: menu.c:540
 msgid "Jump to: "
 msgstr "Перейти к: "
 
-#: menu.c:548
+#: menu.c:549
 msgid "Invalid index number."
 msgstr "Неверный индекс."
 
-#: menu.c:552 menu.c:574 menu.c:638 menu.c:681 menu.c:697 menu.c:708 menu.c:719
-#: menu.c:730 menu.c:743 menu.c:756 menu.c:1287
+#: menu.c:553 menu.c:575 menu.c:639 menu.c:682 menu.c:698 menu.c:709 menu.c:720
+#: menu.c:731 menu.c:744 menu.c:757 menu.c:1288
 msgid "No entries."
 msgstr "Записи отсутствуют."
 
-#: menu.c:571
+#: menu.c:572
 msgid "You cannot scroll down farther."
 msgstr "Дальнейшая прокрутка невозможна."
 
-#: menu.c:589
+#: menu.c:590
 msgid "You cannot scroll up farther."
 msgstr "Дальнейшая прокрутка невозможна."
 
-#: menu.c:631
+#: menu.c:632
 msgid "You are on the first page."
 msgstr "Вы уже на первой странице."
 
-#: menu.c:632
+#: menu.c:633
 msgid "You are on the last page."
 msgstr "Вы уже на последней странице."
 
-#: menu.c:767
+#: menu.c:768
 msgid "You are on the last entry."
 msgstr "Вы уже на последней записи."
 
-#: menu.c:778
+#: menu.c:779
 msgid "You are on the first entry."
 msgstr "Вы уже на первой записи."
 
-#: menu.c:940 pager.c:2454 pattern.c:2013
+#: menu.c:941 pager.c:2454 pattern.c:2012
 msgid "Search for: "
 msgstr "Поиск: "
 
-#: menu.c:941 pager.c:2455 pattern.c:2014
+#: menu.c:942 pager.c:2455 pattern.c:2013
 msgid "Reverse search for: "
 msgstr "Обратный поиск: "
 
-#: menu.c:989 pager.c:2408 pager.c:2429 pager.c:2552 pattern.c:2130
+#: menu.c:990 pager.c:2408 pager.c:2429 pager.c:2552 pattern.c:2129
 msgid "Not found."
 msgstr "Не найдено."
 
-#: menu.c:1150
+#: menu.c:1151
 msgid "No tagged entries."
 msgstr "Нет отмеченных записей."
 
-#: menu.c:1251
+#: menu.c:1252
 msgid "Search is not implemented for this menu."
 msgstr "В этом меню поиск не реализован."
 
-#: menu.c:1256
+#: menu.c:1257
 msgid "Jumping is not implemented for dialogs."
 msgstr "Для диалогов переход по номеру сообщения не реализован."
 
-#: menu.c:1290
+#: menu.c:1291
 msgid "Tagging is not supported."
 msgstr "Возможность пометки не поддерживается."
 
@@ -2809,17 +2854,17 @@ msgstr "Не удалось сохранить сообщение на диск�
 msgid "_maildir_commit_message(): unable to set time on file"
 msgstr "_maildir_commit_message(): не удалось установить время файла"
 
-#: muttlib.c:470
+#: muttlib.c:473
 #, c-format
 msgid "mutt_randbuf len=%zu"
 msgstr ""
 
-#: muttlib.c:490
+#: muttlib.c:493
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr ""
 
-#: muttlib.c:497
+#: muttlib.c:500
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr ""
@@ -2827,48 +2872,48 @@ msgstr ""
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:739
+#: muttlib.c:742
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Указанный файл -- это каталог. Сохранить в нем?[(y)да, (n)нет, (a)все]"
 
-#: muttlib.c:739
+#: muttlib.c:742
 msgid "yna"
 msgstr "yna"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:758
+#: muttlib.c:761
 msgid "File is a directory, save under it?"
 msgstr "Указанный файл -- это каталог. Сохранить в нем?"
 
-#: muttlib.c:762
+#: muttlib.c:765
 msgid "File under directory: "
 msgstr "Имя файла в каталоге: "
 
-#: muttlib.c:772
+#: muttlib.c:775
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файл существует, (o)переписать, (a)добавить, (с)отказ?"
 
-#: muttlib.c:772
+#: muttlib.c:775
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1489
+#: muttlib.c:1492
 msgid "Can't save message to POP mailbox."
 msgstr "Запись сообщений не поддерживается POP-сервером."
 
-#: muttlib.c:1498
+#: muttlib.c:1501
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
-#: muttlib.c:1509
+#: muttlib.c:1512
 #, fuzzy
 msgid "Can't save message to news server."
 msgstr "Невозможно оставить сообщения на сервере."
 
-#: muttlib.c:1518
+#: muttlib.c:1521
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не является почтовым ящиком!"
@@ -2882,54 +2927,54 @@ msgstr ""
 msgid "source: too many arguments"
 msgstr "source: слишком много аргументов"
 
-#: mutt_notmuch.c:401 mutt_notmuch.c:1912 mutt_notmuch.c:1921
-#: mutt_notmuch.c:1932 mutt_notmuch.c:2107
+#: mutt_notmuch.c:351 mutt_notmuch.c:1801 mutt_notmuch.c:1810
+#: mutt_notmuch.c:1821 mutt_notmuch.c:2011
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "Не удалось распознать ссылку mailto:\n"
 
-#: mutt_notmuch.c:460
+#: mutt_notmuch.c:410
 #, c-format
 msgid "failed to parse notmuch query type: %s"
 msgstr ""
 
-#: mutt_notmuch.c:564
+#: mutt_notmuch.c:514
 msgid ""
 "Invalid nm_query_window_timebase value (valid values are: hour, day, week, "
 "month or year)."
 msgstr ""
 
-#: mutt_notmuch.c:619
+#: mutt_notmuch.c:569
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr "Не удалось распознать ссылку mailto:\n"
 
-#: mutt_notmuch.c:698
+#: mutt_notmuch.c:648
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Попытка fcntl-блокировки файла... %d"
 
-#: mutt_notmuch.c:706
+#: mutt_notmuch.c:656
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
 msgstr ""
 
-#: mutt_notmuch.c:707
+#: mutt_notmuch.c:657
 #, fuzzy
 msgid "unknown reason"
 msgstr "неизвестная ошибка"
 
-#: mutt_notmuch.c:1127
+#: mutt_notmuch.c:1039
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Сообщение отправляется..."
 
-#: mutt_notmuch.c:1838
+#: mutt_notmuch.c:1727
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Нет новых сообщений при просмотре с ограничением."
 
-#: mutt_notmuch.c:2638
+#: mutt_notmuch.c:2546
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Не удалось открыть мусорную корзину"
@@ -2963,41 +3008,41 @@ msgstr "Команда, предшествующая соединению, за�
 msgid "Connection to %s closed"
 msgstr "Соединение с %s закрыто"
 
-#: mutt_socket.c:316
+#: mutt_socket.c:301
 msgid "SSL is unavailable."
 msgstr "SSL-протокол недоступен."
 
-#: mutt_socket.c:347 mutt_socket.c:371
+#: mutt_socket.c:332 mutt_socket.c:356
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Ошибка при взаимодействии с %s (%s)"
 
-#: mutt_socket.c:355 mutt_socket.c:379
+#: mutt_socket.c:340 mutt_socket.c:364
 #, fuzzy, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Соединение с %s закрыто"
 
-#: mutt_socket.c:506 mutt_socket.c:564
+#: mutt_socket.c:491 mutt_socket.c:549
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "Некорректный IDN \"%s\"."
 
-#: mutt_socket.c:514 mutt_socket.c:572
+#: mutt_socket.c:499 mutt_socket.c:557
 #, c-format
 msgid "Looking up %s..."
 msgstr "Определяется адрес сервера %s..."
 
-#: mutt_socket.c:524 mutt_socket.c:582
+#: mutt_socket.c:509 mutt_socket.c:567
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Не удалось определить адрес сервера \"%s\""
 
-#: mutt_socket.c:530 mutt_socket.c:588
+#: mutt_socket.c:515 mutt_socket.c:573
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Устанавливается соединение с %s..."
 
-#: mutt_socket.c:612
+#: mutt_socket.c:597
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Не удалось установить соединение с %s (%s)."
@@ -5293,75 +5338,75 @@ msgstr "свернуть/развернуть текущую дискуссию"
 msgid "collapse/uncollapse all threads"
 msgstr "свернуть/развернуть все дискуссии"
 
-#: opcodes.h:239
+#: opcodes.h:237
+msgid "modify (notmuch/imap) tags"
+msgstr ""
+
+#: opcodes.h:238
+#, fuzzy
+msgid "modify (notmuch/imap) tags and then hide message"
+msgstr "Это первое сообщение."
+
+#: opcodes.h:241
 msgid "make decrypted copy and delete"
 msgstr "создать расшифрованную копию и удалить оригинал"
 
-#: opcodes.h:240
+#: opcodes.h:242
 msgid "make decrypted copy"
 msgstr "создать расшифрованную копию"
 
-#: opcodes.h:241
+#: opcodes.h:243
 msgid "wipe passphrase(s) from memory"
 msgstr "удалить фразы-пароли из памяти"
 
-#: opcodes.h:242
+#: opcodes.h:244
 msgid "extract supported public keys"
 msgstr "извлечь поддерживаемые открытые ключи"
 
-#: opcodes.h:246
+#: opcodes.h:248
 msgid "accept the chain constructed"
 msgstr "использовать созданную цепочку"
 
-#: opcodes.h:247
+#: opcodes.h:249
 msgid "append a remailer to the chain"
 msgstr "добавить remailer в цепочку"
 
-#: opcodes.h:248
+#: opcodes.h:250
 msgid "insert a remailer into the chain"
 msgstr "вставить remailer в цепочку"
 
-#: opcodes.h:249
+#: opcodes.h:251
 msgid "delete a remailer from the chain"
 msgstr "удалить remailer из цепочки"
 
-#: opcodes.h:250
+#: opcodes.h:252
 msgid "select the previous element of the chain"
 msgstr "выбрать предыдущий элемент в цепочке"
 
-#: opcodes.h:251
+#: opcodes.h:253
 msgid "select the next element of the chain"
 msgstr "выбрать следующий элемент в цепочке"
 
-#: opcodes.h:252
+#: opcodes.h:254
 msgid "send the message through a mixmaster remailer chain"
 msgstr "послать сообщение через цепочку remailer"
 
-#: opcodes.h:259
+#: opcodes.h:261
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "открыть другой почтовый ящик/файл"
 
-#: opcodes.h:260
+#: opcodes.h:262
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: opcodes.h:261
+#: opcodes.h:263
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: opcodes.h:262
+#: opcodes.h:264
 msgid "shifts virtual folder time window backwards"
 msgstr ""
-
-#: opcodes.h:263
-msgid "modify (notmuch) tags"
-msgstr ""
-
-#: opcodes.h:264
-#, fuzzy
-msgid "modify labels and then hide message"
-msgstr "Это первое сообщение."
 
 #: opcodes.h:265
 #, fuzzy
@@ -5475,126 +5520,126 @@ msgstr "За цитируемым текстом больше нет основ�
 msgid "multipart message has no boundary parameter!"
 msgstr "Составное сообщение требует наличия параметра boundary!"
 
-#: pattern.c:92 pattern.c:413
+#: pattern.c:93 pattern.c:414
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Ошибка в выражении: %s"
 
-#: pattern.c:97 pattern.c:418
+#: pattern.c:98 pattern.c:419
 msgid "Empty expression"
 msgstr "Пустое выражение"
 
-#: pattern.c:176
+#: pattern.c:177
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Неверный день месяца: %s"
 
-#: pattern.c:190
+#: pattern.c:191
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Неверное название месяца: %s"
 
-#: pattern.c:371
+#: pattern.c:372
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Неверно указана относительная дата: %s"
 
-#: pattern.c:659 pattern.c:766
+#: pattern.c:660 pattern.c:767
 #, fuzzy
 msgid "No current message"
 msgstr "Нет непрочитанных сообщений."
 
-#: pattern.c:787
+#: pattern.c:788
 msgid "No Context"
 msgstr ""
 
-#: pattern.c:956
+#: pattern.c:955
 #, fuzzy
 msgid "Error opening memstream"
 msgstr "Ошибка открытия почтового ящика"
 
-#: pattern.c:1003
+#: pattern.c:1002
 #, fuzzy
 msgid "Error re-opening memstream"
 msgstr "Ошибка открытия почтового ящика"
 
-#: pattern.c:1012
+#: pattern.c:1011
 #, fuzzy
 msgid "Error opening /dev/null"
 msgstr "Не удалось открыть /dev/null"
 
-#: pattern.c:1174 pattern.c:1342
+#: pattern.c:1173 pattern.c:1341
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "ошибка в образце: %s"
 
-#: pattern.c:1201
+#: pattern.c:1200
 #, c-format
 msgid "missing pattern: %s"
 msgstr "пропущен образец: %s"
 
-#: pattern.c:1220
+#: pattern.c:1219
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "пропущена скобка: %s"
 
-#: pattern.c:1280
+#: pattern.c:1279
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: неверный модификатор образца"
 
-#: pattern.c:1286
+#: pattern.c:1285
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: в этом режиме не поддерживается"
 
-#: pattern.c:1299
+#: pattern.c:1298
 msgid "missing parameter"
 msgstr "пропущен параметр"
 
-#: pattern.c:1315
+#: pattern.c:1314
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "пропущена скобка: %s"
 
-#: pattern.c:1349
+#: pattern.c:1348
 msgid "empty pattern"
 msgstr "пустой образец"
 
-#: pattern.c:1610 pattern.c:1613
+#: pattern.c:1609 pattern.c:1612
 msgid "error: server custom search only supported with IMAP."
 msgstr ""
 
-#: pattern.c:1745
+#: pattern.c:1744
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "ошибка: неизвестная операция %d (сообщите об этой ошибке)."
 
-#: pattern.c:1893 pattern.c:2035
+#: pattern.c:1892 pattern.c:2034
 msgid "Compiling search pattern..."
 msgstr "Образец поиска компилируется..."
 
-#: pattern.c:1914
+#: pattern.c:1913
 msgid "Executing command on matching messages..."
 msgstr "Исполняется команда для подходящих сообщений..."
 
-#: pattern.c:1982
+#: pattern.c:1981
 msgid "No messages matched criteria."
 msgstr "Ни одно сообщение не подходит под критерий."
 
-#: pattern.c:2065
+#: pattern.c:2064
 msgid "Searching..."
 msgstr "Поиск..."
 
-#: pattern.c:2078
+#: pattern.c:2077
 msgid "Search hit bottom without finding match"
 msgstr "Поиск дошел до конца, не найдя ничего подходящего"
 
-#: pattern.c:2089
+#: pattern.c:2088
 msgid "Search hit top without finding match"
 msgstr "Поиск дошел до начала, не найдя ничего подходящего"
 
-#: pattern.c:2122
+#: pattern.c:2121
 msgid "Search interrupted."
 msgstr "Поиск прерван."
 
@@ -5811,34 +5856,34 @@ msgstr "Изменение структуры расшифрованных вл�
 msgid "Can't decrypt encrypted message!"
 msgstr "Не удалось расшифровать зашифрованное сообщение!"
 
-#: recvattach.c:1129
+#: recvattach.c:1133
 msgid "Attachments"
 msgstr "Вложения"
 
-#: recvattach.c:1167
+#: recvattach.c:1171
 msgid "There are no subparts to show!"
 msgstr "Дайджест не содержит ни одной части!"
 
-#: recvattach.c:1221
+#: recvattach.c:1225
 msgid "Can't delete attachment from POP server."
 msgstr "Удаление вложений не поддерживается POP-сервером."
 
-#: recvattach.c:1230
+#: recvattach.c:1234
 #, fuzzy
 msgid "Can't delete attachment from news server."
 msgstr "Удаление вложений не поддерживается POP-сервером."
 
-#: recvattach.c:1237
+#: recvattach.c:1241
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Удаление вложений из зашифрованных сообщений не поддерживается."
 
-#: recvattach.c:1243
+#: recvattach.c:1247
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
 msgstr ""
 "Удаление вложений из зашифрованных сообщений может аннулировать подпись."
 
-#: recvattach.c:1261 recvattach.c:1278
+#: recvattach.c:1265 recvattach.c:1282
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Для составных вложений поддерживается только удаление."
 
@@ -6132,20 +6177,20 @@ msgstr "Сообщение отправить не удалось."
 msgid "Could not open %s"
 msgstr "Не удалось открыть %s"
 
-#: sendlib.c:2518
+#: sendlib.c:2519
 msgid "$sendmail must be set in order to send mail."
 msgstr "Для отправки почты должна быть установлена переменная $sendmail."
 
-#: sendlib.c:2625
+#: sendlib.c:2626
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Сообщение отправить не удалось, процесс-потомок вернул %d (%s)."
 
-#: sendlib.c:2631
+#: sendlib.c:2632
 msgid "Output of the delivery process"
 msgstr "Результат работы программы доставки почты"
 
-#: sendlib.c:2815
+#: sendlib.c:2816
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Некорректный IDN %s при подготовке Resent-From."
@@ -6305,7 +6350,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:89
+#: version.c:90
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
@@ -6319,7 +6364,7 @@ msgstr ""
 "распространять его при соблюдении определенных условий; для получения\n"
 "более подробной информации введите \"neomutt -vv\".\n"
 
-#: version.c:409
+#: version.c:410
 #, fuzzy
 msgid ""
 "\n"
@@ -6328,7 +6373,7 @@ msgstr ""
 "\n"
 "Параметры компиляции:"
 
-#: version.c:412
+#: version.c:413
 msgid ""
 "\n"
 "Compile options:"
