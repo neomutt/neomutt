@@ -500,7 +500,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
               </para>
             </listitem>
             <listitem>
-              <para>Support for Unicode mailbox names (utf-8)</para>
+              <para>Support for Unicode mailbox names (UTF-8)</para>
             </listitem>
           </itemizedlist>
         </sect3>
@@ -11825,7 +11825,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
       <sect2 id="new-mail-intro">
         <title>Introduction</title>
         <para>This feature enables the new_mail_command setting, which can be
-        used to execute a custom script (e.g., a notification handler) upon
+        used to execute a custom script (e.g. a notification handler) upon
         receiving a new mail.</para>
         <para>The command string can contain expandos, such as
         <literal>%n</literal> for the number of new messages. For a complete list, see:
@@ -13842,7 +13842,7 @@ set sort_browser="reverse-size"
                   <literal>sidebar_ordinary</literal>
                 </entry>
                 <entry>default</entry>
-                <entry>Mailboxes that have no new/flagged mails, etc</entry>
+                <entry>Mailboxes that have no new/flagged mails, etc.</entry>
               </row>
               <row>
                 <entry>
@@ -14017,7 +14017,7 @@ color sidebar_divider color8 black
 color sidebar_flagged red black
 <emphasis role="comment"># Color to give mailboxes containing new mail</emphasis>
 color sidebar_new green black
-<emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc</emphasis>
+<emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc.</emphasis>
 color sidebar_ordinary color245 default
 <emphasis role="comment"># --------------------------------------------------------------------------
 # vim: syntax=neomuttrc</emphasis>

@@ -1,10 +1,12 @@
 # KeybaseMutt
 
-A work in progress. KeybaseMutt exists to let its users utilize Keybase within neomutt. (Unfortunately, not natively (yet).)
+A work in progress. KeybaseMutt exists to let its users utilize Keybase within
+NeoMutt. (Unfortunately, not natively (yet).)
 
 ## Quick start
 
-Run the install script. It will set up the directory's and paths for you. Do what it says or suffer the consequences!
+Run the install script. It will set up the directory's and paths for you. Do
+what it says or suffer the consequences!
 
 Then just throw these into your .muttrc
 
