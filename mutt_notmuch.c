@@ -623,8 +623,7 @@ static const char *get_db_filename(struct NmCtxData *data)
   return db_filename;
 }
 
-static notmuch_database_t *do_database_open(const char *filename,
-                                            bool writable, bool verbose)
+static notmuch_database_t *do_database_open(const char *filename, bool writable, bool verbose)
 {
   notmuch_database_t *db = NULL;
   int ct = 0;
@@ -856,7 +855,6 @@ static int update_header_tags(struct Header *h, notmuch_message_t *msg)
 
     mutt_str_append_item(&new_tags, t, ' ');
   }
-
 
   old_tags = driver_tags_get(&h->tags);
 
@@ -1255,8 +1253,7 @@ static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, bool dedup
   return true;
 }
 
-static bool read_threads_query(struct Context *ctx, notmuch_query_t *q,
-                               bool dedup, int limit)
+static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, bool dedup, int limit)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   notmuch_threads_t *threads = NULL;
@@ -2139,7 +2136,8 @@ int nm_record_message(struct Context *ctx, char *path, struct Header *h)
   if (st == NOTMUCH_STATUS_SUCCESS && msg)
   {
     notmuch_message_maildir_flags_to_tags(msg);
-    if (h) {
+    if (h)
+    {
       char *tags = driver_tags_get(&h->tags);
       update_tags(msg, tags);
       FREE(&tags);

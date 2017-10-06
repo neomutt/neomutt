@@ -1052,7 +1052,7 @@ void mutt_attach_init(struct AttachCtx *actx)
         (option(OPT_DIGEST_COLLAPSE) &&
          (digest ||
           ((actx->idx[i]->content->type == TYPEMULTIPART) &&
-              (mutt_strcasecmp(actx->idx[i]->content->subtype, "digest") == 0))));
+           (mutt_strcasecmp(actx->idx[i]->content->subtype, "digest") == 0))));
   }
 }
 

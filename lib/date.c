@@ -513,8 +513,7 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
           mutt_debug(1, "parse_date: could not process time format: %s\n", t);
           return -1;
         }
-        if ((hour < 0) || (hour > 23) || (min < 0) ||
-            (min > 59) || (sec < 0) || (sec > 60))
+        if ((hour < 0) || (hour > 23) || (min < 0) || (min > 59) || (sec < 0) || (sec > 60))
           return -1;
         tm.tm_hour = hour;
         tm.tm_min = min;
