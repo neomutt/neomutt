@@ -1018,7 +1018,7 @@
     Marco Hinz (mhinz)
 * Docs
   - Fix DocBook validation
-  - Document NotMuch queries
+  - Document Notmuch queries
 * Build
   - More Autoconf improvements
     Darshit Shah (darnir)
@@ -1147,7 +1147,7 @@
 * Other Changes
   - Numerous small tweaks to the docs
   - Lots of minor code tidy-ups
-  - Enabling NotMuch now forcibly enables Sidebar
+  - Enabling Notmuch now forcibly enables Sidebar
     (it is dependent on it, for now)
   - A couple of bug fixes from mutt/stable
 

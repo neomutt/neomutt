@@ -12485,7 +12485,7 @@ bind index \CG get-message
       </sect2>
 
       <sect2 id="notmuch-using">
-        <title>Using NotMuch</title>
+        <title>Using Notmuch</title>
 
         <sect3 id="notmuch-folder-uri">
           <title>Folders URI</title>
@@ -12544,7 +12544,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
         </sect3>
 
         <sect3 id="notmuch-vfolder-format">
-          <title>Format String for the NotMuch Browser</title>
+          <title>Format String for the Notmuch Browser</title>
           <para>Default:
           <literallayout>
             <literal>%2C %?n?%4n/&amp; ?%4m %f</literal>

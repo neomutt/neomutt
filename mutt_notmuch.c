@@ -1,6 +1,6 @@
 /**
  * @file
- * NotMuch virtual mailbox type
+ * Notmuch virtual mailbox type
  *
  * @authors
  * Copyright (C) 2011-2016 Karel Zak <kzak@redhat.com>
@@ -75,7 +75,7 @@
     LIBNOTMUCH_MICRO_VERSION >= (_micro)))
 
 /**
- * enum NmQueryType - NotMuch Query Types
+ * enum NmQueryType - Notmuch Query Types
  *
  * Read whole-thread or matching messages only?
  */
@@ -86,7 +86,7 @@ enum NmQueryType
 };
 
 /**
- * struct UriTag - Parsed NotMuch-URI arguments
+ * struct UriTag - Parsed Notmuch-URI arguments
  *
  * The arguments in a URI are saved in a linked list.
  *
@@ -100,9 +100,9 @@ struct UriTag
 };
 
 /*
- * struct NmHdrData - NotMuch data attached to an email
+ * struct NmHdrData - Notmuch data attached to an email
  *
- * This stores all the NotMuch data associated with an email.
+ * This stores all the Notmuch data associated with an email.
  *
  * @sa Header#data, MUTT_MBOX
  */
@@ -110,14 +110,14 @@ struct NmHdrData
 {
   char *folder; /**< Location of the email */
   char *oldpath;
-  char *virtual_id; /**< Unique NotMuch Id */
+  char *virtual_id; /**< Unique Notmuch Id */
   int magic;        /**< Type of mailbox the email is in */
 };
 
 /**
- * struct NmCtxData - NotMuch data attached to a context
+ * struct NmCtxData - Notmuch data attached to a context
  *
- * This stores the global NotMuch data, such as the database connection.
+ * This stores the global Notmuch data, such as the database connection.
  *
  * @sa Context#data, NmDbLimit, NM_QUERY_TYPE_MESGS
  */
@@ -125,7 +125,7 @@ struct NmCtxData
 {
   notmuch_database_t *db;
 
-  char *db_filename;           /**< Filename of the NotMuch database */
+  char *db_filename;           /**< Filename of the Notmuch database */
   char *db_query;              /**< Previous query */
   int db_limit;                /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */
@@ -145,9 +145,9 @@ struct NmCtxData
 #if 0
 /**
  * debug_print_filenames - Show a message's filenames
- * @param msg NotMuch Message
+ * @param msg Notmuch Message
  *
- * Print a list of all the filenames associated with a NotMuch message.
+ * Print a list of all the filenames associated with a Notmuch message.
  */
 static void debug_print_filenames(notmuch_message_t *msg)
 {
@@ -164,9 +164,9 @@ static void debug_print_filenames(notmuch_message_t *msg)
 
 /**
  * debug_print_tags - Show a message's tags
- * @param msg NotMuch Message
+ * @param msg Notmuch Message
  *
- * Print a list of all the tags associated with a NotMuch message.
+ * Print a list of all the tags associated with a Notmuch message.
  */
 static void debug_print_tags(notmuch_message_t *msg)
 {
@@ -209,7 +209,7 @@ static void url_free_tags(struct UriTag *tags)
  * @retval true  Success
  * @retval false Error Bad format
  *
- * Parse a NotMuch URI, such as:
+ * Parse a Notmuch URI, such as:
  * *    notmuch:///path/to/db?query=tag:lkml&limit=1000
  * *    notmuch://?query=neomutt
  *
@@ -301,7 +301,7 @@ static void free_hdrdata(struct NmHdrData *data)
  * free_ctxdata - Free data attached to the context
  * @param data A mailbox CONTEXT
  *
- * The nm_ctxdata struct stores global NotMuch data, such as the connection to
+ * The nm_ctxdata struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and
  * the struct itself.
  */
@@ -328,7 +328,7 @@ static void free_ctxdata(struct NmCtxData *data)
 
 /**
  * new_ctxdata - Create a new nm_ctxdata object from a query
- * @param uri NotMuch query string
+ * @param uri Notmuch query string
  * @retval ptr New nm_ctxdata struct
  *
  * A new nm_ctxdata struct is created, then the query is parsed and saved
@@ -357,13 +357,13 @@ static struct NmCtxData *new_ctxdata(char *uri)
 }
 
 /**
- * init_context - Add NotMuch data to the Context
+ * init_context - Add Notmuch data to the Context
  * @param ctx A mailbox CONTEXT
  * @retval  0 Success
  * @retval -1 Error Bad format
  *
  * Create a new nm_ctxdata struct and add it CONTEXT::data.
- * NotMuch-specific data will be stored in this struct.
+ * Notmuch-specific data will be stored in this struct.
  * This struct can be freed using free_hdrdata().
  */
 static int init_context(struct Context *ctx)
@@ -694,7 +694,7 @@ static int release_db(struct NmCtxData *data)
 }
 
 /**
- * db_trans_begin - Start a NotMuch database transaction
+ * db_trans_begin - Start a Notmuch database transaction
  * @param data Header data
  * @retval <0 error
  * @retval 1  new transaction started
@@ -734,7 +734,7 @@ static int db_trans_end(struct NmCtxData *data)
 }
 
 /**
- * is_longrun - Is NotMuch in the middle of a long-running transaction
+ * is_longrun - Is Notmuch in the middle of a long-running transaction
  * @param data Header data
  * @retval true if it is
  */
@@ -942,7 +942,7 @@ static void deinit_header(struct Header *h)
 
 /**
  * nm2mutt_message_id - converts notmuch message Id to neomutt message Id
- * @param id NotMuch ID to convert
+ * @param id Notmuch ID to convert
  * @retval string NeoMutt message ID
  *
  * Caller must free the NeoMutt Message ID

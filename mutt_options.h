@@ -1,6 +1,6 @@
 /**
  * @file
- * NotMuch virtual mailbox type
+ * Notmuch virtual mailbox type
  *
  * @authors
  * Copyright (C) 2016 Bernard Pratz <z+mutt+pub@m0g.net>

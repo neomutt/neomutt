@@ -1391,7 +1391,7 @@ msgstr "Fragefenster sind ausgeschaltet."
 
 #: curs_main.c:1980 curs_main.c:1999
 msgid "No notmuch vfolder currently loaded."
-msgstr "Zur Zeit ist kein virtueller NotMuch-Ordner geladen."
+msgstr "Zur Zeit ist kein virtueller Notmuch-Ordner geladen."
 
 #: curs_main.c:2037
 msgid "Open mailbox in read-only mode"

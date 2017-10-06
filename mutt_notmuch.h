@@ -1,6 +1,6 @@
 /**
  * @file
- * NotMuch virtual mailbox type
+ * Notmuch virtual mailbox type
  *
  * @authors
  * Copyright (C) 2011 Karel Zak <kzak@redhat.com>
