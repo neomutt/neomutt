@@ -23,12 +23,11 @@
 #include <stddef.h>
 
 #include "config.h"
-#include "mutt_tags.h"
-#include "globals.h"
 #include "lib/hash.h"
 #include "lib/string2.h"
+#include "globals.h"
+#include "mutt_tags.h"
 #include "queue.h"
-
 
 /**
  * driver_tags_free - Free tags from a header
@@ -44,11 +43,11 @@ void driver_tags_free(struct TagHead *head)
   struct TagNode *np = STAILQ_FIRST(head), *next = NULL;
   while (np)
   {
-      next = STAILQ_NEXT(np, entries);
-      FREE(&np->name);
-      FREE(&np->transformed);
-      FREE(&np);
-      np = next;
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np->name);
+    FREE(&np->transformed);
+    FREE(&np);
+    np = next;
   }
   STAILQ_INIT(head);
 }
@@ -59,7 +58,8 @@ void driver_tags_free(struct TagHead *head)
  *
  * Return a new allocated string containing tags separated by space
  */
-static char *driver_tags_getter(struct TagHead *head, bool show_hidden, bool show_tranformed, char *filter)
+static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
+                                bool show_tranformed, char *filter)
 {
   if (!head)
     return NULL;
@@ -68,7 +68,7 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden, bool sho
   struct TagNode *np;
   STAILQ_FOREACH(np, head, entries)
   {
-    if(filter && mutt_strcmp(np->name, filter) != 0)
+    if (filter && mutt_strcmp(np->name, filter) != 0)
       continue;
     if (show_hidden || !np->hidden)
     {
@@ -80,7 +80,6 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden, bool sho
   }
   return tags;
 }
-
 
 /**
  * driver_tags_get_transformed - Get transformed tags
@@ -144,7 +143,7 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
   char *new_tag_transformed = hash_find(TagTransforms, new_tag);
 
   struct TagNode *np = safe_calloc(1, sizeof(struct TagNode));
-  np->name = safe_strdup(new_tag);;
+  np->name = safe_strdup(new_tag);
   np->hidden = false;
   if (new_tag_transformed)
     np->transformed = safe_strdup(new_tag_transformed);

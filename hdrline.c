@@ -881,7 +881,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[2] = 0;
 
         tag = hash_find(TagFormats, format);
-        if (tag) {
+        if (tag)
+        {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);
           if (!tags)
             optional = 0;
@@ -911,12 +912,15 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (tags)
       {
         i = 1; /* reduce reuse recycle */
-        if (flags & MUTT_FORMAT_TREE){
+        if (flags & MUTT_FORMAT_TREE)
+        {
           char *parent_tags = NULL;
           if (hdr->thread->prev && hdr->thread->prev->message)
-            parent_tags = driver_tags_get_transformed(&hdr->thread->prev->message->tags);
+            parent_tags =
+                driver_tags_get_transformed(&hdr->thread->prev->message->tags);
           if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
-            parent_tags = driver_tags_get_transformed(&hdr->thread->parent->message->tags);
+            parent_tags =
+                driver_tags_get_transformed(&hdr->thread->parent->message->tags);
           if (parent_tags && mutt_strcasecmp(tags, parent_tags) == 0)
             i = 0;
           FREE(&parent_tags);

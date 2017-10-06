@@ -1168,7 +1168,8 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
       safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_system);
     /* set custom flags */
     tags = driver_tags_get_with_hidden(&hdr->tags);
-    if (tags) {
+    if (tags)
+    {
       safe_strcat(flags, sizeof(flags), tags);
       FREE(&tags);
     }
@@ -1267,7 +1268,7 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
 {
   char *new = NULL;
   char *checker = NULL;
-  struct ImapData* idata = (struct ImapData*) ctx->data;
+  struct ImapData *idata = (struct ImapData *) ctx->data;
 
   /* Check for \* flags capability */
   if (!imap_has_flag(&idata->flags, NULL))
@@ -1336,7 +1337,6 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
     return 0;
   return 1;
 }
-
 
 /**
  * imap_commit_message_tags - Add/Change/Remove flags from headers

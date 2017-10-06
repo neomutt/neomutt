@@ -4,7 +4,7 @@ dnl     autoreconf -i
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], [20170912], [neomutt-devel@neomutt.org], [neomutt], [https://www.neomutt.org])
+AC_INIT([NeoMutt], [20171006], [neomutt-devel@neomutt.org], [neomutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE

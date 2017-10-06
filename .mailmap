@@ -1,6 +1,8 @@
 ## NeoMutt Contributors
 Adam Borowski <kilobyte@angband.pl>                             Adam Borowski <kilobyte@angband.pl>                      # @kilobyte
 André Berger <ab@andreberger.eu>                                André Berger <ab@andreberger.eu>                         # @hvkls
+Anton Rieger <seishinryohosha@jikken.de>                        Anton Rieger <seishinryohosha@jikken.de>                 # seishinryohosha
+Anton Rieger <seishinryohosha@jikken.de>                        seishinryohosha <seishinryohosha@users.noreply.github.com> # seishinryohosha
 Antonio Radici <antonio@dyne.org>                               Antonio Radici <antonio@dyne.org>                        # @aradici
 Antonio Radici <antonio@dyne.org>                               Unknown <antonio@dyne.org>                               # @aradici
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Bernard 'Guyzmo' Pratz <guyzmo+github+pub@m0g.net>       # @guyzmo
@@ -37,6 +39,8 @@ Ian Zimmerman <itz@very.loosely.org>                            Ian Zimmerman <n
 Ismaël Bouya <ismael.bouya@normalesup.org>                      Ismaël Bouya <ismael.bouya@normalesup.org>               # @immae
 Ivan Tham <pickfire@riseup.net>                                 Ivan Tham <pickfire@riseup.net>                          # @pickfire
 Jack Stratton <jack@phroa.net>                                  Jack Stratton <jack@phroa.net>                           # @phroa
+Jakub Wilk <jwilk@jwilk.net>                                    Jakub Wilk <jwilk@jwilk.net>                             # jwilk
+Jelle van der Waa <jelle@vdwaa.nl>                              Jelle van der Waa <jelle@vdwaa.nl>                       # jelly
 Jenya Sovetkin <e.sovetkin@gmail.com>                           Jenya Sovetkin <e.sovetkin@gmail.com>                    # @esovetkin
 Johannes Weißl <jargon@molb.org>                                Johannes Weißl <jargon@molb.org>                         # @weisslj
 Jonathan Perkin <jperkin@netbsd.org>                            Jonathan Perkin <jperkin@netbsd.org>                     # @jperkin
@@ -279,6 +283,7 @@ Robert Schiele <robert.schiele@t-online.de>                     Robert Schiele <
 Rocco Rutte <pdmef@gmx.net>                                     Rocco Rutte <pdmef@gmx.net>
 Rocco Rutte <pdmef@gmx.net>                                     Rocco Rutte <s1118644@mail.inf.tu-dresden.de>
 Roger Cornelius <rac@tenzing.org>                               Roger Cornelius <rac@tenzing.org>
+Roger Pau Monne <roger.pau@citrix.com>                          Roger Pau Monne <roger.pau@citrix.com>
 Roland Rosenfeld <roland@spinnaker.de>                          Roland Rosenfeld <roland@spinnaker.de>
 Roman Kagan <rkagan@mail.ru>                                    Roman Kagan <rkagan@mail.ru>
 Roman Kraevskiy <rkraevskiy@gmail.com>                          Roman Kraevskiy <rkraevskiy@gmail.com>
