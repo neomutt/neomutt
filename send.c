@@ -768,9 +768,9 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
     for (int i = 0; i < ctx->msgcount; i++)
       if (message_is_tagged(ctx, i))
       {
-        cur = ctx->hdrs[i];
-        curenv = cur->env;
-        break;
+      cur = ctx->hdrs[i];
+      curenv = cur->env;
+      break;
       }
 
     if (!cur)
@@ -860,12 +860,12 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
         {
           if (message_is_tagged(ctx, i))
           {
-            if (include_reply(ctx, ctx->hdrs[i], tempfp) == -1)
-            {
-              mutt_error(_("Could not include all requested messages!"));
-              return -1;
-            }
-            fputc('\n', tempfp);
+          if (include_reply(ctx, ctx->hdrs[i], tempfp) == -1)
+          {
+            mutt_error(_("Could not include all requested messages!"));
+            return -1;
+          }
+          fputc('\n', tempfp);
           }
         }
       }
@@ -899,14 +899,14 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
         {
           if (message_is_tagged(ctx, i))
           {
-            tmp = mutt_make_message_attach(ctx, ctx->hdrs[i], 0);
-            if (last)
-            {
-              last->next = tmp;
-              last = tmp;
-            }
-            else
-              last = msg->content = tmp;
+          tmp = mutt_make_message_attach(ctx, ctx->hdrs[i], 0);
+          if (last)
+          {
+            last->next = tmp;
+            last = tmp;
+          }
+          else
+            last = msg->content = tmp;
           }
         }
       }
@@ -2186,8 +2186,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     {
       for (i = 0; i < ctx->msgcount; i++)
         if (message_is_tagged(ctx, i))
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_REPLIED,
-                        is_reply(ctx->hdrs[i], msg));
+          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_REPLIED, is_reply(ctx->hdrs[i], msg));
     }
   }
 

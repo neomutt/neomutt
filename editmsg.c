@@ -230,8 +230,8 @@ int mutt_edit_message(struct Context *ctx, struct Header *hdr)
   {
     if (message_is_tagged(ctx, i))
     {
-      if (edit_one_message(ctx, ctx->hdrs[i]) == -1)
-        return -1;
+    if (edit_one_message(ctx, ctx->hdrs[i]) == -1)
+      return -1;
     }
   }
 

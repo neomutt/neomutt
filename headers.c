@@ -317,13 +317,13 @@ int mutt_label_message(struct Header *hdr)
     {
       if (message_is_tagged(Context, i))
       {
-        struct Header *h = Context->hdrs[i];
-        if (label_message(Context, h, new))
-        {
-          changed++;
-          mutt_set_flag(Context, h, MUTT_TAG, 0);
-          /* mutt_set_flag re-evals the header color */
-        }
+      struct Header *h = Context->hdrs[i];
+      if (label_message(Context, h, new))
+      {
+        changed++;
+        mutt_set_flag(Context, h, MUTT_TAG, 0);
+        /* mutt_set_flag re-evals the header color */
+      }
       }
     }
   }

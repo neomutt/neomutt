@@ -1150,15 +1150,15 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         {
           if (message_is_tagged(Context, i))
           {
-            new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
-            new->content = mutt_make_message_attach(Context, Context->hdrs[i], 1);
-            if (new->content)
-              update_idx(menu, actx, new);
-            else
-            {
-              mutt_error(_("Unable to attach!"));
-              FREE(&new);
-            }
+          new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+          new->content = mutt_make_message_attach(Context, Context->hdrs[i], 1);
+          if (new->content != NULL)
+            update_idx(menu, actx, new);
+          else
+          {
+            mutt_error(_("Unable to attach!"));
+            FREE(&new);
+          }
           }
         }
         menu->redraw |= REDRAW_FULL;

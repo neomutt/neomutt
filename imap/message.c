@@ -1370,10 +1370,10 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
       {
         if (message_is_tagged(ctx, i))
         {
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
-          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);
-          if (option(OPT_DELETE_UNTAG))
-            mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, 0);
+        mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
+        mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);
+        if (option(OPT_DELETE_UNTAG))
+          mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, 0);
         }
       }
     }

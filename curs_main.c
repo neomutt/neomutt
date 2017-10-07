@@ -1892,20 +1892,19 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              if (!Context->quiet)
-                mutt_progress_update(&progress, ++px, -1);
-              mx_tags_commit(Context, Context->hdrs[j], buf);
-              if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
-              {
-                bool still_queried = false;
+            if (!Context->quiet)
+              mutt_progress_update(&progress, ++px, -1);
+            mx_tags_commit(Context, Context->hdrs[j], buf);
+            if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
+            {
+              bool still_queried = false;
 #ifdef USE_NOTMUCH
-                if (Context->magic == MUTT_NOTMUCH)
-                  still_queried = nm_message_is_still_queried(
-                      Context, Context->hdrs[j]);
+              if (Context->magic == MUTT_NOTMUCH)
+                still_queried = nm_message_is_still_queried(Context, Context->hdrs[j]);
 #endif
-                Context->hdrs[j]->quasi_deleted = !still_queried;
-                Context->changed = true;
-              }
+              Context->hdrs[j]->quasi_deleted = !still_queried;
+              Context->changed = true;
+            }
             }
           }
 #ifdef USE_NOTMUCH
@@ -2571,11 +2570,10 @@ int mutt_index_menu(void)
           {
             if (message_is_tagged(Context, j))
             {
-              if (Context->hdrs[j]->read ||
-                  Context->hdrs[j]->old)
-                mutt_set_flag(Context, Context->hdrs[j], MUTT_NEW, 1);
-              else
-                mutt_set_flag(Context, Context->hdrs[j], MUTT_READ, 1);
+            if (Context->hdrs[j]->read || Context->hdrs[j]->old)
+              mutt_set_flag(Context, Context->hdrs[j], MUTT_NEW, 1);
+            else
+              mutt_set_flag(Context, Context->hdrs[j], MUTT_READ, 1);
             }
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;

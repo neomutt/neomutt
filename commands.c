@@ -432,11 +432,11 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
       for (int i = 0; i < Context->msgcount; i++)
         if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-          mutt_parse_mime_message(Context, Context->hdrs[i]);
-          if (Context->hdrs[i]->security & ENCRYPT &&
-              !crypt_valid_passphrase(Context->hdrs[i]->security))
-            return 1;
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        mutt_parse_mime_message(Context, Context->hdrs[i]);
+        if (Context->hdrs[i]->security & ENCRYPT &&
+            !crypt_valid_passphrase(Context->hdrs[i]->security))
+          return 1;
         }
     }
 
@@ -446,23 +446,23 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
       {
         if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-          mutt_endwin(NULL);
-          thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
-          if (thepid < 0)
-          {
-            mutt_perror(_("Can't create filter process"));
-            return 1;
-          }
-          set_option(OPT_KEEP_QUIET);
-          pipe_msg(Context->hdrs[i], fpout, decode, print);
-          /* add the message separator */
-          if (sep)
-            fputs(sep, fpout);
-          safe_fclose(&fpout);
-          if (mutt_wait_filter(thepid) != 0)
-            rc = 1;
-          unset_option(OPT_KEEP_QUIET);
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        mutt_endwin(NULL);
+        thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+        if (thepid < 0)
+        {
+          mutt_perror(_("Can't create filter process"));
+          return 1;
+        }
+        set_option(OPT_KEEP_QUIET);
+        pipe_msg(Context->hdrs[i], fpout, decode, print);
+        /* add the message separator */
+        if (sep)
+          fputs(sep, fpout);
+        safe_fclose(&fpout);
+        if (mutt_wait_filter(thepid) != 0)
+          rc = 1;
+        unset_option(OPT_KEEP_QUIET);
         }
       }
     }
@@ -480,11 +480,11 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
       {
         if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-          pipe_msg(Context->hdrs[i], fpout, decode, print);
-          /* add the message separator */
-          if (sep)
-            fputs(sep, fpout);
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        pipe_msg(Context->hdrs[i], fpout, decode, print);
+        /* add the message separator */
+        if (sep)
+          fputs(sep, fpout);
         }
       }
       safe_fclose(&fpout);
@@ -896,20 +896,19 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
       {
         if (message_is_tagged(Context, i))
         {
-          mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-          if ((rc = _mutt_save_message(Context->hdrs[i], &ctx,
-                                      delete, decode, decrypt) != 0))
-            break;
+        mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
+        if ((rc = _mutt_save_message(Context->hdrs[i], &ctx, delete, decode, decrypt) != 0))
+          break;
 #ifdef USE_COMPRESSED
-          if (cm)
-          {
-            struct Header *h2 = Context->hdrs[i];
-            cm->msg_count++;
-            if (!h2->read)
-              cm->msg_unread++;
-            if (h2->flagged)
-              cm->msg_flagged++;
-          }
+        if (cm)
+        {
+          struct Header *h2 = Context->hdrs[i];
+          cm->msg_count++;
+          if (!h2->read)
+            cm->msg_unread++;
+          if (h2->flagged)
+            cm->msg_flagged++;
+        }
 #endif
         }
       }
