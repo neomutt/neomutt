@@ -577,7 +577,7 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
       break;
 
     case 'd':
-      if (folder->ff->nd->desc != NULL)
+      if (folder->ff->nd->desc)
       {
         char *buf = safe_strdup(folder->ff->nd->desc);
         if (NewsgroupsCharset && *NewsgroupsCharset)

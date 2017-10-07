@@ -127,7 +127,7 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   }
 
   snprintf(newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
-  if (mkdtemp(newdir) == NULL)
+  if (!mkdtemp(newdir))
   {
     mutt_debug(1, "mkwrapdir: mkdtemp() failed\n");
     return -1;

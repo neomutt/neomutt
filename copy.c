@@ -470,7 +470,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   if (flags & CH_UPDATE_LABEL)
   {
     h->xlabel_changed = false;
-    if (h->env->x_label != NULL)
+    if (h->env->x_label)
       if (fprintf(out, "X-Label: %s\n", h->env->x_label) != 10 + strlen(h->env->x_label))
         return -1;
   }

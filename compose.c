@@ -1033,7 +1033,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
           new->unowned = 1;
           new->content = mutt_make_file_attach(att);
-          if (new->content != NULL)
+          if (new->content)
             update_idx(menu, actx, new);
           else
           {
@@ -1155,7 +1155,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           {
             new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
             new->content = mutt_make_message_attach(Context, h, 1);
-            if (new->content != NULL)
+            if (new->content)
               update_idx(menu, actx, new);
             else
             {

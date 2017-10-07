@@ -150,7 +150,7 @@ static void start_curses(void)
      its own SIGWINCH handler */
   mutt_signal_init();
 #endif
-  if (initscr() == NULL)
+  if (!initscr())
   {
     puts(_("Error initializing terminal."));
     exit(1);

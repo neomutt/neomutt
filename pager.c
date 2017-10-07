@@ -445,7 +445,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   {
     /* not much point in classifying quotes... */
 
-    if (*quote_list == NULL)
+    if (!*quote_list)
     {
       class = safe_calloc(1, sizeof(struct QClass));
       class->color = ColorQuote[0];

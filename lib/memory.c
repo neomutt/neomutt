@@ -109,9 +109,9 @@ void *safe_malloc(size_t size)
   void *p = NULL;
 
   if (size == 0)
-    return 0;
+    return NULL;
   p = malloc(size);
-  if (p == NULL)
+  if (!p)
   {
     mutt_error(_("Out of memory!"));
     sleep(1);

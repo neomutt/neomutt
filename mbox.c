@@ -784,7 +784,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
        */
       for (j = i; j < old_msgcount; j++)
       {
-        if (old_hdrs[j] == NULL)
+        if (!old_hdrs[j])
           continue;
         if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
         {
@@ -796,7 +796,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       {
         for (j = 0; j < i && j < old_msgcount; j++)
         {
-          if (old_hdrs[j] == NULL)
+          if (!old_hdrs[j])
             continue;
           if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
           {
