@@ -292,16 +292,15 @@ static int mbox_parse_mailbox(struct Context *ctx)
       /* Save the Content-Length of the previous message */
       if (count > 0)
       {
-#define PREV ctx->hdrs[ctx->msgcount - 1]
-
-        if (PREV->content->length < 0)
+        struct Header *h = ctx->hdrs[ctx->msgcount - 1];
+        if (h->content->length < 0)
         {
-          PREV->content->length = loc - PREV->content->offset - 1;
-          if (PREV->content->length < 0)
-            PREV->content->length = 0;
+          h->content->length = loc - h->content->offset - 1;
+          if (h->content->length < 0)
+            h->content->length = 0;
         }
-        if (!PREV->lines)
-          PREV->lines = lines ? lines - 1 : 0;
+        if (!h->lines)
+          h->lines = lines ? lines - 1 : 0;
       }
 
       count++;
@@ -411,15 +410,16 @@ static int mbox_parse_mailbox(struct Context *ctx)
    */
   if (count > 0)
   {
-    if (PREV->content->length < 0)
+    struct Header *h = ctx->hdrs[ctx->msgcount - 1];
+    if (h->content->length < 0)
     {
-      PREV->content->length = ftello(ctx->fp) - PREV->content->offset - 1;
-      if (PREV->content->length < 0)
-        PREV->content->length = 0;
+      h->content->length = ftello(ctx->fp) - h->content->offset - 1;
+      if (h->content->length < 0)
+        h->content->length = 0;
     }
 
-    if (!PREV->lines)
-      PREV->lines = lines ? lines - 1 : 0;
+    if (!h->lines)
+      h->lines = lines ? lines - 1 : 0;
 
     mx_update_context(ctx, count);
   }
@@ -432,8 +432,6 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
   return 0;
 }
-
-#undef PREV
 
 /**
  * mbox_open_mailbox - open a mbox or mmdf style mailbox

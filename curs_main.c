@@ -357,7 +357,6 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
    * they will be visible in the limited view */
   if (ctx->pattern)
   {
-#define THIS_BODY ctx->hdrs[j]->content
     for (j = (check == MUTT_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
     {
       if (!j)
@@ -371,10 +370,10 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
         ctx->v2r[ctx->vcount] = j;
         ctx->hdrs[j]->limited = true;
         ctx->vcount++;
-        ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+        struct Body *b = ctx->hdrs[j]->content;
+        ctx->vsize += b->length + b->offset - b->hdr_offset;
       }
     }
-#undef THIS_BODY
   }
 
   /* save the list of new messages */
@@ -2441,7 +2440,6 @@ int mutt_index_menu(void)
         menu->current = -1;
         for (j = 0; j != Context->vcount; j++)
         {
-#define CURHDRi Context->hdrs[Context->v2r[i]]
           if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_NEXT_NEW_THEN_UNREAD)
           {
             i++;
@@ -2461,18 +2459,19 @@ int mutt_index_menu(void)
             }
           }
 
-          if (CURHDRi->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
+          struct Header *h = Context->hdrs[Context->v2r[i]];
+          if (h->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
           {
-            if (UNREAD(CURHDRi) && first_unread == -1)
+            if (UNREAD(h) && first_unread == -1)
               first_unread = i;
-            if (UNREAD(CURHDRi) == 1 && first_new == -1)
+            if (UNREAD(h) == 1 && first_new == -1)
               first_new = i;
           }
-          else if ((!CURHDRi->deleted && !CURHDRi->read))
+          else if ((!h->deleted && !h->read))
           {
             if (first_unread == -1)
               first_unread = i;
-            if ((!CURHDRi->old) && first_new == -1)
+            if ((!h->old) && first_new == -1)
               first_new = i;
           }
 
@@ -2483,7 +2482,6 @@ int mutt_index_menu(void)
               first_new != -1)
             break;
         }
-#undef CURHDRi
         if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW ||
              op == OP_MAIN_NEXT_NEW_THEN_UNREAD || op == OP_MAIN_PREV_NEW_THEN_UNREAD) &&
             first_new != -1)

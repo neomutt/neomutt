@@ -1351,15 +1351,6 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
   return false;
 }
 
-#define AT_COUNT(why)                                                          \
-  {                                                                            \
-    shallcount = true;                                                         \
-  }
-#define AT_NOCOUNT(why)                                                        \
-  {                                                                            \
-    shallcount = false;                                                        \
-  }
-
 static int count_body_parts(struct Body *body, int flags)
 {
   int count = 0;
@@ -1372,7 +1363,7 @@ static int count_body_parts(struct Body *body, int flags)
   for (bp = body; bp != NULL; bp = bp->next)
   {
     /* Initial disposition is to count and not to recurse this part. */
-    AT_COUNT("default");
+    shallcount = true; /* default */
     shallrecurse = false;
 
     mutt_debug(5, "bp: desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
@@ -1390,7 +1381,7 @@ static int count_body_parts(struct Body *body, int flags)
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
-        AT_NOCOUNT("top-level message/*");
+        shallcount = false; // top-level message/*
     }
     else if (bp->type == TYPEMULTIPART)
     {
@@ -1401,12 +1392,12 @@ static int count_body_parts(struct Body *body, int flags)
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
-        AT_NOCOUNT("top-level multipart");
+        shallcount = false; /* top-level multipart */
     }
 
     if (bp->disposition == DISPINLINE && bp->type != TYPEMULTIPART &&
         bp->type != TYPEMESSAGE && bp == body)
-      AT_NOCOUNT("ignore fundamental inlines");
+      shallcount = false; /* ignore fundamental inlines */
 
     /* If this body isn't scheduled for enumeration already, don't bother
      * profiling it further.
@@ -1421,16 +1412,16 @@ static int count_body_parts(struct Body *body, int flags)
       if (bp->disposition == DISPATTACH)
       {
         if (!count_body_parts_check(&AttachAllow, bp, true))
-          AT_NOCOUNT("attach not allowed");
+          shallcount = false; /* attach not allowed */
         if (count_body_parts_check(&AttachExclude, bp, false))
-          AT_NOCOUNT("attach excluded");
+          shallcount = false; /* attach excluded */
       }
       else
       {
         if (!count_body_parts_check(&InlineAllow, bp, true))
-          AT_NOCOUNT("inline not allowed");
+          shallcount = false; /* inline not allowed */
         if (count_body_parts_check(&InlineExclude, bp, false))
-          AT_NOCOUNT("excluded");
+          shallcount = false; /* excluded */
       }
     }
 

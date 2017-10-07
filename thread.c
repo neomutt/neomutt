@@ -38,8 +38,10 @@
 #include "protos.h"
 #include "sort.h"
 
-#define VISIBLE(hdr, ctx)                                                      \
-  (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
+static bool is_visible(struct Header *hdr, struct Context *ctx)
+{
+  return (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)));
+}
 
 /**
  * is_descendant - Is one thread a descendant of another
@@ -75,7 +77,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
     hdr = tmp->message;
-    if (hdr && VISIBLE(hdr, ctx))
+    if (hdr && is_visible(hdr, ctx))
     {
       if (hdr->subject_changed)
         return 1;
@@ -91,7 +93,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
     hdr = tmp->message;
     if (hdr)
     {
-      if (VISIBLE(hdr, ctx))
+      if (is_visible(hdr, ctx))
         return 0;
       else if (hdr->subject_changed)
         return 1;
@@ -164,7 +166,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
     if (tree->message)
     {
       FREE(&tree->message->tree);
-      if (VISIBLE(tree->message, ctx))
+      if (is_visible(tree->message, ctx))
       {
         tree->deep = true;
         tree->visible = true;
@@ -1139,7 +1141,7 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
     mutt_error(_("Parent message is not available."));
     return -1;
   }
-  if (!VISIBLE(parent, ctx))
+  if (!is_visible(parent, ctx))
   {
     if (find_root)
       mutt_error(_("Root message is not visible in this limited view."));

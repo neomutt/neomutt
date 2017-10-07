@@ -573,19 +573,20 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
       n = choose_block(t, n, col, icode, tocode, &encoder, &wlen);
     }
 
-/* Add to output buffer. */
-#define LINEBREAK "\n\t"
-    if (bufpos + wlen + strlen(LINEBREAK) > buflen)
+    /* Add to output buffer. */
+    const char *line_break = "\n\t";
+    const int lb_len = 2; /* strlen(line_break) */
+      
+    if ((bufpos + wlen + lb_len) > buflen)
     {
-      buflen = bufpos + wlen + strlen(LINEBREAK);
+      buflen = bufpos + wlen + lb_len;
       safe_realloc(&buf, buflen);
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
     assert(r == wlen);
     bufpos += wlen;
-    memcpy(buf + bufpos, LINEBREAK, strlen(LINEBREAK));
-    bufpos += strlen(LINEBREAK);
-#undef LINEBREAK
+    memcpy(buf + bufpos, line_break, lb_len);
+    bufpos += lb_len;
 
     col = 1;
 

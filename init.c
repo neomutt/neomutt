@@ -391,18 +391,17 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
           {
             regmatch_t pmatch[1];
 
-#define CUR_ENV Context->hdrs[i]->env
             for (int i = 0; i < Context->msgcount; i++)
             {
-              if (CUR_ENV && CUR_ENV->subject)
+              struct Envelope *e = Context->hdrs[i]->env;
+              if (e && e->subject)
               {
-                CUR_ENV->real_subj =
-                    (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
-                        CUR_ENV->subject :
-                        CUR_ENV->subject + pmatch[0].rm_eo;
+                e->real_subj =
+                    (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0)) ?
+                        e->subject :
+                        e->subject + pmatch[0].rm_eo;
               }
             }
-#undef CUR_ENV
           }
         }
         else
@@ -2812,18 +2811,17 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           regmatch_t pmatch[1];
           int i;
 
-#define CUR_ENV Context->hdrs[i]->env
           for (i = 0; i < Context->msgcount; i++)
           {
-            if (CUR_ENV && CUR_ENV->subject)
+            struct Envelope *e = Context->hdrs[i]->env;
+            if (e && e->subject)
             {
-              CUR_ENV->real_subj =
-                  (regexec(ReplyRegexp.regex, CUR_ENV->subject, 1, pmatch, 0)) ?
-                      CUR_ENV->subject :
-                      CUR_ENV->subject + pmatch[0].rm_eo;
+              e->real_subj =
+                  (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0)) ?
+                      e->subject :
+                      e->subject + pmatch[0].rm_eo;
             }
           }
-#undef CUR_ENV
         }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
@@ -3380,8 +3378,9 @@ finish:
   return r;
 }
 
-#define NUMVARS (sizeof(MuttVars) / sizeof(MuttVars[0]))
-#define NUMCOMMANDS (sizeof(Commands) / sizeof(Commands[0]))
+#define NUMVARS mutt_array_size(MuttVars)
+#define NUMCOMMANDS mutt_array_size(Commands)
+
 /* initial string that starts completion. No telling how much crap
  * the user has typed so far. Allocate LONG_STRING just to be sure! */
 static char User_typed[LONG_STRING] = { 0 };

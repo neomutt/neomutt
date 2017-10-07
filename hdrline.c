@@ -453,6 +453,18 @@ static char *apply_subject_mods(struct Envelope *env)
   return env->disp_subj;
 }
 
+static bool thread_is_new(struct Context *ctx, struct Header *hdr)
+{
+  return (hdr->collapsed && (hdr->num_hidden > 1) &&
+          (mutt_thread_contains_unread(ctx, hdr) == 1));
+}
+
+static bool thread_is_old(struct Context *ctx, struct Header *hdr)
+{
+  return (hdr->collapsed && (hdr->num_hidden > 1) &&
+          (mutt_thread_contains_unread(ctx, hdr) == 2));
+}
+
 /**
  * hdr_format_str - Format a string, like printf()
  *
@@ -516,12 +528,6 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
-#define THREAD_NEW                                                             \
-  (threads && hdr->collapsed && hdr->num_hidden > 1 &&                         \
-   mutt_thread_contains_unread(ctx, hdr) == 1)
-#define THREAD_OLD                                                             \
-  (threads && hdr->collapsed && hdr->num_hidden > 1 &&                         \
-   mutt_thread_contains_unread(ctx, hdr) == 2)
   size_t len;
   size_t colorlen;
 
@@ -1247,9 +1253,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           ch = get_nth_wchar(FlagChars, FlagCharDeleted);
         else if (hdr->attach_del)
           ch = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
-        else if (THREAD_NEW)
+        else if (threads && thread_is_new(ctx, hdr))
           ch = get_nth_wchar(FlagChars, FlagCharNewThread);
-        else if (THREAD_OLD)
+        else if (threads && thread_is_old(ctx, hdr))
           ch = get_nth_wchar(FlagChars, FlagCharOldThread);
         else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
         {
@@ -1311,9 +1317,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     {
       /* New/Old for threads; replied; New/Old for messages */
       char *first = NULL;
-      if (THREAD_NEW)
+      if (threads && thread_is_new(ctx, hdr))
         first = get_nth_wchar(FlagChars, FlagCharNewThread);
-      else if (THREAD_OLD)
+      else if (threads && thread_is_old(ctx, hdr))
         first = get_nth_wchar(FlagChars, FlagCharOldThread);
       else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
       {
@@ -1377,8 +1383,6 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                         (unsigned long) hfi, flags);
 
   return src;
-#undef THREAD_NEW
-#undef THREAD_OLD
 }
 
 void _mutt_make_string(char *dest, size_t destlen, const char *s,

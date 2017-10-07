@@ -1914,8 +1914,6 @@ int mutt_pattern_func(int op, char *prompt)
                      MUTT_PROGRESS_MSG, ReadInc,
                      (op == MUTT_LIMIT) ? Context->msgcount : Context->vcount);
 
-#define THIS_BODY Context->hdrs[i]->content
-
   if (op == MUTT_LIMIT)
   {
     Context->vcount = 0;
@@ -1936,7 +1934,8 @@ int mutt_pattern_func(int op, char *prompt)
         Context->hdrs[i]->limited = true;
         Context->v2r[Context->vcount] = i;
         Context->vcount++;
-        Context->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+        struct Body *b = Context->hdrs[i]->content;
+        Context->vsize += b->length + b->offset - b->hdr_offset;
       }
     }
   }
@@ -1965,8 +1964,6 @@ int mutt_pattern_func(int op, char *prompt)
       }
     }
   }
-
-#undef THIS_BODY
 
   mutt_clear_error();
 

@@ -71,10 +71,6 @@
 #include "sort.h"
 #include "state.h"
 
-#define PKA_NOTATION_NAME "pka-address@gnupg.org"
-#define is_pka_notation(notation)                                              \
-  ((notation)->name && (strcmp((notation)->name, PKA_NOTATION_NAME) == 0))
-
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID 1
 #define CRYPT_KV_ADDR 2
@@ -132,6 +128,13 @@ static char *current_sender = NULL;
 /*
  * General helper functions.
  */
+
+#define PKA_NOTATION_NAME "pka-address@gnupg.org"
+
+static bool is_pka_notation(gpgme_sig_notation_t notation)
+{
+  return (mutt_strcmp(notation->name, PKA_NOTATION_NAME) == 0);
+}
 
 /**
  * redraw_if_needed - accommodate for a redraw if needed

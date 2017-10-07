@@ -422,8 +422,10 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   return (ferror(f) ? -1 : 0);
 }
 
-#define write_as_text_part(a)                                                  \
-  (mutt_is_text_part(a) || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(a)))
+static bool write_as_text_part(struct Body *b)
+{
+  return (mutt_is_text_part(b) || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)));
+}
 
 int mutt_write_mime_body(struct Body *a, FILE *f)
 {
