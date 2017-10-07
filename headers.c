@@ -56,7 +56,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct stat st;
 
   mutt_mktemp(path, sizeof(path));
-  if ((ofp = safe_fopen(path, "w")) == NULL)
+  ofp = safe_fopen(path, "w");
+  if (!ofp)
   {
     mutt_perror(path);
     return;
@@ -67,7 +68,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   fputc('\n', ofp); /* tie off the header. */
 
   /* now copy the body of the message. */
-  if ((ifp = fopen(body, "r")) == NULL)
+  ifp = fopen(body, "r");
+  if (!ifp)
   {
     mutt_perror(body);
     safe_fclose(&ofp);
@@ -101,13 +103,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
-  if ((ifp = fopen(path, "r")) == NULL)
+  ifp = fopen(path, "r");
+  if (!ifp)
   {
     mutt_perror(path);
     return;
   }
 
-  if ((ofp = safe_fopen(body, "w")) == NULL)
+  ofp = safe_fopen(body, "w");
+  if (!ofp)
   {
     /* intentionally leak a possible temporary file here */
     safe_fclose(&ifp);

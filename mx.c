@@ -710,7 +710,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     {
       mutt_expand_path(mbox, sizeof(mbox));
       snprintf(buf, sizeof(buf), _("Move read messages to %s?"), mbox);
-      if ((move_messages = query_quadoption(OPT_MOVE, buf)) == MUTT_ABORT)
+      move_messages = query_quadoption(OPT_MOVE, buf);
+      if (move_messages == MUTT_ABORT)
       {
         ctx->closing = false;
         return -1;
@@ -728,7 +729,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
              ctx->deleted == 1 ? _("Purge %d deleted message?") :
                                  _("Purge %d deleted messages?"),
              ctx->deleted);
-    if ((purge = query_quadoption(OPT_DELETE, buf)) == MUTT_ABORT)
+    purge = query_quadoption(OPT_DELETE, buf);
+    if (purge == MUTT_ABORT)
     {
       ctx->closing = false;
       return -1;
@@ -828,7 +830,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == MUTT_IMAP)
   {
-    if ((check = imap_sync_mailbox(ctx, purge)) != 0)
+    check = imap_sync_mailbox(ctx, purge);
+    if (check != 0)
     {
       ctx->closing = false;
       return check;
@@ -849,7 +852,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (ctx->changed || ctx->deleted)
     {
-      if ((check = sync_mailbox(ctx, index_hint)) != 0)
+      check = sync_mailbox(ctx, index_hint);
+      if (check != 0)
       {
         ctx->closing = false;
         return check;
@@ -1023,7 +1027,8 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
              ctx->deleted == 1 ? _("Purge %d deleted message?") :
                                  _("Purge %d deleted messages?"),
              ctx->deleted);
-    if ((purge = query_quadoption(OPT_DELETE, buf)) == MUTT_ABORT)
+    purge = query_quadoption(OPT_DELETE, buf);
+    if (purge == MUTT_ABORT)
       return -1;
     else if (purge == MUTT_NO)
     {

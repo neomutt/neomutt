@@ -755,7 +755,8 @@ int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
   struct Message *msg = NULL;
   int r;
 
-  if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
+  msg = mx_open_message(src, hdr->msgno);
+  if (!msg)
     return -1;
   if ((r = _mutt_copy_message(fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 &&
       (ferror(fpout) || feof(fpout)))
@@ -792,7 +793,8 @@ static int _mutt_append_message(struct Context *dest, FILE *fpin,
   if (fgets(buf, sizeof(buf), fpin) == NULL)
     return -1;
 
-  if ((msg = mx_open_new_message(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
+  msg = mx_open_new_message(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  if (!msg)
     return -1;
   if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
@@ -816,7 +818,8 @@ int mutt_append_message(struct Context *dest, struct Context *src,
   struct Message *msg = NULL;
   int r;
 
-  if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
+  msg = mx_open_message(src, hdr->msgno);
+  if (!msg)
     return -1;
   r = _mutt_append_message(dest, msg->fp, src, hdr, hdr->content, cmflags, chflags);
   mx_close_message(src, &msg);
@@ -1017,7 +1020,8 @@ static int address_header_decode(char **h)
       return 0;
   }
 
-  if ((a = rfc822_parse_adrlist(a, s + l)) == NULL)
+  a = rfc822_parse_adrlist(a, s + l);
+  if (!a)
     return 0;
 
   mutt_addrlist_to_local(a);

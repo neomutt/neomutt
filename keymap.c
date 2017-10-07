@@ -202,7 +202,8 @@ static int parsekeys(const char *str, keycode_t *d, int max)
       c = *t;
       *t = '\0';
 
-      if ((n = mutt_getvaluebyname(s, KeyNames)) != -1)
+      n = mutt_getvaluebyname(s, KeyNames);
+      if (n != -1)
       {
         s = t;
         *d = n;
@@ -1090,7 +1091,8 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   char *key = NULL;
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
 
-  if ((key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err)) == NULL)
+  key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err);
+  if (!key)
     return -1;
 
   /* function to execute */
@@ -1147,7 +1149,8 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
   char *seq = NULL;
   char *key = NULL;
 
-  if ((key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err)) == NULL)
+  key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err);
+  if (!key)
     return -1;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);

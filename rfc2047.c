@@ -858,7 +858,8 @@ void rfc2047_decode(char **pd)
           s += m;
         }
 
-        if ((m = n - lwsrlen(s, n)) != 0)
+        m = n - lwsrlen(s, n);
+        if (m != 0)
         {
           if (m > dlen)
             m = dlen;

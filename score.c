@@ -103,7 +103,8 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
       break;
   if (!ptr)
   {
-    if ((pat = mutt_pattern_comp(pattern, 0, err)) == NULL)
+    pat = mutt_pattern_comp(pattern, 0, err);
+    if (!pat)
     {
       FREE(&pattern);
       return -1;

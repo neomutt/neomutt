@@ -768,7 +768,8 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
 
   short err = 0;
 
-  if ((rfp = fopen(ringfile, "r")) == NULL)
+  rfp = fopen(ringfile, "r");
+  if (!rfp)
   {
     char *error_buf = NULL;
     size_t error_buf_len;
@@ -810,7 +811,8 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
 
         /* Not bailing out here would lead us into an endless loop. */
 
-        if ((p = pgp_parse_keyblock(rfp)) == NULL)
+        p = pgp_parse_keyblock(rfp);
+        if (!p)
           err = 1;
 
         pgpring_dump_keyblock(p);

@@ -138,7 +138,8 @@ int mutt_compose_attachment(struct Body *a)
         int r;
 
         mutt_endwin(NULL);
-        if ((r = mutt_system(command)) == -1)
+        r = mutt_system(command);
+        if (r == -1)
           mutt_error(_("Error running \"%s\"!"), command);
 
         if (r != -1 && entry->composetypecommand)
@@ -147,7 +148,8 @@ int mutt_compose_attachment(struct Body *a)
           FILE *fp = NULL, *tfp = NULL;
           char tempfile[_POSIX_PATH_MAX];
 
-          if ((fp = safe_fopen(a->filename, "r")) == NULL)
+          fp = safe_fopen(a->filename, "r");
+          if (!fp)
           {
             mutt_perror(_("Failure to open file to parse headers."));
             goto bailout;
@@ -179,7 +181,8 @@ int mutt_compose_attachment(struct Body *a)
              * copying the file back */
             fseeko(fp, b->offset, SEEK_SET);
             mutt_mktemp(tempfile, sizeof(tempfile));
-            if ((tfp = safe_fopen(tempfile, "w")) == NULL)
+            tfp = safe_fopen(tempfile, "w");
+            if (!tfp)
             {
               mutt_perror(_("Failure to open file to strip headers."));
               goto bailout;
@@ -320,7 +323,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
     {
       struct Body tmp = { 0 };
       int n;
-      if ((n = mutt_lookup_mime_type(&tmp, b->filename)) != TYPEOTHER)
+      n = mutt_lookup_mime_type(&tmp, b->filename);
+      if (n != TYPEOTHER)
       {
         snprintf(type, len, "%s/%s",
                  n == TYPEAUDIO ?
@@ -688,7 +692,8 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
 
     FILE *ifp = NULL, *ofp = NULL;
 
-    if ((ifp = fopen(b->filename, "r")) == NULL)
+    ifp = fopen(b->filename, "r");
+    if (!ifp)
     {
       mutt_perror("fopen");
       if (outfile && *outfile)
@@ -780,7 +785,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         return -1;
       if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)
         return -1;
-      if ((msg = mx_open_new_message(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
+      msg = mx_open_new_message(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      if (!msg)
       {
         mx_close_mailbox(&ctx, NULL);
         return -1;
@@ -805,7 +811,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       struct State s;
 
       memset(&s, 0, sizeof(s));
-      if ((s.fpout = save_attachment_open(path, flags)) == NULL)
+      s.fpout = save_attachment_open(path, flags);
+      if (!s.fpout)
       {
         mutt_perror("fopen");
         mutt_sleep(2);
@@ -831,13 +838,15 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     FILE *ofp = NULL, *nfp = NULL;
 
-    if ((ofp = fopen(m->filename, "r")) == NULL)
+    ofp = fopen(m->filename, "r");
+    if (!ofp)
     {
       mutt_perror("fopen");
       return -1;
     }
 
-    if ((nfp = save_attachment_open(path, flags)) == NULL)
+    nfp = save_attachment_open(path, flags);
+    if (!nfp)
     {
       mutt_perror("fopen");
       safe_fclose(&ofp);
@@ -904,7 +913,8 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
       return -1;
     }
 
-    if ((s.fpin = fopen(m->filename, "r")) == NULL)
+    s.fpin = fopen(m->filename, "r");
+    if (!s.fpin)
     {
       mutt_perror("fopen");
       return -1;
@@ -1011,7 +1021,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     /* interactive program */
     if (piped)
     {
-      if ((ifp = fopen(newfile, "r")) == NULL)
+      ifp = fopen(newfile, "r");
+      if (!ifp)
       {
         mutt_perror("fopen");
         rfc1524_free_entry(&entry);
@@ -1065,7 +1076,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     {
       mutt_debug(2, "successfully decoded %s type attachment to %s\n", type, newfile);
 
-      if ((ifp = fopen(newfile, "r")) == NULL)
+      ifp = fopen(newfile, "r");
+      if (!ifp)
       {
         mutt_perror("fopen");
         goto bail0;

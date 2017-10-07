@@ -353,7 +353,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     {
       if (commentlen && commentlen < sizeof(comment) - 1)
         comment[commentlen++] = ' ';
-      if ((ps = next_token(s, comment, &commentlen, sizeof(comment) - 1)) == NULL)
+      ps = next_token(s, comment, &commentlen, sizeof(comment) - 1);
+      if (!ps)
       {
         rfc822_free_address(&top);
         return NULL;
@@ -364,7 +365,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     {
       if (phraselen && phraselen < sizeof(phrase) - 1)
         phrase[phraselen++] = ' ';
-      if ((ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1)) == NULL)
+      ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
+      if (!ps)
       {
         rfc822_free_address(&top);
         return NULL;
@@ -419,7 +421,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       cur = rfc822_new_address();
       if (phraselen)
         cur->personal = safe_strdup(phrase);
-      if ((ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur)) == NULL)
+      ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur);
+      if (!ps)
       {
         rfc822_free_address(&top);
         rfc822_free_address(&cur);
@@ -440,7 +443,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     {
       if (phraselen && phraselen < sizeof(phrase) - 1 && ws_pending)
         phrase[phraselen++] = ' ';
-      if ((ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1)) == NULL)
+      ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
+      if (!ps)
       {
         rfc822_free_address(&top);
         return NULL;

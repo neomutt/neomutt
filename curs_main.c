@@ -467,7 +467,8 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
       new_last_folder = safe_strdup(Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
-    if ((check = mx_close_mailbox(Context, index_hint)) != 0)
+    check = mx_close_mailbox(Context, index_hint);
+    if (check != 0)
     {
       if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
         update_index(menu, Context, check, *oldcount, *index_hint);
@@ -1034,7 +1035,8 @@ int mutt_index_menu(void)
     {
       /* check for new mail in the incoming folders */
       oldcount = newcount;
-      if ((newcount = mutt_buffy_check(false)) != oldcount)
+      newcount = mutt_buffy_check(false);
+      if (newcount != oldcount)
         menu->redraw |= REDRAW_STATUS;
       if (do_buffy_notify)
       {
@@ -1597,7 +1599,8 @@ int mutt_index_menu(void)
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if ((menu->current = mutt_search_command(menu->current, op)) == -1)
+        menu->current = mutt_search_command(menu->current, op);
+        if (menu->current == -1)
           menu->current = menu->oldcurrent;
         else
           menu->redraw = REDRAW_MOTION;
@@ -1744,7 +1747,8 @@ int mutt_index_menu(void)
               newhdr = Context->hdrs[Context->v2r[newidx]];
           }
 
-          if ((check = mx_sync_mailbox(Context, &index_hint)) == 0)
+          check = mx_sync_mailbox(Context, &index_hint);
+          if (check == 0)
           {
             if (newhdr && Context->vcount != ovc)
               for (j = 0; j < Context->vcount; j++)
@@ -1928,7 +1932,8 @@ int mutt_index_menu(void)
           }
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
               menu->redraw = REDRAW_CURRENT;
@@ -2298,7 +2303,8 @@ int mutt_index_menu(void)
             mutt_error(_("You are on the last message."));
           break;
         }
-        if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+        menu->current = ci_next_undeleted(menu->current);
+        if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
           if (menu->menu == MENU_MAIN)
@@ -2342,7 +2348,8 @@ int mutt_index_menu(void)
           mutt_error(_("You are on the first message."));
           break;
         }
-        if ((menu->current = ci_previous_undeleted(menu->current)) == -1)
+        menu->current = ci_previous_undeleted(menu->current);
+        if (menu->current == -1)
         {
           menu->current = menu->oldcurrent;
           if (menu->menu == MENU_MAIN)
@@ -2399,7 +2406,8 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
           else if (option(OPT_RESOLVE))
           {
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
               menu->redraw |= REDRAW_CURRENT;
@@ -2532,7 +2540,8 @@ int mutt_index_menu(void)
           mutt_set_flag(Context, CURHDR, MUTT_FLAG, !CURHDR->flagged);
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
               menu->redraw |= REDRAW_CURRENT;
@@ -2578,7 +2587,8 @@ int mutt_index_menu(void)
 
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
               menu->redraw |= REDRAW_CURRENT;
@@ -2676,7 +2686,8 @@ int mutt_index_menu(void)
             menu->redraw |= REDRAW_INDEX;
           else if (option(OPT_RESOLVE))
           {
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
               menu->redraw |= REDRAW_CURRENT;
@@ -2781,7 +2792,8 @@ int mutt_index_menu(void)
             mutt_set_flag(Context, CURHDR, MUTT_TAG, 0);
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
             {
               menu->current = menu->oldcurrent;
               menu->redraw |= REDRAW_CURRENT;

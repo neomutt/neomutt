@@ -255,7 +255,8 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 
     if (mutt_strncasecmp("FLAGS", s, 5) == 0)
     {
-      if ((s = msg_parse_flags(h, s)) == NULL)
+      s = msg_parse_flags(h, s);
+      if (!s)
         return -1;
     }
     else if (mutt_strncasecmp("UID", s, 3) == 0)
@@ -932,7 +933,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   imap_cmd_start(idata, buf);
   do
   {
-    if ((rc = imap_cmd_step(idata)) != IMAP_CMD_CONTINUE)
+    rc = imap_cmd_step(idata);
+    if (rc != IMAP_CMD_CONTINUE)
       break;
 
     pc = idata->buf;
@@ -972,7 +974,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
                                 output_progress ? &progressbar : NULL) < 0)
             goto bail;
           /* pick up trailing line */
-          if ((rc = imap_cmd_step(idata)) != IMAP_CMD_CONTINUE)
+          rc = imap_cmd_step(idata);
+          if (rc != IMAP_CMD_CONTINUE)
             goto bail;
           pc = idata->buf;
 
@@ -984,7 +987,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
          * incrementally update flags later, this won't stop us syncing */
         else if ((mutt_strncasecmp("FLAGS", pc, 5) == 0) && !h->changed)
         {
-          if ((pc = imap_set_flags(idata, h, pc, NULL)) == NULL)
+          pc = imap_set_flags(idata, h, pc, NULL);
+          if (!pc)
             goto bail;
         }
       }
@@ -1099,7 +1103,8 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   if (!*mailbox)
     strfcpy(mailbox, "INBOX", sizeof(mailbox));
 
-  if ((fp = fopen(msg->path, "r")) == NULL)
+  fp = fopen(msg->path, "r");
+  if (!fp)
   {
     mutt_perror(msg->path);
     goto fail;
@@ -1477,7 +1482,8 @@ char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *ser
   memcpy(&old_hd, hd, sizeof(old_hd));
 
   mutt_debug(2, "imap_set_flags: parsing FLAGS\n");
-  if ((s = msg_parse_flags(&newh, s)) == NULL)
+  s = msg_parse_flags(&newh, s);
+  if (!s)
     return NULL;
 
   /* Update tags system */

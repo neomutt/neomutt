@@ -625,7 +625,8 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   hadcr = false;
   while (bytes > 0)
   {
-    if ((c = fgetc(s->fpin)) == EOF)
+    c = fgetc(s->fpin);
+    if (c == EOF)
       break;
 
     bytes--;
@@ -840,7 +841,8 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   {
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
     {
-      if ((*keylist = crypt_pgp_findkeys(adrlist, oppenc_mode)) == NULL)
+      *keylist = crypt_pgp_findkeys(adrlist, oppenc_mode);
+      if (!*keylist)
       {
         rfc822_free_address(&adrlist);
         return -1;
@@ -851,7 +853,8 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      if ((*keylist = crypt_smime_findkeys(adrlist, oppenc_mode)) == NULL)
+      *keylist = crypt_smime_findkeys(adrlist, oppenc_mode);
+      if (!*keylist)
       {
         rfc822_free_address(&adrlist);
         return -1;

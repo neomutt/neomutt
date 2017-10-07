@@ -99,7 +99,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if ((rc = stat(tmp, &sb)) == -1)
+  rc = stat(tmp, &sb);
+  if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), tmp, strerror(errno));
     goto bail;
@@ -121,7 +122,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
 
   mutt_edit_file(NONULL(Editor), tmp);
 
-  if ((rc = stat(tmp, &sb)) == -1)
+  rc = stat(tmp, &sb);
+  if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), tmp, strerror(errno));
     goto bail;
@@ -141,7 +143,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if ((fp = fopen(tmp, "r")) == NULL)
+  fp = fopen(tmp, "r");
+  if (!fp)
   {
     rc = -1;
     mutt_error(_("Can't open message file: %s"), strerror(errno));
@@ -184,7 +187,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if ((rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL)) == 0)
+  rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL);
+  if (rc == 0)
   {
     fputc('\n', msg->fp);
     mutt_copy_stream(fp, msg->fp);

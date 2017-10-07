@@ -541,7 +541,8 @@ static void pseudo_threads(struct Context *ctx)
   {
     cur = tree;
     tree = tree->next;
-    if ((parent = find_subject(ctx, cur)) != NULL)
+    parent = find_subject(ctx, cur);
+    if (parent)
     {
       cur->fake_thread = true;
       unlink_message(&top, cur);
@@ -920,7 +921,8 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (using_refs == 0)
       {
         /* look at the beginning of in-reply-to: */
-        if ((ref = STAILQ_FIRST(&cur->env->in_reply_to)) != NULL)
+        ref = STAILQ_FIRST(&cur->env->in_reply_to);
+        if (ref)
           using_refs = 1;
         else
         {
@@ -954,7 +956,8 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (!ref)
         break;
 
-      if ((new = hash_find(ctx->thread_hash, ref->data)) == NULL)
+      new = hash_find(ctx->thread_hash, ref->data);
+      if (!new)
       {
         new = safe_calloc(1, sizeof(struct MuttThread));
         hash_insert(ctx->thread_hash, ref->data, new);
@@ -1014,7 +1017,8 @@ static struct Header *find_virtual(struct MuttThread *cur, int reverse)
     return cur->message;
 
   top = cur;
-  if ((cur = cur->child) == NULL)
+  cur = cur->child;
+  if (!cur)
     return NULL;
 
   while (reverse && cur->next)
@@ -1128,7 +1132,8 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
 
   for (thread = hdr->thread->parent; thread; thread = thread->parent)
   {
-    if ((hdr = thread->message) != NULL)
+    hdr = thread->message;
+    if (hdr)
     {
       parent = hdr;
       if (!find_root)

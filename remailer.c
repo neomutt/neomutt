@@ -142,12 +142,14 @@ static struct Remailer **mix_type2_list(size_t *l)
   if (!l)
     return NULL;
 
-  if ((devnull = open("/dev/null", O_RDWR)) == -1)
+  devnull = open("/dev/null", O_RDWR);
+  if (devnull == -1)
     return NULL;
 
   snprintf(cmd, sizeof(cmd), "%s -T", Mixmaster);
 
-  if ((mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, devnull, -1, devnull)) == -1)
+  mm_pid = mutt_create_filter_fd(cmd, NULL, &fp, NULL, devnull, -1, devnull);
+  if (mm_pid == -1)
   {
     close(devnull);
     return NULL;

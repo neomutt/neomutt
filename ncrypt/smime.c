@@ -575,7 +575,8 @@ static struct SmimeKey *smime_get_candidates(char *search, short public)
   snprintf(index_file, sizeof(index_file), "%s/.index",
            public ? NONULL(SmimeCertificates) : NONULL(SmimeKeys));
 
-  if ((fp = safe_fopen(index_file, "r")) == NULL)
+  fp = safe_fopen(index_file, "r");
+  if (!fp)
   {
     mutt_perror(index_file);
     return NULL;
@@ -911,7 +912,8 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   size_t len = 0;
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((fperr = safe_fopen(tmpfname, "w+")) == NULL)
+  fperr = safe_fopen(tmpfname, "w+");
+  if (!fperr)
   {
     mutt_perror(tmpfname);
     return 1;
@@ -919,7 +921,8 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   mutt_unlink(tmpfname);
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((fpout = safe_fopen(tmpfname, "w+")) == NULL)
+  fpout = safe_fopen(tmpfname, "w+");
+  if (!fpout)
   {
     safe_fclose(&fperr);
     mutt_perror(tmpfname);
@@ -1003,7 +1006,8 @@ static char *smime_extract_certificate(char *infile)
   int empty;
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((fperr = safe_fopen(tmpfname, "w+")) == NULL)
+  fperr = safe_fopen(tmpfname, "w+");
+  if (!fperr)
   {
     mutt_perror(tmpfname);
     return NULL;
@@ -1011,7 +1015,8 @@ static char *smime_extract_certificate(char *infile)
   mutt_unlink(tmpfname);
 
   mutt_mktemp(pk7out, sizeof(pk7out));
-  if ((fpout = safe_fopen(pk7out, "w+")) == NULL)
+  fpout = safe_fopen(pk7out, "w+");
+  if (!fpout)
   {
     safe_fclose(&fperr);
     mutt_perror(pk7out);
@@ -1050,7 +1055,8 @@ static char *smime_extract_certificate(char *infile)
 
   safe_fclose(&fpout);
   mutt_mktemp(certfile, sizeof(certfile));
-  if ((fpout = safe_fopen(certfile, "w+")) == NULL)
+  fpout = safe_fopen(certfile, "w+");
+  if (!fpout)
   {
     safe_fclose(&fperr);
     mutt_unlink(pk7out);
@@ -1104,7 +1110,8 @@ static char *smime_extract_signer_certificate(char *infile)
   int empty;
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((fperr = safe_fopen(tmpfname, "w+")) == NULL)
+  fperr = safe_fopen(tmpfname, "w+");
+  if (!fperr)
   {
     mutt_perror(tmpfname);
     return NULL;
@@ -1112,7 +1119,8 @@ static char *smime_extract_signer_certificate(char *infile)
   mutt_unlink(tmpfname);
 
   mutt_mktemp(certfile, sizeof(certfile));
-  if ((fpout = safe_fopen(certfile, "w+")) == NULL)
+  fpout = safe_fopen(certfile, "w+");
+  if (!fpout)
   {
     safe_fclose(&fperr);
     mutt_perror(certfile);
@@ -1166,7 +1174,8 @@ void smime_invoke_import(char *infile, char *mailbox)
   pid_t thepid = -1;
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((fperr = safe_fopen(tmpfname, "w+")) == NULL)
+  fperr = safe_fopen(tmpfname, "w+");
+  if (!fperr)
   {
     mutt_perror(tmpfname);
     return;
@@ -1174,7 +1183,8 @@ void smime_invoke_import(char *infile, char *mailbox)
   mutt_unlink(tmpfname);
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((fpout = safe_fopen(tmpfname, "w+")) == NULL)
+  fpout = safe_fopen(tmpfname, "w+");
+  if (!fpout)
   {
     safe_fclose(&fperr);
     mutt_perror(tmpfname);
@@ -1319,14 +1329,16 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   pid_t thepid;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((fpout = safe_fopen(tempfile, "w+")) == NULL)
+  fpout = safe_fopen(tempfile, "w+");
+  if (!fpout)
   {
     mutt_perror(tempfile);
     return NULL;
   }
 
   mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
-  if ((smimeerr = safe_fopen(smimeerrfile, "w+")) == NULL)
+  smimeerr = safe_fopen(smimeerrfile, "w+");
+  if (!smimeerr)
   {
     mutt_perror(smimeerrfile);
     safe_fclose(&fpout);
@@ -1336,7 +1348,8 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   mutt_unlink(smimeerrfile);
 
   mutt_mktemp(smimeinfile, sizeof(smimeinfile));
-  if ((fptmp = safe_fopen(smimeinfile, "w+")) == NULL)
+  fptmp = safe_fopen(smimeinfile, "w+");
+  if (!fptmp)
   {
     mutt_perror(smimeinfile);
     mutt_unlink(tempfile);
@@ -1478,14 +1491,16 @@ struct Body *smime_sign_message(struct Body *a)
   convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(filetosign, sizeof(filetosign));
-  if ((sfp = safe_fopen(filetosign, "w+")) == NULL)
+  sfp = safe_fopen(filetosign, "w+");
+  if (!sfp)
   {
     mutt_perror(filetosign);
     return NULL;
   }
 
   mutt_mktemp(signedfile, sizeof(signedfile));
-  if ((smimeout = safe_fopen(signedfile, "w+")) == NULL)
+  smimeout = safe_fopen(signedfile, "w+");
+  if (!smimeout)
   {
     mutt_perror(signedfile);
     safe_fclose(&sfp);
@@ -1627,7 +1642,8 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   /* decode to a tempfile, saving the original destination */
   fp = s->fpout;
-  if ((s->fpout = safe_fopen(signedfile, "w")) == NULL)
+  s->fpout = safe_fopen(signedfile, "w");
+  if (!s->fpout)
   {
     mutt_perror(signedfile);
     return -1;
@@ -1739,14 +1755,16 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
 
   mutt_mktemp(outfile, sizeof(outfile));
-  if ((smimeout = safe_fopen(outfile, "w+")) == NULL)
+  smimeout = safe_fopen(outfile, "w+");
+  if (!smimeout)
   {
     mutt_perror(outfile);
     return NULL;
   }
 
   mutt_mktemp(errfile, sizeof(errfile));
-  if ((smimeerr = safe_fopen(errfile, "w+")) == NULL)
+  smimeerr = safe_fopen(errfile, "w+");
+  if (!smimeerr)
   {
     mutt_perror(errfile);
     safe_fclose(&smimeout);
@@ -1755,7 +1773,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
   mutt_unlink(errfile);
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
-  if ((tmpfp = safe_fopen(tmpfname, "w+")) == NULL)
+  tmpfp = safe_fopen(tmpfname, "w+");
+  if (!tmpfp)
   {
     mutt_perror(tmpfname);
     safe_fclose(&smimeout);
@@ -1813,7 +1832,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeerr);
     rewind(smimeerr);
 
-    if ((c = fgetc(smimeerr)) != EOF)
+    c = fgetc(smimeerr);
+    if (c != EOF)
     {
       ungetc(c, smimeerr);
 
@@ -1840,7 +1860,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     else
     {
       mutt_mktemp(tmptmpfname, sizeof(tmptmpfname));
-      if ((fpout = safe_fopen(tmptmpfname, "w+")) == NULL)
+      fpout = safe_fopen(tmptmpfname, "w+");
+      if (!fpout)
       {
         mutt_perror(tmptmpfname);
         safe_fclose(&smimeout);
@@ -1861,7 +1882,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(fpout);
     rewind(fpout);
 
-    if ((p = mutt_read_mime_header(fpout, 0)) != NULL)
+    p = mutt_read_mime_header(fpout, 0);
+    if (p)
     {
       fstat(fileno(fpout), &info);
       p->length = info.st_size - p->offset;
@@ -1940,7 +1962,8 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   fseeko(s.fpin, b->offset, SEEK_SET);
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((tmpfp = safe_fopen(tempfile, "w+")) == NULL)
+  tmpfp = safe_fopen(tempfile, "w+");
+  if (!tmpfp)
   {
     mutt_perror(tempfile);
     return -1;
@@ -1957,7 +1980,8 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   s.fpout = 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((*fpout = safe_fopen(tempfile, "w+")) == NULL)
+  *fpout = safe_fopen(tempfile, "w+");
+  if (!*fpout)
   {
     mutt_perror(tempfile);
     rv = -1;

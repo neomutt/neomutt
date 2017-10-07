@@ -164,14 +164,16 @@ static short pgp_find_hash(const char *fname)
   short rv = -1;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((out = safe_fopen(tempfile, "w+")) == NULL)
+  out = safe_fopen(tempfile, "w+");
+  if (!out)
   {
     mutt_perror(tempfile);
     goto bye;
   }
   unlink(tempfile);
 
-  if ((in = fopen(fname, "r")) == NULL)
+  in = fopen(fname, "r");
+  if (!in)
   {
     mutt_perror(fname);
     goto bye;
@@ -180,7 +182,8 @@ static short pgp_find_hash(const char *fname)
   pgp_dearmor(in, out);
   rewind(out);
 
-  if ((p = pgp_read_packet(out, &l)) != NULL)
+  p = pgp_read_packet(out, &l);
+  if (p)
   {
     rv = pgp_mic_from_packet(p, l);
   }

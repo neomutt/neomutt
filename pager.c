@@ -1154,7 +1154,8 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   {
     if (offset != *last_pos)
       fseeko(f, offset, SEEK_SET);
-    if ((*buf = (unsigned char *) mutt_read_line((char *) *buf, blen, f, &l, MUTT_EOL)) == NULL)
+    *buf = (unsigned char *) mutt_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
+    if (!*buf)
     {
       fmt[0] = 0;
       return -1;
@@ -2063,7 +2064,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   rd.searchbuf = searchbuf;
   rd.has_types = (IsHeader(extra) || (flags & MUTT_SHOWCOLOR)) ? MUTT_TYPES : 0; /* main message or rfc822 attachment */
 
-  if ((rd.fp = fopen(fname, "r")) == NULL)
+  rd.fp = fopen(fname, "r");
+  if (!rd.fp)
   {
     mutt_perror(fname);
     return -1;

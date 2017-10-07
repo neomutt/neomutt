@@ -268,7 +268,8 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!Postponed)
     return -1;
 
-  if ((PostContext = mx_open_mailbox(Postponed, MUTT_NOSORT, NULL)) == NULL)
+  PostContext = mx_open_mailbox(Postponed, MUTT_NOSORT, NULL);
+  if (!PostContext)
   {
     PostCount = 0;
     mutt_error(_("No postponed messages."));
@@ -659,7 +660,8 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     }
 
     mutt_adv_mktemp(file, sizeof(file));
-    if ((s.fpout = safe_fopen(file, "w")) == NULL)
+    s.fpout = safe_fopen(file, "w");
+    if (!s.fpout)
       goto bail;
 
     if ((WithCrypto & APPLICATION_PGP) &&

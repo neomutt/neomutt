@@ -493,7 +493,8 @@ int imap_open_connection(struct ImapData *idata)
         goto err_close_conn;
       if (rc == MUTT_YES)
       {
-        if ((rc = imap_exec(idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
+        rc = imap_exec(idata, "STARTTLS", IMAP_CMD_FAIL_OK);
+        if (rc == -1)
           goto bail;
         if (rc != -2)
         {
@@ -696,7 +697,8 @@ static int imap_open_mailbox(struct Context *ctx)
   {
     char *pc = NULL;
 
-    if ((rc = imap_cmd_step(idata)) != IMAP_CMD_CONTINUE)
+    rc = imap_cmd_step(idata);
+    if (rc != IMAP_CMD_CONTINUE)
       break;
 
     pc = idata->buf + 2;
@@ -709,7 +711,8 @@ static int imap_open_mailbox(struct Context *ctx)
       if (STAILQ_EMPTY(&idata->flags))
       {
         mutt_debug(3, "Getting mailbox FLAGS\n");
-        if ((pc = imap_get_flags(&idata->flags, pc)) == NULL)
+        pc = imap_get_flags(&idata->flags, pc);
+        if (!pc)
           goto fail;
       }
     }
@@ -721,7 +724,8 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_list_free(&idata->flags);
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
       pc += 13;
-      if ((pc = imap_get_flags(&(idata->flags), pc)) == NULL)
+      pc = imap_get_flags(&(idata->flags), pc);
+      if (!pc)
         goto fail;
     }
     /* save UIDVALIDITY for the header cache */
@@ -849,7 +853,8 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
     strfcpy(mailbox, "INBOX", sizeof(mailbox));
   FREE(&mx.mbox);
 
-  if ((rc = imap_access(ctx->path)) == 0)
+  rc = imap_access(ctx->path);
+  if (rc == 0)
     return 0;
 
   if (rc == -1)
@@ -889,7 +894,8 @@ static int imap_open_new_message(struct Message *msg, struct Context *dest, stru
   char tmp[_POSIX_PATH_MAX];
 
   mutt_mktemp(tmp, sizeof(tmp));
-  if ((msg->fp = safe_fopen(tmp, "w")) == NULL)
+  msg->fp = safe_fopen(tmp, "w");
+  if (!msg->fp)
   {
     mutt_perror(tmp);
     return -1;
@@ -1460,7 +1466,8 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
    * to be changed. */
   imap_allow_reopen(ctx);
 
-  if ((rc = imap_check(idata, 0)) != 0)
+  rc = imap_check(idata, 0);
+  if (rc != 0)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */

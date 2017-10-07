@@ -160,7 +160,8 @@ static int setup_paths(struct Context *ctx)
   mutt_mktemp(tmppath, sizeof(tmppath));
   ctx->path = safe_strdup(tmppath);
 
-  if ((tmpfp = safe_fopen(ctx->path, "w")) == NULL)
+  tmpfp = safe_fopen(ctx->path, "w");
+  if (!tmpfp)
     return -1;
 
   safe_fclose(&tmpfp);

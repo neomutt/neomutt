@@ -1241,7 +1241,8 @@ int mutt_menu_loop(struct Menu *menu)
         if (menu->search && !menu->dialog) /* Searching dialogs won't work */
         {
           menu->oldcurrent = menu->current;
-          if ((menu->current = menu_search(menu, i)) != -1)
+          menu->current = menu_search(menu, i);
+          if (menu->current != -1)
             menu->redraw = REDRAW_MOTION;
           else
             menu->current = menu->oldcurrent;

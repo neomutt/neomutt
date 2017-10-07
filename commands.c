@@ -126,7 +126,8 @@ int mutt_display_message(struct Header *cur)
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((fpout = safe_fopen(tempfile, "w")) == NULL)
+  fpout = safe_fopen(tempfile, "w");
+  if (!fpout)
   {
     mutt_error(_("Could not create temporary file!"));
     return 0;
@@ -237,7 +238,8 @@ int mutt_display_message(struct Header *cur)
 
     mutt_endwin(NULL);
     snprintf(buf, sizeof(buf), "%s %s", NONULL(Pager), tempfile);
-    if ((r = mutt_system(buf)) == -1)
+    r = mutt_system(buf);
+    if (r == -1)
       mutt_error(_("Error running \"%s\"!"), buf);
     unlink(tempfile);
     if (!option(OPT_NO_CURSES))
@@ -725,7 +727,8 @@ int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int de
   if (decode || decrypt)
     mutt_parse_mime_message(Context, h);
 
-  if ((rc = mutt_append_message(ctx, Context, h, cmflags, chflags)) != 0)
+  rc = mutt_append_message(ctx, Context, h, cmflags, chflags);
+  if (rc != 0)
     return rc;
 
   if (delete)
@@ -994,7 +997,8 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
              mutt_get_parameter("charset", b->parameter));
-    if ((r = mutt_yesorno(tmp, !b->noconv)) != MUTT_ABORT)
+    r = mutt_yesorno(tmp, !b->noconv);
+    if (r != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
   }
 
@@ -1051,7 +1055,8 @@ static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
   h->security |= PGP_TRADITIONAL_CHECKED;
 
   mutt_parse_mime_message(Context, h);
-  if ((msg = mx_open_message(Context, h->msgno)) == NULL)
+  msg = mx_open_message(Context, h->msgno);
+  if (!msg)
     return 0;
   if (crypt_pgp_check_traditional(msg->fp, h->content, 0))
   {

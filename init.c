@@ -170,7 +170,8 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
     }
 
     rx = safe_malloc(sizeof(regex_t));
-    if ((e = REGCOMP(rx, p, flags)) != 0)
+    e = REGCOMP(rx, p, flags);
+    if (e != 0)
     {
       regerror(e, rx, err->data, err->dsize);
       FREE(&rx);
@@ -352,7 +353,8 @@ static int parse_sort(short *val, const char *s, const struct Mapping *map, stru
     flags |= SORT_LAST;
   }
 
-  if ((i = mutt_getvaluebyname(s, map)) == -1)
+  i = mutt_getvaluebyname(s, map);
+  if (i == -1)
   {
     snprintf(err->data, err->dsize, _("%s: unknown sorting method"), s);
     return -1;
@@ -1489,7 +1491,8 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
           break;
 
         case GS_ADDR:
-          if ((addr = mutt_parse_adrlist(NULL, buf->data)) == NULL)
+          addr = mutt_parse_adrlist(NULL, buf->data);
+          if (!addr)
             goto bail;
           if (mutt_addrlist_to_intl(addr, &estr))
           {
@@ -2311,7 +2314,8 @@ static void start_debug(void)
     rename(debugfilename, buf);
   }
 
-  if ((debugfile = safe_fopen(debugfilename, "w")) != NULL)
+  debugfile = safe_fopen(debugfilename, "w");
+  if (debugfile)
   {
     setbuf(debugfile, NULL); /* don't buffer the debugging output! */
     mutt_debug(1, "NeoMutt/%s debugging at level %d\n", PACKAGE_VERSION, debuglevel);
@@ -3200,7 +3204,8 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   mutt_debug(2, "Reading configuration file '%s'.\n", rcfile);
 
-  if ((f = mutt_open_read(rcfile, &pid)) == NULL)
+  f = mutt_open_read(rcfile, &pid);
+  if (!f)
   {
     snprintf(err->data, err->dsize, "%s: %s", rcfile, strerror(errno));
     return -1;
@@ -3632,9 +3637,11 @@ int mutt_var_value_complete(char *buffer, size_t len, int pos)
       return 0;
 
     var[vlen - 1] = '\0';
-    if ((idx = mutt_option_index(var)) == -1)
+    idx = mutt_option_index(var);
+    if (idx == -1)
     {
-      if ((myvarval = myvar_get(var)) != NULL)
+      myvarval = myvar_get(var);
+      if (myvarval)
       {
         pretty_var(pt, len - (pt - buffer), var, myvarval);
         return 1;
@@ -4228,7 +4235,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   Editor = safe_strdup(p);
   Visual = safe_strdup(p);
 
-  if ((p = getenv("REPLYTO")) != NULL)
+  p = getenv("REPLYTO");
+  if (p)
   {
     struct Buffer buf, token;
 
@@ -4243,7 +4251,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     FREE(&token.data);
   }
 
-  if ((p = getenv("EMAIL")) != NULL)
+  p = getenv("EMAIL");
+  if (p)
     From = rfc822_parse_adrlist(NULL, p);
 
   mutt_set_langinfo_charset();

@@ -110,7 +110,8 @@ void mutt_adv_mktemp(char *s, size_t l)
     if (lstat(s, &sb) == -1 && errno == ENOENT)
       return;
 
-    if ((suffix = strrchr(prefix, '.')) != NULL)
+    suffix = strrchr(prefix, '.');
+    if (suffix)
     {
       *suffix = 0;
       suffix++;
@@ -1012,7 +1013,8 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
       col -= wlen; /* reset to passed in value */
       wptr = dest; /* reset write ptr */
       wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
-      if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)) != -1)
+      pid = mutt_create_filter(command->data, NULL, &filter, NULL);
+      if (pid != -1)
       {
         int rc;
 
@@ -1495,7 +1497,8 @@ int mutt_save_confirm(const char *s, struct stat *st)
     if (option(OPT_CONFIRMAPPEND))
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
-      if ((rc = mutt_yesorno(tmp, MUTT_YES)) == MUTT_NO)
+      rc = mutt_yesorno(tmp, MUTT_YES);
+      if (rc == MUTT_NO)
         ret = 1;
       else if (rc == MUTT_ABORT)
         ret = -1;
@@ -1529,7 +1532,8 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (option(OPT_CONFIRMCREATE))
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
-        if ((rc = mutt_yesorno(tmp, MUTT_YES)) == MUTT_NO)
+        rc = mutt_yesorno(tmp, MUTT_YES);
+        if (rc == MUTT_NO)
           ret = 1;
         else if (rc == MUTT_ABORT)
           ret = -1;

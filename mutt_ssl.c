@@ -121,7 +121,8 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     SSL_CTX_set_cert_store(ctx, store);
   }
 
-  if ((fp = fopen(CertificateFile, "rt")) == NULL)
+  fp = fopen(CertificateFile, "rt");
+  if (!fp)
     return 0;
 
   while (NULL != PEM_read_X509(fp, &cert, NULL, NULL))
@@ -632,7 +633,8 @@ static int check_certificate_file(X509 *peercert)
   if (!CertificateFile)
     return 0;
 
-  if ((fp = fopen(CertificateFile, "rt")) == NULL)
+  fp = fopen(CertificateFile, "rt");
+  if (!fp)
     return 0;
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen))
@@ -1074,7 +1076,8 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   int err;
   const char *errmsg = NULL;
 
-  if ((HostExDataIndex = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL)) == -1)
+  HostExDataIndex = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
+  if (HostExDataIndex == -1)
   {
     mutt_debug(1, "failed to get index for application specific data\n");
     return -1;
@@ -1086,7 +1089,8 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
     return -1;
   }
 
-  if ((SkipModeExDataIndex = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL)) == -1)
+  SkipModeExDataIndex = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
+  if (SkipModeExDataIndex == -1)
   {
     mutt_debug(1, "failed to get index for application specific data\n");
     return -1;
@@ -1112,7 +1116,8 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
 
   ERR_clear_error();
 
-  if ((err = SSL_connect(ssldata->ssl)) != 1)
+  err = SSL_connect(ssldata->ssl);
+  if (err != 1)
   {
     switch (SSL_get_error(ssldata->ssl, err))
     {

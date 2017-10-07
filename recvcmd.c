@@ -417,7 +417,8 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
-  if ((tmpfp = safe_fopen(tmpbody, "w")) == NULL)
+  tmpfp = safe_fopen(tmpbody, "w");
+  if (!tmpfp)
   {
     mutt_error(_("Can't open temporary file %s."), tmpbody);
     mutt_free_header(&tmphdr);
@@ -814,7 +815,8 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   if (!check_all_msg(actx, cur, false))
   {
     nattach = count_tagged(actx);
-    if ((parent = find_parent(actx, cur, nattach)) != NULL)
+    parent = find_parent(actx, cur, nattach);
+    if (parent)
     {
       parent_hdr = parent->content->hdr;
       parent_fp = parent->fp;
@@ -849,7 +851,8 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   }
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
-  if ((tmpfp = safe_fopen(tmpbody, "w")) == NULL)
+  tmpfp = safe_fopen(tmpbody, "w");
+  if (!tmpfp)
   {
     mutt_error(_("Can't create %s."), tmpbody);
     mutt_free_header(&tmphdr);

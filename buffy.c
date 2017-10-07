@@ -215,7 +215,8 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
   if (!(check_new || check_stats))
     return rc;
 
-  if ((dirp = opendir(path)) == NULL)
+  dirp = opendir(path);
+  if (!dirp)
   {
     mailbox->magic = 0;
     return 0;

@@ -1351,7 +1351,8 @@ static void makedoc(FILE *in, FILE *out)
   while ((fgets(buffer, sizeof(buffer), in)))
   {
     line++;
-    if ((p = strchr(buffer, '\n')) == NULL)
+    p = strchr(buffer, '\n');
+    if (!p)
     {
       fprintf(stderr, "%s: Line %d too long.  Ask a wizard to enlarge\n"
                       "%s: my buffer size.\n",
@@ -1424,7 +1425,8 @@ int main(int argc, char *argv[])
 
   if (optind != argc)
   {
-    if ((f = fopen(argv[optind], "r")) == NULL)
+    f = fopen(argv[optind], "r");
+    if (!f)
     {
       fprintf(stderr, "%s: Can't open %s (%s).\n", Progname, argv[optind], strerror(errno));
       exit(1);

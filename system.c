@@ -57,7 +57,8 @@ int mutt_system(const char *cmd)
   sigaction(SIGTSTP, &act, &oldtstp);
   sigaction(SIGCONT, &act, &oldcont);
 
-  if ((thepid = fork()) == 0)
+  thepid = fork();
+  if (thepid == 0)
   {
     act.sa_flags = 0;
 

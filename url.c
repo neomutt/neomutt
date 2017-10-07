@@ -90,7 +90,8 @@ enum UrlScheme url_check_scheme(const char *s)
   for (t = sbuf; *t; t++)
     *t = tolower(*t);
 
-  if ((i = mutt_getvaluebyname(sbuf, UrlMap)) == -1)
+  i = mutt_getvaluebyname(sbuf, UrlMap);
+  if (i == -1)
     return U_UNKNOWN;
   else
     return (enum UrlScheme) i;
@@ -174,7 +175,8 @@ int url_parse(struct Url *u, char *src)
 {
   char *tmp = NULL;
 
-  if ((u->scheme = url_check_scheme(src)) == U_UNKNOWN)
+  u->scheme = url_check_scheme(src);
+  if (u->scheme == U_UNKNOWN)
     return -1;
 
   tmp = strchr(src, ':') + 1;
@@ -273,7 +275,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
     return -1;
 
   /* copy string for safe use of strtok() */
-  if ((tmp = safe_strdup(t + 1)) == NULL)
+  tmp = safe_strdup(t + 1);
+  if (!tmp)
     return -1;
 
   if ((headers = strchr(tmp, '?')))

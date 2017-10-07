@@ -137,7 +137,8 @@ static int be_barf_file(const char *path, char **buf, int buflen)
 {
   FILE *f = NULL;
 
-  if ((f = fopen(path, "w")) == NULL)
+  f = fopen(path, "w");
+  if (!f)
   {
     addstr(strerror(errno));
     addch('\n');

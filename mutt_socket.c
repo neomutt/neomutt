@@ -327,7 +327,8 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t len)
   int rc;
 
   mutt_allow_interrupt(1);
-  if ((rc = read(conn->fd, buf, len)) == -1)
+  rc = read(conn->fd, buf, len);
+  if (rc == -1)
   {
     mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
     mutt_sleep(2);
@@ -351,7 +352,8 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
   int rc;
 
   mutt_allow_interrupt(1);
-  if ((rc = write(conn->fd, buf, count)) == -1)
+  rc = write(conn->fd, buf, count);
+  if (rc == -1)
   {
     mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
     mutt_sleep(2);
@@ -520,7 +522,8 @@ int raw_socket_open(struct Connection *conn)
     fd = socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol);
     if (fd >= 0)
     {
-      if ((rc = socket_connect(fd, cur->ai_addr)) == 0)
+      rc = socket_connect(fd, cur->ai_addr);
+      if (rc == 0)
       {
         fcntl(fd, F_SETFD, FD_CLOEXEC);
         conn->fd = fd;
@@ -580,7 +583,8 @@ int raw_socket_open(struct Connection *conn)
 
     if (fd >= 0)
     {
-      if ((rc = socket_connect(fd, (struct sockaddr *) &sin)) == 0)
+      rc = socket_connect(fd, (struct sockaddr *) &sin);
+      if (rc == 0)
       {
         fcntl(fd, F_SETFD, FD_CLOEXEC);
         conn->fd = fd;

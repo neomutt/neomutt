@@ -725,7 +725,8 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
         if (!ctx->quiet)
           mutt_progress_update(&progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
-        if ((ret = pop_query(pop_data, buf, sizeof(buf))) == 0)
+        ret = pop_query(pop_data, buf, sizeof(buf));
+        if (ret == 0)
         {
           mutt_bcache_del(pop_data->bcache, ctx->hdrs[i]->data);
 #ifdef USE_HCACHE
@@ -900,7 +901,8 @@ void pop_fetch_mail(void)
 
   for (int i = last + 1; i <= msgs; i++)
   {
-    if ((msg = mx_open_new_message(&ctx, NULL, MUTT_ADD_FROM)) == NULL)
+    msg = mx_open_new_message(&ctx, NULL, MUTT_ADD_FROM);
+    if (!msg)
       ret = -3;
     else
     {

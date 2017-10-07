@@ -61,13 +61,15 @@ static int tunnel_socket_open(struct Connection *conn)
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);
 
-  if ((rc = pipe(pin)) == -1)
+  rc = pipe(pin);
+  if (rc == -1)
   {
     mutt_perror("pipe");
     FREE(&conn->sockdata);
     return -1;
   }
-  if ((rc = pipe(pout)) == -1)
+  rc = pipe(pout);
+  if (rc == -1)
   {
     mutt_perror("pipe");
     close(pin[0]);
@@ -77,7 +79,8 @@ static int tunnel_socket_open(struct Connection *conn)
   }
 
   mutt_block_signals_system();
-  if ((pid = fork()) == 0)
+  pid = fork();
+  if (pid == 0)
   {
     mutt_unblock_signals_system(0);
     devnull = open("/dev/null", O_RDWR);

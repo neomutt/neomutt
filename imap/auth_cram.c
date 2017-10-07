@@ -79,7 +79,8 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  if ((len = mutt_from_base64(obuf, idata->buf + 2)) == -1)
+  len = mutt_from_base64(obuf, idata->buf + 2);
+  if (len == -1)
   {
     mutt_debug(1, "Error decoding base64 response.\n");
     goto bail;

@@ -560,7 +560,8 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
           /* ad hoc support for the European MET (now officially CET) TZ */
           if (mutt_strcasecmp(t, "MET") == 0)
           {
-            if ((t = strtok(NULL, " \t")) != NULL)
+            t = strtok(NULL, " \t");
+            if (t)
             {
               if (mutt_strcasecmp(t, "DST") == 0)
                 zhours++;

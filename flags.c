@@ -357,7 +357,8 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
   if (cur->message && cur != hdr->thread)
     mutt_set_flag(Context, cur->message, flag, bf);
 
-  if ((cur = cur->child) == NULL)
+  cur = cur->child;
+  if (!cur)
     goto done;
 
   while (true)

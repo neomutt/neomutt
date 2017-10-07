@@ -379,7 +379,8 @@ static int check_attachments(struct AttachCtx *actx)
       mutt_pretty_mailbox(pretty, sizeof(pretty));
       snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"), pretty, i + 1);
 
-      if ((r = mutt_yesorno(msg, MUTT_YES)) == MUTT_YES)
+      r = mutt_yesorno(msg, MUTT_YES);
+      if (r == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->content);
       else if (r == MUTT_ABORT)
         return -1;
@@ -994,7 +995,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (!(WithCrypto & APPLICATION_PGP))
           break;
         new = safe_calloc(1, sizeof(struct AttachPtr));
-        if ((new->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
+        new->content = crypt_pgp_make_key_attachment(NULL);
+        if (new->content)
         {
           update_idx(menu, actx, new);
           menu->redraw |= REDRAW_INDEX;
@@ -1421,7 +1423,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           continue;
         }
         *p++ = 0;
-        if ((itype = mutt_check_mime_type(type)) == TYPEOTHER)
+        itype = mutt_check_mime_type(type);
+        if (itype == TYPEOTHER)
         {
           mutt_error(_("Unknown Content-Type %s"), type);
           continue;
@@ -1436,7 +1439,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         safe_fclose(&fp);
 
-        if ((new->content = mutt_make_file_attach(fname)) == NULL)
+        new->content = mutt_make_file_attach(fname);
+        if (!new->content)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));
           FREE(&new);
@@ -1501,7 +1505,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         break;
 
       case OP_EXIT:
-        if ((i = query_quadoption(OPT_POSTPONE, _("Postpone this message?"))) == MUTT_NO)
+        i = query_quadoption(OPT_POSTPONE, _("Postpone this message?"));
+        if (i == MUTT_NO)
         {
           for (i = 0; i < actx->idxlen; i++)
             if (actx->idx[i]->unowned)

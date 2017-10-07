@@ -648,7 +648,8 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
     mutt_mktemp(tempfb, sizeof(tempfb));
     tempf = tempfb;
   }
-  if ((fp = safe_fopen(tempf, tempf == tempfb ? "w+" : "a+")) == NULL)
+  fp = safe_fopen(tempf, tempf == tempfb ? "w+" : "a+");
+  if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
     return NULL;
@@ -1961,7 +1962,8 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     saved_length = b->length;
 
     mutt_mktemp(tempfile, sizeof(tempfile));
-    if ((decoded_fp = safe_fopen(tempfile, "w+")) == NULL)
+    decoded_fp = safe_fopen(tempfile, "w+");
+    if (!decoded_fp)
     {
       mutt_perror(tempfile);
       return -1;
@@ -1990,7 +1992,8 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   }
   unlink(tempfile);
 
-  if ((*cur = decrypt_part(b, &s, *fpout, 0, &is_signed)) == NULL)
+  *cur = decrypt_part(b, &s, *fpout, 0, &is_signed);
+  if (!*cur)
     rv = -1;
   rewind(*fpout);
   if (is_signed > 0)
@@ -2155,7 +2158,8 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   int rc = -1;
   time_t tt;
 
-  if ((err = gpgme_new(&tmpctx)) != GPG_ERR_NO_ERROR)
+  err = gpgme_new(&tmpctx);
+  if (err != GPG_ERR_NO_ERROR)
   {
     mutt_debug(1, "Error creating GPGME context\n");
     return rc;
@@ -2188,7 +2192,8 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
     }
   }
 
-  if ((err = gpgme_op_import(tmpctx, keydata)) != GPG_ERR_NO_ERROR)
+  err = gpgme_op_import(tmpctx, keydata);
+  if (err != GPG_ERR_NO_ERROR)
   {
     mutt_debug(1, "Error importing key\n");
     goto err_tmpdir;
@@ -2302,7 +2307,8 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     return 0;
   }
 
-  if ((tfp = fopen(tempfile, "r")) == NULL)
+  tfp = fopen(tempfile, "r");
+  if (!tfp)
   {
     unlink(tempfile);
     return 0;
@@ -2372,7 +2378,8 @@ void pgp_gpgme_invoke_import(const char *fname)
   /* Note that the stream, "in", needs to be kept open while the keydata
    * is used.
    */
-  if ((err = gpgme_data_new_from_stream(&keydata, in)) != GPG_ERR_NO_ERROR)
+  err = gpgme_data_new_from_stream(&keydata, in);
+  if (err != GPG_ERR_NO_ERROR)
   {
     safe_fclose(&in);
     mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
@@ -4076,7 +4083,8 @@ static void crypt_add_string_to_hints(struct ListHead *hints, const char *str)
   char *scratch = NULL;
   char *t = NULL;
 
-  if ((scratch = safe_strdup(str)) == NULL)
+  scratch = safe_strdup(str);
+  if (!scratch)
     return;
 
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))

@@ -465,7 +465,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     return 0;
   }
 
-  if ((fpin = fopen(a->filename, "r")) == NULL)
+  fpin = fopen(a->filename, "r");
+  if (!fpin)
   {
     mutt_debug(1, "write_mime_body: %s no longer exists!\n", a->filename);
     mutt_error(_("%s no longer exists!"), a->filename);
@@ -835,7 +836,8 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
   ncodes = 0;
   for (c = tocodes; c; c = c1 ? c1 + 1 : 0)
   {
-    if ((c1 = strchr(c, ':')) == c)
+    c1 = strchr(c, ':');
+    if (c1 == c)
       continue;
     ncodes++;
   }
@@ -844,7 +846,8 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
   tcode = safe_malloc(ncodes * sizeof(char *));
   for (c = tocodes, i = 0; c; c = c1 ? c1 + 1 : 0, i++)
   {
-    if ((c1 = strchr(c, ':')) == c)
+    c1 = strchr(c, ':');
+    if (c1 == c)
       continue;
     tcode[i] = mutt_substrdup(c, c1);
   }
@@ -855,7 +858,8 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
     /* Try each fromcode in turn */
     for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
     {
-      if ((c1 = strchr(c, ':')) == c)
+      c1 = strchr(c, ':');
+      if (c1 == c)
         continue;
       fcode = mutt_substrdup(c, c1);
 
@@ -923,7 +927,8 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     return NULL;
   }
 
-  if ((fp = fopen(fname, "r")) == NULL)
+  fp = fopen(fname, "r");
+  if (!fp)
   {
     mutt_debug(1, "mutt_get_content_info: %s: %s (errno %d).\n", fname,
                strerror(errno), errno);
@@ -1030,7 +1035,8 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         goto bye; /* shouldn't happen */
     }
 
-    if ((f = fopen(buf, "r")) != NULL)
+    f = fopen(buf, "r");
+    if (f)
     {
       found_mimetypes = true;
 
@@ -1045,7 +1051,8 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         SKIPWS(ct);
 
         /* position on the next field in this line */
-        if ((p = strpbrk(ct, " \t")) == NULL)
+        p = strpbrk(ct, " \t");
+        if (!p)
           continue;
         *p++ = 0;
         SKIPWS(p);
@@ -1061,7 +1068,8 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
           {
             /* get the content-type */
 
-            if ((p = strchr(ct, '/')) == NULL)
+            p = strchr(ct, '/');
+            if (!p)
             {
               /* malformed line, just skip it. */
               break;
@@ -1073,7 +1081,8 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 
             mutt_substrcpy(subtype, p, q, sizeof(subtype));
 
-            if ((type = mutt_check_mime_type(ct)) == TYPEOTHER)
+            type = mutt_check_mime_type(ct);
+            if (type == TYPEOTHER)
               strfcpy(xtype, ct, sizeof(xtype));
 
             cur_sze = sze;
@@ -1129,7 +1138,8 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->force_charset = true;
 
       mutt_mktemp(buff, sizeof(buff));
-      if ((s.fpout = safe_fopen(buff, "w")) == NULL)
+      s.fpout = safe_fopen(buff, "w");
+      if (!s.fpout)
       {
         mutt_perror("fopen");
         return;
@@ -1320,7 +1330,8 @@ void mutt_update_encoding(struct Body *a)
   if (!a->force_charset && !a->noconv)
     mutt_delete_parameter("charset", &a->parameter);
 
-  if ((info = mutt_get_content_info(a->filename, a)) == NULL)
+  info = mutt_get_content_info(a->filename, a);
+  if (!info)
     return;
 
   set_encoding(a, info);
@@ -1349,7 +1360,8 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   }
 
   mutt_mktemp(buffer, sizeof(buffer));
-  if ((fp = safe_fopen(buffer, "w+")) == NULL)
+  fp = safe_fopen(buffer, "w+");
+  if (!fp)
     return NULL;
 
   body = mutt_new_body();
@@ -1436,7 +1448,8 @@ static void run_mime_type_query(struct Body *att)
     return;
   }
 
-  if ((buf = mutt_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  buf = mutt_read_line(buf, &buflen, fp, &dummy, 0);
+  if (buf)
   {
     if (strchr(buf, '/'))
       mutt_parse_content_type(buf, att);
@@ -1469,7 +1482,8 @@ struct Body *mutt_make_file_attach(const char *path)
       !option(OPT_MIME_TYPE_QUERY_FIRST))
     run_mime_type_query(att);
 
-  if ((info = mutt_get_content_info(path, att)) == NULL)
+  info = mutt_get_content_info(path, att);
+  if (!info)
   {
     mutt_free_body(&att);
     return NULL;
@@ -2316,7 +2330,8 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     *tempfile = safe_strdup(tmp);
   }
 
-  if ((pid = fork()) == 0)
+  pid = fork();
+  if (pid == 0)
   {
     struct sigaction act, oldalrm;
 
@@ -2345,7 +2360,8 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
 #endif
 
     /* now the second fork() */
-    if ((pid = fork()) == 0)
+    pid = fork();
+    if (pid == 0)
     {
       /* "msg" will be opened as stdin */
       if (open(msg, O_RDONLY, 0) < 0)
@@ -2749,7 +2765,8 @@ static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
     fp = msg->fp;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((f = safe_fopen(tempfile, "w")) != NULL)
+  f = safe_fopen(tempfile, "w");
+  if (f)
   {
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
     char *msgid_str = NULL;
@@ -2971,7 +2988,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (f.magic == MUTT_MMDF || f.magic == MUTT_MBOX)
   {
     mutt_mktemp(tempfile, sizeof(tempfile));
-    if ((tempfp = safe_fopen(tempfile, "w+")) == NULL)
+    tempfp = safe_fopen(tempfile, "w+");
+    if (!tempfp)
     {
       mutt_perror(tempfile);
       mx_close_mailbox(&f, NULL);
@@ -2986,7 +3004,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   onm_flags = MUTT_ADD_FROM;
   if (post)
     onm_flags |= MUTT_SET_DRAFT;
-  if ((msg = mx_open_new_message(&f, hdr, onm_flags)) == NULL)
+  msg = mx_open_new_message(&f, hdr, onm_flags);
+  if (!msg)
   {
     safe_fclose(&tempfp);
     mx_close_mailbox(&f, NULL);

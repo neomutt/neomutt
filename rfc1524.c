@@ -202,11 +202,13 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
    */
 
   /* find length of basetype */
-  if ((ch = strchr(type, '/')) == NULL)
+  ch = strchr(type, '/');
+  if (!ch)
     return false;
   btlen = ch - type;
 
-  if ((fp = fopen(filename, "r")) != NULL)
+  fp = fopen(filename, "r");
+  if (fp)
   {
     while (!found && (buf = mutt_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
     {
@@ -592,9 +594,11 @@ int mutt_rename_file(char *oldfile, char *newfile)
     return 1;
   if (access(newfile, F_OK) == 0)
     return 2;
-  if ((ofp = fopen(oldfile, "r")) == NULL)
+  ofp = fopen(oldfile, "r");
+  if (!ofp)
     return 3;
-  if ((nfp = safe_fopen(newfile, "w")) == NULL)
+  nfp = safe_fopen(newfile, "w");
+  if (!nfp)
   {
     safe_fclose(&ofp);
     return 3;

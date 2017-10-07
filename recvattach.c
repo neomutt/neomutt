@@ -470,7 +470,8 @@ static int query_save_attachment(FILE *fp, struct Body *body,
       struct stat st;
 
       /* check to make sure that this file is really the one the user wants */
-      if ((rc = mutt_save_confirm(buf, &st)) == 1)
+      rc = mutt_save_confirm(buf, &st);
+      if (rc == 1)
       {
         prompt = _("Save to file: ");
         continue;
@@ -641,7 +642,8 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   }
   else
   {
-    if ((ifp = fopen(b->filename, "r")) == NULL)
+    ifp = fopen(b->filename, "r");
+    if (!ifp)
     {
       mutt_perror("fopen");
       return;
@@ -770,7 +772,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_mktemp(newfile, sizeof(newfile));
           if (mutt_decode_save_attachment(fp, top, newfile, MUTT_PRINTING, 0) == 0)
           {
-            if ((ifp = fopen(newfile, "r")) != NULL)
+            ifp = fopen(newfile, "r");
+            if (ifp)
             {
               mutt_copy_stream(ifp, state->fpout);
               safe_fclose(&ifp);
@@ -1121,7 +1124,8 @@ void mutt_view_attachments(struct Header *hdr)
 
   mutt_message_hook(Context, hdr, MUTT_MESSAGEHOOK);
 
-  if ((msg = mx_open_message(Context, hdr->msgno)) == NULL)
+  msg = mx_open_message(Context, hdr->msgno);
+  if (!msg)
     return;
 
   menu = mutt_new_menu(MENU_ATTACH);

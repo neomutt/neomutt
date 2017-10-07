@@ -484,7 +484,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     if (isdigit((unsigned char) *pc))
     {
       /* minimum date specified */
-      if ((pc = get_date(pc, &min, err)) == NULL)
+      pc = get_date(pc, &min, err);
+      if (!pc)
       {
         FREE(&buffer.data);
         return false;
@@ -940,7 +941,8 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   struct stat st;
 #endif
 
-  if ((msg = mx_open_message(ctx, msgno)) != NULL)
+  msg = mx_open_message(ctx, msgno);
+  if (msg)
   {
     if (option(OPT_THOROUGH_SEARCH))
     {
@@ -957,7 +959,8 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       }
 #else
       mutt_mktemp(tempfile, sizeof(tempfile));
-      if ((s.fpout = safe_fopen(tempfile, "w+")) == NULL)
+      s.fpout = safe_fopen(tempfile, "w+");
+      if (!s.fpout)
       {
         mutt_perror(tempfile);
         return 0;
@@ -1235,7 +1238,8 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           isalias = false;
           /* compile the sub-expression */
           buf = mutt_substrdup(ps.dptr + 1, p);
-          if ((tmp2 = mutt_pattern_comp(buf, flags, err)) == NULL)
+          tmp2 = mutt_pattern_comp(buf, flags, err);
+          if (!tmp2)
           {
             FREE(&buf);
             mutt_pattern_free(&curlist);
@@ -1274,7 +1278,8 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         last = tmp;
 
         ps.dptr++; /* move past the ~ */
-        if ((entry = lookup_tag(*ps.dptr)) == NULL)
+        entry = lookup_tag(*ps.dptr);
+        if (!entry)
         {
           snprintf(err->data, err->dsize, _("%c: invalid pattern modifier"), *ps.dptr);
           mutt_pattern_free(&curlist);
@@ -1317,7 +1322,8 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
         }
         /* compile the sub-expression */
         buf = mutt_substrdup(ps.dptr + 1, p);
-        if ((tmp = mutt_pattern_comp(buf, flags, err)) == NULL)
+        tmp = mutt_pattern_comp(buf, flags, err);
+        if (!tmp)
         {
           FREE(&buf);
           mutt_pattern_free(&curlist);
@@ -1895,7 +1901,8 @@ int mutt_pattern_func(int op, char *prompt)
   mutt_buffer_init(&err);
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
-  if ((pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err)) == NULL)
+  pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
+  if (!pat)
   {
     FREE(&simple);
     mutt_error("%s", err.data);
@@ -2029,7 +2036,8 @@ int mutt_search_command(int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = STRING;
       err.data = safe_malloc(err.dsize);
-      if ((SearchPattern = mutt_pattern_comp(temp, MUTT_FULL_MSG, &err)) == NULL)
+      SearchPattern = mutt_pattern_comp(temp, MUTT_FULL_MSG, &err);
+      if (!SearchPattern)
       {
         mutt_error("%s", err.data);
         FREE(&err.data);

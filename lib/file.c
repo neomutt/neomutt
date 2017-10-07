@@ -650,7 +650,8 @@ char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
       FREE(&s);
       return NULL;
     }
-    if ((ch = strchr(s + offset, '\n')) != NULL)
+    ch = strchr(s + offset, '\n');
+    if (ch)
     {
       if (line)
         (*line)++;

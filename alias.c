@@ -358,7 +358,8 @@ retry_name:
       return;
     }
 
-    if ((new->addr = rfc822_parse_adrlist(new->addr, buf)) == NULL)
+    new->addr = rfc822_parse_adrlist(new->addr, buf);
+    if (!new->addr)
       BEEP();
     if (mutt_addrlist_to_intl(new->addr, &err))
     {

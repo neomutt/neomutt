@@ -358,7 +358,8 @@ void mutt_help(int menu)
 
   do
   {
-    if ((f = safe_fopen(t, "w")) == NULL)
+    f = safe_fopen(t, "w");
+    if (!f)
     {
       mutt_perror(t);
       return;

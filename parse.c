@@ -159,7 +159,8 @@ static struct Parameter *parse_parameters(const char *s)
 
   while (*s)
   {
-    if ((p = strpbrk(s, "=;")) == NULL)
+    p = strpbrk(s, "=;");
+    if (!p)
     {
       mutt_debug(1, "parse_parameters: malformed parameter: %s\n", s);
       goto bail;
@@ -310,7 +311,8 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   mutt_free_parameter(&ct->parameter);
 
   /* First extract any existing parameters */
-  if ((pc = strchr(s, ';')) != NULL)
+  pc = strchr(s, ';');
+  if (pc)
   {
     *pc++ = 0;
     while (*pc && ISSPACE(*pc))
@@ -400,7 +402,8 @@ static void parse_content_disposition(const char *s, struct Body *ct)
     ct->disposition = DISPATTACH;
 
   /* Check to see if a default filename was given */
-  if ((s = strchr(s, ';')) != NULL)
+  s = strchr(s, ';');
+  if (s)
   {
     s = skip_email_wsp(s + 1);
     if ((s = mutt_get_parameter("filename", (parms = parse_parameters(s)))))
@@ -1297,7 +1300,8 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
   const char *q = NULL;
 
   /* check for a simple whitespace separated list of addresses */
-  if ((q = strpbrk(s, "\"<>():;,\\")) == NULL)
+  q = strpbrk(s, "\"<>():;,\\");
+  if (!q)
   {
     char tmp[HUGE_STRING];
     char *r = NULL;

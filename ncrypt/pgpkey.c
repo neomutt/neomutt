@@ -556,12 +556,14 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       case OP_VERIFY_KEY:
 
         mutt_mktemp(tempfile, sizeof(tempfile));
-        if ((devnull = fopen("/dev/null", "w")) == NULL)
+        devnull = fopen("/dev/null", "w");
+        if (!devnull)
         {
           mutt_perror(_("Can't open /dev/null"));
           break;
         }
-        if ((fp = safe_fopen(tempfile, "w")) == NULL)
+        fp = safe_fopen(tempfile, "w");
+        if (!fp)
         {
           safe_fclose(&devnull);
           mutt_perror(_("Can't create temporary file"));
@@ -737,13 +739,15 @@ struct Body *pgp_make_key_attachment(char *tempf)
     tempf = tempfb;
   }
 
-  if ((tempfp = safe_fopen(tempf, tempf == tempfb ? "w" : "a")) == NULL)
+  tempfp = safe_fopen(tempf, tempf == tempfb ? "w" : "a");
+  if (!tempfp)
   {
     mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
-  if ((devnull = fopen("/dev/null", "w")) == NULL)
+  devnull = fopen("/dev/null", "w");
+  if (!devnull)
   {
     mutt_perror(_("Can't open /dev/null"));
     safe_fclose(&tempfp);
@@ -790,7 +794,8 @@ static void pgp_add_string_to_hints(struct ListHead *hints, const char *str)
   char *scratch = NULL;
   char *t = NULL;
 
-  if ((scratch = safe_strdup(str)) == NULL)
+  scratch = safe_strdup(str);
+  if (!scratch)
     return;
 
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))

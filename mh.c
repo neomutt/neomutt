@@ -356,7 +356,8 @@ bool mh_buffy(struct Buffy *mailbox, bool check_stats)
 
   if (check_stats)
   {
-    if ((dirp = opendir(mailbox->path)) != NULL)
+    dirp = opendir(mailbox->path);
+    if (dirp)
     {
       while ((de = readdir(dirp)) != NULL)
       {
@@ -383,7 +384,8 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
   {
     snprintf(path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%" PRIu64, dest->path,
              NONULL(ShortHostname), (int) getpid(), mutt_rand64());
-    if ((fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
+    fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
+    if (fd == -1)
     {
       if (errno != EEXIST)
       {
@@ -400,7 +402,8 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
   }
   umask(omask);
 
-  if ((*fp = fdopen(fd, "w")) == NULL)
+  *fp = fdopen(fd, "w");
+  if (!*fp)
   {
     FREE(tgt);
     close(fd);
@@ -817,7 +820,8 @@ struct Header *maildir_parse_message(int magic, const char *fname, int is_old,
 {
   FILE *f = NULL;
 
-  if ((f = fopen(fname, "r")) != NULL)
+  f = fopen(fname, "r");
+  if (f)
   {
     h = maildir_parse_stream(magic, f, fname, is_old, h);
     safe_fclose(&f);
@@ -844,7 +848,8 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
   else
     strfcpy(buf, ctx->path, sizeof(buf));
 
-  if ((dirp = opendir(buf)) == NULL)
+  dirp = opendir(buf);
+  if (!dirp)
     return -1;
 
   while (((de = readdir(dirp)) != NULL) && (SigInt != 1))
@@ -1387,7 +1392,8 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
     }
 
     snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", ctx->path);
-    if ((i = creat(tmp, S_IRWXU)) == -1)
+    i = creat(tmp, S_IRWXU);
+    if (i == -1)
     {
       mutt_perror(tmp);
       rmdir(ctx->path);
@@ -1518,7 +1524,8 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
 
     mutt_debug(2, "maildir_open_new_message (): Trying %s.\n", path);
 
-    if ((fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
+    fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
+    if (fd == -1)
     {
       if (errno != EEXIST)
       {
@@ -1536,7 +1543,8 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
   }
   umask(omask);
 
-  if ((msg->fp = fdopen(fd, "w")) == NULL)
+  msg->fp = fdopen(fd, "w");
+  if (!msg->fp)
   {
     FREE(&msg->path);
     close(fd);
@@ -1668,7 +1676,8 @@ static int _mh_commit_message(struct Context *ctx, struct Message *msg,
     return -1;
   }
 
-  if ((dirp = opendir(ctx->path)) == NULL)
+  dirp = opendir(ctx->path);
+  if (!dirp)
   {
     mutt_perror(ctx->path);
     return -1;
@@ -1753,10 +1762,12 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   long old_body_length = h->content->length;
   long old_hdr_lines = h->lines;
 
-  if ((dest = mx_open_new_message(ctx, h, 0)) == NULL)
+  dest = mx_open_new_message(ctx, h, 0);
+  if (!dest)
     return -1;
 
-  if ((rc = mutt_copy_message(dest->fp, ctx, h, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN)) == 0)
+  rc = mutt_copy_message(dest->fp, ctx, h, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
+  if (rc == 0)
   {
     snprintf(oldpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
     strfcpy(partpath, h->path, _POSIX_PATH_MAX);
@@ -1792,7 +1803,8 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     if (ctx->magic == MUTT_MH && rc == 0)
     {
       snprintf(newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
-      if ((rc = safe_rename(newpath, oldpath)) == 0)
+      rc = safe_rename(newpath, oldpath);
+      if (rc == 0)
         mutt_str_replace(&h->path, partpath);
     }
   }
@@ -1844,7 +1856,8 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
     char suffix[16];
     char *p = NULL;
 
-    if ((p = strrchr(h->path, '/')) == NULL)
+    p = strrchr(h->path, '/');
+    if (!p)
     {
       mutt_debug(1, "maildir_sync_message: %s: unable to find subdir!\n", h->path);
       return -1;
@@ -1853,7 +1866,8 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
     strfcpy(newpath, p, sizeof(newpath));
 
     /* kill the previous flags */
-    if ((p = strchr(newpath, ':')) != NULL)
+    p = strchr(newpath, ':');
+    if (p)
       *p = '\0';
 
     maildir_flags(suffix, sizeof(suffix), h);
@@ -2421,7 +2435,8 @@ static FILE *_maildir_open_find_message(const char *folder, const char *unique,
 
   snprintf(dir, sizeof(dir), "%s/%s", folder, subfolder);
 
-  if ((dp = opendir(dir)) == NULL)
+  dp = opendir(dir);
+  if (!dp)
   {
     errno = ENOENT;
     return NULL;
@@ -2510,7 +2525,8 @@ int maildir_check_empty(const char *path)
      */
     snprintf(realpath, sizeof(realpath), "%s/%s", path,
              iter == 0 ? "cur" : "new");
-    if ((dp = opendir(realpath)) == NULL)
+    dp = opendir(realpath);
+    if (!dp)
       return -1;
     while ((de = readdir(dp)))
     {
@@ -2540,7 +2556,8 @@ int mh_check_empty(const char *path)
   struct dirent *de = NULL;
   int r = 1; /* assume empty until we find a message */
 
-  if ((dp = opendir(path)) == NULL)
+  dp = opendir(path);
+  if (!dp)
     return -1;
   while ((de = readdir(dp)))
   {

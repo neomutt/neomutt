@@ -120,7 +120,8 @@ void mutt_read_histfile(void)
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
 
-  if ((f = fopen(HistoryFile, "r")) == NULL)
+  f = fopen(HistoryFile, "r");
+  if (!f)
     return;
 
   while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
@@ -200,7 +201,8 @@ static void shrink_histfile(void)
   bool regen_file = false;
   struct Hash *dup_hashes[HC_LAST] = { 0 };
 
-  if ((f = fopen(HistoryFile, "r")) == NULL)
+  f = fopen(HistoryFile, "r");
+  if (!f)
     return;
 
   if (option(OPT_HISTORY_REMOVE_DUPS))
@@ -240,7 +242,8 @@ static void shrink_histfile(void)
   if (regen_file)
   {
     mutt_mktemp(tmpfname, sizeof(tmpfname));
-    if ((tmp = safe_fopen(tmpfname, "w+")) == NULL)
+    tmp = safe_fopen(tmpfname, "w+");
+    if (!tmp)
     {
       mutt_perror(tmpfname);
       goto cleanup;
@@ -295,7 +298,8 @@ static void save_history(enum HistoryClass hclass, const char *s)
   if (!s || !*s) /* This shouldn't happen, but it's safer. */
     return;
 
-  if ((f = fopen(HistoryFile, "a")) == NULL)
+  f = fopen(HistoryFile, "a");
+  if (!f)
   {
     mutt_perror("fopen");
     return;

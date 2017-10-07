@@ -716,7 +716,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
     mutt_buffy_check(false);
 
-    if ((dp = opendir(d)) == NULL)
+    dp = opendir(d);
+    if (!dp)
     {
       mutt_perror(d);
       return -1;
@@ -1696,7 +1697,8 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             not = 1;
           }
 
-          if ((err = REGCOMP(rx, s, REG_NOSUB)) != 0)
+          err = REGCOMP(rx, s, REG_NOSUB);
+          if (err != 0)
           {
             regerror(err, rx, buf, sizeof(buf));
             FREE(&rx);

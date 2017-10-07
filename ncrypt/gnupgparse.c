@@ -390,7 +390,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   int is_sub;
   int devnull;
 
-  if ((devnull = open("/dev/null", O_RDWR)) == -1)
+  devnull = open("/dev/null", O_RDWR);
+  if (devnull == -1)
     return NULL;
 
   mutt_str_replace(&_chs, Charset);

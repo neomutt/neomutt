@@ -205,7 +205,8 @@ int mutt_complete(char *s, size_t slen)
    * special case to handle when there is no filepart yet.  find the first
    * file/directory which is not ``.'' or ``..''
    */
-  if ((len = mutt_strlen(filepart)) == 0)
+  len = mutt_strlen(filepart);
+  if (len == 0)
   {
     while ((de = readdir(dirp)) != NULL)
     {
