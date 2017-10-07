@@ -802,7 +802,8 @@ void rfc2047_decode(char **pd)
 
   while (*s && dlen > 0)
   {
-    if (!(p = find_encoded_word(s, &q)))
+    p = find_encoded_word(s, &q);
+    if (!p)
     {
       /* no encoded words */
       if (option(OPT_IGNORE_LINEAR_WHITE_SPACE))

@@ -88,7 +88,8 @@ int imap_access(const char *path)
   if (imap_parse_path(path, &mx))
     return -1;
 
-  if (!(idata = imap_conn_find(&mx.account, option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0)))
+  idata = imap_conn_find(&mx.account, option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0);
+  if (!idata)
   {
     FREE(&mx.mbox);
     return -1;
@@ -173,7 +174,8 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
 
   if (!ctx || !ctx->data)
   {
-    if (!(idata = imap_conn_find(&mx->account, option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0)))
+    idata = imap_conn_find(&mx->account, option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0);
+    if (!idata)
     {
       FREE(&mx->mbox);
       return -1;
@@ -414,7 +416,8 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
   if (!idata)
   {
     /* The current connection is a new connection */
-    if (!(idata = imap_new_idata()))
+    idata = imap_new_idata();
+    if (!idata)
     {
       mutt_socket_free(conn);
       return NULL;
@@ -627,7 +630,8 @@ static int imap_open_mailbox(struct Context *ctx)
   }
 
   /* we require a connection which isn't currently in IMAP_SELECTED state */
-  if (!(idata = imap_conn_find(&(mx.account), MUTT_IMAP_CONN_NOSELECT)))
+  idata = imap_conn_find(&(mx.account), MUTT_IMAP_CONN_NOSELECT);
+  if (!idata)
     goto fail_noidata;
   if (idata->state < IMAP_AUTHENTICATED)
     goto fail;
@@ -840,7 +844,8 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
   /* in APPEND mode, we appear to hijack an existing IMAP connection -
    * ctx is brand new and mostly empty */
 
-  if (!(idata = imap_conn_find(&(mx.account), 0)))
+  idata = imap_conn_find(&(mx.account), 0);
+  if (!idata)
   {
     FREE(&mx.mbox);
     return -1;
@@ -1056,7 +1061,8 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   int rc;
   int count = 0;
 
-  if (!(cmd = mutt_buffer_new()))
+  cmd = mutt_buffer_new();
+  if (!cmd)
   {
     mutt_debug(1, "imap_exec_msgset: unable to allocate buffer\n");
     return -1;
@@ -1381,7 +1387,8 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
   /* Remove old custom flags */
   if (HEADER_DATA(h)->flags_remote)
   {
-    if (!(cmd = mutt_buffer_new()))
+    cmd = mutt_buffer_new();
+    if (!cmd)
     {
       mutt_debug(1, "imap_commit_message_tags: unable to allocate buffer\n");
       return -1;
@@ -1408,7 +1415,8 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
   /* Add new custom flags */
   if (tags)
   {
-    if (!(cmd = mutt_buffer_new()))
+    cmd = mutt_buffer_new();
+    if (!cmd)
     {
       mutt_debug(1, "imap_commit_message_tags: fail to remove old flags\n");
       return -1;
@@ -2125,7 +2133,8 @@ static int imap_compile_search(struct Context *ctx, const struct Pattern *pat,
         mutt_buffer_addstr(buf, "HEADER ");
 
         /* extract header name */
-        if (!(delim = strchr(pat->p.str, ':')))
+        delim = strchr(pat->p.str, ':');
+        if (!delim)
         {
           mutt_error(_("Header search without header name: %s"), pat->p.str);
           return -1;
@@ -2212,7 +2221,8 @@ int imap_subscribe(char *path, int subscribe)
     mutt_error(_("Bad mailbox name"));
     return -1;
   }
-  if (!(idata = imap_conn_find(&(mx.account), 0)))
+  idata = imap_conn_find(&(mx.account), 0);
+  if (!idata)
     goto fail;
 
   imap_fix_path(idata, mx.mbox, buf, sizeof(buf));
@@ -2359,7 +2369,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
 
   /* don't open a new socket just for completion. Instead complete over
    * known mailboxes/hooks/etc */
-  if (!(idata = imap_conn_find(&(mx.account), MUTT_IMAP_CONN_NONEW)))
+  idata = imap_conn_find(&(mx.account), MUTT_IMAP_CONN_NONEW);
+  if (!idata)
   {
     FREE(&mx.mbox);
     strfcpy(dest, path, dlen);

@@ -214,7 +214,8 @@ void mutt_set_langinfo_charset(void)
   mutt_canonical_charset(buff2, sizeof(buff2), buff);
 
   /* finally, set $charset */
-  if (!(Charset = safe_strdup(buff2)))
+  Charset = safe_strdup(buff2);
+  if (!Charset)
     Charset = safe_strdup("iso-8859-1");
 }
 

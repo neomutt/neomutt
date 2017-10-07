@@ -87,7 +87,8 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   char tempfile[_POSIX_PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(f = safe_fopen(tempfile, "w+")))
+  f = safe_fopen(tempfile, "w+");
+  if (!f)
   {
     mutt_perror(tempfile);
     return -3;
@@ -201,9 +202,11 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   struct Context *ctx = NULL;
   struct PopData *pop_data = NULL;
 
-  if (!(ctx = (struct Context *) data))
+  ctx = (struct Context *) data;
+  if (!ctx)
     return -1;
-  if (!(pop_data = (struct PopData *) ctx->data))
+  pop_data = (struct PopData *) ctx->data;
+  if (!pop_data)
     return -1;
 
 #ifdef USE_HCACHE
@@ -599,12 +602,14 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
                        NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
-    if (!(msg->fp = mutt_bcache_put(pop_data->bcache, h->data)))
+    msg->fp = mutt_bcache_put(pop_data->bcache, h->data);
+    if (!msg->fp)
     {
       /* no */
       bcache = 0;
       mutt_mktemp(path, sizeof(path));
-      if (!(msg->fp = safe_fopen(path, "w+")))
+      msg->fp = safe_fopen(path, "w+");
+      if (!msg->fp)
       {
         mutt_perror(path);
         mutt_sleep(2);

@@ -178,12 +178,14 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
   char pathname[_POSIX_PATH_MAX];
   snprintf(pathname, sizeof(pathname), "%s/.mh_sequences", path);
 
-  if (!(fp = fopen(pathname, "r")))
+  fp = fopen(pathname, "r");
+  if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
   while ((buff = mutt_read_line(buff, &sz, fp, &line, 0)))
   {
-    if (!(t = strtok(buff, " \t:")))
+    t = strtok(buff, " \t:");
+    if (!t)
       continue;
 
     if (mutt_strcmp(t, MhSeqUnseen) == 0)

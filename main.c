@@ -869,7 +869,8 @@ int main(int argc, char **argv, char **env)
       if (flags & MUTT_NEWS)
       {
         set_option(OPT_NEWS);
-        if (!(CurrentNewsSrv = nntp_select_server(NewsServer, 0)))
+        CurrentNewsSrv = nntp_select_server(NewsServer, 0);
+        if (!CurrentNewsSrv)
         {
           mutt_endwin(ErrorBuf);
           exit(1);

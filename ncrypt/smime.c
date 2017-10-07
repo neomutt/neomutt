@@ -1245,7 +1245,8 @@ int smime_verify_sender(struct Header *h)
   int retval = 1;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  if (!(fpout = safe_fopen(tempfname, "w")))
+  fpout = safe_fopen(tempfname, "w");
+  if (!fpout)
   {
     mutt_perror(tempfname);
     return 1;
@@ -1677,7 +1678,8 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   sigbdy->type = origType;
 
   mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
-  if (!(smimeerr = safe_fopen(smimeerrfile, "w+")))
+  smimeerr = safe_fopen(smimeerrfile, "w+");
+  if (!smimeerr)
   {
     mutt_perror(smimeerrfile);
     mutt_unlink(signedfile);
@@ -1989,7 +1991,8 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   }
   mutt_unlink(tempfile);
 
-  if (!(*cur = smime_handle_entity(b, &s, *fpout)))
+  *cur = smime_handle_entity(b, &s, *fpout);
+  if (!*cur)
   {
     rv = -1;
     goto bail;

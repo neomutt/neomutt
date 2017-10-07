@@ -289,7 +289,8 @@ static void ssl_dprint_err_stack(void)
   long buflen;
   char *output = NULL;
 
-  if (!(bio = BIO_new(BIO_s_mem())))
+  bio = BIO_new(BIO_s_mem());
+  if (!bio)
     return;
   ERR_print_errors(bio);
   if ((buflen = BIO_get_mem_data(bio, &buf)) > 0)
@@ -718,7 +719,8 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
   if (!match_found)
   {
     /* Try the common name */
-    if (!(x509_subject = X509_get_subject_name(x509cert)))
+    x509_subject = X509_get_subject_name(x509cert);
+    if (!x509_subject)
     {
       if (err && errlen)
         strfcpy(err, _("cannot get certificate subject"), errlen);
@@ -960,13 +962,15 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   unsigned int last_cert_mdlen;
 #endif
 
-  if (!(ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx())))
+  ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
+  if (!ssl)
   {
     mutt_debug(1, "ssl_verify_callback: failed to retrieve SSL structure from "
                   "X509_STORE_CTX\n");
     return 0;
   }
-  if (!(host = SSL_get_ex_data(ssl, HostExDataIndex)))
+  host = SSL_get_ex_data(ssl, HostExDataIndex);
+  if (!host)
   {
     mutt_debug(1, "ssl_verify_callback: failed to retrieve hostname from SSL "
                   "structure\n");
@@ -1151,7 +1155,8 @@ static int ssl_socket_open(struct Connection *conn)
   data = safe_calloc(1, sizeof(struct SslSockData));
   conn->sockdata = data;
 
-  if (!(data->ctx = SSL_CTX_new(SSLv23_client_method())))
+  data->ctx = SSL_CTX_new(SSLv23_client_method());
+  if (!data->ctx)
   {
     /* L10N: an SSL context is a data structure returned by the OpenSSL
              function SSL_CTX_new().  In this case it returned NULL: an
@@ -1255,7 +1260,8 @@ int mutt_ssl_starttls(struct Connection *conn)
    * TLSv1_client_method gives us explicitly TLSv1.0, not 1.1 or 1.2 (True as
    * of OpenSSL 1.0.1c)
    */
-  if (!(ssldata->ctx = SSL_CTX_new(SSLv23_client_method())))
+  ssldata->ctx = SSL_CTX_new(SSLv23_client_method());
+  if (!ssldata->ctx)
   {
     mutt_debug(1, "mutt_ssl_starttls: Error allocating SSL_CTX\n");
     goto bail_ssldata;
@@ -1314,7 +1320,8 @@ int mutt_ssl_starttls(struct Connection *conn)
     mutt_sleep(2);
   }
 
-  if (!(ssldata->ssl = SSL_new(ssldata->ctx)))
+  ssldata->ssl = SSL_new(ssldata->ctx);
+  if (!ssldata->ssl)
   {
     mutt_debug(1, "mutt_ssl_starttls: Error allocating SSL\n");
     goto bail_ctx;

@@ -86,7 +86,8 @@ int mutt_filter_unprintable(char **s)
   char *p = *s;
   mbstate_t mbstate1, mbstate2;
 
-  if (!(b = mutt_buffer_new()))
+  b = mutt_buffer_new();
+  if (!b)
     return -1;
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));

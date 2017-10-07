@@ -874,7 +874,8 @@ static void tls_get_client_cert(struct Connection *conn)
   size_t dnlen;
 
   /* get our cert CN if we have one */
-  if (!(crtdata = gnutls_certificate_get_ours(data->state)))
+  crtdata = gnutls_certificate_get_ours(data->state);
+  if (!crtdata)
     return;
 
   if (gnutls_x509_crt_init(&clientcrt) < 0)
@@ -890,7 +891,8 @@ static void tls_get_client_cert(struct Connection *conn)
   /* get length of DN */
   dnlen = 0;
   gnutls_x509_crt_get_dn(clientcrt, NULL, &dnlen);
-  if (!(dn = calloc(1, dnlen)))
+  dn = calloc(1, dnlen);
+  if (!dn)
   {
     mutt_debug(1, "could not allocate DN\n");
     goto err_crt;
@@ -899,7 +901,8 @@ static void tls_get_client_cert(struct Connection *conn)
   mutt_debug(2, "client certificate DN: %s\n", dn);
 
   /* extract CN to use as external user name */
-  if (!(cn = strstr(dn, "CN=")))
+  cn = strstr(dn, "CN=");
+  if (!cn)
   {
     mutt_debug(1, "no CN found in DN\n");
     goto err_dn;

@@ -345,7 +345,8 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
     return rc;
 
   rc = -2; /* we've got a FETCH response, for better or worse */
-  if (!(buf = strchr(buf, '(')))
+  buf = strchr(buf, '(');
+  if (!buf)
     return rc;
   buf++;
 
@@ -534,7 +535,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(fp = safe_fopen(tempfile, "w+")))
+  fp = safe_fopen(tempfile, "w+");
+  if (!fp)
   {
     mutt_error(_("Could not create temporary file %s"), tempfile);
     mutt_sleep(2);
@@ -908,12 +910,14 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   if (output_progress)
     mutt_message(_("Fetching message..."));
 
-  if (!(msg->fp = msg_cache_put(idata, h)))
+  msg->fp = msg_cache_put(idata, h);
+  if (!msg->fp)
   {
     cache->uid = HEADER_DATA(h)->uid;
     mutt_mktemp(path, sizeof(path));
     cache->path = safe_strdup(path);
-    if (!(msg->fp = safe_fopen(path, "w+")))
+    msg->fp = safe_fopen(path, "w+");
+    if (!msg->fp)
     {
       FREE(&cache->path);
       return -1;

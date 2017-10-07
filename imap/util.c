@@ -507,11 +507,13 @@ struct ImapData *imap_new_idata(void)
 {
   struct ImapData *idata = safe_calloc(1, sizeof(struct ImapData));
 
-  if (!(idata->cmdbuf = mutt_buffer_new()))
+  idata->cmdbuf = mutt_buffer_new();
+  if (!idata->cmdbuf)
     FREE(&idata);
 
   idata->cmdslots = ImapPipelineDepth + 2;
-  if (!(idata->cmds = safe_calloc(idata->cmdslots, sizeof(*idata->cmds))))
+  idata->cmds = safe_calloc(idata->cmdslots, sizeof(*idata->cmds));
+  if (!idata->cmds)
   {
     mutt_buffer_free(&idata->cmdbuf);
     FREE(&idata);

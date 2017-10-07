@@ -271,7 +271,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   int rc = -1;
 
-  if (!(t = strchr(src, ':')))
+  t = strchr(src, ':');
+  if (!t)
     return -1;
 
   /* copy string for safe use of strtok() */

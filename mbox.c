@@ -611,7 +611,7 @@ static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope
   }
   else
   {
-    if (e1 == NULL && e2 == NULL)
+    if (!e1 && !e2)
       return 1;
     else
       return 0;
@@ -665,7 +665,7 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
   }
   else
   {
-    if (h1 == NULL && h2 == NULL)
+    if (!h1 && !h2)
       return 1;
     else
       return 0;
@@ -743,7 +743,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     case MUTT_MMDF:
       cmp_headers = mbox_strict_cmp_headers;
       safe_fclose(&ctx->fp);
-      if (!(ctx->fp = safe_fopen(ctx->path, "r")))
+      ctx->fp = safe_fopen(ctx->path, "r");
+      if (!ctx->fp)
         rc = -1;
       else
         rc = ((ctx->magic == MUTT_MBOX) ? mbox_parse_mailbox : mmdf_parse_mailbox)(ctx);

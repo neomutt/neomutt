@@ -424,7 +424,8 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
       FREE(&ctx);
     return NULL;
   }
-  if (!(ctx->realpath = realpath(ctx->path, NULL)))
+  ctx->realpath = realpath(ctx->path, NULL);
+  if (!ctx->realpath)
     ctx->realpath = safe_strdup(ctx->path);
 
   ctx->msgnotreadyet = -1;

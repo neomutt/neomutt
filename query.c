@@ -82,7 +82,8 @@ static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
 
-  if (!(tmp = rfc822_cpy_adr(r->addr, 0)))
+  tmp = rfc822_cpy_adr(r->addr, 0);
+  if (!tmp)
     return NULL;
 
   if (!tmp->next && !tmp->personal)

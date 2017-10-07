@@ -345,7 +345,8 @@ static int smtp_helo(struct Connection *conn)
 #endif
   }
 
-  if (!(fqdn = mutt_fqdn(0)))
+  fqdn = mutt_fqdn(0);
+  if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
   snprintf(buf, sizeof(buf), "%s %s\r\n", Esmtp ? "EHLO" : "HELO", fqdn);
@@ -659,7 +660,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   if (smtp_fill_account(&account) < 0)
     return ret;
 
-  if (!(conn = mutt_conn_find(NULL, &account)))
+  conn = mutt_conn_find(NULL, &account);
+  if (!conn)
     return -1;
 
   Esmtp = eightbit;

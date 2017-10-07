@@ -171,7 +171,8 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
     return;
 
-  if (!(adr = rfc822_parse_adrlist(adr, buf)))
+  adr = rfc822_parse_adrlist(adr, buf);
+  if (!adr)
   {
     mutt_error(_("Error parsing address!"));
     return;
@@ -589,7 +590,8 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
     /* no MIME encapsulation */
 
     mutt_mktemp(tmpbody, sizeof(tmpbody));
-    if (!(tmpfp = safe_fopen(tmpbody, "w")))
+    tmpfp = safe_fopen(tmpbody, "w");
+    if (!tmpfp)
     {
       mutt_error(_("Can't create %s."), tmpbody);
       mutt_free_header(&tmphdr);
@@ -709,7 +711,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     curhdr = parent;
   }
 
-  if (curenv == NULL || curhdr == NULL)
+  if (!curenv || !curhdr)
   {
     mutt_error(_("Can't find any tagged messages."));
     return -1;

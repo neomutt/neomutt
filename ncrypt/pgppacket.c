@@ -40,7 +40,8 @@ static int read_material(size_t material, size_t *used, FILE *fp)
 
     nplen = *used + material + CHUNKSIZE;
 
-    if (!(p = realloc(pbuf, nplen)))
+    p = realloc(pbuf, nplen);
+    if (!p)
     {
       perror("realloc");
       return -1;

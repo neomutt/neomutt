@@ -127,7 +127,8 @@ static int cmd_queue(struct ImapData *idata, const char *cmdstr, int flags)
       return rc;
   }
 
-  if (!(cmd = cmd_new(idata)))
+  cmd = cmd_new(idata);
+  if (!cmd)
     return IMAP_CMD_BAD;
 
   if (mutt_buffer_printf(idata->cmdbuf, "%s %s\r\n", cmd->seq, cmdstr) < 0)

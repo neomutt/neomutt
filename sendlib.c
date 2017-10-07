@@ -384,7 +384,8 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       if (a->use_disp)
       {
-        if (!(fn = a->d_filename))
+        fn = a->d_filename;
+        if (!fn)
           fn = a->filename;
 
         if (fn)
@@ -436,7 +437,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   if (a->type == TYPEMULTIPART)
   {
     /* First, find the boundary to use */
-    if (!(p = mutt_get_parameter("boundary", a->parameter)))
+    p = mutt_get_parameter("boundary", a->parameter);
+    if (!p)
     {
       mutt_debug(1, "mutt_write_mime_body(): no boundary parameter found!\n");
       mutt_error(_("No boundary parameter found! [report this error]"));
@@ -1194,7 +1196,8 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
   }
 
   mutt_mktemp(temp, sizeof(temp));
-  if (!(fpout = safe_fopen(temp, "w+")))
+  fpout = safe_fopen(temp, "w+");
+  if (!fpout)
   {
     mutt_perror("fopen");
     goto cleanup;
@@ -1900,7 +1903,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
       }
     }
 
-    if (!(t = strchr(valbuf, ':')))
+    t = strchr(valbuf, ':');
+    if (!t)
     {
       mutt_debug(1, "mwoh: warning: header not in 'key: value' format!\n");
       FREE(&valbuf);
@@ -2230,7 +2234,8 @@ static void encode_headers(struct ListHead *h)
   struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
-    if (!(p = strchr(np->data, ':')))
+    p = strchr(np->data, ':');
+    if (!p)
       continue;
 
     i = p - np->data;
@@ -2286,7 +2291,8 @@ static char *gen_msgid(void)
   rndid[MUTT_RANDTAG_LEN] = 0;
   now = time(NULL);
   tm = gmtime(&now);
-  if (!(fqdn = mutt_fqdn(0)))
+  fqdn = mutt_fqdn(0);
+  if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
   snprintf(buf, sizeof(buf), "<%d%02d%02d%02d%02d%02d.%s@%s>", tm->tm_year + 1900,

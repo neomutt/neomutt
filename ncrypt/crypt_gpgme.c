@@ -1984,7 +1984,8 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(*fpout = safe_fopen(tempfile, "w+")))
+  *fpout = safe_fopen(tempfile, "w+");
+  if (!*fpout)
   {
     mutt_perror(tempfile);
     rv = -1;
@@ -2045,7 +2046,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(tmpfp = safe_fopen(tempfile, "w+")))
+  tmpfp = safe_fopen(tempfile, "w+");
+  if (!tmpfp)
   {
     mutt_perror(tempfile);
     return -1;
@@ -2063,7 +2065,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = tmpfp;
   s.fpout = 0;
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(*fpout = safe_fopen(tempfile, "w+")))
+  *fpout = safe_fopen(tempfile, "w+");
+  if (!*fpout)
   {
     mutt_perror(tempfile);
     return -1;
@@ -2099,7 +2102,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     s.fpin = *fpout;
     fseeko(s.fpin, bb->offset, SEEK_SET);
     mutt_mktemp(tempfile, sizeof(tempfile));
-    if (!(tmpfp = safe_fopen(tempfile, "w+")))
+    tmpfp = safe_fopen(tempfile, "w+");
+    if (!tmpfp)
     {
       mutt_perror(tempfile);
       return -1;
@@ -2118,7 +2122,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     s.fpin = tmpfp;
     s.fpout = 0;
     mutt_mktemp(tempfile, sizeof(tempfile));
-    if (!(*fpout = safe_fopen(tempfile, "w+")))
+    *fpout = safe_fopen(tempfile, "w+");
+    if (!*fpout)
     {
       mutt_perror(tempfile);
       return -1;
@@ -2373,7 +2378,8 @@ void pgp_gpgme_invoke_import(const char *fname)
   FILE *in = NULL;
   FILE *out = NULL;
 
-  if (!(in = safe_fopen(fname, "r")))
+  in = safe_fopen(fname, "r");
+  if (!in)
     return;
   /* Note that the stream, "in", needs to be kept open while the keydata
    * is used.
@@ -2731,7 +2737,8 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   mutt_debug(2, "Entering pgp_encrypted handler\n");
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(fpout = safe_fopen(tempfile, "w+")))
+  fpout = safe_fopen(tempfile, "w+");
+  if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts(_("[-- Error: could not create temporary file! "
@@ -2808,7 +2815,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
   a->warnsig = false;
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(fpout = safe_fopen(tempfile, "w+")))
+  fpout = safe_fopen(tempfile, "w+");
+  if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts(_("[-- Error: could not create temporary file! "
@@ -2842,7 +2850,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
        */
     if (mutt_is_multipart_signed(tattach) && !tattach->next)
     {
-      if (!(a->goodsig = tattach->goodsig))
+      a->goodsig = tattach->goodsig;
+      if (!a->goodsig)
         a->warnsig = tattach->warnsig;
     }
     else if (tattach->goodsig)
@@ -3488,19 +3497,22 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
   switch (cap)
   {
     case KEY_CAP_CAN_ENCRYPT:
-      if (!(ret = key->can_encrypt))
+      ret = key->can_encrypt;
+      if (ret == 0)
         for (subkey = key->subkeys; subkey; subkey = subkey->next)
           if ((ret = subkey->can_encrypt))
             break;
       break;
     case KEY_CAP_CAN_SIGN:
-      if (!(ret = key->can_sign))
+      ret = key->can_sign;
+      if (ret == 0)
         for (subkey = key->subkeys; subkey; subkey = subkey->next)
           if ((ret = subkey->can_sign))
             break;
       break;
     case KEY_CAP_CAN_CERTIFY:
-      if (!(ret = key->can_certify))
+      ret = key->can_certify;
+      if (ret == 0)
         for (subkey = key->subkeys; subkey; subkey = subkey->next)
           if ((ret = subkey->can_certify))
             break;
@@ -3809,7 +3821,8 @@ static void verify_key(struct CryptKeyInfo *key)
   int maxdepth = 100;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(fp = safe_fopen(tempfile, "w")))
+  fp = safe_fopen(tempfile, "w");
+  if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
     return;

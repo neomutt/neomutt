@@ -381,7 +381,8 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   /* Default character set for text types. */
   if (ct->type == TYPETEXT)
   {
-    if (!(pc = mutt_get_parameter("charset", ct->parameter)))
+    pc = mutt_get_parameter("charset", ct->parameter);
+    if (!pc)
       mutt_set_parameter("charset",
                          (AssumedCharset && *AssumedCharset) ?
                              (const char *) mutt_get_default_charset() :
@@ -909,7 +910,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
           for (beg = strchr(p, '<'); beg; beg = strchr(end, ','))
           {
             beg++;
-            if (!(end = strchr(beg, '>')))
+            end = strchr(beg, '>');
+            if (!end)
               break;
 
             /* Take the first mailto URL */

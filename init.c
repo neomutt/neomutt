@@ -781,7 +781,8 @@ int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
   if (!s || !*s)
     return 0;
 
-  if (!(rx = mutt_compile_regex(s, flags)))
+  rx = mutt_compile_regex(s, flags);
+  if (!rx)
   {
     snprintf(err->data, err->dsize, "Bad regex: %s\n", s);
     return -1;
@@ -871,7 +872,8 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
   if (!pat || !*pat || !templ)
     return 0;
 
-  if (!(rx = mutt_compile_regex(pat, REG_ICASE)))
+  rx = mutt_compile_regex(pat, REG_ICASE);
+  if (!rx)
   {
     snprintf(err->data, err->dsize, _("Bad regex: %s"), pat);
     return -1;

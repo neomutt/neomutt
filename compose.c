@@ -1068,7 +1068,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         unset_option(OPT_NEWS);
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
-          if (!(CurrentNewsSrv = nntp_select_server(NewsServer, 0)))
+          CurrentNewsSrv = nntp_select_server(NewsServer, 0);
+          if (!CurrentNewsSrv)
             break;
 
           prompt = _("Open newsgroup to attach message from");
@@ -1417,7 +1418,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (mutt_get_field("Content-Type: ", type, sizeof(type), 0) != 0 || !type[0])
           continue;
 
-        if (!(p = strchr(type, '/')))
+        p = strchr(type, '/');
+        if (!p)
         {
           mutt_error(_("Content-Type is of the form base/sub"));
           continue;
@@ -1431,7 +1433,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
-        if (!(fp = safe_fopen(fname, "w")))
+        fp = safe_fopen(fname, "w");
+        if (!fp)
         {
           mutt_error(_("Can't create file %s"), fname);
           FREE(&new);

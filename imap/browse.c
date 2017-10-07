@@ -195,7 +195,8 @@ int imap_browse(char *path, struct BrowserState *state)
   unset_option(OPT_IMAP_CHECK_SUBSCRIBED);
   strfcpy(list_cmd, option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", sizeof(list_cmd));
 
-  if (!(idata = imap_conn_find(&(mx.account), 0)))
+  idata = imap_conn_find(&(mx.account), 0);
+  if (!idata)
     goto fail;
 
   mutt_message(_("Getting folder list..."));
@@ -352,7 +353,8 @@ int imap_mailbox_create(const char *folder)
     return -1;
   }
 
-  if (!(idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW)))
+  idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
+  if (!idata)
   {
     mutt_debug(1, "imap_mailbox_create: Couldn't find open connection to %s\n",
                mx.account.host);
@@ -406,7 +408,8 @@ int imap_mailbox_rename(const char *mailbox)
     return -1;
   }
 
-  if (!(idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW)))
+  idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
+  if (!idata)
   {
     mutt_debug(1, "imap_mailbox_rename: Couldn't find open connection to %s\n",
                mx.account.host);

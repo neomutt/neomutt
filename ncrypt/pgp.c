@@ -713,7 +713,8 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   snprintf(sigfile, sizeof(sigfile), "%s.asc", tempfile);
 
-  if (!(fp = safe_fopen(sigfile, "w")))
+  fp = safe_fopen(sigfile, "w");
+  if (!fp)
   {
     mutt_perror(sigfile);
     return -1;
@@ -724,7 +725,8 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   safe_fclose(&fp);
 
   mutt_mktemp(pgperrfile, sizeof(pgperrfile));
-  if (!(pgperr = safe_fopen(pgperrfile, "w+")))
+  pgperr = safe_fopen(pgperrfile, "w+");
+  if (!pgperr)
   {
     mutt_perror(pgperrfile);
     unlink(sigfile);
@@ -774,7 +776,8 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
   char tempfname[_POSIX_PATH_MAX];
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  if (!(tempfp = safe_fopen(tempfname, "w")))
+  tempfp = safe_fopen(tempfname, "w");
+  if (!tempfp)
   {
     mutt_perror(tempfname);
     return;

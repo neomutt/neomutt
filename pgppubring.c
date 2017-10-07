@@ -652,7 +652,8 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
       case PT_SUBKEY:
       case PT_SUBSECKEY:
       {
-        if (!(*last = p = pgp_parse_keyinfo(buff, l)))
+        *last = p = pgp_parse_keyinfo(buff, l);
+        if (!*last)
         {
           err = 1;
           break;

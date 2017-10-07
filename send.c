@@ -1425,7 +1425,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       pbody->next = msg->content; /* don't kill command-line attachments */
       msg->content = pbody;
 
-      if (!(ctype = safe_strdup(ContentType)))
+      ctype = safe_strdup(ContentType);
+      if (!ctype)
         ctype = safe_strdup("text/plain");
       mutt_parse_content_type(ctype, msg->content);
       FREE(&ctype);

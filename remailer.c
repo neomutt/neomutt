@@ -165,25 +165,30 @@ static struct Remailer **mix_type2_list(size_t *l)
   {
     p = mix_new_remailer();
 
-    if (!(t = strtok(line, " \t\n")))
+    t = strtok(line, " \t\n");
+    if (!t)
       goto problem;
 
     p->shortname = safe_strdup(t);
 
-    if (!(t = strtok(NULL, " \t\n")))
+    t = strtok(NULL, " \t\n");
+    if (!t)
       goto problem;
 
     p->addr = safe_strdup(t);
 
-    if (!(t = strtok(NULL, " \t\n")))
+    t = strtok(NULL, " \t\n");
+    if (!t)
       goto problem;
 
-    if (!(t = strtok(NULL, " \t\n")))
+    t = strtok(NULL, " \t\n");
+    if (!t)
       goto problem;
 
     p->ver = safe_strdup(t);
 
-    if (!(t = strtok(NULL, " \t\n")))
+    t = strtok(NULL, " \t\n");
+    if (!t)
       goto problem;
 
     p->caps = mix_get_caps(t);
@@ -470,7 +475,8 @@ void mix_make_chain(struct ListHead *chainhead)
   int j;
   char *t = NULL;
 
-  if (!(type2_list = mix_type2_list(&ttll)))
+  type2_list = mix_type2_list(&ttll);
+  if (!type2_list)
   {
     mutt_error(_("Can't get mixmaster's type2.list!"));
     return;
@@ -692,7 +698,8 @@ int mix_check_message(struct Header *msg)
 
   if (need_hostname)
   {
-    if (!(fqdn = mutt_fqdn(1)))
+    fqdn = mutt_fqdn(1);
+    if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when "
                    "using mixmaster!"));

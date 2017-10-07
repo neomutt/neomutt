@@ -1262,21 +1262,25 @@ static void handle_confline(char *s, FILE *out)
   /* xxx - put this into an actual state machine? */
 
   /* variable name */
-  if (!(s = get_token(varname, sizeof(varname), s)))
+  s = get_token(varname, sizeof(varname), s);
+  if (!s)
     return;
 
   /* comma */
-  if (!(s = get_token(buff, sizeof(buff), s)))
+  s = get_token(buff, sizeof(buff), s);
+  if (!s)
     return;
 
   /* type */
-  if (!(s = get_token(buff, sizeof(buff), s)))
+  s = get_token(buff, sizeof(buff), s);
+  if (!s)
     return;
 
   type = buff2type(buff);
 
   /* possibly a "|" or comma */
-  if (!(s = get_token(buff, sizeof(buff), s)))
+  s = get_token(buff, sizeof(buff), s);
+  if (!s)
     return;
 
   if (strcmp(buff, "|") == 0)
@@ -1284,9 +1288,11 @@ static void handle_confline(char *s, FILE *out)
     if (Debug)
       fprintf(stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
     /* ignore subtype and comma */
-    if (!(s = get_token(buff, sizeof(buff), s)))
+    s = get_token(buff, sizeof(buff), s);
+    if (!s)
       return;
-    if (!(s = get_token(buff, sizeof(buff), s)))
+    s = get_token(buff, sizeof(buff), s);
+    if (!s)
       return;
   }
 
@@ -1294,34 +1300,42 @@ static void handle_confline(char *s, FILE *out)
 
   while (true)
   {
-    if (!(s = get_token(buff, sizeof(buff), s)))
+    s = get_token(buff, sizeof(buff), s);
+    if (!s)
       return;
     if (strcmp(buff, ",") == 0)
       break;
   }
 
   /* option name or UL &address */
-  if (!(s = get_token(buff, sizeof(buff), s)))
+  s = get_token(buff, sizeof(buff), s);
+  if (!s)
     return;
   if (strcmp(buff, "UL") == 0)
-    if (!(s = get_token(buff, sizeof(buff), s)))
+  {
+    s = get_token(buff, sizeof(buff), s);
+    if (!s)
       return;
+  }
 
   /* comma */
-  if (!(s = get_token(buff, sizeof(buff), s)))
+  s = get_token(buff, sizeof(buff), s);
+  if (!s)
     return;
 
   if (Debug)
     fprintf(stderr, "%s: Expecting default value.\n", Progname);
 
   /* <default value> or UL <default value> */
-  if (!(s = get_token(buff, sizeof(buff), s)))
+  s = get_token(buff, sizeof(buff), s);
+  if (!s)
     return;
   if (strcmp(buff, "UL") == 0)
   {
     if (Debug)
       fprintf(stderr, "%s: Skipping UL.\n", Progname);
-    if (!(s = get_token(buff, sizeof(buff), s)))
+    s = get_token(buff, sizeof(buff), s);
+    if (!s)
       return;
   }
 
@@ -1362,7 +1376,8 @@ static void makedoc(FILE *in, FILE *out)
     else
       *p = '\0';
 
-    if (!(p = get_token(token, sizeof(token), buffer)))
+    p = get_token(token, sizeof(token), buffer);
+    if (!p)
       continue;
 
     if (Debug)

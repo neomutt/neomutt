@@ -79,7 +79,8 @@ static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
 {
   char *t = NULL, *u = NULL;
 
-  if (!(t = strchr(value, '\'')))
+  t = strchr(value, '\'');
+  if (!t)
   {
     charset[0] = '\0';
     return value;
@@ -232,7 +233,8 @@ void rfc2231_decode_parameters(struct Parameter **headp)
   {
     q = p->next;
 
-    if (!(s = strchr(p->attribute, '*')))
+    s = strchr(p->attribute, '*');
+    if (!s)
     {
       /*
        * Using RFC2047 encoding in MIME parameters is explicitly

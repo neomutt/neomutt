@@ -407,7 +407,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   k = NULL;
   while (fgets(buf, sizeof(buf) - 1, fp))
   {
-    if (!(kk = parse_pub_line(buf, &is_sub, k)))
+    kk = parse_pub_line(buf, &is_sub, k);
+    if (!kk)
       continue;
 
     /* Only append kk to the list if it's new. */

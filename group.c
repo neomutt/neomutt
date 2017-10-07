@@ -39,7 +39,8 @@ struct Group *mutt_pattern_group(const char *k)
   if (!k)
     return 0;
 
-  if (!(p = hash_find(Groups, k)))
+  p = hash_find(Groups, k);
+  if (!p)
   {
     mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
     p = safe_calloc(1, sizeof(struct Group));

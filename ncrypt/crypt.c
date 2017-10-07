@@ -231,7 +231,8 @@ int mutt_protect(struct Header *msg, char *keylist)
   {
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      if (!(tmp_pbody = crypt_smime_sign_message(msg->content)))
+      tmp_pbody = crypt_smime_sign_message(msg->content);
+      if (!tmp_pbody)
         return -1;
       pbody = tmp_smime_pbody = tmp_pbody;
     }
@@ -239,7 +240,8 @@ int mutt_protect(struct Header *msg, char *keylist)
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
         (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
     {
-      if (!(tmp_pbody = crypt_pgp_sign_message(msg->content)))
+      tmp_pbody = crypt_pgp_sign_message(msg->content);
+      if (!tmp_pbody)
         return -1;
 
       flags &= ~SIGN;
@@ -317,7 +319,8 @@ int mutt_is_multipart_signed(struct Body *b)
       (mutt_strcasecmp(b->subtype, "signed") != 0))
     return 0;
 
-  if (!(p = mutt_get_parameter("protocol", b->parameter)))
+  p = mutt_get_parameter("protocol", b->parameter);
+  if (!p)
     return 0;
 
   if (!(mutt_strcasecmp(p, "multipart/mixed") != 0))
@@ -614,7 +617,8 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   if (!WithCrypto)
     return -1;
 
-  if (!(fp = safe_fopen(tempfile, "w")))
+  fp = safe_fopen(tempfile, "w");
+  if (!fp)
   {
     mutt_perror(tempfile);
     return -1;
@@ -692,7 +696,8 @@ void crypt_extract_keys_from_messages(struct Header *h)
     return;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  if (!(fpout = safe_fopen(tempfname, "w")))
+  fpout = safe_fopen(tempfname, "w");
+  if (!fpout)
   {
     mutt_perror(tempfname);
     return;
