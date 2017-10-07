@@ -1890,8 +1890,9 @@ int mutt_index_menu(void)
 #endif
           for (px = 0, j = 0; j < Context->msgcount; j++)
           {
-            if (message_is_tagged(Context, j))
-            {
+            if (!message_is_tagged(Context, j))
+              continue;
+
             if (!Context->quiet)
               mutt_progress_update(&progress, ++px, -1);
             mx_tags_commit(Context, Context->hdrs[j], buf);
@@ -1904,7 +1905,6 @@ int mutt_index_menu(void)
 #endif
               Context->hdrs[j]->quasi_deleted = !still_queried;
               Context->changed = true;
-            }
             }
           }
 #ifdef USE_NOTMUCH
@@ -2568,13 +2568,13 @@ int mutt_index_menu(void)
         {
           for (j = 0; j < Context->msgcount; j++)
           {
-            if (message_is_tagged(Context, j))
-            {
+            if (!message_is_tagged(Context, j))
+              continue;
+
             if (Context->hdrs[j]->read || Context->hdrs[j]->old)
               mutt_set_flag(Context, Context->hdrs[j], MUTT_NEW, 1);
             else
               mutt_set_flag(Context, Context->hdrs[j], MUTT_READ, 1);
-            }
           }
           menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }

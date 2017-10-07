@@ -710,8 +710,9 @@ void crypt_extract_keys_from_messages(struct Header *h)
   {
     for (int i = 0; i < Context->msgcount; i++)
     {
-      if (message_is_tagged(Context, i))
-      {
+      if (!message_is_tagged(Context, i))
+        continue;
+
       struct Header *h = Context->hdrs[i];
 
       mutt_parse_mime_message(Context, h);
@@ -754,7 +755,6 @@ void crypt_extract_keys_from_messages(struct Header *h)
       }
 
       rewind(fpout);
-      }
     }
   }
   else

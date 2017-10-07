@@ -766,12 +766,14 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
   {
     tag = true;
     for (int i = 0; i < ctx->msgcount; i++)
-      if (message_is_tagged(ctx, i))
-      {
+    {
+      if (!message_is_tagged(ctx, i))
+        continue;
+
       cur = ctx->hdrs[i];
       curenv = cur->env;
       break;
-      }
+    }
 
     if (!cur)
     {
@@ -803,7 +805,10 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
     {
       for (int i = 0; i < ctx->msgcount; i++)
       {
-        if (message_is_tagged(ctx, i) && (mutt_fetch_recips(env, ctx->hdrs[i]->env, flags) == -1))
+        if (!message_is_tagged(ctx, i))
+          continue;
+
+        if (mutt_fetch_recips(env, ctx->hdrs[i]->env, flags) == -1)
           return -1;
       }
     }
@@ -858,15 +863,15 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
       {
         for (i = 0; i < ctx->msgcount; i++)
         {
-          if (message_is_tagged(ctx, i))
-          {
+          if (!message_is_tagged(ctx, i))
+            continue;
+
           if (include_reply(ctx, ctx->hdrs[i], tempfp) == -1)
           {
             mutt_error(_("Could not include all requested messages!"));
             return -1;
           }
           fputc('\n', tempfp);
-          }
         }
       }
       else
@@ -897,8 +902,9 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
       {
         for (i = 0; i < ctx->msgcount; i++)
         {
-          if (message_is_tagged(ctx, i))
-          {
+          if (!message_is_tagged(ctx, i))
+            continue;
+
           tmp = mutt_make_message_attach(ctx, ctx->hdrs[i], 0);
           if (last)
           {
@@ -907,7 +913,6 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
           }
           else
             last = msg->content = tmp;
-          }
         }
       }
     }
@@ -916,9 +921,13 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
       if (cur)
         include_forward(ctx, cur, tempfp);
       else
+      {
         for (i = 0; i < ctx->msgcount; i++)
+        {
           if (message_is_tagged(ctx, i))
             include_forward(ctx, ctx->hdrs[i], tempfp);
+        }
+      }
     }
     else if (i == -1)
       return -1;
@@ -2185,8 +2194,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     else if (!(flags & SENDPOSTPONED) && ctx && ctx->tagged)
     {
       for (i = 0; i < ctx->msgcount; i++)
+      {
         if (message_is_tagged(ctx, i))
+        {
           mutt_set_flag(ctx, ctx->hdrs[i], MUTT_REPLIED, is_reply(ctx->hdrs[i], msg));
+        }
+      }
     }
   }
 

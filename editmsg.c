@@ -228,11 +228,11 @@ int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
-    if (message_is_tagged(ctx, i))
-    {
+    if (!message_is_tagged(ctx, i))
+      continue;
+
     if (edit_one_message(ctx, ctx->hdrs[i]) == -1)
       return -1;
-    }
   }
 
   return 0;

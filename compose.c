@@ -1148,8 +1148,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
         for (i = 0; i < Context->msgcount; i++)
         {
-          if (message_is_tagged(Context, i))
-          {
+          if (!message_is_tagged(Context, i))
+            continue;
+
           new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
           new->content = mutt_make_message_attach(Context, Context->hdrs[i], 1);
           if (new->content != NULL)
@@ -1158,7 +1159,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           {
             mutt_error(_("Unable to attach!"));
             FREE(&new);
-          }
           }
         }
         menu->redraw |= REDRAW_FULL;

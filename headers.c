@@ -315,15 +315,15 @@ int mutt_label_message(struct Header *hdr)
   {
     for (int i = 0; i < Context->msgcount; ++i)
     {
-      if (message_is_tagged(Context, i))
-      {
+      if (!message_is_tagged(Context, i))
+        continue;
+
       struct Header *h = Context->hdrs[i];
       if (label_message(Context, h, new))
       {
         changed++;
         mutt_set_flag(Context, h, MUTT_TAG, 0);
         /* mutt_set_flag re-evals the header color */
-      }
       }
     }
   }
