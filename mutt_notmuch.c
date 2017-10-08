@@ -1620,7 +1620,7 @@ done:
   return rc;
 }
 
-static unsigned count_query(notmuch_database_t *db, const char *qstr)
+static unsigned int count_query(notmuch_database_t *db, const char *qstr)
 {
   unsigned res = 0;
   notmuch_query_t *q = notmuch_query_create(db, qstr);
