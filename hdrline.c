@@ -846,7 +846,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         optional = 0;
       break;
 
-    case 'g':;
+    case 'g':
       tags = driver_tags_get_transformed(&hdr->tags);
       if (!optional)
       {
@@ -913,7 +913,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                     hdr->env->message_id ? hdr->env->message_id : "<no.id>");
       break;
 
-    case 'J':;
+    case 'J':
       tags = driver_tags_get_transformed(&hdr->tags);
       if (tags)
       {

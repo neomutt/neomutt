@@ -637,7 +637,7 @@ int imap_get_literal_count(const char *buf, long *bytes)
 }
 
 /**
- * imap_get_qualifier - Get the qualifier from a tagged reponse
+ * imap_get_qualifier - Get the qualifier from a tagged response
  *
  * In a tagged response, skip tag and status for the qualifier message. Used by
  * imap_copy_message for TRYCREATE

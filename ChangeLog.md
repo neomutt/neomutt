@@ -1050,7 +1050,7 @@
   - Sidebar's inbox occasionally shows zero/wrong value
   - Fix crash opening a second compressed mailbox
 * Config
-  - Look for /etc/NeoMuttrc and ~/.neomuttrc
+  - Look for /etc/neomuttrc and ~/.neomuttrc
 * Docs
   - Fix broken links, typos
   - Update project link

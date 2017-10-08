@@ -56,7 +56,6 @@
 #include "mapping.h"
 #include "md5.h"
 #include "memory.h"
-#include "memory.h"
 #include "message.h"
 #include "sha1.h"
 #include "string2.h"
