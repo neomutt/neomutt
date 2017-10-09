@@ -470,7 +470,7 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
           {
             *do_cache = 1;
           }
-          mutt_debug(1, "Freeing pattern \"%s\" from ColorList\n", tmp->pattern);
+          mutt_debug(1, "Freeing pattern \"%s\" from ColorList\n", buf->data);
           if (tmp)
             STAILQ_REMOVE_AFTER(cl, tmp, entries);
           else
