@@ -220,6 +220,10 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
  */
 time_t mutt_local_tz(time_t t)
 {
+  /* Check we haven't overflowed the time (on 32-bit arches) */
+  if ((t == TIME_T_MAX) || (t == TIME_T_MIN))
+    return 0;
+
   struct tm *ptm = NULL;
   struct tm utc;
 
@@ -591,7 +595,12 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
     tz_out->zoccident = zoccident;
   }
 
-  return (mutt_mktime(&tm, 0) + tz_offset);
+  time_t time = mutt_mktime(&tm, 0);
+  /* Check we haven't overflowed the time (on 32-bit arches) */
+  if ((time != TIME_T_MAX) && (time != TIME_T_MIN))
+    time += tz_offset;
+
+  return time;
 }
 
 /**
