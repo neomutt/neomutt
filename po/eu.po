@@ -2614,8 +2614,8 @@ msgstr ""
 "  -D            inprimatu aldagai guztien balioa irteera estandarrean"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <maila>    inprimatu arazpen irteera hemen: ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <maila>    inprimatu arazpen irteera hemen: ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy

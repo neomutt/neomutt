@@ -2602,8 +2602,8 @@ msgstr ""
 
 #: main.c:108
 #, fuzzy
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <レベル>    デバグ出力を ~/.muttdebug0 に記録"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <レベル>    デバグ出力を ~/.neomuttdebug0 に記録"
 
 #: main.c:111
 #, fuzzy

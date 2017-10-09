@@ -2596,8 +2596,8 @@ msgstr ""
 "  -D            na standardní výstup vypíše hodnoty všech proměnných"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <úroveň>   ladící informace zapisuje do ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <úroveň>   ladící informace zapisuje do ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy

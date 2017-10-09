@@ -2622,8 +2622,8 @@ msgstr ""
 "  -D            wydrukuj wartości wszystkich zmiennych"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <poziom>   zapisuj komunikaty debugowania do ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <poziom>   zapisuj komunikaty debugowania do ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy

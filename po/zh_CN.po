@@ -2624,8 +2624,8 @@ msgstr ""
 "  -D            打印所有变量的值到标准输出"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <级别>     将调试输出记录到 ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <级别>     将调试输出记录到 ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy

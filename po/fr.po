@@ -2720,8 +2720,8 @@ msgstr ""
 "  -D            écrit la valeur de toutes les variables sur stdout"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <niveau>   écrit les infos de débuggage dans ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <niveau>   écrit les infos de débuggage dans ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy

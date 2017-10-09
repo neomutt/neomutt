@@ -2622,7 +2622,7 @@ msgid ""
 msgstr ""
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
 msgstr ""
 
 #: main.c:111

@@ -2613,8 +2613,8 @@ msgstr ""
 "  -D            tampilkan semua nilai variabel ke stdout"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr " -d <level>     catat keluaran debugging ke ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr " -d <level>     catat keluaran debugging ke ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy

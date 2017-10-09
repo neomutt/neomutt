@@ -2586,8 +2586,8 @@ msgstr ""
 
 #: main.c:108
 #, fuzzy
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <nivelo>    skribi sencimigan eligon al ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <nivelo>    skribi sencimigan eligon al ~/.neomuttdebug0"
 
 #: main.c:111
 msgid ""

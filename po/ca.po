@@ -2761,9 +2761,9 @@ msgstr ""
 
 #: main.c:108
 #, fuzzy
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
 msgstr ""
-"  -d NIVELL            Escriu els missatges de depuració a «~/.muttdebug0»."
+"  -d NIVELL            Escriu els missatges de depuració a «~/.neomuttdebug0»."
 
 #: main.c:111
 #, fuzzy

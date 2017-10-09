@@ -2588,8 +2588,8 @@ msgstr ""
 "  -D            показати значення всіх змінних"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <level>    записати інформацію для налагодження в ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <level>    записати інформацію для налагодження в ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy
