@@ -225,6 +225,7 @@ if {1} {
   cc-with [list -cflags [get-define CFLAGS]]
 
   # Large file support
+  cc-check-lfs
   cc-with {-includes sys/types.h} {
     if {[cc-check-sizeof off_t] eq {8}} {
       define OFF_T_FMT {"%" PRId64}
@@ -319,11 +320,17 @@ if {[get-define want-full-doc]} {define MAKEDOC_FULL}
 ###############################################################################
 # GPGME
 if {[get-define want-gpgme]} {
-  if {![check-inc-and-lib gpgme [opt-val with-gpgme $prefix] \
-                          gpgme.h gpgme_new gpgme]} {
-    user-error "Unable to find GPGME"
+  set gpgme_cflags {}
+  if {[is-defined _FILE_OFFSET_BITS]} {
+    set gpgme_cflags -D_FILE_OFFSET_BITS=[get-define _FILE_OFFSET_BITS]
   }
-  cc-check-functions gpgme_op_export_keys
+  cc-with [list -cflags $gpgme_cflags] {
+    if {![check-inc-and-lib gpgme [opt-val with-gpgme $prefix] \
+                            gpgme.h gpgme_new gpgme]} {
+      user-error "Unable to find GPGME"
+    }
+    cc-check-functions gpgme_op_export_keys
+  }
   define CRYPT_BACKEND_GPGME
 }
 
