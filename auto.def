@@ -225,15 +225,12 @@ if {1} {
   cc-with [list -cflags [get-define CFLAGS]]
 
   # Large file support
-  cc-check-lfs
-  cc-with {-includes sys/types.h} {
-    if {[cc-check-sizeof off_t] eq {8}} {
-      define OFF_T_FMT {"%" PRId64}
-    } else {
-      define OFF_T_FMT {"%" PRId32}
-    }
-    define LOFF_T off_t
+  if {[cc-check-lfs]} {
+    define OFF_T_FMT {"%" PRId64}
+  } else {
+    define OFF_T_FMT {"%" PRId32}
   }
+  define LOFF_T off_t
 
   # Let's always use volatile for sig_atomic_t
   cc-check-includes signal.h
