@@ -1122,9 +1122,10 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       init_state(&state, NULL);
       state.imap_browse = true;
       if (!imap_browse(f, &state))
+      {
         strfcpy(LastDir, state.folder, sizeof(LastDir));
-      else
         browser_sort(&state);
+      }
     }
     else
     {
