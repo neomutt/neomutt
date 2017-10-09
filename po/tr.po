@@ -2617,8 +2617,8 @@ msgstr ""
 "  -D            değişkenlerin hepsini göster"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr " -d <seviye>    hata ayıklama bilgisini ~/.muttdebug0 dosyasına kaydet"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr " -d <seviye>    hata ayıklama bilgisini ~/.neomuttdebug0 dosyasına kaydet"
 
 #: main.c:111
 #, fuzzy

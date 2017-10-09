@@ -105,7 +105,7 @@ static void usage(void)
          "  -D -S         like -D, but hide the value of sensitive variables\n"
          "  -B            run in batch mode (do not start the ncurses UI)"));
 #ifdef DEBUG
-  puts(_("  -d <level>    log debugging output to ~/.muttdebug0"));
+  puts(_("  -d <level>    log debugging output to ~/.neomuttdebug0"));
 #endif
   puts(_(
          "  -E            edit the draft (-H) or include (-i) file\n"

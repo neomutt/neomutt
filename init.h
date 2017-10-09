@@ -671,7 +671,7 @@ struct Option MuttVars[] = {
   ** debug_level/debug_file are ignored until it's read from the configuration
   ** file.
   */
-  { "debug_file", DT_PATH, R_NONE, UL &DebugFile, UL "~/.muttdebug" },
+  { "debug_file", DT_PATH, R_NONE, UL &DebugFile, UL "~/.neomuttdebug" },
   /*
   ** .pp
   ** The location prefix of the debug file, 0 is append to the debug file

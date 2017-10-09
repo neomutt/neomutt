@@ -2571,8 +2571,8 @@ msgstr ""
 "  -B            run in batch mode (do not start the ncurses UI)"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <level>    log debugging output to ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <level>    log debugging output to ~/.neomuttdebug0"
 
 #: main.c:111
 msgid ""

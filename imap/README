@@ -25,7 +25,7 @@ IMAP, including SSL/TLS, native CRAM-MD5 and GSSAPI routines, and a SASL
 plugin which can handle just about everything else.
 
 Please report bugs to mutt-dev@mutt.org and/or brendan@kublai.com. Version,
-options, stack-trace and .muttdebug files are a plus.
+options, stack-trace and .neomuttdebug files are a plus.
 
 Brendan Cully <brendan@kublai.com>
 20010506

@@ -2616,8 +2616,8 @@ msgstr ""
 "  -D            stampa il valore di tutte le variabile sullo standard output"
 
 #: main.c:108
-msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <livello>  registra l'output di debug in ~/.muttdebug0"
+msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
+msgstr "  -d <livello>  registra l'output di debug in ~/.neomuttdebug0"
 
 #: main.c:111
 #, fuzzy
