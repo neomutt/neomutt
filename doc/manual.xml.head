@@ -11218,11 +11218,6 @@ color index_size cyan default
               <link linkend="status-color">Status-Color feature</link>
             </para>
           </listitem>
-          <listitem>
-            <para>
-              <link linkend="keywords">Keywords feature</link>
-            </para>
-          </listitem>
         </itemizedlist>
       </sect2>
 
