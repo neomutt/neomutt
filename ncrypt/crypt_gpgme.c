@@ -4542,7 +4542,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp); 
-    mutt_sleep(2);
+    mutt_sleep(0);
   }
   /* not reached */
 }
