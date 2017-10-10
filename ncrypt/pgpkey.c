@@ -702,7 +702,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
     if ((key = pgp_getkeybystr(resp, abilities, keyring)))
       return key;
 
-    BEEP();
+    mutt_error(_("No matching keys found for \"%s\""), resp); 
+    mutt_sleep(2);
   }
   /* not reached */
 }

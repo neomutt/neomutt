@@ -4541,7 +4541,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
     if ((key = crypt_getkeybystr(resp, abilities, app, forced_valid)))
       return key;
 
-    BEEP();
+    mutt_error(_("No matching keys found for \"%s\""), resp); 
+    mutt_sleep(2);
   }
   /* not reached */
 }
