@@ -67,15 +67,14 @@ static int fseek_last_message(FILE *f)
 {
   LOFF_T pos;
   char buffer[BUFSIZ + 9]; /* 7 for "\n\nFrom " */
-  int bytes_read;
-  int i; /* Index into `buffer' for scanning.  */
+  size_t bytes_read;
 
   memset(buffer, 0, sizeof(buffer));
   fseek(f, 0, SEEK_END);
   pos = ftello(f);
 
-  /* Set `bytes_read' to the size of the last, probably partial, buffer; 0 <
-   * `bytes_read' <= `BUFSIZ'.  */
+  /* Set `bytes_read' to the size of the last, probably partial, buffer;
+   * 0 < `bytes_read' <= `BUFSIZ'.  */
   bytes_read = pos % BUFSIZ;
   if (bytes_read == 0)
     bytes_read = BUFSIZ;
@@ -87,14 +86,17 @@ static int fseek_last_message(FILE *f)
     strncpy(buffer + BUFSIZ, buffer, 5 + 2); /* 2 == 2 * mutt_strlen(CRLF) */
     fseeko(f, pos, SEEK_SET);
     bytes_read = fread(buffer, sizeof(char), bytes_read, f);
-    if (bytes_read == -1)
+    if (bytes_read == 0)
       return -1;
-    for (i = bytes_read; --i >= 0;)
+    /* 'i' is Index into `buffer' for scanning.  */
+    for (int i = bytes_read; i >= 0; i--)
+    {
       if (mutt_strncmp(buffer + i, "\n\nFrom ", mutt_strlen("\n\nFrom ")) == 0)
       { /* found it - go to the beginning of the From */
         fseeko(f, pos + i + 2, SEEK_SET);
         return 0;
       }
+    }
     bytes_read = BUFSIZ;
   }
 
