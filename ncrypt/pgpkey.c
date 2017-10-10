@@ -703,7 +703,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp); 
-    mutt_sleep(2);
+    mutt_sleep(0);
   }
   /* not reached */
 }
