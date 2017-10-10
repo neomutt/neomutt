@@ -541,11 +541,11 @@ if {[get-define want-ssl] && ![get-define want-gnutls]} {
     if {![cc-check-includes openssl/bio.h openssl/err.h openssl/ssl.h] ||
         ![cc-check-function-in-lib X509_STORE_CTX_new crypto] ||
         ![cc-check-function-in-lib SSL_new ssl] ||
-        ![cc-check-function-in-lib deflate z] ||
         ![cc-with {-includes openssl/ssl.h} {cc-check-decls SSL_set_mode}]} {
       user-error "Unable to find OpenSSL"
     }
     cc-check-functions RAND_status RAND_egd
+    cc-check-function-in-lib deflate z
   }
   define USE_SSL
   define USE_SSL_OPENSSL
