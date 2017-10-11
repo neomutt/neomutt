@@ -427,10 +427,14 @@ if {[get-define want-nls]} {
 
 ###############################################################################
 # fmemopen(3)
-if {[get-define want-fmemopen] && [cc-check-functions fmemopen open_memstream]} {
-  # Temporarily disable fmemopen, due to this bug:
-  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=834408
-  define USE_FMEMOPEN 0
+if {[get-define want-fmemopen]} {
+  if {![cc-check-functions fmemopen]} {
+    user-error "Unable to find fmemopen"
+  }
+  if {![cc-check-functions open_memstream]} {
+    user-error "Unable to find open_memstream"
+  }
+  define USE_FMEMOPEN 1
 } else {
   define USE_FMEMOPEN 0
 }
