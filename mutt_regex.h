@@ -47,7 +47,7 @@ struct Regex
 {
   char *pattern;  /**< printable version */
   regex_t *regex; /**< compiled expression */
-  int not;        /**< do not match */
+  bool not : 1;   /**< do not match */
 };
 
 /**

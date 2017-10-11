@@ -2153,7 +2153,7 @@ static void restore_default(struct Option *p)
         if ((mutt_strcmp(p->option, "mask") == 0) && *s == '!')
         {
           s++;
-          pp->not = 1;
+          pp->not = true;
         }
         retval = REGCOMP(pp->regex, s, flags);
         if (retval != 0)
