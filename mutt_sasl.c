@@ -631,7 +631,13 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
   conn->conn_poll = mutt_sasl_conn_poll;
 }
 
+/*
+ * mutt_sasl_done - Invoke when processing is complete.
+ * This is a cleanup function, used to free all memory used by the library. 
+ * Invoke when processing is complete.
+ */
 void mutt_sasl_done(void)
 {
-  sasl_done();
+  /* As we never use the server-side, the silently ignore the return value */
+  sasl_client_done();
 }
