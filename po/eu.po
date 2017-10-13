@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20171006\n"
+"Project-Id-Version: neomutt-20171013\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-10-06 15:30+0100\n"
+"POT-Creation-Date: 2017-10-13 13:42+0100\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -187,7 +187,7 @@ msgid "---Attachment: %s"
 msgstr "-- Gehigarriak"
 
 #: attach.c:677 attach.c:709 attach.c:1023 attach.c:1079 handler.c:1444
-#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:759
+#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Ezin da iragazkia sortu"
 
@@ -244,7 +244,7 @@ msgstr "%s-ra harpidetzaz ezabaturik"
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:713 browser.c:1671
+#: browser.c:713 browser.c:1672
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s ez da karpeta bat."
@@ -273,58 +273,58 @@ msgstr "Karpeta [%s], Fitxategi maskara: %s"
 msgid "Can't attach a directory!"
 msgstr "Ezin da karpeta bat gehitu!"
 
-#: browser.c:1324 browser.c:1737 browser.c:1876
+#: browser.c:1325 browser.c:1738 browser.c:1877
 msgid "No files match the file mask"
 msgstr "Ez da fitxategi maskara araberako fitxategirik aurkitu"
 
-#: browser.c:1520
+#: browser.c:1521
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "\"Create\" IMAP posta kutxek bakarrik onartzen dute"
 
-#: browser.c:1542
+#: browser.c:1543
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Berrizendaketa IMAP postakutxentzat bakarrik onartzen da"
 
-#: browser.c:1563
+#: browser.c:1564
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "\"Delete\" IMAP posta kutxek bakarrik onartzen dute"
 
-#: browser.c:1573
+#: browser.c:1574
 msgid "Cannot delete root folder"
 msgstr "Ezin da erro karpeta ezabatu"
 
-#: browser.c:1576
+#: browser.c:1577
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Benetan \"%s\" postakutxa ezabatu?"
 
-#: browser.c:1590
+#: browser.c:1591
 msgid "Mailbox deleted."
 msgstr "Postakutxa ezabatua."
 
-#: browser.c:1594
+#: browser.c:1595
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "Postakutxa ezabatua."
 
-#: browser.c:1597
+#: browser.c:1598
 msgid "Mailbox not deleted."
 msgstr "Postakutxa ez da ezabatu."
 
-#: browser.c:1624
+#: browser.c:1625
 msgid "Chdir to: "
 msgstr "Karpetara joan: "
 
-#: browser.c:1661 browser.c:1731
+#: browser.c:1662 browser.c:1732
 msgid "Error scanning directory."
 msgstr "Errorea karpeta arakatzerakoan."
 
-#: browser.c:1682
+#: browser.c:1683
 msgid "File Mask: "
 msgstr "Fitxategi maskara: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1754
+#: browser.c:1755
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -332,7 +332,7 @@ msgid ""
 msgstr "Atzekoz aurrera (d)ataz, (a)lphaz, tamaina(z) edo ez orde(n)atu? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1757
+#: browser.c:1758
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -340,33 +340,33 @@ msgid ""
 msgstr "(d)ataz, (a)lpha, tamaina(z) edo ez orde(n)atu? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1760
+#: browser.c:1761
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1865
+#: browser.c:1866
 msgid "New file name: "
 msgstr "Fitxategi izen berria: "
 
-#: browser.c:1893
+#: browser.c:1894
 msgid "Can't view a directory"
 msgstr "Ezin da karpeta ikusi"
 
-#: browser.c:1910
+#: browser.c:1911
 msgid "Error trying to view file"
 msgstr "Errorea fitxategia ikusten saiatzerakoan"
 
-#: browser.c:1995
+#: browser.c:1996
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "%s-ra harpideturik"
 
-#: browser.c:1997
+#: browser.c:1998
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "%s-ra harpidetzaz ezabaturik"
 
-#: browser.c:2018
+#: browser.c:2019
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Ez da fitxategi maskara araberako fitxategirik aurkitu"
@@ -707,8 +707,8 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
-#: ncrypt/smime.c:2123 ncrypt/smime.c:2138
+#: compose.c:147 ncrypt/crypt_gpgme.c:4911 ncrypt/pgp.c:1784
+#: ncrypt/smime.c:2124 ncrypt/smime.c:2139
 msgid "Sign as: "
 msgstr "Honela sinatu: "
 
@@ -1055,7 +1055,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr ""
 
 #: ncrypt/crypt.c:179 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:571
-#: ncrypt/pgpkey.c:754
+#: ncrypt/pgpkey.c:755
 msgid "Invoking PGP..."
 msgstr "PGP deitzen..."
 
@@ -3428,7 +3428,7 @@ msgid "error reading data object: %s\n"
 msgstr "errorea datu objektua irakurtzerakoan: %s\n"
 
 #: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
-#: ncrypt/pgpkey.c:741
+#: ncrypt/pgpkey.c:742
 msgid "Can't create temporary file"
 msgstr "Ezin da behin-behineko fitxategia sortu"
 
@@ -3941,28 +3941,33 @@ msgstr "ID bakarrik marginalki erabilgarria da."
 msgid "%s Do you really want to use the key?"
 msgstr "%sZihur zaude gakoa erabili nahi duzula?"
 
-#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
-#: ncrypt/pgpkey.c:955
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:835
+#: ncrypt/pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" duten gakoen bila..."
 
-#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4544 ncrypt/pgpkey.c:705 ncrypt/smime.c:758
+#, c-format
+msgid "No matching keys found for \"%s\""
+msgstr ""
+
+#: ncrypt/crypt_gpgme.c:4592 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "ID-gakoa=\"%s\" %s-rako erabili?"
 
-#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
-#: ncrypt/smime.c:880
+#: ncrypt/crypt_gpgme.c:4643 ncrypt/pgp.c:1303 ncrypt/smime.c:779
+#: ncrypt/smime.c:881
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s-rako ID-gakoa sartu: "
 
-#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4704 ncrypt/pgpkey.c:726
 msgid "Please enter the key ID: "
 msgstr "Mesedez sar ezazu gako-ID-a: "
 
-#: ncrypt/crypt_gpgme.c:4715
+#: ncrypt/crypt_gpgme.c:4716
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Errorea gako argibideak eskuratzen: "
@@ -3971,41 +3976,41 @@ msgstr "Errorea gako argibideak eskuratzen: "
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4735
+#: ncrypt/crypt_gpgme.c:4736
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP Gakoa %s."
 
-#: ncrypt/crypt_gpgme.c:4778
+#: ncrypt/crypt_gpgme.c:4779
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4786
+#: ncrypt/crypt_gpgme.c:4787
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4825
+#: ncrypt/crypt_gpgme.c:4826
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4827
+#: ncrypt/crypt_gpgme.c:4828
 msgid "sapco"
 msgstr "esabpg"
 
-#: ncrypt/crypt_gpgme.c:4834
+#: ncrypt/crypt_gpgme.c:4835
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4836
+#: ncrypt/crypt_gpgme.c:4837
 msgid "samco"
 msgstr "esabmg"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4849
+#: ncrypt/crypt_gpgme.c:4850
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4013,13 +4018,13 @@ msgid ""
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4852
+#: ncrypt/crypt_gpgme.c:4853
 #, fuzzy
 msgid "esabpco"
 msgstr "esabpg"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4858
+#: ncrypt/crypt_gpgme.c:4859
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4027,38 +4032,38 @@ msgid ""
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4861
+#: ncrypt/crypt_gpgme.c:4862
 #, fuzzy
 msgid "esabmco"
 msgstr "esabmg"
 
-#: ncrypt/crypt_gpgme.c:4874
+#: ncrypt/crypt_gpgme.c:4875
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4876
+#: ncrypt/crypt_gpgme.c:4877
 #, fuzzy
 msgid "esabpc"
 msgstr "esabpg"
 
-#: ncrypt/crypt_gpgme.c:4883
+#: ncrypt/crypt_gpgme.c:4884
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4885
+#: ncrypt/crypt_gpgme.c:4886
 #, fuzzy
 msgid "esabmc"
 msgstr "esabmg"
 
-#: ncrypt/crypt_gpgme.c:5037
+#: ncrypt/crypt_gpgme.c:5038
 msgid "Failed to verify sender"
 msgstr "Huts bidaltzailea egiaztatzerakoan"
 
-#: ncrypt/crypt_gpgme.c:5040
+#: ncrypt/crypt_gpgme.c:5041
 msgid "Failed to figure out sender"
 msgstr "Ezin izan da biltzailea atzeman"
 
@@ -4209,11 +4214,11 @@ msgstr "aurkitutako PGP gakoak <%s>."
 msgid "PGP keys matching \"%s\"."
 msgstr "\"%s\" duten PGP gakoak."
 
-#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:747
+#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:748
 msgid "Can't open /dev/null"
 msgstr "Ezin da /dev/null ireki"
 
-#: ncrypt/pgpkey.c:777
+#: ncrypt/pgpkey.c:778
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP Gakoa %s."
@@ -4264,42 +4269,42 @@ msgstr "ID-a ez da baliozkoa."
 msgid "Enter keyID: "
 msgstr "IDgakoa sartu: "
 
-#: ncrypt/smime.c:886
+#: ncrypt/smime.c:887
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Ez da (baliozko) ziurtagiririk aurkitu %s-rentzat."
 
-#: ncrypt/smime.c:933 ncrypt/smime.c:962 ncrypt/smime.c:1026
-#: ncrypt/smime.c:1065 ncrypt/smime.c:1126 ncrypt/smime.c:1205
+#: ncrypt/smime.c:934 ncrypt/smime.c:963 ncrypt/smime.c:1027
+#: ncrypt/smime.c:1066 ncrypt/smime.c:1127 ncrypt/smime.c:1206
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Errorea: Ezin da OpenSSL azpiprozesua sortu!"
 
-#: ncrypt/smime.c:1187
+#: ncrypt/smime.c:1188
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
-#: ncrypt/smime.c:1279
+#: ncrypt/smime.c:1280
 msgid "no certfile"
 msgstr "ziurtagiri gabea"
 
-#: ncrypt/smime.c:1282
+#: ncrypt/smime.c:1283
 msgid "no mbox"
 msgstr "ez dago postakutxarik"
 
-#: ncrypt/smime.c:1406 ncrypt/smime.c:1554
+#: ncrypt/smime.c:1407 ncrypt/smime.c:1555
 msgid "No output from OpenSSL..."
 msgstr "Ez dago irteerarik OpenSSL-tik..."
 
-#: ncrypt/smime.c:1473
+#: ncrypt/smime.c:1474
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Ezin da sinatu. Ez da gakorik ezarri. Honela sinatu erabili."
 
-#: ncrypt/smime.c:1519
+#: ncrypt/smime.c:1520
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Ezin da OpenSSL azpiprozesua ireki!"
 
-#: ncrypt/smime.c:1702 ncrypt/smime.c:1821
+#: ncrypt/smime.c:1703 ncrypt/smime.c:1822
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4307,19 +4312,19 @@ msgstr ""
 "[-- OpenSSL irteeraren bukaera --]\n"
 "\n"
 
-#: ncrypt/smime.c:1780 ncrypt/smime.c:1792
+#: ncrypt/smime.c:1781 ncrypt/smime.c:1793
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Errorea: Ezin da OpenSSL azpiprozesua sortu!--]\n"
 
-#: ncrypt/smime.c:1825
+#: ncrypt/smime.c:1826
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Honako datu hauek S/MIME enkriptatutik daude --]\n"
 
-#: ncrypt/smime.c:1829
+#: ncrypt/smime.c:1830
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Hurrengo datu hauek S/MIME sinaturik daude --]\n"
 
-#: ncrypt/smime.c:1893
+#: ncrypt/smime.c:1894
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4327,7 +4332,7 @@ msgstr ""
 "\n"
 "[-- S/MIME enkriptaturiko duen amaiera --]\n"
 
-#: ncrypt/smime.c:1895
+#: ncrypt/smime.c:1896
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4336,7 +4341,7 @@ msgstr ""
 "[-- S/MIME sinatutako datuen amaiera. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2011
+#: ncrypt/smime.c:2012
 #, fuzzy
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
@@ -4345,12 +4350,12 @@ msgstr ""
 "(g)arbitu? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2014
+#: ncrypt/smime.c:2015
 msgid "swaco"
 msgstr "eshabg"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2024
+#: ncrypt/smime.c:2025
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
@@ -4360,13 +4365,13 @@ msgstr ""
 "(g)arbitu? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2027
+#: ncrypt/smime.c:2028
 #, fuzzy
 msgid "eswabco"
 msgstr "eshabg"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2036
+#: ncrypt/smime.c:2037
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
@@ -4374,40 +4379,40 @@ msgstr ""
 "(g)arbitu? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2039
+#: ncrypt/smime.c:2040
 #, fuzzy
 msgid "eswabc"
 msgstr "eshabg"
 
-#: ncrypt/smime.c:2059
+#: ncrypt/smime.c:2060
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Hautatu algoritmo familia: 1: DES, 2: RC2, 3: AES, edo (g)arbitu? "
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2063
 msgid "drac"
 msgstr "drag"
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: DES-Hirukoitza "
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "dt"
 msgstr "dh"
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "468"
 msgstr "468"
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "895"
 msgstr "895"
 

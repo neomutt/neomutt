@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20171006\n"
+"Project-Id-Version: neomutt-20171013\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-10-06 15:30+0100\n"
+"POT-Creation-Date: 2017-10-13 13:42+0100\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -191,7 +191,7 @@ msgid "---Attachment: %s"
 msgstr "-- Lampiran"
 
 #: attach.c:677 attach.c:709 attach.c:1023 attach.c:1079 handler.c:1444
-#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:759
+#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Tidak bisa membuat filter"
 
@@ -248,7 +248,7 @@ msgstr "Berhenti langganan dari %s"
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:713 browser.c:1671
+#: browser.c:713 browser.c:1672
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s bukan direktori."
@@ -277,58 +277,58 @@ msgstr "Direktori [%s], File mask: %s"
 msgid "Can't attach a directory!"
 msgstr "Tidak bisa melampirkan sebuah direktori"
 
-#: browser.c:1324 browser.c:1737 browser.c:1876
+#: browser.c:1325 browser.c:1738 browser.c:1877
 msgid "No files match the file mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
-#: browser.c:1520
+#: browser.c:1521
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Pembuatan hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:1542
+#: browser.c:1543
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Penggantian nama hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:1563
+#: browser.c:1564
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:1573
+#: browser.c:1574
 msgid "Cannot delete root folder"
 msgstr "Tidak bisa menghapus kotak surat utama"
 
-#: browser.c:1576
+#: browser.c:1577
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Yakin hapus kotak surat \"%s\"?"
 
-#: browser.c:1590
+#: browser.c:1591
 msgid "Mailbox deleted."
 msgstr "Kotak surat telah dihapus."
 
-#: browser.c:1594
+#: browser.c:1595
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "Kotak surat telah dihapus."
 
-#: browser.c:1597
+#: browser.c:1598
 msgid "Mailbox not deleted."
 msgstr "Kotak surat tidak dihapus."
 
-#: browser.c:1624
+#: browser.c:1625
 msgid "Chdir to: "
 msgstr "Pindah dir ke: "
 
-#: browser.c:1661 browser.c:1731
+#: browser.c:1662 browser.c:1732
 msgid "Error scanning directory."
 msgstr "Gagal membaca direktori."
 
-#: browser.c:1682
+#: browser.c:1683
 msgid "File Mask: "
 msgstr "File Mask: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1754
+#: browser.c:1755
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -337,7 +337,7 @@ msgstr ""
 "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1757
+#: browser.c:1758
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -345,33 +345,33 @@ msgid ""
 msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1760
+#: browser.c:1761
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1865
+#: browser.c:1866
 msgid "New file name: "
 msgstr "Nama file baru: "
 
-#: browser.c:1893
+#: browser.c:1894
 msgid "Can't view a directory"
 msgstr "Tidak bisa menampilkan sebuah direktori"
 
-#: browser.c:1910
+#: browser.c:1911
 msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
-#: browser.c:1995
+#: browser.c:1996
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Berlangganan ke %s..."
 
-#: browser.c:1997
+#: browser.c:1998
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Berhenti langganan dari %s"
 
-#: browser.c:2018
+#: browser.c:2019
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
@@ -712,8 +712,8 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
-#: ncrypt/smime.c:2123 ncrypt/smime.c:2138
+#: compose.c:147 ncrypt/crypt_gpgme.c:4911 ncrypt/pgp.c:1784
+#: ncrypt/smime.c:2124 ncrypt/smime.c:2139
 msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
 
@@ -1060,7 +1060,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr ""
 
 #: ncrypt/crypt.c:179 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:571
-#: ncrypt/pgpkey.c:754
+#: ncrypt/pgpkey.c:755
 msgid "Invoking PGP..."
 msgstr "Memanggil PGP..."
 
@@ -3425,7 +3425,7 @@ msgid "error reading data object: %s\n"
 msgstr "error saat membaca objek data: %s\n"
 
 #: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
-#: ncrypt/pgpkey.c:741
+#: ncrypt/pgpkey.c:742
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
@@ -3943,28 +3943,33 @@ msgstr "ID hanya valid secara marginal."
 msgid "%s Do you really want to use the key?"
 msgstr "%s Anda yakin mau menggunakan kunci tsb?"
 
-#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
-#: ncrypt/pgpkey.c:955
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:835
+#: ncrypt/pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4544 ncrypt/pgpkey.c:705 ncrypt/smime.c:758
+#, c-format
+msgid "No matching keys found for \"%s\""
+msgstr ""
+
+#: ncrypt/crypt_gpgme.c:4592 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Gunakan keyID = '%s' untuk %s?"
 
-#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
-#: ncrypt/smime.c:880
+#: ncrypt/crypt_gpgme.c:4643 ncrypt/pgp.c:1303 ncrypt/smime.c:779
+#: ncrypt/smime.c:881
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Masukkan keyID untuk %s: "
 
-#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4704 ncrypt/pgpkey.c:726
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: ncrypt/crypt_gpgme.c:4715
+#: ncrypt/crypt_gpgme.c:4716
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Error saat mengambil informasi tentang kunci: "
@@ -3973,20 +3978,20 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4735
+#: ncrypt/crypt_gpgme.c:4736
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "Kunci PGP %s."
 
-#: ncrypt/crypt_gpgme.c:4778
+#: ncrypt/crypt_gpgme.c:4779
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4786
+#: ncrypt/crypt_gpgme.c:4787
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4825
+#: ncrypt/crypt_gpgme.c:4826
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -3994,11 +3999,11 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4827
+#: ncrypt/crypt_gpgme.c:4828
 msgid "sapco"
 msgstr "etsdpb"
 
-#: ncrypt/crypt_gpgme.c:4834
+#: ncrypt/crypt_gpgme.c:4835
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -4006,12 +4011,12 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4836
+#: ncrypt/crypt_gpgme.c:4837
 msgid "samco"
 msgstr "etsdmb"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4849
+#: ncrypt/crypt_gpgme.c:4850
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4021,13 +4026,13 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4852
+#: ncrypt/crypt_gpgme.c:4853
 #, fuzzy
 msgid "esabpco"
 msgstr "etsdpb"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4858
+#: ncrypt/crypt_gpgme.c:4859
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4037,12 +4042,12 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4861
+#: ncrypt/crypt_gpgme.c:4862
 #, fuzzy
 msgid "esabmco"
 msgstr "etsdmb"
 
-#: ncrypt/crypt_gpgme.c:4874
+#: ncrypt/crypt_gpgme.c:4875
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
@@ -4050,12 +4055,12 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4876
+#: ncrypt/crypt_gpgme.c:4877
 #, fuzzy
 msgid "esabpc"
 msgstr "etsdpb"
 
-#: ncrypt/crypt_gpgme.c:4883
+#: ncrypt/crypt_gpgme.c:4884
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
@@ -4063,16 +4068,16 @@ msgstr ""
 "(b)ersih? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4885
+#: ncrypt/crypt_gpgme.c:4886
 #, fuzzy
 msgid "esabmc"
 msgstr "etsdmb"
 
-#: ncrypt/crypt_gpgme.c:5037
+#: ncrypt/crypt_gpgme.c:5038
 msgid "Failed to verify sender"
 msgstr "Gagal memverifikasi pengirim"
 
-#: ncrypt/crypt_gpgme.c:5040
+#: ncrypt/crypt_gpgme.c:5041
 msgid "Failed to figure out sender"
 msgstr "Gagal menentukan pengirim"
 
@@ -4227,11 +4232,11 @@ msgstr "PGP keys yg cocok dg <%s>."
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP keys yg cocok dg \"%s\"."
 
-#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:747
+#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:748
 msgid "Can't open /dev/null"
 msgstr "Tidak bisa membuka /dev/null"
 
-#: ncrypt/pgpkey.c:777
+#: ncrypt/pgpkey.c:778
 #, c-format
 msgid "PGP Key %s."
 msgstr "Kunci PGP %s."
@@ -4282,42 +4287,42 @@ msgstr "ID tidak valid."
 msgid "Enter keyID: "
 msgstr "Masukkan keyID: "
 
-#: ncrypt/smime.c:886
+#: ncrypt/smime.c:887
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Tidak ditemukan sertifikat (yg valid) utk %s."
 
-#: ncrypt/smime.c:933 ncrypt/smime.c:962 ncrypt/smime.c:1026
-#: ncrypt/smime.c:1065 ncrypt/smime.c:1126 ncrypt/smime.c:1205
+#: ncrypt/smime.c:934 ncrypt/smime.c:963 ncrypt/smime.c:1027
+#: ncrypt/smime.c:1066 ncrypt/smime.c:1127 ncrypt/smime.c:1206
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Error: tidak bisa membuat subproses utk OpenSSL!"
 
-#: ncrypt/smime.c:1187
+#: ncrypt/smime.c:1188
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "Tidak bisa mengambil sertifikat"
 
-#: ncrypt/smime.c:1279
+#: ncrypt/smime.c:1280
 msgid "no certfile"
 msgstr "tdk ada certfile"
 
-#: ncrypt/smime.c:1282
+#: ncrypt/smime.c:1283
 msgid "no mbox"
 msgstr "tdk ada mbox"
 
-#: ncrypt/smime.c:1406 ncrypt/smime.c:1554
+#: ncrypt/smime.c:1407 ncrypt/smime.c:1555
 msgid "No output from OpenSSL..."
 msgstr "Tdk ada keluaran dr OpenSSL..."
 
-#: ncrypt/smime.c:1473
+#: ncrypt/smime.c:1474
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Tdk bisa tandatangan: Kunci tdk diberikan. Gunakan Tandatangan Sbg."
 
-#: ncrypt/smime.c:1519
+#: ncrypt/smime.c:1520
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Tidak bisa membuka subproses OpenSSL!"
 
-#: ncrypt/smime.c:1702 ncrypt/smime.c:1821
+#: ncrypt/smime.c:1703 ncrypt/smime.c:1822
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4325,19 +4330,19 @@ msgstr ""
 "[-- Akhir keluaran OpenSSL --]\n"
 "\n"
 
-#: ncrypt/smime.c:1780 ncrypt/smime.c:1792
+#: ncrypt/smime.c:1781 ncrypt/smime.c:1793
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Error: tidak bisa membuat subproses utk OpenSSL! --]\n"
 
-#: ncrypt/smime.c:1825
+#: ncrypt/smime.c:1826
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Data berikut dienkripsi dg S/MIME --]\n"
 
-#: ncrypt/smime.c:1829
+#: ncrypt/smime.c:1830
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Data berikut ditandatangani dg S/MIME --]\n"
 
-#: ncrypt/smime.c:1893
+#: ncrypt/smime.c:1894
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4345,7 +4350,7 @@ msgstr ""
 "\n"
 "[-- Akhir data yang dienkripsi dg S/MIME. --]\n"
 
-#: ncrypt/smime.c:1895
+#: ncrypt/smime.c:1896
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4354,7 +4359,7 @@ msgstr ""
 "[-- Akhir data yg ditandatangani dg S/MIME. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2011
+#: ncrypt/smime.c:2012
 #, fuzzy
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
@@ -4363,12 +4368,12 @@ msgstr ""
 "atau (b)ersih? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2014
+#: ncrypt/smime.c:2015
 msgid "swaco"
 msgstr "etgsdb"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2024
+#: ncrypt/smime.c:2025
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
@@ -4378,13 +4383,13 @@ msgstr ""
 "atau (b)ersih? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2027
+#: ncrypt/smime.c:2028
 #, fuzzy
 msgid "eswabco"
 msgstr "etgsdb"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2036
+#: ncrypt/smime.c:2037
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
@@ -4392,40 +4397,40 @@ msgstr ""
 "atau (b)ersih? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2039
+#: ncrypt/smime.c:2040
 #, fuzzy
 msgid "eswabc"
 msgstr "etgsdb"
 
-#: ncrypt/smime.c:2059
+#: ncrypt/smime.c:2060
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Pilih algoritma: 1: DES, 2: RC2, 3: AES, atau (b)atal? "
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2063
 msgid "drac"
 msgstr "drab"
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "1: DES, 2: Triple-DES "
 msgstr ""
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "dt"
 msgstr ""
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr ""
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "468"
 msgstr ""
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr ""
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "895"
 msgstr ""
 

@@ -89,13 +89,14 @@ Jack Stratton, Jakub Wilk, Jasper Adriaanse, Jelle van der Waa, Jenya Sovetkin,
 Johannes Frankenau, Johannes Weißl, Jonathan Perkin, Joshua Jordi,
 Julian Andres Klode, Karel Zak, Kevin Decherf, Kevin Velghe, Kurt Jaeger,
 Leonidas Spyropoulos, Manos Pitsidianakis, Marcin Rajner, Marco Hinz,
-Matteo Vescovi, Mehdi Abaakouk, ng0, Olaf Lessenich, Peter Hogg, Peter Lewis,
-Phil Pennock, Philipp Marek, Pierre-Elliott Bécue, Pietro Cerutti, r3lgar,
-Regid Ichira, Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente,
-Santiago Torres, Serge Gebhardt, somini, Stefan Assmann, Stefan Bühler,
-Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Adam, Thomas Klausner,
-Thomas Schneider, Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink,
-Wieland Hoffmann, William Pettersson, Yoshiki Vázquez Baeza, Zero King.
+Matteo Vescovi, Mehdi Abaakouk, ng0, Nicolas Bock, Olaf Lessenich, Peter Hogg,
+Peter Lewis, Phil Pennock, Philipp Marek, Pierre-Elliott Bécue, Pietro Cerutti,
+r3lgar, Regid Ichira, Riad Wahby, Richard Hartmann, Richard Russon,
+Rubén Llorente, Santiago Torres, Serge Gebhardt, somini, Stefan Assmann,
+Stefan Bühler, Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Adam,
+Thomas Klausner, Thomas Schneider, Tobias Angele, Udo Schweigert,
+Vsevolod Volkov, Werner Fink, Wieland Hoffmann, William Pettersson,
+Yoshiki Vázquez Baeza, Zero King.
 
 ## Original Patch Authors
 

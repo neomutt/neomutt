@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20171006\n"
+"Project-Id-Version: neomutt-20171013\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-10-06 15:30+0100\n"
+"POT-Creation-Date: 2017-10-13 13:42+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -191,7 +191,7 @@ msgid "---Attachment: %s"
 msgstr "-- 첨부물"
 
 #: attach.c:677 attach.c:709 attach.c:1023 attach.c:1079 handler.c:1444
-#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:759
+#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:760
 msgid "Can't create filter"
 msgstr "필터를 만들 수 없음"
 
@@ -248,7 +248,7 @@ msgstr "%s에서 가입 탈퇴 중..."
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:713 browser.c:1671
+#: browser.c:713 browser.c:1672
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s는 디렉토리가 아닙니다."
@@ -277,60 +277,60 @@ msgstr "디렉토리 [%s], 파일 매스크: %s"
 msgid "Can't attach a directory!"
 msgstr "디렉토리는 첨부할 수 없음!"
 
-#: browser.c:1324 browser.c:1737 browser.c:1876
+#: browser.c:1325 browser.c:1738 browser.c:1877
 msgid "No files match the file mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: browser.c:1520
+#: browser.c:1521
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "생성은 IMAP 메일함에서만 지원됨"
 
-#: browser.c:1542
+#: browser.c:1543
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "생성은 IMAP 메일함에서만 지원됨"
 
-#: browser.c:1563
+#: browser.c:1564
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser.c:1573
+#: browser.c:1574
 #, fuzzy
 msgid "Cannot delete root folder"
 msgstr "필터를 만들 수 없음"
 
-#: browser.c:1576
+#: browser.c:1577
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "정말로 \"%s\" 메일함을 지울까요?"
 
-#: browser.c:1590
+#: browser.c:1591
 msgid "Mailbox deleted."
 msgstr "메일함 삭제됨."
 
-#: browser.c:1594
+#: browser.c:1595
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "메일함 삭제됨."
 
-#: browser.c:1597
+#: browser.c:1598
 msgid "Mailbox not deleted."
 msgstr "메일함이 삭제되지 않음."
 
-#: browser.c:1624
+#: browser.c:1625
 msgid "Chdir to: "
 msgstr "이동할 디렉토리: "
 
-#: browser.c:1661 browser.c:1731
+#: browser.c:1662 browser.c:1732
 msgid "Error scanning directory."
 msgstr "디렉토리 검사중 오류."
 
-#: browser.c:1682
+#: browser.c:1683
 msgid "File Mask: "
 msgstr "파일 매스크: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1754
+#: browser.c:1755
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -338,7 +338,7 @@ msgid ""
 msgstr "역순정렬 방법: 날짜(d), 낱말(a), 크기(z), 안함(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1757
+#: browser.c:1758
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -346,33 +346,33 @@ msgid ""
 msgstr "정렬 방법: 날짜(d), 글자(a), 크기(z), 안함(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1760
+#: browser.c:1761
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1865
+#: browser.c:1866
 msgid "New file name: "
 msgstr "새 파일 이름: "
 
-#: browser.c:1893
+#: browser.c:1894
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser.c:1910
+#: browser.c:1911
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
-#: browser.c:1995
+#: browser.c:1996
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "%s에 가입 중..."
 
-#: browser.c:1997
+#: browser.c:1998
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: browser.c:2018
+#: browser.c:2019
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
@@ -711,8 +711,8 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
-#: ncrypt/smime.c:2123 ncrypt/smime.c:2138
+#: compose.c:147 ncrypt/crypt_gpgme.c:4911 ncrypt/pgp.c:1784
+#: ncrypt/smime.c:2124 ncrypt/smime.c:2139
 msgid "Sign as: "
 msgstr "사용 서명: "
 
@@ -1056,7 +1056,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr ""
 
 #: ncrypt/crypt.c:179 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:571
-#: ncrypt/pgpkey.c:754
+#: ncrypt/pgpkey.c:755
 msgid "Invoking PGP..."
 msgstr "PGP를 구동합니다..."
 
@@ -3490,7 +3490,7 @@ msgid "error reading data object: %s\n"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
-#: ncrypt/pgpkey.c:741
+#: ncrypt/pgpkey.c:742
 msgid "Can't create temporary file"
 msgstr "임시 파일을 만들 수 없음"
 
@@ -4015,28 +4015,33 @@ msgstr "이 ID는 신용도가 낮음"
 msgid "%s Do you really want to use the key?"
 msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
 
-#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
-#: ncrypt/pgpkey.c:955
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:835
+#: ncrypt/pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\"와 일치하는 키를 찾는 중..."
 
-#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4544 ncrypt/pgpkey.c:705 ncrypt/smime.c:758
+#, c-format
+msgid "No matching keys found for \"%s\""
+msgstr ""
+
+#: ncrypt/crypt_gpgme.c:4592 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "keyID = \"%s\"를 %s에 사용할까요?"
 
-#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
-#: ncrypt/smime.c:880
+#: ncrypt/crypt_gpgme.c:4643 ncrypt/pgp.c:1303 ncrypt/smime.c:779
+#: ncrypt/smime.c:881
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s의 keyID 입력: "
 
-#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4704 ncrypt/pgpkey.c:726
 msgid "Please enter the key ID: "
 msgstr "열쇠 ID 를 입력하십시요: "
 
-#: ncrypt/crypt_gpgme.c:4715
+#: ncrypt/crypt_gpgme.c:4716
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "패턴 오류: %s"
@@ -4045,41 +4050,41 @@ msgstr "패턴 오류: %s"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4735
+#: ncrypt/crypt_gpgme.c:4736
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP 키 %s."
 
-#: ncrypt/crypt_gpgme.c:4778
+#: ncrypt/crypt_gpgme.c:4779
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4786
+#: ncrypt/crypt_gpgme.c:4787
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4825
+#: ncrypt/crypt_gpgme.c:4826
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4827
+#: ncrypt/crypt_gpgme.c:4828
 msgid "sapco"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:4834
+#: ncrypt/crypt_gpgme.c:4835
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4836
+#: ncrypt/crypt_gpgme.c:4837
 msgid "samco"
 msgstr "esabif"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4849
+#: ncrypt/crypt_gpgme.c:4850
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4087,13 +4092,13 @@ msgid ""
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4852
+#: ncrypt/crypt_gpgme.c:4853
 #, fuzzy
 msgid "esabpco"
 msgstr "esabif"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4858
+#: ncrypt/crypt_gpgme.c:4859
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4101,38 +4106,38 @@ msgid ""
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4861
+#: ncrypt/crypt_gpgme.c:4862
 #, fuzzy
 msgid "esabmco"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:4874
+#: ncrypt/crypt_gpgme.c:4875
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4876
+#: ncrypt/crypt_gpgme.c:4877
 #, fuzzy
 msgid "esabpc"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:4883
+#: ncrypt/crypt_gpgme.c:4884
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4885
+#: ncrypt/crypt_gpgme.c:4886
 #, fuzzy
 msgid "esabmc"
 msgstr "esabif"
 
-#: ncrypt/crypt_gpgme.c:5037
+#: ncrypt/crypt_gpgme.c:5038
 msgid "Failed to verify sender"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:5040
+#: ncrypt/crypt_gpgme.c:5041
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "헤더를 분석하기 위한 파일 열기 실패"
@@ -4283,11 +4288,11 @@ msgstr "PGP 키가 <%s>와 일치함."
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP 키가 \"%s\"와 일치함."
 
-#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:747
+#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:748
 msgid "Can't open /dev/null"
 msgstr "/dev/null를 열 수 없음"
 
-#: ncrypt/pgpkey.c:777
+#: ncrypt/pgpkey.c:778
 #, c-format
 msgid "PGP Key %s."
 msgstr "PGP 키 %s."
@@ -4338,42 +4343,42 @@ msgstr "이 ID는 확실하지 않음."
 msgid "Enter keyID: "
 msgstr "keyID 입력: "
 
-#: ncrypt/smime.c:886
+#: ncrypt/smime.c:887
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "%s를 위한 인증서를 찾을 수 없음."
 
-#: ncrypt/smime.c:933 ncrypt/smime.c:962 ncrypt/smime.c:1026
-#: ncrypt/smime.c:1065 ncrypt/smime.c:1126 ncrypt/smime.c:1205
+#: ncrypt/smime.c:934 ncrypt/smime.c:963 ncrypt/smime.c:1027
+#: ncrypt/smime.c:1066 ncrypt/smime.c:1127 ncrypt/smime.c:1206
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "오류: OpenSSL 하부 프로세스를 생성할 수 없음!"
 
-#: ncrypt/smime.c:1187
+#: ncrypt/smime.c:1188
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "지정한 곳에서 인증서를 가져올 수 없음"
 
-#: ncrypt/smime.c:1279
+#: ncrypt/smime.c:1280
 msgid "no certfile"
 msgstr "인증파일 없음"
 
-#: ncrypt/smime.c:1282
+#: ncrypt/smime.c:1283
 msgid "no mbox"
 msgstr "메일함 없음"
 
-#: ncrypt/smime.c:1406 ncrypt/smime.c:1554
+#: ncrypt/smime.c:1407 ncrypt/smime.c:1555
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL으로 부터 출력이 없음..."
 
-#: ncrypt/smime.c:1473
+#: ncrypt/smime.c:1474
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
-#: ncrypt/smime.c:1519
+#: ncrypt/smime.c:1520
 msgid "Can't open OpenSSL subprocess!"
 msgstr "OpenSSL 하부 프로세스를 열 수 없음!"
 
-#: ncrypt/smime.c:1702 ncrypt/smime.c:1821
+#: ncrypt/smime.c:1703 ncrypt/smime.c:1822
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4381,23 +4386,23 @@ msgstr ""
 "[-- OpenSSL 출력 끝 --]\n"
 "\n"
 
-#: ncrypt/smime.c:1780 ncrypt/smime.c:1792
+#: ncrypt/smime.c:1781 ncrypt/smime.c:1793
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- 오류: OpenSSL 하부 프로세스를 생성할 수 없음! --]\n"
 
-#: ncrypt/smime.c:1825
+#: ncrypt/smime.c:1826
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
 "[-- 아래의 자료는 S/MIME 암호화 되었음 --]\n"
 "\n"
 
-#: ncrypt/smime.c:1829
+#: ncrypt/smime.c:1830
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
 "[-- 아래의 자료는 S/MIME 서명 되었음 --]\n"
 "\n"
 
-#: ncrypt/smime.c:1893
+#: ncrypt/smime.c:1894
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4405,7 +4410,7 @@ msgstr ""
 "\n"
 "[-- S/MIME 암호화 자료 끝 --]\n"
 
-#: ncrypt/smime.c:1895
+#: ncrypt/smime.c:1896
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4414,19 +4419,19 @@ msgstr ""
 "[-- S/MIME 서명 자료 끝 --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2011
+#: ncrypt/smime.c:2012
 #, fuzzy
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2014
+#: ncrypt/smime.c:2015
 msgid "swaco"
 msgstr "eswabf"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2024
+#: ncrypt/smime.c:2025
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
@@ -4434,53 +4439,53 @@ msgid ""
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2027
+#: ncrypt/smime.c:2028
 #, fuzzy
 msgid "eswabco"
 msgstr "eswabf"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2036
+#: ncrypt/smime.c:2037
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2039
+#: ncrypt/smime.c:2040
 #, fuzzy
 msgid "eswabc"
 msgstr "eswabf"
 
-#: ncrypt/smime.c:2059
+#: ncrypt/smime.c:2060
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr ""
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2063
 msgid "drac"
 msgstr ""
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "1: DES, 2: Triple-DES "
 msgstr ""
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "dt"
 msgstr ""
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr ""
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "468"
 msgstr ""
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr ""
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "895"
 msgstr ""
 
