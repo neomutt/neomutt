@@ -1,3 +1,12 @@
+2017-10-13  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - crash using uncolor
+  - Sort the folders list when browsing an IMAP server
+  - Prefer a helpful error message over a BEEP
+* Build
+  - Do not fail if deflate is not in libz
+  - Support EXTRA_CFLAGS and EXTRA_LDFLAGS, kill unused variable
+
 2017-10-06  Richard Russon  <rich@flatcap.org>
 * Features
   - Add IMAP keywords support
