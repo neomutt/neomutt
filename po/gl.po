@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20171013\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-10-06 15:30+0100\n"
+"POT-Creation-Date: 2017-10-13 13:42+0100\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -193,7 +193,7 @@ msgid "---Attachment: %s"
 msgstr "-- Adxuntos"
 
 #: attach.c:677 attach.c:709 attach.c:1023 attach.c:1079 handler.c:1444
-#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:759
+#: ncrypt/pgpkey.c:579 ncrypt/pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Non podo crea-lo filtro"
 
@@ -250,7 +250,7 @@ msgstr "Borrando a subscripción con %s..."
 msgid "Catchup"
 msgstr ""
 
-#: browser.c:713 browser.c:1671
+#: browser.c:713 browser.c:1672
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s non é un directorio."
@@ -279,60 +279,60 @@ msgstr "Directorio [%s], máscara de ficheiro: %s"
 msgid "Can't attach a directory!"
 msgstr "Non é posible adxuntar un directorio"
 
-#: browser.c:1324 browser.c:1737 browser.c:1876
+#: browser.c:1325 browser.c:1738 browser.c:1877
 msgid "No files match the file mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
 
-#: browser.c:1520
+#: browser.c:1521
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "A operación 'Crear' está soportada só en buzóns IMAP"
 
-#: browser.c:1542
+#: browser.c:1543
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "A operación 'Crear' está soportada só en buzóns IMAP"
 
-#: browser.c:1563
+#: browser.c:1564
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "A operación 'Borrar' está soportada só en buzóns IMAP"
 
-#: browser.c:1573
+#: browser.c:1574
 #, fuzzy
 msgid "Cannot delete root folder"
 msgstr "Non se puido crea-lo filtro"
 
-#: browser.c:1576
+#: browser.c:1577
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "¿Seguro de borra-lo buzón \"%s\"?"
 
-#: browser.c:1590
+#: browser.c:1591
 msgid "Mailbox deleted."
 msgstr "Buzón borrado."
 
-#: browser.c:1594
+#: browser.c:1595
 #, fuzzy
 msgid "Mailbox deletion failed."
 msgstr "Buzón borrado."
 
-#: browser.c:1597
+#: browser.c:1598
 msgid "Mailbox not deleted."
 msgstr "Buzón non borrado."
 
-#: browser.c:1624
+#: browser.c:1625
 msgid "Chdir to: "
 msgstr "Cambiar directorio a: "
 
-#: browser.c:1661 browser.c:1731
+#: browser.c:1662 browser.c:1732
 msgid "Error scanning directory."
 msgstr "Erro lendo directorio."
 
-#: browser.c:1682
+#: browser.c:1683
 msgid "File Mask: "
 msgstr "Máscara de ficheiro: "
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser.c:1754
+#: browser.c:1755
 #, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
@@ -340,7 +340,7 @@ msgid ""
 msgstr "¿Ordear inversamente por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser.c:1757
+#: browser.c:1758
 #, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
@@ -348,33 +348,33 @@ msgid ""
 msgstr "¿Ordear por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser.c:1760
+#: browser.c:1761
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1865
+#: browser.c:1866
 msgid "New file name: "
 msgstr "Novo nome de ficheiro: "
 
-#: browser.c:1893
+#: browser.c:1894
 msgid "Can't view a directory"
 msgstr "Non é posible ver un directorio"
 
-#: browser.c:1910
+#: browser.c:1911
 msgid "Error trying to view file"
 msgstr "Erro intentando ver ficheiro"
 
-#: browser.c:1995
+#: browser.c:1996
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Subscribindo a %s..."
 
-#: browser.c:1997
+#: browser.c:1998
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Borrando a subscripción con %s..."
 
-#: browser.c:2018
+#: browser.c:2019
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Non hai ficheiros que coincidan coa máscara"
@@ -719,8 +719,8 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:147 ncrypt/crypt_gpgme.c:4910 ncrypt/pgp.c:1784
-#: ncrypt/smime.c:2123 ncrypt/smime.c:2138
+#: compose.c:147 ncrypt/crypt_gpgme.c:4911 ncrypt/pgp.c:1784
+#: ncrypt/smime.c:2124 ncrypt/smime.c:2139
 msgid "Sign as: "
 msgstr "Firmar como: "
 
@@ -1066,7 +1066,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr ""
 
 #: ncrypt/crypt.c:179 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:571
-#: ncrypt/pgpkey.c:754
+#: ncrypt/pgpkey.c:755
 msgid "Invoking PGP..."
 msgstr "Chamando ó PGP..."
 
@@ -3522,7 +3522,7 @@ msgid "error reading data object: %s\n"
 msgstr "erro no patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:650 ncrypt/crypt_gpgme.c:3808 ncrypt/pgpkey.c:567
-#: ncrypt/pgpkey.c:741
+#: ncrypt/pgpkey.c:742
 msgid "Can't create temporary file"
 msgstr "Non podo crea-lo ficheiro temporal"
 
@@ -4060,28 +4060,33 @@ msgstr "Este ID é de confianza marxinal."
 msgid "%s Do you really want to use the key?"
 msgstr "%s ¿Está seguro de querer usa-la chave?"
 
-#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:834
-#: ncrypt/pgpkey.c:955
+#: ncrypt/crypt_gpgme.c:4321 ncrypt/crypt_gpgme.c:4432 ncrypt/pgpkey.c:835
+#: ncrypt/pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Buscando chaves que coincidan con \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:4591 ncrypt/pgp.c:1254
+#: ncrypt/crypt_gpgme.c:4544 ncrypt/pgpkey.c:705 ncrypt/smime.c:758
+#, c-format
+msgid "No matching keys found for \"%s\""
+msgstr ""
+
+#: ncrypt/crypt_gpgme.c:4592 ncrypt/pgp.c:1254
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "¿Usa-lo keyID = \"%s\" para %s?"
 
-#: ncrypt/crypt_gpgme.c:4642 ncrypt/pgp.c:1303 ncrypt/smime.c:778
-#: ncrypt/smime.c:880
+#: ncrypt/crypt_gpgme.c:4643 ncrypt/pgp.c:1303 ncrypt/smime.c:779
+#: ncrypt/smime.c:881
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Introduza keyID para %s: "
 
-#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgpkey.c:725
+#: ncrypt/crypt_gpgme.c:4704 ncrypt/pgpkey.c:726
 msgid "Please enter the key ID: "
 msgstr "Introduza o key ID: "
 
-#: ncrypt/crypt_gpgme.c:4715
+#: ncrypt/crypt_gpgme.c:4716
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "erro no patrón en: %s"
@@ -4090,43 +4095,43 @@ msgstr "erro no patrón en: %s"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:4735
+#: ncrypt/crypt_gpgme.c:4736
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "Chave PGP %s."
 
-#: ncrypt/crypt_gpgme.c:4778
+#: ncrypt/crypt_gpgme.c:4779
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4786
+#: ncrypt/crypt_gpgme.c:4787
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4825
+#: ncrypt/crypt_gpgme.c:4826
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4827
+#: ncrypt/crypt_gpgme.c:4828
 msgid "sapco"
 msgstr "efcaio"
 
-#: ncrypt/crypt_gpgme.c:4834
+#: ncrypt/crypt_gpgme.c:4835
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4836
+#: ncrypt/crypt_gpgme.c:4837
 msgid "samco"
 msgstr "efcaio"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4849
+#: ncrypt/crypt_gpgme.c:4850
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4135,12 +4140,12 @@ msgstr ""
 "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4852
+#: ncrypt/crypt_gpgme.c:4853
 msgid "esabpco"
 msgstr "efcaio"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4858
+#: ncrypt/crypt_gpgme.c:4859
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4149,37 +4154,37 @@ msgstr ""
 "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4861
+#: ncrypt/crypt_gpgme.c:4862
 msgid "esabmco"
 msgstr "efcaio"
 
-#: ncrypt/crypt_gpgme.c:4874
+#: ncrypt/crypt_gpgme.c:4875
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4876
+#: ncrypt/crypt_gpgme.c:4877
 msgid "esabpc"
 msgstr "efcaio"
 
-#: ncrypt/crypt_gpgme.c:4883
+#: ncrypt/crypt_gpgme.c:4884
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4885
+#: ncrypt/crypt_gpgme.c:4886
 msgid "esabmc"
 msgstr "efcaio"
 
-#: ncrypt/crypt_gpgme.c:5037
+#: ncrypt/crypt_gpgme.c:5038
 msgid "Failed to verify sender"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:5040
+#: ncrypt/crypt_gpgme.c:5041
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Fallo ó abri-lo ficheiro para analiza-las cabeceiras."
@@ -4331,11 +4336,11 @@ msgstr "Chaves PGP coincidintes con <%s>."
 msgid "PGP keys matching \"%s\"."
 msgstr "Chaves PGP coincidintes con \"%s\""
 
-#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:747
+#: ncrypt/pgpkey.c:561 ncrypt/pgpkey.c:748
 msgid "Can't open /dev/null"
 msgstr "Non foi posible abrir /dev/null"
 
-#: ncrypt/pgpkey.c:777
+#: ncrypt/pgpkey.c:778
 #, c-format
 msgid "PGP Key %s."
 msgstr "Chave PGP %s."
@@ -4391,72 +4396,72 @@ msgstr "Este ID non é de confianza."
 msgid "Enter keyID: "
 msgstr "Introduza keyID para %s: "
 
-#: ncrypt/smime.c:886
+#: ncrypt/smime.c:887
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr ""
 
-#: ncrypt/smime.c:933 ncrypt/smime.c:962 ncrypt/smime.c:1026
-#: ncrypt/smime.c:1065 ncrypt/smime.c:1126 ncrypt/smime.c:1205
+#: ncrypt/smime.c:934 ncrypt/smime.c:963 ncrypt/smime.c:1027
+#: ncrypt/smime.c:1066 ncrypt/smime.c:1127 ncrypt/smime.c:1206
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "[-- Erro: ¡non foi posible crear subproceso OpenSSL! --]\n"
 
-#: ncrypt/smime.c:1187
+#: ncrypt/smime.c:1188
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "Non foi posible obter un certificado do outro extremo"
 
-#: ncrypt/smime.c:1279
+#: ncrypt/smime.c:1280
 #, fuzzy
 msgid "no certfile"
 msgstr "Non se puido crea-lo filtro"
 
-#: ncrypt/smime.c:1282
+#: ncrypt/smime.c:1283
 #, fuzzy
 msgid "no mbox"
 msgstr "(non hai buzón)"
 
-#: ncrypt/smime.c:1406 ncrypt/smime.c:1554
+#: ncrypt/smime.c:1407 ncrypt/smime.c:1555
 msgid "No output from OpenSSL..."
 msgstr ""
 
-#: ncrypt/smime.c:1473
+#: ncrypt/smime.c:1474
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
-#: ncrypt/smime.c:1519
+#: ncrypt/smime.c:1520
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
 msgstr "¡Non foi posible abri-lo subproceso OpenSSL!"
 
-#: ncrypt/smime.c:1702 ncrypt/smime.c:1821
+#: ncrypt/smime.c:1703 ncrypt/smime.c:1822
 #, fuzzy
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr "[-- Fin da saída OpenSSL --]\n"
 
-#: ncrypt/smime.c:1780 ncrypt/smime.c:1792
+#: ncrypt/smime.c:1781 ncrypt/smime.c:1793
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Erro: ¡non foi posible crear subproceso OpenSSL! --]\n"
 
-#: ncrypt/smime.c:1825
+#: ncrypt/smime.c:1826
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
 "[-- Os datos a continuación están encriptados con S/MIME --]\n"
 "\n"
 
-#: ncrypt/smime.c:1829
+#: ncrypt/smime.c:1830
 #, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
 "[-- Os datos a continuación están asinados --]\n"
 "\n"
 
-#: ncrypt/smime.c:1893
+#: ncrypt/smime.c:1894
 #, fuzzy
 msgid ""
 "\n"
@@ -4465,7 +4470,7 @@ msgstr ""
 "\n"
 "[-- Fin dos datos con encriptación S/MIME --]\n"
 
-#: ncrypt/smime.c:1895
+#: ncrypt/smime.c:1896
 #, fuzzy
 msgid ""
 "\n"
@@ -4475,19 +4480,19 @@ msgstr ""
 "[-- Fin dos datos asinados --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2011
+#: ncrypt/smime.c:2012
 #, fuzzy
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2014
+#: ncrypt/smime.c:2015
 msgid "swaco"
 msgstr "efcao"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2024
+#: ncrypt/smime.c:2025
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
@@ -4495,51 +4500,51 @@ msgid ""
 msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2027
+#: ncrypt/smime.c:2028
 msgid "eswabco"
 msgstr "efcao"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2036
+#: ncrypt/smime.c:2037
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2039
+#: ncrypt/smime.c:2040
 msgid "eswabc"
 msgstr "efcao"
 
-#: ncrypt/smime.c:2059
+#: ncrypt/smime.c:2060
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr ""
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2063
 msgid "drac"
 msgstr ""
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "1: DES, 2: Triple-DES "
 msgstr ""
 
-#: ncrypt/smime.c:2065
+#: ncrypt/smime.c:2066
 msgid "dt"
 msgstr ""
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr ""
 
-#: ncrypt/smime.c:2078
+#: ncrypt/smime.c:2079
 msgid "468"
 msgstr ""
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr ""
 
-#: ncrypt/smime.c:2094
+#: ncrypt/smime.c:2095
 msgid "895"
 msgstr ""
 
