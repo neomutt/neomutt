@@ -901,7 +901,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 /**
  * mx_update_tables - Update a Context structure's internal tables
  */
-void mx_update_tables(struct Context *ctx, int committing)
+void mx_update_tables(struct Context *ctx, bool committing)
 {
   int i, j;
 
@@ -1104,7 +1104,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
       /* IMAP does this automatically after handling EXPUNGE */
       if (ctx->magic != MUTT_IMAP)
       {
-        mx_update_tables(ctx, 1);
+        mx_update_tables(ctx, true);
         mutt_sort_headers(ctx, 1); /* rethread from scratch */
       }
     }
@@ -1404,7 +1404,7 @@ int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags)
 /**
  * mx_tags_is_supported - return true if mailbox support tagging
  */
-int mx_tags_is_supported(struct Context *ctx)
+bool mx_tags_is_supported(struct Context *ctx)
 {
   return ctx->mx_ops->commit_msg_tags && ctx->mx_ops->edit_msg_tags;
 }

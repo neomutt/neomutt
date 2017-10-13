@@ -1121,7 +1121,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
     mx_alloc_memory(ctx);
   }
   if (access(path, F_OK) == 0)
-    h = maildir_parse_message(MUTT_MAILDIR, path, 0, NULL);
+    h = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
   else
   {
     /* maybe moved try find it... */
@@ -1132,7 +1132,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
       FILE *f = maildir_open_find_message(folder, path, &newpath);
       if (f)
       {
-        h = maildir_parse_stream(MUTT_MAILDIR, f, newpath, 0, NULL);
+        h = maildir_parse_stream(MUTT_MAILDIR, f, newpath, false, NULL);
         fclose(f);
 
         mutt_debug(1, "nm: not up-to-date: %s -> %s\n", path, newpath);

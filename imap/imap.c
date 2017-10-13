@@ -343,7 +343,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
-  mx_update_tables(idata->ctx, 0);
+  mx_update_tables(idata->ctx, false);
   Sort = old_sort;
   mutt_sort_headers(idata->ctx, 1);
 }

@@ -94,8 +94,8 @@ int mh_check_empty(const char *path);
 
 int maildir_check_empty(const char *path);
 
-struct Header *maildir_parse_message(int magic, const char *fname, int is_old, struct Header *h);
-struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, struct Header *_h);
+struct Header *maildir_parse_message(int magic, const char *fname, bool is_old, struct Header *h);
+struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *_h);
 void maildir_parse_flags(struct Header *h, const char *path);
 bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
 void maildir_flags(char *dest, size_t destlen, struct Header *hdr);
@@ -112,7 +112,7 @@ bool mx_is_notmuch(const char *p);
 
 int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
 int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags);
-int mx_tags_is_supported(struct Context *ctx);
+bool mx_tags_is_supported(struct Context *ctx);
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 
@@ -120,7 +120,7 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 
 void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
-void mx_update_tables(struct Context *ctx, int committing);
+void mx_update_tables(struct Context *ctx, bool committing);
 
 struct MxOps *mx_get_ops(int magic);
 extern struct MxOps mx_maildir_ops;
