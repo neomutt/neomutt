@@ -755,7 +755,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
     if ((key = smime_get_key_by_str(resp, abilities, public)))
       return key;
 
-    mutt_error(_("No matching keys found for \"%s\""), resp); 
+    mutt_error(_("No matching keys found for \"%s\""), resp);
     mutt_sleep(0);
   }
 }
