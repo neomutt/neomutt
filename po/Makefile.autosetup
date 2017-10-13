@@ -13,7 +13,6 @@ MOFILES		=  po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
 		   po/ga.mo po/gl.mo po/hu.mo po/id.mo po/it.mo po/ja.mo \
 		   po/ko.mo po/lt.mo po/nl.mo po/pl.mo po/pt_BR.mo po/ru.mo \
 		   po/sk.mo po/sv.mo po/tr.mo po/uk.mo po/zh_CN.mo po/zh_TW.mo
-POTFILES	!= find $(SRCDIR) -name "*.[ch]" | sort
 
 all-po:	$(MOFILES)
 
@@ -58,9 +57,9 @@ $(PACKAGE).pot-update:
 	    --package-version="$(PACKAGE_VERSION)" \
 	    --msgid-bugs-address="$(MSGID_BUGS_ADDRESS)" \
 	    --output=$(PACKAGE).pot
-	@catalogs='$(POFILES)'; \
+	@catalogs='$(MOFILES)'; \
 	for cat in $$catalogs; do \
-	  lang=`echo $$cat | sed -e 's/\.po$$//'`; \
+	  lang=`echo $$cat | sed -e 's/\.mo$$//'`; \
 	  echo "$(MSGMERGE_UPDATE) $${lang}.po $(PACKAGE).pot"; \
 	  $(MSGMERGE_UPDATE) $${lang}.po $(PACKAGE).pot; \
 	done
