@@ -189,13 +189,17 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
   return rc;
 }
 
-int mutt_tunnel_socket_setup(struct Connection *conn)
+/**
+ * mutt_tunnel_socket_setup - setups tunnel connection functions.
+ * @param conn Connection to asign functions to
+ *
+ * Assign tunnel socket functions to the Connection conn.
+ */
+void mutt_tunnel_socket_setup(struct Connection *conn)
 {
   conn->conn_open = tunnel_socket_open;
   conn->conn_close = tunnel_socket_close;
   conn->conn_read = tunnel_socket_read;
   conn->conn_write = tunnel_socket_write;
   conn->conn_poll = tunnel_socket_poll;
-
-  return 0;
 }

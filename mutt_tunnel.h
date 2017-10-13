@@ -23,6 +23,6 @@
 
 struct Connection;
 
-int mutt_tunnel_socket_setup(struct Connection *conn);
+void mutt_tunnel_socket_setup(struct Connection *conn);
 
 #endif /* _MUTT_TUNNEL_H */
