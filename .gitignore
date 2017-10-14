@@ -90,5 +90,6 @@ po/quot.sed
 po/remove-potcdate.sed
 po/remove-potcdate.sin
 po/Rules-quot
+po/neomutt.pot
 
 html
