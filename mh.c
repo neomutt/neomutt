@@ -585,7 +585,7 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   char seq_flagged[STRING];
 
   char *buff = NULL;
-  int line;
+  int line = 0;
   size_t sz;
 
   if (mh_mkstemp(ctx, &nfp, &tmpfname) == -1)

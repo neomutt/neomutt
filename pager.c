@@ -1148,7 +1148,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
 {
   unsigned char *p = NULL, *q = NULL;
   static int b_read;
-  int l;
+  int l = 0;
 
   if (*buf_ready == 0)
   {
