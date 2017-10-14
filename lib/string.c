@@ -27,6 +27,7 @@
  *
  * | Function                  | Description
  * | :------------------------ | :---------------------------------------------------------
+ * | imap_wordcasecmp()        | Find word a in word list b
  * | is_email_wsp()            | Is this a whitespace character (for an email header)
  * | lwslen()                  | Measure the linear-white-space at the beginning of a string
  * | lwsrlen()                 | Measure the linear-white-space at the end of a string
@@ -49,6 +50,7 @@
  * | mutt_substrcpy()          | Copy a sub-string into a buffer
  * | mutt_substrdup()          | Duplicate a sub-string
  * | rfc822_dequote_comment()  | Un-escape characters in an email address comment
+ * | rstrnstr()                | Find last instance of a substring
  * | safe_strcat()             | Concatenate two strings
  * | safe_strdup()             | Copy a string, safely
  * | safe_strncat()            | Concatenate two strings
@@ -512,9 +514,7 @@ char *mutt_skip_whitespace(char *p)
  */
 void mutt_remove_trailing_ws(char *s)
 {
-  char *p = NULL;
-
-  for (p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
+  for (char *p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
     *p = '\0';
 }
 
@@ -683,3 +683,66 @@ const char *next_word(const char *s)
   SKIPWS(s);
   return s;
 }
+
+/**
+ * rstrnstr - Find last instance of a substring
+ * @param haystack        String to search through
+ * @param haystack_length Length of the string
+ * @param needle          String to find
+ * @retval NULL String not found
+ * @retval ptr  Location of string
+ *
+ * Return the last instance of needle in the haystack, or NULL.
+ * Like strstr(), only backwards, and for a limited haystack length.
+ */
+const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
+{
+  int needle_length = strlen(needle);
+  const char *haystack_end = haystack + haystack_length - needle_length;
+
+  for (const char *p = haystack_end; p >= haystack; --p)
+  {
+    for (size_t i = 0; i < needle_length; ++i)
+    {
+      if (p[i] != needle[i])
+        goto next;
+    }
+    return p;
+
+  next:;
+  }
+  return NULL;
+}
+
+/**
+ * imap_wordcasecmp - Find word a in word list b
+ * @param a Word to find
+ * @param b String to check
+ * @retval 0   Word was found
+ * @retval !=0 Word was not found
+ *
+ * Given a word "apple", check if it exists at the start of a string of words,
+ * e.g. "apple banana".  It must be an exact match, so "apple" won't match
+ * "apples banana".
+ *
+ * The case of the words is ignored.
+ */
+int imap_wordcasecmp(const char *a, const char *b)
+{
+  char tmp[SHORT_STRING] = "";
+
+  int i;
+  for (i = 0; i < SHORT_STRING - 2; i++, b++)
+  {
+    if (!*b || ISSPACE(*b))
+    {
+      tmp[i] = '\0';
+      break;
+    }
+    tmp[i] = *b;
+  }
+  tmp[i + 1] = '\0';
+
+  return mutt_strcasecmp(a, tmp);
+}
+

@@ -358,7 +358,6 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int n;
-  int j;
 
   if (!X509_digest(cert, hashfunc(), md, &n))
   {
@@ -366,10 +365,10 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
   }
   else
   {
-    for (j = 0; j < (int) n; j++)
+    for (int i = 0; i < (int) n; i++)
     {
       char ch[8];
-      snprintf(ch, 8, "%02X%s", md[j], (j % 2 ? " " : ""));
+      snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
       safe_strcat(s, l, ch);
     }
   }
@@ -604,14 +603,13 @@ static bool check_certificate_cache(X509 *peercert)
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
   X509 *cert = NULL;
-  int i;
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen) || !SslSessionCerts)
   {
     return false;
   }
 
-  for (i = sk_X509_num(SslSessionCerts); i-- > 0;)
+  for (int i = sk_X509_num(SslSessionCerts); i-- > 0;)
   {
     cert = sk_X509_value(SslSessionCerts, i);
     if (compare_certificates(cert, peercert, peermd, peermdlen))
@@ -666,7 +664,7 @@ static int check_certificate_file(X509 *peercert)
  */
 static int check_host(X509 *x509cert, const char *hostname, char *err, size_t errlen)
 {
-  int i, rc = 0;
+  int rc = 0;
   /* hostname in ASCII format: */
   char *hostname_ascii = NULL;
   /* needed to get the common name: */
@@ -697,7 +695,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
   if ((subj_alt_names = X509_get_ext_d2i(x509cert, NID_subject_alt_name, NULL, NULL)))
   {
     subj_alt_names_count = sk_GENERAL_NAME_num(subj_alt_names);
-    for (i = 0; i < subj_alt_names_count; i++)
+    for (int i = 0; i < subj_alt_names_count; i++)
     {
       subj_alt_name = sk_GENERAL_NAME_value(subj_alt_names, i);
       if (subj_alt_name->type == GEN_DNS)
@@ -797,7 +795,6 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   char title[STRING];
   struct Menu *menu = mutt_new_menu(MENU_GENERIC);
   int done, row;
-  unsigned u;
   FILE *fp = NULL;
   int allow_skip = 0;
 
@@ -812,7 +809,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
   x509_subject = X509_get_subject_name(cert);
-  for (u = 0; u < mutt_array_size(part); u++)
+  for (unsigned int u = 0; u < mutt_array_size(part); u++)
     snprintf(menu->dialog[row++], SHORT_STRING, "   %s",
              x509_get_part(x509_subject, part[u]));
 
@@ -820,7 +817,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name(cert);
-  for (u = 0; u < mutt_array_size(part); u++)
+  for (unsigned int u = 0; u < mutt_array_size(part); u++)
     snprintf(menu->dialog[row++], SHORT_STRING, "   %s",
              x509_get_part(x509_issuer, part[u]));
 

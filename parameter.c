@@ -76,9 +76,7 @@ void mutt_set_parameter(const char *attribute, const char *value, struct Paramet
 
 void mutt_delete_parameter(const char *attribute, struct Parameter **p)
 {
-  struct Parameter *q = NULL;
-
-  for (q = *p; q; p = &q->next, q = q->next)
+  for (struct Parameter *q = *p; q; p = &q->next, q = q->next)
   {
     if (mutt_strcasecmp(attribute, q->attribute) == 0)
     {

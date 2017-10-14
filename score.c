@@ -51,8 +51,6 @@ static struct Score *ScoreList = NULL;
 
 void mutt_check_rescore(struct Context *ctx)
 {
-  int i;
-
   if (option(OPT_NEED_RESCORE) && option(OPT_SCORE))
   {
     if ((Sort & SORT_MASK) == SORT_SCORE || (SortAux & SORT_MASK) == SORT_SCORE)
@@ -66,7 +64,7 @@ void mutt_check_rescore(struct Context *ctx)
     mutt_set_menu_redraw_full(MENU_MAIN);
     mutt_set_menu_redraw_full(MENU_PAGER);
 
-    for (i = 0; ctx && i < ctx->msgcount; i++)
+    for (int i = 0; ctx && i < ctx->msgcount; i++)
     {
       mutt_score_message(ctx, ctx->hdrs[i], 1);
       ctx->hdrs[i]->pair = 0;

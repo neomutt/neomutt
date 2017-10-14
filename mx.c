@@ -109,7 +109,10 @@ struct MxOps *mx_get_ops(int magic)
   }
 }
 
-#define mutt_is_spool(s) (mutt_strcmp(SpoolFile, s) == 0)
+static bool mutt_is_spool(const char *str)
+{
+  return (mutt_strcmp(SpoolFile, str) == 0);
+}
 
 #ifdef USE_IMAP
 
@@ -906,7 +909,6 @@ void mx_update_tables(struct Context *ctx, int committing)
   ctx->unread = 0;
   ctx->changed = false;
   ctx->flagged = 0;
-#define this_body ctx->hdrs[j]->content
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
@@ -924,7 +926,8 @@ void mx_update_tables(struct Context *ctx, int committing)
       {
         ctx->v2r[ctx->vcount] = j;
         ctx->hdrs[j]->virtual = ctx->vcount++;
-        ctx->vsize += this_body->length + this_body->offset - this_body->hdr_offset;
+        struct Body *b = ctx->hdrs[j]->content;
+        ctx->vsize += b->length + b->offset - b->hdr_offset;
       }
 
       if (committing)
@@ -972,7 +975,6 @@ void mx_update_tables(struct Context *ctx, int committing)
       mutt_free_header(&ctx->hdrs[i]);
     }
   }
-#undef this_body
   ctx->msgcount = j;
 }
 
@@ -985,7 +987,7 @@ void mx_update_tables(struct Context *ctx, int committing)
  */
 int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 {
-  int rc, i;
+  int rc;
   int purge = 1;
   int msgcount, deleted;
 
@@ -1030,7 +1032,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
       /* let IMAP servers hold on to D flags */
       if (ctx->magic != MUTT_IMAP)
       {
-        for (i = 0; i < ctx->msgcount; i++)
+        for (int i = 0; i < ctx->msgcount; i++)
         {
           ctx->hdrs[i]->deleted = false;
           ctx->hdrs[i]->purge = false;

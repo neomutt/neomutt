@@ -33,6 +33,8 @@
  *
  * | Function              | Description
  * | :-------------------- | :--------------------------------------------------
+ * | imap_make_date()      | Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
+ * | imap_parse_date()     | Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  * | is_day_name()         | Is the string a valid day name
  * | mutt_check_month()    | Is the string a valid month name
  * | mutt_local_tz()       | Calculate the local timezone in seconds east of UTC
@@ -590,3 +592,78 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
 
   return (mutt_mktime(&tm, 0) + tz_offset);
 }
+
+/**
+ * imap_make_date - Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
+ * @param buf       Buffer to store the results
+ * @param buflen    Length of buffer
+ * @param timestamp Time to format
+ * @retval int Number of characters written to buf
+ *
+ * Caller should provide a buffer of at least 27 bytes.
+ */
+int imap_make_date(char *buf, size_t buflen, time_t timestamp)
+{
+  struct tm *tm = localtime(&timestamp);
+  time_t tz = mutt_local_tz(timestamp);
+
+  tz /= 60;
+
+  return snprintf(buf, buflen, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
+           tm->tm_mday, Months[tm->tm_mon], tm->tm_year + 1900, tm->tm_hour,
+           tm->tm_min, tm->tm_sec, (int) tz / 60, (int) abs((int) tz) % 60);
+}
+
+/**
+ * imap_parse_date - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
+ * @param str Date in string form
+ * @retval 0      Error
+ * @retval time_t Unix time
+ */
+time_t imap_parse_date(char *s)
+{
+  struct tm t;
+  time_t tz;
+
+  t.tm_mday = (s[0] == ' ' ? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));
+  s += 2;
+  if (*s != '-')
+    return 0;
+  s++;
+  t.tm_mon = mutt_check_month(s);
+  s += 3;
+  if (*s != '-')
+    return 0;
+  s++;
+  t.tm_year = (s[0] - '0') * 1000 + (s[1] - '0') * 100 + (s[2] - '0') * 10 +
+              (s[3] - '0') - 1900;
+  s += 4;
+  if (*s != ' ')
+    return 0;
+  s++;
+
+  /* time */
+  t.tm_hour = (s[0] - '0') * 10 + (s[1] - '0');
+  s += 2;
+  if (*s != ':')
+    return 0;
+  s++;
+  t.tm_min = (s[0] - '0') * 10 + (s[1] - '0');
+  s += 2;
+  if (*s != ':')
+    return 0;
+  s++;
+  t.tm_sec = (s[0] - '0') * 10 + (s[1] - '0');
+  s += 2;
+  if (*s != ' ')
+    return 0;
+  s++;
+
+  /* timezone */
+  tz = ((s[1] - '0') * 10 + (s[2] - '0')) * 3600 + ((s[3] - '0') * 10 + (s[4] - '0')) * 60;
+  if (s[0] == '+')
+    tz = -tz;
+
+  return (mutt_mktime(&t, 0) + tz);
+}
+

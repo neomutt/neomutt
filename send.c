@@ -761,13 +761,12 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
                              struct Header *cur, int flags)
 {
   struct Envelope *curenv = NULL;
-  int i = 0;
   bool tag = false;
 
   if (!cur)
   {
     tag = true;
-    for (i = 0; i < ctx->vcount; i++)
+    for (int i = 0; i < ctx->vcount; i++)
       if (ctx->hdrs[ctx->v2r[i]]->tagged)
       {
         cur = ctx->hdrs[ctx->v2r[i]];
@@ -805,7 +804,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
     {
       struct Header *h = NULL;
 
-      for (i = 0; i < ctx->vcount; i++)
+      for (int i = 0; i < ctx->vcount; i++)
       {
         h = ctx->hdrs[ctx->v2r[i]];
         if (h->tagged && mutt_fetch_recips(env, h->env, flags) == -1)
@@ -1148,9 +1147,7 @@ static int send_message(struct Header *msg)
  */
 void mutt_encode_descriptions(struct Body *b, short recurse)
 {
-  struct Body *t = NULL;
-
-  for (t = b; t; t = t->next)
+  for (struct Body *t = b; t; t = t->next)
   {
     if (t->description)
     {
@@ -1166,9 +1163,7 @@ void mutt_encode_descriptions(struct Body *b, short recurse)
  */
 static void decode_descriptions(struct Body *b)
 {
-  struct Body *t = NULL;
-
-  for (t = b; t; t = t->next)
+  for (struct Body *t = b; t; t = t->next)
   {
     if (t->description)
     {

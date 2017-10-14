@@ -46,22 +46,29 @@
 /* function to use as discriminator when normal sort method is equal */
 static sort_t *AuxSort = NULL;
 
-#define AUXSORT(code, a, b)                                                    \
-  if (!code && AuxSort && !option(OPT_AUX_SORT))                               \
-  {                                                                            \
-    set_option(OPT_AUX_SORT);                                                  \
-    code = AuxSort(a, b);                                                      \
-    unset_option(OPT_AUX_SORT);                                                \
-  }                                                                            \
-  if (!code)                                                                   \
-    code = (*((struct Header **) a))->index - (*((struct Header **) b))->index;
+static int perform_auxsort(int retval, const void *a, const void *b)
+{
+  /* If the items compared equal by the main sort
+   * and we're not already doing an 'aux' sort...  */
+  if ((retval == 0) && AuxSort && !option(OPT_AUX_SORT))
+  {
+    set_option(OPT_AUX_SORT);
+    retval = AuxSort(a, b);
+    unset_option(OPT_AUX_SORT);
+  }
+  /* If the items still match, use their index positions
+   * to maintain a stable sort order */
+  if (retval == 0)
+    retval = (*((struct Header **) a))->index - (*((struct Header **) b))->index;
+  return retval;
+}
 
 static int compare_score(const void *a, const void *b)
 {
   struct Header **pa = (struct Header **) a;
   struct Header **pb = (struct Header **) b;
   int result = (*pb)->score - (*pa)->score; /* note that this is reverse */
-  AUXSORT(result, a, b);
+  result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
 
@@ -70,7 +77,7 @@ static int compare_size(const void *a, const void *b)
   struct Header **pa = (struct Header **) a;
   struct Header **pb = (struct Header **) b;
   int result = (*pa)->content->length - (*pb)->content->length;
-  AUXSORT(result, a, b);
+  result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
 
@@ -79,7 +86,7 @@ static int compare_date_sent(const void *a, const void *b)
   struct Header **pa = (struct Header **) a;
   struct Header **pb = (struct Header **) b;
   int result = (*pa)->date_sent - (*pb)->date_sent;
-  AUXSORT(result, a, b);
+  result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
 
@@ -100,7 +107,7 @@ static int compare_subject(const void *a, const void *b)
     rc = 1;
   else
     rc = mutt_strcasecmp((*pa)->env->real_subj, (*pb)->env->real_subj);
-  AUXSORT(rc, a, b);
+  rc = perform_auxsort(rc, a, b);
   return (SORTCODE(rc));
 }
 
@@ -132,7 +139,7 @@ static int compare_to(const void *a, const void *b)
   strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
   fb = mutt_get_name((*ppb)->env->to);
   result = mutt_strncasecmp(fa, fb, SHORT_STRING);
-  AUXSORT(result, a, b);
+  result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
 
@@ -147,7 +154,7 @@ static int compare_from(const void *a, const void *b)
   strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
   fb = mutt_get_name((*ppb)->env->from);
   result = mutt_strncasecmp(fa, fb, SHORT_STRING);
-  AUXSORT(result, a, b);
+  result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
 
@@ -156,7 +163,7 @@ static int compare_date_received(const void *a, const void *b)
   struct Header **pa = (struct Header **) a;
   struct Header **pb = (struct Header **) b;
   int result = (*pa)->received - (*pb)->received;
-  AUXSORT(result, a, b);
+  result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
 
@@ -171,7 +178,7 @@ static int compare_order(const void *a, const void *b)
     anum_t na = NHDR(*ha)->article_num;
     anum_t nb = NHDR(*hb)->article_num;
     int result = na == nb ? 0 : na > nb ? 1 : -1;
-    AUXSORT(result, a, b);
+    result = perform_auxsort(result, a, b);
     return (SORTCODE(result));
   }
   else
@@ -203,7 +210,7 @@ static int compare_spam(const void *a, const void *b)
   /* Else, if neither has a spam attr, presume equality. Fall back on aux. */
   if (!ahas && !bhas)
   {
-    AUXSORT(result, a, b);
+    result = perform_auxsort(result, a, b);
     return (SORTCODE(result));
   }
 
@@ -229,7 +236,7 @@ static int compare_spam(const void *a, const void *b)
     result = strcmp(aptr, bptr);
     if (result == 0)
     {
-      AUXSORT(result, a, b);
+      result = perform_auxsort(result, a, b);
     }
   }
 
@@ -257,7 +264,7 @@ static int compare_label(const void *a, const void *b)
   /* If neither has a label, use aux sort. */
   if (!ahas && !bhas)
   {
-    AUXSORT(result, a, b);
+    result = perform_auxsort(result, a, b);
     return (SORTCODE(result));
   }
 
@@ -298,7 +305,6 @@ sort_t *mutt_get_sort_func(int method)
 
 void mutt_sort_headers(struct Context *ctx, int init)
 {
-  int i;
   struct Header *h = NULL;
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
@@ -324,7 +330,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
 
   if (option(OPT_NEED_RESCORE) && option(OPT_SCORE))
   {
-    for (i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->msgcount; i++)
       mutt_score_message(ctx, ctx->hdrs[i], 1);
   }
   unset_option(OPT_NEED_RESCORE);
@@ -345,7 +351,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
        subthreads need to be resorted */
     if (option(OPT_SORT_SUBTHREADS))
     {
-      i = Sort;
+      int i = Sort;
       Sort = SortAux;
       if (ctx->tree)
         ctx->tree = mutt_sort_subthreads(ctx->tree, 1);
@@ -366,7 +372,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
 
   /* adjust the virtual message numbers */
   ctx->vcount = 0;
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     struct Header *cur = ctx->hdrs[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))

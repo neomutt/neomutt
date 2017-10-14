@@ -623,12 +623,10 @@ int pop_reconnect(struct Context *ctx)
     ret = pop_open_connection(pop_data);
     if (ret == 0)
     {
-      int i;
-
       mutt_progress_init(&progressbar, _("Verifying message indexes..."),
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
-      for (i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->msgcount; i++)
         ctx->hdrs[i]->refno = -1;
 
       ret = pop_fetch_data(pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);

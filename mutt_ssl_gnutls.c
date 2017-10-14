@@ -219,7 +219,6 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
 {
   unsigned char md[36];
   size_t n;
-  int j;
 
   n = 36;
 
@@ -229,10 +228,10 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
   }
   else
   {
-    for (j = 0; j < (int) n; j++)
+    for (int i = 0; i < (int) n; i++)
     {
       char ch[8];
-      snprintf(ch, 8, "%02X%s", md[j], (j % 2 ? " " : ""));
+      snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
       safe_strcat(s, l, ch);
     }
     s[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
@@ -525,7 +524,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   char title[STRING];
   FILE *fp = NULL;
   gnutls_datum_t pemdata;
-  int i, row, done, ret;
+  int row, done, ret;
 
   if (!tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert))
     return 1;
@@ -561,7 +560,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu = mutt_new_menu(MENU_GENERIC);
   menu->max = 25;
   menu->dialog = safe_calloc(1, menu->max * sizeof(char *));
-  for (i = 0; i < menu->max; i++)
+  for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = safe_calloc(1, SHORT_STRING * sizeof(char));
   mutt_push_current_menu(menu);
 
@@ -793,7 +792,7 @@ static int tls_check_certificate(struct Connection *conn)
   const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
   gnutls_certificate_status_t certstat;
-  int certerr, i, preauthrc, savedcert, rc = 0;
+  int certerr, preauthrc, savedcert, rc = 0;
   int rcpeer = -1; /* the result of tls_check_preauth() on the peer's EE cert */
 
   if (gnutls_auth_get_type(state) != GNUTLS_CRD_CERTIFICATE)
@@ -817,7 +816,7 @@ static int tls_check_certificate(struct Connection *conn)
    * from most specific to least checking these. If we see a saved certificate,
    * its status short-circuits the remaining checks. */
   preauthrc = 0;
-  for (i = 0; i < cert_list_size; i++)
+  for (int i = 0; i < cert_list_size; i++)
   {
     rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, i,
                            &certerr, &savedcert);
@@ -840,7 +839,7 @@ static int tls_check_certificate(struct Connection *conn)
   }
 
   /* then check interactively, starting from chain root */
-  for (i = cert_list_size - 1; i >= 0; i--)
+  for (int i = cert_list_size - 1; i >= 0; i--)
   {
     rc = tls_check_one_certificate(&cert_list[i], certstat, conn->account.host,
                                    i, cert_list_size);

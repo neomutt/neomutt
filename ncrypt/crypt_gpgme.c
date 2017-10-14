@@ -71,10 +71,6 @@
 #include "sort.h"
 #include "state.h"
 
-#define PKA_NOTATION_NAME "pka-address@gnupg.org"
-#define is_pka_notation(notation)                                              \
-  ((notation)->name && (strcmp((notation)->name, PKA_NOTATION_NAME) == 0))
-
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID 1
 #define CRYPT_KV_ADDR 2
@@ -132,6 +128,13 @@ static char *current_sender = NULL;
 /*
  * General helper functions.
  */
+
+#define PKA_NOTATION_NAME "pka-address@gnupg.org"
+
+static bool is_pka_notation(gpgme_sig_notation_t notation)
+{
+  return (mutt_strcmp(notation->name, PKA_NOTATION_NAME) == 0);
+}
 
 /**
  * redraw_if_needed - accommodate for a redraw if needed
@@ -591,7 +594,7 @@ static gpgme_data_t file_to_data_object(FILE *fp, long offset, long length)
 static int data_object_to_stream(gpgme_data_t data, FILE *fp)
 {
   int err;
-  char buf[4096], *p = NULL;
+  char buf[4096];
   ssize_t nread;
 
   err = ((gpgme_data_seek(data, 0, SEEK_SET) == -1) ? gpgme_error_from_errno(errno) : 0);
@@ -605,7 +608,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
   {
     /* fixme: we are not really converting CRLF to LF but just
          skipping CR. Doing it correctly needs a more complex logic */
-    for (p = buf; nread; p++, nread--)
+    for (char *p = buf; nread; p++, nread--)
     {
       if (*p != '\r')
         putc(*p, fp);
@@ -1445,7 +1448,6 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
 {
   int msgwid;
   gpgme_user_id_t uids = NULL;
-  int i;
   bool aka = false;
 
   state_puts(msg, s);
@@ -1462,7 +1464,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
         msgwid = mutt_strwidth(msg) - mutt_strwidth(_("aka: ")) + 1;
         if (msgwid < 0)
           msgwid = 0;
-        for (i = 0; i < msgwid; i++)
+        for (int i = 0; i < msgwid; i++)
           state_puts(" ", s);
         state_puts(_("aka: "), s);
       }
@@ -1486,7 +1488,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
     msgwid = mutt_strwidth(msg) - mutt_strwidth(_("created: ")) + 1;
     if (msgwid < 0)
       msgwid = 0;
-    for (i = 0; i < msgwid; i++)
+    for (int i = 0; i < msgwid; i++)
       state_puts(" ", s);
     state_puts(_("created: "), s);
     print_time(sig->timestamp, s);
@@ -3370,7 +3372,6 @@ static struct DnArray *parse_dn(const char *string)
 {
   struct DnArray *array = NULL;
   size_t arrayidx, arraysize;
-  int i;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
   array = safe_malloc((arraysize + 1) * sizeof(*array));
@@ -3388,7 +3389,7 @@ static struct DnArray *parse_dn(const char *string)
 
       arraysize += 5;
       a2 = safe_malloc((arraysize + 1) * sizeof(*array));
-      for (i = 0; i < arrayidx; i++)
+      for (int i = 0; i < arrayidx; i++)
       {
         a2[i].key = array[i].key;
         a2[i].value = array[i].value;
@@ -3414,7 +3415,7 @@ static struct DnArray *parse_dn(const char *string)
   return array;
 
 failure:
-  for (i = 0; i < arrayidx; i++)
+  for (int i = 0; i < arrayidx; i++)
   {
     FREE(&array[i].key);
     FREE(&array[i].value);
@@ -3433,7 +3434,6 @@ failure:
 static void parse_and_print_user_id(FILE *fp, const char *userid)
 {
   const char *s = NULL;
-  int i;
 
   if (*userid == '<')
   {
@@ -3453,7 +3453,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
     else
     {
       print_dn_parts(fp, dn);
-      for (i = 0; dn[i].key; i++)
+      for (int i = 0; dn[i].key; i++)
       {
         FREE(&dn[i].key);
         FREE(&dn[i].value);
@@ -3546,14 +3546,13 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   unsigned long aval = 0;
   const char *delim = NULL;
   int is_pgp = 0;
-  int i;
   gpgme_user_id_t uid = NULL;
   static int max_header_width = 0;
   int width;
 
   if (!max_header_width)
   {
-    for (i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_END; i++)
     {
       KeyInfoPadding[i] = mutt_strlen(_(KeyInfoPrompts[i]));
       width = mutt_strwidth(_(KeyInfoPrompts[i]));
@@ -3561,7 +3560,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         max_header_width = width;
       KeyInfoPadding[i] -= width;
     }
-    for (i = 0; i < KIP_END; i++)
+    for (int i = 0; i < KIP_END; i++)
       KeyInfoPadding[i] += max_header_width;
   }
 
@@ -3656,7 +3655,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
     if (is_pgp && strlen(s) == 40)
     {
-      for (i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
+      for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
       {
         putc(*s, fp);
         putc(s[1], fp);
@@ -3669,7 +3668,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     }
     else
     {
-      for (i = 0; *s && s[1] && s[2]; s += 2, i++)
+      for (int i = 0; *s && s[1] && s[2]; s += 2, i++)
       {
         putc(*s, fp);
         putc(s[1], fp);

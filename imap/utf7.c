@@ -159,7 +159,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
 {
   char *buf = NULL, *p = NULL;
   int ch;
-  int n, i, b = 0, k = 0;
+  int n, b = 0, k = 0;
   bool base64 = false;
 
   /*
@@ -211,7 +211,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     u8len--;
     if (n > u8len)
       goto bail;
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
       if ((u8[i] & 0xc0) != 0x80)
         goto bail;

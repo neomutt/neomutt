@@ -358,12 +358,12 @@ static void luaopen_mutt(lua_State *l)
 
 static bool _lua_init(lua_State **l)
 {
-  if (*l == NULL)
+  if (!*l)
   {
     mutt_debug(2, " * lua_init()\n");
     *l = luaL_newstate();
 
-    if (*l == NULL)
+    if (!*l)
     {
       mutt_error("Error: Couldn't load the lua interpreter.");
       return false;

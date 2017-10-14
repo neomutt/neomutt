@@ -679,73 +679,6 @@ char *imap_next_word(char *s)
 }
 
 /**
- * imap_parse_date - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
- */
-time_t imap_parse_date(char *s)
-{
-  struct tm t;
-  time_t tz;
-
-  t.tm_mday = (s[0] == ' ' ? s[1] - '0' : (s[0] - '0') * 10 + (s[1] - '0'));
-  s += 2;
-  if (*s != '-')
-    return 0;
-  s++;
-  t.tm_mon = mutt_check_month(s);
-  s += 3;
-  if (*s != '-')
-    return 0;
-  s++;
-  t.tm_year = (s[0] - '0') * 1000 + (s[1] - '0') * 100 + (s[2] - '0') * 10 +
-              (s[3] - '0') - 1900;
-  s += 4;
-  if (*s != ' ')
-    return 0;
-  s++;
-
-  /* time */
-  t.tm_hour = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ':')
-    return 0;
-  s++;
-  t.tm_min = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ':')
-    return 0;
-  s++;
-  t.tm_sec = (s[0] - '0') * 10 + (s[1] - '0');
-  s += 2;
-  if (*s != ' ')
-    return 0;
-  s++;
-
-  /* timezone */
-  tz = ((s[1] - '0') * 10 + (s[2] - '0')) * 3600 + ((s[3] - '0') * 10 + (s[4] - '0')) * 60;
-  if (s[0] == '+')
-    tz = -tz;
-
-  return (mutt_mktime(&t, 0) + tz);
-}
-
-/**
- * imap_make_date - format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
- *
- * Caller should provide a buffer of IMAP_DATELEN bytes
- */
-void imap_make_date(char *buf, time_t timestamp)
-{
-  struct tm *tm = localtime(&timestamp);
-  time_t tz = mutt_local_tz(timestamp);
-
-  tz /= 60;
-
-  snprintf(buf, IMAP_DATELEN, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
-           tm->tm_mday, Months[tm->tm_mon], tm->tm_year + 1900, tm->tm_hour,
-           tm->tm_min, tm->tm_sec, (int) tz / 60, (int) abs((int) tz) % 60);
-}
-
-/**
  * imap_qualify_path - Make an absolute IMAP folder target
  *
  * given ImapMbox and relative path.
@@ -860,30 +793,6 @@ void imap_unmunge_mbox_name(struct ImapData *idata, char *s)
   }
 
   FREE(&buf);
-}
-
-/**
- * imap_wordcasecmp - find word a in word list b
- */
-int imap_wordcasecmp(const char *a, const char *b)
-{
-  char tmp[SHORT_STRING];
-  char *s = (char *) b;
-  int i;
-
-  tmp[SHORT_STRING - 1] = '\0';
-  for (i = 0; i < SHORT_STRING - 2; i++, s++)
-  {
-    if (!*s || ISSPACE(*s))
-    {
-      tmp[i] = '\0';
-      break;
-    }
-    tmp[i] = *s;
-  }
-  tmp[i + 1] = '\0';
-
-  return mutt_strcasecmp(a, tmp);
 }
 
 /*
