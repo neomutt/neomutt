@@ -1741,9 +1741,16 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
   int added;
 
   if (data)
-    added = snprintf(uri, sizeof(uri),
-                     "notmuch://%s?type=%s&query=", get_db_filename(data),
-                     query_type_to_string(data->query_type));
+  {
+    if (data->db_limit != 0)
+      added = snprintf(uri, sizeof(uri),
+                       "notmuch://%s?type=%s&limit=%d&query=", get_db_filename(data),
+                       query_type_to_string(data->query_type), data->db_limit);
+    else
+      added = snprintf(uri, sizeof(uri),
+                       "notmuch://%s?type=%s&query=", get_db_filename(data),
+                       query_type_to_string(data->query_type));
+  }
   else if (NmDefaultUri)
     added = snprintf(uri, sizeof(uri), "%s?type=%s&query=", NmDefaultUri,
                      query_type_to_string(string_to_query_type(NmQueryType)));
