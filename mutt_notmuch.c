@@ -1741,9 +1741,20 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
   int added;
 
   if (data)
-    added = snprintf(uri, sizeof(uri),
-                     "notmuch://%s?type=%s&query=", get_db_filename(data),
-                     query_type_to_string(data->query_type));
+  {
+    if (get_limit(data) != NmDbLimit)
+    {
+      added = snprintf(uri, sizeof(uri),
+                       "notmuch://%s?type=%s&limit=%d&query=", get_db_filename(data),
+                       query_type_to_string(data->query_type), get_limit(data));
+    }
+    else
+    {
+      added = snprintf(uri, sizeof(uri),
+                       "notmuch://%s?type=%s&query=", get_db_filename(data),
+                       query_type_to_string(data->query_type));
+    }
+  }
   else if (NmDefaultUri)
     added = snprintf(uri, sizeof(uri), "%s?type=%s&query=", NmDefaultUri,
                      query_type_to_string(string_to_query_type(NmQueryType)));
@@ -1792,23 +1803,22 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   struct Context tmp_ctx;
   struct NmCtxData tmp_ctxdata;
 
+  struct NmCtxData *tmp_data_from_uri = new_ctxdata(strdup(orig_uri));
+
+  if (!tmp_data_from_uri) 
+    return false;
+
+  tmp_ctxdata = *tmp_data_from_uri;
+
   tmp_ctx.magic = MUTT_NOTMUCH;
   tmp_ctx.data = &tmp_ctxdata;
-  tmp_ctxdata.db_query = NULL;
-
-  if (!url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items))
-  {
-    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    mutt_debug(2, "nm_normalize_uri () -> error #1\n");
-    return false;
-  }
 
   mutt_debug(2, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata.db_query);
 
   if (get_query_string(&tmp_ctxdata, false) == NULL)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    mutt_debug(2, "nm_normalize_uri () -> error #2\n");
+    mutt_debug(2, "nm_normalize_uri () -> error #1\n");
     return false;
   }
 
@@ -1819,7 +1829,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    mutt_debug(2, "nm_normalize_uri () -> error #3\n");
+    mutt_debug(2, "nm_normalize_uri () -> error #2\n");
     return true;
   }
 
