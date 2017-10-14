@@ -30,6 +30,7 @@ options {
   logging=0                 => "Enable debug logging"
   doc=1                     => "Disable building the documentation"
   full-doc=0                => "Build the full documentation set"
+  docdir:path               => "Documentation root"
   flock=0                   => "Use flock() to lock files"
   fcntl=1                   => "Do NOT use fcntl() to lock files"
   fmemopen=0                => "Use fmemopen() for temporary in-memory files"
@@ -125,7 +126,7 @@ if {1} {
 define BINDIR           [get-define bindir]
 define MUTTLOCALEDIR    [get-define datadir]/locale
 define PKGDATADIR       [get-define datadir]/neomutt
-define PKGDOCDIR        [get-define datadir]/doc/neomutt
+define PKGDOCDIR        [opt-val docdir [get-define datadir]/doc/neomutt]
 define SYSCONFDIR       [get-define sysconfdir]
 ###############################################################################
 
