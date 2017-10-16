@@ -334,7 +334,7 @@ static void free_ctxdata(struct NmCtxData *data)
  * A new nm_ctxdata struct is created, then the query is parsed and saved
  * within it.  This should be freed using free_ctxdata().
  */
-static struct NmCtxData *new_ctxdata(char *uri)
+static struct NmCtxData *new_ctxdata(const char *uri)
 {
   struct NmCtxData *data = NULL;
 
@@ -1801,37 +1801,37 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   char buf[LONG_STRING];
 
   struct Context tmp_ctx;
-  struct NmCtxData tmp_ctxdata;
+  struct NmCtxData *tmp_ctxdata = new_ctxdata(orig_uri);
 
-  struct NmCtxData *tmp_data_from_uri = new_ctxdata(strdup(orig_uri));
-
-  if (!tmp_data_from_uri) 
+  if (!tmp_ctxdata)
     return false;
 
-  tmp_ctxdata = *tmp_data_from_uri;
-
   tmp_ctx.magic = MUTT_NOTMUCH;
-  tmp_ctx.data = &tmp_ctxdata;
+  tmp_ctx.data = tmp_ctxdata;
 
-  mutt_debug(2, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata.db_query);
+  mutt_debug(2, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
-  if (get_query_string(&tmp_ctxdata, false) == NULL)
+  if (get_query_string(tmp_ctxdata, false) == NULL)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
     mutt_debug(2, "nm_normalize_uri () -> error #1\n");
+    FREE(&tmp_ctxdata);
     return false;
   }
 
-  mutt_debug(2, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata.db_query);
+  mutt_debug(2, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
-  strfcpy(buf, tmp_ctxdata.db_query, sizeof(buf));
+  strfcpy(buf, tmp_ctxdata->db_query, sizeof(buf));
 
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
     mutt_debug(2, "nm_normalize_uri () -> error #2\n");
+    FREE(&tmp_ctxdata);
     return true;
   }
+
+  FREE(&tmp_ctxdata);
 
   strncpy(new_uri, buf, new_uri_sz);
 
