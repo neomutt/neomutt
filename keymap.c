@@ -1093,7 +1093,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   char *key = NULL;
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
 
-  key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err);
+  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
   if (!key)
     return -1;
 
@@ -1151,7 +1151,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
   char *seq = NULL;
   char *key = NULL;
 
-  key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err);
+  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
   if (!key)
     return -1;
 
@@ -1230,7 +1230,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
       return -1;
     }
     nops++;
-  } while (MoreArgs(s) && nops < sizeof(ops) / sizeof(ops[0]));
+  } while (MoreArgs(s) && nops < mutt_array_size(ops));
 
   while (nops)
     mutt_push_macro_event(0, ops[--nops]);
