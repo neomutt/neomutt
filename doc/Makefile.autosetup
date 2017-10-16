@@ -1,6 +1,12 @@
-@if BUILD_DOC
-
 MAKEDOC_CPP = $(CPP) $(CPPFLAGS) -D_MAKEDOC -C -I.
+
+doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
+	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
+	    > doc/neomuttrc
+	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c \
+	    >> doc/neomuttrc
+
+@if BUILD_DOC
 
 CHUNKED_DOCFILES = doc/advancedusage.html \
 		   doc/configuration.html \
@@ -32,12 +38,6 @@ all-doc: 	$(CHUNKED_DOCFILES) \
 		doc/neomuttrc \
 		doc/neomuttrc.man \
 		doc/neomutt-syntax.vim
-
-doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
-	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
-	    > doc/neomuttrc
-	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c \
-	    >> doc/neomuttrc
 
 doc/manual.html:	doc/manual.xml \
     			$(SRCDIR)/doc/html.xsl \
@@ -146,10 +146,19 @@ sortcheck-doc: doc/manual.xml
 	$(RM) doc/vars.tmp.1 doc/vars.tmp.2
 
 @else
-all-doc:
+# Let's generate neomuttrc in all cases: it doesn't require any additional 3rd
+# party dependencies and distributions tend to rely on having it.
+all-doc: doc/neomuttrc
+
 clean-doc:
-install-doc:
+	$(RM) doc/neomuttrc
+
+install-doc: all-doc
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -m 644 doc/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
+
 uninstall-doc:
+	$(RM) $(DESTDIR)$(sysconfdir)/neomuttrc
 @endif
 
 # vim: set ts=8 noexpandtab:
