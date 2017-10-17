@@ -359,7 +359,8 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
       mx->account.flags |= MUTT_ACCT_USER;
     }
 
-    if ((n = sscanf(tmp, "%127[^:/]%127s", mx->account.host, tmp)) < 1)
+    n = sscanf(tmp, "%127[^:/]%127s", mx->account.host, tmp);
+    if (n < 1)
     {
       mutt_debug(1, "imap_parse_path: NULL host in %s\n", path);
       FREE(&mx->mbox);

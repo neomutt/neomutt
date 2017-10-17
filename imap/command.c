@@ -1047,7 +1047,8 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 {
   int rc;
 
-  if ((rc = cmd_start(idata, cmdstr, flags)) < 0)
+  rc = cmd_start(idata, cmdstr, flags);
+  if (rc < 0)
   {
     cmd_handle_fatal(idata);
     return -1;

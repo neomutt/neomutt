@@ -810,7 +810,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         {
           if (hdr)
           {
-            if ((hdr->content->length = atol(p)) < 0)
+            hdr->content->length = atol(p);
+            if (hdr->content->length < 0)
               hdr->content->length = -1;
           }
           matched = 1;

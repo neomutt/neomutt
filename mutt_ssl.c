@@ -293,7 +293,8 @@ static void ssl_dprint_err_stack(void)
   if (!bio)
     return;
   ERR_print_errors(bio);
-  if ((buflen = BIO_get_mem_data(bio, &buf)) > 0)
+  buflen = BIO_get_mem_data(bio, &buf);
+  if (buflen > 0)
   {
     output = safe_malloc(buflen + 1);
     memcpy(output, buf, buflen);

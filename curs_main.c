@@ -977,7 +977,8 @@ int mutt_index_menu(void)
               CURHDR->index :
               0;
 
-      if ((check = mx_check_mailbox(Context, &index_hint)) < 0)
+      check = mx_check_mailbox(Context, &index_hint);
+      if (check < 0)
       {
         if (!Context->path)
         {
@@ -2163,7 +2164,8 @@ int mutt_index_menu(void)
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->menu = MENU_MAIN;
 
-        if ((op = mutt_display_message(CURHDR)) < 0)
+        op = mutt_display_message(CURHDR);
+        if (op < 0)
         {
           unset_option(OPT_NEED_RESORT);
           break;
@@ -2658,7 +2660,8 @@ int mutt_index_menu(void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 
-        if ((menu->current = mutt_parent_message(Context, CURHDR, op == OP_MAIN_ROOT_MESSAGE)) < 0)
+        menu->current = mutt_parent_message(Context, CURHDR, op == OP_MAIN_ROOT_MESSAGE);
+        if (menu->current < 0)
         {
           menu->current = menu->oldcurrent;
         }

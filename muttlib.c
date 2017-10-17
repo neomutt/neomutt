@@ -1242,7 +1242,8 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
          * %*X: right justify to EOL, right takes precedence */
         int soft = ch == '*';
         int pl, pw;
-        if ((pl = mutt_charlen(src, &pw)) <= 0)
+        pl = mutt_charlen(src, &pw);
+        if (pl <= 0)
           pl = pw = 1;
 
         /* see if there's room to add content, else ignore */
@@ -1316,7 +1317,8 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
       {
         /* pad to EOL */
         int pl, pw, c;
-        if ((pl = mutt_charlen(src, &pw)) <= 0)
+        pl = mutt_charlen(src, &pw);
+        if (pl <= 0)
           pl = pw = 1;
 
         /* see if there's room to add content, else ignore */
@@ -1409,7 +1411,8 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
     {
       int tmp, w;
       /* in case of error, simply copy byte */
-      if ((tmp = mutt_charlen(src, &w)) < 0)
+      tmp = mutt_charlen(src, &w);
+      if (tmp < 0)
         tmp = w = 1;
       if (tmp > 0 && wlen + tmp < destlen)
       {

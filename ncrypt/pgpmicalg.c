@@ -114,7 +114,8 @@ static void pgp_dearmor(FILE *in, FILE *out)
     return;
   }
 
-  if ((end = ftello(in) - strlen(line)) < start)
+  end = ftello(in) - strlen(line);
+  if (end < start)
   {
     mutt_debug(1, "pgp_dearmor: end < start???\n");
     return;

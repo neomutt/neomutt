@@ -594,7 +594,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (rc != IMAP_CMD_CONTINUE)
           break;
 
-        if ((mfhrc = msg_fetch_header(ctx, &h, idata->buf, NULL)) < 0)
+        mfhrc = msg_fetch_header(ctx, &h, idata->buf, NULL);
+        if (mfhrc < 0)
           continue;
 
         if (!h.data->uid)
@@ -712,7 +713,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (rc != IMAP_CMD_CONTINUE)
           break;
 
-        if ((mfhrc = msg_fetch_header(ctx, &h, idata->buf, fp)) < 0)
+        mfhrc = msg_fetch_header(ctx, &h, idata->buf, fp);
+        if (mfhrc < 0)
           continue;
 
         if (!ftello(fp))
@@ -1321,7 +1323,8 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
           goto out;
         }
       }
-      if ((rc = imap_exec(idata, cmd.data, IMAP_CMD_QUEUE)) < 0)
+      rc = imap_exec(idata, cmd.data, IMAP_CMD_QUEUE);
+      if (rc < 0)
       {
         mutt_debug(1, "could not queue copy\n");
         goto out;

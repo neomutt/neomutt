@@ -127,7 +127,8 @@ static struct Query *run_query(char *s, int quiet)
 
   mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCommand, s);
 
-  if ((thepid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
+  thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  if (thepid < 0)
   {
     mutt_debug(1, "unable to fork command: %s\n", cmd);
     return 0;

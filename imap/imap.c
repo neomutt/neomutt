@@ -125,7 +125,8 @@ int imap_access(const char *path)
     return -1;
   }
 
-  if ((rc = imap_exec(idata, buf, IMAP_CMD_FAIL_OK)) < 0)
+  rc = imap_exec(idata, buf, IMAP_CMD_FAIL_OK);
+  if (rc < 0)
   {
     mutt_debug(1, "imap_access: Can't check STATUS of %s\n", mbox);
     return rc;
@@ -1257,12 +1258,14 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
     return 0;
 
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
-  if ((rc = imap_exec_msgset(idata, "UID STORE", buf, flag, 1, 0)) < 0)
+  rc = imap_exec_msgset(idata, "UID STORE", buf, flag, 1, 0);
+  if (rc < 0)
     return rc;
   count += rc;
 
   buf[0] = '-';
-  if ((rc = imap_exec_msgset(idata, "UID STORE", buf, flag, 1, 1)) < 0)
+  rc = imap_exec_msgset(idata, "UID STORE", buf, flag, 1, 1);
+  if (rc < 0)
     return rc;
   count += rc;
 
@@ -2096,7 +2099,8 @@ static int imap_compile_search(struct Context *ctx, const struct Pattern *pat,
   {
     int clauses;
 
-    if ((clauses = do_search(pat->child, 1)) > 0)
+    clauses = do_search(pat->child, 1);
+    if (clauses > 0)
     {
       const struct Pattern *clause = pat->child;
 

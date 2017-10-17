@@ -1445,7 +1445,8 @@ static void run_mime_type_query(struct Body *att)
 
   mutt_expand_file_fmt(cmd, sizeof(cmd), MimeTypeQueryCommand, att->filename);
 
-  if ((thepid = mutt_create_filter(cmd, NULL, &fp, &fperr)) < 0)
+  thepid = mutt_create_filter(cmd, NULL, &fp, &fperr);
+  if (thepid < 0)
   {
     mutt_error(_("Error running \"%s\"!"), cmd);
     return;
@@ -2012,7 +2013,8 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     /* find maximum line width in current header */
     if (p)
       *p = 0;
-    if ((w = my_width(line, 0, flags)) > max)
+    w = my_width(line, 0, flags);
+    if (w > max)
       max = w;
     if (p)
       *p = '\n';

@@ -1371,7 +1371,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     if (flags == SENDPOSTPONED)
     {
-      if ((flags = mutt_get_postponed(ctx, msg, &cur, fcc, sizeof(fcc))) < 0)
+      flags = mutt_get_postponed(ctx, msg, &cur, fcc, sizeof(fcc));
+      if (flags < 0)
         goto cleanup;
 #ifdef USE_NNTP
       /*

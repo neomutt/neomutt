@@ -122,7 +122,8 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 
   while (sent < len)
   {
-    if ((rc = conn->conn_write(conn, buf + sent, len - sent)) < 0)
+    rc = conn->conn_write(conn, buf + sent, len - sent);
+    if (rc < 0)
     {
       mutt_debug(1, "mutt_socket_write: error writing (%s), closing socket\n",
                  strerror(errno));
