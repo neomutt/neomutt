@@ -1801,6 +1801,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   char buf[LONG_STRING];
 
   struct Context tmp_ctx;
+  memset(&tmp_ctx, 0, sizeof(tmp_ctx));
   struct NmCtxData *tmp_ctxdata = new_ctxdata(orig_uri);
 
   if (!tmp_ctxdata)
