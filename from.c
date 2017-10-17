@@ -125,7 +125,8 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   }
 
   /* now we should be on the month. */
-  if ((tm.tm_mon = mutt_check_month(s)) < 0)
+  tm.tm_mon = mutt_check_month(s);
+  if (tm.tm_mon < 0)
     return 0;
 
   /* day */

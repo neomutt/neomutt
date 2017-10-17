@@ -411,7 +411,8 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
     }
     mutt_endwin(NULL);
 
-    if ((thepid = mutt_create_filter(cmd, &fpout, NULL, NULL)) < 0)
+    thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+    if (thepid < 0)
     {
       mutt_perror(_("Can't create filter process"));
       return 1;
@@ -447,7 +448,8 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
         {
           mutt_message_hook(Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
           mutt_endwin(NULL);
-          if ((thepid = mutt_create_filter(cmd, &fpout, NULL, NULL)) < 0)
+          thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+          if (thepid < 0)
           {
             mutt_perror(_("Can't create filter process"));
             return 1;
@@ -467,7 +469,8 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
     else
     {
       mutt_endwin(NULL);
-      if ((thepid = mutt_create_filter(cmd, &fpout, NULL, NULL)) < 0)
+      thepid = mutt_create_filter(cmd, &fpout, NULL, NULL);
+      if (thepid < 0)
       {
         mutt_perror(_("Can't create filter process"));
         return 1;

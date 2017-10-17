@@ -653,11 +653,14 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
   int rv = 0;
 
   if (outfile && *outfile)
-    if ((out = safe_open(outfile, O_CREAT | O_EXCL | O_WRONLY)) < 0)
+  {
+    out = safe_open(outfile, O_CREAT | O_EXCL | O_WRONLY);
+    if (out < 0)
     {
       mutt_perror("open");
       return 0;
     }
+  }
 
   mutt_endwin(NULL);
 
@@ -1029,7 +1032,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         return 0;
       }
 
-      if ((thepid = mutt_create_filter(command, &fpout, NULL, NULL)) < 0)
+      thepid = mutt_create_filter(command, &fpout, NULL, NULL);
+      if (thepid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
@@ -1086,7 +1090,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin(NULL);
-      if ((thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL)) < 0)
+      thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL);
+      if (thepid < 0)
       {
         mutt_perror(_("Can't create filter"));
         goto bail0;
