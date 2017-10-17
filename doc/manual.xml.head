@@ -12436,7 +12436,7 @@ bind index \CG get-message
 
     <sect1 id="custom-tags">
       <title>Custom backend based Tags Feature</title>
-      <subtitle>Implements with Notmuch tag and Imap keywords</subtitle>
+      <subtitle>Implements Notmuch tags and Imap keywords</subtitle>
 
       <sect2 id="custom-tags-support">
         <title>Support</title>
@@ -12461,10 +12461,10 @@ bind index \CG get-message
 
       <sect2 id="custom-tags-intro">
           <title>Introduction</title>
-          <para>Some backend allow to indexes and tags mail without storing the
+          <para>Some backends allow to index and tags mail without storing the
               tags within the mail envelope. Two backends are currently
-              implementing this feature. Notmuch handles them natively. And Imap stores them
-              in custom Imap keywords.</para>
+              implementing this feature. Notmuch handles them natively and IMAP stores them
+              in custom IMAP keywords.</para>
       </sect2>
 
       <sect2 id="custom-tags-variables">
@@ -12502,7 +12502,7 @@ bind index \CG get-message
         them are bound to keys.</para>
 
         <table id="table-custom-tags-functions">
-          <title>Notmuch Functions</title>
+          <title>Notmuch/IMAP Functions</title>
           <tgroup cols="3">
             <thead>
               <row>
@@ -12518,7 +12518,7 @@ bind index \CG get-message
                   <literal>&lt;modify-labels&gt;</literal>
                 </entry>
                 <entry>add, remove, or toggle tags:
-                  Imap: edit the tags list
+                  IMAP: edit the tags list
                   Notmuch: [+]&lt;tag&gt; to add,
                   -&lt;tag&gt; to remove, !&lt;tag&gt; to toggle(notmuch) tags.
                   Note: Tab completion of tag names is available</entry>
@@ -12529,9 +12529,9 @@ bind index \CG get-message
                   <literal>&lt;modify-labels-then-hide&gt;</literal>
                 </entry>
                 <entry>add, remove, or toggle tags
-                  Imap: edit the tags list
+                  IMAP: edit the tags list
                   Notmuch: [+]&lt;tag&gt; to
-                  add, -&lt;tag&gt; to remove, !&lt;tag&gt; to togglelabels and
+                  add, -&lt;tag&gt; to remove, !&lt;tag&gt; to toggle labels and
                   then hide or unhide the message by changing the "quasi-deleted"
                   to match if it would be shown when requerying.
                   Normal redisplay rules apply here, so the user must call
@@ -12628,7 +12628,7 @@ set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encr
 # --------------------------------------------------------------------------
 # modify (notmuch/imap) tags</emphasis>
 bind index,pager \` modify-labels
-<emphasis role="comment"># modify (notmuch) tag non-interactively.</emphasis>
+<emphasis role="comment"># modify (notmuch/imap) tag non-interactively.</emphasis>
 bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># modify labels and then hide message
 # bind index,pager ??? modify-labels-then-hide
@@ -13037,7 +13037,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
               </row>
             </tbody>
           </tgroup>
-      </table>
+        </table>
         <para>
           More functions about tags can be found in
           <link linkend="custom-tags-functions">Custom backend Tags Feature</link>
@@ -13081,7 +13081,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
       <sect2 id="notmuch-colors">
         <title>Colors</title>
         <para>
-            See <link linkend="custom-tags-colors">Custom backend Tags colors</link>
+          See <link linkend="custom-tags-colors">Custom backend Tags colors</link>
         </para>
       </sect2>
 
