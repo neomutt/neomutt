@@ -4,6 +4,7 @@
 PACKAGE=	@PACKAGE@
 PACKAGE_VERSION=@PACKAGE_VERSION@
 
+PWD=		@PWD@
 AR=		@AR@
 CC=		@CC@
 CPP=		@CPP@
@@ -245,8 +246,8 @@ hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/address.h \
 			$(SRCDIR)/list.h $(SRCDIR)/lib/buffer.h \
 			$(SRCDIR)/parameter.h $(SRCDIR)/body.h \
 			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
-			$(SRCDIR)/hcache/hcachever.sh
-	$(MKDIR_P) $(PWD)/hcache
+			$(SRCDIR)/hcache/hcachever.sh \
+			$(PWD)/hcache
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
 	echo '#include "address.h"'; echo '#include "list.h"'; \
 	echo '#include "lib/buffer.h"'; echo '#include "parameter.h"'; \

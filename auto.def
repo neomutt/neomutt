@@ -851,6 +851,7 @@ foreach dir $subdirs {
 
 ###############################################################################
 # Generate Makefile and config.h
+define PWD [pwd]
 make-template Makefile.autosetup Makefile
 make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
 
