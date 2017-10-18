@@ -160,12 +160,12 @@ void nntp_acache_free(struct NntpData *nntp_data);
 void nntp_delete_group_cache(struct NntpData *nntp_data);
 
 /* exposed interface */
-struct NntpServer *nntp_select_server(char *server, int leave_lock);
+struct NntpServer *nntp_select_server(char *server, bool leave_lock);
 struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group);
 struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group);
 struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group);
 struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group);
-int nntp_active_fetch(struct NntpServer *nserv, unsigned int new);
+int nntp_active_fetch(struct NntpServer *nserv, bool new);
 int nntp_newsrc_update(struct NntpServer *nserv);
 int nntp_post(const char *msg);
 int nntp_check_msgid(struct Context *ctx, const char *msgid);

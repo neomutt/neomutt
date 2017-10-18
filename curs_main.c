@@ -2083,7 +2083,7 @@ int mutt_index_menu(void)
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
             set_option(OPT_NEWS);
-            CurrentNewsSrv = nntp_select_server(NewsServer, 0);
+            CurrentNewsSrv = nntp_select_server(NewsServer, false);
             if (!CurrentNewsSrv)
               break;
             if (flags)

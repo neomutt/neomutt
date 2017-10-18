@@ -928,7 +928,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  */
-struct NntpServer *nntp_select_server(char *server, int leave_lock)
+struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 {
   char file[_POSIX_PATH_MAX];
 #ifdef USE_HCACHE
@@ -1041,7 +1041,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
 
     /* load list of newsgroups from server */
     else
-      rc = nntp_active_fetch(nserv, 0);
+      rc = nntp_active_fetch(nserv, false);
   }
 
   if (rc >= 0)

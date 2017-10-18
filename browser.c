@@ -1957,7 +1957,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             if (nntp_data)
               nntp_data->deleted = true;
           }
-          nntp_active_fetch(nserv, 1);
+          nntp_active_fetch(nserv, true);
           nntp_newsrc_update(nserv);
           nntp_newsrc_close(nserv);
 
