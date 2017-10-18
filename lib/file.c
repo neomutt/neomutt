@@ -1115,9 +1115,12 @@ void mutt_unlink_empty(const char *path)
 
 /**
  * mutt_rename_file - Rename a file
- *
- * This function returns 0 on successful move, 1 on old file doesn't exist,
- * 2 on new file already exists, and 3 on other failure.
+ * @param oldfile Old filename
+ * @param newfile New filename
+ * @retval 0 Success
+ * @retval 1 Old file doesn't exist
+ * @retval 2 New file already exists
+ * @retval 3 Some other error
  *
  * note on access(2) use: No dangling symlink problems here due to
  * safe_fopen().

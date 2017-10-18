@@ -1355,9 +1355,9 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
 
 /**
  * imap_commit_message_tags - Add/Change/Remove flags from headers
- * @param idata: pointer to a struct ImapData
- * @param h: pointer to a header struct
- *
+ * @param ctx  Context
+ * @param h    Header
+ * @param tags List of tags
  * @retval  0 Success
  * @retval -1 Error
  *

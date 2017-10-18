@@ -626,7 +626,7 @@ int imap_make_date(char *buf, size_t buflen, time_t timestamp)
 
 /**
  * imap_parse_date - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
- * @param str Date in string form
+ * @param s Date in string form
  * @retval 0      Error
  * @retval time_t Unix time
  */

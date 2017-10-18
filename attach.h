@@ -47,6 +47,9 @@ struct AttachPtr
   unsigned int decrypted : 1; /**< not part of message as stored in the hdr->content. */
 };
 
+/**
+ * struct AttachCtx - A set of attachments
+ */
 struct AttachCtx
 {
   struct Header *hdr; /**< used by recvattach for updating */

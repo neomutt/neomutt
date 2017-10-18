@@ -35,8 +35,6 @@
  *
  * @sa TagNode
  */
-
-STAILQ_HEAD(TagHead, TagNode);
 struct TagNode
 {
     char *name;
@@ -44,6 +42,7 @@ struct TagNode
     bool hidden;
     STAILQ_ENTRY(TagNode) entries;
 };
+STAILQ_HEAD(TagHead, TagNode);
 
 void driver_tags_free(struct TagHead *head);
 char *driver_tags_get(struct TagHead *head);

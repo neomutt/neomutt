@@ -356,8 +356,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  * @param a      The message body containing the attachment
  * @param flag   Option flag for how the attachment should be viewed
  * @param hdr    Message header for the current message. Can be NULL
- * @param idx    Attachment
- * @param idxlen Number of attachments
+ * @param actx   Attachment context
  * @retval 0  If the viewer is run and exited succesfully
  * @retval -1 Error
  * @retval n  Return value of mutt_do_pager() when it is used

@@ -32,12 +32,15 @@
 
 #include "queue.h"
 
-STAILQ_HEAD(ListHead, ListNode);
+/**
+ * struct ListNode - A generic List node
+ */
 struct ListNode
 {
     char *data;
     STAILQ_ENTRY(ListNode) entries;
 };
+STAILQ_HEAD(ListHead, ListNode);
 
 static inline struct ListNode* mutt_list_insert_head(struct ListHead *h,
                                                      char *s)

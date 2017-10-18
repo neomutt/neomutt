@@ -99,7 +99,7 @@ struct UriTag
   struct UriTag *next;
 };
 
-/*
+/**
  * struct NmHdrData - Notmuch data attached to an email
  *
  * This stores all the Notmuch data associated with an email.

@@ -31,7 +31,7 @@
 
 /**
  * driver_tags_free - Free tags from a header
- * @param[in] head: pointer to the tags head
+ * @param[in] head List of tags
  *
  * Free the whole tags structure
  */
@@ -54,12 +54,16 @@ void driver_tags_free(struct TagHead *head)
 
 /**
  * driver_tags_get_transformed - Get transformed tags
- * @param[in] head: pointer to the tags head
+ * @param head             List of tags
+ * @param show_hidden      Show hidden tags
+ * @param show_transformed Show transformed tags
+ * @param filter           Match tags to this string
+ * @retval ptr String list of tags
  *
  * Return a new allocated string containing tags separated by space
  */
 static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
-                                bool show_tranformed, char *filter)
+                                bool show_transformed, char *filter)
 {
   if (!head)
     return NULL;
@@ -72,7 +76,7 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
       continue;
     if (show_hidden || !np->hidden)
     {
-      if (show_tranformed && np->transformed)
+      if (show_transformed && np->transformed)
         mutt_str_append_item(&tags, np->transformed, ' ');
       else
         mutt_str_append_item(&tags, np->name, ' ');
@@ -83,7 +87,7 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
 
 /**
  * driver_tags_get_transformed - Get transformed tags
- * @param[in] head: pointer to the tags head
+ * @param[in] head List of tags
  *
  * Return a new allocated string containing all tags separated by space with
  * transformation
@@ -95,7 +99,7 @@ char *driver_tags_get_transformed(struct TagHead *head)
 
 /**
  * driver_tags_get - Get tags
- * @param[in] head: pointer to the tags head
+ * @param[in] head List of tags
  *
  * Return a new allocated string containing all tags separated by space
  */
@@ -106,7 +110,7 @@ char *driver_tags_get(struct TagHead *head)
 
 /**
  * driver_tags_get_with_hidden - Get tags with hiddens
- * @param[in] head: pointer to the tags head
+ * @param[in] head List of tags
  *
  * Return a new allocated string containing all tags separated by space even
  * the hiddens.
@@ -118,8 +122,8 @@ char *driver_tags_get_with_hidden(struct TagHead *head)
 
 /**
  * driver_tags_get_transformed_for - Get tranformed tag for a tag name from a header
- * @param[in] tag: char* to the tag to get the transformed version
- * @param[in] head: pointer to the tags head
+ * @param[in] name Tag to transform
+ * @param[in] head List of tags
  *
  * @return string tag
  *
@@ -133,8 +137,8 @@ char *driver_tags_get_transformed_for(char *name, struct TagHead *head)
 
 /**
  * driver_tags_add - Add a tag to header
- * @param[in] head: pointer to the tags head
- * @param[in] new_tag: string representing the new tag
+ * @param[in] head List of tags
+ * @param[in] new_tag string representing the new tag
  *
  * Add a tag to the header tags
  */
@@ -164,8 +168,8 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
 
 /**
  * driver_tags_replace - Replace all tags
- * @param[in] head: pointer to the tags head
- * @param[in] tags: string of all tags separated by space
+ * @param[in] head List of tags
+ * @param[in] tags string of all tags separated by space
  *
  * @retval  0 If no change are made
  * @retval  1 If tags are updated
