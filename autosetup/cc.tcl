@@ -30,11 +30,6 @@ use system
 
 module-options {}
 
-# Note that the return code is not meaningful
-proc cc-check-something {name code} {
-	uplevel 1 $code
-}
-
 # Checks for the existence of the given function by linking
 #
 proc cctest_function {function} {
@@ -155,7 +150,7 @@ proc cc-check-types {args} {
 
 # @cc-check-defines define ...
 #
-# Checks that the given preprocessor symbol is defined.
+# Checks that the given preprocessor symbols are defined.
 proc cc-check-defines {args} {
 	cc-check-some-feature $args {
 		cctest_define $each
@@ -242,9 +237,8 @@ proc cc-check-function-in-lib {function libs {otherlibs {}}} {
 			}
 		}
 	}
-	if {$found} {
-		define [feature-define-name $function]
-	} else {
+	define-feature $function $found
+	if {!$found} {
 		msg-result "no"
 	}
 	return $found
