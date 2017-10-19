@@ -56,7 +56,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc1524.h"
 #include "rfc822.h"
 #include "sort.h"
 #ifdef MIXMASTER
