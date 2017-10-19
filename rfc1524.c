@@ -573,39 +573,3 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   else
     return 1;
 }
-
-/* If rfc1524_expand_command() is used on a recv'd message, then
- * the filename doesn't exist yet, but if it's used while sending a message,
- * then we need to rename the existing file.
- *
- * This function returns 0 on successful move, 1 on old file doesn't exist,
- * 2 on new file already exists, and 3 on other failure.
- */
-
-/* note on access(2) use: No dangling symlink problems here due to
- * safe_fopen().
- */
-
-int mutt_rename_file(char *oldfile, char *newfile)
-{
-  FILE *ofp = NULL, *nfp = NULL;
-
-  if (access(oldfile, F_OK) != 0)
-    return 1;
-  if (access(newfile, F_OK) == 0)
-    return 2;
-  ofp = fopen(oldfile, "r");
-  if (!ofp)
-    return 3;
-  nfp = safe_fopen(newfile, "w");
-  if (!nfp)
-  {
-    safe_fclose(&ofp);
-    return 3;
-  }
-  mutt_copy_stream(ofp, nfp);
-  safe_fclose(&nfp);
-  safe_fclose(&ofp);
-  mutt_unlink(oldfile);
-  return 0;
-}

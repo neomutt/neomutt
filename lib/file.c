@@ -38,6 +38,7 @@
  * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
  * | mutt_read_line()          | Read a line from a file
  * | mutt_rmtree()             | Recursively remove a directory
+ * | mutt_rename_file()        | Rename a file
  * | mutt_regex_sanitize_string() | Escape any regex-magic characters in a string
  * | mutt_sanitize_filename()  | Replace unsafe characters in a filename
  * | mutt_set_mtime()          | Set the modification time of one file from another
@@ -1110,4 +1111,38 @@ void mutt_unlink_empty(const char *path)
 
   mutt_unlock_file(path, fd);
   close(fd);
+}
+
+/**
+ * mutt_rename_file - Rename a file
+ *
+ * This function returns 0 on successful move, 1 on old file doesn't exist,
+ * 2 on new file already exists, and 3 on other failure.
+ *
+ * note on access(2) use: No dangling symlink problems here due to
+ * safe_fopen().
+ */
+
+int mutt_rename_file(char *oldfile, char *newfile)
+{
+  FILE *ofp = NULL, *nfp = NULL;
+
+  if (access(oldfile, F_OK) != 0)
+    return 1;
+  if (access(newfile, F_OK) == 0)
+    return 2;
+  ofp = fopen(oldfile, "r");
+  if (!ofp)
+    return 3;
+  nfp = safe_fopen(newfile, "w");
+  if (!nfp)
+  {
+    safe_fclose(&ofp);
+    return 3;
+  }
+  mutt_copy_stream(ofp, nfp);
+  safe_fclose(&nfp);
+  safe_fclose(&ofp);
+  mutt_unlink(oldfile);
+  return 0;
 }
