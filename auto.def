@@ -838,6 +838,7 @@ set str_rep {
 # Use ccache - don't do it earlier than here
 if {[get-define CCACHE] ne {none}} {
   define CC "[get-define CCACHE] [get-define CC]"
+  define CC_FOR_BUILD "[get-define CCACHE] [get-define CC_FOR_BUILD]"
 }
 
 ###############################################################################

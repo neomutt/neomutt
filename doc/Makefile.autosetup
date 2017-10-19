@@ -1,4 +1,7 @@
-MAKEDOC_CPP = $(CPP) $(CPPFLAGS) -D_MAKEDOC -C -I.
+MAKEDOC_CPP = $(CC_FOR_BUILD) $(CPPFLAGS) -D_MAKEDOC -E -C -I.
+
+doc/makedoc$(EXEEXT): doc/makedoc.c
+	$(CC_FOR_BUILD) $(CPPFLAGS) $(CFLAGS) -o $@ doc/makedoc.c
 
 doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
