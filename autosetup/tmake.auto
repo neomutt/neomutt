@@ -23,41 +23,30 @@ cc-check-tools ar ranlib
 set objdir [get-env BUILDDIR objdir]
 
 make-config-header $objdir/include/autoconf.h
-make-tmake-settings $objdir/settings.conf {[A-Z]*}
+make-tmake-settings $objdir/settings.conf {[A-Z]*} *dir lib_*
 }
 
 	autosetup_check_create project.spec \
 {# Initial project.spec created by 'autosetup --init=tmake'
+
+tmake-require-version 0.7.3
 
 # vim:set syntax=tcl:
 define? DESTDIR _install
 
 # XXX If configure creates additional/different files than include/autoconf.h
 #     that should be reflected here
+Autosetup include/autoconf.h
 
-# We use [set AUTOREMAKE] here to avoid rebuilding settings.conf
-# if the AUTOREMAKE command changes
-Depends {settings.conf include/autoconf.h} auto.def -msg {note Configuring...} -do {
-	run [set AUTOREMAKE] >$build/config.out
-} -onerror {puts [readfile $build/config.out]} -fatal
-Clean config.out
-DistClean --source config.log
-DistClean settings.conf include/autoconf.h
-
-# If not configured, configure with default options
-# Note that it is expected that configure will normally be run
-# separately. This is just a convenience for a host build
-define? AUTOREMAKE configure TOPBUILDDIR=$TOPBUILDDIR --conf=auto.def
-
-Load settings.conf
-
-# e.g. for up autoconf.h
+# e.g. for autoconf.h
 IncludePaths include
 
-ifconfig CONFIGURED
-
-# Hmmm, but should we turn off AutoSubDirs?
-#AutoSubDirs off
+ifconfig !CONFIGURED {
+	# Not configured, so don't process subdirs
+	AutoSubDirs off
+	# And don't process this file any further
+	ifconfig false
+}
 }
 
 	if {![file exists build.spec]} {

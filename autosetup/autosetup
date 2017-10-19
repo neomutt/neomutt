@@ -5,7 +5,7 @@
 # \
 dir=`dirname "$0"`; exec "`$dir/autosetup-find-tclsh`" "$0" "$@"
 
-set autosetup(version) 0.6.7
+set autosetup(version) 0.6.8
 
 # Can be set to 1 to debug early-init problems
 set autosetup(debug) [expr {"--debug" in $argv}]
@@ -94,8 +94,19 @@ proc main {argv} {
 		ref:=text manual:=text
 		reference:=text => "display the autosetup command reference. 'text', 'wiki', 'asciidoc' or 'markdown'"
 		debug        => "display debugging output as autosetup runs"
-		sysinstall:path  => "install standalone autosetup to the given directory (e.g.: /usr/local)"
 		install:=.   => "install autosetup to the current or given directory"
+	}
+	if {$autosetup(installed)} {
+		# hidden options so we can produce a nice error
+		options-add {
+			sysinstall:path
+		}
+	} else {
+		options-add {
+			sysinstall:path  => "install standalone autosetup to the given directory (e.g.: /usr/local)"
+		}
+	}
+	options-add {
 		force init:=help   => "create initial auto.def, etc.  Use --init=help for known types"
 		# Undocumented options
 		option-checking=1
@@ -575,9 +586,15 @@ proc undefine {name} {
 #
 proc define-append {name args} {
 	if {[get-define $name ""] ne ""} {
-		# Make a token attempt to avoid duplicates
+		# Avoid duplicates
 		foreach arg $args {
-			if {[string first $arg $::define($name)] == -1} {
+			set found 0
+			foreach str [split $::define($name) " "] {
+				if {$str eq $arg} {
+					incr found
+				}
+			}
+			if {!$found} {
 				append ::define($name) " " $arg
 			}
 		}
@@ -1554,11 +1571,16 @@ set modsource(install.tcl) {
 # shared=1 means that we are trying to do a sysinstall. This is only possible from the development source.
 
 proc autosetup_install {dir {shared 0}} {
-	if {$shared && $::autosetup(installed)} {
-		user-error "Can only --sysinstall from development sources"
+	global autosetup
+	if {$shared} {
+		if {$autosetup(installed) || $autosetup(sysinstall)} {
+			user-error "Can only --sysinstall from development sources"
+		}
+	} elseif {$autosetup(installed)} {
+		user-error "Can't --install from project install"
 	}
 
-	if {$::autosetup(sysinstall)} {
+	if {$autosetup(sysinstall)} {
 		# This is the sysinstall version, so install just uses references
 		cd $dir
 
@@ -1592,7 +1614,7 @@ proc autosetup_install {dir {shared 0}} {
 		set publicmodules {}
 
 		# First the main script, but only up until "CUT HERE"
-		set in [open $::autosetup(dir)/autosetup]
+		set in [open $autosetup(dir)/autosetup]
 		while {[gets $in buf] >= 0} {
 			if {$buf ne "##-- CUT HERE --##"} {
 				puts $f $buf
@@ -1604,7 +1626,7 @@ proc autosetup_install {dir {shared 0}} {
 			# All modules are inserted if $shared is set
 			puts $f "set autosetup(installed) 1"
 			puts $f "set autosetup(sysinstall) $shared"
-			foreach file [lsort [glob $::autosetup(libdir)/*.{tcl,auto}]] {
+			foreach file [lsort [glob $autosetup(libdir)/*.{tcl,auto}]] {
 				set modname [file tail $file]
 				set ext [file ext $modname]
 				set buf [readfile $file]
@@ -1621,8 +1643,8 @@ proc autosetup_install {dir {shared 0}} {
 				puts $f "\}\n"
 			}
 			if {$shared} {
-				foreach {srcname destname} [list $::autosetup(libdir)/README.autosetup-lib README.autosetup \
-						$::autosetup(srcdir)/LICENSE LICENSE] {
+				foreach {srcname destname} [list $autosetup(libdir)/README.autosetup-lib README.autosetup \
+						$autosetup(srcdir)/LICENSE LICENSE] {
 					dputs "install: importing $srcname as $destname"
 					puts $f "\nset modsource($destname) \\\n[list [readfile $srcname]\n]\n"
 				}
@@ -1630,7 +1652,7 @@ proc autosetup_install {dir {shared 0}} {
 		}
 		close $in
 		close $f
-		exec chmod 755 $target
+		catch {exec chmod 755 $target}
 
 		set installfiles {autosetup-config.guess autosetup-config.sub autosetup-test-tclsh}
 		set removefiles {}
@@ -1657,8 +1679,7 @@ proc autosetup_install {dir {shared 0}} {
 				lassign $fileinfo source
 				set dest $source
 			}
-			autosetup_install_file $::autosetup(dir)/$source $targetdir/$dest
-			exec chmod 755 $targetdir/$dest
+			autosetup_install_file $autosetup(dir)/$source $targetdir/$dest
 		}
 
 		# Remove obsolete files
@@ -1728,6 +1749,10 @@ proc autosetup_install_file {source target} {
 		error "Missing installation file '$source'"
 	}
 	writefile $target [readfile $source]\n
+	# If possible, copy the file mode
+	file stat $source stat
+	set mode [format %o [expr {$stat(mode) & 0x1ff}]]
+	catch {exec chmod $mode $target}
 }
 
 proc autosetup_install_readme {target sysinstall} {
