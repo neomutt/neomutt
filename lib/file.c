@@ -82,6 +82,11 @@ static const char safe_chars[] =
 
 #define MAX_LOCK_ATTEMPTS 5
 
+/* This is defined in POSIX:2008 which isn't a build requirement */
+#ifndef O_NOFOLLOW
+#define O_NOFOLLOW 0
+#endif
+
 /**
  * compare_stat - Compare the struct stat's of two files/dirs
  * @param osb struct stat of the first file/dir
@@ -213,22 +218,15 @@ int safe_fsync_close(FILE **f)
 void mutt_unlink(const char *s)
 {
   int fd;
-  int flags;
   FILE *f = NULL;
   struct stat sb, sb2;
   char buf[2048];
 
 /* Defend against symlink attacks */
 
-#ifdef O_NOFOLLOW
-  flags = O_RDWR | O_NOFOLLOW;
-#else
-  flags = O_RDWR;
-#endif
-
   if ((lstat(s, &sb) == 0) && S_ISREG(sb.st_mode))
   {
-    fd = open(s, flags);
+    fd = open(s, O_RDWR | O_NOFOLLOW);
     if (fd < 0)
       return;
 
@@ -553,11 +551,7 @@ FILE *safe_fopen(const char *path, const char *mode)
   if (mode[0] == 'w')
   {
     int fd;
-    int flags = O_CREAT | O_EXCL;
-
-#ifdef O_NOFOLLOW
-    flags |= O_NOFOLLOW;
-#endif
+    int flags = O_CREAT | O_EXCL | O_NOFOLLOW;
 
     if (mode[1] == '+')
       flags |= O_RDWR;
