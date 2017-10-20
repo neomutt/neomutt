@@ -67,6 +67,10 @@ NEOMUTTOBJS=	account.o addrbook.o alias.o attach.o bcache.o body.o \
 		smtp.o sort.o state.o status.o system.o thread.o url.o \
 		version.o
 
+@if HAVE_WCSCASECMP
+@else
+NEOMUTTOBJS+=	wcscasecmp.o
+@endif
 @if HAVE_RESIZETERM
 NEOMUTTOBJS+=	resize.o
 @endif
