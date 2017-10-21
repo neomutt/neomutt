@@ -48,7 +48,6 @@
 #include "globals.h"
 #include "group.h"
 #include "header.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

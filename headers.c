@@ -36,7 +36,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "list.h"
 #include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

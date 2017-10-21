@@ -33,7 +33,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "list.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"

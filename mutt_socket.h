@@ -26,7 +26,6 @@
 
 #include <stddef.h>
 #include "account.h"
-#include "list.h"
 #include "lib/lib.h"
 
 /* logging levels */

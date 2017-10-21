@@ -35,7 +35,6 @@
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "list.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "ncrypt.h"

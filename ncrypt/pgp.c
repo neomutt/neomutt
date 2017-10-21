@@ -53,7 +53,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"

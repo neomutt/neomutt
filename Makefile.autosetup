@@ -100,8 +100,8 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	lib/base64.o lib/buffer.o lib/date.o lib/debug.o lib/exit.o \
-		lib/file.o lib/hash.o lib/mapping.o lib/md5.o lib/memory.o \
-		lib/message.o lib/sha1.o lib/string.o
+		lib/file.o lib/hash.o lib/list.o lib/mapping.o lib/md5.o \
+		lib/memory.o lib/message.o lib/sha1.o lib/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
@@ -248,13 +248,13 @@ git_ver.h: $(ALL_FILES)
 	rm -f git_ver.h.tmp
 
 hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/address.h \
-			$(SRCDIR)/list.h $(SRCDIR)/lib/buffer.h \
+			$(SRCDIR)/lib/list.h $(SRCDIR)/lib/buffer.h \
 			$(SRCDIR)/parameter.h $(SRCDIR)/body.h \
 			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
 			$(SRCDIR)/hcache/hcachever.sh \
 			$(PWD)/hcache
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
-	echo '#include "address.h"'; echo '#include "list.h"'; \
+	echo '#include "address.h"'; echo '#include "lib/list.h"'; \
 	echo '#include "lib/buffer.h"'; echo '#include "parameter.h"'; \
 	echo '#include "body.h"'; echo '#include "envelope.h"'; \
 	echo '#include "header.h"';) | $(CPP) $(CFLAGS) - | \

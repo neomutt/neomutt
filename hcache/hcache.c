@@ -57,7 +57,6 @@
 #include "hcache.h"
 #include "hcache/hcversion.h"
 #include "header.h"
-#include "list.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
 #include "mutt_tags.h"

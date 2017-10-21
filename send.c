@@ -43,7 +43,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"

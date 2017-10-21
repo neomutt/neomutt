@@ -63,6 +63,7 @@ lib/debug.c
 lib/exit.c
 lib/file.c
 lib/hash.c
+lib/list.c
 lib/md5.c
 lib/memory.c
 lib/message.c

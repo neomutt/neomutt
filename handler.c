@@ -45,7 +45,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "keymap.h"
-#include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"

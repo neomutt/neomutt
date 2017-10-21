@@ -27,7 +27,7 @@
 #include <regex.h>
 #include "lib/lib.h"
 #include "options.h"
-#include "queue.h"
+#include "lib/queue.h"
 
 #ifdef USE_SLANG_CURSES
 
