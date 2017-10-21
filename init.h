@@ -4319,7 +4319,7 @@ struct Option MuttVars[] = {
   ** When \fIset\fP, NeoMutt will weed headers when displaying, forwarding,
   ** printing, or replying to messages.
   */
-  { "wrap",             DT_NUMBER,  R_PAGER, UL &Wrap, 0 },
+  { "wrap",             DT_NUMBER,  R_PAGER_FLOW, UL &Wrap, 0 },
   /*
   ** .pp
   ** When set to a positive value, NeoMutt will wrap text at $$wrap characters.

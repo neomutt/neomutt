@@ -1562,8 +1562,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   {
     if (cnt < b_read)
     {
-      if (ch != -1 && buf[0] != ' ' && buf[0] != '\t' && buf[cnt] != ' ' &&
-          buf[cnt] != '\t' && buf[cnt] != '\n' && buf[cnt] != '\r')
+      /* Wrap if the line is not part of the header and buf[cnt] is not whitespace */
+      if (ch != -1 && !ISHEADER((*line_info)[n].type) && !ISSPACE(buf[cnt]))
       {
         buf_ptr = buf + ch;
         /* skip trailing blanks */
