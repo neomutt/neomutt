@@ -28,7 +28,6 @@
 #include "group.h"
 #include "address.h"
 #include "globals.h"
-#include "list.h"
 #include "protos.h"
 #include "rfc822.h"
 

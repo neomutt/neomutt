@@ -27,7 +27,7 @@
 #include "lib/string2.h"
 #include "globals.h"
 #include "mutt_tags.h"
-#include "queue.h"
+#include "lib/queue.h"
 
 /**
  * driver_tags_free - Free tags from a header

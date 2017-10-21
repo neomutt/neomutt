@@ -39,7 +39,6 @@
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "list.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"

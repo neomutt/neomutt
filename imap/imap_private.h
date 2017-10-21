@@ -27,10 +27,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
+#include "lib/list.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
-#include "list.h"
 
 struct Account;
 struct Buffer;

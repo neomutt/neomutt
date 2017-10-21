@@ -46,7 +46,6 @@
 #include "globals.h"
 #include "header.h"
 #include "imap/imap.h"
-#include "list.h"
 #include "mailbox.h"
 #include "message.h"
 #include "mutt_curses.h"

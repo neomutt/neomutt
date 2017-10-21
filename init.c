@@ -51,7 +51,6 @@
 #include "header.h"
 #include "history.h"
 #include "keymap.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mbtable.h"
 #include "mbyte.h"

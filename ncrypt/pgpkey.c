@@ -43,7 +43,6 @@
 #include "globals.h"
 #include "gnupgparse.h"
 #include "keymap.h"
-#include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"

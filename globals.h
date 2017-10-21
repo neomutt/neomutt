@@ -25,7 +25,6 @@
 
 #include <signal.h>
 #include "lib/lib.h"
-#include "list.h"
 #include "where.h"
 #include "mutt_regex.h"
 
