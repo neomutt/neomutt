@@ -9973,12 +9973,6 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
         <itemizedlist>
           <listitem>
             <para>
-              <link linkend="compile-time-features">Compile-Time
-              Features</link>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
               <link linkend="regex">Regular Expressions</link>
             </para>
           </listitem>
@@ -12396,18 +12390,6 @@ bind index \CG get-message
 <emphasis role="comment"># --------------------------------------------------------------------------
 # vim: syntax=neomuttrc</emphasis>
 </screen>
-      </sect2>
-
-      <sect2 id="nntp-see-also">
-        <title>See Also</title>
-        <itemizedlist>
-          <listitem>
-            <para>
-              <link linkend="compile-time-features">Compile-Time
-              Features</link>
-            </para>
-          </listitem>
-        </itemizedlist>
       </sect2>
 
       <sect2 id="nntp-known-bugs">
