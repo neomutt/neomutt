@@ -175,7 +175,8 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
 
   if (!ctx || !ctx->data)
   {
-    idata = imap_conn_find(&mx->account, option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0);
+    idata = imap_conn_find(&mx->account,
+                           option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0);
     if (!idata)
     {
       FREE(&mx->mbox);
@@ -790,13 +791,16 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_debug(3, "No folder flags found\n");
     else
     {
-      mutt_debug(3, "Mailbox flags: ");
       struct ListNode *np;
+      struct Buffer flag_buffer;
+      mutt_buffer_init(&flag_buffer);
+      mutt_buffer_printf(&flag_buffer, "Mailbox flags: ");
       STAILQ_FOREACH(np, &idata->flags, entries)
       {
-        mutt_debug(3, "[%s] ", np->data);
+        mutt_buffer_printf(&flag_buffer, "[%s] ", np->data);
       }
-      mutt_debug(3, "\n");
+      mutt_debug(3, "%s\n", flag_buffer.data);
+      FREE(&flag_buffer.data);
     }
   }
 #endif
