@@ -154,7 +154,7 @@ sortcheck-doc: doc/manual.xml
 all-doc: doc/neomuttrc
 
 clean-doc:
-	$(RM) doc/neomuttrc
+	$(RM) doc/neomuttrc doc/makedoc$(EXEEXT)
 
 install-doc: all-doc
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
