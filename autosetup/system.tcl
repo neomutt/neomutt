@@ -283,15 +283,19 @@ foreach {name defpath} {
 }
 foreach {name defpath} {
 	datadir /share
-	sysconfdir /etc
 	sharedstatedir /com
-	localstatedir /var
 	infodir /share/info
 	mandir /share/man
 	includedir /include
 } {
 	define $name [lindex [opt-val $name $prefix$defpath] end]
 }
+if {$prefix ne {/usr}} {
+	define sysconfdir [lindex [opt-val sysconfdir $prefix/etc] end]
+} else {
+	define sysconfdir [lindex [opt-val sysconfdir /etc] end]
+}
+define localstatedir [lindex [opt-val localstatedir /var] end]
 
 define SHELL [get-env SHELL [find-an-executable sh bash ksh]]
 
