@@ -202,9 +202,6 @@ if {1} {
     }
   }
 
-  # Endianess
-  cc-check-endian
-
   # GCC-specifc CFLAGS
   if {![catch {exec [get-define CC] --version} res]} {
     if {[regexp -nocase gcc $res]} {
@@ -224,6 +221,9 @@ if {1} {
     define-append CFLAGS -D__EXTENSIONS__
   }
   cc-with [list -cflags [get-define CFLAGS]]
+
+  # Endianess
+  cc-check-endian
 
   # Large file support
   if {[cc-check-lfs]} {
