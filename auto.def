@@ -222,7 +222,7 @@ if {1} {
   }
   cc-with [list -cflags [get-define CFLAGS]]
 
-  # Endianess
+  # Endianness
   cc-check-endian
   if {[have-feature BIG_ENDIAN]} {
     define WORDS_BIGENDIAN
