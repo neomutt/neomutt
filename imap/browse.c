@@ -45,13 +45,13 @@
 #include "protos.h"
 
 /**
- * imap_add_folder - Format and add an IMAP folder to the browser
+ * add_folder - Format and add an IMAP folder to the browser
  *
  * The folder parameter should already be 'unmunged' via
  * imap_unmunge_mbox_name().
  */
-static void imap_add_folder(char delim, char *folder, int noselect, int noinferiors,
-                            struct BrowserState *state, short isparent)
+static void add_folder(char delim, char *folder, int noselect, int noinferiors,
+                       struct BrowserState *state, short isparent)
 {
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
@@ -156,8 +156,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
         list.noselect = true;
       /* prune current folder from output */
       if (isparent || (mutt_strncmp(list.name, mx.mbox, strlen(list.name)) != 0))
-        imap_add_folder(list.delim, list.name, list.noselect, list.noinferiors,
-                        state, isparent);
+        add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
   idata->cmddata = NULL;
@@ -268,7 +267,7 @@ int imap_browse(char *path, struct BrowserState *state)
       if (showparents)
       {
         mutt_debug(3, "imap_init_browse: adding parent %s\n", mbox);
-        imap_add_folder(list.delim, mbox, 1, 0, state, 1);
+        add_folder(list.delim, mbox, 1, 0, state, 1);
       }
 
       /* if our target isn't a folder, we are in our superior */
@@ -290,7 +289,7 @@ int imap_browse(char *path, struct BrowserState *state)
       /* folder may be "/" */
       snprintf(relpath, sizeof(relpath), "%c", n < 0 ? '\0' : idata->delim);
       if (showparents)
-        imap_add_folder(idata->delim, relpath, 1, 0, state, 1);
+        add_folder(idata->delim, relpath, 1, 0, state, 1);
       if (!state->folder)
       {
         imap_qualify_path(buf, sizeof(buf), &mx, relpath);

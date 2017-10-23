@@ -65,13 +65,13 @@
 #endif
 
 /**
- * imap_check_capabilities - Make sure we can log in to this server
+ * check_capabilities - Make sure we can log in to this server
  */
-static int imap_check_capabilities(struct ImapData *idata)
+static int check_capabilities(struct ImapData *idata)
 {
   if (imap_exec(idata, "CAPABILITY", 0) != 0)
   {
-    imap_error("imap_check_capabilities", idata->buf);
+    imap_error("check_capabilities", idata->buf);
     return -1;
   }
 
@@ -89,11 +89,11 @@ static int imap_check_capabilities(struct ImapData *idata)
 }
 
 /**
- * imap_get_flags - Make a simple list out of a FLAGS response
+ * get_flags - Make a simple list out of a FLAGS response
  *
  * return stream following FLAGS response
  */
-static char *imap_get_flags(struct ListHead *hflags, char *s)
+static char *get_flags(struct ListHead *hflags, char *s)
 {
   char *flag_word = NULL;
   char ctmp;
@@ -101,14 +101,14 @@ static char *imap_get_flags(struct ListHead *hflags, char *s)
   /* sanity-check string */
   if (mutt_strncasecmp("FLAGS", s, 5) != 0)
   {
-    mutt_debug(1, "imap_get_flags: not a FLAGS response: %s\n", s);
+    mutt_debug(1, "get_flags: not a FLAGS response: %s\n", s);
     return NULL;
   }
   s += 5;
   SKIPWS(s);
   if (*s != '(')
   {
-    mutt_debug(1, "imap_get_flags: bogus FLAGS response: %s\n", s);
+    mutt_debug(1, "get_flags: bogus FLAGS response: %s\n", s);
     return NULL;
   }
 
@@ -130,7 +130,7 @@ static char *imap_get_flags(struct ListHead *hflags, char *s)
   /* note bad flags response */
   if (*s != ')')
   {
-    mutt_debug(1, "imap_get_flags: Unterminated FLAGS response: %s\n", s);
+    mutt_debug(1, "get_flags: Unterminated FLAGS response: %s\n", s);
     mutt_list_free(hflags);
 
     return NULL;
@@ -142,12 +142,12 @@ static char *imap_get_flags(struct ListHead *hflags, char *s)
 }
 
 /**
- * imap_set_flag - append str to flags if we currently have permission
+ * set_flag - append str to flags if we currently have permission
  *
  * according to aclbit
  */
-static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
-                          const char *str, char *flags, size_t flsize)
+static void set_flag(struct ImapData *idata, int aclbit, int flag,
+                     const char *str, char *flags, size_t flsize)
 {
   if (mutt_bit_isset(idata->ctx->rights, aclbit))
     if (flag && imap_has_flag(&idata->flags, str))
@@ -155,13 +155,13 @@ static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
 }
 
 /**
- * imap_make_msg_set - Make a message set
+ * make_msg_set - Make a message set
  *
  * Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
  * Pos is an opaque pointer a la strtok. It should be 0 at first call.
  */
-static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
-                             int flag, bool changed, bool invert, int *pos)
+static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
+                        bool changed, bool invert, int *pos)
 {
   struct Header **hdrs = idata->ctx->hdrs;
   int count = 0;      /* number of messages in message set */
@@ -295,15 +295,15 @@ static int sync_helper(struct ImapData *idata, int right, int flag, const char *
 }
 
 /**
- * imap_get_mailbox - split path into (idata,mailbox name)
+ * get_mailbox - split path into (idata,mailbox name)
  */
-static int imap_get_mailbox(const char *path, struct ImapData **hidata, char *buf, size_t blen)
+static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, size_t blen)
 {
   struct ImapMbox mx;
 
   if (imap_parse_path(path, &mx))
   {
-    mutt_debug(1, "imap_get_mailbox: Error parsing %s\n", path);
+    mutt_debug(1, "get_mailbox: Error parsing %s\n", path);
     return -1;
   }
   if (!(*hidata = imap_conn_find(&(mx.account), option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0)) ||
@@ -358,14 +358,13 @@ static int do_search(const struct Pattern *search, int allpats)
 }
 
 /**
- * imap_compile_search - Convert NeoMutt pattern to IMAP search
+ * compile_search - Convert NeoMutt pattern to IMAP search
  *
  * Convert neomutt Pattern to IMAP SEARCH command containing only elements
  * that require full-text search (neomutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexes).
  */
-static int imap_compile_search(struct Context *ctx, const struct Pattern *pat,
-                               struct Buffer *buf)
+static int compile_search(struct Context *ctx, const struct Pattern *pat, struct Buffer *buf)
 {
   if (!do_search(pat, 0))
     return 0;
@@ -392,7 +391,7 @@ static int imap_compile_search(struct Context *ctx, const struct Pattern *pat,
             mutt_buffer_addstr(buf, "OR ");
           clauses--;
 
-          if (imap_compile_search(ctx, clause, buf) < 0)
+          if (compile_search(ctx, clause, buf) < 0)
             return -1;
 
           if (clauses)
@@ -484,12 +483,12 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
 }
 
 /**
- * imap_complete_hosts - Look for completion matches for mailboxes
+ * complete_hosts - Look for completion matches for mailboxes
  *
  * look for IMAP URLs to complete from defined mailboxes. Could be extended to
  * complete over open connections and account/folder hooks too.
  */
-static int imap_complete_hosts(char *dest, size_t len)
+static int complete_hosts(char *dest, size_t len)
 {
   struct Buffy *mailbox = NULL;
   struct Connection *conn = NULL;
@@ -926,7 +925,7 @@ int imap_open_connection(struct ImapData *idata)
   if (mutt_strncasecmp("* OK", idata->buf, 4) == 0)
   {
     if ((mutt_strncasecmp("* OK [CAPABILITY", idata->buf, 16) != 0) &&
-        imap_check_capabilities(idata))
+        check_capabilities(idata))
       goto bail;
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
@@ -974,7 +973,7 @@ int imap_open_connection(struct ImapData *idata)
   else if (mutt_strncasecmp("* PREAUTH", idata->buf, 9) == 0)
   {
     idata->state = IMAP_AUTHENTICATED;
-    if (imap_check_capabilities(idata) != 0)
+    if (check_capabilities(idata) != 0)
       goto bail;
     FREE(&idata->capstr);
   }
@@ -1103,7 +1102,7 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   {
     cmd->dptr = cmd->data;
     mutt_buffer_printf(cmd, "%s ", pre);
-    rc = imap_make_msg_set(idata, cmd, flag, changed, invert, &pos);
+    rc = make_msg_set(idata, cmd, flag, changed, invert, &pos);
     if (rc > 0)
     {
       mutt_buffer_printf(cmd, " %s", post);
@@ -1159,12 +1158,12 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
 
   flags[0] = '\0';
 
-  imap_set_flag(idata, MUTT_ACL_SEEN, hdr->read, "\\Seen ", flags, sizeof(flags));
-  imap_set_flag(idata, MUTT_ACL_WRITE, hdr->old, "Old ", flags, sizeof(flags));
-  imap_set_flag(idata, MUTT_ACL_WRITE, hdr->flagged, "\\Flagged ", flags, sizeof(flags));
-  imap_set_flag(idata, MUTT_ACL_WRITE, hdr->replied, "\\Answered ", flags, sizeof(flags));
-  imap_set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ",
-                flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_SEEN, hdr->read, "\\Seen ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_WRITE, hdr->old, "Old ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_WRITE, hdr->flagged, "\\Flagged ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_WRITE, hdr->replied, "\\Answered ", flags, sizeof(flags));
+  set_flag(idata, MUTT_ACL_DELETE, HEADER_DATA(hdr)->deleted, "\\Deleted ",
+           flags, sizeof(flags));
 
   if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE))
   {
@@ -1186,12 +1185,12 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
    * explicitly revoke all system flags (if we have permission) */
   if (!*flags)
   {
-    imap_set_flag(idata, MUTT_ACL_SEEN, 1, "\\Seen ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
-    imap_set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted,
-                  "\\Deleted ", flags, sizeof(flags));
+    set_flag(idata, MUTT_ACL_SEEN, 1, "\\Seen ", flags, sizeof(flags));
+    set_flag(idata, MUTT_ACL_WRITE, 1, "Old ", flags, sizeof(flags));
+    set_flag(idata, MUTT_ACL_WRITE, 1, "\\Flagged ", flags, sizeof(flags));
+    set_flag(idata, MUTT_ACL_WRITE, 1, "\\Answered ", flags, sizeof(flags));
+    set_flag(idata, MUTT_ACL_DELETE, !HEADER_DATA(hdr)->deleted, "\\Deleted ",
+             flags, sizeof(flags));
 
     /* erase custom flags */
     if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) && HEADER_DATA(hdr)->flags_remote)
@@ -1327,7 +1326,7 @@ int imap_buffy_check(int force, int check_stats)
     if (mailbox->magic != MUTT_IMAP)
       continue;
 
-    if (imap_get_mailbox(mailbox->path, &idata, name, sizeof(name)) < 0)
+    if (get_mailbox(mailbox->path, &idata, name, sizeof(name)) < 0)
     {
       mailbox->new = false;
       continue;
@@ -1411,7 +1410,7 @@ int imap_status(char *path, int queue)
   char mbox[LONG_STRING];
   struct ImapStatus *status = NULL;
 
-  if (imap_get_mailbox(path, &idata, buf, sizeof(buf)) < 0)
+  if (get_mailbox(path, &idata, buf, sizeof(buf)) < 0)
     return -1;
 
   /* We are in the folder we're polling - just return the mailbox count.
@@ -1537,7 +1536,7 @@ int imap_search(struct Context *ctx, const struct Pattern *pat)
 
   mutt_buffer_init(&buf);
   mutt_buffer_addstr(&buf, "UID SEARCH ");
-  if (imap_compile_search(ctx, pat, &buf) < 0)
+  if (compile_search(ctx, pat, &buf) < 0)
   {
     FREE(&buf.data);
     return -1;
@@ -1632,7 +1631,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
   if (imap_parse_path(path, &mx))
   {
     strfcpy(dest, path, dlen);
-    return imap_complete_hosts(dest, dlen);
+    return complete_hosts(dest, dlen);
   }
 
   /* don't open a new socket just for completion. Instead complete over
@@ -1642,7 +1641,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
   {
     FREE(&mx.mbox);
     strfcpy(dest, path, dlen);
-    return imap_complete_hosts(dest, dlen);
+    return complete_hosts(dest, dlen);
   }
 
   /* reformat path for IMAP list, and append wildcard */
@@ -1918,7 +1917,7 @@ static int imap_open_mailbox(struct Context *ctx)
       if (STAILQ_EMPTY(&idata->flags))
       {
         mutt_debug(3, "Getting mailbox FLAGS\n");
-        pc = imap_get_flags(&idata->flags, pc);
+        pc = get_flags(&idata->flags, pc);
         if (!pc)
           goto fail;
       }
@@ -1931,7 +1930,7 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_list_free(&idata->flags);
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
       pc += 13;
-      pc = imap_get_flags(&(idata->flags), pc);
+      pc = get_flags(&(idata->flags), pc);
       if (!pc)
         goto fail;
     }
