@@ -224,6 +224,9 @@ if {1} {
 
   # Endianess
   cc-check-endian
+  if {[have-feature BIG_ENDIAN]} {
+    define WORDS_BIGENDIAN
+  }
 
   # Large file support
   if {[cc-check-lfs]} {
@@ -823,6 +826,7 @@ set auto_rep {
   SUN_ATTACHMENT
   SYSCONFDIR
   USE_*
+  WORDS_BIGENDIAN
 }
 set bare_rep {
   ICONV_CONST
