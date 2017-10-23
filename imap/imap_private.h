@@ -300,6 +300,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes);
 int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);
+int imap_append_message(struct Context *ctx, struct Message *msg);
 
 int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno);
 int imap_close_message(struct Context *ctx, struct Message *msg);
@@ -329,10 +330,14 @@ void imap_quote_string(char *dest, size_t slen, const char *src);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
+int imap_account_match(const struct Account *a1, const struct Account *a2);
+void imap_get_parent(char *output, const char *mbox, size_t olen, char delim);
 
 /* utf7.c */
 void imap_utf_encode(struct ImapData *idata, char **s);
 void imap_utf_decode(struct ImapData *idata, char **s);
+void imap_allow_reopen(struct Context *ctx);
+void imap_disallow_reopen(struct Context *ctx);
 
 #ifdef USE_HCACHE
 #define imap_hcache_keylen mutt_strlen

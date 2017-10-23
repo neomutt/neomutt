@@ -478,6 +478,32 @@ static void imap_generate_seqset(struct Buffer *b, struct ImapData *idata,
   }
 }
 
+/* Sets server_changes to 1 if a change to a flag is made, or in the
+ * case of local_changes, if a change to a flag _would_ have been
+ * made. */
+static void imap_set_changed_flag(struct Context *ctx, struct Header *h,
+                                  int local_changes, int *server_changes, int flag_name,
+                                  int old_hd_flag, int new_hd_flag, int h_flag)
+{
+  /* If there are local_changes, we only want to note if the server
+   * flags have changed, so we can set a reopen flag in
+   * cmd_parse_fetch().  We don't want to count a local modification
+   * to the header flag as a "change".
+   */
+  if ((old_hd_flag != new_hd_flag) || (!local_changes))
+  {
+    if (new_hd_flag != h_flag)
+    {
+      if (server_changes)
+        *server_changes = 1;
+
+      /* Local changes have priority */
+      if (!local_changes)
+        mutt_set_flag(ctx, h, flag_name, new_hd_flag);
+    }
+  }
+}
+
 /**
  * imap_read_headers - Read headers from the server
  *
@@ -1432,32 +1458,6 @@ void imap_free_header_data(struct ImapHeaderData **data)
     FREE(&((*data)->flags_system));
     FREE(&((*data)->flags_remote));
     FREE(data);
-  }
-}
-
-/* Sets server_changes to 1 if a change to a flag is made, or in the
- * case of local_changes, if a change to a flag _would_ have been
- * made. */
-static void imap_set_changed_flag(struct Context *ctx, struct Header *h,
-                                  int local_changes, int *server_changes, int flag_name,
-                                  int old_hd_flag, int new_hd_flag, int h_flag)
-{
-  /* If there are local_changes, we only want to note if the server
-   * flags have changed, so we can set a reopen flag in
-   * cmd_parse_fetch().  We don't want to count a local modification
-   * to the header flag as a "change".
-   */
-  if ((old_hd_flag != new_hd_flag) || (!local_changes))
-  {
-    if (new_hd_flag != h_flag)
-    {
-      if (server_changes)
-        *server_changes = 1;
-
-      /* Local changes have priority */
-      if (!local_changes)
-        mutt_set_flag(ctx, h, flag_name, new_hd_flag);
-    }
   }
 }
 
