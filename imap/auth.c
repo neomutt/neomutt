@@ -22,7 +22,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* IMAP login/authentication code */
+/**
+ * @page imap_auth IMAP authenticator multiplexor
+ *
+ * IMAP authenticator multiplexor
+ *
+ * | Function            | Description
+ * | :------------------ | :-------------------------------------------------
+ * | imap_authenticate() | Authenticate to an IMAP server
+ */
 
 #include "config.h"
 #include <string.h>
@@ -31,6 +39,9 @@
 #include "globals.h"
 #include "protos.h"
 
+/**
+ * imap_authenticators - Accepted authentication methods
+ */
 static const struct ImapAuth imap_authenticators[] = {
   { imap_auth_plain, "plain" },
 #ifdef USE_SASL
@@ -52,6 +63,8 @@ static const struct ImapAuth imap_authenticators[] = {
 
 /**
  * imap_authenticate - Authenticate to an IMAP server
+ * @param idata Server data
+ * @retval num Result, e.g. #IMAP_AUTH_SUCCESS
  *
  * Attempt to authenticate using either user-specified authentication method if
  * specified, or any.

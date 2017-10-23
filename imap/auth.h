@@ -23,8 +23,8 @@
 /* common defs for authenticators. A good place to set up a generic callback
  * system */
 
-#ifndef _MUTT_IMAP_AUTH_H
-#define _MUTT_IMAP_AUTH_H
+#ifndef _IMAP_AUTH_H
+#define _IMAP_AUTH_H
 
 struct ImapData;
 
@@ -64,4 +64,4 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method);
 enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method);
 #endif
 
-#endif /* _MUTT_IMAP_AUTH_H */
+#endif /* _IMAP_AUTH_H */

@@ -21,8 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_IMAP_PRIVATE_H
-#define _MUTT_IMAP_PRIVATE_H
+#ifndef _IMAP_PRIVATE_H
+#define _IMAP_PRIVATE_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -343,4 +343,4 @@ void imap_disallow_reopen(struct Context *ctx);
 #define imap_hcache_keylen mutt_strlen
 #endif /* USE_HCACHE */
 
-#endif /* _MUTT_IMAP_PRIVATE_H */
+#endif /* _IMAP_PRIVATE_H */

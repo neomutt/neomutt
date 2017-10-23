@@ -20,7 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* GSS login/authentication code */
+/**
+ * @page imap_auth_gss IMAP GSS authentication method
+ *
+ * IMAP GSS authentication method
+ *
+ * | Function           | Description
+ * | :----------------- | :-------------------------------------------------
+ * | imap_auth_gss()    | GSS Authentication support
+ */
 
 #include "config.h"
 #include <netinet/in.h>
@@ -48,6 +56,12 @@
 #define GSS_AUTH_P_NONE 1
 #define GSS_AUTH_P_INTEGRITY 2
 #define GSS_AUTH_P_PRIVACY 4
+
+/**
+ * print_gss_error - Print detailed error message to the debug log
+ * @param err_maj Error's major number
+ * @param err_min Error's minor number
+ */
 static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 {
   OM_uint32 maj_stat, min_stat;
@@ -79,6 +93,9 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 
 /**
  * imap_auth_gss - GSS Authentication support
+ * @param idata  Server data
+ * @param method Name of this authentication method
+ * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 {

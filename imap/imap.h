@@ -21,8 +21,28 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_IMAP_H
-#define _MUTT_IMAP_H
+/**
+ * @page imap IMAP Network Mailbox
+ *
+ * IMAP network mailbox
+ *
+ * -# @subpage imap_imap
+ * -# @subpage imap_auth_anon
+ * -# @subpage imap_auth
+ * -# @subpage imap_auth_crap
+ * -# @subpage imap_auth_gss
+ * -# @subpage imap_auth_login
+ * -# @subpage imap_auth_plain
+ * -# @subpage imap_auth_sasl
+ * -# @subpage imap_browse
+ * -# @subpage imap_command
+ * -# @subpage imap_message
+ * -# @subpage imap_utf7
+ * -# @subpage imap_util
+ */
+
+#ifndef _IMAP_IMAP_H
+#define _IMAP_IMAP_H
 
 #include <stddef.h>
 #include <sys/types.h>
@@ -48,7 +68,6 @@ int imap_access(const char *path);
 int imap_check_mailbox(struct Context *ctx, int force);
 int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx);
 int imap_sync_mailbox(struct Context *ctx, int expunge);
-int imap_close_mailbox(struct Context *ctx);
 int imap_buffy_check(int force, int check_stats);
 int imap_status(char *path, int queue);
 int imap_search(struct Context *ctx, const struct Pattern *pat);
@@ -80,4 +99,4 @@ void imap_keepalive(void);
 void imap_get_parent_path(char *output, const char *path, size_t olen);
 void imap_clean_path(char *path, size_t plen);
 
-#endif /* _MUTT_IMAP_H */
+#endif /* _IMAP_IMAP_H */
