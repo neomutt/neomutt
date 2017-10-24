@@ -1472,9 +1472,9 @@ int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *c
 
   if (!last)
   {
-    for (int i = 0; i < ctx->vcount; i++)
-      if (ctx->hdrs[Context->v2r[i]]->tagged)
-        changed |= link_threads(cur, ctx->hdrs[Context->v2r[i]], ctx);
+    for (int i = 0; i < ctx->msgcount; i++)
+      if (message_is_tagged(ctx, i))
+        changed |= link_threads(cur, ctx->hdrs[i], ctx);
   }
   else
     changed = link_threads(cur, last, ctx);

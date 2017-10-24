@@ -397,4 +397,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile, struct Contex
 int wcscasecmp(const wchar_t *a, const wchar_t *b);
 #endif
 
+bool message_is_tagged(struct Context *ctx, int index);
+bool message_is_visible(struct Context *ctx, int index);
+
 #endif /* _MUTT_PROTOS_H */

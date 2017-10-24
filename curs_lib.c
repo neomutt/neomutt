@@ -43,8 +43,10 @@
 #include <wchar.h>
 #include "lib/lib.h"
 #include "mutt.h"
+#include "context.h"
 #include "enter_state.h"
 #include "globals.h"
+#include "header.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
@@ -1460,4 +1462,33 @@ int mutt_strwidth(const char *s)
     w += wcwidth(wc);
   }
   return w;
+}
+
+/**
+ * message_is_visible - Is a message in the index within limit
+ * @param ctx   Open mailbox
+ * @param index Message ID (index into `ctx->hdrs[]`
+ * @retval bool True if the message is within limit
+ *
+ * If no limit is in effect, all the messages are visible.
+ */
+bool message_is_visible(struct Context *ctx, int index)
+{
+  if (!ctx || !ctx->hdrs || (index >= ctx->msgcount))
+    return false;
+
+  return !ctx->pattern || ctx->hdrs[index]->limited;
+}
+
+/**
+ * message_is_tagged - Is a message in the index tagged (and within limit)
+ * @param ctx   Open mailbox
+ * @param index Message ID (index into `ctx->hdrs[]`
+ * @retval bool True if the message is both tagged and within limit
+ *
+ * If a limit is in effect, the message must be visible within it.
+ */
+bool message_is_tagged(struct Context *ctx, int index)
+{
+  return message_is_visible(ctx, index) && ctx->hdrs[index]->tagged;
 }
