@@ -1847,7 +1847,6 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
       NORMAL_COLOR;
       rd->index->pagelen = rd->index_window->rows;
-      ;
 
       /* some fudge to work out whereabouts the indicator should go */
       if (rd->index->current - rd->indicator < 0)
