@@ -137,12 +137,10 @@ static int parse_query_string(struct Url *u, char *src)
 
 /**
  * url_parse - Fill in Url
- *
- * @param u        struct Url where the result of stored
- * @param src      pointer to the string to parse
- * @param parse_qs if we should parse the query string
- * @retval 0       if src is valid
- * @retval -1      if src is invalid
+ * @param u   Url where the result is stored
+ * @param src String to parse
+ * @retval 0  String is valid
+ * @retval -1 String is invalid
  *
  * char* elements are pointers into src, which is modified by this call
  * (duplicate it first if you need to).
@@ -150,8 +148,7 @@ static int parse_query_string(struct Url *u, char *src)
  * This method doesn't allocated any additional char* of the Url and
  * UrlQueryString structs.
  *
- * To free Url, caller must free "src" and call url_free(u);
- *
+ * To free Url, caller must free "src" and call url_free()
  */
 int url_parse(struct Url *u, char *src)
 {
@@ -167,6 +164,7 @@ int url_parse(struct Url *u, char *src)
   u->pass = NULL;
   u->host = NULL;
   u->port = 0;
+  u->path = NULL;
   STAILQ_INIT(&u->query_strings);
 
   if (strncmp(src, "//", 2) != 0)

@@ -1714,8 +1714,6 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
     goto gone;
 
-  FREE(&tmp_ctxdata);
-
   strncpy(new_uri, buf, new_uri_sz);
 
   mutt_debug(2, "nm_normalize_uri #3 (%s) -> %s\n", orig_uri, new_uri);
