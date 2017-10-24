@@ -991,7 +991,7 @@ int imap_cmd_step(struct ImapData *idata)
  * @retval 1 if the command result was OK
  * @retval 0 if NO or BAD
  */
-int imap_code(const char *s)
+bool imap_code(const char *s)
 {
   return cmd_status(s) == IMAP_CMD_OK;
 }

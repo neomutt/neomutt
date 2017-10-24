@@ -1452,7 +1452,7 @@ int imap_status(char *path, int queue)
  *
  * return cached mailbox stats or NULL if create is 0
  */
-struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create)
+struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, bool create)
 {
   struct ImapStatus *status = NULL;
 #ifdef USE_HCACHE
@@ -1551,7 +1551,7 @@ int imap_search(struct Context *ctx, const struct Pattern *pat)
   return 0;
 }
 
-int imap_subscribe(char *path, int subscribe)
+int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapData *idata = NULL;
   char buf[LONG_STRING];

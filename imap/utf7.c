@@ -145,7 +145,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
 
 bail:
   FREE(&buf);
-  return 0;
+  return NULL;
 }
 
 /**
@@ -278,7 +278,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
 
 bail:
   FREE(&buf);
-  return 0;
+  return NULL;
 }
 
 void imap_utf_encode(struct ImapData *idata, char **s)

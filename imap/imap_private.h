@@ -269,7 +269,7 @@ struct ImapData
 int imap_check(struct ImapData *idata, int force);
 int imap_create_mailbox(struct ImapData *idata, char *mailbox);
 int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char *newname);
-struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create);
+struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, bool create);
 void imap_mboxcache_free(struct ImapData *idata);
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, int changed, int invert);
@@ -289,7 +289,7 @@ int imap_authenticate(struct ImapData *idata);
 int imap_cmd_start(struct ImapData *idata, const char *cmd);
 int imap_cmd_step(struct ImapData *idata);
 void imap_cmd_finish(struct ImapData *idata);
-int imap_code(const char *s);
+bool imap_code(const char *s);
 const char *imap_cmd_trailer(struct ImapData *idata);
 int imap_exec(struct ImapData *idata, const char *cmd, int flags);
 int imap_cmd_idle(struct ImapData *idata);

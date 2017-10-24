@@ -52,7 +52,7 @@ int imap_close_mailbox(struct Context *ctx);
 int imap_buffy_check(int force, int check_stats);
 int imap_status(char *path, int queue);
 int imap_search(struct Context *ctx, const struct Pattern *pat);
-int imap_subscribe(char *path, int subscribe);
+int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *dest, size_t dlen, char *path);
 int imap_fast_trash(struct Context *ctx, char *dest);
 

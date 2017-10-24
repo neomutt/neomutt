@@ -836,7 +836,7 @@ int imap_wait_keepalive(pid_t pid)
   sigset_t oldmask;
   int rc;
 
-  short imap_passive = option(OPT_IMAP_PASSIVE);
+  bool imap_passive = option(OPT_IMAP_PASSIVE);
 
   set_option(OPT_IMAP_PASSIVE);
   set_option(OPT_KEEP_QUIET);
