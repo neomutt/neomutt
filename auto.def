@@ -183,6 +183,7 @@ if {1} {
   if {[cc-check-standards c99] eq {}} {
     user-error "C99 is required"
   }
+  define-append CFLAGS_FOR_BUILD -std=c99
 
   # Check for tools and programs
   cc-check-tools ar ranlib strip
@@ -212,13 +213,15 @@ if {1} {
   # Enable extensions (reverse-engineered from AC_SYSTEM_EXTENSIONS)
   if {1} {
     if {[cc-check-includes minix/config.h]} {
-      define-append CFLAGS -D_POSIX_SOURCE=1
-      define-append CFLAGS -D_POSIX_1_SOURCE=2
-      define-append CFLAGS -D_MINIX=1
+      lappend extensions -D_POSIX_SOURCE=1
+      lappend extensions -D_POSIX_1_SOURCE=2
+      lappend extensions -D_MINIX=1
     }
-    define-append CFLAGS -D_ALL_SOURCE=1
-    define-append CFLAGS -D_GNU_SOURCE=1
-    define-append CFLAGS -D__EXTENSIONS__
+    lappend extensions -D_ALL_SOURCE=1
+    lappend extensions -D_GNU_SOURCE=1
+    lappend extensions -D__EXTENSIONS__
+    define-append CFLAGS_FOR_BUILD {*}$extensions
+    define-append CFLAGS {*}$extensions
   }
   cc-with [list -cflags [get-define CFLAGS]]
 
