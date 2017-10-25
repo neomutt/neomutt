@@ -508,7 +508,7 @@ static const char *get_db_filename(struct NmCtxData *data)
   if (!db_filename)
     return NULL;
   if (strncmp(db_filename, "notmuch://", 10) == 0)
-    db_filename += 9;
+    db_filename += 10;
 
   mutt_debug(2, "nm: db filename '%s'\n", db_filename);
   return db_filename;
