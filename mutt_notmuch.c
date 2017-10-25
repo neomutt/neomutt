@@ -86,20 +86,6 @@ enum NmQueryType
 };
 
 /**
- * struct UriTag - Parsed Notmuch-URI arguments
- *
- * The arguments in a URI are saved in a linked list.
- *
- * @sa NmCtxData#query_items
- */
-struct UriTag
-{
-  char *name;
-  char *value;
-  struct UriTag *next;
-};
-
-/**
  * struct NmHdrData - Notmuch data attached to an email
  *
  * This stores all the Notmuch data associated with an email.
@@ -125,12 +111,12 @@ struct NmCtxData
 {
   notmuch_database_t *db;
 
-  char *db_filename;           /**< Filename of the Notmuch database */
+  struct Url db_url;           /**< Parsed view url of the Notmuch database */
+  char *db_url_holder;         /**< The storage string used by db_url, we keep it
+                                *   to be able to free db_url */
   char *db_query;              /**< Previous query */
   int db_limit;                /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */
-
-  struct UriTag *query_items;
 
   struct Progress progress; /**< A progress bar */
   int oldmsgcount;
@@ -183,108 +169,13 @@ static void debug_print_tags(notmuch_message_t *msg)
 #endif
 
 /**
- * url_free_tags - Free a list of tags
- * @param tags List of tags
+ * free_hdrdata - Free header data attached to an email
+ * @param data Header data
  *
- * Tags are stored as a singly-linked list.
- * Free all the strings and the list, itself.
+ * Each email can have an attached nm_hdrdata struct, which contains things
+ * like the tags (labels).  This function frees all the resources and the
+ * nm_hdrdata struct itself.
  */
-static void url_free_tags(struct UriTag *tags)
-{
-  while (tags)
-  {
-    struct UriTag *next = tags->next;
-    FREE(&tags->name);
-    FREE(&tags->value);
-    FREE(&tags);
-    tags = next;
-  }
-}
-
-/**
- * url_parse_query - Extract the tokens from a query URI
- * @param[in]  url      URI to parse
- * @param[out] filename Save the filename
- * @param[out] tags     Save the list of tags
- * @retval true  Success
- * @retval false Error Bad format
- *
- * Parse a Notmuch URI, such as:
- * *    notmuch:///path/to/db?query=tag:lkml&limit=1000
- * *    notmuch://?query=neomutt
- *
- * Extract the database filename (optional) and any search parameters (tags).
- * The tags will be saved in a linked list (#UriTag).
- */
-static bool url_parse_query(const char *url, char **filename, struct UriTag **tags)
-{
-  char *p = strstr(url, "://"); /* remote unsupported */
-  char *e = NULL;
-  struct UriTag *tag, *last = NULL;
-
-  *filename = NULL;
-  *tags = NULL;
-
-  if (!p || !*(p + 3))
-    return false;
-
-  p += 3;
-  *filename = p;
-
-  e = strchr(p, '?');
-
-  *filename = e ? (e == p) ? NULL : mutt_substrdup(p, e) : safe_strdup(p);
-  if (!e)
-    return true; /* only filename */
-
-  if (*filename && (url_pct_decode(*filename) < 0))
-    goto err;
-
-  e++; /* skip '?' */
-  p = e;
-
-  while (p && *p)
-  {
-    tag = safe_calloc(1, sizeof(struct UriTag));
-
-    if (!*tags)
-      last = *tags = tag;
-    else
-    {
-      last->next = tag;
-      last = tag;
-    }
-
-    e = strchr(p, '=');
-    if (!e)
-      e = strchr(p, '&');
-    tag->name = e ? mutt_substrdup(p, e) : safe_strdup(p);
-    if (!tag->name || (url_pct_decode(tag->name) < 0))
-      goto err;
-    if (!e)
-      break;
-
-    p = e + 1;
-
-    if (*e == '&')
-      continue;
-
-    e = strchr(p, '&');
-    tag->value = e ? mutt_substrdup(p, e) : safe_strdup(p);
-    if (!tag->value || (url_pct_decode(tag->value) < 0))
-      goto err;
-    if (!e)
-      break;
-    p = e + 1;
-  }
-
-  return true;
-err:
-  FREE(&(*filename));
-  url_free_tags(*tags);
-  return false;
-}
-
 static void free_hdrdata(struct NmHdrData *data)
 {
   if (!data)
@@ -320,9 +211,9 @@ static void free_ctxdata(struct NmCtxData *data)
 #endif
   data->db = NULL;
 
-  FREE(&data->db_filename);
+  url_free(&data->db_url);
+  FREE(&data->db_url_holder);
   FREE(&data->db_query);
-  url_free_tags(data->query_items);
   FREE(&data);
 }
 
@@ -345,14 +236,14 @@ static struct NmCtxData *new_ctxdata(const char *uri)
   mutt_debug(1, "nm: initialize context data %p\n", (void *) data);
 
   data->db_limit = NmDbLimit;
+  data->db_url_holder = safe_strdup(uri);
 
-  if (!url_parse_query(uri, &data->db_filename, &data->query_items))
+  if (url_parse(&data->db_url, data->db_url_holder) < 0)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), uri);
     FREE(&data);
     return NULL;
   }
-
   return data;
 }
 
@@ -549,7 +440,7 @@ static char *get_query_string(struct NmCtxData *data, bool window)
 {
   mutt_debug(2, "nm: get_query_string(%s)\n", window ? "true" : "false");
 
-  struct UriTag *item = NULL;
+  struct UrlQueryString *item = NULL;
 
   if (!data)
     return NULL;
@@ -558,7 +449,7 @@ static char *get_query_string(struct NmCtxData *data, bool window)
 
   data->query_type = string_to_query_type(NmQueryType); /* user's default */
 
-  for (item = data->query_items; item; item = item->next)
+  STAILQ_FOREACH(item, &data->db_url.query_strings, entries)
   {
     if (!item->value || !item->name)
       continue;
@@ -611,7 +502,7 @@ static const char *get_db_filename(struct NmCtxData *data)
   if (!data)
     return NULL;
 
-  db_filename = data->db_filename ? data->db_filename : NmDefaultUri;
+  db_filename = data->db_url.path ? data->db_url.path : NmDefaultUri;
   if (!db_filename)
     db_filename = Folder;
   if (!db_filename)
@@ -1799,6 +1690,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 {
   mutt_debug(2, "nm_normalize_uri (%s)\n", orig_uri);
   char buf[LONG_STRING];
+  int rc = -1;
 
   struct Context tmp_ctx;
   memset(&tmp_ctx, 0, sizeof(tmp_ctx));
@@ -1813,30 +1705,30 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   mutt_debug(2, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
   if (get_query_string(tmp_ctxdata, false) == NULL)
-  {
-    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    mutt_debug(2, "nm_normalize_uri () -> error #1\n");
-    FREE(&tmp_ctxdata);
-    return false;
-  }
+    goto gone;
 
   mutt_debug(2, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
   strfcpy(buf, tmp_ctxdata->db_query, sizeof(buf));
 
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
-  {
-    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    mutt_debug(2, "nm_normalize_uri () -> error #2\n");
-    FREE(&tmp_ctxdata);
-    return true;
-  }
-
-  FREE(&tmp_ctxdata);
+    goto gone;
 
   strncpy(new_uri, buf, new_uri_sz);
 
   mutt_debug(2, "nm_normalize_uri #3 (%s) -> %s\n", orig_uri, new_uri);
+
+  rc = 0;
+gone:
+  url_free(&tmp_ctxdata->db_url);
+  FREE(&tmp_ctxdata->db_url_holder);
+  FREE(&tmp_ctxdata);
+  if (rc < 0)
+  {
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
+    mutt_debug(2, "nm_normalize_uri () -> error\n");
+    return false;
+  }
   return true;
 }
 
@@ -2009,23 +1901,23 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new,
 
 int nm_nonctx_get_count(char *path, int *all, int *new)
 {
-  struct UriTag *query_items = NULL, *item = NULL;
+  struct UrlQueryString *item = NULL;
+  struct Url url;
+  char *url_holder = safe_strdup(path);
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1;
-  bool dflt = false;
-
   mutt_debug(1, "nm: count\n");
 
-  if (!url_parse_query(path, &db_filename, &query_items))
+  memset(&url, 0, sizeof(struct Url));
+
+  if (url_parse(&url, url_holder) < 0)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), path);
     goto done;
   }
-  if (!query_items)
-    goto done;
 
-  for (item = query_items; item; item = item->next)
+  STAILQ_FOREACH(item, &url.query_strings, entries)
   {
     if (item->value && (strcmp(item->name, "query") == 0))
     {
@@ -2037,6 +1929,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   if (!db_query)
     goto done;
 
+  db_filename = url.path;
   if (!db_filename)
   {
     if (NmDefaultUri)
@@ -2048,7 +1941,6 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
     }
     else if (Folder)
       db_filename = Folder;
-    dflt = true;
   }
 
   /* don't be verbose about connection, as we're called from
@@ -2082,9 +1974,8 @@ done:
 #endif
     mutt_debug(1, "nm: count close DB\n");
   }
-  if (!dflt)
-    FREE(&db_filename);
-  url_free_tags(query_items);
+  url_free(&url);
+  FREE(&url_holder);
 
   mutt_debug(1, "nm: count done [rc=%d]\n", rc);
   return rc;

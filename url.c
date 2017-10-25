@@ -97,20 +97,75 @@ enum UrlScheme url_check_scheme(const char *s)
     return (enum UrlScheme) i;
 }
 
+
+static int parse_query_string(struct Url *u, char *src)
+{
+  struct UrlQueryString *qs = NULL;
+  char *k = NULL, *v = NULL;
+
+  while (src && *src)
+  {
+    qs = safe_calloc(1, sizeof(struct UrlQueryString));
+    if ((k = strchr(src, '&')))
+      *k = '\0';
+
+    if ((v = strchr(src, '=')))
+    {
+      *v = '\0';
+      qs->value = v + 1;
+      if (url_pct_decode(qs->value) < 0)
+      {
+        FREE(&qs);
+        return -1;
+      }
+    }
+    qs->name = src;
+    if (url_pct_decode(qs->name) < 0)
+    {
+      FREE(&qs);
+      return -1;
+    }
+    STAILQ_INSERT_TAIL(&u->query_strings, qs, entries);
+
+    if (!k)
+      break;
+    src = k + 1;
+  }
+  return 0;
+}
+
+
 /**
- * parse_userhost - fill in components of Url with info from src
+ * url_parse - Fill in Url
+ * @param u   Url where the result is stored
+ * @param src String to parse
+ * @retval 0  String is valid
+ * @retval -1 String is invalid
  *
- * Note: These are pointers into src, which is altered with '\0's.
- *       Port of 0 means no port given.
+ * char* elements are pointers into src, which is modified by this call
+ * (duplicate it first if you need to).
+ *
+ * This method doesn't allocated any additional char* of the Url and
+ * UrlQueryString structs.
+ *
+ * To free Url, caller must free "src" and call url_free()
  */
-static int parse_userhost(struct Url *u, char *src)
+int url_parse(struct Url *u, char *src)
 {
   char *t = NULL, *p = NULL;
+
+  u->scheme = url_check_scheme(src);
+  if (u->scheme == U_UNKNOWN)
+    return -1;
+
+  src = strchr(src, ':') + 1;
 
   u->user = NULL;
   u->pass = NULL;
   u->host = NULL;
   u->port = 0;
+  u->path = NULL;
+  STAILQ_INIT(&u->query_strings);
 
   if (strncmp(src, "//", 2) != 0)
   {
@@ -120,8 +175,18 @@ static int parse_userhost(struct Url *u, char *src)
 
   src += 2;
 
+  if ((t = strchr(src, '?')))
+  {
+    *t++ = '\0';
+    if (parse_query_string(u, t) < 0)
+      goto err;
+  }
+
   if ((u->path = strchr(src, '/')))
     *u->path++ = '\0';
+
+  if (u->path && url_pct_decode(u->path) < 0)
+    goto err;
 
   if ((t = strrchr(src, '@')))
   {
@@ -131,11 +196,11 @@ static int parse_userhost(struct Url *u, char *src)
       *p = '\0';
       u->pass = p + 1;
       if (url_pct_decode(u->pass) < 0)
-        return -1;
+        goto err;
     }
     u->user = src;
     if (url_pct_decode(u->user) < 0)
-      return -1;
+      goto err;
     src = t + 1;
   }
 
@@ -155,33 +220,45 @@ static int parse_userhost(struct Url *u, char *src)
     int num;
     *p++ = '\0';
     if (mutt_atoi(p, &num) < 0 || num < 0 || num > 0xffff)
-      return -1;
+      goto err;
     u->port = (unsigned short) num;
   }
   else
     u->port = 0;
 
-  u->host = src;
-  return url_pct_decode(u->host) >= 0 && (!u->path || url_pct_decode(u->path) >= 0) ? 0 : -1;
+
+  if (mutt_strlen(src) != 0)
+  {
+    u->host = src;
+    if (url_pct_decode(u->host) < 0)
+      goto err;
+  }
+  else if (u->path)
+  {
+    /* No host are provided, we restore the / because this is absolute path */
+    u->path = src;
+    *src++ = '/';
+  }
+
+  return 0;
+
+err:
+  url_free(u);
+  return -1;
 }
 
-/**
- * url_parse - Fill in Url
- *
- * char* elements are pointers into src, which is modified by this call
- * (duplicate it first if you need to).
- */
-int url_parse(struct Url *u, char *src)
+void url_free(struct Url *u)
 {
-  char *tmp = NULL;
-
-  u->scheme = url_check_scheme(src);
-  if (u->scheme == U_UNKNOWN)
-    return -1;
-
-  tmp = strchr(src, ':') + 1;
-
-  return parse_userhost(u, tmp);
+  struct UrlQueryString *np = STAILQ_FIRST(&u->query_strings), *next = NULL;
+  while (np)
+  {
+      next = STAILQ_NEXT(np, entries);
+      /* NOTE(sileht): We don't free members, they will be freed when
+       * the src char* passed to url_parse() is freed */
+      FREE(&np);
+      np = next;
+  }
+  STAILQ_INIT(&u->query_strings);
 }
 
 void url_pct_encode(char *dst, size_t l, const char *src)

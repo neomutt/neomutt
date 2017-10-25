@@ -1400,6 +1400,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
                 LastDir[n] = '\0';
                 LastDir[n - 1] = state.entry[menu->current].delim;
               }
+              url_free(&url);
             }
 #endif
             else

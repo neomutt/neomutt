@@ -955,8 +955,10 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
   if (url_parse(&url, file) < 0 || (url.path && *url.path) ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS) ||
+      !url.host ||
       mutt_account_fromurl(&acct, &url) < 0)
   {
+    url_free(&url);
     mutt_error(_("%s is an invalid news server specification!"), server);
     mutt_sleep(2);
     return NULL;
@@ -966,6 +968,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
     acct.flags |= MUTT_ACCT_SSL;
     acct.port = NNTP_SSL_PORT;
   }
+  url_free(&url);
 
   /* find connection by account */
   conn = mutt_conn_find(NULL, &acct);
