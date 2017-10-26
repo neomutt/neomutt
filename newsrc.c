@@ -460,20 +460,20 @@ int nntp_newsrc_update(struct NntpServer *nserv)
     off += strlen(buf + off);
 
     /* write entries */
-    for (unsigned int i = 0; i < nntp_data->newsrc_len; i++)
+    for (unsigned int j = 0; j < nntp_data->newsrc_len; j++)
     {
       if (off + LONG_STRING > buflen)
       {
         buflen *= 2;
         safe_realloc(&buf, buflen);
       }
-      if (i)
+      if (j)
         buf[off++] = ',';
-      if (nntp_data->newsrc_ent[i].first == nntp_data->newsrc_ent[i].last)
-        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[i].first);
-      else if (nntp_data->newsrc_ent[i].first < nntp_data->newsrc_ent[i].last)
+      if (nntp_data->newsrc_ent[j].first == nntp_data->newsrc_ent[j].last)
+        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[j].first);
+      else if (nntp_data->newsrc_ent[j].first < nntp_data->newsrc_ent[j].last)
         snprintf(buf + off, buflen - off, "%d-%d",
-                 nntp_data->newsrc_ent[i].first, nntp_data->newsrc_ent[i].last);
+                 nntp_data->newsrc_ent[j].first, nntp_data->newsrc_ent[j].last);
       off += strlen(buf + off);
     }
     buf[off++] = '\n';
