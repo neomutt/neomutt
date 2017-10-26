@@ -915,19 +915,20 @@ time_t mutt_decrease_mtime(const char *f, struct stat *st)
 }
 
 /**
- * mutt_dirname - Return a path up to, but not including, the final '/'.
+ * mutt_dirname - Return a path up to, but not including, the final '/'
+ * @param  p    Path
+ * @retval ptr  The directory containing p
  *
  * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
  *
- * @param  p    Path
- * @retval ptr  The directory containing p
+ * mutt_dirname() returns a static string which must not be free()'d.
  */
 const char *mutt_dirname(const char *p)
 {
   static char buf[_POSIX_PATH_MAX];
-  strncpy(buf, p, sizeof(buf)-1);
+  strfcpy(buf, p, sizeof(buf));
   return dirname(buf);
 }
 
