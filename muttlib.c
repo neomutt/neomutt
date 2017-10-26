@@ -26,7 +26,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#include <libgen.h>
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -1544,10 +1543,8 @@ int mutt_save_confirm(const char *s, struct stat *st)
       /* user confirmed with MUTT_YES or set OPT_CONFIRMCREATE */
       if (ret == 0)
       {
-        strncpy(tmp, s, sizeof(tmp) - 1);
-
         /* create dir recursively */
-        if (mutt_mkdir(dirname(tmp), S_IRWXU) == -1)
+        if (mutt_mkdir(mutt_dirname(s), S_IRWXU) == -1)
         {
           /* report failure & abort */
           mutt_perror(s);

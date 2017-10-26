@@ -33,6 +33,7 @@
  * | mutt_copy_bytes()         | Copy some content from one file to another
  * | mutt_copy_stream()        | Copy the contents of one file into another
  * | mutt_decrease_mtime()     | Decrease a file's modification time by 1 second
+ * | mutt_dirname()            | Return a path up to, but not including, the final '/'
  * | mutt_lock_file()          | (try to) lock a file
  * | mutt_mkdir()              | Recursively create directories
  * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
@@ -58,6 +59,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <libgen.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -910,6 +912,24 @@ time_t mutt_decrease_mtime(const char *f, struct stat *st)
   }
 
   return mtime;
+}
+
+/**
+ * mutt_dirname - Return a path up to, but not including, the final '/'
+ * @param  p    Path
+ * @retval ptr  The directory containing p
+ *
+ * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
+ * implementation does not modify its parameter, so callers need not manually
+ * copy their paths into a modifiable buffer prior to calling this function.
+ *
+ * mutt_dirname() returns a static string which must not be free()'d.
+ */
+const char *mutt_dirname(const char *p)
+{
+  static char buf[_POSIX_PATH_MAX];
+  strfcpy(buf, p, sizeof(buf));
+  return dirname(buf);
 }
 
 /**
