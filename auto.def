@@ -238,10 +238,17 @@ if {1} {
     define OFF_T_FMT {"%" PRId32}
   }
   define LOFF_T off_t
+}
+###############################################################################
 
-  # Let's always use volatile for sig_atomic_t
-  cc-check-includes signal.h
-  define SIG_ATOMIC_VOLATILE_T "volatile sig_atomic_t"
+###############################################################################
+# signal-related checks
+# Let's always use volatile for sig_atomic_t
+cc-check-includes signal.h
+define SIG_ATOMIC_VOLATILE_T "volatile sig_atomic_t"
+
+cc-with {-includes "signal.h unistd.h"} {
+  cc-check-decls sys_siglist
 }
 ###############################################################################
 
