@@ -2086,10 +2086,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     mutt_set_flag(Context, extra->hdr, MUTT_READ, 1);
   }
 
-  rd.line_info = safe_malloc(sizeof(struct Line) * (rd.max_line = LINES));
+  rd.max_line = LINES; /* number of lines on screen, from curses */
+  rd.line_info = safe_calloc(rd.max_line, sizeof(struct Line));
   for (i = 0; i < rd.max_line; i++)
   {
-    memset(&rd.line_info[i], 0, sizeof(struct Line));
     rd.line_info[i].type = -1;
     rd.line_info[i].search_cnt = -1;
     rd.line_info[i].syntax = safe_malloc(sizeof(struct Syntax));
