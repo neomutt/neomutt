@@ -25,7 +25,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
-#include <libgen.h>
 #include <limits.h>
 #include <pwd.h>
 #include <regex.h>
@@ -3116,7 +3115,7 @@ static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
  */
 static int to_absolute_path(char *path, const char *reference)
 {
-  char *ref_tmp = NULL, *dirpath = NULL;
+  const char *dirpath = NULL;
   char abs_path[PATH_MAX];
   int path_len;
 
@@ -3126,12 +3125,10 @@ static int to_absolute_path(char *path, const char *reference)
     return true;
   }
 
-  ref_tmp = safe_strdup(reference);
-  dirpath = dirname(ref_tmp); /* get directory name of */
+  dirpath = mutt_dirname(reference);
   strfcpy(abs_path, dirpath, PATH_MAX);
   safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
-  FREE(&ref_tmp);
   path_len = PATH_MAX - strlen(path);
 
   safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);

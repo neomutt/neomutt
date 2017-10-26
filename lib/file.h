@@ -39,6 +39,7 @@ char *      mutt_concat_path(char *d, const char *dir, const char *fname, size_t
 int         mutt_copy_bytes(FILE *in, FILE *out, size_t size);
 int         mutt_copy_stream(FILE *fin, FILE *fout);
 time_t      mutt_decrease_mtime(const char *f, struct stat *st);
+const char *mutt_dirname(const char *p);
 int         mutt_lock_file(const char *path, int fd, int excl, int timeout);
 int         mutt_mkdir(const char *path, mode_t mode);
 size_t      mutt_quote_filename(char *d, size_t l, const char *f);
