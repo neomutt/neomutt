@@ -97,7 +97,6 @@ enum UrlScheme url_check_scheme(const char *s)
     return (enum UrlScheme) i;
 }
 
-
 static int parse_query_string(struct Url *u, char *src)
 {
   struct UrlQueryString *qs = NULL;
@@ -133,7 +132,6 @@ static int parse_query_string(struct Url *u, char *src)
   }
   return 0;
 }
-
 
 /**
  * url_parse - Fill in Url
@@ -226,7 +224,6 @@ int url_parse(struct Url *u, char *src)
   else
     u->port = 0;
 
-
   if (mutt_strlen(src) != 0)
   {
     u->host = src;
@@ -252,11 +249,11 @@ void url_free(struct Url *u)
   struct UrlQueryString *np = STAILQ_FIRST(&u->query_strings), *next = NULL;
   while (np)
   {
-      next = STAILQ_NEXT(np, entries);
-      /* NOTE(sileht): We don't free members, they will be freed when
-       * the src char* passed to url_parse() is freed */
-      FREE(&np);
-      np = next;
+    next = STAILQ_NEXT(np, entries);
+    /* NOTE(sileht): We don't free members, they will be freed when
+     * the src char* passed to url_parse() is freed */
+    FREE(&np);
+    np = next;
   }
   STAILQ_INIT(&u->query_strings);
 }

@@ -224,7 +224,7 @@ void mutt_unlink(const char *s)
   struct stat sb, sb2;
   char buf[2048];
 
-/* Defend against symlink attacks */
+  /* Defend against symlink attacks */
 
   if ((lstat(s, &sb) == 0) && S_ISREG(sb.st_mode))
   {

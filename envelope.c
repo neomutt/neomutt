@@ -24,8 +24,8 @@
 #include <stddef.h>
 #include "lib/buffer.h"
 #include "lib/memory.h"
-#include "envelope.h"
 #include "lib/queue.h"
+#include "envelope.h"
 #include "rfc822.h"
 
 struct Envelope *mutt_new_envelope(void)
