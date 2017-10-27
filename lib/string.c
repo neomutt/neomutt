@@ -745,4 +745,3 @@ int imap_wordcasecmp(const char *a, const char *b)
 
   return mutt_strcasecmp(a, tmp);
 }
-

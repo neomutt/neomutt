@@ -12,7 +12,7 @@ use system cc cc-lib mutt-gettext mutt-iconv
 ###############################################################################
 # Names and versions
 define PACKAGE          "neomutt"
-define PACKAGE_VERSION  "20171013"
+define PACKAGE_VERSION  "20171027"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files

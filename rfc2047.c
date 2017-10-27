@@ -576,7 +576,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     /* Add to output buffer. */
     const char *line_break = "\n\t";
     const int lb_len = 2; /* strlen(line_break) */
-      
+
     if ((bufpos + wlen + lb_len) > buflen)
     {
       buflen = bufpos + wlen + lb_len;

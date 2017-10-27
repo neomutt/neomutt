@@ -1,3 +1,58 @@
+2017-10-27  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - variable type when using fread
+  - prevent timezone overflow
+  - tags: Show fake header for all backends
+  - notmuch: virtual-mailboxes should accept a limit
+  - Issue 888: Fix imap mailbox flag logging
+  - fix actions on tagged messages
+  - call the folder-hook before saving to $record
+  - Fix smart wrap in pager without breaking header
+  - Add polling for the IDLE command
+* Docs
+  - imap/notmuch tags: Add some documentation
+  - English and other cleanups
+  - compressed and nntp features are now always built
+* Website
+  - Update Arch instructions
+* Build
+  - Fix update-po
+  - Fix neomutt.pot location, remove from git
+  - Allow to specify --docdir at configure time
+  - Generate neomuttrc even if configured with --disable-doc
+  - Let autosetup define PWD, do not unnecessarily try to create hcache dir
+  - Use bundled wcscasecmp if an implementation is not found in libc
+  - Use host compiler to build the documentation
+  - Update autosetup to latest master branch
+  - autosetup: delete makedoc on 'make clean'
+  - Fixes for endianness detection
+  - Update autosetup to latest master branch
+  - Do not use CPPFLAGS / CFLAGS together with CC_FOR_BUILD
+  - --enable-everything includes lua
+  - autosetup: check for sys_siglist[]
+* Code
+  - move functions to library
+  - lib: move MIN/MAX macros
+  - simplify null checks
+  - kill preproc expansion laziness
+  - reduce scope of variables
+  - merge: minor code cleanups
+  - split up 'if' statements that assign and test
+  - Refactor: Remove unused return type
+  - Bool: change functions in mx.h
+  - bool: convert function parameters in nntp.h
+  - add extra checks to mutt_pattern_exec()
+  - Use safe_calloc to initialize memory, simplify size_t overflow check
+  - Move mutt_rename_file to lib/file.[hc]
+  - doxygen: fix a few warnings
+  - minor code fixes
+  - use mutt_array_size()
+  - refactor out O_NOFOLLOW
+  - initialise variables
+  - lib: move List and Queue into library
+  - url: make notmuch query string parser generic
+  - Wrap dirname(3) inside a mutt_dirname() function
+
 2017-10-13  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - crash using uncolor

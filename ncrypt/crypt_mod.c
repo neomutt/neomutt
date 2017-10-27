@@ -22,8 +22,8 @@
 
 #include "config.h"
 #include "lib/lib.h"
-#include "crypt_mod.h"
 #include "lib/queue.h"
+#include "crypt_mod.h"
 
 /**
  * struct CryptModule - A crypto plugin module
