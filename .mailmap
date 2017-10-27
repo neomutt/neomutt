@@ -5,6 +5,7 @@ Anton Rieger <seishinryohosha@jikken.de>                        Anton Rieger <se
 Anton Rieger <seishinryohosha@jikken.de>                        seishinryohosha <seishinryohosha@users.noreply.github.com> # seishinryohosha
 Antonio Radici <antonio@dyne.org>                               Antonio Radici <antonio@dyne.org>                        # @aradici
 Antonio Radici <antonio@dyne.org>                               Unknown <antonio@dyne.org>                               # @aradici
+Austin Ray <austin.duke.ray@gmail.com>                          Austin Ray <austin.duke.ray@gmail.com>                   # @austin-ray
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Bernard 'Guyzmo' Pratz <guyzmo+github+pub@m0g.net>       # @guyzmo
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Bernard Pratz <guyzmo+github+pub@m0g.net>                # @guyzmo
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Guyzmo <guyzmo+github+pub@m0g.net>                       # @guyzmo
@@ -44,12 +45,13 @@ Jelle van der Waa <jelle@vdwaa.nl>                              Jelle van der Wa
 Jenya Sovetkin <e.sovetkin@gmail.com>                           Jenya Sovetkin <e.sovetkin@gmail.com>                    # @esovetkin
 Johannes Weißl <jargon@molb.org>                                Johannes Weißl <jargon@molb.org>                         # @weisslj
 Jonathan Perkin <jperkin@netbsd.org>                            Jonathan Perkin <jperkin@netbsd.org>                     # @jperkin
-Joshua Jordi <dracogoyle@gmail.com>                             Jakkin <dracogoyle@gmail.com>                            # @JakkinStewart
-Joshua Jordi <dracogoyle@gmail.com>                             Joshua Jordi <JakkinStewart@users.noreply.github.com>    # @JakkinStewart
+Joshua Jordi <dracogoyle@gmail.com>                             Jakkin <dracogoyle@gmail.com>                            # @jakkinstewart
+Joshua Jordi <dracogoyle@gmail.com>                             Joshua Jordi <JakkinStewart@users.noreply.github.com>    # @jakkinstewart
 Julian Andres Klode <jak@jak-linux.org>                         Julian Andres Klode <jak@jak-linux.org>                  # @julian-klode
 Karel Zak <kzak@redhat.com>                                     Karel Zak <kzak@redhat.com>                              # @karelzak
 Kevin Decherf <kevin@kdecherf.com>                              Kevin Decherf <kevin@kdecherf.com>                       # @kdecherf
 Kevin Velghe <kevin@paretje.be>                                 Kevin Velghe <kevin@paretje.be>                          # @paretje
+Larry Rosenman <larryrtx@gmail.com>                             Larry Rosenman <larryrtx@gmail.com>                      # @lrosenman
 Manos Pitsidianakis <el13635@mail.ntua.gr>                      Manos Pitsidianakis <el13635@mail.ntua.gr>               # @epilys
 Marcin Rajner <mrajner@gik.pw.edu.pl>                           Marcin Rajner lenovo <mrajner@gik.pw.edu.pl>             # @mrajner
 Marco Hinz <mh.codebro@gmail.com>                               Marco Hinz <mh.codebro@gmail.com>                        # @mhinz
@@ -68,7 +70,7 @@ Regid Ichira <regid23@nt1.in>                                   Regid Ichira <re
 Riad Wahby <kwantam@gmail.com>                                  Riad S. Wahby <kwantam@gmail.com>                        # @kwantam
 Richard Russon <rich@flatcap.org>                               Richard Russon <rich@flatcap.org>                        # @flatcap
 Rubén Llorente <rubenllorente@startmail.com>                    Rubén Llorente <rubenllorente@startmail.com>             #
-Santiago Torres <torresariass@gmail.com>                        Santiago Torres <torresariass@gmail.com>                 # @SantiagoTorres
+Santiago Torres <torresariass@gmail.com>                        Santiago Torres <torresariass@gmail.com>                 # @santiagotorres
 Serge Gebhardt <serge.gebhardt@gmail.com>                       Serge Gebhardt <serge.gebhardt@gmail.com>                # @sgeb
 Somini <somini29@yandex.com>                                    somini <somini29@yandex.com>                             # @somini
 Somini <somini29@yandex.com>                                    somini <somini@users.noreply.github.com>                 # @somini
@@ -78,7 +80,7 @@ Stefan Assmann <sassmann@kpanic.de>                             Stefan Assmann <
 Stefan Bühler <stbuehler@web.de>                                Stefan Bühler <stbuehler@web.de>                         # @stbuehler
 Stephen Gilles <sgilles@math.umd.edu>                           S. Gilles <sgilles@math.umd.edu>                         #
 Steven Ragnarök <steven@nuclearsandwich.com>                    Steven! Ragnarök <steven@nuclearsandwich.com>            # @nuclearsandwich
-Thomas Adam <thomas@xteddy.org>                                 Thomas Adam <thomas@xteddy.org>                          # @ThomasAdam
+Thomas Adam <thomas@xteddy.org>                                 Thomas Adam <thomas@xteddy.org>                          # @thomasadam
 Thomas Klausner <wiz@netbsd.org>                                Thomas Klausner <wiz@netbsd.org>                         # @0-wiz-0
 Tobias Angele <toogley@mailbox.org>                             Tobias Angele <toogley@mailbox.org>                      # @toogley
 Tobias Angele <toogley@mailbox.org>                             toogley <toogley@mailbox.org>                            # @toogley
@@ -87,8 +89,8 @@ Werner Fink <werner@suse.de>                                    Werner Fink <wer
 Wieland Hoffmann <themineo@gmail.com>                           Wieland Hoffmann <mineo@users.noreply.github.com>        # @mineo
 Wieland Hoffmann <themineo@gmail.com>                           Wieland Hoffmann <themineo@gmail.com>                    # @mineo
 William Pettersson <william.pettersson+github@gmail.com>        William Pettersson <william.pettersson+github@gmail.com> # @wpettersson
-William Pettersson <william.pettersson@gmail.com>               William Pettersson <william.pettersson@gmail.com>        # @WPettersson
-Yoshiki Vázquez Baeza <yoshiki89@gmail.com>                     Yoshiki Vázquez Baeza <yoshiki89@gmail.com>              # @ElDeveloper
+William Pettersson <william.pettersson@gmail.com>               William Pettersson <william.pettersson@gmail.com>        # @wpettersson
+Yoshiki Vázquez Baeza <yoshiki89@gmail.com>                     Yoshiki Vázquez Baeza <yoshiki89@gmail.com>              # @eldeveloper
 Zero King <l2dy@icloud.com>                                     Zero King <l2dy@icloud.com>                              # @l2dy
 
 ## Mutt Contributors
