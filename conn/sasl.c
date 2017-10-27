@@ -730,6 +730,10 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
  */
 void mutt_sasl_done(void)
 {
+#ifdef HAVE_SASL_CLIENT_DONE
   /* As we never use the server-side, the silently ignore the return value */
   sasl_client_done();
+#else
+  sasl_done();
+#endif
 }

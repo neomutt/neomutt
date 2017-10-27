@@ -366,6 +366,8 @@ if {[get-define want-sasl]} {
   foreach sasl_lib {sasl2 sasl} {
     if {[check-inc-and-lib sasl [opt-val with-sasl $prefix] \
                            sasl/sasl.h sasl_encode64 $sasl_lib]} {
+      # RHEL6 doesn't have this function yet
+      cc-check-functions sasl_client_done
       define USE_SASL
       break
     }
