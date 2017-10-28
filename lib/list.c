@@ -73,7 +73,7 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
 /**
  * mutt_list_insert_after - Insert a string after a given ListNode
  * @param h Head of the List
- * @parem n ListNode after which the string will be inserted
+ * @param n ListNode after which the string will be inserted
  * @param s String to insert
  * @retval ptr Newly created ListNode containing the string
  */
@@ -87,8 +87,8 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
 
 /**
  * mutt_list_find - Find a string in a List
- * @param h Head of the List
- * @param s String to find
+ * @param h    Head of the List
+ * @param data String to find
  * @retval ptr ListNode containing the string
  * @retval NULL if the string isn't found
  */

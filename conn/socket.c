@@ -22,6 +22,27 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_socket Low-level socket handling
+ *
+ * Low-level socket handling
+ *
+ * | Function               | Description
+ * | :--------------------- | :-----------------------------------
+ * | mutt_socket_close()    | Close a socket
+ * | mutt_socket_open()     | Simple wrapper
+ * | mutt_socket_poll()     | Checks whether reads would block
+ * | mutt_socket_readchar() | simple read buffering to speed things up
+ * | mutt_socket_readln_d() | Read a line from a socket
+ * | mutt_socket_write_d()  | Write data to a socket
+ * | raw_socket_close()     | Close a socket
+ * | raw_socket_open()      | Open a socket
+ * | raw_socket_poll()      | Checks whether reads would block
+ * | raw_socket_read()      | Read data from a socket
+ * | raw_socket_write()     | Write data to a socket
+ * | socket_new_conn()      | allocate and initialise a new connection
+ */
+
 #include "config.h"
 #include <time.h>
 #include <errno.h>
@@ -51,6 +72,11 @@
 #include "ssl.h"
 #endif
 
+/**
+ * socket_preconnect - Execute a command before opening a socket
+ * @retval 0  Success
+ * @retval >0 An errno, e.g. EPERM
+ */
 static int socket_preconnect(void)
 {
   int rc;
@@ -76,6 +102,11 @@ static int socket_preconnect(void)
 
 /**
  * socket_connect - set up to connect to a socket fd
+ * @param fd File descriptor to connect with
+ * @param sa Address info
+ * @retval  0 Success
+ * @retval >0 An errno, e.g. EPERM
+ * @retval -1 Error
  */
 static int socket_connect(int fd, struct sockaddr *sa)
 {
@@ -125,6 +156,9 @@ static int socket_connect(int fd, struct sockaddr *sa)
 
 /**
  * mutt_socket_open - Simple wrapper
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_socket_open(struct Connection *conn)
 {
@@ -141,6 +175,12 @@ int mutt_socket_open(struct Connection *conn)
   return rc;
 }
 
+/**
+ * mutt_socket_close - Close a socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_socket_close(struct Connection *conn)
 {
   int rc = -1;
@@ -156,6 +196,15 @@ int mutt_socket_close(struct Connection *conn)
   return rc;
 }
 
+/**
+ * mutt_socket_write_d - Write data to a socket
+ * @param conn Connection to a server
+ * @param buf Buffer with data to write
+ * @param len Length of data to write
+ * @param dbg Debug level for logging
+ * @retval >0 Number of bytes written
+ * @retval -1 Error
+ */
 int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int dbg)
 {
   int rc;
@@ -194,7 +243,9 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 }
 
 /**
- * mutt_socket_poll - poll whether reads would block
+ * mutt_socket_poll - Checks whether reads would block
+ * @param conn Connection to a server
+ * @param wait_secs How long to wait for a response
  * @retval >0 There is data to read
  * @retval  0 Read would block
  * @retval -1 Connection doesn't support polling
@@ -212,6 +263,10 @@ int mutt_socket_poll(struct Connection *conn, time_t wait_secs)
 
 /**
  * mutt_socket_readchar - simple read buffering to speed things up
+ * @param[in]  conn Connection to a server
+ * @param[out] c    Character that was read
+ * @retval  1 Success
+ * @retval -1 Error
  */
 int mutt_socket_readchar(struct Connection *conn, char *c)
 {
@@ -242,6 +297,15 @@ int mutt_socket_readchar(struct Connection *conn, char *c)
   return 1;
 }
 
+/**
+ * mutt_socket_readln_d - Read a line from a socket
+ * @param buf    Buffer to store the line
+ * @param buflen Length of data to write
+ * @param conn   Connection to a server
+ * @param dbg    Debug level for logging
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error
+ */
 int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg)
 {
   char ch;
@@ -273,6 +337,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
 
 /**
  * socket_new_conn - allocate and initialise a new connection
+ * @retval ptr New Connection
  */
 struct Connection *socket_new_conn(void)
 {
@@ -284,11 +349,25 @@ struct Connection *socket_new_conn(void)
   return conn;
 }
 
+/**
+ * raw_socket_close - Close a socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error, see errno
+ */
 int raw_socket_close(struct Connection *conn)
 {
   return close(conn->fd);
 }
 
+/**
+ * raw_socket_read - Read data from a socket
+ * @param conn Connection to a server
+ * @param buf Buffer to store the data
+ * @param len Number of bytes to read
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
 int raw_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   int rc;
@@ -314,6 +393,14 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t len)
   return rc;
 }
 
+/**
+ * raw_socket_write - Write data to a socket
+ * @param conn Connection to a server
+ * @param buf Buffer to read into
+ * @param count Number of bytes to read
+ * @retval >0 Success, number of bytes written
+ * @retval -1 Error, see errno
+ */
 int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   int rc;
@@ -339,6 +426,14 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
   return rc;
 }
 
+/**
+ * raw_socket_poll - Checks whether reads would block
+ * @param conn Connection to a server
+ * @param wait_secs How long to wait for a response
+ * @retval >0 There is data to read
+ * @retval  0 Read would block
+ * @retval -1 Connection doesn't support polling
+ */
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   fd_set rfds;
@@ -377,6 +472,12 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
   }
 }
 
+/**
+ * raw_socket_open - Open a socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int raw_socket_open(struct Connection *conn)
 {
   int rc;

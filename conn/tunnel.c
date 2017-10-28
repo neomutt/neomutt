@@ -21,6 +21,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_tunnel Support for network tunnelling 
+ *
+ * Support for network tunnelling
+ *
+ * | Function                   | Description
+ * | :------------------------- | :-----------------------------------
+ * | mutt_tunnel_socket_setup() | setups tunnel connection functions.
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <fcntl.h>
@@ -52,6 +62,12 @@ struct TunnelData
   int writefd;
 };
 
+/**
+ * tunnel_socket_open - Open a tunnel socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int tunnel_socket_open(struct Connection *conn)
 {
   struct TunnelData *tunnel = NULL;
@@ -130,6 +146,12 @@ static int tunnel_socket_open(struct Connection *conn)
   return 0;
 }
 
+/**
+ * tunnel_socket_close - Close a tunnel socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error, see errno
+ */
 static int tunnel_socket_close(struct Connection *conn)
 {
   struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
@@ -149,6 +171,14 @@ static int tunnel_socket_close(struct Connection *conn)
   return 0;
 }
 
+/**
+ * tunnel_socket_read - Read data from a tunnel socket
+ * @param conn Connection to a server
+ * @param buf Buffer to store the data
+ * @param len Number of bytes to read
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
 static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
@@ -164,6 +194,14 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
   return rc;
 }
 
+/**
+ * tunnel_socket_write - Write data to a tunnel socket
+ * @param conn Connection to a server
+ * @param buf  Buffer to read into
+ * @param len  Number of bytes to read
+ * @retval >0 Success, number of bytes written
+ * @retval -1 Error, see errno
+ */
 static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
@@ -179,6 +217,14 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
   return rc;
 }
 
+/**
+ * tunnel_socket_poll - Checks whether tunnel reads would block
+ * @param conn Connection to a server
+ * @param wait_secs How long to wait for a response
+ * @retval >0 There is data to read
+ * @retval  0 Read would block
+ * @retval -1 Connection doesn't support polling
+ */
 static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;

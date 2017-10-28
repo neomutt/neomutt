@@ -20,17 +20,39 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_sasl_plain SASL plain authentication support
+ *
+ * SASL plain authentication support
+ *
+ * | Function              | Description
+ * | :-------------------- | :-----------------------------------
+ * | mutt_sasl_plain_msg() | Create an SASL command
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include "lib/base64.h"
 #include "lib/string2.h"
 
+/**
+ * mutt_sasl_plain_msg - Create an SASL command
+ * @param buf    Buffer to store the command
+ * @param buflen Length of the buffer
+ * @param cmd    SASL command
+ * @param authz  Authorisation
+ * @param user   Username
+ * @param pass   Password
+ * @retval >0 Success, number of chars in the command string
+ * @retval  0 Error
+ *
+ * authz, user, and pass can each be up to 255 bytes, making up for a 765 bytes
+ * string. Add the two NULL bytes in between plus one at the end and we get
+ * 768.
+ */
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass)
 {
-  /* authz, user, and pass can each be up to 255 bytes, making up for a 765
-   * bytes string. Add the two NULL bytes in between plus one at the end and we
-   * get 768. */
   char tmp[768];
   size_t len;
   size_t tmplen;

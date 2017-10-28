@@ -20,6 +20,24 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_globals Connection Global Variables
+ *
+ * These global variables are private to the connection library.
+ *
+ * | Global Variable        | NeoMutt Config
+ * | :--------------------- | :------------------------
+ * | #CertificateFile       | $certificate_file
+ * | #ConnectTimeout        | $connect_timeout
+ * | #EntropyFile           | $entropy_file
+ * | #Preconnect            | $preconnect
+ * | #SslCaCertificatesFile | $ssl_ca_certificates_file
+ * | #SslCiphers            | $ssl_ciphers
+ * | #SslClientCert         | $ssl_client_cert
+ * | #SslMinDhPrimeBits     | $ssl_min_dh_prime_bits
+ * | #Tunnel                | $tunnel
+ */
+
 #include "config.h"
 
 short ConnectTimeout; /**< Config: $connect_timeout */

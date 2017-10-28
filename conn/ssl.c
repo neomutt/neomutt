@@ -20,6 +20,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_ssl Handling of OpenSSL encryption
+ *
+ * Handling of OpenSSL encryption
+ *
+ * | Function                | Description
+ * | :---------------------- | :-----------------------------------
+ * | mutt_ssl_socket_setup() | Set up the socket multiplexor
+ * | mutt_ssl_starttls()     | Negotiate TLS over an already opened connection
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
@@ -102,6 +113,9 @@ struct SslSockData
 
 /**
  * ssl_load_certificates - Load certificates and filter out the expired ones
+ * @param ctx SSL context
+ * @retval 1 Success
+ * @retval 0 Error
  *
  * ssl certificate verification can behave strangely if there are expired certs
  * loaded into the trusted store.  This function filters out expired certs.
@@ -155,6 +169,12 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   return rv;
 }
 
+/**
+ * ssl_set_verify_partial - Allow verification using partial chains (with no root)
+ * @param ctx SSL context
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int ssl_set_verify_partial(SSL_CTX *ctx)
 {
   int rv = 0;
@@ -185,6 +205,12 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
   return rv;
 }
 
+/**
+ * add_entropy - Add a source of random numbers
+ * @param file Random device
+ * @retval >0 Success, number of bytes read from the source
+ * @retval -1 Error
+ */
 static int add_entropy(const char *file)
 {
   struct stat st;
@@ -220,6 +246,11 @@ static int add_entropy(const char *file)
   return n;
 }
 
+/**
+ * ssl_err - Display an SSL error message
+ * @param data SSL socket data
+ * @param err  SSL error code
+ */
 static void ssl_err(struct SslSockData *data, int err)
 {
   int e = SSL_get_error(data->ssl, err);
@@ -287,6 +318,9 @@ static void ssl_err(struct SslSockData *data, int err)
 #endif
 }
 
+/**
+ * ssl_dprint_err_stack - Dump the SSL error stack (DEBUG only)
+ */
 static void ssl_dprint_err_stack(void)
 {
 #ifdef DEBUG
@@ -312,6 +346,15 @@ static void ssl_dprint_err_stack(void)
 #endif
 }
 
+/**
+ * ssl_passwd_cb - Callback to get a password
+ * @param buf      Buffer for the password
+ * @param size     Length of the buffer
+ * @param rwflag   0 if writing, 1 if reading (UNUSED)
+ * @param userdata Account whose password is requested
+ * @retval >0 Success, number of chars written to buf
+ * @retval  0 Error
+ */
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
 {
   struct Account *account = (struct Account *) userdata;
@@ -328,6 +371,11 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
   return snprintf(buf, size, "%s", account->pass);
 }
 
+/**
+ * ssl_socket_open_err - Error callback for opening an SSL connection
+ * @param conn Connection to a server
+ * @retval -1 Always
+ */
 static int ssl_socket_open_err(struct Connection *conn)
 {
   mutt_error(_("SSL disabled due to the lack of entropy"));
@@ -335,6 +383,12 @@ static int ssl_socket_open_err(struct Connection *conn)
   return -1;
 }
 
+/**
+ * ssl_socket_close - Close an SSL connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error, see errno
+ */
 static int ssl_socket_close(struct Connection *conn)
 {
   struct SslSockData *data = conn->sockdata;
@@ -353,6 +407,14 @@ static int ssl_socket_close(struct Connection *conn)
   return raw_socket_close(conn);
 }
 
+/**
+ * x509_get_part - Retrieve from X509 data
+ * @param name Name of data to retrieve
+ * @param nid  ID of the item to retrieve
+ * @retval ptr Retrieved data
+ *
+ * The returned pointer is to a static buffer, so it must not be free()'d.
+ */
 static char *x509_get_part(X509_NAME *name, int nid)
 {
   static char ret[SHORT_STRING];
@@ -363,6 +425,13 @@ static char *x509_get_part(X509_NAME *name, int nid)
   return ret;
 }
 
+/**
+ * x509_fingerprint - Generate a fingerprint for an X509 certificate
+ * @param s        Buffer for fingerprint
+ * @param l        Length of buffer
+ * @param cert     Certificate
+ * @param hashfunc Hashing function
+ */
 static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfunc)(void) )
 {
   unsigned char md[EVP_MAX_MD_SIZE];
@@ -383,6 +452,13 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
   }
 }
 
+/**
+ * asn1time_to_string - Convert a time to a string
+ * @param tm Time to convert
+ * @retval ptr Time string
+ *
+ * The returned pointer is to a static buffer, so it must not be free()'d.
+ */
 static char *asn1time_to_string(ASN1_UTCTIME *tm)
 {
   static char buf[64];
@@ -401,6 +477,15 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
   return buf;
 }
 
+/**
+ * compare_certificates - Compare two X509 certificated
+ * @param cert      Certificate
+ * @param peercert  Peer certificate
+ * @param peermd    Peer certificate message digest
+ * @param peermdlen Length of peer certificate message digest
+ * @retval true  Certificates match
+ * @retval false Certificates differ
+ */
 static bool compare_certificates(X509 *cert, X509 *peercert,
                                  unsigned char *peermd, unsigned int peermdlen)
 {
@@ -422,6 +507,13 @@ static bool compare_certificates(X509 *cert, X509 *peercert,
   return true;
 }
 
+/**
+ * check_certificate_expiration - Check if a certificate has expired
+ * @param peercert Certificate to check
+ * @param silent   If true, don't notify the user if the certificate has expired
+ * @retval true  Certificate is valid
+ * @retval false Certificate has expired (or hasn't yet become valid)
+ */
 static bool check_certificate_expiration(X509 *peercert, bool silent)
 {
   if (option(OPT_SSL_VERIFY_DATES) != MUTT_NO)
@@ -453,6 +545,9 @@ static bool check_certificate_expiration(X509 *peercert, bool silent)
 
 /**
  * hostname_match - Does the hostname match the certificate
+ * @param hostname Hostname
+ * @param certname Certificate
+ * @retval true Hostname matches the certificate
  */
 static bool hostname_match(const char *hostname, const char *certname)
 {
@@ -492,6 +587,8 @@ static bool hostname_match(const char *hostname, const char *certname)
 
 /**
  * ssl_init - Initialist the SSL library
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * OpenSSL library needs to be fed with sufficient entropy. On systems with
  * /dev/urandom, this is done transparently by the library itself, on other
@@ -543,6 +640,14 @@ static int ssl_init(void)
   return 0;
 }
 
+/**
+ * ssl_socket_read - Read data from an SSL socket
+ * @param conn Connection to a server
+ * @param buf Buffer to store the data
+ * @param len Number of bytes to read
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
 static int ssl_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   struct SslSockData *data = conn->sockdata;
@@ -562,6 +667,14 @@ static int ssl_socket_read(struct Connection *conn, char *buf, size_t len)
   return rc;
 }
 
+/**
+ * ssl_socket_write - Write data to an SSL socket
+ * @param conn Connection to a server
+ * @param buf  Buffer to read into
+ * @param len  Number of bytes to read
+ * @retval >0 Success, number of bytes written
+ * @retval -1 Error, see errno
+ */
 static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   struct SslSockData *data = conn->sockdata;
@@ -580,6 +693,11 @@ static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len
   return rc;
 }
 
+/**
+ * ssl_get_client_cert - Get the client certificate for an SSL connection
+ * @param ssldata SSL socket data
+ * @param conn    Connection to a server
+ */
 static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *conn)
 {
   if (SslClientCert)
@@ -595,6 +713,12 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
   }
 }
 
+/**
+ * tls_close - Close a TLS Connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error, see errno
+ */
 static int tls_close(struct Connection *conn)
 {
   int rc;
@@ -607,6 +731,11 @@ static int tls_close(struct Connection *conn)
   return rc;
 }
 
+/**
+ * check_certificate_cache - Is the X509 Certificate in the cache?
+ * @param peercert Certificate
+ * @retval true Certificate is in the cache
+ */
 static bool check_certificate_cache(X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
@@ -630,6 +759,12 @@ static bool check_certificate_cache(X509 *peercert)
   return false;
 }
 
+/**
+ * check_certificate_file - Read and check a certificate file
+ * @param peercert Certificate
+ * @retval 1 Certificate is valid
+ * @retval 0 Error, or certificate is invalid
+ */
 static int check_certificate_file(X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
@@ -671,6 +806,12 @@ static int check_certificate_file(X509 *peercert)
 
 /**
  * check_host - Check the host on the certificate
+ * @param x509cert Certificate
+ * @param hostname Hostname
+ * @param err      Buffer for error message
+ * @param errlen   Length of buffer
+ * @retval 1 Hostname matches the certificate
+ * @retval 0 Error
  */
 static int check_host(X509 *x509cert, const char *hostname, char *err, size_t errlen)
 {
@@ -775,11 +916,23 @@ out:
   return rc;
 }
 
+/**
+ * check_certificate_by_digest - Validate a certificate by its digest
+ * @param peercert Certificate
+ * @retval 1 Certificate is valid
+ * @retval 0 Error
+ */
 static int check_certificate_by_digest(X509 *peercert)
 {
   return check_certificate_expiration(peercert, false) && check_certificate_file(peercert);
 }
 
+/**
+ * ssl_cache_trusted_cert - Cache a trusted certificate
+ * @param c Certificate
+ * @retval >0 Number of elements in the cache
+ * @retval  0 Error
+ */
 static int ssl_cache_trusted_cert(X509 *c)
 {
   mutt_debug(1, "ssl_cache_trusted_cert: trusted\n");
@@ -788,6 +941,16 @@ static int ssl_cache_trusted_cert(X509 *c)
   return (sk_X509_push(SslSessionCerts, X509_dup(c)));
 }
 
+/**
+ * interactive_check_cert - Ask the user if a certificate is valid
+ * @param cert         Certificate
+ * @param idx          Place of certificate in the chain
+ * @param len          Length of the certificate chain
+ * @param ssl          SSL state
+ * @param allow_always If certificate may be always allowed
+ * @retval true  User selected 'skip'
+ * @retval false Otherwise
+ */
 static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int allow_always)
 {
   static const int part[] = {
@@ -948,7 +1111,11 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
 }
 
 /**
- * ssl_verify_callback - certificate verification callback
+ * ssl_verify_callback - Certificate verification callback
+ * @param preverify_ok If true, don't question the user if they skipped verification
+ * @param ctx          X509 store context
+ * @retval true  Certificate is valid
+ * @retval false Error, or Certificate is invalid
  *
  * called for each certificate in the chain sent by the peer, starting from the
  * root; returning 1 means that the given certificate is trusted, returning 0
@@ -1078,6 +1245,10 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 
 /**
  * ssl_negotiate - Attempt to negotiate SSL over the wire
+ * @param conn    Connection to a server
+ * @param ssldata SSL socket data
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * After SSL state has been initialized, attempt to negotiate SSL over the
  * wire, including certificate checks.
@@ -1151,6 +1322,12 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   return 0;
 }
 
+/**
+ * ssl_socket_open - Open an SSL socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int ssl_socket_open(struct Connection *conn)
 {
   struct SslSockData *data = NULL;
@@ -1247,6 +1424,9 @@ static int ssl_socket_open(struct Connection *conn)
 
 /**
  * mutt_ssl_starttls - Negotiate TLS over an already opened connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * TODO: Merge this code better with ssl_socket_open.
  */
@@ -1365,6 +1545,12 @@ bail:
   return -1;
 }
 
+/**
+ * mutt_ssl_socket_setup - Set up the socket multiplexor
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_ssl_socket_setup(struct Connection *conn)
 {
   if (ssl_init() < 0)

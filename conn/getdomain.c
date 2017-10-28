@@ -20,6 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_getdomain DNS lookups
+ *
+ * DNS lookups
+ *
+ * | Function           | Description
+ * | :----------------- | :-----------------------------------
+ * | getdnsdomainname() | Lookup the host's name using DNS
+ */
+
 #include "config.h"
 #include <netdb.h>
 #include <string.h>
@@ -30,6 +40,13 @@
 #include "lib/memory.h"
 #include "lib/string2.h"
 
+/**
+ * getdnsdomainname - Lookup the host's name using DNS
+ * @param d   Buffer for the result
+ * @param len Length of the buffer
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int getdnsdomainname(char *d, size_t len)
 {
   int ret = -1;

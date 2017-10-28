@@ -20,6 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn Connection Library
+ *
+ * Manage external connections.
+ *
+ * -# @subpage conn_globals
+ * -# @subpage conn_getdomain
+ * -# @subpage conn_sasl
+ * -# @subpage conn_sasl_plain
+ * -# @subpage conn_socket
+ * -# @subpage conn_ssl
+ * -# @subpage conn_ssl_gnutls
+ * -# @subpage conn_tunnel
+ */
+
 #ifndef _CONN_CONN_H
 #define _CONN_CONN_H
 

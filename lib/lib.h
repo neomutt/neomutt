@@ -25,8 +25,8 @@
  *
  * Each source file in the library provides a group of related functions.
  *
- * The library is self-contained -- some files may depend on others in the
- * library, but none depends on source from outside.
+ * @note The library is self-contained -- some files may depend on others in
+ *       the library, but none depends on source from outside.
  *
  * -# @subpage base64
  * -# @subpage buffer

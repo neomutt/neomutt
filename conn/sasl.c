@@ -20,19 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* common SASL helper routines */
-/* SASL can stack a protection layer on top of an existing connection.
- * To handle this, we store a saslconn_t in conn->sockdata, and write
- * wrappers which en/decode the read/write stream, then replace sockdata
- * with an embedded copy of the old sockdata and call the underlying
- * functions (which we've also preserved). I thought about trying to make
- * a general stackable connection system, but it seemed like overkill -
- * something is wrong if we have 15 filters on top of a socket. Anyway,
- * anything else which wishes to stack can use the same method. The only
- * disadvantage is we have to write wrappers for all the socket methods,
- * even if we only stack over read and write. Thinking about it, the
- * abstraction problem is that there is more in Connection than there
- * needs to be. Ideally it would have only (void*)data and methods. */
+/**
+ * @page conn_sasl SASL authentication support
+ *
+ * SASL can stack a protection layer on top of an existing connection.  To
+ * handle this, we store a saslconn_t in conn->sockdata, and write wrappers
+ * which en/decode the read/write stream, then replace sockdata with an
+ * embedded copy of the old sockdata and call the underlying functions (which
+ * we've also preserved). I thought about trying to make a general stackable
+ * connection system, but it seemed like overkill - something is wrong if we
+ * have 15 filters on top of a socket. Anyway, anything else which wishes to
+ * stack can use the same method. The only disadvantage is we have to write
+ * wrappers for all the socket methods, even if we only stack over read and
+ * write. Thinking about it, the abstraction problem is that there is more in
+ * Connection than there needs to be. Ideally it would have only (void*)data
+ * and methods.
+ *
+ * | Function               | Description
+ * | :--------------------- | :-----------------------------------
+ * | mutt_sasl_client_new() | wrapper for sasl_client_new
+ * | mutt_sasl_done()       | Invoke when processing is complete.
+ * | mutt_sasl_interact()   | Perform an SASL interaction with the user
+ * | mutt_sasl_setup_conn() | Set up an SASL connection
+ */
 
 #include "config.h"
 #include <errno.h>
@@ -65,6 +75,11 @@ static sasl_callback_t MuttSaslCallbacks[5];
 
 static sasl_secret_t *secret_ptr = NULL;
 
+/**
+ * getnameinfo_err - Convert a getaddrinfo() error code into an SASL error code
+ * @param ret getaddrinfo() error code, e.g. EAI_AGAIN
+ * @retval int SASL error code, e.g. SASL_FAIL
+ */
 static int getnameinfo_err(int ret)
 {
   int err;
@@ -115,6 +130,11 @@ static int getnameinfo_err(int ret)
 
 /**
  * iptostring - Convert IP Address to string
+ * @param addr    IP address
+ * @param addrlen Size of addr struct
+ * @param out     Buffer for result
+ * @param outlen  Length of buffer
+ * @retval int SASL error code, e.g. SASL_BADPARAM
  *
  * utility function, copied from sasl2 sample code
  */
@@ -145,6 +165,10 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
 
 /**
  * mutt_sasl_cb_log - callback to log SASL messages
+ * @param context  Supplied context, always NULL
+ * @param priority Debug level
+ * @param message  Message
+ * @retval int SASL_OK, always
  */
 static int mutt_sasl_cb_log(void *context, int priority, const char *message)
 {
@@ -155,6 +179,7 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
 
 /**
  * mutt_sasl_start - Initialise SASL library
+ * @retval int SASL error code, e.g. SASL_OK
  *
  * Call before doing an SASL exchange - initialises library (if necessary).
  */
@@ -192,6 +217,11 @@ static int mutt_sasl_start(void)
 
 /**
  * mutt_sasl_cb_authname - callback to retrieve authname or user from Account
+ * @param[in]  context Account
+ * @param[in]  id      Field to get.  SASL_CB_USER or SASL_CB_AUTHNAME
+ * @param[out] result  Resulting string
+ * @param[out] len     Length of result
+ * @retval int SASL error code, e.g. SASL_FAIL
  */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned *len)
 {
@@ -230,6 +260,14 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
   return SASL_OK;
 }
 
+/**
+ * mutt_sasl_cb_pass - SASL callback function to get password
+ * @param[in]  conn    Connection to a server
+ * @param[in]  context Account
+ * @param[in]  id      SASL_CB_PASS
+ * @param[out] psecret SASL secret
+ * @retval int SASL error code, e.g SASL_FAIL
+ */
 static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
 {
   struct Account *account = (struct Account *) context;
@@ -254,6 +292,11 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
   return SASL_OK;
 }
 
+/**
+ * mutt_sasl_get_callbacks - Get the SASL callback functions
+ * @param account Account to associate with callbacks
+ * @retval ptr Array of callback functions
+ */
 static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
 {
   sasl_callback_t *callback = NULL;
@@ -289,6 +332,9 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
 
 /**
  * mutt_sasl_conn_open - empty wrapper for underlying open function
+ * @param conn Connection to the server
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * We don't know in advance that a connection will use SASL, so we replace
  * conn's methods with sasl methods when authentication is successful, using
@@ -309,6 +355,9 @@ static int mutt_sasl_conn_open(struct Connection *conn)
 
 /**
  * mutt_sasl_conn_close - close SASL connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * Calls underlying close function and disposes of the sasl_conn_t object, then
  * restores connection to pre-sasl state
@@ -338,6 +387,14 @@ static int mutt_sasl_conn_close(struct Connection *conn)
   return rc;
 }
 
+/**
+ * mutt_sasl_conn_read - Read data from an SASL connection
+ * @param conn Connection to a server
+ * @param buf Buffer to store the data
+ * @param len Number of bytes to read
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
 static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
 {
   struct SaslData *sasldata = NULL;
@@ -399,6 +456,14 @@ out:
   return rc;
 }
 
+/**
+ * mutt_sasl_conn_write - Write to an SASL connection
+ * @param conn Connection to a server
+ * @param buf Buffer to store the data
+ * @param len Number of bytes to read
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
 static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t len)
 {
   struct SaslData *sasldata = NULL;
@@ -446,6 +511,14 @@ fail:
   return -1;
 }
 
+/**
+ * mutt_sasl_conn_poll - Check an SASL connection for data
+ * @param conn Connection to a server
+ * @param wait_secs How long to wait for a response
+ * @retval >0 There is data to read
+ * @retval  0 Read would block
+ * @retval -1 Connection doesn't support polling
+ */
 static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {
   struct SaslData *sasldata = conn->sockdata;
@@ -460,6 +533,10 @@ static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 
 /**
  * mutt_sasl_client_new - wrapper for sasl_client_new
+ * @param conn     Connection to a server
+ * @param saslconn SASL connection
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * which also sets various security properties. If this turns out to be fine
  * for POP too we can probably stop exporting mutt_sasl_get_callbacks().
@@ -566,6 +643,13 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
   return 0;
 }
 
+/**
+ * mutt_sasl_interact - Perform an SASL interaction with the user
+ * @param interaction Details of interaction
+ * @retval int SASL error code: SASL_OK or SASL_FAIL
+ *
+ * An example interaction might be asking the user for a password.
+ */
 int mutt_sasl_interact(sasl_interact_t *interaction)
 {
   char prompt[SHORT_STRING];
@@ -593,8 +677,10 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
 /**
  * mutt_sasl_setup_conn - Set up an SASL connection
+ * @param conn Connection to a server
+ * @param saslconn SASL connection
  *
- * replace connection methods, sockdata with SASL wrappers, for protection
+ * Replace connection methods, sockdata with SASL wrappers, for protection
  * layers. Also get ssf, as a fastpath for the read/write methods.
  */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
@@ -638,6 +724,7 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 
 /*
  * mutt_sasl_done - Invoke when processing is complete.
+ *
  * This is a cleanup function, used to free all memory used by the library. 
  * Invoke when processing is complete.
  */

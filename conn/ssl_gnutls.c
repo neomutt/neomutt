@@ -21,6 +21,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page conn_ssl_gnutls Handling of GnuTLS encryption
+ *
+ * Handling of GnuTLS encryption
+ *
+ * | Function                | Description
+ * | :---------------------- | :-----------------------------------
+ * | mutt_ssl_socket_setup() | Set up SSL socket mulitplexor
+ * | mutt_ssl_starttls()     | Set up TLS multiplexor
+ */
+
 #include "config.h"
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
@@ -71,6 +82,11 @@ struct TlsSockData
   gnutls_certificate_credentials_t xcred;
 };
 
+/**
+ * tls_init - Set up Gnu TLS
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int tls_init(void)
 {
   static bool init_complete = false;
@@ -91,6 +107,14 @@ static int tls_init(void)
   return 0;
 }
 
+/**
+ * tls_socket_read - Read data from a TLS socket
+ * @param conn Connection to a server
+ * @param buf Buffer to store the data
+ * @param len Number of bytes to read
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
 static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   struct TlsSockData *data = conn->sockdata;
@@ -117,6 +141,14 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
   return ret;
 }
 
+/**
+ * tls_socket_write - Write data to a TLS socket
+ * @param conn Connection to a server
+ * @param buf  Buffer to read into
+ * @param len  Number of bytes to read
+ * @retval >0 Success, number of bytes written
+ * @retval -1 Error, see errno
+ */
 static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   struct TlsSockData *data = conn->sockdata;
@@ -149,6 +181,12 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t len
   return sent;
 }
 
+/**
+ * tls_socket_close - Close a TLS socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error, see errno
+ */
 static int tls_socket_close(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
@@ -172,6 +210,12 @@ static int tls_socket_close(struct Connection *conn)
   return raw_socket_close(conn);
 }
 
+/**
+ * tls_starttls_close - Close a TLS connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error, see errno
+ */
 static int tls_starttls_close(struct Connection *conn)
 {
   int rc;
@@ -186,6 +230,9 @@ static int tls_starttls_close(struct Connection *conn)
 
 /**
  * tls_verify_peers - wrapper for gnutls_certificate_verify_peers
+ * @param tlsstate TLS state
+ * @retval  0 Success
+ * @retval >0 Error, e.g. GNUTLS_CERT_INVALID
  *
  * wrapper with sanity-checking
  */
@@ -222,6 +269,13 @@ static gnutls_certificate_status_t tls_verify_peers(gnutls_session_t tlsstate)
   return status;
 }
 
+/**
+ * tls_fingerprint - Create a fingerprint of a TLS Certificate
+ * @param algo Fingerprint algorithm, e.g. GNUTLS_MAC_SHA256
+ * @param s    Buffer for the fingerprint
+ * @param l    Length of the buffer
+ * @param data Certificate
+ */
 static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
                             const gnutls_datum_t *data)
 {
@@ -246,6 +300,13 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
   }
 }
 
+/**
+ * tls_check_stored_hostname - Does the hostname match a stored certificate?
+ * @param cert     Certificate
+ * @param hostname Hostname
+ * @retval 1 Hostname match found
+ * @retval 0 Error, or no match
+ */
 static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hostname)
 {
   char buf[80];
@@ -298,7 +359,10 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
 }
 
 /**
- * tls_compare_certificates - Compare certificates
+ * tls_compare_certificates - Compare certificates against CertificateFile
+ * @param peercert Certificate
+ * @retval 1 Certificate matches file
+ * @retval 0 Error, or no match
  */
 static int tls_compare_certificates(const gnutls_datum_t *peercert)
 {
@@ -369,6 +433,17 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   return 0;
 }
 
+/**
+ * tls_check_preauth - Prepare a certificate for authentication
+ * @param[in]  certdata  List of GnuTLS certificates
+ * @param[in]  certstat  GnuTLS certificate status
+ * @param[in]  hostname  Hostname
+ * @param[in]  chainidx  Index in the certificate chain
+ * @param[out] certerr   Result, e.g. #CERTERR_VALID
+ * @param[out] savedcert 1 if certificate has been saved
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int tls_check_preauth(const gnutls_datum_t *certdata,
                              gnutls_certificate_status_t certstat, const char *hostname,
                              int chainidx, int *certerr, int *savedcert)
@@ -486,6 +561,13 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
   return -1;
 }
 
+/**
+ * tls_make_date - Create a TLS date string
+ * @param t   Time to convert
+ * @param s   Buffer for the string
+ * @param len Length of the buffer
+ * @retval ptr Pointer to s
+ */
 static char *tls_make_date(time_t t, char *s, size_t len)
 {
   struct tm *l = gmtime(&t);
@@ -793,6 +875,12 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   return (done == 2);
 }
 
+/**
+ * tls_check_certificate - Check a connection's certificate
+ * @param conn Connection to a server
+ * @retval >0 Certificate is valid
+ * @retval 0  Error, or certificate is invalid
+ */
 static int tls_check_certificate(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
@@ -871,6 +959,10 @@ static int tls_check_certificate(struct Connection *conn)
   return rc;
 }
 
+/**
+ * tls_get_client_cert - Get the client certificate for a TLS connection
+ * @param conn Connection to a server
+ */
 static void tls_get_client_cert(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
@@ -930,6 +1022,12 @@ err_crt:
 }
 
 #ifdef HAVE_GNUTLS_PRIORITY_SET_DIRECT
+/**
+ * tls_set_priority - Set TLS algorithm priorities
+ * @param data TLS socket data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 4;
@@ -1031,6 +1129,9 @@ static int tls_set_priority(struct TlsSockData *data)
 
 /**
  * tls_negotiate - Negotiate TLS connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * After TLS state has been initialized, attempt to negotiate TLS over the
  * wire, including certificate checks.
@@ -1100,9 +1201,7 @@ static int tls_negotiate(struct Connection *conn)
     gnutls_dh_set_prime_bits(data->state, SslMinDhPrimeBits);
   }
 
-  /*
-  gnutls_set_cred (data->state, GNUTLS_ANON, NULL);
-*/
+  /* gnutls_set_cred (data->state, GNUTLS_ANON, NULL); */
 
   gnutls_credentials_set(data->state, GNUTLS_CRD_CERTIFICATE, data->xcred);
 
@@ -1155,6 +1254,12 @@ fail:
   return -1;
 }
 
+/**
+ * tls_socket_open - Open a TLS socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int tls_socket_open(struct Connection *conn)
 {
   if (raw_socket_open(conn) < 0)
@@ -1169,6 +1274,12 @@ static int tls_socket_open(struct Connection *conn)
   return 0;
 }
 
+/**
+ * mutt_ssl_socket_setup - Set up SSL socket mulitplexor
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_ssl_socket_setup(struct Connection *conn)
 {
   if (tls_init() < 0)
@@ -1183,6 +1294,12 @@ int mutt_ssl_socket_setup(struct Connection *conn)
   return 0;
 }
 
+/**
+ * mutt_ssl_starttls - Set up TLS multiplexor
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 int mutt_ssl_starttls(struct Connection *conn)
 {
   if (tls_init() < 0)
