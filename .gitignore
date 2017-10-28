@@ -13,6 +13,7 @@ autosetup/jimsh0
 # Ignore directories
 **/.deps/
 **/*.Po
+**/*.Tpo
 autom4te.cache/
 .build-aux/
 
