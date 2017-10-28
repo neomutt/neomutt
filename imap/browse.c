@@ -21,7 +21,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* NeoMutt browser support routines */
+/**
+ * @page imap_browse Mailbox browser
+ *
+ * GUI select an IMAP mailbox from a list
+ *
+ * | Function              | Description
+ * | :-------------------- | :-------------------------------------------------
+ * | imap_browse()         | IMAP hook into the folder browser
+ * | imap_mailbox_create() | Create a new IMAP mailbox
+ * | imap_mailbox_rename() | Rename a mailbox
+ */
 
 #include "config.h"
 #ifdef ENABLE_NLS
@@ -45,13 +55,19 @@
 #include "protos.h"
 
 /**
- * imap_add_folder - Format and add an IMAP folder to the browser
+ * add_folder - Format and add an IMAP folder to the browser
+ * @param delim       Path delimiter
+ * @param folder      Name of the folder
+ * @param noselect    true if item isn't selectable
+ * @param noinferiors true if item has no children
+ * @param state       Browser state to add to
+ * @param isparent    true if item represents the parent folder
  *
  * The folder parameter should already be 'unmunged' via
  * imap_unmunge_mbox_name().
  */
-static void imap_add_folder(char delim, char *folder, int noselect, int noinferiors,
-                            struct BrowserState *state, short isparent)
+static void add_folder(char delim, char *folder, int noselect, int noinferiors,
+                       struct BrowserState *state, short isparent)
 {
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
@@ -127,6 +143,15 @@ static void imap_add_folder(char delim, char *folder, int noselect, int noinferi
   FREE(&mx.mbox);
 }
 
+/**
+ * browse_add_list_result - Add entries to the folder browser
+ * @param idata    Server data
+ * @param cmd      Command string from server
+ * @param state    Browser state to add to
+ * @param isparent Is this a shortcut for the parent directory?
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int browse_add_list_result(struct ImapData *idata, const char *cmd,
                                   struct BrowserState *state, short isparent)
 {
@@ -156,8 +181,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
         list.noselect = true;
       /* prune current folder from output */
       if (isparent || (mutt_strncmp(list.name, mx.mbox, strlen(list.name)) != 0))
-        imap_add_folder(list.delim, list.name, list.noselect, list.noinferiors,
-                        state, isparent);
+        add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
   idata->cmddata = NULL;
@@ -168,6 +192,10 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
 
 /**
  * imap_browse - IMAP hook into the folder browser
+ * @param path  Current folder
+ * @param state BrowserState to populate
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * Fill out browser_state, given a current folder to browse
  */
@@ -268,7 +296,7 @@ int imap_browse(char *path, struct BrowserState *state)
       if (showparents)
       {
         mutt_debug(3, "imap_init_browse: adding parent %s\n", mbox);
-        imap_add_folder(list.delim, mbox, 1, 0, state, 1);
+        add_folder(list.delim, mbox, 1, 0, state, 1);
       }
 
       /* if our target isn't a folder, we are in our superior */
@@ -290,7 +318,7 @@ int imap_browse(char *path, struct BrowserState *state)
       /* folder may be "/" */
       snprintf(relpath, sizeof(relpath), "%c", n < 0 ? '\0' : idata->delim);
       if (showparents)
-        imap_add_folder(idata->delim, relpath, 1, 0, state, 1);
+        add_folder(idata->delim, relpath, 1, 0, state, 1);
       if (!state->folder)
       {
         imap_qualify_path(buf, sizeof(buf), &mx, relpath);
@@ -337,6 +365,9 @@ fail:
 
 /**
  * imap_mailbox_create - Create a new IMAP mailbox
+ * @param folder Mailbox to create
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * Prompt for a new mailbox name, and try to create it
  */
@@ -395,6 +426,14 @@ fail:
   return -1;
 }
 
+/**
+ * imap_mailbox_rename - Rename a mailbox
+ * @param mailbox Mailbox to rename
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * The user will be prompted for a new name.
+ */
 int imap_mailbox_rename(const char *mailbox)
 {
   struct ImapData *idata = NULL;

@@ -20,7 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* IMAP login/authentication code */
+/**
+ * @page imap_auth_anon IMAP anonymous authentication method
+ *
+ * IMAP anonymous authentication method
+ *
+ * | Function           | Description
+ * | :----------------- | :-------------------------------------------------
+ * | imap_auth_anon()   | Authenticate anonymously
+ */
 
 #include "config.h"
 #include "imap_private.h"
@@ -34,6 +42,9 @@
 
 /**
  * imap_auth_anon - Authenticate anonymously
+ * @param idata  Server data
+ * @param method Name of this authentication method
+ * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  *
  * this is basically a stripped-down version of the cram-md5 method.
  */

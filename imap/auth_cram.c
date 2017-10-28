@@ -20,7 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* IMAP login/authentication code */
+/**
+ * @page imap_auth_crap IMAP CRAM-MD5 authentication method
+ *
+ * IMAP CRAM-MD5 authentication method
+ *
+ * | Function             | Description
+ * | :------------------- | :-------------------------------------------------
+ * | imap_auth_cram_md5() | Authenticate using CRAM-MD5
+ */
 
 #include "config.h"
 #include <stdio.h>
@@ -37,11 +45,63 @@
 #define MD5_BLOCK_LEN 64
 #define MD5_DIGEST_LEN 16
 
-/* forward declarations */
-static void hmac_md5(const char *password, char *challenge, unsigned char *response);
+/**
+ * hmac_md5 - produce CRAM-MD5 challenge response
+ * @param[in]  password  Password to encrypt
+ * @param[in]  challenge Challenge from server
+ * @param[out] response  Buffer for the response
+ */
+static void hmac_md5(const char *password, char *challenge, unsigned char *response)
+{
+  struct Md5Ctx ctx;
+  unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
+  unsigned char secret[MD5_BLOCK_LEN + 1];
+  unsigned char hash_passwd[MD5_DIGEST_LEN];
+  unsigned int secret_len, chal_len;
+
+  secret_len = strlen(password);
+  chal_len = strlen(challenge);
+
+  /* passwords longer than MD5_BLOCK_LEN bytes are substituted with their MD5
+   * digests */
+  if (secret_len > MD5_BLOCK_LEN)
+  {
+    md5_buffer(password, secret_len, hash_passwd);
+    strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
+    secret_len = MD5_DIGEST_LEN;
+  }
+  else
+    strfcpy((char *) secret, password, sizeof(secret));
+
+  memset(ipad, 0, sizeof(ipad));
+  memset(opad, 0, sizeof(opad));
+  memcpy(ipad, secret, secret_len);
+  memcpy(opad, secret, secret_len);
+
+  for (int i = 0; i < MD5_BLOCK_LEN; i++)
+  {
+    ipad[i] ^= 0x36;
+    opad[i] ^= 0x5c;
+  }
+
+  /* inner hash: challenge and ipadded secret */
+  md5_init_ctx(&ctx);
+  md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
+  md5_process_bytes(challenge, chal_len, &ctx);
+  md5_finish_ctx(&ctx, response);
+
+  /* outer hash: inner hash and opadded secret */
+  md5_init_ctx(&ctx);
+  md5_process_bytes(opad, MD5_BLOCK_LEN, &ctx);
+  md5_process_bytes(response, MD5_DIGEST_LEN, &ctx);
+  md5_finish_ctx(&ctx, response);
+}
 
 /**
- * imap_auth_cram_md5 - imap_auth_cram_md5: AUTH=CRAM-MD5 support
+ * imap_auth_cram_md5 - Authenticate using CRAM-MD5
+ * @param idata  Server data
+ * @param method Name of this authentication method
+ * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
 {
@@ -112,10 +172,8 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
       hmac_response[13], hmac_response[14], hmac_response[15]);
   mutt_debug(2, "CRAM response: %s\n", obuf);
 
-  /* XXX - ibuf must be long enough to store the base64 encoding of obuf,
-   * plus the additional debris
-   */
-
+  /* ibuf must be long enough to store the base64 encoding of obuf,
+   * plus the additional debris */
   mutt_to_base64(ibuf, obuf, strlen(obuf), sizeof(ibuf) - 2);
   safe_strcat(ibuf, sizeof(ibuf), "\r\n");
   mutt_socket_write(idata->conn, ibuf);
@@ -137,53 +195,4 @@ bail:
   mutt_error(_("CRAM-MD5 authentication failed."));
   mutt_sleep(2);
   return IMAP_AUTH_FAILURE;
-}
-
-/**
- * hmac_md5 - hmac_md5: produce CRAM-MD5 challenge response
- */
-static void hmac_md5(const char *password, char *challenge, unsigned char *response)
-{
-  struct Md5Ctx ctx;
-  unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
-  unsigned char secret[MD5_BLOCK_LEN + 1];
-  unsigned char hash_passwd[MD5_DIGEST_LEN];
-  unsigned int secret_len, chal_len;
-
-  secret_len = strlen(password);
-  chal_len = strlen(challenge);
-
-  /* passwords longer than MD5_BLOCK_LEN bytes are substituted with their MD5
-   * digests */
-  if (secret_len > MD5_BLOCK_LEN)
-  {
-    md5_buffer(password, secret_len, hash_passwd);
-    strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
-    secret_len = MD5_DIGEST_LEN;
-  }
-  else
-    strfcpy((char *) secret, password, sizeof(secret));
-
-  memset(ipad, 0, sizeof(ipad));
-  memset(opad, 0, sizeof(opad));
-  memcpy(ipad, secret, secret_len);
-  memcpy(opad, secret, secret_len);
-
-  for (int i = 0; i < MD5_BLOCK_LEN; i++)
-  {
-    ipad[i] ^= 0x36;
-    opad[i] ^= 0x5c;
-  }
-
-  /* inner hash: challenge and ipadded secret */
-  md5_init_ctx(&ctx);
-  md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
-  md5_process_bytes(challenge, chal_len, &ctx);
-  md5_finish_ctx(&ctx, response);
-
-  /* outer hash: inner hash and opadded secret */
-  md5_init_ctx(&ctx);
-  md5_process_bytes(opad, MD5_BLOCK_LEN, &ctx);
-  md5_process_bytes(response, MD5_DIGEST_LEN, &ctx);
-  md5_finish_ctx(&ctx, response);
 }

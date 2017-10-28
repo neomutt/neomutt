@@ -22,8 +22,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* command.c: routines for sending commands to an IMAP server and parsing
- *  responses */
+/**
+ * @page imap_command Send/receive commands to/from an IMAP server
+ *
+ * Send/receive commands to/from an IMAP server
+ *
+ * | Function           | Description
+ * | :----------------- | :-------------------------------------------------
+ * | imap_cmd_finish()  | Attempt to perform cleanup
+ * | imap_cmd_idle()    | Enter the IDLE state
+ * | imap_cmd_start()   | Given an IMAP command, send it to the server
+ * | imap_cmd_step()    | Reads server responses from an IMAP command
+ * | imap_cmd_trailer() | Extra information after tagged command response if any
+ * | imap_code()        | Was the command successful
+ * | imap_exec()        | Execute a command and wait for the response from the server
+ */
 
 #include "config.h"
 #include <ctype.h>
@@ -51,13 +64,14 @@
 
 #define IMAP_CMD_BUFSIZE 512
 
+/**
+ * Capabilities - Server capabilties strings that we understand
+ */
 static const char *const Capabilities[] = {
   "IMAP4",         "IMAP4rev1",   "STATUS",         "ACL",      "NAMESPACE",
   "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS", "STARTTLS", "LOGINDISABLED",
   "IDLE",          "SASL-IR",     "X-GM-EXT1",      "ENABLE",   NULL,
 };
-
-/* Gmail document one string but use another.  Support both. */
 
 /**
  * struct CapabilityAlias - Alternative names for capabilities
@@ -68,10 +82,20 @@ struct CapabilityAlias
   unsigned int value;
 };
 
+/**
+ * CapabilityAliases - Alternate capability strings (for compatibility)
+ */
 static struct CapabilityAlias CapabilityAliases[] = {
-  { "X-GM-EXT-1", X_GM_EXT1 }, { NULL, 0 },
+  /* Gmail documents one string but use another.  Support both. */
+  { "X-GM-EXT-1", X_GM_EXT1 },
+  { NULL, 0 },
 };
 
+/**
+ * cmd_queue_full - Is the IMAP command queue full?
+ * @param idata Server data
+ * @retval true Queue is full
+ */
 static bool cmd_queue_full(struct ImapData *idata)
 {
   if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
@@ -84,6 +108,7 @@ static bool cmd_queue_full(struct ImapData *idata)
  * cmd_new - Create and queue a new command control block
  * @param idata IMAP data
  * @retval NULL if the pipeline is full
+ * @retval ptr New command
  */
 static struct ImapCommand *cmd_new(struct ImapData *idata)
 {
@@ -109,6 +134,11 @@ static struct ImapCommand *cmd_new(struct ImapData *idata)
 
 /**
  * cmd_queue - Add a IMAP command to the queue
+ * @param idata  Server data
+ * @param cmdstr Command string
+ * @param flags  Server flags, e.g. #IMAP_CMD_POLL
+ * @retval  0 Success
+ * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  *
  * If the queue is full, attempts to drain it.
  */
@@ -139,6 +169,7 @@ static int cmd_queue(struct ImapData *idata, const char *cmdstr, int flags)
 
 /**
  * cmd_handle_fatal - When ImapData is in fatal state, do what we can
+ * @param idata Server data
  */
 static void cmd_handle_fatal(struct ImapData *idata)
 {
@@ -163,6 +194,14 @@ static void cmd_handle_fatal(struct ImapData *idata)
   }
 }
 
+/**
+ * cmd_start - Start a new IMAP command
+ * @param idata  Server data
+ * @param cmdstr Command string
+ * @param flags  Command flags, e.g. #IMAP_CMD_QUEUE
+ * @retval  0 Success
+ * @retval <0 Failure, e.g. #IMAP_CMD_BAD
+ */
 static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
 {
   int rc;
@@ -195,6 +234,9 @@ static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
 
 /**
  * cmd_status - parse response line for tagged OK/NO/BAD
+ * @param s Status string from server
+ * @retval  0 Success
+ * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  */
 static int cmd_status(const char *s)
 {
@@ -210,6 +252,8 @@ static int cmd_status(const char *s)
 
 /**
  * cmd_parse_expunge - Parse expunge command
+ * @param idata Server data
+ * @param s     String containing MSN of message to expunge
  *
  * cmd_parse_expunge: mark headers with new sequence ID and mark idata to be
  * reopened at our earliest convenience
@@ -252,6 +296,8 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 
 /**
  * cmd_parse_fetch - Load fetch response into ImapData
+ * @param idata Server data
+ * @param s     String containing MSN of message to fetch
  *
  * Currently only handles unanticipated FETCH responses, and only FLAGS data.
  * We get these if another client has changed flags for a mailbox we've
@@ -332,6 +378,8 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 
 /**
  * cmd_parse_capability - set capability bits according to CAPABILITY response
+ * @param idata Server data
+ * @param s     Command string with capabilities
  */
 static void cmd_parse_capability(struct ImapData *idata, char *s)
 {
@@ -378,6 +426,11 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
   }
 }
 
+/**
+ * cmd_parse_list - Parse a server LIST command (list mailboxes)
+ * @param idata Server data
+ * @param s     Command string with folder list
+ */
 static void cmd_parse_list(struct ImapData *idata, char *s)
 {
   struct ImapList *list = NULL;
@@ -449,6 +502,11 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   }
 }
 
+/**
+ * cmd_parse_lsub - Parse a server LSUB (list subscribed mailboxes)
+ * @param idata Server data
+ * @param s     Command string with folder list
+ */
 static void cmd_parse_lsub(struct ImapData *idata, char *s)
 {
   char buf[STRING];
@@ -498,6 +556,8 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
 
 /**
  * cmd_parse_myrights - Set rights bits according to MYRIGHTS response
+ * @param idata Server data
+ * @param s     Command string with rights info
  */
 static void cmd_parse_myrights(struct ImapData *idata, const char *s)
 {
@@ -565,6 +625,8 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
 
 /**
  * cmd_parse_search - store SEARCH response for later use
+ * @param idata Server data
+ * @param s     Command string with search results
  */
 static void cmd_parse_search(struct ImapData *idata, const char *s)
 {
@@ -584,6 +646,8 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
 
 /**
  * cmd_parse_status - Parse status from server
+ * @param idata Server data
+ * @param s     Command string with status info
  *
  * first cut: just do buffy update. Later we may wish to cache all mailbox
  * information, even that not desired by buffy
@@ -743,6 +807,8 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
 /**
  * cmd_parse_enabled - Record what the server has enabled
+ * @param idata Server data
+ * @param s     Command string containing acceptable encodings
  */
 static void cmd_parse_enabled(struct ImapData *idata, const char *s)
 {
@@ -758,6 +824,9 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
 
 /**
  * cmd_handle_untagged - fallback parser for otherwise unhandled messages
+ * @param idata Server data
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int cmd_handle_untagged(struct ImapData *idata)
 {
@@ -861,6 +930,10 @@ static int cmd_handle_untagged(struct ImapData *idata)
 
 /**
  * imap_cmd_start - Given an IMAP command, send it to the server
+ * @param idata  Server data
+ * @param cmdstr Command string to send
+ * @retval  0 Success
+ * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  *
  * If cmdstr is NULL, sends queued commands.
  */
@@ -871,6 +944,9 @@ int imap_cmd_start(struct ImapData *idata, const char *cmdstr)
 
 /**
  * imap_cmd_step - Reads server responses from an IMAP command
+ * @param idata Server data
+ * @retval  0 Success
+ * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  *
  * detects tagged completion response, handles untagged messages, can read
  * arbitrarily large strings (using malloc, so don't make it _too_ large!).
@@ -988,16 +1064,19 @@ int imap_cmd_step(struct ImapData *idata)
 /**
  * imap_code - Was the command successful
  * @param s IMAP command status
- * @retval 1 if the command result was OK
- * @retval 0 if NO or BAD
+ * @retval 1 Command result was OK
+ * @retval 0 If NO or BAD
  */
-int imap_code(const char *s)
+bool imap_code(const char *s)
 {
   return cmd_status(s) == IMAP_CMD_OK;
 }
 
 /**
  * imap_cmd_trailer - Extra information after tagged command response if any
+ * @param idata Server data
+ * @retval ptr Extra command information (pointer into idata->buf)
+ * @retval ""  Error (static string)
  */
 const char *imap_cmd_trailer(struct ImapData *idata)
 {
@@ -1030,9 +1109,9 @@ const char *imap_cmd_trailer(struct ImapData *idata)
  * @param idata  IMAP data
  * @param cmdstr Command to execute
  * @param flags  Flags (see below)
- * @retval 0 on success
- * @retval -1 on Failure
- * @retval -2 on OK Failure
+ * @retval  0 Success
+ * @retval -1 Failure
+ * @retval -2 OK Failure
  *
  * Also, handle untagged responses.
  *
@@ -1090,6 +1169,7 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 
 /**
  * imap_cmd_finish - Attempt to perform cleanup
+ * @param idata Server data
  *
  * Attempts to perform cleanup (eg fetch new mail if detected, do expunge).
  * Called automatically by imap_cmd_step(), but may be called at any time.
@@ -1138,6 +1218,9 @@ void imap_cmd_finish(struct ImapData *idata)
 
 /**
  * imap_cmd_idle - Enter the IDLE state
+ * @param idata Server data
+ * @retval  0 Success
+ * @retval <0 Failure, e.g. #IMAP_CMD_BAD
  */
 int imap_cmd_idle(struct ImapData *idata)
 {
