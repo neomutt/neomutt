@@ -22,9 +22,8 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "lib/lib.h"
-#include "mutt_sasl_plain.h"
-#include "protos.h"
+#include "lib/base64.h"
+#include "lib/string2.h"
 
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass)

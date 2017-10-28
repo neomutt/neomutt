@@ -532,10 +532,10 @@ AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support usi
 
 		AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
 		AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
 		need_ssl=yes
 	fi
 ])
+AM_CONDITIONAL(USE_SSL_OPENSSL, test x$need_ssl = xyes)
 
 AC_ARG_WITH([gnutls], AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[enable TLS support using gnutls]),
 	[gnutls_prefix="$withval"], [gnutls_prefix="no"])
@@ -563,10 +563,10 @@ if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
 		AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
 		AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
 
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
-		need_ssl=yes],
+		need_tls=yes],
 		[AC_MSG_ERROR([could not find libgnutls])])
 fi
+AM_CONDITIONAL(USE_SSL_GNUTLS, test x$need_tls = xyes)
 
 AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network security library]),
 	[
@@ -580,8 +580,6 @@ AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network sec
 		sasl_libs="sasl2 sasl"
 		AC_SEARCH_LIBS(sasl_encode64, [$sasl_libs],,
 			AC_MSG_ERROR([could not find sasl lib]),)
-
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
 
 		AC_DEFINE(USE_SASL,1,
 			[ Define if want to use the SASL library for POP/IMAP authentication. ])
@@ -948,7 +946,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile lib/Makefile)
+	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile lib/Makefile conn/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

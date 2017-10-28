@@ -81,9 +81,9 @@
 #include <unistd.h>
 #include "imap_private.h"
 #include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
-#include "account.h"
 #include "bcache.h"
 #include "body.h"
 #include "buffy.h"
@@ -94,6 +94,7 @@
 #include "imap/imap.h"
 #include "mailbox.h"
 #include "message.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mutt_tags.h"
@@ -105,9 +106,6 @@
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
-#endif
-#ifdef USE_SSL
-#include "mutt_ssl.h"
 #endif
 
 /**

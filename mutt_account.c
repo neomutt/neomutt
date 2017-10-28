@@ -25,7 +25,7 @@
 #include <string.h>
 #include "lib/lib.h"
 #include "mutt.h"
-#include "account.h"
+#include "mutt_account.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"

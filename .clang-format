@@ -18,6 +18,8 @@ IncludeCategories:
     Priority:   -6
   - Regex:      '"lib/.*\.h"'
     Priority:   -4
+  - Regex:      '"conn/.*\.h"'
+    Priority:   -3
   - Regex:      '"mutt\.h"'
     Priority:   -2
   # Main Header 0

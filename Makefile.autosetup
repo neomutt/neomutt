@@ -53,14 +53,14 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-tree -r --name-only HEAD 2>/dev/null) \
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
-NEOMUTTOBJS=	account.o addrbook.o alias.o attach.o bcache.o body.o \
+NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		browser.o buffy.o charset.o color.o commands.o complete.o \
 		compose.o compress.o conststrings.o copy.o curs_lib.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
-		flags.o from.o getdomain.o group.o handler.o hdrline.o \
+		flags.o from.o group.o handler.o hdrline.o \
 		headers.o help.o history.o hook.o init.o keymap.o main.o \
 		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_idna.o \
-		mutt_sasl_plain.o mutt_socket.o mutt_tags.o mutt_tunnel.o mx.o \
+		mutt_socket.o mutt_tags.o mx.o \
 		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
 		rfc1524.o rfc2047.o rfc2231.o rfc3676.o rfc822.o \
@@ -75,20 +75,11 @@ NEOMUTTOBJS+=	wcscasecmp.o
 @if HAVE_RESIZETERM
 NEOMUTTOBJS+=	resize.o
 @endif
-@if USE_SSL_OPENSSL
-NEOMUTTOBJS+=	mutt_ssl.o
-@endif
-@if USE_SSL_GNUTLS
-NEOMUTTOBJS+=	mutt_ssl_gnutls.o
-@endif
 @if USE_NOTMUCH
 NEOMUTTOBJS+=	mutt_notmuch.o
 @endif
 @if MIXMASTER
 NEOMUTTOBJS+=	remailer.o
-@endif
-@if HAVE_SASL
-NEOMUTTOBJS+=	mutt_sasl.o
 @endif
 @if USE_LUA
 NEOMUTTOBJS+=	mutt_lua.o
@@ -142,6 +133,24 @@ LIBIMAPOBJS+=	imap/auth_sasl.o
 CLEANFILES+=	$(LIBIMAP) $(LIBIMAPOBJS)
 MUTTLIBS+=	$(LIBIMAP)
 ALLOBJS+=	$(LIBIMAPOBJS)
+
+###############################################################################
+# libconn
+LIBCONN=	libconn.a
+LIBCONNOBJS=	conn/conn_globals.o conn/getdomain.o conn/sasl_plain.o \
+		conn/socket.o conn/tunnel.o
+@if HAVE_SASL
+LIBCONNOBJS+=	conn/sasl.o
+@endif
+@if USE_SSL_OPENSSL
+LIBCONNOBJS+=	conn/ssl.o
+@endif
+@if USE_SSL_GNUTLS
+LIBCONNOBJS+=	conn/ssl_gnutls.o
+@endif
+CLEANFILES+=	$(LIBCONN) $(LIBCONNOBJS)
+MUTTLIBS+=	$(LIBCONN)
+ALLOBJS+=	$(LIBCONNOBJS)
 
 ###############################################################################
 # libhcache
@@ -223,6 +232,13 @@ $(LIBIMAP): $(PWD)/imap $(LIBIMAPOBJS)
 	$(RANLIB) $@
 $(PWD)/imap:
 	$(MKDIR_P) $(PWD)/imap
+
+# libconn
+$(LIBCONN): $(PWD)/conn $(LIBCONNOBJS)
+	$(AR) cr $@ $(LIBCONNOBJS)
+	$(RANLIB) $@
+$(PWD)/conn:
+	$(MKDIR_P) $(PWD)/conn
 
 # libhcache
 hcache/hcache.o:	hcache/hcversion.h

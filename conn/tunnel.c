@@ -29,14 +29,18 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "lib/memory.h"
+#include "lib/message.h"
+#include "lib/string2.h"
 #include "mutt.h"
-#include "mutt_tunnel.h"
+#include "tunnel.h"
 #include "account.h"
-#include "globals.h"
-#include "mutt_socket.h"
+#include "conn_globals.h"
+#include "connection.h"
 #include "protos.h"
+#include "socket.h"
 
 /**
  * struct TunnelData - A network tunnel (pair of sockets)

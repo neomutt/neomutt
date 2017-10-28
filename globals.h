@@ -105,8 +105,6 @@ WHERE char *MimeTypeQueryCommand;
 WHERE char *MessageFormat;
 
 #ifdef USE_SOCKET
-WHERE char *Preconnect;
-WHERE char *Tunnel;
 WHERE short NetInc;
 #endif /* USE_SOCKET */
 
@@ -167,16 +165,6 @@ WHERE char *SmtpUrl;
 #endif /* USE_SMTP */
 WHERE char *SpoolFile;
 WHERE char *SpamSeparator;
-#ifdef USE_SSL
-WHERE char *CertificateFile;
-WHERE char *SslClientCert;
-WHERE char *EntropyFile;
-WHERE char *SslCiphers;
-#ifdef USE_SSL_GNUTLS
-WHERE short SslMinDhPrimeBits;
-WHERE char *SslCaCertificatesFile;
-#endif
-#endif
 WHERE struct MbTable *StatusChars;
 WHERE char *StatusFormat;
 WHERE char *Tmpdir;
@@ -241,7 +229,6 @@ WHERE short DebugLevel;
 WHERE char *DebugFile;
 #endif
 
-WHERE short ConnectTimeout;
 WHERE short History;
 WHERE short MenuContext;
 WHERE short PagerContext;

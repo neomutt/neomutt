@@ -33,13 +33,14 @@
 #include <time.h>
 #include <unistd.h>
 #include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
-#include "account.h"
 #include "bcache.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"

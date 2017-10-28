@@ -21,20 +21,49 @@
  */
 
 /* common SASL helper routines */
+/* SASL can stack a protection layer on top of an existing connection.
+ * To handle this, we store a saslconn_t in conn->sockdata, and write
+ * wrappers which en/decode the read/write stream, then replace sockdata
+ * with an embedded copy of the old sockdata and call the underlying
+ * functions (which we've also preserved). I thought about trying to make
+ * a general stackable connection system, but it seemed like overkill -
+ * something is wrong if we have 15 filters on top of a socket. Anyway,
+ * anything else which wishes to stack can use the same method. The only
+ * disadvantage is we have to write wrappers for all the socket methods,
+ * even if we only stack over read and write. Thinking about it, the
+ * abstraction problem is that there is more in Connection than there
+ * needs to be. Ideally it would have only (void*)data and methods. */
 
 #include "config.h"
 #include <errno.h>
 #include <netdb.h>
 #include <sasl/sasl.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
-#include "lib/lib.h"
-#include "mutt_sasl.h"
+#include <time.h>
+#include "lib/debug.h"
+#include "lib/memory.h"
+#include "lib/message.h"
+#include "lib/string2.h"
+#include "sasl.h"
 #include "account.h"
-#include "mutt_socket.h"
+#include "connection.h"
+#include "mutt_account.h"
 #include "options.h"
 #include "protos.h"
+
+/* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
+ * been a while since I've had access to an SASL server which negotiated
+ * a protection buffer. */
+#define MUTT_SASL_MAXBUF 65536
+
+#define IP_PORT_BUFLEN 1024
+
+static sasl_callback_t MuttSaslCallbacks[5];
+
+static sasl_secret_t *secret_ptr = NULL;
 
 static int getnameinfo_err(int ret)
 {
@@ -83,17 +112,6 @@ static int getnameinfo_err(int ret)
   }
   return err;
 }
-
-/* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
- * been a while since I've had access to an SASL server which negotiated
- * a protection buffer. */
-#define MUTT_SASL_MAXBUF 65536
-
-#define IP_PORT_BUFLEN 1024
-
-static sasl_callback_t MuttSaslCallbacks[5];
-
-static sasl_secret_t *secret_ptr = NULL;
 
 /**
  * iptostring - Convert IP Address to string
@@ -270,139 +288,6 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
 }
 
 /**
- * mutt_sasl_client_new - wrapper for sasl_client_new
- *
- * which also sets various security properties. If this turns out to be fine
- * for POP too we can probably stop exporting mutt_sasl_get_callbacks().
- */
-int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
-{
-  sasl_security_properties_t secprops;
-  struct sockaddr_storage local, remote;
-  socklen_t size;
-  char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
-  char *plp = NULL;
-  char *prp = NULL;
-  const char *service = NULL;
-  int rc;
-
-  if (mutt_sasl_start() != SASL_OK)
-    return -1;
-
-  switch (conn->account.type)
-  {
-    case MUTT_ACCT_TYPE_IMAP:
-      service = "imap";
-      break;
-    case MUTT_ACCT_TYPE_POP:
-      service = "pop";
-      break;
-    case MUTT_ACCT_TYPE_SMTP:
-      service = "smtp";
-      break;
-#ifdef USE_NNTP
-    case MUTT_ACCT_TYPE_NNTP:
-      service = "nntp";
-      break;
-#endif
-    default:
-      mutt_error(_("Unknown SASL profile"));
-      return -1;
-  }
-
-  size = sizeof(local);
-  if (!getsockname(conn->fd, (struct sockaddr *) &local, &size))
-  {
-    if (iptostring((struct sockaddr *) &local, size, iplocalport, IP_PORT_BUFLEN) == SASL_OK)
-      plp = iplocalport;
-    else
-      mutt_debug(2, "SASL failed to parse local IP address\n");
-  }
-  else
-    mutt_debug(2, "SASL failed to get local IP address\n");
-
-  size = sizeof(remote);
-  if (!getpeername(conn->fd, (struct sockaddr *) &remote, &size))
-  {
-    if (iptostring((struct sockaddr *) &remote, size, ipremoteport, IP_PORT_BUFLEN) == SASL_OK)
-      prp = ipremoteport;
-    else
-      mutt_debug(2, "SASL failed to parse remote IP address\n");
-  }
-  else
-    mutt_debug(2, "SASL failed to get remote IP address\n");
-
-  mutt_debug(2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp), NONULL(prp));
-
-  rc = sasl_client_new(service, conn->account.host, plp, prp,
-                       mutt_sasl_get_callbacks(&conn->account), 0, saslconn);
-
-  if (rc != SASL_OK)
-  {
-    mutt_error(_("Error allocating SASL connection"));
-    mutt_sleep(2);
-    return -1;
-  }
-
-  memset(&secprops, 0, sizeof(secprops));
-  /* Work around a casting bug in the SASL krb4 module */
-  secprops.max_ssf = 0x7fff;
-  secprops.maxbufsize = MUTT_SASL_MAXBUF;
-  if (sasl_setprop(*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)
-  {
-    mutt_error(_("Error setting SASL security properties"));
-    return -1;
-  }
-
-  if (conn->ssf)
-  {
-    /* I'm not sure this actually has an effect, at least with SASLv2 */
-    mutt_debug(2, "External SSF: %d\n", conn->ssf);
-    if (sasl_setprop(*saslconn, SASL_SSF_EXTERNAL, &(conn->ssf)) != SASL_OK)
-    {
-      mutt_error(_("Error setting SASL external security strength"));
-      return -1;
-    }
-  }
-  if (conn->account.user[0])
-  {
-    mutt_debug(2, "External authentication name: %s\n", conn->account.user);
-    if (sasl_setprop(*saslconn, SASL_AUTH_EXTERNAL, conn->account.user) != SASL_OK)
-    {
-      mutt_error(_("Error setting SASL external user name"));
-      return -1;
-    }
-  }
-
-  return 0;
-}
-
-int mutt_sasl_interact(sasl_interact_t *interaction)
-{
-  char prompt[SHORT_STRING];
-  char resp[SHORT_STRING];
-
-  while (interaction->id != SASL_CB_LIST_END)
-  {
-    mutt_debug(2, "mutt_sasl_interact: filling in SASL interaction %ld.\n",
-               interaction->id);
-
-    snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
-    resp[0] = '\0';
-    if (option(OPT_NO_CURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
-      return SASL_FAIL;
-
-    interaction->len = mutt_strlen(resp) + 1;
-    interaction->result = safe_malloc(interaction->len);
-    memcpy((char *) interaction->result, resp, interaction->len);
-
-    interaction++;
-  }
-
-  return SASL_OK;
-}
-
-/**
  * mutt_sasl_conn_open - empty wrapper for underlying open function
  *
  * We don't know in advance that a connection will use SASL, so we replace
@@ -573,18 +458,138 @@ static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
   return rc;
 }
 
-/* SASL can stack a protection layer on top of an existing connection.
- * To handle this, we store a saslconn_t in conn->sockdata, and write
- * wrappers which en/decode the read/write stream, then replace sockdata
- * with an embedded copy of the old sockdata and call the underlying
- * functions (which we've also preserved). I thought about trying to make
- * a general stackable connection system, but it seemed like overkill -
- * something is wrong if we have 15 filters on top of a socket. Anyway,
- * anything else which wishes to stack can use the same method. The only
- * disadvantage is we have to write wrappers for all the socket methods,
- * even if we only stack over read and write. Thinking about it, the
- * abstraction problem is that there is more in Connection than there
- * needs to be. Ideally it would have only (void*)data and methods. */
+/**
+ * mutt_sasl_client_new - wrapper for sasl_client_new
+ *
+ * which also sets various security properties. If this turns out to be fine
+ * for POP too we can probably stop exporting mutt_sasl_get_callbacks().
+ */
+int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
+{
+  sasl_security_properties_t secprops;
+  struct sockaddr_storage local, remote;
+  socklen_t size;
+  char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
+  char *plp = NULL;
+  char *prp = NULL;
+  const char *service = NULL;
+  int rc;
+
+  if (mutt_sasl_start() != SASL_OK)
+    return -1;
+
+  switch (conn->account.type)
+  {
+    case MUTT_ACCT_TYPE_IMAP:
+      service = "imap";
+      break;
+    case MUTT_ACCT_TYPE_POP:
+      service = "pop";
+      break;
+    case MUTT_ACCT_TYPE_SMTP:
+      service = "smtp";
+      break;
+#ifdef USE_NNTP
+    case MUTT_ACCT_TYPE_NNTP:
+      service = "nntp";
+      break;
+#endif
+    default:
+      mutt_error(_("Unknown SASL profile"));
+      return -1;
+  }
+
+  size = sizeof(local);
+  if (!getsockname(conn->fd, (struct sockaddr *) &local, &size))
+  {
+    if (iptostring((struct sockaddr *) &local, size, iplocalport, IP_PORT_BUFLEN) == SASL_OK)
+      plp = iplocalport;
+    else
+      mutt_debug(2, "SASL failed to parse local IP address\n");
+  }
+  else
+    mutt_debug(2, "SASL failed to get local IP address\n");
+
+  size = sizeof(remote);
+  if (!getpeername(conn->fd, (struct sockaddr *) &remote, &size))
+  {
+    if (iptostring((struct sockaddr *) &remote, size, ipremoteport, IP_PORT_BUFLEN) == SASL_OK)
+      prp = ipremoteport;
+    else
+      mutt_debug(2, "SASL failed to parse remote IP address\n");
+  }
+  else
+    mutt_debug(2, "SASL failed to get remote IP address\n");
+
+  mutt_debug(2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp), NONULL(prp));
+
+  rc = sasl_client_new(service, conn->account.host, plp, prp,
+                       mutt_sasl_get_callbacks(&conn->account), 0, saslconn);
+
+  if (rc != SASL_OK)
+  {
+    mutt_error(_("Error allocating SASL connection"));
+    mutt_sleep(2);
+    return -1;
+  }
+
+  memset(&secprops, 0, sizeof(secprops));
+  /* Work around a casting bug in the SASL krb4 module */
+  secprops.max_ssf = 0x7fff;
+  secprops.maxbufsize = MUTT_SASL_MAXBUF;
+  if (sasl_setprop(*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)
+  {
+    mutt_error(_("Error setting SASL security properties"));
+    return -1;
+  }
+
+  if (conn->ssf)
+  {
+    /* I'm not sure this actually has an effect, at least with SASLv2 */
+    mutt_debug(2, "External SSF: %d\n", conn->ssf);
+    if (sasl_setprop(*saslconn, SASL_SSF_EXTERNAL, &(conn->ssf)) != SASL_OK)
+    {
+      mutt_error(_("Error setting SASL external security strength"));
+      return -1;
+    }
+  }
+  if (conn->account.user[0])
+  {
+    mutt_debug(2, "External authentication name: %s\n", conn->account.user);
+    if (sasl_setprop(*saslconn, SASL_AUTH_EXTERNAL, conn->account.user) != SASL_OK)
+    {
+      mutt_error(_("Error setting SASL external user name"));
+      return -1;
+    }
+  }
+
+  return 0;
+}
+
+int mutt_sasl_interact(sasl_interact_t *interaction)
+{
+  char prompt[SHORT_STRING];
+  char resp[SHORT_STRING];
+
+  while (interaction->id != SASL_CB_LIST_END)
+  {
+    mutt_debug(2, "mutt_sasl_interact: filling in SASL interaction %ld.\n",
+               interaction->id);
+
+    snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
+    resp[0] = '\0';
+    if (option(OPT_NO_CURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
+      return SASL_FAIL;
+
+    interaction->len = mutt_strlen(resp) + 1;
+    interaction->result = safe_malloc(interaction->len);
+    memcpy((char *) interaction->result, resp, interaction->len);
+
+    interaction++;
+  }
+
+  return SASL_OK;
+}
 
 /**
  * mutt_sasl_setup_conn - Set up an SASL connection

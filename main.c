@@ -38,6 +38,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -60,9 +61,6 @@
 #include "version.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
-#endif
-#ifdef USE_SASL
-#include "mutt_sasl.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h"

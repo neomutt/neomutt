@@ -25,6 +25,8 @@
 #ifndef _MUTT_ACCOUNT_H
 #define _MUTT_ACCOUNT_H
 
+#include "conn/conn.h"
+
 struct Url;
 
 /**
@@ -45,20 +47,6 @@ enum AccountType
 #define MUTT_ACCT_LOGIN (1 << 2)
 #define MUTT_ACCT_PASS (1 << 3)
 #define MUTT_ACCT_SSL (1 << 4)
-
-/**
- * struct Account - Login details for a remote server
- */
-struct Account
-{
-  char user[64];
-  char login[64];
-  char pass[256];
-  char host[128];
-  unsigned short port;
-  unsigned char type;
-  unsigned char flags;
-};
 
 int mutt_account_match(const struct Account *a1, const struct Account *m2);
 int mutt_account_fromurl(struct Account *account, struct Url *url);

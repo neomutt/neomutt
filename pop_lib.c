@@ -29,20 +29,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
-#include "account.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
 #include "url.h"
-#ifdef USE_SSL
-#include "mutt_ssl.h"
-#endif
 
 /**
  * pop_parse_path - Parse a POP mailbox name

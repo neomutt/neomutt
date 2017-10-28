@@ -28,9 +28,9 @@
 #include <string.h>
 #include <unistd.h>
 #include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "nntp.h"
-#include "account.h"
 #include "bcache.h"
 #include "body.h"
 #include "context.h"
@@ -38,6 +38,7 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -46,16 +47,12 @@
 #include "protos.h"
 #include "thread.h"
 #include "url.h"
-#ifdef USE_SSL
-#include "mutt_ssl.h"
-#endif
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
-#include "mutt_sasl.h"
 #endif
 
 static int nntp_connect_error(struct NntpServer *nserv)

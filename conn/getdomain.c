@@ -26,7 +26,9 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "lib/debug.h"
+#include "lib/memory.h"
+#include "lib/string2.h"
 
 int getdnsdomainname(char *d, size_t len)
 {
