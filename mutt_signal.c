@@ -41,7 +41,7 @@ static void curses_signal_handler(int sig)
   switch (sig)
   {
     case SIGTSTP: /* user requested a suspend */
-      if (!option(OPT_SUSPEND))
+      if (!OPT_SUSPEND)
         break;
       IsEndwin = isendwin();
       curs_set(1);

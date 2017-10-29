@@ -143,7 +143,7 @@ int mutt_num_postponed(int force)
   if (LastModify < st.st_mtime)
   {
 #ifdef USE_NNTP
-    int optnews = option(OPT_NEWS);
+    int optnews = OPT_NEWS;
 #endif
     LastModify = st.st_mtime;
 
@@ -151,7 +151,7 @@ int mutt_num_postponed(int force)
       return (PostCount = 0);
 #ifdef USE_NNTP
     if (optnews)
-      unset_option(OPT_NEWS);
+      OPT_NEWS = false;
 #endif
     if (mx_open_mailbox(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
       PostCount = 0;
@@ -160,7 +160,7 @@ int mutt_num_postponed(int force)
     mx_fastclose_mailbox(&ctx);
 #ifdef USE_NNTP
     if (optnews)
-      set_option(OPT_NEWS);
+      OPT_NEWS = true;
 #endif
   }
 
@@ -219,7 +219,7 @@ static struct Header *select_msg(void)
         mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->msgcount - PostContext->deleted;
-        if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
+        if (OPT_RESOLVE && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
           menu->current++;
@@ -319,10 +319,10 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   PostCount = PostContext->msgcount - PostContext->deleted;
 
   /* avoid the "purge deleted messages" prompt */
-  opt_delete = quadoption(OPT_DELETE);
-  set_quadoption(OPT_DELETE, MUTT_YES);
+  opt_delete = OPT_DELETE;
+  OPT_DELETE = MUTT_YES;
   mx_close_mailbox(PostContext, NULL);
-  set_quadoption(OPT_DELETE, opt_delete);
+  OPT_DELETE = opt_delete;
 
   FREE(&PostContext);
 
@@ -399,7 +399,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     FREE(&np);
   }
 
-  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+  if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
     crypt_opportunistic_encrypt(hdr);
 
   return code;
@@ -723,7 +723,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
   {
-    if (option(OPT_SMIME_IS_DEFAULT))
+    if (OPT_SMIME_IS_DEFAULT)
       newhdr->security &= ~APPLICATION_PGP;
     else
       newhdr->security &= ~APPLICATION_SMIME;

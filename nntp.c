@@ -674,11 +674,11 @@ int nntp_open_connection(struct NntpServer *nserv)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || option(OPT_SSL_FORCE_TLS)))
+  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || OPT_SSL_FORCE_TLS))
   {
     if (nserv->use_tls == 0)
       nserv->use_tls =
-          option(OPT_SSL_FORCE_TLS) ||
+          OPT_SSL_FORCE_TLS ||
                   query_quadoption(OPT_SSL_STARTTLS,
                                    _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
@@ -1250,7 +1250,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 #endif
 
   /* fetch list of articles */
-  if (option(OPT_NNTP_LISTGROUP) && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
+  if (OPT_NNTP_LISTGROUP && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
   {
     if (!ctx->quiet)
       mutt_message(_("Fetching list of articles..."));
@@ -1347,7 +1347,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
     /* fallback to fetch overview */
     else if (nntp_data->nserv->hasOVER || nntp_data->nserv->hasXOVER)
-      if (option(OPT_NNTP_LISTGROUP) && nntp_data->nserv->hasLISTGROUP)
+      if (OPT_NNTP_LISTGROUP && nntp_data->nserv->hasLISTGROUP)
         break;
       else
         continue;
@@ -1425,7 +1425,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     first_over = current + 1;
   }
 
-  if (!option(OPT_NNTP_LISTGROUP) || !nntp_data->nserv->hasLISTGROUP)
+  if (!OPT_NNTP_LISTGROUP || !nntp_data->nserv->hasLISTGROUP)
     current = first_over;
 
   /* fetch overview information */
@@ -1496,7 +1496,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   }
 
   mutt_bit_unset(ctx->rights, MUTT_ACL_INSERT);
-  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUBSCRIBED))
+  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !OPT_SAVE_UNSUBSCRIBED)
     ctx->readonly = true;
 
   /* select newsgroup */
@@ -1517,7 +1517,7 @@ static int nntp_open_mailbox(struct Context *ctx)
       nntp_data->deleted = true;
       nntp_active_save_cache(nserv);
     }
-    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUBSCRIBED))
+    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !OPT_SAVE_UNSUBSCRIBED)
     {
       FREE(&nntp_data->newsrc_ent);
       nntp_data->newsrc_len = 0;
@@ -1542,7 +1542,7 @@ static int nntp_open_mailbox(struct Context *ctx)
     nntp_data->deleted = false;
 
     /* get description if empty */
-    if (option(OPT_NNTP_LOAD_DESCRIPTION) && !nntp_data->desc)
+    if (OPT_NNTP_LOAD_DESCRIPTION && !nntp_data->desc)
     {
       if (get_description(nntp_data, NULL, NULL) < 0)
       {
@@ -1556,8 +1556,8 @@ static int nntp_open_mailbox(struct Context *ctx)
 
   time(&nserv->check_time);
   ctx->data = nntp_data;
-  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed ||
-                             option(OPT_SAVE_UNSUBSCRIBED)))
+  if (!nntp_data->bcache &&
+      (nntp_data->newsrc_ent || nntp_data->subscribed || OPT_SAVE_UNSUBSCRIBED))
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */
@@ -2250,7 +2250,7 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
     }
   }
 
-  if (option(OPT_NNTP_LOAD_DESCRIPTION))
+  if (OPT_NNTP_LOAD_DESCRIPTION)
     rc = get_description(&nntp_data, "*", _("Loading descriptions..."));
 
   nntp_active_save_cache(nserv);
@@ -2280,7 +2280,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     return -1;
 
   /* check subscribed newsgroups for new articles */
-  if (option(OPT_SHOW_NEW_NEWS))
+  if (OPT_SHOW_NEW_NEWS)
   {
     mutt_message(_("Checking for new messages..."));
     for (i = 0; i < nserv->groups_num; i++)
@@ -2346,7 +2346,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     }
 
     /* loading descriptions */
-    if (option(OPT_NNTP_LOAD_DESCRIPTION))
+    if (OPT_NNTP_LOAD_DESCRIPTION)
     {
       unsigned int count = 0;
       struct Progress progress;

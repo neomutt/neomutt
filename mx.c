@@ -287,7 +287,7 @@ int mx_get_magic(const char *path)
     }
     mutt_file_fclose(&f);
 
-    if (!option(OPT_CHECK_MBOX_SIZE))
+    if (!OPT_CHECK_MBOX_SIZE)
     {
       /* need to restore the times here, the file was not really accessed,
        * only the type was accessed.  This is important, because detection
@@ -475,7 +475,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.
    */
-  set_option(OPT_FORCE_REFRESH);
+  OPT_FORCE_REFRESH = true;
 
   if (!ctx->quiet)
     mutt_message(_("Reading %s..."), ctx->path);
@@ -488,8 +488,8 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     {
       /* avoid unnecessary work since the mailbox is completely unthreaded
          to begin with */
-      unset_option(OPT_SORT_SUBTHREADS);
-      unset_option(OPT_NEED_RESCORE);
+      OPT_SORT_SUBTHREADS = false;
+      OPT_NEED_RESCORE = false;
       mutt_sort_headers(ctx, 1);
     }
     if (!ctx->quiet)
@@ -504,7 +504,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
       FREE(&ctx);
   }
 
-  unset_option(OPT_FORCE_REFRESH);
+  OPT_FORCE_REFRESH = false;
   return ctx;
 }
 
@@ -577,7 +577,7 @@ static int trash_append(struct Context *ctx)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
+  if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))
     return 0;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -587,12 +587,12 @@ static int trash_append(struct Context *ctx)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = option(OPT_CONFIRMAPPEND);
+  opt_confappend = OPT_CONFIRMAPPEND;
   if (opt_confappend)
-    unset_option(OPT_CONFIRMAPPEND);
+    OPT_CONFIRMAPPEND = false;
   rc = mutt_save_confirm(Trash, &st);
   if (opt_confappend)
-    set_option(OPT_CONFIRMAPPEND);
+    OPT_CONFIRMAPPEND = true;
   if (rc != 0)
   {
     mutt_error(_("message(s) not deleted"));
@@ -685,7 +685,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   for (i = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read &&
-        !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
+        !(ctx->hdrs[i]->flagged && OPT_KEEP_FLAGGED))
     {
       read_msgs++;
     }
@@ -697,7 +697,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     read_msgs = 0;
 #endif
 
-  if (read_msgs && quadoption(OPT_MOVE) != MUTT_NO)
+  if (read_msgs && OPT_MOVE != MUTT_NO)
   {
     char *p = NULL;
 
@@ -730,7 +730,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
    * There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
+  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))
   {
     snprintf(buf, sizeof(buf),
              ctx->deleted == 1 ? _("Purge %d deleted message?") :
@@ -744,7 +744,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     }
   }
 
-  if (option(OPT_MARK_OLD))
+  if (OPT_MARK_OLD)
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
@@ -768,7 +768,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       for (i = 0; i < ctx->msgcount; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
-            !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
+            !(ctx->hdrs[i]->flagged && OPT_KEEP_FLAGGED))
         {
           ctx->hdrs[i]->tagged = true;
         }
@@ -800,7 +800,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       for (i = 0; i < ctx->msgcount; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
-            !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
+            !(ctx->hdrs[i]->flagged && OPT_KEEP_FLAGGED))
         {
           if (mutt_append_message(&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
@@ -884,7 +884,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   }
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
-      !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
+      !mutt_is_spool(ctx->path) && !OPT_SAVE_EMPTY)
   {
     mutt_file_unlink_empty(ctx->path);
   }
@@ -931,8 +931,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
-        ((committing && (!ctx->hdrs[i]->deleted ||
-                         (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))) ||
+        ((committing && (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))) ||
          (!committing && ctx->hdrs[i]->active)))
     {
       if (i != j)
@@ -954,7 +953,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       else if (ctx->hdrs[j]->changed)
         ctx->changed = true;
 
-      if (!committing || (ctx->magic == MUTT_MAILDIR && option(OPT_MAILDIR_TRASH)))
+      if (!committing || (ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))
       {
         if (ctx->hdrs[j]->deleted)
           ctx->deleted++;
@@ -1099,7 +1098,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     mutt_sleep(0);
 
     if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) &&
-        !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
+        !mutt_is_spool(ctx->path) && !OPT_SAVE_EMPTY)
     {
       unlink(ctx->path);
       mx_fastclose_mailbox(ctx);
@@ -1330,7 +1329,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       if (h2)
       {
         h2->superseded = true;
-        if (option(OPT_SCORE))
+        if (OPT_SCORE)
           mutt_score_message(ctx, h2, 1);
       }
     }
@@ -1342,7 +1341,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
     mutt_label_hash_add(ctx, h);
 
-    if (option(OPT_SCORE))
+    if (OPT_SCORE)
       mutt_score_message(ctx, h, 0);
 
     if (h->changed)

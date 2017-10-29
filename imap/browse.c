@@ -217,10 +217,9 @@ int imap_browse(char *path, struct BrowserState *state)
     return -1;
   }
 
-  save_lsub = option(OPT_IMAP_CHECK_SUBSCRIBED);
-  unset_option(OPT_IMAP_CHECK_SUBSCRIBED);
-  mutt_str_strfcpy(list_cmd, option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST",
-                   sizeof(list_cmd));
+  save_lsub = OPT_IMAP_CHECK_SUBSCRIBED;
+  OPT_IMAP_CHECK_SUBSCRIBED = false;
+  mutt_str_strfcpy(list_cmd, OPT_IMAP_LIST_SUBSCRIBED ? "LSUB" : "LIST", sizeof(list_cmd));
 
   idata = imap_conn_find(&(mx.account), 0);
   if (!idata)
@@ -350,14 +349,14 @@ int imap_browse(char *path, struct BrowserState *state)
   mutt_clear_error();
 
   if (save_lsub)
-    set_option(OPT_IMAP_CHECK_SUBSCRIBED);
+    OPT_IMAP_CHECK_SUBSCRIBED = true;
 
   FREE(&mx.mbox);
   return 0;
 
 fail:
   if (save_lsub)
-    set_option(OPT_IMAP_CHECK_SUBSCRIBED);
+    OPT_IMAP_CHECK_SUBSCRIBED = true;
   FREE(&mx.mbox);
   return -1;
 }

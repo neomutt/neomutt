@@ -205,13 +205,6 @@ WHERE struct ReplaceList *SpamList;
 WHERE struct RegexList *NoSpamList;
 WHERE struct ReplaceList *SubjectRegexList;
 
-/* bit vector for the yes/no/ask variable type */
-#ifdef MAIN_C
-unsigned char QuadOptions[(OPT_QUAD_MAX * 2 + 7) / 8];
-#else
-extern unsigned char QuadOptions[];
-#endif
-
 WHERE unsigned short Counter;
 
 #ifdef USE_NNTP

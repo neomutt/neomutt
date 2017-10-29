@@ -681,7 +681,7 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
       !nntp_data->nserv->conn || !nntp_data->group ||
-      !(nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED)))
+      !(nntp_data->newsrc_ent || nntp_data->subscribed || OPT_SAVE_UNSUBSCRIBED))
     return NULL;
 
   mutt_account_tourl(&nntp_data->nserv->conn->account, &url);
@@ -848,7 +848,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
         nntp_data->group = group;
         nntp_data->bcache = NULL;
       }
-      else if (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED))
+      else if (nntp_data->newsrc_ent || nntp_data->subscribed || OPT_SAVE_UNSUBSCRIBED)
         continue;
 
       nntp_delete_group_cache(nntp_data);
@@ -1182,7 +1182,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
     return;
 
   /* article isn't read but cached, it's old */
-  if (option(OPT_MARK_OLD))
+  if (OPT_MARK_OLD)
     hdr->old = true;
 }
 
@@ -1223,7 +1223,7 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
     return NULL;
 
   nntp_data->subscribed = false;
-  if (!option(OPT_SAVE_UNSUBSCRIBED))
+  if (!OPT_SAVE_UNSUBSCRIBED)
   {
     nntp_data->newsrc_len = 0;
     FREE(&nntp_data->newsrc_ent);

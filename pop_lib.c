@@ -321,9 +321,9 @@ int pop_open_connection(struct PopData *pop_data)
 
 #ifdef USE_SSL
   /* Attempt STLS if available and desired. */
-  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPT_SSL_FORCE_TLS)))
+  if (!pop_data->conn->ssf && (pop_data->cmd_stls || OPT_SSL_FORCE_TLS))
   {
-    if (option(OPT_SSL_FORCE_TLS))
+    if (OPT_SSL_FORCE_TLS)
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
@@ -366,7 +366,7 @@ int pop_open_connection(struct PopData *pop_data)
     }
   }
 
-  if (option(OPT_SSL_FORCE_TLS) && !pop_data->conn->ssf)
+  if (OPT_SSL_FORCE_TLS && !pop_data->conn->ssf)
   {
     mutt_error(_("Encrypted connection unavailable"));
     mutt_sleep(1);

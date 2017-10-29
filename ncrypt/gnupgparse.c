@@ -179,7 +179,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         else
           return NULL;
 
-        if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS))))
+        if (!(is_uid || is_fpr || (*is_subkey && OPT_PGP_IGNORE_SUBKEYS)))
           memset(&tmp, 0, sizeof(tmp));
 
         break;
@@ -213,7 +213,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
             break;
         }
 
-        if (!is_uid && !(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
+        if (!is_uid && !(*is_subkey && OPT_PGP_IGNORE_SUBKEYS))
           tmp.flags |= flags;
 
         break;
@@ -222,8 +222,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "key len: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) &&
-            mutt_str_atos(p, &tmp.keylen) < 0)
+        if (!(*is_subkey && OPT_PGP_IGNORE_SUBKEYS) && mutt_str_atos(p, &tmp.keylen) < 0)
         {
           goto bail;
         }
@@ -233,7 +232,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "pubkey algorithm: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
+        if (!(*is_subkey && OPT_PGP_IGNORE_SUBKEYS))
         {
           int x = 0;
           if (mutt_str_atoi(p, &x) < 0)
@@ -247,7 +246,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "key id: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
+        if (!(*is_subkey && OPT_PGP_IGNORE_SUBKEYS))
           mutt_str_replace(&tmp.keyid, p);
         break;
       }
@@ -311,7 +310,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         }
 
         /* ignore user IDs on subkeys */
-        if (!is_uid && (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
+        if (!is_uid && (*is_subkey && OPT_PGP_IGNORE_SUBKEYS))
           break;
 
         mutt_debug(2, "user ID: %s\n", NONULL(p));
@@ -354,7 +353,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
           }
         }
 
-        if (!is_uid && (!*is_subkey || !option(OPT_PGP_IGNORE_SUBKEYS) ||
+        if (!is_uid && (!*is_subkey || !OPT_PGP_IGNORE_SUBKEYS ||
                         !((flags & KEYFLAG_DISABLED) || (flags & KEYFLAG_REVOKED) ||
                           (flags & KEYFLAG_EXPIRED))))
           tmp.flags |= flags;
@@ -367,7 +366,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   }
 
   /* merge temp key back into real key */
-  if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS))))
+  if (!(is_uid || is_fpr || (*is_subkey && OPT_PGP_IGNORE_SUBKEYS)))
     k = mutt_mem_malloc(sizeof(*k));
   memcpy(k, &tmp, sizeof(*k));
   /* fixup parentship of uids after merging the temp key into

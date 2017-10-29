@@ -23,275 +23,257 @@
 #ifndef _MUTT_OPTIONS_H_
 #define _MUTT_OPTIONS_H_
 
-/**
- * enum GlobalBool - boolean vars
- */
-enum GlobalBool
-{
-  OPT_ALLOW_8BIT,
-  OPT_ALLOW_ANSI,
-  OPT_ARROW_CURSOR,
-  OPT_ASCII_CHARS,
-  OPT_ASKBCC,
-  OPT_ASKCC,
-  OPT_ASK_FOLLOW_UP,
-  OPT_ASK_X_COMMENT_TO,
-  OPT_ATTACH_SPLIT,
-  OPT_AUTOEDIT,
-  OPT_AUTO_TAG,
-  OPT_BEEP,
-  OPT_BEEP_NEW,
-  OPT_BOUNCE_DELIVERED,
-  OPT_BRAILLE_FRIENDLY,
-  OPT_CHANGE_FOLDER_NEXT,
-  OPT_CHECK_MBOX_SIZE,
-  OPT_CHECK_NEW,
-  OPT_COLLAPSE_ALL,
-  OPT_COLLAPSE_UNREAD,
-  OPT_COLLAPSE_FLAGGED,
-  OPT_CONFIRMAPPEND,
-  OPT_CONFIRMCREATE,
-  OPT_DELETE_UNTAG,
-  OPT_DIGEST_COLLAPSE,
-  OPT_DUPLICATE_THREADS,
-  OPT_EDIT_HEADERS,
-  OPT_ENCODE_FROM,
-  OPT_USE_ENVELOPE_FROM,
-  OPT_FAST_REPLY,
-  OPT_FCC_CLEAR,
-  OPT_FLAG_SAFE,
-  OPT_FOLLOWUP_TO,
-  OPT_FORCE_NAME,
-  OPT_FORWARD_DECODE,
-  OPT_FORWARD_QUOTE,
-  OPT_FORWARD_REFERENCES,
+#include <stdbool.h>
+#include "where.h"
+
+WHERE bool OPT_ALLOW_8BIT;
+WHERE bool OPT_ALLOW_ANSI;
+WHERE bool OPT_ARROW_CURSOR;
+WHERE bool OPT_ASCII_CHARS;
+WHERE bool OPT_ASKBCC;
+WHERE bool OPT_ASKCC;
+WHERE bool OPT_ASK_FOLLOW_UP;
+WHERE bool OPT_ASK_X_COMMENT_TO;
+WHERE bool OPT_ATTACH_SPLIT;
+WHERE bool OPT_AUTOEDIT;
+WHERE bool OPT_AUTO_TAG;
+WHERE bool OPT_BEEP;
+WHERE bool OPT_BEEP_NEW;
+WHERE bool OPT_BOUNCE_DELIVERED;
+WHERE bool OPT_BRAILLE_FRIENDLY;
+WHERE bool OPT_CHANGE_FOLDER_NEXT;
+WHERE bool OPT_CHECK_MBOX_SIZE;
+WHERE bool OPT_CHECK_NEW;
+WHERE bool OPT_COLLAPSE_ALL;
+WHERE bool OPT_COLLAPSE_UNREAD;
+WHERE bool OPT_COLLAPSE_FLAGGED;
+WHERE bool OPT_CONFIRMAPPEND;
+WHERE bool OPT_CONFIRMCREATE;
+WHERE bool OPT_DELETE_UNTAG;
+WHERE bool OPT_DIGEST_COLLAPSE;
+WHERE bool OPT_DUPLICATE_THREADS;
+WHERE bool OPT_EDIT_HEADERS;
+WHERE bool OPT_ENCODE_FROM;
+WHERE bool OPT_USE_ENVELOPE_FROM;
+WHERE bool OPT_FAST_REPLY;
+WHERE bool OPT_FCC_CLEAR;
+WHERE bool OPT_FLAG_SAFE;
+WHERE bool OPT_FOLLOWUP_TO;
+WHERE bool OPT_FORCE_NAME;
+WHERE bool OPT_FORWARD_DECODE;
+WHERE bool OPT_FORWARD_QUOTE;
+WHERE bool OPT_FORWARD_REFERENCES;
 #ifdef USE_HCACHE
-  OPT_MAILDIR_HEADER_CACHE_VERIFY,
+WHERE bool OPT_MAILDIR_HEADER_CACHE_VERIFY;
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  OPT_HEADER_CACHE_COMPRESS,
+WHERE bool OPT_HEADER_CACHE_COMPRESS;
 #endif /* HAVE_QDBM */
 #endif
-  OPT_HDRS,
-  OPT_HEADER,
-  OPT_HEADER_COLOR_PARTIAL,
-  OPT_HELP,
-  OPT_HIDDEN_HOST,
-  OPT_HIDE_LIMITED,
-  OPT_HIDE_MISSING,
-  OPT_HIDE_THREAD_SUBJECT,
-  OPT_HIDE_TOP_LIMITED,
-  OPT_HIDE_TOP_MISSING,
-  OPT_HISTORY_REMOVE_DUPS,
-  OPT_HONOR_DISPOSITION,
-  OPT_IGNORE_LINEAR_WHITE_SPACE,
-  OPT_IGNORE_LIST_REPLY_TO,
+WHERE bool OPT_HDRS;
+WHERE bool OPT_HEADER;
+WHERE bool OPT_HEADER_COLOR_PARTIAL;
+WHERE bool OPT_HELP;
+WHERE bool OPT_HIDDEN_HOST;
+WHERE bool OPT_HIDE_LIMITED;
+WHERE bool OPT_HIDE_MISSING;
+WHERE bool OPT_HIDE_THREAD_SUBJECT;
+WHERE bool OPT_HIDE_TOP_LIMITED;
+WHERE bool OPT_HIDE_TOP_MISSING;
+WHERE bool OPT_HISTORY_REMOVE_DUPS;
+WHERE bool OPT_HONOR_DISPOSITION;
+WHERE bool OPT_IGNORE_LINEAR_WHITE_SPACE;
+WHERE bool OPT_IGNORE_LIST_REPLY_TO;
 #ifdef USE_IMAP
-  OPT_IMAP_CHECK_SUBSCRIBED,
-  OPT_IMAP_IDLE,
-  OPT_IMAP_LIST_SUBSCRIBED,
-  OPT_IMAP_PASSIVE,
-  OPT_IMAP_PEEK,
-  OPT_IMAP_SERVERNOISE,
+WHERE bool OPT_IMAP_CHECK_SUBSCRIBED;
+WHERE bool OPT_IMAP_IDLE;
+WHERE bool OPT_IMAP_LIST_SUBSCRIBED;
+WHERE bool OPT_IMAP_PASSIVE;
+WHERE bool OPT_IMAP_PEEK;
+WHERE bool OPT_IMAP_SERVERNOISE;
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS
-  OPT_SSL_USESYSTEMCERTS,
-  OPT_SSL_USE_SSLV2,
+WHERE bool OPT_SSL_USESYSTEMCERTS;
+WHERE bool OPT_SSL_USE_SSLV2;
 #endif /* USE_SSL_GNUTLS */
-  OPT_SSL_USE_SSLV3,
-  OPT_SSL_USE_TLSV1,
-  OPT_SSL_USE_TLSV1_1,
-  OPT_SSL_USE_TLSV1_2,
-  OPT_SSL_FORCE_TLS,
-  OPT_SSL_VERIFY_DATES,
-  OPT_SSL_VERIFY_HOST,
+WHERE bool OPT_SSL_USE_SSLV3;
+WHERE bool OPT_SSL_USE_TLSV1;
+WHERE bool OPT_SSL_USE_TLSV1_1;
+WHERE bool OPT_SSL_USE_TLSV1_2;
+WHERE bool OPT_SSL_FORCE_TLS;
+WHERE bool OPT_SSL_VERIFY_DATES;
+WHERE bool OPT_SSL_VERIFY_HOST;
 #if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
-  OPT_SSL_VERIFY_PARTIAL_CHAINS,
+WHERE bool OPT_SSL_VERIFY_PARTIAL_CHAINS;
 #endif /* USE_SSL_OPENSSL */
 #endif /* defined(USE_SSL) */
-  OPT_IMPLICIT_AUTOVIEW,
-  OPT_INCLUDE_ONLYFIRST,
-  OPT_KEEP_FLAGGED,
-  OPT_MAILCAP_SANITIZE,
-  OPT_MAIL_CHECK_RECENT,
-  OPT_MAIL_CHECK_STATS,
-  OPT_MAILDIR_TRASH,
-  OPT_MAILDIR_CHECK_CUR,
-  OPT_MARKERS,
-  OPT_MARK_OLD,
-  OPT_MENU_SCROLL,  /**< scroll menu instead of implicit next-page */
-  OPT_MENU_MOVE_OFF, /**< allow menu to scroll past last entry */
+WHERE bool OPT_IMPLICIT_AUTOVIEW;
+WHERE bool OPT_INCLUDE_ONLYFIRST;
+WHERE bool OPT_KEEP_FLAGGED;
+WHERE bool OPT_MAILCAP_SANITIZE;
+WHERE bool OPT_MAIL_CHECK_RECENT;
+WHERE bool OPT_MAIL_CHECK_STATS;
+WHERE bool OPT_MAILDIR_TRASH;
+WHERE bool OPT_MAILDIR_CHECK_CUR;
+WHERE bool OPT_MARKERS;
+WHERE bool OPT_MARK_OLD;
+WHERE bool OPT_MENU_SCROLL;  /**< scroll menu instead of implicit next-page */
+WHERE bool OPT_MENU_MOVE_OFF; /**< allow menu to scroll past last entry */
 #if defined(USE_IMAP) || defined(USE_POP)
-  OPT_MESSAGE_CACHE_CLEAN,
+WHERE bool OPT_MESSAGE_CACHE_CLEAN;
 #endif
-  OPT_META_KEY, /**< interpret ALT-x as ESC-x */
-  OPT_METOO,
-  OPT_MH_PURGE,
-  OPT_MIME_FORWARD_DECODE,
-  OPT_MIME_TYPE_QUERY_FIRST,
+WHERE bool OPT_META_KEY; /**< interpret ALT-x as ESC-x */
+WHERE bool OPT_METOO;
+WHERE bool OPT_MH_PURGE;
+WHERE bool OPT_MIME_FORWARD_DECODE;
+WHERE bool OPT_MIME_TYPE_QUERY_FIRST;
 #ifdef USE_NNTP
-  OPT_MIME_SUBJECT, /**< encode subject line with RFC2047 */
+WHERE bool OPT_MIME_SUBJECT; /**< encode subject line with RFC2047 */
 #endif
-  OPT_NARROW_TREE,
-  OPT_PAGER_STOP,
-  OPT_PIPE_DECODE,
-  OPT_PIPE_SPLIT,
+WHERE bool OPT_NARROW_TREE;
+WHERE bool OPT_PAGER_STOP;
+WHERE bool OPT_PIPE_DECODE;
+WHERE bool OPT_PIPE_SPLIT;
 #ifdef USE_POP
-  OPT_POP_AUTH_TRY_ALL,
-  OPT_POP_LAST,
+WHERE bool OPT_POP_AUTH_TRY_ALL;
+WHERE bool OPT_POP_LAST;
 #endif
-  OPT_POSTPONE_ENCRYPT,
-  OPT_PRINT_DECODE,
-  OPT_PRINT_SPLIT,
-  OPT_PROMPT_AFTER,
-  OPT_READ_ONLY,
-  OPT_REFLOW_SPACE_QUOTES,
-  OPT_REFLOW_TEXT,
-  OPT_REPLY_SELF,
-  OPT_REPLY_WITH_XORIG,
-  OPT_RESOLVE,
-  OPT_RESUME_DRAFT_FILES,
-  OPT_RESUME_EDITED_DRAFT_FILES,
-  OPT_REVERSE_ALIAS,
-  OPT_REVERSE_NAME,
-  OPT_REVERSE_REALNAME,
-  OPT_RFC2047_PARAMETERS,
-  OPT_SAVE_ADDRESS,
-  OPT_SAVE_EMPTY,
-  OPT_SAVE_NAME,
-  OPT_SCORE,
+WHERE bool OPT_POSTPONE_ENCRYPT;
+WHERE bool OPT_PRINT_DECODE;
+WHERE bool OPT_PRINT_SPLIT;
+WHERE bool OPT_PROMPT_AFTER;
+WHERE bool OPT_READ_ONLY;
+WHERE bool OPT_REFLOW_SPACE_QUOTES;
+WHERE bool OPT_REFLOW_TEXT;
+WHERE bool OPT_REPLY_SELF;
+WHERE bool OPT_REPLY_WITH_XORIG;
+WHERE bool OPT_RESOLVE;
+WHERE bool OPT_RESUME_DRAFT_FILES;
+WHERE bool OPT_RESUME_EDITED_DRAFT_FILES;
+WHERE bool OPT_REVERSE_ALIAS;
+WHERE bool OPT_REVERSE_NAME;
+WHERE bool OPT_REVERSE_REALNAME;
+WHERE bool OPT_RFC2047_PARAMETERS;
+WHERE bool OPT_SAVE_ADDRESS;
+WHERE bool OPT_SAVE_EMPTY;
+WHERE bool OPT_SAVE_NAME;
+WHERE bool OPT_SCORE;
 #ifdef USE_SIDEBAR
-  OPT_SIDEBAR_VISIBLE,
-  OPT_SIDEBAR_FOLDER_INDENT,
-  OPT_SIDEBAR_NEW_MAIL_ONLY,
-  OPT_SIDEBAR_NEXT_NEW_WRAP,
-  OPT_SIDEBAR_SHORT_PATH,
-  OPT_SIDEBAR_ON_RIGHT,
+WHERE bool OPT_SIDEBAR_VISIBLE;
+WHERE bool OPT_SIDEBAR_FOLDER_INDENT;
+WHERE bool OPT_SIDEBAR_NEW_MAIL_ONLY;
+WHERE bool OPT_SIDEBAR_NEXT_NEW_WRAP;
+WHERE bool OPT_SIDEBAR_SHORT_PATH;
+WHERE bool OPT_SIDEBAR_ON_RIGHT;
 #endif
-  OPT_SIG_DASHES,
-  OPT_SIG_ON_TOP,
-  OPT_SORT_RE,
-  OPT_STATUS_ON_TOP,
-  OPT_STRICT_THREADS,
-  OPT_SUSPEND,
-  OPT_TEXT_FLOWED,
-  OPT_THOROUGH_SEARCH,
-  OPT_THREAD_RECEIVED,
-  OPT_TILDE,
-  OPT_TS_ENABLED,
-  OPT_UNCOLLAPSE_JUMP,
-  OPT_UNCOLLAPSE_NEW,
-  OPT_USE_8BITMIME,
-  OPT_USE_DOMAIN,
-  OPT_USE_FROM,
-  OPT_PGP_USE_GPG_AGENT,
+WHERE bool OPT_SIG_DASHES;
+WHERE bool OPT_SIG_ON_TOP;
+WHERE bool OPT_SORT_RE;
+WHERE bool OPT_STATUS_ON_TOP;
+WHERE bool OPT_STRICT_THREADS;
+WHERE bool OPT_SUSPEND;
+WHERE bool OPT_TEXT_FLOWED;
+WHERE bool OPT_THOROUGH_SEARCH;
+WHERE bool OPT_THREAD_RECEIVED;
+WHERE bool OPT_TILDE;
+WHERE bool OPT_TS_ENABLED;
+WHERE bool OPT_UNCOLLAPSE_JUMP;
+WHERE bool OPT_UNCOLLAPSE_NEW;
+WHERE bool OPT_USE_8BITMIME;
+WHERE bool OPT_USE_DOMAIN;
+WHERE bool OPT_USE_FROM;
+WHERE bool OPT_PGP_USE_GPG_AGENT;
 #ifdef HAVE_LIBIDN
-  OPT_IDN_DECODE,
-  OPT_IDN_ENCODE,
+WHERE bool OPT_IDN_DECODE;
+WHERE bool OPT_IDN_ENCODE;
 #endif
 #ifdef HAVE_GETADDRINFO
-  OPT_USE_IPV6,
+WHERE bool OPT_USE_IPV6;
 #endif
-  OPT_WAIT_KEY,
-  OPT_WEED,
-  OPT_SMART_WRAP,
-  OPT_WRAP_SEARCH,
-  OPT_WRITE_BCC, /**< write out a bcc header? */
-  OPT_USER_AGENT,
+WHERE bool OPT_WAIT_KEY;
+WHERE bool OPT_WEED;
+WHERE bool OPT_SMART_WRAP;
+WHERE bool OPT_WRAP_SEARCH;
+WHERE bool OPT_WRITE_BCC; /**< write out a bcc header? */
+WHERE bool OPT_USER_AGENT;
 
-  OPT_CRYPT_USE_GPGME,
-  OPT_CRYPT_USE_PKA,
+WHERE bool OPT_CRYPT_USE_GPGME;
+WHERE bool OPT_CRYPT_USE_PKA;
 
-  /* PGP options */
+/* PGP options */
 
-  OPT_CRYPT_AUTOSIGN,
-  OPT_CRYPT_AUTOENCRYPT,
-  OPT_CRYPT_AUTOPGP,
-  OPT_CRYPT_AUTOSMIME,
-  OPT_CRYPT_CONFIRMHOOK,
-  OPT_CRYPT_OPPORTUNISTIC_ENCRYPT,
-  OPT_CRYPT_REPLYENCRYPT,
-  OPT_CRYPT_REPLYSIGN,
-  OPT_CRYPT_REPLYSIGNENCRYPTED,
-  OPT_CRYPT_TIMESTAMP,
-  OPT_SMIME_IS_DEFAULT,
-  OPT_SMIME_SELF_ENCRYPT,
-  OPT_SMIME_ASK_CERT_LABEL,
-  OPT_SMIME_DECRYPT_USE_DEFAULT_KEY,
-  OPT_PGP_IGNORE_SUBKEYS,
-  OPT_PGP_CHECK_EXIT,
-  OPT_PGP_LONG_IDS,
-  OPT_PGP_AUTO_DECODE,
-  OPT_PGP_RETAINABLE_SIGS,
-  OPT_PGP_SELF_ENCRYPT,
-  OPT_PGP_STRICT_ENC,
-  OPT_FORWARD_DECRYPT,
-  OPT_PGP_SHOW_UNUSABLE,
-  OPT_PGP_AUTOINLINE,
-  OPT_PGP_REPLYINLINE,
+WHERE bool OPT_CRYPT_AUTOSIGN;
+WHERE bool OPT_CRYPT_AUTOENCRYPT;
+WHERE bool OPT_CRYPT_AUTOPGP;
+WHERE bool OPT_CRYPT_AUTOSMIME;
+WHERE bool OPT_CRYPT_CONFIRMHOOK;
+WHERE bool OPT_CRYPT_OPPORTUNISTIC_ENCRYPT;
+WHERE bool OPT_CRYPT_REPLYENCRYPT;
+WHERE bool OPT_CRYPT_REPLYSIGN;
+WHERE bool OPT_CRYPT_REPLYSIGNENCRYPTED;
+WHERE bool OPT_CRYPT_TIMESTAMP;
+WHERE bool OPT_SMIME_IS_DEFAULT;
+WHERE bool OPT_SMIME_SELF_ENCRYPT;
+WHERE bool OPT_SMIME_ASK_CERT_LABEL;
+WHERE bool OPT_SMIME_DECRYPT_USE_DEFAULT_KEY;
+WHERE bool OPT_PGP_IGNORE_SUBKEYS;
+WHERE bool OPT_PGP_CHECK_EXIT;
+WHERE bool OPT_PGP_LONG_IDS;
+WHERE bool OPT_PGP_AUTO_DECODE;
+WHERE bool OPT_PGP_RETAINABLE_SIGS;
+WHERE bool OPT_PGP_SELF_ENCRYPT;
+WHERE bool OPT_PGP_STRICT_ENC;
+WHERE bool OPT_FORWARD_DECRYPT;
+WHERE bool OPT_PGP_SHOW_UNUSABLE;
+WHERE bool OPT_PGP_AUTOINLINE;
+WHERE bool OPT_PGP_REPLYINLINE;
 
 /* news options */
 
 #ifdef USE_NNTP
-  OPT_SHOW_NEW_NEWS,
-  OPT_SHOW_ONLY_UNREAD,
-  OPT_SAVE_UNSUBSCRIBED,
-  OPT_NNTP_LISTGROUP,
-  OPT_NNTP_LOAD_DESCRIPTION,
-  OPT_X_COMMENT_TO,
+WHERE bool OPT_SHOW_NEW_NEWS;
+WHERE bool OPT_SHOW_ONLY_UNREAD;
+WHERE bool OPT_SAVE_UNSUBSCRIBED;
+WHERE bool OPT_NNTP_LISTGROUP;
+WHERE bool OPT_NNTP_LOAD_DESCRIPTION;
+WHERE bool OPT_X_COMMENT_TO;
 #endif
 
-  /* pseudo options */
+/* pseudo options */
 
-  OPT_AUX_SORT,           /**< (pseudo) using auxiliary sort function */
-  OPT_FORCE_REFRESH,      /**< (pseudo) refresh even during macros */
-  OPT_NO_CURSES,          /**< (pseudo) when sending in batch mode */
-  OPT_SEARCH_REVERSE,     /**< (pseudo) used by ci_search_command */
-  OPT_MSG_ERR,            /**< (pseudo) used by mutt_error/mutt_message */
-  OPT_SEARCH_INVALID,     /**< (pseudo) used to invalidate the search pat */
-  OPT_NEED_RESORT,        /**< (pseudo) used to force a re-sort */
-  OPT_RESORT_INIT,        /**< (pseudo) used to force the next resort to be from scratch */
-  OPT_VIEW_ATTACH,        /**< (pseudo) signals that we are viewing attachments */
-  OPT_SORT_SUBTHREADS,    /**< (pseudo) used when $sort_aux changes */
-  OPT_NEED_RESCORE,       /**< (pseudo) set when the `score' command is used */
-  OPT_ATTACH_MSG,         /**< (pseudo) used by attach-message */
-  OPT_HIDE_READ,          /**< (pseudo) whether or not hide read messages */
-  OPT_KEEP_QUIET,         /**< (pseudo) shut up the message and refresh
-                         *            functions while we are executing an
-                         *            external program.  */
-  OPT_MENU_CALLER,        /**< (pseudo) tell menu to give caller a take */
-  OPT_REDRAW_TREE,        /**< (pseudo) redraw the thread tree */
-  OPT_PGP_CHECK_TRUST,     /**< (pseudo) used by pgp_select_key () */
-  OPT_DONT_HANDLE_PGP_KEYS, /**< (pseudo) used to extract PGP keys */
-  OPT_IGNORE_MACRO_EVENTS, /**< (pseudo) don't process macro/push/exec events while set */
+WHERE bool OPT_AUX_SORT;           /**< (pseudo) using auxiliary sort function */
+WHERE bool OPT_FORCE_REFRESH;      /**< (pseudo) refresh even during macros */
+WHERE bool OPT_NO_CURSES;          /**< (pseudo) when sending in batch mode */
+WHERE bool OPT_SEARCH_REVERSE;     /**< (pseudo) used by ci_search_command */
+WHERE bool OPT_MSG_ERR;            /**< (pseudo) used by mutt_error/mutt_message */
+WHERE bool OPT_SEARCH_INVALID;     /**< (pseudo) used to invalidate the search pat */
+WHERE bool OPT_NEED_RESORT;        /**< (pseudo) used to force a re-sort */
+WHERE bool OPT_RESORT_INIT;        /**< (pseudo) used to force the next resort to be from scratch */
+WHERE bool OPT_VIEW_ATTACH;        /**< (pseudo) signals that we are viewing attachments */
+WHERE bool OPT_SORT_SUBTHREADS;    /**< (pseudo) used when $sort_aux changes */
+WHERE bool OPT_NEED_RESCORE;       /**< (pseudo) set when the `score' command is used */
+WHERE bool OPT_ATTACH_MSG;         /**< (pseudo) used by attach-message */
+WHERE bool OPT_HIDE_READ;          /**< (pseudo) whether or not hide read messages */
+WHERE bool OPT_KEEP_QUIET;         /**< (pseudo) shut up the message and refresh functions while we are executing an external program.  */
+WHERE bool OPT_MENU_CALLER;        /**< (pseudo) tell menu to give caller a take */
+WHERE bool OPT_REDRAW_TREE;        /**< (pseudo) redraw the thread tree */
+WHERE bool OPT_PGP_CHECK_TRUST;     /**< (pseudo) used by pgp_select_key () */
+WHERE bool OPT_DONT_HANDLE_PGP_KEYS; /**< (pseudo) used to extract PGP keys */
+WHERE bool OPT_IGNORE_MACRO_EVENTS; /**< (pseudo) don't process macro/push/exec events while set */
 
 #ifdef USE_NNTP
-  OPT_NEWS,              /**< (pseudo) used to change reader mode */
-  OPT_NEWS_SEND,          /**< (pseudo) used to change behavior when posting */
+WHERE bool OPT_NEWS;              /**< (pseudo) used to change reader mode */
+WHERE bool OPT_NEWS_SEND;          /**< (pseudo) used to change behavior when posting */
 #endif
 #ifdef USE_NOTMUCH
-  OPT_VIRTUAL_SPOOLFILE,
-  OPT_NM_RECORD,
+WHERE bool OPT_VIRTUAL_SPOOLFILE;
+WHERE bool OPT_NM_RECORD;
 #endif
 
-  OPT_GLOBAL_MAX
-};
 
 #define mutt_bit_set(v, n)    v[n / 8] |= (1 << (n % 8))
 #define mutt_bit_unset(v, n)  v[n / 8] &= ~(1 << (n % 8))
 #define mutt_bit_toggle(v, n) v[n / 8] ^= (1 << (n % 8))
 #define mutt_bit_isset(v, n)  (v[n / 8] & (1 << (n % 8)))
-
-/* bit vector for boolean variables */
-#ifdef MAIN_C
-unsigned char Options[(OPT_GLOBAL_MAX + 7) / 8];
-#else
-extern unsigned char Options[];
-#endif
-
-#define set_option(x) mutt_bit_set(Options, x)
-#define unset_option(x) mutt_bit_unset(Options, x)
-#define toggle_option(x) mutt_bit_toggle(Options, x)
-#define option(x) mutt_bit_isset(Options, x)
 
 #endif /* _MUTT_OPTIONS_H_ */

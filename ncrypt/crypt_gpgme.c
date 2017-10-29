@@ -202,7 +202,7 @@ static const char *crypt_keyid(struct CryptKeyInfo *k)
   if (k->kobj && k->kobj->subkeys)
   {
     s = k->kobj->subkeys->keyid;
-    if ((!option(OPT_PGP_LONG_IDS)) && (strlen(s) == 16))
+    if ((!OPT_PGP_LONG_IDS) && (strlen(s) == 16))
       /* Return only the short keyID.  */
       s += 8;
   }
@@ -883,7 +883,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, gpgme_key_t *rset,
       return NULL;
     }
 
-    if (option(OPT_CRYPT_USE_PKA))
+    if (OPT_CRYPT_USE_PKA)
     {
       err = set_pka_sig_notation(ctx);
       if (err)
@@ -1010,7 +1010,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
     return NULL;
   }
 
-  if (option(OPT_CRYPT_USE_PKA))
+  if (OPT_CRYPT_USE_PKA)
   {
     err = set_pka_sig_notation(ctx);
     if (err)
@@ -1343,7 +1343,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     state_puts("\n", s);
   }
 
-  if (option(OPT_CRYPT_USE_PKA))
+  if (OPT_CRYPT_USE_PKA)
   {
     if (sig->pka_trust == 1 && sig->pka_address)
     {
@@ -4199,7 +4199,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   key_table = NULL;
   for (k = keys; k; k = k->next)
   {
-    if (!option(OPT_PGP_SHOW_UNUSABLE) && (k->flags & KEYFLAG_CANTUSE))
+    if (!OPT_PGP_SHOW_UNUSABLE && (k->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -4305,7 +4305,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
              easy because gpgme provides more information */
-        if (option(OPT_PGP_CHECK_TRUST))
+        if (OPT_PGP_CHECK_TRUST)
         {
           if (!crypt_key_is_valid(key_table[menu->current]))
           {
@@ -4315,9 +4315,8 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (option(OPT_PGP_CHECK_TRUST) &&
-            (!crypt_id_is_valid(key_table[menu->current]) ||
-             !crypt_id_is_strong(key_table[menu->current])))
+        if (OPT_PGP_CHECK_TRUST && (!crypt_id_is_valid(key_table[menu->current]) ||
+                                    !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
           char buf2[LONG_STRING];
@@ -4670,7 +4669,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       {
         crypt_hook_val = crypt_hook->data;
         r = MUTT_YES;
-        if (!oppenc_mode && option(OPT_CRYPT_CONFIRMHOOK))
+        if (!oppenc_mode && OPT_CRYPT_CONFIRMHOOK)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"),
                    crypt_hook_val, p->mailbox);
@@ -4782,7 +4781,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   char buf[LONG_STRING];
   struct stat sb;
 
-  unset_option(OPT_PGP_CHECK_TRUST);
+  OPT_PGP_CHECK_TRUST = false;
 
   key = crypt_ask_for_key(_("Please enter the key ID: "), NULL, 0, APPLICATION_PGP, NULL);
   if (!key)
@@ -4900,7 +4899,7 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
+  if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT && (msg->security & OPPENCRYPT))
   {
     if (is_smime)
     {
@@ -4925,7 +4924,7 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
    * Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
-  else if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+  else if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
   {
     if (is_smime)
     {

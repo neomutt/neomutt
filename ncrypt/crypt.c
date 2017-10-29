@@ -65,7 +65,7 @@ void crypt_current_time(struct State *s, char *app_name)
   if (!WithCrypto)
     return;
 
-  if (option(OPT_CRYPT_TIMESTAMP))
+  if (OPT_CRYPT_TIMESTAMP)
   {
     t = time(NULL);
     strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
@@ -202,7 +202,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   if ((WithCrypto & APPLICATION_PGP))
     tmp_pgp_pbody = msg->content;
 
-  if (option(OPT_CRYPT_USE_PKA) && (msg->security & SIGN))
+  if (OPT_CRYPT_USE_PKA && (msg->security & SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -235,7 +235,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
+        (!(flags & ENCRYPT) || OPT_PGP_RETAINABLE_SIGS))
     {
       tmp_pbody = crypt_pgp_sign_message(msg->content);
       if (!tmp_pbody)
@@ -686,7 +686,7 @@ void convert_to_7bit(struct Body *a)
         a->encoding = ENC7BIT;
         convert_to_7bit(a->parts);
       }
-      else if ((WithCrypto & APPLICATION_PGP) && option(OPT_PGP_STRICT_ENC))
+      else if ((WithCrypto & APPLICATION_PGP) && OPT_PGP_STRICT_ENC)
         convert_to_7bit(a->parts);
     }
     else if (a->type == TYPEMESSAGE &&
@@ -700,7 +700,7 @@ void convert_to_7bit(struct Body *a)
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
     else if (a->content && a->encoding != ENCBASE64 &&
-             (a->content->from || (a->content->space && option(OPT_PGP_STRICT_ENC))))
+             (a->content->from || (a->content->space && OPT_PGP_STRICT_ENC)))
     {
       a->encoding = ENCQUOTEDPRINTABLE;
     }
@@ -726,7 +726,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   }
 
   if ((WithCrypto & APPLICATION_PGP))
-    set_option(OPT_DONT_HANDLE_PGP_KEYS);
+    OPT_DONT_HANDLE_PGP_KEYS = true;
 
   if (!h)
   {
@@ -823,7 +823,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   mutt_file_unlink(tempfname);
 
   if ((WithCrypto & APPLICATION_PGP))
-    unset_option(OPT_DONT_HANDLE_PGP_KEYS);
+    OPT_DONT_HANDLE_PGP_KEYS = false;
 }
 
 /**
@@ -850,7 +850,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     return 0;
 
   if ((WithCrypto & APPLICATION_PGP))
-    set_option(OPT_PGP_CHECK_TRUST);
+    OPT_PGP_CHECK_TRUST = true;
 
   last = mutt_addr_append(&adrlist, msg->env->to, false);
   last = mutt_addr_append(last ? &last : &adrlist, msg->env->cc, false);
@@ -872,8 +872,8 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         mutt_addr_free(&adrlist);
         return -1;
       }
-      unset_option(OPT_PGP_CHECK_TRUST);
-      if (option(OPT_PGP_SELF_ENCRYPT) || (quadoption(OPT_PGP_ENCRYPT_SELF) == MUTT_YES))
+      OPT_PGP_CHECK_TRUST = false;
+      if (OPT_PGP_SELF_ENCRYPT || (OPT_PGP_ENCRYPT_SELF == MUTT_YES))
         self_encrypt = PgpSelfEncryptAs;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
@@ -884,7 +884,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         mutt_addr_free(&adrlist);
         return -1;
       }
-      if (option(OPT_SMIME_SELF_ENCRYPT) || (quadoption(OPT_SMIME_ENCRYPT_SELF) == MUTT_YES))
+      if (OPT_SMIME_SELF_ENCRYPT || (OPT_SMIME_ENCRYPT_SELF == MUTT_YES))
         self_encrypt = SmimeSelfEncryptAs;
     }
   }
@@ -914,7 +914,7 @@ void crypt_opportunistic_encrypt(struct Header *msg)
   if (!WithCrypto)
     return;
 
-  if (!(option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT)))
+  if (!(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT && (msg->security & OPPENCRYPT)))
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);

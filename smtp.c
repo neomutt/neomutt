@@ -341,7 +341,7 @@ static int smtp_helo(struct Connection *conn)
     if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_STARTTLS) != MUTT_NO)
+    if (OPT_SSL_FORCE_TLS || OPT_SSL_STARTTLS != MUTT_NO)
       Esmtp = 1;
 #endif
   }
@@ -389,7 +389,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  if (!option(OPT_NO_CURSES))
+  if (!OPT_NO_CURSES)
     mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;
@@ -593,7 +593,7 @@ static int smtp_open(struct Connection *conn)
 #ifdef USE_SSL
   if (conn->ssf)
     rc = MUTT_NO;
-  else if (option(OPT_SSL_FORCE_TLS))
+  else if (OPT_SSL_FORCE_TLS)
     rc = MUTT_YES;
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
            (rc = query_quadoption(OPT_SSL_STARTTLS,

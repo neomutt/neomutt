@@ -29,6 +29,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include "where.h"
 
 struct ListHead;
 struct Mapping;
@@ -228,48 +229,41 @@ enum QuadOptionResponse
   MUTT_ASKYES
 };
 
-/**
- * enum QuadOptionVars - Index of all QuadOptions
- */
-enum QuadOptionVars
-{
-  OPT_ABORT_UNMODIFIED,
-  OPT_BOUNCE,
-  OPT_COPY,
-  OPT_DELETE,
-  OPT_FORWARD_EDIT,
-  OPT_FCC_ATTACH,
-  OPT_INCLUDE,
-  OPT_HONOR_FOLLOWUP_TO,
-  OPT_MIME_FORWARD,
-  OPT_MIME_FORWARD_REST,
-  OPT_MOVE,
-  OPT_PGP_MIME_AUTO, /* ask to revert to PGP/MIME when inline fails */
-  OPT_SMIME_ENCRYPT_SELF,
-  OPT_PGP_ENCRYPT_SELF,
+/* Quad-options */
+WHERE unsigned char OPT_ABORT_UNMODIFIED;
+WHERE unsigned char OPT_BOUNCE;
+WHERE unsigned char OPT_COPY;
+WHERE unsigned char OPT_DELETE;
+WHERE unsigned char OPT_FORWARD_EDIT;
+WHERE unsigned char OPT_FCC_ATTACH;
+WHERE unsigned char OPT_INCLUDE;
+WHERE unsigned char OPT_HONOR_FOLLOWUP_TO;
+WHERE unsigned char OPT_MIME_FORWARD;
+WHERE unsigned char OPT_MIME_FORWARD_REST;
+WHERE unsigned char OPT_MOVE;
+WHERE unsigned char OPT_PGP_MIME_AUTO; /* ask to revert to PGP/MIME when inline fails */
+WHERE unsigned char OPT_SMIME_ENCRYPT_SELF;
+WHERE unsigned char OPT_PGP_ENCRYPT_SELF;
 #ifdef USE_POP
-  OPT_POP_DELETE,
-  OPT_POP_RECONNECT,
+WHERE unsigned char OPT_POP_DELETE;
+WHERE unsigned char OPT_POP_RECONNECT;
 #endif
-  OPT_POSTPONE,
-  OPT_PRINT,
-  OPT_QUIT,
-  OPT_REPLY_TO,
-  OPT_RECALL,
+WHERE unsigned char OPT_POSTPONE;
+WHERE unsigned char OPT_PRINT;
+WHERE unsigned char OPT_QUIT;
+WHERE unsigned char OPT_REPLY_TO;
+WHERE unsigned char OPT_RECALL;
 #ifdef USE_SSL
-  OPT_SSL_STARTTLS,
+WHERE unsigned char OPT_SSL_STARTTLS;
 #endif
-  OPT_ABORT_NOSUBJECT,
-  OPT_CRYPT_VERIFY_SIG, /* verify PGP signatures */
+WHERE unsigned char OPT_ABORT_NOSUBJECT;
+WHERE unsigned char OPT_CRYPT_VERIFY_SIG; /* verify PGP signatures */
 #ifdef USE_NNTP
-  OPT_POST_MODERATED,
-  OPT_CATCHUP_NEWSGROUP,
-  OPT_FOLLOWUP_TO_POSTER,
+WHERE unsigned char OPT_POST_MODERATED;
+WHERE unsigned char OPT_CATCHUP_NEWSGROUP;
+WHERE unsigned char OPT_FOLLOWUP_TO_POSTER;
 #endif
-  OPT_ABORT_NOATTACH, /* forgotten attachment detector */
-  /* THIS MUST BE THE LAST VALUE. */
-  OPT_QUAD_MAX,
-};
+WHERE unsigned char OPT_ABORT_NOATTACH; /* forgotten attachment detector */
 
 /* flags to ci_send_message() */
 #define SENDREPLY        (1 << 0)

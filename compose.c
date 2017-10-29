@@ -289,7 +289,7 @@ static void redraw_crypt_lines(struct Header *msg)
       addstr(_(" (S/MIME)"));
   }
 
-  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
+  if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT && (msg->security & OPPENCRYPT))
     addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(MuttIndexWindow);
@@ -412,7 +412,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
-  if (!option(OPT_NEWS_SEND))
+  if (!OPT_NEWS_SEND)
   {
 #endif
     draw_envelope_addr(HDR_TO, msg->env->to);
@@ -428,7 +428,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
     mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s",
                          HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
     mutt_paddstr(W, NONULL(msg->env->followup_to));
-    if (option(OPT_X_COMMENT_TO))
+    if (OPT_X_COMMENT_TO)
     {
       mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s",
                            HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
@@ -797,7 +797,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 #ifdef USE_NNTP
   int news = 0; /* is it a news article ? */
 
-  if (option(OPT_NEWS_SEND))
+  if (OPT_NEWS_SEND)
     news++;
 #endif
 
@@ -827,7 +827,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   while (loop)
   {
 #ifdef USE_NNTP
-    unset_option(OPT_NEWS); /* for any case */
+    OPT_NEWS = false; /* for any case */
 #endif
     switch (op = mutt_menu_loop(menu))
     {
@@ -841,7 +841,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_TO, &msg->env->to);
-        if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+        if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -854,7 +854,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_BCC, &msg->env->bcc);
-        if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+        if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -867,7 +867,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_CC, &msg->env->cc);
-        if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+        if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -912,7 +912,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         break;
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
-        if (news && option(OPT_X_COMMENT_TO))
+        if (news && OPT_X_COMMENT_TO)
         {
           if (msg->env->x_comment_to)
             mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
@@ -963,7 +963,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HEADERS))
+        if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !OPT_EDIT_HEADERS)
         {
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
@@ -974,8 +974,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       /* fallthrough */
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&
-            (op == OP_COMPOSE_EDIT_HEADERS ||
-             (op == OP_COMPOSE_EDIT_MESSAGE && option(OPT_EDIT_HEADERS))))
+            (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && OPT_EDIT_HEADERS)))
         {
           char *tag = NULL, *err = NULL;
           mutt_env_to_local(msg->env);
@@ -985,7 +984,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
             mutt_error(_("Bad IDN in \"%s\": '%s'"), tag, err);
             FREE(&err);
           }
-          if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+          if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
             crypt_opportunistic_encrypt(msg);
         }
         else
@@ -1082,7 +1081,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         prompt = _("Open mailbox to attach message from");
 
 #ifdef USE_NNTP
-        unset_option(OPT_NEWS);
+        OPT_NEWS = false;
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
           CurrentNewsSrv = nntp_select_server(NewsServer, false);
@@ -1090,7 +1089,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
             break;
 
           prompt = _("Open newsgroup to attach message from");
-          set_option(OPT_NEWS);
+          OPT_NEWS = true;
         }
 #endif
 
@@ -1107,7 +1106,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 
 #ifdef USE_NNTP
-        if (option(OPT_NEWS))
+        if (OPT_NEWS)
           nntp_expand_path(fname, sizeof(fname), &CurrentNewsSrv->conn->account);
         else
 #endif
@@ -1119,7 +1118,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           if (!mx_is_pop(fname))
 #endif
 #ifdef USE_NNTP
-            if (!mx_is_nntp(fname) && !option(OPT_NEWS))
+            if (!mx_is_nntp(fname) && !OPT_NEWS)
 #endif
               /* check to make sure the file exists and is readable */
               if (access(fname, R_OK) == -1)
@@ -1150,10 +1149,10 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         old_sort_aux = SortAux;
 
         Context = ctx;
-        set_option(OPT_ATTACH_MSG);
+        OPT_ATTACH_MSG = true;
         mutt_message(_("Tag the messages you want to attach!"));
         close = mutt_index_menu();
-        unset_option(OPT_ATTACH_MSG);
+        OPT_ATTACH_MSG = false;
 
         if (!Context)
         {

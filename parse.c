@@ -1042,7 +1042,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
                 hdr->replied = true;
                 break;
               case 'O':
-                hdr->old = option(OPT_MARK_OLD) ? true : false;
+                hdr->old = OPT_MARK_OLD ? true : false;
                 break;
               case 'R':
                 hdr->read = true;
@@ -1132,7 +1132,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (!(weed && option(OPT_WEED) && mutt_matches_ignore(line)))
+    if (!(weed && OPT_WEED && mutt_matches_ignore(line)))
     {
       struct ListNode *np = mutt_list_insert_tail(&e->userhdrs, mutt_str_strdup(line));
       if (do_2047)

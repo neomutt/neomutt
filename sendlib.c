@@ -1256,13 +1256,13 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     char *chsname = mutt_get_body_charset(send_charset, sizeof(send_charset), b);
     if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
-        info->linemax > 990 || (info->from && option(OPT_ENCODE_FROM)))
+        info->linemax > 990 || (info->from && OPT_ENCODE_FROM))
     {
       b->encoding = ENCQUOTEDPRINTABLE;
     }
     else if (info->hibin)
     {
-      b->encoding = option(OPT_ALLOW_8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
+      b->encoding = OPT_ALLOW_8BIT ? ENC8BIT : ENCQUOTEDPRINTABLE;
     }
     else
     {
@@ -1273,7 +1273,7 @@ static void set_encoding(struct Body *b, struct Content *info)
   {
     if (info->lobin || info->hibin)
     {
-      if (option(OPT_ALLOW_8BIT) && !info->lobin)
+      if (OPT_ALLOW_8BIT && !info->lobin)
         b->encoding = ENC8BIT;
       else
         mutt_message_to_7bit(b, NULL);
@@ -1365,8 +1365,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
 
   if (WithCrypto)
   {
-    if ((option(OPT_MIME_FORWARD_DECODE) || option(OPT_FORWARD_DECRYPT)) &&
-        (hdr->security & ENCRYPT))
+    if ((OPT_MIME_FORWARD_DECODE || OPT_FORWARD_DECRYPT) && (hdr->security & ENCRYPT))
     {
       if (!crypt_valid_passphrase(hdr->security))
         return NULL;
@@ -1393,7 +1392,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   cmflags = 0;
 
   /* If we are attaching a message, ignore OPT_MIME_FORWARD_DECODE */
-  if (!attach_msg && option(OPT_MIME_FORWARD_DECODE))
+  if (!attach_msg && OPT_MIME_FORWARD_DECODE)
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -1402,7 +1401,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
     if ((WithCrypto & APPLICATION_SMIME))
       pgp &= ~SMIMEENCRYPT;
   }
-  else if (WithCrypto && option(OPT_FORWARD_DECRYPT) && (hdr->security & ENCRYPT))
+  else if (WithCrypto && OPT_FORWARD_DECRYPT && (hdr->security & ENCRYPT))
   {
     if ((WithCrypto & APPLICATION_PGP) && mutt_is_multipart_encrypted(hdr->content))
     {
@@ -1484,7 +1483,7 @@ struct Body *mutt_make_file_attach(const char *path)
   att = mutt_new_body();
   att->filename = mutt_str_strdup(path);
 
-  if (MimeTypeQueryCommand && *MimeTypeQueryCommand && option(OPT_MIME_TYPE_QUERY_FIRST))
+  if (MimeTypeQueryCommand && *MimeTypeQueryCommand && OPT_MIME_TYPE_QUERY_FIRST)
     run_mime_type_query(att);
 
   /* Attempt to determine the appropriate content-type based on the filename
@@ -1493,8 +1492,7 @@ struct Body *mutt_make_file_attach(const char *path)
   if (!att->subtype)
     mutt_lookup_mime_type(att, path);
 
-  if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand &&
-      !option(OPT_MIME_TYPE_QUERY_FIRST))
+  if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand && !OPT_MIME_TYPE_QUERY_FIRST)
   {
     run_mime_type_query(att);
   }
@@ -1940,7 +1938,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   char *v = mutt_str_strdup(value);
   bool display = (flags & CH_DISPLAY);
 
-  if (!display || option(OPT_WEED))
+  if (!display || OPT_WEED)
     v = unfold_header(v);
 
   /* when not displaying, use sane wrap value */
@@ -2059,7 +2057,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!option(OPT_NEWS_SEND))
+    if (!OPT_NEWS_SEND)
 #endif
       fputs("To: \n", fp);
 
@@ -2070,13 +2068,13 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!option(OPT_NEWS_SEND))
+    if (!OPT_NEWS_SEND)
 #endif
       fputs("Cc: \n", fp);
 
   if (env->bcc)
   {
-    if (mode != 0 || option(OPT_WRITE_BCC))
+    if (mode != 0 || OPT_WRITE_BCC)
     {
       fputs("Bcc: ", fp);
       mutt_write_address_list(env->bcc, fp, 5, 0);
@@ -2084,24 +2082,24 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!option(OPT_NEWS_SEND))
+    if (!OPT_NEWS_SEND)
 #endif
       fputs("Bcc: \n", fp);
 
 #ifdef USE_NNTP
   if (env->newsgroups)
     fprintf(fp, "Newsgroups: %s\n", env->newsgroups);
-  else if (mode == 1 && option(OPT_NEWS_SEND))
+  else if (mode == 1 && OPT_NEWS_SEND)
     fputs("Newsgroups: \n", fp);
 
   if (env->followup_to)
     fprintf(fp, "Followup-To: %s\n", env->followup_to);
-  else if (mode == 1 && option(OPT_NEWS_SEND))
+  else if (mode == 1 && OPT_NEWS_SEND)
     fputs("Followup-To: \n", fp);
 
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if (mode == 1 && option(OPT_NEWS_SEND) && option(OPT_X_COMMENT_TO))
+  else if (mode == 1 && OPT_NEWS_SEND && OPT_X_COMMENT_TO)
     fputs("X-Comment-To: \n", fp);
 #endif
 
@@ -2124,7 +2122,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
 
   if (env->mail_followup_to)
 #ifdef USE_NNTP
-    if (!option(OPT_NEWS_SEND))
+    if (!OPT_NEWS_SEND)
 #endif
     {
       fputs("Mail-Followup-To: ", fp);
@@ -2186,7 +2184,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
     }
   }
 
-  if (mode == 0 && !privacy && option(OPT_USER_AGENT) && !has_agent)
+  if (mode == 0 && !privacy && OPT_USER_AGENT && !has_agent)
   {
     /* Add a vanity header */
     fprintf(fp, "User-Agent: NeoMutt/%s%s\n", PACKAGE_VERSION, GitVer);
@@ -2232,7 +2230,7 @@ const char *mutt_fqdn(short may_hide_host)
   {
     p = Hostname;
 
-    if (may_hide_host && option(OPT_HIDDEN_HOST))
+    if (may_hide_host && OPT_HIDDEN_HOST)
     {
       p = strchr(Hostname, '.');
       if (p)
@@ -2490,7 +2488,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   int i;
 
 #ifdef USE_NNTP
-  if (option(OPT_NEWS_SEND))
+  if (OPT_NEWS_SEND)
   {
     char cmd[LONG_STRING];
 
@@ -2544,7 +2542,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   }
 
 #ifdef USE_NNTP
-  if (!option(OPT_NEWS_SEND))
+  if (!OPT_NEWS_SEND)
   {
 #endif
     /* If Sendmail contained a "--", we save the recipients to append to
@@ -2562,10 +2560,10 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       }
     }
 
-    if (eightbit && option(OPT_USE_8BITMIME))
+    if (eightbit && OPT_USE_8BITMIME)
       args = add_option(args, &argslen, &argsmax, "-B8BITMIME");
 
-    if (option(OPT_USE_ENVELOPE_FROM))
+    if (OPT_USE_ENVELOPE_FROM)
     {
       if (EnvelopeFromAddress)
       {
@@ -2608,10 +2606,10 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
    * and is set up to prompt using ncurses pinentry.  If we
    * mutt_endwin() it leaves other users staring at a blank screen.
    * So instead, just force a hard redraw on the next refresh. */
-  if (!option(OPT_NO_CURSES))
+  if (!OPT_NO_CURSES)
     mutt_need_hard_redraw();
 
-  i = send_msg(path, args, msg, option(OPT_NO_CURSES) ? NULL : &childout);
+  i = send_msg(path, args, msg, OPT_NO_CURSES ? NULL : &childout);
   if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)
@@ -2690,7 +2688,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
 
   if (env->subject)
 #ifdef USE_NNTP
-    if (!option(OPT_NEWS_SEND) || option(OPT_MIME_SUBJECT))
+    if (!OPT_NEWS_SEND || OPT_MIME_SUBJECT)
 #endif
     {
       rfc2047_encode_string32(&env->subject);
@@ -2748,7 +2746,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
     char *msgid_str = NULL;
 
-    if (!option(OPT_BOUNCE_DELIVERED))
+    if (!OPT_BOUNCE_DELIVERED)
       ch_flags |= CH_WEED_DELIVERED;
 
     fseeko(fp, h->offset, SEEK_SET);
@@ -2817,7 +2815,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   rfc822_write_address(resent_from, sizeof(resent_from), from, 0);
 
 #ifdef USE_NNTP
-  unset_option(OPT_NEWS_SEND);
+  OPT_NEWS_SEND = false;
 #endif
 
   /*

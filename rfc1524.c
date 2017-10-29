@@ -69,7 +69,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *com
 
   mutt_str_strfcpy(type2, type, sizeof(type2));
 
-  if (option(OPT_MAILCAP_SANITIZE))
+  if (OPT_MAILCAP_SANITIZE)
     mutt_file_sanitize_filename(type2, 0);
 
   while (x < clen - 1 && command[x] && y < sizeof(buf) - 1)
@@ -96,7 +96,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *com
 
         pvalue2 = mutt_param_get(param, a->parameter);
         mutt_str_strfcpy(pvalue, NONULL(pvalue2), sizeof(pvalue));
-        if (option(OPT_MAILCAP_SANITIZE))
+        if (OPT_MAILCAP_SANITIZE)
           mutt_file_sanitize_filename(pvalue, 0);
 
         y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, pvalue);
