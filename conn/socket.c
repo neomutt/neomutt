@@ -44,10 +44,8 @@
  */
 
 #include "config.h"
-#include <time.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <idna.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>
@@ -57,6 +55,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 #include "lib/debug.h"
 #include "lib/memory.h"
@@ -66,6 +65,7 @@
 #include "conn_globals.h"
 #include "connection.h"
 #include "globals.h"
+#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_SSL
