@@ -17,6 +17,8 @@ IncludeCategories:
   - Regex:      '".*_private\.h"'
     Priority:   -6
   - Regex:      '"mutt/.*\.h"'
+    Priority:   -5
+  - Regex:      '"config/.*\.h"'
     Priority:   -4
   - Regex:      '"email/.*\.h"'
     Priority:   -3
