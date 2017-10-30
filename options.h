@@ -26,217 +26,217 @@
 #include <stdbool.h>
 #include "where.h"
 
-WHERE bool OPT_ALLOW_8BIT;
-WHERE bool OPT_ALLOW_ANSI;
-WHERE bool OPT_ARROW_CURSOR;
-WHERE bool OPT_ASCII_CHARS;
-WHERE bool OPT_ASKBCC;
-WHERE bool OPT_ASKCC;
-WHERE bool OPT_ASK_FOLLOW_UP;
-WHERE bool OPT_ASK_X_COMMENT_TO;
-WHERE bool OPT_ATTACH_SPLIT;
-WHERE bool OPT_AUTOEDIT;
-WHERE bool OPT_AUTO_TAG;
-WHERE bool OPT_BEEP;
-WHERE bool OPT_BEEP_NEW;
-WHERE bool OPT_BOUNCE_DELIVERED;
-WHERE bool OPT_BRAILLE_FRIENDLY;
-WHERE bool OPT_CHANGE_FOLDER_NEXT;
-WHERE bool OPT_CHECK_MBOX_SIZE;
-WHERE bool OPT_CHECK_NEW;
-WHERE bool OPT_COLLAPSE_ALL;
-WHERE bool OPT_COLLAPSE_UNREAD;
-WHERE bool OPT_COLLAPSE_FLAGGED;
-WHERE bool OPT_CONFIRMAPPEND;
-WHERE bool OPT_CONFIRMCREATE;
-WHERE bool OPT_DELETE_UNTAG;
-WHERE bool OPT_DIGEST_COLLAPSE;
-WHERE bool OPT_DUPLICATE_THREADS;
-WHERE bool OPT_EDIT_HEADERS;
-WHERE bool OPT_ENCODE_FROM;
-WHERE bool OPT_USE_ENVELOPE_FROM;
-WHERE bool OPT_FAST_REPLY;
-WHERE bool OPT_FCC_CLEAR;
-WHERE bool OPT_FLAG_SAFE;
-WHERE bool OPT_FOLLOWUP_TO;
-WHERE bool OPT_FORCE_NAME;
-WHERE bool OPT_FORWARD_DECODE;
-WHERE bool OPT_FORWARD_QUOTE;
-WHERE bool OPT_FORWARD_REFERENCES;
+WHERE bool Allow8bit;
+WHERE bool AllowAnsi;
+WHERE bool ArrowCursor;
+WHERE bool AsciiChars;
+WHERE bool Askbcc;
+WHERE bool Askcc;
+WHERE bool AskFollowUp;
+WHERE bool AskXCommentTo;
+WHERE bool AttachSplit;
+WHERE bool Autoedit;
+WHERE bool AutoTag;
+WHERE bool Beep;
+WHERE bool BeepNew;
+WHERE bool BounceDelivered;
+WHERE bool BrailleFriendly;
+WHERE bool ChangeFolderNext;
+WHERE bool CheckMboxSize;
+WHERE bool CheckNew;
+WHERE bool CollapseAll;
+WHERE bool CollapseUnread;
+WHERE bool CollapseFlagged;
+WHERE bool Confirmappend;
+WHERE bool Confirmcreate;
+WHERE bool DeleteUntag;
+WHERE bool DigestCollapse;
+WHERE bool DuplicateThreads;
+WHERE bool EditHeaders;
+WHERE bool EncodeFrom;
+WHERE bool UseEnvelopeFrom;
+WHERE bool FastReply;
+WHERE bool FccClear;
+WHERE bool FlagSafe;
+WHERE bool FollowupTo;
+WHERE bool ForceName;
+WHERE bool ForwardDecode;
+WHERE bool ForwardQuote;
+WHERE bool ForwardReferences;
 #ifdef USE_HCACHE
-WHERE bool OPT_MAILDIR_HEADER_CACHE_VERIFY;
+WHERE bool MaildirHeaderCacheVerify;
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-WHERE bool OPT_HEADER_CACHE_COMPRESS;
+WHERE bool HeaderCacheCompress;
 #endif /* HAVE_QDBM */
 #endif
-WHERE bool OPT_HDRS;
-WHERE bool OPT_HEADER;
-WHERE bool OPT_HEADER_COLOR_PARTIAL;
-WHERE bool OPT_HELP;
-WHERE bool OPT_HIDDEN_HOST;
-WHERE bool OPT_HIDE_LIMITED;
-WHERE bool OPT_HIDE_MISSING;
-WHERE bool OPT_HIDE_THREAD_SUBJECT;
-WHERE bool OPT_HIDE_TOP_LIMITED;
-WHERE bool OPT_HIDE_TOP_MISSING;
-WHERE bool OPT_HISTORY_REMOVE_DUPS;
-WHERE bool OPT_HONOR_DISPOSITION;
-WHERE bool OPT_IGNORE_LINEAR_WHITE_SPACE;
-WHERE bool OPT_IGNORE_LIST_REPLY_TO;
+WHERE bool Hdrs;
+WHERE bool Header;
+WHERE bool HeaderColorPartial;
+WHERE bool Help;
+WHERE bool HiddenHost;
+WHERE bool HideLimited;
+WHERE bool HideMissing;
+WHERE bool HideThreadSubject;
+WHERE bool HideTopLimited;
+WHERE bool HideTopMissing;
+WHERE bool HistoryRemoveDups;
+WHERE bool HonorDisposition;
+WHERE bool IgnoreLinearWhiteSpace;
+WHERE bool IgnoreListReplyTo;
 #ifdef USE_IMAP
-WHERE bool OPT_IMAP_CHECK_SUBSCRIBED;
-WHERE bool OPT_IMAP_IDLE;
-WHERE bool OPT_IMAP_LIST_SUBSCRIBED;
-WHERE bool OPT_IMAP_PASSIVE;
-WHERE bool OPT_IMAP_PEEK;
-WHERE bool OPT_IMAP_SERVERNOISE;
+WHERE bool ImapCheckSubscribed;
+WHERE bool ImapIdle;
+WHERE bool ImapListSubscribed;
+WHERE bool ImapPassive;
+WHERE bool ImapPeek;
+WHERE bool ImapServernoise;
 #endif
 #ifdef USE_SSL
 #ifndef USE_SSL_GNUTLS
-WHERE bool OPT_SSL_USESYSTEMCERTS;
-WHERE bool OPT_SSL_USE_SSLV2;
+WHERE bool SslUsesystemcerts;
+WHERE bool SslUseSslv2;
 #endif /* USE_SSL_GNUTLS */
-WHERE bool OPT_SSL_USE_SSLV3;
-WHERE bool OPT_SSL_USE_TLSV1;
-WHERE bool OPT_SSL_USE_TLSV1_1;
-WHERE bool OPT_SSL_USE_TLSV1_2;
-WHERE bool OPT_SSL_FORCE_TLS;
-WHERE bool OPT_SSL_VERIFY_DATES;
-WHERE bool OPT_SSL_VERIFY_HOST;
+WHERE bool SslUseSslv3;
+WHERE bool SslUseTlsv1;
+WHERE bool SslUseTlsv11;
+WHERE bool SslUseTlsv12;
+WHERE bool SslForceTls;
+WHERE bool SslVerifyDates;
+WHERE bool SslVerifyHost;
 #if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
-WHERE bool OPT_SSL_VERIFY_PARTIAL_CHAINS;
+WHERE bool SslVerifyPartialChains;
 #endif /* USE_SSL_OPENSSL */
 #endif /* defined(USE_SSL) */
-WHERE bool OPT_IMPLICIT_AUTOVIEW;
-WHERE bool OPT_INCLUDE_ONLYFIRST;
-WHERE bool OPT_KEEP_FLAGGED;
-WHERE bool OPT_MAILCAP_SANITIZE;
-WHERE bool OPT_MAIL_CHECK_RECENT;
-WHERE bool OPT_MAIL_CHECK_STATS;
-WHERE bool OPT_MAILDIR_TRASH;
-WHERE bool OPT_MAILDIR_CHECK_CUR;
-WHERE bool OPT_MARKERS;
-WHERE bool OPT_MARK_OLD;
-WHERE bool OPT_MENU_SCROLL;  /**< scroll menu instead of implicit next-page */
-WHERE bool OPT_MENU_MOVE_OFF; /**< allow menu to scroll past last entry */
+WHERE bool ImplicitAutoview;
+WHERE bool IncludeOnlyfirst;
+WHERE bool KeepFlagged;
+WHERE bool MailcapSanitize;
+WHERE bool MailCheckRecent;
+WHERE bool MailCheckStats;
+WHERE bool MaildirTrash;
+WHERE bool MaildirCheckCur;
+WHERE bool Markers;
+WHERE bool MarkOld;
+WHERE bool MenuScroll;  /**< scroll menu instead of implicit next-page */
+WHERE bool MenuMoveOff; /**< allow menu to scroll past last entry */
 #if defined(USE_IMAP) || defined(USE_POP)
-WHERE bool OPT_MESSAGE_CACHE_CLEAN;
+WHERE bool MessageCacheClean;
 #endif
-WHERE bool OPT_META_KEY; /**< interpret ALT-x as ESC-x */
-WHERE bool OPT_METOO;
-WHERE bool OPT_MH_PURGE;
-WHERE bool OPT_MIME_FORWARD_DECODE;
-WHERE bool OPT_MIME_TYPE_QUERY_FIRST;
+WHERE bool MetaKey; /**< interpret ALT-x as ESC-x */
+WHERE bool Metoo;
+WHERE bool MhPurge;
+WHERE bool MimeForwardDecode;
+WHERE bool MimeTypeQueryFirst;
 #ifdef USE_NNTP
-WHERE bool OPT_MIME_SUBJECT; /**< encode subject line with RFC2047 */
+WHERE bool MimeSubject; /**< encode subject line with RFC2047 */
 #endif
-WHERE bool OPT_NARROW_TREE;
-WHERE bool OPT_PAGER_STOP;
-WHERE bool OPT_PIPE_DECODE;
-WHERE bool OPT_PIPE_SPLIT;
+WHERE bool NarrowTree;
+WHERE bool PagerStop;
+WHERE bool PipeDecode;
+WHERE bool PipeSplit;
 #ifdef USE_POP
-WHERE bool OPT_POP_AUTH_TRY_ALL;
-WHERE bool OPT_POP_LAST;
+WHERE bool PopAuthTryAll;
+WHERE bool PopLast;
 #endif
-WHERE bool OPT_POSTPONE_ENCRYPT;
-WHERE bool OPT_PRINT_DECODE;
-WHERE bool OPT_PRINT_SPLIT;
-WHERE bool OPT_PROMPT_AFTER;
-WHERE bool OPT_READ_ONLY;
-WHERE bool OPT_REFLOW_SPACE_QUOTES;
-WHERE bool OPT_REFLOW_TEXT;
-WHERE bool OPT_REPLY_SELF;
-WHERE bool OPT_REPLY_WITH_XORIG;
-WHERE bool OPT_RESOLVE;
-WHERE bool OPT_RESUME_DRAFT_FILES;
-WHERE bool OPT_RESUME_EDITED_DRAFT_FILES;
-WHERE bool OPT_REVERSE_ALIAS;
-WHERE bool OPT_REVERSE_NAME;
-WHERE bool OPT_REVERSE_REALNAME;
-WHERE bool OPT_RFC2047_PARAMETERS;
-WHERE bool OPT_SAVE_ADDRESS;
-WHERE bool OPT_SAVE_EMPTY;
-WHERE bool OPT_SAVE_NAME;
-WHERE bool OPT_SCORE;
+WHERE bool PostponeEncrypt;
+WHERE bool PrintDecode;
+WHERE bool PrintSplit;
+WHERE bool PromptAfter;
+WHERE bool ReadOnly;
+WHERE bool ReflowSpaceQuotes;
+WHERE bool ReflowText;
+WHERE bool ReplySelf;
+WHERE bool ReplyWithXorig;
+WHERE bool Resolve;
+WHERE bool ResumeDraftFiles;
+WHERE bool ResumeEditedDraftFiles;
+WHERE bool ReverseAlias;
+WHERE bool ReverseName;
+WHERE bool ReverseRealname;
+WHERE bool Rfc2047Parameters;
+WHERE bool SaveAddress;
+WHERE bool SaveEmpty;
+WHERE bool SaveName;
+WHERE bool Score;
 #ifdef USE_SIDEBAR
-WHERE bool OPT_SIDEBAR_VISIBLE;
-WHERE bool OPT_SIDEBAR_FOLDER_INDENT;
-WHERE bool OPT_SIDEBAR_NEW_MAIL_ONLY;
-WHERE bool OPT_SIDEBAR_NEXT_NEW_WRAP;
-WHERE bool OPT_SIDEBAR_SHORT_PATH;
-WHERE bool OPT_SIDEBAR_ON_RIGHT;
+WHERE bool SidebarVisible;
+WHERE bool SidebarFolderIndent;
+WHERE bool SidebarNewMailOnly;
+WHERE bool SidebarNextNewWrap;
+WHERE bool SidebarShortPath;
+WHERE bool SidebarOnRight;
 #endif
-WHERE bool OPT_SIG_DASHES;
-WHERE bool OPT_SIG_ON_TOP;
-WHERE bool OPT_SORT_RE;
-WHERE bool OPT_STATUS_ON_TOP;
-WHERE bool OPT_STRICT_THREADS;
-WHERE bool OPT_SUSPEND;
-WHERE bool OPT_TEXT_FLOWED;
-WHERE bool OPT_THOROUGH_SEARCH;
-WHERE bool OPT_THREAD_RECEIVED;
-WHERE bool OPT_TILDE;
-WHERE bool OPT_TS_ENABLED;
-WHERE bool OPT_UNCOLLAPSE_JUMP;
-WHERE bool OPT_UNCOLLAPSE_NEW;
-WHERE bool OPT_USE_8BITMIME;
-WHERE bool OPT_USE_DOMAIN;
-WHERE bool OPT_USE_FROM;
-WHERE bool OPT_PGP_USE_GPG_AGENT;
+WHERE bool SigDashes;
+WHERE bool SigOnTop;
+WHERE bool SortRe;
+WHERE bool StatusOnTop;
+WHERE bool StrictThreads;
+WHERE bool Suspend;
+WHERE bool TextFlowed;
+WHERE bool ThoroughSearch;
+WHERE bool ThreadReceived;
+WHERE bool Tilde;
+WHERE bool TsEnabled;
+WHERE bool UncollapseJump;
+WHERE bool UncollapseNew;
+WHERE bool Use8bitmime;
+WHERE bool UseDomain;
+WHERE bool UseFrom;
+WHERE bool PgpUseGpgAgent;
 #ifdef HAVE_LIBIDN
-WHERE bool OPT_IDN_DECODE;
-WHERE bool OPT_IDN_ENCODE;
+WHERE bool IdnDecode;
+WHERE bool IdnEncode;
 #endif
 #ifdef HAVE_GETADDRINFO
-WHERE bool OPT_USE_IPV6;
+WHERE bool UseIpv6;
 #endif
-WHERE bool OPT_WAIT_KEY;
-WHERE bool OPT_WEED;
-WHERE bool OPT_SMART_WRAP;
-WHERE bool OPT_WRAP_SEARCH;
-WHERE bool OPT_WRITE_BCC; /**< write out a bcc header? */
-WHERE bool OPT_USER_AGENT;
+WHERE bool WaitKey;
+WHERE bool Weed;
+WHERE bool SmartWrap;
+WHERE bool WrapSearch;
+WHERE bool WriteBcc; /**< write out a bcc header? */
+WHERE bool UserAgent;
 
-WHERE bool OPT_CRYPT_USE_GPGME;
-WHERE bool OPT_CRYPT_USE_PKA;
+WHERE bool CryptUseGpgme;
+WHERE bool CryptUsePka;
 
 /* PGP options */
 
-WHERE bool OPT_CRYPT_AUTOSIGN;
-WHERE bool OPT_CRYPT_AUTOENCRYPT;
-WHERE bool OPT_CRYPT_AUTOPGP;
-WHERE bool OPT_CRYPT_AUTOSMIME;
-WHERE bool OPT_CRYPT_CONFIRMHOOK;
-WHERE bool OPT_CRYPT_OPPORTUNISTIC_ENCRYPT;
-WHERE bool OPT_CRYPT_REPLYENCRYPT;
-WHERE bool OPT_CRYPT_REPLYSIGN;
-WHERE bool OPT_CRYPT_REPLYSIGNENCRYPTED;
-WHERE bool OPT_CRYPT_TIMESTAMP;
-WHERE bool OPT_SMIME_IS_DEFAULT;
-WHERE bool OPT_SMIME_SELF_ENCRYPT;
-WHERE bool OPT_SMIME_ASK_CERT_LABEL;
-WHERE bool OPT_SMIME_DECRYPT_USE_DEFAULT_KEY;
-WHERE bool OPT_PGP_IGNORE_SUBKEYS;
-WHERE bool OPT_PGP_CHECK_EXIT;
-WHERE bool OPT_PGP_LONG_IDS;
-WHERE bool OPT_PGP_AUTO_DECODE;
-WHERE bool OPT_PGP_RETAINABLE_SIGS;
-WHERE bool OPT_PGP_SELF_ENCRYPT;
-WHERE bool OPT_PGP_STRICT_ENC;
-WHERE bool OPT_FORWARD_DECRYPT;
-WHERE bool OPT_PGP_SHOW_UNUSABLE;
-WHERE bool OPT_PGP_AUTOINLINE;
-WHERE bool OPT_PGP_REPLYINLINE;
+WHERE bool CryptAutosign;
+WHERE bool CryptAutoencrypt;
+WHERE bool CryptAutopgp;
+WHERE bool CryptAutosmime;
+WHERE bool CryptConfirmhook;
+WHERE bool CryptOpportunisticEncrypt;
+WHERE bool CryptReplyencrypt;
+WHERE bool CryptReplysign;
+WHERE bool CryptReplysignencrypted;
+WHERE bool CryptTimestamp;
+WHERE bool SmimeIsDefault;
+WHERE bool SmimeSelfEncrypt;
+WHERE bool SmimeAskCertLabel;
+WHERE bool SmimeDecryptUseDefaultKey;
+WHERE bool PgpIgnoreSubkeys;
+WHERE bool PgpCheckExit;
+WHERE bool PgpLongIds;
+WHERE bool PgpAutoDecode;
+WHERE bool PgpRetainableSigs;
+WHERE bool PgpSelfEncrypt;
+WHERE bool PgpStrictEnc;
+WHERE bool ForwardDecrypt;
+WHERE bool PgpShowUnusable;
+WHERE bool PgpAutoinline;
+WHERE bool PgpReplyinline;
 
 /* news options */
 
 #ifdef USE_NNTP
-WHERE bool OPT_SHOW_NEW_NEWS;
-WHERE bool OPT_SHOW_ONLY_UNREAD;
-WHERE bool OPT_SAVE_UNSUBSCRIBED;
-WHERE bool OPT_NNTP_LISTGROUP;
-WHERE bool OPT_NNTP_LOAD_DESCRIPTION;
-WHERE bool OPT_X_COMMENT_TO;
+WHERE bool ShowNewNews;
+WHERE bool ShowOnlyUnread;
+WHERE bool SaveUnsubscribed;
+WHERE bool NntpListgroup;
+WHERE bool NntpLoadDescription;
+WHERE bool XCommentTo;
 #endif
 
 /* pseudo options */
@@ -266,8 +266,8 @@ WHERE bool OPT_NEWS;              /**< (pseudo) used to change reader mode */
 WHERE bool OPT_NEWS_SEND;          /**< (pseudo) used to change behavior when posting */
 #endif
 #ifdef USE_NOTMUCH
-WHERE bool OPT_VIRTUAL_SPOOLFILE;
-WHERE bool OPT_NM_RECORD;
+WHERE bool VirtualSpoolfile;
+WHERE bool NmRecord;
 #endif
 
 

@@ -65,7 +65,7 @@ void crypt_current_time(struct State *s, char *app_name)
   if (!WithCrypto)
     return;
 
-  if (OPT_CRYPT_TIMESTAMP)
+  if (CryptTimestamp)
   {
     t = time(NULL);
     strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
@@ -148,7 +148,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     if ((msg->content->type != TYPETEXT) ||
         (mutt_str_strcasecmp(msg->content->subtype, "plain") != 0))
     {
-      if (query_quadoption(OPT_PGP_MIME_AUTO,
+      if (query_quadoption(PgpMimeAuto,
                            _("Inline PGP can't be used with attachments.  "
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
@@ -160,7 +160,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     else if (!mutt_str_strcasecmp("flowed",
                                   mutt_param_get("format", msg->content->parameter)))
     {
-      if ((query_quadoption(OPT_PGP_MIME_AUTO,
+      if ((query_quadoption(PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
                               "Revert to PGP/MIME?"))) != MUTT_YES)
       {
@@ -183,7 +183,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption(
-              OPT_PGP_MIME_AUTO,
+              PgpMimeAuto,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent."));
@@ -202,7 +202,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   if ((WithCrypto & APPLICATION_PGP))
     tmp_pgp_pbody = msg->content;
 
-  if (OPT_CRYPT_USE_PKA && (msg->security & SIGN))
+  if (CryptUsePka && (msg->security & SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -235,7 +235,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || OPT_PGP_RETAINABLE_SIGS))
+        (!(flags & ENCRYPT) || PgpRetainableSigs))
     {
       tmp_pbody = crypt_pgp_sign_message(msg->content);
       if (!tmp_pbody)
@@ -686,7 +686,7 @@ void convert_to_7bit(struct Body *a)
         a->encoding = ENC7BIT;
         convert_to_7bit(a->parts);
       }
-      else if ((WithCrypto & APPLICATION_PGP) && OPT_PGP_STRICT_ENC)
+      else if ((WithCrypto & APPLICATION_PGP) && PgpStrictEnc)
         convert_to_7bit(a->parts);
     }
     else if (a->type == TYPEMESSAGE &&
@@ -700,7 +700,7 @@ void convert_to_7bit(struct Body *a)
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
     else if (a->content && a->encoding != ENCBASE64 &&
-             (a->content->from || (a->content->space && OPT_PGP_STRICT_ENC)))
+             (a->content->from || (a->content->space && PgpStrictEnc)))
     {
       a->encoding = ENCQUOTEDPRINTABLE;
     }
@@ -873,7 +873,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         return -1;
       }
       OPT_PGP_CHECK_TRUST = false;
-      if (OPT_PGP_SELF_ENCRYPT || (OPT_PGP_ENCRYPT_SELF == MUTT_YES))
+      if (PgpSelfEncrypt || (PgpEncryptSelf == MUTT_YES))
         self_encrypt = PgpSelfEncryptAs;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
@@ -884,7 +884,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         mutt_addr_free(&adrlist);
         return -1;
       }
-      if (OPT_SMIME_SELF_ENCRYPT || (OPT_SMIME_ENCRYPT_SELF == MUTT_YES))
+      if (SmimeSelfEncrypt || (SmimeEncryptSelf == MUTT_YES))
         self_encrypt = SmimeSelfEncryptAs;
     }
   }
@@ -914,7 +914,7 @@ void crypt_opportunistic_encrypt(struct Header *msg)
   if (!WithCrypto)
     return;
 
-  if (!(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT && (msg->security & OPPENCRYPT)))
+  if (!(CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT)))
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
@@ -1103,7 +1103,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   size_t hexdigits;
 
   /* User input may be partial name, fingerprint or short or long key ID,
-   * independent of OPT_PGP_LONG_IDS.
+   * independent of PgpLongIds.
    * Fingerprint without spaces is 40 hex digits (SHA-1) or 32 hex digits (MD5).
    * Strip leading "0x" for key ID detection and prepare pl and ps to indicate
    * if an ID was found and to simplify logic in the key loop's inner

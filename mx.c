@@ -287,7 +287,7 @@ int mx_get_magic(const char *path)
     }
     mutt_file_fclose(&f);
 
-    if (!OPT_CHECK_MBOX_SIZE)
+    if (!CheckMboxSize)
     {
       /* need to restore the times here, the file was not really accessed,
        * only the type was accessed.  This is important, because detection
@@ -577,7 +577,7 @@ static int trash_append(struct Context *ctx)
   struct stat st, stc;
   int opt_confappend, rc;
 
-  if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))
+  if (!Trash || !ctx->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))
     return 0;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -587,12 +587,12 @@ static int trash_append(struct Context *ctx)
     return 0; /* nothing to be done */
 
   /* avoid the "append messages" prompt */
-  opt_confappend = OPT_CONFIRMAPPEND;
+  opt_confappend = Confirmappend;
   if (opt_confappend)
-    OPT_CONFIRMAPPEND = false;
+    Confirmappend = false;
   rc = mutt_save_confirm(Trash, &st);
   if (opt_confappend)
-    OPT_CONFIRMAPPEND = true;
+    Confirmappend = true;
   if (rc != 0)
   {
     mutt_error(_("message(s) not deleted"));
@@ -669,8 +669,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
-      int rc =
-          query_quadoption(OPT_CATCHUP_NEWSGROUP, _("Mark all articles read?"));
+      int rc = query_quadoption(CatchupNewsgroup, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
       {
         ctx->closing = false;
@@ -684,8 +683,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read &&
-        !(ctx->hdrs[i]->flagged && OPT_KEEP_FLAGGED))
+    if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read && !(ctx->hdrs[i]->flagged && KeepFlagged))
     {
       read_msgs++;
     }
@@ -697,7 +695,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     read_msgs = 0;
 #endif
 
-  if (read_msgs && OPT_MOVE != MUTT_NO)
+  if (read_msgs && Move != MUTT_NO)
   {
     char *p = NULL;
 
@@ -717,7 +715,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     {
       mutt_expand_path(mbox, sizeof(mbox));
       snprintf(buf, sizeof(buf), _("Move %d read messages to %s?"), read_msgs, mbox);
-      move_messages = query_quadoption(OPT_MOVE, buf);
+      move_messages = query_quadoption(Move, buf);
       if (move_messages == MUTT_ABORT)
       {
         ctx->closing = false;
@@ -730,13 +728,13 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
    * There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))
+  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
              ctx->deleted == 1 ? _("Purge %d deleted message?") :
                                  _("Purge %d deleted messages?"),
              ctx->deleted);
-    purge = query_quadoption(OPT_DELETE, buf);
+    purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
     {
       ctx->closing = false;
@@ -744,7 +742,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     }
   }
 
-  if (OPT_MARK_OLD)
+  if (MarkOld)
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
@@ -768,7 +766,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       for (i = 0; i < ctx->msgcount; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
-            !(ctx->hdrs[i]->flagged && OPT_KEEP_FLAGGED))
+            !(ctx->hdrs[i]->flagged && KeepFlagged))
         {
           ctx->hdrs[i]->tagged = true;
         }
@@ -800,7 +798,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       for (i = 0; i < ctx->msgcount; i++)
       {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
-            !(ctx->hdrs[i]->flagged && OPT_KEEP_FLAGGED))
+            !(ctx->hdrs[i]->flagged && KeepFlagged))
         {
           if (mutt_append_message(&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
           {
@@ -884,7 +882,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   }
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
-      !mutt_is_spool(ctx->path) && !OPT_SAVE_EMPTY)
+      !mutt_is_spool(ctx->path) && !SaveEmpty)
   {
     mutt_file_unlink_empty(ctx->path);
   }
@@ -931,7 +929,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
-        ((committing && (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))) ||
+        ((committing && (!ctx->hdrs[i]->deleted || (ctx->magic == MUTT_MAILDIR && MaildirTrash))) ||
          (!committing && ctx->hdrs[i]->active)))
     {
       if (i != j)
@@ -953,7 +951,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
       else if (ctx->hdrs[j]->changed)
         ctx->changed = true;
 
-      if (!committing || (ctx->magic == MUTT_MAILDIR && OPT_MAILDIR_TRASH))
+      if (!committing || (ctx->magic == MUTT_MAILDIR && MaildirTrash))
       {
         if (ctx->hdrs[j]->deleted)
           ctx->deleted++;
@@ -1041,7 +1039,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
              ctx->deleted == 1 ? _("Purge %d deleted message?") :
                                  _("Purge %d deleted messages?"),
              ctx->deleted);
-    purge = query_quadoption(OPT_DELETE, buf);
+    purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
       return -1;
     else if (purge == MUTT_NO)
@@ -1098,7 +1096,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     mutt_sleep(0);
 
     if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) &&
-        !mutt_is_spool(ctx->path) && !OPT_SAVE_EMPTY)
+        !mutt_is_spool(ctx->path) && !SaveEmpty)
     {
       unlink(ctx->path);
       mx_fastclose_mailbox(ctx);
@@ -1329,7 +1327,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       if (h2)
       {
         h2->superseded = true;
-        if (OPT_SCORE)
+        if (Score)
           mutt_score_message(ctx, h2, 1);
       }
     }
@@ -1341,7 +1339,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
     mutt_label_hash_add(ctx, h);
 
-    if (OPT_SCORE)
+    if (Score)
       mutt_score_message(ctx, h, 0);
 
     if (h->changed)

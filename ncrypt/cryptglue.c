@@ -71,7 +71,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!OPT_CRYPT_USE_GPGME)
+      (!CryptUseGpgme)
 #else
       1
 #endif
@@ -82,7 +82,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!OPT_CRYPT_USE_GPGME)
+      (!CryptUseGpgme)
 #else
       1
 #endif
@@ -90,7 +90,7 @@ void crypt_init(void)
     crypto_module_register(&crypt_mod_smime_classic);
 #endif
 
-  if (OPT_CRYPT_USE_GPGME)
+  if (CryptUseGpgme)
   {
 #ifdef CRYPT_BACKEND_GPGME
     crypto_module_register(&crypt_mod_pgp_gpgme);

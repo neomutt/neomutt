@@ -219,7 +219,7 @@ static struct Header *select_msg(void)
         mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->msgcount - PostContext->deleted;
-        if (OPT_RESOLVE && menu->current < menu->max - 1)
+        if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
           menu->current++;
@@ -319,10 +319,10 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   PostCount = PostContext->msgcount - PostContext->deleted;
 
   /* avoid the "purge deleted messages" prompt */
-  opt_delete = OPT_DELETE;
-  OPT_DELETE = MUTT_YES;
+  opt_delete = Delete;
+  Delete = MUTT_YES;
   mx_close_mailbox(PostContext, NULL);
-  OPT_DELETE = opt_delete;
+  Delete = opt_delete;
 
   FREE(&PostContext);
 
@@ -399,7 +399,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     FREE(&np);
   }
 
-  if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
+  if (CryptOpportunisticEncrypt)
     crypt_opportunistic_encrypt(hdr);
 
   return code;
@@ -723,7 +723,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
   {
-    if (OPT_SMIME_IS_DEFAULT)
+    if (SmimeIsDefault)
       newhdr->security &= ~APPLICATION_PGP;
     else
       newhdr->security &= ~APPLICATION_SMIME;

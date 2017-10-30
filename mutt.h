@@ -230,40 +230,40 @@ enum QuadOptionResponse
 };
 
 /* Quad-options */
-WHERE unsigned char OPT_ABORT_UNMODIFIED;
-WHERE unsigned char OPT_BOUNCE;
-WHERE unsigned char OPT_COPY;
-WHERE unsigned char OPT_DELETE;
-WHERE unsigned char OPT_FORWARD_EDIT;
-WHERE unsigned char OPT_FCC_ATTACH;
-WHERE unsigned char OPT_INCLUDE;
-WHERE unsigned char OPT_HONOR_FOLLOWUP_TO;
-WHERE unsigned char OPT_MIME_FORWARD;
-WHERE unsigned char OPT_MIME_FORWARD_REST;
-WHERE unsigned char OPT_MOVE;
-WHERE unsigned char OPT_PGP_MIME_AUTO; /* ask to revert to PGP/MIME when inline fails */
-WHERE unsigned char OPT_SMIME_ENCRYPT_SELF;
-WHERE unsigned char OPT_PGP_ENCRYPT_SELF;
+WHERE unsigned char AbortUnmodified;
+WHERE unsigned char Bounce;
+WHERE unsigned char Copy;
+WHERE unsigned char Delete;
+WHERE unsigned char ForwardEdit;
+WHERE unsigned char FccAttach;
+WHERE unsigned char Include;
+WHERE unsigned char HonorFollowupTo;
+WHERE unsigned char MimeForward;
+WHERE unsigned char MimeForwardRest;
+WHERE unsigned char Move;
+WHERE unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
+WHERE unsigned char SmimeEncryptSelf;
+WHERE unsigned char PgpEncryptSelf;
 #ifdef USE_POP
-WHERE unsigned char OPT_POP_DELETE;
-WHERE unsigned char OPT_POP_RECONNECT;
+WHERE unsigned char PopDelete;
+WHERE unsigned char PopReconnect;
 #endif
-WHERE unsigned char OPT_POSTPONE;
-WHERE unsigned char OPT_PRINT;
-WHERE unsigned char OPT_QUIT;
-WHERE unsigned char OPT_REPLY_TO;
-WHERE unsigned char OPT_RECALL;
+WHERE unsigned char Postpone;
+WHERE unsigned char Print;
+WHERE unsigned char Quit;
+WHERE unsigned char ReplyTo;
+WHERE unsigned char Recall;
 #ifdef USE_SSL
-WHERE unsigned char OPT_SSL_STARTTLS;
+WHERE unsigned char SslStarttls;
 #endif
-WHERE unsigned char OPT_ABORT_NOSUBJECT;
-WHERE unsigned char OPT_CRYPT_VERIFY_SIG; /* verify PGP signatures */
+WHERE unsigned char AbortNosubject;
+WHERE unsigned char CryptVerifySig; /* verify PGP signatures */
 #ifdef USE_NNTP
-WHERE unsigned char OPT_POST_MODERATED;
-WHERE unsigned char OPT_CATCHUP_NEWSGROUP;
-WHERE unsigned char OPT_FOLLOWUP_TO_POSTER;
+WHERE unsigned char PostModerated;
+WHERE unsigned char CatchupNewsgroup;
+WHERE unsigned char FollowupToPoster;
 #endif
-WHERE unsigned char OPT_ABORT_NOATTACH; /* forgotten attachment detector */
+WHERE unsigned char AbortNoattach; /* forgotten attachment detector */
 
 /* flags to ci_send_message() */
 #define SENDREPLY        (1 << 0)

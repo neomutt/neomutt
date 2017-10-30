@@ -123,7 +123,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
     last->next = NULL;
   }
 
-  if (OPT_USE_DOMAIN && (fqdn = mutt_fqdn(1)))
+  if (UseDomain && (fqdn = mutt_fqdn(1)))
   {
     /* now qualify all local addresses */
     mutt_addr_qualify(head, fqdn);

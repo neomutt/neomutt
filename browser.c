@@ -641,7 +641,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->new);
       }
-      else if (OPT_MARK_OLD && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
+      else if (MarkOld && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
                folder->ff->nd->last_cached <= folder->ff->nd->last_message)
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
@@ -864,7 +864,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
     {
       struct NntpData *nntp_data = nserv->groups_list[i];
       if (nntp_data && (nntp_data->new || (nntp_data->subscribed &&
-                                           (nntp_data->unread || !OPT_SHOW_ONLY_UNREAD))))
+                                           (nntp_data->unread || !ShowOnlyUnread))))
         add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
     }
   }
@@ -1588,10 +1588,10 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 
 #ifdef USE_IMAP
       case OP_BROWSER_TOGGLE_LSUB:
-        if (OPT_IMAP_LIST_SUBSCRIBED)
-          OPT_IMAP_LIST_SUBSCRIBED = false;
+        if (ImapListSubscribed)
+          ImapListSubscribed = false;
         else
-          OPT_IMAP_LIST_SUBSCRIBED = true;
+          ImapListSubscribed = true;
 
         mutt_unget_event(0, OP_CHECK_NEW);
         break;

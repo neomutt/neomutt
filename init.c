@@ -4087,7 +4087,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    OPT_SUSPEND = false;
+    Suspend = false;
 #endif
 
   mutt_init_history();
@@ -4212,7 +4212,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   mutt_read_histfile();
 
 #ifdef USE_NOTMUCH
-  if (OPT_VIRTUAL_SPOOLFILE)
+  if (VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
     for (struct Buffy *b = Incoming; b; b = b->next)

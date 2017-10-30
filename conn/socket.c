@@ -495,7 +495,7 @@ int raw_socket_open(struct Connection *conn)
   /* we accept v4 or v6 STREAM sockets */
   memset(&hints, 0, sizeof(hints));
 
-  if (OPT_USE_IPV6)
+  if (UseIpv6)
     hints.ai_family = AF_UNSPEC;
   else
     hints.ai_family = AF_INET;

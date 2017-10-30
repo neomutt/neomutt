@@ -288,7 +288,7 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if ((!e->cc && OPT_ASKCC) || force)
+  if ((!e->cc && Askcc) || force)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
@@ -309,7 +309,7 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if (OPT_ASKBCC || force)
+  if (Askbcc || force)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
@@ -460,7 +460,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             buf = NULL;
             bufmax = buflen = 0;
 
-            if (OPT_EDIT_HEADERS)
+            if (EditHeaders)
             {
               mutt_env_to_local(msg->env);
               mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);

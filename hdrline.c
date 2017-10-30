@@ -998,7 +998,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         make_from_addr(hdr->env, tmp, sizeof(tmp), 1);
-        if (!OPT_SAVE_ADDRESS && (p = strpbrk(tmp, "%@")))
+        if (!SaveAddress && (p = strpbrk(tmp, "%@")))
           *p = 0;
         mutt_format_s(buf, buflen, prec, tmp);
       }

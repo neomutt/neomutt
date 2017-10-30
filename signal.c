@@ -73,7 +73,7 @@ static void sighandler(int sig)
   switch (sig)
   {
     case SIGTSTP: /* user requested a suspend */
-      if (!OPT_SUSPEND)
+      if (!Suspend)
         break;
       IsEndwin = isendwin();
       curs_set(1);

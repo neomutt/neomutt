@@ -248,7 +248,7 @@ new_aliases:
         {
           AliasTable[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
-          if (OPT_RESOLVE && menu->current < menu->max - 1)
+          if (Resolve && menu->current < menu->max - 1)
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;

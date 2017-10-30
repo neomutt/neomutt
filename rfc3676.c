@@ -76,13 +76,13 @@ static int get_quote_level(const char *line)
  */
 static int space_quotes(struct State *s)
 {
-  /* Allow quote spacing in the pager even for OPT_TEXT_FLOWED,
+  /* Allow quote spacing in the pager even for TextFlowed,
    * but obviously not when replying.
    */
-  if (OPT_TEXT_FLOWED && (s->flags & MUTT_REPLYING))
+  if (TextFlowed && (s->flags & MUTT_REPLYING))
     return 0;
 
-  return OPT_REFLOW_SPACE_QUOTES;
+  return ReflowSpaceQuotes;
 }
 
 /**
@@ -105,7 +105,7 @@ static bool add_quote_suffix(struct State *s, int ql)
     return false;
 
   /* The prefix will add its own space */
-  if (!OPT_TEXT_FLOWED && !ql && s->prefix)
+  if (!TextFlowed && !ql && s->prefix)
     return false;
 
   return true;
@@ -120,7 +120,7 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
     /* use given prefix only for format=fixed replies to format=flowed,
      * for format=flowed replies to format=flowed, use '>' indentation
      */
-    if (OPT_TEXT_FLOWED)
+    if (TextFlowed)
       ql++;
     else
     {
@@ -162,7 +162,7 @@ static void flush_par(struct State *s, struct FlowedState *fst)
 static int quote_width(struct State *s, int ql)
 {
   int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
-  if (OPT_TEXT_FLOWED && (s->flags & MUTT_REPLYING))
+  if (TextFlowed && (s->flags & MUTT_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676
      * guidelines */
@@ -230,7 +230,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
     {
       mutt_debug(4, "f=f: break line at %lu, %lu spaces left\n", fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
-      if (OPT_TEXT_FLOWED)
+      if (TextFlowed)
         for (; fst->spaces; fst->spaces--)
           state_putc(' ', s);
       state_putc('\n', s);

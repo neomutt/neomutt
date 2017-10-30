@@ -483,7 +483,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
-    if (!OPT_PGP_SHOW_UNUSABLE && (kp->flags & KEYFLAG_CANTUSE))
+    if (!PgpShowUnusable && (kp->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -491,7 +491,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
     for (a = kp->address; a; a = a->next)
     {
-      if (!OPT_PGP_SHOW_UNUSABLE && (a->flags & KEYFLAG_CANTUSE))
+      if (!PgpShowUnusable && (a->flags & KEYFLAG_CANTUSE))
       {
         unusable = true;
         continue;

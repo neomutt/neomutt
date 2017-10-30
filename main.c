@@ -579,7 +579,7 @@ int main(int argc, char **argv, char **env)
         msg->env->to = mutt_addr_parse_list(msg->env->to, argv[i]);
     }
 
-    if (!draft_file && OPT_AUTOEDIT && !msg->env->to && !msg->env->cc)
+    if (!draft_file && Autoedit && !msg->env->to && !msg->env->cc)
     {
       if (!OPT_NO_CURSES)
         mutt_endwin(NULL);
@@ -701,14 +701,14 @@ int main(int argc, char **argv, char **env)
 
         mutt_prepare_template(fin, NULL, msg, context_hdr, 0);
 
-        /* Scan for neomutt header to set OPT_RESUME_DRAFT_FILES */
+        /* Scan for neomutt header to set ResumeDraftFiles */
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
           if (mutt_str_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
           {
-            if (OPT_RESUME_EDITED_DRAFT_FILES)
-              OPT_RESUME_DRAFT_FILES = true;
+            if (ResumeEditedDraftFiles)
+              ResumeDraftFiles = true;
 
             STAILQ_REMOVE(&msg->env->userhdrs, np, ListNode, entries);
             FREE(&np->data);
@@ -807,7 +807,7 @@ int main(int argc, char **argv, char **env)
         }
 
         mutt_write_rfc822_header(fout, msg->env, msg->content, -1, 0);
-        if (OPT_RESUME_EDITED_DRAFT_FILES)
+        if (ResumeEditedDraftFiles)
           fprintf(fout, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fout);
         if ((mutt_write_mime_body(msg->content, fout) == -1))
@@ -917,7 +917,7 @@ int main(int argc, char **argv, char **env)
     mutt_folder_hook(folder);
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
-    Context = mx_open_mailbox(folder, ((flags & MUTT_RO) || OPT_READ_ONLY) ? MUTT_READONLY : 0, NULL);
+    Context = mx_open_mailbox(folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR

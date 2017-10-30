@@ -48,7 +48,7 @@ struct Buffy
   struct Buffy *next;
   bool new; /**< mailbox has new mail */
 
-  /* These next three are only set when OPT_MAIL_CHECK_STATS is set */
+  /* These next three are only set when MailCheckStats is set */
   int msg_count;             /**< total number of messages */
   int msg_unread;            /**< number of unread messages */
   int msg_flagged;           /**< number of flagged messages */

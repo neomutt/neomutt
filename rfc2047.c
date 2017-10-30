@@ -810,7 +810,7 @@ void rfc2047_decode(char **pd)
     if (!p)
     {
       /* no encoded words */
-      if (OPT_IGNORE_LINEAR_WHITE_SPACE)
+      if (IgnoreLinearWhiteSpace)
       {
         n = mutt_str_strlen(s);
         if (found_encoded && (m = mutt_str_lws_len(s, n)) != 0)
@@ -849,7 +849,7 @@ void rfc2047_decode(char **pd)
       n = (size_t)(p - s);
       /* ignore spaces between encoded word
        * and linear-white-space between encoded word and *text */
-      if (OPT_IGNORE_LINEAR_WHITE_SPACE)
+      if (IgnoreLinearWhiteSpace)
       {
         if (found_encoded && (m = mutt_str_lws_len(s, n)) != 0)
         {

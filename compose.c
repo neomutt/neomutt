@@ -289,7 +289,7 @@ static void redraw_crypt_lines(struct Header *msg)
       addstr(_(" (S/MIME)"));
   }
 
-  if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
     addstr(_(" (OppEnc mode)"));
 
   mutt_window_clrtoeol(MuttIndexWindow);
@@ -428,7 +428,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
     mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s",
                          HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
     mutt_paddstr(W, NONULL(msg->env->followup_to));
-    if (OPT_X_COMMENT_TO)
+    if (XCommentTo)
     {
       mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s",
                            HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
@@ -841,7 +841,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_TO, &msg->env->to);
-        if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
+        if (CryptOpportunisticEncrypt)
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -854,7 +854,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_BCC, &msg->env->bcc);
-        if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
+        if (CryptOpportunisticEncrypt)
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -867,7 +867,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
         edit_address_list(HDR_CC, &msg->env->cc);
-        if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
+        if (CryptOpportunisticEncrypt)
         {
           crypt_opportunistic_encrypt(msg);
           redraw_crypt_lines(msg);
@@ -912,7 +912,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         break;
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
-        if (news && OPT_X_COMMENT_TO)
+        if (news && XCommentTo)
         {
           if (msg->env->x_comment_to)
             mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
@@ -963,7 +963,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !OPT_EDIT_HEADERS)
+        if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !EditHeaders)
         {
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
@@ -974,7 +974,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       /* fallthrough */
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&
-            (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && OPT_EDIT_HEADERS)))
+            (op == OP_COMPOSE_EDIT_HEADERS || (op == OP_COMPOSE_EDIT_MESSAGE && EditHeaders)))
         {
           char *tag = NULL, *err = NULL;
           mutt_env_to_local(msg->env);
@@ -984,7 +984,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
             mutt_error(_("Bad IDN in \"%s\": '%s'"), tag, err);
             FREE(&err);
           }
-          if (OPT_CRYPT_OPPORTUNISTIC_ENCRYPT)
+          if (CryptOpportunisticEncrypt)
             crypt_opportunistic_encrypt(msg);
         }
         else
@@ -1319,7 +1319,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
         if (!fcc_set && *fcc)
         {
-          i = query_quadoption(OPT_COPY, _("Save a copy of this message?"));
+          i = query_quadoption(Copy, _("Save a copy of this message?"));
           if (i == MUTT_ABORT)
             break;
           else if (i == MUTT_NO)
@@ -1527,7 +1527,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         break;
 
       case OP_EXIT:
-        i = query_quadoption(OPT_POSTPONE, _("Postpone this message?"));
+        i = query_quadoption(Postpone, _("Postpone this message?"));
         if (i == MUTT_NO)
         {
           for (i = 0; i < actx->idxlen; i++)
