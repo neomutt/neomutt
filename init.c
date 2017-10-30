@@ -1037,6 +1037,20 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     }
   }
 
+  /* or a my_ var? */
+  if (!res)
+  {
+    struct MyVar **cur;
+    for (cur = &MyVars; *cur; cur = &((*cur)->next))
+    {
+      if (mutt_strcmp(tmp->data, (*cur)->name) == 0)
+      {
+        res = true;
+        break;
+      }
+    }
+  }
+
   if (!MoreArgs(s))
   {
     snprintf(err->data, err->dsize, _("%s: too few arguments"),
