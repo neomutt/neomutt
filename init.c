@@ -1037,6 +1037,12 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     }
   }
 
+  /* or a my_ var? */
+  if (!res)
+  {
+    res = !!myvar_get(tmp->data);
+  }
+
   if (!MoreArgs(s))
   {
     snprintf(err->data, err->dsize, _("%s: too few arguments"),
