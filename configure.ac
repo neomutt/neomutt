@@ -409,6 +409,7 @@ dnl --- ncurses
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
 	fi
 	AC_CHECK_FUNCS([use_extended_names])
+	CPPFLAGS="$CPPFLAGS -DNCURSES_WIDECHAR"
 fi
 
 AC_HEADER_STDC
