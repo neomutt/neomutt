@@ -28,14 +28,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_regex.h"
@@ -159,7 +158,8 @@ static struct Parameter *parse_parameters(const char *s)
 
   while (*s)
   {
-    if ((p = strpbrk(s, "=;")) == NULL)
+    p = strpbrk(s, "=;");
+    if (!p)
     {
       mutt_debug(1, "parse_parameters: malformed parameter: %s\n", s);
       goto bail;
@@ -310,7 +310,8 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   mutt_free_parameter(&ct->parameter);
 
   /* First extract any existing parameters */
-  if ((pc = strchr(s, ';')) != NULL)
+  pc = strchr(s, ';');
+  if (pc)
   {
     *pc++ = 0;
     while (*pc && ISSPACE(*pc))
@@ -379,7 +380,8 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   /* Default character set for text types. */
   if (ct->type == TYPETEXT)
   {
-    if (!(pc = mutt_get_parameter("charset", ct->parameter)))
+    pc = mutt_get_parameter("charset", ct->parameter);
+    if (!pc)
       mutt_set_parameter("charset",
                          (AssumedCharset && *AssumedCharset) ?
                              (const char *) mutt_get_default_charset() :
@@ -400,7 +402,8 @@ static void parse_content_disposition(const char *s, struct Body *ct)
     ct->disposition = DISPATTACH;
 
   /* Check to see if a default filename was given */
-  if ((s = strchr(s, ';')) != NULL)
+  s = strchr(s, ';');
+  if (s)
   {
     s = skip_email_wsp(s + 1);
     if ((s = mutt_get_parameter("filename", (parms = parse_parameters(s)))))
@@ -666,234 +669,6 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   return head;
 }
 
-static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
-{
-  char *p = NULL;
-  size_t len;
-
-  if (*tz != '(')
-    return tz; /* no need to do anything */
-  tz = skip_email_wsp(tz + 1);
-  if ((p = strpbrk(tz, " )")) == NULL)
-    return tz;
-  len = p - tz;
-  if (len > buflen - 1)
-    len = buflen - 1;
-  memcpy(buf, tz, len);
-  buf[len] = 0;
-  return buf;
-}
-
-/**
- * struct Tz - Lookup table of Time Zones
- */
-static const struct Tz
-{
-  char tzname[5];
-  unsigned char zhours;
-  unsigned char zminutes;
-  bool zoccident; /**< west of UTC? */
-} TimeZones[] = {
-  { "aat", 1, 0, true },           /* Atlantic Africa Time */
-  { "adt", 4, 0, false },          /* Arabia DST */
-  { "ast", 3, 0, false },          /* Arabia */
-  /* { "ast",   4,  0, true  }, */ /* Atlantic */
-  { "bst", 1, 0, false },          /* British DST */
-  { "cat", 1, 0, false },          /* Central Africa */
-  { "cdt", 5, 0, true },
-  { "cest", 2, 0, false }, /* Central Europe DST */
-  { "cet", 1, 0, false },  /* Central Europe */
-  { "cst", 6, 0, true },
-  /* { "cst",   8,  0, false }, */ /* China */
-  /* { "cst",   9, 30, false }, */ /* Australian Central Standard Time */
-  { "eat", 3, 0, false },          /* East Africa */
-  { "edt", 4, 0, true },
-  { "eest", 3, 0, false }, /* Eastern Europe DST */
-  { "eet", 2, 0, false },  /* Eastern Europe */
-  { "egst", 0, 0, false }, /* Eastern Greenland DST */
-  { "egt", 1, 0, true },   /* Eastern Greenland */
-  { "est", 5, 0, true },
-  { "gmt", 0, 0, false },
-  { "gst", 4, 0, false },          /* Presian Gulf */
-  { "hkt", 8, 0, false },          /* Hong Kong */
-  { "ict", 7, 0, false },          /* Indochina */
-  { "idt", 3, 0, false },          /* Israel DST */
-  { "ist", 2, 0, false },          /* Israel */
-  /* { "ist",   5, 30, false }, */ /* India */
-  { "jst", 9, 0, false },          /* Japan */
-  { "kst", 9, 0, false },          /* Korea */
-  { "mdt", 6, 0, true },
-  { "met", 1, 0, false }, /* this is now officially CET */
-  { "msd", 4, 0, false }, /* Moscow DST */
-  { "msk", 3, 0, false }, /* Moscow */
-  { "mst", 7, 0, true },
-  { "nzdt", 13, 0, false }, /* New Zealand DST */
-  { "nzst", 12, 0, false }, /* New Zealand */
-  { "pdt", 7, 0, true },
-  { "pst", 8, 0, true },
-  { "sat", 2, 0, false },          /* South Africa */
-  { "smt", 4, 0, false },          /* Seychelles */
-  { "sst", 11, 0, true },          /* Samoa */
-  /* { "sst",   8,  0, false }, */ /* Singapore */
-  { "utc", 0, 0, false },
-  { "wat", 0, 0, false },  /* West Africa */
-  { "west", 1, 0, false }, /* Western Europe DST */
-  { "wet", 0, 0, false },  /* Western Europe */
-  { "wgst", 2, 0, true },  /* Western Greenland DST */
-  { "wgt", 3, 0, true },   /* Western Greenland */
-  { "wst", 8, 0, false },  /* Western Australia */
-};
-
-/**
- * mutt_parse_date - parses a date string in RFC822 format
- *
- * Date: [ weekday , ] day-of-month month year hour:minute:second timezone
- *
- * This routine assumes that `h' has been initialized to 0.  the `timezone'
- * field is optional, defaulting to +0000 if missing.
- */
-time_t mutt_parse_date(const char *s, struct Header *h)
-{
-  int count = 0;
-  char *t = NULL;
-  int hour, min, sec;
-  struct tm tm;
-  int i;
-  int tz_offset = 0;
-  int zhours = 0;
-  int zminutes = 0;
-  bool zoccident = false;
-  const char *ptz = NULL;
-  char tzstr[SHORT_STRING];
-  char scratch[SHORT_STRING];
-
-  /* Don't modify our argument. Fixed-size buffer is ok here since
-   * the date format imposes a natural limit.
-   */
-
-  strfcpy(scratch, s, sizeof(scratch));
-
-  /* kill the day of the week, if it exists. */
-  if ((t = strchr(scratch, ',')))
-    t++;
-  else
-    t = scratch;
-  t = skip_email_wsp(t);
-
-  memset(&tm, 0, sizeof(tm));
-
-  while ((t = strtok(t, " \t")) != NULL)
-  {
-    switch (count)
-    {
-      case 0: /* day of the month */
-        if (mutt_atoi(t, &tm.tm_mday) < 0 || tm.tm_mday < 0)
-          return -1;
-        if (tm.tm_mday > 31)
-          return -1;
-        break;
-
-      case 1: /* month of the year */
-        if ((i = mutt_check_month(t)) < 0)
-          return -1;
-        tm.tm_mon = i;
-        break;
-
-      case 2: /* year */
-        if (mutt_atoi(t, &tm.tm_year) < 0 || tm.tm_year < 0)
-          return -1;
-        if (tm.tm_year < 50)
-          tm.tm_year += 100;
-        else if (tm.tm_year >= 1900)
-          tm.tm_year -= 1900;
-        break;
-
-      case 3: /* time of day */
-        if (sscanf(t, "%d:%d:%d", &hour, &min, &sec) == 3)
-          ;
-        else if (sscanf(t, "%d:%d", &hour, &min) == 2)
-          sec = 0;
-        else
-        {
-          mutt_debug(1, "parse_date: could not process time format: %s\n", t);
-          return -1;
-        }
-        tm.tm_hour = hour;
-        tm.tm_min = min;
-        tm.tm_sec = sec;
-        break;
-
-      case 4: /* timezone */
-        /* sometimes we see things like (MST) or (-0700) so attempt to
-         * compensate by uncommenting the string if non-RFC822 compliant
-         */
-        ptz = uncomment_timezone(tzstr, sizeof(tzstr), t);
-
-        if (*ptz == '+' || *ptz == '-')
-        {
-          if (ptz[1] && ptz[2] && ptz[3] && ptz[4] &&
-              isdigit((unsigned char) ptz[1]) && isdigit((unsigned char) ptz[2]) &&
-              isdigit((unsigned char) ptz[3]) && isdigit((unsigned char) ptz[4]))
-          {
-            zhours = (ptz[1] - '0') * 10 + (ptz[2] - '0');
-            zminutes = (ptz[3] - '0') * 10 + (ptz[4] - '0');
-
-            if (ptz[0] == '-')
-              zoccident = true;
-          }
-        }
-        else
-        {
-          struct Tz *tz = NULL;
-
-          tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct Tz),
-                       sizeof(struct Tz), (int (*)(const void *, const void *)) mutt_strcasecmp
-                       /* This is safe to do: A pointer to a struct equals
-                        * a pointer to its first element */);
-
-          if (tz)
-          {
-            zhours = tz->zhours;
-            zminutes = tz->zminutes;
-            zoccident = tz->zoccident;
-          }
-
-          /* ad hoc support for the European MET (now officially CET) TZ */
-          if (mutt_strcasecmp(t, "MET") == 0)
-          {
-            if ((t = strtok(NULL, " \t")) != NULL)
-            {
-              if (mutt_strcasecmp(t, "DST") == 0)
-                zhours++;
-            }
-          }
-        }
-        tz_offset = zhours * 3600 + zminutes * 60;
-        if (!zoccident)
-          tz_offset = -tz_offset;
-        break;
-    }
-    count++;
-    t = 0;
-  }
-
-  if (count < 4) /* don't check for missing timezone */
-  {
-    mutt_debug(
-        1, "parse_date(): error parsing date format, using received time\n");
-    return -1;
-  }
-
-  if (h)
-  {
-    h->zhours = zhours;
-    h->zminutes = zminutes;
-    h->zoccident = zoccident;
-  }
-
-  return (mutt_mktime(&tm, 0) + tz_offset);
-}
-
 /**
  * mutt_extract_message_id - Find a message-id
  *
@@ -1034,7 +809,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         {
           if (hdr)
           {
-            if ((hdr->content->length = atol(p)) < 0)
+            hdr->content->length = atol(p);
+            if (hdr->content->length < 0)
               hdr->content->length = -1;
           }
           matched = 1;
@@ -1062,7 +838,16 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
       {
         mutt_str_replace(&e->date, p);
         if (hdr)
-          hdr->date_sent = mutt_parse_date(p, hdr);
+        {
+          struct Tz tz;
+          hdr->date_sent = mutt_parse_date(p, &tz);
+          if (hdr->date_sent > 0)
+          {
+            hdr->zhours = tz.zhours;
+            hdr->zminutes = tz.zminutes;
+            hdr->zoccident = tz.zoccident;
+          }
+        }
         matched = 1;
       }
       break;
@@ -1107,7 +892,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         if (hdr)
         {
           /*
-         * HACK - mutt has, for a very short time, produced negative
+         * HACK - neomutt has, for a very short time, produced negative
          * Lines header values.  Ignore them.
          */
           if (mutt_atoi(p, &hdr->lines) < 0 || hdr->lines < 0)
@@ -1125,7 +910,8 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
           for (beg = strchr(p, '<'); beg; beg = strchr(end, ','))
           {
             beg++;
-            if (!(end = strchr(beg, '>')))
+            end = strchr(beg, '>');
+            if (!end)
               break;
 
             /* Take the first mailto URL */
@@ -1416,15 +1202,15 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
     if (mutt_match_spam_list(line, SpamList, buf, sizeof(buf)))
     {
-      if (!mutt_match_rx_list(line, NoSpamList))
+      if (!mutt_match_regex_list(line, NoSpamList))
       {
         /* if spam tag already exists, figure out how to amend it */
         if (e->spam && *buf)
         {
-          /* If SpamSep defined, append with separator */
-          if (SpamSep)
+          /* If SpamSeparator defined, append with separator */
+          if (SpamSeparator)
           {
-            mutt_buffer_addstr(e->spam, SpamSep);
+            mutt_buffer_addstr(e->spam, SpamSeparator);
             mutt_buffer_addstr(e->spam, buf);
           }
 
@@ -1486,7 +1272,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
       rfc2047_decode(&e->subject);
 
-      if (regexec(ReplyRegexp.rx, e->subject, 1, pmatch, 0) == 0)
+      if (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0) == 0)
         e->real_subj = e->subject + pmatch[0].rm_eo;
       else
         e->real_subj = e->subject;
@@ -1516,7 +1302,8 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
   const char *q = NULL;
 
   /* check for a simple whitespace separated list of addresses */
-  if ((q = strpbrk(s, "\"<>():;,\\")) == NULL)
+  q = strpbrk(s, "\"<>():;,\\");
+  if (!q)
   {
     char tmp[HUGE_STRING];
     char *r = NULL;
@@ -1556,7 +1343,7 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
                dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
     if ((a->major_int == TYPEANY || a->major_int == b->type) &&
-        (!b->subtype || !regexec(&a->minor_rx, b->subtype, 0, NULL, 0)))
+        (!b->subtype || !regexec(&a->minor_regex, b->subtype, 0, NULL, 0)))
     {
       mutt_debug(5, "yes\n");
       return true;
@@ -1570,15 +1357,6 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
   return false;
 }
 
-#define AT_COUNT(why)                                                          \
-  {                                                                            \
-    shallcount = true;                                                         \
-  }
-#define AT_NOCOUNT(why)                                                        \
-  {                                                                            \
-    shallcount = false;                                                        \
-  }
-
 static int count_body_parts(struct Body *body, int flags)
 {
   int count = 0;
@@ -1591,7 +1369,7 @@ static int count_body_parts(struct Body *body, int flags)
   for (bp = body; bp != NULL; bp = bp->next)
   {
     /* Initial disposition is to count and not to recurse this part. */
-    AT_COUNT("default");
+    shallcount = true; /* default */
     shallrecurse = false;
 
     mutt_debug(5, "bp: desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
@@ -1609,7 +1387,7 @@ static int count_body_parts(struct Body *body, int flags)
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
-        AT_NOCOUNT("top-level message/*");
+        shallcount = false; // top-level message/*
     }
     else if (bp->type == TYPEMULTIPART)
     {
@@ -1620,12 +1398,12 @@ static int count_body_parts(struct Body *body, int flags)
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
-        AT_NOCOUNT("top-level multipart");
+        shallcount = false; /* top-level multipart */
     }
 
     if (bp->disposition == DISPINLINE && bp->type != TYPEMULTIPART &&
         bp->type != TYPEMESSAGE && bp == body)
-      AT_NOCOUNT("ignore fundamental inlines");
+      shallcount = false; /* ignore fundamental inlines */
 
     /* If this body isn't scheduled for enumeration already, don't bother
      * profiling it further.
@@ -1640,16 +1418,16 @@ static int count_body_parts(struct Body *body, int flags)
       if (bp->disposition == DISPATTACH)
       {
         if (!count_body_parts_check(&AttachAllow, bp, true))
-          AT_NOCOUNT("attach not allowed");
+          shallcount = false; /* attach not allowed */
         if (count_body_parts_check(&AttachExclude, bp, false))
-          AT_NOCOUNT("attach excluded");
+          shallcount = false; /* attach excluded */
       }
       else
       {
         if (!count_body_parts_check(&InlineAllow, bp, true))
-          AT_NOCOUNT("inline not allowed");
+          shallcount = false; /* inline not allowed */
         if (count_body_parts_check(&InlineExclude, bp, false))
-          AT_NOCOUNT("excluded");
+          shallcount = false; /* excluded */
       }
     }
 

@@ -30,6 +30,7 @@
  * | mutt_exit() | Leave NeoMutt NOW
  */
 
+#include "config.h"
 #include <unistd.h>
 
 /**

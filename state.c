@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdarg.h>
 #include "state.h"
 #include "globals.h"
@@ -55,7 +56,8 @@ static int state_putwc(wchar_t wc, struct State *s)
   char mb[MB_LEN_MAX] = "";
   int rc;
 
-  if ((rc = wcrtomb(mb, wc, NULL)) < 0)
+  rc = wcrtomb(mb, wc, NULL);
+  if (rc < 0)
     return rc;
   if (fputs(mb, s->fpout) == EOF)
     return -1;
@@ -110,4 +112,3 @@ void state_prefix_put(const char *d, size_t dlen, struct State *s)
   else
     fwrite(d, dlen, 1, s->fpout);
 }
-

@@ -1,6 +1,6 @@
 /**
  * @file
- * NotMuch virtual mailbox type
+ * Notmuch virtual mailbox type
  *
  * @authors
  * Copyright (C) 2011 Karel Zak <kzak@redhat.com>
@@ -36,13 +36,12 @@ char *nm_header_get_folder(struct Header *h);
 int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz);
 char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz);
-int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf);
 bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
 
 void nm_query_window_backward(void);
 void nm_query_window_forward(void);
 
-void nm_longrun_init(struct Context *ctx, int writable);
+void nm_longrun_init(struct Context *ctx, bool writable);
 void nm_longrun_done(struct Context *ctx);
 
 char *nm_get_description(struct Context *ctx);
@@ -57,10 +56,6 @@ int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
  * functions usable outside notmuch Context
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
-
-char *nm_header_get_tag_transformed(char *tag, struct Header *h);
-char *nm_header_get_tags_transformed(struct Header *h);
-char *nm_header_get_tags(struct Header *h);
 
 extern struct MxOps mx_notmuch_ops;
 

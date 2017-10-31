@@ -24,10 +24,10 @@
  * This is a "simple" PGP key ring dumper.
  *
  * The output format is supposed to be compatible to the one GnuPG
- * emits and Mutt expects.
+ * emits and NeoMutt expects.
  *
  * Note that the code of this program could be considerably less
- * complex, but most of it was taken from mutt's second generation
+ * complex, but most of it was taken from neomutt's second generation
  * key ring parser.
  *
  * You can actually use this to put together some fairly general
@@ -425,7 +425,6 @@ static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l,
   unsigned long signerid1;
   unsigned long signerid2;
   size_t j;
-  int i;
 
   if (l < 22)
     return -1;
@@ -434,14 +433,14 @@ static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l,
   sigtype = buff[j++];
 
   sig_gen_time = 0;
-  for (i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
     sig_gen_time = (sig_gen_time << 8) + buff[j++];
 
   signerid1 = signerid2 = 0;
-  for (i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
     signerid1 = (signerid1 << 8) + buff[j++];
 
-  for (i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
     signerid2 = (signerid2 << 8) + buff[j++];
 
   if (sigtype == 0x20 || sigtype == 0x28)
@@ -469,7 +468,6 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
   unsigned long signerid2 = 0;
   size_t ml;
   size_t j;
-  int i;
   short have_critical_spks = 0;
 
   if (l < 7)
@@ -520,7 +518,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
           if (skl < 4)
             break;
           sig_gen_time = 0;
-          for (i = 0; i < 4; i++)
+          for (int i = 0; i < 4; i++)
             sig_gen_time = (sig_gen_time << 8) + buff[j++];
 
           break;
@@ -530,7 +528,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
           if (skl < 4)
             break;
           validity = 0;
-          for (i = 0; i < 4; i++)
+          for (int i = 0; i < 4; i++)
             validity = (validity << 8) + buff[j++];
           break;
         }
@@ -539,7 +537,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
           if (skl < 4)
             break;
           key_validity = 0;
-          for (i = 0; i < 4; i++)
+          for (int i = 0; i < 4; i++)
             key_validity = (key_validity << 8) + buff[j++];
           break;
         }
@@ -548,9 +546,9 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
           if (skl < 8)
             break;
           signerid2 = signerid1 = 0;
-          for (i = 0; i < 4; i++)
+          for (int i = 0; i < 4; i++)
             signerid1 = (signerid1 << 8) + buff[j++];
-          for (i = 0; i < 4; i++)
+          for (int i = 0; i < 4; i++)
             signerid2 = (signerid2 << 8) + buff[j++];
 
           break;
@@ -559,7 +557,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
           break;
         case 4:  /* exportable */
         case 5:  /* trust */
-        case 6:  /* regexp */
+        case 6:  /* regex */
         case 7:  /* revocable */
         case 11: /* Pref. symm. alg. */
         case 12: /* revocation key */
@@ -654,7 +652,8 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
       case PT_SUBKEY:
       case PT_SUBSECKEY:
       {
-        if (!(*last = p = pgp_parse_keyinfo(buff, l)))
+        *last = p = pgp_parse_keyinfo(buff, l);
+        if (!*last)
         {
           err = 1;
           break;
@@ -770,7 +769,8 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
 
   short err = 0;
 
-  if ((rfp = fopen(ringfile, "r")) == NULL)
+  rfp = fopen(ringfile, "r");
+  if (!rfp)
   {
     char *error_buf = NULL;
     size_t error_buf_len;
@@ -812,7 +812,8 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
 
         /* Not bailing out here would lead us into an endless loop. */
 
-        if ((p = pgp_parse_keyblock(rfp)) == NULL)
+        p = pgp_parse_keyblock(rfp);
+        if (!p)
           err = 1;
 
         pgpring_dump_keyblock(p);

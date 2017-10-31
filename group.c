@@ -23,12 +23,11 @@
 
 #include "config.h"
 #include <stdlib.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "group.h"
 #include "address.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "protos.h"
 #include "rfc822.h"
 
@@ -39,7 +38,8 @@ struct Group *mutt_pattern_group(const char *k)
   if (!k)
     return 0;
 
-  if (!(p = hash_find(Groups, k)))
+  p = hash_find(Groups, k);
+  if (!p)
   {
     mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
     p = safe_calloc(1, sizeof(struct Group));
@@ -56,7 +56,7 @@ static void group_remove(struct Group *g)
     return;
   hash_delete(Groups, g->name, g, NULL);
   rfc822_free_address(&g->as);
-  mutt_free_rx_list(&g->rs);
+  mutt_free_regex_list(&g->rs);
   FREE(&g->name);
   FREE(&g);
 }
@@ -134,14 +134,14 @@ static int group_remove_adrlist(struct Group *g, struct Address *a)
   return 0;
 }
 
-static int group_add_rx(struct Group *g, const char *s, int flags, struct Buffer *err)
+static int group_add_regex(struct Group *g, const char *s, int flags, struct Buffer *err)
 {
-  return mutt_add_to_rx_list(&g->rs, s, flags, err);
+  return mutt_add_to_regex_list(&g->rs, s, flags, err);
 }
 
-static int group_remove_rx(struct Group *g, const char *s)
+static int group_remove_regex(struct Group *g, const char *s)
 {
-  return mutt_remove_from_rx_list(&g->rs, s);
+  return mutt_remove_from_regex_list(&g->rs, s);
 }
 
 void mutt_group_context_add_adrlist(struct GroupContext *ctx, struct Address *a)
@@ -164,24 +164,24 @@ int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *
   return rv;
 }
 
-int mutt_group_context_add_rx(struct GroupContext *ctx, const char *s,
-                              int flags, struct Buffer *err)
+int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
+                                 int flags, struct Buffer *err)
 {
   int rv = 0;
 
   for (; (!rv) && ctx; ctx = ctx->next)
-    rv = group_add_rx(ctx->g, s, flags, err);
+    rv = group_add_regex(ctx->g, s, flags, err);
 
   return rv;
 }
 
-int mutt_group_context_remove_rx(struct GroupContext *ctx, const char *s)
+int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
 {
   int rv = 0;
 
   for (; (!rv) && ctx; ctx = ctx->next)
   {
-    rv = group_remove_rx(ctx->g, s);
+    rv = group_remove_regex(ctx->g, s);
     if (empty_group(ctx->g))
       group_remove(ctx->g);
   }
@@ -195,7 +195,7 @@ bool mutt_group_match(struct Group *g, const char *s)
 
   if (s && g)
   {
-    if (mutt_match_rx_list(s, g->rs))
+    if (mutt_match_regex_list(s, g->rs))
       return true;
     for (ap = g->as; ap; ap = ap->next)
       if (ap->mailbox && (mutt_strcasecmp(s, ap->mailbox) == 0))

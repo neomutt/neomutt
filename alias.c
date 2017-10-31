@@ -23,21 +23,22 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "alias.h"
 #include "address.h"
+#include "alias.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"
@@ -158,7 +159,7 @@ void mutt_expand_aliases_env(struct Envelope *env)
  *
  * if someone has an address like
  *      From: Michael `/bin/rm -f ~` Elkins <me@mutt.org>
- * and the user creates an alias for this, Mutt could wind up executing
+ * and the user creates an alias for this, NeoMutt could wind up executing
  * the backticks because it writes aliases like
  *      alias me Michael `/bin/rm -f ~` Elkins <me@mutt.org>
  * To avoid this problem, use a backslash (\) to quote any backticks.  We also
@@ -169,7 +170,7 @@ void mutt_expand_aliases_env(struct Envelope *env)
  *      alias me Michael \\`/bin/rm -f ~\\` Elkins <me@mutt.org>
  * which still gets evaluated because the double backslash is not a quote.
  *
- * Additionally, we need to quote ' and " characters - otherwise, mutt will
+ * Additionally, we need to quote ' and " characters - otherwise, neomutt will
  * interpret them on the wrong parsing step.
  *
  * $ wants to be quoted since it may indicate the start of an environment
@@ -238,7 +239,7 @@ static void recode_buf(char *buf, size_t buflen)
 /**
  * check_alias_name - Sanity-check an alias name
  *
- * Only characters which are non-special to both the RFC822 and the mutt
+ * Only characters which are non-special to both the RFC822 and the neomutt
  * configuration parser are permitted.
  */
 int check_alias_name(const char *s, char *dest, size_t destlen)
@@ -277,7 +278,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
     }
   }
   if (!dry)
-    *dest = 0;
+    *dest = '\0';
   return rv;
 }
 
@@ -303,7 +304,7 @@ void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
   {
     strfcpy(tmp, adr->mailbox, sizeof(tmp));
     if ((pc = strchr(tmp, '@')))
-      *pc = 0;
+      *pc = '\0';
   }
   else
     tmp[0] = '\0';
@@ -344,7 +345,7 @@ retry_name:
   if (adr && adr->mailbox)
     strfcpy(buf, adr->mailbox, sizeof(buf));
   else
-    buf[0] = 0;
+    buf[0] = '\0';
 
   mutt_addrlist_to_intl(adr, NULL);
 
@@ -356,7 +357,8 @@ retry_name:
       return;
     }
 
-    if ((new->addr = rfc822_parse_adrlist(new->addr, buf)) == NULL)
+    new->addr = rfc822_parse_adrlist(new->addr, buf);
+    if (!new->addr)
       BEEP();
     if (mutt_addrlist_to_intl(new->addr, &err))
     {
@@ -369,7 +371,7 @@ retry_name:
   if (adr && adr->personal && !mutt_is_mail_list(adr))
     strfcpy(buf, adr->personal, sizeof(buf));
   else
-    buf[0] = 0;
+    buf[0] = '\0';
 
   if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), 0) != 0)
   {
@@ -378,7 +380,7 @@ retry_name:
   }
   new->addr->personal = safe_strdup(buf);
 
-  buf[0] = 0;
+  buf[0] = '\0';
   rfc822_write_address(buf, sizeof(buf), new->addr, 1);
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
@@ -429,7 +431,7 @@ retry_name:
       strfcpy(buf, new->name, sizeof(buf));
     recode_buf(buf, sizeof(buf));
     fprintf(rc, "alias %s ", buf);
-    buf[0] = 0;
+    buf[0] = '\0';
     rfc822_write_address(buf, sizeof(buf), new->addr, 0);
     recode_buf(buf, sizeof(buf));
     write_safe_address(rc, buf);
@@ -458,7 +460,7 @@ struct Address *alias_reverse_lookup(struct Address *a)
   if (!a || !a->mailbox)
     return NULL;
 
-  return hash_find(ReverseAlias, a->mailbox);
+  return hash_find(ReverseAliases, a->mailbox);
 }
 
 void mutt_alias_add_reverse(struct Alias *t)
@@ -475,7 +477,7 @@ void mutt_alias_add_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_insert(ReverseAlias, ap->mailbox, ap);
+      hash_insert(ReverseAliases, ap->mailbox, ap);
   }
 }
 
@@ -492,7 +494,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_delete(ReverseAlias, ap->mailbox, ap, NULL);
+      hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
   }
 }
 
@@ -510,10 +512,6 @@ int mutt_alias_complete(char *s, size_t buflen)
   char bestname[HUGE_STRING];
   int i;
 
-#ifndef min
-#define min(a, b) ((a < b) ? a : b)
-#endif
-
   if (s[0] != 0) /* avoid empty string as strstr argument */
   {
     memset(bestname, 0, sizeof(bestname));
@@ -523,12 +521,12 @@ int mutt_alias_complete(char *s, size_t buflen)
       if (a->name && strstr(a->name, s) == a->name)
       {
         if (!bestname[0]) /* init */
-          strfcpy(bestname, a->name, min(mutt_strlen(a->name) + 1, sizeof(bestname)));
+          strfcpy(bestname, a->name, MIN(mutt_strlen(a->name) + 1, sizeof(bestname)));
         else
         {
           for (i = 0; a->name[i] && a->name[i] == bestname[i]; i++)
             ;
-          bestname[i] = 0;
+          bestname[i] = '\0';
         }
       }
       a = a->next;
@@ -565,7 +563,7 @@ int mutt_alias_complete(char *s, size_t buflen)
     }
   }
 
-  bestname[0] = 0;
+  bestname[0] = '\0';
   mutt_alias_menu(bestname, sizeof(bestname), a_list ? a_list : Aliases);
   if (bestname[0] != 0)
     strfcpy(s, bestname, buflen);
@@ -643,9 +641,10 @@ bool mutt_addr_is_user(struct Address *addr)
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username);
     return true;
   }
-  if (string_is_address(addr->mailbox, Username, Hostname))
+  if (string_is_address(addr->mailbox, Username, ShortHostname))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, Hostname);
+    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox,
+               Username, ShortHostname);
     return true;
   }
   fqdn = mutt_fqdn(0);
@@ -669,10 +668,10 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (mutt_match_rx_list(addr->mailbox, Alternates))
+  if (mutt_match_regex_list(addr->mailbox, Alternates))
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox);
-    if (mutt_match_rx_list(addr->mailbox, UnAlternates))
+    if (mutt_match_regex_list(addr->mailbox, UnAlternates))
       mutt_debug(5, "mutt_addr_is_user: but, %s matched by unalternates.\n", addr->mailbox);
     else
       return true;

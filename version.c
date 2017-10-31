@@ -85,11 +85,13 @@ static const char *ReachingUs =
        "    https://github.com/neomutt/neomutt/issues\n"
        "or send an email to: <neomutt-devel@neomutt.org>\n");
 
+// clang-format off
 static const char *Notice =
     N_("Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-       "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
-       "Mutt is free software, and you are welcome to redistribute it\n"
-       "under certain conditions; type `mutt -vv' for details.\n");
+       "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+       "NeoMutt is free software, and you are welcome to redistribute it\n"
+       "under certain conditions; type `neomutt -vv' for details.\n");
+// clang-format on
 
 /**
  * struct CompileOptions - List of built-in capabilities
@@ -114,9 +116,7 @@ static struct CompileOptions comp_opts_default[] = {
   { "imap", 1 },
   { "index_color", 1 },
   { "initials", 1 },
-  { "keywords", 1 },
   { "limit_current_thread", 1 },
-  { "lmdb", 1 },
   { "multiple_fcc", 1 },
   { "nested_if", 1 },
   { "new_mail", 1 },
@@ -208,11 +208,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "homespool", 0 },
 #endif
-#ifdef ICONV_NONTRANS
-  { "iconv_nontrans", 1 },
-#else
-  { "iconv_nontrans", 0 },
-#endif
 #ifdef HAVE_LIBIDN
   { "idn", 1 },
 #else
@@ -280,6 +275,8 @@ static struct CompileOptions comp_opts[] = {
 #endif
 #ifdef SUN_ATTACHMENT
   { "sun_attachment", 1 },
+#else
+  { "sun_attachment", 0 },
 #endif
 #ifdef HAVE_TYPEAHEAD
   { "typeahead", 1 },
@@ -360,7 +357,7 @@ static char *rstrip_in_place(char *s)
 /**
  * print_version - Print system and compile info
  *
- * Print information about the current system Mutt is running on.
+ * Print information about the current system NeoMutt is running on.
  * Also print a list of all the compile-time information.
  */
 void print_version(void)
@@ -438,7 +435,7 @@ void print_version(void)
  * print_copyright - Print copyright message
  *
  * Print the authors' copyright messages, the GPL license and some contact
- * information for the Mutt project.
+ * information for the NeoMutt project.
  */
 void print_copyright(void)
 {
@@ -455,14 +452,14 @@ void print_copyright(void)
  * @retval true  Feature enabled
  * @retval false Feature not enabled, or not compiled in
  *
- * Many of the larger features of mutt can be disabled at compile time.
+ * Many of the larger features of neomutt can be disabled at compile time.
  * They define a symbol and use ifdef's around their code.
  * The symbols are mirrored in "CompileOptions comp_opts[]" in this
  * file.
  *
  * This function checks if one of these symbols is present in the code.
  *
- * These symbols are also seen in the output of "mutt -v".
+ * These symbols are also seen in the output of "neomutt -v".
  */
 bool feature_enabled(const char *name)
 {

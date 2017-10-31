@@ -1,0 +1,322 @@
+###############################################################################
+# substitutions by autosetup
+
+PACKAGE=	@PACKAGE@
+PACKAGE_VERSION=@PACKAGE_VERSION@
+
+PWD=		@PWD@
+AR=		@AR@
+CC=		@CC@
+CC_FOR_BUILD=	@CC_FOR_BUILD@ @CFLAGS_FOR_BUILD@
+CPP=		@CPP@
+CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@top_srcdir@ -Wall $(EXTRA_CFLAGS)
+LDFLAGS=	@LDFLAGS@ $(EXTRA_LDFLAGS)
+EXEEXT=		@EXEEXT@
+LIBS=		@LIBS@
+@if ENABLE_NLS
+INTLLIBS=	@INTLLIBS@
+@endif
+RANLIB=		@RANLIB@
+SRCDIR=		@srcdir@
+INSTALL=	@INSTALL@ -c
+INSTALL_DATA=	@INSTALL@ -m 644
+MKDIR_P=	mkdir -p
+RM=		rm -fr
+DEPFILES=	$(ALLOBJS:.o=.Po)
+BINFILES=	$(NEOMUTT)
+@if HAVE_PGP
+LIBBINFILES+=	$(PGPEWRAP) $(PGPRING)
+@endif
+@if HAVE_SMIME
+LIBBINFILES+=	$(SRCDIR)/contrib/smime_keys
+@endif
+
+# paths
+bindir=		@BINDIR@
+datadir=	@PKGDATADIR@
+docdir=		@PKGDOCDIR@
+mandir=		@mandir@
+libdir=		@libdir@
+sysconfdir=	@SYSCONFDIR@
+
+# targets for specific subdirectories
+ALL_TARGETS=		@ALL_TARGETS@
+CLEAN_TARGETS=		@CLEAN_TARGETS@
+INSTALL_TARGETS=	@INSTALL_TARGETS@
+UNINSTALL_TARGETS=	@UNINSTALL_TARGETS@
+
+VPATH=		$(SRCDIR)
+
+ALL_FILES!=	(cd $(SRCDIR) && git ls-tree -r --name-only HEAD 2>/dev/null) \
+		| grep -v git_ver.h || true
+
+###############################################################################
+# neomutt
+NEOMUTT=	neomutt$(EXEEXT)
+NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
+		browser.o buffy.o charset.o color.o commands.o complete.o \
+		compose.o compress.o conststrings.o copy.o curs_lib.o \
+		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
+		flags.o from.o group.o handler.o hdrline.o \
+		headers.o help.o history.o hook.o init.o keymap.o main.o \
+		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_idna.o \
+		mutt_socket.o mutt_tags.o mx.o \
+		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
+		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
+		rfc1524.o rfc2047.o rfc2231.o rfc3676.o rfc822.o \
+		safe_asprintf.o score.o send.o sendlib.o sidebar.o signal.o \
+		smtp.o sort.o state.o status.o system.o thread.o url.o \
+		version.o
+
+@if HAVE_WCSCASECMP
+@else
+NEOMUTTOBJS+=	wcscasecmp.o
+@endif
+@if HAVE_RESIZETERM
+NEOMUTTOBJS+=	resize.o
+@endif
+@if USE_NOTMUCH
+NEOMUTTOBJS+=	mutt_notmuch.o
+@endif
+@if MIXMASTER
+NEOMUTTOBJS+=	remailer.o
+@endif
+@if USE_LUA
+NEOMUTTOBJS+=	mutt_lua.o
+@endif
+CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
+ALLOBJS+=	$(NEOMUTTOBJS)
+
+###############################################################################
+# libmutt
+LIBMUTT=	libmutt.a
+LIBMUTTOBJS=	lib/base64.o lib/buffer.o lib/date.o lib/debug.o lib/exit.o \
+		lib/file.o lib/hash.o lib/list.o lib/mapping.o lib/md5.o \
+		lib/memory.o lib/message.o lib/sha1.o lib/string.o
+CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
+MUTTLIBS+=	$(LIBMUTT)
+ALLOBJS+=	$(LIBMUTTOBJS)
+
+###############################################################################
+# libncrypt
+LIBNCRYPT=	libncrypt.a
+LIBNCRYPTOBJS=	ncrypt/crypt.o ncrypt/crypt_mod.o ncrypt/cryptglue.o
+@if HAVE_GPGME
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/crypt_mod_pgp_gpgme.o \
+		ncrypt/crypt_mod_smime_gpgme.o
+@endif
+@if HAVE_PGP
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/gnupgparse.o \
+		ncrypt/pgp.o ncrypt/pgpinvoke.o ncrypt/pgpkey.o \
+		ncrypt/pgplib.o ncrypt/pgpmicalg.o ncrypt/pgppacket.o
+@endif
+@if HAVE_SMIME
+LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/smime.o
+@endif
+CLEANFILES+=	$(LIBNCRYPT) $(LIBNCRYPTOBJS)
+MUTTLIBS+=	$(LIBNCRYPT)
+ALLOBJS+=	$(LIBNCRYPTOBJS)
+
+###############################################################################
+# libimap
+LIBIMAP=	libimap.a
+LIBIMAPOBJS=	imap/auth.o imap/auth_anon.o imap/auth_cram.o \
+		imap/auth_login.o imap/auth_plain.o imap/browse.o \
+		imap/command.o imap/imap.o imap/message.o imap/utf7.o \
+		imap/util.o
+@if USE_GSS
+LIBIMAPOBJS+=	imap/auth_gss.o
+@endif
+@if HAVE_SASL
+LIBIMAPOBJS+=	imap/auth_sasl.o
+@endif
+CLEANFILES+=	$(LIBIMAP) $(LIBIMAPOBJS)
+MUTTLIBS+=	$(LIBIMAP)
+ALLOBJS+=	$(LIBIMAPOBJS)
+
+###############################################################################
+# libconn
+LIBCONN=	libconn.a
+LIBCONNOBJS=	conn/conn_globals.o conn/getdomain.o conn/sasl_plain.o \
+		conn/socket.o conn/tunnel.o
+@if HAVE_SASL
+LIBCONNOBJS+=	conn/sasl.o
+@endif
+@if USE_SSL_OPENSSL
+LIBCONNOBJS+=	conn/ssl.o
+@endif
+@if USE_SSL_GNUTLS
+LIBCONNOBJS+=	conn/ssl_gnutls.o
+@endif
+CLEANFILES+=	$(LIBCONN) $(LIBCONNOBJS)
+MUTTLIBS+=	$(LIBCONN)
+ALLOBJS+=	$(LIBCONNOBJS)
+
+###############################################################################
+# libhcache
+@if USE_HCACHE
+LIBHCACHE=	libhcache.a
+LIBHCACHEOBJS=	hcache/hcache.o
+CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
+MUTTLIBS+=	$(LIBHCACHE)
+ALLOBJS+=	$(LIBHCACHEOBJS)
+@endif
+@if HAVE_BDB
+LIBHCACHEOBJS+=	hcache/bdb.o
+@endif
+@if HAVE_GDBM
+LIBHCACHEOBJS+=	hcache/gdbm.o
+@endif
+@if HAVE_KC
+LIBHCACHEOBJS+=	hcache/kc.o
+@endif
+@if HAVE_LMDB
+LIBHCACHEOBJS+=	hcache/lmdb.o
+@endif
+@if HAVE_QDBM
+LIBHCACHEOBJS+=	hcache/qdbm.o
+@endif
+@if HAVE_TC
+LIBHCACHEOBJS+=	hcache/tc.o
+@endif
+
+###############################################################################
+# pgpewrap
+PGPEWRAP=	pgpewrap$(EXEEXT)
+PGPEWRAPOBJS=	pgpewrap.o
+CLEANFILES+=	$(PGPEWRAP) $(PGPEWRAPOBJS)
+ALLOBJS+=	$(PGPEWRAPOBJS)
+
+###############################################################################
+# pgpring
+PGPRING=	pgpring$(EXEEXT)
+PGPRINGOBJS=	pgppubring.o
+CLEANFILES+=	$(PGPRING) $(PGPRINGOBJS)
+ALLOBJS+=	$(PGPRINGOBJS)
+
+###############################################################################
+# generated
+GENERATED=	git_ver.h hcache/hcversion.h
+CLEANFILES+=	$(GENERATED)
+
+##############################################################################
+# targets
+all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
+
+# compile + dependencies
+.c.o:
+	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $*.Tpo -c -o $@ $<
+	@mv $*.Tpo $*.Po
+
+# mutt
+$(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(NEOMUTTOBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+# libmutt
+$(LIBMUTT): $(PWD)/lib $(LIBMUTTOBJS)
+	$(AR) cr $@ $(LIBMUTTOBJS)
+	$(RANLIB) $@
+$(PWD)/lib:
+	$(MKDIR_P) $(PWD)/lib
+
+# libncrypt
+$(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
+	$(AR) cr $@ $(LIBNCRYPTOBJS)
+	$(RANLIB) $@
+$(PWD)/ncrypt:
+	$(MKDIR_P) $(PWD)/ncrypt
+
+# libimap
+$(LIBIMAP): $(PWD)/imap $(LIBIMAPOBJS)
+	$(AR) cr $@ $(LIBIMAPOBJS)
+	$(RANLIB) $@
+$(PWD)/imap:
+	$(MKDIR_P) $(PWD)/imap
+
+# libconn
+$(LIBCONN): $(PWD)/conn $(LIBCONNOBJS)
+	$(AR) cr $@ $(LIBCONNOBJS)
+	$(RANLIB) $@
+$(PWD)/conn:
+	$(MKDIR_P) $(PWD)/conn
+
+# libhcache
+hcache/hcache.o:	hcache/hcversion.h
+$(LIBHCACHE): $(PWD)/hcache $(LIBHCACHEOBJS)
+	$(AR) cr $@ $(LIBHCACHEOBJS)
+	$(RANLIB) $@
+$(PWD)/hcache:
+	$(MKDIR_P) $(PWD)/hcache
+
+# pgpewrap
+$(PGPEWRAP): $(PGPEWRAPOBJS)
+	$(CC) $(LDFLAGS) -o $@ $(PGPEWRAPOBJS)
+
+# pgpring
+$(PGPRING): $(PGPRINGOBJS) $(LIBMUTT) $(LIBNCRYPT)
+	$(CC) $(LDFLAGS) -o $@ $(PGPRINGOBJS) $(LIBMUTT) $(LIBNCRYPT) $(INTLLIBS)
+
+# generated
+git_ver.h: $(ALL_FILES)
+	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
+	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
+	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
+	rm -f git_ver.h.tmp
+
+hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/address.h \
+			$(SRCDIR)/lib/list.h $(SRCDIR)/lib/buffer.h \
+			$(SRCDIR)/parameter.h $(SRCDIR)/body.h \
+			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
+			$(SRCDIR)/hcache/hcachever.sh \
+			$(PWD)/hcache
+	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
+	echo '#include "address.h"'; echo '#include "lib/list.h"'; \
+	echo '#include "lib/buffer.h"'; echo '#include "parameter.h"'; \
+	echo '#include "body.h"'; echo '#include "envelope.h"'; \
+	echo '#include "header.h"';) | $(CPP) $(CFLAGS) - | \
+	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
+
+# clean
+clean: $(CLEAN_TARGETS)
+	rm -f $(CLEANFILES)
+
+# install
+install: all $(INSTALL_TARGETS)
+	# Install binaries
+	$(MKDIR_P) $(DESTDIR)$(bindir)
+	for f in $(BINFILES); do \
+		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f`; \
+	done
+	$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE)
+	for f in $(LIBBINFILES); do \
+		$(INSTALL) $$f $(DESTDIR)$(libdir)/$(PACKAGE)/`basename $$f`; \
+	done
+
+# uninstall
+uninstall: $(UNINSTALL_TARGETS)
+	# Uninstall binaries
+	for f in $(BINFILES); do \
+		$(RM) $(DESTDIR)$(bindir)/`basename $$f`; \
+	done
+	for f in $(LIBBINFILES); do \
+		$(RM) $(DESTDIR)$(libdir)/$(PACKAGE)/`basename $$f`; \
+	done
+
+# distclean
+distclean: clean
+	$(RM) $(DEPFILES) conststrings.c config.h config.log doc/neomutt.1 \
+		Makefile po/Makefile contrib/Makefile doc/Makefile \
+		autosetup/jimsh0
+
+##############################################################################
+# include generated dependency files
+-include $(DEPFILES)
+
+##############################################################################
+# include special-purpose makefiles, each one of which MUST define the
+# dedicated all-, clean-, install-, and uninstall- targets.
+include po/Makefile
+include contrib/Makefile
+include doc/Makefile
+
+# vim: set ts=8 noexpandtab:

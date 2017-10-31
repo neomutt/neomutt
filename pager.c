@@ -25,7 +25,9 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -33,8 +35,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
-#include "pager.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -44,17 +46,16 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
+#include "pager.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
@@ -98,7 +99,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_ATTACH                                                           \
-  if (option(OPT_ATTACH_MSG))                                                    \
+  if (option(OPT_ATTACH_MSG))                                                  \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
@@ -225,7 +226,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   int color;             /* final color */
   static int last_color; /* last color set */
   bool search = false;
-  int i, m;
+  int m;
 
   if (!cnt)
     last_color = -1; /* force attrset() */
@@ -269,7 +270,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
   color = def_color;
   if (flags & MUTT_SHOWCOLOR)
   {
-    for (i = 0; i < line_info[m].chunks; i++)
+    for (int i = 0; i < line_info[m].chunks; i++)
     {
       /* we assume the chunks are sorted */
       if (cnt > (line_info[m].syntax)[i].last)
@@ -288,7 +289,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
 
   if (flags & MUTT_SEARCH)
   {
-    for (i = 0; i < line_info[m].search_cnt; i++)
+    for (int i = 0; i < line_info[m].search_cnt; i++)
     {
       if (cnt > (line_info[m].search)[i].last)
         continue;
@@ -444,7 +445,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   {
     /* not much point in classifying quotes... */
 
-    if (*quote_list == NULL)
+    if (!*quote_list)
     {
       class = safe_calloc(1, sizeof(struct QClass));
       class->color = ColorQuote[0];
@@ -793,9 +794,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
        */
       if (!option(OPT_HEADER_COLOR_PARTIAL))
       {
-        for (color_line = ColorHdrList; color_line; color_line = color_line->next)
+        STAILQ_FOREACH(color_line, &ColorHdrList, entries)
         {
-          if (REGEXEC(color_line->rx, buf) == 0)
+          if (REGEXEC(color_line->regex, buf) == 0)
           {
             line_info[n].type = MT_COLOR_HEADER;
             line_info[n].syntax[0].color = color_line->pair;
@@ -846,9 +847,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (regexec((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0)
+  else if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
   {
-    if (regexec((regex_t *) Smileys.rx, buf, 1, smatch, 0) == 0)
+    if (regexec((regex_t *) Smileys.regex, buf, 1, smatch, 0) == 0)
     {
       if (smatch[0].rm_so > 0)
       {
@@ -858,7 +859,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         c = buf[smatch[0].rm_so];
         buf[smatch[0].rm_so] = 0;
 
-        if (regexec((regex_t *) QuoteRegexp.rx, buf, 1, pmatch, 0) == 0)
+        if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
         {
           if (q_classify && line_info[n].quote == NULL)
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
@@ -907,13 +908,15 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
       found = false;
       null_rx = false;
+      struct ColorLineHead *head = NULL;
       if (line_info[n].type == MT_COLOR_HDEFAULT)
-        color_line = ColorHdrList;
+        head = &ColorHdrList;
       else
-        color_line = ColorBodyList;
-      while (color_line)
+        head = &ColorBodyList;
+      STAILQ_FOREACH(color_line, head, entries)
       {
-        if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+        if (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                    (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -945,9 +948,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             null_rx = false;
           }
           else
-            null_rx = true; /* empty regexp; don't add it, but keep looking */
+            null_rx = true; /* empty regex; don't add it, but keep looking */
         }
-        color_line = color_line->next;
       }
 
       if (null_rx)
@@ -979,9 +981,10 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
       found = false;
       null_rx = false;
-      for (color_line = ColorAttachList; color_line; color_line = color_line->next)
+      STAILQ_FOREACH(color_line, &ColorAttachList, entries)
       {
-        if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+        if (regexec(&color_line->regex, buf + offset, 1, pmatch,
+                    (offset ? REG_NOTBOL : 0)) == 0)
         {
           if (pmatch[0].rm_eo != pmatch[0].rm_so)
           {
@@ -1006,7 +1009,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             null_rx = 0;
           }
           else
-            null_rx = 1; /* empty regexp; don't add it, but keep looking */
+            null_rx = 1; /* empty regex; don't add it, but keep looking */
         }
       }
 
@@ -1145,13 +1148,14 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
 {
   unsigned char *p = NULL, *q = NULL;
   static int b_read;
-  int l;
+  int l = 0;
 
   if (*buf_ready == 0)
   {
     if (offset != *last_pos)
       fseeko(f, offset, SEEK_SET);
-    if ((*buf = (unsigned char *) mutt_read_line((char *) *buf, blen, f, &l, MUTT_EOL)) == NULL)
+    *buf = (unsigned char *) mutt_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
+    if (!*buf)
     {
       fmt[0] = 0;
       return -1;
@@ -1487,7 +1491,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (regexec((regex_t *) QuoteRegexp.rx, (char *) fmt, 1, pmatch, 0) != 0)
+    if (regexec((regex_t *) QuoteRegexp.regex, (char *) fmt, 1, pmatch, 0) != 0)
       goto out;
     (*line_info)[n].quote =
         classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
@@ -1554,12 +1558,12 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
-  if (option(OPT_WRAP))
+  if (option(OPT_SMART_WRAP))
   {
     if (cnt < b_read)
     {
-      if (ch != -1 && buf[0] != ' ' && buf[0] != '\t' && buf[cnt] != ' ' &&
-          buf[cnt] != '\t' && buf[cnt] != '\n' && buf[cnt] != '\r')
+      /* Wrap if the line is not part of the header and buf[cnt] is not whitespace */
+      if (ch != -1 && !ISHEADER((*line_info)[n].type) && !ISSPACE(buf[cnt]))
       {
         buf_ptr = buf + ch;
         /* skip trailing blanks */
@@ -1734,6 +1738,9 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   struct PagerRedrawData *rd = pager_menu->redraw_data;
   int i, j;
   char buffer[LONG_STRING];
+#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
+  int err;
+#endif
 
   if (!rd)
     return;
@@ -1803,9 +1810,18 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     {
       if ((rd->search_compiled = Resize->search_compiled))
       {
-        REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | mutt_which_case(rd->searchbuf));
-        rd->search_flag = MUTT_SEARCH;
-        rd->search_back = Resize->search_back;
+        if ((err = REGCOMP(&rd->search_re, rd->searchbuf,
+                           REG_NEWLINE | mutt_which_case(rd->searchbuf))) != 0)
+        {
+          regerror(err, &rd->search_re, buffer, sizeof(buffer));
+          mutt_error("%s", buffer);
+          rd->search_compiled = 0;
+        }
+        else
+        {
+          rd->search_flag = MUTT_SEARCH;
+          rd->search_back = Resize->search_back;
+        }
       }
       rd->lines = Resize->line;
       pager_menu->redraw |= REDRAW_FLOW;
@@ -1964,7 +1980,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       size_t l2 = sizeof(buffer);
       hfi.hdr = (IsHeader(rd->extra)) ? rd->extra->hdr : rd->extra->bdy->hdr;
       mutt_make_string_info(buffer, l1 < l2 ? l1 : l2, rd->pager_status_window->cols,
-                            NONULL(PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
+                            NONULL(PagerFormat), &hfi, MUTT_FORMAT_MAKEPRINT);
       mutt_draw_statusline(rd->pager_status_window->cols, buffer, l2);
     }
     else
@@ -1991,7 +2007,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       menu_redraw_current(rd->index);
 
     /* print out the index status bar */
-    menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(Status));
+    menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(StatusFormat));
 
     mutt_window_move(rd->index_status_window, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
@@ -2048,7 +2064,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   rd.searchbuf = searchbuf;
   rd.has_types = (IsHeader(extra) || (flags & MUTT_SHOWCOLOR)) ? MUTT_TYPES : 0; /* main message or rfc822 attachment */
 
-  if ((rd.fp = fopen(fname, "r")) == NULL)
+  rd.fp = fopen(fname, "r");
+  if (!rd.fp)
   {
     mutt_perror(fname);
     return -1;
@@ -2214,10 +2231,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       {
         if (option(OPT_BEEP_NEW))
           beep();
-        if (NewMailCmd)
+        if (NewMailCommand)
         {
           char cmd[LONG_STRING];
-          menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(NewMailCmd));
+          menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(NewMailCommand));
           mutt_system(cmd);
         }
       }
@@ -2273,7 +2290,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_QUIT:
-        if (query_quadoption(OPT_QUIT, _("Quit Mutt?")) == MUTT_YES)
+        if (query_quadoption(OPT_QUIT, _("Quit NeoMutt?")) == MUTT_YES)
         {
           /* avoid prompting again in the index menu */
           set_quadoption(OPT_QUIT, MUTT_YES);
@@ -2685,8 +2702,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_bounce(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                             extra->bdy);
+          mutt_attach_bounce(extra->fp, extra->hdr, extra->actx, extra->bdy);
         else
           ci_bounce_message(extra->hdr);
         break;
@@ -2695,8 +2711,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_resend(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                             extra->bdy);
+          mutt_attach_resend(extra->fp, extra->hdr, extra->actx, extra->bdy);
         else
           mutt_resend_message(NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2849,7 +2864,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_PIPE:
         CHECK_MODE(IsHeader(extra) || IsAttach(extra));
         if (IsAttach(extra))
-          mutt_pipe_attachment_list(extra->fp, 0, extra->bdy, 0);
+          mutt_pipe_attachment_list(extra->actx, extra->fp, false, extra->bdy, false);
         else
           mutt_pipe_message(extra->hdr);
         break;
@@ -2857,7 +2872,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_PRINT:
         CHECK_MODE(IsHeader(extra) || IsAttach(extra));
         if (IsAttach(extra))
-          mutt_print_attachment_list(extra->fp, 0, extra->bdy);
+          mutt_print_attachment_list(extra->actx, extra->fp, false, extra->bdy);
         else
           mutt_print_message(extra->hdr);
         break;
@@ -2874,7 +2889,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
@@ -2884,11 +2899,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                              extra->bdy, SENDNEWS);
+          mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS);
         else
           ci_send_message(SENDNEWS | SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2904,15 +2918,15 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           followup_to = extra->hdr->env->followup_to;
 
         if (!followup_to || (mutt_strcasecmp(followup_to, "poster") != 0) ||
-            query_quadoption(OPT_FOLLOW_UP_TO_POSTER,
+            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TO_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (IsMsgAttach(extra))
-            mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                              extra->bdy, SENDNEWS | SENDREPLY);
+            mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
+                              SENDNEWS | SENDREPLY);
           else
             ci_send_message(SENDNEWS | SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
           pager_menu->redraw = REDRAW_FULL;
@@ -2924,8 +2938,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                            extra->bdy, SENDREPLY);
+          mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDREPLY);
         else
           ci_send_message(SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2942,8 +2955,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                            extra->bdy, SENDREPLY | SENDGROUPREPLY);
+          mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
+                            SENDREPLY | SENDGROUPREPLY);
         else
           ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, extra->ctx,
                           extra->hdr);
@@ -2954,8 +2967,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                            extra->bdy, SENDREPLY | SENDLISTREPLY);
+          mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
+                            SENDREPLY | SENDLISTREPLY);
         else
           ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, extra->ctx,
                           extra->hdr);
@@ -2966,8 +2979,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_forward(extra->fp, extra->hdr, extra->idx, extra->idxlen,
-                              extra->bdy, 0);
+          mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, 0);
         else
           ci_send_message(SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2983,7 +2995,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_SAVE:
         if (IsAttach(extra))
         {
-          mutt_save_attachment_list(extra->fp, 0, extra->bdy, extra->hdr, NULL);
+          mutt_save_attachment_list(extra->actx, extra->fp, false, extra->bdy,
+                                    extra->hdr, NULL);
           break;
         }
       /* fall through */
@@ -3181,7 +3194,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
-        toggle_option(OPT_SIDEBAR);
+        toggle_option(OPT_SIDEBAR_VISIBLE);
         mutt_reflow_windows();
         break;
 #endif

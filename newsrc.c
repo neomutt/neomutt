@@ -32,14 +32,15 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
-#include "account.h"
 #include "bcache.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -444,7 +445,6 @@ int nntp_newsrc_update(struct NntpServer *nserv)
   for (unsigned int i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *nntp_data = nserv->groups_list[i];
-    unsigned int n;
 
     if (!nntp_data || !nntp_data->newsrc_ent)
       continue;
@@ -460,20 +460,20 @@ int nntp_newsrc_update(struct NntpServer *nserv)
     off += strlen(buf + off);
 
     /* write entries */
-    for (n = 0; n < nntp_data->newsrc_len; n++)
+    for (unsigned int i = 0; i < nntp_data->newsrc_len; i++)
     {
       if (off + LONG_STRING > buflen)
       {
         buflen *= 2;
         safe_realloc(&buf, buflen);
       }
-      if (n)
+      if (i)
         buf[off++] = ',';
-      if (nntp_data->newsrc_ent[n].first == nntp_data->newsrc_ent[n].last)
-        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[n].first);
-      else if (nntp_data->newsrc_ent[n].first < nntp_data->newsrc_ent[n].last)
+      if (nntp_data->newsrc_ent[i].first == nntp_data->newsrc_ent[i].last)
+        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[i].first);
+      else if (nntp_data->newsrc_ent[i].first < nntp_data->newsrc_ent[i].last)
         snprintf(buf + off, buflen - off, "%d-%d",
-                 nntp_data->newsrc_ent[n].first, nntp_data->newsrc_ent[n].last);
+                 nntp_data->newsrc_ent[i].first, nntp_data->newsrc_ent[i].last);
       off += strlen(buf + off);
     }
     buf[off++] = '\n';
@@ -513,11 +513,11 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
   /* server subdirectory */
   if (acct)
   {
-    struct CissUrl url;
+    struct Url url;
 
     mutt_account_tourl(acct, &url);
     url.path = src;
-    url_ciss_tostring(&url, file, sizeof(file), U_PATH);
+    url_tostring(&url, file, sizeof(file), U_PATH);
   }
   else
     strfcpy(file, src ? src : "", sizeof(file));
@@ -536,11 +536,11 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
  */
 void nntp_expand_path(char *line, size_t len, struct Account *acct)
 {
-  struct CissUrl url;
+  struct Url url;
 
   mutt_account_tourl(acct, &url);
   url.path = safe_strdup(line);
-  url_ciss_tostring(&url, line, len, 0);
+  url_tostring(&url, line, len, 0);
   FREE(&url.path);
 }
 
@@ -669,17 +669,17 @@ static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
  */
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 {
-  struct CissUrl url;
+  struct Url url;
   char file[_POSIX_PATH_MAX];
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
       !nntp_data->nserv->conn || !nntp_data->group ||
-      !(nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUB)))
+      !(nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED)))
     return NULL;
 
   mutt_account_tourl(&nntp_data->nserv->conn->account, &url);
   url.path = nntp_data->group;
-  url_ciss_tostring(&url, file, sizeof(file), U_PATH);
+  url_tostring(&url, file, sizeof(file), U_PATH);
   return mutt_hcache_open(NewsCacheDir, file, nntp_hcache_namer);
 }
 
@@ -841,7 +841,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
         nntp_data->group = group;
         nntp_data->bcache = NULL;
       }
-      else if (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUB))
+      else if (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED))
         continue;
 
       nntp_delete_group_cache(nntp_data);
@@ -872,14 +872,14 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;
-  struct CissUrl url;
+  struct Url url;
   char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
 
   switch (op)
   {
     case 'a':
       mutt_account_tourl(acct, &url);
-      url_ciss_tostring(&url, fn, sizeof(fn), U_PATH);
+      url_tostring(&url, fn, sizeof(fn), U_PATH);
       p = strchr(fn, '/');
       if (p)
         *p = '\0';
@@ -906,7 +906,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
       break;
     case 'S':
       mutt_account_tourl(acct, &url);
-      url_ciss_tostring(&url, fn, sizeof(fn), U_PATH);
+      url_tostring(&url, fn, sizeof(fn), U_PATH);
       p = strchr(fn, ':');
       if (p)
         *p = '\0';
@@ -929,7 +929,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  */
-struct NntpServer *nntp_select_server(char *server, int leave_lock)
+struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 {
   char file[_POSIX_PATH_MAX];
 #ifdef USE_HCACHE
@@ -940,7 +940,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
   struct Connection *conn = NULL;
-  struct CissUrl url;
+  struct Url url;
 
   if (!server || !*server)
   {
@@ -954,10 +954,11 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   acct.port = NNTP_PORT;
   acct.type = MUTT_ACCT_TYPE_NNTP;
   snprintf(file, sizeof(file), "%s%s", strstr(server, "://") ? "" : "news://", server);
-  if (url_parse_ciss(&url, file) < 0 || (url.path && *url.path) ||
-      !(url.scheme == U_NNTP || url.scheme == U_NNTPS) ||
+  if (url_parse(&url, file) < 0 || (url.path && *url.path) ||
+      !(url.scheme == U_NNTP || url.scheme == U_NNTPS) || !url.host ||
       mutt_account_fromurl(&acct, &url) < 0)
   {
+    url_free(&url);
     mutt_error(_("%s is an invalid news server specification!"), server);
     mutt_sleep(2);
     return NULL;
@@ -967,6 +968,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
     acct.flags |= MUTT_ACCT_SSL;
     acct.port = NNTP_SSL_PORT;
   }
+  url_free(&url);
 
   /* find connection by account */
   conn = mutt_conn_find(NULL, &acct);
@@ -1029,7 +1031,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   if (rc >= 0)
   {
     mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
-                      NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
+                        NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
     mutt_expand_path(file, sizeof(file));
     nserv->newsrc_file = safe_strdup(file);
     rc = nntp_newsrc_parse(nserv);
@@ -1042,7 +1044,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
 
     /* load list of newsgroups from server */
     else
-      rc = nntp_active_fetch(nserv, 0);
+      rc = nntp_active_fetch(nserv, false);
   }
 
   if (rc >= 0)
@@ -1199,7 +1201,7 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
     return NULL;
 
   nntp_data->subscribed = false;
-  if (!option(OPT_SAVE_UNSUB))
+  if (!option(OPT_SAVE_UNSUBSCRIBED))
   {
     nntp_data->newsrc_len = 0;
     FREE(&nntp_data->newsrc_ent);
@@ -1288,9 +1290,9 @@ void nntp_buffy(char *buf, size_t len)
     if (Context && Context->magic == MUTT_NNTP &&
         (mutt_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
     {
-      unsigned int j, unread = 0;
+      unsigned int unread = 0;
 
-      for (j = 0; j < Context->msgcount; j++)
+      for (unsigned int j = 0; j < Context->msgcount; j++)
         if (!Context->hdrs[j]->read && !Context->hdrs[j]->deleted)
           unread++;
       if (!unread)

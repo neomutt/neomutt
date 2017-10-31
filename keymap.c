@@ -27,15 +27,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
+#include "mutt.h"
 #include "keymap.h"
 #include "functions.h"
 #include "globals.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "mapping.h"
-#include "mutt.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP
@@ -203,7 +202,8 @@ static int parsekeys(const char *str, keycode_t *d, int max)
       c = *t;
       *t = '\0';
 
-      if ((n = mutt_getvaluebyname(s, KeyNames)) != -1)
+      n = mutt_getvaluebyname(s, KeyNames);
+      if (n != -1)
       {
         s = t;
         *d = n;
@@ -396,7 +396,8 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
         ;
       if (pp >= s)
       {
-        if ((i = parse_fkey(pp)) > 0)
+        i = parse_fkey(pp);
+        if (i > 0)
         {
           generic_push(KEY_F(i), 0);
           p = pp - 1;
@@ -462,10 +463,11 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 
 /**
  * km_dokey - Determine what a keypress should do
- * @retval >0       Function to execute
- * @retval #OP_NULL No function bound to key sequence
- * @retval -1       Error occurred while reading input
- * @retval -2       A timeout or sigwinch occurred
+ * @param menu Menu ID, e.g. #MENU_EDITOR
+ * @retval >0      Function to execute
+ * @retval OP_NULL No function bound to key sequence
+ * @retval -1      Error occurred while reading input
+ * @retval -2      A timeout or sigwinch occurred
  */
 int km_dokey(int menu)
 {
@@ -510,7 +512,7 @@ int km_dokey(int menu)
     timeout(-1);
 
 #ifdef USE_IMAP
-gotkey:
+  gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)
@@ -625,7 +627,7 @@ static const char *km_keyname(int c)
     {
       buf[0] = '^';
       buf[1] = (c + '@') & 0x7f;
-      buf[2] = 0;
+      buf[2] = '\0';
     }
     else
       snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
@@ -721,7 +723,7 @@ static const struct Extkey ExtKeys[] = {
 /**
  * find_ext_name - Find the curses name for a key
  *
- * Look up Mutt's name for a key and find the ncurses extended name for it
+ * Look up NeoMutt's name for a key and find the ncurses extended name for it
  */
 static const char *find_ext_name(const char *key)
 {
@@ -1089,9 +1091,10 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   const struct Binding *bindings = NULL;
   char *key = NULL;
-  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus, i;
+  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
 
-  if ((key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err)) == NULL)
+  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
+  if (!key)
     return -1;
 
   /* function to execute */
@@ -1103,14 +1106,14 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   }
   else if (mutt_strcasecmp("noop", buf->data) == 0)
   {
-    for (i = 0; i < nummenus; ++i)
+    for (int i = 0; i < nummenus; ++i)
     {
       km_bindkey(key, menu[i], OP_NULL); /* the `unbind' command */
     }
   }
   else
   {
-    for (i = 0; i < nummenus; ++i)
+    for (int i = 0; i < nummenus; ++i)
     {
       /* The pager and editor menus don't use the generic map,
        * however for other menus try generic first. */
@@ -1144,11 +1147,12 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
 int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
-  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = -1, nummenus, i;
+  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = -1, nummenus;
   char *seq = NULL;
   char *key = NULL;
 
-  if ((key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err)) == NULL)
+  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
+  if (!key)
     return -1;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
@@ -1170,7 +1174,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
       else
       {
-        for (i = 0; i < nummenus; ++i)
+        for (int i = 0; i < nummenus; ++i)
         {
           r = km_bind(key, menu[i], OP_MACRO, seq, buf->data);
         }
@@ -1180,7 +1184,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
     else
     {
-      for (i = 0; i < nummenus; ++i)
+      for (int i = 0; i < nummenus; ++i)
       {
         r = km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
       }
@@ -1226,7 +1230,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
       return -1;
     }
     nops++;
-  } while (MoreArgs(s) && nops < sizeof(ops) / sizeof(ops[0]));
+  } while (MoreArgs(s) && nops < mutt_array_size(ops));
 
   while (nops)
     mutt_push_macro_event(0, ops[--nops]);

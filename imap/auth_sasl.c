@@ -20,7 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* SASL login/authentication code */
+/**
+ * @page imap_auth_sasl IMAP SASL authentication method
+ *
+ * IMAP SASL authentication method
+ *
+ * | Function           | Description
+ * | :----------------- | :-------------------------------------------------
+ * | imap_auth_sasl()   | Default authenticator if available
+ */
 
 #include "config.h"
 #include <stddef.h>
@@ -29,17 +37,20 @@
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
-#include "account.h"
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "auth.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "mutt_sasl.h"
+#include "mutt_account.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"
 
 /**
  * imap_auth_sasl - Default authenticator if available
+ * @param idata  Server data
+ * @param method Name of this authentication method
+ * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
 {

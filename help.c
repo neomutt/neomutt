@@ -20,8 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define HELP_C
-
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>
@@ -30,33 +28,38 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "globals.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "mapping.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
+#include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
 
+static const char *HelpStrings[] = {
+#define DEFINE_HELP_MESSAGE(opcode, help_string) help_string,
+  OPS(DEFINE_HELP_MESSAGE)
+#undef DEFINE_HELP_MESSAGE
+      NULL,
+};
+
 static const struct Binding *help_lookup_function(int op, int menu)
 {
-  int i;
   const struct Binding *map = NULL;
 
   if (menu != MENU_PAGER)
   {
     /* first look in the generic map for the function */
-    for (i = 0; OpGeneric[i].name; i++)
+    for (int i = 0; OpGeneric[i].name; i++)
       if (OpGeneric[i].op == op)
         return (&OpGeneric[i]);
   }
 
   if ((map = km_get_table(menu)))
   {
-    for (i = 0; map[i].name; i++)
+    for (int i = 0; map[i].name; i++)
       if (map[i].op == op)
         return (&map[i]);
   }
@@ -72,7 +75,7 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
       km_expand_key(buf, sizeof(buf), km_find_func(MENU_GENERIC, op)))
     snprintf(d, dlen, "%s:%s", buf, txt);
   else
-    d[0] = 0;
+    d[0] = '\0';
 }
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
@@ -192,7 +195,7 @@ static int get_wrapped_width(const char *t, size_t wid)
 
 static int pad(FILE *f, int col, int i)
 {
-  char fmt[8];
+  char fmt[32] = "";
 
   if (col < i)
   {
@@ -355,7 +358,8 @@ void mutt_help(int menu)
 
   do
   {
-    if ((f = safe_fopen(t, "w")) == NULL)
+    f = safe_fopen(t, "w");
+    if (!f)
     {
       mutt_perror(t);
       return;

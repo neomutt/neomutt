@@ -32,6 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -41,8 +42,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -75,7 +74,8 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
-  if ((r = mutt_lock_file(ctx->path, fileno(ctx->fp), excl, retry)) == 0)
+  r = mutt_lock_file(ctx->path, fileno(ctx->fp), excl, retry);
+  if (r == 0)
     ctx->locked = true;
   else if (retry && !excl)
   {
@@ -119,7 +119,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   ctx->mtime = sb.st_mtime;
   ctx->size = sb.st_size;
 
-  buf[sizeof(buf) - 1] = 0;
+  buf[sizeof(buf) - 1] = '\0';
 
   if (!ctx->quiet)
   {
@@ -158,7 +158,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         break;
       }
 
-      return_path[0] = 0;
+      return_path[0] = '\0';
 
       if (!is_from(buf, return_path, sizeof(return_path), &t))
       {
@@ -292,16 +292,15 @@ static int mbox_parse_mailbox(struct Context *ctx)
       /* Save the Content-Length of the previous message */
       if (count > 0)
       {
-#define PREV ctx->hdrs[ctx->msgcount - 1]
-
-        if (PREV->content->length < 0)
+        struct Header *h = ctx->hdrs[ctx->msgcount - 1];
+        if (h->content->length < 0)
         {
-          PREV->content->length = loc - PREV->content->offset - 1;
-          if (PREV->content->length < 0)
-            PREV->content->length = 0;
+          h->content->length = loc - h->content->offset - 1;
+          if (h->content->length < 0)
+            h->content->length = 0;
         }
-        if (!PREV->lines)
-          PREV->lines = lines ? lines - 1 : 0;
+        if (!h->lines)
+          h->lines = lines ? lines - 1 : 0;
       }
 
       count++;
@@ -411,15 +410,16 @@ static int mbox_parse_mailbox(struct Context *ctx)
    */
   if (count > 0)
   {
-    if (PREV->content->length < 0)
+    struct Header *h = ctx->hdrs[ctx->msgcount - 1];
+    if (h->content->length < 0)
     {
-      PREV->content->length = ftello(ctx->fp) - PREV->content->offset - 1;
-      if (PREV->content->length < 0)
-        PREV->content->length = 0;
+      h->content->length = ftello(ctx->fp) - h->content->offset - 1;
+      if (h->content->length < 0)
+        h->content->length = 0;
     }
 
-    if (!PREV->lines)
-      PREV->lines = lines ? lines - 1 : 0;
+    if (!h->lines)
+      h->lines = lines ? lines - 1 : 0;
 
     mx_update_context(ctx, count);
   }
@@ -433,8 +433,6 @@ static int mbox_parse_mailbox(struct Context *ctx)
   return 0;
 }
 
-#undef PREV
-
 /**
  * mbox_open_mailbox - open a mbox or mmdf style mailbox
  */
@@ -442,7 +440,8 @@ static int mbox_open_mailbox(struct Context *ctx)
 {
   int rc;
 
-  if ((ctx->fp = fopen(ctx->path, "r")) == NULL)
+  ctx->fp = fopen(ctx->path, "r");
+  if (!ctx->fp)
   {
     mutt_perror(ctx->path);
     return -1;
@@ -611,7 +610,7 @@ static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope
   }
   else
   {
-    if (e1 == NULL && e2 == NULL)
+    if (!e1 && !e2)
       return 1;
     else
       return 0;
@@ -665,7 +664,7 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
   }
   else
   {
-    if (h1 == NULL && h2 == NULL)
+    if (!h1 && !h2)
       return 1;
     else
       return 0;
@@ -743,7 +742,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     case MUTT_MMDF:
       cmp_headers = mbox_strict_cmp_headers;
       safe_fclose(&ctx->fp);
-      if (!(ctx->fp = safe_fopen(ctx->path, "r")))
+      ctx->fp = safe_fopen(ctx->path, "r");
+      if (!ctx->fp)
         rc = -1;
       else
         rc = ((ctx->magic == MUTT_MBOX) ? mbox_parse_mailbox : mmdf_parse_mailbox)(ctx);
@@ -784,7 +784,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
        */
       for (j = i; j < old_msgcount; j++)
       {
-        if (old_hdrs[j] == NULL)
+        if (!old_hdrs[j])
           continue;
         if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
         {
@@ -796,7 +796,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       {
         for (j = 0; j < i && j < old_msgcount; j++)
         {
-          if (old_hdrs[j] == NULL)
+          if (!old_hdrs[j])
             continue;
           if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
           {
@@ -1003,7 +1003,8 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
    * When $mbox_check_recent is set, existing new mail is ignored, so do not
    * reset the atime to mtime-1 to signal new mail.
    */
-  if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
+  if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime &&
+      mbox_has_new(ctx))
     utimebuf.actime = utimebuf.modtime - 1;
 
   utime(ctx->path, &utimebuf);
@@ -1044,7 +1045,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   /* need to open the file for writing in such a way that it does not truncate
    * the file, so use read-write mode.
    */
-  if ((ctx->fp = freopen(ctx->path, "r+", ctx->fp)) == NULL)
+  ctx->fp = freopen(ctx->path, "r+", ctx->fp);
+  if (!ctx->fp)
   {
     mx_fastclose_mailbox(ctx);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
@@ -1098,7 +1100,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   {
     /* this means ctx->changed or ctx->deleted was set, but no
      * messages were found to be changed or deleted.  This should
-     * never happen, is we presume it is a bug in mutt.
+     * never happen, is we presume it is a bug in neomutt.
      */
     mutt_error(
         _("sync: mbox modified, but no modified messages! (report this bug)"));
@@ -1226,7 +1228,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     goto bail;
   }
 
-  if ((fp = fopen(tempfile, "r")) == NULL)
+  fp = fopen(tempfile, "r");
+  if (!fp)
   {
     mutt_unblock_signals();
     mx_fastclose_mailbox(ctx);
@@ -1291,8 +1294,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
     char savefile[_POSIX_PATH_MAX];
 
-    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(TempDir),
-             NONULL(Username), NONULL(Hostname), (unsigned int) getpid());
+    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(Tmpdir),
+             NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_unblock_signals();
     mx_fastclose_mailbox(ctx);
@@ -1308,7 +1311,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   mbox_reset_atime(ctx, &statbuf);
 
   /* reopen the mailbox in read-only mode */
-  if ((ctx->fp = fopen(ctx->path, "r")) == NULL)
+  ctx->fp = fopen(ctx->path, "r");
+  if (!ctx->fp)
   {
     unlink(tempfile);
     mutt_unblock_signals();
@@ -1368,7 +1372,8 @@ bail: /* Come here in case of disaster */
   FREE(&newOffset);
   FREE(&oldOffset);
 
-  if ((ctx->fp = freopen(ctx->path, "r", ctx->fp)) == NULL)
+  ctx->fp = freopen(ctx->path, "r", ctx->fp);
+  if (!ctx->fp)
   {
     mutt_error(_("Could not reopen mailbox!"));
     mx_fastclose_mailbox(ctx);
@@ -1410,6 +1415,8 @@ struct MxOps mx_mbox_ops = {
   .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
   .sync = mbox_sync_mailbox,
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };
 
 struct MxOps mx_mmdf_ops = {
@@ -1422,4 +1429,6 @@ struct MxOps mx_mmdf_ops = {
   .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
   .sync = mbox_sync_mailbox,
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };

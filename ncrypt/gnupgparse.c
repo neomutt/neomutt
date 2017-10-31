@@ -38,11 +38,11 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "charset.h"
 #include "filter.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mime.h"
 #include "ncrypt.h"
 #include "options.h"
@@ -177,7 +177,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         else
           return NULL;
 
-        if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUB))))
+        if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS))))
           memset(&tmp, 0, sizeof(tmp));
 
         break;
@@ -211,7 +211,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
             break;
         }
 
-        if (!is_uid && !(*is_subkey && option(OPT_PGP_IGNORE_SUB)))
+        if (!is_uid && !(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
           tmp.flags |= flags;
 
         break;
@@ -220,7 +220,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "key len: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUB)) && mutt_atos(p, &tmp.keylen) < 0)
+        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) && mutt_atos(p, &tmp.keylen) < 0)
           goto bail;
         break;
       }
@@ -228,7 +228,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "pubkey algorithm: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUB)))
+        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
         {
           int x = 0;
           if (mutt_atoi(p, &x) < 0)
@@ -242,7 +242,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "key id: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUB)))
+        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
           mutt_str_replace(&tmp.keyid, p);
         break;
       }
@@ -293,7 +293,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
          * We allow an empty field for a pub record type because it is
          * possible for a primary uid record to have an empty User-ID
          * field.  Without any address records, it is not possible to
-         * use the key in mutt.
+         * use the key in neomutt.
          */
         if (!(pend && (*p || is_pub)))
           break;
@@ -307,7 +307,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         }
 
         /* ignore user IDs on subkeys */
-        if (!is_uid && (*is_subkey && option(OPT_PGP_IGNORE_SUB)))
+        if (!is_uid && (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
           break;
 
         mutt_debug(2, "user ID: %s\n", NONULL(p));
@@ -350,7 +350,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
           }
         }
 
-        if (!is_uid && (!*is_subkey || !option(OPT_PGP_IGNORE_SUB) ||
+        if (!is_uid && (!*is_subkey || !option(OPT_PGP_IGNORE_SUBKEYS) ||
                         !((flags & KEYFLAG_DISABLED) || (flags & KEYFLAG_REVOKED) ||
                           (flags & KEYFLAG_EXPIRED))))
           tmp.flags |= flags;
@@ -363,7 +363,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   }
 
   /* merge temp key back into real key */
-  if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUB))))
+  if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS))))
     k = safe_malloc(sizeof(*k));
   memcpy(k, &tmp, sizeof(*k));
   /* fixup parentship of uids after merging the temp key into
@@ -390,7 +390,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   int is_sub;
   int devnull;
 
-  if ((devnull = open("/dev/null", O_RDWR)) == -1)
+  devnull = open("/dev/null", O_RDWR);
+  if (devnull == -1)
     return NULL;
 
   mutt_str_replace(&_chs, Charset);
@@ -406,7 +407,8 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   k = NULL;
   while (fgets(buf, sizeof(buf) - 1, fp))
   {
-    if (!(kk = parse_pub_line(buf, &is_sub, k)))
+    kk = parse_pub_line(buf, &is_sub, k);
+    if (!kk)
       continue;
 
     /* Only append kk to the list if it's new. */

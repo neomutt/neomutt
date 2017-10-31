@@ -44,7 +44,7 @@ typedef int (*crypt_func_application_handler_t)(struct Body *m, struct State *s)
 typedef int (*crypt_func_encrypted_handler_t)(struct Body *m, struct State *s);
 
 typedef void (*crypt_func_pgp_invoke_getkeys_t)(struct Address *addr);
-typedef int (*crypt_func_pgp_check_traditional_t)(FILE *fp, struct Body *b, int tagged_only);
+typedef int (*crypt_func_pgp_check_traditional_t) (FILE *fp, struct Body *b, int just_one);
 typedef struct Body *(*crypt_func_pgp_traditional_encryptsign_t)(struct Body *a, int flags, char *keylist);
 typedef struct Body *(*crypt_func_pgp_make_key_attachment_t)(char *tempf);
 typedef char *(*crypt_func_findkeys_t)(struct Address *adrlist, int oppenc_mode);
@@ -74,7 +74,7 @@ typedef void (*crypt_func_set_sender_t)(const char *sender);
  *
  * A structure to keep all crypto module functions together.
  */
-typedef struct CryptModuleFunctions
+struct CryptModuleFunctions
 {
   /* Common/General functions.  */
   crypt_func_init_t                init;
@@ -103,25 +103,25 @@ typedef struct CryptModuleFunctions
   crypt_func_smime_verify_sender_t      smime_verify_sender;
   crypt_func_smime_build_smime_entity_t smime_build_smime_entity;
   crypt_func_smime_invoke_import_t      smime_invoke_import;
-} crypt_module_functions_t;
+};
 
 /**
  * struct CryptModuleSpecs - Crypto API
  *
  * A structure to describe a crypto module.
  */
-typedef struct CryptModuleSpecs
+struct CryptModuleSpecs
 {
   int identifier; /**< Identifying bit */
-  crypt_module_functions_t functions;
-} * crypt_module_specs_t;
+  struct CryptModuleFunctions functions;
+};
 
 /*
    High Level crypto module interface.
  */
 
-void crypto_module_register(crypt_module_specs_t specs);
-crypt_module_specs_t crypto_module_lookup(int identifier);
+void crypto_module_register(struct CryptModuleSpecs *specs);
+struct CryptModuleSpecs *crypto_module_lookup(int identifier);
 
 /** If the crypto module identifier by IDENTIFIER has been registered,
    call its function FUNC.  Do nothing else.  This may be used as an

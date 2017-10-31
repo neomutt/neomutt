@@ -22,7 +22,7 @@ sorted through them, fixed them up and documented them.
 
 | Name                 | Description
 | -------------------- | ------------------------------------------------------
-| Attach Headers Color | Color attachment headers using regexp, just like mail bodies
+| Attach Headers Color | Color attachment headers using regex, just like mail bodies
 | Compose to Sender    | Send new mail to the sender of the current mail
 | Compressed Folders   | Read from/write to compressed mailboxes
 | Conditional Dates    | Use rules to choose date format
@@ -33,7 +33,6 @@ sorted through them, fixed them up and documented them.
 | Ifdef                | Conditional config options
 | Index Color          | Custom rules for theming the email index
 | Initials Expando     | Expando for author's initials
-| Keywords             | Labels/Tagging for emails
 | Kyoto Cabinet        | Kyoto Cabinet backend for the header cache
 | Limit Current Thread | Focus on one Email Thread
 | LMDB                 | LMDB backend for the header cache
@@ -78,21 +77,22 @@ sorted through them, fixed them up and documented them.
 
 Here's a list of everyone who's helped NeoMutt:
 
-Adam Borowski, Alex Pearce, Alok Singh, Ander Punnar, André Berger,
-Antonio Radici, Baptiste Daroussin, Bernard Pratz, Bo Yu, Bryan Bennett,
-Chris Czettel, Chris Salzberg, Christian Dröge, Christoph Berg, Cinder88,
-Clemens Lang, Damien Riegel, Darshit Shah, David Sterba,
-Dimitrios Semitsoglou-Tsiapos, Doug Stone-Weaver, Edward Betts,
+Adam Borowski, Alad Wenter, Alex Pearce, Alok Singh, Ander Punnar, André Berger,
+Antonio Radici, Anton Rieger, Austin Ray, Baptiste Daroussin, Bernard Pratz,
+Bo Yu, Bryan Bennett, Christian Dröge, Christoph Berg, Chris Czettel,
+Chris Salzberg, cinder88, Clemens Lang, Damien Riegel, Darshit Shah,
+David Sterba, Dimitrios Semitsoglou-Tsiapos, Doug Stone-Weaver, Edward Betts,
 Elimar Riesebieter, Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati,
-Fabrice Bellet, Faidon Liambotis, František Hájik, Guillaume Brogi,
-Hugo Barrera, Ian Zimmerman, Ismaël Bouya, Ivan Tham, Jack Stratton,
-Jasper Adriaanse, Johannes Frankenau, Johannes Weißl, Jonathan Perkin,
-Joshua Jordi, Julian Andres Klode, Karel Zak, Kevin Decherf, Kevin Velghe,
-Kurt Jaeger, Leonidas Spyropoulos, Manos Pitsidianakis, Marcin Rajner,
-Marco Hinz, Matteo Vescovi, Mehdi Abaakouk, Olaf Lessenich, Peter Hogg,
-Peter Lewis, Phil Pennock, Philipp Marek, Pierre-Elliott Bécue, Pietro Cerutti,
-R3lgar, Regid Ichira, Riad Wahby, Richard Hartmann, Richard Russon,
-Rubén Llorente, Santiago Torres, Serge Gebhardt, Somini, Stefan Assmann,
+Fabrice Bellet, Faidon Liambotis, Florian Klink, František Hájik,
+Guillaume Brogi, Hugo Barrera, Ian Zimmerman, Ismaël Bouya, Ivan Tham,
+Jack Stratton, Jakub Wilk, Jasper Adriaanse, Jelle van der Waa, Jenya Sovetkin,
+Johannes Frankenau, Johannes Weißl, Jonathan Perkin, Joshua Jordi,
+Julian Andres Klode, Karel Zak, Kevin Decherf, Kevin Velghe, Kurt Jaeger,
+Leonidas Spyropoulos, Manos Pitsidianakis, Marcin Rajner, Marco Hinz,
+Matteo Vescovi, Mehdi Abaakouk, ng0, Nicolas Bock, Olaf Lessenich, Peter Hogg,
+Peter Lewis, Philipp Marek, Phil Pennock, Pierre-Elliott Bécue, Pietro Cerutti,
+r3lgar, Regid Ichira, Riad Wahby, Richard Hartmann, Richard Russon,
+Rubén Llorente, Santiago Torres, Serge Gebhardt, somini, Stefan Assmann,
 Stefan Bühler, Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Adam,
 Thomas Klausner, Thomas Schneider, Tobias Angele, Udo Schweigert,
 Vsevolod Volkov, Werner Fink, Wieland Hoffmann, William Pettersson,

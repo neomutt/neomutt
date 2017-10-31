@@ -50,7 +50,8 @@ void mutt_resize_screen(void)
 
   SLtt_Screen_Rows = -1;
   SLtt_Screen_Cols = -1;
-  if ((fd = open("/dev/tty", O_RDONLY)) != -1)
+  fd = open("/dev/tty", O_RDONLY);
+  if (fd != -1)
   {
     if (ioctl(fd, TIOCGWINSZ, &w) != -1)
     {

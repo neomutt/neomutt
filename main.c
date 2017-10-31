@@ -26,7 +26,9 @@
 
 #include "config.h"
 #include <errno.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
@@ -35,6 +37,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -44,8 +48,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
@@ -59,9 +61,6 @@
 #include "version.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
-#endif
-#ifdef USE_SASL
-#include "mutt_sasl.h"
 #endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
@@ -83,15 +82,15 @@ static void usage(void)
 {
   puts(mutt_make_version());
 
-  puts(_("usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-         "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-         "       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
-         "       mutt [<options>] -p\n"
-         "       mutt [<options>] -A <alias> [...]\n"
-         "       mutt [<options>] -Q <query> [...]\n"
-         "       mutt [<options>] -B\n"
-         "       mutt [<options>] -D [-S]\n"
-         "       mutt -v[v]\n"));
+  puts(_("usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
+         "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+         "       neomutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+         "       neomutt [<options>] -p\n"
+         "       neomutt [<options>] -A <alias> [...]\n"
+         "       neomutt [<options>] -Q <query> [...]\n"
+         "       neomutt [<options>] -B\n"
+         "       neomutt [<options>] -D [-S]\n"
+         "       neomutt -v[v]\n"));
 
   puts(_("options:\n"
          "  -A <alias>    expand the given alias\n"
@@ -103,19 +102,19 @@ static void usage(void)
          "  -D -S         like -D, but hide the value of sensitive variables\n"
          "  -B            run in batch mode (do not start the ncurses UI)"));
 #ifdef DEBUG
-  puts(_("  -d <level>    log debugging output to ~/.muttdebug0"));
+  puts(_("  -d <level>    log debugging output to ~/.neomuttdebug0"));
 #endif
   puts(_(
          "  -E            edit the draft (-H) or include (-i) file\n"
          "  -e <command>  specify a command to be executed after initialization\n"
          "  -f <file>     specify which mailbox to read\n"
-         "  -F <file>     specify an alternate muttrc file\n"
+         "  -F <file>     specify an alternate neomuttrc file\n"
          "  -g <server>   specify a news server (if compiled with NNTP)\n"
          "  -G            select a newsgroup (if compiled with NNTP)\n"
          "  -H <file>     specify a draft file to read header and body from\n"
-         "  -i <file>     specify a file which Mutt should include in the body\n"
+         "  -i <file>     specify a file which NeoMutt should include in the body\n"
          "  -m <type>     specify a default mailbox type\n"
-         "  -n            causes Mutt not to read the system Muttrc\n"
+         "  -n            causes NeoMutt not to read the system neomuttrc\n"
          "  -p            recall a postponed message"));
 
   puts(_("  -Q <variable> query a configuration variable\n"
@@ -148,7 +147,7 @@ static void start_curses(void)
      its own SIGWINCH handler */
   mutt_signal_init();
 #endif
-  if (initscr() == NULL)
+  if (!initscr())
   {
     puts(_("Error initializing terminal."));
     exit(1);
@@ -358,7 +357,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'm':
-          /* should take precedence over .muttrc setting, so save it for later */
+          /* should take precedence over .neomuttrc setting, so save it for later */
           newMagic = optarg;
           break;
 
@@ -517,14 +516,14 @@ int main(int argc, char **argv, char **env)
     mutt_message = mutt_curses_message;
   }
 
-  /* Create the Maildir directory if it doesn't exist. */
-  if (!option(OPT_NO_CURSES) && Maildir)
+  /* Create the Folder directory if it doesn't exist. */
+  if (!option(OPT_NO_CURSES) && Folder)
   {
     struct stat sb;
     char fpath[_POSIX_PATH_MAX];
     char msg2[STRING];
 
-    strfcpy(fpath, Maildir, sizeof(fpath));
+    strfcpy(fpath, Folder, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
     bool skip = false;
 #ifdef USE_IMAP
@@ -536,11 +535,11 @@ int main(int argc, char **argv, char **env)
 #endif
     if (!skip && stat(fpath, &sb) == -1 && errno == ENOENT)
     {
-      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Maildir);
+      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if (mkdir(fpath, 0700) == -1 && errno != EEXIST)
-          mutt_error(_("Can't create %s: %s."), Maildir, strerror(errno));
+          mutt_error(_("Can't create %s: %s."), Folder, strerror(errno));
       }
     }
   }
@@ -557,7 +556,7 @@ int main(int argc, char **argv, char **env)
     mutt_endwin(NULL);
   }
   else if (subject || msg || sendflags || draftFile || includeFile ||
-          !STAILQ_EMPTY(&attach) || optind < argc)
+           !STAILQ_EMPTY(&attach) || optind < argc)
   {
     FILE *fin = NULL;
     FILE *fout = NULL;
@@ -591,7 +590,7 @@ int main(int argc, char **argv, char **env)
         msg->env->to = rfc822_parse_adrlist(msg->env->to, argv[i]);
     }
 
-    if (!draftFile && option(OPT_AUTO_EDIT) && !msg->env->to && !msg->env->cc)
+    if (!draftFile && option(OPT_AUTOEDIT) && !msg->env->to && !msg->env->cc)
     {
       if (!option(OPT_NO_CURSES))
         mutt_endwin(NULL);
@@ -630,7 +629,8 @@ int main(int argc, char **argv, char **env)
         {
           strfcpy(expanded_infile, infile, sizeof(expanded_infile));
           mutt_expand_path(expanded_infile, sizeof(expanded_infile));
-          if ((fin = fopen(expanded_infile, "r")) == NULL)
+          fin = fopen(expanded_infile, "r");
+          if (!fin)
           {
             if (!option(OPT_NO_CURSES))
               mutt_endwin(NULL);
@@ -649,7 +649,8 @@ int main(int argc, char **argv, char **env)
         mutt_mktemp(buf, sizeof(buf));
         tempfile = safe_strdup(buf);
 
-        if ((fout = safe_fopen(tempfile, "w")) == NULL)
+        fout = safe_fopen(tempfile, "w");
+        if (!fout)
         {
           if (!option(OPT_NO_CURSES))
             mutt_endwin(NULL);
@@ -668,7 +669,8 @@ int main(int argc, char **argv, char **env)
           fputs(bodytext, fout);
         safe_fclose(&fout);
 
-        if ((fin = fopen(tempfile, "r")) == NULL)
+        fin = fopen(tempfile, "r");
+        if (!fin)
         {
           if (!option(OPT_NO_CURSES))
             mutt_endwin(NULL);
@@ -710,7 +712,7 @@ int main(int argc, char **argv, char **env)
 
         mutt_prepare_template(fin, NULL, msg, context_hdr, 0);
 
-        /* Scan for mutt header to set OPT_RESUME_DRAFT_FILES */
+        /* Scan for neomutt header to set OPT_RESUME_DRAFT_FILES */
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
@@ -794,7 +796,8 @@ int main(int argc, char **argv, char **env)
           perror(expanded_infile);
           exit(1);
         }
-        if ((fout = safe_fopen(expanded_infile, "a")) == NULL)
+        fout = safe_fopen(expanded_infile, "a");
+        if (!fout)
         {
           if (!option(OPT_NO_CURSES))
             mutt_endwin(NULL);
@@ -863,7 +866,8 @@ int main(int argc, char **argv, char **env)
       if (flags & MUTT_NEWS)
       {
         set_option(OPT_NEWS);
-        if (!(CurrentNewsSrv = nntp_select_server(NewsServer, 0)))
+        CurrentNewsSrv = nntp_select_server(NewsServer, false);
+        if (!CurrentNewsSrv)
         {
           mutt_endwin(ErrorBuf);
           exit(1);
@@ -889,8 +893,8 @@ int main(int argc, char **argv, char **env)
     {
       if (SpoolFile)
         strfcpy(folder, NONULL(SpoolFile), sizeof(folder));
-      else if (Maildir)
-        strfcpy(folder, NONULL(Maildir), sizeof(folder));
+      else if (Folder)
+        strfcpy(folder, NONULL(Folder), sizeof(folder));
       /* else no folder */
     }
 
@@ -925,7 +929,7 @@ int main(int argc, char **argv, char **env)
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
     if ((Context = mx_open_mailbox(
-             folder, ((flags & MUTT_RO) || option(OPT_READONLY)) ? MUTT_READONLY : 0, NULL)) ||
+             folder, ((flags & MUTT_RO) || option(OPT_READ_ONLY)) ? MUTT_READONLY : 0, NULL)) ||
         !explicit_folder)
     {
 #ifdef USE_SIDEBAR

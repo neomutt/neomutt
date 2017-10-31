@@ -28,17 +28,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "pop.h"
-#include "account.h"
 #include "bcache.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -51,8 +52,8 @@
 #endif
 
 #ifdef USE_HCACHE
-#define HC_FNAME "mutt"  /* filename for hcache as POP lacks paths */
-#define HC_FEXT "hcache" /* extension for hcache as POP lacks paths */
+#define HC_FNAME "neomutt" /* filename for hcache as POP lacks paths */
+#define HC_FEXT "hcache"   /* extension for hcache as POP lacks paths */
 #endif
 
 /**
@@ -87,7 +88,8 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   char tempfile[_POSIX_PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if (!(f = safe_fopen(tempfile, "w+")))
+  f = safe_fopen(tempfile, "w+");
+  if (!f)
   {
     mutt_perror(tempfile);
     return -3;
@@ -201,9 +203,11 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
   struct Context *ctx = NULL;
   struct PopData *pop_data = NULL;
 
-  if (!(ctx = (struct Context *) data))
+  ctx = (struct Context *) data;
+  if (!ctx)
     return -1;
-  if (!(pop_data = (struct PopData *) ctx->data))
+  pop_data = (struct PopData *) ctx->data;
+  if (!pop_data)
     return -1;
 
 #ifdef USE_HCACHE
@@ -231,7 +235,7 @@ static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
 
 static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *path)
 {
-  struct CissUrl url;
+  struct Url url;
   char p[LONG_STRING];
 
   if (!pop_data || !pop_data->conn)
@@ -239,7 +243,7 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 
   mutt_account_tourl(&pop_data->conn->account, &url);
   url.path = HC_FNAME;
-  url_ciss_tostring(&url, p, sizeof(p), U_PATH);
+  url_tostring(&url, p, sizeof(p), U_PATH);
   return mutt_hcache_open(HeaderCache, p, pop_hcache_namer);
 }
 #endif
@@ -424,7 +428,7 @@ static int pop_open_mailbox(struct Context *ctx)
   struct Connection *conn = NULL;
   struct Account acct;
   struct PopData *pop_data = NULL;
-  struct CissUrl url;
+  struct Url url;
 
   if (pop_parse_path(ctx->path, &acct))
   {
@@ -435,7 +439,7 @@ static int pop_open_mailbox(struct Context *ctx)
 
   mutt_account_tourl(&acct, &url);
   url.path = NULL;
-  url_ciss_tostring(&url, buf, sizeof(buf), 0);
+  url_tostring(&url, buf, sizeof(buf), 0);
   conn = mutt_conn_find(NULL, &acct);
   if (!conn)
     return -1;
@@ -599,12 +603,14 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
                        NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
-    if (!(msg->fp = mutt_bcache_put(pop_data->bcache, h->data, 1)))
+    msg->fp = mutt_bcache_put(pop_data->bcache, h->data);
+    if (!msg->fp)
     {
       /* no */
       bcache = 0;
       mutt_mktemp(path, sizeof(path));
-      if (!(msg->fp = safe_fopen(path, "w+")))
+      msg->fp = safe_fopen(path, "w+");
+      if (!msg->fp)
       {
         mutt_perror(path);
         mutt_sleep(2);
@@ -725,7 +731,8 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
         if (!ctx->quiet)
           mutt_progress_update(&progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
-        if ((ret = pop_query(pop_data, buf, sizeof(buf))) == 0)
+        ret = pop_query(pop_data, buf, sizeof(buf));
+        if (ret == 0)
         {
           mutt_bcache_del(pop_data->bcache, ctx->hdrs[i]->data);
 #ifdef USE_HCACHE
@@ -778,7 +785,7 @@ static int pop_check_mailbox(struct Context *ctx, int *index_hint)
   int ret;
   struct PopData *pop_data = (struct PopData *) ctx->data;
 
-  if ((pop_data->check_time + PopCheckTimeout) > time(NULL))
+  if ((pop_data->check_time + PopCheckinterval) > time(NULL))
     return 0;
 
   pop_logout(ctx);
@@ -900,7 +907,8 @@ void pop_fetch_mail(void)
 
   for (int i = last + 1; i <= msgs; i++)
   {
-    if ((msg = mx_open_new_message(&ctx, NULL, MUTT_ADD_FROM)) == NULL)
+    msg = mx_open_new_message(&ctx, NULL, MUTT_ADD_FROM);
+    if (!msg)
       ret = -3;
     else
     {
@@ -979,4 +987,6 @@ struct MxOps mx_pop_ops = {
   .commit_msg = NULL,
   .open_new_msg = NULL,
   .sync = pop_sync_mailbox,
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };

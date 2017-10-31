@@ -47,6 +47,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "address.h"
 #include "backend.h"
 #include "body.h"
@@ -54,12 +55,11 @@
 #include "envelope.h"
 #include "globals.h"
 #include "hcache.h"
-#include "hcversion.h"
+#include "hcache/hcversion.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
+#include "mutt_tags.h"
 #include "parameter.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -181,7 +181,7 @@ static inline bool is_ascii(const char *p, size_t len)
 }
 
 static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
-                                     ssize_t size, int convert)
+                                     ssize_t size, bool convert)
 {
   char *p = c;
 
@@ -213,12 +213,12 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
   return d;
 }
 
-static unsigned char *dump_char(char *c, unsigned char *d, int *off, int convert)
+static unsigned char *dump_char(char *c, unsigned char *d, int *off, bool convert)
 {
   return dump_char_size(c, d, off, mutt_strlen(c) + 1, convert);
 }
 
-static void restore_char(char **c, const unsigned char *d, int *off, int convert)
+static void restore_char(char **c, const unsigned char *d, int *off, bool convert)
 {
   unsigned int size;
   restore_int(&size, d, off);
@@ -246,7 +246,7 @@ static void restore_char(char **c, const unsigned char *d, int *off, int convert
   *off += size;
 }
 
-static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off, int convert)
+static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off, bool convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -256,7 +256,7 @@ static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off
   while (a)
   {
     d = dump_char(a->personal, d, off, convert);
-    d = dump_char(a->mailbox, d, off, 0);
+    d = dump_char(a->mailbox, d, off, false);
     d = dump_int(a->group, d, off);
     a = a->next;
     counter++;
@@ -267,7 +267,7 @@ static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off
   return d;
 }
 
-static void restore_address(struct Address **a, const unsigned char *d, int *off, int convert)
+static void restore_address(struct Address **a, const unsigned char *d, int *off, bool convert)
 {
   unsigned int counter;
 
@@ -277,7 +277,7 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   {
     *a = rfc822_new_address();
     restore_char(&(*a)->personal, d, off, convert);
-    restore_char(&(*a)->mailbox, d, off, 0);
+    restore_char(&(*a)->mailbox, d, off, false);
     restore_int((unsigned int *) &(*a)->group, d, off);
     a = &(*a)->next;
     counter--;
@@ -286,7 +286,7 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   *a = NULL;
 }
 
-static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off, int convert)
+static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off, bool convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -305,7 +305,7 @@ static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off
   return d;
 }
 
-static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off, int convert)
+static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert)
 {
   unsigned int counter;
 
@@ -320,8 +320,7 @@ static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
   }
 }
 
-
-static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, int convert)
+static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, bool convert)
 {
   if (!b)
   {
@@ -339,7 +338,7 @@ static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, 
   return d;
 }
 
-static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, int convert)
+static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, bool convert)
 {
   unsigned int used;
   unsigned int offset;
@@ -360,7 +359,8 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
   (*b)->destroy = used;
 }
 
-static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d, int *off, int convert)
+static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
+                                     int *off, bool convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -369,7 +369,7 @@ static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d, int 
 
   while (p)
   {
-    d = dump_char(p->attribute, d, off, 0);
+    d = dump_char(p->attribute, d, off, false);
     d = dump_char(p->value, d, off, convert);
     p = p->next;
     counter++;
@@ -380,7 +380,8 @@ static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d, int 
   return d;
 }
 
-static void restore_parameter(struct Parameter **p, const unsigned char *d, int *off, int convert)
+static void restore_parameter(struct Parameter **p, const unsigned char *d,
+                              int *off, bool convert)
 {
   unsigned int counter;
 
@@ -389,7 +390,7 @@ static void restore_parameter(struct Parameter **p, const unsigned char *d, int 
   while (counter)
   {
     *p = safe_malloc(sizeof(struct Parameter));
-    restore_char(&(*p)->attribute, d, off, 0);
+    restore_char(&(*p)->attribute, d, off, false);
     restore_char(&(*p)->value, d, off, convert);
     p = &(*p)->next;
     counter--;
@@ -398,7 +399,7 @@ static void restore_parameter(struct Parameter **p, const unsigned char *d, int 
   *p = NULL;
 }
 
-static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, int convert)
+static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool convert)
 {
   struct Body nb;
 
@@ -416,8 +417,8 @@ static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, int 
   memcpy(d + *off, &nb, sizeof(struct Body));
   *off += sizeof(struct Body);
 
-  d = dump_char(nb.xtype, d, off, 0);
-  d = dump_char(nb.subtype, d, off, 0);
+  d = dump_char(nb.xtype, d, off, false);
+  d = dump_char(nb.subtype, d, off, false);
 
   d = dump_parameter(nb.parameter, d, off, convert);
 
@@ -429,13 +430,13 @@ static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, int 
   return d;
 }
 
-static void restore_body(struct Body *c, const unsigned char *d, int *off, int convert)
+static void restore_body(struct Body *c, const unsigned char *d, int *off, bool convert)
 {
   memcpy(c, d + *off, sizeof(struct Body));
   *off += sizeof(struct Body);
 
-  restore_char(&c->xtype, d, off, 0);
-  restore_char(&c->subtype, d, off, 0);
+  restore_char(&c->xtype, d, off, false);
+  restore_char(&c->subtype, d, off, false);
 
   restore_parameter(&c->parameter, d, off, convert);
 
@@ -445,7 +446,7 @@ static void restore_body(struct Body *c, const unsigned char *d, int *off, int c
   restore_char(&c->d_filename, d, off, convert);
 }
 
-static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *off, int convert)
+static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *off, bool convert)
 {
   d = dump_address(e->return_path, d, off, convert);
   d = dump_address(e->from, d, off, convert);
@@ -464,27 +465,27 @@ static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *o
   else
     d = dump_int(-1, d, off);
 
-  d = dump_char(e->message_id, d, off, 0);
-  d = dump_char(e->supersedes, d, off, 0);
-  d = dump_char(e->date, d, off, 0);
+  d = dump_char(e->message_id, d, off, false);
+  d = dump_char(e->supersedes, d, off, false);
+  d = dump_char(e->date, d, off, false);
   d = dump_char(e->x_label, d, off, convert);
 
   d = dump_buffer(e->spam, d, off, convert);
 
-  d = dump_stailq(&e->references, d, off, 0);
-  d = dump_stailq(&e->in_reply_to, d, off, 0);
+  d = dump_stailq(&e->references, d, off, false);
+  d = dump_stailq(&e->in_reply_to, d, off, false);
   d = dump_stailq(&e->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
-  d = dump_char(e->xref, d, off, 0);
-  d = dump_char(e->followup_to, d, off, 0);
+  d = dump_char(e->xref, d, off, false);
+  d = dump_char(e->followup_to, d, off, false);
   d = dump_char(e->x_comment_to, d, off, convert);
 #endif
 
   return d;
 }
 
-static void restore_envelope(struct Envelope *e, const unsigned char *d, int *off, int convert)
+static void restore_envelope(struct Envelope *e, const unsigned char *d, int *off, bool convert)
 {
   int real_subj_off;
 
@@ -506,20 +507,20 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
   else
     e->real_subj = NULL;
 
-  restore_char(&e->message_id, d, off, 0);
-  restore_char(&e->supersedes, d, off, 0);
-  restore_char(&e->date, d, off, 0);
+  restore_char(&e->message_id, d, off, false);
+  restore_char(&e->supersedes, d, off, false);
+  restore_char(&e->date, d, off, false);
   restore_char(&e->x_label, d, off, convert);
 
   restore_buffer(&e->spam, d, off, convert);
 
-  restore_stailq(&e->references, d, off, 0);
-  restore_stailq(&e->in_reply_to, d, off, 0);
+  restore_stailq(&e->references, d, off, false);
+  restore_stailq(&e->in_reply_to, d, off, false);
   restore_stailq(&e->userhdrs, d, off, convert);
 
 #ifdef USE_NNTP
-  restore_char(&e->xref, d, off, 0);
-  restore_char(&e->followup_to, d, off, 0);
+  restore_char(&e->xref, d, off, false);
+  restore_char(&e->followup_to, d, off, false);
   restore_char(&e->x_comment_to, d, off, convert);
 #endif
 }
@@ -555,7 +556,7 @@ static bool create_hcache_dir(const char *path)
   if (!p)
     return true;
 
-  *p = 0;
+  *p = '\0';
   if (mutt_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
     return true;
 
@@ -648,7 +649,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
 {
   unsigned char *d = NULL;
   struct Header nh;
-  int convert = !Charset_is_utf8;
+  bool convert = !Charset_is_utf8;
 
   *off = 0;
   d = lazy_malloc(sizeof(union Validate));
@@ -684,6 +685,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
   nh.path = NULL;
   nh.tree = NULL;
   nh.thread = NULL;
+  STAILQ_INIT(&nh.tags);
 #ifdef MIXMASTER
   STAILQ_INIT(&nh.chain);
 #endif
@@ -705,7 +707,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
   struct Header *h = mutt_new_header();
-  int convert = !Charset_is_utf8;
+  bool convert = !Charset_is_utf8;
 
   /* skip validate */
   off += sizeof(union Validate);
@@ -760,7 +762,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     } digest;
     struct Md5Ctx ctx;
     struct ReplaceList *spam = NULL;
-    struct RxList *nospam = NULL;
+    struct RegexList *nospam = NULL;
 
     hcachever = HCACHEVER;
 
@@ -772,14 +774,14 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     /* Mix in user's spam list */
     for (spam = SpamList; spam; spam = spam->next)
     {
-      md5_process_bytes(spam->rx->pattern, strlen(spam->rx->pattern), &ctx);
+      md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
       md5_process_bytes(spam->template, strlen(spam->template), &ctx);
     }
 
     /* Mix in user's nospam list */
     for (nospam = NoSpamList; nospam; nospam = nospam->next)
     {
-      md5_process_bytes(nospam->rx->pattern, strlen(nospam->rx->pattern), &ctx);
+      md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */

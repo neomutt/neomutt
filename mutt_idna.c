@@ -24,12 +24,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt_idna.h"
 #include "address.h"
 #include "charset.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "options.h"
 
 #ifdef HAVE_LIBIDN
@@ -57,6 +57,8 @@ static int mbox_to_udomain(const char *mbx, char **user, char **domain)
   char *p = NULL;
 
   mutt_str_replace(&buff, mbx);
+  if (!buff)
+    return -1;
 
   p = strchr(buff, '@');
   if (!p || !p[1])

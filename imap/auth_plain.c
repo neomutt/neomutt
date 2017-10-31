@@ -21,20 +21,31 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* SASL PLAIN support */
+/**
+ * @page imap_auth_plain IMAP plain authentication method
+ *
+ * IMAP plain authentication method
+ *
+ * | Function           | Description
+ * | :----------------- | :-------------------------------------------------
+ * | imap_auth_plain()  | SASL PLAIN support
+ */
 
 #include "config.h"
 #include "imap_private.h"
-#include "account.h"
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "auth.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "mutt_sasl_plain.h"
+#include "mutt_account.h"
 #include "mutt_socket.h"
 #include "protos.h"
 
 /**
  * imap_auth_plain - SASL PLAIN support
+ * @param idata  Server data
+ * @param method Name of this authentication method
+ * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
 enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 {

@@ -26,11 +26,11 @@
 #include <errno.h>
 #include <iconv.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "rfc2047.h"
 #include "address.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mime.h"
 #include "options.h"
@@ -90,9 +90,9 @@ static size_t convert_string(ICONV_CONST char *f, size_t flen, const char *from,
 
 int convert_nonmime_string(char **ps)
 {
-  const char *c = NULL, *c1 = NULL;
+  const char *c1 = NULL;
 
-  for (c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
+  for (const char *c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
   {
     char *u = *ps;
     char *s = NULL;
@@ -130,9 +130,9 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
   char canonical_buff[LONG_STRING];
   char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
-  const char *p = NULL, *q = NULL;
+  const char *q = NULL;
 
-  for (p = charsets; p; p = q ? q + 1 : 0)
+  for (const char *p = charsets; p; p = q ? q + 1 : 0)
   {
     char *s = NULL, *t = NULL;
     size_t slen, n;
@@ -203,11 +203,11 @@ static size_t b_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
   while (dlen)
   {
     char encoded[11];
-    size_t ret, i;
+    size_t ret;
     size_t in_len = MIN(3, dlen);
 
     ret = mutt_to_base64(encoded, d, in_len, sizeof(encoded));
-    for (i = 0; i < ret; i++)
+    for (size_t i = 0; i < ret; i++)
       *s++ = encoded[i];
 
     dlen -= in_len;
@@ -273,7 +273,7 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
   ICONV_CONST char *ib = NULL;
-  char *ob = NULL, *p = NULL;
+  char *ob = NULL;
   size_t ibl, obl;
   int count, len, len_b, len_q;
 
@@ -304,7 +304,7 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
   }
 
   count = 0;
-  for (p = buf1; p < ob; p++)
+  for (char *p = buf1; p < ob; p++)
   {
     unsigned char c = *p;
     assert(strchr(MimeSpecials, '?'));
@@ -573,19 +573,20 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
       n = choose_block(t, n, col, icode, tocode, &encoder, &wlen);
     }
 
-/* Add to output buffer. */
-#define LINEBREAK "\n\t"
-    if (bufpos + wlen + strlen(LINEBREAK) > buflen)
+    /* Add to output buffer. */
+    const char *line_break = "\n\t";
+    const int lb_len = 2; /* strlen(line_break) */
+
+    if ((bufpos + wlen + lb_len) > buflen)
     {
-      buflen = bufpos + wlen + strlen(LINEBREAK);
+      buflen = bufpos + wlen + lb_len;
       safe_realloc(&buf, buflen);
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
     assert(r == wlen);
     bufpos += wlen;
-    memcpy(buf + bufpos, LINEBREAK, strlen(LINEBREAK));
-    bufpos += strlen(LINEBREAK);
-#undef LINEBREAK
+    memcpy(buf + bufpos, line_break, lb_len);
+    bufpos += lb_len;
 
     col = 1;
 
@@ -779,51 +780,6 @@ static const char *find_encoded_word(const char *s, const char **x)
 }
 
 /**
- * lwslen - return length of linear-white-space
- */
-static size_t lwslen(const char *s, size_t n)
-{
-  const char *p = s;
-  size_t len = n;
-
-  if (n <= 0)
-    return 0;
-
-  for (; p < s + n; p++)
-    if (!strchr(" \t\r\n", *p))
-    {
-      len = (size_t)(p - s);
-      break;
-    }
-  if (strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
-    len = (size_t) 0;
-  return len;
-}
-
-/**
- * lwsrlen - return length of linear-white-space : reverse
- */
-static size_t lwsrlen(const char *s, size_t n)
-{
-  const char *p = s + n - 1;
-  size_t len = n;
-
-  if (n <= 0)
-    return 0;
-
-  if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
-    return (size_t) 0;
-
-  for (; p >= s; p--)
-    if (!strchr(" \t\r\n", *p))
-    {
-      len = (size_t)(s + n - 1 - p);
-      break;
-    }
-  return len;
-}
-
-/**
  * rfc2047_decode - Decode any RFC2047-encoded header fields
  *
  * try to decode anything that looks like a valid RFC2047 encoded
@@ -846,10 +802,11 @@ void rfc2047_decode(char **pd)
 
   while (*s && dlen > 0)
   {
-    if (!(p = find_encoded_word(s, &q)))
+    p = find_encoded_word(s, &q);
+    if (!p)
     {
       /* no encoded words */
-      if (option(OPT_IGNORE_LWS))
+      if (option(OPT_IGNORE_LINEAR_WHITE_SPACE))
       {
         n = mutt_strlen(s);
         if (found_encoded && (m = lwslen(s, n)) != 0)
@@ -888,7 +845,7 @@ void rfc2047_decode(char **pd)
       n = (size_t)(p - s);
       /* ignore spaces between encoded word
        * and linear-white-space between encoded word and *text */
-      if (option(OPT_IGNORE_LWS))
+      if (option(OPT_IGNORE_LINEAR_WHITE_SPACE))
       {
         if (found_encoded && (m = lwslen(s, n)) != 0)
         {
@@ -902,7 +859,8 @@ void rfc2047_decode(char **pd)
           s += m;
         }
 
-        if ((m = n - lwsrlen(s, n)) != 0)
+        m = n - lwsrlen(s, n);
+        if (m != 0)
         {
           if (m > dlen)
             m = dlen;

@@ -61,8 +61,8 @@ struct Buffy
 };
 
 WHERE struct Buffy *Incoming;
-WHERE short BuffyTimeout;
-WHERE short BuffyCheckStatsInterval;
+WHERE short MailCheck;
+WHERE short MailCheckStatsInterval;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen);
@@ -80,6 +80,6 @@ void mutt_buffy_cleanup(const char *buf, struct stat *st);
 /** mark mailbox just left as already notified */
 void mutt_buffy_setnotified(const char *path);
 
-int mh_buffy(struct Buffy *mailbox, int check_stats);
+bool mh_buffy(struct Buffy *mailbox, bool check_stats);
 
 #endif /* _MUTT_BUFFY_H */

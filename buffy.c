@@ -29,13 +29,14 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <utime.h>
+#include "lib/lib.h"
+#include "mutt.h"
 #include "buffy.h"
 #include "context.h"
+#include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
-#include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -66,15 +67,14 @@ static int fseek_last_message(FILE *f)
 {
   LOFF_T pos;
   char buffer[BUFSIZ + 9]; /* 7 for "\n\nFrom " */
-  int bytes_read;
-  int i; /* Index into `buffer' for scanning.  */
+  size_t bytes_read;
 
   memset(buffer, 0, sizeof(buffer));
   fseek(f, 0, SEEK_END);
   pos = ftello(f);
 
-  /* Set `bytes_read' to the size of the last, probably partial, buffer; 0 <
-   * `bytes_read' <= `BUFSIZ'.  */
+  /* Set `bytes_read' to the size of the last, probably partial, buffer;
+   * 0 < `bytes_read' <= `BUFSIZ'.  */
   bytes_read = pos % BUFSIZ;
   if (bytes_read == 0)
     bytes_read = BUFSIZ;
@@ -86,14 +86,17 @@ static int fseek_last_message(FILE *f)
     strncpy(buffer + BUFSIZ, buffer, 5 + 2); /* 2 == 2 * mutt_strlen(CRLF) */
     fseeko(f, pos, SEEK_SET);
     bytes_read = fread(buffer, sizeof(char), bytes_read, f);
-    if (bytes_read == -1)
+    if (bytes_read == 0)
       return -1;
-    for (i = bytes_read; --i >= 0;)
+    /* 'i' is Index into `buffer' for scanning.  */
+    for (int i = bytes_read; i >= 0; i--)
+    {
       if (mutt_strncmp(buffer + i, "\n\nFrom ", mutt_strlen("\n\nFrom ")) == 0)
       { /* found it - go to the beginning of the From */
         fseeko(f, pos + i + 2, SEEK_SET);
         return 0;
       }
+    }
     bytes_read = BUFSIZ;
   }
 
@@ -185,10 +188,10 @@ static void buffy_free(struct Buffy **mailbox)
  * Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  */
 static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
-                                   int check_new, int check_stats)
+                                   bool check_new, bool check_stats)
 {
-  char path[_POSIX_PATH_MAX];
-  char msgpath[_POSIX_PATH_MAX];
+  char path[LONG_STRING];
+  char msgpath[LONG_STRING];
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
@@ -205,14 +208,15 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
     if (stat(path, &sb) == 0 && sb.st_mtime < mailbox->last_visited)
     {
       rc = 0;
-      check_new = 0;
+      check_new = false;
     }
   }
 
   if (!(check_new || check_stats))
     return rc;
 
-  if ((dirp = opendir(path)) == NULL)
+  dirp = opendir(path);
+  if (!dirp)
   {
     mailbox->magic = 0;
     return 0;
@@ -248,7 +252,7 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
         }
         mailbox->new = true;
         rc = 1;
-        check_new = 0;
+        check_new = false;
         if (!check_stats)
           break;
       }
@@ -266,9 +270,10 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
  * @param check_stats if true, also count total, new, and flagged messages
  * @retval 1 if the mailbox has new mail
  */
-static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
+static int buffy_maildir_check(struct Buffy *mailbox, bool check_stats)
 {
-  int rc, check_new = 1;
+  int rc = 1;
+  bool check_new = true;
 
   if (check_stats)
   {
@@ -294,7 +299,7 @@ static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
  * @param check_stats if true, also count total, new, and flagged messages
  * @retval 1 if the mailbox has new mail
  */
-static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_stats)
+static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, bool check_stats)
 {
   int rc = 0;
   int new_or_changed;
@@ -340,7 +345,7 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_st
   return rc;
 }
 
-static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, int check_stats)
+static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_stats)
 {
   struct stat sb;
 #ifdef USE_SIDEBAR
@@ -414,7 +419,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, int check_sta
         break;
 
       case MUTT_MH:
-        if (mh_buffy(tmp, check_stats) > 0)
+        if (mh_buffy(tmp, check_stats))
           BuffyCount++;
         break;
 #ifdef USE_NOTMUCH
@@ -681,7 +686,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
  * mutt_buffy_check - Check all Incoming for new mail
  *
  * Check all Incoming for new mail and total/new/flagged messages
- * force: if true, ignore BuffyTimeout and check for new mail anyway
+ * force: if true, ignore MailCheck and check for new mail anyway
  */
 int mutt_buffy_check(bool force)
 {
@@ -702,10 +707,10 @@ int mutt_buffy_check(bool force)
     return 0;
 
   t = time(NULL);
-  if (!force && (t - BuffyTime < BuffyTimeout))
+  if (!force && (t - BuffyTime < MailCheck))
     return BuffyCount;
 
-  if (option(OPT_MAIL_CHECK_STATS) && (t - BuffyStatsTime >= BuffyCheckStatsInterval))
+  if (option(OPT_MAIL_CHECK_STATS) && (t - BuffyStatsTime >= MailCheckStatsInterval))
   {
     check_stats = true;
     BuffyStatsTime = t;
@@ -747,7 +752,7 @@ int mutt_buffy_list(void)
 
   int have_unnotified = BuffyNotify;
 
-  buffylist[0] = 0;
+  buffylist[0] = '\0';
   pos += strlen(strncat(buffylist, _("New mail in "), sizeof(buffylist) - 1 - pos));
   for (b = Incoming; b; b = b->next)
   {

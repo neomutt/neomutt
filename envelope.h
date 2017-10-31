@@ -24,8 +24,7 @@
 #define _MUTT_ENVELOPE_H
 
 #include <stdbool.h>
-#include "lib/lib.h"
-#include "list.h"
+#include "lib/list.h"
 
 /**
  * struct Envelope - The header of an email
@@ -60,19 +59,13 @@ struct Envelope
   struct ListHead references;  /**< message references (in reverse order) */
   struct ListHead in_reply_to; /**< in-reply-to header content */
   struct ListHead userhdrs;    /**< user defined headers */
-  int kwtypes;
 
   bool irt_changed : 1;  /**< In-Reply-To changed to link/break threads */
   bool refs_changed : 1; /**< References changed to break thread */
 };
 
-static inline struct Envelope *mutt_new_envelope(void)
-{
-  struct Envelope *e = safe_calloc(1, sizeof(struct Envelope));
-  STAILQ_INIT(&e->references);
-  STAILQ_INIT(&e->in_reply_to);
-  STAILQ_INIT(&e->userhdrs);
-  return e;
-}
+struct Envelope *mutt_new_envelope(void);
+void mutt_free_envelope(struct Envelope **p);
+void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra);
 
 #endif /* _MUTT_ENVELOPE_H */

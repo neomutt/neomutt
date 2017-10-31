@@ -31,12 +31,12 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
 #include "mx.h"
 #include "options.h"
@@ -73,12 +73,12 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
 
   mutt_mktemp(tmp, sizeof(tmp));
 
-  omagic = DefaultMagic;
-  DefaultMagic = MUTT_MBOX;
+  omagic = MboxType;
+  MboxType = MUTT_MBOX;
 
   rc = (mx_open_mailbox(tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
 
-  DefaultMagic = omagic;
+  MboxType = omagic;
 
   if (rc == -1)
   {
@@ -99,7 +99,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if ((rc = stat(tmp, &sb)) == -1)
+  rc = stat(tmp, &sb);
+  if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), tmp, strerror(errno));
     goto bail;
@@ -121,7 +122,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
 
   mutt_edit_file(NONULL(Editor), tmp);
 
-  if ((rc = stat(tmp, &sb)) == -1)
+  rc = stat(tmp, &sb);
+  if (rc == -1)
   {
     mutt_error(_("Can't stat %s: %s"), tmp, strerror(errno));
     goto bail;
@@ -141,7 +143,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if ((fp = fopen(tmp, "r")) == NULL)
+  fp = fopen(tmp, "r");
+  if (!fp)
   {
     rc = -1;
     mutt_error(_("Can't open message file: %s"), strerror(errno));
@@ -184,7 +187,8 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if ((rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL)) == 0)
+  rc = mutt_copy_hdr(fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL);
+  if (rc == 0)
   {
     fputc('\n', msg->fp);
     mutt_copy_stream(fp, msg->fp);
@@ -219,19 +223,16 @@ bail:
 
 int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 {
-  int j;
-
   if (hdr)
     return edit_one_message(ctx, hdr);
 
-  for (int i = 0; i < ctx->vcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
-    j = ctx->v2r[i];
-    if (ctx->hdrs[j]->tagged)
-    {
-      if (edit_one_message(ctx, ctx->hdrs[j]) == -1)
-        return -1;
-    }
+    if (!message_is_tagged(ctx, i))
+      continue;
+
+    if (edit_one_message(ctx, ctx->hdrs[i]) == -1)
+      return -1;
   }
 
   return 0;

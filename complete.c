@@ -26,8 +26,8 @@
 #include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "globals.h"
 #include "lib/lib.h"
+#include "globals.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP
@@ -103,11 +103,11 @@ int mutt_complete(char *s, size_t slen)
           {
             if (filepart[i] != nntp_data->group[i])
             {
-              filepart[i] = 0;
+              filepart[i] = '\0';
               break;
             }
           }
-          filepart[i] = 0;
+          filepart[i] = '\0';
         }
         else
         {
@@ -129,7 +129,7 @@ int mutt_complete(char *s, size_t slen)
     if (*s == '!')
       p = NONULL(SpoolFile);
     else
-      p = NONULL(Maildir);
+      p = NONULL(Folder);
 
     mutt_concat_path(imap_path, p, s + 1, sizeof(imap_path));
   }
@@ -143,11 +143,11 @@ int mutt_complete(char *s, size_t slen)
   if (*s == '=' || *s == '+' || *s == '!')
   {
     dirpart[0] = *s;
-    dirpart[1] = 0;
+    dirpart[1] = '\0';
     if (*s == '!')
       strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
     else
-      strfcpy(exp_dirpart, NONULL(Maildir), sizeof(exp_dirpart));
+      strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
     if ((p = strrchr(s, '/')))
     {
       char buf[_POSIX_PATH_MAX];
@@ -172,7 +172,7 @@ int mutt_complete(char *s, size_t slen)
       {
         p = s + 1;
         strfcpy(dirpart, "/", sizeof(dirpart));
-        exp_dirpart[0] = 0;
+        exp_dirpart[0] = '\0';
         strfcpy(filepart, p, sizeof(filepart));
         dirp = opendir(dirpart);
       }
@@ -188,7 +188,7 @@ int mutt_complete(char *s, size_t slen)
     else
     {
       /* no directory name, so assume current directory. */
-      dirpart[0] = 0;
+      dirpart[0] = '\0';
       strfcpy(filepart, s, sizeof(filepart));
       dirp = opendir(".");
     }
@@ -205,7 +205,8 @@ int mutt_complete(char *s, size_t slen)
    * special case to handle when there is no filepart yet.  find the first
    * file/directory which is not ``.'' or ``..''
    */
-  if ((len = mutt_strlen(filepart)) == 0)
+  len = mutt_strlen(filepart);
+  if (len == 0)
   {
     while ((de = readdir(dirp)) != NULL)
     {
@@ -228,11 +229,11 @@ int mutt_complete(char *s, size_t slen)
         {
           if (filepart[i] != de->d_name[i])
           {
-            filepart[i] = 0;
+            filepart[i] = '\0';
             break;
           }
         }
-        filepart[i] = 0;
+        filepart[i] = '\0';
       }
       else
       {

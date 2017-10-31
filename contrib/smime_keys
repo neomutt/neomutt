@@ -76,22 +76,22 @@ sub handle_remove_pair ($);
 sub handle_add_root_cert ($);
 
 
-my $mutt = $ENV{MUTT_CMDLINE} || 'mutt';
+my $neomutt = $ENV{MUTT_CMDLINE} || 'neomutt';
 my $opensslbin = "/usr/bin/openssl";
 my $tmpdir;
 
-# Get the directories mutt uses for certificate/key storage.
+# Get the directories neomutt uses for certificate/key storage.
 
 my $private_keys_path = mutt_Q 'smime_keys';
-die "smime_keys is not set in mutt's configuration file"
+die "smime_keys is not set in neomutt's configuration file"
    if length $private_keys_path == 0;
 
 my $certificates_path = mutt_Q 'smime_certificates';
-die "smime_certificates is not set in mutt's configuration file"
+die "smime_certificates is not set in neomutt's configuration file"
    if length $certificates_path == 0;
 
 my $root_certs_path   = mutt_Q 'smime_ca_location';
-die "smime_ca_location is not set in mutt's configuration file"
+die "smime_ca_location is not set in neomutt's configuration file"
    if length $root_certs_path == 0;
 
 my $root_certs_switch;
@@ -198,25 +198,25 @@ EOF
 sub mutt_Q ($) {
   my ($var) = @_;
 
-  my $cmd = "$mutt -v >/dev/null 2>/dev/null";
+  my $cmd = "$neomutt -v >/dev/null 2>/dev/null";
   system ($cmd) == 0 or die<<EOF;
-Couldn't launch mutt. I attempted to do so by running the command "$mutt".
+Couldn't launch neomutt. I attempted to do so by running the command "$neomutt".
 If that's not the right command, you can override it by setting the
 environment variable \$MUTT_CMDLINE
 EOF
 
-  $cmd = "$mutt -Q $var 2>/dev/null";
+  $cmd = "$neomutt -Q $var 2>/dev/null";
   my $answer = `$cmd`;
 
   $? and die<<EOF;
-Couldn't look up the value of the mutt variable "$var".
-You must set this in your mutt config file. See contrib/smime.rc for an example.
+Couldn't look up the value of the neomutt variable "$var".
+You must set this in your neomutt config file. See contrib/smime.rc for an example.
 EOF
 
   $answer =~ /\"(.*?)\"/ and return bsd_glob($1, GLOB_TILDE | GLOB_NOCHECK);
 
-  $answer =~ /^Mutt (.*?) / and die<<EOF;
-This script requires mutt 1.5.0 or later. You are using mutt $1.
+  $answer =~ /^NeoMutt (.*?) / and die<<EOF;
+This script requires neomutt 1.5.0 or later. You are using neomutt $1.
 EOF
 
   die "Value of $var is weird\n";

@@ -26,13 +26,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
@@ -44,17 +43,15 @@
 int *ColorQuote = NULL;
 int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
-struct ColorLine *ColorHdrList = NULL;
-struct ColorLine *ColorBodyList = NULL;
-struct ColorLine *ColorAttachList = NULL;
-struct ColorLine *ColorStatusList = NULL;
-struct ColorLine *ColorIndexList = NULL;
-struct ColorLine *ColorIndexAuthorList = NULL;
-struct ColorLine *ColorIndexFlagsList = NULL;
-struct ColorLine *ColorIndexSubjectList = NULL;
-#ifdef USE_NOTMUCH
-struct ColorLine *ColorIndexTagList = NULL;
-#endif
+struct ColorLineHead ColorHdrList = STAILQ_HEAD_INITIALIZER(ColorHdrList);
+struct ColorLineHead ColorBodyList = STAILQ_HEAD_INITIALIZER(ColorBodyList);
+struct ColorLineHead ColorAttachList = STAILQ_HEAD_INITIALIZER(ColorAttachList);
+struct ColorLineHead ColorStatusList = STAILQ_HEAD_INITIALIZER(ColorStatusList);
+struct ColorLineHead ColorIndexList = STAILQ_HEAD_INITIALIZER(ColorIndexList);
+struct ColorLineHead ColorIndexAuthorList = STAILQ_HEAD_INITIALIZER(ColorIndexAuthorList);
+struct ColorLineHead ColorIndexFlagsList = STAILQ_HEAD_INITIALIZER(ColorIndexFlagsList);
+struct ColorLineHead ColorIndexSubjectList = STAILQ_HEAD_INITIALIZER(ColorIndexSubjectList);
+struct ColorLineHead ColorIndexTagList = STAILQ_HEAD_INITIALIZER(ColorIndexTagList);
 
 /* local to this file */
 static int ColorQuoteSize;
@@ -124,10 +121,8 @@ static const struct Mapping Fields[] = {
   { "index_number", MT_COLOR_INDEX_NUMBER },
   { "index_size", MT_COLOR_INDEX_SIZE },
   { "index_subject", MT_COLOR_INDEX_SUBJECT },
-#ifdef USE_NOTMUCH
   { "index_tag", MT_COLOR_INDEX_TAG },
   { "index_tags", MT_COLOR_INDEX_TAGS },
-#endif
   { "prompt", MT_COLOR_PROMPT },
 #ifdef USE_SIDEBAR
   { "sidebar_divider", MT_COLOR_DIVIDER },
@@ -161,14 +156,10 @@ static struct ColorLine *new_color_line(void)
   return p;
 }
 
-static void free_color_line(struct ColorLine **l, int free_colors)
+static void free_color_line(struct ColorLine *tmp, int free_colors)
 {
-  struct ColorLine *tmp = NULL;
-
-  if (!l || !*l)
+  if (!tmp)
     return;
-
-  tmp = *l;
 
 #ifdef HAVE_COLOR
   if (free_colors && tmp->fg != -1 && tmp->bg != -1)
@@ -179,10 +170,10 @@ static void free_color_line(struct ColorLine **l, int free_colors)
    * type for regular expressions.
    */
 
-  regfree(&tmp->rx);
+  regfree(&tmp->regex);
   mutt_pattern_free(&tmp->color_pattern);
   FREE(&tmp->pattern);
-  FREE(l);
+  FREE(&tmp);
 }
 
 void ci_start_color(void)
@@ -216,7 +207,6 @@ void ci_start_color(void)
 static char *get_color_name(char *dest, size_t destlen, int val)
 {
   static const char *const missing[3] = { "brown", "lightgray", "default" };
-  int i;
 
   switch (val)
   {
@@ -233,7 +223,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
       return dest;
   }
 
-  for (i = 0; Colors[i].name; i++)
+  for (int i = 0; Colors[i].name; i++)
   {
     if (Colors[i].value == val)
     {
@@ -347,14 +337,6 @@ int mutt_combine_color(int fg_attr, int bg_attr)
   mutt_lookup_color(bg_attr, NULL, &bg);
   if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
     return A_NORMAL;
-#ifdef HAVE_USE_DEFAULT_COLORS
-  if (!option(OPT_NO_CURSES) && has_colors() &&
-      ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT)) && use_default_colors() != OK)
-  {
-    mutt_error(_("default colors not supported."));
-    return A_NORMAL;
-  }
-#endif
   return mutt_alloc_color(fg, bg);
 }
 
@@ -417,7 +399,8 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !option(OPT_NO_CURSES) && has_colors()))
+    if (!*s || *eptr || *col < 0 ||
+        (*col >= COLORS && !option(OPT_NO_CURSES) && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;
@@ -453,49 +436,48 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 #endif
 
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
-                       struct ColorLine **cl, int *do_cache, bool parse_uncolor)
+                       struct ColorLineHead *cl, int *do_cache, bool parse_uncolor)
 {
-  struct ColorLine *tmp = NULL, *last = NULL;
-
+  struct ColorLine *np = NULL, *tmp = NULL;
   do
   {
     mutt_extract_token(buf, s, 0);
     if (mutt_strcmp("*", buf->data) == 0)
     {
-      for (tmp = *cl; tmp;)
+      np = STAILQ_FIRST(cl);
+      while (np)
       {
+        tmp = STAILQ_NEXT(np, entries);
         if (!*do_cache)
         {
           *do_cache = 1;
         }
-        last = tmp;
-        tmp = tmp->next;
-        free_color_line(&last, parse_uncolor);
+        free_color_line(np, parse_uncolor);
+        np = tmp;
       }
-      *cl = NULL;
+      STAILQ_INIT(cl);
+      return;
     }
     else
     {
-      for (last = NULL, tmp = *cl; tmp; last = tmp, tmp = tmp->next)
+      tmp = NULL;
+      STAILQ_FOREACH(np, cl, entries)
       {
-        if (mutt_strcmp(buf->data, tmp->pattern) == 0)
+        if (mutt_strcmp(buf->data, np->pattern) == 0)
         {
           if (!*do_cache)
           {
             *do_cache = 1;
           }
-          mutt_debug(1, "Freeing pattern \"%s\" from ColorList\n", tmp->pattern);
-          if (last)
-          {
-            last->next = tmp->next;
-          }
+          mutt_debug(1, "Freeing pattern \"%s\" from ColorList\n", buf->data);
+          if (tmp)
+            STAILQ_REMOVE_AFTER(cl, tmp, entries);
           else
-          {
-            *cl = tmp->next;
-          }
-          free_color_line(&tmp, parse_uncolor);
+            STAILQ_REMOVE_HEAD(cl, entries);
+          free_color_line(np, parse_uncolor);
           break;
         }
+        tmp = np;
       }
     }
   } while (MoreArgs(s));
@@ -515,7 +497,8 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
 
   mutt_extract_token(buf, s, 0);
 
-  if ((object = mutt_getvaluebyname(buf->data, Fields)) == -1)
+  object = mutt_getvaluebyname(buf->data, Fields);
+  if (object == -1)
   {
     snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
     return -1;
@@ -580,10 +563,8 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
     do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
     do_uncolor(buf, s, &ColorIndexSubjectList, &do_cache, parse_uncolor);
-#ifdef USE_NOTMUCH
   else if (object == MT_COLOR_INDEX_TAG)
     do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
-#endif
 
   if (do_cache && !option(OPT_NO_CURSES))
   {
@@ -611,16 +592,16 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
 
-static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int fg,
+static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, int fg,
                        int bg, int attr, struct Buffer *err, int is_index, int match)
 {
   /* is_index used to store compiled pattern
    * only for `index' color object
    * when called from mutt_parse_color() */
 
-  struct ColorLine *tmp = *top;
+  struct ColorLine *tmp = NULL;
 
-  while (tmp)
+  STAILQ_FOREACH(tmp, top, entries)
   {
     if (sensitive)
     {
@@ -632,7 +613,6 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
       if (mutt_strcasecmp(s, tmp->pattern) == 0)
         break;
     }
-    tmp = tmp->next;
   }
 
   if (tmp)
@@ -663,22 +643,22 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
     {
       strfcpy(buf, NONULL(s), sizeof(buf));
       mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
-      if ((tmp->color_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, err)) == NULL)
+      tmp->color_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, err);
+      if (!tmp->color_pattern)
       {
-        free_color_line(&tmp, 1);
+        free_color_line(tmp, 1);
         return -1;
       }
       /* force re-caching of index colors */
       for (int i = 0; Context && i < Context->msgcount; i++)
         Context->hdrs[i]->pair = 0;
     }
-    else if ((r = REGCOMP(&tmp->rx, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)
+    else if ((r = REGCOMP(&tmp->regex, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)
     {
-      regerror(r, &tmp->rx, err->data, err->dsize);
-      free_color_line(&tmp, 1);
+      regerror(r, &tmp->regex, err->data, err->dsize);
+      free_color_line(tmp, 1);
       return -1;
     }
-    tmp->next = *top;
     tmp->pattern = safe_strdup(s);
     tmp->match = match;
 #ifdef HAVE_COLOR
@@ -690,7 +670,7 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
     }
 #endif
     tmp->pair = attr;
-    *top = tmp;
+    STAILQ_INSERT_HEAD(top, tmp, entries);
   }
 
   return 0;
@@ -735,7 +715,8 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
 
     mutt_extract_token(buf, s, 0);
 
-    if ((*o = mutt_getvaluebyname(buf->data, ComposeFields)) == -1)
+    *o = mutt_getvaluebyname(buf->data, ComposeFields);
+    if (*o == -1)
     {
       snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
       return (-1);
@@ -835,8 +816,8 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 /**
  * _mutt_parse_color - Parse a "color" command
  *
- * usage: color OBJECT FG BG [ REGEXP ]
- *        mono  OBJECT ATTR [ REGEXP ]
+ * usage: color OBJECT FG BG [ REGEX ]
+ *        mono  OBJECT ATTR [ REGEX ]
  */
 static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
                              parser_callback_t callback, bool dry_run)
@@ -855,10 +836,7 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
   if ((object == MT_COLOR_BODY) || (object == MT_COLOR_HEADER) ||
       (object == MT_COLOR_ATTACH_HEADERS) || (object == MT_COLOR_INDEX) ||
       (object == MT_COLOR_INDEX_AUTHOR) || (object == MT_COLOR_INDEX_FLAGS) ||
-#ifdef USE_NOTMUCH
-      (object == MT_COLOR_INDEX_TAG) ||
-#endif
-      (object == MT_COLOR_INDEX_SUBJECT))
+      (object == MT_COLOR_INDEX_TAG) || (object == MT_COLOR_INDEX_SUBJECT))
   {
     if (!MoreArgs(s))
     {
@@ -887,7 +865,13 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
 #ifdef HAVE_USE_DEFAULT_COLORS
   if (!option(OPT_NO_CURSES) && has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
-      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT) && use_default_colors() != OK)
+      && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
+      use_default_colors() != OK)
+  /* the case of the tree object is special, because a non-default
+       * fg color of the tree element may be combined dynamically with
+       * the default bg color of an index line, not necessarily defined in
+       * a rc file.
+       */
   {
     strfcpy(err->data, _("default colors not supported"), err->dsize);
     return -1;
@@ -947,13 +931,11 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
     r = add_pattern(&ColorIndexSubjectList, buf->data, 1, fg, bg, attr, err, 1, match);
     mutt_set_menu_redraw_full(MENU_MAIN);
   }
-#ifdef USE_NOTMUCH
   else if (object == MT_COLOR_INDEX_TAG)
   {
     r = add_pattern(&ColorIndexTagList, buf->data, 1, fg, bg, attr, err, 1, match);
     mutt_set_menu_redraw_full(MENU_MAIN);
   }
-#endif
   else if (object == MT_COLOR_QUOTED)
   {
     if (q_level >= ColorQuoteSize)

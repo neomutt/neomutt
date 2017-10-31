@@ -1,3 +1,164 @@
+2017-10-27  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - variable type when using fread
+  - prevent timezone overflow
+  - tags: Show fake header for all backends
+  - notmuch: virtual-mailboxes should accept a limit
+  - Issue 888: Fix imap mailbox flag logging
+  - fix actions on tagged messages
+  - call the folder-hook before saving to $record
+  - Fix smart wrap in pager without breaking header
+  - Add polling for the IDLE command
+* Docs
+  - imap/notmuch tags: Add some documentation
+  - English and other cleanups
+  - compressed and nntp features are now always built
+* Website
+  - Update Arch instructions
+* Build
+  - Fix update-po
+  - Fix neomutt.pot location, remove from git
+  - Allow to specify --docdir at configure time
+  - Generate neomuttrc even if configured with --disable-doc
+  - Let autosetup define PWD, do not unnecessarily try to create hcache dir
+  - Use bundled wcscasecmp if an implementation is not found in libc
+  - Use host compiler to build the documentation
+  - Update autosetup to latest master branch
+  - autosetup: delete makedoc on 'make clean'
+  - Fixes for endianness detection
+  - Update autosetup to latest master branch
+  - Do not use CPPFLAGS / CFLAGS together with CC_FOR_BUILD
+  - --enable-everything includes lua
+  - autosetup: check for sys_siglist[]
+* Code
+  - move functions to library
+  - lib: move MIN/MAX macros
+  - simplify null checks
+  - kill preproc expansion laziness
+  - reduce scope of variables
+  - merge: minor code cleanups
+  - split up 'if' statements that assign and test
+  - Refactor: Remove unused return type
+  - Bool: change functions in mx.h
+  - bool: convert function parameters in nntp.h
+  - add extra checks to mutt_pattern_exec()
+  - Use safe_calloc to initialize memory, simplify size_t overflow check
+  - Move mutt_rename_file to lib/file.[hc]
+  - doxygen: fix a few warnings
+  - minor code fixes
+  - use mutt_array_size()
+  - refactor out O_NOFOLLOW
+  - initialise variables
+  - lib: move List and Queue into library
+  - url: make notmuch query string parser generic
+  - Wrap dirname(3) inside a mutt_dirname() function
+
+2017-10-13  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - crash using uncolor
+  - Sort the folders list when browsing an IMAP server
+  - Prefer a helpful error message over a BEEP
+* Build
+  - Do not fail if deflate is not in libz
+  - Support EXTRA_CFLAGS and EXTRA_LDFLAGS, kill unused variable
+
+2017-10-06  Richard Russon  <rich@flatcap.org>
+* Features
+  - Add IMAP keywords support
+* Bug Fixes
+  - set mbox_type
+  - %{fmt} date format
+  - Fix off-by-one buffer overflow in add_index_color
+  - crash in mbox_to_udomain
+  - crash in mutt_substrdup
+  - crash looking up mime body type
+  - digest_collapse was broken
+  - crash using notmuch expando with imap
+  - imap: Fix mx.mbox leak in imap_get_parent_path
+  - overflow in mutt_mktime()
+  - add more range-checking on dates/times
+  - Remove spurious error message
+  - Unsubscribe after deleting an imap folder
+  - Do not pop from MuttrcStack what wasn't pushed
+* Docs
+  - replace mutt refs with neomutt
+  - drop old vim syntax file
+* Code
+  - convert functions to use 'bool'
+  - convert structs to use STAILQ
+* Build
+  - Autosetup-based configuration
+  - drop upstream mutt references
+  - rename everything 'mutt' to 'neomutt'
+  - move helper programs to lib dir
+  - rename regexp to regex
+  - expand buffers to avoid gcc7 warnings
+* Upstream
+  - Remove \Seen flag setting for imap trash
+  - Change imap copy/save and trash to sync flags, excluding deleted
+  - Improve imap fetch handler to accept an initial UID
+  - Display an error message when delete mailbox fails
+  - Updated French translation
+  - Fix imap sync segfault due to inactive headers during an expunge
+  - Close the imap socket for the selected mailbox on error
+  - Add missing IMAP_CMD_POLL flag in imap buffy check
+  - Change maildir and mh check_mailbox to use dynamic sized hash
+  - Fix uses of context->changed as a counter
+  - Make cmd_parse_fetch() more precise about setting reopen/check flags
+  - Enable $reply_self for group-reply, even with $metoo unset
+
+2017-09-12  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - broken check on resend message
+  - crash in vfolder-from-query
+* Build
+  - Be more formal about quoting in m4 macros
+  - fix warnings raised by gcc7
+  - notmuch: add support for the v5 API
+
+2017-09-07  Richard Russon  <rich@flatcap.org>
+* Contrib
+  - Add guix build support
+* Bug Fixes
+  - Only match real mailboxes when looking for new mail
+  - Fix the printing of ncurses version in -v output
+  - Bind editor \<delete\> to delete-char
+  - Fix overflowing colours
+  - Fix empty In-Reply-To generation
+  - Trim trailing slash from completed dirs
+  - Add guix-neomutt.scm
+  - Fix setting custom query_type in notmuch query
+* Website
+  - New technical documentation LINK
+  - Improve Gentoo distro page
+* Build
+  - Better curses identification
+  - Use the system's wchar_t support
+  - Use the system's md5 tool (or equivalent)
+  - Clean up configure.ac
+  - Teach gen-map-doc about the new opcode header
+* Source
+  - Rename functions (snake_case)
+  - Rename constants/defines (UPPER_CASE)
+  - Create library of shared functions
+  - Much tidying
+  - Rename globals to match user config
+  - Drop unnecessary functions/macros
+  - Use a standard list implementation
+  - Coverity fixes
+  - Use explicit NUL for string terminators
+  - Drop OPS\* in favour of opcodes.h
+* Upstream
+  - Fix menu color calls to occur before positioning the cursor
+  - When guessing an attachment type, don't allow text/plain if there is a null character
+  - Add $imap_poll_timeout to allow mailbox polling to time out
+  - Handle error if REGCOMP in pager fails when resizing
+  - Change recvattach to allow nested encryption
+  - Fix attachment check_traditional and extract_keys operations
+  - Add edit-content-type helper and warning for decrypted attachments
+  - Add option to run command to query attachment mime type
+  - Add warning about using inline pgp with format=flowed
+
 2017-07-14  Richard Russon  <rich@flatcap.org>
 * Translations
   - Update German translation
@@ -647,7 +808,7 @@
   - Rework OpenSSL certificate verification to support alternative chains. (closes #3903)
   - Add option to control whether threads uncollapse when new mail arrives.
   - In the manual, replaced 2 para by example (similar to the first example).
-  - Create mbchar_table type for multibyte character arrays. (see #3024)
+  - Create MbTable type for multibyte character arrays. (see #3024)
   - Make to_chars and status_chars accept mulitibyte characters. (closes #3024)
 
 2016-11-26  Richard Russon  <rich@flatcap.org>
@@ -857,7 +1018,7 @@
 
 2016-09-10  Richard Russon  <rich@flatcap.org>
 * New Features
-  - Colouring Attachments with Regexp
+  - Colouring Attachments with Regex
     Guillaume Brogi
   - PGP Encrypt to Self
     Guillaume Brogi
@@ -921,7 +1082,7 @@
     Marco Hinz (mhinz)
 * Docs
   - Fix DocBook validation
-  - Document NotMuch queries
+  - Document Notmuch queries
 * Build
   - More Autoconf improvements
     Darshit Shah (darnir)
@@ -944,7 +1105,7 @@
   - Sidebar's inbox occasionally shows zero/wrong value
   - Fix crash opening a second compressed mailbox
 * Config
-  - Look for /etc/NeoMuttrc and ~/.neomuttrc
+  - Look for /etc/neomuttrc and ~/.neomuttrc
 * Docs
   - Fix broken links, typos
   - Update project link
@@ -1050,7 +1211,7 @@
 * Other Changes
   - Numerous small tweaks to the docs
   - Lots of minor code tidy-ups
-  - Enabling NotMuch now forcibly enables Sidebar
+  - Enabling Notmuch now forcibly enables Sidebar
     (it is dependent on it, for now)
   - A couple of bug fixes from mutt/stable
 

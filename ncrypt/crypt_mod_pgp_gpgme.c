@@ -66,9 +66,9 @@ static int crypt_mod_pgp_encrypted_handler(struct Body *m, struct State *s)
   return pgp_gpgme_encrypted_handler(m, s);
 }
 
-static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
+static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
-  return pgp_gpgme_check_traditional(fp, b, tagged_only);
+  return pgp_gpgme_check_traditional(fp, b, just_one);
 }
 
 static void crypt_mod_pgp_invoke_import(const char *fname)

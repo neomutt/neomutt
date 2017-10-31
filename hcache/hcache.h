@@ -29,6 +29,26 @@
  * This module defines the user-visible header cache API, which is used within
  * neomutt to cache and restore mail header data.
  *
+ * @note This library isn't completely independent.
+ * Dependencies:
+ * - \ref lib
+ * - Global variables
+ *   * Charset
+ *   * Charset_is_utf8
+ *   * HeaderCacheBackend
+ *   * HeaderCachePageSize
+ *   * Options
+ *   * SpamList
+ *   * NoSpamList
+ * - Neomutt functions
+ *   * mutt_convert_string()
+ *   * mutt_encode_path()
+ *   * mutt_new_body()
+ *   * mutt_new_envelope()
+ *   * mutt_sleep()
+ *   * mx_lock_file()
+ *   * mx_unlock_file()
+ *
  * @subpage hc_hcache
  *
  * Backends:

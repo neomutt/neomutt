@@ -22,22 +22,24 @@
 
 #include "config.h"
 #include <stddef.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
+#include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
@@ -54,41 +56,42 @@ static struct Menu **MenuStack = NULL;
 
 static int get_color(int index, unsigned char *s)
 {
-  struct ColorLine *color = NULL;
+  struct ColorLineHead *color = NULL;
+  struct ColorLine *np = NULL;
   struct Header *hdr = Context->hdrs[Context->v2r[index]];
   int type = *s;
 
   switch (type)
   {
     case MT_COLOR_INDEX_AUTHOR:
-      color = ColorIndexAuthorList;
+      color = &ColorIndexAuthorList;
       break;
     case MT_COLOR_INDEX_FLAGS:
-      color = ColorIndexFlagsList;
+      color = &ColorIndexFlagsList;
       break;
     case MT_COLOR_INDEX_SUBJECT:
-      color = ColorIndexSubjectList;
+      color = &ColorIndexSubjectList;
       break;
-#ifdef USE_NOTMUCH
     case MT_COLOR_INDEX_TAG:
-      for (color = ColorIndexTagList; color; color = color->next)
+      STAILQ_FOREACH(np, &ColorIndexTagList, entries)
       {
-        if (strncmp((const char *) (s + 1), color->pattern, strlen(color->pattern)) == 0)
-          return color->pair;
-        const char *transform = hash_find(TagTransforms, color->pattern);
+        if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
+          return np->pair;
+        const char *transform = hash_find(TagTransforms, np->pattern);
         if (transform &&
             (strncmp((const char *) (s + 1), transform, strlen(transform)) == 0))
-          return color->pair;
+          return np->pair;
       }
       return 0;
-#endif
     default:
       return ColorDefs[type];
   }
 
-  for (; color; color = color->next)
-    if (mutt_pattern_exec(color->color_pattern, MUTT_MATCH_FULL_ADDRESS, Context, hdr, NULL))
-      return color->pair;
+  STAILQ_FOREACH(np, color, entries)
+  {
+    if (mutt_pattern_exec(np->color_pattern, MUTT_MATCH_FULL_ADDRESS, Context, hdr, NULL))
+      return np->pair;
+  }
 
   return 0;
 }
@@ -288,7 +291,7 @@ static void menu_pad_string(struct Menu *menu, char *s, size_t n)
   int cols = menu->indexwin->cols - shift;
 
   mutt_simple_format(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_strlen(scratch), 1);
-  s[n - 1] = 0;
+  s[n - 1] = '\0';
   FREE(&scratch);
 }
 
@@ -430,7 +433,7 @@ void menu_redraw_motion(struct Menu *menu)
     print_enriched_string(menu->oldcurrent, old_color, (unsigned char *) buf, 1);
 
     /* now draw the new one to reflect the change */
-    cur_color = menu->color (menu->current);
+    cur_color = menu->color(menu->current);
     menu_make_entry(buf, sizeof(buf), menu, menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
     SETCOLOR(MT_COLOR_INDICATOR);
@@ -533,7 +536,7 @@ static void menu_jump(struct Menu *menu)
   if (menu->max)
   {
     mutt_unget_event(LastKey, 0);
-    buf[0] = 0;
+    buf[0] = '\0';
     if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
     {
       if (mutt_atoi(buf, &n) == 0 && n > 0 && n < menu->max + 1)
@@ -820,11 +823,9 @@ struct Menu *mutt_new_menu(int menu)
 
 void mutt_menu_destroy(struct Menu **p)
 {
-  int i;
-
   if ((*p)->dialog)
   {
-    for (i = 0; i < (*p)->max; i++)
+    for (int i = 0; i < (*p)->max; i++)
       FREE(&(*p)->dialog[i]);
 
     FREE(&(*p)->dialog);
@@ -1097,7 +1098,7 @@ int mutt_menu_loop(struct Menu *menu)
      * the prefix on a timeout (i==-2), but do clear on an abort (i==-1)
      */
     if (menu->tagprefix && i != OP_TAG_PREFIX && i != OP_TAG_PREFIX_COND && i != -2)
-      menu->tagprefix = 0;
+      menu->tagprefix = false;
 
     mutt_curs_set(0);
 
@@ -1133,14 +1134,14 @@ int mutt_menu_loop(struct Menu *menu)
     {
       if (menu->tagprefix)
       {
-        menu->tagprefix = 0;
+        menu->tagprefix = false;
         mutt_window_clearline(menu->messagewin, 0);
         continue;
       }
 
       if (menu->tagged)
       {
-        menu->tagprefix = 1;
+        menu->tagprefix = true;
         continue;
       }
       else if (i == OP_TAG_PREFIX)
@@ -1156,7 +1157,7 @@ int mutt_menu_loop(struct Menu *menu)
       }
     }
     else if (menu->tagged && option(OPT_AUTO_TAG))
-      menu->tagprefix = 1;
+      menu->tagprefix = true;
 
     mutt_curs_set(1);
 
@@ -1240,7 +1241,8 @@ int mutt_menu_loop(struct Menu *menu)
         if (menu->search && !menu->dialog) /* Searching dialogs won't work */
         {
           menu->oldcurrent = menu->current;
-          if ((menu->current = menu_search(menu, i)) != -1)
+          menu->current = menu_search(menu, i);
+          if (menu->current != -1)
             menu->redraw = REDRAW_MOTION;
           else
             menu->current = menu->oldcurrent;

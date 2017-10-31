@@ -21,8 +21,9 @@
  */
 
 #include "config.h"
-#include "crypt_mod.h"
 #include "lib/lib.h"
+#include "lib/queue.h"
+#include "crypt_mod.h"
 
 /**
  * struct CryptModule - A crypto plugin module
@@ -31,24 +32,20 @@
  */
 struct CryptModule
 {
-  crypt_module_specs_t specs;
-  struct CryptModule *next, **prevp;
+  struct CryptModuleSpecs *specs;
+  STAILQ_ENTRY(CryptModule) entries;
 };
-
-static struct CryptModule *modules;
+STAILQ_HEAD(CryptModules, CryptModule)
+modules = STAILQ_HEAD_INITIALIZER(modules);
 
 /**
  * crypto_module_register - Register a new crypto module
  */
-void crypto_module_register(crypt_module_specs_t specs)
+void crypto_module_register(struct CryptModuleSpecs *specs)
 {
-  struct CryptModule *module_new = safe_malloc(sizeof(*module_new));
-
-  module_new->specs = specs;
-  module_new->next = modules;
-  if (modules)
-    modules->prevp = &module_new->next;
-  modules = module_new;
+  struct CryptModule *module = safe_calloc(1, sizeof(struct CryptModule));
+  module->specs = specs;
+  STAILQ_INSERT_HEAD(&modules, module, entries);
 }
 
 /**
@@ -57,12 +54,15 @@ void crypto_module_register(crypt_module_specs_t specs)
  * Return the crypto module specs for IDENTIFIER.
  * This function is usually used via the CRYPT_MOD_CALL[_CHECK] macros.
  */
-crypt_module_specs_t crypto_module_lookup(int identifier)
+struct CryptModuleSpecs *crypto_module_lookup(int identifier)
 {
-  struct CryptModule *module = modules;
-
-  while (module && (module->specs->identifier != identifier))
-    module = module->next;
-
-  return module ? module->specs : NULL;
+  struct CryptModule *module = NULL;
+  STAILQ_FOREACH(module, &modules, entries)
+  {
+    if (module->specs->identifier == identifier)
+    {
+      return module->specs;
+    }
+  }
+  return NULL;
 }

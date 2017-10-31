@@ -22,7 +22,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--with-sasl \
 	--with-tokyocabinet
 
-SUBDIRS = m4 contrib imap ncrypt lib
+SUBDIRS = m4 contrib imap ncrypt lib conn
 
 if BUILD_HCACHE
 SUBDIRS += hcache
@@ -36,41 +36,42 @@ if BUILD_PO
 SUBDIRS += po
 endif
 
-bin_SCRIPTS = $(SMIMEAUX_TARGET)
+distdir = $(PACKAGE)-$(VERSION)
 
-distdir = neo$(PACKAGE)-$(VERSION)
+BUILT_SOURCES = conststrings.c git_ver.h
 
-BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
+bin_PROGRAMS = neomutt
 
-bin_PROGRAMS = mutt $(PGPAUX_TARGET)
-
-mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h attach.c \
-	bcache.c body.h browser.c buffy.c charset.c color.c \
+neomutt_SOURCES = mutt_account.c addrbook.c address.h alias.c alias.h attach.c \
+	bcache.c body.c body.h browser.c buffy.c charset.c color.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
 	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
-	envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
+	envelope.c envelope.h filter.c flags.c format_flags.h from.c group.c \
 	handler.c hdrline.c header.h headers.c help.c history.c hook.c \
-	init.c keymap.c list.h main.c mbox.c mbyte.c mbyte_table.h \
-	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
-	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
+	init.c keymap.c main.c mbox.c mbyte.c mbtable.h \
+	menu.c mh.c muttlib.c mutt_idna.c mutt_socket.c \
+	mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \
 	smtp.c sort.c state.c state.h status.c system.c thread.c thread.h url.c \
-	version.c where.h
+	version.c where.h mutt_tags.c
 
-nodist_mutt_SOURCES = $(BUILT_SOURCES)
+nodist_neomutt_SOURCES = $(BUILT_SOURCES)
 
 LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
+LIBCONN = -Lconn -lconn
+LIBCONNDEPS = $(top_srcdir)/conn/connection.h conn/libconn.a
+
 LIBMUTT = -Llib -lmutt
 LIBMUTTDEPS = $(top_srcdir)/lib/lib.h lib/libmutt.a
 
-mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
-	$(LIBIMAP) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
+neomutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
+	$(LIBIMAP) $(LIBCONN) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
 
-mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
+neomutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) $(LIBCONNDEPS) \
 	$(LIBMUTTDEPS) $(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
@@ -78,23 +79,21 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
-	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
+EXTRA_neomutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
+	mutt_lua.c mutt_notmuch.c \
 	remailer.c remailer.h resize.c url.h
 
 EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
-	COPYRIGHT filter.h functions.h gen_defs globals.h \
+	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
-	mapping.h mbyte.h mime.h mime.types mutt.h mutt_commands.h \
+	mbyte.h mime.h mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
-	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
-	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
-	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
-	pgpewrap.c pop.h protos.h queue.h README.md README.SSL remailer.c remailer.h \
+	mutt_options.h mutt_regex.h \
+	mutt_socket.h mx.h myvar.h nntp.h opcodes.h pager.h \
+	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
-	sort.h txt2c.c txt2c.sh version.h \
-	keymap_alldefs.h
+	sort.h txt2c.c txt2c.sh version.h mutt_tags.h
 
 EXTRA_SCRIPTS =
 
@@ -105,7 +104,7 @@ pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS) $(LIBMUTTDEPS)
 txt2c_SOURCES = txt2c.c
 txt2c_LDADD =
 
-noinst_PROGRAMS = txt2c
+noinst_PROGRAMS = txt2c $(PGPAUX_TARGET)
 
 conststrings.c: txt2c config.status
 	( \
@@ -121,7 +120,7 @@ conststrings.c: txt2c config.status
 		${srcdir}/txt2c.sh configure_options >> conststrings_c
 	mv -f conststrings_c conststrings.c
 
-CLEANFILES = keymap_alldefs.h $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 DISTCLEANFILES= txt2c
 
@@ -132,15 +131,7 @@ LDADD = $(LIBOBJS) $(INTLLIBS)
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 
-keymap_defs.h: $(OPS) $(srcdir)/gen_defs
-	$(srcdir)/gen_defs $(OPS) > $@
-
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs config.h
-	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
-		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
-		> $@
-
-git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
+git_ver.h: $(neomutt_SOURCES) $(SUBDIRS)
 	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
 	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
@@ -148,17 +139,22 @@ git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
-	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
-		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
+	-if test -n "$(SMIMEAUX_TARGET)"; then \
+		$(MKDIR_P) $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
+		for i in $(SMIMEAUX_TARGET); do \
+			$(INSTALL) -m 755 $$i $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
+		done \
+	fi
+	-if test -n "$(PGPAUX_TARGET)"; then \
+		$(MKDIR_P) $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
+		for i in $(PGPAUX_TARGET); do \
+			$(INSTALL) -m 755 $$i $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE); \
+		done \
 	fi
 
 uninstall-local:
-	for i in mime.types; do \
-		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
-			rm $(DESTDIR)$(sysconfdir)/$$i; \
-		fi; \
-		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
+	for i in smime_keys $(PGPAUX_TARGET); do \
+		rm -fr $(DESTDIR)$(exec_prefix)/lib/$(PACKAGE)/$$i; \
 	done
 
 distclean-local:

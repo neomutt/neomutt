@@ -23,12 +23,12 @@
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "lib/lib.h"
 #include "mutt_menu.h"
 #include "options.h"
 #include "pattern.h"
@@ -47,12 +47,10 @@ struct Score
   struct Score *next;
 };
 
-static struct Score *Score = NULL;
+static struct Score *ScoreList = NULL;
 
 void mutt_check_rescore(struct Context *ctx)
 {
-  int i;
-
   if (option(OPT_NEED_RESCORE) && option(OPT_SCORE))
   {
     if ((Sort & SORT_MASK) == SORT_SCORE || (SortAux & SORT_MASK) == SORT_SCORE)
@@ -66,7 +64,7 @@ void mutt_check_rescore(struct Context *ctx)
     mutt_set_menu_redraw_full(MENU_MAIN);
     mutt_set_menu_redraw_full(MENU_PAGER);
 
-    for (i = 0; ctx && i < ctx->msgcount; i++)
+    for (int i = 0; ctx && i < ctx->msgcount; i++)
     {
       mutt_score_message(ctx, ctx->hdrs[i], 1);
       ctx->hdrs[i]->pair = 0;
@@ -100,12 +98,13 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   /* look for an existing entry and update the value, else add it to the end
      of the list */
-  for (ptr = Score, last = NULL; ptr; last = ptr, ptr = ptr->next)
+  for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_strcmp(pattern, ptr->str) == 0)
       break;
   if (!ptr)
   {
-    if ((pat = mutt_pattern_comp(pattern, 0, err)) == NULL)
+    pat = mutt_pattern_comp(pattern, 0, err);
+    if (!pat)
     {
       FREE(&pattern);
       return -1;
@@ -114,7 +113,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (last)
       last->next = ptr;
     else
-      Score = ptr;
+      ScoreList = ptr;
     ptr->pat = pat;
     ptr->str = pattern;
   }
@@ -147,7 +146,7 @@ void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
 
   memset(&cache, 0, sizeof(cache));
   hdr->score = 0; /* in case of re-scoring */
-  for (tmp = Score; tmp; tmp = tmp->next)
+  for (tmp = ScoreList; tmp; tmp = tmp->next)
   {
     if (mutt_pattern_exec(tmp->pat, MUTT_MATCH_FULL_ADDRESS, NULL, hdr, &cache) > 0)
     {
@@ -180,25 +179,25 @@ int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
     mutt_extract_token(buf, s, 0);
     if (mutt_strcmp("*", buf->data) == 0)
     {
-      for (tmp = Score; tmp;)
+      for (tmp = ScoreList; tmp;)
       {
         last = tmp;
         tmp = tmp->next;
         mutt_pattern_free(&last->pat);
         FREE(&last);
       }
-      Score = NULL;
+      ScoreList = NULL;
     }
     else
     {
-      for (tmp = Score; tmp; last = tmp, tmp = tmp->next)
+      for (tmp = ScoreList; tmp; last = tmp, tmp = tmp->next)
       {
         if (mutt_strcmp(buf->data, tmp->str) == 0)
         {
           if (last)
             last->next = tmp->next;
           else
-            Score = tmp->next;
+            ScoreList = tmp->next;
           mutt_pattern_free(&tmp->pat);
           FREE(&tmp);
           /* there should only be one score per pattern, so we can stop here */

@@ -24,16 +24,16 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "lib/lib.h"
+#include "mutt.h"
 #include "address.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -65,7 +65,7 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
       mutt_format_s(dest, destlen, fmt, alias->name);
       break;
     case 'r':
-      adr[0] = 0;
+      adr[0] = '\0';
       rfc822_write_address(adr, sizeof(adr), alias->addr, 1);
       snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
       snprintf(dest, destlen, tmp, adr);
@@ -76,7 +76,7 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
       break;
     case 't':
       dest[0] = alias->tagged ? '*' : ' ';
-      dest[1] = 0;
+      dest[1] = '\0';
       break;
   }
 
@@ -85,9 +85,9 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
 
 static void alias_entry(char *s, size_t slen, struct Menu *m, int num)
 {
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(AliasFmt), alias_format_str,
-                    (unsigned long) ((struct Alias **) m->data)[num],
-                    MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(AliasFormat), alias_format_str,
+                      (unsigned long) ((struct Alias **) m->data)[num],
+                      MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int alias_tag(struct Menu *menu, int n, int m)

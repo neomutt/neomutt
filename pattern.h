@@ -50,7 +50,7 @@ struct Pattern
   struct Pattern *next;
   struct Pattern *child; /**< arguments to logical op */
   union {
-    regex_t *rx;
+    regex_t *regex;
     struct Group *g;
     char *str;
   } p;

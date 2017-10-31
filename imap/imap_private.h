@@ -21,16 +21,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_IMAP_PRIVATE_H
-#define _MUTT_IMAP_PRIVATE_H
+#ifndef _IMAP_PRIVATE_H
+#define _IMAP_PRIVATE_H
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
+#include "lib/list.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
-#include "list.h"
 
 struct Account;
 struct Buffer;
@@ -256,7 +256,7 @@ struct ImapData
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
-  /* all folder flags - system flags AND keywords */
+  /* all folder flags - system AND custom flags */
   struct ListHead flags;
 #ifdef USE_HCACHE
   header_cache_t *hcache;
@@ -269,7 +269,7 @@ struct ImapData
 int imap_check(struct ImapData *idata, int force);
 int imap_create_mailbox(struct ImapData *idata, char *mailbox);
 int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char *newname);
-struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create);
+struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, bool create);
 void imap_mboxcache_free(struct ImapData *idata);
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, int changed, int invert);
@@ -279,7 +279,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags);
 int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
-int imap_sync_message(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
+int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 
 /* auth.c */
@@ -289,18 +289,18 @@ int imap_authenticate(struct ImapData *idata);
 int imap_cmd_start(struct ImapData *idata, const char *cmd);
 int imap_cmd_step(struct ImapData *idata);
 void imap_cmd_finish(struct ImapData *idata);
-int imap_code(const char *s);
+bool imap_code(const char *s);
 const char *imap_cmd_trailer(struct ImapData *idata);
 int imap_exec(struct ImapData *idata, const char *cmd, int flags);
 int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
-void imap_add_keywords(char *s, struct Header *keywords, struct ListHead *mailbox_flags, size_t slen);
 void imap_free_header_data(struct ImapHeaderData **data);
 int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end);
-char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s);
+char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s, int *server_changes);
 int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);
+int imap_append_message(struct Context *ctx, struct Message *msg);
 
 int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno);
 int imap_close_message(struct Context *ctx, struct Message *msg);
@@ -325,21 +325,22 @@ int imap_get_literal_count(const char *buf, long *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
-time_t imap_parse_date(char *s);
-void imap_make_date(char *buf, time_t timestamp);
 void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path);
 void imap_quote_string(char *dest, size_t slen, const char *src);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
-int imap_wordcasecmp(const char *a, const char *b);
+int imap_account_match(const struct Account *a1, const struct Account *a2);
+void imap_get_parent(char *output, const char *mbox, size_t olen, char delim);
 
 /* utf7.c */
 void imap_utf_encode(struct ImapData *idata, char **s);
 void imap_utf_decode(struct ImapData *idata, char **s);
+void imap_allow_reopen(struct Context *ctx);
+void imap_disallow_reopen(struct Context *ctx);
 
 #ifdef USE_HCACHE
 #define imap_hcache_keylen mutt_strlen
 #endif /* USE_HCACHE */
 
-#endif /* _MUTT_IMAP_PRIVATE_H */
+#endif /* _IMAP_PRIVATE_H */

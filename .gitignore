@@ -4,11 +4,15 @@
 *.in
 tags
 
+# Autosetup's jimsh
+autosetup/jimsh0
+
 # Ignore these files in all subdirectories
 **/Makefile
 
 # Ignore directories
 **/.deps/
+**/*.Po
 autom4te.cache/
 .build-aux/
 
@@ -16,10 +20,7 @@ autom4te.cache/
 conststrings.c
 git_ver.h
 hcache/hcversion.h
-keymap_alldefs.h
-keymap_defs.h
-mutt
-mutt_md5
+neomutt
 pgpewrap
 pgpring
 txt2c
@@ -31,14 +32,15 @@ config.status
 stamp-h1
 
 # Ignored within subdirectories
-doc/mutt.1
+doc/neomutt.1
 doc/*.html
 doc/makedoc
 doc/manual.txt
 doc/manual.xml
-doc/Muttrc
-doc/muttrc.man
+doc/neomuttrc
+doc/neomuttrc.man
 po/*.gmo
+po/*.mo
 po/POTFILES
 po/stamp-po
 
@@ -88,5 +90,6 @@ po/quot.sed
 po/remove-potcdate.sed
 po/remove-potcdate.sin
 po/Rules-quot
+po/neomutt.pot
 
 html

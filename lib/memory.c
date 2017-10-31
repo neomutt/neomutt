@@ -36,7 +36,8 @@
  * | safe_realloc() | Resize a block of memory on the heap
  */
 
-#include <stdio.h>
+#include "config.h"
+#include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "memory.h"
@@ -61,7 +62,7 @@ void *safe_calloc(size_t nmemb, size_t size)
   if (!nmemb || !size)
     return NULL;
 
-  if (((size_t) -1) / nmemb <= size)
+  if (nmemb > (SIZE_MAX / size))
   {
     mutt_error(_("Integer overflow -- can't allocate memory!"));
     sleep(1);
@@ -109,9 +110,9 @@ void *safe_malloc(size_t size)
   void *p = NULL;
 
   if (size == 0)
-    return 0;
+    return NULL;
   p = malloc(size);
-  if (p == NULL)
+  if (!p)
   {
     mutt_error(_("Out of memory!"));
     sleep(1);

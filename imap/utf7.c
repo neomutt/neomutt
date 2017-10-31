@@ -20,15 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page imap_utf7 UTF-7 Manipulation
+ *
+ * Convert strings to/from utf7/utf8
+ *
+ * | Function           | Description
+ * | :----------------- | :-------------------------------------------------
+ * | imap_utf_decode()  | Decode email from UTF-8 to local charset
+ * | imap_utf_encode()  | Encode email from local charset to UTF-8
+ */
+
 #include "config.h"
 #include <string.h>
 #include "imap_private.h"
+#include "lib/lib.h"
 #include "charset.h"
 #include "globals.h"
-#include "lib/lib.h"
 
 // clang-format off
-/* This is very similar to the table in lib/lib_base64.c
+/**
+ * Index_64u - Lookup table for Base64 encoding/decoding
+ *
+ * This is very similar to the table in lib/lib_base64.c
  * Encoding chars:
  *   utf7 A-Za-z0-9+,
  *   mime A-Za-z0-9+/
@@ -45,6 +59,9 @@ const int Index_64u[128] = {
 };
 // clang-format on
 
+/**
+ * B64Chars - Characters of the Base64 encoding
+ */
 static const char B64Chars[64] = {
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -54,13 +71,20 @@ static const char B64Chars[64] = {
 };
 
 /**
- * utf7_to_utf8 - Convert the data (u7,u7len) from RFC2060's UTF-7 to UTF-8
+ * utf7_to_utf8 - Convert data from RFC2060's UTF-7 to UTF-8
+ * @param[in]  u7    UTF-7 data
+ * @param[in]  u7len Length of UTF-7 data
+ * @param[out] u8    Save the UTF-8 data pointer
+ * @param[out] u8len Save the UTF-8 data length
+ * @retval ptr  UTF-8 data
+ * @retval NULL Error
  *
- * The result is null-terminated and returned, and also stored in (*u8,*u8len)
- * if u8 or u8len is non-zero.  If input data is invalid, return 0 and don't
- * store anything.  RFC2060 obviously intends the encoding to be unique (see
- * point 5 in section 5.1.3), so we reject any non-canonical form, such as
- * &ACY- (instead of &-) or &AMA-&AMA- (instead of &AMAAwA-).
+ * RFC2060 obviously intends the encoding to be unique (see point 5 in section
+ * 5.1.3), so we reject any non-canonical form, such as &ACY- (instead of &-)
+ * or &AMA-&AMA- (instead of &AMAAwA-).
+ *
+ * @note The result is null-terminated.
+ * @note The caller must free() the returned data.
  */
 static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len)
 {
@@ -145,21 +169,28 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
 
 bail:
   FREE(&buf);
-  return 0;
+  return NULL;
 }
 
 /**
- * utf8_to_utf7 - Convert the data (u8,u8len) from UTF-8 to RFC2060's UTF-7
+ * utf8_to_utf7 - Convert data from UTF-8 to RFC2060's UTF-7
+ * @param[in]  u8    UTF-8 data
+ * @param[in]  u8len Length of UTF-8 data
+ * @param[out] u7    Save the UTF-7 data pointer
+ * @param[out] u7len Save the UTF-7 data length
+ * @retval ptr  UTF-7 data
+ * @retval NULL Error
  *
- * The result is null-terminated and returned, and also stored in (*u7,*u7len)
- * if u7 or u7len is non-zero.  Unicode characters above U+FFFF are replaced by
- * U+FFFE.  If input data is invalid, return 0 and don't store anything.
+ * Unicode characters above U+FFFF are replaced by U+FFFE.
+ *
+ * @note The result is null-terminated.
+ * @note The caller must free() the returned data.
  */
 static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len)
 {
   char *buf = NULL, *p = NULL;
   int ch;
-  int n, i, b = 0, k = 0;
+  int n, b = 0, k = 0;
   bool base64 = false;
 
   /*
@@ -211,7 +242,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     u8len--;
     if (n > u8len)
       goto bail;
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
       if ((u8[i] & 0xc0) != 0x80)
         goto bail;
@@ -278,9 +309,14 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
 
 bail:
   FREE(&buf);
-  return 0;
+  return NULL;
 }
 
+/**
+ * imap_utf_encode - Encode email from local charset to UTF-8
+ * @param idata Server data
+ * @param s     Email to convert
+ */
 void imap_utf_encode(struct ImapData *idata, char **s)
 {
   if (Charset)
@@ -298,6 +334,11 @@ void imap_utf_encode(struct ImapData *idata, char **s)
   }
 }
 
+/**
+ * imap_utf_decode - Decode email from UTF-8 to local charset
+ * @param[in]  idata Server data
+ * @param[out] s     Email to convert
+ */
 void imap_utf_decode(struct ImapData *idata, char **s)
 {
   char *t = NULL;

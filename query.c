@@ -21,13 +21,16 @@
  */
 
 #include "config.h"
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -37,12 +40,10 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
+#include "opcodes.h"
 #include "protos.h"
 #include "rfc822.h"
 
@@ -81,7 +82,8 @@ static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
 
-  if (!(tmp = rfc822_cpy_adr(r->addr, 0)))
+  tmp = rfc822_cpy_adr(r->addr, 0);
+  if (!tmp)
     return NULL;
 
   if (!tmp->next && !tmp->personal)
@@ -123,9 +125,10 @@ static struct Query *run_query(char *s, int quiet)
   char *p = NULL;
   pid_t thepid;
 
-  mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCmd, s);
+  mutt_expand_file_fmt(cmd, sizeof(cmd), QueryCommand, s);
 
-  if ((thepid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
+  thepid = mutt_create_filter(cmd, NULL, &fp, NULL);
+  if (thepid < 0)
   {
     mutt_debug(1, "unable to fork command: %s\n", cmd);
     return 0;
@@ -258,7 +261,7 @@ static void query_entry(char *s, size_t slen, struct Menu *m, int num)
 
   entry->data->num = num;
   mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
-                    query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
+                      query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int query_tag(struct Menu *menu, int n, int m)
@@ -503,7 +506,7 @@ int mutt_query_complete(char *buf, size_t buflen)
   struct Query *results = NULL;
   struct Address *tmpa = NULL;
 
-  if (!QueryCmd)
+  if (!QueryCommand)
   {
     mutt_error(_("Query command not defined."));
     return 0;
@@ -532,7 +535,7 @@ int mutt_query_complete(char *buf, size_t buflen)
 
 void mutt_query_menu(char *buf, size_t buflen)
 {
-  if (!QueryCmd)
+  if (!QueryCommand)
   {
     mutt_error(_("Query command not defined."));
     return;

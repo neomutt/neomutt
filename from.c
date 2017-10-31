@@ -26,35 +26,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "globals.h"
 #include "lib/lib.h"
+#include "globals.h"
 #include "protos.h"
-
-static const char *next_word(const char *s)
-{
-  while (*s && !ISSPACE(*s))
-    s++;
-  SKIPWS(s);
-  return s;
-}
-
-int mutt_check_month(const char *s)
-{
-  for (int i = 0; i < 12; i++)
-    if (mutt_strncasecmp(s, Months[i], 3) == 0)
-      return i;
-  return -1; /* error */
-}
-
-static bool is_day_name(const char *s)
-{
-  if ((strlen(s) < 3) || !*(s + 3) || !ISSPACE(*(s + 3)))
-    return false;
-  for (int i = 0; i < 7; i++)
-    if (mutt_strncasecmp(s, Weekdays[i], 3) == 0)
-      return true;
-  return false;
-}
 
 /*
  * A valid message separator looks like:
@@ -67,7 +41,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   int yr;
 
   if (path)
-    *path = 0;
+    *path = '\0';
 
   if (mutt_strncmp("From ", s, 5) != 0)
     return 0;
@@ -119,7 +93,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       if (len + 1 > pathlen)
         len = pathlen - 1;
       memcpy(path, s, len);
-      path[len] = 0;
+      path[len] = '\0';
       mutt_debug(3, "is_from(): got return path: %s\n", path);
     }
 
@@ -151,7 +125,8 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   }
 
   /* now we should be on the month. */
-  if ((tm.tm_mon = mutt_check_month(s)) < 0)
+  tm.tm_mon = mutt_check_month(s);
+  if (tm.tm_mon < 0)
     return 0;
 
   /* day */
@@ -159,6 +134,8 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   if (!*s)
     return 0;
   if (sscanf(s, "%d", &tm.tm_mday) != 1)
+    return 0;
+  if ((tm.tm_mday < 1) || (tm.tm_mday > 31))
     return 0;
 
   /* time */
@@ -172,6 +149,10 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   else if (sscanf(s, "%d:%d", &tm.tm_hour, &tm.tm_min) == 2)
     tm.tm_sec = 0;
   else
+    return 0;
+
+  if ((tm.tm_hour < 0) || (tm.tm_hour > 23) || (tm.tm_min < 0) ||
+      (tm.tm_min > 59) || (tm.tm_sec < 0) || (tm.tm_sec > 60))
     return 0;
 
   s = next_word(s);
@@ -199,6 +180,8 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 
   /* year */
   if (sscanf(s, "%d", &yr) != 1)
+    return 0;
+  if ((yr < 0) || (yr > 9999))
     return 0;
   tm.tm_year = yr > 1900 ? yr - 1900 : (yr < 70 ? yr + 100 : yr);
 

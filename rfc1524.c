@@ -35,11 +35,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "rfc1524.h"
 #include "body.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
@@ -53,7 +53,7 @@
  * %{parameter} is replaced by the parameter value from the content-type field
  * \% is %
  * Unsupported rfc1524 parameters: these would probably require some doing
- * by mutt, and can probably just be done by piping the message to metamail
+ * by neomutt, and can probably just be done by piping the message to metamail
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  *
@@ -202,11 +202,13 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
    */
 
   /* find length of basetype */
-  if ((ch = strchr(type, '/')) == NULL)
+  ch = strchr(type, '/');
+  if (!ch)
     return false;
   btlen = ch - type;
 
-  if ((fp = fopen(filename, "r")) != NULL)
+  fp = fopen(filename, "r");
+  if (fp)
   {
     while (!found && (buf = mutt_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
     {
@@ -406,7 +408,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
    * joy.  They say
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
-   * we'll make it specifiable in .muttrc
+   * we'll make it specifiable in .neomuttrc
    */
   if (!curr || !*curr)
   {
@@ -441,13 +443,6 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
     mutt_error(_("mailcap entry for type %s not found"), type);
 
   return found;
-}
-
-static void strnfcpy(char *d, char *s, size_t siz, size_t len)
-{
-  if (len > siz)
-    len = siz - 1;
-  strfcpy(d, s, len);
 }
 
 /**
@@ -495,7 +490,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
   }
   else if (!oldfile)
   {
-    mutt_expand_fmt(newfile, nflen, nametemplate, "mutt");
+    mutt_expand_fmt(newfile, nflen, nametemplate, "neomutt");
   }
   else /* oldfile && nametemplate */
   {
@@ -577,38 +572,4 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
     return 0;
   else
     return 1;
-}
-
-/* If rfc1524_expand_command() is used on a recv'd message, then
- * the filename doesn't exist yet, but if it's used while sending a message,
- * then we need to rename the existing file.
- *
- * This function returns 0 on successful move, 1 on old file doesn't exist,
- * 2 on new file already exists, and 3 on other failure.
- */
-
-/* note on access(2) use: No dangling symlink problems here due to
- * safe_fopen().
- */
-
-int mutt_rename_file(char *oldfile, char *newfile)
-{
-  FILE *ofp = NULL, *nfp = NULL;
-
-  if (access(oldfile, F_OK) != 0)
-    return 1;
-  if (access(newfile, F_OK) == 0)
-    return 2;
-  if ((ofp = fopen(oldfile, "r")) == NULL)
-    return 3;
-  if ((nfp = safe_fopen(newfile, "w")) == NULL)
-  {
-    safe_fclose(&ofp);
-    return 3;
-  }
-  mutt_copy_stream(ofp, nfp);
-  safe_fclose(&nfp);
-  safe_fclose(&ofp);
-  mutt_unlink(oldfile);
-  return 0;
 }

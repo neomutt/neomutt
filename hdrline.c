@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -38,10 +39,10 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "mutt_tags.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -72,16 +73,16 @@ enum FlagChars
 
 bool mutt_is_mail_list(struct Address *addr)
 {
-  if (!mutt_match_rx_list(addr->mailbox, UnMailLists))
-    return mutt_match_rx_list(addr->mailbox, MailLists);
+  if (!mutt_match_regex_list(addr->mailbox, UnMailLists))
+    return mutt_match_regex_list(addr->mailbox, MailLists);
   return false;
 }
 
 bool mutt_is_subscribed_list(struct Address *addr)
 {
-  if (!mutt_match_rx_list(addr->mailbox, UnMailLists) &&
-      !mutt_match_rx_list(addr->mailbox, UnSubscribedLists))
-    return mutt_match_rx_list(addr->mailbox, SubscribedLists);
+  if (!mutt_match_regex_list(addr->mailbox, UnMailLists) &&
+      !mutt_match_regex_list(addr->mailbox, UnSubscribedLists))
+    return mutt_match_regex_list(addr->mailbox, SubscribedLists);
   return false;
 }
 
@@ -173,7 +174,7 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
     buflen -= len;
   }
 
-  if (buflen < 2)
+  if (buflen <= 2)
     return 0;
 
   buf[0] = MUTT_SPECIAL_INDEX;
@@ -205,7 +206,7 @@ enum FieldType
  * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
  */
-static char *get_nth_wchar(struct MbCharTable *table, int index)
+static char *get_nth_wchar(struct MbTable *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";
@@ -442,14 +443,26 @@ static char *apply_subject_mods(struct Envelope *env)
   if (!env)
     return NULL;
 
-  if (!SubjectRxList)
+  if (!SubjectRegexList)
     return env->subject;
 
   if (env->subject == NULL || *env->subject == '\0')
     return env->disp_subj = NULL;
 
-  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
+  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRegexList);
   return env->disp_subj;
+}
+
+static bool thread_is_new(struct Context *ctx, struct Header *hdr)
+{
+  return (hdr->collapsed && (hdr->num_hidden > 1) &&
+          (mutt_thread_contains_unread(ctx, hdr) == 1));
+}
+
+static bool thread_is_old(struct Context *ctx, struct Header *hdr)
+{
+  return (hdr->collapsed && (hdr->num_hidden > 1) &&
+          (mutt_thread_contains_unread(ctx, hdr) == 2));
 }
 
 /**
@@ -469,9 +482,11 @@ static char *apply_subject_mods(struct Envelope *env)
  * | \%E     | number of messages in current thread
  * | \%f     | entire from line
  * | \%F     | like %n, unless from self
- * | \%g     | message labels (e.g. notmuch tags)
+ * | \%g     | message tags (e.g. notmuch tags/imap flags)
+ * | \%Gx    | individual message tag (e.g. notmuch tags/imap flags)
  * | \%i     | message-id
  * | \%I     | initials of author
+ * | \%J     | message tags (if present, tree unfolded, and != parent's tags)
  * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
  * | \%l     | number of lines in the message
  * | \%L     | like %F, except `lists' are displayed first
@@ -507,18 +522,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
   struct Context *ctx = NULL;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], *p, *tags = NULL;
   char *wch = NULL;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
-#define THREAD_NEW                                                             \
-  (threads && hdr->collapsed && hdr->num_hidden > 1 &&                         \
-   mutt_thread_contains_unread(ctx, hdr) == 1)
-#define THREAD_OLD                                                             \
-  (threads && hdr->collapsed && hdr->num_hidden > 1 &&                         \
-   mutt_thread_contains_unread(ctx, hdr) == 2)
   size_t len;
   size_t colorlen;
 
@@ -719,7 +728,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         p = dest;
 
-        cp = (op == 'd' || op == 'D') ? (NONULL(DateFmt)) : src;
+        cp = (op == 'd' || op == 'D') ? (NONULL(DateFormat)) : src;
         if (*cp == '!')
         {
           do_locales = 0;
@@ -837,22 +846,20 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         optional = 0;
       break;
 
-#ifdef USE_NOTMUCH
     case 'g':
+      tags = driver_tags_get_transformed(&hdr->tags);
       if (!optional)
       {
         colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      nm_header_get_tags_transformed(hdr));
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
         add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!nm_header_get_tags_transformed(hdr))
+      else if (!tags)
         optional = 0;
+      FREE(&tags);
       break;
 
-    case 'G':
-    {
-      char *tag_transformed = NULL;
+    case 'G':;
       char format[3];
       char *tag = NULL;
 
@@ -865,14 +872,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         tag = hash_find(TagFormats, format);
         if (tag)
         {
-          tag_transformed = nm_header_get_tag_transformed(tag, hdr);
-
+          tags = driver_tags_get_transformed_for(tag, &hdr->tags);
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                        (tag_transformed) ? tag_transformed : "");
+          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
           add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          FREE(&tags);
         }
-
         src++;
       }
       else
@@ -883,12 +888,14 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         tag = hash_find(TagFormats, format);
         if (tag)
-          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
+        {
+          tags = driver_tags_get_transformed_for(tag, &hdr->tags);
+          if (!tags)
             optional = 0;
+          FREE(&tags);
+        }
       }
       break;
-    }
-#endif
 
     case 'H':
       /* (Hormel) spam score */
@@ -904,6 +911,40 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'i':
       mutt_format_s(dest, destlen, prefix,
                     hdr->env->message_id ? hdr->env->message_id : "<no.id>");
+      break;
+
+    case 'J':
+      tags = driver_tags_get_transformed(&hdr->tags);
+      if (tags)
+      {
+        i = 1; /* reduce reuse recycle */
+        if (flags & MUTT_FORMAT_TREE)
+        {
+          char *parent_tags = NULL;
+          if (hdr->thread->prev && hdr->thread->prev->message)
+            parent_tags =
+                driver_tags_get_transformed(&hdr->thread->prev->message->tags);
+          if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
+            parent_tags =
+                driver_tags_get_transformed(&hdr->thread->parent->message->tags);
+          if (parent_tags && mutt_strcasecmp(tags, parent_tags) == 0)
+            i = 0;
+          FREE(&parent_tags);
+        }
+      }
+      else
+        i = 0;
+
+      if (optional)
+        optional = i;
+
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
+      if (i)
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
+      else
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
+      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      FREE(&tags);
       break;
 
     case 'l':
@@ -1034,7 +1075,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       char *subj = NULL;
       if (hdr->env->disp_subj)
         subj = hdr->env->disp_subj;
-      else if (SubjectRxList)
+      else if (SubjectRegexList)
         subj = apply_subject_mods(hdr->env);
       else
         subj = hdr->env->subject;
@@ -1212,9 +1253,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           ch = get_nth_wchar(FlagChars, FlagCharDeleted);
         else if (hdr->attach_del)
           ch = get_nth_wchar(FlagChars, FlagCharDeletedAttach);
-        else if (THREAD_NEW)
+        else if (threads && thread_is_new(ctx, hdr))
           ch = get_nth_wchar(FlagChars, FlagCharNewThread);
-        else if (THREAD_OLD)
+        else if (threads && thread_is_old(ctx, hdr))
           ch = get_nth_wchar(FlagChars, FlagCharOldThread);
         else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
         {
@@ -1276,9 +1317,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     {
       /* New/Old for threads; replied; New/Old for messages */
       char *first = NULL;
-      if (THREAD_NEW)
+      if (threads && thread_is_new(ctx, hdr))
         first = get_nth_wchar(FlagChars, FlagCharNewThread);
-      else if (THREAD_OLD)
+      else if (threads && thread_is_old(ctx, hdr))
         first = get_nth_wchar(FlagChars, FlagCharOldThread);
       else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
       {
@@ -1336,14 +1377,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
   if (optional)
     mutt_expando_format(dest, destlen, col, cols, ifstring, hdr_format_str,
-                      (unsigned long) hfi, flags);
+                        (unsigned long) hfi, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_expando_format(dest, destlen, col, cols, elsestring, hdr_format_str,
-                      (unsigned long) hfi, flags);
+                        (unsigned long) hfi, flags);
 
   return src;
-#undef THREAD_NEW
-#undef THREAD_OLD
 }
 
 void _mutt_make_string(char *dest, size_t destlen, const char *s,
@@ -1355,8 +1394,8 @@ void _mutt_make_string(char *dest, size_t destlen, const char *s,
   hfi.ctx = ctx;
   hfi.pager_progress = 0;
 
-  mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s, hdr_format_str,
-                    (unsigned long) &hfi, flags);
+  mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s,
+                      hdr_format_str, (unsigned long) &hfi, flags);
 }
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,

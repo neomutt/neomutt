@@ -28,12 +28,11 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "url.h"
 #include "envelope.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "mapping.h"
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
@@ -91,37 +90,101 @@ enum UrlScheme url_check_scheme(const char *s)
   for (t = sbuf; *t; t++)
     *t = tolower(*t);
 
-  if ((i = mutt_getvaluebyname(sbuf, UrlMap)) == -1)
+  i = mutt_getvaluebyname(sbuf, UrlMap);
+  if (i == -1)
     return U_UNKNOWN;
   else
     return (enum UrlScheme) i;
 }
 
+static int parse_query_string(struct Url *u, char *src)
+{
+  struct UrlQueryString *qs = NULL;
+  char *k = NULL, *v = NULL;
+
+  while (src && *src)
+  {
+    qs = safe_calloc(1, sizeof(struct UrlQueryString));
+    if ((k = strchr(src, '&')))
+      *k = '\0';
+
+    if ((v = strchr(src, '=')))
+    {
+      *v = '\0';
+      qs->value = v + 1;
+      if (url_pct_decode(qs->value) < 0)
+      {
+        FREE(&qs);
+        return -1;
+      }
+    }
+    qs->name = src;
+    if (url_pct_decode(qs->name) < 0)
+    {
+      FREE(&qs);
+      return -1;
+    }
+    STAILQ_INSERT_TAIL(&u->query_strings, qs, entries);
+
+    if (!k)
+      break;
+    src = k + 1;
+  }
+  return 0;
+}
+
 /**
- * ciss_parse_userhost - fill in components of ciss with info from src
+ * url_parse - Fill in Url
+ * @param u   Url where the result is stored
+ * @param src String to parse
+ * @retval 0  String is valid
+ * @retval -1 String is invalid
  *
- * Note: These are pointers into src, which is altered with '\0's.
- *       Port of 0 means no port given.
+ * char* elements are pointers into src, which is modified by this call
+ * (duplicate it first if you need to).
+ *
+ * This method doesn't allocated any additional char* of the Url and
+ * UrlQueryString structs.
+ *
+ * To free Url, caller must free "src" and call url_free()
  */
-static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
+int url_parse(struct Url *u, char *src)
 {
   char *t = NULL, *p = NULL;
 
-  ciss->user = NULL;
-  ciss->pass = NULL;
-  ciss->host = NULL;
-  ciss->port = 0;
+  u->scheme = url_check_scheme(src);
+  if (u->scheme == U_UNKNOWN)
+    return -1;
+
+  src = strchr(src, ':') + 1;
+
+  u->user = NULL;
+  u->pass = NULL;
+  u->host = NULL;
+  u->port = 0;
+  u->path = NULL;
+  STAILQ_INIT(&u->query_strings);
 
   if (strncmp(src, "//", 2) != 0)
   {
-    ciss->path = src;
-    return url_pct_decode(ciss->path);
+    u->path = src;
+    return url_pct_decode(u->path);
   }
 
   src += 2;
 
-  if ((ciss->path = strchr(src, '/')))
-    *ciss->path++ = '\0';
+  if ((t = strchr(src, '?')))
+  {
+    *t++ = '\0';
+    if (parse_query_string(u, t) < 0)
+      goto err;
+  }
+
+  if ((u->path = strchr(src, '/')))
+    *u->path++ = '\0';
+
+  if (u->path && url_pct_decode(u->path) < 0)
+    goto err;
 
   if ((t = strrchr(src, '@')))
   {
@@ -129,13 +192,13 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
     if ((p = strchr(src, ':')))
     {
       *p = '\0';
-      ciss->pass = p + 1;
-      if (url_pct_decode(ciss->pass) < 0)
-        return -1;
+      u->pass = p + 1;
+      if (url_pct_decode(u->pass) < 0)
+        goto err;
     }
-    ciss->user = src;
-    if (url_pct_decode(ciss->user) < 0)
-      return -1;
+    u->user = src;
+    if (url_pct_decode(u->user) < 0)
+      goto err;
     src = t + 1;
   }
 
@@ -155,35 +218,44 @@ static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
     int num;
     *p++ = '\0';
     if (mutt_atoi(p, &num) < 0 || num < 0 || num > 0xffff)
-      return -1;
-    ciss->port = (unsigned short) num;
+      goto err;
+    u->port = (unsigned short) num;
   }
   else
-    ciss->port = 0;
+    u->port = 0;
 
-  ciss->host = src;
-  return url_pct_decode(ciss->host) >= 0 &&
-                 (!ciss->path || url_pct_decode(ciss->path) >= 0) ?
-             0 :
-             -1;
+  if (mutt_strlen(src) != 0)
+  {
+    u->host = src;
+    if (url_pct_decode(u->host) < 0)
+      goto err;
+  }
+  else if (u->path)
+  {
+    /* No host are provided, we restore the / because this is absolute path */
+    u->path = src;
+    *src++ = '/';
+  }
+
+  return 0;
+
+err:
+  url_free(u);
+  return -1;
 }
 
-/**
- * url_parse_ciss - Fill in CissUrl
- *
- * char* elements are pointers into src, which is modified by this call
- * (duplicate it first if you need to).
- */
-int url_parse_ciss(struct CissUrl *ciss, char *src)
+void url_free(struct Url *u)
 {
-  char *tmp = NULL;
-
-  if ((ciss->scheme = url_check_scheme(src)) == U_UNKNOWN)
-    return -1;
-
-  tmp = strchr(src, ':') + 1;
-
-  return ciss_parse_userhost(ciss, tmp);
+  struct UrlQueryString *np = STAILQ_FIRST(&u->query_strings), *next = NULL;
+  while (np)
+  {
+    next = STAILQ_NEXT(np, entries);
+    /* NOTE(sileht): We don't free members, they will be freed when
+     * the src char* passed to url_parse() is freed */
+    FREE(&np);
+    np = next;
+  }
+  STAILQ_INIT(&u->query_strings);
 }
 
 void url_pct_encode(char *dst, size_t l, const char *src)
@@ -208,58 +280,58 @@ void url_pct_encode(char *dst, size_t l, const char *src)
 }
 
 /**
- * url_ciss_tostring - output the URL string for a given CISS object
+ * url_tostring - output the URL string for a given Url object
  */
-int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags)
+int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 {
   long l;
 
-  if (ciss->scheme == U_UNKNOWN)
+  if (u->scheme == U_UNKNOWN)
     return -1;
 
-  snprintf(dest, len, "%s:", mutt_getnamebyvalue(ciss->scheme, UrlMap));
+  snprintf(dest, len, "%s:", mutt_getnamebyvalue(u->scheme, UrlMap));
 
-  if (ciss->host)
+  if (u->host)
   {
     if (!(flags & U_PATH))
       safe_strcat(dest, len, "//");
     len -= (l = strlen(dest));
     dest += l;
 
-    if (ciss->user && (ciss->user[0] || !(flags & U_PATH)))
+    if (u->user && (u->user[0] || !(flags & U_PATH)))
     {
-      char u[STRING];
-      url_pct_encode(u, sizeof(u), ciss->user);
+      char str[STRING];
+      url_pct_encode(str, sizeof(str), u->user);
 
-      if (flags & U_DECODE_PASSWD && ciss->pass)
+      if (flags & U_DECODE_PASSWD && u->pass)
       {
         char p[STRING];
-        url_pct_encode(p, sizeof(p), ciss->pass);
-        snprintf(dest, len, "%s:%s@", u, p);
+        url_pct_encode(p, sizeof(p), u->pass);
+        snprintf(dest, len, "%s:%s@", str, p);
       }
       else
-        snprintf(dest, len, "%s@", u);
+        snprintf(dest, len, "%s@", str);
 
       len -= (l = strlen(dest));
       dest += l;
     }
 
-    if (strchr(ciss->host, ':'))
-      snprintf(dest, len, "[%s]", ciss->host);
+    if (strchr(u->host, ':'))
+      snprintf(dest, len, "[%s]", u->host);
     else
-      snprintf(dest, len, "%s", ciss->host);
+      snprintf(dest, len, "%s", u->host);
 
     len -= (l = strlen(dest));
     dest += l;
 
-    if (ciss->port)
-      snprintf(dest, len, ":%hu/", ciss->port);
+    if (u->port)
+      snprintf(dest, len, ":%hu/", u->port);
     else
       snprintf(dest, len, "/");
   }
 
-  if (ciss->path)
-    safe_strcat(dest, len, ciss->path);
+  if (u->path)
+    safe_strcat(dest, len, u->path);
 
   return 0;
 }
@@ -273,11 +345,13 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   int rc = -1;
 
-  if (!(t = strchr(src, ':')))
+  t = strchr(src, ':');
+  if (!t)
     return -1;
 
   /* copy string for safe use of strtok() */
-  if ((tmp = safe_strdup(t + 1)) == NULL)
+  tmp = safe_strdup(t + 1);
+  if (!tmp)
     return -1;
 
   if ((headers = strchr(tmp, '?')))
@@ -302,7 +376,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
     if (url_pct_decode(value) < 0)
       goto out;
 
-    /* Determine if this header field is on the allowed list.  Since Mutt
+    /* Determine if this header field is on the allowed list.  Since NeoMutt
      * interprets some header fields specially (such as
      * "Attach: ~/.gnupg/secring.gpg"), care must be taken to ensure that
      * only safe fields are allowed.

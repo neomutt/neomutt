@@ -25,8 +25,8 @@
  *
  * Each source file in the library provides a group of related functions.
  *
- * The library is self-contained -- some files may depend on others in the
- * library, but none depends on source from outside.
+ * @note The library is self-contained -- some files may depend on others in
+ *       the library, but none depends on source from outside.
  *
  * -# @subpage base64
  * -# @subpage buffer
@@ -35,6 +35,8 @@
  * -# @subpage exit
  * -# @subpage file
  * -# @subpage hash
+ * -# @subpage list
+ * -# @subpage mapping
  * -# @subpage md5
  * -# @subpage memory
  * -# @subpage message
@@ -52,6 +54,8 @@
 #include "exit.h"
 #include "file.h"
 #include "hash.h"
+#include "list.h"
+#include "mapping.h"
 #include "md5.h"
 #include "memory.h"
 #include "message.h"

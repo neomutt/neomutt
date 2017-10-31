@@ -23,20 +23,9 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include "rfc822.h"
 #include "lib/lib.h"
+#include "rfc822.h"
 #include "mutt_idna.h"
-
-#define terminate_string(a, b, c)                                              \
-  do                                                                           \
-  {                                                                            \
-    if ((b) < (c))                                                             \
-      a[(b)] = 0;                                                              \
-    else                                                                       \
-      a[(c)] = 0;                                                              \
-  } while (0)
-
-#define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 
 const char RFC822Specials[] = "@.,:;<>[]\\\"()";
 #define is_special(x) strchr(RFC822Specials, x)
@@ -48,28 +37,6 @@ const char *const RFC822Errors[] = {
   "out of memory",   "mismatched parenthesis", "mismatched quotes",
   "bad route in <>", "bad address in <>",      "bad address spec",
 };
-
-void rfc822_dequote_comment(char *s)
-{
-  char *w = s;
-
-  for (; *s; s++)
-  {
-    if (*s == '\\')
-    {
-      if (!*++s)
-        break; /* error? */
-      *w++ = *s;
-    }
-    else if (*s != '\"')
-    {
-      if (w != s)
-        *w = *s;
-      w++;
-    }
-  }
-  *w = 0;
-}
 
 static void free_address(struct Address *a)
 {
@@ -386,7 +353,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     {
       if (commentlen && commentlen < sizeof(comment) - 1)
         comment[commentlen++] = ' ';
-      if ((ps = next_token(s, comment, &commentlen, sizeof(comment) - 1)) == NULL)
+      ps = next_token(s, comment, &commentlen, sizeof(comment) - 1);
+      if (!ps)
       {
         rfc822_free_address(&top);
         return NULL;
@@ -397,7 +365,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     {
       if (phraselen && phraselen < sizeof(phrase) - 1)
         phrase[phraselen++] = ' ';
-      if ((ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1)) == NULL)
+      ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
+      if (!ps)
       {
         rfc822_free_address(&top);
         return NULL;
@@ -452,7 +421,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       cur = rfc822_new_address();
       if (phraselen)
         cur->personal = safe_strdup(phrase);
-      if ((ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur)) == NULL)
+      ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur);
+      if (!ps)
       {
         rfc822_free_address(&top);
         rfc822_free_address(&cur);
@@ -473,7 +443,8 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     {
       if (phraselen && phraselen < sizeof(phrase) - 1 && ws_pending)
         phrase[phraselen++] = ' ';
-      if ((ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1)) == NULL)
+      ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
+      if (!ps)
       {
         rfc822_free_address(&top);
         return NULL;

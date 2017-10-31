@@ -4,13 +4,17 @@ dnl     autoreconf -i
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], [20170714], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
+AC_INIT([NeoMutt], [20171027], [neomutt-devel@neomutt.org], [neomutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
-AC_DEFINE(MUTT_VERSION, "1.8.3", [Version of upstream Mutt])
+dnl AC_DEFINE_SUBST(NAME, VALUE, DESCRIPTION)
+AC_DEFUN([AC_DEFINE_SUBST], [
+	AC_DEFINE([$1], [$2], [$3])
+	AC_SUBST([$1], ['$2'])
+])
 
 AC_USE_SYSTEM_EXTENSIONS
 
@@ -36,12 +40,7 @@ if test "$CC" = "gcc"; then
 	CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
 fi
 
-CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
-
-AC_SEARCH_LIBS([strerror],[cposix])
-if test "x$U" != "x"; then
-	AC_MSG_ERROR(Compiler not ANSI compliant)
-fi
+CFLAGS="-Wall -pedantic $CFLAGS"
 
 AC_PROG_CPP
 AC_PROG_MAKE_SET
@@ -75,9 +74,6 @@ AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
 	[Some systems declare sig_atomic_t as volatile, some others -- no.
 	This define will have value `sig_atomic_t' or
 	`volatile sig_atomic_t' accordingly.])
-AH_TEMPLATE([ICONV_NONTRANS],
-	[Define as 1 if iconv() only converts exactly and we should treat
-	all return values other than (size_t)(-1) as equivalent.])
 
 AH_BOTTOM([/* fseeko portability defines */
 #define LOFF_T off_t
@@ -91,8 +87,6 @@ AH_BOTTOM([/* fseeko portability defines */
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
 AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on your system.])
-
-OPS='$(srcdir)/OPS $(srcdir)/OPS.SIDEBAR'
 
 dnl Define the option to enable everything before any feature / option is declared
 dnl This is important because it allows us to set a default value for the options
@@ -169,7 +163,32 @@ AC_ARG_ENABLE(notmuch,
 
 AC_ARG_WITH(mixmaster,
 	AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
-	[alongwith_mixmaster=$withval], [alongwith_mixmaster=no])
+	[with_mixmaster=$withval], [with_mixmaster=no])
+
+AC_ARG_WITH(slang,
+	AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
+	[with_slang=$withval], [with_slang=no])
+
+AC_ARG_WITH(curses,
+	AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
+	[with_curses=$withval], [with_curses=no])
+
+AC_ARG_WITH(homespool,
+	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user home where new mail is spooled]),
+	[with_homespool=${withval}], [with_homespool=no])
+
+AC_ARG_WITH(mailpath,
+	AS_HELP_STRING([--with-mailpath=DIR],[Directory where spool mailboxes are located]),
+	[with_mailpath=$withval], [with_mailpath=/var/mail])
+
+AC_ARG_WITH(docdir,
+	AS_HELP_STRING([--with-docdir=PATH],[Specify where to put the documentation]),
+	[mutt_cv_docdir=$withval],
+	[mutt_cv_docdir='${datarootdir}/doc/neomutt'])
+
+AC_ARG_WITH(domain,
+	AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS domain name]),
+	[with_domain=$withval],[with_domain=no])
 
 dnl == End of Features and Options Definitions ==
 
@@ -199,7 +218,7 @@ AS_IF([test x$use_pgp != "xno"], [
 dnl --enable-smime
 AS_IF([test x$use_smime != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	SMIMEAUX_TARGET='$(top_srcdir)/contrib/smime_keys'
+	SMIMEAUX_TARGET='$(srcdir)/contrib/smime_keys'
 	build_ncrypt_smime="yes"
 ])
 
@@ -227,12 +246,12 @@ AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. 
 
 dnl --enable-lua
 AS_IF([test x$use_lua = "xyes"], [
-	AX_PROG_LUA([5.2],[],:,enable_lua=no)
-	AX_LUA_HEADERS(:,enable_lua=no)
-	AX_LUA_LIBS(:,enable_lua=no)
+	AX_PROG_LUA([5.2],[],:,use_lua=no)
+	AX_LUA_HEADERS(:,use_lua=no)
+	AX_LUA_LIBS(:,use_lua=no)
 ])
 
-AS_IF([test x$enable_lua = "xyes"], [
+AS_IF([test x$use_lua = "xyes"], [
 	AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_lua.o"
 	CPPFLAGS="$CPPFLAGS $LUA_INCLUDE"
@@ -246,7 +265,6 @@ AS_IF([test x$use_notmuch = "xyes"], [
 	AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_notmuch.o"
 	LIBS="$LIBS -lnotmuch"
-	OPS="$OPS \$(srcdir)/OPS.NOTMUCH"
 
 	AC_MSG_CHECKING([for notmuch api version 3])
 	AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
@@ -262,30 +280,23 @@ AS_IF([test x$use_notmuch = "xyes"], [
 ])
 
 dnl --with-mixmaster
-AS_IF([test "$alongwith_mixmaster" != "no"], [
-	AS_IF([test -x "$alongwith_mixmaster"], [MIXMASTER="$alongwith_mixmaster"], [MIXMASTER="mixmaster"])
-	OPS="$OPS \$(srcdir)/OPS.MIX"
+AS_IF([test "$with_mixmaster" != "no"], [
+	AS_IF([test -x "$with_mixmaster"], [MIXMASTER="$with_mixmaster"], [MIXMASTER="mixmaster"])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
 	AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
 ])
-
-# We now require all OPS
-OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
-AC_SUBST([OPS])
 
 AC_SUBST(PGPAUX_TARGET)
 AC_SUBST(SMIMEAUX_TARGET)
 
 AC_PATH_PROG(ISPELL, ispell, no)
 if test $ISPELL != no; then
-	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
+	AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[Where to find ispell on your system.])
 fi
 
-want_slang=no
-AC_ARG_WITH(slang, AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
-	[want_slang=$withval])
-if test $want_slang != no; then
-	withval=$want_slang
+dnl --with-slang
+if test $with_slang != no; then
+	withval=$with_slang
 	AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
 		[AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <sys/param.h>
@@ -345,16 +356,19 @@ main ()
 		[LIBS="$LIBS -lslang -lm"],
 		[AC_MSG_ERROR(unable to compile.  check config.log)], -lm)
 else
+dnl --- ncurses
+	dnl Please note that --with-slang=no --with-curses=no will result in
+	dnl configure trying to locate curses at /no/include first. The mutual
+	dnl exclusion of slang and curses and the requirement that one (and only
+	dnl one) is chosen could be improved.
+	if test x$with_curses != xyes -a x$with_curses != xno; then
+		mutt_cv_curses=$withval
+	fi
+	if test x$mutt_cv_curses != x/usr -a x$mutt_cv_curses != x; then
+		LDFLAGS="$LDFLAGS -L${mutt_cv_curses}/lib"
+		CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
+	fi
 	mutt_cv_curses=/usr
-	AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
-		[if test x$withval != xyes; then
-			mutt_cv_curses=$withval
-		fi
-		if test x$mutt_cv_curses != x/usr; then
-			LDFLAGS="$LDFLAGS -L${mutt_cv_curses}/lib"
-			CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
-		fi])
-
 	AC_CHECK_FUNC(initscr,,[
 		cf_ncurses=""
 		for lib in ncursesw ncurses curses
@@ -372,13 +386,16 @@ else
 
 			AC_CHECK_HEADERS(ncursesw/ncurses.h,
 				[cf_cv_ncurses_header="ncursesw/ncurses.h"],
-				AC_CHECK_HEADERS(ncurses/ncurses.h,
+				[AC_CHECK_HEADERS(ncurses/ncurses.h,
 					[cf_cv_ncurses_header="ncurses/ncurses.h"],
-					AC_CHECK_HEADERS(ncurses.h,
+					[AC_CHECK_HEADERS(ncurses.h,
 						[cf_cv_ncurses_header="ncurses.h"],
-						AC_MSG_ERROR(Unable to find ncurses headers)
-					)
-				)
+						[AC_CHECK_HEADERS(curses.h,
+							[cf_cv_ncurses_header="curses.h"],
+							[AC_MSG_ERROR([Unable to find ncurses headers])]
+						])
+					])
+				])
 			)
 		],)
 	])
@@ -422,23 +439,18 @@ AC_REPLACE_FUNCS([wcscasecmp])
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)
 
-AC_ARG_WITH(homespool,
-	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user's directory where new mail is spooled]), with_homespool=${withval})
-
-if test x$with_homespool != x; then
+if test $with_homespool != no; then
 	if test $with_homespool = yes; then
 		with_homespool=mailbox
 	fi
 	AC_DEFINE_UNQUOTED(MAILPATH,"$with_homespool",[ Where new mail is spooled. ])
 	AC_DEFINE(HOMESPOOL,1,
-		[Is mail spooled to the user's home directory?  If defined,
-		MAILPATH should be set to the filename of the spool mailbox
-		relative the the home directory.
+		[Is mail spooled to the user home directory?  If defined, MAILPATH
+		 should be set to the filename of the spool mailbox relative the the
+		 home directory.
 		use: configure --with-homespool=FILE])
 else
-	AC_ARG_WITH(mailpath, AS_HELP_STRING([--with-mailpath=DIR],[Directory where spool mailboxes are located]),
-		[mutt_cv_mailpath=$withval], [mutt_cv_mailpath=/var/mail])
-	AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
+	AC_DEFINE_UNQUOTED(MAILPATH,"$with_mailpath",[ Where new mail is spooled. ])
 fi
 
 dnl autoconf <2.60 compatibility
@@ -448,21 +460,15 @@ fi
 AC_SUBST([datarootdir])
 
 AC_MSG_CHECKING(where to put the documentation)
-AC_ARG_WITH(docdir, AS_HELP_STRING([--with-docdir=PATH],[Specify where to put the documentation]),
-	[mutt_cv_docdir=$withval],
-	[mutt_cv_docdir='${datarootdir}/doc/mutt'])
 AC_MSG_RESULT($mutt_cv_docdir)
 if test -z "$docdir" -o -n "$with_docdir"; then
 	docdir=$mutt_cv_docdir
 fi
 AC_SUBST(docdir)
 
-AC_ARG_WITH(domain, AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS domain name]),
-	[if test $withval != yes; then
-		if test $withval != no; then
-			AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[ Define your domain name. ])
-		fi
-	fi])
+if test $with_domain != yes -a $with_domain != no; then
+	AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[Define your domain name.])
+fi
 
 dnl -- socket dependencies --
 
@@ -526,10 +532,10 @@ AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support usi
 
 		AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
 		AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
 		need_ssl=yes
 	fi
 ])
+AM_CONDITIONAL(USE_SSL_OPENSSL, test x$need_ssl = xyes)
 
 AC_ARG_WITH([gnutls], AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[enable TLS support using gnutls]),
 	[gnutls_prefix="$withval"], [gnutls_prefix="no"])
@@ -557,10 +563,10 @@ if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
 		AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
 		AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
 
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
-		need_ssl=yes],
+		need_tls=yes],
 		[AC_MSG_ERROR([could not find libgnutls])])
 fi
+AM_CONDITIONAL(USE_SSL_GNUTLS, test x$need_tls = xyes)
 
 AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network security library]),
 	[
@@ -574,8 +580,6 @@ AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network sec
 		sasl_libs="sasl2 sasl"
 		AC_SEARCH_LIBS(sasl_encode64, [$sasl_libs],,
 			AC_MSG_ERROR([could not find sasl lib]),)
-
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
 
 		AC_DEFINE(USE_SASL,1,
 			[ Define if want to use the SASL library for POP/IMAP authentication. ])
@@ -837,7 +841,7 @@ AM_GNU_GETTEXT([external])
 
 AM_ICONV
 if test "$am_cv_func_iconv" != yes; then
-    AC_MSG_ERROR([An iconv implementation is required])
+	AC_MSG_ERROR([An iconv implementation is required])
 fi
 
 AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for internationalized domain names]),
@@ -852,29 +856,29 @@ AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for int
 		[with_idn=auto])
 
 if test "x$with_idn" != "xno"; then
-    dnl Solaris 11 has /usr/include/idn
-    have_stringprep_h=no
-    AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
-                have_stringprep_h=yes
-                break])
-    have_idna_h=no
-    AC_CHECK_HEADERS([idna.h idn/idna.h], [
-                have_idna_h=yes
-                break])
+	dnl Solaris 11 has /usr/include/idn
+	have_stringprep_h=no
+	AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
+		have_stringprep_h=yes
+		break])
+	have_idna_h=no
+	AC_CHECK_HEADERS([idna.h idn/idna.h], [
+		have_idna_h=yes
+		break])
 
-    AC_SEARCH_LIBS([stringprep_check_version], [idn], [
-        AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
+	AC_SEARCH_LIBS([stringprep_check_version], [idn], [
+		AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
 
-        LIBS="$LIBS $LIBICONV"
-        AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-        AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-        AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
-    ])
+		LIBS="$LIBS $LIBICONV"
+		AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+		AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+		AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+	])
 
-    if test "$with_idn" != auto; then
-        if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
-            AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
-        fi
+	if test "$with_idn" != auto; then
+		if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
+			AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
+		fi
 	fi
 fi
 
@@ -942,7 +946,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile lib/Makefile)
+	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile lib/Makefile conn/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

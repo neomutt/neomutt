@@ -27,15 +27,15 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "enter_state.h"
 #include "globals.h"
 #include "history.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 
@@ -219,7 +219,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
  */
 static inline int is_shell_char(wchar_t ch)
 {
-  static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in Mutt */
+  static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in NeoMutt */
   return wcschr(shell_chars, ch) != NULL;
 }
 
@@ -350,7 +350,8 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
     }
     mutt_refresh();
 
-    if ((ch = km_dokey(MENU_EDITOR)) < 0)
+    ch = km_dokey(MENU_EDITOR);
+    if (ch < 0)
     {
       rv = (SigWinch && ch == -2) ? 1 : -1;
       goto bye;
@@ -705,7 +706,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
               {
                 mutt_pretty_mailbox(buf, buflen);
                 if (!pass)
-                  mutt_history_add(hclass, buf, 1);
+                  mutt_history_add(hclass, buf, true);
                 rv = 0;
                 goto bye;
               }
@@ -824,7 +825,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
         /* Convert from wide characters */
         my_wcstombs(buf, buflen, state->wbuf, state->lastchar);
         if (!pass)
-          mutt_history_add(hclass, buf, 1);
+          mutt_history_add(hclass, buf, true);
 
         if (multiple)
         {

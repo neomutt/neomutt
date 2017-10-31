@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "thread.h"
 #include "body.h"
@@ -32,14 +33,14 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
 
-#define VISIBLE(hdr, ctx)                                                      \
-  (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
+static bool is_visible(struct Header *hdr, struct Context *ctx)
+{
+  return (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)));
+}
 
 /**
  * is_descendant - Is one thread a descendant of another
@@ -75,7 +76,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
   for (tmp = tree->prev; tmp; tmp = tmp->prev)
   {
     hdr = tmp->message;
-    if (hdr && VISIBLE(hdr, ctx))
+    if (hdr && is_visible(hdr, ctx))
     {
       if (hdr->subject_changed)
         return 1;
@@ -91,7 +92,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
     hdr = tmp->message;
     if (hdr)
     {
-      if (VISIBLE(hdr, ctx))
+      if (is_visible(hdr, ctx))
         return 0;
       else if (hdr->subject_changed)
         return 1;
@@ -164,7 +165,7 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
     if (tree->message)
     {
       FREE(&tree->message->tree);
-      if (VISIBLE(tree->message, ctx))
+      if (is_visible(tree->message, ctx))
       {
         tree->deep = true;
         tree->visible = true;
@@ -388,7 +389,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
     if (dateptr)
     {
       thisdate = option(OPT_THREAD_RECEIVED) ? cur->message->received :
-                                             cur->message->date_sent;
+                                               cur->message->date_sent;
       if (!*dateptr || thisdate < *dateptr)
         *dateptr = thisdate;
     }
@@ -404,9 +405,9 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
           break;
       }
       if (!np)
-          mutt_list_insert_head(subjects, env->real_subj);
+        mutt_list_insert_head(subjects, env->real_subj);
       else if (rc > 0)
-          mutt_list_insert_after(subjects, np, env->real_subj);
+        mutt_list_insert_after(subjects, np, env->real_subj);
     }
 
     while (!cur->next && cur != start)
@@ -445,7 +446,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
           tmp->message->subject_changed && /* only match interesting replies */
           !is_descendant(tmp, cur) &&      /* don't match in the same thread */
           (date >= (option(OPT_THREAD_RECEIVED) ? tmp->message->received :
-                                                tmp->message->date_sent)) &&
+                                                  tmp->message->date_sent)) &&
           (!last || (option(OPT_THREAD_RECEIVED) ?
                          (last->message->received < tmp->message->received) :
                          (last->message->date_sent < tmp->message->date_sent))) &&
@@ -539,7 +540,8 @@ static void pseudo_threads(struct Context *ctx)
   {
     cur = tree;
     tree = tree->next;
-    if ((parent = find_subject(ctx, cur)) != NULL)
+    parent = find_subject(ctx, cur);
+    if (parent)
     {
       cur->fake_thread = true;
       unlink_message(&top, cur);
@@ -817,7 +819,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
 
     if (!cur->thread)
     {
-      if ((!init || option(OPT_DUP_THREADS)) && cur->env->message_id)
+      if ((!init || option(OPT_DUPLICATE_THREADS)) && cur->env->message_id)
         thread = hash_find(ctx->thread_hash, cur->env->message_id);
       else
         thread = NULL;
@@ -861,7 +863,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
       }
       else
       {
-        new = (option(OPT_DUP_THREADS) ? thread : NULL);
+        new = (option(OPT_DUPLICATE_THREADS) ? thread : NULL);
 
         thread = safe_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
@@ -918,7 +920,8 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (using_refs == 0)
       {
         /* look at the beginning of in-reply-to: */
-        if ((ref = STAILQ_FIRST(&cur->env->in_reply_to)) != NULL)
+        ref = STAILQ_FIRST(&cur->env->in_reply_to);
+        if (ref)
           using_refs = 1;
         else
         {
@@ -952,7 +955,8 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (!ref)
         break;
 
-      if ((new = hash_find(ctx->thread_hash, ref->data)) == NULL)
+      new = hash_find(ctx->thread_hash, ref->data);
+      if (!new)
       {
         new = safe_calloc(1, sizeof(struct MuttThread));
         hash_insert(ctx->thread_hash, ref->data, new);
@@ -1012,7 +1016,8 @@ static struct Header *find_virtual(struct MuttThread *cur, int reverse)
     return cur->message;
 
   top = cur;
-  if ((cur = cur->child) == NULL)
+  cur = cur->child;
+  if (!cur)
     return NULL;
 
   while (reverse && cur->next)
@@ -1126,7 +1131,8 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
 
   for (thread = hdr->thread->parent; thread; thread = thread->parent)
   {
-    if ((hdr = thread->message) != NULL)
+    hdr = thread->message;
+    if (hdr)
     {
       parent = hdr;
       if (!find_root)
@@ -1139,7 +1145,7 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
     mutt_error(_("Parent message is not available."));
     return -1;
   }
-  if (!VISIBLE(parent, ctx))
+  if (!is_visible(parent, ctx))
   {
     if (find_root)
       mutt_error(_("Root message is not visible in this limited view."));
@@ -1393,7 +1399,6 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
 
 static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
-  struct MuttThread *p = NULL;
   struct ListNode *ref = NULL;
   bool done = false;
 
@@ -1406,13 +1411,12 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       break; /* skip pseudo-message */
 
     /* Looking for the first bad reference according to the new threading.
-     * Optimal since Mutt stores the references in reverse order, and the
+     * Optimal since NeoMutt stores the references in reverse order, and the
      * first loop should match immediately for mails respecting RFC2822. */
-    for (p = brk; !done && p; p = p->parent)
+    for (struct MuttThread *p = brk; !done && p; p = p->parent)
     {
       for (ref = STAILQ_FIRST(&cur->message->env->references);
-           p->message && ref;
-           ref = STAILQ_NEXT(ref, entries))
+           p->message && ref; ref = STAILQ_NEXT(ref, entries))
       {
         if (mutt_strcasecmp(ref->data, p->message->env->message_id) == 0)
         {
@@ -1464,14 +1468,13 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
 
 int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *ctx)
 {
-  int i;
   bool changed = false;
 
   if (!last)
   {
-    for (i = 0; i < ctx->vcount; i++)
-      if (ctx->hdrs[Context->v2r[i]]->tagged)
-        changed |= link_threads(cur, ctx->hdrs[Context->v2r[i]], ctx);
+    for (int i = 0; i < ctx->msgcount; i++)
+      if (message_is_tagged(ctx, i))
+        changed |= link_threads(cur, ctx->hdrs[i], ctx);
   }
   else
     changed = link_threads(cur, last, ctx);

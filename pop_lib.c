@@ -28,21 +28,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
-#include "account.h"
 #include "context.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
 #include "url.h"
-#ifdef USE_SSL
-#include "mutt_ssl.h"
-#endif
 
 /**
  * pop_parse_path - Parse a POP mailbox name
@@ -55,7 +53,7 @@
  */
 int pop_parse_path(const char *path, struct Account *acct)
 {
-  struct CissUrl url;
+  struct Url url;
   char *c = NULL;
   struct servent *service = NULL;
 
@@ -65,10 +63,12 @@ int pop_parse_path(const char *path, struct Account *acct)
   acct->port = 0;
 
   c = safe_strdup(path);
-  url_parse_ciss(&url, c);
+  url_parse(&url, c);
 
-  if ((url.scheme != U_POP && url.scheme != U_POPS) || mutt_account_fromurl(acct, &url) < 0)
+  if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host ||
+      mutt_account_fromurl(acct, &url) < 0)
   {
+    url_free(&url);
     FREE(&c);
     mutt_error(_("Invalid POP URL: %s\n"), path);
     mutt_sleep(1);
@@ -88,6 +88,7 @@ int pop_parse_path(const char *path, struct Account *acct)
     ;
   }
 
+  url_free(&url);
   FREE(&c);
   return 0;
 }
@@ -326,7 +327,8 @@ int pop_open_connection(struct PopData *pop_data)
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret = query_quadoption(OPT_SSL_START_TLS, _("Secure connection with TLS?"));
+      ret =
+          query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
       if (ret == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;
@@ -622,12 +624,10 @@ int pop_reconnect(struct Context *ctx)
     ret = pop_open_connection(pop_data);
     if (ret == 0)
     {
-      int i;
-
       mutt_progress_init(&progressbar, _("Verifying message indexes..."),
                          MUTT_PROGRESS_SIZE, NetInc, 0);
 
-      for (i = 0; i < ctx->msgcount; i++)
+      for (int i = 0; i < ctx->msgcount; i++)
         ctx->hdrs[i]->refno = -1;
 
       ret = pop_fetch_data(pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);

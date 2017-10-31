@@ -34,9 +34,9 @@
 
 #include "config.h"
 #include <stdio.h>
+#include "lib/lib.h"
 #include "crypt_mod.h"
 #include "globals.h"
-#include "lib/lib.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -189,10 +189,10 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
 /**
  * crypt_pgp_check_traditional - Check for a traditional PGP message in body B
  */
-int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
+int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
-    return (CRYPT_MOD_CALL(PGP, pgp_check_traditional))(fp, b, tagged_only);
+    return (CRYPT_MOD_CALL(PGP, pgp_check_traditional))(fp, b, just_one);
 
   return 0;
 }

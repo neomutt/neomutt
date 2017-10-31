@@ -27,7 +27,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <langinfo.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdarg.h>
@@ -39,15 +41,17 @@
 #include <termios.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mutt.h"
+#include "context.h"
 #include "enter_state.h"
 #include "globals.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
+#include "header.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
+#include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
@@ -107,7 +111,7 @@ void mutt_refresh(void)
  * Make sure that the next refresh does a full refresh.  This could be
  * optimized by not doing it at all if DISPLAY is set as this might indicate
  * that a GUI based pinentry was used.  Having an option to customize this is
- * of course the Mutt way.
+ * of course the NeoMutt way.
  */
 void mutt_need_hard_redraw(void)
 {
@@ -157,7 +161,7 @@ struct Event mutt_getch(void)
     return timeout;
   }
 
-  if ((ch & 0x80) && option(OPT_METAKEY))
+  if ((ch & 0x80) && option(OPT_META_KEY))
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
@@ -260,7 +264,7 @@ int mutt_yesorno(const char *msg, int def)
   int reno_ok;
   char answer[2];
 
-  answer[1] = 0;
+  answer[1] = '\0';
 
   reyes_ok = (expr = nl_langinfo(YESEXPR)) && expr[0] == '^' &&
              !REGCOMP(&reyes, expr, REG_NOSUB);
@@ -379,7 +383,7 @@ int mutt_yesorno(const char *msg, int def)
 }
 
 /**
- * mutt_query_exit - Ask the user if they want to leave Mutt
+ * mutt_query_exit - Ask the user if they want to leave NeoMutt
  *
  * This function is called when the user presses the abort key.
  */
@@ -389,7 +393,7 @@ void mutt_query_exit(void)
   curs_set(1);
   if (Timeout)
     timeout(-1); /* restore blocking operation */
-  if (mutt_yesorno(_("Exit Mutt?"), MUTT_YES) == MUTT_YES)
+  if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
   {
     endwin();
     exit(1);
@@ -530,7 +534,7 @@ static void message_bar(int percent, const char *fmt, ...)
       int off = mutt_wstr_trunc(buf2, sizeof(buf2), w, NULL);
 
       ch = buf2[off];
-      buf2[off] = 0;
+      buf2[off] = '\0';
       SETCOLOR(MT_COLOR_PROGRESS);
       addstr(buf2);
       buf2[off] = ch;
@@ -662,7 +666,7 @@ void mutt_reflow_windows(void)
       option(OPT_STATUS_ON_TOP) ? MuttStatusWindow->rows : MuttHelpWindow->rows;
 
 #ifdef USE_SIDEBAR
-  if (option(OPT_SIDEBAR))
+  if (option(OPT_SIDEBAR_VISIBLE))
   {
     memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
     MuttSidebarWindow->cols = SidebarWidth;
@@ -698,7 +702,7 @@ static void reflow_message_window_rows(int mw_rows)
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
 
 #ifdef USE_SIDEBAR
-  if (option(OPT_SIDEBAR))
+  if (option(OPT_SIDEBAR_VISIBLE))
     MuttSidebarWindow->rows = MuttIndexWindow->rows;
 #endif
 
@@ -738,7 +742,8 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
   va_list ap;
   int rv;
 
-  if ((rv = mutt_window_move(win, row, col) != ERR))
+  rv = mutt_window_move(win, row, col);
+  if (rv != ERR)
   {
     va_start(ap, fmt);
     rv = vw_printw(stdscr, fmt, ap);
@@ -914,7 +919,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
   else if (ch.ch == '?')
   {
     mutt_refresh();
-    buf[0] = 0;
+    buf[0] = '\0';
 
     if (!flags)
       flags = MUTT_SEL_FOLDER;
@@ -932,7 +937,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (_mutt_get_field(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                         multiple, files, numfiles) != 0)
-      buf[0] = 0;
+      buf[0] = '\0';
     FREE(&pc);
 #ifdef USE_NOTMUCH
     if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))
@@ -1457,4 +1462,33 @@ int mutt_strwidth(const char *s)
     w += wcwidth(wc);
   }
   return w;
+}
+
+/**
+ * message_is_visible - Is a message in the index within limit
+ * @param ctx   Open mailbox
+ * @param index Message ID (index into `ctx->hdrs[]`
+ * @retval bool True if the message is within limit
+ *
+ * If no limit is in effect, all the messages are visible.
+ */
+bool message_is_visible(struct Context *ctx, int index)
+{
+  if (!ctx || !ctx->hdrs || (index >= ctx->msgcount))
+    return false;
+
+  return !ctx->pattern || ctx->hdrs[index]->limited;
+}
+
+/**
+ * message_is_tagged - Is a message in the index tagged (and within limit)
+ * @param ctx   Open mailbox
+ * @param index Message ID (index into `ctx->hdrs[]`
+ * @retval bool True if the message is both tagged and within limit
+ *
+ * If a limit is in effect, the message must be visible within it.
+ */
+bool message_is_tagged(struct Context *ctx, int index)
+{
+  return message_is_visible(ctx, index) && ctx->hdrs[index]->tagged;
 }

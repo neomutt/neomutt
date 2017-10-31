@@ -23,7 +23,7 @@
 #ifndef _LIB_MEMORY_H
 #define _LIB_MEMORY_H
 
-#include <stdio.h>
+#include <stddef.h>
 
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -37,6 +37,13 @@
 #define _(a) (a)
 #define N_(a) a
 #endif
+
+#undef MAX
+#undef MIN
+#define MAX(a, b) ((a) < (b) ? (b) : (a))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
 void *safe_calloc(size_t nmemb, size_t size);
 void  safe_free(void *ptr);

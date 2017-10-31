@@ -1,0 +1,75 @@
+@if ENABLE_NLS
+
+MSGID_BUGS_ADDRESS = @BUGS_ADDRESS@
+GMSGFMT		= @MSGFMT@
+localedir 	= @MUTTLOCALEDIR@
+XGETTEXT 	= @XGETTEXT@
+XGETTEXT_OPTIONS= --keyword=_ --keyword=N_ --no-wrap --add-comments=L10N
+MSGMERGE 	= @MSGMERGE@
+MSGMERGE_UPDATE = @MSGMERGE@ --update
+
+MOFILES		=  po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
+		   po/en_GB.mo po/eo.mo po/es.mo po/et.mo po/eu.mo po/fr.mo \
+		   po/ga.mo po/gl.mo po/hu.mo po/id.mo po/it.mo po/ja.mo \
+		   po/ko.mo po/lt.mo po/nl.mo po/pl.mo po/pt_BR.mo po/ru.mo \
+		   po/sk.mo po/sv.mo po/tr.mo po/uk.mo po/zh_CN.mo po/zh_TW.mo
+POTFILE		= po/$(PACKAGE).pot
+
+all-po:	$(MOFILES)
+
+.SUFFIXES: .po .mo
+.po.mo:
+	$(GMSGFMT) -c -o $@ $<
+
+clean-po:
+	$(RM) $(MOFILES)
+	$(RM) $(POTFILE)
+	$(RM) po/*~
+
+install-po: all-po
+	@catalogs='$(MOFILES)'; \
+	for cat in $$catalogs; do \
+	  lang=`echo $$cat | sed -e 's/\.mo$$//' -e 's|^po/||'`; \
+	  dir=$(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
+	  $(MKDIR_P) $$dir; \
+	  $(INSTALL_DATA) $$cat $$dir/$(PACKAGE).mo; \
+	  echo "installing $$dir/$(PACKAGE).mo"; \
+	done
+
+uninstall-po:
+	@catalogs='$(MOFILES)'; \
+	for cat in $$catalogs; do \
+	  lang=`echo $$cat | sed -e 's/\.mo$$//' -e 's|^po/||'`; \
+	  dir=$(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
+	  $(RM) $$dir/$(PACKAGE).mo; \
+	  echo "removing $$dir/$(PACKAGE).mo"; \
+	done
+
+update-po: clean-po
+	$(MAKE) $(PACKAGE).pot-update
+	$(MAKE) all-po
+
+$(PACKAGE).pot-update:
+	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(SRCDIR) \
+	    $(XGETTEXT_OPTIONS)  \
+	    --files-from=po/POTFILES.in \
+	    --copyright-holder='$(COPYRIGHT_HOLDER)' \
+	    --package-name="$(PACKAGE)" \
+	    --package-version="$(PACKAGE_VERSION)" \
+	    --msgid-bugs-address="$(MSGID_BUGS_ADDRESS)" \
+	    --output=$(POTFILE)
+	@catalogs='$(MOFILES)'; \
+	for cat in $$catalogs; do \
+	  lang=`echo $$cat | sed -e 's/\.mo$$//'`; \
+	  echo "$(MSGMERGE_UPDATE) $${lang}.po $(POTFILE)"; \
+	  $(MSGMERGE_UPDATE) $${lang}.po $(POTFILE); \
+	done
+
+@else
+all-po:
+clean-po:
+install-po:
+uninstall-po:
+@endif
+
+# vim: set ts=8 noexpandtab:

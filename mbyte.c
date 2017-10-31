@@ -30,9 +30,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
+#include "lib/lib.h"
 #include "mbyte.h"
 #include "charset.h"
-#include "lib/lib.h"
 #include "options.h"
 #include "protos.h"
 
@@ -40,7 +40,7 @@
 #define EILSEQ EINVAL
 #endif
 
-int Charset_is_utf8 = 0;
+bool Charset_is_utf8 = false;
 
 void mutt_set_charset(char *charset)
 {
@@ -48,10 +48,10 @@ void mutt_set_charset(char *charset)
 
   mutt_canonical_charset(buffer, sizeof(buffer), charset);
 
-  Charset_is_utf8 = 0;
+  Charset_is_utf8 = false;
 
   if (mutt_is_utf8(buffer))
-    Charset_is_utf8 = 1;
+    Charset_is_utf8 = true;
 
 #if defined(HAVE_BIND_TEXTDOMAIN_CODESET) && defined(ENABLE_NLS)
   bind_textdomain_codeset(PACKAGE, buffer);
@@ -86,7 +86,8 @@ int mutt_filter_unprintable(char **s)
   char *p = *s;
   mbstate_t mbstate1, mbstate2;
 
-  if (!(b = mutt_buffer_new()))
+  b = mutt_buffer_new();
+  if (!b)
     return -1;
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));

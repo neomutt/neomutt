@@ -29,10 +29,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "bcache.h"
-#include "account.h"
-#include "globals.h"
 #include "lib/lib.h"
+#include "bcache.h"
+#include "globals.h"
+#include "mutt_account.h"
 #include "protos.h"
 #include "url.h"
 
@@ -49,21 +49,21 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 {
   char host[STRING];
   char path[_POSIX_PATH_MAX];
-  struct CissUrl url;
+  struct Url url;
   int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
     return -1;
 
-  /* make up a CissUrl we can turn into a string */
-  memset(&url, 0, sizeof(struct CissUrl));
+  /* make up a Url we can turn into a string */
+  memset(&url, 0, sizeof(struct Url));
   mutt_account_tourl(account, &url);
   /*
    * mutt_account_tourl() just sets up some pointers;
    * if this ever changes, we have a memleak here
    */
   url.path = NULL;
-  if (url_ciss_tostring(&url, host, sizeof(host), U_PATH) < 0)
+  if (url_tostring(&url, host, sizeof(host), U_PATH) < 0)
   {
     mutt_debug(1, "bcache_path: URL to string failed\n");
     return -1;
@@ -150,13 +150,19 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
   return fp;
 }
 
-FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp)
+FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 {
-  char path[_POSIX_PATH_MAX];
+  char path[LONG_STRING];
   struct stat sb;
 
   if (!id || !*id || !bcache)
     return NULL;
+
+  if (snprintf(path, sizeof(path), "%s%s%s", bcache->path, id, ".tmp") >= sizeof(path))
+  {
+    mutt_error(_("Path too long: %s%s%s"), bcache->path, id, ".tmp");
+    return NULL;
+  }
 
   if (stat(bcache->path, &sb) == 0)
   {
@@ -175,7 +181,6 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp)
     }
   }
 
-  snprintf(path, sizeof(path), "%s%s%s", bcache->path, id, tmp ? ".tmp" : "");
   mutt_debug(3, "bcache: put: '%s'\n", path);
 
   return safe_fopen(path, "w+");

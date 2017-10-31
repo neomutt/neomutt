@@ -22,12 +22,11 @@
 
 #include "config.h"
 #include <stdio.h>
+#include "lib/lib.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "lib/lib.h"
-#include "mapping.h"
-#include "mbyte_table.h"
+#include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -71,7 +70,7 @@ static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
  * | \%S     | current aux sorting method ($sort_aux)
  * | \%t     | # of tagged messages [option]
  * | \%u     | number of unread messages [option]
- * | \%v     | Mutt version
+ * | \%v     | NeoMutt version
  * | \%V     | currently active limit pattern [option]
  */
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
@@ -146,7 +145,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
     case 'h':
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(buf, buflen, fmt, NONULL(Hostname));
+      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l':
@@ -254,12 +253,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                      0);
       }
 
-      if (!StChars || !StChars->len)
+      if (!StatusChars || !StatusChars->len)
         buf[0] = 0;
-      else if (i >= StChars->len)
-        snprintf(buf, buflen, "%s", StChars->chars[0]);
+      else if (i >= StatusChars->len)
+        snprintf(buf, buflen, "%s", StatusChars->chars[0]);
       else
-        snprintf(buf, buflen, "%s", StChars->chars[i]);
+        snprintf(buf, buflen, "%s", StatusChars->chars[i]);
       break;
     }
 
@@ -328,12 +327,13 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
                               struct Menu *menu, const char *p)
 {
-  mutt_expando_format(buf, buflen, col, cols, p, status_format_str, (unsigned long) menu, 0);
+  mutt_expando_format(buf, buflen, col, cols, p, status_format_str,
+                      (unsigned long) menu, 0);
 }
 
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p)
 {
   mutt_expando_format(buf, buflen, 0,
-                    menu ? menu->statuswin->cols : MuttStatusWindow->cols, p,
-                    status_format_str, (unsigned long) menu, 0);
+                      menu ? menu->statuswin->cols : MuttStatusWindow->cols, p,
+                      status_format_str, (unsigned long) menu, 0);
 }

@@ -3,6 +3,9 @@
  * General purpose object for storing and parsing strings
  *
  * @authors
+ * Copyright (C) 2017 Ian Zimmerman <itz@primate.net>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -34,8 +37,11 @@ struct Buffer
   int destroy;  /**< destroy 'data' when done? */
 };
 
+#define MoreArgs(p) (*p->dptr && (*p->dptr != ';') && (*p->dptr != '#'))
+
 struct Buffer *mutt_buffer_new(void);
 struct Buffer *mutt_buffer_init(struct Buffer *b);
+void mutt_buffer_reset(struct Buffer *b);
 struct Buffer *mutt_buffer_from(char *seed);
 void mutt_buffer_free(struct Buffer **p);
 int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...);

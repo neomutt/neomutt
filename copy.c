@@ -25,6 +25,7 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "copy.h"
 #include "address.h"
@@ -33,12 +34,11 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "mutt_tags.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -83,7 +83,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       return -1;
 
   buf[0] = '\n';
-  buf[1] = 0;
+  buf[1] = '\0';
 
   if ((flags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX | CH_WEED_DELIVERED)) == 0)
   {
@@ -129,15 +129,6 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           continue;
 
         ignore = false;
-      }
-
-      if (flags & CH_UPDATE_LABEL)
-      {
-        if ((mutt_strncasecmp("X-Label:", buf, 8) == 0) ||
-            (mutt_strncasecmp("X-Keywords:", buf, 11) == 0) ||
-            (mutt_strncasecmp("X-Mozilla-Keys:", buf, 15) == 0) ||
-            (mutt_strncasecmp("Keywords:", buf, 9) == 0))
-          continue;
       }
 
       if (!ignore && fputs(buf, out) == EOF)
@@ -194,7 +185,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
               (this_one[this_one_len - 1] == '\n'))
           {
             this_one[this_one_len - 2] = '\n';
-            this_one[this_one_len - 1] = 0;
+            this_one[this_one_len - 1] = '\0';
           }
         }
 
@@ -464,20 +455,21 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
       fputs(buf, out);
       fputc('\n', out);
     }
-    char *tags = nm_header_get_tags(h);
-    if (tags && !(option(OPT_WEED) && mutt_matches_ignore("tags")))
-    {
-      fputs("Tags: ", out);
-      fputs(tags, out);
-      fputc('\n', out);
-    }
   }
 #endif
+  char *tags = driver_tags_get(&h->tags);
+  if (tags && !(option(OPT_WEED) && mutt_matches_ignore("tags")))
+  {
+    fputs("Tags: ", out);
+    fputs(tags, out);
+    fputc('\n', out);
+  }
+  FREE(&tags);
 
   if (flags & CH_UPDATE_LABEL)
   {
     h->xlabel_changed = false;
-    if (h->env->x_label != NULL)
+    if (h->env->x_label)
       if (fprintf(out, "X-Label: %s\n", h->env->x_label) != 10 + strlen(h->env->x_label))
         return -1;
   }
@@ -503,13 +495,12 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
-  long l;
   int ch;
 
   if (b->deleted)
   {
     fseeko(fp, b->offset, SEEK_SET);
-    for (l = b->length; l; l--)
+    for (long l = b->length; l; l--)
     {
       ch = getc(fp);
       if (ch == EOF)
@@ -520,7 +511,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
     dellines -= 3;
     *length -= b->length - (84 + datelen);
     /* Count the number of digits exceeding the first one to write the size */
-    for (l = 10; b->length >= l; l *= 10)
+    for (long l = 10; b->length >= l; l *= 10)
       (*length)++;
   }
   else
@@ -562,7 +553,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
     if (option(OPT_TEXT_FLOWED))
       strfcpy(prefix, ">", sizeof(prefix));
     else
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(Prefix), Context, hdr, 0);
+      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
   }
 
   if (hdr->xlabel_changed)
@@ -763,7 +754,8 @@ int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
   struct Message *msg = NULL;
   int r;
 
-  if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
+  msg = mx_open_message(src, hdr->msgno);
+  if (!msg)
     return -1;
   if ((r = _mutt_copy_message(fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 &&
       (ferror(fpout) || feof(fpout)))
@@ -800,7 +792,8 @@ static int _mutt_append_message(struct Context *dest, FILE *fpin,
   if (fgets(buf, sizeof(buf), fpin) == NULL)
     return -1;
 
-  if ((msg = mx_open_new_message(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
+  msg = mx_open_new_message(dest, hdr, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+  if (!msg)
     return -1;
   if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
@@ -824,7 +817,8 @@ int mutt_append_message(struct Context *dest, struct Context *src,
   struct Message *msg = NULL;
   int r;
 
-  if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
+  msg = mx_open_message(src, hdr->msgno);
+  if (!msg)
     return -1;
   r = _mutt_append_message(dest, msg->fp, src, hdr, hdr->content, cmflags, chflags);
   mx_close_message(src, &msg);
@@ -1025,7 +1019,8 @@ static int address_header_decode(char **h)
       return 0;
   }
 
-  if ((a = rfc822_parse_adrlist(a, s + l)) == NULL)
+  a = rfc822_parse_adrlist(a, s + l);
+  if (!a)
     return 0;
 
   mutt_addrlist_to_local(a);

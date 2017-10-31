@@ -43,7 +43,7 @@
 #define REDRAW_SIDEBAR        (1 << 8)
 #endif
 
-#define MUTT_MODEFMT "-- Mutt: %s"
+#define MUTT_MODEFMT "-- NeoMutt: %s"
 
 /**
  * struct Menu - GUI selectable list of items
@@ -59,7 +59,7 @@ struct Menu
   int menu;    /**< menu definition for keymap entries. */
   int offset;  /**< row offset within the window to start the index */
   int pagelen; /**< number of entries per screen */
-  int tagprefix;
+  bool tagprefix : 1;
   int is_mailbox_list;
   struct MuttWindow *indexwin;
   struct MuttWindow *statuswin;

@@ -28,6 +28,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "attach.h"
 #include "body.h"
@@ -36,11 +37,10 @@
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -137,7 +137,8 @@ int mutt_compose_attachment(struct Body *a)
         int r;
 
         mutt_endwin(NULL);
-        if ((r = mutt_system(command)) == -1)
+        r = mutt_system(command);
+        if (r == -1)
           mutt_error(_("Error running \"%s\"!"), command);
 
         if (r != -1 && entry->composetypecommand)
@@ -146,7 +147,8 @@ int mutt_compose_attachment(struct Body *a)
           FILE *fp = NULL, *tfp = NULL;
           char tempfile[_POSIX_PATH_MAX];
 
-          if ((fp = safe_fopen(a->filename, "r")) == NULL)
+          fp = safe_fopen(a->filename, "r");
+          if (!fp)
           {
             mutt_perror(_("Failure to open file to parse headers."));
             goto bailout;
@@ -178,7 +180,8 @@ int mutt_compose_attachment(struct Body *a)
              * copying the file back */
             fseeko(fp, b->offset, SEEK_SET);
             mutt_mktemp(tempfile, sizeof(tempfile));
-            if ((tfp = safe_fopen(tempfile, "w")) == NULL)
+            tfp = safe_fopen(tempfile, "w");
+            if (!tfp)
             {
               mutt_perror(_("Failure to open file to strip headers."));
               goto bailout;
@@ -319,7 +322,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
     {
       struct Body tmp = { 0 };
       int n;
-      if ((n = mutt_lookup_mime_type(&tmp, b->filename)) != TYPEOTHER)
+      n = mutt_lookup_mime_type(&tmp, b->filename);
+      if (n != TYPEOTHER)
       {
         snprintf(type, len, "%s/%s",
                  n == TYPEAUDIO ?
@@ -351,8 +355,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  * @param a      The message body containing the attachment
  * @param flag   Option flag for how the attachment should be viewed
  * @param hdr    Message header for the current message. Can be NULL
- * @param idx    Attachment
- * @param idxlen Number of attachments
+ * @param actx   Attachment context
  * @retval 0  If the viewer is run and exited succesfully
  * @retval -1 Error
  * @retval n  Return value of mutt_do_pager() when it is used
@@ -362,12 +365,12 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
  * Display a message attachment using the viewer program configured in mailcap.
  * If there is no mailcap entry for a file type, view the image as text.
  * Viewer processes are opened and waited on synchronously so viewing an
- * attachment this way will block the main mutt process until the viewer process
+ * attachment this way will block the main neomutt process until the viewer process
  * exits.
  *
  */
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
-                         struct AttachPtr **idx, short idxlen)
+                         struct AttachCtx *actx)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -606,8 +609,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     info.fp = fp;
     info.bdy = a;
     info.ctx = Context;
-    info.idx = idx;
-    info.idxlen = idxlen;
+    info.actx = actx;
     info.hdr = hdr;
 
     rc = mutt_do_pager(descrip, pagerfile,
@@ -649,11 +651,14 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
   int rv = 0;
 
   if (outfile && *outfile)
-    if ((out = safe_open(outfile, O_CREAT | O_EXCL | O_WRONLY)) < 0)
+  {
+    out = safe_open(outfile, O_CREAT | O_EXCL | O_WRONLY);
+    if (out < 0)
     {
       mutt_perror("open");
       return 0;
     }
+  }
 
   mutt_endwin(NULL);
 
@@ -688,7 +693,8 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
 
     FILE *ifp = NULL, *ofp = NULL;
 
-    if ((ifp = fopen(b->filename, "r")) == NULL)
+    ifp = fopen(b->filename, "r");
+    if (!ifp)
     {
       mutt_perror("fopen");
       if (outfile && *outfile)
@@ -780,7 +786,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
         return -1;
       if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)
         return -1;
-      if ((msg = mx_open_new_message(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
+      msg = mx_open_new_message(&ctx, hn, is_from(buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM);
+      if (!msg)
       {
         mx_close_mailbox(&ctx, NULL);
         return -1;
@@ -805,7 +812,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       struct State s;
 
       memset(&s, 0, sizeof(s));
-      if ((s.fpout = save_attachment_open(path, flags)) == NULL)
+      s.fpout = save_attachment_open(path, flags);
+      if (!s.fpout)
       {
         mutt_perror("fopen");
         mutt_sleep(2);
@@ -831,13 +839,15 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     FILE *ofp = NULL, *nfp = NULL;
 
-    if ((ofp = fopen(m->filename, "r")) == NULL)
+    ofp = fopen(m->filename, "r");
+    if (!ofp)
     {
       mutt_perror("fopen");
       return -1;
     }
 
-    if ((nfp = save_attachment_open(path, flags)) == NULL)
+    nfp = save_attachment_open(path, flags);
+    if (!nfp)
     {
       mutt_perror("fopen");
       safe_fclose(&ofp);
@@ -904,7 +914,8 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
       return -1;
     }
 
-    if ((s.fpin = fopen(m->filename, "r")) == NULL)
+    s.fpin = fopen(m->filename, "r");
+    if (!s.fpin)
     {
       mutt_perror("fopen");
       return -1;
@@ -1011,14 +1022,16 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     /* interactive program */
     if (piped)
     {
-      if ((ifp = fopen(newfile, "r")) == NULL)
+      ifp = fopen(newfile, "r");
+      if (!ifp)
       {
         mutt_perror("fopen");
         rfc1524_free_entry(&entry);
         return 0;
       }
 
-      if ((thepid = mutt_create_filter(command, &fpout, NULL, NULL)) < 0)
+      thepid = mutt_create_filter(command, &fpout, NULL, NULL);
+      if (thepid < 0)
       {
         mutt_perror(_("Can't create filter"));
         rfc1524_free_entry(&entry);
@@ -1049,7 +1062,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if ((mutt_strcasecmp("text/plain", type) == 0) ||
       (mutt_strcasecmp("application/postscript", type) == 0))
   {
-    return (mutt_pipe_attachment(fp, a, NONULL(PrintCmd), NULL));
+    return (mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL));
   }
   else if (mutt_can_decode(a))
   {
@@ -1065,7 +1078,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     {
       mutt_debug(2, "successfully decoded %s type attachment to %s\n", type, newfile);
 
-      if ((ifp = fopen(newfile, "r")) == NULL)
+      ifp = fopen(newfile, "r");
+      if (!ifp)
       {
         mutt_perror("fopen");
         goto bail0;
@@ -1074,7 +1088,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(2, "successfully opened %s read-only\n", newfile);
 
       mutt_endwin(NULL);
-      if ((thepid = mutt_create_filter(NONULL(PrintCmd), &fpout, NULL, NULL)) < 0)
+      thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL);
+      if (thepid < 0)
       {
         mutt_perror(_("Can't create filter"));
         goto bail0;
@@ -1091,7 +1106,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         mutt_any_key_to_continue(NULL);
       rc = 1;
     }
-bail0:
+  bail0:
     safe_fclose(&ifp);
     safe_fclose(&fpout);
     mutt_unlink(newfile);
@@ -1102,4 +1117,89 @@ bail0:
     mutt_error(_("I don't know how to print that!"));
     return 0;
   }
+}
+
+void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
+{
+  int i;
+
+  if (actx->idxlen == actx->idxmax)
+  {
+    actx->idxmax += 5;
+    safe_realloc(&actx->idx, sizeof(struct AttachPtr *) * actx->idxmax);
+    safe_realloc(&actx->v2r, sizeof(short) * actx->idxmax);
+    for (i = actx->idxlen; i < actx->idxmax; i++)
+      actx->idx[i] = NULL;
+  }
+
+  actx->idx[actx->idxlen++] = attach;
+}
+
+void mutt_actx_add_fp(struct AttachCtx *actx, FILE *new_fp)
+{
+  int i;
+
+  if (actx->fp_len == actx->fp_max)
+  {
+    actx->fp_max += 5;
+    safe_realloc(&actx->fp_idx, sizeof(FILE *) * actx->fp_max);
+    for (i = actx->fp_len; i < actx->fp_max; i++)
+      actx->fp_idx[i] = NULL;
+  }
+
+  actx->fp_idx[actx->fp_len++] = new_fp;
+}
+
+void mutt_actx_add_body(struct AttachCtx *actx, struct Body *new_body)
+{
+  int i;
+
+  if (actx->body_len == actx->body_max)
+  {
+    actx->body_max += 5;
+    safe_realloc(&actx->body_idx, sizeof(struct Body *) * actx->body_max);
+    for (i = actx->body_len; i < actx->body_max; i++)
+      actx->body_idx[i] = NULL;
+  }
+
+  actx->body_idx[actx->body_len++] = new_body;
+}
+
+void mutt_actx_free_entries(struct AttachCtx *actx)
+{
+  int i;
+
+  for (i = 0; i < actx->idxlen; i++)
+  {
+    if (actx->idx[i]->content)
+      actx->idx[i]->content->aptr = NULL;
+    FREE(&actx->idx[i]->tree);
+    FREE(&actx->idx[i]);
+  }
+  actx->idxlen = 0;
+  actx->vcount = 0;
+
+  for (i = 0; i < actx->fp_len; i++)
+    safe_fclose(&actx->fp_idx[i]);
+  actx->fp_len = 0;
+
+  for (i = 0; i < actx->body_len; i++)
+    mutt_free_body(&actx->body_idx[i]);
+  actx->body_len = 0;
+}
+
+void mutt_free_attach_context(struct AttachCtx **pactx)
+{
+  struct AttachCtx *actx = NULL;
+
+  if (!pactx || !*pactx)
+    return;
+
+  actx = *pactx;
+  mutt_actx_free_entries(actx);
+  FREE(&actx->idx);
+  FREE(&actx->v2r);
+  FREE(&actx->fp_idx);
+  FREE(&actx->body_idx);
+  FREE(pactx);
 }

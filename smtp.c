@@ -31,25 +31,20 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
-#include "account.h"
 #include "address.h"
 #include "globals.h"
-#include "lib/lib.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"
 #include "url.h"
-#ifdef USE_SSL
-#include "mutt_ssl.h"
-#endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
-#include "mutt_sasl.h"
-#else
-#include "mutt_sasl_plain.h"
 #endif
 
 #define smtp_success(x) ((x) / 100 == 2)
@@ -283,7 +278,7 @@ static int smtp_fill_account(struct Account *account)
   static unsigned short SmtpPort = 0;
 
   struct servent *service = NULL;
-  struct CissUrl url;
+  struct Url url;
   char *urlstr = NULL;
 
   account->flags = 0;
@@ -291,15 +286,17 @@ static int smtp_fill_account(struct Account *account)
   account->type = MUTT_ACCT_TYPE_SMTP;
 
   urlstr = safe_strdup(SmtpUrl);
-  url_parse_ciss(&url, urlstr);
-  if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) ||
+  url_parse(&url, urlstr);
+  if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) || !url.host ||
       mutt_account_fromurl(account, &url) < 0)
   {
+    url_free(&url);
     FREE(&urlstr);
     mutt_error(_("Invalid SMTP URL: %s"), SmtpUrl);
     mutt_sleep(1);
     return -1;
   }
+  url_free(&url);
   FREE(&urlstr);
 
   if (url.scheme == U_SMTPS)
@@ -340,13 +337,14 @@ static int smtp_helo(struct Connection *conn)
     if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_START_TLS) != MUTT_NO)
+    if (option(OPT_SSL_FORCE_TLS) || quadoption(OPT_SSL_STARTTLS) != MUTT_NO)
       Esmtp = 1;
 #endif
   }
 
-  if (!(fqdn = mutt_fqdn(0)))
-    fqdn = NONULL(Hostname);
+  fqdn = mutt_fqdn(0);
+  if (!fqdn)
+    fqdn = NONULL(ShortHostname);
 
   snprintf(buf, sizeof(buf), "%s %s\r\n", Esmtp ? "EHLO" : "HELO", fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
@@ -410,7 +408,8 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   {
     if (mutt_socket_write(conn, buf) < 0)
       goto fail;
-    if ((rc = mutt_socket_readln(buf, bufsize, conn)) < 0)
+    rc = mutt_socket_readln(buf, bufsize, conn);
+    if (rc < 0)
       goto fail;
     if (!valid_smtp_code(buf, rc, &rc))
       goto fail;
@@ -591,7 +590,7 @@ static int smtp_open(struct Connection *conn)
   else if (option(OPT_SSL_FORCE_TLS))
     rc = MUTT_YES;
   else if (mutt_bit_isset(Capabilities, STARTTLS) &&
-           (rc = query_quadoption(OPT_SSL_START_TLS,
+           (rc = query_quadoption(OPT_SSL_STARTTLS,
                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 
@@ -646,8 +645,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (EnvFrom)
-    envfrom = EnvFrom->mailbox;
+  if (EnvelopeFromAddress)
+    envfrom = EnvelopeFromAddress->mailbox;
   else if (from)
     envfrom = from->mailbox;
   else
@@ -659,7 +658,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   if (smtp_fill_account(&account) < 0)
     return ret;
 
-  if (!(conn = mutt_conn_find(NULL, &account)))
+  conn = mutt_conn_find(NULL, &account);
+  if (!conn)
     return -1;
 
   Esmtp = eightbit;

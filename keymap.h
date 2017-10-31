@@ -24,12 +24,12 @@
 #define _MUTT_KEYMAP_H
 
 #include <stddef.h>
-#include "mapping.h"
+#include "lib/mapping.h"
 
 /* maximal length of a key binding sequence used for buffer in km_bindkey */
 #define MAX_SEQ 8
 
-/* type for key storage, the rest of mutt works fine with int type */
+/* type for key storage, the rest of neomutt works fine with int type */
 typedef short keycode_t;
 
 int km_bind(char *s, int menu, int op, char *macro, char *descr);

@@ -63,6 +63,8 @@ struct MxOps
   int (*close_msg)(struct Context *ctx, struct Message *msg);
   int (*commit_msg)(struct Context *ctx, struct Message *msg);
   int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
+  int (*edit_msg_tags)(struct Context *ctx, const char *tags, char *buf, size_t buflen);
+  int (*commit_msg_tags)(struct Context *msg, struct Header *hdr, char *buf);
 };
 
 /**
@@ -81,7 +83,7 @@ enum MailboxFormat
   MUTT_COMPRESSED,
 };
 
-WHERE short DefaultMagic;
+WHERE short MboxType;
 
 #define MMDF_SEP "\001\001\001\001\n"
 
@@ -92,8 +94,8 @@ int mh_check_empty(const char *path);
 
 int maildir_check_empty(const char *path);
 
-struct Header *maildir_parse_message(int magic, const char *fname, int is_old, struct Header *h);
-struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, struct Header *_h);
+struct Header *maildir_parse_message(int magic, const char *fname, bool is_old, struct Header *h);
+struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *_h);
 void maildir_parse_flags(struct Header *h, const char *path);
 bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
 void maildir_flags(char *dest, size_t destlen, struct Header *hdr);
@@ -108,13 +110,17 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno);
 bool mx_is_notmuch(const char *p);
 #endif
 
+int mx_tags_editor(struct Context *ctx, const char *tags, char *buf, size_t buflen);
+int mx_tags_commit(struct Context *ctx, struct Header *h, char *tags);
+bool mx_tags_is_supported(struct Context *ctx);
+
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 
 int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 
 void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);
-void mx_update_tables(struct Context *ctx, int committing);
+void mx_update_tables(struct Context *ctx, bool committing);
 
 struct MxOps *mx_get_ops(int magic);
 extern struct MxOps mx_maildir_ops;

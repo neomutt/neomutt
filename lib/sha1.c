@@ -232,11 +232,10 @@ void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t le
  */
 void sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
 {
-  unsigned i;
   unsigned char finalcount[8];
   unsigned char c;
 
-  for (i = 0; i < 8; i++)
+  for (unsigned int i = 0; i < 8; i++)
   {
     finalcount[i] =
         (unsigned char) ((context->count[(i >= 4 ? 0 : 1)] >> ((3 - (i & 3)) * 8)) & 255); /* Endian independent */
@@ -250,7 +249,7 @@ void sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
     sha1_update(context, &c, 1);
   }
   sha1_update(context, finalcount, 8); /* Should cause a sha1_transform() */
-  for (i = 0; i < 20; i++)
+  for (unsigned int i = 0; i < 20; i++)
   {
     digest[i] = (unsigned char) ((context->state[i >> 2] >> ((3 - (i & 3)) * 8)) & 255);
   }

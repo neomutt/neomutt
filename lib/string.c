@@ -27,7 +27,10 @@
  *
  * | Function                  | Description
  * | :------------------------ | :---------------------------------------------------------
+ * | imap_wordcasecmp()        | Find word a in word list b
  * | is_email_wsp()            | Is this a whitespace character (for an email header)
+ * | lwslen()                  | Measure the linear-white-space at the beginning of a string
+ * | lwsrlen()                 | Measure the linear-white-space at the end of a string
  * | mutt_atoi()               | Convert ASCII string to an integer
  * | mutt_atos()               | Convert ASCII string to a short
  * | mutt_remove_trailing_ws() | Trim trailing whitespace from a string
@@ -43,13 +46,17 @@
  * | mutt_strncmp()            | Compare two strings (to a maximum), safely
  * | mutt_str_adjust()         | Shrink-to-fit a string
  * | mutt_str_replace()        | Replace one string with another
+ * | mutt_str_append_item()    | Add a string to another
  * | mutt_substrcpy()          | Copy a sub-string into a buffer
  * | mutt_substrdup()          | Duplicate a sub-string
+ * | rfc822_dequote_comment()  | Un-escape characters in an email address comment
+ * | rstrnstr()                | Find last instance of a substring
  * | safe_strcat()             | Concatenate two strings
  * | safe_strdup()             | Copy a string, safely
  * | safe_strncat()            | Concatenate two strings
  * | skip_email_wsp()          | Skip over whitespace as defined by RFC5322
  * | strfcpy()                 | Copy a string into a buffer (guaranteeing NUL-termination)
+ * | strnfcpy()                | Copy a limited string into a buffer (guaranteeing NUL-termination)
  */
 
 #include "config.h"
@@ -58,8 +65,9 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
-#include "string2.h"
+#include "debug.h"
 #include "memory.h"
+#include "string2.h"
 
 /**
  * mutt_atol - Convert ASCII string to a long
@@ -244,6 +252,30 @@ void mutt_str_replace(char **p, const char *s)
 }
 
 /**
+ * mutt_str_append_item - Add string to another seprated by sep
+ * @param str String appened
+ * @param item String to append
+ * @param sep separator between string item
+ *
+ * This function appends a string to another separate them by sep
+ * if needed
+ *
+ * This function alters the pointer of the caller.
+ */
+void mutt_str_append_item(char **str, const char *item, int sep)
+{
+  char *p = NULL;
+  size_t sz = strlen(item);
+  size_t ssz = *str ? strlen(*str) : 0;
+
+  safe_realloc(str, ssz + ((ssz && sep) ? 1 : 0) + sz + 1);
+  p = *str + ssz;
+  if (sep && ssz)
+    *p++ = sep;
+  memcpy(p, item, sz + 1);
+}
+
+/**
  * mutt_str_adjust - Shrink-to-fit a string
  * @param p String to alter
  *
@@ -315,7 +347,7 @@ char *mutt_substrcpy(char *dest, const char *begin, const char *end, size_t dest
   if (len > (destlen - 1))
     len = destlen - 1;
   memcpy(dest, begin, len);
-  dest[len] = 0;
+  dest[len] = '\0';
   return dest;
 }
 
@@ -334,14 +366,26 @@ char *mutt_substrdup(const char *begin, const char *end)
   size_t len;
   char *p = NULL;
 
+  if (!begin)
+  {
+    mutt_debug(1, "%s: ERROR: 'begin' is NULL\n", __func__);
+    return NULL;
+  }
+
   if (end)
+  {
+    if (begin > end)
+      return NULL;
     len = end - begin;
+  }
   else
+  {
     len = strlen(begin);
+  }
 
   p = safe_malloc(len + 1);
   memcpy(p, begin, len);
-  p[len] = 0;
+  p[len] = '\0';
   return p;
 }
 
@@ -470,10 +514,8 @@ char *mutt_skip_whitespace(char *p)
  */
 void mutt_remove_trailing_ws(char *s)
 {
-  char *p = NULL;
-
-  for (p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
-    *p = 0;
+  for (char *p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
+    *p = '\0';
 }
 
 /**
@@ -516,4 +558,190 @@ char *skip_email_wsp(const char *s)
 int is_email_wsp(char c)
 {
   return c && (strchr(EMAIL_WSP, c) != NULL);
+}
+
+/**
+ * strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
+ * @param dest Buffer for the result
+ * @param src  String to copy
+ * @param size Maximum number of characters to copy
+ * @param dlen Length of buffer
+ * @retval ptr Destination buffer
+ */
+char *strnfcpy(char *dest, char *src, size_t size, size_t dlen)
+{
+  if (dlen > size)
+    dlen = size - 1;
+  return strfcpy(dest, src, dlen);
+}
+
+/**
+ * lwslen - Measure the linear-white-space at the beginning of a string
+ * @param s String to check
+ * @param n Maximum number of characters to check
+ * @retval num Count of whitespace characters
+ *
+ * Count the number of whitespace characters at the beginning of a string.
+ * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
+ */
+size_t lwslen(const char *s, size_t n)
+{
+  const char *p = s;
+  size_t len = n;
+
+  if (n <= 0)
+    return 0;
+
+  for (; p < (s + n); p++)
+  {
+    if (!strchr(" \t\r\n", *p))
+    {
+      len = p - s;
+      break;
+    }
+  }
+
+  if (strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
+    len = 0;
+  return len;
+}
+
+/**
+ * lwsrlen - Measure the linear-white-space at the end of a string
+ * @param s String to check
+ * @param n Maximum number of characters to check
+ * @retval num Count of whitespace characters
+ *
+ * Count the number of whitespace characters at the end of a string.
+ * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
+ */
+size_t lwsrlen(const char *s, size_t n)
+{
+  const char *p = s + n - 1;
+  size_t len = n;
+
+  if (n <= 0)
+    return 0;
+
+  if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
+    return 0;
+
+  for (; p >= s; p--)
+  {
+    if (!strchr(" \t\r\n", *p))
+    {
+      len = s + n - 1 - p;
+      break;
+    }
+  }
+
+  return len;
+}
+
+/**
+ * rfc822_dequote_comment - Un-escape characters in an email address comment
+ * @param s String to the un-escaped
+ *
+ * @note The string is changed in-place
+ */
+void rfc822_dequote_comment(char *s)
+{
+  char *w = s;
+
+  for (; *s; s++)
+  {
+    if (*s == '\\')
+    {
+      if (!*++s)
+        break; /* error? */
+      *w++ = *s;
+    }
+    else if (*s != '\"')
+    {
+      if (w != s)
+        *w = *s;
+      w++;
+    }
+  }
+  *w = '\0';
+}
+
+/**
+ * next_word - Find the next word in a string
+ * @param s String to examine
+ * @retval ptr Next word
+ *
+ * If the s is pointing to a word (non-space) is is skipped over.
+ * Then, any whitespace is skipped over.
+ *
+ * @note What is/isn't a word is determined by isspace()
+ */
+const char *next_word(const char *s)
+{
+  while (*s && !ISSPACE(*s))
+    s++;
+  SKIPWS(s);
+  return s;
+}
+
+/**
+ * rstrnstr - Find last instance of a substring
+ * @param haystack        String to search through
+ * @param haystack_length Length of the string
+ * @param needle          String to find
+ * @retval NULL String not found
+ * @retval ptr  Location of string
+ *
+ * Return the last instance of needle in the haystack, or NULL.
+ * Like strstr(), only backwards, and for a limited haystack length.
+ */
+const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
+{
+  int needle_length = strlen(needle);
+  const char *haystack_end = haystack + haystack_length - needle_length;
+
+  for (const char *p = haystack_end; p >= haystack; --p)
+  {
+    for (size_t i = 0; i < needle_length; ++i)
+    {
+      if (p[i] != needle[i])
+        goto next;
+    }
+    return p;
+
+  next:;
+  }
+  return NULL;
+}
+
+/**
+ * imap_wordcasecmp - Find word a in word list b
+ * @param a Word to find
+ * @param b String to check
+ * @retval 0   Word was found
+ * @retval !=0 Word was not found
+ *
+ * Given a word "apple", check if it exists at the start of a string of words,
+ * e.g. "apple banana".  It must be an exact match, so "apple" won't match
+ * "apples banana".
+ *
+ * The case of the words is ignored.
+ */
+int imap_wordcasecmp(const char *a, const char *b)
+{
+  char tmp[SHORT_STRING] = "";
+
+  int i;
+  for (i = 0; i < SHORT_STRING - 2; i++, b++)
+  {
+    if (!*b || ISSPACE(*b))
+    {
+      tmp[i] = '\0';
+      break;
+    }
+    tmp[i] = *b;
+  }
+  tmp[i + 1] = '\0';
+
+  return mutt_strcasecmp(a, tmp);
 }

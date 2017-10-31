@@ -441,7 +441,7 @@ syn match muttrcFunction	contained "\<current-\%(bottom\|middle\|top\)\>"
 syn match muttrcFunction	contained "\<decode-\%(copy\|save\)\>"
 syn match muttrcFunction	contained "\<delete-\%(char\|pattern\|subthread\)\>"
 syn match muttrcFunction	contained "\<display-\%(address\|toggle-weed\)\>"
-syn match muttrcFunction	contained "\<edit\%(-\%(bcc\|cc\|description\|encoding\|fcc\|file\|from\|headers\|mime\|reply-to\|subject\|to\|type\)\)\?\>"
+syn match muttrcFunction	contained "\<edit\%(-\%(bcc\|cc\|description\|encoding\|fcc\|file\|from\|headers\|mime\|reply-to\|subject\|to\|type\|label\)\)\?\>"
 syn match muttrcFunction	contained "\<enter-\%(command\|mask\)\>"
 syn match muttrcFunction	contained "\<half-\%(up\|down\)\>"
 syn match muttrcFunction	contained "\<history-\%(up\|down\)\>"
@@ -563,7 +563,7 @@ syn match muttrcPattern contained skipwhite /[.]/
 syn region muttrcPatternInner contained keepend start=+"[~=%!(^]+ms=s+1 skip=+\\"+ end=+"+me=e-1 contains=muttrcSimplePat,muttrcUnHighlightSpace,muttrcSimplePatMetas
 syn region muttrcPatternInner contained keepend start=+'[~=%!(^]+ms=s+1 skip=+\\'+ end=+'+me=e-1 contains=muttrcSimplePat,muttrcUnHighlightSpace,muttrcSimplePatMetas
 
-" Colour definitions takes object, foreground and background arguments (regexps excluded).
+" Colour definitions takes object, foreground and background arguments (regexes excluded).
 syn match muttrcColorMatchCount	contained "[0-9]\+"
 syn match muttrcColorMatchCountNL contained skipwhite skipnl "\s*\\$" nextgroup=muttrcColorMatchCount,muttrcColorMatchCountNL
 syn region muttrcColorRXPat	contained start=+\s*'+ skip=+\\'+ end=+'\s*+ keepend skipwhite contains=muttrcRXString2 nextgroup=muttrcColorMatchCount,muttrcColorMatchCountNL
@@ -817,14 +817,6 @@ syntax keyword muttrcColorField contained index_number
 syntax keyword muttrcColorField contained index_size
 syntax keyword muttrcColorField contained index_subject
 syn region muttrcColorLine keepend start=/^\s*color\s\+index_\%(author\|collapsed\|date\|flags\|label\|number\|size\|subject\)/ skip=+\\$+ end=+$+ contains=muttrcColorKeyword,muttrcComment,muttrcUnHighlightSpace
-" Vim syntax file for the NeoMutt keywords feature.
-
-syntax keyword muttrcVarBool    contained skipwhite keywords_legacy       nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarBool    contained skipwhite keywords_standard     nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-
-syntax keyword muttrcVarStr     contained skipwhite xlabel_delimiter      nextgroup=muttrcVarEqualsIdxFmt
-
-syntax match muttrcFunction     contained "\<edit-label\>"
 
 " Vim syntax file for the NeoMutt new-mail feature.
 

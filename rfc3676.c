@@ -23,19 +23,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file was originally part of mutt-ng */
-
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "options.h"
 #include "parameter.h"
@@ -367,11 +365,13 @@ void rfc3676_space_stuff(struct Header *hdr)
 
   mutt_debug(2, "f=f: postprocess %s\n", hdr->content->filename);
 
-  if ((in = safe_fopen(hdr->content->filename, "r")) == NULL)
+  in = safe_fopen(hdr->content->filename, "r");
+  if (!in)
     return;
 
   mutt_mktemp(tmpfile, sizeof(tmpfile));
-  if ((out = safe_fopen(tmpfile, "w+")) == NULL)
+  out = safe_fopen(tmpfile, "w+");
+  if (!out)
   {
     safe_fclose(&in);
     return;

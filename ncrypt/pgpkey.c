@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "pgpkey.h"
 #include "address.h"
@@ -42,13 +43,11 @@
 #include "globals.h"
 #include "gnupgparse.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "pgp.h"
@@ -305,7 +304,7 @@ static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.num = num + 1;
 
   mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
-                    pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+                      pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int _pgp_compare_address(const void *a, const void *b)
@@ -556,12 +555,14 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       case OP_VERIFY_KEY:
 
         mutt_mktemp(tempfile, sizeof(tempfile));
-        if ((devnull = fopen("/dev/null", "w")) == NULL)
+        devnull = fopen("/dev/null", "w");
+        if (!devnull)
         {
           mutt_perror(_("Can't open /dev/null"));
           break;
         }
-        if ((fp = safe_fopen(tempfile, "w")) == NULL)
+        fp = safe_fopen(tempfile, "w");
+        if (!fp)
         {
           safe_fclose(&devnull);
           mutt_perror(_("Can't create temporary file"));
@@ -610,7 +611,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           }
 
         if (option(OPT_PGP_CHECK_TRUST) && (!pgp_id_is_valid(KeyTable[menu->current]) ||
-                                         !pgp_id_is_strong(KeyTable[menu->current])))
+                                            !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
           char buff[LONG_STRING];
@@ -702,7 +703,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
     if ((key = pgp_getkeybystr(resp, abilities, keyring)))
       return key;
 
-    BEEP();
+    mutt_error(_("No matching keys found for \"%s\""), resp);
+    mutt_sleep(0);
   }
   /* not reached */
 }
@@ -736,13 +738,15 @@ struct Body *pgp_make_key_attachment(char *tempf)
     tempf = tempfb;
   }
 
-  if ((tempfp = safe_fopen(tempf, tempf == tempfb ? "w" : "a")) == NULL)
+  tempfp = safe_fopen(tempf, tempf == tempfb ? "w" : "a");
+  if (!tempfp)
   {
     mutt_perror(_("Can't create temporary file"));
     return NULL;
   }
 
-  if ((devnull = fopen("/dev/null", "w")) == NULL)
+  devnull = fopen("/dev/null", "w");
+  if (!devnull)
   {
     mutt_perror(_("Can't open /dev/null"));
     safe_fclose(&tempfp);
@@ -789,7 +793,8 @@ static void pgp_add_string_to_hints(struct ListHead *hints, const char *str)
   char *scratch = NULL;
   char *t = NULL;
 
-  if ((scratch = safe_strdup(str)) == NULL)
+  scratch = safe_strdup(str);
+  if (!scratch)
     return;
 
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))

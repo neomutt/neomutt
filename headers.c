@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
@@ -35,8 +36,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -56,7 +55,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct stat st;
 
   mutt_mktemp(path, sizeof(path));
-  if ((ofp = safe_fopen(path, "w")) == NULL)
+  ofp = safe_fopen(path, "w");
+  if (!ofp)
   {
     mutt_perror(path);
     return;
@@ -67,7 +67,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   fputc('\n', ofp); /* tie off the header. */
 
   /* now copy the body of the message. */
-  if ((ifp = fopen(body, "r")) == NULL)
+  ifp = fopen(body, "r");
+  if (!ifp)
   {
     mutt_perror(body);
     safe_fclose(&ofp);
@@ -101,13 +102,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
-  if ((ifp = fopen(path, "r")) == NULL)
+  ifp = fopen(path, "r");
+  if (!ifp)
   {
     mutt_perror(path);
     return;
   }
 
-  if ((ofp = safe_fopen(body, "w")) == NULL)
+  ofp = safe_fopen(body, "w");
+  if (!ofp)
   {
     /* intentionally leak a possible temporary file here */
     safe_fclose(&ifp);
@@ -185,7 +188,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
             path[l++] = *p;
         }
         p = skip_email_wsp(p);
-        path[l] = 0;
+        path[l] = '\0';
 
         mutt_expand_path(path, sizeof(path));
         if ((body2 = mutt_make_file_attach(path)))
@@ -203,8 +206,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       }
       keep = false;
     }
-    else if ((WithCrypto & APPLICATION_PGP) &&
-             (mutt_strncasecmp("pgp:", np->data, 4) == 0))
+    else if ((WithCrypto & APPLICATION_PGP) && (mutt_strncasecmp("pgp:", np->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
@@ -269,10 +271,10 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
   if (mutt_strcmp(hdr->env->x_label, new) == 0)
     return 0;
 
-  if (hdr->env->x_label != NULL)
+  if (hdr->env->x_label)
     label_ref_dec(ctx, hdr->env->x_label);
   mutt_str_replace(&hdr->env->x_label, new);
-  if (hdr->env->x_label != NULL)
+  if (hdr->env->x_label)
     label_ref_inc(ctx, hdr->env->x_label);
 
   return hdr->changed = hdr->xlabel_changed = true;
@@ -281,7 +283,6 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 int mutt_label_message(struct Header *hdr)
 {
   char buf[LONG_STRING], *new = NULL;
-  int i;
   int changed;
 
   if (!Context || !Context->label_hash)
@@ -312,16 +313,18 @@ int mutt_label_message(struct Header *hdr)
   }
   else
   {
-#define HDR_OF(index) Context->hdrs[Context->v2r[(index)]]
-    for (i = 0; i < Context->vcount; ++i)
+    for (int i = 0; i < Context->msgcount; ++i)
     {
-      if (HDR_OF(i)->tagged)
-        if (label_message(Context, HDR_OF(i), new))
-        {
-          changed++;
-          mutt_set_flag(Context, HDR_OF(i), MUTT_TAG, 0);
-          /* mutt_set_flag re-evals the header color */
-        }
+      if (!message_is_tagged(Context, i))
+        continue;
+
+      struct Header *h = Context->hdrs[i];
+      if (label_message(Context, h, new))
+      {
+        changed++;
+        mutt_set_flag(Context, h, MUTT_TAG, 0);
+        /* mutt_set_flag re-evals the header color */
+      }
     }
   }
 

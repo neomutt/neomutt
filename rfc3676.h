@@ -22,8 +22,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file was originally part of mutt-ng */
-
 #ifndef _MUTT_RFC3676_H
 #define _MUTT_RFC3676_H
 

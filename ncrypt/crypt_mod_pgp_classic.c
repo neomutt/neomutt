@@ -87,9 +87,9 @@ static struct Body *crypt_mod_pgp_make_key_attachment(char *tempf)
   return pgp_make_key_attachment(tempf);
 }
 
-static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
+static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
-  return pgp_check_traditional(fp, b, tagged_only);
+  return pgp_check_traditional(fp, b, just_one);
 }
 
 static struct Body *crypt_mod_pgp_traditional_encryptsign(struct Body *a,

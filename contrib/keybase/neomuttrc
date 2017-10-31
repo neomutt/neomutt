@@ -1,0 +1,2 @@
+set editor = 'echo %s > ~/.neomutt/keybaseMutt/.tmp; vim %s'
+macro compose K "<enter-command>unset wait_key<enter><shell-escape>python ~/.neomutt/keybaseMutt/keybase.py<enter><enter-command>set wait_key<enter>

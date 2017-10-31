@@ -25,7 +25,6 @@
 
 #include <signal.h>
 #include "lib/lib.h"
-#include "list.h"
 #include "where.h"
 #include "mutt_regex.h"
 
@@ -42,11 +41,11 @@ WHERE struct Context *Context;
 WHERE char ErrorBuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
-WHERE struct Address *EnvFrom;
+WHERE struct Address *EnvelopeFromAddress;
 WHERE struct Address *From;
 
 WHERE char *AliasFile;
-WHERE char *AliasFmt;
+WHERE char *AliasFormat;
 WHERE char *AssumedCharset;
 WHERE char *AttachSep;
 WHERE char *Attribution;
@@ -59,23 +58,23 @@ WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
 WHERE char *ContentType;
 WHERE char *DefaultHook;
-WHERE char *DateFmt;
+WHERE char *DateFormat;
 WHERE char *DisplayFilter;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;
 WHERE char *EmptySubject;
-WHERE char *EscChar;
+WHERE char *Escape;
 WHERE char *FolderFormat;
-WHERE char *ForwardAttrIntro;
-WHERE char *ForwardAttrTrailer;
-WHERE char *ForwFmt;
-WHERE char *Fqdn;
-WHERE struct MbCharTable *FromChars;
-WHERE char *HdrFmt;
-WHERE char *HistFile;
-WHERE char *HomeDir;
+WHERE char *ForwardAttributionIntro;
+WHERE char *ForwardAttributionTrailer;
+WHERE char *ForwardFormat;
 WHERE char *Hostname;
+WHERE struct MbTable *FromChars;
+WHERE char *IndexFormat;
+WHERE char *HistoryFile;
+WHERE char *HomeDir;
+WHERE char *ShortHostname;
 #ifdef USE_IMAP
 WHERE char *ImapAuthenticators;
 WHERE char *ImapDelimChars;
@@ -84,10 +83,10 @@ WHERE char *ImapLogin;
 WHERE char *ImapPass;
 WHERE char *ImapUser;
 #endif
-WHERE char *Inbox;
+WHERE char *Mbox;
 WHERE char *Ispell;
 WHERE char *MailcapPath;
-WHERE char *Maildir;
+WHERE char *Folder;
 #if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)
 WHERE char *MessageCachedir;
 #endif
@@ -99,14 +98,13 @@ WHERE char *HeaderCachePageSize;
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
 WHERE char *MarkMacroPrefix;
-WHERE char *MhFlagged;
-WHERE char *MhReplied;
-WHERE char *MhUnseen;
-WHERE char *MsgFmt;
+WHERE char *MhSeqFlagged;
+WHERE char *MhSeqReplied;
+WHERE char *MhSeqUnseen;
+WHERE char *MimeTypeQueryCommand;
+WHERE char *MessageFormat;
 
 #ifdef USE_SOCKET
-WHERE char *Preconnect;
-WHERE char *Tunnel;
 WHERE short NetInc;
 #endif /* USE_SOCKET */
 
@@ -117,7 +115,7 @@ WHERE char *MixEntryFormat;
 
 WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
 #ifdef USE_NNTP
-WHERE char *GroupFormat;
+WHERE char *GroupIndexFormat;
 WHERE char *Inews;
 WHERE char *NewsCacheDir;
 WHERE char *NewsServer;
@@ -127,13 +125,13 @@ WHERE char *NntpAuthenticators;
 WHERE char *NntpUser;
 WHERE char *NntpPass;
 #endif
-WHERE char *Outbox;
+WHERE char *Record;
 WHERE char *Pager;
-WHERE char *PagerFmt;
+WHERE char *PagerFormat;
 WHERE char *PipeSep;
 #ifdef USE_POP
 WHERE char *PopAuthenticators;
-WHERE short PopCheckTimeout;
+WHERE short PopCheckinterval;
 WHERE char *PopHost;
 WHERE char *PopPass;
 WHERE char *PopUser;
@@ -141,10 +139,10 @@ WHERE char *PopUser;
 WHERE char *PostIndentString;
 WHERE char *Postponed;
 WHERE char *PostponeEncryptAs;
-WHERE char *Prefix;
-WHERE char *PrintCmd;
-WHERE char *NewMailCmd;
-WHERE char *QueryCmd;
+WHERE char *IndentString;
+WHERE char *PrintCommand;
+WHERE char *NewMailCommand;
+WHERE char *QueryCommand;
 WHERE char *QueryFormat;
 WHERE char *RealName;
 WHERE short SearchContext;
@@ -166,29 +164,18 @@ WHERE char *SmtpPass;
 WHERE char *SmtpUrl;
 #endif /* USE_SMTP */
 WHERE char *SpoolFile;
-WHERE char *SpamSep;
-#ifdef USE_SSL
-WHERE char *SslCertFile;
-WHERE char *SslClientCert;
-WHERE char *SslEntropyFile;
-WHERE char *SslCiphers;
-#ifdef USE_SSL_GNUTLS
-WHERE short SslDHPrimeBits;
-WHERE char *SslCACertFile;
-#endif
-#endif
-WHERE struct MbCharTable *StChars;
-WHERE char *Status;
-WHERE char *TempDir;
-WHERE struct MbCharTable *ToChars;
-WHERE struct MbCharTable *FlagChars;
-WHERE char *TrashPath;
+WHERE char *SpamSeparator;
+WHERE struct MbTable *StatusChars;
+WHERE char *StatusFormat;
+WHERE char *Tmpdir;
+WHERE struct MbTable *ToChars;
+WHERE struct MbTable *FlagChars;
+WHERE char *Trash;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
 WHERE short TSSupported;
 WHERE char *Username;
 WHERE char *Visual;
-WHERE char *XlabelDelim;
 
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
@@ -196,11 +183,10 @@ WHERE char *LastFolder;
 WHERE const char *GitVer;
 
 WHERE struct Hash *Groups;
-WHERE struct Hash *ReverseAlias;
-#ifdef USE_NOTMUCH
+WHERE struct Hash *ReverseAliases;
+WHERE char *HiddenTags;
 WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
-#endif
 
 WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
@@ -214,15 +200,15 @@ WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
 WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
 WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
 
-WHERE struct RxList *Alternates;
-WHERE struct RxList *UnAlternates;
-WHERE struct RxList *MailLists;
-WHERE struct RxList *UnMailLists;
-WHERE struct RxList *SubscribedLists;
-WHERE struct RxList *UnSubscribedLists;
+WHERE struct RegexList *Alternates;
+WHERE struct RegexList *UnAlternates;
+WHERE struct RegexList *MailLists;
+WHERE struct RegexList *UnMailLists;
+WHERE struct RegexList *SubscribedLists;
+WHERE struct RegexList *UnSubscribedLists;
 WHERE struct ReplaceList *SpamList;
-WHERE struct RxList *NoSpamList;
-WHERE struct ReplaceList *SubjectRxList;
+WHERE struct RegexList *NoSpamList;
+WHERE struct ReplaceList *SubjectRegexList;
 
 /* bit vector for the yes/no/ask variable type */
 #ifdef MAIN_C
@@ -234,7 +220,7 @@ extern unsigned char QuadOptions[];
 WHERE unsigned short Counter;
 
 #ifdef USE_NNTP
-WHERE short NewsPollTimeout;
+WHERE short NntpPoll;
 WHERE short NntpContext;
 #endif
 
@@ -243,14 +229,13 @@ WHERE short DebugLevel;
 WHERE char *DebugFile;
 #endif
 
-WHERE short ConnectTimeout;
-WHERE short HistSize;
+WHERE short History;
 WHERE short MenuContext;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
 WHERE short ReadInc;
 WHERE short ReflowWrap;
-WHERE short SaveHist;
+WHERE short SaveHistory;
 WHERE short SendmailWait;
 WHERE short SleepTime;
 WHERE short SkipQuotedOffset;
@@ -311,13 +296,13 @@ WHERE char *SmimeDefaultKey;
 WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;
 WHERE char *SmimeKeys;
-WHERE char *SmimeCryptAlg;
+WHERE char *SmimeEncryptWith;
 WHERE char *SmimeCALocation;
 WHERE char *SmimeVerifyCommand;
 WHERE char *SmimeVerifyOpaqueCommand;
 WHERE char *SmimeDecryptCommand;
 WHERE char *SmimeSignCommand;
-WHERE char *SmimeDigestAlg;
+WHERE char *SmimeSignDigestAlg;
 WHERE char *SmimeEncryptCommand;
 WHERE char *SmimeGetSignerCertCommand;
 WHERE char *SmimePk7outCommand;
@@ -327,25 +312,24 @@ WHERE char *SmimeGetCertEmailCommand;
 WHERE char *SmimeSelfEncryptAs;
 
 #ifdef USE_NOTMUCH
-WHERE int NotmuchOpenTimeout;
-WHERE char *NotmuchDefaultUri;
-WHERE char *NotmuchExcludeTags;
-WHERE char *NotmuchUnreadTag;
-WHERE char *NotmuchHiddenTags;
-WHERE char *VirtFolderFormat;
-WHERE int NotmuchDBLimit;
-WHERE char *NotmuchQueryType;
-WHERE char *NotmuchRecordTags;
-WHERE int NotmuchQueryWindowDuration;
-WHERE char *NotmuchQueryWindowTimebase;
-WHERE int NotmuchQueryWindowCurrentPosition;
-WHERE char *NotmuchQueryWindowCurrentSearch;
+WHERE int NmOpenTimeout;
+WHERE char *NmDefaultUri;
+WHERE char *NmExcludeTags;
+WHERE char *NmUnreadTag;
+WHERE char *VfolderFormat;
+WHERE int NmDbLimit;
+WHERE char *NmQueryType;
+WHERE char *NmRecordTags;
+WHERE int NmQueryWindowDuration;
+WHERE char *NmQueryWindowTimebase;
+WHERE int NmQueryWindowCurrentPosition;
+WHERE char *NmQueryWindowCurrentSearch;
 #endif
 
 #ifdef MAIN_C
 const char *const BodyTypes[] = {
     "x-unknown", "audio",     "application", "image", "message",
-    "model",     "multipart", "text",        "video",
+    "model",     "multipart", "text",        "video", "*",
 };
 const char *const BodyEncodings[] = {
     "x-unknown", "7bit",   "8bit",        "quoted-printable",

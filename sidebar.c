@@ -28,17 +28,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "sidebar.h"
 #include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "opcodes.h"
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
@@ -222,11 +222,11 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring, cb_format_str,
-                      (unsigned long) sbe, flags);
+    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring,
+                        cb_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
-                      cb_format_str, (unsigned long) sbe, flags);
+                        cb_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
   return src;
@@ -252,8 +252,8 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
 
   strfcpy(sbe->box, box, sizeof(sbe->box));
 
-  mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat), cb_format_str,
-                    (unsigned long) sbe, 0);
+  mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat),
+                      cb_format_str, (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
@@ -341,7 +341,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
  */
 static void update_entries_visibility(void)
 {
-  short new_only = option(OPT_SIDEBAR_NEWMAIL_ONLY);
+  short new_only = option(OPT_SIDEBAR_NEW_MAIL_ONLY);
   struct SbEntry *sbe = NULL;
   for (int i = 0; i < EntryCount; i++)
   {
@@ -630,7 +630,7 @@ static bool prepare_sidebar(int page_size)
 
   /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
    * need to scan for the framing interval */
-  if (option(OPT_SIDEBAR_NEWMAIL_ONLY))
+  if (option(OPT_SIDEBAR_NEW_MAIL_ONLY))
   {
     TopIndex = BotIndex = -1;
     while (BotIndex < HilIndex)
@@ -662,7 +662,7 @@ static bool prepare_sidebar(int page_size)
 }
 
 /**
- * draw_divider - Draw a line between the sidebar and the rest of mutt
+ * draw_divider - Draw a line between the sidebar and the rest of neomutt
  * @param num_rows   Height of the Sidebar
  * @param num_cols   Width of the Sidebar
  * @retval 0 Empty string
@@ -680,7 +680,6 @@ static int draw_divider(int num_rows, int num_cols)
   if ((num_rows < 1) || (num_cols < 1))
     return 0;
 
-  int i;
   int delim_len;
   enum DivType altchar = SB_DIV_UTF8;
 
@@ -711,7 +710,7 @@ static int draw_divider(int num_rows, int num_cols)
     }
     else if (SidebarDividerChar)
     {
-      for (i = 0; i < delim_len; i++)
+      for (int i = 0; i < delim_len; i++)
       {
         if (SidebarDividerChar[i] & ~0x7F) /* high-bit is set */
         {
@@ -730,7 +729,7 @@ static int draw_divider(int num_rows, int num_cols)
 
   int col = option(OPT_SIDEBAR_ON_RIGHT) ? 0 : (SidebarWidth - delim_len);
 
-  for (i = 0; i < num_rows; i++)
+  for (int i = 0; i < num_rows; i++)
   {
     mutt_window_move(MuttSidebarWindow, i, col);
 
@@ -771,8 +770,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
   {
     mutt_window_move(MuttSidebarWindow, first_row + r, div_width);
 
-    int i;
-    for (i = 0; i < num_cols; i++)
+    for (int i = 0; i < num_cols; i++)
       addch(' ');
   }
 }
@@ -785,12 +783,12 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
- * On the first run they'll be NULL, so we display the top of Mutt's list
+ * On the first run they'll be NULL, so we display the top of NeoMutt's list
  * (Incoming).
  *
  * * TopBuffy - first visible mailbox
  * * BotBuffy - last  visible mailbox
- * * OpnBuffy - mailbox shown in Mutt's Index Panel
+ * * OpnBuffy - mailbox shown in NeoMutt's Index Panel
  * * HilBuffy - Unselected mailbox (the paging follows this)
  *
  * The entries are formatted using "sidebar_format" and may be abbreviated:
@@ -857,28 +855,26 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       b->msg_flagged = Context->flagged;
     }
 
-    /* compute length of Maildir without trailing separator */
-    size_t maildirlen = mutt_strlen(Maildir);
-    if (maildirlen && SidebarDelimChars &&
-        strchr(SidebarDelimChars, Maildir[maildirlen - 1]))
+    /* compute length of Folder without trailing separator */
+    size_t maildirlen = mutt_strlen(Folder);
+    if (maildirlen && SidebarDelimChars && strchr(SidebarDelimChars, Folder[maildirlen - 1]))
       maildirlen--;
 
-    /* check whether Maildir is a prefix of the current folder's path */
+    /* check whether Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
     if ((mutt_strlen(b->path) > maildirlen) &&
-        (mutt_strncmp(Maildir, b->path, maildirlen) == 0) &&
-        SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
+        (mutt_strncmp(Folder, b->path, maildirlen) == 0) && SidebarDelimChars &&
+        strchr(SidebarDelimChars, b->path[maildirlen]))
       maildir_is_prefix = true;
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
     char *sidebar_folder_name = NULL;
-    int i;
     if (option(OPT_SIDEBAR_SHORT_PATH))
     {
       /* disregard a trailing separator, so strlen() - 2 */
       sidebar_folder_name = b->path;
-      for (i = mutt_strlen(sidebar_folder_name) - 2; i >= 0; i--)
+      for (int i = mutt_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, sidebar_folder_name[i]))
         {
@@ -900,7 +896,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       int lastsep = 0;
       tmp_folder_name = b->path + maildirlen + 1;
       int tmplen = (int) mutt_strlen(tmp_folder_name) - 1;
-      for (i = 0; i < tmplen; i++)
+      for (int i = 0; i < tmplen; i++)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, tmp_folder_name[i]))
         {
@@ -916,7 +912,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
                       sidebar_folder_depth * mutt_strlen(SidebarIndentString) + 1;
         sidebar_folder_name = safe_malloc(sfn_len);
         sidebar_folder_name[0] = 0;
-        for (i = 0; i < sidebar_folder_depth; i++)
+        for (int i = 0; i < sidebar_folder_depth; i++)
           safe_strcat(sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
         safe_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
       }
@@ -940,7 +936,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
  */
 void mutt_sb_draw(void)
 {
-  if (!option(OPT_SIDEBAR))
+  if (!option(OPT_SIDEBAR_VISIBLE))
     return;
 
 #ifdef USE_SLANG_CURSES
@@ -975,8 +971,7 @@ void mutt_sb_draw(void)
  * @param op Operation code
  *
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
- * with new mail". The operations are listed OPS.SIDEBAR which is built
- * into an enum in keymap_defs.h.
+ * with new mail". The operations are listed in opcodes.h.
  *
  * If the operation is successful, HilBuffy will be set to the new mailbox.
  * This function only *selects* the mailbox, doesn't *open* it.
@@ -987,7 +982,7 @@ void mutt_sb_draw(void)
  */
 void mutt_sb_change_mailbox(int op)
 {
-  if (!option(OPT_SIDEBAR))
+  if (!option(OPT_SIDEBAR_VISIBLE))
     return;
 
   if (HilIndex < 0) /* It'll get reset on the next draw */
@@ -1060,7 +1055,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
  */
 const char *mutt_sb_get_highlight(void)
 {
-  if (!option(OPT_SIDEBAR))
+  if (!option(OPT_SIDEBAR_VISIBLE))
     return NULL;
 
   if (!EntryCount || HilIndex < 0)

@@ -100,7 +100,8 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
 
   mutt_block_signals_system();
 
-  if ((thepid = fork()) == 0)
+  thepid = fork();
+  if (thepid == 0)
   {
     mutt_unblock_signals_system(0);
 

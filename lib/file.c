@@ -33,12 +33,14 @@
  * | mutt_copy_bytes()         | Copy some content from one file to another
  * | mutt_copy_stream()        | Copy the contents of one file into another
  * | mutt_decrease_mtime()     | Decrease a file's modification time by 1 second
+ * | mutt_dirname()            | Return a path up to, but not including, the final '/'
  * | mutt_lock_file()          | (try to) lock a file
  * | mutt_mkdir()              | Recursively create directories
  * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
  * | mutt_read_line()          | Read a line from a file
  * | mutt_rmtree()             | Recursively remove a directory
- * | mutt_rx_sanitize_string() | Escape any regex-magic characters in a string
+ * | mutt_rename_file()        | Rename a file
+ * | mutt_regex_sanitize_string() | Escape any regex-magic characters in a string
  * | mutt_sanitize_filename()  | Replace unsafe characters in a filename
  * | mutt_set_mtime()          | Set the modification time of one file from another
  * | mutt_touch_atime()        | Set the access time to current time
@@ -57,6 +59,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <libgen.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -80,6 +83,11 @@ static const char safe_chars[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
 #define MAX_LOCK_ATTEMPTS 5
+
+/* This is defined in POSIX:2008 which isn't a build requirement */
+#ifndef O_NOFOLLOW
+#define O_NOFOLLOW 0
+#endif
 
 /**
  * compare_stat - Compare the struct stat's of two files/dirs
@@ -127,7 +135,7 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   }
 
   snprintf(newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
-  if (mkdtemp(newdir) == NULL)
+  if (!mkdtemp(newdir))
   {
     mutt_debug(1, "mkwrapdir: mkdtemp() failed\n");
     return -1;
@@ -212,22 +220,15 @@ int safe_fsync_close(FILE **f)
 void mutt_unlink(const char *s)
 {
   int fd;
-  int flags;
   FILE *f = NULL;
   struct stat sb, sb2;
   char buf[2048];
 
-/* Defend against symlink attacks */
-
-#ifdef O_NOFOLLOW
-  flags = O_RDWR | O_NOFOLLOW;
-#else
-  flags = O_RDWR;
-#endif
+  /* Defend against symlink attacks */
 
   if ((lstat(s, &sb) == 0) && S_ISREG(sb.st_mode))
   {
-    fd = open(s, flags);
+    fd = open(s, O_RDWR | O_NOFOLLOW);
     if (fd < 0)
       return;
 
@@ -344,7 +345,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
       return -1;
   }
 
-  if ((stat(oldpath, &osb) == -1) || (stat(newpath, &nsb) == -1) || !compare_stat(&osb, &nsb))
+  if ((stat(oldpath, &osb) == -1) || (stat(newpath, &nsb) == -1) ||
+      !compare_stat(&osb, &nsb))
   {
     unlink(newpath);
     return -1;
@@ -453,7 +455,7 @@ int mutt_rmtree(const char *path)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
-  char cur[_POSIX_PATH_MAX];
+  char cur[LONG_STRING];
   struct stat statbuf;
   int rc = 0;
 
@@ -551,11 +553,7 @@ FILE *safe_fopen(const char *path, const char *mode)
   if (mode[0] == 'w')
   {
     int fd;
-    int flags = O_CREAT | O_EXCL;
-
-#ifdef O_NOFOLLOW
-    flags |= O_NOFOLLOW;
-#endif
+    int flags = O_CREAT | O_EXCL | O_NOFOLLOW;
 
     if (mode[1] == '+')
       flags |= O_RDWR;
@@ -590,14 +588,14 @@ void mutt_sanitize_filename(char *f, short slash)
 }
 
 /**
- * mutt_rx_sanitize_string - Escape any regex-magic characters in a string
+ * mutt_regex_sanitize_string - Escape any regex-magic characters in a string
  * @param dest    Buffer for result
  * @param destlen Length of buffer
  * @param src     String to transform
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src)
+int mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src)
 {
   while (*src && (--destlen > 2))
   {
@@ -649,15 +647,16 @@ char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
       FREE(&s);
       return NULL;
     }
-    if ((ch = strchr(s + offset, '\n')) != NULL)
+    ch = strchr(s + offset, '\n');
+    if (ch)
     {
       if (line)
         (*line)++;
       if (flags & MUTT_EOL)
         return s;
-      *ch = 0;
+      *ch = '\0';
       if ((ch > s) && (*(ch - 1) == '\r'))
-        *--ch = 0;
+        *--ch = '\0';
       if (!(flags & MUTT_CONT) || (ch == s) || (*(ch - 1) != '\\'))
         return s;
       offset = ch - s - 1;
@@ -767,7 +766,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
      * It doesn't appear that the return value is actually checked anywhere mutt_concat_path()
      * is called, so we should just copy set dst to nul and let the calling function fail later.
      */
-    dst[0] = 0; /* safe since we bail out early if dstlen == 0 */
+    dst[0] = '\0'; /* safe since we bail out early if dstlen == 0 */
     return NULL;
   }
 
@@ -783,7 +782,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
     memcpy(dst + offset, fname, fnamelen);
     offset += fnamelen;
   }
-  dst[offset] = 0;
+  dst[offset] = '\0';
   return dst;
 }
 
@@ -845,7 +844,6 @@ int mutt_mkdir(const char *path, mode_t mode)
   }
 
   errno = 0;
-  char *p = NULL;
   char _path[PATH_MAX];
   const size_t len = strlen(path);
 
@@ -862,7 +860,7 @@ int mutt_mkdir(const char *path, mode_t mode)
   /* Create a mutable copy */
   strfcpy(_path, path, sizeof(_path));
 
-  for (p = _path + 1; *p; p++)
+  for (char *p = _path + 1; *p; p++)
   {
     if (*p != '/')
       continue;
@@ -914,6 +912,24 @@ time_t mutt_decrease_mtime(const char *f, struct stat *st)
   }
 
   return mtime;
+}
+
+/**
+ * mutt_dirname - Return a path up to, but not including, the final '/'
+ * @param  p    Path
+ * @retval ptr  The directory containing p
+ *
+ * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
+ * implementation does not modify its parameter, so callers need not manually
+ * copy their paths into a modifiable buffer prior to calling this function.
+ *
+ * mutt_dirname() returns a static string which must not be free()'d.
+ */
+const char *mutt_dirname(const char *p)
+{
+  static char buf[_POSIX_PATH_MAX];
+  strfcpy(buf, p, sizeof(buf));
+  return dirname(buf);
 }
 
 /**
@@ -1111,3 +1127,39 @@ void mutt_unlink_empty(const char *path)
   close(fd);
 }
 
+/**
+ * mutt_rename_file - Rename a file
+ * @param oldfile Old filename
+ * @param newfile New filename
+ * @retval 0 Success
+ * @retval 1 Old file doesn't exist
+ * @retval 2 New file already exists
+ * @retval 3 Some other error
+ *
+ * note on access(2) use: No dangling symlink problems here due to
+ * safe_fopen().
+ */
+
+int mutt_rename_file(char *oldfile, char *newfile)
+{
+  FILE *ofp = NULL, *nfp = NULL;
+
+  if (access(oldfile, F_OK) != 0)
+    return 1;
+  if (access(newfile, F_OK) == 0)
+    return 2;
+  ofp = fopen(oldfile, "r");
+  if (!ofp)
+    return 3;
+  nfp = safe_fopen(newfile, "w");
+  if (!nfp)
+  {
+    safe_fclose(&ofp);
+    return 3;
+  }
+  mutt_copy_stream(ofp, nfp);
+  safe_fclose(&nfp);
+  safe_fclose(&ofp);
+  mutt_unlink(oldfile);
+  return 0;
+}

@@ -1,0 +1,167 @@
+MAKEDOC_CPP = $(CC_FOR_BUILD) -D_MAKEDOC -E -C -I.
+
+doc/makedoc$(EXEEXT): doc/makedoc.c
+	$(CC_FOR_BUILD) -I. -o $@ doc/makedoc.c
+
+doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
+	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
+	    > doc/neomuttrc
+	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -c \
+	    >> doc/neomuttrc
+
+@if BUILD_DOC
+
+CHUNKED_DOCFILES = doc/advancedusage.html \
+		   doc/configuration.html \
+		   doc/gettingstarted.html \
+		   doc/intro.html \
+		   doc/mimesupport.html \
+		   doc/miscellany.html \
+		   doc/optionalfeatures.html \
+		   doc/reference.html \
+		   doc/security.html \
+		   doc/tuning.html
+
+HTML_DOCFILES = doc/manual.html doc/index.html $(CHUNKED_DOCFILES)
+
+srcdir_DOCFILES = $(SRCDIR)/doc/PGP-Notes.txt \
+		  $(SRCDIR)/doc/smime-notes.txt \
+		  $(SRCDIR)/ChangeLog.md \
+		  $(SRCDIR)/CODE_OF_CONDUCT.md \
+		  $(SRCDIR)/COPYRIGHT \
+		  $(SRCDIR)/INSTALL \
+		  $(SRCDIR)/LICENSE.md \
+		  $(SRCDIR)/README.md \
+		  $(SRCDIR)/README.SSL
+
+all-doc: 	$(CHUNKED_DOCFILES) \
+    		doc/index.html \
+		doc/manual.html \
+		doc/manual.txt \
+		doc/neomuttrc \
+		doc/neomuttrc.man \
+		doc/neomutt-syntax.vim
+
+doc/manual.html:	doc/manual.xml \
+    			$(SRCDIR)/doc/html.xsl \
+			$(SRCDIR)/doc/neomutt.xsl \
+			$(SRCDIR)/doc/neomutt.css
+	xsltproc --nonet -o $@ $(SRCDIR)/doc/html.xsl doc/manual.xml
+
+doc/manual.txt: doc/manual.html
+	-LC_ALL=C w3m -dump -O UTF8 doc/manual.html > $@ || \
+	LC_ALL=C lynx -dump -nolist -with_backspaces \
+		-display_charset=us-ascii doc/manual.html > $@ || \
+	LC_ALL=C elinks -dump -no-numbering -no-references \
+		doc/manual.html | sed -e 's,\\001, ,g' > $@
+
+$(CHUNKED_DOCFILES): doc/index.html
+
+doc/index.html: $(SRCDIR)/doc/chunk.xsl \
+    		$(SRCDIR)/doc/neomutt.xsl \
+		$(SRCDIR)/doc/neomutt.css \
+		doc/manual.xml
+	xsltproc --nonet -o doc/ $(SRCDIR)/doc/chunk.xsl doc/manual.xml > /dev/null 2>&1
+
+doc/neomuttrc.man:	doc/makedoc$(EXEEXT) \
+    		$(SRCDIR)/init.h \
+		$(SRCDIR)/doc/neomuttrc.man.head \
+		$(SRCDIR)/doc/neomuttrc.man.tail
+	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m | \
+		cat $(SRCDIR)/doc/neomuttrc.man.head - \
+		$(SRCDIR)/doc/neomuttrc.man.tail > $@
+
+doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h $(SRCDIR)/opcodes.h \
+		$(SRCDIR)/doc/manual.xml.head $(SRCDIR)/functions.h \
+		$(SRCDIR)/doc/manual.xml.tail $(SRCDIR)/doc/gen-map-doc
+	( sed -e "s/@VERSION@/$(PACKAGE_VERSION)/" \
+	    $(SRCDIR)/doc/manual.xml.head && \
+	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -s && \
+	    $(MAKEDOC_CPP) $(SRCDIR)/functions.h | \
+	    perl $(SRCDIR)/doc/gen-map-doc $(SRCDIR)/doc/manual.xml.tail \
+	    $(SRCDIR)/opcodes.h \
+	) > $@
+
+install-doc: all-doc
+	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
+	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -m 644 doc/neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
+	$(INSTALL) -m 644 doc/neomuttrc.man $(DESTDIR)$(mandir)/man5/neomuttrc.5
+	$(INSTALL) -m 644 $(SRCDIR)/doc/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
+	$(INSTALL) -m 644 $(SRCDIR)/doc/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
+	$(INSTALL) -m 644 $(SRCDIR)/doc/pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring_$(PACKAGE).1
+	$(INSTALL) -m 644 $(SRCDIR)/doc/mbox.5 $(DESTDIR)$(mandir)/man5/mbox_$(PACKAGE).5
+	$(INSTALL) -m 644 $(SRCDIR)/doc/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf_$(PACKAGE).5
+	$(MKDIR_P) $(DESTDIR)$(docdir)
+	for f in $(srcdir_DOCFILES); do \
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir); \
+	done
+	-$(INSTALL) -m 644 doc/manual.txt $(DESTDIR)$(docdir)
+	-for f in $(HTML_DOCFILES); do \
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir); \
+	done
+	$(INSTALL) -m 644 doc/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
+	$(INSTALL) -m 644 $(SRCDIR)/doc/neomutt-syntax.vim $(DESTDIR)$(docdir)
+	# Install mime.types
+	$(INSTALL_DATA) $(SRCDIR)/doc/mime.types $(DESTDIR)$(docdir)/mime.types
+
+uninstall-doc:
+	for f in neomutt.1 smime_keys_$(PACKAGE).1 pgpewrap_$(PACKAGE).1 pgpring_$(PACKAGE).1; do \
+		$(RM) $(DESTDIR)$(mandir)/man1/$$f; \
+	done
+	for f in neomuttrc.5 mbox_$(PACKAGE).5 mmdf_$(PACKAGE).5; do \
+		$(RM) $(DESTDIR)$(mandir)/man5/$$f; \
+	done
+	for f in $(srcdir_DOCFILES) $(HTML_DOCFILES); do \
+		$(RM) $(DESTDIR)$(docdir)/`basename $$f`; \
+	done
+	$(RM) $(DESTDIR)$(docdir)/manual.txt
+	$(RM) $(DESTDIR)$(sysconfdir)/neomuttrc
+	$(RM) $(DESTDIR)$(docdir)/neomutt-syntax.vim
+	# Uninstall mime.types
+	$(RM) $(DESTDIR)$(docdir)/mime.types
+
+clean-doc:
+	$(RM) doc/*.html doc/neomuttrc.man \
+	    doc/makedoc$(EXEEXT) doc/makedoc.o \
+	    doc/makedoc.Po doc/manual.txt doc/manual.xml \
+	    doc/neomuttrc
+
+validate-doc: doc/manual.xml
+	xmllint --noout --noblanks --postvalid doc/manual.xml
+
+spellcheck-doc:
+	-aspell -d american --mode=sgml  --encoding=utf-8 -p \
+	    doc/neomutt.pwl check doc/manual.xml.head
+	-aspell -d american --mode=nroff --encoding=utf-8 -p \
+	    doc/neomutt.pwl check doc/neomuttrc.man.head
+	-aspell -d american --mode=ccpp  --encoding=utf-8 -p \
+	    doc/neomutt.pwl check init.h
+
+sortcheck-doc: doc/manual.xml
+	sed -n -e '1,/^<sect1 id="variables">/d' \
+	    -e '1,/^<sect1 id="functions">/s/<sect2 id="\([^"]*\)">/\1/p' \
+	    < doc/manual.xml > doc/vars.tmp.1
+	sort < doc/vars.tmp.1 > doc/vars.tmp.2
+	cmp -s doc/vars.tmp.1 doc/vars.tmp.2 || \
+	    diff -u doc/vars.tmp.1 doc/vars.tmp.2 | less
+	$(RM) doc/vars.tmp.1 doc/vars.tmp.2
+
+@else
+# Let's generate neomuttrc in all cases: it doesn't require any additional 3rd
+# party dependencies and distributions tend to rely on having it.
+all-doc: doc/neomuttrc
+
+clean-doc:
+	$(RM) doc/neomuttrc doc/makedoc$(EXEEXT)
+
+install-doc: all-doc
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -m 644 doc/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
+
+uninstall-doc:
+	$(RM) $(DESTDIR)$(sysconfdir)/neomuttrc
+@endif
+
+# vim: set ts=8 noexpandtab:

@@ -25,12 +25,15 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"
@@ -38,7 +41,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"
@@ -78,10 +80,10 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
   char *p = tmp;
   int tmplen = sizeof(tmp);
 
-  tmp[sizeof(tmp) - 1] = 0;
+  tmp[sizeof(tmp) - 1] = '\0';
   if (prefix)
   {
-    strfcpy(tmp, NONULL(Prefix), sizeof(tmp));
+    strfcpy(tmp, NONULL(IndentString), sizeof(tmp));
     tmplen = mutt_strlen(tmp);
     p = tmp + tmplen;
     tmplen = sizeof(tmp) - tmplen;
@@ -135,7 +137,8 @@ static int be_barf_file(const char *path, char **buf, int buflen)
 {
   FILE *f = NULL;
 
-  if ((f = fopen(path, "w")) == NULL)
+  f = fopen(path, "w");
+  if (!f)
   {
     addstr(strerror(errno));
     addch('\n');
@@ -210,7 +213,7 @@ static void be_print_header(struct Envelope *env)
   if (env->to)
   {
     addstr("To: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     rfc822_write_address(tmp, sizeof(tmp), env->to, 1);
     addstr(tmp);
     addch('\n');
@@ -218,7 +221,7 @@ static void be_print_header(struct Envelope *env)
   if (env->cc)
   {
     addstr("Cc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     rfc822_write_address(tmp, sizeof(tmp), env->cc, 1);
     addstr(tmp);
     addch('\n');
@@ -226,7 +229,7 @@ static void be_print_header(struct Envelope *env)
   if (env->bcc)
   {
     addstr("Bcc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     rfc822_write_address(tmp, sizeof(tmp), env->bcc, 1);
     addstr(tmp);
     addch('\n');
@@ -252,7 +255,7 @@ static void be_edit_header(struct Envelope *e, int force)
   mutt_window_move(MuttMessageWindow, 0, 0);
 
   addstr("To: ");
-  tmp[0] = 0;
+  tmp[0] = '\0';
   mutt_addrlist_to_local(e->to);
   rfc822_write_address(tmp, sizeof(tmp), e->to, 0);
   if (!e->to || force)
@@ -263,7 +266,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->to = mutt_parse_adrlist(e->to, tmp);
       e->to = mutt_expand_aliases(e->to);
       mutt_addrlist_to_intl(e->to, NULL); /* XXX - IDNA error reporting? */
-      tmp[0] = 0;
+      tmp[0] = '\0';
       rfc822_write_address(tmp, sizeof(tmp), e->to, 1);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
@@ -284,10 +287,10 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if ((!e->cc && option(OPT_ASK_CC)) || force)
+  if ((!e->cc && option(OPT_ASKCC)) || force)
   {
     addstr("Cc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     mutt_addrlist_to_local(e->cc);
     rfc822_write_address(tmp, sizeof(tmp), e->cc, 0);
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
@@ -295,7 +298,7 @@ static void be_edit_header(struct Envelope *e, int force)
       rfc822_free_address(&e->cc);
       e->cc = mutt_parse_adrlist(e->cc, tmp);
       e->cc = mutt_expand_aliases(e->cc);
-      tmp[0] = 0;
+      tmp[0] = '\0';
       mutt_addrlist_to_intl(e->cc, NULL);
       rfc822_write_address(tmp, sizeof(tmp), e->cc, 1);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
@@ -305,10 +308,10 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if (option(OPT_ASK_BCC) || force)
+  if (option(OPT_ASKBCC) || force)
   {
     addstr("Bcc: ");
-    tmp[0] = 0;
+    tmp[0] = '\0';
     mutt_addrlist_to_local(e->bcc);
     rfc822_write_address(tmp, sizeof(tmp), e->bcc, 0);
     if (mutt_enter_string(tmp, sizeof(tmp), 5, 0) == 0)
@@ -317,7 +320,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->bcc = mutt_parse_adrlist(e->bcc, tmp);
       e->bcc = mutt_expand_aliases(e->bcc);
       mutt_addrlist_to_intl(e->bcc, NULL);
-      tmp[0] = 0;
+      tmp[0] = '\0';
       rfc822_write_address(tmp, sizeof(tmp), e->bcc, 1);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 5, tmp);
     }
@@ -344,22 +347,22 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
 
   buf = be_snarf_file(path, buf, &bufmax, &buflen, 0);
 
-  tmp[0] = 0;
+  tmp[0] = '\0';
   while (!done)
   {
     if (mutt_enter_string(tmp, sizeof(tmp), 0, 0) == -1)
     {
-      tmp[0] = 0;
+      tmp[0] = '\0';
       continue;
     }
     addch('\n');
 
-    if (EscChar && tmp[0] == EscChar[0] && tmp[1] != EscChar[0])
+    if (Escape && tmp[0] == Escape[0] && tmp[1] != Escape[0])
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_strlen(tmp) - 1;
       while (p >= tmp && ISSPACE(*p))
-        *p-- = 0;
+        *p-- = '\0';
 
       p = tmp + 2;
       SKIPWS(p);
@@ -410,7 +413,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
              This entry is shown AFTER the message content,
              not IN the middle of the content.
              So it doesn't mean "(message will continue)"
-             but means "(press any key to continue using mutt)". */
+             but means "(press any key to continue using neomutt)". */
           addstr(_("(continue)\n"));
           break;
         case 'q':
@@ -438,7 +441,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           {
             buflen--;
             strfcpy(tmp, buf[buflen], sizeof(tmp));
-            tmp[mutt_strlen(tmp) - 1] = 0;
+            tmp[mutt_strlen(tmp) - 1] = '\0';
             FREE(&buf[buflen]);
             buf[buflen] = NULL;
             continue;
@@ -456,7 +459,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             buf = NULL;
             bufmax = buflen = 0;
 
-            if (option(OPT_EDIT_HDRS))
+            if (option(OPT_EDIT_HEADERS))
             {
               mutt_env_to_local(msg->env);
               mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);
@@ -495,7 +498,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
       buf[buflen++] = safe_strdup(tmp[1] == '~' ? tmp + 1 : tmp);
     }
 
-    tmp[0] = 0;
+    tmp[0] = '\0';
   }
 
   if (!abort)

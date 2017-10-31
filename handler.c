@@ -24,7 +24,9 @@
 #include <stddef.h>
 #include <ctype.h>
 #include <iconv.h>
+#ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -35,6 +37,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include <wctype.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "charset.h"
@@ -42,12 +45,10 @@
 #include "filter.h"
 #include "globals.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
@@ -142,7 +143,8 @@ static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
     {
       if (c == '\r' && len)
       {
-        if ((ch = fgetc(s->fpin)) == '\n')
+        ch = fgetc(s->fpin);
+        if (ch == '\n')
         {
           c = ch;
           len--;
@@ -288,7 +290,7 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
     {
       while (linelen > 0 && ISSPACE(line[linelen - 1]))
         linelen--;
-      line[linelen] = 0;
+      line[linelen] = '\0';
     }
 
     /* decode and do character set conversion */
@@ -308,7 +310,7 @@ void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
   char bufi[BUFI_SIZE];
   size_t l = 0;
 
-  buf[4] = 0;
+  buf[4] = '\0';
 
   if (istext)
     state_set_prefix(s);
@@ -317,7 +319,8 @@ void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
   {
     for (i = 0; i < 4 && len > 0; len--)
     {
-      if ((ch = fgetc(s->fpin)) == EOF)
+      ch = fgetc(s->fpin);
+      if (ch == EOF)
         break;
       if (ch >= 0 && ch < 128 && (base64val(ch) != -1 || ch == '='))
         buf[i++] = ch;
@@ -968,7 +971,8 @@ static int is_mmnoask(const char *buf)
 
     while ((p = strtok(p, ",")) != NULL)
     {
-      if ((q = strrchr(p, '/')) != NULL)
+      q = strrchr(p, '/');
+      if (q)
       {
         if (*(q + 1) == '*')
         {
@@ -1287,8 +1291,6 @@ int mutt_can_decode(struct Body *a)
     return 1;
   else if (a->type == TYPEMULTIPART)
   {
-    struct Body *p = NULL;
-
     if (WithCrypto)
     {
       if ((mutt_strcasecmp(a->subtype, "signed") == 0) ||
@@ -1296,9 +1298,9 @@ int mutt_can_decode(struct Body *a)
         return 1;
     }
 
-    for (p = a->parts; p; p = p->next)
+    for (struct Body *b = a->parts; b; b = b->next)
     {
-      if (mutt_can_decode(p))
+      if (mutt_can_decode(b))
         return 1;
     }
   }
@@ -1364,7 +1366,8 @@ static int multipart_handler(struct Body *a, struct State *s)
                  NONULL(p->subtype));
     }
 
-    if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLY_FIRST)) && (s->flags & MUTT_FIRSTDONE))
+    if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLYFIRST)) &&
+        (s->flags & MUTT_FIRSTDONE))
       break;
   }
 
@@ -1414,7 +1417,8 @@ static int autoview_handler(struct Body *a, struct State *s)
       mutt_message(_("Invoking autoview command: %s"), command);
     }
 
-    if ((fpin = safe_fopen(tempfile, "w+")) == NULL)
+    fpin = safe_fopen(tempfile, "w+");
+    if (!fpin)
     {
       mutt_perror("fopen");
       rfc1524_free_entry(&entry);
@@ -1490,7 +1494,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       }
     }
 
-bail:
+  bail:
     safe_fclose(&fpout);
     safe_fclose(&fperr);
 
@@ -1665,7 +1669,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
     {
       l = mutt_strlen(buf);
       while (l > 0 && buf[l - 1] == ' ')
-        buf[--l] = 0;
+        buf[--l] = '\0';
     }
     if (s->prefix)
       state_puts(s->prefix, s);
@@ -1722,7 +1726,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
 #else
       mutt_mktemp(tempfile, sizeof(tempfile));
-      if ((s->fpout = safe_fopen(tempfile, "w")) == NULL)
+      s->fpout = safe_fopen(tempfile, "w");
+      if (!s->fpout)
       {
         mutt_error(_("Unable to open temporary file!"));
         mutt_debug(1, "Can't open %s.\n", tempfile);
@@ -1935,7 +1940,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!option(OPT_HONOR_DISP) || (b->disposition != DISPATTACH || option(OPT_VIEW_ATTACH))) &&
+  if ((!option(OPT_HONOR_DISPOSITION) ||
+       (b->disposition != DISPATTACH || option(OPT_VIEW_ATTACH))) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
@@ -1944,10 +1950,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
      if we're not already being called from there */
   else if ((s->flags & MUTT_DISPLAY) ||
            (b->disposition == DISPATTACH && !option(OPT_VIEW_ATTACH) &&
-            option(OPT_HONOR_DISP) && (plaintext || handler)))
+            option(OPT_HONOR_DISPOSITION) && (plaintext || handler)))
   {
     state_mark_attach(s);
-    if (option(OPT_HONOR_DISP) && b->disposition == DISPATTACH)
+    if (option(OPT_HONOR_DISPOSITION) && b->disposition == DISPATTACH)
       fputs(_("[-- This is an attachment "), s->fpout);
     else
       state_printf(s, _("[-- %s/%s is unsupported "), TYPE(b), b->subtype);

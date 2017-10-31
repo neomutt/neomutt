@@ -24,19 +24,19 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "account.h"
-#include "globals.h"
 #include "lib/lib.h"
+#include "conn/conn.h"
+#include "mutt.h"
+#include "globals.h"
+#include "mutt_account.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
 #include "rfc822.h"
-#include "mutt.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
-#include "mutt_sasl.h"
 #endif
 
 #ifdef USE_SASL

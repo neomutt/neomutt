@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -43,7 +44,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"
@@ -160,6 +160,18 @@ int mutt_protect(struct Header *msg, char *keylist)
         return -1;
       }
     }
+    else if (!mutt_strcasecmp("flowed",
+                              mutt_get_parameter("format", msg->content->parameter)))
+    {
+      if ((query_quadoption(OPT_PGP_MIME_AUTO,
+                            _("Inline PGP can't be used with format=flowed.  "
+                              "Revert to PGP/MIME?"))) != MUTT_YES)
+      {
+        mutt_error(
+            _("Mail not sent: inline PGP can't be used with format=flowed."));
+        return -1;
+      }
+    }
     else
     {
       /* they really want to send it inline... go for it */
@@ -203,8 +215,8 @@ int mutt_protect(struct Header *msg, char *keylist)
       from = mutt_default_from();
 
     mailbox = from->mailbox;
-    if (!mailbox && EnvFrom)
-      mailbox = EnvFrom->mailbox;
+    if (!mailbox && EnvelopeFromAddress)
+      mailbox = EnvelopeFromAddress->mailbox;
 
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
@@ -219,15 +231,17 @@ int mutt_protect(struct Header *msg, char *keylist)
   {
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      if (!(tmp_pbody = crypt_smime_sign_message(msg->content)))
+      tmp_pbody = crypt_smime_sign_message(msg->content);
+      if (!tmp_pbody)
         return -1;
       pbody = tmp_smime_pbody = tmp_pbody;
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIG)))
+        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
     {
-      if (!(tmp_pbody = crypt_pgp_sign_message(msg->content)))
+      tmp_pbody = crypt_pgp_sign_message(msg->content);
+      if (!tmp_pbody)
         return -1;
 
       flags &= ~SIGN;
@@ -305,7 +319,8 @@ int mutt_is_multipart_signed(struct Body *b)
       (mutt_strcasecmp(b->subtype, "signed") != 0))
     return 0;
 
-  if (!(p = mutt_get_parameter("protocol", b->parameter)))
+  p = mutt_get_parameter("protocol", b->parameter);
+  if (!p)
     return 0;
 
   if (!(mutt_strcasecmp(p, "multipart/mixed") != 0))
@@ -567,15 +582,14 @@ int crypt_query(struct Body *m)
 
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
-    struct Body *p = NULL;
     int u, v, w;
 
     u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
     w = 0;                         /* Bits set in any part  */
 
-    for (p = m->parts; p; p = p->next)
+    for (struct Body *b = m->parts; b; b = b->next)
     {
-      v = crypt_query(p);
+      v = crypt_query(b);
       u &= v;
       w |= v;
     }
@@ -603,7 +617,8 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   if (!WithCrypto)
     return -1;
 
-  if (!(fp = safe_fopen(tempfile, "w")))
+  fp = safe_fopen(tempfile, "w");
+  if (!fp)
   {
     mutt_perror(tempfile);
     return -1;
@@ -614,7 +629,8 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   hadcr = false;
   while (bytes > 0)
   {
-    if ((c = fgetc(s->fpin)) == EOF)
+    c = fgetc(s->fpin);
+    if (c == EOF)
       break;
 
     bytes--;
@@ -672,7 +688,6 @@ void convert_to_7bit(struct Body *a)
 
 void crypt_extract_keys_from_messages(struct Header *h)
 {
-  int i;
   char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
   struct Address *tmp = NULL;
   FILE *fpout = NULL;
@@ -681,7 +696,8 @@ void crypt_extract_keys_from_messages(struct Header *h)
     return;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  if (!(fpout = safe_fopen(tempfname, "w")))
+  fpout = safe_fopen(tempfname, "w");
+  if (!fpout)
   {
     mutt_perror(tempfname);
     return;
@@ -692,55 +708,53 @@ void crypt_extract_keys_from_messages(struct Header *h)
 
   if (!h)
   {
-    for (i = 0; i < Context->vcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
     {
-      if (Context->hdrs[Context->v2r[i]]->tagged)
+      if (!message_is_tagged(Context, i))
+        continue;
+
+      struct Header *h = Context->hdrs[i];
+
+      mutt_parse_mime_message(Context, h);
+      if (h->security & ENCRYPT && !crypt_valid_passphrase(h->security))
       {
-        mutt_parse_mime_message(Context, Context->hdrs[Context->v2r[i]]);
-        if (Context->hdrs[Context->v2r[i]]->security & ENCRYPT &&
-            !crypt_valid_passphrase(Context->hdrs[Context->v2r[i]]->security))
-        {
-          safe_fclose(&fpout);
-          break;
-        }
-
-        if ((WithCrypto & APPLICATION_PGP) &&
-            (Context->hdrs[Context->v2r[i]]->security & APPLICATION_PGP))
-        {
-          mutt_copy_message(fpout, Context, Context->hdrs[Context->v2r[i]],
-                            MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
-          fflush(fpout);
-
-          mutt_endwin(_("Trying to extract PGP keys...\n"));
-          crypt_pgp_invoke_import(tempfname);
-        }
-
-        if ((WithCrypto & APPLICATION_SMIME) &&
-            (Context->hdrs[Context->v2r[i]]->security & APPLICATION_SMIME))
-        {
-          if (Context->hdrs[Context->v2r[i]]->security & ENCRYPT)
-            mutt_copy_message(fpout, Context, Context->hdrs[Context->v2r[i]],
-                              MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                              0);
-          else
-            mutt_copy_message(fpout, Context, Context->hdrs[Context->v2r[i]], 0, 0);
-          fflush(fpout);
-
-          if (Context->hdrs[Context->v2r[i]]->env->from)
-            tmp = mutt_expand_aliases(Context->hdrs[Context->v2r[i]]->env->from);
-          else if (Context->hdrs[Context->v2r[i]]->env->sender)
-            tmp = mutt_expand_aliases(Context->hdrs[Context->v2r[i]]->env->sender);
-          mbox = tmp ? tmp->mailbox : NULL;
-          if (mbox)
-          {
-            mutt_endwin(_("Trying to extract S/MIME certificates...\n"));
-            crypt_smime_invoke_import(tempfname, mbox);
-            tmp = NULL;
-          }
-        }
-
-        rewind(fpout);
+        safe_fclose(&fpout);
+        break;
       }
+
+      if ((WithCrypto & APPLICATION_PGP) && (h->security & APPLICATION_PGP))
+      {
+        mutt_copy_message(fpout, Context, h, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        fflush(fpout);
+
+        mutt_endwin(_("Trying to extract PGP keys...\n"));
+        crypt_pgp_invoke_import(tempfname);
+      }
+
+      if ((WithCrypto & APPLICATION_SMIME) && (h->security & APPLICATION_SMIME))
+      {
+        if (h->security & ENCRYPT)
+          mutt_copy_message(fpout, Context, h,
+                            MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
+                            0);
+        else
+          mutt_copy_message(fpout, Context, h, 0, 0);
+        fflush(fpout);
+
+        if (h->env->from)
+          tmp = mutt_expand_aliases(h->env->from);
+        else if (h->env->sender)
+          tmp = mutt_expand_aliases(h->env->sender);
+        mbox = tmp ? tmp->mailbox : NULL;
+        if (mbox)
+        {
+          mutt_endwin(_("Trying to extract S/MIME certificates...\n"));
+          crypt_smime_invoke_import(tempfname, mbox);
+          tmp = NULL;
+        }
+      }
+
+      rewind(fpout);
     }
   }
   else
@@ -830,7 +844,8 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   {
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
     {
-      if ((*keylist = crypt_pgp_findkeys(adrlist, oppenc_mode)) == NULL)
+      *keylist = crypt_pgp_findkeys(adrlist, oppenc_mode);
+      if (!*keylist)
       {
         rfc822_free_address(&adrlist);
         return -1;
@@ -841,7 +856,8 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      if ((*keylist = crypt_smime_findkeys(adrlist, oppenc_mode)) == NULL)
+      *keylist = crypt_smime_findkeys(adrlist, oppenc_mode);
+      if (!*keylist)
       {
         rfc822_free_address(&adrlist);
         return -1;
@@ -922,7 +938,6 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   struct Body *b = a;
   struct Body **signatures = NULL;
   int sigcnt = 0;
-  int i;
   bool goodsig = true;
   int rc = 0;
 
@@ -983,7 +998,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       mutt_mktemp(tempfile, sizeof(tempfile));
       if (crypt_write_signed(a, s, tempfile) == 0)
       {
-        for (i = 0; i < sigcnt; i++)
+        for (int i = 0; i < sigcnt; i++)
         {
           if ((WithCrypto & APPLICATION_PGP) && signatures[i]->type == TYPEAPPLICATION &&
               (mutt_strcasecmp(signatures[i]->subtype, "pgp-signature") == 0))

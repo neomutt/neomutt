@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include "lib/lib.h"
 #include "mutt.h"
 #include "body.h"
 #include "context.h"
@@ -37,14 +38,11 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "keymap_defs.h"
-#include "lib/lib.h"
-#include "list.h"
 #include "mailbox.h"
-#include "mapping.h"
 #include "mime.h"
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"
+#include "opcodes.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
@@ -178,7 +176,7 @@ static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
 {
   struct Context *ctx = (struct Context *) menu->data;
 
-  _mutt_make_string(s, slen, NONULL(HdrFmt), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
+  _mutt_make_string(s, slen, NONULL(IndexFormat), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
 }
 
 static struct Header *select_msg(void)
@@ -269,7 +267,8 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   if (!Postponed)
     return -1;
 
-  if ((PostContext = mx_open_mailbox(Postponed, MUTT_NOSORT, NULL)) == NULL)
+  PostContext = mx_open_mailbox(Postponed, MUTT_NOSORT, NULL);
+  if (!PostContext)
   {
     PostCount = 0;
     mutt_error(_("No postponed messages."));
@@ -351,7 +350,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
              ((mutt_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
-                                                        * by old mutt versions
+                                                        * by old neomutt versions
                                                         */
               || (mutt_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
     {
@@ -495,7 +494,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
   /* the cryptalg field must not be empty */
   if ((WithCrypto & APPLICATION_SMIME) && *smime_cryptalg)
-    mutt_str_replace(&SmimeCryptAlg, smime_cryptalg);
+    mutt_str_replace(&SmimeEncryptWith, smime_cryptalg);
 
   /* Set {Smime,Pgp}SignAs, if desired. */
 
@@ -574,7 +573,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
     {
-err:
+    err:
       mx_close_message(ctx, &msg);
       mutt_free_envelope(&newhdr->env);
       mutt_free_body(&newhdr->content);
@@ -598,7 +597,7 @@ err:
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
         (mutt_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
-                          "application/pgp-signature") == 0))
+                         "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;
@@ -660,7 +659,8 @@ err:
     }
 
     mutt_adv_mktemp(file, sizeof(file));
-    if ((s.fpout = safe_fopen(file, "w")) == NULL)
+    s.fpout = safe_fopen(file, "w");
+    if (!s.fpout)
       goto bail;
 
     if ((WithCrypto & APPLICATION_PGP) &&

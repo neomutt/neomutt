@@ -26,8 +26,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "globals.h"
 #include "lib/lib.h"
+#include "globals.h"
 #include "mutt_curses.h"
 #include "options.h"
 

@@ -27,17 +27,18 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
+#include "lib/lib.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "nntp.h"
-#include "account.h"
 #include "bcache.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "lib/lib.h"
 #include "mailbox.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "mx.h"
@@ -46,16 +47,12 @@
 #include "protos.h"
 #include "thread.h"
 #include "url.h"
-#ifdef USE_SSL
-#include "mutt_ssl.h"
-#endif
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
-#include "mutt_sasl.h"
 #endif
 
 static int nntp_connect_error(struct NntpServer *nserv)
@@ -671,7 +668,7 @@ int nntp_open_connection(struct NntpServer *nserv)
     if (nserv->use_tls == 0)
       nserv->use_tls =
           option(OPT_SSL_FORCE_TLS) ||
-                  query_quadoption(OPT_SSL_START_TLS,
+                  query_quadoption(OPT_SSL_STARTTLS,
                                    _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
               1;
@@ -1236,7 +1233,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 #endif
 
   /* fetch list of articles */
-  if (option(OPT_LIST_GROUP) && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
+  if (option(OPT_NNTP_LISTGROUP) && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
   {
     if (!ctx->quiet)
       mutt_message(_("Fetching list of articles..."));
@@ -1333,7 +1330,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
     /* fallback to fetch overview */
     else if (nntp_data->nserv->hasOVER || nntp_data->nserv->hasXOVER)
-      if (option(OPT_LIST_GROUP) && nntp_data->nserv->hasLISTGROUP)
+      if (option(OPT_NNTP_LISTGROUP) && nntp_data->nserv->hasLISTGROUP)
         break;
       else
         continue;
@@ -1411,7 +1408,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     first_over = current + 1;
   }
 
-  if (!option(OPT_LIST_GROUP) || !nntp_data->nserv->hasLISTGROUP)
+  if (!option(OPT_NNTP_LISTGROUP) || !nntp_data->nserv->hasLISTGROUP)
     current = first_over;
 
   /* fetch overview information */
@@ -1450,12 +1447,13 @@ static int nntp_open_mailbox(struct Context *ctx)
   int rc;
   void *hc = NULL;
   anum_t first, last, count = 0;
-  struct CissUrl url;
+  struct Url url;
 
   strfcpy(buf, ctx->path, sizeof(buf));
-  if (url_parse_ciss(&url, buf) < 0 || !url.path ||
+  if (url_parse(&url, buf) < 0 || !url.host || !url.path ||
       !(url.scheme == U_NNTP || url.scheme == U_NNTPS))
   {
+    url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification!"), ctx->path);
     mutt_sleep(2);
     return -1;
@@ -1463,8 +1461,9 @@ static int nntp_open_mailbox(struct Context *ctx)
 
   group = url.path;
   url.path = strchr(url.path, '\0');
-  url_ciss_tostring(&url, server, sizeof(server), 0);
-  nserv = nntp_select_server(server, 1);
+  url_tostring(&url, server, sizeof(server), 0);
+  nserv = nntp_select_server(server, true);
+  url_free(&url);
   if (!nserv)
     return -1;
   CurrentNewsSrv = nserv;
@@ -1480,7 +1479,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   }
 
   mutt_bit_unset(ctx->rights, MUTT_ACL_INSERT);
-  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUB))
+  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUBSCRIBED))
     ctx->readonly = true;
 
   /* select newsgroup */
@@ -1501,7 +1500,7 @@ static int nntp_open_mailbox(struct Context *ctx)
       nntp_data->deleted = true;
       nntp_active_save_cache(nserv);
     }
-    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUB))
+    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUBSCRIBED))
     {
       FREE(&nntp_data->newsrc_ent);
       nntp_data->newsrc_len = 0;
@@ -1526,7 +1525,7 @@ static int nntp_open_mailbox(struct Context *ctx)
     nntp_data->deleted = false;
 
     /* get description if empty */
-    if (option(OPT_LOAD_DESC) && !nntp_data->desc)
+    if (option(OPT_NNTP_LOAD_DESCRIPTION) && !nntp_data->desc)
     {
       if (get_description(nntp_data, NULL, NULL) < 0)
       {
@@ -1540,8 +1539,8 @@ static int nntp_open_mailbox(struct Context *ctx)
 
   time(&nserv->check_time);
   ctx->data = nntp_data;
-  if (!nntp_data->bcache &&
-      (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUB)))
+  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed ||
+                             option(OPT_SAVE_UNSUBSCRIBED)))
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */
@@ -1619,7 +1618,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
 
     /* create new cache file */
     mutt_message(fetch_msg);
-    msg->fp = mutt_bcache_put(nntp_data->bcache, article, 1);
+    msg->fp = mutt_bcache_put(nntp_data->bcache, article);
     if (!msg->fp)
     {
       mutt_mktemp(buf, sizeof(buf));
@@ -1681,7 +1680,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   fseek(msg->fp, 0, SEEK_END);
   hdr->content->length = ftell(msg->fp) - hdr->content->offset;
 
-  /* this is called in mutt before the open which fetches the message,
+  /* this is called in neomutt before the open which fetches the message,
    * which is probably wrong, but we just call it again here to handle
    * the problem instead of fixing it */
   NHDR(hdr)->parsed = true;
@@ -1720,7 +1719,7 @@ int nntp_post(const char *msg)
     nntp_data = Context->data;
   else
   {
-    CurrentNewsSrv = nntp_select_server(NewsServer, 0);
+    CurrentNewsSrv = nntp_select_server(NewsServer, false);
     if (!CurrentNewsSrv)
       return -1;
 
@@ -1842,7 +1841,7 @@ static int check_mailbox(struct Context *ctx)
   int rc, ret = 0;
   void *hc = NULL;
 
-  if (nserv->check_time + NewsPollTimeout > now)
+  if (nserv->check_time + NntpPoll > now)
     return 0;
 
   mutt_message(_("Checking for new messages..."));
@@ -2181,10 +2180,10 @@ static int nntp_date(struct NntpServer *nserv, time_t *now)
 /**
  * nntp_active_fetch - Fetch list of all newsgroups from server
  */
-int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
+int nntp_active_fetch(struct NntpServer *nserv, bool new)
 {
   struct NntpData nntp_data;
-  char msg[SHORT_STRING];
+  char msg[STRING];
   char buf[LONG_STRING];
   unsigned int i;
   int rc;
@@ -2215,7 +2214,7 @@ int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
     for (; i < nserv->groups_num; i++)
     {
       struct NntpData *data = nserv->groups_list[i];
-      data->new = 1;
+      data->new = true;
     }
   }
 
@@ -2231,7 +2230,7 @@ int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
     }
   }
 
-  if (option(OPT_LOAD_DESC))
+  if (option(OPT_NNTP_LOAD_DESCRIPTION))
     rc = get_description(&nntp_data, "*", _("Loading descriptions..."));
 
   nntp_active_save_cache(nserv);
@@ -2323,11 +2322,11 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     for (; i < nserv->groups_num; i++)
     {
       struct NntpData *data = nserv->groups_list[i];
-      data->new = 1;
+      data->new = true;
     }
 
     /* loading descriptions */
-    if (option(OPT_LOAD_DESC))
+    if (option(OPT_NNTP_LOAD_DESCRIPTION))
     {
       unsigned int count = 0;
       struct Progress progress;
@@ -2528,4 +2527,6 @@ struct MxOps mx_nntp_ops = {
   .close_msg = nntp_close_message,
   .commit_msg = NULL,
   .open_new_msg = NULL,
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };

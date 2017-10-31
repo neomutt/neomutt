@@ -1,0 +1,35 @@
+SAMPLES=	colors.default colors.linux gpg.rc Mush.rc pgp2.rc pgp5.rc \
+		pgp6.rc Pine.rc sample.mailcap sample.neomuttrc \
+		sample.neomuttrc-tlr smime.rc smime_keys_test.pl Tin.rc
+
+CONTRIB_DIRS=	colorschemes hcache-bench keybase logo lua vim-keys
+
+all-contrib:
+clean-contrib:
+
+install-contrib:
+	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples
+	for f in $(SAMPLES); do \
+		$(INSTALL) -m 644 $(SRCDIR)/contrib/$$f $(DESTDIR)$(docdir)/samples; \
+	done
+	for d in $(CONTRIB_DIRS); do \
+		echo "Creating directory $(DESTDIR)$(docdir)/$$d"; \
+		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d; \
+		for f in $(SRCDIR)/contrib/$$d/*; do \
+			echo "Installing $$f"; \
+			$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/$$d; \
+		done \
+	done
+	chmod +x $(DESTDIR)$(docdir)/keybase/*.sh
+
+uninstall-contrib:
+	for f in $(SAMPLES); do \
+		$(RM) $(DESTDIR)$(docdir)/samples/$$f; \
+	done
+	for d in $(CONTRIB_DIRS); do \
+		$(RM) $(DESTDIR)$(docdir)/$$d; \
+	done
+	-rmdir $(DESTDIR)$(docdir)/samples
+	-rmdir $(DESTDIR)$(docdir)
+
+# vim: set ts=8 noexpandtab:

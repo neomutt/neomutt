@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "lib/lib.h"
-#include "list.h"
+#include "mutt_tags.h"
 
 /**
  * struct Header - The header/envelope of an email
@@ -42,7 +42,7 @@ struct Header
   bool tagged          : 1;
   bool deleted         : 1;
   bool purge           : 1; /**< skip trash folder when deleting */
-  bool quasi_deleted   : 1; /**< deleted from mutt, but not modified on disk */
+  bool quasi_deleted   : 1; /**< deleted from neomutt, but not modified on disk */
   bool changed         : 1;
   bool attach_del      : 1; /**< has an attachment marked for deletion */
   bool old             : 1;
@@ -108,6 +108,8 @@ struct Header
   int refno; /**< message number on server */
 #endif
 
+  struct TagHead tags; /**< for drivers that support server tagging */
+
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;                       /**< driver-specific data */
   void (*free_cb)(struct Header *); /**< driver-specific data free function */
@@ -122,6 +124,7 @@ static inline struct Header *mutt_new_header(void)
 #ifdef MIXMASTER
   STAILQ_INIT(&h->chain);
 #endif
+  STAILQ_INIT(&h->tags);
   return h;
 }
 
