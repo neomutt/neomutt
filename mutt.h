@@ -229,42 +229,6 @@ enum QuadOptionResponse
   MUTT_ASKYES
 };
 
-/* Quad-options */
-WHERE unsigned char AbortUnmodified;
-WHERE unsigned char Bounce;
-WHERE unsigned char Copy;
-WHERE unsigned char Delete;
-WHERE unsigned char ForwardEdit;
-WHERE unsigned char FccAttach;
-WHERE unsigned char Include;
-WHERE unsigned char HonorFollowupTo;
-WHERE unsigned char MimeForward;
-WHERE unsigned char MimeForwardRest;
-WHERE unsigned char Move;
-WHERE unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
-WHERE unsigned char SmimeEncryptSelf;
-WHERE unsigned char PgpEncryptSelf;
-#ifdef USE_POP
-WHERE unsigned char PopDelete;
-WHERE unsigned char PopReconnect;
-#endif
-WHERE unsigned char Postpone;
-WHERE unsigned char Print;
-WHERE unsigned char Quit;
-WHERE unsigned char ReplyTo;
-WHERE unsigned char Recall;
-#ifdef USE_SSL
-WHERE unsigned char SslStarttls;
-#endif
-WHERE unsigned char AbortNosubject;
-WHERE unsigned char CryptVerifySig; /* verify PGP signatures */
-#ifdef USE_NNTP
-WHERE unsigned char PostModerated;
-WHERE unsigned char CatchupNewsgroup;
-WHERE unsigned char FollowupToPoster;
-#endif
-WHERE unsigned char AbortNoattach; /* forgotten attachment detector */
-
 /* flags to ci_send_message() */
 #define SENDREPLY        (1 << 0)
 #define SENDGROUPREPLY   (1 << 1)
@@ -335,5 +299,43 @@ extern FILE *debugfile;
 extern int debuglevel;
 extern char *debugfile_cmdline;
 extern int debuglevel_cmdline;
+
+/* All the variables below are backing for config items */
+
+/* Quad-options */
+WHERE unsigned char AbortUnmodified;
+WHERE unsigned char Bounce;
+WHERE unsigned char Copy;
+WHERE unsigned char Delete;
+WHERE unsigned char ForwardEdit;
+WHERE unsigned char FccAttach;
+WHERE unsigned char Include;
+WHERE unsigned char HonorFollowupTo;
+WHERE unsigned char MimeForward;
+WHERE unsigned char MimeForwardRest;
+WHERE unsigned char Move;
+WHERE unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
+WHERE unsigned char SmimeEncryptSelf;
+WHERE unsigned char PgpEncryptSelf;
+#ifdef USE_POP
+WHERE unsigned char PopDelete;
+WHERE unsigned char PopReconnect;
+#endif
+WHERE unsigned char Postpone;
+WHERE unsigned char Print;
+WHERE unsigned char Quit;
+WHERE unsigned char ReplyTo;
+WHERE unsigned char Recall;
+#ifdef USE_SSL
+WHERE unsigned char SslStarttls;
+#endif
+WHERE unsigned char AbortNosubject;
+WHERE unsigned char CryptVerifySig; /* verify PGP signatures */
+#ifdef USE_NNTP
+WHERE unsigned char PostModerated;
+WHERE unsigned char CatchupNewsgroup;
+WHERE unsigned char FollowupToPoster;
+#endif
+WHERE unsigned char AbortNoattach; /* forgotten attachment detector */
 
 #endif /* _MUTT_H */

@@ -61,8 +61,6 @@ struct Buffy
 };
 
 WHERE struct Buffy *Incoming;
-WHERE short MailCheck;
-WHERE short MailCheckStatsInterval;
 
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen);
@@ -81,5 +79,9 @@ void mutt_buffy_cleanup(const char *buf, struct stat *st);
 void mutt_buffy_setnotified(const char *path);
 
 bool mh_buffy(struct Buffy *mailbox, bool check_stats);
+
+/* These variables are backing for config items */
+WHERE short MailCheck;
+WHERE short MailCheckStatsInterval;
 
 #endif /* _MUTT_BUFFY_H */

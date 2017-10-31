@@ -83,8 +83,6 @@ enum MailboxFormat
   MUTT_COMPRESSED,
 };
 
-WHERE short MboxType;
-
 #define MMDF_SEP "\001\001\001\001\n"
 
 void mbox_reset_atime(struct Context *ctx, struct stat *st);
@@ -126,5 +124,8 @@ extern struct MxOps mx_maildir_ops;
 extern struct MxOps mx_mbox_ops;
 extern struct MxOps mx_mh_ops;
 extern struct MxOps mx_mmdf_ops;
+
+/* This variable is backing for a config item */
+WHERE short MboxType;
 
 #endif /* _MUTT_MX_H */
