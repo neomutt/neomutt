@@ -519,7 +519,6 @@ struct Option MuttVars[] = {
   ** will be saved for later references.  Also see $$record,
   ** $$save_name, $$force_name and ``$fcc-hook''.
   */
-  { "pgp_autoencrypt",          DT_SYNONYM,  R_NONE, UL "crypt_autoencrypt", 0 },
   { "crypt_autoencrypt",        DT_BOOL, R_NONE, UL &CryptAutoencrypt, 0 },
   /*
   ** .pp
@@ -540,7 +539,6 @@ struct Option MuttVars[] = {
   ** $$crypt_replyencrypt,
   ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
-  { "pgp_autosign",     DT_SYNONYM,  R_NONE, UL "crypt_autosign", 0 },
   { "crypt_autosign",   DT_BOOL, R_NONE, UL &CryptAutosign, 0 },
   /*
   ** .pp
@@ -589,7 +587,6 @@ struct Option MuttVars[] = {
   ** be manually re-enabled in the pgp or smime menus.
   ** (Crypto only)
    */
-  { "pgp_replyencrypt",         DT_SYNONYM,  R_NONE, UL "crypt_replyencrypt", 1  },
   { "crypt_replyencrypt",       DT_BOOL, R_NONE, UL &CryptReplyencrypt, 1 },
   /*
   ** .pp
@@ -597,7 +594,6 @@ struct Option MuttVars[] = {
   ** encrypted.
   ** (Crypto only)
   */
-  { "pgp_replysign",    DT_SYNONYM, R_NONE, UL "crypt_replysign", 0 },
   { "crypt_replysign",  DT_BOOL, R_NONE, UL &CryptReplysign, 0 },
   /*
   ** .pp
@@ -608,7 +604,6 @@ struct Option MuttVars[] = {
   ** \fIand\fP signed!
   ** (Crypto only)
   */
-  { "pgp_replysignencrypted",   DT_SYNONYM,  R_NONE, UL "crypt_replysignencrypted", 0 },
   { "crypt_replysignencrypted", DT_BOOL, R_NONE, UL &CryptReplysignencrypted, 0 },
   /*
   ** .pp
@@ -648,7 +643,6 @@ struct Option MuttVars[] = {
   ** (see http://www.g10code.de/docs/pka-intro.de.pdf) during signature
   ** verification (only supported by the GPGME backend).
   */
-  { "pgp_verify_sig",   DT_SYNONYM,  R_NONE, UL "crypt_verify_sig", 0 },
   { "crypt_verify_sig", DT_QUAD, R_NONE, UL &CryptVerifySig, MUTT_YES },
   /*
   ** .pp
@@ -803,9 +797,6 @@ struct Option MuttVars[] = {
   ** .pp
   ** \fBNote\fP that changes made to the References: and Date: headers are
   ** ignored for interoperability reasons.
-  */
-  { "edit_hdrs",        DT_SYNONYM,  R_NONE, UL "edit_headers", 0 },
-  /*
   */
   { "editor",           DT_PATH, R_NONE, UL &Editor, 0 },
   /*
@@ -996,9 +987,6 @@ struct Option MuttVars[] = {
   ** This variable is only used, if $$mime_forward is \fIunset\fP,
   ** otherwise $$mime_forward_decode is used instead.
   */
-  { "forw_decode",      DT_SYNONYM,  R_NONE, UL "forward_decode", 0 },
-  /*
-  */
   { "forward_decrypt",  DT_BOOL, R_NONE, UL &ForwardDecrypt, 1 },
   /*
   ** .pp
@@ -1007,9 +995,6 @@ struct Option MuttVars[] = {
   ** variable is only used if $$mime_forward is \fIset\fP and
   ** $$mime_forward_decode is \fIunset\fP.
   ** (PGP only)
-  */
-  { "forw_decrypt",     DT_SYNONYM,  R_NONE, UL "forward_decrypt", 0 },
-  /*
   */
   { "forward_edit",     DT_QUAD, R_NONE, UL &ForwardEdit, MUTT_YES },
   /*
@@ -1024,18 +1009,12 @@ struct Option MuttVars[] = {
   ** This variable controls the default subject when forwarding a message.
   ** It uses the same format sequences as the $$index_format variable.
   */
-  { "forw_format",      DT_SYNONYM,  R_NONE, UL "forward_format", 0 },
-  /*
-  */
   { "forward_quote",    DT_BOOL, R_NONE, UL &ForwardQuote, 0 },
   /*
   ** .pp
   ** When \fIset\fP, forwarded messages included in the main body of the
   ** message (when $$mime_forward is \fIunset\fP) will be quoted using
   ** $$indent_string.
-  */
-  { "forw_quote",       DT_SYNONYM,  R_NONE, UL "forward_quote", 0 },
-  /*
   */
   { "forward_references", DT_BOOL, R_NONE, UL &ForwardReferences, 0 },
   /*
@@ -1113,9 +1092,6 @@ struct Option MuttVars[] = {
   ** .de
   */
 #endif
-  { "hdr_format",       DT_SYNONYM,  R_NONE, UL "index_format", 0 },
-  /*
-  */
   { "hdrs",             DT_BOOL, R_NONE, UL &Hdrs, 1 },
   /*
   ** .pp
@@ -1520,9 +1496,6 @@ struct Option MuttVars[] = {
   ** This option is a format string, please see the description of
   ** $$index_format for supported \fCprintf(3)\fP-style sequences.
   */
-  { "indent_str",       DT_SYNONYM,  R_NONE, UL "indent_string", 0 },
-  /*
-  */
   { "index_format",     DT_STRING,  R_BOTH, UL &IndexFormat, UL "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s" },
   /*
   ** .pp
@@ -1829,9 +1802,6 @@ struct Option MuttVars[] = {
   ** attachments of type \fCmessage/rfc822\fP.  For a full listing of defined
   ** \fCprintf(3)\fP-like sequences see the section on $$index_format.
   */
-  { "msg_format",       DT_SYNONYM,  R_NONE, UL "message_format", 0 },
-  /*
-  */
   { "meta_key",         DT_BOOL, R_NONE, UL &MetaKey, 0 },
   /*
   ** .pp
@@ -1893,9 +1863,6 @@ struct Option MuttVars[] = {
   ** Controls the decoding of complex MIME messages into \fCtext/plain\fP when
   ** forwarding a message while $$mime_forward is \fIset\fP. Otherwise
   ** $$forward_decode is used instead.
-  */
-  { "mime_fwd",         DT_SYNONYM,  R_NONE, UL "mime_forward", 0 },
-  /*
   */
   { "mime_forward_rest", DT_QUAD, R_NONE, UL &MimeForwardRest, MUTT_YES },
   /*
@@ -2234,7 +2201,6 @@ struct Option MuttVars[] = {
   ** checked with the \fC$<check-traditional-pgp>\fP function, NeoMutt will automatically
   ** check the message for traditional pgp.
   */
-  { "pgp_create_traditional",   DT_SYNONYM, R_NONE, UL "pgp_autoinline", 0 },
   { "pgp_autoinline",           DT_BOOL, R_NONE, UL &PgpAutoinline, 0 },
   /*
   ** .pp
@@ -2463,7 +2429,6 @@ struct Option MuttVars[] = {
   ** \fBdeprecated\fP.
   ** (PGP only)
   */
-  { "pgp_auto_traditional",     DT_SYNONYM, R_NONE, UL "pgp_replyinline", 0 },
   { "pgp_replyinline",          DT_BOOL, R_NONE, UL &PgpReplyinline, 0 },
   /*
   ** .pp
@@ -2708,9 +2673,6 @@ struct Option MuttVars[] = {
   ** Similar to the $$attribution variable, NeoMutt will append this
   ** string after the inclusion of a message which is being replied to.
   */
-  { "post_indent_str",  DT_SYNONYM,  R_NONE, UL "post_indent_string", 0 },
-  /*
-  */
 #ifdef USE_NNTP
   { "post_moderated",   DT_QUAD, R_NONE, UL &PostModerated, MUTT_ASKYES },
   /*
@@ -2785,9 +2747,6 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** This specifies the command pipe that should be used to print messages.
-  */
-  { "print_cmd",        DT_SYNONYM,  R_NONE, UL "print_command", 0 },
-  /*
   */
   { "print_decode",     DT_BOOL, R_NONE, UL &PrintDecode, 1 },
   /*
@@ -3520,7 +3479,6 @@ struct Option MuttVars[] = {
   ** to determine the key to use. It will ask you to supply a key, if it can't find one.
   ** (S/MIME only)
   */
-  { "smime_sign_as",                    DT_SYNONYM,  R_NONE, UL "smime_default_key", 0 },
   { "smime_default_key",                DT_STRING,  R_NONE, UL &SmimeDefaultKey, 0 },
   /*
   ** .pp
@@ -4282,9 +4240,6 @@ struct Option MuttVars[] = {
    ** if the $$sendmail variable already contains \fC-f\fP or if the
    ** executable pointed to by $$sendmail doesn't support the \fC-f\fP switch.
    */
-  { "envelope_from",    DT_SYNONYM,  R_NONE, UL "use_envelope_from", 0 },
-  /*
-  */
   { "use_from",         DT_BOOL, R_NONE, UL &UseFrom, 1 },
   /*
   ** .pp
@@ -4380,11 +4335,6 @@ struct Option MuttVars[] = {
   ** When \fIset\fP, searches will wrap around the first (or last) item. When
   ** \fIunset\fP, incremental searches will not wrap.
   */
-  { "wrapmargin",       DT_NUMBER,  R_PAGER, UL &Wrap, 0 },
-  /*
-  ** .pp
-  ** (DEPRECATED) Equivalent to setting $$wrap with a negative value.
-  */
   { "write_bcc",        DT_BOOL, R_NONE, UL &WriteBcc, 1 },
   /*
   ** .pp
@@ -4404,15 +4354,6 @@ struct Option MuttVars[] = {
   ** Also see the $$read_inc, $$net_inc and $$time_inc variables and the
   ** ``$tuning'' section of the manual for performance considerations.
   */
-  { "xterm_icon",        DT_SYNONYM,  R_NONE, UL "ts_icon_format", 0 },
-  /*
-  */
-  { "xterm_title",       DT_SYNONYM,  R_NONE, UL "ts_status_format", 0 },
-  /*
-  */
-  { "xterm_set_titles",  DT_SYNONYM,  R_NONE, UL "ts_enabled", 0 },
-  /*
-  */
 #ifdef USE_NNTP
   { "x_comment_to",     DT_BOOL, R_NONE, UL &XCommentTo, 0 },
   /*
@@ -4427,8 +4368,40 @@ struct Option MuttVars[] = {
   ** When \fIset\fP, NeoMutt will collapse all threads when entering a folder.
   */
   /*--*/
-  { "pgp_encrypt_self",   DT_QUAD, R_NONE, UL &PgpEncryptSelf,   MUTT_NO },
-  { "smime_encrypt_self", DT_QUAD, R_NONE, UL &SmimeEncryptSelf, MUTT_NO },
+
+  { "pgp_encrypt_self",   DT_QUAD,    R_NONE,  UL &PgpEncryptSelf,   MUTT_NO },
+  { "smime_encrypt_self", DT_QUAD,    R_NONE,  UL &SmimeEncryptSelf, MUTT_NO },
+  { "wrapmargin",         DT_NUMBER,  R_PAGER, UL &Wrap,             0 },
+  /*
+  ** .pp
+  ** (DEPRECATED) Equivalent to setting $$wrap with a negative value.
+  */
+
+  { "edit_hdrs",              DT_SYNONYM, R_NONE, UL "edit_headers",             0 },
+  { "envelope_from",          DT_SYNONYM, R_NONE, UL "use_envelope_from",        0 },
+  { "forw_decode",            DT_SYNONYM, R_NONE, UL "forward_decode",           0 },
+  { "forw_decrypt",           DT_SYNONYM, R_NONE, UL "forward_decrypt",          0 },
+  { "forw_format",            DT_SYNONYM, R_NONE, UL "forward_format",           0 },
+  { "forw_quote",             DT_SYNONYM, R_NONE, UL "forward_quote",            0 },
+  { "hdr_format",             DT_SYNONYM, R_NONE, UL "index_format",             0 },
+  { "indent_str",             DT_SYNONYM, R_NONE, UL "indent_string",            0 },
+  { "mime_fwd",               DT_SYNONYM, R_NONE, UL "mime_forward",             0 },
+  { "msg_format",             DT_SYNONYM, R_NONE, UL "message_format",           0 },
+  { "pgp_autoencrypt",        DT_SYNONYM, R_NONE, UL "crypt_autoencrypt",        0 },
+  { "pgp_autosign",           DT_SYNONYM, R_NONE, UL "crypt_autosign",           0 },
+  { "pgp_auto_traditional",   DT_SYNONYM, R_NONE, UL "pgp_replyinline",          0 },
+  { "pgp_create_traditional", DT_SYNONYM, R_NONE, UL "pgp_autoinline",           0 },
+  { "pgp_replyencrypt",       DT_SYNONYM, R_NONE, UL "crypt_replyencrypt",       0 },
+  { "pgp_replysign",          DT_SYNONYM, R_NONE, UL "crypt_replysign",          0 },
+  { "pgp_replysignencrypted", DT_SYNONYM, R_NONE, UL "crypt_replysignencrypted", 0 },
+  { "pgp_verify_sig",         DT_SYNONYM, R_NONE, UL "crypt_verify_sig",         0 },
+  { "post_indent_str",        DT_SYNONYM, R_NONE, UL "post_indent_string",       0 },
+  { "print_cmd",              DT_SYNONYM, R_NONE, UL "print_command",            0 },
+  { "smime_sign_as",          DT_SYNONYM, R_NONE, UL "smime_default_key",        0 },
+  { "xterm_icon",             DT_SYNONYM, R_NONE, UL "ts_icon_format",           0 },
+  { "xterm_set_titles",       DT_SYNONYM, R_NONE, UL "ts_enabled",               0 },
+  { "xterm_title",            DT_SYNONYM, R_NONE, UL "ts_status_format",         0 },
+
   { NULL, 0, 0, 0, 0 },
 };
 
