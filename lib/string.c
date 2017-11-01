@@ -27,7 +27,9 @@
  *
  * | Function                  | Description
  * | :------------------------ | :---------------------------------------------------------
+ * | find_word()               | Find the next word (non-space)
  * | imap_wordcasecmp()        | Find word a in word list b
+ * | is_ascii()                | Is a string ASCII (7-bit)?
  * | is_email_wsp()            | Is this a whitespace character (for an email header)
  * | lwslen()                  | Measure the linear-white-space at the beginning of a string
  * | lwsrlen()                 | Measure the linear-white-space at the end of a string
@@ -45,10 +47,11 @@
  * | mutt_strncasecmp()        | Compare two strings ignoring case (to a maximum), safely
  * | mutt_strncmp()            | Compare two strings (to a maximum), safely
  * | mutt_str_adjust()         | Shrink-to-fit a string
+ * | mutt_str_append_item()    | Add string to another seprated by sep
  * | mutt_str_replace()        | Replace one string with another
- * | mutt_str_append_item()    | Add a string to another
  * | mutt_substrcpy()          | Copy a sub-string into a buffer
  * | mutt_substrdup()          | Duplicate a sub-string
+ * | next_word()               | Find the next word in a string
  * | rfc822_dequote_comment()  | Un-escape characters in an email address comment
  * | rstrnstr()                | Find last instance of a substring
  * | safe_strcat()             | Concatenate two strings
@@ -744,4 +747,44 @@ int imap_wordcasecmp(const char *a, const char *b)
   tmp[i + 1] = '\0';
 
   return mutt_strcasecmp(a, tmp);
+}
+
+/**
+ * is_ascii - Is a string ASCII (7-bit)?
+ * @param p   String to examine
+ * @param len Length of string
+ * @retval bool True if there are no 8-bit chars
+ */
+bool is_ascii(const char *p, size_t len)
+{
+  const char *s = p;
+  while (s && (unsigned int) (s - p) < len)
+  {
+    if ((*s & 0x80) != 0)
+      return false;
+    s++;
+  }
+  return true;
+}
+
+/**
+ * find_word - Find the next word (non-space)
+ * @param src String to search
+ * @retval ptr Beginning of the next word
+ *
+ * Skip to the end of the current word.
+ * Skip past any whitespace characters.
+ *
+ * @note If there aren't any more words, this will return a pointer to the
+ *       final NUL character.
+ */
+const char *find_word(const char *src)
+{
+  const char *p = src;
+
+  while (p && *p && strchr(" \t\n", *p))
+    p++;
+  while (p && *p && !strchr(" \t\n", *p))
+    p++;
+  return p;
 }
