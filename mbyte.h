@@ -29,7 +29,6 @@
 
 void mutt_set_charset(char *charset);
 extern bool Charset_is_utf8;
-wchar_t replacement_char(void);
 bool is_display_corrupting_utf8(wchar_t wc);
 int mutt_filter_unprintable(char **s);
 

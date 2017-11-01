@@ -68,6 +68,7 @@ lib/file.c
 lib/hash.c
 lib/list.c
 lib/mapping.c
+lib/mbyte.c
 lib/md5.c
 lib/memory.c
 lib/message.c

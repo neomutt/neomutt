@@ -4220,7 +4220,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   /* Do we have a locale definition? */
   if (((p = getenv("LC_ALL")) != NULL && p[0]) || ((p = getenv("LANG")) != NULL && p[0]) ||
       ((p = getenv("LC_CTYPE")) != NULL && p[0]))
-    set_option(OPT_LOCALES);
+    OPT_LOCALES = true;
 #endif
 
 #ifdef HAVE_GETSID

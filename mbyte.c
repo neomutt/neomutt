@@ -45,19 +45,20 @@ void mutt_set_charset(char *charset)
 
   mutt_canonical_charset(buffer, sizeof(buffer), charset);
 
-  Charset_is_utf8 = false;
-
   if (mutt_is_utf8(buffer))
+  {
     Charset_is_utf8 = true;
+    ReplacementChar = 0xfffd;
+  }
+  else
+  {
+    Charset_is_utf8 = false;
+    ReplacementChar = '?';
+  }
 
 #if defined(HAVE_BIND_TEXTDOMAIN_CODESET) && defined(ENABLE_NLS)
   bind_textdomain_codeset(PACKAGE, buffer);
 #endif
-}
-
-wchar_t replacement_char(void)
-{
-  return Charset_is_utf8 ? 0xfffd : '?';
 }
 
 bool is_display_corrupting_utf8(wchar_t wc)
@@ -94,7 +95,7 @@ int mutt_filter_unprintable(char **s)
     {
       k = 1;
       memset(&mbstate1, 0, sizeof(mbstate1));
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';

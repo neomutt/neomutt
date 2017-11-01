@@ -1679,43 +1679,6 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
   FREE(&ref);
 }
 
-/**
- * my_width - like wcwidth(), but gets const char* not wchar_t*
- */
-static int my_width(const char *str, int col, int flags)
-{
-  wchar_t wc;
-  int l, w = 0, nl = 0;
-  const char *p = str;
-
-  while (p && *p)
-  {
-    if (mbtowc(&wc, p, MB_CUR_MAX) >= 0)
-    {
-      l = wcwidth(wc);
-      if (l < 0)
-        l = 1;
-      /* correctly calc tab stop, even for sending as the
-       * line should look pretty on the receiving end */
-      if (wc == L'\t' || (nl && wc == L' '))
-      {
-        nl = 0;
-        l = 8 - (col % 8);
-      }
-      /* track newlines for display-case: if we have a space
-       * after a newline, assume 8 spaces as for display we
-       * always tab-fold */
-      else if ((flags & CH_DISPLAY) && wc == '\n')
-        nl = 1;
-    }
-    else
-      l = 1;
-    w += l;
-    p++;
-  }
-  return w;
-}
-
 static int print_val(FILE *fp, const char *pfx, const char *value, int flags, size_t col)
 {
   while (value && *value)
@@ -1756,6 +1719,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   const char *p = value, *next = NULL, *sp = NULL;
   char buf[HUGE_STRING] = "";
   int first = 1, enc, col = 0, w, l = 0, fold;
+  bool display = (flags & CH_DISPLAY);
 
   mutt_debug(4, "mwoh: pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag,
              flags, NONULL(value));
@@ -1777,7 +1741,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
-    w = my_width(buf, col, flags);
+    w = my_width(buf, col, display);
     enc = (mutt_strncmp(buf, "=?", 2) == 0);
 
     mutt_debug(5, "mwoh: word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
@@ -1795,7 +1759,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
     /* print the actual word; for display, ignore leading ws for word
      * and fold with tab for readability */
-    if ((flags & CH_DISPLAY) && fold)
+    if (display && fold)
     {
       char *pc = buf;
       while (*pc && (*pc == ' ' || *pc == '\t'))
@@ -1961,12 +1925,13 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth(pfx);
   char *v = safe_strdup(value);
+  bool display = (flags & CH_DISPLAY);
 
-  if (!(flags & CH_DISPLAY) || option(OPT_WEED))
+  if (!display || option(OPT_WEED))
     v = unfold_header(v);
 
   /* when not displaying, use sane wrap value */
-  if (!(flags & CH_DISPLAY))
+  if (!display)
   {
     if (WrapHeaders < 78 || WrapHeaders > 998)
       wraplen = 78;
@@ -1979,7 +1944,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
   if (tag)
   {
     /* if header is short enough, simply print it */
-    if (!(flags & CH_DISPLAY) && mutt_strwidth(tag) + 2 + pfxw + mutt_strwidth(v) <= wraplen)
+    if (!display && mutt_strwidth(tag) + 2 + pfxw + mutt_strwidth(v) <= wraplen)
     {
       mutt_debug(4, "mwoh: buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
       if (fprintf(fp, "%s%s: %s\n", NONULL(pfx), tag, v) <= 0)
@@ -2002,7 +1967,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     /* find maximum line width in current header */
     if (p)
       *p = 0;
-    w = my_width(line, 0, flags);
+    w = my_width(line, 0, display);
     if (w > max)
       max = w;
     if (p)
