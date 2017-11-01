@@ -67,11 +67,14 @@
 
 /**
  * Capabilities - Server capabilties strings that we understand
+ *
+ * @note This must be kept in the same order as ImapCaps.
  */
 static const char *const Capabilities[] = {
-  "IMAP4",         "IMAP4rev1",   "STATUS",         "ACL",      "NAMESPACE",
-  "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS", "STARTTLS", "LOGINDISABLED",
-  "IDLE",          "SASL-IR",     "X-GM-EXT1",      "ENABLE",   NULL,
+  "IMAP4",     "IMAP4rev1",     "STATUS",      "ACL",
+  "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS",
+  "STARTTLS",  "LOGINDISABLED", "IDLE",        "SASL-IR",
+  "ENABLE",    "X-GM-EXT1",     NULL,
 };
 
 /**
