@@ -69,30 +69,14 @@
  * Capabilities - Server capabilties strings that we understand
  *
  * @note This must be kept in the same order as ImapCaps.
+ *
+ * @note Gmail documents one string but use another, so we support both.
  */
 static const char *const Capabilities[] = {
   "IMAP4",     "IMAP4rev1",     "STATUS",      "ACL",
   "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS",
   "STARTTLS",  "LOGINDISABLED", "IDLE",        "SASL-IR",
-  "ENABLE",    "X-GM-EXT1",     NULL,
-};
-
-/**
- * struct CapabilityAlias - Alternative names for capabilities
- */
-struct CapabilityAlias
-{
-  char *name;
-  unsigned int value;
-};
-
-/**
- * CapabilityAliases - Alternate capability strings (for compatibility)
- */
-static struct CapabilityAlias CapabilityAliases[] = {
-  /* Gmail documents one string but use another.  Support both. */
-  { "X-GM-EXT-1", X_GM_EXT1 },
-  { NULL, 0 },
+  "ENABLE",    "X-GM-EXT1",     "X-GM-EXT-1",  NULL,
 };
 
 /**
@@ -387,7 +371,6 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
  */
 static void cmd_parse_capability(struct ImapData *idata, char *s)
 {
-  bool found;
   char *bracket = NULL;
 
   mutt_debug(3, "Handling CAPABILITY\n");
@@ -402,28 +385,13 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
 
   while (*s)
   {
-    found = false;
     for (int i = 0; i < CAPMAX; i++)
     {
       if (imap_wordcasecmp(Capabilities[i], s) == 0)
       {
         mutt_bit_set(idata->capabilities, i);
         mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[i], i);
-        found = true;
         break;
-      }
-    }
-    if (!found)
-    {
-      for (int i = 0; CapabilityAliases[i].name != NULL; i++)
-      {
-        if (imap_wordcasecmp(CapabilityAliases[i].name, s) == 0)
-        {
-          mutt_bit_set(idata->capabilities, CapabilityAliases[i].value);
-          mutt_debug(4, " Found capability \"%s\": %d\n",
-                     CapabilityAliases[i].name, CapabilityAliases[i].value);
-          break;
-        }
       }
     }
     s = imap_next_word(s);
