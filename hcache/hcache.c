@@ -170,8 +170,8 @@ static void restore_int(unsigned int *i, const unsigned char *d, int *off)
 
 static inline bool is_ascii(const char *p, size_t len)
 {
-  register const char *s = p;
-  while (s && (unsigned) (s - p) < len)
+  const char *s = p;
+  while (s && (unsigned int) (s - p) < len)
   {
     if ((*s & 0x80) != 0)
       return false;

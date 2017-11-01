@@ -138,7 +138,8 @@ static int getnameinfo_err(int ret)
  *
  * utility function, copied from sasl2 sample code
  */
-static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out, unsigned outlen)
+static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
+                      unsigned int outlen)
 {
   char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
   int ret;
@@ -223,7 +224,7 @@ static int mutt_sasl_start(void)
  * @param[out] len     Length of result
  * @retval int SASL error code, e.g. SASL_FAIL
  */
-static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned *len)
+static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
   struct Account *account = (struct Account *) context;
 
