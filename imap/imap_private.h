@@ -136,6 +136,7 @@ enum ImapCaps
   SASL_IR,       /**< SASL initial response draft */
   ENABLE,        /**< RFC5161 */
   X_GM_EXT1,     /**< https://developers.google.com/gmail/imap/imap-extensions */
+  X_GM_ALT1 = X_GM_EXT1, /**< Alternative capability string */
 
   CAPMAX
 };
