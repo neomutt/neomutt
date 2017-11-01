@@ -1402,23 +1402,6 @@ bail: /* Come here in case of disaster */
   return rc;
 }
 
-/**
- * mbox_check_empty - Is the mailbox empty
- * @param path Path to mailbox
- * @retval 1 mailbox is not empty
- * @retval 0 mailbox is empty
- * @retval -1 on error
- */
-int mbox_check_empty(const char *path)
-{
-  struct stat st;
-
-  if (stat(path, &st) == -1)
-    return -1;
-
-  return ((st.st_size == 0));
-}
-
 struct MxOps mx_mbox_ops = {
   .open = mbox_open_mailbox,
   .open_append = mbox_open_mailbox_append,

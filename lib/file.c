@@ -25,34 +25,37 @@
  *
  * Commonly used file/dir management routines.
  *
- * | Function                  | Description
- * | :------------------------ | :-----------------------------------------------------------
- * | mutt_basename()           | Find the last component for a pathname
- * | mutt_concatn_path()       | Concatenate directory and filename
- * | mutt_concat_path()        | Join a directory name and a filename
- * | mutt_copy_bytes()         | Copy some content from one file to another
- * | mutt_copy_stream()        | Copy the contents of one file into another
- * | mutt_decrease_mtime()     | Decrease a file's modification time by 1 second
- * | mutt_dirname()            | Return a path up to, but not including, the final '/'
- * | mutt_lock_file()          | (try to) lock a file
- * | mutt_mkdir()              | Recursively create directories
- * | mutt_quote_filename()     | Quote a filename to survive the shell's quoting rules
- * | mutt_read_line()          | Read a line from a file
- * | mutt_rmtree()             | Recursively remove a directory
- * | mutt_rename_file()        | Rename a file
+ * | Function                     | Description
+ * | :--------------------------- | :-----------------------------------------------------------
+ * | file_read_keyword()          | Read a keyword from a file
+ * | mbox_check_empty()           | Is the mailbox empty
+ * | mutt_basename()              | Find the last component for a pathname
+ * | mutt_concatn_path()          | Concatenate directory and filename
+ * | mutt_concat_path()           | Join a directory name and a filename
+ * | mutt_copy_bytes()            | Copy some content from one file to another
+ * | mutt_copy_stream()           | Copy the contents of one file into another
+ * | mutt_decrease_mtime()        | Decrease a file's modification time by 1 second
+ * | mutt_dirname()               | Return a path up to, but not including, the final '/'
+ * | mutt_lock_file()             | (try to) lock a file
+ * | mutt_mkdir()                 | Recursively create directories
+ * | mutt_quote_filename()        | Quote a filename to survive the shell's quoting rules
+ * | mutt_read_line()             | Read a line from a file
  * | mutt_regex_sanitize_string() | Escape any regex-magic characters in a string
- * | mutt_sanitize_filename()  | Replace unsafe characters in a filename
- * | mutt_set_mtime()          | Set the modification time of one file from another
- * | mutt_touch_atime()        | Set the access time to current time
- * | mutt_unlink()             | Delete a file, carefully
- * | mutt_unlink_empty()       | Delete a file if it's empty
- * | mutt_unlock_file()        | Unlock a file previously locked by mutt_lock_file()
- * | safe_fclose()             | Close a FILE handle (and NULL the pointer)
- * | safe_fopen()              | Call fopen() safely
- * | safe_fsync_close()        | Flush the data, before closing a file (and NULL the pointer)
- * | safe_open()               | Open a file
- * | safe_rename()             | NFS-safe renaming of files
- * | safe_symlink()            | Create a symlink
+ * | mutt_rename_file()           | Rename a file
+ * | mutt_rmtree()                | Recursively remove a directory
+ * | mutt_sanitize_filename()     | Replace unsafe characters in a filename
+ * | mutt_set_mtime()             | Set the modification time of one file from another
+ * | mutt_touch_atime()           | Set the access time to current time
+ * | mutt_unlink()                | Delete a file, carefully
+ * | mutt_unlink_empty()          | Delete a file if it's empty
+ * | mutt_unlock_file()           | Unlock a file previously locked by mutt_lock_file()
+ * | safe_fclose()                | Close a FILE handle (and NULL the pointer)
+ * | safe_fopen()                 | Call fopen() safely
+ * | safe_fsync_close()           | Flush the data, before closing a file (and NULL the pointer)
+ * | safe_open()                  | Open a file
+ * | safe_rename()                | NFS-safe renaming of files
+ * | safe_symlink()               | Create a symlink
+ * | to_absolute_path()           | Convert relative filepath to an absolute path
  */
 
 #include "config.h"
@@ -1163,3 +1166,98 @@ int mutt_rename_file(char *oldfile, char *newfile)
   mutt_unlink(oldfile);
   return 0;
 }
+
+/**
+ * to_absolute_path - Convert relative filepath to an absolute path
+ * @param path      Relative path
+ * @param reference Absolute path that \a path is relative to
+ * @retval true on success
+ * @retval false otherwise
+ *
+ * Use POSIX functions to convert a path to absolute, relatively to another path
+ * @note \a path should be at least of PATH_MAX length
+ */
+int to_absolute_path(char *path, const char *reference)
+{
+  const char *dirpath = NULL;
+  char abs_path[PATH_MAX];
+  int path_len;
+
+  /* if path is already absolute, don't do anything */
+  if ((strlen(path) > 1) && (path[0] == '/'))
+  {
+    return true;
+  }
+
+  dirpath = mutt_dirname(reference);
+  strfcpy(abs_path, dirpath, PATH_MAX);
+  safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
+
+  path_len = PATH_MAX - strlen(path);
+
+  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+
+  path = realpath(abs_path, path);
+
+  if (!path)
+  {
+    printf("Error: issue converting path to absolute (%s)", strerror(errno));
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * file_read_keyword - Read a keyword from a file
+ * @param file   File to read
+ * @param buffer Buffer to store the keyword
+ * @param buflen Length of the buffer
+ * @retval ptr Start of the keyword
+ *
+ * Read one line from the start of a file.
+ * Skip any leading whitespace and extract the first token.
+ */
+char *file_read_keyword(const char *file, char *buffer, size_t buflen)
+{
+  FILE *fp = NULL;
+  char *start = NULL;
+
+  fp = safe_fopen(file, "r");
+  if (!fp)
+    return NULL;
+
+  buffer = fgets(buffer, buflen, fp);
+  safe_fclose(&fp);
+
+  if (!buffer)
+    return NULL;
+
+  SKIPWS(buffer);
+  start = buffer;
+
+  while (*buffer && !isspace(*buffer))
+    buffer++;
+
+  *buffer = '\0';
+
+  return start;
+}
+
+/**
+ * mbox_check_empty - Is the mailbox empty
+ * @param path Path to mailbox
+ * @retval 1 mailbox is not empty
+ * @retval 0 mailbox is empty
+ * @retval -1 on error
+ */
+int mbox_check_empty(const char *path)
+{
+  struct stat st;
+
+  if (stat(path, &st) == -1)
+    return -1;
+
+  return ((st.st_size == 0));
+}
+

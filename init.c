@@ -3106,47 +3106,6 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
  * avoid cyclic sourcing */
 static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
-/**
- * to_absolute_path - Convert relative filepath to an absolute path
- * @param path      Relative path
- * @param reference Absolute path that \a path is relative to
- * @retval true on success
- * @retval false otherwise
- *
- * Use POSIX functions to convert a path to absolute, relatively to another path
- * @note \a path should be at least of PATH_MAX length
- */
-static int to_absolute_path(char *path, const char *reference)
-{
-  const char *dirpath = NULL;
-  char abs_path[PATH_MAX];
-  int path_len;
-
-  /* if path is already absolute, don't do anything */
-  if ((strlen(path) > 1) && (path[0] == '/'))
-  {
-    return true;
-  }
-
-  dirpath = mutt_dirname(reference);
-  strfcpy(abs_path, dirpath, PATH_MAX);
-  safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
-
-  path_len = PATH_MAX - strlen(path);
-
-  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
-
-  path = realpath(abs_path, path);
-
-  if (!path)
-  {
-    printf("Error: issue converting path to absolute (%s)", strerror(errno));
-    return false;
-  }
-
-  return true;
-}
-
 #define MAXERRS 128
 
 /**
@@ -4182,22 +4141,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
   else
   {
-    FILE *f = NULL;
-    char *c = NULL;
-
-    if ((f = safe_fopen(SYSCONFDIR "/nntpserver", "r")))
-    {
-      if (fgets(buffer, sizeof(buffer), f) == NULL)
-        buffer[0] = '\0';
-      p = buffer;
-      SKIPWS(p);
-      c = p;
-      while (*c && (*c != ' ') && (*c != '\t') && (*c != '\r') && (*c != '\n'))
-        c++;
-      *c = '\0';
-      NewsServer = safe_strdup(p);
-      fclose(f);
-    }
+    p = file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
+    NewsServer = safe_strdup(p);
   }
 #endif
 

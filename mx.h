@@ -87,7 +87,6 @@ WHERE short MboxType;
 
 #define MMDF_SEP "\001\001\001\001\n"
 
-int mbox_check_empty(const char *path);
 void mbox_reset_atime(struct Context *ctx, struct stat *st);
 
 int mh_check_empty(const char *path);
