@@ -52,6 +52,10 @@ struct Buffer;
 #define DT_SORT_AUX     0x80
 #define DT_SORT_SIDEBAR 0x100
 
+/* ... DT_REGEX */
+#define DT_REGEX_MATCH_CASE 0x010 /**< Case-sensitive matching */
+#define DT_REGEX_ALLOW_NOT  0x020 /**< Regex can begin with '!' */
+
 /**
  * struct Option - Definition of a user-variable
  */

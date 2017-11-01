@@ -1242,7 +1242,7 @@ static int is_reply(struct Header *reply, struct Header *orig)
 static int search_attach_keyword(char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
-  if (!AttachKeyword.regex)
+  if (!AttachKeyword || !QuoteRegexp)
     return 0;
 
   FILE *attf = mutt_file_fopen(filename, "r");
@@ -1254,8 +1254,8 @@ static int search_attach_keyword(char *filename)
   while (!feof(attf))
   {
     fgets(inputline, LONG_STRING, attf);
-    if (regexec(QuoteRegexp.regex, inputline, 0, NULL, 0) != 0 &&
-        regexec(AttachKeyword.regex, inputline, 0, NULL, 0) == 0)
+    if (regexec(QuoteRegexp->regex, inputline, 0, NULL, 0) != 0 &&
+        regexec(AttachKeyword->regex, inputline, 0, NULL, 0) == 0)
     {
       found = 1;
       break;

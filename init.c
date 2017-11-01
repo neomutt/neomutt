@@ -175,50 +175,58 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   int e, flags = 0;
   const char *p = NULL;
   regex_t *rx = NULL;
-  struct Regex *ptr = (struct Regex *) MuttVars[idx].data;
+  struct Regex *ptr = *(struct Regex **) MuttVars[idx].data;
 
-  if (!ptr->pattern || (mutt_str_strcmp(ptr->pattern, tmp->data) != 0))
+  if (ptr)
   {
-    bool not = false;
-
-    /* $mask is case-sensitive */
-    if ((mutt_str_strcmp(MuttVars[idx].option, "mask") != 0) && mutt_mb_is_lower(tmp->data))
-      flags |= REG_ICASE;
-
-    p = tmp->data;
-    if (mutt_str_strcmp(MuttVars[idx].option, "mask") == 0)
-    {
-      if (*p == '!')
-      {
-        not = true;
-        p++;
-      }
-    }
-
-    rx = mutt_mem_malloc(sizeof(regex_t));
-    e = REGCOMP(rx, p, flags);
-    if (e != 0)
-    {
-      regerror(e, rx, err->data, err->dsize);
-      FREE(&rx);
+    /* Same pattern as we already have */
+    if (mutt_str_strcmp(ptr->pattern, tmp->data) != 0)
       return 0;
-    }
-
-    /* get here only if everything went smoothly */
-    if (ptr->pattern)
-    {
-      FREE(&ptr->pattern);
-      regfree((regex_t *) ptr->regex);
-      FREE(&ptr->regex);
-    }
-
-    ptr->pattern = mutt_str_strdup(tmp->data);
-    ptr->regex = rx;
-    ptr->not = not;
-
-    return 1;
   }
-  return 0;
+  else
+  {
+    ptr = mutt_mem_calloc(1, sizeof(struct Regex *));
+  }
+
+  bool not = false;
+
+  /* Should we use smart case matching? */
+  if (((MuttVars[idx].flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(tmp->data))
+    flags |= REG_ICASE;
+
+  p = tmp->data;
+  /* Is a prefix of '!' allowed? */
+  if ((MuttVars[idx].flags & DT_REGEX_ALLOW_NOT) != 0)
+  {
+    if (*p == '!')
+    {
+      not = true;
+      p++;
+    }
+  }
+
+  rx = mutt_mem_malloc(sizeof(regex_t));
+  e = REGCOMP(rx, p, flags);
+  if (e != 0)
+  {
+    regerror(e, rx, err->data, err->dsize);
+    FREE(&rx);
+    return 0;
+  }
+
+  /* get here only if everything went smoothly */
+  if (ptr->pattern)
+  {
+    FREE(&ptr->pattern);
+    regfree((regex_t *) ptr->regex);
+    FREE(&ptr->regex);
+  }
+
+  ptr->pattern = mutt_str_strdup(tmp->data);
+  ptr->regex = rx;
+  ptr->not = not;
+
+  return 1;
 }
 
 void set_quadoption(int opt, int flag)
@@ -424,9 +432,11 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               struct Envelope *e = Context->hdrs[i]->env;
               if (e && e->subject)
               {
-                e->real_subj = (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0)) ?
-                                   e->subject :
-                                   e->subject + pmatch[0].rm_eo;
+                e->real_subj =
+                    (ReplyRegexp &&
+                     (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0))) ?
+                        e->subject :
+                        e->subject + pmatch[0].rm_eo;
               }
             }
           }
@@ -737,7 +747,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
 static void free_opt(struct Option *p)
 {
-  struct Regex *pp = NULL;
+  struct Regex **pp = NULL;
 
   switch (DTYPE(p->type))
   {
@@ -745,12 +755,12 @@ static void free_opt(struct Option *p)
       mutt_addr_free((struct Address **) p->data);
       break;
     case DT_REGEX:
-      pp = (struct Regex *) p->data;
-      FREE(&pp->pattern);
-      if (pp->regex)
+      pp = (struct Regex **) p->data;
+      FREE(&(*pp)->pattern);
+      if ((*pp)->regex)
       {
-        regfree(pp->regex);
-        FREE(&pp->regex);
+        regfree((*pp)->regex);
+        FREE(&(*pp)->regex);
       }
       break;
     case DT_PATH:
@@ -1990,23 +2000,28 @@ static void restore_default(struct Option *p)
       break;
     case DT_REGEX:
     {
-      struct Regex *pp = (struct Regex *) p->data;
-      int flags = 0;
-
-      FREE(&pp->pattern);
-      if (pp->regex)
+      struct Regex **pp = (struct Regex **) p->data;
+      if (*pp)
       {
-        regfree(pp->regex);
-        FREE(&pp->regex);
+        FREE(&(*pp)->pattern);
+        if ((*pp)->regex)
+        {
+          regfree((*pp)->regex);
+          FREE(&(*pp)->regex);
+        }
+      }
+      else
+      {
+        *pp = mutt_mem_calloc(1, sizeof(struct Regex));
       }
 
       if (p->init)
       {
-        int retval;
+        int flags = 0;
         char *s = (char *) p->init;
 
-        pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
-        pp->pattern = mutt_str_strdup((char *) p->init);
+        (*pp)->regex = mutt_mem_calloc(1, sizeof(regex_t));
+        (*pp)->pattern = mutt_str_strdup((char *) p->init);
         if ((mutt_str_strcmp(p->option, "mask") != 0) &&
             (mutt_mb_is_lower((const char *) p->init)))
         {
@@ -2015,19 +2030,19 @@ static void restore_default(struct Option *p)
         if ((mutt_str_strcmp(p->option, "mask") == 0) && *s == '!')
         {
           s++;
-          pp->not = true;
+          (*pp)->not = true;
         }
-        retval = REGCOMP(pp->regex, s, flags);
-        if (retval != 0)
+        int rc = REGCOMP((*pp)->regex, s, flags);
+        if (rc != 0)
         {
           char msgbuf[STRING];
-          regerror(retval, pp->regex, msgbuf, sizeof(msgbuf));
+          regerror(rc, (*pp)->regex, msgbuf, sizeof(msgbuf));
           fprintf(stderr, _("restore_default(%s): error in regex: %s\n"),
-                  p->option, pp->pattern);
+                  p->option, (*pp)->pattern);
           fprintf(stderr, "%s\n", msgbuf);
           mutt_sleep(0);
-          FREE(&pp->pattern);
-          FREE(&pp->regex);
+          FREE(&(*pp)->pattern);
+          FREE(&(*pp)->regex);
         }
       }
     }
@@ -2642,8 +2657,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       if (query || *s->dptr != '=')
       {
         /* user requested the value of this variable */
-        struct Regex *ptr = (struct Regex *) MuttVars[idx].data;
-        pretty_var(err->data, err->dsize, MuttVars[idx].option, NONULL(ptr->pattern));
+        struct Regex *ptr = *(struct Regex **) MuttVars[idx].data;
+        const char *value = ptr ? ptr->pattern : NULL;
+        pretty_var(err->data, err->dsize, MuttVars[idx].option, NONULL(value));
         break;
       }
 
@@ -2674,7 +2690,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             struct Envelope *e = Context->hdrs[i]->env;
             if (e && e->subject)
             {
-              e->real_subj = (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0)) ?
+              e->real_subj = (ReplyRegexp &&
+                              (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0))) ?
                                  e->subject :
                                  e->subject + pmatch[0].rm_eo;
             }
@@ -2953,7 +2970,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return r;
 }
 
-/* FILO designed to contain the list of config files that have been sourced and
+/* LIFO designed to contain the list of config files that have been sourced and
  * avoid cyclic sourcing */
 static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 

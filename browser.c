@@ -737,7 +737,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       if (prefix && *prefix && (strncmp(prefix, nntp_data->group, strlen(prefix)) != 0))
         continue;
-      if (!((regexec(Mask.regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask.not))
+      if (Mask && !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
         continue;
       add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
     }
@@ -795,7 +795,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       {
         continue;
       }
-      if (!((regexec(Mask.regex, de->d_name, 0, NULL, 0) == 0) ^ Mask.not))
+      if (Mask && !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
         continue;
 
       mutt_file_concat_path(buffer, d, de->d_name, sizeof(buffer));
@@ -1067,7 +1067,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
       mutt_str_strfcpy(path, LastDir, sizeof(path));
       mutt_pretty_mailbox(path, sizeof(path));
       snprintf(title, titlelen, _("Directory [%s], File mask: %s"), path,
-               NONULL(Mask.pattern));
+               NONULL(Mask ? Mask->pattern : NULL));
     }
   }
 
@@ -1762,7 +1762,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 
       case OP_ENTER_MASK:
 
-        mutt_str_strfcpy(buf, NONULL(Mask.pattern), sizeof(buf));
+        mutt_str_strfcpy(buf, NONULL(Mask ? Mask->pattern : NULL), sizeof(buf));
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) == 0)
         {
           regex_t *rx = mutt_mem_malloc(sizeof(regex_t));
@@ -1790,11 +1790,18 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           }
           else
           {
-            mutt_str_replace(&Mask.pattern, buf);
-            regfree(Mask.regex);
-            FREE(&Mask.regex);
-            Mask.regex = rx;
-            Mask.not = not;
+            if (Mask)
+            {
+              regfree(Mask->regex);
+              FREE(&Mask->regex);
+            }
+            else
+            {
+              Mask = mutt_mem_calloc(1, sizeof(struct Regex *));
+            }
+            mutt_str_replace(&Mask->pattern, buf); //QWQ
+            Mask->regex = rx;
+            Mask->not = not;
 
             destroy_state(&state);
 #ifdef USE_IMAP
