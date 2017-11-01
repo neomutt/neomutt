@@ -3,6 +3,8 @@
  * Convert strings between multibyte and utf8 encodings
  *
  * @authors
+ * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software

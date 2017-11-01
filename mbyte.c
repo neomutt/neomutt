@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2000 Takashi Takizawa <taki@luna.email.ne.jp>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -18,10 +19,6 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
- * Japanese support by TAKIZAWA Takashi <taki@luna.email.ne.jp>.
  */
 
 #include "config.h"
