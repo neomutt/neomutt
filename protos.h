@@ -234,7 +234,6 @@ void mutt_show_error(void);
 void mutt_signal_init(void);
 void mutt_stamp_attachment(struct Body *a);
 void mutt_tag_set_flag(int flag, int bf);
-bool mutt_ts_capability(void);
 void mutt_unblock_signals(void);
 void mutt_unblock_signals_system(int catch);
 void mutt_update_encoding(struct Body *a);
@@ -259,7 +258,6 @@ int mutt_change_flag(struct Header *h, int bf);
 int mutt_check_encoding(const char *c);
 
 int mutt_check_mime_type(const char *s);
-int mutt_check_month(const char *s);
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                          size_t flen, int *append, char **directory);
 int mutt_check_traditional_pgp(struct Header *h, int *redraw);
@@ -371,9 +369,6 @@ uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
 struct Address *alias_reverse_lookup(struct Address *a);
-
-/* utf8.c */
-int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char) (c)) || ((unsigned char) (c) >= 0xa0))
