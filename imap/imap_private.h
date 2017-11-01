@@ -117,6 +117,8 @@ enum ImapNamespace
 
 /**
  * enum ImapCaps - Capabilities we are interested in
+ *
+ * @note This must be kept in the same order as Capabilities.
  */
 enum ImapCaps
 {
