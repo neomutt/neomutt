@@ -39,7 +39,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "memory.h"
+#include "message.h"
 
 /**
  * default_error - Display an error message
