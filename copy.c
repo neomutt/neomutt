@@ -1029,7 +1029,7 @@ static int address_header_decode(char **h)
     if (cur->personal)
       rfc822_dequote_comment(cur->personal);
 
-  /* angle brackets for return path are mandated by RfC5322,
+  /* angle brackets for return path are mandated by RFC5322,
    * so leave Return-Path as-is */
   if (rp)
     *h = safe_strdup(s);
