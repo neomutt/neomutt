@@ -1873,7 +1873,7 @@ msgstr "(функция view-attachments не назначена ни одной
 msgid "Can't create %s: %s."
 msgstr "Не удалось создать %s: %s"
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: не удалось вложить файл"

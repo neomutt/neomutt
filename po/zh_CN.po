@@ -1892,7 +1892,7 @@ msgstr "(需要将 'view-attachments' 绑定到键！)"
 msgid "Can't create %s: %s."
 msgstr "无法创建 %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：无法附加文件"

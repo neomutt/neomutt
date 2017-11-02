@@ -1931,7 +1931,7 @@ msgstr "(necesita 'view-attachments' enlazado a una tecla)"
 msgid "Can't create %s: %s."
 msgstr "No se pudo crear %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: imposible adjuntar archivo"

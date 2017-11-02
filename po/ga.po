@@ -1897,7 +1897,7 @@ msgstr "(ní foláir 'view-attachments' a cheangal le heochair!)"
 msgid "Can't create %s: %s."
 msgstr "Ní féidir %s a chruthú: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: ní féidir comhad a cheangal"

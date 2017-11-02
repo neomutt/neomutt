@@ -40,7 +40,7 @@ hcache/lmdb.c
 hcache/qdbm.c
 hcache/tc.c
 hdrline.c
-headers.c
+header.c
 help.c
 history.c
 hook.c

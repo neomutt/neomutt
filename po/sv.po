@@ -1886,7 +1886,7 @@ msgstr "(\"view-attachments\" måste knytas till tangent!)"
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kunde inte bifoga fil"

@@ -1857,7 +1857,7 @@ msgstr "('view-attachments' må tildeles en tast!)"
 msgid "Can't create %s: %s."
 msgstr "Kan ikke oprette %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kunne ikke vedlægge fil"

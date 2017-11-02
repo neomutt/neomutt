@@ -1869,7 +1869,7 @@ msgstr "(キーに 'view-attachments' を割り当てる必要がある!)"
 msgid "Can't create %s: %s."
 msgstr "%s が %s のために作成できない。"
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: ファイルを添付できない"

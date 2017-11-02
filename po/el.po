@@ -1926,7 +1926,7 @@ msgstr "(απαιτείται το 'view-attachments' να είναι συνδε
 msgid "Can't create %s: %s."
 msgstr "Αδυναμία δημιουργίας του %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στην προσάρτηση του αρχείου"

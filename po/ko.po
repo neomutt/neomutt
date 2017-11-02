@@ -1902,7 +1902,7 @@ msgstr "('첨부물 보기' 글쇠 정의가 필요함!)"
 msgid "Can't create %s: %s."
 msgstr "%s를 만들 수 없음: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: 파일을 첨부할 수 없음"

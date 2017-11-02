@@ -1857,7 +1857,7 @@ msgstr "(bezonas klavodifinon por 'view-attachments'!)"
 msgid "Can't create %s: %s."
 msgstr "Ne eblas krei %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: ne eblas aldoni dosieron"

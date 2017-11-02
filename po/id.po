@@ -1894,7 +1894,7 @@ msgstr "(tombol untuk 'view-attachments' belum ditentukan!)"
 msgid "Can't create %s: %s."
 msgstr "Tidak bisa membuat %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: tidak bisa melampirkan file"

@@ -1925,7 +1925,7 @@ msgstr "('view-attachments' turi būti susietas su klavišu!)"
 msgid "Can't create %s: %s."
 msgstr "Negaliu sukurti %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: negalėjau prisegti bylos"

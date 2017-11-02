@@ -1866,7 +1866,7 @@ msgstr "(je třeba svázat funkci „view-attachments“ s nějakou klávesou!)"
 msgid "Can't create %s: %s."
 msgstr "%s nelze vytvořit: %s"
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "soubor %s nelze připojit"

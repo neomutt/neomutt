@@ -1945,7 +1945,7 @@ msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
 
 # , c-format
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s : impossible d'attacher le fichier"
