@@ -354,3 +354,35 @@ void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
   if (hdr->env->x_label)
     label_ref_dec(ctx, hdr->env->x_label);
 }
+
+void mutt_free_header(struct Header **h)
+{
+  if (!h || !*h)
+    return;
+  mutt_free_envelope(&(*h)->env);
+  mutt_free_body(&(*h)->content);
+  FREE(&(*h)->maildir_flags);
+  FREE(&(*h)->tree);
+  FREE(&(*h)->path);
+#ifdef MIXMASTER
+  mutt_list_free(&(*h)->chain);
+#endif
+  driver_tags_free(&(*h)->tags);
+#if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
+  if ((*h)->free_cb)
+    (*h)->free_cb(*h);
+  FREE(&(*h)->data);
+#endif
+  FREE(h);
+}
+
+struct Header *mutt_new_header(void)
+{
+  struct Header *h = safe_calloc(1, sizeof(struct Header));
+#ifdef MIXMASTER
+  STAILQ_INIT(&h->chain);
+#endif
+  STAILQ_INIT(&h->tags);
+  return h;
+}
+

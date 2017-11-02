@@ -190,10 +190,8 @@ void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s
 void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
-void mutt_free_alias(struct Alias **p);
 void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(struct EnterState **esp);
-void mutt_free_header(struct Header **h);
 void mutt_free_regex(struct Regex **pp);
 void mutt_help(int menu);
 void mutt_check_lookup_list(struct Body *b, char *type, int len);
