@@ -45,12 +45,12 @@ struct Md5Ctx
   md5_uint32 buffer[32];
 };
 
+void *md5_buffer(const char *buffer, size_t len, void *resblock);
+void *md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
 void  md5_init_ctx(struct Md5Ctx *ctx);
 void  md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx);
 void  md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
-void *md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
 void *md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf);
 int   md5_stream(FILE *stream, void *resblock);
-void *md5_buffer(const char *buffer, size_t len, void *resblock);
 
 #endif /* _LIB_MD5_H */
