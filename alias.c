@@ -337,7 +337,6 @@ retry_name:
   }
 
   new = safe_calloc(1, sizeof(struct Alias));
-  new->self = new;
   new->name = safe_strdup(buf);
 
   mutt_addrlist_to_local(adr);

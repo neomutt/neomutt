@@ -33,7 +33,6 @@ struct Address;
  */
 struct Alias
 {
-  struct Alias *self; /* XXX - ugly hack */
   char *name;
   struct Address *addr;
   struct Alias *next;

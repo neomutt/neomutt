@@ -1916,7 +1916,6 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     /* create a new alias */
     tmp = safe_calloc(1, sizeof(struct Alias));
-    tmp->self = tmp;
     tmp->name = safe_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
