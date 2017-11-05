@@ -61,7 +61,7 @@ md5prog () {
   openssl=`which openssl`
   if [ $? = 0 ];then
     # Check that openssl supports the -r option (requires version 1.1.0)
-    check=`echo test | openssl md5 -r 2&> /dev/null`
+    echo test | openssl md5 -r 2&> /dev/null
     if [ $? = 0 ]; then
       echo "$openssl md5 -r"
       return
