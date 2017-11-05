@@ -306,7 +306,7 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
 void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
 {
   char buf[5];
-  int c1, c2, c3, c4, ch, cr = 0, i;
+  int c1, c2, c3, c4, ch, i;
   char bufi[BUFI_SIZE];
   size_t l = 0;
 
@@ -338,52 +338,23 @@ void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
     c1 = base64val(buf[0]);
     c2 = base64val(buf[1]);
     ch = (c1 << 2) | (c2 >> 4);
-
-    if (cr && ch != '\n')
-      bufi[l++] = '\r';
-
-    cr = 0;
-
-    if (istext && ch == '\r')
-      cr = 1;
-    else
-      bufi[l++] = ch;
+    bufi[l++] = ch;
 
     if (buf[2] == '=')
       break;
     c3 = base64val(buf[2]);
     ch = ((c2 & 0xf) << 4) | (c3 >> 2);
-
-    if (cr && ch != '\n')
-      bufi[l++] = '\r';
-
-    cr = 0;
-
-    if (istext && ch == '\r')
-      cr = 1;
-    else
-      bufi[l++] = ch;
+    bufi[l++] = ch;
 
     if (buf[3] == '=')
       break;
     c4 = base64val(buf[3]);
     ch = ((c3 & 0x3) << 6) | c4;
-
-    if (cr && ch != '\n')
-      bufi[l++] = '\r';
-    cr = 0;
-
-    if (istext && ch == '\r')
-      cr = 1;
-    else
-      bufi[l++] = ch;
+    bufi[l++] = ch;
 
     if (l + 8 >= sizeof(bufi))
       convert_to_state(cd, bufi, &l, s);
   }
-
-  if (cr)
-    bufi[l++] = '\r';
 
   convert_to_state(cd, bufi, &l, s);
   convert_to_state(cd, 0, 0, s);
