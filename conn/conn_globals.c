@@ -40,7 +40,6 @@
 
 #include "config.h"
 
-#if 0
 short ConnectTimeout; /**< Config: $connect_timeout */
 
 #ifdef USE_SSL
@@ -58,4 +57,3 @@ short SslMinDhPrimeBits;           /**< Config: $ssl_min_dh_prime_bits */
 const char *Preconnect; /**< Config: $preconnect */
 const char *Tunnel;     /**< Config: $tunnel */
 #endif                  /* USE_SOCKET */
-#endif

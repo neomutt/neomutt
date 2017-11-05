@@ -23,22 +23,22 @@
 #ifndef _CONN_GLOBALS_H
 #define _CONN_GLOBALS_H
 
-extern short ConnectTimeout;
+short ConnectTimeout;
 
 #ifdef USE_SSL
-extern const char *CertificateFile;
-extern const char *EntropyFile;
-extern const char *SslCiphers;
-extern const char *SslClientCert;
+const char *CertificateFile;
+const char *EntropyFile;
+const char *SslCiphers;
+const char *SslClientCert;
 #ifdef USE_SSL_GNUTLS
-extern const char *SslCaCertificatesFile;
-extern short SslMinDhPrimeBits;
+const char *SslCaCertificatesFile;
+short SslMinDhPrimeBits;
 #endif
 #endif
 
 #ifdef USE_SOCKET
-extern const char *Preconnect;
-extern const char *Tunnel;
+const char *Preconnect;
+const char *Tunnel;
 #endif
 
 #endif /* _CONN_GLOBALS_H */
