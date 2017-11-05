@@ -326,26 +326,6 @@ WHERE int NmQueryWindowCurrentPosition;
 WHERE char *NmQueryWindowCurrentSearch;
 #endif
 
-#if 1
-WHERE short ConnectTimeout;
-
-#ifdef USE_SSL
-WHERE const char *CertificateFile;
-WHERE const char *EntropyFile;
-WHERE const char *SslCiphers;
-WHERE const char *SslClientCert;
-#ifdef USE_SSL_GNUTLS
-WHERE const char *SslCaCertificatesFile;
-WHERE short SslMinDhPrimeBits;
-#endif
-#endif
-
-#ifdef USE_SOCKET
-WHERE const char *Preconnect;
-WHERE const char *Tunnel;
-#endif
-#endif
-
 #ifdef MAIN_C
 const char *const BodyTypes[] = {
     "x-unknown", "audio",     "application", "image", "message",
