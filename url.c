@@ -152,18 +152,18 @@ int url_parse(struct Url *u, char *src)
 {
   char *t = NULL, *p = NULL;
 
-  u->scheme = url_check_scheme(src);
-  if (u->scheme == U_UNKNOWN)
-    return -1;
-
-  src = strchr(src, ':') + 1;
-
   u->user = NULL;
   u->pass = NULL;
   u->host = NULL;
   u->port = 0;
   u->path = NULL;
   STAILQ_INIT(&u->query_strings);
+
+  u->scheme = url_check_scheme(src);
+  if (u->scheme == U_UNKNOWN)
+    return -1;
+
+  src = strchr(src, ':') + 1;
 
   if (strncmp(src, "//", 2) != 0)
   {
