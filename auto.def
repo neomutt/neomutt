@@ -460,6 +460,7 @@ if {[get-define want-fmemopen]} {
 # Ncurses / S-Lang
 switch [opt-val with-ui ncurses] {
   ncurses {
+    define-append CFLAGS -DNCURSES_WIDECHAR
     # Locate the library defining waddnwstr()
     set ncurses_prefix [opt-val with-ncurses $prefix]
     cc-with [list -libs -L$ncurses_prefix/lib] {
