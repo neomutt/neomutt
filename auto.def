@@ -557,14 +557,17 @@ if {[opt-val with-domain] ne {}} {
 if {[get-define want-ssl] && ![get-define want-gnutls]} {
   # OpenSSL
   set ssl_prefix [opt-val with-ssl $prefix]
+  set ssl_cflags -I$ssl_prefix/include
   set ssl_ldflags -L$ssl_prefix/lib
-  cc-with [list -libs $ssl_ldflags] {
+  cc-with [list -libs $ssl_ldflags -cflags $ssl_cflags] {
     if {![cc-check-includes openssl/bio.h openssl/err.h openssl/ssl.h] ||
         ![cc-check-function-in-lib X509_STORE_CTX_new crypto] ||
         ![cc-check-function-in-lib SSL_new ssl] ||
         ![cc-with {-includes openssl/ssl.h} {cc-check-decls SSL_set_mode}]} {
       user-error "Unable to find OpenSSL"
     }
+    define-append CFLAGS $ssl_cflags
+    define-append LDFLAGS $ssl_ldflags
     cc-check-functions RAND_status RAND_egd
     cc-check-function-in-lib deflate z
   }
