@@ -655,6 +655,8 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
       s.prefix = prefix;
     if (flags & MUTT_CM_DISPLAY)
       s.flags |= MUTT_DISPLAY;
+    if (flags & MUTT_CM_DISPLAY_FILTER)
+      s.flags |= MUTT_DISPLAY_FILTER;
     if (flags & MUTT_CM_PRINTING)
       s.flags |= MUTT_PRINTING;
     if (flags & MUTT_CM_WEED)

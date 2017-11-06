@@ -146,6 +146,7 @@ int mutt_display_message(struct Header *cur)
       unlink(tempfile);
       return 0;
     }
+    cmflags |= MUTT_CM_DISPLAY_FILTER;
   }
 
   if (!Pager || (mutt_strcmp(Pager, "builtin") == 0))
