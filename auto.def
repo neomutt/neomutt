@@ -188,8 +188,7 @@ if {1} {
   # Check for tools and programs
   cc-check-tools ar ranlib strip
   cc-check-progs install
-  cc-path-progs sendmail
-  if {![is-defined SENDMAIL]} {
+  if {![cc-path-progs sendmail]} {
     define SENDMAIL /usr/sbin/sendmail
   }
 
