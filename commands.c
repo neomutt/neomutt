@@ -388,12 +388,12 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
 }
 
 /**
- * _mutt_pipe_message - Pipe message to a command
+ * pipe_message - Pipe message to a command
  *
  * The following code is shared between printing and piping.
  */
-static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
-                              int print, int split, char *sep)
+static int pipe_message(struct Header *h, char *cmd, int decode, int print,
+                        int split, char *sep)
 {
   int rc = 0;
   pid_t thepid;
@@ -513,7 +513,7 @@ void mutt_pipe_message(struct Header *h)
     return;
 
   mutt_expand_path(buffer, sizeof(buffer));
-  _mutt_pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
+  pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
 }
 
 void mutt_print_message(struct Header *h)
@@ -528,8 +528,8 @@ void mutt_print_message(struct Header *h)
                        h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
     return;
 
-  if (_mutt_pipe_message(h, PrintCommand, option(OPT_PRINT_DECODE), 1,
-                         option(OPT_PRINT_SPLIT), "\f") == 0)
+  if (pipe_message(h, PrintCommand, option(OPT_PRINT_DECODE), 1,
+                   option(OPT_PRINT_SPLIT), "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));
   else
     mutt_message(h ? _("Message could not be printed") :
@@ -1053,7 +1053,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   return structure_changed;
 }
 
-static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
+static int check_traditional_pgp(struct Header *h, int *redraw)
 {
   struct Message *msg = NULL;
   int rv = 0;
@@ -1080,14 +1080,14 @@ int mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
   int rv = 0;
   if (h && !(h->security & PGP_TRADITIONAL_CHECKED))
-    rv = _mutt_check_traditional_pgp(h, redraw);
+    rv = check_traditional_pgp(h, redraw);
   else
   {
     for (int i = 0; i < Context->msgcount; i++)
     {
       if (message_is_tagged(Context, i) && !(Context->hdrs[i]->security & PGP_TRADITIONAL_CHECKED))
       {
-        rv = _mutt_check_traditional_pgp(Context->hdrs[i], redraw) || rv;
+        rv = check_traditional_pgp(Context->hdrs[i], redraw) || rv;
       }
     }
   }

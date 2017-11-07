@@ -500,7 +500,7 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
   mutt_pretty_mailbox(path, pathlen);
 }
 
-static char *_mutt_string_hook(const char *match, int hook)
+static char *string_hook(const char *match, int hook)
 {
   struct Hook *tmp = NULL;
 
@@ -513,7 +513,7 @@ static char *_mutt_string_hook(const char *match, int hook)
   return NULL;
 }
 
-static void _mutt_list_hook(struct ListHead *matches, const char *match, int hook)
+static void list_hook(struct ListHead *matches, const char *match, int hook)
 {
   struct Hook *tmp = NULL;
 
@@ -527,17 +527,17 @@ static void _mutt_list_hook(struct ListHead *matches, const char *match, int hoo
 
 char *mutt_charset_hook(const char *chs)
 {
-  return _mutt_string_hook(chs, MUTT_CHARSETHOOK);
+  return string_hook(chs, MUTT_CHARSETHOOK);
 }
 
 char *mutt_iconv_hook(const char *chs)
 {
-  return _mutt_string_hook(chs, MUTT_ICONVHOOK);
+  return string_hook(chs, MUTT_ICONVHOOK);
 }
 
 void mutt_crypt_hook(struct ListHead *list, struct Address *adr)
 {
-  _mutt_list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
+  list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
 }
 
 #ifdef USE_SOCKET

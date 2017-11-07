@@ -1558,7 +1558,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
 }
 
 /**
- * _maildir_commit_message - Commit a message to a maildir folder
+ * md_commit_message - Commit a message to a maildir folder
  *
  * msg->path contains the file name of a file in tmp/. We take the
  * flags from this file's name.
@@ -1576,7 +1576,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
  *
  * See also maildir_open_new_message().
  */
-static int _maildir_commit_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
+static int md_commit_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   char subdir[4];
   char suffix[16];
@@ -1607,7 +1607,7 @@ static int _maildir_commit_message(struct Context *ctx, struct Message *msg, str
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
     snprintf(full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
-    mutt_debug(2, "_maildir_commit_message (): renaming %s to %s.\n", msg->path, full);
+    mutt_debug(2, "md_commit_message (): renaming %s to %s.\n", msg->path, full);
 
     if (safe_rename(msg->path, full) == 0)
     {
@@ -1625,8 +1625,7 @@ static int _maildir_commit_message(struct Context *ctx, struct Message *msg, str
         ut.modtime = msg->received;
         if (utime(full, &ut))
         {
-          mutt_perror(
-              _("_maildir_commit_message(): unable to set time on file"));
+          mutt_perror(_("md_commit_message(): unable to set time on file"));
           goto post_rename_err;
         }
       }
@@ -1655,15 +1654,15 @@ static int _maildir_commit_message(struct Context *ctx, struct Message *msg, str
 
 static int maildir_commit_message(struct Context *ctx, struct Message *msg)
 {
-  return _maildir_commit_message(ctx, msg, NULL);
+  return md_commit_message(ctx, msg, NULL);
 }
 
 /*
  * commit a message to an MH folder.
  */
 
-static int _mh_commit_message(struct Context *ctx, struct Message *msg,
-                              struct Header *hdr, short updseq)
+static int mh_commit_msg(struct Context *ctx, struct Message *msg,
+                         struct Header *hdr, short updseq)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
@@ -1741,7 +1740,7 @@ static int _mh_commit_message(struct Context *ctx, struct Message *msg,
 
 static int mh_commit_message(struct Context *ctx, struct Message *msg)
 {
-  return _mh_commit_message(ctx, msg, NULL, 1);
+  return mh_commit_msg(ctx, msg, NULL, 1);
 }
 
 /**
@@ -1775,9 +1774,9 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     strfcpy(partpath, h->path, _POSIX_PATH_MAX);
 
     if (ctx->magic == MUTT_MAILDIR)
-      rc = _maildir_commit_message(ctx, dest, h);
+      rc = md_commit_message(ctx, dest, h);
     else
-      rc = _mh_commit_message(ctx, dest, h, 0);
+      rc = mh_commit_msg(ctx, dest, h, 0);
 
     mx_close_message(ctx, &dest);
 
@@ -2416,14 +2415,14 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
 }
 
 /**
- * _maildir_open_find_message - Find a message in a maildir folder
+ * md_open_find_message - Find a message in a maildir folder
  *
  * These functions try to find a message in a maildir folder when it
  * has moved under our feet.  Note that this code is rather expensive, but
  * then again, it's called rarely.
  */
-static FILE *_maildir_open_find_message(const char *folder, const char *unique,
-                                        const char *subfolder, char **newname)
+static FILE *md_open_find_message(const char *folder, const char *unique,
+                                  const char *subfolder, char **newname)
 {
   char dir[_POSIX_PATH_MAX];
   char tunique[_POSIX_PATH_MAX];
@@ -2475,8 +2474,7 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 
   maildir_canon_filename(unique, msg, sizeof(unique));
 
-  if ((fp = _maildir_open_find_message(
-           folder, unique, new_hits > cur_hits ? "new" : "cur", newname)) ||
+  if ((fp = md_open_find_message(folder, unique, new_hits > cur_hits ? "new" : "cur", newname)) ||
       errno != ENOENT)
   {
     if (new_hits < UINT_MAX && cur_hits < UINT_MAX)
@@ -2487,8 +2485,7 @@ FILE *maildir_open_find_message(const char *folder, const char *msg, char **newn
 
     return fp;
   }
-  if ((fp = _maildir_open_find_message(
-           folder, unique, new_hits > cur_hits ? "cur" : "new", newname)) ||
+  if ((fp = md_open_find_message(folder, unique, new_hits > cur_hits ? "cur" : "new", newname)) ||
       errno != ENOENT)
   {
     if (new_hits < UINT_MAX && cur_hits < UINT_MAX)

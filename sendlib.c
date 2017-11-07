@@ -2748,8 +2748,8 @@ void mutt_unprepare_envelope(struct Envelope *env)
   rfc2047_decode(&env->subject);
 }
 
-static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
-                                const char *resent_from, struct Address *env_from)
+static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
+                          const char *resent_from, struct Address *env_from)
 {
   int ret = 0;
   FILE *f = NULL;
@@ -2761,7 +2761,7 @@ static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->msgcount; i++)
       if (message_is_tagged(Context, i))
-        ret |= _mutt_bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
+        ret |= bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
     return ret;
   }
 
@@ -2859,7 +2859,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   resent_to = rfc822_cpy_adr(to, 0);
   rfc2047_encode_adrlist(resent_to, "Resent-To");
 
-  ret = _mutt_bounce_message(fp, h, resent_to, resent_from, from);
+  ret = bounce_message(fp, h, resent_to, resent_from, from);
 
   rfc822_free_address(&resent_to);
   rfc822_free_address(&from);

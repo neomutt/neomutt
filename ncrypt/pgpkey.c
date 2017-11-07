@@ -307,7 +307,7 @@ static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
                       pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
-static int _pgp_compare_address(const void *a, const void *b)
+static int compare_key_address(const void *a, const void *b)
 {
   int r;
 
@@ -323,11 +323,11 @@ static int _pgp_compare_address(const void *a, const void *b)
 
 static int pgp_compare_address(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_address(a, b) :
-                                         _pgp_compare_address(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
+                                         compare_key_address(a, b));
 }
 
-static int _pgp_compare_keyid(const void *a, const void *b)
+static int compare_keyid(const void *a, const void *b)
 {
   int r;
 
@@ -342,11 +342,10 @@ static int _pgp_compare_keyid(const void *a, const void *b)
 
 static int pgp_compare_keyid(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_keyid(a, b) :
-                                         _pgp_compare_keyid(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b));
 }
 
-static int _pgp_compare_date(const void *a, const void *b)
+static int compare_key_date(const void *a, const void *b)
 {
   int r;
   struct PgpUid **s = (struct PgpUid **) a;
@@ -359,11 +358,10 @@ static int _pgp_compare_date(const void *a, const void *b)
 
 static int pgp_compare_date(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_date(a, b) :
-                                         _pgp_compare_date(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) : compare_key_date(a, b));
 }
 
-static int _pgp_compare_trust(const void *a, const void *b)
+static int compare_key_trust(const void *a, const void *b)
 {
   int r;
 
@@ -387,8 +385,8 @@ static int _pgp_compare_trust(const void *a, const void *b)
 
 static int pgp_compare_trust(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_trust(a, b) :
-                                         _pgp_compare_trust(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
+                                         compare_key_trust(a, b));
 }
 
 static bool pgp_key_is_valid(struct PgpKeyInfo *k)

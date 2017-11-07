@@ -155,15 +155,14 @@ int smime_valid_passphrase(void)
  */
 
 /**
- * _mutt_fmt_smime_command - Format an SMIME command
+ * fmt_smime_command - Format an SMIME command
  *
  * This is almost identical to pgp's invoking interface.
  */
-static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t col,
-                                           int cols, char op, const char *src,
-                                           const char *prefix, const char *ifstring,
-                                           const char *elsestring,
-                                           unsigned long data, enum FormatFlag flags)
+static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int cols,
+                                     char op, const char *src, const char *prefix,
+                                     const char *ifstring, const char *elsestring,
+                                     unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
@@ -286,11 +285,9 @@ static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t co
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring,
-                        _mutt_fmt_smime_command, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, fmt_smime_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring,
-                        _mutt_fmt_smime_command, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, fmt_smime_command, data, 0);
 
   return src;
 }
@@ -299,7 +296,7 @@ static void smime_command(char *d, size_t dlen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
-                      _mutt_fmt_smime_command, (unsigned long) cctx, 0);
+                      fmt_smime_command, (unsigned long) cctx, 0);
   mutt_debug(2, "smime_command: %s\n", d);
 }
 
@@ -762,12 +759,12 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
 }
 
 /**
- * _smime_getkeys - Get the keys for a mailbox
+ * getkeys - Get the keys for a mailbox
  *
  * This sets the '*ToUse' variables for an upcoming decryption, where the
  * required key is different from SmimeDefaultKey.
  */
-static void _smime_getkeys(char *mailbox)
+static void getkeys(char *mailbox)
 {
   struct SmimeKey *key = NULL;
   char *k = NULL;
@@ -840,17 +837,17 @@ void smime_getkeys(struct Envelope *env)
     if (mutt_addr_is_user(t))
     {
       found = true;
-      _smime_getkeys(t->mailbox);
+      getkeys(t->mailbox);
     }
   for (t = env->cc; !found && t; t = t->next)
     if (mutt_addr_is_user(t))
     {
       found = true;
-      _smime_getkeys(t->mailbox);
+      getkeys(t->mailbox);
     }
   if (!found && (t = mutt_default_from()))
   {
-    _smime_getkeys(t->mailbox);
+    getkeys(t->mailbox);
     rfc822_free_address(&t);
   }
 }
