@@ -3112,9 +3112,9 @@ static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
 }
 
 /**
- * _crypt_compare_address - Compare Key addresses and IDs for sorting
+ * compare_key_address - Compare Key addresses and IDs for sorting
  */
-static int _crypt_compare_address(const void *a, const void *b)
+static int compare_key_address(const void *a, const void *b)
 {
   struct CryptKeyInfo **s = (struct CryptKeyInfo **) a;
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
@@ -3128,14 +3128,14 @@ static int _crypt_compare_address(const void *a, const void *b)
 
 static int crypt_compare_address(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_crypt_compare_address(a, b) :
-                                         _crypt_compare_address(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_address(a, b) :
+                                         compare_key_address(a, b));
 }
 
 /**
- * _crypt_compare_keyid - Compare Key IDs and addresses for sorting
+ * compare_keyid - Compare Key IDs and addresses for sorting
  */
-static int _crypt_compare_keyid(const void *a, const void *b)
+static int compare_keyid(const void *a, const void *b)
 {
   struct CryptKeyInfo **s = (struct CryptKeyInfo **) a;
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
@@ -3149,14 +3149,13 @@ static int _crypt_compare_keyid(const void *a, const void *b)
 
 static int crypt_compare_keyid(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_crypt_compare_keyid(a, b) :
-                                         _crypt_compare_keyid(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_keyid(a, b) : compare_keyid(a, b));
 }
 
 /**
- * _crypt_compare_date - Compare Key creation dates and addresses for sorting
+ * compare_key_date - Compare Key creation dates and addresses for sorting
  */
-static int _crypt_compare_date(const void *a, const void *b)
+static int compare_key_date(const void *a, const void *b)
 {
   struct CryptKeyInfo **s = (struct CryptKeyInfo **) a;
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
@@ -3177,17 +3176,16 @@ static int _crypt_compare_date(const void *a, const void *b)
 
 static int crypt_compare_date(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_crypt_compare_date(a, b) :
-                                         _crypt_compare_date(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_date(a, b) : compare_key_date(a, b));
 }
 
 /**
- * _crypt_compare_trust - Compare the trust of keys for sorting
+ * compare_key_trust - Compare the trust of keys for sorting
  *
  * Compare two trust values, the key length, the creation dates. the addresses
  * and the key IDs.
  */
-static int _crypt_compare_trust(const void *a, const void *b)
+static int compare_key_trust(const void *a, const void *b)
 {
   struct CryptKeyInfo **s = (struct CryptKeyInfo **) a;
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
@@ -3225,8 +3223,8 @@ static int _crypt_compare_trust(const void *a, const void *b)
 
 static int crypt_compare_trust(const void *a, const void *b)
 {
-  return ((PgpSortKeys & SORT_REVERSE) ? !_crypt_compare_trust(a, b) :
-                                         _crypt_compare_trust(a, b));
+  return ((PgpSortKeys & SORT_REVERSE) ? !compare_key_trust(a, b) :
+                                         compare_key_trust(a, b));
 }
 
 /**

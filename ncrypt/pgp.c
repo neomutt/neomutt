@@ -120,7 +120,7 @@ bool pgp_use_gpg_agent(void)
   return true;
 }
 
-static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
+static struct PgpKeyInfo *key_parent(struct PgpKeyInfo *k)
 {
   if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPT_PGP_IGNORE_SUBKEYS))
     k = k->parent;
@@ -130,21 +130,21 @@ static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
 
 char *pgp_long_keyid(struct PgpKeyInfo *k)
 {
-  k = _pgp_parent(k);
+  k = key_parent(k);
 
   return k->keyid;
 }
 
 char *pgp_short_keyid(struct PgpKeyInfo *k)
 {
-  k = _pgp_parent(k);
+  k = key_parent(k);
 
   return k->keyid + 8;
 }
 
 char *pgp_keyid(struct PgpKeyInfo *k)
 {
-  k = _pgp_parent(k);
+  k = key_parent(k);
 
   return _pgp_keyid(k);
 }
@@ -159,7 +159,7 @@ char *_pgp_keyid(struct PgpKeyInfo *k)
 
 static char *pgp_fingerprint(struct PgpKeyInfo *k)
 {
-  k = _pgp_parent(k);
+  k = key_parent(k);
 
   return k->fingerprint;
 }

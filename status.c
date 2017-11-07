@@ -45,9 +45,8 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
   return buf;
 }
 
-static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
-                              struct Menu *menu, const char *p);
-
+static void status_line(char *buf, size_t buflen, size_t col, int cols,
+                        struct Menu *menu, const char *p);
 /**
  * status_format_str - Format a string for the status bar
  *
@@ -317,15 +316,15 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   }
 
   if (optional)
-    _menu_status_line(buf, buflen, col, cols, menu, ifstring);
+    status_line(buf, buflen, col, cols, menu, ifstring);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    _menu_status_line(buf, buflen, col, cols, menu, elsestring);
+    status_line(buf, buflen, col, cols, menu, elsestring);
 
   return src;
 }
 
-static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
-                              struct Menu *menu, const char *p)
+static void status_line(char *buf, size_t buflen, size_t col, int cols,
+                        struct Menu *menu, const char *p)
 {
   mutt_expando_format(buf, buflen, col, cols, p, status_format_str,
                       (unsigned long) menu, 0);

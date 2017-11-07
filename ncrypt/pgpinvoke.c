@@ -57,11 +57,10 @@ struct PgpCommandContext
   const char *ids;       /**< %r */
 };
 
-static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
-                                         int cols, char op, const char *src,
-                                         const char *prefix, const char *ifstring,
-                                         const char *elsestring,
-                                         unsigned long data, enum FormatFlag flags)
+static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int cols,
+                                   char op, const char *src, const char *prefix,
+                                   const char *ifstring, const char *elsestring,
+                                   unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
@@ -136,10 +135,9 @@ static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, _mutt_fmt_pgp_command, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, fmt_pgp_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring,
-                        _mutt_fmt_pgp_command, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, fmt_pgp_command, data, 0);
 
   return src;
 }
@@ -148,7 +146,7 @@ static void mutt_pgp_command(char *d, size_t dlen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
   mutt_expando_format(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
-                      _mutt_fmt_pgp_command, (unsigned long) cctx, 0);
+                      fmt_pgp_command, (unsigned long) cctx, 0);
   mutt_debug(2, "mutt_pgp_command: %s\n", d);
 }
 

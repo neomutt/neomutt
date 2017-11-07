@@ -1149,7 +1149,7 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
-static void _alternates_clean(void)
+static void alternates_clean(void)
 {
   if (Context && Context->msgcount)
   {
@@ -1163,7 +1163,7 @@ static int parse_alternates(struct Buffer *buf, struct Buffer *s,
 {
   struct GroupContext *gc = NULL;
 
-  _alternates_clean();
+  alternates_clean();
 
   do
   {
@@ -1192,7 +1192,7 @@ bail:
 static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
                               unsigned long data, struct Buffer *err)
 {
-  _alternates_clean();
+  alternates_clean();
   do
   {
     mutt_extract_token(buf, s, 0);
@@ -1528,9 +1528,9 @@ bail:
 }
 
 /**
- * _attachments_clean - always wise to do what someone else did before
+ * attachments_clean - always wise to do what someone else did before
  */
-static void _attachments_clean(void)
+static void attachments_clean(void)
 {
   if (Context && Context->msgcount)
   {
@@ -1601,7 +1601,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     mutt_list_insert_tail(head, (char *) a);
   } while (MoreArgs(s));
 
-  _attachments_clean();
+  attachments_clean();
   return 0;
 }
 
@@ -1657,7 +1657,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
   } while (MoreArgs(s));
 
   FREE(&tmp);
-  _attachments_clean();
+  attachments_clean();
   return 0;
 }
 

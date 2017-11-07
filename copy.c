@@ -768,7 +768,7 @@ int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
 }
 
 /**
- * _mutt_append_message - appends a copy of the given message to a mailbox
+ * append_message - appends a copy of the given message to a mailbox
  * @param dest    destination mailbox
  * @param fpin    where to get input
  * @param src     source mailbox
@@ -779,9 +779,8 @@ int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
  * @retval 0 on success
  * @retval -1 on error
  */
-static int _mutt_append_message(struct Context *dest, FILE *fpin,
-                                struct Context *src, struct Header *hdr,
-                                struct Body *body, int flags, int chflags)
+static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
+                          struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char buf[STRING];
   struct Message *msg = NULL;
@@ -820,7 +819,7 @@ int mutt_append_message(struct Context *dest, struct Context *src,
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  r = _mutt_append_message(dest, msg->fp, src, hdr, hdr->content, cmflags, chflags);
+  r = append_message(dest, msg->fp, src, hdr, hdr->content, cmflags, chflags);
   mx_close_message(src, &msg);
   return r;
 }
