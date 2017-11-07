@@ -35,6 +35,7 @@
  * | mutt_list_insert_head()  | Insert a string at the beginning of a List
  * | mutt_list_insert_tail()  | Append a string to the end of a List
  * | mutt_list_match()        | Is the string in the list (see notes)
+ * | strict_cmp_stailq()      | Compare two string lists
  */
 
 #include "config.h"
@@ -163,3 +164,32 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   }
   return false;
 }
+
+/**
+ * strict_cmp_stailq - Compare two string lists
+ * @param ah First string list
+ * @param bh Second string list
+ * @retval bool True if lists are identical
+ *
+ * To be identical, the lists must both be the same length and contain the same
+ * strings.  Two empty lists are identical.
+ */
+int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
+{
+  struct ListNode *a = STAILQ_FIRST(ah);
+  struct ListNode *b = STAILQ_FIRST(bh);
+
+  while (a && b)
+  {
+    if (mutt_strcmp(a->data, b->data) != 0)
+      return 0;
+
+    a = STAILQ_NEXT(a, entries);
+    b = STAILQ_NEXT(b, entries);
+  }
+  if (a || b)
+    return 0;
+
+  return 1;
+}
+
