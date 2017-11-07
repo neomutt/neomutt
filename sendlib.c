@@ -1734,7 +1734,7 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int flags, si
     if (fputc(*value, fp) == EOF)
       return -1;
     /* corner-case: break words longer than 998 chars by force,
-     * mandated by RfC5322 */
+     * mandated by RFC5322 */
     if (!(flags & CH_DISPLAY) && ++col >= 998)
     {
       if (fputs("\n ", fp) < 0)

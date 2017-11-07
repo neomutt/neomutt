@@ -925,7 +925,7 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
 
   if (!data->progress_ready && q)
   {
-    unsigned count;
+    unsigned int count;
     static char msg[STRING];
     snprintf(msg, sizeof(msg), _("Reading messages..."));
 
@@ -1513,7 +1513,7 @@ done:
 
 static unsigned int count_query(notmuch_database_t *db, const char *qstr)
 {
-  unsigned res = 0;
+  unsigned int res = 0;
   notmuch_query_t *q = notmuch_query_create(db, qstr);
 
   if (q)

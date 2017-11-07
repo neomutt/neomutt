@@ -138,7 +138,8 @@ static int getnameinfo_err(int ret)
  *
  * utility function, copied from sasl2 sample code
  */
-static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out, unsigned outlen)
+static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
+                      unsigned int outlen)
 {
   char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
   int ret;
@@ -223,7 +224,7 @@ static int mutt_sasl_start(void)
  * @param[out] len     Length of result
  * @retval int SASL error code, e.g. SASL_FAIL
  */
-static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned *len)
+static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
   struct Account *account = (struct Account *) context;
 
@@ -725,7 +726,7 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 /*
  * mutt_sasl_done - Invoke when processing is complete.
  *
- * This is a cleanup function, used to free all memory used by the library. 
+ * This is a cleanup function, used to free all memory used by the library.
  * Invoke when processing is complete.
  */
 void mutt_sasl_done(void)

@@ -750,7 +750,7 @@ static void make_reference_headers(struct Envelope *curenv,
 
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
-     discouraged by RfC2822, sect. 3.6.4 */
+     discouraged by RFC2822, sect. 3.6.4 */
   if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
     mutt_list_free(&env->references);

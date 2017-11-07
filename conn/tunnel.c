@@ -22,7 +22,7 @@
  */
 
 /**
- * @page conn_tunnel Support for network tunnelling 
+ * @page conn_tunnel Support for network tunnelling
  *
  * Support for network tunnelling
  *

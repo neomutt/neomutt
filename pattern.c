@@ -1771,9 +1771,9 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_BROKEN:
       return (pat->not ^ (h->thread && h->thread->fake_thread));
 #ifdef USE_NNTP
+    case MUTT_NEWSGROUPS:
       if (!h->env)
         return 0;
-    case MUTT_NEWSGROUPS:
       return (pat->not ^ (h->env->newsgroups && patmatch(pat, h->env->newsgroups) == 0));
 #endif
   }

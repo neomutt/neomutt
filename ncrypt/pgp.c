@@ -414,7 +414,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
             (!needpass && ((mutt_strcmp("-----END PGP SIGNATURE-----\n", buf) == 0) ||
                            (mutt_strcmp("-----END PGP PUBLIC KEY BLOCK-----\n", buf) == 0))))
           break;
-        /* remember optional Charset: armor header as defined by RfC4880 */
+        /* remember optional Charset: armor header as defined by RFC4880 */
         if (mutt_strncmp("Charset: ", buf, 9) == 0)
         {
           size_t l = 0;

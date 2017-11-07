@@ -2728,7 +2728,7 @@ color sidebar_divider   color8  default
           specifically it does not add the trailing spaces.</para>
           <para>After editing the initial message text and before entering the
           compose menu, NeoMutt properly space-stuffs the message.
-          <emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
+          <emphasis>Space-stuffing</emphasis> is required by RFC3676 defining
           <literal>format=flowed</literal> and means to prepend a space
           to:</para>
           <itemizedlist>
@@ -14796,7 +14796,7 @@ bind index D purge-message
       <para>NeoMutt in many places has to rely on external applications or for
       convenience supports mechanisms involving external applications.</para>
       <para>One of these is the
-      <literal>mailcap</literal> mechanism as defined by RfC1524. Details about
+      <literal>mailcap</literal> mechanism as defined by RFC1524. Details about
       a secure use of the mailcap mechanisms is given in
       <xref linkend="secure-mailcap" />.</para>
       <para>Besides the mailcap mechanism, NeoMutt uses a number of other external

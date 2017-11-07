@@ -168,8 +168,8 @@ new_aliases:
   /* count the number of aliases */
   for (aliasp = aliases; aliasp; aliasp = aliasp->next)
   {
-    aliasp->self->del = false;
-    aliasp->self->tagged = false;
+    aliasp->del = false;
+    aliasp->tagged = false;
     menu->max++;
   }
 
@@ -180,7 +180,7 @@ new_aliases:
 
   for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
   {
-    AliasTable[i] = aliasp->self;
+    AliasTable[i] = aliasp;
     aliases = aliasp;
   }
 
@@ -215,7 +215,7 @@ new_aliases:
         }
         else
         {
-          AliasTable[menu->current]->self->del = (op == OP_DELETE);
+          AliasTable[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
           if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
           {

@@ -713,38 +713,38 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if (!message_is_tagged(Context, i))
         continue;
 
-      struct Header *h = Context->hdrs[i];
+      struct Header *hi = Context->hdrs[i];
 
-      mutt_parse_mime_message(Context, h);
-      if (h->security & ENCRYPT && !crypt_valid_passphrase(h->security))
+      mutt_parse_mime_message(Context, hi);
+      if (hi->security & ENCRYPT && !crypt_valid_passphrase(hi->security))
       {
         safe_fclose(&fpout);
         break;
       }
 
-      if ((WithCrypto & APPLICATION_PGP) && (h->security & APPLICATION_PGP))
+      if ((WithCrypto & APPLICATION_PGP) && (hi->security & APPLICATION_PGP))
       {
-        mutt_copy_message(fpout, Context, h, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_copy_message(fpout, Context, hi, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
 
         mutt_endwin(_("Trying to extract PGP keys...\n"));
         crypt_pgp_invoke_import(tempfname);
       }
 
-      if ((WithCrypto & APPLICATION_SMIME) && (h->security & APPLICATION_SMIME))
+      if ((WithCrypto & APPLICATION_SMIME) && (hi->security & APPLICATION_SMIME))
       {
-        if (h->security & ENCRYPT)
-          mutt_copy_message(fpout, Context, h,
+        if (hi->security & ENCRYPT)
+          mutt_copy_message(fpout, Context, hi,
                             MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
                             0);
         else
-          mutt_copy_message(fpout, Context, h, 0, 0);
+          mutt_copy_message(fpout, Context, hi, 0, 0);
         fflush(fpout);
 
-        if (h->env->from)
-          tmp = mutt_expand_aliases(h->env->from);
-        else if (h->env->sender)
-          tmp = mutt_expand_aliases(h->env->sender);
+        if (hi->env->from)
+          tmp = mutt_expand_aliases(hi->env->from);
+        else if (hi->env->sender)
+          tmp = mutt_expand_aliases(hi->env->sender);
         mbox = tmp ? tmp->mailbox : NULL;
         if (mbox)
         {

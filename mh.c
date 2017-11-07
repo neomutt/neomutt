@@ -75,7 +75,7 @@ struct Maildir
 {
   struct Header *h;
   char *canon_fname;
-  unsigned header_parsed : 1;
+  bool header_parsed : 1;
   ino_t inode;
   struct Maildir *next;
 };
