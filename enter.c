@@ -40,7 +40,7 @@
 #include "protos.h"
 
 /**
- * enum RedrawFlags - redraw flags for mutt_enter_string()
+ * enum RedrawFlags - redraw flags for mutt_enter_string_full()
  */
 enum RedrawFlags
 {
@@ -251,14 +251,14 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
       clearok(stdscr, TRUE);
     }
 #endif
-    rv = _mutt_enter_string(buf, buflen, col, flags, 0, NULL, NULL, es);
+    rv = mutt_enter_string_full(buf, buflen, col, flags, 0, NULL, NULL, es);
   } while (rv == 1);
   mutt_free_enter_state(&es);
   return rv;
 }
 
 /**
- * _mutt_enter_string - Ask the user for a string
+ * mutt_enter_string_full - Ask the user for a string
  * @param[in]  buf      Buffer to store the string
  * @param[in]  buflen   Buffer length
  * @param[in]  col      Initial cursor position
@@ -271,8 +271,8 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  * @retval 0  if input was given
  * @retval -1 if abort
  */
-int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
-                       char ***files, int *numfiles, struct EnterState *state)
+int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int multiple,
+                      char ***files, int *numfiles, struct EnterState *state)
 {
   int width = MuttMessageWindow->cols - col - 1;
   int redraw;
@@ -591,7 +591,8 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
             if (tempbuf && templen == state->lastchar - i &&
                 !memcmp(tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof(wchar_t)))
             {
-              mutt_select_file(buf, buflen, (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0);
+              mutt_select_file(buf, buflen,
+                               (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0, NULL, NULL);
               if (*buf)
                 replace_part(state, i, buf);
               rv = 1;
@@ -698,10 +699,10 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
                 (tempbuf && templen == state->lastchar &&
                  !memcmp(tempbuf, state->wbuf, state->lastchar * sizeof(wchar_t))))
             {
-              _mutt_select_file(buf, buflen,
-                                ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) |
-                                    (multiple ? MUTT_SEL_MULTI : 0),
-                                files, numfiles);
+              mutt_select_file(buf, buflen,
+                               ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) |
+                                   (multiple ? MUTT_SEL_MULTI : 0),
+                               files, numfiles);
               if (*buf)
               {
                 mutt_pretty_mailbox(buf, buflen);

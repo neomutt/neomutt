@@ -1415,7 +1415,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
     }
   }
 
-  mutt_copy_message(fp, ctx, hdr, cmflags, chflags);
+  mutt_open_copy_message(fp, ctx, hdr, cmflags, chflags);
 
   fflush(fp);
   rewind(fp);
@@ -2247,7 +2247,7 @@ static void encode_headers(struct ListHead *h)
     if (!tmp)
       continue;
 
-    rfc2047_encode_string(&tmp);
+    rfc2047_encode_string32(&tmp);
     safe_realloc(&np->data, mutt_strlen(np->data) + 2 + mutt_strlen(tmp) + 1);
 
     sprintf(np->data + i, ": %s", NONULL(tmp));
@@ -2724,7 +2724,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
     if (!option(OPT_NEWS_SEND) || option(OPT_MIME_SUBJECT))
 #endif
     {
-      rfc2047_encode_string(&env->subject);
+      rfc2047_encode_string32(&env->subject);
     }
   encode_headers(&env->userhdrs);
 }

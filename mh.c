@@ -1767,7 +1767,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   if (!dest)
     return -1;
 
-  rc = mutt_copy_message(dest->fp, ctx, h, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
+  rc = mutt_open_copy_message(dest->fp, ctx, h, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
     snprintf(oldpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);

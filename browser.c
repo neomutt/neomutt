@@ -1066,7 +1066,7 @@ void mutt_browser_select_dir(char *f)
   mutt_get_parent_path(LastDir, OldLastDir, sizeof(LastDir));
 }
 
-void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles)
+void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles)
 {
   char buf[_POSIX_PATH_MAX];
   char prefix[_POSIX_PATH_MAX] = "";

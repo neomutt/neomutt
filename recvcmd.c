@@ -341,7 +341,7 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
     if (_prefix)
       strfcpy(prefix, _prefix, sizeof(prefix));
     else if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
+      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
 
@@ -433,8 +433,8 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (option(OPT_FORWARD_QUOTE))
   {
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
-                        parent_hdr, 0);
+      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
+                             Context, parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
   }
@@ -617,7 +617,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
     if (cur)
     {
       mutt_forward_intro(Context, cur->hdr, tmpfp);
-      _mutt_copy_message(tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
+      mutt_copy_message(tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
       mutt_forward_trailer(Context, cur->hdr, tmpfp);
     }
     else
@@ -627,8 +627,8 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
         if (actx->idx[i]->content->tagged)
         {
           mutt_forward_intro(Context, actx->idx[i]->content->hdr, tmpfp);
-          _mutt_copy_message(tmpfp, actx->idx[i]->fp, actx->idx[i]->content->hdr,
-                             actx->idx[i]->content->hdr->content, cmflags, chflags);
+          mutt_copy_message(tmpfp, actx->idx[i]->fp, actx->idx[i]->content->hdr,
+                            actx->idx[i]->content->hdr->content, cmflags, chflags);
           mutt_forward_trailer(Context, actx->idx[i]->content->hdr, tmpfp);
         }
       }
@@ -785,7 +785,7 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int 
     cmflags |= MUTT_CM_WEED;
   }
 
-  _mutt_copy_message(tmpfp, fp, cur, cur->content, cmflags, chflags);
+  mutt_copy_message(tmpfp, fp, cur, cur->content, cmflags, chflags);
   mutt_make_post_indent(Context, cur, tmpfp);
 }
 
@@ -882,8 +882,8 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     st.fpout = tmpfp;
 
     if (!option(OPT_TEXT_FLOWED))
-      _mutt_make_string(prefix, sizeof(prefix), NONULL(IndentString), Context,
-                        parent_hdr, 0);
+      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
+                             Context, parent_hdr, 0);
     else
       strfcpy(prefix, ">", sizeof(prefix));
 

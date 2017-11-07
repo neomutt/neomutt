@@ -232,7 +232,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, _pgp_keyid(key));
+        snprintf(dest, destlen, fmt, pgp_this_keyid(key));
       }
       break;
     case 'u':

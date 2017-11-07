@@ -42,8 +42,8 @@ bool pgp_use_gpg_agent(void);
 
 int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only);
 
-char *_pgp_keyid(struct PgpKeyInfo *);
-char *pgp_keyid(struct PgpKeyInfo *);
+char *pgp_this_keyid(struct PgpKeyInfo *k);
+char *pgp_keyid(struct PgpKeyInfo *k);
 char *pgp_short_keyid(struct PgpKeyInfo * k);
 char *pgp_long_keyid(struct PgpKeyInfo * k);
 char *pgp_fpr_or_lkeyid(struct PgpKeyInfo * k);

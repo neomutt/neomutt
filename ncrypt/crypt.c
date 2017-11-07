@@ -724,7 +724,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
 
       if ((WithCrypto & APPLICATION_PGP) && (hi->security & APPLICATION_PGP))
       {
-        mutt_copy_message(fpout, Context, hi, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_open_copy_message(fpout, Context, hi, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
 
         mutt_endwin(_("Trying to extract PGP keys...\n"));
@@ -734,11 +734,11 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if ((WithCrypto & APPLICATION_SMIME) && (hi->security & APPLICATION_SMIME))
       {
         if (hi->security & ENCRYPT)
-          mutt_copy_message(fpout, Context, hi,
-                            MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                            0);
+          mutt_open_copy_message(fpout, Context, hi,
+                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
+                                 0);
         else
-          mutt_copy_message(fpout, Context, hi, 0, 0);
+          mutt_open_copy_message(fpout, Context, hi, 0, 0);
         fflush(fpout);
 
         if (hi->env->from)
@@ -764,7 +764,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
     {
       if ((WithCrypto & APPLICATION_PGP) && (h->security & APPLICATION_PGP))
       {
-        mutt_copy_message(fpout, Context, h, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
+        mutt_open_copy_message(fpout, Context, h, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
         mutt_endwin(_("Trying to extract PGP keys...\n"));
         crypt_pgp_invoke_import(tempfname);
@@ -773,11 +773,11 @@ void crypt_extract_keys_from_messages(struct Header *h)
       if ((WithCrypto & APPLICATION_SMIME) && (h->security & APPLICATION_SMIME))
       {
         if (h->security & ENCRYPT)
-          mutt_copy_message(fpout, Context, h,
-                            MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
-                            0);
+          mutt_open_copy_message(fpout, Context, h,
+                                 MUTT_CM_NOHEADER | MUTT_CM_DECODE_CRYPT | MUTT_CM_DECODE_SMIME,
+                                 0);
         else
-          mutt_copy_message(fpout, Context, h, 0, 0);
+          mutt_open_copy_message(fpout, Context, h, 0, 0);
 
         fflush(fpout);
         if (h->env->from)

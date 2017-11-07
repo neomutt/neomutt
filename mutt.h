@@ -57,7 +57,7 @@ struct Mapping;
 #define fgetc fgetc_unlocked
 #endif
 
-/* flags for mutt_enter_string() */
+/* flags for mutt_enter_string_full() */
 #define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
 #define MUTT_FILE     (1 << 1)  /**< do file completion */
 #define MUTT_EFILE    (1 << 2)  /**< do file completion, plus incoming folders */
@@ -293,7 +293,7 @@ enum QuadOptionVars
 /* flags for mutt_compose_menu() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-/* flags to _mutt_select_file() */
+/* flags to mutt_select_file() */
 #define MUTT_SEL_BUFFY   (1 << 0)
 #define MUTT_SEL_MULTI   (1 << 1)
 #define MUTT_SEL_FOLDER  (1 << 2)

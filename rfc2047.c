@@ -611,7 +611,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   return ret;
 }
 
-void _rfc2047_encode_string(char **pd, int encode_specials, int col)
+void rfc2047_encode_string(char **pd, int encode_specials, int col)
 {
   char *e = NULL;
   size_t elen;
@@ -639,9 +639,9 @@ void rfc2047_encode_adrlist(struct Address *addr, const char *tag)
   while (ptr)
   {
     if (ptr->personal)
-      _rfc2047_encode_string(&ptr->personal, 1, col);
+      rfc2047_encode_string(&ptr->personal, 1, col);
     else if (ptr->group && ptr->mailbox)
-      _rfc2047_encode_string(&ptr->mailbox, 1, col);
+      rfc2047_encode_string(&ptr->mailbox, 1, col);
     ptr = ptr->next;
   }
 }

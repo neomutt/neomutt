@@ -1385,8 +1385,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   return src;
 }
 
-void _mutt_make_string(char *dest, size_t destlen, const char *s,
-                       struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
+void mutt_make_string_flags(char *dest, size_t destlen, const char *s,
+                            struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
 {
   struct HdrFormatInfo hfi;
 

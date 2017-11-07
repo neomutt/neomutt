@@ -36,7 +36,7 @@
 #include "sort.h"
 #include "thread.h"
 
-void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx)
+void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx)
 {
   if (!ctx || !h)
     return;
