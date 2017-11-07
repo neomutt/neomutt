@@ -655,7 +655,7 @@ void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
     }
   }
 
-  _mutt_make_string(s, l, NONULL(IndexFormat), Context, h, flag);
+  mutt_make_string_flags(s, l, NONULL(IndexFormat), Context, h, flag);
 }
 
 int index_color(int index_no)

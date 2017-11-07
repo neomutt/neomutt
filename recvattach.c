@@ -210,8 +210,9 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
             MessageFormat && aptr->content->hdr)
         {
           char s[SHORT_STRING];
-          _mutt_make_string(s, sizeof(s), MessageFormat, NULL, aptr->content->hdr,
-                            MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR);
+          mutt_make_string_flags(
+              s, sizeof(s), MessageFormat, NULL, aptr->content->hdr,
+              MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR);
           if (*s)
           {
             mutt_format_s(dest, destlen, prefix, s);

@@ -187,10 +187,10 @@ bool mutt_matches_ignore(const char *s)
 
 char *mutt_expand_path(char *s, size_t slen)
 {
-  return _mutt_expand_path(s, slen, 0);
+  return mutt_expand_path_regex(s, slen, 0);
 }
 
-char *_mutt_expand_path(char *s, size_t slen, int regex)
+char *mutt_expand_path_regex(char *s, size_t slen, int regex)
 {
   char p[_POSIX_PATH_MAX] = "";
   char q[_POSIX_PATH_MAX] = "";
@@ -528,8 +528,8 @@ uint64_t mutt_rand64(void)
   return ret;
 }
 
-void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
-                  const char *src, int line)
+void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
+                      const char *suffix, const char *src, int line)
 {
   size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
                       NONULL(prefix), NONULL(ShortHostname), (int) getuid(),

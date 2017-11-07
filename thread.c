@@ -1052,13 +1052,13 @@ static struct Header *find_virtual(struct MuttThread *cur, int reverse)
 }
 
 /**
- * _mutt_aside_thread - Find the next/previous (sub)thread
+ * mutt_aside_thread - Find the next/previous (sub)thread
  * @param hdr        Search from this message
  * @param dir        Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval n Index into the virtual email table
  */
-int _mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
+int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 {
   struct MuttThread *cur = NULL;
   struct Header *tmp = NULL;
@@ -1177,7 +1177,7 @@ void mutt_set_virtual(struct Context *ctx)
   }
 }
 
-int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
+int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Header *roothdr = NULL;

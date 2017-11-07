@@ -142,19 +142,19 @@ char *pgp_short_keyid(struct PgpKeyInfo *k)
   return k->keyid + 8;
 }
 
-char *pgp_keyid(struct PgpKeyInfo *k)
-{
-  k = key_parent(k);
-
-  return _pgp_keyid(k);
-}
-
-char *_pgp_keyid(struct PgpKeyInfo *k)
+char *pgp_this_keyid(struct PgpKeyInfo *k)
 {
   if (option(OPT_PGP_LONG_IDS))
     return k->keyid;
   else
     return (k->keyid + 8);
+}
+
+char *pgp_keyid(struct PgpKeyInfo *k)
+{
+  k = key_parent(k);
+
+  return pgp_this_keyid(k);
 }
 
 static char *pgp_fingerprint(struct PgpKeyInfo *k)

@@ -167,7 +167,7 @@ int mutt_display_message(struct Header *cur)
   if (Context->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fpout, Context, cur, cmflags, chflags);
+  res = mutt_open_copy_message(fpout, Context, cur, cmflags, chflags);
 
   if ((safe_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
@@ -384,7 +384,7 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
   if (decode)
     mutt_parse_mime_message(Context, h);
 
-  mutt_copy_message(fp, Context, h, cmflags, chflags);
+  mutt_open_copy_message(fp, Context, h, cmflags, chflags);
 }
 
 /**
@@ -725,7 +725,8 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
   }
 }
 
-int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt)
+int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
+                          struct Context *ctx)
 {
   int cmflags, chflags;
   int rc;
@@ -871,7 +872,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 #endif
     if (h)
     {
-      if (_mutt_save_message(h, &ctx, delete, decode, decrypt) != 0)
+      if (mutt_save_message_ctx(h, delete, decode, decrypt, &ctx) != 0)
       {
         mx_close_mailbox(&ctx, NULL);
         return -1;
@@ -901,7 +902,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
           continue;
 
         mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-        if ((rc = _mutt_save_message(Context->hdrs[i], &ctx, delete, decode, decrypt) != 0))
+        if ((rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx) != 0))
           break;
 #ifdef USE_COMPRESSED
         if (cm)

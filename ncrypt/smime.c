@@ -1250,10 +1250,10 @@ int smime_verify_sender(struct Header *h)
   }
 
   if (h->security & ENCRYPT)
-    mutt_copy_message(fpout, Context, h, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
-                      CH_MIME | CH_WEED | CH_NONEWLINE);
+    mutt_open_copy_message(fpout, Context, h, MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
+                           CH_MIME | CH_WEED | CH_NONEWLINE);
   else
-    mutt_copy_message(fpout, Context, h, 0, 0);
+    mutt_open_copy_message(fpout, Context, h, 0, 0);
 
   fflush(fpout);
   safe_fclose(&fpout);

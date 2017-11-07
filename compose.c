@@ -1017,8 +1017,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         numfiles = 0;
         files = NULL;
 
-        if (_mutt_enter_fname(prompt, fname, sizeof(fname), 0, 1, &files,
-                              &numfiles, MUTT_SEL_MULTI) == -1 ||
+        if (mutt_enter_fname_full(prompt, fname, sizeof(fname), 0, 1, &files,
+                                  &numfiles, MUTT_SEL_MULTI) == -1 ||
             *fname == '\0')
           break;
 

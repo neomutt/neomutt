@@ -176,7 +176,8 @@ static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
 {
   struct Context *ctx = (struct Context *) menu->data;
 
-  _mutt_make_string(s, slen, NONULL(IndexFormat), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
+  mutt_make_string_flags(s, slen, NONULL(IndexFormat), ctx, ctx->hdrs[entry],
+                         MUTT_FORMAT_ARROWCURSOR);
 }
 
 static struct Header *select_msg(void)

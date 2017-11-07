@@ -121,7 +121,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
 
     strfcpy(path, pattern.data, sizeof(path));
-    _mutt_expand_path(path, sizeof(path), 1);
+    mutt_expand_path_regex(path, sizeof(path), 1);
 
     /* Check for other mailbox shortcuts that expand to the empty string.
      * This is likely a mistake too */

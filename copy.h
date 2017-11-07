@@ -29,7 +29,7 @@ struct Body;
 struct Header;
 struct Context;
 
-/**< flags to _mutt_copy_message */
+/**< flags to mutt_copy_message */
 #define MUTT_CM_NOHEADER     (1 << 0) /**< don't copy the message header */
 #define MUTT_CM_PREFIX       (1 << 1) /**< quote the message */
 #define MUTT_CM_DECODE       (1 << 2) /**< decode the message body into text/plain */
@@ -72,10 +72,10 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
 int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix);
 
-int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body *body,
+int mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body *body,
                        int flags, int chflags);
 
-int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags);
+int mutt_open_copy_message(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags);
 
 int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags);
 

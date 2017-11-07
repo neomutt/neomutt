@@ -468,7 +468,7 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
    * rather than send action */
   chflags |= CH_DISPLAY;
 
-  mutt_copy_message(out, ctx, cur, cmflags, chflags);
+  mutt_open_copy_message(out, ctx, cur, cmflags, chflags);
   mutt_forward_trailer(ctx, cur, out);
   return 0;
 }
@@ -522,7 +522,7 @@ static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message(out, ctx, cur, cmflags, chflags);
+  mutt_open_copy_message(out, ctx, cur, cmflags, chflags);
 
   mutt_make_post_indent(ctx, cur, out);
 
@@ -1157,7 +1157,7 @@ void mutt_encode_descriptions(struct Body *b, short recurse)
   {
     if (t->description)
     {
-      rfc2047_encode_string(&t->description);
+      rfc2047_encode_string32(&t->description);
     }
     if (recurse && t->parts)
       mutt_encode_descriptions(t->parts, recurse);

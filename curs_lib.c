@@ -176,8 +176,8 @@ struct Event mutt_getch(void)
   return (ch == ctrl('G') ? err : ret);
 }
 
-int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
-                    int multiple, char ***files, int *numfiles)
+int mutt_get_field_full(const char *field, char *buf, size_t buflen,
+                        int complete, int multiple, char ***files, int *numfiles)
 {
   int ret;
   int x;
@@ -201,7 +201,7 @@ int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
     NORMAL_COLOR;
     mutt_refresh();
     mutt_window_getyx(MuttMessageWindow, NULL, &x);
-    ret = _mutt_enter_string(buf, buflen, x, complete, multiple, files, numfiles, es);
+    ret = mutt_enter_string_full(buf, buflen, x, complete, multiple, files, numfiles, es);
   } while (ret == 1);
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_free_enter_state(&es);
@@ -896,8 +896,8 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
   return rc;
 }
 
-int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
-                      int multiple, char ***files, int *numfiles, int flags)
+int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
+                          int multiple, char ***files, int *numfiles, int flags)
 {
   struct Event ch;
 
@@ -927,7 +927,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
       flags |= MUTT_SEL_MULTI;
     if (buffy)
       flags |= MUTT_SEL_BUFFY;
-    _mutt_select_file(buf, blen, flags, files, numfiles);
+    mutt_select_file(buf, blen, flags, files, numfiles);
   }
   else
   {
@@ -935,8 +935,8 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    if (_mutt_get_field(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
-                        multiple, files, numfiles) != 0)
+    if (mutt_get_field_full(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+                            multiple, files, numfiles) != 0)
       buf[0] = '\0';
     FREE(&pc);
 #ifdef USE_NOTMUCH
