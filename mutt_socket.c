@@ -83,7 +83,7 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
     conn = TAILQ_NEXT(conn, entries);
   }
 
-  conn = socket_new_conn();
+  conn = mutt_socket_new();
   memcpy(&conn->account, account, sizeof(struct Account));
 
   TAILQ_INSERT_HEAD(&Connections, conn, entries);

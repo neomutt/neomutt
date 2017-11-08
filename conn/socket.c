@@ -332,10 +332,10 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
 }
 
 /**
- * socket_new_conn - allocate and initialise a new connection
+ * mutt_socket_new - allocate and initialise a new connection
  * @retval ptr New Connection
  */
-struct Connection *socket_new_conn(void)
+struct Connection *mutt_socket_new(void)
 {
   struct Connection *conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
