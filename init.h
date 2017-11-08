@@ -3820,7 +3820,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable specifies a file containing trusted CA certificates.
   ** Any server certificate that is signed with one of these CA
-  ** certificates is also automatically accepted.
+  ** certificates is also automatically accepted. (GnuTLS only)
   ** .pp
   ** Example:
   ** .ts
@@ -3849,7 +3849,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable specifies the minimum acceptable prime size (in bits)
   ** for use in any Diffie-Hellman key exchange. A value of 0 will use
-  ** the default from the GNUTLS library.
+  ** the default from the GNUTLS library. (GnuTLS only)
   */
 #endif /* USE_SSL_GNUTLS */
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSL_STARTTLS, MUTT_YES },
@@ -3866,6 +3866,7 @@ struct Option MuttVars[] = {
   ** This variable specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process. Note that SSLv2 and SSLv3 are now
   ** considered fundamentally insecure and are no longer recommended.
+  ** (OpenSSL only)
   */
 #endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPT_SSL_USE_SSLV3, 0 },
@@ -3899,7 +3900,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If set to \fIyes\fP, NeoMutt will use CA certificates in the
   ** system-wide certificate store when checking if a server certificate
-  ** is signed by a trusted CA.
+  ** is signed by a trusted CA. (OpenSSL only)
   */
 #endif
   { "ssl_verify_dates", DT_BOOL, R_NONE, OPT_SSL_VERIFY_DATES, 1 },
