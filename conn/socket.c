@@ -220,9 +220,6 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
     return -1;
   }
 
-  if (len < 0)
-    len = mutt_str_strlen(buf);
-
   while (sent < len)
   {
     const int rc = conn->conn_write(conn, buf + sent, len - sent);
