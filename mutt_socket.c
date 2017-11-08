@@ -92,18 +92,16 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
     mutt_tunnel_socket_setup(conn);
   else if (account->flags & MUTT_ACCT_SSL)
   {
-#ifdef USE_SSL
     if (mutt_ssl_socket_setup(conn) < 0)
     {
+#ifndef USE_SSL
+      /* that's probably why it failed */
+      mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
+#endif
       mutt_socket_free(conn);
+
       return NULL;
     }
-#else
-    mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
-    mutt_socket_free(conn);
-
-    return NULL;
-#endif
   }
   else
   {

@@ -45,12 +45,10 @@
 #include "connection.h"
 #include "sasl_plain.h"
 #include "socket.h"
+#include "ssl.h"
 #include "tunnel.h"
 #ifdef USE_SASL
 #include "sasl.h"
-#endif
-#ifdef USE_SSL
-#include "ssl.h"
 #endif
 
 #endif /* _CONN_CONN_H */
