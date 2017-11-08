@@ -159,7 +159,7 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
       snprintf(buf, sizeof(buf), "RCPT TO:<%s> NOTIFY=%s\r\n", a->mailbox, DsnNotify);
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
-    if (mutt_socket_write(conn, buf) == -1)
+    if (mutt_socket_send(conn, buf) == -1)
       return SMTP_ERR_WRITE;
     r = smtp_get_resp(conn);
     if (r != 0)
@@ -190,7 +190,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
                      NetInc, st.st_size);
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
-  if (mutt_socket_write(conn, buf) == -1)
+  if (mutt_socket_send(conn, buf) == -1)
   {
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
@@ -231,7 +231,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   mutt_file_fclose(&fp);
 
   /* terminate the message body */
-  if (mutt_socket_write(conn, ".\r\n") == -1)
+  if (mutt_socket_send(conn, ".\r\n") == -1)
     return SMTP_ERR_WRITE;
 
   r = smtp_get_resp(conn);
@@ -349,7 +349,7 @@ static int smtp_helo(struct Connection *conn)
    * repeatedly calls conn->write until all data is sent.  This
    * currently doesn't check for a short write.
    */
-  if (mutt_socket_write(conn, buf) == -1)
+  if (mutt_socket_send(conn, buf) == -1)
     return SMTP_ERR_WRITE;
   return smtp_get_resp(conn);
 }
@@ -404,7 +404,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 
   do
   {
-    if (mutt_socket_write(conn, buf) < 0)
+    if (mutt_socket_send(conn, buf) < 0)
       goto fail;
     rc = mutt_socket_readln(buf, bufsize, conn);
     if (rc < 0)
@@ -546,7 +546,7 @@ static int smtp_auth_plain(struct Connection *conn)
       }
 
       /* Send request, receive response (with a check for OK code). */
-      if ((mutt_socket_write(conn, buf) < 0) || smtp_get_resp(conn))
+      if ((mutt_socket_send(conn, buf) < 0) || smtp_get_resp(conn))
       {
         goto error;
       }
@@ -592,7 +592,7 @@ static int smtp_open(struct Connection *conn)
 
   if (rc == MUTT_YES)
   {
-    if (mutt_socket_write(conn, "STARTTLS\r\n") < 0)
+    if (mutt_socket_send(conn, "STARTTLS\r\n") < 0)
       return SMTP_ERR_WRITE;
     rc = smtp_get_resp(conn);
     if (rc != 0)
@@ -684,7 +684,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
       snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
     }
     mutt_str_strncat(buf, sizeof(buf), "\r\n", 3);
-    if (mutt_socket_write(conn, buf) == -1)
+    if (mutt_socket_send(conn, buf) == -1)
     {
       rc = SMTP_ERR_WRITE;
       break;
@@ -705,7 +705,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     if (rc != 0)
       break;
 
-    mutt_socket_write(conn, "QUIT\r\n");
+    mutt_socket_send(conn, "QUIT\r\n");
 
     rc = 0;
   } while (0);

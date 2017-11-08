@@ -45,7 +45,7 @@ void mutt_socket_free(struct Connection *conn);
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account);
 
 #define mutt_socket_readln(A, B, C)  mutt_socket_readln_d(A, B, C, MUTT_SOCK_LOG_CMD)
-#define mutt_socket_write(A, B)      mutt_socket_write_d(A, B, -1, MUTT_SOCK_LOG_CMD)
+#define mutt_socket_send(conn, buffer)           mutt_socket_send_d(conn, buffer, MUTT_SOCK_LOG_CMD)
 #define mutt_socket_send_d(conn, buffer, level)  mutt_socket_write_d(conn, buffer, -1, level)
 #define mutt_socket_write_n(A, B, C) mutt_socket_write_d(A, B, C, MUTT_SOCK_LOG_CMD)
 
