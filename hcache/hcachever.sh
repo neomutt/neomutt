@@ -60,8 +60,12 @@ md5prog () {
   # Use OpenSSL if it's installed
   openssl=`which openssl`
   if [ $? = 0 ];then
-    echo "$openssl md5 -r"
-    return
+    # Check that openssl supports the -r option (requires version 1.1.0)
+    echo test | openssl md5 -r 2&> /dev/null
+    if [ $? = 0 ]; then
+      echo "$openssl md5 -r"
+      return
+    fi
   fi
 
   # Fallback to looking for a system-specific utility
@@ -70,8 +74,8 @@ md5prog () {
       # This matches most of the Solaris family
       prog="digest -a md5"
       ;;
-    *BSD)
-      # FreeBSD, NetBSD, and OpenBSD all have md5
+    *BSD|Darwin)
+      # Darwin, FreeBSD, NetBSD, and OpenBSD all have md5
       prog="md5"
       ;;
     *)
@@ -96,8 +100,8 @@ do
        STRUCT=`getstruct "$line"`
        if test -n "$STRUCT"
        then
-	 NAME=`echo $STRUCT | cut -d: -f1`
-	 BODY=`echo $STRUCT | cut -d' ' -f2-`
+         NAME=`echo $STRUCT | cut -d: -f1`
+         BODY=`echo $STRUCT | cut -d' ' -f2-`
          echo " * $NAME:" $BODY >> $TMPD
          TEXT="$TEXT $NAME {$BODY}"
        fi
