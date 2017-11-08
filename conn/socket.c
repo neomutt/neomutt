@@ -174,6 +174,32 @@ int mutt_socket_close(struct Connection *conn)
 }
 
 /**
+ * mutt_socket_read - read from a Connection
+ * @param conn Connection a server
+ * @param buf Buffer to store read data
+ * @param len length of the buffer
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
+int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
+{
+  return conn->conn_read(conn, buf, len);
+}
+
+/**
+ * mutt_socket_write - write to a Connection
+ * @param conn Connection to a server
+ * @param buf Buffer with data to write
+ * @param len Length of data to write
+ * @retval >0 Number of bytes written
+ * @retval -1 Error
+ */
+int mutt_socket_write(struct Connection *conn, const char *buf, size_t len)
+{
+  return conn->conn_write(conn, buf, len);
+}
+
+/**
  * mutt_socket_write_d - Write data to a socket
  * @param conn Connection to a server
  * @param buf Buffer with data to write
