@@ -43,6 +43,7 @@ struct Context;
 #define MUTT_CM_DECODE_SMIME (1 << 10) /**< used for decoding S/MIME messages */
 #define MUTT_CM_DECODE_CRYPT (MUTT_CM_DECODE_PGP | MUTT_CM_DECODE_SMIME)
 #define MUTT_CM_VERIFY       (1 << 11) /**< do signature verification */
+#define MUTT_CM_DISPLAY_FILTER (1 << 12) /**< output being passed through an external filter */
 
 /* flags for mutt_copy_header() */
 #define CH_UPDATE         (1 << 0)  /**< update the status and x-status fields? */
