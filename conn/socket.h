@@ -30,6 +30,7 @@
 struct Connection;
 
 struct Connection *mutt_socket_new(void);
+void mutt_socket_free(struct Connection *conn);
 
 int mutt_socket_open(struct Connection *conn);
 int mutt_socket_close(struct Connection *conn);

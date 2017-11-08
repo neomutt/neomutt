@@ -39,9 +39,10 @@ struct Connection;
  */
 TAILQ_HEAD(ConnectionList, Connection);
 
+extern struct ConnectionList Connections;
+
 /* stupid hack for imap_logout_all */
 struct ConnectionList *mutt_socket_head(void);
-void mutt_socket_free(struct Connection *conn);
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account);
 
 #define mutt_socket_readln(A, B, C)  mutt_socket_readln_d(A, B, C, MUTT_SOCK_LOG_CMD)

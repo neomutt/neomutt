@@ -53,6 +53,8 @@
 #include "ssl.h"
 #endif
 
+#include <mutt_socket.h>
+
 /**
  * socket_preconnect - Execute a command before opening a socket
  * @retval 0  Success
@@ -341,6 +343,23 @@ struct Connection *mutt_socket_new(void)
   conn->fd = -1;
 
   return conn;
+}
+
+/**
+ * mutt_socket_free - remove connection from connection list and free it
+ */
+void mutt_socket_free(struct Connection *conn)
+{
+  struct Connection *np = NULL;
+  TAILQ_FOREACH(np, &Connections, entries)
+  {
+    if (np == conn)
+    {
+      TAILQ_REMOVE(&Connections, np, entries);
+      FREE(&np);
+      return;
+    }
+  }
 }
 
 /**
