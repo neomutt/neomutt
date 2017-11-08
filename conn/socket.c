@@ -53,7 +53,15 @@
 #include "ssl.h"
 #endif
 
-#include <mutt_socket.h>
+#include "socket.h"
+
+/* support for multiple socket connections */
+static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
+
+struct ConnectionList *mutt_socket_head(void)
+{
+  return &Connections;
+}
 
 /**
  * socket_preconnect - Execute a command before opening a socket

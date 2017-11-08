@@ -30,14 +30,6 @@
 #include "protos.h"
 #include "url.h"
 
-/* support for multiple socket connections */
-struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
-
-struct ConnectionList *mutt_socket_head(void)
-{
-  return &Connections;
-}
-
 /**
  * mutt_conn_find - Find a connection from a list
  *
@@ -58,7 +50,7 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
-  struct Connection *conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(&Connections);
+  struct Connection *conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(mutt_socket_head());
   while (conn)
   {
     if (mutt_account_match(account, &(conn->account)))

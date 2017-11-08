@@ -34,15 +34,6 @@ struct Connection;
 #define MUTT_SOCK_LOG_HDR  3
 #define MUTT_SOCK_LOG_FULL 4
 
-/**
- * struct ConnectionList - A list of connections
- */
-TAILQ_HEAD(ConnectionList, Connection);
-
-extern struct ConnectionList Connections;
-
-/* stupid hack for imap_logout_all */
-struct ConnectionList *mutt_socket_head(void);
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account);
 
 #define mutt_socket_readln(A, B, C)  mutt_socket_readln_d(A, B, C, MUTT_SOCK_LOG_CMD)
