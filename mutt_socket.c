@@ -69,8 +69,6 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
   conn = mutt_socket_new();
   memcpy(&conn->account, account, sizeof(struct Account));
 
-  TAILQ_INSERT_HEAD(&Connections, conn, entries);
-
   if (Tunnel && *Tunnel)
     mutt_tunnel_socket_setup(conn);
   else if (account->flags & MUTT_ACCT_SSL)

@@ -342,6 +342,8 @@ struct Connection *mutt_socket_new(void)
   struct Connection *conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
+  TAILQ_INSERT_HEAD(&Connections, conn, entries);
+
   return conn;
 }
 
