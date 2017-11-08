@@ -49,11 +49,10 @@
 #include "globals.h"
 #include "options.h"
 #include "protos.h"
-#ifdef USE_SSL
-#include "ssl.h"
-#endif
 
 #include "socket.h"
+#include "ssl.h"
+#include "tunnel.h"
 
 /* support for multiple socket connections */
 static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
@@ -343,14 +342,36 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
 
 /**
  * mutt_socket_new - allocate and initialise a new connection
+ * @param type Type of the new Connection
  * @retval ptr New Connection
  */
-struct Connection *mutt_socket_new(void)
+struct Connection *mutt_socket_new(enum ConnectionType type)
 {
   struct Connection *conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
-  TAILQ_INSERT_HEAD(&Connections, conn, entries);
+  if (type == MUTT_CONNECTION_TUNNEL)
+  {
+    mutt_tunnel_socket_setup(conn);
+  }
+  else if (type == MUTT_CONNECTION_SSL)
+  {
+    int ret = mutt_ssl_socket_setup(conn);
+
+    if (ret < 0)
+      FREE(&conn);
+  }
+  else
+  {
+    conn->conn_read = raw_socket_read;
+    conn->conn_write = raw_socket_write;
+    conn->conn_open = raw_socket_open;
+    conn->conn_close = raw_socket_close;
+    conn->conn_poll = raw_socket_poll;
+  }
+
+  if (conn)
+    TAILQ_INSERT_HEAD(&Connections, conn, entries);
 
   return conn;
 }

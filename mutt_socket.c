@@ -41,6 +41,7 @@
  */
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
 {
+  enum ConnectionType conn_type;
   struct Url url;
   char hook[LONG_STRING];
 
@@ -58,31 +59,27 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
     conn = TAILQ_NEXT(conn, entries);
   }
 
-  conn = mutt_socket_new();
-  memcpy(&conn->account, account, sizeof(struct Account));
-
   if (Tunnel && *Tunnel)
-    mutt_tunnel_socket_setup(conn);
+    conn_type = MUTT_CONNECTION_TUNNEL;
   else if (account->flags & MUTT_ACCT_SSL)
+    conn_type = MUTT_CONNECTION_SSL;
+  else
+    conn_type = MUTT_CONNECTION_SIMPLE;
+
+  conn = mutt_socket_new(conn_type);
+  if (conn)
   {
-    if (mutt_ssl_socket_setup(conn) < 0)
+    memcpy(&conn->account, account, sizeof(struct Account));
+  }
+  else
+  {
+    if (conn_type == MUTT_CONNECTION_SSL)
     {
 #ifndef USE_SSL
       /* that's probably why it failed */
       mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
 #endif
-      mutt_socket_free(conn);
-
-      return NULL;
     }
-  }
-  else
-  {
-    conn->conn_read = raw_socket_read;
-    conn->conn_write = raw_socket_write;
-    conn->conn_open = raw_socket_open;
-    conn->conn_close = raw_socket_close;
-    conn->conn_poll = raw_socket_poll;
   }
 
   return conn;
