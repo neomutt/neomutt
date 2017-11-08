@@ -723,6 +723,17 @@ struct Option MuttVars[] = {
   ** When set, specifies a command used to filter messages.  When a message
   ** is viewed it is passed as standard input to $$display_filter, and the
   ** filtered message is read from the standard output.
+  ** .pp
+  ** When preparing the message, NeoMutt inserts some escape sequences into the
+  ** text.  They are of the form: \fC<esc>]9;XXX<bel>\fP where "XXX" is a random
+  ** 64-bit number.
+  ** .pp
+  ** If these escape sequences interfere with your filter, they can be removed
+  ** using a tool like \fCansifilter\fP or \fCsed 's/^\x1b]9;[0-9]\+\x7//'\fP
+  ** .pp
+  ** If they are removed, then PGP and MIME headers will no longer be coloured.
+  ** This can be fixed by adding this to your config:
+  ** \fCcolor body magenta default '^\[-- .* --\]$$'\fP.
   */
   { "dsn_notify",       DT_STRING,  R_NONE, UL &DsnNotify, UL "" },
   /*
