@@ -410,7 +410,7 @@ static int nntp_auth(struct NntpServer *nserv)
           if (DebugLevel < MUTT_SOCK_LOG_FULL)
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO PASS *\n", conn->fd);
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
-          if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
+          if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln(buf, sizeof(buf), conn) < 0)
           {
             break;
@@ -501,7 +501,7 @@ static int nntp_auth(struct NntpServer *nserv)
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           }
           client_len = 0;
-          if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
+          if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0)
           {
             break;
@@ -1752,8 +1752,8 @@ int nntp_post(const char *msg)
       len++;
       buf[len] = '\0';
     }
-    if (mutt_socket_write_d(nntp_data->nserv->conn, buf[1] == '.' ? buf : buf + 1,
-                            -1, MUTT_SOCK_LOG_HDR) < 0)
+    if (mutt_socket_send_d(nntp_data->nserv->conn,
+                           buf[1] == '.' ? buf : buf + 1, MUTT_SOCK_LOG_HDR) < 0)
     {
       mutt_file_fclose(&fp);
       return nntp_connect_error(nntp_data->nserv);
@@ -1762,8 +1762,8 @@ int nntp_post(const char *msg)
   mutt_file_fclose(&fp);
 
   if ((buf[strlen(buf) - 1] != '\n' &&
-       mutt_socket_write_d(nntp_data->nserv->conn, "\r\n", -1, MUTT_SOCK_LOG_HDR) < 0) ||
-      mutt_socket_write_d(nntp_data->nserv->conn, ".\r\n", -1, MUTT_SOCK_LOG_HDR) < 0 ||
+       mutt_socket_send_d(nntp_data->nserv->conn, "\r\n", MUTT_SOCK_LOG_HDR) < 0) ||
+      mutt_socket_send_d(nntp_data->nserv->conn, ".\r\n", MUTT_SOCK_LOG_HDR) < 0 ||
       mutt_socket_readln(buf, sizeof(buf), nntp_data->nserv->conn) < 0)
     return nntp_connect_error(nntp_data->nserv);
   if (buf[0] != '2')

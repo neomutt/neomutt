@@ -210,20 +210,20 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
       snprintf(buf + buflen - 1, sizeof(buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
-      if (mutt_socket_write_d(conn, ".", -1, MUTT_SOCK_LOG_FULL) == -1)
+      if (mutt_socket_send_d(conn, ".", MUTT_SOCK_LOG_FULL) == -1)
       {
         mutt_file_fclose(&fp);
         return SMTP_ERR_WRITE;
       }
     }
-    if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) == -1)
+    if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) == -1)
     {
       mutt_file_fclose(&fp);
       return SMTP_ERR_WRITE;
     }
     mutt_progress_update(&progress, ftell(fp), -1);
   }
-  if (!term && buflen && mutt_socket_write_d(conn, "\r\n", -1, MUTT_SOCK_LOG_FULL) == -1)
+  if (!term && buflen && mutt_socket_send_d(conn, "\r\n", MUTT_SOCK_LOG_FULL) == -1)
   {
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;

@@ -467,7 +467,7 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
     mutt_debug(MUTT_SOCK_LOG_CMD, "> %s", msg);
   }
 
-  mutt_socket_write_d(pop_data->conn, buf, -1, dbg);
+  mutt_socket_send_d(pop_data->conn, buf, dbg);
 
   c = strpbrk(buf, " \r\n");
   if (c)
