@@ -378,6 +378,7 @@ static int ssl_socket_open_err(struct Connection *conn)
 static int ssl_socket_close(struct Connection *conn)
 {
   struct SslSockData *data = conn->sockdata;
+
   if (data)
   {
     if (data->isopen)
@@ -698,12 +699,12 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
 }
 
 /**
- * tls_close - Close a TLS Connection
+ * ssl_socket_close_and_restore - Close an SSL Connection and restore Connnection callbacks
  * @param conn Connection to a server
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-static int tls_close(struct Connection *conn)
+static int ssl_socket_close_and_restore(struct Connection *conn)
 {
   int rc;
 
@@ -1418,7 +1419,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->conn_read = ssl_socket_read;
   conn->conn_write = ssl_socket_write;
-  conn->conn_close = tls_close;
+  conn->conn_close = ssl_socket_close_and_restore;
 
   return ret;
 }
