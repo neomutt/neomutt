@@ -167,7 +167,7 @@ int mutt_display_message(struct Header *cur)
   if (Context->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_open_copy_message(fpout, Context, cur, cmflags, chflags);
+  res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
 
   if ((safe_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
@@ -384,7 +384,7 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
   if (decode)
     mutt_parse_mime_message(Context, h);
 
-  mutt_open_copy_message(fp, Context, h, cmflags, chflags);
+  mutt_copy_message_ctx(fp, Context, h, cmflags, chflags);
 }
 
 /**

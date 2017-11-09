@@ -1415,7 +1415,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
     }
   }
 
-  mutt_open_copy_message(fp, ctx, hdr, cmflags, chflags);
+  mutt_copy_message_ctx(fp, ctx, hdr, cmflags, chflags);
 
   fflush(fp);
   rewind(fp);

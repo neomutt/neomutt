@@ -1167,7 +1167,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
        */
       newOffset[i - first].hdr = ftello(fp) + offset;
 
-      if (mutt_open_copy_message(fp, ctx, ctx->hdrs[i], MUTT_CM_UPDATE,
+      if (mutt_copy_message_ctx(fp, ctx, ctx->hdrs[i], MUTT_CM_UPDATE,
                                  CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
