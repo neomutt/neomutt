@@ -2380,7 +2380,7 @@ static int imap_open_new_message(struct Message *msg, struct Context *dest, stru
 /**
  * imap_check_mailbox_reopen - Check for new mail (reopen mailbox if necessary)
  * @param ctx        Context
- * @param index_hint Remeber our place in the index
+ * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */

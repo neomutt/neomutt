@@ -2190,7 +2190,7 @@ static int nm_close_mailbox(struct Context *ctx)
 /**
  * nm_check_mailbox - Check a notmuch mailbox for new mail
  * @param ctx         A mailbox CONTEXT
- * @param index_hint  Remeber our place in the index
+ * @param index_hint  Remember our place in the index
  * @retval -1 Error
  * @retval  0 Success
  * @retval #MUTT_NEW_MAIL - new mail has arrived
