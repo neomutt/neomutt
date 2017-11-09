@@ -121,7 +121,7 @@ char *driver_tags_get_with_hidden(struct TagHead *head)
 }
 
 /**
- * driver_tags_get_transformed_for - Get tranformed tag for a tag name from a header
+ * driver_tags_get_transformed_for - Get transformed tag for a tag name from a header
  * @param[in] name Tag to transform
  * @param[in] head List of tags
  *

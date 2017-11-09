@@ -343,7 +343,7 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
  * @param dlen     Buffer length
  * @param fromcode Original encoding
  * @param tocode   New encoding
- * @param encoder  Encoding funtion
+ * @param encoder  Encoding function
  * @retval n Length of the encoded word
  *
  * Encode the data (d, dlen) into s using the encoder.
