@@ -72,10 +72,8 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
 int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix);
 
-int mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body *body,
-                       int flags, int chflags);
-
-int mutt_open_copy_message(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags);
+int mutt_copy_message_fp (FILE *fpout, FILE *fpin,          struct Header *hdr, int flags, int chflags);
+int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags);
 
 int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags);
 

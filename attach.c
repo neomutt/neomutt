@@ -795,7 +795,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF)
         chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= (ctx.magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
-      if (mutt_copy_message(msg->fp, fp, hn, hn->content, 0, chflags) == 0 &&
+      if (mutt_copy_message_fp(msg->fp, fp, hn, 0, chflags) == 0 &&
           mx_commit_message(msg, &ctx) == 0)
         r = 0;
       else

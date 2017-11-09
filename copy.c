@@ -523,7 +523,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 }
 
 /**
- * mutt_copy_message - make a copy of a message
+ * mutt_copy_message_fp - make a copy of a message from a FILE pointer
  * @param fpout   Where to write output
  * @param fpin    Where to get input
  * @param hdr     Header of message being copied
@@ -540,9 +540,10 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
  * * #MUTT_CM_CHARCONV   perform character set conversion
  */
-int mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
-                      struct Body *body, int flags, int chflags)
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
+                      int chflags)
 {
+  struct Body *body = hdr->content;
   char prefix[SHORT_STRING];
   struct State s;
   LOFF_T new_offset = -1;
@@ -743,13 +744,13 @@ int mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
 }
 
 /**
- * mutt_open_copy_message - Copy a message
+ * mutt_copy_message_ctx - Copy a message from a Context
  *
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
  */
-int mutt_open_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
-                           int flags, int chflags)
+int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
+                          int flags, int chflags)
 {
   struct Message *msg = NULL;
   int r;
@@ -757,7 +758,7 @@ int mutt_open_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  if ((r = mutt_copy_message(fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 &&
+  if ((r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags)) == 0 &&
       (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "mutt_copy_message failed to detect EOF!\n");
@@ -780,7 +781,7 @@ int mutt_open_copy_message(FILE *fpout, struct Context *src, struct Header *hdr,
  * @retval -1 on error
  */
 static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
-                          struct Header *hdr, struct Body *body, int flags, int chflags)
+                          struct Header *hdr, int flags, int chflags)
 {
   char buf[STRING];
   struct Message *msg = NULL;
@@ -797,7 +798,7 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
-  r = mutt_copy_message(msg->fp, fpin, hdr, body, flags, chflags);
+  r = mutt_copy_message_fp(msg->fp, fpin, hdr, flags, chflags);
   if (mx_commit_message(msg, dest) != 0)
     r = -1;
 
@@ -819,7 +820,7 @@ int mutt_append_message(struct Context *dest, struct Context *src,
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  r = append_message(dest, msg->fp, src, hdr, hdr->content, cmflags, chflags);
+  r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
   mx_close_message(src, &msg);
   return r;
 }

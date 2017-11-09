@@ -617,7 +617,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
     if (cur)
     {
       mutt_forward_intro(Context, cur->hdr, tmpfp);
-      mutt_copy_message(tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
+      mutt_copy_message_fp(tmpfp, fp, cur->hdr, cmflags, chflags);
       mutt_forward_trailer(Context, cur->hdr, tmpfp);
     }
     else
@@ -627,8 +627,8 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
         if (actx->idx[i]->content->tagged)
         {
           mutt_forward_intro(Context, actx->idx[i]->content->hdr, tmpfp);
-          mutt_copy_message(tmpfp, actx->idx[i]->fp, actx->idx[i]->content->hdr,
-                            actx->idx[i]->content->hdr->content, cmflags, chflags);
+          mutt_copy_message_fp(tmpfp, actx->idx[i]->fp,
+                               actx->idx[i]->content->hdr, cmflags, chflags);
           mutt_forward_trailer(Context, actx->idx[i]->content->hdr, tmpfp);
         }
       }
@@ -785,7 +785,7 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int 
     cmflags |= MUTT_CM_WEED;
   }
 
-  mutt_copy_message(tmpfp, fp, cur, cur->content, cmflags, chflags);
+  mutt_copy_message_fp(tmpfp, fp, cur, cmflags, chflags);
   mutt_make_post_indent(Context, cur, tmpfp);
 }
 
