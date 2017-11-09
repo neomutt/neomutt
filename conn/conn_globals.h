@@ -26,19 +26,19 @@
 short ConnectTimeout;
 
 #ifdef USE_SSL
-const char *CertificateFile;
-const char *EntropyFile;
-const char *SslCiphers;
-const char *SslClientCert;
+extern const char *CertificateFile;
+extern const char *EntropyFile;
+extern const char *SslCiphers;
+extern const char *SslClientCert;
 #ifdef USE_SSL_GNUTLS
-const char *SslCaCertificatesFile;
+extern const char *SslCaCertificatesFile;
 short SslMinDhPrimeBits;
 #endif
 #endif
 
 #ifdef USE_SOCKET
-const char *Preconnect;
-const char *Tunnel;
+extern const char *Preconnect;
+extern const char *Tunnel;
 #endif
 
 #endif /* _CONN_GLOBALS_H */
