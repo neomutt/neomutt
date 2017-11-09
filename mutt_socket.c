@@ -102,8 +102,7 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
       return NULL;
     }
 #else
-    mutt_error(_("SSL is unavailable."));
-    mutt_sleep(2);
+    mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
     mutt_socket_free(conn);
 
     return NULL;
