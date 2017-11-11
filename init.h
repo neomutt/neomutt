@@ -398,6 +398,13 @@ struct Option MuttVars[] = {
   **
   */
 #endif
+  { "change_folder_next", DT_BOOL, R_NONE, OPT_CHANGE_FOLDER_NEXT, 0 },
+  /*
+  ** .pp
+  ** When this variable is \fIset\fP, the \fC<change-folder>\fP function
+  ** mailbox suggestion will start at the next folder in your ``$mailboxes''
+  ** list, instead of starting at the first folder in the list.
+  */
   { "charset",          DT_STRING,  R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp
