@@ -13391,7 +13391,9 @@ color progress white red
         <title>Introduction</title>
         <para>The
         <quote>quasi-delete</quote> function marks an email that should be
-        hidden from the index, but NOT deleted.</para>
+        hidden from the index, but NOT deleted.  The email will disappear from
+        the index when <link linkend="index-map">&lt;sync-mailbox&gt;</link> is
+        called.</para>
         <para>On its own, this feature isn't very useful. It forms a useful
         part of the notmuch plugin.</para>
       </sect2>
