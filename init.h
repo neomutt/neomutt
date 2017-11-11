@@ -3989,6 +3989,7 @@ struct Option MuttVars[] = {
   ** .dt %P  .dd percentage of the way through the index
   ** .dt %r  .dd modified/read-only/won't-write/attach-message indicator,
   **             according to $$status_chars
+  ** .dt %R  .dd number of read messages *
   ** .dt %s  .dd current sorting mode ($$sort)
   ** .dt %S  .dd current aux sorting method ($$sort_aux)
   ** .dt %t  .dd number of tagged messages *
