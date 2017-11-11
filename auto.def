@@ -299,7 +299,10 @@ if {[get-define want-everything]} {
   foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb 
                gdbm qdbm lmdb} {
     define want-$opt
+    append conf_options "--$opt "
   }
+} else {
+  set conf_options "$::argv"
 }
 
 ###############################################################################
@@ -808,7 +811,7 @@ if {[get-define want-gss]} {
 set conststrings "\
   unsigned char cc_version\[\] = {[text2c $cc_version]};\n\
   unsigned char cc_cflags\[\] = {[text2c [get-define CFLAGS]]};\n\
-  unsigned char configure_options\[\] = {[text2c $::argv]};\n"
+  unsigned char configure_options\[\] = {[text2c $conf_options]};\n"
 if {[catch {set fd [open conststrings.c w]
             puts $fd $conststrings
             close $fd} msg]} {
