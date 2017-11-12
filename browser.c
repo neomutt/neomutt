@@ -2003,7 +2003,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             }
 
             err = REGCOMP(&rx, s, REG_NOSUB);
-            if (err)
+            if (err != 0)
             {
               regerror(err, &rx, buf, sizeof(buf));
               regfree(&rx);

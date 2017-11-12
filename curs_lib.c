@@ -266,10 +266,10 @@ int mutt_yesorno(const char *msg, int def)
 
   answer[1] = '\0';
 
-  reyes_ok = (expr = nl_langinfo(YESEXPR)) && expr[0] == '^' &&
-             !REGCOMP(&reyes, expr, REG_NOSUB);
-  reno_ok = (expr = nl_langinfo(NOEXPR)) && expr[0] == '^' &&
-            !REGCOMP(&reno, expr, REG_NOSUB);
+  reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
+             (REGCOMP(&reyes, expr, REG_NOSUB) == 0);
+  reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
+            (REGCOMP(&reno, expr, REG_NOSUB) == 0);
 
   /*
    * In order to prevent the default answer to the question to wrapped

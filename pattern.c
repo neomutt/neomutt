@@ -114,7 +114,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
     pat->p.regex = safe_malloc(sizeof(regex_t));
     r = REGCOMP(pat->p.regex, buf.data,
                 REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
-    if (r)
+    if (r != 0)
     {
       regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
       mutt_buffer_printf(err, "'%s': %s", buf.data, errmsg);
