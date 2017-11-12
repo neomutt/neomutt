@@ -66,7 +66,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
 
   if (mutt_sasl_client_new(idata->conn, &saslconn) < 0)
   {
-    mutt_debug(1, "imap_auth_sasl: Error allocating SASL connection.\n");
+    mutt_debug(1, "Error allocating SASL connection.\n");
     return IMAP_AUTH_FAILURE;
   }
 
@@ -114,10 +114,11 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
     if (method)
-      mutt_debug(2, "imap_auth_sasl: %s unavailable\n", method);
+      mutt_debug(2, "%s unavailable\n", method);
     else
-      mutt_debug(1, "imap_auth_sasl: Failure starting authentication exchange. "
-                    "No shared mechanisms?\n");
+      mutt_debug(
+          1,
+          "Failure starting authentication exchange. No shared mechanisms?\n");
     /* SASL doesn't support LOGIN, so fall back */
 
     return IMAP_AUTH_UNAVAIL;
@@ -135,7 +136,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
     buf[len++] = ' ';
     if (sasl_encode64(pc, olen, buf + len, bufsize - len, &olen) != SASL_OK)
     {
-      mutt_debug(1, "imap_auth_sasl: error base64-encoding client response.\n");
+      mutt_debug(1, "#1 error base64-encoding client response.\n");
       goto bail;
     }
     client_start = false;
@@ -174,8 +175,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
          * include space for the trailing null */
         if (sasl_decode64(idata->buf + 2, len, buf, bufsize - 1, &len) != SASL_OK)
         {
-          mutt_debug(
-              1, "imap_auth_sasl: error base64-decoding server response.\n");
+          mutt_debug(1, "error base64-decoding server response.\n");
           goto bail;
         }
       }
@@ -206,8 +206,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
-        mutt_debug(1,
-                   "imap_auth_sasl: error base64-encoding client response.\n");
+        mutt_debug(1, "#2 error base64-encoding client response.\n");
         goto bail;
       }
     }
@@ -222,7 +221,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
     if (rc < 0)
     {
       mutt_socket_write(idata->conn, "*\r\n");
-      mutt_debug(1, "imap_auth_sasl: sasl_client_step error %d\n", rc);
+      mutt_debug(1, "sasl_client_step error %d\n", rc);
     }
 
     olen = 0;
@@ -251,7 +250,7 @@ bail:
 
   if (method)
   {
-    mutt_debug(2, "imap_auth_sasl: %s failed\n", method);
+    mutt_debug(2, "%s failed\n", method);
     return IMAP_AUTH_UNAVAIL;
   }
 

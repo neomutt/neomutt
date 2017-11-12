@@ -161,8 +161,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
 
   if (imap_parse_path(state->folder, &mx))
   {
-    mutt_debug(2, "browse_add_list_result: current folder %s makes no sense\n",
-               state->folder);
+    mutt_debug(2, "current folder %s makes no sense\n", state->folder);
     return -1;
   }
 
@@ -245,7 +244,7 @@ int imap_browse(char *path, struct BrowserState *state)
   if (n)
   {
     int rc;
-    mutt_debug(3, "imap_browse: mbox: %s\n", mbox);
+    mutt_debug(3, "mbox: %s\n", mbox);
 
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
@@ -296,7 +295,7 @@ int imap_browse(char *path, struct BrowserState *state)
 
       if (showparents)
       {
-        mutt_debug(3, "imap_init_browse: adding parent %s\n", mbox);
+        mutt_debug(3, "adding parent %s\n", mbox);
         add_folder(list.delim, mbox, 1, 0, state, 1);
       }
 
@@ -335,7 +334,7 @@ int imap_browse(char *path, struct BrowserState *state)
     state->folder = mutt_str_strdup(buf);
   }
 
-  mutt_debug(3, "imap_browse: Quoting mailbox scan: %s -> ", mbox);
+  mutt_debug(3, "Quoting mailbox scan: %s -> ", mbox);
   snprintf(buf, sizeof(buf), "%s%%", mbox);
   imap_munge_mbox_name(idata, munged_mbox, sizeof(munged_mbox), buf);
   mutt_debug(3, "%s\n", munged_mbox);
@@ -381,15 +380,14 @@ int imap_mailbox_create(const char *folder)
 
   if (imap_parse_path(folder, &mx) < 0)
   {
-    mutt_debug(1, "imap_mailbox_create: Bad starting path %s\n", folder);
+    mutt_debug(1, "Bad starting path %s\n", folder);
     return -1;
   }
 
   idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
   if (!idata)
   {
-    mutt_debug(1, "imap_mailbox_create: Couldn't find open connection to %s\n",
-               mx.account.host);
+    mutt_debug(1, "Couldn't find open connection to %s\n", mx.account.host);
     goto fail;
   }
 
@@ -444,15 +442,14 @@ int imap_mailbox_rename(const char *mailbox)
 
   if (imap_parse_path(mailbox, &mx) < 0)
   {
-    mutt_debug(1, "imap_mailbox_rename: Bad source mailbox %s\n", mailbox);
+    mutt_debug(1, "Bad source mailbox %s\n", mailbox);
     return -1;
   }
 
   idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
   if (!idata)
   {
-    mutt_debug(1, "imap_mailbox_rename: Couldn't find open connection to %s\n",
-               mx.account.host);
+    mutt_debug(1, "Couldn't find open connection to %s\n", mx.account.host);
     goto fail;
   }
 

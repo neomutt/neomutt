@@ -135,17 +135,15 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
 
     if (mutt_convert_string(&reversed_user, Charset, "utf-8", 0) == -1)
     {
-      mutt_debug(1, "intl_to_local: Not reversible. Charset conv to utf-8 "
-                    "failed for user = '%s'.\n",
-                 reversed_user);
+      mutt_debug(
+          1, "Not reversible. Charset conv to utf-8 failed for user = '%s'.\n", reversed_user);
       goto cleanup;
     }
 
     if (mutt_str_strcasecmp(orig_user, reversed_user) != 0)
     {
-      mutt_debug(
-          1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
-          orig_user, reversed_user);
+      mutt_debug(1, "#1 Not reversible. orig = '%s', reversed = '%s'.\n",
+                 orig_user, reversed_user);
       goto cleanup;
     }
 
@@ -153,9 +151,10 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
 
     if (mutt_convert_string(&reversed_domain, Charset, "utf-8", 0) == -1)
     {
-      mutt_debug(1, "intl_to_local: Not reversible. Charset conv to utf-8 "
-                    "failed for domain = '%s'.\n",
-                 reversed_domain);
+      mutt_debug(
+          1,
+          "Not reversible. Charset conv to utf-8 failed for domain = '%s'.\n",
+          reversed_domain);
       goto cleanup;
     }
 
@@ -168,9 +167,8 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
     {
       if (idna_to_ascii_8z(reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       {
-        mutt_debug(1, "intl_to_local: Not reversible. idna_to_ascii_8z failed "
-                      "for domain = '%s'.\n",
-                   reversed_domain);
+        mutt_debug(
+            1, "Not reversible. idna_to_ascii_8z failed for domain = '%s'.\n", reversed_domain);
         goto cleanup;
       }
       mutt_str_replace(&reversed_domain, tmp);
@@ -179,9 +177,8 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
 
     if (mutt_str_strcasecmp(orig_domain, reversed_domain) != 0)
     {
-      mutt_debug(
-          1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
-          orig_domain, reversed_domain);
+      mutt_debug(1, "#2 Not reversible. orig = '%s', reversed = '%s'.\n",
+                 orig_domain, reversed_domain);
       goto cleanup;
     }
   }

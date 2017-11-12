@@ -154,7 +154,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       if (fgets(buf, sizeof(buf) - 1, ctx->fp) == NULL)
       {
         /* TODO: memory leak??? */
-        mutt_debug(1, "mmdf_parse_mailbox: unexpected EOF\n");
+        mutt_debug(1, "unexpected EOF\n");
         break;
       }
 
@@ -164,7 +164,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       {
         if (fseeko(ctx->fp, loc, SEEK_SET) != 0)
         {
-          mutt_debug(1, "mmdf_parse_mailbox: fseek() failed\n");
+          mutt_debug(1, "#1 fseek() failed\n");
           mutt_error(_("Mailbox is corrupt!"));
           return -1;
         }
@@ -189,7 +189,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
               (mutt_str_strcmp(MMDF_SEP, buf) != 0))
           {
             if (fseeko(ctx->fp, loc, SEEK_SET) != 0)
-              mutt_debug(1, "mmdf_parse_mailbox: fseek() failed\n");
+              mutt_debug(1, "#2 fseek() failed\n");
             hdr->content->length = -1;
           }
         }
@@ -226,7 +226,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
     }
     else
     {
-      mutt_debug(1, "mmdf_parse_mailbox: corrupt mailbox!\n");
+      mutt_debug(1, "corrupt mailbox!\n");
       mutt_error(_("Mailbox is corrupt!"));
       return -1;
     }
@@ -340,14 +340,14 @@ static int mbox_parse_mailbox(struct Context *ctx)
               fgets(buf, sizeof(buf), ctx->fp) == NULL ||
               (mutt_str_strncmp("From ", buf, 5) != 0))
           {
-            mutt_debug(1, "mbox_parse_mailbox: bad content-length in message "
-                          "%d (cl=" OFF_T_FMT ")\n",
+            mutt_debug(1,
+                       "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
                        curhdr->index, curhdr->content->length);
             mutt_debug(1, "\tLINE: %s", buf);
             /* nope, return the previous position */
             if ((loc < 0) || (fseeko(ctx->fp, loc, SEEK_SET) != 0))
             {
-              mutt_debug(1, "mbox_parse_mailbox: fseek() failed\n");
+              mutt_debug(1, "#1 fseek() failed\n");
             }
             curhdr->content->length = -1;
           }
@@ -371,7 +371,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
             /* count the number of lines in this message */
             if ((loc < 0) || (fseeko(ctx->fp, loc, SEEK_SET) != 0))
-              mutt_debug(1, "mbox_parse_mailbox: fseek() failed\n");
+              mutt_debug(1, "#2 fseek() failed\n");
             while (cl-- > 0)
             {
               if (fgetc(ctx->fp) == '\n')
@@ -381,7 +381,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
           /* return to the offset of the next message separator */
           if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0)
-            mutt_debug(1, "mbox_parse_mailbox: fseek() failed\n");
+            mutt_debug(1, "#3 fseek() failed\n");
         }
       }
 
@@ -896,14 +896,14 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
        * folder.
        */
       if (fseeko(ctx->fp, ctx->size, SEEK_SET) != 0)
-        mutt_debug(1, "mbox_check_mailbox: fseek() failed\n");
+        mutt_debug(1, "#1 fseek() failed\n");
       if (fgets(buffer, sizeof(buffer), ctx->fp) != NULL)
       {
         if ((ctx->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buffer, 5) == 0)) ||
             (ctx->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buffer) == 0)))
         {
           if (fseeko(ctx->fp, ctx->size, SEEK_SET) != 0)
-            mutt_debug(1, "mbox_check_mailbox: fseek() failed\n");
+            mutt_debug(1, "#2 fseek() failed\n");
           if (ctx->magic == MUTT_MBOX)
             mbox_parse_mailbox(ctx);
           else
@@ -927,7 +927,7 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
       }
       else
       {
-        mutt_debug(1, "mbox_check_mailbox: fgets returned NULL.\n");
+        mutt_debug(1, "fgets returned NULL.\n");
         modified = true;
       }
     }
@@ -1101,7 +1101,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     mutt_error(
         _("sync: mbox modified, but no modified messages! (report this bug)"));
     mutt_sleep(5); /* the mutt_error /will/ get cleared! */
-    mutt_debug(1, "mbox_sync_mailbox(): no modified messages.\n");
+    mutt_debug(1, "no modified messages.\n");
     unlink(tempfile);
     goto bail;
   }
@@ -1207,8 +1207,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   if (fclose(fp) != 0)
   {
     fp = NULL;
-    mutt_debug(1,
-               "mbox_sync_mailbox: mutt_file_fclose (&) returned non-zero.\n");
+    mutt_debug(1, "mutt_file_fclose (&) returned non-zero.\n");
     unlink(tempfile);
     mutt_perror(tempfile);
     mutt_sleep(5);
@@ -1230,8 +1229,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   {
     mutt_unblock_signals();
     mx_fastclose_mailbox(ctx);
-    mutt_debug(1,
-               "mbox_sync_mailbox: unable to reopen temp copy of mailbox!\n");
+    mutt_debug(1, "unable to reopen temp copy of mailbox!\n");
     mutt_perror(tempfile);
     mutt_sleep(5);
     FREE(&newOffset);
@@ -1245,7 +1243,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
       (ctx->magic == MUTT_MBOX && (mutt_str_strncmp("From ", buf, 5) != 0)) ||
       (ctx->magic == MUTT_MMDF && (mutt_str_strcmp(MMDF_SEP, buf) != 0)))
   {
-    mutt_debug(1, "mbox_sync_mailbox: message not in expected position.\n");
+    mutt_debug(1, "message not in expected position.\n");
     mutt_debug(1, "\tLINE: %s\n", buf);
     i = -1;
   }
@@ -1254,7 +1252,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     if (fseeko(ctx->fp, offset, SEEK_SET) != 0) /* return to proper offset */
     {
       i = -1;
-      mutt_debug(1, "mbox_sync_mailbox: fseek() failed\n");
+      mutt_debug(1, "fseek() failed\n");
     }
     else
     {
@@ -1274,7 +1272,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
       if ((ctx->size < 0) || (ftruncate(fileno(ctx->fp), ctx->size) != 0))
       {
         i = -1;
-        mutt_debug(1, "mbox_sync_mailbox: ftruncate() failed\n");
+        mutt_debug(1, "ftruncate() failed\n");
       }
     }
   }

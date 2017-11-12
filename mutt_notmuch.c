@@ -300,7 +300,7 @@ static bool query_window_check_timebase(const char *timebase)
  */
 static void query_window_reset(void)
 {
-  mutt_debug(2, "query_window_reset ()\n");
+  mutt_debug(2, "entering\n");
   NmQueryWindowCurrentPosition = 0;
 }
 
@@ -344,7 +344,7 @@ static void query_window_reset(void)
  */
 static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz)
 {
-  mutt_debug(2, "nm: windowed_query_from_query (%s)\n", query);
+  mutt_debug(2, "nm: %s\n", query);
 
   int beg = NmQueryWindowDuration * (NmQueryWindowCurrentPosition + 1);
   int end = NmQueryWindowDuration * NmQueryWindowCurrentPosition;
@@ -375,7 +375,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
     snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
              end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
 
-  mutt_debug(2, "nm: windowed_query_from_query (%s) -> %s\n", query, buf);
+  mutt_debug(2, "nm: %s -> %s\n", query, buf);
 
   return true;
 }
@@ -398,7 +398,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
  */
 static char *get_query_string(struct NmCtxData *data, bool window)
 {
-  mutt_debug(2, "nm: get_query_string(%s)\n", window ? "true" : "false");
+  mutt_debug(2, "nm: %s\n", window ? "true" : "false");
 
   struct UrlQueryString *item = NULL;
 
@@ -1588,7 +1588,7 @@ done:
 
 char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
 {
-  mutt_debug(2, "nm_uri_from_query (%s)\n", buf);
+  mutt_debug(2, "(%s)\n", buf);
   struct NmCtxData *data = get_ctxdata(ctx);
   char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
   int added;
@@ -1650,7 +1650,7 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
  */
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 {
-  mutt_debug(2, "nm_normalize_uri (%s)\n", orig_uri);
+  mutt_debug(2, "(%s)\n", orig_uri);
   char buf[LONG_STRING];
   int rc = -1;
 
@@ -1664,12 +1664,12 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   tmp_ctx.magic = MUTT_NOTMUCH;
   tmp_ctx.data = tmp_ctxdata;
 
-  mutt_debug(2, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata->db_query);
+  mutt_debug(2, "#1 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
   if (get_query_string(tmp_ctxdata, false) == NULL)
     goto gone;
 
-  mutt_debug(2, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata->db_query);
+  mutt_debug(2, "#2 () -> db_query: %s\n", tmp_ctxdata->db_query);
 
   mutt_str_strfcpy(buf, tmp_ctxdata->db_query, sizeof(buf));
 
@@ -1678,7 +1678,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 
   strncpy(new_uri, buf, new_uri_sz);
 
-  mutt_debug(2, "nm_normalize_uri #3 (%s) -> %s\n", orig_uri, new_uri);
+  mutt_debug(2, "#3 (%s) -> %s\n", orig_uri, new_uri);
 
   rc = 0;
 gone:
@@ -1688,7 +1688,7 @@ gone:
   if (rc < 0)
   {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    mutt_debug(2, "nm_normalize_uri () -> error\n");
+    mutt_debug(2, "() -> error\n");
     return false;
   }
   return true;
@@ -1708,7 +1708,7 @@ void nm_query_window_forward(void)
   if (NmQueryWindowCurrentPosition != 0)
     NmQueryWindowCurrentPosition--;
 
-  mutt_debug(2, "nm_query_window_forward (%d)\n", NmQueryWindowCurrentPosition);
+  mutt_debug(2, "(%d)\n", NmQueryWindowCurrentPosition);
 }
 
 /**
@@ -1722,7 +1722,7 @@ void nm_query_window_forward(void)
 void nm_query_window_backward(void)
 {
   NmQueryWindowCurrentPosition++;
-  mutt_debug(2, "nm_query_window_backward (%d)\n", NmQueryWindowCurrentPosition);
+  mutt_debug(2, "(%d)\n", NmQueryWindowCurrentPosition);
 }
 
 /**

@@ -643,7 +643,7 @@ void mutt_reflow_windows(void)
   if (option(OPT_NO_CURSES))
     return;
 
-  mutt_debug(2, "In mutt_reflow_windows\n");
+  mutt_debug(2, "entering\n");
 
   MuttStatusWindow->rows = 1;
   MuttStatusWindow->cols = COLS;

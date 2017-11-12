@@ -1757,7 +1757,7 @@ static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile
   gpgme_release(ctx);
 
   state_attach_puts(_("[-- End signature information --]\n\n"), s);
-  mutt_debug(1, "verify_one: returning %d.\n", badsig);
+  mutt_debug(1, "returning %d.\n", badsig);
 
   return badsig ? 1 : anywarn ? 2 : 0;
 }
@@ -2508,7 +2508,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
   char body_charset[STRING]; /* Only used for clearsigned messages. */
 
-  mutt_debug(2, "Entering pgp_application_pgp handler\n");
+  mutt_debug(2, "Entering handler\n");
 
   /* For clearsigned messages we won't be able to get a character set
      but we know that this may only be text thus we assume Latin-1
@@ -2723,7 +2723,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
                       s);
     return 1;
   }
-  mutt_debug(2, "Leaving pgp_application_pgp handler\n");
+  mutt_debug(2, "Leaving handler\n");
 
   return err;
 }
@@ -2746,7 +2746,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   int is_signed;
   int rc = 0;
 
-  mutt_debug(2, "Entering pgp_encrypted handler\n");
+  mutt_debug(2, "Entering handler\n");
 
   mutt_mktemp(tempfile, sizeof(tempfile));
   fpout = mutt_file_fopen(tempfile, "w+");
@@ -2807,7 +2807,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 
   mutt_file_fclose(&fpout);
   mutt_file_unlink(tempfile);
-  mutt_debug(2, "Leaving pgp_encrypted handler\n");
+  mutt_debug(2, "Leaving handler\n");
 
   return rc;
 }
@@ -2823,7 +2823,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   int is_signed;
   int rc = 0;
 
-  mutt_debug(2, "Entering smime_encrypted handler\n");
+  mutt_debug(2, "Entering handler\n");
 
   a->warnsig = false;
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -2885,7 +2885,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
   mutt_file_fclose(&fpout);
   mutt_file_unlink(tempfile);
-  mutt_debug(2, "Leaving smime_encrypted handler\n");
+  mutt_debug(2, "Leaving handler\n");
 
   return rc;
 }
@@ -4389,8 +4389,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
-             a ? a->personal : "", a ? a->mailbox : "");
+  mutt_debug(5, "looking for %s <%s>.\n", a ? a->personal : "", a ? a->mailbox : "");
 
   for (k = keys; k; k = k->next)
   {
@@ -4512,9 +4511,8 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
     if (abilities && !(k->flags & abilities))
       continue;
 
-    mutt_debug(5, "crypt_getkeybystr: matching \"%s\" against "
-                  "key %s, \"%s\": ",
-               p, crypt_long_keyid(k), k->uid);
+    mutt_debug(5, "matching \"%s\" against key %s, \"%s\": ", p,
+               crypt_long_keyid(k), k->uid);
 
     if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
         (pl && (mutt_str_strcasecmp(pl, crypt_long_keyid(k)) == 0)) ||

@@ -65,7 +65,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   url.path = NULL;
   if (url_tostring(&url, host, sizeof(host), U_PATH) < 0)
   {
-    mutt_debug(1, "bcache_path: URL to string failed\n");
+    mutt_debug(1, "URL to string failed\n");
     return -1;
   }
 
@@ -78,12 +78,12 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host, path,
                  (*path && path[plen - 1] == '/') ? "" : "/");
 
-  mutt_debug(3, "bcache_path: rc: %d, path: '%s'\n", len, dst);
+  mutt_debug(3, "rc: %d, path: '%s'\n", len, dst);
 
   if (len < 0 || (size_t) len >= dstlen - 1)
     return -1;
 
-  mutt_debug(3, "bcache_path: directory: '%s'\n", dst);
+  mutt_debug(3, "directory: '%s'\n", dst);
 
   return 0;
 }

@@ -380,7 +380,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
-    mutt_debug(2, "smtp_auth_sasl: %s unavailable\n", mech);
+    mutt_debug(2, "%s unavailable\n", mech);
     sasl_dispose(&saslconn);
     return SMTP_AUTH_UNAVAIL;
   }
@@ -398,7 +398,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     if (sasl_encode64(data, len, buf + mutt_str_strlen(buf),
                       bufsize - mutt_str_strlen(buf), &len) != SASL_OK)
     {
-      mutt_debug(1, "smtp_auth_sasl: error base64-encoding client response.\n");
+      mutt_debug(1, "#1 error base64-encoding client response.\n");
       goto fail;
     }
   }
@@ -419,7 +419,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 
     if (sasl_decode64(buf + 4, strlen(buf + 4), buf, bufsize - 1, &len) != SASL_OK)
     {
-      mutt_debug(1, "smtp_auth_sasl: error base64-decoding server response.\n");
+      mutt_debug(1, "error base64-decoding server response.\n");
       goto fail;
     }
 
@@ -439,8 +439,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
       }
       if (sasl_encode64(data, len, buf, bufsize, &len) != SASL_OK)
       {
-        mutt_debug(1,
-                   "smtp_auth_sasl: error base64-encoding client response.\n");
+        mutt_debug(1, "#2 error base64-encoding client response.\n");
         goto fail;
       }
     }
@@ -478,7 +477,7 @@ static int smtp_auth(struct Connection *conn)
       if (!method[0])
         continue;
 
-      mutt_debug(2, "smtp_authenticate: Trying method %s\n", method);
+      mutt_debug(2, "Trying method %s\n", method);
 
       r = smtp_auth_sasl(conn, method);
 

@@ -190,7 +190,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
     if (rc != IMAP_CMD_RESPOND)
     {
-      mutt_debug(1, "Error receiving server response.\n");
+      mutt_debug(1, "#1 Error receiving server response.\n");
       gss_release_name(&min_stat, &target_name);
       goto bail;
     }
@@ -227,7 +227,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    mutt_debug(1, "Error receiving server response.\n");
+    mutt_debug(1, "#2 Error receiving server response.\n");
     goto bail;
   }
   request_buf.length = mutt_b64_decode(buf2, idata->buf + 2);

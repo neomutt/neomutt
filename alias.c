@@ -75,7 +75,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
         {
           if (mutt_str_strcmp(a->mailbox, np->data) == 0) /* alias already found */
           {
-            mutt_debug(1, "expand_aliases_r(): loop in alias found for '%s'\n", a->mailbox);
+            mutt_debug(1, "loop in alias found for '%s'\n", a->mailbox);
             i = true;
             break;
           }
@@ -627,57 +627,54 @@ bool mutt_addr_is_user(struct Address *addr)
   /* NULL address is assumed to be the user. */
   if (!addr)
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, NULL address\n");
+    mutt_debug(5, "yes, NULL address\n");
     return true;
   }
   if (!addr->mailbox)
   {
-    mutt_debug(5, "mutt_addr_is_user: no, no mailbox\n");
+    mutt_debug(5, "no, no mailbox\n");
     return false;
   }
 
   if (mutt_str_strcasecmp(addr->mailbox, Username) == 0)
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username);
+    mutt_debug(5, "#1 yes, %s = %s\n", addr->mailbox, Username);
     return true;
   }
   if (string_is_address(addr->mailbox, Username, ShortHostname))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox,
-               Username, ShortHostname);
+    mutt_debug(5, "#2 yes, %s = %s @ %s\n", addr->mailbox, Username, ShortHostname);
     return true;
   }
   fqdn = mutt_fqdn(0);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox,
-               Username, NONULL(fqdn));
+    mutt_debug(5, "#3 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
     return true;
   }
   fqdn = mutt_fqdn(1);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox,
-               Username, NONULL(fqdn));
+    mutt_debug(5, "#4 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
     return true;
   }
 
   if (From && (mutt_str_strcasecmp(From->mailbox, addr->mailbox) == 0))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox);
+    mutt_debug(5, "#5 yes, %s = %s\n", addr->mailbox, From->mailbox);
     return true;
   }
 
   if (mutt_match_regex_list(addr->mailbox, Alternates))
   {
-    mutt_debug(5, "mutt_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox);
+    mutt_debug(5, "yes, %s matched by alternates.\n", addr->mailbox);
     if (mutt_match_regex_list(addr->mailbox, UnAlternates))
-      mutt_debug(5, "mutt_addr_is_user: but, %s matched by unalternates.\n", addr->mailbox);
+      mutt_debug(5, "but, %s matched by unalternates.\n", addr->mailbox);
     else
       return true;
   }
 
-  mutt_debug(5, "mutt_addr_is_user: no, all failed.\n");
+  mutt_debug(5, "no, all failed.\n");
   return false;
 }
 

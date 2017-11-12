@@ -1196,7 +1196,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
       }
       else if (*p == '\033' && *(p + 1) == ']' && check_attachment_marker((char *) p) == 0)
       {
-        mutt_debug(2, "fill_buffer: Seen attachment marker.\n");
+        mutt_debug(2, "Seen attachment marker.\n");
         while (*p++ != '\a') /* skip pseudo-ANSI sequence */
           ;
       }
@@ -1250,8 +1250,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug(1, "%s:%d: mbrtowc returned %lu; errno = %d.\n", __FILE__,
-                 __LINE__, k, errno);
+      mutt_debug(1, "mbrtowc returned %lu; errno = %d.\n", k, errno);
       if (col + 4 > wrap_cols)
         break;
       col += 4;

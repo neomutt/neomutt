@@ -829,7 +829,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
       switcher ^= 1;
       dst = twinbuf[switcher];
 
-      mutt_debug(5, "mutt_apply_replace: %s matches %s\n", src, l->regex->pattern);
+      mutt_debug(5, "%s matches %s\n", src, l->regex->pattern);
 
       /* Copy into other twinbuf with substitutions */
       if (l->template)
@@ -868,7 +868,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
         }
       }
       dst[tlen] = '\0';
-      mutt_debug(5, "mutt_apply_replace: subst %s\n", dst);
+      mutt_debug(5, "subst %s\n", dst);
     }
     src = dst;
   }
@@ -1607,7 +1607,7 @@ bool mutt_match_regex_list(const char *s, struct RegexList *l)
   {
     if (regexec(l->regex->regex, s, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
     {
-      mutt_debug(5, "mutt_match_regex_list: %s matches %s\n", s, l->regex->pattern);
+      mutt_debug(5, "%s matches %s\n", s, l->regex->pattern);
       return true;
     }
   }
@@ -1651,8 +1651,8 @@ bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int 
     /* Does this pattern match? */
     if (regexec(l->regex->regex, s, (size_t) l->nmatch, (regmatch_t *) pmatch, (int) 0) == 0)
     {
-      mutt_debug(5, "mutt_match_spam_list: %s matches %s\n", s, l->regex->pattern);
-      mutt_debug(5, "mutt_match_spam_list: %d subs\n", (int) l->regex->regex->re_nsub);
+      mutt_debug(5, "%s matches %s\n", s, l->regex->pattern);
+      mutt_debug(5, "%d subs\n", (int) l->regex->regex->re_nsub);
 
       /* Copy template into text, with substitutions. */
       for (p = l->template; *p && tlen < textsize - 1;)
@@ -1692,7 +1692,7 @@ bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int 
       if (tlen < textsize)
       {
         text[tlen] = '\0';
-        mutt_debug(5, "mutt_match_spam_list: \"%s\"\n", text);
+        mutt_debug(5, "\"%s\"\n", text);
       }
       return true;
     }

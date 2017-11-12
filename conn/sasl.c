@@ -207,7 +207,7 @@ static int mutt_sasl_start(void)
 
   if (rc != SASL_OK)
   {
-    mutt_debug(1, "mutt_sasl_start: libsasl initialisation failed.\n");
+    mutt_debug(1, "libsasl initialisation failed.\n");
     return SASL_FAIL;
   }
 
@@ -238,9 +238,8 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
   if (!account)
     return SASL_BADPARAM;
 
-  mutt_debug(2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
-             id == SASL_CB_AUTHNAME ? "authname" : "user", account->host,
-             account->port);
+  mutt_debug(2, "getting %s for %s:%u\n", id == SASL_CB_AUTHNAME ? "authname" : "user",
+             account->host, account->port);
 
   if (id == SASL_CB_AUTHNAME)
   {
@@ -277,8 +276,8 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
   if (!account || !psecret)
     return SASL_BADPARAM;
 
-  mutt_debug(2, "mutt_sasl_cb_pass: getting password for %s@%s:%u\n",
-             account->login, account->host, account->port);
+  mutt_debug(2, "getting password for %s@%s:%u\n", account->login,
+             account->host, account->port);
 
   if (mutt_account_getpass(account) < 0)
     return SASL_FAIL;
@@ -658,8 +657,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
   while (interaction->id != SASL_CB_LIST_END)
   {
-    mutt_debug(2, "mutt_sasl_interact: filling in SASL interaction %ld.\n",
-               interaction->id);
+    mutt_debug(2, "filling in SASL interaction %ld.\n", interaction->id);
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';

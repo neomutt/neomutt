@@ -329,9 +329,7 @@ void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
     {
       /* "i" may be zero if there is trailing whitespace, which is not an error */
       if (i != 0)
-        mutt_debug(2, "%s:%d [mutt_decode_base64()]: "
-                      "didn't get a multiple of 4 chars.\n",
-                   __FILE__, __LINE__);
+        mutt_debug(2, "didn't get a multiple of 4 chars.\n");
       break;
     }
 
@@ -1908,9 +1906,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
     if (b->encoding != ENC7BIT && b->encoding != ENC8BIT && b->encoding != ENCBINARY)
     {
-      mutt_debug(1, "Bad encoding type %d for multipart entity, "
-                    "assuming 7 bit\n",
-                 b->encoding);
+      mutt_debug(1,
+                 "Bad encoding type %d for multipart entity, assuming 7 bit\n", b->encoding);
       b->encoding = ENC7BIT;
     }
   }

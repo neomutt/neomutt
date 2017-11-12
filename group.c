@@ -41,7 +41,7 @@ struct Group *mutt_pattern_group(const char *k)
   p = mutt_hash_find(Groups, k);
   if (!p)
   {
-    mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
+    mutt_debug(2, "Creating group %s.\n", k);
     p = mutt_mem_calloc(1, sizeof(struct Group));
     p->name = mutt_str_strdup(k);
     mutt_hash_insert(Groups, p->name, p);

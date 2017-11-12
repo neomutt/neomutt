@@ -440,7 +440,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     p = mutt_get_parameter("boundary", a->parameter);
     if (!p)
     {
-      mutt_debug(1, "mutt_write_mime_body(): no boundary parameter found!\n");
+      mutt_debug(1, "no boundary parameter found!\n");
       mutt_error(_("No boundary parameter found! [report this error]"));
       return -1;
     }
@@ -470,7 +470,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   fpin = fopen(a->filename, "r");
   if (!fpin)
   {
-    mutt_debug(1, "write_mime_body: %s no longer exists!\n", a->filename);
+    mutt_debug(1, "%s no longer exists!\n", a->filename);
     mutt_error(_("%s no longer exists!"), a->filename);
     return -1;
   }
@@ -932,8 +932,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   fp = fopen(fname, "r");
   if (!fp)
   {
-    mutt_debug(1, "mutt_get_content_info: %s: %s (errno %d).\n", fname,
-               strerror(errno), errno);
+    mutt_debug(1, "%s: %s (errno %d).\n", fname, strerror(errno), errno);
     return NULL;
   }
 
@@ -1033,7 +1032,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
         snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(HomeDir));
         break;
       default:
-        mutt_debug(1, "mutt_lookup_mime_type: Internal error, count = %d.\n", count);
+        mutt_debug(1, "Internal error, count = %d.\n", count);
         goto bye; /* shouldn't happen */
     }
 
@@ -1738,8 +1737,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
   int first = 1, enc, col = 0, w, l = 0, fold;
   bool display = (flags & CH_DISPLAY);
 
-  mutt_debug(4, "mwoh: pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag,
-             flags, NONULL(value));
+  mutt_debug(4, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
 
   if (tag && *tag && fprintf(fp, "%s%s: ", NONULL(pfx), tag) < 0)
     return -1;
@@ -1761,7 +1759,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
     w = mutt_mb_width(buf, col, display);
     enc = (mutt_str_strncmp(buf, "=?", 2) == 0);
 
-    mutt_debug(5, "mwoh: word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
+    mutt_debug(5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
 
     /* insert a folding \n before the current word's lwsp except for
      * header name, first word on a line (word longer than wrap width)
@@ -1862,9 +1860,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
   if (!(flags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
   {
     valbuf = mutt_str_substr_dup(start, end);
-    mutt_debug(4, "mwoh: buf[%s%s] short enough, "
-                  "max width = %d <= %d\n",
-               NONULL(pfx), valbuf, max, wraplen);
+    mutt_debug(4, "buf[%s%s] short enough, max width = %d <= %d\n", NONULL(pfx),
+               valbuf, max, wraplen);
     if (pfx && *pfx)
     {
       if (fputs(pfx, fp) == EOF)
@@ -1877,7 +1874,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     t = strchr(valbuf, ':');
     if (!t)
     {
-      mutt_debug(1, "mwoh: warning: header not in 'key: value' format!\n");
+      mutt_debug(1, "#1 warning: header not in 'key: value' format!\n");
       FREE(&valbuf);
       return 0;
     }
@@ -1893,7 +1890,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
     t = strchr(start, ':');
     if (!t || t > end)
     {
-      mutt_debug(1, "mwoh: warning: header not in 'key: value' format!\n");
+      mutt_debug(1, "#2 warning: header not in 'key: value' format!\n");
       return 0;
     }
     if (is_from)
@@ -1915,8 +1912,8 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
 
       valbuf = mutt_str_substr_dup(t, end);
     }
-    mutt_debug(4, "mwoh: buf[%s%s] too long, max width = %d > %d\n",
-               NONULL(pfx), NONULL(valbuf), max, wraplen);
+    mutt_debug(4, "buf[%s%s] too long, max width = %d > %d\n", NONULL(pfx),
+               NONULL(valbuf), max, wraplen);
     if (fold_one_header(fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
     {
       FREE(&valbuf);
@@ -1963,7 +1960,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     /* if header is short enough, simply print it */
     if (!display && mutt_strwidth(tag) + 2 + pfxw + mutt_strwidth(v) <= wraplen)
     {
-      mutt_debug(4, "mwoh: buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
+      mutt_debug(4, "buf[%s%s: %s] is short enough\n", NONULL(pfx), tag, v);
       if (fprintf(fp, "%s%s: %s\n", NONULL(pfx), tag, v) <= 0)
         goto out;
       rc = 0;
@@ -2864,7 +2861,7 @@ struct Address *mutt_remove_duplicates(struct Address *addr)
 
     if (dup)
     {
-      mutt_debug(2, "mutt_remove_duplicates: Removing %s\n", addr->mailbox);
+      mutt_debug(2, "Removing %s\n", addr->mailbox);
 
       *last = addr->next;
 
@@ -2959,9 +2956,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   mutt_folder_hook(path);
   if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
   {
-    mutt_debug(1, "mutt_write_fcc(): unable to open mailbox %s in append-mode, "
-                  "aborting.\n",
-               path);
+    mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
     return -1;
   }
 
@@ -3104,7 +3099,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     fflush(tempfp);
     if (ferror(tempfp))
     {
-      mutt_debug(1, "mutt_write_fcc(): %s: write failed.\n", tempfile);
+      mutt_debug(1, "%s: write failed.\n", tempfile);
       mutt_file_fclose(&tempfp);
       unlink(tempfile);
       mx_commit_message(msg, &f); /* XXX - really? */

@@ -297,7 +297,7 @@ static void smime_command(char *buf, size_t buflen,
 {
   mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
                       fmt_smime_command, (unsigned long) cctx, 0);
-  mutt_debug(2, "smime_command: %s\n", buf);
+  mutt_debug(2, "%s\n", buf);
 }
 
 static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,

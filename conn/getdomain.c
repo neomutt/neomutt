@@ -84,7 +84,7 @@ int getdnsdomainname(char *d, size_t len)
       h = reqs[0]->ar_result;
     else if (status == EAI_INPROGRESS)
     {
-      mutt_debug(1, "getdnsdomainname timeout\n");
+      mutt_debug(1, "timeout\n");
       /* request is not finish, cancel it to free it safely */
       if (gai_cancel(reqs[0]) == EAI_NOTCANCELED)
       {
@@ -93,7 +93,7 @@ int getdnsdomainname(char *d, size_t len)
       }
     }
     else
-      mutt_debug(1, "getdnsdomainname fail: (%d) %s\n", status, gai_strerror(status));
+      mutt_debug(1, "fail: (%d) %s\n", status, gai_strerror(status));
   }
   FREE(&reqs[0]);
 
@@ -110,7 +110,7 @@ int getdnsdomainname(char *d, size_t len)
   {
     mutt_str_strfcpy(d, ++p, len);
     rc = 0;
-    mutt_debug(1, "getdnsdomainname(): %s\n", d);
+    mutt_debug(1, "%s\n", d);
     freeaddrinfo(h);
   }
 

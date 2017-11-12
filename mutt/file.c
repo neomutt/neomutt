@@ -145,14 +145,14 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   snprintf(newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
   if (!mkdtemp(newdir))
   {
-    mutt_debug(1, "mkwrapdir: mkdtemp() failed\n");
+    mutt_debug(1, "mkdtemp() failed\n");
     return -1;
   }
 
   if (snprintf(newfile, nflen, "%s/%s", newdir, NONULL(basename)) >= nflen)
   {
     rmdir(newdir);
-    mutt_debug(1, "mkwrapdir: string was truncated\n");
+    mutt_debug(1, "string was truncated\n");
     return -1;
   }
   return 0;
@@ -389,8 +389,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
      * With other file systems, rename should just fail when
      * the files reside on different file systems, so it's safe
      * to try it here. */
-    mutt_debug(1, "mutt_file_safe_rename: link (%s, %s) failed: %s (%d)\n", src,
-               target, strerror(errno), errno);
+    mutt_debug(1, "link (%s, %s) failed: %s (%d)\n", src, target, strerror(errno), errno);
 
     /* FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
      * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear. */
@@ -403,15 +402,14 @@ int mutt_file_safe_rename(const char *src, const char *target)
 #endif
         )
     {
-      mutt_debug(1, "mutt_file_safe_rename: trying rename...\n");
+      mutt_debug(1, "trying rename...\n");
       if (rename(src, target) == -1)
       {
-        mutt_debug(1,
-                   "mutt_file_safe_rename: rename (%s, %s) failed: %s (%d)\n",
-                   src, target, strerror(errno), errno);
+        mutt_debug(1, "rename (%s, %s) failed: %s (%d)\n", src, target,
+                   strerror(errno), errno);
         return -1;
       }
-      mutt_debug(1, "mutt_file_safe_rename: rename succeeded.\n");
+      mutt_debug(1, "rename succeeded.\n");
 
       return 0;
     }
@@ -423,15 +421,13 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   if (lstat(src, &ssb) == -1)
   {
-    mutt_debug(1, "mutt_file_safe_rename: can't stat %s: %s (%d)\n", src,
-               strerror(errno), errno);
+    mutt_debug(1, "#1 can't stat %s: %s (%d)\n", src, strerror(errno), errno);
     return -1;
   }
 
   if (lstat(target, &tsb) == -1)
   {
-    mutt_debug(1, "mutt_file_safe_rename: can't stat %s: %s (%d)\n", src,
-               strerror(errno), errno);
+    mutt_debug(1, "#2 can't stat %s: %s (%d)\n", src, strerror(errno), errno);
     return -1;
   }
 
@@ -439,9 +435,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   if (!compare_stat(&ssb, &tsb))
   {
-    mutt_debug(1, "mutt_file_safe_rename: stat blocks for %s and %s diverge; "
-                  "pretending EEXIST.\n",
-               src, target);
+    mutt_debug(1, "stat blocks for %s and %s diverge; pretending EEXIST.\n", src, target);
     errno = EEXIST;
     return -1;
   }
@@ -450,8 +444,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
    * Should we really ignore the return value here? XXX */
   if (unlink(src) == -1)
   {
-    mutt_debug(1, "mutt_file_safe_rename: unlink (%s) failed: %s (%d)\n", src,
-               strerror(errno), errno);
+    mutt_debug(1, "unlink (%s) failed: %s (%d)\n", src, strerror(errno), errno);
   }
 
   return 0;
@@ -474,7 +467,7 @@ int mutt_file_rmtree(const char *path)
   dirp = opendir(path);
   if (!dirp)
   {
-    mutt_debug(1, "mutt_file_rmtree: error opening directory %s\n", path);
+    mutt_debug(1, "error opening directory %s\n", path);
     return -1;
   }
   while ((de = readdir(dirp)))
@@ -1128,7 +1121,7 @@ int mutt_file_lock(const char *path, int fd, int excl, int timeout)
   attempt = 0;
   while (fcntl(fd, F_SETLK, &lck) == -1)
   {
-    mutt_debug(1, "mutt_file_lock(): fcntl errno %d.\n", errno);
+    mutt_debug(1, "fcntl errno %d.\n", errno);
     if ((errno != EAGAIN) && (errno != EACCES))
     {
       mutt_perror("fcntl");

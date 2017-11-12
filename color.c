@@ -304,7 +304,7 @@ int mutt_alloc_color(int fg, int bg)
 
     init_pair(i, fg, bg);
 
-  mutt_debug(3, "mutt_alloc_color(): Color pairs used so far: %d\n", UserColors);
+  mutt_debug(3, "Color pairs used so far: %d\n", UserColors);
 
   return (COLOR_PAIR(p->index));
 }
@@ -354,7 +354,7 @@ void mutt_free_color(int fg, int bg)
         return;
 
       UserColors--;
-      mutt_debug(1, "mutt_free_color(): Color pairs used so far: %d\n", UserColors);
+      mutt_debug(1, "Color pairs used so far: %d\n", UserColors);
 
       if (p == ColorList)
       {

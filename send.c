@@ -1474,8 +1474,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     if (!tempfp)
     {
-      mutt_debug(1, "newsend_message: can't create tempfile %s (errno=%d)\n",
-                 msg->content->filename, errno);
+      mutt_debug(1, "can't create tempfile %s (errno=%d)\n", msg->content->filename, errno);
       mutt_perror(msg->content->filename);
       goto cleanup;
     }
@@ -1497,9 +1496,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
      */
 
     if (msg->env->from)
-      mutt_debug(
-          5, "ci_send_message: msg->env->from before set_reverse_name: %s\n",
-          msg->env->from->mailbox);
+      mutt_debug(5, "msg->env->from before set_reverse_name: %s\n",
+                 msg->env->from->mailbox);
     msg->env->from = set_reverse_name(cur->env);
   }
   if (cur && option(OPT_REPLY_WITH_XORIG) &&
@@ -1519,8 +1517,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->env->from = cur->env->x_original_to;
       /* Not more than one from address */
       msg->env->from->next = NULL;
-      mutt_debug(5, "ci_send_message: msg->env->from extracted from "
-                    "X-Original-To: header: %s\n",
+      mutt_debug(5, "msg->env->from extracted from X-Original-To: header: %s\n",
                  msg->env->from->mailbox);
     }
   }

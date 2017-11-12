@@ -202,11 +202,11 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
     {
       if (regexec(PgpGoodSign.regex, line, 0, NULL, 0) == 0)
       {
-        mutt_debug(2, "pgp_copy_checksig: \"%s\" matches regex.\n", line);
+        mutt_debug(2, "\"%s\" matches regex.\n", line);
         rc = 0;
       }
       else
-        mutt_debug(2, "pgp_copy_checksig: \"%s\" doesn't match regex.\n", line);
+        mutt_debug(2, "\"%s\" doesn't match regex.\n", line);
 
       if (strncmp(line, "[GNUPG:] ", 9) == 0)
         continue;
@@ -217,7 +217,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
   }
   else
   {
-    mutt_debug(2, "pgp_copy_checksig: No pattern.\n");
+    mutt_debug(2, "No pattern.\n");
     mutt_file_copy_stream(fpin, fpout);
     rc = 1;
   }
@@ -246,19 +246,18 @@ static int pgp_check_decryption_okay(FILE *fpin)
     {
       if (regexec(PgpDecryptionOkay.regex, line, 0, NULL, 0) == 0)
       {
-        mutt_debug(2, "pgp_check_decryption_okay: \"%s\" matches regex.\n", line);
+        mutt_debug(2, "\"%s\" matches regex.\n", line);
         rc = 0;
         break;
       }
       else
-        mutt_debug(2,
-                   "pgp_check_decryption_okay: \"%s\" doesn't match regex.\n", line);
+        mutt_debug(2, "\"%s\" doesn't match regex.\n", line);
     }
     FREE(&line);
   }
   else
   {
-    mutt_debug(2, "pgp_check_decryption_okay: No pattern.\n");
+    mutt_debug(2, "No pattern.\n");
     rc = 1;
   }
 
@@ -752,7 +751,7 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
     if ((rv = mutt_wait_filter(thepid)))
       badsig = -1;
 
-    mutt_debug(1, "pgp_verify_one: mutt_wait_filter returned %d.\n", rv);
+    mutt_debug(1, "mutt_wait_filter returned %d.\n", rv);
   }
 
   mutt_file_fclose(&pgperr);
@@ -762,7 +761,7 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   mutt_file_unlink(sigfile);
   mutt_file_unlink(pgperrfile);
 
-  mutt_debug(1, "pgp_verify_one: returning %d.\n", badsig);
+  mutt_debug(1, "returning %d.\n", badsig);
 
   return badsig;
 }

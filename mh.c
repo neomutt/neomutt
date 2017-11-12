@@ -868,7 +868,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
     }
 
     /* FOO - really ignore the return value? */
-    mutt_debug(2, "%s:%d: queueing %s\n", __FILE__, __LINE__, de->d_name);
+    mutt_debug(2, "queueing %s\n", de->d_name);
 
     h = mutt_new_header();
     h->old = is_old;
@@ -915,15 +915,13 @@ static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 
   while (md)
   {
-    mutt_debug(2, "%s:%d maildir_add_to_context(): Considering %s\n", __FILE__,
-               __LINE__, NONULL(md->canon_fname));
+    mutt_debug(2, "Considering %s\n", NONULL(md->canon_fname));
 
     if (md->h)
     {
-      mutt_debug(2, "%s:%d Adding header structure. Flags: %s%s%s%s%s\n",
-                 __FILE__, __LINE__, md->h->flagged ? "f" : "",
-                 md->h->deleted ? "D" : "", md->h->replied ? "r" : "",
-                 md->h->old ? "O" : "", md->h->read ? "R" : "");
+      mutt_debug(2, "Adding header structure. Flags: %s%s%s%s%s\n",
+                 md->h->flagged ? "f" : "", md->h->deleted ? "D" : "",
+                 md->h->replied ? "r" : "", md->h->old ? "O" : "", md->h->read ? "R" : "");
       if (ctx->msgcount == ctx->hdrmax)
         mx_alloc_memory(ctx);
 
@@ -1468,8 +1466,7 @@ static int maildir_mh_open_message(struct Context *ctx, struct Message *msg,
   if (!msg->fp)
   {
     mutt_perror(path);
-    mutt_debug(1, "maildir_mh_open_message: fopen: %s: %s (errno %d).\n", path,
-               strerror(errno), errno);
+    mutt_debug(1, "fopen: %s: %s (errno %d).\n", path, strerror(errno), errno);
     return -1;
   }
 
@@ -1531,7 +1528,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
     snprintf(path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s", dest->path, subdir,
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
 
-    mutt_debug(2, "maildir_open_new_message (): Trying %s.\n", path);
+    mutt_debug(2, "Trying %s.\n", path);
 
     fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
     if (fd == -1)
@@ -1545,7 +1542,7 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
     }
     else
     {
-      mutt_debug(2, "maildir_open_new_message (): Success.\n");
+      mutt_debug(2, "Success.\n");
       msg->path = mutt_str_strdup(path);
       break;
     }
@@ -1614,7 +1611,7 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
              (long long) time(NULL), mutt_rand64(), NONULL(ShortHostname), suffix);
     snprintf(full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
-    mutt_debug(2, "md_commit_message (): renaming %s to %s.\n", msg->path, full);
+    mutt_debug(2, "renaming %s to %s.\n", msg->path, full);
 
     if (mutt_file_safe_rename(msg->path, full) == 0)
     {
@@ -1869,7 +1866,7 @@ static int maildir_sync_message(struct Context *ctx, int msgno)
     p = strrchr(h->path, '/');
     if (!p)
     {
-      mutt_debug(1, "maildir_sync_message: %s: unable to find subdir!\n", h->path);
+      mutt_debug(1, "%s: unable to find subdir!\n", h->path);
       return -1;
     }
     p++;

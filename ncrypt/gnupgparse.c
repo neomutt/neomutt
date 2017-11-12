@@ -143,7 +143,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   else
     memset(&tmp, 0, sizeof(tmp));
 
-  mutt_debug(2, "parse_pub_line: buf = `%s'\n", buf);
+  mutt_debug(2, "buf = `%s'\n", buf);
 
   for (p = buf; p; p = pend)
   {
@@ -380,7 +380,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   return k;
 
 bail:
-  mutt_debug(5, "parse_pub_line: invalid number: '%s'\n", p);
+  mutt_debug(5, "invalid number: '%s'\n", p);
   return NULL;
 }
 

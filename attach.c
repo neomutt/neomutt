@@ -338,7 +338,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
                                       "multipart" :
                                       n == TYPETEXT ? "text" : n == TYPEVIDEO ? "video" : "other",
                  tmp.subtype);
-        mutt_debug(1, "mutt_check_lookup_list: \"%s\" -> %s\n", b->filename, type);
+        mutt_debug(1, "\"%s\" -> %s\n", b->filename, type);
       }
       if (tmp.subtype)
         FREE(&tmp.subtype);
@@ -560,9 +560,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
         decode_state.fpout = mutt_file_fopen(pagerfile, "w");
         if (!decode_state.fpout)
         {
-          mutt_debug(
-              1, "mutt_view_attachment:%d mutt_file_fopen(%s) errno=%d %s\n",
-              __LINE__, pagerfile, errno, strerror(errno));
+          mutt_debug(1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile, errno,
+                     strerror(errno));
           mutt_perror(pagerfile);
           mutt_sleep(1);
           goto return_error;
@@ -571,8 +570,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
         decode_state.flags = MUTT_CHARCONV;
         mutt_decode_attachment(a, &decode_state);
         if (fclose(decode_state.fpout) == EOF)
-          mutt_debug(1, "mutt_view_attachment:%d fclose(%s) errno=%d %s\n",
-                     __LINE__, pagerfile, errno, strerror(errno));
+          mutt_debug(1, "fclose(%s) errno=%d %s\n", pagerfile, errno, strerror(errno));
       }
       else
       {

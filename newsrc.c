@@ -288,7 +288,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     nntp_data->newsrc_len = j;
     mutt_mem_realloc(&nntp_data->newsrc_ent, j * sizeof(struct NewsrcEntry));
     nntp_group_unread_stat(nntp_data);
-    mutt_debug(2, "nntp_newsrc_parse: %s\n", nntp_data->group);
+    mutt_debug(2, "%s\n", nntp_data->group);
   }
   FREE(&line);
   return 1;
@@ -702,7 +702,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
   hdata = mutt_hcache_fetch_raw(hc, "index", 5);
   if (hdata)
   {
-    mutt_debug(2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", (char *) hdata);
+    mutt_debug(2, "mutt_hcache_fetch index: %s\n", (char *) hdata);
     if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = true;
@@ -715,7 +715,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
           continue;
 
         snprintf(buf, sizeof(buf), "%d", current);
-        mutt_debug(2, "nntp_hcache_update: mutt_hcache_delete %s\n", buf);
+        mutt_debug(2, "mutt_hcache_delete %s\n", buf);
         mutt_hcache_delete(hc, buf, strlen(buf));
       }
     }
@@ -726,7 +726,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
   if (!old || nntp_data->first_message != first || nntp_data->last_message != last)
   {
     snprintf(buf, sizeof(buf), "%u %u", nntp_data->first_message, nntp_data->last_message);
-    mutt_debug(2, "nntp_hcache_update: mutt_hcache_store index: %s\n", buf);
+    mutt_debug(2, "mutt_hcache_store index: %s\n", buf);
     mutt_hcache_store_raw(hc, "index", 5, buf, strlen(buf));
   }
 }
@@ -745,7 +745,7 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
       anum < nntp_data->first_message || anum > nntp_data->last_message)
   {
     if (nntp_data)
-      mutt_debug(2, "nntp_bcache_delete: mutt_bcache_del %s\n", id);
+      mutt_debug(2, "mutt_bcache_del %s\n", id);
     mutt_bcache_del(bcache, id);
   }
   return 0;
@@ -773,7 +773,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
   cache_expand(file, sizeof(file), &nntp_data->nserv->conn->account, file);
   unlink(file);
   nntp_data->last_cached = 0;
-  mutt_debug(2, "nntp_delete_group_cache: %s\n", file);
+  mutt_debug(2, "%s\n", file);
 #endif
 
   if (!nntp_data->bcache)
@@ -781,7 +781,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
         mutt_bcache_open(&nntp_data->nserv->conn->account, nntp_data->group);
   if (nntp_data->bcache)
   {
-    mutt_debug(2, "nntp_delete_group_cache: %s/*\n", nntp_data->group);
+    mutt_debug(2, "%s/*\n", nntp_data->group);
     mutt_bcache_list(nntp_data->bcache, nntp_bcache_delete, NULL);
     mutt_bcache_close(&nntp_data->bcache);
   }
@@ -850,7 +850,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
       if (S_ISDIR(sb.st_mode))
       {
         rmdir(file);
-        mutt_debug(2, "nntp_clear_cache: %s\n", file);
+        mutt_debug(2, "%s\n", file);
       }
     }
     closedir(dp);
@@ -1110,8 +1110,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
             if (last >= nntp_data->first_message && last <= nntp_data->last_message)
             {
               nntp_data->last_cached = last;
-              mutt_debug(2, "nntp_select_server: %s last_cached=%u\n",
-                         nntp_data->group, last);
+              mutt_debug(2, "%s last_cached=%u\n", nntp_data->group, last);
             }
           }
           mutt_hcache_free(hc, &hdata);

@@ -239,8 +239,7 @@ int mx_get_magic(const char *path)
 
   if (stat(path, &st) == -1)
   {
-    mutt_debug(1, "mx_get_magic(): unable to stat %s: %s (errno %d).\n", path,
-               strerror(errno), errno);
+    mutt_debug(1, "unable to stat %s: %s (errno %d).\n", path, strerror(errno), errno);
     return -1;
   }
 
@@ -301,7 +300,7 @@ int mx_get_magic(const char *path)
   }
   else
   {
-    mutt_debug(1, "mx_get_magic(): unable to open file %s for reading.\n", path);
+    mutt_debug(1, "unable to open file %s for reading.\n", path);
     return -1;
   }
 
@@ -1142,10 +1141,7 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
 
   if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
   {
-    mutt_debug(
-        1,
-        "mx_open_new_message(): function unimplemented for mailbox type %d.\n",
-        dest->magic);
+    mutt_debug(1, "function unimplemented for mailbox type %d.\n", dest->magic);
     return NULL;
   }
 
@@ -1198,7 +1194,7 @@ int mx_check_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx || !ctx->mx_ops)
   {
-    mutt_debug(1, "mx_check_mailbox: null or invalid context.\n");
+    mutt_debug(1, "null or invalid context.\n");
     return -1;
   }
 
@@ -1214,8 +1210,7 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
 
   if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
   {
-    mutt_debug(
-        1, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic);
+    mutt_debug(1, "function not implemented for mailbox type %d.\n", ctx->magic);
     return NULL;
   }
 
@@ -1236,8 +1231,7 @@ int mx_commit_message(struct Message *msg, struct Context *ctx)
 
   if (!(msg->write && ctx->append))
   {
-    mutt_debug(1, "mx_commit_message(): msg->write = %d, ctx->append = %d\n",
-               msg->write, ctx->append);
+    mutt_debug(1, "msg->write = %d, ctx->append = %d\n", msg->write, ctx->append);
     return -1;
   }
 
@@ -1258,7 +1252,7 @@ int mx_close_message(struct Context *ctx, struct Message **msg)
 
   if ((*msg)->path)
   {
-    mutt_debug(1, "mx_close_message (): unlinking %s\n", (*msg)->path);
+    mutt_debug(1, "unlinking %s\n", (*msg)->path);
     unlink((*msg)->path);
     FREE(&(*msg)->path);
   }

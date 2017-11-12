@@ -90,7 +90,7 @@ int imap_authenticate(struct ImapData *idata)
       if (!method[0])
         continue;
 
-      mutt_debug(2, "imap_authenticate: Trying method %s\n", method);
+      mutt_debug(2, "Trying method %s\n", method);
       authenticator = imap_authenticators;
 
       while (authenticator->authenticate)
@@ -115,7 +115,7 @@ int imap_authenticate(struct ImapData *idata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(2, "imap_authenticate: Using any available method.\n");
+    mutt_debug(2, "Using any available method.\n");
     authenticator = imap_authenticators;
 
     while (authenticator->authenticate)

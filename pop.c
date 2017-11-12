@@ -110,14 +110,14 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
       {
         pop_data->cmd_top = 1;
 
-        mutt_debug(1, "pop_read_header: set TOP capability\n");
+        mutt_debug(1, "set TOP capability\n");
       }
 
       if (rc == -2)
       {
         pop_data->cmd_top = 0;
 
-        mutt_debug(1, "pop_read_header: unset TOP capability\n");
+        mutt_debug(1, "unset TOP capability\n");
         snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
                  _("Command TOP is not supported by server."));
       }
@@ -180,7 +180,7 @@ static int fetch_uidl(char *line, void *data)
 
   if (i == ctx->msgcount)
   {
-    mutt_debug(1, "pop_fetch_headers: new header %d %s\n", index, line);
+    mutt_debug(1, "new header %d %s\n", index, line);
 
     if (i >= ctx->hdrmax)
       mx_alloc_memory(ctx);
@@ -289,14 +289,14 @@ static int pop_fetch_headers(struct Context *ctx)
     {
       pop_data->cmd_uidl = 1;
 
-      mutt_debug(1, "pop_fetch_headers: set UIDL capability\n");
+      mutt_debug(1, "set UIDL capability\n");
     }
 
     if (ret == -2 && pop_data->cmd_uidl == 2)
     {
       pop_data->cmd_uidl = 0;
 
-      mutt_debug(1, "pop_fetch_headers: unset UIDL capability\n");
+      mutt_debug(1, "unset UIDL capability\n");
       snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
                _("Command UIDL is not supported by server."));
     }
@@ -501,7 +501,7 @@ static void pop_clear_cache(struct PopData *pop_data)
   if (!pop_data->clear_cache)
     return;
 
-  mutt_debug(1, "pop_clear_cache: delete cached messages\n");
+  mutt_debug(1, "delete cached messages\n");
 
   for (int i = 0; i < POP_CACHE_LEN; i++)
   {

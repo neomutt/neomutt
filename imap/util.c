@@ -456,7 +456,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
     n = sscanf(tmp, "%127[^:/]%127s", mx->account.host, tmp);
     if (n < 1)
     {
-      mutt_debug(1, "imap_parse_path: NULL host in %s\n", path);
+      mutt_debug(1, "NULL host in %s\n", path);
       FREE(&mx->mbox);
       return -1;
     }
@@ -471,7 +471,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
           mx->account.flags |= MUTT_ACCT_SSL;
         else
         {
-          mutt_debug(1, "imap_parse_path: Unknown connection type in %s\n", path);
+          mutt_debug(1, "Unknown connection type in %s\n", path);
           FREE(&mx->mbox);
           return -1;
         }
