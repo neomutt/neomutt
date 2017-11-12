@@ -60,6 +60,12 @@ extern const char *const RFC822Errors[];
 
 #define rfc822_error(x) RFC822Errors[x]
 
+/**
+ * rfc822_new_address - Create a new Address
+ * @retval ptr Newly allocated Address
+ *
+ * Free the result with free_address() or rfc822_free_address()
+ */
 static inline struct Address *rfc822_new_address(void)
 {
   return safe_calloc(1, sizeof(struct Address));

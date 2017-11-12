@@ -554,8 +554,10 @@ static int mbox_open_new_message(struct Message *msg, struct Context *dest, stru
 }
 
 /**
- * strict_addrcmp - Strictly compare two address list
- * @retval 1 if address lists are strictly identical
+ * strict_addrcmp - Strictly compare two Address lists
+ * @param a First Address
+ * @param b Second Address
+ * @retval true Address lists are strictly identical
  */
 static int strict_addrcmp(const struct Address *a, const struct Address *b)
 {

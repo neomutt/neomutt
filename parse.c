@@ -1297,6 +1297,14 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
   return e;
 }
 
+/**
+ * mutt_parse_adrlist - Parse a list of email addresses
+ * @param p Add to this List of Addresses
+ * @param s String to parse
+ * @retval ptr Head of the list of addresses
+ *
+ * The email addresses can be separated by whitespace or commas.
+ */
 struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 {
   const char *q = NULL;

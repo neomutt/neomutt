@@ -101,7 +101,10 @@ static bool addrcmp(struct Address *a, struct Address *b)
 }
 
 /**
- * addrsrc - search an e-mail address in a list
+ * addrsrc - Search for an e-mail address in a list
+ * @param a   Address containing the search email
+ * @param lst Address List
+ * @retval true If the Address is in the list
  */
 static int addrsrc(struct Address *a, struct Address *lst)
 {
@@ -1257,6 +1260,13 @@ static int is_reply(struct Header *reply, struct Header *orig)
          mutt_list_find(&orig->env->in_reply_to, reply->env->message_id);
 }
 
+/**
+ * has_recips - Count the number of Addresses with valid recipients
+ * @param a Address list
+ * @retval num Number of valid Addresses
+ *
+ * An Address has a recipient if the mailbox or group is set.
+ */
 static int has_recips(struct Address *a)
 {
   int c = 0;
