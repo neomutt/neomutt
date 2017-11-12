@@ -595,6 +595,12 @@ static int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *b
   return 1;
 }
 
+/**
+ * strict_cmp_envelopes - Strictly compare two Envelopes
+ * @param e1 First Envelope
+ * @param e2 Second Envelope
+ * @retval true Envelopes are strictly identical
+ */
 static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope *e2)
 {
   if (e1 && e2)
