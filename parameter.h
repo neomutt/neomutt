@@ -35,6 +35,10 @@ struct Parameter
   struct Parameter *next;
 };
 
+/**
+ * mutt_new_parameter - Create a new Parameter
+ * @retval ptr Newly allocated Parameter
+ */
 static inline struct Parameter *mutt_new_parameter(void)
 {
   return safe_calloc(1, sizeof(struct Parameter));

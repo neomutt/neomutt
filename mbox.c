@@ -625,6 +625,12 @@ static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope
   }
 }
 
+/**
+ * strict_cmp_parameters - strictly compare two parameters
+ * @param p1 first parameter
+ * @param p2 second parameter
+ * @retval true parameters are strictly identical
+ */
 static int strict_cmp_parameters(const struct Parameter *p1, const struct Parameter *p2)
 {
   while (p1 && p2)
