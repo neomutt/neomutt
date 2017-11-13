@@ -382,6 +382,9 @@ static bool crypt_key_is_valid(struct CryptKeyInfo *k)
  */
 static int crypt_id_is_strong(struct CryptKeyInfo *key)
 {
+  if (!key)
+    return 0;
+
   unsigned int is_strong = 0;
 
   if ((key->flags & KEYFLAG_ISX509))
@@ -411,6 +414,9 @@ static int crypt_id_is_strong(struct CryptKeyInfo *key)
  */
 static int crypt_id_is_valid(struct CryptKeyInfo *key)
 {
+  if (!key)
+    return 0;
+
   return !(key->flags & KEYFLAG_CANTUSE);
 }
 
@@ -431,13 +437,20 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
   if (crypt_id_is_strong(key))
     rv |= CRYPT_KV_STRONGID;
 
-  if (addr->mailbox && u_addr->mailbox &&
-      (mutt_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
-    rv |= CRYPT_KV_ADDR;
+  if (addr && u_addr)
+  {
+    if (addr->mailbox && u_addr->mailbox &&
+        (mutt_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
+    {
+      rv |= CRYPT_KV_ADDR;
+    }
 
-  if (addr->personal && u_addr->personal &&
-      (mutt_strcasecmp(addr->personal, u_addr->personal) == 0))
-    rv |= CRYPT_KV_STRING;
+    if (addr->personal && u_addr->personal &&
+        (mutt_strcasecmp(addr->personal, u_addr->personal) == 0))
+    {
+      rv |= CRYPT_KV_STRING;
+    }
+  }
 
   return rv;
 }
