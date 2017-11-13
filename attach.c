@@ -179,6 +179,7 @@ int mutt_compose_attachment(struct Body *a)
             /* Remove headers by copying out data to another file, then
              * copying the file back */
             fseeko(fp, b->offset, SEEK_SET);
+            mutt_free_body(&b);
             mutt_mktemp(tempfile, sizeof(tempfile));
             tfp = safe_fopen(tempfile, "w");
             if (!tfp)
@@ -195,8 +196,6 @@ int mutt_compose_attachment(struct Body *a)
               mutt_perror(_("Failure to rename file."));
               goto bailout;
             }
-
-            mutt_free_body(&b);
           }
         }
       }
