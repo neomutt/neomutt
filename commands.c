@@ -622,7 +622,11 @@ void mutt_shell_escape(void)
       mutt_window_clearline(MuttMessageWindow, 0);
       mutt_endwin(NULL);
       fflush(stdout);
-      if (mutt_system(buf) != 0 || option(OPT_WAIT_KEY))
+      int rc = mutt_system(buf);
+      if (rc == -1)
+        mutt_debug(1, "Error running \"%s\"!", buf);
+
+      if ((rc != 0) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
       mutt_buffy_check(true);
     }

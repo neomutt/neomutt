@@ -735,7 +735,8 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   if (!option(OPT_NO_CURSES))
     mutt_endwin(NULL);
 
-  if ((i = mutt_system(cmd)))
+  i = mutt_system(cmd);
+  if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
     if (!option(OPT_NO_CURSES))

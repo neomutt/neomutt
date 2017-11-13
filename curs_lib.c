@@ -233,7 +233,7 @@ void mutt_edit_file(const char *editor, const char *data)
 
   mutt_endwin(NULL);
   mutt_expand_file_fmt(cmd, sizeof(cmd), editor, data);
-  if (mutt_system(cmd))
+  if (mutt_system(cmd) != 0)
   {
     mutt_error(_("Error running \"%s\"!"), cmd);
     mutt_sleep(2);

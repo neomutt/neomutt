@@ -530,7 +530,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* interactive command */
-      if (mutt_system(command) || (entry->needsterminal && option(OPT_WAIT_KEY)))
+      int rc = mutt_system(command);
+      if (rc == -1)
+        mutt_debug(1, "Error running \"%s\"!", command);
+
+      if ((rc != 0) || (entry->needsterminal && option(OPT_WAIT_KEY)))
         mutt_any_key_to_continue(NULL);
     }
   }
@@ -1050,7 +1054,11 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
     else
     {
-      if (mutt_system(command) || option(OPT_WAIT_KEY))
+      int rc = mutt_system(command);
+      if (rc == -1)
+        mutt_debug(1, "Error running \"%s\"!", command);
+
+      if ((rc != 0) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
     }
 
