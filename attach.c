@@ -751,8 +751,13 @@ static FILE *save_attachment_open(char *path, int flags)
 
 /**
  * mutt_save_attachment - Save an attachment
- * @retval 0 on success
- * @retval -1 on error
+ * @param fp    Source file stream. Can be NULL
+ * @param m     Email Body
+ * @param path  Where to save the attachment
+ * @param flags Flags, e.g. #MUTT_SAVE_APPEND
+ * @param hdr   Message header for the current message. Can be NULL
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
 {
@@ -1010,8 +1015,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
 
     /* in recv mode, save file to newfile first */
-    if (fp)
-      mutt_save_attachment(fp, a, newfile, 0, NULL);
+    if (fp && (mutt_save_attachment(fp, a, newfile, 0, NULL) != 0))
+      return 0;
 
     strfcpy(command, entry->printcommand, sizeof(command));
     piped = rfc1524_expand_command(a, newfile, type, command, sizeof(command));
