@@ -61,9 +61,9 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
     return IMAP_AUTH_UNAVAIL;
   }
 
-  if (mutt_account_getuser(&idata->conn->account))
+  if (mutt_account_getuser(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&idata->conn->account))
+  if (mutt_account_getpass(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
   mutt_message(_("Logging in..."));

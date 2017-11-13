@@ -343,8 +343,8 @@ int pop_authenticate(struct PopData *pop_data)
   int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
-  if (mutt_account_getuser(acct) || !acct->user[0] ||
-      mutt_account_getpass(acct) || !acct->pass[0])
+  if ((mutt_account_getuser(acct) < 0) || (acct->user[0] == '\0') ||
+      (mutt_account_getpass(acct) < 0) || (acct->pass[0] == '\0'))
     return -3;
 
   if (PopAuthenticators && *PopAuthenticators)

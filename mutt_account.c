@@ -32,7 +32,10 @@
 #include "url.h"
 
 /**
- * mutt_account_match - compare account info (host/port/user)
+ * mutt_account_match - Compare account info (host/port/user)
+ * @param a1 First Account
+ * @param a2 Second Account
+ * @retval 0 Accounts match
  */
 int mutt_account_match(const struct Account *a1, const struct Account *a2)
 {
@@ -78,7 +81,11 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 }
 
 /**
- * mutt_account_fromurl - fill account with information from url
+ * mutt_account_fromurl - Fill Account with information from url
+ * @param account Account to fill
+ * @param url     Url to parse
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_account_fromurl(struct Account *account, struct Url *url)
 {
@@ -108,7 +115,9 @@ int mutt_account_fromurl(struct Account *account, struct Url *url)
 }
 
 /**
- * mutt_account_tourl - fill URL with info from account
+ * mutt_account_tourl - Fill URL with info from account
+ * @param account Source Account
+ * @param url     Url to fill
  *
  * The URL information is a set of pointers into account - don't free or edit
  * account until you've finished with url (make a copy of account if you need
@@ -172,7 +181,10 @@ void mutt_account_tourl(struct Account *account, struct Url *url)
 }
 
 /**
- * mutt_account_getuser - retrieve username into Account, if necessary
+ * mutt_account_getuser - Retrieve username into Account, if necessary
+ * @param account Account to fill
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_account_getuser(struct Account *account)
 {
@@ -210,6 +222,12 @@ int mutt_account_getuser(struct Account *account)
   return 0;
 }
 
+/**
+ * mutt_account_getlogin - Retrieve login info into Account, if necessary
+ * @param account Account to fill
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_account_getlogin(struct Account *account)
 {
   /* already set */
@@ -228,17 +246,26 @@ int mutt_account_getlogin(struct Account *account)
 
   if (!(account->flags & MUTT_ACCT_LOGIN))
   {
-    mutt_account_getuser(account);
-    strfcpy(account->login, account->user, sizeof(account->login));
+    if (mutt_account_getuser(account) == 0)
+    {
+      strfcpy(account->login, account->user, sizeof(account->login));
+      account->flags |= MUTT_ACCT_LOGIN;
+    }
+    else
+    {
+      mutt_debug(1, "Couldn't get user info\n");
+      return -1;
+    }
   }
-
-  account->flags |= MUTT_ACCT_LOGIN;
 
   return 0;
 }
 
 /**
- * mutt_account_getpass - fetch password into Account, if necessary
+ * mutt_account_getpass - Fetch password into Account, if necessary
+ * @param account Account to fill
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_account_getpass(struct Account *account)
 {
@@ -279,6 +306,10 @@ int mutt_account_getpass(struct Account *account)
   return 0;
 }
 
+/**
+ * mutt_account_unsetpass - Unset Account's password
+ * @param account Account to modify
+ */
 void mutt_account_unsetpass(struct Account *account)
 {
   account->flags &= ~MUTT_ACCT_PASS;
