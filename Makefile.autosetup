@@ -208,6 +208,9 @@ all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
 	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $*.Tpo -c -o $@ $<
 	@mv $*.Tpo $*.Po
 
+# make sure git_ver.h is built before any .o files
+$(ALLOBJS):	git_ver.h
+
 # mutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(NEOMUTTOBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
