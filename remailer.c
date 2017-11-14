@@ -48,7 +48,7 @@
 #include "rfc822.h"
 
 /**
- * struct Coord - Screen coordindates
+ * struct Coord - Screen coordinates
  */
 struct Coord
 {

@@ -3939,7 +3939,7 @@ struct Option MuttVars[] = {
   { "ssl_ciphers", DT_STRING, R_NONE, UL &SslCiphers, UL 0 },
   /*
   ** .pp
-  ** Contains a colon-seperated list of ciphers to use when using SSL.
+  ** Contains a colon-separated list of ciphers to use when using SSL.
   ** For OpenSSL, see ciphers(1) for the syntax of the string.
   ** .pp
   ** For GnuTLS, this option will be used in place of "NORMAL" at the

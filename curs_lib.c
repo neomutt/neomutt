@@ -1343,7 +1343,7 @@ void mutt_paddstr(int n, const char *s)
 
 /**
  * mutt_wstr_trunc - Work out how to truncate a widechar string
- * @param[in]  src    String to measute
+ * @param[in]  src    String to measure
  * @param[in]  maxlen Maximum length of string in bytes
  * @param[in]  maxwid Maximum width in screen columns
  * @param[out] width  Save the truncated screen column width

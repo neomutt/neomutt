@@ -587,7 +587,7 @@ static bool hostname_match(const char *hostname, const char *certname)
 }
 
 /**
- * ssl_init - Initialist the SSL library
+ * ssl_init - Initialise the SSL library
  * @retval  0 Success
  * @retval -1 Error
  *

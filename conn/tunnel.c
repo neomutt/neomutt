@@ -241,7 +241,7 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 
 /**
  * mutt_tunnel_socket_setup - setups tunnel connection functions.
- * @param conn Connection to asign functions to
+ * @param conn Connection to assign functions to
  *
  * Assign tunnel socket functions to the Connection conn.
  */

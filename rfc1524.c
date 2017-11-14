@@ -389,7 +389,7 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * @param type   Text type in "type/subtype" format
  * @param entry  struct Rfc1524MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup
- * @retval 1 on success. If *entry is not NULL it poplates it with the mailcap entry
+ * @retval 1 on success. If *entry is not NULL it populates it with the mailcap entry
  * @retval 0 if no matching entry is found
  *
  * opt can be one of: #MUTT_EDIT, #MUTT_COMPOSE, #MUTT_PRINT, #MUTT_AUTOVIEW
