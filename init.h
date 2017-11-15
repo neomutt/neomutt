@@ -398,6 +398,13 @@ struct Option MuttVars[] = {
   **
   */
 #endif
+  { "change_folder_next", DT_BOOL, R_NONE, OPT_CHANGE_FOLDER_NEXT, 0 },
+  /*
+  ** .pp
+  ** When this variable is \fIset\fP, the \fC<change-folder>\fP function
+  ** mailbox suggestion will start at the next folder in your ``$mailboxes''
+  ** list, instead of starting at the first folder in the list.
+  */
   { "charset",          DT_STRING,  R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp
@@ -3820,7 +3827,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable specifies a file containing trusted CA certificates.
   ** Any server certificate that is signed with one of these CA
-  ** certificates is also automatically accepted.
+  ** certificates is also automatically accepted. (GnuTLS only)
   ** .pp
   ** Example:
   ** .ts
@@ -3849,7 +3856,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable specifies the minimum acceptable prime size (in bits)
   ** for use in any Diffie-Hellman key exchange. A value of 0 will use
-  ** the default from the GNUTLS library.
+  ** the default from the GNUTLS library. (GnuTLS only)
   */
 #endif /* USE_SSL_GNUTLS */
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSL_STARTTLS, MUTT_YES },
@@ -3866,6 +3873,7 @@ struct Option MuttVars[] = {
   ** This variable specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process. Note that SSLv2 and SSLv3 are now
   ** considered fundamentally insecure and are no longer recommended.
+  ** (OpenSSL only)
   */
 #endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPT_SSL_USE_SSLV3, 0 },
@@ -3899,7 +3907,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If set to \fIyes\fP, NeoMutt will use CA certificates in the
   ** system-wide certificate store when checking if a server certificate
-  ** is signed by a trusted CA.
+  ** is signed by a trusted CA. (OpenSSL only)
   */
 #endif
   { "ssl_verify_dates", DT_BOOL, R_NONE, OPT_SSL_VERIFY_DATES, 1 },
@@ -3988,6 +3996,7 @@ struct Option MuttVars[] = {
   ** .dt %P  .dd percentage of the way through the index
   ** .dt %r  .dd modified/read-only/won't-write/attach-message indicator,
   **             according to $$status_chars
+  ** .dt %R  .dd number of read messages *
   ** .dt %s  .dd current sorting mode ($$sort)
   ** .dt %S  .dd current aux sorting method ($$sort_aux)
   ** .dt %t  .dd number of tagged messages *

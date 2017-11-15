@@ -3470,20 +3470,20 @@ msgstr ""
 # , c-format
 #: mx.c:713
 #, c-format
-msgid "Move read messages to %s?"
-msgstr "Déplacer les messages lus dans %s ?"
+msgid "Move %d read messages to %s?"
+msgstr "Déplacer %d messages lus dans %s ?"
 
 # , c-format
 #: mx.c:730 mx.c:1028
 #, c-format
 msgid "Purge %d deleted message?"
-msgstr "Effacer %d message(s) marqué(s) à effacer ?"
+msgstr "Effacer %d message marqué à effacer ?"
 
 # , c-format
 #: mx.c:731 mx.c:1029
 #, c-format
 msgid "Purge %d deleted messages?"
-msgstr "Effacer %d message(s) marqué(s) à effacer ?"
+msgstr "Effacer %d messages marqués à effacer ?"
 
 # , c-format
 #: mx.c:753

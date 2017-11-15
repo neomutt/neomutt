@@ -65,6 +65,7 @@ static void status_line(char *buf, size_t buflen, size_t col, int cols,
  * | \%p     | number of postponed messages [option]
  * | \%P     | percent of way through index
  * | \%r     | readonly/wontwrite/changed flag
+ * | \%R     | number of read messages [option]
  * | \%s     | current sorting method ($sort)
  * | \%S     | current aux sorting method ($sort_aux)
  * | \%t     | # of tagged messages [option]
@@ -258,6 +259,20 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, "%s", StatusChars->chars[0]);
       else
         snprintf(buf, buflen, "%s", StatusChars->chars[i]);
+      break;
+    }
+
+    case 'R':
+    {
+      int read = Context ? Context->msgcount - Context->unread : 0;
+
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(buf, buflen, fmt, read);
+      }
+      else if (!read)
+        optional = 0;
       break;
     }
 

@@ -2080,6 +2080,11 @@ int mutt_index_menu(void)
 #endif
         else
         {
+          if (option(OPT_CHANGE_FOLDER_NEXT) && Context && Context->path)
+          {
+            strfcpy(buf, Context->path, sizeof(buf));
+            mutt_pretty_mailbox(buf, sizeof(buf));
+          }
 #ifdef USE_NNTP
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
@@ -2096,7 +2101,7 @@ int mutt_index_menu(void)
           else
 #endif
             /* By default, fill buf with the next mailbox that contains unread
-           * mail */
+             * mail */
             mutt_buffy(buf, sizeof(buf));
 
           if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)

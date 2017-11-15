@@ -1560,23 +1560,22 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   /* move the break point only if smart_wrap is set */
   if (option(OPT_SMART_WRAP))
   {
-    if (cnt < b_read)
+    if ((cnt < b_read) && (ch != -1) && !ISHEADER((*line_info)[n].type) &&
+        !ISSPACE(buf[cnt]))
     {
-      /* Wrap if the line is not part of the header and buf[cnt] is not whitespace */
-      if (ch != -1 && !ISHEADER((*line_info)[n].type) && !ISSPACE(buf[cnt]))
-      {
-        buf_ptr = buf + ch;
-        /* skip trailing blanks */
-        while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
-          ch--;
-        /* a very long word with leading spaces causes infinite wrapping */
-        if ((!ch) && (flags & MUTT_PAGER_NSKIP))
-          buf_ptr = buf + cnt;
-        else
-          cnt = ch + 1;
-      }
+      buf_ptr = buf + ch;
+      /* skip trailing blanks */
+      while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
+        ch--;
+      /* A very long word with leading spaces causes infinite
+       * wrapping when MUTT_PAGER_NSKIP is set.  A folded header
+       * with a single long word shouldn't be smartwrapped
+       * either.  So just disable smart_wrap if it would wrap at the
+       * beginning of the line. */
+      if (!ch)
+        buf_ptr = buf + cnt;
       else
-        buf_ptr = buf + cnt; /* a very long word... */
+        cnt = ch + 1;
     }
     if (!(flags & MUTT_PAGER_NSKIP))
       /* skip leading blanks on the next line too */
