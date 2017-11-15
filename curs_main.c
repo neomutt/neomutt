@@ -2873,19 +2873,34 @@ int mutt_index_menu(void)
         mutt_check_rescore(Context);
         break;
 
-      case OP_EDIT_RAW_MESSAGE:
+      case OP_EDIT_OR_VIEW_RAW_MESSAGE: /* fall through */
+      case OP_EDIT_RAW_MESSAGE:         /* fall through */
+      case OP_VIEW_RAW_MESSAGE:
 
+        /* TODO split this into 3 cases? */
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        CHECK_READONLY;
         CHECK_ATTACH;
-        /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
+        bool edit;
+        if (op == OP_EDIT_RAW_MESSAGE)
+        {
+          CHECK_READONLY;
+          /* L10N: CHECK_ACL */
+          CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
+          edit = true;
+        }
+        else if (op == OP_EDIT_OR_VIEW_RAW_MESSAGE)
+          edit = !Context->readonly && mutt_bit_isset(Context->rights, MUTT_ACL_INSERT);
+        else
+          edit = false;
 
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
-        mutt_edit_message(Context, tag ? NULL : CURHDR);
+        if (edit)
+          mutt_edit_message(Context, tag ? NULL : CURHDR);
+        else
+          mutt_view_message(Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
 
         break;
