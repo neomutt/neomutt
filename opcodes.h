@@ -93,7 +93,8 @@
   _fmt(OP_DISPLAY_HEADERS,                N_("display message and toggle header weeding")) \
   _fmt(OP_DISPLAY_MESSAGE,                N_("display a message")) \
   _fmt(OP_EDIT_LABEL,                     N_("add, change, or delete a message's label")) \
-  _fmt(OP_EDIT_MESSAGE,                   N_("edit the raw message")) \
+  _fmt(OP_EDIT_RAW_MESSAGE,               N_("edit the raw message (edit and edit-raw-message are synonyms)")) \
+  _fmt(OP_EDIT_OR_VIEW_RAW_MESSAGE,       N_("edit the raw message if the mailbox is not read-only, otherwise view it")) \
   _fmt(OP_EDITOR_BACKSPACE,               N_("delete the char in front of the cursor")) \
   _fmt(OP_EDITOR_BACKWARD_CHAR,           N_("move the cursor one character to the left")) \
   _fmt(OP_EDITOR_BACKWARD_WORD,           N_("move the cursor to the beginning of the word")) \
@@ -229,6 +230,7 @@
   _fmt(OP_VERSION,                        N_("show the NeoMutt version number and date")) \
   _fmt(OP_VIEW_ATTACH,                    N_("view attachment using mailcap entry if necessary")) \
   _fmt(OP_VIEW_ATTACHMENTS,               N_("show MIME attachments")) \
+  _fmt(OP_VIEW_RAW_MESSAGE,               N_("show the raw message")) \
   _fmt(OP_WHAT_KEY,                       N_("display the keycode for a key press")) \
   _fmt(OP_LIMIT_CURRENT_THREAD,           N_("limit view to current thread")) \
   _fmt(OP_MAIN_SHOW_LIMIT,                N_("show currently active limit pattern")) \

@@ -441,7 +441,7 @@ syn match muttrcFunction	contained "\<current-\%(bottom\|middle\|top\)\>"
 syn match muttrcFunction	contained "\<decode-\%(copy\|save\)\>"
 syn match muttrcFunction	contained "\<delete-\%(char\|pattern\|subthread\)\>"
 syn match muttrcFunction	contained "\<display-\%(address\|toggle-weed\)\>"
-syn match muttrcFunction	contained "\<edit\%(-\%(bcc\|cc\|description\|encoding\|fcc\|file\|from\|headers\|mime\|reply-to\|subject\|to\|type\|label\)\)\?\>"
+syn match muttrcFunction	contained "\<edit\%(-\%(bcc\|cc\|description\|encoding\|fcc\|file\|from\|headers\|mime\|or-view-raw-message\|reply-to\|subject\|to\|type\|label\)\)\?\>"
 syn match muttrcFunction	contained "\<enter-\%(command\|mask\)\>"
 syn match muttrcFunction	contained "\<half-\%(up\|down\)\>"
 syn match muttrcFunction	contained "\<history-\%(up\|down\)\>"
@@ -457,7 +457,7 @@ syn match muttrcFunction	contained "\<sidebar-\%(next\|next-new\|open\|page-down
 syn match muttrcFunction	contained "\<toggle-\%(mailboxes\|new\|quoted\|subscribed\|unlink\|write\)\>"
 syn match muttrcFunction	contained "\<undelete-\%(pattern\|subthread\)\>"
 syn match muttrcFunction	contained "\<collapse-\%(parts\|thread\|all\)\>"
-syn match muttrcFunction	contained "\<view-\%(attach\|attachments\|file\|mailcap\|name\|text\)\>"
+syn match muttrcFunction	contained "\<view-\%(attach\|attachments\|file\|mailcap\|name\|raw-message\|text\)\>"
 syn match muttrcFunction	contained "\<\%(backspace\|backward-char\|bol\|bottom\|bottom-page\|buffy-cycle\|clear-flag\|complete\%(-query\)\?\|copy-file\|create-alias\|detach-file\|eol\|exit\|extract-keys\|\%(imap-\)\?fetch-mail\|forget-passphrase\|forward-char\|group-reply\|help\|ispell\|jump\|limit\|list-reply\|mail\|mail-key\|mark-as-new\|middle-page\|new-mime\|noop\|pgp-menu\|query\|query-append\|quit\|quote-char\|read-subthread\|redraw-screen\|refresh\|rename-file\|reply\|select-new\|set-flag\|shell-escape\|skip-quoted\|sort\|subscribe\|sync-mailbox\|top\|top-page\|transpose-chars\|unsubscribe\|untag-pattern\|verify-key\|what-key\|write-fcc\)\>"
 syn keyword muttrcFunction	contained imap-logout-all
 if use_mutt_sidebar == 1
