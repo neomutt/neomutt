@@ -272,6 +272,7 @@ int mutt_display_message(struct Header *cur);
 int mutt_dump_variables(int hide_sensitive);
 int mutt_edit_attachment(struct Body *a);
 int mutt_edit_message(struct Context *ctx, struct Header *hdr);
+int mutt_view_message(struct Context *ctx, struct Header *hdr);
 int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags);
 int mutt_chscmp(const char *s, const char *chs);
 #define mutt_is_utf8(a) mutt_chscmp(a, "utf-8")
