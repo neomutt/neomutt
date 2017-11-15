@@ -39,13 +39,13 @@ struct Buffer
 
 #define MoreArgs(p) (*p->dptr && (*p->dptr != ';') && (*p->dptr != '#'))
 
-struct Buffer *mutt_buffer_new(void);
-struct Buffer *mutt_buffer_init(struct Buffer *b);
-void mutt_buffer_reset(struct Buffer *b);
+void           mutt_buffer_addch(struct Buffer *buf, char c);
+void           mutt_buffer_addstr(struct Buffer *buf, const char *s);
+void           mutt_buffer_free(struct Buffer **p);
 struct Buffer *mutt_buffer_from(char *seed);
-void mutt_buffer_free(struct Buffer **p);
-int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...);
-void mutt_buffer_addstr(struct Buffer *buf, const char *s);
-void mutt_buffer_addch(struct Buffer *buf, char c);
+struct Buffer *mutt_buffer_init(struct Buffer *b);
+struct Buffer *mutt_buffer_new(void);
+int            mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...);
+void           mutt_buffer_reset(struct Buffer *b);
 
 #endif /* _LIB_BUFFER_H */

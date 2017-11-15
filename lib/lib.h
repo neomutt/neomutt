@@ -37,6 +37,7 @@
  * -# @subpage hash
  * -# @subpage list
  * -# @subpage mapping
+ * -# @subpage mbyte
  * -# @subpage md5
  * -# @subpage memory
  * -# @subpage message
@@ -56,6 +57,7 @@
 #include "hash.h"
 #include "list.h"
 #include "mapping.h"
+#include "mbyte.h"
 #include "md5.h"
 #include "memory.h"
 #include "message.h"

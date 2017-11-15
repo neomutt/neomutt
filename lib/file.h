@@ -33,6 +33,8 @@ struct stat;
 #define MUTT_CONT (1 << 0) /**< \-continuation */
 #define MUTT_EOL  (1 << 1) /**< don't strip `\n` / `\r\n` */
 
+char *      file_read_keyword(const char *file, char *buffer, size_t buflen);
+int         mbox_check_empty(const char *path);
 const char *mutt_basename(const char *f);
 char *      mutt_concatn_path(char *dst, size_t dstlen, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
 char *      mutt_concat_path(char *d, const char *dir, const char *fname, size_t l);
@@ -44,9 +46,9 @@ int         mutt_lock_file(const char *path, int fd, int excl, int timeout);
 int         mutt_mkdir(const char *path, mode_t mode);
 size_t      mutt_quote_filename(char *d, size_t l, const char *f);
 char *      mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags);
-int         mutt_rmtree(const char *path);
 int         mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src);
 int         mutt_rename_file(char *oldfile, char *newfile);
+int         mutt_rmtree(const char *path);
 void        mutt_sanitize_filename(char *f, short slash);
 void        mutt_set_mtime(const char *from, const char *to);
 void        mutt_touch_atime(int f);
@@ -59,5 +61,6 @@ int         safe_fsync_close(FILE **f);
 int         safe_open(const char *path, int flags);
 int         safe_rename(const char *src, const char *target);
 int         safe_symlink(const char *oldpath, const char *newpath);
+int         to_absolute_path(char *path, const char *reference);
 
 #endif /* _LIB_FILE_H */

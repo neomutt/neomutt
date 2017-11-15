@@ -118,14 +118,8 @@ struct Header
   char *maildir_flags; /**< unknown maildir flags */
 };
 
-static inline struct Header *mutt_new_header(void)
-{
-  struct Header *h = safe_calloc(1, sizeof(struct Header));
-#ifdef MIXMASTER
-  STAILQ_INIT(&h->chain);
-#endif
-  STAILQ_INIT(&h->tags);
-  return h;
-}
+int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
+struct Header *mutt_new_header(void);
+void mutt_free_header(struct Header **h);
 
 #endif /* _MUTT_HEADER_H */

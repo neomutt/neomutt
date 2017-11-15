@@ -576,31 +576,6 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   return 1;
 }
 
-static int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
-{
-  struct ListNode *a = STAILQ_FIRST(ah);
-  struct ListNode *b = STAILQ_FIRST(bh);
-
-  while (a && b)
-  {
-    if (mutt_strcmp(a->data, b->data) != 0)
-      return 0;
-
-    a = STAILQ_NEXT(a, entries);
-    b = STAILQ_NEXT(b, entries);
-  }
-  if (a || b)
-    return 0;
-
-  return 1;
-}
-
-/**
- * strict_cmp_envelopes - Strictly compare two Envelopes
- * @param e1 First Envelope
- * @param e2 Second Envelope
- * @retval true Envelopes are strictly identical
- */
 static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope *e2)
 {
   if (e1 && e2)
@@ -1400,23 +1375,6 @@ bail: /* Come here in case of disaster */
     mutt_sort_headers(ctx, (need_sort == MUTT_REOPENED));
 
   return rc;
-}
-
-/**
- * mbox_check_empty - Is the mailbox empty
- * @param path Path to mailbox
- * @retval 1 mailbox is not empty
- * @retval 0 mailbox is empty
- * @retval -1 on error
- */
-int mbox_check_empty(const char *path)
-{
-  struct stat st;
-
-  if (stat(path, &st) == -1)
-    return -1;
-
-  return ((st.st_size == 0));
 }
 
 struct MxOps mx_mbox_ops = {

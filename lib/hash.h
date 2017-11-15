@@ -61,24 +61,17 @@ struct Hash
 #define MUTT_HASH_STRDUP_KEYS (1 << 1) /**< make a copy of the keys */
 #define MUTT_HASH_ALLOW_DUPS  (1 << 2) /**< allow duplicate keys to be inserted */
 
-struct Hash *hash_create(int nelem, int flags);
-struct Hash *int_hash_create(int nelem, int flags);
-
-int hash_insert(struct Hash *table, const char *strkey, void *data);
-int int_hash_insert(struct Hash *table, unsigned int intkey, void *data);
-
-void *hash_find(const struct Hash *table, const char *strkey);
-struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey);
-void *int_hash_find(const struct Hash *table, unsigned int intkey);
-
+struct Hash *    hash_create(int nelem, int flags);
+void             hash_delete(struct Hash *table, const char *strkey, const void *data, void (*destroy)(void *));
+void             hash_destroy(struct Hash **ptr, void (*destroy)(void *));
 struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey);
-
-void hash_delete(struct Hash *table, const char *strkey, const void *data,
-                 void (*destroy)(void *));
-void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
-                     void (*destroy)(void *));
-
-void hash_destroy(struct Hash **ptr, void (*destroy)(void *));
+void *           hash_find(const struct Hash *table, const char *strkey);
+struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey);
+int              hash_insert(struct Hash *table, const char *strkey, void *data);
+struct Hash *    int_hash_create(int nelem, int flags);
+void             int_hash_delete(struct Hash *table, unsigned int intkey, const void *data, void (*destroy)(void *));
+void *           int_hash_find(const struct Hash *table, unsigned int intkey);
+int              int_hash_insert(struct Hash *table, unsigned int intkey, void *data);
 
 /**
  * struct HashWalkState - Cursor to iterate through a Hash Table

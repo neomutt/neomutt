@@ -380,64 +380,6 @@ static int user_is_recipient(struct Header *h)
   return h->recipient;
 }
 
-/**
- * get_initials - Turn a name into initials
- * @param name   String to be converted
- * @param buf    Buffer for the result
- * @param buflen Size of the buffer
- * @retval 1 on Success
- * @retval 0 on Failure
- *
- * Take a name, e.g. "John F. Kennedy" and reduce it to initials "JFK".
- * The function saves the first character from each word.  Words are delimited
- * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
- */
-static bool get_initials(const char *name, char *buf, int buflen)
-{
-  if (!name || !buf)
-    return false;
-
-  while (*name)
-  {
-    /* Char's length in bytes */
-    int clen = mutt_charlen(name, NULL);
-    if (clen < 1)
-      return false;
-
-    /* Ignore punctuation at the beginning of a word */
-    if ((clen == 1) && ispunct(*name))
-    {
-      name++;
-      continue;
-    }
-
-    if (clen >= buflen)
-      return false;
-
-    /* Copy one multibyte character */
-    buflen -= clen;
-    while (clen--)
-      *buf++ = *name++;
-
-    /* Skip to end-of-word */
-    for (; *name; name += clen)
-    {
-      clen = mutt_charlen(name, NULL);
-      if (clen < 1)
-        return false;
-      else if ((clen == 1) && (isspace(*name) || (*name == '-')))
-        break;
-    }
-
-    /* Skip any whitespace, or hyphens */
-    while (*name && (isspace(*name) || (*name == '-')))
-      name++;
-  }
-
-  *buf = 0;
-  return true;
-}
-
 static char *apply_subject_mods(struct Envelope *env)
 {
   if (!env)

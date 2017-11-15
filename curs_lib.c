@@ -1176,7 +1176,7 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
         memset(&mbstate1, 0, sizeof(mbstate1));
 
       k = (k == (size_t)(-1)) ? 1 : n;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (escaped)
     {
@@ -1324,7 +1324,7 @@ void mutt_paddstr(int n, const char *s)
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';
@@ -1372,7 +1372,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
       if (cl == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       cl = (cl == (size_t)(-1)) ? 1 : n;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     cw = wcwidth(wc);
     /* hack because MUTT_TREE symbols aren't turned into characters
@@ -1395,32 +1395,6 @@ out:
   if (width)
     *width = w;
   return l;
-}
-
-/**
- * mutt_charlen - Count the bytes in a (multibyte) character
- * @param[in]  s     String to be examined
- * @param[out] width Number of screen columns the character would use
- * @retval n  Number of bytes in the first (multibyte) character of input consumes
- * @retval <0 Conversion error
- * @retval =0 End of input
- * @retval >0 Length (bytes)
- */
-int mutt_charlen(const char *s, int *width)
-{
-  wchar_t wc;
-  mbstate_t mbstate;
-  size_t k, n;
-
-  if (!s || !*s)
-    return 0;
-
-  n = mutt_strlen(s);
-  memset(&mbstate, 0, sizeof(mbstate));
-  k = mbrtowc(&wc, s, n, &mbstate);
-  if (width)
-    *width = wcwidth(wc);
-  return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
 }
 
 /**
@@ -1455,7 +1429,7 @@ int mutt_strwidth(const char *s)
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : n;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';

@@ -679,3 +679,19 @@ bool mutt_addr_is_user(struct Address *addr)
   mutt_debug(5, "mutt_addr_is_user: no, all failed.\n");
   return false;
 }
+
+void mutt_free_alias(struct Alias **p)
+{
+  struct Alias *t = NULL;
+
+  while (*p)
+  {
+    t = *p;
+    *p = (*p)->next;
+    mutt_alias_delete_reverse(t);
+    FREE(&t->name);
+    rfc822_free_address(&t->addr);
+    FREE(&t);
+  }
+}
+

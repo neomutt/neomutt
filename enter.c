@@ -48,28 +48,8 @@ enum RedrawFlags
   MUTT_REDRAW_LINE      /**< redraw entire line */
 };
 
-static int my_wcwidth(wchar_t wc)
-{
-  int n = wcwidth(wc);
-  if (IsWPrint(wc) && n > 0)
-    return n;
-  if (!(wc & ~0x7f))
-    return 2;
-  if (!(wc & ~0xffff))
-    return 6;
-  return 10;
-}
-
 /* combining mark / non-spacing character */
 #define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))
-
-static int my_wcswidth(const wchar_t *s, size_t n)
-{
-  int w = 0;
-  while (n--)
-    w += my_wcwidth(*s++);
-  return w;
-}
 
 static int my_addwch(wchar_t wc)
 {
@@ -81,98 +61,6 @@ static int my_addwch(wchar_t wc)
   if (!(wc & ~0xffff))
     return printw("\\u%04x", (int) wc);
   return printw("\\u%08x", (int) wc);
-}
-
-static size_t width_ceiling(const wchar_t *s, size_t n, int w1)
-{
-  const wchar_t *s0 = s;
-  int w = 0;
-  for (; n; s++, n--)
-    if ((w += my_wcwidth(*s)) > w1)
-      break;
-  return s - s0;
-}
-
-static void my_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
-{
-  mbstate_t st;
-  size_t k;
-
-  /* First convert directly into the destination buffer */
-  memset(&st, 0, sizeof(st));
-  for (; slen && dlen >= MB_LEN_MAX; dest += k, dlen -= k, src++, slen--)
-    if ((k = wcrtomb(dest, *src, &st)) == (size_t)(-1))
-      break;
-
-  /* If this works, we can stop now */
-  if (dlen >= MB_LEN_MAX)
-  {
-    wcrtomb(dest, 0, &st);
-    return;
-  }
-
-  /* Otherwise convert any remaining data into a local buffer */
-  {
-    char buf[3 * MB_LEN_MAX];
-    char *p = buf;
-
-    for (; slen && p - buf < dlen; p += k, src++, slen--)
-      if ((k = wcrtomb(p, *src, &st)) == (size_t)(-1))
-        break;
-    p += wcrtomb(p, 0, &st);
-
-    /* If it fits into the destination buffer, we can stop now */
-    if (p - buf <= dlen)
-    {
-      memcpy(dest, buf, p - buf);
-      return;
-    }
-
-    /* Otherwise we truncate the string in an ugly fashion */
-    memcpy(dest, buf, dlen);
-    dest[dlen - 1] = '\0'; /* assume original dlen > 0 */
-  }
-}
-
-static size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
-{
-  wchar_t wc;
-  mbstate_t st;
-  size_t k;
-  wchar_t *wbuf = NULL;
-  size_t wbuflen;
-
-  wbuf = *pwbuf;
-  wbuflen = *pwbuflen;
-
-  while (*buf)
-  {
-    memset(&st, 0, sizeof(st));
-    for (; (k = mbrtowc(&wc, buf, MB_LEN_MAX, &st)) && k != (size_t)(-1) &&
-           k != (size_t)(-2);
-         buf += k)
-    {
-      if (i >= wbuflen)
-      {
-        wbuflen = i + 20;
-        safe_realloc(&wbuf, wbuflen * sizeof(*wbuf));
-      }
-      wbuf[i++] = wc;
-    }
-    if (*buf && (k == (size_t) -1 || k == (size_t) -2))
-    {
-      if (i >= wbuflen)
-      {
-        wbuflen = i + 20;
-        safe_realloc(&wbuf, wbuflen * sizeof(*wbuf));
-      }
-      wbuf[i++] = replacement_char();
-      buf++;
-    }
-  }
-  *pwbuf = wbuf;
-  *pwbuflen = wbuflen;
-  return i;
 }
 
 /**
@@ -213,18 +101,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
 }
 
 /**
- * is_shell_char - Is character not typically part of a pathname
- * @param ch Character to examine
- * @retval 1 if the character is not typically part of a pathname
- */
-static inline int is_shell_char(wchar_t ch)
-{
-  static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in NeoMutt */
-  return wcschr(shell_chars, ch) != NULL;
-}
-
-/**
- * mutt_enter_string - Ask the user for a string
+ * mutt_enter_string_simple - Ask the user for a string
  * @param buf    Buffer to store the string
  * @param buflen Buffer length
  * @param col    Initial cursor position

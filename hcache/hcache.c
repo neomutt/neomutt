@@ -168,18 +168,6 @@ static void restore_int(unsigned int *i, const unsigned char *d, int *off)
   (*off) += sizeof(int);
 }
 
-static inline bool is_ascii(const char *p, size_t len)
-{
-  const char *s = p;
-  while (s && (unsigned int) (s - p) < len)
-  {
-    if ((*s & 0x80) != 0)
-      return false;
-    s++;
-  }
-  return true;
-}
-
 static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
                                      ssize_t size, bool convert)
 {

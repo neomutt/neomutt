@@ -1925,7 +1925,7 @@ msgstr "（需要定義一個鍵給 'view-attachments' 來瀏覽附件！)"
 msgid "Can't create %s: %s."
 msgstr "無法建立 %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：無法附帶檔案"

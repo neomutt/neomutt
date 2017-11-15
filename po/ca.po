@@ -2002,7 +2002,7 @@ msgstr " (Vinculeu «view-attachents» a una tecla.)"
 msgid "Can't create %s: %s."
 msgstr "No s’ha pogut crear «%s»: %s"
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: No s’ha pogut adjuntar el fitxer."

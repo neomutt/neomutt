@@ -190,10 +190,8 @@ void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s
 void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
-void mutt_free_alias(struct Alias **p);
 void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(struct EnterState **esp);
-void mutt_free_header(struct Header **h);
 void mutt_free_regex(struct Regex **pp);
 void mutt_help(int menu);
 void mutt_check_lookup_list(struct Body *b, char *type, int len);
@@ -339,7 +337,6 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to, const s
 #endif
 
 size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
-int mutt_charlen(const char *s, int *width);
 int mutt_strwidth(const char *s);
 int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen, struct Header *cur, int flags);
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread);
@@ -368,16 +365,6 @@ uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
 struct Address *alias_reverse_lookup(struct Address *a);
-
-#ifdef LOCALES_HACK
-#define IsPrint(c) (isprint((unsigned char) (c)) || ((unsigned char) (c) >= 0xa0))
-#define IsWPrint(wc) (iswprint(wc) || wc >= 0xa0)
-#else
-#define IsPrint(c)                                                             \
-  (isprint((unsigned char) (c)) ||                                             \
-   (option(OPT_LOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
-#define IsWPrint(wc) (iswprint(wc) || (option(OPT_LOCALES) ? 0 : (wc >= 0xa0)))
-#endif
 
 int getdnsdomainname(char *d, size_t len);
 

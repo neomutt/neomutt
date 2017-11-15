@@ -154,27 +154,6 @@ int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
   return rv;
 }
 
-void mutt_free_header(struct Header **h)
-{
-  if (!h || !*h)
-    return;
-  mutt_free_envelope(&(*h)->env);
-  mutt_free_body(&(*h)->content);
-  FREE(&(*h)->maildir_flags);
-  FREE(&(*h)->tree);
-  FREE(&(*h)->path);
-#ifdef MIXMASTER
-  mutt_list_free(&(*h)->chain);
-#endif
-  driver_tags_free(&(*h)->tags);
-#if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
-  if ((*h)->free_cb)
-    (*h)->free_cb(*h);
-  FREE(&(*h)->data);
-#endif
-  FREE(h);
-}
-
 /**
  * mutt_matches_ignore - Does the string match the ignore list
  *
@@ -542,21 +521,6 @@ void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
   if (unlink(s) && errno != ENOENT)
     mutt_debug(1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, s,
                strerror(errno), errno);
-}
-
-void mutt_free_alias(struct Alias **p)
-{
-  struct Alias *t = NULL;
-
-  while (*p)
-  {
-    t = *p;
-    *p = (*p)->next;
-    mutt_alias_delete_reverse(t);
-    FREE(&t->name);
-    rfc822_free_address(&t->addr);
-    FREE(&t);
-  }
 }
 
 /**

@@ -52,5 +52,6 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
 struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s);
 struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
 bool             mutt_list_match(const char *s, struct ListHead *h);
+int              strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh);
 
 #endif /* _LIB_LIST_H */

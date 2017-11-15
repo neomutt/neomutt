@@ -117,7 +117,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
       if (k == (size_t)(-1))
         memset(&mbstate1, 0, sizeof(mbstate1));
       k = (k == (size_t)(-1)) ? 1 : len;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
     if (IsWPrint(wc) && (w = wcwidth(wc)) >= 0)
@@ -180,7 +180,7 @@ static int get_wrapped_width(const char *t, size_t wid)
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';

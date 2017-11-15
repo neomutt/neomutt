@@ -403,7 +403,7 @@ char *mutt_make_date(char *buf, size_t buflen)
 
 /**
  * mutt_check_month - Is the string a valid month name
- * @param s - String to check
+ * @param s String to check
  * @retval num Index into Months array (0-based)
  * @retval -1  Error
  *
@@ -421,7 +421,7 @@ int mutt_check_month(const char *s)
 
 /**
  * is_day_name - Is the string a valid day name
- * @param s - String to check
+ * @param s String to check
  * @retval boolean
  *
  * @note Only the first three characters are checked
