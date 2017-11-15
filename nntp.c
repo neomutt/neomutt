@@ -313,8 +313,8 @@ static int nntp_auth(struct NntpServer *nserv)
   while (true)
   {
     /* get login and password */
-    if (mutt_account_getuser(&conn->account) || !conn->account.user[0] ||
-        mutt_account_getpass(&conn->account) || !conn->account.pass[0])
+    if ((mutt_account_getuser(&conn->account) < 0) || (conn->account.user[0] == '\0') ||
+        (mutt_account_getpass(&conn->account) < 0) || (conn->account.pass[0] == '\0'))
       break;
 
     /* get list of authenticators */

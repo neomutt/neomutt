@@ -252,8 +252,8 @@ void mutt_str_replace(char **p, const char *s)
 }
 
 /**
- * mutt_str_append_item - Add string to another seprated by sep
- * @param str String appened
+ * mutt_str_append_item - Add string to another separated by sep
+ * @param str  String appended
  * @param item String to append
  * @param sep separator between string item
  *

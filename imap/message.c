@@ -1223,7 +1223,7 @@ int imap_close_message(struct Context *ctx, struct Message *msg)
  * @param ctx Context
  * @param msg Email info
  * @retval 0   Success
- * @retval EOF fclose() failured, see errno
+ * @retval EOF fclose() failed, see errno
  * @retval -1  Failure
  */
 int imap_commit_message(struct Context *ctx, struct Message *msg)

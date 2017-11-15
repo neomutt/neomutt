@@ -1982,7 +1982,8 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         if (option(OPT_NEWS))
         {
           struct NntpServer *nserv = CurrentNewsSrv;
-          regex_t *rx = safe_malloc(sizeof(regex_t));
+          regex_t rx;
+          memset(&rx, 0, sizeof(rx));
           char *s = buf;
           int rc, j = menu->current;
 
@@ -1998,16 +1999,14 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               snprintf(tmp, sizeof(tmp), _("Unsubscribe pattern: "));
             if (mutt_get_field(tmp, buf, sizeof(buf), 0) != 0 || !buf[0])
             {
-              FREE(&rx);
               break;
             }
 
-            err = REGCOMP(rx, s, REG_NOSUB);
-            if (err)
+            err = REGCOMP(&rx, s, REG_NOSUB);
+            if (err != 0)
             {
-              regerror(err, rx, buf, sizeof(buf));
-              regfree(rx);
-              FREE(&rx);
+              regerror(err, &rx, buf, sizeof(buf));
+              regfree(&rx);
               mutt_error("%s", buf);
               break;
             }
@@ -2029,7 +2028,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             struct FolderFile *ff = &state.entry[j];
 
             if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE ||
-                regexec(rx, ff->name, 0, NULL, 0) == 0)
+                regexec(&rx, ff->name, 0, NULL, 0) == 0)
             {
               if (i == OP_BROWSER_SUBSCRIBE || i == OP_SUBSCRIBE_PATTERN)
                 mutt_newsgroup_subscribe(nserv, ff->name);
@@ -2051,7 +2050,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               struct NntpData *nntp_data = nserv->groups_list[k];
               if (nntp_data && nntp_data->group && !nntp_data->subscribed)
               {
-                if (regexec(rx, nntp_data->group, 0, NULL, 0) == 0)
+                if (regexec(&rx, nntp_data->group, 0, NULL, 0) == 0)
                 {
                   mutt_newsgroup_subscribe(nserv, nntp_data->group);
                   add_folder(menu, &state, nntp_data->group, NULL, NULL, NULL, nntp_data);
@@ -2066,8 +2065,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           nntp_clear_cache(nserv);
           nntp_newsrc_close(nserv);
           if (i != OP_BROWSER_SUBSCRIBE && i != OP_BROWSER_UNSUBSCRIBE)
-            regfree(rx);
-          FREE(&rx);
+            regfree(&rx);
         }
 #ifdef USE_IMAP
         else

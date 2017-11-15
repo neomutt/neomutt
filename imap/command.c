@@ -66,7 +66,7 @@
 #define IMAP_CMD_BUFSIZE 512
 
 /**
- * Capabilities - Server capabilties strings that we understand
+ * Capabilities - Server capabilities strings that we understand
  *
  * @note This must be kept in the same order as ImapCaps.
  *

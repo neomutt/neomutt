@@ -1013,7 +1013,8 @@ static void tls_get_client_cert(struct Connection *conn)
     *cnend = '\0';
 
   /* if we are using a client cert, SASL may expect an external auth name */
-  mutt_account_getuser(&conn->account);
+  if (mutt_account_getuser(&conn->account) < 0)
+    mutt_debug(1, "Couldn't get user info\n");
 
 err_dn:
   FREE(&dn);

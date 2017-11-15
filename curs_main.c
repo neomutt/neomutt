@@ -1007,7 +1007,8 @@ int mutt_index_menu(void)
               {
                 char cmd[LONG_STRING];
                 menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
-                mutt_system(cmd);
+                if (mutt_system(cmd) != 0)
+                  mutt_error(_("Error running \"%s\"!"), cmd);
               }
               break;
             }
@@ -1049,7 +1050,8 @@ int mutt_index_menu(void)
           {
             char cmd[LONG_STRING];
             menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
-            mutt_system(cmd);
+            if (mutt_system(cmd) != 0)
+              mutt_error(_("Error running \"%s\"!"), cmd);
           }
         }
       }

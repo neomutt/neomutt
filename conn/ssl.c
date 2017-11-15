@@ -360,13 +360,13 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
 {
   struct Account *account = (struct Account *) userdata;
 
-  if (mutt_account_getuser(account))
+  if (mutt_account_getuser(account) < 0)
     return 0;
 
   mutt_debug(2, "ssl_passwd_cb: getting password for %s@%s:%u\n", account->user,
              account->host, account->port);
 
-  if (mutt_account_getpass(account))
+  if (mutt_account_getpass(account) < 0)
     return 0;
 
   return snprintf(buf, size, "%s", account->pass);
@@ -587,7 +587,7 @@ static bool hostname_match(const char *hostname, const char *certname)
 }
 
 /**
- * ssl_init - Initialist the SSL library
+ * ssl_init - Initialise the SSL library
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -710,7 +710,8 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
     SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
 
     /* if we are using a client cert, SASL may expect an external auth name */
-    mutt_account_getuser(&conn->account);
+    if (mutt_account_getuser(&conn->account) < 0)
+      mutt_debug(1, "Couldn't get user info\n");
   }
 }
 
@@ -971,7 +972,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   struct Menu *menu = mutt_new_menu(MENU_GENERIC);
   int done, row;
   FILE *fp = NULL;
-  int allow_skip = 0;
+  int ALLOW_SKIP = 0; /**< All caps tells Coverity that this is effectively a preproc condition */
 
   mutt_push_current_menu(menu);
 
@@ -1019,7 +1020,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
 /* The leaf/host certificate can't be skipped. */
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   if ((idx != 0) && (option(OPT_SSL_VERIFY_PARTIAL_CHAINS)))
-    allow_skip = 1;
+    ALLOW_SKIP = 1;
 #endif
 
   /* Inside ssl_verify_callback(), this function is guarded by a call to
@@ -1039,14 +1040,14 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   menu->keys = _("roas");
   if (allow_always)
   {
-    if (allow_skip)
+    if (ALLOW_SKIP)
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
   }
   else
   {
-    if (allow_skip)
+    if (ALLOW_SKIP)
       menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce");
@@ -1097,7 +1098,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
         ssl_cache_trusted_cert(cert);
         break;
       case OP_MAX + 4: /* skip */
-        if (!allow_skip)
+        if (!ALLOW_SKIP)
           break;
         done = 2;
         SSL_set_ex_data(ssl, SkipModeExDataIndex, &SkipModeExDataIndex);

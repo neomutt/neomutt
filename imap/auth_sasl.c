@@ -82,7 +82,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
      * 2. attempt sasl_client_start with only "AUTH=ANONYMOUS" capability
      * 3. if sasl_client_start fails, fall through... */
 
-    if (mutt_account_getuser(&idata->conn->account))
+    if (mutt_account_getuser(&idata->conn->account) < 0)
       return IMAP_AUTH_FAILURE;
 
     if (mutt_bit_isset(idata->capabilities, AUTH_ANON) &&

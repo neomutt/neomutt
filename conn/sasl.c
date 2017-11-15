@@ -244,13 +244,13 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
 
   if (id == SASL_CB_AUTHNAME)
   {
-    if (mutt_account_getlogin(account))
+    if (mutt_account_getlogin(account) < 0)
       return SASL_FAIL;
     *result = account->login;
   }
   else
   {
-    if (mutt_account_getuser(account))
+    if (mutt_account_getuser(account) < 0)
       return SASL_FAIL;
     *result = account->user;
   }
@@ -280,7 +280,7 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
   mutt_debug(2, "mutt_sasl_cb_pass: getting password for %s@%s:%u\n",
              account->login, account->host, account->port);
 
-  if (mutt_account_getpass(account))
+  if (mutt_account_getpass(account) < 0)
     return SASL_FAIL;
 
   len = strlen(account->pass);

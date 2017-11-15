@@ -42,11 +42,11 @@ enum AccountType
 };
 
 /* account flags */
-#define MUTT_ACCT_PORT (1 << 0)
-#define MUTT_ACCT_USER (1 << 1)
+#define MUTT_ACCT_PORT  (1 << 0)
+#define MUTT_ACCT_USER  (1 << 1)
 #define MUTT_ACCT_LOGIN (1 << 2)
-#define MUTT_ACCT_PASS (1 << 3)
-#define MUTT_ACCT_SSL (1 << 4)
+#define MUTT_ACCT_PASS  (1 << 3)
+#define MUTT_ACCT_SSL   (1 << 4)
 
 int mutt_account_match(const struct Account *a1, const struct Account *m2);
 int mutt_account_fromurl(struct Account *account, struct Url *url);

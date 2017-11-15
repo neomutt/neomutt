@@ -250,7 +250,8 @@ void pgp_invoke_import(const char *fname)
   cctx.signas = PgpSignAs;
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, PgpImportCommand);
-  mutt_system(cmd);
+  if (mutt_system(cmd) != 0)
+    mutt_debug(1, "Error running \"%s\"!", cmd);
 }
 
 void pgp_invoke_getkeys(struct Address *addr)
@@ -288,7 +289,8 @@ void pgp_invoke_getkeys(struct Address *addr)
   if (!isendwin())
     mutt_message(_("Fetching PGP key..."));
 
-  mutt_system(cmd);
+  if (mutt_system(cmd) != 0)
+    mutt_debug(1, "Error running \"%s\"!", cmd);
 
   if (!isendwin())
     mutt_clear_error();

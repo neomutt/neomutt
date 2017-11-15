@@ -179,6 +179,7 @@ int mutt_compose_attachment(struct Body *a)
             /* Remove headers by copying out data to another file, then
              * copying the file back */
             fseeko(fp, b->offset, SEEK_SET);
+            mutt_free_body(&b);
             mutt_mktemp(tempfile, sizeof(tempfile));
             tfp = safe_fopen(tempfile, "w");
             if (!tfp)
@@ -195,8 +196,6 @@ int mutt_compose_attachment(struct Body *a)
               mutt_perror(_("Failure to rename file."));
               goto bailout;
             }
-
-            mutt_free_body(&b);
           }
         }
       }
@@ -531,7 +530,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* interactive command */
-      if (mutt_system(command) || (entry->needsterminal && option(OPT_WAIT_KEY)))
+      int rc = mutt_system(command);
+      if (rc == -1)
+        mutt_debug(1, "Error running \"%s\"!", command);
+
+      if ((rc != 0) || (entry->needsterminal && option(OPT_WAIT_KEY)))
         mutt_any_key_to_continue(NULL);
     }
   }
@@ -752,8 +755,13 @@ static FILE *save_attachment_open(char *path, int flags)
 
 /**
  * mutt_save_attachment - Save an attachment
- * @retval 0 on success
- * @retval -1 on error
+ * @param fp    Source file stream. Can be NULL
+ * @param m     Email Body
+ * @param path  Where to save the attachment
+ * @param flags Flags, e.g. #MUTT_SAVE_APPEND
+ * @param hdr   Message header for the current message. Can be NULL
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
 {
@@ -1011,8 +1019,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
 
     /* in recv mode, save file to newfile first */
-    if (fp)
-      mutt_save_attachment(fp, a, newfile, 0, NULL);
+    if (fp && (mutt_save_attachment(fp, a, newfile, 0, NULL) != 0))
+      return 0;
 
     strfcpy(command, entry->printcommand, sizeof(command));
     piped = rfc1524_expand_command(a, newfile, type, command, sizeof(command));
@@ -1046,7 +1054,11 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     }
     else
     {
-      if (mutt_system(command) || option(OPT_WAIT_KEY))
+      int rc = mutt_system(command);
+      if (rc == -1)
+        mutt_debug(1, "Error running \"%s\"!", command);
+
+      if ((rc != 0) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
     }
 

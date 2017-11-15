@@ -1588,7 +1588,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
 
     FREE(&tmpminor);
 
-    if (ret)
+    if (ret != 0)
     {
       regerror(ret, &a->minor_regex, err->data, err->dsize);
       FREE(&a->major);

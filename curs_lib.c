@@ -233,7 +233,7 @@ void mutt_edit_file(const char *editor, const char *data)
 
   mutt_endwin(NULL);
   mutt_expand_file_fmt(cmd, sizeof(cmd), editor, data);
-  if (mutt_system(cmd))
+  if (mutt_system(cmd) != 0)
   {
     mutt_error(_("Error running \"%s\"!"), cmd);
     mutt_sleep(2);
@@ -266,10 +266,10 @@ int mutt_yesorno(const char *msg, int def)
 
   answer[1] = '\0';
 
-  reyes_ok = (expr = nl_langinfo(YESEXPR)) && expr[0] == '^' &&
-             !REGCOMP(&reyes, expr, REG_NOSUB);
-  reno_ok = (expr = nl_langinfo(NOEXPR)) && expr[0] == '^' &&
-            !REGCOMP(&reno, expr, REG_NOSUB);
+  reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
+             (REGCOMP(&reyes, expr, REG_NOSUB) == 0);
+  reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
+            (REGCOMP(&reno, expr, REG_NOSUB) == 0);
 
   /*
    * In order to prevent the default answer to the question to wrapped
@@ -1343,7 +1343,7 @@ void mutt_paddstr(int n, const char *s)
 
 /**
  * mutt_wstr_trunc - Work out how to truncate a widechar string
- * @param[in]  src    String to measute
+ * @param[in]  src    String to measure
  * @param[in]  maxlen Maximum length of string in bytes
  * @param[in]  maxwid Maximum width in screen columns
  * @param[out] width  Save the truncated screen column width

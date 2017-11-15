@@ -33,6 +33,16 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+/**
+ * mutt_system - Run an external command
+ * @param cmd Command and argments
+ * @retval -1  Error
+ * @retval >=0 Success (command's return code)
+ *
+ * Fork and run an external command with arguments.
+ *
+ * @note This function won't return until the command finishes.
+ */
 int mutt_system(const char *cmd)
 {
   int rc = -1;

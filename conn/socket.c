@@ -87,7 +87,7 @@ static int socket_preconnect(void)
     mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
     rc = mutt_system(Preconnect);
     mutt_debug(2, "Preconnect result: %d\n", rc);
-    if (rc)
+    if (rc != 0)
     {
       save_errno = errno;
       mutt_perror(_("Preconnect command failed."));

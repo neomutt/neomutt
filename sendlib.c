@@ -2942,6 +2942,9 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
   strfcpy(fcc_tok, path, sizeof(fcc_tok));
 
   tok = strtok(fcc_tok, ",");
+  if (!tok)
+    return -1;
+
   mutt_debug(1, "Fcc: initial mailbox = '%s'\n", tok);
   /* mutt_expand_path already called above for the first token */
   status = mutt_write_fcc(tok, hdr, msgid, post, fcc, finalpath);

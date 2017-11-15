@@ -111,7 +111,7 @@ static bool compare_stat(struct stat *osb, struct stat *nsb)
  * @param nflen   Length of new filename
  * @param newdir  New directory name
  * @param ndlen   Length of new directory name
- * @retval  0 Succes 0 Success
+ * @retval  0 Success
  * @retval -1 Error
  */
 static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir, size_t ndlen)

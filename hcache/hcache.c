@@ -587,7 +587,7 @@ static bool create_hcache_dir(const char *path)
  * If @a path exists and is a directory, it is used.
  * If @a path has a trailing '/' it is assumed to be a directory.
  * If ICONV isn't being used, then a suffix is added to the path, e.g. '-utf-8'.
- * Otherise @a path is assumed to be a file.
+ * Otherwise @a path is assumed to be a file.
  */
 static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
 {
