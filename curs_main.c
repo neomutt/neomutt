@@ -2873,7 +2873,7 @@ int mutt_index_menu(void)
         mutt_check_rescore(Context);
         break;
 
-      case OP_EDIT_MESSAGE:
+      case OP_EDIT_RAW_MESSAGE:
 
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;

@@ -93,7 +93,7 @@
   _fmt(OP_DISPLAY_HEADERS,                N_("display message and toggle header weeding")) \
   _fmt(OP_DISPLAY_MESSAGE,                N_("display a message")) \
   _fmt(OP_EDIT_LABEL,                     N_("add, change, or delete a message's label")) \
-  _fmt(OP_EDIT_MESSAGE,                   N_("edit the raw message")) \
+  _fmt(OP_EDIT_RAW_MESSAGE,               N_("edit the raw message")) \
   _fmt(OP_EDITOR_BACKSPACE,               N_("delete the char in front of the cursor")) \
   _fmt(OP_EDITOR_BACKWARD_CHAR,           N_("move the cursor one character to the left")) \
   _fmt(OP_EDITOR_BACKWARD_WORD,           N_("move the cursor to the beginning of the word")) \
