@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "lib/list.h"
+#include "mutt/list.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

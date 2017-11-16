@@ -36,7 +36,7 @@
 #include <sys/utsname.h>
 #include <unistd.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "init.h"
 #include "address.h"

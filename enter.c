@@ -27,7 +27,7 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "enter_state.h"
 #include "globals.h"
@@ -149,7 +149,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  * @retval -1 if abort
  */
 int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int multiple,
-                      char ***files, int *numfiles, struct EnterState *state)
+                           char ***files, int *numfiles, struct EnterState *state)
 {
   int width = MuttMessageWindow->cols - col - 1;
   int redraw;

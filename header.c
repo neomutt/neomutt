@@ -28,14 +28,14 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
+#include "header.h"
 #include "alias.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -385,4 +385,3 @@ struct Header *mutt_new_header(void)
   STAILQ_INIT(&h->tags);
   return h;
 }
-

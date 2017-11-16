@@ -23,8 +23,8 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
-#include "lib/queue.h"
+#include "mutt/mutt.h"
+#include "mutt/queue.h"
 #include "conn/conn.h"
 #include "mutt_socket.h"
 #include "globals.h"

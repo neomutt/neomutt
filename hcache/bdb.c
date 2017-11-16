@@ -39,7 +39,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
 #include "mx.h"

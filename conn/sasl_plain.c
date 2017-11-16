@@ -32,8 +32,8 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "lib/base64.h"
-#include "lib/string2.h"
+#include "mutt/base64.h"
+#include "mutt/string2.h"
 
 /**
  * mutt_sasl_plain_msg - Create an SASL command

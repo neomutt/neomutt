@@ -38,7 +38,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "charset.h"
 #include "filter.h"

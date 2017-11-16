@@ -37,7 +37,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include <wctype.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "body.h"
 #include "charset.h"

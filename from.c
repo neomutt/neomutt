@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "globals.h"
 #include "protos.h"
 

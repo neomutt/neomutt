@@ -21,12 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_LIST_H
-#define _LIB_LIST_H
+#ifndef _MUTT_LIST_H
+#define _MUTT_LIST_H
 
 #include <string.h>
 #include <stdbool.h>
-#include "lib/queue.h"
+#include "mutt/queue.h"
 
 /**
  * struct ListNode - A List node for strings
@@ -54,4 +54,4 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
 bool             mutt_list_match(const char *s, struct ListHead *h);
 int              strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh);
 
-#endif /* _LIB_LIST_H */
+#endif /* _MUTT_LIST_H */

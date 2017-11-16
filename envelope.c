@@ -34,9 +34,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "lib/buffer.h"
-#include "lib/memory.h"
-#include "lib/queue.h"
+#include "mutt/buffer.h"
+#include "mutt/memory.h"
+#include "mutt/queue.h"
 #include "envelope.h"
 #include "rfc822.h"
 

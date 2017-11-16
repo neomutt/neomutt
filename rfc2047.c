@@ -26,7 +26,7 @@
 #include <errno.h>
 #include <iconv.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "rfc2047.h"
 #include "address.h"
 #include "charset.h"

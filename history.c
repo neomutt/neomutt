@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "history.h"
 #include "charset.h"
 #include "globals.h"

@@ -1,6 +1,6 @@
 /**
  * @file
- * Leave the program NOW
+ * Memory management wrappers
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,9 +20,23 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_EXIT_H
-#define _LIB_EXIT_H
+#ifndef _MUTT_MEMORY_H
+#define _MUTT_MEMORY_H
 
-void mutt_exit(int code);
+#include <stddef.h>
 
-#endif /* _LIB_EXIT_H */
+#undef MAX
+#undef MIN
+#define MAX(a, b) ((a) < (b) ? (b) : (a))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+#define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
+
+void *safe_calloc(size_t nmemb, size_t size);
+void  safe_free(void *ptr);
+void *safe_malloc(size_t size);
+void  safe_realloc(void *ptr, size_t size);
+
+#define FREE(x) safe_free(x)
+
+#endif /* _MUTT_MEMORY_H */

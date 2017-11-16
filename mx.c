@@ -32,7 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "mx.h"
 #include "address.h"

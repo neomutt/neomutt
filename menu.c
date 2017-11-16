@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "context.h"
 #include "globals.h"

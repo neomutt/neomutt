@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "lib/list.h"
+#include "mutt/list.h"
 
 /**
  * struct ImapHeaderData - IMAP-specific header data

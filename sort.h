@@ -24,7 +24,7 @@
 #define _MUTT_SORT_H
 
 #include "where.h"
-#include "lib/mapping.h"
+#include "mutt/mapping.h"
 
 struct Address;
 struct Context;

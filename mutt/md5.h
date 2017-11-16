@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_MD5_H
-#define _LIB_MD5_H
+#ifndef _MUTT_MD5_H
+#define _MUTT_MD5_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -53,4 +53,4 @@ void  md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
 void *md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf);
 int   md5_stream(FILE *stream, void *resblock);
 
-#endif /* _LIB_MD5_H */
+#endif /* _MUTT_MD5_H */

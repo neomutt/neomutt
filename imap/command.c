@@ -46,7 +46,7 @@
 #include <string.h>
 #include <time.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "buffy.h"
 #include "context.h"

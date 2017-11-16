@@ -1260,4 +1260,3 @@ int mbox_check_empty(const char *path)
 
   return ((st.st_size == 0));
 }
-

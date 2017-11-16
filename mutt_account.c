@@ -23,7 +23,7 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "mutt_account.h"
 #include "globals.h"

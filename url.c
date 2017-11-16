@@ -28,7 +28,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "url.h"
 #include "envelope.h"

@@ -22,7 +22,7 @@
 
 #include "config.h"
 #include <stdio.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"

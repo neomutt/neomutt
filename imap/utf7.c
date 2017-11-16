@@ -34,7 +34,7 @@
 #include "config.h"
 #include <string.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "charset.h"
 #include "globals.h"
 

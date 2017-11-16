@@ -34,7 +34,7 @@
 
 #include "config.h"
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "auth.h"
 #include "globals.h"
 #include "protos.h"

@@ -29,7 +29,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "bcache.h"
 #include "globals.h"
 #include "mutt_account.h"

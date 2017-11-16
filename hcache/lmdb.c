@@ -33,7 +33,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <lmdb.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 
 /** The maximum size of the database file (2GiB).

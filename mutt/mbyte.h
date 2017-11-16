@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_MBYTE_H
-#define _LIB_MBYTE_H
+#ifndef _MUTT_MBYTE_H
+#define _MUTT_MBYTE_H
 
 #include <stddef.h>
 #include <ctype.h>
@@ -51,4 +51,4 @@ int    my_wcwidth(wchar_t wc);
 int    my_width(const char *str, int col, bool display);
 size_t width_ceiling(const wchar_t *s, size_t n, int w1);
 
-#endif /* _LIB_MBYTE_H */
+#endif /* _MUTT_MBYTE_H */

@@ -21,8 +21,8 @@
  */
 
 #include "config.h"
-#include "lib/lib.h"
-#include "lib/queue.h"
+#include "mutt/mutt.h"
+#include "mutt/queue.h"
 #include "crypt_mod.h"
 
 /**

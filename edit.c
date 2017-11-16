@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
 #include "body.h"

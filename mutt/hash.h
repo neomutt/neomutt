@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_HASH_H
-#define _LIB_HASH_H
+#ifndef _MUTT_HASH_H
+#define _MUTT_HASH_H
 
 #include <stdbool.h>
 
@@ -84,4 +84,4 @@ struct HashWalkState
 
 struct HashElem *hash_walk(const struct Hash *table, struct HashWalkState *state);
 
-#endif /* _LIB_HASH_H */
+#endif /* _MUTT_HASH_H */

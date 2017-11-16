@@ -52,11 +52,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/file.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/file.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "mutt.h"
 #include "ssl.h"
 #include "account.h"

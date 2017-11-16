@@ -23,7 +23,7 @@
 #ifndef _MUTT_PARAMETER_H
 #define _MUTT_PARAMETER_H
 
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 
 /**
  * struct Parameter - Attribute associated with a MIME part

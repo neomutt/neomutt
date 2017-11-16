@@ -1,6 +1,6 @@
 /**
  * @file
- * Message logging
+ * Debug messages
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,24 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_MESSAGE_H
-#define _LIB_MESSAGE_H
+#ifndef _MUTT_DEBUG_H
+#define _MUTT_DEBUG_H
 
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#define _(a) gettext(a)
-#ifdef gettext_noop
-#define N_(a) gettext_noop(a)
+#ifdef DEBUG
+void mutt_debug(int level, const char *fmt, ...);
 #else
-#define N_(a) (a)
-#endif
-#else
-#define _(a) (a)
-#define N_(a) a
+#define mutt_debug(...) do { } while (0)
 #endif
 
-void (*mutt_error)  (const char *format, ...);
-void (*mutt_message)(const char *format, ...);
-void (*mutt_perror) (const char *message);
-
-#endif /* _LIB_MESSAGE_H */
+#endif /* _MUTT_DEBUG_H */

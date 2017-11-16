@@ -41,9 +41,9 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "mutt.h"
 #include "tunnel.h"
 #include "account.h"

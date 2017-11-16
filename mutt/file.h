@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_FILE_H
-#define _LIB_FILE_H
+#ifndef _MUTT_FILE_H
+#define _MUTT_FILE_H
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -63,4 +63,4 @@ int         safe_rename(const char *src, const char *target);
 int         safe_symlink(const char *oldpath, const char *newpath);
 int         to_absolute_path(char *path, const char *reference);
 
-#endif /* _LIB_FILE_H */
+#endif /* _MUTT_FILE_H */

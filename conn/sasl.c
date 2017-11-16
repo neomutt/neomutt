@@ -53,10 +53,10 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <time.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "sasl.h"
 #include "account.h"
 #include "connection.h"

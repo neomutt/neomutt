@@ -24,9 +24,9 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/string2.h"
 #include "body.h"
 #include "header.h"
 #include "mime.h"

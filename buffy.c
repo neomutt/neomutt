@@ -29,7 +29,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <utime.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "buffy.h"
 #include "context.h"

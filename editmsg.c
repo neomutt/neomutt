@@ -31,7 +31,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
@@ -52,8 +52,7 @@
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-static int edit_or_view_one_message(bool edit, struct Context *ctx,
-                                    struct Header *cur)
+static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
 {
   char tmp[_POSIX_PATH_MAX];
   char buff[STRING];

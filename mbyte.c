@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mbyte.h"
 #include "charset.h"
 #include "options.h"

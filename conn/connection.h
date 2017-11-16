@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 #include <time.h>
-#include "lib/queue.h"
+#include "mutt/queue.h"
 #include "account.h"
 
 #define LONG_STRING 1024

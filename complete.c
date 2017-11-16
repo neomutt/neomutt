@@ -26,7 +26,7 @@
 #include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"

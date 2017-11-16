@@ -32,7 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -1157,7 +1157,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
       newOffset[i - first].hdr = ftello(fp) + offset;
 
       if (mutt_copy_message_ctx(fp, ctx, ctx->hdrs[i], MUTT_CM_UPDATE,
-                                 CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
+                                CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
         mutt_perror(tempfile);
         mutt_sleep(5);

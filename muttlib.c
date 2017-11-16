@@ -43,7 +43,7 @@
 #include <unistd.h>
 #include <utime.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"

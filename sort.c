@@ -23,7 +23,7 @@
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "sort.h"
 #include "address.h"

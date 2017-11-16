@@ -24,8 +24,8 @@
  * #include <string.h>
  */
 
-#ifndef _LIB_STRING_H
-#define _LIB_STRING_H
+#ifndef _MUTT_STRING_H
+#define _MUTT_STRING_H
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -91,4 +91,4 @@ char *      skip_email_wsp(const char *s);
 char *      strfcpy(char *dest, const char *src, size_t dlen);
 char *      strnfcpy(char *dest, char *src, size_t size, size_t dlen);
 
-#endif /* _LIB_STRING_H */
+#endif /* _MUTT_STRING_H */

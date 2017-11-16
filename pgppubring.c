@@ -42,7 +42,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "ncrypt/ncrypt.h"
 #include "ncrypt/pgplib.h"
 #include "ncrypt/pgppacket.h"

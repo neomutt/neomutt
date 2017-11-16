@@ -36,9 +36,9 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/string2.h"
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS

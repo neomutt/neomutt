@@ -34,7 +34,7 @@
 #include <kclangc.h>
 #include <limits.h>
 #include <stdio.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "options.h"
 

@@ -192,4 +192,3 @@ int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
 
   return 1;
 }
-

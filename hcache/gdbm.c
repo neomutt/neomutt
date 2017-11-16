@@ -33,7 +33,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <gdbm.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
 

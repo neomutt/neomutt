@@ -32,7 +32,7 @@
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -694,4 +694,3 @@ void mutt_free_alias(struct Alias **p)
     FREE(&t);
   }
 }
-

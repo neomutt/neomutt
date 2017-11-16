@@ -25,7 +25,7 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "copy.h"
 #include "address.h"
@@ -540,8 +540,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * * #MUTT_CM_DECODE_PGP used for decoding PGP messages
  * * #MUTT_CM_CHARCONV   perform character set conversion
  */
-int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
-                      int chflags)
+int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags, int chflags)
 {
   struct Body *body = hdr->content;
   char prefix[SHORT_STRING];

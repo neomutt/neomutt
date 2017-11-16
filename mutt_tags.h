@@ -25,7 +25,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include "lib/queue.h"
+#include "mutt/queue.h"
 
 /**
  * struct TagNode - LinkedList Tag Element

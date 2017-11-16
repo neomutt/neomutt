@@ -35,7 +35,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
 #include "attach.h"

@@ -45,8 +45,8 @@
  * -# @subpage string
  */
 
-#ifndef _LIB_LIB_H
-#define _LIB_LIB_H
+#ifndef _MUTT_MUTT_H
+#define _MUTT_MUTT_H
 
 #include "base64.h"
 #include "buffer.h"
@@ -64,4 +64,4 @@
 #include "sha1.h"
 #include "string2.h"
 
-#endif /* _LIB_LIB_H */
+#endif /* _MUTT_MUTT_H */

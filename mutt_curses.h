@@ -25,9 +25,9 @@
 #define _MUTT_CURSES_H
 
 #include <regex.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "options.h"
-#include "lib/queue.h"
+#include "mutt/queue.h"
 
 #ifdef USE_SLANG_CURSES
 

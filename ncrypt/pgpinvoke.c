@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "address.h"
 #include "filter.h"
 #include "format_flags.h"

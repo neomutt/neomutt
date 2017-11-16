@@ -24,7 +24,7 @@
 #define _MUTT_GLOBALS_H
 
 #include <signal.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "where.h"
 #include "mutt_regex.h"
 

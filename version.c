@@ -28,7 +28,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)

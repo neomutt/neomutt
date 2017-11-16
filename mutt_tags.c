@@ -23,9 +23,9 @@
 #include <stddef.h>
 
 #include "config.h"
-#include "lib/hash.h"
-#include "lib/queue.h"
-#include "lib/string2.h"
+#include "mutt/hash.h"
+#include "mutt/queue.h"
+#include "mutt/string2.h"
 #include "globals.h"
 #include "mutt_tags.h"
 
