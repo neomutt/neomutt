@@ -532,11 +532,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* interactive command */
-      int rc = mutt_system(command);
-      if (rc == -1)
+      int rv = mutt_system(command);
+      if (rv == -1)
         mutt_debug(1, "Error running \"%s\"!", command);
 
-      if ((rc != 0) || (entry->needsterminal && option(OPT_WAIT_KEY)))
+      if ((rv != 0) || (entry->needsterminal && option(OPT_WAIT_KEY)))
         mutt_any_key_to_continue(NULL);
     }
   }
