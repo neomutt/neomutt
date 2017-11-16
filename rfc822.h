@@ -42,7 +42,6 @@ enum AddressError
   ERR_BAD_ADDR_SPEC
 };
 
-void mutt_str_dequote_comment(char *s);
 void rfc822_free_address(struct Address **p);
 void rfc822_qualify(struct Address *addr, const char *host);
 struct Address *rfc822_parse_adrlist(struct Address *top, const char *s);
