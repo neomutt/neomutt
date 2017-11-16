@@ -4021,12 +4021,12 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   err.data = safe_malloc(err.dsize);
   err.dptr = err.data;
 
-  Groups = hash_create(1031, 0);
+  Groups = mutt_hash_create(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAliases =
-      hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
-  TagTransforms = hash_create(64, 1);
-  TagFormats = hash_create(64, 0);
+  ReverseAliases = mutt_hash_create(
+      1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
+  TagTransforms = mutt_hash_create(64, 1);
+  TagFormats = mutt_hash_create(64, 0);
 
   mutt_menu_init();
 
@@ -4430,7 +4430,7 @@ static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
     transform = safe_strdup(b->data);
 
     /* avoid duplicates */
-    tmp = hash_find(TagTransforms, tag);
+    tmp = mutt_hash_find(TagTransforms, tag);
     if (tmp)
     {
       mutt_debug(3, "tag transform '%s' already registered as '%s'\n", tag, tmp);
@@ -4439,7 +4439,7 @@ static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
       continue;
     }
 
-    hash_insert(TagTransforms, tag, transform);
+    mutt_hash_insert(TagTransforms, tag, transform);
   }
   return 0;
 }
@@ -4466,7 +4466,7 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
     format = safe_strdup(b->data);
 
     /* avoid duplicates */
-    tmp = hash_find(TagFormats, format);
+    tmp = mutt_hash_find(TagFormats, format);
     if (tmp)
     {
       mutt_debug(3, "tag format '%s' already registered as '%s'\n", format, tmp);
@@ -4475,7 +4475,7 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
       continue;
     }
 
-    hash_insert(TagFormats, format, tag);
+    mutt_hash_insert(TagFormats, format, tag);
   }
   return 0;
 }
@@ -4625,7 +4625,7 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
     memset(Matches, 0, Matches_listsize);
     memset(Completed, 0, sizeof(Completed));
     memset(&state, 0, sizeof(state));
-    while ((entry = hash_walk(Context->label_hash, &state)))
+    while ((entry = mutt_hash_walk(Context->label_hash, &state)))
       candidate(Completed, User_typed, entry->key.strkey, sizeof(Completed));
     matches_ensure_morespace(Num_matched);
     qsort(Matches, Num_matched, sizeof(char *), (sort_t *) mutt_strcasecmp);

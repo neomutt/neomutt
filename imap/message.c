@@ -93,12 +93,12 @@ static void update_context(struct ImapData *idata, int oldmsgcount)
 
   ctx = idata->ctx;
   if (!idata->uid_hash)
-    idata->uid_hash = int_hash_create(MAX(6 * ctx->msgcount / 5, 30), 0);
+    idata->uid_hash = mutt_hash_int_create(MAX(6 * ctx->msgcount / 5, 30), 0);
 
   for (int msgno = oldmsgcount; msgno < ctx->msgcount; msgno++)
   {
     h = ctx->hdrs[msgno];
-    int_hash_insert(idata->uid_hash, HEADER_DATA(h)->uid, h);
+    mutt_hash_int_insert(idata->uid_hash, HEADER_DATA(h)->uid, h);
   }
 }
 
@@ -195,7 +195,7 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
     return 0;
 
   /* bad UID */
-  if (uv != idata->uid_validity || !int_hash_find(idata->uid_hash, uid))
+  if (uv != idata->uid_validity || !mutt_hash_int_find(idata->uid_hash, uid))
     mutt_bcache_del(bcache, id);
 
   return 0;

@@ -331,7 +331,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
         p = skip_email_wsp(np->data + 18);
         if (!ctx->id_hash)
           ctx->id_hash = mutt_make_id_hash(ctx);
-        *cur = hash_find(ctx->id_hash, p);
+        *cur = mutt_hash_find(ctx->id_hash, p);
       }
       if (*cur)
         code |= SENDREPLY;

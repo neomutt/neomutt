@@ -438,7 +438,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
   struct ListNode *np;
   STAILQ_FOREACH(np, &subjects, entries)
   {
-    for (ptr = hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
+    for (ptr = mutt_hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
     {
       tmp = ((struct Header *) ptr->data)->thread;
       if (tmp != cur &&                    /* don't match the same message */
@@ -510,13 +510,13 @@ static struct Hash *make_subj_hash(struct Context *ctx)
   struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
-  hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+  hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
-      hash_insert(hash, hdr->env->real_subj, hdr);
+      mutt_hash_insert(hash, hdr->env->real_subj, hdr);
   }
 
   return hash;
@@ -602,7 +602,7 @@ void mutt_clear_threads(struct Context *ctx)
   ctx->tree = NULL;
 
   if (ctx->thread_hash)
-    hash_destroy(&ctx->thread_hash, *free);
+    mutt_hash_destroy(&ctx->thread_hash, *free);
 }
 
 static int compare_threads(const void *a, const void *b)
@@ -799,7 +799,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
     init = 1;
 
   if (init)
-    ctx->thread_hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+    ctx->thread_hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
@@ -820,7 +820,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
     if (!cur->thread)
     {
       if ((!init || option(OPT_DUPLICATE_THREADS)) && cur->env->message_id)
-        thread = hash_find(ctx->thread_hash, cur->env->message_id);
+        thread = mutt_hash_find(ctx->thread_hash, cur->env->message_id);
       else
         thread = NULL;
 
@@ -869,8 +869,8 @@ void mutt_sort_threads(struct Context *ctx, int init)
         thread->message = cur;
         thread->check_subject = true;
         cur->thread = thread;
-        hash_insert(ctx->thread_hash,
-                    cur->env->message_id ? cur->env->message_id : "", thread);
+        mutt_hash_insert(ctx->thread_hash,
+                         cur->env->message_id ? cur->env->message_id : "", thread);
 
         if (new)
         {
@@ -955,11 +955,11 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (!ref)
         break;
 
-      new = hash_find(ctx->thread_hash, ref->data);
+      new = mutt_hash_find(ctx->thread_hash, ref->data);
       if (!new)
       {
         new = safe_calloc(1, sizeof(struct MuttThread));
-        hash_insert(ctx->thread_hash, ref->data, new);
+        mutt_hash_insert(ctx->thread_hash, ref->data, new);
       }
       else
       {
@@ -1385,13 +1385,13 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
   struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
-  hash = hash_create(ctx->msgcount * 2, 0);
+  hash = mutt_hash_create(ctx->msgcount * 2, 0);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
-      hash_insert(hash, hdr->env->message_id, hdr);
+      mutt_hash_insert(hash, hdr->env->message_id, hdr);
   }
 
   return hash;

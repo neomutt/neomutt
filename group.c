@@ -38,13 +38,13 @@ struct Group *mutt_pattern_group(const char *k)
   if (!k)
     return 0;
 
-  p = hash_find(Groups, k);
+  p = mutt_hash_find(Groups, k);
   if (!p)
   {
     mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
     p = safe_calloc(1, sizeof(struct Group));
     p->name = safe_strdup(k);
-    hash_insert(Groups, p->name, p);
+    mutt_hash_insert(Groups, p->name, p);
   }
 
   return p;
@@ -54,7 +54,7 @@ static void group_remove(struct Group *g)
 {
   if (!g)
     return;
-  hash_delete(Groups, g->name, g, NULL);
+  mutt_hash_delete(Groups, g->name, g, NULL);
   rfc822_free_address(&g->as);
   mutt_free_regex_list(&g->rs);
   FREE(&g->name);

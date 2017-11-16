@@ -155,14 +155,14 @@ static int dup_hash_dec(struct Hash *dup_hash, char *s)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, s);
   if (!elem)
     return -1;
 
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    hash_delete(dup_hash, s, NULL, NULL);
+    mutt_hash_delete(dup_hash, s, NULL, NULL);
     return 0;
   }
 
@@ -176,11 +176,11 @@ static int dup_hash_inc(struct Hash *dup_hash, char *s)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, s);
   if (!elem)
   {
     count = 1;
-    hash_insert(dup_hash, s, (void *) count);
+    mutt_hash_insert(dup_hash, s, (void *) count);
     return count;
   }
 
@@ -207,7 +207,7 @@ static void shrink_histfile(void)
 
   if (option(OPT_HISTORY_REMOVE_DUPS))
     for (hclass = 0; hclass < HC_LAST; hclass++)
-      dup_hashes[hclass] = hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
+      dup_hashes[hclass] = mutt_hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
@@ -286,7 +286,7 @@ cleanup:
   }
   if (option(OPT_HISTORY_REMOVE_DUPS))
     for (hclass = 0; hclass < HC_LAST; hclass++)
-      hash_destroy(&dup_hashes[hclass], NULL);
+      mutt_hash_destroy(&dup_hashes[hclass], NULL);
 }
 
 static void save_history(enum HistoryClass hclass, const char *s)

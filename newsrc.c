@@ -60,7 +60,7 @@ struct BodyCache;
  */
 static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *group)
 {
-  struct NntpData *nntp_data = hash_find(nserv->groups_hash, group);
+  struct NntpData *nntp_data = mutt_hash_find(nserv->groups_hash, group);
 
   if (!nntp_data)
   {
@@ -71,7 +71,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
     strfcpy(nntp_data->group, group, len);
     nntp_data->nserv = nserv;
     nntp_data->deleted = true;
-    hash_insert(nserv->groups_hash, nntp_data->group, nntp_data);
+    mutt_hash_insert(nserv->groups_hash, nntp_data->group, nntp_data);
 
     /* add NntpData to list */
     if (nserv->groups_num >= nserv->groups_max)
@@ -833,7 +833,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
           if (!S_ISDIR(sb.st_mode))
         continue;
 
-      nntp_data = hash_find(nserv->groups_hash, group);
+      nntp_data = mutt_hash_find(nserv->groups_hash, group);
       if (!nntp_data)
       {
         nntp_data = &nntp_tmp;
@@ -1008,7 +1008,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   /* new news server */
   nserv = safe_calloc(1, sizeof(struct NntpServer));
   nserv->conn = conn;
-  nserv->groups_hash = hash_create(1009, 0);
+  nserv->groups_hash = mutt_hash_create(1009, 0);
   nserv->groups_max = 16;
   nserv->groups_list = safe_malloc(nserv->groups_max * sizeof(nntp_data));
 
@@ -1069,7 +1069,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
         if (strlen(group) < 8 || (strcmp(p, ".hcache") != 0))
           continue;
         *p = '\0';
-        nntp_data = hash_find(nserv->groups_hash, group);
+        nntp_data = mutt_hash_find(nserv->groups_hash, group);
         if (!nntp_data)
           continue;
 
@@ -1111,7 +1111,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 
   if (rc < 0)
   {
-    hash_destroy(&nserv->groups_hash, nntp_data_free);
+    mutt_hash_destroy(&nserv->groups_hash, nntp_data_free);
     FREE(&nserv->groups_list);
     FREE(&nserv->newsrc_file);
     FREE(&nserv->authenticators);
@@ -1138,7 +1138,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
   struct NntpData *nntp_data = ctx->data;
 
   if (group)
-    nntp_data = hash_find(nntp_data->nserv->groups_hash, group);
+    nntp_data = mutt_hash_find(nntp_data->nserv->groups_hash, group);
 
   if (!nntp_data)
     return;
@@ -1196,7 +1196,7 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
 
-  nntp_data = hash_find(nserv->groups_hash, group);
+  nntp_data = mutt_hash_find(nserv->groups_hash, group);
   if (!nntp_data)
     return NULL;
 
@@ -1219,7 +1219,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
 
-  nntp_data = hash_find(nserv->groups_hash, group);
+  nntp_data = mutt_hash_find(nserv->groups_hash, group);
   if (!nntp_data)
     return NULL;
 
@@ -1249,7 +1249,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
 
-  nntp_data = hash_find(nserv->groups_hash, group);
+  nntp_data = mutt_hash_find(nserv->groups_hash, group);
   if (!nntp_data)
     return NULL;
 

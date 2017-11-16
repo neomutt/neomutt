@@ -1255,7 +1255,7 @@ int mutt_index_menu(void)
           }
           if (!Context->id_hash)
             Context->id_hash = mutt_make_id_hash(Context);
-          hdr = hash_find(Context->id_hash, buf);
+          hdr = mutt_hash_find(Context->id_hash, buf);
           if (hdr)
           {
             if (hdr->virtual != -1)
@@ -1321,7 +1321,7 @@ int mutt_index_menu(void)
             struct ListNode *ref;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
-              if (hash_find(Context->id_hash, ref->data) == NULL)
+              if (mutt_hash_find(Context->id_hash, ref->data) == NULL)
               {
                 rc2 = nntp_check_msgid(Context, ref->data);
                 if (rc2 < 0)
@@ -1361,7 +1361,7 @@ int mutt_index_menu(void)
             }
 
             /* if the root message was retrieved, move to it */
-            hdr = hash_find(Context->id_hash, buf);
+            hdr = mutt_hash_find(Context->id_hash, buf);
             if (hdr)
               menu->current = hdr->virtual;
 

@@ -459,7 +459,7 @@ struct Address *alias_reverse_lookup(struct Address *a)
   if (!a || !a->mailbox)
     return NULL;
 
-  return hash_find(ReverseAliases, a->mailbox);
+  return mutt_hash_find(ReverseAliases, a->mailbox);
 }
 
 void mutt_alias_add_reverse(struct Alias *t)
@@ -476,7 +476,7 @@ void mutt_alias_add_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_insert(ReverseAliases, ap->mailbox, ap);
+      mutt_hash_insert(ReverseAliases, ap->mailbox, ap);
   }
 }
 
@@ -493,7 +493,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
+      mutt_hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
   }
 }
 

@@ -973,7 +973,7 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
   mid = nm2mutt_message_id(id);
   mutt_debug(2, "nm: neomutt id='%s'\n", mid);
 
-  h = hash_find(ctx->id_hash, mid);
+  h = mutt_hash_find(ctx->id_hash, mid);
   FREE(&mid);
   return h;
 }

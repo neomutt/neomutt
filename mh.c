@@ -2090,13 +2090,13 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.
    */
-  fnames = hash_create(count, 0);
+  fnames = mutt_hash_create(count, 0);
 
   for (p = md; p; p = p->next)
   {
     maildir_canon_filename(buf, p->h->path, sizeof(buf));
     p->canon_fname = safe_strdup(buf);
-    hash_insert(fnames, p->canon_fname, p);
+    mutt_hash_insert(fnames, p->canon_fname, p);
   }
 
   /* check for modifications and adjust flags */
@@ -2104,7 +2104,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   {
     ctx->hdrs[i]->active = false;
     maildir_canon_filename(buf, ctx->hdrs[i]->path, sizeof(buf));
-    p = hash_find(fnames, buf);
+    p = mutt_hash_find(fnames, buf);
     if (p && p->h)
     {
       /* message already exists, merge flags */
@@ -2158,7 +2158,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* destroy the file name hash */
-  hash_destroy(&fnames, NULL);
+  mutt_hash_destroy(&fnames, NULL);
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
@@ -2251,20 +2251,20 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   mhs_free_sequences(&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = hash_create(count, 0);
+  fnames = mutt_hash_create(count, 0);
 
   for (p = md; p; p = p->next)
   {
     /* the hash key must survive past the header, which is freed below. */
     p->canon_fname = safe_strdup(p->h->path);
-    hash_insert(fnames, p->canon_fname, p);
+    mutt_hash_insert(fnames, p->canon_fname, p);
   }
 
   for (i = 0; i < ctx->msgcount; i++)
   {
     ctx->hdrs[i]->active = false;
 
-    if ((p = hash_find(fnames, ctx->hdrs[i]->path)) && p->h &&
+    if ((p = mutt_hash_find(fnames, ctx->hdrs[i]->path)) && p->h &&
         (mbox_strict_cmp_headers(ctx->hdrs[i], p->h)))
     {
       ctx->hdrs[i]->active = true;
@@ -2281,7 +2281,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
 
   /* destroy the file name hash */
 
-  hash_destroy(&fnames, NULL);
+  mutt_hash_destroy(&fnames, NULL);
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)

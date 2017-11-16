@@ -912,7 +912,7 @@ static int fetch_description(char *line, void *data)
   else
     desc = strchr(line, '\0');
 
-  nntp_data = hash_find(nserv->groups_hash, line);
+  nntp_data = mutt_hash_find(nserv->groups_hash, line);
   if (nntp_data && (mutt_strcmp(desc, nntp_data->desc) != 0))
   {
     mutt_str_replace(&nntp_data->desc, desc);
@@ -1469,7 +1469,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   CurrentNewsSrv = nserv;
 
   /* find news group data structure */
-  nntp_data = hash_find(nserv->groups_hash, group);
+  nntp_data = mutt_hash_find(nserv->groups_hash, group);
   if (!nntp_data)
   {
     nntp_newsrc_close(nserv);
@@ -1664,17 +1664,17 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   /* replace envelope with new one
    * hash elements must be updated because pointers will be changed */
   if (ctx->id_hash && hdr->env->message_id)
-    hash_delete(ctx->id_hash, hdr->env->message_id, hdr, NULL);
+    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr, NULL);
   if (ctx->subj_hash && hdr->env->real_subj)
-    hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr, NULL);
+    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr, NULL);
 
   mutt_free_envelope(&hdr->env);
   hdr->env = mutt_read_rfc822_header(msg->fp, hdr, 0, 0);
 
   if (ctx->id_hash && hdr->env->message_id)
-    hash_insert(ctx->id_hash, hdr->env->message_id, hdr);
+    mutt_hash_insert(ctx->id_hash, hdr->env->message_id, hdr);
   if (ctx->subj_hash && hdr->env->real_subj)
-    hash_insert(ctx->subj_hash, hdr->env->real_subj, hdr);
+    mutt_hash_insert(ctx->subj_hash, hdr->env->real_subj, hdr);
 
   /* fix content length */
   fseek(msg->fp, 0, SEEK_END);
@@ -1995,9 +1995,9 @@ static int check_mailbox(struct Context *ctx)
   if (ret == MUTT_REOPENED)
   {
     if (ctx->subj_hash)
-      hash_destroy(&ctx->subj_hash, NULL);
+      mutt_hash_destroy(&ctx->subj_hash, NULL);
     if (ctx->id_hash)
-      hash_destroy(&ctx->id_hash, NULL);
+      mutt_hash_destroy(&ctx->id_hash, NULL);
     mutt_clear_threads(ctx);
 
     ctx->vcount = 0;
@@ -2136,7 +2136,7 @@ static int nntp_close_mailbox(struct Context *ctx)
   if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)
     return 0;
 
-  nntp_tmp = hash_find(nntp_data->nserv->groups_hash, nntp_data->group);
+  nntp_tmp = mutt_hash_find(nntp_data->nserv->groups_hash, nntp_data->group);
   if (nntp_tmp == NULL || nntp_tmp != nntp_data)
     nntp_data_free(nntp_data);
   return 0;
@@ -2225,7 +2225,7 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
     if (data && data->deleted && !data->newsrc_ent)
     {
       nntp_delete_group_cache(data);
-      hash_delete(nserv->groups_hash, data->group, NULL, nntp_data_free);
+      mutt_hash_delete(nserv->groups_hash, data->group, NULL, nntp_data_free);
       nserv->groups_list[i] = NULL;
     }
   }

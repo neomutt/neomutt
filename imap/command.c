@@ -610,7 +610,7 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
   while ((s = imap_next_word((char *) s)) && *s != '\0')
   {
     uid = (unsigned int) atoi(s);
-    h = (struct Header *) int_hash_find(idata->uid_hash, uid);
+    h = (struct Header *) mutt_hash_int_find(idata->uid_hash, uid);
     if (h)
       h->matched = true;
   }

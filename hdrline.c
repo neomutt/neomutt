@@ -811,7 +811,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[1] = *src;
         format[2] = 0;
 
-        tag = hash_find(TagFormats, format);
+        tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);
@@ -828,7 +828,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[1] = *prefix;
         format[2] = 0;
 
-        tag = hash_find(TagFormats, format);
+        tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);

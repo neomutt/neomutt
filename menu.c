@@ -77,7 +77,7 @@ static int get_color(int index, unsigned char *s)
       {
         if (strncmp((const char *) (s + 1), np->pattern, strlen(np->pattern)) == 0)
           return np->pair;
-        const char *transform = hash_find(TagTransforms, np->pattern);
+        const char *transform = mutt_hash_find(TagTransforms, np->pattern);
         if (transform &&
             (strncmp((const char *) (s + 1), transform, strlen(transform)) == 0))
           return np->pair;

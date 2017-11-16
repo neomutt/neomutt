@@ -228,14 +228,14 @@ static void label_ref_dec(struct Context *ctx, char *label)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(ctx->label_hash, label);
+  elem = mutt_hash_find_elem(ctx->label_hash, label);
   if (!elem)
     return;
 
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    hash_delete(ctx->label_hash, label, NULL, NULL);
+    mutt_hash_delete(ctx->label_hash, label, NULL, NULL);
     return;
   }
 
@@ -248,11 +248,11 @@ static void label_ref_inc(struct Context *ctx, char *label)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(ctx->label_hash, label);
+  elem = mutt_hash_find_elem(ctx->label_hash, label);
   if (!elem)
   {
     count = 1;
-    hash_insert(ctx->label_hash, label, (void *) count);
+    mutt_hash_insert(ctx->label_hash, label, (void *) count);
     return;
   }
 
@@ -336,7 +336,7 @@ void mutt_make_label_hash(struct Context *ctx)
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a mailbox.
    */
-  ctx->label_hash = hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  ctx->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
