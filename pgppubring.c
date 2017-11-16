@@ -313,7 +313,7 @@ static void pgp_make_pgp3_fingerprint(unsigned char *buff, size_t l, unsigned ch
   unsigned char dummy;
   struct Sha1Ctx context;
 
-  sha1_init(&context);
+  mutt_sha1_init(&context);
 
   dummy = buff[0] & 0x3f;
 
@@ -321,13 +321,13 @@ static void pgp_make_pgp3_fingerprint(unsigned char *buff, size_t l, unsigned ch
     dummy = PT_PUBKEY;
 
   dummy = (dummy << 2) | 0x81;
-  sha1_update(&context, &dummy, 1);
+  mutt_sha1_update(&context, &dummy, 1);
   dummy = ((l - 1) >> 8) & 0xff;
-  sha1_update(&context, &dummy, 1);
+  mutt_sha1_update(&context, &dummy, 1);
   dummy = (l - 1) & 0xff;
-  sha1_update(&context, &dummy, 1);
-  sha1_update(&context, buff + 1, l - 1);
-  sha1_final(digest, &context);
+  mutt_sha1_update(&context, &dummy, 1);
+  mutt_sha1_update(&context, buff + 1, l - 1);
+  mutt_sha1_final(digest, &context);
 }
 
 static void skip_bignum(unsigned char *buff, size_t l, size_t j, size_t *toff, size_t n)
