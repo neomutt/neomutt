@@ -63,6 +63,6 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
   tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);
 
   len = snprintf(buf, buflen, "%s ", cmd);
-  len += mutt_to_base64(buf + len, tmp, tmplen, buflen - len);
+  len += mutt_b64_encode(buf + len, tmp, tmplen, buflen - len);
   return len;
 }

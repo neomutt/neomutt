@@ -206,7 +206,7 @@ static size_t b_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
     size_t ret;
     size_t in_len = MIN(3, dlen);
 
-    ret = mutt_to_base64(encoded, d, in_len, sizeof(encoded));
+    ret = mutt_b64_encode(encoded, d, in_len, sizeof(encoded));
     for (size_t i = 0; i < ret; i++)
       *s++ = encoded[i];
 
