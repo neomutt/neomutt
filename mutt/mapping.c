@@ -26,23 +26,23 @@
  *
  * Map a string to a constant and vice versa.
  *
- * | Function              | Description
- * | :-------------------- | :-------------------------------
- * | mutt_getnamebyvalue() | Lookup a string for a constant
- * | mutt_getvaluebyname() | Lookup the constant for a string
+ * | Function             | Description
+ * | :------------------- | :-------------------------------
+ * | mutt_map_get_name()  | Lookup a string for a constant
+ * | mutt_map_get_value() | Lookup the constant for a string
  */
 
 #include "mapping.h"
 #include "string2.h"
 
 /**
- * mutt_getnamebyvalue - Lookup a string for a constant
+ * mutt_map_get_name - Lookup a string for a constant
  * @param val ID to locate in map
  * @param map NULL-terminated map of strings and constants
  * @retval str  String matching ID
  * @retval NULL ID not found
  */
-const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
+const char *mutt_map_get_name(int val, const struct Mapping *map)
 {
   for (int i = 0; map[i].name; i++)
     if (map[i].value == val)
@@ -51,13 +51,13 @@ const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
 }
 
 /**
- * mutt_getvaluebyname - Lookup the constant for a string
+ * mutt_map_get_value - Lookup the constant for a string
  * @param name String to locate in map
  * @param map  NULL-terminated map of strings and constants
  * @retval num  ID matching string
  * @retval -1   String not found
  */
-int mutt_getvaluebyname(const char *name, const struct Mapping *map)
+int mutt_map_get_value(const char *name, const struct Mapping *map)
 {
   for (int i = 0; map[i].name; i++)
     if (mutt_strcasecmp(map[i].name, name) == 0)

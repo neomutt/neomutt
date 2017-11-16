@@ -406,7 +406,7 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
       return -1;
     }
   }
-  else if ((*col = mutt_getvaluebyname(s, Colors)) == -1)
+  else if ((*col = mutt_map_get_value(s, Colors)) == -1)
   {
     snprintf(err->data, err->dsize, _("%s: no such color"), s);
     return -1;
@@ -497,7 +497,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
 
   mutt_extract_token(buf, s, 0);
 
-  object = mutt_getvaluebyname(buf->data, Fields);
+  object = mutt_map_get_value(buf->data, Fields);
   if (object == -1)
   {
     snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
@@ -715,14 +715,14 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
 
     mutt_extract_token(buf, s, 0);
 
-    *o = mutt_getvaluebyname(buf->data, ComposeFields);
+    *o = mutt_map_get_value(buf->data, ComposeFields);
     if (*o == -1)
     {
       snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
       return (-1);
     }
   }
-  else if ((*o = mutt_getvaluebyname(buf->data, Fields)) == -1)
+  else if ((*o = mutt_map_get_value(buf->data, Fields)) == -1)
   {
     snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
     return -1;

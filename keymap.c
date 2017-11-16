@@ -202,7 +202,7 @@ static int parsekeys(const char *str, keycode_t *d, int max)
       c = *t;
       *t = '\0';
 
-      n = mutt_getvaluebyname(s, KeyNames);
+      n = mutt_map_get_value(s, KeyNames);
       if (n != -1)
       {
         s = t;
@@ -280,7 +280,7 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
                 _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s "
                   "noop'  "
                   "https://neomutt.org/guide/configuration.html#bind-warnings"),
-                old_binding, new_binding, mutt_getnamebyvalue(menu, Menus), new_binding);
+                old_binding, new_binding, mutt_map_get_name(menu, Menus), new_binding);
           }
           else
           {
@@ -288,7 +288,7 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
                 _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s "
                   "noop'  "
                   "https://neomutt.org/guide/configuration.html#bind-warnings"),
-                old_binding, new_binding, mutt_getnamebyvalue(menu, Menus), new_binding);
+                old_binding, new_binding, mutt_map_get_name(menu, Menus), new_binding);
           }
           retval = -2;
         }
@@ -615,7 +615,7 @@ static const char *km_keyname(int c)
   static char buf[10];
   const char *p = NULL;
 
-  if ((p = mutt_getnamebyvalue(c, KeyNames)))
+  if ((p = mutt_map_get_name(c, KeyNames)))
     return p;
 
   if (c < 256 && c > -128 && iscntrl((unsigned char) c))
@@ -987,7 +987,7 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
       if (q)
         *q = '\0';
 
-      menu[i] = mutt_getvaluebyname(p, Menus);
+      menu[i] = mutt_map_get_value(p, Menus);
       if (menu[i] == -1)
       {
         snprintf(err->data, err->dsize, _("%s: no such menu"), p);
@@ -1033,7 +1033,7 @@ static int try_bind(char *key, int menu, char *func,
   {
     snprintf(err->data, err->dsize,
              _("Function '%s' not available for menu '%s'"), func,
-             mutt_getnamebyvalue(menu, Menus));
+             mutt_map_get_name(menu, Menus));
   }
   return -1; /* Couldn't find an existing function with this name */
 }

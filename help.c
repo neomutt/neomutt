@@ -352,7 +352,7 @@ void mutt_help(int menu)
   mutt_mktemp(t, sizeof(t));
 
   funcs = km_get_table(menu);
-  desc = mutt_getnamebyvalue(menu, Menus);
+  desc = mutt_map_get_name(menu, Menus);
   if (!desc)
     desc = _("<UNKNOWN>");
 

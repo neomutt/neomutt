@@ -351,7 +351,7 @@ static int parse_sort(short *val, const char *s, const struct Mapping *map, stru
     flags |= SORT_LAST;
   }
 
-  i = mutt_getvaluebyname(s, map);
+  i = mutt_map_get_value(s, map);
   if (i == -1)
   {
     snprintf(err->data, err->dsize, _("%s: unknown sorting method"), s);
@@ -3018,7 +3018,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
       if (query || *s->dptr != '=')
       {
-        p = mutt_getnamebyvalue(*((short *) MuttVars[idx].data) & SORT_MASK, map);
+        p = mutt_map_get_name(*((short *) MuttVars[idx].data) & SORT_MASK, map);
 
         snprintf(err->data, err->dsize, "%s=%s%s%s", MuttVars[idx].option,
                  (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
@@ -3831,7 +3831,7 @@ int var_to_string(int idx, char *val, size_t len)
         map = SortMethods;
         break;
     }
-    p = mutt_getnamebyvalue(*((short *) MuttVars[idx].data) & SORT_MASK, map);
+    p = mutt_map_get_name(*((short *) MuttVars[idx].data) & SORT_MASK, map);
     snprintf(tmp, sizeof(tmp), "%s%s%s",
              (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
              (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "", p);

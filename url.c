@@ -90,7 +90,7 @@ enum UrlScheme url_check_scheme(const char *s)
   for (t = sbuf; *t; t++)
     *t = tolower(*t);
 
-  i = mutt_getvaluebyname(sbuf, UrlMap);
+  i = mutt_map_get_value(sbuf, UrlMap);
   if (i == -1)
     return U_UNKNOWN;
   else
@@ -289,7 +289,7 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
   if (u->scheme == U_UNKNOWN)
     return -1;
 
-  snprintf(dest, len, "%s:", mutt_getnamebyvalue(u->scheme, UrlMap));
+  snprintf(dest, len, "%s:", mutt_map_get_name(u->scheme, UrlMap));
 
   if (u->host)
   {
