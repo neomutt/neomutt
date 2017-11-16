@@ -496,7 +496,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       }
       else
       {
-        if (get_initials(mutt_get_name(hdr->env->from), buf2, sizeof(buf2)))
+        if (mutt_mb_get_initials(mutt_get_name(hdr->env->from), buf2, sizeof(buf2)))
         {
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
           mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);

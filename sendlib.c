@@ -1741,7 +1741,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
-    w = my_width(buf, col, display);
+    w = mutt_mb_width(buf, col, display);
     enc = (mutt_strncmp(buf, "=?", 2) == 0);
 
     mutt_debug(5, "mwoh: word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
@@ -1967,7 +1967,7 @@ int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
     /* find maximum line width in current header */
     if (p)
       *p = 0;
-    w = my_width(line, 0, display);
+    w = mutt_mb_width(line, 0, display);
     if (w > max)
       max = w;
     if (p)
