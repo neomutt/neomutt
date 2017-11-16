@@ -57,8 +57,6 @@ static void default_error(const char *format, ...)
   fputc('\n', stderr);
 }
 
-void (*mutt_error)(const char *, ...) = default_error;
-
 /**
  * default_message - Display an informative message
  * @param format printf-like formatting string
@@ -75,8 +73,6 @@ static void default_message(const char *format, ...)
   fputc('\n', stdout);
 }
 
-void (*mutt_message)(const char *, ...) = default_message;
-
 /**
  * default_perror - Lookup a standard error message (using errno)
  * @param message Prefix message to display
@@ -90,4 +86,6 @@ static void default_perror(const char *message)
   mutt_error("%s: %s (errno = %d)", message, p ? p : _("unknown error"), errno);
 }
 
+void (*mutt_error)(const char *, ...) = default_error;
+void (*mutt_message)(const char *, ...) = default_message;
 void (*mutt_perror)(const char *) = default_perror;

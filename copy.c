@@ -538,7 +538,6 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * @param fpout   Where to write output
  * @param fpin    Where to get input
  * @param hdr     Header of message being copied
- * @param body    Structure of message being copied
  * @param flags   See below
  * @param chflags Flags to mutt_copy_header()
  *
@@ -784,7 +783,6 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
  * @param fpin    where to get input
  * @param src     source mailbox
  * @param hdr     message being copied
- * @param body    structure of message being copied
  * @param flags   mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
  * @retval 0 on success
