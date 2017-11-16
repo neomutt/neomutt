@@ -278,7 +278,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
           p = tstr + 8;
           goto bail;
         }
-        tmp.gen_time = mutt_mktime(&time, 0);
+        tmp.gen_time = mutt_date_make_time(&time, 0);
         break;
       }
       case 7: /* valid for n days */

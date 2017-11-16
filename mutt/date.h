@@ -41,14 +41,14 @@ extern const char *const Weekdays[];
 extern const char *const Months[];
 extern const struct Tz TimeZones[];
 
-int     imap_make_date(char *buf, size_t buflen, time_t timestamp);
-time_t  imap_parse_date(char *s);
-bool    is_day_name(const char *s);
-int     mutt_check_month(const char *s);
-time_t  mutt_local_tz(time_t t);
-char   *mutt_make_date(char *buf, size_t buflen);
-time_t  mutt_mktime(struct tm *t, int local);
-void    mutt_normalize_time(struct tm *tm);
-time_t  mutt_parse_date(const char *s, struct Tz *tz_out);
+int     mutt_date_check_month(const char *s);
+bool    mutt_date_is_day_name(const char *s);
+time_t  mutt_date_local_tz(time_t t);
+char   *mutt_date_make_date(char *buf, size_t buflen);
+int     mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
+time_t  mutt_date_make_time(struct tm *t, int local);
+void    mutt_date_normalize_time(struct tm *tm);
+time_t  mutt_date_parse_date(const char *s, struct Tz *tz_out);
+time_t  mutt_date_parse_imap(char *s);
 
 #endif /* _MUTT_DATE_H */

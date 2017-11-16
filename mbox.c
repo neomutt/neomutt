@@ -170,7 +170,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         }
       }
       else
-        hdr->received = t - mutt_local_tz(t);
+        hdr->received = t - mutt_date_local_tz(t);
 
       hdr->env = mutt_read_rfc822_header(ctx->fp, hdr, 0, 0);
 
@@ -313,7 +313,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
         mx_alloc_memory(ctx);
 
       curhdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
-      curhdr->received = t - mutt_local_tz(t);
+      curhdr->received = t - mutt_date_local_tz(t);
       curhdr->offset = loc;
       curhdr->index = ctx->msgcount;
 

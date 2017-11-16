@@ -52,7 +52,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 
   mutt_debug(3, "\nis_from(): parsing: %s\n", s);
 
-  if (!is_day_name(s))
+  if (!mutt_date_is_day_name(s))
   {
     const char *p = NULL;
     size_t len;
@@ -102,7 +102,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     if (!*s)
       return 0;
 
-    if (!is_day_name(s))
+    if (!mutt_date_is_day_name(s))
     {
       mutt_debug(1, "is_from():  expected weekday, got: %s\n", s);
       return 0;
@@ -117,7 +117,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
    * this could happen when receiving mail from a local user whose login name
    * is the same as a three-letter abbreviation of the day of the week.
    */
-  if (is_day_name(s))
+  if (mutt_date_is_day_name(s))
   {
     s = next_word(s);
     if (!*s)
@@ -125,7 +125,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   }
 
   /* now we should be on the month. */
-  tm.tm_mon = mutt_check_month(s);
+  tm.tm_mon = mutt_date_check_month(s);
   if (tm.tm_mon < 0)
     return 0;
 
@@ -191,6 +191,6 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   tm.tm_isdst = -1;
 
   if (tp)
-    *tp = mutt_mktime(&tm, 0);
+    *tp = mutt_date_make_time(&tm, 0);
   return 1;
 }

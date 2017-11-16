@@ -570,7 +570,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       LOFF_T new_length = body->length;
       char date[SHORT_STRING];
 
-      mutt_make_date(date, sizeof(date));
+      mutt_date_make_date(date, sizeof(date));
       int dlen = mutt_strlen(date);
       if (dlen == 0)
         return -1;

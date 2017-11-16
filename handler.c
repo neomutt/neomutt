@@ -1506,7 +1506,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 
   expiration = mutt_get_parameter("expiration", b->parameter);
   if (expiration)
-    expire = mutt_parse_date(expiration, NULL);
+    expire = mutt_date_parse_date(expiration, NULL);
   else
     expire = -1;
 

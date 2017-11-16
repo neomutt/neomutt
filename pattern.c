@@ -160,7 +160,7 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
     default:
       return s;
   }
-  mutt_normalize_time(tm);
+  mutt_date_normalize_time(tm);
   return (ps + 1);
 }
 
@@ -429,7 +429,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   memset(&max, 0, sizeof(max));
 
   /* Arbitrary year in the future.  Don't set this too high
-     or mutt_mktime() returns something larger than will
+     or mutt_date_make_time() returns something larger than will
      fit in a time_t on some systems */
   max.tm_year = 130;
   max.tm_mon = 11;
@@ -530,8 +530,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   /* Since we allow two dates to be specified we'll have to adjust that. */
   adjust_date_range(&min, &max);
 
-  pat->min = mutt_mktime(&min, 1);
-  pat->max = mutt_mktime(&max, 1);
+  pat->min = mutt_date_make_time(&min, 1);
+  pat->max = mutt_date_make_time(&max, 1);
 
   FREE(&buffer.data);
 

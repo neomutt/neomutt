@@ -349,7 +349,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
         return -1;
       s++; /* skip past the trailing " */
       *ptmp = '\0';
-      h->received = imap_parse_date(tmp);
+      h->received = mutt_date_parse_imap(tmp);
     }
     else if (mutt_strncasecmp("RFC822.SIZE", s, 11) == 0)
     {
@@ -1294,7 +1294,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
                      MUTT_PROGRESS_SIZE, NetInc, len);
 
   imap_munge_mbox_name(idata, mbox, sizeof(mbox), mailbox);
-  imap_make_date(internaldate, sizeof(internaldate), msg->received);
+  mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
   imap_flags[0] = imap_flags[1] = 0;
   if (msg->flags.read)

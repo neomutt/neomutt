@@ -840,7 +840,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         if (hdr)
         {
           struct Tz tz;
-          hdr->date_sent = mutt_parse_date(p, &tz);
+          hdr->date_sent = mutt_date_parse_date(p, &tz);
           if (hdr->date_sent > 0)
           {
             hdr->zhours = tz.zhours;
@@ -854,7 +854,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
 
     case 'e':
       if ((mutt_strcasecmp("xpires", line + 1) == 0) && hdr &&
-          mutt_parse_date(p, NULL) < time(NULL))
+          mutt_date_parse_date(p, NULL) < time(NULL))
         hdr->expired = true;
       break;
 
@@ -1003,7 +1003,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
           char *d = strrchr(p, ';');
 
           if (d)
-            hdr->received = mutt_parse_date(d + 1, NULL);
+            hdr->received = mutt_date_parse_date(d + 1, NULL);
         }
       }
       break;
@@ -1190,7 +1190,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
       {
         /* MH sometimes has the From_ line in the middle of the header! */
         if (hdr && !hdr->received)
-          hdr->received = t - mutt_local_tz(t);
+          hdr->received = t - mutt_date_local_tz(t);
         continue;
       }
 

@@ -2020,7 +2020,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   bool has_agent = false; /* user defined user-agent header field exists */
 
   if (mode == 0 && !privacy)
-    fputs(mutt_make_date(buffer, sizeof(buffer)), fp);
+    fputs(mutt_date_make_date(buffer, sizeof(buffer)), fp);
 
   /* OPT_USE_FROM is not consulted here so that we can still write a From:
    * field if the user sets it with the `my_hdr' command
@@ -2738,7 +2738,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
 
     fseeko(fp, h->offset, SEEK_SET);
     fprintf(f, "Resent-From: %s", resent_from);
-    fprintf(f, "\nResent-%s", mutt_make_date(date, sizeof(date)));
+    fprintf(f, "\nResent-%s", mutt_date_make_date(date, sizeof(date)));
     msgid_str = gen_msgid();
     fprintf(f, "Resent-Message-ID: %s\n", msgid_str);
     fputs("Resent-To: ", f);
@@ -3004,7 +3004,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   /* mutt_write_rfc822_header() only writes out a Date: header with
    * mode == 0, i.e. _not_ postponement; so write out one ourself */
   if (post)
-    fprintf(msg->fp, "%s", mutt_make_date(buf, sizeof(buf)));
+    fprintf(msg->fp, "%s", mutt_date_make_date(buf, sizeof(buf)));
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
   if ((WithCrypto & APPLICATION_PGP) && post && (hdr->security & APPLICATION_PGP))
