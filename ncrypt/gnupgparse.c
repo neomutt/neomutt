@@ -436,7 +436,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   if (ferror(fp))
     mutt_perror("fgets");
 
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   mutt_wait_filter(thepid);
 
   close(devnull);

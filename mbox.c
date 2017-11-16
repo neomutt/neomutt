@@ -74,7 +74,7 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
-  r = mutt_lock_file(ctx->path, fileno(ctx->fp), excl, retry);
+  r = mutt_file_lock(ctx->path, fileno(ctx->fp), excl, retry);
   if (r == 0)
     ctx->locked = true;
   else if (retry && !excl)
@@ -92,7 +92,7 @@ static void mbox_unlock_mailbox(struct Context *ctx)
   {
     fflush(ctx->fp);
 
-    mutt_unlock_file(ctx->path, fileno(ctx->fp));
+    mutt_file_unlock(ctx->path, fileno(ctx->fp));
     ctx->locked = false;
   }
 }
@@ -459,7 +459,7 @@ static int mbox_open_mailbox(struct Context *ctx)
     rc = mmdf_parse_mailbox(ctx);
   else
     rc = -1;
-  mutt_touch_atime(fileno(ctx->fp));
+  mutt_file_touch_atime(fileno(ctx->fp));
 
   mbox_unlock_mailbox(ctx);
   mutt_unblock_signals();
@@ -468,7 +468,7 @@ static int mbox_open_mailbox(struct Context *ctx)
 
 static int mbox_open_mailbox_append(struct Context *ctx, int flags)
 {
-  ctx->fp = safe_fopen(ctx->path, flags & MUTT_NEWFOLDER ? "w" : "a");
+  ctx->fp = mutt_file_fopen(ctx->path, flags & MUTT_NEWFOLDER ? "w" : "a");
   if (!ctx->fp)
   {
     mutt_perror(ctx->path);
@@ -478,7 +478,7 @@ static int mbox_open_mailbox_append(struct Context *ctx, int flags)
   if (mbox_lock_mailbox(ctx, 1, 1) != 0)
   {
     mutt_error(_("Couldn't lock %s\n"), ctx->path);
-    safe_fclose(&ctx->fp);
+    mutt_file_fclose(&ctx->fp);
     return -1;
   }
 
@@ -496,11 +496,11 @@ static int mbox_close_mailbox(struct Context *ctx)
 
   if (ctx->append)
   {
-    mutt_unlock_file(ctx->path, fileno(ctx->fp));
+    mutt_file_unlock(ctx->path, fileno(ctx->fp));
     mutt_unblock_signals();
   }
 
-  safe_fclose(&ctx->fp);
+  mutt_file_fclose(&ctx->fp);
 
   return 0;
 }
@@ -730,8 +730,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     case MUTT_MBOX:
     case MUTT_MMDF:
       cmp_headers = mbox_strict_cmp_headers;
-      safe_fclose(&ctx->fp);
-      ctx->fp = safe_fopen(ctx->path, "r");
+      mutt_file_fclose(&ctx->fp);
+      ctx->fp = mutt_file_fopen(ctx->path, "r");
       if (!ctx->fp)
         rc = -1;
       else
@@ -754,7 +754,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  mutt_touch_atime(fileno(ctx->fp));
+  mutt_file_touch_atime(fileno(ctx->fp));
 
   /* now try to recover the old flags */
 
@@ -1200,7 +1200,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   if (fclose(fp) != 0)
   {
     fp = NULL;
-    mutt_debug(1, "mbox_sync_mailbox: safe_fclose (&) returned non-zero.\n");
+    mutt_debug(1,
+               "mbox_sync_mailbox: mutt_file_fclose (&) returned non-zero.\n");
     unlink(tempfile);
     mutt_perror(tempfile);
     mutt_sleep(5);
@@ -1255,7 +1256,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
        */
       if (!ctx->quiet)
         mutt_message(_("Committing changes..."));
-      i = mutt_copy_stream(fp, ctx->fp);
+      i = mutt_file_copy_stream(fp, ctx->fp);
 
       if (ferror(ctx->fp))
         i = -1;
@@ -1271,11 +1272,11 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     }
   }
 
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   fp = NULL;
   mbox_unlock_mailbox(ctx);
 
-  if (safe_fclose(&ctx->fp) != 0 || i == -1)
+  if (mutt_file_fclose(&ctx->fp) != 0 || i == -1)
   {
     /* error occurred while writing the mailbox back, so keep the temp copy
      * around
@@ -1339,7 +1340,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
 bail: /* Come here in case of disaster */
 
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   /* restore offsets, as far as they are valid */
   if (first >= 0 && oldOffset)

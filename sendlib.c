@@ -489,11 +489,11 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   else if (a->type == TYPETEXT && (!a->noconv))
     encode_8bit(fc, f, write_as_text_part(a));
   else
-    mutt_copy_stream(fpin, f);
+    mutt_file_copy_stream(fpin, f);
   mutt_allow_interrupt(0);
 
   fgetconv_close(&fc);
-  safe_fclose(&fpin);
+  mutt_file_fclose(&fpin);
 
   if (SigInt == 1)
   {
@@ -958,7 +958,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
       FREE(&b->charset);
       b->charset = fromcode;
       FREE(&tocode);
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
       return info;
     }
   }
@@ -968,7 +968,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     update_content_info(info, &state, buffer, r);
   update_content_info(info, &state, 0, 0);
 
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
     mutt_set_parameter(
@@ -1092,7 +1092,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
           p = NULL;
         }
       }
-      safe_fclose(&f);
+      mutt_file_fclose(&f);
     }
   }
 
@@ -1140,7 +1140,7 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->force_charset = true;
 
       mutt_mktemp(buff, sizeof(buff));
-      s.fpout = safe_fopen(buff, "w");
+      s.fpout = mutt_file_fopen(buff, "w");
       if (!s.fpout)
       {
         mutt_perror("fopen");
@@ -1148,7 +1148,7 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       }
       s.fpin = fpin;
       mutt_decode_attachment(a, &s);
-      safe_fclose(&s.fpout);
+      mutt_file_fclose(&s.fpout);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
       a->filename = safe_strdup(buff);
@@ -1190,13 +1190,13 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
     if (stat(a->filename, &sb) == -1)
     {
       mutt_perror("stat");
-      safe_fclose(&fpin);
+      mutt_file_fclose(&fpin);
     }
     a->length = sb.st_size;
   }
 
   mutt_mktemp(temp, sizeof(temp));
-  fpout = safe_fopen(temp, "w+");
+  fpout = mutt_file_fopen(temp, "w+");
   if (!fpout)
   {
     mutt_perror("fopen");
@@ -1223,9 +1223,9 @@ cleanup:
   FREE(&line);
 
   if (fpin && fpin != fp)
-    safe_fclose(&fpin);
+    mutt_file_fclose(&fpin);
   if (fpout)
-    safe_fclose(&fpout);
+    mutt_file_fclose(&fpout);
   else
     return;
 
@@ -1363,7 +1363,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   }
 
   mutt_mktemp(buffer, sizeof(buffer));
-  fp = safe_fopen(buffer, "w+");
+  fp = mutt_file_fopen(buffer, "w+");
   if (!fp)
     return NULL;
 
@@ -1429,7 +1429,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   mutt_update_encoding(body);
   body->parts = body->hdr->content;
 
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return body;
 }
@@ -1452,7 +1452,7 @@ static void run_mime_type_query(struct Body *att)
     return;
   }
 
-  buf = mutt_read_line(buf, &buflen, fp, &dummy, 0);
+  buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0);
   if (buf)
   {
     if (strchr(buf, '/'))
@@ -1460,8 +1460,8 @@ static void run_mime_type_query(struct Body *att)
     FREE(&buf);
   }
 
-  safe_fclose(&fp);
-  safe_fclose(&fperr);
+  mutt_file_fclose(&fp);
+  mutt_file_fclose(&fperr);
   mutt_wait_filter(thepid);
 }
 
@@ -2727,7 +2727,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     fp = msg->fp;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  f = safe_fopen(tempfile, "w");
+  f = mutt_file_fopen(tempfile, "w");
   if (f)
   {
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
@@ -2745,9 +2745,9 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     mutt_write_address_list(to, f, 11, 0);
     mutt_copy_header(fp, h, f, ch_flags, NULL);
     fputc('\n', f);
-    mutt_copy_bytes(fp, f, h->content->length);
+    mutt_file_copy_bytes(fp, f, h->content->length);
     FREE(&msgid_str);
-    if (safe_fclose(&f) != 0)
+    if (mutt_file_fclose(&f) != 0)
     {
       mutt_perror(tempfile);
       unlink(tempfile);
@@ -2954,7 +2954,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (f.magic == MUTT_MMDF || f.magic == MUTT_MBOX)
   {
     mutt_mktemp(tempfile, sizeof(tempfile));
-    tempfp = safe_fopen(tempfile, "w+");
+    tempfp = mutt_file_fopen(tempfile, "w+");
     if (!tempfp)
     {
       mutt_perror(tempfile);
@@ -2973,7 +2973,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   msg = mx_open_new_message(&f, hdr, onm_flags);
   if (!msg)
   {
-    safe_fclose(&tempfp);
+    mutt_file_fclose(&tempfp);
     mx_close_mailbox(&f, NULL);
     return -1;
   }
@@ -3088,7 +3088,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     if (ferror(tempfp))
     {
       mutt_debug(1, "mutt_write_fcc(): %s: write failed.\n", tempfile);
-      safe_fclose(&tempfp);
+      mutt_file_fclose(&tempfp);
       unlink(tempfile);
       mx_commit_message(msg, &f); /* XXX - really? */
       mx_close_message(&f, &msg);
@@ -3105,7 +3105,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 
     /* copy the body and clean up */
     rewind(tempfp);
-    r = mutt_copy_stream(tempfp, msg->fp);
+    r = mutt_file_copy_stream(tempfp, msg->fp);
     if (fclose(tempfp) != 0)
       r = -1;
     /* if there was an error, leave the temp version */

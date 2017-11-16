@@ -265,7 +265,7 @@ static int link_is_dir(const char *folder, const char *path)
   struct stat st;
   char fullpath[_POSIX_PATH_MAX];
 
-  mutt_concat_path(fullpath, folder, path, sizeof(fullpath));
+  mutt_file_concat_path(fullpath, folder, path, sizeof(fullpath));
 
   if (stat(fullpath, &st) == 0)
     return (S_ISDIR(st.st_mode));
@@ -735,7 +735,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       if (!((regexec(Mask.regex, de->d_name, 0, NULL, 0) == 0) ^ Mask.not))
         continue;
 
-      mutt_concat_path(buffer, d, de->d_name, sizeof(buffer));
+      mutt_file_concat_path(buffer, d, de->d_name, sizeof(buffer));
       if (lstat(buffer, &s) == -1)
         continue;
 
@@ -1347,7 +1347,8 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           }
 #endif
           else
-            mutt_concat_path(buf, LastDir, state.entry[menu->current].name, sizeof(buf));
+            mutt_file_concat_path(buf, LastDir, state.entry[menu->current].name,
+                                  sizeof(buf));
 
           if ((mx_get_magic(buf) <= 0)
 #ifdef USE_IMAP
@@ -1406,7 +1407,8 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             else
             {
               char tmp[_POSIX_PATH_MAX];
-              mutt_concat_path(tmp, LastDir, state.entry[menu->current].name, sizeof(tmp));
+              mutt_file_concat_path(tmp, LastDir,
+                                    state.entry[menu->current].name, sizeof(tmp));
               strfcpy(LastDir, tmp, sizeof(LastDir));
             }
 
@@ -1460,7 +1462,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           strfcpy(f, state.entry[menu->current].name, flen);
 #endif
         else
-          mutt_concat_path(f, LastDir, state.entry[menu->current].name, flen);
+          mutt_file_concat_path(f, LastDir, state.entry[menu->current].name, flen);
 
       /* Fall through to OP_EXIT */
 
@@ -1480,7 +1482,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               char full[_POSIX_PATH_MAX];
               if (ff.tagged)
               {
-                mutt_concat_path(full, LastDir, ff.name, sizeof(full));
+                mutt_file_concat_path(full, LastDir, ff.name, sizeof(full));
                 mutt_expand_path(full, sizeof(full));
                 tfiles[k++] = safe_strdup(full);
               }
@@ -1647,7 +1649,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               /* in case dir is relative, make it relative to LastDir,
                * not current working dir */
               char tmp[_POSIX_PATH_MAX];
-              mutt_concat_path(tmp, LastDir, buf, sizeof(tmp));
+              mutt_file_concat_path(tmp, LastDir, buf, sizeof(tmp));
               strfcpy(buf, tmp, sizeof(buf));
             }
             if (stat(buf, &st) == 0)
@@ -1900,7 +1902,8 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           struct Body *b = NULL;
           char buf2[_POSIX_PATH_MAX];
 
-          mutt_concat_path(buf2, LastDir, state.entry[menu->current].name, sizeof(buf2));
+          mutt_file_concat_path(buf2, LastDir, state.entry[menu->current].name,
+                                sizeof(buf2));
           b = mutt_make_file_attach(buf2);
           if (b)
           {

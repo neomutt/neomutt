@@ -138,7 +138,7 @@ static struct Query *run_query(char *s, int quiet)
   fgets(msg, sizeof(msg), fp);
   if ((p = strrchr(msg, '\n')))
     *p = '\0';
-  while ((buf = mutt_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
   {
     if ((p = strtok(buf, "\t\n")))
     {
@@ -165,7 +165,7 @@ static struct Query *run_query(char *s, int quiet)
     }
   }
   FREE(&buf);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   if (mutt_wait_filter(thepid))
   {
     mutt_debug(1, "Error: %s\n", msg);

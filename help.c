@@ -358,7 +358,7 @@ void mutt_help(int menu)
 
   do
   {
-    f = safe_fopen(t, "w");
+    f = mutt_file_fopen(t, "w");
     if (!f)
     {
       mutt_perror(t);
@@ -378,7 +378,7 @@ void mutt_help(int menu)
     if (menu != MENU_PAGER)
       dump_unbound(f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
 
-    safe_fclose(&f);
+    mutt_file_fclose(&f);
 
     snprintf(buf, sizeof(buf), _("Help for %s"), desc);
   } while (mutt_do_pager(buf, t, MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,

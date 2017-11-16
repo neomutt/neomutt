@@ -630,8 +630,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
       /* read line */
       mutt_buffer_init(&expn);
-      expn.data = mutt_read_line(NULL, &expn.dsize, fp, &line, 0);
-      safe_fclose(&fp);
+      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, &line, 0);
+      mutt_file_fclose(&fp);
       mutt_wait_filter(pid);
 
       /* if we got output, make a new string consisting of the shell output
@@ -2319,7 +2319,7 @@ static void start_debug(void)
     rename(debugfilename, buf);
   }
 
-  debugfile = safe_fopen(debugfilename, "w");
+  debugfile = mutt_file_fopen(debugfilename, "w");
   if (debugfile)
   {
     setbuf(debugfile, NULL); /* don't buffer the debugging output! */
@@ -2345,7 +2345,7 @@ static void restart_debug(void)
   if (disable_debug || file_changed)
   {
     mutt_debug(1, "NeoMutt/%s stop debugging\n", PACKAGE_VERSION);
-    safe_fclose(&debugfile);
+    mutt_file_fclose(&debugfile);
   }
 
   if (!enable_debug && !disable_debug && debuglevel != DebugLevel)
@@ -3139,7 +3139,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   if (!ispipe)
   {
     struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
-    if (!to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
+    if (!mutt_file_to_absolute_path(rcfile, np ? NONULL(np->data) : ""))
     {
       mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
       return -1;
@@ -3173,7 +3173,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   }
 
   mutt_buffer_init(&token);
-  while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
   {
     conv = ConfigCharset && (*ConfigCharset) && Charset;
     if (conv)
@@ -3217,7 +3217,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   }
   FREE(&token.data);
   FREE(&linebuf);
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   if (pid != -1)
     mutt_wait_filter(pid);
   if (rc)
@@ -4141,7 +4141,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
   else
   {
-    p = file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
+    p = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
     NewsServer = safe_strdup(p);
   }
 #endif
@@ -4153,9 +4153,9 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   else
   {
 #ifdef HOMESPOOL
-    mutt_concat_path(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
+    mutt_file_concat_path(buffer, NONULL(HomeDir), MAILPATH, sizeof(buffer));
 #else
-    mutt_concat_path(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
+    mutt_file_concat_path(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
 #endif
     SpoolFile = safe_strdup(buffer);
   }
@@ -4346,7 +4346,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       mutt_exit(1);
   }
 
-  mutt_mkdir(Tmpdir, S_IRWXU);
+  mutt_file_mkdir(Tmpdir, S_IRWXU);
 
   mutt_read_histfile();
 

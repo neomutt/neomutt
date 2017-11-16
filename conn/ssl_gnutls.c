@@ -324,13 +324,13 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
                 "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
                 REG_ICASE) != 0)
     {
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
       return 0;
     }
 
     buf[0] = '\0';
     tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
-    while ((linestr = mutt_read_line(linestr, &linestrsize, fp, &linenum, 0)) != NULL)
+    while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, &linenum, 0)) != NULL)
     {
       if (linestr[0] == '#' && linestr[1] == 'H')
       {
@@ -343,7 +343,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
           {
             regfree(&preg);
             FREE(&linestr);
-            safe_fclose(&fp);
+            mutt_file_fclose(&fp);
             return 1;
           }
         }
@@ -351,7 +351,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
     }
 
     regfree(&preg);
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
   }
 
   /* not found a matching name */
@@ -389,7 +389,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   }
 
   b64_data.size = fread(b64_data.data, 1, b64_data.size, fd1);
-  safe_fclose(&fd1);
+  mutt_file_fclose(&fd1);
 
   do
   {
@@ -849,7 +849,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
               gnutls_free(pemdata.data);
             }
           }
-          safe_fclose(&fp);
+          mutt_file_fclose(&fp);
         }
         if (!done)
         {

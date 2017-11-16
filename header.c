@@ -55,7 +55,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct stat st;
 
   mutt_mktemp(path, sizeof(path));
-  ofp = safe_fopen(path, "w");
+  ofp = mutt_file_fopen(path, "w");
   if (!ofp)
   {
     mutt_perror(path);
@@ -71,14 +71,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   if (!ifp)
   {
     mutt_perror(body);
-    safe_fclose(&ofp);
+    mutt_file_fclose(&ofp);
     return;
   }
 
-  mutt_copy_stream(ifp, ofp);
+  mutt_file_copy_stream(ifp, ofp);
 
-  safe_fclose(&ifp);
-  safe_fclose(&ofp);
+  mutt_file_fclose(&ifp);
+  mutt_file_fclose(&ofp);
 
   if (stat(path, &st) == -1)
   {
@@ -86,7 +86,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     return;
   }
 
-  mtime = mutt_decrease_mtime(path, &st);
+  mtime = mutt_file_decrease_mtime(path, &st);
 
   mutt_edit_file(editor, path);
   stat(path, &st);
@@ -94,11 +94,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   {
     mutt_debug(1, "ci_edit_headers(): temp file was not modified.\n");
     /* the file has not changed! */
-    mutt_unlink(path);
+    mutt_file_unlink(path);
     return;
   }
 
-  mutt_unlink(body);
+  mutt_file_unlink(body);
   mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
@@ -109,11 +109,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     return;
   }
 
-  ofp = safe_fopen(body, "w");
+  ofp = mutt_file_fopen(body, "w");
   if (!ofp)
   {
     /* intentionally leak a possible temporary file here */
-    safe_fclose(&ifp);
+    mutt_file_fclose(&ifp);
     mutt_perror(body);
     return;
   }
@@ -121,9 +121,9 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   n = mutt_read_rfc822_header(ifp, NULL, 1, 0);
   while ((i = fread(buffer, 1, sizeof(buffer), ifp)) > 0)
     fwrite(buffer, 1, i, ofp);
-  safe_fclose(&ofp);
-  safe_fclose(&ifp);
-  mutt_unlink(path);
+  mutt_file_fclose(&ofp);
+  mutt_file_fclose(&ifp);
+  mutt_file_unlink(path);
 
 /* in case the user modifies/removes the In-Reply-To header with
      $edit_headers set, we remove References: as they're likely invalid;

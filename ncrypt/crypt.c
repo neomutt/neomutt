@@ -617,7 +617,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   if (!WithCrypto)
     return -1;
 
-  fp = safe_fopen(tempfile, "w");
+  fp = mutt_file_fopen(tempfile, "w");
   if (!fp)
   {
     mutt_perror(tempfile);
@@ -647,7 +647,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 
     fputc(c, fp);
   }
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return 0;
 }
@@ -696,7 +696,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
     return;
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  fpout = safe_fopen(tempfname, "w");
+  fpout = mutt_file_fopen(tempfname, "w");
   if (!fpout)
   {
     mutt_perror(tempfname);
@@ -718,7 +718,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
       mutt_parse_mime_message(Context, hi);
       if (hi->security & ENCRYPT && !crypt_valid_passphrase(hi->security))
       {
-        safe_fclose(&fpout);
+        mutt_file_fclose(&fpout);
         break;
       }
 
@@ -794,11 +794,11 @@ void crypt_extract_keys_from_messages(struct Header *h)
     }
   }
 
-  safe_fclose(&fpout);
+  mutt_file_fclose(&fpout);
   if (isendwin())
     mutt_any_key_to_continue(NULL);
 
-  mutt_unlink(tempfname);
+  mutt_file_unlink(tempfname);
 
   if ((WithCrypto & APPLICATION_PGP))
     unset_option(OPT_DONT_HANDLE_PGP_KEYS);
@@ -1025,7 +1025,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
         }
       }
 
-      mutt_unlink(tempfile);
+      mutt_file_unlink(tempfile);
 
       b->goodsig = goodsig;
       b->badsig = !goodsig;

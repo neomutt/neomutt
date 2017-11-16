@@ -143,7 +143,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
   safe_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
   safe_strncat(path, sizeof(path), id, mutt_strlen(id));
 
-  fp = safe_fopen(path, "r");
+  fp = mutt_file_fopen(path, "r");
 
   mutt_debug(3, "bcache: get: '%s': %s\n", path, fp == NULL ? "no" : "yes");
 
@@ -174,7 +174,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
   }
   else
   {
-    if (mutt_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
+    if (mutt_file_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
     {
       mutt_error(_("Can't create %s %s"), bcache->path, strerror(errno));
       return NULL;
@@ -183,7 +183,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 
   mutt_debug(3, "bcache: put: '%s'\n", path);
 
-  return safe_fopen(path, "w+");
+  return mutt_file_fopen(path, "w+");
 }
 
 int mutt_bcache_commit(struct BodyCache *bcache, const char *id)

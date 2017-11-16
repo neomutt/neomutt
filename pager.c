@@ -1154,7 +1154,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   {
     if (offset != *last_pos)
       fseeko(f, offset, SEEK_SET);
-    *buf = (unsigned char *) mutt_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
+    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
     if (!*buf)
     {
       fmt[0] = 0;
@@ -2072,7 +2072,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   if (stat(fname, &rd.sb) != 0)
   {
     mutt_perror(fname);
-    safe_fclose(&rd.fp);
+    mutt_file_fclose(&rd.fp);
     return -1;
   }
   unlink(fname);
@@ -3204,7 +3204,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     }
   }
 
-  safe_fclose(&rd.fp);
+  mutt_file_fclose(&rd.fp);
   if (IsHeader(extra))
   {
     if (Context)

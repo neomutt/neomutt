@@ -664,7 +664,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = safe_fopen(tempfile, "w+");
+  fp = mutt_file_fopen(tempfile, "w+");
   if (!fp)
   {
     mutt_error(_("Could not create temporary file %s"), tempfile);
@@ -978,7 +978,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   retval = msn_end;
 
 error_out_1:
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
 error_out_0:
   FREE(&hdrreq);
@@ -1055,7 +1055,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
     cache->uid = HEADER_DATA(h)->uid;
     mutt_mktemp(path, sizeof(path));
     cache->path = safe_strdup(path);
-    msg->fp = safe_fopen(path, "w+");
+    msg->fp = mutt_file_fopen(path, "w+");
     if (!msg->fp)
     {
       FREE(&cache->path);
@@ -1195,7 +1195,7 @@ parsemsg:
   return 0;
 
 bail:
-  safe_fclose(&msg->fp);
+  mutt_file_fclose(&msg->fp);
   imap_cache_del(idata, h);
   if (cache->path)
   {
@@ -1215,7 +1215,7 @@ bail:
  */
 int imap_close_message(struct Context *ctx, struct Message *msg)
 {
-  return safe_fclose(&msg->fp);
+  return mutt_file_fclose(&msg->fp);
 }
 
 /**
@@ -1228,7 +1228,7 @@ int imap_close_message(struct Context *ctx, struct Message *msg)
  */
 int imap_commit_message(struct Context *ctx, struct Message *msg)
 {
-  int r = safe_fclose(&msg->fp);
+  int r = mutt_file_fclose(&msg->fp);
 
   if (r)
     return r;
@@ -1326,7 +1326,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
     pc = imap_next_word(pc);
     mutt_error("%s", pc);
     mutt_sleep(1);
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     goto fail;
   }
 
@@ -1349,7 +1349,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
     flush_buffer(buf, &len, idata->conn);
 
   mutt_socket_write(idata->conn, "\r\n");
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   do
     rc = imap_cmd_step(idata);

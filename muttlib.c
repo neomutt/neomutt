@@ -103,7 +103,7 @@ void mutt_adv_mktemp(char *s, size_t l)
   else
   {
     strfcpy(prefix, s, sizeof(prefix));
-    mutt_sanitize_filename(prefix, 1);
+    mutt_file_sanitize_filename(prefix, 1);
     snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
     if (lstat(s, &sb) == -1 && errno == ENOENT)
       return;
@@ -322,7 +322,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
 
     if (regex && *p && !recurse)
     {
-      mutt_regex_sanitize_string(q, sizeof(q), p);
+      mutt_file_sanitize_regex(q, sizeof(q), p);
       snprintf(tmp, sizeof(tmp), "%s%s", q, tail);
     }
     else
@@ -623,7 +623,7 @@ void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const cha
 {
   char tmp[LONG_STRING];
 
-  mutt_quote_filename(tmp, sizeof(tmp), src);
+  mutt_file_quote_filename(tmp, sizeof(tmp), src);
   mutt_expand_fmt(dest, destlen, fmt, tmp);
 }
 
@@ -724,12 +724,12 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     else if ((rc = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (rc == MUTT_NO) ? 1 : -1;
 
-    strfcpy(tmp, mutt_basename(NONULL(attname)), sizeof(tmp));
+    strfcpy(tmp, mutt_file_basename(NONULL(attname)), sizeof(tmp));
     if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
                        MUTT_FILE | MUTT_CLEAR) != 0 ||
         !tmp[0])
       return -1;
-    mutt_concat_path(fname, path, tmp, flen);
+    mutt_file_concat_path(fname, path, tmp, flen);
   }
 
   if (*append == 0 && access(fname, F_OK) == 0)
@@ -981,7 +981,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
         int rc;
 
         n = fread(dest, 1, destlen /* already decremented */, filter);
-        safe_fclose(&filter);
+        mutt_file_fclose(&filter);
         rc = mutt_wait_filter(pid);
         if (rc != 0)
           mutt_debug(1, "format pipe command exited code %d\n", rc);
@@ -1508,7 +1508,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
       if (ret == 0)
       {
         /* create dir recursively */
-        if (mutt_mkdir(mutt_dirname(s), S_IRWXU) == -1)
+        if (mutt_file_mkdir(mutt_file_dirname(s), S_IRWXU) == -1)
         {
           /* report failure & abort */
           mutt_perror(s);

@@ -286,7 +286,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   mutt_debug(4, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
-  while ((buf = mutt_read_line(buf, &sz, s->fpin, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
     buf_len = mutt_strlen(buf);
     newql = get_quote_level(buf);
@@ -365,15 +365,15 @@ void rfc3676_space_stuff(struct Header *hdr)
 
   mutt_debug(2, "f=f: postprocess %s\n", hdr->content->filename);
 
-  in = safe_fopen(hdr->content->filename, "r");
+  in = mutt_file_fopen(hdr->content->filename, "r");
   if (!in)
     return;
 
   mutt_mktemp(tmpfile, sizeof(tmpfile));
-  out = safe_fopen(tmpfile, "w+");
+  out = mutt_file_fopen(tmpfile, "w+");
   if (!out)
   {
-    safe_fclose(&in);
+    mutt_file_fclose(&in);
     return;
   }
 
@@ -397,9 +397,9 @@ void rfc3676_space_stuff(struct Header *hdr)
     }
     fputs(buf, out);
   }
-  safe_fclose(&in);
-  safe_fclose(&out);
-  mutt_set_mtime(hdr->content->filename, tmpfile);
+  mutt_file_fclose(&in);
+  mutt_file_fclose(&out);
+  mutt_file_set_mtime(hdr->content->filename, tmpfile);
   unlink(hdr->content->filename);
   mutt_str_replace(&hdr->content->filename, tmpfile);
 }

@@ -890,7 +890,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
     }
     else
       rc = 0;
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
   }
 
   return rc;

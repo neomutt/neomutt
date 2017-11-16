@@ -415,7 +415,7 @@ retry_name:
       if (fread(buf, 1, 1, rc) != 1)
       {
         mutt_perror(_("Error reading alias file"));
-        safe_fclose(&rc);
+        mutt_file_fclose(&rc);
         return;
       }
       if (fseek(rc, 0, SEEK_END) < 0)
@@ -425,7 +425,7 @@ retry_name:
     }
 
     if (check_alias_name(new->name, NULL, 0))
-      mutt_quote_filename(buf, sizeof(buf), new->name);
+      mutt_file_quote_filename(buf, sizeof(buf), new->name);
     else
       strfcpy(buf, new->name, sizeof(buf));
     recode_buf(buf, sizeof(buf));
@@ -435,7 +435,7 @@ retry_name:
     recode_buf(buf, sizeof(buf));
     write_safe_address(rc, buf);
     fputc('\n', rc);
-    if (safe_fsync_close(&rc) != 0)
+    if (mutt_file_fsync_close(&rc) != 0)
       mutt_message("Trouble adding alias: %s.", strerror(errno));
     else
       mutt_message(_("Alias added."));
@@ -447,7 +447,7 @@ retry_name:
 
 fseek_err:
   mutt_perror(_("Error seeking in alias file"));
-  safe_fclose(&rc);
+  mutt_file_fclose(&rc);
   return;
 }
 

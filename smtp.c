@@ -192,12 +192,12 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_write(conn, buf) == -1)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
   }
   if ((r = smtp_get_resp(conn)))
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return r;
   }
 
@@ -211,23 +211,23 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
     {
       if (mutt_socket_write_d(conn, ".", -1, MUTT_SOCK_LOG_FULL) == -1)
       {
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
         return SMTP_ERR_WRITE;
       }
     }
     if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) == -1)
     {
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
       return SMTP_ERR_WRITE;
     }
     mutt_progress_update(&progress, ftell(fp), -1);
   }
   if (!term && buflen && mutt_socket_write_d(conn, "\r\n", -1, MUTT_SOCK_LOG_FULL) == -1)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
   }
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   /* terminate the message body */
   if (mutt_socket_write(conn, ".\r\n") == -1)

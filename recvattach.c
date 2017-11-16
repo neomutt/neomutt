@@ -438,7 +438,8 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   if (body->filename)
   {
     if (directory && *directory)
-      mutt_concat_path(buf, *directory, mutt_basename(body->filename), sizeof(buf));
+      mutt_file_concat_path(buf, *directory, mutt_file_basename(body->filename),
+                            sizeof(buf));
     else
       strfcpy(buf, body->filename, sizeof(buf));
   }
@@ -535,7 +536,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           int append = 0;
 
-          strfcpy(buf, mutt_basename(NONULL(top->filename)), sizeof(buf));
+          strfcpy(buf, mutt_file_basename(NONULL(top->filename)), sizeof(buf));
           prepend_curdir(buf, sizeof(buf));
 
           if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 ||
@@ -548,7 +549,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
           {
             fprintf(fpout, "%s", AttachSep);
-            safe_fclose(&fpout);
+            mutt_file_fclose(&fpout);
           }
         }
         else
@@ -557,7 +558,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
           {
             fprintf(fpout, "%s", AttachSep);
-            safe_fclose(&fpout);
+            mutt_file_fclose(&fpout);
           }
         }
       }
@@ -617,8 +618,8 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
   {
     if (filter)
     {
-      mutt_unlink(body->filename);
-      mutt_rename_file(tfile, body->filename);
+      mutt_file_unlink(body->filename);
+      mutt_file_rename(tfile, body->filename);
       mutt_update_encoding(body);
       mutt_message(_("Attachment filtered."));
     }
@@ -626,7 +627,7 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
   else
   {
     if (filter && tfile[0])
-      mutt_unlink(tfile);
+      mutt_file_unlink(tfile);
   }
 }
 
@@ -649,8 +650,8 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       mutt_perror("fopen");
       return;
     }
-    mutt_copy_stream(ifp, state->fpout);
-    safe_fclose(&ifp);
+    mutt_file_copy_stream(ifp, state->fpout);
+    mutt_file_fclose(&ifp);
     if (AttachSep)
       state_puts(AttachSep, state);
   }
@@ -705,7 +706,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     mutt_endwin(NULL);
     thepid = mutt_create_filter(buf, &state.fpout, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
-    safe_fclose(&state.fpout);
+    mutt_file_fclose(&state.fpout);
     if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
       mutt_any_key_to_continue(NULL);
   }
@@ -776,13 +777,13 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             ifp = fopen(newfile, "r");
             if (ifp)
             {
-              mutt_copy_stream(ifp, state->fpout);
-              safe_fclose(&ifp);
+              mutt_file_copy_stream(ifp, state->fpout);
+              mutt_file_fclose(&ifp);
               if (AttachSep)
                 state_puts(AttachSep, state);
             }
           }
-          mutt_unlink(newfile);
+          mutt_file_unlink(newfile);
         }
       }
       else
@@ -811,7 +812,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     memset(&state, 0, sizeof(struct State));
     thepid = mutt_create_filter(NONULL(PrintCommand), &state.fpout, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
-    safe_fclose(&state.fpout);
+    mutt_file_fclose(&state.fpout);
     if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
       mutt_any_key_to_continue(NULL);
   }
@@ -973,7 +974,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
         secured = !crypt_smime_decrypt_mime(outer_fp, &new_fp, outer_new_body, &new_body);
 
         mutt_free_body(&outer_new_body);
-        safe_fclose(&outer_fp);
+        mutt_file_fclose(&outer_fp);
       }
 
       if (secured)

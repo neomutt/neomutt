@@ -826,7 +826,7 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
     fgetpos(rfp, &pos);
   }
 
-  safe_fclose(&rfp);
+  mutt_file_fclose(&rfp);
 }
 
 int main(int argc, char *const argv[])

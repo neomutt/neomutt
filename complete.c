@@ -131,7 +131,7 @@ int mutt_complete(char *s, size_t slen)
     else
       p = NONULL(Folder);
 
-    mutt_concat_path(imap_path, p, s + 1, sizeof(imap_path));
+    mutt_file_concat_path(imap_path, p, s + 1, sizeof(imap_path));
   }
   else
     strfcpy(imap_path, s, sizeof(imap_path));
@@ -151,8 +151,8 @@ int mutt_complete(char *s, size_t slen)
     if ((p = strrchr(s, '/')))
     {
       char buf[_POSIX_PATH_MAX];
-      if (mutt_concatn_path(buf, sizeof(buf), exp_dirpart, strlen(exp_dirpart),
-                            s + 1, (size_t)(p - s - 1)) == NULL)
+      if (mutt_file_concatn_path(buf, sizeof(buf), exp_dirpart, strlen(exp_dirpart),
+                                 s + 1, (size_t)(p - s - 1)) == NULL)
       {
         return -1;
       }

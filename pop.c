@@ -88,7 +88,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   char tempfile[_POSIX_PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  f = safe_fopen(tempfile, "w+");
+  f = mutt_file_fopen(tempfile, "w+");
   if (!f)
   {
     mutt_perror(tempfile);
@@ -151,7 +151,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
     }
   }
 
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   unlink(tempfile);
   return ret;
 }
@@ -609,7 +609,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
       /* no */
       bcache = 0;
       mutt_mktemp(path, sizeof(path));
-      msg->fp = safe_fopen(path, "w+");
+      msg->fp = mutt_file_fopen(path, "w+");
       if (!msg->fp)
       {
         mutt_perror(path);
@@ -624,7 +624,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
     if (ret == 0)
       break;
 
-    safe_fclose(&msg->fp);
+    mutt_file_fclose(&msg->fp);
 
     /* if RETR failed (e.g. connection closed), be sure to remove either
      * the file in bcache or from POP's own cache since the next iteration
@@ -693,7 +693,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
 
 static int pop_close_message(struct Context *ctx, struct Message *msg)
 {
-  return safe_fclose(&msg->fp);
+  return mutt_file_fclose(&msg->fp);
 }
 
 /**

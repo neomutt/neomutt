@@ -78,8 +78,8 @@ static void append_signature(FILE *f)
   {
     if (option(OPT_SIG_DASHES))
       fputs("\n-- \n", f);
-    mutt_copy_stream(tmpfp, f);
-    safe_fclose(&tmpfp);
+    mutt_file_copy_stream(tmpfp, f);
+    mutt_file_fclose(&tmpfp);
     if (thepid != -1)
       mutt_wait_filter(thepid);
   }
@@ -1096,7 +1096,7 @@ static int send_message(struct Header *msg)
 
   /* Write out the message in MIME form. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  tempfp = safe_fopen(tempfile, "w");
+  tempfp = mutt_file_fopen(tempfile, "w");
   if (!tempfp)
     return -1;
 
@@ -1120,7 +1120,7 @@ static int send_message(struct Header *msg)
 
   if ((mutt_write_mime_body(msg->content, tempfp) == -1))
   {
-    safe_fclose(&tempfp);
+    mutt_file_fclose(&tempfp);
     unlink(tempfile);
     return -1;
   }
@@ -1187,7 +1187,7 @@ static void fix_end_of_file(const char *data)
 {
   FILE *fp = NULL;
 
-  fp = safe_fopen(data, "a+");
+  fp = mutt_file_fopen(data, "a+");
   if (!fp)
     return;
   if (fseek(fp, -1, SEEK_END) >= 0)
@@ -1196,7 +1196,7 @@ static void fix_end_of_file(const char *data)
     if (c != '\n')
       fputc('\n', fp);
   }
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 }
 
 int mutt_compose_to_sender(struct Header *hdr)
@@ -1286,7 +1286,7 @@ static int search_attach_keyword(char *filename)
   if (!AttachKeyword.regex)
     return 0;
 
-  FILE *attf = safe_fopen(filename, "r");
+  FILE *attf = mutt_file_fopen(filename, "r");
   if (!attf)
     return 0;
 
@@ -1303,7 +1303,7 @@ static int search_attach_keyword(char *filename)
     }
   }
   FREE(&inputline);
-  safe_fclose(&attf);
+  mutt_file_fclose(&attf);
   return found;
 }
 
@@ -1404,7 +1404,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     if (flags & (SENDPOSTPONED | SENDRESEND))
     {
-      tempfp = safe_fopen(msg->content->filename, "a+");
+      tempfp = mutt_file_fopen(msg->content->filename, "a+");
       if (!tempfp)
       {
         mutt_perror(msg->content->filename);
@@ -1448,17 +1448,17 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (!tempfile)
       {
         mutt_mktemp(buffer, sizeof(buffer));
-        tempfp = safe_fopen(buffer, "w+");
+        tempfp = mutt_file_fopen(buffer, "w+");
         msg->content->filename = safe_strdup(buffer);
       }
       else
       {
-        tempfp = safe_fopen(tempfile, "a+");
+        tempfp = mutt_file_fopen(tempfile, "a+");
         msg->content->filename = safe_strdup(tempfile);
       }
     }
     else
-      tempfp = safe_fopen(msg->content->filename, "a+");
+      tempfp = mutt_file_fopen(msg->content->filename, "a+");
 
     if (!tempfp)
     {
@@ -1598,7 +1598,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       process_user_header(msg->env);
 
     if (flags & SENDBATCH)
-      mutt_copy_stream(stdin, tempfp);
+      mutt_file_copy_stream(stdin, tempfp);
 
     if (option(OPT_SIG_ON_TOP) && !(flags & (SENDMAILX | SENDKEY | SENDBATCH)) &&
         Editor && (mutt_strcmp(Editor, "builtin") != 0))
@@ -1627,7 +1627,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     msg->env->from->personal = safe_strdup(RealName);
 
   if (!((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY)))
-    safe_fclose(&tempfp);
+    mutt_file_fclose(&tempfp);
 
   if (flags & SENDMAILX)
   {
@@ -1637,7 +1637,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   else if (!(flags & SENDBATCH))
   {
     struct stat st;
-    time_t mtime = mutt_decrease_mtime(msg->content->filename, NULL);
+    time_t mtime = mutt_file_decrease_mtime(msg->content->filename, NULL);
 
     mutt_update_encoding(msg->content);
 
@@ -2231,7 +2231,7 @@ cleanup:
     }
   }
 
-  safe_fclose(&tempfp);
+  mutt_file_fclose(&tempfp);
   if (!(flags & SENDNOFREEHEADER))
     mutt_free_header(&msg);
 

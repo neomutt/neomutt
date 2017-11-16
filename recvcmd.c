@@ -418,7 +418,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
-  tmpfp = safe_fopen(tmpbody, "w");
+  tmpfp = mutt_file_fopen(tmpbody, "w");
   if (!tmpfp)
   {
     mutt_error(_("Can't open temporary file %s."), tmpbody);
@@ -524,7 +524,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   mutt_forward_trailer(Context, parent_hdr, tmpfp);
 
-  safe_fclose(&tmpfp);
+  mutt_file_fclose(&tmpfp);
   tmpfp = NULL;
 
   /* now that we have the template, send it. */
@@ -535,8 +535,8 @@ bail:
 
   if (tmpfp)
   {
-    safe_fclose(&tmpfp);
-    mutt_unlink(tmpbody);
+    mutt_file_fclose(&tmpfp);
+    mutt_file_unlink(tmpbody);
   }
 
   mutt_free_header(&tmphdr);
@@ -590,7 +590,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
     /* no MIME encapsulation */
 
     mutt_mktemp(tmpbody, sizeof(tmpbody));
-    tmpfp = safe_fopen(tmpbody, "w");
+    tmpfp = mutt_file_fopen(tmpbody, "w");
     if (!tmpfp)
     {
       mutt_error(_("Can't create %s."), tmpbody);
@@ -633,7 +633,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
         }
       }
     }
-    safe_fclose(&tmpfp);
+    mutt_file_fclose(&tmpfp);
   }
   else if (rc == MUTT_YES) /* do MIME encapsulation - we don't need to do much here */
   {
@@ -853,7 +853,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   }
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
-  tmpfp = safe_fopen(tmpbody, "w");
+  tmpfp = mutt_file_fopen(tmpbody, "w");
   if (!tmpfp)
   {
     mutt_error(_("Can't create %s."), tmpbody);
@@ -926,12 +926,12 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
         copy_problematic_attachments(&tmphdr->content, actx, 0) == NULL)
     {
       mutt_free_header(&tmphdr);
-      safe_fclose(&tmpfp);
+      mutt_file_fclose(&tmpfp);
       return;
     }
   }
 
-  safe_fclose(&tmpfp);
+  mutt_file_fclose(&tmpfp);
 
   if (ci_send_message(flags, tmphdr, tmpbody, NULL,
                       parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL)) == 0)

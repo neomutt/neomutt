@@ -165,7 +165,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   ERR_clear_error();
 
   X509_free(cert);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return rv;
 }
@@ -784,7 +784,7 @@ static int check_certificate_file(X509 *peercert)
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen))
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return 0;
   }
 
@@ -801,7 +801,7 @@ static int check_certificate_file(X509 *peercert)
   if (!pass)
     ERR_clear_error();
   X509_free(cert);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return pass;
 }
@@ -1079,7 +1079,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
         {
           if (PEM_write_X509(fp, cert))
             done = 1;
-          safe_fclose(&fp);
+          mutt_file_fclose(&fp);
         }
         if (!done)
         {

@@ -1353,7 +1353,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           src = CURATTACH->content->d_filename;
         else
           src = CURATTACH->content->filename;
-        strfcpy(fname, mutt_basename(NONULL(src)), sizeof(fname));
+        strfcpy(fname, mutt_file_basename(NONULL(src)), sizeof(fname));
         ret = mutt_get_field(_("Send attachment with name: "), fname, sizeof(fname), MUTT_FILE);
         if (ret == 0)
         {
@@ -1383,7 +1383,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           }
 
           mutt_expand_path(fname, sizeof(fname));
-          if (mutt_rename_file(CURATTACH->content->filename, fname))
+          if (mutt_file_rename(CURATTACH->content->filename, fname))
             break;
 
           mutt_str_replace(&CURATTACH->content->filename, fname);
@@ -1429,14 +1429,14 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
-        fp = safe_fopen(fname, "w");
+        fp = mutt_file_fopen(fname, "w");
         if (!fp)
         {
           mutt_error(_("Can't create file %s"), fname);
           FREE(&new);
           continue;
         }
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
 
         new->content = mutt_make_file_attach(fname);
         if (!new->content)

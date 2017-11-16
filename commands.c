@@ -126,7 +126,7 @@ int mutt_display_message(struct Header *cur)
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = safe_fopen(tempfile, "w");
+  fpout = mutt_file_fopen(tempfile, "w");
   if (!fpout)
   {
     mutt_error(_("Could not create temporary file!"));
@@ -142,7 +142,7 @@ int mutt_display_message(struct Header *cur)
     if (filterpid < 0)
     {
       mutt_error(_("Cannot create display filter"));
-      safe_fclose(&fpfilterout);
+      mutt_file_fclose(&fpfilterout);
       unlink(tempfile);
       return 0;
     }
@@ -169,22 +169,22 @@ int mutt_display_message(struct Header *cur)
 #endif
   res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
 
-  if ((safe_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
+  if ((mutt_file_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
     mutt_error(_("Could not copy message"));
     if (fpfilterout)
     {
       mutt_wait_filter(filterpid);
-      safe_fclose(&fpfilterout);
+      mutt_file_fclose(&fpfilterout);
     }
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
     return 0;
   }
 
   if (fpfilterout != NULL && mutt_wait_filter(filterpid) != 0)
     mutt_any_key_to_continue(NULL);
 
-  safe_fclose(&fpfilterout); /* XXX - check result? */
+  mutt_file_fclose(&fpfilterout); /* XXX - check result? */
 
   if (WithCrypto)
   {
@@ -420,7 +420,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
 
     set_option(OPT_KEEP_QUIET);
     pipe_msg(h, fpout, decode, print);
-    safe_fclose(&fpout);
+    mutt_file_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
     unset_option(OPT_KEEP_QUIET);
   }
@@ -464,7 +464,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
-        safe_fclose(&fpout);
+        mutt_file_fclose(&fpout);
         if (mutt_wait_filter(thepid) != 0)
           rc = 1;
         unset_option(OPT_KEEP_QUIET);
@@ -491,7 +491,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         if (sep)
           fputs(sep, fpout);
       }
-      safe_fclose(&fpout);
+      mutt_file_fclose(&fpout);
       if (mutt_wait_filter(thepid) != 0)
         rc = 1;
       unset_option(OPT_KEEP_QUIET);

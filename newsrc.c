@@ -124,8 +124,8 @@ void nntp_newsrc_close(struct NntpServer *nserv)
     return;
 
   mutt_debug(1, "Unlocking %s\n", nserv->newsrc_file);
-  mutt_unlock_file(nserv->newsrc_file, fileno(nserv->newsrc_fp));
-  safe_fclose(&nserv->newsrc_fp);
+  mutt_file_unlock(nserv->newsrc_file, fileno(nserv->newsrc_fp));
+  mutt_file_fclose(&nserv->newsrc_fp);
 }
 
 /**
@@ -168,17 +168,17 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
   if (nserv->newsrc_fp)
   {
     /* if we already have a handle, close it and reopen */
-    safe_fclose(&nserv->newsrc_fp);
+    mutt_file_fclose(&nserv->newsrc_fp);
   }
   else
   {
     /* if file doesn't exist, create it */
-    nserv->newsrc_fp = safe_fopen(nserv->newsrc_file, "a");
-    safe_fclose(&nserv->newsrc_fp);
+    nserv->newsrc_fp = mutt_file_fopen(nserv->newsrc_file, "a");
+    mutt_file_fclose(&nserv->newsrc_fp);
   }
 
   /* open .newsrc */
-  nserv->newsrc_fp = safe_fopen(nserv->newsrc_file, "r");
+  nserv->newsrc_fp = mutt_file_fopen(nserv->newsrc_file, "r");
   if (!nserv->newsrc_fp)
   {
     mutt_perror(nserv->newsrc_file);
@@ -188,9 +188,9 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
 
   /* lock it */
   mutt_debug(1, "Locking %s\n", nserv->newsrc_file);
-  if (mutt_lock_file(nserv->newsrc_file, fileno(nserv->newsrc_fp), 0, 1))
+  if (mutt_file_lock(nserv->newsrc_file, fileno(nserv->newsrc_fp), 0, 1))
   {
-    safe_fclose(&nserv->newsrc_fp);
+    mutt_file_fclose(&nserv->newsrc_fp);
     return -1;
   }
 
@@ -388,7 +388,7 @@ static int update_file(char *filename, char *buf)
   while (true)
   {
     snprintf(tmpfile, sizeof(tmpfile), "%s.tmp", filename);
-    fp = safe_fopen(tmpfile, "w");
+    fp = mutt_file_fopen(tmpfile, "w");
     if (!fp)
     {
       mutt_perror(tmpfile);
@@ -400,7 +400,7 @@ static int update_file(char *filename, char *buf)
       mutt_perror(tmpfile);
       break;
     }
-    if (safe_fclose(&fp) == EOF)
+    if (mutt_file_fclose(&fp) == EOF)
     {
       mutt_perror(tmpfile);
       fp = NULL;
@@ -417,7 +417,7 @@ static int update_file(char *filename, char *buf)
     break;
   }
   if (fp)
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
   if (*tmpfile)
     unlink(tmpfile);
   if (rc)
@@ -589,13 +589,13 @@ static int active_get_cache(struct NntpServer *nserv)
 
   cache_expand(file, sizeof(file), &nserv->conn->account, ".active");
   mutt_debug(1, "Parsing %s\n", file);
-  fp = safe_fopen(file, "r");
+  fp = mutt_file_fopen(file, "r");
   if (!fp)
     return -1;
 
   if (fgets(buf, sizeof(buf), fp) == NULL || sscanf(buf, "%ld%s", &t, file) != 1 || t == 0)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return -1;
   }
   nserv->newgroups_time = t;
@@ -604,7 +604,7 @@ static int active_get_cache(struct NntpServer *nserv)
   while (fgets(buf, sizeof(buf), fp))
     nntp_add_group(buf, nserv);
   nntp_add_group(NULL, NULL);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   mutt_clear_error();
   return 0;
 }
@@ -1019,7 +1019,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   if (rc >= 0 && NewsCacheDir && *NewsCacheDir)
   {
     cache_expand(file, sizeof(file), &conn->account, NULL);
-    if (mutt_mkdir(file, S_IRWXU) < 0)
+    if (mutt_file_mkdir(file, S_IRWXU) < 0)
     {
       mutt_error(_("Can't create %s: %s."), file, strerror(errno));
       mutt_sleep(2);

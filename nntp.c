@@ -1088,7 +1088,7 @@ static int parse_overview_line(char *line, void *data)
 
   /* convert overview line to header */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = safe_fopen(tempfile, "w+");
+  fp = mutt_file_fopen(tempfile, "w+");
   if (!fp)
     return -1;
 
@@ -1101,7 +1101,7 @@ static int parse_overview_line(char *line, void *data)
     {
       if (strstr(header, ":full") == NULL && fputs(header, fp) == EOF)
       {
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
         unlink(tempfile);
         return -1;
       }
@@ -1113,7 +1113,7 @@ static int parse_overview_line(char *line, void *data)
       *field++ = '\0';
     if (fputs(b, fp) == EOF || fputc('\n', fp) == EOF)
     {
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
       unlink(tempfile);
       return -1;
     }
@@ -1129,7 +1129,7 @@ static int parse_overview_line(char *line, void *data)
   hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
   hdr->env->newsgroups = safe_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   unlink(tempfile);
 
 #ifdef USE_HCACHE
@@ -1342,7 +1342,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       char tempfile[_POSIX_PATH_MAX];
 
       mutt_mktemp(tempfile, sizeof(tempfile));
-      fp = safe_fopen(tempfile, "w+");
+      fp = mutt_file_fopen(tempfile, "w+");
       if (!fp)
       {
         mutt_perror(tempfile);
@@ -1356,7 +1356,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), NULL, fetch_tempfile, fp);
       if (rc)
       {
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
         unlink(tempfile);
         if (rc < 0)
           break;
@@ -1384,7 +1384,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
       hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
       hdr->received = hdr->date_sent;
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
       unlink(tempfile);
     }
 
@@ -1592,7 +1592,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   {
     if (acache->index == hdr->index)
     {
-      msg->fp = safe_fopen(acache->path, "r");
+      msg->fp = mutt_file_fopen(acache->path, "r");
       if (msg->fp)
         return 0;
     }
@@ -1624,7 +1624,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
       mutt_mktemp(buf, sizeof(buf));
       acache->path = safe_strdup(buf);
       acache->index = hdr->index;
-      msg->fp = safe_fopen(acache->path, "w+");
+      msg->fp = mutt_file_fopen(acache->path, "w+");
       if (!msg->fp)
       {
         mutt_perror(acache->path);
@@ -1640,7 +1640,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
     rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), fetch_msg, fetch_tempfile, msg->fp);
     if (rc)
     {
-      safe_fclose(&msg->fp);
+      mutt_file_fclose(&msg->fp);
       if (acache->path)
       {
         unlink(acache->path);
@@ -1702,7 +1702,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
  */
 static int nntp_close_message(struct Context *ctx, struct Message *msg)
 {
-  return safe_fclose(&msg->fp);
+  return mutt_file_fclose(&msg->fp);
 }
 
 /**
@@ -1728,7 +1728,7 @@ int nntp_post(const char *msg)
     nntp_data->group = NULL;
   }
 
-  fp = safe_fopen(msg, "r");
+  fp = mutt_file_fopen(msg, "r");
   if (!fp)
   {
     mutt_perror(msg);
@@ -1738,13 +1738,13 @@ int nntp_post(const char *msg)
   strfcpy(buf, "POST\r\n", sizeof(buf));
   if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return -1;
   }
   if (buf[0] != '3')
   {
     mutt_error(_("Can't post article: %s"), buf);
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return -1;
   }
 
@@ -1764,7 +1764,7 @@ int nntp_post(const char *msg)
                             -1, MUTT_SOCK_LOG_HDR) < 0)
       return nntp_connect_error(nntp_data->nserv);
   }
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   if ((buf[strlen(buf) - 1] != '\n' &&
        mutt_socket_write_d(nntp_data->nserv->conn, "\r\n", -1, MUTT_SOCK_LOG_HDR) < 0) ||
@@ -2367,7 +2367,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   int rc;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = safe_fopen(tempfile, "w+");
+  fp = mutt_file_fopen(tempfile, "w+");
   if (!fp)
   {
     mutt_perror(tempfile);
@@ -2379,7 +2379,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), NULL, fetch_tempfile, fp);
   if (rc)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     unlink(tempfile);
     if (rc < 0)
       return -1;
@@ -2395,7 +2395,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
   hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   unlink(tempfile);
 
   /* get article number */

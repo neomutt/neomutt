@@ -2439,7 +2439,7 @@ static int nm_close_message(struct Context *ctx, struct Message *msg)
 {
   if (!msg)
     return 1;
-  safe_fclose(&(msg->fp));
+  mutt_file_fclose(&(msg->fp));
   return 0;
 }
 

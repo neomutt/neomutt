@@ -700,14 +700,14 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
     if (fseeko(fp, cur->offset, SEEK_SET) < 0)
       return -1;
-    if (mutt_copy_bytes(fp, fpout, cur->length) == -1)
+    if (mutt_file_copy_bytes(fp, fpout, cur->length) == -1)
     {
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
       mutt_free_body(&cur);
       return -1;
     }
     mutt_free_body(&cur);
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
   }
   else
   {
@@ -729,7 +729,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
         }
       }
     }
-    else if (mutt_copy_bytes(fpin, fpout, body->length) == -1)
+    else if (mutt_file_copy_bytes(fpin, fpout, body->length) == -1)
       return -1;
   }
 
@@ -842,7 +842,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
     if (part->deleted || part->parts)
     {
       /* Copy till start of this part */
-      if (mutt_copy_bytes(fpin, fpout, part->hdr_offset - ftello(fpin)))
+      if (mutt_file_copy_bytes(fpin, fpout, part->hdr_offset - ftello(fpin)))
         return -1;
 
       if (part->deleted)
@@ -857,7 +857,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
           return -1;
 
         /* Copy the original mime headers */
-        if (mutt_copy_bytes(fpin, fpout, part->offset - ftello(fpin)))
+        if (mutt_file_copy_bytes(fpin, fpout, part->offset - ftello(fpin)))
           return -1;
 
         /* Skip the deleted body */
@@ -872,7 +872,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
   }
 
   /* Copy the last parts */
-  if (mutt_copy_bytes(fpin, fpout, b->offset + b->length - ftello(fpin)))
+  if (mutt_file_copy_bytes(fpin, fpout, b->offset + b->length - ftello(fpin)))
     return -1;
 
   return 0;

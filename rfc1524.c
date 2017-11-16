@@ -70,7 +70,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
   strfcpy(type, _type, sizeof(type));
 
   if (option(OPT_MAILCAP_SANITIZE))
-    mutt_sanitize_filename(type, 0);
+    mutt_file_sanitize_filename(type, 0);
 
   while (x < clen - 1 && command[x] && y < sizeof(buf) - 1)
   {
@@ -97,18 +97,18 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
         _pvalue = mutt_get_parameter(param, a->parameter);
         strfcpy(pvalue, NONULL(_pvalue), sizeof(pvalue));
         if (option(OPT_MAILCAP_SANITIZE))
-          mutt_sanitize_filename(pvalue, 0);
+          mutt_file_sanitize_filename(pvalue, 0);
 
-        y += mutt_quote_filename(buf + y, sizeof(buf) - y, pvalue);
+        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, pvalue);
       }
       else if (command[x] == 's' && filename != NULL)
       {
-        y += mutt_quote_filename(buf + y, sizeof(buf) - y, filename);
+        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, filename);
         needspipe = false;
       }
       else if (command[x] == 't')
       {
-        y += mutt_quote_filename(buf + y, sizeof(buf) - y, type);
+        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, type);
       }
       x++;
     }
@@ -210,7 +210,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
   fp = fopen(filename, "r");
   if (fp)
   {
-    while (!found && (buf = mutt_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
+    while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
     {
       /* ignore comments */
       if (*buf == '#')
@@ -349,8 +349,8 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           entry->copiousoutput = false;
         }
       }
-    } /* while (!found && (buf = mutt_read_line ())) */
-    safe_fclose(&fp);
+    } /* while (!found && (buf = mutt_file_read_line ())) */
+    mutt_file_fclose(&fp);
   } /* if ((fp = fopen ())) */
   FREE(&buf);
   return found;

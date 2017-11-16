@@ -182,7 +182,7 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
-  while ((buff = mutt_read_line(buff, &sz, fp, &line, 0)))
+  while ((buff = mutt_file_read_line(buff, &sz, fp, &line, 0)))
   {
     t = strtok(buff, " \t:");
     if (!t)
@@ -214,7 +214,7 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
 
 out:
   FREE(&buff);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   return rc;
 }
 
@@ -500,7 +500,7 @@ static void mh_update_sequences(struct Context *ctx)
   /* first, copy unknown sequences */
   if ((ofp = fopen(sequences, "r")))
   {
-    while ((buff = mutt_read_line(buff, &s, ofp, &l, 0)))
+    while ((buff = mutt_file_read_line(buff, &s, ofp, &l, 0)))
     {
       if (mutt_strncmp(buff, seq_unseen, mutt_strlen(seq_unseen)) == 0)
         continue;
@@ -512,7 +512,7 @@ static void mh_update_sequences(struct Context *ctx)
       fprintf(nfp, "%s\n", buff);
     }
   }
-  safe_fclose(&ofp);
+  mutt_file_fclose(&ofp);
 
   /* now, update our unseen, flagged, and replied sequences */
   for (l = 0; l < ctx->msgcount; l++)
@@ -556,10 +556,10 @@ static void mh_update_sequences(struct Context *ctx)
   mhs_free_sequences(&mhs);
 
   /* try to commit the changes - no guarantee here */
-  safe_fclose(&nfp);
+  mutt_file_fclose(&nfp);
 
   unlink(sequences);
-  if (safe_rename(tmpfname, sequences) != 0)
+  if (mutt_file_safe_rename(tmpfname, sequences) != 0)
   {
     /* report an error? */
     unlink(tmpfname);
@@ -598,7 +598,7 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", ctx->path);
   if ((ofp = fopen(sequences, "r")))
   {
-    while ((buff = mutt_read_line(buff, &sz, ofp, &line, 0)))
+    while ((buff = mutt_file_read_line(buff, &sz, ofp, &line, 0)))
     {
       if (unseen && (strncmp(buff, seq_unseen, mutt_strlen(seq_unseen)) == 0))
       {
@@ -619,7 +619,7 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
         fprintf(nfp, "%s\n", buff);
     }
   }
-  safe_fclose(&ofp);
+  mutt_file_fclose(&ofp);
   FREE(&buff);
 
   if (!unseen_done && unseen)
@@ -629,10 +629,10 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   if (!replied_done && replied)
     fprintf(nfp, "%s: %d\n", NONULL(MhSeqReplied), n);
 
-  safe_fclose(&nfp);
+  mutt_file_fclose(&nfp);
 
   unlink(sequences);
-  if (safe_rename(tmpfname, sequences) != 0)
+  if (mutt_file_safe_rename(tmpfname, sequences) != 0)
     unlink(tmpfname);
 
   FREE(&tmpfname);
@@ -826,7 +826,7 @@ struct Header *maildir_parse_message(int magic, const char *fname, bool is_old,
   if (f)
   {
     h = maildir_parse_stream(magic, f, fname, is_old, h);
-    safe_fclose(&f);
+    mutt_file_fclose(&f);
     return h;
   }
   return NULL;
@@ -1481,7 +1481,7 @@ static int mh_open_message(struct Context *ctx, struct Message *msg, int msgno)
 
 static int mh_close_message(struct Context *ctx, struct Message *msg)
 {
-  return safe_fclose(&msg->fp);
+  return mutt_file_fclose(&msg->fp);
 }
 
 /**
@@ -1584,7 +1584,7 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
   char full[_POSIX_PATH_MAX];
   char *s = NULL;
 
-  if (safe_fsync_close(&msg->fp))
+  if (mutt_file_fsync_close(&msg->fp))
   {
     mutt_perror(_("Could not flush message to disk"));
     return -1;
@@ -1609,7 +1609,7 @@ static int md_commit_message(struct Context *ctx, struct Message *msg, struct He
 
     mutt_debug(2, "md_commit_message (): renaming %s to %s.\n", msg->path, full);
 
-    if (safe_rename(msg->path, full) == 0)
+    if (mutt_file_safe_rename(msg->path, full) == 0)
     {
       /*
        * Adjust the mtime on the file to match the time at which this
@@ -1671,7 +1671,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
   char path[_POSIX_PATH_MAX];
   char tmp[16];
 
-  if (safe_fsync_close(&msg->fp))
+  if (mutt_file_fsync_close(&msg->fp))
   {
     mutt_perror(_("Could not flush message to disk"));
     return -1;
@@ -1718,7 +1718,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
     hi++;
     snprintf(tmp, sizeof(tmp), "%d", hi);
     snprintf(path, sizeof(path), "%s/%s", ctx->path, tmp);
-    if (safe_rename(msg->path, path) == 0)
+    if (mutt_file_safe_rename(msg->path, path) == 0)
     {
       if (hdr)
         mutt_str_replace(&hdr->path, tmp);
@@ -1804,7 +1804,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     if (ctx->magic == MUTT_MH && rc == 0)
     {
       snprintf(newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
-      rc = safe_rename(newpath, oldpath);
+      rc = mutt_file_safe_rename(newpath, oldpath);
       if (rc == 0)
         mutt_str_replace(&h->path, partpath);
     }
@@ -2218,8 +2218,8 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
 
     if (mh_mkstemp(ctx, &fp, &tmp) == 0)
     {
-      safe_fclose(&fp);
-      if (safe_rename(tmp, buf) == -1)
+      mutt_file_fclose(&fp);
+      if (mutt_file_safe_rename(tmp, buf) == -1)
         unlink(tmp);
       FREE(&tmp);
     }

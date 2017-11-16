@@ -124,7 +124,7 @@ void mutt_read_histfile(void)
   if (!f)
     return;
 
-  while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
   {
     read = 0;
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
@@ -146,7 +146,7 @@ void mutt_read_histfile(void)
     }
   }
 
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   FREE(&linebuf);
 }
 
@@ -210,7 +210,7 @@ static void shrink_histfile(void)
       dup_hashes[hclass] = hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
-  while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
   {
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
         *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -242,7 +242,7 @@ static void shrink_histfile(void)
   if (regen_file)
   {
     mutt_mktemp(tmpfname, sizeof(tmpfname));
-    tmp = safe_fopen(tmpfname, "w+");
+    tmp = mutt_file_fopen(tmpfname, "w+");
     if (!tmp)
     {
       mutt_perror(tmpfname);
@@ -250,7 +250,7 @@ static void shrink_histfile(void)
     }
     rewind(f);
     line = 0;
-    while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
     {
       if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
           *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -271,17 +271,17 @@ static void shrink_histfile(void)
   }
 
 cleanup:
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   FREE(&linebuf);
   if (tmp)
   {
     if (fflush(tmp) == 0 && (f = fopen(HistoryFile, "w")) != NULL)
     {
       rewind(tmp);
-      mutt_copy_stream(tmp, f);
-      safe_fclose(&f);
+      mutt_file_copy_stream(tmp, f);
+      mutt_file_fclose(&f);
     }
-    safe_fclose(&tmp);
+    mutt_file_fclose(&tmp);
     unlink(tmpfname);
   }
   if (option(OPT_HISTORY_REMOVE_DUPS))
@@ -321,7 +321,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
   }
   fputs("|\n", f);
 
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   FREE(&tmp);
 
   if (--n < 0)

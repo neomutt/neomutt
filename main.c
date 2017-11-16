@@ -650,25 +650,25 @@ int main(int argc, char **argv, char **env)
         mutt_mktemp(buf, sizeof(buf));
         tempfile = safe_strdup(buf);
 
-        fout = safe_fopen(tempfile, "w");
+        fout = mutt_file_fopen(tempfile, "w");
         if (!fout)
         {
           if (!option(OPT_NO_CURSES))
             mutt_endwin(NULL);
           perror(tempfile);
-          safe_fclose(&fin);
+          mutt_file_fclose(&fin);
           FREE(&tempfile);
           exit(1);
         }
         if (fin)
         {
-          mutt_copy_stream(fin, fout);
+          mutt_file_copy_stream(fin, fout);
           if (fin != stdin)
-            safe_fclose(&fin);
+            mutt_file_fclose(&fin);
         }
         else if (bodytext)
           fputs(bodytext, fout);
-        safe_fclose(&fout);
+        mutt_file_fclose(&fout);
 
         fin = fopen(tempfile, "r");
         if (!fin)
@@ -748,7 +748,7 @@ int main(int argc, char **argv, char **env)
         bodyfile = tempfile;
 
       if (fin)
-        safe_fclose(&fin);
+        mutt_file_fclose(&fin);
     }
 
     FREE(&bodytext);
@@ -797,7 +797,7 @@ int main(int argc, char **argv, char **env)
           perror(expanded_infile);
           exit(1);
         }
-        fout = safe_fopen(expanded_infile, "a");
+        fout = mutt_file_fopen(expanded_infile, "a");
         if (!fout)
         {
           if (!option(OPT_NO_CURSES))
@@ -826,10 +826,10 @@ int main(int argc, char **argv, char **env)
         {
           if (!option(OPT_NO_CURSES))
             mutt_endwin(NULL);
-          safe_fclose(&fout);
+          mutt_file_fclose(&fout);
           exit(1);
         }
-        safe_fclose(&fout);
+        mutt_file_fclose(&fout);
       }
 
       mutt_free_header(&msg);

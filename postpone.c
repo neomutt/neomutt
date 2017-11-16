@@ -660,7 +660,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     }
 
     mutt_adv_mktemp(file, sizeof(file));
-    s.fpout = safe_fopen(file, "w");
+    s.fpout = mutt_file_fopen(file, "w");
     if (!s.fpout)
       goto bail;
 
@@ -687,7 +687,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     else
       mutt_decode_attachment(b, &s);
 
-    if (safe_fclose(&s.fpout) != 0)
+    if (mutt_file_fclose(&s.fpout) != 0)
       goto bail;
 
     mutt_str_replace(&b->filename, file);
@@ -724,7 +724,7 @@ bail:
 
   /* that's it. */
   if (bfp != fp)
-    safe_fclose(&bfp);
+    mutt_file_fclose(&bfp);
   if (msg)
     mx_close_message(ctx, &msg);
 

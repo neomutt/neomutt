@@ -958,7 +958,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       }
 #else
       mutt_mktemp(tempfile, sizeof(tempfile));
-      s.fpout = safe_fopen(tempfile, "w+");
+      s.fpout = mutt_file_fopen(tempfile, "w+");
       if (!s.fpout)
       {
         mutt_perror(tempfile);
@@ -978,7 +978,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
           mx_close_message(ctx, &msg);
           if (s.fpout)
           {
-            safe_fclose(&s.fpout);
+            mutt_file_fclose(&s.fpout);
 #ifdef USE_FMEMOPEN
             FREE(&temp);
 #else
@@ -1007,7 +1007,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       }
       else
       { /* fmemopen cannot handle empty buffers */
-        fp = safe_fopen("/dev/null", "r");
+        fp = mutt_file_fopen("/dev/null", "r");
         if (!fp)
         {
           mutt_perror(_("Error opening /dev/null"));
@@ -1066,7 +1066,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
     if (option(OPT_THOROUGH_SEARCH))
     {
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
 #ifdef USE_FMEMOPEN
       if (tempsize)
         FREE(&temp);

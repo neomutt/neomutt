@@ -164,7 +164,7 @@ static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
     state_reset_prefix(s);
   }
   else
-    mutt_copy_bytes(s->fpin, s->fpout, len);
+    mutt_file_copy_bytes(s->fpin, s->fpout, len);
 }
 
 static int qp_decode_triple(char *s, char *d)
@@ -1155,7 +1155,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY && !option(OPT_WEED))
     {
       fseeko(s->fpin, choice->hdr_offset, SEEK_SET);
-      mutt_copy_bytes(s->fpin, s->fpout, choice->offset - choice->hdr_offset);
+      mutt_file_copy_bytes(s->fpin, s->fpout, choice->offset - choice->hdr_offset);
     }
 
     if (mutt_strcmp("info", ShowMultipartAlternative) == 0)
@@ -1321,7 +1321,7 @@ static int multipart_handler(struct Body *a, struct State *s)
       if (!option(OPT_WEED))
       {
         fseeko(s->fpin, p->hdr_offset, SEEK_SET);
-        mutt_copy_bytes(s->fpin, s->fpout, p->offset - p->hdr_offset);
+        mutt_file_copy_bytes(s->fpin, s->fpout, p->offset - p->hdr_offset);
       }
       else
         state_putc('\n', s);
@@ -1370,7 +1370,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   rfc1524_mailcap_lookup(a, type, entry, MUTT_AUTOVIEW);
 
   fname = safe_strdup(a->filename);
-  mutt_sanitize_filename(fname, 1);
+  mutt_file_sanitize_filename(fname, 1);
   rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile));
   FREE(&fname);
 
@@ -1388,7 +1388,7 @@ static int autoview_handler(struct Body *a, struct State *s)
       mutt_message(_("Invoking autoview command: %s"), command);
     }
 
-    fpin = safe_fopen(tempfile, "w+");
+    fpin = mutt_file_fopen(tempfile, "w+");
     if (!fpin)
     {
       mutt_perror("fopen");
@@ -1396,11 +1396,11 @@ static int autoview_handler(struct Body *a, struct State *s)
       return -1;
     }
 
-    mutt_copy_bytes(s->fpin, fpin, a->length);
+    mutt_file_copy_bytes(s->fpin, fpin, a->length);
 
     if (!piped)
     {
-      safe_fclose(&fpin);
+      mutt_file_fclose(&fpin);
       thepid = mutt_create_filter(command, NULL, &fpout, &fperr);
     }
     else
@@ -1450,7 +1450,7 @@ static int autoview_handler(struct Body *a, struct State *s)
     }
     else
     {
-      mutt_copy_stream(fpout, s->fpout);
+      mutt_file_copy_stream(fpout, s->fpout);
       /* Check for stderr messages */
       if (fgets(buffer, sizeof(buffer), fperr))
       {
@@ -1461,19 +1461,19 @@ static int autoview_handler(struct Body *a, struct State *s)
         }
 
         state_puts(buffer, s);
-        mutt_copy_stream(fperr, s->fpout);
+        mutt_file_copy_stream(fperr, s->fpout);
       }
     }
 
   bail:
-    safe_fclose(&fpout);
-    safe_fclose(&fperr);
+    mutt_file_fclose(&fpout);
+    mutt_file_fclose(&fperr);
 
     mutt_wait_filter(thepid);
     if (piped)
-      safe_fclose(&fpin);
+      mutt_file_fclose(&fpin);
     else
-      mutt_unlink(tempfile);
+      mutt_file_unlink(tempfile);
 
     if (s->flags & MUTT_DISPLAY)
       mutt_clear_error();
@@ -1634,7 +1634,7 @@ static int text_plain_handler(struct Body *b, struct State *s)
   char *buf = NULL;
   size_t l = 0, sz = 0;
 
-  while ((buf = mutt_read_line(buf, &sz, s->fpin, NULL, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
     if ((mutt_strcmp(buf, "-- ") != 0) && option(OPT_TEXT_FLOWED))
     {
@@ -1697,7 +1697,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
 #else
       mutt_mktemp(tempfile, sizeof(tempfile));
-      s->fpout = safe_fopen(tempfile, "w");
+      s->fpout = mutt_file_fopen(tempfile, "w");
       if (!s->fpout)
       {
         mutt_error(_("Unable to open temporary file!"));
@@ -1729,12 +1729,12 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       b->length = ftello(s->fpout);
       b->offset = 0;
 #ifdef USE_FMEMOPEN
-      /* When running under torify, safe_fclose(&s->fpout) does not seem to
+      /* When running under torify, mutt_file_fclose(&s->fpout) does not seem to
        * update tempsize. On the other hand, fflush does.  See
        * https://github.com/neomutt/neomutt/issues/440 */
       fflush(s->fpout);
 #endif
-      safe_fclose(&s->fpout);
+      mutt_file_fclose(&s->fpout);
 
       /* restore final destination and substitute the tempfile for input */
       s->fpout = fp;
@@ -1746,7 +1746,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
       else
       { /* fmemopen cannot handle zero-length buffers */
-        s->fpin = safe_fopen("/dev/null", "r");
+        s->fpin = mutt_file_fopen("/dev/null", "r");
       }
       if (!s->fpin)
       {
@@ -1780,7 +1780,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       b->offset = tmpoffset;
 
       /* restore the original source stream */
-      safe_fclose(&s->fpin);
+      mutt_file_fclose(&s->fpin);
 #ifdef USE_FMEMOPEN
       FREE(&temp);
 #endif

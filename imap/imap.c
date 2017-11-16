@@ -2367,7 +2367,7 @@ static int imap_open_new_message(struct Message *msg, struct Context *dest, stru
   char tmp[_POSIX_PATH_MAX];
 
   mutt_mktemp(tmp, sizeof(tmp));
-  msg->fp = safe_fopen(tmp, "w");
+  msg->fp = mutt_file_fopen(tmp, "w");
   if (!msg->fp)
   {
     mutt_perror(tmp);

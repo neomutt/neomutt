@@ -559,10 +559,10 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           mutt_perror(_("Can't open /dev/null"));
           break;
         }
-        fp = safe_fopen(tempfile, "w");
+        fp = mutt_file_fopen(tempfile, "w");
         if (!fp)
         {
-          safe_fclose(&devnull);
+          mutt_file_fclose(&devnull);
           mutt_perror(_("Can't create temporary file"));
           break;
         }
@@ -577,13 +577,13 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         {
           mutt_perror(_("Can't create filter"));
           unlink(tempfile);
-          safe_fclose(&fp);
-          safe_fclose(&devnull);
+          mutt_file_fclose(&fp);
+          mutt_file_fclose(&devnull);
         }
 
         mutt_wait_filter(thepid);
-        safe_fclose(&fp);
-        safe_fclose(&devnull);
+        mutt_file_fclose(&fp);
+        mutt_file_fclose(&devnull);
         mutt_clear_error();
         snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"),
                  pgp_keyid(pgp_principal_key(KeyTable[menu->current]->parent)));
@@ -736,7 +736,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
     tempf = tempfb;
   }
 
-  tempfp = safe_fopen(tempf, tempf == tempfb ? "w" : "a");
+  tempfp = mutt_file_fopen(tempf, tempf == tempfb ? "w" : "a");
   if (!tempfp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -747,7 +747,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   if (!devnull)
   {
     mutt_perror(_("Can't open /dev/null"));
-    safe_fclose(&tempfp);
+    mutt_file_fclose(&tempfp);
     if (tempf == tempfb)
       unlink(tempf);
     return NULL;
@@ -760,15 +760,15 @@ struct Body *pgp_make_key_attachment(char *tempf)
   {
     mutt_perror(_("Can't create filter"));
     unlink(tempf);
-    safe_fclose(&tempfp);
-    safe_fclose(&devnull);
+    mutt_file_fclose(&tempfp);
+    mutt_file_fclose(&devnull);
     return NULL;
   }
 
   mutt_wait_filter(thepid);
 
-  safe_fclose(&tempfp);
-  safe_fclose(&devnull);
+  mutt_file_fclose(&tempfp);
+  mutt_file_fclose(&devnull);
 
   att = mutt_new_body();
   att->filename = safe_strdup(tempf);

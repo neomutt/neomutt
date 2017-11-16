@@ -165,7 +165,7 @@ static short pgp_find_hash(const char *fname)
   short rv = -1;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  out = safe_fopen(tempfile, "w+");
+  out = mutt_file_fopen(tempfile, "w+");
   if (!out)
   {
     mutt_perror(tempfile);
@@ -195,8 +195,8 @@ static short pgp_find_hash(const char *fname)
 
 bye:
 
-  safe_fclose(&in);
-  safe_fclose(&out);
+  mutt_file_fclose(&in);
+  mutt_file_fclose(&out);
   pgp_release_packet();
   return rv;
 }

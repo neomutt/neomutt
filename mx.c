@@ -286,7 +286,7 @@ int mx_get_magic(const char *path)
       else if (mutt_strcmp(MMDF_SEP, tmp) == 0)
         magic = MUTT_MMDF;
     }
-    safe_fclose(&f);
+    mutt_file_fclose(&f);
 
     if (!option(OPT_CHECK_MBOX_SIZE))
     {
@@ -550,7 +550,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   FREE(&ctx->pattern);
   if (ctx->limit_pattern)
     mutt_pattern_free(&ctx->limit_pattern);
-  safe_fclose(&ctx->fp);
+  mutt_file_fclose(&ctx->fp);
   memset(ctx, 0, sizeof(struct Context));
 }
 
@@ -873,7 +873,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
       !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
-    mutt_unlink_empty(ctx->path);
+    mutt_file_unlink_empty(ctx->path);
 
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)
@@ -1364,7 +1364,7 @@ int mx_check_empty(const char *path)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
-      return mbox_check_empty(path);
+      return mutt_file_check_empty(path);
     case MUTT_MH:
       return mh_check_empty(path);
     case MUTT_MAILDIR:

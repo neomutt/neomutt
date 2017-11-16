@@ -525,7 +525,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, int convert)
   gpgme_data_t data;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fptmp = safe_fopen(tempfile, "w+");
+  fptmp = mutt_file_fopen(tempfile, "w+");
   if (!fptmp)
   {
     mutt_perror(tempfile);
@@ -561,12 +561,12 @@ static gpgme_data_t body_to_data_object(struct Body *a, int convert)
       buf[0] = c;
       gpgme_data_write(data, buf, 1);
     }
-    safe_fclose(&fptmp);
+    mutt_file_fclose(&fptmp);
     gpgme_data_seek(data, 0, SEEK_SET);
   }
   else
   {
-    safe_fclose(&fptmp);
+    mutt_file_fclose(&fptmp);
     err = gpgme_data_new_from_file(&data, tempfile, 1);
   }
   unlink(tempfile);
@@ -660,7 +660,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
     mutt_mktemp(tempfb, sizeof(tempfb));
     tempf = tempfb;
   }
-  fp = safe_fopen(tempf, tempf == tempfb ? "w+" : "a+");
+  fp = mutt_file_fopen(tempf, tempf == tempfb ? "w+" : "a+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -677,7 +677,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
       if (fwrite(buf, nread, 1, fp) != 1)
       {
         mutt_perror(tempf);
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
         unlink(tempf);
         return NULL;
       }
@@ -686,12 +686,12 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
   if (ret_fp)
     rewind(fp);
   else
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
   if (nread == -1)
   {
     mutt_error(_("error reading data object: %s\n"), gpgme_strerror(err));
     unlink(tempf);
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return NULL;
   }
   if (ret_fp)
@@ -1974,7 +1974,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     saved_length = b->length;
 
     mutt_mktemp(tempfile, sizeof(tempfile));
-    decoded_fp = safe_fopen(tempfile, "w+");
+    decoded_fp = mutt_file_fopen(tempfile, "w+");
     if (!decoded_fp)
     {
       mutt_perror(tempfile);
@@ -1996,7 +1996,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = safe_fopen(tempfile, "w+");
+  *fpout = mutt_file_fopen(tempfile, "w+");
   if (!*fpout)
   {
     mutt_perror(tempfile);
@@ -2018,7 +2018,7 @@ bail:
     b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
-    safe_fclose(&decoded_fp);
+    mutt_file_fclose(&decoded_fp);
   }
 
   return rv;
@@ -2058,13 +2058,13 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
   mutt_mktemp(tempfile, sizeof(tempfile));
-  tmpfp = safe_fopen(tempfile, "w+");
+  tmpfp = mutt_file_fopen(tempfile, "w+");
   if (!tmpfp)
   {
     mutt_perror(tempfile);
     return -1;
   }
-  mutt_unlink(tempfile);
+  mutt_file_unlink(tempfile);
 
   s.fpout = tmpfp;
   mutt_decode_attachment(b, &s);
@@ -2077,13 +2077,13 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = tmpfp;
   s.fpout = 0;
   mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = safe_fopen(tempfile, "w+");
+  *fpout = mutt_file_fopen(tempfile, "w+");
   if (!*fpout)
   {
     mutt_perror(tempfile);
     return -1;
   }
-  mutt_unlink(tempfile);
+  mutt_file_unlink(tempfile);
 
   *cur = decrypt_part(b, &s, *fpout, 1, &is_signed);
   if (*cur)
@@ -2091,7 +2091,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   b->type = saved_b_type;
   b->length = saved_b_length;
   b->offset = saved_b_offset;
-  safe_fclose(&tmpfp);
+  mutt_file_fclose(&tmpfp);
   rewind(*fpout);
   if (*cur && !is_signed && !(*cur)->parts && mutt_is_application_smime(*cur))
   {
@@ -2114,13 +2114,13 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     s.fpin = *fpout;
     fseeko(s.fpin, bb->offset, SEEK_SET);
     mutt_mktemp(tempfile, sizeof(tempfile));
-    tmpfp = safe_fopen(tempfile, "w+");
+    tmpfp = mutt_file_fopen(tempfile, "w+");
     if (!tmpfp)
     {
       mutt_perror(tempfile);
       return -1;
     }
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
 
     s.fpout = tmpfp;
     mutt_decode_attachment(bb, &s);
@@ -2128,19 +2128,19 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     bb->length = ftello(s.fpout);
     bb->offset = 0;
     rewind(tmpfp);
-    safe_fclose(fpout);
+    mutt_file_fclose(fpout);
 
     memset(&s, 0, sizeof(s));
     s.fpin = tmpfp;
     s.fpout = 0;
     mutt_mktemp(tempfile, sizeof(tempfile));
-    *fpout = safe_fopen(tempfile, "w+");
+    *fpout = mutt_file_fopen(tempfile, "w+");
     if (!*fpout)
     {
       mutt_perror(tempfile);
       return -1;
     }
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
 
     tmp_b = decrypt_part(bb, &s, *fpout, 1, &is_signed);
     if (tmp_b)
@@ -2148,7 +2148,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     bb->type = saved_b_type;
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
-    safe_fclose(&tmpfp);
+    mutt_file_fclose(&tmpfp);
     rewind(*fpout);
     mutt_free_body(cur);
     *cur = tmp_b;
@@ -2217,7 +2217,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   }
 
   mutt_mktemp(tmpfile, sizeof(tmpfile));
-  *fp = safe_fopen(tmpfile, "w+");
+  *fp = mutt_file_fopen(tmpfile, "w+");
   if (!*fp)
   {
     mutt_perror(tmpfile);
@@ -2263,10 +2263,10 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 
 err_fp:
   if (rc)
-    safe_fclose(fp);
+    mutt_file_fclose(fp);
 err_tmpdir:
   if (dryrun)
-    mutt_rmtree(tmpdir);
+    mutt_file_rmtree(tmpdir);
 err_ctx:
   gpgme_release(tmpctx);
 
@@ -2347,7 +2347,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
       }
     }
   }
-  safe_fclose(&tfp);
+  mutt_file_fclose(&tfp);
   unlink(tempfile);
 
   if (!enc && !sgn)
@@ -2390,7 +2390,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   FILE *in = NULL;
   FILE *out = NULL;
 
-  in = safe_fopen(fname, "r");
+  in = mutt_file_fopen(fname, "r");
   if (!in)
     return;
   /* Note that the stream, "in", needs to be kept open while the keydata
@@ -2399,7 +2399,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   err = gpgme_data_new_from_stream(&keydata, in);
   if (err != GPG_ERR_NO_ERROR)
   {
-    safe_fclose(&in);
+    mutt_file_fclose(&in);
     mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
     mutt_sleep(1);
     return;
@@ -2411,8 +2411,8 @@ void pgp_gpgme_invoke_import(const char *fname)
     mutt_sleep(1);
   }
   gpgme_data_release(keydata);
-  safe_fclose(&in);
-  safe_fclose(&out);
+  mutt_file_fclose(&in);
+  mutt_file_fclose(&out);
 }
 
 /*
@@ -2442,7 +2442,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   fname = data_object_to_tempfile(data, NULL, &fp);
   if (!fname)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return;
   }
   unlink(fname);
@@ -2484,7 +2484,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   }
 
   fgetconv_close(&fc);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 }
 
 /**
@@ -2639,7 +2639,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           tmpfname = data_object_to_tempfile(plaintext, NULL, &pgpout);
           if (!tmpfname)
           {
-            safe_fclose(&pgpout);
+            mutt_file_fclose(&pgpout);
             state_puts(_("Error: copy data failed\n"), s);
           }
           else
@@ -2701,7 +2701,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       gpgme_data_release(armored_data);
       if (pgpout)
       {
-        safe_fclose(&pgpout);
+        mutt_file_fclose(&pgpout);
       }
     }
     else
@@ -2749,7 +2749,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   mutt_debug(2, "Entering pgp_encrypted handler\n");
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = safe_fopen(tempfile, "w+");
+  fpout = mutt_file_fopen(tempfile, "w+");
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -2805,8 +2805,8 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     rc = -1;
   }
 
-  safe_fclose(&fpout);
-  mutt_unlink(tempfile);
+  mutt_file_fclose(&fpout);
+  mutt_file_unlink(tempfile);
   mutt_debug(2, "Leaving pgp_encrypted handler\n");
 
   return rc;
@@ -2827,7 +2827,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
   a->warnsig = false;
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = safe_fopen(tempfile, "w+");
+  fpout = mutt_file_fopen(tempfile, "w+");
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -2883,8 +2883,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     mutt_free_body(&tattach);
   }
 
-  safe_fclose(&fpout);
-  mutt_unlink(tempfile);
+  mutt_file_fclose(&fpout);
+  mutt_file_unlink(tempfile);
   mutt_debug(2, "Leaving smime_encrypted handler\n");
 
   return rc;
@@ -3831,7 +3831,7 @@ static void verify_key(struct CryptKeyInfo *key)
   int maxdepth = 100;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = safe_fopen(tempfile, "w");
+  fp = mutt_file_fopen(tempfile, "w");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -3879,7 +3879,7 @@ static void verify_key(struct CryptKeyInfo *key)
 leave:
   gpgme_key_unref(k);
   gpgme_release(listctx);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   mutt_clear_error();
   snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), crypt_keyid(key));
   mutt_do_pager(cmd, tempfile, 0, NULL);
