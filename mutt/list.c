@@ -29,13 +29,13 @@
  * | Function                 | Description
  * | :----------------------- | :-----------------------------------------
  * | mutt_list_clear()        | Free a list, but NOT its strings
+ * | mutt_list_compare()      | Compare two string lists
  * | mutt_list_find()         | Find a string in a List
  * | mutt_list_free()         | Free a List AND its strings
  * | mutt_list_insert_after() | Insert a string after a given ListNode
  * | mutt_list_insert_head()  | Insert a string at the beginning of a List
  * | mutt_list_insert_tail()  | Append a string to the end of a List
  * | mutt_list_match()        | Is the string in the list (see notes)
- * | strict_cmp_stailq()      | Compare two string lists
  */
 
 #include "config.h"
@@ -166,7 +166,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
 }
 
 /**
- * strict_cmp_stailq - Compare two string lists
+ * mutt_list_compare - Compare two string lists
  * @param ah First string list
  * @param bh Second string list
  * @retval bool True if lists are identical
@@ -174,7 +174,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.
  */
-int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
+int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 {
   struct ListNode *a = STAILQ_FIRST(ah);
   struct ListNode *b = STAILQ_FIRST(bh);
