@@ -28,7 +28,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)
@@ -467,14 +467,14 @@ bool feature_enabled(const char *name)
     return false;
   for (int i = 0; comp_opts_default[i].name; i++)
   {
-    if (mutt_strcmp(name, comp_opts_default[i].name) == 0)
+    if (mutt_str_strcmp(name, comp_opts_default[i].name) == 0)
     {
       return true;
     }
   }
   for (int i = 0; comp_opts[i].name; i++)
   {
-    if (mutt_strcmp(name, comp_opts[i].name) == 0)
+    if (mutt_str_strcmp(name, comp_opts[i].name) == 0)
     {
       return comp_opts[i].enabled;
     }

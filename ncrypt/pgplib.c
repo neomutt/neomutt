@@ -24,7 +24,7 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "pgplib.h"
 
 const char *pgp_pkalgbytype(unsigned char type)
@@ -128,10 +128,10 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 
   for (; up; up = up->next)
   {
-    *lp = safe_calloc(1, sizeof(struct PgpUid));
+    *lp = mutt_mem_calloc(1, sizeof(struct PgpUid));
     (*lp)->trust = up->trust;
     (*lp)->flags = up->flags;
-    (*lp)->addr = safe_strdup(up->addr);
+    (*lp)->addr = mutt_str_strdup(up->addr);
     (*lp)->parent = parent;
     lp = &(*lp)->next;
   }

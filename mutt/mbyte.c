@@ -29,17 +29,17 @@
  * | :--------------- | :--------------------------------------------------
  * | #ReplacementChar | When a Unicode character can't be displayed, use this instead
  *
- * | Function        | Description
- * | :-------------- | :---------------------------------------------------------
- * | get_initials()  | Turn a name into initials
- * | is_shell_char() | Is character not typically part of a pathname
- * | mutt_charlen()  | Count the bytes in a (multibyte) character
- * | my_mbstowcs()   | Convert a string from multibyte to wide characters
- * | my_wcstombs()   | Convert a string from wide to multibyte characters
- * | my_wcswidth()   | Measure the screen width of a string
- * | my_wcwidth()    | Measure the screen width of a character
- * | my_width()      | Measure a string's display width (in screen columns)
- * | width_ceiling() | Keep the end of the string on-screen
+ * | Function                | Description
+ * | :---------------------- | :---------------------------------------------------------
+ * | mutt_mb_charlen()       | Count the bytes in a (multibyte) character
+ * | mutt_mb_get_initials()  | Turn a name into initials
+ * | mutt_mb_is_shell_char() | Is character not typically part of a pathname
+ * | mutt_mb_mbstowcs()      | Convert a string from multibyte to wide characters
+ * | mutt_mb_wcstombs()      | Convert a string from wide to multibyte characters
+ * | mutt_mb_wcswidth()      | Measure the screen width of a string
+ * | mutt_mb_wcwidth()       | Measure the screen width of a character
+ * | mutt_mb_width()         | Measure a string's display width (in screen columns)
+ * | mutt_mb_width_ceiling() | Keep the end of the string on-screen
  */
 
 #include "config.h"
@@ -62,7 +62,7 @@ bool OPT_LOCALES; /**< (pseudo) set if user has valid locale definition */
 wchar_t ReplacementChar = '?';
 
 /**
- * mutt_charlen - Count the bytes in a (multibyte) character
+ * mutt_mb_charlen - Count the bytes in a (multibyte) character
  * @param[in]  s     String to be examined
  * @param[out] width Number of screen columns the character would use
  * @retval n  Number of bytes in the first (multibyte) character of input consumes
@@ -70,7 +70,7 @@ wchar_t ReplacementChar = '?';
  * @retval =0 End of input
  * @retval >0 Length (bytes)
  */
-int mutt_charlen(const char *s, int *width)
+int mutt_mb_charlen(const char *s, int *width)
 {
   wchar_t wc;
   mbstate_t mbstate;
@@ -79,7 +79,7 @@ int mutt_charlen(const char *s, int *width)
   if (!s || !*s)
     return 0;
 
-  n = mutt_strlen(s);
+  n = mutt_str_strlen(s);
   memset(&mbstate, 0, sizeof(mbstate));
   k = mbrtowc(&wc, s, n, &mbstate);
   if (width)
@@ -88,7 +88,7 @@ int mutt_charlen(const char *s, int *width)
 }
 
 /**
- * get_initials - Turn a name into initials
+ * mutt_mb_get_initials - Turn a name into initials
  * @param name   String to be converted
  * @param buf    Buffer for the result
  * @param buflen Size of the buffer
@@ -99,7 +99,7 @@ int mutt_charlen(const char *s, int *width)
  * The function saves the first character from each word.  Words are delimited
  * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
  */
-bool get_initials(const char *name, char *buf, int buflen)
+bool mutt_mb_get_initials(const char *name, char *buf, int buflen)
 {
   if (!name || !buf)
     return false;
@@ -107,7 +107,7 @@ bool get_initials(const char *name, char *buf, int buflen)
   while (*name)
   {
     /* Char's length in bytes */
-    int clen = mutt_charlen(name, NULL);
+    int clen = mutt_mb_charlen(name, NULL);
     if (clen < 1)
       return false;
 
@@ -129,7 +129,7 @@ bool get_initials(const char *name, char *buf, int buflen)
     /* Skip to end-of-word */
     for (; *name; name += clen)
     {
-      clen = mutt_charlen(name, NULL);
+      clen = mutt_mb_charlen(name, NULL);
       if (clen < 1)
         return false;
       else if ((clen == 1) && (isspace(*name) || (*name == '-')))
@@ -146,7 +146,7 @@ bool get_initials(const char *name, char *buf, int buflen)
 }
 
 /**
- * my_width - Measure a string's display width (in screen columns)
+ * mutt_mb_width - Measure a string's display width (in screen columns)
  * @param str     String to measure
  * @param col     Display column (used for expanding tabs)
  * @param display will this be displayed to the user?
@@ -154,7 +154,7 @@ bool get_initials(const char *name, char *buf, int buflen)
  *
  * This is like wcwidth(), but gets const char* not wchar_t*.
  */
-int my_width(const char *str, int col, bool display)
+int mutt_mb_width(const char *str, int col, bool display)
 {
   wchar_t wc;
   int l, w = 0, nl = 0;
@@ -189,11 +189,11 @@ int my_width(const char *str, int col, bool display)
 }
 
 /**
- * my_wcwidth - Measure the screen width of a character
+ * mutt_mb_wcwidth - Measure the screen width of a character
  * @param wc Character to examine
  * @retval int Width in screen columns
  */
-int my_wcwidth(wchar_t wc)
+int mutt_mb_wcwidth(wchar_t wc)
 {
   int n = wcwidth(wc);
   if (IsWPrint(wc) && n > 0)
@@ -206,21 +206,21 @@ int my_wcwidth(wchar_t wc)
 }
 
 /**
- * my_wcswidth - Measure the screen width of a string
+ * mutt_mb_wcswidth - Measure the screen width of a string
  * @param s String to measure
  * @param n Length of string in characters
  * @retval int Width in screen columns
  */
-int my_wcswidth(const wchar_t *s, size_t n)
+int mutt_mb_wcswidth(const wchar_t *s, size_t n)
 {
   int w = 0;
   while (n--)
-    w += my_wcwidth(*s++);
+    w += mutt_mb_wcwidth(*s++);
   return w;
 }
 
 /**
- * width_ceiling - Keep the end of the string on-screen
+ * mutt_mb_width_ceiling - Keep the end of the string on-screen
  * @param s String being displayed
  * @param n Length of string in characters
  * @param w1 Width limit
@@ -229,24 +229,24 @@ int my_wcswidth(const wchar_t *s, size_t n)
  * Given a string and a width, determine how many characters from the
  * beginning of the string should be skipped so that the string fits.
  */
-size_t width_ceiling(const wchar_t *s, size_t n, int w1)
+size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1)
 {
   const wchar_t *s0 = s;
   int w = 0;
   for (; n; s++, n--)
-    if ((w += my_wcwidth(*s)) > w1)
+    if ((w += mutt_mb_wcwidth(*s)) > w1)
       break;
   return s - s0;
 }
 
 /**
- * my_wcstombs - Convert a string from wide to multibyte characters
+ * mutt_mb_wcstombs - Convert a string from wide to multibyte characters
  * @param dest Buffer for the result
  * @param dlen Length of the result buffer
  * @param src Source string to convert
  * @param slen Length of the source string
  */
-void my_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
+void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
 {
   mbstate_t st;
   size_t k;
@@ -288,14 +288,14 @@ void my_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
 }
 
 /**
- * my_mbstowcs - Convert a string from multibyte to wide characters
+ * mutt_mb_mbstowcs - Convert a string from multibyte to wide characters
  * @param pwbuf    Buffer for the result
  * @param pwbuflen Length of the result buffer
  * @param i        Starting index into the result buffer
  * @param buf      String to convert
  * @retval size_t First character after the result
  */
-size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
+size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
 {
   wchar_t wc;
   mbstate_t st;
@@ -316,7 +316,7 @@ size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        safe_realloc(&wbuf, wbuflen * sizeof(*wbuf));
+        mutt_mem_realloc(&wbuf, wbuflen * sizeof(*wbuf));
       }
       wbuf[i++] = wc;
     }
@@ -325,7 +325,7 @@ size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        safe_realloc(&wbuf, wbuflen * sizeof(*wbuf));
+        mutt_mem_realloc(&wbuf, wbuflen * sizeof(*wbuf));
       }
       wbuf[i++] = ReplacementChar;
       buf++;
@@ -337,16 +337,15 @@ size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
 }
 
 /**
- * is_shell_char - Is character not typically part of a pathname
+ * mutt_mb_is_shell_char - Is character not typically part of a pathname
  * @param ch Character to examine
  * @retval true  Character is not typically part of a pathname
  * @retval false Character is typically part of a pathname
  *
  * @note The name is very confusing.
  */
-bool is_shell_char(wchar_t ch)
+bool mutt_mb_is_shell_char(wchar_t ch)
 {
   static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in NeoMutt */
   return wcschr(shell_chars, ch) != NULL;
 }
-

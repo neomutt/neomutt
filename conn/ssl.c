@@ -52,11 +52,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/file.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/file.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "mutt.h"
 #include "ssl.h"
 #include "account.h"
@@ -165,7 +165,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   ERR_clear_error();
 
   X509_free(cert);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return rv;
 }
@@ -337,7 +337,7 @@ static void ssl_dprint_err_stack(void)
   buflen = BIO_get_mem_data(bio, &buf);
   if (buflen > 0)
   {
-    output = safe_malloc(buflen + 1);
+    output = mutt_mem_malloc(buflen + 1);
     memcpy(output, buf, buflen);
     output[buflen] = '\0';
     mutt_debug(1, "SSL error stack: %s\n", output);
@@ -421,7 +421,7 @@ static char *x509_get_part(X509_NAME *name, int nid)
   static char ret[SHORT_STRING];
 
   if (!name || X509_NAME_get_text_by_NID(name, nid, ret, sizeof(ret)) < 0)
-    strfcpy(ret, _("Unknown"), sizeof(ret));
+    mutt_str_strfcpy(ret, _("Unknown"), sizeof(ret));
 
   return ret;
 }
@@ -448,7 +448,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
     {
       char ch[8];
       snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
-      safe_strcat(s, l, ch);
+      mutt_str_strcat(s, l, ch);
     }
   }
 }
@@ -465,7 +465,7 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
   static char buf[64];
   BIO *bio = NULL;
 
-  strfcpy(buf, _("[invalid date]"), sizeof(buf));
+  mutt_str_strfcpy(buf, _("[invalid date]"), sizeof(buf));
 
   bio = BIO_new(BIO_s_mem());
   if (bio)
@@ -784,7 +784,7 @@ static int check_certificate_file(X509 *peercert)
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen))
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return 0;
   }
 
@@ -801,7 +801,7 @@ static int check_certificate_file(X509 *peercert)
   if (!pass)
     ERR_clear_error();
   X509_free(cert);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return pass;
 }
@@ -837,10 +837,10 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
 #ifdef HAVE_LIBIDN
   if (idna_to_ascii_lz(hostname, &hostname_ascii, 0) != IDNA_SUCCESS)
   {
-    hostname_ascii = safe_strdup(hostname);
+    hostname_ascii = mutt_str_strdup(hostname);
   }
 #else
-  hostname_ascii = safe_strdup(hostname);
+  hostname_ascii = mutt_str_strdup(hostname);
 #endif
 
   /* Try the DNS subjectAltNames. */
@@ -854,7 +854,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       if (subj_alt_name->type == GEN_DNS)
       {
         if (subj_alt_name->d.ia5->length >= 0 &&
-            mutt_strlen((char *) subj_alt_name->d.ia5->data) ==
+            mutt_str_strlen((char *) subj_alt_name->d.ia5->data) ==
                 (size_t) subj_alt_name->d.ia5->length &&
             (match_found = hostname_match(hostname_ascii,
                                           (char *) (subj_alt_name->d.ia5->data))))
@@ -873,7 +873,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (!x509_subject)
     {
       if (err && errlen)
-        strfcpy(err, _("cannot get certificate subject"), errlen);
+        mutt_str_strfcpy(err, _("cannot get certificate subject"), errlen);
       goto out;
     }
 
@@ -882,21 +882,21 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (bufsize == -1)
     {
       if (err && errlen)
-        strfcpy(err, _("cannot get certificate common name"), errlen);
+        mutt_str_strfcpy(err, _("cannot get certificate common name"), errlen);
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
-    buf = safe_malloc((size_t) bufsize);
+    buf = mutt_mem_malloc((size_t) bufsize);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
-        strfcpy(err, _("cannot get certificate common name"), errlen);
+        mutt_str_strfcpy(err, _("cannot get certificate common name"), errlen);
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
      * zero or greater.
      */
-    if (mutt_strlen(buf) == (size_t) bufsize - 1)
+    if (mutt_str_strlen(buf) == (size_t) bufsize - 1)
     {
       match_found = hostname_match(hostname_ascii, buf);
     }
@@ -977,12 +977,12 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   mutt_push_current_menu(menu);
 
   menu->max = mutt_array_size(part) * 2 + 10;
-  menu->dialog = safe_calloc(1, menu->max * sizeof(char *));
+  menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = safe_calloc(1, SHORT_STRING * sizeof(char));
+    menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
 
   row = 0;
-  strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
   x509_subject = X509_get_subject_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
@@ -990,7 +990,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
              x509_get_part(x509_subject, part[u]));
 
   row++;
-  strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
@@ -1055,9 +1055,9 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
 
   helpstr[0] = '\0';
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  safe_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_GENERIC, OP_HELP);
-  safe_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   menu->help = helpstr;
 
   done = 0;
@@ -1079,7 +1079,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
         {
           if (PEM_write_X509(fp, cert))
             done = 1;
-          safe_fclose(&fp);
+          mutt_file_fclose(&fp);
         }
         if (!done)
         {
@@ -1338,7 +1338,7 @@ static int ssl_socket_open(struct Connection *conn)
   if (raw_socket_open(conn) < 0)
     return -1;
 
-  data = safe_calloc(1, sizeof(struct SslSockData));
+  data = mutt_mem_calloc(1, sizeof(struct SslSockData));
   conn->sockdata = data;
 
   data->ctx = SSL_CTX_new(SSLv23_client_method());
@@ -1441,7 +1441,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   if (ssl_init())
     goto bail;
 
-  ssldata = safe_calloc(1, sizeof(struct SslSockData));
+  ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
   /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
    *
    * However, we need to be able to negotiate amongst various TLS versions,

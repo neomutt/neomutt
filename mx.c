@@ -32,7 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "mx.h"
 #include "address.h"
@@ -111,7 +111,7 @@ struct MxOps *mx_get_ops(int magic)
 
 static bool mutt_is_spool(const char *str)
 {
-  return (mutt_strcmp(SpoolFile, str) == 0);
+  return (mutt_str_strcmp(SpoolFile, str) == 0);
 }
 
 #ifdef USE_IMAP
@@ -281,12 +281,12 @@ int mx_get_magic(const char *path)
 
     if (fgets(tmp, sizeof(tmp), f))
     {
-      if (mutt_strncmp("From ", tmp, 5) == 0)
+      if (mutt_str_strncmp("From ", tmp, 5) == 0)
         magic = MUTT_MBOX;
-      else if (mutt_strcmp(MMDF_SEP, tmp) == 0)
+      else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
         magic = MUTT_MMDF;
     }
-    safe_fclose(&f);
+    mutt_file_fclose(&f);
 
     if (!option(OPT_CHECK_MBOX_SIZE))
     {
@@ -319,13 +319,13 @@ int mx_get_magic(const char *path)
  */
 int mx_set_magic(const char *s)
 {
-  if (mutt_strcasecmp(s, "mbox") == 0)
+  if (mutt_str_strcasecmp(s, "mbox") == 0)
     MboxType = MUTT_MBOX;
-  else if (mutt_strcasecmp(s, "mmdf") == 0)
+  else if (mutt_str_strcasecmp(s, "mmdf") == 0)
     MboxType = MUTT_MMDF;
-  else if (mutt_strcasecmp(s, "mh") == 0)
+  else if (mutt_str_strcasecmp(s, "mh") == 0)
     MboxType = MUTT_MH;
-  else if (mutt_strcasecmp(s, "maildir") == 0)
+  else if (mutt_str_strcasecmp(s, "maildir") == 0)
     MboxType = MUTT_MAILDIR;
   else
     return -1;
@@ -414,10 +414,10 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     return NULL;
 
   if (!ctx)
-    ctx = safe_malloc(sizeof(struct Context));
+    ctx = mutt_mem_malloc(sizeof(struct Context));
   memset(ctx, 0, sizeof(struct Context));
 
-  ctx->path = safe_strdup(path);
+  ctx->path = mutt_str_strdup(path);
   if (!ctx->path)
   {
     if (!pctx)
@@ -426,7 +426,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
   }
   ctx->realpath = realpath(ctx->path, NULL);
   if (!ctx->realpath)
-    ctx->realpath = safe_strdup(ctx->path);
+    ctx->realpath = mutt_str_strdup(ctx->path);
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
@@ -536,10 +536,10 @@ void mx_fastclose_mailbox(struct Context *ctx)
     ctx->mx_ops->close(ctx);
 
   if (ctx->subj_hash)
-    hash_destroy(&ctx->subj_hash, NULL);
+    mutt_hash_destroy(&ctx->subj_hash, NULL);
   if (ctx->id_hash)
-    hash_destroy(&ctx->id_hash, NULL);
-  hash_destroy(&ctx->label_hash, NULL);
+    mutt_hash_destroy(&ctx->id_hash, NULL);
+  mutt_hash_destroy(&ctx->label_hash, NULL);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->msgcount; i++)
     mutt_free_header(&ctx->hdrs[i]);
@@ -550,7 +550,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   FREE(&ctx->pattern);
   if (ctx->limit_pattern)
     mutt_pattern_free(&ctx->limit_pattern);
-  safe_fclose(&ctx->fp);
+  mutt_file_fclose(&ctx->fp);
   memset(ctx, 0, sizeof(struct Context));
 }
 
@@ -699,11 +699,11 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     if ((p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path)))
     {
       isSpool = 1;
-      strfcpy(mbox, p, sizeof(mbox));
+      mutt_str_strfcpy(mbox, p, sizeof(mbox));
     }
     else
     {
-      strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
+      mutt_str_strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
       isSpool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
     }
 
@@ -818,7 +818,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, Trash) != 0))
+  if (purge && ctx->deleted && (mutt_str_strcmp(ctx->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
     {
@@ -873,7 +873,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
       !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
-    mutt_unlink_empty(ctx->path);
+    mutt_file_unlink_empty(ctx->path);
 
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)
@@ -966,9 +966,9 @@ void mx_update_tables(struct Context *ctx, bool committing)
                       ctx->hdrs[i]->content->hdr_offset);
       /* remove message from the hash tables */
       if (ctx->subj_hash && ctx->hdrs[i]->env->real_subj)
-        hash_delete(ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
+        mutt_hash_delete(ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
       if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
-        hash_delete(ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
+        mutt_hash_delete(ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
       mutt_label_hash_remove(ctx, ctx->hdrs[i]);
       /* The path mx_check_mailbox() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
@@ -1002,7 +1002,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
       snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
-      strfcpy(tmp, _("Use 'toggle-write' to re-enable write!"), sizeof(tmp));
+      mutt_str_strfcpy(tmp, _("Use 'toggle-write' to re-enable write!"), sizeof(tmp));
 
     mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
@@ -1055,7 +1055,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
   msgcount = ctx->msgcount;
   deleted = ctx->deleted;
 
-  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, Trash) != 0))
+  if (purge && ctx->deleted && (mutt_str_strcmp(ctx->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
       return -1;
@@ -1135,7 +1135,7 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
     return NULL;
   }
 
-  msg = safe_calloc(1, sizeof(struct Message));
+  msg = mutt_mem_calloc(1, sizeof(struct Message));
   msg->write = true;
 
   if (hdr)
@@ -1205,7 +1205,7 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
     return NULL;
   }
 
-  msg = safe_calloc(1, sizeof(struct Message));
+  msg = mutt_mem_calloc(1, sizeof(struct Message));
   if (ctx->mx_ops->open_msg(ctx, msg, msgno))
     FREE(&msg);
 
@@ -1267,13 +1267,13 @@ void mx_alloc_memory(struct Context *ctx)
 
   if (ctx->hdrs)
   {
-    safe_realloc(&ctx->hdrs, sizeof(struct Header *) * (ctx->hdrmax += 25));
-    safe_realloc(&ctx->v2r, sizeof(int) * ctx->hdrmax);
+    mutt_mem_realloc(&ctx->hdrs, sizeof(struct Header *) * (ctx->hdrmax += 25));
+    mutt_mem_realloc(&ctx->v2r, sizeof(int) * ctx->hdrmax);
   }
   else
   {
-    ctx->hdrs = safe_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
-    ctx->v2r = safe_calloc(ctx->hdrmax, sizeof(int));
+    ctx->hdrs = mutt_mem_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
+    ctx->v2r = mutt_mem_calloc(ctx->hdrmax, sizeof(int));
   }
   for (int i = ctx->msgcount; i < ctx->hdrmax; i++)
   {
@@ -1317,7 +1317,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
       if (!ctx->id_hash)
         ctx->id_hash = mutt_make_id_hash(ctx);
 
-      h2 = hash_find(ctx->id_hash, h->env->supersedes);
+      h2 = mutt_hash_find(ctx->id_hash, h->env->supersedes);
       if (h2)
       {
         h2->superseded = true;
@@ -1328,9 +1328,9 @@ void mx_update_context(struct Context *ctx, int new_messages)
 
     /* add this message to the hash tables */
     if (ctx->id_hash && h->env->message_id)
-      hash_insert(ctx->id_hash, h->env->message_id, h);
+      mutt_hash_insert(ctx->id_hash, h->env->message_id, h);
     if (ctx->subj_hash && h->env->real_subj)
-      hash_insert(ctx->subj_hash, h->env->real_subj, h);
+      mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
     mutt_label_hash_add(ctx, h);
 
     if (option(OPT_SCORE))
@@ -1364,7 +1364,7 @@ int mx_check_empty(const char *path)
   {
     case MUTT_MBOX:
     case MUTT_MMDF:
-      return mbox_check_empty(path);
+      return mutt_file_check_empty(path);
     case MUTT_MH:
       return mh_check_empty(path);
     case MUTT_MAILDIR:

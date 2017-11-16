@@ -34,7 +34,7 @@
 #include <stddef.h>
 #include <depot.h>
 #include <villa.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "options.h"
 

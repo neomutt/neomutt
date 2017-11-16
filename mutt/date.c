@@ -31,17 +31,17 @@
  * | #TimeZones            | Lookup table of Time Zones
  * | #Weekdays             | Day of the week (abbreviated)
  *
- * | Function              | Description
- * | :-------------------- | :--------------------------------------------------
- * | imap_make_date()      | Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
- * | imap_parse_date()     | Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
- * | is_day_name()         | Is the string a valid day name
- * | mutt_check_month()    | Is the string a valid month name
- * | mutt_local_tz()       | Calculate the local timezone in seconds east of UTC
- * | mutt_make_date()      | Write a date in RFC822 format to a buffer
- * | mutt_mktime()         | Convert `struct tm` to `time_t`
- * | mutt_normalize_time() | Fix the contents of a struct tm
- * | mutt_parse_date()     | Parse a date string in RFC822 format
+ * | Function                   | Description
+ * | :------------------------- | :--------------------------------------------------
+ * | mutt_date_check_month()    | Is the string a valid month name
+ * | mutt_date_is_day_name()    | Is the string a valid day name
+ * | mutt_date_local_tz()       | Calculate the local timezone in seconds east of UTC
+ * | mutt_date_make_date()      | Write a date in RFC822 format to a buffer
+ * | mutt_date_make_imap()      | Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
+ * | mutt_date_make_time()      | Convert `struct tm` to `time_t`
+ * | mutt_date_normalize_time() | Fix the contents of a struct tm
+ * | mutt_date_parse_date()     | Parse a date string in RFC822 format
+ * | mutt_date_parse_imap()     | Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  */
 
 #include "config.h"
@@ -198,7 +198,7 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
 
   if (*tz != '(')
     return tz; /* no need to do anything */
-  tz = skip_email_wsp(tz + 1);
+  tz = mutt_str_skip_email_wsp(tz + 1);
   p = strpbrk(tz, " )");
   if (!p)
     return tz;
@@ -211,14 +211,14 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
 }
 
 /**
- * mutt_local_tz - Calculate the local timezone in seconds east of UTC
+ * mutt_date_local_tz - Calculate the local timezone in seconds east of UTC
  * @param t Time to examine
  * @retval num Seconds east of UTC
  *
  * Returns the local timezone in seconds east of UTC for the time t,
  * or for the current time if t is zero.
  */
-time_t mutt_local_tz(time_t t)
+time_t mutt_date_local_tz(time_t t)
 {
   /* Check we haven't overflowed the time (on 32-bit arches) */
   if ((t == TIME_T_MAX) || (t == TIME_T_MIN))
@@ -237,7 +237,7 @@ time_t mutt_local_tz(time_t t)
 }
 
 /**
- * mutt_mktime - Convert `struct tm` to `time_t`
+ * mutt_date_make_time - Convert `struct tm` to `time_t`
  * @param t     Time to convert
  * @param local Should the local timezone be considered
  * @retval num Time in Unix format
@@ -245,7 +245,7 @@ time_t mutt_local_tz(time_t t)
  * Convert a struct tm to time_t, but don't take the local timezone into
  * account unless ``local'' is nonzero
  */
-time_t mutt_mktime(struct tm *t, int local)
+time_t mutt_date_make_time(struct tm *t, int local)
 {
   time_t g;
 
@@ -301,7 +301,7 @@ time_t mutt_mktime(struct tm *t, int local)
 }
 
 /**
- * mutt_normalize_time - Fix the contents of a struct tm
+ * mutt_date_normalize_time - Fix the contents of a struct tm
  * @param tm Time to correct
  *
  * If values have been added/subtracted from a struct tm, it can lead to
@@ -309,7 +309,7 @@ time_t mutt_mktime(struct tm *t, int local)
  *
  * This function will correct any over/under-flow.
  */
-void mutt_normalize_time(struct tm *tm)
+void mutt_date_normalize_time(struct tm *tm)
 {
   static const char DaysPerMonth[12] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
@@ -382,16 +382,16 @@ void mutt_normalize_time(struct tm *tm)
 }
 
 /**
- * mutt_make_date - Write a date in RFC822 format to a buffer
+ * mutt_date_make_date - Write a date in RFC822 format to a buffer
  * @param buf    Buffer for result
  * @param buflen Length of buffer
  * @retval ptr Buffer containing result
  */
-char *mutt_make_date(char *buf, size_t buflen)
+char *mutt_date_make_date(char *buf, size_t buflen)
 {
   time_t t = time(NULL);
   struct tm *l = localtime(&t);
-  time_t tz = mutt_local_tz(t);
+  time_t tz = mutt_date_local_tz(t);
 
   tz /= 60;
 
@@ -402,7 +402,7 @@ char *mutt_make_date(char *buf, size_t buflen)
 }
 
 /**
- * mutt_check_month - Is the string a valid month name
+ * mutt_date_check_month - Is the string a valid month name
  * @param s String to check
  * @retval num Index into Months array (0-based)
  * @retval -1  Error
@@ -410,37 +410,37 @@ char *mutt_make_date(char *buf, size_t buflen)
  * @note Only the first three characters are checked
  * @note The comparison is case insensitive
  */
-int mutt_check_month(const char *s)
+int mutt_date_check_month(const char *s)
 {
   for (int i = 0; i < 12; i++)
-    if (mutt_strncasecmp(s, Months[i], 3) == 0)
+    if (mutt_str_strncasecmp(s, Months[i], 3) == 0)
       return i;
 
   return -1; /* error */
 }
 
 /**
- * is_day_name - Is the string a valid day name
+ * mutt_date_is_day_name - Is the string a valid day name
  * @param s String to check
  * @retval boolean
  *
  * @note Only the first three characters are checked
  * @note The comparison is case insensitive
  */
-bool is_day_name(const char *s)
+bool mutt_date_is_day_name(const char *s)
 {
   if ((strlen(s) < 3) || !*(s + 3) || !ISSPACE(*(s + 3)))
     return false;
 
   for (int i = 0; i < 7; i++)
-    if (mutt_strncasecmp(s, Weekdays[i], 3) == 0)
+    if (mutt_str_strncasecmp(s, Weekdays[i], 3) == 0)
       return true;
 
   return false;
 }
 
 /**
- * mutt_parse_date - Parse a date string in RFC822 format
+ * mutt_date_parse_date - Parse a date string in RFC822 format
  * @param[in]  s      String to parse
  * @param[out] tz_out Pointer to timezone (optional)
  * @retval num Unix time in seconds
@@ -450,7 +450,7 @@ bool is_day_name(const char *s)
  *
  * The 'timezone' field is optional; it defaults to +0000 if missing.
  */
-time_t mutt_parse_date(const char *s, struct Tz *tz_out)
+time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 {
   int count = 0;
   char *t = NULL;
@@ -469,14 +469,14 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
    * the date format imposes a natural limit.
    */
 
-  strfcpy(scratch, s, sizeof(scratch));
+  mutt_str_strfcpy(scratch, s, sizeof(scratch));
 
   /* kill the day of the week, if it exists. */
   if ((t = strchr(scratch, ',')))
     t++;
   else
     t = scratch;
-  t = skip_email_wsp(t);
+  t = mutt_str_skip_email_wsp(t);
 
   memset(&tm, 0, sizeof(tm));
 
@@ -485,21 +485,21 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
     switch (count)
     {
       case 0: /* day of the month */
-        if ((mutt_atoi(t, &tm.tm_mday) < 0) || (tm.tm_mday < 0))
+        if ((mutt_str_atoi(t, &tm.tm_mday) < 0) || (tm.tm_mday < 0))
           return -1;
         if (tm.tm_mday > 31)
           return -1;
         break;
 
       case 1: /* month of the year */
-        i = mutt_check_month(t);
+        i = mutt_date_check_month(t);
         if ((i < 0) || (i > 11))
           return -1;
         tm.tm_mon = i;
         break;
 
       case 2: /* year */
-        if ((mutt_atoi(t, &tm.tm_year) < 0) || (tm.tm_year < 0))
+        if ((mutt_str_atoi(t, &tm.tm_year) < 0) || (tm.tm_year < 0))
           return -1;
         if ((tm.tm_year < 0) || (tm.tm_year > 9999))
           return -1;
@@ -552,7 +552,7 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
           /* This is safe to do: A pointer to a struct equals a pointer to its first element */
           tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct Tz),
                        sizeof(struct Tz),
-                       (int (*)(const void *, const void *)) mutt_strcasecmp);
+                       (int (*)(const void *, const void *)) mutt_str_strcasecmp);
 
           if (tz)
           {
@@ -562,12 +562,12 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
           }
 
           /* ad hoc support for the European MET (now officially CET) TZ */
-          if (mutt_strcasecmp(t, "MET") == 0)
+          if (mutt_str_strcasecmp(t, "MET") == 0)
           {
             t = strtok(NULL, " \t");
             if (t)
             {
-              if (mutt_strcasecmp(t, "DST") == 0)
+              if (mutt_str_strcasecmp(t, "DST") == 0)
                 zhours++;
             }
           }
@@ -595,7 +595,7 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
     tz_out->zoccident = zoccident;
   }
 
-  time_t time = mutt_mktime(&tm, 0);
+  time_t time = mutt_date_make_time(&tm, 0);
   /* Check we haven't overflowed the time (on 32-bit arches) */
   if ((time != TIME_T_MAX) && (time != TIME_T_MIN))
     time += tz_offset;
@@ -604,7 +604,7 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
 }
 
 /**
- * imap_make_date - Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
+ * mutt_date_make_imap - Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
  * @param buf       Buffer to store the results
  * @param buflen    Length of buffer
  * @param timestamp Time to format
@@ -612,10 +612,10 @@ time_t mutt_parse_date(const char *s, struct Tz *tz_out)
  *
  * Caller should provide a buffer of at least 27 bytes.
  */
-int imap_make_date(char *buf, size_t buflen, time_t timestamp)
+int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
 {
   struct tm *tm = localtime(&timestamp);
-  time_t tz = mutt_local_tz(timestamp);
+  time_t tz = mutt_date_local_tz(timestamp);
 
   tz /= 60;
 
@@ -625,12 +625,12 @@ int imap_make_date(char *buf, size_t buflen, time_t timestamp)
 }
 
 /**
- * imap_parse_date - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
+ * mutt_date_parse_imap - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  * @param s Date in string form
  * @retval 0      Error
  * @retval time_t Unix time
  */
-time_t imap_parse_date(char *s)
+time_t mutt_date_parse_imap(char *s)
 {
   struct tm t;
   time_t tz;
@@ -640,7 +640,7 @@ time_t imap_parse_date(char *s)
   if (*s != '-')
     return 0;
   s++;
-  t.tm_mon = mutt_check_month(s);
+  t.tm_mon = mutt_date_check_month(s);
   s += 3;
   if (*s != '-')
     return 0;
@@ -674,5 +674,5 @@ time_t imap_parse_date(char *s)
   if (s[0] == '+')
     tz = -tz;
 
-  return (mutt_mktime(&t, 0) + tz);
+  return (mutt_date_make_time(&t, 0) + tz);
 }

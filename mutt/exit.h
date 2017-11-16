@@ -1,6 +1,6 @@
 /**
  * @file
- * Debug messages
+ * Leave the program NOW
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -20,13 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_DEBUG_H
-#define _LIB_DEBUG_H
+#ifndef _MUTT_EXIT_H
+#define _MUTT_EXIT_H
 
-#ifdef DEBUG
-void mutt_debug(int level, const char *fmt, ...);
-#else
-#define mutt_debug(...) do { } while (0)
-#endif
+void mutt_exit(int code);
 
-#endif /* _LIB_DEBUG_H */
+#endif /* _MUTT_EXIT_H */

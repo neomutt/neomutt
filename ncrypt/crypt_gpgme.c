@@ -45,7 +45,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -132,7 +132,7 @@ static char *current_sender = NULL;
 
 static bool is_pka_notation(gpgme_sig_notation_t notation)
 {
-  return (mutt_strcmp(notation->name, PKA_NOTATION_NAME) == 0);
+  return (mutt_str_strcmp(notation->name, PKA_NOTATION_NAME) == 0);
 }
 
 /**
@@ -174,7 +174,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 {
   char *tstr = NULL;
 
-  tstr = safe_malloc(len + 1);
+  tstr = mutt_mem_malloc(len + 1);
   memcpy(tstr, buf, len);
   tstr[len] = 0;
 
@@ -333,7 +333,7 @@ static struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key)
 {
   struct CryptKeyInfo *k = NULL;
 
-  k = safe_calloc(1, sizeof(*k));
+  k = mutt_mem_calloc(1, sizeof(*k));
   k->kobj = key->kobj;
   gpgme_key_ref(key->kobj);
   k->idx = key->idx;
@@ -440,13 +440,13 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
   if (addr && u_addr)
   {
     if (addr->mailbox && u_addr->mailbox &&
-        (mutt_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
+        (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
     {
       rv |= CRYPT_KV_ADDR;
     }
 
     if (addr->personal && u_addr->personal &&
-        (mutt_strcasecmp(addr->personal, u_addr->personal) == 0))
+        (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
     {
       rv |= CRYPT_KV_STRING;
     }
@@ -525,7 +525,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, int convert)
   gpgme_data_t data;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fptmp = safe_fopen(tempfile, "w+");
+  fptmp = mutt_file_fopen(tempfile, "w+");
   if (!fptmp)
   {
     mutt_perror(tempfile);
@@ -561,12 +561,12 @@ static gpgme_data_t body_to_data_object(struct Body *a, int convert)
       buf[0] = c;
       gpgme_data_write(data, buf, 1);
     }
-    safe_fclose(&fptmp);
+    mutt_file_fclose(&fptmp);
     gpgme_data_seek(data, 0, SEEK_SET);
   }
   else
   {
-    safe_fclose(&fptmp);
+    mutt_file_fclose(&fptmp);
     err = gpgme_data_new_from_file(&data, tempfile, 1);
   }
   unlink(tempfile);
@@ -660,7 +660,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
     mutt_mktemp(tempfb, sizeof(tempfb));
     tempf = tempfb;
   }
-  fp = safe_fopen(tempf, tempf == tempfb ? "w+" : "a+");
+  fp = mutt_file_fopen(tempf, tempf == tempfb ? "w+" : "a+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -677,7 +677,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
       if (fwrite(buf, nread, 1, fp) != 1)
       {
         mutt_perror(tempf);
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
         unlink(tempf);
         return NULL;
       }
@@ -686,17 +686,17 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
   if (ret_fp)
     rewind(fp);
   else
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
   if (nread == -1)
   {
     mutt_error(_("error reading data object: %s\n"), gpgme_strerror(err));
     unlink(tempf);
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return NULL;
   }
   if (ret_fp)
     *ret_fp = fp;
-  return safe_strdup(tempf);
+  return mutt_str_strdup(tempf);
 }
 
 static void free_recipient_set(gpgme_key_t **p_rset)
@@ -766,7 +766,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
         else
           err = gpgme_get_key(context, buf, &key, 0);
 
-        safe_realloc(&rset, sizeof(*rset) * (rset_n + 1));
+        mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
         if (!err)
           rset[rset_n++] = key;
         else
@@ -782,7 +782,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
   }
 
   /* NULL terminate.  */
-  safe_realloc(&rset, sizeof(*rset) * (rset_n + 1));
+  mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
   rset[rset_n++] = NULL;
 
   if (context)
@@ -1056,7 +1056,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
 
   t = mutt_new_body();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup("signed");
+  t->subtype = mutt_str_strdup("signed");
   t->encoding = ENC7BIT;
   t->use_disp = false;
   t->disposition = DISPINLINE;
@@ -1082,16 +1082,16 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   t->type = TYPEAPPLICATION;
   if (use_smime)
   {
-    t->subtype = safe_strdup("pkcs7-signature");
+    t->subtype = mutt_str_strdup("pkcs7-signature");
     mutt_set_parameter("name", "smime.p7s", &t->parameter);
     t->encoding = ENCBASE64;
     t->use_disp = true;
     t->disposition = DISPATTACH;
-    t->d_filename = safe_strdup("smime.p7s");
+    t->d_filename = mutt_str_strdup("smime.p7s");
   }
   else
   {
-    t->subtype = safe_strdup("pgp-signature");
+    t->subtype = mutt_str_strdup("pgp-signature");
     mutt_set_parameter("name", "signature.asc", &t->parameter);
     t->use_disp = false;
     t->disposition = DISPNONE;
@@ -1151,7 +1151,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
 
   t = mutt_new_body();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup("encrypted");
+  t->subtype = mutt_str_strdup("encrypted");
   t->encoding = ENC7BIT;
   t->use_disp = false;
   t->disposition = DISPINLINE;
@@ -1161,18 +1161,18 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
 
   t->parts = mutt_new_body();
   t->parts->type = TYPEAPPLICATION;
-  t->parts->subtype = safe_strdup("pgp-encrypted");
+  t->parts->subtype = mutt_str_strdup("pgp-encrypted");
   t->parts->encoding = ENC7BIT;
 
   t->parts->next = mutt_new_body();
   t->parts->next->type = TYPEAPPLICATION;
-  t->parts->next->subtype = safe_strdup("octet-stream");
+  t->parts->next->subtype = mutt_str_strdup("octet-stream");
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = outfile;
   t->parts->next->use_disp = true;
   t->parts->next->disposition = DISPATTACH;
   t->parts->next->unlink = true; /* delete after sending the message */
-  t->parts->next->d_filename = safe_strdup("msg.asc"); /* non pgp/mime
+  t->parts->next->d_filename = mutt_str_strdup("msg.asc"); /* non pgp/mime
                                                            can save */
 
   return t;
@@ -1218,13 +1218,13 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 
   t = mutt_new_body();
   t->type = TYPEAPPLICATION;
-  t->subtype = safe_strdup("pkcs7-mime");
+  t->subtype = mutt_str_strdup("pkcs7-mime");
   mutt_set_parameter("name", "smime.p7m", &t->parameter);
   mutt_set_parameter("smime-type", "enveloped-data", &t->parameter);
   t->encoding = ENCBASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISPATTACH;
-  t->d_filename = safe_strdup("smime.p7m");
+  t->d_filename = mutt_str_strdup("smime.p7m");
   t->filename = outfile;
   t->unlink = true; /* delete after sending the message */
   t->parts = 0;
@@ -1379,7 +1379,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
     return;
   is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
-  buf = safe_malloc(strlen(prefix) + strlen(s) * 4 + 2);
+  buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
   strcpy(buf, prefix);
   p = buf + strlen(buf);
   if (is_pgp && strlen(s) == 40)
@@ -1974,7 +1974,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
     saved_length = b->length;
 
     mutt_mktemp(tempfile, sizeof(tempfile));
-    decoded_fp = safe_fopen(tempfile, "w+");
+    decoded_fp = mutt_file_fopen(tempfile, "w+");
     if (!decoded_fp)
     {
       mutt_perror(tempfile);
@@ -1996,7 +1996,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = safe_fopen(tempfile, "w+");
+  *fpout = mutt_file_fopen(tempfile, "w+");
   if (!*fpout)
   {
     mutt_perror(tempfile);
@@ -2018,7 +2018,7 @@ bail:
     b->type = saved_type;
     b->length = saved_length;
     b->offset = saved_offset;
-    safe_fclose(&decoded_fp);
+    mutt_file_fclose(&decoded_fp);
   }
 
   return rv;
@@ -2058,13 +2058,13 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = fpin;
   fseeko(s.fpin, b->offset, SEEK_SET);
   mutt_mktemp(tempfile, sizeof(tempfile));
-  tmpfp = safe_fopen(tempfile, "w+");
+  tmpfp = mutt_file_fopen(tempfile, "w+");
   if (!tmpfp)
   {
     mutt_perror(tempfile);
     return -1;
   }
-  mutt_unlink(tempfile);
+  mutt_file_unlink(tempfile);
 
   s.fpout = tmpfp;
   mutt_decode_attachment(b, &s);
@@ -2077,13 +2077,13 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   s.fpin = tmpfp;
   s.fpout = 0;
   mutt_mktemp(tempfile, sizeof(tempfile));
-  *fpout = safe_fopen(tempfile, "w+");
+  *fpout = mutt_file_fopen(tempfile, "w+");
   if (!*fpout)
   {
     mutt_perror(tempfile);
     return -1;
   }
-  mutt_unlink(tempfile);
+  mutt_file_unlink(tempfile);
 
   *cur = decrypt_part(b, &s, *fpout, 1, &is_signed);
   if (*cur)
@@ -2091,7 +2091,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   b->type = saved_b_type;
   b->length = saved_b_length;
   b->offset = saved_b_offset;
-  safe_fclose(&tmpfp);
+  mutt_file_fclose(&tmpfp);
   rewind(*fpout);
   if (*cur && !is_signed && !(*cur)->parts && mutt_is_application_smime(*cur))
   {
@@ -2114,13 +2114,13 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     s.fpin = *fpout;
     fseeko(s.fpin, bb->offset, SEEK_SET);
     mutt_mktemp(tempfile, sizeof(tempfile));
-    tmpfp = safe_fopen(tempfile, "w+");
+    tmpfp = mutt_file_fopen(tempfile, "w+");
     if (!tmpfp)
     {
       mutt_perror(tempfile);
       return -1;
     }
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
 
     s.fpout = tmpfp;
     mutt_decode_attachment(bb, &s);
@@ -2128,19 +2128,19 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     bb->length = ftello(s.fpout);
     bb->offset = 0;
     rewind(tmpfp);
-    safe_fclose(fpout);
+    mutt_file_fclose(fpout);
 
     memset(&s, 0, sizeof(s));
     s.fpin = tmpfp;
     s.fpout = 0;
     mutt_mktemp(tempfile, sizeof(tempfile));
-    *fpout = safe_fopen(tempfile, "w+");
+    *fpout = mutt_file_fopen(tempfile, "w+");
     if (!*fpout)
     {
       mutt_perror(tempfile);
       return -1;
     }
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
 
     tmp_b = decrypt_part(bb, &s, *fpout, 1, &is_signed);
     if (tmp_b)
@@ -2148,7 +2148,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     bb->type = saved_b_type;
     bb->length = saved_b_length;
     bb->offset = saved_b_offset;
-    safe_fclose(&tmpfp);
+    mutt_file_fclose(&tmpfp);
     rewind(*fpout);
     mutt_free_body(cur);
     *cur = tmp_b;
@@ -2217,7 +2217,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   }
 
   mutt_mktemp(tmpfile, sizeof(tmpfile));
-  *fp = safe_fopen(tmpfile, "w+");
+  *fp = mutt_file_fopen(tmpfile, "w+");
   if (!*fp)
   {
     mutt_perror(tmpfile);
@@ -2236,7 +2236,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
     while (subkey)
     {
       shortid = subkey->keyid;
-      len = mutt_strlen(subkey->keyid);
+      len = mutt_str_strlen(subkey->keyid);
       if (len > 8)
         shortid += len - 8;
       tt = subkey->timestamp;
@@ -2263,10 +2263,10 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
 
 err_fp:
   if (rc)
-    safe_fclose(fp);
+    mutt_file_fclose(fp);
 err_tmpdir:
   if (dryrun)
-    mutt_rmtree(tmpdir);
+    mutt_file_rmtree(tmpdir);
 err_ctx:
   gpgme_release(tmpctx);
 
@@ -2286,7 +2286,7 @@ err_ctx:
  */
 static int line_compare(const char *a, size_t n, const char *b)
 {
-  if (mutt_strncmp(a, b, n) == 0)
+  if (mutt_str_strncmp(a, b, n) == 0)
   {
     /* at this point we know that 'b' is at least 'n' chars long */
     if (b[n] == '\n' || (b[n] == '\r' && b[n + 1] == '\n'))
@@ -2333,7 +2333,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   while (fgets(buf, sizeof(buf), tfp))
   {
-    if (mutt_strncmp("-----BEGIN PGP ", buf, 15) == 0)
+    if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
     {
       if (MESSAGE(buf + 15))
       {
@@ -2347,7 +2347,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
       }
     }
   }
-  safe_fclose(&tfp);
+  mutt_file_fclose(&tfp);
   unlink(tempfile);
 
   if (!enc && !sgn)
@@ -2390,7 +2390,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   FILE *in = NULL;
   FILE *out = NULL;
 
-  in = safe_fopen(fname, "r");
+  in = mutt_file_fopen(fname, "r");
   if (!in)
     return;
   /* Note that the stream, "in", needs to be kept open while the keydata
@@ -2399,7 +2399,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   err = gpgme_data_new_from_stream(&keydata, in);
   if (err != GPG_ERR_NO_ERROR)
   {
-    safe_fclose(&in);
+    mutt_file_fclose(&in);
     mutt_error(_("error allocating data object: %s\n"), gpgme_strerror(err));
     mutt_sleep(1);
     return;
@@ -2411,8 +2411,8 @@ void pgp_gpgme_invoke_import(const char *fname)
     mutt_sleep(1);
   }
   gpgme_data_release(keydata);
-  safe_fclose(&in);
-  safe_fclose(&out);
+  mutt_file_fclose(&in);
+  mutt_file_fclose(&out);
 }
 
 /*
@@ -2442,7 +2442,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   fname = data_object_to_tempfile(data, NULL, &fp);
   if (!fname)
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return;
   }
   unlink(fname);
@@ -2484,7 +2484,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
   }
 
   fgetconv_close(&fc);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 }
 
 /**
@@ -2514,7 +2514,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
      but we know that this may only be text thus we assume Latin-1
      here. */
   if (!mutt_get_body_charset(body_charset, sizeof(body_charset), m))
-    strfcpy(body_charset, "iso-8859-1", sizeof(body_charset));
+    mutt_str_strfcpy(body_charset, "iso-8859-1", sizeof(body_charset));
 
   fseeko(s->fpin, m->offset, SEEK_SET);
   last_pos = m->offset;
@@ -2525,10 +2525,10 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       break;
 
     offset = ftello(s->fpin);
-    bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
+    bytes -= (offset - last_pos); /* don't rely on mutt_str_strlen(buf) */
     last_pos = offset;
 
-    if (mutt_strncmp("-----BEGIN PGP ", buf, 15) == 0)
+    if (mutt_str_strncmp("-----BEGIN PGP ", buf, 15) == 0)
     {
       clearsign = false;
 
@@ -2639,7 +2639,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           tmpfname = data_object_to_tempfile(plaintext, NULL, &pgpout);
           if (!tmpfname)
           {
-            safe_fclose(&pgpout);
+            mutt_file_fclose(&pgpout);
             state_puts(_("Error: copy data failed\n"), s);
           }
           else
@@ -2701,7 +2701,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       gpgme_data_release(armored_data);
       if (pgpout)
       {
-        safe_fclose(&pgpout);
+        mutt_file_fclose(&pgpout);
       }
     }
     else
@@ -2749,7 +2749,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
   mutt_debug(2, "Entering pgp_encrypted handler\n");
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = safe_fopen(tempfile, "w+");
+  fpout = mutt_file_fopen(tempfile, "w+");
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -2805,8 +2805,8 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
     rc = -1;
   }
 
-  safe_fclose(&fpout);
-  mutt_unlink(tempfile);
+  mutt_file_fclose(&fpout);
+  mutt_file_unlink(tempfile);
   mutt_debug(2, "Leaving pgp_encrypted handler\n");
 
   return rc;
@@ -2827,7 +2827,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 
   a->warnsig = false;
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = safe_fopen(tempfile, "w+");
+  fpout = mutt_file_fopen(tempfile, "w+");
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -2883,8 +2883,8 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
     mutt_free_body(&tattach);
   }
 
-  safe_fclose(&fpout);
-  mutt_unlink(tempfile);
+  mutt_file_fclose(&fpout);
+  mutt_file_unlink(tempfile);
   mutt_debug(2, "Leaving smime_encrypted handler\n");
 
   return rc;
@@ -3133,10 +3133,10 @@ static int compare_key_address(const void *a, const void *b)
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
   int r;
 
-  if ((r = mutt_strcasecmp((*s)->uid, (*t)->uid)))
+  if ((r = mutt_str_strcasecmp((*s)->uid, (*t)->uid)))
     return r > 0;
   else
-    return (mutt_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0);
+    return (mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0);
 }
 
 static int crypt_compare_address(const void *a, const void *b)
@@ -3154,10 +3154,10 @@ static int compare_keyid(const void *a, const void *b)
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
   int r;
 
-  if ((r = mutt_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t))))
+  if ((r = mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t))))
     return r > 0;
   else
-    return (mutt_strcasecmp((*s)->uid, (*t)->uid) > 0);
+    return (mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0);
 }
 
 static int crypt_compare_keyid(const void *a, const void *b)
@@ -3184,7 +3184,7 @@ static int compare_key_date(const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  return (mutt_strcasecmp((*s)->uid, (*t)->uid) > 0);
+  return (mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0);
 }
 
 static int crypt_compare_date(const void *a, const void *b)
@@ -3229,9 +3229,9 @@ static int compare_key_trust(const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  if ((r = mutt_strcasecmp((*s)->uid, (*t)->uid)))
+  if ((r = mutt_str_strcasecmp((*s)->uid, (*t)->uid)))
     return r > 0;
-  return (mutt_strcasecmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0);
+  return (mutt_str_strcasecmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0);
 }
 
 static int crypt_compare_trust(const void *a, const void *b)
@@ -3317,7 +3317,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
   n = s - string;
   if (!n)
     return NULL; /* empty key */
-  array->key = safe_malloc(n + 1);
+  array->key = mutt_mem_malloc(n + 1);
   p = array->key;
   memcpy(p, string, n); /* fixme: trim trailing spaces */
   p[n] = 0;
@@ -3332,7 +3332,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
     if (!n || (n & 1))
       return NULL; /* empty or odd number of digits */
     n /= 2;
-    p = safe_malloc(n + 1);
+    p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
     for (s1 = string; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
@@ -3365,7 +3365,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
         n++;
     }
 
-    p = safe_malloc(n + 1);
+    p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
     for (s = string; n; s++, n--)
     {
@@ -3400,7 +3400,7 @@ static struct DnArray *parse_dn(const char *string)
   size_t arrayidx, arraysize;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = safe_malloc((arraysize + 1) * sizeof(*array));
+  array = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
   arrayidx = 0;
   while (*string)
   {
@@ -3410,11 +3410,11 @@ static struct DnArray *parse_dn(const char *string)
       break; /* ready */
     if (arrayidx >= arraysize)
     {
-      /* neomutt lacks a real safe_realloc - so we need to copy */
+      /* neomutt lacks a real mutt_mem_realloc - so we need to copy */
       struct DnArray *a2 = NULL;
 
       arraysize += 5;
-      a2 = safe_malloc((arraysize + 1) * sizeof(*array));
+      a2 = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
       for (int i = 0; i < arrayidx; i++)
       {
         a2[i].key = array[i].key;
@@ -3583,7 +3583,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   {
     for (int i = 0; i < KIP_END; i++)
     {
-      KeyInfoPadding[i] = mutt_strlen(_(KeyInfoPrompts[i]));
+      KeyInfoPadding[i] = mutt_str_strlen(_(KeyInfoPrompts[i]));
       width = mutt_strwidth(_(KeyInfoPrompts[i]));
       if (max_header_width < width)
         max_header_width = width;
@@ -3831,7 +3831,7 @@ static void verify_key(struct CryptKeyInfo *key)
   int maxdepth = 100;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = safe_fopen(tempfile, "w");
+  fp = mutt_file_fopen(tempfile, "w");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -3879,7 +3879,7 @@ static void verify_key(struct CryptKeyInfo *key)
 leave:
   gpgme_key_unref(k);
   gpgme_release(listctx);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   mutt_clear_error();
   snprintf(cmd, sizeof(cmd), _("Key ID: 0x%s"), crypt_keyid(key));
   mutt_do_pager(cmd, tempfile, 0, NULL);
@@ -3913,7 +3913,7 @@ static char *list_to_pattern(struct ListHead *list)
     n++; /* delimiter or end of string */
   }
   n++; /* make sure to allocate at least one byte */
-  pattern = p = safe_calloc(1, n);
+  pattern = p = mutt_mem_calloc(1, n);
   STAILQ_FOREACH(np, list, entries)
   {
     s = np->data;
@@ -3992,12 +3992,12 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
     if (!n)
       goto no_pgphints;
 
-    char **patarr = safe_calloc(n + 1, sizeof(*patarr));
+    char **patarr = mutt_mem_calloc(n + 1, sizeof(*patarr));
     n = 0;
     STAILQ_FOREACH(np, hints, entries)
     {
       if (np->data && *np->data)
-        patarr[n++] = safe_strdup(np->data);
+        patarr[n++] = mutt_str_strdup(np->data);
     }
     patarr[n] = NULL;
     err = gpgme_op_keylist_ext_start(ctx, (const char **) patarr, secret, 0);
@@ -4030,7 +4030,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
-        k = safe_calloc(1, sizeof(*k));
+        k = mutt_mem_calloc(1, sizeof(*k));
         k->kobj = key;
         gpgme_key_ref(k->kobj);
         k->idx = idx;
@@ -4074,7 +4074,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
-        k = safe_calloc(1, sizeof(*k));
+        k = mutt_mem_calloc(1, sizeof(*k));
         k->kobj = key;
         gpgme_key_ref(k->kobj);
         k->idx = idx;
@@ -4106,14 +4106,14 @@ static void crypt_add_string_to_hints(struct ListHead *hints, const char *str)
   char *scratch = NULL;
   char *t = NULL;
 
-  scratch = safe_strdup(str);
+  scratch = mutt_str_strdup(str);
   if (!scratch)
     return;
 
   for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
-      mutt_list_insert_tail(hints, safe_strdup(t));
+      mutt_list_insert_tail(hints, mutt_str_strdup(t));
   }
 
   FREE(&scratch);
@@ -4156,7 +4156,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
     if (i == keymax)
     {
       keymax += 20;
-      safe_realloc(&key_table, sizeof(struct CryptKeyInfo *) * keymax);
+      mutt_mem_realloc(&key_table, sizeof(struct CryptKeyInfo *) * keymax);
     }
 
     key_table[i++] = k;
@@ -4483,10 +4483,10 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
                   "key %s, \"%s\": ",
                p, crypt_long_keyid(k), k->uid);
 
-    if (!*p || (pfcopy && (mutt_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
-        (pl && (mutt_strcasecmp(pl, crypt_long_keyid(k)) == 0)) ||
-        (ps && (mutt_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
-        mutt_stristr(k->uid, p))
+    if (!*p || (pfcopy && (mutt_str_strcasecmp(pfcopy, crypt_fpr(k)) == 0)) ||
+        (pl && (mutt_str_strcasecmp(pl, crypt_long_keyid(k)) == 0)) ||
+        (ps && (mutt_str_strcasecmp(ps, crypt_short_keyid(k)) == 0)) ||
+        mutt_str_stristr(k->uid, p))
     {
       struct CryptKeyInfo *tmp = NULL;
 
@@ -4541,9 +4541,9 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
-      if (mutt_strcasecmp(whatfor, l->what) == 0)
+      if (mutt_str_strcasecmp(whatfor, l->what) == 0)
       {
-        strfcpy(resp, NONULL(l->dflt), sizeof(resp));
+        mutt_str_strfcpy(resp, NONULL(l->dflt), sizeof(resp));
         break;
       }
   }
@@ -4560,11 +4560,11 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
         mutt_str_replace(&l->dflt, resp);
       else
       {
-        l = safe_malloc(sizeof(struct CryptCache));
+        l = mutt_mem_malloc(sizeof(struct CryptCache));
         l->next = id_defaults;
         id_defaults = l;
-        l->what = safe_strdup(whatfor);
-        l->dflt = safe_strdup(resp);
+        l->what = mutt_str_strdup(whatfor);
+        l->dflt = mutt_str_strdup(resp);
       }
     }
 
@@ -4686,11 +4686,11 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       keyID = crypt_fpr_or_lkeyid(k_info);
 
     bypass_selection:
-      keylist_size += mutt_strlen(keyID) + 4 + 1;
-      safe_realloc(&keylist, keylist_size);
+      keylist_size += mutt_str_strlen(keyID) + 4 + 1;
+      mutt_mem_realloc(&keylist, keylist_size);
       sprintf(keylist + keylist_used, "%s0x%s%s", keylist_used ? " " : "",
               keyID, forced_valid ? "!" : "");
-      keylist_used = mutt_strlen(keylist);
+      keylist_used = mutt_str_strlen(keylist);
 
       key_selected = true;
 
@@ -4758,13 +4758,13 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   att->unlink = true;
   att->use_disp = false;
   att->type = TYPEAPPLICATION;
-  att->subtype = safe_strdup("pgp-keys");
+  att->subtype = mutt_str_strdup("pgp-keys");
   /* L10N:
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
   snprintf(buff, sizeof(buff), _("PGP Key 0x%s."), crypt_keyid(key));
-  att->description = safe_strdup(buff);
+  att->description = mutt_str_strdup(buff);
   mutt_update_encoding(att);
 
   stat(tempf, &sb);
@@ -5087,5 +5087,5 @@ int smime_gpgme_verify_sender(struct Header *h)
 void mutt_gpgme_set_sender(const char *sender)
 {
   FREE(&current_sender);
-  current_sender = safe_strdup(sender);
+  current_sender = mutt_str_strdup(sender);
 }

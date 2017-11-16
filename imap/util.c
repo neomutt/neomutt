@@ -76,7 +76,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "bcache.h"
@@ -145,9 +145,9 @@ void imap_get_parent(char *output, const char *mbox, size_t olen, char delim)
 
   /* Make a copy of the mailbox name, but only if the pointers are different */
   if (mbox != output)
-    strfcpy(output, mbox, olen);
+    mutt_str_strfcpy(output, mbox, olen);
 
-  n = mutt_strlen(output);
+  n = mutt_str_strlen(output);
 
   /* Let's go backwards until the next delimiter
    *
@@ -193,14 +193,14 @@ void imap_get_parent_path(char *output, const char *path, size_t olen)
 
   if (imap_parse_path(path, &mx) < 0)
   {
-    strfcpy(output, path, olen);
+    mutt_str_strfcpy(output, path, olen);
     return;
   }
 
   idata = imap_conn_find(&mx.account, MUTT_IMAP_CONN_NONEW);
   if (!idata)
   {
-    strfcpy(output, path, olen);
+    mutt_str_strfcpy(output, path, olen);
     return;
   }
 
@@ -411,7 +411,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
   mx->account.port = ImapPort;
   mx->account.type = MUTT_ACCT_TYPE_IMAP;
 
-  c = safe_strdup(path);
+  c = mutt_str_strdup(path);
   url_parse(&url, c);
   if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
@@ -422,7 +422,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
       return -1;
     }
 
-    mx->mbox = safe_strdup(url.path);
+    mx->mbox = mutt_str_strdup(url.path);
 
     if (url.scheme == U_IMAPS)
       mx->account.flags |= MUTT_ACCT_SSL;
@@ -443,13 +443,13 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
       return -1;
     else
       /* walk past closing '}' */
-      mx->mbox = safe_strdup(c + 1);
+      mx->mbox = mutt_str_strdup(c + 1);
 
     if ((c = strrchr(tmp, '@')))
     {
       *c = '\0';
-      strfcpy(mx->account.user, tmp, sizeof(mx->account.user));
-      strfcpy(tmp, c + 1, sizeof(tmp));
+      mutt_str_strfcpy(mx->account.user, tmp, sizeof(mx->account.user));
+      mutt_str_strfcpy(tmp, c + 1, sizeof(tmp));
       mx->account.flags |= MUTT_ACCT_USER;
     }
 
@@ -467,7 +467,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
         mx->account.flags |= MUTT_ACCT_PORT;
       if (sscanf(tmp, "/%s", tmp) == 1)
       {
-        if (mutt_strncmp(tmp, "ssl", 3) == 0)
+        if (mutt_str_strncmp(tmp, "ssl", 3) == 0)
           mx->account.flags |= MUTT_ACCT_SSL;
         else
         {
@@ -506,16 +506,17 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx1 = "INBOX";
   if (!mx2 || !*mx2)
     mx2 = "INBOX";
-  if ((mutt_strcasecmp(mx1, "INBOX") == 0) && (mutt_strcasecmp(mx2, "INBOX") == 0))
+  if ((mutt_str_strcasecmp(mx1, "INBOX") == 0) &&
+      (mutt_str_strcasecmp(mx2, "INBOX") == 0))
     return 0;
 
-  b1 = safe_malloc(strlen(mx1) + 1);
-  b2 = safe_malloc(strlen(mx2) + 1);
+  b1 = mutt_mem_malloc(strlen(mx1) + 1);
+  b2 = mutt_mem_malloc(strlen(mx2) + 1);
 
   imap_fix_path(NULL, mx1, b1, strlen(mx1) + 1);
   imap_fix_path(NULL, mx2, b2, strlen(mx2) + 1);
 
-  rc = mutt_strcmp(b1, b2);
+  rc = mutt_str_strcmp(b1, b2);
   FREE(&b1);
   FREE(&b2);
 
@@ -540,13 +541,13 @@ void imap_pretty_mailbox(char *path)
   if (imap_parse_path(path, &target) < 0)
     return;
 
-  tlen = mutt_strlen(target.mbox);
+  tlen = mutt_str_strlen(target.mbox);
   /* check whether we can do '=' substitution */
   if (mx_is_imap(Folder) && !imap_parse_path(Folder, &home))
   {
-    hlen = mutt_strlen(home.mbox);
+    hlen = mutt_str_strlen(home.mbox);
     if (tlen && mutt_account_match(&home.account, &target.account) &&
-        (mutt_strncmp(home.mbox, target.mbox, hlen) == 0))
+        (mutt_str_strncmp(home.mbox, target.mbox, hlen) == 0))
     {
       if (!hlen)
         home_match = true;
@@ -611,14 +612,14 @@ void imap_error(const char *where, const char *msg)
  */
 struct ImapData *imap_new_idata(void)
 {
-  struct ImapData *idata = safe_calloc(1, sizeof(struct ImapData));
+  struct ImapData *idata = mutt_mem_calloc(1, sizeof(struct ImapData));
 
   idata->cmdbuf = mutt_buffer_new();
   if (!idata->cmdbuf)
     FREE(&idata);
 
   idata->cmdslots = ImapPipelineDepth + 2;
-  idata->cmds = safe_calloc(idata->cmdslots, sizeof(*idata->cmds));
+  idata->cmds = mutt_mem_calloc(idata->cmdslots, sizeof(*idata->cmds));
   if (!idata->cmds)
   {
     mutt_buffer_free(&idata->cmdbuf);
@@ -910,7 +911,7 @@ void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const
 {
   char *buf = NULL;
 
-  buf = safe_strdup(src);
+  buf = mutt_str_strdup(src);
   imap_utf_encode(idata, &buf);
 
   imap_quote_string(dest, dlen, buf);
@@ -931,7 +932,7 @@ void imap_unmunge_mbox_name(struct ImapData *idata, char *s)
 
   imap_unquote_string(s);
 
-  buf = safe_strdup(s);
+  buf = mutt_str_strdup(s);
   if (buf)
   {
     imap_utf_decode(idata, &buf);

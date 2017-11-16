@@ -42,7 +42,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "browser.h"
 #include "buffy.h"
@@ -79,19 +79,19 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
 
   if (state->entrylen + 1 == state->entrymax)
   {
-    safe_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
+    mutt_mem_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
     memset(state->entry + state->entrylen, 0,
            (sizeof(struct FolderFile) * (state->entrymax - state->entrylen)));
   }
 
   /* render superiors as unix-standard ".." */
   if (isparent)
-    strfcpy(relpath, "../", sizeof(relpath));
+    mutt_str_strfcpy(relpath, "../", sizeof(relpath));
   /* strip current folder from target, to render a relative path */
-  else if (mutt_strncmp(mx.mbox, folder, mutt_strlen(mx.mbox)) == 0)
-    strfcpy(relpath, folder + mutt_strlen(mx.mbox), sizeof(relpath));
+  else if (mutt_str_strncmp(mx.mbox, folder, mutt_str_strlen(mx.mbox)) == 0)
+    mutt_str_strfcpy(relpath, folder + mutt_str_strlen(mx.mbox), sizeof(relpath));
   else
-    strfcpy(relpath, folder, sizeof(relpath));
+    mutt_str_strfcpy(relpath, folder, sizeof(relpath));
 
   /* apply filemask filter. This should really be done at menu setup rather
    * than at scan, since it's so expensive to scan. But that's big changes
@@ -103,7 +103,7 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
   }
 
   imap_qualify_path(tmp, sizeof(tmp), &mx, folder);
-  (state->entry)[state->entrylen].name = safe_strdup(tmp);
+  (state->entry)[state->entrylen].name = mutt_str_strdup(tmp);
 
   /* mark desc with delim in browser if it can have subfolders */
   if (!isparent && !noinferiors && strlen(relpath) < sizeof(relpath) - 1)
@@ -112,7 +112,7 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
     relpath[strlen(relpath)] = delim;
   }
 
-  (state->entry)[state->entrylen].desc = safe_strdup(relpath);
+  (state->entry)[state->entrylen].desc = mutt_str_strdup(relpath);
 
   (state->entry)[state->entrylen].imap = true;
   /* delimiter at the root is useless. */
@@ -123,11 +123,11 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
   b = Incoming;
-  while (b && (mutt_strcmp(tmp, b->path) != 0))
+  while (b && (mutt_str_strcmp(tmp, b->path) != 0))
     b = b->next;
   if (b)
   {
-    if (Context && (mutt_strcmp(b->realpath, Context->realpath) == 0))
+    if (Context && (mutt_str_strcmp(b->realpath, Context->realpath) == 0))
     {
       b->msg_count = Context->msgcount;
       b->msg_unread = Context->unread;
@@ -180,7 +180,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
       if (isparent)
         list.noselect = true;
       /* prune current folder from output */
-      if (isparent || (mutt_strncmp(list.name, mx.mbox, strlen(list.name)) != 0))
+      if (isparent || (mutt_str_strncmp(list.name, mx.mbox, strlen(list.name)) != 0))
         add_folder(list.delim, list.name, list.noselect, list.noinferiors, state, isparent);
     }
   } while (rc == IMAP_CMD_CONTINUE);
@@ -221,7 +221,8 @@ int imap_browse(char *path, struct BrowserState *state)
 
   save_lsub = option(OPT_IMAP_CHECK_SUBSCRIBED);
   unset_option(OPT_IMAP_CHECK_SUBSCRIBED);
-  strfcpy(list_cmd, option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", sizeof(list_cmd));
+  mutt_str_strfcpy(list_cmd, option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST",
+                   sizeof(list_cmd));
 
   idata = imap_conn_find(&(mx.account), 0);
   if (!idata)
@@ -233,7 +234,7 @@ int imap_browse(char *path, struct BrowserState *state)
   if (mx.mbox && mx.mbox[0] != '\0')
   {
     imap_fix_path(idata, mx.mbox, mbox, sizeof(mbox));
-    n = mutt_strlen(mbox);
+    n = mutt_str_strlen(mbox);
   }
   else
   {
@@ -274,7 +275,7 @@ int imap_browse(char *path, struct BrowserState *state)
     {
       showparents = true;
       imap_qualify_path(buf, sizeof(buf), &mx, mbox);
-      state->folder = safe_strdup(buf);
+      state->folder = mutt_str_strdup(buf);
       n--;
     }
 
@@ -307,7 +308,7 @@ int imap_browse(char *path, struct BrowserState *state)
         ctmp = mbox[n];
         mbox[n] = '\0';
         imap_qualify_path(buf, sizeof(buf), &mx, mbox);
-        state->folder = safe_strdup(buf);
+        state->folder = mutt_str_strdup(buf);
       }
       mbox[n] = ctmp;
     }
@@ -322,7 +323,7 @@ int imap_browse(char *path, struct BrowserState *state)
       if (!state->folder)
       {
         imap_qualify_path(buf, sizeof(buf), &mx, relpath);
-        state->folder = safe_strdup(buf);
+        state->folder = mutt_str_strdup(buf);
       }
     }
   }
@@ -331,7 +332,7 @@ int imap_browse(char *path, struct BrowserState *state)
   if (!state->folder)
   {
     imap_qualify_path(buf, sizeof(buf), &mx, NULL);
-    state->folder = safe_strdup(buf);
+    state->folder = mutt_str_strdup(buf);
   }
 
   mutt_debug(3, "imap_browse: Quoting mailbox scan: %s -> ", mbox);
@@ -392,10 +393,10 @@ int imap_mailbox_create(const char *folder)
     goto fail;
   }
 
-  strfcpy(buf, NONULL(mx.mbox), sizeof(buf));
+  mutt_str_strfcpy(buf, NONULL(mx.mbox), sizeof(buf));
 
   /* append a delimiter if necessary */
-  n = mutt_strlen(buf);
+  n = mutt_str_strlen(buf);
   if (n && (n < sizeof(buf) - 1) && (buf[n - 1] != idata->delim))
   {
     buf[n++] = idata->delim;
@@ -405,7 +406,7 @@ int imap_mailbox_create(const char *folder)
   if (mutt_get_field(_("Create mailbox: "), buf, sizeof(buf), MUTT_FILE) < 0)
     goto fail;
 
-  if (!mutt_strlen(buf))
+  if (!mutt_str_strlen(buf))
   {
     mutt_error(_("Mailbox must have a name."));
     mutt_sleep(1);
@@ -462,12 +463,12 @@ int imap_mailbox_rename(const char *mailbox)
   }
 
   snprintf(buf, sizeof(buf), _("Rename mailbox %s to: "), mx.mbox);
-  strfcpy(newname, mx.mbox, sizeof(newname));
+  mutt_str_strfcpy(newname, mx.mbox, sizeof(newname));
 
   if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE) < 0)
     goto fail;
 
-  if (!mutt_strlen(newname))
+  if (!mutt_str_strlen(newname))
   {
     mutt_error(_("Mailbox must have a name."));
     mutt_sleep(1);

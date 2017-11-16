@@ -36,8 +36,8 @@
  *
  * | Function           | Description
  * | :----------------- | :-------------------------------------------------
- * | mutt_from_base64() | convert null-terminated base64 string to raw bytes
- * | mutt_to_base64()   | convert raw bytes to null-terminated base64 string
+ * | mutt_b64_decode()  | convert null-terminated base64 string to raw bytes
+ * | mutt_b64_encode()  | convert raw bytes to null-terminated base64 string
  */
 
 #include "config.h"
@@ -79,7 +79,7 @@ const int Index_64[128] = {
 // clang-format on
 
 /**
- * mutt_to_base64 - convert raw bytes to null-terminated base64 string
+ * mutt_b64_encode - convert raw bytes to null-terminated base64 string
  * @param out  Output buffer for the base64 encoded string
  * @param cin  Input  buffer for the raw bytes
  * @param len  Length of the input buffer
@@ -91,7 +91,7 @@ const int Index_64[128] = {
  * null-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
-size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen)
+size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
 {
   unsigned char *begin = (unsigned char *) out;
   const unsigned char *in = (const unsigned char *) cin;
@@ -125,7 +125,7 @@ size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen)
 }
 
 /**
- * mutt_from_base64 - convert null-terminated base64 string to raw bytes
+ * mutt_b64_decode - convert null-terminated base64 string to raw bytes
  * @param out Output buffer for the raw bytes
  * @param in  Input  buffer for the null-terminated base64-encoded string
  * @retval n Number of bytes written on success
@@ -135,7 +135,7 @@ size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen)
  * null-terminated. If the input buffer contains invalid base64 characters,
  * this function returns -1.
  */
-int mutt_from_base64(char *out, const char *in)
+int mutt_b64_decode(char *out, const char *in)
 {
   int len = 0;
   unsigned char digit1, digit2, digit3, digit4;

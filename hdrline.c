@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -169,7 +169,7 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
 
   if (color == MT_COLOR_INDEX)
   { /* buf might be uninitialized other cases */
-    len = mutt_strlen(buf);
+    len = mutt_str_strlen(buf);
     buf += len;
     buflen -= len;
   }
@@ -237,7 +237,7 @@ static const char *make_from_prefix(enum FieldType disp)
     return long_prefixes[disp];
 
   char *pchar = get_nth_wchar(FromChars, disp);
-  if (mutt_strlen(pchar) == 0)
+  if (mutt_str_strlen(pchar) == 0)
     return "";
 
   snprintf(padded, sizeof(padded), "%s ", pchar);
@@ -325,7 +325,7 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_l
   else if (me && hdr->cc)
     snprintf(buf, len, "%s", hdr->cc->mailbox);
   else if (hdr->from)
-    strfcpy(buf, hdr->from->mailbox, len);
+    mutt_str_strfcpy(buf, hdr->from->mailbox, len);
   else
     *buf = 0;
 }
@@ -496,7 +496,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       }
       else
       {
-        if (get_initials(mutt_get_name(hdr->env->from), buf2, sizeof(buf2)))
+        if (mutt_mb_get_initials(mutt_get_name(hdr->env->from), buf2, sizeof(buf2)))
         {
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
           mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
@@ -523,7 +523,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         dest[0] = 0;
       if (dest[0])
       {
-        strfcpy(buf2, dest, sizeof(buf2));
+        mutt_str_strfcpy(buf2, dest, sizeof(buf2));
         mutt_format_s(dest, destlen, prefix, buf2);
         break;
       }
@@ -540,13 +540,13 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (ctx)
       {
         if ((p = strrchr(ctx->path, '/')))
-          strfcpy(dest, p + 1, destlen);
+          mutt_str_strfcpy(dest, p + 1, destlen);
         else
-          strfcpy(dest, ctx->path, destlen);
+          mutt_str_strfcpy(dest, ctx->path, destlen);
       }
       else
-        strfcpy(dest, "(null)", destlen);
-      strfcpy(buf2, dest, sizeof(buf2));
+        mutt_str_strfcpy(dest, "(null)", destlen);
+      mutt_str_strfcpy(buf2, dest, sizeof(buf2));
       mutt_format_s(dest, destlen, prefix, buf2);
       break;
 
@@ -811,7 +811,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[1] = *src;
         format[2] = 0;
 
-        tag = hash_find(TagFormats, format);
+        tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);
@@ -828,7 +828,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[1] = *prefix;
         format[2] = 0;
 
-        tag = hash_find(TagFormats, format);
+        tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);
@@ -869,7 +869,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
             parent_tags =
                 driver_tags_get_transformed(&hdr->thread->parent->message->tags);
-          if (parent_tags && mutt_strcasecmp(tags, parent_tags) == 0)
+          if (parent_tags && mutt_str_strcasecmp(tags, parent_tags) == 0)
             i = 0;
           FREE(&parent_tags);
         }
@@ -923,7 +923,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         snprintf(dest, destlen, fmt, ctx->msgcount);
       }
       else
-        strfcpy(dest, "(null)", destlen);
+        mutt_str_strfcpy(dest, "(null)", destlen);
       break;
 
     case 'n':
@@ -987,7 +987,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       break;
 
     case 'P':
-      strfcpy(dest, NONULL(hfi->pager_progress), destlen);
+      mutt_str_strfcpy(dest, NONULL(hfi->pager_progress), destlen);
       break;
 
 #ifdef USE_NNTP
@@ -1091,7 +1091,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'u':
       if (hdr->env->from && hdr->env->from->mailbox)
       {
-        strfcpy(buf2, mutt_addr_for_display(hdr->env->from), sizeof(buf2));
+        mutt_str_strfcpy(buf2, mutt_addr_for_display(hdr->env->from), sizeof(buf2));
         if ((p = strpbrk(buf2, "%@")))
           *p = 0;
       }
@@ -1169,7 +1169,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                  (hdr->thread->parent && hdr->thread->parent->message &&
                   hdr->thread->parent->message->env->x_label))
           htmp = hdr->thread->parent->message;
-        if (htmp && (mutt_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
+        if (htmp && (mutt_str_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
           i = 0;
       }
       else

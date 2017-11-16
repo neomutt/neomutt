@@ -27,7 +27,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "charset.h"
 #include "globals.h"
@@ -210,13 +210,13 @@ void mutt_set_langinfo_charset(void)
   char buff[LONG_STRING];
   char buff2[LONG_STRING];
 
-  strfcpy(buff, nl_langinfo(CODESET), sizeof(buff));
+  mutt_str_strfcpy(buff, nl_langinfo(CODESET), sizeof(buff));
   mutt_canonical_charset(buff2, sizeof(buff2), buff);
 
   /* finally, set $charset */
-  Charset = safe_strdup(buff2);
+  Charset = mutt_str_strdup(buff2);
   if (!Charset)
-    Charset = safe_strdup("iso-8859-1");
+    Charset = mutt_str_strdup("iso-8859-1");
 }
 
 /**
@@ -230,37 +230,38 @@ void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
   char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
 
-  strfcpy(in, name, sizeof(in));
+  mutt_str_strfcpy(in, name, sizeof(in));
   if ((ext = strchr(in, '/')))
     *ext++ = '\0';
 
-  if ((mutt_strcasecmp(in, "utf-8") == 0) || (mutt_strcasecmp(in, "utf8") == 0))
+  if ((mutt_str_strcasecmp(in, "utf-8") == 0) ||
+      (mutt_str_strcasecmp(in, "utf8") == 0))
   {
-    strfcpy(dest, "utf-8", dlen);
+    mutt_str_strfcpy(dest, "utf-8", dlen);
     goto out;
   }
 
   /* catch some common iso-8859-something misspellings */
-  if ((mutt_strncasecmp(in, "8859", 4) == 0) && in[4] != '-')
+  if ((mutt_str_strncasecmp(in, "8859", 4) == 0) && in[4] != '-')
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + 4);
-  else if (mutt_strncasecmp(in, "8859-", 5) == 0)
+  else if (mutt_str_strncasecmp(in, "8859-", 5) == 0)
     snprintf(scratch, sizeof(scratch), "iso-8859-%s", in + 5);
-  else if ((mutt_strncasecmp(in, "iso8859", 7) == 0) && in[7] != '-')
+  else if ((mutt_str_strncasecmp(in, "iso8859", 7) == 0) && in[7] != '-')
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + 7);
-  else if (mutt_strncasecmp(in, "iso8859-", 8) == 0)
+  else if (mutt_str_strncasecmp(in, "iso8859-", 8) == 0)
     snprintf(scratch, sizeof(scratch), "iso_8859-%s", in + 8);
   else
-    strfcpy(scratch, in, sizeof(scratch));
+    mutt_str_strfcpy(scratch, in, sizeof(scratch));
 
   for (size_t i = 0; PreferredMIMENames[i].key; i++)
-    if ((mutt_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
-        (mutt_strcasecmp(scratch, PreferredMIMENames[i].key) == 0))
+    if ((mutt_str_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
+        (mutt_str_strcasecmp(scratch, PreferredMIMENames[i].key) == 0))
     {
-      strfcpy(dest, PreferredMIMENames[i].pref, dlen);
+      mutt_str_strfcpy(dest, PreferredMIMENames[i].pref, dlen);
       goto out;
     }
 
-  strfcpy(dest, scratch, dlen);
+  mutt_str_strfcpy(dest, scratch, dlen);
 
   /* for cosmetics' sake, transform to lowercase. */
   for (p = dest; *p; p++)
@@ -269,8 +270,8 @@ void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
 out:
   if (ext && *ext)
   {
-    safe_strcat(dest, dlen, "/");
-    safe_strcat(dest, dlen, ext);
+    mutt_str_strcat(dest, dlen, "/");
+    mutt_str_strcat(dest, dlen, ext);
   }
 }
 
@@ -289,9 +290,9 @@ int mutt_chscmp(const char *s, const char *chs)
      we simply check if the shorter string is a prefix for
      the longer */
   mutt_canonical_charset(buffer, sizeof(buffer), s);
-  a = mutt_strlen(buffer);
-  b = mutt_strlen(chs);
-  return (mutt_strncasecmp(a > b ? buffer : chs, a > b ? chs : buffer, MIN(a, b)) == 0);
+  a = mutt_str_strlen(buffer);
+  b = mutt_str_strlen(chs);
+  return (mutt_str_strncasecmp(a > b ? buffer : chs, a > b ? chs : buffer, MIN(a, b)) == 0);
 }
 
 char *mutt_get_default_charset(void)
@@ -303,7 +304,7 @@ char *mutt_get_default_charset(void)
   if (c && *c)
   {
     c1 = strchr(c, ':');
-    strfcpy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
+    mutt_str_strfcpy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
     return fcharset;
   }
   return strcpy(fcharset, "us-ascii");
@@ -469,7 +470,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
     ib = s;
     ibl = len + 1;
     obl = MB_LEN_MAX * ibl;
-    ob = buf = safe_malloc(obl + 1);
+    ob = buf = mutt_mem_malloc(obl + 1);
 
     mutt_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close(cd);
@@ -533,14 +534,14 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 
   if (cd != (iconv_t) -1)
   {
-    fc = safe_malloc(sizeof(struct FgetConv));
+    fc = mutt_mem_malloc(sizeof(struct FgetConv));
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_is_utf8(to) ? repls : repls + 1;
   }
   else
-    fc = safe_malloc(sizeof(struct FgetConvNot));
+    fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
   fc->file = file;
   fc->cd = cd;
   return (FGETCONV *) fc;
@@ -640,8 +641,8 @@ bool mutt_check_charset(const char *s, bool strict)
   if (!strict)
     for (int i = 0; PreferredMIMENames[i].key; i++)
     {
-      if ((mutt_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
-          (mutt_strcasecmp(PreferredMIMENames[i].pref, s) == 0))
+      if ((mutt_str_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
+          (mutt_str_strcasecmp(PreferredMIMENames[i].pref, s) == 0))
         return true;
     }
 

@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -87,7 +87,7 @@ static struct Address *result_to_addr(struct Query *r)
     return NULL;
 
   if (!tmp->next && !tmp->personal)
-    tmp->personal = safe_strdup(r->name);
+    tmp->personal = mutt_str_strdup(r->name);
 
   mutt_addrlist_to_intl(tmp, NULL);
   return tmp;
@@ -138,18 +138,18 @@ static struct Query *run_query(char *s, int quiet)
   fgets(msg, sizeof(msg), fp);
   if ((p = strrchr(msg, '\n')))
     *p = '\0';
-  while ((buf = mutt_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
   {
     if ((p = strtok(buf, "\t\n")))
     {
       if (!first)
       {
-        first = safe_calloc(1, sizeof(struct Query));
+        first = mutt_mem_calloc(1, sizeof(struct Query));
         cur = first;
       }
       else
       {
-        cur->next = safe_calloc(1, sizeof(struct Query));
+        cur->next = mutt_mem_calloc(1, sizeof(struct Query));
         cur = cur->next;
       }
 
@@ -157,15 +157,15 @@ static struct Query *run_query(char *s, int quiet)
       p = strtok(NULL, "\t\n");
       if (p)
       {
-        cur->name = safe_strdup(p);
+        cur->name = mutt_str_strdup(p);
         p = strtok(NULL, "\t\n");
         if (p)
-          cur->other = safe_strdup(p);
+          cur->other = mutt_str_strdup(p);
       }
     }
   }
   FREE(&buf);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   if (mutt_wait_filter(thepid))
   {
     mutt_debug(1, "Error: %s\n", msg);
@@ -309,7 +309,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
+    menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
@@ -363,7 +363,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
               if (op == OP_QUERY)
               {
-                menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
+                menu->data = QueryTable =
+                    mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
                 for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
                   QueryTable[i].data = queryp;
@@ -373,7 +374,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
                 bool clear = false;
 
                 /* append */
-                safe_realloc(&QueryTable, menu->max * sizeof(struct Entry));
+                mutt_mem_realloc(&QueryTable, menu->max * sizeof(struct Entry));
 
                 menu->data = QueryTable;
 
@@ -470,7 +471,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             mutt_addrlist_to_local(tmpa);
             tagged = true;
             rfc822_write_address(buf, buflen, tmpa, 0);
-            curpos = mutt_strlen(buf);
+            curpos = mutt_str_strlen(buf);
             rfc822_free_address(&tmpa);
           }
           else if (curpos + 2 < buflen)
@@ -479,7 +480,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             mutt_addrlist_to_local(tmpa);
             strcat(buf, ", ");
             rfc822_write_address((char *) buf + curpos + 1, buflen - curpos - 1, tmpa, 0);
-            curpos = mutt_strlen(buf);
+            curpos = mutt_str_strlen(buf);
             rfc822_free_address(&tmpa);
           }
         }

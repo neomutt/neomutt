@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "globals.h"
 #include "protos.h"
 
@@ -43,16 +43,16 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   if (path)
     *path = '\0';
 
-  if (mutt_strncmp("From ", s, 5) != 0)
+  if (mutt_str_strncmp("From ", s, 5) != 0)
     return 0;
 
-  s = next_word(s); /* skip over the From part. */
+  s = mutt_str_next_word(s); /* skip over the From part. */
   if (!*s)
     return 0;
 
   mutt_debug(3, "\nis_from(): parsing: %s\n", s);
 
-  if (!is_day_name(s))
+  if (!mutt_date_is_day_name(s))
   {
     const char *p = NULL;
     size_t len;
@@ -75,7 +75,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       return 0;
 
     /* pipermail archives have the return_path obscured such as "me at mutt.org" */
-    if (mutt_strncasecmp(p, " at ", 4) == 0)
+    if (mutt_str_strncasecmp(p, " at ", 4) == 0)
     {
       p = strchr(p + 4, ' ');
       if (!p)
@@ -102,14 +102,14 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     if (!*s)
       return 0;
 
-    if (!is_day_name(s))
+    if (!mutt_date_is_day_name(s))
     {
       mutt_debug(1, "is_from():  expected weekday, got: %s\n", s);
       return 0;
     }
   }
 
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
 
@@ -117,20 +117,20 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
    * this could happen when receiving mail from a local user whose login name
    * is the same as a three-letter abbreviation of the day of the week.
    */
-  if (is_day_name(s))
+  if (mutt_date_is_day_name(s))
   {
-    s = next_word(s);
+    s = mutt_str_next_word(s);
     if (!*s)
       return 0;
   }
 
   /* now we should be on the month. */
-  tm.tm_mon = mutt_check_month(s);
+  tm.tm_mon = mutt_date_check_month(s);
   if (tm.tm_mon < 0)
     return 0;
 
   /* day */
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
   if (sscanf(s, "%d", &tm.tm_mday) != 1)
@@ -139,7 +139,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     return 0;
 
   /* time */
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
 
@@ -155,14 +155,14 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       (tm.tm_min > 59) || (tm.tm_sec < 0) || (tm.tm_sec > 60))
     return 0;
 
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
 
   /* timezone? */
   if (isalpha((unsigned char) *s) || *s == '+' || *s == '-')
   {
-    s = next_word(s);
+    s = mutt_str_next_word(s);
     if (!*s)
       return 0;
 
@@ -172,7 +172,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
      */
     if (isalpha((unsigned char) *s))
     {
-      s = next_word(s);
+      s = mutt_str_next_word(s);
       if (!*s)
         return 0;
     }
@@ -191,6 +191,6 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   tm.tm_isdst = -1;
 
   if (tp)
-    *tp = mutt_mktime(&tm, 0);
+    *tp = mutt_date_make_time(&tm, 0);
   return 1;
 }

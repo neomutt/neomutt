@@ -33,7 +33,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <gdbm.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
 
@@ -41,7 +41,7 @@ static void *hcache_gdbm_open(const char *path)
 {
   int pagesize;
 
-  if (mutt_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+  if (mutt_str_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
 
   GDBM_FILE db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);

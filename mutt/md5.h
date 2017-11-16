@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_MD5_H
-#define _LIB_MD5_H
+#ifndef _MUTT_MD5_H
+#define _MUTT_MD5_H
 
 #include <stdint.h>
 #include <stdio.h>
@@ -45,12 +45,12 @@ struct Md5Ctx
   md5_uint32 buffer[32];
 };
 
-void *md5_buffer(const char *buffer, size_t len, void *resblock);
-void *md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
-void  md5_init_ctx(struct Md5Ctx *ctx);
-void  md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx);
-void  md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
-void *md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf);
-int   md5_stream(FILE *stream, void *resblock);
+void *mutt_md5_buf(const char *buffer, size_t len, void *resblock);
+void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
+void  mutt_md5_init_ctx(struct Md5Ctx *ctx);
+void  mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx);
+void  mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
+void *mutt_md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf);
+int   mutt_md5_stream(FILE *stream, void *resblock);
 
-#endif /* _LIB_MD5_H */
+#endif /* _MUTT_MD5_H */

@@ -41,9 +41,9 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "mutt.h"
 #include "tunnel.h"
 #include "account.h"
@@ -76,7 +76,7 @@ static int tunnel_socket_open(struct Connection *conn)
   int pin[2], pout[2];
   int devnull;
 
-  tunnel = safe_malloc(sizeof(struct TunnelData));
+  tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
   conn->sockdata = tunnel;
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);

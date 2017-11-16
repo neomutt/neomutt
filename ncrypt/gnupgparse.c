@@ -38,7 +38,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "charset.h"
 #include "filter.h"
@@ -98,7 +98,7 @@ static void fix_uid(char *uid)
     char *ob = NULL;
     size_t ibl, obl;
 
-    buf = safe_malloc(n + 1);
+    buf = mutt_mem_malloc(n + 1);
     ib = uid;
     ibl = d - uid + 1;
     ob = buf;
@@ -162,17 +162,17 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "record type: %s\n", p);
 
-        if (mutt_strcmp(p, "pub") == 0)
+        if (mutt_str_strcmp(p, "pub") == 0)
           is_pub = true;
-        else if (mutt_strcmp(p, "sub") == 0)
+        else if (mutt_str_strcmp(p, "sub") == 0)
           *is_subkey = 1;
-        else if (mutt_strcmp(p, "sec") == 0)
+        else if (mutt_str_strcmp(p, "sec") == 0)
           ;
-        else if (mutt_strcmp(p, "ssb") == 0)
+        else if (mutt_str_strcmp(p, "ssb") == 0)
           *is_subkey = 1;
-        else if (mutt_strcmp(p, "uid") == 0)
+        else if (mutt_str_strcmp(p, "uid") == 0)
           is_uid = true;
-        else if (mutt_strcmp(p, "fpr") == 0)
+        else if (mutt_str_strcmp(p, "fpr") == 0)
           is_fpr = true;
         else
           return NULL;
@@ -220,7 +220,8 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "key len: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) && mutt_atos(p, &tmp.keylen) < 0)
+        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) &&
+            mutt_str_atos(p, &tmp.keylen) < 0)
           goto bail;
         break;
       }
@@ -231,7 +232,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
         {
           int x = 0;
-          if (mutt_atoi(p, &x) < 0)
+          if (mutt_str_atoi(p, &x) < 0)
             goto bail;
           tmp.numalg = x;
           tmp.algorithm = pgp_pkalgbytype(x);
@@ -261,24 +262,24 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         strncpy(tstr, p, 11);
         tstr[4] = '\0';
         tstr[7] = '\0';
-        if (mutt_atoi(tstr, &time.tm_year) < 0)
+        if (mutt_str_atoi(tstr, &time.tm_year) < 0)
         {
           p = tstr;
           goto bail;
         }
         time.tm_year -= 1900;
-        if (mutt_atoi(tstr + 5, &time.tm_mon) < 0)
+        if (mutt_str_atoi(tstr + 5, &time.tm_mon) < 0)
         {
           p = tstr + 5;
           goto bail;
         }
         time.tm_mon -= 1;
-        if (mutt_atoi(tstr + 8, &time.tm_mday) < 0)
+        if (mutt_str_atoi(tstr + 8, &time.tm_mday) < 0)
         {
           p = tstr + 8;
           goto bail;
         }
-        tmp.gen_time = mutt_mktime(&time, 0);
+        tmp.gen_time = mutt_date_make_time(&time, 0);
         break;
       }
       case 7: /* valid for n days */
@@ -302,7 +303,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         {
           /* don't let a subkey fpr overwrite an existing primary key fpr */
           if (!tmp.fingerprint)
-            tmp.fingerprint = safe_strdup(p);
+            tmp.fingerprint = mutt_str_strdup(p);
           break;
         }
 
@@ -312,9 +313,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         mutt_debug(2, "user ID: %s\n", NONULL(p));
 
-        uid = safe_calloc(1, sizeof(struct PgpUid));
+        uid = mutt_mem_calloc(1, sizeof(struct PgpUid));
         fix_uid(p);
-        uid->addr = safe_strdup(p);
+        uid->addr = mutt_str_strdup(p);
         uid->trust = trust;
         uid->flags |= flags;
         uid->next = tmp.address;
@@ -364,7 +365,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
   /* merge temp key back into real key */
   if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS))))
-    k = safe_malloc(sizeof(*k));
+    k = mutt_mem_malloc(sizeof(*k));
   memcpy(k, &tmp, sizeof(*k));
   /* fixup parentship of uids after merging the temp key into
    * the real key */
@@ -436,7 +437,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   if (ferror(fp))
     mutt_perror("fgets");
 
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   mutt_wait_filter(thepid);
 
   close(devnull);

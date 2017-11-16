@@ -28,6 +28,7 @@
  *
  * | Function             | Description
  * | :------------------- | :--------------------------------------------------
+ * | mutt_buffer_add()    | Add a string to a Buffer, expanding it if necessary
  * | mutt_buffer_addch()  | Add a single character to a Buffer
  * | mutt_buffer_addstr() | Add a string to a Buffer
  * | mutt_buffer_free()   | Release a Buffer and its contents
@@ -35,7 +36,7 @@
  * | mutt_buffer_init()   | Initialise a new Buffer
  * | mutt_buffer_new()    | Create and initialise a Buffer
  * | mutt_buffer_printf() | Format a string into a Buffer
- * | mutt_buffer_reset    | Reset an existing Buffer
+ * | mutt_buffer_reset()  | Reset an existing Buffer
  */
 
 #include "config.h"
@@ -56,7 +57,7 @@ struct Buffer *mutt_buffer_new(void)
 {
   struct Buffer *b = NULL;
 
-  b = safe_malloc(sizeof(struct Buffer));
+  b = mutt_mem_malloc(sizeof(struct Buffer));
 
   mutt_buffer_init(b);
 
@@ -102,8 +103,8 @@ struct Buffer *mutt_buffer_from(char *seed)
     return NULL;
 
   b = mutt_buffer_new();
-  b->data = safe_strdup(seed);
-  b->dsize = mutt_strlen(seed);
+  b->data = mutt_str_strdup(seed);
+  b->dsize = mutt_str_strlen(seed);
   b->dptr = (char *) b->data + b->dsize;
   return b;
 }
@@ -127,7 +128,7 @@ static void mutt_buffer_add(struct Buffer *buf, const char *s, size_t len)
   {
     size_t offset = buf->dptr - buf->data;
     buf->dsize += (len < 128) ? 128 : len + 1;
-    safe_realloc(&buf->data, buf->dsize);
+    mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + offset;
   }
   if (!buf->dptr)
@@ -179,7 +180,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
   {
     blen = 128;
     buf->dsize += blen;
-    safe_realloc(&buf->data, buf->dsize);
+    mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
   }
   len = vsnprintf(buf->dptr, blen, fmt, ap);
@@ -189,7 +190,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
     if (blen < 128)
       blen = 128;
     buf->dsize += blen;
-    safe_realloc(&buf->data, buf->dsize);
+    mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
     len = vsnprintf(buf->dptr, len, fmt, ap_retry);
   }
@@ -211,7 +212,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
  */
 void mutt_buffer_addstr(struct Buffer *buf, const char *s)
 {
-  mutt_buffer_add(buf, s, mutt_strlen(s));
+  mutt_buffer_add(buf, s, mutt_str_strlen(s));
 }
 
 /**

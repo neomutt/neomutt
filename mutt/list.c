@@ -29,13 +29,13 @@
  * | Function                 | Description
  * | :----------------------- | :-----------------------------------------
  * | mutt_list_clear()        | Free a list, but NOT its strings
+ * | mutt_list_compare()      | Compare two string lists
  * | mutt_list_find()         | Find a string in a List
  * | mutt_list_free()         | Free a List AND its strings
  * | mutt_list_insert_after() | Insert a string after a given ListNode
  * | mutt_list_insert_head()  | Insert a string at the beginning of a List
  * | mutt_list_insert_tail()  | Append a string to the end of a List
  * | mutt_list_match()        | Is the string in the list (see notes)
- * | strict_cmp_stailq()      | Compare two string lists
  */
 
 #include "config.h"
@@ -51,7 +51,7 @@
  */
 struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
 {
-  struct ListNode *np = safe_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_HEAD(h, np, entries);
   return np;
@@ -65,7 +65,7 @@ struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
  */
 struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
 {
-  struct ListNode *np = safe_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_TAIL(h, np, entries);
   return np;
@@ -80,7 +80,7 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
  */
 struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, char *s)
 {
-  struct ListNode *np = safe_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
   np->data = s;
   STAILQ_INSERT_AFTER(h, n, np, entries);
   return np;
@@ -98,7 +98,7 @@ struct ListNode *mutt_list_find(struct ListHead *h, const char *data)
   struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
-    if (np->data == data || mutt_strcmp(np->data, data) == 0)
+    if (np->data == data || mutt_str_strcmp(np->data, data) == 0)
     {
       return np;
     }
@@ -159,14 +159,14 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((*np->data == '*') || (mutt_strncasecmp(s, np->data, strlen(np->data)) == 0))
+    if ((*np->data == '*') || (mutt_str_strncasecmp(s, np->data, strlen(np->data)) == 0))
       return true;
   }
   return false;
 }
 
 /**
- * strict_cmp_stailq - Compare two string lists
+ * mutt_list_compare - Compare two string lists
  * @param ah First string list
  * @param bh Second string list
  * @retval bool True if lists are identical
@@ -174,14 +174,14 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.
  */
-int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
+int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 {
   struct ListNode *a = STAILQ_FIRST(ah);
   struct ListNode *b = STAILQ_FIRST(bh);
 
   while (a && b)
   {
-    if (mutt_strcmp(a->data, b->data) != 0)
+    if (mutt_str_strcmp(a->data, b->data) != 0)
       return 0;
 
     a = STAILQ_NEXT(a, entries);
@@ -192,4 +192,3 @@ int strict_cmp_stailq(const struct ListHead *ah, const struct ListHead *bh)
 
   return 1;
 }
-

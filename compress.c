@@ -27,7 +27,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "compress.h"
 #include "context.h"
@@ -96,13 +96,13 @@ static int lock_realpath(struct Context *ctx, int excl)
     return 0;
   }
 
-  int r = mutt_lock_file(ctx->realpath, fileno(ci->lockfp), excl, 1);
+  int r = mutt_file_lock(ctx->realpath, fileno(ci->lockfp), excl, 1);
 
   if (r == 0)
     ci->locked = 1;
   else if (excl == 0)
   {
-    safe_fclose(&ci->lockfp);
+    mutt_file_fclose(&ci->lockfp);
     ctx->readonly = true;
     return 1;
   }
@@ -128,10 +128,10 @@ static void unlock_realpath(struct Context *ctx)
   if (!ci->locked)
     return;
 
-  mutt_unlock_file(ctx->realpath, fileno(ci->lockfp));
+  mutt_file_unlock(ctx->realpath, fileno(ci->lockfp));
 
   ci->locked = 0;
-  safe_fclose(&ci->lockfp);
+  mutt_file_fclose(&ci->lockfp);
 }
 
 /**
@@ -158,13 +158,13 @@ static int setup_paths(struct Context *ctx)
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
-  ctx->path = safe_strdup(tmppath);
+  ctx->path = mutt_str_strdup(tmppath);
 
-  tmpfp = safe_fopen(ctx->path, "w");
+  tmpfp = mutt_file_fopen(ctx->path, "w");
   if (!tmpfp)
     return -1;
 
-  safe_fclose(&tmpfp);
+  mutt_file_fclose(&tmpfp);
   return 0;
 }
 
@@ -256,12 +256,12 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
   const char *c = find_hook(MUTT_CLOSEHOOK, ctx->path);
   const char *a = find_hook(MUTT_APPENDHOOK, ctx->path);
 
-  struct CompressInfo *ci = safe_calloc(1, sizeof(struct CompressInfo));
+  struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   ctx->compress_info = ci;
 
-  ci->open = safe_strdup(o);
-  ci->close = safe_strdup(c);
-  ci->append = safe_strdup(a);
+  ci->open = mutt_str_strdup(o);
+  ci->close = mutt_str_strdup(c);
+  ci->append = mutt_str_strdup(a);
 
   return ci;
 }

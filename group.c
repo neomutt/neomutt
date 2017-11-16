@@ -23,7 +23,7 @@
 
 #include "config.h"
 #include <stdlib.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "group.h"
 #include "address.h"
@@ -38,13 +38,13 @@ struct Group *mutt_pattern_group(const char *k)
   if (!k)
     return 0;
 
-  p = hash_find(Groups, k);
+  p = mutt_hash_find(Groups, k);
   if (!p)
   {
     mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
-    p = safe_calloc(1, sizeof(struct Group));
-    p->name = safe_strdup(k);
-    hash_insert(Groups, p->name, p);
+    p = mutt_mem_calloc(1, sizeof(struct Group));
+    p->name = mutt_str_strdup(k);
+    mutt_hash_insert(Groups, p->name, p);
   }
 
   return p;
@@ -54,7 +54,7 @@ static void group_remove(struct Group *g)
 {
   if (!g)
     return;
-  hash_delete(Groups, g->name, g, NULL);
+  mutt_hash_delete(Groups, g->name, g, NULL);
   rfc822_free_address(&g->as);
   mutt_free_regex_list(&g->rs);
   FREE(&g->name);
@@ -88,7 +88,7 @@ void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
       return;
   }
 
-  *ctx = safe_calloc(1, sizeof(struct GroupContext));
+  *ctx = mutt_mem_calloc(1, sizeof(struct GroupContext));
   (*ctx)->g = group;
 }
 
@@ -198,7 +198,7 @@ bool mutt_group_match(struct Group *g, const char *s)
     if (mutt_match_regex_list(s, g->rs))
       return true;
     for (ap = g->as; ap; ap = ap->next)
-      if (ap->mailbox && (mutt_strcasecmp(s, ap->mailbox) == 0))
+      if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
         return true;
   }
   return false;

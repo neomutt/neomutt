@@ -21,8 +21,8 @@
  */
 
 #include "config.h"
-#include "lib/lib.h"
-#include "lib/queue.h"
+#include "mutt/mutt.h"
+#include "mutt/queue.h"
 #include "crypt_mod.h"
 
 /**
@@ -43,7 +43,7 @@ modules = STAILQ_HEAD_INITIALIZER(modules);
  */
 void crypto_module_register(struct CryptModuleSpecs *specs)
 {
-  struct CryptModule *module = safe_calloc(1, sizeof(struct CryptModule));
+  struct CryptModule *module = mutt_mem_calloc(1, sizeof(struct CryptModule));
   module->specs = specs;
   STAILQ_INSERT_HEAD(&modules, module, entries);
 }

@@ -25,37 +25,37 @@
  *
  * Commonly used file/dir management routines.
  *
- * | Function                     | Description
- * | :--------------------------- | :-----------------------------------------------------------
- * | file_read_keyword()          | Read a keyword from a file
- * | mbox_check_empty()           | Is the mailbox empty
- * | mutt_basename()              | Find the last component for a pathname
- * | mutt_concatn_path()          | Concatenate directory and filename
- * | mutt_concat_path()           | Join a directory name and a filename
- * | mutt_copy_bytes()            | Copy some content from one file to another
- * | mutt_copy_stream()           | Copy the contents of one file into another
- * | mutt_decrease_mtime()        | Decrease a file's modification time by 1 second
- * | mutt_dirname()               | Return a path up to, but not including, the final '/'
- * | mutt_lock_file()             | (try to) lock a file
- * | mutt_mkdir()                 | Recursively create directories
- * | mutt_quote_filename()        | Quote a filename to survive the shell's quoting rules
- * | mutt_read_line()             | Read a line from a file
- * | mutt_regex_sanitize_string() | Escape any regex-magic characters in a string
- * | mutt_rename_file()           | Rename a file
- * | mutt_rmtree()                | Recursively remove a directory
- * | mutt_sanitize_filename()     | Replace unsafe characters in a filename
- * | mutt_set_mtime()             | Set the modification time of one file from another
- * | mutt_touch_atime()           | Set the access time to current time
- * | mutt_unlink()                | Delete a file, carefully
- * | mutt_unlink_empty()          | Delete a file if it's empty
- * | mutt_unlock_file()           | Unlock a file previously locked by mutt_lock_file()
- * | safe_fclose()                | Close a FILE handle (and NULL the pointer)
- * | safe_fopen()                 | Call fopen() safely
- * | safe_fsync_close()           | Flush the data, before closing a file (and NULL the pointer)
- * | safe_open()                  | Open a file
- * | safe_rename()                | NFS-safe renaming of files
- * | safe_symlink()               | Create a symlink
- * | to_absolute_path()           | Convert relative filepath to an absolute path
+ * | Function                      | Description
+ * | :---------------------------- | :-----------------------------------------------------------
+ * | mutt_file_basename()          | Find the last component for a pathname
+ * | mutt_file_check_empty()       | Is the mailbox empty
+ * | mutt_file_concatn_path()      | Concatenate directory and filename
+ * | mutt_file_concat_path()       | Join a directory name and a filename
+ * | mutt_file_copy_bytes()        | Copy some content from one file to another
+ * | mutt_file_copy_stream()       | Copy the contents of one file into another
+ * | mutt_file_decrease_mtime()    | Decrease a file's modification time by 1 second
+ * | mutt_file_dirname()           | Return a path up to, but not including, the final '/'
+ * | mutt_file_fclose()            | Close a FILE handle (and NULL the pointer)
+ * | mutt_file_fopen()             | Call fopen() safely
+ * | mutt_file_fsync_close()       | Flush the data, before closing a file (and NULL the pointer)
+ * | mutt_file_lock()              | (try to) lock a file
+ * | mutt_file_mkdir()             | Recursively create directories
+ * | mutt_file_open()              | Open a file
+ * | mutt_file_quote_filename()    | Quote a filename to survive the shell's quoting rules
+ * | mutt_file_read_keyword()      | Read a keyword from a file
+ * | mutt_file_read_line()         | Read a line from a file
+ * | mutt_file_rename()            | Rename a file
+ * | mutt_file_rmtree()            | Recursively remove a directory
+ * | mutt_file_safe_rename()       | NFS-safe renaming of files
+ * | mutt_file_sanitize_filename() | Replace unsafe characters in a filename
+ * | mutt_file_sanitize_regex()    | Escape any regex-magic characters in a string
+ * | mutt_file_set_mtime()         | Set the modification time of one file from another
+ * | mutt_file_symlink()           | Create a symlink
+ * | mutt_file_touch_atime()       | Set the access time to current time
+ * | mutt_file_to_absolute_path()  | Convert relative filepath to an absolute path
+ * | mutt_file_unlink()            | Delete a file, carefully
+ * | mutt_file_unlink_empty()      | Delete a file if it's empty
+ * | mutt_file_unlock()            | Unlock a file previously locked by mutt_file_lock()
  */
 
 #include "config.h"
@@ -123,7 +123,7 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   char parent[_POSIX_PATH_MAX];
   char *p = NULL;
 
-  strfcpy(parent, NONULL(path), sizeof(parent));
+  mutt_str_strfcpy(parent, NONULL(path), sizeof(parent));
 
   p = strrchr(parent, '/');
   if (p)
@@ -133,7 +133,7 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   }
   else
   {
-    strfcpy(parent, ".", sizeof(parent));
+    mutt_str_strfcpy(parent, ".", sizeof(parent));
     basename = path;
   }
 
@@ -165,19 +165,19 @@ static int put_file_in_place(const char *path, const char *safe_file, const char
 {
   int rv;
 
-  rv = safe_rename(safe_file, path);
+  rv = mutt_file_safe_rename(safe_file, path);
   unlink(safe_file);
   rmdir(safe_dir);
   return rv;
 }
 
 /**
- * safe_fclose - Close a FILE handle (and NULL the pointer)
+ * mutt_file_fclose - Close a FILE handle (and NULL the pointer)
  * @param f FILE handle to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-int safe_fclose(FILE **f)
+int mutt_file_fclose(FILE **f)
 {
   int r = 0;
 
@@ -189,12 +189,12 @@ int safe_fclose(FILE **f)
 }
 
 /**
- * safe_fsync_close - Flush the data, before closing a file (and NULL the pointer)
+ * mutt_file_fsync_close - Flush the data, before closing a file (and NULL the pointer)
  * @param f FILE handle to close
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-int safe_fsync_close(FILE **f)
+int mutt_file_fsync_close(FILE **f)
 {
   int r = 0;
 
@@ -204,23 +204,23 @@ int safe_fsync_close(FILE **f)
     {
       int save_errno = errno;
       r = -1;
-      safe_fclose(f);
+      mutt_file_fclose(f);
       errno = save_errno;
     }
     else
-      r = safe_fclose(f);
+      r = mutt_file_fclose(f);
   }
 
   return r;
 }
 
 /**
- * mutt_unlink - Delete a file, carefully
+ * mutt_file_unlink - Delete a file, carefully
  * @param s Filename
  *
  * This won't follow symlinks.
  */
-void mutt_unlink(const char *s)
+void mutt_file_unlink(const char *s)
 {
   int fd;
   FILE *f = NULL;
@@ -252,20 +252,20 @@ void mutt_unlink(const char *s)
         fwrite(buf, 1, MIN(sizeof(buf), sb.st_size), f);
         sb.st_size -= MIN(sizeof(buf), sb.st_size);
       }
-      safe_fclose(&f);
+      mutt_file_fclose(&f);
     }
   }
 }
 
 /**
- * mutt_copy_bytes - Copy some content from one file to another
+ * mutt_file_copy_bytes - Copy some content from one file to another
  * @param in   Source file
  * @param out  Destination file
  * @param size Maximum number of bytes to copy
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-int mutt_copy_bytes(FILE *in, FILE *out, size_t size)
+int mutt_file_copy_bytes(FILE *in, FILE *out, size_t size)
 {
   char buf[2048];
   size_t chunk;
@@ -288,13 +288,13 @@ int mutt_copy_bytes(FILE *in, FILE *out, size_t size)
 }
 
 /**
- * mutt_copy_stream - Copy the contents of one file into another
+ * mutt_file_copy_stream - Copy the contents of one file into another
  * @param fin  Source file
  * @param fout Destination file
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-int mutt_copy_stream(FILE *fin, FILE *fout)
+int mutt_file_copy_stream(FILE *fin, FILE *fout)
 {
   size_t l;
   char buf[LONG_STRING];
@@ -311,13 +311,13 @@ int mutt_copy_stream(FILE *fin, FILE *fout)
 }
 
 /**
- * safe_symlink - Create a symlink
+ * mutt_file_symlink - Create a symlink
  * @param oldpath Existing pathname
  * @param newpath New pathname
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-int safe_symlink(const char *oldpath, const char *newpath)
+int mutt_file_symlink(const char *oldpath, const char *newpath)
 {
   struct stat osb, nsb;
 
@@ -359,7 +359,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
 }
 
 /**
- * safe_rename - NFS-safe renaming of files
+ * mutt_file_safe_rename - NFS-safe renaming of files
  * @param src    Original filename
  * @param target New filename
  * @retval  0 Success
@@ -367,7 +367,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
  *
  * Warning: We don't check whether src and target are equal.
  */
-int safe_rename(const char *src, const char *target)
+int mutt_file_safe_rename(const char *src, const char *target)
 {
   struct stat ssb, tsb;
 
@@ -384,8 +384,8 @@ int safe_rename(const char *src, const char *target)
      * With other file systems, rename should just fail when
      * the files reside on different file systems, so it's safe
      * to try it here. */
-    mutt_debug(1, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target,
-               strerror(errno), errno);
+    mutt_debug(1, "mutt_file_safe_rename: link (%s, %s) failed: %s (%d)\n", src,
+               target, strerror(errno), errno);
 
     /* FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
      * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear. */
@@ -398,14 +398,15 @@ int safe_rename(const char *src, const char *target)
 #endif
         )
     {
-      mutt_debug(1, "safe_rename: trying rename...\n");
+      mutt_debug(1, "mutt_file_safe_rename: trying rename...\n");
       if (rename(src, target) == -1)
       {
-        mutt_debug(1, "safe_rename: rename (%s, %s) failed: %s (%d)\n", src,
-                   target, strerror(errno), errno);
+        mutt_debug(1,
+                   "mutt_file_safe_rename: rename (%s, %s) failed: %s (%d)\n",
+                   src, target, strerror(errno), errno);
         return -1;
       }
-      mutt_debug(1, "safe_rename: rename succeeded.\n");
+      mutt_debug(1, "mutt_file_safe_rename: rename succeeded.\n");
 
       return 0;
     }
@@ -417,13 +418,15 @@ int safe_rename(const char *src, const char *target)
 
   if (lstat(src, &ssb) == -1)
   {
-    mutt_debug(1, "safe_rename: can't stat %s: %s (%d)\n", src, strerror(errno), errno);
+    mutt_debug(1, "mutt_file_safe_rename: can't stat %s: %s (%d)\n", src,
+               strerror(errno), errno);
     return -1;
   }
 
   if (lstat(target, &tsb) == -1)
   {
-    mutt_debug(1, "safe_rename: can't stat %s: %s (%d)\n", src, strerror(errno), errno);
+    mutt_debug(1, "mutt_file_safe_rename: can't stat %s: %s (%d)\n", src,
+               strerror(errno), errno);
     return -1;
   }
 
@@ -431,7 +434,7 @@ int safe_rename(const char *src, const char *target)
 
   if (!compare_stat(&ssb, &tsb))
   {
-    mutt_debug(1, "safe_rename: stat blocks for %s and %s diverge; "
+    mutt_debug(1, "mutt_file_safe_rename: stat blocks for %s and %s diverge; "
                   "pretending EEXIST.\n",
                src, target);
     errno = EEXIST;
@@ -442,19 +445,20 @@ int safe_rename(const char *src, const char *target)
    * Should we really ignore the return value here? XXX */
   if (unlink(src) == -1)
   {
-    mutt_debug(1, "safe_rename: unlink (%s) failed: %s (%d)\n", src, strerror(errno), errno);
+    mutt_debug(1, "mutt_file_safe_rename: unlink (%s) failed: %s (%d)\n", src,
+               strerror(errno), errno);
   }
 
   return 0;
 }
 
 /**
- * mutt_rmtree - Recursively remove a directory
+ * mutt_file_rmtree - Recursively remove a directory
  * @param path Directory to delete
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-int mutt_rmtree(const char *path)
+int mutt_file_rmtree(const char *path)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
@@ -465,7 +469,7 @@ int mutt_rmtree(const char *path)
   dirp = opendir(path);
   if (!dirp)
   {
-    mutt_debug(1, "mutt_rmtree: error opening directory %s\n", path);
+    mutt_debug(1, "mutt_file_rmtree: error opening directory %s\n", path);
     return -1;
   }
   while ((de = readdir(dirp)))
@@ -483,7 +487,7 @@ int mutt_rmtree(const char *path)
     }
 
     if (S_ISDIR(statbuf.st_mode))
-      rc |= mutt_rmtree(cur);
+      rc |= mutt_file_rmtree(cur);
     else
       rc |= unlink(cur);
   }
@@ -495,13 +499,13 @@ int mutt_rmtree(const char *path)
 }
 
 /**
- * safe_open - Open a file
+ * mutt_file_open - Open a file
  * @param path  Pathname to open
  * @param flags Flags, e.g. O_EXCL
  * @retval >0 Success, file handle
  * @retval -1 Error
  */
-int safe_open(const char *path, int flags)
+int mutt_file_open(const char *path, int flags)
 {
   struct stat osb, nsb;
   int fd;
@@ -542,7 +546,7 @@ int safe_open(const char *path, int flags)
 }
 
 /**
- * safe_fopen - Call fopen() safely
+ * mutt_file_fopen - Call fopen() safely
  * @param path Filename
  * @param mode Mode e.g. "r" readonly; "w" read-write
  * @retval ptr  FILE handle
@@ -551,7 +555,7 @@ int safe_open(const char *path, int flags)
  * When opening files for writing, make sure the file doesn't already exist to
  * avoid race conditions.
  */
-FILE *safe_fopen(const char *path, const char *mode)
+FILE *mutt_file_fopen(const char *path, const char *mode)
 {
   if (mode[0] == 'w')
   {
@@ -563,7 +567,7 @@ FILE *safe_fopen(const char *path, const char *mode)
     else
       flags |= O_WRONLY;
 
-    fd = safe_open(path, flags);
+    fd = mutt_file_open(path, flags);
     if (fd < 0)
       return NULL;
 
@@ -574,11 +578,11 @@ FILE *safe_fopen(const char *path, const char *mode)
 }
 
 /**
- * mutt_sanitize_filename - Replace unsafe characters in a filename
+ * mutt_file_sanitize_filename - Replace unsafe characters in a filename
  * @param f     Filename to make safe
  * @param slash Replace '/' characters too
  */
-void mutt_sanitize_filename(char *f, short slash)
+void mutt_file_sanitize_filename(char *f, short slash)
 {
   if (!f)
     return;
@@ -591,14 +595,14 @@ void mutt_sanitize_filename(char *f, short slash)
 }
 
 /**
- * mutt_regex_sanitize_string - Escape any regex-magic characters in a string
+ * mutt_file_sanitize_regex - Escape any regex-magic characters in a string
  * @param dest    Buffer for result
  * @param destlen Length of buffer
  * @param src     String to transform
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src)
+int mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src)
 {
   while (*src && (--destlen > 2))
   {
@@ -619,7 +623,7 @@ int mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src)
 }
 
 /**
- * mutt_read_line - Read a line from a file
+ * mutt_file_read_line - Read a line from a file
  * @param[out] s     Buffer allocated on the head (optional)
  * @param[in]  size  Length of buffer (optional)
  * @param[in]  fp    File to read
@@ -632,14 +636,14 @@ int mutt_regex_sanitize_string(char *dest, size_t destlen, const char *src)
  * with "\", this char and the linefeed is removed, and the next line is read
  * too.
  */
-char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
+char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 {
   size_t offset = 0;
   char *ch = NULL;
 
   if (!s)
   {
-    s = safe_malloc(STRING);
+    s = mutt_mem_malloc(STRING);
     *size = STRING;
   }
 
@@ -685,14 +689,14 @@ char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
         /* There wasn't room for the line -- increase ``s'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
-        safe_realloc(&s, *size);
+        mutt_mem_realloc(&s, *size);
       }
     }
   }
 }
 
 /**
- * mutt_quote_filename - Quote a filename to survive the shell's quoting rules
+ * mutt_file_quote_filename - Quote a filename to survive the shell's quoting rules
  * @param d Buffer for the result
  * @param l Length of buffer
  * @param f String to convert
@@ -700,7 +704,7 @@ char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
  *
  * From the Unix programming FAQ by way of Liviu.
  */
-size_t mutt_quote_filename(char *d, size_t l, const char *f)
+size_t mutt_file_quote_filename(char *d, size_t l, const char *f)
 {
   size_t j = 0;
 
@@ -735,7 +739,7 @@ size_t mutt_quote_filename(char *d, size_t l, const char *f)
 }
 
 /**
- * mutt_concatn_path - Concatenate directory and filename
+ * mutt_file_concatn_path - Concatenate directory and filename
  * @param dst      Buffer for result
  * @param dstlen   Buffer length
  * @param dir      Directory
@@ -748,8 +752,8 @@ size_t mutt_quote_filename(char *d, size_t l, const char *f)
  * Write the concatenated pathname (dir + "/" + fname) into dst.
  * The slash is omitted when dir or fname is of 0 length.
  */
-char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
-                        size_t dirlen, const char *fname, size_t fnamelen)
+char *mutt_file_concatn_path(char *dst, size_t dstlen, const char *dir,
+                             size_t dirlen, const char *fname, size_t fnamelen)
 {
   size_t req;
   size_t offset = 0;
@@ -766,7 +770,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
     /* Two options here:
      * 1) assert(0) or return NULL to signal error
      * 2) copy as much of the path as will fit
-     * It doesn't appear that the return value is actually checked anywhere mutt_concat_path()
+     * It doesn't appear that the return value is actually checked anywhere mutt_file_concat_path()
      * is called, so we should just copy set dst to nul and let the calling function fail later.
      */
     dst[0] = '\0'; /* safe since we bail out early if dstlen == 0 */
@@ -790,7 +794,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
 }
 
 /**
- * mutt_concat_path - Join a directory name and a filename
+ * mutt_file_concat_path - Join a directory name and a filename
  * @param d     Buffer for the result
  * @param dir   Directory name
  * @param fname File name
@@ -800,7 +804,7 @@ char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
  * If both dir and fname are supplied, they are separated with '/'.
  * If either is missing, then the other will be copied exactly.
  */
-char *mutt_concat_path(char *d, const char *dir, const char *fname, size_t l)
+char *mutt_file_concat_path(char *d, const char *dir, const char *fname, size_t l)
 {
   const char *fmt = "%s/%s";
 
@@ -812,11 +816,11 @@ char *mutt_concat_path(char *d, const char *dir, const char *fname, size_t l)
 }
 
 /**
- * mutt_basename - Find the last component for a pathname
+ * mutt_file_basename - Find the last component for a pathname
  * @param f String to be examined
  * @retval ptr Part of pathname after last '/' character
  */
-const char *mutt_basename(const char *f)
+const char *mutt_file_basename(const char *f)
 {
   const char *p = strrchr(f, '/');
   if (p)
@@ -826,7 +830,7 @@ const char *mutt_basename(const char *f)
 }
 
 /**
- * mutt_mkdir - Recursively create directories
+ * mutt_file_mkdir - Recursively create directories
  * @param path Directories to create
  * @param mode Permissions for final directory
  * @retval    0  Success
@@ -838,7 +842,7 @@ const char *mutt_basename(const char *f)
  *       The permissions of any parent directories are determined by the umask.
  *       (This is how "mkdir -p" behaves)
  */
-int mutt_mkdir(const char *path, mode_t mode)
+int mutt_file_mkdir(const char *path, mode_t mode)
 {
   if (!path || !*path)
   {
@@ -861,7 +865,7 @@ int mutt_mkdir(const char *path, mode_t mode)
     return 0;
 
   /* Create a mutable copy */
-  strfcpy(_path, path, sizeof(_path));
+  mutt_str_strfcpy(_path, path, sizeof(_path));
 
   for (char *p = _path + 1; *p; p++)
   {
@@ -884,7 +888,7 @@ int mutt_mkdir(const char *path, mode_t mode)
 }
 
 /**
- * mutt_decrease_mtime - Decrease a file's modification time by 1 second
+ * mutt_file_decrease_mtime - Decrease a file's modification time by 1 second
  * @param f  Filename
  * @param st struct stat for the file (optional)
  * @retval num Updated Unix mtime
@@ -892,7 +896,7 @@ int mutt_mkdir(const char *path, mode_t mode)
  *
  * If a file's mtime is NOW, then set it to 1 second in the past.
  */
-time_t mutt_decrease_mtime(const char *f, struct stat *st)
+time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
 {
   struct utimbuf utim;
   struct stat _st;
@@ -918,7 +922,7 @@ time_t mutt_decrease_mtime(const char *f, struct stat *st)
 }
 
 /**
- * mutt_dirname - Return a path up to, but not including, the final '/'
+ * mutt_file_dirname - Return a path up to, but not including, the final '/'
  * @param  p    Path
  * @retval ptr  The directory containing p
  *
@@ -926,21 +930,21 @@ time_t mutt_decrease_mtime(const char *f, struct stat *st)
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
  *
- * mutt_dirname() returns a static string which must not be free()'d.
+ * mutt_file_dirname() returns a static string which must not be free()'d.
  */
-const char *mutt_dirname(const char *p)
+const char *mutt_file_dirname(const char *p)
 {
   static char buf[_POSIX_PATH_MAX];
-  strfcpy(buf, p, sizeof(buf));
+  mutt_str_strfcpy(buf, p, sizeof(buf));
   return dirname(buf);
 }
 
 /**
- * mutt_set_mtime - Set the modification time of one file from another
+ * mutt_file_set_mtime - Set the modification time of one file from another
  * @param from Filename whose mtime should be copied
  * @param to   Filename to update
  */
-void mutt_set_mtime(const char *from, const char *to)
+void mutt_file_set_mtime(const char *from, const char *to)
 {
   struct utimbuf utim;
   struct stat st;
@@ -954,13 +958,13 @@ void mutt_set_mtime(const char *from, const char *to)
 }
 
 /**
- * mutt_touch_atime - Set the access time to current time
+ * mutt_file_touch_atime - Set the access time to current time
  * @param f File descriptor of the file to alter
  *
  * This is just as read() would do on !noatime.
  * Silently ignored if futimens() isn't supported.
  */
-void mutt_touch_atime(int f)
+void mutt_file_touch_atime(int f)
 {
 #ifdef HAVE_FUTIMENS
   struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
@@ -969,7 +973,7 @@ void mutt_touch_atime(int f)
 }
 
 /**
- * mutt_lock_file - (try to) lock a file
+ * mutt_file_lock - (try to) lock a file
  * @param path    Path to file
  * @param fd      File descriptor to file
  * @param excl    If set, try to lock exclusively
@@ -980,9 +984,9 @@ void mutt_touch_atime(int f)
  * The type of file locking depends on how NeoMutt was compiled.
  * It could use fcntl() or flock() to perform the locking.
  *
- * Use mutt_unlock_file() to unlock the file.
+ * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_lock_file(const char *path, int fd, int excl, int timeout)
+int mutt_file_lock(const char *path, int fd, int excl, int timeout)
 {
 #if defined(USE_FCNTL) || defined(USE_FLOCK)
   int count;
@@ -1002,7 +1006,7 @@ int mutt_lock_file(const char *path, int fd, int excl, int timeout)
   attempt = 0;
   while (fcntl(fd, F_SETLK, &lck) == -1)
   {
-    mutt_debug(1, "mutt_lock_file(): fcntl errno %d.\n", errno);
+    mutt_debug(1, "mutt_file_lock(): fcntl errno %d.\n", errno);
     if ((errno != EAGAIN) && (errno != EACCES))
     {
       mutt_perror("fcntl");
@@ -1081,12 +1085,12 @@ int mutt_lock_file(const char *path, int fd, int excl, int timeout)
 }
 
 /**
- * mutt_unlock_file - Unlock a file previously locked by mutt_lock_file()
+ * mutt_file_unlock - Unlock a file previously locked by mutt_file_lock()
  * @param path Path to file
  * @param fd   File descriptor to file
  * @retval 0 Always
  */
-int mutt_unlock_file(const char *path, int fd)
+int mutt_file_unlock(const char *path, int fd)
 {
 #ifdef USE_FCNTL
   struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
@@ -1105,10 +1109,10 @@ int mutt_unlock_file(const char *path, int fd)
 }
 
 /**
- * mutt_unlink_empty - Delete a file if it's empty
+ * mutt_file_unlink_empty - Delete a file if it's empty
  * @param path File to delete
  */
-void mutt_unlink_empty(const char *path)
+void mutt_file_unlink_empty(const char *path)
 {
   int fd;
   struct stat sb;
@@ -1117,7 +1121,7 @@ void mutt_unlink_empty(const char *path)
   if (fd == -1)
     return;
 
-  if (mutt_lock_file(path, fd, 1, 1) == -1)
+  if (mutt_file_lock(path, fd, 1, 1) == -1)
   {
     close(fd);
     return;
@@ -1126,12 +1130,12 @@ void mutt_unlink_empty(const char *path)
   if (fstat(fd, &sb) == 0 && sb.st_size == 0)
     unlink(path);
 
-  mutt_unlock_file(path, fd);
+  mutt_file_unlock(path, fd);
   close(fd);
 }
 
 /**
- * mutt_rename_file - Rename a file
+ * mutt_file_rename - Rename a file
  * @param oldfile Old filename
  * @param newfile New filename
  * @retval 0 Success
@@ -1140,10 +1144,10 @@ void mutt_unlink_empty(const char *path)
  * @retval 3 Some other error
  *
  * note on access(2) use: No dangling symlink problems here due to
- * safe_fopen().
+ * mutt_file_fopen().
  */
 
-int mutt_rename_file(char *oldfile, char *newfile)
+int mutt_file_rename(char *oldfile, char *newfile)
 {
   FILE *ofp = NULL, *nfp = NULL;
 
@@ -1154,21 +1158,21 @@ int mutt_rename_file(char *oldfile, char *newfile)
   ofp = fopen(oldfile, "r");
   if (!ofp)
     return 3;
-  nfp = safe_fopen(newfile, "w");
+  nfp = mutt_file_fopen(newfile, "w");
   if (!nfp)
   {
-    safe_fclose(&ofp);
+    mutt_file_fclose(&ofp);
     return 3;
   }
-  mutt_copy_stream(ofp, nfp);
-  safe_fclose(&nfp);
-  safe_fclose(&ofp);
-  mutt_unlink(oldfile);
+  mutt_file_copy_stream(ofp, nfp);
+  mutt_file_fclose(&nfp);
+  mutt_file_fclose(&ofp);
+  mutt_file_unlink(oldfile);
   return 0;
 }
 
 /**
- * to_absolute_path - Convert relative filepath to an absolute path
+ * mutt_file_to_absolute_path - Convert relative filepath to an absolute path
  * @param path      Relative path
  * @param reference Absolute path that \a path is relative to
  * @retval true on success
@@ -1177,7 +1181,7 @@ int mutt_rename_file(char *oldfile, char *newfile)
  * Use POSIX functions to convert a path to absolute, relatively to another path
  * @note \a path should be at least of PATH_MAX length
  */
-int to_absolute_path(char *path, const char *reference)
+int mutt_file_to_absolute_path(char *path, const char *reference)
 {
   const char *dirpath = NULL;
   char abs_path[PATH_MAX];
@@ -1189,13 +1193,13 @@ int to_absolute_path(char *path, const char *reference)
     return true;
   }
 
-  dirpath = mutt_dirname(reference);
-  strfcpy(abs_path, dirpath, PATH_MAX);
-  safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
+  dirpath = mutt_file_dirname(reference);
+  mutt_str_strfcpy(abs_path, dirpath, PATH_MAX);
+  mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   path_len = PATH_MAX - strlen(path);
 
-  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+  mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
 
   path = realpath(abs_path, path);
 
@@ -1209,7 +1213,7 @@ int to_absolute_path(char *path, const char *reference)
 }
 
 /**
- * file_read_keyword - Read a keyword from a file
+ * mutt_file_read_keyword - Read a keyword from a file
  * @param file   File to read
  * @param buffer Buffer to store the keyword
  * @param buflen Length of the buffer
@@ -1218,17 +1222,17 @@ int to_absolute_path(char *path, const char *reference)
  * Read one line from the start of a file.
  * Skip any leading whitespace and extract the first token.
  */
-char *file_read_keyword(const char *file, char *buffer, size_t buflen)
+char *mutt_file_read_keyword(const char *file, char *buffer, size_t buflen)
 {
   FILE *fp = NULL;
   char *start = NULL;
 
-  fp = safe_fopen(file, "r");
+  fp = mutt_file_fopen(file, "r");
   if (!fp)
     return NULL;
 
   buffer = fgets(buffer, buflen, fp);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   if (!buffer)
     return NULL;
@@ -1245,13 +1249,13 @@ char *file_read_keyword(const char *file, char *buffer, size_t buflen)
 }
 
 /**
- * mbox_check_empty - Is the mailbox empty
+ * mutt_file_check_empty - Is the mailbox empty
  * @param path Path to mailbox
  * @retval 1 mailbox is not empty
  * @retval 0 mailbox is empty
  * @retval -1 on error
  */
-int mbox_check_empty(const char *path)
+int mutt_file_check_empty(const char *path)
 {
   struct stat st;
 
@@ -1260,4 +1264,3 @@ int mbox_check_empty(const char *path)
 
   return ((st.st_size == 0));
 }
-

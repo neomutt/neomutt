@@ -29,7 +29,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "bcache.h"
 #include "globals.h"
 #include "mutt_account.h"
@@ -71,7 +71,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 
   mutt_encode_path(path, sizeof(path), NONULL(mailbox));
 
-  int plen = mutt_strlen(path);
+  int plen = mutt_str_strlen(path);
   if (plen == 0)
     return -1;
 
@@ -111,10 +111,10 @@ struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox)
   if (!account)
     goto bail;
 
-  bcache = safe_calloc(1, sizeof(struct BodyCache));
+  bcache = mutt_mem_calloc(1, sizeof(struct BodyCache));
   if (bcache_path(account, mailbox, bcache->path, sizeof(bcache->path)) < 0)
     goto bail;
-  bcache->pathlen = mutt_strlen(bcache->path);
+  bcache->pathlen = mutt_str_strlen(bcache->path);
 
   return bcache;
 
@@ -140,10 +140,10 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
     return NULL;
 
   path[0] = '\0';
-  safe_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
-  safe_strncat(path, sizeof(path), id, mutt_strlen(id));
+  mutt_str_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
+  mutt_str_strncat(path, sizeof(path), id, mutt_str_strlen(id));
 
-  fp = safe_fopen(path, "r");
+  fp = mutt_file_fopen(path, "r");
 
   mutt_debug(3, "bcache: get: '%s': %s\n", path, fp == NULL ? "no" : "yes");
 
@@ -174,7 +174,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
   }
   else
   {
-    if (mutt_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
+    if (mutt_file_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
     {
       mutt_error(_("Can't create %s %s"), bcache->path, strerror(errno));
       return NULL;
@@ -183,7 +183,7 @@ FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id)
 
   mutt_debug(3, "bcache: put: '%s'\n", path);
 
-  return safe_fopen(path, "w+");
+  return mutt_file_fopen(path, "w+");
 }
 
 int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
@@ -203,8 +203,8 @@ int mutt_bcache_del(struct BodyCache *bcache, const char *id)
     return -1;
 
   path[0] = '\0';
-  safe_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
-  safe_strncat(path, sizeof(path), id, mutt_strlen(id));
+  mutt_str_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
+  mutt_str_strncat(path, sizeof(path), id, mutt_str_strlen(id));
 
   mutt_debug(3, "bcache: del: '%s'\n", path);
 
@@ -221,8 +221,8 @@ int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
     return -1;
 
   path[0] = '\0';
-  safe_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
-  safe_strncat(path, sizeof(path), id, mutt_strlen(id));
+  mutt_str_strncat(path, sizeof(path), bcache->path, bcache->pathlen);
+  mutt_str_strncat(path, sizeof(path), id, mutt_str_strlen(id));
 
   if (stat(path, &st) < 0)
     rc = -1;
@@ -251,8 +251,8 @@ int mutt_bcache_list(struct BodyCache *bcache,
 
   while ((de = readdir(d)))
   {
-    if ((mutt_strncmp(de->d_name, ".", 1) == 0) ||
-        (mutt_strncmp(de->d_name, "..", 2) == 0))
+    if ((mutt_str_strncmp(de->d_name, ".", 1) == 0) ||
+        (mutt_str_strncmp(de->d_name, "..", 2) == 0))
       continue;
 
     mutt_debug(3, "bcache: list: dir: '%s', id :'%s'\n", bcache->path, de->d_name);

@@ -22,7 +22,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--with-sasl \
 	--with-tokyocabinet
 
-SUBDIRS = m4 contrib imap ncrypt lib conn
+SUBDIRS = m4 contrib imap ncrypt mutt conn
 
 if BUILD_HCACHE
 SUBDIRS += hcache
@@ -65,8 +65,8 @@ LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 LIBCONN = -Lconn -lconn
 LIBCONNDEPS = $(top_srcdir)/conn/connection.h conn/libconn.a
 
-LIBMUTT = -Llib -lmutt
-LIBMUTTDEPS = $(top_srcdir)/lib/lib.h lib/libmutt.a
+LIBMUTT = -Lmutt -lmutt
+LIBMUTTDEPS = $(top_srcdir)/mutt/mutt.h mutt/libmutt.a
 
 neomutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
 	$(LIBIMAP) $(LIBCONN) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)

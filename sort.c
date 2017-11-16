@@ -23,7 +23,7 @@
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "sort.h"
 #include "address.h"
@@ -106,7 +106,7 @@ static int compare_subject(const void *a, const void *b)
   else if (!(*pb)->env->real_subj)
     rc = 1;
   else
-    rc = mutt_strcasecmp((*pa)->env->real_subj, (*pb)->env->real_subj);
+    rc = mutt_str_strcasecmp((*pa)->env->real_subj, (*pb)->env->real_subj);
   rc = perform_auxsort(rc, a, b);
   return (SORTCODE(rc));
 }
@@ -136,9 +136,9 @@ static int compare_to(const void *a, const void *b)
   const char *fb = NULL;
   int result;
 
-  strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
+  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
   fb = mutt_get_name((*ppb)->env->to);
-  result = mutt_strncasecmp(fa, fb, SHORT_STRING);
+  result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
   result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
@@ -151,9 +151,9 @@ static int compare_from(const void *a, const void *b)
   const char *fb = NULL;
   int result;
 
-  strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
+  mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
   fb = mutt_get_name((*ppb)->env->from);
-  result = mutt_strncasecmp(fa, fb, SHORT_STRING);
+  result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
   result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
@@ -269,7 +269,7 @@ static int compare_label(const void *a, const void *b)
   }
 
   /* If both have a label, we just do a lexical compare. */
-  result = mutt_strcasecmp((*ppa)->env->x_label, (*ppb)->env->x_label);
+  result = mutt_str_strcasecmp((*ppa)->env->x_label, (*ppb)->env->x_label);
   return (SORTCODE(result));
 }
 

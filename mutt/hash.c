@@ -25,20 +25,20 @@
  *
  * Hash table data structure.
  *
- * | Function               | Description
- * | :--------------------- | :---------------------------------------------------------
- * | hash_create()          | Create a new Hash table (with string keys)
- * | hash_delete()          | Remove an element from a Hash table
- * | hash_destroy()         | Destroy a hash table
- * | hash_find()            | Find the HashElem data in a Hash table element using a key
- * | hash_find_bucket()     | Find the HashElem in a Hash table element using a key
- * | hash_find_elem()       | Find the HashElem in a Hash table element using a key
- * | hash_insert()          | Add a new element to the Hash table (with string keys)
- * | hash_walk()            | Iterate through all the HashElem's in a Hash table
- * | int_hash_create()      | Create a new Hash table (with integer keys)
- * | int_hash_delete()      | Remove an element from a Hash table
- * | int_hash_find()        | Find the HashElem data in a Hash table element using a key
- * | int_hash_insert()      | Add a new element to the Hash table (with integer keys)
+ * | Function                | Description
+ * | :---------------------- | :---------------------------------------------------------
+ * | mutt_hash_create()      | Create a new Hash table (with string keys)
+ * | mutt_hash_delete()      | Remove an element from a Hash table
+ * | mutt_hash_destroy()     | Destroy a hash table
+ * | mutt_hash_find()        | Find the HashElem data in a Hash table element using a key
+ * | mutt_hash_find_bucket() | Find the HashElem in a Hash table element using a key
+ * | mutt_hash_find_elem()   | Find the HashElem in a Hash table element using a key
+ * | mutt_hash_insert()      | Add a new element to the Hash table (with string keys)
+ * | mutt_hash_int_create()  | Create a new Hash table (with integer keys)
+ * | mutt_hash_int_delete()  | Remove an element from a Hash table
+ * | mutt_hash_int_find()    | Find the HashElem data in a Hash table element using a key
+ * | mutt_hash_int_insert()  | Add a new element to the Hash table (with integer keys)
+ * | mutt_hash_walk()        | Iterate through all the HashElem's in a Hash table
  */
 
 #include "config.h"
@@ -78,7 +78,7 @@ static unsigned int gen_string_hash(union HashKey key, unsigned int n)
  */
 static int cmp_string_key(union HashKey a, union HashKey b)
 {
-  return mutt_strcmp(a.strkey, b.strkey);
+  return mutt_str_strcmp(a.strkey, b.strkey);
 }
 
 /**
@@ -109,7 +109,7 @@ static unsigned int gen_case_string_hash(union HashKey key, unsigned int n)
  */
 static int cmp_case_string_key(union HashKey a, union HashKey b)
 {
-  return mutt_strcasecmp(a.strkey, b.strkey);
+  return mutt_str_strcasecmp(a.strkey, b.strkey);
 }
 
 /**
@@ -150,11 +150,11 @@ static int cmp_int_key(union HashKey a, union HashKey b)
  */
 static struct Hash *new_hash(int nelem)
 {
-  struct Hash *table = safe_calloc(1, sizeof(struct Hash));
+  struct Hash *table = mutt_mem_calloc(1, sizeof(struct Hash));
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
-  table->table = safe_calloc(nelem, sizeof(struct HashElem *));
+  table->table = mutt_mem_calloc(nelem, sizeof(struct HashElem *));
   return table;
 }
 
@@ -171,7 +171,7 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
   struct HashElem *ptr = NULL;
   unsigned int h;
 
-  ptr = safe_malloc(sizeof(struct HashElem));
+  ptr = mutt_mem_malloc(sizeof(struct HashElem));
   h = table->gen_hash(key, table->nelem);
   ptr->key = key;
   ptr->data = data;
@@ -286,12 +286,12 @@ static void union_hash_delete(struct Hash *table, union HashKey key,
 }
 
 /**
- * hash_create - Create a new Hash table (with string keys)
+ * mutt_hash_create - Create a new Hash table (with string keys)
  * @param nelem Number of elements it should contain
  * @param flags Flags, e.g. #MUTT_HASH_STRCASECMP
  * @retval ptr New Hash table
  */
-struct Hash *hash_create(int nelem, int flags)
+struct Hash *mutt_hash_create(int nelem, int flags)
 {
   struct Hash *table = new_hash(nelem);
   if (flags & MUTT_HASH_STRCASECMP)
@@ -312,12 +312,12 @@ struct Hash *hash_create(int nelem, int flags)
 }
 
 /**
- * int_hash_create - Create a new Hash table (with integer keys)
+ * mutt_hash_int_create - Create a new Hash table (with integer keys)
  * @param nelem Number of elements it should contain
  * @param flags Flags, e.g. #MUTT_HASH_ALLOW_DUPS
  * @retval ptr New Hash table
  */
-struct Hash *int_hash_create(int nelem, int flags)
+struct Hash *mutt_hash_int_create(int nelem, int flags)
 {
   struct Hash *table = new_hash(nelem);
   table->gen_hash = gen_int_hash;
@@ -328,29 +328,29 @@ struct Hash *int_hash_create(int nelem, int flags)
 }
 
 /**
- * hash_insert - Add a new element to the Hash table (with string keys)
+ * mutt_hash_insert - Add a new element to the Hash table (with string keys)
  * @param table  Hash table (with string keys)
  * @param strkey String key
  * @param data   Private data associated with the key
  * @retval -1 on error
  * @retval >=0 on success, index into the hash table
  */
-int hash_insert(struct Hash *table, const char *strkey, void *data)
+int mutt_hash_insert(struct Hash *table, const char *strkey, void *data)
 {
   union HashKey key;
-  key.strkey = table->strdup_keys ? safe_strdup(strkey) : strkey;
+  key.strkey = table->strdup_keys ? mutt_str_strdup(strkey) : strkey;
   return union_hash_insert(table, key, data);
 }
 
 /**
- * int_hash_insert - Add a new element to the Hash table (with integer keys)
+ * mutt_hash_int_insert - Add a new element to the Hash table (with integer keys)
  * @param table  Hash table (with integer keys)
  * @param intkey Integer key
  * @param data   Private data associated with the key
  * @retval -1 on error
  * @retval >=0 on success, index into the hash table
  */
-int int_hash_insert(struct Hash *table, unsigned int intkey, void *data)
+int mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data)
 {
   union HashKey key;
   key.intkey = intkey;
@@ -358,12 +358,12 @@ int int_hash_insert(struct Hash *table, unsigned int intkey, void *data)
 }
 
 /**
- * hash_find - Find the HashElem data in a Hash table element using a key
+ * mutt_hash_find - Find the HashElem data in a Hash table element using a key
  * @param table  Hash table to search
  * @param strkey String key to search for
  * @retval ptr Data attached to the HashElem matching the key
  */
-void *hash_find(const struct Hash *table, const char *strkey)
+void *mutt_hash_find(const struct Hash *table, const char *strkey)
 {
   union HashKey key;
   key.strkey = strkey;
@@ -371,12 +371,12 @@ void *hash_find(const struct Hash *table, const char *strkey)
 }
 
 /**
- * hash_find_elem - Find the HashElem in a Hash table element using a key
+ * mutt_hash_find_elem - Find the HashElem in a Hash table element using a key
  * @param table  Hash table to search
  * @param strkey String key to search for
  * @retval ptr HashElem matching the key
  */
-struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey)
+struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey)
 {
   union HashKey key;
   key.strkey = strkey;
@@ -384,12 +384,12 @@ struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey)
 }
 
 /**
- * int_hash_find - Find the HashElem data in a Hash table element using a key
+ * mutt_hash_int_find - Find the HashElem data in a Hash table element using a key
  * @param table  Hash table to search
  * @param intkey Integer key
  * @retval ptr Data attached to the HashElem matching the key
  */
-void *int_hash_find(const struct Hash *table, unsigned int intkey)
+void *mutt_hash_int_find(const struct Hash *table, unsigned int intkey)
 {
   union HashKey key;
   key.intkey = intkey;
@@ -397,14 +397,14 @@ void *int_hash_find(const struct Hash *table, unsigned int intkey)
 }
 
 /**
- * hash_find_bucket - Find the HashElem in a Hash table element using a key
+ * mutt_hash_find_bucket - Find the HashElem in a Hash table element using a key
  * @param table Hash table to search
  * @param strkey String key to search for
  * @retval ptr HashElem matching the key
  *
- * Unlike hash_find_elem(), this will return the first matching entry.
+ * Unlike mutt_hash_find_elem(), this will return the first matching entry.
  */
-struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey)
+struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *strkey)
 {
   union HashKey key;
   int hash;
@@ -418,14 +418,14 @@ struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey)
 }
 
 /**
- * hash_delete - Remove an element from a Hash table
+ * mutt_hash_delete - Remove an element from a Hash table
  * @param table   Hash table to use
  * @param strkey  String key to match
  * @param data    Private data to match (or NULL for any match)
  * @param destroy Callback function to free the HashElem's data
  */
-void hash_delete(struct Hash *table, const char *strkey, const void *data,
-                 void (*destroy)(void *))
+void mutt_hash_delete(struct Hash *table, const char *strkey, const void *data,
+                      void (*destroy)(void *))
 {
   union HashKey key;
   key.strkey = strkey;
@@ -433,14 +433,14 @@ void hash_delete(struct Hash *table, const char *strkey, const void *data,
 }
 
 /**
- * int_hash_delete - Remove an element from a Hash table
+ * mutt_hash_int_delete - Remove an element from a Hash table
  * @param table   Hash table to use
  * @param intkey  Integer key to match
  * @param data    Private data to match (or NULL for any match)
  * @param destroy Callback function to free the HashElem's data
  */
-void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
-                     void (*destroy)(void *))
+void mutt_hash_int_delete(struct Hash *table, unsigned int intkey,
+                          const void *data, void (*destroy)(void *))
 {
   union HashKey key;
   key.intkey = intkey;
@@ -448,11 +448,11 @@ void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
 }
 
 /**
- * hash_destroy - Destroy a hash table
+ * mutt_hash_destroy - Destroy a hash table
  * @param ptr     Pointer to the hash table to be freed
  * @param destroy Function to call to free the ->data member (optional)
  */
-void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
+void mutt_hash_destroy(struct Hash **ptr, void (*destroy)(void *))
 {
   struct Hash *pptr = NULL;
   struct HashElem *elem = NULL, *tmp = NULL;
@@ -479,13 +479,13 @@ void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
 }
 
 /**
- * hash_walk - Iterate through all the HashElem's in a Hash table
+ * mutt_hash_walk - Iterate through all the HashElem's in a Hash table
  * @param table Hash table to search
  * @param state Cursor to keep track
  * @retval ptr  Next HashElem in the Hash table
  * @retval NULL When the last HashElem has been seen
  */
-struct HashElem *hash_walk(const struct Hash *table, struct HashWalkState *state)
+struct HashElem *mutt_hash_walk(const struct Hash *table, struct HashWalkState *state)
 {
   if (state->last && state->last->next)
   {

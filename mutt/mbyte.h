@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_MBYTE_H
-#define _LIB_MBYTE_H
+#ifndef _MUTT_MBYTE_H
+#define _MUTT_MBYTE_H
 
 #include <stddef.h>
 #include <ctype.h>
@@ -41,14 +41,14 @@ extern wchar_t ReplacementChar;
 #define IsWPrint(wc) (iswprint(wc) || (OPT_LOCALES ? 0 : (wc >= 0xa0)))
 #endif
 
-bool   get_initials(const char *name, char *buf, int buflen);
-bool   is_shell_char(wchar_t ch);
-int    mutt_charlen(const char *s, int *width);
-size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf);
-void   my_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
-int    my_wcswidth(const wchar_t *s, size_t n);
-int    my_wcwidth(wchar_t wc);
-int    my_width(const char *str, int col, bool display);
-size_t width_ceiling(const wchar_t *s, size_t n, int w1);
+int    mutt_mb_charlen(const char *s, int *width);
+bool   mutt_mb_get_initials(const char *name, char *buf, int buflen);
+bool   mutt_mb_is_shell_char(wchar_t ch);
+size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf);
+void   mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
+int    mutt_mb_wcswidth(const wchar_t *s, size_t n);
+int    mutt_mb_wcwidth(wchar_t wc);
+size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1);
+int    mutt_mb_width(const char *str, int col, bool display);
 
-#endif /* _LIB_MBYTE_H */
+#endif /* _MUTT_MBYTE_H */

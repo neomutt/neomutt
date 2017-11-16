@@ -15,12 +15,12 @@
  *
  * Calculate the SHA1 cryptographic hash of a string, according to RFC3174.
  *
- * | Function         | Description
- * | :--------------- | :----------------------------------------
- * | sha1_final()     | Add padding and return the message digest
- * | sha1_init()      | Initialize new context
- * | sha1_transform() | Hash a single 512-bit block
- * | sha1_update()    | Run your data through this
+ * | Function              | Description
+ * | :-------------------- | :----------------------------------------
+ * | mutt_sha1_final()     | Add padding and return the message digest
+ * | mutt_sha1_init()      | Initialize new context
+ * | mutt_sha1_transform() | Hash a single 512-bit block
+ * | mutt_sha1_update()    | Run your data through this
  *
  * Test Vectors (from FIPS PUB 180-1):
  * - "abc" yields `A9993E36 4706816A BA3E2571 7850C26C 9CD0D89D`
@@ -66,13 +66,13 @@
   w = rol(w, 30);
 
 /**
- * sha1_transform - Hash a single 512-bit block
+ * mutt_sha1_transform - Hash a single 512-bit block
  * @param state  Internal state of the transform
  * @param buffer Data to transform
  *
  * This is the core of the algorithm.
  */
-void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
+void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 {
   uint32_t a, b, c, d, e;
   typedef union {
@@ -180,10 +180,10 @@ void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 }
 
 /**
- * sha1_init - Initialize new context
+ * mutt_sha1_init - Initialize new context
  * @param context SHA1 context
  */
-void sha1_init(struct Sha1Ctx *context)
+void mutt_sha1_init(struct Sha1Ctx *context)
 {
   /* SHA1 initialization constants */
   context->state[0] = 0x67452301;
@@ -195,12 +195,12 @@ void sha1_init(struct Sha1Ctx *context)
 }
 
 /**
- * sha1_update - Run your data through this
+ * mutt_sha1_update - Run your data through this
  * @param context SHA1 context
  * @param data    Data to be hashed
  * @param len     Length of data
  */
-void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len)
+void mutt_sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len)
 {
   uint32_t i;
   uint32_t j;
@@ -213,10 +213,10 @@ void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t le
   if ((j + len) > 63)
   {
     memcpy(&context->buffer[j], data, (i = 64 - j));
-    sha1_transform(context->state, context->buffer);
+    mutt_sha1_transform(context->state, context->buffer);
     for (; i + 63 < len; i += 64)
     {
-      sha1_transform(context->state, &data[i]);
+      mutt_sha1_transform(context->state, &data[i]);
     }
     j = 0;
   }
@@ -226,11 +226,11 @@ void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t le
 }
 
 /**
- * sha1_final - Add padding and return the message digest
+ * mutt_sha1_final - Add padding and return the message digest
  * @param[out] digest  Message digest (SHA1 sum)
  * @param[in]  context SHA1 context
  */
-void sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
+void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
 {
   unsigned char finalcount[8];
   unsigned char c;
@@ -242,13 +242,13 @@ void sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
   }
 
   c = 0200;
-  sha1_update(context, &c, 1);
+  mutt_sha1_update(context, &c, 1);
   while ((context->count[0] & 504) != 448)
   {
     c = 0000;
-    sha1_update(context, &c, 1);
+    mutt_sha1_update(context, &c, 1);
   }
-  sha1_update(context, finalcount, 8); /* Should cause a sha1_transform() */
+  mutt_sha1_update(context, finalcount, 8); /* Should cause a mutt_sha1_transform() */
   for (unsigned int i = 0; i < 20; i++)
   {
     digest[i] = (unsigned char) ((context->state[i >> 2] >> ((3 - (i & 3)) * 8)) & 255);

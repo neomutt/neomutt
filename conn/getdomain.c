@@ -36,9 +36,9 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/string2.h"
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS
@@ -73,7 +73,7 @@ int getdnsdomainname(char *d, size_t len)
   int status;
   struct timespec timeout = { 0, 100000000 };
   struct gaicb *reqs[1];
-  reqs[0] = safe_calloc(1, sizeof(*reqs[0]));
+  reqs[0] = mutt_mem_calloc(1, sizeof(*reqs[0]));
   reqs[0]->ar_name = node;
   reqs[0]->ar_request = &hints;
   if (getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0)
@@ -106,7 +106,7 @@ int getdnsdomainname(char *d, size_t len)
   char *p = NULL;
   if (h != NULL && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
-    strfcpy(d, ++p, len);
+    mutt_str_strfcpy(d, ++p, len);
     ret = 0;
     mutt_debug(1, "getdnsdomainname(): %s\n", d);
     freeaddrinfo(h);

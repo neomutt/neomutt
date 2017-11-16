@@ -36,7 +36,7 @@ struct Context;
 #define MUTT_READONLY  (1 << 2) /**< open in read-only mode */
 #define MUTT_QUIET     (1 << 3) /**< do not print any messages */
 #define MUTT_NEWFOLDER (1 << 4) /**< create a new folder - same as MUTT_APPEND, but uses
-                                 * safe_fopen() with mode "w" for mbox-style folders.
+                                 * mutt_file_fopen() with mode "w" for mbox-style folders.
                                  * This will truncate an existing file. */
 #define MUTT_PEEK      (1 << 5) /**< revert atime back after taking a look (if applicable) */
 #define MUTT_APPENDNEW (1 << 6) /**< set in mx_open_mailbox_append if the mailbox doesn't

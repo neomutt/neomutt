@@ -57,10 +57,10 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
@@ -82,7 +82,7 @@ static int socket_preconnect(void)
   int rc;
   int save_errno;
 
-  if (mutt_strlen(Preconnect))
+  if (mutt_str_strlen(Preconnect))
   {
     mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
     rc = mutt_system(Preconnect);
@@ -219,7 +219,7 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
   }
 
   if (len < 0)
-    len = mutt_strlen(buf);
+    len = mutt_str_strlen(buf);
 
   while (sent < len)
   {
@@ -343,7 +343,7 @@ struct Connection *socket_new_conn(void)
 {
   struct Connection *conn = NULL;
 
-  conn = safe_calloc(1, sizeof(struct Connection));
+  conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
   return conn;

@@ -31,7 +31,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
@@ -52,8 +52,7 @@
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-static int edit_or_view_one_message(bool edit, struct Context *ctx,
-                                    struct Header *cur)
+static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
 {
   char tmp[_POSIX_PATH_MAX];
   char buff[STRING];
@@ -134,7 +133,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx,
   }
 
   /* Do not reuse the stat sb here as it is outdated. */
-  mtime = mutt_decrease_mtime(tmp, NULL);
+  mtime = mutt_file_decrease_mtime(tmp, NULL);
 
   mutt_edit_file(NONULL(Editor), tmp);
 
@@ -221,7 +220,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx,
   if (rc == 0)
   {
     fputc('\n', msg->fp);
-    mutt_copy_stream(fp, msg->fp);
+    mutt_file_copy_stream(fp, msg->fp);
   }
 
   rc = mx_commit_message(msg, &tmpctx);
@@ -231,7 +230,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx,
 
 bail:
   if (fp)
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
 
   if (rc >= 0)
     unlink(tmp);

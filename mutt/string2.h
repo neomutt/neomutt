@@ -24,8 +24,8 @@
  * #include <string.h>
  */
 
-#ifndef _LIB_STRING_H
-#define _LIB_STRING_H
+#ifndef _MUTT_STRING_H
+#define _MUTT_STRING_H
 
 #include <ctype.h>
 #include <stdbool.h>
@@ -57,38 +57,39 @@
 
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 
-const char *find_word(const char *src);
-int         imap_wordcasecmp(const char *a, const char *b);
-bool        is_ascii(const char *p, size_t len);
-int         is_email_wsp(char c);
-size_t      lwslen(const char *s, size_t n);
-size_t      lwsrlen(const char *s, size_t n);
-int         mutt_atoi(const char *str, int *dst);
-int         mutt_atos(const char *str, short *dst);
-void        mutt_remove_trailing_ws(char *s);
-char *      mutt_skip_whitespace(char *p);
 void        mutt_str_adjust(char **p);
 void        mutt_str_append_item(char **p, const char *item, int sep);
-int         mutt_strcasecmp(const char *a, const char *b);
-const char *mutt_strchrnul(const char *s, char c);
-int         mutt_strcmp(const char *a, const char *b);
-int         mutt_strcoll(const char *a, const char *b);
-const char *mutt_stristr(const char *haystack, const char *needle);
-size_t      mutt_strlen(const char *a);
-char *      mutt_strlower(char *s);
-int         mutt_strncasecmp(const char *a, const char *b, size_t l);
-int         mutt_strncmp(const char *a, const char *b, size_t l);
+int         mutt_str_atoi(const char *str, int *dst);
+int         mutt_str_atol(const char *str, long *dst);
+int         mutt_str_atos(const char *str, short *dst);
+void        mutt_str_dequote_comment(char *s);
+const char *mutt_str_find_word(const char *src);
+bool        mutt_str_is_ascii(const char *p, size_t len);
+int         mutt_str_is_email_wsp(char c);
+size_t      mutt_str_lws_len(const char *s, size_t n);
+size_t      mutt_str_lws_rlen(const char *s, size_t n);
+const char *mutt_str_next_word(const char *s);
+void        mutt_str_remove_trailing_ws(char *s);
 void        mutt_str_replace(char **p, const char *s);
-char *      mutt_substrcpy(char *dest, const char *begin, const char *end, size_t destlen);
-char *      mutt_substrdup(const char *begin, const char *end);
-const char *next_word(const char *s);
-void        rfc822_dequote_comment(char *s);
-const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
-char *      safe_strcat(char *d, size_t l, const char *s);
-char *      safe_strdup(const char *s);
-char *      safe_strncat(char *d, size_t l, const char *s, size_t sl);
-char *      skip_email_wsp(const char *s);
-char *      strfcpy(char *dest, const char *src, size_t dlen);
-char *      strnfcpy(char *dest, char *src, size_t size, size_t dlen);
+const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);
+char *      mutt_str_skip_email_wsp(const char *s);
+char *      mutt_str_skip_whitespace(char *p);
+int         mutt_str_strcasecmp(const char *a, const char *b);
+char *      mutt_str_strcat(char *d, size_t l, const char *s);
+const char *mutt_str_strchrnul(const char *s, char c);
+int         mutt_str_strcmp(const char *a, const char *b);
+int         mutt_str_strcoll(const char *a, const char *b);
+char *      mutt_str_strdup(const char *s);
+char *      mutt_str_strfcpy(char *dest, const char *src, size_t dlen);
+const char *mutt_str_stristr(const char *haystack, const char *needle);
+size_t      mutt_str_strlen(const char *a);
+char *      mutt_str_strlower(char *s);
+int         mutt_str_strncasecmp(const char *a, const char *b, size_t l);
+char *      mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
+int         mutt_str_strncmp(const char *a, const char *b, size_t l);
+char *      mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen);
+char *      mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
+char *      mutt_str_substr_dup(const char *begin, const char *end);
+int         mutt_str_word_casecmp(const char *a, const char *b);
 
-#endif /* _LIB_STRING_H */
+#endif /* _MUTT_STRING_H */

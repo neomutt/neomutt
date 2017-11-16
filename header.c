@@ -28,14 +28,14 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
+#include "header.h"
 #include "alias.h"
 #include "body.h"
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
-#include "header.h"
 #include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -55,7 +55,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct stat st;
 
   mutt_mktemp(path, sizeof(path));
-  ofp = safe_fopen(path, "w");
+  ofp = mutt_file_fopen(path, "w");
   if (!ofp)
   {
     mutt_perror(path);
@@ -71,14 +71,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   if (!ifp)
   {
     mutt_perror(body);
-    safe_fclose(&ofp);
+    mutt_file_fclose(&ofp);
     return;
   }
 
-  mutt_copy_stream(ifp, ofp);
+  mutt_file_copy_stream(ifp, ofp);
 
-  safe_fclose(&ifp);
-  safe_fclose(&ofp);
+  mutt_file_fclose(&ifp);
+  mutt_file_fclose(&ofp);
 
   if (stat(path, &st) == -1)
   {
@@ -86,7 +86,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     return;
   }
 
-  mtime = mutt_decrease_mtime(path, &st);
+  mtime = mutt_file_decrease_mtime(path, &st);
 
   mutt_edit_file(editor, path);
   stat(path, &st);
@@ -94,11 +94,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   {
     mutt_debug(1, "ci_edit_headers(): temp file was not modified.\n");
     /* the file has not changed! */
-    mutt_unlink(path);
+    mutt_file_unlink(path);
     return;
   }
 
-  mutt_unlink(body);
+  mutt_file_unlink(body);
   mutt_list_free(&msg->env->userhdrs);
 
   /* Read the temp file back in */
@@ -109,11 +109,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     return;
   }
 
-  ofp = safe_fopen(body, "w");
+  ofp = mutt_file_fopen(body, "w");
   if (!ofp)
   {
     /* intentionally leak a possible temporary file here */
-    safe_fclose(&ifp);
+    mutt_file_fclose(&ifp);
     mutt_perror(body);
     return;
   }
@@ -121,9 +121,9 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   n = mutt_read_rfc822_header(ifp, NULL, 1, 0);
   while ((i = fread(buffer, 1, sizeof(buffer), ifp)) > 0)
     fwrite(buffer, 1, i, ofp);
-  safe_fclose(&ofp);
-  safe_fclose(&ifp);
-  mutt_unlink(path);
+  mutt_file_fclose(&ofp);
+  mutt_file_fclose(&ifp);
+  mutt_file_unlink(path);
 
 /* in case the user modifies/removes the In-Reply-To header with
      $edit_headers set, we remove References: as they're likely invalid;
@@ -134,8 +134,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 #endif
     if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
-         (mutt_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
-                      STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
+         (mutt_str_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
+                          STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
       mutt_list_free(&msg->env->references);
 
   /* restore old info. */
@@ -157,23 +157,23 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   {
     keep = true;
 
-    if (fcc && (mutt_strncasecmp("fcc:", np->data, 4) == 0))
+    if (fcc && (mutt_str_strncasecmp("fcc:", np->data, 4) == 0))
     {
-      p = skip_email_wsp(np->data + 4);
+      p = mutt_str_skip_email_wsp(np->data + 4);
       if (*p)
       {
-        strfcpy(fcc, p, fcclen);
+        mutt_str_strfcpy(fcc, p, fcclen);
         mutt_pretty_mailbox(fcc, fcclen);
       }
       keep = false;
     }
-    else if (mutt_strncasecmp("attach:", np->data, 7) == 0)
+    else if (mutt_str_strncasecmp("attach:", np->data, 7) == 0)
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
       size_t l = 0;
 
-      p = skip_email_wsp(np->data + 7);
+      p = mutt_str_skip_email_wsp(np->data + 7);
       if (*p)
       {
         for (; *p && *p != ' ' && *p != '\t'; p++)
@@ -187,13 +187,13 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
           if (l < sizeof(path) - 1)
             path[l++] = *p;
         }
-        p = skip_email_wsp(p);
+        p = mutt_str_skip_email_wsp(p);
         path[l] = '\0';
 
         mutt_expand_path(path, sizeof(path));
         if ((body2 = mutt_make_file_attach(path)))
         {
-          body2->description = safe_strdup(p);
+          body2->description = mutt_str_strdup(p);
           for (parts = msg->content; parts->next; parts = parts->next)
             ;
           parts->next = body2;
@@ -206,7 +206,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       }
       keep = false;
     }
-    else if ((WithCrypto & APPLICATION_PGP) && (mutt_strncasecmp("pgp:", np->data, 4) == 0))
+    else if ((WithCrypto & APPLICATION_PGP) &&
+             (mutt_str_strncasecmp("pgp:", np->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
@@ -228,14 +229,14 @@ static void label_ref_dec(struct Context *ctx, char *label)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(ctx->label_hash, label);
+  elem = mutt_hash_find_elem(ctx->label_hash, label);
   if (!elem)
     return;
 
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    hash_delete(ctx->label_hash, label, NULL, NULL);
+    mutt_hash_delete(ctx->label_hash, label, NULL, NULL);
     return;
   }
 
@@ -248,11 +249,11 @@ static void label_ref_inc(struct Context *ctx, char *label)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(ctx->label_hash, label);
+  elem = mutt_hash_find_elem(ctx->label_hash, label);
   if (!elem)
   {
     count = 1;
-    hash_insert(ctx->label_hash, label, (void *) count);
+    mutt_hash_insert(ctx->label_hash, label, (void *) count);
     return;
   }
 
@@ -268,7 +269,7 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 {
   if (!hdr)
     return 0;
-  if (mutt_strcmp(hdr->env->x_label, new) == 0)
+  if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
     return 0;
 
   if (hdr->env->x_label)
@@ -291,7 +292,7 @@ int mutt_label_message(struct Header *hdr)
   *buf = '\0';
   if (hdr != NULL && hdr->env->x_label != NULL)
   {
-    strfcpy(buf, hdr->env->x_label, sizeof(buf));
+    mutt_str_strfcpy(buf, hdr->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
@@ -336,7 +337,7 @@ void mutt_make_label_hash(struct Context *ctx)
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a mailbox.
    */
-  ctx->label_hash = hash_create(131, MUTT_HASH_STRDUP_KEYS);
+  ctx->label_hash = mutt_hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
 void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
@@ -378,11 +379,10 @@ void mutt_free_header(struct Header **h)
 
 struct Header *mutt_new_header(void)
 {
-  struct Header *h = safe_calloc(1, sizeof(struct Header));
+  struct Header *h = mutt_mem_calloc(1, sizeof(struct Header));
 #ifdef MIXMASTER
   STAILQ_INIT(&h->chain);
 #endif
   STAILQ_INIT(&h->tags);
   return h;
 }
-

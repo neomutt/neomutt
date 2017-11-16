@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "globals.h"
 #include "keymap.h"
 #include "mbyte.h"
@@ -92,7 +92,7 @@ char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping
       buflen -= 2;
     }
     mutt_make_help(pbuf, buflen, _(items[i].name), menu, items[i].value);
-    len = mutt_strlen(pbuf);
+    len = mutt_str_strlen(pbuf);
     pbuf += len;
     buflen -= len;
   }
@@ -105,7 +105,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
   wchar_t wc;
   int w;
   size_t k;
-  size_t len = mutt_strlen(*macro);
+  size_t len = mutt_str_strlen(*macro);
   mbstate_t mbstate1, mbstate2;
 
   memset(&mbstate1, 0, sizeof(mbstate1));
@@ -165,7 +165,7 @@ static int get_wrapped_width(const char *t, size_t wid)
   wchar_t wc;
   size_t k;
   size_t m, n;
-  size_t len = mutt_strlen(t);
+  size_t len = mutt_str_strlen(t);
   const char *s = t;
   mbstate_t mbstate;
 
@@ -233,7 +233,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
   if (ismacro > 0)
   {
-    if (mutt_strcmp(Pager, "builtin") == 0)
+    if (mutt_str_strcmp(Pager, "builtin") == 0)
       fputs("_\010", f);
     fputs("M ", f);
     col += 2;
@@ -273,7 +273,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
       if (*t3)
       {
-        if (mutt_strcmp(Pager, "builtin") != 0)
+        if (mutt_str_strcmp(Pager, "builtin") != 0)
         {
           fputc('\n', f);
           n = 0;
@@ -352,13 +352,13 @@ void mutt_help(int menu)
   mutt_mktemp(t, sizeof(t));
 
   funcs = km_get_table(menu);
-  desc = mutt_getnamebyvalue(menu, Menus);
+  desc = mutt_map_get_name(menu, Menus);
   if (!desc)
     desc = _("<UNKNOWN>");
 
   do
   {
-    f = safe_fopen(t, "w");
+    f = mutt_file_fopen(t, "w");
     if (!f)
     {
       mutt_perror(t);
@@ -378,7 +378,7 @@ void mutt_help(int menu)
     if (menu != MENU_PAGER)
       dump_unbound(f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
 
-    safe_fclose(&f);
+    mutt_file_fclose(&f);
 
     snprintf(buf, sizeof(buf), _("Help for %s"), desc);
   } while (mutt_do_pager(buf, t, MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,

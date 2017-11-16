@@ -34,9 +34,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "lib/buffer.h"
-#include "lib/memory.h"
-#include "lib/queue.h"
+#include "mutt/buffer.h"
+#include "mutt/memory.h"
+#include "mutt/queue.h"
 #include "envelope.h"
 #include "rfc822.h"
 
@@ -46,7 +46,7 @@
  */
 struct Envelope *mutt_new_envelope(void)
 {
-  struct Envelope *e = safe_calloc(1, sizeof(struct Envelope));
+  struct Envelope *e = mutt_mem_calloc(1, sizeof(struct Envelope));
   STAILQ_INIT(&e->references);
   STAILQ_INIT(&e->in_reply_to);
   STAILQ_INIT(&e->userhdrs);

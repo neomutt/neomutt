@@ -31,7 +31,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "attach.h"
 #include "body.h"
@@ -124,11 +124,11 @@ void mutt_update_tree(struct AttachCtx *actx)
 
     if (actx->idx[rindex]->tree)
     {
-      if (mutt_strcmp(actx->idx[rindex]->tree, buf) != 0)
+      if (mutt_str_strcmp(actx->idx[rindex]->tree, buf) != 0)
         mutt_str_replace(&actx->idx[rindex]->tree, buf);
     }
     else
-      actx->idx[rindex]->tree = safe_strdup(buf);
+      actx->idx[rindex]->tree = mutt_str_strdup(buf);
 
     if (2 * (actx->idx[rindex]->level + 2) < sizeof(buf) && actx->idx[rindex]->level)
     {
@@ -252,7 +252,7 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
         {
           char path[_POSIX_PATH_MAX];
 
-          strfcpy(path, aptr->content->filename, sizeof(path));
+          mutt_str_strfcpy(path, aptr->content->filename, sizeof(path));
           mutt_pretty_mailbox(path, sizeof(path));
           mutt_format_s(dest, destlen, prefix, path);
         }
@@ -404,8 +404,8 @@ bool mutt_is_message_type(int type, const char *subtype)
     return false;
 
   subtype = NONULL(subtype);
-  return ((mutt_strcasecmp(subtype, "rfc822") == 0) ||
-          (mutt_strcasecmp(subtype, "news") == 0));
+  return ((mutt_str_strcasecmp(subtype, "rfc822") == 0) ||
+          (mutt_str_strcasecmp(subtype, "news") == 0));
 }
 
 static void prepend_curdir(char *dst, size_t dstlen)
@@ -438,9 +438,10 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   if (body->filename)
   {
     if (directory && *directory)
-      mutt_concat_path(buf, *directory, mutt_basename(body->filename), sizeof(buf));
+      mutt_file_concat_path(buf, *directory, mutt_file_basename(body->filename),
+                            sizeof(buf));
     else
-      strfcpy(buf, body->filename, sizeof(buf));
+      mutt_str_strfcpy(buf, body->filename, sizeof(buf));
   }
   else if (body->hdr && body->encoding != ENCBASE64 && body->encoding != ENCQUOTEDPRINTABLE &&
            mutt_is_message_type(body->type, body->subtype))
@@ -479,7 +480,7 @@ static int query_save_attachment(FILE *fp, struct Body *body,
       }
       else if (rc == -1)
         return -1;
-      strfcpy(tfile, buf, sizeof(tfile));
+      mutt_str_strfcpy(tfile, buf, sizeof(tfile));
     }
     else
     {
@@ -535,7 +536,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         {
           int append = 0;
 
-          strfcpy(buf, mutt_basename(NONULL(top->filename)), sizeof(buf));
+          mutt_str_strfcpy(buf, mutt_file_basename(NONULL(top->filename)), sizeof(buf));
           prepend_curdir(buf, sizeof(buf));
 
           if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 ||
@@ -548,7 +549,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
           {
             fprintf(fpout, "%s", AttachSep);
-            safe_fclose(&fpout);
+            mutt_file_fclose(&fpout);
           }
         }
         else
@@ -557,7 +558,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           if (rc == 0 && AttachSep && (fpout = fopen(tfile, "a")) != NULL)
           {
             fprintf(fpout, "%s", AttachSep);
-            safe_fclose(&fpout);
+            mutt_file_fclose(&fpout);
           }
         }
       }
@@ -617,8 +618,8 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
   {
     if (filter)
     {
-      mutt_unlink(body->filename);
-      mutt_rename_file(tfile, body->filename);
+      mutt_file_unlink(body->filename);
+      mutt_file_rename(tfile, body->filename);
       mutt_update_encoding(body);
       mutt_message(_("Attachment filtered."));
     }
@@ -626,7 +627,7 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
   else
   {
     if (filter && tfile[0])
-      mutt_unlink(tfile);
+      mutt_file_unlink(tfile);
   }
 }
 
@@ -649,8 +650,8 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       mutt_perror("fopen");
       return;
     }
-    mutt_copy_stream(ifp, state->fpout);
-    safe_fclose(&ifp);
+    mutt_file_copy_stream(ifp, state->fpout);
+    mutt_file_fclose(&ifp);
     if (AttachSep)
       state_puts(AttachSep, state);
   }
@@ -705,7 +706,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     mutt_endwin(NULL);
     thepid = mutt_create_filter(buf, &state.fpout, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
-    safe_fclose(&state.fpout);
+    mutt_file_fclose(&state.fpout);
     if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
       mutt_any_key_to_continue(NULL);
   }
@@ -726,8 +727,8 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
     {
       if (!rfc1524_mailcap_lookup(top, type, NULL, MUTT_PRINT))
       {
-        if ((mutt_strcasecmp("text/plain", top->subtype) != 0) &&
-            (mutt_strcasecmp("application/postscript", top->subtype) != 0))
+        if ((mutt_str_strcasecmp("text/plain", top->subtype) != 0) &&
+            (mutt_str_strcasecmp("application/postscript", top->subtype) != 0))
         {
           if (!mutt_can_decode(top))
           {
@@ -760,8 +761,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
       if (!option(OPT_ATTACH_SPLIT) && !rfc1524_mailcap_lookup(top, type, NULL, MUTT_PRINT))
       {
-        if ((mutt_strcasecmp("text/plain", top->subtype) == 0) ||
-            (mutt_strcasecmp("application/postscript", top->subtype) == 0))
+        if ((mutt_str_strcasecmp("text/plain", top->subtype) == 0) ||
+            (mutt_str_strcasecmp("application/postscript", top->subtype) == 0))
           pipe_attachment(fp, top, state);
         else if (mutt_can_decode(top))
         {
@@ -776,13 +777,13 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             ifp = fopen(newfile, "r");
             if (ifp)
             {
-              mutt_copy_stream(ifp, state->fpout);
-              safe_fclose(&ifp);
+              mutt_file_copy_stream(ifp, state->fpout);
+              mutt_file_fclose(&ifp);
               if (AttachSep)
                 state_puts(AttachSep, state);
             }
           }
-          mutt_unlink(newfile);
+          mutt_file_unlink(newfile);
         }
       }
       else
@@ -811,7 +812,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     memset(&state, 0, sizeof(struct State));
     thepid = mutt_create_filter(NONULL(PrintCommand), &state.fpout, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
-    safe_fclose(&state.fpout);
+    mutt_file_fclose(&state.fpout);
     if (mutt_wait_filter(thepid) != 0 || option(OPT_WAIT_KEY))
       mutt_any_key_to_continue(NULL);
   }
@@ -973,7 +974,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
         secured = !crypt_smime_decrypt_mime(outer_fp, &new_fp, outer_new_body, &new_body);
 
         mutt_free_body(&outer_new_body);
-        safe_fclose(&outer_fp);
+        mutt_file_fclose(&outer_fp);
       }
 
       if (secured)
@@ -1009,13 +1010,13 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
 
     /* Strip out the top level multipart */
     if (m->type == TYPEMULTIPART && m->parts && !need_secured &&
-        (parent_type == -1 && mutt_strcasecmp("alternative", m->subtype)))
+        (parent_type == -1 && mutt_str_strcasecmp("alternative", m->subtype)))
     {
       mutt_generate_recvattach_list(actx, hdr, m->parts, fp, m->type, level, decrypted);
     }
     else
     {
-      new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
 
       new->content = m;
@@ -1041,7 +1042,7 @@ void mutt_attach_init(struct AttachCtx *actx)
 {
   /* Collapse the attachments if '$digest_collapse' is set AND if...
    * the outer container is of type 'multipart/digest' */
-  bool digest = (mutt_strcasecmp(actx->hdr->content->subtype, "digest") == 0);
+  bool digest = (mutt_str_strcasecmp(actx->hdr->content->subtype, "digest") == 0);
 
   for (int i = 0; i < actx->idxlen; i++)
   {
@@ -1052,7 +1053,7 @@ void mutt_attach_init(struct AttachCtx *actx)
         (option(OPT_DIGEST_COLLAPSE) &&
          (digest ||
           ((actx->idx[i]->content->type == TYPEMULTIPART) &&
-           (mutt_strcasecmp(actx->idx[i]->content->subtype, "digest") == 0))));
+           (mutt_str_strcasecmp(actx->idx[i]->content->subtype, "digest") == 0))));
   }
 }
 
@@ -1091,7 +1092,7 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   while ((rindex < actx->idxlen) && (actx->idx[rindex]->level > curlevel))
   {
     if (option(OPT_DIGEST_COLLAPSE) && actx->idx[rindex]->content->type == TYPEMULTIPART &&
-        !mutt_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
+        !mutt_str_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
       actx->idx[rindex]->content->collapsed = true;
     else
       actx->idx[rindex]->content->collapsed = false;
@@ -1136,7 +1137,7 @@ void mutt_view_attachments(struct Header *hdr)
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_push_current_menu(menu);
 
-  actx = safe_calloc(sizeof(struct AttachCtx), 1);
+  actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = hdr;
   actx->root_fp = msg->fp;
   mutt_update_recvattach_menu(actx, menu, 1);
@@ -1342,8 +1343,8 @@ void mutt_view_attachments(struct Header *hdr)
         CHECK_ATTACH;
 
         if (!CURATTACH->content->hdr->env->followup_to ||
-            (mutt_strcasecmp(CURATTACH->content->hdr->env->followup_to,
-                             "poster") != 0) ||
+            (mutt_str_strcasecmp(CURATTACH->content->hdr->env->followup_to,
+                                 "poster") != 0) ||
             query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {

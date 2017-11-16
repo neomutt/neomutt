@@ -1,8 +1,10 @@
 /**
  * @file
- * Leave the program NOW
+ * Calculate the SHA1 checksum of a buffer
  *
  * @authors
+ * Copyright (C) 2000 Steve Reid <steve@edmweb.com>
+ * Copyright (C) 2000 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
@@ -20,9 +22,26 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _LIB_EXIT_H
-#define _LIB_EXIT_H
+#ifndef _MUTT_SHA1_H
+#define _MUTT_SHA1_H
 
-void mutt_exit(int code);
+#include <stdint.h>
 
-#endif /* _LIB_EXIT_H */
+/**
+ * struct Sha1Ctx - Cursor for the SHA1 hashing
+ */
+struct Sha1Ctx
+{
+  uint32_t state[5];
+  uint32_t count[2];
+  unsigned char buffer[64];
+};
+
+void mutt_sha1_final(unsigned char digest[20], struct Sha1Ctx *context);
+void mutt_sha1_init(struct Sha1Ctx *context);
+void mutt_sha1_transform(uint32_t state[5], const unsigned char buffer[64]);
+void mutt_sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len);
+
+#define SHA_DIGEST_LENGTH 20
+
+#endif /* _MUTT_SHA1_H */

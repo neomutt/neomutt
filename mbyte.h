@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MBYTE_H
-#define _MUTT_MBYTE_H
+#ifndef _NEOMUTT_MBYTE_H
+#define _NEOMUTT_MBYTE_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -32,4 +32,4 @@ extern bool Charset_is_utf8;
 bool is_display_corrupting_utf8(wchar_t wc);
 int mutt_filter_unprintable(char **s);
 
-#endif /* _MUTT_MBYTE_H */
+#endif /* _NEOMUTT_MBYTE_H */
