@@ -50,7 +50,7 @@ struct Address *mutt_lookup_alias(const char *s)
   struct Alias *t = Aliases;
 
   for (; t; t = t->next)
-    if (mutt_strcasecmp(s, t->name) == 0)
+    if (mutt_str_strcasecmp(s, t->name) == 0)
       return t->addr;
   return NULL; /* no such alias */
 }
@@ -73,7 +73,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
         struct ListNode *np;
         STAILQ_FOREACH(np, expn, entries)
         {
-          if (mutt_strcmp(a->mailbox, np->data) == 0) /* alias already found */
+          if (mutt_str_strcmp(a->mailbox, np->data) == 0) /* alias already found */
           {
             mutt_debug(1, "expand_aliases_r(): loop in alias found for '%s'\n", a->mailbox);
             i = true;
@@ -83,7 +83,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
 
         if (!i)
         {
-          mutt_list_insert_head(expn, safe_strdup(a->mailbox));
+          mutt_list_insert_head(expn, mutt_str_strdup(a->mailbox));
           w = rfc822_cpy_adr(t, 0);
           w = expand_aliases_r(w, expn);
           if (head)
@@ -228,11 +228,11 @@ static void recode_buf(char *buf, size_t buflen)
 
   if (!ConfigCharset || !*ConfigCharset || !Charset)
     return;
-  s = safe_strdup(buf);
+  s = mutt_str_strdup(buf);
   if (!s)
     return;
   if (mutt_convert_string(&s, Charset, ConfigCharset, 0) == 0)
-    strfcpy(buf, s, buflen);
+    mutt_str_strfcpy(buf, s, buflen);
   FREE(&s);
 }
 
@@ -302,7 +302,7 @@ void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
 
   if (adr && adr->mailbox)
   {
-    strfcpy(tmp, adr->mailbox, sizeof(tmp));
+    mutt_str_strfcpy(tmp, adr->mailbox, sizeof(tmp));
     if ((pc = strchr(tmp, '@')))
       *pc = '\0';
   }
@@ -329,7 +329,7 @@ retry_name:
     switch (mutt_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
       case MUTT_YES:
-        strfcpy(buf, fixed, sizeof(buf));
+        mutt_str_strfcpy(buf, fixed, sizeof(buf));
         goto retry_name;
       case MUTT_ABORT:
         return;
@@ -337,12 +337,12 @@ retry_name:
   }
 
   new = mutt_mem_calloc(1, sizeof(struct Alias));
-  new->name = safe_strdup(buf);
+  new->name = mutt_str_strdup(buf);
 
   mutt_addrlist_to_local(adr);
 
   if (adr && adr->mailbox)
-    strfcpy(buf, adr->mailbox, sizeof(buf));
+    mutt_str_strfcpy(buf, adr->mailbox, sizeof(buf));
   else
     buf[0] = '\0';
 
@@ -368,7 +368,7 @@ retry_name:
   } while (!new->addr);
 
   if (adr && adr->personal && !mutt_is_mail_list(adr))
-    strfcpy(buf, adr->personal, sizeof(buf));
+    mutt_str_strfcpy(buf, adr->personal, sizeof(buf));
   else
     buf[0] = '\0';
 
@@ -377,7 +377,7 @@ retry_name:
     mutt_free_alias(&new);
     return;
   }
-  new->addr->personal = safe_strdup(buf);
+  new->addr->personal = mutt_str_strdup(buf);
 
   buf[0] = '\0';
   rfc822_write_address(buf, sizeof(buf), new->addr, 1);
@@ -399,7 +399,7 @@ retry_name:
   else
     Aliases = new;
 
-  strfcpy(buf, NONULL(AliasFile), sizeof(buf));
+  mutt_str_strfcpy(buf, NONULL(AliasFile), sizeof(buf));
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));
@@ -427,7 +427,7 @@ retry_name:
     if (check_alias_name(new->name, NULL, 0))
       mutt_file_quote_filename(buf, sizeof(buf), new->name);
     else
-      strfcpy(buf, new->name, sizeof(buf));
+      mutt_str_strfcpy(buf, new->name, sizeof(buf));
     recode_buf(buf, sizeof(buf));
     fprintf(rc, "alias %s ", buf);
     buf[0] = '\0';
@@ -520,7 +520,8 @@ int mutt_alias_complete(char *s, size_t buflen)
       if (a->name && strstr(a->name, s) == a->name)
       {
         if (!bestname[0]) /* init */
-          strfcpy(bestname, a->name, MIN(mutt_strlen(a->name) + 1, sizeof(bestname)));
+          mutt_str_strfcpy(bestname, a->name,
+                           MIN(mutt_str_strlen(a->name) + 1, sizeof(bestname)));
         else
         {
           for (i = 0; a->name[i] && a->name[i] == bestname[i]; i++)
@@ -533,10 +534,10 @@ int mutt_alias_complete(char *s, size_t buflen)
 
     if (bestname[0] != 0)
     {
-      if (mutt_strcmp(bestname, s) != 0)
+      if (mutt_str_strcmp(bestname, s) != 0)
       {
         /* we are adding something to the completion */
-        strfcpy(s, bestname, mutt_strlen(bestname) + 1);
+        mutt_str_strfcpy(s, bestname, mutt_str_strlen(bestname) + 1);
         return 1;
       }
 
@@ -565,7 +566,7 @@ int mutt_alias_complete(char *s, size_t buflen)
   bestname[0] = '\0';
   mutt_alias_menu(bestname, sizeof(bestname), a_list ? a_list : Aliases);
   if (bestname[0] != 0)
-    strfcpy(s, bestname, buflen);
+    mutt_str_strfcpy(s, bestname, buflen);
 
   /* free the alias list */
   while (a_list)
@@ -609,7 +610,7 @@ static bool string_is_address(const char *str, const char *u, const char *d)
   char buf[LONG_STRING];
 
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
-  if (mutt_strcasecmp(str, buf) == 0)
+  if (mutt_str_strcasecmp(str, buf) == 0)
     return true;
 
   return false;
@@ -635,7 +636,7 @@ bool mutt_addr_is_user(struct Address *addr)
     return false;
   }
 
-  if (mutt_strcasecmp(addr->mailbox, Username) == 0)
+  if (mutt_str_strcasecmp(addr->mailbox, Username) == 0)
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username);
     return true;
@@ -661,7 +662,7 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (From && (mutt_strcasecmp(From->mailbox, addr->mailbox) == 0))
+  if (From && (mutt_str_strcasecmp(From->mailbox, addr->mailbox) == 0))
   {
     mutt_debug(5, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox);
     return true;

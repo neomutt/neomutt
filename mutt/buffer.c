@@ -103,8 +103,8 @@ struct Buffer *mutt_buffer_from(char *seed)
     return NULL;
 
   b = mutt_buffer_new();
-  b->data = safe_strdup(seed);
-  b->dsize = mutt_strlen(seed);
+  b->data = mutt_str_strdup(seed);
+  b->dsize = mutt_str_strlen(seed);
   b->dptr = (char *) b->data + b->dsize;
   return b;
 }
@@ -212,7 +212,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
  */
 void mutt_buffer_addstr(struct Buffer *buf, const char *s)
 {
-  mutt_buffer_add(buf, s, mutt_strlen(s));
+  mutt_buffer_add(buf, s, mutt_str_strlen(s));
 }
 
 /**

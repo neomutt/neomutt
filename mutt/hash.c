@@ -78,7 +78,7 @@ static unsigned int gen_string_hash(union HashKey key, unsigned int n)
  */
 static int cmp_string_key(union HashKey a, union HashKey b)
 {
-  return mutt_strcmp(a.strkey, b.strkey);
+  return mutt_str_strcmp(a.strkey, b.strkey);
 }
 
 /**
@@ -109,7 +109,7 @@ static unsigned int gen_case_string_hash(union HashKey key, unsigned int n)
  */
 static int cmp_case_string_key(union HashKey a, union HashKey b)
 {
-  return mutt_strcasecmp(a.strkey, b.strkey);
+  return mutt_str_strcasecmp(a.strkey, b.strkey);
 }
 
 /**
@@ -338,7 +338,7 @@ struct Hash *mutt_hash_int_create(int nelem, int flags)
 int mutt_hash_insert(struct Hash *table, const char *strkey, void *data)
 {
   union HashKey key;
-  key.strkey = table->strdup_keys ? safe_strdup(strkey) : strkey;
+  key.strkey = table->strdup_keys ? mutt_str_strdup(strkey) : strkey;
   return union_hash_insert(table, key, data);
 }
 

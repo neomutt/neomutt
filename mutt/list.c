@@ -98,7 +98,7 @@ struct ListNode *mutt_list_find(struct ListHead *h, const char *data)
   struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
-    if (np->data == data || mutt_strcmp(np->data, data) == 0)
+    if (np->data == data || mutt_str_strcmp(np->data, data) == 0)
     {
       return np;
     }
@@ -159,7 +159,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
   struct ListNode *np;
   STAILQ_FOREACH(np, h, entries)
   {
-    if ((*np->data == '*') || (mutt_strncasecmp(s, np->data, strlen(np->data)) == 0))
+    if ((*np->data == '*') || (mutt_str_strncasecmp(s, np->data, strlen(np->data)) == 0))
       return true;
   }
   return false;
@@ -181,7 +181,7 @@ int mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
 
   while (a && b)
   {
-    if (mutt_strcmp(a->data, b->data) != 0)
+    if (mutt_str_strcmp(a->data, b->data) != 0)
       return 0;
 
     a = STAILQ_NEXT(a, entries);

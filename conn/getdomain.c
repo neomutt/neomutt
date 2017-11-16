@@ -106,7 +106,7 @@ int getdnsdomainname(char *d, size_t len)
   char *p = NULL;
   if (h != NULL && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
-    strfcpy(d, ++p, len);
+    mutt_str_strfcpy(d, ++p, len);
     ret = 0;
     mutt_debug(1, "getdnsdomainname(): %s\n", d);
     freeaddrinfo(h);

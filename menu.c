@@ -100,7 +100,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
 {
   wchar_t wc;
   size_t k;
-  size_t n = mutt_strlen((char *) s);
+  size_t n = mutt_str_strlen((char *) s);
   mbstate_t mbstate;
 
   memset(&mbstate, 0, sizeof(mbstate));
@@ -286,11 +286,11 @@ static void menu_make_entry(char *s, int l, struct Menu *menu, int i)
 
 static void menu_pad_string(struct Menu *menu, char *s, size_t n)
 {
-  char *scratch = safe_strdup(s);
+  char *scratch = mutt_str_strdup(s);
   int shift = option(OPT_ARROW_CURSOR) ? 3 : 0;
   int cols = menu->indexwin->cols - shift;
 
-  mutt_simple_format(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_strlen(scratch), 1);
+  mutt_simple_format(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_str_strlen(scratch), 1);
   s[n - 1] = '\0';
   FREE(&scratch);
 }
@@ -539,7 +539,7 @@ static void menu_jump(struct Menu *menu)
     buf[0] = '\0';
     if (mutt_get_field(_("Jump to: "), buf, sizeof(buf), 0) == 0 && buf[0])
     {
-      if (mutt_atoi(buf, &n) == 0 && n > 0 && n < menu->max + 1)
+      if (mutt_str_atoi(buf, &n) == 0 && n > 0 && n < menu->max + 1)
       {
         n--; /* msg numbers are 0-based */
         menu->current = n;
@@ -934,7 +934,7 @@ static int menu_search(struct Menu *menu, int op)
 
   if (!(searchBuf && *searchBuf) || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    strfcpy(buf, searchBuf && *searchBuf ? searchBuf : "", sizeof(buf));
+    mutt_str_strfcpy(buf, searchBuf && *searchBuf ? searchBuf : "", sizeof(buf));
     if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
                            _("Search for: ") :
                            _("Reverse search for: "),

@@ -68,7 +68,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
     /* create NntpData structure and add it to hash */
     nntp_data = mutt_mem_calloc(1, sizeof(struct NntpData) + len);
     nntp_data->group = (char *) nntp_data + sizeof(struct NntpData);
-    strfcpy(nntp_data->group, group, len);
+    mutt_str_strfcpy(nntp_data->group, group, len);
     nntp_data->nserv = nserv;
     nntp_data->deleted = true;
     mutt_hash_insert(nserv->groups_hash, nntp_data->group, nntp_data);
@@ -520,7 +520,7 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
     url_tostring(&url, file, sizeof(file), U_PATH);
   }
   else
-    strfcpy(file, src ? src : "", sizeof(file));
+    mutt_str_strfcpy(file, src ? src : "", sizeof(file));
 
   snprintf(dst, dstlen, "%s/%s", NewsCacheDir, file);
 
@@ -539,7 +539,7 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct)
   struct Url url;
 
   mutt_account_tourl(acct, &url);
-  url.path = safe_strdup(line);
+  url.path = mutt_str_strdup(line);
   url_tostring(&url, line, len, 0);
   FREE(&url.path);
 }
@@ -804,7 +804,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
   dp = opendir(file);
   if (dp)
   {
-    safe_strncat(file, sizeof(file), "/", 1);
+    mutt_str_strncat(file, sizeof(file), "/", 1);
     fp = file + strlen(file);
     while ((entry = readdir(dp)))
     {
@@ -813,10 +813,10 @@ void nntp_clear_cache(struct NntpServer *nserv)
       struct NntpData *nntp_data = NULL;
       struct NntpData nntp_tmp;
 
-      if ((mutt_strcmp(group, ".") == 0) || (mutt_strcmp(group, "..") == 0))
+      if ((mutt_str_strcmp(group, ".") == 0) || (mutt_str_strcmp(group, "..") == 0))
         continue;
       *fp = '\0';
-      safe_strncat(file, sizeof(file), group, strlen(group));
+      mutt_str_strncat(file, sizeof(file), group, strlen(group));
       if (stat(file, &sb))
         continue;
 
@@ -824,7 +824,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
       if (S_ISREG(sb.st_mode))
       {
         char *ext = group + strlen(group) - 7;
-        if (strlen(group) < 8 || (mutt_strcmp(ext, ".hcache") != 0))
+        if (strlen(group) < 8 || (mutt_str_strcmp(ext, ".hcache") != 0))
           continue;
         *ext = '\0';
       }
@@ -900,7 +900,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
       break;
     case 's':
       strncpy(fn, acct->host, sizeof(fn) - 1);
-      mutt_strlower(fn);
+      mutt_str_strlower(fn);
       snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
       snprintf(dest, destlen, tmp, fn);
       break;
@@ -1033,7 +1033,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
     mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
                         NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
     mutt_expand_path(file, sizeof(file));
-    nserv->newsrc_file = safe_strdup(file);
+    nserv->newsrc_file = mutt_str_strdup(file);
     rc = nntp_newsrc_parse(nserv);
   }
   if (rc >= 0)
@@ -1288,7 +1288,7 @@ void nntp_buffy(char *buf, size_t len)
       continue;
 
     if (Context && Context->magic == MUTT_NNTP &&
-        (mutt_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
+        (mutt_str_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
     {
       unsigned int unread = 0;
 
@@ -1298,7 +1298,7 @@ void nntp_buffy(char *buf, size_t len)
       if (!unread)
         continue;
     }
-    strfcpy(buf, nntp_data->group, len);
+    mutt_str_strfcpy(buf, nntp_data->group, len);
     break;
   }
 }

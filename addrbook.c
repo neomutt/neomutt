@@ -104,7 +104,7 @@ static int alias_sort_alias(const void *a, const void *b)
 {
   struct Alias *pa = *(struct Alias **) a;
   struct Alias *pb = *(struct Alias **) b;
-  int r = mutt_strcasecmp(pa->name, pb->name);
+  int r = mutt_str_strcasecmp(pa->name, pb->name);
 
   return (RSORT(r));
 }
@@ -124,14 +124,14 @@ static int alias_sort_address(const void *a, const void *b)
   else if (pa->personal)
   {
     if (pb->personal)
-      r = mutt_strcasecmp(pa->personal, pb->personal);
+      r = mutt_str_strcasecmp(pa->personal, pb->personal);
     else
       r = 1;
   }
   else if (pb->personal)
     r = -1;
   else
-    r = mutt_strcasecmp(pa->mailbox, pb->mailbox);
+    r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
   return (RSORT(r));
 }
 

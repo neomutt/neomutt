@@ -198,7 +198,7 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
 
   if (*tz != '(')
     return tz; /* no need to do anything */
-  tz = skip_email_wsp(tz + 1);
+  tz = mutt_str_skip_email_wsp(tz + 1);
   p = strpbrk(tz, " )");
   if (!p)
     return tz;
@@ -413,7 +413,7 @@ char *mutt_date_make_date(char *buf, size_t buflen)
 int mutt_date_check_month(const char *s)
 {
   for (int i = 0; i < 12; i++)
-    if (mutt_strncasecmp(s, Months[i], 3) == 0)
+    if (mutt_str_strncasecmp(s, Months[i], 3) == 0)
       return i;
 
   return -1; /* error */
@@ -433,7 +433,7 @@ bool mutt_date_is_day_name(const char *s)
     return false;
 
   for (int i = 0; i < 7; i++)
-    if (mutt_strncasecmp(s, Weekdays[i], 3) == 0)
+    if (mutt_str_strncasecmp(s, Weekdays[i], 3) == 0)
       return true;
 
   return false;
@@ -469,14 +469,14 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
    * the date format imposes a natural limit.
    */
 
-  strfcpy(scratch, s, sizeof(scratch));
+  mutt_str_strfcpy(scratch, s, sizeof(scratch));
 
   /* kill the day of the week, if it exists. */
   if ((t = strchr(scratch, ',')))
     t++;
   else
     t = scratch;
-  t = skip_email_wsp(t);
+  t = mutt_str_skip_email_wsp(t);
 
   memset(&tm, 0, sizeof(tm));
 
@@ -485,7 +485,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
     switch (count)
     {
       case 0: /* day of the month */
-        if ((mutt_atoi(t, &tm.tm_mday) < 0) || (tm.tm_mday < 0))
+        if ((mutt_str_atoi(t, &tm.tm_mday) < 0) || (tm.tm_mday < 0))
           return -1;
         if (tm.tm_mday > 31)
           return -1;
@@ -499,7 +499,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
         break;
 
       case 2: /* year */
-        if ((mutt_atoi(t, &tm.tm_year) < 0) || (tm.tm_year < 0))
+        if ((mutt_str_atoi(t, &tm.tm_year) < 0) || (tm.tm_year < 0))
           return -1;
         if ((tm.tm_year < 0) || (tm.tm_year > 9999))
           return -1;
@@ -552,7 +552,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
           /* This is safe to do: A pointer to a struct equals a pointer to its first element */
           tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct Tz),
                        sizeof(struct Tz),
-                       (int (*)(const void *, const void *)) mutt_strcasecmp);
+                       (int (*)(const void *, const void *)) mutt_str_strcasecmp);
 
           if (tz)
           {
@@ -562,12 +562,12 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
           }
 
           /* ad hoc support for the European MET (now officially CET) TZ */
-          if (mutt_strcasecmp(t, "MET") == 0)
+          if (mutt_str_strcasecmp(t, "MET") == 0)
           {
             t = strtok(NULL, " \t");
             if (t)
             {
-              if (mutt_strcasecmp(t, "DST") == 0)
+              if (mutt_str_strcasecmp(t, "DST") == 0)
                 zhours++;
             }
           }

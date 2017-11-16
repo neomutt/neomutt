@@ -87,7 +87,7 @@ static struct Address *result_to_addr(struct Query *r)
     return NULL;
 
   if (!tmp->next && !tmp->personal)
-    tmp->personal = safe_strdup(r->name);
+    tmp->personal = mutt_str_strdup(r->name);
 
   mutt_addrlist_to_intl(tmp, NULL);
   return tmp;
@@ -157,10 +157,10 @@ static struct Query *run_query(char *s, int quiet)
       p = strtok(NULL, "\t\n");
       if (p)
       {
-        cur->name = safe_strdup(p);
+        cur->name = mutt_str_strdup(p);
         p = strtok(NULL, "\t\n");
         if (p)
-          cur->other = safe_strdup(p);
+          cur->other = mutt_str_strdup(p);
       }
     }
   }
@@ -471,7 +471,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             mutt_addrlist_to_local(tmpa);
             tagged = true;
             rfc822_write_address(buf, buflen, tmpa, 0);
-            curpos = mutt_strlen(buf);
+            curpos = mutt_str_strlen(buf);
             rfc822_free_address(&tmpa);
           }
           else if (curpos + 2 < buflen)
@@ -480,7 +480,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             mutt_addrlist_to_local(tmpa);
             strcat(buf, ", ");
             rfc822_write_address((char *) buf + curpos + 1, buflen - curpos - 1, tmpa, 0);
-            curpos = mutt_strlen(buf);
+            curpos = mutt_str_strlen(buf);
             rfc822_free_address(&tmpa);
           }
         }

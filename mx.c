@@ -111,7 +111,7 @@ struct MxOps *mx_get_ops(int magic)
 
 static bool mutt_is_spool(const char *str)
 {
-  return (mutt_strcmp(SpoolFile, str) == 0);
+  return (mutt_str_strcmp(SpoolFile, str) == 0);
 }
 
 #ifdef USE_IMAP
@@ -281,9 +281,9 @@ int mx_get_magic(const char *path)
 
     if (fgets(tmp, sizeof(tmp), f))
     {
-      if (mutt_strncmp("From ", tmp, 5) == 0)
+      if (mutt_str_strncmp("From ", tmp, 5) == 0)
         magic = MUTT_MBOX;
-      else if (mutt_strcmp(MMDF_SEP, tmp) == 0)
+      else if (mutt_str_strcmp(MMDF_SEP, tmp) == 0)
         magic = MUTT_MMDF;
     }
     mutt_file_fclose(&f);
@@ -319,13 +319,13 @@ int mx_get_magic(const char *path)
  */
 int mx_set_magic(const char *s)
 {
-  if (mutt_strcasecmp(s, "mbox") == 0)
+  if (mutt_str_strcasecmp(s, "mbox") == 0)
     MboxType = MUTT_MBOX;
-  else if (mutt_strcasecmp(s, "mmdf") == 0)
+  else if (mutt_str_strcasecmp(s, "mmdf") == 0)
     MboxType = MUTT_MMDF;
-  else if (mutt_strcasecmp(s, "mh") == 0)
+  else if (mutt_str_strcasecmp(s, "mh") == 0)
     MboxType = MUTT_MH;
-  else if (mutt_strcasecmp(s, "maildir") == 0)
+  else if (mutt_str_strcasecmp(s, "maildir") == 0)
     MboxType = MUTT_MAILDIR;
   else
     return -1;
@@ -417,7 +417,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     ctx = mutt_mem_malloc(sizeof(struct Context));
   memset(ctx, 0, sizeof(struct Context));
 
-  ctx->path = safe_strdup(path);
+  ctx->path = mutt_str_strdup(path);
   if (!ctx->path)
   {
     if (!pctx)
@@ -426,7 +426,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
   }
   ctx->realpath = realpath(ctx->path, NULL);
   if (!ctx->realpath)
-    ctx->realpath = safe_strdup(ctx->path);
+    ctx->realpath = mutt_str_strdup(ctx->path);
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = false;
@@ -699,11 +699,11 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     if ((p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path)))
     {
       isSpool = 1;
-      strfcpy(mbox, p, sizeof(mbox));
+      mutt_str_strfcpy(mbox, p, sizeof(mbox));
     }
     else
     {
-      strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
+      mutt_str_strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
       isSpool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
     }
 
@@ -818,7 +818,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, Trash) != 0))
+  if (purge && ctx->deleted && (mutt_str_strcmp(ctx->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
     {
@@ -1002,7 +1002,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_MAIN, OP_TOGGLE_WRITE)))
       snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
-      strfcpy(tmp, _("Use 'toggle-write' to re-enable write!"), sizeof(tmp));
+      mutt_str_strfcpy(tmp, _("Use 'toggle-write' to re-enable write!"), sizeof(tmp));
 
     mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
@@ -1055,7 +1055,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
   msgcount = ctx->msgcount;
   deleted = ctx->deleted;
 
-  if (purge && ctx->deleted && (mutt_strcmp(ctx->path, Trash) != 0))
+  if (purge && ctx->deleted && (mutt_str_strcmp(ctx->path, Trash) != 0))
   {
     if (trash_append(ctx) != 0)
       return -1;

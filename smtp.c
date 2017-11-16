@@ -90,7 +90,7 @@ static bool valid_smtp_code(char *buf, size_t len, int *n)
   code[1] = buf[1];
   code[2] = buf[2];
   code[3] = 0;
-  if (mutt_atoi(code, n) < 0)
+  if (mutt_str_atoi(code, n) < 0)
     return false;
   return true;
 }
@@ -115,19 +115,19 @@ static int smtp_get_resp(struct Connection *conn)
       return SMTP_ERR_READ;
     }
 
-    if (mutt_strncasecmp("8BITMIME", buf + 4, 8) == 0)
+    if (mutt_str_strncasecmp("8BITMIME", buf + 4, 8) == 0)
       mutt_bit_set(Capabilities, EIGHTBITMIME);
-    else if (mutt_strncasecmp("AUTH ", buf + 4, 5) == 0)
+    else if (mutt_str_strncasecmp("AUTH ", buf + 4, 5) == 0)
     {
       mutt_bit_set(Capabilities, AUTH);
       FREE(&AuthMechs);
-      AuthMechs = safe_strdup(buf + 9);
+      AuthMechs = mutt_str_strdup(buf + 9);
     }
-    else if (mutt_strncasecmp("DSN", buf + 4, 3) == 0)
+    else if (mutt_str_strncasecmp("DSN", buf + 4, 3) == 0)
       mutt_bit_set(Capabilities, DSN);
-    else if (mutt_strncasecmp("STARTTLS", buf + 4, 8) == 0)
+    else if (mutt_str_strncasecmp("STARTTLS", buf + 4, 8) == 0)
       mutt_bit_set(Capabilities, STARTTLS);
-    else if (mutt_strncasecmp("SMTPUTF8", buf + 4, 8) == 0)
+    else if (mutt_str_strncasecmp("SMTPUTF8", buf + 4, 8) == 0)
       mutt_bit_set(Capabilities, SMTPUTF8);
 
     if (!valid_smtp_code(buf, n, &n))
@@ -203,7 +203,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 
   while (fgets(buf, sizeof(buf) - 1, fp))
   {
-    buflen = mutt_strlen(buf);
+    buflen = mutt_str_strlen(buf);
     term = buflen && buf[buflen - 1] == '\n';
     if (term && (buflen == 1 || buf[buflen - 2] != '\r'))
       snprintf(buf + buflen - 1, sizeof(buf) - buflen + 1, "\r\n");
@@ -285,7 +285,7 @@ static int smtp_fill_account(struct Account *account)
   account->port = 0;
   account->type = MUTT_ACCT_TYPE_SMTP;
 
-  urlstr = safe_strdup(SmtpUrl);
+  urlstr = mutt_str_strdup(SmtpUrl);
   url_parse(&url, urlstr);
   if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) || !url.host ||
       mutt_account_fromurl(account, &url) < 0)
@@ -394,15 +394,15 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
   snprintf(buf, bufsize, "AUTH %s", mech);
   if (len)
   {
-    safe_strcat(buf, bufsize, " ");
-    if (sasl_encode64(data, len, buf + mutt_strlen(buf),
-                      bufsize - mutt_strlen(buf), &len) != SASL_OK)
+    mutt_str_strcat(buf, bufsize, " ");
+    if (sasl_encode64(data, len, buf + mutt_str_strlen(buf),
+                      bufsize - mutt_str_strlen(buf), &len) != SASL_OK)
     {
       mutt_debug(1, "smtp_auth_sasl: error base64-encoding client response.\n");
       goto fail;
     }
   }
-  safe_strcat(buf, bufsize, "\r\n");
+  mutt_str_strcat(buf, bufsize, "\r\n");
 
   do
   {
@@ -444,7 +444,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
         goto fail;
       }
     }
-    strfcpy(buf + len, "\r\n", bufsize - len);
+    mutt_str_strfcpy(buf + len, "\r\n", bufsize - len);
   } while (rc == SMTP_READY && saslrc != SASL_FAIL);
 
   if (smtp_success(rc))
@@ -466,7 +466,7 @@ static int smtp_auth(struct Connection *conn)
 
   if (SmtpAuthenticators && *SmtpAuthenticators)
   {
-    char *methods = safe_strdup(SmtpAuthenticators);
+    char *methods = mutt_str_strdup(SmtpAuthenticators);
     char *method = NULL;
     char *delim = NULL;
 
@@ -530,9 +530,9 @@ static int smtp_auth_plain(struct Connection *conn)
 
   /* Check if any elements in SmtpAuthenticators is "plain" */
   for (method = delim = SmtpAuthenticators;
-       *delim && (delim = mutt_strchrnul(method, ':')); method = delim + 1)
+       *delim && (delim = mutt_str_strchrnul(method, ':')); method = delim + 1)
   {
-    if (mutt_strncasecmp(method, "plain", 5) == 0)
+    if (mutt_str_strncasecmp(method, "plain", 5) == 0)
     {
       /* Get username and password. Bail out of any cannot be retrieved. */
       if ((mutt_account_getuser(&conn->account) < 0) ||
@@ -676,7 +676,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     ret = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
     if (eightbit && mutt_bit_isset(Capabilities, EIGHTBITMIME))
     {
-      safe_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
+      mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
       ret += 14;
     }
     if (DsnReturn && mutt_bit_isset(Capabilities, DSN))
@@ -685,7 +685,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
         (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
          addresses_use_unicode(cc) || addresses_use_unicode(bcc)))
       ret += snprintf(buf + ret, sizeof(buf) - ret, " SMTPUTF8");
-    safe_strncat(buf, sizeof(buf), "\r\n", 3);
+    mutt_str_strncat(buf, sizeof(buf), "\r\n", 3);
     if (mutt_socket_write(conn, buf) == -1)
     {
       ret = SMTP_ERR_WRITE;

@@ -321,12 +321,12 @@ void imap_utf_encode(struct ImapData *idata, char **s)
 {
   if (Charset)
   {
-    char *t = safe_strdup(*s);
+    char *t = mutt_str_strdup(*s);
     if (t && !mutt_convert_string(&t, Charset, "utf-8", 0))
     {
       FREE(s);
       if (idata->unicode)
-        *s = safe_strdup(t);
+        *s = mutt_str_strdup(t);
       else
         *s = utf8_to_utf7(t, strlen(t), NULL, 0);
     }
@@ -346,7 +346,7 @@ void imap_utf_decode(struct ImapData *idata, char **s)
   if (Charset)
   {
     if (idata->unicode)
-      t = safe_strdup(*s);
+      t = mutt_str_strdup(*s);
     else
       t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 

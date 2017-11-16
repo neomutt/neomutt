@@ -186,7 +186,7 @@ static bool pgpring_string_matches_hint(const char *s, const char *hints[], int 
 
   for (int i = 0; i < nhints; i++)
   {
-    if (mutt_stristr(s, hints[i]) != NULL)
+    if (mutt_str_stristr(s, hints[i]) != NULL)
       return true;
   }
 
@@ -298,7 +298,7 @@ static struct PgpKeyInfo *pgp_parse_pgp2_key(unsigned char *buff, size_t l)
     snprintf((char *) scratch + k * 8, sizeof(scratch) - k * 8, "%08lX", id);
   }
 
-  p->keyid = safe_strdup((char *) scratch);
+  p->keyid = mutt_str_strdup((char *) scratch);
 
   return p;
 
@@ -395,7 +395,7 @@ static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buff, size_t l)
     snprintf((char *) scratch + k * 8, sizeof(scratch) - k * 8, "%08lX", id);
   }
 
-  p->keyid = safe_strdup((char *) scratch);
+  p->keyid = mutt_str_strdup((char *) scratch);
 
   return p;
 }
@@ -889,11 +889,11 @@ int main(int argc, char *const argv[])
   }
 
   if (_kring)
-    strfcpy(kring, _kring, sizeof(kring));
+    mutt_str_strfcpy(kring, _kring, sizeof(kring));
   else
   {
     if ((env_pgppath = getenv("PGPPATH")))
-      strfcpy(pgppath, env_pgppath, sizeof(pgppath));
+      mutt_str_strfcpy(pgppath, env_pgppath, sizeof(pgppath));
     else if ((env_home = getenv("HOME")))
       snprintf(pgppath, sizeof(pgppath), "%s/.pgp", env_home);
     else

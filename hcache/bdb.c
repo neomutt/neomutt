@@ -79,7 +79,7 @@ static void *hcache_bdb_open(const char *path)
 
   struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
 
-  if (mutt_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+  if (mutt_str_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
 
   snprintf(ctx->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);

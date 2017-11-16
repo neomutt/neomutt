@@ -199,7 +199,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   }
 
   width = quote_width(s, ql);
-  last = line[mutt_strlen(line) - 1];
+  last = line[mutt_str_strlen(line) - 1];
 
   mutt_debug(4, "f=f: line [%s], width = %ld, spaces = %lu\n", NONULL(line),
              (long) width, fst->spaces);
@@ -279,7 +279,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   /* respect DelSp of RFC3676 only with f=f parts */
   if ((t = (char *) mutt_get_parameter("delsp", a->parameter)))
   {
-    delsp = mutt_strlen(t) == 3 && (mutt_strncasecmp(t, "yes", 3) == 0);
+    delsp = mutt_str_strlen(t) == 3 && (mutt_str_strncasecmp(t, "yes", 3) == 0);
     t = NULL;
     fst.delsp = 1;
   }
@@ -288,7 +288,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
-    buf_len = mutt_strlen(buf);
+    buf_len = mutt_str_strlen(buf);
     newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
@@ -305,7 +305,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
       buf_off++;
 
     /* test for signature separator */
-    sigsep = (mutt_strcmp(buf + buf_off, "-- ") == 0);
+    sigsep = (mutt_str_strcmp(buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
@@ -379,12 +379,12 @@ void rfc3676_space_stuff(struct Header *hdr)
 
   while (fgets(buf, sizeof(buf), in))
   {
-    if ((mutt_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
+    if ((mutt_str_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
     {
       fputc(' ', out);
 #ifdef DEBUG
       lc++;
-      len = mutt_strlen(buf);
+      len = mutt_str_strlen(buf);
       if (len > 0)
       {
         c = buf[len - 1];

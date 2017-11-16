@@ -43,10 +43,10 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   if (path)
     *path = '\0';
 
-  if (mutt_strncmp("From ", s, 5) != 0)
+  if (mutt_str_strncmp("From ", s, 5) != 0)
     return 0;
 
-  s = next_word(s); /* skip over the From part. */
+  s = mutt_str_next_word(s); /* skip over the From part. */
   if (!*s)
     return 0;
 
@@ -75,7 +75,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       return 0;
 
     /* pipermail archives have the return_path obscured such as "me at mutt.org" */
-    if (mutt_strncasecmp(p, " at ", 4) == 0)
+    if (mutt_str_strncasecmp(p, " at ", 4) == 0)
     {
       p = strchr(p + 4, ' ');
       if (!p)
@@ -109,7 +109,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     }
   }
 
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
 
@@ -119,7 +119,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
    */
   if (mutt_date_is_day_name(s))
   {
-    s = next_word(s);
+    s = mutt_str_next_word(s);
     if (!*s)
       return 0;
   }
@@ -130,7 +130,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     return 0;
 
   /* day */
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
   if (sscanf(s, "%d", &tm.tm_mday) != 1)
@@ -139,7 +139,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     return 0;
 
   /* time */
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
 
@@ -155,14 +155,14 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       (tm.tm_min > 59) || (tm.tm_sec < 0) || (tm.tm_sec > 60))
     return 0;
 
-  s = next_word(s);
+  s = mutt_str_next_word(s);
   if (!*s)
     return 0;
 
   /* timezone? */
   if (isalpha((unsigned char) *s) || *s == '+' || *s == '-')
   {
-    s = next_word(s);
+    s = mutt_str_next_word(s);
     if (!*s)
       return 0;
 
@@ -172,7 +172,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
      */
     if (isalpha((unsigned char) *s))
     {
-      s = next_word(s);
+      s = mutt_str_next_word(s);
       if (!*s)
         return 0;
     }

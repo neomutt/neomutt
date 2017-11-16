@@ -72,7 +72,7 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
   struct TagNode *np;
   STAILQ_FOREACH(np, head, entries)
   {
-    if (filter && mutt_strcmp(np->name, filter) != 0)
+    if (filter && mutt_str_strcmp(np->name, filter) != 0)
       continue;
     if (show_hidden || !np->hidden)
     {
@@ -147,16 +147,16 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
   char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
 
   struct TagNode *np = mutt_mem_calloc(1, sizeof(struct TagNode));
-  np->name = safe_strdup(new_tag);
+  np->name = mutt_str_strdup(new_tag);
   np->hidden = false;
   if (new_tag_transformed)
-    np->transformed = safe_strdup(new_tag_transformed);
+    np->transformed = mutt_str_strdup(new_tag_transformed);
 
   /* filter out hidden tags */
   if (HiddenTags)
   {
     char *p = strstr(HiddenTags, new_tag);
-    size_t xsz = p ? mutt_strlen(new_tag) : 0;
+    size_t xsz = p ? mutt_str_strlen(new_tag) : 0;
 
     if (p && ((p == HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
         ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))

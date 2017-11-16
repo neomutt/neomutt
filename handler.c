@@ -384,16 +384,16 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
   {
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
-    len -= mutt_strlen(tmps);
-    if ((mutt_strncmp(tmps, "begin", 5) == 0) && ISSPACE(tmps[5]))
+    len -= mutt_str_strlen(tmps);
+    if ((mutt_str_strncmp(tmps, "begin", 5) == 0) && ISSPACE(tmps[5]))
       break;
   }
   while (len > 0)
   {
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
-    len -= mutt_strlen(tmps);
-    if (mutt_strncmp(tmps, "end", 3) == 0)
+    len -= mutt_str_strlen(tmps);
+    if (mutt_str_strncmp(tmps, "end", 3) == 0)
       break;
     pt = tmps;
     linelen = decode_byte(*pt);
@@ -564,7 +564,7 @@ static void enriched_wrap(struct EnrichedState *stte)
   if (stte->s->prefix)
   {
     state_puts(stte->s->prefix, stte->s);
-    stte->indent_len += mutt_strlen(stte->s->prefix);
+    stte->indent_len += mutt_str_strlen(stte->s->prefix);
   }
 
   if (stte->tag_level[RICH_EXCERPT])
@@ -575,12 +575,12 @@ static void enriched_wrap(struct EnrichedState *stte)
       if (stte->s->prefix)
       {
         state_puts(stte->s->prefix, stte->s);
-        stte->indent_len += mutt_strlen(stte->s->prefix);
+        stte->indent_len += mutt_str_strlen(stte->s->prefix);
       }
       else
       {
         state_puts("> ", stte->s);
-        stte->indent_len += mutt_strlen("> ");
+        stte->indent_len += mutt_str_strlen("> ");
       }
       x--;
     }
@@ -695,7 +695,7 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
 {
   const char *c = NULL;
 
-  if (stte->buff_len < stte->buff_used + mutt_strlen(s))
+  if (stte->buff_len < stte->buff_used + mutt_str_strlen(s))
   {
     stte->buff_len += LONG_STRING;
     mutt_mem_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
@@ -823,7 +823,7 @@ static int text_enriched_handler(struct Body *a, struct State *s)
   if (s->prefix)
   {
     state_puts(s->prefix, s);
-    stte.indent_len += mutt_strlen(s->prefix);
+    stte.indent_len += mutt_str_strlen(s->prefix);
   }
 
   while (state != DONE)
@@ -934,10 +934,10 @@ static int is_mmnoask(const char *buf)
 
   if ((p = getenv("MM_NOASK")) != NULL && *p)
   {
-    if (mutt_strcmp(p, "1") == 0)
+    if (mutt_str_strcmp(p, "1") == 0)
       return 1;
 
-    strfcpy(tmp, p, sizeof(tmp));
+    mutt_str_strfcpy(tmp, p, sizeof(tmp));
     p = tmp;
 
     while ((p = strtok(p, ",")) != NULL)
@@ -947,19 +947,19 @@ static int is_mmnoask(const char *buf)
       {
         if (*(q + 1) == '*')
         {
-          if (mutt_strncasecmp(buf, p, q - p) == 0)
+          if (mutt_str_strncasecmp(buf, p, q - p) == 0)
             return 1;
         }
         else
         {
-          if (mutt_strcasecmp(buf, p) == 0)
+          if (mutt_str_strcasecmp(buf, p) == 0)
             return 1;
         }
       }
       else
       {
-        lng = mutt_strlen(p);
-        if (buf[lng] == '/' && (mutt_strncasecmp(buf, p, lng) == 0))
+        lng = mutt_str_strlen(p);
+        if (buf[lng] == '/' && (mutt_str_strncasecmp(buf, p, lng) == 0))
           return 1;
       }
 
@@ -995,10 +995,10 @@ static int is_autoview(struct Body *b)
     struct ListNode *np;
     STAILQ_FOREACH(np, &AutoViewList, entries)
     {
-      int i = mutt_strlen(np->data) - 1;
+      int i = mutt_str_strlen(np->data) - 1;
       if ((i > 0 && np->data[i - 1] == '/' && np->data[i] == '*' &&
-           (mutt_strncasecmp(type, np->data, i) == 0)) ||
-          (mutt_strcasecmp(type, np->data) == 0))
+           (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
+          (mutt_str_strcasecmp(type, np->data) == 0))
       {
         is_av = 1;
         break;
@@ -1038,9 +1038,9 @@ static int alternative_handler(struct Body *a, struct State *s)
     fstat(fileno(s->fpin), &st);
     b = mutt_new_body();
     b->length = (long) st.st_size;
-    b->parts = mutt_parse_multipart(s->fpin, mutt_get_parameter("boundary", a->parameter),
-                                    (long) st.st_size,
-                                    (mutt_strcasecmp("digest", a->subtype) == 0));
+    b->parts = mutt_parse_multipart(
+        s->fpin, mutt_get_parameter("boundary", a->parameter),
+        (long) st.st_size, (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
     b = a;
@@ -1064,7 +1064,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     else
     {
       wild = true;
-      btlen = mutt_strlen(np->data);
+      btlen = mutt_str_strlen(np->data);
     }
 
     if (a->parts)
@@ -1074,10 +1074,10 @@ static int alternative_handler(struct Body *a, struct State *s)
     while (b)
     {
       const char *bt = TYPE(b);
-      if ((mutt_strncasecmp(bt, np->data, btlen) == 0) && (bt[btlen] == 0))
+      if ((mutt_str_strncasecmp(bt, np->data, btlen) == 0) && (bt[btlen] == 0))
       {
         /* the basetype matches */
-        if (wild || (mutt_strcasecmp(np->data + btlen + 1, b->subtype) == 0))
+        if (wild || (mutt_str_strcasecmp(np->data + btlen + 1, b->subtype) == 0))
         {
           choice = b;
         }
@@ -1115,17 +1115,17 @@ static int alternative_handler(struct Body *a, struct State *s)
     {
       if (b->type == TYPETEXT)
       {
-        if ((mutt_strcasecmp("plain", b->subtype) == 0) && type <= TXTPLAIN)
+        if ((mutt_str_strcasecmp("plain", b->subtype) == 0) && type <= TXTPLAIN)
         {
           choice = b;
           type = TXTPLAIN;
         }
-        else if ((mutt_strcasecmp("enriched", b->subtype) == 0) && type <= TXTENRICHED)
+        else if ((mutt_str_strcasecmp("enriched", b->subtype) == 0) && type <= TXTENRICHED)
         {
           choice = b;
           type = TXTENRICHED;
         }
-        else if ((mutt_strcasecmp("html", b->subtype) == 0) && type <= TXTHTML)
+        else if ((mutt_str_strcasecmp("html", b->subtype) == 0) && type <= TXTHTML)
         {
           choice = b;
           type = TXTHTML;
@@ -1158,13 +1158,13 @@ static int alternative_handler(struct Body *a, struct State *s)
       mutt_file_copy_bytes(s->fpin, s->fpout, choice->offset - choice->hdr_offset);
     }
 
-    if (mutt_strcmp("info", ShowMultipartAlternative) == 0)
+    if (mutt_str_strcmp("info", ShowMultipartAlternative) == 0)
     {
       print_part_line(s, choice, 0);
     }
     mutt_body_handler(choice, s);
 
-    if (mutt_strcmp("info", ShowMultipartAlternative) == 0)
+    if (mutt_str_strcmp("info", ShowMultipartAlternative) == 0)
     {
       if (a->parts)
         b = a->parts;
@@ -1264,8 +1264,8 @@ int mutt_can_decode(struct Body *a)
   {
     if (WithCrypto)
     {
-      if ((mutt_strcasecmp(a->subtype, "signed") == 0) ||
-          (mutt_strcasecmp(a->subtype, "encrypted") == 0))
+      if ((mutt_str_strcasecmp(a->subtype, "signed") == 0) ||
+          (mutt_str_strcasecmp(a->subtype, "encrypted") == 0))
         return 1;
     }
 
@@ -1298,9 +1298,9 @@ static int multipart_handler(struct Body *a, struct State *s)
     fstat(fileno(s->fpin), &st);
     b = mutt_new_body();
     b->length = (long) st.st_size;
-    b->parts = mutt_parse_multipart(s->fpin, mutt_get_parameter("boundary", a->parameter),
-                                    (long) st.st_size,
-                                    (mutt_strcasecmp("digest", a->subtype) == 0));
+    b->parts = mutt_parse_multipart(
+        s->fpin, mutt_get_parameter("boundary", a->parameter),
+        (long) st.st_size, (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
     b = a;
@@ -1369,14 +1369,14 @@ static int autoview_handler(struct Body *a, struct State *s)
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   rfc1524_mailcap_lookup(a, type, entry, MUTT_AUTOVIEW);
 
-  fname = safe_strdup(a->filename);
+  fname = mutt_str_strdup(a->filename);
   mutt_file_sanitize_filename(fname, 1);
   rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile));
   FREE(&fname);
 
   if (entry->command)
   {
-    strfcpy(command, entry->command, sizeof(command));
+    mutt_str_strfcpy(command, entry->command, sizeof(command));
 
     /* rfc1524_expand_command returns 0 if the file is required */
     piped = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
@@ -1510,7 +1510,7 @@ static int external_body_handler(struct Body *b, struct State *s)
   else
     expire = -1;
 
-  if (mutt_strcasecmp(access_type, "x-mutt-deleted") == 0)
+  if (mutt_str_strcasecmp(access_type, "x-mutt-deleted") == 0)
   {
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
@@ -1636,9 +1636,9 @@ static int text_plain_handler(struct Body *b, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
-    if ((mutt_strcmp(buf, "-- ") != 0) && option(OPT_TEXT_FLOWED))
+    if ((mutt_str_strcmp(buf, "-- ") != 0) && option(OPT_TEXT_FLOWED))
     {
-      l = mutt_strlen(buf);
+      l = mutt_str_strlen(buf);
       while (l > 0 && buf[l - 1] == ' ')
         buf[--l] = '\0';
     }
@@ -1837,7 +1837,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (b->type == TYPETEXT)
   {
-    if (mutt_strcasecmp("plain", b->subtype) == 0)
+    if (mutt_str_strcasecmp("plain", b->subtype) == 0)
     {
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
@@ -1845,12 +1845,12 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_pgp_handler;
       else if (option(OPT_REFLOW_TEXT) &&
-               (mutt_strcasecmp("flowed", mutt_get_parameter("format", b->parameter)) == 0))
+               (mutt_str_strcasecmp("flowed", mutt_get_parameter("format", b->parameter)) == 0))
         handler = rfc3676_handler;
       else
         handler = text_plain_handler;
     }
-    else if (mutt_strcasecmp("enriched", b->subtype) == 0)
+    else if (mutt_str_strcasecmp("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
     else /* text body type without a handler */
       plaintext = false;
@@ -1859,19 +1859,19 @@ int mutt_body_handler(struct Body *b, struct State *s)
   {
     if (mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
-    else if (mutt_strcasecmp("delivery-status", b->subtype) == 0)
+    else if (mutt_str_strcasecmp("delivery-status", b->subtype) == 0)
       plaintext = true;
-    else if (mutt_strcasecmp("external-body", b->subtype) == 0)
+    else if (mutt_str_strcasecmp("external-body", b->subtype) == 0)
       handler = external_body_handler;
   }
   else if (b->type == TYPEMULTIPART)
   {
     char *p = NULL;
 
-    if ((mutt_strcmp("inline", ShowMultipartAlternative) != 0) &&
-        (mutt_strcasecmp("alternative", b->subtype) == 0))
+    if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
+        (mutt_str_strcasecmp("alternative", b->subtype) == 0))
       handler = alternative_handler;
-    else if (WithCrypto && (mutt_strcasecmp("signed", b->subtype) == 0))
+    else if (WithCrypto && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {
       p = mutt_get_parameter("protocol", b->parameter);
 
@@ -1898,7 +1898,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if (WithCrypto && b->type == TYPEAPPLICATION)
   {
-    if (option(OPT_DONT_HANDLE_PGP_KEYS) && (mutt_strcasecmp("pgp-keys", b->subtype) == 0))
+    if (option(OPT_DONT_HANDLE_PGP_KEYS) &&
+        (mutt_str_strcasecmp("pgp-keys", b->subtype) == 0))
     {
       /* pass raw part through for key extraction */
       plaintext = true;

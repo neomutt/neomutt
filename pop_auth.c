@@ -98,7 +98,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   /* looping protocol */
   while (true)
   {
-    strfcpy(buf + olen, "\r\n", bufsize - olen);
+    mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
     mutt_socket_write(pop_data->conn, buf);
     if (mutt_socket_readln(inbuf, sizeof(inbuf), pop_data->conn) < 0)
     {
@@ -116,7 +116,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
     if (!client_start && rc != SASL_CONTINUE)
       break;
 
-    if ((mutt_strncmp(inbuf, "+ ", 2) == 0) &&
+    if ((mutt_str_strncmp(inbuf, "+ ", 2) == 0) &&
         sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK)
     {
       mutt_debug(1, "pop_auth_sasl: error base64-decoding server response.\n");
@@ -163,7 +163,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   if (rc != SASL_OK)
     goto bail;
 
-  if (mutt_strncmp(inbuf, "+OK", 3) == 0)
+  if (mutt_str_strncmp(inbuf, "+OK", 3) == 0)
   {
     mutt_sasl_setup_conn(pop_data->conn, saslconn);
     FREE(&buf);
@@ -174,7 +174,7 @@ bail:
   sasl_dispose(&saslconn);
 
   /* terminate SASL session if the last response is not +OK nor -ERR */
-  if (mutt_strncmp(inbuf, "+ ", 2) == 0)
+  if (mutt_str_strncmp(inbuf, "+ ", 2) == 0)
   {
     snprintf(buf, bufsize, "*\r\n");
     if (pop_query(pop_data, buf, bufsize) == -1)
@@ -204,7 +204,7 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
   if ((p1 = strchr(buf, '<')) && (p2 = strchr(p1, '>')))
   {
     p2[1] = '\0';
-    pop_data->timestamp = safe_strdup(p1);
+    pop_data->timestamp = mutt_str_strdup(p1);
   }
 }
 
@@ -350,7 +350,7 @@ int pop_authenticate(struct PopData *pop_data)
   if (PopAuthenticators && *PopAuthenticators)
   {
     /* Try user-specified list of authentication methods */
-    methods = safe_strdup(PopAuthenticators);
+    methods = mutt_str_strdup(PopAuthenticators);
     method = methods;
 
     while (method)
@@ -363,7 +363,8 @@ int pop_authenticate(struct PopData *pop_data)
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
+        if (!authenticator->method ||
+            (mutt_str_strcasecmp(authenticator->method, method) == 0))
         {
           ret = authenticator->authenticate(pop_data, method);
           if (ret == POP_A_SOCKET)

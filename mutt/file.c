@@ -123,7 +123,7 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   char parent[_POSIX_PATH_MAX];
   char *p = NULL;
 
-  strfcpy(parent, NONULL(path), sizeof(parent));
+  mutt_str_strfcpy(parent, NONULL(path), sizeof(parent));
 
   p = strrchr(parent, '/');
   if (p)
@@ -133,7 +133,7 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
   }
   else
   {
-    strfcpy(parent, ".", sizeof(parent));
+    mutt_str_strfcpy(parent, ".", sizeof(parent));
     basename = path;
   }
 
@@ -865,7 +865,7 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return 0;
 
   /* Create a mutable copy */
-  strfcpy(_path, path, sizeof(_path));
+  mutt_str_strfcpy(_path, path, sizeof(_path));
 
   for (char *p = _path + 1; *p; p++)
   {
@@ -935,7 +935,7 @@ time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
 const char *mutt_file_dirname(const char *p)
 {
   static char buf[_POSIX_PATH_MAX];
-  strfcpy(buf, p, sizeof(buf));
+  mutt_str_strfcpy(buf, p, sizeof(buf));
   return dirname(buf);
 }
 
@@ -1194,12 +1194,12 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
   }
 
   dirpath = mutt_file_dirname(reference);
-  strfcpy(abs_path, dirpath, PATH_MAX);
-  safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
+  mutt_str_strfcpy(abs_path, dirpath, PATH_MAX);
+  mutt_str_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   path_len = PATH_MAX - strlen(path);
 
-  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+  mutt_str_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
 
   path = realpath(abs_path, path);
 

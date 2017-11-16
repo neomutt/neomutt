@@ -110,24 +110,24 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 #ifdef USE_NOTMUCH
       char *p = NULL;
       if (Context && Context->magic == MUTT_NOTMUCH && (p = nm_get_description(Context)))
-        strfcpy(tmp, p, sizeof(tmp));
+        mutt_str_strfcpy(tmp, p, sizeof(tmp));
       else
 #endif
 #ifdef USE_COMPRESSED
           if (Context && Context->compress_info && Context->realpath)
       {
-        strfcpy(tmp, Context->realpath, sizeof(tmp));
+        mutt_str_strfcpy(tmp, Context->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
 #endif
           if (Context && Context->path)
       {
-        strfcpy(tmp, Context->path, sizeof(tmp));
+        mutt_str_strfcpy(tmp, Context->path, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
       else
-        strfcpy(tmp, _("(no mailbox)"), sizeof(tmp));
+        mutt_str_strfcpy(tmp, _("(no mailbox)"), sizeof(tmp));
 
       snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
       snprintf(buf, buflen, fmt, tmp);

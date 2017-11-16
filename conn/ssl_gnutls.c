@@ -294,7 +294,7 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
     {
       char ch[8];
       snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
-      safe_strcat(s, l, ch);
+      mutt_str_strcat(s, l, ch);
     }
     s[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
   }
@@ -576,7 +576,7 @@ static char *tls_make_date(time_t t, char *s, size_t len)
     snprintf(s, len, "%s, %d %s %d %02d:%02d:%02d UTC", Weekdays[l->tm_wday], l->tm_mday,
              Months[l->tm_mon], l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec);
   else
-    strfcpy(s, _("[invalid date]"), len);
+    mutt_str_strfcpy(s, _("[invalid date]"), len);
 
   return s;
 }
@@ -655,7 +655,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   mutt_push_current_menu(menu);
 
   row = 0;
-  strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
 
   buflen = sizeof(dn_common_name);
@@ -693,7 +693,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
            dn_province, dn_country);
   row++;
 
-  strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
 
   buflen = sizeof(dn_common_name);
@@ -752,31 +752,32 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   if (certerr & CERTERR_NOTYETVALID)
   {
     row++;
-    strfcpy(menu->dialog[row],
-            _("WARNING: Server certificate is not yet valid"), SHORT_STRING);
+    mutt_str_strfcpy(menu->dialog[row],
+                     _("WARNING: Server certificate is not yet valid"), SHORT_STRING);
   }
   if (certerr & CERTERR_EXPIRED)
   {
     row++;
-    strfcpy(menu->dialog[row], _("WARNING: Server certificate has expired"), SHORT_STRING);
+    mutt_str_strfcpy(menu->dialog[row],
+                     _("WARNING: Server certificate has expired"), SHORT_STRING);
   }
   if (certerr & CERTERR_REVOKED)
   {
     row++;
-    strfcpy(menu->dialog[row],
-            _("WARNING: Server certificate has been revoked"), SHORT_STRING);
+    mutt_str_strfcpy(menu->dialog[row],
+                     _("WARNING: Server certificate has been revoked"), SHORT_STRING);
   }
   if (certerr & CERTERR_HOSTNAME)
   {
     row++;
-    strfcpy(menu->dialog[row],
-            _("WARNING: Server hostname does not match certificate"), SHORT_STRING);
+    mutt_str_strfcpy(menu->dialog[row],
+                     _("WARNING: Server hostname does not match certificate"), SHORT_STRING);
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {
     row++;
-    strfcpy(menu->dialog[row],
-            _("WARNING: Signer of server certificate is not a CA"), SHORT_STRING);
+    mutt_str_strfcpy(menu->dialog[row],
+                     _("WARNING: Signer of server certificate is not a CA"), SHORT_STRING);
   }
 
   snprintf(title, sizeof(title),
@@ -810,9 +811,9 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   helpstr[0] = '\0';
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  safe_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_GENERIC, OP_HELP);
-  safe_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   menu->help = helpstr;
 
   done = 0;
@@ -1036,34 +1037,34 @@ static int tls_set_priority(struct TlsSockData *data)
   size_t priority_size;
   int err;
 
-  priority_size = SHORT_STRING + mutt_strlen(SslCiphers);
+  priority_size = SHORT_STRING + mutt_str_strlen(SslCiphers);
   priority = mutt_mem_malloc(priority_size);
 
   priority[0] = 0;
   if (SslCiphers)
-    safe_strcat(priority, priority_size, SslCiphers);
+    mutt_str_strcat(priority, priority_size, SslCiphers);
   else
-    safe_strcat(priority, priority_size, "NORMAL");
+    mutt_str_strcat(priority, priority_size, "NORMAL");
 
   if (!option(OPT_SSL_USE_TLSV1_2))
   {
     nproto--;
-    safe_strcat(priority, priority_size, ":-VERS-TLS1.2");
+    mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
   if (!option(OPT_SSL_USE_TLSV1_1))
   {
     nproto--;
-    safe_strcat(priority, priority_size, ":-VERS-TLS1.1");
+    mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
   if (!option(OPT_SSL_USE_TLSV1))
   {
     nproto--;
-    safe_strcat(priority, priority_size, ":-VERS-TLS1.0");
+    mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
   if (!option(OPT_SSL_USE_SSLV3))
   {
     nproto--;
-    safe_strcat(priority, priority_size, ":-VERS-SSL3.0");
+    mutt_str_strcat(priority, priority_size, ":-VERS-SSL3.0");
   }
 
   if (nproto == 0)
@@ -1186,7 +1187,7 @@ static int tls_negotiate(struct Connection *conn)
   gnutls_transport_set_ptr(data->state, (gnutls_transport_ptr_t)(long) conn->fd);
 
   if (gnutls_server_name_set(data->state, GNUTLS_NAME_DNS, conn->account.host,
-                             mutt_strlen(conn->account.host)))
+                             mutt_str_strlen(conn->account.host)))
   {
     mutt_error(_("Warning: unable to set TLS SNI host name"));
     mutt_sleep(1);

@@ -77,14 +77,14 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
                                   GSS_C_NO_OID, &msg_ctx, &status_string);
     if (GSS_ERROR(maj_stat))
       break;
-    strfcpy(buf_maj, (char *) status_string.value, sizeof(buf_maj));
+    mutt_str_strfcpy(buf_maj, (char *) status_string.value, sizeof(buf_maj));
     gss_release_buffer(&min_stat, &status_string);
 
     maj_stat = gss_display_status(&min_stat, err_min, GSS_C_MECH_CODE,
                                   GSS_C_NULL_OID, &msg_ctx, &status_string);
     if (!GSS_ERROR(maj_stat))
     {
-      strfcpy(buf_min, (char *) status_string.value, sizeof(buf_min));
+      mutt_str_strfcpy(buf_min, (char *) status_string.value, sizeof(buf_min));
       gss_release_buffer(&min_stat, &status_string);
     }
   } while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
@@ -178,7 +178,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   mutt_debug(2, "Sending credentials\n");
   mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
   gss_release_buffer(&min_stat, &send_token);
-  safe_strcat(buf1, sizeof(buf1), "\r\n");
+  mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
   mutt_socket_write(idata->conn, buf1);
 
   while (maj_stat == GSS_S_CONTINUE_NEEDED)
@@ -214,7 +214,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     }
     mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
     gss_release_buffer(&min_stat, &send_token);
-    safe_strcat(buf1, sizeof(buf1), "\r\n");
+    mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
     mutt_socket_write(idata->conn, buf1);
   }
 
@@ -282,7 +282,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
 
   mutt_b64_encode(buf1, send_token.value, send_token.length, sizeof(buf1) - 2);
   mutt_debug(2, "Requesting authorisation as %s\n", idata->conn->account.user);
-  safe_strcat(buf1, sizeof(buf1), "\r\n");
+  mutt_str_strcat(buf1, sizeof(buf1), "\r\n");
   mutt_socket_write(idata->conn, buf1);
 
   /* Joy of victory or agony of defeat? */

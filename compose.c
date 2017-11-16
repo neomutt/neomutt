@@ -185,7 +185,7 @@ static void calc_header_width_padding(int idx, const char *header, int calc_max)
 {
   int width;
 
-  HeaderPadding[idx] = mutt_strlen(header);
+  HeaderPadding[idx] = mutt_str_strlen(header);
   width = mutt_strwidth(header);
   if (calc_max && MaxHeaderWidth < width)
     MaxHeaderWidth = width;
@@ -344,14 +344,14 @@ static void redraw_mix_line(struct ListHead *chain)
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
 
-    if (c + mutt_strlen(t) + 2 >= MuttIndexWindow->cols)
+    if (c + mutt_str_strlen(t) + 2 >= MuttIndexWindow->cols)
       break;
 
     addstr(NONULL(t));
     if (STAILQ_NEXT(np, entries))
       addstr(", ");
 
-    c += mutt_strlen(t) + 2;
+    c += mutt_str_strlen(t) + 2;
   }
 }
 #endif /* MIXMASTER */
@@ -364,7 +364,7 @@ static int check_attachments(struct AttachCtx *actx)
 
   for (int i = 0; i < actx->idxlen; i++)
   {
-    strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
+    mutt_str_strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
     if (stat(actx->idx[i]->content->filename, &st) != 0)
     {
       mutt_pretty_mailbox(pretty, sizeof(pretty));
@@ -859,7 +859,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (news)
         {
           if (msg->env->newsgroups)
-            strfcpy(buf, msg->env->newsgroups, sizeof(buf));
+            mutt_str_strfcpy(buf, msg->env->newsgroups, sizeof(buf));
           else
             buf[0] = 0;
           if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
@@ -877,7 +877,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (news)
         {
           if (msg->env->followup_to)
-            strfcpy(buf, msg->env->followup_to, sizeof(buf));
+            mutt_str_strfcpy(buf, msg->env->followup_to, sizeof(buf));
           else
             buf[0] = 0;
           if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
@@ -895,7 +895,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (news && option(OPT_X_COMMENT_TO))
         {
           if (msg->env->x_comment_to)
-            strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
+            mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
           else
             buf[0] = 0;
           if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
@@ -912,7 +912,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 #endif
       case OP_COMPOSE_EDIT_SUBJECT:
         if (msg->env->subject)
-          strfcpy(buf, msg->env->subject, sizeof(buf));
+          mutt_str_strfcpy(buf, msg->env->subject, sizeof(buf));
         else
           buf[0] = 0;
         if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) == 0)
@@ -931,10 +931,10 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_FCC:
-        strfcpy(buf, fcc, sizeof(buf));
+        mutt_str_strfcpy(buf, fcc, sizeof(buf));
         if (mutt_get_field(_("Fcc: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) == 0)
         {
-          strfcpy(fcc, buf, fcclen);
+          mutt_str_strfcpy(fcc, buf, fcclen);
           mutt_pretty_mailbox(fcc, fcclen);
           mutt_window_move(MuttIndexWindow, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, fcc);
@@ -943,7 +943,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (Editor && (mutt_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HEADERS))
+        if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HEADERS))
         {
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
@@ -953,7 +953,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
       /* fall through */
       case OP_COMPOSE_EDIT_HEADERS:
-        if ((mutt_strcmp("builtin", Editor) != 0) &&
+        if ((mutt_str_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS ||
              (op == OP_COMPOSE_EDIT_MESSAGE && option(OPT_EDIT_HEADERS))))
         {
@@ -1079,7 +1079,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
 #endif
           {
-            strfcpy(fname, NONULL(Context->path), sizeof(fname));
+            mutt_str_strfcpy(fname, NONULL(Context->path), sizeof(fname));
             mutt_pretty_mailbox(fname, sizeof(fname));
           }
 
@@ -1211,8 +1211,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
         CHECK_COUNT;
-        strfcpy(buf, CURATTACH->content->description ? CURATTACH->content->description : "",
-                sizeof(buf));
+        mutt_str_strfcpy(buf,
+                         CURATTACH->content->description ? CURATTACH->content->description : "",
+                         sizeof(buf));
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf), 0) == 0)
         {
@@ -1264,7 +1265,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_EDIT_ENCODING:
         CHECK_COUNT;
-        strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
+        mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
         if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && buf[0])
         {
           if ((i = mutt_check_encoding(buf)) != ENCOTHER && i != ENCUUENCODED)
@@ -1353,7 +1354,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           src = CURATTACH->content->d_filename;
         else
           src = CURATTACH->content->filename;
-        strfcpy(fname, mutt_file_basename(NONULL(src)), sizeof(fname));
+        mutt_str_strfcpy(fname, mutt_file_basename(NONULL(src)), sizeof(fname));
         ret = mutt_get_field(_("Send attachment with name: "), fname, sizeof(fname), MUTT_FILE);
         if (ret == 0)
         {
@@ -1369,7 +1370,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_RENAME_FILE:
         CHECK_COUNT;
-        strfcpy(fname, CURATTACH->content->filename, sizeof(fname));
+        mutt_str_strfcpy(fname, CURATTACH->content->filename, sizeof(fname));
         mutt_pretty_mailbox(fname, sizeof(fname));
         if (mutt_get_field(_("Rename to: "), fname, sizeof(fname), MUTT_FILE) == 0 &&
             fname[0])
@@ -1559,7 +1560,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         fname[0] = '\0';
         if (Context)
         {
-          strfcpy(fname, NONULL(Context->path), sizeof(fname));
+          mutt_str_strfcpy(fname, NONULL(Context->path), sizeof(fname));
           mutt_pretty_mailbox(fname, sizeof(fname));
         }
         if (actx->idxlen)

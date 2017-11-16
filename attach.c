@@ -110,9 +110,9 @@ int mutt_compose_attachment(struct Body *a)
     if (entry->composecommand || entry->composetypecommand)
     {
       if (entry->composetypecommand)
-        strfcpy(command, entry->composetypecommand, sizeof(command));
+        mutt_str_strfcpy(command, entry->composetypecommand, sizeof(command));
       else
-        strfcpy(command, entry->composecommand, sizeof(command));
+        mutt_str_strfcpy(command, entry->composecommand, sizeof(command));
       if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
       {
         mutt_debug(1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
@@ -125,7 +125,7 @@ int mutt_compose_attachment(struct Body *a)
           unlink_newfile = true;
       }
       else
-        strfcpy(newfile, a->filename, sizeof(newfile));
+        mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
 
       if (rfc1524_expand_command(a, newfile, type, command, sizeof(command)))
       {
@@ -246,7 +246,7 @@ int mutt_edit_attachment(struct Body *a)
   {
     if (entry->editcommand)
     {
-      strfcpy(command, entry->editcommand, sizeof(command));
+      mutt_str_strfcpy(command, entry->editcommand, sizeof(command));
       if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
       {
         mutt_debug(1, "oldfile: %s\t newfile: %s\n", a->filename, newfile);
@@ -259,7 +259,7 @@ int mutt_edit_attachment(struct Body *a)
           unlink_newfile = true;
       }
       else
-        strfcpy(newfile, a->filename, sizeof(newfile));
+        mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
 
       if (rfc1524_expand_command(a, newfile, type, command, sizeof(command)))
       {
@@ -314,10 +314,10 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
   struct ListNode *np;
   STAILQ_FOREACH(np, &MimeLookupList, entries)
   {
-    i = mutt_strlen(np->data) - 1;
+    i = mutt_str_strlen(np->data) - 1;
     if ((i > 0 && np->data[i - 1] == '/' && np->data[i] == '*' &&
-         (mutt_strncasecmp(type, np->data, i) == 0)) ||
-        (mutt_strcasecmp(type, np->data) == 0))
+         (mutt_str_strncasecmp(type, np->data, i) == 0)) ||
+        (mutt_str_strcasecmp(type, np->data) == 0))
     {
       struct Body tmp = { 0 };
       int n;
@@ -418,11 +418,11 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
       mutt_error(_("MIME type not defined.  Cannot view attachment."));
       goto return_error;
     }
-    strfcpy(command, entry->command, sizeof(command));
+    mutt_str_strfcpy(command, entry->command, sizeof(command));
 
     if (fp)
     {
-      fname = safe_strdup(a->filename);
+      fname = mutt_str_strdup(a->filename);
       mutt_file_sanitize_filename(fname, 1);
     }
     else
@@ -430,13 +430,13 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 
     if (rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile)))
     {
-      if (fp == NULL && (mutt_strcmp(tempfile, a->filename) != 0))
+      if (fp == NULL && (mutt_str_strcmp(tempfile, a->filename) != 0))
       {
         /* send case: the file is already there */
         if (mutt_file_symlink(a->filename, tempfile) == -1)
         {
           if (mutt_yesorno(_("Can't match nametemplate, continue?"), MUTT_YES) == MUTT_YES)
-            strfcpy(tempfile, a->filename, sizeof(tempfile));
+            mutt_str_strfcpy(tempfile, a->filename, sizeof(tempfile));
           else
             goto return_error;
         }
@@ -445,7 +445,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
       }
     }
     else if (!fp) /* send case */
-      strfcpy(tempfile, a->filename, sizeof(tempfile));
+      mutt_str_strfcpy(tempfile, a->filename, sizeof(tempfile));
 
     if (fp)
     {
@@ -465,7 +465,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     if (fp && !use_mailcap && a->filename)
     {
       /* recv case */
-      strfcpy(pagerfile, a->filename, sizeof(pagerfile));
+      mutt_str_strfcpy(pagerfile, a->filename, sizeof(pagerfile));
       mutt_adv_mktemp(pagerfile, sizeof(pagerfile));
     }
     else
@@ -596,7 +596,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     }
 
     if (a->description)
-      strfcpy(descrip, a->description, sizeof(descrip));
+      mutt_str_strfcpy(descrip, a->description, sizeof(descrip));
     else if (a->filename)
       snprintf(descrip, sizeof(descrip), _("---Attachment: %s: %s"), a->filename, type);
     else
@@ -1012,7 +1012,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
             rfc1524_free_entry(&entry);
             return 0;
           }
-          strfcpy(newfile, a->filename, sizeof(newfile));
+          mutt_str_strfcpy(newfile, a->filename, sizeof(newfile));
         }
         else
           unlink_newfile = true;
@@ -1023,7 +1023,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     if (fp && (mutt_save_attachment(fp, a, newfile, 0, NULL) != 0))
       return 0;
 
-    strfcpy(command, entry->printcommand, sizeof(command));
+    mutt_str_strfcpy(command, entry->printcommand, sizeof(command));
     piped = rfc1524_expand_command(a, newfile, type, command, sizeof(command));
 
     mutt_endwin(NULL);
@@ -1072,8 +1072,8 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     return 1;
   }
 
-  if ((mutt_strcasecmp("text/plain", type) == 0) ||
-      (mutt_strcasecmp("application/postscript", type) == 0))
+  if ((mutt_str_strcasecmp("text/plain", type) == 0) ||
+      (mutt_str_strcasecmp("application/postscript", type) == 0))
   {
     return (mutt_pipe_attachment(fp, a, NONULL(PrintCommand), NULL));
   }

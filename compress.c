@@ -158,7 +158,7 @@ static int setup_paths(struct Context *ctx)
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
-  ctx->path = safe_strdup(tmppath);
+  ctx->path = mutt_str_strdup(tmppath);
 
   tmpfp = mutt_file_fopen(ctx->path, "w");
   if (!tmpfp)
@@ -259,9 +259,9 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   ctx->compress_info = ci;
 
-  ci->open = safe_strdup(o);
-  ci->close = safe_strdup(c);
-  ci->append = safe_strdup(a);
+  ci->open = mutt_str_strdup(o);
+  ci->close = mutt_str_strdup(c);
+  ci->append = mutt_str_strdup(a);
 
   return ci;
 }

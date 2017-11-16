@@ -100,7 +100,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
   if (pat->stringmatch)
   {
-    pat->p.str = safe_strdup(buf.data);
+    pat->p.str = mutt_str_strdup(buf.data);
     pat->ign_case = mutt_which_case(buf.data) == REG_ICASE;
     FREE(&buf.data);
   }
@@ -657,7 +657,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
     return true;
 
   /* Nope. */
-  strfcpy(err->data, _("No current message"), err->dsize);
+  mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
   return false;
 }
 
@@ -764,7 +764,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   {
     if (!Context->menu)
     {
-      strfcpy(err->data, _("No current message"), err->dsize);
+      mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
       return RANGE_E_CTX;
     }
     pat->min = pat->max = CTX_MSGNO(Context);
@@ -785,7 +785,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   /* We need a Context for pretty much anything. */
   if (!Context)
   {
-    strfcpy(err->data, _("No Context"), err->dsize);
+    mutt_str_strfcpy(err->data, _("No Context"), err->dsize);
     return false;
   }
 
@@ -1057,7 +1057,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
         match = 1;
         break;
       }
-      lng -= mutt_strlen(buf);
+      lng -= mutt_str_strlen(buf);
     }
 
     FREE(&buf);
@@ -1148,7 +1148,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
 
   mutt_buffer_init(&ps);
   ps.dptr = s;
-  ps.dsize = mutt_strlen(s);
+  ps.dsize = mutt_str_strlen(s);
 
   while (*ps.dptr)
   {
@@ -1236,7 +1236,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           alladdr = false;
           isalias = false;
           /* compile the sub-expression */
-          buf = mutt_substrdup(ps.dptr + 1, p);
+          buf = mutt_str_substr_dup(ps.dptr + 1, p);
           tmp2 = mutt_pattern_comp(buf, flags, err);
           if (!tmp2)
           {
@@ -1320,7 +1320,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           return NULL;
         }
         /* compile the sub-expression */
-        buf = mutt_substrdup(ps.dptr + 1, p);
+        buf = mutt_str_substr_dup(ps.dptr + 1, p);
         tmp = mutt_pattern_comp(buf, flags, err);
         if (!tmp)
         {
@@ -1350,7 +1350,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   }
   if (!curlist)
   {
-    strfcpy(err->data, _("empty pattern"), err->dsize);
+    mutt_str_strfcpy(err->data, _("empty pattern"), err->dsize);
     return NULL;
   }
   if (curlist->next)
@@ -1815,32 +1815,32 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     }
   }
 
-  /* XXX - is mutt_strcasecmp() right here, or should we use locale's
+  /* XXX - is mutt_str_strcasecmp() right here, or should we use locale's
    * equivalences?
    */
 
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if ((mutt_strcasecmp("all", s) == 0) || (mutt_strcmp("^", s) == 0) ||
-        (mutt_strcmp(".", s) == 0)) /* ~A is more efficient */
-      strfcpy(s, "~A", len);
-    else if (mutt_strcasecmp("del", s) == 0)
-      strfcpy(s, "~D", len);
-    else if (mutt_strcasecmp("flag", s) == 0)
-      strfcpy(s, "~F", len);
-    else if (mutt_strcasecmp("new", s) == 0)
-      strfcpy(s, "~N", len);
-    else if (mutt_strcasecmp("old", s) == 0)
-      strfcpy(s, "~O", len);
-    else if (mutt_strcasecmp("repl", s) == 0)
-      strfcpy(s, "~Q", len);
-    else if (mutt_strcasecmp("read", s) == 0)
-      strfcpy(s, "~R", len);
-    else if (mutt_strcasecmp("tag", s) == 0)
-      strfcpy(s, "~T", len);
-    else if (mutt_strcasecmp("unread", s) == 0)
-      strfcpy(s, "~U", len);
+    if ((mutt_str_strcasecmp("all", s) == 0) || (mutt_str_strcmp("^", s) == 0) ||
+        (mutt_str_strcmp(".", s) == 0)) /* ~A is more efficient */
+      mutt_str_strfcpy(s, "~A", len);
+    else if (mutt_str_strcasecmp("del", s) == 0)
+      mutt_str_strfcpy(s, "~D", len);
+    else if (mutt_str_strcasecmp("flag", s) == 0)
+      mutt_str_strfcpy(s, "~F", len);
+    else if (mutt_str_strcasecmp("new", s) == 0)
+      mutt_str_strfcpy(s, "~N", len);
+    else if (mutt_str_strcasecmp("old", s) == 0)
+      mutt_str_strfcpy(s, "~O", len);
+    else if (mutt_str_strcasecmp("repl", s) == 0)
+      mutt_str_strfcpy(s, "~Q", len);
+    else if (mutt_str_strcasecmp("read", s) == 0)
+      mutt_str_strfcpy(s, "~R", len);
+    else if (mutt_str_strcasecmp("tag", s) == 0)
+      mutt_str_strfcpy(s, "~T", len);
+    else if (mutt_str_strcasecmp("unread", s) == 0)
+      mutt_str_strfcpy(s, "~U", len);
     else
     {
       quote_simple(tmp, sizeof(tmp), s);
@@ -1919,14 +1919,14 @@ int mutt_pattern_func(int op, char *prompt)
   struct Buffer err;
   struct Progress progress;
 
-  strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
+  mutt_str_strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
   if (prompt || op != MUTT_LIMIT)
     if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
       return -1;
 
   mutt_message(_("Compiling search pattern..."));
 
-  simple = safe_strdup(buf);
+  simple = mutt_str_strdup(buf);
   mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
 
   mutt_buffer_init(&err);
@@ -2014,7 +2014,7 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_error(_("No messages matched criteria."));
 
     /* record new limit pattern, unless match all */
-    if (mutt_strcmp(buf, "~A") != 0)
+    if (mutt_str_strcmp(buf, "~A") != 0)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
@@ -2039,7 +2039,7 @@ int mutt_search_command(int cur, int op)
 
   if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
+    mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
     if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
                            _("Search for: ") :
                            _("Reverse search for: "),
@@ -2054,15 +2054,15 @@ int mutt_search_command(int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
-    strfcpy(temp, buf, sizeof(temp));
+    mutt_str_strfcpy(temp, buf, sizeof(temp));
     mutt_check_simple(temp, sizeof(temp), NONULL(SimpleSearch));
 
-    if (!SearchPattern || (mutt_strcmp(temp, LastSearchExpn) != 0))
+    if (!SearchPattern || (mutt_str_strcmp(temp, LastSearchExpn) != 0))
     {
       struct Buffer err;
       mutt_buffer_init(&err);
       set_option(OPT_SEARCH_INVALID);
-      strfcpy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = STRING;

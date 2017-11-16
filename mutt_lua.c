@@ -88,12 +88,12 @@ static int lua_mutt_call(lua_State *l)
   for (int i = 2; i <= lua_gettop(l); i++)
   {
     const char *s = lua_tostring(l, i);
-    safe_strncat(buffer, sizeof(buffer), s, mutt_strlen(s));
-    safe_strncat(buffer, sizeof(buffer), " ", 1);
+    mutt_str_strncat(buffer, sizeof(buffer), s, mutt_str_strlen(s));
+    mutt_str_strncat(buffer, sizeof(buffer), " ", 1);
   }
 
   expn.data = expn.dptr = buffer;
-  expn.dsize = mutt_strlen(buffer);
+  expn.dsize = mutt_str_strlen(buffer);
 
   if (command->func(&token, &expn, command->data, &err))
   {
@@ -139,7 +139,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_PATH:
     case DT_SORT:
     case DT_STRING:
-      opt.data = (long) safe_strdup(lua_tostring(l, -1));
+      opt.data = (long) mutt_str_strdup(lua_tostring(l, -1));
       rv = mutt_option_set(&opt, &err);
       FREE(&opt.data);
       break;
@@ -217,7 +217,7 @@ static int lua_mutt_get(lua_State *l)
       }
       case DT_PATH:
       case DT_STRING:
-        if (mutt_strncmp("my_", param, 3) == 0)
+        if (mutt_str_strncmp("my_", param, 3) == 0)
         {
           char *option = (char *) opt.option;
           char *value = (char *) opt.data;
@@ -267,7 +267,7 @@ static int lua_mutt_enter(lua_State *l)
 {
   mutt_debug(2, " * lua_mutt_enter()\n");
   struct Buffer token, err;
-  char *buffer = safe_strdup(lua_tostring(l, -1));
+  char *buffer = mutt_str_strdup(lua_tostring(l, -1));
   int rv = 0;
 
   mutt_buffer_init(&err);
@@ -416,10 +416,10 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
   }
   if (MoreArgs(s))
   {
-    strfcpy(err->data, _("source: too many arguments"), err->dsize);
+    mutt_str_strfcpy(err->data, _("source: too many arguments"), err->dsize);
     return -1;
   }
-  strfcpy(path, tmp->data, sizeof(path));
+  mutt_str_strfcpy(path, tmp->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
 
   if (luaL_dofile(Lua, path))

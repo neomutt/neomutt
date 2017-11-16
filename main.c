@@ -250,7 +250,7 @@ int main(int argc, char **argv, char **env)
       count++;
     envlist = mutt_mem_calloc(count + 1, sizeof(char *));
     for (srcp = env, dstp = envlist; srcp && *srcp; srcp++, dstp++)
-      *dstp = safe_strdup(*srcp);
+      *dstp = mutt_str_strdup(*srcp);
   }
 
   for (optind = 1; optind < double_dash;)
@@ -271,7 +271,7 @@ int main(int argc, char **argv, char **env)
 
       /* non-option, either an attachment or address */
       if (!STAILQ_EMPTY(&attach))
-        mutt_list_insert_tail(&attach, safe_strdup(argv[optind]));
+        mutt_list_insert_tail(&attach, mutt_str_strdup(argv[optind]));
       else
         argv[nargc++] = argv[optind];
     }
@@ -282,19 +282,19 @@ int main(int argc, char **argv, char **env)
       switch (i)
       {
         case 'A':
-          mutt_list_insert_tail(&alias_queries, safe_strdup(optarg));
+          mutt_list_insert_tail(&alias_queries, mutt_str_strdup(optarg));
           break;
         case 'a':
-          mutt_list_insert_tail(&attach, safe_strdup(optarg));
+          mutt_list_insert_tail(&attach, mutt_str_strdup(optarg));
           break;
 
         case 'F':
           /* mutt_str_replace (&Muttrc, optarg); */
-          mutt_list_insert_tail(&Muttrc, safe_strdup(optarg));
+          mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
 
         case 'f':
-          strfcpy(folder, optarg, sizeof(folder));
+          mutt_str_strfcpy(folder, optarg, sizeof(folder));
           explicit_folder = true;
           break;
 
@@ -320,7 +320,7 @@ int main(int argc, char **argv, char **env)
 
         case 'd':
 #ifdef DEBUG
-          if (mutt_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
+          if (mutt_str_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
           {
             fprintf(stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
             return 1;
@@ -337,7 +337,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'e':
-          mutt_list_insert_tail(&commands, safe_strdup(optarg));
+          mutt_list_insert_tail(&commands, mutt_str_strdup(optarg));
           break;
 
         case 'H':
@@ -371,7 +371,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'Q':
-          mutt_list_insert_tail(&queries, safe_strdup(optarg));
+          mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
           break;
 
         case 'R':
@@ -404,7 +404,7 @@ int main(int argc, char **argv, char **env)
           char buf[LONG_STRING];
 
           snprintf(buf, sizeof(buf), "set news_server=%s", optarg);
-          mutt_list_insert_tail(&commands, safe_strdup(buf));
+          mutt_list_insert_tail(&commands, mutt_str_strdup(buf));
         }
 
         case 'G': /* List of newsgroups */
@@ -478,7 +478,7 @@ int main(int argc, char **argv, char **env)
   if (!STAILQ_EMPTY(&queries))
   {
     for (; optind < argc; optind++)
-      mutt_list_insert_tail(&queries, safe_strdup(argv[optind]));
+      mutt_list_insert_tail(&queries, mutt_str_strdup(argv[optind]));
     return mutt_query_variables(&queries);
   }
   if (dump_variables)
@@ -489,7 +489,7 @@ int main(int argc, char **argv, char **env)
     int rv = 0;
     struct Address *a = NULL;
     for (; optind < argc; optind++)
-      mutt_list_insert_tail(&alias_queries, safe_strdup(argv[optind]));
+      mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
     struct ListNode *np;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
@@ -524,7 +524,7 @@ int main(int argc, char **argv, char **env)
     char fpath[_POSIX_PATH_MAX];
     char msg2[STRING];
 
-    strfcpy(fpath, Folder, sizeof(fpath));
+    mutt_str_strfcpy(fpath, Folder, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
     bool skip = false;
 #ifdef USE_IMAP
@@ -600,7 +600,7 @@ int main(int argc, char **argv, char **env)
     }
 
     if (subject)
-      msg->env->subject = safe_strdup(subject);
+      msg->env->subject = mutt_str_strdup(subject);
 
     if (draftFile)
     {
@@ -617,7 +617,7 @@ int main(int argc, char **argv, char **env)
       /* Prepare fin and expanded_infile. */
       if (infile)
       {
-        if (mutt_strcmp("-", infile) == 0)
+        if (mutt_str_strcmp("-", infile) == 0)
         {
           if (edit_infile)
           {
@@ -628,7 +628,7 @@ int main(int argc, char **argv, char **env)
         }
         else
         {
-          strfcpy(expanded_infile, infile, sizeof(expanded_infile));
+          mutt_str_strfcpy(expanded_infile, infile, sizeof(expanded_infile));
           mutt_expand_path(expanded_infile, sizeof(expanded_infile));
           fin = fopen(expanded_infile, "r");
           if (!fin)
@@ -648,7 +648,7 @@ int main(int argc, char **argv, char **env)
       if (!edit_infile)
       {
         mutt_mktemp(buf, sizeof(buf));
-        tempfile = safe_strdup(buf);
+        tempfile = mutt_str_strdup(buf);
 
         fout = mutt_file_fopen(tempfile, "w");
         if (!fout)
@@ -717,7 +717,7 @@ int main(int argc, char **argv, char **env)
         struct ListNode *np, *tmp;
         STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
         {
-          if (mutt_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
+          if (mutt_str_strncasecmp("X-Mutt-Resume-Draft:", np->data, 20) == 0)
           {
             if (option(OPT_RESUME_EDITED_DRAFT_FILES))
               set_option(OPT_RESUME_DRAFT_FILES);
@@ -893,9 +893,9 @@ int main(int argc, char **argv, char **env)
     if (!folder[0])
     {
       if (SpoolFile)
-        strfcpy(folder, NONULL(SpoolFile), sizeof(folder));
+        mutt_str_strfcpy(folder, NONULL(SpoolFile), sizeof(folder));
       else if (Folder)
-        strfcpy(folder, NONULL(Folder), sizeof(folder));
+        mutt_str_strfcpy(folder, NONULL(Folder), sizeof(folder));
       /* else no folder */
     }
 

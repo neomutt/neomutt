@@ -157,7 +157,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   /* first, generate the "random" remailer */
 
   p = mix_new_remailer();
-  p->shortname = safe_strdup(_("<random>"));
+  p->shortname = mutt_str_strdup(_("<random>"));
   mix_add_entry(&type2_list, p, &slots, &used);
 
   while (fgets(line, sizeof(line), fp))
@@ -168,13 +168,13 @@ static struct Remailer **mix_type2_list(size_t *l)
     if (!t)
       goto problem;
 
-    p->shortname = safe_strdup(t);
+    p->shortname = mutt_str_strdup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
       goto problem;
 
-    p->addr = safe_strdup(t);
+    p->addr = mutt_str_strdup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
@@ -184,7 +184,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     if (!t)
       goto problem;
 
-    p->ver = safe_strdup(t);
+    p->ver = mutt_str_strdup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
@@ -426,7 +426,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
   if (chain->cl >= MAXMIXES)
     return -1;
 
-  if ((mutt_strcmp(s, "0") == 0) || (mutt_strcasecmp(s, "<random>") == 0))
+  if ((mutt_str_strcmp(s, "0") == 0) || (mutt_str_strcasecmp(s, "<random>") == 0))
   {
     chain->ch[chain->cl++] = 0;
     return 0;
@@ -434,7 +434,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (mutt_strcasecmp(s, type2_list[i]->shortname) == 0)
+    if (mutt_str_strcasecmp(s, type2_list[i]->shortname) == 0)
     {
       chain->ch[chain->cl++] = i;
       return 0;
@@ -657,7 +657,7 @@ void mix_make_chain(struct ListHead *chainhead)
       else
         t = "*";
 
-      mutt_list_insert_tail(chainhead, safe_strdup(t));
+      mutt_list_insert_tail(chainhead, mutt_str_strdup(t));
     }
   }
 
@@ -726,7 +726,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   struct ListNode *np;
   STAILQ_FOREACH(np, chain, entries)
   {
-    strfcpy(tmp, cmd, sizeof(tmp));
+    mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
     mutt_file_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);

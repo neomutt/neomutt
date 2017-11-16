@@ -87,7 +87,7 @@ static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
   }
 
   *t = '\0';
-  strfcpy(charset, value, chslen);
+  mutt_str_strfcpy(charset, value, chslen);
 
   if ((u = strchr(t + 1, '\'')))
     return u + 1;
@@ -175,7 +175,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
     value = NULL;
     l = 0;
 
-    strfcpy(attribute, par->attribute, sizeof(attribute));
+    mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
 
     if ((encoded = par->encoded))
       valp = rfc2231_get_charset(par->value, charset, sizeof(charset));
@@ -202,7 +202,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
     if (encoded)
       mutt_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
     *head = mutt_new_parameter();
-    (*head)->attribute = safe_strdup(attribute);
+    (*head)->attribute = mutt_str_strdup(attribute);
     (*head)->value = value;
     head = &(*head)->next;
   }
@@ -327,7 +327,7 @@ int rfc2231_encode_string(char **pd)
   if (!Charset || !SendCharset ||
       !(charset = mutt_choose_charset(Charset, SendCharset, *pd, strlen(*pd), &d, &dlen)))
   {
-    charset = safe_strdup(Charset ? Charset : "unknown-8bit");
+    charset = mutt_str_strdup(Charset ? Charset : "unknown-8bit");
     FREE(&d);
     d = *pd;
     dlen = strlen(d);

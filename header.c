@@ -134,8 +134,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 #endif
     if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
-         (mutt_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
-                      STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
+         (mutt_str_strcmp(STAILQ_FIRST(&n->in_reply_to)->data,
+                          STAILQ_FIRST(&msg->env->in_reply_to)->data) != 0)))
       mutt_list_free(&msg->env->references);
 
   /* restore old info. */
@@ -157,23 +157,23 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   {
     keep = true;
 
-    if (fcc && (mutt_strncasecmp("fcc:", np->data, 4) == 0))
+    if (fcc && (mutt_str_strncasecmp("fcc:", np->data, 4) == 0))
     {
-      p = skip_email_wsp(np->data + 4);
+      p = mutt_str_skip_email_wsp(np->data + 4);
       if (*p)
       {
-        strfcpy(fcc, p, fcclen);
+        mutt_str_strfcpy(fcc, p, fcclen);
         mutt_pretty_mailbox(fcc, fcclen);
       }
       keep = false;
     }
-    else if (mutt_strncasecmp("attach:", np->data, 7) == 0)
+    else if (mutt_str_strncasecmp("attach:", np->data, 7) == 0)
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
       size_t l = 0;
 
-      p = skip_email_wsp(np->data + 7);
+      p = mutt_str_skip_email_wsp(np->data + 7);
       if (*p)
       {
         for (; *p && *p != ' ' && *p != '\t'; p++)
@@ -187,13 +187,13 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
           if (l < sizeof(path) - 1)
             path[l++] = *p;
         }
-        p = skip_email_wsp(p);
+        p = mutt_str_skip_email_wsp(p);
         path[l] = '\0';
 
         mutt_expand_path(path, sizeof(path));
         if ((body2 = mutt_make_file_attach(path)))
         {
-          body2->description = safe_strdup(p);
+          body2->description = mutt_str_strdup(p);
           for (parts = msg->content; parts->next; parts = parts->next)
             ;
           parts->next = body2;
@@ -206,7 +206,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       }
       keep = false;
     }
-    else if ((WithCrypto & APPLICATION_PGP) && (mutt_strncasecmp("pgp:", np->data, 4) == 0))
+    else if ((WithCrypto & APPLICATION_PGP) &&
+             (mutt_str_strncasecmp("pgp:", np->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr(np->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
@@ -268,7 +269,7 @@ static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 {
   if (!hdr)
     return 0;
-  if (mutt_strcmp(hdr->env->x_label, new) == 0)
+  if (mutt_str_strcmp(hdr->env->x_label, new) == 0)
     return 0;
 
   if (hdr->env->x_label)
@@ -291,7 +292,7 @@ int mutt_label_message(struct Header *hdr)
   *buf = '\0';
   if (hdr != NULL && hdr->env->x_label != NULL)
   {
-    strfcpy(buf, hdr->env->x_label, sizeof(buf));
+    mutt_str_strfcpy(buf, hdr->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)

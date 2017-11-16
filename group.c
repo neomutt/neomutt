@@ -43,7 +43,7 @@ struct Group *mutt_pattern_group(const char *k)
   {
     mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
     p = mutt_mem_calloc(1, sizeof(struct Group));
-    p->name = safe_strdup(k);
+    p->name = mutt_str_strdup(k);
     mutt_hash_insert(Groups, p->name, p);
   }
 
@@ -198,7 +198,7 @@ bool mutt_group_match(struct Group *g, const char *s)
     if (mutt_match_regex_list(s, g->rs))
       return true;
     for (ap = g->as; ap; ap = ap->next)
-      if (ap->mailbox && (mutt_strcasecmp(s, ap->mailbox) == 0))
+      if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
         return true;
   }
   return false;

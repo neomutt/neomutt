@@ -25,41 +25,42 @@
  *
  * Lots of commonly-used string manipulation routines.
  *
- * | Function                  | Description
- * | :------------------------ | :---------------------------------------------------------
- * | find_word()               | Find the next word (non-space)
- * | imap_wordcasecmp()        | Find word a in word list b
- * | is_ascii()                | Is a string ASCII (7-bit)?
- * | is_email_wsp()            | Is this a whitespace character (for an email header)
- * | lwslen()                  | Measure the linear-white-space at the beginning of a string
- * | lwsrlen()                 | Measure the linear-white-space at the end of a string
- * | mutt_atoi()               | Convert ASCII string to an integer
- * | mutt_atos()               | Convert ASCII string to a short
- * | mutt_remove_trailing_ws() | Trim trailing whitespace from a string
- * | mutt_skip_whitespace()    | Find the first non-whitespace character in a string
- * | mutt_strcasecmp()         | Compare two strings ignoring case, safely
- * | mutt_strchrnul()          | Find first occurrence of character in string
- * | mutt_strcmp()             | Compare two strings, safely
- * | mutt_strcoll()            | Collate two strings (compare using locale), safely
- * | mutt_stristr()            | Find first occurrence of string (ignoring case)
- * | mutt_strlen()             | Calculate the length of a string, safely
- * | mutt_strlower()           | convert all characters in the string to lowercase
- * | mutt_strncasecmp()        | Compare two strings ignoring case (to a maximum), safely
- * | mutt_strncmp()            | Compare two strings (to a maximum), safely
- * | mutt_str_adjust()         | Shrink-to-fit a string
- * | mutt_str_append_item()    | Add string to another seprated by sep
- * | mutt_str_replace()        | Replace one string with another
- * | mutt_substrcpy()          | Copy a sub-string into a buffer
- * | mutt_substrdup()          | Duplicate a sub-string
- * | next_word()               | Find the next word in a string
- * | rfc822_dequote_comment()  | Un-escape characters in an email address comment
- * | rstrnstr()                | Find last instance of a substring
- * | safe_strcat()             | Concatenate two strings
- * | safe_strdup()             | Copy a string, safely
- * | safe_strncat()            | Concatenate two strings
- * | skip_email_wsp()          | Skip over whitespace as defined by RFC5322
- * | strfcpy()                 | Copy a string into a buffer (guaranteeing NUL-termination)
- * | strnfcpy()                | Copy a limited string into a buffer (guaranteeing NUL-termination)
+ * | Function                      | Description
+ * | :---------------------------- | :---------------------------------------------------------
+ * | mutt_str_adjust()             | Shrink-to-fit a string
+ * | mutt_str_append_item()        | Add string to another separated by sep
+ * | mutt_str_atoi()               | Convert ASCII string to an integer
+ * | mutt_str_atol()               | Convert ASCII string to a long
+ * | mutt_str_atos()               | Convert ASCII string to a short
+ * | mutt_str_dequote_comment()    | Un-escape characters in an email address comment
+ * | mutt_str_find_word()          | Find the next word (non-space)
+ * | mutt_str_is_ascii()           | Is a string ASCII (7-bit)?
+ * | mutt_str_is_email_wsp()       | Is this a whitespace character (for an email header)
+ * | mutt_str_lws_len()            | Measure the linear-white-space at the beginning of a string
+ * | mutt_str_lws_rlen()           | Measure the linear-white-space at the end of a string
+ * | mutt_str_next_word()          | Find the next word in a string
+ * | mutt_str_remove_trailing_ws() | Trim trailing whitespace from a string
+ * | mutt_str_replace()            | Replace one string with another
+ * | mutt_str_rstrnstr()           | Find last instance of a substring
+ * | mutt_str_skip_email_wsp()     | Skip over whitespace as defined by RFC5322
+ * | mutt_str_skip_whitespace()    | Find the first non-whitespace character in a string
+ * | mutt_str_strcasecmp()         | Compare two strings ignoring case, safely
+ * | mutt_str_strcat()             | Concatenate two strings
+ * | mutt_str_strchrnul()          | Find first occurrence of character in string
+ * | mutt_str_strcmp()             | Compare two strings, safely
+ * | mutt_str_strcoll()            | Collate two strings (compare using locale), safely
+ * | mutt_str_strdup()             | Copy a string, safely
+ * | mutt_str_strfcpy()            | Copy a string into a buffer (guaranteeing NUL-termination)
+ * | mutt_str_stristr()            | Find first occurrence of string (ignoring case)
+ * | mutt_str_strlen()             | Calculate the length of a string, safely
+ * | mutt_str_strlower()           | convert all characters in the string to lowercase
+ * | mutt_str_strncasecmp()        | Compare two strings ignoring case (to a maximum), safely
+ * | mutt_str_strncat()            | Concatenate two strings
+ * | mutt_str_strncmp()            | Compare two strings (to a maximum), safely
+ * | mutt_str_strnfcpy()           | Copy a limited string into a buffer (guaranteeing NUL-termination)
+ * | mutt_str_substr_cpy()         | Copy a sub-string into a buffer
+ * | mutt_str_substr_dup()         | Duplicate a sub-string
+ * | mutt_str_word_casecmp()       | Find word a in word list b
  */
 
 #include "config.h"
@@ -73,7 +74,7 @@
 #include "string2.h"
 
 /**
- * mutt_atol - Convert ASCII string to a long
+ * mutt_str_atol - Convert ASCII string to a long
  * @param[in]  str String to read
  * @param[out] dst Store the result
  * @retval  0 Success
@@ -82,7 +83,7 @@
  * This is a strtol() wrapper with range checking.
  * errno may be set on error, e.g. ERANGE
  */
-static int mutt_atol(const char *str, long *dst)
+int mutt_str_atol(const char *str, long *dst)
 {
   long r;
   long *res = dst ? dst : &r;
@@ -102,7 +103,7 @@ static int mutt_atol(const char *str, long *dst)
 }
 
 /**
- * mutt_atos - Convert ASCII string to a short
+ * mutt_str_atos - Convert ASCII string to a short
  * @param[in]  str String to read
  * @param[out] dst Store the result
  * @retval  0 Success
@@ -114,7 +115,7 @@ static int mutt_atol(const char *str, long *dst)
  *
  * errno may be set on error, e.g. ERANGE
  */
-int mutt_atos(const char *str, short *dst)
+int mutt_str_atos(const char *str, short *dst)
 {
   int rc;
   long res;
@@ -123,7 +124,7 @@ int mutt_atos(const char *str, short *dst)
 
   *t = 0;
 
-  rc = mutt_atol(str, &res);
+  rc = mutt_str_atol(str, &res);
   if (rc < 0)
     return rc;
   if ((short) res != res)
@@ -134,7 +135,7 @@ int mutt_atos(const char *str, short *dst)
 }
 
 /**
- * mutt_atoi - Convert ASCII string to an integer
+ * mutt_str_atoi - Convert ASCII string to an integer
  * @param[in]  str String to read
  * @param[out] dst Store the result
  * @retval  0 Success
@@ -145,7 +146,7 @@ int mutt_atos(const char *str, short *dst)
  * If @a dst is NULL, the string will be tested only (without conversion).
  * errno may be set on error, e.g. ERANGE
  */
-int mutt_atoi(const char *str, int *dst)
+int mutt_str_atoi(const char *str, int *dst)
 {
   int rc;
   long res;
@@ -154,7 +155,7 @@ int mutt_atoi(const char *str, int *dst)
 
   *t = 0;
 
-  rc = mutt_atol(str, &res);
+  rc = mutt_str_atol(str, &res);
   if (rc < 0)
     return rc;
   if ((int) res != res)
@@ -165,12 +166,12 @@ int mutt_atoi(const char *str, int *dst)
 }
 
 /**
- * safe_strdup - Copy a string, safely
+ * mutt_str_strdup - Copy a string, safely
  * @param s String to copy
  * @retval ptr  Copy of the string
  * @retval NULL if s was NULL
  */
-char *safe_strdup(const char *s)
+char *mutt_str_strdup(const char *s)
 {
   char *p = NULL;
   size_t l;
@@ -184,13 +185,13 @@ char *safe_strdup(const char *s)
 }
 
 /**
- * safe_strcat - Concatenate two strings
+ * mutt_str_strcat - Concatenate two strings
  * @param d Buffer containing source string
  * @param l Length of buffer
  * @param s String to add
  * @retval ptr Start of joined string
  */
-char *safe_strcat(char *d, size_t l, const char *s)
+char *mutt_str_strcat(char *d, size_t l, const char *s)
 {
   char *p = d;
 
@@ -210,7 +211,7 @@ char *safe_strcat(char *d, size_t l, const char *s)
 }
 
 /**
- * safe_strncat - Concatenate two strings
+ * mutt_str_strncat - Concatenate two strings
  * @param d  Buffer containing source string
  * @param l  Length of buffer
  * @param s  String to add
@@ -219,7 +220,7 @@ char *safe_strcat(char *d, size_t l, const char *s)
  *
  * Add a string to a maximum of @a sl bytes.
  */
-char *safe_strncat(char *d, size_t l, const char *s, size_t sl)
+char *mutt_str_strncat(char *d, size_t l, const char *s, size_t sl)
 {
   char *p = d;
 
@@ -251,7 +252,7 @@ char *safe_strncat(char *d, size_t l, const char *s, size_t sl)
 void mutt_str_replace(char **p, const char *s)
 {
   FREE(p);
-  *p = safe_strdup(s);
+  *p = mutt_str_strdup(s);
 }
 
 /**
@@ -295,13 +296,13 @@ void mutt_str_adjust(char **p)
 }
 
 /**
- * mutt_strlower - convert all characters in the string to lowercase
+ * mutt_str_strlower - convert all characters in the string to lowercase
  * @param s String to lowercase
  * @retval ptr Lowercase string
  *
  * The string is transformed in place.
  */
-char *mutt_strlower(char *s)
+char *mutt_str_strlower(char *s)
 {
   char *p = s;
 
@@ -315,7 +316,7 @@ char *mutt_strlower(char *s)
 }
 
 /**
- * mutt_strchrnul - Find first occurrence of character in string
+ * mutt_str_strchrnul - Find first occurrence of character in string
  * @param s Haystack
  * @param c Needle
  * @retval ptr Success, first occurrence of the character
@@ -327,7 +328,7 @@ char *mutt_strlower(char *s)
  * returning NULL like its standard counterpart, this function returns a
  * pointer to the terminating NUL character.
  */
-const char *mutt_strchrnul(const char *s, char c)
+const char *mutt_str_strchrnul(const char *s, char c)
 {
   for (; *s && (*s != c); s++)
     ;
@@ -335,14 +336,14 @@ const char *mutt_strchrnul(const char *s, char c)
 }
 
 /**
- * mutt_substrcpy - Copy a sub-string into a buffer
+ * mutt_str_substr_cpy - Copy a sub-string into a buffer
  * @param dest    Buffer for the result
  * @param begin     Start of the string to copy
  * @param end     End of the string to copy
  * @param destlen Length of buffer
  * @retval ptr Destination buffer
  */
-char *mutt_substrcpy(char *dest, const char *begin, const char *end, size_t destlen)
+char *mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen)
 {
   size_t len;
 
@@ -355,7 +356,7 @@ char *mutt_substrcpy(char *dest, const char *begin, const char *end, size_t dest
 }
 
 /**
- * mutt_substrdup - Duplicate a sub-string
+ * mutt_str_substr_dup - Duplicate a sub-string
  * @param begin Start of the string to copy
  * @param end   End of the string to copy
  * @retval ptr New string
@@ -364,7 +365,7 @@ char *mutt_substrcpy(char *dest, const char *begin, const char *end, size_t dest
  *
  * The caller must free the returned string.
  */
-char *mutt_substrdup(const char *begin, const char *end)
+char *mutt_str_substr_dup(const char *begin, const char *end)
 {
   size_t len;
   char *p = NULL;
@@ -393,33 +394,33 @@ char *mutt_substrdup(const char *begin, const char *end)
 }
 
 /**
- * mutt_strcmp - Compare two strings, safely
+ * mutt_str_strcmp - Compare two strings, safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_strcmp(const char *a, const char *b)
+int mutt_str_strcmp(const char *a, const char *b)
 {
   return strcmp(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_strcasecmp - Compare two strings ignoring case, safely
+ * mutt_str_strcasecmp - Compare two strings ignoring case, safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_strcasecmp(const char *a, const char *b)
+int mutt_str_strcasecmp(const char *a, const char *b)
 {
   return strcasecmp(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_strncmp - Compare two strings (to a maximum), safely
+ * mutt_str_strncmp - Compare two strings (to a maximum), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @param l Maximum number of bytes to compare
@@ -427,13 +428,13 @@ int mutt_strcasecmp(const char *a, const char *b)
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_strncmp(const char *a, const char *b, size_t l)
+int mutt_str_strncmp(const char *a, const char *b, size_t l)
 {
   return strncmp(NONULL(a), NONULL(b), l);
 }
 
 /**
- * mutt_strncasecmp - Compare two strings ignoring case (to a maximum), safely
+ * mutt_str_strncasecmp - Compare two strings ignoring case (to a maximum), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @param l Maximum number of bytes to compare
@@ -441,42 +442,42 @@ int mutt_strncmp(const char *a, const char *b, size_t l)
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_strncasecmp(const char *a, const char *b, size_t l)
+int mutt_str_strncasecmp(const char *a, const char *b, size_t l)
 {
   return strncasecmp(NONULL(a), NONULL(b), l);
 }
 
 /**
- * mutt_strlen - Calculate the length of a string, safely
+ * mutt_str_strlen - Calculate the length of a string, safely
  * @param a String to measure
  * @retval num Length in bytes
  */
-size_t mutt_strlen(const char *a)
+size_t mutt_str_strlen(const char *a)
 {
   return a ? strlen(a) : 0;
 }
 
 /**
- * mutt_strcoll - Collate two strings (compare using locale), safely
+ * mutt_str_strcoll - Collate two strings (compare using locale), safely
  * @param a First string to compare
  * @param b Second string to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int mutt_strcoll(const char *a, const char *b)
+int mutt_str_strcoll(const char *a, const char *b)
 {
   return strcoll(NONULL(a), NONULL(b));
 }
 
 /**
- * mutt_stristr - Find first occurrence of string (ignoring case)
+ * mutt_str_stristr - Find first occurrence of string (ignoring case)
  * @param haystack String to search through
  * @param needle   String to find
  * @retval ptr  First match of the search string
  * @retval NULL No match, or an error
  */
-const char *mutt_stristr(const char *haystack, const char *needle)
+const char *mutt_str_stristr(const char *haystack, const char *needle)
 {
   const char *p = NULL, *q = NULL;
 
@@ -498,37 +499,37 @@ const char *mutt_stristr(const char *haystack, const char *needle)
 }
 
 /**
- * mutt_skip_whitespace - Find the first non-whitespace character in a string
+ * mutt_str_skip_whitespace - Find the first non-whitespace character in a string
  * @param p String to search
  * @retval ptr First non-whitespace character
  * @retval ptr Terminating NUL character, if the string was entirely whitespace
  */
-char *mutt_skip_whitespace(char *p)
+char *mutt_str_skip_whitespace(char *p)
 {
   SKIPWS(p);
   return p;
 }
 
 /**
- * mutt_remove_trailing_ws - Trim trailing whitespace from a string
+ * mutt_str_remove_trailing_ws - Trim trailing whitespace from a string
  * @param s String to trim
  *
  * The string is modified in place.
  */
-void mutt_remove_trailing_ws(char *s)
+void mutt_str_remove_trailing_ws(char *s)
 {
-  for (char *p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
+  for (char *p = s + mutt_str_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
     *p = '\0';
 }
 
 /**
- * strfcpy - Copy a string into a buffer (guaranteeing NUL-termination)
+ * mutt_str_strfcpy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest Buffer for the result
  * @param src  String to copy
  * @param dlen Length of buffer
  * @retval ptr Destination buffer
  */
-char *strfcpy(char *dest, const char *src, size_t dlen)
+char *mutt_str_strfcpy(char *dest, const char *src, size_t dlen)
 {
   char *dest0 = dest;
   while ((--dlen > 0) && (*src != '\0'))
@@ -539,14 +540,14 @@ char *strfcpy(char *dest, const char *src, size_t dlen)
 }
 
 /**
- * skip_email_wsp - Skip over whitespace as defined by RFC5322
+ * mutt_str_skip_email_wsp - Skip over whitespace as defined by RFC5322
  * @param s String to search
  * @retval ptr First non-whitespace character
  * @retval ptr Terminating NUL character, if the string was entirely whitespace
  *
  * This is used primarily for parsing header fields.
  */
-char *skip_email_wsp(const char *s)
+char *mutt_str_skip_email_wsp(const char *s)
 {
   if (s)
     return (char *) (s + strspn(s, EMAIL_WSP));
@@ -554,32 +555,32 @@ char *skip_email_wsp(const char *s)
 }
 
 /**
- * is_email_wsp - Is this a whitespace character (for an email header)
+ * mutt_str_is_email_wsp - Is this a whitespace character (for an email header)
  * @param c Character to test
  * @retval boolean
  */
-int is_email_wsp(char c)
+int mutt_str_is_email_wsp(char c)
 {
   return c && (strchr(EMAIL_WSP, c) != NULL);
 }
 
 /**
- * strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
+ * mutt_str_strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
  * @param dest Buffer for the result
  * @param src  String to copy
  * @param size Maximum number of characters to copy
  * @param dlen Length of buffer
  * @retval ptr Destination buffer
  */
-char *strnfcpy(char *dest, char *src, size_t size, size_t dlen)
+char *mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen)
 {
   if (dlen > size)
     dlen = size - 1;
-  return strfcpy(dest, src, dlen);
+  return mutt_str_strfcpy(dest, src, dlen);
 }
 
 /**
- * lwslen - Measure the linear-white-space at the beginning of a string
+ * mutt_str_lws_len - Measure the linear-white-space at the beginning of a string
  * @param s String to check
  * @param n Maximum number of characters to check
  * @retval num Count of whitespace characters
@@ -587,7 +588,7 @@ char *strnfcpy(char *dest, char *src, size_t size, size_t dlen)
  * Count the number of whitespace characters at the beginning of a string.
  * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
  */
-size_t lwslen(const char *s, size_t n)
+size_t mutt_str_lws_len(const char *s, size_t n)
 {
   const char *p = s;
   size_t len = n;
@@ -610,7 +611,7 @@ size_t lwslen(const char *s, size_t n)
 }
 
 /**
- * lwsrlen - Measure the linear-white-space at the end of a string
+ * mutt_str_lws_rlen - Measure the linear-white-space at the end of a string
  * @param s String to check
  * @param n Maximum number of characters to check
  * @retval num Count of whitespace characters
@@ -618,7 +619,7 @@ size_t lwslen(const char *s, size_t n)
  * Count the number of whitespace characters at the end of a string.
  * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
  */
-size_t lwsrlen(const char *s, size_t n)
+size_t mutt_str_lws_rlen(const char *s, size_t n)
 {
   const char *p = s + n - 1;
   size_t len = n;
@@ -642,12 +643,12 @@ size_t lwsrlen(const char *s, size_t n)
 }
 
 /**
- * rfc822_dequote_comment - Un-escape characters in an email address comment
+ * mutt_str_dequote_comment - Un-escape characters in an email address comment
  * @param s String to the un-escaped
  *
  * @note The string is changed in-place
  */
-void rfc822_dequote_comment(char *s)
+void mutt_str_dequote_comment(char *s)
 {
   char *w = s;
 
@@ -670,7 +671,7 @@ void rfc822_dequote_comment(char *s)
 }
 
 /**
- * next_word - Find the next word in a string
+ * mutt_str_next_word - Find the next word in a string
  * @param s String to examine
  * @retval ptr Next word
  *
@@ -679,7 +680,7 @@ void rfc822_dequote_comment(char *s)
  *
  * @note What is/isn't a word is determined by isspace()
  */
-const char *next_word(const char *s)
+const char *mutt_str_next_word(const char *s)
 {
   while (*s && !ISSPACE(*s))
     s++;
@@ -688,7 +689,7 @@ const char *next_word(const char *s)
 }
 
 /**
- * rstrnstr - Find last instance of a substring
+ * mutt_str_rstrnstr - Find last instance of a substring
  * @param haystack        String to search through
  * @param haystack_length Length of the string
  * @param needle          String to find
@@ -698,7 +699,7 @@ const char *next_word(const char *s)
  * Return the last instance of needle in the haystack, or NULL.
  * Like strstr(), only backwards, and for a limited haystack length.
  */
-const char *rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
+const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle)
 {
   int needle_length = strlen(needle);
   const char *haystack_end = haystack + haystack_length - needle_length;
@@ -718,7 +719,7 @@ const char *rstrnstr(const char *haystack, size_t haystack_length, const char *n
 }
 
 /**
- * imap_wordcasecmp - Find word a in word list b
+ * mutt_str_word_casecmp - Find word a in word list b
  * @param a Word to find
  * @param b String to check
  * @retval 0   Word was found
@@ -730,7 +731,7 @@ const char *rstrnstr(const char *haystack, size_t haystack_length, const char *n
  *
  * The case of the words is ignored.
  */
-int imap_wordcasecmp(const char *a, const char *b)
+int mutt_str_word_casecmp(const char *a, const char *b)
 {
   char tmp[SHORT_STRING] = "";
 
@@ -746,16 +747,16 @@ int imap_wordcasecmp(const char *a, const char *b)
   }
   tmp[i + 1] = '\0';
 
-  return mutt_strcasecmp(a, tmp);
+  return mutt_str_strcasecmp(a, tmp);
 }
 
 /**
- * is_ascii - Is a string ASCII (7-bit)?
+ * mutt_str_is_ascii - Is a string ASCII (7-bit)?
  * @param p   String to examine
  * @param len Length of string
  * @retval bool True if there are no 8-bit chars
  */
-bool is_ascii(const char *p, size_t len)
+bool mutt_str_is_ascii(const char *p, size_t len)
 {
   const char *s = p;
   while (s && (unsigned int) (s - p) < len)
@@ -768,7 +769,7 @@ bool is_ascii(const char *p, size_t len)
 }
 
 /**
- * find_word - Find the next word (non-space)
+ * mutt_str_find_word - Find the next word (non-space)
  * @param src String to search
  * @retval ptr Beginning of the next word
  *
@@ -778,7 +779,7 @@ bool is_ascii(const char *p, size_t len)
  * @note If there aren't any more words, this will return a pointer to the
  *       final NUL character.
  */
-const char *find_word(const char *src)
+const char *mutt_str_find_word(const char *src)
 {
   const char *p = src;
 

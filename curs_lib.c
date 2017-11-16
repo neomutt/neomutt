@@ -875,7 +875,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
 {
   int rc;
 
-  if (!Pager || (mutt_strcmp(Pager, "builtin") == 0))
+  if (!Pager || (mutt_str_strcmp(Pager, "builtin") == 0))
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {
@@ -931,7 +931,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
   }
   else
   {
-    char *pc = mutt_mem_malloc(mutt_strlen(prompt) + 3);
+    char *pc = mutt_mem_malloc(mutt_str_strlen(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
@@ -963,7 +963,7 @@ void mutt_unget_event(int ch, int op)
 
 void mutt_unget_string(char *s)
 {
-  char *p = s + mutt_strlen(s) - 1;
+  char *p = s + mutt_str_strlen(s) - 1;
 
   while (p >= s)
   {
@@ -1112,7 +1112,7 @@ int mutt_multi_choice(char *prompt, char *letters)
       else if (ch.ch <= '9' && ch.ch > '0')
       {
         choice = ch.ch - '0';
-        if (choice <= mutt_strlen(letters))
+        if (choice <= mutt_str_strlen(letters))
           break;
       }
     }
@@ -1290,7 +1290,7 @@ static void format_s_x(char *dest, size_t destlen, const char *prefix,
   }
 
   mutt_simple_format(dest, destlen, min_width, max_width, justify, ' ', s,
-                     mutt_strlen(s), arboreal);
+                     mutt_str_strlen(s), arboreal);
 }
 
 void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s)
@@ -1313,7 +1313,7 @@ void mutt_paddstr(int n, const char *s)
   wchar_t wc;
   int w;
   size_t k;
-  size_t len = mutt_strlen(s);
+  size_t len = mutt_str_strlen(s);
   mbstate_t mbstate;
 
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1362,7 +1362,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
   if (!src)
     goto out;
 
-  n = mutt_strlen(src);
+  n = mutt_str_strlen(src);
 
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
@@ -1412,7 +1412,7 @@ int mutt_strwidth(const char *s)
   if (!s)
     return 0;
 
-  n = mutt_strlen(s);
+  n = mutt_str_strlen(s);
 
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (k = mbrtowc(&wc, s, n, &mbstate)); s += k, n -= k)

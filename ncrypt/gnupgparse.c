@@ -162,17 +162,17 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "record type: %s\n", p);
 
-        if (mutt_strcmp(p, "pub") == 0)
+        if (mutt_str_strcmp(p, "pub") == 0)
           is_pub = true;
-        else if (mutt_strcmp(p, "sub") == 0)
+        else if (mutt_str_strcmp(p, "sub") == 0)
           *is_subkey = 1;
-        else if (mutt_strcmp(p, "sec") == 0)
+        else if (mutt_str_strcmp(p, "sec") == 0)
           ;
-        else if (mutt_strcmp(p, "ssb") == 0)
+        else if (mutt_str_strcmp(p, "ssb") == 0)
           *is_subkey = 1;
-        else if (mutt_strcmp(p, "uid") == 0)
+        else if (mutt_str_strcmp(p, "uid") == 0)
           is_uid = true;
-        else if (mutt_strcmp(p, "fpr") == 0)
+        else if (mutt_str_strcmp(p, "fpr") == 0)
           is_fpr = true;
         else
           return NULL;
@@ -220,7 +220,8 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       {
         mutt_debug(2, "key len: %s\n", p);
 
-        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) && mutt_atos(p, &tmp.keylen) < 0)
+        if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) &&
+            mutt_str_atos(p, &tmp.keylen) < 0)
           goto bail;
         break;
       }
@@ -231,7 +232,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)))
         {
           int x = 0;
-          if (mutt_atoi(p, &x) < 0)
+          if (mutt_str_atoi(p, &x) < 0)
             goto bail;
           tmp.numalg = x;
           tmp.algorithm = pgp_pkalgbytype(x);
@@ -261,19 +262,19 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         strncpy(tstr, p, 11);
         tstr[4] = '\0';
         tstr[7] = '\0';
-        if (mutt_atoi(tstr, &time.tm_year) < 0)
+        if (mutt_str_atoi(tstr, &time.tm_year) < 0)
         {
           p = tstr;
           goto bail;
         }
         time.tm_year -= 1900;
-        if (mutt_atoi(tstr + 5, &time.tm_mon) < 0)
+        if (mutt_str_atoi(tstr + 5, &time.tm_mon) < 0)
         {
           p = tstr + 5;
           goto bail;
         }
         time.tm_mon -= 1;
-        if (mutt_atoi(tstr + 8, &time.tm_mday) < 0)
+        if (mutt_str_atoi(tstr + 8, &time.tm_mday) < 0)
         {
           p = tstr + 8;
           goto bail;
@@ -302,7 +303,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         {
           /* don't let a subkey fpr overwrite an existing primary key fpr */
           if (!tmp.fingerprint)
-            tmp.fingerprint = safe_strdup(p);
+            tmp.fingerprint = mutt_str_strdup(p);
           break;
         }
 
@@ -314,7 +315,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         uid = mutt_mem_calloc(1, sizeof(struct PgpUid));
         fix_uid(p);
-        uid->addr = safe_strdup(p);
+        uid->addr = mutt_str_strdup(p);
         uid->trust = trust;
         uid->flags |= flags;
         uid->next = tmp.address;

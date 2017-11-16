@@ -87,7 +87,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
     if (!MoreArgs(s))
     {
-      strfcpy(err->data, _("too few arguments"), err->dsize);
+      mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
       goto error;
     }
   }
@@ -100,13 +100,13 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
   if (!command.data)
   {
-    strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
     goto error;
   }
 
   if (MoreArgs(s))
   {
-    strfcpy(err->data, _("too many arguments"), err->dsize);
+    mutt_str_strfcpy(err->data, _("too many arguments"), err->dsize);
     goto error;
   }
 
@@ -116,31 +116,31 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
      * common mistake */
     if ((*pattern.data == '^') && (!CurrentFolder))
     {
-      strfcpy(err->data, _("current mailbox shortcut '^' is unset"), err->dsize);
+      mutt_str_strfcpy(err->data, _("current mailbox shortcut '^' is unset"), err->dsize);
       goto error;
     }
 
-    strfcpy(path, pattern.data, sizeof(path));
+    mutt_str_strfcpy(path, pattern.data, sizeof(path));
     mutt_expand_path_regex(path, sizeof(path), 1);
 
     /* Check for other mailbox shortcuts that expand to the empty string.
      * This is likely a mistake too */
     if (!*path && *pattern.data)
     {
-      strfcpy(err->data, _("mailbox shortcut expanded to empty regex"), err->dsize);
+      mutt_str_strfcpy(err->data, _("mailbox shortcut expanded to empty regex"), err->dsize);
       goto error;
     }
 
     FREE(&pattern.data);
     mutt_buffer_init(&pattern);
-    pattern.data = safe_strdup(path);
+    pattern.data = mutt_str_strdup(path);
   }
 #ifdef USE_COMPRESSED
   else if (data & (MUTT_APPENDHOOK | MUTT_OPENHOOK | MUTT_CLOSEHOOK))
   {
     if (mutt_comp_valid_command(command.data) == 0)
     {
-      strfcpy(err->data, _("badly formatted command string"), err->dsize);
+      mutt_str_strfcpy(err->data, _("badly formatted command string"), err->dsize);
       return -1;
     }
   }
@@ -155,20 +155,20 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
      * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
      * patterns. If given a simple regex, we expand $default_hook.
      */
-    strfcpy(tmp, pattern.data, sizeof(tmp));
+    mutt_str_strfcpy(tmp, pattern.data, sizeof(tmp));
     mutt_check_simple(tmp, sizeof(tmp), DefaultHook);
     FREE(&pattern.data);
     mutt_buffer_init(&pattern);
-    pattern.data = safe_strdup(tmp);
+    pattern.data = mutt_str_strdup(tmp);
   }
 
   if (data & (MUTT_MBOXHOOK | MUTT_SAVEHOOK | MUTT_FCCHOOK))
   {
-    strfcpy(path, command.data, sizeof(path));
+    mutt_str_strfcpy(path, command.data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
     FREE(&command.data);
     mutt_buffer_init(&command);
-    command.data = safe_strdup(path);
+    command.data = mutt_str_strdup(path);
   }
 
   /* check to make sure that a matching hook doesn't already exist */
@@ -177,14 +177,14 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     if (data & MUTT_GLOBALHOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_strcmp(ptr->command, command.data) == 0)
+      if (mutt_str_strcmp(ptr->command, command.data) == 0)
       {
         FREE(&command.data);
         return 0;
       }
     }
     else if (ptr->type == data &&
-             ptr->regex.not == not&&(mutt_strcmp(pattern.data, ptr->regex.pattern) == 0))
+             ptr->regex.not == not&&(mutt_str_strcmp(pattern.data, ptr->regex.pattern) == 0))
     {
       if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK |
                   MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK |
@@ -193,7 +193,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_strcmp(ptr->command, command.data) == 0)
+        if (mutt_str_strcmp(ptr->command, command.data) == 0)
         {
           FREE(&command.data);
           FREE(&pattern.data);
@@ -297,7 +297,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   while (MoreArgs(s))
   {
     mutt_extract_token(buf, s, 0);
-    if (mutt_strcmp("*", buf->data) == 0)
+    if (mutt_str_strcmp("*", buf->data) == 0)
     {
       if (current_hook_type)
       {
@@ -492,10 +492,10 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
       mutt_safe_path(buf, sizeof(buf), adr);
       mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
       if (!option(OPT_FORCE_NAME) && mx_access(path, W_OK) != 0)
-        strfcpy(path, NONULL(Record), pathlen);
+        mutt_str_strfcpy(path, NONULL(Record), pathlen);
     }
     else
-      strfcpy(path, NONULL(Record), pathlen);
+      mutt_str_strfcpy(path, NONULL(Record), pathlen);
   }
   mutt_pretty_mailbox(path, pathlen);
 }
@@ -521,7 +521,7 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
   {
     if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
                                tmp->regex.not))
-      mutt_list_insert_tail(matches, safe_strdup(tmp->command));
+      mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
   }
 }
 

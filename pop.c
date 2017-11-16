@@ -175,7 +175,7 @@ static int fetch_uidl(char *line, void *data)
   memmove(line, endp, strlen(endp) + 1);
 
   for (i = 0; i < ctx->msgcount; i++)
-    if (mutt_strcmp(line, ctx->hdrs[i]->data) == 0)
+    if (mutt_str_strcmp(line, ctx->hdrs[i]->data) == 0)
       break;
 
   if (i == ctx->msgcount)
@@ -187,7 +187,7 @@ static int fetch_uidl(char *line, void *data)
 
     ctx->msgcount++;
     ctx->hdrs[i] = mutt_new_header();
-    ctx->hdrs[i]->data = safe_strdup(line);
+    ctx->hdrs[i]->data = mutt_str_strdup(line);
   }
   else if (ctx->hdrs[i]->index != index - 1)
     pop_data->clear_cache = true;
@@ -218,7 +218,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 
   for (int i = 0; i < ctx->msgcount; i++)
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (ctx->hdrs[i]->data && (mutt_strcmp(ctx->hdrs[i]->data, id) == 0))
+    if (ctx->hdrs[i]->data && (mutt_str_strcmp(ctx->hdrs[i]->data, id) == 0))
       return 0;
 
   /* message not found in context -> remove it from cache
@@ -327,7 +327,7 @@ static int pop_fetch_headers(struct Context *ctx)
 #ifdef USE_HCACHE
       if ((data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
       {
-        char *uidl = safe_strdup(ctx->hdrs[i]->data);
+        char *uidl = mutt_str_strdup(ctx->hdrs[i]->data);
         int refno = ctx->hdrs[i]->refno;
         int index = ctx->hdrs[i]->index;
         /*
@@ -446,8 +446,8 @@ static int pop_open_mailbox(struct Context *ctx)
 
   FREE(&ctx->path);
   FREE(&ctx->realpath);
-  ctx->path = safe_strdup(buf);
-  ctx->realpath = safe_strdup(ctx->path);
+  ctx->path = mutt_str_strdup(buf);
+  ctx->realpath = mutt_str_strdup(ctx->path);
 
   pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
@@ -655,7 +655,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   else
   {
     cache->index = h->index;
-    cache->path = safe_strdup(path);
+    cache->path = mutt_str_strdup(path);
   }
   rewind(msg->fp);
   uidl = h->data;
@@ -756,7 +756,7 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 
     if (ret == 0)
     {
-      strfcpy(buf, "QUIT\r\n", sizeof(buf));
+      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
       ret = pop_query(pop_data, buf, sizeof(buf));
     }
 
@@ -867,7 +867,7 @@ void pop_fetch_mail(void)
   mutt_message(_("Checking for new messages..."));
 
   /* find out how many messages are in the mailbox. */
-  strfcpy(buffer, "STAT\r\n", sizeof(buffer));
+  mutt_str_strfcpy(buffer, "STAT\r\n", sizeof(buffer));
   ret = pop_query(pop_data, buffer, sizeof(buffer));
   if (ret == -1)
     goto fail;
@@ -882,7 +882,7 @@ void pop_fetch_mail(void)
   /* only get unread messages */
   if (msgs > 0 && option(OPT_POP_LAST))
   {
-    strfcpy(buffer, "LAST\r\n", sizeof(buffer));
+    mutt_str_strfcpy(buffer, "LAST\r\n", sizeof(buffer));
     ret = pop_query(pop_data, buffer, sizeof(buffer));
     if (ret == -1)
       goto fail;
@@ -957,14 +957,14 @@ void pop_fetch_mail(void)
   if (rset)
   {
     /* make sure no messages get deleted */
-    strfcpy(buffer, "RSET\r\n", sizeof(buffer));
+    mutt_str_strfcpy(buffer, "RSET\r\n", sizeof(buffer));
     if (pop_query(pop_data, buffer, sizeof(buffer)) == -1)
       goto fail;
   }
 
 finish:
   /* exit gracefully */
-  strfcpy(buffer, "QUIT\r\n", sizeof(buffer));
+  mutt_str_strfcpy(buffer, "QUIT\r\n", sizeof(buffer));
   if (pop_query(pop_data, buffer, sizeof(buffer)) == -1)
     goto fail;
   mutt_socket_close(conn);

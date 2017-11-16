@@ -148,7 +148,7 @@ int mutt_display_message(struct Header *cur)
     }
   }
 
-  if (!Pager || (mutt_strcmp(Pager, "builtin") == 0))
+  if (!Pager || (mutt_str_strcmp(Pager, "builtin") == 0))
     builtin = true;
   else
   {
@@ -291,9 +291,9 @@ void ci_bounce_message(struct Header *h)
   }
 
   if (h)
-    strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
   if (rc || !buf[0])
@@ -327,7 +327,7 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - EXTRA_SPACE,
                        FMT_LEFT, 0, scratch, sizeof(scratch), 0);
-    safe_strcat(prompt, sizeof(prompt), "...?");
+    mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }
   else
     snprintf(prompt, sizeof(prompt), "%s?", scratch);
@@ -616,7 +616,7 @@ void mutt_shell_escape(void)
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) == 0)
   {
     if (!buf[0] && Shell)
-      strfcpy(buf, Shell, sizeof(buf));
+      mutt_str_strfcpy(buf, Shell, sizeof(buf));
     if (buf[0])
     {
       mutt_window_clearline(MuttMessageWindow, 0);
@@ -827,10 +827,10 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
    */
-  if (mutt_strcmp(buf, ".") == 0)
-    strfcpy(buf, LastSaveFolder, sizeof(buf));
+  if (mutt_str_strcmp(buf, ".") == 0)
+    mutt_str_strfcpy(buf, LastSaveFolder, sizeof(buf));
   else
-    strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
+    mutt_str_strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
 
   mutt_expand_path(buf, sizeof(buf));
 
@@ -971,10 +971,10 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   short structure_changed = 0;
 
   cp = mutt_get_parameter("charset", b->parameter);
-  strfcpy(charset, NONULL(cp), sizeof(charset));
+  mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
-  strfcpy(obuf, buf, sizeof(obuf));
+  mutt_str_strfcpy(obuf, buf, sizeof(obuf));
   if (b->parameter)
   {
     size_t l;
@@ -998,8 +998,9 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = mutt_strcasecmp(tmp, obuf);
-  charset_changed = mutt_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
+  type_changed = mutt_str_strcasecmp(tmp, obuf);
+  charset_changed =
+      mutt_str_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
 
   /* if in send mode, check for conversion - current setting is default. */
 

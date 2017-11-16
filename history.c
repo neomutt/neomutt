@@ -137,7 +137,7 @@ void mutt_read_histfile(void)
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
-    p = safe_strdup(linebuf + read);
+    p = mutt_str_strdup(linebuf + read);
     if (p)
     {
       mutt_convert_string(&p, "utf-8", Charset, 0);
@@ -305,7 +305,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
     return;
   }
 
-  tmp = safe_strdup(s);
+  tmp = mutt_str_strdup(s);
   mutt_convert_string(&tmp, Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
@@ -349,7 +349,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
   source = dest = 0;
   while (source < h->last)
   {
-    if (!mutt_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], s))
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -368,7 +368,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
   source = dest = History;
   while (source > old_last)
   {
-    if (!mutt_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], s))
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];
@@ -408,7 +408,7 @@ void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
      *  - lines beginning by a space
      *  - repeated lines
      */
-    if (*s != ' ' && (!h->hist[prev] || (mutt_strcmp(h->hist[prev], s) != 0)))
+    if (*s != ' ' && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], s) != 0)))
     {
       if (option(OPT_HISTORY_REMOVE_DUPS))
         remove_history_dups(hclass, s);

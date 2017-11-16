@@ -80,7 +80,7 @@ int imap_authenticate(struct ImapData *idata)
   if (ImapAuthenticators && *ImapAuthenticators)
   {
     /* Try user-specified list of authentication methods */
-    methods = safe_strdup(ImapAuthenticators);
+    methods = mutt_str_strdup(ImapAuthenticators);
 
     for (method = methods; method; method = delim)
     {
@@ -95,7 +95,8 @@ int imap_authenticate(struct ImapData *idata)
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
+        if (!authenticator->method ||
+            (mutt_str_strcasecmp(authenticator->method, method) == 0))
           if ((r = authenticator->authenticate(idata, method)) != IMAP_AUTH_UNAVAIL)
           {
             FREE(&methods);

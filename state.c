@@ -31,7 +31,7 @@ void state_mark_attach(struct State *s)
 {
   if (!s || !s->fpout)
     return;
-  if ((s->flags & MUTT_DISPLAY) && (mutt_strcmp(Pager, "builtin") == 0))
+  if ((s->flags & MUTT_DISPLAY) && (mutt_str_strcmp(Pager, "builtin") == 0))
     state_puts(AttachmentMarker, s);
 }
 

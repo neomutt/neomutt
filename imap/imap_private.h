@@ -343,7 +343,7 @@ void imap_allow_reopen(struct Context *ctx);
 void imap_disallow_reopen(struct Context *ctx);
 
 #ifdef USE_HCACHE
-#define imap_hcache_keylen mutt_strlen
+#define imap_hcache_keylen mutt_str_strlen
 #endif /* USE_HCACHE */
 
 #endif /* _IMAP_PRIVATE_H */

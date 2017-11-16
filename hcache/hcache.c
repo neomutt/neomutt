@@ -180,13 +180,13 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
     return d;
   }
 
-  if (convert && !is_ascii(c, size))
+  if (convert && !mutt_str_is_ascii(c, size))
   {
-    p = mutt_substrdup(c, c + size);
+    p = mutt_str_substr_dup(c, c + size);
     if (mutt_convert_string(&p, Charset, "utf-8", 0) == 0)
     {
       c = p;
-      size = mutt_strlen(c) + 1;
+      size = mutt_str_strlen(c) + 1;
     }
   }
 
@@ -203,7 +203,7 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
 
 static unsigned char *dump_char(char *c, unsigned char *d, int *off, bool convert)
 {
-  return dump_char_size(c, d, off, mutt_strlen(c) + 1, convert);
+  return dump_char_size(c, d, off, mutt_str_strlen(c) + 1, convert);
 }
 
 static void restore_char(char **c, const unsigned char *d, int *off, bool convert)
@@ -219,9 +219,9 @@ static void restore_char(char **c, const unsigned char *d, int *off, bool conver
 
   *c = mutt_mem_malloc(size);
   memcpy(*c, d + *off, size);
-  if (convert && !is_ascii(*c, size))
+  if (convert && !mutt_str_is_ascii(*c, size))
   {
-    char *tmp = safe_strdup(*c);
+    char *tmp = mutt_str_strdup(*c);
     if (mutt_convert_string(&tmp, "utf-8", Charset, 0) == 0)
     {
       mutt_str_replace(c, tmp);
@@ -538,7 +538,7 @@ static bool create_hcache_dir(const char *path)
     return false;
 
   static char dir[_POSIX_PATH_MAX];
-  strfcpy(dir, path, sizeof(dir));
+  mutt_str_strfcpy(dir, path, sizeof(dir));
 
   char *p = strrchr(dir, '/');
   if (!p)
@@ -583,7 +583,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   char suffix[32] = "";
   struct stat sb;
 
-  int plen = mutt_strlen(path);
+  int plen = mutt_str_strlen(path);
   int ret = stat(path, &sb);
   int slash = (path[plen - 1] == '/');
 
@@ -921,7 +921,7 @@ const char *mutt_hcache_backend_list(void)
     len += snprintf(tmp + len, STRING - len, "%s", (*ops)->name);
   }
 
-  return safe_strdup(tmp);
+  return mutt_str_strdup(tmp);
 }
 
 int mutt_hcache_is_valid_backend(const char *s)
