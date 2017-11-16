@@ -104,7 +104,7 @@ static int parse_query_string(struct Url *u, char *src)
 
   while (src && *src)
   {
-    qs = safe_calloc(1, sizeof(struct UrlQueryString));
+    qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
     if ((k = strchr(src, '&')))
       *k = '\0';
 

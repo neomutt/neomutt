@@ -68,7 +68,7 @@ extern const char *const RFC822Errors[];
  */
 static inline struct Address *rfc822_new_address(void)
 {
-  return safe_calloc(1, sizeof(struct Address));
+  return mutt_mem_calloc(1, sizeof(struct Address));
 }
 
 #endif /* _MUTT_RFC822_H */

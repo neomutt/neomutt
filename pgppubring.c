@@ -224,7 +224,7 @@ static char *binary_fingerprint_to_string(unsigned char *buff, size_t length)
 {
   char *fingerprint = NULL, *pf = NULL;
 
-  pf = fingerprint = safe_malloc((length * 2) + 1);
+  pf = fingerprint = mutt_mem_malloc((length * 2) + 1);
 
   for (int i = 0; i < length; i++)
   {
@@ -685,7 +685,8 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
       {
         if (lsig)
         {
-          struct PgpSignature *signature = safe_calloc(1, sizeof(struct PgpSignature));
+          struct PgpSignature *signature =
+              mutt_mem_calloc(1, sizeof(struct PgpSignature));
           *lsig = signature;
           lsig = &signature->next;
 
@@ -717,14 +718,14 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
         if (!addr)
           break;
 
-        chr = safe_malloc(l);
+        chr = mutt_mem_malloc(l);
         if (l > 0)
         {
           memcpy(chr, buff + 1, l - 1);
           chr[l - 1] = '\0';
         }
 
-        *addr = uid = safe_calloc(1, sizeof(struct PgpUid)); /* XXX */
+        *addr = uid = mutt_mem_calloc(1, sizeof(struct PgpUid)); /* XXX */
         uid->addr = chr;
         uid->parent = p;
         uid->trust = 0;
@@ -776,7 +777,7 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
     size_t error_buf_len;
 
     error_buf_len = sizeof("fopen: ") - 1 + strlen(ringfile) + 1;
-    error_buf = safe_malloc(error_buf_len);
+    error_buf = mutt_mem_malloc(error_buf_len);
     snprintf(error_buf, error_buf_len, "fopen: %s", ringfile);
     perror(error_buf);
     FREE(&error_buf);
@@ -799,7 +800,7 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
     }
     else if (pt == PT_NAME)
     {
-      char *tmp = safe_malloc(l);
+      char *tmp = mutt_mem_malloc(l);
 
       memcpy(tmp, buff + 1, l - 1);
       tmp[l - 1] = '\0';

@@ -486,7 +486,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
       if (i == keymax)
       {
         keymax += 5;
-        safe_realloc(&KeyTable, sizeof(struct PgpUid *) * keymax);
+        mutt_mem_realloc(&KeyTable, sizeof(struct PgpUid *) * keymax);
       }
 
       KeyTable[i++] = a;
@@ -690,7 +690,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
         mutt_str_replace(&l->dflt, resp);
       else
       {
-        l = safe_malloc(sizeof(struct PgpCache));
+        l = mutt_mem_malloc(sizeof(struct PgpCache));
         l->next = id_defaults;
         id_defaults = l;
         l->what = safe_strdup(whatfor);

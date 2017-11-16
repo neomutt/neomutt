@@ -815,7 +815,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
     /* If this pattern needs more matches, expand pmatch. */
     if (l->nmatch > nmatch)
     {
-      safe_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
+      mutt_mem_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
       nmatch = l->nmatch;
     }
 
@@ -1544,9 +1544,9 @@ const char *mutt_make_version(void)
 
 struct Regex *mutt_compile_regex(const char *s, int flags)
 {
-  struct Regex *pp = safe_calloc(1, sizeof(struct Regex));
+  struct Regex *pp = mutt_mem_calloc(1, sizeof(struct Regex));
   pp->pattern = safe_strdup(s);
-  pp->regex = safe_calloc(1, sizeof(regex_t));
+  pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
   if (REGCOMP(pp->regex, NONULL(s), flags) != 0)
     mutt_free_regex(&pp);
 
@@ -1638,7 +1638,7 @@ bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int 
     /* If this pattern needs more matches, expand pmatch. */
     if (l->nmatch > nmatch)
     {
-      safe_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
+      mutt_mem_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
       nmatch = l->nmatch;
     }
 

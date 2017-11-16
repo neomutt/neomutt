@@ -100,7 +100,7 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
   if (*used == *slots)
   {
     *slots += 5;
-    safe_realloc(type2_list, sizeof(struct Remailer *) * (*slots));
+    mutt_mem_realloc(type2_list, sizeof(struct Remailer *) * (*slots));
   }
 
   (*type2_list)[(*used)++] = entry;
@@ -110,7 +110,7 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
 
 static struct Remailer *mix_new_remailer(void)
 {
-  return safe_calloc(1, sizeof(struct Remailer));
+  return mutt_mem_calloc(1, sizeof(struct Remailer));
 }
 
 static void mix_free_remailer(struct Remailer **r)
@@ -232,7 +232,7 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
   if (!chain->cl)
     return;
 
-  safe_realloc(coordsp, sizeof(struct Coord) * chain->cl);
+  mutt_mem_realloc(coordsp, sizeof(struct Coord) * chain->cl);
 
   coords = *coordsp;
 
@@ -481,7 +481,7 @@ void mix_make_chain(struct ListHead *chainhead)
     return;
   }
 
-  chain = safe_calloc(1, sizeof(struct MixChain));
+  chain = mutt_mem_calloc(1, sizeof(struct MixChain));
 
   struct ListNode *p;
   STAILQ_FOREACH(p, chainhead, entries)

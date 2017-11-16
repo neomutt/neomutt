@@ -910,7 +910,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
           tmp_folder_name += lastsep; /* basename */
         int sfn_len = mutt_strlen(tmp_folder_name) +
                       sidebar_folder_depth * mutt_strlen(SidebarIndentString) + 1;
-        sidebar_folder_name = safe_malloc(sfn_len);
+        sidebar_folder_name = mutt_mem_malloc(sfn_len);
         sidebar_folder_name[0] = 0;
         for (int i = 0; i < sidebar_folder_depth; i++)
           safe_strcat(sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
@@ -1112,9 +1112,9 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
     if (EntryCount >= EntryLen)
     {
       EntryLen += 10;
-      safe_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
+      mutt_mem_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
     }
-    Entries[EntryCount] = safe_calloc(1, sizeof(struct SbEntry));
+    Entries[EntryCount] = mutt_mem_calloc(1, sizeof(struct SbEntry));
     Entries[EntryCount]->buffy = b;
 
     if (TopIndex < 0)

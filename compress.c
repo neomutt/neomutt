@@ -256,7 +256,7 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
   const char *c = find_hook(MUTT_CLOSEHOOK, ctx->path);
   const char *a = find_hook(MUTT_APPENDHOOK, ctx->path);
 
-  struct CompressInfo *ci = safe_calloc(1, sizeof(struct CompressInfo));
+  struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   ctx->compress_info = ci;
 
   ci->open = safe_strdup(o);

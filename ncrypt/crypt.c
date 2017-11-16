@@ -870,7 +870,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   if (!oppenc_mode && self_encrypt && *self_encrypt)
   {
     keylist_size = mutt_strlen(*keylist);
-    safe_realloc(keylist, keylist_size + mutt_strlen(self_encrypt) + 2);
+    mutt_mem_realloc(keylist, keylist_size + mutt_strlen(self_encrypt) + 2);
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
@@ -919,7 +919,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
     else
     {
       if ((*n % 5) == 0)
-        safe_realloc(signatures, (*n + 6) * sizeof(struct Body **));
+        mutt_mem_realloc(signatures, (*n + 6) * sizeof(struct Body **));
 
       (*signatures)[(*n)++] = a;
     }

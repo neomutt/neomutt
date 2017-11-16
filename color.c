@@ -149,7 +149,7 @@ static const struct Mapping ComposeFields[] = {
 
 static struct ColorLine *new_color_line(void)
 {
-  struct ColorLine *p = safe_calloc(1, sizeof(struct ColorLine));
+  struct ColorLine *p = mutt_mem_calloc(1, sizeof(struct ColorLine));
 
   p->fg = p->bg = -1;
 
@@ -179,7 +179,7 @@ static void free_color_line(struct ColorLine *tmp, int free_colors)
 void ci_start_color(void)
 {
   memset(ColorDefs, A_NORMAL, sizeof(int) * MT_COLOR_MAX);
-  ColorQuote = safe_malloc(COLOR_QUOTE_INIT * sizeof(int));
+  ColorQuote = mutt_mem_malloc(COLOR_QUOTE_INIT * sizeof(int));
   memset(ColorQuote, A_NORMAL, sizeof(int) * COLOR_QUOTE_INIT);
   ColorQuoteSize = COLOR_QUOTE_INIT;
   ColorQuoteUsed = 0;
@@ -281,7 +281,7 @@ int mutt_alloc_color(int fg, int bg)
     i++;
   }
 
-  p = safe_malloc(sizeof(struct ColorList));
+  p = mutt_mem_malloc(sizeof(struct ColorList));
   p->next = ColorList;
   ColorList = p;
 
@@ -940,7 +940,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
   {
     if (q_level >= ColorQuoteSize)
     {
-      safe_realloc(&ColorQuote, (ColorQuoteSize += 2) * sizeof(int));
+      mutt_mem_realloc(&ColorQuote, (ColorQuoteSize += 2) * sizeof(int));
       ColorQuote[ColorQuoteSize - 2] = ColorDefs[MT_COLOR_QUOTED];
       ColorQuote[ColorQuoteSize - 1] = ColorDefs[MT_COLOR_QUOTED];
     }

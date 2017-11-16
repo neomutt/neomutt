@@ -160,7 +160,7 @@ static struct Buffy *buffy_new(const char *path)
   char rp[PATH_MAX] = "";
   char *r = NULL;
 
-  buffy = safe_calloc(1, sizeof(struct Buffy));
+  buffy = mutt_mem_calloc(1, sizeof(struct Buffy));
   strfcpy(buffy->path, path, sizeof(buffy->path));
   r = realpath(path, rp);
   strfcpy(buffy->realpath, r ? rp : path, sizeof(buffy->realpath));

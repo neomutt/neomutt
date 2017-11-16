@@ -150,11 +150,11 @@ static int cmp_int_key(union HashKey a, union HashKey b)
  */
 static struct Hash *new_hash(int nelem)
 {
-  struct Hash *table = safe_calloc(1, sizeof(struct Hash));
+  struct Hash *table = mutt_mem_calloc(1, sizeof(struct Hash));
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
-  table->table = safe_calloc(nelem, sizeof(struct HashElem *));
+  table->table = mutt_mem_calloc(nelem, sizeof(struct HashElem *));
   return table;
 }
 
@@ -171,7 +171,7 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
   struct HashElem *ptr = NULL;
   unsigned int h;
 
-  ptr = safe_malloc(sizeof(struct HashElem));
+  ptr = mutt_mem_malloc(sizeof(struct HashElem));
   h = table->gen_hash(key, table->nelem);
   ptr->key = key;
   ptr->data = data;

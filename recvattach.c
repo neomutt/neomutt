@@ -1016,7 +1016,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
     }
     else
     {
-      new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
 
       new->content = m;
@@ -1137,7 +1137,7 @@ void mutt_view_attachments(struct Header *hdr)
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
   mutt_push_current_menu(menu);
 
-  actx = safe_calloc(sizeof(struct AttachCtx), 1);
+  actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = hdr;
   actx->root_fp = msg->fp;
   mutt_update_recvattach_menu(actx, menu, 1);

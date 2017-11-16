@@ -174,7 +174,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
 {
   char *tstr = NULL;
 
-  tstr = safe_malloc(len + 1);
+  tstr = mutt_mem_malloc(len + 1);
   memcpy(tstr, buf, len);
   tstr[len] = 0;
 
@@ -333,7 +333,7 @@ static struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key)
 {
   struct CryptKeyInfo *k = NULL;
 
-  k = safe_calloc(1, sizeof(*k));
+  k = mutt_mem_calloc(1, sizeof(*k));
   k->kobj = key->kobj;
   gpgme_key_ref(key->kobj);
   k->idx = key->idx;
@@ -766,7 +766,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
         else
           err = gpgme_get_key(context, buf, &key, 0);
 
-        safe_realloc(&rset, sizeof(*rset) * (rset_n + 1));
+        mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
         if (!err)
           rset[rset_n++] = key;
         else
@@ -782,7 +782,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
   }
 
   /* NULL terminate.  */
-  safe_realloc(&rset, sizeof(*rset) * (rset_n + 1));
+  mutt_mem_realloc(&rset, sizeof(*rset) * (rset_n + 1));
   rset[rset_n++] = NULL;
 
   if (context)
@@ -1379,7 +1379,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
     return;
   is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
-  buf = safe_malloc(strlen(prefix) + strlen(s) * 4 + 2);
+  buf = mutt_mem_malloc(strlen(prefix) + strlen(s) * 4 + 2);
   strcpy(buf, prefix);
   p = buf + strlen(buf);
   if (is_pgp && strlen(s) == 40)
@@ -3317,7 +3317,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
   n = s - string;
   if (!n)
     return NULL; /* empty key */
-  array->key = safe_malloc(n + 1);
+  array->key = mutt_mem_malloc(n + 1);
   p = array->key;
   memcpy(p, string, n); /* fixme: trim trailing spaces */
   p[n] = 0;
@@ -3332,7 +3332,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
     if (!n || (n & 1))
       return NULL; /* empty or odd number of digits */
     n /= 2;
-    p = safe_malloc(n + 1);
+    p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
     for (s1 = string; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
@@ -3365,7 +3365,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
         n++;
     }
 
-    p = safe_malloc(n + 1);
+    p = mutt_mem_malloc(n + 1);
     array->value = (char *) p;
     for (s = string; n; s++, n--)
     {
@@ -3400,7 +3400,7 @@ static struct DnArray *parse_dn(const char *string)
   size_t arrayidx, arraysize;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = safe_malloc((arraysize + 1) * sizeof(*array));
+  array = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
   arrayidx = 0;
   while (*string)
   {
@@ -3410,11 +3410,11 @@ static struct DnArray *parse_dn(const char *string)
       break; /* ready */
     if (arrayidx >= arraysize)
     {
-      /* neomutt lacks a real safe_realloc - so we need to copy */
+      /* neomutt lacks a real mutt_mem_realloc - so we need to copy */
       struct DnArray *a2 = NULL;
 
       arraysize += 5;
-      a2 = safe_malloc((arraysize + 1) * sizeof(*array));
+      a2 = mutt_mem_malloc((arraysize + 1) * sizeof(*array));
       for (int i = 0; i < arrayidx; i++)
       {
         a2[i].key = array[i].key;
@@ -3913,7 +3913,7 @@ static char *list_to_pattern(struct ListHead *list)
     n++; /* delimiter or end of string */
   }
   n++; /* make sure to allocate at least one byte */
-  pattern = p = safe_calloc(1, n);
+  pattern = p = mutt_mem_calloc(1, n);
   STAILQ_FOREACH(np, list, entries)
   {
     s = np->data;
@@ -3992,7 +3992,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
     if (!n)
       goto no_pgphints;
 
-    char **patarr = safe_calloc(n + 1, sizeof(*patarr));
+    char **patarr = mutt_mem_calloc(n + 1, sizeof(*patarr));
     n = 0;
     STAILQ_FOREACH(np, hints, entries)
     {
@@ -4030,7 +4030,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
-        k = safe_calloc(1, sizeof(*k));
+        k = mutt_mem_calloc(1, sizeof(*k));
         k->kobj = key;
         gpgme_key_ref(k->kobj);
         k->idx = idx;
@@ -4074,7 +4074,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
-        k = safe_calloc(1, sizeof(*k));
+        k = mutt_mem_calloc(1, sizeof(*k));
         k->kobj = key;
         gpgme_key_ref(k->kobj);
         k->idx = idx;
@@ -4156,7 +4156,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
     if (i == keymax)
     {
       keymax += 20;
-      safe_realloc(&key_table, sizeof(struct CryptKeyInfo *) * keymax);
+      mutt_mem_realloc(&key_table, sizeof(struct CryptKeyInfo *) * keymax);
     }
 
     key_table[i++] = k;
@@ -4560,7 +4560,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
         mutt_str_replace(&l->dflt, resp);
       else
       {
-        l = safe_malloc(sizeof(struct CryptCache));
+        l = mutt_mem_malloc(sizeof(struct CryptCache));
         l->next = id_defaults;
         id_defaults = l;
         l->what = safe_strdup(whatfor);
@@ -4687,7 +4687,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
 
     bypass_selection:
       keylist_size += mutt_strlen(keyID) + 4 + 1;
-      safe_realloc(&keylist, keylist_size);
+      mutt_mem_realloc(&keylist, keylist_size);
       sprintf(keylist + keylist_used, "%s0x%s%s", keylist_used ? " " : "",
               keyID, forced_valid ? "!" : "");
       keylist_used = mutt_strlen(keylist);

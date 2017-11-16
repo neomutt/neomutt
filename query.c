@@ -144,12 +144,12 @@ static struct Query *run_query(char *s, int quiet)
     {
       if (!first)
       {
-        first = safe_calloc(1, sizeof(struct Query));
+        first = mutt_mem_calloc(1, sizeof(struct Query));
         cur = first;
       }
       else
       {
-        cur->next = safe_calloc(1, sizeof(struct Query));
+        cur->next = mutt_mem_calloc(1, sizeof(struct Query));
         cur = cur->next;
       }
 
@@ -309,7 +309,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
+    menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
@@ -363,7 +363,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
               if (op == OP_QUERY)
               {
-                menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
+                menu->data = QueryTable =
+                    mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
                 for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
                   QueryTable[i].data = queryp;
@@ -373,7 +374,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
                 bool clear = false;
 
                 /* append */
-                safe_realloc(&QueryTable, menu->max * sizeof(struct Entry));
+                mutt_mem_realloc(&QueryTable, menu->max * sizeof(struct Entry));
 
                 menu->data = QueryTable;
 

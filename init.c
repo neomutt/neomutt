@@ -100,7 +100,7 @@ static void myvar_set(const char *var, const char *val)
       break;
 
   if (!*cur)
-    *cur = safe_calloc(1, sizeof(struct MyVar));
+    *cur = mutt_mem_calloc(1, sizeof(struct MyVar));
 
   if (!(*cur)->name)
     (*cur)->name = safe_strdup(var);
@@ -167,7 +167,7 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
       }
     }
 
-    rx = safe_malloc(sizeof(regex_t));
+    rx = mutt_mem_malloc(sizeof(regex_t));
     e = REGCOMP(rx, p, flags);
     if (e != 0)
     {
@@ -302,7 +302,7 @@ static struct MbTable *parse_mbtable(const char *s)
   mbstate_t mbstate;
   char *d = NULL;
 
-  t = safe_calloc(1, sizeof(struct MbTable));
+  t = mutt_mem_calloc(1, sizeof(struct MbTable));
   slen = mutt_strlen(s);
   if (!slen)
     return t;
@@ -310,8 +310,8 @@ static struct MbTable *parse_mbtable(const char *s)
   t->orig_str = safe_strdup(s);
   /* This could be more space efficient.  However, being used on tiny
    * strings (ToChars and StatusChars), the overhead is not great. */
-  t->chars = safe_calloc(slen, sizeof(char *));
-  d = t->segmented_str = safe_calloc(slen * 2, sizeof(char));
+  t->chars = mutt_mem_calloc(slen, sizeof(char *));
+  d = t->segmented_str = mutt_mem_calloc(slen * 2, sizeof(char));
 
   memset(&mbstate, 0, sizeof(mbstate));
   while (slen && (k = mbrtowc(NULL, s, slen, &mbstate)))
@@ -647,7 +647,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       {
         expnlen = mutt_strlen(expn.data);
         tok->dsize = expnlen + mutt_strlen(tok->dptr) + 1;
-        ptr = safe_malloc(tok->dsize);
+        ptr = mutt_mem_malloc(tok->dsize);
         memcpy(ptr, expn.data, expnlen);
         strcpy(ptr + expnlen, tok->dptr);
         if (tok->destroy)
@@ -767,7 +767,7 @@ static void add_to_stailq(struct ListHead *head, const char *str)
 
 static struct RegexList *new_regex_list(void)
 {
-  return safe_calloc(1, sizeof(struct RegexList));
+  return mutt_mem_calloc(1, sizeof(struct RegexList));
 }
 
 int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
@@ -856,7 +856,7 @@ static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
 
 static struct ReplaceList *new_replace_list(void)
 {
-  return safe_calloc(1, sizeof(struct ReplaceList));
+  return mutt_mem_calloc(1, sizeof(struct ReplaceList));
 }
 
 static int add_to_replace_list(struct ReplaceList **list, const char *pat,
@@ -1555,7 +1555,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     if (!buf->data || *buf->data == '\0')
       continue;
 
-    a = safe_malloc(sizeof(struct AttachMatch));
+    a = mutt_mem_malloc(sizeof(struct AttachMatch));
 
     /* some cheap hacks that I expect to remove */
     if (mutt_strcasecmp(buf->data, "any") == 0)
@@ -1577,7 +1577,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     }
 
     len = strlen(a->minor);
-    tmpminor = safe_malloc(len + 3);
+    tmpminor = mutt_mem_malloc(len + 3);
     strcpy(&tmpminor[1], a->minor);
     tmpminor[0] = '^';
     tmpminor[len + 1] = '$';
@@ -1915,7 +1915,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (!tmp)
   {
     /* create a new alias */
-    tmp = safe_calloc(1, sizeof(struct Alias));
+    tmp = mutt_mem_calloc(1, sizeof(struct Alias));
     tmp->name = safe_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
@@ -2148,7 +2148,7 @@ static void restore_default(struct Option *p)
         int retval;
         char *s = (char *) p->init;
 
-        pp->regex = safe_calloc(1, sizeof(regex_t));
+        pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
         pp->pattern = safe_strdup((char *) p->init);
         if (mutt_strcmp(p->option, "mask") != 0)
           flags |= mutt_which_case((const char *) p->init);
@@ -2398,7 +2398,7 @@ void mutt_envlist_set(const char *name, const char *value, bool overwrite)
   /* If not found, add new slot */
   else
   {
-    safe_realloc(&envlist, sizeof(char *) * (count + 2));
+    mutt_mem_realloc(&envlist, sizeof(char *) * (count + 2));
     envlist[count] = safe_strdup(work);
     envlist[count + 1] = NULL;
   }
@@ -2472,7 +2472,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
           count++;
         }
         *save = NULL;
-        safe_realloc(&envlist, sizeof(char *) * (count + 1));
+        mutt_mem_realloc(&envlist, sizeof(char *) * (count + 1));
         return 0;
       }
       envp++;
@@ -3361,7 +3361,7 @@ static void matches_ensure_morespace(int current)
     extra_space = Matches_listsize - base_space;
     extra_space *= 2;
     space = base_space + extra_space;
-    safe_realloc(&Matches, space * sizeof(char *));
+    mutt_mem_realloc(&Matches, space * sizeof(char *));
     memset(&Matches[current + 1], 0, space - current);
     Matches_listsize = space;
   }
@@ -3647,7 +3647,7 @@ static int complete_all_nm_tags(const char *pt)
     FREE(&nm_tags);
   }
   /* Allocate a new list, with sentinel. */
-  nm_tags = safe_malloc((tag_count_1 + 1) * sizeof(char *));
+  nm_tags = mutt_mem_malloc((tag_count_1 + 1) * sizeof(char *));
   nm_tags[tag_count_1] = NULL;
 
   /* Get all the tags. */
@@ -3882,7 +3882,7 @@ int mutt_query_variables(struct ListHead *queries)
   mutt_buffer_init(&token);
 
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
 
   struct ListNode *np;
   STAILQ_FOREACH(np, queries, entries)
@@ -3918,7 +3918,7 @@ int mutt_dump_variables(int hide_sensitive)
   mutt_buffer_init(&token);
 
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
 
   for (int i = 0; MuttVars[i].option; i++)
   {
@@ -3954,7 +3954,7 @@ static int execute_commands(struct ListHead *p)
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   struct ListNode *np;
   STAILQ_FOREACH(np, p, entries)
@@ -4018,7 +4018,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   err.dptr = err.data;
 
   Groups = mutt_hash_create(1031, 0);
@@ -4112,12 +4112,12 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
   /* we have a compile-time domain name, use that for Hostname */
-  Hostname = safe_malloc(mutt_strlen(DOMAIN) + mutt_strlen(ShortHostname) + 2);
+  Hostname = mutt_mem_malloc(mutt_strlen(DOMAIN) + mutt_strlen(ShortHostname) + 2);
   sprintf(Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
   if (!(getdnsdomainname(buffer, sizeof(buffer))))
   {
-    Hostname = safe_malloc(mutt_strlen(buffer) + mutt_strlen(ShortHostname) + 2);
+    Hostname = mutt_mem_malloc(mutt_strlen(buffer) + mutt_strlen(ShortHostname) + 2);
     sprintf(Hostname, "%s.%s", NONULL(ShortHostname), buffer);
   }
   else
@@ -4205,7 +4205,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   mutt_set_langinfo_charset();
   mutt_set_charset(Charset);
 
-  Matches = safe_calloc(Matches_listsize, sizeof(char *));
+  Matches = mutt_mem_calloc(Matches_listsize, sizeof(char *));
 
   /* Set standard defaults */
   for (int i = 0; MuttVars[i].option; i++)

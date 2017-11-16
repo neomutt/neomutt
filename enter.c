@@ -76,7 +76,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
 
   if (savelen)
   {
-    savebuf = safe_calloc(savelen, sizeof(wchar_t));
+    savebuf = mutt_mem_calloc(savelen, sizeof(wchar_t));
     memcpy(savebuf, state->wbuf + state->curpos, savelen * sizeof(wchar_t));
   }
 
@@ -89,7 +89,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
     if (state->curpos + savelen > state->wbuflen)
     {
       state->wbuflen = state->curpos + savelen;
-      safe_realloc(&state->wbuf, state->wbuflen * sizeof(wchar_t));
+      mutt_mem_realloc(&state->wbuf, state->wbuflen * sizeof(wchar_t));
     }
 
     /* Restore suffix */
@@ -478,7 +478,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             if (!mutt_complete(buf, buflen))
             {
               templen = state->lastchar - i;
-              safe_realloc(&tempbuf, templen * sizeof(wchar_t));
+              mutt_mem_realloc(&tempbuf, templen * sizeof(wchar_t));
             }
             else
               BEEP();
@@ -597,7 +597,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             if (!mutt_complete(buf, buflen))
             {
               templen = state->lastchar;
-              safe_realloc(&tempbuf, templen * sizeof(wchar_t));
+              mutt_mem_realloc(&tempbuf, templen * sizeof(wchar_t));
               memcpy(tempbuf, state->wbuf, templen * sizeof(wchar_t));
             }
             else
@@ -709,7 +709,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
         {
           char **tfiles = NULL;
           *numfiles = 1;
-          tfiles = safe_calloc(*numfiles, sizeof(char *));
+          tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
           mutt_expand_path(buf, buflen);
           tfiles[0] = safe_strdup(buf);
           *files = tfiles;
@@ -722,7 +722,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
         if (state->lastchar >= state->wbuflen)
         {
           state->wbuflen = state->lastchar + 20;
-          safe_realloc(&state->wbuf, state->wbuflen * sizeof(wchar_t));
+          mutt_mem_realloc(&state->wbuf, state->wbuflen * sizeof(wchar_t));
         }
         memmove(state->wbuf + state->curpos + 1, state->wbuf + state->curpos,
                 (state->lastchar - state->curpos) * sizeof(wchar_t));

@@ -248,7 +248,7 @@ int main(int argc, char **argv, char **env)
     int count = 0;
     for (srcp = env; srcp && *srcp; srcp++)
       count++;
-    envlist = safe_calloc(count + 1, sizeof(char *));
+    envlist = mutt_mem_calloc(count + 1, sizeof(char *));
     for (srcp = env, dstp = envlist; srcp && *srcp; srcp++, dstp++)
       *dstp = safe_strdup(*srcp);
   }

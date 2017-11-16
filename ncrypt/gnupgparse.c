@@ -98,7 +98,7 @@ static void fix_uid(char *uid)
     char *ob = NULL;
     size_t ibl, obl;
 
-    buf = safe_malloc(n + 1);
+    buf = mutt_mem_malloc(n + 1);
     ib = uid;
     ibl = d - uid + 1;
     ob = buf;
@@ -312,7 +312,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         mutt_debug(2, "user ID: %s\n", NONULL(p));
 
-        uid = safe_calloc(1, sizeof(struct PgpUid));
+        uid = mutt_mem_calloc(1, sizeof(struct PgpUid));
         fix_uid(p);
         uid->addr = safe_strdup(p);
         uid->trust = trust;
@@ -364,7 +364,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
   /* merge temp key back into real key */
   if (!(is_uid || is_fpr || (*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS))))
-    k = safe_malloc(sizeof(*k));
+    k = mutt_mem_malloc(sizeof(*k));
   memcpy(k, &tmp, sizeof(*k));
   /* fixup parentship of uids after merging the temp key into
    * the real key */

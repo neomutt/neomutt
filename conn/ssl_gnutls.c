@@ -378,7 +378,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     return 0;
 
   b64_data.size = filestat.st_size + 1;
-  b64_data_data = safe_calloc(1, b64_data.size);
+  b64_data_data = mutt_mem_calloc(1, b64_data.size);
   b64_data_data[b64_data.size - 1] = '\0';
   b64_data.data = b64_data_data;
 
@@ -649,9 +649,9 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
 
   menu = mutt_new_menu(MENU_GENERIC);
   menu->max = 25;
-  menu->dialog = safe_calloc(1, menu->max * sizeof(char *));
+  menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = safe_calloc(1, SHORT_STRING * sizeof(char));
+    menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
   mutt_push_current_menu(menu);
 
   row = 0;
@@ -1037,7 +1037,7 @@ static int tls_set_priority(struct TlsSockData *data)
   int err;
 
   priority_size = SHORT_STRING + mutt_strlen(SslCiphers);
-  priority = safe_malloc(priority_size);
+  priority = mutt_mem_malloc(priority_size);
 
   priority[0] = 0;
   if (SslCiphers)
@@ -1142,7 +1142,7 @@ static int tls_negotiate(struct Connection *conn)
   struct TlsSockData *data = NULL;
   int err;
 
-  data = safe_calloc(1, sizeof(struct TlsSockData));
+  data = mutt_mem_calloc(1, sizeof(struct TlsSockData));
   conn->sockdata = data;
   err = gnutls_certificate_allocate_credentials(&data->xcred);
   if (err < 0)

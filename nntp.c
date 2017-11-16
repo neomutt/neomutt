@@ -246,14 +246,14 @@ static int nntp_attempt_features(struct NntpServer *nserv)
 
       if (nserv->overview_fmt)
         FREE(&nserv->overview_fmt);
-      nserv->overview_fmt = safe_malloc(buflen);
+      nserv->overview_fmt = mutt_mem_malloc(buflen);
 
       while (true)
       {
         if (buflen - off < LONG_STRING)
         {
           buflen *= 2;
-          safe_realloc(&nserv->overview_fmt, buflen);
+          mutt_mem_realloc(&nserv->overview_fmt, buflen);
         }
 
         chunk = mutt_socket_readln(nserv->overview_fmt + off, buflen - off, conn);
@@ -293,7 +293,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
         }
       }
       nserv->overview_fmt[off++] = '\0';
-      safe_realloc(&nserv->overview_fmt, off);
+      mutt_mem_realloc(&nserv->overview_fmt, off);
     }
   }
   return 0;
@@ -843,7 +843,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
       return 1;
     }
 
-    line = safe_malloc(sizeof(buf));
+    line = mutt_mem_malloc(sizeof(buf));
     rc = 0;
 
     while (true)
@@ -883,7 +883,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
         off = 0;
       }
 
-      safe_realloc(&line, off + sizeof(buf));
+      mutt_mem_realloc(&line, off + sizeof(buf));
     }
     FREE(&line);
     funct(NULL, data);
@@ -1178,7 +1178,7 @@ static int parse_overview_line(char *line, void *data)
     hdr->read = false;
     hdr->old = false;
     hdr->deleted = false;
-    hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
+    hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
     NHDR(hdr)->article_num = anum;
     if (fc->restore)
       hdr->changed = true;
@@ -1227,7 +1227,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
   fc.first = first;
   fc.last = last;
   fc.restore = restore;
-  fc.messages = safe_calloc(last - first + 1, sizeof(unsigned char));
+  fc.messages = mutt_mem_calloc(last - first + 1, sizeof(unsigned char));
 #ifdef USE_HCACHE
   fc.hc = hc;
 #endif
@@ -1393,7 +1393,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     hdr->read = false;
     hdr->old = false;
     hdr->deleted = false;
-    hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
+    hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
     NHDR(hdr)->article_num = current;
     if (restore)
       hdr->changed = true;
@@ -1804,7 +1804,7 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
     nntp_data->last_cached = 0;
     if (nntp_data->newsrc_len)
     {
-      safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
+      mutt_mem_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
       nntp_data->newsrc_len = 1;
       nntp_data->newsrc_ent[0].first = 1;
       nntp_data->newsrc_ent[0].last = 0;
@@ -1888,7 +1888,7 @@ static int check_mailbox(struct Context *ctx)
 
     if (NntpContext && nntp_data->last_message - first + 1 > NntpContext)
       first = nntp_data->last_message - NntpContext + 1;
-    messages = safe_calloc(nntp_data->last_loaded - first + 1, sizeof(unsigned char));
+    messages = mutt_mem_calloc(nntp_data->last_loaded - first + 1, sizeof(unsigned char));
     hc = nntp_hcache_open(nntp_data);
     nntp_hcache_update(nntp_data, hc);
 #endif
@@ -1977,7 +1977,7 @@ static int check_mailbox(struct Context *ctx)
         ctx->msgcount++;
         hdr->read = false;
         hdr->old = false;
-        hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
+        hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
         NHDR(hdr)->article_num = anum;
         nntp_article_status(ctx, hdr, NULL, anum);
         if (!hdr->read)
@@ -2393,7 +2393,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   if (ctx->msgcount == ctx->hdrmax)
     mx_alloc_memory(ctx);
   hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
-  hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
+  hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
   mutt_file_fclose(&fp);
   unlink(tempfile);
@@ -2450,7 +2450,7 @@ static int fetch_children(char *line, void *data)
   if (cc->num >= cc->max)
   {
     cc->max *= 2;
-    safe_realloc(&cc->child, sizeof(anum_t) * cc->max);
+    mutt_mem_realloc(&cc->child, sizeof(anum_t) * cc->max);
   }
   cc->child[cc->num++] = anum;
   return 0;
@@ -2477,7 +2477,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   cc.ctx = ctx;
   cc.num = 0;
   cc.max = 10;
-  cc.child = safe_malloc(sizeof(anum_t) * cc.max);
+  cc.child = mutt_mem_malloc(sizeof(anum_t) * cc.max);
 
   /* fetch numbers of child messages */
   snprintf(buf, sizeof(buf), "XPAT References %d-%d *%s*\r\n",

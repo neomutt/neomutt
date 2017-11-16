@@ -336,7 +336,7 @@ retry_name:
     }
   }
 
-  new = safe_calloc(1, sizeof(struct Alias));
+  new = mutt_mem_calloc(1, sizeof(struct Alias));
   new->name = safe_strdup(buf);
 
   mutt_addrlist_to_local(adr);
@@ -548,10 +548,10 @@ int mutt_alias_complete(char *s, size_t buflen)
         if (a->name && (strstr(a->name, s) == a->name))
         {
           if (!a_list) /* init */
-            a_cur = a_list = safe_malloc(sizeof(struct Alias));
+            a_cur = a_list = mutt_mem_malloc(sizeof(struct Alias));
           else
           {
-            a_cur->next = safe_malloc(sizeof(struct Alias));
+            a_cur->next = mutt_mem_malloc(sizeof(struct Alias));
             a_cur = a_cur->next;
           }
           memcpy(a_cur, a, sizeof(struct Alias));

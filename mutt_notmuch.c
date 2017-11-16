@@ -232,7 +232,7 @@ static struct NmCtxData *new_ctxdata(const char *uri)
   if (!uri)
     return NULL;
 
-  data = safe_calloc(1, sizeof(struct NmCtxData));
+  data = mutt_mem_calloc(1, sizeof(struct NmCtxData));
   mutt_debug(1, "nm: initialize context data %p\n", (void *) data);
 
   data->db_limit = NmDbLimit;
@@ -846,7 +846,7 @@ static char *nm2mutt_message_id(const char *id)
   if (!id)
     return NULL;
   sz = strlen(id) + 3;
-  mid = safe_malloc(sz);
+  mid = mutt_mem_malloc(sz);
 
   snprintf(mid, sz, "<%s>", id);
   return mid;
@@ -861,7 +861,7 @@ static int init_header(struct Header *h, const char *path, notmuch_message_t *ms
 
   id = notmuch_message_get_message_id(msg);
 
-  h->data = safe_calloc(1, sizeof(struct NmHdrData));
+  h->data = mutt_mem_calloc(1, sizeof(struct NmHdrData));
   h->free_cb = deinit_header;
 
   /*

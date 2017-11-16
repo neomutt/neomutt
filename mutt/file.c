@@ -643,7 +643,7 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 
   if (!s)
   {
-    s = safe_malloc(STRING);
+    s = mutt_mem_malloc(STRING);
     *size = STRING;
   }
 
@@ -689,7 +689,7 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
         /* There wasn't room for the line -- increase ``s'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
-        safe_realloc(&s, *size);
+        mutt_mem_realloc(&s, *size);
       }
     }
   }

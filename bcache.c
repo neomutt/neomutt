@@ -111,7 +111,7 @@ struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox)
   if (!account)
     goto bail;
 
-  bcache = safe_calloc(1, sizeof(struct BodyCache));
+  bcache = mutt_mem_calloc(1, sizeof(struct BodyCache));
   if (bcache_path(account, mailbox, bcache->path, sizeof(bcache->path)) < 0)
     goto bail;
   bcache->pathlen = mutt_strlen(bcache->path);

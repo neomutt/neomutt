@@ -77,7 +77,7 @@ static void *hcache_bdb_open(const char *path)
   u_int32_t createflags = DB_CREATE;
   int pagesize;
 
-  struct HcacheDbCtx *ctx = safe_malloc(sizeof(struct HcacheDbCtx));
+  struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
 
   if (mutt_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;

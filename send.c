@@ -715,7 +715,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx,
   if (curenv->real_subj)
   {
     FREE(&env->subject);
-    env->subject = safe_malloc(mutt_strlen(curenv->real_subj) + 5);
+    env->subject = mutt_mem_malloc(mutt_strlen(curenv->real_subj) + 5);
     sprintf(env->subject, "Re: %s", curenv->real_subj);
   }
   else if (!env->subject)
@@ -1073,7 +1073,7 @@ struct Address *mutt_default_from(void)
   else if (option(OPT_USE_DOMAIN))
   {
     adr = rfc822_new_address();
-    adr->mailbox = safe_malloc(mutt_strlen(Username) + mutt_strlen(fqdn) + 2);
+    adr->mailbox = mutt_mem_malloc(mutt_strlen(Username) + mutt_strlen(fqdn) + 2);
     sprintf(adr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
   }
   else
@@ -1290,7 +1290,7 @@ static int search_attach_keyword(char *filename)
   if (!attf)
     return 0;
 
-  char *inputline = safe_malloc(LONG_STRING);
+  char *inputline = mutt_mem_malloc(LONG_STRING);
   int found = 0;
   while (!feof(attf))
   {

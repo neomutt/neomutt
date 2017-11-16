@@ -800,7 +800,7 @@ void mutt_menu_init(void)
 
 struct Menu *mutt_new_menu(int menu)
 {
-  struct Menu *p = safe_calloc(1, sizeof(struct Menu));
+  struct Menu *p = mutt_mem_calloc(1, sizeof(struct Menu));
 
   if ((menu < 0) || (menu >= MENU_MAX))
     menu = MENU_GENERIC;
@@ -844,7 +844,7 @@ void mutt_push_current_menu(struct Menu *menu)
   if (MenuStackCount >= MenuStackLen)
   {
     MenuStackLen += 5;
-    safe_realloc(&MenuStack, MenuStackLen * sizeof(struct Menu *));
+    mutt_mem_realloc(&MenuStack, MenuStackLen * sizeof(struct Menu *));
   }
 
   MenuStack[MenuStackCount++] = menu;

@@ -267,8 +267,8 @@ void mutt_draw_tree(struct Context *ctx)
    * From now on we can simply ignore invisible subtrees
    */
   calculate_visibility(ctx, &max_depth);
-  pfx = safe_malloc(width * max_depth + 2);
-  arrow = safe_malloc(width * max_depth + 2);
+  pfx = mutt_mem_malloc(width * max_depth + 2);
+  arrow = mutt_mem_malloc(width * max_depth + 2);
   while (tree)
   {
     if (depth)
@@ -289,7 +289,7 @@ void mutt_draw_tree(struct Context *ctx)
       {
         myarrow[width] = MUTT_TREE_RARROW;
         myarrow[width + 1] = 0;
-        new_tree = safe_malloc((2 + depth * width));
+        new_tree = mutt_mem_malloc((2 + depth * width));
         if (start_depth > 1)
         {
           strncpy(new_tree, pfx, (start_depth - 1) * width);
@@ -639,7 +639,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
 
   top = thread;
 
-  array = safe_calloc((array_size = 256), sizeof(struct MuttThread *));
+  array = mutt_mem_calloc((array_size = 256), sizeof(struct MuttThread *));
   while (true)
   {
     if (init || !thread->sort_key)
@@ -678,7 +678,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
         for (i = 0; thread; i++, thread = thread->prev)
         {
           if (i >= array_size)
-            safe_realloc(&array, (array_size *= 2) * sizeof(struct MuttThread *));
+            mutt_mem_realloc(&array, (array_size *= 2) * sizeof(struct MuttThread *));
 
           array[i] = thread;
         }
@@ -865,7 +865,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
       {
         new = (option(OPT_DUPLICATE_THREADS) ? thread : NULL);
 
-        thread = safe_calloc(1, sizeof(struct MuttThread));
+        thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
         thread->check_subject = true;
         cur->thread = thread;
@@ -958,7 +958,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
       new = mutt_hash_find(ctx->thread_hash, ref->data);
       if (!new)
       {
-        new = safe_calloc(1, sizeof(struct MuttThread));
+        new = mutt_mem_calloc(1, sizeof(struct MuttThread));
         mutt_hash_insert(ctx->thread_hash, ref->data, new);
       }
       else

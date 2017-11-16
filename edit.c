@@ -96,12 +96,12 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
       break;
     bytes -= mutt_strlen(p);
     if (*bufmax == *buflen)
-      safe_realloc(&buf, sizeof(char *) * (*bufmax += 25));
+      mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
     buf[(*buflen)++] = safe_strdup(tmp);
   }
   if (buf && *bufmax == *buflen)
   { /* Do not smash memory past buf */
-    safe_realloc(&buf, sizeof(char *) * (++*bufmax));
+    mutt_mem_realloc(&buf, sizeof(char *) * (++*bufmax));
   }
   if (buf)
     buf[*buflen] = NULL;
@@ -182,7 +182,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       }
 
       if (*bufmax == *buflen)
-        safe_realloc(&buf, sizeof(char *) * (*bufmax += 25));
+        mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
       buf[(*buflen)++] = safe_strdup(tmp);
 
       bytes = Context->hdrs[n]->content->length;
@@ -196,7 +196,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
       buf = be_snarf_data(Context->fp, buf, bufmax, buflen, offset, bytes, pfx);
 
       if (*bufmax == *buflen)
-        safe_realloc(&buf, sizeof(char *) * (*bufmax += 25));
+        mutt_mem_realloc(&buf, sizeof(char *) * (*bufmax += 25));
       buf[(*buflen)++] = safe_strdup("\n");
     }
     else
@@ -494,7 +494,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
     {
       safe_strcat(tmp, sizeof(tmp), "\n");
       if (buflen == bufmax)
-        safe_realloc(&buf, sizeof(char *) * (bufmax += 25));
+        mutt_mem_realloc(&buf, sizeof(char *) * (bufmax += 25));
       buf[buflen++] = safe_strdup(tmp[1] == '~' ? tmp + 1 : tmp);
     }
 

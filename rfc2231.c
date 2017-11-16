@@ -116,7 +116,7 @@ static void rfc2231_decode_one(char *dest, char *src)
 
 static struct Rfc2231Parameter *rfc2231_new_parameter(void)
 {
-  return safe_calloc(1, sizeof(struct Rfc2231Parameter));
+  return mutt_mem_calloc(1, sizeof(struct Rfc2231Parameter));
 }
 
 /**
@@ -189,7 +189,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
 
       vl = strlen(par->value);
 
-      safe_realloc(&value, l + vl + 1);
+      mutt_mem_realloc(&value, l + vl + 1);
       strcpy(value + l, par->value);
       l += vl;
 
@@ -349,7 +349,7 @@ int rfc2231_encode_string(char **pd)
 
   if (encode)
   {
-    e = safe_malloc(dlen + 2 * ext + strlen(charset) + 3);
+    e = mutt_mem_malloc(dlen + 2 * ext + strlen(charset) + 3);
     sprintf(e, "%s''", charset);
     t = e + strlen(e);
     for (s = d, slen = dlen; slen; s++, slen--)

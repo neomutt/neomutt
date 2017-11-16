@@ -67,7 +67,7 @@ static size_t convert_string(ICONV_CONST char *f, size_t flen, const char *from,
   if (cd == (iconv_t)(-1))
     return (size_t)(-1);
   obl = 4 * flen + 1;
-  ob = buf = safe_malloc(obl);
+  ob = buf = mutt_mem_malloc(obl);
   n = iconv(cd, &f, &flen, &ob, &obl);
   if (n == (size_t)(-1) || iconv(cd, 0, 0, &ob, &obl) == (size_t)(-1))
   {
@@ -81,7 +81,7 @@ static size_t convert_string(ICONV_CONST char *f, size_t flen, const char *from,
 
   *tlen = ob - buf;
 
-  safe_realloc(&buf, ob - buf + 1);
+  mutt_mem_realloc(&buf, ob - buf + 1);
   *t = buf;
   iconv_close(cd);
 
@@ -108,7 +108,7 @@ int convert_nonmime_string(char **ps)
     n = c1 ? c1 - c : mutt_strlen(c);
     if (!n)
       return 0;
-    fromcode = safe_malloc(n + 1);
+    fromcode = mutt_mem_malloc(n + 1);
     strfcpy(fromcode, c, n + 1);
     m = convert_string(u, ulen, fromcode, Charset, &s, &slen);
     FREE(&fromcode);
@@ -143,7 +143,7 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
     if (!n)
       continue;
 
-    t = safe_malloc(n + 1);
+    t = mutt_mem_malloc(n + 1);
     memcpy(t, p, n);
     t[n] = '\0';
 
@@ -444,7 +444,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   {
     ret = 1;
     icode = 0;
-    safe_realloc(&u, (ulen = dlen) + 1);
+    mutt_mem_realloc(&u, (ulen = dlen) + 1);
     memcpy(u, d, dlen);
     u[ulen] = 0;
   }
@@ -537,7 +537,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
 
   /* Initialise the output buffer with the us-ascii prefix. */
   buflen = 2 * ulen;
-  buf = safe_malloc(buflen);
+  buf = mutt_mem_malloc(buflen);
   bufpos = t0 - u;
   memcpy(buf, u, t0 - u);
 
@@ -580,7 +580,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     if ((bufpos + wlen + lb_len) > buflen)
     {
       buflen = bufpos + wlen + lb_len;
-      safe_realloc(&buf, buflen);
+      mutt_mem_realloc(&buf, buflen);
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
     assert(r == wlen);
@@ -595,7 +595,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
 
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
-  safe_realloc(&buf, buflen + 1);
+  mutt_mem_realloc(&buf, buflen + 1);
   r = encode_block(buf + bufpos, t, t1 - t, icode, tocode, encoder);
   assert(r == wlen);
   bufpos += wlen;
@@ -655,7 +655,7 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
   char *charset = NULL;
   int rv = -1;
 
-  pd = d0 = safe_malloc(strlen(s) + 1);
+  pd = d0 = mutt_mem_malloc(strlen(s) + 1);
 
   for (pp = s; (pp1 = strchr(pp, '?')); pp = pp1 + 1)
   {
@@ -798,7 +798,7 @@ void rfc2047_decode(char **pd)
     return;
 
   dlen = 4 * strlen(s); /* should be enough */
-  d = d0 = safe_malloc(dlen + 1);
+  d = d0 = mutt_mem_malloc(dlen + 1);
 
   while (*s && dlen > 0)
   {
@@ -826,7 +826,7 @@ void rfc2047_decode(char **pd)
         size_t tlen;
 
         n = mutt_strlen(s);
-        t = safe_malloc(n + 1);
+        t = mutt_mem_malloc(n + 1);
         strfcpy(t, s, n + 1);
         convert_nonmime_string(&t);
         tlen = mutt_strlen(t);

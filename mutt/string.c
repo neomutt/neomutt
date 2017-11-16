@@ -178,7 +178,7 @@ char *safe_strdup(const char *s)
   if (!s || !*s)
     return 0;
   l = strlen(s) + 1;
-  p = safe_malloc(l);
+  p = mutt_mem_malloc(l);
   memcpy(p, s, l);
   return p;
 }
@@ -271,7 +271,7 @@ void mutt_str_append_item(char **str, const char *item, int sep)
   size_t sz = strlen(item);
   size_t ssz = *str ? strlen(*str) : 0;
 
-  safe_realloc(str, ssz + ((ssz && sep) ? 1 : 0) + sz + 1);
+  mutt_mem_realloc(str, ssz + ((ssz && sep) ? 1 : 0) + sz + 1);
   p = *str + ssz;
   if (sep && ssz)
     *p++ = sep;
@@ -291,7 +291,7 @@ void mutt_str_adjust(char **p)
 {
   if (!p || !*p)
     return;
-  safe_realloc(p, strlen(*p) + 1);
+  mutt_mem_realloc(p, strlen(*p) + 1);
 }
 
 /**
@@ -386,7 +386,7 @@ char *mutt_substrdup(const char *begin, const char *end)
     len = strlen(begin);
   }
 
-  p = safe_malloc(len + 1);
+  p = mutt_mem_malloc(len + 1);
   memcpy(p, begin, len);
   p[len] = '\0';
   return p;

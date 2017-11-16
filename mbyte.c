@@ -106,7 +106,7 @@ int mutt_filter_unprintable(char **s)
     mutt_buffer_addstr(b, scratch);
   }
   FREE(s);
-  *s = b->data ? b->data : safe_calloc(1, 1);
+  *s = b->data ? b->data : mutt_mem_calloc(1, 1);
   FREE(&b);
   return 0;
 }

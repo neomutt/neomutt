@@ -111,7 +111,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
   else
   {
-    pat->p.regex = safe_malloc(sizeof(regex_t));
+    pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
     r = REGCOMP(pat->p.regex, buf.data,
                 REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
     if (r != 0)
@@ -1040,7 +1040,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     }
 
     blen = STRING;
-    buf = safe_malloc(blen);
+    buf = mutt_mem_malloc(blen);
 
     /* search the file "fp" */
     while (lng > 0)
@@ -1931,7 +1931,7 @@ int mutt_pattern_func(int op, char *prompt)
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
   if (!pat)
   {
@@ -2066,7 +2066,7 @@ int mutt_search_command(int cur, int op)
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = STRING;
-      err.data = safe_malloc(err.dsize);
+      err.data = mutt_mem_malloc(err.dsize);
       SearchPattern = mutt_pattern_comp(temp, MUTT_FULL_MSG, &err);
       if (!SearchPattern)
       {

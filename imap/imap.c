@@ -1231,7 +1231,7 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   if (Sort != SORT_ORDER)
   {
     hdrs = idata->ctx->hdrs;
-    idata->ctx->hdrs = safe_malloc(idata->ctx->msgcount * sizeof(struct Header *));
+    idata->ctx->hdrs = mutt_mem_malloc(idata->ctx->msgcount * sizeof(struct Header *));
     memcpy(idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
@@ -1644,7 +1644,7 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   /* lame */
   if (create)
   {
-    struct ImapStatus *scache = safe_calloc(1, sizeof(struct ImapStatus));
+    struct ImapStatus *scache = mutt_mem_calloc(1, sizeof(struct ImapStatus));
     scache->name = (char *) mbox;
     mutt_list_insert_tail(&idata->mboxcache, (char *) scache);
     status = imap_mboxcache_get(idata, mbox, 0);
@@ -2213,8 +2213,8 @@ static int imap_open_mailbox(struct Context *ctx)
     ctx->readonly = true;
 
   ctx->hdrmax = count;
-  ctx->hdrs = safe_calloc(count, sizeof(struct Header *));
-  ctx->v2r = safe_calloc(count, sizeof(int));
+  ctx->hdrs = mutt_mem_calloc(count, sizeof(struct Header *));
+  ctx->v2r = mutt_mem_calloc(count, sizeof(int));
   ctx->msgcount = 0;
 
   if (count && (imap_read_headers(idata, 1, count) < 0))
@@ -2500,7 +2500,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   if (Sort != SORT_ORDER)
   {
     hdrs = ctx->hdrs;
-    ctx->hdrs = safe_malloc(ctx->msgcount * sizeof(struct Header *));
+    ctx->hdrs = mutt_mem_malloc(ctx->msgcount * sizeof(struct Header *));
     memcpy(ctx->hdrs, hdrs, ctx->msgcount * sizeof(struct Header *));
 
     Sort = SORT_ORDER;

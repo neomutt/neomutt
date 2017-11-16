@@ -109,7 +109,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
       FREE(&pattern);
       return -1;
     }
-    ptr = safe_calloc(1, sizeof(struct Score));
+    ptr = mutt_mem_calloc(1, sizeof(struct Score));
     if (last)
       last->next = ptr;
     else

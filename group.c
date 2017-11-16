@@ -42,7 +42,7 @@ struct Group *mutt_pattern_group(const char *k)
   if (!p)
   {
     mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
-    p = safe_calloc(1, sizeof(struct Group));
+    p = mutt_mem_calloc(1, sizeof(struct Group));
     p->name = safe_strdup(k);
     mutt_hash_insert(Groups, p->name, p);
   }
@@ -88,7 +88,7 @@ void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
       return;
   }
 
-  *ctx = safe_calloc(1, sizeof(struct GroupContext));
+  *ctx = mutt_mem_calloc(1, sizeof(struct GroupContext));
   (*ctx)->g = group;
 }
 

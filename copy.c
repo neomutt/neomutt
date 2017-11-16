@@ -157,7 +157,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
   mutt_debug(1, "WEED is %s\n", (flags & CH_WEED) ? "Set" : "Not");
 
-  headers = safe_calloc(hdr_count, sizeof(char *));
+  headers = mutt_mem_calloc(hdr_count, sizeof(char *));
 
   /* Read all the headers into the array */
   while (ftello(in) < off_end)
@@ -195,7 +195,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         {
           int hlen = mutt_strlen(headers[x]);
 
-          safe_realloc(&headers[x], hlen + this_one_len + sizeof(char));
+          mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
           strcat(headers[x] + hlen, this_one);
           FREE(&this_one);
         }
@@ -270,7 +270,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       {
         int blen = mutt_strlen(buf);
 
-        safe_realloc(&this_one, this_one_len + blen + sizeof(char));
+        mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
         this_one_len += blen;
       }
@@ -293,7 +293,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     {
       int hlen = mutt_strlen(headers[x]);
 
-      safe_realloc(&headers[x], hlen + this_one_len + sizeof(char));
+      mutt_mem_realloc(&headers[x], hlen + this_one_len + sizeof(char));
       strcat(headers[x] + hlen, this_one);
       FREE(&this_one);
     }
@@ -899,7 +899,7 @@ static void format_address_header(char **h, struct Address *a)
   plen = linelen;
   buflen = linelen + 3;
 
-  safe_realloc(h, buflen);
+  mutt_mem_realloc(h, buflen);
   for (int count = 0; a; a = a->next, count++)
   {
     struct Address *tmp = a->next;
@@ -932,7 +932,7 @@ static void format_address_header(char **h, struct Address *a)
     cbuflen = mutt_strlen(cbuf);
     c2buflen = mutt_strlen(c2buf);
     buflen += l + cbuflen + c2buflen;
-    safe_realloc(h, buflen);
+    mutt_mem_realloc(h, buflen);
     p = *h;
     strcat(p + plen, cbuf);
     plen += cbuflen;
@@ -1034,7 +1034,7 @@ static int address_header_decode(char **h)
     *h = safe_strdup(s);
   else
   {
-    *h = safe_calloc(1, l + 2);
+    *h = mutt_mem_calloc(1, l + 2);
     strfcpy(*h, s, l + 1);
     format_address_header(h, a);
   }

@@ -534,7 +534,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
     }
     else
     {
-      new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
       new->content = m;
       m->aptr = new;
@@ -800,7 +800,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   menu->redraw_data = &rd;
   mutt_push_current_menu(menu);
 
-  actx = safe_calloc(sizeof(struct AttachCtx), 1);
+  actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = msg;
   mutt_update_compose_menu(actx, menu, 1);
 
@@ -992,7 +992,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       case OP_COMPOSE_ATTACH_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
           break;
-        new = safe_calloc(1, sizeof(struct AttachPtr));
+        new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         new->content = crypt_pgp_make_key_attachment(NULL);
         if (new->content)
         {
@@ -1028,7 +1028,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
-          new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->unowned = 1;
           new->content = mutt_make_file_attach(att);
           if (new->content)
@@ -1151,7 +1151,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           if (!message_is_tagged(Context, i))
             continue;
 
-          new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->content = mutt_make_message_attach(Context, Context->hdrs[i], 1);
           if (new->content != NULL)
             update_idx(menu, actx, new);
@@ -1427,7 +1427,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           mutt_error(_("Unknown Content-Type %s"), type);
           continue;
         }
-        new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+        new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
         fp = mutt_file_fopen(fname, "w");
         if (!fp)

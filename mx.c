@@ -414,7 +414,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     return NULL;
 
   if (!ctx)
-    ctx = safe_malloc(sizeof(struct Context));
+    ctx = mutt_mem_malloc(sizeof(struct Context));
   memset(ctx, 0, sizeof(struct Context));
 
   ctx->path = safe_strdup(path);
@@ -1135,7 +1135,7 @@ struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, in
     return NULL;
   }
 
-  msg = safe_calloc(1, sizeof(struct Message));
+  msg = mutt_mem_calloc(1, sizeof(struct Message));
   msg->write = true;
 
   if (hdr)
@@ -1205,7 +1205,7 @@ struct Message *mx_open_message(struct Context *ctx, int msgno)
     return NULL;
   }
 
-  msg = safe_calloc(1, sizeof(struct Message));
+  msg = mutt_mem_calloc(1, sizeof(struct Message));
   if (ctx->mx_ops->open_msg(ctx, msg, msgno))
     FREE(&msg);
 
@@ -1267,13 +1267,13 @@ void mx_alloc_memory(struct Context *ctx)
 
   if (ctx->hdrs)
   {
-    safe_realloc(&ctx->hdrs, sizeof(struct Header *) * (ctx->hdrmax += 25));
-    safe_realloc(&ctx->v2r, sizeof(int) * ctx->hdrmax);
+    mutt_mem_realloc(&ctx->hdrs, sizeof(struct Header *) * (ctx->hdrmax += 25));
+    mutt_mem_realloc(&ctx->v2r, sizeof(int) * ctx->hdrmax);
   }
   else
   {
-    ctx->hdrs = safe_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
-    ctx->v2r = safe_calloc(ctx->hdrmax, sizeof(int));
+    ctx->hdrs = mutt_mem_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
+    ctx->v2r = mutt_mem_calloc(ctx->hdrmax, sizeof(int));
   }
   for (int i = ctx->msgcount; i < ctx->hdrmax; i++)
   {

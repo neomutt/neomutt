@@ -70,7 +70,7 @@ static int lua_mutt_call(lua_State *l)
   mutt_buffer_init(&err);
 
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
 
   if (lua_gettop(l) == 0)
   {
@@ -274,7 +274,7 @@ static int lua_mutt_enter(lua_State *l)
   mutt_buffer_init(&token);
 
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
 
   if (mutt_parse_rc_line(buffer, &token, &err))
   {

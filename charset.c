@@ -469,7 +469,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
     ib = s;
     ibl = len + 1;
     obl = MB_LEN_MAX * ibl;
-    ob = buf = safe_malloc(obl + 1);
+    ob = buf = mutt_mem_malloc(obl + 1);
 
     mutt_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close(cd);
@@ -533,14 +533,14 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 
   if (cd != (iconv_t) -1)
   {
-    fc = safe_malloc(sizeof(struct FgetConv));
+    fc = mutt_mem_malloc(sizeof(struct FgetConv));
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_is_utf8(to) ? repls : repls + 1;
   }
   else
-    fc = safe_malloc(sizeof(struct FgetConvNot));
+    fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
   fc->file = file;
   fc->cd = cd;
   return (FGETCONV *) fc;

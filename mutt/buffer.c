@@ -57,7 +57,7 @@ struct Buffer *mutt_buffer_new(void)
 {
   struct Buffer *b = NULL;
 
-  b = safe_malloc(sizeof(struct Buffer));
+  b = mutt_mem_malloc(sizeof(struct Buffer));
 
   mutt_buffer_init(b);
 
@@ -128,7 +128,7 @@ static void mutt_buffer_add(struct Buffer *buf, const char *s, size_t len)
   {
     size_t offset = buf->dptr - buf->data;
     buf->dsize += (len < 128) ? 128 : len + 1;
-    safe_realloc(&buf->data, buf->dsize);
+    mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + offset;
   }
   if (!buf->dptr)
@@ -180,7 +180,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
   {
     blen = 128;
     buf->dsize += blen;
-    safe_realloc(&buf->data, buf->dsize);
+    mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
   }
   len = vsnprintf(buf->dptr, blen, fmt, ap);
@@ -190,7 +190,7 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
     if (blen < 128)
       blen = 128;
     buf->dsize += blen;
-    safe_realloc(&buf->data, buf->dsize);
+    mutt_mem_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
     len = vsnprintf(buf->dptr, len, fmt, ap_retry);
   }

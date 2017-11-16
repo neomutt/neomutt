@@ -605,7 +605,7 @@ static void add_folder(struct Menu *m, struct BrowserState *state, const char *n
   if (state->entrylen == state->entrymax)
   {
     /* need to allocate more space */
-    safe_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
+    mutt_mem_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
     memset(&state->entry[state->entrylen], 0, sizeof(struct FolderFile) * 256);
     if (m)
       m->data = state->entry;
@@ -649,7 +649,7 @@ static void init_state(struct BrowserState *state, struct Menu *menu)
 {
   state->entrylen = 0;
   state->entrymax = 256;
-  state->entry = safe_calloc(state->entrymax, sizeof(struct FolderFile));
+  state->entry = mutt_mem_calloc(state->entrymax, sizeof(struct FolderFile));
 #ifdef USE_IMAP
   state->imap_browse = false;
 #endif
@@ -1475,7 +1475,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           if (menu->tagged)
           {
             *numfiles = menu->tagged;
-            tfiles = safe_calloc(*numfiles, sizeof(char *));
+            tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
             for (int j = 0, k = 0; j < state.entrylen; j++)
             {
               struct FolderFile ff = state.entry[j];
@@ -1492,7 +1492,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           else if (f[0]) /* no tagged entries. return selected entry */
           {
             *numfiles = 1;
-            tfiles = safe_calloc(*numfiles, sizeof(char *));
+            tfiles = mutt_mem_calloc(*numfiles, sizeof(char *));
             mutt_expand_path(f, flen);
             tfiles[0] = safe_strdup(f);
             *files = tfiles;
@@ -1684,7 +1684,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         strfcpy(buf, NONULL(Mask.pattern), sizeof(buf));
         if (mutt_get_field(_("File Mask: "), buf, sizeof(buf), 0) == 0)
         {
-          regex_t *rx = safe_malloc(sizeof(regex_t));
+          regex_t *rx = mutt_mem_malloc(sizeof(regex_t));
           char *s = buf;
           int not = 0, err;
 

@@ -285,7 +285,7 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
 
   len = strlen(account->pass);
 
-  safe_realloc(&secret_ptr, sizeof(sasl_secret_t) + len);
+  mutt_mem_realloc(&secret_ptr, sizeof(sasl_secret_t) + len);
   memcpy((char *) secret_ptr->data, account->pass, (size_t) len);
   secret_ptr->len = len;
   *psecret = secret_ptr;
@@ -667,7 +667,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
       return SASL_FAIL;
 
     interaction->len = mutt_strlen(resp) + 1;
-    interaction->result = safe_malloc(interaction->len);
+    interaction->result = mutt_mem_malloc(interaction->len);
     memcpy((char *) interaction->result, resp, interaction->len);
 
     interaction++;
@@ -686,7 +686,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  struct SaslData *sasldata = safe_malloc(sizeof(struct SaslData));
+  struct SaslData *sasldata = mutt_mem_malloc(sizeof(struct SaslData));
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 

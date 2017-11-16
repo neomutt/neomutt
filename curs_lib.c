@@ -618,12 +618,12 @@ out:
 
 void mutt_init_windows(void)
 {
-  MuttHelpWindow = safe_calloc(1, sizeof(struct MuttWindow));
-  MuttIndexWindow = safe_calloc(1, sizeof(struct MuttWindow));
-  MuttStatusWindow = safe_calloc(1, sizeof(struct MuttWindow));
-  MuttMessageWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttHelpWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttIndexWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttStatusWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttMessageWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttSidebarWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 #endif
 }
 
@@ -931,7 +931,7 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
   }
   else
   {
-    char *pc = safe_malloc(mutt_strlen(prompt) + 3);
+    char *pc = mutt_mem_malloc(mutt_strlen(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
@@ -956,7 +956,7 @@ void mutt_unget_event(int ch, int op)
   tmp.op = op;
 
   if (UngetCount >= UngetLen)
-    safe_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
+    mutt_mem_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
 
   UngetKeyEvents[UngetCount++] = tmp;
 }
@@ -985,7 +985,7 @@ void mutt_push_macro_event(int ch, int op)
   tmp.op = op;
 
   if (MacroBufferCount >= MacroBufferLen)
-    safe_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
+    mutt_mem_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
 
   MacroEvents[MacroBufferCount++] = tmp;
 }

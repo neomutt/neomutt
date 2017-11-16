@@ -300,7 +300,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           if (get_field_text(field + 4, &test_command, type, filename, line) && test_command)
           {
             len = mutt_strlen(test_command) + STRING;
-            safe_realloc(&test_command, len);
+            mutt_mem_realloc(&test_command, len);
             rfc1524_expand_command(a, a->filename, type, test_command, len);
             if (mutt_system(test_command) != 0)
             {
@@ -362,7 +362,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
  */
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
 {
-  return safe_calloc(1, sizeof(struct Rfc1524MailcapEntry));
+  return mutt_mem_calloc(1, sizeof(struct Rfc1524MailcapEntry));
 }
 
 /**

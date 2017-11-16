@@ -1111,8 +1111,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     offset -= (sizeof(MMDF_SEP) - 1);
 
   /* allocate space for the new offsets */
-  newOffset = safe_calloc(ctx->msgcount - first, sizeof(struct MUpdate));
-  oldOffset = safe_calloc(ctx->msgcount - first, sizeof(struct MUpdate));
+  newOffset = mutt_mem_calloc(ctx->msgcount - first, sizeof(struct MUpdate));
+  oldOffset = mutt_mem_calloc(ctx->msgcount - first, sizeof(struct MUpdate));
 
   if (!ctx->quiet)
   {

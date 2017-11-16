@@ -316,7 +316,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        safe_realloc(&wbuf, wbuflen * sizeof(*wbuf));
+        mutt_mem_realloc(&wbuf, wbuflen * sizeof(*wbuf));
       }
       wbuf[i++] = wc;
     }
@@ -325,7 +325,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
       if (i >= wbuflen)
       {
         wbuflen = i + 20;
-        safe_realloc(&wbuf, wbuflen * sizeof(*wbuf));
+        mutt_mem_realloc(&wbuf, wbuflen * sizeof(*wbuf));
       }
       wbuf[i++] = ReplacementChar;
       buf++;

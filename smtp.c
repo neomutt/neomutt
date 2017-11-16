@@ -389,7 +389,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;
-  buf = safe_malloc(bufsize);
+  buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
   if (len)
@@ -435,7 +435,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
       if ((len * 2) > bufsize)
       {
         bufsize = len * 2;
-        safe_realloc(&buf, bufsize);
+        mutt_mem_realloc(&buf, bufsize);
       }
       if (sasl_encode64(data, len, buf, bufsize, &len) != SASL_OK)
       {

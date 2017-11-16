@@ -77,7 +77,7 @@
  */
 static struct ImapHeaderData *new_header_data(void)
 {
-  struct ImapHeaderData *d = safe_calloc(1, sizeof(struct ImapHeaderData));
+  struct ImapHeaderData *d = mutt_mem_calloc(1, sizeof(struct ImapHeaderData));
   return d;
 }
 
@@ -492,10 +492,10 @@ static void alloc_msn_index(struct ImapData *idata, unsigned int msn_count)
   new_size = msn_count + 25;
 
   if (!idata->msn_index)
-    idata->msn_index = safe_calloc(new_size, sizeof(struct Header *));
+    idata->msn_index = mutt_mem_calloc(new_size, sizeof(struct Header *));
   else
   {
-    safe_realloc(&idata->msn_index, sizeof(struct Header *) * new_size);
+    mutt_mem_realloc(&idata->msn_index, sizeof(struct Header *) * new_size);
     memset(idata->msn_index + idata->msn_index_size, 0,
            sizeof(struct Header *) * (new_size - idata->msn_index_size));
   }

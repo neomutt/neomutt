@@ -108,7 +108,7 @@ static void *hcache_lmdb_open(const char *path)
 {
   int rc;
 
-  struct HcacheLmdbCtx *ctx = safe_calloc(1, sizeof(struct HcacheLmdbCtx));
+  struct HcacheLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct HcacheLmdbCtx));
 
   rc = mdb_env_create(&ctx->env);
   if (rc != MDB_SUCCESS)

@@ -41,7 +41,7 @@ struct Parameter
  */
 static inline struct Parameter *mutt_new_parameter(void)
 {
-  return safe_calloc(1, sizeof(struct Parameter));
+  return mutt_mem_calloc(1, sizeof(struct Parameter));
 }
 
 void mutt_delete_parameter(const char *attribute, struct Parameter **p);

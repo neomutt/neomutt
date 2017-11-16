@@ -146,7 +146,7 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
 {
   char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
 
-  struct TagNode *np = safe_calloc(1, sizeof(struct TagNode));
+  struct TagNode *np = mutt_mem_calloc(1, sizeof(struct TagNode));
   np->name = safe_strdup(new_tag);
   np->hidden = false;
   if (new_tag_transformed)

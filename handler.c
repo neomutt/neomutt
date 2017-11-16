@@ -613,7 +613,7 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
     if (stte->line_used > stte->line_max)
     {
       stte->line_max = stte->line_used;
-      safe_realloc(&stte->line, (stte->line_max + 1) * sizeof(wchar_t));
+      mutt_mem_realloc(&stte->line, (stte->line_max + 1) * sizeof(wchar_t));
     }
     wcscat(stte->line, stte->buffer);
     stte->line_len += stte->word_len;
@@ -632,7 +632,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
     if (stte->tag_level[RICH_COLOR])
     {
       if (stte->param_used + 1 >= stte->param_len)
-        safe_realloc(&stte->param, (stte->param_len += STRING) * sizeof(wchar_t));
+        mutt_mem_realloc(&stte->param, (stte->param_len += STRING) * sizeof(wchar_t));
 
       stte->param[stte->param_used++] = c;
     }
@@ -643,7 +643,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   if (stte->buff_len < stte->buff_used + 3)
   {
     stte->buff_len += LONG_STRING;
-    safe_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
+    mutt_mem_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
   }
 
   if ((!stte->tag_level[RICH_NOFILL] && iswspace(c)) || c == (wchar_t) '\0')
@@ -698,7 +698,7 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
   if (stte->buff_len < stte->buff_used + mutt_strlen(s))
   {
     stte->buff_len += LONG_STRING;
-    safe_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
+    mutt_mem_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
   }
   c = s;
   while (*c)
@@ -814,8 +814,8 @@ static int text_enriched_handler(struct Body *a, struct State *s)
            (MuttIndexWindow->cols - 4) :
            ((MuttIndexWindow->cols - 4) < 72) ? (MuttIndexWindow->cols - 4) : 72);
   stte.line_max = stte.wrap_margin * 4;
-  stte.line = safe_calloc(1, (stte.line_max + 1) * sizeof(wchar_t));
-  stte.param = safe_calloc(1, (STRING) * sizeof(wchar_t));
+  stte.line = mutt_mem_calloc(1, (stte.line_max + 1) * sizeof(wchar_t));
+  stte.param = mutt_mem_calloc(1, (STRING) * sizeof(wchar_t));
 
   stte.param_len = STRING;
   stte.param_used = 0;

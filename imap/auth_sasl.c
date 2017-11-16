@@ -120,7 +120,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
   mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
-  buf = safe_malloc(bufsize);
+  buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTHENTICATE %s", mech);
   if (mutt_bit_isset(idata->capabilities, SASL_IR) && client_start)
@@ -162,7 +162,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
         if (len > bufsize)
         {
           bufsize = len;
-          safe_realloc(&buf, bufsize);
+          mutt_mem_realloc(&buf, bufsize);
         }
         /* For sasl_decode64, the fourth parameter, outmax, doesn't
          * include space for the trailing null */
@@ -196,7 +196,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
       if ((olen * 2) > bufsize)
       {
         bufsize = olen * 2;
-        safe_realloc(&buf, bufsize);
+        mutt_mem_realloc(&buf, bufsize);
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {

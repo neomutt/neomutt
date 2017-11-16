@@ -79,7 +79,7 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
 
   if (state->entrylen + 1 == state->entrymax)
   {
-    safe_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
+    mutt_mem_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
     memset(state->entry + state->entrylen, 0,
            (sizeof(struct FolderFile) * (state->entrymax - state->entrylen)));
   }

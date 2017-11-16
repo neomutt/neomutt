@@ -509,8 +509,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
   if ((mutt_strcasecmp(mx1, "INBOX") == 0) && (mutt_strcasecmp(mx2, "INBOX") == 0))
     return 0;
 
-  b1 = safe_malloc(strlen(mx1) + 1);
-  b2 = safe_malloc(strlen(mx2) + 1);
+  b1 = mutt_mem_malloc(strlen(mx1) + 1);
+  b2 = mutt_mem_malloc(strlen(mx2) + 1);
 
   imap_fix_path(NULL, mx1, b1, strlen(mx1) + 1);
   imap_fix_path(NULL, mx2, b2, strlen(mx2) + 1);
@@ -611,14 +611,14 @@ void imap_error(const char *where, const char *msg)
  */
 struct ImapData *imap_new_idata(void)
 {
-  struct ImapData *idata = safe_calloc(1, sizeof(struct ImapData));
+  struct ImapData *idata = mutt_mem_calloc(1, sizeof(struct ImapData));
 
   idata->cmdbuf = mutt_buffer_new();
   if (!idata->cmdbuf)
     FREE(&idata);
 
   idata->cmdslots = ImapPipelineDepth + 2;
-  idata->cmds = safe_calloc(idata->cmdslots, sizeof(*idata->cmds));
+  idata->cmds = mutt_mem_calloc(idata->cmdslots, sizeof(*idata->cmds));
   if (!idata->cmds)
   {
     mutt_buffer_free(&idata->cmdbuf);

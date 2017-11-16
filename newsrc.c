@@ -66,7 +66,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
   {
     int len = strlen(group) + 1;
     /* create NntpData structure and add it to hash */
-    nntp_data = safe_calloc(1, sizeof(struct NntpData) + len);
+    nntp_data = mutt_mem_calloc(1, sizeof(struct NntpData) + len);
     nntp_data->group = (char *) nntp_data + sizeof(struct NntpData);
     strfcpy(nntp_data->group, group, len);
     nntp_data->nserv = nserv;
@@ -77,7 +77,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
     if (nserv->groups_num >= nserv->groups_max)
     {
       nserv->groups_max *= 2;
-      safe_realloc(&nserv->groups_list, nserv->groups_max * sizeof(nntp_data));
+      mutt_mem_realloc(&nserv->groups_list, nserv->groups_max * sizeof(nntp_data));
     }
     nserv->groups_list[nserv->groups_num++] = nntp_data;
   }
@@ -223,7 +223,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     FREE(&nntp_data->newsrc_ent);
   }
 
-  line = safe_malloc(sb.st_size + 1);
+  line = mutt_mem_malloc(sb.st_size + 1);
   while (sb.st_size && fgets(line, sb.st_size + 1, nserv->newsrc_fp))
   {
     char *b = NULL, *h = NULL, *p = NULL;
@@ -250,7 +250,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     while (*b)
       if (*b++ == ',')
         j++;
-    nntp_data->newsrc_ent = safe_calloc(j, sizeof(struct NewsrcEntry));
+    nntp_data->newsrc_ent = mutt_mem_calloc(j, sizeof(struct NewsrcEntry));
     nntp_data->subscribed = subs;
 
     /* parse entries */
@@ -284,7 +284,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     if (nntp_data->last_message == 0)
       nntp_data->last_message = nntp_data->newsrc_ent[j - 1].last;
     nntp_data->newsrc_len = j;
-    safe_realloc(&nntp_data->newsrc_ent, j * sizeof(struct NewsrcEntry));
+    mutt_mem_realloc(&nntp_data->newsrc_ent, j * sizeof(struct NewsrcEntry));
     nntp_group_unread_stat(nntp_data);
     mutt_debug(2, "nntp_newsrc_parse: %s\n", nntp_data->group);
   }
@@ -314,7 +314,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
   if (!entries)
   {
     entries = 5;
-    nntp_data->newsrc_ent = safe_calloc(entries, sizeof(struct NewsrcEntry));
+    nntp_data->newsrc_ent = mutt_mem_calloc(entries, sizeof(struct NewsrcEntry));
   }
 
   /* Set up to fake initial sequence from 1 to the article before the
@@ -335,7 +335,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
         if (nntp_data->newsrc_len >= entries)
         {
           entries *= 2;
-          safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
+          mutt_mem_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
         }
         nntp_data->newsrc_ent[nntp_data->newsrc_len].first = first;
         nntp_data->newsrc_ent[nntp_data->newsrc_len].last = last - 1;
@@ -361,13 +361,13 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     if (nntp_data->newsrc_len >= entries)
     {
       entries++;
-      safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
+      mutt_mem_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
     }
     nntp_data->newsrc_ent[nntp_data->newsrc_len].first = first;
     nntp_data->newsrc_ent[nntp_data->newsrc_len].last = nntp_data->last_loaded;
     nntp_data->newsrc_len++;
   }
-  safe_realloc(&nntp_data->newsrc_ent, nntp_data->newsrc_len * sizeof(struct NewsrcEntry));
+  mutt_mem_realloc(&nntp_data->newsrc_ent, nntp_data->newsrc_len * sizeof(struct NewsrcEntry));
 
   if (save_sort != Sort)
   {
@@ -438,7 +438,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
     return -1;
 
   buflen = 10 * LONG_STRING;
-  buf = safe_calloc(1, buflen);
+  buf = mutt_mem_calloc(1, buflen);
   off = 0;
 
   /* we will generate full newsrc here */
@@ -453,7 +453,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
     if (off + strlen(nntp_data->group) + 3 > buflen)
     {
       buflen *= 2;
-      safe_realloc(&buf, buflen);
+      mutt_mem_realloc(&buf, buflen);
     }
     snprintf(buf + off, buflen - off, "%s%c ", nntp_data->group,
              nntp_data->subscribed ? ':' : '!');
@@ -465,7 +465,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
       if (off + LONG_STRING > buflen)
       {
         buflen *= 2;
-        safe_realloc(&buf, buflen);
+        mutt_mem_realloc(&buf, buflen);
       }
       if (j)
         buf[off++] = ',';
@@ -623,7 +623,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
     return 0;
 
   buflen = 10 * LONG_STRING;
-  buf = safe_calloc(1, buflen);
+  buf = mutt_mem_calloc(1, buflen);
   snprintf(buf, buflen, "%lu\n", (unsigned long) nserv->newgroups_time);
   off = strlen(buf);
 
@@ -637,7 +637,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
     if (off + strlen(nntp_data->group) + (nntp_data->desc ? strlen(nntp_data->desc) : 0) + 50 > buflen)
     {
       buflen *= 2;
-      safe_realloc(&buf, buflen);
+      mutt_mem_realloc(&buf, buflen);
     }
     snprintf(buf + off, buflen - off, "%s %d %d %c%s%s\n", nntp_data->group,
              nntp_data->last_message, nntp_data->first_message,
@@ -1006,11 +1006,11 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   }
 
   /* new news server */
-  nserv = safe_calloc(1, sizeof(struct NntpServer));
+  nserv = mutt_mem_calloc(1, sizeof(struct NntpServer));
   nserv->conn = conn;
   nserv->groups_hash = mutt_hash_create(1009, 0);
   nserv->groups_max = 16;
-  nserv->groups_list = safe_malloc(nserv->groups_max * sizeof(nntp_data));
+  nserv->groups_list = mutt_mem_malloc(nserv->groups_max * sizeof(nntp_data));
 
   rc = nntp_open_connection(nserv);
 
@@ -1178,7 +1178,7 @@ struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
   nntp_data->subscribed = true;
   if (!nntp_data->newsrc_ent)
   {
-    nntp_data->newsrc_ent = safe_calloc(1, sizeof(struct NewsrcEntry));
+    nntp_data->newsrc_ent = mutt_mem_calloc(1, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = 0;
@@ -1225,7 +1225,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
 
   if (nntp_data->newsrc_ent)
   {
-    safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
+    mutt_mem_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = nntp_data->last_message;
@@ -1255,7 +1255,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 
   if (nntp_data->newsrc_ent)
   {
-    safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
+    mutt_mem_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = nntp_data->first_message - 1;

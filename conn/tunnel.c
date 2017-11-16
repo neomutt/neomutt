@@ -76,7 +76,7 @@ static int tunnel_socket_open(struct Connection *conn)
   int pin[2], pout[2];
   int devnull;
 
-  tunnel = safe_malloc(sizeof(struct TunnelData));
+  tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
   conn->sockdata = tunnel;
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);

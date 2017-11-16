@@ -106,7 +106,7 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
   if (!key)
     return NULL;
 
-  copy = safe_calloc(1, sizeof(struct SmimeKey));
+  copy = mutt_mem_calloc(1, sizeof(struct SmimeKey));
   copy->email = safe_strdup(key->email);
   copy->hash = safe_strdup(key->hash);
   copy->label = safe_strdup(key->label);
@@ -402,7 +402,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
     if (table_index == table_size)
     {
       table_size += 5;
-      safe_realloc(&table, sizeof(struct SmimeKey *) * table_size);
+      mutt_mem_realloc(&table, sizeof(struct SmimeKey *) * table_size);
     }
 
     table[table_index++] = key;
@@ -485,7 +485,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
   char *pend = NULL, *p = NULL;
   int field = 0;
 
-  key = safe_calloc(1, sizeof(struct SmimeKey));
+  key = mutt_mem_calloc(1, sizeof(struct SmimeKey));
 
   for (p = buf; p; p = pend)
   {
@@ -889,7 +889,7 @@ char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
 
     keyID = key->hash;
     keylist_size += mutt_strlen(keyID) + 2;
-    safe_realloc(&keylist, keylist_size);
+    mutt_mem_realloc(&keylist, keylist_size);
     sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyID);
     keylist_used = mutt_strlen(keylist);
 
@@ -971,7 +971,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   if (copy && buffer && num)
   {
     (*num) = count;
-    *buffer = safe_calloc(count, sizeof(char *));
+    *buffer = mutt_mem_calloc(count, sizeof(char *));
     count = 0;
 
     rewind(fpout);
@@ -980,7 +980,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
       len = mutt_strlen(email);
       if (len && (email[len - 1] == '\n'))
         email[len - 1] = '\0';
-      (*buffer)[count] = safe_calloc(mutt_strlen(email) + 1, sizeof(char));
+      (*buffer)[count] = mutt_mem_calloc(mutt_strlen(email) + 1, sizeof(char));
       strncpy((*buffer)[count], email, mutt_strlen(email));
       count++;
     }
@@ -1456,7 +1456,7 @@ static char *openssl_md_to_smime_micalg(char *md)
   if (mutt_strncasecmp("sha", md, 3) == 0)
   {
     l = strlen(md) + 2;
-    micalg = safe_malloc(l);
+    micalg = mutt_mem_malloc(l);
     snprintf(micalg, l, "sha-%s", md + 3);
   }
   else

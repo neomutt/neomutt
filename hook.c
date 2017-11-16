@@ -226,7 +226,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   else if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
-    rx = safe_malloc(sizeof(regex_t));
+    rx = mutt_mem_malloc(sizeof(regex_t));
 #ifdef MUTT_CRYPTHOOK
     if ((rc = REGCOMP(rx, NONULL(pattern.data),
                       ((data & (MUTT_CRYPTHOOK | MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0))) != 0)
@@ -241,7 +241,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
 
-  ptr = safe_calloc(1, sizeof(struct Hook));
+  ptr = mutt_mem_calloc(1, sizeof(struct Hook));
   ptr->type = data;
   ptr->command = command.data;
   ptr->pattern = pat;
@@ -337,7 +337,7 @@ void mutt_folder_hook(const char *path)
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   TAILQ_FOREACH(tmp, &Hooks, entries)
   {
@@ -392,7 +392,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   memset(&cache, 0, sizeof(cache));
   TAILQ_FOREACH(hook, &Hooks, entries)
@@ -557,7 +557,7 @@ void mutt_account_hook(const char *url)
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
 
   TAILQ_FOREACH(hook, &Hooks, entries)

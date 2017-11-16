@@ -372,7 +372,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   if (option(OPT_UNCOLLAPSE_NEW) && oldcount && check != MUTT_REOPENED &&
       ((Sort & SORT_MASK) == SORT_THREADS))
   {
-    save_new = safe_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
+    save_new = mutt_mem_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
     for (int i = oldcount; i < ctx->msgcount; i++)
       save_new[i - oldcount] = ctx->hdrs[i];
   }
@@ -730,7 +730,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
       if (!found)
       {
         chunks++;
-        safe_realloc(&syntax, chunks * sizeof(struct Syntax));
+        mutt_mem_realloc(&syntax, chunks * sizeof(struct Syntax));
       }
 
       i = chunks - 1;

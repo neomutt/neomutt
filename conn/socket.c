@@ -343,7 +343,7 @@ struct Connection *socket_new_conn(void)
 {
   struct Connection *conn = NULL;
 
-  conn = safe_calloc(1, sizeof(struct Connection));
+  conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
   return conn;

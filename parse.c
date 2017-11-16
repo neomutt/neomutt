@@ -106,7 +106,7 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
     {
       /* grow the buffer */
       *linelen += STRING;
-      safe_realloc(&line, *linelen);
+      mutt_mem_realloc(&line, *linelen);
       buf = line + offset;
     }
   }
@@ -423,7 +423,7 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
 {
   struct Body *p = mutt_new_body();
   char *c = NULL;
-  char *line = safe_malloc(LONG_STRING);
+  char *line = mutt_mem_malloc(LONG_STRING);
   size_t linelen = LONG_STRING;
 
   p->hdr_offset = ftello(fp);
@@ -702,7 +702,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
     if (*p == '>')
     {
       size_t olen = onull - o, slen = p - s + 1;
-      ret = safe_malloc(olen + slen + 1);
+      ret = mutt_mem_malloc(olen + slen + 1);
       if (o)
         memcpy(ret, o, olen);
       memcpy(ret + olen, s, slen);
@@ -1150,7 +1150,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)
 {
   struct Envelope *e = mutt_new_envelope();
-  char *line = safe_malloc(LONG_STRING);
+  char *line = mutt_mem_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
   size_t linelen = LONG_STRING;

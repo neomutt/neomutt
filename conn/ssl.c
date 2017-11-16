@@ -337,7 +337,7 @@ static void ssl_dprint_err_stack(void)
   buflen = BIO_get_mem_data(bio, &buf);
   if (buflen > 0)
   {
-    output = safe_malloc(buflen + 1);
+    output = mutt_mem_malloc(buflen + 1);
     memcpy(output, buf, buflen);
     output[buflen] = '\0';
     mutt_debug(1, "SSL error stack: %s\n", output);
@@ -886,7 +886,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
-    buf = safe_malloc((size_t) bufsize);
+    buf = mutt_mem_malloc((size_t) bufsize);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
@@ -977,9 +977,9 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   mutt_push_current_menu(menu);
 
   menu->max = mutt_array_size(part) * 2 + 10;
-  menu->dialog = safe_calloc(1, menu->max * sizeof(char *));
+  menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = safe_calloc(1, SHORT_STRING * sizeof(char));
+    menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
 
   row = 0;
   strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
@@ -1338,7 +1338,7 @@ static int ssl_socket_open(struct Connection *conn)
   if (raw_socket_open(conn) < 0)
     return -1;
 
-  data = safe_calloc(1, sizeof(struct SslSockData));
+  data = mutt_mem_calloc(1, sizeof(struct SslSockData));
   conn->sockdata = data;
 
   data->ctx = SSL_CTX_new(SSLv23_client_method());
@@ -1441,7 +1441,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   if (ssl_init())
     goto bail;
 
-  ssldata = safe_calloc(1, sizeof(struct SslSockData));
+  ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
   /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
    *
    * However, we need to be able to negotiate amongst various TLS versions,

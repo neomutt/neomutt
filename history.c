@@ -107,7 +107,7 @@ static void init_history(struct History *h)
   }
 
   if (History)
-    h->hist = safe_calloc(History + 1, sizeof(char *));
+    h->hist = mutt_mem_calloc(History + 1, sizeof(char *));
 
   h->cur = 0;
   h->last = 0;

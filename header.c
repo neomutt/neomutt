@@ -378,7 +378,7 @@ void mutt_free_header(struct Header **h)
 
 struct Header *mutt_new_header(void)
 {
-  struct Header *h = safe_calloc(1, sizeof(struct Header));
+  struct Header *h = mutt_mem_calloc(1, sizeof(struct Header));
 #ifdef MIXMASTER
   STAILQ_INIT(&h->chain);
 #endif

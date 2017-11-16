@@ -140,7 +140,7 @@ static void *lazy_malloc(size_t siz)
   if (siz < 4096)
     siz = 4096;
 
-  return safe_malloc(siz);
+  return mutt_mem_malloc(siz);
 }
 
 static void lazy_realloc(void *ptr, size_t siz)
@@ -150,7 +150,7 @@ static void lazy_realloc(void *ptr, size_t siz)
   if (p != NULL && siz < 4096)
     return;
 
-  safe_realloc(ptr, siz);
+  mutt_mem_realloc(ptr, siz);
 }
 
 static unsigned char *dump_int(unsigned int i, unsigned char *d, int *off)
@@ -217,7 +217,7 @@ static void restore_char(char **c, const unsigned char *d, int *off, bool conver
     return;
   }
 
-  *c = safe_malloc(size);
+  *c = mutt_mem_malloc(size);
   memcpy(*c, d + *off, size);
   if (convert && !is_ascii(*c, size))
   {
@@ -336,7 +336,7 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
     return;
   }
 
-  *b = safe_malloc(sizeof(struct Buffer));
+  *b = mutt_mem_malloc(sizeof(struct Buffer));
 
   restore_char(&(*b)->data, d, off, convert);
   restore_int(&offset, d, off);
@@ -377,7 +377,7 @@ static void restore_parameter(struct Parameter **p, const unsigned char *d,
 
   while (counter)
   {
-    *p = safe_malloc(sizeof(struct Parameter));
+    *p = mutt_mem_malloc(sizeof(struct Parameter));
     restore_char(&(*p)->attribute, d, off, false);
     restore_char(&(*p)->value, d, off, convert);
     p = &(*p)->next;
@@ -726,7 +726,7 @@ static char *get_foldername(const char *folder)
 
   /* if the folder is local, canonify the path to avoid
    * to ensure equivalent paths share the hcache */
-  p = safe_malloc(PATH_MAX + 1);
+  p = mutt_mem_malloc(PATH_MAX + 1);
   if (!realpath(path, p))
     mutt_str_replace(&p, path);
 
@@ -739,7 +739,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
   if (!ops)
     return NULL;
 
-  header_cache_t *h = safe_calloc(1, sizeof(header_cache_t));
+  header_cache_t *h = mutt_mem_calloc(1, sizeof(header_cache_t));
 
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0)

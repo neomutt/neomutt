@@ -449,7 +449,7 @@ static int pop_open_mailbox(struct Context *ctx)
   ctx->path = safe_strdup(buf);
   ctx->realpath = safe_strdup(ctx->path);
 
-  pop_data = safe_calloc(1, sizeof(struct PopData));
+  pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
   ctx->data = pop_data;
 
@@ -832,7 +832,7 @@ void pop_fetch_mail(void)
     return;
   }
 
-  url = p = safe_calloc(strlen(PopHost) + 7, sizeof(char));
+  url = p = mutt_mem_calloc(strlen(PopHost) + 7, sizeof(char));
   if (url_check_scheme(PopHost) == U_UNKNOWN)
   {
     strcpy(url, "pop://");
@@ -852,7 +852,7 @@ void pop_fetch_mail(void)
   if (!conn)
     return;
 
-  pop_data = safe_calloc(1, sizeof(struct PopData));
+  pop_data = mutt_mem_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
 
   if (pop_open_connection(pop_data) < 0)

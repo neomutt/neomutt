@@ -46,7 +46,7 @@
  */
 struct Envelope *mutt_new_envelope(void)
 {
-  struct Envelope *e = safe_calloc(1, sizeof(struct Envelope));
+  struct Envelope *e = mutt_mem_calloc(1, sizeof(struct Envelope));
   STAILQ_INIT(&e->references);
   STAILQ_INIT(&e->in_reply_to);
   STAILQ_INIT(&e->userhdrs);

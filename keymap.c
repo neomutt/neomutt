@@ -134,9 +134,9 @@ static struct Keymap *alloc_keys(int len, keycode_t *keys)
 {
   struct Keymap *p = NULL;
 
-  p = safe_calloc(1, sizeof(struct Keymap));
+  p = mutt_mem_calloc(1, sizeof(struct Keymap));
   p->len = len;
-  p->keys = safe_malloc(len * sizeof(keycode_t));
+  p->keys = mutt_mem_malloc(len * sizeof(keycode_t));
   memcpy(p->keys, keys, len * sizeof(keycode_t));
   return p;
 }

@@ -162,12 +162,12 @@ static int fetch_auth(char *line, void *data)
 
   if (!pop_data->auth_list)
   {
-    pop_data->auth_list = safe_malloc(strlen(line) + 1);
+    pop_data->auth_list = mutt_mem_malloc(strlen(line) + 1);
     *pop_data->auth_list = '\0';
   }
   else
   {
-    safe_realloc(&pop_data->auth_list, strlen(pop_data->auth_list) + strlen(line) + 2);
+    mutt_mem_realloc(&pop_data->auth_list, strlen(pop_data->auth_list) + strlen(line) + 2);
     strcat(pop_data->auth_list, " ");
   }
   strcat(pop_data->auth_list, line);
@@ -523,7 +523,7 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
   if (ret < 0)
     return ret;
 
-  inbuf = safe_malloc(sizeof(buf));
+  inbuf = mutt_mem_malloc(sizeof(buf));
 
   while (true)
   {
@@ -560,7 +560,7 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
       lenbuf = 0;
     }
 
-    safe_realloc(&inbuf, lenbuf + sizeof(buf));
+    mutt_mem_realloc(&inbuf, lenbuf + sizeof(buf));
   }
 
   FREE(&inbuf);

@@ -173,7 +173,7 @@ new_aliases:
     menu->max++;
   }
 
-  safe_realloc(&AliasTable, menu->max * sizeof(struct Alias *));
+  mutt_mem_realloc(&AliasTable, menu->max * sizeof(struct Alias *));
   menu->data = AliasTable;
   if (!AliasTable)
     return;

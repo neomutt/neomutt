@@ -118,7 +118,7 @@ static void mhs_alloc(struct MhSequences *mhs, int i)
   {
     newmax = i + 128;
     j = mhs->flags ? mhs->max + 1 : 0;
-    safe_realloc(&mhs->flags, sizeof(mhs->flags[0]) * (newmax + 1));
+    mutt_mem_realloc(&mhs->flags, sizeof(mhs->flags[0]) * (newmax + 1));
     while (j <= newmax)
       mhs->flags[j++] = 0;
 
@@ -884,7 +884,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
     else
       h->path = safe_strdup(de->d_name);
 
-    entry = safe_calloc(1, sizeof(struct Maildir));
+    entry = mutt_mem_calloc(1, sizeof(struct Maildir));
     entry->h = h;
     entry->inode = de->d_ino;
     **last = entry;
@@ -1272,7 +1272,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
 
   if (!ctx->data)
   {
-    ctx->data = safe_calloc(1, sizeof(struct MhData));
+    ctx->data = mutt_mem_calloc(1, sizeof(struct MhData));
   }
   data = mh_data(ctx);
 

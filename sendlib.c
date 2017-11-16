@@ -694,10 +694,10 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   if (cd1 == (iconv_t)(-1))
     return -1;
 
-  cd = safe_calloc(ncodes, sizeof(iconv_t));
-  score = safe_calloc(ncodes, sizeof(size_t));
-  states = safe_calloc(ncodes, sizeof(struct ContentState));
-  infos = safe_calloc(ncodes, sizeof(struct Content));
+  cd = mutt_mem_calloc(ncodes, sizeof(iconv_t));
+  score = mutt_mem_calloc(ncodes, sizeof(size_t));
+  states = mutt_mem_calloc(ncodes, sizeof(struct ContentState));
+  infos = mutt_mem_calloc(ncodes, sizeof(struct Content));
 
   for (int i = 0; i < ncodes; i++)
   {
@@ -845,7 +845,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
   }
 
   /* Copy them */
-  tcode = safe_malloc(ncodes * sizeof(char *));
+  tcode = mutt_mem_malloc(ncodes * sizeof(char *));
   for (c = tocodes, i = 0; c; c = c1 ? c1 + 1 : 0, i++)
   {
     c1 = strchr(c, ':');
@@ -937,7 +937,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     return NULL;
   }
 
-  info = safe_calloc(1, sizeof(struct Content));
+  info = mutt_mem_calloc(1, sizeof(struct Content));
   memset(&state, 0, sizeof(state));
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
@@ -1656,7 +1656,7 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
       break;
   }
 
-  struct ListNode **ref = safe_calloc(length, sizeof(struct ListNode *));
+  struct ListNode **ref = mutt_mem_calloc(length, sizeof(struct ListNode *));
 
   // store in reverse order
   size_t tmp = length;
@@ -2202,7 +2202,7 @@ static void encode_headers(struct ListHead *h)
       continue;
 
     rfc2047_encode_string32(&tmp);
-    safe_realloc(&np->data, mutt_strlen(np->data) + 2 + mutt_strlen(tmp) + 1);
+    mutt_mem_realloc(&np->data, mutt_strlen(np->data) + 2 + mutt_strlen(tmp) + 1);
 
     sprintf(np->data + i, ": %s", NONULL(tmp));
 
@@ -2440,7 +2440,7 @@ static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Add
     if (addr->mailbox && !addr->group)
     {
       if (*argslen == *argsmax)
-        safe_realloc(&args, (*argsmax += 5) * sizeof(char *));
+        mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
       args[(*argslen)++] = addr->mailbox;
     }
   }
@@ -2450,7 +2450,7 @@ static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Add
 static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
 {
   if (*argslen == *argsmax)
-    safe_realloc(&args, (*argsmax += 5) * sizeof(char *));
+    mutt_mem_realloc(&args, (*argsmax += 5) * sizeof(char *));
   args[(*argslen)++] = s;
   return args;
 }
@@ -2506,7 +2506,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   while ((ps = strtok(ps, " ")))
   {
     if (argslen == argsmax)
-      safe_realloc(&args, sizeof(char *) * (argsmax += 5));
+      mutt_mem_realloc(&args, sizeof(char *) * (argsmax += 5));
 
     if (i)
     {
@@ -2540,7 +2540,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
       while ((ps = strtok(ps, " ")))
       {
         if (extra_argslen == extra_argsmax)
-          safe_realloc(&extra_args, sizeof(char *) * (extra_argsmax += 5));
+          mutt_mem_realloc(&extra_args, sizeof(char *) * (extra_argsmax += 5));
 
         extra_args[extra_argslen++] = ps;
         ps = NULL;
@@ -2585,7 +2585,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
 #endif
 
   if (argslen == argsmax)
-    safe_realloc(&args, sizeof(char *) * (++argsmax));
+    mutt_mem_realloc(&args, sizeof(char *) * (++argsmax));
 
   args[argslen++] = NULL;
 

@@ -35,7 +35,7 @@
 
 struct Body *mutt_new_body(void)
 {
-  struct Body *p = safe_calloc(1, sizeof(struct Body));
+  struct Body *p = mutt_mem_calloc(1, sizeof(struct Body));
 
   p->disposition = DISPATTACH;
   p->use_disp = true;
