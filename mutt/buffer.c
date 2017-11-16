@@ -28,6 +28,7 @@
  *
  * | Function             | Description
  * | :------------------- | :--------------------------------------------------
+ * | mutt_buffer_add()    | Add a string to a Buffer, expanding it if necessary
  * | mutt_buffer_addch()  | Add a single character to a Buffer
  * | mutt_buffer_addstr() | Add a string to a Buffer
  * | mutt_buffer_free()   | Release a Buffer and its contents
@@ -35,7 +36,7 @@
  * | mutt_buffer_init()   | Initialise a new Buffer
  * | mutt_buffer_new()    | Create and initialise a Buffer
  * | mutt_buffer_printf() | Format a string into a Buffer
- * | mutt_buffer_reset    | Reset an existing Buffer
+ * | mutt_buffer_reset()  | Reset an existing Buffer
  */
 
 #include "config.h"
