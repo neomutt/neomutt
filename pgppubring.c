@@ -201,13 +201,13 @@ static void pgp_make_pgp2_fingerprint(unsigned char *buff, unsigned char *digest
   struct Md5Ctx ctx;
   unsigned int size = 0;
 
-  md5_init_ctx(&ctx);
+  mutt_md5_init_ctx(&ctx);
 
   size = (buff[0] << 8) + buff[1];
   size = ((size + 7) / 8);
   buff = &buff[2];
 
-  md5_process_bytes(buff, size, &ctx);
+  mutt_md5_process_bytes(buff, size, &ctx);
 
   buff = &buff[size];
 
@@ -215,9 +215,9 @@ static void pgp_make_pgp2_fingerprint(unsigned char *buff, unsigned char *digest
   size = ((size + 7) / 8);
   buff = &buff[2];
 
-  md5_process_bytes(buff, size, &ctx);
+  mutt_md5_process_bytes(buff, size, &ctx);
 
-  md5_finish_ctx(&ctx, digest);
+  mutt_md5_finish_ctx(&ctx, digest);
 }
 
 static char *binary_fingerprint_to_string(unsigned char *buff, size_t length)

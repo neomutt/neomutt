@@ -231,11 +231,11 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   mutt_message(_("Authenticating (APOP)..."));
 
   /* Compute the authentication hash to send to the server */
-  md5_init_ctx(&ctx);
-  md5_process_bytes(pop_data->timestamp, strlen(pop_data->timestamp), &ctx);
-  md5_process_bytes(pop_data->conn->account.pass,
-                    strlen(pop_data->conn->account.pass), &ctx);
-  md5_finish_ctx(&ctx, digest);
+  mutt_md5_init_ctx(&ctx);
+  mutt_md5_process_bytes(pop_data->timestamp, strlen(pop_data->timestamp), &ctx);
+  mutt_md5_process_bytes(pop_data->conn->account.pass,
+                         strlen(pop_data->conn->account.pass), &ctx);
+  mutt_md5_finish_ctx(&ctx, digest);
 
   for (size_t i = 0; i < sizeof(digest); i++)
     sprintf(hash + 2 * i, "%02x", digest[i]);
