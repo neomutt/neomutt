@@ -35,6 +35,11 @@ struct stat;
 
 const char *mutt_file_basename(const char *f);
 int         mutt_file_check_empty(const char *path);
+int         mutt_file_chmod(const char *path, mode_t mode);
+int         mutt_file_chmod_add(const char *path, mode_t mode);
+int         mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st);
+int         mutt_file_chmod_rm(const char *path, mode_t mode);
+int         mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st);
 char *      mutt_file_concatn_path(char *dst, size_t dstlen, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
 char *      mutt_file_concat_path(char *d, const char *dir, const char *fname, size_t l);
 int         mutt_file_copy_bytes(FILE *in, FILE *out, size_t size);
