@@ -453,7 +453,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
       FREE(&fname);
       if (mutt_save_attachment(fp, a, tempfile, 0, NULL) == -1)
         goto return_error;
-      chmod(tempfile, 0400);
+      mutt_file_chmod(tempfile, S_IRUSR);
     }
 
     use_pipe = rfc1524_expand_command(a, tempfile, type, command, sizeof(command));
@@ -631,7 +631,7 @@ return_error:
   if (fp && tempfile[0])
   {
     /* Restore write permission so mutt_file_unlink can open the file for writing */
-    chmod(tempfile, 0600);
+    mutt_file_chmod_add(tempfile, S_IWUSR);
     mutt_file_unlink(tempfile);
   }
   else if (unlink_tempfile)
