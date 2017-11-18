@@ -29,6 +29,11 @@
  * | :---------------------------- | :-----------------------------------------------------------
  * | mutt_file_basename()          | Find the last component for a pathname
  * | mutt_file_check_empty()       | Is the mailbox empty
+ * | mutt_file_chmod()             | Set permissions of a file
+ * | mutt_file_chmod_add()         | Add permissions to a file
+ * | mutt_file_chmod_add_stat()    | Add permissions to a file
+ * | mutt_file_chmod_rm()          | Remove permissions from a file
+ * | mutt_file_chmod_rm_stat()     | Remove permissions from a file
  * | mutt_file_concatn_path()      | Concatenate directory and filename
  * | mutt_file_concat_path()       | Join a directory name and a filename
  * | mutt_file_copy_bytes()        | Copy some content from one file to another
@@ -970,6 +975,124 @@ void mutt_file_touch_atime(int f)
   struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
   futimens(f, times);
 #endif
+}
+
+/**
+ * mutt_file_chmod - change permissions of a file
+ * @param path Filename
+ * @param mode the permissions to set
+ * @retval int same as chmod(2)
+ *
+ * This is essentially chmod(path, mode), see chmod(2).
+ */
+int mutt_file_chmod(const char *path, mode_t mode)
+{
+  return chmod(path, mode);
+}
+
+/**
+ * mutt_file_chmod_add - add permissions to a file
+ * @param path Filename
+ * @param mode the permissions to add
+ * @retval int same as chmod(2)
+ * @see   mutt_file_chmod_add_stat()
+ *
+ * Adds the given permissions to the file. Permissions not mentioned in mode
+ * will stay as they are. This function resembles the `chmod ugoa+rwxXst`
+ * command family. Example:
+ *
+ *     mutt_file_chmod_add(path, S_IWUSR | S_IWGRP | S_IWOTH);
+ *
+ * will add write permissions to path but does not alter read and other
+ * permissions.
+ */
+int mutt_file_chmod_add(const char *path, mode_t mode)
+{
+  return mutt_file_chmod_add_stat(path, mode, NULL);
+}
+
+/**
+ * mutt_file_chmod_add_stat - add permissions to a file
+ * @param path Filename
+ * @param mode the permissions to add
+ * @param st   struct stat for the file (optional)
+ * @retval int same as chmod(2)
+ * @see   mutt_file_chmod_add()
+ *
+ * Same as mutt_file_chmod_add() but saves a system call to stat() if a
+ * non-NULL stat structure is given. Useful if the stat structure of the file
+ * was retrieved before by the calling code. Example:
+ *
+ *     struct stat st;
+ *     stat(path, &st);
+ *     // ... do something else with st ...
+ *     mutt_file_chmod_add_stat(path, S_IWUSR | S_IWGRP | S_IWOTH, st);
+ *
+ */
+int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
+{
+  struct stat _st;
+
+  if (!st)
+  {
+    if (stat(path, &_st) == -1)
+      return -1;
+    st = &_st;
+  }
+  return chmod(path, st->st_mode | mode);
+}
+
+
+/**
+ * mutt_file_chmod_rm - remove permissions from a file
+ * @param path Filename
+ * @param mode the permissions to remove
+ * @retval int same as chmod(2)
+ * @see   mutt_file_chmod_rm_stat()
+ *
+ * Removes the given permissions from the file. Permissions not mentioned in
+ * mode will stay as they are. This function resembles the `chmod ugoa-rwxXst`
+ * command family. Example:
+ *
+ *     mutt_file_chmod_rm(path, S_IWUSR | S_IWGRP | S_IWOTH);
+ *
+ * will remove write permissions from path but does not alter read and other
+ * permissions.
+ */
+int mutt_file_chmod_rm(const char *path, mode_t mode)
+{
+  return mutt_file_chmod_rm_stat(path, mode, NULL);
+}
+
+/**
+ * mutt_file_chmod_rm_stat - remove permissions from a file
+ * @param path Filename
+ * @param mode the permissions to remove
+ * @param st   struct stat for the file (optional)
+ * @retval int same as chmod(2)
+ * @see   mutt_file_chmod_rm()
+ *
+ * Same as mutt_file_chmod_rm() but saves a system call to stat() if a non-NULL
+ * stat structure is given. Useful if the stat structure of the file was
+ * retrieved before by the calling code. Example:
+ *
+ *     struct stat st;
+ *     stat(path, &st);
+ *     // ... do something else with st ...
+ *     mutt_file_chmod_rm_stat(path, S_IWUSR | S_IWGRP | S_IWOTH, st);
+ *
+ */
+int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
+{
+  struct stat _st;
+
+  if (!st)
+  {
+    if (stat(path, &_st) == -1)
+      return -1;
+    st = &_st;
+  }
+  return chmod(path, st->st_mode & ~mode);
 }
 
 /**
