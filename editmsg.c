@@ -120,10 +120,10 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
     goto bail;
   }
 
-  /* remove write permissions */
   if (!edit)
   {
-    rc = chmod(tmp, sb.st_mode & ~(S_IWUSR | S_IWGRP | S_IWOTH));
+    /* remove write permissions */
+    rc = mutt_file_chmod_rm_stat(tmp, S_IWUSR | S_IWGRP | S_IWOTH, &sb);
     if (rc == -1)
     {
       mutt_debug(1, "Could not remove write permissions of %s: %s", tmp, strerror(errno));
