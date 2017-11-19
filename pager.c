@@ -340,7 +340,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
     {
       color ^= A_BLINK;
     }
-    else if (a->attr & ANSI_OFF)
+    else if (a->attr == ANSI_OFF)
     {
       a->attr = 0;
     }
