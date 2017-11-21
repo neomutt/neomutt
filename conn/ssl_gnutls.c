@@ -992,12 +992,8 @@ static void tls_get_client_cert(struct Connection *conn)
   /* get length of DN */
   dnlen = 0;
   gnutls_x509_crt_get_dn(clientcrt, NULL, &dnlen);
-  dn = calloc(1, dnlen);
-  if (!dn)
-  {
-    mutt_debug(1, "could not allocate DN\n");
-    goto err_crt;
-  }
+  dn = mutt_mem_calloc(1, dnlen);
+
   gnutls_x509_crt_get_dn(clientcrt, dn, &dnlen);
   mutt_debug(2, "client certificate DN: %s\n", dn);
 
