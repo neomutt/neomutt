@@ -77,13 +77,13 @@ neomutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) $(LIBCONNDE
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
 
-AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
+AM_CPPFLAGS=-I. -I.. -I$(top_srcdir) $(GPGME_CFLAGS)
 
 EXTRA_neomutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_notmuch.c \
 	remailer.c remailer.h resize.c url.h
 
-EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
+EXTRA_DIST = mutt_account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
 	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \

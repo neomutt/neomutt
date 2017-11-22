@@ -216,11 +216,11 @@ $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(NEOMUTTOBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 # libmutt
-$(LIBMUTT): $(PWD)/lib $(LIBMUTTOBJS)
+$(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
 	$(AR) cr $@ $(LIBMUTTOBJS)
 	$(RANLIB) $@
-$(PWD)/lib:
-	$(MKDIR_P) $(PWD)/lib
+$(PWD)/mutt:
+	$(MKDIR_P) $(PWD)/mutt
 
 # libncrypt
 $(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)

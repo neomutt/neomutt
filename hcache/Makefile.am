@@ -36,8 +36,8 @@ if BUILD_HC_TC
 libhcache_a_SOURCES += tc.c
 endif
 
-LIBMUTT = -L../lib -lmutt
-LIBMUTTDEPS = $(top_srcdir)/mutt/lib.h ../mutt/libmutt.a
+LIBMUTT = -L../mutt -lmutt
+LIBMUTTDEPS = $(top_srcdir)/mutt/mutt.h ../mutt/libmutt.a
 
 BUILT_SOURCES = $(HCVERSION)
 
