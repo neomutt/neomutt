@@ -92,7 +92,7 @@ static void print_part_line(struct State *s, struct Body *b, int n)
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 {
   char bufo[BUFO_SIZE];
-  ICONV_CONST char *ib = NULL;
+  const char *ib = NULL;
   char *ob = NULL;
   size_t ibl, obl;
 
@@ -101,7 +101,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
     if (cd != (iconv_t)(-1))
     {
       ob = bufo, obl = sizeof(bufo);
-      iconv(cd, 0, 0, &ob, &obl);
+      iconv(cd, NULL, NULL, &ob, &obl);
       if (ob != bufo)
         state_prefix_put(bufo, ob - bufo, s);
     }

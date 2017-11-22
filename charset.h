@@ -30,9 +30,8 @@
 int mutt_convert_string(char **ps, const char *from, const char *to, int flags);
 
 iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags);
-size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
-                  char **outbuf, size_t *outbytesleft,
-                  ICONV_CONST char **inrepls, const char *outrepl);
+size_t mutt_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
+                  size_t *outbytesleft, const char **inrepls, const char *outrepl);
 
 typedef void *FGETCONV;
 

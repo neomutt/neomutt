@@ -53,9 +53,9 @@
 
 extern char RFC822Specials[];
 
-typedef size_t (*encoder_t)(char *s, ICONV_CONST char *d, size_t dlen, const char *tocode);
+typedef size_t (*encoder_t)(char *s, const char *d, size_t dlen, const char *tocode);
 
-static size_t convert_string(ICONV_CONST char *f, size_t flen, const char *from,
+static size_t convert_string(const char *f, size_t flen, const char *from,
                              const char *to, char **t, size_t *tlen)
 {
   iconv_t cd;
@@ -68,8 +68,8 @@ static size_t convert_string(ICONV_CONST char *f, size_t flen, const char *from,
     return (size_t)(-1);
   obl = 4 * flen + 1;
   ob = buf = mutt_mem_malloc(obl);
-  n = iconv(cd, &f, &flen, &ob, &obl);
-  if (n == (size_t)(-1) || iconv(cd, 0, 0, &ob, &obl) == (size_t)(-1))
+  n = iconv(cd, (ICONV_CONST char **) &f, &flen, &ob, &obl);
+  if (n == (size_t)(-1) || iconv(cd, NULL, NULL, &ob, &obl) == (size_t)(-1))
   {
     e = errno;
     FREE(&buf);
@@ -189,7 +189,7 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
   return tocode;
 }
 
-static size_t b_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *tocode)
+static size_t b_encoder(char *s, const char *d, size_t dlen, const char *tocode)
 {
   char *s0 = s;
 
@@ -219,7 +219,7 @@ static size_t b_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
   return s - s0;
 }
 
-static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *tocode)
+static size_t q_encoder(char *s, const char *d, size_t dlen, const char *tocode)
 {
   static const char hex[] = "0123456789ABCDEF";
   char *s0 = s;
@@ -250,7 +250,7 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
 }
 
 /**
- * try_block - Attempt to convert a block ot text
+ * try_block - Attempt to convert a block of text
  * @param d        String to convert
  * @param dlen     Length of string
  * @param fromcode Original encoding
@@ -267,12 +267,12 @@ static size_t q_encoder(char *s, ICONV_CONST char *d, size_t dlen, const char *t
  * tocode, unless fromcode is 0, in which case the data is assumed to
  * be already in tocode, which should be 8-bit and stateless.
  */
-static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
+static size_t try_block(const char *d, size_t dlen, const char *fromcode,
                         const char *tocode, encoder_t *encoder, size_t *wlen)
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
-  ICONV_CONST char *ib = NULL;
+  const char *ib = NULL;
   char *ob = NULL;
   size_t ibl, obl;
   int count, len, len_b, len_q;
@@ -285,8 +285,8 @@ static size_t try_block(ICONV_CONST char *d, size_t dlen, const char *fromcode,
     ibl = dlen;
     ob = buf1;
     obl = sizeof(buf1) - strlen(tocode);
-    if (iconv(cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
-        iconv(cd, 0, 0, &ob, &obl) == (size_t)(-1))
+    if (iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
+        iconv(cd, NULL, NULL, &ob, &obl) == (size_t)(-1))
     {
       assert(errno == E2BIG);
       iconv_close(cd);
@@ -353,7 +353,7 @@ static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
-  ICONV_CONST char *ib = NULL;
+  const char *ib = NULL;
   char *ob = NULL;
   size_t ibl, obl, n1, n2;
 
@@ -365,8 +365,8 @@ static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
     ibl = dlen;
     ob = buf1;
     obl = sizeof(buf1) - strlen(tocode);
-    n1 = iconv(cd, &ib, &ibl, &ob, &obl);
-    n2 = iconv(cd, 0, 0, &ob, &obl);
+    n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
+    n2 = iconv(cd, NULL, NULL, &ob, &obl);
     assert(n1 != (size_t)(-1) && n2 != (size_t)(-1));
     iconv_close(cd);
     return (*encoder)(s, buf1, ob - buf1, tocode);
@@ -425,7 +425,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
  * The input data is assumed to be a single line starting at column col;
  * if col is non-zero, the preceding character was a space.
  */
-static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char *fromcode,
+static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromcode,
                           const char *charsets, char **e, size_t *elen, char *specials)
 {
   int rc = 0;

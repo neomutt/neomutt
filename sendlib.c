@@ -684,7 +684,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 {
   iconv_t cd1, *cd = NULL;
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
-  ICONV_CONST char *ib = NULL, *ub = NULL;
+  const char *ib = NULL, *ub = NULL;
   char *ob = NULL;
   size_t ibl, obl, ubl, ubl1, n, ret;
   struct Content *infos = NULL;
@@ -724,7 +724,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     ib = bufi;
     ob = bufu;
     obl = sizeof(bufu);
-    n = iconv(cd1, ibl ? &ib : 0, &ibl, &ob, &obl);
+    n = iconv(cd1, (ICONV_CONST char **) (ibl ? &ib : 0), &ibl, &ob, &obl);
     assert(n == (size_t)(-1) || !n);
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
     {
@@ -743,7 +743,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
         ubl = ubl1;
         ob = bufo;
         obl = sizeof(bufo);
-        n = iconv(cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
+        n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
         if (n == (size_t)(-1))
         {
           assert(errno == E2BIG || (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT)));
