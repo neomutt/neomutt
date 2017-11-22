@@ -3,7 +3,7 @@ include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
 
-EXTRA_DIST = account.h connection.h sasl.h sasl_plain.h socket.h ssl.h tunnel.h
+EXTRA_DIST = conn.h conn_globals.h account.h connection.h sasl.h sasl_plain.h socket.h ssl.h tunnel.h
 
 AM_CPPFLAGS = -I$(top_srcdir)
 
