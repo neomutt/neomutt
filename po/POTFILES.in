@@ -6,7 +6,6 @@ bcache.c
 body.c
 browser.c
 buffy.c
-charset.c
 color.c
 commands.c
 complete.c
@@ -67,6 +66,7 @@ menu.c
 mh.c
 mutt/base64.c
 mutt/buffer.c
+mutt/charset.c
 mutt/date.c
 mutt/debug.c
 mutt/exit.c
@@ -84,6 +84,7 @@ mutt/string.c
 muttlib.c
 mutt_account.c
 mutt_address.c
+mutt_charset.c
 mutt_idna.c
 mutt_lua.c
 mutt_notmuch.c

@@ -41,7 +41,7 @@
 #include "init.h"
 #include "address.h"
 #include "alias.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "context.h"
 #include "envelope.h"
 #include "filter.h"

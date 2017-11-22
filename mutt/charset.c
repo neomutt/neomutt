@@ -23,19 +23,21 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#include <iconv.h>
 #include <langinfo.h>
-#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
-#include "mutt.h"
 #include "charset.h"
-#include "globals.h"
-#include "protos.h"
+#include "memory.h"
+#include "string2.h"
 
 #ifndef EILSEQ
 #define EILSEQ EINVAL
 #endif
+
+char *AssumedCharset;
+char *Charset;
 
 /*
  * The following list has been created manually from the data under:
@@ -46,14 +48,8 @@
  * MIME name is given.
  */
 
-static const struct
-{
-  const char *key;
-  const char *pref;
-}
-
 // clang-format off
-PreferredMIMENames[] =
+const struct MimeNames PreferredMIMENames[] =
 {
   { "ansi_x3.4-1968",        "us-ascii"      },
   { "iso-ir-6",              "us-ascii"      },
@@ -205,18 +201,87 @@ PreferredMIMENames[] =
 };
 // clang-format on
 
-void mutt_set_langinfo_charset(void)
+void fgetconv_close(FGETCONV **_fc)
 {
-  char buf[LONG_STRING];
-  char buf2[LONG_STRING];
+  struct FgetConv *fc = (struct FgetConv *) *_fc;
 
-  mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
-  mutt_canonical_charset(buf2, sizeof(buf2), buf);
+  if (fc->cd != (iconv_t) -1)
+    iconv_close(fc->cd);
+  FREE(_fc);
+}
 
-  /* finally, set $charset */
-  Charset = mutt_str_strdup(buf2);
-  if (!Charset)
-    Charset = mutt_str_strdup("iso-8859-1");
+int fgetconv(FGETCONV *_fc)
+{
+  struct FgetConv *fc = (struct FgetConv *) _fc;
+
+  if (!fc)
+    return EOF;
+  if (fc->cd == (iconv_t) -1)
+    return fgetc(fc->file);
+  if (!fc->p)
+    return EOF;
+  if (fc->p < fc->ob)
+    return (unsigned char) *(fc->p)++;
+
+  /* Try to convert some more */
+  fc->p = fc->ob = fc->bufo;
+  if (fc->ibl)
+  {
+    size_t obl = sizeof(fc->bufo);
+    iconv(fc->cd, (ICONV_CONST char **) &fc->ib, &fc->ibl, &fc->ob, &obl);
+    if (fc->p < fc->ob)
+      return (unsigned char) *(fc->p)++;
+  }
+
+  /* If we trusted iconv a bit more, we would at this point
+   * ask why it had stopped converting ... */
+
+  /* Try to read some more */
+  if (fc->ibl == sizeof(fc->bufi) ||
+      (fc->ibl && fc->ib + fc->ibl < fc->bufi + sizeof(fc->bufi)))
+  {
+    fc->p = 0;
+    return EOF;
+  }
+  if (fc->ibl)
+    memcpy(fc->bufi, fc->ib, fc->ibl);
+  fc->ib = fc->bufi;
+  fc->ibl += fread(fc->ib + fc->ibl, 1, sizeof(fc->bufi) - fc->ibl, fc->file);
+
+  /* Try harder this time to convert some */
+  if (fc->ibl)
+  {
+    size_t obl = sizeof(fc->bufo);
+    mutt_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
+    if (fc->p < fc->ob)
+      return (unsigned char) *(fc->p)++;
+  }
+
+  /* Either the file has finished or one of the buffers is too small */
+  fc->p = 0;
+  return EOF;
+}
+
+char *fgetconvs(char *buf, size_t l, FGETCONV *_fc)
+{
+  int c;
+  size_t r;
+
+  for (r = 0; r + 1 < l;)
+  {
+    c = fgetconv(_fc);
+    if (c == EOF)
+      break;
+    buf[r++] = (char) c;
+    if (c == '\n')
+      break;
+  }
+  buf[r] = '\0';
+
+  if (r)
+    return buf;
+  else
+    return NULL;
 }
 
 /**
@@ -313,53 +378,6 @@ char *mutt_get_default_charset(void)
 }
 
 /**
- * mutt_iconv_open - Set up iconv for conversions
- *
- * Like iconv_open, but canonicalises the charsets, applies charset-hooks,
- * recanonicalises, and finally applies iconv-hooks. Parameter flags=0 skips
- * charset-hooks, while MUTT_ICONV_HOOK_FROM applies them to fromcode. Callers
- * should use flags=0 when fromcode can safely be considered true, either some
- * constant, or some value provided by the user; MUTT_ICONV_HOOK_FROM should be
- * used only when fromcode is unsure, taken from a possibly wrong incoming MIME
- * label, or such. Misusing MUTT_ICONV_HOOK_FROM leads to unwanted interactions
- * in some setups. Note: By design charset-hooks should never be, and are never,
- * applied to tocode. Highlight note: The top-well-named MUTT_ICONV_HOOK_FROM
- * acts on charset-hooks, not at all on iconv-hooks.
- */
-iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
-{
-  char tocode1[SHORT_STRING];
-  char fromcode1[SHORT_STRING];
-  char *tocode2 = NULL, *fromcode2 = NULL;
-  char *tmp = NULL;
-
-  iconv_t cd;
-
-  /* transform to MIME preferred charset names */
-  mutt_canonical_charset(tocode1, sizeof(tocode1), tocode);
-  mutt_canonical_charset(fromcode1, sizeof(fromcode1), fromcode);
-
-  /* maybe apply charset-hooks and recanonicalise fromcode,
-   * but only when caller asked us to sanitize a potentially wrong
-   * charset name incoming from the wild exterior. */
-  if ((flags & MUTT_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook(fromcode1)))
-    mutt_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
-
-  /* always apply iconv-hooks to suit system's iconv tastes */
-  tocode2 = mutt_iconv_hook(tocode1);
-  tocode2 = (tocode2) ? tocode2 : tocode1;
-  fromcode2 = mutt_iconv_hook(fromcode1);
-  fromcode2 = (fromcode2) ? fromcode2 : fromcode1;
-
-  /* call system iconv with names it appreciates */
-  cd = iconv_open(tocode2, fromcode2);
-  if (cd != (iconv_t) -1)
-    return cd;
-
-  return (iconv_t) -1;
-}
-
-/**
  * mutt_iconv - Change the encoding of a string
  *
  * Like iconv, but keeps going even when the input is invalid
@@ -436,224 +454,16 @@ size_t mutt_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **ou
   }
 }
 
-/**
- * mutt_convert_string - Convert a string between encodings
- *
- * Parameter flags is given as-is to mutt_iconv_open().
- * See there for its meaning and usage policy.
- */
-int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
+void mutt_set_langinfo_charset(void)
 {
-  iconv_t cd;
-  const char *repls[] = { "\357\277\275", "?", 0 };
-  char *s = *ps;
+  char buf[LONG_STRING];
+  char buf2[LONG_STRING];
 
-  if (!s || !*s)
-    return 0;
+  mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
+  mutt_canonical_charset(buf2, sizeof(buf2), buf);
 
-  if (to && from && (cd = mutt_iconv_open(to, from, flags)) != (iconv_t) -1)
-  {
-    int len;
-    const char *ib = NULL;
-    char *buf = NULL, *ob = NULL;
-    size_t ibl, obl;
-    const char **inrepls = NULL;
-    char *outrepl = NULL;
-
-    if (mutt_is_utf8(to))
-      outrepl = "\357\277\275";
-    else if (mutt_is_utf8(from))
-      inrepls = repls;
-    else
-      outrepl = "?";
-
-    len = strlen(s);
-    ib = s;
-    ibl = len + 1;
-    obl = MB_LEN_MAX * ibl;
-    ob = buf = mutt_mem_malloc(obl + 1);
-
-    mutt_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
-    iconv_close(cd);
-
-    *ob = '\0';
-
-    FREE(ps);
-    *ps = buf;
-
-    mutt_str_adjust(ps);
-    return 0;
-  }
-  else
-    return -1;
-}
-
-/*
- * FGETCONV stuff for converting a file while reading it.
- * Used in sendlib.c for converting from neomutt's Charset
- */
-
-/**
- * struct FgetConv - Cursor for converting a file's encoding
- */
-struct FgetConv
-{
-  FILE *file;
-  iconv_t cd;
-  char bufi[512];
-  char bufo[512];
-  char *p;
-  char *ob;
-  char *ib;
-  size_t ibl;
-  const char **inrepls;
-};
-
-/**
- * struct FgetConvNot - A dummy converter
- */
-struct FgetConvNot
-{
-  FILE *file;
-  iconv_t cd;
-};
-
-/**
- * fgetconv_open - Open a file and convert its encoding
- *
- * Parameter flags is given as-is to mutt_iconv_open().
- * See there for its meaning and usage policy.
- */
-FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
-{
-  struct FgetConv *fc = NULL;
-  iconv_t cd = (iconv_t) -1;
-  static const char *repls[] = { "\357\277\275", "?", 0 };
-
-  if (from && to)
-    cd = mutt_iconv_open(to, from, flags);
-
-  if (cd != (iconv_t) -1)
-  {
-    fc = mutt_mem_malloc(sizeof(struct FgetConv));
-    fc->p = fc->ob = fc->bufo;
-    fc->ib = fc->bufi;
-    fc->ibl = 0;
-    fc->inrepls = mutt_is_utf8(to) ? repls : repls + 1;
-  }
-  else
-    fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
-  fc->file = file;
-  fc->cd = cd;
-  return (FGETCONV *) fc;
-}
-
-char *fgetconvs(char *buf, size_t l, FGETCONV *_fc)
-{
-  int c;
-  size_t r;
-
-  for (r = 0; r + 1 < l;)
-  {
-    c = fgetconv(_fc);
-    if (c == EOF)
-      break;
-    buf[r++] = (char) c;
-    if (c == '\n')
-      break;
-  }
-  buf[r] = '\0';
-
-  if (r)
-    return buf;
-  else
-    return NULL;
-}
-
-int fgetconv(FGETCONV *_fc)
-{
-  struct FgetConv *fc = (struct FgetConv *) _fc;
-
-  if (!fc)
-    return EOF;
-  if (fc->cd == (iconv_t) -1)
-    return fgetc(fc->file);
-  if (!fc->p)
-    return EOF;
-  if (fc->p < fc->ob)
-    return (unsigned char) *(fc->p)++;
-
-  /* Try to convert some more */
-  fc->p = fc->ob = fc->bufo;
-  if (fc->ibl)
-  {
-    size_t obl = sizeof(fc->bufo);
-    iconv(fc->cd, (ICONV_CONST char **) &fc->ib, &fc->ibl, &fc->ob, &obl);
-    if (fc->p < fc->ob)
-      return (unsigned char) *(fc->p)++;
-  }
-
-  /* If we trusted iconv a bit more, we would at this point
-   * ask why it had stopped converting ... */
-
-  /* Try to read some more */
-  if (fc->ibl == sizeof(fc->bufi) ||
-      (fc->ibl && fc->ib + fc->ibl < fc->bufi + sizeof(fc->bufi)))
-  {
-    fc->p = 0;
-    return EOF;
-  }
-  if (fc->ibl)
-    memcpy(fc->bufi, fc->ib, fc->ibl);
-  fc->ib = fc->bufi;
-  fc->ibl += fread(fc->ib + fc->ibl, 1, sizeof(fc->bufi) - fc->ibl, fc->file);
-
-  /* Try harder this time to convert some */
-  if (fc->ibl)
-  {
-    size_t obl = sizeof(fc->bufo);
-    mutt_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
-    if (fc->p < fc->ob)
-      return (unsigned char) *(fc->p)++;
-  }
-
-  /* Either the file has finished or one of the buffers is too small */
-  fc->p = 0;
-  return EOF;
-}
-
-void fgetconv_close(FGETCONV **_fc)
-{
-  struct FgetConv *fc = (struct FgetConv *) *_fc;
-
-  if (fc->cd != (iconv_t) -1)
-    iconv_close(fc->cd);
-  FREE(_fc);
-}
-
-bool mutt_check_charset(const char *s, bool strict)
-{
-  iconv_t cd;
-
-  if (mutt_is_utf8(s))
-    return true;
-
-  if (!strict)
-    for (int i = 0; PreferredMIMENames[i].key; i++)
-    {
-      if ((mutt_str_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
-          (mutt_str_strcasecmp(PreferredMIMENames[i].pref, s) == 0))
-      {
-        return true;
-      }
-    }
-
-  cd = mutt_iconv_open(s, s, 0);
-  if (cd != (iconv_t)(-1))
-  {
-    iconv_close(cd);
-    return true;
-  }
-
-  return false;
+  /* finally, set $charset */
+  Charset = mutt_str_strdup(buf2);
+  if (!Charset)
+    Charset = mutt_str_strdup("iso-8859-1");
 }

@@ -40,7 +40,7 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "body.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "copy.h"
 #include "filter.h"
 #include "globals.h"

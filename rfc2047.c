@@ -29,7 +29,7 @@
 #include "mutt/mutt.h"
 #include "rfc2047.h"
 #include "address.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"

@@ -152,7 +152,6 @@ int mutt_body_handler(struct Body *b, struct State *s);
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to);
 void mutt_buffy(char *s, size_t slen);
 int mutt_buffy_list(void);
-void mutt_canonical_charset(char *dest, size_t dlen, const char *name);
 int mutt_count_body_parts(struct Context *ctx, struct Header *hdr);
 void mutt_check_rescore(struct Context *ctx);
 void mutt_clear_error(void);
@@ -268,9 +267,6 @@ int mutt_edit_attachment(struct Body *a);
 int mutt_edit_message(struct Context *ctx, struct Header *hdr);
 int mutt_view_message(struct Context *ctx, struct Header *hdr);
 int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags);
-int mutt_chscmp(const char *s, const char *chs);
-#define mutt_is_utf8(a) mutt_chscmp(a, "utf-8")
-#define mutt_is_us_ascii(a) mutt_chscmp(a, "us-ascii")
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, short resend);
 int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur);
 int mutt_compose_to_sender(struct Header *hdr);

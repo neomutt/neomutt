@@ -50,7 +50,7 @@
 #include "address.h"
 #include "alias.h"
 #include "body.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "crypt.h"
 #include "envelope.h"
 #include "format_flags.h"

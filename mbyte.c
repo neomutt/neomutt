@@ -29,7 +29,7 @@
 #include <wchar.h>
 #include "mutt/mutt.h"
 #include "mbyte.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "options.h"
 #include "protos.h"
 

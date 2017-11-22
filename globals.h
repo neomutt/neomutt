@@ -46,14 +46,12 @@ WHERE struct Address *From;
 
 WHERE char *AliasFile;
 WHERE char *AliasFormat;
-WHERE char *AssumedCharset;
 WHERE char *AttachSep;
 WHERE char *Attribution;
 WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
 WHERE struct Regex AttachKeyword;
-WHERE char *Charset;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
 WHERE char *ContentType;

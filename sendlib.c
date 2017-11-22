@@ -43,7 +43,7 @@
 #include "address.h"
 #include "body.h"
 #include "buffy.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "content.h"
 #include "context.h"
 #include "copy.h"

@@ -47,7 +47,7 @@
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "crypt.h"
 #include "cryptglue.h"
 #include "filter.h"

@@ -36,7 +36,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "rfc2231.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"
