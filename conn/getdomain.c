@@ -99,7 +99,9 @@ int getdnsdomainname(char *d, size_t len)
 
 #else /* !HAVE_GETADDRINFO_A */
 
+  mutt_debug(3, "before getaddrinfo\n");
   getaddrinfo(node, NULL, &hints, &h);
+  mutt_debug(3, "after getaddrinfo\n");
 
 #endif
 
