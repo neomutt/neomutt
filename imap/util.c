@@ -981,7 +981,7 @@ int imap_wait_keepalive(pid_t pid)
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
 
   sigemptyset(&act.sa_mask);
-  act.sa_handler = empty_signal_handler;
+  act.sa_handler = mutt_sig_empty_handler;
 #ifdef SA_INTERRUPT
   act.sa_flags = SA_INTERRUPT;
 #else

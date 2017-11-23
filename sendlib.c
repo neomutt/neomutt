@@ -481,7 +481,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   else
     fc = fgetconv_open(fpin, 0, 0, 0);
 
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
   if (a->encoding == ENCQUOTEDPRINTABLE)
     encode_quoted(fc, f, write_as_text_part(a));
   else if (a->encoding == ENCBASE64)
@@ -490,7 +490,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     encode_8bit(fc, f, write_as_text_part(a));
   else
     mutt_file_copy_stream(fpin, f);
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
 
   fgetconv_close(&fc);
   mutt_file_fclose(&fpin);
@@ -2291,7 +2291,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   int fd, st;
   pid_t pid, ppid;
 
-  mutt_block_signals_system();
+  mutt_sig_block_system();
 
   sigemptyset(&set);
   /* we also don't want to be stopped right now */
@@ -2441,7 +2441,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   else
     st = S_ERR; /* error */
 
-  mutt_unblock_signals_system(1);
+  mutt_sig_unblock_system(1);
 
   return st;
 }

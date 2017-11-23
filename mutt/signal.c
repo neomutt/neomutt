@@ -25,16 +25,16 @@
  *
  * Signal handling
  *
- * | Function                      | Description
- * | :---------------------------- | :---------------------------------------------------------
- * | default_exit_handler          | Notify the user and shutdown gracefully
- * | empty_signal_handler          | Dummy signal handler
- * | mutt_allow_interrupt          | Allow/disallow Ctrl-C (SIGINT)
- * | mutt_block_signals            | Block signals during critical operations
- * | mutt_block_signals_system     | Block signals before calling exec()
- * | mutt_sig_init                 | Initialise the signal handling
- * | mutt_unblock_signals          | Restore previously blocked signals
- * | mutt_unblock_signals_system   | Restore previously blocked signals
+ * | Function                   | Description
+ * | :------------------------- | :---------------------------------------------------------
+ * | mutt_sig_exit_handler()    | Notify the user and shutdown gracefully
+ * | mutt_sig_empty_handler()   | Dummy signal handler
+ * | mutt_sig_allow_interrupt() | Allow/disallow Ctrl-C (SIGINT)
+ * | mutt_sig_block()           | Block signals during critical operations
+ * | mutt_sig_block_system()    | Block signals before calling exec()
+ * | mutt_sig_init()            | Initialise the signal handling
+ * | mutt_sig_unblock()         | Restore previously blocked signals
+ * | mutt_sig_unblock_system()  | Restore previously blocked signals
  */
 
 #include "config.h"
@@ -55,26 +55,26 @@ static struct sigaction SysOldQuit;
 static bool SignalsBlocked;
 static bool SysSignalsBlocked;
 
-static sig_handler_t sig_handler = empty_signal_handler;
-static sig_handler_t exit_handler = default_exit_handler;
+static sig_handler_t sig_handler = mutt_sig_empty_handler;
+static sig_handler_t exit_handler = mutt_sig_exit_handler;
 
 /**
- * empty_signal_handler - Dummy signal handler
+ * mutt_sig_empty_handler - Dummy signal handler
  * @param sig Signal number, e.g. SIGINT
  *
  * Useful for signals that we can't ignore,
  * or don't want to do anything with.
  */
-void empty_signal_handler(int sig)
+void mutt_sig_empty_handler(int sig)
 {
   mutt_debug(2, "Received signal %d\n", sig);
 }
 
 /**
- * default_exit_handler - Notify the user and shutdown gracefully
+ * mutt_sig_exit_handler - Notify the user and shutdown gracefully
  * @param sig Signal number, e.g. SIGINT
  */
-void default_exit_handler(int sig)
+void mutt_sig_exit_handler(int sig)
 {
 #if HAVE_DECL_SYS_SIGLIST
   printf(_("%s...  Exiting.\n"), sys_siglist[sig]);
@@ -140,7 +140,7 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn)
 
   /* POSIX doesn't allow us to ignore SIGCHLD,
    * so we just install a dummy handler for it */
-  act.sa_handler = empty_signal_handler;
+  act.sa_handler = mutt_sig_empty_handler;
   /* don't need to block any other signals here */
   sigemptyset(&act.sa_mask);
   /* we don't want to mess with stopped children */
@@ -149,12 +149,12 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn)
 }
 
 /**
- * mutt_block_signals - Block signals during critical operations
+ * mutt_sig_block - Block signals during critical operations
  *
  * It's important that certain signals don't interfere with critical operations.
- * Call mutt_unblock_signals() to restore the signals' behaviour.
+ * Call mutt_sig_unblock() to restore the signals' behaviour.
  */
-void mutt_block_signals(void)
+void mutt_sig_block(void)
 {
   if (SignalsBlocked)
     return;
@@ -172,9 +172,9 @@ void mutt_block_signals(void)
 }
 
 /**
- * mutt_unblock_signals - Restore previously blocked signals
+ * mutt_sig_unblock - Restore previously blocked signals
  */
-void mutt_unblock_signals(void)
+void mutt_sig_unblock(void)
 {
   if (!SignalsBlocked)
     return;
@@ -184,12 +184,12 @@ void mutt_unblock_signals(void)
 }
 
 /**
- * mutt_block_signals_system - Block signals before calling exec()
+ * mutt_sig_block_system - Block signals before calling exec()
  *
  * It's important that certain signals don't interfere with the child process.
- * Call mutt_unblock_signals_system() to restore the signals' behaviour.
+ * Call mutt_sig_unblock_system() to restore the signals' behaviour.
  */
-void mutt_block_signals_system(void)
+void mutt_sig_block_system(void)
 {
   if (SysSignalsBlocked)
     return;
@@ -210,10 +210,10 @@ void mutt_block_signals_system(void)
 }
 
 /**
- * mutt_unblock_signals_system - Restore previously blocked signals
+ * mutt_sig_unblock_system - Restore previously blocked signals
  * @param catch If true, restore previous SIGINT, SIGQUIT behaviour
  */
-void mutt_unblock_signals_system(int catch)
+void mutt_sig_unblock_system(int catch)
 {
   if (!SysSignalsBlocked)
     return;
@@ -239,12 +239,12 @@ void mutt_unblock_signals_system(int catch)
 }
 
 /**
- * mutt_allow_interrupt - Allow/disallow Ctrl-C (SIGINT)
+ * mutt_sig_allow_interrupt - Allow/disallow Ctrl-C (SIGINT)
  * @param disposition True to allow Ctrl-C to interrupt signals
  *
  * Allow the user to interrupt some long operations.
  */
-void mutt_allow_interrupt(int disposition)
+void mutt_sig_allow_interrupt(int disposition)
 {
   struct sigaction sa;
 
