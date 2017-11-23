@@ -203,14 +203,15 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
       {
         /* Go to end of line */
         state->curpos = state->lastchar;
-        state->begin =
-            mutt_mb_width_ceiling(state->wbuf, state->lastchar,
-                          mutt_mb_wcswidth(state->wbuf, state->lastchar) - width + 1);
+        state->begin = mutt_mb_width_ceiling(
+            state->wbuf, state->lastchar,
+            mutt_mb_wcswidth(state->wbuf, state->lastchar) - width + 1);
       }
       if (state->curpos < state->begin ||
           mutt_mb_wcswidth(state->wbuf + state->begin, state->curpos - state->begin) >= width)
-        state->begin = mutt_mb_width_ceiling(state->wbuf, state->lastchar,
-                                     mutt_mb_wcswidth(state->wbuf, state->curpos) - width / 2);
+        state->begin = mutt_mb_width_ceiling(
+            state->wbuf, state->lastchar,
+            mutt_mb_wcswidth(state->wbuf, state->curpos) - width / 2);
       mutt_window_move(MuttMessageWindow, 0, col);
       w = 0;
       for (i = state->begin; i < state->lastchar; i++)
@@ -223,7 +224,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
       mutt_window_clrtoeol(MuttMessageWindow);
       mutt_window_move(MuttMessageWindow, 0,
                        col + mutt_mb_wcswidth(state->wbuf + state->begin,
-                                         state->curpos - state->begin));
+                                              state->curpos - state->begin));
     }
     mutt_refresh();
 

@@ -1042,7 +1042,6 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
   return chmod(path, st->st_mode | mode);
 }
 
-
 /**
  * mutt_file_chmod_rm - remove permissions from a file
  * @param path Filename
