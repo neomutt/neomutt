@@ -43,6 +43,7 @@
 #include <unistd.h>
 #include "mutt/memory.h"
 #include "mutt/message.h"
+#include "mutt/signal2.h"
 #include "mutt/string2.h"
 #include "mutt.h"
 #include "tunnel.h"

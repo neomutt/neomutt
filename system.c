@@ -25,6 +25,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "protos.h"
 #ifdef USE_IMAP

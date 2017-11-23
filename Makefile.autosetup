@@ -64,7 +64,7 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
 		rfc1524.o rfc2047.o rfc2231.o rfc3676.o rfc822.o \
-		safe_asprintf.o score.o send.o sendlib.o sidebar.o signal.o \
+		safe_asprintf.o score.o send.o sendlib.o sidebar.o mutt_signal.o \
 		smtp.o sort.o state.o status.o system.o thread.o url.o \
 		version.o
 
@@ -92,7 +92,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/date.o mutt/debug.o mutt/exit.o \
 		mutt/file.o mutt/hash.o mutt/list.o mutt/mapping.o mutt/mbyte.o mutt/md5.o \
-		mutt/memory.o mutt/message.o mutt/sha1.o mutt/string.o
+		mutt/memory.o mutt/message.o mutt/sha1.o mutt/signal.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
