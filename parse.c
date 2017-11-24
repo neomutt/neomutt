@@ -86,7 +86,8 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
                          * it begins with a non-space */
 
       /* check to see if the next line is a continuation line */
-      if ((ch = fgetc(f)) != ' ' && ch != '\t')
+      ch = fgetc(f);
+      if ((ch != ' ') && (ch != '\t'))
       {
         ungetc(ch, f);
         return line; /* next line is a separate header field or EOH */
@@ -1183,7 +1184,8 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     line = mutt_read_rfc822_line(f, line, &linelen);
     if (*line == '\0')
       break;
-    if ((p = strpbrk(line, ": \t")) == NULL || *p != ':')
+    p = strpbrk(line, ": \t");
+    if (!p || (*p != ':'))
     {
       char return_path[LONG_STRING];
       time_t t;

@@ -702,7 +702,8 @@ void maildir_parse_flags(struct Header *h, const char *path)
   h->read = false;
   h->replied = false;
 
-  if ((p = strrchr(path, ':')) != NULL && (mutt_str_strncmp(p + 1, "2,", 2) == 0))
+  p = strrchr(path, ':');
+  if (p && (mutt_str_strncmp(p + 1, "2,", 2) == 0))
   {
     p += 3;
 
@@ -2219,7 +2220,8 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
 
   /* create .mh_sequences when there isn't one. */
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", ctx->path);
-  if ((i = stat(buf, &st_cur)) == -1 && errno == ENOENT)
+  i = stat(buf, &st_cur);
+  if ((i == -1) && (errno == ENOENT))
   {
     char *tmp = NULL;
     FILE *fp = NULL;

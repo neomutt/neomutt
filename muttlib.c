@@ -589,7 +589,8 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
     mutt_str_strfcpy(p, tmp, buflen - (p - s));
 
-  if ((mutt_str_strncmp(s, Folder, (len = mutt_str_strlen(Folder))) == 0) && s[len] == '/')
+  len = mutt_str_strlen(Folder);
+  if ((mutt_str_strncmp(s, Folder, len) == 0) && s[len] == '/')
   {
     *s++ = '=';
     memmove(s, s + len, mutt_str_strlen(s + len) + 1);

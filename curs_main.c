@@ -2856,8 +2856,11 @@ int mutt_index_menu(void)
           if (option(OPT_DELETE_UNTAG))
             mutt_thread_set_flag(CURHDR, MUTT_TAG, 0, subthread);
           if (option(OPT_RESOLVE))
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+          {
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
               menu->current = menu->oldcurrent;
+          }
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
@@ -3082,10 +3085,12 @@ int mutt_index_menu(void)
         {
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = (op == OP_MAIN_READ_THREAD ?
-                                      mutt_next_thread(CURHDR) :
-                                      mutt_next_subthread(CURHDR))) == -1)
+            menu->current = (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CURHDR) :
+                                                         mutt_next_subthread(CURHDR));
+            if (menu->current == -1)
+            {
               menu->current = menu->oldcurrent;
+            }
             else if (menu->menu == MENU_PAGER)
             {
               op = OP_DISPLAY_MESSAGE;

@@ -934,7 +934,8 @@ static int is_mmnoask(const char *buf)
   char tmp[LONG_STRING], *p = NULL, *q = NULL;
   int lng;
 
-  if ((p = getenv("MM_NOASK")) != NULL && *p)
+  p = getenv("MM_NOASK");
+  if (p && *p)
   {
     if (mutt_str_strcmp(p, "1") == 0)
       return 1;

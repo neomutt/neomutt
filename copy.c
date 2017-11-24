@@ -768,8 +768,8 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  if ((r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags)) == 0 &&
-      (ferror(fpout) || feof(fpout)))
+  r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
+  if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "mutt_copy_message failed to detect EOF!\n");
     r = -1;

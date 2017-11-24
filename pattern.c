@@ -1047,7 +1047,8 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     {
       if (pat->op == MUTT_HEADER)
       {
-        if (*(buf = mutt_read_rfc822_line(fp, buf, &blen)) == '\0')
+        buf = mutt_read_rfc822_line(fp, buf, &blen);
+        if (*buf == '\0')
           break;
       }
       else if (fgets(buf, blen - 1, fp) == NULL)

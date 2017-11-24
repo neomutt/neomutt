@@ -959,7 +959,8 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyrin
   size_t l;
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
-  if ((l = mutt_str_strlen(p)) && p[l - 1] == '!')
+  l = mutt_str_strlen(p);
+  if ((l > 0) && (p[l - 1] == '!'))
     p[l - 1] = 0;
 
   mutt_message(_("Looking for keys matching \"%s\"..."), p);

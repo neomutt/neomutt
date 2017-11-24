@@ -421,7 +421,8 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
           size_t l = 0;
           FREE(&gpgcharset);
           gpgcharset = mutt_str_strdup(buf + 9);
-          if ((l = mutt_str_strlen(gpgcharset)) > 0 && gpgcharset[l - 1] == '\n')
+          l = mutt_str_strlen(gpgcharset);
+          if ((l > 0) && (gpgcharset[l - 1] == '\n'))
             gpgcharset[l - 1] = 0;
           if (!mutt_check_charset(gpgcharset, 0))
             mutt_str_replace(&gpgcharset, "UTF-8");

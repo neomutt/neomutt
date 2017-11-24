@@ -229,8 +229,11 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
   }
 
   while (irc != IMAP_CMD_OK)
-    if ((irc = imap_cmd_step(idata)) != IMAP_CMD_CONTINUE)
+  {
+    irc = imap_cmd_step(idata);
+    if (irc != IMAP_CMD_CONTINUE)
       break;
+  }
 
   if (rc != SASL_OK)
     goto bail;

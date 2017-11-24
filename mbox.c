@@ -1058,7 +1058,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  if ((i = mbox_check_mailbox(ctx, index_hint)) == MUTT_NEW_MAIL || i == MUTT_REOPENED)
+  i = mbox_check_mailbox(ctx, index_hint);
+  if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
     need_sort = i;
@@ -1071,8 +1072,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((i = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1 ||
-      (fp = fdopen(i, "w")) == NULL)
+  i = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600);
+  if ((i == -1) || (fp = fdopen(i, "w")) == NULL)
   {
     if (-1 != i)
     {

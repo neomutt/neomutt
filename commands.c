@@ -908,7 +908,8 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
           continue;
 
         mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-        if ((rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx) != 0))
+        rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx);
+        if (rc != 0)
           break;
 #ifdef USE_COMPRESSED
         if (cm)

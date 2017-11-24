@@ -1268,7 +1268,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
         if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && buf[0])
         {
-          if ((i = mutt_check_encoding(buf)) != ENCOTHER && i != ENCUUENCODED)
+          i = mutt_check_encoding(buf);
+          if ((i != ENCOTHER) && (i != ENCUUENCODED))
           {
             CURATTACH->content->encoding = i;
             menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;

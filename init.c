@@ -2021,7 +2021,8 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   char *p = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
-  if ((p = strpbrk(buf->data, ": \t")) == NULL || *p != ':')
+  p = strpbrk(buf->data, ": \t");
+  if (!p || (*p != ':'))
   {
     mutt_str_strfcpy(err->data, _("invalid header field"), err->dsize);
     return -1;

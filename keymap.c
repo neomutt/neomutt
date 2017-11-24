@@ -1218,7 +1218,8 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
     mutt_extract_token(buf, s, 0);
     function = buf->data;
 
-    if ((bindings = km_get_table(CurrentMenu)) == NULL && CurrentMenu != MENU_PAGER)
+    bindings = km_get_table(CurrentMenu);
+    if (!bindings && (CurrentMenu != MENU_PAGER))
       bindings = OpGeneric;
 
     ops[nops] = get_op(bindings, function, mutt_str_strlen(function));
