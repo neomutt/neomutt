@@ -72,9 +72,10 @@
 
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
-#else /* Make sure EX_OK is defined <philiph@pobox.com> */
+#else
 #define EX_OK 0
 #endif
+
 /* If you are debugging this file, comment out the following line. */
 #define NDEBUG
 #ifdef NDEBUG
@@ -2617,7 +2618,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
     {
       const char *e = NULL;
 
-      e = mutt_strsysexit(i);
+      e = mutt_str_sysexit(i);
       mutt_error(_("Error sending message, child exited %d (%s)."), i, NONULL(e));
       if (childout)
       {

@@ -40,6 +40,10 @@
 #define ISSPACE(c) isspace((unsigned char) c)
 #define EMAIL_WSP " \t\r\n"
 
+/* Exit values */
+#define S_ERR 127
+#define S_BKG 126
+
 /* this macro must check for (*c == 0) since isspace(0) has unreliable behavior
    on some systems */
 #define SKIPWS(c)                                                              \
@@ -90,6 +94,7 @@ int         mutt_str_strncmp(const char *a, const char *b, size_t l);
 char *      mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen);
 char *      mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
 char *      mutt_str_substr_dup(const char *begin, const char *end);
+const char *mutt_str_sysexit(int e);
 int         mutt_str_word_casecmp(const char *a, const char *b);
 
 #endif /* _MUTT_STRING_H */

@@ -166,7 +166,7 @@ static int tunnel_socket_close(struct Connection *conn)
   if (!WIFEXITED(status) || WEXITSTATUS(status))
   {
     mutt_error(_("Tunnel to %s returned error %d (%s)"), conn->account.host,
-               WEXITSTATUS(status), NONULL(mutt_strsysexit(WEXITSTATUS(status))));
+               WEXITSTATUS(status), NONULL(mutt_str_sysexit(WEXITSTATUS(status))));
     mutt_sleep(2);
   }
   FREE(&conn->sockdata);
