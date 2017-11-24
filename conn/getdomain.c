@@ -49,12 +49,12 @@
  */
 int getdnsdomainname(char *d, size_t len)
 {
-  int ret = -1;
+  int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
   char node[STRING];
   if (gethostname(node, sizeof(node)))
-    return ret;
+    return rc;
 
   struct addrinfo hints;
   struct addrinfo *h = NULL;
@@ -109,12 +109,12 @@ int getdnsdomainname(char *d, size_t len)
   if (h != NULL && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
     mutt_str_strfcpy(d, ++p, len);
-    ret = 0;
+    rc = 0;
     mutt_debug(1, "getdnsdomainname(): %s\n", d);
     freeaddrinfo(h);
   }
 
 #endif /* HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A */
 
-  return ret;
+  return rc;
 }

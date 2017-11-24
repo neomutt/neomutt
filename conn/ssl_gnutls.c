@@ -118,7 +118,7 @@ static int tls_init(void)
 static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   struct TlsSockData *data = conn->sockdata;
-  int ret;
+  int rc;
 
   if (!data)
   {
@@ -129,16 +129,16 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 
   do
   {
-    ret = gnutls_record_recv(data->state, buf, len);
-    if ((ret < 0 && gnutls_error_is_fatal(ret) == 1) || ret == GNUTLS_E_INTERRUPTED)
+    rc = gnutls_record_recv(data->state, buf, len);
+    if ((rc < 0 && gnutls_error_is_fatal(rc) == 1) || rc == GNUTLS_E_INTERRUPTED)
     {
-      mutt_error("tls_socket_read (%s)", gnutls_strerror(ret));
+      mutt_error("tls_socket_read (%s)", gnutls_strerror(rc));
       mutt_sleep(2);
       return -1;
     }
-  } while (ret == GNUTLS_E_AGAIN);
+  } while (rc == GNUTLS_E_AGAIN);
 
-  return ret;
+  return rc;
 }
 
 /**

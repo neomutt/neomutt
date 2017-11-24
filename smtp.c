@@ -642,7 +642,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   struct Account account;
   const char *envfrom = NULL;
   char buf[1024];
-  int ret = -1;
+  int rc = -1;
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
@@ -657,7 +657,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   }
 
   if (smtp_fill_account(&account) < 0)
-    return ret;
+    return rc;
 
   conn = mutt_conn_find(NULL, &account);
   if (!conn)
@@ -668,57 +668,55 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   do
   {
     /* send our greeting */
-    if ((ret = smtp_open(conn)))
+    if ((rc = smtp_open(conn)))
       break;
     FREE(&AuthMechs);
 
     /* send the sender's address */
-    ret = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
+    rc = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
     if (eightbit && mutt_bit_isset(Capabilities, EIGHTBITMIME))
     {
       mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
-      ret += 14;
+      rc += 14;
     }
     if (DsnReturn && mutt_bit_isset(Capabilities, DSN))
-      ret += snprintf(buf + ret, sizeof(buf) - ret, " RET=%s", DsnReturn);
+      rc += snprintf(buf + rc, sizeof(buf) - rc, " rc=%s", DsnReturn);
     if (mutt_bit_isset(Capabilities, SMTPUTF8) &&
         (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
          addresses_use_unicode(cc) || addresses_use_unicode(bcc)))
-      ret += snprintf(buf + ret, sizeof(buf) - ret, " SMTPUTF8");
+      rc += snprintf(buf + rc, sizeof(buf) - rc, " SMTPUTF8");
     mutt_str_strncat(buf, sizeof(buf), "\r\n", 3);
     if (mutt_socket_write(conn, buf) == -1)
     {
-      ret = SMTP_ERR_WRITE;
+      rc = SMTP_ERR_WRITE;
       break;
     }
-    if ((ret = smtp_get_resp(conn)))
+    if ((rc = smtp_get_resp(conn)))
       break;
 
     /* send the recipient list */
-    if ((ret = smtp_rcpt_to(conn, to)) || (ret = smtp_rcpt_to(conn, cc)) ||
-        (ret = smtp_rcpt_to(conn, bcc)))
-    {
+    if ((rc = smtp_rcpt_to(conn, to)) || (rc = smtp_rcpt_to(conn, cc)) ||
+        (rc = smtp_rcpt_to(conn, bcc)))
       break;
-    }
 
     /* send the message data */
-    if ((ret = smtp_data(conn, msgfile)))
+    if ((rc = smtp_data(conn, msgfile)))
       break;
 
     mutt_socket_write(conn, "QUIT\r\n");
 
-    ret = 0;
+    rc = 0;
   } while (0);
 
   if (conn)
     mutt_socket_close(conn);
 
-  if (ret == SMTP_ERR_READ)
+  if (rc == SMTP_ERR_READ)
     mutt_error(_("SMTP session failed: read error"));
-  else if (ret == SMTP_ERR_WRITE)
+  else if (rc == SMTP_ERR_WRITE)
     mutt_error(_("SMTP session failed: write error"));
-  else if (ret == SMTP_ERR_CODE)
+  else if (rc == SMTP_ERR_CODE)
     mutt_error(_("Invalid server response"));
 
-  return ret;
+  return rc;
 }

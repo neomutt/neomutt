@@ -909,7 +909,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   FILE *fpout = NULL, *fperr = NULL;
   char tmpfname[_POSIX_PATH_MAX];
   char email[STRING];
-  int ret = -1, count = 0;
+  int rc = -1, count = 0;
   pid_t thepid;
   size_t len = 0;
 
@@ -955,23 +955,23 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
     if (len && (email[len - 1] == '\n'))
       email[len - 1] = '\0';
     if (mutt_str_strncasecmp(email, mailbox, mutt_str_strlen(mailbox)) == 0)
-      ret = 1;
+      rc = 1;
 
-    ret = ret < 0 ? 0 : ret;
+    rc = rc < 0 ? 0 : rc;
     count++;
   }
 
-  if (ret == -1)
+  if (rc == -1)
   {
     mutt_endwin(NULL);
     mutt_file_copy_stream(fperr, stdout);
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
-    ret = 1;
+    rc = 1;
   }
-  else if (!ret)
-    ret = 1;
+  else if (!rc)
+    rc = 1;
   else
-    ret = 0;
+    rc = 0;
 
   if (copy && buffer && num)
   {
@@ -991,12 +991,12 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
     }
   }
   else if (copy)
-    ret = 2;
+    rc = 2;
 
   mutt_file_fclose(&fpout);
   mutt_file_fclose(&fperr);
 
-  return ret;
+  return rc;
 }
 
 static char *smime_extract_certificate(char *infile)

@@ -428,7 +428,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
 static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char *fromcode,
                           const char *charsets, char **e, size_t *elen, char *specials)
 {
-  int ret = 0;
+  int rc = 0;
   char *buf = NULL;
   size_t bufpos, buflen;
   char *u = NULL, *t0 = NULL, *t1 = NULL, *t = NULL;
@@ -442,7 +442,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   /* Try to convert to UTF-8. */
   if (convert_string(d, dlen, fromcode, icode, &u, &ulen))
   {
-    ret = 1;
+    rc = 1;
     icode = 0;
     mutt_mem_realloc(&u, (ulen = dlen) + 1);
     memcpy(u, d, dlen);
@@ -478,7 +478,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     /* No encoding is required. */
     *e = u;
     *elen = ulen;
-    return ret;
+    return rc;
   }
 
   /* Choose target charset. */
@@ -489,7 +489,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
       tocode = tocode1;
     else
     {
-      ret = 2;
+      rc = 2;
       icode = 0;
     }
   }
@@ -612,7 +612,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
 
   *e = buf;
   *elen = buflen + 1;
-  return ret;
+  return rc;
 }
 
 void rfc2047_encode_string(char **pd, int encode_specials, int col)

@@ -418,12 +418,12 @@ static int ssl_socket_close(struct Connection *conn)
  */
 static char *x509_get_part(X509_NAME *name, int nid)
 {
-  static char ret[SHORT_STRING];
+  static char data[SHORT_STRING];
 
-  if (!name || X509_NAME_get_text_by_NID(name, nid, ret, sizeof(ret)) < 0)
-    mutt_str_strfcpy(ret, _("Unknown"), sizeof(ret));
+  if (!name || X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0)
+    mutt_str_strfcpy(data, _("Unknown"), sizeof(data));
 
-  return ret;
+  return data;
 }
 
 /**

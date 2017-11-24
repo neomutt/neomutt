@@ -2722,7 +2722,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
 static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
-  int ret = 0;
+  int rc = 0;
   FILE *f = NULL;
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
   struct Message *msg = NULL;
@@ -2732,8 +2732,8 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->msgcount; i++)
       if (message_is_tagged(Context, i))
-        ret |= bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
-    return ret;
+        rc |= bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
+    return rc;
   }
 
   /* If we failed to open a message, return with error */
@@ -2772,17 +2772,17 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     }
 #ifdef USE_SMTP
     if (SmtpUrl)
-      ret = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
+      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
     else
 #endif /* USE_SMTP */
-      ret = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
-                                 h->content->encoding == ENC8BIT);
+      rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
+                                h->content->encoding == ENC8BIT);
   }
 
   if (msg)
     mx_close_message(Context, &msg);
 
-  return ret;
+  return rc;
 }
 
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)

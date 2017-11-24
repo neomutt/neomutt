@@ -5010,7 +5010,7 @@ int smime_gpgme_send_menu(struct Header *msg)
 static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
 {
   struct Address *sender = NULL;
-  unsigned int ret = 1;
+  unsigned int rc = 1;
 
   if (h->env->from)
   {
@@ -5033,7 +5033,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
       int uid_length = 0;
 
       sender_length = strlen(sender->mailbox);
-      for (uid = key->uids; uid && ret; uid = uid->next)
+      for (uid = key->uids; uid && rc; uid = uid->next)
       {
         uid_length = strlen(uid->email);
         if (1 && (uid->email[0] == '<') && (uid->email[uid_length - 1] == '>') &&
@@ -5043,7 +5043,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
           if (!at_sign)
           {
             if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
-              ret = 0;
+              rc = 0;
           }
           else
           {
@@ -5065,7 +5065,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
             domainname_match =
                 (strncasecmp(tmp_email, tmp_sender, domainname_length) == 0);
             if (mailbox_match && domainname_match)
-              ret = 0;
+              rc = 0;
           }
         }
       }
@@ -5082,7 +5082,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
     signature_key = NULL;
   }
 
-  return ret;
+  return rc;
 }
 
 int smime_gpgme_verify_sender(struct Header *h)

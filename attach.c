@@ -898,7 +898,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   unsigned int saved_encoding = 0;
   struct Body *saved_parts = NULL;
   struct Header *saved_hdr = NULL;
-  int ret = 0;
+  int rc = 0;
 
   memset(&s, 0, sizeof(s));
   s.flags = displaying;
@@ -960,7 +960,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   if (mutt_file_fsync_close(&s.fpout) != 0)
   {
     mutt_perror("fclose");
-    ret = -1;
+    rc = -1;
   }
   if (!fp)
   {
@@ -975,7 +975,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     mutt_file_fclose(&s.fpin);
   }
 
-  return ret;
+  return rc;
 }
 
 /**
