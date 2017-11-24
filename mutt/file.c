@@ -168,12 +168,12 @@ static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir
  */
 static int put_file_in_place(const char *path, const char *safe_file, const char *safe_dir)
 {
-  int rv;
+  int rc;
 
-  rv = mutt_file_safe_rename(safe_file, path);
+  rc = mutt_file_safe_rename(safe_file, path);
   unlink(safe_file);
   rmdir(safe_dir);
-  return rv;
+  return rc;
 }
 
 /**

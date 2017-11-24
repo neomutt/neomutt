@@ -190,7 +190,7 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
  */
 static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 {
-  int rv = -1;
+  int rc = -1;
 
   if (PgpGoodSign.pattern)
   {
@@ -203,7 +203,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
       if (regexec(PgpGoodSign.regex, line, 0, NULL, 0) == 0)
       {
         mutt_debug(2, "pgp_copy_checksig: \"%s\" matches regex.\n", line);
-        rv = 0;
+        rc = 0;
       }
       else
         mutt_debug(2, "pgp_copy_checksig: \"%s\" doesn't match regex.\n", line);
@@ -219,10 +219,10 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
   {
     mutt_debug(2, "pgp_copy_checksig: No pattern.\n");
     mutt_file_copy_stream(fpin, fpout);
-    rv = 1;
+    rc = 1;
   }
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -234,7 +234,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
  */
 static int pgp_check_decryption_okay(FILE *fpin)
 {
-  int rv = -1;
+  int rc = -1;
 
   if (PgpDecryptionOkay.pattern)
   {
@@ -247,7 +247,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
       if (regexec(PgpDecryptionOkay.regex, line, 0, NULL, 0) == 0)
       {
         mutt_debug(2, "pgp_check_decryption_okay: \"%s\" matches regex.\n", line);
-        rv = 0;
+        rc = 0;
         break;
       }
       else
@@ -259,10 +259,10 @@ static int pgp_check_decryption_okay(FILE *fpin)
   else
   {
     mutt_debug(2, "pgp_check_decryption_okay: No pattern.\n");
-    rv = 1;
+    rc = 1;
   }
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -683,25 +683,25 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
 int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
-  int rv = 0;
+  int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rv = pgp_check_traditional(fp, b->parts, 0) || rv;
+      rc = pgp_check_traditional(fp, b->parts, 0) || rc;
     else if (b->type == TYPETEXT)
     {
       if ((r = mutt_is_application_pgp(b)))
-        rv = rv || r;
+        rc = rc || r;
       else
-        rv = pgp_check_traditional_one_body(fp, b) || rv;
+        rc = pgp_check_traditional_one_body(fp, b) || rc;
     }
 
     if (just_one)
       break;
   }
 
-  return rv;
+  return rc;
 }
 
 int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
@@ -961,7 +961,7 @@ int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur
   LOFF_T saved_offset;
   size_t saved_length;
   FILE *decoded_fp = NULL;
-  int rv = 0;
+  int rc = 0;
 
   if (mutt_is_valid_multipart_pgp_encrypted(b))
     b = b->parts->next;
@@ -1009,14 +1009,14 @@ int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur
   if (!*fpout)
   {
     mutt_perror(tempfile);
-    rv = -1;
+    rc = -1;
     goto bail;
   }
   unlink(tempfile);
 
   *cur = pgp_decrypt_part(b, &s, *fpout, p);
   if (!*cur)
-    rv = -1;
+    rc = -1;
   rewind(*fpout);
 
 bail:
@@ -1028,7 +1028,7 @@ bail:
     mutt_file_fclose(&decoded_fp);
   }
 
-  return rv;
+  return rc;
 }
 
 /**

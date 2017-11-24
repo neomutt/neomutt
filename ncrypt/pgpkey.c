@@ -428,27 +428,23 @@ static bool pgp_id_is_valid(struct PgpUid *uid)
 
 static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, struct PgpUid *uid)
 {
-  int rv = 0;
+  int rc = 0;
 
   if (pgp_id_is_valid(uid))
-    rv |= PGP_KV_VALID;
+    rc |= PGP_KV_VALID;
 
   if (pgp_id_is_strong(uid))
-    rv |= PGP_KV_STRONGID;
+    rc |= PGP_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox &&
       (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
-  {
-    rv |= PGP_KV_ADDR;
-  }
+    rc |= PGP_KV_ADDR;
 
   if (addr->personal && u_addr->personal &&
       (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
-  {
-    rv |= PGP_KV_STRING;
-  }
+    rc |= PGP_KV_STRING;
 
-  return rv;
+  return rc;
 }
 
 static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,

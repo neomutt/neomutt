@@ -241,7 +241,7 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
 {
   char *user = NULL, *domain = NULL;
   char *intl_mailbox = NULL;
-  int rv = 0;
+  int rc = 0;
 
   if (err)
     *err = NULL;
@@ -257,7 +257,7 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
     intl_mailbox = local_to_intl(user, domain);
     if (!intl_mailbox)
     {
-      rv = -1;
+      rc = -1;
       if (err && !*err)
         *err = mutt_str_strdup(a->mailbox);
       continue;
@@ -266,7 +266,7 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
     set_intl_mailbox(a, intl_mailbox);
   }
 
-  return rv;
+  return rc;
 }
 
 int mutt_addrlist_to_local(struct Address *a)

@@ -63,7 +63,7 @@ static int lua_mutt_call(lua_State *l)
   struct Buffer token, expn, err;
   char buffer[LONG_STRING] = "";
   const struct Command *command = NULL;
-  int rv = 0;
+  int rc = 0;
 
   mutt_buffer_init(&token);
   mutt_buffer_init(&expn);
@@ -98,24 +98,24 @@ static int lua_mutt_call(lua_State *l)
   if (command->func(&token, &expn, command->data, &err))
   {
     luaL_error(l, "NeoMutt error: %s", err.data);
-    rv = -1;
+    rc = -1;
   }
   else
   {
     if (lua_pushstring(l, err.data) == NULL)
       handle_error(l);
     else
-      rv++;
+      rc++;
   }
 
   FREE(&err.data);
 
-  return rv;
+  return rc;
 }
 
 static int lua_mutt_set(lua_State *l)
 {
-  int rv = -1;
+  int rc = -1;
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * lua_mutt_set(%s)\n", param);
   struct Option opt;
@@ -130,7 +130,7 @@ static int lua_mutt_set(lua_State *l)
     return -1;
   }
 
-  rv = 0;
+  rc = 0;
   switch (DTYPE(opt.type))
   {
     case DT_ADDRESS:
@@ -140,7 +140,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_SORT:
     case DT_STRING:
       opt.data = (long) mutt_str_strdup(lua_tostring(l, -1));
-      rv = mutt_option_set(&opt, &err);
+      rc = mutt_option_set(&opt, &err);
       FREE(&opt.data);
       break;
     case DT_QUAD:
@@ -152,16 +152,16 @@ static int lua_mutt_set(lua_State *l)
                       "mutt.QUAD_YES, mutt.QUAD_NO, mutt.QUAD_ASKYES, "
                       "mutt.QUAD_ASKNO",
                    param);
-        rv = -1;
+        rc = -1;
       }
       else
-        rv = mutt_option_set(&opt, &err);
+        rc = mutt_option_set(&opt, &err);
       break;
     case DT_MAGIC:
       if (mx_set_magic(lua_tostring(l, -1)))
       {
         luaL_error(l, "Invalid mailbox type: %s", opt.data);
-        rv = -1;
+        rc = -1;
       }
       break;
     case DT_NUMBER:
@@ -170,26 +170,26 @@ static int lua_mutt_set(lua_State *l)
       if ((i > SHRT_MIN) && (i < SHRT_MAX))
       {
         opt.data = lua_tointeger(l, -1);
-        rv = mutt_option_set(&opt, &err);
+        rc = mutt_option_set(&opt, &err);
       }
       else
       {
         luaL_error(l, "Integer overflow of %d, not in %d-%d", i, SHRT_MIN, SHRT_MAX);
-        rv = -1;
+        rc = -1;
       }
       break;
     }
     case DT_BOOL:
       opt.data = (long) lua_toboolean(l, -1);
-      rv = mutt_option_set(&opt, &err);
+      rc = mutt_option_set(&opt, &err);
       break;
     default:
       luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", opt.type, param);
-      rv = -1;
+      rc = -1;
       break;
   }
 
-  return rv;
+  return rc;
 }
 
 static int lua_mutt_get(lua_State *l)
@@ -268,7 +268,7 @@ static int lua_mutt_enter(lua_State *l)
   mutt_debug(2, " * lua_mutt_enter()\n");
   struct Buffer token, err;
   char *buffer = mutt_str_strdup(lua_tostring(l, -1));
-  int rv = 0;
+  int rc = 0;
 
   mutt_buffer_init(&err);
   mutt_buffer_init(&token);
@@ -279,20 +279,20 @@ static int lua_mutt_enter(lua_State *l)
   if (mutt_parse_rc_line(buffer, &token, &err))
   {
     luaL_error(l, "NeoMutt error: %s", err.data);
-    rv = -1;
+    rc = -1;
   }
   else
   {
     if (lua_pushstring(l, err.data) == NULL)
       handle_error(l);
     else
-      rv++;
+      rc++;
   }
 
   FREE(&buffer);
   FREE(&err.data);
 
-  return rv;
+  return rc;
 }
 
 static int lua_mutt_message(lua_State *l)

@@ -487,7 +487,7 @@ int main(int argc, char **argv, char **env)
 
   if (!STAILQ_EMPTY(&alias_queries))
   {
-    int rv = 0;
+    int rc = 0;
     struct Address *a = NULL;
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
@@ -502,12 +502,12 @@ int main(int argc, char **argv, char **env)
       }
       else
       {
-        rv = 1;
+        rc = 1;
         printf("%s\n", np->data);
       }
     }
     mutt_list_free(&alias_queries);
-    return rv;
+    return rc;
   }
 
   if (!option(OPT_NO_CURSES))

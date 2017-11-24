@@ -94,14 +94,14 @@ void state_prefix_putc(char c, struct State *s)
 
 int state_printf(struct State *s, const char *fmt, ...)
 {
-  int rv;
+  int rc;
   va_list ap;
 
   va_start(ap, fmt);
-  rv = vfprintf(s->fpout, fmt, ap);
+  rc = vfprintf(s->fpout, fmt, ap);
   va_end(ap);
 
-  return rv;
+  return rc;
 }
 
 void state_prefix_put(const char *d, size_t dlen, struct State *s)

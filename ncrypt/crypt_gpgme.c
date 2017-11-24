@@ -429,30 +429,30 @@ static int crypt_id_is_valid(struct CryptKeyInfo *key)
 static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
                                  struct CryptKeyInfo *key)
 {
-  int rv = 0;
+  int rc = 0;
 
   if (crypt_id_is_valid(key))
-    rv |= CRYPT_KV_VALID;
+    rc |= CRYPT_KV_VALID;
 
   if (crypt_id_is_strong(key))
-    rv |= CRYPT_KV_STRONGID;
+    rc |= CRYPT_KV_STRONGID;
 
   if (addr && u_addr)
   {
     if (addr->mailbox && u_addr->mailbox &&
         (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
     {
-      rv |= CRYPT_KV_ADDR;
+      rc |= CRYPT_KV_ADDR;
     }
 
     if (addr->personal && u_addr->personal &&
         (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
     {
-      rv |= CRYPT_KV_STRING;
+      rc |= CRYPT_KV_STRING;
     }
   }
 
-  return rv;
+  return rc;
 }
 
 /*
@@ -1949,7 +1949,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   LOFF_T saved_offset;
   size_t saved_length;
   FILE *decoded_fp = NULL;
-  int rv = 0;
+  int rc = 0;
 
   first_part->goodsig = false;
   first_part->warnsig = false;
@@ -2000,14 +2000,14 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   if (!*fpout)
   {
     mutt_perror(tempfile);
-    rv = -1;
+    rc = -1;
     goto bail;
   }
   unlink(tempfile);
 
   *cur = decrypt_part(b, &s, *fpout, 0, &is_signed);
   if (!*cur)
-    rv = -1;
+    rc = -1;
   rewind(*fpout);
   if (is_signed > 0)
     first_part->goodsig = true;
@@ -2021,7 +2021,7 @@ bail:
     mutt_file_fclose(&decoded_fp);
   }
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -2363,24 +2363,24 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
 int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
-  int rv = 0;
+  int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rv = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rv);
+      rc = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rc);
     else if (b->type == TYPETEXT)
     {
       if ((r = mutt_is_application_pgp(b)))
-        rv = (rv || r);
+        rc = (rc || r);
       else
-        rv = (pgp_check_traditional_one_body(fp, b) || rv);
+        rc = (pgp_check_traditional_one_body(fp, b) || rc);
     }
 
     if (just_one)
       break;
   }
-  return rv;
+  return rc;
 }
 
 void pgp_gpgme_invoke_import(const char *fname)

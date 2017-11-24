@@ -129,7 +129,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   FILE *fp = NULL;
   X509 *cert = NULL;
   X509_STORE *store = NULL;
-  int rv = 1;
+  int rc = 1;
 #ifdef DEBUG
   char buf[STRING];
 #endif
@@ -161,13 +161,13 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   }
   /* PEM_read_X509 sets the error NO_START_LINE on eof */
   if (ERR_GET_REASON(ERR_peek_last_error()) != PEM_R_NO_START_LINE)
-    rv = 0;
+    rc = 0;
   ERR_clear_error();
 
   X509_free(cert);
   mutt_file_fclose(&fp);
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -178,7 +178,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
  */
 static int ssl_set_verify_partial(SSL_CTX *ctx)
 {
-  int rv = 0;
+  int rc = 0;
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   X509_VERIFY_PARAM *param = NULL;
 
@@ -191,7 +191,7 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
       if (0 == SSL_CTX_set1_param(ctx, param))
       {
         mutt_debug(2, "ssl_set_verify_partial: SSL_CTX_set1_param() failed.\n");
-        rv = -1;
+        rc = -1;
       }
       X509_VERIFY_PARAM_free(param);
     }
@@ -199,11 +199,11 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
     {
       mutt_debug(2,
                  "ssl_set_verify_partial: X509_VERIFY_PARAM_new() failed.\n");
-      rv = -1;
+      rc = -1;
     }
   }
 #endif
-  return rv;
+  return rc;
 }
 
 /**

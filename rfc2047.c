@@ -657,7 +657,7 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
   const char *t = NULL, *t1 = NULL;
   int enc = 0, count = 0;
   char *charset = NULL;
-  int rv = -1;
+  int rc = -1;
 
   pd = d0 = mutt_mem_malloc(strlen(s) + 1);
 
@@ -741,11 +741,11 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
     mutt_convert_string(&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
   mutt_filter_unprintable(&d0);
   mutt_str_strfcpy(d, d0, len);
-  rv = 0;
+  rc = 0;
 error_out_0:
   FREE(&charset);
   FREE(&d0);
-  return rv;
+  return rc;
 }
 
 /**

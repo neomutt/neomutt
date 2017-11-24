@@ -1953,7 +1953,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   size_t tmplength = b->length;
   int origType = b->type;
   FILE *tmpfp = NULL;
-  int rv = 0;
+  int rc = 0;
 
   if (!mutt_is_application_smime(b))
     return -1;
@@ -1988,7 +1988,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   if (!*fpout)
   {
     mutt_perror(tempfile);
-    rv = -1;
+    rc = -1;
     goto bail;
   }
   mutt_file_unlink(tempfile);
@@ -1996,7 +1996,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   *cur = smime_handle_entity(b, &s, *fpout);
   if (!*cur)
   {
-    rv = -1;
+    rc = -1;
     goto bail;
   }
 
@@ -2011,7 +2011,7 @@ bail:
   if (*fpout)
     rewind(*fpout);
 
-  return rv;
+  return rc;
 }
 
 int smime_application_smime_handler(struct Body *m, struct State *s)

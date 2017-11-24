@@ -1352,7 +1352,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   char *ctype = NULL;
   char *finalpath = NULL;
 
-  int rv = -1;
+  int rc = -1;
 
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
@@ -1368,7 +1368,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
      */
     i = query_quadoption(OPT_RECALL, _("Recall postponed message?"));
     if (i == MUTT_ABORT)
-      return rv;
+      return rc;
 
     if (i == MUTT_YES)
       flags |= SENDPOSTPONED;
@@ -1941,7 +1941,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       }
       mutt_update_num_postponed();
       mutt_message(_("Message postponed."));
-      rv = 1;
+      rc = 1;
       goto cleanup;
     }
   }
@@ -2245,7 +2245,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
   }
 
-  rv = 0;
+  rc = 0;
 
 cleanup:
 
@@ -2268,5 +2268,5 @@ cleanup:
     mutt_free_header(&msg);
 
   FREE(&finalpath);
-  return rv;
+  return rc;
 }

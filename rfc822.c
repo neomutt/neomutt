@@ -109,7 +109,7 @@ static void free_address(struct Address *a)
 int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
 {
   struct Address *p = NULL, *last = NULL, *t = NULL;
-  int rv = -1;
+  int rc = -1;
 
   p = *a;
   last = NULL;
@@ -124,7 +124,7 @@ int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
       t = p;
       p = p->next;
       free_address(t);
-      rv = 0;
+      rc = 0;
     }
     else
     {
@@ -133,7 +133,7 @@ int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
     }
   }
 
-  return rv;
+  return rc;
 }
 
 /**

@@ -533,7 +533,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   char file[_POSIX_PATH_MAX];
   struct Body *b = NULL;
   FILE *bfp = NULL;
-  int rv = -1;
+  int rc = -1;
   struct State s;
   int sec_type;
 
@@ -722,7 +722,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       newhdr->security &= ~APPLICATION_SMIME;
   }
 
-  rv = 0;
+  rc = 0;
 
 bail:
 
@@ -732,11 +732,11 @@ bail:
   if (msg)
     mx_close_message(ctx, &msg);
 
-  if (rv == -1)
+  if (rc == -1)
   {
     mutt_free_envelope(&newhdr->env);
     mutt_free_body(&newhdr->content);
   }
 
-  return rv;
+  return rc;
 }
