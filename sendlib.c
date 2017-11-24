@@ -713,7 +713,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 
   rewind(file);
   ibl = 0;
-  for (;;)
+  while (true)
   {
     /* Try to fill input buffer */
     n = fread(bufi + ibl, 1, sizeof(bufi) - ibl, file);

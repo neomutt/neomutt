@@ -374,7 +374,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
   char *ob = *outbuf;
   size_t obl = *outbytesleft;
 
-  for (;;)
+  while (true)
   {
     ret1 = iconv(cd, &ib, &ibl, &ob, &obl);
     if (ret1 != (size_t) -1)

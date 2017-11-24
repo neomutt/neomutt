@@ -117,7 +117,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 
   ib = bufi;
   ibl = *l;
-  for (;;)
+  while (true)
   {
     ob = bufo, obl = sizeof(bufo);
     mutt_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");

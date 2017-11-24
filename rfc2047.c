@@ -390,7 +390,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   int utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
 
   n = dlen;
-  for (;;)
+  while (true)
   {
     assert(d + n > d);
     nn = try_block(d, n, fromcode, tocode, encoder, wlen);
@@ -544,7 +544,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   col += t0 - u;
 
   t = t0;
-  for (;;)
+  while (true)
   {
     /* Find how much we can encode. */
     n = choose_block(t, t1 - t, col, icode, tocode, &encoder, &wlen);

@@ -4548,7 +4548,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
       }
   }
 
-  for (;;)
+  while (true)
   {
     resp[0] = 0;
     if (mutt_get_field(tag, resp, sizeof(resp), MUTT_CLEAR) != 0)

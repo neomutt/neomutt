@@ -70,7 +70,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
   int n;
 
   *strp = mutt_mem_malloc(rlen);
-  for (;;)
+  while (true)
   {
     va_list ap;
     va_start(ap, fmt);
