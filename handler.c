@@ -477,13 +477,13 @@ struct EnrichedState
   wchar_t *buffer;
   wchar_t *line;
   wchar_t *param;
-  size_t buff_len;
+  size_t buf_len;
   size_t line_len;
   size_t line_used;
   size_t line_max;
   size_t indent_len;
   size_t word_len;
-  size_t buff_used;
+  size_t buf_used;
   size_t param_used;
   size_t param_len;
   int tag_level[RICH_LAST_TAG];
@@ -606,10 +606,10 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
        (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE) - stte->indent_len)))
     enriched_wrap(stte);
 
-  if (stte->buff_used)
+  if (stte->buf_used)
   {
-    stte->buffer[stte->buff_used] = (wchar_t) '\0';
-    stte->line_used += stte->buff_used;
+    stte->buffer[stte->buf_used] = (wchar_t) '\0';
+    stte->line_used += stte->buf_used;
     if (stte->line_used > stte->line_max)
     {
       stte->line_max = stte->line_used;
@@ -618,7 +618,7 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
     wcscat(stte->line, stte->buffer);
     stte->line_len += stte->word_len;
     stte->word_len = 0;
-    stte->buff_used = 0;
+    stte->buf_used = 0;
   }
   if (wrap)
     enriched_wrap(stte);
@@ -640,10 +640,10 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
   }
 
   /* see if more space is needed (plus extra for possible rich characters) */
-  if (stte->buff_len < stte->buff_used + 3)
+  if (stte->buf_len < stte->buf_used + 3)
   {
-    stte->buff_len += LONG_STRING;
-    mutt_mem_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
+    stte->buf_len += LONG_STRING;
+    mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
   }
 
   if ((!stte->tag_level[RICH_NOFILL] && iswspace(c)) || c == (wchar_t) '\0')
@@ -653,7 +653,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
     else
       stte->word_len++;
 
-    stte->buffer[stte->buff_used++] = c;
+    stte->buffer[stte->buf_used++] = c;
     enriched_flush(stte, 0);
   }
   else
@@ -662,30 +662,30 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
     {
       if (stte->tag_level[RICH_BOLD])
       {
-        stte->buffer[stte->buff_used++] = c;
-        stte->buffer[stte->buff_used++] = (wchar_t) '\010';
-        stte->buffer[stte->buff_used++] = c;
+        stte->buffer[stte->buf_used++] = c;
+        stte->buffer[stte->buf_used++] = (wchar_t) '\010';
+        stte->buffer[stte->buf_used++] = c;
       }
       else if (stte->tag_level[RICH_UNDERLINE])
       {
-        stte->buffer[stte->buff_used++] = '_';
-        stte->buffer[stte->buff_used++] = (wchar_t) '\010';
-        stte->buffer[stte->buff_used++] = c;
+        stte->buffer[stte->buf_used++] = '_';
+        stte->buffer[stte->buf_used++] = (wchar_t) '\010';
+        stte->buffer[stte->buf_used++] = c;
       }
       else if (stte->tag_level[RICH_ITALIC])
       {
-        stte->buffer[stte->buff_used++] = c;
-        stte->buffer[stte->buff_used++] = (wchar_t) '\010';
-        stte->buffer[stte->buff_used++] = '_';
+        stte->buffer[stte->buf_used++] = c;
+        stte->buffer[stte->buf_used++] = (wchar_t) '\010';
+        stte->buffer[stte->buf_used++] = '_';
       }
       else
       {
-        stte->buffer[stte->buff_used++] = c;
+        stte->buffer[stte->buf_used++] = c;
       }
     }
     else
     {
-      stte->buffer[stte->buff_used++] = c;
+      stte->buffer[stte->buf_used++] = c;
     }
     stte->word_len++;
   }
@@ -695,15 +695,15 @@ static void enriched_puts(const char *s, struct EnrichedState *stte)
 {
   const char *c = NULL;
 
-  if (stte->buff_len < stte->buff_used + mutt_str_strlen(s))
+  if (stte->buf_len < stte->buf_used + mutt_str_strlen(s))
   {
-    stte->buff_len += LONG_STRING;
-    mutt_mem_realloc(&stte->buffer, (stte->buff_len + 1) * sizeof(wchar_t));
+    stte->buf_len += LONG_STRING;
+    mutt_mem_realloc(&stte->buffer, (stte->buf_len + 1) * sizeof(wchar_t));
   }
   c = s;
   while (*c)
   {
-    stte->buffer[stte->buff_used++] = (wchar_t) *c;
+    stte->buffer[stte->buf_used++] = (wchar_t) *c;
     c++;
   }
 }

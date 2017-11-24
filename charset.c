@@ -207,14 +207,14 @@ PreferredMIMENames[] =
 
 void mutt_set_langinfo_charset(void)
 {
-  char buff[LONG_STRING];
-  char buff2[LONG_STRING];
+  char buf[LONG_STRING];
+  char buf2[LONG_STRING];
 
-  mutt_str_strfcpy(buff, nl_langinfo(CODESET), sizeof(buff));
-  mutt_canonical_charset(buff2, sizeof(buff2), buff);
+  mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
+  mutt_canonical_charset(buf2, sizeof(buf2), buf);
 
   /* finally, set $charset */
-  Charset = mutt_str_strdup(buff2);
+  Charset = mutt_str_strdup(buf2);
   if (!Charset)
     Charset = mutt_str_strdup("iso-8859-1");
 }

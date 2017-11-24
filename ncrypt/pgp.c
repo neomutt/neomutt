@@ -1504,7 +1504,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   bool empty = false;
   bool err;
 
-  char buff[STRING];
+  char buf[STRING];
 
   pid_t thepid;
 
@@ -1617,10 +1617,10 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
 
   err = false;
 
-  while (fgets(buff, sizeof(buff), pgperr))
+  while (fgets(buf, sizeof(buf), pgperr))
   {
     err = true;
-    fputs(buff, stdout);
+    fputs(buf, stdout);
   }
 
   mutt_file_fclose(&pgperr);

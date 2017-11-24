@@ -256,7 +256,7 @@ void pgp_invoke_import(const char *fname)
 
 void pgp_invoke_getkeys(struct Address *addr)
 {
-  char buff[LONG_STRING];
+  char buf[LONG_STRING];
   char tmp[LONG_STRING];
   char cmd[HUGE_STRING];
   int devnull;
@@ -276,11 +276,11 @@ void pgp_invoke_getkeys(struct Address *addr)
   *tmp = '\0';
   mutt_addrlist_to_local(addr);
   rfc822_write_address_single(tmp, sizeof(tmp), addr, 0);
-  mutt_file_quote_filename(buff, sizeof(buff), tmp);
+  mutt_file_quote_filename(buf, sizeof(buf), tmp);
 
   addr->personal = personal;
 
-  cctx.ids = buff;
+  cctx.ids = buf;
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, PgpGetkeysCommand);
 

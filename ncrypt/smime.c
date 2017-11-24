@@ -334,21 +334,21 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 
 static char *smime_key_flags(int flags)
 {
-  static char buff[3];
+  static char buf[3];
 
   if (!(flags & KEYFLAG_CANENCRYPT))
-    buff[0] = '-';
+    buf[0] = '-';
   else
-    buff[0] = 'e';
+    buf[0] = 'e';
 
   if (!(flags & KEYFLAG_CANSIGN))
-    buff[1] = '-';
+    buf[1] = '-';
   else
-    buff[1] = 's';
+    buf[1] = 's';
 
-  buff[2] = '\0';
+  buf[2] = '\0';
 
-  return buff;
+  return buf;
 }
 
 static void smime_entry(char *s, size_t l, struct Menu *menu, int num)

@@ -55,7 +55,7 @@
 static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
 {
   char tmp[_POSIX_PATH_MAX];
-  char buff[STRING];
+  char buf[STRING];
   int omagic;
   int oerrno;
   int rc;
@@ -191,7 +191,7 @@ static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Heade
   of = 0;
   cf = ((tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
 
-  if (fgets(buff, sizeof(buff), fp) && is_from(buff, NULL, 0, NULL))
+  if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
     if (tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF)
       cf = CH_FROM | CH_FORCE_FROM;

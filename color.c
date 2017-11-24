@@ -972,7 +972,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
 #ifdef HAVE_COLOR
 
-int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data,
+int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
   bool dry_run = false;
@@ -980,12 +980,12 @@ int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data,
   if (option(OPT_NO_CURSES) || !has_colors())
     dry_run = true;
 
-  return parse_color(buff, s, err, parse_color_pair, dry_run);
+  return parse_color(buf, s, err, parse_color_pair, dry_run);
 }
 
 #endif
 
-int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data,
+int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
   bool dry_run = false;
@@ -998,5 +998,5 @@ int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data,
     dry_run = true;
 #endif
 
-  return parse_color(buff, s, err, parse_attr_spec, dry_run);
+  return parse_color(buf, s, err, parse_attr_spec, dry_run);
 }

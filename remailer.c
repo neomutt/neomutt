@@ -309,8 +309,8 @@ static void mix_redraw_head(struct MixChain *chain)
 
 static const char *mix_format_caps(struct Remailer *r)
 {
-  static char capbuff[10];
-  char *t = capbuff;
+  static char capbuf[10];
+  char *t = capbuf;
 
   if (r->caps & MIX_CAP_COMPRESS)
     *t++ = 'C';
@@ -346,7 +346,7 @@ static const char *mix_format_caps(struct Remailer *r)
 
   *t = '\0';
 
-  return capbuff;
+  return capbuf;
 }
 
 /**

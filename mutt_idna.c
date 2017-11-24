@@ -53,18 +53,18 @@ static bool check_idn(char *domain)
 
 static int mbox_to_udomain(const char *mbx, char **user, char **domain)
 {
-  static char *buff = NULL;
+  static char *buf = NULL;
   char *p = NULL;
 
-  mutt_str_replace(&buff, mbx);
-  if (!buff)
+  mutt_str_replace(&buf, mbx);
+  if (!buf)
     return -1;
 
-  p = strchr(buff, '@');
+  p = strchr(buf, '@');
   if (!p || !p[1])
     return -1;
   *p = '\0';
-  *user = buff;
+  *user = buf;
   *domain = p + 1;
   return 0;
 }
@@ -296,10 +296,10 @@ int mutt_addrlist_to_local(struct Address *a)
 const char *mutt_addr_for_display(struct Address *a)
 {
   char *user = NULL, *domain = NULL;
-  static char *buff = NULL;
+  static char *buf = NULL;
   char *local_mailbox = NULL;
 
-  FREE(&buff);
+  FREE(&buf);
 
   if (!a->mailbox || addr_is_local(a))
     return a->mailbox;
@@ -311,9 +311,9 @@ const char *mutt_addr_for_display(struct Address *a)
   if (!local_mailbox)
     return a->mailbox;
 
-  mutt_str_replace(&buff, local_mailbox);
+  mutt_str_replace(&buf, local_mailbox);
   FREE(&local_mailbox);
-  return buff;
+  return buf;
 }
 
 /**

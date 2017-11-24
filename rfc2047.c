@@ -127,7 +127,7 @@ int convert_nonmime_string(char **ps)
 char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
                           size_t ulen, char **d, size_t *dlen)
 {
-  char canonical_buff[LONG_STRING];
+  char canonical_buf[LONG_STRING];
   char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
   const char *q = NULL;
@@ -183,8 +183,8 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
     if (dlen)
       *dlen = elen;
 
-    mutt_canonical_charset(canonical_buff, sizeof(canonical_buff), tocode);
-    mutt_str_replace(&tocode, canonical_buff);
+    mutt_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
+    mutt_str_replace(&tocode, canonical_buf);
   }
   return tocode;
 }

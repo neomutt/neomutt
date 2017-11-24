@@ -286,25 +286,25 @@ static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
  */
 static char *crypt_key_abilities(int flags)
 {
-  static char buff[3];
+  static char buf[3];
 
   if (!(flags & KEYFLAG_CANENCRYPT))
-    buff[0] = '-';
+    buf[0] = '-';
   else if (flags & KEYFLAG_PREFER_SIGNING)
-    buff[0] = '.';
+    buf[0] = '.';
   else
-    buff[0] = 'e';
+    buf[0] = 'e';
 
   if (!(flags & KEYFLAG_CANSIGN))
-    buff[1] = '-';
+    buf[1] = '-';
   else if (flags & KEYFLAG_PREFER_ENCRYPTION)
-    buff[1] = '.';
+    buf[1] = '.';
   else
-    buff[1] = 's';
+    buf[1] = 's';
 
-  buff[2] = '\0';
+  buf[2] = '\0';
 
-  return buff;
+  return buf;
 }
 
 /**
@@ -4272,7 +4272,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
              !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
-          char buff[LONG_STRING];
+          char buf2[LONG_STRING];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
             warn_s = N_("ID is expired/disabled/revoked.");
@@ -4297,10 +4297,10 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
             }
           }
 
-          snprintf(buff, sizeof(buff),
+          snprintf(buf2, sizeof(buf2),
                    _("%s Do you really want to use the key?"), _(warn_s));
 
-          if (mutt_yesorno(buff, 0) != MUTT_YES)
+          if (mutt_yesorno(buf2, 0) != MUTT_YES)
           {
             mutt_clear_error();
             break;
@@ -4732,7 +4732,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
   struct Body *att = NULL;
-  char buff[LONG_STRING];
+  char buf[LONG_STRING];
   struct stat sb;
 
   unset_option(OPT_PGP_CHECK_TRUST);
@@ -4769,8 +4769,8 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
-  snprintf(buff, sizeof(buff), _("PGP Key 0x%s."), crypt_keyid(key));
-  att->description = mutt_str_strdup(buff);
+  snprintf(buf, sizeof(buf), _("PGP Key 0x%s."), crypt_keyid(key));
+  att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 
   stat(tempf, &sb);

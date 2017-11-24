@@ -1116,7 +1116,7 @@ bye:
 
 static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
-  char buff[_POSIX_PATH_MAX];
+  char buf[_POSIX_PATH_MAX];
   struct State s;
   struct stat sb;
 
@@ -1139,8 +1139,8 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->noconv = true;
       a->force_charset = true;
 
-      mutt_mktemp(buff, sizeof(buff));
-      s.fpout = mutt_file_fopen(buff, "w");
+      mutt_mktemp(buf, sizeof(buf));
+      s.fpout = mutt_file_fopen(buf, "w");
       if (!s.fpout)
       {
         mutt_perror("fopen");
@@ -1151,7 +1151,7 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       mutt_file_fclose(&s.fpout);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
-      a->filename = mutt_str_strdup(buff);
+      a->filename = mutt_str_strdup(buf);
       a->unlink = true;
       if (stat(a->filename, &sb) == -1)
       {
@@ -1336,10 +1336,10 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
 void mutt_update_encoding(struct Body *a)
 {
   struct Content *info = NULL;
-  char chsbuff[STRING];
+  char chsbuf[STRING];
 
   /* override noconv when it's us-ascii */
-  if (mutt_is_us_ascii(mutt_get_body_charset(chsbuff, sizeof(chsbuff), a)))
+  if (mutt_is_us_ascii(mutt_get_body_charset(chsbuf, sizeof(chsbuf), a)))
     a->noconv = false;
 
   if (!a->force_charset && !a->noconv)
