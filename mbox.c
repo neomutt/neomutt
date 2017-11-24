@@ -565,7 +565,9 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   {
     if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
         (mutt_str_strcmp(a->personal, b->personal) != 0))
+    {
       return 0;
+    }
 
     a = a->next;
     b = b->next;
@@ -612,7 +614,9 @@ static int strict_cmp_parameters(const struct Parameter *p1, const struct Parame
   {
     if ((mutt_str_strcmp(p1->attribute, p2->attribute) != 0) ||
         (mutt_str_strcmp(p1->value, p2->value) != 0))
+    {
       return 0;
+    }
 
     p1 = p1->next;
     p2 = p2->next;
@@ -994,7 +998,9 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
    */
   if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime &&
       mbox_has_new(ctx))
+  {
     utimebuf.actime = utimebuf.modtime - 1;
+  }
 
   utime(ctx->path, &utimebuf);
 }

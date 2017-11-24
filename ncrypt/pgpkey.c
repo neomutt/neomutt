@@ -438,11 +438,15 @@ static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, str
 
   if (addr->mailbox && u_addr->mailbox &&
       (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
+  {
     rv |= PGP_KV_ADDR;
+  }
 
   if (addr->personal && u_addr->personal &&
       (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
+  {
     rv |= PGP_KV_STRING;
+  }
 
   return rv;
 }
@@ -672,11 +676,13 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
+    {
       if (mutt_str_strcasecmp(whatfor, l->what) == 0)
       {
         mutt_str_strfcpy(resp, NONULL(l->dflt), sizeof(resp));
         break;
       }
+    }
   }
 
   while (true)

@@ -272,7 +272,9 @@ static int edit_envelope(struct Envelope *en, int flags)
       buf[0] = 0;
     if (option(OPT_ASK_FOLLOW_UP) &&
         mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) != 0)
+    {
       return -1;
+    }
     FREE(&en->followup_to);
     en->followup_to = mutt_str_strdup(buf);
 
@@ -282,7 +284,9 @@ static int edit_envelope(struct Envelope *en, int flags)
       buf[0] = 0;
     if (option(OPT_X_COMMENT_TO) && option(OPT_ASK_X_COMMENT_TO) &&
         mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) != 0)
+    {
       return -1;
+    }
     FREE(&en->x_comment_to);
     en->x_comment_to = mutt_str_strdup(buf);
   }
@@ -631,7 +635,9 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 
     if (in->mail_followup_to && hmfupto == MUTT_YES &&
         default_to(&out->cc, in, flags & SENDLISTREPLY, hmfupto) == MUTT_ABORT)
+    {
       return -1; /* abort */
+    }
   }
   else
   {
@@ -756,7 +762,9 @@ static void make_reference_headers(struct Envelope *curenv,
      discouraged by RFC2822, sect. 3.6.4 */
   if (ctx->tagged > 0 && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
+  {
     mutt_list_free(&env->references);
+  }
 }
 
 static int envelope_defaults(struct Envelope *env, struct Context *ctx,
@@ -801,7 +809,9 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
       /* in case followup set Newsgroups: with Followup-To: if it present */
       if (!env->newsgroups &&
           (mutt_str_strcasecmp(curenv->followup_to, "poster") != 0))
+      {
         env->newsgroups = mutt_str_strdup(curenv->followup_to);
+      }
     }
     else
 #endif
@@ -1520,7 +1530,9 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   {
     if ((flags & (SENDREPLY | SENDFORWARD)) && ctx &&
         envelope_defaults(msg->env, ctx, cur, flags) == -1)
+    {
       goto cleanup;
+    }
 
     if (option(OPT_HDRS))
       process_user_recips(msg->env);
@@ -1584,7 +1596,9 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     {
       if (option(OPT_TEXT_FLOWED) && msg->content->type == TYPETEXT &&
           (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0))
+      {
         mutt_set_parameter("format", "flowed", &msg->content->parameter);
+      }
     }
 
     /* $use_from and/or $from might have changed in a send-hook */
@@ -1604,16 +1618,22 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     if (option(OPT_SIG_ON_TOP) && !(flags & (SENDMAILX | SENDKEY | SENDBATCH)) &&
         Editor && (mutt_str_strcmp(Editor, "builtin") != 0))
+    {
       append_signature(tempfp);
+    }
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (ctx || !(flags & (SENDREPLY | SENDFORWARD))) &&
         generate_body(tempfp, msg, flags, ctx, cur) == -1)
+    {
       goto cleanup;
+    }
 
     if (!option(OPT_SIG_ON_TOP) && !(flags & (SENDMAILX | SENDKEY | SENDBATCH)) &&
         Editor && (mutt_str_strcmp(Editor, "builtin") != 0))
+    {
       append_signature(tempfp);
+    }
   }
 
   /*
@@ -1766,10 +1786,14 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       {
         if ((WithCrypto & APPLICATION_PGP) && option(OPT_CRYPT_AUTOPGP) &&
             (cur->security & APPLICATION_PGP))
+        {
           msg->security |= APPLICATION_PGP;
+        }
         else if ((WithCrypto & APPLICATION_SMIME) && option(OPT_CRYPT_AUTOSMIME) &&
                  (cur->security & APPLICATION_SMIME))
+        {
           msg->security |= APPLICATION_SMIME;
+        }
       }
 
       /*
@@ -1780,11 +1804,17 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       {
         if ((WithCrypto & APPLICATION_SMIME) && option(OPT_CRYPT_AUTOSMIME) &&
             option(OPT_SMIME_IS_DEFAULT))
+        {
           msg->security |= APPLICATION_SMIME;
+        }
         else if ((WithCrypto & APPLICATION_PGP) && option(OPT_CRYPT_AUTOPGP))
+        {
           msg->security |= APPLICATION_PGP;
+        }
         else if ((WithCrypto & APPLICATION_SMIME) && option(OPT_CRYPT_AUTOSMIME))
+        {
           msg->security |= APPLICATION_SMIME;
+        }
       }
     }
 

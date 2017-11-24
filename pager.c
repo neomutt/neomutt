@@ -2400,7 +2400,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i < rd.last_line)
@@ -2421,7 +2423,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || (rd.has_types && rd.line_info[i].type != MT_COLOR_QUOTED)) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i >= 0)
@@ -2527,7 +2531,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i < rd.last_line)
@@ -2540,7 +2546,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i >= 0)
@@ -2889,7 +2897,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        {
           break;
+        }
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -2899,7 +2909,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        {
           break;
+        }
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS);
         else
@@ -2922,7 +2934,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+          {
             break;
+          }
           if (IsMsgAttach(extra))
             mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
                               SENDNEWS | SENDREPLY);

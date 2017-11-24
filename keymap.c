@@ -356,7 +356,9 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
   {
     if ((mutt_str_strncasecmp(start, bindings[i].name, len) == 0) &&
         mutt_str_strlen(bindings[i].name) == len)
+    {
       return bindings[i].op;
+    }
   }
 
   return OP_NULL;

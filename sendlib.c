@@ -1258,11 +1258,17 @@ static void set_encoding(struct Body *b, struct Content *info)
     char *chsname = mutt_get_body_charset(send_charset, sizeof(send_charset), b);
     if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
         info->linemax > 990 || (info->from && option(OPT_ENCODE_FROM)))
+    {
       b->encoding = ENCQUOTEDPRINTABLE;
+    }
     else if (info->hibin)
+    {
       b->encoding = option(OPT_ALLOW_8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
+    }
     else
+    {
       b->encoding = ENC7BIT;
+    }
   }
   else if (b->type == TYPEMESSAGE || b->type == TYPEMULTIPART)
   {
@@ -1278,15 +1284,21 @@ static void set_encoding(struct Body *b, struct Content *info)
   }
   else if (b->type == TYPEAPPLICATION &&
            (mutt_str_strcasecmp(b->subtype, "pgp-keys") == 0))
+  {
     b->encoding = ENC7BIT;
+  }
   else
   {
     /* Determine which encoding is smaller  */
     if (1.33 * (float) (info->lobin + info->hibin + info->ascii) <
         3.0 * (float) (info->lobin + info->hibin) + (float) info->ascii)
+    {
       b->encoding = ENCBASE64;
+    }
     else
+    {
       b->encoding = ENCQUOTEDPRINTABLE;
+    }
   }
 }
 
@@ -1484,7 +1496,9 @@ struct Body *mutt_make_file_attach(const char *path)
 
   if (!att->subtype && MimeTypeQueryCommand && *MimeTypeQueryCommand &&
       !option(OPT_MIME_TYPE_QUERY_FIRST))
+  {
     run_mime_type_query(att);
+  }
 
   info = mutt_get_content_info(path, att);
   if (!info)
@@ -1548,7 +1562,9 @@ static bool check_boundary(const char *boundary, struct Body *b)
 
   if ((p = mutt_get_parameter("boundary", b->parameter)) &&
       (mutt_str_strcmp(p, boundary) == 0))
+  {
     return true;
+  }
   return false;
 }
 

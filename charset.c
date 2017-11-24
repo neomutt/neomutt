@@ -254,12 +254,14 @@ void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
     mutt_str_strfcpy(scratch, in, sizeof(scratch));
 
   for (size_t i = 0; PreferredMIMENames[i].key; i++)
+  {
     if ((mutt_str_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
         (mutt_str_strcasecmp(scratch, PreferredMIMENames[i].key) == 0))
     {
       mutt_str_strfcpy(dest, PreferredMIMENames[i].pref, dlen);
       goto out;
     }
+  }
 
   mutt_str_strfcpy(dest, scratch, dlen);
 
@@ -643,7 +645,9 @@ bool mutt_check_charset(const char *s, bool strict)
     {
       if ((mutt_str_strcasecmp(PreferredMIMENames[i].key, s) == 0) ||
           (mutt_str_strcasecmp(PreferredMIMENames[i].pref, s) == 0))
+      {
         return true;
+      }
     }
 
   cd = mutt_iconv_open(s, s, 0);

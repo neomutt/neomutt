@@ -363,16 +363,22 @@ static void update_entries_visibility(void)
 
     if ((i == OpnIndex) || (sbe->buffy->msg_unread > 0) || sbe->buffy->new ||
         (sbe->buffy->msg_flagged > 0))
+    {
       continue;
+    }
 
     if (Context && (mutt_str_strcmp(sbe->buffy->realpath, Context->realpath) == 0))
+    {
       /* Spool directory */
       continue;
+    }
 
     if (mutt_list_find(&SidebarWhitelist, sbe->buffy->path) ||
         mutt_list_find(&SidebarWhitelist, sbe->buffy->desc))
+    {
       /* Explicitly asked to be visible */
       continue;
+    }
 
     sbe->is_hidden = true;
   }
@@ -827,7 +833,9 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       SETCOLOR(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
              (mutt_str_strcmp(b->path, SpoolFile) == 0))
+    {
       SETCOLOR(MT_COLOR_SB_SPOOLFILE);
+    }
     else
     {
       if (ColorDefs[MT_COLOR_ORDINARY] != 0)

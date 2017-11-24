@@ -87,7 +87,9 @@ static int nntp_capabilities(struct NntpServer *nserv)
 
   if (mutt_socket_write(conn, "CAPABILITIES\r\n") < 0 ||
       mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+  {
     return nntp_connect_error(nserv);
+  }
 
   /* no capabilities */
   if (mutt_str_strncmp("101", buf, 3) != 0)
@@ -186,19 +188,25 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   {
     if (mutt_socket_write(conn, "DATE\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasDATE = true;
 
     if (mutt_socket_write(conn, "LISTGROUP\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasLISTGROUP = true;
 
     if (mutt_socket_write(conn, "LIST NEWSGROUPS +\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasLIST_NEWSGROUPS = true;
     if (mutt_str_strncmp("215", buf, 3) == 0)
@@ -216,7 +224,9 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   {
     if (mutt_socket_write(conn, "XGTITLE\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasXGTITLE = true;
   }
@@ -226,7 +236,9 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   {
     if (mutt_socket_write(conn, "XOVER\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasXOVER = true;
   }
@@ -236,7 +248,9 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   {
     if (mutt_socket_write(conn, "LIST OVERVIEW.FMT\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("215", buf, 3) != 0)
       nserv->overview_fmt = OverviewFmt;
     else
@@ -315,7 +329,9 @@ static int nntp_auth(struct NntpServer *nserv)
     /* get login and password */
     if ((mutt_account_getuser(&conn->account) < 0) || (conn->account.user[0] == '\0') ||
         (mutt_account_getpass(&conn->account) < 0) || (conn->account.pass[0] == '\0'))
+    {
       break;
+    }
 
     /* get list of authenticators */
     if (NntpAuthenticators && *NntpAuthenticators)
@@ -379,7 +395,9 @@ static int nntp_auth(struct NntpServer *nserv)
         snprintf(buf, sizeof(buf), "AUTHINFO USER %s\r\n", conn->account.user);
         if (mutt_socket_write(conn, buf) < 0 ||
             mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+        {
           break;
+        }
 
         /* authenticated, password is not required */
         if (mutt_str_strncmp("281", buf, 3) == 0)
@@ -395,7 +413,9 @@ static int nntp_auth(struct NntpServer *nserv)
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
           if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+          {
             break;
+          }
 
           /* authenticated */
           if (mutt_str_strncmp("281", buf, 3) == 0)
@@ -490,7 +510,9 @@ static int nntp_auth(struct NntpServer *nserv)
           client_len = 0;
           if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0)
+          {
             break;
+          }
           if ((mutt_str_strncmp(inbuf, "283 ", 4) != 0) &&
               (mutt_str_strncmp(inbuf, "383 ", 4) != 0))
           {
@@ -559,7 +581,9 @@ static int nntp_auth(struct NntpServer *nserv)
         {
           if (mutt_socket_write(conn, "*\r\n") < 0 ||
               mutt_socket_readln(inbuf, sizeof(inbuf), conn) < 0)
+          {
             break;
+          }
         }
 
         /* server doesn't support AUTHINFO SASL, trying next method */
@@ -633,7 +657,9 @@ int nntp_open_connection(struct NntpServer *nserv)
   {
     if (mutt_socket_write(conn, "MODE READER\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
 
     if (mutt_str_strncmp("200", buf, 3) == 0)
       posting = true;
@@ -676,7 +702,9 @@ int nntp_open_connection(struct NntpServer *nserv)
     {
       if (mutt_socket_write(conn, "STARTTLS\r\n") < 0 ||
           mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+      {
         return nntp_connect_error(nserv);
+      }
       if (mutt_str_strncmp("382", buf, 3) != 0)
       {
         nserv->use_tls = 0;
@@ -713,7 +741,9 @@ int nntp_open_connection(struct NntpServer *nserv)
   {
     if (mutt_socket_write(conn, "STAT\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    {
       return nntp_connect_error(nserv);
+    }
     if (mutt_str_strncmp("480", buf, 3) != 0)
       auth = false;
   }
@@ -797,7 +827,9 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
       snprintf(buf, sizeof(buf), "GROUP %s\r\n", nntp_data->group);
       if (mutt_socket_write(nserv->conn, buf) < 0 ||
           mutt_socket_readln(buf, sizeof(buf), nserv->conn) < 0)
+      {
         return nntp_connect_error(nserv);
+      }
     }
     if (!*line)
       break;

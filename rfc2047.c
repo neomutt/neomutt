@@ -516,7 +516,9 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
         t++;
     if (!try_block(t0, t - t0, icode, tocode, &encoder, &wlen) &&
         col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
+    {
       break;
+    }
   }
 
   /* Adjust t1 until we can encode a character before a space. */
@@ -530,7 +532,9 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
         t--;
     if (!try_block(t, t1 - t, icode, tocode, &encoder, &wlen) &&
         1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
+    {
       break;
+    }
   }
 
   /* We shall encode the region [t0,t1). */
@@ -909,7 +913,9 @@ void rfc2047_decode_adrlist(struct Address *a)
   {
     if (a->personal &&
         ((strstr(a->personal, "=?") != NULL) || (AssumedCharset && *AssumedCharset)))
+    {
       rfc2047_decode(&a->personal);
+    }
     else if (a->group && a->mailbox && (strstr(a->mailbox, "=?") != NULL))
       rfc2047_decode(&a->mailbox);
     a = a->next;

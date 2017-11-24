@@ -451,9 +451,13 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   if ((!cur || mutt_can_decode(cur)) &&
       (rc = query_quadoption(OPT_MIME_FORWARD, _("Forward as attachments?"))) == MUTT_YES)
+  {
     mime_fwd_all = true;
+  }
   else if (rc == -1)
+  {
     goto bail;
+  }
 
   /*
    * shortcut MIMEFWDREST when there is only one attachment.  Is
@@ -571,11 +575,13 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
+    {
       if (actx->idx[i]->content->tagged)
       {
         curhdr = actx->idx[i]->content->hdr;
         break;
       }
+    }
   }
 
   tmphdr = mutt_new_header();
@@ -643,11 +649,13 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr,
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
+      {
         if (actx->idx[i]->content->tagged)
         {
           mutt_copy_body(actx->idx[i]->fp, last, actx->idx[i]->content);
           last = &((*last)->next);
         }
+      }
     }
   }
   else
@@ -723,7 +731,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     /* in case followup set Newsgroups: with Followup-To: if it present */
     if (!env->newsgroups && curenv &&
         (mutt_str_strcasecmp(curenv->followup_to, "poster") != 0))
+    {
       env->newsgroups = mutt_str_strdup(curenv->followup_to);
+    }
   }
   else
 #endif
@@ -739,7 +749,9 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
       {
         if (actx->idx[i]->content->tagged &&
             mutt_fetch_recips(env, actx->idx[i]->content->hdr->env, flags) == -1)
+        {
           return -1;
+        }
       }
     }
 

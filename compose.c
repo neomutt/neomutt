@@ -1407,7 +1407,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         fname[0] = 0;
         if (mutt_get_field(_("New file: "), fname, sizeof(fname), MUTT_FILE) != 0 ||
             !fname[0])
+        {
           continue;
+        }
         mutt_expand_path(fname, sizeof(fname));
 
         /* Call to lookup_mime_type () ?  maybe later */

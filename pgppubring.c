@@ -94,9 +94,13 @@ static void pgpring_dump_signatures(struct PgpSignature *sig)
   {
     if (sig->sigtype == 0x10 || sig->sigtype == 0x11 || sig->sigtype == 0x12 ||
         sig->sigtype == 0x13)
+    {
       printf("sig::::%08lX%08lX::::::%X:\n", sig->sid1, sig->sid2, sig->sigtype);
+    }
     else if (sig->sigtype == 0x20)
+    {
       printf("rev::::%08lX%08lX::::::%X:\n", sig->sid1, sig->sid2, sig->sigtype);
+    }
   }
 }
 

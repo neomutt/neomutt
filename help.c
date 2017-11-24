@@ -73,9 +73,13 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
 
   if (km_expand_key(buf, sizeof(buf), km_find_func(menu, op)) ||
       km_expand_key(buf, sizeof(buf), km_find_func(MENU_GENERIC, op)))
+  {
     snprintf(d, dlen, "%s:%s", buf, txt);
+  }
   else
+  {
     d[0] = '\0';
+  }
 }
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
@@ -130,7 +134,9 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
         size_t n1, n2;
         if ((n1 = wcrtomb(buf, wc, &mbstate2)) != (size_t)(-1) &&
             (n2 = wcrtomb(buf + n1, 0, &mbstate2)) != (size_t)(-1))
+        {
           fputs(buf, f);
+        }
       }
     }
     else if (wc < 0x20 || wc == 0x7f)

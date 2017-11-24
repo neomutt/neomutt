@@ -97,11 +97,13 @@ int imap_authenticate(struct ImapData *idata)
       {
         if (!authenticator->method ||
             (mutt_str_strcasecmp(authenticator->method, method) == 0))
+        {
           if ((r = authenticator->authenticate(idata, method)) != IMAP_AUTH_UNAVAIL)
           {
             FREE(&methods);
             return r;
           }
+        }
 
         authenticator++;
       }

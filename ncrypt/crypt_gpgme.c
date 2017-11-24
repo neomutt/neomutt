@@ -3347,7 +3347,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
         s++;
         if (*s == ',' || *s == '=' || *s == '+' || *s == '<' || *s == '>' ||
             *s == '#' || *s == ';' || *s == '\\' || *s == '\"' || *s == ' ')
+        {
           n++;
+        }
         else if (isxdigit(*s) && isxdigit(*(s + 1)))
         {
           s++;
@@ -3360,7 +3362,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
         return NULL; /* invalid encoding */
       else if (*s == ',' || *s == '=' || *s == '+' || *s == '<' || *s == '>' ||
                *s == '#' || *s == ';')
+      {
         break;
+      }
       else
         n++;
     }
@@ -4541,11 +4545,13 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
   if (whatfor)
   {
     for (l = id_defaults; l; l = l->next)
+    {
       if (mutt_str_strcasecmp(whatfor, l->what) == 0)
       {
         mutt_str_strfcpy(resp, NONULL(l->dflt), sizeof(resp));
         break;
       }
+    }
   }
 
   while (true)

@@ -179,13 +179,17 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
       {
         if (mutt_is_text_part(aptr->content) &&
             mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+        {
           mutt_format_s(dest, destlen, prefix, charset);
+        }
         else
           mutt_format_s(dest, destlen, prefix, "");
       }
       else if (!mutt_is_text_part(aptr->content) ||
                !mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+      {
         optional = 0;
+      }
       break;
     case 'c':
       /* XXX */
@@ -445,7 +449,9 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   }
   else if (body->hdr && body->encoding != ENCBASE64 && body->encoding != ENCQUOTEDPRINTABLE &&
            mutt_is_message_type(body->type, body->subtype))
+  {
     mutt_default_save(buf, sizeof(buf), body->hdr);
+  }
   else
     buf[0] = 0;
 
@@ -541,7 +547,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 ||
               !buf[0])
+          {
             return;
+          }
           mutt_expand_path(buf, sizeof(buf));
           if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &append, NULL))
             return;
@@ -763,7 +771,9 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       {
         if ((mutt_str_strcasecmp("text/plain", top->subtype) == 0) ||
             (mutt_str_strcasecmp("application/postscript", top->subtype) == 0))
+        {
           pipe_attachment(fp, top, state);
+        }
         else if (mutt_can_decode(top))
         {
           /* decode and print */
@@ -1093,9 +1103,13 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   {
     if (option(OPT_DIGEST_COLLAPSE) && actx->idx[rindex]->content->type == TYPEMULTIPART &&
         !mutt_str_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
+    {
       actx->idx[rindex]->content->collapsed = true;
+    }
     else
+    {
       actx->idx[rindex]->content->collapsed = false;
+    }
     rindex++;
   }
 }

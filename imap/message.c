@@ -947,7 +947,9 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
   if (maxuid && (status = imap_mboxcache_get(idata, idata->mailbox, 0)) &&
       (status->uidnext < maxuid + 1))
+  {
     status->uidnext = maxuid + 1;
+  }
 
 #ifdef USE_HCACHE
   mutt_hcache_store_raw(idata->hcache, "/UIDVALIDITY", 12, &idata->uid_validity,

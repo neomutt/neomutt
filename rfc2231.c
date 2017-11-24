@@ -353,13 +353,17 @@ int rfc2231_encode_string(char **pd)
     sprintf(e, "%s''", charset);
     t = e + strlen(e);
     for (s = d, slen = dlen; slen; s++, slen--)
+    {
       if (*s < 0x20 || *s >= 0x7f || strchr(MimeSpecials, *s) || strchr("*'%", *s))
       {
         sprintf(t, "%%%02X", (unsigned char) *s);
         t += 3;
       }
       else
+      {
         *t++ = *s;
+      }
+    }
     *t = '\0';
 
     if (d != *pd)

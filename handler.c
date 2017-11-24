@@ -717,11 +717,13 @@ static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
     tagptr++;
 
   for (i = 0, j = -1; EnrichedTags[i].tag_name; i++)
+  {
     if (wcscasecmp(EnrichedTags[i].tag_name, tagptr) == 0)
     {
       j = EnrichedTags[i].index;
       break;
     }
+  }
 
   if (j != -1)
   {
@@ -1266,7 +1268,9 @@ int mutt_can_decode(struct Body *a)
     {
       if ((mutt_str_strcasecmp(a->subtype, "signed") == 0) ||
           (mutt_str_strcasecmp(a->subtype, "encrypted") == 0))
+      {
         return 1;
+      }
     }
 
     for (struct Body *b = a->parts; b; b = b->next)
@@ -1339,7 +1343,9 @@ static int multipart_handler(struct Body *a, struct State *s)
 
     if ((s->flags & MUTT_REPLYING) && (option(OPT_INCLUDE_ONLYFIRST)) &&
         (s->flags & MUTT_FIRSTDONE))
+    {
       break;
+    }
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
@@ -1846,9 +1852,13 @@ int mutt_body_handler(struct Body *b, struct State *s)
         handler = crypt_pgp_application_pgp_handler;
       else if (option(OPT_REFLOW_TEXT) &&
                (mutt_str_strcasecmp("flowed", mutt_get_parameter("format", b->parameter)) == 0))
+      {
         handler = rfc3676_handler;
+      }
       else
+      {
         handler = text_plain_handler;
+      }
     }
     else if (mutt_str_strcasecmp("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
@@ -1870,7 +1880,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
     if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
+    {
       handler = alternative_handler;
+    }
     else if (WithCrypto && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {
       p = mutt_get_parameter("protocol", b->parameter);
@@ -1881,9 +1893,13 @@ int mutt_body_handler(struct Body *b, struct State *s)
         handler = mutt_signed_handler;
     }
     else if (mutt_is_valid_multipart_pgp_encrypted(b))
+    {
       handler = valid_pgp_encrypted_handler;
+    }
     else if (mutt_is_malformed_multipart_pgp_encrypted(b))
+    {
       handler = malformed_pgp_encrypted_handler;
+    }
 
     if (!handler)
       handler = multipart_handler;

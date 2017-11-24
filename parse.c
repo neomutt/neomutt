@@ -135,7 +135,9 @@ int mutt_check_encoding(const char *c)
     return ENCBINARY;
   else if (mutt_str_strncasecmp("quoted-printable", c,
                                 sizeof("quoted-printable") - 1) == 0)
+  {
     return ENCQUOTEDPRINTABLE;
+  }
   else if (mutt_str_strncasecmp("base64", c, sizeof("base64") - 1) == 0)
     return ENCBASE64;
   else if (mutt_str_strncasecmp("x-uuencode", c, sizeof("x-uuencode") - 1) == 0)
@@ -856,7 +858,9 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'e':
       if ((mutt_str_strcasecmp("xpires", line + 1) == 0) && hdr &&
           mutt_date_parse_date(p, NULL) < time(NULL))
+      {
         hdr->expired = true;
+      }
       break;
 
     case 'f':
@@ -1412,7 +1416,9 @@ static int count_body_parts(struct Body *body, int flags)
 
     if (bp->disposition == DISPINLINE && bp->type != TYPEMULTIPART &&
         bp->type != TYPEMESSAGE && bp == body)
+    {
       shallcount = false; /* ignore fundamental inlines */
+    }
 
     /* If this body isn't scheduled for enumeration already, don't bother
      * profiling it further.

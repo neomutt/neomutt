@@ -229,7 +229,9 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         /* if folder = {host} or imap[s]://host/: don't append slash */
         if (mx_is_imap(NONULL(Folder)) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
+        {
           mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+        }
         else
 #endif
 #ifdef USE_NOTMUCH

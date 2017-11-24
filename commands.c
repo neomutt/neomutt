@@ -510,7 +510,9 @@ void mutt_pipe_message(struct Header *h)
   buffer[0] = '\0';
   if (mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0 ||
       !buffer[0])
+  {
     return;
+  }
 
   mutt_expand_path(buffer, sizeof(buffer));
   pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);

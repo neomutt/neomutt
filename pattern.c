@@ -1474,10 +1474,14 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
     return a;
   if (right && t->parent &&
       (a = match_threadcomplete(pat, flags, ctx, t->next, 0, 0, 1, 1)))
+  {
     return a;
+  }
   if (left && t->parent &&
       (a = match_threadcomplete(pat, flags, ctx, t->prev, 1, 0, 0, 1)))
+  {
     return a;
+  }
   if (down && (a = match_threadcomplete(pat, flags, ctx, t->child, 1, 0, 1, 1)))
     return a;
   return 0;
@@ -1824,7 +1828,9 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     /* convert old tokens into the new format */
     if ((mutt_str_strcasecmp("all", s) == 0) || (mutt_str_strcmp("^", s) == 0) ||
         (mutt_str_strcmp(".", s) == 0)) /* ~A is more efficient */
+    {
       mutt_str_strfcpy(s, "~A", len);
+    }
     else if (mutt_str_strcasecmp("del", s) == 0)
       mutt_str_strfcpy(s, "~D", len);
     else if (mutt_str_strcasecmp("flag", s) == 0)

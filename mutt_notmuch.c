@@ -480,7 +480,9 @@ static char *get_query_string(struct NmCtxData *data, bool window)
      */
     if (!strstr(data->db_query, "date:") &&
         windowed_query_from_query(data->db_query, buf, sizeof(buf)))
+    {
       data->db_query = mutt_str_strdup(buf);
+    }
 
     mutt_debug(2, "nm: query (windowed) '%s'\n", data->db_query);
   }
@@ -2422,7 +2424,9 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
   msg->fp = fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) &&
       ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_NOTMUCH)))
+  {
     msg->fp = maildir_open_find_message(folder, cur->path, NULL);
+  }
 
   mutt_debug(1, "%s\n", __func__);
   return !msg->fp;

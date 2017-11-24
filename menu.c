@@ -80,7 +80,9 @@ static int get_color(int index, unsigned char *s)
         const char *transform = mutt_hash_find(TagTransforms, np->pattern);
         if (transform &&
             (strncmp((const char *) (s + 1), transform, strlen(transform)) == 0))
+        {
           return np->pair;
+        }
       }
       return 0;
     default:

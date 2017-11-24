@@ -82,7 +82,9 @@ bool mutt_is_subscribed_list(struct Address *addr)
 {
   if (!mutt_match_regex_list(addr->mailbox, UnMailLists) &&
       !mutt_match_regex_list(addr->mailbox, UnSubscribedLists))
+  {
     return mutt_match_regex_list(addr->mailbox, SubscribedLists);
+  }
   return false;
 }
 
@@ -520,7 +522,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'K':
       if (!first_mailing_list(dest, destlen, hdr->env->to) &&
           !first_mailing_list(dest, destlen, hdr->env->cc))
+      {
         dest[0] = 0;
+      }
       if (dest[0])
       {
         mutt_str_strfcpy(buf2, dest, sizeof(buf2));

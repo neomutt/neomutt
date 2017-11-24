@@ -754,7 +754,9 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 #ifdef USE_SIDEBAR
         if ((inc->new != new) || (inc->msg_count != status->messages) ||
             (inc->msg_unread != status->unseen))
+        {
           mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+        }
 #endif
         inc->new = new;
         if (new_msg_count)
@@ -790,7 +792,9 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
   {
     if ((mutt_str_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
         (mutt_str_strncasecmp(s, "UTF8=ONLY", 9) == 0))
+    {
       idata->unicode = 1;
+    }
   }
 }
 

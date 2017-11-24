@@ -1674,7 +1674,9 @@ int pgp_send_menu(struct Header *msg)
   /* If autoinline and no crypto options set, then set inline. */
   if (option(OPT_PGP_AUTOINLINE) &&
       !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN | ENCRYPT))))
+  {
     msg->security |= INLINE;
+  }
 
   msg->security |= APPLICATION_PGP;
 
