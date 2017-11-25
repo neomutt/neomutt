@@ -1531,8 +1531,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         else if (i == MUTT_ABORT)
           break; /* abort */
-
-      /* fall through to postpone! */
+      /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
 

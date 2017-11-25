@@ -2451,7 +2451,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
           break;
         }
-      /* no previous search pattern, so fall through to search */
+      /* no previous search pattern */
+      /* fallthrough */
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
@@ -2947,7 +2948,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;

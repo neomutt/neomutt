@@ -1232,6 +1232,7 @@ int mutt_index_menu(void)
       case OP_GET_PARENT:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      /* fallthrough */
 
       case OP_GET_MESSAGE:
         CHECK_IN_MAILBOX;
@@ -3167,12 +3168,11 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_FOLLOWUP:
       case OP_FORWARD_TO_GROUP:
-
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      /* fallthrough */
 
       case OP_POST:
-
         CHECK_ATTACH;
         if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
             (mutt_str_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
@@ -3196,7 +3196,7 @@ int mutt_index_menu(void)
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
 
         CHECK_ATTACH;

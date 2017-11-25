@@ -1470,8 +1470,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #endif
         else
           mutt_file_concat_path(f, LastDir, state.entry[menu->current].name, flen);
-
-      /* Fall through to OP_EXIT */
+      /* fallthrough */
 
       case OP_EXIT:
 

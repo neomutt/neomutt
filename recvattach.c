@@ -232,8 +232,10 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
       else if (aptr->content->description ||
                (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
                 MessageFormat && aptr->content->hdr))
+      {
         break;
-    /* FALLS THROUGH TO 'F' */
+      }
+    /* fallthrough */
     case 'F':
       if (!optional)
       {
@@ -248,7 +250,7 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
         optional = 0;
         break;
       }
-    /* FALLS THROUGH TO 'f' */
+    /* fallthrough */
     case 'f':
       if (!optional)
       {
@@ -1359,8 +1361,8 @@ void mutt_view_attachments(struct Header *hdr)
         if (!CURATTACH->content->hdr->env->followup_to ||
             (mutt_str_strcasecmp(CURATTACH->content->hdr->env->followup_to,
                                  "poster") != 0) ||
-            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
-                             _("Reply by mail as poster prefers?")) != MUTT_YES)
+            (query_quadoption(OPT_FOLLOWUP_TO_POSTER,
+                              _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
           mutt_attach_reply(CURATTACH->fp, hdr, actx,
                             menu->tagprefix ? NULL : CURATTACH->content,
@@ -1369,7 +1371,7 @@ void mutt_view_attachments(struct Header *hdr)
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
       case OP_GROUP_REPLY:
       case OP_LIST_REPLY:

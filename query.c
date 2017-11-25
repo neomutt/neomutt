@@ -429,8 +429,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             done = 2;
             break;
           }
-        /* fall through to OP_MAIL */
-
+        /* fallthrough */
         case OP_MAIL:
           msg = mutt_new_header();
           msg->env = mutt_new_envelope();

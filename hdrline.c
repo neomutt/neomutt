@@ -506,7 +506,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           break;
         }
       }
-    /* fall through on failure */
+    /* fallthrough */
 
     case 'a':
       colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
@@ -538,7 +538,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         /* break if 'K' returns nothing */
         break;
       }
-    /* fall through if 'B' returns nothing */
+    /* if 'B' returns nothing */
+    /* fallthrough */
 
     case 'b':
       if (ctx)
