@@ -74,8 +74,10 @@ proc main {argv} {
 	set autosetup(options) {}
 	# optset is a dictionary of option values set by the user based on getopt
 	set autosetup(optset) {}
-	# optdefault is a dictionary of default values for options
+	# optdefault is a dictionary of default values
 	set autosetup(optdefault) {}
+	# options-defaults is a dictionary of overrides for default values for options
+	set autosetup(options-defaults) {}
 	set autosetup(optionhelp) {}
 	set autosetup(showhelp) 0
 
@@ -122,8 +124,8 @@ proc main {argv} {
 	}
 
 	# autosetup --conf=alternate-auto.def
-	if {[opt-val conf] ne ""} {
-		set autosetup(autodef) [lindex [opt-val conf] end]
+	if {[opt-str conf o]} {
+		set autosetup(autodef) $o
 	}
 
 	# Debugging output (set this early)
@@ -141,10 +143,10 @@ proc main {argv} {
 	# Now any auto-load modules
 	autosetup_load_auto_modules
 
-	if {[opt-val help] ne ""} {
+	if {[opt-str help o]} {
 		incr autosetup(showhelp)
 		use help
-		autosetup_help [lindex [opt-val help] end]
+		autosetup_help $o
 	}
 
 	if {[opt-bool licence license]} {
@@ -153,31 +155,31 @@ proc main {argv} {
 		exit 0
 	}
 
-	if {[opt-val {manual ref reference}] ne ""} {
+	if {[opt-str {manual ref reference} o]} {
 		use help
-		autosetup_reference [lindex [opt-val {manual ref reference}] end]
+		autosetup_reference $o
 	}
 
 	# Allow combining --install and --init
 	set earlyexit 0
-	if {[opt-val install] ne ""} {
+	if {[opt-str install o]} {
 		use install
-		autosetup_install [lindex [opt-val install] end]
+		autosetup_install $o
 		incr earlyexit
 	}
 
-	if {[opt-val init] ne ""} {
+	if {[opt-str init o]} {
 		use init
-		autosetup_init [lindex [opt-val init] end]
+		autosetup_init $o
 		incr earlyexit
 	}
 
 	if {$earlyexit} {
 		exit 0
 	}
-	if {[opt-val sysinstall] ne ""} {
+	if {[opt-str sysinstall o]} {
 		use install
-		autosetup_install [lindex [opt-val sysinstall] end] 1
+		autosetup_install $o 1
 		exit 0
 	}
 
@@ -266,11 +268,10 @@ proc opt-bool {args} {
 # Returns a list containing all the values given for the non-boolean options in '$optionlist'.
 # There will be one entry in the list for each option given by the user, including if the
 # same option was used multiple times.
-# If only a single value is required, use something like:
-#
-## lindex [opt-val $names] end
 #
 # If no options were set, '$default' is returned (exactly, not as a list).
+#
+# Note: For most use cases, 'opt-str' should be preferred.
 #
 proc opt-val {names {default ""}} {
 	option-check-names {*}$names
@@ -284,6 +285,79 @@ proc opt-val {names {default ""}} {
 		return $result
 	}
 	return $default
+}
+
+# @opt-str optionlist varname ?default?
+#
+# Sets '$varname' in the callers scope to the value for one of the given options.
+#
+# For the list of options given in '$optionlist', if any value is set for any option,
+# the option value is taken to be the *last* value of the last option (in the order given).
+#
+# If no option was given, and a default was specified with 'options-defaults',
+# that value is used.
+#
+# If no 'options-defaults' value was given and '$default' was given, it is used.
+#
+# If none of the above provided a value, no value is set.
+#
+# The return value depends on whether '$default' was specified.
+# If it was, the option value is returned.
+# If it was not, 1 is returns if a value was set, or 0 if not.
+#
+# Typical usage is as follows:
+#
+## if {[opt-str {myopt altname} o]} {
+##     do something with $o
+## }
+#
+# Or:
+## define myname [opt-str {myopt altname} o "/usr/local"]
+#
+proc opt-str {names varname args} {
+	global autosetup
+
+	option-check-names {*}$names
+	upvar $varname value
+
+	if {[llength $args]} {
+		# A default was given, so always return the string value of the option
+		set default [lindex $args 0]
+		set retopt 1
+	} else {
+		# No default, so return 0 or 1 to indicate if a value was found
+		set retopt 0
+	}
+
+	foreach opt $names {
+		if {[dict exists $::autosetup(optset) $opt]} {
+			set result [lindex [dict get $::autosetup(optset) $opt] end]
+		}
+	}
+
+	if {![info exists result]} {
+		# No user-specified value. Has options-defaults been set?
+		foreach opt $names {
+			if {[dict exists $::autosetup(options-defaults) $opt]} {
+				set result [dict get $autosetup(options-defaults) $opt]
+			}
+		}
+	}
+
+	if {[info exists result]} {
+		set value $result
+		if {$retopt} {
+			return $value
+		}
+		return 1
+	}
+
+	if {$retopt} {
+		set value $default
+		return $value
+	}
+
+	return 0
 }
 
 proc option-check-names {args} {
@@ -317,6 +391,7 @@ proc options-add {opts {header ""}} {
 			set header {}
 			continue
 		}
+		unset -nocomplain defaultvalue equal value
 
 		#puts "i=$i, opt=$opt"
 		regexp {^([^:=]*)(:)?(=)?(.*)$} $opt -> name colon equal value
@@ -335,6 +410,12 @@ proc options-add {opts {header ""}} {
 			# Boolean option
 			lappend autosetup(options) $name
 
+			# Check for override
+			if {[dict exists $autosetup(options-defaults) $name]} {
+				# A default was specified with options-defaults, so use it
+				set value [dict get $autosetup(options-defaults) $name]
+			}
+
 			if {$value eq "1"} {
 				set opthelp "--disable-$name"
 			} else {
@@ -345,7 +426,8 @@ proc options-add {opts {header ""}} {
 			if {$value eq ""} {
 				set value 0
 			}
-			dict set autosetup(optdefault) $name $value
+			set defaultvalue $value
+			dict set autosetup(optdefault) $name $defaultvalue
 
 			if {[dict exists $autosetup(getopt) $name]} {
 				# The option was specified by the user. Look at the last value.
@@ -367,6 +449,27 @@ proc options-add {opts {header ""}} {
 			# String option.
 			lappend autosetup(options) $name
 
+			if {$colon eq ":"} {
+				# Was ":name=default" given?
+				# If so, set $value to the display name and $defaultvalue to the default
+				# (This is the preferred way to set a default value for a string option)
+				if {[regexp {^([^=]+)=(.*)$} $value -> value defaultvalue]} {
+					dict set autosetup(optdefault) $name $defaultvalue
+				}
+			}
+
+			# Maybe override the default value
+			if {[dict exists $autosetup(options-defaults) $name]} {
+				# A default was specified with options-defaults, so use it
+				set defaultvalue [dict get $autosetup(options-defaults) $name]
+				dict set autosetup(optdefault) $name $defaultvalue
+			} elseif {![info exists defaultvalue]} {
+				# For backward compatiblity, if ":name" was given, use name as both
+				# the display text and the default value, but only if the user
+				# specified the option without the value
+				set defaultvalue $value
+			}
+
 			if {$equal eq "="} {
 				# String option with optional value
 				set opthelp "--$name?=$value?"
@@ -374,7 +477,6 @@ proc options-add {opts {header ""}} {
 				# String option with required value
 				set opthelp "--$name=$value"
 			}
-			dict set autosetup(optdefault) $name $value
 
 			# Get the values specified by the user
 			if {[dict exists $autosetup(getopt) $name]} {
@@ -387,7 +489,7 @@ proc options-add {opts {header ""}} {
 							user-error "Option --$name requires a value"
 						}
 						# If given as a boolean, use the default value
-						set setvalue $value
+						set setvalue $defaultvalue
 					}
 					lappend listvalue $setvalue
 				}
@@ -400,6 +502,9 @@ proc options-add {opts {header ""}} {
 		# Now create the help for this option if appropriate
 		if {[lindex $opts $i+1] eq "=>"} {
 			set desc [lindex $opts $i+2]
+			if {[info exists defaultvalue]} {
+				set desc [string map [list @default@ $defaultvalue] $desc]
+			}
 			#string match \n* $desc
 			if {$header ne ""} {
 				lappend autosetup(optionhelp) $header ""
@@ -490,7 +595,7 @@ proc options-show {} {
 # @options optionspec
 #
 # Specifies configuration-time options which may be selected by the user
-# and checked with 'opt-val' and 'opt-bool'. '$optionspec' contains a series
+# and checked with 'opt-str' and 'opt-bool'. '$optionspec' contains a series
 # of options specifications separated by newlines, as follows:
 #
 # A boolean option is of the form:
@@ -508,6 +613,9 @@ proc options-show {} {
 # If the 'name:value' form is used, the value must be provided with the option (as '--name=myvalue').
 # If the 'name:=value' form is used, the value is optional and the given value is used as the default
 # if it is not provided.
+#
+# The description may contain '@default@', in which case it will be replaced with the default
+# value for the option (taking into account defaults specified with 'options-defaults'.
 #
 # Undocumented options are also supported by omitting the '=> description'.
 # These options are not displayed with '--help' and can be useful for internal options or as aliases.
@@ -532,6 +640,17 @@ proc options {optlist} {
 				user-error "Unknown option --$o"
 			}
 		}
+	}
+}
+
+# @options-defaults dictionary
+#
+# Specifies a dictionary of options and a new default value for each of those options.
+# Use before any 'use' statements in 'auto.def' to change the defaults for
+# subsequently included modules.
+proc options-defaults {dict} {
+	foreach {n v} $dict {
+		dict set ::autosetup(options-defaults) $n $v
 	}
 }
 
@@ -1576,7 +1695,7 @@ proc autosetup_install {dir {shared 0}} {
 		if {$autosetup(installed) || $autosetup(sysinstall)} {
 			user-error "Can only --sysinstall from development sources"
 		}
-	} elseif {$autosetup(installed)} {
+	} elseif {$autosetup(installed) && !$autosetup(sysinstall)} {
 		user-error "Can't --install from project install"
 	}
 
