@@ -106,7 +106,9 @@ static int tunnel_socket_open(struct Connection *conn)
     devnull = open("/dev/null", O_RDWR);
     if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
         dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
+    {
       _exit(127);
+    }
     close(pin[0]);
     close(pin[1]);
     close(pout[0]);

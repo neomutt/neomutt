@@ -510,7 +510,9 @@ void mutt_pipe_message(struct Header *h)
   buffer[0] = '\0';
   if (mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0 ||
       !buffer[0])
+  {
     return;
+  }
 
   mutt_expand_path(buffer, sizeof(buffer));
   pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
@@ -906,7 +908,8 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
           continue;
 
         mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-        if ((rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx) != 0))
+        rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx);
+        if (rc != 0)
           break;
 #ifdef USE_COMPRESSED
         if (cm)

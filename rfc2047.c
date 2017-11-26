@@ -390,7 +390,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   int utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
 
   n = dlen;
-  for (;;)
+  while (true)
   {
     assert(d + n > d);
     nn = try_block(d, n, fromcode, tocode, encoder, wlen);
@@ -516,7 +516,9 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
         t++;
     if (!try_block(t0, t - t0, icode, tocode, &encoder, &wlen) &&
         col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
+    {
       break;
+    }
   }
 
   /* Adjust t1 until we can encode a character before a space. */
@@ -530,7 +532,9 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
         t--;
     if (!try_block(t, t1 - t, icode, tocode, &encoder, &wlen) &&
         1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
+    {
       break;
+    }
   }
 
   /* We shall encode the region [t0,t1). */
@@ -544,7 +548,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   col += t0 - u;
 
   t = t0;
-  for (;;)
+  while (true)
   {
     /* Find how much we can encode. */
     n = choose_block(t, t1 - t, col, icode, tocode, &encoder, &wlen);
@@ -909,7 +913,9 @@ void rfc2047_decode_adrlist(struct Address *a)
   {
     if (a->personal &&
         ((strstr(a->personal, "=?") != NULL) || (AssumedCharset && *AssumedCharset)))
+    {
       rfc2047_decode(&a->personal);
+    }
     else if (a->group && a->mailbox && (strstr(a->mailbox, "=?") != NULL))
       rfc2047_decode(&a->mailbox);
     a = a->next;

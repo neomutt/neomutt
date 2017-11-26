@@ -222,7 +222,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         if (!(*is_subkey && option(OPT_PGP_IGNORE_SUBKEYS)) &&
             mutt_str_atos(p, &tmp.keylen) < 0)
+        {
           goto bail;
+        }
         break;
       }
       case 4: /* pubkey algo */

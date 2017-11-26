@@ -1200,7 +1200,9 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
         mutt_add_to_regex_list(&UnAlternates, buf->data, REG_ICASE, err) != 0)
+    {
       return -1;
+    }
 
   } while (MoreArgs(s));
 
@@ -1490,10 +1492,14 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
         case GS_RX:
           if (data == MUTT_GROUP &&
               mutt_group_context_add_regex(gc, buf->data, REG_ICASE, err) != 0)
+          {
             goto bail;
+          }
           else if (data == MUTT_UNGROUP &&
                    mutt_group_context_remove_regex(gc, buf->data) < 0)
+          {
             goto bail;
+          }
           break;
 
         case GS_ADDR:
@@ -1785,7 +1791,9 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s,
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
         mutt_add_to_regex_list(&UnMailLists, buf->data, REG_ICASE, err) != 0)
+    {
       return -1;
+    }
   } while (MoreArgs(s));
 
   return 0;
@@ -1832,7 +1840,9 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
 
     if ((mutt_str_strcmp(buf->data, "*") != 0) &&
         mutt_add_to_regex_list(&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
+    {
       return -1;
+    }
   } while (MoreArgs(s));
 
   return 0;
@@ -2011,7 +2021,8 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   char *p = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
-  if ((p = strpbrk(buf->data, ": \t")) == NULL || *p != ':')
+  p = strpbrk(buf->data, ": \t");
+  if (!p || (*p != ':'))
   {
     mutt_str_strfcpy(err->data, _("invalid header field"), err->dsize);
     return -1;
@@ -4221,7 +4232,9 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   /* Do we have a locale definition? */
   if (((p = getenv("LC_ALL")) != NULL && p[0]) || ((p = getenv("LANG")) != NULL && p[0]) ||
       ((p = getenv("LC_CTYPE")) != NULL && p[0]))
+  {
     OPT_LOCALES = true;
+  }
 #endif
 
 #ifdef HAVE_GETSID

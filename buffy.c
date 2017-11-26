@@ -444,7 +444,9 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
 #ifdef USE_SIDEBAR
   if ((orig_new != tmp->new) || (orig_count != tmp->msg_count) ||
       (orig_unread != tmp->msg_unread) || (orig_flagged != tmp->msg_flagged))
+  {
     mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+  }
 #endif
 
   if (!tmp->new)
@@ -518,7 +520,9 @@ struct Buffy *mutt_find_mailbox(const char *path)
   {
     if (stat(b->path, &tmp_sb) == 0 && sb.st_dev == tmp_sb.st_dev &&
         sb.st_ino == tmp_sb.st_ino)
+    {
       return b;
+    }
   }
   return NULL;
 }
@@ -766,7 +770,9 @@ int mutt_buffy_list(void)
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
         (pos + strlen(path) >= (size_t) MuttMessageWindow->cols - 7))
+    {
       break;
+    }
 
     if (!first)
       pos += strlen(strncat(buffylist + pos, ", ", sizeof(buffylist) - 1 - pos));

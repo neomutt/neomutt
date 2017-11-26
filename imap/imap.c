@@ -1062,7 +1062,9 @@ int imap_open_connection(struct ImapData *idata)
   {
     if ((mutt_str_strncasecmp("* OK [CAPABILITY", idata->buf, 16) != 0) &&
         check_capabilities(idata))
+    {
       goto bail;
+    }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
     if (!idata->conn->ssf &&
@@ -1074,7 +1076,9 @@ int imap_open_connection(struct ImapData *idata)
         rc = MUTT_YES;
       else if ((rc = query_quadoption(OPT_SSL_STARTTLS,
                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
+      {
         goto err_close_conn;
+      }
       if (rc == MUTT_YES)
       {
         rc = imap_exec(idata, "STARTTLS", IMAP_CMD_FAIL_OK);
@@ -1435,7 +1439,9 @@ int imap_check(struct ImapData *idata, int force)
 
   if ((force || (idata->state != IMAP_IDLE && time(NULL) >= idata->lastread + Timeout)) &&
       imap_exec(idata, "NOOP", IMAP_CMD_POLL) != 0)
+  {
     return -1;
+  }
 
   /* We call this even when we haven't run NOOP in case we have pending
    * changes to process, since we can reopen here. */
@@ -2088,7 +2094,9 @@ static int imap_open_mailbox(struct Context *ctx)
   pmx.mbox = NULL;
   if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
       mutt_account_match(&pmx.account, &mx.account))
+  {
     imap_status(Postponed, 1);
+  }
   FREE(&pmx.mbox);
 
   snprintf(bufout, sizeof(bufout), "%s %s",

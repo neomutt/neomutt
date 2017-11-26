@@ -835,17 +835,21 @@ void smime_getkeys(struct Envelope *env)
   }
 
   for (t = env->to; !found && t; t = t->next)
+  {
     if (mutt_addr_is_user(t))
     {
       found = true;
       getkeys(t->mailbox);
     }
+  }
   for (t = env->cc; !found && t; t = t->next)
+  {
     if (mutt_addr_is_user(t))
     {
       found = true;
       getkeys(t->mailbox);
     }
+  }
   if (!found && (t = mutt_default_from()))
   {
     getkeys(t->mailbox);
@@ -2131,9 +2135,10 @@ int smime_send_menu(struct Header *msg)
               }
               break;
 
-            case 4: /* (c)lear */
+            case 4:
               FREE(&SmimeEncryptWith);
-            /* fallback */
+            /* (c)lear */
+            /* fallthrough */
             case -1: /* Ctrl-G or Enter */
               choice = 0;
               break;

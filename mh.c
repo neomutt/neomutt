@@ -249,7 +249,9 @@ static int mh_sequences_changed(struct Buffy *b)
 
   if ((snprintf(path, sizeof(path), "%s/.mh_sequences", b->path) < sizeof(path)) &&
       (stat(path, &sb) == 0))
+  {
     return (sb.st_mtime > b->last_visited);
+  }
   return -1;
 }
 
@@ -268,7 +270,9 @@ static int mh_already_notified(struct Buffy *b, int msgno)
 
   if ((snprintf(path, sizeof(path), "%s/%d", b->path, msgno) < sizeof(path)) &&
       (stat(path, &sb) == 0))
+  {
     return (sb.st_mtime <= b->last_visited);
+  }
   return -1;
 }
 
@@ -698,7 +702,8 @@ void maildir_parse_flags(struct Header *h, const char *path)
   h->read = false;
   h->replied = false;
 
-  if ((p = strrchr(path, ':')) != NULL && (mutt_str_strncmp(p + 1, "2,", 2) == 0))
+  p = strrchr(path, ':');
+  if (p && (mutt_str_strncmp(p + 1, "2,", 2) == 0))
   {
     p += 3;
 
@@ -858,7 +863,9 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
   {
     if ((ctx->magic == MUTT_MH && !mh_valid_message(de->d_name)) ||
         (ctx->magic == MUTT_MAILDIR && *de->d_name == '.'))
+    {
       continue;
+    }
 
     /* FOO - really ignore the return value? */
     mutt_debug(2, "%s:%d: queueing %s\n", __FILE__, __LINE__, de->d_name);
@@ -1829,8 +1836,10 @@ static int mh_sync_message(struct Context *ctx, int msgno)
 
   if (h->attach_del || h->xlabel_changed ||
       (h->env && (h->env->refs_changed || h->env->irt_changed)))
+  {
     if (mh_rewrite_message(ctx, msgno) != 0)
       return -1;
+  }
 
   return 0;
 }
@@ -2211,7 +2220,8 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
 
   /* create .mh_sequences when there isn't one. */
   snprintf(buf, sizeof(buf), "%s/.mh_sequences", ctx->path);
-  if ((i = stat(buf, &st_cur)) == -1 && errno == ENOENT)
+  i = stat(buf, &st_cur);
+  if ((i == -1) && (errno == ENOENT))
   {
     char *tmp = NULL;
     FILE *fp = NULL;

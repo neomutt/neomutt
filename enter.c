@@ -195,7 +195,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
   else
     hclass = HC_OTHER;
 
-  for (;;)
+  while (true)
   {
     if (redraw && !pass)
     {
@@ -209,9 +209,11 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
       }
       if (state->curpos < state->begin ||
           mutt_mb_wcswidth(state->wbuf + state->begin, state->curpos - state->begin) >= width)
+      {
         state->begin = mutt_mb_width_ceiling(
             state->wbuf, state->lastchar,
             mutt_mb_wcswidth(state->wbuf, state->curpos) - width / 2);
+      }
       mutt_window_move(MuttMessageWindow, 0, col);
       w = 0;
       for (i = state->begin; i < state->lastchar; i++)
@@ -455,8 +457,10 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             break;
           }
           else if (!(flags & MUTT_FILE))
+          {
             goto self_insert;
-        /* fall through to completion routine (MUTT_FILE) */
+          }
+        /* fallthrough */
 
         case OP_EDITOR_COMPLETE:
         case OP_EDITOR_COMPLETE_QUERY:

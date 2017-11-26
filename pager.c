@@ -895,7 +895,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
     /* don't consider line endings part of the buffer
      * for regex matching */
-    if ((nl = mutt_str_strlen(buf)) > 0 && buf[nl - 1] == '\n')
+    nl = mutt_str_strlen(buf);
+    if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = 0;
 
     i = 0;
@@ -2400,7 +2401,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i < rd.last_line)
@@ -2421,7 +2424,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || (rd.has_types && rd.line_info[i].type != MT_COLOR_QUOTED)) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i >= 0)
@@ -2446,7 +2451,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
           break;
         }
-      /* no previous search pattern, so fall through to search */
+      /* no previous search pattern */
+      /* fallthrough */
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
@@ -2527,7 +2533,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i < rd.last_line)
@@ -2540,7 +2548,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i >= 0)
@@ -2889,7 +2899,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        {
           break;
+        }
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -2899,7 +2911,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        {
           break;
+        }
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS);
         else
@@ -2922,7 +2936,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+          {
             break;
+          }
           if (IsMsgAttach(extra))
             mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
                               SENDNEWS | SENDREPLY);
@@ -2932,7 +2948,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;

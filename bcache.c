@@ -253,7 +253,9 @@ int mutt_bcache_list(struct BodyCache *bcache,
   {
     if ((mutt_str_strncmp(de->d_name, ".", 1) == 0) ||
         (mutt_str_strncmp(de->d_name, "..", 2) == 0))
+    {
       continue;
+    }
 
     mutt_debug(3, "bcache: list: dir: '%s', id :'%s'\n", bcache->path, de->d_name);
 

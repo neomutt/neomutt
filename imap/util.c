@@ -508,7 +508,9 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     mx2 = "INBOX";
   if ((mutt_str_strcasecmp(mx1, "INBOX") == 0) &&
       (mutt_str_strcasecmp(mx2, "INBOX") == 0))
+  {
     return 0;
+  }
 
   b1 = mutt_mem_malloc(strlen(mx1) + 1);
   b2 = mutt_mem_malloc(strlen(mx2) + 1);

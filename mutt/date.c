@@ -156,9 +156,13 @@ static time_t compute_tz(time_t g, struct tm *utc)
     /* This code is optimized to negative timezones (West of Greenwich) */
     if ((yday == -1) || /* UTC passed midnight before localtime */
         (yday > 1))     /* UTC passed new year before localtime */
+    {
       t -= (24 * 60 * 60);
+    }
     else
+    {
       t += (24 * 60 * 60);
+    }
   }
 
   return t;
@@ -264,7 +268,9 @@ time_t mutt_date_make_time(struct tm *t, int local)
     return TIME_T_MIN;
   if ((t->tm_hour < 0) || (t->tm_hour > 23) || (t->tm_min < 0) ||
       (t->tm_min > 59) || (t->tm_sec < 0) || (t->tm_sec > 60))
+  {
     return TIME_T_MIN;
+  }
   if (t->tm_year > 9999)
     return TIME_T_MAX;
 

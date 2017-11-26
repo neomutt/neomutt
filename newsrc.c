@@ -273,7 +273,9 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
 
       if (sscanf(b, ANUM, &nntp_data->newsrc_ent[j].first) == 1 &&
           sscanf(h, ANUM, &nntp_data->newsrc_ent[j].last) == 1)
+      {
         j++;
+      }
     }
     if (j == 0)
     {

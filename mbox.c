@@ -565,7 +565,9 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   {
     if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
         (mutt_str_strcmp(a->personal, b->personal) != 0))
+    {
       return 0;
+    }
 
     a = a->next;
     b = b->next;
@@ -612,7 +614,9 @@ static int strict_cmp_parameters(const struct Parameter *p1, const struct Parame
   {
     if ((mutt_str_strcmp(p1->attribute, p2->attribute) != 0) ||
         (mutt_str_strcmp(p1->value, p2->value) != 0))
+    {
       return 0;
+    }
 
     p1 = p1->next;
     p2 = p2->next;
@@ -994,7 +998,9 @@ void mbox_reset_atime(struct Context *ctx, struct stat *st)
    */
   if (!option(OPT_MAIL_CHECK_RECENT) && utimebuf.actime >= utimebuf.modtime &&
       mbox_has_new(ctx))
+  {
     utimebuf.actime = utimebuf.modtime - 1;
+  }
 
   utime(ctx->path, &utimebuf);
 }
@@ -1052,7 +1058,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  if ((i = mbox_check_mailbox(ctx, index_hint)) == MUTT_NEW_MAIL || i == MUTT_REOPENED)
+  i = mbox_check_mailbox(ctx, index_hint);
+  if ((i == MUTT_NEW_MAIL) || (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
     need_sort = i;
@@ -1065,8 +1072,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  if ((i = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1 ||
-      (fp = fdopen(i, "w")) == NULL)
+  i = open(tempfile, O_WRONLY | O_EXCL | O_CREAT, 0600);
+  if ((i == -1) || (fp = fdopen(i, "w")) == NULL)
   {
     if (-1 != i)
     {

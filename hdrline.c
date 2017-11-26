@@ -82,7 +82,9 @@ bool mutt_is_subscribed_list(struct Address *addr)
 {
   if (!mutt_match_regex_list(addr->mailbox, UnMailLists) &&
       !mutt_match_regex_list(addr->mailbox, UnSubscribedLists))
+  {
     return mutt_match_regex_list(addr->mailbox, SubscribedLists);
+  }
   return false;
 }
 
@@ -504,7 +506,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           break;
         }
       }
-    /* fall through on failure */
+    /* fallthrough */
 
     case 'a':
       colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
@@ -520,7 +522,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'K':
       if (!first_mailing_list(dest, destlen, hdr->env->to) &&
           !first_mailing_list(dest, destlen, hdr->env->cc))
+      {
         dest[0] = 0;
+      }
       if (dest[0])
       {
         mutt_str_strfcpy(buf2, dest, sizeof(buf2));
@@ -534,7 +538,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         /* break if 'K' returns nothing */
         break;
       }
-    /* fall through if 'B' returns nothing */
+    /* if 'B' returns nothing */
+    /* fallthrough */
 
     case 'b':
       if (ctx)

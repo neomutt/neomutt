@@ -1047,7 +1047,8 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     {
       if (pat->op == MUTT_HEADER)
       {
-        if (*(buf = mutt_read_rfc822_line(fp, buf, &blen)) == '\0')
+        buf = mutt_read_rfc822_line(fp, buf, &blen);
+        if (*buf == '\0')
           break;
       }
       else if (fgets(buf, blen - 1, fp) == NULL)
@@ -1474,10 +1475,14 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
     return a;
   if (right && t->parent &&
       (a = match_threadcomplete(pat, flags, ctx, t->next, 0, 0, 1, 1)))
+  {
     return a;
+  }
   if (left && t->parent &&
       (a = match_threadcomplete(pat, flags, ctx, t->prev, 1, 0, 0, 1)))
+  {
     return a;
+  }
   if (down && (a = match_threadcomplete(pat, flags, ctx, t->child, 1, 0, 1, 1)))
     return a;
   return 0;
@@ -1824,7 +1829,9 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     /* convert old tokens into the new format */
     if ((mutt_str_strcasecmp("all", s) == 0) || (mutt_str_strcmp("^", s) == 0) ||
         (mutt_str_strcmp(".", s) == 0)) /* ~A is more efficient */
+    {
       mutt_str_strfcpy(s, "~A", len);
+    }
     else if (mutt_str_strcasecmp("del", s) == 0)
       mutt_str_strfcpy(s, "~D", len);
     else if (mutt_str_strcasecmp("flag", s) == 0)
@@ -1987,6 +1994,7 @@ int mutt_pattern_func(int op, char *prompt)
         {
           case MUTT_UNDELETE:
             mutt_set_flag(Context, Context->hdrs[Context->v2r[i]], MUTT_PURGE, 0);
+          /* fallthrough */
           case MUTT_DELETE:
             mutt_set_flag(Context, Context->hdrs[Context->v2r[i]], MUTT_DELETE,
                           (op == MUTT_DELETE));

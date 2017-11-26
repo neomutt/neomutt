@@ -1268,7 +1268,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
         if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && buf[0])
         {
-          if ((i = mutt_check_encoding(buf)) != ENCOTHER && i != ENCUUENCODED)
+          i = mutt_check_encoding(buf);
+          if ((i != ENCOTHER) && (i != ENCUUENCODED))
           {
             CURATTACH->content->encoding = i;
             menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
@@ -1407,7 +1408,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         fname[0] = 0;
         if (mutt_get_field(_("New file: "), fname, sizeof(fname), MUTT_FILE) != 0 ||
             !fname[0])
+        {
           continue;
+        }
         mutt_expand_path(fname, sizeof(fname));
 
         /* Call to lookup_mime_type () ?  maybe later */
@@ -1528,8 +1531,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         else if (i == MUTT_ABORT)
           break; /* abort */
-
-      /* fall through to postpone! */
+      /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
 

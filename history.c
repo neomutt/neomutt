@@ -232,12 +232,16 @@ static void shrink_histfile(void)
   }
 
   if (!regen_file)
+  {
     for (hclass = HC_FIRST; hclass < HC_LAST; hclass++)
+    {
       if (n[hclass] > SaveHistory)
       {
         regen_file = true;
         break;
       }
+    }
+  }
 
   if (regen_file)
   {
@@ -263,7 +267,9 @@ static void shrink_histfile(void)
       *p = '\0';
       if (option(OPT_HISTORY_REMOVE_DUPS) &&
           (dup_hash_dec(dup_hashes[hclass], linebuf + read) > 0))
+      {
         continue;
+      }
       *p = '|';
       if (n[hclass]-- <= SaveHistory)
         fprintf(tmp, "%s\n", linebuf);

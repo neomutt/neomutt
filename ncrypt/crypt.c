@@ -317,7 +317,9 @@ int mutt_is_multipart_signed(struct Body *b)
 
   if (!b || !(b->type == TYPEMULTIPART) || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "signed") != 0))
+  {
     return 0;
+  }
 
   p = mutt_get_parameter("protocol", b->parameter);
   if (!p)
@@ -328,14 +330,20 @@ int mutt_is_multipart_signed(struct Body *b)
 
   if ((WithCrypto & APPLICATION_PGP) &&
       !(mutt_str_strcasecmp(p, "application/pgp-signature") != 0))
+  {
     return PGPSIGN;
+  }
 
   if ((WithCrypto & APPLICATION_SMIME) &&
       !(mutt_str_strcasecmp(p, "application/x-pkcs7-signature") != 0))
+  {
     return SMIMESIGN;
+  }
   if ((WithCrypto & APPLICATION_SMIME) &&
       !(mutt_str_strcasecmp(p, "application/pkcs7-signature") != 0))
+  {
     return SMIMESIGN;
+  }
 
   return 0;
 }
@@ -366,12 +374,16 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
   b = b->parts;
   if (!b || b->type != TYPEAPPLICATION || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "pgp-encrypted") != 0))
+  {
     return 0;
+  }
 
   b = b->next;
   if (!b || b->type != TYPEAPPLICATION || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "octet-stream") != 0))
+  {
     return 0;
+  }
 
   return PGPENCRYPT;
 }
@@ -396,22 +408,30 @@ int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 
   if (!b || b->type != TYPEMULTIPART || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "mixed") != 0))
+  {
     return 0;
+  }
 
   b = b->parts;
   if (!b || b->type != TYPETEXT || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "plain") != 0) || b->length != 0)
+  {
     return 0;
+  }
 
   b = b->next;
   if (!b || b->type != TYPEAPPLICATION || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "pgp-encrypted") != 0))
+  {
     return 0;
+  }
 
   b = b->next;
   if (!b || b->type != TYPEAPPLICATION || !b->subtype ||
       (mutt_str_strcasecmp(b->subtype, "octet-stream") != 0))
+  {
     return 0;
+  }
 
   b = b->next;
   if (b)
@@ -437,7 +457,9 @@ int mutt_is_application_pgp(struct Body *m)
 
       if ((p = mutt_get_parameter("format", m->parameter)) &&
           (mutt_str_strcasecmp(p, "keys-only") == 0))
+      {
         t |= PGPKEY;
+      }
 
       if (!t)
         t |= PGPENCRYPT; /* not necessarily correct, but... */
@@ -681,7 +703,9 @@ void convert_to_7bit(struct Body *a)
       a->encoding = ENCBASE64;
     else if (a->content && a->encoding != ENCBASE64 &&
              (a->content->from || (a->content->space && option(OPT_PGP_STRICT_ENC))))
+    {
       a->encoding = ENCQUOTEDPRINTABLE;
+    }
     a = a->next;
   }
 }
@@ -964,18 +988,24 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       case SIGN:
         if (a->next->type != TYPEMULTIPART ||
             (mutt_str_strcasecmp(a->next->subtype, "mixed") != 0))
+        {
           inconsistent = true;
+        }
         break;
       case PGPSIGN:
         if (a->next->type != TYPEAPPLICATION ||
             (mutt_str_strcasecmp(a->next->subtype, "pgp-signature") != 0))
+        {
           inconsistent = true;
+        }
         break;
       case SMIMESIGN:
         if (a->next->type != TYPEAPPLICATION ||
             ((mutt_str_strcasecmp(a->next->subtype, "x-pkcs7-signature") != 0) &&
              (mutt_str_strcasecmp(a->next->subtype, "pkcs7-signature") != 0)))
+        {
           inconsistent = true;
+        }
         break;
       default:
         inconsistent = true;

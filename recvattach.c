@@ -179,13 +179,17 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
       {
         if (mutt_is_text_part(aptr->content) &&
             mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+        {
           mutt_format_s(dest, destlen, prefix, charset);
+        }
         else
           mutt_format_s(dest, destlen, prefix, "");
       }
       else if (!mutt_is_text_part(aptr->content) ||
                !mutt_get_body_charset(charset, sizeof(charset), aptr->content))
+      {
         optional = 0;
+      }
       break;
     case 'c':
       /* XXX */
@@ -228,8 +232,10 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
       else if (aptr->content->description ||
                (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
                 MessageFormat && aptr->content->hdr))
+      {
         break;
-    /* FALLS THROUGH TO 'F' */
+      }
+    /* fallthrough */
     case 'F':
       if (!optional)
       {
@@ -244,7 +250,7 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
         optional = 0;
         break;
       }
-    /* FALLS THROUGH TO 'f' */
+    /* fallthrough */
     case 'f':
       if (!optional)
       {
@@ -445,7 +451,9 @@ static int query_save_attachment(FILE *fp, struct Body *body,
   }
   else if (body->hdr && body->encoding != ENCBASE64 && body->encoding != ENCQUOTEDPRINTABLE &&
            mutt_is_message_type(body->type, body->subtype))
+  {
     mutt_default_save(buf, sizeof(buf), body->hdr);
+  }
   else
     buf[0] = 0;
 
@@ -541,7 +549,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) != 0 ||
               !buf[0])
+          {
             return;
+          }
           mutt_expand_path(buf, sizeof(buf));
           if (mutt_check_overwrite(top->filename, buf, tfile, sizeof(tfile), &append, NULL))
             return;
@@ -763,7 +773,9 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       {
         if ((mutt_str_strcasecmp("text/plain", top->subtype) == 0) ||
             (mutt_str_strcasecmp("application/postscript", top->subtype) == 0))
+        {
           pipe_attachment(fp, top, state);
+        }
         else if (mutt_can_decode(top))
         {
           /* decode and print */
@@ -1093,9 +1105,13 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
   {
     if (option(OPT_DIGEST_COLLAPSE) && actx->idx[rindex]->content->type == TYPEMULTIPART &&
         !mutt_str_strcasecmp(actx->idx[rindex]->content->subtype, "digest"))
+    {
       actx->idx[rindex]->content->collapsed = true;
+    }
     else
+    {
       actx->idx[rindex]->content->collapsed = false;
+    }
     rindex++;
   }
 }
@@ -1345,8 +1361,8 @@ void mutt_view_attachments(struct Header *hdr)
         if (!CURATTACH->content->hdr->env->followup_to ||
             (mutt_str_strcasecmp(CURATTACH->content->hdr->env->followup_to,
                                  "poster") != 0) ||
-            query_quadoption(OPT_FOLLOWUP_TO_POSTER,
-                             _("Reply by mail as poster prefers?")) != MUTT_YES)
+            (query_quadoption(OPT_FOLLOWUP_TO_POSTER,
+                              _("Reply by mail as poster prefers?")) != MUTT_YES))
         {
           mutt_attach_reply(CURATTACH->fp, hdr, actx,
                             menu->tagprefix ? NULL : CURATTACH->content,
@@ -1355,7 +1371,7 @@ void mutt_view_attachments(struct Header *hdr)
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
       case OP_GROUP_REPLY:
       case OP_LIST_REPLY:

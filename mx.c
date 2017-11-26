@@ -602,7 +602,9 @@ static int trash_append(struct Context *ctx)
 
   if (lstat(ctx->path, &stc) == 0 && stc.st_ino == st.st_ino &&
       stc.st_dev == st.st_dev && stc.st_rdev == st.st_rdev)
+  {
     return 0; /* we are in the trash folder: simple sync */
+  }
 
 #ifdef USE_IMAP
   if (Context->magic == MUTT_IMAP && mx_is_imap(Trash))
@@ -616,6 +618,7 @@ static int trash_append(struct Context *ctx)
   {
     /* continue from initial scan above */
     for (; i < ctx->msgcount; i++)
+    {
       if (ctx->hdrs[i]->deleted && (!ctx->hdrs[i]->purge))
       {
         if (mutt_append_message(&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
@@ -624,6 +627,7 @@ static int trash_append(struct Context *ctx)
           return -1;
         }
       }
+    }
 
     mx_close_mailbox(&ctx_trash, NULL);
   }
@@ -683,7 +687,9 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   {
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read &&
         !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
+    {
       read_msgs++;
+    }
   }
 
 #ifdef USE_NNTP
@@ -760,11 +766,17 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)
+      {
         if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted &&
             !(ctx->hdrs[i]->flagged && option(OPT_KEEP_FLAGGED)))
+        {
           ctx->hdrs[i]->tagged = true;
+        }
         else
+        {
           ctx->hdrs[i]->tagged = false;
+        }
+      }
 
       i = imap_copy_messages(ctx, NULL, mbox, 1);
     }
@@ -873,7 +885,9 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
   if (ctx->msgcount == ctx->deleted && (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
       !mutt_is_spool(ctx->path) && !option(OPT_SAVE_EMPTY))
+  {
     mutt_file_unlink_empty(ctx->path);
+  }
 
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)

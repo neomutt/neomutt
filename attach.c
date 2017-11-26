@@ -388,7 +388,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
   is_message = mutt_is_message_type(a->type, a->subtype);
   if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
       !crypt_valid_passphrase(a->hdr->security))
+  {
     return rc;
+  }
   use_mailcap =
       (flag == MUTT_MAILCAP || (flag == MUTT_REGULAR && mutt_needs_mailcap(a)));
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
@@ -806,9 +808,13 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       chflags |= (ctx.magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if (mutt_copy_message_fp(msg->fp, fp, hn, 0, chflags) == 0 &&
           mx_commit_message(msg, &ctx) == 0)
+      {
         r = 0;
+      }
       else
+      {
         r = -1;
+      }
 
       mx_close_message(&ctx, &msg);
       mx_close_mailbox(&ctx, NULL);

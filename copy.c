@@ -217,24 +217,34 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       /* note: CH_FROM takes precedence over header weeding. */
       if (!((flags & CH_FROM) && (flags & CH_FORCE_FROM) && this_is_from) &&
           (flags & CH_WEED) && mutt_matches_ignore(buf))
+      {
         continue;
+      }
       if ((flags & CH_WEED_DELIVERED) &&
           (mutt_str_strncasecmp("Delivered-To:", buf, 13) == 0))
+      {
         continue;
+      }
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
           ((mutt_str_strncasecmp("Status:", buf, 7) == 0) ||
            (mutt_str_strncasecmp("X-Status:", buf, 9) == 0)))
+      {
         continue;
+      }
       if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
           ((mutt_str_strncasecmp("Content-Length:", buf, 15) == 0) ||
            (mutt_str_strncasecmp("Lines:", buf, 6) == 0)))
+      {
         continue;
+      }
       if ((flags & CH_MIME) &&
           (((mutt_str_strncasecmp("content-", buf, 8) == 0) &&
             ((mutt_str_strncasecmp("transfer-encoding:", buf + 8, 18) == 0) ||
              (mutt_str_strncasecmp("type:", buf + 8, 5) == 0))) ||
            (mutt_str_strncasecmp("mime-version:", buf, 13) == 0)))
+      {
         continue;
+      }
       if ((flags & CH_UPDATE_REFS) && (mutt_str_strncasecmp("References:", buf, 11) == 0))
         continue;
       if ((flags & CH_UPDATE_IRT) && (mutt_str_strncasecmp("In-Reply-To:", buf, 12) == 0))
@@ -758,8 +768,8 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  if ((r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags)) == 0 &&
-      (ferror(fpout) || feof(fpout)))
+  r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
+  if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "mutt_copy_message failed to detect EOF!\n");
     r = -1;

@@ -697,7 +697,9 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     /* send the recipient list */
     if ((ret = smtp_rcpt_to(conn, to)) || (ret = smtp_rcpt_to(conn, cc)) ||
         (ret = smtp_rcpt_to(conn, bcc)))
+    {
       break;
+    }
 
     /* send the message data */
     if ((ret = smtp_data(conn, msgfile)))

@@ -193,10 +193,14 @@ static int query_search(struct Menu *m, regex_t *re, int n)
   {
     if (table[n].data->addr->personal &&
         !regexec(re, table[n].data->addr->personal, 0, NULL, 0))
+    {
       return 0;
+    }
     if (table[n].data->addr->mailbox &&
         !regexec(re, table[n].data->addr->mailbox, 0, NULL, 0))
+    {
       return 0;
+    }
   }
 
   return REG_NOMATCH;
@@ -399,12 +403,14 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             struct Address *naddr = NULL;
 
             for (i = 0; i < menu->max; i++)
+            {
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
                 rfc822_append(&naddr, a, 0);
                 rfc822_free_address(&a);
               }
+            }
 
             mutt_create_alias(NULL, naddr);
             rfc822_free_address(&naddr);
@@ -423,8 +429,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             done = 2;
             break;
           }
-        /* fall through to OP_MAIL */
-
+        /* fallthrough */
         case OP_MAIL:
           msg = mutt_new_header();
           msg->env = mutt_new_envelope();

@@ -345,7 +345,9 @@ int pop_authenticate(struct PopData *pop_data)
 
   if ((mutt_account_getuser(acct) < 0) || (acct->user[0] == '\0') ||
       (mutt_account_getpass(acct) < 0) || (acct->pass[0] == '\0'))
+  {
     return -3;
+  }
 
   if (PopAuthenticators && *PopAuthenticators)
   {
@@ -421,7 +423,9 @@ int pop_authenticate(struct PopData *pop_data)
         attempts++;
       if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
           (ret == POP_A_FAILURE && !option(OPT_POP_AUTH_TRY_ALL)))
+      {
         break;
+      }
 
       authenticator++;
     }

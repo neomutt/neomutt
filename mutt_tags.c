@@ -160,7 +160,9 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
 
     if (p && ((p == HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
         ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
+    {
       np->hidden = true;
+    }
   }
 
   STAILQ_INSERT_TAIL(head, np, entries);

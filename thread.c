@@ -226,7 +226,9 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
     {
       if (!tree->visible && tree->deep && tree->subtree_visible < 2 &&
           ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
+      {
         tree->deep = false;
+      }
       if (!tree->deep && tree->child && tree->subtree_visible)
         tree = tree->child;
       else if (tree->next)

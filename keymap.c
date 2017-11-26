@@ -356,7 +356,9 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
   {
     if ((mutt_str_strncasecmp(start, bindings[i].name, len) == 0) &&
         mutt_str_strlen(bindings[i].name) == len)
+    {
       return bindings[i].op;
+    }
   }
 
   return OP_NULL;
@@ -1216,7 +1218,8 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data,
     mutt_extract_token(buf, s, 0);
     function = buf->data;
 
-    if ((bindings = km_get_table(CurrentMenu)) == NULL && CurrentMenu != MENU_PAGER)
+    bindings = km_get_table(CurrentMenu);
+    if (!bindings && (CurrentMenu != MENU_PAGER))
       bindings = OpGeneric;
 
     ops[nops] = get_op(bindings, function, mutt_str_strlen(function));

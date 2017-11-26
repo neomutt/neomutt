@@ -88,20 +88,26 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
     if (mutt_bit_isset(idata->capabilities, AUTH_ANON) &&
         (!idata->conn->account.user[0] ||
          (mutt_str_strncmp(idata->conn->account.user, "anonymous", 9) == 0)))
+    {
       rc = sasl_client_start(saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, &mech);
+    }
   }
   else if ((mutt_str_strcasecmp("login", method) == 0) &&
            !strstr(NONULL(idata->capstr), "AUTH=LOGIN"))
+  {
     /* do not use SASL login for regular IMAP login (#3556) */
     return IMAP_AUTH_UNAVAIL;
+  }
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
+  {
     do
     {
       rc = sasl_client_start(saslconn, method, &interaction, &pc, &olen, &mech);
       if (rc == SASL_INTERACT)
         mutt_sasl_interact(interaction);
     } while (rc == SASL_INTERACT);
+  }
 
   client_start = (olen > 0);
 
@@ -223,8 +229,11 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
   }
 
   while (irc != IMAP_CMD_OK)
-    if ((irc = imap_cmd_step(idata)) != IMAP_CMD_CONTINUE)
+  {
+    irc = imap_cmd_step(idata);
+    if (irc != IMAP_CMD_CONTINUE)
       break;
+  }
 
   if (rc != SASL_OK)
     goto bail;

@@ -153,7 +153,9 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 
   if ((tm.tm_hour < 0) || (tm.tm_hour > 23) || (tm.tm_min < 0) ||
       (tm.tm_min > 59) || (tm.tm_sec < 0) || (tm.tm_sec > 60))
+  {
     return 0;
+  }
 
   s = mutt_str_next_word(s);
   if (!*s)

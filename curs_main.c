@@ -264,9 +264,13 @@ static int ci_first_message(void)
      */
     if (((Sort & SORT_REVERSE) && (Sort & SORT_MASK) != SORT_THREADS) ||
         ((Sort & SORT_MASK) == SORT_THREADS && ((Sort ^ SortAux) & SORT_REVERSE)))
+    {
       return 0;
+    }
     else
+    {
       return (Context->vcount ? Context->vcount - 1 : 0);
+    }
   }
   return 0;
 }
@@ -1228,6 +1232,7 @@ int mutt_index_menu(void)
       case OP_GET_PARENT:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      /* fallthrough */
 
       case OP_GET_MESSAGE:
         CHECK_IN_MAILBOX;
@@ -1242,7 +1247,9 @@ int mutt_index_menu(void)
             buf[0] = 0;
             if (mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0 ||
                 !buf[0])
+            {
               break;
+            }
           }
           else
           {
@@ -1541,11 +1548,13 @@ int mutt_index_menu(void)
             /* try to find what used to be the current message */
             menu->current = -1;
             for (i = 0; i < Context->vcount; i++)
+            {
               if (Context->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
               {
                 menu->current = i;
                 break;
               }
+            }
             if (menu->current < 0)
               menu->current = 0;
           }
@@ -2163,7 +2172,9 @@ int mutt_index_menu(void)
 
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
         /* If we are returning to the pager via an index menu redirection, we
@@ -2846,8 +2857,11 @@ int mutt_index_menu(void)
           if (option(OPT_DELETE_UNTAG))
             mutt_thread_set_flag(CURHDR, MUTT_TAG, 0, subthread);
           if (option(OPT_RESOLVE))
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+          {
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
               menu->current = menu->oldcurrent;
+          }
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
@@ -2902,7 +2916,9 @@ int mutt_index_menu(void)
 
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         if (edit)
           mutt_edit_message(Context, tag ? NULL : CURHDR);
         else
@@ -2918,7 +2934,9 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
@@ -2934,7 +2952,9 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
@@ -2969,7 +2989,9 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3064,10 +3086,12 @@ int mutt_index_menu(void)
         {
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = (op == OP_MAIN_READ_THREAD ?
-                                      mutt_next_thread(CURHDR) :
-                                      mutt_next_subthread(CURHDR))) == -1)
+            menu->current = (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CURHDR) :
+                                                         mutt_next_subthread(CURHDR));
+            if (menu->current == -1)
+            {
               menu->current = menu->oldcurrent;
+            }
             else if (menu->menu == MENU_PAGER)
             {
               op = OP_DISPLAY_MESSAGE;
@@ -3144,12 +3168,11 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_FOLLOWUP:
       case OP_FORWARD_TO_GROUP:
-
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      /* fallthrough */
 
       case OP_POST:
-
         CHECK_ATTACH;
         if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
             (mutt_str_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
@@ -3158,7 +3181,9 @@ int mutt_index_menu(void)
         {
           if (Context && Context->magic == MUTT_NNTP &&
               !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+          {
             break;
+          }
           if (op == OP_POST)
             ci_send_message(SENDNEWS, NULL, NULL, Context, NULL);
           else
@@ -3171,7 +3196,7 @@ int mutt_index_menu(void)
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
 
         CHECK_ATTACH;
@@ -3179,7 +3204,9 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;

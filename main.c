@@ -406,6 +406,7 @@ int main(int argc, char **argv, char **env)
           snprintf(buf, sizeof(buf), "set news_server=%s", optarg);
           mutt_list_insert_tail(&commands, mutt_str_strdup(buf));
         }
+        /* fallthrough */
 
         case 'G': /* List of newsgroups */
           flags |= MUTT_SELECT | MUTT_NEWS;

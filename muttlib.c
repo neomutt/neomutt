@@ -229,7 +229,9 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         /* if folder = {host} or imap[s]://host/: don't append slash */
         if (mx_is_imap(NONULL(Folder)) &&
             (Folder[strlen(Folder) - 1] == '}' || Folder[strlen(Folder) - 1] == '/'))
+        {
           mutt_str_strfcpy(p, NONULL(Folder), sizeof(p));
+        }
         else
 #endif
 #ifdef USE_NOTMUCH
@@ -587,7 +589,8 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
     mutt_str_strfcpy(p, tmp, buflen - (p - s));
 
-  if ((mutt_str_strncmp(s, Folder, (len = mutt_str_strlen(Folder))) == 0) && s[len] == '/')
+  len = mutt_str_strlen(Folder);
+  if ((mutt_str_strncmp(s, Folder, len) == 0) && s[len] == '/')
   {
     *s++ = '=';
     memmove(s, s + len, mutt_str_strlen(s + len) + 1);

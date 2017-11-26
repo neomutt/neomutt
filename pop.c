@@ -217,9 +217,11 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 #endif
 
   for (int i = 0; i < ctx->msgcount; i++)
+  {
     /* if the id we get is known for a header: done (i.e. keep in cache) */
     if (ctx->hdrs[i]->data && (mutt_str_strcmp(ctx->hdrs[i]->data, id) == 0))
       return 0;
+  }
 
   /* message not found in context -> remove it from cache
    * return the result of bcache, so we stop upon its first error

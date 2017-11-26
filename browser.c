@@ -732,7 +732,9 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 
       if (prefix && *prefix &&
           (mutt_str_strncmp(prefix, de->d_name, mutt_str_strlen(prefix)) != 0))
+      {
         continue;
+      }
       if (!((regexec(Mask.regex, de->d_name, 0, NULL, 0) == 0) ^ Mask.not))
         continue;
 
@@ -941,10 +943,14 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
    */
   if ((mutt_str_strcmp(state->entry[0].desc, "..") == 0) ||
       (mutt_str_strcmp(state->entry[0].desc, "../") == 0))
+  {
     /* Skip the first entry, unless there's only one entry. */
     menu->current = (menu->max > 1);
+  }
   else
+  {
     menu->current = 0;
+  }
 }
 
 static void init_menu(struct BrowserState *state, struct Menu *menu,
@@ -1464,8 +1470,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #endif
         else
           mutt_file_concat_path(f, LastDir, state.entry[menu->current].name, flen);
-
-      /* Fall through to OP_EXIT */
+      /* fallthrough */
 
       case OP_EXIT:
 

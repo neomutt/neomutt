@@ -645,6 +645,7 @@ void rfc822_qualify(struct Address *addr, const char *host)
   char *p = NULL;
 
   for (; addr; addr = addr->next)
+  {
     if (!addr->group && addr->mailbox && strchr(addr->mailbox, '@') == NULL)
     {
       p = mutt_mem_malloc(mutt_str_strlen(addr->mailbox) + mutt_str_strlen(host) + 2);
@@ -652,6 +653,7 @@ void rfc822_qualify(struct Address *addr, const char *host)
       FREE(&addr->mailbox);
       addr->mailbox = p;
     }
+  }
 }
 
 /**
