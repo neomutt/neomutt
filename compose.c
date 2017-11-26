@@ -224,11 +224,11 @@ static void init_header_padding(void)
   }
 }
 
-static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
+static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
 
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
                       attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
@@ -691,8 +691,8 @@ static unsigned long cum_attachs_size(struct Menu *menu)
  * help when modifying this function.
  */
 static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prefix,
-                                      const char *ifstring, const char *elsestring,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
                                       unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING];
@@ -703,17 +703,17 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 'a': /* total number of attachments */
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, menu->max);
       break;
 
     case 'h': /* hostname */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l': /* approx length of current message in bytes */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       mutt_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
       snprintf(buf, buflen, fmt, tmp);
       break;
@@ -728,14 +728,14 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
       return src;
 
     default:
-      snprintf(buf, buflen, "%%%s%c", prefix, op);
+      snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
   }
 
   if (optional)
-    compose_status_line(buf, buflen, col, cols, menu, ifstring);
+    compose_status_line(buf, buflen, col, cols, menu, if_str);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    compose_status_line(buf, buflen, col, cols, menu, elsestring);
+    compose_status_line(buf, buflen, col, cols, menu, else_str);
 
   return src;
 }

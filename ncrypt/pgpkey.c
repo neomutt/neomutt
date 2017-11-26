@@ -139,9 +139,9 @@ struct PgpEntry
   struct PgpUid *uid;
 };
 
-static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
+static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
+                                 char op, const char *src, const char *prec,
+                                 const char *if_str, const char *else_str,
                                  unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
@@ -172,7 +172,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
       struct tm *tm = NULL;
       size_t len;
 
-      p = dest;
+      p = buf;
 
       cp = src;
       if (*cp == '!')
@@ -183,7 +183,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
       else
         do_locales = 1;
 
-      len = destlen - 1;
+      len = buflen - 1;
       while (len > 0 && *cp != ']')
       {
         if (*cp == '%')
@@ -211,12 +211,12 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
 
       if (!do_locales)
         setlocale(LC_TIME, "C");
-      strftime(buf2, sizeof(buf2), dest, tm);
+      strftime(buf2, sizeof(buf2), buf, tm);
       if (!do_locales)
         setlocale(LC_TIME, "");
 
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(dest, destlen, fmt, buf2);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, buf2);
       if (len > 0)
         src = cp + 1;
     }
@@ -224,43 +224,43 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, entry->num);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, entry->num);
       }
       break;
     case 'k':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, pgp_this_keyid(key));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, pgp_this_keyid(key));
       }
       break;
     case 'u':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(uid->addr));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(uid->addr));
       }
       break;
     case 'a':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, key->algorithm);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, key->algorithm);
       }
       break;
     case 'l':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, key->keylen);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, key->keylen);
       }
       break;
     case 'f':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, pgp_flags(kflags));
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, pgp_flags(kflags));
       }
       else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
         optional = 0;
@@ -268,8 +268,8 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
     case 'c':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, pgp_key_abilities(kflags));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
       }
       else if (!(kflags & (KEYFLAG_ABILITIES)))
         optional = 0;
@@ -277,25 +277,25 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
     case 't':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, trust_flags[uid->trust & 0x03]);
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, trust_flags[uid->trust & 0x03]);
       }
       else if (!(uid->trust & 0x03))
         /* undefined trust */
         optional = 0;
       break;
     default:
-      *dest = '\0';
+      *buf = '\0';
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
   return src;
 }
 
-static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
+static void pgp_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct PgpUid **KeyTable = (struct PgpUid **) menu->data;
   struct PgpEntry entry;
@@ -303,7 +303,7 @@ static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.uid = KeyTable[num];
   entry.num = num + 1;
 
-  mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
                       pgp_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

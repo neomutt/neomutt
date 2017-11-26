@@ -594,7 +594,7 @@ void mutt_ts_icon(char *str)
   fprintf(stderr, "\033]1;%s\007", str);
 }
 
-void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
+void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   if (!Context || !menu || (num < 0) || (num >= Context->hdrmax))
     return;
@@ -659,7 +659,7 @@ void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
     }
   }
 
-  mutt_make_string_flags(s, l, NONULL(IndexFormat), Context, h, flag);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context, h, flag);
 }
 
 int index_color(int index_no)

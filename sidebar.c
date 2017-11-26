@@ -96,8 +96,8 @@ enum SidebarSrc
  * @param[in]  op          printf-like operator, e.g. 'B'
  * @param[in]  src         printf-like format string
  * @param[in]  prefix      Field formatting string, UNUSED
- * @param[in]  ifstring    If condition is met, display this string
- * @param[in]  elsestring  Otherwise, display this string
+ * @param[in]  if_str    If condition is met, display this string
+ * @param[in]  else_str  Otherwise, display this string
  * @param[in]  data        Pointer to our sidebar_entry
  * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
  * @retval src (unchanged)
@@ -108,19 +108,19 @@ enum SidebarSrc
  * '%!' : Icon denoting number of flagged messages.
  * '%n' : N if folder has new mail, blank otherwise.
  */
-static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                      char op, const char *src, const char *prefix,
-                                      const char *ifstring, const char *elsestring,
+static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
                                       unsigned long data, enum FormatFlag flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
   char fmt[STRING];
 
-  if (!sbe || !dest)
+  if (!sbe || !buf)
     return src;
 
-  dest[0] = 0; /* Just in case there's nothing to do */
+  buf[0] = 0; /* Just in case there's nothing to do */
 
   struct Buffy *b = sbe->buffy;
   if (!b)
@@ -133,14 +133,14 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
   switch (op)
   {
     case 'B':
-      mutt_format_s(dest, destlen, prefix, sbe->box);
+      mutt_format_s(buf, buflen, prec, sbe->box);
       break;
 
     case 'd':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->deleted : 0);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->deleted : 0);
       }
       else if ((c && Context->deleted == 0) || !c)
         optional = 0;
@@ -149,8 +149,8 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
     case 'F':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_flagged);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_flagged);
       }
       else if (b->msg_flagged == 0)
         optional = 0;
@@ -159,8 +159,8 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
     case 'L':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->vcount : b->msg_count);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->vcount : b->msg_count);
       }
       else if ((c && Context->vcount == b->msg_count) || !c)
         optional = 0;
@@ -169,8 +169,8 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
     case 'N':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_unread);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_unread);
       }
       else if (b->msg_unread == 0)
         optional = 0;
@@ -179,8 +179,8 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, b->new ? 'N' : ' ');
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, b->new ? 'N' : ' ');
       }
       else if (b->new == false)
         optional = 0;
@@ -189,8 +189,8 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
     case 'S':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_count);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_count);
       }
       else if (b->msg_count == 0)
         optional = 0;
@@ -199,8 +199,8 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
     case 't':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->tagged : 0);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->tagged : 0);
       }
       else if ((c && Context->tagged == 0) || !c)
         optional = 0;
@@ -208,24 +208,24 @@ static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, in
 
     case '!':
       if (b->msg_flagged == 0)
-        mutt_format_s(dest, destlen, prefix, "");
+        mutt_format_s(buf, buflen, prec, "");
       else if (b->msg_flagged == 1)
-        mutt_format_s(dest, destlen, prefix, "!");
+        mutt_format_s(buf, buflen, prec, "!");
       else if (b->msg_flagged == 2)
-        mutt_format_s(dest, destlen, prefix, "!!");
+        mutt_format_s(buf, buflen, prec, "!!");
       else
       {
         snprintf(fmt, sizeof(fmt), "%d!", b->msg_flagged);
-        mutt_format_s(dest, destlen, prefix, fmt);
+        mutt_format_s(buf, buflen, prec, fmt);
       }
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring,
+    mutt_expando_format(buf, buflen, col, SidebarWidth, if_str,
                         sidebar_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
+    mutt_expando_format(buf, buflen, col, SidebarWidth, else_str,
                         sidebar_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */

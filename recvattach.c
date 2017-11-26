@@ -160,9 +160,9 @@ void mutt_update_tree(struct AttachCtx *actx)
  * | \%s     | size
  * | \%u     | unlink
  */
-const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
-                              char op, const char *src, const char *prefix,
-                              const char *ifstring, const char *elsestring,
+const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
+                              char op, const char *src, const char *prec,
+                              const char *if_str, const char *else_str,
                               unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
@@ -180,10 +180,10 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
         if (mutt_is_text_part(aptr->content) &&
             mutt_get_body_charset(charset, sizeof(charset), aptr->content))
         {
-          mutt_format_s(dest, destlen, prefix, charset);
+          mutt_format_s(buf, buflen, prec, charset);
         }
         else
-          mutt_format_s(dest, destlen, prefix, "");
+          mutt_format_s(buf, buflen, prec, "");
       }
       else if (!mutt_is_text_part(aptr->content) ||
                !mutt_get_body_charset(charset, sizeof(charset), aptr->content))
@@ -195,8 +195,8 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
       /* XXX */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt,
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt,
                  aptr->content->type != TYPETEXT || aptr->content->noconv ? 'n' : 'c');
       }
       else if (aptr->content->type != TYPETEXT || aptr->content->noconv)
@@ -207,7 +207,7 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
       {
         if (aptr->content->description)
         {
-          mutt_format_s(dest, destlen, prefix, aptr->content->description);
+          mutt_format_s(buf, buflen, prec, aptr->content->description);
           break;
         }
         if (mutt_is_message_type(aptr->content->type, aptr->content->subtype) &&
@@ -219,13 +219,13 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
               MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR);
           if (*s)
           {
-            mutt_format_s(dest, destlen, prefix, s);
+            mutt_format_s(buf, buflen, prec, s);
             break;
           }
         }
         if (!aptr->content->d_filename && !aptr->content->filename)
         {
-          mutt_format_s(dest, destlen, prefix, "<no description>");
+          mutt_format_s(buf, buflen, prec, "<no description>");
           break;
         }
       }
@@ -241,7 +241,7 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
       {
         if (aptr->content->d_filename)
         {
-          mutt_format_s(dest, destlen, prefix, aptr->content->d_filename);
+          mutt_format_s(buf, buflen, prec, aptr->content->d_filename);
           break;
         }
       }
@@ -260,23 +260,23 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
 
           mutt_str_strfcpy(path, aptr->content->filename, sizeof(path));
           mutt_pretty_mailbox(path, sizeof(path));
-          mutt_format_s(dest, destlen, prefix, path);
+          mutt_format_s(buf, buflen, prec, path);
         }
         else
-          mutt_format_s(dest, destlen, prefix, NONULL(aptr->content->filename));
+          mutt_format_s(buf, buflen, prec, NONULL(aptr->content->filename));
       }
       else if (!aptr->content->filename)
         optional = 0;
       break;
     case 'D':
       if (!optional)
-        snprintf(dest, destlen, "%c", aptr->content->deleted ? 'D' : ' ');
+        snprintf(buf, buflen, "%c", aptr->content->deleted ? 'D' : ' ');
       else if (!aptr->content->deleted)
         optional = 0;
       break;
     case 'e':
       if (!optional)
-        mutt_format_s(dest, destlen, prefix, ENCODING(aptr->content->encoding));
+        mutt_format_s(buf, buflen, prec, ENCODING(aptr->content->encoding));
       break;
     case 'I':
       if (!optional)
@@ -291,24 +291,24 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
           mutt_debug(1, "ERROR: invalid content-disposition %d\n", aptr->content->disposition);
           ch = '!';
         }
-        snprintf(dest, destlen, "%c", ch);
+        snprintf(buf, buflen, "%c", ch);
       }
       break;
     case 'm':
       if (!optional)
-        mutt_format_s(dest, destlen, prefix, TYPE(aptr->content));
+        mutt_format_s(buf, buflen, prec, TYPE(aptr->content));
       break;
     case 'M':
       if (!optional)
-        mutt_format_s(dest, destlen, prefix, aptr->content->subtype);
+        mutt_format_s(buf, buflen, prec, aptr->content->subtype);
       else if (!aptr->content->subtype)
         optional = 0;
       break;
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, aptr->num + 1);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, aptr->num + 1);
       }
       break;
     case 'Q':
@@ -316,8 +316,8 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
         optional = aptr->content->attach_qualifies;
       else
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        mutt_format_s(dest, destlen, fmt, "Q");
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        mutt_format_s(buf, buflen, fmt, "Q");
       }
       break;
     case 's':
@@ -333,7 +333,7 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
       if (!optional)
       {
         mutt_pretty_size(tmp, sizeof(tmp), l);
-        mutt_format_s(dest, destlen, prefix, tmp);
+        mutt_format_s(buf, buflen, prec, tmp);
       }
       else if (l == 0)
         optional = 0;
@@ -341,19 +341,19 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
       break;
     case 't':
       if (!optional)
-        snprintf(dest, destlen, "%c", aptr->content->tagged ? '*' : ' ');
+        snprintf(buf, buflen, "%c", aptr->content->tagged ? '*' : ' ');
       else if (!aptr->content->tagged)
         optional = 0;
       break;
     case 'T':
       if (!optional)
-        mutt_format_s_tree(dest, destlen, prefix, NONULL(aptr->tree));
+        mutt_format_s_tree(buf, buflen, prec, NONULL(aptr->tree));
       else if (!aptr->tree)
         optional = 0;
       break;
     case 'u':
       if (!optional)
-        snprintf(dest, destlen, "%c", aptr->content->unlink ? '-' : ' ');
+        snprintf(buf, buflen, "%c", aptr->content->unlink ? '-' : ' ');
       else if (!aptr->content->unlink)
         optional = 0;
       break;
@@ -362,27 +362,26 @@ const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
         optional = (aptr->content->attach_count + aptr->content->attach_qualifies) != 0;
       else
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt,
-                 aptr->content->attach_count + aptr->content->attach_qualifies);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, aptr->content->attach_count + aptr->content->attach_qualifies);
       }
       break;
     default:
-      *dest = 0;
+      *buf = 0;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
   return src;
 }
 
-static void attach_entry(char *b, size_t blen, struct Menu *menu, int num)
+static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
 
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
                       attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
                       MUTT_FORMAT_ARROWCURSOR);
 }

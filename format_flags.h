@@ -40,12 +40,12 @@ enum FormatFlag
   MUTT_FORMAT_NOFILTER    = (1 << 7)  /**< do not allow filtering on this pass */
 };
 
-typedef const char *format_t(char *dest, size_t destlen, size_t col, int cols,
-                             char op, const char *src, const char *prefix,
-                             const char *ifstring, const char *elsestring,
+typedef const char *format_t(char *buf, size_t buflen, size_t col, int cols,
+                             char op, const char *src, const char *prec,
+                             const char *if_str, const char *else_str,
                              unsigned long data, enum FormatFlag flags);
 
-void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
+void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols,
                          const char *src, format_t *callback,
                          unsigned long data, enum FormatFlag flags);
 

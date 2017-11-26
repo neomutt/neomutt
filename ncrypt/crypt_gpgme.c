@@ -2911,9 +2911,9 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
  * * \%F flags of the principal key
  * * \%C capabilities of the principal key
  */
-static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                    char op, const char *src, const char *prefix,
-                                    const char *ifstring, const char *elsestring,
+static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                    char op, const char *src, const char *prec,
+                                    const char *if_str, const char *else_str,
                                     unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
@@ -2943,7 +2943,7 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
       struct tm *tm = NULL;
       size_t len;
 
-      p = dest;
+      p = buf;
 
       cp = src;
       if (*cp == '!')
@@ -2954,7 +2954,7 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
       else
         do_locales = 1;
 
-      len = destlen - 1;
+      len = buflen - 1;
       while (len > 0 && *cp != ']')
       {
         if (*cp == '%')
@@ -2989,12 +2989,12 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
 
       if (!do_locales)
         setlocale(LC_TIME, "C");
-      strftime(buf2, sizeof(buf2), dest, tm);
+      strftime(buf2, sizeof(buf2), buf, tm);
       if (!do_locales)
         setlocale(LC_TIME, "");
 
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(dest, destlen, fmt, buf2);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, buf2);
       if (len > 0)
         src = cp + 1;
     }
@@ -3002,8 +3002,8 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, entry->num);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, entry->num);
       }
       break;
     case 'k':
@@ -3011,44 +3011,44 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
       {
         /* fixme: we need a way to distinguish between main and subkeys.
            Store the idx in entry? */
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, crypt_keyid(key));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_keyid(key));
       }
       break;
     case 'u':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, key->uid);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, key->uid);
       }
       break;
     case 'a':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%s.3s", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
         if (key->kobj->subkeys)
           s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
         else
           s = "?";
-        snprintf(dest, destlen, fmt, s);
+        snprintf(buf, buflen, fmt, s);
       }
       break;
     case 'l':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%slu", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%slu", prec);
         if (key->kobj->subkeys)
           val = key->kobj->subkeys->length;
         else
           val = 0;
-        snprintf(dest, destlen, fmt, val);
+        snprintf(buf, buflen, fmt, val);
       }
       break;
     case 'f':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, crypt_flags(kflags));
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, crypt_flags(kflags));
       }
       else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
         optional = 0;
@@ -3056,8 +3056,8 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
     case 'c':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, crypt_key_abilities(kflags));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
       }
       else if (!(kflags & (KEYFLAG_ABILITIES)))
         optional = 0;
@@ -3090,29 +3090,29 @@ static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int 
             break;
         }
       }
-      snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-      snprintf(dest, destlen, fmt, *s);
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, *s);
       break;
     case 'p':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(dest, destlen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
       break;
 
     default:
-      *dest = '\0';
+      *buf = '\0';
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
   return src;
 }
 
 /**
  * crypt_entry - Used by the display function to format a line
  */
-static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
+static void crypt_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct CryptKeyInfo **key_table = (struct CryptKeyInfo **) menu->data;
   struct CryptEntry entry;
@@ -3120,7 +3120,7 @@ static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.key = key_table[num];
   entry.num = num + 1;
 
-  mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
                       crypt_format_str, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
