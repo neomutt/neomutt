@@ -334,21 +334,21 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 
 static char *smime_key_flags(int flags)
 {
-  static char buff[3];
+  static char buf[3];
 
   if (!(flags & KEYFLAG_CANENCRYPT))
-    buff[0] = '-';
+    buf[0] = '-';
   else
-    buff[0] = 'e';
+    buf[0] = 'e';
 
   if (!(flags & KEYFLAG_CANSIGN))
-    buff[1] = '-';
+    buf[1] = '-';
   else
-    buff[1] = 's';
+    buf[1] = 's';
 
-  buff[2] = '\0';
+  buf[2] = '\0';
 
-  return buff;
+  return buf;
 }
 
 static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
@@ -909,7 +909,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   FILE *fpout = NULL, *fperr = NULL;
   char tmpfname[_POSIX_PATH_MAX];
   char email[STRING];
-  int ret = -1, count = 0;
+  int rc = -1, count = 0;
   pid_t thepid;
   size_t len = 0;
 
@@ -955,23 +955,23 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
     if (len && (email[len - 1] == '\n'))
       email[len - 1] = '\0';
     if (mutt_str_strncasecmp(email, mailbox, mutt_str_strlen(mailbox)) == 0)
-      ret = 1;
+      rc = 1;
 
-    ret = ret < 0 ? 0 : ret;
+    rc = rc < 0 ? 0 : rc;
     count++;
   }
 
-  if (ret == -1)
+  if (rc == -1)
   {
     mutt_endwin(NULL);
     mutt_file_copy_stream(fperr, stdout);
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
-    ret = 1;
+    rc = 1;
   }
-  else if (!ret)
-    ret = 1;
+  else if (!rc)
+    rc = 1;
   else
-    ret = 0;
+    rc = 0;
 
   if (copy && buffer && num)
   {
@@ -991,12 +991,12 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
     }
   }
   else if (copy)
-    ret = 2;
+    rc = 2;
 
   mutt_file_fclose(&fpout);
   mutt_file_fclose(&fperr);
 
-  return ret;
+  return rc;
 }
 
 static char *smime_extract_certificate(char *infile)
@@ -1953,7 +1953,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   size_t tmplength = b->length;
   int origType = b->type;
   FILE *tmpfp = NULL;
-  int rv = 0;
+  int rc = 0;
 
   if (!mutt_is_application_smime(b))
     return -1;
@@ -1988,7 +1988,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   if (!*fpout)
   {
     mutt_perror(tempfile);
-    rv = -1;
+    rc = -1;
     goto bail;
   }
   mutt_file_unlink(tempfile);
@@ -1996,7 +1996,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   *cur = smime_handle_entity(b, &s, *fpout);
   if (!*cur)
   {
-    rv = -1;
+    rc = -1;
     goto bail;
   }
 
@@ -2011,7 +2011,7 @@ bail:
   if (*fpout)
     rewind(*fpout);
 
-  return rv;
+  return rc;
 }
 
 int smime_application_smime_handler(struct Body *m, struct State *s)

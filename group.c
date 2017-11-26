@@ -152,41 +152,41 @@ void mutt_group_context_add_adrlist(struct GroupContext *ctx, struct Address *a)
 
 int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *a)
 {
-  int rv = 0;
+  int rc = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (!rc) && ctx; ctx = ctx->next)
   {
-    rv = group_remove_adrlist(ctx->g, a);
+    rc = group_remove_adrlist(ctx->g, a);
     if (empty_group(ctx->g))
       group_remove(ctx->g);
   }
 
-  return rv;
+  return rc;
 }
 
 int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
                                  int flags, struct Buffer *err)
 {
-  int rv = 0;
+  int rc = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
-    rv = group_add_regex(ctx->g, s, flags, err);
+  for (; (!rc) && ctx; ctx = ctx->next)
+    rc = group_add_regex(ctx->g, s, flags, err);
 
-  return rv;
+  return rc;
 }
 
 int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
 {
-  int rv = 0;
+  int rc = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (!rc) && ctx; ctx = ctx->next)
   {
-    rv = group_remove_regex(ctx->g, s);
+    rc = group_remove_regex(ctx->g, s);
     if (empty_group(ctx->g))
       group_remove(ctx->g);
   }
 
-  return rv;
+  return rc;
 }
 
 bool mutt_group_match(struct Group *g, const char *s)

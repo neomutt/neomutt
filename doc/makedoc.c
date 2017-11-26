@@ -43,7 +43,7 @@
 
 extern int optind;
 
-#define BUFFSIZE 2048
+#define BUFSIZE 2048
 
 /**
  * enum OutputFormats - Documentation output formats
@@ -724,13 +724,13 @@ static int flush_doc(int docstat, FILE *out)
   return D_INIT;
 }
 
-static int commit_buff(char *buff, char **d, FILE *out, int docstat)
+static int commit_buf(char *buf, char **d, FILE *out, int docstat)
 {
-  if (*d > buff)
+  if (*d > buf)
   {
     **d = '\0';
-    docstat = print_it(SP_STR, buff, out, docstat);
-    *d = buff;
+    docstat = print_it(SP_STR, buf, out, docstat);
+    *d = buf;
   }
 
   return docstat;
@@ -819,7 +819,7 @@ void print_ref(FILE *out, int output_dollar, const char *ref)
 
 static int handle_docline(char *l, FILE *out, int docstat)
 {
-  char buff[BUFFSIZE];
+  char buf[BUFSIZE];
   char *s = NULL, *d = NULL;
   l = skip_ws(l);
 
@@ -843,7 +843,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
   else if (strncmp(l, ". ", 2) == 0)
     *l = ' ';
 
-  for (s = l, d = buff; *s; s++)
+  for (s = l, d = buf; *s; s++)
   {
     if (strncmp(s, "\\(as", 4) == 0)
     {
@@ -857,25 +857,25 @@ static int handle_docline(char *l, FILE *out, int docstat)
     }
     else if (strncmp(s, "\\fI", 3) == 0)
     {
-      docstat = commit_buff(buff, &d, out, docstat);
+      docstat = commit_buf(buf, &d, out, docstat);
       docstat = print_it(SP_START_EM, NULL, out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fB", 3) == 0)
     {
-      docstat = commit_buff(buff, &d, out, docstat);
+      docstat = commit_buf(buf, &d, out, docstat);
       docstat = print_it(SP_START_BF, NULL, out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fC", 3) == 0)
     {
-      docstat = commit_buff(buff, &d, out, docstat);
+      docstat = commit_buf(buf, &d, out, docstat);
       docstat = print_it(SP_START_TT, NULL, out, docstat);
       s += 2;
     }
     else if (strncmp(s, "\\fP", 3) == 0)
     {
-      docstat = commit_buff(buff, &d, out, docstat);
+      docstat = commit_buf(buf, &d, out, docstat);
       docstat = print_it(SP_END_FT, NULL, out, docstat);
       s += 2;
     }
@@ -883,10 +883,10 @@ static int handle_docline(char *l, FILE *out, int docstat)
     {
       if (docstat & D_DD)
       {
-        docstat = commit_buff(buff, &d, out, docstat);
+        docstat = commit_buf(buf, &d, out, docstat);
         docstat = print_it(SP_END_DD, NULL, out, docstat);
       }
-      docstat = commit_buff(buff, &d, out, docstat);
+      docstat = commit_buf(buf, &d, out, docstat);
       docstat = print_it(SP_DT, NULL, out, docstat);
       s += 3;
     }
@@ -894,10 +894,10 @@ static int handle_docline(char *l, FILE *out, int docstat)
     {
       if ((docstat & D_IL) && (docstat & D_DD))
       {
-        docstat = commit_buff(buff, &d, out, docstat);
+        docstat = commit_buf(buf, &d, out, docstat);
         docstat = print_it(SP_END_DD, NULL, out, docstat);
       }
-      docstat = commit_buff(buff, &d, out, docstat);
+      docstat = commit_buf(buf, &d, out, docstat);
       docstat = print_it(SP_DD, NULL, out, docstat);
       s += 3;
     }
@@ -923,7 +923,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
         while (isalnum((unsigned char) *s) || (*s && strchr("-_<>", *s)))
           s++;
 
-        docstat = commit_buff(buff, &d, out, docstat);
+        docstat = commit_buf(buf, &d, out, docstat);
         save = *s;
         *s = '\0';
         print_ref(out, output_dollar, ref);
@@ -935,7 +935,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
       *d++ = *s;
   }
 
-  docstat = commit_buff(buff, &d, out, docstat);
+  docstat = commit_buf(buf, &d, out, docstat);
   return print_it(SP_NEWLINE, NULL, out, docstat);
 }
 
@@ -982,7 +982,7 @@ struct VariableTypes
   { NULL, NULL },
 };
 
-static int buff2type(const char *s)
+static int buf_to_type(const char *s)
 {
   for (int type = DT_NONE; types[type].machine; type++)
     if (strcmp(types[type].machine, s) == 0)
@@ -1084,9 +1084,9 @@ static void char_to_escape(char *dest, unsigned int c)
 
 static void conf_char_to_escape(unsigned int c, FILE *out)
 {
-  char buff[16];
-  char_to_escape(buff, c);
-  fputs(buff, out);
+  char buf[16];
+  char_to_escape(buf, c);
+  fputs(buf, out);
 }
 
 static void conf_print_strval(const char *v, FILE *out)
@@ -1142,13 +1142,13 @@ static void man_print_strval(const char *v, FILE *out)
 
 static void sgml_print_strval(const char *v, FILE *out)
 {
-  char buff[16];
+  char buf[16];
   for (; *v; v++)
   {
     if (*v < ' ' || *v & 0x80)
     {
-      char_to_escape(buff, (unsigned int) *v);
-      sgml_fputs(buff, out);
+      char_to_escape(buf, (unsigned int) *v);
+      sgml_fputs(buf, out);
       continue;
     }
     sgml_fputc((unsigned int) *v, out);
@@ -1252,12 +1252,12 @@ static void print_confline(const char *varname, int type, const char *val, FILE 
 
 static void handle_confline(char *s, FILE *out)
 {
-  char varname[BUFFSIZE];
-  char buff[BUFFSIZE];
-  char tmp[BUFFSIZE];
+  char varname[BUFSIZE];
+  char buf[BUFSIZE];
+  char tmp[BUFSIZE];
   int type;
 
-  char val[BUFFSIZE];
+  char val[BUFSIZE];
 
   /* xxx - put this into an actual state machine? */
 
@@ -1267,31 +1267,31 @@ static void handle_confline(char *s, FILE *out)
     return;
 
   /* comma */
-  s = get_token(buff, sizeof(buff), s);
+  s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
 
   /* type */
-  s = get_token(buff, sizeof(buff), s);
+  s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
 
-  type = buff2type(buff);
+  type = buf_to_type(buf);
 
   /* possibly a "|" or comma */
-  s = get_token(buff, sizeof(buff), s);
+  s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
 
-  if (strcmp(buff, "|") == 0)
+  if (strcmp(buf, "|") == 0)
   {
     if (Debug)
       fprintf(stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
     /* ignore subtype and comma */
-    s = get_token(buff, sizeof(buff), s);
+    s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
-    s = get_token(buff, sizeof(buff), s);
+    s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
   }
@@ -1300,26 +1300,26 @@ static void handle_confline(char *s, FILE *out)
 
   while (true)
   {
-    s = get_token(buff, sizeof(buff), s);
+    s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
-    if (strcmp(buff, ",") == 0)
+    if (strcmp(buf, ",") == 0)
       break;
   }
 
   /* option name or UL &address */
-  s = get_token(buff, sizeof(buff), s);
+  s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
-  if (strcmp(buff, "UL") == 0)
+  if (strcmp(buf, "UL") == 0)
   {
-    s = get_token(buff, sizeof(buff), s);
+    s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
   }
 
   /* comma */
-  s = get_token(buff, sizeof(buff), s);
+  s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
 
@@ -1327,14 +1327,14 @@ static void handle_confline(char *s, FILE *out)
     fprintf(stderr, "%s: Expecting default value.\n", Progname);
 
   /* <default value> or UL <default value> */
-  s = get_token(buff, sizeof(buff), s);
+  s = get_token(buf, sizeof(buf), s);
   if (!s)
     return;
-  if (strcmp(buff, "UL") == 0)
+  if (strcmp(buf, "UL") == 0)
   {
     if (Debug)
       fprintf(stderr, "%s: Skipping UL.\n", Progname);
-    s = get_token(buff, sizeof(buff), s);
+    s = get_token(buf, sizeof(buf), s);
     if (!s)
       return;
   }
@@ -1343,11 +1343,11 @@ static void handle_confline(char *s, FILE *out)
 
   do
   {
-    if (strcmp(buff, "}") == 0)
+    if (strcmp(buf, "}") == 0)
       break;
 
-    strncpy(tmp + strlen(tmp), buff, sizeof(tmp) - strlen(tmp));
-  } while ((s = get_token(buff, sizeof(buff), s)));
+    strncpy(tmp + strlen(tmp), buf, sizeof(tmp) - strlen(tmp));
+  } while ((s = get_token(buf, sizeof(buf), s)));
 
   pretty_default(val, sizeof(val), tmp, type);
   print_confline(varname, type, val, out);
@@ -1355,8 +1355,8 @@ static void handle_confline(char *s, FILE *out)
 
 static void makedoc(FILE *in, FILE *out)
 {
-  char buffer[BUFFSIZE];
-  char token[BUFFSIZE];
+  char buffer[BUFSIZE];
+  char token[BUFSIZE];
   char *p = NULL;
   int active = 0;
   int line = 0;

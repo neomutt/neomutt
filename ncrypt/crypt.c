@@ -115,19 +115,19 @@ static void disable_coredumps(void)
  */
 int crypt_valid_passphrase(int flags)
 {
-  int ret = 0;
+  int rc = 0;
 
 #if !defined(DEBUG)
   disable_coredumps();
 #endif
 
   if ((WithCrypto & APPLICATION_PGP) && (flags & APPLICATION_PGP))
-    ret = crypt_pgp_valid_passphrase();
+    rc = crypt_pgp_valid_passphrase();
 
   if ((WithCrypto & APPLICATION_SMIME) && (flags & APPLICATION_SMIME))
-    ret = crypt_smime_valid_passphrase();
+    rc = crypt_smime_valid_passphrase();
 
-  return ret;
+  return rc;
 }
 
 int mutt_protect(struct Header *msg, char *keylist)

@@ -186,12 +186,12 @@ static int parse_keycode(const char *s)
 static int parsekeys(const char *str, keycode_t *d, int max)
 {
   int n, len = max;
-  char buff[SHORT_STRING];
+  char buf[SHORT_STRING];
   char c;
   char *s = NULL, *t = NULL;
 
-  mutt_str_strfcpy(buff, str, sizeof(buff));
-  s = buff;
+  mutt_str_strfcpy(buf, str, sizeof(buf));
+  s = buf;
 
   while (*s && len)
   {

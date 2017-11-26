@@ -168,7 +168,7 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
 {
   FILE *fp = NULL;
   int line = 1;
-  char *buff = NULL;
+  char *buf = NULL;
   char *t = NULL;
   size_t sz = 0;
 
@@ -182,9 +182,9 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
-  while ((buff = mutt_file_read_line(buff, &sz, fp, &line, 0)))
+  while ((buf = mutt_file_read_line(buf, &sz, fp, &line, 0)))
   {
-    t = strtok(buff, " \t:");
+    t = strtok(buf, " \t:");
     if (!t)
       continue;
 
@@ -213,7 +213,7 @@ static int mh_read_sequences(struct MhSequences *mhs, const char *path)
   rc = 0;
 
 out:
-  FREE(&buff);
+  FREE(&buf);
   mutt_file_fclose(&fp);
   return rc;
 }
@@ -472,7 +472,7 @@ static void mh_update_sequences(struct Context *ctx)
 
   char sequences[_POSIX_PATH_MAX];
   char *tmpfname = NULL;
-  char *buff = NULL;
+  char *buf = NULL;
   char *p = NULL;
   size_t s;
   int l = 0;
@@ -504,16 +504,16 @@ static void mh_update_sequences(struct Context *ctx)
   /* first, copy unknown sequences */
   if ((ofp = fopen(sequences, "r")))
   {
-    while ((buff = mutt_file_read_line(buff, &s, ofp, &l, 0)))
+    while ((buf = mutt_file_read_line(buf, &s, ofp, &l, 0)))
     {
-      if (mutt_str_strncmp(buff, seq_unseen, mutt_str_strlen(seq_unseen)) == 0)
+      if (mutt_str_strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0)
         continue;
-      if (mutt_str_strncmp(buff, seq_flagged, mutt_str_strlen(seq_flagged)) == 0)
+      if (mutt_str_strncmp(buf, seq_flagged, mutt_str_strlen(seq_flagged)) == 0)
         continue;
-      if (mutt_str_strncmp(buff, seq_replied, mutt_str_strlen(seq_replied)) == 0)
+      if (mutt_str_strncmp(buf, seq_replied, mutt_str_strlen(seq_replied)) == 0)
         continue;
 
-      fprintf(nfp, "%s\n", buff);
+      fprintf(nfp, "%s\n", buf);
     }
   }
   mutt_file_fclose(&ofp);
@@ -588,7 +588,7 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   char seq_replied[STRING];
   char seq_flagged[STRING];
 
-  char *buff = NULL;
+  char *buf = NULL;
   int line = 0;
   size_t sz;
 
@@ -602,29 +602,29 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen,
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", ctx->path);
   if ((ofp = fopen(sequences, "r")))
   {
-    while ((buff = mutt_file_read_line(buff, &sz, ofp, &line, 0)))
+    while ((buf = mutt_file_read_line(buf, &sz, ofp, &line, 0)))
     {
-      if (unseen && (strncmp(buff, seq_unseen, mutt_str_strlen(seq_unseen)) == 0))
+      if (unseen && (strncmp(buf, seq_unseen, mutt_str_strlen(seq_unseen)) == 0))
       {
-        fprintf(nfp, "%s %d\n", buff, n);
+        fprintf(nfp, "%s %d\n", buf, n);
         unseen_done = 1;
       }
-      else if (flagged && (strncmp(buff, seq_flagged, mutt_str_strlen(seq_flagged)) == 0))
+      else if (flagged && (strncmp(buf, seq_flagged, mutt_str_strlen(seq_flagged)) == 0))
       {
-        fprintf(nfp, "%s %d\n", buff, n);
+        fprintf(nfp, "%s %d\n", buf, n);
         flagged_done = 1;
       }
-      else if (replied && (strncmp(buff, seq_replied, mutt_str_strlen(seq_replied)) == 0))
+      else if (replied && (strncmp(buf, seq_replied, mutt_str_strlen(seq_replied)) == 0))
       {
-        fprintf(nfp, "%s %d\n", buff, n);
+        fprintf(nfp, "%s %d\n", buf, n);
         replied_done = 1;
       }
       else
-        fprintf(nfp, "%s\n", buff);
+        fprintf(nfp, "%s\n", buf);
     }
   }
   mutt_file_fclose(&ofp);
-  FREE(&buff);
+  FREE(&buf);
 
   if (!unseen_done && unseen)
     fprintf(nfp, "%s: %d\n", NONULL(MhSeqUnseen), n);

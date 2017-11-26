@@ -127,7 +127,7 @@ int convert_nonmime_string(char **ps)
 char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
                           size_t ulen, char **d, size_t *dlen)
 {
-  char canonical_buff[LONG_STRING];
+  char canonical_buf[LONG_STRING];
   char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
   const char *q = NULL;
@@ -183,8 +183,8 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
     if (dlen)
       *dlen = elen;
 
-    mutt_canonical_charset(canonical_buff, sizeof(canonical_buff), tocode);
-    mutt_str_replace(&tocode, canonical_buff);
+    mutt_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
+    mutt_str_replace(&tocode, canonical_buf);
   }
   return tocode;
 }
@@ -428,7 +428,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
 static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char *fromcode,
                           const char *charsets, char **e, size_t *elen, char *specials)
 {
-  int ret = 0;
+  int rc = 0;
   char *buf = NULL;
   size_t bufpos, buflen;
   char *u = NULL, *t0 = NULL, *t1 = NULL, *t = NULL;
@@ -442,7 +442,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
   /* Try to convert to UTF-8. */
   if (convert_string(d, dlen, fromcode, icode, &u, &ulen))
   {
-    ret = 1;
+    rc = 1;
     icode = 0;
     mutt_mem_realloc(&u, (ulen = dlen) + 1);
     memcpy(u, d, dlen);
@@ -478,7 +478,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
     /* No encoding is required. */
     *e = u;
     *elen = ulen;
-    return ret;
+    return rc;
   }
 
   /* Choose target charset. */
@@ -489,7 +489,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
       tocode = tocode1;
     else
     {
-      ret = 2;
+      rc = 2;
       icode = 0;
     }
   }
@@ -612,7 +612,7 @@ static int rfc2047_encode(ICONV_CONST char *d, size_t dlen, int col, const char 
 
   *e = buf;
   *elen = buflen + 1;
-  return ret;
+  return rc;
 }
 
 void rfc2047_encode_string(char **pd, int encode_specials, int col)
@@ -657,7 +657,7 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
   const char *t = NULL, *t1 = NULL;
   int enc = 0, count = 0;
   char *charset = NULL;
-  int rv = -1;
+  int rc = -1;
 
   pd = d0 = mutt_mem_malloc(strlen(s) + 1);
 
@@ -741,11 +741,11 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
     mutt_convert_string(&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
   mutt_filter_unprintable(&d0);
   mutt_str_strfcpy(d, d0, len);
-  rv = 0;
+  rc = 0;
 error_out_0:
   FREE(&charset);
   FREE(&d0);
-  return rv;
+  return rc;
 }
 
 /**

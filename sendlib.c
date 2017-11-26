@@ -1116,7 +1116,7 @@ bye:
 
 static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
-  char buff[_POSIX_PATH_MAX];
+  char buf[_POSIX_PATH_MAX];
   struct State s;
   struct stat sb;
 
@@ -1139,8 +1139,8 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       a->noconv = true;
       a->force_charset = true;
 
-      mutt_mktemp(buff, sizeof(buff));
-      s.fpout = mutt_file_fopen(buff, "w");
+      mutt_mktemp(buf, sizeof(buf));
+      s.fpout = mutt_file_fopen(buf, "w");
       if (!s.fpout)
       {
         mutt_perror("fopen");
@@ -1151,7 +1151,7 @@ static void transform_to_7bit(struct Body *a, FILE *fpin)
       mutt_file_fclose(&s.fpout);
       FREE(&a->d_filename);
       a->d_filename = a->filename;
-      a->filename = mutt_str_strdup(buff);
+      a->filename = mutt_str_strdup(buf);
       a->unlink = true;
       if (stat(a->filename, &sb) == -1)
       {
@@ -1336,10 +1336,10 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
 void mutt_update_encoding(struct Body *a)
 {
   struct Content *info = NULL;
-  char chsbuff[STRING];
+  char chsbuf[STRING];
 
   /* override noconv when it's us-ascii */
-  if (mutt_is_us_ascii(mutt_get_body_charset(chsbuff, sizeof(chsbuff), a)))
+  if (mutt_is_us_ascii(mutt_get_body_charset(chsbuf, sizeof(chsbuf), a)))
     a->noconv = false;
 
   if (!a->force_charset && !a->noconv)
@@ -2722,7 +2722,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
 static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
                           const char *resent_from, struct Address *env_from)
 {
-  int ret = 0;
+  int rc = 0;
   FILE *f = NULL;
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
   struct Message *msg = NULL;
@@ -2732,8 +2732,8 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     /* Try to bounce each message out, aborting if we get any failures. */
     for (int i = 0; i < Context->msgcount; i++)
       if (message_is_tagged(Context, i))
-        ret |= bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
-    return ret;
+        rc |= bounce_message(fp, Context->hdrs[i], to, resent_from, env_from);
+    return rc;
   }
 
   /* If we failed to open a message, return with error */
@@ -2772,17 +2772,17 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
     }
 #ifdef USE_SMTP
     if (SmtpUrl)
-      ret = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
+      rc = mutt_smtp_send(env_from, to, NULL, NULL, tempfile, h->content->encoding == ENC8BIT);
     else
 #endif /* USE_SMTP */
-      ret = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
-                                 h->content->encoding == ENC8BIT);
+      rc = mutt_invoke_sendmail(env_from, to, NULL, NULL, tempfile,
+                                h->content->encoding == ENC8BIT);
   }
 
   if (msg)
     mx_close_message(Context, &msg);
 
-  return ret;
+  return rc;
 }
 
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)

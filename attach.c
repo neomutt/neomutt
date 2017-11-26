@@ -654,7 +654,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
 {
   pid_t thepid;
   int out = -1;
-  int rv = 0;
+  int rc = 0;
 
   if (outfile && *outfile)
   {
@@ -728,7 +728,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     mutt_file_fclose(&ifp);
   }
 
-  rv = 1;
+  rc = 1;
 
 bail:
 
@@ -739,11 +739,11 @@ bail:
    * check for error exit from child process
    */
   if (mutt_wait_filter(thepid) != 0)
-    rv = 0;
+    rc = 0;
 
-  if (rv == 0 || option(OPT_WAIT_KEY))
+  if (rc == 0 || option(OPT_WAIT_KEY))
     mutt_any_key_to_continue(NULL);
-  return rv;
+  return rc;
 }
 
 static FILE *save_attachment_open(char *path, int flags)
@@ -898,7 +898,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   unsigned int saved_encoding = 0;
   struct Body *saved_parts = NULL;
   struct Header *saved_hdr = NULL;
-  int ret = 0;
+  int rc = 0;
 
   memset(&s, 0, sizeof(s));
   s.flags = displaying;
@@ -960,7 +960,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   if (mutt_file_fsync_close(&s.fpout) != 0)
   {
     mutt_perror("fclose");
-    ret = -1;
+    rc = -1;
   }
   if (!fp)
   {
@@ -975,7 +975,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     mutt_file_fclose(&s.fpin);
   }
 
-  return ret;
+  return rc;
 }
 
 /**

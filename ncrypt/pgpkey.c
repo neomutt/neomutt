@@ -73,25 +73,25 @@ static const char trust_flags[] = "?- +";
 
 static char *pgp_key_abilities(int flags)
 {
-  static char buff[3];
+  static char buf[3];
 
   if (!(flags & KEYFLAG_CANENCRYPT))
-    buff[0] = '-';
+    buf[0] = '-';
   else if (flags & KEYFLAG_PREFER_SIGNING)
-    buff[0] = '.';
+    buf[0] = '.';
   else
-    buff[0] = 'e';
+    buf[0] = 'e';
 
   if (!(flags & KEYFLAG_CANSIGN))
-    buff[1] = '-';
+    buf[1] = '-';
   else if (flags & KEYFLAG_PREFER_ENCRYPTION)
-    buff[1] = '.';
+    buf[1] = '.';
   else
-    buff[1] = 's';
+    buf[1] = 's';
 
-  buff[2] = '\0';
+  buf[2] = '\0';
 
-  return buff;
+  return buf;
 }
 
 static char pgp_flags(int flags)
@@ -428,27 +428,23 @@ static bool pgp_id_is_valid(struct PgpUid *uid)
 
 static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, struct PgpUid *uid)
 {
-  int rv = 0;
+  int rc = 0;
 
   if (pgp_id_is_valid(uid))
-    rv |= PGP_KV_VALID;
+    rc |= PGP_KV_VALID;
 
   if (pgp_id_is_strong(uid))
-    rv |= PGP_KV_STRONGID;
+    rc |= PGP_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox &&
       (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
-  {
-    rv |= PGP_KV_ADDR;
-  }
+    rc |= PGP_KV_ADDR;
 
   if (addr->personal && u_addr->personal &&
       (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
-  {
-    rv |= PGP_KV_STRING;
-  }
+    rc |= PGP_KV_STRING;
 
-  return rv;
+  return rc;
 }
 
 static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
@@ -617,7 +613,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                                             !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
-          char buff[LONG_STRING];
+          char buf2[LONG_STRING];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
             str = N_("ID is expired/disabled/revoked.");
@@ -635,10 +631,10 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                 break;
             }
 
-          snprintf(buff, sizeof(buff),
+          snprintf(buf2, sizeof(buf2),
                    _("%s Do you really want to use the key?"), _(str));
 
-          if (mutt_yesorno(buff, MUTT_NO) != MUTT_YES)
+          if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
           {
             mutt_clear_error();
             break;
@@ -720,7 +716,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
 struct Body *pgp_make_key_attachment(char *tempf)
 {
   struct Body *att = NULL;
-  char buff[LONG_STRING];
+  char buf[LONG_STRING];
   char tempfb[_POSIX_PATH_MAX], tmp[STRING];
   FILE *tempfp = NULL;
   FILE *devnull = NULL;
@@ -783,8 +779,8 @@ struct Body *pgp_make_key_attachment(char *tempf)
   att->use_disp = false;
   att->type = TYPEAPPLICATION;
   att->subtype = mutt_str_strdup("pgp-keys");
-  snprintf(buff, sizeof(buff), _("PGP Key %s."), tmp);
-  att->description = mutt_str_strdup(buff);
+  snprintf(buf, sizeof(buf), _("PGP Key %s."), tmp);
+  att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 
   stat(tempf, &sb);

@@ -299,21 +299,21 @@ int pop_connect(struct PopData *pop_data)
 */
 int pop_open_connection(struct PopData *pop_data)
 {
-  int ret;
+  int rc;
   unsigned int n, size;
   char buf[LONG_STRING];
 
-  ret = pop_connect(pop_data);
-  if (ret < 0)
+  rc = pop_connect(pop_data);
+  if (rc < 0)
   {
     mutt_sleep(2);
-    return ret;
+    return rc;
   }
 
-  ret = pop_capabilities(pop_data, 0);
-  if (ret == -1)
+  rc = pop_capabilities(pop_data, 0);
+  if (rc == -1)
     goto err_conn;
-  if (ret == -2)
+  if (rc == -2)
   {
     mutt_sleep(2);
     return -2;
@@ -327,21 +327,20 @@ int pop_open_connection(struct PopData *pop_data)
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret =
-          query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
-      if (ret == MUTT_ABORT)
+      rc = query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
+      if (rc == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;
-      if (ret == MUTT_YES)
+      if (rc == MUTT_YES)
         pop_data->use_stls = 2;
     }
     if (pop_data->use_stls == 2)
     {
       mutt_str_strfcpy(buf, "STLS\r\n", sizeof(buf));
-      ret = pop_query(pop_data, buf, sizeof(buf));
-      if (ret == -1)
+      rc = pop_query(pop_data, buf, sizeof(buf));
+      if (rc == -1)
         goto err_conn;
-      if (ret != 0)
+      if (rc != 0)
       {
         mutt_error("%s", pop_data->err_msg);
         mutt_sleep(2);
@@ -355,10 +354,10 @@ int pop_open_connection(struct PopData *pop_data)
       else
       {
         /* recheck capabilities after STLS completes */
-        ret = pop_capabilities(pop_data, 1);
-        if (ret == -1)
+        rc = pop_capabilities(pop_data, 1);
+        if (rc == -1)
           goto err_conn;
-        if (ret == -2)
+        if (rc == -2)
         {
           mutt_sleep(2);
           return -2;
@@ -375,19 +374,19 @@ int pop_open_connection(struct PopData *pop_data)
   }
 #endif
 
-  ret = pop_authenticate(pop_data);
-  if (ret == -1)
+  rc = pop_authenticate(pop_data);
+  if (rc == -1)
     goto err_conn;
-  if (ret == -3)
+  if (rc == -3)
     mutt_clear_error();
-  if (ret != 0)
-    return ret;
+  if (rc != 0)
+    return rc;
 
   /* recheck capabilities after authentication */
-  ret = pop_capabilities(pop_data, 2);
-  if (ret == -1)
+  rc = pop_capabilities(pop_data, 2);
+  if (rc == -1)
     goto err_conn;
-  if (ret == -2)
+  if (rc == -2)
   {
     mutt_sleep(2);
     return -2;
@@ -395,14 +394,14 @@ int pop_open_connection(struct PopData *pop_data)
 
   /* get total size of mailbox */
   mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
-  ret = pop_query(pop_data, buf, sizeof(buf));
-  if (ret == -1)
+  rc = pop_query(pop_data, buf, sizeof(buf));
+  if (rc == -1)
     goto err_conn;
-  if (ret == -2)
+  if (rc == -2)
   {
     mutt_error("%s", pop_data->err_msg);
     mutt_sleep(2);
-    return ret;
+    return rc;
   }
 
   sscanf(buf, "+OK %u %u", &n, &size);

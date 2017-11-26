@@ -1065,7 +1065,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 static int check_traditional_pgp(struct Header *h, int *redraw)
 {
   struct Message *msg = NULL;
-  int rv = 0;
+  int rc = 0;
 
   h->security |= PGP_TRADITIONAL_CHECKED;
 
@@ -1077,28 +1077,28 @@ static int check_traditional_pgp(struct Header *h, int *redraw)
   {
     h->security = crypt_query(h->content);
     *redraw |= REDRAW_FULL;
-    rv = 1;
+    rc = 1;
   }
 
   h->security |= PGP_TRADITIONAL_CHECKED;
   mx_close_message(Context, &msg);
-  return rv;
+  return rc;
 }
 
 int mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
-  int rv = 0;
+  int rc = 0;
   if (h && !(h->security & PGP_TRADITIONAL_CHECKED))
-    rv = check_traditional_pgp(h, redraw);
+    rc = check_traditional_pgp(h, redraw);
   else
   {
     for (int i = 0; i < Context->msgcount; i++)
     {
       if (message_is_tagged(Context, i) && !(Context->hdrs[i]->security & PGP_TRADITIONAL_CHECKED))
       {
-        rv = check_traditional_pgp(Context->hdrs[i], redraw) || rv;
+        rc = check_traditional_pgp(Context->hdrs[i], redraw) || rc;
       }
     }
   }
-  return rv;
+  return rc;
 }

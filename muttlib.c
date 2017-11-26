@@ -121,12 +121,12 @@ void mutt_adv_mktemp(char *s, size_t l)
 int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
 {
   struct RegexList *p = NULL, *last = NULL;
-  int rv = -1;
+  int rc = -1;
 
   if (mutt_str_strcmp("*", str) == 0)
   {
     mutt_free_regex_list(l); /* ``unCMD *'' means delete all current entries */
-    rv = 0;
+    rc = 0;
   }
   else
   {
@@ -142,7 +142,7 @@ int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
         else
           (*l) = p->next;
         FREE(&p);
-        rv = 0;
+        rc = 0;
       }
       else
       {
@@ -151,7 +151,7 @@ int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
       }
     }
   }
-  return rv;
+  return rc;
 }
 
 /**

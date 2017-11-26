@@ -207,14 +207,14 @@ PreferredMIMENames[] =
 
 void mutt_set_langinfo_charset(void)
 {
-  char buff[LONG_STRING];
-  char buff2[LONG_STRING];
+  char buf[LONG_STRING];
+  char buf2[LONG_STRING];
 
-  mutt_str_strfcpy(buff, nl_langinfo(CODESET), sizeof(buff));
-  mutt_canonical_charset(buff2, sizeof(buff2), buff);
+  mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
+  mutt_canonical_charset(buf2, sizeof(buf2), buf);
 
   /* finally, set $charset */
-  Charset = mutt_str_strdup(buff2);
+  Charset = mutt_str_strdup(buf2);
   if (!Charset)
     Charset = mutt_str_strdup("iso-8859-1");
 }
@@ -370,7 +370,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
                   char **outbuf, size_t *outbytesleft,
                   ICONV_CONST char **inrepls, const char *outrepl)
 {
-  size_t ret = 0, ret1;
+  size_t rc = 0, ret1;
   ICONV_CONST char *ib = *inbuf;
   size_t ibl = *inbytesleft;
   char *ob = *outbuf;
@@ -380,7 +380,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
   {
     ret1 = iconv(cd, &ib, &ibl, &ob, &obl);
     if (ret1 != (size_t) -1)
-      ret += ret1;
+      rc += ret1;
     if (ibl && obl && errno == EILSEQ)
     {
       if (inrepls)
@@ -400,7 +400,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
             ibl--;
             ob = ob1;
             obl = obl1;
-            ret++;
+            rc++;
             break;
           }
         }
@@ -424,7 +424,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
         ibl--;
         ob += n;
         obl -= n;
-        ret++;
+        rc++;
         iconv(cd, 0, 0, 0, 0); /* for good measure */
         continue;
       }
@@ -433,7 +433,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
     *inbytesleft = ibl;
     *outbuf = ob;
     *outbytesleft = obl;
-    return ret;
+    return rc;
   }
 }
 

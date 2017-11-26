@@ -584,10 +584,10 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   struct stat sb;
 
   int plen = mutt_str_strlen(path);
-  int ret = stat(path, &sb);
+  int rc = stat(path, &sb);
   int slash = (path[plen - 1] == '/');
 
-  if (((ret == 0) && !S_ISDIR(sb.st_mode)) || ((ret == -1) && !slash))
+  if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
   {
     /* An existing file or a non-existing path not ending with a slash */
     snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
@@ -603,7 +603,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     if (!slash)
       plen++;
 
-    ret = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
+    rc = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
   }
   else
   {
@@ -616,10 +616,10 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
              m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10],
              m[11], m[12], m[13], m[14], m[15]);
 
-    ret = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
+    rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
   }
 
-  if (ret < 0) /* namer or fprintf failed.. should not happen */
+  if (rc < 0) /* namer or fprintf failed.. should not happen */
     return path;
 
   create_hcache_dir(hcpath);

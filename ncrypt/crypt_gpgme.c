@@ -286,25 +286,25 @@ static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
  */
 static char *crypt_key_abilities(int flags)
 {
-  static char buff[3];
+  static char buf[3];
 
   if (!(flags & KEYFLAG_CANENCRYPT))
-    buff[0] = '-';
+    buf[0] = '-';
   else if (flags & KEYFLAG_PREFER_SIGNING)
-    buff[0] = '.';
+    buf[0] = '.';
   else
-    buff[0] = 'e';
+    buf[0] = 'e';
 
   if (!(flags & KEYFLAG_CANSIGN))
-    buff[1] = '-';
+    buf[1] = '-';
   else if (flags & KEYFLAG_PREFER_ENCRYPTION)
-    buff[1] = '.';
+    buf[1] = '.';
   else
-    buff[1] = 's';
+    buf[1] = 's';
 
-  buff[2] = '\0';
+  buf[2] = '\0';
 
-  return buff;
+  return buf;
 }
 
 /**
@@ -429,30 +429,30 @@ static int crypt_id_is_valid(struct CryptKeyInfo *key)
 static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
                                  struct CryptKeyInfo *key)
 {
-  int rv = 0;
+  int rc = 0;
 
   if (crypt_id_is_valid(key))
-    rv |= CRYPT_KV_VALID;
+    rc |= CRYPT_KV_VALID;
 
   if (crypt_id_is_strong(key))
-    rv |= CRYPT_KV_STRONGID;
+    rc |= CRYPT_KV_STRONGID;
 
   if (addr && u_addr)
   {
     if (addr->mailbox && u_addr->mailbox &&
         (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
     {
-      rv |= CRYPT_KV_ADDR;
+      rc |= CRYPT_KV_ADDR;
     }
 
     if (addr->personal && u_addr->personal &&
         (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
     {
-      rv |= CRYPT_KV_STRING;
+      rc |= CRYPT_KV_STRING;
     }
   }
 
-  return rv;
+  return rc;
 }
 
 /*
@@ -1949,7 +1949,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   LOFF_T saved_offset;
   size_t saved_length;
   FILE *decoded_fp = NULL;
-  int rv = 0;
+  int rc = 0;
 
   first_part->goodsig = false;
   first_part->warnsig = false;
@@ -2000,14 +2000,14 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   if (!*fpout)
   {
     mutt_perror(tempfile);
-    rv = -1;
+    rc = -1;
     goto bail;
   }
   unlink(tempfile);
 
   *cur = decrypt_part(b, &s, *fpout, 0, &is_signed);
   if (!*cur)
-    rv = -1;
+    rc = -1;
   rewind(*fpout);
   if (is_signed > 0)
     first_part->goodsig = true;
@@ -2021,7 +2021,7 @@ bail:
     mutt_file_fclose(&decoded_fp);
   }
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -2363,24 +2363,24 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
 int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
 {
-  int rv = 0;
+  int rc = 0;
   int r;
   for (; b; b = b->next)
   {
     if (!just_one && is_multipart(b))
-      rv = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rv);
+      rc = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rc);
     else if (b->type == TYPETEXT)
     {
       if ((r = mutt_is_application_pgp(b)))
-        rv = (rv || r);
+        rc = (rc || r);
       else
-        rv = (pgp_check_traditional_one_body(fp, b) || rv);
+        rc = (pgp_check_traditional_one_body(fp, b) || rc);
     }
 
     if (just_one)
       break;
   }
-  return rv;
+  return rc;
 }
 
 void pgp_gpgme_invoke_import(const char *fname)
@@ -4272,7 +4272,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
              !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
-          char buff[LONG_STRING];
+          char buf2[LONG_STRING];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
             warn_s = N_("ID is expired/disabled/revoked.");
@@ -4297,10 +4297,10 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
             }
           }
 
-          snprintf(buff, sizeof(buff),
+          snprintf(buf2, sizeof(buf2),
                    _("%s Do you really want to use the key?"), _(warn_s));
 
-          if (mutt_yesorno(buff, 0) != MUTT_YES)
+          if (mutt_yesorno(buf2, 0) != MUTT_YES)
           {
             mutt_clear_error();
             break;
@@ -4732,7 +4732,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
   struct Body *att = NULL;
-  char buff[LONG_STRING];
+  char buf[LONG_STRING];
   struct stat sb;
 
   unset_option(OPT_PGP_CHECK_TRUST);
@@ -4769,8 +4769,8 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
-  snprintf(buff, sizeof(buff), _("PGP Key 0x%s."), crypt_keyid(key));
-  att->description = mutt_str_strdup(buff);
+  snprintf(buf, sizeof(buf), _("PGP Key 0x%s."), crypt_keyid(key));
+  att->description = mutt_str_strdup(buf);
   mutt_update_encoding(att);
 
   stat(tempf, &sb);
@@ -5010,7 +5010,7 @@ int smime_gpgme_send_menu(struct Header *msg)
 static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
 {
   struct Address *sender = NULL;
-  unsigned int ret = 1;
+  unsigned int rc = 1;
 
   if (h->env->from)
   {
@@ -5033,7 +5033,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
       int uid_length = 0;
 
       sender_length = strlen(sender->mailbox);
-      for (uid = key->uids; uid && ret; uid = uid->next)
+      for (uid = key->uids; uid && rc; uid = uid->next)
       {
         uid_length = strlen(uid->email);
         if (1 && (uid->email[0] == '<') && (uid->email[uid_length - 1] == '>') &&
@@ -5043,7 +5043,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
           if (!at_sign)
           {
             if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
-              ret = 0;
+              rc = 0;
           }
           else
           {
@@ -5065,7 +5065,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
             domainname_match =
                 (strncasecmp(tmp_email, tmp_sender, domainname_length) == 0);
             if (mailbox_match && domainname_match)
-              ret = 0;
+              rc = 0;
           }
         }
       }
@@ -5082,7 +5082,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
     signature_key = NULL;
   }
 
-  return ret;
+  return rc;
 }
 
 int smime_gpgme_verify_sender(struct Header *h)

@@ -247,7 +247,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
   wchar_t wc;
   mbstate_t mb;
   size_t l;
-  int rv = 0, bad = 0, dry = !dest || !destlen;
+  int rc = 0, bad = 0, dry = !dest || !destlen;
 
   memset(&mb, 0, sizeof(mbstate_t));
 
@@ -269,7 +269,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
       if (l == (size_t)(-1))
         memset(&mb, 0, sizeof(mbstate_t));
       *dest++ = '_';
-      rv = -1;
+      rc = -1;
     }
     else if (!dry)
     {
@@ -279,7 +279,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
   }
   if (!dry)
     *dest = '\0';
-  return rv;
+  return rc;
 }
 
 void mutt_create_alias(struct Envelope *cur, struct Address *iadr)

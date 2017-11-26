@@ -162,7 +162,7 @@ static short pgp_find_hash(const char *fname)
   unsigned char *p = NULL;
   size_t l;
 
-  short rv = -1;
+  short rc = -1;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
   out = mutt_file_fopen(tempfile, "w+");
@@ -186,7 +186,7 @@ static short pgp_find_hash(const char *fname)
   p = pgp_read_packet(out, &l);
   if (p)
   {
-    rv = pgp_mic_from_packet(p, l);
+    rc = pgp_mic_from_packet(p, l);
   }
   else
   {
@@ -198,7 +198,7 @@ bye:
   mutt_file_fclose(&in);
   mutt_file_fclose(&out);
   pgp_release_packet();
-  return rv;
+  return rc;
 }
 
 const char *pgp_micalg(const char *fname)

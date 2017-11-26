@@ -439,7 +439,7 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
   fd_set rfds;
   unsigned long wait_millis, post_t_millis;
   struct timeval tv, pre_t, post_t;
-  int rv;
+  int rc;
 
   if (conn->fd < 0)
     return -1;
@@ -455,11 +455,11 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     FD_SET(conn->fd, &rfds);
 
     gettimeofday(&pre_t, NULL);
-    rv = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
+    rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
     gettimeofday(&post_t, NULL);
 
-    if (rv > 0 || (rv < 0 && errno != EINTR))
-      return rv;
+    if (rc > 0 || (rc < 0 && errno != EINTR))
+      return rc;
 
     if (SigInt)
       mutt_query_exit();

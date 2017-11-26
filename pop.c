@@ -82,7 +82,7 @@ static int fetch_message(char *line, void *file)
 static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
   FILE *f = NULL;
-  int ret, index;
+  int rc, index;
   long length;
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX];
@@ -96,24 +96,24 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   }
 
   snprintf(buf, sizeof(buf), "LIST %d\r\n", h->refno);
-  ret = pop_query(pop_data, buf, sizeof(buf));
-  if (ret == 0)
+  rc = pop_query(pop_data, buf, sizeof(buf));
+  if (rc == 0)
   {
     sscanf(buf, "+OK %d %ld", &index, &length);
 
     snprintf(buf, sizeof(buf), "TOP %d 0\r\n", h->refno);
-    ret = pop_fetch_data(pop_data, buf, NULL, fetch_message, f);
+    rc = pop_fetch_data(pop_data, buf, NULL, fetch_message, f);
 
     if (pop_data->cmd_top == 2)
     {
-      if (ret == 0)
+      if (rc == 0)
       {
         pop_data->cmd_top = 1;
 
         mutt_debug(1, "pop_read_header: set TOP capability\n");
       }
 
-      if (ret == -2)
+      if (rc == -2)
       {
         pop_data->cmd_top = 0;
 
@@ -124,7 +124,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
     }
   }
 
-  switch (ret)
+  switch (rc)
   {
     case 0:
     {
@@ -153,7 +153,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 
   mutt_file_fclose(&f);
   unlink(tempfile);
-  return ret;
+  return rc;
 }
 
 /**

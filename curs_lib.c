@@ -740,17 +740,17 @@ static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
 int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
 {
   va_list ap;
-  int rv;
+  int rc;
 
-  rv = mutt_window_move(win, row, col);
-  if (rv != ERR)
+  rc = mutt_window_move(win, row, col);
+  if (rc != ERR)
   {
     va_start(ap, fmt);
-    rv = vw_printw(stdscr, fmt, ap);
+    rc = vw_printw(stdscr, fmt, ap);
     va_end(ap);
   }
 
-  return rv;
+  return rc;
 }
 
 /**

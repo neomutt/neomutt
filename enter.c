@@ -116,7 +116,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
  */
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
-  int rv;
+  int rc;
   struct EnterState *es = mutt_new_enter_state();
   do
   {
@@ -128,10 +128,10 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
       clearok(stdscr, TRUE);
     }
 #endif
-    rv = mutt_enter_string_full(buf, buflen, col, flags, 0, NULL, NULL, es);
-  } while (rv == 1);
+    rc = mutt_enter_string_full(buf, buflen, col, flags, 0, NULL, NULL, es);
+  } while (rc == 1);
   mutt_free_enter_state(&es);
-  return rv;
+  return rc;
 }
 
 /**
@@ -163,7 +163,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
   wchar_t wc;
   mbstate_t mbstate;
 
-  int rv = 0;
+  int rc = 0;
   memset(&mbstate, 0, sizeof(mbstate));
 
   if (state->wbuf)
@@ -233,7 +233,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
     ch = km_dokey(MENU_EDITOR);
     if (ch < 0)
     {
-      rv = (SigWinch && ch == -2) ? 1 : -1;
+      rc = (SigWinch && ch == -2) ? 1 : -1;
       goto bye;
     }
 
@@ -477,7 +477,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
                                (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0, NULL, NULL);
               if (*buf)
                 replace_part(state, i, buf);
-              rv = 1;
+              rc = 1;
               goto bye;
             }
             if (!mutt_complete(buf, buflen))
@@ -503,7 +503,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             replace_part(state, i, buf);
             if (!r)
             {
-              rv = 1;
+              rc = 1;
               goto bye;
             }
             break;
@@ -520,7 +520,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             replace_part(state, i, buf);
             if (!r)
             {
-              rv = 1;
+              rc = 1;
               goto bye;
             }
             break;
@@ -537,7 +537,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
               replace_part(state, i, buf);
               if (!r)
               {
-                rv = 1;
+                rc = 1;
                 goto bye;
               }
             }
@@ -559,7 +559,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             mutt_query_complete(buf, buflen);
             replace_part(state, i, buf);
 
-            rv = 1;
+            rc = 1;
             goto bye;
           }
           else if (flags & MUTT_COMMAND)
@@ -590,12 +590,12 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
                 mutt_pretty_mailbox(buf, buflen);
                 if (!pass)
                   mutt_history_add(hclass, buf, true);
-                rv = 0;
+                rc = 0;
                 goto bye;
               }
 
               /* file selection cancelled */
-              rv = 1;
+              rc = 1;
               goto bye;
             }
 
@@ -719,7 +719,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           tfiles[0] = mutt_str_strdup(buf);
           *files = tfiles;
         }
-        rv = 0;
+        rc = 0;
         goto bye;
       }
       else if (wc && (wc < ' ' || IsWPrint(wc))) /* why? */
@@ -746,7 +746,7 @@ bye:
 
   mutt_reset_history_state(hclass);
   FREE(&tempbuf);
-  return rv;
+  return rc;
 }
 
 void mutt_free_enter_state(struct EnterState **esp)
