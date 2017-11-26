@@ -229,7 +229,7 @@ static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
 
   mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      mutt_attach_fmt, (unsigned long) (actx->idx[actx->v2r[num]]),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 

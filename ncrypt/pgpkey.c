@@ -289,9 +289,9 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
   return src;
 }
 

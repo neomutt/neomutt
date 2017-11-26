@@ -88,7 +88,7 @@ enum SidebarSrc
 } sidebar_source = SB_SRC_INCOMING;
 
 /**
- * cb_format_str - Create the string to show in the sidebar
+ * sidebar_format_str - Create the string to show in the sidebar
  * @param[out] dest        Buffer in which to save string
  * @param[in]  destlen     Buffer length
  * @param[in]  col         Starting column, UNUSED
@@ -102,16 +102,16 @@ enum SidebarSrc
  * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
  * @retval src (unchanged)
  *
- * cb_format_str is a callback function for mutt_expando_format.  It understands
+ * sidebar_format_str is a callback function for mutt_expando_format.  It understands
  * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
  * '%N' : Number of new messages, '%S' : Size (total number of messages),
  * '%!' : Icon denoting number of flagged messages.
  * '%n' : N if folder has new mail, blank otherwise.
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *sidebar_format_str(char *dest, size_t destlen, size_t col, int cols,
+                                      char op, const char *src, const char *prefix,
+                                      const char *ifstring, const char *elsestring,
+                                      unsigned long data, enum FormatFlag flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
@@ -223,10 +223,10 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
 
   if (optional)
     mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring,
-                        cb_format_str, (unsigned long) sbe, flags);
+                        sidebar_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
-                        cb_format_str, (unsigned long) sbe, flags);
+                        sidebar_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
   return src;
@@ -242,7 +242,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
- * us using cb_format_str() for the sidebar specific formatting characters.
+ * us using sidebar_format_str() for the sidebar specific formatting characters.
  */
 static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
                                char *box, struct SbEntry *sbe)
@@ -253,7 +253,7 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
   mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
 
   mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat),
-                      cb_format_str, (unsigned long) sbe, 0);
+                      sidebar_format_str, (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);

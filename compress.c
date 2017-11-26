@@ -329,7 +329,7 @@ static char *escape_path(char *src)
 }
 
 /**
- * cb_format_str - Expand the filenames in the command string
+ * compress_format_str - Expand the filenames in the command string
  * @param dest        Buffer in which to save string
  * @param destlen     Buffer length
  * @param col         Starting column, UNUSED
@@ -343,13 +343,13 @@ static char *escape_path(char *src)
  * @param flags       Format flags, UNUSED
  * @retval src (unchanged)
  *
- * cb_format_str is a callback function for mutt_expando_format.  It understands
+ * compress_format_str is a callback function for mutt_expando_format.  It understands
  * two operators. '%f' : 'from' filename, '%t' : 'to' filename.
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *fmt,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *compress_format_str(char *dest, size_t destlen, size_t col, int cols,
+                                       char op, const char *src, const char *fmt,
+                                       const char *ifstring, const char *elsestring,
+                                       unsigned long data, enum FormatFlag flags)
 {
   if (!dest || (data == 0))
     return src;
@@ -379,7 +379,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  *
  * This function takes a hook command and expands the filename placeholders
  * within it.  The function calls mutt_expando_format() to do the replacement
- * which calls our callback function cb_format_str(). e.g.
+ * which calls our callback function compress_format_str(). e.g.
  *
  * Template command:
  *      gzip -cd '%f' > '%t'
@@ -392,7 +392,8 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
   if (!ctx || !cmd || !buf)
     return;
 
-  mutt_expando_format(buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
+  mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
+                      (unsigned long) ctx, 0);
 }
 
 /**

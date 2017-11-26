@@ -140,7 +140,7 @@ void mutt_update_tree(struct AttachCtx *actx)
 }
 
 /**
- * mutt_attach_fmt - Format string for attachment menu
+ * attach_format_str - Format string for attachment menu
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
@@ -160,10 +160,10 @@ void mutt_update_tree(struct AttachCtx *actx)
  * | \%s     | size
  * | \%u     | unlink
  */
-const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
-                            char op, const char *src, const char *prefix,
-                            const char *ifstring, const char *elsestring,
-                            unsigned long data, enum FormatFlag flags)
+const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
+                              char op, const char *src, const char *prefix,
+                              const char *ifstring, const char *elsestring,
+                              unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   char tmp[SHORT_STRING];
@@ -372,9 +372,9 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
   return src;
 }
 
@@ -383,7 +383,7 @@ static void attach_entry(char *b, size_t blen, struct Menu *menu, int num)
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
 
   mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      mutt_attach_fmt, (unsigned long) (actx->idx[actx->v2r[num]]),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
                       MUTT_FORMAT_ARROWCURSOR);
 }
 

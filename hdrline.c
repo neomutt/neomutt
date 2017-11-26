@@ -410,7 +410,7 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
 }
 
 /**
- * hdr_format_str - Format a string, like printf()
+ * index_format_str - Format a string, like printf()
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
@@ -458,10 +458,10 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
  * | \%zt    | message tag flags
  * | \%Z     | combined message flags
  */
-static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                  char op, const char *src, const char *prefix,
-                                  const char *ifstring, const char *elsestring,
-                                  unsigned long data, enum FormatFlag flags)
+static const char *index_format_str(char *dest, size_t destlen, size_t col, int cols,
+                                    char op, const char *src, const char *prefix,
+                                    const char *ifstring, const char *elsestring,
+                                    unsigned long data, enum FormatFlag flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
@@ -1323,10 +1323,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, hdr_format_str,
+    mutt_expando_format(dest, destlen, col, cols, ifstring, index_format_str,
                         (unsigned long) hfi, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, hdr_format_str,
+    mutt_expando_format(dest, destlen, col, cols, elsestring, index_format_str,
                         (unsigned long) hfi, flags);
 
   return src;
@@ -1342,11 +1342,11 @@ void mutt_make_string_flags(char *dest, size_t destlen, const char *s,
   hfi.pager_progress = 0;
 
   mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s,
-                      hdr_format_str, (unsigned long) &hfi, flags);
+                      index_format_str, (unsigned long) &hfi, flags);
 }
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags)
 {
-  mutt_expando_format(dst, dstlen, 0, cols, s, hdr_format_str, (unsigned long) hfi, flags);
+  mutt_expando_format(dst, dstlen, 0, cols, s, index_format_str, (unsigned long) hfi, flags);
 }

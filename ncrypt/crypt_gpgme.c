@@ -2891,7 +2891,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 }
 
 /**
- * crypt_entry_fmt - Format an entry on the CRYPT key selection menu
+ * crypt_format_str - Format an entry on the CRYPT key selection menu
  *
  * * \%u user id
  * * \%n number
@@ -2911,10 +2911,10 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
  * * \%F flags of the principal key
  * * \%C capabilities of the principal key
  */
-static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
-                                   char op, const char *src, const char *prefix,
-                                   const char *ifstring, const char *elsestring,
-                                   unsigned long data, enum FormatFlag flags)
+static const char *crypt_format_str(char *dest, size_t destlen, size_t col, int cols,
+                                    char op, const char *src, const char *prefix,
+                                    const char *ifstring, const char *elsestring,
+                                    unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct CryptEntry *entry = NULL;
@@ -3103,9 +3103,9 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
   return src;
 }
 
@@ -3121,7 +3121,7 @@ static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.num = num + 1;
 
   mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
-                      crypt_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+                      crypt_format_str, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

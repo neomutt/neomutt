@@ -496,10 +496,11 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
 }
 
 #ifdef USE_NNTP
-static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                        char op, const char *src, const char *fmt,
-                                        const char *ifstring, const char *elsestring,
-                                        unsigned long data, enum FormatFlag flags)
+static const char *group_index_format_str(char *dest, size_t destlen, size_t col,
+                                          int cols, char op, const char *src,
+                                          const char *fmt, const char *ifstring,
+                                          const char *elsestring,
+                                          unsigned long data, enum FormatFlag flags)
 {
   char fn[SHORT_STRING], tmp[SHORT_STRING];
   struct Folder *folder = (struct Folder *) data;
@@ -538,10 +539,10 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
       {
         if (folder->ff->nd->unread != 0)
           mutt_expando_format(dest, destlen, col, cols, ifstring,
-                              newsgroup_format_str, data, flags);
+                              group_index_format_str, data, flags);
         else
           mutt_expando_format(dest, destlen, col, cols, elsestring,
-                              newsgroup_format_str, data, flags);
+                              group_index_format_str, data, flags);
       }
       else if (Context && Context->data == folder->ff->nd)
       {
@@ -907,7 +908,7 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 #ifdef USE_NNTP
   if (option(OPT_NEWS))
     mutt_expando_format(s, slen, 0, MuttIndexWindow->cols,
-                        NONULL(GroupIndexFormat), newsgroup_format_str,
+                        NONULL(GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   else
 #endif

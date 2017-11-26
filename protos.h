@@ -58,7 +58,7 @@ void mutt_make_string_flags(char *dest, size_t destlen, const char *s, struct Co
                        struct Header *hdr, enum FormatFlag flags);
 
 /**
- * struct HdrFormatInfo - Data passed to hdr_format_str()
+ * struct HdrFormatInfo - Data passed to index_format_str()
  */
 struct HdrFormatInfo
 {
@@ -120,7 +120,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user
 
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 
-const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
+const char *attach_format_str(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, enum FormatFlag flags);

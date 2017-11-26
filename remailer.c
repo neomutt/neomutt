@@ -350,17 +350,17 @@ static const char *mix_format_caps(struct Remailer *r)
 }
 
 /**
- * mix_entry_fmt - Format an entry for the remailer menu
+ * mix_format_str - Format an entry for the remailer menu
  *
  * * %n number
  * * %c capabilities
  * * %s short name
  * * %a address
  */
-static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *mix_format_str(char *dest, size_t destlen, size_t col, int cols,
+                                  char op, const char *src, const char *prefix,
+                                  const char *ifstring, const char *elsestring,
+                                  unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct Remailer *remailer = (struct Remailer *) data;
@@ -406,16 +406,16 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, attach_format_str, data, 0);
   return src;
 }
 
 static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
+  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
