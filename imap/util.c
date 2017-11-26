@@ -622,11 +622,6 @@ struct ImapData *imap_new_idata(void)
 
   idata->cmdslots = ImapPipelineDepth + 2;
   idata->cmds = mutt_mem_calloc(idata->cmdslots, sizeof(*idata->cmds));
-  if (!idata->cmds)
-  {
-    mutt_buffer_free(&idata->cmdbuf);
-    FREE(&idata);
-  }
 
   STAILQ_INIT(&idata->flags);
   STAILQ_INIT(&idata->mboxcache);

@@ -128,46 +128,6 @@ struct NmCtxData
   bool progress_ready : 1; /**< A progress bar has been initialised */
 };
 
-#if 0
-/**
- * debug_print_filenames - Show a message's filenames
- * @param msg Notmuch Message
- *
- * Print a list of all the filenames associated with a Notmuch message.
- */
-static void debug_print_filenames(notmuch_message_t *msg)
-{
-  notmuch_filenames_t *ls = NULL;
-  const char *id = notmuch_message_get_message_id(msg);
-
-  for (ls = notmuch_message_get_filenames(msg);
-       ls && notmuch_filenames_valid(ls);
-       notmuch_filenames_move_to_next(ls))
-  {
-    mutt_debug (2, "nm: %s: %s\n", id, notmuch_filenames_get(ls));
-  }
-}
-
-/**
- * debug_print_tags - Show a message's tags
- * @param msg Notmuch Message
- *
- * Print a list of all the tags associated with a Notmuch message.
- */
-static void debug_print_tags(notmuch_message_t *msg)
-{
-  notmuch_tags_t *tags = NULL;
-  const char *id = notmuch_message_get_message_id(msg);
-
-  for (tags = notmuch_message_get_tags(msg);
-       tags && notmuch_tags_valid(tags);
-       notmuch_tags_move_to_next(tags))
-  {
-    mutt_debug (2, "nm: %s: %s\n", id, notmuch_tags_get(tags));
-  }
-}
-#endif
-
 /**
  * free_hdrdata - Free header data attached to an email
  * @param data Header data

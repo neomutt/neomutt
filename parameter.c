@@ -61,7 +61,7 @@ void mutt_free_parameter(struct Parameter **p)
  * @param s String to match
  * @param p Parameter list
  * @retval ptr Matching Parameter
- * @reval NULL No match
+ * @retval NULL No match
  */
 char *mutt_get_parameter(const char *s, struct Parameter *p)
 {
