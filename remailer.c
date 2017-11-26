@@ -378,7 +378,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
                                   const char *if_str, const char *else_str,
                                   unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct Remailer *remailer = (struct Remailer *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 

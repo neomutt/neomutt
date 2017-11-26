@@ -144,7 +144,7 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  const char *if_str, const char *else_str,
                                  unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct PgpEntry *entry = NULL;
   struct PgpUid *uid = NULL;
   struct PgpKeyInfo *key = NULL, *pkey = NULL;

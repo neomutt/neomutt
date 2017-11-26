@@ -62,7 +62,7 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
                                    const char *if_str, const char *else_str,
                                    unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 

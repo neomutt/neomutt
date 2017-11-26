@@ -739,8 +739,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
       break;
 
     case 'v':
-      snprintf(fmt, sizeof(fmt), "NeoMutt %%s%%s");
-      snprintf(buf, buflen, fmt, PACKAGE_VERSION, GitVer);
+      snprintf(buf, buflen, "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
       break;
 
     case 0:
