@@ -133,10 +133,14 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
 }
 
 /**
- * fgetconv_open - Open a file and convert its encoding
+ * fgetconv_open - Prepare a file for charset conversion
+ * @param file  FILE ptr to prepare
+ * @param from  Current character set
+ * @param to    Destination character set
+ * @param flags Flags, e.g. MUTT_ICONV_HOOK_FROM
+ * @retval ptr fgetconv handle
  *
  * Parameter flags is given as-is to mutt_iconv_open().
- * See there for its meaning and usage policy.
  */
 FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {

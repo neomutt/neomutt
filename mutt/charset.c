@@ -20,6 +20,27 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page charset Conversion between different character encodings
+ *
+ * Conversion between different character encodings
+ *
+ * | Data                | Description
+ * | :------------------ | :--------------------------------------------------
+ * | #PreferredMIMENames | Lookup table of preferred charsets
+ *
+ * | Function                       | Description
+ * | :----------------------------- | :---------------------------------------------------------
+ * | mutt_cs_canonical_charset()    | Canonicalise the charset of a string
+ * | mutt_cs_chscmp()               | Are the names of two character sets equivalent?
+ * | mutt_cs_fgetconv()             | Convert a file's character set
+ * | mutt_cs_fgetconvs()            | Convert a file's charset into a string buffer
+ * | mutt_cs_fgetconv_close()       | Close an fgetconv handle
+ * | mutt_cs_get_default_charset()  | Get the default character set
+ * | mutt_cs_iconv()                | Change the encoding of a string
+ * | mutt_cs_set_langinfo_charset() | Set the user's choice of character set
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
@@ -36,19 +57,20 @@
 #define EILSEQ EINVAL
 #endif
 
-char *AssumedCharset;
-char *Charset;
+char *AssumedCharset; /**< Encoding schemes for messages without indication */
+char *Charset;        /**< User's choice of character set */
 
-/*
+// clang-format off
+/**
+ * PreferredMIMENames - Lookup table of preferred charsets
+ *
  * The following list has been created manually from the data under:
  * http://www.isi.edu/in-notes/iana/assignments/character-sets
  * Last update: 2000-09-07
  *
- * Note that it includes only the subset of character sets for which a preferred
+ * @note It includes only the subset of character sets for which a preferred
  * MIME name is given.
  */
-
-// clang-format off
 const struct MimeNames PreferredMIMENames[] =
 {
   { "ansi_x3.4-1968",        "us-ascii"      },
@@ -201,6 +223,10 @@ const struct MimeNames PreferredMIMENames[] =
 };
 // clang-format on
 
+/**
+ * mutt_cs_fgetconv_close - Close an fgetconv handle
+ * @param _fc fgetconv handle
+ */
 void mutt_cs_fgetconv_close(FGETCONV **_fc)
 {
   struct FgetConv *fc = (struct FgetConv *) *_fc;
@@ -210,6 +236,16 @@ void mutt_cs_fgetconv_close(FGETCONV **_fc)
   FREE(_fc);
 }
 
+/**
+ * mutt_cs_fgetconv - Convert a file's character set
+ * @param _fc fgetconv handle
+ * @retval num Next character in the converted file
+ * @retval EOF Error
+ *
+ * A file is read into a buffer and its character set is converted.
+ * Each call to this function will return one converted character.
+ * The buffer is refilled automatically when empty.
+ */
 int mutt_cs_fgetconv(FGETCONV *_fc)
 {
   struct FgetConv *fc = (struct FgetConv *) _fc;
@@ -262,6 +298,16 @@ int mutt_cs_fgetconv(FGETCONV *_fc)
   return EOF;
 }
 
+/**
+ * mutt_cs_fgetconvs - Convert a file's charset into a string buffer
+ * @param buf Buffer for result
+ * @param l   Length of buffer
+ * @param _fc fgetconv handle
+ * @retval ptr  Result buffer on success
+ * @retval NULL Error
+ *
+ * Read a file into a buffer, converting the character set as it goes.
+ */
 char *mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *_fc)
 {
   int c;
@@ -286,8 +332,11 @@ char *mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *_fc)
 
 /**
  * mutt_cs_canonical_charset - Canonicalise the charset of a string
+ * @param dest Buffer for canonical character set name
+ * @param dlen Length of buffer
+ * @param name Name to be canonicalised
  *
- * this first ties off any charset extension such as //TRANSLIT,
+ * This first ties off any charset extension such as "//TRANSLIT",
  * canonicalizes the charset and re-adds the extension
  */
 void mutt_cs_canonical_charset(char *dest, size_t dlen, const char *name)
@@ -342,26 +391,36 @@ out:
   }
 }
 
+/**
+ * mutt_cs_chscmp - Are the names of two character sets equivalent?
+ * @param s   First character set
+ * @param chs Second character set
+ * @retval num true if the names are equivalent
+ *
+ * Charsets may have extensions that mutt_cs_canonical_charset() leaves intact;
+ * we expect 'chs' to originate from neomutt code, not user input (i.e. 'chs'
+ * does _not_ have any extension) we simply check if the shorter string is a
+ * prefix for the longer.
+ */
 int mutt_cs_chscmp(const char *s, const char *chs)
 {
-  char buffer[STRING];
-  int a, b;
-
-  if (!s)
+  if (!s || !chs)
     return 0;
 
-  /* charsets may have extensions mutt_cs_canonical_charset()
-     leaves intact; we expect `chs' to originate from neomutt
-     code, not user input (i.e. `chs' does _not_ have any
-     extension)
-     we simply check if the shorter string is a prefix for
-     the longer */
+  char buffer[STRING];
+
   mutt_cs_canonical_charset(buffer, sizeof(buffer), s);
-  a = mutt_str_strlen(buffer);
-  b = mutt_str_strlen(chs);
+  int a = mutt_str_strlen(buffer);
+  int b = mutt_str_strlen(chs);
   return (mutt_str_strncasecmp(a > b ? buffer : chs, a > b ? chs : buffer, MIN(a, b)) == 0);
 }
 
+/**
+ * mutt_cs_get_default_charset - Get the default character set
+ * @retval ptr Name of the default character set
+ *
+ * @note This returns a pointer to a static buffer.  Do not free it.
+ */
 char *mutt_cs_get_default_charset(void)
 {
   static char fcharset[SHORT_STRING];
@@ -379,6 +438,14 @@ char *mutt_cs_get_default_charset(void)
 
 /**
  * mutt_cs_iconv - Change the encoding of a string
+ * @param[in]     cd           Iconv conversion descriptor
+ * @param[in,out] inbuf        Buffer to convert
+ * @param[in,out] inbytesleft  Length of buffer to convert
+ * @param[in,out] outbuf       Buffer for the result
+ * @param[in,out] outbytesleft Length of result buffer
+ * @param[in]     inrepls      Input replacement characters
+ * @param[in]     outrepl      Output replacement characters
+ * @retval num Number of characters converted
  *
  * Like iconv, but keeps going even when the input is invalid
  * If you're supplying inrepls, the source charset should be stateless;
@@ -454,6 +521,11 @@ size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char *
   }
 }
 
+/**
+ * mutt_cs_set_langinfo_charset - Set the user's choice of character set
+ *
+ * Lookup the character map used by the user's locale and store it in Charset.
+ */
 void mutt_cs_set_langinfo_charset(void)
 {
   char buf[LONG_STRING];
