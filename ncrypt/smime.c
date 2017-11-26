@@ -351,6 +351,13 @@ static char *smime_key_flags(int flags)
   return buf;
 }
 
+/**
+ * smime_entry - Format a menu item for the smime key list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct SmimeKey **Table = (struct SmimeKey **) menu->data;

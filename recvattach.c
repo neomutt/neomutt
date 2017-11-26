@@ -140,25 +140,41 @@ void mutt_update_tree(struct AttachCtx *actx)
 }
 
 /**
- * attach_format_str - Format string for attachment menu
+ * attach_format_str - Format a string for the attachment menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * attach_format_str() is a callback function for mutt_expando_format().
  *
  * | Expando | Description
  * |:--------|:--------------------------------------------------------
- * | \%c     | character set: convert?
- * | \%C     | character set
- * | \%D     | deleted flag
- * | \%d     | description
+ * | \%C     | Character set
+ * | \%c     | Character set: convert?
+ * | \%D     | Deleted flag
+ * | \%d     | Description
  * | \%e     | MIME content-transfer-encoding
- * | \%F     | filename for content-disposition header
- * | \%f     | filename
- * | \%I     | content-disposition, either I (inline) or A (attachment)
- * | \%t     | tagged flag
- * | \%T     | tree chars
- * | \%m     | major MIME type
+ * | \%f     | Filename
+ * | \%F     | Filename for content-disposition header
+ * | \%I     | Content-disposition, either I (inline) or A (attachment)
+ * | \%m     | Major MIME type
  * | \%M     | MIME subtype
- * | \%n     | attachment number
- * | \%s     | size
- * | \%u     | unlink
+ * | \%n     | Attachment number
+ * | \%Q     | 'Q', if MIME part qualifies for attachment counting
+ * | \%s     | Size
+ * | \%t     | Tagged flag
+ * | \%T     | Tree chars
+ * | \%u     | Unlink
+ * | \%X     | Number of qualifying MIME parts in this part and its children
  */
 const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
                               char op, const char *src, const char *prec,
@@ -377,6 +393,13 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
   return src;
 }
 
+/**
+ * attach_entry - Format a menu item for the attachment list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void attach_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;

@@ -882,14 +882,14 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
 
 /**
  * mutt_expando_format - Expand expandos (%x) in a string
- * @param dest     output buffer
- * @param destlen  output buffer len
- * @param col      starting column (nonzero when called recursively)
- * @param cols     maximum columns
- * @param src      template string
- * @param callback callback for processing
- * @param data     callback data
- * @param flags    callback flags
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  src      Printf-like format string
+ * @param[in]  callback Callback for processing
+ * @param[in]  data     Callback data
+ * @param[in]  flags    Callback flags
  */
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
                          format_t *callback, unsigned long data, enum FormatFlag flags)

@@ -410,53 +410,72 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
 }
 
 /**
- * index_format_str - Format a string, like printf()
+ * index_format_str - Format a string for the index list
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * index_format_str() is a callback function for mutt_expando_format().
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%a     | address of author
- * | \%A     | reply-to address (if present; otherwise: address of author
- * | \%b     | filename of the originating folder
- * | \%B     | the list to which the letter was sent, or else the folder name (%b).
- * | \%c     | size of message in bytes
- * | \%C     | current message number
- * | \%d     | date and time of message using $date_format and sender's timezone
- * | \%D     | date and time of message using $date_format and local timezone
- * | \%e     | current message number in thread
- * | \%E     | number of messages in current thread
- * | \%f     | entire from line
- * | \%F     | like %n, unless from self
- * | \%g     | message tags (e.g. notmuch tags/imap flags)
- * | \%Gx    | individual message tag (e.g. notmuch tags/imap flags)
- * | \%i     | message-id
- * | \%I     | initials of author
- * | \%J     | message tags (if present, tree unfolded, and != parent's tags)
- * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
- * | \%l     | number of lines in the message
- * | \%L     | like %F, except `lists' are displayed first
- * | \%m     | number of messages in the mailbox
- * | \%n     | name of author
- * | \%N     | score
- * | \%O     | like %L, except using address instead of name
- * | \%P     | progress indicator for builtin pager
- * | \%q     | newsgroup name (if compiled with NNTP support)
- * | \%r     | comma separated list of To: recipients
- * | \%R     | comma separated list of Cc: recipients
- * | \%s     | subject
- * | \%S     | short message status (e.g., N/O/D/!/r/-)
- * | \%t     | `to:' field (recipients)
+ * | \%a     | Address of author
+ * | \%A     | Reply-to address (if present; otherwise: address of author
+ * | \%b     | Filename of the originating folder
+ * | \%B     | The list to which the letter was sent, or else the folder name (%b).
+ * | \%C     | Current message number
+ * | \%c     | Size of message in bytes
+ * | \%D     | Date and time of message using $date_format and local timezone
+ * | \%d     | Date and time of message using $date_format and sender's timezone
+ * | \%e     | Current message number in thread
+ * | \%E     | Number of messages in current thread
+ * | \%f     | Entire from line
+ * | \%F     | Like %n, unless from self
+ * | \%g     | Message tags (e.g. notmuch tags/imap flags)
+ * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
+ * | \%H     | Spam attribute(s) of this message
+ * | \%I     | Initials of author
+ * | \%i     | Message-id
+ * | \%J     | Message tags (if present, tree unfolded, and != parent's tags)
+ * | \%K     | The list to which the letter was sent (if any; otherwise: empty)
+ * | \%L     | Like %F, except 'lists' are displayed first
+ * | \%l     | Number of lines in the message
+ * | \%M     | Number of hidden messages if the thread is collapsed
+ * | \%m     | Number of messages in the mailbox
+ * | \%n     | Name of author
+ * | \%N     | Score
+ * | \%O     | Like %L, except using address instead of name
+ * | \%P     | Progress indicator for builtin pager
+ * | \%q     | Newsgroup name (if compiled with NNTP support)
+ * | \%R     | Comma separated list of Cc: recipients
+ * | \%r     | Comma separated list of To: recipients
+ * | \%S     | Short message status (e.g., N/O/D/!/r/-)
+ * | \%s     | Subject
  * | \%T     | $to_chars
- * | \%u     | user (login) name of author
- * | \%v     | first name of author, unless from self
- * | \%W     | where user is (organization)
- * | \%x     | `x-comment-to:' field (if present and compiled with NNTP support)
- * | \%X     | number of MIME attachments
- * | \%y     | `x-label:' field (if present)
- * | \%Y     | `x-label:' field (if present, tree unfolded, and != parent's x-label)
- * | \%zs    | message status flags
- * | \%zc    | message crypto flags
- * | \%zt    | message tag flags
- * | \%Z     | combined message flags
+ * | \%t     | 'To:' field (recipients)
+ * | \%u     | User (login) name of author
+ * | \%v     | First name of author, unless from self
+ * | \%W     | Where user is (organization)
+ * | \%x     | 'X-Comment-To:' field (if present and compiled with NNTP support)
+ * | \%X     | Number of MIME attachments
+ * | \%y     | 'X-Label:' field (if present)
+ * | \%Y     | 'X-Label:' field (if present, tree unfolded, and != parent's x-label)
+ * | \%Z     | Combined message flags
+ * | \%zc    | Message crypto flags
+ * | \%zs    | Message status flags
+ * | \%zt    | Message tag flags
+ * | \%(fmt) | Date/time when the message was received
+ * | \%[fmt] | Message date/time converted to the local time zone
+ * | \%{fmt} | Message date/time converted to sender's time zone
  */
 static const char *index_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,

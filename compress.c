@@ -329,22 +329,26 @@ static char *escape_path(char *src)
 }
 
 /**
- * compress_format_str - Expand the filenames in the command string
- * @param buf        Buffer in which to save string
- * @param buflen     Buffer length
- * @param col         Starting column, UNUSED
- * @param cols        Number of screen columns, UNUSED
- * @param op          printf-like operator, e.g. 't'
- * @param src         printf-like format string
- * @param prec         Field formatting string, UNUSED
- * @param if_str    If condition is met, display this string, UNUSED
- * @param else_str  Otherwise, display this string, UNUSED
- * @param data        Pointer to the mailbox Context
- * @param flags       Format flags, UNUSED
+ * compress_format_str - Expand the filenames in a command string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
  * @retval src (unchanged)
  *
- * compress_format_str is a callback function for mutt_expando_format.  It understands
- * two operators. '%f' : 'from' filename, '%t' : 'to' filename.
+ * compress_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%f     | Compressed file
+ * | \%t     | Plaintext, temporary file
  */
 static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
                                        char op, const char *src, const char *prec,

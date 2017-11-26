@@ -273,6 +273,39 @@ static int link_is_dir(const char *folder, const char *path)
     return 0;
 }
 
+/**
+ * folder_format_str - Format a string for the folder browser
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * folder_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%C     | Current file number
+ * | \%d     | Date/time folder was last modified
+ * | \%D     | Date/time folder was last modified using $$date_format.
+ * | \%F     | File permissions
+ * | \%f     | Filename (with suffix '/', '@' or '*')
+ * | \%g     | Group name (or numeric gid, if missing)
+ * | \%l     | Number of hard links
+ * | \%m     | Number of messages in the mailbox *
+ * | \%N     | N if mailbox has new mail, blank otherwise
+ * | \%n     | Number of unread messages in the mailbox *
+ * | \%s     | Size in bytes
+ * | \%t     | '*' if the file is tagged, blank otherwise
+ * | \%u     | Owner name (or numeric uid, if missing)
+ */
 static const char *folder_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,
                                      const char *if_str, const char *else_str,
@@ -496,6 +529,33 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 }
 
 #ifdef USE_NNTP
+/**
+ * group_index_format_str - Format a string for the newsgroup menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * group_index_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%C     | Current newsgroup number
+ * | \%d     | Description of newsgroup (becomes from server)
+ * | \%f     | Newsgroup name
+ * | \%M     | - if newsgroup not allowed for direct post (moderated for example)
+ * | \%N     | N if newsgroup is new, u if unsubscribed, blank otherwise
+ * | \%n     | Number of new articles in newsgroup
+ * | \%s     | Number of unread articles in newsgroup
+ */
 static const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols,
                                           char op, const char *src, const char *prec,
                                           const char *if_str, const char *else_str,
@@ -896,6 +956,13 @@ static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 }
 #endif
 
+/**
+ * folder_entry - Format a menu item for the folder browser
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Folder folder;
@@ -916,6 +983,13 @@ static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 }
 
 #ifdef USE_NOTMUCH
+/**
+ * vfolder_entry - Format a menu item for the virtual folder list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void vfolder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Folder folder;

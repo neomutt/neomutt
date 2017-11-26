@@ -172,6 +172,13 @@ void mutt_update_num_postponed(void)
   UpdateNumPostponed = 1;
 }
 
+/**
+ * post_entry - Format a menu item for the email list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Context *ctx = (struct Context *) menu->data;

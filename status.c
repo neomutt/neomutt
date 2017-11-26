@@ -47,31 +47,47 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
 
 static void status_line(char *buf, size_t buflen, size_t col, int cols,
                         struct Menu *menu, const char *p);
+
 /**
- * status_format_str - Format a string for the status bar
+ * status_format_str - Create the status bar string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * status_format_str() is a callback function for mutt_expando_format().
  *
  * | Expando | Description
- * |:--------|:----------------------------------------------------------------
- * | \%b     | number of incoming folders with unread messages [option]
- * | \%d     | number of deleted messages [option]
- * | \%f     | full mailbox path
- * | \%F     | number of flagged messages [option]
- * | \%h     | hostname
- * | \%l     | length of mailbox (in bytes) [option]
- * | \%m     | total number of messages [option]
- * | \%M     | number of messages shown (virtual message count when limiting) [option]
- * | \%n     | number of new messages [option]
- * | \%o     | number of old unread messages [option]
- * | \%p     | number of postponed messages [option]
- * | \%P     | percent of way through index
- * | \%r     | readonly/wontwrite/changed flag
- * | \%R     | number of read messages [option]
- * | \%s     | current sorting method ($sort)
- * | \%S     | current aux sorting method ($sort_aux)
- * | \%t     | # of tagged messages [option]
- * | \%u     | number of unread messages [option]
+ * |:--------|:--------------------------------------------------------
+ * | \%b     | Number of incoming folders with unread messages
+ * | \%d     | Number of deleted messages
+ * | \%f     | Full mailbox path
+ * | \%F     | Number of flagged messages
+ * | \%h     | Hostname
+ * | \%l     | Length of mailbox (in bytes)
+ * | \%L     | Size (in bytes) of the messages shown
+ * | \%M     | Number of messages shown (virtual message count when limiting)
+ * | \%m     | Total number of messages
+ * | \%n     | Number of new messages
+ * | \%o     | Number of old unread messages
+ * | \%p     | Number of postponed messages
+ * | \%P     | Percent of way through index
+ * | \%R     | Number of read messages
+ * | \%r     | Readonly/wontwrite/changed flag
+ * | \%S     | Current aux sorting method ($sort_aux)
+ * | \%s     | Current sorting method ($sort)
+ * | \%t     | # of tagged messages
+ * | \%u     | Number of unread messages
+ * | \%V     | Currently active limit pattern
  * | \%v     | NeoMutt version
- * | \%V     | currently active limit pattern [option]
  */
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prec,

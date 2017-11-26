@@ -88,25 +88,33 @@ enum SidebarSrc
 } sidebar_source = SB_SRC_INCOMING;
 
 /**
- * sidebar_format_str - Create the string to show in the sidebar
- * @param[out] dest        Buffer in which to save string
- * @param[in]  destlen     Buffer length
- * @param[in]  col         Starting column, UNUSED
- * @param[in]  cols        Maximum columns, UNUSED
- * @param[in]  op          printf-like operator, e.g. 'B'
- * @param[in]  src         printf-like format string
- * @param[in]  prefix      Field formatting string, UNUSED
- * @param[in]  if_str    If condition is met, display this string
- * @param[in]  else_str  Otherwise, display this string
- * @param[in]  data        Pointer to our sidebar_entry
- * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
+ * sidebar_format_str - Format a string for the sidebar
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
  * @retval src (unchanged)
  *
- * sidebar_format_str is a callback function for mutt_expando_format.  It understands
- * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
- * '%N' : Number of new messages, '%S' : Size (total number of messages),
- * '%!' : Icon denoting number of flagged messages.
- * '%n' : N if folder has new mail, blank otherwise.
+ * sidebar_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%B     | Name of the mailbox
+ * | \%d     | Number of deleted messages
+ * | \%F     | Number of Flagged messages in the mailbox
+ * | \%L     | Number of messages after limiting
+ * | \%n     | N if mailbox has new mail, blank otherwise
+ * | \%N     | Number of unread messages in the mailbox
+ * | \%S     | Size of mailbox (total number of messages)
+ * | \%t     | Number of tagged messages
+ * | \%!     | 'n!' Flagged messages
  */
 static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,

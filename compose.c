@@ -224,6 +224,13 @@ static void init_header_padding(void)
   }
 }
 
+/**
+ * snd_entry - Format a menu item for the attachment list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
@@ -680,15 +687,28 @@ static unsigned long cum_attachs_size(struct Menu *menu)
 }
 
 /**
- * compose_format_str - Format strings like printf()
+ * compose_format_str - Create the status bar string for compose mode
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * \%a Total number of attachments
- * * \%h ShortHostname  [option]
- * * \%l Approx. length of current message (in bytes)
- * * \%v NeoMutt version
+ * compose_format_str() is a callback function for mutt_expando_format().
  *
- * This function is similar to status_format_str().  Look at that function for
- * help when modifying this function.
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Total number of attachments
+ * | \%h     | Local hostname
+ * | \%l     | Approximate size (in bytes) of the current message
+ * | \%v     | NeoMutt version string
  */
 static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prec,

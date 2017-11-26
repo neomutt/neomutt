@@ -1152,8 +1152,17 @@ int mutt_addwch(wchar_t wc)
 
 /**
  * mutt_simple_format - Format a string, like snprintf()
+ * @param[out] buf       Buffer in which to save string
+ * @param[in]  buflen    Buffer length
+ * @param[in]  min_width Minimum width
+ * @param[in]  max_width Maximum width
+ * @param[in]  justify   Justification, e.g. #FMT_RIGHT
+ * @param[in]  pad_char  Padding character
+ * @param[in]  s         String to format
+ * @param[in]  n         Number of bytes of string to format
+ * @param[in]  arboreal  If true, string contains graphical tree characters
  *
- * This formats a string, a bit like snprintf (dest, destlen, "%-*.*s",
+ * This formats a string, a bit like snprintf(buf, buflen, "%-*.*s",
  * min_width, max_width, s), except that the widths refer to the number of
  * character cells when printed.
  */
@@ -1259,6 +1268,11 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
 
 /**
  * format_s_x - Format a string like snprintf()
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ * @param[in]  arboreal  If true, string contains graphical tree characters
  *
  * This formats a string rather like
  *   snprintf (fmt, sizeof (fmt), "%%%ss", prec);
@@ -1296,11 +1310,25 @@ static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s
                      mutt_str_strlen(s), arboreal);
 }
 
+/**
+ * mutt_format_s - Format a simple string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ */
 void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
 {
   format_s_x(buf, buflen, prec, s, 0);
 }
 
+/**
+ * mutt_format_s_tree - Format a simple string with tree characters
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ */
 void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s)
 {
   format_s_x(buf, buflen, prec, s, 1);

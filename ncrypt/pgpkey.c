@@ -295,6 +295,13 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
   return src;
 }
 
+/**
+ * pgp_entry - Format a menu item for the pgp key list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void pgp_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct PgpUid **KeyTable = (struct PgpUid **) menu->data;

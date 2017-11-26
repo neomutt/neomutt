@@ -206,6 +206,31 @@ static int query_search(struct Menu *m, regex_t *re, int n)
   return REG_NOMATCH;
 }
 
+/**
+ * query_format_str - Format a string for the query menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * query_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Destination address
+ * | \%c     | Current entry number
+ * | \%e     | Extra information
+ * | \%n     | Destination name
+ * | \%t     | '*' if current entry is tagged, a space otherwise
+ */
 static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
                                     const char *if_str, const char *else_str,
@@ -259,6 +284,13 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
   return src;
 }
 
+/**
+ * query_entry - Format a menu item for the query list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
 static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Entry *entry = &((struct Entry *) menu->data)[num];

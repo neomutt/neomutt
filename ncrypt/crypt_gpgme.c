@@ -2891,25 +2891,41 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 }
 
 /**
- * crypt_format_str - Format an entry on the CRYPT key selection menu
+ * crypt_format_str - Format a string for the key selection menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * \%u user id
- * * \%n number
- * * \%t trust/validity of the key-uid association
- * * \%p         protocol
- * * \%[...] date of key using strftime(3)
+ * crypt_format_str() is a callback function for mutt_expando_format().
  *
- * * \%k key id
- * * \%a algorithm
- * * \%l length
- * * \%f flags
- * * \%c capabilities
- *
- * * \%K key id of the principal key
- * * \%A algorithm of the principal key
- * * \%L length of the principal key
- * * \%F flags of the principal key
- * * \%C capabilities of the principal key
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%u     | User id
+ * | \%n     | Number
+ * | \%t     | Trust/validity of the key-uid association
+ * | \%p     | Protocol
+ * | \%[...] | Date of key using strftime(3)
+ * |         |
+ * | \%k     | Key id
+ * | \%a     | Algorithm
+ * | \%l     | Length
+ * | \%f     | Flags
+ * | \%c     | Capabilities
+ * |         |
+ * | \%K     | Key id of the principal key
+ * | \%A     | Algorithm of the principal key
+ * | \%L     | Length of the principal key
+ * | \%F     | Flags of the principal key
+ * | \%C     | Capabilities of the principal key
  */
 static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
@@ -3110,7 +3126,11 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * crypt_entry - Used by the display function to format a line
+ * crypt_entry - Format a menu item for the key selection list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
  */
 static void crypt_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
