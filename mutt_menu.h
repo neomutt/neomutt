@@ -76,7 +76,7 @@ struct Menu
   char *keys;    /**< keys used in the prompt */
 
   /* callback to generate an index line for the requested element */
-  void (*make_entry)(char *, size_t, struct Menu *, int);
+  void (*make_entry)(char *buf, size_t buflen, struct Menu *menu, int num);
 
   /* how to search the menu */
   int (*search)(struct Menu *, regex_t *re, int n);

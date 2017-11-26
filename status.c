@@ -47,35 +47,51 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
 
 static void status_line(char *buf, size_t buflen, size_t col, int cols,
                         struct Menu *menu, const char *p);
+
 /**
- * status_format_str - Format a string for the status bar
+ * status_format_str - Create the status bar string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * status_format_str() is a callback function for mutt_expando_format().
  *
  * | Expando | Description
- * |:--------|:----------------------------------------------------------------
- * | \%b     | number of incoming folders with unread messages [option]
- * | \%d     | number of deleted messages [option]
- * | \%f     | full mailbox path
- * | \%F     | number of flagged messages [option]
- * | \%h     | hostname
- * | \%l     | length of mailbox (in bytes) [option]
- * | \%m     | total number of messages [option]
- * | \%M     | number of messages shown (virtual message count when limiting) [option]
- * | \%n     | number of new messages [option]
- * | \%o     | number of old unread messages [option]
- * | \%p     | number of postponed messages [option]
- * | \%P     | percent of way through index
- * | \%r     | readonly/wontwrite/changed flag
- * | \%R     | number of read messages [option]
- * | \%s     | current sorting method ($sort)
- * | \%S     | current aux sorting method ($sort_aux)
- * | \%t     | # of tagged messages [option]
- * | \%u     | number of unread messages [option]
+ * |:--------|:--------------------------------------------------------
+ * | \%b     | Number of incoming folders with unread messages
+ * | \%d     | Number of deleted messages
+ * | \%f     | Full mailbox path
+ * | \%F     | Number of flagged messages
+ * | \%h     | Hostname
+ * | \%l     | Length of mailbox (in bytes)
+ * | \%L     | Size (in bytes) of the messages shown
+ * | \%M     | Number of messages shown (virtual message count when limiting)
+ * | \%m     | Total number of messages
+ * | \%n     | Number of new messages
+ * | \%o     | Number of old unread messages
+ * | \%p     | Number of postponed messages
+ * | \%P     | Percent of way through index
+ * | \%R     | Number of read messages
+ * | \%r     | Readonly/wontwrite/changed flag
+ * | \%S     | Current aux sorting method ($sort_aux)
+ * | \%s     | Current sorting method ($sort)
+ * | \%t     | # of tagged messages
+ * | \%u     | Number of unread messages
+ * | \%V     | Currently active limit pattern
  * | \%v     | NeoMutt version
- * | \%V     | currently active limit pattern [option]
  */
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                     char op, const char *src, const char *prefix,
-                                     const char *ifstring, const char *elsestring,
+                                     char op, const char *src, const char *prec,
+                                     const char *if_str, const char *else_str,
                                      unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
@@ -88,7 +104,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'b':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, mutt_buffy_check(false));
       }
       else if (!mutt_buffy_check(false))
@@ -98,7 +114,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'd':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->deleted : 0);
       }
       else if (!Context || !Context->deleted)
@@ -129,14 +145,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       else
         mutt_str_strfcpy(tmp, _("(no mailbox)"), sizeof(tmp));
 
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, tmp);
       break;
     }
     case 'F':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->flagged : 0);
       }
       else if (!Context || !Context->flagged)
@@ -144,14 +160,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       break;
 
     case 'h':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         mutt_pretty_size(tmp, sizeof(tmp), Context ? Context->size : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
@@ -162,7 +178,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'L':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         mutt_pretty_size(tmp, sizeof(tmp), Context ? Context->vsize : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
@@ -173,7 +189,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'm':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->msgcount : 0);
       }
       else if (!Context || !Context->msgcount)
@@ -183,7 +199,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'M':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->vcount : 0);
       }
       else if (!Context || !Context->pattern)
@@ -193,7 +209,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->new : 0);
       }
       else if (!Context || !Context->new)
@@ -203,7 +219,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'o':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->unread - Context->new : 0);
       }
       else if (!Context || !(Context->unread - Context->new))
@@ -214,7 +230,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       count = mutt_num_postponed(0);
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, count);
       }
       else if (!count)
@@ -232,7 +248,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(tmp, sizeof(tmp), "%d%%", count);
         cp = tmp;
       }
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, cp);
       break;
 
@@ -268,7 +284,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, read);
       }
       else if (!read)
@@ -277,19 +293,19 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     }
 
     case 's':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), Sort));
       break;
 
     case 'S':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), SortAux));
       break;
 
     case 't':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->tagged : 0);
       }
       else if (!Context || !Context->tagged)
@@ -299,7 +315,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'u':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context ? Context->unread : 0);
       }
       else if (!Context || !Context->unread)
@@ -314,7 +330,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'V':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, (Context && Context->pattern) ? Context->pattern : "");
       }
       else if (!Context || !Context->pattern)
@@ -326,14 +342,14 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       return src;
 
     default:
-      snprintf(buf, buflen, "%%%s%c", prefix, op);
+      snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
   }
 
   if (optional)
-    status_line(buf, buflen, col, cols, menu, ifstring);
+    status_line(buf, buflen, col, cols, menu, if_str);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    status_line(buf, buflen, col, cols, menu, elsestring);
+    status_line(buf, buflen, col, cols, menu, else_str);
 
   return src;
 }

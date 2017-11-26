@@ -273,12 +273,45 @@ static int link_is_dir(const char *folder, const char *path)
     return 0;
 }
 
-static const char *folder_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                     char op, const char *src, const char *fmt,
-                                     const char *ifstring, const char *elsestring,
+/**
+ * folder_format_str - Format a string for the folder browser
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * folder_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%C     | Current file number
+ * | \%d     | Date/time folder was last modified
+ * | \%D     | Date/time folder was last modified using $$date_format.
+ * | \%F     | File permissions
+ * | \%f     | Filename (with suffix '/', '@' or '*')
+ * | \%g     | Group name (or numeric gid, if missing)
+ * | \%l     | Number of hard links
+ * | \%m     | Number of messages in the mailbox *
+ * | \%N     | N if mailbox has new mail, blank otherwise
+ * | \%n     | Number of unread messages in the mailbox *
+ * | \%s     | Size in bytes
+ * | \%t     | '*' if the file is tagged, blank otherwise
+ * | \%u     | Owner name (or numeric uid, if missing)
+ */
+static const char *folder_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                     char op, const char *src, const char *prec,
+                                     const char *if_str, const char *else_str,
                                      unsigned long data, enum FormatFlag flags)
 {
-  char fn[SHORT_STRING], tmp[SHORT_STRING], permission[11];
+  char fn[SHORT_STRING], fmt[SHORT_STRING], permission[11];
   char date[SHORT_STRING], *t_fmt = NULL;
   time_t tnow;
   struct Folder *folder = (struct Folder *) data;
@@ -289,8 +322,8 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
   switch (op)
   {
     case 'C':
-      snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-      snprintf(dest, destlen, tmp, folder->num + 1);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, folder->num + 1);
       break;
 
     case 'd':
@@ -321,10 +354,10 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
         if (!do_locales)
           setlocale(LC_TIME, "");
 
-        mutt_format_s(dest, destlen, fmt, date);
+        mutt_format_s(buf, buflen, prec, date);
       }
       else
-        mutt_format_s(dest, destlen, fmt, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     case 'f':
@@ -352,7 +385,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
                              ((folder->ff->mode & S_IXUSR) != 0 ? "*" : ""))) :
                    "");
 
-      mutt_format_s(dest, destlen, fmt, fn);
+      mutt_format_s(buf, buflen, prec, fn);
       break;
     }
     case 'F':
@@ -375,7 +408,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
                  (folder->ff->mode & S_ISVTX) != 0 ?
                      't' :
                      (folder->ff->mode & S_IXOTH) != 0 ? 'x' : '-');
-        mutt_format_s(dest, destlen, fmt, permission);
+        mutt_format_s(buf, buflen, prec, permission);
       }
 #ifdef USE_IMAP
       else if (folder->ff->imap)
@@ -383,36 +416,36 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
         /* mark folders with subfolders AND mail */
         snprintf(permission, sizeof(permission), "IMAP %c",
                  (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
-        mutt_format_s(dest, destlen, fmt, permission);
+        mutt_format_s(buf, buflen, prec, permission);
       }
 #endif
       else
-        mutt_format_s(dest, destlen, fmt, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     case 'g':
       if (folder->ff->local)
       {
         if ((gr = getgrgid(folder->ff->gid)))
-          mutt_format_s(dest, destlen, fmt, gr->gr_name);
+          mutt_format_s(buf, buflen, prec, gr->gr_name);
         else
         {
-          snprintf(tmp, sizeof(tmp), "%%%sld", fmt);
-          snprintf(dest, destlen, tmp, folder->ff->gid);
+          snprintf(fmt, sizeof(fmt), "%%%sld", prec);
+          snprintf(buf, buflen, fmt, folder->ff->gid);
         }
       }
       else
-        mutt_format_s(dest, destlen, fmt, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     case 'l':
       if (folder->ff->local)
       {
-        snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-        snprintf(dest, destlen, tmp, folder->ff->nlink);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->nlink);
       }
       else
-        mutt_format_s(dest, destlen, fmt, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     case 'm':
@@ -420,19 +453,19 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
       {
         if (folder->ff->has_buffy)
         {
-          snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-          snprintf(dest, destlen, tmp, folder->ff->msg_count);
+          snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+          snprintf(buf, buflen, fmt, folder->ff->msg_count);
         }
         else
-          mutt_format_s(dest, destlen, fmt, "");
+          mutt_format_s(buf, buflen, prec, "");
       }
       else if (!folder->ff->msg_count)
         optional = 0;
       break;
 
     case 'N':
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, folder->ff->new ? 'N' : ' ');
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, folder->ff->new ? 'N' : ' ');
       break;
 
     case 'n':
@@ -440,11 +473,11 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
       {
         if (folder->ff->has_buffy)
         {
-          snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-          snprintf(dest, destlen, tmp, folder->ff->msg_unread);
+          snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+          snprintf(buf, buflen, fmt, folder->ff->msg_unread);
         }
         else
-          mutt_format_s(dest, destlen, fmt, "");
+          mutt_format_s(buf, buflen, prec, "");
       }
       else if (!folder->ff->msg_unread)
         optional = 0;
@@ -454,144 +487,170 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
       if (folder->ff->local)
       {
         mutt_pretty_size(fn, sizeof(fn), folder->ff->size);
-        snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-        snprintf(dest, destlen, tmp, fn);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, fn);
       }
       else
-        mutt_format_s(dest, destlen, fmt, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     case 't':
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, folder->ff->tagged ? '*' : ' ');
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, folder->ff->tagged ? '*' : ' ');
       break;
 
     case 'u':
       if (folder->ff->local)
       {
         if ((pw = getpwuid(folder->ff->uid)))
-          mutt_format_s(dest, destlen, fmt, pw->pw_name);
+          mutt_format_s(buf, buflen, prec, pw->pw_name);
         else
         {
-          snprintf(tmp, sizeof(tmp), "%%%sld", fmt);
-          snprintf(dest, destlen, tmp, folder->ff->uid);
+          snprintf(fmt, sizeof(fmt), "%%%sld", prec);
+          snprintf(buf, buflen, fmt, folder->ff->uid);
         }
       }
       else
-        mutt_format_s(dest, destlen, fmt, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     default:
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, op);
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, op);
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, folder_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, folder_format_str, data, 0);
 
   return src;
 }
 
 #ifdef USE_NNTP
-static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                        char op, const char *src, const char *fmt,
-                                        const char *ifstring, const char *elsestring,
-                                        unsigned long data, enum FormatFlag flags)
+/**
+ * group_index_format_str - Format a string for the newsgroup menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * group_index_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%C     | Current newsgroup number
+ * | \%d     | Description of newsgroup (becomes from server)
+ * | \%f     | Newsgroup name
+ * | \%M     | - if newsgroup not allowed for direct post (moderated for example)
+ * | \%N     | N if newsgroup is new, u if unsubscribed, blank otherwise
+ * | \%n     | Number of new articles in newsgroup
+ * | \%s     | Number of unread articles in newsgroup
+ */
+static const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                          char op, const char *src, const char *prec,
+                                          const char *if_str, const char *else_str,
+                                          unsigned long data, enum FormatFlag flags)
 {
-  char fn[SHORT_STRING], tmp[SHORT_STRING];
+  char fn[SHORT_STRING], fmt[SHORT_STRING];
   struct Folder *folder = (struct Folder *) data;
 
   switch (op)
   {
     case 'C':
-      snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-      snprintf(dest, destlen, tmp, folder->num + 1);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, folder->num + 1);
+      break;
+
+    case 'd':
+      if (folder->ff->nd->desc)
+      {
+        char *desc = mutt_str_strdup(folder->ff->nd->desc);
+        if (NewsgroupsCharset && *NewsgroupsCharset)
+          mutt_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
+        mutt_filter_unprintable(&desc);
+
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, desc);
+        FREE(&desc);
+      }
+      else
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, "");
+      }
       break;
 
     case 'f':
       strncpy(fn, folder->ff->name, sizeof(fn) - 1);
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, fn);
-      break;
-
-    case 'N':
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      if (folder->ff->nd->subscribed)
-        snprintf(dest, destlen, tmp, ' ');
-      else
-        snprintf(dest, destlen, tmp, folder->ff->new ? 'N' : 'u');
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, fn);
       break;
 
     case 'M':
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       if (folder->ff->nd->deleted)
-        snprintf(dest, destlen, tmp, 'D');
+        snprintf(buf, buflen, fmt, 'D');
       else
-        snprintf(dest, destlen, tmp, folder->ff->nd->allowed ? ' ' : '-');
+        snprintf(buf, buflen, fmt, folder->ff->nd->allowed ? ' ' : '-');
+      break;
+
+    case 'N':
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      if (folder->ff->nd->subscribed)
+        snprintf(buf, buflen, fmt, ' ');
+      else
+        snprintf(buf, buflen, fmt, folder->ff->new ? 'N' : 'u');
       break;
 
     case 's':
       if (flags & MUTT_FORMAT_OPTIONAL)
       {
         if (folder->ff->nd->unread != 0)
-          mutt_expando_format(dest, destlen, col, cols, ifstring,
-                              newsgroup_format_str, data, flags);
+          mutt_expando_format(buf, buflen, col, cols, if_str,
+                              group_index_format_str, data, flags);
         else
-          mutt_expando_format(dest, destlen, col, cols, elsestring,
-                              newsgroup_format_str, data, flags);
+          mutt_expando_format(buf, buflen, col, cols, else_str,
+                              group_index_format_str, data, flags);
       }
       else if (Context && Context->data == folder->ff->nd)
       {
-        snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-        snprintf(dest, destlen, tmp, Context->unread);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, Context->unread);
       }
       else
       {
-        snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-        snprintf(dest, destlen, tmp, folder->ff->nd->unread);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->nd->unread);
       }
       break;
 
     case 'n':
       if (Context && Context->data == folder->ff->nd)
       {
-        snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-        snprintf(dest, destlen, tmp, Context->new);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, Context->new);
       }
       else if (option(OPT_MARK_OLD) &&
                folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
                folder->ff->nd->last_cached <= folder->ff->nd->last_message)
       {
-        snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-        snprintf(dest, destlen, tmp,
-                 folder->ff->nd->last_message - folder->ff->nd->last_cached);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->nd->last_message - folder->ff->nd->last_cached);
       }
       else
       {
-        snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-        snprintf(dest, destlen, tmp, folder->ff->nd->unread);
-      }
-      break;
-
-    case 'd':
-      if (folder->ff->nd->desc)
-      {
-        char *buf = mutt_str_strdup(folder->ff->nd->desc);
-        if (NewsgroupsCharset && *NewsgroupsCharset)
-          mutt_convert_string(&buf, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
-        mutt_filter_unprintable(&buf);
-
-        snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-        snprintf(dest, destlen, tmp, buf);
-        FREE(&buf);
-      }
-      else
-      {
-        snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-        snprintf(dest, destlen, tmp, "");
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->nd->unread);
       }
       break;
   }
@@ -897,7 +956,14 @@ static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 }
 #endif
 
-static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
+/**
+ * folder_entry - Format a menu item for the folder browser
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void folder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Folder folder;
 
@@ -906,24 +972,32 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 
 #ifdef USE_NNTP
   if (option(OPT_NEWS))
-    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols,
-                        NONULL(GroupIndexFormat), newsgroup_format_str,
+    mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
+                        NONULL(GroupIndexFormat), group_index_format_str,
                         (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   else
 #endif
-    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(FolderFormat),
-                        folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
+    mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
+                        NONULL(FolderFormat), folder_format_str,
+                        (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 
 #ifdef USE_NOTMUCH
-static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
+/**
+ * vfolder_entry - Format a menu item for the virtual folder list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void vfolder_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Folder folder;
 
   folder.ff = &((struct FolderFile *) menu->data)[num];
   folder.num = num;
 
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(VfolderFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(VfolderFormat),
                       folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 #endif

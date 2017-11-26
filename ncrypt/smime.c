@@ -159,12 +159,12 @@ int smime_valid_passphrase(void)
  *
  * This is almost identical to pgp's invoking interface.
  */
-static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int cols,
-                                     char op, const char *src, const char *prefix,
-                                     const char *ifstring, const char *elsestring,
+static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int cols,
+                                     char op, const char *src, const char *prec,
+                                     const char *if_str, const char *else_str,
                                      unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -187,8 +187,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
         else
           snprintf(buf2, sizeof(buf2), "-CApath %s", buf1);
 
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, buf2);
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, buf2);
       }
       else if (!SmimeCALocation)
         optional = 0;
@@ -199,8 +199,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* certificate (list) */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->certificates));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->certificates));
       }
       else if (!cctx->certificates)
         optional = 0;
@@ -211,8 +211,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* intermediate certificates  */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->intermediates));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->intermediates));
       }
       else if (!cctx->intermediates)
         optional = 0;
@@ -223,8 +223,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* detached signature */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->sig_fname));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
       }
       else if (!cctx->sig_fname)
         optional = 0;
@@ -235,8 +235,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* private key */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->key));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->key));
       }
       else if (!cctx->key)
         optional = 0;
@@ -247,8 +247,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* algorithm for encryption */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->cryptalg));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->cryptalg));
       }
       else if (!cctx->key)
         optional = 0;
@@ -259,8 +259,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* file to process */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->fname));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->fname));
       }
       else if (!cctx->fname)
         optional = 0;
@@ -271,8 +271,8 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     { /* algorithm for the signature message digest */
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->digestalg));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->digestalg));
       }
       else if (!cctx->key)
         optional = 0;
@@ -280,24 +280,24 @@ static const char *fmt_smime_command(char *dest, size_t destlen, size_t col, int
     }
 
     default:
-      *dest = '\0';
+      *buf = '\0';
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, fmt_smime_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_smime_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, fmt_smime_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_smime_command, data, 0);
 
   return src;
 }
 
-static void smime_command(char *d, size_t dlen,
+static void smime_command(char *buf, size_t buflen,
                           struct SmimeCommandContext *cctx, const char *fmt)
 {
-  mutt_expando_format(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
                       fmt_smime_command, (unsigned long) cctx, 0);
-  mutt_debug(2, "smime_command: %s\n", d);
+  mutt_debug(2, "smime_command: %s\n", buf);
 }
 
 static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
@@ -351,7 +351,14 @@ static char *smime_key_flags(int flags)
   return buf;
 }
 
-static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
+/**
+ * smime_entry - Format a menu item for the smime key list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct SmimeKey **Table = (struct SmimeKey **) menu->data;
   struct SmimeKey *this = Table[num];
@@ -379,7 +386,7 @@ static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
     default:
       truststate = N_("Unknown   ");
   }
-  snprintf(s, l, " 0x%s %s %s %-35.35s %s", this->hash,
+  snprintf(buf, buflen, " 0x%s %s %s %-35.35s %s", this->hash,
            smime_key_flags(this->flags), truststate, this->email, this->label);
 }
 

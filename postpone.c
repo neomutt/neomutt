@@ -172,11 +172,18 @@ void mutt_update_num_postponed(void)
   UpdateNumPostponed = 1;
 }
 
-static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
+/**
+ * post_entry - Format a menu item for the email list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Context *ctx = (struct Context *) menu->data;
 
-  mutt_make_string_flags(s, slen, NONULL(IndexFormat), ctx, ctx->hdrs[entry],
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx, ctx->hdrs[num],
                          MUTT_FORMAT_ARROWCURSOR);
 }
 

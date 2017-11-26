@@ -350,72 +350,99 @@ static const char *mix_format_caps(struct Remailer *r)
 }
 
 /**
- * mix_entry_fmt - Format an entry for the remailer menu
+ * mix_format_str - Format a string for the remailer menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * %n number
- * * %c capabilities
- * * %s short name
- * * %a address
+ * mix_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | The remailer's e-mail address
+ * | \%c     | Remailer capabilities
+ * | \%n     | The running number on the menu
+ * | \%s     | The remailer's short name
  */
-static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                  char op, const char *src, const char *prec,
+                                  const char *if_str, const char *else_str,
+                                  unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct Remailer *remailer = (struct Remailer *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, remailer->num);
-      }
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, mix_format_caps(remailer));
-      }
-      break;
-    case 's':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(remailer->shortname));
-      }
-      else if (!remailer->shortname)
-        optional = 0;
-      break;
     case 'a':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(remailer->addr));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(remailer->addr));
       }
       else if (!remailer->addr)
         optional = 0;
       break;
 
+    case 'c':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, mix_format_caps(remailer));
+      }
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, remailer->num);
+      }
+      break;
+
+    case 's':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
+      }
+      else if (!remailer->shortname)
+        optional = 0;
+      break;
+
     default:
-      *dest = '\0';
+      *buf = '\0';
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
   return src;
 }
 
-static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
+/**
+ * mix_entry - Format a menu item for the mixmaster chain list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
+                      NONULL(MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 

@@ -1152,13 +1152,22 @@ int mutt_addwch(wchar_t wc)
 
 /**
  * mutt_simple_format - Format a string, like snprintf()
+ * @param[out] buf       Buffer in which to save string
+ * @param[in]  buflen    Buffer length
+ * @param[in]  min_width Minimum width
+ * @param[in]  max_width Maximum width
+ * @param[in]  justify   Justification, e.g. #FMT_RIGHT
+ * @param[in]  pad_char  Padding character
+ * @param[in]  s         String to format
+ * @param[in]  n         Number of bytes of string to format
+ * @param[in]  arboreal  If true, string contains graphical tree characters
  *
- * This formats a string, a bit like snprintf (dest, destlen, "%-*.*s",
+ * This formats a string, a bit like snprintf(buf, buflen, "%-*.*s",
  * min_width, max_width, s), except that the widths refer to the number of
  * character cells when printed.
  */
-void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width,
-                        int justify, char m_pad_char, const char *s, size_t n, int arboreal)
+void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
+                        int justify, char pad_char, const char *s, size_t n, int arboreal)
 {
   char *p = NULL;
   wchar_t wc;
@@ -1170,8 +1179,8 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
 
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
-  destlen--;
-  p = dest;
+  buflen--;
+  p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
@@ -1209,25 +1218,25 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
     }
     if (w >= 0)
     {
-      if (w > max_width || (k2 = wcrtomb(scratch, wc, &mbstate2)) > destlen)
+      if (w > max_width || (k2 = wcrtomb(scratch, wc, &mbstate2)) > buflen)
         continue;
       min_width -= w;
       max_width -= w;
       strncpy(p, scratch, k2);
       p += k2;
-      destlen -= k2;
+      buflen -= k2;
     }
   }
-  w = (int) destlen < min_width ? destlen : min_width;
+  w = (int) buflen < min_width ? buflen : min_width;
   if (w <= 0)
     *p = '\0';
   else if (justify == FMT_RIGHT) /* right justify */
   {
     p[w] = '\0';
-    while (--p >= dest)
+    while (--p >= buf)
       p[w] = *p;
     while (--w >= 0)
-      dest[w] = m_pad_char;
+      buf[w] = pad_char;
   }
   else if (justify == FMT_CENTER) /* center */
   {
@@ -1237,74 +1246,92 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
     p[w] = '\0';
 
     /* move str to center of buffer */
-    while (--p >= dest)
+    while (--p >= buf)
       p[half] = *p;
 
     /* fill rhs */
     p = savedp + half;
     while (--w >= half)
-      *p++ = m_pad_char;
+      *p++ = pad_char;
 
     /* fill lhs */
     while (half--)
-      dest[half] = m_pad_char;
+      buf[half] = pad_char;
   }
   else /* left justify */
   {
     while (--w >= 0)
-      *p++ = m_pad_char;
+      *p++ = pad_char;
     *p = '\0';
   }
 }
 
 /**
  * format_s_x - Format a string like snprintf()
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ * @param[in]  arboreal  If true, string contains graphical tree characters
  *
  * This formats a string rather like
- *   snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
- *   snprintf (dest, destlen, fmt, s);
+ *   snprintf (fmt, sizeof (fmt), "%%%ss", prec);
+ *   snprintf (buf, buflen, fmt, s);
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-static void format_s_x(char *dest, size_t destlen, const char *prefix,
-                       const char *s, int arboreal)
+static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, int arboreal)
 {
   int justify = FMT_RIGHT;
   char *p = NULL;
   int min_width;
   int max_width = INT_MAX;
 
-  if (*prefix == '-')
+  if (*prec == '-')
   {
-    prefix++;
+    prec++;
     justify = FMT_LEFT;
   }
-  else if (*prefix == '=')
+  else if (*prec == '=')
   {
-    prefix++;
+    prec++;
     justify = FMT_CENTER;
   }
-  min_width = strtol(prefix, &p, 10);
+  min_width = strtol(prec, &p, 10);
   if (*p == '.')
   {
-    prefix = p + 1;
-    max_width = strtol(prefix, &p, 10);
-    if (p <= prefix)
+    prec = p + 1;
+    max_width = strtol(prec, &p, 10);
+    if (p <= prec)
       max_width = INT_MAX;
   }
 
-  mutt_simple_format(dest, destlen, min_width, max_width, justify, ' ', s,
+  mutt_simple_format(buf, buflen, min_width, max_width, justify, ' ', s,
                      mutt_str_strlen(s), arboreal);
 }
 
-void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s)
+/**
+ * mutt_format_s - Format a simple string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ */
+void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(dest, destlen, prefix, s, 0);
+  format_s_x(buf, buflen, prec, s, 0);
 }
 
-void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s)
+/**
+ * mutt_format_s_tree - Format a simple string with tree characters
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ */
+void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(dest, destlen, prefix, s, 1);
+  format_s_x(buf, buflen, prec, s, 1);
 }
 
 /**

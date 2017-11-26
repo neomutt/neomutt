@@ -58,7 +58,7 @@ void mutt_make_string_flags(char *dest, size_t destlen, const char *s, struct Co
                        struct Header *hdr, enum FormatFlag flags);
 
 /**
- * struct HdrFormatInfo - Data passed to hdr_format_str()
+ * struct HdrFormatInfo - Data passed to index_format_str()
  */
 struct HdrFormatInfo
 {
@@ -120,9 +120,9 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user
 
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 
-const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
-                            char op, const char *src, const char *prefix,
-                            const char *ifstring, const char *elsestring,
+const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
+                            char op, const char *src, const char *prec,
+                            const char *if_str, const char *else_str,
                             unsigned long data, enum FormatFlag flags);
 
 char *mutt_charset_hook(const char *chs);
@@ -184,10 +184,10 @@ void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const cha
 void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
 void mutt_fix_reply_recipients(struct Envelope *env);
 void mutt_folder_hook(const char *path);
-void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width, int justify,
+void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, int justify,
                         char m_pad_char, const char *s, size_t n, int arboreal);
-void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s);
-void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);
+void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
+void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_free_color(int fg, int bg);

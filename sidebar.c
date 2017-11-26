@@ -88,39 +88,47 @@ enum SidebarSrc
 } sidebar_source = SB_SRC_INCOMING;
 
 /**
- * cb_format_str - Create the string to show in the sidebar
- * @param[out] dest        Buffer in which to save string
- * @param[in]  destlen     Buffer length
- * @param[in]  col         Starting column, UNUSED
- * @param[in]  cols        Maximum columns, UNUSED
- * @param[in]  op          printf-like operator, e.g. 'B'
- * @param[in]  src         printf-like format string
- * @param[in]  prefix      Field formatting string, UNUSED
- * @param[in]  ifstring    If condition is met, display this string
- * @param[in]  elsestring  Otherwise, display this string
- * @param[in]  data        Pointer to our sidebar_entry
- * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
+ * sidebar_format_str - Format a string for the sidebar
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
  * @retval src (unchanged)
  *
- * cb_format_str is a callback function for mutt_expando_format.  It understands
- * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
- * '%N' : Number of new messages, '%S' : Size (total number of messages),
- * '%!' : Icon denoting number of flagged messages.
- * '%n' : N if folder has new mail, blank otherwise.
+ * sidebar_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%B     | Name of the mailbox
+ * | \%d     | Number of deleted messages
+ * | \%F     | Number of Flagged messages in the mailbox
+ * | \%L     | Number of messages after limiting
+ * | \%n     | N if mailbox has new mail, blank otherwise
+ * | \%N     | Number of unread messages in the mailbox
+ * | \%S     | Size of mailbox (total number of messages)
+ * | \%t     | Number of tagged messages
+ * | \%!     | 'n!' Flagged messages
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
+                                      unsigned long data, enum FormatFlag flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
   char fmt[STRING];
 
-  if (!sbe || !dest)
+  if (!sbe || !buf)
     return src;
 
-  dest[0] = 0; /* Just in case there's nothing to do */
+  buf[0] = 0; /* Just in case there's nothing to do */
 
   struct Buffy *b = sbe->buffy;
   if (!b)
@@ -133,14 +141,14 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   switch (op)
   {
     case 'B':
-      mutt_format_s(dest, destlen, prefix, sbe->box);
+      mutt_format_s(buf, buflen, prec, sbe->box);
       break;
 
     case 'd':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->deleted : 0);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->deleted : 0);
       }
       else if ((c && Context->deleted == 0) || !c)
         optional = 0;
@@ -149,8 +157,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'F':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_flagged);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_flagged);
       }
       else if (b->msg_flagged == 0)
         optional = 0;
@@ -159,8 +167,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'L':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->vcount : b->msg_count);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->vcount : b->msg_count);
       }
       else if ((c && Context->vcount == b->msg_count) || !c)
         optional = 0;
@@ -169,8 +177,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'N':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_unread);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_unread);
       }
       else if (b->msg_unread == 0)
         optional = 0;
@@ -179,8 +187,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, b->new ? 'N' : ' ');
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, b->new ? 'N' : ' ');
       }
       else if (b->new == false)
         optional = 0;
@@ -189,8 +197,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'S':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_count);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_count);
       }
       else if (b->msg_count == 0)
         optional = 0;
@@ -199,8 +207,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 't':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->tagged : 0);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->tagged : 0);
       }
       else if ((c && Context->tagged == 0) || !c)
         optional = 0;
@@ -208,25 +216,25 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
 
     case '!':
       if (b->msg_flagged == 0)
-        mutt_format_s(dest, destlen, prefix, "");
+        mutt_format_s(buf, buflen, prec, "");
       else if (b->msg_flagged == 1)
-        mutt_format_s(dest, destlen, prefix, "!");
+        mutt_format_s(buf, buflen, prec, "!");
       else if (b->msg_flagged == 2)
-        mutt_format_s(dest, destlen, prefix, "!!");
+        mutt_format_s(buf, buflen, prec, "!!");
       else
       {
         snprintf(fmt, sizeof(fmt), "%d!", b->msg_flagged);
-        mutt_format_s(dest, destlen, prefix, fmt);
+        mutt_format_s(buf, buflen, prec, fmt);
       }
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring,
-                        cb_format_str, (unsigned long) sbe, flags);
+    mutt_expando_format(buf, buflen, col, SidebarWidth, if_str,
+                        sidebar_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
-                        cb_format_str, (unsigned long) sbe, flags);
+    mutt_expando_format(buf, buflen, col, SidebarWidth, else_str,
+                        sidebar_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
   return src;
@@ -242,7 +250,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
- * us using cb_format_str() for the sidebar specific formatting characters.
+ * us using sidebar_format_str() for the sidebar specific formatting characters.
  */
 static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
                                char *box, struct SbEntry *sbe)
@@ -253,7 +261,7 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
   mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
 
   mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat),
-                      cb_format_str, (unsigned long) sbe, 0);
+                      sidebar_format_str, (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);

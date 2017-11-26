@@ -57,12 +57,12 @@ struct PgpCommandContext
   const char *ids;       /**< %r */
 };
 
-static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int cols,
-                                   char op, const char *src, const char *prefix,
-                                   const char *ifstring, const char *elsestring,
+static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int cols,
+                                   char op, const char *src, const char *prec,
+                                   const char *if_str, const char *else_str,
                                    unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -72,8 +72,8 @@ static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int c
     {
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->ids));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
       }
       else if (!cctx->ids)
         optional = 0;
@@ -84,8 +84,8 @@ static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int c
     {
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->signas));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->signas));
       }
       else if (!cctx->signas)
         optional = 0;
@@ -96,8 +96,8 @@ static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int c
     {
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->sig_fname));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
       }
       else if (!cctx->sig_fname)
         optional = 0;
@@ -108,8 +108,8 @@ static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int c
     {
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(cctx->fname));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->fname));
       }
       else if (!cctx->fname)
         optional = 0;
@@ -120,8 +120,8 @@ static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int c
     {
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
       }
       else if (!cctx->need_passphrase || pgp_use_gpg_agent())
         optional = 0;
@@ -129,25 +129,25 @@ static const char *fmt_pgp_command(char *dest, size_t destlen, size_t col, int c
     }
     default:
     {
-      *dest = '\0';
+      *buf = '\0';
       break;
     }
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, fmt_pgp_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, fmt_pgp_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, fmt_pgp_command, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, fmt_pgp_command, data, 0);
 
   return src;
 }
 
-static void mutt_pgp_command(char *d, size_t dlen,
+static void mutt_pgp_command(char *buf, size_t buflen,
                              struct PgpCommandContext *cctx, const char *fmt)
 {
-  mutt_expando_format(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(fmt),
                       fmt_pgp_command, (unsigned long) cctx, 0);
-  mutt_debug(2, "mutt_pgp_command: %s\n", d);
+  mutt_debug(2, "mutt_pgp_command: %s\n", buf);
 }
 
 /*

@@ -2891,32 +2891,48 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
 }
 
 /**
- * crypt_entry_fmt - Format an entry on the CRYPT key selection menu
+ * crypt_format_str - Format a string for the key selection menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * \%u user id
- * * \%n number
- * * \%t trust/validity of the key-uid association
- * * \%p         protocol
- * * \%[...] date of key using strftime(3)
+ * crypt_format_str() is a callback function for mutt_expando_format().
  *
- * * \%k key id
- * * \%a algorithm
- * * \%l length
- * * \%f flags
- * * \%c capabilities
- *
- * * \%K key id of the principal key
- * * \%A algorithm of the principal key
- * * \%L length of the principal key
- * * \%F flags of the principal key
- * * \%C capabilities of the principal key
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%u     | User id
+ * | \%n     | Number
+ * | \%t     | Trust/validity of the key-uid association
+ * | \%p     | Protocol
+ * | \%[...] | Date of key using strftime(3)
+ * |         |
+ * | \%k     | Key id
+ * | \%a     | Algorithm
+ * | \%l     | Length
+ * | \%f     | Flags
+ * | \%c     | Capabilities
+ * |         |
+ * | \%K     | Key id of the principal key
+ * | \%A     | Algorithm of the principal key
+ * | \%L     | Length of the principal key
+ * | \%F     | Flags of the principal key
+ * | \%C     | Capabilities of the principal key
  */
-static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
-                                   char op, const char *src, const char *prefix,
-                                   const char *ifstring, const char *elsestring,
-                                   unsigned long data, enum FormatFlag flags)
+static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                    char op, const char *src, const char *prec,
+                                    const char *if_str, const char *else_str,
+                                    unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct CryptEntry *entry = NULL;
   struct CryptKeyInfo *key = NULL;
   int kflags = 0;
@@ -2935,6 +2951,113 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
 
   switch (tolower(op))
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
+        if (key->kobj->subkeys)
+          s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
+        else
+          s = "?";
+        snprintf(buf, buflen, fmt, s);
+      }
+      break;
+
+    case 'c':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
+      }
+      else if (!(kflags & (KEYFLAG_ABILITIES)))
+        optional = 0;
+      break;
+
+    case 'f':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, crypt_flags(kflags));
+      }
+      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+        optional = 0;
+      break;
+
+    case 'k':
+      if (!optional)
+      {
+        /* fixme: we need a way to distinguish between main and subkeys.
+           Store the idx in entry? */
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_keyid(key));
+      }
+      break;
+
+    case 'l':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%slu", prec);
+        if (key->kobj->subkeys)
+          val = key->kobj->subkeys->length;
+        else
+          val = 0;
+        snprintf(buf, buflen, fmt, val);
+      }
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, entry->num);
+      }
+      break;
+
+    case 'p':
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
+      break;
+
+    case 't':
+      if ((kflags & KEYFLAG_ISX509))
+        s = "x";
+      else
+      {
+        switch (key->validity)
+        {
+          case GPGME_VALIDITY_UNDEFINED:
+            s = "q";
+            break;
+          case GPGME_VALIDITY_NEVER:
+            s = "n";
+            break;
+          case GPGME_VALIDITY_MARGINAL:
+            s = "m";
+            break;
+          case GPGME_VALIDITY_FULL:
+            s = "f";
+            break;
+          case GPGME_VALIDITY_ULTIMATE:
+            s = "u";
+            break;
+          case GPGME_VALIDITY_UNKNOWN:
+          default:
+            s = "?";
+            break;
+        }
+      }
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, *s);
+      break;
+
+    case 'u':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, key->uid);
+      }
+      break;
+
     case '[':
     {
       const char *cp = NULL;
@@ -2943,7 +3066,7 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
       struct tm *tm = NULL;
       size_t len;
 
-      p = dest;
+      p = buf;
 
       cp = src;
       if (*cp == '!')
@@ -2954,7 +3077,7 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
       else
         do_locales = 1;
 
-      len = destlen - 1;
+      len = buflen - 1;
       while (len > 0 && *cp != ']')
       {
         if (*cp == '%')
@@ -2989,130 +3112,36 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
 
       if (!do_locales)
         setlocale(LC_TIME, "C");
-      strftime(buf2, sizeof(buf2), dest, tm);
+      strftime(buf2, sizeof(buf2), buf, tm);
       if (!do_locales)
         setlocale(LC_TIME, "");
 
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(dest, destlen, fmt, buf2);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, buf2);
       if (len > 0)
         src = cp + 1;
     }
     break;
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, entry->num);
-      }
-      break;
-    case 'k':
-      if (!optional)
-      {
-        /* fixme: we need a way to distinguish between main and subkeys.
-           Store the idx in entry? */
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, crypt_keyid(key));
-      }
-      break;
-    case 'u':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, key->uid);
-      }
-      break;
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%s.3s", prefix);
-        if (key->kobj->subkeys)
-          s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
-        else
-          s = "?";
-        snprintf(dest, destlen, fmt, s);
-      }
-      break;
-    case 'l':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%slu", prefix);
-        if (key->kobj->subkeys)
-          val = key->kobj->subkeys->length;
-        else
-          val = 0;
-        snprintf(dest, destlen, fmt, val);
-      }
-      break;
-    case 'f':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, crypt_flags(kflags));
-      }
-      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
-        optional = 0;
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, crypt_key_abilities(kflags));
-      }
-      else if (!(kflags & (KEYFLAG_ABILITIES)))
-        optional = 0;
-      break;
-    case 't':
-      if ((kflags & KEYFLAG_ISX509))
-        s = "x";
-      else
-      {
-        switch (key->validity)
-        {
-          case GPGME_VALIDITY_UNDEFINED:
-            s = "q";
-            break;
-          case GPGME_VALIDITY_NEVER:
-            s = "n";
-            break;
-          case GPGME_VALIDITY_MARGINAL:
-            s = "m";
-            break;
-          case GPGME_VALIDITY_FULL:
-            s = "f";
-            break;
-          case GPGME_VALIDITY_ULTIMATE:
-            s = "u";
-            break;
-          case GPGME_VALIDITY_UNKNOWN:
-          default:
-            s = "?";
-            break;
-        }
-      }
-      snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-      snprintf(dest, destlen, fmt, *s);
-      break;
-    case 'p':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(dest, destlen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
-      break;
 
     default:
-      *dest = '\0';
+      *buf = '\0';
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
   return src;
 }
 
 /**
- * crypt_entry - Used by the display function to format a line
+ * crypt_entry - Format a menu item for the key selection list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
  */
-static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
+static void crypt_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct CryptKeyInfo **key_table = (struct CryptKeyInfo **) menu->data;
   struct CryptEntry entry;
@@ -3120,8 +3149,8 @@ static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
   entry.key = key_table[num];
   entry.num = num + 1;
 
-  mutt_expando_format(s, l, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
-                      crypt_entry_fmt, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(PgpEntryFormat),
+                      crypt_format_str, (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

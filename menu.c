@@ -286,14 +286,15 @@ static void menu_make_entry(char *s, int l, struct Menu *menu, int i)
     menu->make_entry(s, l, menu, i);
 }
 
-static void menu_pad_string(struct Menu *menu, char *s, size_t n)
+static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 {
-  char *scratch = mutt_str_strdup(s);
+  char *scratch = mutt_str_strdup(buf);
   int shift = option(OPT_ARROW_CURSOR) ? 3 : 0;
   int cols = menu->indexwin->cols - shift;
 
-  mutt_simple_format(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_str_strlen(scratch), 1);
-  s[n - 1] = '\0';
+  mutt_simple_format(buf, buflen, cols, cols, FMT_LEFT, ' ', scratch,
+                     mutt_str_strlen(scratch), 1);
+  buf[buflen - 1] = '\0';
   FREE(&scratch);
 }
 

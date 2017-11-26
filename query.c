@@ -206,65 +206,97 @@ static int query_search(struct Menu *m, regex_t *re, int n)
   return REG_NOMATCH;
 }
 
-static const char *query_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                    char op, const char *src, const char *fmt,
-                                    const char *ifstring, const char *elsestring,
+/**
+ * query_format_str - Format a string for the query menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * query_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Destination address
+ * | \%c     | Current entry number
+ * | \%e     | Extra information
+ * | \%n     | Destination name
+ * | \%t     | '*' if current entry is tagged, a space otherwise
+ */
+static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                    char op, const char *src, const char *prec,
+                                    const char *if_str, const char *else_str,
                                     unsigned long data, enum FormatFlag flags)
 {
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;
-  char tmp[SHORT_STRING];
-  char buf2[STRING] = "";
+  char fmt[SHORT_STRING];
+  char tmp[STRING] = "";
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
     case 'a':
-      rfc822_write_address(buf2, sizeof(buf2), query->addr, 1);
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, buf2);
+      rfc822_write_address(tmp, sizeof(tmp), query->addr, 1);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, tmp);
       break;
     case 'c':
-      snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-      snprintf(dest, destlen, tmp, query->num + 1);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, query->num + 1);
       break;
     case 'e':
       if (!optional)
       {
-        snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-        snprintf(dest, destlen, tmp, NONULL(query->other));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(query->other));
       }
       else if (!query->other || !*query->other)
         optional = 0;
       break;
     case 'n':
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, NONULL(query->name));
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, NONULL(query->name));
       break;
     case 't':
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, entry->tagged ? '*' : ' ');
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, entry->tagged ? '*' : ' ');
       break;
     default:
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, op);
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, op);
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, query_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, query_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, query_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, query_format_str, data, 0);
 
   return src;
 }
 
-static void query_entry(char *s, size_t slen, struct Menu *m, int num)
+/**
+ * query_entry - Format a menu item for the query list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct Entry *entry = &((struct Entry *) m->data)[num];
+  struct Entry *entry = &((struct Entry *) menu->data)[num];
 
   entry->data->num = num;
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

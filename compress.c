@@ -329,29 +329,33 @@ static char *escape_path(char *src)
 }
 
 /**
- * cb_format_str - Expand the filenames in the command string
- * @param dest        Buffer in which to save string
- * @param destlen     Buffer length
- * @param col         Starting column, UNUSED
- * @param cols        Number of screen columns, UNUSED
- * @param op          printf-like operator, e.g. 't'
- * @param src         printf-like format string
- * @param fmt         Field formatting string, UNUSED
- * @param ifstring    If condition is met, display this string, UNUSED
- * @param elsestring  Otherwise, display this string, UNUSED
- * @param data        Pointer to the mailbox Context
- * @param flags       Format flags, UNUSED
+ * compress_format_str - Expand the filenames in a command string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
  * @retval src (unchanged)
  *
- * cb_format_str is a callback function for mutt_expando_format.  It understands
- * two operators. '%f' : 'from' filename, '%t' : 'to' filename.
+ * compress_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%f     | Compressed file
+ * | \%t     | Plaintext, temporary file
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *fmt,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                       char op, const char *src, const char *prec,
+                                       const char *if_str, const char *else_str,
+                                       unsigned long data, enum FormatFlag flags)
 {
-  if (!dest || (data == 0))
+  if (!buf || (data == 0))
     return src;
 
   struct Context *ctx = (struct Context *) data;
@@ -360,11 +364,11 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   {
     case 'f':
       /* Compressed file */
-      snprintf(dest, destlen, "%s", NONULL(escape_path(ctx->realpath)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(dest, destlen, "%s", NONULL(escape_path(ctx->path)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->path)));
       break;
   }
   return src;
@@ -379,7 +383,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  *
  * This function takes a hook command and expands the filename placeholders
  * within it.  The function calls mutt_expando_format() to do the replacement
- * which calls our callback function cb_format_str(). e.g.
+ * which calls our callback function compress_format_str(). e.g.
  *
  * Template command:
  *      gzip -cd '%f' > '%t'
@@ -392,7 +396,8 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
   if (!ctx || !cmd || !buf)
     return;
 
-  mutt_expando_format(buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
+  mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
+                      (unsigned long) ctx, 0);
 }
 
 /**

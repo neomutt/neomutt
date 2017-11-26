@@ -882,21 +882,20 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
 
 /**
  * mutt_expando_format - Expand expandos (%x) in a string
- * @param dest     output buffer
- * @param destlen  output buffer len
- * @param col      starting column (nonzero when called recursively)
- * @param cols     maximum columns
- * @param src      template string
- * @param callback callback for processing
- * @param data     callback data
- * @param flags    callback flags
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  src      Printf-like format string
+ * @param[in]  callback Callback for processing
+ * @param[in]  data     Callback data
+ * @param[in]  flags    Callback flags
  */
-void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
-                         const char *src, format_t *callback,
-                         unsigned long data, enum FormatFlag flags)
+void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
+                         format_t *callback, unsigned long data, enum FormatFlag flags)
 {
-  char prefix[SHORT_STRING], buf[LONG_STRING], *cp = NULL, *wptr = dest, ch;
-  char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
+  char prefix[SHORT_STRING], tmp[LONG_STRING], *cp = NULL, *wptr = buf, ch;
+  char if_str[SHORT_STRING], else_str[SHORT_STRING];
   size_t wlen, count, len, wid;
   pid_t pid;
   FILE *filter = NULL;
@@ -908,7 +907,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
   src = src2;
 
   prefix[0] = '\0';
-  destlen--; /* save room for the terminal \0 */
+  buflen--; /* save room for the terminal \0 */
   wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
   col += wlen;
 
@@ -957,9 +956,9 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
         mutt_extract_token(word, srcbuf, 0);
         mutt_debug(3, "fmtpipe %2d: %s\n", i++, word->data);
         mutt_buffer_addch(command, '\'');
-        mutt_expando_format(buf, sizeof(buf), 0, cols, word->data, callback,
+        mutt_expando_format(tmp, sizeof(tmp), 0, cols, word->data, callback,
                             data, flags | MUTT_FORMAT_NOFILTER);
-        for (char *p = buf; p && *p; p++)
+        for (char *p = tmp; p && *p; p++)
         {
           if (*p == '\'')
             /* shell quoting doesn't permit escaping a single quote within
@@ -977,44 +976,44 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
       mutt_debug(3, "fmtpipe > %s\n", command->data);
 
       col -= wlen; /* reset to passed in value */
-      wptr = dest; /* reset write ptr */
+      wptr = buf;  /* reset write ptr */
       wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
       pid = mutt_create_filter(command->data, NULL, &filter, NULL);
       if (pid != -1)
       {
         int rc;
 
-        n = fread(dest, 1, destlen /* already decremented */, filter);
+        n = fread(buf, 1, buflen /* already decremented */, filter);
         mutt_file_fclose(&filter);
         rc = mutt_wait_filter(pid);
         if (rc != 0)
           mutt_debug(1, "format pipe command exited code %d\n", rc);
         if (n > 0)
         {
-          dest[n] = 0;
-          while ((n > 0) && (dest[n - 1] == '\n' || dest[n - 1] == '\r'))
-            dest[--n] = '\0';
-          mutt_debug(3, "fmtpipe < %s\n", dest);
+          buf[n] = 0;
+          while ((n > 0) && (buf[n - 1] == '\n' || buf[n - 1] == '\r'))
+            buf[--n] = '\0';
+          mutt_debug(3, "fmtpipe < %s\n", buf);
 
           /* If the result ends with '%', this indicates that the filter
            * generated %-tokens that neomutt can expand.  Eliminate the '%'
            * marker and recycle the string through mutt_expando_format().
            * To literally end with "%", use "%%". */
-          if ((n > 0) && dest[n - 1] == '%')
+          if ((n > 0) && buf[n - 1] == '%')
           {
             n--;
-            dest[n] = '\0'; /* remove '%' */
-            if ((n > 0) && dest[n - 1] != '%')
+            buf[n] = '\0'; /* remove '%' */
+            if ((n > 0) && buf[n - 1] != '%')
             {
-              recycler = mutt_str_strdup(dest);
+              recycler = mutt_str_strdup(buf);
               if (recycler)
               {
-                /* destlen is decremented at the start of this function
+                /* buflen is decremented at the start of this function
                  * to save space for the terminal nul char.  We can add
                  * it back for the recursive call since the expansion of
                  * format pipes does not try to append a nul itself.
                  */
-                mutt_expando_format(dest, destlen + 1, col, cols, recycler,
+                mutt_expando_format(buf, buflen + 1, col, cols, recycler,
                                     callback, data, flags);
                 FREE(&recycler);
               }
@@ -1042,7 +1041,7 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
     }
   }
 
-  while (*src && wlen < destlen)
+  while (*src && wlen < buflen)
   {
     if (*src == '%')
     {
@@ -1121,10 +1120,10 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
         src++;
 
         /* eat the `if' part of the string */
-        cp = ifstring;
+        cp = if_str;
         count = 0;
         lrbalance = 1;
-        while ((lrbalance > 0) && (count < sizeof(ifstring)) && *src)
+        while ((lrbalance > 0) && (count < sizeof(if_str)) && *src)
         {
           if ((src[0] == '%') && (src[1] == '>'))
           {
@@ -1160,9 +1159,9 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
         /* eat the `else' part of the string (optional) */
         if (*src == '&')
           src++; /* skip the & */
-        cp = elsestring;
+        cp = else_str;
         count = 0;
-        while ((lrbalance > 0) && (count < sizeof(elsestring)) && *src)
+        while ((lrbalance > 0) && (count < sizeof(else_str)) && *src)
         {
           if ((src[0] == '%') && (src[1] == '>'))
           {
@@ -1213,27 +1212,27 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
           pl = pw = 1;
 
         /* see if there's room to add content, else ignore */
-        if ((col < cols && wlen < destlen) || soft)
+        if ((col < cols && wlen < buflen) || soft)
         {
           int pad;
 
           /* get contents after padding */
-          mutt_expando_format(buf, sizeof(buf), 0, cols, src + pl, callback, data, flags);
-          len = mutt_str_strlen(buf);
-          wid = mutt_strwidth(buf);
+          mutt_expando_format(tmp, sizeof(tmp), 0, cols, src + pl, callback, data, flags);
+          len = mutt_str_strlen(tmp);
+          wid = mutt_strwidth(tmp);
 
           pad = (cols - col - wid) / pw;
           if (pad >= 0)
           {
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
-            if (wlen + (pad * pl) + len > destlen)
-              pad = (destlen > wlen + len) ? ((destlen - wlen - len) / pl) : 0;
+            if (wlen + (pad * pl) + len > buflen)
+              pad = (buflen > wlen + len) ? ((buflen - wlen - len) / pl) : 0;
             else
             {
               /* Add pre-spacing to make multi-column pad characters and
                * the contents after padding line up */
-              while ((col + (pad * pw) + wid < cols) && (wlen + (pad * pl) + len < destlen))
+              while ((col + (pad * pw) + wid < cols) && (wlen + (pad * pl) + len < buflen))
               {
                 *wptr++ = ' ';
                 wlen++;
@@ -1253,25 +1252,25 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
             int offset =
                 ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
-            /* \0-terminate dest for length computation in mutt_wstr_trunc() */
+            /* \0-terminate buf for length computation in mutt_wstr_trunc() */
             *wptr = 0;
             /* make sure right part is at most as wide as display */
-            len = mutt_wstr_trunc(buf, destlen, avail_cols, &wid);
+            len = mutt_wstr_trunc(tmp, buflen, avail_cols, &wid);
             /* truncate left so that right part fits completely in */
-            wlen = mutt_wstr_trunc(dest, destlen - len, avail_cols - wid, &col);
-            wptr = dest + wlen;
+            wlen = mutt_wstr_trunc(buf, buflen - len, avail_cols - wid, &col);
+            wptr = buf + wlen;
             /* Multi-column characters may be truncated in the middle.
              * Add spacing so the right hand side lines up. */
-            while ((col + wid < avail_cols) && (wlen + len < destlen))
+            while ((col + wid < avail_cols) && (wlen + len < buflen))
             {
               *wptr++ = ' ';
               wlen++;
               col++;
             }
           }
-          if (len + wlen > destlen)
-            len = mutt_wstr_trunc(buf, destlen - wlen, cols - col, NULL);
-          memcpy(wptr, buf, len);
+          if (len + wlen > buflen)
+            len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
+          memcpy(wptr, tmp, len);
           wptr += len;
           wlen += len;
           col += wid;
@@ -1288,11 +1287,11 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
           pl = pw = 1;
 
         /* see if there's room to add content, else ignore */
-        if (col < cols && wlen < destlen)
+        if (col < cols && wlen < buflen)
         {
           c = (cols - col) / pw;
-          if (c > 0 && wlen + (c * pl) > destlen)
-            c = ((signed) (destlen - wlen)) / pl;
+          if (c > 0 && wlen + (c * pl) > buflen)
+            c = ((signed) (buflen - wlen)) / pl;
           while (c > 0)
           {
             memcpy(wptr, src, pl);
@@ -1321,26 +1320,26 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
         }
 
         /* use callback function to handle this case */
-        src = callback(buf, sizeof(buf), col, cols, ch, src, prefix, ifstring,
-                       elsestring, data, flags);
+        src = callback(tmp, sizeof(tmp), col, cols, ch, src, prefix, if_str,
+                       else_str, data, flags);
 
         if (tolower)
-          mutt_str_strlower(buf);
+          mutt_str_strlower(tmp);
         if (nodots)
         {
-          char *p = buf;
+          char *p = tmp;
           for (; *p; p++)
             if (*p == '.')
               *p = '_';
         }
 
-        if ((len = mutt_str_strlen(buf)) + wlen > destlen)
-          len = mutt_wstr_trunc(buf, destlen - wlen, cols - col, NULL);
+        if ((len = mutt_str_strlen(tmp)) + wlen > buflen)
+          len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
 
-        memcpy(wptr, buf, len);
+        memcpy(wptr, tmp, len);
         wptr += len;
         wlen += len;
-        col += mutt_strwidth(buf);
+        col += mutt_strwidth(tmp);
       }
     }
     else if (*src == '\\')
@@ -1375,23 +1374,26 @@ void mutt_expando_format(char *dest, size_t destlen, size_t col, int cols,
     }
     else
     {
-      int tmp, w;
+      int bytes, width;
       /* in case of error, simply copy byte */
-      tmp = mutt_mb_charlen(src, &w);
-      if (tmp < 0)
-        tmp = w = 1;
-      if (tmp > 0 && wlen + tmp < destlen)
+      bytes = mutt_mb_charlen(src, &width);
+      if (bytes < 0)
       {
-        memcpy(wptr, src, tmp);
-        wptr += tmp;
-        src += tmp;
-        wlen += tmp;
-        col += w;
+        bytes = 1;
+        width = 1;
+      }
+      if ((bytes > 0) && ((wlen + bytes) < buflen))
+      {
+        memcpy(wptr, src, bytes);
+        wptr += bytes;
+        src += bytes;
+        wlen += bytes;
+        col += width;
       }
       else
       {
-        src += destlen - wlen;
-        wlen = destlen;
+        src += buflen - wlen;
+        wlen = buflen;
       }
     }
   }

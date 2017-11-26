@@ -224,12 +224,19 @@ static void init_header_padding(void)
   }
 }
 
-static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
+/**
+ * snd_entry - Format a menu item for the attachment list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
 
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      mutt_attach_fmt, (unsigned long) (actx->idx[actx->v2r[num]]),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -680,19 +687,32 @@ static unsigned long cum_attachs_size(struct Menu *menu)
 }
 
 /**
- * compose_format_str - Format strings like printf()
+ * compose_format_str - Create the status bar string for compose mode
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * \%a Total number of attachments
- * * \%h ShortHostname  [option]
- * * \%l Approx. length of current message (in bytes)
- * * \%v NeoMutt version
+ * compose_format_str() is a callback function for mutt_expando_format().
  *
- * This function is similar to status_format_str().  Look at that function for
- * help when modifying this function.
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Total number of attachments
+ * | \%h     | Local hostname
+ * | \%l     | Approximate size (in bytes) of the current message
+ * | \%v     | NeoMutt version string
  */
 static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prefix,
-                                      const char *ifstring, const char *elsestring,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
                                       unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING];
@@ -703,24 +723,23 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 'a': /* total number of attachments */
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, menu->max);
       break;
 
     case 'h': /* hostname */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l': /* approx length of current message in bytes */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       mutt_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
       snprintf(buf, buflen, fmt, tmp);
       break;
 
     case 'v':
-      snprintf(fmt, sizeof(fmt), "NeoMutt %%s%%s");
-      snprintf(buf, buflen, fmt, PACKAGE_VERSION, GitVer);
+      snprintf(buf, buflen, "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
       break;
 
     case 0:
@@ -728,14 +747,14 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
       return src;
 
     default:
-      snprintf(buf, buflen, "%%%s%c", prefix, op);
+      snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
   }
 
   if (optional)
-    compose_status_line(buf, buflen, col, cols, menu, ifstring);
+    compose_status_line(buf, buflen, col, cols, menu, if_str);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    compose_status_line(buf, buflen, col, cols, menu, elsestring);
+    compose_status_line(buf, buflen, col, cols, menu, else_str);
 
   return src;
 }

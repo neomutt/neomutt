@@ -858,24 +858,39 @@ void nntp_clear_cache(struct NntpServer *nserv)
 }
 
 /**
- * nntp_format_str - Format a string, like printf()
+ * nntp_format_str - Expand the newsrc filename
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * %a = account url
- * %p = port
- * %P = port if specified
- * %s = news server name
- * %S = url schema
- * %u = username
+ * nntp_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Account url
+ * | \%p     | Port
+ * | \%P     | Port if specified
+ * | \%s     | News server name
+ * | \%S     | Url schema
+ * | \%u     | Username
  */
-const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
-                            char op, const char *src, const char *fmt,
-                            const char *ifstring, const char *elsestring,
-                            unsigned long data, enum FormatFlag flags)
+const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
+                            const char *src, const char *prec, const char *if_str,
+                            const char *else_str, unsigned long data, enum FormatFlag flags)
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;
   struct Url url;
-  char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
+  char fn[SHORT_STRING], fmt[SHORT_STRING], *p = NULL;
 
   switch (op)
   {
@@ -885,26 +900,26 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
       p = strchr(fn, '/');
       if (p)
         *p = '\0';
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, fn);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, fn);
       break;
     case 'p':
-      snprintf(tmp, sizeof(tmp), "%%%su", fmt);
-      snprintf(dest, destlen, tmp, acct->port);
+      snprintf(fmt, sizeof(fmt), "%%%su", prec);
+      snprintf(buf, buflen, fmt, acct->port);
       break;
     case 'P':
-      *dest = '\0';
+      *buf = '\0';
       if (acct->flags & MUTT_ACCT_PORT)
       {
-        snprintf(tmp, sizeof(tmp), "%%%su", fmt);
-        snprintf(dest, destlen, tmp, acct->port);
+        snprintf(fmt, sizeof(fmt), "%%%su", prec);
+        snprintf(buf, buflen, fmt, acct->port);
       }
       break;
     case 's':
       strncpy(fn, acct->host, sizeof(fn) - 1);
       mutt_str_strlower(fn);
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, fn);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, fn);
       break;
     case 'S':
       mutt_account_tourl(acct, &url);
@@ -912,12 +927,12 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
       p = strchr(fn, ':');
       if (p)
         *p = '\0';
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, fn);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, fn);
       break;
     case 'u':
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, acct->user);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, acct->user);
       break;
   }
   return src;
