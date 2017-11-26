@@ -38,6 +38,7 @@ datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
 mandir=		@mandir@
 libdir=		@libdir@
+libexecdir=		@libexecdir@
 sysconfdir=	@SYSCONFDIR@
 
 # targets for specific subdirectories
@@ -291,9 +292,9 @@ install: all $(INSTALL_TARGETS)
 	for f in $(BINFILES); do \
 		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f`; \
 	done
-	$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE)
+	$(MKDIR_P) $(DESTDIR)$(libexecdir)/$(PACKAGE)
 	for f in $(LIBBINFILES); do \
-		$(INSTALL) $$f $(DESTDIR)$(libdir)/$(PACKAGE)/`basename $$f`; \
+		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f`; \
 	done
 
 # uninstall
@@ -303,7 +304,7 @@ uninstall: $(UNINSTALL_TARGETS)
 		$(RM) $(DESTDIR)$(bindir)/`basename $$f`; \
 	done
 	for f in $(LIBBINFILES); do \
-		$(RM) $(DESTDIR)$(libdir)/$(PACKAGE)/`basename $$f`; \
+		$(RM) $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f`; \
 	done
 
 # distclean
