@@ -57,14 +57,14 @@ iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
   iconv_t cd;
 
   /* transform to MIME preferred charset names */
-  mutt_canonical_charset(tocode1, sizeof(tocode1), tocode);
-  mutt_canonical_charset(fromcode1, sizeof(fromcode1), fromcode);
+  mutt_cs_canonical_charset(tocode1, sizeof(tocode1), tocode);
+  mutt_cs_canonical_charset(fromcode1, sizeof(fromcode1), fromcode);
 
   /* maybe apply charset-hooks and recanonicalise fromcode,
    * but only when caller asked us to sanitize a potentially wrong
    * charset name incoming from the wild exterior. */
   if ((flags & MUTT_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook(fromcode1)))
-    mutt_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
+    mutt_cs_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
 
   /* always apply iconv-hooks to suit system's iconv tastes */
   tocode2 = mutt_iconv_hook(tocode1);
@@ -104,9 +104,9 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
     const char **inrepls = NULL;
     char *outrepl = NULL;
 
-    if (mutt_is_utf8(to))
+    if (mutt_cs_is_utf8(to))
       outrepl = "\357\277\275";
-    else if (mutt_is_utf8(from))
+    else if (mutt_cs_is_utf8(from))
       inrepls = repls;
     else
       outrepl = "?";
@@ -117,7 +117,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
     obl = MB_LEN_MAX * ibl;
     ob = buf = mutt_mem_malloc(obl + 1);
 
-    mutt_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
+    mutt_cs_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close(cd);
 
     *ob = '\0';
@@ -153,7 +153,7 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
-    fc->inrepls = mutt_is_utf8(to) ? repls : repls + 1;
+    fc->inrepls = mutt_cs_is_utf8(to) ? repls : repls + 1;
   }
   else
     fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
@@ -166,7 +166,7 @@ bool mutt_check_charset(const char *s, bool strict)
 {
   iconv_t cd;
 
-  if (mutt_is_utf8(s))
+  if (mutt_cs_is_utf8(s))
     return true;
 
   if (!strict)

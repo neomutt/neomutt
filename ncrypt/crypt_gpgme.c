@@ -2453,7 +2453,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
    */
   fc = fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; fgetconvs(buf, sizeof(buf), fc) != NULL;
+  for (complete = true, armor_header = true; mutt_cs_fgetconvs(buf, sizeof(buf), fc) != NULL;
        complete = (strchr(buf, '\n') != NULL))
   {
     if (!complete)
@@ -2482,7 +2482,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
       state_puts(buf, s);
   }
 
-  fgetconv_close(&fc);
+  mutt_cs_fgetconv_close(&fc);
   mutt_file_fclose(&fp);
 }
 
@@ -2677,13 +2677,13 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
         int c;
         rewind(pgpout);
         fc = fgetconv_open(pgpout, "utf-8", Charset, 0);
-        while ((c = fgetconv(fc)) != EOF)
+        while ((c = mutt_cs_fgetconv(fc)) != EOF)
         {
           state_putc(c, s);
           if (c == '\n' && s->prefix)
             state_puts(s->prefix, s);
         }
-        fgetconv_close(&fc);
+        mutt_cs_fgetconv_close(&fc);
       }
 
       if (s->flags & MUTT_DISPLAY)

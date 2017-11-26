@@ -43,9 +43,9 @@ void mutt_set_charset(char *charset)
 {
   char buffer[STRING];
 
-  mutt_canonical_charset(buffer, sizeof(buffer), charset);
+  mutt_cs_canonical_charset(buffer, sizeof(buffer), charset);
 
-  if (mutt_is_utf8(buffer))
+  if (mutt_cs_is_utf8(buffer))
   {
     Charset_is_utf8 = true;
     ReplacementChar = 0xfffd;

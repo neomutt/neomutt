@@ -201,7 +201,7 @@ const struct MimeNames PreferredMIMENames[] =
 };
 // clang-format on
 
-void fgetconv_close(FGETCONV **_fc)
+void mutt_cs_fgetconv_close(FGETCONV **_fc)
 {
   struct FgetConv *fc = (struct FgetConv *) *_fc;
 
@@ -210,7 +210,7 @@ void fgetconv_close(FGETCONV **_fc)
   FREE(_fc);
 }
 
-int fgetconv(FGETCONV *_fc)
+int mutt_cs_fgetconv(FGETCONV *_fc)
 {
   struct FgetConv *fc = (struct FgetConv *) _fc;
 
@@ -252,7 +252,7 @@ int fgetconv(FGETCONV *_fc)
   if (fc->ibl)
   {
     size_t obl = sizeof(fc->bufo);
-    mutt_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
+    mutt_cs_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
     if (fc->p < fc->ob)
       return (unsigned char) *(fc->p)++;
   }
@@ -262,14 +262,14 @@ int fgetconv(FGETCONV *_fc)
   return EOF;
 }
 
-char *fgetconvs(char *buf, size_t l, FGETCONV *_fc)
+char *mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *_fc)
 {
   int c;
   size_t r;
 
   for (r = 0; r + 1 < l;)
   {
-    c = fgetconv(_fc);
+    c = mutt_cs_fgetconv(_fc);
     if (c == EOF)
       break;
     buf[r++] = (char) c;
@@ -285,12 +285,12 @@ char *fgetconvs(char *buf, size_t l, FGETCONV *_fc)
 }
 
 /**
- * mutt_canonical_charset - Canonicalise the charset of a string
+ * mutt_cs_canonical_charset - Canonicalise the charset of a string
  *
  * this first ties off any charset extension such as //TRANSLIT,
  * canonicalizes the charset and re-adds the extension
  */
-void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
+void mutt_cs_canonical_charset(char *dest, size_t dlen, const char *name)
 {
   char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
@@ -342,7 +342,7 @@ out:
   }
 }
 
-int mutt_chscmp(const char *s, const char *chs)
+int mutt_cs_chscmp(const char *s, const char *chs)
 {
   char buffer[STRING];
   int a, b;
@@ -350,19 +350,19 @@ int mutt_chscmp(const char *s, const char *chs)
   if (!s)
     return 0;
 
-  /* charsets may have extensions mutt_canonical_charset()
+  /* charsets may have extensions mutt_cs_canonical_charset()
      leaves intact; we expect `chs' to originate from neomutt
      code, not user input (i.e. `chs' does _not_ have any
      extension)
      we simply check if the shorter string is a prefix for
      the longer */
-  mutt_canonical_charset(buffer, sizeof(buffer), s);
+  mutt_cs_canonical_charset(buffer, sizeof(buffer), s);
   a = mutt_str_strlen(buffer);
   b = mutt_str_strlen(chs);
   return (mutt_str_strncasecmp(a > b ? buffer : chs, a > b ? chs : buffer, MIN(a, b)) == 0);
 }
 
-char *mutt_get_default_charset(void)
+char *mutt_cs_get_default_charset(void)
 {
   static char fcharset[SHORT_STRING];
   const char *c = AssumedCharset;
@@ -378,14 +378,14 @@ char *mutt_get_default_charset(void)
 }
 
 /**
- * mutt_iconv - Change the encoding of a string
+ * mutt_cs_iconv - Change the encoding of a string
  *
  * Like iconv, but keeps going even when the input is invalid
  * If you're supplying inrepls, the source charset should be stateless;
  * if you're supplying an outrepl, the target charset should be.
  */
-size_t mutt_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
-                  size_t *outbytesleft, const char **inrepls, const char *outrepl)
+size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
+                     size_t *outbytesleft, const char **inrepls, const char *outrepl)
 {
   size_t rc = 0, ret1;
   const char *ib = *inbuf;
@@ -454,13 +454,13 @@ size_t mutt_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **ou
   }
 }
 
-void mutt_set_langinfo_charset(void)
+void mutt_cs_set_langinfo_charset(void)
 {
   char buf[LONG_STRING];
   char buf2[LONG_STRING];
 
   mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
-  mutt_canonical_charset(buf2, sizeof(buf2), buf);
+  mutt_cs_canonical_charset(buf2, sizeof(buf2), buf);
 
   /* finally, set $charset */
   Charset = mutt_str_strdup(buf2);

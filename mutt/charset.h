@@ -56,6 +56,9 @@ struct FgetConvNot
   iconv_t cd;
 };
 
+/**
+ * struct MimeNames - MIME name lookup entry
+ */
 struct MimeNames
 {
   const char *key;
@@ -64,16 +67,16 @@ struct MimeNames
 
 extern const struct MimeNames PreferredMIMENames[];
 
-char * fgetconvs(char *buf, size_t l, FGETCONV *_fc);
-char * mutt_get_default_charset(void);
-int    fgetconv(FGETCONV *_fc);
-int    mutt_chscmp(const char *s, const char *chs);
-size_t mutt_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
-void   fgetconv_close(FGETCONV **_fc);
-void   mutt_canonical_charset(char *dest, size_t dlen, const char *name);
-void   mutt_set_langinfo_charset(void);
+void   mutt_cs_canonical_charset(char *dest, size_t dlen, const char *name);
+int    mutt_cs_chscmp(const char *s, const char *chs);
+void   mutt_cs_fgetconv_close(FGETCONV **fc);
+int    mutt_cs_fgetconv(FGETCONV *fc);
+char * mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *fc);
+char * mutt_cs_get_default_charset(void);
+size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
+void   mutt_cs_set_langinfo_charset(void);
 
-#define mutt_is_utf8(a)     mutt_chscmp(a, "utf-8")
-#define mutt_is_us_ascii(a) mutt_chscmp(a, "us-ascii")
+#define mutt_cs_is_utf8(a)     mutt_cs_chscmp(a, "utf-8")
+#define mutt_cs_is_us_ascii(a) mutt_cs_chscmp(a, "us-ascii")
 
 #endif 

@@ -90,7 +90,7 @@ static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)
   int c, linelen = 0;
   char line[77], savechar;
 
-  while ((c = fgetconv(fc)) != EOF)
+  while ((c = mutt_cs_fgetconv(fc)) != EOF)
   {
     /* Wrap the line if needed. */
     if (linelen == 76 && ((istext && c != '\n') || !istext))
@@ -279,7 +279,7 @@ static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
 
   b64_init(&ctx);
 
-  while ((ch = fgetconv(fc)) != EOF)
+  while ((ch = mutt_cs_fgetconv(fc)) != EOF)
   {
     if (SigInt == 1)
     {
@@ -299,7 +299,7 @@ static void encode_8bit(FGETCONV *fc, FILE *fout)
 {
   int ch;
 
-  while ((ch = fgetconv(fc)) != EOF)
+  while ((ch = mutt_cs_fgetconv(fc)) != EOF)
   {
     if (SigInt == 1)
     {
@@ -490,7 +490,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     mutt_file_copy_stream(fpin, f);
   mutt_sig_allow_interrupt(0);
 
-  fgetconv_close(&fc);
+  mutt_cs_fgetconv_close(&fc);
   mutt_file_fclose(&fpin);
 
   if (SigInt == 1)
@@ -949,7 +949,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     {
       if (!chs)
       {
-        mutt_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
+        mutt_cs_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
         mutt_param_set("charset", chsbuf, &b->parameter);
       }
       FREE(&b->charset);
@@ -968,10 +968,10 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   mutt_file_fclose(&fp);
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
-    mutt_param_set("charset",
-                   (!info->hibin ? "us-ascii" :
-                                   Charset && !mutt_is_us_ascii(Charset) ? Charset : "unknown-8bit"),
-                   &b->parameter);
+    mutt_param_set(
+        "charset",
+        (!info->hibin ? "us-ascii" : Charset && !mutt_cs_is_us_ascii(Charset) ? Charset : "unknown-8bit"),
+        &b->parameter);
 
   return info;
 }
@@ -1318,7 +1318,7 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
     p = mutt_param_get("charset", b->parameter);
 
   if (p)
-    mutt_canonical_charset(d, dlen, NONULL(p));
+    mutt_cs_canonical_charset(d, dlen, NONULL(p));
   else
     mutt_str_strfcpy(d, "us-ascii", dlen);
 
@@ -1336,7 +1336,7 @@ void mutt_update_encoding(struct Body *a)
   char chsbuf[STRING];
 
   /* override noconv when it's us-ascii */
-  if (mutt_is_us_ascii(mutt_get_body_charset(chsbuf, sizeof(chsbuf), a)))
+  if (mutt_cs_is_us_ascii(mutt_get_body_charset(chsbuf, sizeof(chsbuf), a)))
     a->noconv = false;
 
   if (!a->force_charset && !a->noconv)
