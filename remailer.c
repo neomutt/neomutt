@@ -384,29 +384,6 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 
   switch (op)
   {
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, remailer->num);
-      }
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, mix_format_caps(remailer));
-      }
-      break;
-    case 's':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
-      }
-      else if (!remailer->shortname)
-        optional = 0;
-      break;
     case 'a':
       if (!optional)
       {
@@ -414,6 +391,32 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
         snprintf(buf, buflen, fmt, NONULL(remailer->addr));
       }
       else if (!remailer->addr)
+        optional = 0;
+      break;
+
+    case 'c':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, mix_format_caps(remailer));
+      }
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, remailer->num);
+      }
+      break;
+
+    case 's':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
+      }
+      else if (!remailer->shortname)
         optional = 0;
       break;
 

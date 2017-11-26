@@ -2951,6 +2951,113 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 
   switch (tolower(op))
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
+        if (key->kobj->subkeys)
+          s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
+        else
+          s = "?";
+        snprintf(buf, buflen, fmt, s);
+      }
+      break;
+
+    case 'c':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
+      }
+      else if (!(kflags & (KEYFLAG_ABILITIES)))
+        optional = 0;
+      break;
+
+    case 'f':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, crypt_flags(kflags));
+      }
+      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+        optional = 0;
+      break;
+
+    case 'k':
+      if (!optional)
+      {
+        /* fixme: we need a way to distinguish between main and subkeys.
+           Store the idx in entry? */
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, crypt_keyid(key));
+      }
+      break;
+
+    case 'l':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%slu", prec);
+        if (key->kobj->subkeys)
+          val = key->kobj->subkeys->length;
+        else
+          val = 0;
+        snprintf(buf, buflen, fmt, val);
+      }
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, entry->num);
+      }
+      break;
+
+    case 'p':
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
+      break;
+
+    case 't':
+      if ((kflags & KEYFLAG_ISX509))
+        s = "x";
+      else
+      {
+        switch (key->validity)
+        {
+          case GPGME_VALIDITY_UNDEFINED:
+            s = "q";
+            break;
+          case GPGME_VALIDITY_NEVER:
+            s = "n";
+            break;
+          case GPGME_VALIDITY_MARGINAL:
+            s = "m";
+            break;
+          case GPGME_VALIDITY_FULL:
+            s = "f";
+            break;
+          case GPGME_VALIDITY_ULTIMATE:
+            s = "u";
+            break;
+          case GPGME_VALIDITY_UNKNOWN:
+          default:
+            s = "?";
+            break;
+        }
+      }
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, *s);
+      break;
+
+    case 'u':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, key->uid);
+      }
+      break;
+
     case '[':
     {
       const char *cp = NULL;
@@ -3015,104 +3122,6 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         src = cp + 1;
     }
     break;
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, entry->num);
-      }
-      break;
-    case 'k':
-      if (!optional)
-      {
-        /* fixme: we need a way to distinguish between main and subkeys.
-           Store the idx in entry? */
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, crypt_keyid(key));
-      }
-      break;
-    case 'u':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, key->uid);
-      }
-      break;
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
-        if (key->kobj->subkeys)
-          s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
-        else
-          s = "?";
-        snprintf(buf, buflen, fmt, s);
-      }
-      break;
-    case 'l':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%slu", prec);
-        if (key->kobj->subkeys)
-          val = key->kobj->subkeys->length;
-        else
-          val = 0;
-        snprintf(buf, buflen, fmt, val);
-      }
-      break;
-    case 'f':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, crypt_flags(kflags));
-      }
-      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
-        optional = 0;
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
-      }
-      else if (!(kflags & (KEYFLAG_ABILITIES)))
-        optional = 0;
-      break;
-    case 't':
-      if ((kflags & KEYFLAG_ISX509))
-        s = "x";
-      else
-      {
-        switch (key->validity)
-        {
-          case GPGME_VALIDITY_UNDEFINED:
-            s = "q";
-            break;
-          case GPGME_VALIDITY_NEVER:
-            s = "n";
-            break;
-          case GPGME_VALIDITY_MARGINAL:
-            s = "m";
-            break;
-          case GPGME_VALIDITY_FULL:
-            s = "f";
-            break;
-          case GPGME_VALIDITY_ULTIMATE:
-            s = "u";
-            break;
-          case GPGME_VALIDITY_UNKNOWN:
-          default:
-            s = "?";
-            break;
-        }
-      }
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, *s);
-      break;
-    case 'p':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
-      break;
 
     default:
       *buf = '\0';

@@ -571,18 +571,29 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       snprintf(buf, buflen, fmt, folder->num + 1);
       break;
 
+    case 'd':
+      if (folder->ff->nd->desc)
+      {
+        char *desc = mutt_str_strdup(folder->ff->nd->desc);
+        if (NewsgroupsCharset && *NewsgroupsCharset)
+          mutt_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
+        mutt_filter_unprintable(&desc);
+
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, desc);
+        FREE(&desc);
+      }
+      else
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, "");
+      }
+      break;
+
     case 'f':
       strncpy(fn, folder->ff->name, sizeof(fn) - 1);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, fn);
-      break;
-
-    case 'N':
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      if (folder->ff->nd->subscribed)
-        snprintf(buf, buflen, fmt, ' ');
-      else
-        snprintf(buf, buflen, fmt, folder->ff->new ? 'N' : 'u');
       break;
 
     case 'M':
@@ -591,6 +602,14 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, 'D');
       else
         snprintf(buf, buflen, fmt, folder->ff->nd->allowed ? ' ' : '-');
+      break;
+
+    case 'N':
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      if (folder->ff->nd->subscribed)
+        snprintf(buf, buflen, fmt, ' ');
+      else
+        snprintf(buf, buflen, fmt, folder->ff->new ? 'N' : 'u');
       break;
 
     case 's':
@@ -632,25 +651,6 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, folder->ff->nd->unread);
-      }
-      break;
-
-    case 'd':
-      if (folder->ff->nd->desc)
-      {
-        char *desc = mutt_str_strdup(folder->ff->nd->desc);
-        if (NewsgroupsCharset && *NewsgroupsCharset)
-          mutt_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
-        mutt_filter_unprintable(&desc);
-
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(desc, buflen, fmt, desc);
-        FREE(&desc);
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, "");
       }
       break;
   }

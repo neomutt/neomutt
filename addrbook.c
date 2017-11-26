@@ -82,22 +82,22 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
 
   switch (op)
   {
+    case 'a':
+      mutt_format_s(buf, buflen, prec, alias->name);
+      break;
     case 'f':
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, alias->del ? "D" : " ");
       break;
-    case 'a':
-      mutt_format_s(buf, buflen, prec, alias->name);
+    case 'n':
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, alias->num + 1);
       break;
     case 'r':
       adr[0] = '\0';
       rfc822_write_address(adr, sizeof(adr), alias->addr, 1);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, adr);
-      break;
-    case 'n':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, alias->num + 1);
       break;
     case 't':
       buf[0] = alias->tagged ? '*' : ' ';
