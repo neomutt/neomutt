@@ -72,9 +72,10 @@
 
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
-#else /* Make sure EX_OK is defined <philiph@pobox.com> */
+#else
 #define EX_OK 0
 #endif
+
 /* If you are debugging this file, comment out the following line. */
 #define NDEBUG
 #ifdef NDEBUG
@@ -481,7 +482,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   else
     fc = fgetconv_open(fpin, 0, 0, 0);
 
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
   if (a->encoding == ENCQUOTEDPRINTABLE)
     encode_quoted(fc, f, write_as_text_part(a));
   else if (a->encoding == ENCBASE64)
@@ -490,7 +491,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
     encode_8bit(fc, f, write_as_text_part(a));
   else
     mutt_file_copy_stream(fpin, f);
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
 
   fgetconv_close(&fc);
   mutt_file_fclose(&fpin);
@@ -683,7 +684,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 {
   iconv_t cd1, *cd = NULL;
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
-  ICONV_CONST char *ib = NULL, *ub = NULL;
+  const char *ib = NULL, *ub = NULL;
   char *ob = NULL;
   size_t ibl, obl, ubl, ubl1, n, ret;
   struct Content *infos = NULL;
@@ -723,7 +724,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     ib = bufi;
     ob = bufu;
     obl = sizeof(bufu);
-    n = iconv(cd1, ibl ? &ib : 0, &ibl, &ob, &obl);
+    n = iconv(cd1, (ICONV_CONST char **) (ibl ? &ib : 0), &ibl, &ob, &obl);
     assert(n == (size_t)(-1) || !n);
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
     {
@@ -742,7 +743,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
         ubl = ubl1;
         ob = bufo;
         obl = sizeof(bufo);
-        n = iconv(cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
+        n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
         if (n == (size_t)(-1))
         {
           assert(errno == E2BIG || (BUGGY_ICONV && (errno == EILSEQ || errno == ENOENT)));
@@ -2291,7 +2292,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   int fd, st;
   pid_t pid, ppid;
 
-  mutt_block_signals_system();
+  mutt_sig_block_system();
 
   sigemptyset(&set);
   /* we also don't want to be stopped right now */
@@ -2441,7 +2442,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   else
     st = S_ERR; /* error */
 
-  mutt_unblock_signals_system(1);
+  mutt_sig_unblock_system(1);
 
   return st;
 }
@@ -2617,7 +2618,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
     {
       const char *e = NULL;
 
-      e = mutt_strsysexit(i);
+      e = mutt_str_sysexit(i);
       mutt_error(_("Error sending message, child exited %d (%s)."), i, NONULL(e));
       if (childout)
       {

@@ -25,6 +25,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "protos.h"
 #ifdef USE_IMAP
@@ -56,7 +57,7 @@ int mutt_system(const char *cmd)
 
   /* must ignore SIGINT and SIGQUIT */
 
-  mutt_block_signals_system();
+  mutt_sig_block_system();
 
   act.sa_handler = SIG_DFL;
 /* we want to restart the waitpid() below */
@@ -73,7 +74,7 @@ int mutt_system(const char *cmd)
     act.sa_flags = 0;
 
     /* reset signals for the child; not really needed, but... */
-    mutt_unblock_signals_system(0);
+    mutt_sig_unblock_system(0);
     act.sa_handler = SIG_DFL;
     act.sa_flags = 0;
     sigemptyset(&act.sa_mask);
@@ -95,7 +96,7 @@ int mutt_system(const char *cmd)
   sigaction(SIGTSTP, &oldtstp, NULL);
 
   /* reset SIGINT, SIGQUIT and SIGCHLD */
-  mutt_unblock_signals_system(1);
+  mutt_sig_unblock_system(1);
 
   rc = (thepid != -1) ? (WIFEXITED(rc) ? WEXITSTATUS(rc) : -1) : -1;
 

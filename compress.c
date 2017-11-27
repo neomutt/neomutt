@@ -422,7 +422,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
   if (!ctx->quiet)
     mutt_message(progress, ctx->realpath);
 
-  mutt_block_signals();
+  mutt_sig_block();
   endwin();
   fflush(stdout);
 
@@ -435,7 +435,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
     mutt_error(_("Error running \"%s\"!"), sys_cmd);
   }
 
-  mutt_unblock_signals();
+  mutt_sig_unblock();
 
   return rc;
 }

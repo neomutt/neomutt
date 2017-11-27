@@ -940,15 +940,6 @@ void imap_unmunge_mbox_name(struct ImapData *idata, char *s)
 }
 
 /**
- * alrm_handler - Dummy signal handler (ignore a signal)
- * @param sig Signal number
- */
-static void alrm_handler(int sig)
-{
-  /* empty */
-}
-
-/**
  * imap_keepalive - poll the current folder to keep the connection alive
  */
 void imap_keepalive(void)
@@ -990,7 +981,7 @@ int imap_wait_keepalive(pid_t pid)
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
 
   sigemptyset(&act.sa_mask);
-  act.sa_handler = alrm_handler;
+  act.sa_handler = mutt_sig_empty_handler;
 #ifdef SA_INTERRUPT
   act.sa_flags = SA_INTERRUPT;
 #else

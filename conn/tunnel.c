@@ -43,6 +43,7 @@
 #include <unistd.h>
 #include "mutt/memory.h"
 #include "mutt/message.h"
+#include "mutt/signal2.h"
 #include "mutt/string2.h"
 #include "mutt.h"
 #include "tunnel.h"
@@ -98,11 +99,11 @@ static int tunnel_socket_open(struct Connection *conn)
     return -1;
   }
 
-  mutt_block_signals_system();
+  mutt_sig_block_system();
   pid = fork();
   if (pid == 0)
   {
-    mutt_unblock_signals_system(0);
+    mutt_sig_unblock_system(0);
     devnull = open("/dev/null", O_RDWR);
     if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
         dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
@@ -121,7 +122,7 @@ static int tunnel_socket_open(struct Connection *conn)
     execle(EXECSHELL, "sh", "-c", Tunnel, NULL, mutt_envlist());
     _exit(127);
   }
-  mutt_unblock_signals_system(1);
+  mutt_sig_unblock_system(1);
 
   if (pid == -1)
   {
@@ -165,7 +166,7 @@ static int tunnel_socket_close(struct Connection *conn)
   if (!WIFEXITED(status) || WEXITSTATUS(status))
   {
     mutt_error(_("Tunnel to %s returned error %d (%s)"), conn->account.host,
-               WEXITSTATUS(status), NONULL(mutt_strsysexit(WEXITSTATUS(status))));
+               WEXITSTATUS(status), NONULL(mutt_str_sysexit(WEXITSTATUS(status))));
     mutt_sleep(2);
   }
   FREE(&conn->sockdata);

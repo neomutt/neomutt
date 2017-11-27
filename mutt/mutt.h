@@ -42,6 +42,7 @@
  * -# @subpage memory
  * -# @subpage message
  * -# @subpage sha1
+ * -# @subpage signal
  * -# @subpage string
  */
 
@@ -62,6 +63,7 @@
 #include "memory.h"
 #include "message.h"
 #include "sha1.h"
+#include "signal2.h"
 #include "string2.h"
 
 #endif /* _MUTT_MUTT_H */

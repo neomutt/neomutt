@@ -1121,11 +1121,11 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
   }
 
   /* Allow interruptions, particularly useful if there are network problems. */
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
   do
     rc = imap_cmd_step(idata);
   while (rc == IMAP_CMD_CONTINUE);
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
 
   if (rc == IMAP_CMD_NO && (flags & IMAP_CMD_FAIL_OK))
     return -2;

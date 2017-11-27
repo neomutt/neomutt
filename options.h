@@ -249,8 +249,6 @@ enum GlobalBool
   OPT_SEARCH_REVERSE,     /**< (pseudo) used by ci_search_command */
   OPT_MSG_ERR,            /**< (pseudo) used by mutt_error/mutt_message */
   OPT_SEARCH_INVALID,     /**< (pseudo) used to invalidate the search pat */
-  OPT_SIGNALS_BLOCKED,    /**< (pseudo) using by mutt_block_signals () */
-  OPT_SYS_SIGNALS_BLOCKED, /**< (pseudo) using by mutt_block_signals_system () */
   OPT_NEED_RESORT,        /**< (pseudo) used to force a re-sort */
   OPT_RESORT_INIT,        /**< (pseudo) used to force the next resort to be from scratch */
   OPT_VIEW_ATTACH,        /**< (pseudo) signals that we are viewing attachments */

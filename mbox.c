@@ -446,10 +446,10 @@ static int mbox_open_mailbox(struct Context *ctx)
     mutt_perror(ctx->path);
     return -1;
   }
-  mutt_block_signals();
+  mutt_sig_block();
   if (mbox_lock_mailbox(ctx, 0, 1) == -1)
   {
-    mutt_unblock_signals();
+    mutt_sig_unblock();
     return -1;
   }
 
@@ -462,7 +462,7 @@ static int mbox_open_mailbox(struct Context *ctx)
   mutt_file_touch_atime(fileno(ctx->fp));
 
   mbox_unlock_mailbox(ctx);
-  mutt_unblock_signals();
+  mutt_sig_unblock();
   return rc;
 }
 
@@ -497,7 +497,7 @@ static int mbox_close_mailbox(struct Context *ctx)
   if (ctx->append)
   {
     mutt_file_unlock(ctx->path, fileno(ctx->fp));
-    mutt_unblock_signals();
+    mutt_sig_unblock();
   }
 
   mutt_file_fclose(&ctx->fp);
@@ -876,10 +876,10 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
       /* lock the file if it isn't already */
       if (!ctx->locked)
       {
-        mutt_block_signals();
+        mutt_sig_block();
         if (mbox_lock_mailbox(ctx, 0, 0) == -1)
         {
-          mutt_unblock_signals();
+          mutt_sig_unblock();
           /* we couldn't lock the mailbox, but nothing serious happened:
            * probably the new mail arrived: no reason to wait till we can
            * parse it: we'll get it on the next pass
@@ -917,7 +917,7 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
           if (unlock)
           {
             mbox_unlock_mailbox(ctx);
-            mutt_unblock_signals();
+            mutt_sig_unblock();
           }
 
           return MUTT_NEW_MAIL; /* signal that new mail arrived */
@@ -942,7 +942,7 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
       if (unlock)
       {
         mbox_unlock_mailbox(ctx);
-        mutt_unblock_signals();
+        mutt_sig_unblock();
       }
       return MUTT_REOPENED;
     }
@@ -952,7 +952,7 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 
   mbox_unlock_mailbox(ctx);
   mx_fastclose_mailbox(ctx);
-  mutt_unblock_signals();
+  mutt_sig_unblock();
   mutt_error(_("Mailbox was corrupted!"));
   return -1;
 }
@@ -1048,11 +1048,11 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  mutt_block_signals();
+  mutt_sig_block();
 
   if (mbox_lock_mailbox(ctx, 1, 1) == -1)
   {
-    mutt_unblock_signals();
+    mutt_sig_unblock();
     mutt_error(_("Unable to lock mailbox!"));
     goto bail;
   }
@@ -1227,7 +1227,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   fp = fopen(tempfile, "r");
   if (!fp)
   {
-    mutt_unblock_signals();
+    mutt_sig_unblock();
     mx_fastclose_mailbox(ctx);
     mutt_debug(1, "unable to reopen temp copy of mailbox!\n");
     mutt_perror(tempfile);
@@ -1292,7 +1292,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(Tmpdir),
              NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(tempfile, savefile);
-    mutt_unblock_signals();
+    mutt_sig_unblock();
     mx_fastclose_mailbox(ctx);
     mutt_pretty_mailbox(savefile, sizeof(savefile));
     mutt_error(_("Write failed!  Saved partial mailbox to %s"), savefile);
@@ -1310,7 +1310,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   if (!ctx->fp)
   {
     unlink(tempfile);
-    mutt_unblock_signals();
+    mutt_sig_unblock();
     mx_fastclose_mailbox(ctx);
     mutt_error(_("Fatal error!  Could not reopen mailbox!"));
     FREE(&newOffset);
@@ -1332,7 +1332,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   FREE(&newOffset);
   FREE(&oldOffset);
   unlink(tempfile); /* remove partial copy of the mailbox */
-  mutt_unblock_signals();
+  mutt_sig_unblock();
 
   if (option(OPT_CHECK_MBOX_SIZE))
   {
@@ -1363,7 +1363,7 @@ bail: /* Come here in case of disaster */
   /* this is ok to call even if we haven't locked anything */
   mbox_unlock_mailbox(ctx);
 
-  mutt_unblock_signals();
+  mutt_sig_unblock();
   FREE(&newOffset);
   FREE(&oldOffset);
 

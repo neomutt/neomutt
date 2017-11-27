@@ -337,15 +337,11 @@ struct AttachMatch
 #define FMT_CENTER 0
 #define FMT_RIGHT  1
 
-/* Exit values used in send_msg() */
-#define S_ERR 127
-#define S_BKG 126
-
 int safe_asprintf(char **, const char *, ...);
 
 int mutt_inbox_cmp(const char *a, const char *b);
 
-const char *mutt_strsysexit(int e);
+const char *mutt_str_sysexit(int e);
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 

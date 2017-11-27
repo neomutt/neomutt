@@ -60,6 +60,7 @@
  * | mutt_str_strnfcpy()           | Copy a limited string into a buffer (guaranteeing NUL-termination)
  * | mutt_str_substr_cpy()         | Copy a sub-string into a buffer
  * | mutt_str_substr_dup()         | Duplicate a sub-string
+ * | mutt_str_sysexit()            | Return a string matching an error code
  * | mutt_str_word_casecmp()       | Find word a in word list b
  */
 
@@ -72,6 +73,83 @@
 #include "debug.h"
 #include "memory.h"
 #include "string2.h"
+#ifdef HAVE_SYSEXITS_H
+#include <sysexits.h>
+#endif
+
+/**
+ * struct SysExits - Lookup table of error messages
+ */
+static const struct SysExits
+{
+  int v;
+  const char *str;
+} sysexits_h[] = {
+#ifdef EX_USAGE
+  { 0xff & EX_USAGE, "Bad usage." },
+#endif
+#ifdef EX_DATAERR
+  { 0xff & EX_DATAERR, "Data format error." },
+#endif
+#ifdef EX_NOINPUT
+  { 0xff & EX_NOINPUT, "Cannot open input." },
+#endif
+#ifdef EX_NOUSER
+  { 0xff & EX_NOUSER, "User unknown." },
+#endif
+#ifdef EX_NOHOST
+  { 0xff & EX_NOHOST, "Host unknown." },
+#endif
+#ifdef EX_UNAVAILABLE
+  { 0xff & EX_UNAVAILABLE, "Service unavailable." },
+#endif
+#ifdef EX_SOFTWARE
+  { 0xff & EX_SOFTWARE, "Internal error." },
+#endif
+#ifdef EX_OSERR
+  { 0xff & EX_OSERR, "Operating system error." },
+#endif
+#ifdef EX_OSFILE
+  { 0xff & EX_OSFILE, "System file missing." },
+#endif
+#ifdef EX_CANTCREAT
+  { 0xff & EX_CANTCREAT, "Can't create output." },
+#endif
+#ifdef EX_IOERR
+  { 0xff & EX_IOERR, "I/O error." },
+#endif
+#ifdef EX_TEMPFAIL
+  { 0xff & EX_TEMPFAIL, "Deferred." },
+#endif
+#ifdef EX_PROTOCOL
+  { 0xff & EX_PROTOCOL, "Remote protocol error." },
+#endif
+#ifdef EX_NOPERM
+  { 0xff & EX_NOPERM, "Insufficient permission." },
+#endif
+#ifdef EX_CONFIG
+  { 0xff & EX_NOPERM, "Local configuration error." },
+#endif
+  { S_ERR, "Exec error." },
+  { -1, NULL },
+};
+
+/**
+ * mutt_str_sysexit - Return a string matching an error code
+ * @param e Error code, e.g. EX_NOPERM
+ */
+const char *mutt_str_sysexit(int e)
+{
+  int i;
+
+  for (i = 0; sysexits_h[i].str; i++)
+  {
+    if (e == sysexits_h[i].v)
+      break;
+  }
+
+  return sysexits_h[i].str;
+}
 
 /**
  * mutt_str_atol - Convert ASCII string to a long

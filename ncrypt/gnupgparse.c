@@ -94,7 +94,7 @@ static void fix_uid(char *uid)
   {
     int n = s - uid + 1; /* chars available in original buffer */
     char *buf = NULL;
-    ICONV_CONST char *ib = NULL;
+    const char *ib = NULL;
     char *ob = NULL;
     size_t ibl, obl;
 
@@ -103,7 +103,7 @@ static void fix_uid(char *uid)
     ibl = d - uid + 1;
     ob = buf;
     obl = n;
-    iconv(cd, &ib, &ibl, &ob, &obl);
+    iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
     if (!ibl)
     {
       if (ob - buf < n)
