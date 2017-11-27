@@ -556,8 +556,7 @@ bail:
  * relies on a context structure to find messages, while, on the attachment
  * menu, messages are referenced through the attachment index.
  */
-static void attach_forward_msgs(FILE *fp, struct Header *hdr,
-                                struct AttachCtx *actx, struct Body *cur, int flags)
+static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *cur, int flags)
 {
   struct Header *curhdr = NULL;
   struct Header *tmphdr = NULL;
@@ -670,7 +669,7 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   short nattach;
 
   if (check_all_msg(actx, cur, false))
-    attach_forward_msgs(fp, hdr, actx, cur, flags);
+    attach_forward_msgs(fp, actx, cur, flags);
   else
   {
     nattach = count_tagged(actx);
