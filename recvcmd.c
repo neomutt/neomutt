@@ -241,7 +241,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 /**
  * mutt_attach_resend - resend-message, from the attachment menu
  */
-void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
   if (!check_all_msg(actx, cur, true))
     return;

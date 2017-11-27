@@ -1350,7 +1350,7 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_RESEND:
         CHECK_ATTACH;
-        mutt_attach_resend(CURATTACH->fp, hdr, actx,
+        mutt_attach_resend(CURATTACH->fp, actx,
                            menu->tagprefix ? NULL : CURATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
