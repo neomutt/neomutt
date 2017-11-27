@@ -5034,7 +5034,7 @@ int smime_gpgme_send_menu(struct Header *msg)
   return gpgme_send_menu(msg, 1);
 }
 
-static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
+static int verify_sender(struct Header *h)
 {
   struct Address *sender = NULL;
   unsigned int rc = 1;
@@ -5114,7 +5114,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
 
 int smime_gpgme_verify_sender(struct Header *h)
 {
-  return verify_sender(h, GPGME_PROTOCOL_CMS);
+  return verify_sender(h);
 }
 
 void mutt_gpgme_set_sender(const char *sender)
