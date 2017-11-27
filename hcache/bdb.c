@@ -91,7 +91,7 @@ static void *hcache_bdb_open(const char *path)
     return NULL;
   }
 
-  if (mutt_file_lock(ctx->lockfile, ctx->fd, 1, 5))
+  if (mutt_file_lock(ctx->fd, 1, 5))
     goto fail_close;
 
   ret = db_env_create(&ctx->env, 0);
