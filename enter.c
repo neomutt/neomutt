@@ -623,7 +623,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           {
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
             i = strlen(buf);
-            if (!mutt_nm_tag_complete(buf, buflen, i, state->tabs))
+            if (!mutt_nm_tag_complete(buf, buflen, state->tabs))
               BEEP();
 
             replace_part(state, 0, buf);

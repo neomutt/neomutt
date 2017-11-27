@@ -3737,7 +3737,7 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
  *
  * Complete the nearest "+" or "-" -prefixed string previous to pos.
  */
-bool mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs)
+bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
 {
   if (!buffer)
     return false;
