@@ -196,7 +196,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len);
 void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out);
 void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Header *cur);
 void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
-void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, struct Header *cur, struct Envelope *curenv);
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv);
 void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out);
 void mutt_message_to_7bit(struct Body *a, FILE *fp);
 void mutt_mktemp_full(char *s, size_t slen, const char *prefix, const char *suffix, const char *src, int line);

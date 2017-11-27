@@ -762,7 +762,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 
     mutt_fix_reply_recipients(env);
   }
-  mutt_make_misc_reply_headers(env, Context, curhdr, curenv);
+  mutt_make_misc_reply_headers(env, curenv);
 
   if (parent)
     mutt_add_to_reference_headers(env, curenv);
