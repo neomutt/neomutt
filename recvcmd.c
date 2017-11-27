@@ -781,7 +781,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 /**
  * attach_include_reply - This is _very_ similar to send.c's include_reply()
  */
-static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int flags)
+static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   int chflags = CH_DECODE;
@@ -875,13 +875,13 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   if (!parent_hdr)
   {
     if (cur)
-      attach_include_reply(fp, tmpfp, cur->hdr, flags);
+      attach_include_reply(fp, tmpfp, cur->hdr);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged)
-          attach_include_reply(actx->idx[i]->fp, tmpfp, actx->idx[i]->content->hdr, flags);
+          attach_include_reply(actx->idx[i]->fp, tmpfp, actx->idx[i]->content->hdr);
       }
     }
   }
