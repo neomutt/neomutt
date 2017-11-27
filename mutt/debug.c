@@ -25,9 +25,9 @@
  *
  * Output debugging messages, suitable for a developer.
  *
- * | Function     | Description
- * | :----------- | :--------------------------------
- * | mutt_debug() | Output some debugging information
+ * | Function          | Description
+ * | :---------------- | :--------------------------------
+ * | mutt_debug_real() | Output some debugging information
  */
 
 #include "config.h"
@@ -35,7 +35,7 @@
 #include <stdio.h>
 
 /**
- * mutt_debug - Output some debugging information
+ * mutt_debug_real - Output some debugging information
  * @param level Debug level
  * @param fmt   printf-like formatting string
  * @param ...   Arguments to be formatted
@@ -43,10 +43,13 @@
  * This stub function ignores the logging level and outputs all information to
  * stderr.
  */
-void mutt_debug(int level, const char *fmt, ...)
+int mutt_debug_real(const char *function, const char *file, int line, int level, ...)
 {
   va_list ap;
-  va_start(ap, fmt);
+  va_start(ap, level);
+  const char *fmt = va_arg(ap, const char *);
   vfprintf(stderr, fmt, ap);
+  int ret = vfprintf(stderr, fmt, ap);
   va_end(ap);
+  return ret;
 }
