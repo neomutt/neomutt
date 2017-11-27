@@ -377,7 +377,7 @@ static struct Body **copy_problematic_attachments(struct Body **last,
  * (non-message types)
  */
 static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
-                                  struct Body *cur, short nattach, int flags)
+                                  struct Body *cur, short nattach)
 {
   bool mime_fwd_all = false;
   bool mime_fwd_any = true;
@@ -674,7 +674,7 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   else
   {
     nattach = count_tagged(actx);
-    attach_forward_bodies(fp, hdr, actx, cur, nattach, flags);
+    attach_forward_bodies(fp, hdr, actx, cur, nattach);
   }
 }
 
