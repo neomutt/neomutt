@@ -124,7 +124,7 @@ void nntp_newsrc_close(struct NntpServer *nserv)
     return;
 
   mutt_debug(1, "Unlocking %s\n", nserv->newsrc_file);
-  mutt_file_unlock(nserv->newsrc_file, fileno(nserv->newsrc_fp));
+  mutt_file_unlock(fileno(nserv->newsrc_fp));
   mutt_file_fclose(&nserv->newsrc_fp);
 }
 

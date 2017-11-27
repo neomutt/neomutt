@@ -128,7 +128,7 @@ static void unlock_realpath(struct Context *ctx)
   if (!ci->locked)
     return;
 
-  mutt_file_unlock(ctx->realpath, fileno(ci->lockfp));
+  mutt_file_unlock(fileno(ci->lockfp));
 
   ci->locked = 0;
   mutt_file_fclose(&ci->lockfp);

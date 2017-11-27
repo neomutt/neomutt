@@ -1200,11 +1200,10 @@ int mutt_file_lock(int fd, int excl, int timeout)
 
 /**
  * mutt_file_unlock - Unlock a file previously locked by mutt_file_lock()
- * @param path Path to file
- * @param fd   File descriptor to file
+ * @param fd File descriptor to file
  * @retval 0 Always
  */
-int mutt_file_unlock(const char *path, int fd)
+int mutt_file_unlock(int fd)
 {
 #ifdef USE_FCNTL
   struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
@@ -1244,7 +1243,7 @@ void mutt_file_unlink_empty(const char *path)
   if (fstat(fd, &sb) == 0 && sb.st_size == 0)
     unlink(path);
 
-  mutt_file_unlock(path, fd);
+  mutt_file_unlock(fd);
   close(fd);
 }
 

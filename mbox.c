@@ -92,7 +92,7 @@ static void mbox_unlock_mailbox(struct Context *ctx)
   {
     fflush(ctx->fp);
 
-    mutt_file_unlock(ctx->path, fileno(ctx->fp));
+    mutt_file_unlock(fileno(ctx->fp));
     ctx->locked = false;
   }
 }
@@ -496,7 +496,7 @@ static int mbox_close_mailbox(struct Context *ctx)
 
   if (ctx->append)
   {
-    mutt_file_unlock(ctx->path, fileno(ctx->fp));
+    mutt_file_unlock(fileno(ctx->fp));
     mutt_sig_unblock();
   }
 
