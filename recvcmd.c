@@ -119,7 +119,7 @@ static short count_tagged_children(struct AttachCtx *actx, short i)
 /**
  * mutt_attach_bounce - Bounce function, from the attachment menu
  */
-void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
   char prompt[STRING];
   char buf[HUGE_STRING];

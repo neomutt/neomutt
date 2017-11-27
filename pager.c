@@ -2710,7 +2710,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_bounce(extra->fp, extra->hdr, extra->actx, extra->bdy);
+          mutt_attach_bounce(extra->fp, extra->actx, extra->bdy);
         else
           ci_bounce_message(extra->hdr);
         break;

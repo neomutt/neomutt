@@ -1357,7 +1357,7 @@ void mutt_view_attachments(struct Header *hdr)
 
       case OP_BOUNCE_MESSAGE:
         CHECK_ATTACH;
-        mutt_attach_bounce(CURATTACH->fp, hdr, actx,
+        mutt_attach_bounce(CURATTACH->fp, actx,
                            menu->tagprefix ? NULL : CURATTACH->content);
         menu->redraw = REDRAW_FULL;
         break;
