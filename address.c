@@ -34,10 +34,10 @@
  *
  * | Function                     | Description
  * | :--------------------------- | :---------------------------------------------------------
- * | addrcmp()                    | compare two e-mail addresses
- * | addrsrc()                    | Search for an e-mail address in a list
- * | has_recips()                 | Count the number of Addresses with valid recipients
- * | mutt_parse_adrlist()         | Parse a list of email addresses
+ * | mutt_addr_cmp()                    | compare two e-mail addresses
+ * | mutt_addr_search()                    | Search for an e-mail address in a list
+ * | mutt_addr_has_recips()                 | Count the number of Addresses with valid recipients
+ * | mutt_addr_parse_list2()         | Parse a list of email addresses
  * | mutt_addr_append()           | Append one list of addresses onto another
  * | mutt_addr_cat()              | Copy a string and escape the specified characters
  * | mutt_addr_copy_list()        | Copy an Address
@@ -643,6 +643,39 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
 }
 
 /**
+ * mutt_addr_parse_list2 - Parse a list of email addresses
+ * @param p Add to this List of Addresses
+ * @param s String to parse
+ * @retval ptr Head of the list of addresses
+ *
+ * The email addresses can be separated by whitespace or commas.
+ */
+struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
+{
+  const char *q = NULL;
+
+  /* check for a simple whitespace separated list of addresses */
+  q = strpbrk(s, "\"<>():;,\\");
+  if (!q)
+  {
+    char tmp[HUGE_STRING];
+    char *r = NULL;
+
+    mutt_str_strfcpy(tmp, s, sizeof(tmp));
+    r = tmp;
+    while ((r = strtok(r, " \t")) != NULL)
+    {
+      p = mutt_addr_parse_list(p, r);
+      r = NULL;
+    }
+  }
+  else
+    p = mutt_addr_parse_list(p, s);
+
+  return p;
+}
+
+/**
  * mutt_addr_qualify - Expand local names in an Address list using a hostname
  * @param addr Address list
  * @param host Hostname
@@ -822,4 +855,80 @@ bool mutt_addr_valid_msgid(const char *msgid)
       return false;
 
   return true;
+}
+
+/**
+ * mutt_addr_cmp_strict - Strictly compare two Address lists
+ * @param a First Address
+ * @param b Second Address
+ * @retval true Address lists are strictly identical
+ */
+int mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
+{
+  while (a && b)
+  {
+    if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
+        (mutt_str_strcmp(a->personal, b->personal) != 0))
+    {
+      return 0;
+    }
+
+    a = a->next;
+    b = b->next;
+  }
+  if (a || b)
+    return 0;
+
+  return 1;
+}
+
+/**
+ * mutt_addr_has_recips - Count the number of Addresses with valid recipients
+ * @param a Address list
+ * @retval num Number of valid Addresses
+ *
+ * An Address has a recipient if the mailbox or group is set.
+ */
+int mutt_addr_has_recips(struct Address *a)
+{
+  int c = 0;
+
+  for (; a; a = a->next)
+  {
+    if (!a->mailbox || a->group)
+      continue;
+    c++;
+  }
+  return c;
+}
+
+/**
+ * mutt_addr_cmp - compare two e-mail addresses
+ * @param a Address 1
+ * @param b Address 2
+ * @retval true if they are equivalent
+ */
+bool mutt_addr_cmp(struct Address *a, struct Address *b)
+{
+  if (!a->mailbox || !b->mailbox)
+    return false;
+  if (mutt_str_strcasecmp(a->mailbox, b->mailbox) != 0)
+    return false;
+  return true;
+}
+
+/**
+ * mutt_addr_search - Search for an e-mail address in a list
+ * @param a   Address containing the search email
+ * @param lst Address List
+ * @retval true If the Address is in the list
+ */
+int mutt_addr_search(struct Address *a, struct Address *lst)
+{
+  for (; lst; lst = lst->next)
+  {
+    if (mutt_addr_cmp(a, lst))
+      return 1;
+  }
+  return 0;
 }

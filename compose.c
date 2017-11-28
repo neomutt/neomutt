@@ -475,7 +475,7 @@ static void edit_address_list(int line, struct Address **addr)
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
     mutt_addr_free(addr);
-    *addr = mutt_parse_adrlist(*addr, buf);
+    *addr = mutt_addr_parse_list2(*addr, buf);
     *addr = mutt_expand_aliases(*addr);
   }
 

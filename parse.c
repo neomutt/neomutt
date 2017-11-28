@@ -1302,39 +1302,6 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 }
 
 /**
- * mutt_parse_adrlist - Parse a list of email addresses
- * @param p Add to this List of Addresses
- * @param s String to parse
- * @retval ptr Head of the list of addresses
- *
- * The email addresses can be separated by whitespace or commas.
- */
-struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
-{
-  const char *q = NULL;
-
-  /* check for a simple whitespace separated list of addresses */
-  q = strpbrk(s, "\"<>():;,\\");
-  if (!q)
-  {
-    char tmp[HUGE_STRING];
-    char *r = NULL;
-
-    mutt_str_strfcpy(tmp, s, sizeof(tmp));
-    r = tmp;
-    while ((r = strtok(r, " \t")) != NULL)
-    {
-      p = mutt_addr_parse_list(p, r);
-      r = NULL;
-    }
-  }
-  else
-    p = mutt_addr_parse_list(p, s);
-
-  return p;
-}
-
-/**
  * count_body_parts_check - Compares mime types to the ok and except lists
  */
 static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool dflt)

@@ -263,7 +263,7 @@ static void be_edit_header(struct Envelope *e, int force)
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
     {
       mutt_addr_free(&e->to);
-      e->to = mutt_parse_adrlist(e->to, tmp);
+      e->to = mutt_addr_parse_list2(e->to, tmp);
       e->to = mutt_expand_aliases(e->to);
       mutt_addrlist_to_intl(e->to, NULL); /* XXX - IDNA error reporting? */
       tmp[0] = '\0';
@@ -296,7 +296,7 @@ static void be_edit_header(struct Envelope *e, int force)
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
     {
       mutt_addr_free(&e->cc);
-      e->cc = mutt_parse_adrlist(e->cc, tmp);
+      e->cc = mutt_addr_parse_list2(e->cc, tmp);
       e->cc = mutt_expand_aliases(e->cc);
       tmp[0] = '\0';
       mutt_addrlist_to_intl(e->cc, NULL);
@@ -317,7 +317,7 @@ static void be_edit_header(struct Envelope *e, int force)
     if (mutt_enter_string(tmp, sizeof(tmp), 5, 0) == 0)
     {
       mutt_addr_free(&e->bcc);
-      e->bcc = mutt_parse_adrlist(e->bcc, tmp);
+      e->bcc = mutt_addr_parse_list2(e->bcc, tmp);
       e->bcc = mutt_expand_aliases(e->bcc);
       mutt_addrlist_to_intl(e->bcc, NULL);
       tmp[0] = '\0';
@@ -374,11 +374,11 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           addstr(_(EditorHelp2));
           break;
         case 'b':
-          msg->env->bcc = mutt_parse_adrlist(msg->env->bcc, p);
+          msg->env->bcc = mutt_addr_parse_list2(msg->env->bcc, p);
           msg->env->bcc = mutt_expand_aliases(msg->env->bcc);
           break;
         case 'c':
-          msg->env->cc = mutt_parse_adrlist(msg->env->cc, p);
+          msg->env->cc = mutt_addr_parse_list2(msg->env->cc, p);
           msg->env->cc = mutt_expand_aliases(msg->env->cc);
           break;
         case 'h':

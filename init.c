@@ -1502,7 +1502,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
           break;
 
         case GS_ADDR:
-          addr = mutt_parse_adrlist(NULL, buf->data);
+          addr = mutt_addr_parse_list2(NULL, buf->data);
           if (!addr)
             goto bail;
           if (mutt_addrlist_to_intl(addr, &estr))
@@ -1941,7 +1941,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
   mutt_debug(3, "Second token is '%s'.\n", buf->data);
 
-  tmp->addr = mutt_parse_adrlist(tmp->addr, buf->data);
+  tmp->addr = mutt_addr_parse_list2(tmp->addr, buf->data);
 
   if (last)
     last->next = tmp;

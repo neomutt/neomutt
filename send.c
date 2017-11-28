@@ -85,37 +85,6 @@ static void append_signature(FILE *f)
 }
 
 /**
- * addrcmp - compare two e-mail addresses
- * @param a Address 1
- * @param b Address 2
- * @retval true if they are equivalent
- */
-static bool addrcmp(struct Address *a, struct Address *b)
-{
-  if (!a->mailbox || !b->mailbox)
-    return false;
-  if (mutt_str_strcasecmp(a->mailbox, b->mailbox) != 0)
-    return false;
-  return true;
-}
-
-/**
- * addrsrc - Search for an e-mail address in a list
- * @param a   Address containing the search email
- * @param lst Address List
- * @retval true If the Address is in the list
- */
-static int addrsrc(struct Address *a, struct Address *lst)
-{
-  for (; lst; lst = lst->next)
-  {
-    if (addrcmp(a, lst))
-      return 1;
-  }
-  return 0;
-}
-
-/**
  * mutt_remove_xrefs - Remove cross-references
  *
  * Remove addresses from "b" which are contained in "a"
@@ -129,7 +98,7 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
   {
     for (p = a; p; p = p->next)
     {
-      if (addrcmp(p, b))
+      if (mutt_addr_cmp(p, b))
         break;
     }
     if (p)
@@ -236,7 +205,7 @@ static int edit_address(struct Address **a, /* const */ char *field)
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
       return -1;
     mutt_addr_free(a);
-    *a = mutt_expand_aliases(mutt_parse_adrlist(NULL, buf));
+    *a = mutt_expand_aliases(mutt_addr_parse_list2(NULL, buf));
     idna_ok = mutt_addrlist_to_intl(*a, &err);
     if (idna_ok != 0)
     {
@@ -558,10 +527,11 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
   }
   else if (env->reply_to)
   {
-    if ((addrcmp(env->from, env->reply_to) && !env->reply_to->next &&
+    if ((mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next &&
          !env->reply_to->personal) ||
         (option(OPT_IGNORE_LIST_REPLY_TO) && mutt_is_mail_list(env->reply_to) &&
-         (addrsrc(env->reply_to, env->to) || addrsrc(env->reply_to, env->cc))))
+         (mutt_addr_search(env->reply_to, env->to) ||
+          mutt_addr_search(env->reply_to, env->cc))))
     {
       /* If the Reply-To: address is a mailing list, assume that it was
        * put there by the mailing list, and use the From: address
@@ -573,7 +543,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
        */
       mutt_addr_append(to, env->from, 0);
     }
-    else if (!(addrcmp(env->from, env->reply_to) && !env->reply_to->next) &&
+    else if (!(mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next) &&
              quadoption(OPT_REPLY_TO) != MUTT_YES)
     {
       /* There are quite a few mailing lists which set the Reply-To:
@@ -1270,26 +1240,6 @@ static int is_reply(struct Header *reply, struct Header *orig)
          mutt_list_find(&orig->env->in_reply_to, reply->env->message_id);
 }
 
-/**
- * has_recips - Count the number of Addresses with valid recipients
- * @param a Address list
- * @retval num Number of valid Addresses
- *
- * An Address has a recipient if the mailbox or group is set.
- */
-static int has_recips(struct Address *a)
-{
-  int c = 0;
-
-  for (; a; a = a->next)
-  {
-    if (!a->mailbox || a->group)
-      continue;
-    c++;
-  }
-  return c;
-}
-
 static int search_attach_keyword(char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
@@ -1944,8 +1894,8 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 #ifdef USE_NNTP
   if (!(flags & SENDNEWS))
 #endif
-    if (!has_recips(msg->env->to) && !has_recips(msg->env->cc) &&
-        !has_recips(msg->env->bcc))
+    if (!mutt_addr_has_recips(msg->env->to) && !mutt_addr_has_recips(msg->env->cc) &&
+        !mutt_addr_has_recips(msg->env->bcc))
     {
       if (!(flags & SENDBATCH))
       {

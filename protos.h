@@ -103,7 +103,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr);
 struct Address *mutt_default_from(void);
 struct Address *mutt_remove_duplicates(struct Address *addr);
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b);
-struct Address *mutt_parse_adrlist(struct Address *p, const char *s);
+struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 
 struct Body *mutt_make_file_attach(const char *path);
 struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg);
@@ -376,5 +376,8 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 
 bool message_is_tagged(struct Context *ctx, int index);
 bool message_is_visible(struct Context *ctx, int index);
+
+int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
+void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
 
 #endif /* _MUTT_PROTOS_H */

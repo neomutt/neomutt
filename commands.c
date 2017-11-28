@@ -299,7 +299,7 @@ void ci_bounce_message(struct Header *h)
   if (rc || !buf[0])
     return;
 
-  adr = mutt_parse_adrlist(adr, buf);
+  adr = mutt_addr_parse_list2(adr, buf);
   if (!adr)
   {
     mutt_error(_("Error parsing address!"));

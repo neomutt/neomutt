@@ -552,31 +552,6 @@ static int mbox_open_new_message(struct Message *msg, struct Context *dest, stru
   return 0;
 }
 
-/**
- * strict_addrcmp - Strictly compare two Address lists
- * @param a First Address
- * @param b Second Address
- * @retval true Address lists are strictly identical
- */
-static int strict_addrcmp(const struct Address *a, const struct Address *b)
-{
-  while (a && b)
-  {
-    if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
-        (mutt_str_strcmp(a->personal, b->personal) != 0))
-    {
-      return 0;
-    }
-
-    a = a->next;
-    b = b->next;
-  }
-  if (a || b)
-    return 0;
-
-  return 1;
-}
-
 static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope *e2)
 {
   if (e1 && e2)
@@ -584,10 +559,11 @@ static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope
     if ((mutt_str_strcmp(e1->message_id, e2->message_id) != 0) ||
         (mutt_str_strcmp(e1->subject, e2->subject) != 0) ||
         !mutt_list_compare(&e1->references, &e2->references) ||
-        !strict_addrcmp(e1->from, e2->from) || !strict_addrcmp(e1->sender, e2->sender) ||
-        !strict_addrcmp(e1->reply_to, e2->reply_to) ||
-        !strict_addrcmp(e1->to, e2->to) || !strict_addrcmp(e1->cc, e2->cc) ||
-        !strict_addrcmp(e1->return_path, e2->return_path))
+        !mutt_addr_cmp_strict(e1->from, e2->from) ||
+        !mutt_addr_cmp_strict(e1->sender, e2->sender) ||
+        !mutt_addr_cmp_strict(e1->reply_to, e2->reply_to) ||
+        !mutt_addr_cmp_strict(e1->to, e2->to) || !mutt_addr_cmp_strict(e1->cc, e2->cc) ||
+        !mutt_addr_cmp_strict(e1->return_path, e2->return_path))
       return 0;
     else
       return 1;
