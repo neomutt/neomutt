@@ -552,31 +552,6 @@ static int mbox_open_new_message(struct Message *msg, struct Context *dest, stru
   return 0;
 }
 
-static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope *e2)
-{
-  if (e1 && e2)
-  {
-    if ((mutt_str_strcmp(e1->message_id, e2->message_id) != 0) ||
-        (mutt_str_strcmp(e1->subject, e2->subject) != 0) ||
-        !mutt_list_compare(&e1->references, &e2->references) ||
-        !mutt_addr_cmp_strict(e1->from, e2->from) ||
-        !mutt_addr_cmp_strict(e1->sender, e2->sender) ||
-        !mutt_addr_cmp_strict(e1->reply_to, e2->reply_to) ||
-        !mutt_addr_cmp_strict(e1->to, e2->to) || !mutt_addr_cmp_strict(e1->cc, e2->cc) ||
-        !mutt_addr_cmp_strict(e1->return_path, e2->return_path))
-      return 0;
-    else
-      return 1;
-  }
-  else
-  {
-    if (!e1 && !e2)
-      return 1;
-    else
-      return 0;
-  }
-}
-
 /**
  * strict_cmp_parameters - strictly compare two parameters
  * @param p1 first parameter
@@ -624,7 +599,7 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
         h1->content->length != h2->content->length || h1->lines != h2->lines ||
         h1->zhours != h2->zhours || h1->zminutes != h2->zminutes ||
         h1->zoccident != h2->zoccident || h1->mime != h2->mime ||
-        !strict_cmp_envelopes(h1->env, h2->env) ||
+        !mutt_env_cmp_strict(h1->env, h2->env) ||
         !strict_cmp_bodies(h1->content, h2->content))
       return 0;
     else
