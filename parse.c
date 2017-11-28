@@ -187,7 +187,7 @@ static struct Parameter *parse_parameters(const char *s)
       }
       else
       {
-        new = mutt_new_parameter();
+        new = mutt_param_new();
         new->attribute = mutt_str_substr_dup(s, s + i);
       }
 

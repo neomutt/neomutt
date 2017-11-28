@@ -107,7 +107,7 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   /* copy parameters */
   for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
   {
-    *ppar = mutt_new_parameter();
+    *ppar = mutt_param_new();
     (*ppar)->attribute = mutt_str_strdup(par->attribute);
     (*ppar)->value = mutt_str_strdup(par->value);
   }

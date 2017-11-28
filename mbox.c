@@ -552,37 +552,12 @@ static int mbox_open_new_message(struct Message *msg, struct Context *dest, stru
   return 0;
 }
 
-/**
- * strict_cmp_parameters - strictly compare two parameters
- * @param p1 first parameter
- * @param p2 second parameter
- * @retval true parameters are strictly identical
- */
-static int strict_cmp_parameters(const struct Parameter *p1, const struct Parameter *p2)
-{
-  while (p1 && p2)
-  {
-    if ((mutt_str_strcmp(p1->attribute, p2->attribute) != 0) ||
-        (mutt_str_strcmp(p1->value, p2->value) != 0))
-    {
-      return 0;
-    }
-
-    p1 = p1->next;
-    p2 = p2->next;
-  }
-  if (p1 || p2)
-    return 0;
-
-  return 1;
-}
-
 static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
 {
   if (b1->type != b2->type || b1->encoding != b2->encoding ||
       (mutt_str_strcmp(b1->subtype, b2->subtype) != 0) ||
       (mutt_str_strcmp(b1->description, b2->description) != 0) ||
-      !strict_cmp_parameters(b1->parameter, b2->parameter) || b1->length != b2->length)
+      !mutt_param_cmp_strict(b1->parameter, b2->parameter) || b1->length != b2->length)
     return 0;
   return 1;
 }

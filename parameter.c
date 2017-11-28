@@ -37,6 +37,15 @@
 #include "parameter.h"
 
 /**
+ * mutt_param_new - Create a new Parameter
+ * @retval ptr Newly allocated Parameter
+ */
+struct Parameter *mutt_param_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Parameter));
+}
+
+/**
  * mutt_param_free - Free a Parameter
  * @param p Parameter to free
  */
@@ -102,7 +111,7 @@ void mutt_param_set(const char *attribute, const char *value, struct Parameter *
     }
   }
 
-  q = mutt_new_parameter();
+  q = mutt_param_new();
   q->attribute = mutt_str_strdup(attribute);
   q->value = mutt_str_strdup(value);
   q->next = *p;
@@ -126,4 +135,29 @@ void mutt_param_delete(const char *attribute, struct Parameter **p)
       return;
     }
   }
+}
+
+/**
+ * mutt_param_cmp_strict - strictly compare two parameters
+ * @param p1 first parameter
+ * @param p2 second parameter
+ * @retval true parameters are strictly identical
+ */
+int mutt_param_cmp_strict(const struct Parameter *p1, const struct Parameter *p2)
+{
+  while (p1 && p2)
+  {
+    if ((mutt_str_strcmp(p1->attribute, p2->attribute) != 0) ||
+        (mutt_str_strcmp(p1->value, p2->value) != 0))
+    {
+      return 0;
+    }
+
+    p1 = p1->next;
+    p2 = p2->next;
+  }
+  if (p1 || p2)
+    return 0;
+
+  return 1;
 }
