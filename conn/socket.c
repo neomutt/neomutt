@@ -201,7 +201,7 @@ int mutt_socket_close(struct Connection *conn)
  * @retval >0 Number of bytes written
  * @retval -1 Error
  */
-int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int dbg)
+int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int CONDIT(dbg))
 {
   int rc;
   int sent = 0;
@@ -300,7 +300,7 @@ int mutt_socket_readchar(struct Connection *conn, char *c)
  * @retval >0 Success, number of bytes read
  * @retval -1 Error
  */
-int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg)
+int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int CONDIT(dbg))
 {
   char ch;
   int i;

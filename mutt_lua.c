@@ -386,7 +386,7 @@ static bool lua_init(lua_State **l)
 
 lua_State *Lua = NULL;
 
-int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s,
+int mutt_lua_parse(struct Buffer *CONDIT(tmp), struct Buffer *s,
                    unsigned long UNUSED(data), struct Buffer *err)
 {
   lua_init(&Lua);

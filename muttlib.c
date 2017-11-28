@@ -468,7 +468,7 @@ uint64_t mutt_rand64(void)
 }
 
 void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
-                      const char *suffix, const char *src, int line)
+                      const char *suffix, const char *CONDIT(src), int CONDIT(line))
 {
   size_t n = snprintf(s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(Tmpdir),
                       NONULL(prefix), NONULL(ShortHostname), (int) getuid(),

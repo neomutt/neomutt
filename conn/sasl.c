@@ -171,7 +171,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
  * @param message  Message
  * @retval int SASL_OK, always
  */
-static int mutt_sasl_cb_log(void *UNUSED(context), int priority, const char *message)
+static int mutt_sasl_cb_log(void *UNUSED(context), int CONDIT(priority), const char *CONDIT(message))
 {
   mutt_debug(priority, "SASL: %s\n", message);
 

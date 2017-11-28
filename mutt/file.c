@@ -1103,7 +1103,7 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  *
  * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_file_lock(int fd, int excl, int timeout)
+int mutt_file_lock(int CONDIT(fd), int CONDIT(excl), int CONDIT(timeout))
 {
 #if defined(USE_FCNTL) || defined(USE_FLOCK)
   int count;
@@ -1206,7 +1206,7 @@ int mutt_file_lock(int fd, int excl, int timeout)
  * @param fd File descriptor to file
  * @retval 0 Always
  */
-int mutt_file_unlock(int fd)
+int mutt_file_unlock(int CONDIT(fd))
 {
 #ifdef USE_FCNTL
   struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };

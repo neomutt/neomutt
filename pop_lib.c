@@ -461,7 +461,7 @@ void pop_logout(struct Context *ctx)
  * @retval -1 Connection lost
  * @retval -2 Invalid command or execution error
 */
-int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
+int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *CONDIT(msg))
 {
   int dbg = MUTT_SOCK_LOG_CMD;
   char *c = NULL;
