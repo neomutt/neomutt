@@ -74,7 +74,7 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
-  r = mutt_file_lock(ctx->path, fileno(ctx->fp), excl, retry);
+  r = mutt_file_lock(fileno(ctx->fp), excl, retry);
   if (r == 0)
     ctx->locked = true;
   else if (retry && !excl)
@@ -92,7 +92,7 @@ static void mbox_unlock_mailbox(struct Context *ctx)
   {
     fflush(ctx->fp);
 
-    mutt_file_unlock(ctx->path, fileno(ctx->fp));
+    mutt_file_unlock(fileno(ctx->fp));
     ctx->locked = false;
   }
 }
@@ -496,7 +496,7 @@ static int mbox_close_mailbox(struct Context *ctx)
 
   if (ctx->append)
   {
-    mutt_file_unlock(ctx->path, fileno(ctx->fp));
+    mutt_file_unlock(fileno(ctx->fp));
     mutt_sig_unblock();
   }
 

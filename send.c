@@ -709,8 +709,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   mutt_str_replace(&env->subject, buffer);
 }
 
-void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx,
-                                  struct Header *cur, struct Envelope *curenv)
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv)
 {
   if (!env || !curenv)
     return;
@@ -835,7 +834,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
       return -1;
     }
 
-    mutt_make_misc_reply_headers(env, ctx, cur, curenv);
+    mutt_make_misc_reply_headers(env, curenv);
     make_reference_headers(tag ? NULL : curenv, env, ctx);
   }
   else if (flags & SENDFORWARD)

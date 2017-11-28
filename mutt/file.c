@@ -1089,7 +1089,6 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 
 /**
  * mutt_file_lock - (try to) lock a file
- * @param path    Path to file
  * @param fd      File descriptor to file
  * @param excl    If set, try to lock exclusively
  * @param timeout Retry after this time
@@ -1101,7 +1100,7 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  *
  * Use mutt_file_unlock() to unlock the file.
  */
-int mutt_file_lock(const char *path, int fd, int excl, int timeout)
+int mutt_file_lock(int fd, int excl, int timeout)
 {
 #if defined(USE_FCNTL) || defined(USE_FLOCK)
   int count;
@@ -1201,11 +1200,10 @@ int mutt_file_lock(const char *path, int fd, int excl, int timeout)
 
 /**
  * mutt_file_unlock - Unlock a file previously locked by mutt_file_lock()
- * @param path Path to file
- * @param fd   File descriptor to file
+ * @param fd File descriptor to file
  * @retval 0 Always
  */
-int mutt_file_unlock(const char *path, int fd)
+int mutt_file_unlock(int fd)
 {
 #ifdef USE_FCNTL
   struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
@@ -1236,7 +1234,7 @@ void mutt_file_unlink_empty(const char *path)
   if (fd == -1)
     return;
 
-  if (mutt_file_lock(path, fd, 1, 1) == -1)
+  if (mutt_file_lock(fd, 1, 1) == -1)
   {
     close(fd);
     return;
@@ -1245,7 +1243,7 @@ void mutt_file_unlink_empty(const char *path)
   if (fstat(fd, &sb) == 0 && sb.st_size == 0)
     unlink(path);
 
-  mutt_file_unlock(path, fd);
+  mutt_file_unlock(fd);
   close(fd);
 }
 

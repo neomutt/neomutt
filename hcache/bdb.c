@@ -91,7 +91,7 @@ static void *hcache_bdb_open(const char *path)
     return NULL;
   }
 
-  if (mutt_file_lock(ctx->lockfile, ctx->fd, 1, 5))
+  if (mutt_file_lock(ctx->fd, 1, 5))
     goto fail_close;
 
   ret = db_env_create(&ctx->env, 0);
@@ -124,7 +124,7 @@ fail_db:
 fail_env:
   ctx->env->close(ctx->env, 0);
 fail_unlock:
-  mutt_file_unlock(ctx->lockfile, ctx->fd);
+  mutt_file_unlock(ctx->fd);
 fail_close:
   close(ctx->fd);
   unlink(ctx->lockfile);
@@ -199,7 +199,7 @@ static void hcache_bdb_close(void **vctx)
 
   ctx->db->close(ctx->db, 0);
   ctx->env->close(ctx->env, 0);
-  mutt_file_unlock(ctx->lockfile, ctx->fd);
+  mutt_file_unlock(ctx->fd);
   close(ctx->fd);
   unlink(ctx->lockfile);
   FREE(vctx);

@@ -119,7 +119,7 @@ static short count_tagged_children(struct AttachCtx *actx, short i)
 /**
  * mutt_attach_bounce - Bounce function, from the attachment menu
  */
-void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
   char prompt[STRING];
   char buf[HUGE_STRING];
@@ -241,7 +241,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx, st
 /**
  * mutt_attach_resend - resend-message, from the attachment menu
  */
-void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx, struct Body *cur)
+void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 {
   if (!check_all_msg(actx, cur, true))
     return;
@@ -377,7 +377,7 @@ static struct Body **copy_problematic_attachments(struct Body **last,
  * (non-message types)
  */
 static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
-                                  struct Body *cur, short nattach, int flags)
+                                  struct Body *cur, short nattach)
 {
   bool mime_fwd_all = false;
   bool mime_fwd_any = true;
@@ -556,8 +556,7 @@ bail:
  * relies on a context structure to find messages, while, on the attachment
  * menu, messages are referenced through the attachment index.
  */
-static void attach_forward_msgs(FILE *fp, struct Header *hdr,
-                                struct AttachCtx *actx, struct Body *cur, int flags)
+static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *cur, int flags)
 {
   struct Header *curhdr = NULL;
   struct Header *tmphdr = NULL;
@@ -670,11 +669,11 @@ void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   short nattach;
 
   if (check_all_msg(actx, cur, false))
-    attach_forward_msgs(fp, hdr, actx, cur, flags);
+    attach_forward_msgs(fp, actx, cur, flags);
   else
   {
     nattach = count_tagged(actx);
-    attach_forward_bodies(fp, hdr, actx, cur, nattach, flags);
+    attach_forward_bodies(fp, hdr, actx, cur, nattach);
   }
 }
 
@@ -763,7 +762,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 
     mutt_fix_reply_recipients(env);
   }
-  mutt_make_misc_reply_headers(env, Context, curhdr, curenv);
+  mutt_make_misc_reply_headers(env, curenv);
 
   if (parent)
     mutt_add_to_reference_headers(env, curenv);
@@ -782,7 +781,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
 /**
  * attach_include_reply - This is _very_ similar to send.c's include_reply()
  */
-static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int flags)
+static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   int chflags = CH_DECODE;
@@ -876,13 +875,13 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   if (!parent_hdr)
   {
     if (cur)
-      attach_include_reply(fp, tmpfp, cur->hdr, flags);
+      attach_include_reply(fp, tmpfp, cur->hdr);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged)
-          attach_include_reply(actx->idx[i]->fp, tmpfp, actx->idx[i]->content->hdr, flags);
+          attach_include_reply(actx->idx[i]->fp, tmpfp, actx->idx[i]->content->hdr);
       }
     }
   }

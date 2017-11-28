@@ -726,7 +726,7 @@ int mutt_buffy_check(bool force)
   BuffyNotify = 0;
 
 #ifdef USE_IMAP
-  BuffyCount += imap_buffy_check(force, check_stats);
+  BuffyCount += imap_buffy_check(check_stats);
 #endif
 
   /* check device ID and serial number instead of comparing paths */

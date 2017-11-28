@@ -298,7 +298,7 @@ static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
   fputc('\n', fout);
 }
 
-static void encode_8bit(FGETCONV *fc, FILE *fout, int istext)
+static void encode_8bit(FGETCONV *fc, FILE *fout)
 {
   int ch;
 
@@ -488,7 +488,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   else if (a->encoding == ENCBASE64)
     encode_base64(fc, f, write_as_text_part(a));
   else if (a->type == TYPETEXT && (!a->noconv))
-    encode_8bit(fc, f, write_as_text_part(a));
+    encode_8bit(fc, f);
   else
     mutt_file_copy_stream(fpin, f);
   mutt_sig_allow_interrupt(0);

@@ -49,7 +49,7 @@ const char *mutt_file_dirname(const char *p);
 int         mutt_file_fclose(FILE **f);
 FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
-int         mutt_file_lock(const char *path, int fd, int excl, int timeout);
+int         mutt_file_lock(int fd, int excl, int timeout);
 int         mutt_file_mkdir(const char *path, mode_t mode);
 int         mutt_file_open(const char *path, int flags);
 size_t      mutt_file_quote_filename(char *d, size_t l, const char *f);
@@ -66,6 +66,6 @@ int         mutt_file_to_absolute_path(char *path, const char *reference);
 void        mutt_file_touch_atime(int f);
 void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
-int         mutt_file_unlock(const char *path, int fd);
+int         mutt_file_unlock(int fd);
 
 #endif /* _MUTT_FILE_H */

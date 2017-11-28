@@ -435,8 +435,8 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     menu->current = ci_first_message();
 }
 
-static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz,
-                              int *oldcount, int *index_hint, int flags)
+static int main_change_folder(struct Menu *menu, int op, char *buf,
+                              size_t bufsz, int *oldcount, int *index_hint)
 {
 #ifdef USE_NNTP
   if (option(OPT_NEWS))
@@ -1978,7 +1978,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, 0);
+          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
@@ -1998,7 +1998,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, 0);
+          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
@@ -2019,7 +2019,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_debug(2, "nm: + windowed query (%s)\n", buf);
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, 0);
+          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         }
         break;
 
@@ -2142,7 +2142,7 @@ int mutt_index_menu(void)
           }
         }
 
-        main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, flags);
+        main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
 #ifdef USE_NNTP
         /* mutt_buffy_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(
