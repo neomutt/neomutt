@@ -30,6 +30,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "body.h"
 #include "charset.h"
 #include "envelope.h"
@@ -44,7 +45,6 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
-#include "address.h"
 #include "url.h"
 
 struct Address;

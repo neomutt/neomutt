@@ -31,12 +31,12 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "url.h"
+#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
-#include "address.h"
 
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },

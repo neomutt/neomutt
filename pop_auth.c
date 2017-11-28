@@ -27,13 +27,13 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "address.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
-#include "address.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

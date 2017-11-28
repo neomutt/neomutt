@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "body.h"
 #include "buffy.h"
@@ -58,7 +59,6 @@
 #include "pager.h"
 #include "parameter.h"
 #include "protos.h"
-#include "address.h"
 #include "sort.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"

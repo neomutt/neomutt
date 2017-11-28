@@ -87,6 +87,17 @@ const char *const RFC822Errors[] = {
 };
 
 /**
+ * rfc822_new_address - Create a new Address
+ * @retval ptr Newly allocated Address
+ *
+ * Free the result with free_address() or rfc822_free_address()
+ */
+struct Address *rfc822_new_address(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Address));
+}
+
+/**
  * free_address - Free a single Address
  * @param a Address to free
  *

@@ -35,6 +35,7 @@
 #include <sys/stat.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "body.h"
 #include "context.h"
@@ -45,7 +46,6 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
-#include "address.h"
 
 /*
  * SLcurses_waddnstr() can't take a "const char *", so this is only

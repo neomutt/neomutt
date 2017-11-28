@@ -27,6 +27,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -38,7 +39,6 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
-#include "address.h"
 #include "state.h"
 
 /**
