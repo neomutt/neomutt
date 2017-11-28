@@ -302,7 +302,7 @@ int main(int argc, char **argv, char **env)
           if (!msg)
             msg = mutt_new_header();
           if (!msg->env)
-            msg->env = mutt_new_envelope();
+            msg->env = mutt_env_new();
           if (i == 'b')
             msg->env->bcc = mutt_addr_parse_list(msg->env->bcc, optarg);
           else
@@ -573,7 +573,7 @@ int main(int argc, char **argv, char **env)
     if (!msg)
       msg = mutt_new_header();
     if (!msg->env)
-      msg->env = mutt_new_envelope();
+      msg->env = mutt_env_new();
 
     for (i = optind; i < argc; i++)
     {
@@ -734,7 +734,7 @@ int main(int argc, char **argv, char **env)
         if (opts_env->subject)
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 
-        mutt_free_envelope(&opts_env);
+        mutt_env_free(&opts_env);
         mutt_free_header(&context_hdr);
       }
       /* Editing the includeFile: pass it directly in.

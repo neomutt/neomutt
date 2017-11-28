@@ -414,7 +414,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   }
 
   tmphdr = mutt_new_header();
-  tmphdr->env = mutt_new_envelope();
+  tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
@@ -584,7 +584,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   }
 
   tmphdr = mutt_new_header();
-  tmphdr->env = mutt_new_envelope();
+  tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, curhdr);
 
   tmpbody[0] = '\0';
@@ -854,7 +854,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     mime_reply_any = true;
 
   tmphdr = mutt_new_header();
-  tmphdr->env = mutt_new_envelope();
+  tmphdr->env = mutt_env_new();
 
   if (attach_reply_envelope_defaults(
           tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)

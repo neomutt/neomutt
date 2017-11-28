@@ -1213,7 +1213,7 @@ int mutt_compose_to_sender(struct Header *hdr)
 {
   struct Header *msg = mutt_new_header();
 
-  msg->env = mutt_new_envelope();
+  msg->env = mutt_env_new();
   if (!hdr)
   {
     for (int i = 0; i < Context->msgcount; i++)
@@ -1423,7 +1423,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     }
 
     if (!msg->env)
-      msg->env = mutt_new_envelope();
+      msg->env = mutt_env_new();
   }
 
   /* Parse and use an eventual list-post header */

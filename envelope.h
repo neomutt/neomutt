@@ -64,8 +64,8 @@ struct Envelope
   bool refs_changed : 1; /**< References changed to break thread */
 };
 
-struct Envelope *mutt_new_envelope(void);
-void mutt_free_envelope(struct Envelope **p);
-void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra);
+struct Envelope *mutt_env_new(void);
+void mutt_env_free(struct Envelope **p);
+void mutt_env_merge(struct Envelope *base, struct Envelope **extra);
 
 #endif /* _MUTT_ENVELOPE_H */

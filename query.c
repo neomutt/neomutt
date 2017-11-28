@@ -463,7 +463,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
         /* fallthrough */
         case OP_MAIL:
           msg = mutt_new_header();
-          msg->env = mutt_new_envelope();
+          msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {
             msg->env->to = result_to_addr(QueryTable[menu->current].data);

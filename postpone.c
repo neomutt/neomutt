@@ -587,7 +587,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     {
     err:
       mx_close_message(ctx, &msg);
-      mutt_free_envelope(&newhdr->env);
+      mutt_env_free(&newhdr->env);
       mutt_free_body(&newhdr->content);
       mutt_error(_("Decryption failed."));
       return -1;
@@ -741,7 +741,7 @@ bail:
 
   if (rc == -1)
   {
-    mutt_free_envelope(&newhdr->env);
+    mutt_env_free(&newhdr->env);
     mutt_free_body(&newhdr->content);
   }
 

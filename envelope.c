@@ -25,11 +25,11 @@
  *
  * Representation of an email header (envelope)
  *
- * | Function                     | Description
- * | :--------------------------- | :---------------------------------------------------------
- * | mutt_free_envelope           | Free an Envelope
- * | mutt_merge_envelopes         | Merge the headers of two Envelopes
- * | mutt_new_envelope            | Create a new Envelope
+ * | Function         | Description
+ * | :--------------- | :---------------------------------
+ * | mutt_env_free()  | Free an Envelope
+ * | mutt_env_merge() | Merge the headers of two Envelopes
+ * | mutt_env_new()   | Create a new Envelope
  */
 
 #include "config.h"
@@ -41,10 +41,10 @@
 #include "address.h"
 
 /**
- * mutt_new_envelope - Create a new Envelope
+ * mutt_env_new - Create a new Envelope
  * @retval ptr New Envelope
  */
-struct Envelope *mutt_new_envelope(void)
+struct Envelope *mutt_env_new(void)
 {
   struct Envelope *e = mutt_mem_calloc(1, sizeof(struct Envelope));
   STAILQ_INIT(&e->references);
@@ -54,10 +54,10 @@ struct Envelope *mutt_new_envelope(void)
 }
 
 /**
- * mutt_free_envelope - Free an Envelope
+ * mutt_env_free - Free an Envelope
  * @param p Envelope to free
  */
-void mutt_free_envelope(struct Envelope **p)
+void mutt_env_free(struct Envelope **p)
 {
   if (!*p)
     return;
@@ -95,17 +95,17 @@ void mutt_free_envelope(struct Envelope **p)
 }
 
 /**
- * mutt_merge_envelopes - Merge the headers of two Envelopes
+ * mutt_env_merge - Merge the headers of two Envelopes
  * @param base  Envelope destination for all the headers
  * @param extra Envelope to copy from
  *
  * Any fields that are missing from base will be copied from extra.
  * extra will be freed afterwards.
  */
-void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
+void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
 {
 /* copies each existing element if necessary, and sets the element
- * to NULL in the source so that mutt_free_envelope doesn't leave us
+ * to NULL in the source so that mutt_env_free doesn't leave us
  * with dangling pointers. */
 #define MOVE_ELEM(h)                                                           \
   if (!base->h)                                                                \
@@ -161,5 +161,5 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM
 
-  mutt_free_envelope(extra);
+  mutt_env_free(extra);
 }

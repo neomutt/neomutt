@@ -257,7 +257,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         if ((alias = mutt_lookup_alias(s + 1)))
         {
           h = mutt_new_header();
-          h->env = mutt_new_envelope();
+          h->env = mutt_env_new();
           h->env->from = h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
           h->env->from = h->env->to = NULL;

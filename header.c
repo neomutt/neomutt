@@ -142,7 +142,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   mutt_list_free(&n->references);
   STAILQ_SWAP(&n->references, &msg->env->references, ListNode);
 
-  mutt_free_envelope(&msg->env);
+  mutt_env_free(&msg->env);
   msg->env = n;
   n = NULL;
 
@@ -360,7 +360,7 @@ void mutt_free_header(struct Header **h)
 {
   if (!h || !*h)
     return;
-  mutt_free_envelope(&(*h)->env);
+  mutt_env_free(&(*h)->env);
   mutt_free_body(&(*h)->content);
   FREE(&(*h)->maildir_flags);
   FREE(&(*h)->tree);

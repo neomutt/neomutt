@@ -1149,12 +1149,12 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
  *                  Used for recall-message
  * @retval ptr Newly allocated envelope structure
  *
- * Caller should free the Envelope using mutt_free_envelope().
+ * Caller should free the Envelope using mutt_env_free().
  */
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)
 {
-  struct Envelope *e = mutt_new_envelope();
+  struct Envelope *e = mutt_env_new();
   char *line = mutt_mem_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;

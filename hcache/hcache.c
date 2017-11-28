@@ -705,7 +705,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   memcpy(h, d + off, sizeof(struct Header));
   off += sizeof(struct Header);
 
-  h->env = mutt_new_envelope();
+  h->env = mutt_env_new();
   restore_envelope(h->env, d, &off, convert);
 
   h->content = mutt_new_body();

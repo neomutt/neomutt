@@ -1697,7 +1697,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   if (ctx->subj_hash && hdr->env->real_subj)
     mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr, NULL);
 
-  mutt_free_envelope(&hdr->env);
+  mutt_env_free(&hdr->env);
   hdr->env = mutt_read_rfc822_header(msg->fp, hdr, 0, 0);
 
   if (ctx->id_hash && hdr->env->message_id)

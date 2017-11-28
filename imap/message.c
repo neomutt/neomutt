@@ -1169,7 +1169,7 @@ parsemsg:
    * changed). Another possibility: ignore Status on IMAP? */
   read = h->read;
   newenv = mutt_read_rfc822_header(msg->fp, h, 0, 0);
-  mutt_merge_envelopes(h->env, &newenv);
+  mutt_env_merge(h->env, &newenv);
 
   /* see above. We want the new status in h->read, so we unset it manually
    * and let mutt_set_flag set it correctly, updating context. */
