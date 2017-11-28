@@ -59,9 +59,9 @@
 #include "header.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
-#include "mutt_tags.h"
 #include "parameter.h"
 #include "protos.h"
+#include "tags.h"
 
 static unsigned int hcachever = 0x0;
 

@@ -23,9 +23,12 @@
 #ifndef _MUTT_TAG_H
 #define _MUTT_TAG_H
 
-#include <stdbool.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include "mutt/queue.h"
+
+extern char *HiddenTags;
+extern struct Hash *TagTransforms;
 
 /**
  * struct TagNode - LinkedList Tag Element

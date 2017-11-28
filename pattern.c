@@ -62,8 +62,8 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
-#include "mutt_tags.h"
 #include "mx.h"
+#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif

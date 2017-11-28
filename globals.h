@@ -184,8 +184,6 @@ WHERE const char *GitVer;
 
 WHERE struct Hash *Groups;
 WHERE struct Hash *ReverseAliases;
-WHERE char *HiddenTags;
-WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 
 WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));

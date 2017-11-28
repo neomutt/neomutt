@@ -97,12 +97,12 @@
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+#include "tags.h"
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"

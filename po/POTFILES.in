@@ -89,7 +89,6 @@ mutt_lua.c
 mutt_notmuch.c
 mutt_signal.c
 mutt_socket.c
-mutt_tags.c
 mx.c
 ncrypt/crypt.c
 ncrypt/cryptglue.c
@@ -139,6 +138,7 @@ sort.c
 state.c
 status.c
 system.c
+tags.c
 thread.c
 txt2c.c
 url.c

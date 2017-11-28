@@ -60,7 +60,7 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		flags.o from.o group.o handler.o hdrline.o \
 		header.o help.o history.o hook.o init.o keymap.o main.o \
 		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_address.o mutt_idna.o \
-		mutt_socket.o mutt_tags.o mx.o \
+		mutt_socket.o tags.o mx.o \
 		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
 		rfc1524.o rfc2047.o rfc2231.o rfc3676.o address.o \

@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "mutt/mutt.h"
-#include "mutt_tags.h"
+#include "tags.h"
 
 /**
  * struct Header - The header/envelope of an email

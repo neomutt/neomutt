@@ -20,14 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
-
 #include "config.h"
+#include <stddef.h>
 #include "mutt/hash.h"
 #include "mutt/queue.h"
 #include "mutt/string2.h"
+#include "tags.h"
 #include "globals.h"
-#include "mutt_tags.h"
+
+char *HiddenTags;
+struct Hash *TagTransforms;
 
 /**
  * driver_tags_free - Free tags from a header

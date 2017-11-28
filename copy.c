@@ -38,13 +38,13 @@
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "rfc2047.h"
 #include "state.h"
+#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
