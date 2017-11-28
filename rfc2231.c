@@ -68,7 +68,7 @@ static void purge_empty_parameters(struct Parameter **headp)
     {
       *last = q;
       p->next = NULL;
-      mutt_free_parameter(&p);
+      mutt_param_free(&p);
     }
     else
       last = &p->next;

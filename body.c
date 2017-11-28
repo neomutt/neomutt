@@ -127,7 +127,7 @@ void mutt_free_body(struct Body **p)
     a = a->next;
 
     if (b->parameter)
-      mutt_free_parameter(&b->parameter);
+      mutt_param_free(&b->parameter);
     if (b->filename)
     {
       if (b->unlink)

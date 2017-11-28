@@ -311,7 +311,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   char *subtype = NULL;
 
   FREE(&ct->subtype);
-  mutt_free_parameter(&ct->parameter);
+  mutt_param_free(&ct->parameter);
 
   /* First extract any existing parameters */
   pc = strchr(s, ';');
@@ -325,12 +325,12 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    if ((pc = mutt_get_parameter("name", ct->parameter)) && !ct->filename)
+    if ((pc = mutt_param_get("name", ct->parameter)) && !ct->filename)
       ct->filename = mutt_str_strdup(pc);
 
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
-    if ((pc = mutt_get_parameter("conversions", ct->parameter)))
+    if ((pc = mutt_param_get("conversions", ct->parameter)))
       ct->encoding = mutt_check_encoding(pc);
 #endif
   }
@@ -384,13 +384,13 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   /* Default character set for text types. */
   if (ct->type == TYPETEXT)
   {
-    pc = mutt_get_parameter("charset", ct->parameter);
+    pc = mutt_param_get("charset", ct->parameter);
     if (!pc)
-      mutt_set_parameter("charset",
-                         (AssumedCharset && *AssumedCharset) ?
-                             (const char *) mutt_get_default_charset() :
-                             "us-ascii",
-                         &ct->parameter);
+      mutt_param_set("charset",
+                     (AssumedCharset && *AssumedCharset) ?
+                         (const char *) mutt_get_default_charset() :
+                         "us-ascii",
+                     &ct->parameter);
   }
 }
 
@@ -410,11 +410,11 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    if ((s = mutt_get_parameter("filename", (parms = parse_parameters(s)))))
+    if ((s = mutt_param_get("filename", (parms = parse_parameters(s)))))
       mutt_str_replace(&ct->filename, s);
-    if ((s = mutt_get_parameter("name", parms)))
+    if ((s = mutt_param_get("name", parms)))
       ct->form_name = mutt_str_strdup(s);
-    mutt_free_parameter(&parms);
+    mutt_param_free(&parms);
   }
 }
 
@@ -477,7 +477,7 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
       else if (mutt_str_strcasecmp("encoding-info", line + 6) == 0)
         p->encoding = mutt_check_encoding(c);
       else if (mutt_str_strcasecmp("content-lines", line + 6) == 0)
-        mutt_set_parameter("content-lines", c, &(p->parameter));
+        mutt_param_set("content-lines", c, &(p->parameter));
       else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
       {
         mutt_str_replace(&p->description, c);
@@ -509,7 +509,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
         bound = "--------";
       else
 #endif
-        bound = mutt_get_parameter("boundary", b->parameter);
+        bound = mutt_param_get("boundary", b->parameter);
 
       fseeko(fp, b->offset, SEEK_SET);
       b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
@@ -630,9 +630,9 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
         new = mutt_read_mime_header(fp, digest);
 
 #ifdef SUN_ATTACHMENT
-        if (mutt_get_parameter("content-lines", new->parameter))
+        if (mutt_param_get("content-lines", new->parameter))
         {
-          if (mutt_str_atoi(mutt_get_parameter("content-lines", new->parameter), &lines) < 0)
+          if (mutt_str_atoi(mutt_param_get("content-lines", new->parameter), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
             if (ftello(fp) >= end_off || fgets(buffer, LONG_STRING, fp) == NULL)

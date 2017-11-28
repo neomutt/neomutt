@@ -435,7 +435,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   if (a->type == TYPEMULTIPART)
   {
     /* First, find the boundary to use */
-    p = mutt_get_parameter("boundary", a->parameter);
+    p = mutt_param_get("boundary", a->parameter);
     if (!p)
     {
       mutt_debug(1, "no boundary parameter found!\n");
@@ -509,7 +509,7 @@ void mutt_generate_boundary(struct Parameter **parm)
 
   mutt_rand_base32(rs, sizeof(rs) - 1);
   rs[MUTT_RANDTAG_LEN] = 0;
-  mutt_set_parameter("boundary", rs, parm);
+  mutt_param_set("boundary", rs, parm);
 }
 
 /**
@@ -939,7 +939,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
   {
-    char *chs = mutt_get_parameter("charset", b->parameter);
+    char *chs = mutt_param_get("charset", b->parameter);
     char *fchs = b->use_disp ?
                      ((AttachCharset && *AttachCharset) ? AttachCharset : Charset) :
                      Charset;
@@ -950,7 +950,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
       if (!chs)
       {
         mutt_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
-        mutt_set_parameter("charset", chsbuf, &b->parameter);
+        mutt_param_set("charset", chsbuf, &b->parameter);
       }
       FREE(&b->charset);
       b->charset = fromcode;
@@ -968,10 +968,10 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   mutt_file_fclose(&fp);
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
-    mutt_set_parameter(
-        "charset",
-        (!info->hibin ? "us-ascii" : Charset && !mutt_is_us_ascii(Charset) ? Charset : "unknown-8bit"),
-        &b->parameter);
+    mutt_param_set("charset",
+                   (!info->hibin ? "us-ascii" :
+                                   Charset && !mutt_is_us_ascii(Charset) ? Charset : "unknown-8bit"),
+                   &b->parameter);
 
   return info;
 }
@@ -1315,7 +1315,7 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
     return NULL;
 
   if (b)
-    p = mutt_get_parameter("charset", b->parameter);
+    p = mutt_param_get("charset", b->parameter);
 
   if (p)
     mutt_canonical_charset(d, dlen, NONULL(p));
@@ -1340,7 +1340,7 @@ void mutt_update_encoding(struct Body *a)
     a->noconv = false;
 
   if (!a->force_charset && !a->noconv)
-    mutt_delete_parameter("charset", &a->parameter);
+    mutt_param_delete("charset", &a->parameter);
 
   info = mutt_get_content_info(a->filename, a);
   if (!info)
@@ -1557,8 +1557,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
   if (b->next && check_boundary(boundary, b->next))
     return true;
 
-  if ((p = mutt_get_parameter("boundary", b->parameter)) &&
-      (mutt_str_strcmp(p, boundary) == 0))
+  if ((p = mutt_param_get("boundary", b->parameter)) && (mutt_str_strcmp(p, boundary) == 0))
   {
     return true;
   }
@@ -1576,9 +1575,9 @@ struct Body *mutt_make_multipart(struct Body *b)
   do
   {
     mutt_generate_boundary(&new->parameter);
-    if (check_boundary(mutt_get_parameter("boundary", new->parameter), b))
-      mutt_delete_parameter("boundary", &new->parameter);
-  } while (!mutt_get_parameter("boundary", new->parameter));
+    if (check_boundary(mutt_param_get("boundary", new->parameter), b))
+      mutt_param_delete("boundary", &new->parameter);
+  } while (!mutt_param_get("boundary", new->parameter));
   new->use_disp = false;
   new->disposition = DISPINLINE;
   new->parts = b;
@@ -2887,9 +2886,9 @@ static void set_noconv_flags(struct Body *b, short flag)
     else if (b->type == TYPETEXT && b->noconv)
     {
       if (flag)
-        mutt_set_parameter("x-mutt-noconv", "yes", &b->parameter);
+        mutt_param_set("x-mutt-noconv", "yes", &b->parameter);
       else
-        mutt_delete_parameter("x-mutt-noconv", &b->parameter);
+        mutt_param_delete("x-mutt-noconv", &b->parameter);
     }
   }
 }

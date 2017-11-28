@@ -1592,7 +1592,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (option(OPT_TEXT_FLOWED) && msg->content->type == TYPETEXT &&
           (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0))
       {
-        mutt_set_parameter("format", "flowed", &msg->content->parameter);
+        mutt_param_set("format", "flowed", &msg->content->parameter);
       }
     }
 
@@ -1706,7 +1706,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (option(OPT_TEXT_FLOWED) && msg->content->type == TYPETEXT &&
           (mutt_str_strcasecmp("plain", msg->content->subtype) == 0))
       {
-        char *p = mutt_get_parameter("format", msg->content->parameter);
+        char *p = mutt_param_get("format", msg->content->parameter);
         if (mutt_str_strcasecmp("flowed", NONULL(p)) != 0)
           rfc3676_space_stuff(msg);
       }

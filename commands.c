@@ -973,7 +973,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   short type_changed = 0;
   short structure_changed = 0;
 
-  cp = mutt_get_parameter("charset", b->parameter);
+  cp = mutt_param_get("charset", b->parameter);
   mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
@@ -995,15 +995,14 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     return 0;
 
   /* clean up previous junk */
-  mutt_free_parameter(&b->parameter);
+  mutt_param_free(&b->parameter);
   FREE(&b->subtype);
 
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = mutt_str_strcasecmp(tmp, obuf);
-  charset_changed =
-      mutt_str_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
+  charset_changed = mutt_str_strcasecmp(charset, mutt_param_get("charset", b->parameter));
 
   /* if in send mode, check for conversion - current setting is default. */
 
@@ -1011,7 +1010,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
-             mutt_get_parameter("charset", b->parameter));
+             mutt_param_get("charset", b->parameter));
     r = mutt_yesorno(tmp, !b->noconv);
     if (r != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
@@ -1027,7 +1026,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     if (type_changed)
       mutt_sleep(1);
     mutt_message(_("Character set changed to %s; %s."),
-                 mutt_get_parameter("charset", b->parameter),
+                 mutt_param_get("charset", b->parameter),
                  b->noconv ? _("not converting") : _("converting"));
   }
 
