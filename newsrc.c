@@ -115,7 +115,7 @@ void nntp_data_free(void *data)
   FREE(&data);
 }
 
-void nntp_hash_destructor(int type, void *obj, intptr_t data)
+void nntp_hash_destructor(int UNUSED(type), void *obj, intptr_t UNUSED(data))
 {
   nntp_data_free(obj);
 }

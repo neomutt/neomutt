@@ -780,7 +780,7 @@ static void check_subjects(struct Context *ctx, int init)
   }
 }
 
-void thread_hash_destructor(int type, void *obj, intptr_t data)
+void thread_hash_destructor(int UNUSED(type), void *obj, intptr_t UNUSED(data))
 {
   FREE(&obj);
 }
