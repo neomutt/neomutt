@@ -38,16 +38,15 @@
  * | addrsrc()                    | Search for an e-mail address in a list
  * | has_recips()                 | Count the number of Addresses with valid recipients
  * | mutt_parse_adrlist()         | Parse a list of email addresses
- * | rfc822_append()              | Append one list of addresses onto another
- * | rfc822_cat()                 | Copy a string and escape the specified characters
- * | rfc822_cpy_adr()             | Copy an Address
- * | rfc822_cpy_adr_real          | Copy the real address
- * | rfc822_free_address()        | Free a list of Addresses
- * | rfc822_parse_adrlist()       | Parse a list of email addresses
- * | rfc822_qualify()             | Expand local names in an Address list using a hostname
- * | rfc822_remove_from_adrlist() | Remove an Address from a list
- * | rfc822_valid_msgid()         | Is this a valid Message ID?
- * | rfc822_write_address         | Write an address to a buffer
+ * | mutt_addr_append()           | Append one list of addresses onto another
+ * | mutt_addr_cat()              | Copy a string and escape the specified characters
+ * | mutt_addr_copy_list()        | Copy an Address
+ * | mutt_addr_copy               | Copy the real address
+ * | mutt_addr_free()             | Free a list of Addresses
+ * | mutt_addr_parse_list()       | Parse a list of email addresses
+ * | mutt_addr_qualify()          | Expand local names in an Address list using a hostname
+ * | mutt_addr_remove_from_list() | Remove an Address from a list
+ * | mutt_addr_valid_msgid()      | Is this a valid Message ID?
  */
 
 #include "config.h"
@@ -87,12 +86,12 @@ const char *const RFC822Errors[] = {
 };
 
 /**
- * rfc822_new_address - Create a new Address
+ * mutt_addr_new - Create a new Address
  * @retval ptr Newly allocated Address
  *
- * Free the result with free_address() or rfc822_free_address()
+ * Free the result with free_address() or mutt_addr_free()
  */
-struct Address *rfc822_new_address(void)
+struct Address *mutt_addr_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct Address));
 }
@@ -111,13 +110,13 @@ static void free_address(struct Address *a)
 }
 
 /**
- * rfc822_remove_from_adrlist - Remove an Address from a list
+ * mutt_addr_remove_from_list - Remove an Address from a list
  * @param a       Address list
  * @param mailbox Email address to match
  * @retval  0 Success
  * @retval -1 Error, or email not found
  */
-int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
+int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
 {
   struct Address *p = NULL, *last = NULL, *t = NULL;
   int rc = -1;
@@ -148,10 +147,10 @@ int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
 }
 
 /**
- * rfc822_free_address - Free a list of Addresses
+ * mutt_addr_free - Free a list of Addresses
  * @param p Top of the list
  */
-void rfc822_free_address(struct Address **p)
+void mutt_addr_free(struct Address **p)
 {
   struct Address *t = NULL;
 
@@ -462,11 +461,11 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
 static void add_addrspec(struct Address **top, struct Address **last, const char *phrase,
                          char *comment, size_t *commentlen, size_t commentmax)
 {
-  struct Address *cur = rfc822_new_address();
+  struct Address *cur = mutt_addr_new();
 
   if (parse_addr_spec(phrase, comment, commentlen, commentmax, cur) == NULL)
   {
-    rfc822_free_address(&cur);
+    mutt_addr_free(&cur);
     return;
   }
 
@@ -478,13 +477,13 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
 }
 
 /**
- * rfc822_parse_adrlist - Parse a list of email addresses
+ * mutt_addr_parse_list - Parse a list of email addresses
  * @param top List to append addresses
  * @param s   String to parse
  * @retval ptr  Top of the address list
  * @retval NULL Error
  */
-struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
+struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
 {
   int ws_pending, nl;
   const char *ps = NULL;
@@ -529,7 +528,7 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       ps = next_token(s, comment, &commentlen, sizeof(comment) - 1);
       if (!ps)
       {
-        rfc822_free_address(&top);
+        mutt_addr_free(&top);
         return NULL;
       }
       s = ps;
@@ -541,14 +540,14 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       ps = parse_quote(s + 1, phrase, &phraselen, sizeof(phrase) - 1);
       if (!ps)
       {
-        rfc822_free_address(&top);
+        mutt_addr_free(&top);
         return NULL;
       }
       s = ps;
     }
     else if (*s == ':')
     {
-      cur = rfc822_new_address();
+      cur = mutt_addr_new();
       terminate_buffer(phrase, phraselen);
       cur->mailbox = mutt_str_strdup(phrase);
       cur->group = 1;
@@ -577,7 +576,7 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       }
 
       /* add group terminator */
-      cur = rfc822_new_address();
+      cur = mutt_addr_new();
       if (last)
       {
         last->next = cur;
@@ -591,14 +590,14 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     else if (*s == '<')
     {
       terminate_buffer(phrase, phraselen);
-      cur = rfc822_new_address();
+      cur = mutt_addr_new();
       if (phraselen)
         cur->personal = mutt_str_strdup(phrase);
       ps = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, cur);
       if (!ps)
       {
-        rfc822_free_address(&top);
-        rfc822_free_address(&cur);
+        mutt_addr_free(&top);
+        mutt_addr_free(&cur);
         return NULL;
       }
 
@@ -619,7 +618,7 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       ps = next_token(s, phrase, &phraselen, sizeof(phrase) - 1);
       if (!ps)
       {
-        rfc822_free_address(&top);
+        mutt_addr_free(&top);
         return NULL;
       }
       s = ps;
@@ -644,14 +643,14 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
 }
 
 /**
- * rfc822_qualify - Expand local names in an Address list using a hostname
+ * mutt_addr_qualify - Expand local names in an Address list using a hostname
  * @param addr Address list
  * @param host Hostname
  *
  * Any addresses containing a bare name will be expanded using the hostname.
  * e.g. "john", "example.com" -> 'john@example.com'.
  */
-void rfc822_qualify(struct Address *addr, const char *host)
+void mutt_addr_qualify(struct Address *addr, const char *host)
 {
   char *p = NULL;
 
@@ -668,13 +667,13 @@ void rfc822_qualify(struct Address *addr, const char *host)
 }
 
 /**
- * rfc822_cat - Copy a string and escape the specified characters
+ * mutt_addr_cat - Copy a string and escape the specified characters
  * @param buf      Buffer for the result
  * @param buflen   Length of the result buffer
  * @param value    String to copy
  * @param specials Characters to be escaped
  */
-void rfc822_cat(char *buf, size_t buflen, const char *value, const char *specials)
+void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials)
 {
   if (strpbrk(value, specials))
   {
@@ -701,15 +700,15 @@ void rfc822_cat(char *buf, size_t buflen, const char *value, const char *special
 }
 
 /**
- * rfc822_cpy_adr_real - Copy the real address
+ * mutt_addr_copy - Copy the real address
  * @param addr Address to copy
  * @retval ptr New Address
  *
- * this should be rfc822_cpy_adr
+ * this should be mutt_addr_copy_list
  */
-struct Address *rfc822_cpy_adr_real(struct Address *addr)
+struct Address *mutt_addr_copy(struct Address *addr)
 {
-  struct Address *p = rfc822_new_address();
+  struct Address *p = mutt_addr_new();
 
   p->personal = mutt_str_strdup(addr->personal);
   p->mailbox = mutt_str_strdup(addr->mailbox);
@@ -720,14 +719,14 @@ struct Address *rfc822_cpy_adr_real(struct Address *addr)
 }
 
 /**
- * rfc822_cpy_adr - Copy a list of addresses
+ * mutt_addr_copy_list - Copy a list of addresses
  * @param addr  Address list
  * @param prune Skip groups if there are more addresses
  * @retval ptr New Address list
  *
  * this should be rfc822_cpy_adrlist
  */
-struct Address *rfc822_cpy_adr(struct Address *addr, int prune)
+struct Address *mutt_addr_copy_list(struct Address *addr, int prune)
 {
   struct Address *top = NULL, *last = NULL;
 
@@ -739,17 +738,17 @@ struct Address *rfc822_cpy_adr(struct Address *addr, int prune)
     }
     else if (last)
     {
-      last->next = rfc822_cpy_adr_real(addr);
+      last->next = mutt_addr_copy(addr);
       last = last->next;
     }
     else
-      top = last = rfc822_cpy_adr_real(addr);
+      top = last = mutt_addr_copy(addr);
   }
   return top;
 }
 
 /**
- * rfc822_append - Append one list of addresses onto another
+ * mutt_addr_append - Append one list of addresses onto another
  * @param a     Destination Address list
  * @param b     Source Address list
  * @param prune Skip groups if there are more addresses
@@ -757,7 +756,7 @@ struct Address *rfc822_cpy_adr(struct Address *addr, int prune)
  *
  * Append the Source onto the end of the Destination Address list.
  */
-struct Address *rfc822_append(struct Address **a, struct Address *b, int prune)
+struct Address *mutt_addr_append(struct Address **a, struct Address *b, int prune)
 {
   struct Address *tmp = *a;
 
@@ -766,22 +765,22 @@ struct Address *rfc822_append(struct Address **a, struct Address *b, int prune)
   if (!b)
     return tmp;
   if (tmp)
-    tmp->next = rfc822_cpy_adr(b, prune);
+    tmp->next = mutt_addr_copy_list(b, prune);
   else
-    tmp = *a = rfc822_cpy_adr(b, prune);
+    tmp = *a = mutt_addr_copy_list(b, prune);
   while (tmp && tmp->next)
     tmp = tmp->next;
   return tmp;
 }
 
 /**
- * rfc822_valid_msgid - Is this a valid Message ID?
+ * mutt_addr_valid_msgid - Is this a valid Message ID?
  * @param msgid Message ID
  * @retval bool True if it is valid
  *
  * Incomplete. Only used to thwart the APOP MD5 attack (#2846).
  */
-bool rfc822_valid_msgid(const char *msgid)
+bool mutt_addr_valid_msgid(const char *msgid)
 {
   /* msg-id         = "<" addr-spec ">"
    * addr-spec      = local-part "@" domain

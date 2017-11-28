@@ -770,12 +770,12 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'a':
       if (mutt_str_strcasecmp(line + 1, "pparently-to") == 0)
       {
-        e->to = rfc822_parse_adrlist(e->to, p);
+        e->to = mutt_addr_parse_list(e->to, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "pparently-from") == 0)
       {
-        e->from = rfc822_parse_adrlist(e->from, p);
+        e->from = mutt_addr_parse_list(e->from, p);
         matched = 1;
       }
       break;
@@ -783,7 +783,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'b':
       if (mutt_str_strcasecmp(line + 1, "cc") == 0)
       {
-        e->bcc = rfc822_parse_adrlist(e->bcc, p);
+        e->bcc = mutt_addr_parse_list(e->bcc, p);
         matched = 1;
       }
       break;
@@ -791,7 +791,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'c':
       if (mutt_str_strcasecmp(line + 1, "c") == 0)
       {
-        e->cc = rfc822_parse_adrlist(e->cc, p);
+        e->cc = mutt_addr_parse_list(e->cc, p);
         matched = 1;
       }
       else if (mutt_str_strncasecmp(line + 1, "ontent-", 7) == 0)
@@ -866,7 +866,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'f':
       if (mutt_str_strcasecmp("rom", line + 1) == 0)
       {
-        e->from = rfc822_parse_adrlist(e->from, p);
+        e->from = mutt_addr_parse_list(e->from, p);
         matched = 1;
       }
 #ifdef USE_NNTP
@@ -951,13 +951,13 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         if (mutt_str_strcasecmp(line + 5, "reply-to") == 0)
         {
           /* override the Reply-To: field */
-          rfc822_free_address(&e->reply_to);
-          e->reply_to = rfc822_parse_adrlist(e->reply_to, p);
+          mutt_addr_free(&e->reply_to);
+          e->reply_to = mutt_addr_parse_list(e->reply_to, p);
           matched = 1;
         }
         else if (mutt_str_strcasecmp(line + 5, "followup-to") == 0)
         {
-          e->mail_followup_to = rfc822_parse_adrlist(e->mail_followup_to, p);
+          e->mail_followup_to = mutt_addr_parse_list(e->mail_followup_to, p);
           matched = 1;
         }
       }
@@ -993,12 +993,12 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "eply-to") == 0)
       {
-        e->reply_to = rfc822_parse_adrlist(e->reply_to, p);
+        e->reply_to = mutt_addr_parse_list(e->reply_to, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "eturn-path") == 0)
       {
-        e->return_path = rfc822_parse_adrlist(e->return_path, p);
+        e->return_path = mutt_addr_parse_list(e->return_path, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "eceived") == 0)
@@ -1022,7 +1022,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "ender") == 0)
       {
-        e->sender = rfc822_parse_adrlist(e->sender, p);
+        e->sender = mutt_addr_parse_list(e->sender, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "tatus") == 0)
@@ -1060,7 +1060,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 't':
       if (mutt_str_strcasecmp(line + 1, "o") == 0)
       {
-        e->to = rfc822_parse_adrlist(e->to, p);
+        e->to = mutt_addr_parse_list(e->to, p);
         matched = 1;
       }
       break;
@@ -1113,7 +1113,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
 #endif
       else if (mutt_str_strcasecmp(line + 1, "-original-to") == 0)
       {
-        e->x_original_to = rfc822_parse_adrlist(e->x_original_to, p);
+        e->x_original_to = mutt_addr_parse_list(e->x_original_to, p);
         matched = 1;
       }
 
@@ -1324,12 +1324,12 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
     r = tmp;
     while ((r = strtok(r, " \t")) != NULL)
     {
-      p = rfc822_parse_adrlist(p, r);
+      p = mutt_addr_parse_list(p, r);
       r = NULL;
     }
   }
   else
-    p = rfc822_parse_adrlist(p, s);
+    p = mutt_addr_parse_list(p, s);
 
   return p;
 }

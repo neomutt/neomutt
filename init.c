@@ -456,9 +456,9 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
       }
       break;
       case DT_ADDRESS:
-        rfc822_free_address((struct Address **) MuttVars[idx].data);
+        mutt_addr_free((struct Address **) MuttVars[idx].data);
         *((struct Address **) MuttVars[idx].data) =
-            rfc822_parse_adrlist(NULL, (const char *) val->data);
+            mutt_addr_parse_list(NULL, (const char *) val->data);
         break;
       case DT_PATH:
       {
@@ -711,7 +711,7 @@ static void free_opt(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_ADDRESS:
-      rfc822_free_address((struct Address **) p->data);
+      mutt_addr_free((struct Address **) p->data);
       break;
     case DT_REGEX:
       pp = (struct Regex *) p->data;
@@ -1509,7 +1509,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
           {
             snprintf(err->data, err->dsize,
                      _("%sgroup: warning: bad IDN '%s'.\n"), data == 1 ? "un" : "", estr);
-            rfc822_free_address(&addr);
+            mutt_addr_free(&addr);
             FREE(&estr);
             goto bail;
           }
@@ -1517,7 +1517,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             mutt_group_context_add_adrlist(gc, addr);
           else if (data == MUTT_UNGROUP)
             mutt_group_context_remove_adrlist(gc, addr);
-          rfc822_free_address(&addr);
+          mutt_addr_free(&addr);
           break;
       }
     }
@@ -1933,7 +1933,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     mutt_alias_delete_reverse(tmp);
     /* override the previous value */
-    rfc822_free_address(&tmp->addr);
+    mutt_addr_free(&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
       mutt_set_current_menu_redraw_full();
   }
@@ -2117,9 +2117,9 @@ static void restore_default(struct Option *p)
       }
       break;
     case DT_ADDRESS:
-      rfc822_free_address((struct Address **) p->data);
+      mutt_addr_free((struct Address **) p->data);
       if (p->init)
-        *((struct Address **) p->data) = rfc822_parse_adrlist(NULL, (char *) p->init);
+        *((struct Address **) p->data) = mutt_addr_parse_list(NULL, (char *) p->init);
       break;
     case DT_BOOL:
       if (p->init)
@@ -2656,7 +2656,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         if (myvar)
           myvar_del(myvar);
         else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
-          rfc822_free_address((struct Address **) MuttVars[idx].data);
+          mutt_addr_free((struct Address **) MuttVars[idx].data);
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
           free_mbtable((struct MbTable **) MuttVars[idx].data);
         else
@@ -2785,9 +2785,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
         else
         {
-          rfc822_free_address((struct Address **) MuttVars[idx].data);
+          mutt_addr_free((struct Address **) MuttVars[idx].data);
           *((struct Address **) MuttVars[idx].data) =
-              rfc822_parse_adrlist(NULL, tmp->data);
+              mutt_addr_parse_list(NULL, tmp->data);
         }
       }
     }
@@ -4210,7 +4210,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   p = getenv("EMAIL");
   if (p)
-    From = rfc822_parse_adrlist(NULL, p);
+    From = mutt_addr_parse_list(NULL, p);
 
   mutt_set_langinfo_charset();
   mutt_set_charset(Charset);

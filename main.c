@@ -304,9 +304,9 @@ int main(int argc, char **argv, char **env)
           if (!msg->env)
             msg->env = mutt_new_envelope();
           if (i == 'b')
-            msg->env->bcc = rfc822_parse_adrlist(msg->env->bcc, optarg);
+            msg->env->bcc = mutt_addr_parse_list(msg->env->bcc, optarg);
           else
-            msg->env->cc = rfc822_parse_adrlist(msg->env->cc, optarg);
+            msg->env->cc = mutt_addr_parse_list(msg->env->cc, optarg);
           break;
 
         case 'D':
@@ -588,7 +588,7 @@ int main(int argc, char **argv, char **env)
         }
       }
       else
-        msg->env->to = rfc822_parse_adrlist(msg->env->to, argv[i]);
+        msg->env->to = mutt_addr_parse_list(msg->env->to, argv[i]);
     }
 
     if (!draftFile && option(OPT_AUTOEDIT) && !msg->env->to && !msg->env->cc)
@@ -728,9 +728,9 @@ int main(int argc, char **argv, char **env)
           }
         }
 
-        rfc822_append(&msg->env->to, opts_env->to, 0);
-        rfc822_append(&msg->env->cc, opts_env->cc, 0);
-        rfc822_append(&msg->env->bcc, opts_env->bcc, 0);
+        mutt_addr_append(&msg->env->to, opts_env->to, 0);
+        mutt_addr_append(&msg->env->cc, opts_env->cc, 0);
+        mutt_addr_append(&msg->env->bcc, opts_env->bcc, 0);
         if (opts_env->subject)
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 

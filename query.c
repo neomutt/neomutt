@@ -81,7 +81,7 @@ static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
 
-  tmp = rfc822_cpy_adr(r->addr, 0);
+  tmp = mutt_addr_copy_list(r->addr, 0);
   if (!tmp)
     return NULL;
 
@@ -104,7 +104,7 @@ static void free_query(struct Query **query)
     p = *query;
     *query = (*query)->next;
 
-    rfc822_free_address(&p->addr);
+    mutt_addr_free(&p->addr);
     FREE(&p->name);
     FREE(&p->other);
     FREE(&p);
@@ -152,7 +152,7 @@ static struct Query *run_query(char *s, int quiet)
         cur = cur->next;
       }
 
-      cur->addr = rfc822_parse_adrlist(cur->addr, p);
+      cur->addr = mutt_addr_parse_list(cur->addr, p);
       p = strtok(NULL, "\t\n");
       if (p)
       {
@@ -438,19 +438,19 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
-                rfc822_append(&naddr, a, 0);
-                rfc822_free_address(&a);
+                mutt_addr_append(&naddr, a, 0);
+                mutt_addr_free(&a);
               }
             }
 
             mutt_create_alias(NULL, naddr);
-            rfc822_free_address(&naddr);
+            mutt_addr_free(&naddr);
           }
           else
           {
             struct Address *a = result_to_addr(QueryTable[menu->current].data);
             mutt_create_alias(NULL, a);
-            rfc822_free_address(&a);
+            mutt_addr_free(&a);
           }
           break;
 
@@ -474,8 +474,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
-                rfc822_append(&msg->env->to, a, 0);
-                rfc822_free_address(&a);
+                mutt_addr_append(&msg->env->to, a, 0);
+                mutt_addr_free(&a);
               }
           }
           ci_send_message(0, msg, NULL, Context, NULL);
@@ -508,7 +508,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             tagged = true;
             rfc822_write_address(buf, buflen, tmpa, 0);
             curpos = mutt_str_strlen(buf);
-            rfc822_free_address(&tmpa);
+            mutt_addr_free(&tmpa);
           }
           else if (curpos + 2 < buflen)
           {
@@ -517,7 +517,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             strcat(buf, ", ");
             rfc822_write_address((char *) buf + curpos + 1, buflen - curpos - 1, tmpa, 0);
             curpos = mutt_str_strlen(buf);
-            rfc822_free_address(&tmpa);
+            mutt_addr_free(&tmpa);
           }
         }
       }
@@ -527,7 +527,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
         struct Address *tmpa = result_to_addr(QueryTable[menu->current].data);
         mutt_addrlist_to_local(tmpa);
         rfc822_write_address(buf, buflen, tmpa, 0);
-        rfc822_free_address(&tmpa);
+        mutt_addr_free(&tmpa);
       }
     }
 
@@ -559,7 +559,7 @@ int mutt_query_complete(char *buf, size_t buflen)
       mutt_addrlist_to_local(tmpa);
       buf[0] = '\0';
       rfc822_write_address(buf, buflen, tmpa, 0);
-      rfc822_free_address(&tmpa);
+      mutt_addr_free(&tmpa);
       free_query(&results);
       mutt_clear_error();
       return 0;

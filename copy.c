@@ -396,7 +396,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputs("Content-Type: text/plain; charset=", out);
     mutt_canonical_charset(chsbuf, sizeof(chsbuf),
                            Charset ? Charset : "us-ascii");
-    rfc822_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
+    mutt_addr_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
     fputs(buffer, out);
     fputc('\n', out);
   }
@@ -1026,7 +1026,7 @@ static int address_header_decode(char **h)
       return 0;
   }
 
-  a = rfc822_parse_adrlist(a, s + l);
+  a = mutt_addr_parse_list(a, s + l);
   if (!a)
     return 0;
 
@@ -1047,7 +1047,7 @@ static int address_header_decode(char **h)
     format_address_header(h, a);
   }
 
-  rfc822_free_address(&a);
+  mutt_addr_free(&a);
 
   FREE(&s);
   return 1;

@@ -220,7 +220,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   if (!pop_data->timestamp)
     return POP_A_UNAVAIL;
 
-  if (!rfc822_valid_msgid(pop_data->timestamp))
+  if (!mutt_addr_valid_msgid(pop_data->timestamp))
   {
     mutt_error(_("POP timestamp is invalid!"));
     mutt_sleep(2);

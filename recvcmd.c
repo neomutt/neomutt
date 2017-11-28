@@ -171,7 +171,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
     return;
 
-  adr = rfc822_parse_adrlist(adr, buf);
+  adr = mutt_addr_parse_list(adr, buf);
   if (!adr)
   {
     mutt_error(_("Error parsing address!"));
@@ -184,7 +184,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     return;
   }
 
@@ -209,7 +209,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 
   if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
   {
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(p ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -235,7 +235,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     mutt_error(p ? _("Error bouncing message!") :
                    _("Error bouncing messages!"));
 
-  rfc822_free_address(&adr);
+  mutt_addr_free(&adr);
 }
 
 /**

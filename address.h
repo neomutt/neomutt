@@ -51,18 +51,18 @@ enum AddressError
   ERR_BAD_ADDR_SPEC
 };
 
-struct Address *rfc822_new_address(void);
-void rfc822_free_address(struct Address **p);
-void rfc822_qualify(struct Address *addr, const char *host);
-struct Address *rfc822_parse_adrlist(struct Address *top, const char *s);
-struct Address *rfc822_cpy_adr(struct Address *addr, int prune);
-struct Address *rfc822_cpy_adr_real(struct Address *addr);
-struct Address *rfc822_append(struct Address **a, struct Address *b, int prune);
+struct Address *mutt_addr_new(void);
+void mutt_addr_free(struct Address **p);
+void mutt_addr_qualify(struct Address *addr, const char *host);
+struct Address *mutt_addr_parse_list(struct Address *top, const char *s);
+struct Address *mutt_addr_copy_list(struct Address *addr, int prune);
+struct Address *mutt_addr_copy(struct Address *addr);
+struct Address *mutt_addr_append(struct Address **a, struct Address *b, int prune);
 int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
 void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
-void rfc822_cat(char *buf, size_t buflen, const char *value, const char *specials);
-bool rfc822_valid_msgid(const char *msgid);
-int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox);
+void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
+bool mutt_addr_valid_msgid(const char *msgid);
+int mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
 
 extern int RFC822Error;
 extern const char *const RFC822Errors[];

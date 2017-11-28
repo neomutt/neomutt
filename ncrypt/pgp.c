@@ -1280,10 +1280,10 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
           }
 
           /* check for e-mail address */
-          if (strchr(keyID, '@') && (addr = rfc822_parse_adrlist(NULL, keyID)))
+          if (strchr(keyID, '@') && (addr = mutt_addr_parse_list(NULL, keyID)))
           {
             if (fqdn)
-              rfc822_qualify(addr, fqdn);
+              mutt_addr_qualify(addr, fqdn);
             q = addr;
           }
           else if (!oppenc_mode)
@@ -1302,7 +1302,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         else if (r == MUTT_ABORT)
         {
           FREE(&keylist);
-          rfc822_free_address(&addr);
+          mutt_addr_free(&addr);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -1323,7 +1323,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       if (!k_info)
       {
         FREE(&keylist);
-        rfc822_free_address(&addr);
+        mutt_addr_free(&addr);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -1339,7 +1339,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       key_selected = true;
 
       pgp_free_key(&k_info);
-      rfc822_free_address(&addr);
+      mutt_addr_free(&addr);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);

@@ -859,7 +859,7 @@ void smime_getkeys(struct Envelope *env)
   if (!found && (t = mutt_default_from()))
   {
     getkeys(t->mailbox);
-    rfc822_free_address(&t);
+    mutt_addr_free(&t);
   }
 }
 

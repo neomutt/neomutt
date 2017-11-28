@@ -223,7 +223,7 @@ int mutt_protect(struct Header *msg, char *keylist)
       crypt_pgp_set_sender(mailbox);
 
     if (!msg->env->from)
-      rfc822_free_address(&from);
+      mutt_addr_free(&from);
   }
 
   if (msg->security & SIGN)
@@ -853,12 +853,12 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   if ((WithCrypto & APPLICATION_PGP))
     set_option(OPT_PGP_CHECK_TRUST);
 
-  last = rfc822_append(&adrlist, msg->env->to, 0);
-  last = rfc822_append(last ? &last : &adrlist, msg->env->cc, 0);
-  rfc822_append(last ? &last : &adrlist, msg->env->bcc, 0);
+  last = mutt_addr_append(&adrlist, msg->env->to, 0);
+  last = mutt_addr_append(last ? &last : &adrlist, msg->env->cc, 0);
+  mutt_addr_append(last ? &last : &adrlist, msg->env->bcc, 0);
 
   if (fqdn)
-    rfc822_qualify(adrlist, fqdn);
+    mutt_addr_qualify(adrlist, fqdn);
   adrlist = mutt_remove_duplicates(adrlist);
 
   *keylist = NULL;
@@ -870,7 +870,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
       *keylist = crypt_pgp_findkeys(adrlist, oppenc_mode);
       if (!*keylist)
       {
-        rfc822_free_address(&adrlist);
+        mutt_addr_free(&adrlist);
         return -1;
       }
       unset_option(OPT_PGP_CHECK_TRUST);
@@ -882,7 +882,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
       *keylist = crypt_smime_findkeys(adrlist, oppenc_mode);
       if (!*keylist)
       {
-        rfc822_free_address(&adrlist);
+        mutt_addr_free(&adrlist);
         return -1;
       }
       if (option(OPT_SMIME_SELF_ENCRYPT) || (quadoption(OPT_SMIME_ENCRYPT_SELF) == MUTT_YES))
@@ -897,7 +897,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
-  rfc822_free_address(&adrlist);
+  mutt_addr_free(&adrlist);
 
   return 0;
 }

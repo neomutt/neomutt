@@ -337,7 +337,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
       buffer[0] = 0;
       tmp = mutt_str_strdup(p->value);
       encode = rfc2231_encode_string(&tmp);
-      rfc822_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
+      mutt_addr_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
 
       /* Dirty hack to make messages readable by Outlook Express
        * for the Mac: force quotes around the boundary parameter
@@ -398,7 +398,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           buffer[0] = 0;
           tmp = mutt_str_strdup(t);
           encode = rfc2231_encode_string(&tmp);
-          rfc822_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
+          mutt_addr_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
           FREE(&tmp);
           fprintf(f, "; filename%s=%s", encode ? "*" : "", buffer);
         }
@@ -2661,12 +2661,12 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
        * recipients if there is no To: or Cc: field, so attempt to suppress
        * it by using an empty To: field.
        */
-      env->to = rfc822_new_address();
+      env->to = mutt_addr_new();
       env->to->group = 1;
-      env->to->next = rfc822_new_address();
+      env->to->next = mutt_addr_new();
 
       buffer[0] = 0;
-      rfc822_cat(buffer, sizeof(buffer), "undisclosed-recipients", RFC822Specials);
+      mutt_addr_cat(buffer, sizeof(buffer), "undisclosed-recipients", RFC822Specials);
 
       env->to->mailbox = mutt_str_strdup(buffer);
     }
@@ -2703,7 +2703,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
     rfc2047_decode(&item->data);
   }
 
-  rfc822_free_address(&env->mail_followup_to);
+  mutt_addr_free(&env->mail_followup_to);
 
   /* back conversions */
   rfc2047_decode_adrlist(env->to);
@@ -2802,13 +2802,13 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
     from->personal = mutt_str_strdup(RealName);
 
   if (fqdn)
-    rfc822_qualify(from, fqdn);
+    mutt_addr_qualify(from, fqdn);
 
   rfc2047_encode_adrlist(from, "Resent-From");
   if (mutt_addrlist_to_intl(from, &err))
   {
     mutt_error(_("Bad IDN %s while preparing resent-from."), err);
-    rfc822_free_address(&from);
+    mutt_addr_free(&from);
     return -1;
   }
   rfc822_write_address(resent_from, sizeof(resent_from), from, 0);
@@ -2822,13 +2822,13 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * function is called, since the user receives confirmation of the address
    * list being bounced to.
    */
-  resent_to = rfc822_cpy_adr(to, 0);
+  resent_to = mutt_addr_copy_list(to, 0);
   rfc2047_encode_adrlist(resent_to, "Resent-To");
 
   ret = bounce_message(fp, h, resent_to, resent_from, from);
 
-  rfc822_free_address(&resent_to);
-  rfc822_free_address(&from);
+  mutt_addr_free(&resent_to);
+  mutt_addr_free(&from);
 
   return ret;
 }
@@ -2864,7 +2864,7 @@ struct Address *mutt_remove_duplicates(struct Address *addr)
       *last = addr->next;
 
       addr->next = NULL;
-      rfc822_free_address(&addr);
+      mutt_addr_free(&addr);
 
       addr = *last;
     }

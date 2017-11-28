@@ -732,9 +732,9 @@ int mix_check_message(struct Header *msg)
     }
 
     /* Cc and Bcc are empty at this point. */
-    rfc822_qualify(msg->env->to, fqdn);
-    rfc822_qualify(msg->env->reply_to, fqdn);
-    rfc822_qualify(msg->env->mail_followup_to, fqdn);
+    mutt_addr_qualify(msg->env->to, fqdn);
+    mutt_addr_qualify(msg->env->reply_to, fqdn);
+    mutt_addr_qualify(msg->env->mail_followup_to, fqdn);
   }
 
   return 0;

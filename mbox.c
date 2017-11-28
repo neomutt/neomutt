@@ -216,10 +216,10 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       }
 
       if (!hdr->env->return_path && return_path[0])
-        hdr->env->return_path = rfc822_parse_adrlist(hdr->env->return_path, return_path);
+        hdr->env->return_path = mutt_addr_parse_list(hdr->env->return_path, return_path);
 
       if (!hdr->env->from)
-        hdr->env->from = rfc822_cpy_adr(hdr->env->return_path, 0);
+        hdr->env->from = mutt_addr_copy_list(hdr->env->return_path, 0);
 
       ctx->msgcount++;
     }
@@ -388,10 +388,10 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
       if (!curhdr->env->return_path && return_path[0])
         curhdr->env->return_path =
-            rfc822_parse_adrlist(curhdr->env->return_path, return_path);
+            mutt_addr_parse_list(curhdr->env->return_path, return_path);
 
       if (!curhdr->env->from)
-        curhdr->env->from = rfc822_cpy_adr(curhdr->env->return_path, 0);
+        curhdr->env->from = mutt_addr_copy_list(curhdr->env->return_path, 0);
 
       lines = 0;
     }

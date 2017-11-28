@@ -312,7 +312,7 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     return;
   }
 
@@ -334,7 +334,7 @@ void ci_bounce_message(struct Header *h)
 
   if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
   {
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(h ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -343,7 +343,7 @@ void ci_bounce_message(struct Header *h)
   mutt_window_clearline(MuttMessageWindow, 0);
 
   rc = mutt_bounce_message(NULL, h, adr);
-  rfc822_free_address(&adr);
+  mutt_addr_free(&adr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(h ? _("Message bounced.") : _("Messages bounced."));
@@ -986,7 +986,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     {
       l = strlen(buf);
 
-      rfc822_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
+      mutt_addr_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
       snprintf(buf + l, sizeof(buf) - l, "; %s=%s", p->attribute, tmp);
     }
   }

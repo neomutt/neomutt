@@ -54,7 +54,7 @@ static void group_remove(struct Group *g)
   if (!g)
     return;
   mutt_hash_delete(Groups, g->name, g, NULL);
-  rfc822_free_address(&g->as);
+  mutt_addr_free(&g->as);
   mutt_free_regex_list(&g->rs);
   FREE(&g->name);
   FREE(&g);
@@ -113,7 +113,7 @@ static void group_add_adrlist(struct Group *g, struct Address *a)
   for (p = &g->as; *p; p = &((*p)->next))
     ;
 
-  q = rfc822_cpy_adr(a, 0);
+  q = mutt_addr_copy_list(a, 0);
   q = mutt_remove_xrefs(g->as, q);
   *p = q;
 }
@@ -128,7 +128,7 @@ static int group_remove_adrlist(struct Group *g, struct Address *a)
     return -1;
 
   for (p = a; p; p = p->next)
-    rfc822_remove_from_adrlist(&g->as, p->mailbox);
+    mutt_addr_remove_from_list(&g->as, p->mailbox);
 
   return 0;
 }

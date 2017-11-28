@@ -4404,7 +4404,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     this_key_has_addr_match = false;
     match = false; /* any match */
 
-    r = rfc822_parse_adrlist(NULL, k->uid);
+    r = mutt_addr_parse_list(NULL, k->uid);
     for (p = r; p; p = p->next)
     {
       int validity = crypt_id_matches_addr(a, p, k);
@@ -4426,7 +4426,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
         }
       }
     }
-    rfc822_free_address(&r);
+    mutt_addr_free(&r);
 
     if (match)
     {
@@ -4667,10 +4667,10 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
 
           /* check for e-mail address */
           if ((t = strchr(crypt_hook_val, '@')) &&
-              (addr = rfc822_parse_adrlist(NULL, crypt_hook_val)))
+              (addr = mutt_addr_parse_list(NULL, crypt_hook_val)))
           {
             if (fqdn)
-              rfc822_qualify(addr, fqdn);
+              mutt_addr_qualify(addr, fqdn);
             q = addr;
           }
           else if (!oppenc_mode)
@@ -4689,7 +4689,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         else if (r == MUTT_ABORT)
         {
           FREE(&keylist);
-          rfc822_free_address(&addr);
+          mutt_addr_free(&addr);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -4710,7 +4710,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       if (!k_info)
       {
         FREE(&keylist);
-        rfc822_free_address(&addr);
+        mutt_addr_free(&addr);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -4727,7 +4727,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       key_selected = true;
 
       crypt_free_key(&k_info);
-      rfc822_free_address(&addr);
+      mutt_addr_free(&addr);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);

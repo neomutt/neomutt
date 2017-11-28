@@ -138,14 +138,14 @@ struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
       {
         prev->next = b->next;
         b->next = NULL;
-        rfc822_free_address(&b);
+        mutt_addr_free(&b);
         b = prev;
       }
       else
       {
         top = top->next;
         b->next = NULL;
-        rfc822_free_address(&b);
+        mutt_addr_free(&b);
         b = top;
       }
     }
@@ -190,7 +190,7 @@ static struct Address *remove_user(struct Address *a, int leave_only)
       if (!leave_only || a || last)
       {
         tmp->next = NULL;
-        rfc822_free_address(&tmp);
+        mutt_addr_free(&tmp);
       }
       else
         last = top = tmp;
@@ -211,11 +211,11 @@ static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
       {
         if (top)
         {
-          ptr->next = rfc822_cpy_adr_real(t);
+          ptr->next = mutt_addr_copy(t);
           ptr = ptr->next;
         }
         else
-          ptr = top = rfc822_cpy_adr_real(t);
+          ptr = top = mutt_addr_copy(t);
       }
     }
   }
@@ -235,7 +235,7 @@ static int edit_address(struct Address **a, /* const */ char *field)
     rfc822_write_address(buf, sizeof(buf), *a, 0);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
       return -1;
-    rfc822_free_address(a);
+    mutt_addr_free(a);
     *a = mutt_expand_aliases(mutt_parse_adrlist(NULL, buf));
     idna_ok = mutt_addrlist_to_intl(*a, &err);
     if (idna_ok != 0)
@@ -353,11 +353,11 @@ static void process_user_recips(struct Envelope *env)
   STAILQ_FOREACH(uh, &UserHeader, entries)
   {
     if (mutt_str_strncasecmp("to:", uh->data, 3) == 0)
-      env->to = rfc822_parse_adrlist(env->to, uh->data + 3);
+      env->to = mutt_addr_parse_list(env->to, uh->data + 3);
     else if (mutt_str_strncasecmp("cc:", uh->data, 3) == 0)
-      env->cc = rfc822_parse_adrlist(env->cc, uh->data + 3);
+      env->cc = mutt_addr_parse_list(env->cc, uh->data + 3);
     else if (mutt_str_strncasecmp("bcc:", uh->data, 4) == 0)
-      env->bcc = rfc822_parse_adrlist(env->bcc, uh->data + 4);
+      env->bcc = mutt_addr_parse_list(env->bcc, uh->data + 4);
 #ifdef USE_NNTP
     else if (mutt_str_strncasecmp("newsgroups:", uh->data, 11) == 0)
       env->newsgroups = nntp_get_header(uh->data + 11);
@@ -377,18 +377,18 @@ static void process_user_header(struct Envelope *env)
     if (mutt_str_strncasecmp("from:", uh->data, 5) == 0)
     {
       /* User has specified a default From: address.  Remove default address */
-      rfc822_free_address(&env->from);
-      env->from = rfc822_parse_adrlist(env->from, uh->data + 5);
+      mutt_addr_free(&env->from);
+      env->from = mutt_addr_parse_list(env->from, uh->data + 5);
     }
     else if (mutt_str_strncasecmp("reply-to:", uh->data, 9) == 0)
     {
-      rfc822_free_address(&env->reply_to);
-      env->reply_to = rfc822_parse_adrlist(env->reply_to, uh->data + 9);
+      mutt_addr_free(&env->reply_to);
+      env->reply_to = mutt_addr_parse_list(env->reply_to, uh->data + 9);
     }
     else if (mutt_str_strncasecmp("message-id:", uh->data, 11) == 0)
     {
       char *tmp = mutt_extract_message_id(uh->data + 11, NULL);
-      if (rfc822_valid_msgid(tmp))
+      if (mutt_addr_valid_msgid(tmp))
       {
         FREE(&env->message_id);
         env->message_id = tmp;
@@ -541,7 +541,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
 
   if (flags && env->mail_followup_to && hmfupto == MUTT_YES)
   {
-    rfc822_append(to, env->mail_followup_to, 1);
+    mutt_addr_append(to, env->mail_followup_to, 1);
     return 0;
   }
 
@@ -554,7 +554,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
   if (!option(OPT_REPLY_SELF) && mutt_addr_is_user(env->from))
   {
     /* mail is from the user, assume replying to recipients */
-    rfc822_append(to, env->to, 1);
+    mutt_addr_append(to, env->to, 1);
   }
   else if (env->reply_to)
   {
@@ -571,7 +571,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
        * in his From header, and the reply-to has no display-name.
        *
        */
-      rfc822_append(to, env->from, 0);
+      mutt_addr_append(to, env->from, 0);
     }
     else if (!(addrcmp(env->from, env->reply_to) && !env->reply_to->next) &&
              quadoption(OPT_REPLY_TO) != MUTT_YES)
@@ -589,11 +589,11 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
       switch (query_quadoption(OPT_REPLY_TO, prompt))
       {
         case MUTT_YES:
-          rfc822_append(to, env->reply_to, 0);
+          mutt_addr_append(to, env->reply_to, 0);
           break;
 
         case MUTT_NO:
-          rfc822_append(to, env->from, 0);
+          mutt_addr_append(to, env->from, 0);
           break;
 
         default:
@@ -601,10 +601,10 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
       }
     }
     else
-      rfc822_append(to, env->reply_to, 0);
+      mutt_addr_append(to, env->reply_to, 0);
   }
   else
-    rfc822_append(to, env->from, 0);
+    mutt_addr_append(to, env->from, 0);
 
   return 0;
 }
@@ -629,8 +629,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   if (flags & SENDLISTREPLY)
   {
     tmp = find_mailing_lists(in->to, in->cc);
-    rfc822_append(&out->to, tmp, 0);
-    rfc822_free_address(&tmp);
+    mutt_addr_append(&out->to, tmp, 0);
+    mutt_addr_free(&tmp);
 
     if (in->mail_followup_to && hmfupto == MUTT_YES &&
         default_to(&out->cc, in, flags & SENDLISTREPLY, hmfupto) == MUTT_ABORT)
@@ -646,8 +646,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
     if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
     {
       /* if(!mutt_addr_is_user(in->to)) */
-      rfc822_append(&out->cc, in->to, 1);
-      rfc822_append(&out->cc, in->cc, 1);
+      mutt_addr_append(&out->cc, in->to, 1);
+      mutt_addr_append(&out->cc, in->cc, 1);
     }
   }
   return 0;
@@ -991,8 +991,8 @@ void mutt_set_followup_to(struct Envelope *e)
        * mail-followup-to header
        */
 
-      t = rfc822_append(&e->mail_followup_to, e->to, 0);
-      rfc822_append(&t, e->cc, 1);
+      t = mutt_addr_append(&e->mail_followup_to, e->to, 0);
+      mutt_addr_append(&t, e->cc, 1);
     }
 
     /* remove ourselves from the mail-followup-to header */
@@ -1008,9 +1008,9 @@ void mutt_set_followup_to(struct Envelope *e)
     if (e->mail_followup_to && !mutt_is_list_recipient(0, e->to, e->cc))
     {
       if (e->reply_to)
-        from = rfc822_cpy_adr(e->reply_to, 0);
+        from = mutt_addr_copy_list(e->reply_to, 0);
       else if (e->from)
-        from = rfc822_cpy_adr(e->from, 0);
+        from = mutt_addr_copy_list(e->from, 0);
       else
         from = mutt_default_from();
 
@@ -1057,7 +1057,7 @@ static struct Address *set_reverse_name(struct Envelope *env)
     tmp = env->from;
   if (tmp)
   {
-    tmp = rfc822_cpy_adr_real(tmp);
+    tmp = mutt_addr_copy(tmp);
     /* when $reverse_realname is not set, clear the personal name so that it
      * may be set vi a reply- or send-hook.
      */
@@ -1078,17 +1078,17 @@ struct Address *mutt_default_from(void)
    */
 
   if (From)
-    adr = rfc822_cpy_adr_real(From);
+    adr = mutt_addr_copy(From);
   else if (option(OPT_USE_DOMAIN))
   {
-    adr = rfc822_new_address();
+    adr = mutt_addr_new();
     adr->mailbox =
         mutt_mem_malloc(mutt_str_strlen(Username) + mutt_str_strlen(fqdn) + 2);
     sprintf(adr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
   }
   else
   {
-    adr = rfc822_new_address();
+    adr = mutt_addr_new();
     adr->mailbox = mutt_str_strdup(NONULL(Username));
   }
 
@@ -1219,11 +1219,11 @@ int mutt_compose_to_sender(struct Header *hdr)
     for (int i = 0; i < Context->msgcount; i++)
     {
       if (message_is_tagged(Context, i))
-        rfc822_append(&msg->env->to, Context->hdrs[i]->env->from, 0);
+        mutt_addr_append(&msg->env->to, Context->hdrs[i]->env->from, 0);
     }
   }
   else
-    msg->env->to = rfc822_cpy_adr(hdr->env->from, 0);
+    msg->env->to = mutt_addr_copy_list(hdr->env->from, 0);
 
   return ci_send_message(0, msg, NULL, NULL, NULL);
 }
@@ -1432,7 +1432,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     /* Use any list-post header as a template */
     url_parse_mailto(msg->env, NULL, cur->env->list_post);
     /* We don't let them set the sender's address. */
-    rfc822_free_address(&msg->env->from);
+    mutt_addr_free(&msg->env->from);
   }
 
   if (!(flags & (SENDKEY | SENDPOSTPONED | SENDRESEND)))
@@ -1599,7 +1599,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     /* $use_from and/or $from might have changed in a send-hook */
     if (killfrom)
     {
-      rfc822_free_address(&msg->env->from);
+      mutt_addr_free(&msg->env->from);
       if (option(OPT_USE_FROM) && !(flags & (SENDPOSTPONED | SENDRESEND)))
         msg->env->from = mutt_default_from();
       killfrom = false;
@@ -1848,7 +1848,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     mutt_select_fcc(fcc, sizeof(fcc), msg);
     if (killfrom)
     {
-      rfc822_free_address(&msg->env->from);
+      mutt_addr_free(&msg->env->from);
       killfrom = false;
     }
   }

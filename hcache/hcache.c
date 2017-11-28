@@ -262,7 +262,7 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
 
   while (counter)
   {
-    *a = rfc822_new_address();
+    *a = mutt_addr_new();
     restore_char(&(*a)->personal, d, off, convert);
     restore_char(&(*a)->mailbox, d, off, false);
     restore_int((unsigned int *) &(*a)->group, d, off);
