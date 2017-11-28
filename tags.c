@@ -20,6 +20,28 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page tags Driver based email tags
+ *
+ * Driver based email tags
+ *
+ * | Data           | Description
+ * | :------------- | :--------------------------------------------------
+ * | #HiddenTags    | Private tags which should not be displayed
+ * | #TagTransforms | Lookup table of alternative tag names
+ *
+ * | Function                          | Description
+ * | :-------------------------------- | :-----------------------------------------------
+ * | driver_tags_free()                | Free tags from a header
+ * | driver_tags_getter()              | Get transformed tags
+ * | driver_tags_get_transformed()     | Get transformed tags
+ * | driver_tags_get()                 | Get tags
+ * | driver_tags_get_with_hidden()     | Get tags with hiddens
+ * | driver_tags_get_transformed_for() | Get transformed tag for a tag name from a header
+ * | driver_tags_add()                 | Add a tag to header
+ * | driver_tags_replace()             | Replace all tags
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include "mutt/hash.h"
@@ -28,8 +50,8 @@
 #include "tags.h"
 #include "globals.h"
 
-char *HiddenTags;
-struct Hash *TagTransforms;
+char *HiddenTags;           /**< Private tags which should not be displayed */
+struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
 /**
  * driver_tags_free - Free tags from a header
@@ -55,7 +77,7 @@ void driver_tags_free(struct TagHead *head)
 }
 
 /**
- * driver_tags_get_transformed - Get transformed tags
+ * driver_tags_getter - Get transformed tags
  * @param head             List of tags
  * @param show_hidden      Show hidden tags
  * @param show_transformed Show transformed tags
@@ -174,17 +196,15 @@ static void driver_tags_add(struct TagHead *head, char *new_tag)
  * driver_tags_replace - Replace all tags
  * @param[in] head List of tags
  * @param[in] tags string of all tags separated by space
+ * @retval false No changes are made
+ * @retval true  Tags are updated
  *
- * @retval  0 If no change are made
- * @retval  1 If tags are updated
- *
- * Free current tags structures and replace it by
- * new tags
+ * Free current tags structures and replace it by new tags
  */
-int driver_tags_replace(struct TagHead *head, char *tags)
+bool driver_tags_replace(struct TagHead *head, char *tags)
 {
   if (!head)
-    return 0;
+    return false;
 
   driver_tags_free(head);
 
@@ -195,5 +215,5 @@ int driver_tags_replace(struct TagHead *head, char *tags)
       driver_tags_add(head, tag);
     FREE(&tags);
   }
-  return 1;
+  return true;
 }

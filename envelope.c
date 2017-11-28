@@ -25,11 +25,12 @@
  *
  * Representation of an email header (envelope)
  *
- * | Function         | Description
- * | :--------------- | :---------------------------------
- * | mutt_env_free()  | Free an Envelope
- * | mutt_env_merge() | Merge the headers of two Envelopes
- * | mutt_env_new()   | Create a new Envelope
+ * | Function              | Description
+ * | :-------------------- | :---------------------------------
+ * | mutt_env_cmp_strict() | Strictly compare two Envelopes
+ * | mutt_env_free()       | Free an Envelope
+ * | mutt_env_merge()      | Merge the headers of two Envelopes
+ * | mutt_env_new()        | Create a new Envelope
  */
 
 #include "config.h"
@@ -165,7 +166,13 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   mutt_env_free(extra);
 }
 
-int mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
+/**
+ * mutt_env_cmp_strict - Strictly compare two Envelopes
+ * @param e1 First Envelope
+ * @param e2 Second Envelope
+ * @retval true Envelopes are strictly identical
+ */
+bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
 {
   if (e1 && e2)
   {
@@ -177,15 +184,15 @@ int mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
         !mutt_addr_cmp_strict(e1->reply_to, e2->reply_to) ||
         !mutt_addr_cmp_strict(e1->to, e2->to) || !mutt_addr_cmp_strict(e1->cc, e2->cc) ||
         !mutt_addr_cmp_strict(e1->return_path, e2->return_path))
-      return 0;
+      return false;
     else
-      return 1;
+      return true;
   }
   else
   {
     if (!e1 && !e2)
-      return 1;
+      return true;
     else
-      return 0;
+      return false;
   }
 }

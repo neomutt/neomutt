@@ -25,12 +25,14 @@
  *
  * Store attributes associated with a MIME part
  *
- * | Function                     | Description
- * | :--------------------------- | :---------------------------------------------------------
- * | mutt_param_delete()      | Delete a matching Parameter
- * | mutt_param_free()        | Free a Parameter
- * | mutt_param_get()         | Find a matching Parameter
- * | mutt_param_set()         | Set a Parameter
+ * | Function                | Description
+ * | :---------------------- | :------------------------------
+ * | mutt_param_cmp_strict() | Strictly compare two Parameters
+ * | mutt_param_delete()     | Delete a matching Parameter
+ * | mutt_param_free()       | Free a Parameter
+ * | mutt_param_get()        | Find a matching Parameter
+ * | mutt_param_new()        | Create a new Parameter
+ * | mutt_param_set()        | Set a Parameter
  */
 
 #include "config.h"
@@ -138,10 +140,10 @@ void mutt_param_delete(const char *attribute, struct Parameter **p)
 }
 
 /**
- * mutt_param_cmp_strict - strictly compare two parameters
- * @param p1 first parameter
- * @param p2 second parameter
- * @retval true parameters are strictly identical
+ * mutt_param_cmp_strict - Strictly compare two Parameters
+ * @param p1 First parameter
+ * @param p2 Second parameter
+ * @retval true Parameters are strictly identical
  */
 int mutt_param_cmp_strict(const struct Parameter *p1, const struct Parameter *p2)
 {

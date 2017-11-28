@@ -51,6 +51,12 @@ enum AddressError
   ERR_BAD_ADDR_SPEC
 };
 
+extern int RFC822Error;
+extern const char *const RFC822Errors[];
+extern const char RFC822Specials[];
+
+#define rfc822_error(x) RFC822Errors[x]
+
 struct Address *mutt_addr_append(struct Address **a, struct Address *b, int prune);
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
 int             mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
@@ -66,11 +72,5 @@ void            mutt_addr_qualify(struct Address *addr, const char *host);
 int             mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
 int             mutt_addr_search(struct Address *a, struct Address *lst);
 bool            mutt_addr_valid_msgid(const char *msgid);
-
-extern int RFC822Error;
-extern const char *const RFC822Errors[];
-extern const char RFC822Specials[];
-
-#define rfc822_error(x) RFC822Errors[x]
 
 #endif /* _MUTT_ADDRESS_H */

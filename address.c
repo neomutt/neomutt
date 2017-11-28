@@ -34,18 +34,20 @@
  *
  * | Function                     | Description
  * | :--------------------------- | :---------------------------------------------------------
- * | mutt_addr_cmp()                    | compare two e-mail addresses
- * | mutt_addr_search()                    | Search for an e-mail address in a list
- * | mutt_addr_has_recips()                 | Count the number of Addresses with valid recipients
- * | mutt_addr_parse_list2()         | Parse a list of email addresses
  * | mutt_addr_append()           | Append one list of addresses onto another
  * | mutt_addr_cat()              | Copy a string and escape the specified characters
- * | mutt_addr_copy_list()        | Copy an Address
- * | mutt_addr_copy               | Copy the real address
+ * | mutt_addr_cmp()              | Compare two e-mail addresses
+ * | mutt_addr_cmp_strict()       | Strictly compare two Address lists
+ * | mutt_addr_copy()             | Copy the real address
+ * | mutt_addr_copy_list()        | Copy a list of addresses
  * | mutt_addr_free()             | Free a list of Addresses
+ * | mutt_addr_has_recips()       | Count the number of Addresses with valid recipients
+ * | mutt_addr_new()              | Create a new Address
  * | mutt_addr_parse_list()       | Parse a list of email addresses
+ * | mutt_addr_parse_list2()      | Parse a list of email addresses
  * | mutt_addr_qualify()          | Expand local names in an Address list using a hostname
  * | mutt_addr_remove_from_list() | Remove an Address from a list
+ * | mutt_addr_search()           | Search for an e-mail address in a list
  * | mutt_addr_valid_msgid()      | Is this a valid Message ID?
  */
 
@@ -736,8 +738,6 @@ void mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *spec
  * mutt_addr_copy - Copy the real address
  * @param addr Address to copy
  * @retval ptr New Address
- *
- * this should be mutt_addr_copy_list
  */
 struct Address *mutt_addr_copy(struct Address *addr)
 {
@@ -756,8 +756,6 @@ struct Address *mutt_addr_copy(struct Address *addr)
  * @param addr  Address list
  * @param prune Skip groups if there are more addresses
  * @retval ptr New Address list
- *
- * this should be rfc822_cpy_adrlist
  */
 struct Address *mutt_addr_copy_list(struct Address *addr, int prune)
 {
@@ -903,7 +901,7 @@ int mutt_addr_has_recips(struct Address *a)
 }
 
 /**
- * mutt_addr_cmp - compare two e-mail addresses
+ * mutt_addr_cmp - Compare two e-mail addresses
  * @param a Address 1
  * @param b Address 2
  * @retval true if they are equivalent
