@@ -49,7 +49,7 @@ neomutt_SOURCES = mutt_account.c addrbook.c address.h alias.c alias.h attach.c \
 	envelope.c envelope.h filter.c flags.c format_flags.h from.c group.c \
 	handler.c hdrline.c header.h header.c help.c history.c hook.c \
 	init.c keymap.c main.c mbox.c mbyte.c mbtable.h \
-	menu.c mh.c muttlib.c mutt_idna.c mutt_socket.c \
+	menu.c mh.c muttlib.c mutt_address.c mutt_idna.c mutt_socket.c \
 	mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \

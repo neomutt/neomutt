@@ -84,8 +84,6 @@
 #include <assert.h>
 #endif
 
-extern char RFC822Specials[];
-
 const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
 static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)

@@ -56,6 +56,7 @@ int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox);
 
 extern int RFC822Error;
 extern const char *const RFC822Errors[];
+extern const char RFC822Specials[];
 
 #define rfc822_error(x) RFC822Errors[x]
 

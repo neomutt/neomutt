@@ -82,6 +82,7 @@ mutt/signal.c
 mutt/string.c
 muttlib.c
 mutt_account.c
+mutt_address.c
 mutt_idna.c
 mutt_lua.c
 mutt_notmuch.c
