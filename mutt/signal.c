@@ -67,7 +67,6 @@ static sig_handler_t exit_handler = mutt_sig_exit_handler;
  */
 void mutt_sig_empty_handler(int sig)
 {
-  mutt_debug(2, "Received signal %d\n", sig);
 }
 
 /**
