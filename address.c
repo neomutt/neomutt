@@ -26,11 +26,11 @@
  *
  * Representation of an email address
  *
- * | Data               | Description
- * | :----------------- | :--------------------------------------------------
- * | #RFC822Error       | An out-of-band error code
- * | #RFC822Errors      | Messages for the error codes in #AddressError
- * | #RFC822Specials    | Characters with special meaning for email addresses
+ * | Data             | Description
+ * | :--------------- | :--------------------------------------------------
+ * | #AddressError    | An out-of-band error code
+ * | #AddressErrors   | Messages for the error codes in #AddressError
+ * | #AddressSpecials | Characters with special meaning for email addresses
  *
  * | Function                     | Description
  * | :--------------------------- | :---------------------------------------------------------
@@ -59,30 +59,30 @@
 #include "mutt_idna.h"
 
 /**
- * RFC822Specials - Characters with special meaning for email addresses
+ * AddressSpecials - Characters with special meaning for email addresses
  */
-const char RFC822Specials[] = "@.,:;<>[]\\\"()";
+const char AddressSpecials[] = "@.,:;<>[]\\\"()";
 
 /**
  * is_special - Is this character special to an email address?
  */
-#define is_special(x) strchr(RFC822Specials, x)
+#define is_special(x) strchr(AddressSpecials, x)
 
 /**
- * RFC822Error - An out-of-band error code
+ * AddressError - An out-of-band error code
  *
  * Many of the Address functions set this variable on error.
  * Its values are defined in #AddressError.
- * Text for the errors can be looked up using #RFC822Errors.
+ * Text for the errors can be looked up using #AddressErrors.
  */
-int RFC822Error = 0;
+int AddressError = 0;
 
 /**
- * RFC822Errors - Messages for the error codes in #AddressError
+ * AddressErrors - Messages for the error codes in #AddressError
  *
  * These must defined in the same order as enum AddressError.
  */
-const char *const RFC822Errors[] = {
+const char *const AddressErrors[] = {
   "out of memory",   "mismatched parenthesis", "mismatched quotes",
   "bad route in <>", "bad address in <>",      "bad address spec",
 };
@@ -202,7 +202,7 @@ static const char *parse_comment(const char *s, char *comment, size_t *commentle
   }
   if (level)
   {
-    RFC822Error = ERR_MISMATCH_PAREN;
+    AddressError = ERR_MISMATCH_PAREN;
     return NULL;
   }
   return s;
@@ -236,7 +236,7 @@ static const char *parse_quote(const char *s, char *token, size_t *tokenlen, siz
     (*tokenlen)++;
     s++;
   }
-  RFC822Error = ERR_MISMATCH_QUOTE;
+  AddressError = ERR_MISMATCH_QUOTE;
   return NULL;
 }
 
@@ -400,7 +400,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
     }
     if (!s || *s != ':')
     {
-      RFC822Error = ERR_BAD_ROUTE;
+      AddressError = ERR_BAD_ROUTE;
       return NULL; /* invalid route */
     }
 
@@ -415,7 +415,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
 
   if (*s != '>')
   {
-    RFC822Error = ERR_BAD_ROUTE_ADDR;
+    AddressError = ERR_BAD_ROUTE_ADDR;
     return NULL;
   }
 
@@ -445,7 +445,7 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
                     commentmax, addr);
   if (s && *s && *s != ',' && *s != ';')
   {
-    RFC822Error = ERR_BAD_ADDR_SPEC;
+    AddressError = ERR_BAD_ADDR_SPEC;
     return NULL;
   }
   return s;
@@ -493,7 +493,7 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
   size_t phraselen = 0, commentlen = 0;
   struct Address *cur = NULL, *last = NULL;
 
-  RFC822Error = 0;
+  AddressError = 0;
 
   last = top;
   while (last && last->next)

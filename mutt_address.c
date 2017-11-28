@@ -41,7 +41,7 @@ void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr,
 
   if (addr->personal)
   {
-    if (strpbrk(addr->personal, RFC822Specials))
+    if (strpbrk(addr->personal, AddressSpecials))
     {
       if (!buflen)
         goto done;

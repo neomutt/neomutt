@@ -2665,7 +2665,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
       env->to->next = mutt_addr_new();
 
       buffer[0] = 0;
-      mutt_addr_cat(buffer, sizeof(buffer), "undisclosed-recipients", RFC822Specials);
+      mutt_addr_cat(buffer, sizeof(buffer), "undisclosed-recipients", AddressSpecials);
 
       env->to->mailbox = mutt_str_strdup(buffer);
     }

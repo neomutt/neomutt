@@ -627,7 +627,7 @@ void rfc2047_encode_string(char **pd, int encode_specials, int col)
     charsets = "utf-8";
 
   rfc2047_encode(*pd, strlen(*pd), col, Charset, charsets, &e, &elen,
-                 encode_specials ? RFC822Specials : NULL);
+                 encode_specials ? AddressSpecials : NULL);
 
   FREE(pd);
   *pd = e;

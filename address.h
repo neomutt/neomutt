@@ -39,7 +39,7 @@ struct Address
 };
 
 /**
- * enum AddressError - possible values for RFC822Error
+ * enum AddressError - possible values for AddressError
  */
 enum AddressError
 {
@@ -51,11 +51,11 @@ enum AddressError
   ERR_BAD_ADDR_SPEC
 };
 
-extern int RFC822Error;
-extern const char *const RFC822Errors[];
-extern const char RFC822Specials[];
+extern int AddressError;
+extern const char *const AddressErrors[];
+extern const char AddressSpecials[];
 
-#define rfc822_error(x) RFC822Errors[x]
+#define address_error(x) AddressErrors[x]
 
 struct Address *mutt_addr_append(struct Address **a, struct Address *b, int prune);
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
