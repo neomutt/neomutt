@@ -51,8 +51,6 @@
 
 #define CONTINUATION_BYTE(c) (((c) &0xc0) == 0x80)
 
-extern char RFC822Specials[];
-
 typedef size_t (*encoder_t)(char *s, const char *d, size_t dlen, const char *tocode);
 
 static size_t convert_string(const char *f, size_t flen, const char *from,
@@ -426,7 +424,7 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
  * if col is non-zero, the preceding character was a space.
  */
 static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromcode,
-                          const char *charsets, char **e, size_t *elen, char *specials)
+                          const char *charsets, char **e, size_t *elen, const char *specials)
 {
   int rc = 0;
   char *buf = NULL;

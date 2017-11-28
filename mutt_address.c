@@ -25,8 +25,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "address.h"
 #include "mutt_idna.h"
-#include "rfc822.h"
 
 void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display)
 {

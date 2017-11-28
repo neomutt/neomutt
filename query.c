@@ -45,7 +45,6 @@
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "protos.h"
-#include "rfc822.h"
 
 /**
  * struct Query - An entry from an external address-book

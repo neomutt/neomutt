@@ -45,7 +45,7 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "address.h"
 
 /*
  * SLcurses_waddnstr() can't take a "const char *", so this is only

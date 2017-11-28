@@ -38,7 +38,7 @@
 #include "mutt/memory.h"
 #include "mutt/queue.h"
 #include "envelope.h"
-#include "rfc822.h"
+#include "address.h"
 
 /**
  * mutt_new_envelope - Create a new Envelope

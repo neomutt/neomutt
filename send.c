@@ -55,7 +55,6 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc3676.h"
-#include "rfc822.h"
 #include "sort.h"
 #include "url.h"
 #ifdef USE_NNTP

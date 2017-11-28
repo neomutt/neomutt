@@ -44,7 +44,7 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
-#include "rfc822.h"
+#include "address.h"
 #include "url.h"
 
 struct Address;

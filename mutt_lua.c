@@ -39,7 +39,7 @@
 #include "mutt_options.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "address.h"
 
 static int handle_panic(lua_State *l)
 {

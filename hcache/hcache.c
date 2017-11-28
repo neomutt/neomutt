@@ -62,7 +62,6 @@
 #include "mutt_tags.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 
 static unsigned int hcachever = 0x0;
 

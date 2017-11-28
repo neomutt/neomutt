@@ -41,7 +41,6 @@
 #include "pgp.h"
 #include "pgpkey.h"
 #include "protos.h"
-#include "rfc822.h"
 
 /**
  * struct PgpCommandContext - Data for a PGP command

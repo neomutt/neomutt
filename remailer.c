@@ -45,7 +45,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 
 /**
  * struct Coord - Screen coordinates

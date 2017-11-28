@@ -43,7 +43,6 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 
 struct Address *mutt_lookup_alias(const char *s)
 {

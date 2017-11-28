@@ -53,7 +53,7 @@ neomutt_SOURCES = mutt_account.c addrbook.c address.h alias.c alias.h attach.c \
 	mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
-	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c mutt_signal.c \
+	address.c safe_asprintf.c score.c send.c sendlib.c sidebar.c mutt_signal.c \
 	smtp.c sort.c state.c state.h status.c system.c thread.c thread.h url.c \
 	version.c where.h mutt_tags.c
 
@@ -92,7 +92,7 @@ EXTRA_DIST = mutt_account.h attach.h bcache.h browser.h buffy.h \
 	mutt_options.h mutt_regex.h \
 	mutt_socket.h mx.h myvar.h nntp.h opcodes.h pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
-	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h sidebar.h \
 	sort.h txt2c.c txt2c.sh version.h mutt_tags.h
 
 EXTRA_SCRIPTS =

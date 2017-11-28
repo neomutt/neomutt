@@ -62,7 +62,6 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
-#include "rfc822.h"
 #include "sidebar.h"
 #include "version.h"
 #ifdef USE_NOTMUCH

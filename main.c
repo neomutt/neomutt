@@ -57,7 +57,6 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "url.h"
 #include "version.h"
 #ifdef USE_SIDEBAR

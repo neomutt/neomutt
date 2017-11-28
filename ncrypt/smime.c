@@ -54,7 +54,6 @@
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "smime.h"
 #include "state.h"
 

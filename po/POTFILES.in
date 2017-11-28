@@ -1,4 +1,5 @@
 addrbook.c
+address.c
 alias.c
 attach.c
 bcache.c
@@ -128,7 +129,6 @@ rfc1524.c
 rfc2047.c
 rfc2231.c
 rfc3676.c
-rfc822.c
 safe_asprintf.c
 score.c
 send.c

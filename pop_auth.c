@@ -33,7 +33,7 @@
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "address.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

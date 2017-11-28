@@ -50,7 +50,6 @@
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "state.h"
 
 /**

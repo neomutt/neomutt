@@ -65,7 +65,6 @@
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "url.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"

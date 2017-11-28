@@ -55,7 +55,7 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "address.h"
 #include "sort.h"
 #ifdef MIXMASTER
 #include "remailer.h"

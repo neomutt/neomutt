@@ -58,7 +58,7 @@
 #include "pager.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "address.h"
 #include "sort.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"

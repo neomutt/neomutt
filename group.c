@@ -29,7 +29,6 @@
 #include "address.h"
 #include "globals.h"
 #include "protos.h"
-#include "rfc822.h"
 
 struct Group *mutt_pattern_group(const char *k)
 {

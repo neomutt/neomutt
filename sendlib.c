@@ -64,7 +64,6 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
-#include "rfc822.h"
 #include "state.h"
 #ifdef USE_NNTP
 #include "nntp.h"

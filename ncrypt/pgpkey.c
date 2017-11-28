@@ -54,7 +54,6 @@
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 
 /**

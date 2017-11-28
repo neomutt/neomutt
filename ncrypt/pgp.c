@@ -64,7 +64,6 @@
 #include "pgplib.h"
 #include "pgpmicalg.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "state.h"
 
 char PgpPass[LONG_STRING];

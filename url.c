@@ -36,7 +36,7 @@
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
-#include "rfc822.h"
+#include "address.h"
 
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },
