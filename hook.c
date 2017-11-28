@@ -59,8 +59,8 @@ static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static int current_hook_type = 0;
 
-int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+int mutt_parse_hook(struct Buffer *UNUSED(buf), struct Buffer *s,
+                    unsigned long data, struct Buffer *err)
 {
   struct Hook *ptr = NULL;
   struct Buffer command, pattern;
@@ -299,8 +299,8 @@ static void delete_hooks(int type)
   }
 }
 
-int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                      struct Buffer *err)
+int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
+                      unsigned long UNUSED(data), struct Buffer *err)
 {
   while (MoreArgs(s))
   {

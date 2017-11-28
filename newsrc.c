@@ -888,9 +888,10 @@ void nntp_clear_cache(struct NntpServer *nserv)
  * | \%S     | Url schema
  * | \%u     | Username
  */
-const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
-                            const char *src, const char *prec, const char *if_str,
-                            const char *else_str, unsigned long data, enum FormatFlag flags)
+const char *nntp_format_str(char *buf, size_t buflen, size_t UNUSED(col),
+                            int UNUSED(cols), char op, const char *src, const char *prec,
+                            const char *UNUSED(if_str), const char *UNUSED(else_str),
+                            unsigned long data, enum FormatFlag UNUSED(flags))
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;

@@ -1223,7 +1223,7 @@ bail:
  * @retval 0   Success
  * @retval EOF Failure, see errno
  */
-int imap_close_message(struct Context *ctx, struct Message *msg)
+int imap_close_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }

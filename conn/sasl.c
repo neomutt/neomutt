@@ -171,7 +171,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
  * @param message  Message
  * @retval int SASL_OK, always
  */
-static int mutt_sasl_cb_log(void *context, int priority, const char *message)
+static int mutt_sasl_cb_log(void *UNUSED(context), int priority, const char *message)
 {
   mutt_debug(priority, "SASL: %s\n", message);
 
@@ -268,7 +268,8 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
  * @param[out] psecret SASL secret
  * @retval int SASL error code, e.g SASL_FAIL
  */
-static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
+static int mutt_sasl_cb_pass(sasl_conn_t *UNUSED(conn), void *context,
+                             int UNUSED(id), sasl_secret_t **psecret)
 {
   struct Account *account = (struct Account *) context;
   int len;

@@ -695,7 +695,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   return 0;
 }
 
-static int pop_close_message(struct Context *ctx, struct Message *msg)
+static int pop_close_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
@@ -703,7 +703,7 @@ static int pop_close_message(struct Context *ctx, struct Message *msg)
 /**
  * pop_sync_mailbox - update POP mailbox, delete messages from server
  */
-static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
+static int pop_sync_mailbox(struct Context *ctx, int *UNUSED(index_hint))
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
@@ -784,7 +784,7 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 /**
  * pop_check_mailbox - Check for new messages and fetch headers
  */
-static int pop_check_mailbox(struct Context *ctx, int *index_hint)
+static int pop_check_mailbox(struct Context *ctx, int *UNUSED(index_hint))
 {
   int ret;
   struct PopData *pop_data = (struct PopData *) ctx->data;

@@ -488,8 +488,8 @@ static void do_uncolor(struct Buffer *buf, struct Buffer *s,
  * * uncolor index pattern [pattern...]
  * * unmono  index pattern [pattern...]
  */
-static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                         struct Buffer *err, short parse_uncolor)
+static int parse_uncolor(struct Buffer *buf, struct Buffer *s,
+                         unsigned long UNUSED(data), struct Buffer *err, short parse_uncolor)
 {
   int object = 0, do_cache = 0;
 
@@ -980,8 +980,8 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
 #ifdef HAVE_COLOR
 
-int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                     struct Buffer *err)
+int mutt_parse_color(struct Buffer *buf, struct Buffer *s,
+                     unsigned long UNUSED(data), struct Buffer *err)
 {
   bool dry_run = false;
 
@@ -993,8 +993,8 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
 #endif
 
-int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                    struct Buffer *err)
+int mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
+                    unsigned long UNUSED(data), struct Buffer *err)
 {
   bool dry_run = false;
 

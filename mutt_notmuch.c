@@ -1731,7 +1731,8 @@ void nm_query_window_backward(void)
  * @retval 0: no valid user input
  * @retval 1: buf set
  */
-static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
+static int nm_edit_message_tags(struct Context *UNUSED(ctx),
+                                const char *UNUSED(tags), char *buf, size_t buflen)
 {
   *buf = '\0';
   if (mutt_get_field("Add/remove labels: ", buf, buflen, MUTT_NM_TAG) != 0)
@@ -2158,7 +2159,7 @@ static int nm_close_mailbox(struct Context *ctx)
  * @retval #MUTT_REOPENED - mailbox closed and reopened
  * @retval #MUTT_FLAGS - flags have changed
  */
-static int nm_check_mailbox(struct Context *ctx, int *index_hint)
+static int nm_check_mailbox(struct Context *ctx, int *UNUSED(index_hint))
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   time_t mtime = 0;
@@ -2281,7 +2282,7 @@ done:
  * @param ctx        A mailbox CONTEXT
  * @param index_hint Remember our place in the index
  */
-static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
+static int nm_sync_mailbox(struct Context *ctx, int *UNUSED(index_hint))
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   int rc = 0;
@@ -2398,7 +2399,7 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
  * @retval 0 Success
  * @retval 1 Error
  */
-static int nm_close_message(struct Context *ctx, struct Message *msg)
+static int nm_close_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   if (!msg)
     return 1;
@@ -2406,7 +2407,7 @@ static int nm_close_message(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
-static int nm_commit_message(struct Context *ctx, struct Message *msg)
+static int nm_commit_message(struct Context *UNUSED(ctx), struct Message *UNUSED(msg))
 {
   mutt_error(_("Can't write to virtual folder."));
   return -1;

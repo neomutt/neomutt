@@ -212,7 +212,7 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 /**
  * pop_auth_apop - APOP authenticator
  */
-static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *UNUSED(method))
 {
   struct Md5Ctx ctx;
   unsigned char digest[16];
@@ -258,7 +258,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
 /**
  * pop_auth_user - USER authenticator
  */
-static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *UNUSED(method))
 {
   char buf[LONG_STRING];
   int ret;

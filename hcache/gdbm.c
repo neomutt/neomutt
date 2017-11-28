@@ -67,7 +67,7 @@ static void *hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
   return data.dptr;
 }
 
-static void hcache_gdbm_free(void *vctx, void **data)
+static void hcache_gdbm_free(void *UNUSED(vctx), void **data)
 {
   FREE(data);
 }

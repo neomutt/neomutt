@@ -67,7 +67,7 @@ static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen
   return tcbdbget(db, key, keylen, &sp);
 }
 
-static void hcache_tokyocabinet_free(void *ctx, void **data)
+static void hcache_tokyocabinet_free(void *UNUSED(ctx), void **data)
 {
   FREE(data);
 }

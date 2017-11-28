@@ -103,7 +103,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *UNUSED(method))
 {
   char ibuf[LONG_STRING * 2], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];

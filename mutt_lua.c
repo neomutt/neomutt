@@ -386,7 +386,8 @@ static bool lua_init(lua_State **l)
 
 lua_State *Lua = NULL;
 
-int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s,
+                   unsigned long UNUSED(data), struct Buffer *err)
 {
   lua_init(&Lua);
   mutt_debug(2, " * mutt_lua_parse(%s)\n", tmp->data);
@@ -404,7 +405,7 @@ int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, str
 }
 
 int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+                         unsigned long UNUSED(data), struct Buffer *err)
 {
   mutt_debug(2, " * mutt_lua_source()\n");
 

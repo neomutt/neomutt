@@ -2248,7 +2248,7 @@ fail_noidata:
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int imap_open_mailbox_append(struct Context *ctx, int flags)
+static int imap_open_mailbox_append(struct Context *ctx, int UNUSED(flags))
 {
   struct ImapData *idata = NULL;
   char buf[LONG_STRING];
@@ -2367,7 +2367,8 @@ static int imap_close_mailbox(struct Context *ctx)
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int imap_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int imap_open_new_message(struct Message *msg, struct Context *UNUSED(dest),
+                                 struct Header *UNUSED(hdr))
 {
   char tmp[_POSIX_PATH_MAX];
 

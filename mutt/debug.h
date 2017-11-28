@@ -26,4 +26,7 @@
 int mutt_debug_real(const char *function, const char *file, int line, int level, ...);
 #define mutt_debug(LEVEL, ...) mutt_debug_real(__func__, __FILE__, __LINE__, LEVEL, __VA_ARGS__)
 
+/* Mark unused parameters in API functions */
+#define UNUSED(x) UNUSED_ ## x __attribute__((__unused__))
+
 #endif /* _MUTT_DEBUG_H */

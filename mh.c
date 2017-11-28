@@ -1420,7 +1420,8 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
  * Open a new (temporary) message in an MH folder.
  */
 
-static int mh_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int mh_open_new_message(struct Message *msg, struct Context *dest,
+                               struct Header *UNUSED(hdr))
 {
   return mh_mkstemp(dest, &msg->fp, &msg->path);
 }
@@ -1487,7 +1488,7 @@ static int mh_open_message(struct Context *ctx, struct Message *msg, int msgno)
   return maildir_mh_open_message(ctx, msg, msgno, 0);
 }
 
-static int mh_close_message(struct Context *ctx, struct Message *msg)
+static int mh_close_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }

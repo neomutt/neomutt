@@ -71,10 +71,11 @@ static const struct Mapping AliasHelp[] = {
  * | \%r     | Address which alias expands to
  * | \%t     | Character which indicates if the alias is tagged for inclusion
  */
-static const char *alias_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                    char op, const char *src, const char *prec,
-                                    const char *if_str, const char *else_str,
-                                    unsigned long data, enum FormatFlag flags)
+static const char *alias_format_str(char *buf, size_t buflen, size_t UNUSED(col),
+                                    int UNUSED(cols), char op, const char *src,
+                                    const char *prec, const char *UNUSED(if_str),
+                                    const char *UNUSED(else_str), unsigned long data,
+                                    enum FormatFlag UNUSED(flags))
 {
   char fmt[SHORT_STRING], addr[SHORT_STRING];
   struct Alias *alias = (struct Alias *) data;
