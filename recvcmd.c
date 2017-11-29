@@ -27,6 +27,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -38,7 +39,6 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "state.h"
 
 /**
@@ -171,7 +171,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
     return;
 
-  adr = rfc822_parse_adrlist(adr, buf);
+  adr = mutt_addr_parse_list(adr, buf);
   if (!adr)
   {
     mutt_error(_("Error parsing address!"));
@@ -184,7 +184,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     return;
   }
 
@@ -209,7 +209,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 
   if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
   {
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(p ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -235,7 +235,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     mutt_error(p ? _("Error bouncing message!") :
                    _("Error bouncing messages!"));
 
-  rfc822_free_address(&adr);
+  mutt_addr_free(&adr);
 }
 
 /**
@@ -414,7 +414,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   }
 
   tmphdr = mutt_new_header();
-  tmphdr->env = mutt_new_envelope();
+  tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
@@ -584,7 +584,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   }
 
   tmphdr = mutt_new_header();
-  tmphdr->env = mutt_new_envelope();
+  tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, curhdr);
 
   tmpbody[0] = '\0';
@@ -854,7 +854,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     mime_reply_any = true;
 
   tmphdr = mutt_new_header();
-  tmphdr->env = mutt_new_envelope();
+  tmphdr->env = mutt_env_new();
 
   if (attach_reply_envelope_defaults(
           tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)

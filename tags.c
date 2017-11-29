@@ -20,40 +20,41 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
+/**
+ * @page tags Driver based email tags
+ *
+ * Driver based email tags
+ *
+ * | Data           | Description
+ * | :------------- | :--------------------------------------------------
+ * | #HiddenTags    | Private tags which should not be displayed
+ * | #TagTransforms | Lookup table of alternative tag names
+ *
+ * | Function                          | Description
+ * | :-------------------------------- | :-----------------------------------------------
+ * | driver_tags_free()                | Free tags from a header
+ * | driver_tags_getter()              | Get transformed tags
+ * | driver_tags_get_transformed()     | Get transformed tags
+ * | driver_tags_get()                 | Get tags
+ * | driver_tags_get_with_hidden()     | Get tags with hiddens
+ * | driver_tags_get_transformed_for() | Get transformed tag for a tag name from a header
+ * | driver_tags_add()                 | Add a tag to header
+ * | driver_tags_replace()             | Replace all tags
+ */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/hash.h"
 #include "mutt/queue.h"
 #include "mutt/string2.h"
+#include "tags.h"
 #include "globals.h"
-#include "mutt_tags.h"
+
+char *HiddenTags;           /**< Private tags which should not be displayed */
+struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
 /**
- * driver_tags_free - Free tags from a header
- * @param[in] head List of tags
- *
- * Free the whole tags structure
- */
-void driver_tags_free(struct TagHead *head)
-{
-  if (!head)
-    return;
-
-  struct TagNode *np = STAILQ_FIRST(head), *next = NULL;
-  while (np)
-  {
-    next = STAILQ_NEXT(np, entries);
-    FREE(&np->name);
-    FREE(&np->transformed);
-    FREE(&np);
-    np = next;
-  }
-  STAILQ_INIT(head);
-}
-
-/**
- * driver_tags_get_transformed - Get transformed tags
+ * driver_tags_getter - Get transformed tags
  * @param head             List of tags
  * @param show_hidden      Show hidden tags
  * @param show_transformed Show transformed tags
@@ -83,6 +84,62 @@ static char *driver_tags_getter(struct TagHead *head, bool show_hidden,
     }
   }
   return tags;
+}
+
+/**
+ * driver_tags_add - Add a tag to header
+ * @param[in] head List of tags
+ * @param[in] new_tag string representing the new tag
+ *
+ * Add a tag to the header tags
+ */
+static void driver_tags_add(struct TagHead *head, char *new_tag)
+{
+  char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
+
+  struct TagNode *np = mutt_mem_calloc(1, sizeof(struct TagNode));
+  np->name = mutt_str_strdup(new_tag);
+  np->hidden = false;
+  if (new_tag_transformed)
+    np->transformed = mutt_str_strdup(new_tag_transformed);
+
+  /* filter out hidden tags */
+  if (HiddenTags)
+  {
+    char *p = strstr(HiddenTags, new_tag);
+    size_t xsz = p ? mutt_str_strlen(new_tag) : 0;
+
+    if (p && ((p == HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
+        ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
+    {
+      np->hidden = true;
+    }
+  }
+
+  STAILQ_INSERT_TAIL(head, np, entries);
+}
+
+/**
+ * driver_tags_free - Free tags from a header
+ * @param[in] head List of tags
+ *
+ * Free the whole tags structure
+ */
+void driver_tags_free(struct TagHead *head)
+{
+  if (!head)
+    return;
+
+  struct TagNode *np = STAILQ_FIRST(head), *next = NULL;
+  while (np)
+  {
+    next = STAILQ_NEXT(np, entries);
+    FREE(&np->name);
+    FREE(&np->transformed);
+    FREE(&np);
+    np = next;
+  }
+  STAILQ_INIT(head);
 }
 
 /**
@@ -136,53 +193,18 @@ char *driver_tags_get_transformed_for(char *name, struct TagHead *head)
 }
 
 /**
- * driver_tags_add - Add a tag to header
- * @param[in] head List of tags
- * @param[in] new_tag string representing the new tag
- *
- * Add a tag to the header tags
- */
-static void driver_tags_add(struct TagHead *head, char *new_tag)
-{
-  char *new_tag_transformed = mutt_hash_find(TagTransforms, new_tag);
-
-  struct TagNode *np = mutt_mem_calloc(1, sizeof(struct TagNode));
-  np->name = mutt_str_strdup(new_tag);
-  np->hidden = false;
-  if (new_tag_transformed)
-    np->transformed = mutt_str_strdup(new_tag_transformed);
-
-  /* filter out hidden tags */
-  if (HiddenTags)
-  {
-    char *p = strstr(HiddenTags, new_tag);
-    size_t xsz = p ? mutt_str_strlen(new_tag) : 0;
-
-    if (p && ((p == HiddenTags) || (*(p - 1) == ',') || (*(p - 1) == ' ')) &&
-        ((*(p + xsz) == '\0') || (*(p + xsz) == ',') || (*(p + xsz) == ' ')))
-    {
-      np->hidden = true;
-    }
-  }
-
-  STAILQ_INSERT_TAIL(head, np, entries);
-}
-
-/**
  * driver_tags_replace - Replace all tags
  * @param[in] head List of tags
  * @param[in] tags string of all tags separated by space
+ * @retval false No changes are made
+ * @retval true  Tags are updated
  *
- * @retval  0 If no change are made
- * @retval  1 If tags are updated
- *
- * Free current tags structures and replace it by
- * new tags
+ * Free current tags structures and replace it by new tags
  */
-int driver_tags_replace(struct TagHead *head, char *tags)
+bool driver_tags_replace(struct TagHead *head, char *tags)
 {
   if (!head)
-    return 0;
+    return false;
 
   driver_tags_free(head);
 
@@ -193,5 +215,5 @@ int driver_tags_replace(struct TagHead *head, char *tags)
       driver_tags_add(head, tag);
     FREE(&tags);
   }
-  return 1;
+  return true;
 }

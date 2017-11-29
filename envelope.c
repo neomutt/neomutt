@@ -25,11 +25,12 @@
  *
  * Representation of an email header (envelope)
  *
- * | Function                     | Description
- * | :--------------------------- | :---------------------------------------------------------
- * | mutt_free_envelope           | Free an Envelope
- * | mutt_merge_envelopes         | Merge the headers of two Envelopes
- * | mutt_new_envelope            | Create a new Envelope
+ * | Function              | Description
+ * | :-------------------- | :---------------------------------
+ * | mutt_env_cmp_strict() | Strictly compare two Envelopes
+ * | mutt_env_free()       | Free an Envelope
+ * | mutt_env_merge()      | Merge the headers of two Envelopes
+ * | mutt_env_new()        | Create a new Envelope
  */
 
 #include "config.h"
@@ -37,14 +38,15 @@
 #include "mutt/buffer.h"
 #include "mutt/memory.h"
 #include "mutt/queue.h"
+#include "mutt/string2.h"
 #include "envelope.h"
-#include "rfc822.h"
+#include "address.h"
 
 /**
- * mutt_new_envelope - Create a new Envelope
+ * mutt_env_new - Create a new Envelope
  * @retval ptr New Envelope
  */
-struct Envelope *mutt_new_envelope(void)
+struct Envelope *mutt_env_new(void)
 {
   struct Envelope *e = mutt_mem_calloc(1, sizeof(struct Envelope));
   STAILQ_INIT(&e->references);
@@ -54,21 +56,21 @@ struct Envelope *mutt_new_envelope(void)
 }
 
 /**
- * mutt_free_envelope - Free an Envelope
+ * mutt_env_free - Free an Envelope
  * @param p Envelope to free
  */
-void mutt_free_envelope(struct Envelope **p)
+void mutt_env_free(struct Envelope **p)
 {
   if (!*p)
     return;
-  rfc822_free_address(&(*p)->return_path);
-  rfc822_free_address(&(*p)->from);
-  rfc822_free_address(&(*p)->to);
-  rfc822_free_address(&(*p)->cc);
-  rfc822_free_address(&(*p)->bcc);
-  rfc822_free_address(&(*p)->sender);
-  rfc822_free_address(&(*p)->reply_to);
-  rfc822_free_address(&(*p)->mail_followup_to);
+  mutt_addr_free(&(*p)->return_path);
+  mutt_addr_free(&(*p)->from);
+  mutt_addr_free(&(*p)->to);
+  mutt_addr_free(&(*p)->cc);
+  mutt_addr_free(&(*p)->bcc);
+  mutt_addr_free(&(*p)->sender);
+  mutt_addr_free(&(*p)->reply_to);
+  mutt_addr_free(&(*p)->mail_followup_to);
 
   FREE(&(*p)->list_post);
   FREE(&(*p)->subject);
@@ -95,17 +97,17 @@ void mutt_free_envelope(struct Envelope **p)
 }
 
 /**
- * mutt_merge_envelopes - Merge the headers of two Envelopes
+ * mutt_env_merge - Merge the headers of two Envelopes
  * @param base  Envelope destination for all the headers
  * @param extra Envelope to copy from
  *
  * Any fields that are missing from base will be copied from extra.
  * extra will be freed afterwards.
  */
-void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
+void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
 {
 /* copies each existing element if necessary, and sets the element
- * to NULL in the source so that mutt_free_envelope doesn't leave us
+ * to NULL in the source so that mutt_env_free doesn't leave us
  * with dangling pointers. */
 #define MOVE_ELEM(h)                                                           \
   if (!base->h)                                                                \
@@ -161,5 +163,36 @@ void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
   MOVE_STAILQ(userhdrs);
 #undef MOVE_ELEM
 
-  mutt_free_envelope(extra);
+  mutt_env_free(extra);
+}
+
+/**
+ * mutt_env_cmp_strict - Strictly compare two Envelopes
+ * @param e1 First Envelope
+ * @param e2 Second Envelope
+ * @retval true Envelopes are strictly identical
+ */
+bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
+{
+  if (e1 && e2)
+  {
+    if ((mutt_str_strcmp(e1->message_id, e2->message_id) != 0) ||
+        (mutt_str_strcmp(e1->subject, e2->subject) != 0) ||
+        !mutt_list_compare(&e1->references, &e2->references) ||
+        !mutt_addr_cmp_strict(e1->from, e2->from) ||
+        !mutt_addr_cmp_strict(e1->sender, e2->sender) ||
+        !mutt_addr_cmp_strict(e1->reply_to, e2->reply_to) ||
+        !mutt_addr_cmp_strict(e1->to, e2->to) || !mutt_addr_cmp_strict(e1->cc, e2->cc) ||
+        !mutt_addr_cmp_strict(e1->return_path, e2->return_path))
+      return false;
+    else
+      return true;
+  }
+  else
+  {
+    if (!e1 && !e2)
+      return true;
+    else
+      return false;
+  }
 }

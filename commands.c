@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "body.h"
 #include "buffy.h"
@@ -58,7 +59,6 @@
 #include "pager.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
@@ -299,7 +299,7 @@ void ci_bounce_message(struct Header *h)
   if (rc || !buf[0])
     return;
 
-  adr = mutt_parse_adrlist(adr, buf);
+  adr = mutt_addr_parse_list2(adr, buf);
   if (!adr)
   {
     mutt_error(_("Error parsing address!"));
@@ -312,7 +312,7 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     return;
   }
 
@@ -334,7 +334,7 @@ void ci_bounce_message(struct Header *h)
 
   if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
   {
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(h ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -343,7 +343,7 @@ void ci_bounce_message(struct Header *h)
   mutt_window_clearline(MuttMessageWindow, 0);
 
   rc = mutt_bounce_message(NULL, h, adr);
-  rfc822_free_address(&adr);
+  mutt_addr_free(&adr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(h ? _("Message bounced.") : _("Messages bounced."));
@@ -973,7 +973,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   short type_changed = 0;
   short structure_changed = 0;
 
-  cp = mutt_get_parameter("charset", b->parameter);
+  cp = mutt_param_get("charset", b->parameter);
   mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
@@ -986,7 +986,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     {
       l = strlen(buf);
 
-      rfc822_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
+      mutt_addr_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
       snprintf(buf + l, sizeof(buf) - l, "; %s=%s", p->attribute, tmp);
     }
   }
@@ -995,15 +995,14 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     return 0;
 
   /* clean up previous junk */
-  mutt_free_parameter(&b->parameter);
+  mutt_param_free(&b->parameter);
   FREE(&b->subtype);
 
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = mutt_str_strcasecmp(tmp, obuf);
-  charset_changed =
-      mutt_str_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
+  charset_changed = mutt_str_strcasecmp(charset, mutt_param_get("charset", b->parameter));
 
   /* if in send mode, check for conversion - current setting is default. */
 
@@ -1011,7 +1010,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
-             mutt_get_parameter("charset", b->parameter));
+             mutt_param_get("charset", b->parameter));
     r = mutt_yesorno(tmp, !b->noconv);
     if (r != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
@@ -1027,7 +1026,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     if (type_changed)
       mutt_sleep(1);
     mutt_message(_("Character set changed to %s; %s."),
-                 mutt_get_parameter("charset", b->parameter),
+                 mutt_param_get("charset", b->parameter),
                  b->noconv ? _("not converting") : _("converting"));
   }
 

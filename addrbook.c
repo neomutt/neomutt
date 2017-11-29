@@ -36,7 +36,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x

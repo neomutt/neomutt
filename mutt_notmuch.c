@@ -57,9 +57,9 @@
 #include "header.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "protos.h"
+#include "tags.h"
 #include "thread.h"
 #include "url.h"
 

@@ -30,6 +30,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "body.h"
 #include "charset.h"
 #include "envelope.h"
@@ -44,7 +45,6 @@
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
-#include "rfc822.h"
 #include "url.h"
 
 struct Address;
@@ -187,7 +187,7 @@ static struct Parameter *parse_parameters(const char *s)
       }
       else
       {
-        new = mutt_new_parameter();
+        new = mutt_param_new();
         new->attribute = mutt_str_substr_dup(s, s + i);
       }
 
@@ -311,7 +311,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   char *subtype = NULL;
 
   FREE(&ct->subtype);
-  mutt_free_parameter(&ct->parameter);
+  mutt_param_free(&ct->parameter);
 
   /* First extract any existing parameters */
   pc = strchr(s, ';');
@@ -325,12 +325,12 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    if ((pc = mutt_get_parameter("name", ct->parameter)) && !ct->filename)
+    if ((pc = mutt_param_get("name", ct->parameter)) && !ct->filename)
       ct->filename = mutt_str_strdup(pc);
 
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
-    if ((pc = mutt_get_parameter("conversions", ct->parameter)))
+    if ((pc = mutt_param_get("conversions", ct->parameter)))
       ct->encoding = mutt_check_encoding(pc);
 #endif
   }
@@ -384,13 +384,13 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   /* Default character set for text types. */
   if (ct->type == TYPETEXT)
   {
-    pc = mutt_get_parameter("charset", ct->parameter);
+    pc = mutt_param_get("charset", ct->parameter);
     if (!pc)
-      mutt_set_parameter("charset",
-                         (AssumedCharset && *AssumedCharset) ?
-                             (const char *) mutt_get_default_charset() :
-                             "us-ascii",
-                         &ct->parameter);
+      mutt_param_set("charset",
+                     (AssumedCharset && *AssumedCharset) ?
+                         (const char *) mutt_get_default_charset() :
+                         "us-ascii",
+                     &ct->parameter);
   }
 }
 
@@ -410,11 +410,11 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    if ((s = mutt_get_parameter("filename", (parms = parse_parameters(s)))))
+    if ((s = mutt_param_get("filename", (parms = parse_parameters(s)))))
       mutt_str_replace(&ct->filename, s);
-    if ((s = mutt_get_parameter("name", parms)))
+    if ((s = mutt_param_get("name", parms)))
       ct->form_name = mutt_str_strdup(s);
-    mutt_free_parameter(&parms);
+    mutt_param_free(&parms);
   }
 }
 
@@ -477,7 +477,7 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
       else if (mutt_str_strcasecmp("encoding-info", line + 6) == 0)
         p->encoding = mutt_check_encoding(c);
       else if (mutt_str_strcasecmp("content-lines", line + 6) == 0)
-        mutt_set_parameter("content-lines", c, &(p->parameter));
+        mutt_param_set("content-lines", c, &(p->parameter));
       else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
       {
         mutt_str_replace(&p->description, c);
@@ -509,7 +509,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
         bound = "--------";
       else
 #endif
-        bound = mutt_get_parameter("boundary", b->parameter);
+        bound = mutt_param_get("boundary", b->parameter);
 
       fseeko(fp, b->offset, SEEK_SET);
       b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
@@ -630,9 +630,9 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
         new = mutt_read_mime_header(fp, digest);
 
 #ifdef SUN_ATTACHMENT
-        if (mutt_get_parameter("content-lines", new->parameter))
+        if (mutt_param_get("content-lines", new->parameter))
         {
-          if (mutt_str_atoi(mutt_get_parameter("content-lines", new->parameter), &lines) < 0)
+          if (mutt_str_atoi(mutt_param_get("content-lines", new->parameter), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
             if (ftello(fp) >= end_off || fgets(buffer, LONG_STRING, fp) == NULL)
@@ -770,12 +770,12 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'a':
       if (mutt_str_strcasecmp(line + 1, "pparently-to") == 0)
       {
-        e->to = rfc822_parse_adrlist(e->to, p);
+        e->to = mutt_addr_parse_list(e->to, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "pparently-from") == 0)
       {
-        e->from = rfc822_parse_adrlist(e->from, p);
+        e->from = mutt_addr_parse_list(e->from, p);
         matched = 1;
       }
       break;
@@ -783,7 +783,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'b':
       if (mutt_str_strcasecmp(line + 1, "cc") == 0)
       {
-        e->bcc = rfc822_parse_adrlist(e->bcc, p);
+        e->bcc = mutt_addr_parse_list(e->bcc, p);
         matched = 1;
       }
       break;
@@ -791,7 +791,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'c':
       if (mutt_str_strcasecmp(line + 1, "c") == 0)
       {
-        e->cc = rfc822_parse_adrlist(e->cc, p);
+        e->cc = mutt_addr_parse_list(e->cc, p);
         matched = 1;
       }
       else if (mutt_str_strncasecmp(line + 1, "ontent-", 7) == 0)
@@ -866,7 +866,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 'f':
       if (mutt_str_strcasecmp("rom", line + 1) == 0)
       {
-        e->from = rfc822_parse_adrlist(e->from, p);
+        e->from = mutt_addr_parse_list(e->from, p);
         matched = 1;
       }
 #ifdef USE_NNTP
@@ -951,13 +951,13 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
         if (mutt_str_strcasecmp(line + 5, "reply-to") == 0)
         {
           /* override the Reply-To: field */
-          rfc822_free_address(&e->reply_to);
-          e->reply_to = rfc822_parse_adrlist(e->reply_to, p);
+          mutt_addr_free(&e->reply_to);
+          e->reply_to = mutt_addr_parse_list(e->reply_to, p);
           matched = 1;
         }
         else if (mutt_str_strcasecmp(line + 5, "followup-to") == 0)
         {
-          e->mail_followup_to = rfc822_parse_adrlist(e->mail_followup_to, p);
+          e->mail_followup_to = mutt_addr_parse_list(e->mail_followup_to, p);
           matched = 1;
         }
       }
@@ -993,12 +993,12 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "eply-to") == 0)
       {
-        e->reply_to = rfc822_parse_adrlist(e->reply_to, p);
+        e->reply_to = mutt_addr_parse_list(e->reply_to, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "eturn-path") == 0)
       {
-        e->return_path = rfc822_parse_adrlist(e->return_path, p);
+        e->return_path = mutt_addr_parse_list(e->return_path, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "eceived") == 0)
@@ -1022,7 +1022,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
       }
       else if (mutt_str_strcasecmp(line + 1, "ender") == 0)
       {
-        e->sender = rfc822_parse_adrlist(e->sender, p);
+        e->sender = mutt_addr_parse_list(e->sender, p);
         matched = 1;
       }
       else if (mutt_str_strcasecmp(line + 1, "tatus") == 0)
@@ -1060,7 +1060,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     case 't':
       if (mutt_str_strcasecmp(line + 1, "o") == 0)
       {
-        e->to = rfc822_parse_adrlist(e->to, p);
+        e->to = mutt_addr_parse_list(e->to, p);
         matched = 1;
       }
       break;
@@ -1113,7 +1113,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
 #endif
       else if (mutt_str_strcasecmp(line + 1, "-original-to") == 0)
       {
-        e->x_original_to = rfc822_parse_adrlist(e->x_original_to, p);
+        e->x_original_to = mutt_addr_parse_list(e->x_original_to, p);
         matched = 1;
       }
 
@@ -1149,12 +1149,12 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
  *                  Used for recall-message
  * @retval ptr Newly allocated envelope structure
  *
- * Caller should free the Envelope using mutt_free_envelope().
+ * Caller should free the Envelope using mutt_env_free().
  */
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)
 {
-  struct Envelope *e = mutt_new_envelope();
+  struct Envelope *e = mutt_env_new();
   char *line = mutt_mem_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
@@ -1299,39 +1299,6 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
   }
 
   return e;
-}
-
-/**
- * mutt_parse_adrlist - Parse a list of email addresses
- * @param p Add to this List of Addresses
- * @param s String to parse
- * @retval ptr Head of the list of addresses
- *
- * The email addresses can be separated by whitespace or commas.
- */
-struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
-{
-  const char *q = NULL;
-
-  /* check for a simple whitespace separated list of addresses */
-  q = strpbrk(s, "\"<>():;,\\");
-  if (!q)
-  {
-    char tmp[HUGE_STRING];
-    char *r = NULL;
-
-    mutt_str_strfcpy(tmp, s, sizeof(tmp));
-    r = tmp;
-    while ((r = strtok(r, " \t")) != NULL)
-    {
-      p = rfc822_parse_adrlist(p, r);
-      r = NULL;
-    }
-  }
-  else
-    p = rfc822_parse_adrlist(p, s);
-
-  return p;
 }
 
 /**

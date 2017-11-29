@@ -94,7 +94,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
           param[z++] = command[x++];
         param[z] = '\0';
 
-        _pvalue = mutt_get_parameter(param, a->parameter);
+        _pvalue = mutt_param_get(param, a->parameter);
         mutt_str_strfcpy(pvalue, NONULL(_pvalue), sizeof(pvalue));
         if (option(OPT_MAILCAP_SANITIZE))
           mutt_file_sanitize_filename(pvalue, 0);

@@ -35,6 +35,7 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -55,7 +56,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 #ifdef MIXMASTER
 #include "remailer.h"
@@ -474,8 +474,8 @@ static void edit_address_list(int line, struct Address **addr)
   rfc822_write_address(buf, sizeof(buf), *addr, 0);
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
-    rfc822_free_address(addr);
-    *addr = mutt_parse_adrlist(*addr, buf);
+    mutt_addr_free(addr);
+    *addr = mutt_addr_parse_list2(*addr, buf);
     *addr = mutt_expand_aliases(*addr);
   }
 

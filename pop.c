@@ -666,7 +666,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   if (ctx->subj_hash && h->env->real_subj)
     mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h, NULL);
   mutt_label_hash_remove(ctx, h);
-  mutt_free_envelope(&h->env);
+  mutt_env_free(&h->env);
   h->env = mutt_read_rfc822_header(msg->fp, h, 0, 0);
   if (ctx->subj_hash && h->env->real_subj)
     mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);

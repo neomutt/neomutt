@@ -159,7 +159,7 @@ int mutt_compose_attachment(struct Body *a)
           {
             if (b->parameter)
             {
-              mutt_free_parameter(&a->parameter);
+              mutt_param_free(&a->parameter);
               a->parameter = b->parameter;
               b->parameter = NULL;
             }

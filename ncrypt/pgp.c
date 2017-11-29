@@ -64,7 +64,6 @@
 #include "pgplib.h"
 #include "pgpmicalg.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "state.h"
 
 char PgpPass[LONG_STRING];
@@ -669,13 +668,13 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   /* fix the content type */
 
-  mutt_set_parameter("format", "fixed", &b->parameter);
+  mutt_param_set("format", "fixed", &b->parameter);
   if (enc)
-    mutt_set_parameter("x-action", "pgp-encrypted", &b->parameter);
+    mutt_param_set("x-action", "pgp-encrypted", &b->parameter);
   else if (sgn)
-    mutt_set_parameter("x-action", "pgp-signed", &b->parameter);
+    mutt_param_set("x-action", "pgp-signed", &b->parameter);
   else if (key)
-    mutt_set_parameter("x-action", "pgp-keys", &b->parameter);
+    mutt_param_set("x-action", "pgp-keys", &b->parameter);
 
   return 1;
 }
@@ -1210,8 +1209,8 @@ struct Body *pgp_sign_message(struct Body *a)
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
-  mutt_set_parameter("protocol", "application/pgp-signature", &t->parameter);
-  mutt_set_parameter("micalg", pgp_micalg(sigfile), &t->parameter);
+  mutt_param_set("protocol", "application/pgp-signature", &t->parameter);
+  mutt_param_set("micalg", pgp_micalg(sigfile), &t->parameter);
 
   t->parts = a;
   a = t;
@@ -1225,7 +1224,7 @@ struct Body *pgp_sign_message(struct Body *a)
   t->disposition = DISPNONE;
   t->encoding = ENC7BIT;
   t->unlink = true; /* ok to remove this file after sending. */
-  mutt_set_parameter("name", "signature.asc", &t->parameter);
+  mutt_param_set("name", "signature.asc", &t->parameter);
 
   return a;
 }
@@ -1281,10 +1280,10 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
           }
 
           /* check for e-mail address */
-          if (strchr(keyID, '@') && (addr = rfc822_parse_adrlist(NULL, keyID)))
+          if (strchr(keyID, '@') && (addr = mutt_addr_parse_list(NULL, keyID)))
           {
             if (fqdn)
-              rfc822_qualify(addr, fqdn);
+              mutt_addr_qualify(addr, fqdn);
             q = addr;
           }
           else if (!oppenc_mode)
@@ -1303,7 +1302,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         else if (r == MUTT_ABORT)
         {
           FREE(&keylist);
-          rfc822_free_address(&addr);
+          mutt_addr_free(&addr);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -1324,7 +1323,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       if (!k_info)
       {
         FREE(&keylist);
-        rfc822_free_address(&addr);
+        mutt_addr_free(&addr);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -1340,7 +1339,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       key_selected = true;
 
       pgp_free_key(&k_info);
-      rfc822_free_address(&addr);
+      mutt_addr_free(&addr);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);
@@ -1465,7 +1464,7 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
-  mutt_set_parameter("protocol", "application/pgp-encrypted", &t->parameter);
+  mutt_param_set("protocol", "application/pgp-encrypted", &t->parameter);
 
   t->parts = mutt_new_body();
   t->parts->type = TYPEAPPLICATION;
@@ -1642,9 +1641,8 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   b->type = TYPETEXT;
   b->subtype = mutt_str_strdup("plain");
 
-  mutt_set_parameter("x-action",
-                     flags & ENCRYPT ? "pgp-encrypted" : "pgp-signed", &b->parameter);
-  mutt_set_parameter("charset", send_charset, &b->parameter);
+  mutt_param_set("x-action", flags & ENCRYPT ? "pgp-encrypted" : "pgp-signed", &b->parameter);
+  mutt_param_set("charset", send_charset, &b->parameter);
 
   b->filename = mutt_str_strdup(pgpoutfile);
 

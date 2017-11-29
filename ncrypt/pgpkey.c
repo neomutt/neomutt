@@ -54,7 +54,6 @@
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 
 /**
@@ -870,7 +869,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
 
     for (q = k->address; q; q = q->next)
     {
-      r = rfc822_parse_adrlist(NULL, NONULL(q->addr));
+      r = mutt_addr_parse_list(NULL, NONULL(q->addr));
 
       for (p = r; p; p = p->next)
       {
@@ -894,7 +893,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
         }
       }
 
-      rfc822_free_address(&r);
+      mutt_addr_free(&r);
     }
 
     if (match)

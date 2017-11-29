@@ -31,12 +31,12 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "url.h"
+#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
-#include "rfc822.h"
 
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },
@@ -360,7 +360,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
   if (url_pct_decode(tmp) < 0)
     goto out;
 
-  e->to = rfc822_parse_adrlist(e->to, tmp);
+  e->to = mutt_addr_parse_list(e->to, tmp);
 
   tag = headers ? strtok_r(headers, "&", &p) : NULL;
 

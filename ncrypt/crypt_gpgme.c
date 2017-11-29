@@ -66,7 +66,6 @@
 #include "pager.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 #include "state.h"
 
@@ -1062,16 +1061,16 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
-  mutt_set_parameter("protocol",
-                     use_smime ? "application/pkcs7-signature" :
-                                 "application/pgp-signature",
-                     &t->parameter);
+  mutt_param_set("protocol",
+                 use_smime ? "application/pkcs7-signature" :
+                             "application/pgp-signature",
+                 &t->parameter);
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */
   if (!get_micalg(ctx, use_smime, buf, sizeof(buf)))
-    mutt_set_parameter("micalg", buf, &t->parameter);
+    mutt_param_set("micalg", buf, &t->parameter);
   else if (use_smime)
-    mutt_set_parameter("micalg", "sha1", &t->parameter);
+    mutt_param_set("micalg", "sha1", &t->parameter);
   gpgme_release(ctx);
 
   t->parts = a;
@@ -1083,7 +1082,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   if (use_smime)
   {
     t->subtype = mutt_str_strdup("pkcs7-signature");
-    mutt_set_parameter("name", "smime.p7s", &t->parameter);
+    mutt_param_set("name", "smime.p7s", &t->parameter);
     t->encoding = ENCBASE64;
     t->use_disp = true;
     t->disposition = DISPATTACH;
@@ -1092,7 +1091,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   else
   {
     t->subtype = mutt_str_strdup("pgp-signature");
-    mutt_set_parameter("name", "signature.asc", &t->parameter);
+    mutt_param_set("name", "signature.asc", &t->parameter);
     t->use_disp = false;
     t->disposition = DISPNONE;
     t->encoding = ENC7BIT;
@@ -1157,7 +1156,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
-  mutt_set_parameter("protocol", "application/pgp-encrypted", &t->parameter);
+  mutt_param_set("protocol", "application/pgp-encrypted", &t->parameter);
 
   t->parts = mutt_new_body();
   t->parts->type = TYPEAPPLICATION;
@@ -1219,8 +1218,8 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
   t = mutt_new_body();
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("pkcs7-mime");
-  mutt_set_parameter("name", "smime.p7m", &t->parameter);
-  mutt_set_parameter("smime-type", "enveloped-data", &t->parameter);
+  mutt_param_set("name", "smime.p7m", &t->parameter);
+  mutt_param_set("smime-type", "enveloped-data", &t->parameter);
   t->encoding = ENCBASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISPATTACH;
@@ -2355,8 +2354,8 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
 
   /* fix the content type */
 
-  mutt_set_parameter("format", "fixed", &b->parameter);
-  mutt_set_parameter("x-action", enc ? "pgp-encrypted" : "pgp-signed", &b->parameter);
+  mutt_param_set("format", "fixed", &b->parameter);
+  mutt_param_set("x-action", enc ? "pgp-encrypted" : "pgp-signed", &b->parameter);
 
   return 1;
 }
@@ -4405,7 +4404,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     this_key_has_addr_match = false;
     match = false; /* any match */
 
-    r = rfc822_parse_adrlist(NULL, k->uid);
+    r = mutt_addr_parse_list(NULL, k->uid);
     for (p = r; p; p = p->next)
     {
       int validity = crypt_id_matches_addr(a, p, k);
@@ -4427,7 +4426,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
         }
       }
     }
-    rfc822_free_address(&r);
+    mutt_addr_free(&r);
 
     if (match)
     {
@@ -4668,10 +4667,10 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
 
           /* check for e-mail address */
           if ((t = strchr(crypt_hook_val, '@')) &&
-              (addr = rfc822_parse_adrlist(NULL, crypt_hook_val)))
+              (addr = mutt_addr_parse_list(NULL, crypt_hook_val)))
           {
             if (fqdn)
-              rfc822_qualify(addr, fqdn);
+              mutt_addr_qualify(addr, fqdn);
             q = addr;
           }
           else if (!oppenc_mode)
@@ -4690,7 +4689,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         else if (r == MUTT_ABORT)
         {
           FREE(&keylist);
-          rfc822_free_address(&addr);
+          mutt_addr_free(&addr);
           mutt_list_free(&crypt_hook_list);
           return NULL;
         }
@@ -4711,7 +4710,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       if (!k_info)
       {
         FREE(&keylist);
-        rfc822_free_address(&addr);
+        mutt_addr_free(&addr);
         mutt_list_free(&crypt_hook_list);
         return NULL;
       }
@@ -4728,7 +4727,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       key_selected = true;
 
       crypt_free_key(&k_info);
-      rfc822_free_address(&addr);
+      mutt_addr_free(&addr);
 
       if (crypt_hook)
         crypt_hook = STAILQ_NEXT(crypt_hook, entries);

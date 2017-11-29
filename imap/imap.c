@@ -97,12 +97,12 @@
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+#include "tags.h"
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -1461,9 +1461,7 @@ int imap_check(struct ImapData *idata, int force)
 
 /**
  * imap_buffy_check - Check for new mail in subscribed folders
- * @param force       Force an update
  * @param check_stats Check for message stats too
- * @retval num Number of mailboxes with new mail
  * @retval 0   Failure
  *
  * @note Returns 0 on failure

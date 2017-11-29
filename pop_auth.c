@@ -27,13 +27,13 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "address.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
-#include "rfc822.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -220,7 +220,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   if (!pop_data->timestamp)
     return POP_A_UNAVAIL;
 
-  if (!rfc822_valid_msgid(pop_data->timestamp))
+  if (!mutt_addr_valid_msgid(pop_data->timestamp))
   {
     mutt_error(_("POP timestamp is invalid!"));
     mutt_sleep(2);

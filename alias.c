@@ -43,7 +43,6 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 
 struct Address *mutt_lookup_alias(const char *s)
 {
@@ -84,7 +83,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
         if (!i)
         {
           mutt_list_insert_head(expn, mutt_str_strdup(a->mailbox));
-          w = rfc822_cpy_adr(t, 0);
+          w = mutt_addr_copy_list(t, false);
           w = expand_aliases_r(w, expn);
           if (head)
             last->next = w;
@@ -96,7 +95,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
         t = a;
         a = a->next;
         t->next = NULL;
-        rfc822_free_address(&t);
+        mutt_addr_free(&t);
         continue;
       }
       else
@@ -127,7 +126,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
   if (option(OPT_USE_DOMAIN) && (fqdn = mutt_fqdn(1)))
   {
     /* now qualify all local addresses */
-    rfc822_qualify(head, fqdn);
+    mutt_addr_qualify(head, fqdn);
   }
 
   return head;
@@ -356,7 +355,7 @@ retry_name:
       return;
     }
 
-    new->addr = rfc822_parse_adrlist(new->addr, buf);
+    new->addr = mutt_addr_parse_list(new->addr, buf);
     if (!new->addr)
       BEEP();
     if (mutt_addrlist_to_intl(new->addr, &err))
@@ -688,7 +687,7 @@ void mutt_free_alias(struct Alias **p)
     *p = (*p)->next;
     mutt_alias_delete_reverse(t);
     FREE(&t->name);
-    rfc822_free_address(&t->addr);
+    mutt_addr_free(&t->addr);
     FREE(&t);
   }
 }

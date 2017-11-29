@@ -58,14 +58,13 @@
 #include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
-#include "mutt_tags.h"
+#include "tags.h"
 
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "url.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
@@ -258,7 +257,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         if ((alias = mutt_lookup_alias(s + 1)))
         {
           h = mutt_new_header();
-          h->env = mutt_new_envelope();
+          h->env = mutt_env_new();
           h->env->from = h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
           h->env->from = h->env->to = NULL;

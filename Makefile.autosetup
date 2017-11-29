@@ -59,11 +59,11 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
 		flags.o from.o group.o handler.o hdrline.o \
 		header.o help.o history.o hook.o init.o keymap.o main.o \
-		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_idna.o \
-		mutt_socket.o mutt_tags.o mx.o \
+		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_address.o mutt_idna.o \
+		mutt_socket.o tags.o mx.o \
 		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
-		rfc1524.o rfc2047.o rfc2231.o rfc3676.o rfc822.o \
+		rfc1524.o rfc2047.o rfc2231.o rfc3676.o address.o \
 		safe_asprintf.o score.o send.o sendlib.o sidebar.o mutt_signal.o \
 		smtp.o sort.o state.o status.o system.o thread.o url.o \
 		version.o

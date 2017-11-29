@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib Library of shared functions
+ * @page mutt Shared functions
  *
  * Each source file in the library provides a group of related functions.
  *

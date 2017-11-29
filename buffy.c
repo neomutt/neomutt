@@ -129,7 +129,7 @@ static int test_last_status_new(FILE *f)
   if (!(hdr->read || hdr->old))
     result = 1;
 
-  mutt_free_envelope(&tmp_envelope);
+  mutt_env_free(&tmp_envelope);
   mutt_free_header(&hdr);
 
   return result;

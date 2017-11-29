@@ -36,9 +36,11 @@
 
 /**
  * mutt_debug_real - Output some debugging information
- * @param level Debug level
- * @param fmt   printf-like formatting string
- * @param ...   Arguments to be formatted
+ * @param function Function
+ * @param file     File
+ * @param line     Line number
+ * @param level    Debug level
+ * @param ...      Arguments to be formatted
  *
  * This stub function ignores the logging level and outputs all information to
  * stderr.

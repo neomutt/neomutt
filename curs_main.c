@@ -46,7 +46,6 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -54,6 +53,7 @@
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+#include "tags.h"
 #include "thread.h"
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h>

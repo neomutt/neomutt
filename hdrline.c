@@ -42,12 +42,11 @@
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
-#include "mutt_tags.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
+#include "tags.h"
 #include "thread.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"

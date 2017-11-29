@@ -23,17 +23,18 @@
 #ifndef _MUTT_TAG_H
 #define _MUTT_TAG_H
 
-#include <stdbool.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include "mutt/queue.h"
+
+extern char *HiddenTags;
+extern struct Hash *TagTransforms;
 
 /**
  * struct TagNode - LinkedList Tag Element
  *
  * Keep a linked list of header tags and their transformed values.
  * Textual tags can be transformed to symbols to save space.
- *
- * @sa TagNode
  */
 struct TagNode
 {
@@ -44,11 +45,11 @@ struct TagNode
 };
 STAILQ_HEAD(TagHead, TagNode);
 
-void driver_tags_free(struct TagHead *head);
+void  driver_tags_free(struct TagHead *head);
 char *driver_tags_get(struct TagHead *head);
-char *driver_tags_get_with_hidden(struct TagHead *head);
-char *driver_tags_get_transformed(struct TagHead *head);
 char *driver_tags_get_transformed_for(char *name, struct TagHead *head);
-int driver_tags_replace(struct TagHead *head, char *tags);
+char *driver_tags_get_transformed(struct TagHead *head);
+char *driver_tags_get_with_hidden(struct TagHead *head);
+bool  driver_tags_replace(struct TagHead *head, char *tags);
 
 #endif /* _MUTT_TAG_H */

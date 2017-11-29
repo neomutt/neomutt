@@ -59,10 +59,9 @@
 #include "header.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
-#include "mutt_tags.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "tags.h"
 
 static unsigned int hcachever = 0x0;
 
@@ -263,7 +262,7 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
 
   while (counter)
   {
-    *a = rfc822_new_address();
+    *a = mutt_addr_new();
     restore_char(&(*a)->personal, d, off, convert);
     restore_char(&(*a)->mailbox, d, off, false);
     restore_int((unsigned int *) &(*a)->group, d, off);
@@ -706,7 +705,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   memcpy(h, d + off, sizeof(struct Header));
   off += sizeof(struct Header);
 
-  h->env = mutt_new_envelope();
+  h->env = mutt_env_new();
   restore_envelope(h->env, d, &off, convert);
 
   h->content = mutt_new_body();

@@ -35,18 +35,11 @@ struct Parameter
   struct Parameter *next;
 };
 
-/**
- * mutt_new_parameter - Create a new Parameter
- * @retval ptr Newly allocated Parameter
- */
-static inline struct Parameter *mutt_new_parameter(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct Parameter));
-}
-
-void mutt_delete_parameter(const char *attribute, struct Parameter **p);
-void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p);
-void mutt_free_parameter(struct Parameter **p);
-char *mutt_get_parameter(const char *s, struct Parameter *p);
+struct Parameter *mutt_param_new(void);
+int               mutt_param_cmp_strict(const struct Parameter *p1, const struct Parameter *p2);
+void              mutt_param_delete(const char *attribute, struct Parameter **p);
+void              mutt_param_free(struct Parameter **p);
+char *            mutt_param_get(const char *s, struct Parameter *p);
+void              mutt_param_set(const char *attribute, const char *value, struct Parameter **p);
 
 #endif /* _MUTT_PARAMETER_H */

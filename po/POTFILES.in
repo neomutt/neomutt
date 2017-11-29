@@ -1,4 +1,5 @@
 addrbook.c
+address.c
 alias.c
 attach.c
 bcache.c
@@ -82,12 +83,12 @@ mutt/signal.c
 mutt/string.c
 muttlib.c
 mutt_account.c
+mutt_address.c
 mutt_idna.c
 mutt_lua.c
 mutt_notmuch.c
 mutt_signal.c
 mutt_socket.c
-mutt_tags.c
 mx.c
 ncrypt/crypt.c
 ncrypt/cryptglue.c
@@ -127,7 +128,6 @@ rfc1524.c
 rfc2047.c
 rfc2231.c
 rfc3676.c
-rfc822.c
 safe_asprintf.c
 score.c
 send.c
@@ -138,6 +138,7 @@ sort.c
 state.c
 status.c
 system.c
+tags.c
 thread.c
 txt2c.c
 url.c

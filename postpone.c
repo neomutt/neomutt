@@ -587,7 +587,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     {
     err:
       mx_close_message(ctx, &msg);
-      mutt_free_envelope(&newhdr->env);
+      mutt_env_free(&newhdr->env);
       mutt_free_body(&newhdr->content);
       mutt_error(_("Decryption failed."));
       return -1;
@@ -608,7 +608,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
-        (mutt_str_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
+        (mutt_str_strcasecmp(mutt_param_get("protocol", newhdr->content->parameter),
                              "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
@@ -659,7 +659,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     if (b->type == TYPETEXT)
     {
-      if (mutt_str_strcasecmp("yes", mutt_get_parameter("x-mutt-noconv", b->parameter)) == 0)
+      if (mutt_str_strcasecmp("yes", mutt_param_get("x-mutt-noconv", b->parameter)) == 0)
         b->noconv = true;
       else
       {
@@ -667,7 +667,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
         b->noconv = false;
       }
 
-      mutt_delete_parameter("x-mutt-noconv", &b->parameter);
+      mutt_param_delete("x-mutt-noconv", &b->parameter);
     }
 
     mutt_adv_mktemp(file, sizeof(file));
@@ -684,7 +684,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
       b->type = TYPETEXT;
       mutt_str_replace(&b->subtype, "plain");
-      mutt_delete_parameter("x-action", &b->parameter);
+      mutt_param_delete("x-action", &b->parameter);
     }
     else if ((WithCrypto & APPLICATION_SMIME) &&
              ((sec_type = mutt_is_application_smime(b)) & (ENCRYPT | SIGN)))
@@ -741,7 +741,7 @@ bail:
 
   if (rc == -1)
   {
-    mutt_free_envelope(&newhdr->env);
+    mutt_env_free(&newhdr->env);
     mutt_free_body(&newhdr->content);
   }
 

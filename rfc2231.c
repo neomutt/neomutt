@@ -68,7 +68,7 @@ static void purge_empty_parameters(struct Parameter **headp)
     {
       *last = q;
       p->next = NULL;
-      mutt_free_parameter(&p);
+      mutt_param_free(&p);
     }
     else
       last = &p->next;
@@ -201,7 +201,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
 
     if (encoded)
       mutt_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
-    *head = mutt_new_parameter();
+    *head = mutt_param_new();
     (*head)->attribute = mutt_str_strdup(attribute);
     (*head)->value = value;
     head = &(*head)->next;
