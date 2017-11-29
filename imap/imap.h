@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2007 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-2007,2017 Brendan Cully <brendan@kublai.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
