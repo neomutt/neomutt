@@ -120,7 +120,7 @@ static struct Header *OldHdr = NULL;
  */
 struct QClass
 {
-  int length;
+  size_t length;
   int index;
   int color;
   char *prefix;
@@ -433,7 +433,7 @@ static void cleanup_quote(struct QClass **quote_list)
 }
 
 static struct QClass *classify_quote(struct QClass **quote_list, const char *qptr,
-                                     int length, int *force_redraw, int *q_level)
+                                     size_t length, int *force_redraw, int *q_level)
 {
   struct QClass *q_list = *quote_list;
   struct QClass *class = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;

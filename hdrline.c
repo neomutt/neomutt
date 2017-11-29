@@ -158,7 +158,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  */
 static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, char color)
 {
-  int len;
+  size_t len;
 
   /* only add color markers if we are operating on main index entries. */
   if (!(flags & MUTT_FORMAT_INDEX))

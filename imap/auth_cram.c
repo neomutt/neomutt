@@ -58,7 +58,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
   unsigned char secret[MD5_BLOCK_LEN + 1];
   unsigned char hash_passwd[MD5_DIGEST_LEN];
-  unsigned int secret_len, chal_len;
+  size_t secret_len, chal_len;
 
   secret_len = strlen(password);
   chal_len = strlen(challenge);

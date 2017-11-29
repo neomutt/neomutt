@@ -222,7 +222,7 @@ struct ImapData
   unsigned int seqno;
   time_t lastread; /**< last time we read a command for the server */
   char *buf;
-  unsigned int blen;
+  size_t blen;
 
   /* If nonzero, we can send UTF-8, and the server will use UTF8 rather
    * than mUTF7 */
@@ -255,7 +255,7 @@ struct ImapData
   unsigned int uid_validity;
   unsigned int uidnext;
   struct Header **msn_index;   /**< look up headers by (MSN-1) */
-  unsigned int msn_index_size; /**< allocation size */
+  size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 

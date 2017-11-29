@@ -303,7 +303,7 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
+void mutt_decode_base64(struct State *s, size_t len, int istext, iconv_t cd)
 {
   char buf[5];
   int c1, c2, c3, c4, ch, i;

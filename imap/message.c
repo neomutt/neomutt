@@ -471,7 +471,7 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
  *
  * Mapping from Message Sequence Number to Header
  */
-static void alloc_msn_index(struct ImapData *idata, unsigned int msn_count)
+static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
 {
   unsigned int new_size;
 

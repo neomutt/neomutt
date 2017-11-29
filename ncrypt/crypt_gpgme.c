@@ -584,7 +584,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, int convert)
  * Create a GPGME data object from the stream FP but limit the object
  * to LENGTH bytes starting at OFFSET bytes from the beginning of the file.
  */
-static gpgme_data_t file_to_data_object(FILE *fp, long offset, long length)
+static gpgme_data_t file_to_data_object(FILE *fp, long offset, size_t length)
 {
   int err = 0;
   gpgme_data_t data;
@@ -2168,7 +2168,7 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   gpgme_user_id_t uid;
   gpgme_subkey_t subkey;
   const char *shortid = NULL;
-  int len;
+  size_t len;
   char date[STRING];
   int more;
   int rc = -1;

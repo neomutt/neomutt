@@ -278,7 +278,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       }
       else
       {
-        int blen = mutt_str_strlen(buf);
+        size_t blen = mutt_str_strlen(buf);
 
         mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
@@ -898,7 +898,7 @@ static void format_address_header(char **h, struct Address *a)
   char cbuf[STRING];
   char c2buf[STRING];
   char *p = NULL;
-  int l, linelen, buflen, cbuflen, c2buflen, plen;
+  size_t l, linelen, buflen, cbuflen, c2buflen, plen;
 
   linelen = mutt_str_strlen(*h);
   plen = linelen;
@@ -954,7 +954,7 @@ static void format_address_header(char **h, struct Address *a)
 static int address_header_decode(char **h)
 {
   char *s = *h;
-  int l;
+  size_t l;
   bool rp = false;
 
   struct Address *a = NULL;

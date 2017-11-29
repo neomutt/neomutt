@@ -1409,7 +1409,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   FILE *f = NULL;
   struct stat s;
 
-  int len = mutt_str_strlen(path);
+  size_t len = mutt_str_strlen(path);
 
   if (path[len - 1] == '|')
   {

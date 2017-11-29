@@ -1696,7 +1696,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #endif
         {
           /* add '/' at the end of the directory name if not already there */
-          int len = mutt_str_strlen(buf);
+          size_t len = mutt_str_strlen(buf);
           if ((len > 0) && (buf[len - 1] != '/') && (sizeof(buf) > (len + 1)))
           {
             buf[len] = '/';

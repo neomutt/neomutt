@@ -203,7 +203,7 @@ static bool pgpring_string_matches_hint(const char *s, const char *hints[], int 
 static void pgp_make_pgp2_fingerprint(unsigned char *buf, unsigned char *digest)
 {
   struct Md5Ctx ctx;
-  unsigned int size = 0;
+  size_t size = 0;
 
   mutt_md5_init_ctx(&ctx);
 

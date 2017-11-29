@@ -67,7 +67,7 @@ struct FolderFile
 struct BrowserState
 {
   struct FolderFile *entry;
-  unsigned int entrylen; /**< number of real entries */
+  size_t entrylen; /**< number of real entries */
   unsigned int entrymax; /**< max entry */
 #ifdef USE_IMAP
   bool imap_browse;

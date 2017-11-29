@@ -834,7 +834,7 @@ bool mutt_addr_valid_msgid(const char *msgid)
    * domain-literal = "[" *(dtext / quoted-pair) "]"
    */
 
-  unsigned int l;
+  size_t l;
 
   if (!msgid || !*msgid)
     return false;

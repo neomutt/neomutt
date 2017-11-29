@@ -213,13 +213,13 @@ struct Progress
   unsigned short flags;
   const char *msg;
   long pos;
-  long size;
+  size_t size;
   unsigned int timestamp;
   char sizestr[SHORT_STRING];
 };
 
 void mutt_progress_init(struct Progress *progress, const char *msg,
-                        unsigned short flags, unsigned short inc, long size);
+                        unsigned short flags, unsigned short inc, size_t size);
 /* If percent is positive, it is displayed as percentage, otherwise
  * percentage is calculated from progress->size and pos if progress
  * was initialized with positive size, otherwise no percentage is shown */

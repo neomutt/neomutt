@@ -64,7 +64,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
 
   if (!nntp_data)
   {
-    int len = strlen(group) + 1;
+    size_t len = strlen(group) + 1;
     /* create NntpData structure and add it to hash */
     nntp_data = mutt_mem_calloc(1, sizeof(struct NntpData) + len);
     nntp_data->group = (char *) nntp_data + sizeof(struct NntpData);

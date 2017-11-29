@@ -97,7 +97,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
 
   if (to && from && (cd = mutt_iconv_open(to, from, flags)) != (iconv_t) -1)
   {
-    int len;
+    size_t len;
     const char *ib = NULL;
     char *buf = NULL, *ob = NULL;
     size_t ibl, obl;

@@ -947,7 +947,7 @@ static int ssl_cache_trusted_cert(X509 *c)
  * @retval true  User selected 'skip'
  * @retval false Otherwise
  */
-static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int allow_always)
+static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int allow_always)
 {
   static const int part[] = {
     NID_commonName,             /* CN */
@@ -1121,7 +1121,8 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
   char buf[STRING];
   const char *host = NULL;
-  int len, pos;
+  size_t len;
+  int pos;
   X509 *cert = NULL;
   SSL *ssl = NULL;
   int skip_mode;
