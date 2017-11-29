@@ -69,36 +69,6 @@ const char AddressSpecials[] = "@.,:;<>[]\\\"()";
 #define is_special(x) strchr(AddressSpecials, x)
 
 /**
- * AddressError - An out-of-band error code
- *
- * Many of the Address functions set this variable on error.
- * Its values are defined in #AddressError.
- * Text for the errors can be looked up using #AddressErrors.
- */
-int AddressError = 0;
-
-/**
- * AddressErrors - Messages for the error codes in #AddressError
- *
- * These must defined in the same order as enum AddressError.
- */
-const char *const AddressErrors[] = {
-  "out of memory",   "mismatched parenthesis", "mismatched quotes",
-  "bad route in <>", "bad address in <>",      "bad address spec",
-};
-
-/**
- * mutt_addr_new - Create a new Address
- * @retval ptr Newly allocated Address
- *
- * Free the result with free_address() or mutt_addr_free()
- */
-struct Address *mutt_addr_new(void)
-{
-  return mutt_mem_calloc(1, sizeof(struct Address));
-}
-
-/**
  * free_address - Free a single Address
  * @param a Address to free
  *
@@ -111,59 +81,6 @@ static void free_address(struct Address **a)
   FREE(&(*a)->personal);
   FREE(&(*a)->mailbox);
   FREE(&(*a));
-}
-
-/**
- * mutt_addr_remove_from_list - Remove an Address from a list
- * @param a       Address list
- * @param mailbox Email address to match
- * @retval  0 Success
- * @retval -1 Error, or email not found
- */
-int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
-{
-  struct Address *p = NULL, *last = NULL, *t = NULL;
-  int rc = -1;
-
-  p = *a;
-  last = NULL;
-  while (p)
-  {
-    if (mutt_str_strcasecmp(mailbox, p->mailbox) == 0)
-    {
-      if (last)
-        last->next = p->next;
-      else
-        (*a) = p->next;
-      t = p;
-      p = p->next;
-      free_address(&t);
-      rc = 0;
-    }
-    else
-    {
-      last = p;
-      p = p->next;
-    }
-  }
-
-  return rc;
-}
-
-/**
- * mutt_addr_free - Free a list of Addresses
- * @param p Top of the list
- */
-void mutt_addr_free(struct Address **p)
-{
-  struct Address *t = NULL;
-
-  while (*p)
-  {
-    t = *p;
-    *p = (*p)->next;
-    free_address(&t);
-  }
 }
 
 /**
@@ -476,6 +393,89 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
   else
     *top = cur;
   *last = cur;
+}
+
+/**
+ * AddressError - An out-of-band error code
+ *
+ * Many of the Address functions set this variable on error.
+ * Its values are defined in #AddressError.
+ * Text for the errors can be looked up using #AddressErrors.
+ */
+int AddressError = 0;
+
+/**
+ * AddressErrors - Messages for the error codes in #AddressError
+ *
+ * These must defined in the same order as enum AddressError.
+ */
+const char *const AddressErrors[] = {
+  "out of memory",   "mismatched parenthesis", "mismatched quotes",
+  "bad route in <>", "bad address in <>",      "bad address spec",
+};
+
+/**
+ * mutt_addr_new - Create a new Address
+ * @retval ptr Newly allocated Address
+ *
+ * Free the result with free_address() or mutt_addr_free()
+ */
+struct Address *mutt_addr_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Address));
+}
+
+/**
+ * mutt_addr_remove_from_list - Remove an Address from a list
+ * @param a       Address list
+ * @param mailbox Email address to match
+ * @retval  0 Success
+ * @retval -1 Error, or email not found
+ */
+int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
+{
+  struct Address *p = NULL, *last = NULL, *t = NULL;
+  int rc = -1;
+
+  p = *a;
+  last = NULL;
+  while (p)
+  {
+    if (mutt_str_strcasecmp(mailbox, p->mailbox) == 0)
+    {
+      if (last)
+        last->next = p->next;
+      else
+        (*a) = p->next;
+      t = p;
+      p = p->next;
+      free_address(&t);
+      rc = 0;
+    }
+    else
+    {
+      last = p;
+      p = p->next;
+    }
+  }
+
+  return rc;
+}
+
+/**
+ * mutt_addr_free - Free a list of Addresses
+ * @param p Top of the list
+ */
+void mutt_addr_free(struct Address **p)
+{
+  struct Address *t = NULL;
+
+  while (*p)
+  {
+    t = *p;
+    *p = (*p)->next;
+    free_address(&t);
+  }
 }
 
 /**
