@@ -81,7 +81,7 @@ static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
 
-  tmp = mutt_addr_copy_list(r->addr, 0);
+  tmp = mutt_addr_copy_list(r->addr, false);
   if (!tmp)
     return NULL;
 
@@ -438,7 +438,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
-                mutt_addr_append(&naddr, a, 0);
+                mutt_addr_append(&naddr, a, false);
                 mutt_addr_free(&a);
               }
             }
@@ -474,7 +474,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
-                mutt_addr_append(&msg->env->to, a, 0);
+                mutt_addr_append(&msg->env->to, a, false);
                 mutt_addr_free(&a);
               }
           }

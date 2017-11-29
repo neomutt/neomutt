@@ -510,7 +510,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
 
   if (flags && env->mail_followup_to && hmfupto == MUTT_YES)
   {
-    mutt_addr_append(to, env->mail_followup_to, 1);
+    mutt_addr_append(to, env->mail_followup_to, true);
     return 0;
   }
 
@@ -523,7 +523,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
   if (!option(OPT_REPLY_SELF) && mutt_addr_is_user(env->from))
   {
     /* mail is from the user, assume replying to recipients */
-    mutt_addr_append(to, env->to, 1);
+    mutt_addr_append(to, env->to, true);
   }
   else if (env->reply_to)
   {
@@ -541,7 +541,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
        * in his From header, and the reply-to has no display-name.
        *
        */
-      mutt_addr_append(to, env->from, 0);
+      mutt_addr_append(to, env->from, false);
     }
     else if (!(mutt_addr_cmp(env->from, env->reply_to) && !env->reply_to->next) &&
              quadoption(OPT_REPLY_TO) != MUTT_YES)
@@ -559,11 +559,11 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
       switch (query_quadoption(OPT_REPLY_TO, prompt))
       {
         case MUTT_YES:
-          mutt_addr_append(to, env->reply_to, 0);
+          mutt_addr_append(to, env->reply_to, false);
           break;
 
         case MUTT_NO:
-          mutt_addr_append(to, env->from, 0);
+          mutt_addr_append(to, env->from, false);
           break;
 
         default:
@@ -571,10 +571,10 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
       }
     }
     else
-      mutt_addr_append(to, env->reply_to, 0);
+      mutt_addr_append(to, env->reply_to, false);
   }
   else
-    mutt_addr_append(to, env->from, 0);
+    mutt_addr_append(to, env->from, false);
 
   return 0;
 }
@@ -599,7 +599,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   if (flags & SENDLISTREPLY)
   {
     tmp = find_mailing_lists(in->to, in->cc);
-    mutt_addr_append(&out->to, tmp, 0);
+    mutt_addr_append(&out->to, tmp, false);
     mutt_addr_free(&tmp);
 
     if (in->mail_followup_to && hmfupto == MUTT_YES &&
@@ -616,8 +616,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
     if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
     {
       /* if(!mutt_addr_is_user(in->to)) */
-      mutt_addr_append(&out->cc, in->to, 1);
-      mutt_addr_append(&out->cc, in->cc, 1);
+      mutt_addr_append(&out->cc, in->to, true);
+      mutt_addr_append(&out->cc, in->cc, true);
     }
   }
   return 0;
@@ -961,8 +961,8 @@ void mutt_set_followup_to(struct Envelope *e)
        * mail-followup-to header
        */
 
-      t = mutt_addr_append(&e->mail_followup_to, e->to, 0);
-      mutt_addr_append(&t, e->cc, 1);
+      t = mutt_addr_append(&e->mail_followup_to, e->to, false);
+      mutt_addr_append(&t, e->cc, true);
     }
 
     /* remove ourselves from the mail-followup-to header */
@@ -978,9 +978,9 @@ void mutt_set_followup_to(struct Envelope *e)
     if (e->mail_followup_to && !mutt_is_list_recipient(0, e->to, e->cc))
     {
       if (e->reply_to)
-        from = mutt_addr_copy_list(e->reply_to, 0);
+        from = mutt_addr_copy_list(e->reply_to, false);
       else if (e->from)
-        from = mutt_addr_copy_list(e->from, 0);
+        from = mutt_addr_copy_list(e->from, false);
       else
         from = mutt_default_from();
 
@@ -1189,11 +1189,11 @@ int mutt_compose_to_sender(struct Header *hdr)
     for (int i = 0; i < Context->msgcount; i++)
     {
       if (message_is_tagged(Context, i))
-        mutt_addr_append(&msg->env->to, Context->hdrs[i]->env->from, 0);
+        mutt_addr_append(&msg->env->to, Context->hdrs[i]->env->from, false);
     }
   }
   else
-    msg->env->to = mutt_addr_copy_list(hdr->env->from, 0);
+    msg->env->to = mutt_addr_copy_list(hdr->env->from, false);
 
   return ci_send_message(0, msg, NULL, NULL, NULL);
 }

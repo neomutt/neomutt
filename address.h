@@ -57,11 +57,11 @@ extern const char AddressSpecials[];
 
 #define address_error(x) AddressErrors[x]
 
-struct Address *mutt_addr_append(struct Address **a, struct Address *b, int prune);
+struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune);
 void            mutt_addr_cat(char *buf, size_t buflen, const char *value, const char *specials);
-int             mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
+bool            mutt_addr_cmp_strict(const struct Address *a, const struct Address *b);
 bool            mutt_addr_cmp(struct Address *a, struct Address *b);
-struct Address *mutt_addr_copy_list(struct Address *addr, int prune);
+struct Address *mutt_addr_copy_list(struct Address *addr, bool prune);
 struct Address *mutt_addr_copy(struct Address *addr);
 void            mutt_addr_free(struct Address **p);
 int             mutt_addr_has_recips(struct Address *a);
@@ -70,7 +70,7 @@ struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);
 struct Address *mutt_addr_parse_list(struct Address *top, const char *s);
 void            mutt_addr_qualify(struct Address *addr, const char *host);
 int             mutt_addr_remove_from_list(struct Address **a, const char *mailbox);
-int             mutt_addr_search(struct Address *a, struct Address *lst);
+bool            mutt_addr_search(struct Address *a, struct Address *lst);
 bool            mutt_addr_valid_msgid(const char *msgid);
 
 #endif /* _MUTT_ADDRESS_H */

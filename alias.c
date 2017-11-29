@@ -83,7 +83,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
         if (!i)
         {
           mutt_list_insert_head(expn, mutt_str_strdup(a->mailbox));
-          w = mutt_addr_copy_list(t, 0);
+          w = mutt_addr_copy_list(t, false);
           w = expand_aliases_r(w, expn);
           if (head)
             last->next = w;

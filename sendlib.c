@@ -2821,7 +2821,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * function is called, since the user receives confirmation of the address
    * list being bounced to.
    */
-  resent_to = mutt_addr_copy_list(to, 0);
+  resent_to = mutt_addr_copy_list(to, false);
   rfc2047_encode_adrlist(resent_to, "Resent-To");
 
   ret = bounce_message(fp, h, resent_to, resent_from, from);

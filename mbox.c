@@ -219,7 +219,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
         hdr->env->return_path = mutt_addr_parse_list(hdr->env->return_path, return_path);
 
       if (!hdr->env->from)
-        hdr->env->from = mutt_addr_copy_list(hdr->env->return_path, 0);
+        hdr->env->from = mutt_addr_copy_list(hdr->env->return_path, false);
 
       ctx->msgcount++;
     }
@@ -391,7 +391,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
             mutt_addr_parse_list(curhdr->env->return_path, return_path);
 
       if (!curhdr->env->from)
-        curhdr->env->from = mutt_addr_copy_list(curhdr->env->return_path, 0);
+        curhdr->env->from = mutt_addr_copy_list(curhdr->env->return_path, false);
 
       lines = 0;
     }

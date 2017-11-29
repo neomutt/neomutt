@@ -113,7 +113,7 @@ static void group_add_adrlist(struct Group *g, struct Address *a)
   for (p = &g->as; *p; p = &((*p)->next))
     ;
 
-  q = mutt_addr_copy_list(a, 0);
+  q = mutt_addr_copy_list(a, false);
   q = mutt_remove_xrefs(g->as, q);
   *p = q;
 }

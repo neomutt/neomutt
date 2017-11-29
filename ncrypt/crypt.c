@@ -853,9 +853,9 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   if ((WithCrypto & APPLICATION_PGP))
     set_option(OPT_PGP_CHECK_TRUST);
 
-  last = mutt_addr_append(&adrlist, msg->env->to, 0);
-  last = mutt_addr_append(last ? &last : &adrlist, msg->env->cc, 0);
-  mutt_addr_append(last ? &last : &adrlist, msg->env->bcc, 0);
+  last = mutt_addr_append(&adrlist, msg->env->to, false);
+  last = mutt_addr_append(last ? &last : &adrlist, msg->env->cc, false);
+  mutt_addr_append(last ? &last : &adrlist, msg->env->bcc, false);
 
   if (fqdn)
     mutt_addr_qualify(adrlist, fqdn);

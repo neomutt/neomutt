@@ -104,11 +104,13 @@ struct Address *mutt_addr_new(void)
  *
  * @note This doesn't alter the links if the Address is in a list.
  */
-static void free_address(struct Address *a)
+static void free_address(struct Address **a)
 {
-  FREE(&a->personal);
-  FREE(&a->mailbox);
-  FREE(&a);
+  if (!a || !*a)
+    return;
+  FREE(&(*a)->personal);
+  FREE(&(*a)->mailbox);
+  FREE(&(*a));
 }
 
 /**
@@ -135,7 +137,7 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
         (*a) = p->next;
       t = p;
       p = p->next;
-      free_address(t);
+      free_address(&t);
       rc = 0;
     }
     else
@@ -160,9 +162,7 @@ void mutt_addr_free(struct Address **p)
   {
     t = *p;
     *p = (*p)->next;
-    FREE(&t->personal);
-    FREE(&t->mailbox);
-    FREE(&t);
+    free_address(&t);
   }
 }
 
@@ -757,7 +757,7 @@ struct Address *mutt_addr_copy(struct Address *addr)
  * @param prune Skip groups if there are more addresses
  * @retval ptr New Address list
  */
-struct Address *mutt_addr_copy_list(struct Address *addr, int prune)
+struct Address *mutt_addr_copy_list(struct Address *addr, bool prune)
 {
   struct Address *top = NULL, *last = NULL;
 
@@ -787,7 +787,7 @@ struct Address *mutt_addr_copy_list(struct Address *addr, int prune)
  *
  * Append the Source onto the end of the Destination Address list.
  */
-struct Address *mutt_addr_append(struct Address **a, struct Address *b, int prune)
+struct Address *mutt_addr_append(struct Address **a, struct Address *b, bool prune)
 {
   struct Address *tmp = *a;
 
@@ -861,23 +861,23 @@ bool mutt_addr_valid_msgid(const char *msgid)
  * @param b Second Address
  * @retval true Address lists are strictly identical
  */
-int mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
+bool mutt_addr_cmp_strict(const struct Address *a, const struct Address *b)
 {
   while (a && b)
   {
     if ((mutt_str_strcmp(a->mailbox, b->mailbox) != 0) ||
         (mutt_str_strcmp(a->personal, b->personal) != 0))
     {
-      return 0;
+      return false;
     }
 
     a = a->next;
     b = b->next;
   }
   if (a || b)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }
 
 /**
@@ -921,12 +921,12 @@ bool mutt_addr_cmp(struct Address *a, struct Address *b)
  * @param lst Address List
  * @retval true If the Address is in the list
  */
-int mutt_addr_search(struct Address *a, struct Address *lst)
+bool mutt_addr_search(struct Address *a, struct Address *lst)
 {
   for (; lst; lst = lst->next)
   {
     if (mutt_addr_cmp(a, lst))
-      return 1;
+      return true;
   }
-  return 0;
+  return false;
 }
