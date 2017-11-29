@@ -69,7 +69,7 @@ exe()
     export my_backend=$1
     export my_maildir=$MAILDIR
     export my_tmpdir=$TMPDIR
-    t=$(time -p $NEOMUTT -F "$CWD"/muttrc 2>&1 > /dev/null)
+    t=$(time -p $NEOMUTT -F "$CWD"/neomuttrc 2>&1 > /dev/null)
     echo "$t" | xargs
 }
 
