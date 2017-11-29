@@ -350,7 +350,7 @@ static void ssl_dprint_err_stack(void)
  * @retval >0 Success, number of chars written to buf
  * @retval  0 Error
  */
-static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
+static int ssl_passwd_cb(char *buf, size_t size, int rwflag, void *userdata)
 {
   struct Account *account = (struct Account *) userdata;
 
@@ -482,10 +482,10 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
  * @retval false Certificates differ
  */
 static bool compare_certificates(X509 *cert, X509 *peercert,
-                                 unsigned char *peermd, unsigned int peermdlen)
+                                 unsigned char *peermd, size_t peermdlen)
 {
   unsigned char md[EVP_MAX_MD_SIZE];
-  unsigned int mdlen;
+  size_t mdlen;
 
   /* Avoid CPU-intensive digest calculation if the certificates are
     * not even remotely equal.
@@ -735,7 +735,7 @@ static int tls_close(struct Connection *conn)
 static bool check_certificate_cache(X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
-  unsigned int peermdlen;
+  size_t peermdlen;
   X509 *cert = NULL;
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen) || !SslSessionCerts)
@@ -764,7 +764,7 @@ static bool check_certificate_cache(X509 *peercert)
 static int check_certificate_file(X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
-  unsigned int peermdlen;
+  size_t peermdlen;
   X509 *cert = NULL;
   int pass = 0;
   FILE *fp = NULL;
@@ -947,7 +947,7 @@ static int ssl_cache_trusted_cert(X509 *c)
  * @retval true  User selected 'skip'
  * @retval false Otherwise
  */
-static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int allow_always)
+static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int allow_always)
 {
   static const int part[] = {
     NID_commonName,             /* CN */
@@ -1121,7 +1121,8 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 {
   char buf[STRING];
   const char *host = NULL;
-  int len, pos;
+  size_t len;
+  int pos;
   X509 *cert = NULL;
   SSL *ssl = NULL;
   int skip_mode;
@@ -1129,7 +1130,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   static int last_pos = 0;
   static X509 *last_cert = NULL;
   unsigned char last_cert_md[EVP_MAX_MD_SIZE];
-  unsigned int last_cert_mdlen;
+  size_t last_cert_mdlen;
 #endif
 
   ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());

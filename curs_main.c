@@ -704,7 +704,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
   int offset = 0;
   bool found = false;
   int chunks = 0;
-  int len = 0;
+  size_t len = 0;
 
   struct Syntax
   {

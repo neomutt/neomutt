@@ -583,7 +583,8 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 #ifdef SUN_ATTACHMENT
   int lines;
 #endif
-  int blen, len, crlf = 0;
+  size_t blen, len;
+  int crlf = 0;
   char buffer[LONG_STRING];
   struct Body *head = NULL, *last = NULL, *new = NULL;
   int i;

@@ -83,7 +83,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
   FILE *f = NULL;
   int rc, index;
-  long length;
+  size_t length;
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX];
 
@@ -99,7 +99,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   rc = pop_query(pop_data, buf, sizeof(buf));
   if (rc == 0)
   {
-    sscanf(buf, "+OK %d %ld", &index, &length);
+    sscanf(buf, "+OK %d %zu", &index, &length);
 
     snprintf(buf, sizeof(buf), "TOP %d 0\r\n", h->refno);
     rc = pop_fetch_data(pop_data, buf, NULL, fetch_message, f);

@@ -298,7 +298,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
             off = colon + 1 - nserv->overview_fmt;
           if (strcasecmp(nserv->overview_fmt + b, "Bytes:") == 0)
           {
-            int len = strlen(nserv->overview_fmt + b);
+            size_t len = strlen(nserv->overview_fmt + b);
             mutt_str_strfcpy(nserv->overview_fmt + b, "Content-Length:", len + 1);
             off = b + len;
           }

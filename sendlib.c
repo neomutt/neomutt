@@ -315,7 +315,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
   char buffer[STRING];
   char *t = NULL;
   char *fn = NULL;
-  int len;
+  size_t len;
   int tmplen;
   int encode;
 
@@ -1613,7 +1613,7 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
   struct Address *tmp = NULL;
   char buf[LONG_STRING];
   int count = 0;
-  int len;
+  size_t len;
 
   while (adr)
   {

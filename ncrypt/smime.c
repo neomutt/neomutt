@@ -1748,7 +1748,7 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
-  int len = 0;
+  size_t len = 0;
   int c;
   char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX], errfile[_POSIX_PATH_MAX];

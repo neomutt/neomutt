@@ -449,7 +449,7 @@ void mutt_curses_message(const char *fmt, ...)
 }
 
 void mutt_progress_init(struct Progress *progress, const char *msg,
-                        unsigned short flags, unsigned short inc, long size)
+                        unsigned short flags, unsigned short inc, size_t size)
 {
   struct timeval tv = { 0, 0 };
 

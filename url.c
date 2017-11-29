@@ -284,7 +284,7 @@ void url_pct_encode(char *dst, size_t l, const char *src)
  */
 int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 {
-  long l;
+  size_t l;
 
   if (u->scheme == U_UNKNOWN)
     return -1;

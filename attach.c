@@ -307,7 +307,7 @@ bailout:
  * @param type Buffer with mime type of attachment in "type/subtype" format
  * @param len  Buffer length
  */
-void mutt_check_lookup_list(struct Body *b, char *type, int len)
+void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
 {
   int i;
 

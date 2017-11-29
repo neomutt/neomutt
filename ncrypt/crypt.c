@@ -489,7 +489,7 @@ int mutt_is_application_pgp(struct Body *m)
 int mutt_is_application_smime(struct Body *m)
 {
   char *t = NULL;
-  int len;
+  size_t len;
   bool complain = false;
 
   if (!m)

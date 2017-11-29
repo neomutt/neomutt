@@ -1550,7 +1550,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
   struct AttachMatch *a = NULL;
   char *p = NULL;
   char *tmpminor = NULL;
-  int len;
+  size_t len;
   int ret;
 
   do
@@ -3367,7 +3367,7 @@ static void matches_ensure_morespace(int current)
  *
  * Changes the dest buffer if necessary/possible to aid completion.
 */
-static void candidate(char *dest, char *try, const char *src, int len)
+static void candidate(char *dest, char *try, const char *src, size_t len)
 {
   if (!dest || !try || !src)
     return;
