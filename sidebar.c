@@ -900,6 +900,18 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
         }
       }
     }
+    else if ((SidebarComponentDepth > 0) && SidebarDelimChars)
+    {
+      sidebar_folder_name = b->path + maildir_is_prefix * (maildirlen + 1);
+      for (int i = 0; i < SidebarComponentDepth; i++)
+      {
+        char *chars_after_delim = strpbrk(sidebar_folder_name, SidebarDelimChars);
+        if (!chars_after_delim)
+          break;
+        else
+          sidebar_folder_name = chars_after_delim + 1;
+      }
+    }
     else
       sidebar_folder_name = b->path + maildir_is_prefix * (maildirlen + 1);
 

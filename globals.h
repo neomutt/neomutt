@@ -244,6 +244,7 @@ WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
 
 #ifdef USE_SIDEBAR
+WHERE short SidebarComponentDepth;
 WHERE short SidebarWidth;
 WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
 #endif
