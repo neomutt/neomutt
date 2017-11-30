@@ -3340,7 +3340,8 @@ struct Option MuttVars[] = {
   ** .dt \fCfruit.cherry\fP .dd \fCcherry\fP        .dd \fC..cherry\fP
   ** .de
   ** .pp
-  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folder_indent, $$sidebar_indent_string.
+  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folder_indent,
+  ** $$sidebar_indent_string, $$sidebar_component_depth.
   */
   { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR, R_SIDEBAR, UL &SidebarSortMethod, SORT_ORDER },
   /*
@@ -3360,6 +3361,18 @@ struct Option MuttVars[] = {
   ** .pp
   ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
   ** order (example: ``\fCset sort_browser=reverse-date\fP'').
+  */
+  { "sidebar_component_depth", DT_NUMBER, R_SIDEBAR, UL &SidebarComponentDepth, UL 0 },
+  /*
+  ** .pp
+  ** By default the sidebar will show the mailbox's path, relative to the
+  ** $$folder variable. This specifies the number of parent directories to hide
+  ** from display in the sidebar. For example: If a maildir is normally
+  ** displayed in the sidebar as dir1/dir2/dir3/maildir, setting
+  ** \fCsidebar_component_depth=2\fP will display it as dir3/maildir, having
+  ** truncated the 2 highest directories.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path
   */
   { "sidebar_visible", DT_BOOL, R_REFLOW, OPT_SIDEBAR_VISIBLE, 0 },
   /*

@@ -748,11 +748,12 @@ mailboxes =water/ocean/atlantic =water/ocean/pacific   =water/ocean/arctic
 </screen>
               <para>Shorten the names:</para>
               <screen>
-set sidebar_short_path                  <emphasis role="comment"># Shorten mailbox names</emphasis>
-set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everything up to the last / character</emphasis>
+set sidebar_short_path                  <emphasis role="comment"># Shorten mailbox names (truncate all subdirs)</emphasis>
+set sidebar_component_depth=1           <emphasis role="comment"># Shorten mailbox names (truncate 1 subdirs)</emphasis>
+set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everything up to the last or Nth / character</emphasis>
 </screen>
               <para>The screenshot below shows what the Sidebar would look like
-              before and after shortening.</para>
+              before and after shortening using <literal>sidebar_short_path</literal>.</para>
               <screen>
 |fruit/apple                            |apple
 |fruit/banana                           |banana
@@ -763,6 +764,19 @@ set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everyt
 |water/ocean/atlantic                   |atlantic
 |water/ocean/pacific                    |pacific
 |water/ocean/arctic                     |arctic
+</screen>
+              <para>The screenshot below shows what the Sidebar would look like
+              before and after shortening using <literal>sidebar_component_depth=1</literal>.</para>
+              <screen>
+|fruit/apple                            |apple
+|fruit/banana                           |banana
+|fruit/cherry                           |cherry
+|water/sea/sicily                       |sea/sicily
+|water/sea/archipelago                  |sea/archipelago
+|water/sea/sibuyan                      |sea/sibuyan
+|water/ocean/atlantic                   |ocean/atlantic
+|water/ocean/pacific                    |ocean/pacific
+|water/ocean/arctic                     |ocean/arctic
 </screen>
             </sect5>
 
@@ -13819,6 +13833,15 @@ set sort_browser="reverse-size"
               </row>
               <row>
                 <entry>
+                  <literal>sidebar_component_depth</literal>
+                </entry>
+                <entry>number</entry>
+                <entry>
+                  <literal>0</literal>
+                </entry>
+              </row>
+              <row>
+                <entry>
                   <literal>sidebar_sort_method</literal>
                 </entry>
                 <entry>enum</entry>
@@ -14119,9 +14142,10 @@ set sidebar_visible = no
 set sidebar_width = 20
 <emphasis role="comment"># Should the mailbox paths be abbreviated?</emphasis>
 set sidebar_short_path = no
+<emphasis role="comment"># Number of top-level mailbox path subdirectories to truncate for display</emphasis>
+set sidebar_component_depth = 0
 <emphasis role="comment"># When abbreviating mailbox path names, use any of these characters as path
 # separators.  Only the part after the last separators will be shown.
-
 # For file folders '/' is good.  For IMAP folders, often '.' is useful.</emphasis>
 set sidebar_delim_chars = '/.'
 <emphasis role="comment"># If the mailbox path is abbreviated, should it be indented?</emphasis>
