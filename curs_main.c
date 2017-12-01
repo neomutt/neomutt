@@ -1947,7 +1947,12 @@ int mutt_index_menu(void)
           }
           if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
           {
-            CURHDR->quasi_deleted = true;
+            bool still_queried = false;
+#ifdef USE_NOTMUCH
+            if (Context->magic == MUTT_NOTMUCH)
+              still_queried = nm_message_is_still_queried(Context, CURHDR);
+#endif
+            CURHDR->quasi_deleted = !still_queried;
             Context->changed = true;
           }
           if (menu->menu == MENU_PAGER)
