@@ -133,6 +133,36 @@ static char **nm_tags;
 
 extern char **envlist;
 
+#ifndef DOMAIN
+/**
+ * getmailname - Try to retrieve the FQDN from mailname files
+ * @retval ptr Heap allocated string with the FQDN
+ * @retval NULL if no valid mailname file could be read
+ */
+static char *getmailname(void)
+{
+  char *mailname = NULL;
+  static const char *mn_files[] = { "/etc/mailname", "/etc/mail/mailname" };
+
+  for (size_t i = 0; i < mutt_array_size(mn_files); i++)
+  {
+    FILE *f = mutt_file_fopen(mn_files[i], "r");
+    if (!f)
+      continue;
+
+    size_t len = 0;
+    mailname = mutt_file_read_line(NULL, &len, f, NULL, 0);
+    mutt_file_fclose(&f);
+    if (mailname && *mailname)
+      break;
+
+    FREE(&mailname);
+  }
+
+  return mailname;
+}
+#endif
+
 static void toggle_quadoption(int opt)
 {
   int n = opt / 4;
@@ -4104,23 +4134,27 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   Hostname = mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
   sprintf(Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
-  if (!(getdnsdomainname(buffer, sizeof(buffer))))
+  Hostname = getmailname();
+  if (!Hostname)
   {
-    Hostname =
-        mutt_mem_malloc(mutt_str_strlen(buffer) + mutt_str_strlen(ShortHostname) + 2);
-    sprintf(Hostname, "%s.%s", NONULL(ShortHostname), buffer);
+    if (!(getdnsdomainname(buffer, sizeof(buffer))))
+    {
+      Hostname =
+          mutt_mem_malloc(mutt_str_strlen(buffer) + mutt_str_strlen(ShortHostname) + 2);
+      sprintf(Hostname, "%s.%s", NONULL(ShortHostname), buffer);
+    }
+    else
+    {
+      /* DNS failed, use the nodename.  Whether or not the nodename had a '.' in
+       * it, we can use the nodename as the FQDN.  On hosts where DNS is not
+       * being used, e.g. small network that relies on hosts files, a short host
+       * name is all that is required for SMTP to work correctly.  It could be
+       * wrong, but we've done the best we can, at this point the onus is on the
+       * user to provide the correct hostname if the nodename won't work in their
+       * network.  */
+      Hostname = mutt_str_strdup(utsname.nodename);
+    }
   }
-  else
-    /*
-     * DNS failed, use the nodename.  Whether or not the nodename had a '.' in
-     * it, we can use the nodename as the FQDN.  On hosts where DNS is not
-     * being used, e.g. small network that relies on hosts files, a short host
-     * name is all that is required for SMTP to work correctly.  It could be
-     * wrong, but we've done the best we can, at this point the onus is on the
-     * user to provide the correct hostname if the nodename won't work in their
-     * network.
-     */
-    Hostname = mutt_str_strdup(utsname.nodename);
 #endif
 
 #ifdef USE_NNTP
