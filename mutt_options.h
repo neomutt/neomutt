@@ -1,6 +1,6 @@
 /**
  * @file
- * Notmuch virtual mailbox type
+ * Definitions of NeoMutt Configuration
  *
  * @authors
  * Copyright (C) 2016 Bernard Pratz <z+mutt+pub@m0g.net>
