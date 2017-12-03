@@ -258,27 +258,6 @@ AS_IF([test x$use_lua = "xyes"], [
 	LIBS="$LIBS $LUA_LIB"
 ])
 
-dnl --enable-notmuch
-AS_IF([test x$use_notmuch = "xyes"], [
-	AC_CHECK_LIB(notmuch, notmuch_database_open, [:],
-		AC_MSG_ERROR([Unable to find Notmuch library]))
-	AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_notmuch.o"
-	LIBS="$LIBS -lnotmuch"
-
-	AC_MSG_CHECKING([for notmuch api version 3])
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
-		[[#include <notmuch.h>]],
-		[[notmuch_database_open("/path", NOTMUCH_DATABASE_MODE_READ_ONLY, (notmuch_database_t**)NULL);]]
-	)], [
-		notmuch_api_3=yes
-		AC_DEFINE([NOTMUCH_API_3], 1, [Define to 1 if you have the notmuch api version 3.])
-	], [
-		notmuch_api_3=no
-	])
-	AC_MSG_RESULT([$notmuch_api_3])
-])
-
 dnl --with-mixmaster
 AS_IF([test "$with_mixmaster" != "no"], [
 	AS_IF([test -x "$with_mixmaster"], [MIXMASTER="$with_mixmaster"], [MIXMASTER="mixmaster"])
@@ -876,6 +855,27 @@ if test "x$with_idn" != "xno"; then
 		fi
 	fi
 fi
+
+dnl --enable-notmuch
+AS_IF([test x$use_notmuch = "xyes"], [
+	AC_CHECK_LIB(notmuch, notmuch_database_open, [:],
+		AC_MSG_ERROR([Unable to find Notmuch library]))
+	AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_notmuch.o"
+	LIBS="$LIBS -lnotmuch"
+
+	AC_MSG_CHECKING([for notmuch api version 3])
+	AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+		[[#include <notmuch.h>]],
+		[[notmuch_database_open("/path", NOTMUCH_DATABASE_MODE_READ_ONLY, (notmuch_database_t**)NULL);]]
+	)], [
+		notmuch_api_3=yes
+		AC_DEFINE([NOTMUCH_API_3], 1, [Define to 1 if you have the notmuch api version 3.])
+	], [
+		notmuch_api_3=no
+	])
+	AC_MSG_RESULT([$notmuch_api_3])
+])
 
 dnl -- locales --
 AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
