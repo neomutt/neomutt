@@ -2941,7 +2941,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   struct Message *msg = NULL;
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
-  int r;
+  int rc = -1;
   bool need_buffy_cleanup = false;
   struct stat st;
   char buf[SHORT_STRING];
@@ -2954,7 +2954,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
-    return -1;
+    goto done;
   }
 
   /* We need to add a Content-Length field to avoid problems where a line in
@@ -2968,7 +2968,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     {
       mutt_perror(tempfile);
       mx_close_mailbox(&f, NULL);
-      return -1;
+      goto done;
     }
     /* remember new mail status before appending message */
     need_buffy_cleanup = true;
@@ -2984,7 +2984,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   {
     mutt_file_fclose(&tempfp);
     mx_close_mailbox(&f, NULL);
-    return -1;
+    goto done;
   }
 
   /* post == 1 => postpone message. Set mode = -1 in mutt_write_rfc822_header()
@@ -3102,7 +3102,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
       mx_commit_message(msg, &f); /* XXX - really? */
       mx_close_message(&f, &msg);
       mx_close_mailbox(&f, NULL);
-      return -1;
+      goto done;
     }
 
     /* count the number of lines */
@@ -3114,21 +3114,21 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 
     /* copy the body and clean up */
     rewind(tempfp);
-    r = mutt_file_copy_stream(tempfp, msg->fp);
+    rc = mutt_file_copy_stream(tempfp, msg->fp);
     if (fclose(tempfp) != 0)
-      r = -1;
+      rc = -1;
     /* if there was an error, leave the temp version */
-    if (!r)
+    if (!rc)
       unlink(tempfile);
   }
   else
   {
     fputc('\n', msg->fp); /* finish off the header */
-    r = mutt_write_mime_body(hdr->content, msg->fp);
+    rc = mutt_write_mime_body(hdr->content, msg->fp);
   }
 
   if (mx_commit_message(msg, &f) != 0)
-    r = -1;
+    rc = -1;
   else if (finalpath)
     *finalpath = mutt_str_strdup(msg->commited_path);
   mx_close_message(&f, &msg);
@@ -3140,5 +3140,11 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (post)
     set_noconv_flags(hdr->content, 0);
 
-  return r;
+done:
+  /* We ran a folder hook for the destination mailbox,
+   * now we run it for the user's current mailbox */
+  if (Context->path)
+    mutt_folder_hook(Context->path);
+
+  return rc;
 }
