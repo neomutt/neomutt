@@ -1854,7 +1854,7 @@ msgstr "(Tastaturbindung für 'view-attachments' benötigt!)"
 msgid "Can't create %s: %s."
 msgstr "Kann %s nicht anlegen: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: Kann Datei nicht anhängen."

@@ -409,6 +409,7 @@ dnl --- ncurses
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
 	fi
 	AC_CHECK_FUNCS([use_extended_names])
+	CPPFLAGS="$CPPFLAGS -DNCURSES_WIDECHAR"
 fi
 
 AC_HEADER_STDC
@@ -589,12 +590,6 @@ AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network sec
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
 
 dnl -- end socket --
-
-AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug],[Enable debugging support]),
-	[ if test x$enableval = xyes; then
-		AC_DEFINE(DEBUG,1,[ Define to enable debugging info. ])
-	fi
-])
 
 AC_ARG_ENABLE(flock, AS_HELP_STRING([--enable-flock],[Use flock() to lock files]),
 	[if test $enableval = yes; then
@@ -946,7 +941,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile lib/Makefile conn/Makefile)
+	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile mutt/Makefile conn/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

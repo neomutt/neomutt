@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "alias.h"
@@ -46,7 +46,6 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -54,6 +53,7 @@
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+#include "tags.h"
 #include "thread.h"
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h>
@@ -264,9 +264,13 @@ static int ci_first_message(void)
      */
     if (((Sort & SORT_REVERSE) && (Sort & SORT_MASK) != SORT_THREADS) ||
         ((Sort & SORT_MASK) == SORT_THREADS && ((Sort ^ SortAux) & SORT_REVERSE)))
+    {
       return 0;
+    }
     else
+    {
       return (Context->vcount ? Context->vcount - 1 : 0);
+    }
   }
   return 0;
 }
@@ -372,7 +376,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   if (option(OPT_UNCOLLAPSE_NEW) && oldcount && check != MUTT_REOPENED &&
       ((Sort & SORT_MASK) == SORT_THREADS))
   {
-    save_new = safe_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
+    save_new = mutt_mem_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
     for (int i = oldcount; i < ctx->msgcount; i++)
       save_new[i - oldcount] = ctx->hdrs[i];
   }
@@ -431,8 +435,8 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
     menu->current = ci_first_message();
 }
 
-static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz,
-                              int *oldcount, int *index_hint, int flags)
+static int main_change_folder(struct Menu *menu, int op, char *buf,
+                              size_t bufsz, int *oldcount, int *index_hint)
 {
 #ifdef USE_NNTP
   if (option(OPT_NEWS))
@@ -460,10 +464,10 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
 
 #ifdef USE_COMPRESSED
     if (Context->compress_info && Context->realpath)
-      new_last_folder = safe_strdup(Context->realpath);
+      new_last_folder = mutt_str_strdup(Context->realpath);
     else
 #endif
-      new_last_folder = safe_strdup(Context->path);
+      new_last_folder = mutt_str_strdup(Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
     check = mx_close_mailbox(Context, index_hint);
@@ -564,7 +568,7 @@ bool mutt_ts_capability(void)
    * necessarily asserting it in terminfo. */
   for (termp = known; termp; termp++)
   {
-    if (term && *termp && (mutt_strncasecmp(term, *termp, strlen(*termp)) != 0))
+    if (term && *termp && (mutt_str_strncasecmp(term, *termp, strlen(*termp)) != 0))
       return true;
   }
 
@@ -590,7 +594,14 @@ void mutt_ts_icon(char *str)
   fprintf(stderr, "\033]1;%s\007", str);
 }
 
-void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
+/**
+ * index_make_entry - Format a menu item for the index list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   if (!Context || !menu || (num < 0) || (num >= Context->hdrmax))
     return;
@@ -655,7 +666,7 @@ void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
     }
   }
 
-  _mutt_make_string(s, l, NONULL(IndexFormat), Context, h, flag);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), Context, h, flag);
 }
 
 int index_color(int index_no)
@@ -730,7 +741,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
       if (!found)
       {
         chunks++;
-        safe_realloc(&syntax, chunks * sizeof(struct Syntax));
+        mutt_mem_realloc(&syntax, chunks * sizeof(struct Syntax));
       }
 
       i = chunks - 1;
@@ -935,6 +946,12 @@ int mutt_index_menu(void)
     menu->redraw = REDRAW_FULL;
   }
 
+  /* On SIGWINCH, we clear the input buffer and redraw the screen.
+   * We don't want this to happening the first time we enter the loop.
+   * The startup hook puts commands into the keyboard buffer which we don't
+   * want to lose. */
+  SigWinch = 0;
+
   while (true)
   {
     /* Clear the tag prefix unless we just started it.  Don't clear
@@ -1007,7 +1024,8 @@ int mutt_index_menu(void)
               {
                 char cmd[LONG_STRING];
                 menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
-                mutt_system(cmd);
+                if (mutt_system(cmd) != 0)
+                  mutt_error(_("Error running \"%s\"!"), cmd);
               }
               break;
             }
@@ -1049,7 +1067,8 @@ int mutt_index_menu(void)
           {
             char cmd[LONG_STRING];
             menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCommand));
-            mutt_system(cmd);
+            if (mutt_system(cmd) != 0)
+              mutt_error(_("Error running \"%s\"!"), cmd);
           }
         }
       }
@@ -1103,7 +1122,7 @@ int mutt_index_menu(void)
 
       op = km_dokey(MENU_MAIN);
 
-      mutt_debug(4, "mutt_index_menu[%d]: Got op %d\n", __LINE__, op);
+      mutt_debug(4, "[%d]: Got op %d\n", __LINE__, op);
 
       /* either user abort or timeout */
       if (op < 0)
@@ -1226,6 +1245,7 @@ int mutt_index_menu(void)
       case OP_GET_PARENT:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      /* fallthrough */
 
       case OP_GET_MESSAGE:
         CHECK_IN_MAILBOX;
@@ -1240,7 +1260,9 @@ int mutt_index_menu(void)
             buf[0] = 0;
             if (mutt_get_field(_("Enter Message-Id: "), buf, sizeof(buf), 0) != 0 ||
                 !buf[0])
+            {
               break;
+            }
           }
           else
           {
@@ -1249,11 +1271,12 @@ int mutt_index_menu(void)
               mutt_error(_("Article has no parent reference."));
               break;
             }
-            strfcpy(buf, STAILQ_FIRST(&CURHDR->env->references)->data, sizeof(buf));
+            mutt_str_strfcpy(buf, STAILQ_FIRST(&CURHDR->env->references)->data,
+                             sizeof(buf));
           }
           if (!Context->id_hash)
             Context->id_hash = mutt_make_id_hash(Context);
-          hdr = hash_find(Context->id_hash, buf);
+          hdr = mutt_hash_find(Context->id_hash, buf);
           if (hdr)
           {
             if (hdr->virtual != -1)
@@ -1311,7 +1334,7 @@ int mutt_index_menu(void)
           mutt_message(_("Fetching message headers..."));
           if (!Context->id_hash)
             Context->id_hash = mutt_make_id_hash(Context);
-          strfcpy(buf, CURHDR->env->message_id, sizeof(buf));
+          mutt_str_strfcpy(buf, CURHDR->env->message_id, sizeof(buf));
 
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
@@ -1319,7 +1342,7 @@ int mutt_index_menu(void)
             struct ListNode *ref;
             STAILQ_FOREACH(ref, &CURHDR->env->references, entries)
             {
-              if (hash_find(Context->id_hash, ref->data) == NULL)
+              if (mutt_hash_find(Context->id_hash, ref->data) == NULL)
               {
                 rc2 = nntp_check_msgid(Context, ref->data);
                 if (rc2 < 0)
@@ -1328,7 +1351,7 @@ int mutt_index_menu(void)
 
               /* the last msgid in References is the root message */
               if (!STAILQ_NEXT(ref, entries))
-                strfcpy(buf, ref->data, sizeof(buf));
+                mutt_str_strfcpy(buf, ref->data, sizeof(buf));
             }
           }
 
@@ -1359,7 +1382,7 @@ int mutt_index_menu(void)
             }
 
             /* if the root message was retrieved, move to it */
-            hdr = hash_find(Context->id_hash, buf);
+            hdr = mutt_hash_find(Context->id_hash, buf);
             if (hdr)
               menu->current = hdr->virtual;
 
@@ -1412,7 +1435,7 @@ int mutt_index_menu(void)
           break;
         }
 
-        if (mutt_atoi(buf, &i) < 0)
+        if (mutt_str_atoi(buf, &i) < 0)
         {
           mutt_error(_("Argument must be a message number."));
           break;
@@ -1519,13 +1542,13 @@ int mutt_index_menu(void)
           }
           else
           {
-            strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
+            mutt_str_strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
             if (!*buf2 || (strncmp(buf2, ".*", 2) == 0))
               snprintf(buf2, sizeof(buf2), "~A");
             unset_option(OPT_HIDE_READ);
           }
           FREE(&Context->pattern);
-          Context->pattern = safe_strdup(buf2);
+          Context->pattern = mutt_str_strdup(buf2);
         }
 
         if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(CURHDR)) ||
@@ -1538,11 +1561,13 @@ int mutt_index_menu(void)
             /* try to find what used to be the current message */
             menu->current = -1;
             for (i = 0; i < Context->vcount; i++)
+            {
               if (Context->hdrs[Context->v2r[i]]->index == menu->oldcurrent)
               {
                 menu->current = i;
                 break;
               }
+            }
             if (menu->current < 0)
               menu->current = 0;
           }
@@ -1922,7 +1947,12 @@ int mutt_index_menu(void)
           }
           if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
           {
-            CURHDR->quasi_deleted = true;
+            bool still_queried = false;
+#ifdef USE_NOTMUCH
+            if (Context->magic == MUTT_NOTMUCH)
+              still_queried = nm_message_is_still_queried(Context, CURHDR);
+#endif
+            CURHDR->quasi_deleted = !still_queried;
             Context->changed = true;
           }
           if (menu->menu == MENU_PAGER)
@@ -1959,7 +1989,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, 0);
+          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
@@ -1979,7 +2009,7 @@ int mutt_index_menu(void)
         if (!nm_uri_from_query(Context, buf, sizeof(buf)))
           mutt_message(_("Failed to create query, aborting."));
         else
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, 0);
+          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         break;
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
@@ -2000,7 +2030,7 @@ int mutt_index_menu(void)
         else
         {
           mutt_debug(2, "nm: + windowed query (%s)\n", buf);
-          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, 0);
+          main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
         }
         break;
 
@@ -2039,7 +2069,7 @@ int mutt_index_menu(void)
         buf[0] = '\0';
         if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context && Context->path)
         {
-          strfcpy(buf, Context->path, sizeof(buf));
+          mutt_str_strfcpy(buf, Context->path, sizeof(buf));
           mutt_pretty_mailbox(buf, sizeof(buf));
           mutt_buffy(buf, sizeof(buf));
           if (!buf[0])
@@ -2065,7 +2095,7 @@ int mutt_index_menu(void)
         {
           if (Context && (Context->magic == MUTT_NOTMUCH))
           {
-            strfcpy(buf, Context->path, sizeof(buf));
+            mutt_str_strfcpy(buf, Context->path, sizeof(buf));
             mutt_buffy_vfolder(buf, sizeof(buf));
           }
           mutt_enter_vfolder(cp, buf, sizeof(buf), 1);
@@ -2078,6 +2108,11 @@ int mutt_index_menu(void)
 #endif
         else
         {
+          if (option(OPT_CHANGE_FOLDER_NEXT) && Context && Context->path)
+          {
+            mutt_str_strfcpy(buf, Context->path, sizeof(buf));
+            mutt_pretty_mailbox(buf, sizeof(buf));
+          }
 #ifdef USE_NNTP
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
@@ -2094,7 +2129,7 @@ int mutt_index_menu(void)
           else
 #endif
             /* By default, fill buf with the next mailbox that contains unread
-           * mail */
+             * mail */
             mutt_buffy(buf, sizeof(buf));
 
           if (mutt_enter_fname(cp, buf, sizeof(buf), 1) == -1)
@@ -2118,7 +2153,7 @@ int mutt_index_menu(void)
           }
         }
 
-        main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint, flags);
+        main_change_folder(menu, op, buf, sizeof(buf), &oldcount, &index_hint);
 #ifdef USE_NNTP
         /* mutt_buffy_check() must be done with mail-reader mode! */
         menu->help = mutt_compile_help(
@@ -2155,7 +2190,9 @@ int mutt_index_menu(void)
 
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
         /* If we are returning to the pager via an index menu redirection, we
@@ -2838,8 +2875,11 @@ int mutt_index_menu(void)
           if (option(OPT_DELETE_UNTAG))
             mutt_thread_set_flag(CURHDR, MUTT_TAG, 0, subthread);
           if (option(OPT_RESOLVE))
-            if ((menu->current = ci_next_undeleted(menu->current)) == -1)
+          {
+            menu->current = ci_next_undeleted(menu->current);
+            if (menu->current == -1)
               menu->current = menu->oldcurrent;
+          }
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
         }
         break;
@@ -2871,19 +2911,36 @@ int mutt_index_menu(void)
         mutt_check_rescore(Context);
         break;
 
-      case OP_EDIT_MESSAGE:
+      case OP_EDIT_OR_VIEW_RAW_MESSAGE: /* fall through */
+      case OP_EDIT_RAW_MESSAGE:         /* fall through */
+      case OP_VIEW_RAW_MESSAGE:
 
+        /* TODO split this into 3 cases? */
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        CHECK_READONLY;
         CHECK_ATTACH;
-        /* L10N: CHECK_ACL */
-        CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
+        bool edit;
+        if (op == OP_EDIT_RAW_MESSAGE)
+        {
+          CHECK_READONLY;
+          /* L10N: CHECK_ACL */
+          CHECK_ACL(MUTT_ACL_INSERT, _("Cannot edit message"));
+          edit = true;
+        }
+        else if (op == OP_EDIT_OR_VIEW_RAW_MESSAGE)
+          edit = !Context->readonly && mutt_bit_isset(Context->rights, MUTT_ACL_INSERT);
+        else
+          edit = false;
 
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
-        mutt_edit_message(Context, tag ? NULL : CURHDR);
+        }
+        if (edit)
+          mutt_edit_message(Context, tag ? NULL : CURHDR);
+        else
+          mutt_view_message(Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
 
         break;
@@ -2895,7 +2952,9 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDFORWARD, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
@@ -2911,7 +2970,9 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDREPLY | SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
@@ -2946,7 +3007,9 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDREPLY | SENDLISTREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;
@@ -3041,10 +3104,12 @@ int mutt_index_menu(void)
         {
           if (option(OPT_RESOLVE))
           {
-            if ((menu->current = (op == OP_MAIN_READ_THREAD ?
-                                      mutt_next_thread(CURHDR) :
-                                      mutt_next_subthread(CURHDR))) == -1)
+            menu->current = (op == OP_MAIN_READ_THREAD ? mutt_next_thread(CURHDR) :
+                                                         mutt_next_subthread(CURHDR));
+            if (menu->current == -1)
+            {
               menu->current = menu->oldcurrent;
+            }
             else if (menu->menu == MENU_PAGER)
             {
               op = OP_DISPLAY_MESSAGE;
@@ -3121,21 +3186,22 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_FOLLOWUP:
       case OP_FORWARD_TO_GROUP:
-
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+      /* fallthrough */
 
       case OP_POST:
-
         CHECK_ATTACH;
         if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
-            (mutt_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
+            (mutt_str_strcasecmp(CURHDR->env->followup_to, "poster") != 0) ||
             query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (Context && Context->magic == MUTT_NNTP &&
               !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+          {
             break;
+          }
           if (op == OP_POST)
             ci_send_message(SENDNEWS, NULL, NULL, Context, NULL);
           else
@@ -3148,7 +3214,7 @@ int mutt_index_menu(void)
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
 
         CHECK_ATTACH;
@@ -3156,7 +3222,9 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         if (option(OPT_PGP_AUTO_DECODE) &&
             (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
+        {
           mutt_check_traditional_pgp(tag ? NULL : CURHDR, &menu->redraw);
+        }
         ci_send_message(SENDREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
         menu->redraw = REDRAW_FULL;
         break;

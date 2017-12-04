@@ -41,6 +41,7 @@
 #include "protos.h"
 #include "sort.h"
 #include "conn/conn.h"
+#include "tags.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
@@ -134,11 +135,11 @@ struct Option MuttVars[] = {
   ** Specifies the format of the data displayed for the ``$alias'' menu.  The
   ** following \fCprintf(3)\fP-style sequences are available:
   ** .dl
-  ** .dt %a .dd alias name
-  ** .dt %f .dd flags - currently, a ``d'' for an alias marked for deletion
-  ** .dt %n .dd index number
-  ** .dt %r .dd address which alias expands to
-  ** .dt %t .dd character which indicates if the alias is tagged for inclusion
+  ** .dt %a .dd Alias name
+  ** .dt %f .dd Flags - currently, a ``d'' for an alias marked for deletion
+  ** .dt %n .dd Index number
+  ** .dt %r .dd Address which alias expands to
+  ** .dt %t .dd Character which indicates if the alias is tagged for inclusion
   ** .de
   */
   { "allow_8bit",       DT_BOOL, R_NONE, OPT_ALLOW_8BIT, 1 },
@@ -245,27 +246,27 @@ struct Option MuttVars[] = {
   ** This variable describes the format of the ``attachment'' menu.  The
   ** following \fCprintf(3)\fP-style sequences are understood:
   ** .dl
-  ** .dt %C  .dd charset
-  ** .dt %c  .dd requires charset conversion (``n'' or ``c'')
-  ** .dt %D  .dd deleted flag
-  ** .dt %d  .dd description (if none, falls back to %F)
+  ** .dt %C  .dd Charset
+  ** .dt %c  .dd Requires charset conversion (``n'' or ``c'')
+  ** .dt %D  .dd Deleted flag
+  ** .dt %d  .dd Description (if none, falls back to %F)
   ** .dt %e  .dd MIME content-transfer-encoding
-  ** .dt %F  .dd filename in content-disposition header (if none, falls back to %f)
-  ** .dt %f  .dd filename
-  ** .dt %I  .dd disposition (``I'' for inline, ``A'' for attachment)
-  ** .dt %m  .dd major MIME type
+  ** .dt %f  .dd Filename
+  ** .dt %F  .dd Filename in content-disposition header (if none, falls back to %f)
+  ** .dt %I  .dd Disposition (``I'' for inline, ``A'' for attachment)
+  ** .dt %m  .dd Major MIME type
   ** .dt %M  .dd MIME subtype
-  ** .dt %n  .dd attachment number
+  ** .dt %n  .dd Attachment number
   ** .dt %Q  .dd ``Q'', if MIME part qualifies for attachment counting
-  ** .dt %s  .dd size
-  ** .dt %t  .dd tagged flag
-  ** .dt %T  .dd graphic tree characters
-  ** .dt %u  .dd unlink (=to delete) flag
-  ** .dt %X  .dd number of qualifying MIME parts in this part and its children
+  ** .dt %s  .dd Size
+  ** .dt %T  .dd Graphic tree characters
+  ** .dt %t  .dd Tagged flag
+  ** .dt %u  .dd Unlink (=to delete) flag
+  ** .dt %X  .dd Number of qualifying MIME parts in this part and its children
   **             (please see the ``$attachments'' section for possible speed effects)
-  ** .dt %>X .dd right justify the rest of the string and pad with character ``X''
-  ** .dt %|X .dd pad to the end of the line with character ``X''
-  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .dt %>X .dd Right justify the rest of the string and pad with character ``X''
+  ** .dt %|X .dd Pad to the end of the line with character ``X''
+  ** .dt %*X .dd Soft-fill with character ``X'' as pad
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
@@ -398,6 +399,13 @@ struct Option MuttVars[] = {
   **
   */
 #endif
+  { "change_folder_next", DT_BOOL, R_NONE, OPT_CHANGE_FOLDER_NEXT, 0 },
+  /*
+  ** .pp
+  ** When this variable is \fIset\fP, the \fC<change-folder>\fP function
+  ** mailbox suggestion will start at the next folder in your ``$mailboxes''
+  ** list, instead of starting at the first folder in the list.
+  */
   { "charset",          DT_STRING,  R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp
@@ -457,9 +465,9 @@ struct Option MuttVars[] = {
   ** menu.  This string is similar to $$status_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %a .dd total number of attachments
-  ** .dt %h .dd local hostname
-  ** .dt %l .dd approximate size (in bytes) of the current message
+  ** .dt %a .dd Total number of attachments
+  ** .dt %h .dd Local hostname
+  ** .dt %l .dd Approximate size (in bytes) of the current message
   ** .dt %v .dd NeoMutt version string
   ** .de
   ** .pp
@@ -663,7 +671,6 @@ struct Option MuttVars[] = {
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
   */
-#ifdef DEBUG
   { "debug_level", DT_NUMBER, R_NONE, UL &DebugLevel, 0 },
   /*
   ** .pp
@@ -679,7 +686,6 @@ struct Option MuttVars[] = {
   ** Old debug files are renamed with the prefix 1, 2, 3 and 4.
   ** See ``debug_level'' for more detail.
   */
-#endif
   { "default_hook",     DT_STRING,  R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   /*
   ** .pp
@@ -723,6 +729,17 @@ struct Option MuttVars[] = {
   ** When set, specifies a command used to filter messages.  When a message
   ** is viewed it is passed as standard input to $$display_filter, and the
   ** filtered message is read from the standard output.
+  ** .pp
+  ** When preparing the message, NeoMutt inserts some escape sequences into the
+  ** text.  They are of the form: \fC<esc>]9;XXX<bel>\fP where "XXX" is a random
+  ** 64-bit number.
+  ** .pp
+  ** If these escape sequences interfere with your filter, they can be removed
+  ** using a tool like \fCansifilter\fP or \fCsed 's/^\x1b]9;[0-9]\+\x7//'\fP
+  ** .pp
+  ** If they are removed, then PGP and MIME headers will no longer be coloured.
+  ** This can be fixed by adding this to your config:
+  ** \fCcolor body magenta default '^\[-- .* --\]$$'\fP.
   */
   { "dsn_notify",       DT_STRING,  R_NONE, UL &DsnNotify, UL "" },
   /*
@@ -888,24 +905,23 @@ struct Option MuttVars[] = {
   ** personal taste.  This string is similar to $$index_format, but has
   ** its own set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %C  .dd current file number
-  ** .dt %d  .dd date/time folder was last modified
-  ** .dt %D  .dd date/time folder was last modified using $$date_format.
-  ** .dt %f  .dd filename (``/'' is appended to directory names,
-  **             ``@'' to symbolic links and ``*'' to executable
-  **             files)
-  ** .dt %F  .dd file permissions
-  ** .dt %g  .dd group name (or numeric gid, if missing)
-  ** .dt %l  .dd number of hard links
-  ** .dt %m  .dd number of messages in the mailbox *
-  ** .dt %n  .dd number of unread messages in the mailbox *
-  ** .dt %N  .dd N if mailbox has new mail, blank otherwise
-  ** .dt %s  .dd size in bytes
+  ** .dt %C  .dd Current file number
+  ** .dt %d  .dd Date/time folder was last modified
+  ** .dt %D  .dd Date/time folder was last modified using $$date_format.
+  ** .dt %f  .dd Filename (``/'' is appended to directory names,
+  **             ``@'' to symbolic links and ``*'' to executable files)
+  ** .dt %F  .dd File permissions
+  ** .dt %g  .dd Group name (or numeric gid, if missing)
+  ** .dt %l  .dd Number of hard links
+  ** .dt %m  .dd Number of messages in the mailbox *
+  ** .dt %n  .dd Number of unread messages in the mailbox *
+  ** .dt %N  .dd ``N'' if mailbox has new mail, blank otherwise
+  ** .dt %s  .dd Size in bytes
   ** .dt %t  .dd ``*'' if the file is tagged, blank otherwise
-  ** .dt %u  .dd owner name (or numeric uid, if missing)
-  ** .dt %>X .dd right justify the rest of the string and pad with character ``X''
-  ** .dt %|X .dd pad to the end of the line with character ``X''
-  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .dt %u  .dd Owner name (or numeric uid, if missing)
+  ** .dt %>X .dd Right justify the rest of the string and pad with character ``X''
+  ** .dt %|X .dd Pad to the end of the line with character ``X''
+  ** .dt %*X .dd Soft-fill with character ``X'' as pad
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
@@ -1085,15 +1101,15 @@ struct Option MuttVars[] = {
   ** your personal taste.  This string is similar to ``$index_format'', but
   ** has its own set of printf()-like sequences:
   ** .dl
-  ** .dt %C  .dd current newsgroup number
-  ** .dt %d  .dd description of newsgroup (becomes from server)
-  ** .dt %f  .dd newsgroup name
+  ** .dt %C  .dd Current newsgroup number
+  ** .dt %d  .dd Description of newsgroup (becomes from server)
+  ** .dt %f  .dd Newsgroup name
   ** .dt %M  .dd - if newsgroup not allowed for direct post (moderated for example)
   ** .dt %N  .dd N if newsgroup is new, u if unsubscribed, blank otherwise
-  ** .dt %n  .dd number of new articles in newsgroup
-  ** .dt %s  .dd number of unread articles in newsgroup
-  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
-  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .dt %n  .dd Number of new articles in newsgroup
+  ** .dt %s  .dd Number of unread articles in newsgroup
+  ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd Pad to the end of the line with character "X"
   ** .de
   */
 #endif
@@ -1518,64 +1534,64 @@ struct Option MuttVars[] = {
   ** For an explanation of the %? construct, see the $status_format description.
   ** The following sequences are defined in NeoMutt:
   ** .dl
-  ** .dt %a .dd address of the author
-  ** .dt %A .dd reply-to address (if present; otherwise: address of author)
-  ** .dt %b .dd filename of the original message folder (think mailbox)
-  ** .dt %B .dd the list to which the letter was sent, or else the folder name (%b).
-  ** .dt %c .dd number of characters (bytes) in the message
-  ** .dt %C .dd current message number
-  ** .dt %d .dd date and time of the message in the format specified by
+  ** .dt %a .dd Address of the author
+  ** .dt %A .dd Reply-to address (if present; otherwise: address of author)
+  ** .dt %b .dd Filename of the original message folder (think mailbox)
+  ** .dt %B .dd The list to which the letter was sent, or else the folder name (%b).
+  ** .dt %c .dd Number of characters (bytes) in the message
+  ** .dt %C .dd Current message number
+  ** .dt %d .dd Date and time of the message in the format specified by
   **            $$date_format converted to sender's time zone
-  ** .dt %D .dd date and time of the message in the format specified by
+  ** .dt %D .dd Date and time of the message in the format specified by
   **            $$date_format converted to the local time zone
-  ** .dt %e .dd current message number in thread
-  ** .dt %E .dd number of messages in current thread
-  ** .dt %f .dd sender (address + real name), either From: or Return-Path:
-  ** .dt %F .dd author name, or recipient name if the message is from you
-  ** .dt %g .dd newsgroup name (if compiled with NNTP support)
-  ** .dt %g .dd message labels (e.g. notmuch tags)
-  ** .dt %H .dd spam attribute(s) of this message
-  ** .dt %I .dd initials of author
-  ** .dt %i .dd message-id of the current message
-  ** .dt %K .dd the list to which the letter was sent (if any; otherwise: empty).
-  ** .dt %l .dd number of lines in the message (does not work with maildir,
-  **            mh, and possibly IMAP folders)
+  ** .dt %e .dd Current message number in thread
+  ** .dt %E .dd Number of messages in current thread
+  ** .dt %f .dd Sender (address + real name), either From: or Return-Path:
+  ** .dt %F .dd Author name, or recipient name if the message is from you
+  ** .dt %g .dd Newsgroup name (if compiled with NNTP support)
+  ** .dt %g .dd Message labels (e.g. notmuch tags)
+  ** .dt %H .dd Spam attribute(s) of this message
+  ** .dt %I .dd Initials of author
+  ** .dt %i .dd Message-id of the current message
+  ** .dt %K .dd The list to which the letter was sent (if any; otherwise: empty)
+  ** .dt %l .dd Number of lines in the message (does not work with maildir,
+  **            Mh, and possibly IMAP folders)
   ** .dt %L .dd If an address in the ``To:'' or ``Cc:'' header field matches an address
-  **            defined by the users ``$subscribe'' command, this displays
-  **            "To <list-name>", otherwise the same as %F.
-  ** .dt %m .dd total number of message in the mailbox
-  ** .dt %M .dd number of hidden messages if the thread is collapsed.
-  ** .dt %N .dd message score
-  ** .dt %n .dd author's real name (or address if missing)
-  ** .dt %O .dd original save folder where NeoMutt would formerly have
-  **            stashed the message: list name or recipient name
-  **            if not sent to a list
-  ** .dt %P .dd progress indicator for the built-in pager (how much of the file has been displayed)
-  ** .dt %q .dd newsgroup name (if compiled with NNTP support)
-  ** .dt %r .dd comma separated list of ``To:'' recipients
-  ** .dt %R .dd comma separated list of ``Cc:'' recipients
-  ** .dt %s .dd subject of the message
-  ** .dt %S .dd single character status of the message (``N''/``O''/``D''/``d''/``!''/``r''/``\(as'')
+  **            Defined by the users ``$subscribe'' command, this displays
+  **            "To <list-name>", otherwise the same as %F
+  ** .dt %m .dd Total number of message in the mailbox
+  ** .dt %M .dd Number of hidden messages if the thread is collapsed
+  ** .dt %N .dd Message score
+  ** .dt %n .dd Author's real name (or address if missing)
+  ** .dt %O .dd Original save folder where NeoMutt would formerly have
+  **            Stashed the message: list name or recipient name
+  **            If not sent to a list
+  ** .dt %P .dd Progress indicator for the built-in pager (how much of the file has been displayed)
+  ** .dt %q .dd Newsgroup name (if compiled with NNTP support)
+  ** .dt %r .dd Comma separated list of ``To:'' recipients
+  ** .dt %R .dd Comma separated list of ``Cc:'' recipients
+  ** .dt %s .dd Subject of the message
+  ** .dt %S .dd Single character status of the message (``N''/``O''/``D''/``d''/``!''/``r''/``\(as'')
   ** .dt %t .dd ``To:'' field (recipients)
-  ** .dt %T .dd the appropriate character from the $$to_chars string
-  ** .dt %u .dd user (login) name of the author
-  ** .dt %v .dd first name of the author, or the recipient if the message is from you
-  ** .dt %W .dd name of organization of author (``Organization:'' field)
+  ** .dt %T .dd The appropriate character from the $$to_chars string
+  ** .dt %u .dd User (login) name of the author
+  ** .dt %v .dd First name of the author, or the recipient if the message is from you
+  ** .dt %W .dd Name of organization of author (``Organization:'' field)
   ** .dt %x .dd ``X-Comment-To:'' field (if present and compiled with NNTP support)
-  ** .dt %X .dd number of attachments
+  ** .dt %X .dd Number of attachments
   **            (please see the ``$attachments'' section for possible speed effects)
   ** .dt %y .dd ``X-Label:'' field, if present
   ** .dt %Y .dd ``X-Label:'' field, if present, and \fI(1)\fP not at part of a thread tree,
   **            \fI(2)\fP at the top of a thread, or \fI(3)\fP ``X-Label:'' is different from
-  **            preceding message's ``X-Label:''.
-  ** .dt %Z .dd a three character set of message status flags.
-  **            the first character is new/read/replied flags (``n''/``o''/``r''/``O''/``N'').
-  **            the second is deleted or encryption flags (``D''/``d''/``S''/``P''/``s''/``K'').
-  **            the third is either tagged/flagged (``\(as''/``!''), or one of the characters
-  **            listed in $$to_chars.
-  ** .dt %zs .dd message status flags
-  ** .dt %zc .dd message crypto flags
-  ** .dt %zt .dd message tag flags
+  **            Preceding message's ``X-Label:''
+  ** .dt %Z .dd A three character set of message status flags.
+  **            The first character is new/read/replied flags (``n''/``o''/``r''/``O''/``N'').
+  **            The second is deleted or encryption flags (``D''/``d''/``S''/``P''/``s''/``K'').
+  **            The third is either tagged/flagged (``\(as''/``!''), or one of the characters
+  **            Listed in $$to_chars.
+  ** .dt %zs .dd Message status flags
+  ** .dt %zc .dd Message crypto flags
+  ** .dt %zt .dd Message tag flags
   ** .dt %{fmt} .dd the date and time of the message is converted to sender's
   **                time zone, and ``fmt'' is expanded by the library function
   **                \fCstrftime(3)\fP; a leading bang disables locales
@@ -1931,10 +1947,10 @@ struct Option MuttVars[] = {
   ** chain selection screen.  The following \fCprintf(3)\fP-like sequences are
   ** supported:
   ** .dl
-  ** .dt %n .dd The running number on the menu.
-  ** .dt %c .dd Remailer capabilities.
-  ** .dt %s .dd The remailer's short name.
-  ** .dt %a .dd The remailer's e-mail address.
+  ** .dt %a .dd The remailer's e-mail address
+  ** .dt %c .dd Remailer capabilities
+  ** .dt %n .dd The running number on the menu
+  ** .dt %s .dd The remailer's short name
   ** .de
   */
   { "mixmaster",        DT_PATH, R_NONE, UL &Mixmaster, UL MIXMASTER },
@@ -2007,12 +2023,12 @@ struct Option MuttVars[] = {
   ** indexes of read articles.  The following printf-style sequence
   ** is understood:
   ** .dl
-  ** .dt %a .dd account url
-  ** .dt %p .dd port
-  ** .dt %P .dd port if specified
-  ** .dt %s .dd news server name
-  ** .dt %S .dd url schema
-  ** .dt %u .dd username
+  ** .dt %a .dd Account url
+  ** .dt %p .dd Port
+  ** .dt %P .dd Port if specified
+  ** .dt %s .dd News server name
+  ** .dt %S .dd Url schema
+  ** .dt %u .dd Username
   ** .de
   */
   { "nntp_authenticators", DT_STRING, R_NONE, UL &NntpAuthenticators, UL 0 },
@@ -2326,16 +2342,16 @@ struct Option MuttVars[] = {
   ** your personal taste. This string is similar to $$index_format, but
   ** has its own set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %n     .dd number
-  ** .dt %k     .dd key id
-  ** .dt %u     .dd user id
-  ** .dt %a     .dd algorithm
-  ** .dt %l     .dd key length
-  ** .dt %p     .dd protocol
-  ** .dt %f     .dd flags
-  ** .dt %c     .dd capabilities
-  ** .dt %t     .dd trust/validity of the key-uid association
-  ** .dt %[<s>] .dd date of the key where <s> is an \fCstrftime(3)\fP expression
+  ** .dt %a     .dd Algorithm
+  ** .dt %c     .dd Capabilities
+  ** .dt %f     .dd Flags
+  ** .dt %k     .dd Key id
+  ** .dt %l     .dd Key length
+  ** .dt %n     .dd Number
+  ** .dt %p     .dd Protocol
+  ** .dt %t     .dd Trust/validity of the key-uid association
+  ** .dt %u     .dd User id
+  ** .dt %[<s>] .dd Date of the key where <s> is an \fCstrftime(3)\fP expression
   ** .de
   ** .pp
   ** (PGP only)
@@ -2822,14 +2838,14 @@ struct Option MuttVars[] = {
   ** This variable describes the format of the ``query'' menu. The
   ** following \fCprintf(3)\fP-style sequences are understood:
   ** .dl
-  ** .dt %a  .dd destination address
-  ** .dt %c  .dd current entry number
-  ** .dt %e  .dd extra information *
-  ** .dt %n  .dd destination name
+  ** .dt %a  .dd Destination address
+  ** .dt %c  .dd Current entry number
+  ** .dt %e  .dd Extra information *
+  ** .dt %n  .dd Destination name
   ** .dt %t  .dd ``*'' if current entry is tagged, a space otherwise
-  ** .dt %>X .dd right justify the rest of the string and pad with ``X''
-  ** .dt %|X .dd pad to the end of the line with ``X''
-  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .dt %>X .dd Right justify the rest of the string and pad with ``X''
+  ** .dt %|X .dd Pad to the end of the line with ``X''
+  ** .dt %*X .dd Soft-fill with character ``X'' as pad
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
@@ -3809,7 +3825,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable specifies a file containing trusted CA certificates.
   ** Any server certificate that is signed with one of these CA
-  ** certificates is also automatically accepted.
+  ** certificates is also automatically accepted. (GnuTLS only)
   ** .pp
   ** Example:
   ** .ts
@@ -3838,7 +3854,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** This variable specifies the minimum acceptable prime size (in bits)
   ** for use in any Diffie-Hellman key exchange. A value of 0 will use
-  ** the default from the GNUTLS library.
+  ** the default from the GNUTLS library. (GnuTLS only)
   */
 #endif /* USE_SSL_GNUTLS */
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSL_STARTTLS, MUTT_YES },
@@ -3855,6 +3871,7 @@ struct Option MuttVars[] = {
   ** This variable specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process. Note that SSLv2 and SSLv3 are now
   ** considered fundamentally insecure and are no longer recommended.
+  ** (OpenSSL only)
   */
 #endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPT_SSL_USE_SSLV3, 0 },
@@ -3888,7 +3905,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If set to \fIyes\fP, NeoMutt will use CA certificates in the
   ** system-wide certificate store when checking if a server certificate
-  ** is signed by a trusted CA.
+  ** is signed by a trusted CA. (OpenSSL only)
   */
 #endif
   { "ssl_verify_dates", DT_BOOL, R_NONE, OPT_SSL_VERIFY_DATES, 1 },
@@ -3928,7 +3945,7 @@ struct Option MuttVars[] = {
   { "ssl_ciphers", DT_STRING, R_NONE, UL &SslCiphers, UL 0 },
   /*
   ** .pp
-  ** Contains a colon-seperated list of ciphers to use when using SSL.
+  ** Contains a colon-separated list of ciphers to use when using SSL.
   ** For OpenSSL, see ciphers(1) for the syntax of the string.
   ** .pp
   ** For GnuTLS, this option will be used in place of "NORMAL" at the
@@ -3961,31 +3978,32 @@ struct Option MuttVars[] = {
   ** menu.  This string is similar to $$index_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
   ** .dl
-  ** .dt %b  .dd number of mailboxes with new mail *
-  ** .dt %d  .dd number of deleted messages *
-  ** .dt %f  .dd the full pathname of the current mailbox
-  ** .dt %F  .dd number of flagged messages *
-  ** .dt %h  .dd local hostname
-  ** .dt %l  .dd size (in bytes) of the current mailbox *
-  ** .dt %L  .dd size (in bytes) of the messages shown
+  ** .dt %b  .dd Number of mailboxes with new mail *
+  ** .dt %d  .dd Number of deleted messages *
+  ** .dt %f  .dd The full pathname of the current mailbox
+  ** .dt %F  .dd Number of flagged messages *
+  ** .dt %h  .dd Local hostname
+  ** .dt %l  .dd Size (in bytes) of the current mailbox *
+  ** .dt %L  .dd Size (in bytes) of the messages shown
   **             (i.e., which match the current limit) *
-  ** .dt %m  .dd the number of messages in the mailbox *
-  ** .dt %M  .dd the number of messages shown (i.e., which match the current limit) *
-  ** .dt %n  .dd number of new messages in the mailbox *
-  ** .dt %o  .dd number of old unread messages *
-  ** .dt %p  .dd number of postponed messages *
-  ** .dt %P  .dd percentage of the way through the index
-  ** .dt %r  .dd modified/read-only/won't-write/attach-message indicator,
-  **             according to $$status_chars
-  ** .dt %s  .dd current sorting mode ($$sort)
-  ** .dt %S  .dd current aux sorting method ($$sort_aux)
-  ** .dt %t  .dd number of tagged messages *
-  ** .dt %u  .dd number of unread messages *
+  ** .dt %m  .dd The number of messages in the mailbox *
+  ** .dt %M  .dd The number of messages shown (i.e., which match the current limit) *
+  ** .dt %n  .dd Number of new messages in the mailbox *
+  ** .dt %o  .dd Number of old unread messages *
+  ** .dt %p  .dd Number of postponed messages *
+  ** .dt %P  .dd Percentage of the way through the index
+  ** .dt %r  .dd Modified/read-only/won't-write/attach-message indicator,
+  **             According to $$status_chars
+  ** .dt %R  .dd Number of read messages *
+  ** .dt %s  .dd Current sorting mode ($$sort)
+  ** .dt %S  .dd Current aux sorting method ($$sort_aux)
+  ** .dt %t  .dd Number of tagged messages *
+  ** .dt %u  .dd Number of unread messages *
   ** .dt %v  .dd NeoMutt version string
-  ** .dt %V  .dd currently active limit pattern, if any *
-  ** .dt %>X .dd right justify the rest of the string and pad with ``X''
-  ** .dt %|X .dd pad to the end of the line with ``X''
-  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .dt %V  .dd Currently active limit pattern, if any *
+  ** .dt %>X .dd Right justify the rest of the string and pad with ``X''
+  ** .dt %|X .dd Pad to the end of the line with ``X''
+  ** .dt %*X .dd Soft-fill with character ``X'' as pad
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.

@@ -2069,8 +2069,8 @@ color sidebar_divider   color8  default
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;edit&gt;</literal>
-            <anchor id="edit" />(default: e)</term>
+            <literal>&lt;edit-raw-message&gt;</literal>
+            <anchor id="edit-raw-message" /></term>
             <listitem>
               <para>This command (available in the index and pager) allows you
               to edit the raw current message as it's present in the mail
@@ -2078,6 +2078,43 @@ color sidebar_divider   color8  default
               be appended to the current folder, and the original message will
               be marked for deletion; if the message is unchanged it won't be
               replaced.</para>
+              <para>
+              <link linkend="edit"><literal>&lt;edit&gt;</literal></link> is a
+              synonym of this for backwards compatibility.</para>
+              <para>See also
+              <link linkend="edit-or-view-raw-message">
+                <literal>&lt;edit-or-view-raw-message&gt;</literal>
+              </link>,
+              <link linkend="view-raw-message">
+                <literal>&lt;view-raw-message&gt;</literal>
+              </link>.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+            <literal>&lt;edit&gt;</literal>
+            <anchor id="edit" /></term>
+            <listitem>
+              <para>Alias of
+              <link linkend="edit-raw-message">
+                <literal>&lt;edit-raw-message&gt;</literal>
+              </link> for backwards compatibility.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+            <literal>&lt;edit-or-view-raw-message&gt;</literal>
+            <anchor id="edit-or-view-raw-message" />(default: e)</term>
+            <listitem>
+              <para>This command (available in the index and pager) is the same
+              as
+              <link linkend="edit-raw-message">
+                <literal>&lt;edit-raw-message&gt;</literal>
+              </link>
+              if the mailbox is writable, otherwise it the same as
+              <link linkend="view-raw-message">
+                <literal>&lt;view-raw-message&gt;</literal>
+              </link>.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -2209,6 +2246,26 @@ color sidebar_divider   color8  default
               message. It is particularly useful when being interested in just
               the response and there is a large amount of quoted text in the
               way.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>
+            <literal>&lt;view-raw-message&gt;</literal>
+            <anchor id="view-raw-message" /></term>
+            <listitem>
+              <para>This command (available in the index and pager) opens the
+              raw message read-only in an editor. This command does not allow
+              editing the message, use
+              <link linkend="edit-raw-message">
+                <literal>&lt;edit-raw-message&gt;</literal>
+              </link> for this.</para>
+              <para>See also
+              <link linkend="edit-raw-message">
+                <literal>&lt;edit-raw-message&gt;</literal>
+              </link>,
+              <link linkend="edit-or-view-raw-message">
+                <literal>&lt;edit-or-view-raw-message&gt;</literal>
+              </link>.</para>
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -2728,7 +2785,7 @@ color sidebar_divider   color8  default
           specifically it does not add the trailing spaces.</para>
           <para>After editing the initial message text and before entering the
           compose menu, NeoMutt properly space-stuffs the message.
-          <emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
+          <emphasis>Space-stuffing</emphasis> is required by RFC3676 defining
           <literal>format=flowed</literal> and means to prepend a space
           to:</para>
           <itemizedlist>
@@ -13391,7 +13448,9 @@ color progress white red
         <title>Introduction</title>
         <para>The
         <quote>quasi-delete</quote> function marks an email that should be
-        hidden from the index, but NOT deleted.</para>
+        hidden from the index, but NOT deleted.  The email will disappear from
+        the index when <link linkend="index-map">&lt;sync-mailbox&gt;</link> is
+        called.</para>
         <para>On its own, this feature isn't very useful. It forms a useful
         part of the notmuch plugin.</para>
       </sect2>
@@ -14796,7 +14855,7 @@ bind index D purge-message
       <para>NeoMutt in many places has to rely on external applications or for
       convenience supports mechanisms involving external applications.</para>
       <para>One of these is the
-      <literal>mailcap</literal> mechanism as defined by RfC1524. Details about
+      <literal>mailcap</literal> mechanism as defined by RFC1524. Details about
       a secure use of the mailcap mechanisms is given in
       <xref linkend="secure-mailcap" />.</para>
       <para>Besides the mailcap mechanism, NeoMutt uses a number of other external

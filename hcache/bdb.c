@@ -39,7 +39,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "globals.h"
 #include "mx.h"
@@ -77,9 +77,9 @@ static void *hcache_bdb_open(const char *path)
   u_int32_t createflags = DB_CREATE;
   int pagesize;
 
-  struct HcacheDbCtx *ctx = safe_malloc(sizeof(struct HcacheDbCtx));
+  struct HcacheDbCtx *ctx = mutt_mem_malloc(sizeof(struct HcacheDbCtx));
 
-  if (mutt_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+  if (mutt_str_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
 
   snprintf(ctx->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
@@ -91,7 +91,7 @@ static void *hcache_bdb_open(const char *path)
     return NULL;
   }
 
-  if (mutt_lock_file(ctx->lockfile, ctx->fd, 1, 5))
+  if (mutt_file_lock(ctx->fd, 1, 5))
     goto fail_close;
 
   ret = db_env_create(&ctx->env, 0);
@@ -124,7 +124,7 @@ fail_db:
 fail_env:
   ctx->env->close(ctx->env, 0);
 fail_unlock:
-  mutt_unlock_file(ctx->lockfile, ctx->fd);
+  mutt_file_unlock(ctx->fd);
 fail_close:
   close(ctx->fd);
   unlink(ctx->lockfile);
@@ -199,7 +199,7 @@ static void hcache_bdb_close(void **vctx)
 
   ctx->db->close(ctx->db, 0);
   ctx->env->close(ctx->env, 0);
-  mutt_unlock_file(ctx->lockfile, ctx->fd);
+  mutt_file_unlock(ctx->fd);
   close(ctx->fd);
   unlink(ctx->lockfile);
   FREE(vctx);

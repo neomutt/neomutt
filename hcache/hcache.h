@@ -44,7 +44,7 @@
  *   * mutt_convert_string()
  *   * mutt_encode_path()
  *   * mutt_new_body()
- *   * mutt_new_envelope()
+ *   * mutt_env_new()
  *   * mutt_sleep()
  *   * mx_lock_file()
  *   * mx_unlock_file()

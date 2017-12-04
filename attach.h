@@ -87,10 +87,8 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
                                 struct Body *top);
 
-void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
-                        struct Body *cur);
-void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
-                        struct Body *cur);
+void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur);
+void mutt_attach_resend(FILE *fp, struct AttachCtx *actx, struct Body *cur);
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
                          struct Body *cur, int flags);
 void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,

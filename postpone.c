@@ -29,7 +29,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "body.h"
 #include "context.h"
@@ -86,10 +86,10 @@ int mutt_num_postponed(int force)
     force = 1;
   }
 
-  if (mutt_strcmp(Postponed, OldPostponed) != 0)
+  if (mutt_str_strcmp(Postponed, OldPostponed) != 0)
   {
     FREE(&OldPostponed);
-    OldPostponed = safe_strdup(Postponed);
+    OldPostponed = mutt_str_strdup(Postponed);
     LastModify = 0;
     force = 1;
   }
@@ -109,10 +109,10 @@ int mutt_num_postponed(int force)
       if (newpc >= 0)
       {
         PostCount = newpc;
-        mutt_debug(3, "mutt_num_postponed: %d postponed IMAP messages found.\n", PostCount);
+        mutt_debug(3, "%d postponed IMAP messages found.\n", PostCount);
       }
       else
-        mutt_debug(3, "mutt_num_postponed: using old IMAP postponed count.\n");
+        mutt_debug(3, "using old IMAP postponed count.\n");
     }
     return PostCount;
   }
@@ -172,11 +172,19 @@ void mutt_update_num_postponed(void)
   UpdateNumPostponed = 1;
 }
 
-static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
+/**
+ * post_entry - Format a menu item for the email list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Context *ctx = (struct Context *) menu->data;
 
-  _mutt_make_string(s, slen, NONULL(IndexFormat), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
+  mutt_make_string_flags(buf, buflen, NONULL(IndexFormat), ctx, ctx->hdrs[num],
+                         MUTT_FORMAT_ARROWCURSOR);
 }
 
 static struct Header *select_msg(void)
@@ -321,24 +329,24 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &hdr->env->userhdrs, entries, tmp)
   {
-    if (mutt_strncasecmp("X-Mutt-References:", np->data, 18) == 0)
+    if (mutt_str_strncasecmp("X-Mutt-References:", np->data, 18) == 0)
     {
       if (ctx)
       {
         /* if a mailbox is currently open, look to see if the original message
            the user attempted to reply to is in this mailbox */
-        p = skip_email_wsp(np->data + 18);
+        p = mutt_str_skip_email_wsp(np->data + 18);
         if (!ctx->id_hash)
           ctx->id_hash = mutt_make_id_hash(ctx);
-        *cur = hash_find(ctx->id_hash, p);
+        *cur = mutt_hash_find(ctx->id_hash, p);
       }
       if (*cur)
         code |= SENDREPLY;
     }
-    else if (mutt_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
+    else if (mutt_str_strncasecmp("X-Mutt-Fcc:", np->data, 11) == 0)
     {
-      p = skip_email_wsp(np->data + 11);
-      strfcpy(fcc, p, fcclen);
+      p = mutt_str_skip_email_wsp(np->data + 11);
+      mutt_str_strfcpy(fcc, p, fcclen);
       mutt_pretty_mailbox(fcc, fcclen);
 
       /* note that x-mutt-fcc was present.  we do this because we want to add a
@@ -349,23 +357,23 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       code |= SENDPOSTPONEDFCC;
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
-             ((mutt_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
+             ((mutt_str_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
                                                         * by old neomutt versions
                                                         */
-              || (mutt_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
+              || (mutt_str_strncmp("X-Mutt-PGP:", np->data, 11) == 0)))
     {
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
     }
     else if ((WithCrypto & APPLICATION_SMIME) &&
-             (mutt_strncmp("X-Mutt-SMIME:", np->data, 13) == 0))
+             (mutt_str_strncmp("X-Mutt-SMIME:", np->data, 13) == 0))
     {
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
     }
 
 #ifdef MIXMASTER
-    else if (mutt_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
+    else if (mutt_str_strncmp("X-Mutt-Mix:", np->data, 11) == 0)
     {
       char *t = NULL;
       mutt_list_free(&hdr->chain);
@@ -373,7 +381,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       t = strtok(np->data + 11, " \t\n");
       while (t)
       {
-        mutt_list_insert_tail(&hdr->chain, safe_strdup(t));
+        mutt_list_insert_tail(&hdr->chain, mutt_str_strdup(t));
         t = strtok(NULL, " \t\n");
       }
     }
@@ -406,7 +414,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
   if (!WithCrypto)
     return 0;
 
-  p = skip_email_wsp(p);
+  p = mutt_str_skip_email_wsp(p);
   for (; *p; p++)
   {
     switch (*p)
@@ -500,11 +508,15 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 
   if ((WithCrypto & APPLICATION_PGP) && (crypt_app == APPLICATION_PGP) &&
       (flags & SIGN) && (set_empty_signas || *sign_as))
+  {
     mutt_str_replace(&PgpSignAs, sign_as);
+  }
 
   if ((WithCrypto & APPLICATION_SMIME) && (crypt_app == APPLICATION_SMIME) &&
       (flags & SIGN) && (set_empty_signas || *sign_as))
+  {
     mutt_str_replace(&SmimeDefaultKey, sign_as);
+  }
 
   return flags;
 }
@@ -528,7 +540,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   char file[_POSIX_PATH_MAX];
   struct Body *b = NULL;
   FILE *bfp = NULL;
-  int rv = -1;
+  int rc = -1;
   struct State s;
   int sec_type;
 
@@ -575,7 +587,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     {
     err:
       mx_close_message(ctx, &msg);
-      mutt_free_envelope(&newhdr->env);
+      mutt_env_free(&newhdr->env);
       mutt_free_body(&newhdr->content);
       mutt_error(_("Decryption failed."));
       return -1;
@@ -596,8 +608,8 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
-        (mutt_strcasecmp(mutt_get_parameter("protocol", newhdr->content->parameter),
-                         "application/pgp-signature") == 0))
+        (mutt_str_strcasecmp(mutt_param_get("protocol", newhdr->content->parameter),
+                             "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;
@@ -632,8 +644,8 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     file[0] = '\0';
     if (b->filename)
     {
-      strfcpy(file, b->filename, sizeof(file));
-      b->d_filename = safe_strdup(b->filename);
+      mutt_str_strfcpy(file, b->filename, sizeof(file));
+      b->d_filename = mutt_str_strdup(b->filename);
     }
     else
     {
@@ -647,7 +659,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     if (b->type == TYPETEXT)
     {
-      if (mutt_strcasecmp("yes", mutt_get_parameter("x-mutt-noconv", b->parameter)) == 0)
+      if (mutt_str_strcasecmp("yes", mutt_param_get("x-mutt-noconv", b->parameter)) == 0)
         b->noconv = true;
       else
       {
@@ -655,11 +667,11 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
         b->noconv = false;
       }
 
-      mutt_delete_parameter("x-mutt-noconv", &b->parameter);
+      mutt_param_delete("x-mutt-noconv", &b->parameter);
     }
 
     mutt_adv_mktemp(file, sizeof(file));
-    s.fpout = safe_fopen(file, "w");
+    s.fpout = mutt_file_fopen(file, "w");
     if (!s.fpout)
       goto bail;
 
@@ -672,7 +684,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
       b->type = TYPETEXT;
       mutt_str_replace(&b->subtype, "plain");
-      mutt_delete_parameter("x-action", &b->parameter);
+      mutt_param_delete("x-action", &b->parameter);
     }
     else if ((WithCrypto & APPLICATION_SMIME) &&
              ((sec_type = mutt_is_application_smime(b)) & (ENCRYPT | SIGN)))
@@ -686,7 +698,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     else
       mutt_decode_attachment(b, &s);
 
-    if (safe_fclose(&s.fpout) != 0)
+    if (mutt_file_fclose(&s.fpout) != 0)
       goto bail;
 
     mutt_str_replace(&b->filename, file);
@@ -717,21 +729,21 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       newhdr->security &= ~APPLICATION_SMIME;
   }
 
-  rv = 0;
+  rc = 0;
 
 bail:
 
   /* that's it. */
   if (bfp != fp)
-    safe_fclose(&bfp);
+    mutt_file_fclose(&bfp);
   if (msg)
     mx_close_message(ctx, &msg);
 
-  if (rv == -1)
+  if (rc == -1)
   {
-    mutt_free_envelope(&newhdr->env);
+    mutt_env_free(&newhdr->env);
     mutt_free_body(&newhdr->content);
   }
 
-  return rv;
+  return rc;
 }

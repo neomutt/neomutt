@@ -34,7 +34,7 @@
 
 #include "config.h"
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "auth.h"
 #include "globals.h"
 #include "protos.h"
@@ -80,7 +80,7 @@ int imap_authenticate(struct ImapData *idata)
   if (ImapAuthenticators && *ImapAuthenticators)
   {
     /* Try user-specified list of authentication methods */
-    methods = safe_strdup(ImapAuthenticators);
+    methods = mutt_str_strdup(ImapAuthenticators);
 
     for (method = methods; method; method = delim)
     {
@@ -90,17 +90,21 @@ int imap_authenticate(struct ImapData *idata)
       if (!method[0])
         continue;
 
-      mutt_debug(2, "imap_authenticate: Trying method %s\n", method);
+      mutt_debug(2, "Trying method %s\n", method);
       authenticator = imap_authenticators;
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
-          if ((r = authenticator->authenticate(idata, method)) != IMAP_AUTH_UNAVAIL)
+        if (!authenticator->method ||
+            (mutt_str_strcasecmp(authenticator->method, method) == 0))
+        {
+          r = authenticator->authenticate(idata, method);
+          if (r != IMAP_AUTH_UNAVAIL)
           {
             FREE(&methods);
             return r;
           }
+        }
 
         authenticator++;
       }
@@ -111,12 +115,13 @@ int imap_authenticate(struct ImapData *idata)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(2, "imap_authenticate: Using any available method.\n");
+    mutt_debug(2, "Using any available method.\n");
     authenticator = imap_authenticators;
 
     while (authenticator->authenticate)
     {
-      if ((r = authenticator->authenticate(idata, NULL)) != IMAP_AUTH_UNAVAIL)
+      r = authenticator->authenticate(idata, NULL);
+      if (r != IMAP_AUTH_UNAVAIL)
         return r;
       authenticator++;
     }

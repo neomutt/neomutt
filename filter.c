@@ -98,12 +98,12 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
     }
   }
 
-  mutt_block_signals_system();
+  mutt_sig_block_system();
 
   thepid = fork();
   if (thepid == 0)
   {
-    mutt_unblock_signals_system(0);
+    mutt_sig_unblock_system(0);
 
     if (in)
     {
@@ -152,7 +152,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
   }
   else if (thepid == -1)
   {
-    mutt_unblock_signals_system(1);
+    mutt_sig_unblock_system(1);
 
     if (in)
     {
@@ -212,7 +212,7 @@ int mutt_wait_filter(pid_t pid)
   int rc;
 
   waitpid(pid, &rc, 0);
-  mutt_unblock_signals_system(1);
+  mutt_sig_unblock_system(1);
   rc = WIFEXITED(rc) ? WEXITSTATUS(rc) : -1;
 
   return rc;

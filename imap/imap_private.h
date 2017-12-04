@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
-#include "lib/list.h"
+#include "mutt/list.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
@@ -117,6 +117,8 @@ enum ImapNamespace
 
 /**
  * enum ImapCaps - Capabilities we are interested in
+ *
+ * @note This must be kept in the same order as Capabilities.
  */
 enum ImapCaps
 {
@@ -134,6 +136,7 @@ enum ImapCaps
   SASL_IR,       /**< SASL initial response draft */
   ENABLE,        /**< RFC5161 */
   X_GM_EXT1,     /**< https://developers.google.com/gmail/imap/imap-extensions */
+  X_GM_ALT1 = X_GM_EXT1, /**< Alternative capability string */
 
   CAPMAX
 };
@@ -340,7 +343,7 @@ void imap_allow_reopen(struct Context *ctx);
 void imap_disallow_reopen(struct Context *ctx);
 
 #ifdef USE_HCACHE
-#define imap_hcache_keylen mutt_strlen
+#define imap_hcache_keylen mutt_str_strlen
 #endif /* USE_HCACHE */
 
 #endif /* _IMAP_PRIVATE_H */

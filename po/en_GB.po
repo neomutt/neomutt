@@ -1838,7 +1838,7 @@ msgstr "(need 'view-attachments' bound to key!)"
 msgid "Can't create %s: %s."
 msgstr "Can't create %s: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: unable to attach file"

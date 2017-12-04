@@ -28,7 +28,7 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 
 /**
  * struct PgpSignature - PGP Signature
@@ -86,7 +86,7 @@ struct PgpKeyInfo * pgp_remove_key(struct PgpKeyInfo * *klist, struct PgpKeyInfo
 
 static inline struct PgpKeyInfo *pgp_new_keyinfo(void)
 {
-  return safe_calloc(1, sizeof(struct PgpKeyInfo));
+  return mutt_mem_calloc(1, sizeof(struct PgpKeyInfo));
 }
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */

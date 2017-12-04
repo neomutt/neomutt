@@ -23,7 +23,7 @@
 #ifndef _CONN_GLOBALS_H
 #define _CONN_GLOBALS_H
 
-extern short ConnectTimeout;
+short ConnectTimeout;
 
 #ifdef USE_SSL
 extern const char *CertificateFile;
@@ -32,7 +32,7 @@ extern const char *SslCiphers;
 extern const char *SslClientCert;
 #ifdef USE_SSL_GNUTLS
 extern const char *SslCaCertificatesFile;
-extern short SslMinDhPrimeBits;
+short SslMinDhPrimeBits;
 #endif
 #endif
 

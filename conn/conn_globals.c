@@ -39,21 +39,22 @@
  */
 
 #include "config.h"
+#include <stdio.h>
 
-short ConnectTimeout; /**< Config: $connect_timeout */
+short ConnectTimeout = 0; /**< Config: $connect_timeout */
 
 #ifdef USE_SSL
-const char *CertificateFile; /**< Config: $certificate_file */
-const char *EntropyFile;     /**< Config: $entropy_file */
-const char *SslCiphers;      /**< Config: $ssl_ciphers */
-const char *SslClientCert;   /**< Config: $ssl_client_cert */
+const char *CertificateFile = NULL; /**< Config: $certificate_file */
+const char *EntropyFile = NULL;     /**< Config: $entropy_file */
+const char *SslCiphers = NULL;      /**< Config: $ssl_ciphers */
+const char *SslClientCert = NULL;   /**< Config: $ssl_client_cert */
 #ifdef USE_SSL_GNUTLS
-const char *SslCaCertificatesFile; /**< Config: $ssl_ca_certificates_file */
-short SslMinDhPrimeBits;           /**< Config: $ssl_min_dh_prime_bits */
+const char *SslCaCertificatesFile = NULL; /**< Config: $ssl_ca_certificates_file */
+short SslMinDhPrimeBits = 0;              /**< Config: $ssl_min_dh_prime_bits */
 #endif
 #endif
 
 #ifdef USE_SOCKET
-const char *Preconnect; /**< Config: $preconnect */
-const char *Tunnel;     /**< Config: $tunnel */
-#endif                  /* USE_SOCKET */
+const char *Preconnect = NULL; /**< Config: $preconnect */
+const char *Tunnel = NULL;     /**< Config: $tunnel */
+#endif

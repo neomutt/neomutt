@@ -58,13 +58,13 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		compose.o compress.o conststrings.o copy.o curs_lib.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
 		flags.o from.o group.o handler.o hdrline.o \
-		headers.o help.o history.o hook.o init.o keymap.o main.o \
-		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_idna.o \
-		mutt_socket.o mutt_tags.o mx.o \
+		header.o help.o history.o hook.o init.o keymap.o main.o \
+		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_address.o mutt_idna.o \
+		mutt_socket.o tags.o mx.o \
 		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
-		rfc1524.o rfc2047.o rfc2231.o rfc3676.o rfc822.o \
-		safe_asprintf.o score.o send.o sendlib.o sidebar.o signal.o \
+		rfc1524.o rfc2047.o rfc2231.o rfc3676.o address.o \
+		safe_asprintf.o score.o send.o sendlib.o sidebar.o mutt_signal.o \
 		smtp.o sort.o state.o status.o system.o thread.o url.o \
 		version.o
 
@@ -90,9 +90,9 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 ###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	lib/base64.o lib/buffer.o lib/date.o lib/debug.o lib/exit.o \
-		lib/file.o lib/hash.o lib/list.o lib/mapping.o lib/md5.o \
-		lib/memory.o lib/message.o lib/sha1.o lib/string.o
+LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/date.o mutt/debug.o mutt/exit.o \
+		mutt/file.o mutt/hash.o mutt/list.o mutt/mapping.o mutt/mbyte.o mutt/md5.o \
+		mutt/memory.o mutt/message.o mutt/sha1.o mutt/signal.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
@@ -208,16 +208,19 @@ all: $(BINFILES) $(LIBBINFILES) $(ALL_TARGETS)
 	$(CC) $(CFLAGS) -MT $@ -MD -MP -MF $*.Tpo -c -o $@ $<
 	@mv $*.Tpo $*.Po
 
+# make sure git_ver.h is built before any .o files
+$(ALLOBJS):	git_ver.h
+
 # mutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(NEOMUTTOBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
 # libmutt
-$(LIBMUTT): $(PWD)/lib $(LIBMUTTOBJS)
+$(LIBMUTT): $(PWD)/mutt $(LIBMUTTOBJS)
 	$(AR) cr $@ $(LIBMUTTOBJS)
 	$(RANLIB) $@
-$(PWD)/lib:
-	$(MKDIR_P) $(PWD)/lib
+$(PWD)/mutt:
+	$(MKDIR_P) $(PWD)/mutt
 
 # libncrypt
 $(LIBNCRYPT): $(PWD)/ncrypt $(LIBNCRYPTOBJS)
@@ -264,14 +267,14 @@ git_ver.h: $(ALL_FILES)
 	rm -f git_ver.h.tmp
 
 hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/address.h \
-			$(SRCDIR)/lib/list.h $(SRCDIR)/lib/buffer.h \
+			$(SRCDIR)/mutt/list.h $(SRCDIR)/mutt/buffer.h \
 			$(SRCDIR)/parameter.h $(SRCDIR)/body.h \
 			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
 			$(SRCDIR)/hcache/hcachever.sh \
 			$(PWD)/hcache
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
-	echo '#include "address.h"'; echo '#include "lib/list.h"'; \
-	echo '#include "lib/buffer.h"'; echo '#include "parameter.h"'; \
+	echo '#include "address.h"'; echo '#include "mutt/list.h"'; \
+	echo '#include "mutt/buffer.h"'; echo '#include "parameter.h"'; \
 	echo '#include "body.h"'; echo '#include "envelope.h"'; \
 	echo '#include "header.h"';) | $(CPP) $(CFLAGS) - | \
 	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h

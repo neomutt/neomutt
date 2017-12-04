@@ -31,7 +31,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "context.h"
 #include "copy.h"
@@ -43,17 +43,19 @@
 #include "protos.h"
 
 /**
- * edit_one_message - Edit an email
+ * edit_or_view_one_message - Edit an email or view it in an external editor
+ * @param edit true if the message should be editable. If false, changes
+ *            to the massage (in the editor) will be ignored.
  * @param ctx Context
  * @param cur Header of email
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-static int edit_one_message(struct Context *ctx, struct Header *cur)
+static int edit_or_view_one_message(bool edit, struct Context *ctx, struct Header *cur)
 {
   char tmp[_POSIX_PATH_MAX];
-  char buff[STRING];
+  char buf[STRING];
   int omagic;
   int oerrno;
   int rc;
@@ -118,7 +120,20 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  mtime = mutt_decrease_mtime(tmp, &sb);
+  if (!edit)
+  {
+    /* remove write permissions */
+    rc = mutt_file_chmod_rm_stat(tmp, S_IWUSR | S_IWGRP | S_IWOTH, &sb);
+    if (rc == -1)
+    {
+      mutt_debug(1, "Could not remove write permissions of %s: %s", tmp, strerror(errno));
+      /* Do not bail out here as we are checking afterwards if we should adopt
+       * changes of the temporary file. */
+    }
+  }
+
+  /* Do not reuse the stat sb here as it is outdated. */
+  mtime = mutt_file_decrease_mtime(tmp, NULL);
 
   mutt_edit_file(NONULL(Editor), tmp);
 
@@ -136,9 +151,23 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
     goto bail;
   }
 
-  if (sb.st_mtime == mtime)
+  if (edit && sb.st_mtime == mtime)
   {
     mutt_message(_("Message not modified!"));
+    rc = 1;
+    goto bail;
+  }
+
+  if (!edit && sb.st_mtime != mtime)
+  {
+    mutt_message(_("Message of read-only mailbox modified! Ignoring changes."));
+    rc = 1;
+    goto bail;
+  }
+
+  if (!edit)
+  {
+    /* stop processing here and skip right to the end */
     rc = 1;
     goto bail;
   }
@@ -162,7 +191,7 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
   of = 0;
   cf = ((tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
 
-  if (fgets(buff, sizeof(buff), fp) && is_from(buff, NULL, 0, NULL))
+  if (fgets(buf, sizeof(buf), fp) && is_from(buf, NULL, 0, NULL))
   {
     if (tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF)
       cf = CH_FROM | CH_FORCE_FROM;
@@ -191,7 +220,7 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
   if (rc == 0)
   {
     fputc('\n', msg->fp);
-    mutt_copy_stream(fp, msg->fp);
+    mutt_file_copy_stream(fp, msg->fp);
   }
 
   rc = mx_commit_message(msg, &tmpctx);
@@ -201,7 +230,7 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
 
 bail:
   if (fp)
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
 
   if (rc >= 0)
     unlink(tmp);
@@ -221,19 +250,29 @@ bail:
   return rc;
 }
 
-int mutt_edit_message(struct Context *ctx, struct Header *hdr)
+int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
 {
   if (hdr)
-    return edit_one_message(ctx, hdr);
+    return edit_or_view_one_message(edit, ctx, hdr);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
     if (!message_is_tagged(ctx, i))
       continue;
 
-    if (edit_one_message(ctx, ctx->hdrs[i]) == -1)
+    if (edit_or_view_one_message(edit, ctx, ctx->hdrs[i]) == -1)
       return -1;
   }
 
   return 0;
+}
+
+int mutt_edit_message(struct Context *ctx, struct Header *hdr)
+{
+  return edit_or_view_message(true, ctx, hdr); /* true means edit */
+}
+
+int mutt_view_message(struct Context *ctx, struct Header *hdr)
+{
+  return edit_or_view_message(false, ctx, hdr); /* false means only view */
 }

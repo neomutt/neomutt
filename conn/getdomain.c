@@ -36,9 +36,9 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/string2.h"
 
 /**
  * getdnsdomainname - Lookup the host's name using DNS
@@ -49,12 +49,12 @@
  */
 int getdnsdomainname(char *d, size_t len)
 {
-  int ret = -1;
+  int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
   char node[STRING];
   if (gethostname(node, sizeof(node)))
-    return ret;
+    return rc;
 
   struct addrinfo hints;
   struct addrinfo *h = NULL;
@@ -73,7 +73,7 @@ int getdnsdomainname(char *d, size_t len)
   int status;
   struct timespec timeout = { 0, 100000000 };
   struct gaicb *reqs[1];
-  reqs[0] = safe_calloc(1, sizeof(*reqs[0]));
+  reqs[0] = mutt_mem_calloc(1, sizeof(*reqs[0]));
   reqs[0]->ar_name = node;
   reqs[0]->ar_request = &hints;
   if (getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0)
@@ -84,7 +84,7 @@ int getdnsdomainname(char *d, size_t len)
       h = reqs[0]->ar_result;
     else if (status == EAI_INPROGRESS)
     {
-      mutt_debug(1, "getdnsdomainname timeout\n");
+      mutt_debug(1, "timeout\n");
       /* request is not finish, cancel it to free it safely */
       if (gai_cancel(reqs[0]) == EAI_NOTCANCELED)
       {
@@ -93,26 +93,28 @@ int getdnsdomainname(char *d, size_t len)
       }
     }
     else
-      mutt_debug(1, "getdnsdomainname fail: (%d) %s\n", status, gai_strerror(status));
+      mutt_debug(1, "fail: (%d) %s\n", status, gai_strerror(status));
   }
   FREE(&reqs[0]);
 
 #else /* !HAVE_GETADDRINFO_A */
 
+  mutt_debug(3, "before getaddrinfo\n");
   getaddrinfo(node, NULL, &hints, &h);
+  mutt_debug(3, "after getaddrinfo\n");
 
 #endif
 
   char *p = NULL;
   if (h != NULL && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
-    strfcpy(d, ++p, len);
-    ret = 0;
-    mutt_debug(1, "getdnsdomainname(): %s\n", d);
+    mutt_str_strfcpy(d, ++p, len);
+    rc = 0;
+    mutt_debug(1, "%s\n", d);
     freeaddrinfo(h);
   }
 
 #endif /* HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A */
 
-  return ret;
+  return rc;
 }

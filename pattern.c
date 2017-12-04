@@ -38,7 +38,7 @@
 #include <unistd.h>
 #include <wchar.h>
 #include <wctype.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -62,8 +62,8 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
-#include "mutt_tags.h"
 #include "mx.h"
+#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
@@ -100,7 +100,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 
   if (pat->stringmatch)
   {
-    pat->p.str = safe_strdup(buf.data);
+    pat->p.str = mutt_str_strdup(buf.data);
     pat->ign_case = mutt_which_case(buf.data) == REG_ICASE;
     FREE(&buf.data);
   }
@@ -111,10 +111,10 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   }
   else
   {
-    pat->p.regex = safe_malloc(sizeof(regex_t));
+    pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
     r = REGCOMP(pat->p.regex, buf.data,
                 REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
-    if (r)
+    if (r != 0)
     {
       regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
       mutt_buffer_printf(err, "'%s': %s", buf.data, errmsg);
@@ -160,7 +160,7 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
     default:
       return s;
   }
-  mutt_normalize_time(tm);
+  mutt_date_normalize_time(tm);
   return (ps + 1);
 }
 
@@ -429,7 +429,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   memset(&max, 0, sizeof(max));
 
   /* Arbitrary year in the future.  Don't set this too high
-     or mutt_mktime() returns something larger than will
+     or mutt_date_make_time() returns something larger than will
      fit in a time_t on some systems */
   max.tm_year = 130;
   max.tm_mon = 11;
@@ -530,8 +530,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   /* Since we allow two dates to be specified we'll have to adjust that. */
   adjust_date_range(&min, &max);
 
-  pat->min = mutt_mktime(&min, 1);
-  pat->max = mutt_mktime(&max, 1);
+  pat->min = mutt_date_make_time(&min, 1);
+  pat->max = mutt_date_make_time(&max, 1);
 
   FREE(&buffer.data);
 
@@ -657,7 +657,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
     return true;
 
   /* Nope. */
-  strfcpy(err->data, _("No current message"), err->dsize);
+  mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
   return false;
 }
 
@@ -764,7 +764,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   {
     if (!Context->menu)
     {
-      strfcpy(err->data, _("No current message"), err->dsize);
+      mutt_str_strfcpy(err->data, _("No current message"), err->dsize);
       return RANGE_E_CTX;
     }
     pat->min = pat->max = CTX_MSGNO(Context);
@@ -785,7 +785,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   /* We need a Context for pretty much anything. */
   if (!Context)
   {
-    strfcpy(err->data, _("No Context"), err->dsize);
+    mutt_str_strfcpy(err->data, _("No Context"), err->dsize);
     return false;
   }
 
@@ -958,7 +958,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       }
 #else
       mutt_mktemp(tempfile, sizeof(tempfile));
-      s.fpout = safe_fopen(tempfile, "w+");
+      s.fpout = mutt_file_fopen(tempfile, "w+");
       if (!s.fpout)
       {
         mutt_perror(tempfile);
@@ -978,7 +978,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
           mx_close_message(ctx, &msg);
           if (s.fpout)
           {
-            safe_fclose(&s.fpout);
+            mutt_file_fclose(&s.fpout);
 #ifdef USE_FMEMOPEN
             FREE(&temp);
 #else
@@ -1007,7 +1007,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       }
       else
       { /* fmemopen cannot handle empty buffers */
-        fp = safe_fopen("/dev/null", "r");
+        fp = mutt_file_fopen("/dev/null", "r");
         if (!fp)
         {
           mutt_perror(_("Error opening /dev/null"));
@@ -1040,14 +1040,15 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     }
 
     blen = STRING;
-    buf = safe_malloc(blen);
+    buf = mutt_mem_malloc(blen);
 
     /* search the file "fp" */
     while (lng > 0)
     {
       if (pat->op == MUTT_HEADER)
       {
-        if (*(buf = mutt_read_rfc822_line(fp, buf, &blen)) == '\0')
+        buf = mutt_read_rfc822_line(fp, buf, &blen);
+        if (*buf == '\0')
           break;
       }
       else if (fgets(buf, blen - 1, fp) == NULL)
@@ -1057,7 +1058,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
         match = 1;
         break;
       }
-      lng -= mutt_strlen(buf);
+      lng -= mutt_str_strlen(buf);
     }
 
     FREE(&buf);
@@ -1066,7 +1067,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
     if (option(OPT_THOROUGH_SEARCH))
     {
-      safe_fclose(&fp);
+      mutt_file_fclose(&fp);
 #ifdef USE_FMEMOPEN
       if (tempsize)
         FREE(&temp);
@@ -1148,7 +1149,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
 
   mutt_buffer_init(&ps);
   ps.dptr = s;
-  ps.dsize = mutt_strlen(s);
+  ps.dsize = mutt_str_strlen(s);
 
   while (*ps.dptr)
   {
@@ -1236,7 +1237,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           alladdr = false;
           isalias = false;
           /* compile the sub-expression */
-          buf = mutt_substrdup(ps.dptr + 1, p);
+          buf = mutt_str_substr_dup(ps.dptr + 1, p);
           tmp2 = mutt_pattern_comp(buf, flags, err);
           if (!tmp2)
           {
@@ -1320,7 +1321,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           return NULL;
         }
         /* compile the sub-expression */
-        buf = mutt_substrdup(ps.dptr + 1, p);
+        buf = mutt_str_substr_dup(ps.dptr + 1, p);
         tmp = mutt_pattern_comp(buf, flags, err);
         if (!tmp)
         {
@@ -1350,7 +1351,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   }
   if (!curlist)
   {
-    strfcpy(err->data, _("empty pattern"), err->dsize);
+    mutt_str_strfcpy(err->data, _("empty pattern"), err->dsize);
     return NULL;
   }
   if (curlist->next)
@@ -1474,10 +1475,14 @@ static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
     return a;
   if (right && t->parent &&
       (a = match_threadcomplete(pat, flags, ctx, t->next, 0, 0, 1, 1)))
+  {
     return a;
+  }
   if (left && t->parent &&
       (a = match_threadcomplete(pat, flags, ctx, t->prev, 1, 0, 0, 1)))
+  {
     return a;
+  }
   if (down && (a = match_threadcomplete(pat, flags, ctx, t->child, 1, 0, 1, 1)))
     return a;
   return 0;
@@ -1771,9 +1776,9 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_BROKEN:
       return (pat->not ^ (h->thread && h->thread->fake_thread));
 #ifdef USE_NNTP
+    case MUTT_NEWSGROUPS:
       if (!h->env)
         return 0;
-    case MUTT_NEWSGROUPS:
       return (pat->not ^ (h->env->newsgroups && patmatch(pat, h->env->newsgroups) == 0));
 #endif
   }
@@ -1815,32 +1820,34 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
     }
   }
 
-  /* XXX - is mutt_strcasecmp() right here, or should we use locale's
+  /* XXX - is mutt_str_strcasecmp() right here, or should we use locale's
    * equivalences?
    */
 
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if ((mutt_strcasecmp("all", s) == 0) || (mutt_strcmp("^", s) == 0) ||
-        (mutt_strcmp(".", s) == 0)) /* ~A is more efficient */
-      strfcpy(s, "~A", len);
-    else if (mutt_strcasecmp("del", s) == 0)
-      strfcpy(s, "~D", len);
-    else if (mutt_strcasecmp("flag", s) == 0)
-      strfcpy(s, "~F", len);
-    else if (mutt_strcasecmp("new", s) == 0)
-      strfcpy(s, "~N", len);
-    else if (mutt_strcasecmp("old", s) == 0)
-      strfcpy(s, "~O", len);
-    else if (mutt_strcasecmp("repl", s) == 0)
-      strfcpy(s, "~Q", len);
-    else if (mutt_strcasecmp("read", s) == 0)
-      strfcpy(s, "~R", len);
-    else if (mutt_strcasecmp("tag", s) == 0)
-      strfcpy(s, "~T", len);
-    else if (mutt_strcasecmp("unread", s) == 0)
-      strfcpy(s, "~U", len);
+    if ((mutt_str_strcasecmp("all", s) == 0) || (mutt_str_strcmp("^", s) == 0) ||
+        (mutt_str_strcmp(".", s) == 0)) /* ~A is more efficient */
+    {
+      mutt_str_strfcpy(s, "~A", len);
+    }
+    else if (mutt_str_strcasecmp("del", s) == 0)
+      mutt_str_strfcpy(s, "~D", len);
+    else if (mutt_str_strcasecmp("flag", s) == 0)
+      mutt_str_strfcpy(s, "~F", len);
+    else if (mutt_str_strcasecmp("new", s) == 0)
+      mutt_str_strfcpy(s, "~N", len);
+    else if (mutt_str_strcasecmp("old", s) == 0)
+      mutt_str_strfcpy(s, "~O", len);
+    else if (mutt_str_strcasecmp("repl", s) == 0)
+      mutt_str_strfcpy(s, "~Q", len);
+    else if (mutt_str_strcasecmp("read", s) == 0)
+      mutt_str_strfcpy(s, "~R", len);
+    else if (mutt_str_strcasecmp("tag", s) == 0)
+      mutt_str_strfcpy(s, "~T", len);
+    else if (mutt_str_strcasecmp("unread", s) == 0)
+      mutt_str_strfcpy(s, "~U", len);
     else
     {
       quote_simple(tmp, sizeof(tmp), s);
@@ -1919,19 +1926,19 @@ int mutt_pattern_func(int op, char *prompt)
   struct Buffer err;
   struct Progress progress;
 
-  strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
+  mutt_str_strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
   if (prompt || op != MUTT_LIMIT)
     if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
       return -1;
 
   mutt_message(_("Compiling search pattern..."));
 
-  simple = safe_strdup(buf);
+  simple = mutt_str_strdup(buf);
   mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   pat = mutt_pattern_comp(buf, MUTT_FULL_MSG, &err);
   if (!pat)
   {
@@ -1987,6 +1994,7 @@ int mutt_pattern_func(int op, char *prompt)
         {
           case MUTT_UNDELETE:
             mutt_set_flag(Context, Context->hdrs[Context->v2r[i]], MUTT_PURGE, 0);
+          /* fallthrough */
           case MUTT_DELETE:
             mutt_set_flag(Context, Context->hdrs[Context->v2r[i]], MUTT_DELETE,
                           (op == MUTT_DELETE));
@@ -2014,7 +2022,7 @@ int mutt_pattern_func(int op, char *prompt)
       mutt_error(_("No messages matched criteria."));
 
     /* record new limit pattern, unless match all */
-    if (mutt_strcmp(buf, "~A") != 0)
+    if (mutt_str_strcmp(buf, "~A") != 0)
     {
       Context->pattern = simple;
       simple = NULL; /* don't clobber it */
@@ -2039,7 +2047,7 @@ int mutt_search_command(int cur, int op)
 
   if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
+    mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
     if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
                            _("Search for: ") :
                            _("Reverse search for: "),
@@ -2054,19 +2062,19 @@ int mutt_search_command(int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
-    strfcpy(temp, buf, sizeof(temp));
+    mutt_str_strfcpy(temp, buf, sizeof(temp));
     mutt_check_simple(temp, sizeof(temp), NONULL(SimpleSearch));
 
-    if (!SearchPattern || (mutt_strcmp(temp, LastSearchExpn) != 0))
+    if (!SearchPattern || (mutt_str_strcmp(temp, LastSearchExpn) != 0))
     {
       struct Buffer err;
       mutt_buffer_init(&err);
       set_option(OPT_SEARCH_INVALID);
-      strfcpy(LastSearch, buf, sizeof(LastSearch));
+      mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
       err.dsize = STRING;
-      err.data = safe_malloc(err.dsize);
+      err.data = mutt_mem_malloc(err.dsize);
       SearchPattern = mutt_pattern_comp(temp, MUTT_FULL_MSG, &err);
       if (!SearchPattern)
       {

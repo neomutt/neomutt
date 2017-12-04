@@ -1889,7 +1889,7 @@ msgstr "(potrebujem 'view-attachments' priradené na klávesu!)"
 msgid "Can't create %s: %s."
 msgstr "Nemožno vytvoriť súbor %s"
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: súbor nemožno pripojiť"

@@ -24,7 +24,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt_idna.h"
 #include "address.h"
 #include "charset.h"
@@ -38,12 +38,12 @@ static bool check_idn(char *domain)
   if (!domain)
     return false;
 
-  if (mutt_strncasecmp(domain, "xn--", 4) == 0)
+  if (mutt_str_strncasecmp(domain, "xn--", 4) == 0)
     return true;
 
   while ((domain = strchr(domain, '.')) != NULL)
   {
-    if (mutt_strncasecmp(++domain, "xn--", 4) == 0)
+    if (mutt_str_strncasecmp(++domain, "xn--", 4) == 0)
       return true;
   }
 
@@ -53,18 +53,18 @@ static bool check_idn(char *domain)
 
 static int mbox_to_udomain(const char *mbx, char **user, char **domain)
 {
-  static char *buff = NULL;
+  static char *buf = NULL;
   char *p = NULL;
 
-  mutt_str_replace(&buff, mbx);
-  if (!buff)
+  mutt_str_replace(&buf, mbx);
+  if (!buf)
     return -1;
 
-  p = strchr(buff, '@');
+  p = strchr(buf, '@');
   if (!p || !p[1])
     return -1;
   *p = '\0';
-  *user = buff;
+  *user = buf;
   *domain = p + 1;
   return 0;
 }
@@ -104,8 +104,8 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
   bool is_idn_encoded = false;
 #endif /* HAVE_LIBIDN */
 
-  local_user = safe_strdup(orig_user);
-  local_domain = safe_strdup(orig_domain);
+  local_user = mutt_str_strdup(orig_user);
+  local_domain = mutt_str_strdup(orig_domain);
 
 #ifdef HAVE_LIBIDN
   is_idn_encoded = check_idn(local_domain);
@@ -131,31 +131,30 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
    */
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
-    reversed_user = safe_strdup(local_user);
+    reversed_user = mutt_str_strdup(local_user);
 
     if (mutt_convert_string(&reversed_user, Charset, "utf-8", 0) == -1)
     {
-      mutt_debug(1, "intl_to_local: Not reversible. Charset conv to utf-8 "
-                    "failed for user = '%s'.\n",
-                 reversed_user);
-      goto cleanup;
-    }
-
-    if (mutt_strcasecmp(orig_user, reversed_user) != 0)
-    {
       mutt_debug(
-          1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
-          orig_user, reversed_user);
+          1, "Not reversible. Charset conv to utf-8 failed for user = '%s'.\n", reversed_user);
       goto cleanup;
     }
 
-    reversed_domain = safe_strdup(local_domain);
+    if (mutt_str_strcasecmp(orig_user, reversed_user) != 0)
+    {
+      mutt_debug(1, "#1 Not reversible. orig = '%s', reversed = '%s'.\n",
+                 orig_user, reversed_user);
+      goto cleanup;
+    }
+
+    reversed_domain = mutt_str_strdup(local_domain);
 
     if (mutt_convert_string(&reversed_domain, Charset, "utf-8", 0) == -1)
     {
-      mutt_debug(1, "intl_to_local: Not reversible. Charset conv to utf-8 "
-                    "failed for domain = '%s'.\n",
-                 reversed_domain);
+      mutt_debug(
+          1,
+          "Not reversible. Charset conv to utf-8 failed for domain = '%s'.\n",
+          reversed_domain);
       goto cleanup;
     }
 
@@ -168,25 +167,23 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
     {
       if (idna_to_ascii_8z(reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       {
-        mutt_debug(1, "intl_to_local: Not reversible. idna_to_ascii_8z failed "
-                      "for domain = '%s'.\n",
-                   reversed_domain);
+        mutt_debug(
+            1, "Not reversible. idna_to_ascii_8z failed for domain = '%s'.\n", reversed_domain);
         goto cleanup;
       }
       mutt_str_replace(&reversed_domain, tmp);
     }
 #endif /* HAVE_LIBIDN */
 
-    if (mutt_strcasecmp(orig_domain, reversed_domain) != 0)
+    if (mutt_str_strcasecmp(orig_domain, reversed_domain) != 0)
     {
-      mutt_debug(
-          1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
-          orig_domain, reversed_domain);
+      mutt_debug(1, "#2 Not reversible. orig = '%s', reversed = '%s'.\n",
+                 orig_domain, reversed_domain);
       goto cleanup;
     }
   }
 
-  mailbox = safe_malloc(mutt_strlen(local_user) + mutt_strlen(local_domain) + 2);
+  mailbox = mutt_mem_malloc(mutt_str_strlen(local_user) + mutt_str_strlen(local_domain) + 2);
   sprintf(mailbox, "%s@%s", NONULL(local_user), NONULL(local_domain));
 
 cleanup:
@@ -205,8 +202,8 @@ static char *local_to_intl(char *user, char *domain)
   char *mailbox = NULL;
   char *tmp = NULL;
 
-  intl_user = safe_strdup(user);
-  intl_domain = safe_strdup(domain);
+  intl_user = mutt_str_strdup(user);
+  intl_domain = mutt_str_strdup(domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
   if (mutt_convert_string(&intl_user, Charset, "utf-8", 0) == -1)
@@ -224,7 +221,7 @@ static char *local_to_intl(char *user, char *domain)
   }
 #endif /* HAVE_LIBIDN */
 
-  mailbox = safe_malloc(mutt_strlen(intl_user) + mutt_strlen(intl_domain) + 2);
+  mailbox = mutt_mem_malloc(mutt_str_strlen(intl_user) + mutt_str_strlen(intl_domain) + 2);
   sprintf(mailbox, "%s@%s", NONULL(intl_user), NONULL(intl_domain));
 
 cleanup:
@@ -241,7 +238,7 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
 {
   char *user = NULL, *domain = NULL;
   char *intl_mailbox = NULL;
-  int rv = 0;
+  int rc = 0;
 
   if (err)
     *err = NULL;
@@ -257,16 +254,16 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
     intl_mailbox = local_to_intl(user, domain);
     if (!intl_mailbox)
     {
-      rv = -1;
+      rc = -1;
       if (err && !*err)
-        *err = safe_strdup(a->mailbox);
+        *err = mutt_str_strdup(a->mailbox);
       continue;
     }
 
     set_intl_mailbox(a, intl_mailbox);
   }
 
-  return rv;
+  return rc;
 }
 
 int mutt_addrlist_to_local(struct Address *a)
@@ -296,10 +293,10 @@ int mutt_addrlist_to_local(struct Address *a)
 const char *mutt_addr_for_display(struct Address *a)
 {
   char *user = NULL, *domain = NULL;
-  static char *buff = NULL;
+  static char *buf = NULL;
   char *local_mailbox = NULL;
 
-  FREE(&buff);
+  FREE(&buf);
 
   if (!a->mailbox || addr_is_local(a))
     return a->mailbox;
@@ -311,9 +308,9 @@ const char *mutt_addr_for_display(struct Address *a)
   if (!local_mailbox)
     return a->mailbox;
 
-  mutt_str_replace(&buff, local_mailbox);
+  mutt_str_replace(&buf, local_mailbox);
   FREE(&local_mailbox);
-  return buff;
+  return buf;
 }
 
 /**

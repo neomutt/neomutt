@@ -1865,7 +1865,7 @@ msgstr "('view-attachments' moet aan een toets gekoppeld zijn!)"
 msgid "Can't create %s: %s."
 msgstr "Kan bestand %s niet aanmaken: %s"
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kan bestand niet toevoegen"

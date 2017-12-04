@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2000 Takashi Takizawa <taki@luna.email.ne.jp>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,17 +21,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Japanese support by TAKIZAWA Takashi <taki@luna.email.ne.jp>.
- */
-
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mbyte.h"
 #include "charset.h"
 #include "options.h"
@@ -48,19 +45,20 @@ void mutt_set_charset(char *charset)
 
   mutt_canonical_charset(buffer, sizeof(buffer), charset);
 
-  Charset_is_utf8 = false;
-
   if (mutt_is_utf8(buffer))
+  {
     Charset_is_utf8 = true;
+    ReplacementChar = 0xfffd;
+  }
+  else
+  {
+    Charset_is_utf8 = false;
+    ReplacementChar = '?';
+  }
 
 #if defined(HAVE_BIND_TEXTDOMAIN_CODESET) && defined(ENABLE_NLS)
   bind_textdomain_codeset(PACKAGE, buffer);
 #endif
-}
-
-wchar_t replacement_char(void)
-{
-  return Charset_is_utf8 ? 0xfffd : '?';
 }
 
 bool is_display_corrupting_utf8(wchar_t wc)
@@ -97,7 +95,7 @@ int mutt_filter_unprintable(char **s)
     {
       k = 1;
       memset(&mbstate1, 0, sizeof(mbstate1));
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';
@@ -108,7 +106,7 @@ int mutt_filter_unprintable(char **s)
     mutt_buffer_addstr(b, scratch);
   }
   FREE(s);
-  *s = b->data ? b->data : safe_calloc(1, 1);
+  *s = b->data ? b->data : mutt_mem_calloc(1, 1);
   FREE(&b);
   return 0;
 }

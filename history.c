@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "history.h"
 #include "charset.h"
 #include "globals.h"
@@ -107,7 +107,7 @@ static void init_history(struct History *h)
   }
 
   if (History)
-    h->hist = safe_calloc(History + 1, sizeof(char *));
+    h->hist = mutt_mem_calloc(History + 1, sizeof(char *));
 
   h->cur = 0;
   h->last = 0;
@@ -124,7 +124,7 @@ void mutt_read_histfile(void)
   if (!f)
     return;
 
-  while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
   {
     read = 0;
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
@@ -137,7 +137,7 @@ void mutt_read_histfile(void)
     if (hclass >= HC_LAST)
       continue;
     *p = '\0';
-    p = safe_strdup(linebuf + read);
+    p = mutt_str_strdup(linebuf + read);
     if (p)
     {
       mutt_convert_string(&p, "utf-8", Charset, 0);
@@ -146,7 +146,7 @@ void mutt_read_histfile(void)
     }
   }
 
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   FREE(&linebuf);
 }
 
@@ -155,14 +155,14 @@ static int dup_hash_dec(struct Hash *dup_hash, char *s)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, s);
   if (!elem)
     return -1;
 
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    hash_delete(dup_hash, s, NULL, NULL);
+    mutt_hash_delete(dup_hash, s, NULL, NULL);
     return 0;
   }
 
@@ -176,11 +176,11 @@ static int dup_hash_inc(struct Hash *dup_hash, char *s)
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, s);
   if (!elem)
   {
     count = 1;
-    hash_insert(dup_hash, s, (void *) count);
+    mutt_hash_insert(dup_hash, s, (void *) count);
     return count;
   }
 
@@ -207,10 +207,10 @@ static void shrink_histfile(void)
 
   if (option(OPT_HISTORY_REMOVE_DUPS))
     for (hclass = 0; hclass < HC_LAST; hclass++)
-      dup_hashes[hclass] = hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
+      dup_hashes[hclass] = mutt_hash_create(MAX(10, SaveHistory * 2), MUTT_HASH_STRDUP_KEYS);
 
   line = 0;
-  while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
   {
     if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
         *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -232,17 +232,21 @@ static void shrink_histfile(void)
   }
 
   if (!regen_file)
+  {
     for (hclass = HC_FIRST; hclass < HC_LAST; hclass++)
+    {
       if (n[hclass] > SaveHistory)
       {
         regen_file = true;
         break;
       }
+    }
+  }
 
   if (regen_file)
   {
     mutt_mktemp(tmpfname, sizeof(tmpfname));
-    tmp = safe_fopen(tmpfname, "w+");
+    tmp = mutt_file_fopen(tmpfname, "w+");
     if (!tmp)
     {
       mutt_perror(tmpfname);
@@ -250,7 +254,7 @@ static void shrink_histfile(void)
     }
     rewind(f);
     line = 0;
-    while ((linebuf = mutt_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+    while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
     {
       if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
           *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
@@ -263,7 +267,9 @@ static void shrink_histfile(void)
       *p = '\0';
       if (option(OPT_HISTORY_REMOVE_DUPS) &&
           (dup_hash_dec(dup_hashes[hclass], linebuf + read) > 0))
+      {
         continue;
+      }
       *p = '|';
       if (n[hclass]-- <= SaveHistory)
         fprintf(tmp, "%s\n", linebuf);
@@ -271,22 +277,22 @@ static void shrink_histfile(void)
   }
 
 cleanup:
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   FREE(&linebuf);
   if (tmp)
   {
     if (fflush(tmp) == 0 && (f = fopen(HistoryFile, "w")) != NULL)
     {
       rewind(tmp);
-      mutt_copy_stream(tmp, f);
-      safe_fclose(&f);
+      mutt_file_copy_stream(tmp, f);
+      mutt_file_fclose(&f);
     }
-    safe_fclose(&tmp);
+    mutt_file_fclose(&tmp);
     unlink(tmpfname);
   }
   if (option(OPT_HISTORY_REMOVE_DUPS))
     for (hclass = 0; hclass < HC_LAST; hclass++)
-      hash_destroy(&dup_hashes[hclass], NULL);
+      mutt_hash_destroy(&dup_hashes[hclass], NULL);
 }
 
 static void save_history(enum HistoryClass hclass, const char *s)
@@ -305,7 +311,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
     return;
   }
 
-  tmp = safe_strdup(s);
+  tmp = mutt_str_strdup(s);
   mutt_convert_string(&tmp, Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
@@ -321,7 +327,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
   }
   fputs("|\n", f);
 
-  safe_fclose(&f);
+  mutt_file_fclose(&f);
   FREE(&tmp);
 
   if (--n < 0)
@@ -349,7 +355,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
   source = dest = 0;
   while (source < h->last)
   {
-    if (!mutt_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], s))
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -368,7 +374,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
   source = dest = History;
   while (source > old_last)
   {
-    if (!mutt_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], s))
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];
@@ -408,7 +414,7 @@ void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
      *  - lines beginning by a space
      *  - repeated lines
      */
-    if (*s != ' ' && (!h->hist[prev] || (mutt_strcmp(h->hist[prev], s) != 0)))
+    if (*s != ' ' && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], s) != 0)))
     {
       if (option(OPT_HISTORY_REMOVE_DUPS))
         remove_history_dups(hclass, s);

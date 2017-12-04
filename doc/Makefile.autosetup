@@ -1,7 +1,7 @@
 MAKEDOC_CPP = $(CC_FOR_BUILD) -D_MAKEDOC -E -C -I.
 
-doc/makedoc$(EXEEXT): doc/makedoc.c
-	$(CC_FOR_BUILD) -I. -o $@ doc/makedoc.c
+doc/makedoc$(EXEEXT): $(SRCDIR)/doc/makedoc.c
+	$(CC_FOR_BUILD) -I. -o $@ $(SRCDIR)/doc/makedoc.c
 
 doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
@@ -39,8 +39,7 @@ all-doc: 	$(CHUNKED_DOCFILES) \
 		doc/manual.html \
 		doc/manual.txt \
 		doc/neomuttrc \
-		doc/neomuttrc.man \
-		doc/neomutt-syntax.vim
+		doc/neomuttrc.man
 
 doc/manual.html:	doc/manual.xml \
     			$(SRCDIR)/doc/html.xsl \
@@ -102,7 +101,6 @@ install-doc: all-doc
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir); \
 	done
 	$(INSTALL) -m 644 doc/neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
-	$(INSTALL) -m 644 $(SRCDIR)/doc/neomutt-syntax.vim $(DESTDIR)$(docdir)
 	# Install mime.types
 	$(INSTALL_DATA) $(SRCDIR)/doc/mime.types $(DESTDIR)$(docdir)/mime.types
 
@@ -118,7 +116,6 @@ uninstall-doc:
 	done
 	$(RM) $(DESTDIR)$(docdir)/manual.txt
 	$(RM) $(DESTDIR)$(sysconfdir)/neomuttrc
-	$(RM) $(DESTDIR)$(docdir)/neomutt-syntax.vim
 	# Uninstall mime.types
 	$(RM) $(DESTDIR)$(docdir)/mime.types
 

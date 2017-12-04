@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "context.h"
@@ -62,7 +62,7 @@ int pop_parse_path(const char *path, struct Account *acct)
   acct->type = MUTT_ACCT_TYPE_POP;
   acct->port = 0;
 
-  c = safe_strdup(path);
+  c = mutt_str_strdup(path);
   url_parse(&url, c);
 
   if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host ||
@@ -105,16 +105,16 @@ static void pop_error(struct PopData *pop_data, char *msg)
   t = strchr(pop_data->err_msg, '\0');
   c = msg;
 
-  if (mutt_strncmp(msg, "-ERR ", 5) == 0)
+  if (mutt_str_strncmp(msg, "-ERR ", 5) == 0)
   {
-    c2 = skip_email_wsp(msg + 5);
+    c2 = mutt_str_skip_email_wsp(msg + 5);
 
     if (*c2)
       c = c2;
   }
 
-  strfcpy(t, c, sizeof(pop_data->err_msg) - strlen(pop_data->err_msg));
-  mutt_remove_trailing_ws(pop_data->err_msg);
+  mutt_str_strfcpy(t, c, sizeof(pop_data->err_msg) - strlen(pop_data->err_msg));
+  mutt_str_remove_trailing_ws(pop_data->err_msg);
 }
 
 /**
@@ -128,23 +128,23 @@ static int fetch_capa(char *line, void *data)
   struct PopData *pop_data = (struct PopData *) data;
   char *c = NULL;
 
-  if (mutt_strncasecmp(line, "SASL", 4) == 0)
+  if (mutt_str_strncasecmp(line, "SASL", 4) == 0)
   {
     FREE(&pop_data->auth_list);
-    c = skip_email_wsp(line + 4);
-    pop_data->auth_list = safe_strdup(c);
+    c = mutt_str_skip_email_wsp(line + 4);
+    pop_data->auth_list = mutt_str_strdup(c);
   }
 
-  else if (mutt_strncasecmp(line, "STLS", 4) == 0)
+  else if (mutt_str_strncasecmp(line, "STLS", 4) == 0)
     pop_data->cmd_stls = true;
 
-  else if (mutt_strncasecmp(line, "USER", 4) == 0)
+  else if (mutt_str_strncasecmp(line, "USER", 4) == 0)
     pop_data->cmd_user = 1;
 
-  else if (mutt_strncasecmp(line, "UIDL", 4) == 0)
+  else if (mutt_str_strncasecmp(line, "UIDL", 4) == 0)
     pop_data->cmd_uidl = 1;
 
-  else if (mutt_strncasecmp(line, "TOP", 3) == 0)
+  else if (mutt_str_strncasecmp(line, "TOP", 3) == 0)
     pop_data->cmd_top = 1;
 
   return 0;
@@ -162,12 +162,12 @@ static int fetch_auth(char *line, void *data)
 
   if (!pop_data->auth_list)
   {
-    pop_data->auth_list = safe_malloc(strlen(line) + 1);
+    pop_data->auth_list = mutt_mem_malloc(strlen(line) + 1);
     *pop_data->auth_list = '\0';
   }
   else
   {
-    safe_realloc(&pop_data->auth_list, strlen(pop_data->auth_list) + strlen(line) + 2);
+    mutt_mem_realloc(&pop_data->auth_list, strlen(pop_data->auth_list) + strlen(line) + 2);
     strcat(pop_data->auth_list, " ");
   }
   strcat(pop_data->auth_list, line);
@@ -208,7 +208,7 @@ static int pop_capabilities(struct PopData *pop_data, int mode)
   /* Execute CAPA command */
   if (mode == 0 || pop_data->cmd_capa)
   {
-    strfcpy(buf, "CAPA\r\n", sizeof(buf));
+    mutt_str_strfcpy(buf, "CAPA\r\n", sizeof(buf));
     switch (pop_fetch_data(pop_data, buf, NULL, fetch_capa, pop_data))
     {
       case 0:
@@ -228,7 +228,7 @@ static int pop_capabilities(struct PopData *pop_data, int mode)
     pop_data->cmd_uidl = 2;
     pop_data->cmd_top = 2;
 
-    strfcpy(buf, "AUTH\r\n", sizeof(buf));
+    mutt_str_strfcpy(buf, "AUTH\r\n", sizeof(buf));
     if (pop_fetch_data(pop_data, buf, NULL, fetch_auth, pop_data) == -1)
       return -1;
   }
@@ -276,7 +276,7 @@ int pop_connect(struct PopData *pop_data)
 
   pop_data->status = POP_CONNECTED;
 
-  if (mutt_strncmp(buf, "+OK", 3) != 0)
+  if (mutt_str_strncmp(buf, "+OK", 3) != 0)
   {
     *pop_data->err_msg = '\0';
     pop_error(pop_data, buf);
@@ -299,21 +299,21 @@ int pop_connect(struct PopData *pop_data)
 */
 int pop_open_connection(struct PopData *pop_data)
 {
-  int ret;
+  int rc;
   unsigned int n, size;
   char buf[LONG_STRING];
 
-  ret = pop_connect(pop_data);
-  if (ret < 0)
+  rc = pop_connect(pop_data);
+  if (rc < 0)
   {
     mutt_sleep(2);
-    return ret;
+    return rc;
   }
 
-  ret = pop_capabilities(pop_data, 0);
-  if (ret == -1)
+  rc = pop_capabilities(pop_data, 0);
+  if (rc == -1)
     goto err_conn;
-  if (ret == -2)
+  if (rc == -2)
   {
     mutt_sleep(2);
     return -2;
@@ -327,21 +327,20 @@ int pop_open_connection(struct PopData *pop_data)
       pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
-      ret =
-          query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
-      if (ret == MUTT_ABORT)
+      rc = query_quadoption(OPT_SSL_STARTTLS, _("Secure connection with TLS?"));
+      if (rc == MUTT_ABORT)
         return -2;
       pop_data->use_stls = 1;
-      if (ret == MUTT_YES)
+      if (rc == MUTT_YES)
         pop_data->use_stls = 2;
     }
     if (pop_data->use_stls == 2)
     {
-      strfcpy(buf, "STLS\r\n", sizeof(buf));
-      ret = pop_query(pop_data, buf, sizeof(buf));
-      if (ret == -1)
+      mutt_str_strfcpy(buf, "STLS\r\n", sizeof(buf));
+      rc = pop_query(pop_data, buf, sizeof(buf));
+      if (rc == -1)
         goto err_conn;
-      if (ret != 0)
+      if (rc != 0)
       {
         mutt_error("%s", pop_data->err_msg);
         mutt_sleep(2);
@@ -355,10 +354,10 @@ int pop_open_connection(struct PopData *pop_data)
       else
       {
         /* recheck capabilities after STLS completes */
-        ret = pop_capabilities(pop_data, 1);
-        if (ret == -1)
+        rc = pop_capabilities(pop_data, 1);
+        if (rc == -1)
           goto err_conn;
-        if (ret == -2)
+        if (rc == -2)
         {
           mutt_sleep(2);
           return -2;
@@ -375,34 +374,34 @@ int pop_open_connection(struct PopData *pop_data)
   }
 #endif
 
-  ret = pop_authenticate(pop_data);
-  if (ret == -1)
+  rc = pop_authenticate(pop_data);
+  if (rc == -1)
     goto err_conn;
-  if (ret == -3)
+  if (rc == -3)
     mutt_clear_error();
-  if (ret != 0)
-    return ret;
+  if (rc != 0)
+    return rc;
 
   /* recheck capabilities after authentication */
-  ret = pop_capabilities(pop_data, 2);
-  if (ret == -1)
+  rc = pop_capabilities(pop_data, 2);
+  if (rc == -1)
     goto err_conn;
-  if (ret == -2)
+  if (rc == -2)
   {
     mutt_sleep(2);
     return -2;
   }
 
   /* get total size of mailbox */
-  strfcpy(buf, "STAT\r\n", sizeof(buf));
-  ret = pop_query(pop_data, buf, sizeof(buf));
-  if (ret == -1)
+  mutt_str_strfcpy(buf, "STAT\r\n", sizeof(buf));
+  rc = pop_query(pop_data, buf, sizeof(buf));
+  if (rc == -1)
     goto err_conn;
-  if (ret == -2)
+  if (rc == -2)
   {
     mutt_error("%s", pop_data->err_msg);
     mutt_sleep(2);
-    return ret;
+    return rc;
   }
 
   sscanf(buf, "+OK %u %u", &n, &size);
@@ -432,13 +431,13 @@ void pop_logout(struct Context *ctx)
 
     if (ctx->readonly)
     {
-      strfcpy(buf, "RSET\r\n", sizeof(buf));
+      mutt_str_strfcpy(buf, "RSET\r\n", sizeof(buf));
       ret = pop_query(pop_data, buf, sizeof(buf));
     }
 
     if (ret != -1)
     {
-      strfcpy(buf, "QUIT\r\n", sizeof(buf));
+      mutt_str_strfcpy(buf, "QUIT\r\n", sizeof(buf));
       ret = pop_query(pop_data, buf, sizeof(buf));
     }
 
@@ -470,14 +469,12 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
   if (pop_data->status != POP_CONNECTED)
     return -1;
 
-#ifdef DEBUG
   /* print msg instead of real command */
   if (msg)
   {
     dbg = MUTT_SOCK_LOG_FULL;
     mutt_debug(MUTT_SOCK_LOG_CMD, "> %s", msg);
   }
-#endif
 
   mutt_socket_write_d(pop_data->conn, buf, -1, dbg);
 
@@ -491,7 +488,7 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
     pop_data->status = POP_DISCONNECTED;
     return -1;
   }
-  if (mutt_strncmp(buf, "+OK", 3) == 0)
+  if (mutt_str_strncmp(buf, "+OK", 3) == 0)
     return 0;
 
   pop_error(pop_data, buf);
@@ -518,12 +515,12 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
   long pos = 0;
   size_t lenbuf = 0;
 
-  strfcpy(buf, query, sizeof(buf));
+  mutt_str_strfcpy(buf, query, sizeof(buf));
   ret = pop_query(pop_data, buf, sizeof(buf));
   if (ret < 0)
     return ret;
 
-  inbuf = safe_malloc(sizeof(buf));
+  inbuf = mutt_mem_malloc(sizeof(buf));
 
   while (true)
   {
@@ -543,7 +540,7 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
       p++;
     }
 
-    strfcpy(inbuf + lenbuf, p, sizeof(buf));
+    mutt_str_strfcpy(inbuf + lenbuf, p, sizeof(buf));
     pos += chunk;
 
     /* cast is safe since we break out of the loop when chunk<=0 */
@@ -560,7 +557,7 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
       lenbuf = 0;
     }
 
-    safe_realloc(&inbuf, lenbuf + sizeof(buf));
+    mutt_mem_realloc(&inbuf, lenbuf + sizeof(buf));
   }
 
   FREE(&inbuf);
@@ -590,7 +587,7 @@ static int check_uidl(char *line, void *data)
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
-    if (mutt_strcmp(ctx->hdrs[i]->data, line) == 0)
+    if (mutt_str_strcmp(ctx->hdrs[i]->data, line) == 0)
     {
       ctx->hdrs[i]->refno = index;
       break;

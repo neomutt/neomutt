@@ -177,7 +177,7 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct);
 void nntp_clear_cache(struct NntpServer *nserv);
 const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *fmt,
-                            const char *ifstring, const char *elsestring,
+                            const char *if_str, const char *else_str,
                             unsigned long data, enum FormatFlag flags);
 
 struct NntpServer *CurrentNewsSrv;

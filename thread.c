@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "thread.h"
 #include "body.h"
@@ -226,7 +226,9 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
     {
       if (!tree->visible && tree->deep && tree->subtree_visible < 2 &&
           ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
+      {
         tree->deep = false;
+      }
       if (!tree->deep && tree->child && tree->subtree_visible)
         tree = tree->child;
       else if (tree->next)
@@ -267,8 +269,8 @@ void mutt_draw_tree(struct Context *ctx)
    * From now on we can simply ignore invisible subtrees
    */
   calculate_visibility(ctx, &max_depth);
-  pfx = safe_malloc(width * max_depth + 2);
-  arrow = safe_malloc(width * max_depth + 2);
+  pfx = mutt_mem_malloc(width * max_depth + 2);
+  arrow = mutt_mem_malloc(width * max_depth + 2);
   while (tree)
   {
     if (depth)
@@ -289,15 +291,15 @@ void mutt_draw_tree(struct Context *ctx)
       {
         myarrow[width] = MUTT_TREE_RARROW;
         myarrow[width + 1] = 0;
-        new_tree = safe_malloc((2 + depth * width));
+        new_tree = mutt_mem_malloc((2 + depth * width));
         if (start_depth > 1)
         {
           strncpy(new_tree, pfx, (start_depth - 1) * width);
-          strfcpy(new_tree + (start_depth - 1) * width, arrow,
-                  (1 + depth - start_depth) * width + 2);
+          mutt_str_strfcpy(new_tree + (start_depth - 1) * width, arrow,
+                           (1 + depth - start_depth) * width + 2);
         }
         else
-          strfcpy(new_tree, arrow, 2 + depth * width);
+          mutt_str_strfcpy(new_tree, arrow, 2 + depth * width);
         tree->message->tree = new_tree;
       }
     }
@@ -400,7 +402,7 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
       struct ListNode *np;
       STAILQ_FOREACH(np, subjects, entries)
       {
-        rc = mutt_strcmp(env->real_subj, np->data);
+        rc = mutt_str_strcmp(env->real_subj, np->data);
         if (rc >= 0)
           break;
       }
@@ -438,7 +440,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
   struct ListNode *np;
   STAILQ_FOREACH(np, &subjects, entries)
   {
-    for (ptr = hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
+    for (ptr = mutt_hash_find_bucket(ctx->subj_hash, np->data); ptr; ptr = ptr->next)
     {
       tmp = ((struct Header *) ptr->data)->thread;
       if (tmp != cur &&                    /* don't match the same message */
@@ -451,7 +453,7 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
                          (last->message->received < tmp->message->received) :
                          (last->message->date_sent < tmp->message->date_sent))) &&
           tmp->message->env->real_subj &&
-          (mutt_strcmp(np->data, tmp->message->env->real_subj) == 0))
+          (mutt_str_strcmp(np->data, tmp->message->env->real_subj) == 0))
       {
         last = tmp; /* best match so far */
       }
@@ -510,13 +512,13 @@ static struct Hash *make_subj_hash(struct Context *ctx)
   struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
-  hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+  hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
-      hash_insert(hash, hdr->env->real_subj, hdr);
+      mutt_hash_insert(hash, hdr->env->real_subj, hdr);
   }
 
   return hash;
@@ -558,8 +560,8 @@ static void pseudo_threads(struct Context *ctx)
          * but only do this if they have the same real subject as the
          * parent, since otherwise they rightly belong to the message
          * we're attaching. */
-        if (tmp == cur || (mutt_strcmp(tmp->message->env->real_subj,
-                                       parent->message->env->real_subj) == 0))
+        if (tmp == cur || (mutt_str_strcmp(tmp->message->env->real_subj,
+                                           parent->message->env->real_subj) == 0))
         {
           tmp->message->subject_changed = false;
 
@@ -602,7 +604,7 @@ void mutt_clear_threads(struct Context *ctx)
   ctx->tree = NULL;
 
   if (ctx->thread_hash)
-    hash_destroy(&ctx->thread_hash, *free);
+    mutt_hash_destroy(&ctx->thread_hash, *free);
 }
 
 static int compare_threads(const void *a, const void *b)
@@ -639,7 +641,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
 
   top = thread;
 
-  array = safe_calloc((array_size = 256), sizeof(struct MuttThread *));
+  array = mutt_mem_calloc((array_size = 256), sizeof(struct MuttThread *));
   while (true)
   {
     if (init || !thread->sort_key)
@@ -678,7 +680,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
         for (i = 0; thread; i++, thread = thread->prev)
         {
           if (i >= array_size)
-            safe_realloc(&array, (array_size *= 2) * sizeof(struct MuttThread *));
+            mutt_mem_realloc(&array, (array_size *= 2) * sizeof(struct MuttThread *));
 
           array[i] = thread;
         }
@@ -773,7 +775,7 @@ static void check_subjects(struct Context *ctx, int init)
       cur->subject_changed = true;
     else if (cur->env->real_subj && tmp->message->env->real_subj)
       cur->subject_changed =
-          (mutt_strcmp(cur->env->real_subj, tmp->message->env->real_subj) != 0) ? true : false;
+          (mutt_str_strcmp(cur->env->real_subj, tmp->message->env->real_subj) != 0) ? true : false;
     else
       cur->subject_changed =
           (cur->env->real_subj || tmp->message->env->real_subj) ? true : false;
@@ -799,7 +801,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
     init = 1;
 
   if (init)
-    ctx->thread_hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+    ctx->thread_hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
@@ -820,7 +822,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
     if (!cur->thread)
     {
       if ((!init || option(OPT_DUPLICATE_THREADS)) && cur->env->message_id)
-        thread = hash_find(ctx->thread_hash, cur->env->message_id);
+        thread = mutt_hash_find(ctx->thread_hash, cur->env->message_id);
       else
         thread = NULL;
 
@@ -865,12 +867,12 @@ void mutt_sort_threads(struct Context *ctx, int init)
       {
         new = (option(OPT_DUPLICATE_THREADS) ? thread : NULL);
 
-        thread = safe_calloc(1, sizeof(struct MuttThread));
+        thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
         thread->check_subject = true;
         cur->thread = thread;
-        hash_insert(ctx->thread_hash,
-                    cur->env->message_id ? cur->env->message_id : "", thread);
+        mutt_hash_insert(ctx->thread_hash,
+                         cur->env->message_id ? cur->env->message_id : "", thread);
 
         if (new)
         {
@@ -941,7 +943,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
           ref = STAILQ_NEXT(ref, entries);
         else
         {
-          if (mutt_strcmp(ref->data, STAILQ_FIRST(&cur->env->references)->data) != 0)
+          if (mutt_str_strcmp(ref->data, STAILQ_FIRST(&cur->env->references)->data) != 0)
             ref = STAILQ_FIRST(&cur->env->references);
           else
             ref = STAILQ_NEXT(STAILQ_FIRST(&cur->env->references), entries);
@@ -955,11 +957,11 @@ void mutt_sort_threads(struct Context *ctx, int init)
       if (!ref)
         break;
 
-      new = hash_find(ctx->thread_hash, ref->data);
+      new = mutt_hash_find(ctx->thread_hash, ref->data);
       if (!new)
       {
-        new = safe_calloc(1, sizeof(struct MuttThread));
-        hash_insert(ctx->thread_hash, ref->data, new);
+        new = mutt_mem_calloc(1, sizeof(struct MuttThread));
+        mutt_hash_insert(ctx->thread_hash, ref->data, new);
       }
       else
       {
@@ -1052,13 +1054,13 @@ static struct Header *find_virtual(struct MuttThread *cur, int reverse)
 }
 
 /**
- * _mutt_aside_thread - Find the next/previous (sub)thread
+ * mutt_aside_thread - Find the next/previous (sub)thread
  * @param hdr        Search from this message
  * @param dir        Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval n Index into the virtual email table
  */
-int _mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
+int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 {
   struct MuttThread *cur = NULL;
   struct Header *tmp = NULL;
@@ -1177,7 +1179,7 @@ void mutt_set_virtual(struct Context *ctx)
   }
 }
 
-int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
+int mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 {
   struct MuttThread *thread = NULL, *top = NULL;
   struct Header *roothdr = NULL;
@@ -1385,13 +1387,13 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
   struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
-  hash = hash_create(ctx->msgcount * 2, 0);
+  hash = mutt_hash_create(ctx->msgcount * 2, 0);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
-      hash_insert(hash, hdr->env->message_id, hdr);
+      mutt_hash_insert(hash, hdr->env->message_id, hdr);
   }
 
   return hash;
@@ -1418,7 +1420,7 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       for (ref = STAILQ_FIRST(&cur->message->env->references);
            p->message && ref; ref = STAILQ_NEXT(ref, entries))
       {
-        if (mutt_strcasecmp(ref->data, p->message->env->message_id) == 0)
+        if (mutt_str_strcasecmp(ref->data, p->message->env->message_id) == 0)
         {
           done = true;
           break;
@@ -1459,7 +1461,7 @@ static bool link_threads(struct Header *parent, struct Header *child, struct Con
     return false;
 
   mutt_break_thread(child);
-  mutt_list_insert_head(&child->env->in_reply_to, safe_strdup(parent->env->message_id));
+  mutt_list_insert_head(&child->env->in_reply_to, mutt_str_strdup(parent->env->message_id));
   mutt_set_flag(ctx, child, MUTT_TAG, 0);
 
   child->env->irt_changed = child->changed = true;

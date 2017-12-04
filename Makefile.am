@@ -22,7 +22,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = \
 	--with-sasl \
 	--with-tokyocabinet
 
-SUBDIRS = m4 contrib imap ncrypt lib conn
+SUBDIRS = m4 contrib imap ncrypt mutt conn
 
 if BUILD_HCACHE
 SUBDIRS += hcache
@@ -47,15 +47,15 @@ neomutt_SOURCES = mutt_account.c addrbook.c address.h alias.c alias.h attach.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
 	curs_lib.c curs_main.c edit.c editmsg.c enter.c enter_state.h \
 	envelope.c envelope.h filter.c flags.c format_flags.h from.c group.c \
-	handler.c hdrline.c header.h headers.c help.c history.c hook.c \
+	handler.c hdrline.c header.h header.c help.c history.c hook.c \
 	init.c keymap.c main.c mbox.c mbyte.c mbtable.h \
-	menu.c mh.c muttlib.c mutt_idna.c mutt_socket.c \
+	menu.c mh.c muttlib.c mutt_address.c mutt_idna.c mutt_socket.c \
 	mx.c newsrc.c nntp.c options.h pager.c parameter.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
-	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \
+	address.c safe_asprintf.c score.c send.c sendlib.c sidebar.c mutt_signal.c \
 	smtp.c sort.c state.c state.h status.c system.c thread.c thread.h url.c \
-	version.c where.h mutt_tags.c
+	version.c where.h tags.c
 
 nodist_neomutt_SOURCES = $(BUILT_SOURCES)
 
@@ -65,8 +65,8 @@ LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 LIBCONN = -Lconn -lconn
 LIBCONNDEPS = $(top_srcdir)/conn/connection.h conn/libconn.a
 
-LIBMUTT = -Llib -lmutt
-LIBMUTTDEPS = $(top_srcdir)/lib/lib.h lib/libmutt.a
+LIBMUTT = -Lmutt -lmutt
+LIBMUTTDEPS = $(top_srcdir)/mutt/mutt.h mutt/libmutt.a
 
 neomutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
 	$(LIBIMAP) $(LIBCONN) $(LIBMUTT) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
@@ -77,13 +77,13 @@ neomutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) $(LIBCONNDE
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
 
-AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
+AM_CPPFLAGS=-I. -I.. -I$(top_srcdir) $(GPGME_CFLAGS)
 
 EXTRA_neomutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_notmuch.c \
 	remailer.c remailer.h resize.c url.h
 
-EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
+EXTRA_DIST = mutt_account.h attach.h bcache.h browser.h buffy.h \
 	ChangeLog.md charset.h CODE_OF_CONDUCT.md compress.h copy.h \
 	COPYRIGHT filter.h functions.h globals.h \
 	group.h history.h init.h keymap.h LICENSE.md mailbox.h \
@@ -92,8 +92,8 @@ EXTRA_DIST = account.h attach.h bcache.h browser.h buffy.h \
 	mutt_options.h mutt_regex.h \
 	mutt_socket.h mx.h myvar.h nntp.h opcodes.h pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
-	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sidebar.h \
-	sort.h txt2c.c txt2c.sh version.h mutt_tags.h
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h sidebar.h \
+	sort.h txt2c.c txt2c.sh version.h tags.h
 
 EXTRA_SCRIPTS =
 

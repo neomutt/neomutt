@@ -23,13 +23,12 @@
 
 #include "config.h"
 #include <stdlib.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "group.h"
 #include "address.h"
 #include "globals.h"
 #include "protos.h"
-#include "rfc822.h"
 
 struct Group *mutt_pattern_group(const char *k)
 {
@@ -38,13 +37,13 @@ struct Group *mutt_pattern_group(const char *k)
   if (!k)
     return 0;
 
-  p = hash_find(Groups, k);
+  p = mutt_hash_find(Groups, k);
   if (!p)
   {
-    mutt_debug(2, "mutt_pattern_group: Creating group %s.\n", k);
-    p = safe_calloc(1, sizeof(struct Group));
-    p->name = safe_strdup(k);
-    hash_insert(Groups, p->name, p);
+    mutt_debug(2, "Creating group %s.\n", k);
+    p = mutt_mem_calloc(1, sizeof(struct Group));
+    p->name = mutt_str_strdup(k);
+    mutt_hash_insert(Groups, p->name, p);
   }
 
   return p;
@@ -54,8 +53,8 @@ static void group_remove(struct Group *g)
 {
   if (!g)
     return;
-  hash_delete(Groups, g->name, g, NULL);
-  rfc822_free_address(&g->as);
+  mutt_hash_delete(Groups, g->name, g, NULL);
+  mutt_addr_free(&g->as);
   mutt_free_regex_list(&g->rs);
   FREE(&g->name);
   FREE(&g);
@@ -88,7 +87,7 @@ void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
       return;
   }
 
-  *ctx = safe_calloc(1, sizeof(struct GroupContext));
+  *ctx = mutt_mem_calloc(1, sizeof(struct GroupContext));
   (*ctx)->g = group;
 }
 
@@ -114,7 +113,7 @@ static void group_add_adrlist(struct Group *g, struct Address *a)
   for (p = &g->as; *p; p = &((*p)->next))
     ;
 
-  q = rfc822_cpy_adr(a, 0);
+  q = mutt_addr_copy_list(a, false);
   q = mutt_remove_xrefs(g->as, q);
   *p = q;
 }
@@ -129,7 +128,7 @@ static int group_remove_adrlist(struct Group *g, struct Address *a)
     return -1;
 
   for (p = a; p; p = p->next)
-    rfc822_remove_from_adrlist(&g->as, p->mailbox);
+    mutt_addr_remove_from_list(&g->as, p->mailbox);
 
   return 0;
 }
@@ -152,41 +151,41 @@ void mutt_group_context_add_adrlist(struct GroupContext *ctx, struct Address *a)
 
 int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *a)
 {
-  int rv = 0;
+  int rc = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (!rc) && ctx; ctx = ctx->next)
   {
-    rv = group_remove_adrlist(ctx->g, a);
+    rc = group_remove_adrlist(ctx->g, a);
     if (empty_group(ctx->g))
       group_remove(ctx->g);
   }
 
-  return rv;
+  return rc;
 }
 
 int mutt_group_context_add_regex(struct GroupContext *ctx, const char *s,
                                  int flags, struct Buffer *err)
 {
-  int rv = 0;
+  int rc = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
-    rv = group_add_regex(ctx->g, s, flags, err);
+  for (; (!rc) && ctx; ctx = ctx->next)
+    rc = group_add_regex(ctx->g, s, flags, err);
 
-  return rv;
+  return rc;
 }
 
 int mutt_group_context_remove_regex(struct GroupContext *ctx, const char *s)
 {
-  int rv = 0;
+  int rc = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (!rc) && ctx; ctx = ctx->next)
   {
-    rv = group_remove_regex(ctx->g, s);
+    rc = group_remove_regex(ctx->g, s);
     if (empty_group(ctx->g))
       group_remove(ctx->g);
   }
 
-  return rv;
+  return rc;
 }
 
 bool mutt_group_match(struct Group *g, const char *s)
@@ -198,7 +197,7 @@ bool mutt_group_match(struct Group *g, const char *s)
     if (mutt_match_regex_list(s, g->rs))
       return true;
     for (ap = g->as; ap; ap = ap->next)
-      if (ap->mailbox && (mutt_strcasecmp(s, ap->mailbox) == 0))
+      if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
         return true;
   }
   return false;

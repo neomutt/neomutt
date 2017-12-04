@@ -24,16 +24,16 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "address.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
 #include "protos.h"
-#include "rfc822.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
@@ -57,7 +57,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
 
   if (mutt_sasl_client_new(pop_data->conn, &saslconn) < 0)
   {
-    mutt_debug(1, "pop_auth_sasl: Error allocating SASL connection.\n");
+    mutt_debug(1, "Error allocating SASL connection.\n");
     return POP_A_FAILURE;
   }
 
@@ -74,8 +74,8 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
-    mutt_debug(1, "pop_auth_sasl: Failure starting authentication exchange. "
-                  "No shared mechanisms?\n");
+    mutt_debug(
+        1, "Failure starting authentication exchange. No shared mechanisms?\n");
 
     /* SASL doesn't support suggested mechanisms, so fall back */
     return POP_A_UNAVAIL;
@@ -90,7 +90,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   mutt_message(_("Authenticating (SASL)..."));
 
   bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
-  buf = safe_malloc(bufsize);
+  buf = mutt_mem_malloc(bufsize);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
   olen = strlen(buf);
@@ -98,7 +98,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   /* looping protocol */
   while (true)
   {
-    strfcpy(buf + olen, "\r\n", bufsize - olen);
+    mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
     mutt_socket_write(pop_data->conn, buf);
     if (mutt_socket_readln(inbuf, sizeof(inbuf), pop_data->conn) < 0)
     {
@@ -116,10 +116,10 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
     if (!client_start && rc != SASL_CONTINUE)
       break;
 
-    if ((mutt_strncmp(inbuf, "+ ", 2) == 0) &&
+    if ((mutt_str_strncmp(inbuf, "+ ", 2) == 0) &&
         sasl_decode64(inbuf + 2, strlen(inbuf + 2), buf, bufsize - 1, &len) != SASL_OK)
     {
-      mutt_debug(1, "pop_auth_sasl: error base64-decoding server response.\n");
+      mutt_debug(1, "error base64-decoding server response.\n");
       goto bail;
     }
 
@@ -149,12 +149,11 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
       if ((olen * 2) > bufsize)
       {
         bufsize = olen * 2;
-        safe_realloc(&buf, bufsize);
+        mutt_mem_realloc(&buf, bufsize);
       }
       if (sasl_encode64(pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
-        mutt_debug(1,
-                   "pop_auth_sasl: error base64-encoding client response.\n");
+        mutt_debug(1, "error base64-encoding client response.\n");
         goto bail;
       }
     }
@@ -163,7 +162,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   if (rc != SASL_OK)
     goto bail;
 
-  if (mutt_strncmp(inbuf, "+OK", 3) == 0)
+  if (mutt_str_strncmp(inbuf, "+OK", 3) == 0)
   {
     mutt_sasl_setup_conn(pop_data->conn, saslconn);
     FREE(&buf);
@@ -174,7 +173,7 @@ bail:
   sasl_dispose(&saslconn);
 
   /* terminate SASL session if the last response is not +OK nor -ERR */
-  if (mutt_strncmp(inbuf, "+ ", 2) == 0)
+  if (mutt_str_strncmp(inbuf, "+ ", 2) == 0)
   {
     snprintf(buf, bufsize, "*\r\n");
     if (pop_query(pop_data, buf, bufsize) == -1)
@@ -204,7 +203,7 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
   if ((p1 = strchr(buf, '<')) && (p2 = strchr(p1, '>')))
   {
     p2[1] = '\0';
-    pop_data->timestamp = safe_strdup(p1);
+    pop_data->timestamp = mutt_str_strdup(p1);
   }
 }
 
@@ -221,7 +220,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   if (!pop_data->timestamp)
     return POP_A_UNAVAIL;
 
-  if (!rfc822_valid_msgid(pop_data->timestamp))
+  if (!mutt_addr_valid_msgid(pop_data->timestamp))
   {
     mutt_error(_("POP timestamp is invalid!"));
     mutt_sleep(2);
@@ -231,11 +230,11 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   mutt_message(_("Authenticating (APOP)..."));
 
   /* Compute the authentication hash to send to the server */
-  md5_init_ctx(&ctx);
-  md5_process_bytes(pop_data->timestamp, strlen(pop_data->timestamp), &ctx);
-  md5_process_bytes(pop_data->conn->account.pass,
-                    strlen(pop_data->conn->account.pass), &ctx);
-  md5_finish_ctx(&ctx, digest);
+  mutt_md5_init_ctx(&ctx);
+  mutt_md5_process_bytes(pop_data->timestamp, strlen(pop_data->timestamp), &ctx);
+  mutt_md5_process_bytes(pop_data->conn->account.pass,
+                         strlen(pop_data->conn->account.pass), &ctx);
+  mutt_md5_finish_ctx(&ctx, digest);
 
   for (size_t i = 0; i < sizeof(digest); i++)
     sprintf(hash + 2 * i, "%02x", digest[i]);
@@ -279,14 +278,14 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
     {
       pop_data->cmd_user = 1;
 
-      mutt_debug(1, "pop_auth_user: set USER capability\n");
+      mutt_debug(1, "set USER capability\n");
     }
 
     if (ret == -2)
     {
       pop_data->cmd_user = 0;
 
-      mutt_debug(1, "pop_auth_user: unset USER capability\n");
+      mutt_debug(1, "unset USER capability\n");
       snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
                _("Command USER is not supported by server."));
     }
@@ -296,10 +295,8 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
   {
     snprintf(buf, sizeof(buf), "PASS %s\r\n", pop_data->conn->account.pass);
     ret = pop_query_d(pop_data, buf, sizeof(buf),
-#ifdef DEBUG
                       /* don't print the password unless we're at the ungodly debugging level */
                       debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" :
-#endif
                                                         NULL);
   }
 
@@ -343,14 +340,16 @@ int pop_authenticate(struct PopData *pop_data)
   int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
-  if (mutt_account_getuser(acct) || !acct->user[0] ||
-      mutt_account_getpass(acct) || !acct->pass[0])
+  if ((mutt_account_getuser(acct) < 0) || (acct->user[0] == '\0') ||
+      (mutt_account_getpass(acct) < 0) || (acct->pass[0] == '\0'))
+  {
     return -3;
+  }
 
   if (PopAuthenticators && *PopAuthenticators)
   {
     /* Try user-specified list of authentication methods */
-    methods = safe_strdup(PopAuthenticators);
+    methods = mutt_str_strdup(PopAuthenticators);
     method = methods;
 
     while (method)
@@ -358,12 +357,13 @@ int pop_authenticate(struct PopData *pop_data)
       comma = strchr(method, ':');
       if (comma)
         *comma++ = '\0';
-      mutt_debug(2, "pop_authenticate: Trying method %s\n", method);
+      mutt_debug(2, "Trying method %s\n", method);
       authenticator = pop_authenticators;
 
       while (authenticator->authenticate)
       {
-        if (!authenticator->method || (mutt_strcasecmp(authenticator->method, method) == 0))
+        if (!authenticator->method ||
+            (mutt_str_strcasecmp(authenticator->method, method) == 0))
         {
           ret = authenticator->authenticate(pop_data, method);
           if (ret == POP_A_SOCKET)
@@ -398,7 +398,7 @@ int pop_authenticate(struct PopData *pop_data)
   else
   {
     /* Fall back to default: any authenticator */
-    mutt_debug(2, "pop_authenticate: Using any available method.\n");
+    mutt_debug(2, "Using any available method.\n");
     authenticator = pop_authenticators;
 
     while (authenticator->authenticate)
@@ -420,7 +420,9 @@ int pop_authenticate(struct PopData *pop_data)
         attempts++;
       if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
           (ret == POP_A_FAILURE && !option(OPT_POP_AUTH_TRY_ALL)))
+      {
         break;
+      }
 
       authenticator++;
     }

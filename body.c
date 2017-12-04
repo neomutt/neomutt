@@ -24,9 +24,9 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/string2.h"
 #include "body.h"
 #include "header.h"
 #include "mime.h"
@@ -35,7 +35,7 @@
 
 struct Body *mutt_new_body(void)
 {
-  struct Body *p = safe_calloc(1, sizeof(struct Body));
+  struct Body *p = mutt_mem_calloc(1, sizeof(struct Body));
 
   p->disposition = DISPATTACH;
   p->use_disp = true;
@@ -60,7 +60,7 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   if (src->filename)
   {
     use_disp = true;
-    strfcpy(tmp, src->filename, sizeof(tmp));
+    mutt_str_strfcpy(tmp, src->filename, sizeof(tmp));
   }
   else
   {
@@ -79,22 +79,22 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   b->parts = NULL;
   b->next = NULL;
 
-  b->filename = safe_strdup(tmp);
+  b->filename = mutt_str_strdup(tmp);
   b->use_disp = use_disp;
   b->unlink = true;
 
   if (mutt_is_text_part(b))
     b->noconv = true;
 
-  b->xtype = safe_strdup(b->xtype);
-  b->subtype = safe_strdup(b->subtype);
-  b->form_name = safe_strdup(b->form_name);
-  b->d_filename = safe_strdup(b->d_filename);
+  b->xtype = mutt_str_strdup(b->xtype);
+  b->subtype = mutt_str_strdup(b->subtype);
+  b->form_name = mutt_str_strdup(b->form_name);
+  b->d_filename = mutt_str_strdup(b->d_filename);
   /* mutt_adv_mktemp() will mangle the filename in tmp,
    * so preserve it in d_filename */
   if (!b->d_filename && use_disp)
-    b->d_filename = safe_strdup(src->filename);
-  b->description = safe_strdup(b->description);
+    b->d_filename = mutt_str_strdup(src->filename);
+  b->description = mutt_str_strdup(b->description);
 
   /*
    * we don't seem to need the Header structure currently.
@@ -107,9 +107,9 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   /* copy parameters */
   for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
   {
-    *ppar = mutt_new_parameter();
-    (*ppar)->attribute = safe_strdup(par->attribute);
-    (*ppar)->value = safe_strdup(par->value);
+    *ppar = mutt_param_new();
+    (*ppar)->attribute = mutt_str_strdup(par->attribute);
+    (*ppar)->value = mutt_str_strdup(par->value);
   }
 
   mutt_stamp_attachment(b);
@@ -127,13 +127,12 @@ void mutt_free_body(struct Body **p)
     a = a->next;
 
     if (b->parameter)
-      mutt_free_parameter(&b->parameter);
+      mutt_param_free(&b->parameter);
     if (b->filename)
     {
       if (b->unlink)
         unlink(b->filename);
-      mutt_debug(1, "mutt_free_body: %sunlinking %s.\n",
-                 b->unlink ? "" : "not ", b->filename);
+      mutt_debug(1, "%sunlinking %s.\n", b->unlink ? "" : "not ", b->filename);
     }
 
     FREE(&b->filename);

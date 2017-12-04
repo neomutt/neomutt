@@ -24,7 +24,7 @@
 #define _MUTT_GLOBALS_H
 
 #include <signal.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "where.h"
 #include "mutt_regex.h"
 
@@ -184,8 +184,6 @@ WHERE const char *GitVer;
 
 WHERE struct Hash *Groups;
 WHERE struct Hash *ReverseAliases;
-WHERE char *HiddenTags;
-WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 
 WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
@@ -224,10 +222,8 @@ WHERE short NntpPoll;
 WHERE short NntpContext;
 #endif
 
-#ifdef DEBUG
 WHERE short DebugLevel;
 WHERE char *DebugFile;
-#endif
 
 WHERE short History;
 WHERE short MenuContext;

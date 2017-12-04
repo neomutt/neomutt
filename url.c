@@ -28,15 +28,15 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "url.h"
+#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
-#include "rfc822.h"
 
 static const struct Mapping UrlMap[] = {
   { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },
@@ -86,11 +86,11 @@ enum UrlScheme url_check_scheme(const char *s)
   if ((size_t)(t - s) >= sizeof(sbuf) - 1)
     return U_UNKNOWN;
 
-  strfcpy(sbuf, s, t - s + 1);
+  mutt_str_strfcpy(sbuf, s, t - s + 1);
   for (t = sbuf; *t; t++)
     *t = tolower(*t);
 
-  i = mutt_getvaluebyname(sbuf, UrlMap);
+  i = mutt_map_get_value(sbuf, UrlMap);
   if (i == -1)
     return U_UNKNOWN;
   else
@@ -104,7 +104,7 @@ static int parse_query_string(struct Url *u, char *src)
 
   while (src && *src)
   {
-    qs = safe_calloc(1, sizeof(struct UrlQueryString));
+    qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
     if ((k = strchr(src, '&')))
       *k = '\0';
 
@@ -152,18 +152,18 @@ int url_parse(struct Url *u, char *src)
 {
   char *t = NULL, *p = NULL;
 
-  u->scheme = url_check_scheme(src);
-  if (u->scheme == U_UNKNOWN)
-    return -1;
-
-  src = strchr(src, ':') + 1;
-
   u->user = NULL;
   u->pass = NULL;
   u->host = NULL;
   u->port = 0;
   u->path = NULL;
   STAILQ_INIT(&u->query_strings);
+
+  u->scheme = url_check_scheme(src);
+  if (u->scheme == U_UNKNOWN)
+    return -1;
+
+  src = strchr(src, ':') + 1;
 
   if (strncmp(src, "//", 2) != 0)
   {
@@ -217,14 +217,14 @@ int url_parse(struct Url *u, char *src)
   {
     int num;
     *p++ = '\0';
-    if (mutt_atoi(p, &num) < 0 || num < 0 || num > 0xffff)
+    if (mutt_str_atoi(p, &num) < 0 || num < 0 || num > 0xffff)
       goto err;
     u->port = (unsigned short) num;
   }
   else
     u->port = 0;
 
-  if (mutt_strlen(src) != 0)
+  if (mutt_str_strlen(src) != 0)
   {
     u->host = src;
     if (url_pct_decode(u->host) < 0)
@@ -289,12 +289,12 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
   if (u->scheme == U_UNKNOWN)
     return -1;
 
-  snprintf(dest, len, "%s:", mutt_getnamebyvalue(u->scheme, UrlMap));
+  snprintf(dest, len, "%s:", mutt_map_get_name(u->scheme, UrlMap));
 
   if (u->host)
   {
     if (!(flags & U_PATH))
-      safe_strcat(dest, len, "//");
+      mutt_str_strcat(dest, len, "//");
     len -= (l = strlen(dest));
     dest += l;
 
@@ -331,7 +331,7 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
   }
 
   if (u->path)
-    safe_strcat(dest, len, u->path);
+    mutt_str_strcat(dest, len, u->path);
 
   return 0;
 }
@@ -350,7 +350,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
     return -1;
 
   /* copy string for safe use of strtok() */
-  tmp = safe_strdup(t + 1);
+  tmp = mutt_str_strdup(t + 1);
   if (!tmp)
     return -1;
 
@@ -360,7 +360,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
   if (url_pct_decode(tmp) < 0)
     goto out;
 
-  e->to = rfc822_parse_adrlist(e->to, tmp);
+  e->to = mutt_addr_parse_list(e->to, tmp);
 
   tag = headers ? strtok_r(headers, "&", &p) : NULL;
 
@@ -389,7 +389,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
      */
     if (mutt_list_match(tag, &MailToAllow))
     {
-      if (mutt_strcasecmp(tag, "body") == 0)
+      if (mutt_str_strcasecmp(tag, "body") == 0)
       {
         if (body)
           mutt_str_replace(body, value);
@@ -397,11 +397,11 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
       else
       {
         char *scratch = NULL;
-        size_t taglen = mutt_strlen(tag);
+        size_t taglen = mutt_str_strlen(tag);
 
         safe_asprintf(&scratch, "%s: %s", tag, value);
         scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
-        value = skip_email_wsp(&scratch[taglen + 1]);
+        value = mutt_str_skip_email_wsp(&scratch[taglen + 1]);
         mutt_parse_rfc822_line(e, NULL, scratch, value, 1, 0, 1);
         FREE(&scratch);
       }

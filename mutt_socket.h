@@ -23,7 +23,7 @@
 #ifndef _MUTT_SOCKET_H
 #define _MUTT_SOCKET_H
 
-#include "lib/queue.h"
+#include "mutt/queue.h"
 #include "conn/conn.h"
 
 struct Account;

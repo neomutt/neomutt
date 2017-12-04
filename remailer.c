@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "remailer.h"
 #include "address.h"
@@ -45,10 +45,9 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 
 /**
- * struct Coord - Screen coordindates
+ * struct Coord - Screen coordinates
  */
 struct Coord
 {
@@ -100,7 +99,7 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
   if (*used == *slots)
   {
     *slots += 5;
-    safe_realloc(type2_list, sizeof(struct Remailer *) * (*slots));
+    mutt_mem_realloc(type2_list, sizeof(struct Remailer *) * (*slots));
   }
 
   (*type2_list)[(*used)++] = entry;
@@ -110,7 +109,7 @@ static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
 
 static struct Remailer *mix_new_remailer(void)
 {
-  return safe_calloc(1, sizeof(struct Remailer));
+  return mutt_mem_calloc(1, sizeof(struct Remailer));
 }
 
 static void mix_free_remailer(struct Remailer **r)
@@ -157,7 +156,7 @@ static struct Remailer **mix_type2_list(size_t *l)
   /* first, generate the "random" remailer */
 
   p = mix_new_remailer();
-  p->shortname = safe_strdup(_("<random>"));
+  p->shortname = mutt_str_strdup(_("<random>"));
   mix_add_entry(&type2_list, p, &slots, &used);
 
   while (fgets(line, sizeof(line), fp))
@@ -168,13 +167,13 @@ static struct Remailer **mix_type2_list(size_t *l)
     if (!t)
       goto problem;
 
-    p->shortname = safe_strdup(t);
+    p->shortname = mutt_str_strdup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
       goto problem;
 
-    p->addr = safe_strdup(t);
+    p->addr = mutt_str_strdup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
@@ -184,7 +183,7 @@ static struct Remailer **mix_type2_list(size_t *l)
     if (!t)
       goto problem;
 
-    p->ver = safe_strdup(t);
+    p->ver = mutt_str_strdup(t);
 
     t = strtok(NULL, " \t\n");
     if (!t)
@@ -232,7 +231,7 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
   if (!chain->cl)
     return;
 
-  safe_realloc(coordsp, sizeof(struct Coord) * chain->cl);
+  mutt_mem_realloc(coordsp, sizeof(struct Coord) * chain->cl);
 
   coords = *coordsp;
 
@@ -309,8 +308,8 @@ static void mix_redraw_head(struct MixChain *chain)
 
 static const char *mix_format_caps(struct Remailer *r)
 {
-  static char capbuff[10];
-  char *t = capbuff;
+  static char capbuf[10];
+  char *t = capbuf;
 
   if (r->caps & MIX_CAP_COMPRESS)
     *t++ = 'C';
@@ -346,76 +345,103 @@ static const char *mix_format_caps(struct Remailer *r)
 
   *t = '\0';
 
-  return capbuff;
+  return capbuf;
 }
 
 /**
- * mix_entry_fmt - Format an entry for the remailer menu
+ * mix_format_str - Format a string for the remailer menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * %n number
- * * %c capabilities
- * * %s short name
- * * %a address
+ * mix_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | The remailer's e-mail address
+ * | \%c     | Remailer capabilities
+ * | \%n     | The running number on the menu
+ * | \%s     | The remailer's short name
  */
-static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                  char op, const char *src, const char *prec,
+                                  const char *if_str, const char *else_str,
+                                  unsigned long data, enum FormatFlag flags)
 {
-  char fmt[16];
+  char fmt[SHORT_STRING];
   struct Remailer *remailer = (struct Remailer *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, remailer->num);
-      }
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, mix_format_caps(remailer));
-      }
-      break;
-    case 's':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(remailer->shortname));
-      }
-      else if (!remailer->shortname)
-        optional = 0;
-      break;
     case 'a':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-        snprintf(dest, destlen, fmt, NONULL(remailer->addr));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(remailer->addr));
       }
       else if (!remailer->addr)
         optional = 0;
       break;
 
+    case 'c':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, mix_format_caps(remailer));
+      }
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, remailer->num);
+      }
+      break;
+
+    case 's':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
+      }
+      else if (!remailer->shortname)
+        optional = 0;
+      break;
+
     default:
-      *dest = '\0';
+      *buf = '\0';
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, attach_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, attach_format_str, data, 0);
   return src;
 }
 
-static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
+/**
+ * mix_entry - Format a menu item for the mixmaster chain list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void mix_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols,
+                      NONULL(MixEntryFormat), mix_format_str,
                       (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -426,7 +452,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
   if (chain->cl >= MAXMIXES)
     return -1;
 
-  if ((mutt_strcmp(s, "0") == 0) || (mutt_strcasecmp(s, "<random>") == 0))
+  if ((mutt_str_strcmp(s, "0") == 0) || (mutt_str_strcasecmp(s, "<random>") == 0))
   {
     chain->ch[chain->cl++] = 0;
     return 0;
@@ -434,7 +460,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (mutt_strcasecmp(s, type2_list[i]->shortname) == 0)
+    if (mutt_str_strcasecmp(s, type2_list[i]->shortname) == 0)
     {
       chain->ch[chain->cl++] = i;
       return 0;
@@ -481,7 +507,7 @@ void mix_make_chain(struct ListHead *chainhead)
     return;
   }
 
-  chain = safe_calloc(1, sizeof(struct MixChain));
+  chain = mutt_mem_calloc(1, sizeof(struct MixChain));
 
   struct ListNode *p;
   STAILQ_FOREACH(p, chainhead, entries)
@@ -657,7 +683,7 @@ void mix_make_chain(struct ListHead *chainhead)
       else
         t = "*";
 
-      mutt_list_insert_tail(chainhead, safe_strdup(t));
+      mutt_list_insert_tail(chainhead, mutt_str_strdup(t));
     }
   }
 
@@ -706,9 +732,9 @@ int mix_check_message(struct Header *msg)
     }
 
     /* Cc and Bcc are empty at this point. */
-    rfc822_qualify(msg->env->to, fqdn);
-    rfc822_qualify(msg->env->reply_to, fqdn);
-    rfc822_qualify(msg->env->mail_followup_to, fqdn);
+    mutt_addr_qualify(msg->env->to, fqdn);
+    mutt_addr_qualify(msg->env->reply_to, fqdn);
+    mutt_addr_qualify(msg->env->mail_followup_to, fqdn);
   }
 
   return 0;
@@ -726,8 +752,8 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   struct ListNode *np;
   STAILQ_FOREACH(np, chain, entries)
   {
-    strfcpy(tmp, cmd, sizeof(tmp));
-    mutt_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
+    mutt_str_strfcpy(tmp, cmd, sizeof(tmp));
+    mutt_file_quote_filename(cd_quoted, sizeof(cd_quoted), np->data);
     snprintf(cmd, sizeof(cmd), "%s%s%s", tmp,
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
@@ -735,7 +761,8 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   if (!option(OPT_NO_CURSES))
     mutt_endwin(NULL);
 
-  if ((i = mutt_system(cmd)))
+  i = mutt_system(cmd);
+  if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
     if (!option(OPT_NO_CURSES))

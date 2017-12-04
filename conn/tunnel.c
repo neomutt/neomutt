@@ -22,7 +22,7 @@
  */
 
 /**
- * @page conn_tunnel Support for network tunnelling 
+ * @page conn_tunnel Support for network tunnelling
  *
  * Support for network tunnelling
  *
@@ -41,9 +41,10 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/signal2.h"
+#include "mutt/string2.h"
 #include "mutt.h"
 #include "tunnel.h"
 #include "account.h"
@@ -76,7 +77,7 @@ static int tunnel_socket_open(struct Connection *conn)
   int pin[2], pout[2];
   int devnull;
 
-  tunnel = safe_malloc(sizeof(struct TunnelData));
+  tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
   conn->sockdata = tunnel;
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);
@@ -98,15 +99,17 @@ static int tunnel_socket_open(struct Connection *conn)
     return -1;
   }
 
-  mutt_block_signals_system();
+  mutt_sig_block_system();
   pid = fork();
   if (pid == 0)
   {
-    mutt_unblock_signals_system(0);
+    mutt_sig_unblock_system(0);
     devnull = open("/dev/null", O_RDWR);
     if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
         dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
+    {
       _exit(127);
+    }
     close(pin[0]);
     close(pin[1]);
     close(pout[0]);
@@ -119,7 +122,7 @@ static int tunnel_socket_open(struct Connection *conn)
     execle(EXECSHELL, "sh", "-c", Tunnel, NULL, mutt_envlist());
     _exit(127);
   }
-  mutt_unblock_signals_system(1);
+  mutt_sig_unblock_system(1);
 
   if (pid == -1)
   {
@@ -163,7 +166,7 @@ static int tunnel_socket_close(struct Connection *conn)
   if (!WIFEXITED(status) || WEXITSTATUS(status))
   {
     mutt_error(_("Tunnel to %s returned error %d (%s)"), conn->account.host,
-               WEXITSTATUS(status), NONULL(mutt_strsysexit(WEXITSTATUS(status))));
+               WEXITSTATUS(status), NONULL(mutt_str_sysexit(WEXITSTATUS(status))));
     mutt_sleep(2);
   }
   FREE(&conn->sockdata);
@@ -241,7 +244,7 @@ static int tunnel_socket_poll(struct Connection *conn, time_t wait_secs)
 
 /**
  * mutt_tunnel_socket_setup - setups tunnel connection functions.
- * @param conn Connection to asign functions to
+ * @param conn Connection to assign functions to
  *
  * Assign tunnel socket functions to the Connection conn.
  */

@@ -3,6 +3,8 @@
  * Convert strings between multibyte and utf8 encodings
  *
  * @authors
+ * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -18,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_MBYTE_H
-#define _MUTT_MBYTE_H
+#ifndef _NEOMUTT_MBYTE_H
+#define _NEOMUTT_MBYTE_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -27,8 +29,7 @@
 
 void mutt_set_charset(char *charset);
 extern bool Charset_is_utf8;
-wchar_t replacement_char(void);
 bool is_display_corrupting_utf8(wchar_t wc);
 int mutt_filter_unprintable(char **s);
 
-#endif /* _MUTT_MBYTE_H */
+#endif /* _NEOMUTT_MBYTE_H */

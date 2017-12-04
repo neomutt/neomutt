@@ -33,7 +33,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <lmdb.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 
 /** The maximum size of the database file (2GiB).
@@ -76,8 +76,8 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
   if (rc == MDB_SUCCESS)
     ctx->txn_mode = TXN_READ;
   else
-    mutt_debug(2, "mdb_get_r_txn: %s: %s\n",
-               ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin", mdb_strerror(rc));
+    mutt_debug(2, "%s: %s\n", ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin",
+               mdb_strerror(rc));
 
   return rc;
 }
@@ -99,7 +99,7 @@ static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
   if (rc == MDB_SUCCESS)
     ctx->txn_mode = TXN_WRITE;
   else
-    mutt_debug(2, "mdb_get_w_txn: mdb_txn_begin: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_txn_begin: %s\n", mdb_strerror(rc));
 
   return rc;
 }
@@ -108,12 +108,12 @@ static void *hcache_lmdb_open(const char *path)
 {
   int rc;
 
-  struct HcacheLmdbCtx *ctx = safe_calloc(1, sizeof(struct HcacheLmdbCtx));
+  struct HcacheLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct HcacheLmdbCtx));
 
   rc = mdb_env_create(&ctx->env);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_open_lmdb: mdb_env_create: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_env_create: %s\n", mdb_strerror(rc));
     FREE(&ctx);
     return NULL;
   }
@@ -123,21 +123,21 @@ static void *hcache_lmdb_open(const char *path)
   rc = mdb_env_open(ctx->env, path, MDB_NOSUBDIR, 0644);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_open_lmdb: mdb_env_open: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_env_open: %s\n", mdb_strerror(rc));
     goto fail_env;
   }
 
   rc = mdb_get_r_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_open_lmdb: mdb_txn_begin: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_txn_begin: %s\n", mdb_strerror(rc));
     goto fail_env;
   }
 
   rc = mdb_dbi_open(ctx->txn, NULL, MDB_CREATE, &ctx->db);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_open_lmdb: mdb_dbi_open: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_dbi_open: %s\n", mdb_strerror(rc));
     goto fail_dbi;
   }
 
@@ -175,7 +175,7 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   if (rc != MDB_SUCCESS)
   {
     ctx->txn = NULL;
-    mutt_debug(2, "hcache_lmdb_fetch: txn_renew: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "txn_renew: %s\n", mdb_strerror(rc));
     return NULL;
   }
   rc = mdb_get(ctx->txn, ctx->db, &dkey, &data);
@@ -185,7 +185,7 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   }
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_lmdb_fetch: mdb_get: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_get: %s\n", mdb_strerror(rc));
     return NULL;
   }
 
@@ -215,13 +215,13 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
   rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_lmdb_store: mdb_get_w_txn: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
     return rc;
   }
   rc = mdb_put(ctx->txn, ctx->db, &dkey, &databuf, 0);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcahce_lmdb_store: mdb_put: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_put: %s\n", mdb_strerror(rc));
     mdb_txn_abort(ctx->txn);
     ctx->txn_mode = TXN_UNINITIALIZED;
     ctx->txn = NULL;
@@ -244,13 +244,13 @@ static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(2, "hcache_lmdb_delete: mdb_get_w_txn: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
     return rc;
   }
   rc = mdb_del(ctx->txn, ctx->db, &dkey, NULL);
   if (rc != MDB_SUCCESS && rc != MDB_NOTFOUND)
   {
-    mutt_debug(2, "hcache_lmdb_delete: mdb_del: %s\n", mdb_strerror(rc));
+    mutt_debug(2, "mdb_del: %s\n", mdb_strerror(rc));
     mdb_txn_abort(ctx->txn);
     ctx->txn_mode = TXN_UNINITIALIZED;
     ctx->txn = NULL;

@@ -52,11 +52,11 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/file.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/file.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "mutt.h"
 #include "ssl.h"
 #include "account.h"
@@ -129,12 +129,10 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   FILE *fp = NULL;
   X509 *cert = NULL;
   X509_STORE *store = NULL;
-  int rv = 1;
-#ifdef DEBUG
+  int rc = 1;
   char buf[STRING];
-#endif
 
-  mutt_debug(2, "ssl_load_certificates: loading trusted certificates\n");
+  mutt_debug(2, "loading trusted certificates\n");
   store = SSL_CTX_get_cert_store(ctx);
   if (!store)
   {
@@ -151,7 +149,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
     if ((X509_cmp_current_time(X509_get_notBefore(cert)) >= 0) ||
         (X509_cmp_current_time(X509_get_notAfter(cert)) <= 0))
     {
-      mutt_debug(2, "ssl_load_certificates: filtering expired cert: %s\n",
+      mutt_debug(2, "filtering expired cert: %s\n",
                  X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)));
     }
     else
@@ -161,13 +159,13 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   }
   /* PEM_read_X509 sets the error NO_START_LINE on eof */
   if (ERR_GET_REASON(ERR_peek_last_error()) != PEM_R_NO_START_LINE)
-    rv = 0;
+    rc = 0;
   ERR_clear_error();
 
   X509_free(cert);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -178,7 +176,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
  */
 static int ssl_set_verify_partial(SSL_CTX *ctx)
 {
-  int rv = 0;
+  int rc = 0;
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   X509_VERIFY_PARAM *param = NULL;
 
@@ -190,20 +188,19 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
       if (0 == SSL_CTX_set1_param(ctx, param))
       {
-        mutt_debug(2, "ssl_set_verify_partial: SSL_CTX_set1_param() failed.\n");
-        rv = -1;
+        mutt_debug(2, "SSL_CTX_set1_param() failed.\n");
+        rc = -1;
       }
       X509_VERIFY_PARAM_free(param);
     }
     else
     {
-      mutt_debug(2,
-                 "ssl_set_verify_partial: X509_VERIFY_PARAM_new() failed.\n");
-      rv = -1;
+      mutt_debug(2, "X509_VERIFY_PARAM_new() failed.\n");
+      rc = -1;
     }
   }
 #endif
-  return rv;
+  return rc;
 }
 
 /**
@@ -266,7 +263,7 @@ static void ssl_err(struct SslSockData *data, int err)
       data->isopen = 0;
       break;
   }
-#ifdef DEBUG
+
   const char *errmsg = NULL;
   unsigned long sslerr;
 
@@ -316,15 +313,13 @@ static void ssl_err(struct SslSockData *data, int err)
   }
 
   mutt_debug(1, "SSL error: %s\n", errmsg);
-#endif
 }
 
 /**
- * ssl_dprint_err_stack - Dump the SSL error stack (DEBUG only)
+ * ssl_dprint_err_stack - Dump the SSL error stack
  */
 static void ssl_dprint_err_stack(void)
 {
-#ifdef DEBUG
   BIO *bio = NULL;
   char *buf = NULL;
   long buflen;
@@ -337,14 +332,13 @@ static void ssl_dprint_err_stack(void)
   buflen = BIO_get_mem_data(bio, &buf);
   if (buflen > 0)
   {
-    output = safe_malloc(buflen + 1);
+    output = mutt_mem_malloc(buflen + 1);
     memcpy(output, buf, buflen);
     output[buflen] = '\0';
     mutt_debug(1, "SSL error stack: %s\n", output);
     FREE(&output);
   }
   BIO_free(bio);
-#endif
 }
 
 /**
@@ -360,13 +354,13 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
 {
   struct Account *account = (struct Account *) userdata;
 
-  if (mutt_account_getuser(account))
+  if (mutt_account_getuser(account) < 0)
     return 0;
 
-  mutt_debug(2, "ssl_passwd_cb: getting password for %s@%s:%u\n", account->user,
-             account->host, account->port);
+  mutt_debug(2, "getting password for %s@%s:%u\n", account->user, account->host,
+             account->port);
 
-  if (mutt_account_getpass(account))
+  if (mutt_account_getpass(account) < 0)
     return 0;
 
   return snprintf(buf, size, "%s", account->pass);
@@ -418,12 +412,12 @@ static int ssl_socket_close(struct Connection *conn)
  */
 static char *x509_get_part(X509_NAME *name, int nid)
 {
-  static char ret[SHORT_STRING];
+  static char data[SHORT_STRING];
 
-  if (!name || X509_NAME_get_text_by_NID(name, nid, ret, sizeof(ret)) < 0)
-    strfcpy(ret, _("Unknown"), sizeof(ret));
+  if (!name || X509_NAME_get_text_by_NID(name, nid, data, sizeof(data)) < 0)
+    mutt_str_strfcpy(data, _("Unknown"), sizeof(data));
 
-  return ret;
+  return data;
 }
 
 /**
@@ -448,7 +442,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
     {
       char ch[8];
       snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
-      safe_strcat(s, l, ch);
+      mutt_str_strcat(s, l, ch);
     }
   }
 }
@@ -465,7 +459,7 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
   static char buf[64];
   BIO *bio = NULL;
 
-  strfcpy(buf, _("[invalid date]"), sizeof(buf));
+  mutt_str_strfcpy(buf, _("[invalid date]"), sizeof(buf));
 
   bio = BIO_new(BIO_s_mem());
   if (bio)
@@ -587,7 +581,7 @@ static bool hostname_match(const char *hostname, const char *certname)
 }
 
 /**
- * ssl_init - Initialist the SSL library
+ * ssl_init - Initialise the SSL library
  * @retval  0 Success
  * @retval -1 Error
  *
@@ -710,7 +704,8 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
     SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
 
     /* if we are using a client cert, SASL may expect an external auth name */
-    mutt_account_getuser(&conn->account);
+    if (mutt_account_getuser(&conn->account) < 0)
+      mutt_debug(1, "Couldn't get user info\n");
   }
 }
 
@@ -783,7 +778,7 @@ static int check_certificate_file(X509 *peercert)
 
   if (!X509_digest(peercert, EVP_sha256(), peermd, &peermdlen))
   {
-    safe_fclose(&fp);
+    mutt_file_fclose(&fp);
     return 0;
   }
 
@@ -800,7 +795,7 @@ static int check_certificate_file(X509 *peercert)
   if (!pass)
     ERR_clear_error();
   X509_free(cert);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
 
   return pass;
 }
@@ -836,10 +831,10 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
 #ifdef HAVE_LIBIDN
   if (idna_to_ascii_lz(hostname, &hostname_ascii, 0) != IDNA_SUCCESS)
   {
-    hostname_ascii = safe_strdup(hostname);
+    hostname_ascii = mutt_str_strdup(hostname);
   }
 #else
-  hostname_ascii = safe_strdup(hostname);
+  hostname_ascii = mutt_str_strdup(hostname);
 #endif
 
   /* Try the DNS subjectAltNames. */
@@ -853,7 +848,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       if (subj_alt_name->type == GEN_DNS)
       {
         if (subj_alt_name->d.ia5->length >= 0 &&
-            mutt_strlen((char *) subj_alt_name->d.ia5->data) ==
+            mutt_str_strlen((char *) subj_alt_name->d.ia5->data) ==
                 (size_t) subj_alt_name->d.ia5->length &&
             (match_found = hostname_match(hostname_ascii,
                                           (char *) (subj_alt_name->d.ia5->data))))
@@ -872,7 +867,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (!x509_subject)
     {
       if (err && errlen)
-        strfcpy(err, _("cannot get certificate subject"), errlen);
+        mutt_str_strfcpy(err, _("cannot get certificate subject"), errlen);
       goto out;
     }
 
@@ -881,21 +876,21 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
     if (bufsize == -1)
     {
       if (err && errlen)
-        strfcpy(err, _("cannot get certificate common name"), errlen);
+        mutt_str_strfcpy(err, _("cannot get certificate common name"), errlen);
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
-    buf = safe_malloc((size_t) bufsize);
+    buf = mutt_mem_malloc((size_t) bufsize);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
-        strfcpy(err, _("cannot get certificate common name"), errlen);
+        mutt_str_strfcpy(err, _("cannot get certificate common name"), errlen);
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
      * zero or greater.
      */
-    if (mutt_strlen(buf) == (size_t) bufsize - 1)
+    if (mutt_str_strlen(buf) == (size_t) bufsize - 1)
     {
       match_found = hostname_match(hostname_ascii, buf);
     }
@@ -936,7 +931,7 @@ static int check_certificate_by_digest(X509 *peercert)
  */
 static int ssl_cache_trusted_cert(X509 *c)
 {
-  mutt_debug(1, "ssl_cache_trusted_cert: trusted\n");
+  mutt_debug(1, "trusted\n");
   if (!SslSessionCerts)
     SslSessionCerts = sk_X509_new_null();
   return (sk_X509_push(SslSessionCerts, X509_dup(c)));
@@ -971,17 +966,17 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   struct Menu *menu = mutt_new_menu(MENU_GENERIC);
   int done, row;
   FILE *fp = NULL;
-  int allow_skip = 0;
+  int ALLOW_SKIP = 0; /**< All caps tells Coverity that this is effectively a preproc condition */
 
   mutt_push_current_menu(menu);
 
   menu->max = mutt_array_size(part) * 2 + 10;
-  menu->dialog = safe_calloc(1, menu->max * sizeof(char *));
+  menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
-    menu->dialog[i] = safe_calloc(1, SHORT_STRING * sizeof(char));
+    menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
 
   row = 0;
-  strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
   x509_subject = X509_get_subject_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
@@ -989,7 +984,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
              x509_get_part(x509_subject, part[u]));
 
   row++;
-  strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  mutt_str_strfcpy(menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name(cert);
   for (unsigned int u = 0; u < mutt_array_size(part); u++)
@@ -1019,7 +1014,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
 /* The leaf/host certificate can't be skipped. */
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   if ((idx != 0) && (option(OPT_SSL_VERIFY_PARTIAL_CHAINS)))
-    allow_skip = 1;
+    ALLOW_SKIP = 1;
 #endif
 
   /* Inside ssl_verify_callback(), this function is guarded by a call to
@@ -1039,14 +1034,14 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   menu->keys = _("roas");
   if (allow_always)
   {
-    if (allow_skip)
+    if (ALLOW_SKIP)
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
   }
   else
   {
-    if (allow_skip)
+    if (ALLOW_SKIP)
       menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce");
@@ -1054,9 +1049,9 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
 
   helpstr[0] = '\0';
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
-  safe_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_GENERIC, OP_HELP);
-  safe_strcat(helpstr, sizeof(helpstr), buf);
+  mutt_str_strcat(helpstr, sizeof(helpstr), buf);
   menu->help = helpstr;
 
   done = 0;
@@ -1078,7 +1073,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
         {
           if (PEM_write_X509(fp, cert))
             done = 1;
-          safe_fclose(&fp);
+          mutt_file_fclose(&fp);
         }
         if (!done)
         {
@@ -1097,7 +1092,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
         ssl_cache_trusted_cert(cert);
         break;
       case OP_MAX + 4: /* skip */
-        if (!allow_skip)
+        if (!ALLOW_SKIP)
           break;
         done = 2;
         SSL_set_ex_data(ssl, SkipModeExDataIndex, &SkipModeExDataIndex);
@@ -1107,7 +1102,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   unset_option(OPT_IGNORE_MACRO_EVENTS);
   mutt_pop_current_menu(menu);
   mutt_menu_destroy(&menu);
-  mutt_debug(2, "ssl interactive_check_cert: done=%d\n", done);
+  mutt_debug(2, "done=%d\n", done);
   return (done == 2);
 }
 
@@ -1140,15 +1135,13 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   if (!ssl)
   {
-    mutt_debug(1, "ssl_verify_callback: failed to retrieve SSL structure from "
-                  "X509_STORE_CTX\n");
+    mutt_debug(1, "failed to retrieve SSL structure from X509_STORE_CTX\n");
     return 0;
   }
   host = SSL_get_ex_data(ssl, HostExDataIndex);
   if (!host)
   {
-    mutt_debug(1, "ssl_verify_callback: failed to retrieve hostname from SSL "
-                  "structure\n");
+    mutt_debug(1, "failed to retrieve hostname from SSL structure\n");
     return 0;
   }
 
@@ -1164,8 +1157,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   pos = X509_STORE_CTX_get_error_depth(ctx);
   len = sk_X509_num(X509_STORE_CTX_get_chain(ctx));
 
-  mutt_debug(1, "ssl_verify_callback: checking cert chain entry %s (preverify: "
-                "%d skipmode: %d)\n",
+  mutt_debug(1, "checking cert chain entry %s (preverify: %d skipmode: %d)\n",
              X509_NAME_oneline(X509_get_subject_name(cert), buf, sizeof(buf)),
              preverify_ok, skip_mode);
 
@@ -1181,9 +1173,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       if (X509_digest(last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
           compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
-        mutt_debug(
-            2,
-            "ssl_verify_callback: ignoring duplicate skipped certificate.\n");
+        mutt_debug(2, "ignoring duplicate skipped certificate.\n");
         return 1;
       }
     }
@@ -1198,7 +1188,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   /* check session cache first */
   if (check_certificate_cache(cert))
   {
-    mutt_debug(2, "ssl_verify_callback: using cached certificate\n");
+    mutt_debug(2, "using cached certificate\n");
     SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
     return 1;
   }
@@ -1215,7 +1205,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
        * for hostname mismatches. */
       return interactive_check_cert(cert, pos, len, ssl, 0);
     }
-    mutt_debug(2, "ssl_verify_callback: hostname check passed\n");
+    mutt_debug(2, "hostname check passed\n");
   }
 
   if (!preverify_ok || skip_mode)
@@ -1223,19 +1213,15 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
     /* automatic check from user's database */
     if (CertificateFile && check_certificate_by_digest(cert))
     {
-      mutt_debug(2, "ssl_verify_callback: digest check passed\n");
+      mutt_debug(2, "digest check passed\n");
       SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);
       return 1;
     }
 
-#ifdef DEBUG
     /* log verification error */
-    {
-      int err = X509_STORE_CTX_get_error(ctx);
-      snprintf(buf, sizeof(buf), "%s (%d)", X509_verify_cert_error_string(err), err);
-      mutt_debug(2, "X509_verify_cert: %s\n", buf);
-    }
-#endif
+    int err = X509_STORE_CTX_get_error(ctx);
+    snprintf(buf, sizeof(buf), "%s (%d)", X509_verify_cert_error_string(err), err);
+    mutt_debug(2, "X509_verify_cert: %s\n", buf);
 
     /* prompt user */
     return interactive_check_cert(cert, pos, len, ssl, 1);
@@ -1262,26 +1248,26 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   HostExDataIndex = SSL_get_ex_new_index(0, "host", NULL, NULL, NULL);
   if (HostExDataIndex == -1)
   {
-    mutt_debug(1, "failed to get index for application specific data\n");
+    mutt_debug(1, "#1 failed to get index for application specific data\n");
     return -1;
   }
 
   if (!SSL_set_ex_data(ssldata->ssl, HostExDataIndex, conn->account.host))
   {
-    mutt_debug(1, "failed to save hostname in SSL structure\n");
+    mutt_debug(1, "#2 failed to save hostname in SSL structure\n");
     return -1;
   }
 
   SkipModeExDataIndex = SSL_get_ex_new_index(0, "skip", NULL, NULL, NULL);
   if (SkipModeExDataIndex == -1)
   {
-    mutt_debug(1, "failed to get index for application specific data\n");
+    mutt_debug(1, "#3 failed to get index for application specific data\n");
     return -1;
   }
 
   if (!SSL_set_ex_data(ssldata->ssl, SkipModeExDataIndex, NULL))
   {
-    mutt_debug(1, "failed to save skip mode in SSL structure\n");
+    mutt_debug(1, "#4 failed to save skip mode in SSL structure\n");
     return -1;
   }
 
@@ -1337,7 +1323,7 @@ static int ssl_socket_open(struct Connection *conn)
   if (raw_socket_open(conn) < 0)
     return -1;
 
-  data = safe_calloc(1, sizeof(struct SslSockData));
+  data = mutt_mem_calloc(1, sizeof(struct SslSockData));
   conn->sockdata = data;
 
   data->ctx = SSL_CTX_new(SSLv23_client_method());
@@ -1385,14 +1371,14 @@ static int ssl_socket_open(struct Connection *conn)
   {
     if (!SSL_CTX_set_default_verify_paths(data->ctx))
     {
-      mutt_debug(1, "ssl_socket_open: Error setting default verify paths\n");
+      mutt_debug(1, "Error setting default verify paths\n");
       mutt_socket_close(conn);
       return -1;
     }
   }
 
   if (CertificateFile && !ssl_load_certificates(data->ctx))
-    mutt_debug(1, "ssl_socket_open: Error loading trusted certificates\n");
+    mutt_debug(1, "Error loading trusted certificates\n");
 
   ssl_get_client_cert(data, conn);
 
@@ -1440,7 +1426,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   if (ssl_init())
     goto bail;
 
-  ssldata = safe_calloc(1, sizeof(struct SslSockData));
+  ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
   /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
    *
    * However, we need to be able to negotiate amongst various TLS versions,
@@ -1451,7 +1437,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   ssldata->ctx = SSL_CTX_new(SSLv23_client_method());
   if (!ssldata->ctx)
   {
-    mutt_debug(1, "mutt_ssl_starttls: Error allocating SSL_CTX\n");
+    mutt_debug(1, "Error allocating SSL_CTX\n");
     goto bail_ssldata;
   }
 #ifdef SSL_OP_NO_TLSv1_2
@@ -1475,7 +1461,7 @@ int mutt_ssl_starttls(struct Connection *conn)
 #endif
   if (!SSL_CTX_set_options(ssldata->ctx, ssl_options))
   {
-    mutt_debug(1, "mutt_ssl_starttls: Error setting options to %ld\n", ssl_options);
+    mutt_debug(1, "Error setting options to %ld\n", ssl_options);
     goto bail_ctx;
   }
 
@@ -1483,13 +1469,13 @@ int mutt_ssl_starttls(struct Connection *conn)
   {
     if (!SSL_CTX_set_default_verify_paths(ssldata->ctx))
     {
-      mutt_debug(1, "mutt_ssl_starttls: Error setting default verify paths\n");
+      mutt_debug(1, "Error setting default verify paths\n");
       goto bail_ctx;
     }
   }
 
   if (CertificateFile && !ssl_load_certificates(ssldata->ctx))
-    mutt_debug(1, "mutt_ssl_starttls: Error loading trusted certificates\n");
+    mutt_debug(1, "Error loading trusted certificates\n");
 
   ssl_get_client_cert(ssldata, conn);
 
@@ -1497,7 +1483,7 @@ int mutt_ssl_starttls(struct Connection *conn)
   {
     if (!SSL_CTX_set_cipher_list(ssldata->ctx, SslCiphers))
     {
-      mutt_debug(1, "mutt_ssl_starttls: Could not select preferred ciphers\n");
+      mutt_debug(1, "Could not select preferred ciphers\n");
       goto bail_ctx;
     }
   }
@@ -1511,13 +1497,13 @@ int mutt_ssl_starttls(struct Connection *conn)
   ssldata->ssl = SSL_new(ssldata->ctx);
   if (!ssldata->ssl)
   {
-    mutt_debug(1, "mutt_ssl_starttls: Error allocating SSL\n");
+    mutt_debug(1, "Error allocating SSL\n");
     goto bail_ctx;
   }
 
   if (SSL_set_fd(ssldata->ssl, conn->fd) != 1)
   {
-    mutt_debug(1, "mutt_ssl_starttls: Error setting fd\n");
+    mutt_debug(1, "Error setting fd\n");
     goto bail_ssl;
   }
 

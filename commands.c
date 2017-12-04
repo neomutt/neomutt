@@ -34,8 +34,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "body.h"
 #include "buffy.h"
@@ -58,7 +59,6 @@
 #include "pager.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
@@ -126,7 +126,7 @@ int mutt_display_message(struct Header *cur)
   }
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = safe_fopen(tempfile, "w");
+  fpout = mutt_file_fopen(tempfile, "w");
   if (!fpout)
   {
     mutt_error(_("Could not create temporary file!"));
@@ -142,13 +142,13 @@ int mutt_display_message(struct Header *cur)
     if (filterpid < 0)
     {
       mutt_error(_("Cannot create display filter"));
-      safe_fclose(&fpfilterout);
+      mutt_file_fclose(&fpfilterout);
       unlink(tempfile);
       return 0;
     }
   }
 
-  if (!Pager || (mutt_strcmp(Pager, "builtin") == 0))
+  if (!Pager || (mutt_str_strcmp(Pager, "builtin") == 0))
     builtin = true;
   else
   {
@@ -167,24 +167,24 @@ int mutt_display_message(struct Header *cur)
   if (Context->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
 #endif
-  res = mutt_copy_message(fpout, Context, cur, cmflags, chflags);
+  res = mutt_copy_message_ctx(fpout, Context, cur, cmflags, chflags);
 
-  if ((safe_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
+  if ((mutt_file_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
     mutt_error(_("Could not copy message"));
     if (fpfilterout)
     {
       mutt_wait_filter(filterpid);
-      safe_fclose(&fpfilterout);
+      mutt_file_fclose(&fpfilterout);
     }
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
     return 0;
   }
 
   if (fpfilterout != NULL && mutt_wait_filter(filterpid) != 0)
     mutt_any_key_to_continue(NULL);
 
-  safe_fclose(&fpfilterout); /* XXX - check result? */
+  mutt_file_fclose(&fpfilterout); /* XXX - check result? */
 
   if (WithCrypto)
   {
@@ -291,15 +291,15 @@ void ci_bounce_message(struct Header *h)
   }
 
   if (h)
-    strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
   if (rc || !buf[0])
     return;
 
-  adr = mutt_parse_adrlist(adr, buf);
+  adr = mutt_addr_parse_list2(adr, buf);
   if (!adr)
   {
     mutt_error(_("Error parsing address!"));
@@ -312,7 +312,7 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     return;
   }
 
@@ -327,14 +327,14 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - EXTRA_SPACE,
                        FMT_LEFT, 0, scratch, sizeof(scratch), 0);
-    safe_strcat(prompt, sizeof(prompt), "...?");
+    mutt_str_strcat(prompt, sizeof(prompt), "...?");
   }
   else
     snprintf(prompt, sizeof(prompt), "%s?", scratch);
 
   if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
   {
-    rfc822_free_address(&adr);
+    mutt_addr_free(&adr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(h ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -343,7 +343,7 @@ void ci_bounce_message(struct Header *h)
   mutt_window_clearline(MuttMessageWindow, 0);
 
   rc = mutt_bounce_message(NULL, h, adr);
-  rfc822_free_address(&adr);
+  mutt_addr_free(&adr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(h ? _("Message bounced.") : _("Messages bounced."));
@@ -384,16 +384,16 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
   if (decode)
     mutt_parse_mime_message(Context, h);
 
-  mutt_copy_message(fp, Context, h, cmflags, chflags);
+  mutt_copy_message_ctx(fp, Context, h, cmflags, chflags);
 }
 
 /**
- * _mutt_pipe_message - Pipe message to a command
+ * pipe_message - Pipe message to a command
  *
  * The following code is shared between printing and piping.
  */
-static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
-                              int print, int split, char *sep)
+static int pipe_message(struct Header *h, char *cmd, int decode, int print,
+                        int split, char *sep)
 {
   int rc = 0;
   pid_t thepid;
@@ -420,7 +420,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
 
     set_option(OPT_KEEP_QUIET);
     pipe_msg(h, fpout, decode, print);
-    safe_fclose(&fpout);
+    mutt_file_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
     unset_option(OPT_KEEP_QUIET);
   }
@@ -464,7 +464,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
         /* add the message separator */
         if (sep)
           fputs(sep, fpout);
-        safe_fclose(&fpout);
+        mutt_file_fclose(&fpout);
         if (mutt_wait_filter(thepid) != 0)
           rc = 1;
         unset_option(OPT_KEEP_QUIET);
@@ -491,7 +491,7 @@ static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
         if (sep)
           fputs(sep, fpout);
       }
-      safe_fclose(&fpout);
+      mutt_file_fclose(&fpout);
       if (mutt_wait_filter(thepid) != 0)
         rc = 1;
       unset_option(OPT_KEEP_QUIET);
@@ -510,10 +510,12 @@ void mutt_pipe_message(struct Header *h)
   buffer[0] = '\0';
   if (mutt_get_field(_("Pipe to command: "), buffer, sizeof(buffer), MUTT_CMD) != 0 ||
       !buffer[0])
+  {
     return;
+  }
 
   mutt_expand_path(buffer, sizeof(buffer));
-  _mutt_pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
+  pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
 }
 
 void mutt_print_message(struct Header *h)
@@ -528,8 +530,8 @@ void mutt_print_message(struct Header *h)
                        h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
     return;
 
-  if (_mutt_pipe_message(h, PrintCommand, option(OPT_PRINT_DECODE), 1,
-                         option(OPT_PRINT_SPLIT), "\f") == 0)
+  if (pipe_message(h, PrintCommand, option(OPT_PRINT_DECODE), 1,
+                   option(OPT_PRINT_SPLIT), "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));
   else
     mutt_message(h ? _("Message could not be printed") :
@@ -616,13 +618,17 @@ void mutt_shell_escape(void)
   if (mutt_get_field(_("Shell command: "), buf, sizeof(buf), MUTT_CMD) == 0)
   {
     if (!buf[0] && Shell)
-      strfcpy(buf, Shell, sizeof(buf));
+      mutt_str_strfcpy(buf, Shell, sizeof(buf));
     if (buf[0])
     {
       mutt_window_clearline(MuttMessageWindow, 0);
       mutt_endwin(NULL);
       fflush(stdout);
-      if (mutt_system(buf) != 0 || option(OPT_WAIT_KEY))
+      int rc = mutt_system(buf);
+      if (rc == -1)
+        mutt_debug(1, "Error running \"%s\"!", buf);
+
+      if ((rc != 0) || option(OPT_WAIT_KEY))
         mutt_any_key_to_continue(NULL);
       mutt_buffy_check(true);
     }
@@ -643,7 +649,7 @@ void mutt_enter_command(void)
     return;
   mutt_buffer_init(&err);
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
   mutt_buffer_init(&token);
   r = mutt_parse_rc_line(buffer, &token, &err);
   FREE(&token.data);
@@ -725,7 +731,8 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
   }
 }
 
-int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt)
+int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
+                          struct Context *ctx)
 {
   int cmflags, chflags;
   int rc;
@@ -822,10 +829,10 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
    */
-  if (mutt_strcmp(buf, ".") == 0)
-    strfcpy(buf, LastSaveFolder, sizeof(buf));
+  if (mutt_str_strcmp(buf, ".") == 0)
+    mutt_str_strfcpy(buf, LastSaveFolder, sizeof(buf));
   else
-    strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
+    mutt_str_strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
 
   mutt_expand_path(buf, sizeof(buf));
 
@@ -871,7 +878,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 #endif
     if (h)
     {
-      if (_mutt_save_message(h, &ctx, delete, decode, decrypt) != 0)
+      if (mutt_save_message_ctx(h, delete, decode, decrypt, &ctx) != 0)
       {
         mx_close_mailbox(&ctx, NULL);
         return -1;
@@ -901,7 +908,8 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
           continue;
 
         mutt_message_hook(Context, Context->hdrs[i], MUTT_MESSAGEHOOK);
-        if ((rc = _mutt_save_message(Context->hdrs[i], &ctx, delete, decode, decrypt) != 0))
+        rc = mutt_save_message_ctx(Context->hdrs[i], delete, decode, decrypt, &ctx);
+        if (rc != 0)
           break;
 #ifdef USE_COMPRESSED
         if (cm)
@@ -965,11 +973,11 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   short type_changed = 0;
   short structure_changed = 0;
 
-  cp = mutt_get_parameter("charset", b->parameter);
-  strfcpy(charset, NONULL(cp), sizeof(charset));
+  cp = mutt_param_get("charset", b->parameter);
+  mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
-  strfcpy(obuf, buf, sizeof(obuf));
+  mutt_str_strfcpy(obuf, buf, sizeof(obuf));
   if (b->parameter)
   {
     size_t l;
@@ -978,7 +986,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     {
       l = strlen(buf);
 
-      rfc822_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
+      mutt_addr_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
       snprintf(buf + l, sizeof(buf) - l, "; %s=%s", p->attribute, tmp);
     }
   }
@@ -987,14 +995,14 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     return 0;
 
   /* clean up previous junk */
-  mutt_free_parameter(&b->parameter);
+  mutt_param_free(&b->parameter);
   FREE(&b->subtype);
 
   mutt_parse_content_type(buf, b);
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
-  type_changed = mutt_strcasecmp(tmp, obuf);
-  charset_changed = mutt_strcasecmp(charset, mutt_get_parameter("charset", b->parameter));
+  type_changed = mutt_str_strcasecmp(tmp, obuf);
+  charset_changed = mutt_str_strcasecmp(charset, mutt_param_get("charset", b->parameter));
 
   /* if in send mode, check for conversion - current setting is default. */
 
@@ -1002,7 +1010,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
-             mutt_get_parameter("charset", b->parameter));
+             mutt_param_get("charset", b->parameter));
     r = mutt_yesorno(tmp, !b->noconv);
     if (r != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
@@ -1018,7 +1026,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     if (type_changed)
       mutt_sleep(1);
     mutt_message(_("Character set changed to %s; %s."),
-                 mutt_get_parameter("charset", b->parameter),
+                 mutt_param_get("charset", b->parameter),
                  b->noconv ? _("not converting") : _("converting"));
   }
 
@@ -1053,10 +1061,10 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   return structure_changed;
 }
 
-static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
+static int check_traditional_pgp(struct Header *h, int *redraw)
 {
   struct Message *msg = NULL;
-  int rv = 0;
+  int rc = 0;
 
   h->security |= PGP_TRADITIONAL_CHECKED;
 
@@ -1068,28 +1076,28 @@ static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
   {
     h->security = crypt_query(h->content);
     *redraw |= REDRAW_FULL;
-    rv = 1;
+    rc = 1;
   }
 
   h->security |= PGP_TRADITIONAL_CHECKED;
   mx_close_message(Context, &msg);
-  return rv;
+  return rc;
 }
 
 int mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
-  int rv = 0;
+  int rc = 0;
   if (h && !(h->security & PGP_TRADITIONAL_CHECKED))
-    rv = _mutt_check_traditional_pgp(h, redraw);
+    rc = check_traditional_pgp(h, redraw);
   else
   {
     for (int i = 0; i < Context->msgcount; i++)
     {
       if (message_is_tagged(Context, i) && !(Context->hdrs[i]->security & PGP_TRADITIONAL_CHECKED))
       {
-        rv = _mutt_check_traditional_pgp(Context->hdrs[i], redraw) || rv;
+        rc = check_traditional_pgp(Context->hdrs[i], redraw) || rc;
       }
     }
   }
-  return rv;
+  return rc;
 }

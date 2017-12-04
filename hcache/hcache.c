@@ -47,7 +47,7 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "address.h"
 #include "backend.h"
 #include "body.h"
@@ -59,10 +59,9 @@
 #include "header.h"
 #include "mbyte.h"
 #include "mutt_regex.h"
-#include "mutt_tags.h"
 #include "parameter.h"
 #include "protos.h"
-#include "rfc822.h"
+#include "tags.h"
 
 static unsigned int hcachever = 0x0;
 
@@ -140,7 +139,7 @@ static void *lazy_malloc(size_t siz)
   if (siz < 4096)
     siz = 4096;
 
-  return safe_malloc(siz);
+  return mutt_mem_malloc(siz);
 }
 
 static void lazy_realloc(void *ptr, size_t siz)
@@ -150,7 +149,7 @@ static void lazy_realloc(void *ptr, size_t siz)
   if (p != NULL && siz < 4096)
     return;
 
-  safe_realloc(ptr, siz);
+  mutt_mem_realloc(ptr, siz);
 }
 
 static unsigned char *dump_int(unsigned int i, unsigned char *d, int *off)
@@ -168,18 +167,6 @@ static void restore_int(unsigned int *i, const unsigned char *d, int *off)
   (*off) += sizeof(int);
 }
 
-static inline bool is_ascii(const char *p, size_t len)
-{
-  register const char *s = p;
-  while (s && (unsigned) (s - p) < len)
-  {
-    if ((*s & 0x80) != 0)
-      return false;
-    s++;
-  }
-  return true;
-}
-
 static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
                                      ssize_t size, bool convert)
 {
@@ -192,13 +179,13 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
     return d;
   }
 
-  if (convert && !is_ascii(c, size))
+  if (convert && !mutt_str_is_ascii(c, size))
   {
-    p = mutt_substrdup(c, c + size);
+    p = mutt_str_substr_dup(c, c + size);
     if (mutt_convert_string(&p, Charset, "utf-8", 0) == 0)
     {
       c = p;
-      size = mutt_strlen(c) + 1;
+      size = mutt_str_strlen(c) + 1;
     }
   }
 
@@ -215,7 +202,7 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
 
 static unsigned char *dump_char(char *c, unsigned char *d, int *off, bool convert)
 {
-  return dump_char_size(c, d, off, mutt_strlen(c) + 1, convert);
+  return dump_char_size(c, d, off, mutt_str_strlen(c) + 1, convert);
 }
 
 static void restore_char(char **c, const unsigned char *d, int *off, bool convert)
@@ -229,11 +216,11 @@ static void restore_char(char **c, const unsigned char *d, int *off, bool conver
     return;
   }
 
-  *c = safe_malloc(size);
+  *c = mutt_mem_malloc(size);
   memcpy(*c, d + *off, size);
-  if (convert && !is_ascii(*c, size))
+  if (convert && !mutt_str_is_ascii(*c, size))
   {
-    char *tmp = safe_strdup(*c);
+    char *tmp = mutt_str_strdup(*c);
     if (mutt_convert_string(&tmp, "utf-8", Charset, 0) == 0)
     {
       mutt_str_replace(c, tmp);
@@ -275,7 +262,7 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
 
   while (counter)
   {
-    *a = rfc822_new_address();
+    *a = mutt_addr_new();
     restore_char(&(*a)->personal, d, off, convert);
     restore_char(&(*a)->mailbox, d, off, false);
     restore_int((unsigned int *) &(*a)->group, d, off);
@@ -348,7 +335,7 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
     return;
   }
 
-  *b = safe_malloc(sizeof(struct Buffer));
+  *b = mutt_mem_malloc(sizeof(struct Buffer));
 
   restore_char(&(*b)->data, d, off, convert);
   restore_int(&offset, d, off);
@@ -389,7 +376,7 @@ static void restore_parameter(struct Parameter **p, const unsigned char *d,
 
   while (counter)
   {
-    *p = safe_malloc(sizeof(struct Parameter));
+    *p = mutt_mem_malloc(sizeof(struct Parameter));
     restore_char(&(*p)->attribute, d, off, false);
     restore_char(&(*p)->value, d, off, convert);
     p = &(*p)->next;
@@ -550,14 +537,14 @@ static bool create_hcache_dir(const char *path)
     return false;
 
   static char dir[_POSIX_PATH_MAX];
-  strfcpy(dir, path, sizeof(dir));
+  mutt_str_strfcpy(dir, path, sizeof(dir));
 
   char *p = strrchr(dir, '/');
   if (!p)
     return true;
 
   *p = '\0';
-  if (mutt_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
+  if (mutt_file_mkdir(dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
     return true;
 
   mutt_error(_("Can't create %s: %s."), dir, strerror(errno));
@@ -587,7 +574,7 @@ static bool create_hcache_dir(const char *path)
  * If @a path exists and is a directory, it is used.
  * If @a path has a trailing '/' it is assumed to be a directory.
  * If ICONV isn't being used, then a suffix is added to the path, e.g. '-utf-8'.
- * Otherise @a path is assumed to be a file.
+ * Otherwise @a path is assumed to be a file.
  */
 static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
 {
@@ -595,11 +582,11 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   char suffix[32] = "";
   struct stat sb;
 
-  int plen = mutt_strlen(path);
-  int ret = stat(path, &sb);
+  int plen = mutt_str_strlen(path);
+  int rc = stat(path, &sb);
   int slash = (path[plen - 1] == '/');
 
-  if (((ret == 0) && !S_ISDIR(sb.st_mode)) || ((ret == -1) && !slash))
+  if (((rc == 0) && !S_ISDIR(sb.st_mode)) || ((rc == -1) && !slash))
   {
     /* An existing file or a non-existing path not ending with a slash */
     snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
@@ -615,23 +602,23 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     if (!slash)
       plen++;
 
-    ret = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
+    rc = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
   }
   else
   {
     unsigned char m[16]; /* binary md5sum */
     char name[_POSIX_PATH_MAX];
     snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
-    md5_buffer(name, strlen(name), &m);
+    mutt_md5_buf(name, strlen(name), &m);
     snprintf(name, sizeof(name),
              "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
              m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10],
              m[11], m[12], m[13], m[14], m[15]);
 
-    ret = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
+    rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
   }
 
-  if (ret < 0) /* namer or fprintf failed.. should not happen */
+  if (rc < 0) /* namer or fprintf failed.. should not happen */
     return path;
 
   create_hcache_dir(hcpath);
@@ -718,7 +705,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   memcpy(h, d + off, sizeof(struct Header));
   off += sizeof(struct Header);
 
-  h->env = mutt_new_envelope();
+  h->env = mutt_env_new();
   restore_envelope(h->env, d, &off, convert);
 
   h->content = mutt_new_body();
@@ -738,7 +725,7 @@ static char *get_foldername(const char *folder)
 
   /* if the folder is local, canonify the path to avoid
    * to ensure equivalent paths share the hcache */
-  p = safe_malloc(PATH_MAX + 1);
+  p = mutt_mem_malloc(PATH_MAX + 1);
   if (!realpath(path, p))
     mutt_str_replace(&p, path);
 
@@ -751,7 +738,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
   if (!ops)
     return NULL;
 
-  header_cache_t *h = safe_calloc(1, sizeof(header_cache_t));
+  header_cache_t *h = mutt_mem_calloc(1, sizeof(header_cache_t));
 
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0)
@@ -766,26 +753,26 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 
     hcachever = HCACHEVER;
 
-    md5_init_ctx(&ctx);
+    mutt_md5_init_ctx(&ctx);
 
     /* Seed with the compiled-in header structure hash */
-    md5_process_bytes(&hcachever, sizeof(hcachever), &ctx);
+    mutt_md5_process_bytes(&hcachever, sizeof(hcachever), &ctx);
 
     /* Mix in user's spam list */
     for (spam = SpamList; spam; spam = spam->next)
     {
-      md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
-      md5_process_bytes(spam->template, strlen(spam->template), &ctx);
+      mutt_md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
+      mutt_md5_process_bytes(spam->template, strlen(spam->template), &ctx);
     }
 
     /* Mix in user's nospam list */
     for (nospam = NoSpamList; nospam; nospam = nospam->next)
     {
-      md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
+      mutt_md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */
-    md5_finish_ctx(&ctx, digest.charval);
+    mutt_md5_finish_ctx(&ctx, digest.charval);
     hcachever = digest.intval;
   }
 
@@ -933,7 +920,7 @@ const char *mutt_hcache_backend_list(void)
     len += snprintf(tmp + len, STRING - len, "%s", (*ops)->name);
   }
 
-  return safe_strdup(tmp);
+  return mutt_str_strdup(tmp);
 }
 
 int mutt_hcache_is_valid_backend(const char *s)

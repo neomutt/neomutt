@@ -36,21 +36,21 @@ if BUILD_HC_TC
 libhcache_a_SOURCES += tc.c
 endif
 
-LIBMUTT = -L../lib -lmutt
-LIBMUTTDEPS = $(top_srcdir)/lib/lib.h ../lib/libmutt.a
+LIBMUTT = -L../mutt -lmutt
+LIBMUTTDEPS = $(top_srcdir)/mutt/mutt.h ../mutt/libmutt.a
 
 BUILT_SOURCES = $(HCVERSION)
 
 $(top_srcdir)/keymap_defs.h:
 	+$(MAKE) -C $(top_srcdir) keymap_defs.h
 
-hcversion.h: $(top_srcdir)/mutt.h $(top_srcdir)/address.h $(top_srcdir)/lib/list.h \
-		$(top_srcdir)/lib/buffer.h $(top_srcdir)/parameter.h \
+hcversion.h: $(top_srcdir)/mutt.h $(top_srcdir)/address.h $(top_srcdir)/mutt/list.h \
+		$(top_srcdir)/mutt/buffer.h $(top_srcdir)/parameter.h \
 		$(top_srcdir)/body.h $(top_srcdir)/envelope.h \
 		$(top_srcdir)/header.h $(srcdir)/hcachever.sh
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
-	echo '#include "address.h"'; echo '#include "lib/list.h"'; \
-	echo '#include "lib/buffer.h"'; echo '#include "parameter.h"'; \
+	echo '#include "address.h"'; echo '#include "mutt/list.h"'; \
+	echo '#include "mutt/buffer.h"'; echo '#include "parameter.h"'; \
 	echo '#include "body.h"'; echo '#include "envelope.h"'; \
 	echo '#include "header.h"'; \
 	) | $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh $(srcdir)/hcachever.sh hcversion.h

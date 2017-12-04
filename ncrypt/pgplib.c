@@ -24,7 +24,7 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "pgplib.h"
 
 const char *pgp_pkalgbytype(unsigned char type)
@@ -128,10 +128,10 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 
   for (; up; up = up->next)
   {
-    *lp = safe_calloc(1, sizeof(struct PgpUid));
+    *lp = mutt_mem_calloc(1, sizeof(struct PgpUid));
     (*lp)->trust = up->trust;
     (*lp)->flags = up->flags;
-    (*lp)->addr = safe_strdup(up->addr);
+    (*lp)->addr = mutt_str_strdup(up->addr);
     (*lp)->parent = parent;
     lp = &(*lp)->next;
   }
@@ -139,7 +139,7 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
   return l;
 }
 
-static void _pgp_free_key(struct PgpKeyInfo **kpp)
+static void free_key(struct PgpKeyInfo **kpp)
 {
   struct PgpKeyInfo *kp = NULL;
 
@@ -205,12 +205,12 @@ void pgp_free_key(struct PgpKeyInfo **kpp)
     for (q = p->next; q && q->parent == p; q = r)
     {
       r = q->next;
-      _pgp_free_key(&q);
+      free_key(&q);
     }
     if (p->parent)
-      _pgp_free_key(&p->parent);
+      free_key(&p->parent);
 
-    _pgp_free_key(&p);
+    free_key(&p);
   }
 
   *kpp = NULL;

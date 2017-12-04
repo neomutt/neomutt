@@ -34,7 +34,7 @@
 #include "config.h"
 #include <string.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "charset.h"
 #include "globals.h"
 
@@ -91,7 +91,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
   char *buf = NULL, *p = NULL;
   int b, ch, k;
 
-  p = buf = safe_malloc(u7len + u7len / 8 + 1);
+  p = buf = mutt_mem_malloc(u7len + u7len / 8 + 1);
 
   for (; u7len; u7++, u7len--)
   {
@@ -162,7 +162,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
   if (u8len)
     *u8len = p - buf;
 
-  safe_realloc(&buf, p - buf);
+  mutt_mem_realloc(&buf, p - buf);
   if (u8)
     *u8 = buf;
   return buf;
@@ -197,7 +197,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
    * In the worst case we convert 2 chars to 7 chars. For example:
    * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".
    */
-  p = buf = safe_malloc((u8len / 2) * 7 + 6);
+  p = buf = mutt_mem_malloc((u8len / 2) * 7 + 6);
 
   while (u8len)
   {
@@ -302,7 +302,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
   *p++ = '\0';
   if (u7len)
     *u7len = p - buf;
-  safe_realloc(&buf, p - buf);
+  mutt_mem_realloc(&buf, p - buf);
   if (u7)
     *u7 = buf;
   return buf;
@@ -321,12 +321,12 @@ void imap_utf_encode(struct ImapData *idata, char **s)
 {
   if (Charset)
   {
-    char *t = safe_strdup(*s);
+    char *t = mutt_str_strdup(*s);
     if (t && !mutt_convert_string(&t, Charset, "utf-8", 0))
     {
       FREE(s);
       if (idata->unicode)
-        *s = safe_strdup(t);
+        *s = mutt_str_strdup(t);
       else
         *s = utf8_to_utf7(t, strlen(t), NULL, 0);
     }
@@ -346,7 +346,7 @@ void imap_utf_decode(struct ImapData *idata, char **s)
   if (Charset)
   {
     if (idata->unicode)
-      t = safe_strdup(*s);
+      t = mutt_str_strdup(*s);
     else
       t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 

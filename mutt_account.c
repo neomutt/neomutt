@@ -23,7 +23,7 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "mutt_account.h"
 #include "globals.h"
@@ -32,7 +32,10 @@
 #include "url.h"
 
 /**
- * mutt_account_match - compare account info (host/port/user)
+ * mutt_account_match - Compare account info (host/port/user)
+ * @param a1 First Account
+ * @param a2 Second Account
+ * @retval 0 Accounts match
  */
 int mutt_account_match(const struct Account *a1, const struct Account *a2)
 {
@@ -40,7 +43,7 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 
   if (a1->type != a2->type)
     return 0;
-  if (mutt_strcasecmp(a1->host, a2->host) != 0)
+  if (mutt_str_strcasecmp(a1->host, a2->host) != 0)
     return 0;
   if (a1->port != a2->port)
     return 0;
@@ -78,24 +81,28 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 }
 
 /**
- * mutt_account_fromurl - fill account with information from url
+ * mutt_account_fromurl - Fill Account with information from url
+ * @param account Account to fill
+ * @param url     Url to parse
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mutt_account_fromurl(struct Account *account, struct Url *url)
 {
   /* must be present */
   if (url->host)
-    strfcpy(account->host, url->host, sizeof(account->host));
+    mutt_str_strfcpy(account->host, url->host, sizeof(account->host));
   else
     return -1;
 
   if (url->user)
   {
-    strfcpy(account->user, url->user, sizeof(account->user));
+    mutt_str_strfcpy(account->user, url->user, sizeof(account->user));
     account->flags |= MUTT_ACCT_USER;
   }
   if (url->pass)
   {
-    strfcpy(account->pass, url->pass, sizeof(account->pass));
+    mutt_str_strfcpy(account->pass, url->pass, sizeof(account->pass));
     account->flags |= MUTT_ACCT_PASS;
   }
   if (url->port)
@@ -108,7 +115,9 @@ int mutt_account_fromurl(struct Account *account, struct Url *url)
 }
 
 /**
- * mutt_account_tourl - fill URL with info from account
+ * mutt_account_tourl - Fill URL with info from account
+ * @param account Source Account
+ * @param url     Url to fill
  *
  * The URL information is a set of pointers into account - don't free or edit
  * account until you've finished with url (make a copy of account if you need
@@ -172,7 +181,10 @@ void mutt_account_tourl(struct Account *account, struct Url *url)
 }
 
 /**
- * mutt_account_getuser - retrieve username into Account, if necessary
+ * mutt_account_getuser - Retrieve username into Account, if necessary
+ * @param account Account to fill
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_account_getuser(struct Account *account)
 {
@@ -183,15 +195,15 @@ int mutt_account_getuser(struct Account *account)
     return 0;
 #ifdef USE_IMAP
   else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
-    strfcpy(account->user, ImapUser, sizeof(account->user));
+    mutt_str_strfcpy(account->user, ImapUser, sizeof(account->user));
 #endif
 #ifdef USE_POP
   else if ((account->type == MUTT_ACCT_TYPE_POP) && PopUser)
-    strfcpy(account->user, PopUser, sizeof(account->user));
+    mutt_str_strfcpy(account->user, PopUser, sizeof(account->user));
 #endif
 #ifdef USE_NNTP
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
-    strfcpy(account->user, NntpUser, sizeof(account->user));
+    mutt_str_strfcpy(account->user, NntpUser, sizeof(account->user));
 #endif
   else if (option(OPT_NO_CURSES))
     return -1;
@@ -200,7 +212,7 @@ int mutt_account_getuser(struct Account *account)
   {
     /* L10N: Example: Username at myhost.com */
     snprintf(prompt, sizeof(prompt), _("Username at %s: "), account->host);
-    strfcpy(account->user, NONULL(Username), sizeof(account->user));
+    mutt_str_strfcpy(account->user, NONULL(Username), sizeof(account->user));
     if (mutt_get_field_unbuffered(prompt, account->user, sizeof(account->user), 0))
       return -1;
   }
@@ -210,6 +222,12 @@ int mutt_account_getuser(struct Account *account)
   return 0;
 }
 
+/**
+ * mutt_account_getlogin - Retrieve login info into Account, if necessary
+ * @param account Account to fill
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_account_getlogin(struct Account *account)
 {
   /* already set */
@@ -220,7 +238,7 @@ int mutt_account_getlogin(struct Account *account)
   {
     if (ImapLogin)
     {
-      strfcpy(account->login, ImapLogin, sizeof(account->login));
+      mutt_str_strfcpy(account->login, ImapLogin, sizeof(account->login));
       account->flags |= MUTT_ACCT_LOGIN;
     }
   }
@@ -228,17 +246,26 @@ int mutt_account_getlogin(struct Account *account)
 
   if (!(account->flags & MUTT_ACCT_LOGIN))
   {
-    mutt_account_getuser(account);
-    strfcpy(account->login, account->user, sizeof(account->login));
+    if (mutt_account_getuser(account) == 0)
+    {
+      mutt_str_strfcpy(account->login, account->user, sizeof(account->login));
+      account->flags |= MUTT_ACCT_LOGIN;
+    }
+    else
+    {
+      mutt_debug(1, "Couldn't get user info\n");
+      return -1;
+    }
   }
-
-  account->flags |= MUTT_ACCT_LOGIN;
 
   return 0;
 }
 
 /**
- * mutt_account_getpass - fetch password into Account, if necessary
+ * mutt_account_getpass - Fetch password into Account, if necessary
+ * @param account Account to fill
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_account_getpass(struct Account *account)
 {
@@ -248,19 +275,19 @@ int mutt_account_getpass(struct Account *account)
     return 0;
 #ifdef USE_IMAP
   else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapPass)
-    strfcpy(account->pass, ImapPass, sizeof(account->pass));
+    mutt_str_strfcpy(account->pass, ImapPass, sizeof(account->pass));
 #endif
 #ifdef USE_POP
   else if ((account->type == MUTT_ACCT_TYPE_POP) && PopPass)
-    strfcpy(account->pass, PopPass, sizeof(account->pass));
+    mutt_str_strfcpy(account->pass, PopPass, sizeof(account->pass));
 #endif
 #ifdef USE_SMTP
   else if ((account->type == MUTT_ACCT_TYPE_SMTP) && SmtpPass)
-    strfcpy(account->pass, SmtpPass, sizeof(account->pass));
+    mutt_str_strfcpy(account->pass, SmtpPass, sizeof(account->pass));
 #endif
 #ifdef USE_NNTP
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpPass)
-    strfcpy(account->pass, NntpPass, sizeof(account->pass));
+    mutt_str_strfcpy(account->pass, NntpPass, sizeof(account->pass));
 #endif
   else if (option(OPT_NO_CURSES))
     return -1;
@@ -279,6 +306,10 @@ int mutt_account_getpass(struct Account *account)
   return 0;
 }
 
+/**
+ * mutt_account_unsetpass - Unset Account's password
+ * @param account Account to modify
+ */
 void mutt_account_unsetpass(struct Account *account)
 {
   account->flags &= ~MUTT_ACCT_PASS;

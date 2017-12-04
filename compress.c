@@ -27,7 +27,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "compress.h"
 #include "context.h"
@@ -96,13 +96,13 @@ static int lock_realpath(struct Context *ctx, int excl)
     return 0;
   }
 
-  int r = mutt_lock_file(ctx->realpath, fileno(ci->lockfp), excl, 1);
+  int r = mutt_file_lock(fileno(ci->lockfp), excl, 1);
 
   if (r == 0)
     ci->locked = 1;
   else if (excl == 0)
   {
-    safe_fclose(&ci->lockfp);
+    mutt_file_fclose(&ci->lockfp);
     ctx->readonly = true;
     return 1;
   }
@@ -128,10 +128,10 @@ static void unlock_realpath(struct Context *ctx)
   if (!ci->locked)
     return;
 
-  mutt_unlock_file(ctx->realpath, fileno(ci->lockfp));
+  mutt_file_unlock(fileno(ci->lockfp));
 
   ci->locked = 0;
-  safe_fclose(&ci->lockfp);
+  mutt_file_fclose(&ci->lockfp);
 }
 
 /**
@@ -158,13 +158,13 @@ static int setup_paths(struct Context *ctx)
 
   /* We will uncompress to /tmp */
   mutt_mktemp(tmppath, sizeof(tmppath));
-  ctx->path = safe_strdup(tmppath);
+  ctx->path = mutt_str_strdup(tmppath);
 
-  tmpfp = safe_fopen(ctx->path, "w");
+  tmpfp = mutt_file_fopen(ctx->path, "w");
   if (!tmpfp)
     return -1;
 
-  safe_fclose(&tmpfp);
+  mutt_file_fclose(&tmpfp);
   return 0;
 }
 
@@ -256,12 +256,12 @@ static struct CompressInfo *set_compress_info(struct Context *ctx)
   const char *c = find_hook(MUTT_CLOSEHOOK, ctx->path);
   const char *a = find_hook(MUTT_APPENDHOOK, ctx->path);
 
-  struct CompressInfo *ci = safe_calloc(1, sizeof(struct CompressInfo));
+  struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   ctx->compress_info = ci;
 
-  ci->open = safe_strdup(o);
-  ci->close = safe_strdup(c);
-  ci->append = safe_strdup(a);
+  ci->open = mutt_str_strdup(o);
+  ci->close = mutt_str_strdup(c);
+  ci->append = mutt_str_strdup(a);
 
   return ci;
 }
@@ -329,29 +329,33 @@ static char *escape_path(char *src)
 }
 
 /**
- * cb_format_str - Expand the filenames in the command string
- * @param dest        Buffer in which to save string
- * @param destlen     Buffer length
- * @param col         Starting column, UNUSED
- * @param cols        Number of screen columns, UNUSED
- * @param op          printf-like operator, e.g. 't'
- * @param src         printf-like format string
- * @param fmt         Field formatting string, UNUSED
- * @param ifstring    If condition is met, display this string, UNUSED
- * @param elsestring  Otherwise, display this string, UNUSED
- * @param data        Pointer to the mailbox Context
- * @param flags       Format flags, UNUSED
+ * compress_format_str - Expand the filenames in a command string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
  * @retval src (unchanged)
  *
- * cb_format_str is a callback function for mutt_expando_format.  It understands
- * two operators. '%f' : 'from' filename, '%t' : 'to' filename.
+ * compress_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%f     | Compressed file
+ * | \%t     | Plaintext, temporary file
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *fmt,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                       char op, const char *src, const char *prec,
+                                       const char *if_str, const char *else_str,
+                                       unsigned long data, enum FormatFlag flags)
 {
-  if (!dest || (data == 0))
+  if (!buf || (data == 0))
     return src;
 
   struct Context *ctx = (struct Context *) data;
@@ -360,11 +364,11 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   {
     case 'f':
       /* Compressed file */
-      snprintf(dest, destlen, "%s", NONULL(escape_path(ctx->realpath)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf(dest, destlen, "%s", NONULL(escape_path(ctx->path)));
+      snprintf(buf, buflen, "%s", NONULL(escape_path(ctx->path)));
       break;
   }
   return src;
@@ -379,7 +383,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  *
  * This function takes a hook command and expands the filename placeholders
  * within it.  The function calls mutt_expando_format() to do the replacement
- * which calls our callback function cb_format_str(). e.g.
+ * which calls our callback function compress_format_str(). e.g.
  *
  * Template command:
  *      gzip -cd '%f' > '%t'
@@ -392,7 +396,8 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
   if (!ctx || !cmd || !buf)
     return;
 
-  mutt_expando_format(buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
+  mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
+                      (unsigned long) ctx, 0);
 }
 
 /**
@@ -417,7 +422,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
   if (!ctx->quiet)
     mutt_message(progress, ctx->realpath);
 
-  mutt_block_signals();
+  mutt_sig_block();
   endwin();
   fflush(stdout);
 
@@ -430,7 +435,7 @@ static int execute_command(struct Context *ctx, const char *command, const char 
     mutt_error(_("Error running \"%s\"!"), sys_cmd);
   }
 
-  mutt_unblock_signals();
+  mutt_sig_unblock();
 
   return rc;
 }

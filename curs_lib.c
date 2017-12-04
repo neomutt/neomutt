@@ -41,7 +41,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "context.h"
 #include "enter_state.h"
@@ -134,14 +134,14 @@ struct Event mutt_getch(void)
 
   SigInt = 0;
 
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
 #ifdef KEY_RESIZE
   /* ncurses 4.2 sends this when the screen is resized */
   ch = KEY_RESIZE;
   while (ch == KEY_RESIZE)
 #endif /* KEY_RESIZE */
     ch = getch();
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
 
   if (SigInt)
   {
@@ -176,8 +176,8 @@ struct Event mutt_getch(void)
   return (ch == ctrl('G') ? err : ret);
 }
 
-int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
-                    int multiple, char ***files, int *numfiles)
+int mutt_get_field_full(const char *field, char *buf, size_t buflen,
+                        int complete, int multiple, char ***files, int *numfiles)
 {
   int ret;
   int x;
@@ -201,7 +201,7 @@ int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
     NORMAL_COLOR;
     mutt_refresh();
     mutt_window_getyx(MuttMessageWindow, NULL, &x);
-    ret = _mutt_enter_string(buf, buflen, x, complete, multiple, files, numfiles, es);
+    ret = mutt_enter_string_full(buf, buflen, x, complete, multiple, files, numfiles, es);
   } while (ret == 1);
   mutt_window_clearline(MuttMessageWindow, 0);
   mutt_free_enter_state(&es);
@@ -233,7 +233,7 @@ void mutt_edit_file(const char *editor, const char *data)
 
   mutt_endwin(NULL);
   mutt_expand_file_fmt(cmd, sizeof(cmd), editor, data);
-  if (mutt_system(cmd))
+  if (mutt_system(cmd) != 0)
   {
     mutt_error(_("Error running \"%s\"!"), cmd);
     mutt_sleep(2);
@@ -266,10 +266,10 @@ int mutt_yesorno(const char *msg, int def)
 
   answer[1] = '\0';
 
-  reyes_ok = (expr = nl_langinfo(YESEXPR)) && expr[0] == '^' &&
-             !REGCOMP(&reyes, expr, REG_NOSUB);
-  reno_ok = (expr = nl_langinfo(NOEXPR)) && expr[0] == '^' &&
-            !REGCOMP(&reno, expr, REG_NOSUB);
+  reyes_ok = (expr = nl_langinfo(YESEXPR)) && (expr[0] == '^') &&
+             (REGCOMP(&reyes, expr, REG_NOSUB) == 0);
+  reno_ok = (expr = nl_langinfo(NOEXPR)) && (expr[0] == '^') &&
+            (REGCOMP(&reno, expr, REG_NOSUB) == 0);
 
   /*
    * In order to prevent the default answer to the question to wrapped
@@ -618,12 +618,12 @@ out:
 
 void mutt_init_windows(void)
 {
-  MuttHelpWindow = safe_calloc(1, sizeof(struct MuttWindow));
-  MuttIndexWindow = safe_calloc(1, sizeof(struct MuttWindow));
-  MuttStatusWindow = safe_calloc(1, sizeof(struct MuttWindow));
-  MuttMessageWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttHelpWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttIndexWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttStatusWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  MuttMessageWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttSidebarWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 #endif
 }
 
@@ -643,7 +643,7 @@ void mutt_reflow_windows(void)
   if (option(OPT_NO_CURSES))
     return;
 
-  mutt_debug(2, "In mutt_reflow_windows\n");
+  mutt_debug(2, "entering\n");
 
   MuttStatusWindow->rows = 1;
   MuttStatusWindow->cols = COLS;
@@ -740,17 +740,17 @@ static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
 int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
 {
   va_list ap;
-  int rv;
+  int rc;
 
-  rv = mutt_window_move(win, row, col);
-  if (rv != ERR)
+  rc = mutt_window_move(win, row, col);
+  if (rc != ERR)
   {
     va_start(ap, fmt);
-    rv = vw_printw(stdscr, fmt, ap);
+    rc = vw_printw(stdscr, fmt, ap);
     va_end(ap);
   }
 
-  return rv;
+  return rc;
 }
 
 /**
@@ -875,7 +875,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
 {
   int rc;
 
-  if (!Pager || (mutt_strcmp(Pager, "builtin") == 0))
+  if (!Pager || (mutt_str_strcmp(Pager, "builtin") == 0))
     rc = mutt_pager(banner, tempfile, do_color, info);
   else
   {
@@ -890,14 +890,14 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct
     }
     else
       rc = 0;
-    mutt_unlink(tempfile);
+    mutt_file_unlink(tempfile);
   }
 
   return rc;
 }
 
-int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
-                      int multiple, char ***files, int *numfiles, int flags)
+int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
+                          int multiple, char ***files, int *numfiles, int flags)
 {
   struct Event ch;
 
@@ -927,16 +927,16 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
       flags |= MUTT_SEL_MULTI;
     if (buffy)
       flags |= MUTT_SEL_BUFFY;
-    _mutt_select_file(buf, blen, flags, files, numfiles);
+    mutt_select_file(buf, blen, flags, files, numfiles);
   }
   else
   {
-    char *pc = safe_malloc(mutt_strlen(prompt) + 3);
+    char *pc = mutt_mem_malloc(mutt_str_strlen(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    if (_mutt_get_field(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
-                        multiple, files, numfiles) != 0)
+    if (mutt_get_field_full(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
+                            multiple, files, numfiles) != 0)
       buf[0] = '\0';
     FREE(&pc);
 #ifdef USE_NOTMUCH
@@ -956,14 +956,14 @@ void mutt_unget_event(int ch, int op)
   tmp.op = op;
 
   if (UngetCount >= UngetLen)
-    safe_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
+    mutt_mem_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
 
   UngetKeyEvents[UngetCount++] = tmp;
 }
 
 void mutt_unget_string(char *s)
 {
-  char *p = s + mutt_strlen(s) - 1;
+  char *p = s + mutt_str_strlen(s) - 1;
 
   while (p >= s)
   {
@@ -985,7 +985,7 @@ void mutt_push_macro_event(int ch, int op)
   tmp.op = op;
 
   if (MacroBufferCount >= MacroBufferLen)
-    safe_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
+    mutt_mem_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
 
   MacroEvents[MacroBufferCount++] = tmp;
 }
@@ -1112,7 +1112,7 @@ int mutt_multi_choice(char *prompt, char *letters)
       else if (ch.ch <= '9' && ch.ch > '0')
       {
         choice = ch.ch - '0';
-        if (choice <= mutt_strlen(letters))
+        if (choice <= mutt_str_strlen(letters))
           break;
       }
     }
@@ -1141,20 +1141,33 @@ int mutt_addwch(wchar_t wc)
   memset(&mbstate, 0, sizeof(mbstate));
   if ((n1 = wcrtomb(buf, wc, &mbstate)) == (size_t)(-1) ||
       (n2 = wcrtomb(buf + n1, 0, &mbstate)) == (size_t)(-1))
+  {
     return -1; /* ERR */
+  }
   else
+  {
     return addstr(buf);
+  }
 }
 
 /**
  * mutt_simple_format - Format a string, like snprintf()
+ * @param[out] buf       Buffer in which to save string
+ * @param[in]  buflen    Buffer length
+ * @param[in]  min_width Minimum width
+ * @param[in]  max_width Maximum width
+ * @param[in]  justify   Justification, e.g. #FMT_RIGHT
+ * @param[in]  pad_char  Padding character
+ * @param[in]  s         String to format
+ * @param[in]  n         Number of bytes of string to format
+ * @param[in]  arboreal  If true, string contains graphical tree characters
  *
- * This formats a string, a bit like snprintf (dest, destlen, "%-*.*s",
+ * This formats a string, a bit like snprintf(buf, buflen, "%-*.*s",
  * min_width, max_width, s), except that the widths refer to the number of
  * character cells when printed.
  */
-void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width,
-                        int justify, char m_pad_char, const char *s, size_t n, int arboreal)
+void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
+                        int justify, char pad_char, const char *s, size_t n, int arboreal)
 {
   char *p = NULL;
   wchar_t wc;
@@ -1166,8 +1179,8 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
 
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
-  destlen--;
-  p = dest;
+  buflen--;
+  p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
@@ -1176,7 +1189,7 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
         memset(&mbstate1, 0, sizeof(mbstate1));
 
       k = (k == (size_t)(-1)) ? 1 : n;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (escaped)
     {
@@ -1205,25 +1218,25 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
     }
     if (w >= 0)
     {
-      if (w > max_width || (k2 = wcrtomb(scratch, wc, &mbstate2)) > destlen)
+      if (w > max_width || (k2 = wcrtomb(scratch, wc, &mbstate2)) > buflen)
         continue;
       min_width -= w;
       max_width -= w;
       strncpy(p, scratch, k2);
       p += k2;
-      destlen -= k2;
+      buflen -= k2;
     }
   }
-  w = (int) destlen < min_width ? destlen : min_width;
+  w = (int) buflen < min_width ? buflen : min_width;
   if (w <= 0)
     *p = '\0';
   else if (justify == FMT_RIGHT) /* right justify */
   {
     p[w] = '\0';
-    while (--p >= dest)
+    while (--p >= buf)
       p[w] = *p;
     while (--w >= 0)
-      dest[w] = m_pad_char;
+      buf[w] = pad_char;
   }
   else if (justify == FMT_CENTER) /* center */
   {
@@ -1233,74 +1246,92 @@ void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width
     p[w] = '\0';
 
     /* move str to center of buffer */
-    while (--p >= dest)
+    while (--p >= buf)
       p[half] = *p;
 
     /* fill rhs */
     p = savedp + half;
     while (--w >= half)
-      *p++ = m_pad_char;
+      *p++ = pad_char;
 
     /* fill lhs */
     while (half--)
-      dest[half] = m_pad_char;
+      buf[half] = pad_char;
   }
   else /* left justify */
   {
     while (--w >= 0)
-      *p++ = m_pad_char;
+      *p++ = pad_char;
     *p = '\0';
   }
 }
 
 /**
  * format_s_x - Format a string like snprintf()
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ * @param[in]  arboreal  If true, string contains graphical tree characters
  *
  * This formats a string rather like
- *   snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
- *   snprintf (dest, destlen, fmt, s);
+ *   snprintf (fmt, sizeof (fmt), "%%%ss", prec);
+ *   snprintf (buf, buflen, fmt, s);
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-static void format_s_x(char *dest, size_t destlen, const char *prefix,
-                       const char *s, int arboreal)
+static void format_s_x(char *buf, size_t buflen, const char *prec, const char *s, int arboreal)
 {
   int justify = FMT_RIGHT;
   char *p = NULL;
   int min_width;
   int max_width = INT_MAX;
 
-  if (*prefix == '-')
+  if (*prec == '-')
   {
-    prefix++;
+    prec++;
     justify = FMT_LEFT;
   }
-  else if (*prefix == '=')
+  else if (*prec == '=')
   {
-    prefix++;
+    prec++;
     justify = FMT_CENTER;
   }
-  min_width = strtol(prefix, &p, 10);
+  min_width = strtol(prec, &p, 10);
   if (*p == '.')
   {
-    prefix = p + 1;
-    max_width = strtol(prefix, &p, 10);
-    if (p <= prefix)
+    prec = p + 1;
+    max_width = strtol(prec, &p, 10);
+    if (p <= prec)
       max_width = INT_MAX;
   }
 
-  mutt_simple_format(dest, destlen, min_width, max_width, justify, ' ', s,
-                     mutt_strlen(s), arboreal);
+  mutt_simple_format(buf, buflen, min_width, max_width, justify, ' ', s,
+                     mutt_str_strlen(s), arboreal);
 }
 
-void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s)
+/**
+ * mutt_format_s - Format a simple string
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ */
+void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(dest, destlen, prefix, s, 0);
+  format_s_x(buf, buflen, prec, s, 0);
 }
 
-void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s)
+/**
+ * mutt_format_s_tree - Format a simple string with tree characters
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  s        String to format
+ */
+void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s)
 {
-  format_s_x(dest, destlen, prefix, s, 1);
+  format_s_x(buf, buflen, prec, s, 1);
 }
 
 /**
@@ -1313,7 +1344,7 @@ void mutt_paddstr(int n, const char *s)
   wchar_t wc;
   int w;
   size_t k;
-  size_t len = mutt_strlen(s);
+  size_t len = mutt_str_strlen(s);
   mbstate_t mbstate;
 
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1324,7 +1355,7 @@ void mutt_paddstr(int n, const char *s)
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';
@@ -1343,7 +1374,7 @@ void mutt_paddstr(int n, const char *s)
 
 /**
  * mutt_wstr_trunc - Work out how to truncate a widechar string
- * @param[in]  src    String to measute
+ * @param[in]  src    String to measure
  * @param[in]  maxlen Maximum length of string in bytes
  * @param[in]  maxwid Maximum width in screen columns
  * @param[out] width  Save the truncated screen column width
@@ -1362,7 +1393,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
   if (!src)
     goto out;
 
-  n = mutt_strlen(src);
+  n = mutt_str_strlen(src);
 
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
@@ -1372,7 +1403,7 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
       if (cl == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       cl = (cl == (size_t)(-1)) ? 1 : n;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     cw = wcwidth(wc);
     /* hack because MUTT_TREE symbols aren't turned into characters
@@ -1398,32 +1429,6 @@ out:
 }
 
 /**
- * mutt_charlen - Count the bytes in a (multibyte) character
- * @param[in]  s     String to be examined
- * @param[out] width Number of screen columns the character would use
- * @retval n  Number of bytes in the first (multibyte) character of input consumes
- * @retval <0 Conversion error
- * @retval =0 End of input
- * @retval >0 Length (bytes)
- */
-int mutt_charlen(const char *s, int *width)
-{
-  wchar_t wc;
-  mbstate_t mbstate;
-  size_t k, n;
-
-  if (!s || !*s)
-    return 0;
-
-  n = mutt_strlen(s);
-  memset(&mbstate, 0, sizeof(mbstate));
-  k = mbrtowc(&wc, s, n, &mbstate);
-  if (width)
-    *width = wcwidth(wc);
-  return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
-}
-
-/**
  * mutt_strwidth - Measure a string's width in screen cells
  * @param s String to be measured
  * @retval n Number of screen cells string would use
@@ -1438,7 +1443,7 @@ int mutt_strwidth(const char *s)
   if (!s)
     return 0;
 
-  n = mutt_strlen(s);
+  n = mutt_str_strlen(s);
 
   memset(&mbstate, 0, sizeof(mbstate));
   for (w = 0; n && (k = mbrtowc(&wc, s, n, &mbstate)); s += k, n -= k)
@@ -1455,7 +1460,7 @@ int mutt_strwidth(const char *s)
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       k = (k == (size_t)(-1)) ? 1 : n;
-      wc = replacement_char();
+      wc = ReplacementChar;
     }
     if (!IsWPrint(wc))
       wc = '?';

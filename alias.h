@@ -33,7 +33,6 @@ struct Address;
  */
 struct Alias
 {
-  struct Alias *self; /* XXX - ugly hack */
   char *name;
   struct Address *addr;
   struct Alias *next;
@@ -47,5 +46,6 @@ struct Address *mutt_expand_aliases(struct Address *a);
 void mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp);
 void mutt_create_alias(struct Envelope *cur, struct Address *iadr);
+void mutt_free_alias(struct Alias **p);
 
 #endif /* _MUTT_ALIAS_H */

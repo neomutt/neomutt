@@ -29,9 +29,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "mutt_lua.h"
+#include "address.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "mbtable.h"
@@ -39,9 +40,8 @@
 #include "mutt_options.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 
-static int _handle_panic(lua_State *l)
+static int handle_panic(lua_State *l)
 {
   mutt_debug(1, "lua runtime panic: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime panic: %s\n", lua_tostring(l, -1));
@@ -49,7 +49,7 @@ static int _handle_panic(lua_State *l)
   return -1;
 }
 
-static int _handle_error(lua_State *l)
+static int handle_error(lua_State *l)
 {
   mutt_debug(1, "lua runtime error: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime error: %s\n", lua_tostring(l, -1));
@@ -57,20 +57,20 @@ static int _handle_error(lua_State *l)
   return -1;
 }
 
-static int _lua_mutt_call(lua_State *l)
+static int lua_mutt_call(lua_State *l)
 {
-  mutt_debug(2, " * _lua_mutt_call()\n");
+  mutt_debug(2, " * lua_mutt_call()\n");
   struct Buffer token, expn, err;
   char buffer[LONG_STRING] = "";
   const struct Command *command = NULL;
-  int rv = 0;
+  int rc = 0;
 
   mutt_buffer_init(&token);
   mutt_buffer_init(&expn);
   mutt_buffer_init(&err);
 
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
 
   if (lua_gettop(l) == 0)
   {
@@ -88,36 +88,36 @@ static int _lua_mutt_call(lua_State *l)
   for (int i = 2; i <= lua_gettop(l); i++)
   {
     const char *s = lua_tostring(l, i);
-    safe_strncat(buffer, sizeof(buffer), s, mutt_strlen(s));
-    safe_strncat(buffer, sizeof(buffer), " ", 1);
+    mutt_str_strncat(buffer, sizeof(buffer), s, mutt_str_strlen(s));
+    mutt_str_strncat(buffer, sizeof(buffer), " ", 1);
   }
 
   expn.data = expn.dptr = buffer;
-  expn.dsize = mutt_strlen(buffer);
+  expn.dsize = mutt_str_strlen(buffer);
 
   if (command->func(&token, &expn, command->data, &err))
   {
     luaL_error(l, "NeoMutt error: %s", err.data);
-    rv = -1;
+    rc = -1;
   }
   else
   {
     if (lua_pushstring(l, err.data) == NULL)
-      _handle_error(l);
+      handle_error(l);
     else
-      rv++;
+      rc++;
   }
 
   FREE(&err.data);
 
-  return rv;
+  return rc;
 }
 
-static int _lua_mutt_set(lua_State *l)
+static int lua_mutt_set(lua_State *l)
 {
-  int rv = -1;
+  int rc = -1;
   const char *param = lua_tostring(l, -2);
-  mutt_debug(2, " * _lua_mutt_set(%s)\n", param);
+  mutt_debug(2, " * lua_mutt_set(%s)\n", param);
   struct Option opt;
   char err_str[LONG_STRING];
   struct Buffer err;
@@ -130,7 +130,7 @@ static int _lua_mutt_set(lua_State *l)
     return -1;
   }
 
-  rv = 0;
+  rc = 0;
   switch (DTYPE(opt.type))
   {
     case DT_ADDRESS:
@@ -139,8 +139,8 @@ static int _lua_mutt_set(lua_State *l)
     case DT_PATH:
     case DT_SORT:
     case DT_STRING:
-      opt.data = (long) safe_strdup(lua_tostring(l, -1));
-      rv = mutt_option_set(&opt, &err);
+      opt.data = (long) mutt_str_strdup(lua_tostring(l, -1));
+      rc = mutt_option_set(&opt, &err);
       FREE(&opt.data);
       break;
     case DT_QUAD:
@@ -152,16 +152,16 @@ static int _lua_mutt_set(lua_State *l)
                       "mutt.QUAD_YES, mutt.QUAD_NO, mutt.QUAD_ASKYES, "
                       "mutt.QUAD_ASKNO",
                    param);
-        rv = -1;
+        rc = -1;
       }
       else
-        rv = mutt_option_set(&opt, &err);
+        rc = mutt_option_set(&opt, &err);
       break;
     case DT_MAGIC:
       if (mx_set_magic(lua_tostring(l, -1)))
       {
         luaL_error(l, "Invalid mailbox type: %s", opt.data);
-        rv = -1;
+        rc = -1;
       }
       break;
     case DT_NUMBER:
@@ -170,32 +170,32 @@ static int _lua_mutt_set(lua_State *l)
       if ((i > SHRT_MIN) && (i < SHRT_MAX))
       {
         opt.data = lua_tointeger(l, -1);
-        rv = mutt_option_set(&opt, &err);
+        rc = mutt_option_set(&opt, &err);
       }
       else
       {
         luaL_error(l, "Integer overflow of %d, not in %d-%d", i, SHRT_MIN, SHRT_MAX);
-        rv = -1;
+        rc = -1;
       }
       break;
     }
     case DT_BOOL:
       opt.data = (long) lua_toboolean(l, -1);
-      rv = mutt_option_set(&opt, &err);
+      rc = mutt_option_set(&opt, &err);
       break;
     default:
       luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", opt.type, param);
-      rv = -1;
+      rc = -1;
       break;
   }
 
-  return rv;
+  return rc;
 }
 
-static int _lua_mutt_get(lua_State *l)
+static int lua_mutt_get(lua_State *l)
 {
   const char *param = lua_tostring(l, -1);
-  mutt_debug(2, " * _lua_mutt_get(%s)\n", param);
+  mutt_debug(2, " * lua_mutt_get(%s)\n", param);
   struct Option opt;
 
   if (mutt_option_get(param, &opt))
@@ -217,7 +217,7 @@ static int _lua_mutt_get(lua_State *l)
       }
       case DT_PATH:
       case DT_STRING:
-        if (mutt_strncmp("my_", param, 3) == 0)
+        if (mutt_str_strncmp("my_", param, 3) == 0)
         {
           char *option = (char *) opt.option;
           char *value = (char *) opt.data;
@@ -258,62 +258,62 @@ static int _lua_mutt_get(lua_State *l)
         return -1;
     }
   }
-  mutt_debug(2, " * _lua_mutt_get() -> error\n");
+  mutt_debug(2, " * error\n");
   luaL_error(l, "NeoMutt parameter not found %s", param);
   return -1;
 }
 
-static int _lua_mutt_enter(lua_State *l)
+static int lua_mutt_enter(lua_State *l)
 {
-  mutt_debug(2, " * _lua_mutt_enter()\n");
+  mutt_debug(2, " * lua_mutt_enter()\n");
   struct Buffer token, err;
-  char *buffer = safe_strdup(lua_tostring(l, -1));
-  int rv = 0;
+  char *buffer = mutt_str_strdup(lua_tostring(l, -1));
+  int rc = 0;
 
   mutt_buffer_init(&err);
   mutt_buffer_init(&token);
 
   err.dsize = STRING;
-  err.data = safe_malloc(err.dsize);
+  err.data = mutt_mem_malloc(err.dsize);
 
   if (mutt_parse_rc_line(buffer, &token, &err))
   {
     luaL_error(l, "NeoMutt error: %s", err.data);
-    rv = -1;
+    rc = -1;
   }
   else
   {
     if (lua_pushstring(l, err.data) == NULL)
-      _handle_error(l);
+      handle_error(l);
     else
-      rv++;
+      rc++;
   }
 
   FREE(&buffer);
   FREE(&err.data);
 
-  return rv;
+  return rc;
 }
 
-static int _lua_mutt_message(lua_State *l)
+static int lua_mutt_message(lua_State *l)
 {
-  mutt_debug(2, " * _lua_mutt_message()\n");
+  mutt_debug(2, " * lua_mutt_message()\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
     mutt_message(msg);
   return 0;
 }
 
-static int _lua_mutt_error(lua_State *l)
+static int lua_mutt_error(lua_State *l)
 {
-  mutt_debug(2, " * _lua_mutt_error()\n");
+  mutt_debug(2, " * lua_mutt_error()\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
     mutt_error(msg);
   return 0;
 }
 
-static void _lua_expose_command(void *p, const struct Command *cmd)
+static void lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
   char buf[LONG_STRING];
@@ -324,10 +324,10 @@ static void _lua_expose_command(void *p, const struct Command *cmd)
 }
 
 static const luaL_Reg luaMuttDecl[] = {
-  { "set", _lua_mutt_set },       { "get", _lua_mutt_get },
-  { "call", _lua_mutt_call },     { "enter", _lua_mutt_enter },
-  { "print", _lua_mutt_message }, { "message", _lua_mutt_message },
-  { "error", _lua_mutt_error },   { NULL, NULL },
+  { "set", lua_mutt_set },       { "get", lua_mutt_get },
+  { "call", lua_mutt_call },     { "enter", lua_mutt_enter },
+  { "print", lua_mutt_message }, { "message", lua_mutt_message },
+  { "error", lua_mutt_error },   { NULL, NULL },
 };
 
 #define lua_add_lib_member(LUA, TABLE, KEY, VALUE, DATATYPE_HANDLER)           \
@@ -353,10 +353,10 @@ static void luaopen_mutt(lua_State *l)
 {
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
-  mutt_commands_apply((void *) l, &_lua_expose_command);
+  mutt_commands_apply((void *) l, &lua_expose_command);
 }
 
-static bool _lua_init(lua_State **l)
+static bool lua_init(lua_State **l)
 {
   if (!*l)
   {
@@ -369,7 +369,7 @@ static bool _lua_init(lua_State **l)
       return false;
     }
 
-    lua_atpanic(*l, _handle_panic);
+    lua_atpanic(*l, handle_panic);
 
     /* load various Lua libraries */
     luaL_openlibs(*l);
@@ -385,18 +385,18 @@ lua_State *Lua = NULL;
 
 int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  _lua_init(&Lua);
+  lua_init(&Lua);
   mutt_debug(2, " * mutt_lua_parse(%s)\n", tmp->data);
 
   if (luaL_dostring(Lua, s->dptr))
   {
-    mutt_debug(2, " * mutt_lua_parse(%s) -> failure\n", s->dptr);
+    mutt_debug(2, " * %s -> failure\n", s->dptr);
     snprintf(err->data, err->dsize, _("%s: %s"), s->dptr, lua_tostring(Lua, -1));
     /* pop error message from the stack */
     lua_pop(Lua, 1);
     return -1;
   }
-  mutt_debug(2, " * mutt_lua_parse(%s) -> success\n", s->dptr);
+  mutt_debug(2, " * %s -> success\n", s->dptr);
   return 2;
 }
 
@@ -405,7 +405,7 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
 {
   mutt_debug(2, " * mutt_lua_source()\n");
 
-  _lua_init(&Lua);
+  lua_init(&Lua);
 
   char path[_POSIX_PATH_MAX];
 
@@ -416,10 +416,10 @@ int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s,
   }
   if (MoreArgs(s))
   {
-    strfcpy(err->data, _("source: too many arguments"), err->dsize);
+    mutt_str_strfcpy(err->data, _("source: too many arguments"), err->dsize);
     return -1;
   }
-  strfcpy(path, tmp->data, sizeof(path));
+  mutt_str_strfcpy(path, tmp->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));
 
   if (luaL_dofile(Lua, path))

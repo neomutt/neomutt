@@ -53,10 +53,10 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <time.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "sasl.h"
 #include "account.h"
 #include "connection.h"
@@ -138,7 +138,8 @@ static int getnameinfo_err(int ret)
  *
  * utility function, copied from sasl2 sample code
  */
-static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out, unsigned outlen)
+static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
+                      unsigned int outlen)
 {
   char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
   int ret;
@@ -206,7 +207,7 @@ static int mutt_sasl_start(void)
 
   if (rc != SASL_OK)
   {
-    mutt_debug(1, "mutt_sasl_start: libsasl initialisation failed.\n");
+    mutt_debug(1, "libsasl initialisation failed.\n");
     return SASL_FAIL;
   }
 
@@ -223,7 +224,7 @@ static int mutt_sasl_start(void)
  * @param[out] len     Length of result
  * @retval int SASL error code, e.g. SASL_FAIL
  */
-static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned *len)
+static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
   struct Account *account = (struct Account *) context;
 
@@ -237,19 +238,18 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
   if (!account)
     return SASL_BADPARAM;
 
-  mutt_debug(2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
-             id == SASL_CB_AUTHNAME ? "authname" : "user", account->host,
-             account->port);
+  mutt_debug(2, "getting %s for %s:%u\n", id == SASL_CB_AUTHNAME ? "authname" : "user",
+             account->host, account->port);
 
   if (id == SASL_CB_AUTHNAME)
   {
-    if (mutt_account_getlogin(account))
+    if (mutt_account_getlogin(account) < 0)
       return SASL_FAIL;
     *result = account->login;
   }
   else
   {
-    if (mutt_account_getuser(account))
+    if (mutt_account_getuser(account) < 0)
       return SASL_FAIL;
     *result = account->user;
   }
@@ -276,15 +276,15 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
   if (!account || !psecret)
     return SASL_BADPARAM;
 
-  mutt_debug(2, "mutt_sasl_cb_pass: getting password for %s@%s:%u\n",
-             account->login, account->host, account->port);
+  mutt_debug(2, "getting password for %s@%s:%u\n", account->login,
+             account->host, account->port);
 
-  if (mutt_account_getpass(account))
+  if (mutt_account_getpass(account) < 0)
     return SASL_FAIL;
 
   len = strlen(account->pass);
 
-  safe_realloc(&secret_ptr, sizeof(sasl_secret_t) + len);
+  mutt_mem_realloc(&secret_ptr, sizeof(sasl_secret_t) + len);
   memcpy((char *) secret_ptr->data, account->pass, (size_t) len);
   secret_ptr->len = len;
   *psecret = secret_ptr;
@@ -657,16 +657,15 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
   while (interaction->id != SASL_CB_LIST_END)
   {
-    mutt_debug(2, "mutt_sasl_interact: filling in SASL interaction %ld.\n",
-               interaction->id);
+    mutt_debug(2, "filling in SASL interaction %ld.\n", interaction->id);
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';
     if (option(OPT_NO_CURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
       return SASL_FAIL;
 
-    interaction->len = mutt_strlen(resp) + 1;
-    interaction->result = safe_malloc(interaction->len);
+    interaction->len = mutt_str_strlen(resp) + 1;
+    interaction->result = mutt_mem_malloc(interaction->len);
     memcpy((char *) interaction->result, resp, interaction->len);
 
     interaction++;
@@ -685,7 +684,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  struct SaslData *sasldata = safe_malloc(sizeof(struct SaslData));
+  struct SaslData *sasldata = mutt_mem_malloc(sizeof(struct SaslData));
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 
@@ -725,7 +724,7 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 /*
  * mutt_sasl_done - Invoke when processing is complete.
  *
- * This is a cleanup function, used to free all memory used by the library. 
+ * This is a cleanup function, used to free all memory used by the library.
  * Invoke when processing is complete.
  */
 void mutt_sasl_done(void)

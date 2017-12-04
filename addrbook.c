@@ -24,7 +24,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -36,7 +36,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
@@ -47,46 +46,78 @@ static const struct Mapping AliasHelp[] = {
   { N_("Help"), OP_HELP },      { NULL, 0 },
 };
 
-static const char *alias_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                    char op, const char *src, const char *fmt,
-                                    const char *ifstring, const char *elsestring,
+/**
+ * alias_format_str - Format a string for the alias list
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * alias_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Alias name
+ * | \%f     | Flags - currently, a 'd' for an alias marked for deletion
+ * | \%n     | Index number
+ * | \%r     | Address which alias expands to
+ * | \%t     | Character which indicates if the alias is tagged for inclusion
+ */
+static const char *alias_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                    char op, const char *src, const char *prec,
+                                    const char *if_str, const char *else_str,
                                     unsigned long data, enum FormatFlag flags)
 {
-  char tmp[SHORT_STRING], adr[SHORT_STRING];
+  char fmt[SHORT_STRING], adr[SHORT_STRING];
   struct Alias *alias = (struct Alias *) data;
 
   switch (op)
   {
-    case 'f':
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, alias->del ? "D" : " ");
-      break;
     case 'a':
-      mutt_format_s(dest, destlen, fmt, alias->name);
+      mutt_format_s(buf, buflen, prec, alias->name);
+      break;
+    case 'f':
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, alias->del ? "D" : " ");
+      break;
+    case 'n':
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, alias->num + 1);
       break;
     case 'r':
       adr[0] = '\0';
       rfc822_write_address(adr, sizeof(adr), alias->addr, 1);
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, adr);
-      break;
-    case 'n':
-      snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-      snprintf(dest, destlen, tmp, alias->num + 1);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, adr);
       break;
     case 't':
-      dest[0] = alias->tagged ? '*' : ' ';
-      dest[1] = '\0';
+      buf[0] = alias->tagged ? '*' : ' ';
+      buf[1] = '\0';
       break;
   }
 
   return src;
 }
 
-static void alias_entry(char *s, size_t slen, struct Menu *m, int num)
+/**
+ * alias_entry - Format a menu item for the alias list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void alias_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(AliasFormat), alias_format_str,
-                      (unsigned long) ((struct Alias **) m->data)[num],
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AliasFormat), alias_format_str,
+                      (unsigned long) ((struct Alias **) menu->data)[num],
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -104,7 +135,7 @@ static int alias_sort_alias(const void *a, const void *b)
 {
   struct Alias *pa = *(struct Alias **) a;
   struct Alias *pb = *(struct Alias **) b;
-  int r = mutt_strcasecmp(pa->name, pb->name);
+  int r = mutt_str_strcasecmp(pa->name, pb->name);
 
   return (RSORT(r));
 }
@@ -124,14 +155,14 @@ static int alias_sort_address(const void *a, const void *b)
   else if (pa->personal)
   {
     if (pb->personal)
-      r = mutt_strcasecmp(pa->personal, pb->personal);
+      r = mutt_str_strcasecmp(pa->personal, pb->personal);
     else
       r = 1;
   }
   else if (pb->personal)
     r = -1;
   else
-    r = mutt_strcasecmp(pa->mailbox, pb->mailbox);
+    r = mutt_str_strcasecmp(pa->mailbox, pb->mailbox);
   return (RSORT(r));
 }
 
@@ -168,19 +199,19 @@ new_aliases:
   /* count the number of aliases */
   for (aliasp = aliases; aliasp; aliasp = aliasp->next)
   {
-    aliasp->self->del = false;
-    aliasp->self->tagged = false;
+    aliasp->del = false;
+    aliasp->tagged = false;
     menu->max++;
   }
 
-  safe_realloc(&AliasTable, menu->max * sizeof(struct Alias *));
+  mutt_mem_realloc(&AliasTable, menu->max * sizeof(struct Alias *));
   menu->data = AliasTable;
   if (!AliasTable)
     return;
 
   for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
   {
-    AliasTable[i] = aliasp->self;
+    AliasTable[i] = aliasp;
     aliases = aliasp;
   }
 
@@ -215,7 +246,7 @@ new_aliases:
         }
         else
         {
-          AliasTable[menu->current]->self->del = (op == OP_DELETE);
+          AliasTable[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
           if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
           {

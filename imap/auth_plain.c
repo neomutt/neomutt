@@ -33,7 +33,7 @@
 
 #include "config.h"
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
 #include "globals.h"
@@ -53,9 +53,9 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
   char buf[STRING];
 
-  if (mutt_account_getuser(&idata->conn->account))
+  if (mutt_account_getuser(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&idata->conn->account))
+  if (mutt_account_getpass(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
   mutt_message(_("Logging in..."));

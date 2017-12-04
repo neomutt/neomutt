@@ -80,7 +80,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
@@ -97,12 +97,12 @@
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
-#include "mutt_tags.h"
 #include "mx.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
+#include "tags.h"
 #include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -150,16 +150,16 @@ static char *get_flags(struct ListHead *hflags, char *s)
   char ctmp;
 
   /* sanity-check string */
-  if (mutt_strncasecmp("FLAGS", s, 5) != 0)
+  if (mutt_str_strncasecmp("FLAGS", s, 5) != 0)
   {
-    mutt_debug(1, "get_flags: not a FLAGS response: %s\n", s);
+    mutt_debug(1, "not a FLAGS response: %s\n", s);
     return NULL;
   }
   s += 5;
   SKIPWS(s);
   if (*s != '(')
   {
-    mutt_debug(1, "get_flags: bogus FLAGS response: %s\n", s);
+    mutt_debug(1, "bogus FLAGS response: %s\n", s);
     return NULL;
   }
 
@@ -174,14 +174,14 @@ static char *get_flags(struct ListHead *hflags, char *s)
     ctmp = *s;
     *s = '\0';
     if (*flag_word)
-      mutt_list_insert_tail(hflags, safe_strdup(flag_word));
+      mutt_list_insert_tail(hflags, mutt_str_strdup(flag_word));
     *s = ctmp;
   }
 
   /* note bad flags response */
   if (*s != ')')
   {
-    mutt_debug(1, "get_flags: Unterminated FLAGS response: %s\n", s);
+    mutt_debug(1, "Unterminated FLAGS response: %s\n", s);
     mutt_list_free(hflags);
 
     return NULL;
@@ -206,7 +206,7 @@ static void set_flag(struct ImapData *idata, int aclbit, int flag,
 {
   if (mutt_bit_isset(idata->ctx->rights, aclbit))
     if (flag && imap_has_flag(&idata->flags, str))
-      safe_strcat(flags, flsize, str);
+      mutt_str_strcat(flags, flsize, str);
 }
 
 /**
@@ -386,7 +386,7 @@ static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, si
 
   if (imap_parse_path(path, &mx))
   {
-    mutt_debug(1, "get_mailbox: Error parsing %s\n", path);
+    mutt_debug(1, "Error parsing %s\n", path);
     return -1;
   }
   if (!(*hidata = imap_conn_find(&(mx.account), option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0)) ||
@@ -398,7 +398,7 @@ static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, si
 
   imap_fix_path(*hidata, mx.mbox, buf, blen);
   if (!*buf)
-    strfcpy(buf, "INBOX", blen);
+    mutt_str_strfcpy(buf, "INBOX", blen);
   FREE(&mx.mbox);
 
   return 0;
@@ -589,14 +589,14 @@ static int complete_hosts(char *dest, size_t len)
   int rc = -1;
   size_t matchlen;
 
-  matchlen = mutt_strlen(dest);
+  matchlen = mutt_str_strlen(dest);
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
   {
-    if (mutt_strncmp(dest, mailbox->path, matchlen) == 0)
+    if (mutt_str_strncmp(dest, mailbox->path, matchlen) == 0)
     {
       if (rc)
       {
-        strfcpy(dest, mailbox->path, len);
+        mutt_str_strfcpy(dest, mailbox->path, len);
         rc = 0;
       }
       else
@@ -617,11 +617,11 @@ static int complete_hosts(char *dest, size_t len)
     url.user = NULL;
     url.path = NULL;
     url_tostring(&url, urlstr, sizeof(urlstr), 0);
-    if (mutt_strncmp(dest, urlstr, matchlen) == 0)
+    if (mutt_str_strncmp(dest, urlstr, matchlen) == 0)
     {
       if (rc)
       {
-        strfcpy(dest, urlstr, len);
+        mutt_str_strfcpy(dest, urlstr, len);
         rc = 0;
       }
       else
@@ -661,10 +661,10 @@ int imap_access(const char *path)
 
   imap_fix_path(idata, mx.mbox, mailbox, sizeof(mailbox));
   if (!*mailbox)
-    strfcpy(mailbox, "INBOX", sizeof(mailbox));
+    mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
 
   /* we may already be in the folder we're checking */
-  if (mutt_strcmp(idata->mailbox, mx.mbox) == 0)
+  if (mutt_str_strcmp(idata->mailbox, mx.mbox) == 0)
   {
     FREE(&mx.mbox);
     return 0;
@@ -673,7 +673,7 @@ int imap_access(const char *path)
 
   if (imap_mboxcache_get(idata, mailbox, 0))
   {
-    mutt_debug(3, "imap_access: found %s in cache\n", mailbox);
+    mutt_debug(3, "found %s in cache\n", mailbox);
     return 0;
   }
 
@@ -685,14 +685,14 @@ int imap_access(const char *path)
     snprintf(buf, sizeof(buf), "STATUS %s (UID-VALIDITY)", mbox);
   else
   {
-    mutt_debug(2, "imap_access: STATUS not supported?\n");
+    mutt_debug(2, "STATUS not supported?\n");
     return -1;
   }
 
   rc = imap_exec(idata, buf, IMAP_CMD_FAIL_OK);
   if (rc < 0)
   {
-    mutt_debug(1, "imap_access: Can't check STATUS of %s\n", mbox);
+    mutt_debug(1, "Can't check STATUS of %s\n", mbox);
     return rc;
   }
 
@@ -822,13 +822,13 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progr
   char c;
   bool r = false;
 
-  mutt_debug(2, "imap_read_literal: reading %ld bytes\n", bytes);
+  mutt_debug(2, "reading %ld bytes\n", bytes);
 
   for (long pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar(idata->conn, &c) != 1)
     {
-      mutt_debug(1, "imap_read_literal: error during read, %ld bytes read\n", pos);
+      mutt_debug(1, "error during read, %ld bytes read\n", pos);
       idata->status = IMAP_FATAL;
 
       return -1;
@@ -849,10 +849,8 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progr
 
     if (pbar && !(pos % 1024))
       mutt_progress_update(pbar, pos, -1);
-#ifdef DEBUG
     if (debuglevel >= IMAP_LOG_LTRL)
       fputc(c, debugfile);
-#endif
   }
 
   return 0;
@@ -905,7 +903,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
         FREE(&idata->cache[cacheno].path);
       }
 
-      int_hash_delete(idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
+      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
 
       imap_free_header_data((struct ImapHeaderData **) &h->data);
     }
@@ -1058,11 +1056,13 @@ int imap_open_connection(struct ImapData *idata)
     return -1;
   }
 
-  if (mutt_strncasecmp("* OK", idata->buf, 4) == 0)
+  if (mutt_str_strncasecmp("* OK", idata->buf, 4) == 0)
   {
-    if ((mutt_strncasecmp("* OK [CAPABILITY", idata->buf, 16) != 0) &&
+    if ((mutt_str_strncasecmp("* OK [CAPABILITY", idata->buf, 16) != 0) &&
         check_capabilities(idata))
+    {
       goto bail;
+    }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
     if (!idata->conn->ssf &&
@@ -1074,7 +1074,9 @@ int imap_open_connection(struct ImapData *idata)
         rc = MUTT_YES;
       else if ((rc = query_quadoption(OPT_SSL_STARTTLS,
                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
+      {
         goto err_close_conn;
+      }
       if (rc == MUTT_YES)
       {
         rc = imap_exec(idata, "STARTTLS", IMAP_CMD_FAIL_OK);
@@ -1106,7 +1108,7 @@ int imap_open_connection(struct ImapData *idata)
     }
 #endif
   }
-  else if (mutt_strncasecmp("* PREAUTH", idata->buf, 9) == 0)
+  else if (mutt_str_strncasecmp("* PREAUTH", idata->buf, 9) == 0)
   {
     idata->state = IMAP_AUTHENTICATED;
     if (check_capabilities(idata) != 0)
@@ -1182,10 +1184,10 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   struct ListNode *np;
   STAILQ_FOREACH(np, flag_list, entries)
   {
-    if (mutt_strncasecmp(np->data, flag, strlen(np->data)) == 0)
+    if (mutt_str_strncasecmp(np->data, flag, strlen(np->data)) == 0)
       return true;
 
-    if (mutt_strncmp(np->data, "\\*", strlen(np->data)) == 0)
+    if (mutt_str_strncmp(np->data, "\\*", strlen(np->data)) == 0)
       return true;
   }
 
@@ -1220,7 +1222,7 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   cmd = mutt_buffer_new();
   if (!cmd)
   {
-    mutt_debug(1, "imap_exec_msgset: unable to allocate buffer\n");
+    mutt_debug(1, "unable to allocate buffer\n");
     return -1;
   }
 
@@ -1231,7 +1233,7 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
   if (Sort != SORT_ORDER)
   {
     hdrs = idata->ctx->hdrs;
-    idata->ctx->hdrs = safe_malloc(idata->ctx->msgcount * sizeof(struct Header *));
+    idata->ctx->hdrs = mutt_mem_malloc(idata->ctx->msgcount * sizeof(struct Header *));
     memcpy(idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
@@ -1318,17 +1320,17 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
   {
     /* restore system flags */
     if (HEADER_DATA(hdr)->flags_system)
-      safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_system);
+      mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_system);
     /* set custom flags */
     tags = driver_tags_get_with_hidden(&hdr->tags);
     if (tags)
     {
-      safe_strcat(flags, sizeof(flags), tags);
+      mutt_str_strcat(flags, sizeof(flags), tags);
       FREE(&tags);
     }
   }
 
-  mutt_remove_trailing_ws(flags);
+  mutt_str_remove_trailing_ws(flags);
 
   /* UW-IMAP is OK with null flags, Cyrus isn't. The only solution is to
    * explicitly revoke all system flags (if we have permission) */
@@ -1343,9 +1345,9 @@ int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
 
     /* erase custom flags */
     if (mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) && HEADER_DATA(hdr)->flags_remote)
-      safe_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_remote);
+      mutt_str_strcat(flags, sizeof(flags), HEADER_DATA(hdr)->flags_remote);
 
-    mutt_remove_trailing_ws(flags);
+    mutt_str_remove_trailing_ws(flags);
 
     mutt_buffer_addstr(cmd, " -FLAGS.SILENT (");
   }
@@ -1435,7 +1437,9 @@ int imap_check(struct ImapData *idata, int force)
 
   if ((force || (idata->state != IMAP_IDLE && time(NULL) >= idata->lastread + Timeout)) &&
       imap_exec(idata, "NOOP", IMAP_CMD_POLL) != 0)
+  {
     return -1;
+  }
 
   /* We call this even when we haven't run NOOP in case we have pending
    * changes to process, since we can reopen here. */
@@ -1455,9 +1459,7 @@ int imap_check(struct ImapData *idata, int force)
 
 /**
  * imap_buffy_check - Check for new mail in subscribed folders
- * @param force       Force an update
  * @param check_stats Check for message stats too
- * @retval num Number of mailboxes with new mail
  * @retval 0   Failure
  *
  * @note Returns 0 on failure
@@ -1466,7 +1468,7 @@ int imap_check(struct ImapData *idata, int force)
  * batch the commands and save on round trips. Returns number of mailboxes with
  * new mail.
  */
-int imap_buffy_check(int force, int check_stats)
+int imap_buffy_check(int check_stats)
 {
   struct ImapData *idata = NULL;
   struct ImapData *lastdata = NULL;
@@ -1516,7 +1518,7 @@ int imap_buffy_check(int force, int check_stats)
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
       if (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1)
-        mutt_debug(1, "Error polling mailboxes\n");
+        mutt_debug(1, "#1 Error polling mailboxes\n");
 
       lastdata = NULL;
     }
@@ -1541,7 +1543,7 @@ int imap_buffy_check(int force, int check_stats)
 
   if (lastdata && (imap_exec(lastdata, NULL, IMAP_CMD_FAIL_OK | IMAP_CMD_POLL) == -1))
   {
-    mutt_debug(1, "Error polling mailboxes\n");
+    mutt_debug(1, "#2 Error polling mailboxes\n");
     return 0;
   }
 
@@ -1644,11 +1646,11 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
   /* lame */
   if (create)
   {
-    struct ImapStatus *scache = safe_calloc(1, sizeof(struct ImapStatus));
+    struct ImapStatus *scache = mutt_mem_calloc(1, sizeof(struct ImapStatus));
     scache->name = (char *) mbox;
     mutt_list_insert_tail(&idata->mboxcache, (char *) scache);
     status = imap_mboxcache_get(idata, mbox, 0);
-    status->name = safe_strdup(mbox);
+    status->name = mutt_str_strdup(mbox);
   }
 
 #ifdef USE_HCACHE
@@ -1668,8 +1670,8 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
       }
       status->uidvalidity = *(unsigned int *) uidvalidity;
       status->uidnext = uidnext ? *(unsigned int *) uidnext : 0;
-      mutt_debug(3, "mboxcache: hcache uidvalidity %d, uidnext %d\n",
-                 status->uidvalidity, status->uidnext);
+      mutt_debug(3, "hcache uidvalidity %d, uidnext %d\n", status->uidvalidity,
+                 status->uidnext);
     }
     mutt_hcache_free(hc, &uidvalidity);
     mutt_hcache_free(hc, &uidnext);
@@ -1759,7 +1761,7 @@ int imap_subscribe(char *path, bool subscribe)
 
   imap_fix_path(idata, mx.mbox, buf, sizeof(buf));
   if (!*buf)
-    strfcpy(buf, "INBOX", sizeof(buf));
+    mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
 
   if (option(OPT_IMAP_CHECK_SUBSCRIBED))
   {
@@ -1823,7 +1825,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
 
   if (imap_parse_path(path, &mx))
   {
-    strfcpy(dest, path, dlen);
+    mutt_str_strfcpy(dest, path, dlen);
     return complete_hosts(dest, dlen);
   }
 
@@ -1833,7 +1835,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
   if (!idata)
   {
     FREE(&mx.mbox);
-    strfcpy(dest, path, dlen);
+    mutt_str_strfcpy(dest, path, dlen);
     return complete_hosts(dest, dlen);
   }
 
@@ -1851,7 +1853,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
   imap_cmd_start(idata, buf);
 
   /* and see what the results are */
-  strfcpy(completion, NONULL(mx.mbox), sizeof(completion));
+  mutt_str_strfcpy(completion, NONULL(mx.mbox), sizeof(completion));
   idata->cmdtype = IMAP_CT_LIST;
   idata->cmddata = &listresp;
   do
@@ -1872,7 +1874,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
       /* copy in first word */
       if (!completions)
       {
-        strfcpy(completion, listresp.name, sizeof(completion));
+        mutt_str_strfcpy(completion, listresp.name, sizeof(completion));
         matchlen = strlen(completion);
         completions++;
         continue;
@@ -1921,20 +1923,20 @@ int imap_fast_trash(struct Context *ctx, char *dest)
 
   if (imap_parse_path(dest, &mx))
   {
-    mutt_debug(1, "imap_fast_trash: bad destination %s\n", dest);
+    mutt_debug(1, "bad destination %s\n", dest);
     return -1;
   }
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match(&(idata->conn->account), &(mx.account)))
   {
-    mutt_debug(3, "imap_fast_trash: %s not same server as %s\n", dest, ctx->path);
+    mutt_debug(3, "%s not same server as %s\n", dest, ctx->path);
     return 1;
   }
 
   imap_fix_path(idata, mx.mbox, mbox, sizeof(mbox));
   if (!*mbox)
-    strfcpy(mbox, "INBOX", sizeof(mbox));
+    mutt_str_strfcpy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(idata, mmbox, sizeof(mmbox), mbox);
 
   sync_cmd = mutt_buffer_new();
@@ -1946,7 +1948,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
       rc = imap_sync_message_for_copy(idata, ctx->hdrs[i], sync_cmd, &err_continue);
       if (rc < 0)
       {
-        mutt_debug(1, "imap_fast_trash: could not sync\n");
+        mutt_debug(1, "could not sync\n");
         goto out;
       }
     }
@@ -1958,7 +1960,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
     rc = imap_exec_msgset(idata, "UID COPY", mmbox, MUTT_TRASH, 0, 0);
     if (!rc)
     {
-      mutt_debug(1, "imap_fast_trash: No messages to trash\n");
+      mutt_debug(1, "No messages to trash\n");
       rc = -1;
       goto out;
     }
@@ -1980,9 +1982,9 @@ int imap_fast_trash(struct Context *ctx, char *dest)
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (mutt_strncasecmp(imap_get_qualifier(idata->buf), "[TRYCREATE]", 11) != 0)
+      if (mutt_str_strncasecmp(imap_get_qualifier(idata->buf), "[TRYCREATE]", 11) != 0)
         break;
-      mutt_debug(3, "imap_fast_trash: server suggests TRYCREATE\n");
+      mutt_debug(3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
       if (option(OPT_CONFIRMCREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
@@ -2045,15 +2047,15 @@ static int imap_open_mailbox(struct Context *ctx)
   /* Clean up path and replace the one in the ctx */
   imap_fix_path(idata, mx.mbox, buf, sizeof(buf));
   if (!*buf)
-    strfcpy(buf, "INBOX", sizeof(buf));
+    mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
   FREE(&(idata->mailbox));
-  idata->mailbox = safe_strdup(buf);
+  idata->mailbox = mutt_str_strdup(buf);
   imap_qualify_path(buf, sizeof(buf), &mx, idata->mailbox);
 
   FREE(&(ctx->path));
   FREE(&(ctx->realpath));
-  ctx->path = safe_strdup(buf);
-  ctx->realpath = safe_strdup(ctx->path);
+  ctx->path = mutt_str_strdup(buf);
+  ctx->realpath = mutt_str_strdup(ctx->path);
 
   idata->ctx = ctx;
 
@@ -2088,7 +2090,9 @@ static int imap_open_mailbox(struct Context *ctx)
   pmx.mbox = NULL;
   if (mx_is_imap(Postponed) && !imap_parse_path(Postponed, &pmx) &&
       mutt_account_match(&pmx.account, &mx.account))
+  {
     imap_status(Postponed, 1);
+  }
   FREE(&pmx.mbox);
 
   snprintf(bufout, sizeof(bufout), "%s %s",
@@ -2112,7 +2116,7 @@ static int imap_open_mailbox(struct Context *ctx)
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
-    if (mutt_strncasecmp("FLAGS", pc, 5) == 0)
+    if (mutt_str_strncasecmp("FLAGS", pc, 5) == 0)
     {
       /* don't override PERMANENTFLAGS */
       if (STAILQ_EMPTY(&idata->flags))
@@ -2124,7 +2128,7 @@ static int imap_open_mailbox(struct Context *ctx)
       }
     }
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
-    else if (mutt_strncasecmp("OK [PERMANENTFLAGS", pc, 18) == 0)
+    else if (mutt_str_strncasecmp("OK [PERMANENTFLAGS", pc, 18) == 0)
     {
       mutt_debug(3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
@@ -2136,7 +2140,7 @@ static int imap_open_mailbox(struct Context *ctx)
         goto fail;
     }
     /* save UIDVALIDITY for the header cache */
-    else if (mutt_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
+    else if (mutt_str_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
     {
       mutt_debug(3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
@@ -2144,7 +2148,7 @@ static int imap_open_mailbox(struct Context *ctx)
       idata->uid_validity = strtol(pc, NULL, 10);
       status->uidvalidity = idata->uid_validity;
     }
-    else if (mutt_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
+    else if (mutt_str_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
     {
       mutt_debug(3, "Getting mailbox UIDNEXT\n");
       pc += 3;
@@ -2155,7 +2159,7 @@ static int imap_open_mailbox(struct Context *ctx)
     else
     {
       pc = imap_next_word(pc);
-      if (mutt_strncasecmp("EXISTS", pc, 6) == 0)
+      if (mutt_str_strncasecmp("EXISTS", pc, 6) == 0)
       {
         count = idata->new_mail_count;
         idata->new_mail_count = 0;
@@ -2177,14 +2181,13 @@ static int imap_open_mailbox(struct Context *ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if ((mutt_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) == 0) &&
+  if ((mutt_str_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) == 0) &&
       !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug(2, "Mailbox is read-only.\n");
     ctx->readonly = true;
   }
 
-#ifdef DEBUG
   /* dump the mailbox flags we've found */
   if (debuglevel > 2)
   {
@@ -2204,7 +2207,6 @@ static int imap_open_mailbox(struct Context *ctx)
       FREE(&flag_buffer.data);
     }
   }
-#endif
 
   if (!(mutt_bit_isset(idata->ctx->rights, MUTT_ACL_DELETE) ||
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_SEEN) ||
@@ -2213,8 +2215,8 @@ static int imap_open_mailbox(struct Context *ctx)
     ctx->readonly = true;
 
   ctx->hdrmax = count;
-  ctx->hdrs = safe_calloc(count, sizeof(struct Header *));
-  ctx->v2r = safe_calloc(count, sizeof(int));
+  ctx->hdrs = mutt_mem_calloc(count, sizeof(struct Header *));
+  ctx->v2r = mutt_mem_calloc(count, sizeof(int));
   ctx->msgcount = 0;
 
   if (count && (imap_read_headers(idata, 1, count) < 0))
@@ -2224,7 +2226,7 @@ static int imap_open_mailbox(struct Context *ctx)
     goto fail;
   }
 
-  mutt_debug(2, "imap_open_mailbox: msgcount is %d\n", ctx->msgcount);
+  mutt_debug(2, "msgcount is %d\n", ctx->msgcount);
   FREE(&mx.mbox);
   return 0;
 
@@ -2268,7 +2270,7 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
 
   imap_fix_path(idata, mx.mbox, mailbox, sizeof(mailbox));
   if (!*mailbox)
-    strfcpy(mailbox, "INBOX", sizeof(mailbox));
+    mutt_str_strfcpy(mailbox, "INBOX", sizeof(mailbox));
   FREE(&mx.mbox);
 
   rc = imap_access(ctx->path);
@@ -2326,7 +2328,7 @@ static int imap_close_mailbox(struct Context *ctx)
     mutt_list_free(&idata->flags);
     idata->ctx = NULL;
 
-    hash_destroy(&idata->uid_hash, NULL);
+    mutt_hash_destroy(&idata->uid_hash, NULL);
     FREE(&idata->msn_index);
     idata->msn_index_size = 0;
     idata->max_msn = 0;
@@ -2367,20 +2369,20 @@ static int imap_open_new_message(struct Message *msg, struct Context *dest, stru
   char tmp[_POSIX_PATH_MAX];
 
   mutt_mktemp(tmp, sizeof(tmp));
-  msg->fp = safe_fopen(tmp, "w");
+  msg->fp = mutt_file_fopen(tmp, "w");
   if (!msg->fp)
   {
     mutt_perror(tmp);
     return -1;
   }
-  msg->path = safe_strdup(tmp);
+  msg->path = mutt_str_strdup(tmp);
   return 0;
 }
 
 /**
  * imap_check_mailbox_reopen - Check for new mail (reopen mailbox if necessary)
  * @param ctx        Context
- * @param index_hint Remeber our place in the index
+ * @param index_hint Remember our place in the index
  * @retval >0 Success, e.g. #MUTT_REOPENED
  * @retval -1 Failure
  */
@@ -2416,7 +2418,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
 
   if (idata->state < IMAP_SELECTED)
   {
-    mutt_debug(2, "imap_sync_mailbox: no mailbox selected\n");
+    mutt_debug(2, "no mailbox selected\n");
     return -1;
   }
 
@@ -2482,10 +2484,9 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
         if (!appendctx)
           appendctx = mx_open_mailbox(ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
         if (!appendctx)
-          mutt_debug(
-              1, "imap_sync_mailbox: Error opening mailbox in append mode\n");
+          mutt_debug(1, "Error opening mailbox in append mode\n");
         else
-          _mutt_save_message(h, appendctx, 1, 0, 0);
+          mutt_save_message_ctx(h, 1, 0, 0, appendctx);
         h->xlabel_changed = false;
       }
     }
@@ -2500,7 +2501,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   if (Sort != SORT_ORDER)
   {
     hdrs = ctx->hdrs;
-    ctx->hdrs = safe_malloc(ctx->msgcount * sizeof(struct Header *));
+    ctx->hdrs = mutt_mem_malloc(ctx->msgcount * sizeof(struct Header *));
     memcpy(ctx->hdrs, hdrs, ctx->msgcount * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
@@ -2673,9 +2674,9 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
   }
   *new = '\0';
   new = buf; /* rewind */
-  mutt_remove_trailing_ws(new);
+  mutt_str_remove_trailing_ws(new);
 
-  if (mutt_strcmp(tags, buf) == 0)
+  if (mutt_str_strcmp(tags, buf) == 0)
     return 0;
   return 1;
 }
@@ -2720,7 +2721,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     cmd = mutt_buffer_new();
     if (!cmd)
     {
-      mutt_debug(1, "imap_commit_message_tags: unable to allocate buffer\n");
+      mutt_debug(1, "unable to allocate buffer\n");
       return -1;
     }
     cmd->dptr = cmd->data;
@@ -2748,7 +2749,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
     cmd = mutt_buffer_new();
     if (!cmd)
     {
-      mutt_debug(1, "imap_commit_message_tags: fail to remove old flags\n");
+      mutt_debug(1, "fail to remove old flags\n");
       return -1;
     }
     cmd->dptr = cmd->data;
@@ -2760,7 +2761,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
 
     if (imap_exec(idata, cmd->data, 0) != 0)
     {
-      mutt_debug(1, "imap_commit_message_tags: fail to add new flags\n");
+      mutt_debug(1, "fail to add new flags\n");
       mutt_buffer_free(&cmd);
       return -1;
     }

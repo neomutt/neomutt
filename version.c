@@ -28,7 +28,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)
@@ -109,6 +109,7 @@ static struct CompileOptions comp_opts_default[] = {
   { "compose_to_sender", 1 },
   { "compress", 1 },
   { "cond_date", 1 },
+  { "debug", 1 },
   { "encrypt_to_self", 1 },
   { "forgotten_attachments", 1 },
   { "forwref", 1 },
@@ -152,11 +153,6 @@ static struct CompileOptions comp_opts[] = {
   { "curs_set", 1 },
 #else
   { "curs_set", 0 },
-#endif
-#ifdef DEBUG
-  { "debug", 1 },
-#else
-  { "debug", 0 },
 #endif
 #ifdef USE_FCNTL
   { "fcntl", 1 },
@@ -467,14 +463,14 @@ bool feature_enabled(const char *name)
     return false;
   for (int i = 0; comp_opts_default[i].name; i++)
   {
-    if (mutt_strcmp(name, comp_opts_default[i].name) == 0)
+    if (mutt_str_strcmp(name, comp_opts_default[i].name) == 0)
     {
       return true;
     }
   }
   for (int i = 0; comp_opts[i].name; i++)
   {
-    if (mutt_strcmp(name, comp_opts[i].name) == 0)
+    if (mutt_str_strcmp(name, comp_opts[i].name) == 0)
     {
       return comp_opts[i].enabled;
     }

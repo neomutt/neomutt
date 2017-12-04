@@ -35,7 +35,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <wchar.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "alias.h"
 #include "attach.h"
@@ -340,7 +340,7 @@ static void resolve_color(struct Line *line_info, int n, int cnt, int flags,
     {
       color ^= A_BLINK;
     }
-    else if (a->attr & ANSI_OFF)
+    else if (a->attr == ANSI_OFF)
     {
       a->attr = 0;
     }
@@ -447,7 +447,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
 
     if (!*quote_list)
     {
-      class = safe_calloc(1, sizeof(struct QClass));
+      class = mutt_mem_calloc(1, sizeof(struct QClass));
       class->color = ColorQuote[0];
       *quote_list = class;
     }
@@ -463,7 +463,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
     {
       /* case 1: check the top level nodes */
 
-      if (mutt_strncmp(qptr, q_list->prefix, length) == 0)
+      if (mutt_str_strncmp(qptr, q_list->prefix, length) == 0)
       {
         if (length == q_list->length)
           return q_list; /* same prefix: return the current class */
@@ -472,8 +472,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         if (!tmp)
         {
           /* add a node above q_list */
-          tmp = safe_calloc(1, sizeof(struct QClass));
-          tmp->prefix = safe_calloc(1, length + 1);
+          tmp = mutt_mem_calloc(1, sizeof(struct QClass));
+          tmp->prefix = mutt_mem_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
           tmp->length = length;
 
@@ -557,7 +557,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (tmp == NULL && (mutt_strncmp(qptr, q_list->prefix, q_list->length) == 0))
+      if (tmp == NULL && (mutt_str_strncmp(qptr, q_list->prefix, q_list->length) == 0))
       {
         /* ok, it's a subclass somewhere on this branch */
 
@@ -572,7 +572,7 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         {
           if (length <= q_list->length)
           {
-            if (mutt_strncmp(tail_qptr, (q_list->prefix) + offset, tail_lng) == 0)
+            if (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset, tail_lng) == 0)
             {
               /* same prefix: return the current class */
               if (length == q_list->length)
@@ -582,8 +582,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
               if (!tmp)
               {
                 /* add a node above q_list */
-                tmp = safe_calloc(1, sizeof(struct QClass));
-                tmp->prefix = safe_calloc(1, length + 1);
+                tmp = mutt_mem_calloc(1, sizeof(struct QClass));
+                tmp->prefix = mutt_mem_calloc(1, length + 1);
                 strncpy(tmp->prefix, qptr, length);
                 tmp->length = length;
 
@@ -659,8 +659,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
           else
           {
             /* longer than the current prefix: try subclassing it */
-            if (tmp == NULL && (mutt_strncmp(tail_qptr, (q_list->prefix) + offset,
-                                             q_list->length - offset) == 0))
+            if (tmp == NULL && (mutt_str_strncmp(tail_qptr, (q_list->prefix) + offset,
+                                                 q_list->length - offset) == 0))
             {
               /* still a subclass: go down one level */
               ptr = q_list;
@@ -684,8 +684,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
         /* still not found so far: add it as a sibling to the current node */
         if (!class)
         {
-          tmp = safe_calloc(1, sizeof(struct QClass));
-          tmp->prefix = safe_calloc(1, length + 1);
+          tmp = mutt_mem_calloc(1, sizeof(struct QClass));
+          tmp->prefix = mutt_mem_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
           tmp->length = length;
 
@@ -721,8 +721,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   if (!class)
   {
     /* not found so far: add it as a top level class */
-    class = safe_calloc(1, sizeof(struct QClass));
-    class->prefix = safe_calloc(1, length + 1);
+    class = mutt_mem_calloc(1, sizeof(struct QClass));
+    class->prefix = mutt_mem_calloc(1, length + 1);
     strncpy(class->prefix, qptr, length);
     class->length = length;
     new_class_color(class, q_level);
@@ -823,11 +823,11 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       }
     }
   }
-  else if (mutt_strncmp("\033[0m", raw, 4) == 0) /* a little hack... */
+  else if (mutt_str_strncmp("\033[0m", raw, 4) == 0) /* a little hack... */
     line_info[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker((char *) raw) == 0)
     line_info[n].type = MT_COLOR_ATTACHMENT;
-  else if ((mutt_strcmp("-- \n", buf) == 0) || (mutt_strcmp("-- \r\n", buf) == 0))
+  else if ((mutt_str_strcmp("-- \n", buf) == 0) || (mutt_str_strcmp("-- \r\n", buf) == 0))
   {
     i = n + 1;
 
@@ -840,7 +840,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
       if (line_info[i].chunks)
       {
         line_info[i].chunks = 0;
-        safe_realloc(&(line_info[n].syntax), sizeof(struct Syntax));
+        mutt_mem_realloc(&(line_info[n].syntax), sizeof(struct Syntax));
       }
       line_info[i++].type = MT_COLOR_SIGNATURE;
     }
@@ -895,7 +895,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
 
     /* don't consider line endings part of the buffer
      * for regex matching */
-    if ((nl = mutt_strlen(buf)) > 0 && buf[nl - 1] == '\n')
+    nl = mutt_str_strlen(buf);
+    if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = 0;
 
     i = 0;
@@ -930,8 +931,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
                 break;
               }
               if (++(line_info[n].chunks) > 1)
-                safe_realloc(&(line_info[n].syntax),
-                             (line_info[n].chunks) * sizeof(struct Syntax));
+                mutt_mem_realloc(&(line_info[n].syntax),
+                                 (line_info[n].chunks) * sizeof(struct Syntax));
             }
             i = line_info[n].chunks - 1;
             pmatch[0].rm_so += offset;
@@ -967,7 +968,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     size_t nl;
 
     /* don't consider line endings part of the buffer for regex matching */
-    nl = mutt_strlen(buf);
+    nl = mutt_str_strlen(buf);
     if ((nl > 0) && (buf[nl - 1] == '\n'))
       buf[nl - 1] = 0;
 
@@ -991,8 +992,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
             if (!found)
             {
               if (++(line_info[n].chunks) > 1)
-                safe_realloc(&(line_info[n].syntax),
-                             (line_info[n].chunks) * sizeof(struct Syntax));
+                mutt_mem_realloc(&(line_info[n].syntax),
+                                 (line_info[n].chunks) * sizeof(struct Syntax));
             }
             i = line_info[n].chunks - 1;
             pmatch[0].rm_so += offset;
@@ -1154,7 +1155,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   {
     if (offset != *last_pos)
       fseeko(f, offset, SEEK_SET);
-    *buf = (unsigned char *) mutt_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
+    *buf = (unsigned char *) mutt_file_read_line((char *) *buf, blen, f, &l, MUTT_EOL);
     if (!*buf)
     {
       fmt[0] = 0;
@@ -1164,7 +1165,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
     b_read = (int) (*last_pos - offset);
     *buf_ready = 1;
 
-    safe_realloc(fmt, *blen);
+    mutt_mem_realloc(fmt, *blen);
 
     /* incomplete mbyte characters trigger a segfault in regex processing for
      * certain versions of glibc. Trim them if necessary. */
@@ -1195,7 +1196,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
       }
       else if (*p == '\033' && *(p + 1) == ']' && check_attachment_marker((char *) p) == 0)
       {
-        mutt_debug(2, "fill_buffer: Seen attachment marker.\n");
+        mutt_debug(2, "Seen attachment marker.\n");
         while (*p++ != '\a') /* skip pseudo-ANSI sequence */
           ;
       }
@@ -1249,8 +1250,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug(1, "%s:%d: mbrtowc returned %lu; errno = %d.\n", __FILE__,
-                 __LINE__, k, errno);
+      mutt_debug(1, "mbrtowc returned %lu; errno = %d.\n", k, errno);
       if (col + 4 > wrap_cols)
         break;
       col += 4;
@@ -1375,7 +1375,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
         break;
       col += k;
       if (pa)
-        addch(replacement_char());
+        addch(ReplacementChar);
     }
   }
   *pspace = space;
@@ -1439,13 +1439,13 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
 
   if (*last == *max)
   {
-    safe_realloc(line_info, sizeof(struct Line) * (*max += LINES));
+    mutt_mem_realloc(line_info, sizeof(struct Line) * (*max += LINES));
     for (ch = *last; ch < *max; ch++)
     {
       memset(&((*line_info)[ch]), 0, sizeof(struct Line));
       (*line_info)[ch].type = -1;
       (*line_info)[ch].search_cnt = -1;
-      (*line_info)[ch].syntax = safe_malloc(sizeof(struct Syntax));
+      (*line_info)[ch].syntax = mutt_mem_malloc(sizeof(struct Syntax));
       ((*line_info)[ch].syntax)[0].first = ((*line_info)[ch].syntax)[0].last = -1;
     }
   }
@@ -1514,10 +1514,10 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
                    (offset ? REG_NOTBOL : 0)) == 0)
     {
       if (++((*line_info)[n].search_cnt) > 1)
-        safe_realloc(&((*line_info)[n].search),
-                     ((*line_info)[n].search_cnt) * sizeof(struct Syntax));
+        mutt_mem_realloc(&((*line_info)[n].search),
+                         ((*line_info)[n].search_cnt) * sizeof(struct Syntax));
       else
-        (*line_info)[n].search = safe_malloc(sizeof(struct Syntax));
+        (*line_info)[n].search = mutt_mem_malloc(sizeof(struct Syntax));
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;
       ((*line_info)[n].search)[(*line_info)[n].search_cnt - 1].first = pmatch[0].rm_so;
@@ -1560,23 +1560,22 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
   /* move the break point only if smart_wrap is set */
   if (option(OPT_SMART_WRAP))
   {
-    if (cnt < b_read)
+    if ((cnt < b_read) && (ch != -1) && !ISHEADER((*line_info)[n].type) &&
+        !ISSPACE(buf[cnt]))
     {
-      /* Wrap if the line is not part of the header and buf[cnt] is not whitespace */
-      if (ch != -1 && !ISHEADER((*line_info)[n].type) && !ISSPACE(buf[cnt]))
-      {
-        buf_ptr = buf + ch;
-        /* skip trailing blanks */
-        while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
-          ch--;
-        /* a very long word with leading spaces causes infinite wrapping */
-        if ((!ch) && (flags & MUTT_PAGER_NSKIP))
-          buf_ptr = buf + cnt;
-        else
-          cnt = ch + 1;
-      }
+      buf_ptr = buf + ch;
+      /* skip trailing blanks */
+      while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
+        ch--;
+      /* A very long word with leading spaces causes infinite
+       * wrapping when MUTT_PAGER_NSKIP is set.  A folded header
+       * with a single long word shouldn't be smartwrapped
+       * either.  So just disable smart_wrap if it would wrap at the
+       * beginning of the line. */
+      if (!ch)
+        buf_ptr = buf + cnt;
       else
-        buf_ptr = buf + cnt; /* a very long word... */
+        cnt = ch + 1;
     }
     if (!(flags & MUTT_PAGER_NSKIP))
       /* skip leading blanks on the next line too */
@@ -1847,7 +1846,6 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
       NORMAL_COLOR;
       rd->index->pagelen = rd->index_window->rows;
-      ;
 
       /* some fudge to work out whereabouts the indicator should go */
       if (rd->index->current - rd->indicator < 0)
@@ -1884,7 +1882,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
         rd->line_info[i].search_cnt = -1;
         rd->line_info[i].quote = NULL;
 
-        safe_realloc(&(rd->line_info[i].syntax), sizeof(struct Syntax));
+        mutt_mem_realloc(&(rd->line_info[i].syntax), sizeof(struct Syntax));
         if (rd->search_compiled && rd->line_info[i].search)
           FREE(&(rd->line_info[i].search));
       }
@@ -1967,8 +1965,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%",
                (100 * rd->last_offset / rd->sb.st_size));
     else
-      strfcpy(pager_progress_str, (rd->topline == 0) ? "all" : "end",
-              sizeof(pager_progress_str));
+      mutt_str_strfcpy(pager_progress_str, (rd->topline == 0) ? "all" : "end",
+                       sizeof(pager_progress_str));
 
     /* print out the pager status bar */
     mutt_window_move(rd->pager_status_window, 0, 0);
@@ -2074,7 +2072,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   if (stat(fname, &rd.sb) != 0)
   {
     mutt_perror(fname);
-    safe_fclose(&rd.fp);
+    mutt_file_fclose(&rd.fp);
     return -1;
   }
   unlink(fname);
@@ -2087,20 +2085,20 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     mutt_set_flag(Context, extra->hdr, MUTT_READ, 1);
   }
 
-  rd.line_info = safe_malloc(sizeof(struct Line) * (rd.max_line = LINES));
+  rd.max_line = LINES; /* number of lines on screen, from curses */
+  rd.line_info = mutt_mem_calloc(rd.max_line, sizeof(struct Line));
   for (i = 0; i < rd.max_line; i++)
   {
-    memset(&rd.line_info[i], 0, sizeof(struct Line));
     rd.line_info[i].type = -1;
     rd.line_info[i].search_cnt = -1;
-    rd.line_info[i].syntax = safe_malloc(sizeof(struct Syntax));
+    rd.line_info[i].syntax = mutt_mem_malloc(sizeof(struct Syntax));
     (rd.line_info[i].syntax)[0].first = (rd.line_info[i].syntax)[0].last = -1;
   }
 
   mutt_compile_help(helpstr, sizeof(helpstr), MENU_PAGER, PagerHelp);
   if (IsHeader(extra))
   {
-    strfcpy(tmphelp, helpstr, sizeof(tmphelp));
+    mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_compile_help(buffer, sizeof(buffer), MENU_PAGER,
 #ifdef USE_NNTP
                       (Context && (Context->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
@@ -2110,15 +2108,15 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   }
   if (!InHelp)
   {
-    strfcpy(tmphelp, helpstr, sizeof(tmphelp));
+    mutt_str_strfcpy(tmphelp, helpstr, sizeof(tmphelp));
     mutt_make_help(buffer, sizeof(buffer), _("Help"), MENU_PAGER, OP_HELP);
     snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
   }
 
-  rd.index_status_window = safe_calloc(1, sizeof(struct MuttWindow));
-  rd.index_window = safe_calloc(1, sizeof(struct MuttWindow));
-  rd.pager_status_window = safe_calloc(1, sizeof(struct MuttWindow));
-  rd.pager_window = safe_calloc(1, sizeof(struct MuttWindow));
+  rd.index_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  rd.index_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  rd.pager_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
+  rd.pager_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
   pager_menu = mutt_new_menu(MENU_PAGER);
   pager_menu->custom_menu_redraw = pager_menu_redraw;
@@ -2235,7 +2233,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           char cmd[LONG_STRING];
           menu_status_line(cmd, sizeof(cmd), rd.index, NONULL(NewMailCommand));
-          mutt_system(cmd);
+          if (mutt_system(cmd) != 0)
+            mutt_error(_("Error running \"%s\"!"), cmd);
         }
       }
     }
@@ -2255,7 +2254,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           if (!rd.line_info[i].continuation)
             rd.lines++;
 
-        Resize = safe_malloc(sizeof(struct Resize));
+        Resize = mutt_mem_malloc(sizeof(struct Resize));
 
         Resize->line = rd.lines;
         Resize->search_compiled = rd.search_compiled;
@@ -2401,7 +2400,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i < rd.last_line)
@@ -2422,7 +2423,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || (rd.has_types && rd.line_info[i].type != MT_COLOR_QUOTED)) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i >= 0)
@@ -2447,11 +2450,12 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
           break;
         }
-      /* no previous search pattern, so fall through to search */
+      /* no previous search pattern */
+      /* fallthrough */
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
-        strfcpy(buffer, searchbuf, sizeof(buffer));
+        mutt_str_strfcpy(buffer, searchbuf, sizeof(buffer));
         if (mutt_get_field((ch == OP_SEARCH || ch == OP_SEARCH_NEXT) ?
                                _("Search for: ") :
                                _("Reverse search for: "),
@@ -2476,7 +2480,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         if (!buffer[0])
           break;
 
-        strfcpy(searchbuf, buffer, sizeof(searchbuf));
+        mutt_str_strfcpy(searchbuf, buffer, sizeof(searchbuf));
 
         /* leave search_back alone if ch == OP_SEARCH_NEXT */
         if (ch == OP_SEARCH)
@@ -2528,7 +2532,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i < rd.last_line)
@@ -2541,7 +2547,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             {
               if ((!rd.hide_quoted || rd.line_info[i].type != MT_COLOR_QUOTED) &&
                   !rd.line_info[i].continuation && rd.line_info[i].search_cnt > 0)
+              {
                 break;
+              }
             }
 
             if (i >= 0)
@@ -2702,7 +2710,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_bounce(extra->fp, extra->hdr, extra->actx, extra->bdy);
+          mutt_attach_bounce(extra->fp, extra->actx, extra->bdy);
         else
           ci_bounce_message(extra->hdr);
         break;
@@ -2711,7 +2719,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra))
         CHECK_ATTACH;
         if (IsMsgAttach(extra))
-          mutt_attach_resend(extra->fp, extra->hdr, extra->actx, extra->bdy);
+          mutt_attach_resend(extra->fp, extra->actx, extra->bdy);
         else
           mutt_resend_message(NULL, extra->ctx, extra->hdr);
         pager_menu->redraw = REDRAW_FULL;
@@ -2890,7 +2898,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        {
           break;
+        }
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
         break;
@@ -2900,7 +2910,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
             !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+        {
           break;
+        }
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->actx, extra->bdy, SENDNEWS);
         else
@@ -2917,13 +2929,15 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         else
           followup_to = extra->hdr->env->followup_to;
 
-        if (!followup_to || (mutt_strcasecmp(followup_to, "poster") != 0) ||
+        if (!followup_to || (mutt_str_strcasecmp(followup_to, "poster") != 0) ||
             query_quadoption(OPT_FOLLOWUP_TO_POSTER,
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
               !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_POST_MODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+          {
             break;
+          }
           if (IsMsgAttach(extra))
             mutt_attach_reply(extra->fp, extra->hdr, extra->actx, extra->bdy,
                               SENDNEWS | SENDREPLY);
@@ -2933,7 +2947,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         }
 #endif
-
+      /* fallthrough */
       case OP_REPLY:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
@@ -3205,7 +3219,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     }
   }
 
-  safe_fclose(&rd.fp);
+  mutt_file_fclose(&rd.fp);
   if (IsHeader(extra))
   {
     if (Context)

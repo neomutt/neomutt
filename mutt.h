@@ -57,7 +57,7 @@ struct Mapping;
 #define fgetc fgetc_unlocked
 #endif
 
-/* flags for mutt_enter_string() */
+/* flags for mutt_enter_string_full() */
 #define MUTT_ALIAS    (1 << 0)  /**< do alias "completion" by calling up the alias-menu */
 #define MUTT_FILE     (1 << 1)  /**< do file completion */
 #define MUTT_EFILE    (1 << 2)  /**< do file completion, plus incoming folders */
@@ -293,7 +293,7 @@ enum QuadOptionVars
 /* flags for mutt_compose_menu() */
 #define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
-/* flags to _mutt_select_file() */
+/* flags to mutt_select_file() */
 #define MUTT_SEL_BUFFY   (1 << 0)
 #define MUTT_SEL_MULTI   (1 << 1)
 #define MUTT_SEL_FOLDER  (1 << 2)
@@ -333,31 +333,22 @@ struct AttachMatch
 #define EXECSHELL "/bin/sh"
 
 /* For mutt_simple_format() justifications */
-/* Making left 0 and center -1 is of course completely nonsensical, but
- * it retains compatibility for any patches that call mutt_simple_format.
- * Once patches are updated to use FMT_*, these can be made sane. */
-#define FMT_LEFT   0
+#define FMT_LEFT   -1
+#define FMT_CENTER 0
 #define FMT_RIGHT  1
-#define FMT_CENTER -1
-
-/* Exit values used in send_msg() */
-#define S_ERR 127
-#define S_BKG 126
 
 int safe_asprintf(char **, const char *, ...);
 
 int mutt_inbox_cmp(const char *a, const char *b);
 
-const char *mutt_strsysexit(int e);
+const char *mutt_str_sysexit(int e);
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
-#ifdef DEBUG
 extern char debugfilename[_POSIX_PATH_MAX];
 extern FILE *debugfile;
 extern int debuglevel;
 extern char *debugfile_cmdline;
 extern int debuglevel_cmdline;
-#endif
 
 #endif /* _MUTT_H */

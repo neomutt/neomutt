@@ -34,7 +34,7 @@
 #include <stddef.h>
 #include <depot.h>
 #include <villa.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "backend.h"
 #include "options.h"
 
@@ -68,7 +68,7 @@ static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *da
     return -1;
 
   VILLA *db = ctx;
-  /* Not sure if dbecode is reset on success, so better to explicitely return 0
+  /* Not sure if dbecode is reset on success, so better to explicitly return 0
    * on success */
   bool success = vlput(db, key, keylen, data, dlen, VL_DOVER);
   return success ? 0 : dpecode ? dpecode : -1;
@@ -80,7 +80,7 @@ static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
     return -1;
 
   VILLA *db = ctx;
-  /* Not sure if dbecode is reset on success, so better to explicitely return 0
+  /* Not sure if dbecode is reset on success, so better to explicitly return 0
    * on success */
   bool success = vlout(db, key, keylen);
   return success ? 0 : dpecode ? dpecode : -1;

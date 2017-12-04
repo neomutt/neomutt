@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "pgppacket.h"
 #include "protos.h"
@@ -78,7 +78,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
   }
   if (!r)
   {
-    mutt_debug(1, "pgp_dearmor: Can't find begin of ASCII armor.\n");
+    mutt_debug(1, "Can't find begin of ASCII armor.\n");
     return;
   }
 
@@ -92,7 +92,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
   }
   if (!r)
   {
-    mutt_debug(1, "pgp_dearmor: Armor header doesn't end.\n");
+    mutt_debug(1, "Armor header doesn't end.\n");
     return;
   }
 
@@ -110,20 +110,20 @@ static void pgp_dearmor(FILE *in, FILE *out)
   }
   if (!r)
   {
-    mutt_debug(1, "pgp_dearmor: Can't find end of ASCII armor.\n");
+    mutt_debug(1, "Can't find end of ASCII armor.\n");
     return;
   }
 
   end = ftello(in) - strlen(line);
   if (end < start)
   {
-    mutt_debug(1, "pgp_dearmor: end < start???\n");
+    mutt_debug(1, "end < start???\n");
     return;
   }
 
   if (fseeko(in, start, SEEK_SET) == -1)
   {
-    mutt_debug(1, "pgp_dearmor: Can't seekto start.\n");
+    mutt_debug(1, "Can't seekto start.\n");
     return;
   }
 
@@ -135,7 +135,7 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
   /* is signature? */
   if ((p[0] & 0x3f) != PT_SIG)
   {
-    mutt_debug(1, "pgp_mic_from_packet: tag = %d, want %d.\n", p[0] & 0x3f, PT_SIG);
+    mutt_debug(1, "tag = %d, want %d.\n", p[0] & 0x3f, PT_SIG);
     return -1;
   }
 
@@ -147,7 +147,7 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
     return (short) p[4];
   else
   {
-    mutt_debug(1, "pgp_mic_from_packet: Bad signature packet.\n");
+    mutt_debug(1, "Bad signature packet.\n");
     return -1;
   }
 }
@@ -162,10 +162,10 @@ static short pgp_find_hash(const char *fname)
   unsigned char *p = NULL;
   size_t l;
 
-  short rv = -1;
+  short rc = -1;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  out = safe_fopen(tempfile, "w+");
+  out = mutt_file_fopen(tempfile, "w+");
   if (!out)
   {
     mutt_perror(tempfile);
@@ -186,19 +186,19 @@ static short pgp_find_hash(const char *fname)
   p = pgp_read_packet(out, &l);
   if (p)
   {
-    rv = pgp_mic_from_packet(p, l);
+    rc = pgp_mic_from_packet(p, l);
   }
   else
   {
-    mutt_debug(1, "pgp_find_hash: No packet.\n");
+    mutt_debug(1, "No packet.\n");
   }
 
 bye:
 
-  safe_fclose(&in);
-  safe_fclose(&out);
+  mutt_file_fclose(&in);
+  mutt_file_fclose(&out);
   pgp_release_packet();
-  return rv;
+  return rc;
 }
 
 const char *pgp_micalg(const char *fname)

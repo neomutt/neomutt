@@ -22,7 +22,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 
 /* NOTE: Currently there is no check in configure.ac for vasprintf(3).  the
  * undefined behavior of the error condition makes it difficult to write a safe
@@ -69,8 +69,8 @@ int safe_asprintf(char **strp, const char *fmt, ...)
   int rlen = STRING;
   int n;
 
-  *strp = safe_malloc(rlen);
-  for (;;)
+  *strp = mutt_mem_malloc(rlen);
+  while (true)
   {
     va_list ap;
     va_start(ap, fmt);
@@ -90,12 +90,12 @@ int safe_asprintf(char **strp, const char *fmt, ...)
       if (n == 0) /* convention is to use NULL for zero-length strings. */
         FREE(strp);
       else if (n != rlen - 1)
-        safe_realloc(strp, n + 1);
+        mutt_mem_realloc(strp, n + 1);
       return n;
     }
     /* increase size and try again */
     rlen = n + 1;
-    safe_realloc(strp, rlen);
+    mutt_mem_realloc(strp, rlen);
   }
   /* not reached */
 }

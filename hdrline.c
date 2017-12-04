@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
@@ -42,12 +42,11 @@
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
-#include "mutt_tags.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
+#include "tags.h"
 #include "thread.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
@@ -82,7 +81,9 @@ bool mutt_is_subscribed_list(struct Address *addr)
 {
   if (!mutt_match_regex_list(addr->mailbox, UnMailLists) &&
       !mutt_match_regex_list(addr->mailbox, UnSubscribedLists))
+  {
     return mutt_match_regex_list(addr->mailbox, SubscribedLists);
+  }
   return false;
 }
 
@@ -169,7 +170,7 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
 
   if (color == MT_COLOR_INDEX)
   { /* buf might be uninitialized other cases */
-    len = mutt_strlen(buf);
+    len = mutt_str_strlen(buf);
     buf += len;
     buflen -= len;
   }
@@ -237,7 +238,7 @@ static const char *make_from_prefix(enum FieldType disp)
     return long_prefixes[disp];
 
   char *pchar = get_nth_wchar(FromChars, disp);
-  if (mutt_strlen(pchar) == 0)
+  if (mutt_str_strlen(pchar) == 0)
     return "";
 
   snprintf(padded, sizeof(padded), "%s ", pchar);
@@ -325,7 +326,7 @@ static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_l
   else if (me && hdr->cc)
     snprintf(buf, len, "%s", hdr->cc->mailbox);
   else if (hdr->from)
-    strfcpy(buf, hdr->from->mailbox, len);
+    mutt_str_strfcpy(buf, hdr->from->mailbox, len);
   else
     *buf = 0;
 }
@@ -380,64 +381,6 @@ static int user_is_recipient(struct Header *h)
   return h->recipient;
 }
 
-/**
- * get_initials - Turn a name into initials
- * @param name   String to be converted
- * @param buf    Buffer for the result
- * @param buflen Size of the buffer
- * @retval 1 on Success
- * @retval 0 on Failure
- *
- * Take a name, e.g. "John F. Kennedy" and reduce it to initials "JFK".
- * The function saves the first character from each word.  Words are delimited
- * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
- */
-static bool get_initials(const char *name, char *buf, int buflen)
-{
-  if (!name || !buf)
-    return false;
-
-  while (*name)
-  {
-    /* Char's length in bytes */
-    int clen = mutt_charlen(name, NULL);
-    if (clen < 1)
-      return false;
-
-    /* Ignore punctuation at the beginning of a word */
-    if ((clen == 1) && ispunct(*name))
-    {
-      name++;
-      continue;
-    }
-
-    if (clen >= buflen)
-      return false;
-
-    /* Copy one multibyte character */
-    buflen -= clen;
-    while (clen--)
-      *buf++ = *name++;
-
-    /* Skip to end-of-word */
-    for (; *name; name += clen)
-    {
-      clen = mutt_charlen(name, NULL);
-      if (clen < 1)
-        return false;
-      else if ((clen == 1) && (isspace(*name) || (*name == '-')))
-        break;
-    }
-
-    /* Skip any whitespace, or hyphens */
-    while (*name && (isspace(*name) || (*name == '-')))
-      name++;
-  }
-
-  *buf = 0;
-  return true;
-}
-
 static char *apply_subject_mods(struct Envelope *env)
 {
   if (!env)
@@ -466,63 +409,82 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
 }
 
 /**
- * hdr_format_str - Format a string, like printf()
+ * index_format_str - Format a string for the index list
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * index_format_str() is a callback function for mutt_expando_format().
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%a     | address of author
- * | \%A     | reply-to address (if present; otherwise: address of author
- * | \%b     | filename of the originating folder
- * | \%B     | the list to which the letter was sent, or else the folder name (%b).
- * | \%c     | size of message in bytes
- * | \%C     | current message number
- * | \%d     | date and time of message using $date_format and sender's timezone
- * | \%D     | date and time of message using $date_format and local timezone
- * | \%e     | current message number in thread
- * | \%E     | number of messages in current thread
- * | \%f     | entire from line
- * | \%F     | like %n, unless from self
- * | \%g     | message tags (e.g. notmuch tags/imap flags)
- * | \%Gx    | individual message tag (e.g. notmuch tags/imap flags)
- * | \%i     | message-id
- * | \%I     | initials of author
- * | \%J     | message tags (if present, tree unfolded, and != parent's tags)
- * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
- * | \%l     | number of lines in the message
- * | \%L     | like %F, except `lists' are displayed first
- * | \%m     | number of messages in the mailbox
- * | \%n     | name of author
- * | \%N     | score
- * | \%O     | like %L, except using address instead of name
- * | \%P     | progress indicator for builtin pager
- * | \%q     | newsgroup name (if compiled with NNTP support)
- * | \%r     | comma separated list of To: recipients
- * | \%R     | comma separated list of Cc: recipients
- * | \%s     | subject
- * | \%S     | short message status (e.g., N/O/D/!/r/-)
- * | \%t     | `to:' field (recipients)
+ * | \%a     | Address of author
+ * | \%A     | Reply-to address (if present; otherwise: address of author
+ * | \%b     | Filename of the originating folder
+ * | \%B     | The list to which the letter was sent, or else the folder name (%b).
+ * | \%C     | Current message number
+ * | \%c     | Size of message in bytes
+ * | \%D     | Date and time of message using $date_format and local timezone
+ * | \%d     | Date and time of message using $date_format and sender's timezone
+ * | \%e     | Current message number in thread
+ * | \%E     | Number of messages in current thread
+ * | \%f     | Entire from line
+ * | \%F     | Like %n, unless from self
+ * | \%g     | Message tags (e.g. notmuch tags/imap flags)
+ * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
+ * | \%H     | Spam attribute(s) of this message
+ * | \%I     | Initials of author
+ * | \%i     | Message-id
+ * | \%J     | Message tags (if present, tree unfolded, and != parent's tags)
+ * | \%K     | The list to which the letter was sent (if any; otherwise: empty)
+ * | \%L     | Like %F, except 'lists' are displayed first
+ * | \%l     | Number of lines in the message
+ * | \%M     | Number of hidden messages if the thread is collapsed
+ * | \%m     | Number of messages in the mailbox
+ * | \%n     | Name of author
+ * | \%N     | Score
+ * | \%O     | Like %L, except using address instead of name
+ * | \%P     | Progress indicator for builtin pager
+ * | \%q     | Newsgroup name (if compiled with NNTP support)
+ * | \%R     | Comma separated list of Cc: recipients
+ * | \%r     | Comma separated list of To: recipients
+ * | \%S     | Short message status (e.g., N/O/D/!/r/-)
+ * | \%s     | Subject
  * | \%T     | $to_chars
- * | \%u     | user (login) name of author
- * | \%v     | first name of author, unless from self
- * | \%W     | where user is (organization)
- * | \%x     | `x-comment-to:' field (if present and compiled with NNTP support)
- * | \%X     | number of MIME attachments
- * | \%y     | `x-label:' field (if present)
- * | \%Y     | `x-label:' field (if present, tree unfolded, and != parent's x-label)
- * | \%zs    | message status flags
- * | \%zc    | message crypto flags
- * | \%zt    | message tag flags
- * | \%Z     | combined message flags
+ * | \%t     | 'To:' field (recipients)
+ * | \%u     | User (login) name of author
+ * | \%v     | First name of author, unless from self
+ * | \%W     | Where user is (organization)
+ * | \%x     | 'X-Comment-To:' field (if present and compiled with NNTP support)
+ * | \%X     | Number of MIME attachments
+ * | \%y     | 'X-Label:' field (if present)
+ * | \%Y     | 'X-Label:' field (if present, tree unfolded, and != parent's x-label)
+ * | \%Z     | Combined message flags
+ * | \%zc    | Message crypto flags
+ * | \%zs    | Message status flags
+ * | \%zt    | Message tag flags
+ * | \%(fmt) | Date/time when the message was received
+ * | \%[fmt] | Message date/time converted to the local time zone
+ * | \%{fmt} | Message date/time converted to sender's time zone
  */
-static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                  char op, const char *src, const char *prefix,
-                                  const char *ifstring, const char *elsestring,
-                                  unsigned long data, enum FormatFlag flags)
+static const char *index_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                    char op, const char *src, const char *prec,
+                                    const char *if_str, const char *else_str,
+                                    unsigned long data, enum FormatFlag flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
   struct Context *ctx = NULL;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], *p, *tags = NULL;
+  char fmt[SHORT_STRING], tmp[LONG_STRING], *p, *tags = NULL;
   char *wch = NULL;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -536,7 +498,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
   if (!hdr || !hdr->env)
     return src;
-  dest[0] = 0;
+  buf[0] = 0;
   switch (op)
   {
     case 'A':
@@ -545,44 +507,46 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       {
         if (hdr->env->reply_to && hdr->env->reply_to->mailbox)
         {
-          colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
+          colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
+          mutt_format_s(buf + colorlen, buflen - colorlen, prec,
                         mutt_addr_for_display(hdr->env->reply_to));
-          add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
           break;
         }
       }
       else
       {
-        if (get_initials(mutt_get_name(hdr->env->from), buf2, sizeof(buf2)))
+        if (mutt_mb_get_initials(mutt_get_name(hdr->env->from), tmp, sizeof(tmp)))
         {
-          colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-          add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
+          mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+          add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
           break;
         }
       }
-    /* fall through on failure */
+    /* fallthrough */
 
     case 'a':
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
       if (hdr->env->from && hdr->env->from->mailbox)
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec,
                       mutt_addr_for_display(hdr->env->from));
       else
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'B':
     case 'K':
-      if (!first_mailing_list(dest, destlen, hdr->env->to) &&
-          !first_mailing_list(dest, destlen, hdr->env->cc))
-        dest[0] = 0;
-      if (dest[0])
+      if (!first_mailing_list(buf, buflen, hdr->env->to) &&
+          !first_mailing_list(buf, buflen, hdr->env->cc))
       {
-        strfcpy(buf2, dest, sizeof(buf2));
-        mutt_format_s(dest, destlen, prefix, buf2);
+        buf[0] = 0;
+      }
+      if (buf[0])
+      {
+        mutt_str_strfcpy(tmp, buf, sizeof(tmp));
+        mutt_format_s(buf, buflen, prec, tmp);
         break;
       }
       if (op == 'K')
@@ -592,34 +556,35 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         /* break if 'K' returns nothing */
         break;
       }
-    /* fall through if 'B' returns nothing */
+    /* if 'B' returns nothing */
+    /* fallthrough */
 
     case 'b':
       if (ctx)
       {
         if ((p = strrchr(ctx->path, '/')))
-          strfcpy(dest, p + 1, destlen);
+          mutt_str_strfcpy(buf, p + 1, buflen);
         else
-          strfcpy(dest, ctx->path, destlen);
+          mutt_str_strfcpy(buf, ctx->path, buflen);
       }
       else
-        strfcpy(dest, "(null)", destlen);
-      strfcpy(buf2, dest, sizeof(buf2));
-      mutt_format_s(dest, destlen, prefix, buf2);
+        mutt_str_strfcpy(buf, "(null)", buflen);
+      mutt_str_strfcpy(tmp, buf, sizeof(tmp));
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 'c':
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SIZE);
-      mutt_pretty_size(buf2, sizeof(buf2), (long) hdr->content->length);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SIZE);
+      mutt_pretty_size(tmp, sizeof(tmp), (long) hdr->content->length);
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'C':
       colorlen = add_index_color(fmt, sizeof(fmt), flags, MT_COLOR_INDEX_NUMBER);
-      snprintf(fmt + colorlen, sizeof(fmt) - colorlen, "%%%sd", prefix);
+      snprintf(fmt + colorlen, sizeof(fmt) - colorlen, "%%%sd", prec);
       add_index_color(fmt + colorlen, sizeof(fmt) - colorlen, flags, MT_COLOR_INDEX);
-      snprintf(dest, destlen, fmt, hdr->msgno + 1);
+      snprintf(buf, buflen, fmt, hdr->msgno + 1);
       break;
 
     case 'd':
@@ -642,7 +607,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           tm = localtime(&T);
           T -= (op == '(') ? hdr->received : hdr->date_sent;
 
-          is = (char *) prefix;
+          is = (char *) prec;
           if (*is == '>')
           {
             invert = 1;
@@ -726,7 +691,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           break;
         }
 
-        p = dest;
+        p = buf;
 
         cp = (op == 'd' || op == 'D') ? (NONULL(DateFormat)) : src;
         if (*cp == '!')
@@ -737,7 +702,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         else
           do_locales = 1;
 
-        len = destlen - 1;
+        len = buflen - 1;
         while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||
                            (op == '{' && *cp != '}') || (op == '[' && *cp != ']') ||
                            (op == '(' && *cp != ')') || (op == '<' && *cp != '>')))
@@ -800,13 +765,13 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         if (!do_locales)
           setlocale(LC_TIME, "C");
-        strftime(buf2, sizeof(buf2), dest, tm);
+        strftime(tmp, sizeof(tmp), buf, tm);
         if (!do_locales)
           setlocale(LC_TIME, "");
 
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_DATE);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-        add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_DATE);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
 
         if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
           src = cp + 1;
@@ -814,33 +779,33 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       break;
 
     case 'e':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-      snprintf(dest, destlen, fmt, mutt_messages_in_thread(ctx, hdr, 1));
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx, hdr, 1));
       break;
 
     case 'E':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, mutt_messages_in_thread(ctx, hdr, 0));
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, mutt_messages_in_thread(ctx, hdr, 0));
       }
       else if (mutt_messages_in_thread(ctx, hdr, 0) <= 1)
         optional = 0;
       break;
 
     case 'f':
-      buf2[0] = 0;
-      rfc822_write_address(buf2, sizeof(buf2), hdr->env->from, 1);
-      mutt_format_s(dest, destlen, prefix, buf2);
+      tmp[0] = 0;
+      rfc822_write_address(tmp, sizeof(tmp), hdr->env->from, 1);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 'F':
       if (!optional)
       {
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(hdr->env, buf2, sizeof(buf2), 0);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-        add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
+        make_from(hdr->env, tmp, sizeof(tmp), 0);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (mutt_addr_is_user(hdr->env->from))
         optional = 0;
@@ -850,9 +815,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       tags = driver_tags_get_transformed(&hdr->tags);
       if (!optional)
       {
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
-        add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
+        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (!tags)
         optional = 0;
@@ -869,13 +834,13 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[1] = *src;
         format[2] = 0;
 
-        tag = hash_find(TagFormats, format);
+        tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);
-          colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
-          add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAG);
+          mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
+          add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
           FREE(&tags);
         }
         src++;
@@ -883,10 +848,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       else
       {
         format[0] = op;
-        format[1] = *prefix;
+        format[1] = *prec;
         format[2] = 0;
 
-        tag = hash_find(TagFormats, format);
+        tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
           tags = driver_tags_get_transformed_for(tag, &hdr->tags);
@@ -903,14 +868,13 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         optional = hdr->env->spam ? 1 : 0;
 
       if (hdr->env->spam)
-        mutt_format_s(dest, destlen, prefix, NONULL(hdr->env->spam->data));
+        mutt_format_s(buf, buflen, prec, NONULL(hdr->env->spam->data));
       else
-        mutt_format_s(dest, destlen, prefix, "");
+        mutt_format_s(buf, buflen, prec, "");
       break;
 
     case 'i':
-      mutt_format_s(dest, destlen, prefix,
-                    hdr->env->message_id ? hdr->env->message_id : "<no.id>");
+      mutt_format_s(buf, buflen, prec, hdr->env->message_id ? hdr->env->message_id : "<no.id>");
       break;
 
     case 'J':
@@ -927,7 +891,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
           if (!parent_tags && hdr->thread->parent && hdr->thread->parent->message)
             parent_tags =
                 driver_tags_get_transformed(&hdr->thread->parent->message->tags);
-          if (parent_tags && mutt_strcasecmp(tags, parent_tags) == 0)
+          if (parent_tags && mutt_str_strcasecmp(tags, parent_tags) == 0)
             i = 0;
           FREE(&parent_tags);
         }
@@ -938,22 +902,22 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (optional)
         optional = i;
 
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
       if (i)
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
       else
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       FREE(&tags);
       break;
 
     case 'l':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SIZE);
-        snprintf(dest + colorlen, destlen - colorlen, fmt, (int) hdr->lines);
-        add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SIZE);
+        snprintf(buf + colorlen, buflen - colorlen, fmt, (int) hdr->lines);
+        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (hdr->lines <= 0)
         optional = 0;
@@ -962,10 +926,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'L':
       if (!optional)
       {
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
-        make_from(hdr->env, buf2, sizeof(buf2), 1);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-        add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
+        make_from(hdr->env, tmp, sizeof(tmp), 1);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (!check_for_mailing_list(hdr->env->to, NULL, NULL, 0) &&
                !check_for_mailing_list(hdr->env->cc, NULL, NULL, 0))
@@ -977,37 +941,37 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'm':
       if (ctx)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, ctx->msgcount);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, ctx->msgcount);
       }
       else
-        strfcpy(dest, "(null)", destlen);
+        mutt_str_strfcpy(buf, "(null)", buflen);
       break;
 
     case 'n':
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec,
                     mutt_get_name(hdr->env->from));
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'M':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       if (!optional)
       {
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_COLLAPSED);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_COLLAPSED);
         if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
         {
-          snprintf(dest + colorlen, destlen - colorlen, fmt, hdr->num_hidden);
-          add_index_color(dest, destlen - colorlen, flags, MT_COLOR_INDEX);
+          snprintf(buf + colorlen, buflen - colorlen, fmt, hdr->num_hidden);
+          add_index_color(buf, buflen - colorlen, flags, MT_COLOR_INDEX);
         }
         else if (is_index && threads)
         {
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, " ");
-          add_index_color(dest, destlen - colorlen, flags, MT_COLOR_INDEX);
+          mutt_format_s(buf + colorlen, buflen - colorlen, prec, " ");
+          add_index_color(buf, buflen - colorlen, flags, MT_COLOR_INDEX);
         }
         else
-          *dest = '\0';
+          *buf = '\0';
       }
       else
       {
@@ -1019,8 +983,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'N':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, hdr->score);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, hdr->score);
       }
       else
       {
@@ -1032,10 +996,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'O':
       if (!optional)
       {
-        make_from_addr(hdr->env, buf2, sizeof(buf2), 1);
-        if (!option(OPT_SAVE_ADDRESS) && (p = strpbrk(buf2, "%@")))
+        make_from_addr(hdr->env, tmp, sizeof(tmp), 1);
+        if (!option(OPT_SAVE_ADDRESS) && (p = strpbrk(tmp, "%@")))
           *p = 0;
-        mutt_format_s(dest, destlen, prefix, buf2);
+        mutt_format_s(buf, buflen, prec, tmp);
       }
       else if (!check_for_mailing_list_addr(hdr->env->to, NULL, 0) &&
                !check_for_mailing_list_addr(hdr->env->cc, NULL, 0))
@@ -1045,29 +1009,29 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       break;
 
     case 'P':
-      strfcpy(dest, NONULL(hfi->pager_progress), destlen);
+      mutt_str_strfcpy(buf, NONULL(hfi->pager_progress), buflen);
       break;
 
 #ifdef USE_NNTP
     case 'q':
-      mutt_format_s(dest, destlen, prefix, hdr->env->newsgroups ? hdr->env->newsgroups : "");
+      mutt_format_s(buf, buflen, prec, hdr->env->newsgroups ? hdr->env->newsgroups : "");
       break;
 #endif
 
     case 'r':
-      buf2[0] = 0;
-      rfc822_write_address(buf2, sizeof(buf2), hdr->env->to, 1);
-      if (optional && buf2[0] == '\0')
+      tmp[0] = 0;
+      rfc822_write_address(tmp, sizeof(tmp), hdr->env->to, 1);
+      if (optional && tmp[0] == '\0')
         optional = 0;
-      mutt_format_s(dest, destlen, prefix, buf2);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 'R':
-      buf2[0] = 0;
-      rfc822_write_address(buf2, sizeof(buf2), hdr->env->cc, 1);
-      if (optional && buf2[0] == '\0')
+      tmp[0] = 0;
+      rfc822_write_address(tmp, sizeof(tmp), hdr->env->cc, 1);
+      if (optional && tmp[0] == '\0')
         optional = 0;
-      mutt_format_s(dest, destlen, prefix, buf2);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 's':
@@ -1083,20 +1047,20 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       {
         if (flags & MUTT_FORMAT_FORCESUBJ)
         {
-          colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
-          mutt_format_s(dest + colorlen, destlen - colorlen, "", NONULL(subj));
-          add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-          snprintf(buf2, sizeof(buf2), "%s%s", hdr->tree, dest);
-          mutt_format_s_tree(dest, destlen, prefix, buf2);
+          colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SUBJECT);
+          mutt_format_s(buf + colorlen, buflen - colorlen, "", NONULL(subj));
+          add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
+          snprintf(tmp, sizeof(tmp), "%s%s", hdr->tree, buf);
+          mutt_format_s_tree(buf, buflen, prec, tmp);
         }
         else
-          mutt_format_s_tree(dest, destlen, prefix, hdr->tree);
+          mutt_format_s_tree(buf, buflen, prec, hdr->tree);
       }
       else
       {
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(subj));
-        add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SUBJECT);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(subj));
+        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
     }
     break;
@@ -1119,28 +1083,28 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       else
         wch = get_nth_wchar(FlagChars, FlagCharNew);
 
-      snprintf(buf2, sizeof(buf2), "%s", wch);
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      snprintf(tmp, sizeof(tmp), "%s", wch);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_FLAGS);
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 't':
-      buf2[0] = 0;
-      if (!check_for_mailing_list(hdr->env->to, "To ", buf2, sizeof(buf2)) &&
-          !check_for_mailing_list(hdr->env->cc, "Cc ", buf2, sizeof(buf2)))
+      tmp[0] = 0;
+      if (!check_for_mailing_list(hdr->env->to, "To ", tmp, sizeof(tmp)) &&
+          !check_for_mailing_list(hdr->env->cc, "Cc ", tmp, sizeof(tmp)))
       {
         if (hdr->env->to)
-          snprintf(buf2, sizeof(buf2), "To %s", mutt_get_name(hdr->env->to));
+          snprintf(tmp, sizeof(tmp), "To %s", mutt_get_name(hdr->env->to));
         else if (hdr->env->cc)
-          snprintf(buf2, sizeof(buf2), "Cc %s", mutt_get_name(hdr->env->cc));
+          snprintf(tmp, sizeof(tmp), "Cc %s", mutt_get_name(hdr->env->cc));
       }
-      mutt_format_s(dest, destlen, prefix, buf2);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 'T':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
-      snprintf(dest, destlen, fmt,
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt,
                (ToChars && ((i = user_is_recipient(hdr))) < ToChars->len) ?
                    ToChars->chars[i] :
                    " ");
@@ -1149,35 +1113,35 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'u':
       if (hdr->env->from && hdr->env->from->mailbox)
       {
-        strfcpy(buf2, mutt_addr_for_display(hdr->env->from), sizeof(buf2));
-        if ((p = strpbrk(buf2, "%@")))
+        mutt_str_strfcpy(tmp, mutt_addr_for_display(hdr->env->from), sizeof(tmp));
+        if ((p = strpbrk(tmp, "%@")))
           *p = 0;
       }
       else
-        buf2[0] = 0;
-      mutt_format_s(dest, destlen, prefix, buf2);
+        tmp[0] = 0;
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 'v':
       if (mutt_addr_is_user(hdr->env->from))
       {
         if (hdr->env->to)
-          mutt_format_s(buf2, sizeof(buf2), prefix, mutt_get_name(hdr->env->to));
+          mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(hdr->env->to));
         else if (hdr->env->cc)
-          mutt_format_s(buf2, sizeof(buf2), prefix, mutt_get_name(hdr->env->cc));
+          mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(hdr->env->cc));
         else
-          *buf2 = 0;
+          *tmp = 0;
       }
       else
-        mutt_format_s(buf2, sizeof(buf2), prefix, mutt_get_name(hdr->env->from));
-      if ((p = strpbrk(buf2, " %@")))
+        mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(hdr->env->from));
+      if ((p = strpbrk(tmp, " %@")))
         *p = 0;
-      mutt_format_s(dest, destlen, prefix, buf2);
+      mutt_format_s(buf, buflen, prec, tmp);
       break;
 
     case 'W':
       if (!optional)
-        mutt_format_s(dest, destlen, prefix,
+        mutt_format_s(buf, buflen, prec,
                       hdr->env->organization ? hdr->env->organization : "");
       else if (!hdr->env->organization)
         optional = 0;
@@ -1186,7 +1150,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 #ifdef USE_NNTP
     case 'x':
       if (!optional)
-        mutt_format_s(dest, destlen, prefix,
+        mutt_format_s(buf, buflen, prec,
                       hdr->env->x_comment_to ? hdr->env->x_comment_to : "");
       else if (!hdr->env->x_comment_to)
         optional = 0;
@@ -1201,8 +1165,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (optional)
         optional = count != 0;
 
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-      snprintf(dest, destlen, fmt, count);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, count);
     }
     break;
 
@@ -1210,9 +1174,9 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (optional)
         optional = hdr->env->x_label ? 1 : 0;
 
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(hdr->env->x_label));
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_LABEL);
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(hdr->env->x_label));
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'Y':
@@ -1227,7 +1191,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                  (hdr->thread->parent && hdr->thread->parent->message &&
                   hdr->thread->parent->message->env->x_label))
           htmp = hdr->thread->parent->message;
-        if (htmp && (mutt_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
+        if (htmp && (mutt_str_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
           i = 0;
       }
       else
@@ -1236,13 +1200,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       if (optional)
         optional = i;
 
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_LABEL);
       if (i)
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      NONULL(hdr->env->x_label));
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(hdr->env->x_label));
       else
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'z':
@@ -1272,7 +1235,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
             ch = get_nth_wchar(FlagChars, FlagCharNew);
         }
 
-        snprintf(buf2, sizeof(buf2), "%s", ch);
+        snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
       }
       else if (src[0] == 'c') /* crypto */
@@ -1289,7 +1252,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         else
           ch = " ";
 
-        snprintf(buf2, sizeof(buf2), "%s", ch);
+        snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
       }
       else if (src[0] == 't') /* tagged, flagged, recipient */
@@ -1302,15 +1265,15 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         else
           ch = get_nth_wchar(ToChars, user_is_recipient(hdr));
 
-        snprintf(buf2, sizeof(buf2), "%s", ch);
+        snprintf(tmp, sizeof(tmp), "%s", ch);
         src++;
       }
       else /* fallthrough */
         break;
 
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_FLAGS);
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'Z':
@@ -1362,31 +1325,31 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       else
         third = get_nth_wchar(ToChars, user_is_recipient(hdr));
 
-      snprintf(buf2, sizeof(buf2), "%s%s%s", first, second, third);
+      snprintf(tmp, sizeof(tmp), "%s%s%s", first, second, third);
     }
 
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_FLAGS);
+      mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
+      add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     default:
-      snprintf(dest, destlen, "%%%s%c", prefix, op);
+      snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, hdr_format_str,
+    mutt_expando_format(buf, buflen, col, cols, if_str, index_format_str,
                         (unsigned long) hfi, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, hdr_format_str,
+    mutt_expando_format(buf, buflen, col, cols, else_str, index_format_str,
                         (unsigned long) hfi, flags);
 
   return src;
 }
 
-void _mutt_make_string(char *dest, size_t destlen, const char *s,
-                       struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
+void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
+                            struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
 {
   struct HdrFormatInfo hfi;
 
@@ -1394,12 +1357,12 @@ void _mutt_make_string(char *dest, size_t destlen, const char *s,
   hfi.ctx = ctx;
   hfi.pager_progress = 0;
 
-  mutt_expando_format(dest, destlen, 0, MuttIndexWindow->cols, s,
-                      hdr_format_str, (unsigned long) &hfi, flags);
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, s,
+                      index_format_str, (unsigned long) &hfi, flags);
 }
 
-void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
+void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags)
 {
-  mutt_expando_format(dst, dstlen, 0, cols, s, hdr_format_str, (unsigned long) hfi, flags);
+  mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (unsigned long) hfi, flags);
 }

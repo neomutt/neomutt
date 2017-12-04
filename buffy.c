@@ -29,7 +29,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <utime.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "buffy.h"
 #include "context.h"
@@ -83,7 +83,7 @@ static int fseek_last_message(FILE *f)
   while ((pos -= bytes_read) >= 0)
   {
     /* we save in the buffer at the end the first 7 chars from the last read */
-    strncpy(buffer + BUFSIZ, buffer, 5 + 2); /* 2 == 2 * mutt_strlen(CRLF) */
+    strncpy(buffer + BUFSIZ, buffer, 5 + 2); /* 2 == 2 * mutt_str_strlen(CRLF) */
     fseeko(f, pos, SEEK_SET);
     bytes_read = fread(buffer, sizeof(char), bytes_read, f);
     if (bytes_read == 0)
@@ -91,7 +91,8 @@ static int fseek_last_message(FILE *f)
     /* 'i' is Index into `buffer' for scanning.  */
     for (int i = bytes_read; i >= 0; i--)
     {
-      if (mutt_strncmp(buffer + i, "\n\nFrom ", mutt_strlen("\n\nFrom ")) == 0)
+      if (mutt_str_strncmp(buffer + i, "\n\nFrom ",
+                           mutt_str_strlen("\n\nFrom ")) == 0)
       { /* found it - go to the beginning of the From */
         fseeko(f, pos + i + 2, SEEK_SET);
         return 0;
@@ -101,7 +102,7 @@ static int fseek_last_message(FILE *f)
   }
 
   /* here we are at the beginning of the file */
-  if (mutt_strncmp("From ", buffer, 5) == 0)
+  if (mutt_str_strncmp("From ", buffer, 5) == 0)
   {
     fseek(f, 0, SEEK_SET);
     return 0;
@@ -128,7 +129,7 @@ static int test_last_status_new(FILE *f)
   if (!(hdr->read || hdr->old))
     result = 1;
 
-  mutt_free_envelope(&tmp_envelope);
+  mutt_env_free(&tmp_envelope);
   mutt_free_header(&hdr);
 
   return result;
@@ -148,7 +149,7 @@ static int test_new_folder(const char *path)
   if ((f = fopen(path, "rb")))
   {
     rc = test_last_status_new(f);
-    safe_fclose(&f);
+    mutt_file_fclose(&f);
   }
 
   return rc;
@@ -160,10 +161,10 @@ static struct Buffy *buffy_new(const char *path)
   char rp[PATH_MAX] = "";
   char *r = NULL;
 
-  buffy = safe_calloc(1, sizeof(struct Buffy));
-  strfcpy(buffy->path, path, sizeof(buffy->path));
+  buffy = mutt_mem_calloc(1, sizeof(struct Buffy));
+  mutt_str_strfcpy(buffy->path, path, sizeof(buffy->path));
   r = realpath(path, rp);
-  strfcpy(buffy->realpath, r ? rp : path, sizeof(buffy->realpath));
+  mutt_str_strfcpy(buffy->realpath, r ? rp : path, sizeof(buffy->realpath));
   buffy->next = NULL;
   buffy->magic = 0;
 
@@ -402,7 +403,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
         tmp->magic == MUTT_NOTMUCH ||
 #endif
         tmp->magic == MUTT_POP) ?
-           (mutt_strcmp(tmp->path, Context->path) != 0) :
+           (mutt_str_strcmp(tmp->path, Context->path) != 0) :
            (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
   {
     switch (tmp->magic)
@@ -443,7 +444,9 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
 #ifdef USE_SIDEBAR
   if ((orig_new != tmp->new) || (orig_count != tmp->msg_count) ||
       (orig_unread != tmp->msg_unread) || (orig_flagged != tmp->msg_flagged))
+  {
     mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+  }
 #endif
 
   if (!tmp->new)
@@ -463,14 +466,14 @@ static struct Buffy *buffy_get(const char *path)
   if (!path)
     return NULL;
 
-  epath = safe_strdup(path);
-  mutt_expand_path(epath, mutt_strlen(epath));
+  epath = mutt_str_strdup(path);
+  mutt_expand_path(epath, mutt_str_strlen(epath));
 
   for (cur = Incoming; cur; cur = cur->next)
   {
     /* must be done late because e.g. IMAP delimiter may change */
     mutt_expand_path(cur->path, sizeof(cur->path));
-    if (mutt_strcmp(cur->path, path) == 0)
+    if (mutt_str_strcmp(cur->path, path) == 0)
     {
       FREE(&epath);
       return cur;
@@ -517,7 +520,9 @@ struct Buffy *mutt_find_mailbox(const char *path)
   {
     if (stat(b->path, &tmp_sb) == 0 && sb.st_dev == tmp_sb.st_dev &&
         sb.st_ino == tmp_sb.st_ino)
+    {
       return b;
+    }
   }
   return NULL;
 }
@@ -553,7 +558,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     {
       mutt_extract_token(path, s, 0);
       if (path->data && *path->data)
-        desc = safe_strdup(path->data);
+        desc = mutt_str_strdup(path->data);
       else
         continue;
     }
@@ -564,7 +569,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
       nm_normalize_uri(buf, path->data, sizeof(buf));
     else
 #endif
-      strfcpy(buf, path->data, sizeof(buf));
+      mutt_str_strfcpy(buf, path->data, sizeof(buf));
 
     mutt_expand_path(buf, sizeof(buf));
 
@@ -579,7 +584,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     p = realpath(buf, f1);
     for (b = &Incoming; *b; b = &((*b)->next))
     {
-      if (mutt_strcmp(p ? p : buf, (*b)->realpath) == 0)
+      if (mutt_str_strcmp(p ? p : buf, (*b)->realpath) == 0)
       {
         mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, (*b)->path);
         break;
@@ -638,7 +643,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
   {
     mutt_extract_token(path, s, 0);
 
-    if (mutt_strcmp(path->data, "*") == 0)
+    if (mutt_str_strcmp(path->data, "*") == 0)
     {
       clear_all = true;
     }
@@ -652,7 +657,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       else
 #endif
       {
-        strfcpy(buf, path->data, sizeof(buf));
+        mutt_str_strfcpy(buf, path->data, sizeof(buf));
         mutt_expand_path(buf, sizeof(buf));
       }
     }
@@ -664,8 +669,8 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       bool norm = (((*b)->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
       bool clear_this = clear_all && (virt | norm);
 
-      if (clear_this || (mutt_strcasecmp(buf, (*b)->path) == 0) ||
-          (mutt_strcasecmp(buf, (*b)->desc) == 0))
+      if (clear_this || (mutt_str_strcasecmp(buf, (*b)->path) == 0) ||
+          (mutt_str_strcasecmp(buf, (*b)->desc) == 0))
       {
         struct Buffy *next = (*b)->next;
 #ifdef USE_SIDEBAR
@@ -721,7 +726,7 @@ int mutt_buffy_check(bool force)
   BuffyNotify = 0;
 
 #ifdef USE_IMAP
-  BuffyCount += imap_buffy_check(force, check_stats);
+  BuffyCount += imap_buffy_check(check_stats);
 #endif
 
   /* check device ID and serial number instead of comparing paths */
@@ -760,12 +765,14 @@ int mutt_buffy_list(void)
     if (!b->new || (have_unnotified && b->notified))
       continue;
 
-    strfcpy(path, b->path, sizeof(path));
+    mutt_str_strfcpy(path, b->path, sizeof(path));
     mutt_pretty_mailbox(path, sizeof(path));
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
         (pos + strlen(path) >= (size_t) MuttMessageWindow->cols - 7))
+    {
       break;
+    }
 
     if (!first)
       pos += strlen(strncat(buffylist + pos, ", ", sizeof(buffylist) - 1 - pos));
@@ -841,11 +848,11 @@ void mutt_buffy(char *s, size_t slen)
         mutt_expand_path(b->path, sizeof(b->path));
         if ((found || pass) && b->new)
         {
-          strfcpy(s, b->path, slen);
+          mutt_str_strfcpy(s, b->path, slen);
           mutt_pretty_mailbox(s, slen);
           return;
         }
-        if (mutt_strcmp(s, b->path) == 0)
+        if (mutt_str_strcmp(s, b->path) == 0)
           found = 1;
       }
     }
@@ -872,10 +879,10 @@ void mutt_buffy_vfolder(char *s, size_t slen)
           continue;
         if ((found || pass) && b->new)
         {
-          strfcpy(s, b->desc, slen);
+          mutt_str_strfcpy(s, b->desc, slen);
           return;
         }
-        if (mutt_strcmp(s, b->path) == 0)
+        if (mutt_str_strcmp(s, b->path) == 0)
           found = true;
       }
     }

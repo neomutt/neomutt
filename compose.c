@@ -32,9 +32,10 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "address.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -55,7 +56,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
-#include "rfc822.h"
 #include "sort.h"
 #ifdef MIXMASTER
 #include "remailer.h"
@@ -185,7 +185,7 @@ static void calc_header_width_padding(int idx, const char *header, int calc_max)
 {
   int width;
 
-  HeaderPadding[idx] = mutt_strlen(header);
+  HeaderPadding[idx] = mutt_str_strlen(header);
   width = mutt_strwidth(header);
   if (calc_max && MaxHeaderWidth < width)
     MaxHeaderWidth = width;
@@ -224,12 +224,19 @@ static void init_header_padding(void)
   }
 }
 
-static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
+/**
+ * snd_entry - Format a menu item for the attachment list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void snd_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
   struct AttachCtx *actx = (struct AttachCtx *) menu->data;
 
-  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
-                      mutt_attach_fmt, (unsigned long) (actx->idx[actx->v2r[num]]),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(AttachFormat),
+                      attach_format_str, (unsigned long) (actx->idx[actx->v2r[num]]),
                       MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -344,14 +351,14 @@ static void redraw_mix_line(struct ListHead *chain)
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
 
-    if (c + mutt_strlen(t) + 2 >= MuttIndexWindow->cols)
+    if (c + mutt_str_strlen(t) + 2 >= MuttIndexWindow->cols)
       break;
 
     addstr(NONULL(t));
     if (STAILQ_NEXT(np, entries))
       addstr(", ");
 
-    c += mutt_strlen(t) + 2;
+    c += mutt_str_strlen(t) + 2;
   }
 }
 #endif /* MIXMASTER */
@@ -364,7 +371,7 @@ static int check_attachments(struct AttachCtx *actx)
 
   for (int i = 0; i < actx->idxlen; i++)
   {
-    strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
+    mutt_str_strfcpy(pretty, actx->idx[i]->content->filename, sizeof(pretty));
     if (stat(actx->idx[i]->content->filename, &st) != 0)
     {
       mutt_pretty_mailbox(pretty, sizeof(pretty));
@@ -467,8 +474,8 @@ static void edit_address_list(int line, struct Address **addr)
   rfc822_write_address(buf, sizeof(buf), *addr, 0);
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
-    rfc822_free_address(addr);
-    *addr = mutt_parse_adrlist(*addr, buf);
+    mutt_addr_free(addr);
+    *addr = mutt_addr_parse_list2(*addr, buf);
     *addr = mutt_expand_aliases(*addr);
   }
 
@@ -534,7 +541,7 @@ static void mutt_gen_compose_attach_list(struct AttachCtx *actx, struct Body *m,
     }
     else
     {
-      new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+      new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
       mutt_actx_add_attach(actx, new);
       new->content = m;
       m->aptr = new;
@@ -680,19 +687,32 @@ static unsigned long cum_attachs_size(struct Menu *menu)
 }
 
 /**
- * compose_format_str - Format strings like printf()
+ * compose_format_str - Create the status bar string for compose mode
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
  *
- * * \%a Total number of attachments
- * * \%h ShortHostname  [option]
- * * \%l Approx. length of current message (in bytes)
- * * \%v NeoMutt version
+ * compose_format_str() is a callback function for mutt_expando_format().
  *
- * This function is similar to status_format_str().  Look at that function for
- * help when modifying this function.
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Total number of attachments
+ * | \%h     | Local hostname
+ * | \%l     | Approximate size (in bytes) of the current message
+ * | \%v     | NeoMutt version string
  */
 static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prefix,
-                                      const char *ifstring, const char *elsestring,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
                                       unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING];
@@ -703,24 +723,23 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 'a': /* total number of attachments */
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, menu->max);
       break;
 
     case 'h': /* hostname */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, NONULL(ShortHostname));
       break;
 
     case 'l': /* approx length of current message in bytes */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prefix);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       mutt_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
       snprintf(buf, buflen, fmt, tmp);
       break;
 
     case 'v':
-      snprintf(fmt, sizeof(fmt), "NeoMutt %%s%%s");
-      snprintf(buf, buflen, fmt, PACKAGE_VERSION, GitVer);
+      snprintf(buf, buflen, "NeoMutt %s%s", PACKAGE_VERSION, GitVer);
       break;
 
     case 0:
@@ -728,14 +747,14 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
       return src;
 
     default:
-      snprintf(buf, buflen, "%%%s%c", prefix, op);
+      snprintf(buf, buflen, "%%%s%c", prec, op);
       break;
   }
 
   if (optional)
-    compose_status_line(buf, buflen, col, cols, menu, ifstring);
+    compose_status_line(buf, buflen, col, cols, menu, if_str);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    compose_status_line(buf, buflen, col, cols, menu, elsestring);
+    compose_status_line(buf, buflen, col, cols, menu, else_str);
 
   return src;
 }
@@ -800,7 +819,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   menu->redraw_data = &rd;
   mutt_push_current_menu(menu);
 
-  actx = safe_calloc(sizeof(struct AttachCtx), 1);
+  actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = msg;
   mutt_update_compose_menu(actx, menu, 1);
 
@@ -859,7 +878,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (news)
         {
           if (msg->env->newsgroups)
-            strfcpy(buf, msg->env->newsgroups, sizeof(buf));
+            mutt_str_strfcpy(buf, msg->env->newsgroups, sizeof(buf));
           else
             buf[0] = 0;
           if (mutt_get_field("Newsgroups: ", buf, sizeof(buf), 0) == 0)
@@ -877,7 +896,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (news)
         {
           if (msg->env->followup_to)
-            strfcpy(buf, msg->env->followup_to, sizeof(buf));
+            mutt_str_strfcpy(buf, msg->env->followup_to, sizeof(buf));
           else
             buf[0] = 0;
           if (mutt_get_field("Followup-To: ", buf, sizeof(buf), 0) == 0)
@@ -895,7 +914,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         if (news && option(OPT_X_COMMENT_TO))
         {
           if (msg->env->x_comment_to)
-            strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
+            mutt_str_strfcpy(buf, msg->env->x_comment_to, sizeof(buf));
           else
             buf[0] = 0;
           if (mutt_get_field("X-Comment-To: ", buf, sizeof(buf), 0) == 0)
@@ -912,7 +931,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 #endif
       case OP_COMPOSE_EDIT_SUBJECT:
         if (msg->env->subject)
-          strfcpy(buf, msg->env->subject, sizeof(buf));
+          mutt_str_strfcpy(buf, msg->env->subject, sizeof(buf));
         else
           buf[0] = 0;
         if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) == 0)
@@ -931,10 +950,10 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_FCC:
-        strfcpy(buf, fcc, sizeof(buf));
+        mutt_str_strfcpy(buf, fcc, sizeof(buf));
         if (mutt_get_field(_("Fcc: "), buf, sizeof(buf), MUTT_FILE | MUTT_CLEAR) == 0)
         {
-          strfcpy(fcc, buf, fcclen);
+          mutt_str_strfcpy(fcc, buf, fcclen);
           mutt_pretty_mailbox(fcc, fcclen);
           mutt_window_move(MuttIndexWindow, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, fcc);
@@ -943,7 +962,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
-        if (Editor && (mutt_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HEADERS))
+        if (Editor && (mutt_str_strcmp("builtin", Editor) != 0) && !option(OPT_EDIT_HEADERS))
         {
           mutt_edit_file(Editor, msg->content->filename);
           mutt_update_encoding(msg->content);
@@ -953,7 +972,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
       /* fall through */
       case OP_COMPOSE_EDIT_HEADERS:
-        if ((mutt_strcmp("builtin", Editor) != 0) &&
+        if ((mutt_str_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS ||
              (op == OP_COMPOSE_EDIT_MESSAGE && option(OPT_EDIT_HEADERS))))
         {
@@ -992,7 +1011,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
       case OP_COMPOSE_ATTACH_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
           break;
-        new = safe_calloc(1, sizeof(struct AttachPtr));
+        new = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         new->content = crypt_pgp_make_key_attachment(NULL);
         if (new->content)
         {
@@ -1017,8 +1036,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         numfiles = 0;
         files = NULL;
 
-        if (_mutt_enter_fname(prompt, fname, sizeof(fname), 0, 1, &files,
-                              &numfiles, MUTT_SEL_MULTI) == -1 ||
+        if (mutt_enter_fname_full(prompt, fname, sizeof(fname), 0, 1, &files,
+                                  &numfiles, MUTT_SEL_MULTI) == -1 ||
             *fname == '\0')
           break;
 
@@ -1028,7 +1047,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
-          new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->unowned = 1;
           new->content = mutt_make_file_attach(att);
           if (new->content)
@@ -1079,7 +1098,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
 #endif
           {
-            strfcpy(fname, NONULL(Context->path), sizeof(fname));
+            mutt_str_strfcpy(fname, NONULL(Context->path), sizeof(fname));
             mutt_pretty_mailbox(fname, sizeof(fname));
           }
 
@@ -1151,7 +1170,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           if (!message_is_tagged(Context, i))
             continue;
 
-          new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+          new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
           new->content = mutt_make_message_attach(Context, Context->hdrs[i], 1);
           if (new->content != NULL)
             update_idx(menu, actx, new);
@@ -1211,8 +1230,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
         CHECK_COUNT;
-        strfcpy(buf, CURATTACH->content->description ? CURATTACH->content->description : "",
-                sizeof(buf));
+        mutt_str_strfcpy(buf,
+                         CURATTACH->content->description ? CURATTACH->content->description : "",
+                         sizeof(buf));
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf), 0) == 0)
         {
@@ -1264,10 +1284,11 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_EDIT_ENCODING:
         CHECK_COUNT;
-        strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
+        mutt_str_strfcpy(buf, ENCODING(CURATTACH->content->encoding), sizeof(buf));
         if (mutt_get_field("Content-Transfer-Encoding: ", buf, sizeof(buf), 0) == 0 && buf[0])
         {
-          if ((i = mutt_check_encoding(buf)) != ENCOTHER && i != ENCUUENCODED)
+          i = mutt_check_encoding(buf);
+          if ((i != ENCOTHER) && (i != ENCUUENCODED))
           {
             CURATTACH->content->encoding = i;
             menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
@@ -1353,7 +1374,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           src = CURATTACH->content->d_filename;
         else
           src = CURATTACH->content->filename;
-        strfcpy(fname, mutt_basename(NONULL(src)), sizeof(fname));
+        mutt_str_strfcpy(fname, mutt_file_basename(NONULL(src)), sizeof(fname));
         ret = mutt_get_field(_("Send attachment with name: "), fname, sizeof(fname), MUTT_FILE);
         if (ret == 0)
         {
@@ -1369,7 +1390,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_RENAME_FILE:
         CHECK_COUNT;
-        strfcpy(fname, CURATTACH->content->filename, sizeof(fname));
+        mutt_str_strfcpy(fname, CURATTACH->content->filename, sizeof(fname));
         mutt_pretty_mailbox(fname, sizeof(fname));
         if (mutt_get_field(_("Rename to: "), fname, sizeof(fname), MUTT_FILE) == 0 &&
             fname[0])
@@ -1383,7 +1404,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           }
 
           mutt_expand_path(fname, sizeof(fname));
-          if (mutt_rename_file(CURATTACH->content->filename, fname))
+          if (mutt_file_rename(CURATTACH->content->filename, fname))
             break;
 
           mutt_str_replace(&CURATTACH->content->filename, fname);
@@ -1406,7 +1427,9 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         fname[0] = 0;
         if (mutt_get_field(_("New file: "), fname, sizeof(fname), MUTT_FILE) != 0 ||
             !fname[0])
+        {
           continue;
+        }
         mutt_expand_path(fname, sizeof(fname));
 
         /* Call to lookup_mime_type () ?  maybe later */
@@ -1427,16 +1450,16 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           mutt_error(_("Unknown Content-Type %s"), type);
           continue;
         }
-        new = (struct AttachPtr *) safe_calloc(1, sizeof(struct AttachPtr));
+        new = (struct AttachPtr *) mutt_mem_calloc(1, sizeof(struct AttachPtr));
         /* Touch the file */
-        fp = safe_fopen(fname, "w");
+        fp = mutt_file_fopen(fname, "w");
         if (!fp)
         {
           mutt_error(_("Can't create file %s"), fname);
           FREE(&new);
           continue;
         }
-        safe_fclose(&fp);
+        mutt_file_fclose(&fp);
 
         new->content = mutt_make_file_attach(fname);
         if (!new->content)
@@ -1527,8 +1550,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         else if (i == MUTT_ABORT)
           break; /* abort */
-
-      /* fall through to postpone! */
+      /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
 
@@ -1559,7 +1581,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         fname[0] = '\0';
         if (Context)
         {
-          strfcpy(fname, NONULL(Context->path), sizeof(fname));
+          mutt_str_strfcpy(fname, NONULL(Context->path), sizeof(fname));
           mutt_pretty_mailbox(fname, sizeof(fname));
         }
         if (actx->idxlen)

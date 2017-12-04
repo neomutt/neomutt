@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "imap_private.h"
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "auth.h"
 #include "globals.h"
@@ -67,12 +67,12 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
    * digests */
   if (secret_len > MD5_BLOCK_LEN)
   {
-    md5_buffer(password, secret_len, hash_passwd);
-    strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
+    mutt_md5_buf(password, secret_len, hash_passwd);
+    mutt_str_strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
   }
   else
-    strfcpy((char *) secret, password, sizeof(secret));
+    mutt_str_strfcpy((char *) secret, password, sizeof(secret));
 
   memset(ipad, 0, sizeof(ipad));
   memset(opad, 0, sizeof(opad));
@@ -86,16 +86,16 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   }
 
   /* inner hash: challenge and ipadded secret */
-  md5_init_ctx(&ctx);
-  md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
-  md5_process_bytes(challenge, chal_len, &ctx);
-  md5_finish_ctx(&ctx, response);
+  mutt_md5_init_ctx(&ctx);
+  mutt_md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
+  mutt_md5_process_bytes(challenge, chal_len, &ctx);
+  mutt_md5_finish_ctx(&ctx, response);
 
   /* outer hash: inner hash and opadded secret */
-  md5_init_ctx(&ctx);
-  md5_process_bytes(opad, MD5_BLOCK_LEN, &ctx);
-  md5_process_bytes(response, MD5_DIGEST_LEN, &ctx);
-  md5_finish_ctx(&ctx, response);
+  mutt_md5_init_ctx(&ctx);
+  mutt_md5_process_bytes(opad, MD5_BLOCK_LEN, &ctx);
+  mutt_md5_process_bytes(response, MD5_DIGEST_LEN, &ctx);
+  mutt_md5_finish_ctx(&ctx, response);
 }
 
 /**
@@ -117,9 +117,9 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
   mutt_message(_("Authenticating (CRAM-MD5)..."));
 
   /* get auth info */
-  if (mutt_account_getlogin(&idata->conn->account))
+  if (mutt_account_getlogin(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&idata->conn->account))
+  if (mutt_account_getpass(&idata->conn->account) < 0)
     return IMAP_AUTH_FAILURE;
 
   imap_cmd_start(idata, "AUTHENTICATE CRAM-MD5");
@@ -140,7 +140,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
     goto bail;
   }
 
-  len = mutt_from_base64(obuf, idata->buf + 2);
+  len = mutt_b64_decode(obuf, idata->buf + 2);
   if (len == -1)
   {
     mutt_debug(1, "Error decoding base64 response.\n");
@@ -175,8 +175,8 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
-  mutt_to_base64(ibuf, obuf, strlen(obuf), sizeof(ibuf) - 2);
-  safe_strcat(ibuf, sizeof(ibuf), "\r\n");
+  mutt_b64_encode(ibuf, obuf, strlen(obuf), sizeof(ibuf) - 2);
+  mutt_str_strcat(ibuf, sizeof(ibuf), "\r\n");
   mutt_socket_write(idata->conn, ibuf);
 
   do

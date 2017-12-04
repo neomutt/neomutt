@@ -15,7 +15,7 @@ noinst_PROGRAMS = makedoc
 EXTRA_DIST = $(BUILT_DISTFILES) chunk.xsl gen-map-doc html.xsl makedoc.c \
 	makedoc_defs.h manual.xml.head manual.xml.tail mbox.5 mmdf.5 \
 	neomutt.css neomutt.man neomutt.xsl neomuttrc neomuttrc.head \
-	neomuttrc.man.head neomuttrc.man.tail neomutt-syntax.vim PGP-Notes.txt \
+	neomuttrc.man.head neomuttrc.man.tail PGP-Notes.txt \
 	smime-notes.txt pgpewrap.1 pgpring.1 smime_keys.1 mime.types
 
 CHUNKED_DOCFILES = advancedusage.html configuration.html gettingstarted.html \
@@ -34,7 +34,7 @@ topsrcdir_DOCFILES = ChangeLog.md CODE_OF_CONDUCT.md COPYRIGHT INSTALL \
 all: makedoc-all
 
 makedoc-all: $(CHUNKED_DOCFILES) index.html manual.html manual.txt neomutt.1 \
-	neomuttrc neomuttrc.man neomutt-syntax.vim
+	neomuttrc neomuttrc.man
 
 install-data-local: makedoc-all
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
@@ -59,7 +59,6 @@ install-data-local: makedoc-all
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir); \
 	done
 	$(INSTALL) -m 644 neomuttrc $(DESTDIR)$(sysconfdir)/neomuttrc
-	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
 	-$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(docdir)/mime.types
 
 uninstall-local:
@@ -74,7 +73,6 @@ uninstall-local:
 	done
 	rm -f $(DESTDIR)$(docdir)/manual.txt
 	rm -f $(DESTDIR)$(sysconfdir)/neomuttrc
-	rm -f $(DESTDIR)$(docdir)/neomutt-syntax.vim
 	rm -f $(DESTDIR)$(docdir)/mime.types
 
 check:

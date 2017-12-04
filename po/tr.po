@@ -1896,7 +1896,7 @@ msgstr "('view-attachments' komutunun bir tuşa atanması gerekiyor!)"
 msgid "Can't create %s: %s."
 msgstr "%s yaratılamadı: %s."
 
-#: headers.c:204
+#: header.c:204
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: dosya eklenemiyor"

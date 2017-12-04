@@ -57,10 +57,10 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include "lib/debug.h"
-#include "lib/memory.h"
-#include "lib/message.h"
-#include "lib/string2.h"
+#include "mutt/debug.h"
+#include "mutt/memory.h"
+#include "mutt/message.h"
+#include "mutt/string2.h"
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
@@ -82,12 +82,12 @@ static int socket_preconnect(void)
   int rc;
   int save_errno;
 
-  if (mutt_strlen(Preconnect))
+  if (mutt_str_strlen(Preconnect))
   {
     mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
     rc = mutt_system(Preconnect);
     mutt_debug(2, "Preconnect result: %d\n", rc);
-    if (rc)
+    if (rc != 0)
     {
       save_errno = errno;
       mutt_perror(_("Preconnect command failed."));
@@ -129,7 +129,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   if (ConnectTimeout > 0)
     alarm(ConnectTimeout);
 
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
 
   /* FreeBSD's connect() does not respect SA_RESTART, meaning
    * a SIGWINCH will cause the connect to fail. */
@@ -148,7 +148,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
 
   if (ConnectTimeout > 0)
     alarm(0);
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
   sigprocmask(SIG_UNBLOCK, &set, NULL);
 
   return save_errno;
@@ -186,7 +186,7 @@ int mutt_socket_close(struct Connection *conn)
   int rc = -1;
 
   if (conn->fd < 0)
-    mutt_debug(1, "mutt_socket_close: Attempt to close closed connection.\n");
+    mutt_debug(1, "Attempt to close closed connection.\n");
   else
     rc = conn->conn_close(conn);
 
@@ -214,27 +214,26 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 
   if (conn->fd < 0)
   {
-    mutt_debug(1, "mutt_socket_write: attempt to write to closed connection\n");
+    mutt_debug(1, "attempt to write to closed connection\n");
     return -1;
   }
 
   if (len < 0)
-    len = mutt_strlen(buf);
+    len = mutt_str_strlen(buf);
 
   while (sent < len)
   {
     rc = conn->conn_write(conn, buf + sent, len - sent);
     if (rc < 0)
     {
-      mutt_debug(1, "mutt_socket_write: error writing (%s), closing socket\n",
-                 strerror(errno));
+      mutt_debug(1, "error writing (%s), closing socket\n", strerror(errno));
       mutt_socket_close(conn);
 
       return -1;
     }
 
     if (rc < len - sent)
-      mutt_debug(3, "mutt_socket_write: short write (%d of %d bytes)\n", rc, len - sent);
+      mutt_debug(3, "short write (%d of %d bytes)\n", rc, len - sent);
 
     sent += rc;
   }
@@ -276,8 +275,7 @@ int mutt_socket_readchar(struct Connection *conn, char *c)
       conn->available = conn->conn_read(conn, conn->inbuf, sizeof(conn->inbuf));
     else
     {
-      mutt_debug(
-          1, "mutt_socket_readchar: attempt to read from closed connection.\n");
+      mutt_debug(1, "attempt to read from closed connection.\n");
       return -1;
     }
     conn->bufpos = 0;
@@ -343,7 +341,7 @@ struct Connection *socket_new_conn(void)
 {
   struct Connection *conn = NULL;
 
-  conn = safe_calloc(1, sizeof(struct Connection));
+  conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
   return conn;
@@ -372,7 +370,7 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   int rc;
 
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
   rc = read(conn->fd, buf, len);
   if (rc == -1)
   {
@@ -380,7 +378,7 @@ int raw_socket_read(struct Connection *conn, char *buf, size_t len)
     mutt_sleep(2);
     SigInt = 0;
   }
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
 
   if (SigInt)
   {
@@ -405,7 +403,7 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   int rc;
 
-  mutt_allow_interrupt(1);
+  mutt_sig_allow_interrupt(1);
   rc = write(conn->fd, buf, count);
   if (rc == -1)
   {
@@ -413,7 +411,7 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
     mutt_sleep(2);
     SigInt = 0;
   }
-  mutt_allow_interrupt(0);
+  mutt_sig_allow_interrupt(0);
 
   if (SigInt)
   {
@@ -439,7 +437,7 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
   fd_set rfds;
   unsigned long wait_millis, post_t_millis;
   struct timeval tv, pre_t, post_t;
-  int rv;
+  int rc;
 
   if (conn->fd < 0)
     return -1;
@@ -455,11 +453,11 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     FD_SET(conn->fd, &rfds);
 
     gettimeofday(&pre_t, NULL);
-    rv = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
+    rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
     gettimeofday(&post_t, NULL);
 
-    if (rv > 0 || (rv < 0 && errno != EINTR))
-      return rv;
+    if (rc > 0 || (rc < 0 && errno != EINTR))
+      return rc;
 
     if (SigInt)
       mutt_query_exit();

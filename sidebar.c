@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "sidebar.h"
 #include "buffy.h"
@@ -88,59 +88,67 @@ enum SidebarSrc
 } sidebar_source = SB_SRC_INCOMING;
 
 /**
- * cb_format_str - Create the string to show in the sidebar
- * @param[out] dest        Buffer in which to save string
- * @param[in]  destlen     Buffer length
- * @param[in]  col         Starting column, UNUSED
- * @param[in]  cols        Maximum columns, UNUSED
- * @param[in]  op          printf-like operator, e.g. 'B'
- * @param[in]  src         printf-like format string
- * @param[in]  prefix      Field formatting string, UNUSED
- * @param[in]  ifstring    If condition is met, display this string
- * @param[in]  elsestring  Otherwise, display this string
- * @param[in]  data        Pointer to our sidebar_entry
- * @param[in]  flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
+ * sidebar_format_str - Format a string for the sidebar
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
  * @retval src (unchanged)
  *
- * cb_format_str is a callback function for mutt_expando_format.  It understands
- * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
- * '%N' : Number of new messages, '%S' : Size (total number of messages),
- * '%!' : Icon denoting number of flagged messages.
- * '%n' : N if folder has new mail, blank otherwise.
+ * sidebar_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%B     | Name of the mailbox
+ * | \%d     | Number of deleted messages
+ * | \%F     | Number of Flagged messages in the mailbox
+ * | \%L     | Number of messages after limiting
+ * | \%n     | N if mailbox has new mail, blank otherwise
+ * | \%N     | Number of unread messages in the mailbox
+ * | \%S     | Size of mailbox (total number of messages)
+ * | \%t     | Number of tagged messages
+ * | \%!     | 'n!' Flagged messages
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                 char op, const char *src, const char *prefix,
-                                 const char *ifstring, const char *elsestring,
-                                 unsigned long data, enum FormatFlag flags)
+static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
+                                      unsigned long data, enum FormatFlag flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
   char fmt[STRING];
 
-  if (!sbe || !dest)
+  if (!sbe || !buf)
     return src;
 
-  dest[0] = 0; /* Just in case there's nothing to do */
+  buf[0] = 0; /* Just in case there's nothing to do */
 
   struct Buffy *b = sbe->buffy;
   if (!b)
     return src;
 
-  int c = Context && (mutt_strcmp(Context->realpath, b->realpath) == 0);
+  int c = Context && (mutt_str_strcmp(Context->realpath, b->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 
   switch (op)
   {
     case 'B':
-      mutt_format_s(dest, destlen, prefix, sbe->box);
+      mutt_format_s(buf, buflen, prec, sbe->box);
       break;
 
     case 'd':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->deleted : 0);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->deleted : 0);
       }
       else if ((c && Context->deleted == 0) || !c)
         optional = 0;
@@ -149,8 +157,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'F':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_flagged);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_flagged);
       }
       else if (b->msg_flagged == 0)
         optional = 0;
@@ -159,8 +167,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'L':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->vcount : b->msg_count);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->vcount : b->msg_count);
       }
       else if ((c && Context->vcount == b->msg_count) || !c)
         optional = 0;
@@ -169,8 +177,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'N':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_unread);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_unread);
       }
       else if (b->msg_unread == 0)
         optional = 0;
@@ -179,8 +187,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'n':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prefix);
-        snprintf(dest, destlen, fmt, b->new ? 'N' : ' ');
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, b->new ? 'N' : ' ');
       }
       else if (b->new == false)
         optional = 0;
@@ -189,8 +197,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 'S':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, b->msg_count);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, b->msg_count);
       }
       else if (b->msg_count == 0)
         optional = 0;
@@ -199,8 +207,8 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
     case 't':
       if (!optional)
       {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-        snprintf(dest, destlen, fmt, c ? Context->tagged : 0);
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, c ? Context->tagged : 0);
       }
       else if ((c && Context->tagged == 0) || !c)
         optional = 0;
@@ -208,25 +216,25 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
 
     case '!':
       if (b->msg_flagged == 0)
-        mutt_format_s(dest, destlen, prefix, "");
+        mutt_format_s(buf, buflen, prec, "");
       else if (b->msg_flagged == 1)
-        mutt_format_s(dest, destlen, prefix, "!");
+        mutt_format_s(buf, buflen, prec, "!");
       else if (b->msg_flagged == 2)
-        mutt_format_s(dest, destlen, prefix, "!!");
+        mutt_format_s(buf, buflen, prec, "!!");
       else
       {
         snprintf(fmt, sizeof(fmt), "%d!", b->msg_flagged);
-        mutt_format_s(dest, destlen, prefix, fmt);
+        mutt_format_s(buf, buflen, prec, fmt);
       }
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring,
-                        cb_format_str, (unsigned long) sbe, flags);
+    mutt_expando_format(buf, buflen, col, SidebarWidth, if_str,
+                        sidebar_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
-                        cb_format_str, (unsigned long) sbe, flags);
+    mutt_expando_format(buf, buflen, col, SidebarWidth, else_str,
+                        sidebar_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
   return src;
@@ -242,7 +250,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
- * us using cb_format_str() for the sidebar specific formatting characters.
+ * us using sidebar_format_str() for the sidebar specific formatting characters.
  */
 static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
                                char *box, struct SbEntry *sbe)
@@ -250,14 +258,14 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
   if (!buf || !box || !sbe)
     return;
 
-  strfcpy(sbe->box, box, sizeof(sbe->box));
+  mutt_str_strfcpy(sbe->box, box, sizeof(sbe->box));
 
   mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat),
-                      cb_format_str, (unsigned long) sbe, 0);
+                      sidebar_format_str, (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
-  int s = mutt_strlen(buf);
+  int s = mutt_str_strlen(buf);
   width = MIN(buflen, width);
   if (w < width)
   {
@@ -294,22 +302,22 @@ static int cb_qsort_sbe(const void *a, const void *b)
   {
     case SORT_COUNT:
       if (b2->msg_count == b1->msg_count)
-        result = mutt_strcoll(b1->path, b2->path);
+        result = mutt_str_strcoll(b1->path, b2->path);
       else
         result = (b2->msg_count - b1->msg_count);
       break;
     case SORT_UNREAD:
       if (b2->msg_unread == b1->msg_unread)
-        result = mutt_strcoll(b1->path, b2->path);
+        result = mutt_str_strcoll(b1->path, b2->path);
       else
         result = (b2->msg_unread - b1->msg_unread);
       break;
     case SORT_DESC:
-      result = mutt_strcmp(b1->desc, b2->desc);
+      result = mutt_str_strcmp(b1->desc, b2->desc);
       break;
     case SORT_FLAGGED:
       if (b2->msg_flagged == b1->msg_flagged)
-        result = mutt_strcoll(b1->path, b2->path);
+        result = mutt_str_strcoll(b1->path, b2->path);
       else
         result = (b2->msg_flagged - b1->msg_flagged);
       break;
@@ -317,7 +325,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
     {
       result = mutt_inbox_cmp(b1->path, b2->path);
       if (result == 0)
-        result = mutt_strcoll(b1->path, b2->path);
+        result = mutt_str_strcoll(b1->path, b2->path);
       break;
     }
   }
@@ -363,16 +371,22 @@ static void update_entries_visibility(void)
 
     if ((i == OpnIndex) || (sbe->buffy->msg_unread > 0) || sbe->buffy->new ||
         (sbe->buffy->msg_flagged > 0))
+    {
       continue;
+    }
 
-    if (Context && (mutt_strcmp(sbe->buffy->realpath, Context->realpath) == 0))
+    if (Context && (mutt_str_strcmp(sbe->buffy->realpath, Context->realpath) == 0))
+    {
       /* Spool directory */
       continue;
+    }
 
     if (mutt_list_find(&SidebarWhitelist, sbe->buffy->path) ||
         mutt_list_find(&SidebarWhitelist, sbe->buffy->desc))
+    {
       /* Explicitly asked to be visible */
       continue;
+    }
 
     sbe->is_hidden = true;
   }
@@ -826,8 +840,10 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else if (b->msg_flagged > 0)
       SETCOLOR(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
-             (mutt_strcmp(b->path, SpoolFile) == 0))
+             (mutt_str_strcmp(b->path, SpoolFile) == 0))
+    {
       SETCOLOR(MT_COLOR_SB_SPOOLFILE);
+    }
     else
     {
       if (ColorDefs[MT_COLOR_ORDINARY] != 0)
@@ -841,7 +857,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       col = div_width;
 
     mutt_window_move(MuttSidebarWindow, row, col);
-    if (Context && Context->realpath && (mutt_strcmp(b->realpath, Context->realpath) == 0))
+    if (Context && Context->realpath &&
+        (mutt_str_strcmp(b->realpath, Context->realpath) == 0))
     {
 #ifdef USE_NOTMUCH
       if (b->magic == MUTT_NOTMUCH)
@@ -856,15 +873,15 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
 
     /* compute length of Folder without trailing separator */
-    size_t maildirlen = mutt_strlen(Folder);
+    size_t maildirlen = mutt_str_strlen(Folder);
     if (maildirlen && SidebarDelimChars && strchr(SidebarDelimChars, Folder[maildirlen - 1]))
       maildirlen--;
 
     /* check whether Folder is a prefix of the current folder's path */
     bool maildir_is_prefix = false;
-    if ((mutt_strlen(b->path) > maildirlen) &&
-        (mutt_strncmp(Folder, b->path, maildirlen) == 0) && SidebarDelimChars &&
-        strchr(SidebarDelimChars, b->path[maildirlen]))
+    if ((mutt_str_strlen(b->path) > maildirlen) &&
+        (mutt_str_strncmp(Folder, b->path, maildirlen) == 0) &&
+        SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
       maildir_is_prefix = true;
 
     /* calculate depth of current folder and generate its display name with indented spaces */
@@ -874,7 +891,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     {
       /* disregard a trailing separator, so strlen() - 2 */
       sidebar_folder_name = b->path;
-      for (int i = mutt_strlen(sidebar_folder_name) - 2; i >= 0; i--)
+      for (int i = mutt_str_strlen(sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, sidebar_folder_name[i]))
         {
@@ -895,7 +912,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       const char *tmp_folder_name = NULL;
       int lastsep = 0;
       tmp_folder_name = b->path + maildirlen + 1;
-      int tmplen = (int) mutt_strlen(tmp_folder_name) - 1;
+      int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
       for (int i = 0; i < tmplen; i++)
       {
         if (SidebarDelimChars && strchr(SidebarDelimChars, tmp_folder_name[i]))
@@ -908,13 +925,13 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       {
         if (option(OPT_SIDEBAR_SHORT_PATH))
           tmp_folder_name += lastsep; /* basename */
-        int sfn_len = mutt_strlen(tmp_folder_name) +
-                      sidebar_folder_depth * mutt_strlen(SidebarIndentString) + 1;
-        sidebar_folder_name = safe_malloc(sfn_len);
+        int sfn_len = mutt_str_strlen(tmp_folder_name) +
+                      sidebar_folder_depth * mutt_str_strlen(SidebarIndentString) + 1;
+        sidebar_folder_name = mutt_mem_malloc(sfn_len);
         sidebar_folder_name[0] = 0;
         for (int i = 0; i < sidebar_folder_depth; i++)
-          safe_strcat(sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
-        safe_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
+          mutt_str_strcat(sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
+        mutt_str_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
       }
     }
     char str[STRING];
@@ -1037,7 +1054,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
 
   for (; b; b = b->next)
   {
-    if (mutt_strcmp(b->realpath, ctx->realpath) == 0)
+    if (mutt_str_strcmp(b->realpath, ctx->realpath) == 0)
     {
       b->msg_unread = ctx->unread;
       b->msg_count = ctx->msgcount;
@@ -1079,7 +1096,7 @@ void mutt_sb_set_open_buffy(void)
 
   for (int entry = 0; entry < EntryCount; entry++)
   {
-    if (mutt_strcmp(Entries[entry]->buffy->realpath, Context->realpath) == 0)
+    if (mutt_str_strcmp(Entries[entry]->buffy->realpath, Context->realpath) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1112,16 +1129,16 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
     if (EntryCount >= EntryLen)
     {
       EntryLen += 10;
-      safe_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
+      mutt_mem_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
     }
-    Entries[EntryCount] = safe_calloc(1, sizeof(struct SbEntry));
+    Entries[EntryCount] = mutt_mem_calloc(1, sizeof(struct SbEntry));
     Entries[EntryCount]->buffy = b;
 
     if (TopIndex < 0)
       TopIndex = EntryCount;
     if (BotIndex < 0)
       BotIndex = EntryCount;
-    if ((OpnIndex < 0) && Context && (mutt_strcmp(b->realpath, Context->realpath) == 0))
+    if ((OpnIndex < 0) && Context && (mutt_str_strcmp(b->realpath, Context->realpath) == 0))
       OpnIndex = EntryCount;
 
     EntryCount++;

@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-#include "lib/lib.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -45,7 +45,6 @@
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "protos.h"
-#include "rfc822.h"
 
 /**
  * struct Query - An entry from an external address-book
@@ -82,12 +81,12 @@ static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
 
-  tmp = rfc822_cpy_adr(r->addr, 0);
+  tmp = mutt_addr_copy_list(r->addr, false);
   if (!tmp)
     return NULL;
 
   if (!tmp->next && !tmp->personal)
-    tmp->personal = safe_strdup(r->name);
+    tmp->personal = mutt_str_strdup(r->name);
 
   mutt_addrlist_to_intl(tmp, NULL);
   return tmp;
@@ -105,7 +104,7 @@ static void free_query(struct Query **query)
     p = *query;
     *query = (*query)->next;
 
-    rfc822_free_address(&p->addr);
+    mutt_addr_free(&p->addr);
     FREE(&p->name);
     FREE(&p->other);
     FREE(&p);
@@ -138,34 +137,34 @@ static struct Query *run_query(char *s, int quiet)
   fgets(msg, sizeof(msg), fp);
   if ((p = strrchr(msg, '\n')))
     *p = '\0';
-  while ((buf = mutt_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
+  while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
   {
     if ((p = strtok(buf, "\t\n")))
     {
       if (!first)
       {
-        first = safe_calloc(1, sizeof(struct Query));
+        first = mutt_mem_calloc(1, sizeof(struct Query));
         cur = first;
       }
       else
       {
-        cur->next = safe_calloc(1, sizeof(struct Query));
+        cur->next = mutt_mem_calloc(1, sizeof(struct Query));
         cur = cur->next;
       }
 
-      cur->addr = rfc822_parse_adrlist(cur->addr, p);
+      cur->addr = mutt_addr_parse_list(cur->addr, p);
       p = strtok(NULL, "\t\n");
       if (p)
       {
-        cur->name = safe_strdup(p);
+        cur->name = mutt_str_strdup(p);
         p = strtok(NULL, "\t\n");
         if (p)
-          cur->other = safe_strdup(p);
+          cur->other = mutt_str_strdup(p);
       }
     }
   }
   FREE(&buf);
-  safe_fclose(&fp);
+  mutt_file_fclose(&fp);
   if (mutt_wait_filter(thepid))
   {
     mutt_debug(1, "Error: %s\n", msg);
@@ -193,74 +192,110 @@ static int query_search(struct Menu *m, regex_t *re, int n)
   {
     if (table[n].data->addr->personal &&
         !regexec(re, table[n].data->addr->personal, 0, NULL, 0))
+    {
       return 0;
+    }
     if (table[n].data->addr->mailbox &&
         !regexec(re, table[n].data->addr->mailbox, 0, NULL, 0))
+    {
       return 0;
+    }
   }
 
   return REG_NOMATCH;
 }
 
-static const char *query_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                    char op, const char *src, const char *fmt,
-                                    const char *ifstring, const char *elsestring,
+/**
+ * query_format_str - Format a string for the query menu
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ * @retval src (unchanged)
+ *
+ * query_format_str() is a callback function for mutt_expando_format().
+ *
+ * | Expando | Description
+ * |:--------|:--------------------------------------------------------
+ * | \%a     | Destination address
+ * | \%c     | Current entry number
+ * | \%e     | Extra information
+ * | \%n     | Destination name
+ * | \%t     | '*' if current entry is tagged, a space otherwise
+ */
+static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                    char op, const char *src, const char *prec,
+                                    const char *if_str, const char *else_str,
                                     unsigned long data, enum FormatFlag flags)
 {
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;
-  char tmp[SHORT_STRING];
-  char buf2[STRING] = "";
+  char fmt[SHORT_STRING];
+  char tmp[STRING] = "";
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
     case 'a':
-      rfc822_write_address(buf2, sizeof(buf2), query->addr, 1);
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, buf2);
+      rfc822_write_address(tmp, sizeof(tmp), query->addr, 1);
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, tmp);
       break;
     case 'c':
-      snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
-      snprintf(dest, destlen, tmp, query->num + 1);
+      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+      snprintf(buf, buflen, fmt, query->num + 1);
       break;
     case 'e':
       if (!optional)
       {
-        snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-        snprintf(dest, destlen, tmp, NONULL(query->other));
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(query->other));
       }
       else if (!query->other || !*query->other)
         optional = 0;
       break;
     case 'n':
-      snprintf(tmp, sizeof(tmp), "%%%ss", fmt);
-      snprintf(dest, destlen, tmp, NONULL(query->name));
+      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+      snprintf(buf, buflen, fmt, NONULL(query->name));
       break;
     case 't':
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, entry->tagged ? '*' : ' ');
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, entry->tagged ? '*' : ' ');
       break;
     default:
-      snprintf(tmp, sizeof(tmp), "%%%sc", fmt);
-      snprintf(dest, destlen, tmp, op);
+      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+      snprintf(buf, buflen, fmt, op);
       break;
   }
 
   if (optional)
-    mutt_expando_format(dest, destlen, col, cols, ifstring, query_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, if_str, query_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(dest, destlen, col, cols, elsestring, query_format_str, data, 0);
+    mutt_expando_format(buf, buflen, col, cols, else_str, query_format_str, data, 0);
 
   return src;
 }
 
-static void query_entry(char *s, size_t slen, struct Menu *m, int num)
+/**
+ * query_entry - Format a menu item for the query list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void query_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  struct Entry *entry = &((struct Entry *) m->data)[num];
+  struct Entry *entry = &((struct Entry *) menu->data)[num];
 
   entry->data->num = num;
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
                       query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -309,7 +344,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
+    menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
@@ -363,7 +398,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
               if (op == OP_QUERY)
               {
-                menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
+                menu->data = QueryTable =
+                    mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
                 for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
                   QueryTable[i].data = queryp;
@@ -373,7 +409,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
                 bool clear = false;
 
                 /* append */
-                safe_realloc(&QueryTable, menu->max * sizeof(struct Entry));
+                mutt_mem_realloc(&QueryTable, menu->max * sizeof(struct Entry));
 
                 menu->data = QueryTable;
 
@@ -398,21 +434,23 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             struct Address *naddr = NULL;
 
             for (i = 0; i < menu->max; i++)
+            {
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
-                rfc822_append(&naddr, a, 0);
-                rfc822_free_address(&a);
+                mutt_addr_append(&naddr, a, false);
+                mutt_addr_free(&a);
               }
+            }
 
             mutt_create_alias(NULL, naddr);
-            rfc822_free_address(&naddr);
+            mutt_addr_free(&naddr);
           }
           else
           {
             struct Address *a = result_to_addr(QueryTable[menu->current].data);
             mutt_create_alias(NULL, a);
-            rfc822_free_address(&a);
+            mutt_addr_free(&a);
           }
           break;
 
@@ -422,11 +460,10 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             done = 2;
             break;
           }
-        /* fall through to OP_MAIL */
-
+        /* fallthrough */
         case OP_MAIL:
           msg = mutt_new_header();
-          msg->env = mutt_new_envelope();
+          msg->env = mutt_env_new();
           if (!menu->tagprefix)
           {
             msg->env->to = result_to_addr(QueryTable[menu->current].data);
@@ -437,8 +474,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
-                rfc822_append(&msg->env->to, a, 0);
-                rfc822_free_address(&a);
+                mutt_addr_append(&msg->env->to, a, false);
+                mutt_addr_free(&a);
               }
           }
           ci_send_message(0, msg, NULL, Context, NULL);
@@ -470,8 +507,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             mutt_addrlist_to_local(tmpa);
             tagged = true;
             rfc822_write_address(buf, buflen, tmpa, 0);
-            curpos = mutt_strlen(buf);
-            rfc822_free_address(&tmpa);
+            curpos = mutt_str_strlen(buf);
+            mutt_addr_free(&tmpa);
           }
           else if (curpos + 2 < buflen)
           {
@@ -479,8 +516,8 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
             mutt_addrlist_to_local(tmpa);
             strcat(buf, ", ");
             rfc822_write_address((char *) buf + curpos + 1, buflen - curpos - 1, tmpa, 0);
-            curpos = mutt_strlen(buf);
-            rfc822_free_address(&tmpa);
+            curpos = mutt_str_strlen(buf);
+            mutt_addr_free(&tmpa);
           }
         }
       }
@@ -490,7 +527,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
         struct Address *tmpa = result_to_addr(QueryTable[menu->current].data);
         mutt_addrlist_to_local(tmpa);
         rfc822_write_address(buf, buflen, tmpa, 0);
-        rfc822_free_address(&tmpa);
+        mutt_addr_free(&tmpa);
       }
     }
 
@@ -522,7 +559,7 @@ int mutt_query_complete(char *buf, size_t buflen)
       mutt_addrlist_to_local(tmpa);
       buf[0] = '\0';
       rfc822_write_address(buf, buflen, tmpa, 0);
-      rfc822_free_address(&tmpa);
+      mutt_addr_free(&tmpa);
       free_query(&results);
       mutt_clear_error();
       return 0;
