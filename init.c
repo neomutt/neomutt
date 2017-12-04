@@ -1150,11 +1150,11 @@ static int parse_unstailq(struct Buffer *buf, struct Buffer *s,
 
 static void alternates_clean(void)
 {
-  if (Context && Context->msgcount)
-  {
-    for (int i = 0; i < Context->msgcount; i++)
-      Context->hdrs[i]->recip_valid = false;
-  }
+  if (!Context)
+    return;
+
+  for (int i = 0; i < Context->msgcount; i++)
+    Context->hdrs[i]->recip_valid = false;
 }
 
 static int parse_alternates(struct Buffer *buf, struct Buffer *s,
@@ -1269,11 +1269,11 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
 
 static void clear_subject_mods(void)
 {
-  if (Context && Context->msgcount)
-  {
-    for (int i = 0; i < Context->msgcount; i++)
-      FREE(&Context->hdrs[i]->env->disp_subj);
-  }
+  if (!Context)
+    return;
+
+  for (int i = 0; i < Context->msgcount; i++)
+    FREE(&Context->hdrs[i]->env->disp_subj);
 }
 
 static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
@@ -1537,11 +1537,11 @@ bail:
  */
 static void attachments_clean(void)
 {
-  if (Context && Context->msgcount)
-  {
-    for (int i = 0; i < Context->msgcount; i++)
-      Context->hdrs[i]->attach_valid = false;
-  }
+  if (!Context)
+    return;
+
+  for (int i = 0; i < Context->msgcount; i++)
+    Context->hdrs[i]->attach_valid = false;
 }
 
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
