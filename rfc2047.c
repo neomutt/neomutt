@@ -29,7 +29,7 @@
 #include "mutt/mutt.h"
 #include "rfc2047.h"
 #include "address.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"
@@ -117,7 +117,7 @@ int convert_nonmime_string(char **ps)
       return 0;
     }
   }
-  mutt_convert_string(ps, (const char *) mutt_get_default_charset(), Charset,
+  mutt_convert_string(ps, (const char *) mutt_cs_get_default_charset(), Charset,
                       MUTT_ICONV_HOOK_FROM);
   return -1;
 }
@@ -181,7 +181,7 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
     if (dlen)
       *dlen = elen;
 
-    mutt_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
+    mutt_cs_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
     mutt_str_replace(&tocode, canonical_buf);
   }
   return tocode;
@@ -493,7 +493,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   }
 
   /* Hack to avoid labelling 8-bit data as us-ascii. */
-  if (!icode && mutt_is_us_ascii(tocode))
+  if (!icode && mutt_cs_is_us_ascii(tocode))
     tocode = "unknown-8bit";
 
   /* Adjust t0 for maximum length of line. */

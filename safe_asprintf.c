@@ -22,6 +22,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "mutt/mutt.h"
 
 /* NOTE: Currently there is no check in configure.ac for vasprintf(3).  the

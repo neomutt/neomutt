@@ -40,7 +40,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "filter.h"
 #include "globals.h"
 #include "mime.h"

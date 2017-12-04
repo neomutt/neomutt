@@ -31,7 +31,7 @@
  *
  * @note This library isn't completely independent.
  * Dependencies:
- * - \ref lib
+ * - \ref mutt
  * - Global variables
  *   * Charset
  *   * Charset_is_utf8

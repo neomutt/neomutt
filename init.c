@@ -41,7 +41,7 @@
 #include "init.h"
 #include "address.h"
 #include "alias.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "context.h"
 #include "envelope.h"
 #include "filter.h"
@@ -4192,7 +4192,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   if (p)
     From = mutt_addr_parse_list(NULL, p);
 
-  mutt_set_langinfo_charset();
+  mutt_cs_set_langinfo_charset();
   mutt_set_charset(Charset);
 
   Matches = mutt_mem_calloc(Matches_listsize, sizeof(char *));

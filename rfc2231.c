@@ -36,7 +36,7 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "rfc2231.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"
@@ -333,7 +333,7 @@ int rfc2231_encode_string(char **pd)
     dlen = strlen(d);
   }
 
-  if (!mutt_is_us_ascii(charset))
+  if (!mutt_cs_is_us_ascii(charset))
     encode = 1;
 
   for (s = d, slen = dlen; slen; s++, slen--)
