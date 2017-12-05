@@ -139,6 +139,7 @@ static int smtp_get_resp(struct Connection *conn)
     return 0;
 
   mutt_error(_("SMTP session failed: %s"), buf);
+  mutt_sleep(0);
   return -1;
 }
 

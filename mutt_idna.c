@@ -27,7 +27,7 @@
 #include "mutt/mutt.h"
 #include "mutt_idna.h"
 #include "address.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "options.h"

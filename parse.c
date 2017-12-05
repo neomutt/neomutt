@@ -32,7 +32,7 @@
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
@@ -387,10 +387,10 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     pc = mutt_param_get("charset", ct->parameter);
     if (!pc)
       mutt_param_set("charset",
-                     (AssumedCharset && *AssumedCharset) ?
-                         (const char *) mutt_get_default_charset() :
-                         "us-ascii",
-                     &ct->parameter);
+                         (AssumedCharset && *AssumedCharset) ?
+                             (const char *) mutt_cs_get_default_charset() :
+                             "us-ascii",
+                         &ct->parameter);
   }
 }
 

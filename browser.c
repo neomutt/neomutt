@@ -46,7 +46,7 @@
 #include "body.h"
 #include "browser.h"
 #include "buffy.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"

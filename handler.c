@@ -40,7 +40,7 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "body.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "copy.h"
 #include "filter.h"
 #include "globals.h"
@@ -120,7 +120,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
   while (true)
   {
     ob = bufo, obl = sizeof(bufo);
-    mutt_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");
+    mutt_cs_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");
     if (ob == bufo)
       break;
     state_prefix_put(bufo, ob - bufo, s);
@@ -1592,7 +1592,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   {
     char *charset = mutt_param_get("charset", b->parameter);
     if (!charset && AssumedCharset && *AssumedCharset)
-      charset = mutt_get_default_charset();
+      charset = mutt_cs_get_default_charset();
     if (charset && Charset)
       cd = mutt_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
   }

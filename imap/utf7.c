@@ -35,7 +35,7 @@
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
-#include "charset.h"
+#include "mutt_charset.h"
 #include "globals.h"
 
 // clang-format off

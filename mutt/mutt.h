@@ -30,6 +30,7 @@
  *
  * -# @subpage base64
  * -# @subpage buffer
+ * -# @subpage charset
  * -# @subpage date
  * -# @subpage debug
  * -# @subpage exit
@@ -51,6 +52,7 @@
 
 #include "base64.h"
 #include "buffer.h"
+#include "charset.h"
 #include "date.h"
 #include "debug.h"
 #include "exit.h"
