@@ -959,7 +959,10 @@ static int menu_search(struct Menu *menu, int op)
     search_dir = -search_dir;
 
   if (search_buf)
-    r = REGCOMP(&re, search_buf, REG_NOSUB | mutt_which_case(search_buf));
+  {
+    int flags = mutt_mb_is_lower(search_buf) ? REG_ICASE : 0;
+    r = REGCOMP(&re, search_buf, REG_NOSUB | flags);
+  }
 
   if (r != 0)
   {

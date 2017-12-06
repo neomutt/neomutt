@@ -653,11 +653,21 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
       for (int i = 0; Context && i < Context->msgcount; i++)
         Context->hdrs[i]->pair = 0;
     }
-    else if ((r = REGCOMP(&tmp->regex, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)
+    else
     {
-      regerror(r, &tmp->regex, err->data, err->dsize);
-      free_color_line(tmp, 1);
-      return -1;
+      int flags = 0;
+      if (sensitive)
+        flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
+      else
+        flags = REG_ICASE;
+
+      r = REGCOMP(&tmp->regex, s, flags);
+      if (r != 0)
+      {
+        regerror(r, &tmp->regex, err->data, err->dsize);
+        free_color_line(tmp, 1);
+        return -1;
+      }
     }
     tmp->pattern = mutt_str_strdup(s);
     tmp->match = match;

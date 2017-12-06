@@ -183,8 +183,8 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
     bool not = false;
 
     /* $mask is case-sensitive */
-    if (mutt_str_strcmp(MuttVars[idx].option, "mask") != 0)
-      flags |= mutt_which_case(tmp->data);
+    if ((mutt_str_strcmp(MuttVars[idx].option, "mask") != 0) && mutt_mb_is_lower(tmp->data))
+      flags |= REG_ICASE;
 
     p = tmp->data;
     if (mutt_str_strcmp(MuttVars[idx].option, "mask") == 0)
@@ -2187,8 +2187,11 @@ static void restore_default(struct Option *p)
 
         pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
         pp->pattern = mutt_str_strdup((char *) p->init);
-        if (mutt_str_strcmp(p->option, "mask") != 0)
-          flags |= mutt_which_case((const char *) p->init);
+        if ((mutt_str_strcmp(p->option, "mask") != 0) &&
+            (mutt_mb_is_lower((const char *) p->init)))
+        {
+          flags |= REG_ICASE;
+        }
         if ((mutt_str_strcmp(p->option, "mask") == 0) && *s == '!')
         {
           s++;

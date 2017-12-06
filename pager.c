@@ -847,9 +847,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
+  else if (regexec(QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
   {
-    if (regexec((regex_t *) Smileys.regex, buf, 1, smatch, 0) == 0)
+    if ((regexec(Smileys.regex, buf, 1, smatch, 0) == 0))
     {
       if (smatch[0].rm_so > 0)
       {
@@ -859,7 +859,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         c = buf[smatch[0].rm_so];
         buf[smatch[0].rm_so] = 0;
 
-        if (regexec((regex_t *) QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
+        if (regexec(QuoteRegexp.regex, buf, 1, pmatch, 0) == 0)
         {
           if (q_classify && line_info[n].quote == NULL)
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
@@ -1491,7 +1491,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (regexec((regex_t *) QuoteRegexp.regex, (char *) fmt, 1, pmatch, 0) != 0)
+    if (regexec(QuoteRegexp.regex, (char *) fmt, 1, pmatch, 0) != 0)
       goto out;
     (*line_info)[n].quote =
         classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
@@ -1810,8 +1810,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       rd->search_compiled = Resize->search_compiled;
       if (rd->search_compiled)
       {
-        err = REGCOMP(&rd->search_re, rd->searchbuf,
-                      REG_NEWLINE | mutt_which_case(rd->searchbuf));
+        int flags = mutt_mb_is_lower(rd->searchbuf) ? REG_ICASE : 0;
+        err = REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
         if (err != 0)
         {
           regerror(err, &rd->search_re, buffer, sizeof(buffer));
@@ -2501,7 +2501,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           }
         }
 
-        err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | mutt_which_case(searchbuf));
+        int rflags = mutt_mb_is_lower(searchbuf) ? REG_ICASE : 0;
+        err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | rflags);
         if (err != 0)
         {
           regerror(err, &rd.search_re, buffer, sizeof(buffer));

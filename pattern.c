@@ -101,7 +101,7 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   if (pat->stringmatch)
   {
     pat->p.str = mutt_str_strdup(buf.data);
-    pat->ign_case = mutt_which_case(buf.data) == REG_ICASE;
+    pat->ign_case = mutt_mb_is_lower(buf.data);
     FREE(&buf.data);
   }
   else if (pat->groupmatch)
@@ -112,8 +112,8 @@ static bool eat_regex(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   else
   {
     pat->p.regex = mutt_mem_malloc(sizeof(regex_t));
-    r = REGCOMP(pat->p.regex, buf.data,
-                REG_NEWLINE | REG_NOSUB | mutt_which_case(buf.data));
+    int flags = mutt_mb_is_lower(buf.data) ? REG_ICASE : 0;
+    r = REGCOMP(pat->p.regex, buf.data, REG_NEWLINE | REG_NOSUB | flags);
     if (r != 0)
     {
       regerror(r, pat->p.regex, errmsg, sizeof(errmsg));
@@ -881,36 +881,9 @@ static const struct PatternFlags
   { 0, 0, 0, NULL },
 };
 
-static struct Pattern *SearchPattern = NULL;     /* current search pattern */
-static char LastSearch[STRING] = { 0 };          /* last pattern searched for */
-static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
-                                                    LastSearch */
-
-/**
- * mutt_which_case - Smart-case searching
- *
- * if no uppercase letters are given, do a case-insensitive search
- */
-int mutt_which_case(const char *s)
-{
-  wchar_t w;
-  mbstate_t mb;
-  size_t l;
-
-  memset(&mb, 0, sizeof(mb));
-
-  for (; (l = mbrtowc(&w, s, MB_CUR_MAX, &mb)) != 0; s += l)
-  {
-    if (l == (size_t) -2)
-      continue; /* shift sequences */
-    if (l == (size_t) -1)
-      return 0; /* error; assume case-sensitive */
-    if (iswalpha((wint_t) w) && iswupper((wint_t) w))
-      return 0; /* case-sensitive */
-  }
-
-  return REG_ICASE; /* case-insensitive */
-}
+static struct Pattern *SearchPattern = NULL; /**< current search pattern */
+static char LastSearch[STRING] = { 0 };      /**< last pattern searched for */
+static char LastSearchExpn[LONG_STRING] = { 0 }; /**< expanded version of LastSearch */
 
 static int patmatch(const struct Pattern *pat, const char *buf)
 {

@@ -33,6 +33,7 @@
  * | :---------------------- | :---------------------------------------------------------
  * | mutt_mb_charlen()       | Count the bytes in a (multibyte) character
  * | mutt_mb_get_initials()  | Turn a name into initials
+ * | mutt_mb_is_lower()      | Does a multi-byte string contain only lowercase characters?
  * | mutt_mb_is_shell_char() | Is character not typically part of a pathname
  * | mutt_mb_mbstowcs()      | Convert a string from multibyte to wide characters
  * | mutt_mb_wcstombs()      | Convert a string from wide to multibyte characters
@@ -354,4 +355,33 @@ bool mutt_mb_is_shell_char(wchar_t ch)
 {
   static const wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in NeoMutt */
   return wcschr(shell_chars, ch) != NULL;
+}
+
+/**
+ * mutt_mb_is_lower - Does a multi-byte string contain only lowercase characters?
+ * @param s String to check
+ * @retval true  String contains no uppercase characters
+ * @retval false Error, or contains some uppercase characters
+ *
+ * Non-alphabetic characters are considered lowercase.
+ */
+bool mutt_mb_is_lower(const char *s)
+{
+  wchar_t w;
+  mbstate_t mb;
+  size_t l;
+
+  memset(&mb, 0, sizeof(mb));
+
+  for (; (l = mbrtowc(&w, s, MB_CUR_MAX, &mb)) != 0; s += l)
+  {
+    if (l == (size_t) -2)
+      continue; /* shift sequences */
+    if (l == (size_t) -1)
+      return false;
+    if (iswalpha((wint_t) w) && iswupper((wint_t) w))
+      return false;
+  }
+
+  return true;
 }
