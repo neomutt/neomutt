@@ -905,13 +905,13 @@ static bool mbox_has_new(struct Context *ctx)
 void mbox_reset_atime(struct Context *ctx, struct stat *st)
 {
   struct utimbuf utimebuf;
-  struct stat _st;
+  struct stat st2;
 
   if (!st)
   {
-    if (stat(ctx->path, &_st) < 0)
+    if (stat(ctx->path, &st2) < 0)
       return;
-    st = &_st;
+    st = &st2;
   }
 
   utimebuf.actime = st->st_atime;

@@ -238,14 +238,14 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
 void pgp_invoke_import(const char *fname)
 {
-  char _fname[_POSIX_PATH_MAX + SHORT_STRING];
+  char tmp_fname[_POSIX_PATH_MAX + SHORT_STRING];
   char cmd[HUGE_STRING];
   struct PgpCommandContext cctx;
 
   memset(&cctx, 0, sizeof(cctx));
 
-  mutt_file_quote_filename(_fname, sizeof(_fname), fname);
-  cctx.fname = _fname;
+  mutt_file_quote_filename(tmp_fname, sizeof(tmp_fname), fname);
+  cctx.fname = tmp_fname;
   cctx.signas = PgpSignAs;
 
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, PgpImportCommand);

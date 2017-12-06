@@ -60,17 +60,17 @@
  * In addition, this function returns a 0 if the command works on a file,
  * and 1 if the command works on a pipe.
  */
-int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *command, int clen)
+int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *command, int clen)
 {
   int x = 0, y = 0;
   int needspipe = true;
   char buf[LONG_STRING];
-  char type[LONG_STRING];
+  char type2[LONG_STRING];
 
-  mutt_str_strfcpy(type, _type, sizeof(type));
+  mutt_str_strfcpy(type2, type, sizeof(type2));
 
   if (option(OPT_MAILCAP_SANITIZE))
-    mutt_file_sanitize_filename(type, 0);
+    mutt_file_sanitize_filename(type2, 0);
 
   while (x < clen - 1 && command[x] && y < sizeof(buf) - 1)
   {
@@ -86,7 +86,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
       {
         char param[STRING];
         char pvalue[STRING];
-        char *_pvalue = NULL;
+        char *pvalue2 = NULL;
         int z = 0;
 
         x++;
@@ -94,8 +94,8 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
           param[z++] = command[x++];
         param[z] = '\0';
 
-        _pvalue = mutt_param_get(param, a->parameter);
-        mutt_str_strfcpy(pvalue, NONULL(_pvalue), sizeof(pvalue));
+        pvalue2 = mutt_param_get(param, a->parameter);
+        mutt_str_strfcpy(pvalue, NONULL(pvalue2), sizeof(pvalue));
         if (option(OPT_MAILCAP_SANITIZE))
           mutt_file_sanitize_filename(pvalue, 0);
 
@@ -108,7 +108,7 @@ int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *co
       }
       else if (command[x] == 't')
       {
-        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, type);
+        y += mutt_file_quote_filename(buf + y, sizeof(buf) - y, type2);
       }
       x++;
     }

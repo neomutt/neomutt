@@ -225,20 +225,20 @@ const struct MimeNames PreferredMIMENames[] =
 
 /**
  * mutt_cs_fgetconv_close - Close an fgetconv handle
- * @param _fc fgetconv handle
+ * @param handle fgetconv handle
  */
-void mutt_cs_fgetconv_close(FGETCONV **_fc)
+void mutt_cs_fgetconv_close(FGETCONV **handle)
 {
-  struct FgetConv *fc = (struct FgetConv *) *_fc;
+  struct FgetConv *fc = (struct FgetConv *) *handle;
 
   if (fc->cd != (iconv_t) -1)
     iconv_close(fc->cd);
-  FREE(_fc);
+  FREE(handle);
 }
 
 /**
  * mutt_cs_fgetconv - Convert a file's character set
- * @param _fc fgetconv handle
+ * @param handle fgetconv handle
  * @retval num Next character in the converted file
  * @retval EOF Error
  *
@@ -246,9 +246,9 @@ void mutt_cs_fgetconv_close(FGETCONV **_fc)
  * Each call to this function will return one converted character.
  * The buffer is refilled automatically when empty.
  */
-int mutt_cs_fgetconv(FGETCONV *_fc)
+int mutt_cs_fgetconv(FGETCONV *handle)
 {
-  struct FgetConv *fc = (struct FgetConv *) _fc;
+  struct FgetConv *fc = (struct FgetConv *) handle;
 
   if (!fc)
     return EOF;
@@ -300,22 +300,22 @@ int mutt_cs_fgetconv(FGETCONV *_fc)
 
 /**
  * mutt_cs_fgetconvs - Convert a file's charset into a string buffer
- * @param buf Buffer for result
- * @param l   Length of buffer
- * @param _fc fgetconv handle
+ * @param buf    Buffer for result
+ * @param l      Length of buffer
+ * @param handle fgetconv handle
  * @retval ptr  Result buffer on success
  * @retval NULL Error
  *
  * Read a file into a buffer, converting the character set as it goes.
  */
-char *mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *_fc)
+char *mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *handle)
 {
   int c;
   size_t r;
 
   for (r = 0; r + 1 < l;)
   {
-    c = mutt_cs_fgetconv(_fc);
+    c = mutt_cs_fgetconv(handle);
     if (c == EOF)
       break;
     buf[r++] = (char) c;

@@ -2658,7 +2658,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
       else if (query || *s->dptr != '=')
       {
-        char _tmp[LONG_STRING];
+        char tmp2[LONG_STRING];
         const char *val = NULL;
 
         if (myvar)
@@ -2676,17 +2676,17 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
         else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
         {
-          _tmp[0] = '\0';
-          rfc822_write_address(_tmp, sizeof(_tmp),
+          tmp2[0] = '\0';
+          rfc822_write_address(tmp2, sizeof(tmp2),
                                *((struct Address **) MuttVars[idx].data), 0);
-          val = _tmp;
+          val = tmp2;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
         {
-          _tmp[0] = '\0';
-          mutt_str_strfcpy(_tmp, NONULL(*((char **) MuttVars[idx].data)), sizeof(_tmp));
-          mutt_pretty_mailbox(_tmp, sizeof(_tmp));
-          val = _tmp;
+          tmp2[0] = '\0';
+          mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].data)), sizeof(tmp2));
+          mutt_pretty_mailbox(tmp2, sizeof(tmp2));
+          val = tmp2;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {

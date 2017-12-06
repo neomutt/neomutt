@@ -1045,7 +1045,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   }
 
   /* This function is called in a few places after endwin()
-   * e.g. _mutt_pipe_message(). */
+   * e.g. mutt_pipe_message(). */
   output_progress = !isendwin();
   if (output_progress)
     mutt_message(_("Fetching message..."));
