@@ -188,9 +188,9 @@ int main(int argc, char **argv, char **env)
 {
   char folder[_POSIX_PATH_MAX] = "";
   char *subject = NULL;
-  char *includeFile = NULL;
-  char *draftFile = NULL;
-  char *newMagic = NULL;
+  char *include_file = NULL;
+  char *draft_file = NULL;
+  char *new_magic = NULL;
   struct Header *msg = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
@@ -333,11 +333,11 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'H':
-          draftFile = optarg;
+          draft_file = optarg;
           break;
 
         case 'i':
-          includeFile = optarg;
+          include_file = optarg;
           break;
 
         case 'l':
@@ -347,7 +347,7 @@ int main(int argc, char **argv, char **env)
 
         case 'm':
           /* should take precedence over .neomuttrc setting, so save it for later */
-          newMagic = optarg;
+          new_magic = optarg;
           break;
 
         case 'n':
@@ -461,8 +461,8 @@ int main(int argc, char **argv, char **env)
   /* Initialize crypto backends.  */
   crypt_init();
 
-  if (newMagic)
-    mx_set_magic(newMagic);
+  if (new_magic)
+    mx_set_magic(new_magic);
 
   if (!STAILQ_EMPTY(&queries))
   {
@@ -545,7 +545,7 @@ int main(int argc, char **argv, char **env)
     mutt_free_windows();
     mutt_endwin(NULL);
   }
-  else if (subject || msg || sendflags || draftFile || includeFile ||
+  else if (subject || msg || sendflags || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || optind < argc)
   {
     FILE *fin = NULL;
@@ -580,7 +580,7 @@ int main(int argc, char **argv, char **env)
         msg->env->to = mutt_addr_parse_list(msg->env->to, argv[i]);
     }
 
-    if (!draftFile && option(OPT_AUTOEDIT) && !msg->env->to && !msg->env->cc)
+    if (!draft_file && option(OPT_AUTOEDIT) && !msg->env->to && !msg->env->cc)
     {
       if (!option(OPT_NO_CURSES))
         mutt_endwin(NULL);
@@ -591,13 +591,13 @@ int main(int argc, char **argv, char **env)
     if (subject)
       msg->env->subject = mutt_str_strdup(subject);
 
-    if (draftFile)
+    if (draft_file)
     {
-      infile = draftFile;
-      includeFile = NULL;
+      infile = draft_file;
+      include_file = NULL;
     }
-    else if (includeFile)
-      infile = includeFile;
+    else if (include_file)
+      infile = include_file;
     else
       edit_infile = false;
 
@@ -631,7 +631,7 @@ int main(int argc, char **argv, char **env)
       }
 
       /* Copy input to a tempfile, and re-point fin to the tempfile.
-       * Note: stdin is always copied to a tempfile, ensuring draftFile
+       * Note: stdin is always copied to a tempfile, ensuring draft_file
        * can stat and get the correct st_size below.
        */
       if (!edit_infile)
@@ -670,16 +670,16 @@ int main(int argc, char **argv, char **env)
         }
       }
       /* If editing the infile, keep it around afterwards so
-       * it doesn't get unlinked, and we can rebuild the draftFile
+       * it doesn't get unlinked, and we can rebuild the draft_file
        */
       else
         sendflags |= SENDNOFREEHEADER;
 
-      /* Parse the draftFile into the full Header/Body structure.
+      /* Parse the draft_file into the full Header/Body structure.
        * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
-      if (draftFile)
+      if (draft_file)
       {
         struct Header *context_hdr = NULL;
         struct Envelope *opts_env = msg->env;
@@ -695,7 +695,7 @@ int main(int argc, char **argv, char **env)
         context_hdr->content = mutt_new_body();
         if (fstat(fileno(fin), &st))
         {
-          perror(draftFile);
+          perror(draft_file);
           exit(1);
         }
         context_hdr->content->length = st.st_size;
@@ -726,12 +726,12 @@ int main(int argc, char **argv, char **env)
         mutt_env_free(&opts_env);
         mutt_free_header(&context_hdr);
       }
-      /* Editing the includeFile: pass it directly in.
+      /* Editing the include_file: pass it directly in.
        * Note that SENDNOFREEHEADER is set above so it isn't unlinked.
        */
       else if (edit_infile)
         bodyfile = expanded_infile;
-      /* For bodytext and unedited includeFile: use the tempfile.
+      /* For bodytext and unedited include_file: use the tempfile.
        */
       else
         bodyfile = tempfile;
@@ -775,9 +775,9 @@ int main(int argc, char **argv, char **env)
 
     if (edit_infile)
     {
-      if (includeFile)
+      if (include_file)
         msg->content->unlink = false;
-      else if (draftFile)
+      else if (draft_file)
       {
         if (truncate(expanded_infile, 0) == -1)
         {
@@ -824,7 +824,7 @@ int main(int argc, char **argv, char **env)
       mutt_free_header(&msg);
     }
 
-    /* !edit_infile && draftFile will leave the tempfile around */
+    /* !edit_infile && draft_file will leave the tempfile around */
     if (tempfile)
     {
       unlink(tempfile);

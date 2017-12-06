@@ -320,7 +320,7 @@ void mutt_date_normalize_time(struct tm *tm)
   static const char DaysPerMonth[12] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
   };
-  int nLeap;
+  int leap;
 
   while (tm->tm_sec < 0)
   {
@@ -374,9 +374,9 @@ void mutt_date_normalize_time(struct tm *tm)
     }
     tm->tm_mday += DaysPerMonth[tm->tm_mon] + is_leap_year_feb(tm);
   }
-  while (tm->tm_mday > (DaysPerMonth[tm->tm_mon] + (nLeap = is_leap_year_feb(tm))))
+  while (tm->tm_mday > (DaysPerMonth[tm->tm_mon] + (leap = is_leap_year_feb(tm))))
   {
-    tm->tm_mday -= DaysPerMonth[tm->tm_mon] + nLeap;
+    tm->tm_mday -= DaysPerMonth[tm->tm_mon] + leap;
     if (tm->tm_mon < 11)
       tm->tm_mon++;
     else

@@ -933,12 +933,12 @@ static int menu_search(struct Menu *menu, int op)
   int search_dir;
   regex_t re;
   char buf[SHORT_STRING];
-  char *searchBuf =
+  char *search_buf =
       menu->menu >= 0 && menu->menu < MENU_MAX ? SearchBuffers[menu->menu] : NULL;
 
-  if (!(searchBuf && *searchBuf) || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+  if (!(search_buf && *search_buf) || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    mutt_str_strfcpy(buf, searchBuf && *searchBuf ? searchBuf : "", sizeof(buf));
+    mutt_str_strfcpy(buf, search_buf && *search_buf ? search_buf : "", sizeof(buf));
     if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
                            _("Search for: ") :
                            _("Reverse search for: "),
@@ -948,7 +948,7 @@ static int menu_search(struct Menu *menu, int op)
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
       mutt_str_replace(&SearchBuffers[menu->menu], buf);
-      searchBuf = SearchBuffers[menu->menu];
+      search_buf = SearchBuffers[menu->menu];
     }
     menu->search_dir =
         (op == OP_SEARCH || op == OP_SEARCH_NEXT) ? MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
@@ -958,8 +958,8 @@ static int menu_search(struct Menu *menu, int op)
   if (op == OP_SEARCH_OPPOSITE)
     search_dir = -search_dir;
 
-  if (searchBuf)
-    r = REGCOMP(&re, searchBuf, REG_NOSUB | mutt_which_case(searchBuf));
+  if (search_buf)
+    r = REGCOMP(&re, search_buf, REG_NOSUB | mutt_which_case(search_buf));
 
   if (r != 0)
   {

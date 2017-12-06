@@ -1156,7 +1156,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
   struct BrowserState state;
   struct Menu *menu = NULL;
   struct stat st;
-  int i, killPrefix = 0;
+  int i, kill_prefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI) ? 1 : 0;
   int folder = (flags & MUTT_SEL_FOLDER) ? 1 : 0;
   int buffy = (flags & MUTT_SEL_BUFFY) ? 1 : 0;
@@ -1241,7 +1241,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         mutt_str_strfcpy(prefix, f, sizeof(prefix));
       else
         mutt_str_strfcpy(prefix, f + i + 1, sizeof(prefix));
-      killPrefix = 1;
+      kill_prefix = 1;
 #ifdef USE_IMAP
     }
 #endif
@@ -1494,10 +1494,10 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             }
 
             destroy_state(&state);
-            if (killPrefix)
+            if (kill_prefix)
             {
               prefix[0] = 0;
-              killPrefix = 0;
+              kill_prefix = 0;
             }
             buffy = 0;
 #ifdef USE_IMAP
@@ -1815,7 +1815,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               mutt_error(_("Error scanning directory."));
               goto bail;
             }
-            killPrefix = 0;
+            kill_prefix = 0;
             if (!state.entrylen)
             {
               mutt_error(_("No files match the file mask"));
@@ -1918,7 +1918,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         }
         destroy_state(&state);
         prefix[0] = 0;
-        killPrefix = 0;
+        kill_prefix = 0;
 
         if (buffy)
         {

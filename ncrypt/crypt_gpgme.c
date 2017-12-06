@@ -3337,7 +3337,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *string)
   size_t n;
   char *p = NULL;
 
-  /* parse attributeType */
+  /* parse attribute type */
   for (s = string + 1; *s && *s != '='; s++)
     ;
   if (!*s)

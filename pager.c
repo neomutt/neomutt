@@ -741,8 +741,8 @@ static struct QClass *classify_quote(struct QClass **quote_list, const char *qpt
   return class;
 }
 
-static int brailleLine = -1;
-static int brailleCol = -1;
+static int braille_line = -1;
+static int braille_col = -1;
 
 static int check_attachment_marker(char *p)
 {
@@ -768,7 +768,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     if (buf[0] == '\n') /* end of header */
     {
       line_info[n].type = MT_COLOR_NORMAL;
-      getyx(stdscr, brailleLine, brailleCol);
+      getyx(stdscr, braille_line, braille_col);
     }
     else
     {
@@ -2131,10 +2131,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     if (option(OPT_BRAILLE_FRIENDLY))
     {
-      if (brailleLine != -1)
+      if (braille_line != -1)
       {
-        move(brailleLine + 1, 0);
-        brailleLine = -1;
+        move(braille_line + 1, 0);
+        braille_line = -1;
       }
     }
     else

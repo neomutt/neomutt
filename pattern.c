@@ -293,7 +293,7 @@ enum RangeSide
 };
 
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
-                                    int haveMin, struct tm *baseMin, struct Buffer *err)
+                                    int have_min, struct tm *base_min, struct Buffer *err)
 {
   int flag = MUTT_PDR_NONE;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
@@ -316,8 +316,8 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
             else
             {
               /* reestablish initial base minimum if not specified */
-              if (!haveMin)
-                memcpy(min, baseMin, sizeof(struct tm));
+              if (!have_min)
+                memcpy(min, base_min, sizeof(struct tm));
               flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE); /* done good */
             }
           }
@@ -327,7 +327,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
         else
         {
           pc = pt;
-          if (flag == MUTT_PDR_NONE && !haveMin)
+          if (flag == MUTT_PDR_NONE && !have_min)
           { /* the very first "-3d" without a previous absolute date */
             max->tm_year = min->tm_year;
             max->tm_mon = min->tm_mon;
@@ -338,7 +338,7 @@ static const char *parse_date_range(const char *pc, struct tm *min, struct tm *m
       }
       break;
       case '+':
-      { /* enlarge plusRange */
+      { /* enlarge plus range */
         pt = get_offset(max, pc, 1);
         if (pc == pt)
           flag |= MUTT_PDR_ERRORDONE;
@@ -478,8 +478,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   {
     const char *pc = buffer.data;
 
-    int haveMin = false;
-    int untilNow = false;
+    int have_min = false;
+    int until_now = false;
     if (isdigit((unsigned char) *pc))
     {
       /* minimum date specified */
@@ -489,26 +489,26 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
         FREE(&buffer.data);
         return false;
       }
-      haveMin = true;
+      have_min = true;
       SKIPWS(pc);
       if (*pc == '-')
       {
         const char *pt = pc + 1;
         SKIPWS(pt);
-        untilNow = (*pt == '\0');
+        until_now = (*pt == '\0');
       }
     }
 
-    if (!untilNow)
+    if (!until_now)
     { /* max date or relative range/window */
 
-      struct tm baseMin;
+      struct tm base_min;
 
-      if (!haveMin)
+      if (!have_min)
       { /* save base minimum and set current date, e.g. for "-3d+1d" */
         time_t now = time(NULL);
         struct tm *tm = localtime(&now);
-        memcpy(&baseMin, &min, sizeof(baseMin));
+        memcpy(&base_min, &min, sizeof(base_min));
         memcpy(&min, tm, sizeof(min));
         min.tm_hour = min.tm_sec = min.tm_min = 0;
       }
@@ -519,7 +519,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
       max.tm_mon = min.tm_mon;
       max.tm_mday = min.tm_mday;
 
-      if (!parse_date_range(pc, &min, &max, haveMin, &baseMin, err))
+      if (!parse_date_range(pc, &min, &max, have_min, &base_min, err))
       { /* bail out on any parsing error */
         FREE(&buffer.data);
         return false;

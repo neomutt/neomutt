@@ -1644,8 +1644,8 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   LOFF_T tmpoffset = 0;
   size_t tmplength = 0;
-  int origType = sigbdy->type;
-  char *savePrefix = NULL;
+  int orig_type = sigbdy->type;
+  char *save_prefix = NULL;
 
   snprintf(signedfile, sizeof(signedfile), "%s.sig", tempfile);
 
@@ -1666,7 +1666,7 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   /* if we are decoding binary bodies, we don't want to prefix each
    * line with the prefix or else the data will get corrupted.
    */
-  savePrefix = s->prefix;
+  save_prefix = s->prefix;
   s->prefix = NULL;
 
   mutt_decode_attachment(sigbdy, s);
@@ -1681,9 +1681,9 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   s->fpin = fopen(signedfile, "r");
 
   /* restore the prefix */
-  s->prefix = savePrefix;
+  s->prefix = save_prefix;
 
-  sigbdy->type = origType;
+  sigbdy->type = orig_type;
 
   mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
   smimeerr = mutt_file_fopen(smimeerrfile, "w+");
@@ -1746,7 +1746,7 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
  *
  * This can either be a signed or an encrypted message.
  */
-static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *outFile)
+static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
   int len = 0;
   int c;
@@ -1865,8 +1865,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeout);
     rewind(smimeout);
 
-    if (outFile)
-      fpout = outFile;
+    if (out_file)
+      fpout = out_file;
     else
     {
       mutt_mktemp(tmptmpfname, sizeof(tmptmpfname));
@@ -1912,7 +1912,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     smimeout = NULL;
     mutt_file_unlink(outfile);
 
-    if (!outFile)
+    if (!out_file)
     {
       mutt_file_fclose(&fpout);
       mutt_file_unlink(tmptmpfname);
@@ -1957,7 +1957,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   struct State s;
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
-  int origType = b->type;
+  int orig_type = b->type;
   FILE *tmpfp = NULL;
   int rc = 0;
 
@@ -2010,7 +2010,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   (*cur)->badsig = b->badsig;
 
 bail:
-  b->type = origType;
+  b->type = orig_type;
   b->length = tmplength;
   b->offset = tmpoffset;
   mutt_file_fclose(&tmpfp);

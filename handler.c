@@ -1661,8 +1661,8 @@ static int text_plain_handler(struct Body *b, struct State *s)
 static int run_decode_and_handler(struct Body *b, struct State *s,
                                   handler_t handler, int plaintext)
 {
-  int origType;
-  char *savePrefix = NULL;
+  int orig_type;
+  char *save_prefix = NULL;
   FILE *fp = NULL;
 #ifndef USE_FMEMOPEN
   char tempfile[_POSIX_PATH_MAX];
@@ -1687,7 +1687,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
                                                         * with 8bit encoding.
                                                         */
   {
-    origType = b->type;
+    orig_type = b->type;
 
     if (!plaintext)
     {
@@ -1720,7 +1720,7 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       /* if we are decoding binary bodies, we don't want to prefix each
         * line with the prefix or else the data will get corrupted.
         */
-      savePrefix = s->prefix;
+      save_prefix = s->prefix;
       s->prefix = NULL;
 
       decode = 1;
@@ -1764,10 +1764,10 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       unlink(tempfile);
 #endif
       /* restore the prefix */
-      s->prefix = savePrefix;
+      s->prefix = save_prefix;
     }
 
-    b->type = origType;
+    b->type = orig_type;
   }
 
   /* process the (decoded) body part */
