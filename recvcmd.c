@@ -328,27 +328,27 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
   return parent;
 }
 
-static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *_prefix)
+static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
-  char prefix[SHORT_STRING];
+  char prefix2[SHORT_STRING];
 
   if (option(OPT_WEED))
     chflags |= CH_WEED | CH_REORDER;
 
   if (quote)
   {
-    if (_prefix)
-      mutt_str_strfcpy(prefix, _prefix, sizeof(prefix));
+    if (prefix)
+      mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
     else if (!option(OPT_TEXT_FLOWED))
-      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
+      mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString), Context, hdr, 0);
     else
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
 
     chflags |= CH_PREFIX;
   }
 
-  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix : NULL);
+  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix2 : NULL);
 }
 
 /**

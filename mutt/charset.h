@@ -32,7 +32,7 @@ extern char *Charset;
 typedef void *FGETCONV;
 
 /**
- * struct FgetConv - Cursor for converting a file's encoding
+ * struct EgetConv - Cursor for converting a file's encoding
  */
 struct FgetConv
 {
@@ -69,9 +69,9 @@ extern const struct MimeNames PreferredMIMENames[];
 
 void   mutt_cs_canonical_charset(char *dest, size_t dlen, const char *name);
 int    mutt_cs_chscmp(const char *s, const char *chs);
-void   mutt_cs_fgetconv_close(FGETCONV **fc);
-int    mutt_cs_fgetconv(FGETCONV *fc);
-char * mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *fc);
+void   mutt_cs_fgetconv_close(FGETCONV **handle);
+int    mutt_cs_fgetconv(FGETCONV *handle);
+char * mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *handle);
 char * mutt_cs_get_default_charset(void);
 size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
 void   mutt_cs_set_langinfo_charset(void);

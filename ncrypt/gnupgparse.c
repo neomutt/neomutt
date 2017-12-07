@@ -70,7 +70,7 @@
 
 /* decode the backslash-escaped user ids. */
 
-static char *_chs = NULL;
+static char *chs = NULL;
 
 static void fix_uid(char *uid)
 {
@@ -90,7 +90,7 @@ static void fix_uid(char *uid)
   }
   *d = '\0';
 
-  if (_chs && (cd = mutt_iconv_open(_chs, "utf-8", 0)) != (iconv_t) -1)
+  if (chs && (cd = mutt_iconv_open(chs, "utf-8", 0)) != (iconv_t) -1)
   {
     int n = s - uid + 1; /* chars available in original buffer */
     char *buf = NULL;
@@ -397,7 +397,7 @@ struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hin
   if (devnull == -1)
     return NULL;
 
-  mutt_str_replace(&_chs, Charset);
+  mutt_str_replace(&chs, Charset);
 
   thepid = pgp_invoke_list_keys(NULL, &fp, NULL, -1, -1, devnull, keyring, hints);
   if (thepid == -1)

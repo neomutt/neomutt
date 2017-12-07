@@ -955,9 +955,9 @@ int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur
   struct State s;
   struct Body *p = b;
   bool need_decode = false;
-  int saved_type;
-  LOFF_T saved_offset;
-  size_t saved_length;
+  int saved_type = 0;
+  LOFF_T saved_offset = 0;
+  size_t saved_length = 0;
   FILE *decoded_fp = NULL;
   int rc = 0;
 

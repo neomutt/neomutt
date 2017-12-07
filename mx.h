@@ -94,7 +94,7 @@ int mh_check_empty(const char *path);
 int maildir_check_empty(const char *path);
 
 struct Header *maildir_parse_message(int magic, const char *fname, bool is_old, struct Header *h);
-struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *_h);
+struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, bool is_old, struct Header *h);
 void maildir_parse_flags(struct Header *h, const char *path);
 bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
 void maildir_flags(char *dest, size_t destlen, struct Header *hdr);

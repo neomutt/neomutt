@@ -646,7 +646,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
   int check;
-  int isSpool = 0;
+  int is_spool = 0;
   struct Context f;
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
@@ -703,16 +703,16 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if ((p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path)))
     {
-      isSpool = 1;
+      is_spool = 1;
       mutt_str_strfcpy(mbox, p, sizeof(mbox));
     }
     else
     {
       mutt_str_strfcpy(mbox, NONULL(Mbox), sizeof(mbox));
-      isSpool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
+      is_spool = mutt_is_spool(ctx->path) && !mutt_is_spool(mbox);
     }
 
-    if (isSpool && *mbox)
+    if (is_spool && *mbox)
     {
       mutt_expand_path(mbox, sizeof(mbox));
       snprintf(buf, sizeof(buf), _("Move %d read messages to %s?"), read_msgs, mbox);

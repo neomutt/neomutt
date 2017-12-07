@@ -787,10 +787,10 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   int r = -1; /* return value */
   int op = 0;
   int loop = 1;
-  int fccSet = 0; /* has the user edited the Fcc: field ? */
+  int fcc_set = 0; /* has the user edited the Fcc: field ? */
   struct Context *ctx = NULL, *this = NULL;
   /* Sort, SortAux could be changed in mutt_index_menu() */
-  int oldSort, oldSortAux;
+  int old_sort, old_sort_aux;
   struct stat st;
   struct ComposeRedrawData rd;
 #ifdef USE_NNTP
@@ -957,7 +957,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           mutt_pretty_mailbox(fcc, fcclen);
           mutt_window_move(MuttIndexWindow, HDR_FCC, HDR_XOFFSET);
           mutt_paddstr(W, fcc);
-          fccSet = 1;
+          fcc_set = 1;
         }
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
@@ -1145,8 +1145,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
 
         this = Context; /* remember current folder and sort methods */
-        oldSort = Sort;
-        oldSortAux = SortAux;
+        old_sort = Sort;
+        old_sort_aux = SortAux;
 
         Context = ctx;
         set_option(OPT_ATTACH_MSG);
@@ -1159,8 +1159,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           /* go back to the folder we started from */
           Context = this;
           /* Restore old $sort and $sort_aux */
-          Sort = oldSort;
-          SortAux = oldSortAux;
+          Sort = old_sort;
+          SortAux = old_sort_aux;
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
           break;
         }
@@ -1191,8 +1191,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         /* go back to the folder we started from */
         Context = this;
         /* Restore old $sort and $sort_aux */
-        Sort = oldSort;
-        SortAux = oldSortAux;
+        Sort = old_sort;
+        SortAux = old_sort_aux;
       }
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
@@ -1317,7 +1317,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
 #endif
 
-        if (!fccSet && *fcc)
+        if (!fcc_set && *fcc)
         {
           if ((i = query_quadoption(OPT_COPY,
                                     _("Save a copy of this message?"))) == MUTT_ABORT)

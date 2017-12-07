@@ -458,11 +458,11 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
     char tmp[_POSIX_PATH_MAX];
     struct Address *adr = NULL;
     struct Envelope *env = hdr->env;
-    bool fromMe = mutt_addr_is_user(env->from);
+    bool from_me = mutt_addr_is_user(env->from);
 
-    if (!fromMe && env->reply_to && env->reply_to->mailbox)
+    if (!from_me && env->reply_to && env->reply_to->mailbox)
       adr = env->reply_to;
-    else if (!fromMe && env->from && env->from->mailbox)
+    else if (!from_me && env->from && env->from->mailbox)
       adr = env->from;
     else if (env->to && env->to->mailbox)
       adr = env->to;

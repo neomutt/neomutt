@@ -841,7 +841,7 @@ int main(int argc, char *const argv[])
   short version = 2;
   short secring = 0;
 
-  const char *_kring = NULL;
+  const char *tmp_kring = NULL;
   char *env_pgppath = NULL, *env_home = NULL;
 
   char pgppath[_POSIX_PATH_MAX];
@@ -865,7 +865,7 @@ int main(int argc, char *const argv[])
 
       case 'k':
       {
-        _kring = optarg;
+        tmp_kring = optarg;
         break;
       }
 
@@ -892,8 +892,8 @@ int main(int argc, char *const argv[])
     }
   }
 
-  if (_kring)
-    mutt_str_strfcpy(kring, _kring, sizeof(kring));
+  if (tmp_kring)
+    mutt_str_strfcpy(kring, tmp_kring, sizeof(kring));
   else
   {
     if ((env_pgppath = getenv("PGPPATH")))
