@@ -36,10 +36,10 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "rfc2231.h"
-#include "mutt_charset.h"
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"
+#include "mutt_charset.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"

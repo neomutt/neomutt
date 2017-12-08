@@ -29,10 +29,10 @@
 #include "mutt/mutt.h"
 #include "rfc2047.h"
 #include "address.h"
-#include "mutt_charset.h"
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"
+#include "mutt_charset.h"
 #include "options.h"
 #include "protos.h"
 

@@ -43,7 +43,6 @@
 #include "address.h"
 #include "body.h"
 #include "buffy.h"
-#include "mutt_charset.h"
 #include "content.h"
 #include "context.h"
 #include "copy.h"
@@ -54,6 +53,7 @@
 #include "header.h"
 #include "mailbox.h"
 #include "mime.h"
+#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mx.h"
@@ -968,10 +968,10 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   mutt_file_fclose(&fp);
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
-    mutt_param_set(
-        "charset",
-        (!info->hibin ? "us-ascii" : Charset && !mutt_cs_is_us_ascii(Charset) ? Charset : "unknown-8bit"),
-        &b->parameter);
+    mutt_param_set("charset",
+                   (!info->hibin ? "us-ascii" :
+                                   Charset && !mutt_cs_is_us_ascii(Charset) ? Charset : "unknown-8bit"),
+                   &b->parameter);
 
   return info;
 }
