@@ -77,26 +77,27 @@ sorted through them, fixed them up and documented them.
 
 Here's a list of everyone who's helped NeoMutt:
 
-Adam Borowski, Alad Wenter, Alex Pearce, Alok Singh, Ander Punnar, André Berger,
-Antonio Radici, Anton Rieger, Austin Ray, Baptiste Daroussin, Bernard Pratz,
-Bo Yu, Bryan Bennett, Christian Dröge, Christoph Berg, Chris Czettel,
-Chris Salzberg, cinder88, Clemens Lang, Damien Riegel, Darshit Shah,
-David Sterba, Dimitrios Semitsoglou-Tsiapos, Doug Stone-Weaver, Edward Betts,
+Adam Borowski, Alad Wenter, Alex Pearce, Alok Singh, Ander Punnar,
+Andreas Rammhold, André Berger, Anton Rieger, Antonio Radici, Austin Ray,
+Baptiste Daroussin, Bernard Pratz, Bletchley Park, Bo Yu, Bryan Bennett,
+Chris Czettel, Chris Salzberg, Christian Dröge, Christoph Berg, cinder88,
+Clemens Lang, Damien Riegel, Darshit Shah, David Sterba,
+Dimitrios Semitsoglou-Tsiapos, Doug Stone-Weaver, Edward Betts,
 Elimar Riesebieter, Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati,
-Fabrice Bellet, Faidon Liambotis, Florian Klink, František Hájik,
-Guillaume Brogi, Hugo Barrera, Ian Zimmerman, Ismaël Bouya, Ivan Tham,
-Jack Stratton, Jakub Wilk, Jasper Adriaanse, Jelle van der Waa, Jenya Sovetkin,
-Johannes Frankenau, Johannes Weißl, Jonathan Perkin, Joshua Jordi,
-Julian Andres Klode, Karel Zak, Kevin Decherf, Kevin Velghe, Kurt Jaeger,
-Leonidas Spyropoulos, Manos Pitsidianakis, Marcin Rajner, Marco Hinz,
-Matteo Vescovi, Mehdi Abaakouk, ng0, Nicolas Bock, Olaf Lessenich, Peter Hogg,
-Peter Lewis, Philipp Marek, Phil Pennock, Pierre-Elliott Bécue, Pietro Cerutti,
-r3lgar, Regid Ichira, Riad Wahby, Richard Hartmann, Richard Russon,
-Rubén Llorente, Santiago Torres, Serge Gebhardt, somini, Stefan Assmann,
-Stefan Bühler, Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Adam,
-Thomas Klausner, Thomas Schneider, Tobias Angele, Udo Schweigert,
-Vsevolod Volkov, Werner Fink, Wieland Hoffmann, William Pettersson,
-Yoshiki Vázquez Baeza, Zero King.
+Fabrice Bellet, Faidon Liambotis, Florian Klink, Floyd Anderson,
+František Hájik, Guillaume Brogi, Hugo Barrera, Ian Zimmerman, Ismaël Bouya,
+Ivan Tham, Jack Stratton, Jakub Wilk, Jasper Adriaanse, Jelle van der Waa,
+Jenya Sovetkin, Johannes Frankenau, Johannes Weißl, Jonathan Perkin,
+Joshua Jordi, Julian Andres Klode, Karel Zak, Kevin Decherf, Kevin Velghe,
+Kurt Jaeger, Leonardo Schenkel, Leonidas Spyropoulos, Manos Pitsidianakis,
+Marcin Rajner, Marco Hinz, Matteo Vescovi, Mehdi Abaakouk, ng0, Nicolas Bock,
+Olaf Lessenich, Peter Hogg, Peter Lewis, Phil Pennock, Philipp Marek,
+Pierre-Elliott Bécue, Pietro Cerutti, r3lgar, Regid Ichira, Reis Radomil,
+Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente, Santiago Torres,
+Serge Gebhardt, somini, Stefan Assmann, Stefan Bühler, Stephen Gilles,
+Steven Ragnarök, Sven Guckes, Thomas Adam, Thomas Klausner, Thomas Schneider,
+Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink, Wieland Hoffmann,
+William Pettersson, Yoshiki Vázquez Baeza, Zero King.
 
 ## Original Patch Authors
 
