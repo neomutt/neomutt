@@ -41,7 +41,6 @@
 #include "init.h"
 #include "address.h"
 #include "alias.h"
-#include "mutt_charset.h"
 #include "context.h"
 #include "envelope.h"
 #include "filter.h"
@@ -53,6 +52,7 @@
 #include "mailbox.h"
 #include "mbtable.h"
 #include "mbyte.h"
+#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
@@ -2754,7 +2754,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         {
           if (mutt_str_strcmp(MuttVars[idx].option, "debug_file") == 0 && debugfile_cmdline)
           {
-            mutt_message(_("set debug_file ignored, it has been overridden by the cmdline"));
+            mutt_message(_("set debug_file ignored, it has been overridden by "
+                           "the cmdline"));
             break;
           }
           /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
@@ -2923,7 +2924,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
       else if (mutt_str_strcmp(MuttVars[idx].option, "debug_level") == 0 && debuglevel_cmdline)
       {
-        mutt_message(_("set debug_level ignored, it has been overridden by the cmdline"));
+        mutt_message(_(
+            "set debug_level ignored, it has been overridden by the cmdline"));
         break;
       }
       else

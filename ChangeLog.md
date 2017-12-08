@@ -1,3 +1,66 @@
+2017-12-08  Richard Russon  <rich@flatcap.org>
+* Features
+  - Enhance ifdef feature to support my_ vars
+  - Add <edit-or-view-raw-message>
+  - Remove vim syntax file from the main repo
+  - Support reading FQDN from mailname files
+* Bug Fixes
+  - Do not turn CRLF into LF when dealing with transfer-encoding=base64
+  - Cleanup "SSL is unavailable" error in mutt_conn_find
+  - Don't clear the macro buffer during startup
+  - Fixup smart modify-labels-then-hide for !tag case
+  - Add sleep after SMTP error
+  - Restore folder settings after folder-hook
+  - Fix segfault when pipe'ing a deleted message
+* Docs
+  - Display_filter escape sequence
+  - Correct spelling mistakes
+  - Add a sentence to quasi-delete docs
+  - Modify gpg.rc to accommodate GPG 2.1 changes
+* Build
+  - Fix build for RHEL6
+  - Define NCURSES_WIDECHAR to require wide-char support from ncurses
+  - Autosetup: fix check for missing sendmail
+  - Respect --with-ssl path
+  - Check that OpenSSL md5 supports -r before using it
+  - Autosetup: expand --everything in `neomutt -v`
+  - Make sure objects are not compiled before git_ver.h is generated
+  - Build: fix update-po target
+  - Fix out-of-tree builds
+  - Fix stdout + stderr redirection in hcachever.sh
+  - Build: moved the check for idn before the check for notmuch
+  - Define prefix in Makefile.autosetup
+  - Install stuff to $(PACKAGE) in $(libexecdir), not $(libdir)
+  - Update autosetup to latest master
+* Code
+  - Rename files
+  - Rename functions
+  - Rename variables
+  - Rename constants
+  - Remove unused parameters
+  - Document functions
+  - Rearrange functions
+  - Move functions to libraries
+  - Add new library functions
+  - Rearrange switch statements
+  - Boolification
+  - Drop #ifdef DEBUG
+  - Fix Coverity defects
+  - Insert braces
+  - Split ifs
+  - Fallthrough
+  - Fix shadow variable
+  - Replace mutt_debug with a macro
+  - Return early where possible
+* Upstream
+  - Note which ssl config vars are GnuTLS or OpenSSL only
+  - Add message count to $move quadoption prompt
+  - Add %R (number of read messages) for $status_format
+  - Add $change_folder_next option to control mailbox suggestion order
+  - Fix $smart_wrap to not be disabled by whitespace-prefixed lines
+  - Remove useless else branch in the $smart_wrap code
+  - Fix ansi escape sequences with both reset and color parameters
+
 2017-10-27  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - variable type when using fread

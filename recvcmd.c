@@ -341,7 +341,8 @@ static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, 
     if (prefix)
       mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
     else if (!option(OPT_TEXT_FLOWED))
-      mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString), Context, hdr, 0);
+      mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString),
+                             Context, hdr, 0);
     else
       mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
 

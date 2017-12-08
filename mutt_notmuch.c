@@ -68,11 +68,11 @@
 #endif
 
 /* @def The definition in <notmuch.h> is broken */
-#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                            \
-  (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                           \
+#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
+  (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
    (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION == (minor) && \
-    LIBNOTMUCH_MICRO_VERSION >= (micro)))
+   (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
+    LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
 
 /**
  * enum NmQueryType - Notmuch Query Types

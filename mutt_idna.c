@@ -27,9 +27,9 @@
 #include "mutt/mutt.h"
 #include "mutt_idna.h"
 #include "address.h"
-#include "mutt_charset.h"
 #include "envelope.h"
 #include "globals.h"
+#include "mutt_charset.h"
 #include "options.h"
 
 #ifdef HAVE_LIBIDN
