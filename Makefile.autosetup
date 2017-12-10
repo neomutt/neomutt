@@ -311,8 +311,8 @@ uninstall: $(UNINSTALL_TARGETS)
 
 # distclean
 distclean: clean
-	$(RM) $(DEPFILES) conststrings.c config.h config.log doc/neomutt.1 \
-		Makefile po/Makefile contrib/Makefile doc/Makefile \
+	$(RM) $(DEPFILES) conststrings.c config.h config.log \
+		Makefile po/Makefile contrib/Makefile \
 		test/Makefile autosetup/jimsh0
 
 ##############################################################################
@@ -324,7 +324,6 @@ distclean: clean
 # dedicated all-, clean-, install-, and uninstall- targets.
 include po/Makefile
 include contrib/Makefile
-include doc/Makefile
 include test/Makefile
 
 # vim: set ts=8 noexpandtab:
