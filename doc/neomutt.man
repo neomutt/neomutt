@@ -183,7 +183,7 @@ Specifies the editor to use when composing messages.
 .PP
 .IP "~/.neomuttrc or ~/.neomutt/neomuttrc"
 User configuration file.
-.IP "@sysconfdir@/Neomuttrc"
+.IP "@sysconfdir@/neomuttrc"
 System-wide configuration file.
 .IP "/tmp/neomuttXXXXXX"
 Temporary files created by Neomutt.
