@@ -141,7 +141,6 @@ status.c
 system.c
 tags.c
 thread.c
-txt2c.c
 url.c
 version.c
 wcscasecmp.c
