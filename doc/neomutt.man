@@ -17,16 +17,16 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .\"
-.TH mutt 1 "January 2009" Unix "User Manuals"
+.TH neomutt 1 "January 2009" Unix "User Manuals"
 .SH NAME
-mutt \- The Mutt Mail User Agent
+neomutt \- The Neomutt Mail User Agent
 .SH SYNOPSIS
 .PP
-.B mutt
+.B neomutt
 [\-GnRyzZ]
 [\-e \fIcmd\fP] [\-F \fIfile\fP] [\-g \fIserver\fP] [\-m \fItype\fP] [\-f \fIfile\fP]
 .PP
-.B mutt
+.B neomutt
 [\-Enx]
 [\-e \fIcmd\fP]
 [\-F \fIfile\fP]
@@ -38,7 +38,7 @@ mutt \- The Mutt Mail User Agent
 [\-a \fIfile\fP [...] \-\-]
 \fIaddr|mailto_url\fP [...]
 .PP
-.B mutt
+.B neomutt
 [\-nx]
 [\-e \fIcmd\fP]
 [\-F \fIfile\fP]
@@ -49,29 +49,29 @@ mutt \- The Mutt Mail User Agent
 \fIaddr|mailto_url\fP [...]
 < message
 .PP
-.B mutt
+.B neomutt
 [\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-p
 .PP
-.B mutt
+.B neomutt
 [\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-A \fIalias\fP
 .PP
-.B mutt
+.B neomutt
 [\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-Q \fIquery\fP
 .PP
-.B mutt
+.B neomutt
 \-v[v]
 .PP
-.B mutt
+.B neomutt
 \-D [\-S]
 .SH DESCRIPTION
 .PP
-Mutt is a small but very powerful text based program for reading and sending electronic
+Neomutt is a small but very powerful text based program for reading and sending electronic
 mail under unix operating systems, including support for color terminals, MIME,
 OpenPGP, and a threaded sorting mode.
 .PP
 .I Note:
 .IR
-This manual page gives a brief overview of mutt's command line
+This manual page gives a brief overview of neomutt's command line
 options. You should find a copy of the full manual in @docdir@, in
 text, HTML, and/or PDF format.
 .SH OPTIONS
@@ -81,15 +81,15 @@ An expanded version of the given alias is passed to stdout.
 .IP "-a \fIfile\fP [...]"
 Attach a file to your message using MIME.
 When attaching single or multiple files, separating filenames and recipient addresses with
-"\-\-" is mandatory, e.g. \fBmutt \-a image.jpg \-\- addr1\fP or
-\fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
+"\-\-" is mandatory, e.g. \fBneomutt \-a image.jpg \-\- addr1\fP or
+\fBneomutt \-a img.jpg *.png \-\- addr1 addr2\fP.
 The \-a option must be placed at the end of command line options.
 .IP "-b \fIaddress\fP"
 Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"
 Specify a carbon-copy (CC) recipient
 .IP "-d \fIlevel\fP"
-If mutt was compiled with +DEBUG log debugging output to ~/.neomuttdebug0.
+log debugging output to ~/.neomuttdebug0.
 \fILevel\fP can range from 1-5 and effects verbosity. A value of 2 is
 recommended.
 .IP "-D"
@@ -104,12 +104,12 @@ Specify a configuration command to be run after processing of initialization
 files.
 .IP "-f \fImailbox\fP"
 Specify which mailbox to load.
-.IP "-F \fImuttrc\fP"
-Specify an initialization file to read instead of ~/.muttrc
+.IP "-F \fIneomuttrc\fP"
+Specify an initialization file to read instead of ~/.neomuttrc
 .IP "-g \fIserver\fP"
-Start Mutt with a listing of subscribed newsgroups at specified news server.
+Start Neomutt with a listing of subscribed newsgroups at specified news server.
 .IP "-G"
-Start Mutt with a listing of subscribed newsgroups.
+Start Neomutt with a listing of subscribed newsgroups.
 .IP "-h"
 Display help.
 .IP "-H \fIdraft\fP"
@@ -120,7 +120,7 @@ Specify a file to include into the body of a message.
 .IP "-m \fItype\fP       "
 specify a default mailbox type for newly created folders.
 .IP "-n"
-Causes Mutt to bypass the system configuration file.
+Causes Neomutt to bypass the system configuration file.
 .IP "-p"
 Resume a postponed message.
 .IP "-Q \fIquery\fP"
@@ -132,19 +132,19 @@ Open a mailbox in \fIread-only\fP mode.
 .IP "-s \fIsubject\fP"
 Specify the subject of the message.
 .IP "-v"
-Display the Mutt version number and compile-time definitions.
+Display the Neomutt version number and compile-time definitions.
 .IP "-vv"
 Display license and copyright information.
 .IP "-x"
 Emulate the mailx compose mode.
 .IP "-y"
-Start Mutt with a listing of all mailboxes specified by the \fImailboxes\fP
+Start Neomutt with a listing of all mailboxes specified by the \fImailboxes\fP
 command.
 .IP "-z"
-When used with \-f, causes Mutt not to start if there are no messages in the
+When used with \-f, causes Neomutt not to start if there are no messages in the
 mailbox.
 .IP "-Z"
-Causes Mutt to open the first mailbox specified by the \fImailboxes\fP
+Causes Neomutt to open the first mailbox specified by the \fImailboxes\fP
 command which contains new mail.
 .IP "--"
 Treat remaining arguments as \fIaddr\fP even if they start with a dash.
@@ -170,7 +170,7 @@ Path to search for mailcap files.
 If this variable is set, mailcap are always used without prompting first.
 .IP "PGPPATH"
 Directory in which the user's PGP public keyring can be found.  When used with
-the original PGP program, mutt and
+the original PGP program, neomutt and
 .B pgpring (1)
 rely on this being set.
 .IP "TMPDIR"
@@ -181,12 +181,12 @@ Default Reply-To address.
 Specifies the editor to use when composing messages.
 .SH FILES
 .PP
-.IP "~/.muttrc or ~/.mutt/muttrc"
+.IP "~/.neomuttrc or ~/.neomutt/neomuttrc"
 User configuration file.
-.IP "@sysconfdir@/Muttrc"
+.IP "@sysconfdir@/neomuttrc"
 System-wide configuration file.
-.IP "/tmp/muttXXXXXX"
-Temporary files created by Mutt.
+.IP "/tmp/neomuttXXXXXX"
+Temporary files created by Neomutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
 .IP "@sysconfdir@/mailcap"
@@ -196,20 +196,10 @@ User's personal mapping between MIME types and file extensions.
 .IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
 .IP "@docdir@/manual.txt"
-The Mutt manual.
+The Neomutt manual.
 .SH BUGS
 .PP
-None.  Mutts have fleas, not bugs.
-.SH FLEAS
-.PP
-Resizing the screen while using an external pager causes Mutt to go haywire
-on some systems.
-.PP
-The help line for the index menu is not updated if you change the bindings
-for one of the functions listed while Mutt is running.
-.PP
-For a more up-to-date list of bugs, errm, fleas, please visit the
-mutt project's bug tracking system under http://bugs.mutt.org/.
+See https://github.com/neomutt/neomutt/issues
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -220,16 +210,18 @@ GNU General Public License for more details.
 .BR curses (3),
 .BR mailcap (5),
 .BR maildir (5),
+.BR notmuch (1),
+.BR msmtp (1),
 .BR mbox (5),
-.BR muttrc (5),
+.BR neomuttrc (5),
 .BR ncurses (3),
 .BR sendmail (1),
 .BR smail (1).
 .PP
-Mutt Home Page: http://www.mutt.org/
+Neomutt Home Page: http://www.neomutt.org/
 .PP
-The Mutt manual
+The Neomutt manual
 .SH AUTHOR
 .PP
-Michael Elkins, and others.  Use <mutt-dev@mutt.org> to contact
+Michael Elkins, and others.  Use <neomutt-devel@neomutt.org> to contact
 the developers.
