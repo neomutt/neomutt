@@ -105,7 +105,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster 
+    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster
     ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -295,7 +295,7 @@ set prefix [get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb 
+  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb
                gdbm qdbm lmdb} {
     define want-$opt
     append conf_options "--$opt "
@@ -403,28 +403,6 @@ if {[get-define want-lua]} {
     }
     user-error "Unable to find Lua"
   }} [opt-val with-lua $prefix] $lua_versions
-}
-
-###############################################################################
-# Notmuch
-if {[get-define want-notmuch]} {
-  if {![check-inc-and-lib notmuch [opt-val with-notmuch $prefix] \
-                          notmuch.h notmuch_database_open notmuch]} {
-    user-error "Unable to find Notmuch"
-  }
-  define USE_NOTMUCH
-  msg-checking "Checking for Notmuch API version 3..."
-  if {[cctest -includes {notmuch.h} \
-              -code {
-                notmuch_database_open("/path",
-                                      NOTMUCH_DATABASE_MODE_READ_ONLY,
-                                      (notmuch_database_t**)NULL);
-              }]} {
-    define NOTMUCH_API_3
-    msg-result "yes"
-  } else {
-    msg-result "no"
-  }
 }
 
 ###############################################################################
@@ -621,6 +599,28 @@ if {[get-define want-idn]} {
     cc-check-functions idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z
     cc-check-functions idna_to_ascii_from_utf8 idna_to_ascii_8z
     cc-check-functions idna_to_ascii_lz idna_to_ascii_from_locale
+  }
+}
+
+###############################################################################
+# Notmuch
+if {[get-define want-notmuch]} {
+  if {![check-inc-and-lib notmuch [opt-val with-notmuch $prefix] \
+                          notmuch.h notmuch_database_open notmuch]} {
+    user-error "Unable to find Notmuch"
+  }
+  define USE_NOTMUCH
+  msg-checking "Checking for Notmuch API version 3..."
+  if {[cctest -includes {notmuch.h} \
+              -code {
+                notmuch_database_open("/path",
+                                      NOTMUCH_DATABASE_MODE_READ_ONLY,
+                                      (notmuch_database_t**)NULL);
+              }]} {
+    define NOTMUCH_API_3
+    msg-result "yes"
+  } else {
+    msg-result "no"
   }
 }
 
