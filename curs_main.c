@@ -83,7 +83,7 @@ static const char *There_are_no_messages = N_("There are no messages.");
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 static const char *Function_not_permitted_in_attach_message_mode =
     N_("Function not permitted in attach-message mode.");
-static const char *No_visible = N_("No visible messages.");
+static const char *NoVisible = N_("No visible messages.");
 
 #define CHECK_IN_MAILBOX                                                       \
   if (!Context)                                                                \
@@ -111,7 +111,7 @@ static const char *No_visible = N_("No visible messages.");
   if (Context && menu->current >= Context->vcount)                             \
   {                                                                            \
     mutt_flushinp();                                                           \
-    mutt_error(_(No_visible));                                                 \
+    mutt_error(_(NoVisible));                                                 \
     break;                                                                     \
   }
 

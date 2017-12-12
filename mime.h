@@ -67,9 +67,9 @@ enum ContentDisposition
 
 /* MIME encoding/decoding global vars */
 
-extern const int Index_hex[];
+extern const int IndexHex[];
 
-#define hexval(c) Index_hex[(unsigned int) (c)]
+#define hexval(c) IndexHex[(unsigned int) (c)]
 
 #define is_multipart(x)                                                        \
   ((x)->type == TYPEMULTIPART ||                                               \

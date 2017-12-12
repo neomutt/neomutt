@@ -62,7 +62,7 @@
 typedef int (*handler_t)(struct Body *b, struct State *s);
 
 // clang-format off
-const int Index_hex[128] = {
+const int IndexHex[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,

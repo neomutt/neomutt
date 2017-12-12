@@ -32,7 +32,7 @@
  *
  * | Data               | Description
  * | :----------------- | :--------------------------------------------------
- * | #Index_64          | Lookup table for Base64 encoding characters
+ * | #Index64          | Lookup table for Base64 encoding characters
  *
  * | Function           | Description
  * | :----------------- | :-------------------------------------------------
@@ -58,7 +58,7 @@ static const char B64Chars[64] = {
 
 // clang-format off
 /**
- * Index_64 - Lookup table for Base64 encoding characters
+ * Index64 - Lookup table for Base64 encoding characters
  *
  * @note This is very similar to the table in imap/utf7.c
  *
@@ -66,7 +66,7 @@ static const char B64Chars[64] = {
  * * utf7 A-Za-z0-9+,
  * * mime A-Za-z0-9+/
  */
-const int Index_64[128] = {
+const int Index64[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,62, -1,-1,-1,63,
