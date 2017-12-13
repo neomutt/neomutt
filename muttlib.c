@@ -602,7 +602,7 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   }
 }
 
-void mutt_pretty_size(char *s, size_t len, LOFF_T n)
+void mutt_pretty_size(char *s, size_t len, size_t n)
 {
   if (n == 0)
     mutt_str_strfcpy(s, "0K", len);
@@ -1410,6 +1410,10 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   struct stat s;
 
   size_t len = mutt_str_strlen(path);
+  if (len == 0)
+  {
+    return NULL;
+  }
 
   if (path[len - 1] == '|')
   {

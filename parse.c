@@ -583,11 +583,9 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 #ifdef SUN_ATTACHMENT
   int lines;
 #endif
-  size_t blen, len;
-  int crlf = 0;
+  size_t blen, len, crlf;
   char buffer[LONG_STRING];
   struct Body *head = NULL, *last = NULL, *new = NULL;
-  int i;
   bool final = false; /* did we see the ending boundary? */
 
   if (!boundary)
@@ -617,7 +615,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       }
 
       /* Remove any trailing whitespace, up to the length of the boundary */
-      for (i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
+      for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
         buffer[i] = 0;
 
       /* Check for the end boundary */

@@ -438,7 +438,7 @@ static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfun
   }
   else
   {
-    for (int i = 0; i < (int) n; i++)
+    for (unsigned int i = 0; i < n; i++)
     {
       char ch[8];
       snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
@@ -1008,7 +1008,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
   snprintf(menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), buf);
 
   snprintf(title, sizeof(title),
-           _("SSL Certificate check (certificate %d of %d in chain)"), len - idx, len);
+           _("SSL Certificate check (certificate %zu of %zu in chain)"), len - idx, len);
   menu->title = title;
 
 /* The leaf/host certificate can't be skipped. */

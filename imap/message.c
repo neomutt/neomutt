@@ -473,7 +473,7 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
  */
 static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
 {
-  unsigned int new_size;
+  size_t new_size;
 
   if (msn_count <= idata->msn_index_size)
     return;

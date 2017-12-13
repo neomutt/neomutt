@@ -208,7 +208,7 @@ void mutt_perror_debug(const char *s);
 void mutt_prepare_envelope(struct Envelope *env, int final);
 void mutt_unprepare_envelope(struct Envelope *env);
 void mutt_pretty_mailbox(char *s, size_t buflen);
-void mutt_pretty_size(char *s, size_t len, LOFF_T n);
+void mutt_pretty_size(char *s, size_t len, size_t n);
 void mutt_pipe_message(struct Header *h);
 void mutt_print_message(struct Header *h);
 void mutt_query_exit(void);
@@ -373,7 +373,7 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 bool message_is_tagged(struct Context *ctx, int index);
 bool message_is_visible(struct Context *ctx, int index);
 
-int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
+size_t rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
 void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
 
 #endif /* _MUTT_PROTOS_H */

@@ -148,7 +148,7 @@ done:
  *
  * Note: it is assumed that `buf' is nul terminated!
  */
-int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display)
+size_t rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display)
 {
   char *pbuf = buf;
   size_t len = mutt_str_strlen(buf);
@@ -158,7 +158,7 @@ int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int dis
   if (len > 0)
   {
     if (len > buflen)
-      return pbuf - buf; /* safety check for bogus arguments */
+      return 0; /* safety check for bogus arguments */
 
     pbuf += len;
     buflen -= len;

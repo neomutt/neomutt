@@ -183,9 +183,10 @@ static int parse_keycode(const char *s)
   return result;
 }
 
-static int parsekeys(const char *str, keycode_t *d, int max)
+static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 {
-  int n, len = max;
+  int n;
+  size_t len = max;
   char buf[SHORT_STRING];
   char c;
   char *s = NULL, *t = NULL;
@@ -246,7 +247,7 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
   struct Keymap *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
   size_t len;
-  int pos = 0, lastpos = 0;
+  size_t pos = 0, lastpos = 0;
 
   len = parsekeys(s, buf, MAX_SEQ);
 

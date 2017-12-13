@@ -114,7 +114,7 @@ static char LastDir[_POSIX_PATH_MAX] = "";
  */
 static void destroy_state(struct BrowserState *state)
 {
-  for (int c = 0; c < state->entrylen; c++)
+  for (size_t c = 0; c < state->entrylen; c++)
   {
     FREE(&((state->entry)[c].name));
     FREE(&((state->entry)[c].desc));

@@ -295,8 +295,7 @@ static struct CompileOptions comp_opts[] = {
  */
 static void print_compile_options(struct CompileOptions *co)
 {
-  size_t len;
-  int used = 2;
+  size_t len, used = 2;
   bool tty = stdout ? isatty(fileno(stdout)) : false;
 
   printf("  ");
