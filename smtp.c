@@ -680,7 +680,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
       rc += 14;
     }
     if (DsnReturn && mutt_bit_isset(Capabilities, DSN))
-      rc += snprintf(buf + rc, sizeof(buf) - rc, " rc=%s", DsnReturn);
+      rc += snprintf(buf + rc, sizeof(buf) - rc, " RET=%s", DsnReturn);
     if (mutt_bit_isset(Capabilities, SMTPUTF8) &&
         (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
          addresses_use_unicode(cc) || addresses_use_unicode(bcc)))
