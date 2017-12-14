@@ -3143,7 +3143,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
 done:
   /* We ran a folder hook for the destination mailbox,
    * now we run it for the user's current mailbox */
-  if (Context->path)
+  if (Context && Context->path)
     mutt_folder_hook(Context->path);
 
   return rc;
