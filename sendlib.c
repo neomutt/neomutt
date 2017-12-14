@@ -1653,7 +1653,7 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
 #define REF_INC 16
 
 /**
- * mutt_write_references - Add the message refrerences to a list
+ * mutt_write_references - Add the message references to a list
  *
  * need to write the list in reverse because they are stored in reverse order
  * when parsed to speed up threading
@@ -1682,8 +1682,7 @@ void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 
   for (size_t i = 0; i < length; ++i)
   {
-    if (i != 0)
-      fputc(' ', f);
+    fputc(' ', f);
     fputs(ref[i]->data, f);
     if (i != length - 1)
       fputc('\n', f);
