@@ -2147,8 +2147,9 @@ int mutt_search_command(int cur, int op)
     {
       /* remember that we've already searched this message */
       h->searched = true;
-      if ((h->matched = (mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS,
-                                           Context, h, NULL) > 0)))
+      h->matched =
+          mutt_pattern_exec(SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context, h, NULL);
+      if (h->matched > 0)
       {
         mutt_clear_error();
         if (msg && *msg)

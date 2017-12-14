@@ -1607,7 +1607,8 @@ int imap_status(char *path, int queue)
     imap_exec(idata, buf, 0);
 
   queued = 0;
-  if ((status = imap_mboxcache_get(idata, mbox, 0)))
+  status = imap_mboxcache_get(idata, mbox, 0);
+  if (status)
     return status->messages;
 
   return 0;
@@ -2433,8 +2434,9 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
   {
-    if ((rc = imap_exec_msgset(idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
-                               MUTT_DELETED, 1, 0)) < 0)
+    rc = imap_exec_msgset(idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
+                          MUTT_DELETED, 1, 0);
+    if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
       mutt_sleep(1);

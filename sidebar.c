@@ -252,8 +252,8 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
  * mutt_expando_format to do the actual work. mutt_expando_format will callback to
  * us using sidebar_format_str() for the sidebar specific formatting characters.
  */
-static void make_sidebar_entry(char *buf, size_t buflen, int width,
-                               char *box, struct SbEntry *sbe)
+static void make_sidebar_entry(char *buf, size_t buflen, int width, char *box,
+                               struct SbEntry *sbe)
 {
   if (!buf || !box || !sbe)
     return;

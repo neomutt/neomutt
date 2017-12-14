@@ -1019,7 +1019,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   idata = ctx->data;
   h = ctx->hdrs[msgno];
 
-  if ((msg->fp = msg_cache_get(idata, h)))
+  msg->fp = msg_cache_get(idata, h);
+  if (msg->fp)
   {
     if (HEADER_DATA(h)->parsed)
       return 0;

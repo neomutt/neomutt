@@ -376,7 +376,8 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
   mutt_debug(3, "Handling CAPABILITY\n");
 
   s = imap_next_word(s);
-  if ((bracket = strchr(s, ']')))
+  bracket = strchr(s, ']');
+  if (bracket)
     *bracket = '\0';
   FREE(&idata->capstr);
   idata->capstr = mutt_str_strdup(s);

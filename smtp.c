@@ -162,7 +162,8 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_write(conn, buf) == -1)
       return SMTP_ERR_WRITE;
-    if ((r = smtp_get_resp(conn)))
+    r = smtp_get_resp(conn);
+    if (r != 0)
       return r;
     a = a->next;
   }
@@ -196,7 +197,8 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
     mutt_file_fclose(&fp);
     return SMTP_ERR_WRITE;
   }
-  if ((r = smtp_get_resp(conn)))
+  r = smtp_get_resp(conn);
+  if (r != 0)
   {
     mutt_file_fclose(&fp);
     return r;
@@ -234,7 +236,8 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   if (mutt_socket_write(conn, ".\r\n") == -1)
     return SMTP_ERR_WRITE;
 
-  if ((r = smtp_get_resp(conn)))
+  r = smtp_get_resp(conn);
+  if (r != 0)
     return r;
 
   return 0;
@@ -579,10 +582,12 @@ static int smtp_open(struct Connection *conn)
     return -1;
 
   /* get greeting string */
-  if ((rc = smtp_get_resp(conn)))
+  rc = smtp_get_resp(conn);
+  if (rc != 0)
     return rc;
 
-  if ((rc = smtp_helo(conn)))
+  rc = smtp_helo(conn);
+  if (rc != 0)
     return rc;
 
 #ifdef USE_SSL
@@ -599,7 +604,8 @@ static int smtp_open(struct Connection *conn)
   {
     if (mutt_socket_write(conn, "STARTTLS\r\n") < 0)
       return SMTP_ERR_WRITE;
-    if ((rc = smtp_get_resp(conn)))
+    rc = smtp_get_resp(conn);
+    if (rc != 0)
       return rc;
 
     if (mutt_ssl_starttls(conn))
@@ -610,7 +616,8 @@ static int smtp_open(struct Connection *conn)
     }
 
     /* re-EHLO to get authentication mechanisms */
-    if ((rc = smtp_helo(conn)))
+    rc = smtp_helo(conn);
+    if (rc != 0)
       return rc;
   }
 #endif
@@ -668,7 +675,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   do
   {
     /* send our greeting */
-    if ((rc = smtp_open(conn)))
+    rc = smtp_open(conn);
+    if (rc != 0)
       break;
     FREE(&AuthMechs);
 
@@ -691,7 +699,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
       rc = SMTP_ERR_WRITE;
       break;
     }
-    if ((rc = smtp_get_resp(conn)))
+    rc = smtp_get_resp(conn);
+    if (rc != 0)
       break;
 
     /* send the recipient list */
@@ -700,7 +709,8 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
       break;
 
     /* send the message data */
-    if ((rc = smtp_data(conn, msgfile)))
+    rc = smtp_data(conn, msgfile);
+    if (rc != 0)
       break;
 
     mutt_socket_write(conn, "QUIT\r\n");

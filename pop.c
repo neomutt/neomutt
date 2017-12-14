@@ -327,7 +327,8 @@ static int pop_fetch_headers(struct Context *ctx)
       if (!ctx->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
-      if ((data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
+      data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
+      if (data)
       {
         char *uidl = mutt_str_strdup(ctx->hdrs[i]->data);
         int refno = ctx->hdrs[i]->refno;
@@ -557,7 +558,8 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   unsigned short bcache = 1;
 
   /* see if we already have the message in body cache */
-  if ((msg->fp = mutt_bcache_get(pop_data->bcache, h->data)))
+  msg->fp = mutt_bcache_get(pop_data->bcache, h->data);
+  if (msg->fp)
     return 0;
 
   /*

@@ -426,7 +426,8 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'g':
       if (folder->ff->local)
       {
-        if ((gr = getgrgid(folder->ff->gid)))
+        gr = getgrgid(folder->ff->gid);
+        if (gr)
           mutt_format_s(buf, buflen, prec, gr->gr_name);
         else
         {
@@ -502,7 +503,8 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'u':
       if (folder->ff->local)
       {
-        if ((pw = getpwuid(folder->ff->uid)))
+        pw = getpwuid(folder->ff->uid);
+        if (pw)
           mutt_format_s(buf, buflen, prec, pw->pw_name);
         else
         {

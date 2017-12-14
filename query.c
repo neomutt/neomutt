@@ -135,11 +135,13 @@ static struct Query *run_query(char *s, int quiet)
   if (!quiet)
     mutt_message(_("Waiting for response..."));
   fgets(msg, sizeof(msg), fp);
-  if ((p = strrchr(msg, '\n')))
+  p = strrchr(msg, '\n');
+  if (p)
     *p = '\0';
   while ((buf = mutt_file_read_line(buf, &buflen, fp, &dummy, 0)) != NULL)
   {
-    if ((p = strtok(buf, "\t\n")))
+    p = strtok(buf, "\t\n");
+    if (p)
     {
       if (!first)
       {

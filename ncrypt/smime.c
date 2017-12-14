@@ -756,7 +756,8 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
     if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_CLEAR) != 0)
       return NULL;
 
-    if ((key = smime_get_key_by_str(resp, abilities, public)))
+    key = smime_get_key_by_str(resp, abilities, public);
+    if (key)
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
@@ -938,9 +939,9 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   }
   mutt_file_unlink(tmpfname);
 
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr),
-                             certificate, NULL, NULL, NULL, NULL, NULL, NULL,
-                             SmimeGetCertEmailCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), certificate,
+                        NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertEmailCommand);
+  if (thepid == -1)
   {
     mutt_message(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1034,8 +1035,9 @@ static char *smime_extract_certificate(char *infile)
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
      extract the full set of certificates directly.
   */
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), infile, NULL,
-                             NULL, NULL, NULL, NULL, NULL, SmimePk7outCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), infile,
+                        NULL, NULL, NULL, NULL, NULL, NULL, SmimePk7outCommand);
+  if (thepid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1074,8 +1076,9 @@ static char *smime_extract_certificate(char *infile)
 
   /* Step 2: Extract the certificates from a PKCS#7 structure.
    */
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), pk7out, NULL,
-                             NULL, NULL, NULL, NULL, NULL, SmimeGetCertCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), pk7out,
+                        NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertCommand);
+  if (thepid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1137,8 +1140,9 @@ static char *smime_extract_signer_certificate(char *infile)
 
   /* Extract signer's certificate
    */
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fperr), infile, NULL, NULL, NULL,
-                             NULL, certfile, NULL, SmimeGetSignerCertCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fperr), infile, NULL, NULL,
+                        NULL, NULL, certfile, NULL, SmimeGetSignerCertCommand);
+  if (thepid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1213,13 +1217,14 @@ void smime_invoke_import(char *infile, char *mailbox)
   }
 
   mutt_endwin(NULL);
-  if ((certfile = smime_extract_certificate(infile)))
+  certfile = smime_extract_certificate(infile);
+  if (certfile)
   {
     mutt_endwin(NULL);
 
-    if ((thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout),
-                               fileno(fperr), certfile, NULL, NULL, NULL, NULL,
-                               NULL, NULL, SmimeImportCertCommand)) == -1)
+    thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout), fileno(fperr), certfile,
+                          NULL, NULL, NULL, NULL, NULL, NULL, SmimeImportCertCommand);
+    if (thepid == -1)
     {
       mutt_message(_("Error: unable to create OpenSSL subprocess!"));
       return;
@@ -1282,7 +1287,8 @@ int smime_verify_sender(struct Header *h)
 
   if (mbox)
   {
-    if ((certfile = smime_extract_signer_certificate(tempfname)))
+    certfile = smime_extract_signer_certificate(tempfname);
+    if (certfile)
     {
       mutt_file_unlink(tempfname);
       if (smime_handle_cert_email(certfile, mbox, 0, NULL, NULL))
@@ -1370,7 +1376,8 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   *certfile = '\0';
   for (cert_start = certlist; cert_start; cert_start = cert_end)
   {
-    if ((cert_end = strchr(cert_start, ' ')))
+    cert_end = strchr(cert_start, ' ');
+    if (cert_end)
       *cert_end = '\0';
     if (*cert_start)
     {
@@ -1388,8 +1395,9 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   mutt_write_mime_body(a, fptmp);
   mutt_file_fclose(&fptmp);
 
-  if ((thepid = smime_invoke_encrypt(&smimein, NULL, NULL, -1, fileno(fpout),
-                                     fileno(smimeerr), smimeinfile, certfile)) == -1)
+  thepid = smime_invoke_encrypt(&smimein, NULL, NULL, -1, fileno(fpout),
+                                fileno(smimeerr), smimeinfile, certfile);
+  if (thepid == -1)
   {
     mutt_file_fclose(&smimeerr);
     mutt_file_unlink(smimeinfile);
@@ -1538,8 +1546,8 @@ struct Body *smime_sign_message(struct Body *a)
 
   smime_free_key(&default_key);
 
-  if ((thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1,
-                                  fileno(smimeout), -1, filetosign)) == -1)
+  thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1, fileno(smimeout), -1, filetosign);
+  if (thepid == -1)
   {
     mutt_perror(_("Can't open OpenSSL subprocess!"));
     mutt_file_fclose(&smimeout);
@@ -1696,8 +1704,9 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   crypt_current_time(s, "OpenSSL");
 
-  if ((thepid = smime_invoke_verify(NULL, &smimeout, NULL, -1, -1, fileno(smimeerr),
-                                    tempfile, signedfile, 0)) != -1)
+  thepid = smime_invoke_verify(NULL, &smimeout, NULL, -1, -1, fileno(smimeerr),
+                               tempfile, signedfile, 0);
+  if (thepid != -1)
   {
     fflush(smimeout);
     mutt_file_fclose(&smimeout);
@@ -2157,7 +2166,8 @@ int smime_send_menu(struct Header *msg)
       case 'S': /* (s)ign in oppenc mode */
         if (!SmimeDefaultKey)
         {
-          if ((key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0)))
+          key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
+          if (key)
           {
             mutt_str_replace(&SmimeDefaultKey, key->hash);
             smime_free_key(&key);
@@ -2172,7 +2182,8 @@ int smime_send_menu(struct Header *msg)
 
       case 'a': /* sign (a)s */
 
-        if ((key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0)))
+        key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
+        if (key)
         {
           mutt_str_replace(&SmimeDefaultKey, key->hash);
           smime_free_key(&key);

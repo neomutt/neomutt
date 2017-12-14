@@ -147,7 +147,8 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
   for (p = buf; p; p = pend)
   {
-    if ((pend = strchr(p, ':')))
+    pend = strchr(p, ':');
+    if (pend)
       *pend++ = 0;
     field++;
     if (!*p && (field != 1) && (field != 10))

@@ -274,8 +274,9 @@ int main(int argc, char **argv, char **env)
     }
 
     /* USE_NNTP 'g:G' */
-    if ((i = getopt(argc, argv,
-                    "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:s:i:hm:npQ:RSvxyzZ")) != EOF)
+    i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:s:i:hm:npQ:RSvxyzZ");
+    if (i != EOF)
+    {
       switch (i)
       {
         case 'A':
@@ -412,6 +413,7 @@ int main(int argc, char **argv, char **env)
         default:
           usage();
       }
+    }
   }
 
   /* collapse remaining argv */
@@ -482,7 +484,8 @@ int main(int argc, char **argv, char **env)
     struct ListNode *np;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      if ((a = mutt_lookup_alias(np->data)))
+      a = mutt_lookup_alias(np->data);
+      if (a)
       {
         /* output in machine-readable form */
         mutt_addrlist_to_intl(a, NULL);
@@ -918,9 +921,9 @@ int main(int argc, char **argv, char **env)
     mutt_folder_hook(folder);
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
-    if ((Context = mx_open_mailbox(
-             folder, ((flags & MUTT_RO) || option(OPT_READ_ONLY)) ? MUTT_READONLY : 0, NULL)) ||
-        !explicit_folder)
+    Context = mx_open_mailbox(
+        folder, ((flags & MUTT_RO) || option(OPT_READ_ONLY)) ? MUTT_READONLY : 0, NULL);
+    if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
       mutt_sb_set_open_buffy();

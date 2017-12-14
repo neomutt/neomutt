@@ -2227,7 +2227,8 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp, int dryrun)
   err = gpgme_op_keylist_start(tmpctx, NULL, 0);
   while (!err)
   {
-    if ((err = gpgme_op_keylist_next(tmpctx, &key)))
+    err = gpgme_op_keylist_next(tmpctx, &key);
+    if (err)
       break;
     uid = key->uids;
     subkey = key->subkeys;
@@ -2370,7 +2371,8 @@ int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int just_one)
       rc = (pgp_gpgme_check_traditional(fp, b->parts, 0) || rc);
     else if (b->type == TYPETEXT)
     {
-      if ((r = mutt_is_application_pgp(b)))
+      r = mutt_is_application_pgp(b);
+      if (r != 0)
         rc = (rc || r);
       else
         rc = (pgp_check_traditional_one_body(fp, b) || rc);
@@ -3161,7 +3163,8 @@ static int compare_key_address(const void *a, const void *b)
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
   int r;
 
-  if ((r = mutt_str_strcasecmp((*s)->uid, (*t)->uid)))
+  r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
+  if (r != 0)
     return r > 0;
   else
     return (mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t)) > 0);
@@ -3182,7 +3185,8 @@ static int compare_keyid(const void *a, const void *b)
   struct CryptKeyInfo **t = (struct CryptKeyInfo **) b;
   int r;
 
-  if ((r = mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t))))
+  r = mutt_str_strcasecmp(crypt_fpr_or_lkeyid(*s), crypt_fpr_or_lkeyid(*t));
+  if (r != 0)
     return r > 0;
   else
     return (mutt_str_strcasecmp((*s)->uid, (*t)->uid) > 0);
@@ -3233,12 +3237,14 @@ static int compare_key_trust(const void *a, const void *b)
   unsigned long ts = 0, tt = 0;
   int r;
 
-  if ((r = (((*s)->flags & (KEYFLAG_RESTRICTIONS)) - ((*t)->flags & (KEYFLAG_RESTRICTIONS)))))
+  r = (((*s)->flags & (KEYFLAG_RESTRICTIONS)) - ((*t)->flags & (KEYFLAG_RESTRICTIONS)));
+  if (r != 0)
     return r > 0;
 
   ts = (*s)->validity;
   tt = (*t)->validity;
-  if ((r = (tt - ts)))
+  r = (tt - ts);
+  if (r != 0)
     return r < 0;
 
   if ((*s)->kobj->subkeys)
@@ -3257,7 +3263,8 @@ static int compare_key_trust(const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  if ((r = mutt_str_strcasecmp((*s)->uid, (*t)->uid)))
+  r = mutt_str_strcasecmp((*s)->uid, (*t)->uid);
+  if (r != 0)
     return r > 0;
   return (mutt_str_strcasecmp(crypt_fpr_or_lkeyid((*s)), crypt_fpr_or_lkeyid((*t))) > 0);
 }
@@ -3541,23 +3548,38 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
     case KEY_CAP_CAN_ENCRYPT:
       ret = key->can_encrypt;
       if (ret == 0)
+      {
         for (subkey = key->subkeys; subkey; subkey = subkey->next)
-          if ((ret = subkey->can_encrypt))
+        {
+          ret = subkey->can_encrypt;
+          if (ret != 0)
             break;
+        }
+      }
       break;
     case KEY_CAP_CAN_SIGN:
       ret = key->can_sign;
       if (ret == 0)
+      {
         for (subkey = key->subkeys; subkey; subkey = subkey->next)
-          if ((ret = subkey->can_sign))
+        {
+          ret = subkey->can_sign;
+          if (ret != 0)
             break;
+        }
+      }
       break;
     case KEY_CAP_CAN_CERTIFY:
       ret = key->can_certify;
       if (ret == 0)
+      {
         for (subkey = key->subkeys; subkey; subkey = subkey->next)
-          if ((ret = subkey->can_certify))
+        {
+          ret = subkey->can_certify;
+          if (ret != 0)
             break;
+        }
+      }
       break;
   }
 
@@ -4600,7 +4622,8 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
       }
     }
 
-    if ((key = crypt_getkeybystr(resp, abilities, app, forced_valid)))
+    key = crypt_getkeybystr(resp, abilities, app, forced_valid);
+    if (key)
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
@@ -4970,8 +4993,9 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
         break;
 
       case 'a': /* sign (a)s */
-        if ((p = crypt_ask_for_key(_("Sign as: "), NULL, KEYFLAG_CANSIGN,
-                                   is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL)))
+        p = crypt_ask_for_key(_("Sign as: "), NULL, KEYFLAG_CANSIGN,
+                              is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL);
+        if (p)
         {
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
           mutt_str_replace(is_smime ? &SmimeDefaultKey : &PgpSignAs, input_signas);

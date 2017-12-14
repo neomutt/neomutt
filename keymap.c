@@ -543,7 +543,8 @@ int km_dokey(int menu)
       {
         /* check generic menu */
         bindings = OpGeneric;
-        if ((func = get_func(bindings, tmp.op)))
+        func = get_func(bindings, tmp.op);
+        if (func)
           return tmp.op;
       }
 
@@ -619,7 +620,8 @@ static const char *km_keyname(int c)
   static char buf[10];
   const char *p = NULL;
 
-  if ((p = mutt_map_get_name(c, KeyNames)))
+  p = mutt_map_get_name(c, KeyNames);
+  if (p)
     return p;
 
   if (c < 256 && c > -128 && iscntrl((unsigned char) c))

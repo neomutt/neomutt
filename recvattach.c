@@ -514,8 +514,8 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     }
     else
     {
-      if ((rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile),
-                                     &append, directory)) == -1)
+      rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile), &append, directory);
+      if (rc == -1)
         return -1;
       else if (rc == 1)
       {

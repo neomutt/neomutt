@@ -390,7 +390,8 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           char *tmp = NULL;
 
           /* Strip off the leading path... */
-          if ((t = strrchr(fn, '/')))
+          t = strrchr(fn, '/');
+          if (t)
             t++;
           else
             t = fn;
@@ -1042,7 +1043,8 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
       while (fgets(buf, sizeof(buf) - 1, f) != NULL)
       {
         /* weed out any comments */
-        if ((p = strchr(buf, '#')))
+        p = strchr(buf, '#');
+        if (p)
           *p = 0;
 
         /* remove any leading space. */
@@ -1557,7 +1559,8 @@ static bool check_boundary(const char *boundary, struct Body *b)
   if (b->next && check_boundary(boundary, b->next))
     return true;
 
-  if ((p = mutt_param_get("boundary", b->parameter)) && (mutt_str_strcmp(p, boundary) == 0))
+  p = mutt_param_get("boundary", b->parameter);
+  if (p && (mutt_str_strcmp(p, boundary) == 0))
   {
     return true;
   }
@@ -2153,7 +2156,8 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   struct ListNode *tmp;
   STAILQ_FOREACH(tmp, &env->userhdrs, entries)
   {
-    if ((p = strchr(tmp->data, ':')))
+    p = strchr(tmp->data, ':');
+    if (p)
     {
       q = p;
 
@@ -2230,7 +2234,8 @@ const char *mutt_fqdn(short may_hide_host)
 
     if (may_hide_host && option(OPT_HIDDEN_HOST))
     {
-      if ((p = strchr(Hostname, '.')))
+      p = strchr(Hostname, '.');
+      if (p)
         p++;
 
       /* sanity check: don't hide the host if
@@ -2606,8 +2611,8 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   if (!option(OPT_NO_CURSES))
     mutt_need_hard_redraw();
 
-  if ((i = send_msg(path, args, msg, option(OPT_NO_CURSES) ? NULL : &childout)) !=
-      (EX_OK & 0xff))
+  i = send_msg(path, args, msg, option(OPT_NO_CURSES) ? NULL : &childout);
+  if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)
     {

@@ -445,7 +445,8 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
       /* walk past closing '}' */
       mx->mbox = mutt_str_strdup(c + 1);
 
-    if ((c = strrchr(tmp, '@')))
+    c = strrchr(tmp, '@');
+    if (c)
     {
       *c = '\0';
       mutt_str_strfcpy(mx->account.user, tmp, sizeof(mx->account.user));

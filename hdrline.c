@@ -562,7 +562,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'b':
       if (ctx)
       {
-        if ((p = strrchr(ctx->path, '/')))
+        p = strrchr(ctx->path, '/');
+        if (p)
           mutt_str_strfcpy(buf, p + 1, buflen);
         else
           mutt_str_strfcpy(buf, ctx->path, buflen);
@@ -1114,7 +1115,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (hdr->env->from && hdr->env->from->mailbox)
       {
         mutt_str_strfcpy(tmp, mutt_addr_for_display(hdr->env->from), sizeof(tmp));
-        if ((p = strpbrk(tmp, "%@")))
+        p = strpbrk(tmp, "%@");
+        if (p)
           *p = 0;
       }
       else
@@ -1134,7 +1136,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       else
         mutt_format_s(tmp, sizeof(tmp), prec, mutt_get_name(hdr->env->from));
-      if ((p = strpbrk(tmp, " %@")))
+      p = strpbrk(tmp, " %@");
+      if (p)
         *p = 0;
       mutt_format_s(buf, buflen, prec, tmp);
       break;

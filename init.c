@@ -633,7 +633,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       pc = tok->dptr;
       do
       {
-        if ((pc = strpbrk(pc, "\\`")))
+        pc = strpbrk(pc, "\\`");
+        if (pc)
         {
           /* skip any quoted chars */
           if (*pc == '\\')
@@ -698,7 +699,8 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       if (*tok->dptr == '{')
       {
         tok->dptr++;
-        if ((pc = strchr(tok->dptr, '}')))
+        pc = strchr(tok->dptr, '}');
+        if (pc)
         {
           var = mutt_str_substr_dup(tok->dptr, pc);
           tok->dptr = pc + 1;
@@ -1600,7 +1602,8 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
     else
       a->major = mutt_str_strdup(buf->data);
 
-    if ((p = strchr(a->major, '/')))
+    p = strchr(a->major, '/');
+    if (p)
     {
       *p = '\0';
       p++;
@@ -1660,7 +1663,8 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     else
       tmp = mutt_str_strdup(buf->data);
 
-    if ((minor = strchr(tmp, '/')))
+    minor = strchr(tmp, '/');
+    if (minor)
     {
       *minor = '\0';
       minor++;
@@ -2693,7 +2697,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
         if (myvar)
         {
-          if ((val = myvar_get(myvar)))
+          val = myvar_get(myvar);
+          if (val)
           {
             pretty_var(err->data, err->dsize, myvar, val);
             break;
@@ -3368,7 +3373,7 @@ finish:
  * the user has typed so far. Allocate LONG_STRING just to be sure! */
 static char UserTyped[LONG_STRING] = { 0 };
 
-static int NumMatched = 0;            /* Number of matches for completion */
+static int NumMatched = 0;             /* Number of matches for completion */
 static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
 static const char **Matches;
 /* this is a lie until mutt_init runs: */
@@ -4058,11 +4063,13 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   /* on one of the systems I use, getcwd() does not return the same prefix
      as is listed in the passwd file */
-  if ((p = getenv("HOME")))
+  p = getenv("HOME");
+  if (p)
     HomeDir = mutt_str_strdup(p);
 
   /* Get some information about the user */
-  if ((pw = getpwuid(getuid())))
+  pw = getpwuid(getuid());
+  if (pw)
   {
     char rnbuf[STRING];
 
@@ -4082,7 +4089,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       fputs(_("unable to determine home directory"), stderr);
       exit(1);
     }
-    if ((p = getenv("USER")))
+    p = getenv("USER");
+    if (p)
       Username = mutt_str_strdup(p);
     else
     {
@@ -4125,7 +4133,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
 
   /* some systems report the FQDN instead of just the hostname */
-  if ((p = strchr(utsname.nodename, '.')))
+  p = strchr(utsname.nodename, '.');
+  if (p)
     ShortHostname = mutt_str_substr_dup(utsname.nodename, p);
   else
     ShortHostname = mutt_str_strdup(utsname.nodename);
@@ -4160,7 +4169,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 #endif
 
 #ifdef USE_NNTP
-  if ((p = getenv("NNTPSERVER")))
+  p = getenv("NNTPSERVER");
+  if (p)
   {
     FREE(&NewsServer);
     NewsServer = mutt_str_strdup(p);
@@ -4172,7 +4182,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
 #endif
 
-  if ((p = getenv("MAIL")))
+  p = getenv("MAIL");
+  if (p)
     SpoolFile = mutt_str_strdup(p);
   else if ((p = getenv("MAILDIR")))
     SpoolFile = mutt_str_strdup(p);
@@ -4186,7 +4197,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     SpoolFile = mutt_str_strdup(buffer);
   }
 
-  if ((p = getenv("MAILCAPS")))
+  p = getenv("MAILCAPS");
+  if (p)
     MailcapPath = mutt_str_strdup(p);
   else
   {

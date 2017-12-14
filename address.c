@@ -326,8 +326,9 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
     s++;
   }
 
-  if ((s = parse_address(s, token, &tokenlen, sizeof(token) - 1, comment,
-                         commentlen, commentmax, addr)) == NULL)
+  s = parse_address(s, token, &tokenlen, sizeof(token) - 1, comment, commentlen,
+                    commentmax, addr);
+  if (s == NULL)
     return NULL;
 
   if (*s != '>')
@@ -500,7 +501,8 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     last = last->next;
 
   ws_pending = mutt_str_is_email_wsp(*s);
-  if ((nl = mutt_str_strlen(s)))
+  nl = mutt_str_strlen(s);
+  if (nl)
     nl = s[nl - 1] == '\n';
 
   s = mutt_str_skip_email_wsp(s);

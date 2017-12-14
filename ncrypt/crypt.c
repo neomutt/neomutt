@@ -447,13 +447,13 @@ int mutt_is_application_pgp(struct Body *m)
     if ((mutt_str_strcasecmp(m->subtype, "pgp") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "x-pgp-message") == 0))
     {
-      if ((p = mutt_param_get("x-action", m->parameter)) &&
-          ((mutt_str_strcasecmp(p, "sign") == 0) ||
-           (mutt_str_strcasecmp(p, "signclear") == 0)))
+      p = mutt_param_get("x-action", m->parameter);
+      if (p && ((mutt_str_strcasecmp(p, "sign") == 0) ||
+          (mutt_str_strcasecmp(p, "signclear") == 0)))
         t |= PGPSIGN;
 
-      if ((p = mutt_param_get("format", m->parameter)) &&
-          (mutt_str_strcasecmp(p, "keys-only") == 0))
+      p = mutt_param_get("format", m->parameter);
+      if (p && (mutt_str_strcasecmp(p, "keys-only") == 0))
       {
         t |= PGPKEY;
       }
@@ -501,7 +501,8 @@ int mutt_is_application_smime(struct Body *m)
     if ((mutt_str_strcasecmp(m->subtype, "x-pkcs7-mime") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "pkcs7-mime") == 0))
     {
-      if ((t = mutt_param_get("smime-type", m->parameter)))
+      t = mutt_param_get("smime-type", m->parameter);
+      if (t)
       {
         if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
           return SMIMEENCRYPT;

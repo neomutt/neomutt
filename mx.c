@@ -701,7 +701,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   {
     char *p = NULL;
 
-    if ((p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path)))
+    p = mutt_find_hook(MUTT_MBOXHOOK, ctx->path);
+    if (p)
     {
       is_spool = 1;
       mutt_str_strfcpy(mbox, p, sizeof(mbox));

@@ -896,7 +896,8 @@ int main(int argc, char *const argv[])
     mutt_str_strfcpy(kring, tmp_kring, sizeof(kring));
   else
   {
-    if ((env_pgppath = getenv("PGPPATH")))
+    env_pgppath = getenv("PGPPATH");
+    if (env_pgppath)
       mutt_str_strfcpy(pgppath, env_pgppath, sizeof(pgppath));
     else if ((env_home = getenv("HOME")))
       snprintf(pgppath, sizeof(pgppath), "%s/.pgp", env_home);

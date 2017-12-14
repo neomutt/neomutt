@@ -148,7 +148,8 @@ int mutt_complete(char *s, size_t slen)
       mutt_str_strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
     else
       mutt_str_strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
-    if ((p = strrchr(s, '/')))
+    p = strrchr(s, '/');
+    if (p)
     {
       char buf[_POSIX_PATH_MAX];
       if (mutt_file_concatn_path(buf, sizeof(buf), exp_dirpart, strlen(exp_dirpart),
@@ -166,7 +167,8 @@ int mutt_complete(char *s, size_t slen)
   }
   else
   {
-    if ((p = strrchr(s, '/')))
+    p = strrchr(s, '/');
+    if (p)
     {
       if (p == s) /* absolute path */
       {

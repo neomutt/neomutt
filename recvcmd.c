@@ -467,9 +467,10 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    if ((rc = query_quadoption(OPT_MIME_FORWARD_REST,
-                               _("Can't decode all tagged attachments.  "
-                                 "MIME-forward the others?"))) == MUTT_ABORT)
+    rc = query_quadoption(
+        OPT_MIME_FORWARD_REST,
+        _("Can't decode all tagged attachments.  MIME-forward the others?"));
+    if (rc == MUTT_ABORT)
       goto bail;
     else if (rc == MUTT_NO)
       mime_fwd_any = false;
@@ -590,8 +591,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
   tmpbody[0] = '\0';
 
-  if ((rc = query_quadoption(OPT_MIME_FORWARD,
-                             _("Forward MIME encapsulated?"))) == MUTT_NO)
+  rc = query_quadoption(OPT_MIME_FORWARD, _("Forward MIME encapsulated?"));
+  if (rc == MUTT_NO)
   {
     /* no MIME encapsulation */
 
@@ -844,9 +845,10 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    if ((rc = query_quadoption(OPT_MIME_FORWARD_REST,
-                               _("Can't decode all tagged attachments.  "
-                                 "MIME-encapsulate the others?"))) == MUTT_ABORT)
+    rc = query_quadoption(OPT_MIME_FORWARD_REST,
+                          _("Can't decode all tagged attachments.  "
+                            "MIME-encapsulate the others?"));
+    if (rc == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)
       mime_reply_any = true;

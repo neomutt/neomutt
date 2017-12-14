@@ -1545,8 +1545,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
     goto out; /* fake display */
   }
 
-  if ((b_read = fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt,
-                            &buflen, &buf_ready)) < 0)
+  b_read = fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready);
+  if (b_read < 0)
   {
     if (change_last)
       (*last)--;
@@ -1807,10 +1807,12 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (Resize)
     {
-      if ((rd->search_compiled = Resize->search_compiled))
+      rd->search_compiled = Resize->search_compiled;
+      if (rd->search_compiled)
       {
-        if ((err = REGCOMP(&rd->search_re, rd->searchbuf,
-                           REG_NEWLINE | mutt_which_case(rd->searchbuf))) != 0)
+        err = REGCOMP(&rd->search_re, rd->searchbuf,
+                      REG_NEWLINE | mutt_which_case(rd->searchbuf));
+        if (err != 0)
         {
           regerror(err, &rd->search_re, buffer, sizeof(buffer));
           mutt_error("%s", buffer);
@@ -2499,8 +2501,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           }
         }
 
-        if ((err = REGCOMP(&rd.search_re, searchbuf,
-                           REG_NEWLINE | mutt_which_case(searchbuf))) != 0)
+        err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | mutt_which_case(searchbuf));
+        if (err != 0)
         {
           regerror(err, &rd.search_re, buffer, sizeof(buffer));
           mutt_error("%s", buffer);

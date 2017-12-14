@@ -318,7 +318,8 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
-  if ((fp = fopen(CertificateFile, "r")))
+  fp = fopen(CertificateFile, "r");
+  if (fp)
   {
     if (REGCOMP(&preg,
                 "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
@@ -829,7 +830,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
       case OP_MAX + 3: /* accept always */
         done = 0;
-        if ((fp = fopen(CertificateFile, "a")))
+        fp = fopen(CertificateFile, "a");
+        if (fp)
         {
           /* save hostname if necessary */
           if (certerr & CERTERR_HOSTNAME)
@@ -1006,7 +1008,8 @@ static void tls_get_client_cert(struct Connection *conn)
   }
   cn += 3;
 
-  if ((cnend = strstr(dn, ",EMAIL=")))
+  cnend = strstr(dn, ",EMAIL=");
+  if (cnend)
     *cnend = '\0';
 
   /* if we are using a client cert, SASL may expect an external auth name */
@@ -1172,7 +1175,8 @@ static int tls_negotiate(struct Connection *conn)
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
 #endif
 
-  if ((err = gnutls_init(&data->state, GNUTLS_CLIENT)))
+  err = gnutls_init(&data->state, GNUTLS_CLIENT);
+  if (err)
   {
     mutt_error("gnutls_handshake: %s", gnutls_strerror(err));
     mutt_sleep(2);

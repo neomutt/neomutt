@@ -498,8 +498,9 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
         goto return_error;
       }
 
-      if ((thepid = mutt_create_filter_fd(command, NULL, NULL, NULL, use_pipe ? tempfd : -1,
-                                          use_pager ? pagerfd : -1, -1)) == -1)
+      thepid = mutt_create_filter_fd(command, NULL, NULL, NULL, use_pipe ? tempfd : -1,
+                                     use_pager ? pagerfd : -1, -1);
+      if (thepid == -1)
       {
         if (pagerfd != -1)
           close(pagerfd);

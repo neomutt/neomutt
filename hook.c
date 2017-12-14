@@ -218,9 +218,10 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_SAVEHOOK | MUTT_FCCHOOK |
               MUTT_MESSAGEHOOK | MUTT_REPLYHOOK))
   {
-    if ((pat = mutt_pattern_comp(
-             pattern.data, (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_FCCHOOK)) ? 0 : MUTT_FULL_MSG,
-             err)) == NULL)
+    pat = mutt_pattern_comp(
+        pattern.data,
+        (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_FCCHOOK)) ? 0 : MUTT_FULL_MSG, err);
+    if (!pat)
       goto error;
   }
   else if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
@@ -228,12 +229,13 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_malloc(sizeof(regex_t));
 #ifdef MUTT_CRYPTHOOK
-    if ((rc = REGCOMP(rx, NONULL(pattern.data),
-                      ((data & (MUTT_CRYPTHOOK | MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0))) != 0)
+    rc = REGCOMP(rx, NONULL(pattern.data),
+                 ((data & (MUTT_CRYPTHOOK | MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0));
 #else
-    if ((rc = REGCOMP(rx, NONULL(pattern.data),
-                      (data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0)) != 0)
+    rc = REGCOMP(rx, NONULL(pattern.data),
+                 (data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0);
 #endif /* MUTT_CRYPTHOOK */
+    if (rc != 0)
     {
       regerror(rc, rx, err->data, err->dsize);
       FREE(&rx);
