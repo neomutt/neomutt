@@ -468,7 +468,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
     if (progress->flags & MUTT_PROGRESS_SIZE)
       mutt_pretty_size(progress->sizestr, sizeof(progress->sizestr), progress->size);
     else
-      snprintf(progress->sizestr, sizeof(progress->sizestr), "%ld", progress->size);
+      snprintf(progress->sizestr, sizeof(progress->sizestr), "%zu", progress->size);
   }
   if (!inc)
   {
