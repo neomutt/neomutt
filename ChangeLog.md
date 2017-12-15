@@ -1,3 +1,7 @@
+2017-12-15  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Fix some regressions in the previous release
+
 2017-12-08  Richard Russon  <rich@flatcap.org>
 * Features
   - Enhance ifdef feature to support my_ vars

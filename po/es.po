@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20171208\n"
+"Project-Id-Version: neomutt-20171215\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-12-08 16:43+0000\n"
+"POT-Creation-Date: 2017-12-15 16:43+0000\n"
 "PO-Revision-Date: 2016-11-28 19:29+0100\n"
 "Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
