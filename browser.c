@@ -890,7 +890,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         tmp->msg_unread = Context->unread;
       }
 
-      mutt_str_strfcpy(buffer, NONULL(tmp->path), sizeof(buffer));
+      mutt_str_strfcpy(buffer, tmp->path, sizeof(buffer));
       mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
