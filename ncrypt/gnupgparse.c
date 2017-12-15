@@ -130,6 +130,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   int trust = 0;
   int flags = 0;
   struct PgpKeyInfo tmp;
+  char tstr[11];
 
   *is_subkey = 0;
   if (!*buf)
@@ -252,7 +253,6 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
       }
       case 6: /* timestamp (1998-02-28) */
       {
-        char tstr[11];
         struct tm time;
 
         mutt_debug(2, "time stamp: %s\n", p);
