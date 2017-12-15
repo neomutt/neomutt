@@ -525,7 +525,7 @@ static void message_bar(int percent, const char *fmt, ...)
       {
         addch(' ');
       }
-      SETCOLOR(MT_COLOR_NORMAL);
+      NORMAL_COLOR;
     }
     else
     {
@@ -538,7 +538,7 @@ static void message_bar(int percent, const char *fmt, ...)
       SETCOLOR(MT_COLOR_PROGRESS);
       addstr(buf2);
       buf2[off] = ch;
-      SETCOLOR(MT_COLOR_NORMAL);
+      NORMAL_COLOR;
       addstr(&buf2[off]);
     }
   }

@@ -776,7 +776,7 @@ static int draw_divider(int num_rows, int num_cols)
 static void fill_empty_space(int first_row, int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
-  SETCOLOR(MT_COLOR_NORMAL);
+  NORMAL_COLOR;
 
   if (!option(OPT_SIDEBAR_ON_RIGHT))
     div_width = 0;
@@ -849,7 +849,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       if (ColorDefs[MT_COLOR_ORDINARY] != 0)
         SETCOLOR(MT_COLOR_ORDINARY);
       else
-        SETCOLOR(MT_COLOR_NORMAL);
+        NORMAL_COLOR;
     }
 
     int col = 0;
