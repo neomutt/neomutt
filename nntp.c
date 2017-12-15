@@ -1779,7 +1779,10 @@ int nntp_post(const char *msg)
     }
     if (mutt_socket_write_d(nntp_data->nserv->conn, buf[1] == '.' ? buf : buf + 1,
                             -1, MUTT_SOCK_LOG_HDR) < 0)
+    {
+      mutt_file_fclose(&fp);
       return nntp_connect_error(nntp_data->nserv);
+    }
   }
   mutt_file_fclose(&fp);
 
