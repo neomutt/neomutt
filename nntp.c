@@ -1010,7 +1010,7 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
       continue;
 
     nntp_article_status(ctx, hdr, grp, anum);
-    if (hdr && !NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
+    if (!NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
       NHDR(hdr)->article_num = anum;
   }
   FREE(&buf);
