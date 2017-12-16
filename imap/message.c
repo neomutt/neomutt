@@ -532,7 +532,7 @@ static void generate_seqset(struct Buffer *b, struct ImapData *idata,
       {
         case 1: /* single: convert to a range */
           state = 2;
-        /* fall through */
+        /* fallthrough */
         case 2: /* extend range ending */
           range_end = msn;
           break;

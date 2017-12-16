@@ -971,7 +971,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
           break;
         }
-      /* fall through */
+      /* fallthrough */
       case OP_COMPOSE_EDIT_HEADERS:
         if ((mutt_str_strcmp("builtin", Editor) != 0) &&
             (op == OP_COMPOSE_EDIT_HEADERS ||

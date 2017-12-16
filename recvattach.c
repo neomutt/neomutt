@@ -913,7 +913,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
     {
       case OP_DISPLAY_HEADERS:
         toggle_option(OPT_WEED);
-      /* fall through */
+      /* fallthrough */
 
       case OP_VIEW_ATTACH:
         op = mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_REGULAR, hdr, actx);
@@ -958,11 +958,11 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
           op = OP_NULL;
           break;
         }
-      /* fall through */
+      /* fallthrough */
       case OP_ATTACH_COLLAPSE:
         if (recv)
           return op;
-      /* fall through */
+      /* fallthrough */
       default:
         op = OP_NULL;
     }

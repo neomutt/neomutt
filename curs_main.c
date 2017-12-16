@@ -2906,8 +2906,8 @@ int mutt_index_menu(void)
         mutt_check_rescore(Context);
         break;
 
-      case OP_EDIT_OR_VIEW_RAW_MESSAGE: /* fall through */
-      case OP_EDIT_RAW_MESSAGE:         /* fall through */
+      case OP_EDIT_OR_VIEW_RAW_MESSAGE:
+      case OP_EDIT_RAW_MESSAGE:
       case OP_VIEW_RAW_MESSAGE:
 
         /* TODO split this into 3 cases? */
