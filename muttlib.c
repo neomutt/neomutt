@@ -1057,20 +1057,25 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         /* %?x?y&z? to %<x?y&z> where y and z are nestable */
         char *p = (char *) src;
         *p = '<';
+        /* skip over "x" */
         for (; *p && *p != '?'; p++)
           ;
         /* nothing */
         if (*p == '?')
-        {
           p++;
-        }
+        /* fix up the "y&z" section */
         for (; *p && *p != '?'; p++)
-          ;
-        /* nothing */
-        if (*p == '?')
         {
-          *p = '>';
+            /* escape '<' and '>' to work inside nested-if */
+            if (*p == '<' || *p == '>')
+            {
+              memmove(p+2, p, mutt_str_strlen(p) + 1);
+              *p++ = '\\';
+              *p++ = '\\';
+            }
         }
+        if (*p == '?')
+          *p = '>';
       }
 
       if (*src == '<')
