@@ -230,7 +230,7 @@ static char *binary_fingerprint_to_string(unsigned char *buf, size_t length)
 
   pf = fingerprint = mutt_mem_malloc((length * 2) + 1);
 
-  for (int i = 0; i < length; i++)
+  for (size_t i = 0; i < length; i++)
   {
     sprintf(pf, "%02X", buf[i]);
     pf += 2;
