@@ -11866,6 +11866,10 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
             <para>Richard Russon
             <email>rich@flatcap.org</email></para>
           </listitem>
+          <listitem>
+            <para>Aleksa Sarai
+            <email>cyphar@cyphar.com</email></para>
+          </listitem>
         </itemizedlist>
       </sect2>
     </sect1>
