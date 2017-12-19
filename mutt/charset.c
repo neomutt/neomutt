@@ -416,7 +416,7 @@ int mutt_cs_chscmp(const char *s, const char *chs)
  * mutt_cs_get_default_charset - Get the default character set
  * @retval ptr Name of the default character set
  *
- * @note This returns a pointer to a static buffer.  Do not free it.
+ * @warning This returns a pointer to a static buffer.  Do not free it.
  */
 char *mutt_cs_get_default_charset(void)
 {
