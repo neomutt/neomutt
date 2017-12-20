@@ -76,7 +76,7 @@ static const char *const Capabilities[] = {
   "IMAP4",     "IMAP4rev1",     "STATUS",      "ACL",
   "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS",
   "STARTTLS",  "LOGINDISABLED", "IDLE",        "SASL-IR",
-  "ENABLE",    "X-GM-EXT1",     "X-GM-EXT-1",  NULL,
+  "ENABLE",    "X-GM-EXT-1",    "X-GM-EXT1",   NULL,
 };
 
 /**
