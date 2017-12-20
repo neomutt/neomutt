@@ -31,9 +31,6 @@
  */
 
 #include "config.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -45,6 +42,7 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "pgp.h"
 #include "address.h"
 #include "body.h"
 #include "crypt.h"
@@ -59,12 +57,14 @@
 #include "ncrypt.h"
 #include "options.h"
 #include "parameter.h"
-#include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgplib.h"
 #include "pgpmicalg.h"
 #include "protos.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */

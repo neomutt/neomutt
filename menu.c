@@ -22,9 +22,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -44,6 +41,9 @@
 #include "pattern.h"
 #include "protos.h"
 #include "tags.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

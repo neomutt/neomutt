@@ -23,9 +23,6 @@
  */
 
 #include "config.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -34,6 +31,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "smime.h"
 #include "address.h"
 #include "alias.h"
 #include "body.h"
@@ -54,8 +52,10 @@
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
-#include "smime.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /**
  * struct SmimeCommandContext - Data for a SIME command

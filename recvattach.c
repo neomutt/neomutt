@@ -22,9 +22,6 @@
  */
 
 #include "config.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -53,6 +50,9 @@
 #include "protos.h"
 #include "rfc1524.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, int init);
 

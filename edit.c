@@ -25,9 +25,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -46,6 +43,9 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /*
  * SLcurses_waddnstr() can't take a "const char *", so this is only

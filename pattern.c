@@ -23,9 +23,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <ctype.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdarg.h>
@@ -40,6 +37,7 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "pattern.h"
 #include "address.h"
 #include "body.h"
 #include "context.h"
@@ -52,18 +50,20 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
+#include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pattern.h"
 #include "protos.h"
 #include "state.h"
+#include "tags.h"
 #include "thread.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
-#include "mx.h"
-#include "tags.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif

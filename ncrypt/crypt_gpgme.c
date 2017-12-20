@@ -33,9 +33,6 @@
 #include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
@@ -68,6 +65,9 @@
 #include "protos.h"
 #include "sort.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID 1

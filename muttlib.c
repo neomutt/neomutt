@@ -26,9 +26,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <pwd.h>
 #include <regex.h>
@@ -58,19 +55,21 @@
 #include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
-#include "tags.h"
-
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
+#include "tags.h"
 #include "url.h"
-#ifdef USE_IMAP
-#include "imap/imap.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
+#endif
+#ifdef USE_IMAP
+#include "imap/imap.h"
 #endif
 
 static const char *xdg_env_vars[] = {

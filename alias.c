@@ -23,9 +23,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,8 +31,8 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
+#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "mutt_charset.h"
@@ -43,6 +40,9 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 struct Address *mutt_lookup_alias(const char *s)
 {

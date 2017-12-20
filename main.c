@@ -26,9 +26,6 @@
 
 #include "config.h"
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
@@ -59,6 +56,9 @@
 #include "protos.h"
 #include "url.h"
 #include "version.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

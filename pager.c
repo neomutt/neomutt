@@ -25,9 +25,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -37,6 +34,7 @@
 #include <wchar.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "pager.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -55,7 +53,6 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
@@ -64,6 +61,9 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)

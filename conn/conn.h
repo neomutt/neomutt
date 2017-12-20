@@ -41,14 +41,14 @@
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
+#include "sasl_plain.h"
+#include "socket.h"
+#include "tunnel.h"
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
-#include "sasl_plain.h"
-#include "socket.h"
 #ifdef USE_SSL
 #include "ssl.h"
 #endif
-#include "tunnel.h"
 
 #endif /* _CONN_CONN_H */

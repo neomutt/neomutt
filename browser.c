@@ -25,9 +25,6 @@
 #include <dirent.h>
 #include <errno.h>
 #include <grp.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <locale.h>
 #include <pwd.h>
@@ -42,9 +39,9 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
+#include "browser.h"
 #include "attach.h"
 #include "body.h"
-#include "browser.h"
 #include "buffy.h"
 #include "context.h"
 #include "format_flags.h"
@@ -63,6 +60,9 @@
 #include "protos.h"
 #include "sort.h"
 #include "url.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
