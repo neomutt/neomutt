@@ -228,13 +228,8 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_malloc(sizeof(regex_t));
-#ifdef MUTT_CRYPTHOOK
     rc = REGCOMP(rx, NONULL(pattern.data),
                  ((data & (MUTT_CRYPTHOOK | MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0));
-#else
-    rc = REGCOMP(rx, NONULL(pattern.data),
-                 (data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0);
-#endif /* MUTT_CRYPTHOOK */
     if (rc != 0)
     {
       regerror(rc, rx, err->data, err->dsize);
