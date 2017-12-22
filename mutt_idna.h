@@ -23,33 +23,15 @@
 #ifndef _MUTT_IDNA_H
 #define _MUTT_IDNA_H
 
-#ifdef HAVE_IDNA_H
-#include <idna.h>
-#elif defined(HAVE_IDN_IDNA_H)
-#include <idn/idna.h>
-#endif
-
 struct Envelope;
 struct Address;
 
 #define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 
-/* Work around incompatibilities in the libidn API */
+int mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
 
-#ifdef HAVE_LIBIDN
-#if (!defined(HAVE_IDNA_TO_ASCII_8Z) && defined(HAVE_IDNA_TO_ASCII_FROM_UTF8))
-#define idna_to_ascii_8z(a, b, c)                                              \
-  idna_to_ascii_from_utf8(a, b, (c) &1, ((c) &2) ? 1 : 0)
-#endif
-#if (!defined(HAVE_IDNA_TO_ASCII_LZ) && defined(HAVE_IDNA_TO_ASCII_FROM_LOCALE))
-#define idna_to_ascii_lz(a, b, c)                                              \
-  idna_to_ascii_from_locale(a, b, (c) &1, ((c) &2) ? 1 : 0)
-#endif
-#if (!defined(HAVE_IDNA_TO_UNICODE_8Z8Z) && defined(HAVE_IDNA_TO_UNICODE_UTF8_FROM_UTF8))
-#define idna_to_unicode_8z8z(a, b, c)                                          \
-  idna_to_unicode_utf8_from_utf8(a, b, (c) &1, ((c) &2) ? 1 : 0)
-#endif
-#endif /* HAVE_LIBIDN */
+char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags);
+char *mutt_idna_local_to_intl(char *user, char *domain);
 
 int mutt_addrlist_to_intl(struct Address *a, char **err);
 int mutt_addrlist_to_local(struct Address *a);

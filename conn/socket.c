@@ -505,7 +505,7 @@ int raw_socket_open(struct Connection *conn)
   snprintf(port, sizeof(port), "%d", conn->account.port);
 
 #ifdef HAVE_LIBIDN
-  if (idna_to_ascii_lz(conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
+  if (mutt_idna_to_ascii_lz(conn->account.host, &host_idna, 1) != 0)
   {
     mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
     return -1;
@@ -564,7 +564,7 @@ int raw_socket_open(struct Connection *conn)
   sin.sin_family = AF_INET;
 
 #ifdef HAVE_LIBIDN
-  if (idna_to_ascii_lz(conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
+  if (mutt_idna_to_ascii_lz(conn->account.host, &host_idna, 1) != 0)
   {
     mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
     return -1;

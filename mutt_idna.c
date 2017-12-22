@@ -31,8 +31,42 @@
 #include "globals.h"
 #include "mutt_charset.h"
 #include "options.h"
+#ifdef HAVE_IDNA_H
+#include <idna.h>
+#elif defined(HAVE_IDN_IDNA_H)
+#include <idn/idna.h>
+#endif
 
 #ifdef HAVE_LIBIDN
+/* Work around incompatibilities in the libidn API */
+#if (!defined(HAVE_IDNA_TO_ASCII_8Z) && defined(HAVE_IDNA_TO_ASCII_FROM_UTF8))
+#define idna_to_ascii_8z(a, b, c)                                              \
+  idna_to_ascii_from_utf8(a, b, (c) &1, ((c) &2) ? 1 : 0)
+#endif
+#if (!defined(HAVE_IDNA_TO_ASCII_LZ) && defined(HAVE_IDNA_TO_ASCII_FROM_LOCALE))
+#define idna_to_ascii_lz(a, b, c)                                              \
+  idna_to_ascii_from_locale(a, b, (c) &1, ((c) &2) ? 1 : 0)
+#endif
+#if (!defined(HAVE_IDNA_TO_UNICODE_8Z8Z) && defined(HAVE_IDNA_TO_UNICODE_UTF8_FROM_UTF8))
+#define idna_to_unicode_8z8z(a, b, c)                                          \
+  idna_to_unicode_utf8_from_utf8(a, b, (c) &1, ((c) &2) ? 1 : 0)
+#endif
+#endif /* HAVE_LIBIDN */
+
+#ifdef HAVE_LIBIDN
+/**
+ * mutt_idna_to_ascii_lz - XXX
+ * @param input  XXX
+ * @param output XXX
+ * @param flags  XXX
+ * @retval 0 Success
+ * @retval >0 Failure, error code
+ */
+int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
+{
+  return idna_to_ascii_lz(input, output, flags);
+}
+
 static bool check_idn(char *domain)
 {
   if (!domain)
@@ -95,7 +129,7 @@ static void set_intl_mailbox(struct Address *a, char *intl_mailbox)
   a->is_intl = true;
 }
 
-static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
+char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags)
 {
   char *local_user = NULL, *local_domain = NULL, *mailbox = NULL;
   char *reversed_user = NULL, *reversed_domain = NULL;
@@ -196,7 +230,7 @@ cleanup:
   return mailbox;
 }
 
-static char *local_to_intl(char *user, char *domain)
+char *mutt_idna_local_to_intl(char *user, char *domain)
 {
   char *intl_user = NULL, *intl_domain = NULL;
   char *mailbox = NULL;
@@ -251,7 +285,7 @@ int mutt_addrlist_to_intl(struct Address *a, char **err)
     if (mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
-    intl_mailbox = local_to_intl(user, domain);
+    intl_mailbox = mutt_idna_local_to_intl(user, domain);
     if (!intl_mailbox)
     {
       rc = -1;
@@ -279,7 +313,7 @@ int mutt_addrlist_to_local(struct Address *a)
     if (mbox_to_udomain(a->mailbox, &user, &domain) == -1)
       continue;
 
-    local_mailbox = intl_to_local(user, domain, 0);
+    local_mailbox = mutt_idna_intl_to_local(user, domain, 0);
     if (local_mailbox)
       set_local_mailbox(a, local_mailbox);
   }
@@ -304,7 +338,7 @@ const char *mutt_addr_for_display(struct Address *a)
   if (mbox_to_udomain(a->mailbox, &user, &domain) == -1)
     return a->mailbox;
 
-  local_mailbox = intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
+  local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
   if (!local_mailbox)
     return a->mailbox;
 

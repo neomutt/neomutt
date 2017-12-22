@@ -829,7 +829,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
    * type DNS or the Common Name (CN). */
 
 #ifdef HAVE_LIBIDN
-  if (idna_to_ascii_lz(hostname, &hostname_ascii, 0) != IDNA_SUCCESS)
+  if (mutt_idna_to_ascii_lz(hostname, &hostname_ascii, 0) != 0)
   {
     hostname_ascii = mutt_str_strdup(hostname);
   }
