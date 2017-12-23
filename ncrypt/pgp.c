@@ -279,7 +279,7 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
   char buf[HUGE_STRING];
   bool complete, armor_header;
 
-  FGETCONV *fc = NULL;
+  struct FgetConv *fc = NULL;
 
   rewind(fpin);
 
@@ -541,7 +541,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
       }
       else if (pgpout)
       {
-        FGETCONV *fc = NULL;
+        struct FgetConv *fc = NULL;
         int ch;
         char *expected_charset =
             gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
@@ -1547,7 +1547,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   if (!mutt_cs_is_us_ascii(body_charset))
   {
     int c;
-    FGETCONV *fc = NULL;
+    struct FgetConv *fc = NULL;
 
     if (flags & ENCRYPT)
       send_charset = "us-ascii";

@@ -85,7 +85,7 @@
 
 const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
-static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)
+static void encode_quoted(struct FgetConv *fc, FILE *fout, int istext)
 {
   int c, linelen = 0;
   char line[77], savechar;
@@ -272,7 +272,7 @@ static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
   ctx->buffer[ctx->size++] = c;
 }
 
-static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
+static void encode_base64(struct FgetConv *fc, FILE *fout, int istext)
 {
   struct B64Context ctx;
   int ch, ch1 = EOF;
@@ -295,7 +295,7 @@ static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
   fputc('\n', fout);
 }
 
-static void encode_8bit(FGETCONV *fc, FILE *fout)
+static void encode_8bit(struct FgetConv *fc, FILE *fout)
 {
   int ch;
 
@@ -431,7 +431,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   char *p, boundary[SHORT_STRING];
   char send_charset[SHORT_STRING];
   FILE *fpin = NULL;
-  FGETCONV *fc = NULL;
+  struct FgetConv *fc = NULL;
 
   if (a->type == TYPEMULTIPART)
   {

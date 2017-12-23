@@ -2436,7 +2436,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
   char buf[HUGE_STRING];
   bool complete, armor_header;
-  FGETCONV *fc = NULL;
+  struct FgetConv *fc = NULL;
   char *fname = NULL;
   FILE *fp = NULL;
 
@@ -2675,7 +2675,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       }
       else if (pgpout)
       {
-        FGETCONV *fc = NULL;
+        struct FgetConv *fc = NULL;
         int c;
         rewind(pgpout);
         fc = fgetconv_open(pgpout, "utf-8", Charset, 0);

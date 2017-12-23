@@ -30,7 +30,7 @@
 int mutt_convert_string(char **ps, const char *from, const char *to, int flags);
 
 iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags);
-FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags);
+struct FgetConv *fgetconv_open(FILE *file, const char *from, const char *to, int flags);
 
 /* flags for charset.c:mutt_convert_string(), fgetconv_open(), and
  * mutt_iconv_open(). Note that applying charset-hooks to tocode is

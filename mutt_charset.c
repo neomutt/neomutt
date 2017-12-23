@@ -142,7 +142,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
  *
  * Parameter flags is given as-is to mutt_iconv_open().
  */
-FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
+struct FgetConv *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {
   struct FgetConv *fc = NULL;
   iconv_t cd = (iconv_t) -1;
@@ -163,7 +163,7 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
     fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
   fc->file = file;
   fc->cd = cd;
-  return (FGETCONV *) fc;
+  return fc;
 }
 
 bool mutt_check_charset(const char *s, bool strict)
