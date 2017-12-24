@@ -92,14 +92,14 @@ void                mutt_regex_free(struct Regex **r);
 
 int                 mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct Buffer *err);
 void                mutt_regexlist_free(struct RegexList **rl);
-bool                mutt_regexlist_match(const char *str, struct RegexList *rl);
+bool                mutt_regexlist_match(struct RegexList *rl, const char *str);
 struct RegexList *  mutt_regexlist_new(void);
 int                 mutt_regexlist_remove(struct RegexList **rl, const char *str);
 
 int                 mutt_replacelist_add(struct ReplaceList **rl, const char *pat, const char *templ, struct Buffer *err);
-char *              mutt_replacelist_apply(char *buf, size_t buflen, char *str, struct ReplaceList *rl);
+char *              mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
 void                mutt_replacelist_free(struct ReplaceList **rl);
-bool                mutt_replacelist_match(const char *str, struct ReplaceList *rl, char *buf, int buflen);
+bool                mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
 struct ReplaceList *mutt_replacelist_new(void);
 int                 mutt_replacelist_remove(struct ReplaceList **rl, const char *pat);
 

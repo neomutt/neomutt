@@ -163,7 +163,7 @@ void mutt_regexlist_free(struct RegexList **rl)
   }
 }
 
-bool mutt_regexlist_match(const char *str, struct RegexList *rl)
+bool mutt_regexlist_match(struct RegexList *rl, const char *str)
 {
   if (!str)
     return false;
@@ -312,7 +312,7 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
  * Note this function uses a fixed size buffer of LONG_STRING and so
  * should only be used for visual modifications, such as disp_subj.
  */
-char *mutt_replacelist_apply(char *buf, size_t buflen, char *str, struct ReplaceList *rl)
+char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
   struct ReplaceList *l = NULL;
   static regmatch_t *pmatch = NULL;
@@ -433,7 +433,7 @@ void mutt_replacelist_free(struct ReplaceList **rl)
  * match is performed but the format is not expanded and no assumptions are made
  * about the value of `text` so it may be NULL.
  */
-bool mutt_replacelist_match(const char *str, struct ReplaceList *rl, char *buf, int buflen)
+bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;

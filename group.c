@@ -194,7 +194,7 @@ bool mutt_group_match(struct Group *g, const char *s)
 
   if (s && g)
   {
-    if (mutt_regexlist_match(s, g->rs))
+    if (mutt_regexlist_match(g->rs, s))
       return true;
     for (ap = g->as; ap; ap = ap->next)
       if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
