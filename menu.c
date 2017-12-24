@@ -35,7 +35,6 @@
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"

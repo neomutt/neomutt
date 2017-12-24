@@ -58,7 +58,6 @@
 #include "header.h"
 #include "mbyte.h"
 #include "mutt_charset.h"
-#include "mutt_regex.h"
 #include "parameter.h"
 #include "protos.h"
 #include "tags.h"

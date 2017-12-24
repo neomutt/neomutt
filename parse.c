@@ -38,7 +38,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_charset.h"
-#include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"

@@ -53,7 +53,6 @@
 #include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"

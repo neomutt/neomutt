@@ -36,7 +36,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"

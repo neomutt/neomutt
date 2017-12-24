@@ -1,9 +1,9 @@
 /**
  * @file
- * Constants/structs for handling (lists of) regular expressions
+ * Manage regular expressions
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * A (more) generic interface to regular expression matching
- */
-
 #ifndef _MUTT_REGEX_H
 #define _MUTT_REGEX_H
 
 #include <regex.h>
-#include "where.h"
+#include <stdbool.h>
 
-/* this is a non-standard option supported by Solaris 2.5.x which allows
- * patterns of the form \<...\>
- */
+struct Buffer;
+
+/* ... DT_REGEX */
+#define DT_REGEX_MATCH_CASE 0x010 /**< Case-sensitive matching */
+#define DT_REGEX_ALLOW_NOT  0x020 /**< Regex can begin with '!' */
+
+/* This is a non-standard option supported by Solaris 2.5.x
+ * which allows patterns of the form \<...\> */
 #ifndef REG_WORDS
 #define REG_WORDS 0
 #endif
@@ -62,7 +63,7 @@ struct Regex
 {
   char *pattern;  /**< printable version */
   regex_t *regex; /**< compiled expression */
-  bool not : 1;   /**< do not match */
+  bool not;       /**< do not match */
 };
 
 /**
@@ -85,10 +86,21 @@ struct ReplaceList
   struct ReplaceList *next;
 };
 
-WHERE struct Regex Mask;
-WHERE struct Regex QuoteRegexp;
-WHERE struct Regex ReplyRegexp;
-WHERE struct Regex Smileys;
-WHERE struct Regex GecosMask;
+struct Regex *      mutt_compile_regex(const char *s, int flags);
+struct Regex *      mutt_regex_create(const char *str, int flags, struct Buffer *err);
+void                mutt_free_regex(struct Regex **pp);
+
+int                 mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags, struct Buffer *err);
+void                mutt_free_regex_list(struct RegexList **list);
+bool                mutt_match_regex_list(const char *s, struct RegexList *l);
+struct RegexList *  new_regex_list(void);
+int                 mutt_remove_from_regex_list(struct RegexList **l, const char *str);
+
+int                 add_to_replace_list(struct ReplaceList **list, const char *pat, const char *templ, struct Buffer *err);
+char *              mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist);
+void                mutt_free_replace_list(struct ReplaceList **list);
+bool                mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize);
+struct ReplaceList *new_replace_list(void);
+int                 remove_from_replace_list(struct ReplaceList **list, const char *pat);
 
 #endif /* _MUTT_REGEX_H */

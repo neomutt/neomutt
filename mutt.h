@@ -30,11 +30,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-struct ReplaceList;
-struct RegexList;
-struct State;
 struct ListHead;
-struct TagHead;
 struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
@@ -303,12 +299,7 @@ enum QuadOptionVars
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
-void mutt_free_regex_list(struct RegexList **list);
-void mutt_free_replace_list(struct ReplaceList **list);
 bool mutt_matches_ignore(const char *s);
-
-/* add an element to a list */
-int mutt_remove_from_regex_list(struct RegexList **l, const char *str);
 
 void mutt_init(int skip_sys_rc, struct ListHead *commands);
 

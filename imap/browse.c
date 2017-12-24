@@ -47,7 +47,6 @@
 #include "globals.h"
 #include "imap/imap.h"
 #include "mutt_account.h"
-#include "mutt_regex.h"
 #include "options.h"
 #include "protos.h"
 #ifdef ENABLE_NLS

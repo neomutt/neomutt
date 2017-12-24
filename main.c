@@ -49,7 +49,6 @@
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
 #include "mutt_socket.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

@@ -53,7 +53,6 @@
 #include "mime.h"
 #include "mutt_charset.h"
 #include "mutt_curses.h"
-#include "mutt_regex.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "parameter.h"

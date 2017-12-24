@@ -42,6 +42,7 @@
  * -# @subpage md5
  * -# @subpage memory
  * -# @subpage message
+ * -# @subpage regex
  * -# @subpage sha1
  * -# @subpage signal
  * -# @subpage string
@@ -64,6 +65,7 @@
 #include "md5.h"
 #include "memory.h"
 #include "message.h"
+#include "regex3.h"
 #include "sha1.h"
 #include "signal2.h"
 #include "string2.h"
