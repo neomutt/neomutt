@@ -41,13 +41,13 @@
 #include "regex3.h"
 #include "string2.h"
 
-struct Regex *mutt_compile_regex(const char *s, int flags)
+struct Regex *mutt_regex_compile(const char *s, int flags)
 {
   struct Regex *pp = mutt_mem_calloc(1, sizeof(struct Regex));
   pp->pattern = mutt_str_strdup(s);
   pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
   if (REGCOMP(pp->regex, NONULL(s), flags) != 0)
-    mutt_free_regex(&pp);
+    mutt_regex_free(&pp);
 
   return pp;
 }
@@ -86,14 +86,14 @@ struct Regex *mutt_regex_create(const char *str, int flags, struct Buffer *err)
   if ((rc != 0) && err)
   {
     regerror(rc, reg->regex, err->data, err->dsize);
-    mutt_free_regex(&reg);
+    mutt_regex_free(&reg);
     return NULL;
   }
 
   return reg;
 }
 
-void mutt_free_regex(struct Regex **pp)
+void mutt_regex_free(struct Regex **pp)
 {
   FREE(&(*pp)->pattern);
   regfree((*pp)->regex);
@@ -101,8 +101,7 @@ void mutt_free_regex(struct Regex **pp)
   FREE(pp);
 }
 
-int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
-                           struct Buffer *err)
+int mutt_regexlist_add(struct RegexList **list, const char *s, int flags, struct Buffer *err)
 {
   struct RegexList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
@@ -110,7 +109,7 @@ int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
   if (!s || !*s)
     return 0;
 
-  rx = mutt_compile_regex(s, flags);
+  rx = mutt_regex_compile(s, flags);
   if (!rx)
   {
     snprintf(err->data, err->dsize, "Bad regex: %s\n", s);
@@ -132,7 +131,7 @@ int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
 
   if (!*list || last)
   {
-    t = new_regex_list();
+    t = mutt_regexlist_new();
     t->regex = rx;
     if (last)
     {
@@ -143,12 +142,12 @@ int mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags,
       *list = last = t;
   }
   else /* duplicate */
-    mutt_free_regex(&rx);
+    mutt_regex_free(&rx);
 
   return 0;
 }
 
-void mutt_free_regex_list(struct RegexList **list)
+void mutt_regexlist_free(struct RegexList **list)
 {
   struct RegexList *p = NULL;
 
@@ -158,12 +157,12 @@ void mutt_free_regex_list(struct RegexList **list)
   {
     p = *list;
     *list = (*list)->next;
-    mutt_free_regex(&p->regex);
+    mutt_regex_free(&p->regex);
     FREE(&p);
   }
 }
 
-bool mutt_match_regex_list(const char *s, struct RegexList *l)
+bool mutt_regexlist_match(const char *s, struct RegexList *l)
 {
   if (!s)
     return false;
@@ -180,19 +179,19 @@ bool mutt_match_regex_list(const char *s, struct RegexList *l)
   return false;
 }
 
-struct RegexList *new_regex_list(void)
+struct RegexList *mutt_regexlist_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct RegexList));
 }
 
-int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
+int mutt_regexlist_remove(struct RegexList **l, const char *str)
 {
   struct RegexList *p = NULL, *last = NULL;
   int rc = -1;
 
   if (mutt_str_strcmp("*", str) == 0)
   {
-    mutt_free_regex_list(l); /* ``unCMD *'' means delete all current entries */
+    mutt_regexlist_free(l); /* ``unCMD *'' means delete all current entries */
     rc = 0;
   }
   else
@@ -203,7 +202,7 @@ int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
     {
       if (mutt_str_strcasecmp(str, p->regex->pattern) == 0)
       {
-        mutt_free_regex(&p->regex);
+        mutt_regex_free(&p->regex);
         if (last)
           last->next = p->next;
         else
@@ -221,8 +220,8 @@ int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
   return rc;
 }
 
-int add_to_replace_list(struct ReplaceList **list, const char *pat,
-                        const char *templ, struct Buffer *err)
+int mutt_replacelist_add(struct ReplaceList **list, const char *pat,
+                         const char *templ, struct Buffer *err)
 {
   struct ReplaceList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
@@ -232,7 +231,7 @@ int add_to_replace_list(struct ReplaceList **list, const char *pat,
   if (!pat || !*pat || !templ)
     return 0;
 
-  rx = mutt_compile_regex(pat, REG_ICASE);
+  rx = mutt_regex_compile(pat, REG_ICASE);
   if (!rx)
   {
     snprintf(err->data, err->dsize, _("Bad regex: %s"), pat);
@@ -263,7 +262,7 @@ int add_to_replace_list(struct ReplaceList **list, const char *pat,
    */
   if (!t)
   {
-    t = new_replace_list();
+    t = mutt_replacelist_new();
     t->regex = rx;
     rx = NULL;
     if (last)
@@ -272,7 +271,7 @@ int add_to_replace_list(struct ReplaceList **list, const char *pat,
       *list = t;
   }
   else
-    mutt_free_regex(&rx);
+    mutt_regex_free(&rx);
 
   /* Now t is the ReplaceList* that we want to modify. It is prepared. */
   t->template = mutt_str_strdup(templ);
@@ -297,7 +296,7 @@ int add_to_replace_list(struct ReplaceList **list, const char *pat,
   {
     snprintf(err->data, err->dsize, "%s", _("Not enough subexpressions for "
                                             "template"));
-    remove_from_replace_list(list, pat);
+    mutt_replacelist_remove(list, pat);
     return -1;
   }
 
@@ -307,12 +306,12 @@ int add_to_replace_list(struct ReplaceList **list, const char *pat,
 }
 
 /**
- * mutt_apply_replace - Apply replacements to a buffer
+ * mutt_replacelist_apply - Apply replacements to a buffer
  *
  * Note this function uses a fixed size buffer of LONG_STRING and so
  * should only be used for visual modifications, such as disp_subj.
  */
-char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist)
+char *mutt_replacelist_apply(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist)
 {
   struct ReplaceList *l = NULL;
   static regmatch_t *pmatch = NULL;
@@ -403,7 +402,7 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
   return dbuf;
 }
 
-void mutt_free_replace_list(struct ReplaceList **list)
+void mutt_replacelist_free(struct ReplaceList **list)
 {
   struct ReplaceList *p = NULL;
 
@@ -413,14 +412,14 @@ void mutt_free_replace_list(struct ReplaceList **list)
   {
     p = *list;
     *list = (*list)->next;
-    mutt_free_regex(&p->regex);
+    mutt_regex_free(&p->regex);
     FREE(&p->template);
     FREE(&p);
   }
 }
 
 /**
- * mutt_match_spam_list - Does a string match a spam pattern
+ * mutt_replacelist_match - Does a string match a spam pattern
  * @param s        String to check
  * @param l        List of spam patterns
  * @param text     Buffer to save match
@@ -433,7 +432,7 @@ void mutt_free_replace_list(struct ReplaceList **list)
  * match is performed but the format is not expanded and no assumptions are made
  * about the value of `text` so it may be NULL.
  */
-bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize)
+bool mutt_replacelist_match(const char *s, struct ReplaceList *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
@@ -505,12 +504,12 @@ bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int 
   return false;
 }
 
-struct ReplaceList *new_replace_list(void)
+struct ReplaceList *mutt_replacelist_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct ReplaceList));
 }
 
-int remove_from_replace_list(struct ReplaceList **list, const char *pat)
+int mutt_replacelist_remove(struct ReplaceList **list, const char *pat)
 {
   struct ReplaceList *cur = NULL, *prev = NULL;
   int nremoved = 0;
@@ -522,7 +521,7 @@ int remove_from_replace_list(struct ReplaceList **list, const char *pat)
   if (cur->regex && (mutt_str_strcmp(cur->regex->pattern, pat) == 0))
   {
     *list = cur->next;
-    mutt_free_regex(&cur->regex);
+    mutt_regex_free(&cur->regex);
     FREE(&cur->template);
     FREE(&cur);
     return 1;
@@ -534,7 +533,7 @@ int remove_from_replace_list(struct ReplaceList **list, const char *pat)
     if (mutt_str_strcmp(cur->regex->pattern, pat) == 0)
     {
       prev->next = cur->next;
-      mutt_free_regex(&cur->regex);
+      mutt_regex_free(&cur->regex);
       FREE(&cur->template);
       FREE(&cur);
       cur = prev->next;

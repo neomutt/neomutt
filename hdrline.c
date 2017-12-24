@@ -72,17 +72,17 @@ enum FlagChars
 
 bool mutt_is_mail_list(struct Address *addr)
 {
-  if (!mutt_match_regex_list(addr->mailbox, UnMailLists))
-    return mutt_match_regex_list(addr->mailbox, MailLists);
+  if (!mutt_regexlist_match(addr->mailbox, UnMailLists))
+    return mutt_regexlist_match(addr->mailbox, MailLists);
   return false;
 }
 
 bool mutt_is_subscribed_list(struct Address *addr)
 {
-  if (!mutt_match_regex_list(addr->mailbox, UnMailLists) &&
-      !mutt_match_regex_list(addr->mailbox, UnSubscribedLists))
+  if (!mutt_regexlist_match(addr->mailbox, UnMailLists) &&
+      !mutt_regexlist_match(addr->mailbox, UnSubscribedLists))
   {
-    return mutt_match_regex_list(addr->mailbox, SubscribedLists);
+    return mutt_regexlist_match(addr->mailbox, SubscribedLists);
   }
   return false;
 }
@@ -392,7 +392,7 @@ static char *apply_subject_mods(struct Envelope *env)
   if (env->subject == NULL || *env->subject == '\0')
     return env->disp_subj = NULL;
 
-  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRegexList);
+  env->disp_subj = mutt_replacelist_apply(NULL, 0, env->subject, SubjectRegexList);
   return env->disp_subj;
 }
 

@@ -86,21 +86,21 @@ struct ReplaceList
   struct ReplaceList *next;
 };
 
-struct Regex *      mutt_compile_regex(const char *s, int flags);
+struct Regex *      mutt_regex_compile(const char *s, int flags);
 struct Regex *      mutt_regex_create(const char *str, int flags, struct Buffer *err);
-void                mutt_free_regex(struct Regex **pp);
+void                mutt_regex_free(struct Regex **pp);
 
-int                 mutt_add_to_regex_list(struct RegexList **list, const char *s, int flags, struct Buffer *err);
-void                mutt_free_regex_list(struct RegexList **list);
-bool                mutt_match_regex_list(const char *s, struct RegexList *l);
-struct RegexList *  new_regex_list(void);
-int                 mutt_remove_from_regex_list(struct RegexList **l, const char *str);
+int                 mutt_regexlist_add(struct RegexList **list, const char *s, int flags, struct Buffer *err);
+void                mutt_regexlist_free(struct RegexList **list);
+bool                mutt_regexlist_match(const char *s, struct RegexList *l);
+struct RegexList *  mutt_regexlist_new(void);
+int                 mutt_regexlist_remove(struct RegexList **l, const char *str);
 
-int                 add_to_replace_list(struct ReplaceList **list, const char *pat, const char *templ, struct Buffer *err);
-char *              mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist);
-void                mutt_free_replace_list(struct ReplaceList **list);
-bool                mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize);
-struct ReplaceList *new_replace_list(void);
-int                 remove_from_replace_list(struct ReplaceList **list, const char *pat);
+int                 mutt_replacelist_add(struct ReplaceList **list, const char *pat, const char *templ, struct Buffer *err);
+char *              mutt_replacelist_apply(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist);
+void                mutt_replacelist_free(struct ReplaceList **list);
+bool                mutt_replacelist_match(const char *s, struct ReplaceList *l, char *text, int textsize);
+struct ReplaceList *mutt_replacelist_new(void);
+int                 mutt_replacelist_remove(struct ReplaceList **list, const char *pat);
 
 #endif /* _MUTT_REGEX_H */
