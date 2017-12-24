@@ -71,8 +71,8 @@ struct Regex
  */
 struct RegexList
 {
-  struct Regex *regex;
-  struct RegexList *next;
+  struct Regex *regex;    /**< Regex containing a regular expression */
+  struct RegexList *next; /**< Next item in list */
 };
 
 /**
@@ -80,10 +80,10 @@ struct RegexList
  */
 struct ReplaceList
 {
-  struct Regex *regex;
-  int nmatch;
-  char *template;
-  struct ReplaceList *next;
+  struct Regex *regex;      /**< Regex containing a regular expression */
+  int nmatch;               /**< Match the 'nth' occurrence (0 means the whole expression) */
+  char *template;           /**< Template to match */
+  struct ReplaceList *next; /**< Next item in list */
 };
 
 struct Regex *      mutt_regex_compile(const char *str, int flags);

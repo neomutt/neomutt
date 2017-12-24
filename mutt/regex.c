@@ -27,6 +27,20 @@
  *
  * | Function                  | Description
  * | :------------------------ | :------------------------------------------
+ * | mutt_regexlist_add()      | Compile a regex string and add it to a list
+ * | mutt_regexlist_free()     | Free a RegexList object
+ * | mutt_regexlist_match()    | Does a string match any Regex in the list?
+ * | mutt_regexlist_new()      | Create a new RegexList
+ * | mutt_regexlist_remove()   | Remove a Regex from a list
+ * | mutt_regex_compile()      | Create an Regex from a string
+ * | mutt_regex_create()       | Create an Regex from a string
+ * | mutt_regex_free()         | Free a Regex object
+ * | mutt_replacelist_add()    | Add a pattern and a template to a list
+ * | mutt_replacelist_apply()  | Apply replacements to a buffer
+ * | mutt_replacelist_free()   | Free a ReplaceList object
+ * | mutt_replacelist_match()  | Does a string match a spam pattern
+ * | mutt_replacelist_new()    | Create a new ReplaceList
+ * | mutt_replacelist_remove() | Remove a pattern from a list
  */
 
 #include "config.h"
@@ -41,6 +55,13 @@
 #include "regex3.h"
 #include "string2.h"
 
+/**
+ * mutt_regex_compile - Create an Regex from a string
+ * @param str   Regular expression
+ * @param flags Type flags, e.g. #REG_ICASE
+ * @retval ptr New Regex object
+ * @retval NULL Error
+ */
 struct Regex *mutt_regex_compile(const char *str, int flags)
 {
   struct Regex *r = mutt_mem_calloc(1, sizeof(struct Regex));
@@ -93,8 +114,15 @@ struct Regex *mutt_regex_create(const char *str, int flags, struct Buffer *err)
   return reg;
 }
 
+/**
+ * mutt_regex_free - Free a Regex object
+ * @param r Regex to free
+ */
 void mutt_regex_free(struct Regex **r)
 {
+  if (!r || !*r)
+    return;
+
   FREE(&(*r)->pattern);
   if ((*r)->regex)
     regfree((*r)->regex);
@@ -102,6 +130,15 @@ void mutt_regex_free(struct Regex **r)
   FREE(r);
 }
 
+/**
+ * mutt_regexlist_add - Compile a regex string and add it to a list
+ * @param rl    RegexList to add to
+ * @param str   String to compile into a regex
+ * @param flags Flags
+ * @param err   Buffer for error messages
+ * @retval 0  Success, Regex compiled and added to the list
+ * @retval -1 Error, see message in 'err'
+ */
 int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct Buffer *err)
 {
   struct RegexList *t = NULL, *last = NULL;
@@ -148,6 +185,10 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
   return 0;
 }
 
+/**
+ * mutt_regexlist_free - Free a RegexList object
+ * @param rl RegexList to free
+ */
 void mutt_regexlist_free(struct RegexList **rl)
 {
   struct RegexList *p = NULL;
@@ -163,6 +204,12 @@ void mutt_regexlist_free(struct RegexList **rl)
   }
 }
 
+/**
+ * mutt_regexlist_match - Does a string match any Regex in the list?
+ * @param rl  RegexList to match against
+ * @param str String to compare
+ * @retval true String matches one of the Regexes in the list
+ */
 bool mutt_regexlist_match(struct RegexList *rl, const char *str)
 {
   if (!str)
@@ -180,11 +227,24 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
   return false;
 }
 
+/**
+ * mutt_regexlist_new - Create a new RegexList
+ * @retval ptr New RegexList object
+ */
 struct RegexList *mutt_regexlist_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct RegexList));
 }
 
+/**
+ * mutt_regexlist_remove - Remove a Regex from a list
+ * @param rl  RegexList to alter
+ * @param str Pattern to remove from the list
+ * @retval 0  Success, pattern was found and removed from the list
+ * @retval -1 Error, pattern wasn't found
+ *
+ * If the pattern is "*", then all the Regexes are removed.
+ */
 int mutt_regexlist_remove(struct RegexList **rl, const char *str)
 {
   struct RegexList *p = NULL, *last = NULL;
@@ -192,7 +252,7 @@ int mutt_regexlist_remove(struct RegexList **rl, const char *str)
 
   if (mutt_str_strcmp("*", str) == 0)
   {
-    mutt_regexlist_free(rl); /* ``unCMD *'' means delete all current entries */
+    mutt_regexlist_free(rl); /* "unCMD *" means delete all current entries */
     rc = 0;
   }
   else
@@ -221,6 +281,15 @@ int mutt_regexlist_remove(struct RegexList **rl, const char *str)
   return rc;
 }
 
+/**
+ * mutt_replacelist_add - Add a pattern and a template to a list
+ * @param rl    ReplaceList to add to
+ * @param pat   Pattern to compile into a regex
+ * @param templ Template string to associate with the pattern
+ * @param err   Buffer for error messages
+ * @retval 0  Success, pattern added to the ReplaceList
+ * @retval -1 Error, see message in 'err'
+ */
 int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
                          const char *templ, struct Buffer *err)
 {
@@ -308,9 +377,16 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
 
 /**
  * mutt_replacelist_apply - Apply replacements to a buffer
+ * @param rl     ReplaceList to apply
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param str    String to manipulate
+ * @retval ptr Pointer to 'buf'
  *
- * Note this function uses a fixed size buffer of LONG_STRING and so
- * should only be used for visual modifications, such as disp_subj.
+ * If 'buf' is NULL, a new string will be returned.  It must be freed by the caller.
+ *
+ * @note This function uses a fixed size buffer of LONG_STRING and so should
+ * only be used for visual modifications, such as disp_subj.
  */
 char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
@@ -403,6 +479,10 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
   return buf;
 }
 
+/**
+ * mutt_replacelist_free - Free a ReplaceList object
+ * @param rl ReplaceList to free
+ */
 void mutt_replacelist_free(struct ReplaceList **rl)
 {
   struct ReplaceList *p = NULL;
@@ -420,18 +500,17 @@ void mutt_replacelist_free(struct ReplaceList **rl)
 }
 
 /**
- * mutt_replacelist_match - Does a string match a spam pattern
- * @param s        String to check
- * @param l        List of spam patterns
- * @param text     Buffer to save match
- * @param textsize Buffer length
- * @retval true if \a s matches a pattern in \a l
- * @retval false otherwise
+ * mutt_replacelist_match - Does a string match a pattern?
+ * @param rl     ReplaceList of patterns
+ * @param str    String to check
+ * @param buf    Buffer to save match
+ * @param buflen Buffer length
+ * @retval true String matches a patterh in the ReplaceList
  *
  * Match a string against the patterns defined by the 'spam' command and output
- * the expanded format into `text` when there is a match.  If textsize<=0, the
- * match is performed but the format is not expanded and no assumptions are made
- * about the value of `text` so it may be NULL.
+ * the expanded format into `buf` when there is a match.  If buflen<=0, the
+ * match is performed but the format is not expanded and no assumptions are
+ * made about the value of `buf` so it may be NULL.
  */
 bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
 {
@@ -505,11 +584,21 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
   return false;
 }
 
+/**
+ * mutt_replacelist_new - Create a new ReplaceList
+ * @retval ptr New ReplaceList
+ */
 struct ReplaceList *mutt_replacelist_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct ReplaceList));
 }
 
+/**
+ * mutt_replacelist_remove - Remove a pattern from a list
+ * @param rl  ReplaceList to modify
+ * @param pat Pattern to remove
+ * @retval num Number of matching patterns removed
+ */
 int mutt_replacelist_remove(struct ReplaceList **rl, const char *pat)
 {
   struct ReplaceList *cur = NULL, *prev = NULL;
