@@ -230,7 +230,7 @@ static char *binary_fingerprint_to_string(unsigned char *buf, size_t length)
 
   pf = fingerprint = mutt_mem_malloc((length * 2) + 1);
 
-  for (int i = 0; i < length; i++)
+  for (size_t i = 0; i < length; i++)
   {
     sprintf(pf, "%02X", buf[i]);
     pf += 2;
@@ -896,7 +896,8 @@ int main(int argc, char *const argv[])
     mutt_str_strfcpy(kring, tmp_kring, sizeof(kring));
   else
   {
-    if ((env_pgppath = getenv("PGPPATH")))
+    env_pgppath = getenv("PGPPATH");
+    if (env_pgppath)
       mutt_str_strfcpy(pgppath, env_pgppath, sizeof(pgppath));
     else if ((env_home = getenv("HOME")))
       snprintf(pgppath, sizeof(pgppath), "%s/.pgp", env_home);

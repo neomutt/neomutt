@@ -227,18 +227,16 @@ const struct MimeNames PreferredMIMENames[] =
  * mutt_cs_fgetconv_close - Close an fgetconv handle
  * @param handle fgetconv handle
  */
-void mutt_cs_fgetconv_close(FGETCONV **handle)
+void mutt_cs_fgetconv_close(struct FgetConv **fc)
 {
-  struct FgetConv *fc = (struct FgetConv *) *handle;
-
-  if (fc->cd != (iconv_t) -1)
-    iconv_close(fc->cd);
-  FREE(handle);
+  if ((*fc)->cd != (iconv_t) -1)
+    iconv_close((*fc)->cd);
+  FREE(fc);
 }
 
 /**
  * mutt_cs_fgetconv - Convert a file's character set
- * @param handle fgetconv handle
+ * @param fc FgetConv handle
  * @retval num Next character in the converted file
  * @retval EOF Error
  *
@@ -246,10 +244,8 @@ void mutt_cs_fgetconv_close(FGETCONV **handle)
  * Each call to this function will return one converted character.
  * The buffer is refilled automatically when empty.
  */
-int mutt_cs_fgetconv(FGETCONV *handle)
+int mutt_cs_fgetconv(struct FgetConv *fc)
 {
-  struct FgetConv *fc = (struct FgetConv *) handle;
-
   if (!fc)
     return EOF;
   if (fc->cd == (iconv_t) -1)
@@ -300,22 +296,22 @@ int mutt_cs_fgetconv(FGETCONV *handle)
 
 /**
  * mutt_cs_fgetconvs - Convert a file's charset into a string buffer
- * @param buf    Buffer for result
- * @param l      Length of buffer
- * @param handle fgetconv handle
+ * @param buf Buffer for result
+ * @param l   Length of buffer
+ * @param fc  FgetConv handle
  * @retval ptr  Result buffer on success
  * @retval NULL Error
  *
  * Read a file into a buffer, converting the character set as it goes.
  */
-char *mutt_cs_fgetconvs(char *buf, size_t l, FGETCONV *handle)
+char *mutt_cs_fgetconvs(char *buf, size_t l, struct FgetConv *fc)
 {
   int c;
   size_t r;
 
   for (r = 0; r + 1 < l;)
   {
-    c = mutt_cs_fgetconv(handle);
+    c = mutt_cs_fgetconv(fc);
     if (c == EOF)
       break;
     buf[r++] = (char) c;
@@ -345,7 +341,8 @@ void mutt_cs_canonical_charset(char *dest, size_t dlen, const char *name)
   char in[LONG_STRING], scratch[LONG_STRING];
 
   mutt_str_strfcpy(in, name, sizeof(in));
-  if ((ext = strchr(in, '/')))
+  ext = strchr(in, '/');
+  if (ext)
     *ext++ = '\0';
 
   if ((mutt_str_strcasecmp(in, "utf-8") == 0) ||
@@ -419,7 +416,7 @@ int mutt_cs_chscmp(const char *s, const char *chs)
  * mutt_cs_get_default_charset - Get the default character set
  * @retval ptr Name of the default character set
  *
- * @note This returns a pointer to a static buffer.  Do not free it.
+ * @warning This returns a pointer to a static buffer.  Do not free it.
  */
 char *mutt_cs_get_default_charset(void)
 {

@@ -483,7 +483,8 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   tocode = fromcode;
   if (icode)
   {
-    if ((tocode1 = mutt_choose_charset(icode, charsets, u, ulen, 0, 0)))
+    tocode1 = mutt_choose_charset(icode, charsets, u, ulen, 0, 0);
+    if (tocode1)
       tocode = tocode1;
     else
     {
@@ -677,7 +678,8 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
       case 2:
         /* ignore language specification a la RFC2231 */
         t = pp1;
-        if ((t1 = memchr(pp, '*', t - pp)))
+        t1 = memchr(pp, '*', t - pp);
+        if (t1)
           t = t1;
         charset = mutt_str_substr_dup(pp, t);
         break;

@@ -57,7 +57,8 @@ static const struct Binding *help_lookup_function(int op, int menu)
         return (&OpGeneric[i]);
   }
 
-  if ((map = km_get_table(menu)))
+  map = km_get_table(menu);
+  if (map)
   {
     for (int i = 0; map[i].name; i++)
       if (map[i].op == op)
@@ -224,7 +225,8 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
   /* don't try to press string into one line with less than 40 characters.
      The double parenthesis avoids a gcc warning, sigh ... */
-  if ((split = MuttIndexWindow->cols < 40))
+  split = MuttIndexWindow->cols;
+  if (split < 40)
   {
     col_a = col = 0;
     col_b = LONG_STRING;

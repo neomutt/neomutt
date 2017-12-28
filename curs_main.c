@@ -23,9 +23,6 @@
 #include "config.h"
 #include <assert.h>
 #include <ctype.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -55,6 +52,9 @@
 #include "sort.h"
 #include "tags.h"
 #include "thread.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
@@ -111,7 +111,7 @@ static const char *NoVisible = N_("No visible messages.");
   if (Context && menu->current >= Context->vcount)                             \
   {                                                                            \
     mutt_flushinp();                                                           \
-    mutt_error(_(NoVisible));                                                 \
+    mutt_error(_(NoVisible));                                                  \
     break;                                                                     \
   }
 
@@ -499,9 +499,10 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
    * switch statement would need to be run. */
   mutt_folder_hook(buf);
 
-  if ((Context = mx_open_mailbox(
-           buf, (option(OPT_READ_ONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ? MUTT_READONLY : 0,
-           NULL)) != NULL)
+  Context = mx_open_mailbox(
+      buf, (option(OPT_READ_ONLY) || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0,
+      NULL);
+  if (Context)
   {
     menu->current = ci_first_message();
   }

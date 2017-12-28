@@ -25,9 +25,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -37,6 +34,7 @@
 #include <wchar.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "pager.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"
@@ -55,7 +53,6 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pager.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
@@ -64,6 +61,9 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
+#endif
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
@@ -1545,8 +1545,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
     goto out; /* fake display */
   }
 
-  if ((b_read = fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt,
-                            &buflen, &buf_ready)) < 0)
+  b_read = fill_buffer(f, last_pos, (*line_info)[n].offset, &buf, &fmt, &buflen, &buf_ready);
+  if (b_read < 0)
   {
     if (change_last)
       (*last)--;
@@ -1807,10 +1807,12 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (Resize)
     {
-      if ((rd->search_compiled = Resize->search_compiled))
+      rd->search_compiled = Resize->search_compiled;
+      if (rd->search_compiled)
       {
-        if ((err = REGCOMP(&rd->search_re, rd->searchbuf,
-                           REG_NEWLINE | mutt_which_case(rd->searchbuf))) != 0)
+        err = REGCOMP(&rd->search_re, rd->searchbuf,
+                      REG_NEWLINE | mutt_which_case(rd->searchbuf));
+        if (err != 0)
         {
           regerror(err, &rd->search_re, buffer, sizeof(buffer));
           mutt_error("%s", buffer);
@@ -2499,8 +2501,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           }
         }
 
-        if ((err = REGCOMP(&rd.search_re, searchbuf,
-                           REG_NEWLINE | mutt_which_case(searchbuf))) != 0)
+        err = REGCOMP(&rd.search_re, searchbuf, REG_NEWLINE | mutt_which_case(searchbuf));
+        if (err != 0)
         {
           regerror(err, &rd.search_re, buffer, sizeof(buffer));
           mutt_error("%s", buffer);

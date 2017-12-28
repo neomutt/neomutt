@@ -89,7 +89,8 @@ static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
   *t = '\0';
   mutt_str_strfcpy(charset, value, chslen);
 
-  if ((u = strchr(t + 1, '\'')))
+  u = strchr(t + 1, '\'');
+  if (u)
     return u + 1;
   else
     return t + 1;
@@ -177,7 +178,8 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
 
     mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
 
-    if ((encoded = par->encoded))
+    encoded = par->encoded;
+    if (encoded != 0)
       valp = rfc2231_get_charset(par->value, charset, sizeof(charset));
     else
       valp = par->value;
@@ -195,7 +197,8 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
 
       q = par->next;
       rfc2231_free_parameter(&par);
-      if ((par = q))
+      par = q;
+      if (par)
         valp = par->value;
     } while (par && (strcmp(par->attribute, attribute) == 0));
 

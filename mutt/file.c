@@ -928,7 +928,7 @@ time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
  *
- * mutt_file_dirname() returns a static string which must not be free()'d.
+ * @warning mutt_file_dirname() returns a static string which must not be free()'d.
  */
 const char *mutt_file_dirname(const char *p)
 {

@@ -34,9 +34,6 @@
  */
 
 #include "config.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -53,6 +50,9 @@
 #include "mutt_regex.h"
 #include "options.h"
 #include "protos.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /**
  * add_folder - Format and add an IMAP folder to the browser

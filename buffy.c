@@ -146,7 +146,8 @@ static int test_new_folder(const char *path)
   if (typ != MUTT_MBOX && typ != MUTT_MMDF)
     return 0;
 
-  if ((f = fopen(path, "rb")))
+  f = fopen(path, "rb");
+  if (f)
   {
     rc = test_last_status_new(f);
     mutt_file_fclose(&f);

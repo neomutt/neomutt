@@ -320,7 +320,8 @@ static int compare_key_address(const void *a, const void *b)
   struct PgpUid **s = (struct PgpUid **) a;
   struct PgpUid **t = (struct PgpUid **) b;
 
-  if ((r = mutt_str_strcasecmp((*s)->addr, (*t)->addr)))
+  r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
+  if (r != 0)
     return r > 0;
   else
     return (mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
@@ -340,8 +341,8 @@ static int compare_keyid(const void *a, const void *b)
   struct PgpUid **s = (struct PgpUid **) a;
   struct PgpUid **t = (struct PgpUid **) b;
 
-  if ((r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
-                               pgp_fpr_or_lkeyid((*t)->parent))))
+  r = mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
+  if (r != 0)
     return r > 0;
   else
     return (mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0);
@@ -358,8 +359,9 @@ static int compare_key_date(const void *a, const void *b)
   struct PgpUid **s = (struct PgpUid **) a;
   struct PgpUid **t = (struct PgpUid **) b;
 
-  if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
-    return r > 0;
+  r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
+  if (r != 0)
+    return (r > 0);
   return (mutt_str_strcasecmp((*s)->addr, (*t)->addr) > 0);
 }
 
@@ -375,17 +377,22 @@ static int compare_key_trust(const void *a, const void *b)
   struct PgpUid **s = (struct PgpUid **) a;
   struct PgpUid **t = (struct PgpUid **) b;
 
-  if ((r = (((*s)->parent->flags & (KEYFLAG_RESTRICTIONS)) -
-            ((*t)->parent->flags & (KEYFLAG_RESTRICTIONS)))))
-    return r > 0;
-  if ((r = ((*s)->trust - (*t)->trust)))
-    return r < 0;
-  if ((r = ((*s)->parent->keylen - (*t)->parent->keylen)))
-    return r < 0;
-  if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
-    return r < 0;
-  if ((r = mutt_str_strcasecmp((*s)->addr, (*t)->addr)))
-    return r > 0;
+  r = (((*s)->parent->flags & (KEYFLAG_RESTRICTIONS)) -
+       ((*t)->parent->flags & (KEYFLAG_RESTRICTIONS)));
+  if (r != 0)
+    return (r > 0);
+  r = ((*s)->trust - (*t)->trust);
+  if (r != 0)
+    return (r < 0);
+  r = ((*s)->parent->keylen - (*t)->parent->keylen);
+  if (r != 0)
+    return (r < 0);
+  r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
+  if (r != 0)
+    return (r < 0);
+  r = mutt_str_strcasecmp((*s)->addr, (*t)->addr);
+  if (r != 0)
+    return (r > 0);
   return (mutt_str_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent),
                               pgp_fpr_or_lkeyid((*t)->parent)) > 0);
 }
@@ -579,8 +586,9 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",
                  pgp_fpr_or_lkeyid(pgp_principal_key(KeyTable[menu->current]->parent)));
 
-        if ((thepid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
-                                            fileno(devnull), tmpbuf)) == -1)
+        thepid = pgp_invoke_verify_key(NULL, NULL, NULL, -1, fileno(fp),
+                                       fileno(devnull), tmpbuf);
+        if (thepid == -1)
         {
           mutt_perror(_("Can't create filter"));
           unlink(tempfile);
@@ -707,7 +715,8 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, en
       }
     }
 
-    if ((key = pgp_getkeybystr(resp, abilities, keyring)))
+    key = pgp_getkeybystr(resp, abilities, keyring);
+    if (key)
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
@@ -764,8 +773,8 @@ struct Body *pgp_make_key_attachment(char *tempf)
 
   mutt_message(_("Invoking PGP..."));
 
-  if ((thepid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(tempfp),
-                                  fileno(devnull), tmp)) == -1)
+  thepid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(tempfp), fileno(devnull), tmp);
+  if (thepid == -1)
   {
     mutt_perror(_("Can't create filter"));
     unlink(tempf);
@@ -938,7 +947,8 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
       /*
        * Else: Ask the user.
        */
-      if ((k = pgp_select_key(matches, a, NULL)))
+      k = pgp_select_key(matches, a, NULL);
+      if (k)
         pgp_remove_key(&matches, k);
     }
 
@@ -1025,7 +1035,8 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyrin
 
   if (matches)
   {
-    if ((k = pgp_select_key(matches, NULL, p)))
+    k = pgp_select_key(matches, NULL, p);
+    if (k)
       pgp_remove_key(&matches, k);
 
     pgp_free_key(&matches);

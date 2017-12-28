@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
+#include "debug.h"
 #include "memory.h"
 #include "string2.h"
 
@@ -73,6 +74,8 @@ struct Buffer *mutt_buffer_new(void)
  */
 struct Buffer *mutt_buffer_init(struct Buffer *b)
 {
+  if (!b)
+    return NULL;
   memset(b, 0, sizeof(struct Buffer));
   return b;
 }
@@ -86,6 +89,8 @@ struct Buffer *mutt_buffer_init(struct Buffer *b)
  */
 void mutt_buffer_reset(struct Buffer *b)
 {
+  if (!b)
+    return;
   memset(b->data, 0, b->dsize);
   b->dptr = b->data;
 }
@@ -212,6 +217,8 @@ int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
  */
 void mutt_buffer_addstr(struct Buffer *buf, const char *s)
 {
+  if (!buf || !s)
+    return;
   mutt_buffer_add(buf, s, mutt_str_strlen(s));
 }
 
@@ -224,5 +231,7 @@ void mutt_buffer_addstr(struct Buffer *buf, const char *s)
  */
 void mutt_buffer_addch(struct Buffer *buf, char c)
 {
+  if (!buf)
+    return;
   mutt_buffer_add(buf, &c, 1);
 }

@@ -151,7 +151,8 @@ static time_t compute_tz(time_t g, struct tm *utc)
 
   t = (((lt->tm_hour - utc->tm_hour) * 60) + (lt->tm_min - utc->tm_min)) * 60;
 
-  if ((yday = (lt->tm_yday - utc->tm_yday)))
+  yday = (lt->tm_yday - utc->tm_yday);
+  if (yday != 0)
   {
     /* This code is optimized to negative timezones (West of Greenwich) */
     if ((yday == -1) || /* UTC passed midnight before localtime */
@@ -478,7 +479,8 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   mutt_str_strfcpy(scratch, s, sizeof(scratch));
 
   /* kill the day of the week, if it exists. */
-  if ((t = strchr(scratch, ',')))
+  t = strchr(scratch, ',');
+  if (t)
     t++;
   else
     t = scratch;

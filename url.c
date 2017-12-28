@@ -105,10 +105,12 @@ static int parse_query_string(struct Url *u, char *src)
   while (src && *src)
   {
     qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
-    if ((k = strchr(src, '&')))
+    k = strchr(src, '&');
+    if (k)
       *k = '\0';
 
-    if ((v = strchr(src, '=')))
+    v = strchr(src, '=');
+    if (v)
     {
       *v = '\0';
       qs->value = v + 1;
@@ -173,23 +175,27 @@ int url_parse(struct Url *u, char *src)
 
   src += 2;
 
-  if ((t = strchr(src, '?')))
+  t = strchr(src, '?');
+  if (t)
   {
     *t++ = '\0';
     if (parse_query_string(u, t) < 0)
       goto err;
   }
 
-  if ((u->path = strchr(src, '/')))
+  u->path = strchr(src, '/');
+  if (u->path)
     *u->path++ = '\0';
 
   if (u->path && url_pct_decode(u->path) < 0)
     goto err;
 
-  if ((t = strrchr(src, '@')))
+  t = strrchr(src, '@');
+  if (t)
   {
     *t = '\0';
-    if ((p = strchr(src, ':')))
+    p = strchr(src, ':');
+    if (p)
     {
       *p = '\0';
       u->pass = p + 1;
@@ -213,7 +219,8 @@ int url_parse(struct Url *u, char *src)
   else
     t = src;
 
-  if ((p = strchr(t, ':')))
+  p = strchr(t, ':');
+  if (p)
   {
     int num;
     *p++ = '\0';
@@ -357,7 +364,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
   if (!tmp)
     return -1;
 
-  if ((headers = strchr(tmp, '?')))
+  headers = strchr(tmp, '?');
+  if (headers)
     *headers++ = '\0';
 
   if (url_pct_decode(tmp) < 0)
@@ -369,7 +377,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   for (; tag; tag = strtok_r(NULL, "&", &p))
   {
-    if ((value = strchr(tag, '=')))
+    value = strchr(tag, '=');
+    if (value)
       *value++ = '\0';
     if (!value || !*value)
       continue;

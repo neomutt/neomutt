@@ -23,9 +23,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,8 +31,8 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
+#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "mutt_charset.h"
@@ -43,6 +40,9 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 struct Address *mutt_lookup_alias(const char *s)
 {
@@ -302,7 +302,8 @@ void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
   if (adr && adr->mailbox)
   {
     mutt_str_strfcpy(tmp, adr->mailbox, sizeof(tmp));
-    if ((pc = strchr(tmp, '@')))
+    pc = strchr(tmp, '@');
+    if (pc)
       *pc = '\0';
   }
   else
@@ -389,7 +390,8 @@ retry_name:
 
   mutt_alias_add_reverse(new);
 
-  if ((t = Aliases))
+  t = Aliases;
+  if (t)
   {
     while (t->next)
       t = t->next;
@@ -402,7 +404,8 @@ retry_name:
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));
-  if ((rc = fopen(buf, "a+")))
+  rc = fopen(buf, "a+");
+  if (rc)
   {
     /* terminate existing file with \n if necessary */
     if (fseek(rc, 0, SEEK_END))

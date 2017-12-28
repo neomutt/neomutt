@@ -325,18 +325,21 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    if ((pc = mutt_param_get("name", ct->parameter)) && !ct->filename)
+    pc = mutt_param_get("name", ct->parameter);
+    if (pc && !ct->filename)
       ct->filename = mutt_str_strdup(pc);
 
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
-    if ((pc = mutt_param_get("conversions", ct->parameter)))
+    pc = mutt_param_get("conversions", ct->parameter);
+    if (pc)
       ct->encoding = mutt_check_encoding(pc);
 #endif
   }
 
   /* Now get the subtype */
-  if ((subtype = strchr(s, '/')))
+  subtype = strchr(s, '/');
+  if (subtype)
   {
     *subtype++ = '\0';
     for (pc = subtype; *pc && !ISSPACE(*pc) && *pc != ';'; pc++)
@@ -410,9 +413,11 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    if ((s = mutt_param_get("filename", (parms = parse_parameters(s)))))
+    s = mutt_param_get("filename", (parms = parse_parameters(s)));
+    if (s)
       mutt_str_replace(&ct->filename, s);
-    if ((s = mutt_param_get("name", parms)))
+    s = mutt_param_get("name", parms);
+    if (s)
       ct->form_name = mutt_str_strdup(s);
     mutt_param_free(&parms);
   }
@@ -439,7 +444,8 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
   while (*(line = mutt_read_rfc822_line(fp, line, &linelen)) != 0)
   {
     /* Find the value of the current header */
-    if ((c = strchr(line, ':')))
+    c = strchr(line, ':');
+    if (c)
     {
       *c = 0;
       c = mutt_str_skip_email_wsp(c + 1);
@@ -745,7 +751,8 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
     if (cur->content->parts)
       break; /* The message was parsed earlier. */
 
-    if ((msg = mx_open_message(ctx, cur->msgno)))
+    msg = mx_open_message(ctx, cur->msgno);
+    if (msg)
     {
       mutt_parse_part(msg->fp, cur->content);
 

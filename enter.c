@@ -547,7 +547,8 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           }
           else if (flags & MUTT_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
           {
-            if ((i = state->curpos))
+            i = state->curpos;
+            if (i != 0)
             {
               for (; i && state->wbuf[i - 1] != ','; i--)
                 ;

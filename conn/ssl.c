@@ -839,7 +839,8 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
 
   /* Try the DNS subjectAltNames. */
   match_found = false;
-  if ((subj_alt_names = X509_get_ext_d2i(x509cert, NID_subject_alt_name, NULL, NULL)))
+  subj_alt_names = X509_get_ext_d2i(x509cert, NID_subject_alt_name, NULL, NULL);
+  if (subj_alt_names)
   {
     subj_alt_names_count = sk_GENERAL_NAME_num(subj_alt_names);
     for (int i = 0; i < subj_alt_names_count; i++)
@@ -1069,7 +1070,8 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
         if (!allow_always)
           break;
         done = 0;
-        if ((fp = fopen(CertificateFile, "a")))
+        fp = fopen(CertificateFile, "a");
+        if (fp)
         {
           if (PEM_write_X509(fp, cert))
             done = 1;

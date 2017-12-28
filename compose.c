@@ -23,9 +23,6 @@
 
 #include "config.h"
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -57,6 +54,9 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
@@ -666,7 +666,8 @@ static unsigned long cum_attachs_size(struct Menu *menu)
     if (!b->content)
       b->content = mutt_get_content_info(b->filename, b);
 
-    if ((info = b->content))
+    info = b->content;
+    if (info)
     {
       switch (b->encoding)
       {
@@ -1319,8 +1320,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
         if (!fcc_set && *fcc)
         {
-          if ((i = query_quadoption(OPT_COPY,
-                                    _("Save a copy of this message?"))) == MUTT_ABORT)
+          i = query_quadoption(OPT_COPY, _("Save a copy of this message?"));
+          if (i == MUTT_ABORT)
             break;
           else if (i == MUTT_NO)
             *fcc = 0;

@@ -678,7 +678,8 @@ void mix_make_chain(struct ListHead *chainhead)
   {
     for (int i = 0; i < chain->cl; i++)
     {
-      if ((j = chain->ch[i]))
+      j = chain->ch[i];
+      if (j != 0)
         t = type2_list[j]->shortname;
       else
         t = "*";

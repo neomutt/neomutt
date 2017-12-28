@@ -22,9 +22,6 @@
  */
 
 #include "config.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -53,6 +50,9 @@
 #include "protos.h"
 #include "rfc1524.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 static void mutt_update_recvattach_menu(struct AttachCtx *actx, struct Menu *menu, int init);
 
@@ -514,8 +514,8 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     }
     else
     {
-      if ((rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile),
-                                     &append, directory)) == -1)
+      rc = mutt_check_overwrite(body->filename, buf, tfile, sizeof(tfile), &append, directory);
+      if (rc == -1)
         return -1;
       else if (rc == 1)
       {

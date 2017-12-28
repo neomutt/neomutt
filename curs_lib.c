@@ -27,9 +27,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <langinfo.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <regex.h>
 #include <stdarg.h>
@@ -55,6 +52,9 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

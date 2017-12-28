@@ -24,9 +24,6 @@
 #include <stddef.h>
 #include <ctype.h>
 #include <iconv.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -55,6 +52,9 @@
 #include "rfc1524.h"
 #include "rfc3676.h"
 #include "state.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000

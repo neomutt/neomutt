@@ -26,9 +26,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <pwd.h>
 #include <regex.h>
@@ -58,19 +55,21 @@
 #include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
-#include "tags.h"
-
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
+#include "tags.h"
 #include "url.h"
-#ifdef USE_IMAP
-#include "imap/imap.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
 #endif
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
+#endif
+#ifdef USE_IMAP
+#include "imap/imap.h"
 #endif
 
 static const char *xdg_env_vars[] = {
@@ -195,10 +194,12 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         else
         {
           struct passwd *pw = NULL;
-          if ((t = strchr(s + 1, '/')))
+          t = strchr(s + 1, '/');
+          if (t)
             *t = 0;
 
-          if ((pw = getpwnam(s + 1)))
+          pw = getpwnam(s + 1);
+          if (pw)
           {
             mutt_str_strfcpy(p, pw->pw_dir, sizeof(p));
             if (t)
@@ -254,7 +255,8 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         struct Header *h = NULL;
         struct Address *alias = NULL;
 
-        if ((alias = mutt_lookup_alias(s + 1)))
+        alias = mutt_lookup_alias(s + 1);
+        if (alias)
         {
           h = mutt_new_header();
           h->env = mutt_env_new();
@@ -765,7 +767,8 @@ void mutt_save_path(char *d, size_t dsize, struct Address *a)
     {
       char *p = NULL;
 
-      if ((p = strpbrk(d, "%@")))
+      p = strpbrk(d, "%@");
+      if (p)
         *p = 0;
     }
     mutt_str_strlower(d);
@@ -1265,7 +1268,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               col++;
             }
           }
-          if (len + wlen > buflen)
+          if ((len + wlen) > buflen)
             len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
           memcpy(wptr, tmp, len);
           wptr += len;
@@ -1330,7 +1333,8 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               *p = '_';
         }
 
-        if ((len = mutt_str_strlen(tmp)) + wlen > buflen)
+        len = mutt_str_strlen(tmp);
+        if ((len + wlen) > buflen)
           len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
 
         memcpy(wptr, tmp, len);

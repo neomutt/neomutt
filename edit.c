@@ -25,9 +25,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -46,6 +43,9 @@
 #include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /*
  * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -114,7 +114,8 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, in
   char tmp[LONG_STRING];
   struct stat sb;
 
-  if ((f = fopen(path, "r")))
+  f = fopen(path, "r");
+  if (f)
   {
     fstat(fileno(f), &sb);
     buf = be_snarf_data(f, buf, max, len, 0, sb.st_size, 0);
