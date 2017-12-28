@@ -53,7 +53,7 @@ static void group_remove(struct Group *g)
 {
   if (!g)
     return;
-  mutt_hash_delete(Groups, g->name, g, NULL);
+  mutt_hash_delete(Groups, g->name, g);
   mutt_addr_free(&g->as);
   mutt_regexlist_free(&g->rs);
   FREE(&g->name);

@@ -915,7 +915,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   msg = mx_open_message(ctx, msgno);
   if (msg)
   {
-    if (option(OPT_THOROUGH_SEARCH))
+    if (ThoroughSearch)
     {
       /* decode the header / body */
       memset(&s, 0, sizeof(s));
@@ -1037,7 +1037,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
     mx_close_message(ctx, &msg);
 
-    if (option(OPT_THOROUGH_SEARCH))
+    if (ThoroughSearch)
     {
       mutt_file_fclose(&fp);
 #ifdef USE_FMEMOPEN
@@ -2028,9 +2028,9 @@ int mutt_search_command(int cur, int op)
       return -1;
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
-      unset_option(OPT_SEARCH_REVERSE);
+      OPT_SEARCH_REVERSE = false;
     else
-      set_option(OPT_SEARCH_REVERSE);
+      OPT_SEARCH_REVERSE = true;
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
@@ -2041,7 +2041,7 @@ int mutt_search_command(int cur, int op)
     {
       struct Buffer err;
       mutt_buffer_init(&err);
-      set_option(OPT_SEARCH_INVALID);
+      OPT_SEARCH_INVALID = true;
       mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
@@ -2059,7 +2059,7 @@ int mutt_search_command(int cur, int op)
     }
   }
 
-  if (option(OPT_SEARCH_INVALID))
+  if (OPT_SEARCH_INVALID)
   {
     for (int i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = false;
@@ -2067,10 +2067,10 @@ int mutt_search_command(int cur, int op)
     if (Context->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
       return -1;
 #endif
-    unset_option(OPT_SEARCH_INVALID);
+    OPT_SEARCH_INVALID = false;
   }
 
-  incr = (option(OPT_SEARCH_REVERSE)) ? -1 : 1;
+  incr = (OPT_SEARCH_REVERSE) ? -1 : 1;
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
@@ -2083,7 +2083,7 @@ int mutt_search_command(int cur, int op)
     if (i > Context->vcount - 1)
     {
       i = 0;
-      if (option(OPT_WRAP_SEARCH))
+      if (WrapSearch)
         msg = _("Search wrapped to top.");
       else
       {
@@ -2094,7 +2094,7 @@ int mutt_search_command(int cur, int op)
     else if (i < 0)
     {
       i = Context->vcount - 1;
-      if (option(OPT_WRAP_SEARCH))
+      if (WrapSearch)
         msg = _("Search wrapped to bottom.");
       else
       {

@@ -258,15 +258,13 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (Context)
       {
-        i = option(OPT_ATTACH_MSG) ?
-                3 :
-                ((Context->readonly || Context->dontwrite) ?
-                     2 :
-                     (Context->changed ||
-                      /* deleted doesn't necessarily mean changed in IMAP */
-                      (Context->magic != MUTT_IMAP && Context->deleted)) ?
-                     1 :
-                     0);
+        i = OPT_ATTACH_MSG ? 3 : ((Context->readonly || Context->dontwrite) ?
+                                      2 :
+                                      (Context->changed ||
+                                       /* deleted doesn't necessarily mean changed in IMAP */
+                                       (Context->magic != MUTT_IMAP && Context->deleted)) ?
+                                      1 :
+                                      0);
       }
 
       if (!StatusChars || !StatusChars->len)

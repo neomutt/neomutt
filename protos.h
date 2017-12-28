@@ -92,9 +92,7 @@ int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned
 
 FILE *mutt_open_read(const char *path, pid_t *thepid);
 
-void set_quadoption(int opt, int flag);
 int query_quadoption(int opt, const char *prompt);
-int quadoption(int opt);
 
 char *mutt_extract_message_id(const char *s, const char **saveptr);
 

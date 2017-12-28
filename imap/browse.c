@@ -95,7 +95,7 @@ static void add_folder(char delim, char *folder, int noselect, int noinferiors,
   /* apply filemask filter. This should really be done at menu setup rather
    * than at scan, since it's so expensive to scan. But that's big changes
    * to browser.c */
-  if (!((regexec(Mask.regex, relpath, 0, NULL, 0) == 0) ^ Mask.not))
+  if (Mask && !((regexec(Mask->regex, relpath, 0, NULL, 0) == 0) ^ Mask->not))
   {
     FREE(&mx.mbox);
     return;
@@ -217,10 +217,9 @@ int imap_browse(char *path, struct BrowserState *state)
     return -1;
   }
 
-  save_lsub = option(OPT_IMAP_CHECK_SUBSCRIBED);
-  unset_option(OPT_IMAP_CHECK_SUBSCRIBED);
-  mutt_str_strfcpy(list_cmd, option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST",
-                   sizeof(list_cmd));
+  save_lsub = ImapCheckSubscribed;
+  ImapCheckSubscribed = false;
+  mutt_str_strfcpy(list_cmd, ImapListSubscribed ? "LSUB" : "LIST", sizeof(list_cmd));
 
   idata = imap_conn_find(&(mx.account), 0);
   if (!idata)
@@ -350,14 +349,14 @@ int imap_browse(char *path, struct BrowserState *state)
   mutt_clear_error();
 
   if (save_lsub)
-    set_option(OPT_IMAP_CHECK_SUBSCRIBED);
+    ImapCheckSubscribed = true;
 
   FREE(&mx.mbox);
   return 0;
 
 fail:
   if (save_lsub)
-    set_option(OPT_IMAP_CHECK_SUBSCRIBED);
+    ImapCheckSubscribed = true;
   FREE(&mx.mbox);
   return -1;
 }

@@ -115,6 +115,11 @@ void nntp_data_free(void *data)
   FREE(&data);
 }
 
+void nntp_hash_destructor(int type, void *obj, intptr_t data)
+{
+  nntp_data_free(obj);
+}
+
 /**
  * nntp_newsrc_close - Unlock and close .newsrc file
  */
@@ -676,7 +681,7 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
       !nntp_data->nserv->conn || !nntp_data->group ||
-      !(nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED)))
+      !(nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
     return NULL;
 
   mutt_account_tourl(&nntp_data->nserv->conn->account, &url);
@@ -843,7 +848,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
         nntp_data->group = group;
         nntp_data->bcache = NULL;
       }
-      else if (nntp_data->newsrc_ent || nntp_data->subscribed || option(OPT_SAVE_UNSUBSCRIBED))
+      else if (nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed)
         continue;
 
       nntp_delete_group_cache(nntp_data);
@@ -1026,6 +1031,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   nserv = mutt_mem_calloc(1, sizeof(struct NntpServer));
   nserv->conn = conn;
   nserv->groups_hash = mutt_hash_create(1009, 0);
+  mutt_hash_set_destructor(nserv->groups_hash, nntp_hash_destructor, 0);
   nserv->groups_max = 16;
   nserv->groups_list = mutt_mem_malloc(nserv->groups_max * sizeof(nntp_data));
 
@@ -1127,7 +1133,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 
   if (rc < 0)
   {
-    mutt_hash_destroy(&nserv->groups_hash, nntp_data_free);
+    mutt_hash_destroy(&nserv->groups_hash);
     FREE(&nserv->groups_list);
     FREE(&nserv->newsrc_file);
     FREE(&nserv->authenticators);
@@ -1176,7 +1182,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
     return;
 
   /* article isn't read but cached, it's old */
-  if (option(OPT_MARK_OLD))
+  if (MarkOld)
     hdr->old = true;
 }
 
@@ -1217,7 +1223,7 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
     return NULL;
 
   nntp_data->subscribed = false;
-  if (!option(OPT_SAVE_UNSUBSCRIBED))
+  if (!SaveUnsubscribed)
   {
     nntp_data->newsrc_len = 0;
     FREE(&nntp_data->newsrc_ent);

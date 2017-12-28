@@ -483,7 +483,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {
-    if (!option(OPT_PGP_SHOW_UNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
+    if (!PgpShowUnusable && (kp->flags & KEYFLAG_CANTUSE))
     {
       unusable = true;
       continue;
@@ -491,7 +491,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
     for (a = kp->address; a; a = a->next)
     {
-      if (!option(OPT_PGP_SHOW_UNUSABLE) && (a->flags & KEYFLAG_CANTUSE))
+      if (!PgpShowUnusable && (a->flags & KEYFLAG_CANTUSE))
       {
         unusable = true;
         continue;
@@ -616,15 +616,15 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
         /* XXX make error reporting more verbose */
 
-        if (option(OPT_PGP_CHECK_TRUST))
+        if (OPT_PGP_CHECK_TRUST)
           if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
           {
             mutt_error(_("This key can't be used: expired/disabled/revoked."));
             break;
           }
 
-        if (option(OPT_PGP_CHECK_TRUST) && (!pgp_id_is_valid(KeyTable[menu->current]) ||
-                                            !pgp_id_is_strong(KeyTable[menu->current])))
+        if (OPT_PGP_CHECK_TRUST && (!pgp_id_is_valid(KeyTable[menu->current]) ||
+                                    !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
           char buf2[LONG_STRING];
@@ -738,7 +738,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   struct stat sb;
   pid_t thepid;
   struct PgpKeyInfo *key = NULL;
-  unset_option(OPT_PGP_CHECK_TRUST);
+  OPT_PGP_CHECK_TRUST = false;
 
   key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 

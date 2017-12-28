@@ -104,7 +104,7 @@ int mutt_display_message(struct Header *cur)
     else if (cur->security & SIGN)
     {
       /* find out whether or not the verify signature */
-      if (query_quadoption(OPT_CRYPT_VERIFY_SIG, _("Verify PGP signature?")) == MUTT_YES)
+      if (query_quadoption(CryptVerifySig, _("Verify PGP signature?")) == MUTT_YES)
       {
         cmflags |= MUTT_CM_VERIFY;
       }
@@ -162,7 +162,7 @@ int mutt_display_message(struct Header *cur)
     fputs("\n\n", fpout);
   }
 
-  chflags = (option(OPT_WEED) ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
+  chflags = (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
   if (Context->magic == MUTT_NOTMUCH)
     chflags |= CH_VIRTUAL;
@@ -242,11 +242,11 @@ int mutt_display_message(struct Header *cur)
     if (r == -1)
       mutt_error(_("Error running \"%s\"!"), buf);
     unlink(tempfile);
-    if (!option(OPT_NO_CURSES))
+    if (!OPT_NO_CURSES)
       keypad(stdscr, true);
     if (r != -1)
       mutt_set_flag(Context, cur, MUTT_READ, 1);
-    if (r != -1 && option(OPT_PROMPT_AFTER))
+    if (r != -1 && PromptAfter)
     {
       mutt_unget_event(mutt_any_key_to_continue(_("Command: ")), 0);
       rc = km_dokey(MENU_PAGER);
@@ -332,7 +332,7 @@ void ci_bounce_message(struct Header *h)
   else
     snprintf(prompt, sizeof(prompt), "%s?", scratch);
 
-  if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
+  if (query_quadoption(Bounce, prompt) != MUTT_YES)
   {
     mutt_addr_free(&adr);
     mutt_window_clearline(MuttMessageWindow, 0);
@@ -356,7 +356,7 @@ static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     *chflags |= CH_DECODE | CH_REORDER;
 
-    if (option(OPT_WEED))
+    if (Weed)
     {
       *chflags |= CH_WEED;
       *cmflags |= MUTT_CM_WEED;
@@ -418,11 +418,11 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
       return 1;
     }
 
-    set_option(OPT_KEEP_QUIET);
+    OPT_KEEP_QUIET = true;
     pipe_msg(h, fpout, decode, print);
     mutt_file_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
-    unset_option(OPT_KEEP_QUIET);
+    OPT_KEEP_QUIET = false;
   }
   else
   {
@@ -459,7 +459,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
           mutt_perror(_("Can't create filter process"));
           return 1;
         }
-        set_option(OPT_KEEP_QUIET);
+        OPT_KEEP_QUIET = true;
         pipe_msg(Context->hdrs[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
@@ -467,7 +467,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         mutt_file_fclose(&fpout);
         if (mutt_wait_filter(thepid) != 0)
           rc = 1;
-        unset_option(OPT_KEEP_QUIET);
+        OPT_KEEP_QUIET = false;
       }
     }
     else
@@ -479,7 +479,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         mutt_perror(_("Can't create filter process"));
         return 1;
       }
-      set_option(OPT_KEEP_QUIET);
+      OPT_KEEP_QUIET = true;
       for (int i = 0; i < Context->msgcount; i++)
       {
         if (!message_is_tagged(Context, i))
@@ -494,11 +494,11 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
       mutt_file_fclose(&fpout);
       if (mutt_wait_filter(thepid) != 0)
         rc = 1;
-      unset_option(OPT_KEEP_QUIET);
+      OPT_KEEP_QUIET = false;
     }
   }
 
-  if (rc || option(OPT_WAIT_KEY))
+  if (rc || WaitKey)
     mutt_any_key_to_continue(NULL);
   return rc;
 }
@@ -515,23 +515,22 @@ void mutt_pipe_message(struct Header *h)
   }
 
   mutt_expand_path(buffer, sizeof(buffer));
-  pipe_message(h, buffer, option(OPT_PIPE_DECODE), 0, option(OPT_PIPE_SPLIT), PipeSep);
+  pipe_message(h, buffer, PipeDecode, 0, PipeSplit, PipeSep);
 }
 
 void mutt_print_message(struct Header *h)
 {
-  if (quadoption(OPT_PRINT) && (!PrintCommand || !*PrintCommand))
+  if (Print && (!PrintCommand || !*PrintCommand))
   {
     mutt_message(_("No printing command has been defined."));
     return;
   }
 
-  if (query_quadoption(OPT_PRINT,
+  if (query_quadoption(Print,
                        h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
     return;
 
-  if (pipe_message(h, PrintCommand, option(OPT_PRINT_DECODE), 1,
-                   option(OPT_PRINT_SPLIT), "\f") == 0)
+  if (pipe_message(h, PrintCommand, PrintDecode, 1, PrintSplit, "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));
   else
     mutt_message(h ? _("Message could not be printed") :
@@ -628,7 +627,7 @@ void mutt_shell_escape(void)
       if (rc == -1)
         mutt_debug(1, "Error running \"%s\"!", buf);
 
-      if ((rc != 0) || option(OPT_WAIT_KEY))
+      if ((rc != 0) || WaitKey)
         mutt_any_key_to_continue(NULL);
       mutt_buffy_check(true);
     }
@@ -722,7 +721,7 @@ static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
     {
       *chflags |= CH_DECODE; /* then decode RFC2047 headers, */
 
-      if (option(OPT_WEED))
+      if (Weed)
       {
         *chflags |= CH_WEED; /* and respect $weed. */
         *cmflags |= MUTT_CM_WEED;
@@ -750,7 +749,7 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
   {
     mutt_set_flag(Context, h, MUTT_DELETE, 1);
     mutt_set_flag(Context, h, MUTT_PURGE, 1);
-    if (option(OPT_DELETE_UNTAG))
+    if (DeleteUntag)
       mutt_set_flag(Context, h, MUTT_TAG, 0);
   }
 

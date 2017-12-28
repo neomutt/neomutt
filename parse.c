@@ -1042,7 +1042,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
                 hdr->replied = true;
                 break;
               case 'O':
-                hdr->old = option(OPT_MARK_OLD) ? true : false;
+                hdr->old = MarkOld ? true : false;
                 break;
               case 'R':
                 hdr->read = true;
@@ -1132,7 +1132,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (!(weed && option(OPT_WEED) && mutt_matches_ignore(line)))
+    if (!(weed && Weed && mutt_matches_ignore(line)))
     {
       struct ListNode *np = mutt_list_insert_tail(&e->userhdrs, mutt_str_strdup(line));
       if (do_2047)
@@ -1283,7 +1283,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
       rfc2047_decode(&e->subject);
 
-      if (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0) == 0)
+      if (ReplyRegexp && (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0) == 0))
         e->real_subj = e->subject + pmatch[0].rm_eo;
       else
         e->real_subj = e->subject;

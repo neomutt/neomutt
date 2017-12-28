@@ -162,12 +162,12 @@ static char *getmailname(void)
 }
 #endif
 
-static void toggle_quadoption(int opt)
+static int toggle_quadoption(int opt)
 {
-  int n = opt / 4;
-  int b = (opt % 4) * 2;
-
-  QuadOptions[n] ^= (1 << b);
+  /* toggle the low bit
+   * MUTT_NO    <--> MUTT_YES
+   * MUTT_ASKNO <--> MUTT_ASKYES */
+  return opt ^= 1;
 }
 
 static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
@@ -175,83 +175,72 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   int e, flags = 0;
   const char *p = NULL;
   regex_t *rx = NULL;
-  struct Regex *ptr = (struct Regex *) MuttVars[idx].data;
+  struct Regex *ptr = *(struct Regex **) MuttVars[idx].var;
 
-  if (!ptr->pattern || (mutt_str_strcmp(ptr->pattern, tmp->data) != 0))
+  if (ptr)
   {
-    bool not = false;
-
-    /* $mask is case-sensitive */
-    if ((mutt_str_strcmp(MuttVars[idx].option, "mask") != 0) && mutt_mb_is_lower(tmp->data))
-      flags |= REG_ICASE;
-
-    p = tmp->data;
-    if (mutt_str_strcmp(MuttVars[idx].option, "mask") == 0)
-    {
-      if (*p == '!')
-      {
-        not = true;
-        p++;
-      }
-    }
-
-    rx = mutt_mem_malloc(sizeof(regex_t));
-    e = REGCOMP(rx, p, flags);
-    if (e != 0)
-    {
-      regerror(e, rx, err->data, err->dsize);
-      FREE(&rx);
+    /* Same pattern as we already have */
+    if (mutt_str_strcmp(ptr->pattern, tmp->data) != 0)
       return 0;
-    }
-
-    /* get here only if everything went smoothly */
-    if (ptr->pattern)
-    {
-      FREE(&ptr->pattern);
-      regfree((regex_t *) ptr->regex);
-      FREE(&ptr->regex);
-    }
-
-    ptr->pattern = mutt_str_strdup(tmp->data);
-    ptr->regex = rx;
-    ptr->not = not;
-
-    return 1;
   }
-  return 0;
-}
+  else
+  {
+    ptr = mutt_mem_calloc(1, sizeof(struct Regex *));
+  }
 
-void set_quadoption(int opt, int flag)
-{
-  int n = opt / 4;
-  int b = (opt % 4) * 2;
+  bool not = false;
 
-  QuadOptions[n] &= ~(0x3 << b);
-  QuadOptions[n] |= (flag & 0x3) << b;
-}
+  /* Should we use smart case matching? */
+  if (((MuttVars[idx].flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(tmp->data))
+    flags |= REG_ICASE;
 
-int quadoption(int opt)
-{
-  int n = opt / 4;
-  int b = (opt % 4) * 2;
+  p = tmp->data;
+  /* Is a prefix of '!' allowed? */
+  if ((MuttVars[idx].flags & DT_REGEX_ALLOW_NOT) != 0)
+  {
+    if (*p == '!')
+    {
+      not = true;
+      p++;
+    }
+  }
 
-  return (QuadOptions[n] >> b) & 0x3;
+  rx = mutt_mem_malloc(sizeof(regex_t));
+  e = REGCOMP(rx, p, flags);
+  if (e != 0)
+  {
+    regerror(e, rx, err->data, err->dsize);
+    FREE(&rx);
+    return 0;
+  }
+
+  /* get here only if everything went smoothly */
+  if (ptr->pattern)
+  {
+    FREE(&ptr->pattern);
+    regfree((regex_t *) ptr->regex);
+    FREE(&ptr->regex);
+  }
+
+  ptr->pattern = mutt_str_strdup(tmp->data);
+  ptr->regex = rx;
+  ptr->not = not;
+
+  return 1;
 }
 
 int query_quadoption(int opt, const char *prompt)
 {
-  int v = quadoption(opt);
-
-  switch (v)
+  switch (opt)
   {
     case MUTT_YES:
     case MUTT_NO:
-      return v;
+      return opt;
 
     default:
-      v = mutt_yesorno(prompt, (v == MUTT_ASKYES));
+      opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES));
       mutt_window_clearline(MuttMessageWindow, 0);
-      return v;
+      return opt;
   }
 
   /* not reached */
@@ -265,10 +254,10 @@ int query_quadoption(int opt, const char *prompt)
  */
 int mutt_option_index(const char *s)
 {
-  for (int i = 0; MuttVars[i].option; i++)
-    if (mutt_str_strcmp(s, MuttVars[i].option) == 0)
+  for (int i = 0; MuttVars[i].name; i++)
+    if (mutt_str_strcmp(s, MuttVars[i].name) == 0)
       return (MuttVars[i].type == DT_SYNONYM ?
-                  mutt_option_index((char *) MuttVars[i].data) :
+                  mutt_option_index((char *) MuttVars[i].var) :
                   i);
   return -1;
 }
@@ -276,8 +265,8 @@ int mutt_option_index(const char *s)
 #ifdef USE_LUA
 int mutt_option_to_string(const struct Option *opt, char *val, size_t len)
 {
-  mutt_debug(2, " * mutt_option_to_string(%s)\n", NONULL((char *) opt->data));
-  int idx = mutt_option_index((const char *) opt->option);
+  mutt_debug(2, " * mutt_option_to_string(%s)\n", NONULL((char *) opt->var));
+  int idx = mutt_option_index((const char *) opt->name);
   if (idx != -1)
     return var_to_string(idx, val, len);
   return 0;
@@ -303,7 +292,7 @@ bool mutt_option_get(const char *s, struct Option *opt)
     if (opt)
     {
       memset(opt, 0, sizeof(*opt));
-      opt->option = s;
+      opt->name = s;
       opt->type = DT_STRING;
     }
     return true;
@@ -395,7 +384,7 @@ static int parse_sort(short *val, const char *s, const struct Mapping *map, stru
 int mutt_option_set(const struct Option *val, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_option_set()\n");
-  int idx = mutt_option_index(val->option);
+  int idx = mutt_option_index(val->name);
   if (idx != -1)
   {
     switch (DTYPE(MuttVars[idx].type))
@@ -408,14 +397,14 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         err2.dsize = sizeof(err_str);
 
         struct Buffer tmp;
-        tmp.data = (char *) val->data;
-        tmp.dsize = strlen((char *) val->data);
+        tmp.data = (char *) val->var;
+        tmp.dsize = strlen((char *) val->var);
 
         if (parse_regex(idx, &tmp, &err2))
         {
           /* $reply_regexp and $alternates require special treatment */
           if (Context && Context->msgcount &&
-              (mutt_str_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
+              (mutt_str_strcmp(MuttVars[idx].name, "reply_regexp") == 0))
           {
             regmatch_t pmatch[1];
 
@@ -424,16 +413,18 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               struct Envelope *e = Context->hdrs[i]->env;
               if (e && e->subject)
               {
-                e->real_subj = (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0)) ?
-                                   e->subject :
-                                   e->subject + pmatch[0].rm_eo;
+                e->real_subj =
+                    (ReplyRegexp &&
+                     (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0))) ?
+                        e->subject :
+                        e->subject + pmatch[0].rm_eo;
               }
             }
           }
         }
         else
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
+          snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].name);
           return -1;
         }
         break;
@@ -467,11 +458,11 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 
         if (!map)
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
+          snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].name);
           return -1;
         }
 
-        if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data, map, err) == -1)
+        if (parse_sort((short *) MuttVars[idx].var, (const char *) val->var, map, err) == -1)
         {
           return -1;
         }
@@ -479,55 +470,55 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
       break;
       case DT_MBTABLE:
       {
-        struct MbTable **tbl = (struct MbTable **) MuttVars[idx].data;
+        struct MbTable **tbl = (struct MbTable **) MuttVars[idx].var;
         free_mbtable(tbl);
-        *tbl = parse_mbtable((const char *) val->data);
+        *tbl = parse_mbtable((const char *) val->var);
       }
       break;
       case DT_ADDRESS:
-        mutt_addr_free((struct Address **) MuttVars[idx].data);
-        *((struct Address **) MuttVars[idx].data) =
-            mutt_addr_parse_list(NULL, (const char *) val->data);
+        mutt_addr_free((struct Address **) MuttVars[idx].var);
+        *((struct Address **) MuttVars[idx].var) =
+            mutt_addr_parse_list(NULL, (const char *) val->var);
         break;
       case DT_PATH:
       {
         char scratch[LONG_STRING];
-        mutt_str_strfcpy(scratch, NONULL((const char *) val->data), sizeof(scratch));
+        mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
-        /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
+        /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
         * so cast to 'void*' is okay */
-        FREE((void *) MuttVars[idx].data);
-        *((char **) MuttVars[idx].data) = mutt_str_strdup(scratch);
+        FREE((void *) MuttVars[idx].var);
+        *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
         break;
       }
       case DT_STRING:
       {
-        /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
+        /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
           * so cast to 'void*' is okay */
-        FREE((void *) MuttVars[idx].data);
-        *((char **) MuttVars[idx].data) = mutt_str_strdup((char *) val->data);
+        FREE((void *) MuttVars[idx].var);
+        *((char **) MuttVars[idx].var) = mutt_str_strdup(*(char **) val->var);
       }
       break;
       case DT_BOOL:
-        if (val->data)
-          set_option(MuttVars[idx].data);
+        if (val->var)
+          *(bool *) MuttVars[idx].var = true;
         else
-          unset_option(MuttVars[idx].data);
+          *(bool *) MuttVars[idx].var = false;
         break;
       case DT_QUAD:
-        set_quadoption(MuttVars[idx].data, val->data);
+        *(short *) MuttVars[idx].var = val->var;
         break;
       case DT_NUMBER:
-        *((short *) MuttVars[idx].data) = val->data;
+        *(short *) MuttVars[idx].var = val->var;
         break;
       default:
         return -1;
     }
   }
   /* set the string as a myvar if it's one */
-  if (mutt_str_strncmp("my_", val->option, 3) == 0)
+  if (mutt_str_strncmp("my_", val->name, 3) == 0)
   {
-    myvar_set(val->option, (const char *) val->data);
+    myvar_set(val->name, (const char *) val->var);
   }
   return 0;
 }
@@ -737,25 +728,25 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
 static void free_opt(struct Option *p)
 {
-  struct Regex *pp = NULL;
+  struct Regex **pp = NULL;
 
   switch (DTYPE(p->type))
   {
     case DT_ADDRESS:
-      mutt_addr_free((struct Address **) p->data);
+      mutt_addr_free((struct Address **) p->var);
       break;
     case DT_REGEX:
-      pp = (struct Regex *) p->data;
-      FREE(&pp->pattern);
-      if (pp->regex)
+      pp = (struct Regex **) p->var;
+      FREE(&(*pp)->pattern);
+      if ((*pp)->regex)
       {
-        regfree(pp->regex);
-        FREE(&pp->regex);
+        regfree((*pp)->regex);
+        FREE(&(*pp)->regex);
       }
       break;
     case DT_PATH:
     case DT_STRING:
-      FREE((char **) p->data);
+      FREE((char **) p->var);
       break;
   }
 }
@@ -765,7 +756,7 @@ static void free_opt(struct Option *p)
  */
 void mutt_free_opts(void)
 {
-  for (int i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].name; i++)
     free_opt(MuttVars + i);
 
   mutt_regexlist_free(&Alternates);
@@ -1781,7 +1772,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     tmp->name = mutt_str_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
-      set_option(OPT_MENU_CALLER);
+      OPT_MENU_CALLER = true;
   }
   else
   {
@@ -1910,31 +1901,31 @@ static void set_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
-      if (!p->init && *((char **) p->data))
-        p->init = (unsigned long) mutt_str_strdup(*((char **) p->data));
+      if (!p->initial && *((char **) p->var))
+        p->initial = (unsigned long) mutt_str_strdup(*((char **) p->var));
       break;
     case DT_PATH:
-      if (!p->init && *((char **) p->data))
+      if (!p->initial && *((char **) p->var))
       {
-        char *cp = mutt_str_strdup(*((char **) p->data));
+        char *cp = mutt_str_strdup(*((char **) p->var));
         /* mutt_pretty_mailbox (cp); */
-        p->init = (unsigned long) cp;
+        p->initial = (unsigned long) cp;
       }
       break;
     case DT_ADDRESS:
-      if (!p->init && *((struct Address **) p->data))
+      if (!p->initial && *((struct Address **) p->var))
       {
         char tmp[HUGE_STRING];
         *tmp = '\0';
-        rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) p->data), 0);
-        p->init = (unsigned long) mutt_str_strdup(tmp);
+        rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) p->var), 0);
+        p->initial = (unsigned long) mutt_str_strdup(tmp);
       }
       break;
     case DT_REGEX:
     {
-      struct Regex *pp = (struct Regex *) p->data;
-      if (!p->init && pp->pattern)
-        p->init = (unsigned long) mutt_str_strdup(pp->pattern);
+      struct Regex *pp = (struct Regex *) p->var;
+      if (!p->initial && pp->pattern)
+        p->initial = (unsigned long) mutt_str_strdup(pp->pattern);
       break;
     }
   }
@@ -1945,89 +1936,94 @@ static void restore_default(struct Option *p)
   switch (DTYPE(p->type))
   {
     case DT_STRING:
-      mutt_str_replace((char **) p->data, (char *) p->init);
+      mutt_str_replace((char **) p->var, (char *) p->initial);
       break;
     case DT_MBTABLE:
-      free_mbtable((struct MbTable **) p->data);
-      *((struct MbTable **) p->data) = parse_mbtable((char *) p->init);
+      free_mbtable((struct MbTable **) p->var);
+      *((struct MbTable **) p->var) = parse_mbtable((char *) p->initial);
       break;
     case DT_PATH:
-      FREE((char **) p->data);
+      FREE((char **) p->var);
       char *init = NULL;
-      if (mutt_str_strcmp(p->option, "debug_file") == 0 && debugfile_cmdline)
+      if (mutt_str_strcmp(p->name, "debug_file") == 0 && debugfile_cmdline)
         init = debugfile_cmdline;
       else
-        init = (char *) p->init;
+        init = (char *) p->initial;
       if (init)
       {
         char path[_POSIX_PATH_MAX];
         mutt_str_strfcpy(path, init, sizeof(path));
         mutt_expand_path(path, sizeof(path));
-        *((char **) p->data) = mutt_str_strdup(path);
+        *((char **) p->var) = mutt_str_strdup(path);
       }
       break;
     case DT_ADDRESS:
-      mutt_addr_free((struct Address **) p->data);
-      if (p->init)
-        *((struct Address **) p->data) = mutt_addr_parse_list(NULL, (char *) p->init);
+      mutt_addr_free((struct Address **) p->var);
+      if (p->initial)
+        *((struct Address **) p->var) = mutt_addr_parse_list(NULL, (char *) p->initial);
       break;
     case DT_BOOL:
-      if (p->init)
-        set_option(p->data);
+      if (p->initial)
+        *(bool *) p->var = true;
       else
-        unset_option(p->data);
+        *(bool *) p->var = false;
       break;
     case DT_QUAD:
-      set_quadoption(p->data, p->init);
+      *(unsigned char *) p->var = p->initial;
       break;
     case DT_NUMBER:
     case DT_SORT:
     case DT_MAGIC:
-      if (mutt_str_strcmp(p->option, "debug_level") == 0 && debuglevel_cmdline)
-        *((short *) p->data) = debuglevel_cmdline;
+      if (mutt_str_strcmp(p->name, "debug_level") == 0 && debuglevel_cmdline)
+        *((short *) p->var) = debuglevel_cmdline;
       else
-        *((short *) p->data) = p->init;
+        *((short *) p->var) = p->initial;
       break;
     case DT_REGEX:
     {
-      struct Regex *pp = (struct Regex *) p->data;
-      int flags = 0;
-
-      FREE(&pp->pattern);
-      if (pp->regex)
+      struct Regex **pp = (struct Regex **) p->var;
+      if (*pp)
       {
-        regfree(pp->regex);
-        FREE(&pp->regex);
+        FREE(&(*pp)->pattern);
+        if ((*pp)->regex)
+        {
+          regfree((*pp)->regex);
+          FREE(&(*pp)->regex);
+        }
+      }
+      else
+      {
+        *pp = mutt_mem_calloc(1, sizeof(struct Regex));
       }
 
-      if (p->init)
+      if (p->initial)
       {
-        int retval;
-        char *s = (char *) p->init;
+        int flags = 0;
+        char *s = (char *) p->initial;
 
-        pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
-        pp->pattern = mutt_str_strdup((char *) p->init);
-        if ((mutt_str_strcmp(p->option, "mask") != 0) &&
-            (mutt_mb_is_lower((const char *) p->init)))
+        (*pp)->regex = mutt_mem_calloc(1, sizeof(regex_t));
+        (*pp)->pattern = mutt_str_strdup((char *) p->initial);
+        if ((mutt_str_strcmp(p->name, "mask") != 0) &&
+            (mutt_mb_is_lower((const char *) p->initial)))
         {
           flags |= REG_ICASE;
         }
-        if ((mutt_str_strcmp(p->option, "mask") == 0) && *s == '!')
+        if ((mutt_str_strcmp(p->name, "mask") == 0) && *s == '!')
         {
           s++;
-          pp->not = true;
+          (*pp)->not = true;
         }
-        retval = REGCOMP(pp->regex, s, flags);
-        if (retval != 0)
+        int rc = REGCOMP((*pp)->regex, s, flags);
+        if (rc != 0)
         {
           char msgbuf[STRING];
-          regerror(retval, pp->regex, msgbuf, sizeof(msgbuf));
+          regerror(rc, (*pp)->regex, msgbuf, sizeof(msgbuf));
           fprintf(stderr, _("restore_default(%s): error in regex: %s\n"),
-                  p->option, pp->pattern);
+                  p->name, (*pp)->pattern);
           fprintf(stderr, "%s\n", msgbuf);
           mutt_sleep(0);
-          FREE(&pp->pattern);
-          FREE(&pp->regex);
+          FREE(&(*pp)->pattern);
+          FREE(&(*pp)->regex);
         }
       }
     }
@@ -2044,13 +2040,13 @@ static void restore_default(struct Option *p)
     mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
   }
   if (p->flags & R_RESORT_SUB)
-    set_option(OPT_SORT_SUBTHREADS);
+    OPT_SORT_SUBTHREADS = true;
   if (p->flags & R_RESORT)
-    set_option(OPT_NEED_RESORT);
+    OPT_NEED_RESORT = true;
   if (p->flags & R_RESORT_INIT)
-    set_option(OPT_RESORT_INIT);
+    OPT_RESORT_INIT = true;
   if (p->flags & R_TREE)
-    set_option(OPT_REDRAW_TREE);
+    OPT_REDRAW_TREE = true;
   if (p->flags & R_REFLOW)
     mutt_reflow_windows();
 #ifdef USE_SIDEBAR
@@ -2124,7 +2120,7 @@ static int check_charset(struct Option *opt, const char *val)
 {
   char *q = NULL, *s = mutt_str_strdup(val);
   int rc = 0;
-  bool strict = (strcmp(opt->option, "send_charset") == 0);
+  bool strict = (strcmp(opt->name, "send_charset") == 0);
 
   if (!s)
     return rc;
@@ -2436,13 +2432,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
                    _("Not available in this menu."));
           return -1;
         }
-        for (idx = 0; MuttVars[idx].option; idx++)
+        for (idx = 0; MuttVars[idx].name; idx++)
           restore_default(&MuttVars[idx]);
         mutt_set_current_menu_redraw_full();
-        set_option(OPT_SORT_SUBTHREADS);
-        set_option(OPT_NEED_RESORT);
-        set_option(OPT_RESORT_INIT);
-        set_option(OPT_REDRAW_TREE);
+        OPT_SORT_SUBTHREADS = true;
+        OPT_NEED_RESORT = true;
+        OPT_RESORT_INIT = true;
+        OPT_REDRAW_TREE = true;
         return 0;
       }
       else
@@ -2481,19 +2477,19 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
       if (query)
       {
-        snprintf(err->data, err->dsize,
-                 option(MuttVars[idx].data) ? _("%s is set") : _("%s is unset"),
+        snprintf(err->data,
+                 err->dsize, *(bool *) MuttVars[idx].var ? _("%s is set") : _("%s is unset"),
                  tmp->data);
         return 0;
       }
 
       CHECK_PAGER;
       if (unset)
-        unset_option(MuttVars[idx].data);
+        *(bool *) MuttVars[idx].var = false;
       else if (inv)
-        toggle_option(MuttVars[idx].data);
+        *(bool *) MuttVars[idx].var = !(*(bool *) MuttVars[idx].var);
       else
-        set_option(MuttVars[idx].data);
+        *(bool *) MuttVars[idx].var = true;
     }
     else if (myvar || DTYPE(MuttVars[idx].type) == DT_STRING ||
              DTYPE(MuttVars[idx].type) == DT_PATH || DTYPE(MuttVars[idx].type) == DT_ADDRESS ||
@@ -2505,13 +2501,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         if (myvar)
           myvar_del(myvar);
         else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
-          mutt_addr_free((struct Address **) MuttVars[idx].data);
+          mutt_addr_free((struct Address **) MuttVars[idx].var);
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
-          free_mbtable((struct MbTable **) MuttVars[idx].data);
+          free_mbtable((struct MbTable **) MuttVars[idx].var);
         else
-          /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
+          /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
-          FREE((void *) MuttVars[idx].data);
+          FREE((void *) MuttVars[idx].var);
       }
       else if (query || *s->dptr != '=')
       {
@@ -2536,26 +2532,26 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         {
           tmp2[0] = '\0';
           rfc822_write_address(tmp2, sizeof(tmp2),
-                               *((struct Address **) MuttVars[idx].data), 0);
+                               *((struct Address **) MuttVars[idx].var), 0);
           val = tmp2;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
         {
           tmp2[0] = '\0';
-          mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].data)), sizeof(tmp2));
+          mutt_str_strfcpy(tmp2, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp2));
           mutt_pretty_mailbox(tmp2, sizeof(tmp2));
           val = tmp2;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {
-          struct MbTable *mbt = (*((struct MbTable **) MuttVars[idx].data));
+          struct MbTable *mbt = (*((struct MbTable **) MuttVars[idx].var));
           val = mbt ? NONULL(mbt->orig_str) : "";
         }
         else
-          val = *((char **) MuttVars[idx].data);
+          val = *((char **) MuttVars[idx].var);
 
         /* user requested the value of this variable */
-        pretty_var(err->data, err->dsize, MuttVars[idx].option, NONULL(val));
+        pretty_var(err->data, err->dsize, MuttVars[idx].name, NONULL(val));
         break;
       }
       else
@@ -2580,59 +2576,59 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
         {
-          if (mutt_str_strcmp(MuttVars[idx].option, "debug_file") == 0 && debugfile_cmdline)
+          if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0 && debugfile_cmdline)
           {
             mutt_message(_("set debug_file ignored, it has been overridden by "
                            "the cmdline"));
             break;
           }
-          /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
+          /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
-          FREE((void *) MuttVars[idx].data);
+          FREE((void *) MuttVars[idx].var);
 
           mutt_str_strfcpy(scratch, tmp->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
-          *((char **) MuttVars[idx].data) = mutt_str_strdup(scratch);
-          if (mutt_str_strcmp(MuttVars[idx].option, "debug_file") == 0)
+          *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
+          if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
             restart_debug();
         }
         else if (DTYPE(MuttVars[idx].type) == DT_STRING)
         {
-          if ((strstr(MuttVars[idx].option, "charset") &&
+          if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], tmp->data) < 0) |
               /* $charset can't be empty, others can */
-              ((strcmp(MuttVars[idx].option, "charset") == 0) && !*tmp->data))
+              ((strcmp(MuttVars[idx].name, "charset") == 0) && !*tmp->data))
           {
             snprintf(err->data, err->dsize,
                      _("Invalid value for option %s: \"%s\""),
-                     MuttVars[idx].option, tmp->data);
+                     MuttVars[idx].name, tmp->data);
             return -1;
           }
 
-          FREE((void *) MuttVars[idx].data);
-          *((char **) MuttVars[idx].data) = mutt_str_strdup(tmp->data);
-          if (mutt_str_strcmp(MuttVars[idx].option, "charset") == 0)
+          FREE((void *) MuttVars[idx].var);
+          *((char **) MuttVars[idx].var) = mutt_str_strdup(tmp->data);
+          if (mutt_str_strcmp(MuttVars[idx].name, "charset") == 0)
             mutt_set_charset(Charset);
 
-          if ((mutt_str_strcmp(MuttVars[idx].option,
+          if ((mutt_str_strcmp(MuttVars[idx].name,
                                "show_multipart_alternative") == 0) &&
               !valid_show_multipart_alternative(tmp->data))
           {
             snprintf(err->data, err->dsize,
-                     _("Invalid value for option %s: \"%s\""),
-                     MuttVars[idx].option, tmp->data);
+                     _("Invalid value for name %s: \"%s\""), MuttVars[idx].name,
+                     tmp->data);
             return -1;
           }
         }
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {
-          free_mbtable((struct MbTable **) MuttVars[idx].data);
-          *((struct MbTable **) MuttVars[idx].data) = parse_mbtable(tmp->data);
+          free_mbtable((struct MbTable **) MuttVars[idx].var);
+          *((struct MbTable **) MuttVars[idx].var) = parse_mbtable(tmp->data);
         }
         else
         {
-          mutt_addr_free((struct Address **) MuttVars[idx].data);
-          *((struct Address **) MuttVars[idx].data) =
+          mutt_addr_free((struct Address **) MuttVars[idx].var);
+          *((struct Address **) MuttVars[idx].var) =
               mutt_addr_parse_list(NULL, tmp->data);
         }
       }
@@ -2642,13 +2638,14 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       if (query || *s->dptr != '=')
       {
         /* user requested the value of this variable */
-        struct Regex *ptr = (struct Regex *) MuttVars[idx].data;
-        pretty_var(err->data, err->dsize, MuttVars[idx].option, NONULL(ptr->pattern));
+        struct Regex *ptr = *(struct Regex **) MuttVars[idx].var;
+        const char *value = ptr ? ptr->pattern : NULL;
+        pretty_var(err->data, err->dsize, MuttVars[idx].name, NONULL(value));
         break;
       }
 
-      if (option(OPT_ATTACH_MSG) &&
-          (mutt_str_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
+      if (OPT_ATTACH_MSG &&
+          (mutt_str_strcmp(MuttVars[idx].name, "reply_regexp") == 0))
       {
         snprintf(err->data, err->dsize,
                  "Operation not permitted when in attach-message mode.");
@@ -2665,7 +2662,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       if (parse_regex(idx, tmp, err))
         /* $reply_regexp and $alternates require special treatment */
         if (Context && Context->msgcount &&
-            (mutt_str_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
+            (mutt_str_strcmp(MuttVars[idx].name, "reply_regexp") == 0))
         {
           regmatch_t pmatch[1];
 
@@ -2674,7 +2671,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             struct Envelope *e = Context->hdrs[i]->env;
             if (e && e->subject)
             {
-              e->real_subj = (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0)) ?
+              e->real_subj = (ReplyRegexp &&
+                              (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0))) ?
                                  e->subject :
                                  e->subject + pmatch[0].rm_eo;
             }
@@ -2703,7 +2701,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             p = "unknown";
             break;
         }
-        snprintf(err->data, err->dsize, "%s=%s", MuttVars[idx].option, p);
+        snprintf(err->data, err->dsize, "%s=%s", MuttVars[idx].name, p);
         break;
       }
 
@@ -2721,7 +2719,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     }
     else if (DTYPE(MuttVars[idx].type) == DT_NUMBER)
     {
-      short *ptr = (short *) MuttVars[idx].data;
+      short *ptr = (short *) MuttVars[idx].var;
       short val;
       int rc;
 
@@ -2729,11 +2727,11 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         val = *ptr;
         /* compatibility alias */
-        if (mutt_str_strcmp(MuttVars[idx].option, "wrapmargin") == 0)
+        if (mutt_str_strcmp(MuttVars[idx].name, "wrapmargin") == 0)
           val = *ptr < 0 ? -*ptr : 0;
 
         /* user requested the value of this variable */
-        snprintf(err->data, err->dsize, "%s=%d", MuttVars[idx].option, val);
+        snprintf(err->data, err->dsize, "%s=%d", MuttVars[idx].name, val);
         break;
       }
 
@@ -2750,7 +2748,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         r = -1;
         break;
       }
-      else if (mutt_str_strcmp(MuttVars[idx].option, "debug_level") == 0 && debuglevel_cmdline)
+      else if (mutt_str_strcmp(MuttVars[idx].name, "debug_level") == 0 && debuglevel_cmdline)
       {
         mutt_message(_(
             "set debug_level ignored, it has been overridden by the cmdline"));
@@ -2760,24 +2758,24 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         *ptr = val;
 
       /* these ones need a sanity check */
-      if (mutt_str_strcmp(MuttVars[idx].option, "history") == 0)
+      if (mutt_str_strcmp(MuttVars[idx].name, "history") == 0)
       {
         if (*ptr < 0)
           *ptr = 0;
         mutt_init_history();
       }
-      else if (mutt_str_strcmp(MuttVars[idx].option, "debug_level") == 0)
+      else if (mutt_str_strcmp(MuttVars[idx].name, "debug_level") == 0)
       {
         if (*ptr < 0)
           *ptr = 0;
         restart_debug();
       }
-      else if (mutt_str_strcmp(MuttVars[idx].option, "pager_index_lines") == 0)
+      else if (mutt_str_strcmp(MuttVars[idx].name, "pager_index_lines") == 0)
       {
         if (*ptr < 0)
           *ptr = 0;
       }
-      else if (mutt_str_strcmp(MuttVars[idx].option, "wrapmargin") == 0)
+      else if (mutt_str_strcmp(MuttVars[idx].name, "wrapmargin") == 0)
       {
         if (*ptr < 0)
           *ptr = 0;
@@ -2785,7 +2783,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           *ptr = -*ptr;
       }
 #ifdef USE_IMAP
-      else if (mutt_str_strcmp(MuttVars[idx].option, "imap_pipeline_depth") == 0)
+      else if (mutt_str_strcmp(MuttVars[idx].name, "imap_pipeline_depth") == 0)
       {
         if (*ptr < 0)
           *ptr = 0;
@@ -2798,8 +2796,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         static const char *const vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
-        snprintf(err->data, err->dsize, "%s=%s", MuttVars[idx].option,
-                 vals[quadoption(MuttVars[idx].data)]);
+        snprintf(err->data, err->dsize, "%s=%s", MuttVars[idx].name,
+                 vals[*(unsigned char *) MuttVars[idx].var]);
         break;
       }
 
@@ -2809,13 +2807,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         s->dptr++;
         mutt_extract_token(tmp, s, 0);
         if (mutt_str_strcasecmp("yes", tmp->data) == 0)
-          set_quadoption(MuttVars[idx].data, MUTT_YES);
+          *(unsigned char *) MuttVars[idx].var = MUTT_YES;
         else if (mutt_str_strcasecmp("no", tmp->data) == 0)
-          set_quadoption(MuttVars[idx].data, MUTT_NO);
+          *(unsigned char *) MuttVars[idx].var = MUTT_NO;
         else if (mutt_str_strcasecmp("ask-yes", tmp->data) == 0)
-          set_quadoption(MuttVars[idx].data, MUTT_ASKYES);
+          *(unsigned char *) MuttVars[idx].var = MUTT_ASKYES;
         else if (mutt_str_strcasecmp("ask-no", tmp->data) == 0)
-          set_quadoption(MuttVars[idx].data, MUTT_ASKNO);
+          *(unsigned char *) MuttVars[idx].var = MUTT_ASKNO;
         else
         {
           snprintf(err->data, err->dsize, _("%s: invalid value"), tmp->data);
@@ -2826,11 +2824,12 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       else
       {
         if (inv)
-          toggle_quadoption(MuttVars[idx].data);
+          *(unsigned char *) MuttVars[idx].var =
+              toggle_quadoption(*(unsigned char *) MuttVars[idx].var);
         else if (unset)
-          set_quadoption(MuttVars[idx].data, MUTT_NO);
+          *(unsigned char *) MuttVars[idx].var = MUTT_NO;
         else
-          set_quadoption(MuttVars[idx].data, MUTT_YES);
+          *(unsigned char *) MuttVars[idx].var = MUTT_YES;
       }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_SORT)
@@ -2862,25 +2861,25 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
       if (!map)
       {
-        snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
+        snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].name);
         r = -1;
         break;
       }
 
       if (query || *s->dptr != '=')
       {
-        p = mutt_map_get_name(*((short *) MuttVars[idx].data) & SORT_MASK, map);
+        p = mutt_map_get_name(*((short *) MuttVars[idx].var) & SORT_MASK, map);
 
-        snprintf(err->data, err->dsize, "%s=%s%s%s", MuttVars[idx].option,
-                 (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
-                 (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "", p);
+        snprintf(err->data, err->dsize, "%s=%s%s%s", MuttVars[idx].name,
+                 (*((short *) MuttVars[idx].var) & SORT_REVERSE) ? "reverse-" : "",
+                 (*((short *) MuttVars[idx].var) & SORT_LAST) ? "last-" : "", p);
         return 0;
       }
       CHECK_PAGER;
       s->dptr++;
       mutt_extract_token(tmp, s, 0);
 
-      if (parse_sort((short *) MuttVars[idx].data, tmp->data, map, err) == -1)
+      if (parse_sort((short *) MuttVars[idx].var, tmp->data, map, err) == -1)
       {
         r = -1;
         break;
@@ -2891,8 +2890,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (query || (*s->dptr != '='))
       {
-        pretty_var(err->data, err->dsize, MuttVars[idx].option,
-                   NONULL((*(char **) MuttVars[idx].data)));
+        pretty_var(err->data, err->dsize, MuttVars[idx].name,
+                   NONULL((*(char **) MuttVars[idx].var)));
         break;
       }
 
@@ -2903,8 +2902,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       mutt_extract_token(tmp, s, 0);
       if (mutt_hcache_is_valid_backend(tmp->data))
       {
-        FREE((void *) MuttVars[idx].data);
-        *(char **) (MuttVars[idx].data) = mutt_str_strdup(tmp->data);
+        FREE((void *) MuttVars[idx].var);
+        *(char **) (MuttVars[idx].var) = mutt_str_strdup(tmp->data);
       }
       else
       {
@@ -2916,7 +2915,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 #endif
     else
     {
-      snprintf(err->data, err->dsize, _("%s: unknown type"), MuttVars[idx].option);
+      snprintf(err->data, err->dsize, _("%s: unknown type"), MuttVars[idx].name);
       r = -1;
       break;
     }
@@ -2933,13 +2932,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
       }
       if (MuttVars[idx].flags & R_RESORT_SUB)
-        set_option(OPT_SORT_SUBTHREADS);
+        OPT_SORT_SUBTHREADS = true;
       if (MuttVars[idx].flags & R_RESORT)
-        set_option(OPT_NEED_RESORT);
+        OPT_NEED_RESORT = true;
       if (MuttVars[idx].flags & R_RESORT_INIT)
-        set_option(OPT_RESORT_INIT);
+        OPT_RESORT_INIT = true;
       if (MuttVars[idx].flags & R_TREE)
-        set_option(OPT_REDRAW_TREE);
+        OPT_REDRAW_TREE = true;
       if (MuttVars[idx].flags & R_REFLOW)
         mutt_reflow_windows();
 #ifdef USE_SIDEBAR
@@ -2953,7 +2952,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return r;
 }
 
-/* FILO designed to contain the list of config files that have been sourced and
+/* LIFO designed to contain the list of config files that have been sourced and
  * avoid cyclic sourcing */
 static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 
@@ -3340,8 +3339,8 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       mutt_str_strfcpy(UserTyped, pt, sizeof(UserTyped));
       memset(Matches, 0, MatchesListsize);
       memset(Completed, 0, sizeof(Completed));
-      for (num = 0; MuttVars[num].option; num++)
-        candidate(Completed, UserTyped, MuttVars[num].option, sizeof(Completed));
+      for (num = 0; MuttVars[num].name; num++)
+        candidate(Completed, UserTyped, MuttVars[num].name, sizeof(Completed));
       for (myv = MyVars; myv; myv = myv->next)
         candidate(Completed, UserTyped, myv->name, sizeof(Completed));
       matches_ensure_morespace(NumMatched);
@@ -3634,27 +3633,27 @@ int var_to_string(int idx, char *val, size_t len)
   if ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
       (DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_REGEX))
   {
-    mutt_str_strfcpy(tmp, NONULL(*((char **) MuttVars[idx].data)), sizeof(tmp));
+    mutt_str_strfcpy(tmp, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp));
     if (DTYPE(MuttVars[idx].type) == DT_PATH)
       mutt_pretty_mailbox(tmp, sizeof(tmp));
   }
   else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
   {
-    struct MbTable *mbt = (*((struct MbTable **) MuttVars[idx].data));
+    struct MbTable *mbt = (*((struct MbTable **) MuttVars[idx].var));
     mutt_str_strfcpy(tmp, mbt ? NONULL(mbt->orig_str) : "", sizeof(tmp));
   }
   else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
   {
-    rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].data), 0);
+    rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].var), 0);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
-    mutt_str_strfcpy(tmp, vals[quadoption(MuttVars[idx].data)], sizeof(tmp));
+    mutt_str_strfcpy(tmp, vals[*(unsigned char *) MuttVars[idx].var], sizeof(tmp));
   else if (DTYPE(MuttVars[idx].type) == DT_NUMBER)
   {
-    short sval = *((short *) MuttVars[idx].data);
+    short sval = *((short *) MuttVars[idx].var);
 
     /* avert your eyes, gentle reader */
-    if (mutt_str_strcmp(MuttVars[idx].option, "wrapmargin") == 0)
+    if (mutt_str_strcmp(MuttVars[idx].name, "wrapmargin") == 0)
       sval = sval > 0 ? 0 : -sval;
 
     snprintf(tmp, sizeof(tmp), "%d", sval);
@@ -3682,10 +3681,10 @@ int var_to_string(int idx, char *val, size_t len)
         map = SortMethods;
         break;
     }
-    p = mutt_map_get_name(*((short *) MuttVars[idx].data) & SORT_MASK, map);
+    p = mutt_map_get_name(*((short *) MuttVars[idx].var) & SORT_MASK, map);
     snprintf(tmp, sizeof(tmp), "%s%s%s",
-             (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
-             (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "", p);
+             (*((short *) MuttVars[idx].var) & SORT_REVERSE) ? "reverse-" : "",
+             (*((short *) MuttVars[idx].var) & SORT_LAST) ? "last-" : "", p);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
   {
@@ -3711,7 +3710,7 @@ int var_to_string(int idx, char *val, size_t len)
     mutt_str_strfcpy(tmp, p, sizeof(tmp));
   }
   else if (DTYPE(MuttVars[idx].type) == DT_BOOL)
-    mutt_str_strfcpy(tmp, option(MuttVars[idx].data) ? "yes" : "no", sizeof(tmp));
+    mutt_str_strfcpy(tmp, *(bool *) MuttVars[idx].var ? "yes" : "no", sizeof(tmp));
   else
     return 0;
 
@@ -3771,17 +3770,17 @@ int mutt_dump_variables(int hide_sensitive)
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
 
-  for (int i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].name; i++)
   {
     if (MuttVars[i].type == DT_SYNONYM)
       continue;
 
     if (hide_sensitive && IS_SENSITIVE(MuttVars[i]))
     {
-      printf("%s='***'\n", MuttVars[i].option);
+      printf("%s='***'\n", MuttVars[i].name);
       continue;
     }
-    snprintf(command, sizeof(command), "set ?%s\n", MuttVars[i].option);
+    snprintf(command, sizeof(command), "set ?%s\n", MuttVars[i].name);
     if (mutt_parse_rc_line(command, &token, &err) == -1)
     {
       fprintf(stderr, "%s\n", err.data);
@@ -3876,7 +3875,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   /* reverse alias keys need to be strdup'ed because of idna conversions */
   ReverseAliases = mutt_hash_create(
       1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
-  TagTransforms = mutt_hash_create(64, 1);
+  TagTransforms = mutt_hash_create(64, MUTT_HASH_STRCASECMP);
   TagFormats = mutt_hash_create(64, 0);
 
   mutt_menu_init();
@@ -3935,8 +3934,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     else
     {
       int i = mutt_option_index("debug_file");
-      if ((i >= 0) && (MuttVars[i].init != 0))
-        DebugFile = mutt_str_strdup((const char *) MuttVars[i].init);
+      if ((i >= 0) && (MuttVars[i].initial != 0))
+        DebugFile = mutt_str_strdup((const char *) MuttVars[i].initial);
     }
     start_debug();
   }
@@ -4069,7 +4068,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
 
   /* Set standard defaults */
-  for (int i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].name; i++)
   {
     set_default(&MuttVars[i]);
     restore_default(&MuttVars[i]);
@@ -4089,7 +4088,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    unset_option(OPT_SUSPEND);
+    Suspend = false;
 #endif
 
   mutt_init_history();
@@ -4189,7 +4188,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   {
     if (np->data)
     {
-      if (!option(OPT_NO_CURSES))
+      if (!OPT_NO_CURSES)
         endwin();
       if (source_rc(np->data, &err) != 0)
       {
@@ -4203,7 +4202,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   if (execute_commands(commands) != 0)
     need_pause = 1;
 
-  if (need_pause && !option(OPT_NO_CURSES))
+  if (need_pause && !OPT_NO_CURSES)
   {
     if (mutt_any_key_to_continue(NULL) == -1)
       mutt_exit(1);
@@ -4214,7 +4213,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   mutt_read_histfile();
 
 #ifdef USE_NOTMUCH
-  if (option(OPT_VIRTUAL_SPOOLFILE))
+  if (VirtualSpoolfile)
   {
     /* Find the first virtual folder and open it */
     for (struct Buffy *b = Incoming; b; b = b->next)

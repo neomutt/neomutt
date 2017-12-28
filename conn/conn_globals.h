@@ -23,6 +23,7 @@
 #ifndef _CONN_GLOBALS_H
 #define _CONN_GLOBALS_H
 
+/* These variables are backing for config items */
 short ConnectTimeout;
 
 #ifdef USE_SSL

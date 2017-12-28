@@ -326,9 +326,9 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  if (GecosMask.regex)
+  if (GecosMask)
   {
-    if (regexec(GecosMask.regex, pw->pw_gecos, 1, pat_match, 0) == 0)
+    if (regexec(GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
       mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
                        MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
   }
@@ -726,7 +726,7 @@ void mutt_save_path(char *d, size_t dsize, struct Address *a)
   if (a && a->mailbox)
   {
     mutt_str_strfcpy(d, a->mailbox, dsize);
-    if (!option(OPT_SAVE_ADDRESS))
+    if (!SaveAddress)
     {
       char *p = NULL;
 
@@ -776,7 +776,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
   prefix[0] = '\0';
   buflen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
   col += wlen;
 
   if ((flags & MUTT_FORMAT_NOFILTER) == 0)
@@ -843,7 +843,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
+      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
       pid = mutt_create_filter(command->data, NULL, &filter, NULL);
       if (pid != -1)
       {
@@ -1120,8 +1120,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           }
           else if (soft && pad < 0)
           {
-            int offset =
-                ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
+            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate buf for length computation in mutt_wstr_trunc() */
             *wptr = 0;
@@ -1341,7 +1340,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if (magic > 0 && !mx_access(s, W_OK))
   {
-    if (option(OPT_CONFIRMAPPEND))
+    if (Confirmappend)
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
       rc = mutt_yesorno(tmp, MUTT_YES);
@@ -1376,7 +1375,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      if (option(OPT_CONFIRMCREATE))
+      if (Confirmcreate)
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
         rc = mutt_yesorno(tmp, MUTT_YES);
@@ -1386,7 +1385,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
           ret = -1;
       }
 
-      /* user confirmed with MUTT_YES or set OPT_CONFIRMCREATE */
+      /* user confirmed with MUTT_YES or set Confirmcreate */
       if (ret == 0)
       {
         /* create dir recursively */

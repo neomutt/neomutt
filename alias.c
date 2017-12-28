@@ -123,7 +123,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
     last->next = NULL;
   }
 
-  if (option(OPT_USE_DOMAIN) && (fqdn = mutt_fqdn(1)))
+  if (UseDomain && (fqdn = mutt_fqdn(1)))
   {
     /* now qualify all local addresses */
     mutt_addr_qualify(head, fqdn);
@@ -495,7 +495,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      mutt_hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
+      mutt_hash_delete(ReverseAliases, ap->mailbox, ap);
   }
 }
 
