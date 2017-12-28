@@ -34,7 +34,6 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"

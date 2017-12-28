@@ -26,7 +26,6 @@
 #include <signal.h>
 #include "mutt/mutt.h"
 #include "where.h"
-#include "mutt_regex.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */
@@ -320,6 +319,12 @@ WHERE char *NmQueryWindowTimebase;
 WHERE int NmQueryWindowCurrentPosition;
 WHERE char *NmQueryWindowCurrentSearch;
 #endif
+
+WHERE struct Regex Mask;
+WHERE struct Regex QuoteRegexp;
+WHERE struct Regex ReplyRegexp;
+WHERE struct Regex Smileys;
+WHERE struct Regex GecosMask;
 
 #ifdef MAIN_C
 const char *const BodyTypes[] = {

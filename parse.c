@@ -38,7 +38,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_charset.h"
-#include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"
@@ -1212,9 +1211,9 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
     *buf = '\0';
 
-    if (mutt_match_spam_list(line, SpamList, buf, sizeof(buf)))
+    if (mutt_replacelist_match(SpamList, buf, sizeof(buf), line))
     {
-      if (!mutt_match_regex_list(line, NoSpamList))
+      if (!mutt_regexlist_match(NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
         if (e->spam && *buf)

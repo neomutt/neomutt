@@ -55,7 +55,7 @@ static void group_remove(struct Group *g)
     return;
   mutt_hash_delete(Groups, g->name, g, NULL);
   mutt_addr_free(&g->as);
-  mutt_free_regex_list(&g->rs);
+  mutt_regexlist_free(&g->rs);
   FREE(&g->name);
   FREE(&g);
 }
@@ -135,12 +135,12 @@ static int group_remove_adrlist(struct Group *g, struct Address *a)
 
 static int group_add_regex(struct Group *g, const char *s, int flags, struct Buffer *err)
 {
-  return mutt_add_to_regex_list(&g->rs, s, flags, err);
+  return mutt_regexlist_add(&g->rs, s, flags, err);
 }
 
 static int group_remove_regex(struct Group *g, const char *s)
 {
-  return mutt_remove_from_regex_list(&g->rs, s);
+  return mutt_regexlist_remove(&g->rs, s);
 }
 
 void mutt_group_context_add_adrlist(struct GroupContext *ctx, struct Address *a)
@@ -194,7 +194,7 @@ bool mutt_group_match(struct Group *g, const char *s)
 
   if (s && g)
   {
-    if (mutt_match_regex_list(s, g->rs))
+    if (mutt_regexlist_match(g->rs, s))
       return true;
     for (ap = g->as; ap; ap = ap->next)
       if (ap->mailbox && (mutt_str_strcasecmp(s, ap->mailbox) == 0))
