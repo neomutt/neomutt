@@ -169,7 +169,7 @@ int mutt_socket_open(struct Connection *conn)
 
   rc = conn->conn_open(conn);
 
-  mutt_debug(2, "Connected to %s:%d on fd=%d\n", NONULL(conn->account.host),
+  mutt_debug(2, "Connected to %s:%d on fd=%d\n", conn->account.host,
              conn->account.port, conn->fd);
 
   return rc;

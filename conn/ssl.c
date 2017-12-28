@@ -1087,7 +1087,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
           mutt_message(_("Certificate saved"));
           mutt_sleep(0);
         }
-      /* fall through */
+      /* fallthrough */
       case OP_MAX + 2: /* accept once */
         done = 2;
         SSL_set_ex_data(ssl, SkipModeExDataIndex, NULL);

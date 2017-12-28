@@ -1010,7 +1010,7 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
       continue;
 
     nntp_article_status(ctx, hdr, grp, anum);
-    if (hdr && !NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
+    if (!NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
       NHDR(hdr)->article_num = anum;
   }
   FREE(&buf);
@@ -1779,7 +1779,10 @@ int nntp_post(const char *msg)
     }
     if (mutt_socket_write_d(nntp_data->nserv->conn, buf[1] == '.' ? buf : buf + 1,
                             -1, MUTT_SOCK_LOG_HDR) < 0)
+    {
+      mutt_file_fclose(&fp);
       return nntp_connect_error(nntp_data->nserv);
+    }
   }
   mutt_file_fclose(&fp);
 

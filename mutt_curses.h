@@ -309,6 +309,10 @@ void ci_start_color(void);
 #endif
 
 /* reset the color to the normal terminal color as defined by 'color normal ...' */
-#define NORMAL_COLOR SETCOLOR(MT_COLOR_NORMAL)
+#ifdef HAVE_BKGDSET
+#define NORMAL_COLOR bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ')
+#else
+#define NORMAL_COLOR attrset(ColorDefs[MT_COLOR_NORMAL])
+#endif
 
 #endif /* _MUTT_CURSES_H */

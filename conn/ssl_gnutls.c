@@ -864,7 +864,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
           mutt_message(_("Certificate saved"));
           mutt_sleep(0);
         }
-      /* fall through */
+      /* fallthrough */
       case OP_MAX + 2: /* accept once */
         done = 2;
         break;

@@ -503,7 +503,7 @@ int main(int argc, char **argv, char **env)
 
   if (!option(OPT_NO_CURSES))
   {
-    SETCOLOR(MT_COLOR_NORMAL);
+    NORMAL_COLOR;
     clear();
     mutt_error = mutt_curses_error;
     mutt_message = mutt_curses_message;

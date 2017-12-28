@@ -854,7 +854,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
       case 0:
         mutt_clear_error();
         return 0;
-      /* non-fatal error: fall through to fetch/append */
+      /* non-fatal error: continue to fetch/append */
       case 1:
         break;
       /* fatal error, abort */

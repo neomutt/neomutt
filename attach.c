@@ -185,6 +185,7 @@ int mutt_compose_attachment(struct Body *a)
             if (!tfp)
             {
               mutt_perror(_("Failure to open file to strip headers."));
+              mutt_file_fclose(&fp);
               goto bailout;
             }
             mutt_file_copy_stream(fp, tfp);
