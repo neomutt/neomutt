@@ -243,6 +243,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
 int mutt_check_traditional_pgp(struct Header *h, int *redraw);
 int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs);
 int mutt_var_value_complete(char *buffer, size_t len, int pos);
+void myvar_set(const char *var, const char *val);
 #ifdef USE_NOTMUCH
 bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs);
 bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs);

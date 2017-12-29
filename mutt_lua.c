@@ -124,7 +124,13 @@ static int lua_mutt_set(lua_State *l)
   err.data = err_str;
   err.dsize = sizeof(err_str);
 
-  if (!mutt_option_get(param, &opt))
+  if (mutt_str_strncmp("my_", param, 3) == 0)
+  {
+    const char *val = lua_tostring(l, -1);
+    myvar_set(param, val);
+    return 0;
+  }
+  else if (!mutt_option_get(param, &opt))
   {
     luaL_error(l, "Error getting parameter %s", param);
     return -1;
@@ -219,11 +225,8 @@ static int lua_mutt_get(lua_State *l)
       case DT_STRING:
         if (mutt_str_strncmp("my_", param, 3) == 0)
         {
-          char *option = (char *) opt.name;
-          char *value = (char *) opt.var;
+          char *value = (char *) opt.initial;
           lua_pushstring(l, value);
-          FREE(&option);
-          FREE(&value);
         }
         else
         {

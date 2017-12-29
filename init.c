@@ -87,7 +87,7 @@ struct MyVar
 
 static struct MyVar *MyVars;
 
-static void myvar_set(const char *var, const char *val)
+void myvar_set(const char *var, const char *val)
 {
   struct MyVar **cur = NULL;
 
@@ -292,6 +292,7 @@ bool mutt_option_get(const char *s, struct Option *opt)
       memset(opt, 0, sizeof(*opt));
       opt->name = s;
       opt->type = DT_STRING;
+      opt->initial = (intptr_t) mv;
     }
     return true;
   }
