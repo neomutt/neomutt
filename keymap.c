@@ -494,6 +494,7 @@ int km_dokey(int menu)
       if (ImapKeepalive >= i)
         imap_keepalive();
       else
+      {
         while (ImapKeepalive && ImapKeepalive < i)
         {
           timeout(ImapKeepalive * 1000);
@@ -508,6 +509,7 @@ int km_dokey(int menu)
           i -= ImapKeepalive;
           imap_keepalive();
         }
+      }
     }
 #endif
 

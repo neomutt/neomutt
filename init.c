@@ -1711,6 +1711,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
       break;
     }
     else
+    {
       for (tmp = Aliases; tmp; tmp = tmp->next)
       {
         if (mutt_str_strcasecmp(buf->data, tmp->name) == 0)
@@ -1732,6 +1733,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
         }
         last = tmp;
       }
+    }
   } while (MoreArgs(s));
   return 0;
 }
@@ -2661,6 +2663,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       mutt_extract_token(tmp, s, 0);
 
       if (parse_regex(idx, tmp, err))
+      {
         /* $reply_regexp and $alternates require special treatment */
         if (Context && Context->msgcount &&
             (mutt_str_strcmp(MuttVars[idx].name, "reply_regexp") == 0))
@@ -2679,6 +2682,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             }
           }
         }
+      }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
     {

@@ -472,12 +472,14 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
           else
           {
             for (i = 0; i < menu->max; i++)
+            {
               if (QueryTable[i].tagged)
               {
                 struct Address *a = result_to_addr(QueryTable[i].data);
                 mutt_addr_append(&msg->env->to, a, false);
                 mutt_addr_free(&a);
               }
+            }
           }
           ci_send_message(0, msg, NULL, Context, NULL);
           menu->redraw = REDRAW_FULL;
