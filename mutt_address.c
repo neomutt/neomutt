@@ -23,7 +23,6 @@
 
 #include "config.h"
 #include <stdio.h>
-#include <string.h>
 #include "mutt/mutt.h"
 #include "address.h"
 

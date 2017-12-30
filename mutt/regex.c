@@ -38,12 +38,15 @@
  * | mutt_replacelist_add()    | Add a pattern and a template to a list
  * | mutt_replacelist_apply()  | Apply replacements to a buffer
  * | mutt_replacelist_free()   | Free a ReplaceList object
- * | mutt_replacelist_match()  | Does a string match a spam pattern
+ * | mutt_replacelist_match()  | Does a string match a pattern?
  * | mutt_replacelist_new()    | Create a new ReplaceList
  * | mutt_replacelist_remove() | Remove a pattern from a list
  */
 
 #include "config.h"
+#include <ctype.h>
+#include <regex.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

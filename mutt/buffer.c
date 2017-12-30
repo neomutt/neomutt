@@ -26,17 +26,19 @@
  *
  * The Buffer object make parsing and manipulating strings easier.
  *
- * | Function             | Description
- * | :------------------- | :--------------------------------------------------
- * | mutt_buffer_add()    | Add a string to a Buffer, expanding it if necessary
- * | mutt_buffer_addch()  | Add a single character to a Buffer
- * | mutt_buffer_addstr() | Add a string to a Buffer
- * | mutt_buffer_free()   | Release a Buffer and its contents
- * | mutt_buffer_from()   | Create Buffer from an existing string
- * | mutt_buffer_init()   | Initialise a new Buffer
- * | mutt_buffer_new()    | Create and initialise a Buffer
- * | mutt_buffer_printf() | Format a string into a Buffer
- * | mutt_buffer_reset()  | Reset an existing Buffer
+ * | Function               | Description
+ * | :--------------------- | :--------------------------------------------------
+ * | mutt_buffer_add()      | Add a string to a Buffer, expanding it if necessary
+ * | mutt_buffer_addch()    | Add a single character to a Buffer
+ * | mutt_buffer_addstr()   | Add a string to a Buffer
+ * | mutt_buffer_alloc()    | Create a new Buffer
+ * | mutt_buffer_free()     | Release a Buffer and its contents
+ * | mutt_buffer_from()     | Create Buffer from an existing string
+ * | mutt_buffer_init()     | Initialise a new Buffer
+ * | mutt_buffer_is_empty() | Is the Buffer empty?
+ * | mutt_buffer_new()      | Create and initialise a Buffer
+ * | mutt_buffer_printf()   | Format a string into a Buffer
+ * | mutt_buffer_reset()    | Reset an existing Buffer
  */
 
 #include "config.h"
@@ -44,7 +46,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "buffer.h"
-#include "debug.h"
 #include "memory.h"
 #include "string2.h"
 

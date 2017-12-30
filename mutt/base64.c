@@ -30,14 +30,14 @@
  * @note RFC3548 obsoletes RFC2045.
  * @note RFC4648 obsoletes RFC3548.
  *
- * | Data               | Description
- * | :----------------- | :--------------------------------------------------
+ * | Data              | Description
+ * | :---------------- | :--------------------------------------------------
  * | #Index64          | Lookup table for Base64 encoding characters
  *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | mutt_b64_decode()  | convert null-terminated base64 string to raw bytes
- * | mutt_b64_encode()  | convert raw bytes to null-terminated base64 string
+ * | Function          | Description
+ * | :---------------- | :-------------------------------------------------
+ * | mutt_b64_encode() | Convert raw bytes to null-terminated base64 string
+ * | mutt_b64_decode() | Convert null-terminated base64 string to raw bytes
  */
 
 #include "config.h"
@@ -79,7 +79,7 @@ const int Index64[128] = {
 // clang-format on
 
 /**
- * mutt_b64_encode - convert raw bytes to null-terminated base64 string
+ * mutt_b64_encode - Convert raw bytes to null-terminated base64 string
  * @param out  Output buffer for the base64 encoded string
  * @param cin  Input  buffer for the raw bytes
  * @param len  Length of the input buffer
@@ -125,7 +125,7 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
 }
 
 /**
- * mutt_b64_decode - convert null-terminated base64 string to raw bytes
+ * mutt_b64_decode - Convert null-terminated base64 string to raw bytes
  * @param out Output buffer for the raw bytes
  * @param in  Input  buffer for the null-terminated base64-encoded string
  * @retval n Number of bytes written on success

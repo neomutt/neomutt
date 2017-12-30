@@ -24,7 +24,6 @@
 #ifndef _MUTT_LIST_H
 #define _MUTT_LIST_H
 
-#include <string.h>
 #include <stdbool.h>
 #include "mutt/queue.h"
 

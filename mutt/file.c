@@ -971,7 +971,7 @@ void mutt_file_touch_atime(int f)
 }
 
 /**
- * mutt_file_chmod - change permissions of a file
+ * mutt_file_chmod - Set permissions of a file
  * @param path Filename
  * @param mode the permissions to set
  * @retval int same as chmod(2)
@@ -984,7 +984,7 @@ int mutt_file_chmod(const char *path, mode_t mode)
 }
 
 /**
- * mutt_file_chmod_add - add permissions to a file
+ * mutt_file_chmod_add - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
  * @retval int same as chmod(2)
@@ -1005,7 +1005,7 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
 }
 
 /**
- * mutt_file_chmod_add_stat - add permissions to a file
+ * mutt_file_chmod_add_stat - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
  * @param st   struct stat for the file (optional)
@@ -1036,7 +1036,7 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
 }
 
 /**
- * mutt_file_chmod_rm - remove permissions from a file
+ * mutt_file_chmod_rm - Remove permissions from a file
  * @param path Filename
  * @param mode the permissions to remove
  * @retval int same as chmod(2)
@@ -1057,7 +1057,7 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
 }
 
 /**
- * mutt_file_chmod_rm_stat - remove permissions from a file
+ * mutt_file_chmod_rm_stat - Remove permissions from a file
  * @param path Filename
  * @param mode the permissions to remove
  * @param st   struct stat for the file (optional)
