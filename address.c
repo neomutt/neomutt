@@ -40,14 +40,20 @@
  * | mutt_addr_cmp_strict()       | Strictly compare two Address lists
  * | mutt_addr_copy()             | Copy the real address
  * | mutt_addr_copy_list()        | Copy a list of addresses
+ * | mutt_addr_for_display()      | Convert an Address for display purposes
  * | mutt_addr_free()             | Free a list of Addresses
  * | mutt_addr_has_recips()       | Count the number of Addresses with valid recipients
+ * | mutt_addr_is_intl()          | Does the Address have IDN components
+ * | mutt_addr_is_local()         | Does the Address have NO IDN components
+ * | mutt_addr_mbox_to_udomain()  | Split a mailbox name into user and domain
  * | mutt_addr_new()              | Create a new Address
  * | mutt_addr_parse_list()       | Parse a list of email addresses
  * | mutt_addr_parse_list2()      | Parse a list of email addresses
  * | mutt_addr_qualify()          | Expand local names in an Address list using a hostname
  * | mutt_addr_remove_from_list() | Remove an Address from a list
  * | mutt_addr_search()           | Search for an e-mail address in a list
+ * | mutt_addr_set_intl()         | Mark an Address as having IDN components
+ * | mutt_addr_set_local()        | Mark an Address as having NO IDN components
  * | mutt_addr_valid_msgid()      | Is this a valid Message ID?
  */
 
@@ -931,4 +937,107 @@ bool mutt_addr_search(struct Address *a, struct Address *lst)
       return true;
   }
   return false;
+}
+
+/**
+ * mutt_addr_is_intl - Does the Address have IDN components
+ * @param a Address to check
+ * @retval true Address contains IDN components
+ */
+bool mutt_addr_is_intl(struct Address *a)
+{
+  return (a->intl_checked && a->is_intl);
+}
+
+/**
+ * mutt_addr_is_local - Does the Address have NO IDN components
+ * @param a Address to check
+ * @retval true Address contains NO IDN components
+ */
+bool mutt_addr_is_local(struct Address *a)
+{
+  return (a->intl_checked && !a->is_intl);
+}
+
+/**
+ * mutt_addr_mbox_to_udomain - Split a mailbox name into user and domain
+ * @param[in]  mbox   Mailbox name to split
+ * @param[out] user   User
+ * @param[out] domain Domain
+ * @retval 0  Success
+ * @retval -1 Error
+ */
+int mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain)
+{
+  static char *buf = NULL;
+  char *p = NULL;
+
+  mutt_str_replace(&buf, mbox);
+  if (!buf)
+    return -1;
+
+  p = strchr(buf, '@');
+  if (!p || !p[1])
+    return -1;
+  *p = '\0';
+  *user = buf;
+  *domain = p + 1;
+  return 0;
+}
+
+/**
+ * mutt_addr_set_intl - Mark an Address as having IDN components
+ * @param a            Address to modify
+ * @param intl_mailbox Email address with IDN components
+ */
+void mutt_addr_set_intl(struct Address *a, char *intl_mailbox)
+{
+  FREE(&a->mailbox);
+  a->mailbox = intl_mailbox;
+  a->intl_checked = true;
+  a->is_intl = true;
+}
+
+/**
+ * mutt_addr_set_local - Mark an Address as having NO IDN components
+ * @param a             Address
+ * @param local_mailbox Email address with NO IDN components
+ */
+void mutt_addr_set_local(struct Address *a, char *local_mailbox)
+{
+  FREE(&a->mailbox);
+  a->mailbox = local_mailbox;
+  a->intl_checked = true;
+  a->is_intl = false;
+}
+
+/**
+ * mutt_addr_for_display - Convert an Address for display purposes
+ * @param a Address to convert
+ * @retval ptr Address to display
+ *
+ * @warning This function may return a static pointer.  It must not be freed by
+ * the caller.  Later calls may overwrite the returned pointer.
+ */
+const char *mutt_addr_for_display(struct Address *a)
+{
+  char *user = NULL, *domain = NULL;
+  static char *buf = NULL;
+  char *local_mailbox = NULL;
+
+  FREE(&buf);
+
+  if (!a->mailbox || mutt_addr_is_local(a))
+    return a->mailbox;
+
+  if (mutt_addr_mbox_to_udomain(a->mailbox, &user, &domain) == -1)
+    return a->mailbox;
+
+  local_mailbox = mutt_idna_intl_to_local(user, domain, MI_MAY_BE_IRREVERSIBLE);
+  if (!local_mailbox)
+    return a->mailbox;
+
+  mutt_str_replace(&buf, local_mailbox);
+  FREE(&local_mailbox);
+  return buf;
 }

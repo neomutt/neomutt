@@ -36,9 +36,6 @@ char *mutt_idna_local_to_intl(char *user, char *domain);
 int mutt_addrlist_to_intl(struct Address *a, char **err);
 int mutt_addrlist_to_local(struct Address *a);
 
-void mutt_env_to_local(struct Envelope *e);
-int mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
-
 const char *mutt_addr_for_display(struct Address *a);
 
 #endif /* _MUTT_IDNA_H */
