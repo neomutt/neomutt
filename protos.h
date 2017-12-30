@@ -121,8 +121,6 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
                             const char *if_str, const char *else_str,
                             unsigned long data, enum FormatFlag flags);
 
-char *mutt_charset_hook(const char *chs);
-char *mutt_iconv_hook(const char *chs);
 char *mutt_expand_path(char *s, size_t slen);
 char *mutt_expand_path_regex(char *s, size_t slen, int regex);
 char *mutt_find_hook(int type, const char *pat);

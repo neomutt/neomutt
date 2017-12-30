@@ -27,6 +27,20 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+/**
+ * enum LookupType - Types of character set lookups
+ */
+enum LookupType
+{
+  MUTT_LOOKUP_CHARSET,
+  MUTT_LOOKUP_ICONV
+};
+
+bool             mutt_cs_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
+void             mutt_cs_lookup_remove(void);
+const char *     mutt_cs_charset_lookup(const char *chs);
+const char *     mutt_cs_iconv_lookup(const char *chs);
+
 int mutt_convert_string(char **ps, const char *from, const char *to, int flags);
 
 iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags);

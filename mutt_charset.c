@@ -34,6 +34,20 @@
 #include "protos.h"
 
 /**
+ * struct Lookup - Regex to String lookup table
+ *
+ * This is used by 'charset-hook' and 'iconv-hook'.
+ */
+struct Lookup
+{
+  enum LookupType type; /**< Lookup type */
+  struct Regex regex;   /**< Regular expression */
+  char *replacement;    /**< Alternative charset to use */
+  TAILQ_ENTRY(Lookup) entries;
+};
+static TAILQ_HEAD(LookupHead, Lookup) Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
+
+/**
  * mutt_iconv_open - Set up iconv for conversions
  *
  * Like iconv_open, but canonicalises the charsets, applies charset-hooks,
@@ -51,8 +65,8 @@ iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
-  char *tocode2 = NULL, *fromcode2 = NULL;
-  char *tmp = NULL;
+  const char *tocode2 = NULL, *fromcode2 = NULL;
+  const char *tmp = NULL;
 
   iconv_t cd;
 
@@ -63,13 +77,17 @@ iconv_t mutt_iconv_open(const char *tocode, const char *fromcode, int flags)
   /* maybe apply charset-hooks and recanonicalise fromcode,
    * but only when caller asked us to sanitize a potentially wrong
    * charset name incoming from the wild exterior. */
-  if ((flags & MUTT_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook(fromcode1)))
-    mutt_cs_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
+  if (flags & MUTT_ICONV_HOOK_FROM)
+  {
+    tmp = mutt_cs_charset_lookup(fromcode1);
+    if (tmp)
+      mutt_cs_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
+  }
 
   /* always apply iconv-hooks to suit system's iconv tastes */
-  tocode2 = mutt_iconv_hook(tocode1);
+  tocode2 = mutt_cs_iconv_lookup(tocode1);
   tocode2 = (tocode2) ? tocode2 : tocode1;
-  fromcode2 = mutt_iconv_hook(fromcode1);
+  fromcode2 = mutt_cs_iconv_lookup(fromcode1);
   fromcode2 = (fromcode2) ? fromcode2 : fromcode1;
 
   /* call system iconv with names it appreciates */
@@ -191,4 +209,117 @@ bool mutt_check_charset(const char *s, bool strict)
   }
 
   return false;
+}
+
+/**
+ * lookup_charset - Look for a preferred character set name
+ * @param type Type, e.g. #MUTT_LOOKUP_CHARSET
+ * @param cs   Character set
+ *
+ * If the character set matches one of the regexes,
+ * then return the replacement name.
+ */
+static const char *lookup_charset(enum LookupType type, const char *cs)
+{
+  if (!cs)
+    return NULL;
+
+  struct Lookup *l = NULL;
+
+  TAILQ_FOREACH(l, &Lookups, entries)
+  {
+    if (l->type != type)
+      continue;
+    if (regexec(l->regex.regex, cs, 0, NULL, 0) == 0)
+      return l->replacement;
+  }
+  return NULL;
+}
+
+/**
+ * mutt_cs_lookup_add - Add a new character set lookup
+ * @param type    Type of character set, e.g. MUTT_LOOKUP_CHARSET 
+ * @param pat     Pattern to match
+ * @param replace Replacement string
+ * @param err     Buffer for error message
+ * @retval true, lookup added to list
+ * @retval false, Regex string was invalid
+ *
+ * Add a regex for a character set and a replacement name.
+ */
+bool mutt_cs_lookup_add(enum LookupType type, const char *pat,
+                        const char *replace, struct Buffer *err)
+{
+  if (!pat || !replace)
+    return false;
+
+  regex_t *rx = mutt_mem_malloc(sizeof(regex_t));
+  int rc = REGCOMP(rx, pat, REG_ICASE);
+  if (rc != 0)
+  {
+    regerror(rc, rx, err->data, err->dsize);
+    FREE(&rx);
+    return false;
+  }
+
+  struct Lookup *l = mutt_mem_calloc(1, sizeof(struct Lookup));
+  l->type = type;
+  l->replacement = mutt_str_strdup(replace);
+  l->regex.pattern = mutt_str_strdup(pat);
+  l->regex.regex = rx;
+  l->regex.not = false;
+
+  TAILQ_INSERT_TAIL(&Lookups, l, entries);
+
+  return true;
+}
+
+/**
+ * mutt_cs_lookup_remove - Remove all the character set lookups
+ *
+ * Empty the list of replacement character set names.
+ */
+void mutt_cs_lookup_remove(void)
+{
+  struct Lookup *l = NULL;
+  struct Lookup *tmp = NULL;
+
+  TAILQ_FOREACH_SAFE(l, &Lookups, entries, tmp)
+  {
+    TAILQ_REMOVE(&Lookups, l, entries);
+    FREE(&l->replacement);
+    FREE(&l->regex.pattern);
+    if (l->regex.regex)
+      regfree(l->regex.regex);
+    FREE(&l->regex);
+    FREE(&l);
+  }
+}
+
+/**
+ * mutt_cs_charset_lookup - Look for a replacement character set
+ * @param chs Character set to lookup
+ * @retval ptr  Replacement character set (if a 'charset-hook' matches)
+ * @retval NULL No matching hook
+ *
+ * Look through all the 'charset-hook's.
+ * If one matches return the replacement character set.
+ */
+const char *mutt_cs_charset_lookup(const char *chs)
+{
+  return lookup_charset(MUTT_LOOKUP_CHARSET, chs);
+}
+
+/**
+ * mutt_cs_iconv_lookup - Look for a replacement character set
+ * @param chs Character set to lookup
+ * @retval ptr  Replacement character set (if a 'iconv-hook' matches)
+ * @retval NULL No matching hook
+ *
+ * Look through all the 'iconv-hook's.
+ * If one matches return the replacement character set.
+ */
+const char *mutt_cs_iconv_lookup(const char *chs)
+{
+  return lookup_charset(MUTT_LOOKUP_ICONV, chs);
 }
