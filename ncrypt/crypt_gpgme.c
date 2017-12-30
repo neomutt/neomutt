@@ -54,7 +54,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "mime.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"
@@ -180,7 +179,7 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
   /* fromcode "utf-8" is sure, so we don't want
    * charset-hook corrections: flags must be 0.
    */
-  mutt_convert_string(&tstr, "utf-8", Charset, 0);
+  mutt_cs_convert_string(&tstr, "utf-8", Charset, 0);
   fputs(tstr, fp);
   FREE(&tstr);
 }
@@ -2453,7 +2452,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
    */
-  fc = fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
+  fc = mutt_cs_fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true; mutt_cs_fgetconvs(buf, sizeof(buf), fc) != NULL;
        complete = (strchr(buf, '\n') != NULL))
@@ -2678,7 +2677,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
         struct FgetConv *fc = NULL;
         int c;
         rewind(pgpout);
-        fc = fgetconv_open(pgpout, "utf-8", Charset, 0);
+        fc = mutt_cs_fgetconv_open(pgpout, "utf-8", Charset, 0);
         while ((c = mutt_cs_fgetconv(fc)) != EOF)
         {
           state_putc(c, s);

@@ -53,7 +53,6 @@
 #include "header.h"
 #include "mailbox.h"
 #include "mime.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mx.h"
@@ -475,10 +474,10 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
-    fc = fgetconv_open(fpin, a->charset,
+    fc = mutt_cs_fgetconv_open(fpin, a->charset,
                        mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
   else
-    fc = fgetconv_open(fpin, 0, 0, 0);
+    fc = mutt_cs_fgetconv_open(fpin, 0, 0, 0);
 
   mutt_sig_allow_interrupt(1);
   if (a->encoding == ENCQUOTEDPRINTABLE)
@@ -689,7 +688,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   struct ContentState *states = NULL;
   size_t *score = NULL;
 
-  cd1 = mutt_iconv_open("utf-8", fromcode, 0);
+  cd1 = mutt_cs_iconv_open("utf-8", fromcode, 0);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
@@ -701,7 +700,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   for (int i = 0; i < ncodes; i++)
   {
     if (mutt_str_strcasecmp(tocodes[i], "utf-8") != 0)
-      cd[i] = mutt_iconv_open(tocodes[i], "utf-8", 0);
+      cd[i] = mutt_cs_iconv_open(tocodes[i], "utf-8", 0);
     else
     {
       /* Special case for conversion to UTF-8 */

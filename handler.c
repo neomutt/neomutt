@@ -42,7 +42,6 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mime.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -1591,10 +1590,10 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
     if (!charset && AssumedCharset && *AssumedCharset)
       charset = mutt_cs_get_default_charset();
     if (charset && Charset)
-      cd = mutt_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
+      cd = mutt_cs_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
   }
   else if (istext && b->charset)
-    cd = mutt_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
+    cd = mutt_cs_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
   fseeko(s->fpin, b->offset, SEEK_SET);
   switch (b->encoding)

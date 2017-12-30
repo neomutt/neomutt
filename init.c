@@ -52,7 +52,6 @@
 #include "mailbox.h"
 #include "mbtable.h"
 #include "mbyte.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
@@ -2129,7 +2128,7 @@ static int check_charset(struct Option *opt, const char *val)
   {
     if (!*p)
       continue;
-    if (!mutt_check_charset(p, strict))
+    if (!mutt_cs_check_charset(p, strict))
     {
       rc = -1;
       break;
@@ -3031,7 +3030,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = mutt_str_strdup(linebuf);
       if (!currentline)
         continue;
-      mutt_convert_string(&currentline, ConfigCharset, Charset, 0);
+      mutt_cs_convert_string(&currentline, ConfigCharset, Charset, 0);
     }
     else
       currentline = linebuf;

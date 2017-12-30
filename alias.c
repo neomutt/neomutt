@@ -35,7 +35,6 @@
 #include "address.h"
 #include "envelope.h"
 #include "globals.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "options.h"
@@ -230,7 +229,7 @@ static void recode_buf(char *buf, size_t buflen)
   s = mutt_str_strdup(buf);
   if (!s)
     return;
-  if (mutt_convert_string(&s, Charset, ConfigCharset, 0) == 0)
+  if (mutt_cs_convert_string(&s, Charset, ConfigCharset, 0) == 0)
     mutt_str_strfcpy(buf, s, buflen);
   FREE(&s);
 }

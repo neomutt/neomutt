@@ -56,7 +56,7 @@ ALL_FILES!=	(cd $(SRCDIR) && git ls-tree -r --name-only HEAD 2>/dev/null) \
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
-		browser.o buffy.o mutt_charset.o color.o commands.o complete.o \
+		browser.o buffy.o color.o commands.o complete.o \
 		compose.o compress.o conststrings.o copy.o curs_lib.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
 		flags.o from.o group.o handler.o hdrline.o \
