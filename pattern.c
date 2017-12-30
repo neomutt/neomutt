@@ -37,7 +37,6 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "mx.h"
 #include "pattern.h"
 #include "address.h"
 #include "body.h"
@@ -50,6 +49,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"

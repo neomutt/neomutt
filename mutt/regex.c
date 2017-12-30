@@ -532,7 +532,8 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
     }
 
     /* Does this pattern match? */
-    if (regexec(rl->regex->regex, str, (size_t) rl->nmatch, (regmatch_t *) pmatch, (int) 0) == 0)
+    if (regexec(rl->regex->regex, str, (size_t) rl->nmatch,
+                (regmatch_t *) pmatch, (int) 0) == 0)
     {
       mutt_debug(5, "%s matches %s\n", str, rl->regex->pattern);
       mutt_debug(5, "%d subs\n", (int) rl->regex->regex->re_nsub);

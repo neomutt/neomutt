@@ -467,7 +467,9 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    rc = query_quadoption(MimeForwardRest, _("Can't decode all tagged attachments.  MIME-forward the others?"));
+    rc = query_quadoption(
+        MimeForwardRest,
+        _("Can't decode all tagged attachments.  MIME-forward the others?"));
     if (rc == MUTT_ABORT)
       goto bail;
     else if (rc == MUTT_NO)
@@ -843,7 +845,9 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    rc = query_quadoption(MimeForwardRest, _("Can't decode all tagged attachments.  MIME-encapsulate the others?"));
+    rc = query_quadoption(MimeForwardRest,
+                          _("Can't decode all tagged attachments.  "
+                            "MIME-encapsulate the others?"));
     if (rc == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)

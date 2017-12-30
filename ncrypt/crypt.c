@@ -449,7 +449,7 @@ int mutt_is_application_pgp(struct Body *m)
     {
       p = mutt_param_get("x-action", m->parameter);
       if (p && ((mutt_str_strcasecmp(p, "sign") == 0) ||
-          (mutt_str_strcasecmp(p, "signclear") == 0)))
+                (mutt_str_strcasecmp(p, "signclear") == 0)))
         t |= PGPSIGN;
 
       p = mutt_param_get("format", m->parameter);
