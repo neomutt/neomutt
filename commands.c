@@ -48,7 +48,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"

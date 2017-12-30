@@ -116,8 +116,8 @@ int convert_nonmime_string(char **ps)
       return 0;
     }
   }
-  mutt_cs_convert_string(ps, (const char *) mutt_cs_get_default_charset(), Charset,
-                      MUTT_ICONV_HOOK_FROM);
+  mutt_cs_convert_string(ps, (const char *) mutt_cs_get_default_charset(),
+                         Charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
 

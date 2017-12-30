@@ -37,7 +37,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

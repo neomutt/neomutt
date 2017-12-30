@@ -36,7 +36,6 @@
 #include "format_flags.h"
 #include "globals.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "ncrypt.h"
 #include "pgp.h"
 #include "pgpkey.h"

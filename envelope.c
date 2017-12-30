@@ -43,7 +43,7 @@
 #include "mutt/string2.h"
 #include "envelope.h"
 #include "address.h"
-#include "mutt_idna.h"
+#include "protos.h"
 
 /**
  * mutt_env_new - Create a new Envelope

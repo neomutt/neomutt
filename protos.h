@@ -360,6 +360,10 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 bool message_is_tagged(struct Context *ctx, int index);
 bool message_is_visible(struct Context *ctx, int index);
 
+int mutt_addrlist_to_local(struct Address *a);
+int mutt_addrlist_to_intl(struct Address *a, char **err);
+int mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
+void mutt_env_to_local(struct Envelope *e);
 size_t rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
 void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
 

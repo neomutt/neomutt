@@ -20,20 +20,36 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page idna Handling of international domain names
+ *
+ * Handling of international domain names
+ *
+ * | Function                  | Description
+ * | :------------------------ | :---------------------------------------------------------
+ * | mutt_idna_intl_to_local() | Convert an email's domain from Punycode
+ * | mutt_idna_local_to_intl() | Convert an email's domain to Punycode
+ * | mutt_idna_to_ascii_lz()   | Convert a domain to Punycode
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "mutt/mutt.h"
-#include "mutt_idna.h"
-#include "address.h"
-#include "envelope.h"
-#include "globals.h"
-#include "options.h"
+#include "charset.h"
+#include "debug.h"
+#include "idna2.h"
+#include "memory.h"
+#include "string2.h"
 #ifdef HAVE_IDNA_H
 #include <idna.h>
 #elif defined(HAVE_IDN_IDNA_H)
 #include <idn/idna.h>
+#endif
+
+#ifdef HAVE_LIBIDN
+bool IdnDecode;
+bool IdnEncode;
 #endif
 
 #ifdef HAVE_LIBIDN
@@ -54,18 +70,27 @@
 
 #ifdef HAVE_LIBIDN
 /**
- * mutt_idna_to_ascii_lz - XXX
- * @param input  XXX
- * @param output XXX
- * @param flags  XXX
+ * mutt_idna_to_ascii_lz - Convert a domain to Punycode
+ * @param input  Domain
+ * @param output Result
+ * @param flags  Flags, e.g. IDNA_ALLOW_UNASSIGNED
  * @retval 0 Success
  * @retval >0 Failure, error code
+ *
+ * Convert a domain from the current locale to Punycode.
+ *
+ * @note The caller must free output
  */
 int mutt_idna_to_ascii_lz(const char *input, char **output, int flags)
 {
   return idna_to_ascii_lz(input, output, flags);
 }
 
+/**
+ * check_idn - Is domain in Punycode?
+ * @param domain Domain to test
+ * @retval true At least one part of domain is in Punycode
+ */
 static bool check_idn(char *domain)
 {
   if (!domain)
@@ -84,7 +109,25 @@ static bool check_idn(char *domain)
 }
 #endif /* HAVE_LIBIDN */
 
-char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags)
+/**
+ * mutt_idna_intl_to_local - Convert an email's domain from Punycode
+ * @param user   Username
+ * @param domain Domain
+ * @param flags  Flags, e.g. #MI_MAY_BE_IRREVERSIBLE
+ * @retval ptr  Newly allocated local email address
+ * @retval NULL Error in conversion
+ *
+ * If #IdnDecode is set, then the domain will be converted from Punycode.
+ * For example, "xn--ls8h.la" becomes the emoji domain: ":poop:.la"
+ * Then the user and domain are changed from 'utf-8' to the encoding in
+ * #Charset.
+ *
+ * If the flag #MI_MAY_BE_IRREVERSIBLE is NOT given, then the results will be
+ * checked to make sure that the transformation is "undo-able".
+ *
+ * @note The caller must free the returned string.
+ */
+char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 {
   char *local_user = NULL, *local_domain = NULL, *mailbox = NULL;
   char *reversed_user = NULL, *reversed_domain = NULL;
@@ -93,8 +136,8 @@ char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags)
   bool is_idn_encoded = false;
 #endif /* HAVE_LIBIDN */
 
-  local_user = mutt_str_strdup(orig_user);
-  local_domain = mutt_str_strdup(orig_domain);
+  local_user = mutt_str_strdup(user);
+  local_domain = mutt_str_strdup(domain);
 
 #ifdef HAVE_LIBIDN
   is_idn_encoded = check_idn(local_domain);
@@ -114,10 +157,8 @@ char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags)
   if (mutt_cs_convert_string(&local_domain, "utf-8", Charset, 0) == -1)
     goto cleanup;
 
-  /*
-   * make sure that we can convert back and come out with the same
-   * user and domain name.
-   */
+  /* make sure that we can convert back and come out with the same
+   * user and domain name.  */
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
     reversed_user = mutt_str_strdup(local_user);
@@ -129,10 +170,9 @@ char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags)
       goto cleanup;
     }
 
-    if (mutt_str_strcasecmp(orig_user, reversed_user) != 0)
+    if (mutt_str_strcasecmp(user, reversed_user) != 0)
     {
-      mutt_debug(1, "#1 Not reversible. orig = '%s', reversed = '%s'.\n",
-                 orig_user, reversed_user);
+      mutt_debug(1, "#1 Not reversible. orig = '%s', reversed = '%s'.\n", user, reversed_user);
       goto cleanup;
     }
 
@@ -164,10 +204,9 @@ char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (mutt_str_strcasecmp(orig_domain, reversed_domain) != 0)
+    if (mutt_str_strcasecmp(domain, reversed_domain) != 0)
     {
-      mutt_debug(1, "#2 Not reversible. orig = '%s', reversed = '%s'.\n",
-                 orig_domain, reversed_domain);
+      mutt_debug(1, "#2 Not reversible. orig = '%s', reversed = '%s'.\n", domain, reversed_domain);
       goto cleanup;
     }
   }
@@ -185,7 +224,21 @@ cleanup:
   return mailbox;
 }
 
-char *mutt_idna_local_to_intl(char *user, char *domain)
+/**
+ * mutt_idna_local_to_intl - Convert an email's domain to Punycode
+ * @param user   Username
+ * @param domain Domain
+ * @retval ptr  Newly allocated Punycode email address
+ * @retval NULL Error in conversion
+ *
+ * The user and domain are assumed to be encoded according to #Charset.
+ * They are converted to 'utf-8'.  If #IdnEncode is set, then the domain
+ * will be converted to Punycode.  For example, the emoji domain:
+ * ":poop:.la" becomes "xn--ls8h.la"
+ *
+ * @note The caller must free the returned string.
+ */
+char *mutt_idna_local_to_intl(const char *user, const char *domain)
 {
   char *intl_user = NULL, *intl_domain = NULL;
   char *mailbox = NULL;

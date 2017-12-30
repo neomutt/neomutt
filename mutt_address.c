@@ -26,7 +26,6 @@
 #include <string.h>
 #include "mutt/mutt.h"
 #include "address.h"
-#include "mutt_idna.h"
 
 /**
  * mutt_addrlist_to_intl - Convert an Address list to Punycode

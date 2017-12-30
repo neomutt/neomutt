@@ -54,7 +54,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -474,8 +473,8 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
-    fc = mutt_cs_fgetconv_open(fpin, a->charset,
-                       mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
+    fc = mutt_cs_fgetconv_open(
+        fpin, a->charset, mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
   else
     fc = mutt_cs_fgetconv_open(fpin, 0, 0, 0);
 

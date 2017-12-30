@@ -38,7 +38,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "protos.h"
