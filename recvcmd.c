@@ -188,7 +188,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   }
 
   buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), adr, 1);
+  mutt_addr_write(buf, sizeof(buf), adr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /*

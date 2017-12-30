@@ -221,7 +221,7 @@ void mutt_tag_set_flag(int flag, int bf);
 void mutt_update_encoding(struct Body *a);
 void mutt_version(void);
 void mutt_view_attachments(struct Header *hdr);
-void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int display);
+void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, bool display);
 bool mutt_addr_is_user(struct Address *addr);
 int mutt_addwch(wchar_t wc);
 int mutt_alias_complete(char *s, size_t buflen);
@@ -364,7 +364,5 @@ int mutt_addrlist_to_local(struct Address *a);
 int mutt_addrlist_to_intl(struct Address *a, char **err);
 int mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
 void mutt_env_to_local(struct Envelope *e);
-size_t rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
-void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
 
 #endif /* _MUTT_PROTOS_H */

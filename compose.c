@@ -399,7 +399,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
   char buf[LONG_STRING];
 
   buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), addr, 1);
+  mutt_addr_write(buf, sizeof(buf), addr, true);
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, line, 0, "%*s", HeaderPadding[line],
                        _(Prompts[line]));
@@ -470,7 +470,7 @@ static void edit_address_list(int line, struct Address **addr)
   char *err = NULL;
 
   mutt_addrlist_to_local(*addr);
-  rfc822_write_address(buf, sizeof(buf), *addr, 0);
+  mutt_addr_write(buf, sizeof(buf), *addr, false);
   if (mutt_get_field(_(Prompts[line]), buf, sizeof(buf), MUTT_ALIAS) == 0)
   {
     mutt_addr_free(addr);
@@ -487,7 +487,7 @@ static void edit_address_list(int line, struct Address **addr)
 
   /* redraw the expanded list so the user can see the result */
   buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), *addr, 1);
+  mutt_addr_write(buf, sizeof(buf), *addr, true);
   mutt_window_move(MuttIndexWindow, line, HDR_XOFFSET);
   mutt_paddstr(W, buf);
 }

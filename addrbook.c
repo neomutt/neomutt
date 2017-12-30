@@ -94,7 +94,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'r':
       adr[0] = '\0';
-      rfc822_write_address(adr, sizeof(adr), alias->addr, 1);
+      mutt_addr_write(adr, sizeof(adr), alias->addr, true);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, adr);
       break;
@@ -269,14 +269,14 @@ new_aliases:
   {
     if (AliasTable[i]->tagged)
     {
-      rfc822_write_address(buf, buflen, AliasTable[i]->addr, 1);
+      mutt_addr_write(buf, buflen, AliasTable[i]->addr, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    rfc822_write_address(buf, buflen, AliasTable[t]->addr, 1);
+    mutt_addr_write(buf, buflen, AliasTable[t]->addr, true);
   }
 
   mutt_pop_current_menu(menu);

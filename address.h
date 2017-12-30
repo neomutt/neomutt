@@ -79,5 +79,7 @@ bool            mutt_addr_search(struct Address *a, struct Address *lst);
 void            mutt_addr_set_intl(struct Address *a, char *intl_mailbox);
 void            mutt_addr_set_local(struct Address *a, char *local_mailbox);
 bool            mutt_addr_valid_msgid(const char *msgid);
+size_t          mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
+void            mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool display);
 
 #endif /* _MUTT_ADDRESS_H */

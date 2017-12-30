@@ -795,7 +795,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'f':
       tmp[0] = 0;
-      rfc822_write_address(tmp, sizeof(tmp), hdr->env->from, 1);
+      mutt_addr_write(tmp, sizeof(tmp), hdr->env->from, true);
       mutt_format_s(buf, buflen, prec, tmp);
       break;
 
@@ -1020,7 +1020,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'r':
       tmp[0] = 0;
-      rfc822_write_address(tmp, sizeof(tmp), hdr->env->to, 1);
+      mutt_addr_write(tmp, sizeof(tmp), hdr->env->to, true);
       if (optional && tmp[0] == '\0')
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);
@@ -1028,7 +1028,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'R':
       tmp[0] = 0;
-      rfc822_write_address(tmp, sizeof(tmp), hdr->env->cc, 1);
+      mutt_addr_write(tmp, sizeof(tmp), hdr->env->cc, true);
       if (optional && tmp[0] == '\0')
         optional = 0;
       mutt_format_s(buf, buflen, prec, tmp);

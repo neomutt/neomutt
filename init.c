@@ -1915,7 +1915,7 @@ static void set_default(struct Option *p)
       {
         char tmp[HUGE_STRING];
         *tmp = '\0';
-        rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) p->var), 0);
+        mutt_addr_write(tmp, sizeof(tmp), *((struct Address **) p->var), false);
         p->initial = (unsigned long) mutt_str_strdup(tmp);
       }
       break;
@@ -2529,8 +2529,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
         {
           tmp2[0] = '\0';
-          rfc822_write_address(tmp2, sizeof(tmp2),
-                               *((struct Address **) MuttVars[idx].var), 0);
+          mutt_addr_write(tmp2, sizeof(tmp2),
+                          *((struct Address **) MuttVars[idx].var), false);
           val = tmp2;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
@@ -3642,7 +3642,7 @@ int var_to_string(int idx, char *val, size_t len)
   }
   else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
   {
-    rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].var), 0);
+    mutt_addr_write(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].var), false);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
     mutt_str_strfcpy(tmp, vals[*(unsigned char *) MuttVars[idx].var], sizeof(tmp));

@@ -1607,7 +1607,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
  * So we can handle very large recipient lists without needing a huge temporary
  * buffer in memory
  */
-void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int display)
+void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, bool display)
 {
   struct Address *tmp = NULL;
   char buf[LONG_STRING];
@@ -1619,7 +1619,7 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
     tmp = adr->next;
     adr->next = NULL;
     buf[0] = 0;
-    rfc822_write_address(buf, sizeof(buf), adr, display);
+    mutt_addr_write(buf, sizeof(buf), adr, display);
     len = mutt_str_strlen(buf);
     if (count && linelen + len > 74)
     {
@@ -2037,14 +2037,14 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   if (env->from && !privacy)
   {
     buffer[0] = 0;
-    rfc822_write_address(buffer, sizeof(buffer), env->from, 0);
+    mutt_addr_write(buffer, sizeof(buffer), env->from, false);
     fprintf(fp, "From: %s\n", buffer);
   }
 
   if (env->sender && !privacy)
   {
     buffer[0] = 0;
-    rfc822_write_address(buffer, sizeof(buffer), env->sender, 0);
+    mutt_addr_write(buffer, sizeof(buffer), env->sender, false);
     fprintf(fp, "Sender: %s\n", buffer);
   }
 
@@ -2810,7 +2810,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
     mutt_addr_free(&from);
     return -1;
   }
-  rfc822_write_address(resent_from, sizeof(resent_from), from, 0);
+  mutt_addr_write(resent_from, sizeof(resent_from), from, false);
 
 #ifdef USE_NNTP
   OPT_NEWS_SEND = false;

@@ -909,7 +909,7 @@ static void format_address_header(char **h, struct Address *a)
     struct Address *tmp = a->next;
     a->next = NULL;
     *buf = *cbuf = *c2buf = '\0';
-    l = rfc822_write_address(buf, sizeof(buf), a, 0);
+    l = mutt_addr_write(buf, sizeof(buf), a, false);
     a->next = tmp;
 
     if (count && linelen + l > 74)

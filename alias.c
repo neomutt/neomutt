@@ -378,7 +378,7 @@ retry_name:
   new->addr->personal = mutt_str_strdup(buf);
 
   buf[0] = '\0';
-  rfc822_write_address(buf, sizeof(buf), new->addr, 1);
+  mutt_addr_write(buf, sizeof(buf), new->addr, true);
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
@@ -431,7 +431,7 @@ retry_name:
     recode_buf(buf, sizeof(buf));
     fprintf(rc, "alias %s ", buf);
     buf[0] = '\0';
-    rfc822_write_address(buf, sizeof(buf), new->addr, 0);
+    mutt_addr_write(buf, sizeof(buf), new->addr, false);
     recode_buf(buf, sizeof(buf));
     write_safe_address(rc, buf);
     fputc('\n', rc);
