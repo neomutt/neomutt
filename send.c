@@ -1034,7 +1034,7 @@ static struct Address *set_reverse_name(struct Envelope *env)
 
 struct Address *mutt_default_from(void)
 {
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /*
@@ -1043,21 +1043,21 @@ struct Address *mutt_default_from(void)
    */
 
   if (From)
-    adr = mutt_addr_copy(From);
+    addr = mutt_addr_copy(From);
   else if (UseDomain)
   {
-    adr = mutt_addr_new();
-    adr->mailbox =
+    addr = mutt_addr_new();
+    addr->mailbox =
         mutt_mem_malloc(mutt_str_strlen(Username) + mutt_str_strlen(fqdn) + 2);
-    sprintf(adr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
+    sprintf(addr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
   }
   else
   {
-    adr = mutt_addr_new();
-    adr->mailbox = mutt_str_strdup(NONULL(Username));
+    addr = mutt_addr_new();
+    addr->mailbox = mutt_str_strdup(NONULL(Username));
   }
 
-  return adr;
+  return addr;
 }
 
 static int send_message(struct Header *msg)

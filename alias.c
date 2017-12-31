@@ -186,7 +186,7 @@ static void write_safe_address(FILE *fp, char *s)
 
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
 {
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   char *pfx = NULL;
 
   if (mutt_addr_is_user(env->from))
@@ -194,29 +194,29 @@ struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
     if (env->to && !mutt_is_mail_list(env->to))
     {
       pfx = "To";
-      adr = env->to;
+      addr = env->to;
     }
     else
     {
       pfx = "Cc";
-      adr = env->cc;
+      addr = env->cc;
     }
   }
   else if (env->reply_to && !mutt_is_mail_list(env->reply_to))
   {
     pfx = "Reply-To";
-    adr = env->reply_to;
+    addr = env->reply_to;
   }
   else
   {
-    adr = env->from;
+    addr = env->from;
     pfx = "From";
   }
 
   if (pfxp)
     *pfxp = pfx;
 
-  return adr;
+  return addr;
 }
 
 static void recode_buf(char *buf, size_t buflen)
@@ -279,27 +279,27 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
   return rc;
 }
 
-void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
+void mutt_create_alias(struct Envelope *cur, struct Address *iaddr)
 {
   struct Alias *new = NULL, *t = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
   char *err = NULL;
   char fixed[LONG_STRING];
   FILE *rc = NULL;
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
 
   if (cur)
   {
-    adr = mutt_get_address(cur, NULL);
+    addr = mutt_get_address(cur, NULL);
   }
-  else if (iadr)
+  else if (iaddr)
   {
-    adr = iadr;
+    addr = iaddr;
   }
 
-  if (adr && adr->mailbox)
+  if (addr && addr->mailbox)
   {
-    mutt_str_strfcpy(tmp, adr->mailbox, sizeof(tmp));
+    mutt_str_strfcpy(tmp, addr->mailbox, sizeof(tmp));
     pc = strchr(tmp, '@');
     if (pc)
       *pc = '\0';
@@ -337,14 +337,14 @@ retry_name:
   new = mutt_mem_calloc(1, sizeof(struct Alias));
   new->name = mutt_str_strdup(buf);
 
-  mutt_addrlist_to_local(adr);
+  mutt_addrlist_to_local(addr);
 
-  if (adr && adr->mailbox)
-    mutt_str_strfcpy(buf, adr->mailbox, sizeof(buf));
+  if (addr && addr->mailbox)
+    mutt_str_strfcpy(buf, addr->mailbox, sizeof(buf));
   else
     buf[0] = '\0';
 
-  mutt_addrlist_to_intl(adr, NULL);
+  mutt_addrlist_to_intl(addr, NULL);
 
   do
   {
@@ -365,8 +365,8 @@ retry_name:
     }
   } while (!new->addr);
 
-  if (adr && adr->personal && !mutt_is_mail_list(adr))
-    mutt_str_strfcpy(buf, adr->personal, sizeof(buf));
+  if (addr && addr->personal && !mutt_is_mail_list(addr))
+    mutt_str_strfcpy(buf, addr->personal, sizeof(buf));
   else
     buf[0] = '\0';
 

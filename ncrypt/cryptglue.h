@@ -30,7 +30,7 @@ struct State;
 void crypt_pgp_void_passphrase(void);
 int crypt_pgp_valid_passphrase(void);
 struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist);
-char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode);
+char *crypt_pgp_findkeys(struct Address *addrlist, int oppenc_mode);
 struct Body *crypt_pgp_sign_message(struct Body *a);
 struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign);
 void crypt_pgp_invoke_import(const char *fname);
@@ -39,7 +39,7 @@ void crypt_pgp_set_sender(const char *sender);
 
 void crypt_smime_void_passphrase(void);
 int crypt_smime_valid_passphrase(void);
-char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode);
+char *crypt_smime_findkeys(struct Address *addrlist, int oppenc_mode);
 struct Body *crypt_smime_sign_message(struct Body *a);
 struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist);
 void crypt_smime_invoke_import(char *infile, char *mailbox);

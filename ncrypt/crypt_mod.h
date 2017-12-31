@@ -47,7 +47,7 @@ typedef void (*crypt_func_pgp_invoke_getkeys_t)(struct Address *addr);
 typedef int (*crypt_func_pgp_check_traditional_t) (FILE *fp, struct Body *b, int just_one);
 typedef struct Body *(*crypt_func_pgp_traditional_encryptsign_t)(struct Body *a, int flags, char *keylist);
 typedef struct Body *(*crypt_func_pgp_make_key_attachment_t)(char *tempf);
-typedef char *(*crypt_func_findkeys_t)(struct Address *adrlist, int oppenc_mode);
+typedef char *(*crypt_func_findkeys_t)(struct Address *addrlist, int oppenc_mode);
 typedef struct Body *(*crypt_func_sign_message_t)(struct Body *a);
 typedef struct Body *(*crypt_func_pgp_encrypt_message_t)(struct Body *a, char *keylist, int sign);
 typedef void (*crypt_func_pgp_invoke_import_t)(const char *fname);

@@ -56,9 +56,9 @@ static int crypt_mod_smime_application_handler(struct Body *m, struct State *s)
   return smime_application_smime_handler(m, s);
 }
 
-static char *crypt_mod_smime_findkeys(struct Address *adrlist, int oppenc_mode)
+static char *crypt_mod_smime_findkeys(struct Address *addrlist, int oppenc_mode)
 {
-  return smime_find_keys(adrlist, oppenc_mode);
+  return smime_find_keys(addrlist, oppenc_mode);
 }
 
 static struct Body *crypt_mod_smime_sign_message(struct Body *a)
