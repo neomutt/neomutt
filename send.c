@@ -1771,6 +1771,18 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->security = 0;
   }
 
+  /* Deal with the corner case where the crypto module backend is not available.
+   * This can happen if configured without pgp/smime and with gpgme, but
+   * $crypt_use_gpgme is unset.
+   */
+  if (msg->security && !crypt_has_module_backend(msg->security))
+  {
+    mutt_error(_(
+        "No crypto backend configured.  Disabling message security setting."));
+    mutt_sleep(1);
+    msg->security = 0;
+  }
+
   /* specify a default fcc.  if we are in batchmode, only save a copy of
    * the message if the value of $copy is yes or ask-yes */
 

@@ -126,6 +126,24 @@ void crypt_invoke_message(int type)
     mutt_message(_("Invoking S/MIME..."));
 }
 
+/* Returns 1 if a module backend is registered for the type */
+int crypt_has_module_backend(int type)
+{
+  if ((WithCrypto & APPLICATION_PGP) && (type & APPLICATION_PGP) &&
+      crypto_module_lookup(APPLICATION_PGP))
+  {
+    return 1;
+  }
+
+  if ((WithCrypto & APPLICATION_SMIME) && (type & APPLICATION_SMIME) &&
+      crypto_module_lookup(APPLICATION_SMIME))
+  {
+    return 1;
+  }
+
+  return 0;
+}
+
 /*
  * PGP
  */
