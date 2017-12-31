@@ -1266,15 +1266,15 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     hdr->content->offset = ftello(f);
 
     /* do RFC2047 decoding */
-    rfc2047_decode_adrlist(e->from);
-    rfc2047_decode_adrlist(e->to);
-    rfc2047_decode_adrlist(e->cc);
-    rfc2047_decode_adrlist(e->bcc);
-    rfc2047_decode_adrlist(e->reply_to);
-    rfc2047_decode_adrlist(e->mail_followup_to);
-    rfc2047_decode_adrlist(e->return_path);
-    rfc2047_decode_adrlist(e->sender);
-    rfc2047_decode_adrlist(e->x_original_to);
+    rfc2047_decode_addrlist(e->from);
+    rfc2047_decode_addrlist(e->to);
+    rfc2047_decode_addrlist(e->cc);
+    rfc2047_decode_addrlist(e->bcc);
+    rfc2047_decode_addrlist(e->reply_to);
+    rfc2047_decode_addrlist(e->mail_followup_to);
+    rfc2047_decode_addrlist(e->return_path);
+    rfc2047_decode_addrlist(e->sender);
+    rfc2047_decode_addrlist(e->x_original_to);
 
     if (e->subject)
     {

@@ -1355,9 +1355,9 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             goto bail;
           }
           if (data == MUTT_GROUP)
-            mutt_group_context_add_adrlist(gc, addr);
+            mutt_group_context_add_addrlist(gc, addr);
           else if (data == MUTT_UNGROUP)
-            mutt_group_context_remove_adrlist(gc, addr);
+            mutt_group_context_remove_addrlist(gc, addr);
           mutt_addr_free(&addr);
           break;
       }
@@ -1800,7 +1800,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     goto bail;
   }
 
-  mutt_group_context_add_adrlist(gc, tmp->addr);
+  mutt_group_context_add_addrlist(gc, tmp->addr);
   mutt_alias_add_reverse(tmp);
 
   if (debuglevel >= 2)

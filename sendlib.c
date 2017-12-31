@@ -2677,12 +2677,12 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
-  rfc2047_encode_adrlist(env->to, "To");
-  rfc2047_encode_adrlist(env->cc, "Cc");
-  rfc2047_encode_adrlist(env->bcc, "Bcc");
-  rfc2047_encode_adrlist(env->from, "From");
-  rfc2047_encode_adrlist(env->mail_followup_to, "Mail-Followup-To");
-  rfc2047_encode_adrlist(env->reply_to, "Reply-To");
+  rfc2047_encode_addrlist(env->to, "To");
+  rfc2047_encode_addrlist(env->cc, "Cc");
+  rfc2047_encode_addrlist(env->bcc, "Bcc");
+  rfc2047_encode_addrlist(env->from, "From");
+  rfc2047_encode_addrlist(env->mail_followup_to, "Mail-Followup-To");
+  rfc2047_encode_addrlist(env->reply_to, "Reply-To");
 
   if (env->subject)
 #ifdef USE_NNTP
@@ -2705,11 +2705,11 @@ void mutt_unprepare_envelope(struct Envelope *env)
   mutt_addr_free(&env->mail_followup_to);
 
   /* back conversions */
-  rfc2047_decode_adrlist(env->to);
-  rfc2047_decode_adrlist(env->cc);
-  rfc2047_decode_adrlist(env->bcc);
-  rfc2047_decode_adrlist(env->from);
-  rfc2047_decode_adrlist(env->reply_to);
+  rfc2047_decode_addrlist(env->to);
+  rfc2047_decode_addrlist(env->cc);
+  rfc2047_decode_addrlist(env->bcc);
+  rfc2047_decode_addrlist(env->from);
+  rfc2047_decode_addrlist(env->reply_to);
   rfc2047_decode(&env->subject);
 }
 
@@ -2803,7 +2803,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   if (fqdn)
     mutt_addr_qualify(from, fqdn);
 
-  rfc2047_encode_adrlist(from, "Resent-From");
+  rfc2047_encode_addrlist(from, "Resent-From");
   if (mutt_addrlist_to_intl(from, &err))
   {
     mutt_error(_("Bad IDN %s while preparing resent-from."), err);
@@ -2822,7 +2822,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * list being bounced to.
    */
   resent_to = mutt_addr_copy_list(to, false);
-  rfc2047_encode_adrlist(resent_to, "Resent-To");
+  rfc2047_encode_addrlist(resent_to, "Resent-To");
 
   ret = bounce_message(fp, h, resent_to, resent_from, from);
 
