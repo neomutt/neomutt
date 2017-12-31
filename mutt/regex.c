@@ -61,7 +61,7 @@
 /**
  * mutt_regex_compile - Create an Regex from a string
  * @param str   Regular expression
- * @param flags Type flags, e.g. #REG_ICASE
+ * @param flags Type flags, e.g. REG_ICASE
  * @retval ptr New Regex object
  * @retval NULL Error
  */
