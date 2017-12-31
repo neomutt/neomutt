@@ -219,10 +219,6 @@ WHERE bool Use8bitmime;
 WHERE bool UseDomain;
 WHERE bool UseFrom;
 WHERE bool PgpUseGpgAgent;
-#ifdef HAVE_LIBIDN
-WHERE bool IdnDecode;
-WHERE bool IdnEncode;
-#endif
 #ifdef HAVE_GETADDRINFO
 WHERE bool UseIpv6;
 #endif

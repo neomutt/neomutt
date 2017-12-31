@@ -497,7 +497,8 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
    * switch statement would need to be run. */
   mutt_folder_hook(buf);
 
-  Context = mx_open_mailbox(buf, (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0, NULL);
+  Context = mx_open_mailbox(
+      buf, (ReadOnly || (op == OP_MAIN_CHANGE_FOLDER_READONLY)) ? MUTT_READONLY : 0, NULL);
   if (Context)
   {
     menu->current = ci_first_message();

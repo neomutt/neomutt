@@ -48,7 +48,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -317,7 +316,7 @@ void ci_bounce_message(struct Header *h)
   }
 
   buf[0] = '\0';
-  rfc822_write_address(buf, sizeof(buf), adr, 1);
+  mutt_addr_write(buf, sizeof(buf), adr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
@@ -685,7 +684,7 @@ void mutt_display_address(struct Envelope *env)
    */
 
   buf[0] = '\0';
-  rfc822_write_address(buf, sizeof(buf), adr, 0);
+  mutt_addr_write(buf, sizeof(buf), adr, false);
   mutt_message("%s: %s", pfx, buf);
 }
 

@@ -53,9 +53,7 @@
 #include "header.h"
 #include "mailbox.h"
 #include "mime.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -475,10 +473,10 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
-    fc = fgetconv_open(fpin, a->charset,
-                       mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
+    fc = mutt_cs_fgetconv_open(
+        fpin, a->charset, mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
   else
-    fc = fgetconv_open(fpin, 0, 0, 0);
+    fc = mutt_cs_fgetconv_open(fpin, 0, 0, 0);
 
   mutt_sig_allow_interrupt(1);
   if (a->encoding == ENCQUOTEDPRINTABLE)
@@ -689,7 +687,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   struct ContentState *states = NULL;
   size_t *score = NULL;
 
-  cd1 = mutt_iconv_open("utf-8", fromcode, 0);
+  cd1 = mutt_cs_iconv_open("utf-8", fromcode, 0);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
@@ -701,7 +699,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   for (int i = 0; i < ncodes; i++)
   {
     if (mutt_str_strcasecmp(tocodes[i], "utf-8") != 0)
-      cd[i] = mutt_iconv_open(tocodes[i], "utf-8", 0);
+      cd[i] = mutt_cs_iconv_open(tocodes[i], "utf-8", 0);
     else
     {
       /* Special case for conversion to UTF-8 */
@@ -1609,7 +1607,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
  * So we can handle very large recipient lists without needing a huge temporary
  * buffer in memory
  */
-void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int display)
+void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, bool display)
 {
   struct Address *tmp = NULL;
   char buf[LONG_STRING];
@@ -1621,7 +1619,7 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
     tmp = adr->next;
     adr->next = NULL;
     buf[0] = 0;
-    rfc822_write_address(buf, sizeof(buf), adr, display);
+    mutt_addr_write(buf, sizeof(buf), adr, display);
     len = mutt_str_strlen(buf);
     if (count && linelen + len > 74)
     {
@@ -2039,14 +2037,14 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   if (env->from && !privacy)
   {
     buffer[0] = 0;
-    rfc822_write_address(buffer, sizeof(buffer), env->from, 0);
+    mutt_addr_write(buffer, sizeof(buffer), env->from, false);
     fprintf(fp, "From: %s\n", buffer);
   }
 
   if (env->sender && !privacy)
   {
     buffer[0] = 0;
-    rfc822_write_address(buffer, sizeof(buffer), env->sender, 0);
+    mutt_addr_write(buffer, sizeof(buffer), env->sender, false);
     fprintf(fp, "Sender: %s\n", buffer);
   }
 
@@ -2812,7 +2810,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
     mutt_addr_free(&from);
     return -1;
   }
-  rfc822_write_address(resent_from, sizeof(resent_from), from, 0);
+  mutt_addr_write(resent_from, sizeof(resent_from), from, false);
 
 #ifdef USE_NNTP
   OPT_NEWS_SEND = false;

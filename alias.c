@@ -35,9 +35,7 @@
 #include "address.h"
 #include "envelope.h"
 #include "globals.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #ifdef ENABLE_NLS
@@ -230,7 +228,7 @@ static void recode_buf(char *buf, size_t buflen)
   s = mutt_str_strdup(buf);
   if (!s)
     return;
-  if (mutt_convert_string(&s, Charset, ConfigCharset, 0) == 0)
+  if (mutt_cs_convert_string(&s, Charset, ConfigCharset, 0) == 0)
     mutt_str_strfcpy(buf, s, buflen);
   FREE(&s);
 }
@@ -380,7 +378,7 @@ retry_name:
   new->addr->personal = mutt_str_strdup(buf);
 
   buf[0] = '\0';
-  rfc822_write_address(buf, sizeof(buf), new->addr, 1);
+  mutt_addr_write(buf, sizeof(buf), new->addr, true);
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
@@ -433,7 +431,7 @@ retry_name:
     recode_buf(buf, sizeof(buf));
     fprintf(rc, "alias %s ", buf);
     buf[0] = '\0';
-    rfc822_write_address(buf, sizeof(buf), new->addr, 0);
+    mutt_addr_write(buf, sizeof(buf), new->addr, false);
     recode_buf(buf, sizeof(buf));
     write_safe_address(rc, buf);
     fputc('\n', rc);

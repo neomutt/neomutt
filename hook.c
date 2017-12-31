@@ -47,7 +47,6 @@
 /**
  * struct Hook - A list of user hooks
  */
-static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 struct Hook
 {
   int type;                /**< hook type */
@@ -56,6 +55,7 @@ struct Hook
   struct Pattern *pattern; /**< used for fcc,save,send-hook */
   TAILQ_ENTRY(Hook) entries;
 };
+static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static int current_hook_type = 0;
 
@@ -214,8 +214,18 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
 
-  if (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_SAVEHOOK | MUTT_FCCHOOK |
-              MUTT_MESSAGEHOOK | MUTT_REPLYHOOK))
+  if (data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK))
+  {
+    /* These are managed separately by the charset code */
+    enum LookupType type = (data & MUTT_CHARSETHOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
+    if (!mutt_cs_lookup_add(type, pattern.data, command.data, err))
+      goto error;
+    FREE(&pattern.data);
+    FREE(&command.data);
+    return 0;
+  }
+  else if (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_SAVEHOOK |
+                   MUTT_FCCHOOK | MUTT_MESSAGEHOOK | MUTT_REPLYHOOK))
   {
     pat = mutt_pattern_comp(
         pattern.data,
@@ -227,8 +237,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_malloc(sizeof(regex_t));
-    rc = REGCOMP(rx, NONULL(pattern.data),
-                 ((data & (MUTT_CRYPTHOOK | MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0));
+    rc = REGCOMP(rx, NONULL(pattern.data), ((data & MUTT_CRYPTHOOK) ? REG_ICASE : 0));
     if (rc != 0)
     {
       regerror(rc, rx, err->data, err->dsize);
@@ -254,6 +263,9 @@ error:
   return -1;
 }
 
+/**
+ * delete_hook - XXX
+ */
 static void delete_hook(struct Hook *h)
 {
   FREE(&h->command);
@@ -302,6 +314,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         return -1;
       }
       delete_hooks(0);
+      mutt_cs_lookup_remove();
     }
     else
     {
@@ -311,6 +324,11 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       {
         snprintf(err->data, err->dsize, _("unhook: unknown hook type: %s"), buf->data);
         return -1;
+      }
+      if (type & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK))
+      {
+        mutt_cs_lookup_remove();
+        return 0;
       }
       if (current_hook_type == type)
       {
@@ -363,6 +381,9 @@ void mutt_folder_hook(const char *path)
   current_hook_type = 0;
 }
 
+/**
+ * mutt_find_hook - XXX
+ */
 char *mutt_find_hook(int type, const char *pat)
 {
   struct Hook *tmp = NULL;
@@ -397,6 +418,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
       continue;
 
     if (hook->type & type)
+    {
       if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
           hook->regex.not)
       {
@@ -414,6 +436,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
          * so the cache has to be wiped */
         memset(&cache, 0, sizeof(cache));
       }
+    }
   }
   FREE(&token.data);
   FREE(&err.data);
@@ -435,12 +458,14 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
       continue;
 
     if (hook->type & type)
+    {
       if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
           hook->regex.not)
       {
         mutt_make_string(path, pathlen, hook->command, ctx, hdr);
         return 0;
       }
+    }
   }
 
   return -1;
@@ -496,19 +521,6 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
   mutt_pretty_mailbox(path, pathlen);
 }
 
-static char *string_hook(const char *match, int hook)
-{
-  struct Hook *tmp = NULL;
-
-  TAILQ_FOREACH(tmp, &Hooks, entries)
-  {
-    if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
-                               tmp->regex.not))
-      return tmp->command;
-  }
-  return NULL;
-}
-
 static void list_hook(struct ListHead *matches, const char *match, int hook)
 {
   struct Hook *tmp = NULL;
@@ -519,16 +531,6 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
                                tmp->regex.not))
       mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
   }
-}
-
-char *mutt_charset_hook(const char *chs)
-{
-  return string_hook(chs, MUTT_CHARSETHOOK);
-}
-
-char *mutt_iconv_hook(const char *chs)
-{
-  return string_hook(chs, MUTT_ICONVHOOK);
 }
 
 void mutt_crypt_hook(struct ListHead *list, struct Address *adr)

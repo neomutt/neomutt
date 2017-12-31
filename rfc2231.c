@@ -39,7 +39,6 @@
 #include "globals.h"
 #include "mbyte.h"
 #include "mime.h"
-#include "mutt_charset.h"
 #include "options.h"
 #include "parameter.h"
 #include "protos.h"
@@ -203,7 +202,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
     } while (par && (strcmp(par->attribute, attribute) == 0));
 
     if (encoded)
-      mutt_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_cs_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
     *head = mutt_param_new();
     (*head)->attribute = mutt_str_strdup(attribute);
     (*head)->value = value;
@@ -261,7 +260,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
 
       s = rfc2231_get_charset(p->value, charset, sizeof(charset));
       rfc2231_decode_one(p->value, s);
-      mutt_convert_string(&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_cs_convert_string(&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       mutt_filter_unprintable(&p->value);
 
       *last = p;

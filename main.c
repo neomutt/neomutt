@@ -47,7 +47,6 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
 #include "ncrypt/ncrypt.h"
@@ -917,7 +916,8 @@ int main(int argc, char **argv, char **env)
     mutt_folder_hook(folder);
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
-    Context = mx_open_mailbox(folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);
+    Context = mx_open_mailbox(
+        folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);
     if (Context || !explicit_folder)
     {
 #ifdef USE_SIDEBAR

@@ -36,7 +36,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #include "state.h"
@@ -189,7 +188,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   }
 
   buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), adr, 1);
+  mutt_addr_write(buf, sizeof(buf), adr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /*
@@ -467,7 +466,9 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    rc = query_quadoption(MimeForwardRest, _("Can't decode all tagged attachments.  MIME-forward the others?"));
+    rc = query_quadoption(
+        MimeForwardRest,
+        _("Can't decode all tagged attachments.  MIME-forward the others?"));
     if (rc == MUTT_ABORT)
       goto bail;
     else if (rc == MUTT_NO)
@@ -843,7 +844,9 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    rc = query_quadoption(MimeForwardRest, _("Can't decode all tagged attachments.  MIME-encapsulate the others?"));
+    rc = query_quadoption(MimeForwardRest,
+                          _("Can't decode all tagged attachments.  "
+                            "MIME-encapsulate the others?"));
     if (rc == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)

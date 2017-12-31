@@ -44,6 +44,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <string.h>
 #include "mutt/hash.h"
 #include "mutt/queue.h"
 #include "mutt/string2.h"

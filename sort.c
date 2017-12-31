@@ -32,7 +32,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #include "thread.h"

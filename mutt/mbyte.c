@@ -25,9 +25,9 @@
  *
  * Some commonly-used multi-byte string manipulation routines.
  *
- * | Data             | Description
- * | :--------------- | :--------------------------------------------------
- * | #ReplacementChar | When a Unicode character can't be displayed, use this instead
+ * | Data                    | Description
+ * | :---------------------- | :--------------------------------------------------
+ * | #ReplacementChar        | When a Unicode character can't be displayed, use this instead
  *
  * | Function                | Description
  * | :---------------------- | :---------------------------------------------------------

@@ -40,7 +40,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #ifdef ENABLE_NLS
@@ -215,7 +214,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("To: ");
     tmp[0] = '\0';
-    rfc822_write_address(tmp, sizeof(tmp), env->to, 1);
+    mutt_addr_write(tmp, sizeof(tmp), env->to, true);
     addstr(tmp);
     addch('\n');
   }
@@ -223,7 +222,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
-    rfc822_write_address(tmp, sizeof(tmp), env->cc, 1);
+    mutt_addr_write(tmp, sizeof(tmp), env->cc, true);
     addstr(tmp);
     addch('\n');
   }
@@ -231,7 +230,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
-    rfc822_write_address(tmp, sizeof(tmp), env->bcc, 1);
+    mutt_addr_write(tmp, sizeof(tmp), env->bcc, true);
     addstr(tmp);
     addch('\n');
   }
@@ -258,7 +257,7 @@ static void be_edit_header(struct Envelope *e, int force)
   addstr("To: ");
   tmp[0] = '\0';
   mutt_addrlist_to_local(e->to);
-  rfc822_write_address(tmp, sizeof(tmp), e->to, 0);
+  mutt_addr_write(tmp, sizeof(tmp), e->to, false);
   if (!e->to || force)
   {
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
@@ -268,7 +267,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->to = mutt_expand_aliases(e->to);
       mutt_addrlist_to_intl(e->to, NULL); /* XXX - IDNA error reporting? */
       tmp[0] = '\0';
-      rfc822_write_address(tmp, sizeof(tmp), e->to, 1);
+      mutt_addr_write(tmp, sizeof(tmp), e->to, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
   }
@@ -293,7 +292,7 @@ static void be_edit_header(struct Envelope *e, int force)
     addstr("Cc: ");
     tmp[0] = '\0';
     mutt_addrlist_to_local(e->cc);
-    rfc822_write_address(tmp, sizeof(tmp), e->cc, 0);
+    mutt_addr_write(tmp, sizeof(tmp), e->cc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
     {
       mutt_addr_free(&e->cc);
@@ -301,7 +300,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->cc = mutt_expand_aliases(e->cc);
       tmp[0] = '\0';
       mutt_addrlist_to_intl(e->cc, NULL);
-      rfc822_write_address(tmp, sizeof(tmp), e->cc, 1);
+      mutt_addr_write(tmp, sizeof(tmp), e->cc, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
     else
@@ -314,7 +313,7 @@ static void be_edit_header(struct Envelope *e, int force)
     addstr("Bcc: ");
     tmp[0] = '\0';
     mutt_addrlist_to_local(e->bcc);
-    rfc822_write_address(tmp, sizeof(tmp), e->bcc, 0);
+    mutt_addr_write(tmp, sizeof(tmp), e->bcc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 5, 0) == 0)
     {
       mutt_addr_free(&e->bcc);
@@ -322,7 +321,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->bcc = mutt_expand_aliases(e->bcc);
       mutt_addrlist_to_intl(e->bcc, NULL);
       tmp[0] = '\0';
-      rfc822_write_address(tmp, sizeof(tmp), e->bcc, 1);
+      mutt_addr_write(tmp, sizeof(tmp), e->bcc, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 5, tmp);
     }
     else

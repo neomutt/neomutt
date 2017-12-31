@@ -33,6 +33,7 @@
  */
 
 #include "mapping.h"
+#include <stddef.h>
 #include "string2.h"
 
 /**

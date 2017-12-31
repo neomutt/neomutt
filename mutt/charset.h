@@ -24,7 +24,10 @@
 #define _MUTT_CHARSET_H
 
 #include <iconv.h>
+#include <stdbool.h>
 #include <stdio.h>
+
+struct Buffer;
 
 extern char *AssumedCharset;
 extern char *Charset;
@@ -63,18 +66,40 @@ struct MimeNames
   const char *pref;
 };
 
+/**
+ * enum LookupType - Types of character set lookups
+ */
+enum LookupType
+{
+  MUTT_LOOKUP_CHARSET,
+  MUTT_LOOKUP_ICONV
+};
+
+#define MUTT_ICONV_HOOK_FROM 1 /**< apply charset-hooks to fromcode */
+
 extern const struct MimeNames PreferredMIMENames[];
 
-void   mutt_cs_canonical_charset(char *dest, size_t dlen, const char *name);
-int    mutt_cs_chscmp(const char *s, const char *chs);
-void   mutt_cs_fgetconv_close(struct FgetConv **fc);
-int    mutt_cs_fgetconv(struct FgetConv *fc);
-char * mutt_cs_fgetconvs(char *buf, size_t l, struct FgetConv *fc);
-char * mutt_cs_get_default_charset(void);
-size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
-void   mutt_cs_set_langinfo_charset(void);
+void             mutt_cs_canonical_charset(char *buf, size_t buflen, const char *name);
+int              mutt_cs_chscmp(const char *cs1, const char *cs2);
+char *           mutt_cs_get_default_charset(void);
+void             mutt_cs_set_langinfo_charset(void);
+
+bool             mutt_cs_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
+void             mutt_cs_lookup_remove(void);
+const char *     mutt_cs_charset_lookup(const char *chs);
+
+iconv_t          mutt_cs_iconv_open(const char *tocode, const char *fromcode, int flags);
+size_t           mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
+const char *     mutt_cs_iconv_lookup(const char *chs);
+int              mutt_cs_convert_string(char **ps, const char *from, const char *to, int flags);
+bool             mutt_cs_check_charset(const char *cs, bool strict);
+
+struct FgetConv *mutt_cs_fgetconv_open(FILE *file, const char *from, const char *to, int flags);
+void             mutt_cs_fgetconv_close(struct FgetConv **fc);
+int              mutt_cs_fgetconv(struct FgetConv *fc);
+char *           mutt_cs_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 
 #define mutt_cs_is_utf8(a)     mutt_cs_chscmp(a, "utf-8")
 #define mutt_cs_is_us_ascii(a) mutt_cs_chscmp(a, "us-ascii")
 
-#endif 
+#endif

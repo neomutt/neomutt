@@ -52,9 +52,7 @@
 #include "mailbox.h"
 #include "mbtable.h"
 #include "mbyte.h"
-#include "mutt_charset.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "mx.h"
 #include "myvar.h"
@@ -1917,7 +1915,7 @@ static void set_default(struct Option *p)
       {
         char tmp[HUGE_STRING];
         *tmp = '\0';
-        rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) p->var), 0);
+        mutt_addr_write(tmp, sizeof(tmp), *((struct Address **) p->var), false);
         p->initial = (unsigned long) mutt_str_strdup(tmp);
       }
       break;
@@ -2129,7 +2127,7 @@ static int check_charset(struct Option *opt, const char *val)
   {
     if (!*p)
       continue;
-    if (!mutt_check_charset(p, strict))
+    if (!mutt_cs_check_charset(p, strict))
     {
       rc = -1;
       break;
@@ -2531,8 +2529,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
         {
           tmp2[0] = '\0';
-          rfc822_write_address(tmp2, sizeof(tmp2),
-                               *((struct Address **) MuttVars[idx].var), 0);
+          mutt_addr_write(tmp2, sizeof(tmp2),
+                          *((struct Address **) MuttVars[idx].var), false);
           val = tmp2;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
@@ -3031,7 +3029,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = mutt_str_strdup(linebuf);
       if (!currentline)
         continue;
-      mutt_convert_string(&currentline, ConfigCharset, Charset, 0);
+      mutt_cs_convert_string(&currentline, ConfigCharset, Charset, 0);
     }
     else
       currentline = linebuf;
@@ -3644,7 +3642,7 @@ int var_to_string(int idx, char *val, size_t len)
   }
   else if (DTYPE(MuttVars[idx].type) == DT_ADDRESS)
   {
-    rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].var), 0);
+    mutt_addr_write(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].var), false);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
     mutt_str_strfcpy(tmp, vals[*(unsigned char *) MuttVars[idx].var], sizeof(tmp));

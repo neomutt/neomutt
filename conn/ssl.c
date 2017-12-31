@@ -65,7 +65,6 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mutt_account.h"
-#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"

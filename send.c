@@ -46,7 +46,6 @@
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"
@@ -200,7 +199,7 @@ static int edit_address(struct Address **a, /* const */ char *field)
   {
     buf[0] = 0;
     mutt_addrlist_to_local(*a);
-    rfc822_write_address(buf, sizeof(buf), *a, 0);
+    mutt_addr_write(buf, sizeof(buf), *a, false);
     if (mutt_get_field(field, buf, sizeof(buf), MUTT_ALIAS) != 0)
       return -1;
     mutt_addr_free(a);

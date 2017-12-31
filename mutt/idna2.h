@@ -23,22 +23,15 @@
 #ifndef _MUTT_IDNA_H
 #define _MUTT_IDNA_H
 
-struct Envelope;
-struct Address;
+#include <stdbool.h>
+
+extern bool IdnDecode;
+extern bool IdnEncode;
 
 #define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 
-int mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
-
-char *mutt_idna_intl_to_local(char *orig_user, char *orig_domain, int flags);
-char *mutt_idna_local_to_intl(char *user, char *domain);
-
-int mutt_addrlist_to_intl(struct Address *a, char **err);
-int mutt_addrlist_to_local(struct Address *a);
-
-void mutt_env_to_local(struct Envelope *e);
-int mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
-
-const char *mutt_addr_for_display(struct Address *a);
+int   mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
+char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
+char *mutt_idna_local_to_intl(const char *user, const char *domain);
 
 #endif /* _MUTT_IDNA_H */

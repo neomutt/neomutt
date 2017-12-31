@@ -36,6 +36,7 @@
  * -# @subpage exit
  * -# @subpage file
  * -# @subpage hash
+ * -# @subpage idna
  * -# @subpage list
  * -# @subpage mapping
  * -# @subpage mbyte
@@ -59,6 +60,7 @@
 #include "exit.h"
 #include "file.h"
 #include "hash.h"
+#include "idna2.h"
 #include "list.h"
 #include "mapping.h"
 #include "mbyte.h"

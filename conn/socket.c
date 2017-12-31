@@ -65,7 +65,6 @@
 #include "conn_globals.h"
 #include "connection.h"
 #include "globals.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_SSL

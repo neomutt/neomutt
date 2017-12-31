@@ -39,6 +39,7 @@
  */
 
 #include "config.h"
+#include <string.h>
 #include "list.h"
 #include "memory.h"
 #include "string2.h"

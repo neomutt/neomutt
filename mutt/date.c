@@ -25,11 +25,11 @@
  *
  * Some commonly used time and date functions.
  *
- * | Data                  | Description
- * | :-------------------- | :--------------------------------------------------
- * | #Months               | Months of the year (abbreviated)
- * | #TimeZones            | Lookup table of Time Zones
- * | #Weekdays             | Day of the week (abbreviated)
+ * | Data                      | Description
+ * | :------------------------ | :--------------------------------------------------
+ * | #Months                   | Months of the year (abbreviated)
+ * | #TimeZones                | Lookup table of Time Zones
+ * | #Weekdays                 | Day of the week (abbreviated)
  *
  * | Function                   | Description
  * | :------------------------- | :--------------------------------------------------
