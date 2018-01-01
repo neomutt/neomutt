@@ -262,7 +262,7 @@ void ci_bounce_message(struct Header *h)
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
   char buf[HUGE_STRING] = { 0 };
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   char *err = NULL;
   int rc;
 
@@ -298,25 +298,25 @@ void ci_bounce_message(struct Header *h)
   if (rc || !buf[0])
     return;
 
-  adr = mutt_addr_parse_list2(adr, buf);
-  if (!adr)
+  addr = mutt_addr_parse_list2(addr, buf);
+  if (!addr)
   {
     mutt_error(_("Error parsing address!"));
     return;
   }
 
-  adr = mutt_expand_aliases(adr);
+  addr = mutt_expand_aliases(addr);
 
-  if (mutt_addrlist_to_intl(adr, &err) < 0)
+  if (mutt_addrlist_to_intl(addr, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addr_free(&adr);
+    mutt_addr_free(&addr);
     return;
   }
 
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), adr, true);
+  mutt_addr_write(buf, sizeof(buf), addr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
@@ -333,7 +333,7 @@ void ci_bounce_message(struct Header *h)
 
   if (query_quadoption(Bounce, prompt) != MUTT_YES)
   {
-    mutt_addr_free(&adr);
+    mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(h ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -341,8 +341,8 @@ void ci_bounce_message(struct Header *h)
 
   mutt_window_clearline(MuttMessageWindow, 0);
 
-  rc = mutt_bounce_message(NULL, h, adr);
-  mutt_addr_free(&adr);
+  rc = mutt_bounce_message(NULL, h, addr);
+  mutt_addr_free(&addr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
     mutt_message(h ? _("Message bounced.") : _("Messages bounced."));
@@ -669,11 +669,11 @@ void mutt_display_address(struct Envelope *env)
 {
   char *pfx = NULL;
   char buf[SHORT_STRING];
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
 
-  adr = mutt_get_address(env, &pfx);
+  addr = mutt_get_address(env, &pfx);
 
-  if (!adr)
+  if (!addr)
     return;
 
   /*
@@ -684,7 +684,7 @@ void mutt_display_address(struct Envelope *env)
    */
 
   buf[0] = '\0';
-  mutt_addr_write(buf, sizeof(buf), adr, false);
+  mutt_addr_write(buf, sizeof(buf), addr, false);
   mutt_message("%s: %s", pfx, buf);
 }
 

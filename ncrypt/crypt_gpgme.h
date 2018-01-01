@@ -33,8 +33,8 @@ struct State;
 void pgp_gpgme_init(void);
 void smime_gpgme_init(void);
 
-char *pgp_gpgme_findkeys(struct Address *adrlist, int oppenc_mode);
-char *smime_gpgme_findkeys(struct Address *adrlist, int oppenc_mode);
+char *pgp_gpgme_findkeys(struct Address *addrlist, int oppenc_mode);
+char *smime_gpgme_findkeys(struct Address *addrlist, int oppenc_mode);
 
 struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign);
 struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist);

@@ -871,7 +871,7 @@ void smime_getkeys(struct Envelope *env)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
+char *smime_find_keys(struct Address *addrlist, int oppenc_mode)
 {
   struct SmimeKey *key = NULL;
   char *keyID = NULL, *keylist = NULL;
@@ -879,7 +879,7 @@ char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
   size_t keylist_used = 0;
   struct Address *p = NULL, *q = NULL;
 
-  for (p = adrlist; p; p = p->next)
+  for (p = addrlist; p; p = p->next)
   {
     char buf[LONG_STRING];
 

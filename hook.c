@@ -477,23 +477,23 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
-    struct Address *adr = NULL;
+    struct Address *addr = NULL;
     struct Envelope *env = hdr->env;
     bool from_me = mutt_addr_is_user(env->from);
 
     if (!from_me && env->reply_to && env->reply_to->mailbox)
-      adr = env->reply_to;
+      addr = env->reply_to;
     else if (!from_me && env->from && env->from->mailbox)
-      adr = env->from;
+      addr = env->from;
     else if (env->to && env->to->mailbox)
-      adr = env->to;
+      addr = env->to;
     else if (env->cc && env->cc->mailbox)
-      adr = env->cc;
+      addr = env->cc;
     else
-      adr = NULL;
-    if (adr)
+      addr = NULL;
+    if (addr)
     {
-      mutt_safe_path(tmp, sizeof(tmp), adr);
+      mutt_safe_path(tmp, sizeof(tmp), addr);
       snprintf(path, pathlen, "=%s", tmp);
     }
   }
@@ -501,7 +501,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 
 void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 {
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   char buf[_POSIX_PATH_MAX];
   struct Envelope *env = hdr->env;
 
@@ -509,8 +509,8 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
   {
     if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
     {
-      adr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
-      mutt_safe_path(buf, sizeof(buf), adr);
+      addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
+      mutt_safe_path(buf, sizeof(buf), addr);
       mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
       if (!ForceName && mx_access(path, W_OK) != 0)
         mutt_str_strfcpy(path, NONULL(Record), pathlen);
@@ -533,9 +533,9 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
   }
 }
 
-void mutt_crypt_hook(struct ListHead *list, struct Address *adr)
+void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 {
-  list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
+  list_hook(list, addr->mailbox, MUTT_CRYPTHOOK);
 }
 
 #ifdef USE_SOCKET

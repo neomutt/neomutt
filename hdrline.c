@@ -88,24 +88,24 @@ bool mutt_is_subscribed_list(struct Address *addr)
 
 /**
  * check_for_mailing_list - Search list of addresses for a mailing list
- * @param adr     List of addreses to search
+ * @param addr    List of addreses to search
  * @param pfx     Prefix string
  * @param buf     Buffer to store results
  * @param buflen  Buffer length
  * @retval 1 Mailing list found
  * @retval 0 No list found
  *
- * Search for a mailing list in the list of addresses pointed to by adr.
+ * Search for a mailing list in the list of addresses pointed to by addr.
  * If one is found, print pfx and the name of the list into buf.
  */
-static bool check_for_mailing_list(struct Address *adr, const char *pfx, char *buf, int buflen)
+static bool check_for_mailing_list(struct Address *addr, const char *pfx, char *buf, int buflen)
 {
-  for (; adr; adr = adr->next)
+  for (; addr; addr = addr->next)
   {
-    if (mutt_is_subscribed_list(adr))
+    if (mutt_is_subscribed_list(addr))
     {
       if (pfx && buf && buflen)
-        snprintf(buf, buflen, "%s%s", pfx, mutt_get_name(adr));
+        snprintf(buf, buflen, "%s%s", pfx, mutt_get_name(addr));
       return true;
     }
   }
@@ -118,14 +118,14 @@ static bool check_for_mailing_list(struct Address *adr, const char *pfx, char *b
  * If one is found, print the address of the list into buf, then return 1.
  * Otherwise, simply return 0.
  */
-static bool check_for_mailing_list_addr(struct Address *adr, char *buf, int buflen)
+static bool check_for_mailing_list_addr(struct Address *addr, char *buf, int buflen)
 {
-  for (; adr; adr = adr->next)
+  for (; addr; addr = addr->next)
   {
-    if (mutt_is_subscribed_list(adr))
+    if (mutt_is_subscribed_list(addr))
     {
       if (buf && buflen)
-        snprintf(buf, buflen, "%s", adr->mailbox);
+        snprintf(buf, buflen, "%s", addr->mailbox);
       return true;
     }
   }

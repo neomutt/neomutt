@@ -123,7 +123,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   char prompt[STRING];
   char buf[HUGE_STRING];
   char *err = NULL;
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   int ret = 0;
   int p = 0;
 
@@ -170,25 +170,25 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
     return;
 
-  adr = mutt_addr_parse_list(adr, buf);
-  if (!adr)
+  addr = mutt_addr_parse_list(addr, buf);
+  if (!addr)
   {
     mutt_error(_("Error parsing address!"));
     return;
   }
 
-  adr = mutt_expand_aliases(adr);
+  addr = mutt_expand_aliases(addr);
 
-  if (mutt_addrlist_to_intl(adr, &err) < 0)
+  if (mutt_addrlist_to_intl(addr, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addr_free(&adr);
+    mutt_addr_free(&addr);
     return;
   }
 
   buf[0] = 0;
-  mutt_addr_write(buf, sizeof(buf), adr, true);
+  mutt_addr_write(buf, sizeof(buf), addr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /*
@@ -208,7 +208,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
 
   if (query_quadoption(Bounce, prompt) != MUTT_YES)
   {
-    mutt_addr_free(&adr);
+    mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(p ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -217,13 +217,13 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   mutt_window_clearline(MuttMessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->hdr, adr);
+    ret = mutt_bounce_message(fp, cur->hdr, addr);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->hdr, adr))
+        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->hdr, addr))
           ret = 1;
     }
   }
@@ -234,7 +234,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     mutt_error(p ? _("Error bouncing message!") :
                    _("Error bouncing messages!"));
 
-  mutt_addr_free(&adr);
+  mutt_addr_free(&addr);
 }
 
 /**

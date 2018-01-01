@@ -1897,12 +1897,14 @@ static void pager_menu_redraw(struct Menu *pager_menu)
                         &rd->max_line, rd->has_types | rd->search_flag | (rd->flags & MUTT_PAGER_NOWRAP),
                         &rd->quote_list, &rd->q_level, &rd->force_redraw,
                         &rd->search_re, rd->pager_window) == 0)
+    {
       if (!rd->line_info[i].continuation && ++j == rd->lines)
       {
         rd->topline = i;
         if (!rd->search_flag)
           break;
       }
+    }
   }
 
 #ifdef USE_SIDEBAR

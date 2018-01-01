@@ -1237,7 +1237,7 @@ struct Body *pgp_sign_message(struct Body *a)
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
+char *pgp_find_keys(struct Address *addrlist, int oppenc_mode)
 {
   struct ListHead crypt_hook_list = STAILQ_HEAD_INITIALIZER(crypt_hook_list);
   struct ListNode *crypt_hook = NULL;
@@ -1253,7 +1253,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 
   const char *fqdn = mutt_fqdn(1);
 
-  for (p = adrlist; p; p = p->next)
+  for (p = addrlist; p; p = p->next)
   {
     key_selected = false;
     mutt_crypt_hook(&crypt_hook_list, p);

@@ -633,7 +633,7 @@ void rfc2047_encode_string(char **pd, int encode_specials, int col)
   *pd = e;
 }
 
-void rfc2047_encode_adrlist(struct Address *addr, const char *tag)
+void rfc2047_encode_addrlist(struct Address *addr, const char *tag)
 {
   struct Address *ptr = addr;
   int col = tag ? strlen(tag) + 2 : 32;
@@ -906,7 +906,7 @@ void rfc2047_decode(char **pd)
   mutt_str_adjust(pd);
 }
 
-void rfc2047_decode_adrlist(struct Address *a)
+void rfc2047_decode_addrlist(struct Address *a)
 {
   while (a)
   {

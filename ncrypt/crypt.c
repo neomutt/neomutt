@@ -837,7 +837,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
  */
 int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 {
-  struct Address *adrlist = NULL, *last = NULL;
+  struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);
   char *self_encrypt = NULL;
   size_t keylist_size;
@@ -852,13 +852,13 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   if ((WithCrypto & APPLICATION_PGP))
     OPT_PGP_CHECK_TRUST = true;
 
-  last = mutt_addr_append(&adrlist, msg->env->to, false);
-  last = mutt_addr_append(last ? &last : &adrlist, msg->env->cc, false);
-  mutt_addr_append(last ? &last : &adrlist, msg->env->bcc, false);
+  last = mutt_addr_append(&addrlist, msg->env->to, false);
+  last = mutt_addr_append(last ? &last : &addrlist, msg->env->cc, false);
+  mutt_addr_append(last ? &last : &addrlist, msg->env->bcc, false);
 
   if (fqdn)
-    mutt_addr_qualify(adrlist, fqdn);
-  adrlist = mutt_remove_duplicates(adrlist);
+    mutt_addr_qualify(addrlist, fqdn);
+  addrlist = mutt_remove_duplicates(addrlist);
 
   *keylist = NULL;
 
@@ -866,10 +866,10 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   {
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
     {
-      *keylist = crypt_pgp_findkeys(adrlist, oppenc_mode);
+      *keylist = crypt_pgp_findkeys(addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addr_free(&adrlist);
+        mutt_addr_free(&addrlist);
         return -1;
       }
       OPT_PGP_CHECK_TRUST = false;
@@ -878,10 +878,10 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      *keylist = crypt_smime_findkeys(adrlist, oppenc_mode);
+      *keylist = crypt_smime_findkeys(addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addr_free(&adrlist);
+        mutt_addr_free(&addrlist);
         return -1;
       }
       if (SmimeSelfEncrypt || (SmimeEncryptSelf == MUTT_YES))
@@ -896,7 +896,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
-  mutt_addr_free(&adrlist);
+  mutt_addr_free(&addrlist);
 
   return 0;
 }

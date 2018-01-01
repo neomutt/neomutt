@@ -1027,7 +1027,7 @@ static int address_header_decode(char **h)
     return 0;
 
   mutt_addrlist_to_local(a);
-  rfc2047_decode_adrlist(a);
+  rfc2047_decode_addrlist(a);
   for (cur = a; cur; cur = cur->next)
     if (cur->personal)
       mutt_str_dequote_comment(cur->personal);
