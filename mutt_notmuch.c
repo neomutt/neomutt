@@ -237,9 +237,9 @@ static char *header_get_id(struct Header *h)
   return (h && h->data) ? ((struct NmHdrData *) h->data)->virtual_id : NULL;
 }
 
-static char *header_get_fullpath(struct Header *h, char *buf, size_t bufsz)
+static char *header_get_fullpath(struct Header *h, char *buf, size_t buflen)
 {
-  snprintf(buf, bufsz, "%s/%s", nm_header_get_folder(h), h->path);
+  snprintf(buf, buflen, "%s/%s", nm_header_get_folder(h), h->path);
   return buf;
 }
 
@@ -308,7 +308,7 @@ static void query_window_reset(void)
  * windowed_query_from_query - transforms a vfolder search query into a windowed one
  * @param[in]  query vfolder search string
  * @param[out] buf   allocated string buffer to receive the modified search query
- * @param[in]  bufsz allocated maximum size of the buf string buffer
+ * @param[in]  buflen allocated maximum size of the buf string buffer
  * @retval true  Transformed search query is available as a string in buf
  * @retval false Search query shall not be transformed
  *
@@ -342,7 +342,7 @@ static void query_window_reset(void)
  * If there's no search registered in `nm_query_window_current_search` or this is
  * a new search, it will reset the window and do the search.
  */
-static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz)
+static bool windowed_query_from_query(const char *query, char *buf, size_t buflen)
 {
   mutt_debug(2, "nm: %s\n", query);
 
@@ -369,10 +369,10 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   }
 
   if (end == 0)
-    snprintf(buf, bufsz, "date:%d%s..now and %s", beg, NmQueryWindowTimebase,
+    snprintf(buf, buflen, "date:%d%s..now and %s", beg, NmQueryWindowTimebase,
              NmQueryWindowCurrentSearch);
   else
-    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
+    snprintf(buf, buflen, "date:%d%s..%d%s and %s", beg, NmQueryWindowTimebase,
              end, NmQueryWindowTimebase, NmQueryWindowCurrentSearch);
 
   mutt_debug(2, "nm: %s -> %s\n", query, buf);
@@ -1584,7 +1584,7 @@ done:
   return rc;
 }
 
-char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
+char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen)
 {
   mutt_debug(2, "(%s)\n", buf);
   struct NmCtxData *data = get_ctxdata(ctx);
@@ -1623,8 +1623,8 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
 
   url_pct_encode(&uri[added], sizeof(uri) - added, buf);
 
-  strncpy(buf, uri, bufsz);
-  buf[bufsz - 1] = '\0';
+  strncpy(buf, uri, buflen);
+  buf[buflen - 1] = '\0';
 
   mutt_debug(1, "nm: uri from query '%s'\n", buf);
   return buf;
@@ -1950,17 +1950,17 @@ char *nm_get_description(struct Context *ctx)
   return NULL;
 }
 
-int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
+int nm_description_to_path(const char *desc, char *buf, size_t buflen)
 {
-  if (!desc || !buf || !bufsz)
+  if (!desc || !buf || (buflen == 0))
     return -EINVAL;
 
   for (struct Buffy *b = Incoming; b; b = b->next)
   {
     if ((b->magic == MUTT_NOTMUCH) && b->desc && (strcmp(desc, b->desc) == 0))
     {
-      strncpy(buf, b->path, bufsz);
-      buf[bufsz - 1] = '\0';
+      strncpy(buf, b->path, buflen);
+      buf[buflen - 1] = '\0';
       return 0;
     }
   }
