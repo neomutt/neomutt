@@ -2075,12 +2075,15 @@ static size_t escape_string(char *dst, size_t len, const char *src)
     {
       case '\n':
         esc_char('n', p, dst, len);
+        p += 2;
         break;
       case '\r':
         esc_char('r', p, dst, len);
+        p += 2;
         break;
       case '\t':
         esc_char('t', p, dst, len);
+        p += 2;
         break;
       default:
         if ((*src == '\\' || *src == '"') && p - dst < len - 1)
