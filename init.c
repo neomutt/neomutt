@@ -178,7 +178,7 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   if (ptr)
   {
     /* Same pattern as we already have */
-    if (mutt_str_strcmp(ptr->pattern, tmp->data) != 0)
+    if (mutt_str_strcmp(ptr->pattern, tmp->data) == 0)
       return 0;
   }
   else
