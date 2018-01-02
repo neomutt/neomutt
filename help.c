@@ -223,8 +223,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
   fputs(t1, f);
 
-  /* don't try to press string into one line with less than 40 characters.
-     The double parenthesis avoids a gcc warning, sigh ... */
+  /* don't try to press string into one line with less than 40 characters. */
   split = (MuttIndexWindow->cols < 40);
   if (split)
   {
