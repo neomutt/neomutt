@@ -6598,6 +6598,16 @@ msgstr ""
 "\n"
 "Options de compilation :"
 
+msgid "No PGP backend configured"
+msgstr "Pas de backend PGP configuré"
+
+msgid "No S/MIME backend configured"
+msgstr "Pas de backend S/MIME configuré"
+
+msgid "No crypto backend configured.  Disabling message security setting."
+msgstr ""
+"Pas de backend crypto configuré. Désactivation de la sécurité du message."
+
 #, fuzzy
 #~ msgid "DEBUG was not defined during compilation. -d Ignored.\n"
 #~ msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
