@@ -73,6 +73,7 @@ int         mutt_str_is_email_wsp(char c);
 size_t      mutt_str_lws_len(const char *s, size_t n);
 size_t      mutt_str_lws_rlen(const char *s, size_t n);
 const char *mutt_str_next_word(const char *s);
+void        mutt_str_pretty_size(char *buf, size_t buflen, size_t num);
 void        mutt_str_remove_trailing_ws(char *s);
 void        mutt_str_replace(char **p, const char *s);
 const char *mutt_str_rstrnstr(const char *haystack, size_t haystack_length, const char *needle);

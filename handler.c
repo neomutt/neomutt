@@ -76,7 +76,7 @@ const int IndexHex[128] = {
 static void print_part_line(struct State *s, struct Body *b, int n)
 {
   char length[5];
-  mutt_pretty_size(length, sizeof(length), b->length);
+  mutt_str_pretty_size(length, sizeof(length), b->length);
   state_mark_attach(s);
   char *charset = mutt_param_get("charset", b->parameter);
   if (n != 0)
@@ -1526,7 +1526,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       length = mutt_param_get("length", b->parameter);
       if (length)
       {
-        mutt_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
+        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
         state_printf(s, _("(size %s bytes) "), pretty_size);
       }
       state_puts(_("has been deleted --]\n"), s);

@@ -465,7 +465,7 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
   if (progress->size)
   {
     if (progress->flags & MUTT_PROGRESS_SIZE)
-      mutt_pretty_size(progress->sizestr, sizeof(progress->sizestr), progress->size);
+      mutt_str_pretty_size(progress->sizestr, sizeof(progress->sizestr), progress->size);
     else
       snprintf(progress->sizestr, sizeof(progress->sizestr), "%zu", progress->size);
   }
@@ -582,7 +582,7 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
     if (progress->flags & MUTT_PROGRESS_SIZE)
     {
       pos = pos / (progress->inc << 10) * (progress->inc << 10);
-      mutt_pretty_size(posstr, sizeof(posstr), pos);
+      mutt_str_pretty_size(posstr, sizeof(posstr), pos);
     }
     else
       snprintf(posstr, sizeof(posstr), "%ld", pos);

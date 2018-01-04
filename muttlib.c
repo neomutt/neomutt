@@ -566,26 +566,6 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   }
 }
 
-void mutt_pretty_size(char *s, size_t len, size_t n)
-{
-  if (n < 1000)
-    snprintf(s, len, "%d", (int) n);
-  else if (n < 10189) /* 0.1K - 9.9K */
-    snprintf(s, len, "%3.1fK", (n < 103) ? 0.1 : n / 1024.0);
-  else if (n < 1023949) /* 10K - 999K */
-  {
-    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(s, len, "%zuK", (n + 51) / 1024);
-  }
-  else if (n < 10433332) /* 1.0M - 9.9M */
-    snprintf(s, len, "%3.1fM", n / 1048576.0);
-  else /* 10M+ */
-  {
-    /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(s, len, "%zuM", (n + 52428) / 1048576);
-  }
-}
-
 void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
 {
   char tmp[LONG_STRING];

@@ -348,7 +348,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
 
       if (!optional)
       {
-        mutt_pretty_size(tmp, sizeof(tmp), l);
+        mutt_str_pretty_size(tmp, sizeof(tmp), l);
         mutt_format_s(buf, buflen, prec, tmp);
       }
       else if (l == 0)

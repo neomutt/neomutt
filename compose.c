@@ -734,7 +734,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 
     case 'l': /* approx length of current message in bytes */
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      mutt_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
+      mutt_str_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
       snprintf(buf, buflen, fmt, tmp);
       break;
 

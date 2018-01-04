@@ -485,7 +485,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 's':
       if (folder->ff->local)
       {
-        mutt_pretty_size(fn, sizeof(fn), folder->ff->size);
+        mutt_str_pretty_size(fn, sizeof(fn), folder->ff->size);
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, fn);
       }
