@@ -816,14 +816,15 @@ void imap_logout_all(void)
  * Not explicitly buffered, relies on FILE buffering. NOTE: strips `\r` from
  * `\r\n`.  Apparently even literals use `\r\n`-terminated strings ?!
  */
-int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar)
+int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
+                      struct Progress *pbar)
 {
   char c;
   bool r = false;
 
   mutt_debug(2, "reading %ld bytes\n", bytes);
 
-  for (long pos = 0; pos < bytes; pos++)
+  for (unsigned long pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar(idata->conn, &c) != 1)
     {

@@ -412,7 +412,7 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   struct ImapList *list = NULL;
   struct ImapList lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
-  long litlen;
+  unsigned int litlen;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
     list = (struct ImapList *) idata->cmddata;
@@ -638,7 +638,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   unsigned int count;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
-  long litlen;
+  unsigned int litlen;
   short new = 0;
   short new_msg_count = 0;
 

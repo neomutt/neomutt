@@ -397,7 +397,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf, FILE *fp)
 {
   struct ImapData *idata = NULL;
-  long bytes;
+  unsigned int bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
   int parse_rc;
 
@@ -1006,7 +1006,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc = NULL;
-  long bytes;
+  unsigned int bytes;
   struct Progress progressbar;
   unsigned int uid;
   int cacheno;
