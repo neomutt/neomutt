@@ -635,6 +635,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   char *value = NULL;
   struct Buffy *inc = NULL;
   struct ImapMbox mx;
+  unsigned long ulcount;
   unsigned int count;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
@@ -679,12 +680,13 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
     value = imap_next_word(s);
 
     errno = 0;
-    count = strtoul(value, &value, 10);
-    if (errno == ERANGE && count == ULONG_MAX)
+    ulcount = strtoul(value, &value, 10);
+    if (((errno == ERANGE) && (ulcount == ULONG_MAX)) || ((unsigned int) ulcount != ulcount))
     {
       mutt_debug(1, "Error parsing STATUS number\n");
       return;
     }
+    count = (unsigned int) ulcount;
 
     if (mutt_str_strncmp("MESSAGES", s, 8) == 0)
     {
