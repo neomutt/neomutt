@@ -21,8 +21,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
-#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <iconv.h>
@@ -37,7 +35,6 @@
 #include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
-#include <wchar.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"

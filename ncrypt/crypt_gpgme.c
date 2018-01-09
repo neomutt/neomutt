@@ -64,9 +64,6 @@
 #include "protos.h"
 #include "sort.h"
 #include "state.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID 1

@@ -29,6 +29,7 @@
 #include "mutt/mutt.h"
 #include "history.h"
 #include "globals.h"
+#include "options.h"
 #include "protos.h"
 
 /* This history ring grows from 0..History, with last marking the

@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
+#include "conn/conn.h"
 #include "mutt_account.h"
 #include "globals.h"
 #include "options.h"

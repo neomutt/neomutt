@@ -52,9 +52,6 @@
 #include "sort.h"
 #include "tags.h"
 #include "thread.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)

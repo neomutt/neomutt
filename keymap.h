@@ -24,7 +24,7 @@
 #define _MUTT_KEYMAP_H
 
 #include <stddef.h>
-#include "mutt/mapping.h"
+#include "mutt/mutt.h"
 
 /* maximal length of a key binding sequence used for buffer in km_bindkey */
 #define MAX_SEQ 8

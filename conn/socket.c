@@ -57,10 +57,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/debug.h"
-#include "mutt/memory.h"
-#include "mutt/message.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"

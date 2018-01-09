@@ -21,11 +21,8 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <signal.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"

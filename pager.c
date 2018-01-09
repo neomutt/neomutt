@@ -52,7 +52,6 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "pattern.h"
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_SIDEBAR
@@ -60,9 +59,6 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
-#endif
-#ifdef ENABLE_NLS
-#include <libintl.h>
 #endif
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)

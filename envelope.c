@@ -37,10 +37,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/queue.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "envelope.h"
 #include "address.h"
 #include "protos.h"

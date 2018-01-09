@@ -60,9 +60,6 @@
 #include "protos.h"
 #include "tags.h"
 #include "url.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
 #endif

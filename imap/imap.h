@@ -44,15 +44,16 @@
 #ifndef _IMAP_IMAP_H
 #define _IMAP_IMAP_H
 
+#include "conn/conn.h"
+#include "mutt_account.h"
 #include <stddef.h>
 #include <sys/types.h>
-#include "mutt_account.h"
 
-struct Header;
-struct Pattern;
-struct Context;
-struct Message;
 struct BrowserState;
+struct Context;
+struct Header;
+struct Message;
+struct Pattern;
 
 /**
  * struct ImapMbox - An IMAP mailbox

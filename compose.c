@@ -53,17 +53,12 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
 #endif
-
-struct Address;
 
 static const char *There_are_no_attachments = N_("There are no attachments.");
 

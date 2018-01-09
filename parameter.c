@@ -36,6 +36,8 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include "mutt/mutt.h"
 #include "parameter.h"
 
 /**

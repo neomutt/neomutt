@@ -41,9 +41,6 @@
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "protos.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /**
  * struct Query - An entry from an external address-book

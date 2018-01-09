@@ -24,7 +24,6 @@
 #ifndef _MUTT_BCACHE_H
 #define _MUTT_BCACHE_H
 
-#include <stdbool.h>
 #include <stdio.h>
 
 struct Account;

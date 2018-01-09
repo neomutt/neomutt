@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <utime.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
+#include "conn/conn.h"
 #include "buffy.h"
 #include "context.h"
 #include "envelope.h"

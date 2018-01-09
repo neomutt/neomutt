@@ -23,7 +23,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -47,9 +46,6 @@
 #include "sort.h"
 #include "tags.h"
 #include "thread.h"
-#ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
-#endif
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)

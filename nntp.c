@@ -26,6 +26,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "conn/conn.h"

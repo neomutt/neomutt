@@ -33,9 +33,8 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include <wchar.h>
-#include <wctype.h>
 #include "mutt/mutt.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "pattern.h"
 #include "address.h"
@@ -57,9 +56,6 @@
 #include "state.h"
 #include "tags.h"
 #include "thread.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

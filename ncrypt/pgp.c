@@ -60,9 +60,6 @@
 #include "pgpmicalg.h"
 #include "protos.h"
 #include "state.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */

@@ -31,7 +31,6 @@
 #include <sys/types.h>
 #include <time.h>
 #include "format_flags.h"
-#include "where.h"
 #include "mx.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"

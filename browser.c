@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <grp.h>
@@ -49,7 +48,6 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mbyte.h"
-#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -58,9 +56,6 @@
 #include "protos.h"
 #include "sort.h"
 #include "url.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

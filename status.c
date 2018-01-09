@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "context.h"

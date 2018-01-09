@@ -23,15 +23,14 @@
 
 #include "config.h"
 #include <errno.h>
-#include <fcntl.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "address.h"
 #include "alias.h"
@@ -56,9 +55,6 @@
 #include "parameter.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

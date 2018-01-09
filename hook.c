@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -31,7 +30,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
-#include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
@@ -43,6 +41,8 @@
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif
+
+struct Context;
 
 /**
  * struct Hook - A list of user hooks

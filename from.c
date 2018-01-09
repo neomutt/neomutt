@@ -22,13 +22,10 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/mutt.h"
-#include "globals.h"
-#include "protos.h"
 
 /*
  * A valid message separator looks like:

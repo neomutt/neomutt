@@ -45,7 +45,6 @@
 #include "rfc2231.h"
 #include "url.h"
 
-struct Address;
 struct Context;
 
 /**

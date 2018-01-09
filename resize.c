@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include <fcntl.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>

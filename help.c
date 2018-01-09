@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -31,7 +30,6 @@
 #include "mutt/mutt.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mbyte.h"
 #include "mutt_curses.h"
 #include "opcodes.h"
 #include "options.h"

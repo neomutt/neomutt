@@ -44,16 +44,12 @@
 #include "enter_state.h"
 #include "globals.h"
 #include "header.h"
-#include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

@@ -38,9 +38,6 @@
 #include "mutt_curses.h"
 #include "options.h"
 #include "protos.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 struct Address *mutt_lookup_alias(const char *s)
 {

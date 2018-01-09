@@ -24,6 +24,7 @@
 #define _MUTT_THREAD_H
 
 #include <stdbool.h>
+#include "mutt.h"
 
 struct Context;
 struct Header;

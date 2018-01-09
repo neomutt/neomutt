@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <wctype.h>
+#include "mutt.h"
 #include "format_flags.h"
 #include "options.h"
 
