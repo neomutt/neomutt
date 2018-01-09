@@ -2335,8 +2335,8 @@ msgid "Mailbox renamed."
 msgstr "Boîte aux lettres renommée."
 
 #: imap/command.c:170
-msgid "Mailbox closed"
-msgstr "Boîte aux lettres fermée"
+msgid "Mailbox %s@%s closed"
+msgstr "Boîte aux lettres %s@%s fermée"
 
 #: imap/command.c:1118 imap/command.c:1213
 #, c-format
