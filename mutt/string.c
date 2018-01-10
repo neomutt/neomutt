@@ -34,6 +34,7 @@
  * | mutt_str_atos()               | Convert ASCII string to a short
  * | mutt_str_dequote_comment()    | Un-escape characters in an email address comment
  * | mutt_str_find_word()          | Find the next word (non-space)
+ * | mutt_str_getenv()             | Get an environment variable
  * | mutt_str_is_ascii()           | Is a string ASCII (7-bit)?
  * | mutt_str_is_email_wsp()       | Is this a whitespace character (for an email header)
  * | mutt_str_lws_len()            | Measure the linear-white-space at the beginning of a string
@@ -900,4 +901,24 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
     /* (10433332 + 52428) / 1048576 = 10 */
     snprintf(buf, buflen, "%zuM", (num + 52428) / 1048576);
   }
+}
+
+/**
+ * mutt_str_getenv - Get an environment variable
+ * @param name Environment variable to get
+ * @retval ptr Value of variable
+ * @retval NULL Variable isn't set, or is empty
+ *
+ * @warning The caller must not free the returned pointer.
+ */
+const char *mutt_str_getenv(const char *name)
+{
+  if (!name)
+    return NULL;
+
+  const char *val = getenv(name);
+  if (val && (val[0] != '\0'))
+      return val;
+
+  return NULL;
 }
