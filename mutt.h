@@ -79,6 +79,7 @@ struct Mapping;
 #define MUTT_TOKEN_SEMICOLON     (1<<6)  /**< don't treat ; as special */
 #define MUTT_TOKEN_BACKTICK_VARS (1<<7)  /**< expand variables within backticks */
 #define MUTT_TOKEN_NOSHELL       (1<<8)  /**< don't expand environment variables */
+#define MUTT_TOKEN_QUESTION      (1<<9)  /**< treat '?' as a special */
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER 1
@@ -195,6 +196,7 @@ enum MuttMisc
 #define MUTT_NOSPAM 2
 
 int mutt_init(bool skip_sys_rc, struct ListHead *commands);
+struct ConfigSet *init_config(size_t size);
 
 /**
  * struct AttachMatch - An attachment matching a regex

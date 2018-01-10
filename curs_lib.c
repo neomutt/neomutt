@@ -54,6 +54,7 @@
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
+#include "sidebar.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

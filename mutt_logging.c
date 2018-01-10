@@ -45,10 +45,10 @@
 
 struct timeval LastError = { 0 };
 
-short DebugLevel = 0;    /**< Log file logging level */
-char *DebugFile = NULL;  /**< Log file name */
-const int NumOfLogs = 5; /**< How many log files to rotate */
-bool LogAllowDebugSet = false;
+short DebugLevel = 0;     /**< Log file logging level */
+char *DebugFile = NULL;   /**< Log file name */
+char *CurrentFile = NULL; /**< The previous log file name */
+const int NumOfLogs = 5;  /**< How many log files to rotate */
 
 #define S_TO_NS 1000000000UL
 #define S_TO_US 1000000UL
@@ -232,6 +232,71 @@ int log_disp_curses(time_t stamp, const char *file, int line,
 }
 
 /**
+ * mutt_log_prep - Prepare to log
+ */
+void mutt_log_prep(void)
+{
+  char ver[64];
+  snprintf(ver, sizeof(ver), "-%s%s", PACKAGE_VERSION, GitVer);
+  log_file_set_version(ver);
+}
+
+/**
+ * mutt_log_stop - Close the log file
+ */
+void mutt_log_stop(void)
+{
+  log_file_close(false);
+  FREE(&CurrentFile);
+}
+
+/**
+ * mutt_log_set_file - Change the logging file
+ * @param file Name to use
+ * @param verbose If true, then log the event
+ * @retval  0 Success, file opened
+ * @retval -1 Error, see errno
+ *
+ * Close the old log, rotate the new logs and open the new log.
+ */
+int mutt_log_set_file(const char *file, bool verbose)
+{
+  if (mutt_str_strcmp(CurrentFile, DebugFile) != 0)
+  {
+    const char *name = rotate_logs(DebugFile, NumOfLogs);
+    if (!name)
+      return -1;
+
+    log_file_set_filename(name, false);
+    FREE(&name);
+    mutt_str_replace(&CurrentFile, DebugFile);
+  }
+
+  cs_str_string_set(Config, "debug_file", file, NULL);
+
+  return 0;
+}
+
+/**
+ * mutt_log_set_level - Change the logging level
+ * @param level Logging level
+ * @param verbose If true, then log the event
+ * @retval  0 Success
+ * @retval -1 Error, level is out of range
+ */
+int mutt_log_set_level(int level, bool verbose)
+{
+  if (!CurrentFile)
+    mutt_log_set_file(DebugFile, false);
+
+  if (log_file_set_level(level, verbose) != 0)
+    return -1;
+
+  DebugLevel = level;
+  return 0;
+}
+
+/**
  * mutt_log_start - Enable file logging
  * @retval  0 Success, or already running
  * @retval -1 Failed to start
@@ -246,75 +311,11 @@ int mutt_log_start(void)
   if (log_file_running())
     return 0;
 
-  char ver[64];
-  snprintf(ver, sizeof(ver), "-%s%s", PACKAGE_VERSION, GitVer);
-  log_file_set_version(ver);
-
-  const char *name = rotate_logs(DebugFile, NumOfLogs);
-  if (!name)
-    return -1;
-
-  log_file_set_filename(name, false);
-  FREE(&name);
+  mutt_log_set_file(DebugFile, false);
 
   /* This will trigger the file creation */
-  if (log_file_set_level(DebugLevel, true) < 1)
+  if (log_file_set_level(DebugLevel, true) < 0)
     return -1;
-
-  return 0;
-}
-
-/**
- * mutt_log_stop - Close the log file
- */
-void mutt_log_stop(void)
-{
-  log_file_close(false);
-}
-
-/**
- * mutt_log_set_level - Change the logging level
- * @param level Logging level
- * @param verbose If true, then log the event
- * @retval  0 Success
- * @retval -1 Error, level is out of range
- */
-int mutt_log_set_level(int level, bool verbose)
-{
-  if (log_file_set_level(level, verbose) != 0)
-    return -1;
-
-  if (!LogAllowDebugSet)
-    return 0;
-
-  DebugLevel = level;
-  return 0;
-}
-
-/**
- * mutt_log_set_file - Change the logging file
- * @param file Name to use
- * @param verbose If true, then log the event
- * @retval  0 Success, file opened
- * @retval -1 Error, see errno
- *
- * Close the old log, rotate the new logs and open the new log.
- */
-int mutt_log_set_file(const char *file, bool verbose)
-{
-  if (mutt_str_strcmp(DebugFile, file) == 0)
-    return 0;
-
-  if (!LogAllowDebugSet)
-    return 0;
-
-  const char *name = rotate_logs(file, NumOfLogs);
-  if (!name)
-    return 0;
-
-  log_file_set_filename(name, verbose);
-  FREE(&name);
-  mutt_str_replace(&DebugFile, file);
 
   return 0;
 }

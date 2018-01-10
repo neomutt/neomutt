@@ -40,9 +40,7 @@
 #include "set.h"
 #include "types.h"
 
-void mutt_pretty_mailbox(char *s, size_t buflen)
-{
-}
+void mutt_pretty_mailbox(char *s, size_t buflen);
 
 /**
  * escape_string - Write a string to a buffer, escaping special characters

@@ -341,29 +341,6 @@ int mx_get_magic(const char *path)
 }
 
 /**
- * mx_set_magic - set MboxType to the given value
- * @param s Mailbox type string
- * @retval num Magic number, e.g. #MUTT_MBOX
- */
-int mx_set_magic(const char *s)
-{
-  int type;
-  if (mutt_str_strcasecmp(s, "mbox") == 0)
-    type = MUTT_MBOX;
-  else if (mutt_str_strcasecmp(s, "mmdf") == 0)
-    type = MUTT_MMDF;
-  else if (mutt_str_strcasecmp(s, "mh") == 0)
-    type = MUTT_MH;
-  else if (mutt_str_strcasecmp(s, "maildir") == 0)
-    type = MUTT_MAILDIR;
-  else
-    return -1;
-
-  MboxType = type;
-  return 0;
-}
-
-/**
  * mx_access - Wrapper for access, checks permissions on a given mailbox
  * @param path  Path of mailbox
  * @param flags Flags, e.g. W_OK

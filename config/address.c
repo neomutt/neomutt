@@ -294,8 +294,8 @@ void address_init(struct ConfigSet *cs)
 struct Address *address_create(const char *addr)
 {
   struct Address *a = mutt_mem_calloc(1, sizeof(*a));
-  a->personal = mutt_str_strdup(addr);
-  a->mailbox = mutt_str_strdup("dummy3");
+  // a->personal = mutt_str_strdup(addr);
+  a->mailbox = mutt_str_strdup(addr);
   return a;
 }
 

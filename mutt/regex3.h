@@ -30,8 +30,8 @@
 struct Buffer;
 
 /* ... DT_REGEX */
-#define DT_REGEX_MATCH_CASE 0x010 /**< Case-sensitive matching */
-#define DT_REGEX_ALLOW_NOT  0x020 /**< Regex can begin with '!' */
+#define DT_REGEX_MATCH_CASE 0x040 /**< Case-sensitive matching */
+#define DT_REGEX_ALLOW_NOT  0x080 /**< Regex can begin with '!' */
 #define DT_REGEX_NOSUB      0x100 /**< Do not report what was matched (REG_NOSUB) */
 
 /* This is a non-standard option supported by Solaris 2.5.x

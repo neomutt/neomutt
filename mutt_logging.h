@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "config/lib.h"
 
 extern short DebugLevel;
 extern char *DebugFile;
@@ -32,10 +33,12 @@ extern bool LogAllowDebugSet;
 
 int log_disp_curses(time_t stamp, const char *file, int line, const char *function, int level, ...);
 
+void mutt_log_prep(void);
 int  mutt_log_start(void);
 void mutt_log_stop(void);
-int mutt_log_set_level(int level, bool verbose);
-int mutt_log_set_file(const char *file, bool verbose);
+int  mutt_log_set_level(int level, bool verbose);
+int  mutt_log_set_file(const char *file, bool verbose);
+bool mutt_log_listener(const struct ConfigSet *cs, struct HashElem *he, const char *name, enum ConfigEvent ev);
 
 void mutt_clear_error(void);
 

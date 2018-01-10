@@ -58,7 +58,6 @@
 #include "mutt_account.h"
 #include "mutt_commands.h"
 #include "mutt_logging.h"
-#include "mutt_options.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
@@ -91,6 +90,7 @@
 
 // clang-format off
 #ifndef _MAKEDOC
+/* flags to parse_set() */
 enum MuttSetCommand
 {
   MUTT_SET_SET,   /**< default is to set all vars */
@@ -1203,7 +1203,7 @@ struct ConfigDef MuttVars[] = {
   ** Header caching can greatly improve speed when opening POP, IMAP
   ** MH or Maildir folders, see ``$caching'' for details.
   */
-  { "header_cache_backend", DT_HCACHE, R_NONE, &HeaderCacheBackend, 0 },
+  { "header_cache_backend", DT_STRING, R_NONE, &HeaderCacheBackend, 0 },
   /*
   ** .pp
   ** This variable specifies the header cache backend.
@@ -3282,7 +3282,7 @@ struct ConfigDef MuttVars[] = {
   ** process will be put in a temporary file.  If there is some error, you
   ** will be informed as to where to find the output.
   */
-  { "shell", DT_COMMAND, R_NONE, &Shell, 0 },
+  { "shell", DT_COMMAND, R_NONE, &Shell, IP "/bin/sh" },
   /*
   ** .pp
   ** Command to use when spawning a subshell.

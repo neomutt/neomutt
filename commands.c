@@ -695,6 +695,7 @@ void mutt_enter_command(void)
   mutt_buffer_init(&err);
   err.dsize = STRING;
   err.data = mutt_mem_malloc(err.dsize);
+  err.dptr = err.data;
   mutt_buffer_init(&token);
   r = mutt_parse_rc_line(buffer, &token, &err);
   FREE(&token.data);
