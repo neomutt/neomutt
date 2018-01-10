@@ -282,9 +282,9 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
    */
-  fc = mutt_cs_fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
+  fc = mutt_ch_fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = true, armor_header = true; mutt_cs_fgetconvs(buf, sizeof(buf), fc) != NULL;
+  for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc) != NULL;
        complete = (strchr(buf, '\n') != NULL))
   {
     if (!complete)
@@ -314,7 +314,7 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
       state_puts(buf, s);
   }
 
-  mutt_cs_fgetconv_close(&fc);
+  mutt_ch_fgetconv_close(&fc);
 }
 
 /**
@@ -418,7 +418,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
           l = mutt_str_strlen(gpgcharset);
           if ((l > 0) && (gpgcharset[l - 1] == '\n'))
             gpgcharset[l - 1] = 0;
-          if (!mutt_cs_check_charset(gpgcharset, 0))
+          if (!mutt_ch_check_charset(gpgcharset, 0))
             mutt_str_replace(&gpgcharset, "UTF-8");
         }
       }
@@ -545,10 +545,10 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
 
         rewind(pgpout);
         state_set_prefix(s);
-        fc = mutt_cs_fgetconv_open(pgpout, expected_charset, Charset, MUTT_ICONV_HOOK_FROM);
-        while ((ch = mutt_cs_fgetconv(fc)) != EOF)
+        fc = mutt_ch_fgetconv_open(pgpout, expected_charset, Charset, MUTT_ICONV_HOOK_FROM);
+        while ((ch = mutt_ch_fgetconv(fc)) != EOF)
           state_prefix_putc(ch, s);
-        mutt_cs_fgetconv_close(&fc);
+        mutt_ch_fgetconv_close(&fc);
       }
 
       /*
@@ -1539,7 +1539,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   else
     from_charset = Charset;
 
-  if (!mutt_cs_is_us_ascii(body_charset))
+  if (!mutt_ch_is_us_ascii(body_charset))
   {
     int c;
     struct FgetConv *fc = NULL;
@@ -1550,11 +1550,11 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
       send_charset = "utf-8";
 
     /* fromcode is assumed to be correct: we set flags to 0 */
-    fc = mutt_cs_fgetconv_open(fp, from_charset, "utf-8", 0);
-    while ((c = mutt_cs_fgetconv(fc)) != EOF)
+    fc = mutt_ch_fgetconv_open(fp, from_charset, "utf-8", 0);
+    while ((c = mutt_ch_fgetconv(fc)) != EOF)
       fputc(c, pgpin);
 
-    mutt_cs_fgetconv_close(&fc);
+    mutt_ch_fgetconv_close(&fc);
   }
   else
   {

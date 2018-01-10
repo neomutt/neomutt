@@ -140,7 +140,7 @@ void mutt_read_histfile(void)
     p = mutt_str_strdup(linebuf + read);
     if (p)
     {
-      mutt_cs_convert_string(&p, "utf-8", Charset, 0);
+      mutt_ch_convert_string(&p, "utf-8", Charset, 0);
       mutt_history_add(hclass, p, false);
       FREE(&p);
     }
@@ -310,7 +310,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
   }
 
   tmp = mutt_str_strdup(s);
-  mutt_cs_convert_string(&tmp, Charset, "utf-8", 0);
+  mutt_ch_convert_string(&tmp, Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
      We add a '|' in order to avoid lines ending with '\'. */

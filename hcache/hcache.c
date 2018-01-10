@@ -180,7 +180,7 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
   if (convert && !mutt_str_is_ascii(c, size))
   {
     p = mutt_str_substr_dup(c, c + size);
-    if (mutt_cs_convert_string(&p, Charset, "utf-8", 0) == 0)
+    if (mutt_ch_convert_string(&p, Charset, "utf-8", 0) == 0)
     {
       c = p;
       size = mutt_str_strlen(c) + 1;
@@ -219,7 +219,7 @@ static void restore_char(char **c, const unsigned char *d, int *off, bool conver
   if (convert && !mutt_str_is_ascii(*c, size))
   {
     char *tmp = mutt_str_strdup(*c);
-    if (mutt_cs_convert_string(&tmp, "utf-8", Charset, 0) == 0)
+    if (mutt_ch_convert_string(&tmp, "utf-8", Charset, 0) == 0)
     {
       mutt_str_replace(c, tmp);
     }

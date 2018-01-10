@@ -116,7 +116,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
   while (true)
   {
     ob = bufo, obl = sizeof(bufo);
-    mutt_cs_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");
+    mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");
     if (ob == bufo)
       break;
     state_prefix_put(bufo, ob - bufo, s);
@@ -1585,12 +1585,12 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   {
     char *charset = mutt_param_get("charset", b->parameter);
     if (!charset && AssumedCharset && *AssumedCharset)
-      charset = mutt_cs_get_default_charset();
+      charset = mutt_ch_get_default_charset();
     if (charset && Charset)
-      cd = mutt_cs_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
+      cd = mutt_ch_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
   }
   else if (istext && b->charset)
-    cd = mutt_cs_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
+    cd = mutt_ch_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
   fseeko(s->fpin, b->offset, SEEK_SET);
   switch (b->encoding)

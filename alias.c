@@ -225,7 +225,7 @@ static void recode_buf(char *buf, size_t buflen)
   s = mutt_str_strdup(buf);
   if (!s)
     return;
-  if (mutt_cs_convert_string(&s, Charset, ConfigCharset, 0) == 0)
+  if (mutt_ch_convert_string(&s, Charset, ConfigCharset, 0) == 0)
     mutt_str_strfcpy(buf, s, buflen);
   FREE(&s);
 }

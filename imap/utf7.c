@@ -321,7 +321,7 @@ void imap_utf_encode(struct ImapData *idata, char **s)
   if (Charset)
   {
     char *t = mutt_str_strdup(*s);
-    if (t && !mutt_cs_convert_string(&t, Charset, "utf-8", 0))
+    if (t && !mutt_ch_convert_string(&t, Charset, "utf-8", 0))
     {
       FREE(s);
       if (idata->unicode)
@@ -349,7 +349,7 @@ void imap_utf_decode(struct ImapData *idata, char **s)
     else
       t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 
-    if (t && !mutt_cs_convert_string(&t, "utf-8", Charset, 0))
+    if (t && !mutt_ch_convert_string(&t, "utf-8", Charset, 0))
     {
       FREE(s);
       *s = t;

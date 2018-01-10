@@ -2132,7 +2132,7 @@ static int check_charset(struct Option *opt, const char *val)
   {
     if (!*p)
       continue;
-    if (!mutt_cs_check_charset(p, strict))
+    if (!mutt_ch_check_charset(p, strict))
     {
       rc = -1;
       break;
@@ -3036,7 +3036,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = mutt_str_strdup(linebuf);
       if (!currentline)
         continue;
-      mutt_cs_convert_string(&currentline, ConfigCharset, Charset, 0);
+      mutt_ch_convert_string(&currentline, ConfigCharset, Charset, 0);
     }
     else
       currentline = linebuf;
@@ -4067,7 +4067,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   if (p)
     From = mutt_addr_parse_list(NULL, p);
 
-  mutt_cs_set_langinfo_charset();
+  mutt_ch_set_langinfo_charset();
   mutt_set_charset(Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));

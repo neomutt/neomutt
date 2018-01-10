@@ -218,7 +218,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   {
     /* These are managed separately by the charset code */
     enum LookupType type = (data & MUTT_CHARSETHOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
-    if (!mutt_cs_lookup_add(type, pattern.data, command.data, err))
+    if (!mutt_ch_lookup_add(type, pattern.data, command.data, err))
       goto error;
     FREE(&pattern.data);
     FREE(&command.data);
@@ -314,7 +314,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         return -1;
       }
       delete_hooks(0);
-      mutt_cs_lookup_remove();
+      mutt_ch_lookup_remove();
     }
     else
     {
@@ -327,7 +327,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
       if (type & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK))
       {
-        mutt_cs_lookup_remove();
+        mutt_ch_lookup_remove();
         return 0;
       }
       if (current_hook_type == type)

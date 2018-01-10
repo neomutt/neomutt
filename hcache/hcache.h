@@ -41,7 +41,7 @@
  *   * SpamList
  *   * NoSpamList
  * - Neomutt functions
- *   * mutt_cs_convert_string()
+ *   * mutt_ch_convert_string()
  *   * mutt_encode_path()
  *   * mutt_new_body()
  *   * mutt_env_new()

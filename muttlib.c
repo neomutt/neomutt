@@ -1402,7 +1402,7 @@ const char *mutt_make_version(void)
 void mutt_encode_path(char *dest, size_t dlen, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_cs_convert_string(&p, Charset, "utf-8", 0);
+  int rc = mutt_ch_convert_string(&p, Charset, "utf-8", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
   mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
   FREE(&p);
