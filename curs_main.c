@@ -525,7 +525,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
  */
 bool mutt_ts_capability(void)
 {
-  char *term = getenv("TERM");
+  const char *term = mutt_str_getenv("TERM");
   char *tcaps = NULL;
 #ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;

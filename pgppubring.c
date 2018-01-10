@@ -842,7 +842,8 @@ int main(int argc, char *const argv[])
   short secring = 0;
 
   const char *tmp_kring = NULL;
-  char *env_pgppath = NULL, *env_home = NULL;
+  const char *env_pgppath = NULL;
+  const char *env_home = NULL;
 
   char pgppath[_POSIX_PATH_MAX];
   char kring[_POSIX_PATH_MAX];
@@ -896,10 +897,10 @@ int main(int argc, char *const argv[])
     mutt_str_strfcpy(kring, tmp_kring, sizeof(kring));
   else
   {
-    env_pgppath = getenv("PGPPATH");
+    env_pgppath = mutt_str_getenv("PGPPATH");
     if (env_pgppath)
       mutt_str_strfcpy(pgppath, env_pgppath, sizeof(pgppath));
-    else if ((env_home = getenv("HOME")))
+    else if ((env_home = mutt_str_getenv("HOME")))
       snprintf(pgppath, sizeof(pgppath), "%s/.pgp", env_home);
     else
     {

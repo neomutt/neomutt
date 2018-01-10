@@ -926,16 +926,18 @@ static int text_enriched_handler(struct Body *a, struct State *s)
  */
 static int is_mmnoask(const char *buf)
 {
-  char tmp[LONG_STRING], *p = NULL, *q = NULL;
+  char *p = NULL;
+  const char *val = NULL;
+  char tmp[LONG_STRING], *q = NULL;
   int lng;
 
-  p = getenv("MM_NOASK");
-  if (p && *p)
+  val = mutt_str_getenv("MM_NOASK");
+  if (val)
   {
-    if (mutt_str_strcmp(p, "1") == 0)
+    if (mutt_str_strcmp(val, "1") == 0)
       return 1;
 
-    mutt_str_strfcpy(tmp, p, sizeof(tmp));
+    mutt_str_strfcpy(tmp, val, sizeof(tmp));
     p = tmp;
 
     while ((p = strtok(p, ",")) != NULL)
