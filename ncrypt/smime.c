@@ -1494,11 +1494,13 @@ struct Body *smime_sign_message(struct Body *a)
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  struct SmimeKey *default_key = NULL;
+  char *signas = NULL;
+  struct SmimeKey *signas_key = NULL;
   char *intermediates = NULL;
   char *micalg = NULL;
 
-  if (!SmimeDefaultKey)
+  signas = (SmimeSignAs && *SmimeSignAs) ? SmimeSignAs : SmimeDefaultKey;
+  if (!signas || !*signas)
   {
     mutt_error(_("Can't sign: No key specified. Use Sign As."));
     return NULL;
@@ -1529,21 +1531,21 @@ struct Body *smime_sign_message(struct Body *a)
   mutt_write_mime_body(a, sfp);
   mutt_file_fclose(&sfp);
 
-  snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
+  snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), signas);
 
   snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
-           NONULL(SmimeCertificates), SmimeDefaultKey);
+           NONULL(SmimeCertificates), signas);
 
-  default_key = smime_get_key_by_hash(SmimeDefaultKey, 1);
-  if ((!default_key) || (mutt_str_strcmp("?", default_key->issuer) == 0))
-    intermediates = SmimeDefaultKey; /* so openssl won't complain in any case */
+  signas_key = smime_get_key_by_hash(signas, 1);
+  if ((!signas_key) || (!mutt_str_strcmp("?", signas_key->issuer)))
+    intermediates = signas; /* so openssl won't complain in any case */
   else
-    intermediates = default_key->issuer;
+    intermediates = signas_key->issuer;
 
   snprintf(SmimeIntermediateToUse, sizeof(SmimeIntermediateToUse), "%s/%s",
            NONULL(SmimeCertificates), intermediates);
 
-  smime_free_key(&default_key);
+  smime_free_key(&signas_key);
 
   thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1, fileno(smimeout), -1, filetosign);
   if (thepid == -1)
@@ -2162,29 +2164,19 @@ int smime_send_menu(struct Header *msg)
       break;
 
       case 's': /* (s)ign */
+        msg->security &= ~ENCRYPT;
+        msg->security |= SIGN;
+        break;
+
       case 'S': /* (s)ign in oppenc mode */
-        if (!SmimeDefaultKey)
-        {
-          key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
-          if (key)
-          {
-            mutt_str_replace(&SmimeDefaultKey, key->hash);
-            smime_free_key(&key);
-          }
-          else
-            break;
-        }
-        if (choices[choice - 1] == 's')
-          msg->security &= ~ENCRYPT;
         msg->security |= SIGN;
         break;
 
       case 'a': /* sign (a)s */
-
         key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
         if (key)
         {
-          mutt_str_replace(&SmimeDefaultKey, key->hash);
+          mutt_str_replace(&SmimeSignAs, key->hash);
           smime_free_key(&key);
 
           msg->security |= SIGN;

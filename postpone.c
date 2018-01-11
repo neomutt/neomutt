@@ -515,7 +515,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
   if ((WithCrypto & APPLICATION_SMIME) && (crypt_app == APPLICATION_SMIME) &&
       (flags & SIGN) && (set_empty_signas || *sign_as))
   {
-    mutt_str_replace(&SmimeDefaultKey, sign_as);
+    mutt_str_replace(&SmimeSignAs, sign_as);
   }
 
   return flags;
