@@ -580,17 +580,12 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   {
     newhdr->security |= sec_type;
     if (!crypt_valid_passphrase(sec_type))
-      goto err;
+      goto bail;
 
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
     {
-    err:
-      mx_close_message(ctx, &msg);
-      mutt_env_free(&newhdr->env);
-      mutt_free_body(&newhdr->content);
-      mutt_error(_("Decryption failed."));
-      return -1;
+      goto bail;
     }
 
     mutt_free_body(&newhdr->content);
@@ -678,7 +673,18 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     if ((WithCrypto & APPLICATION_PGP) &&
         ((sec_type = mutt_is_application_pgp(b)) & (ENCRYPT | SIGN)))
     {
-      mutt_body_handler(b, &s);
+      if (sec_type & ENCRYPT)
+      {
+        if (!crypt_valid_passphrase(APPLICATION_PGP))
+          goto bail;
+        mutt_message(_("Decrypting message..."));
+      }
+
+      if (mutt_body_handler(b, &s) < 0)
+      {
+        mutt_error(_("Decryption failed."));
+        goto bail;
+      }
 
       newhdr->security |= sec_type;
 
@@ -689,7 +695,19 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     else if ((WithCrypto & APPLICATION_SMIME) &&
              ((sec_type = mutt_is_application_smime(b)) & (ENCRYPT | SIGN)))
     {
-      mutt_body_handler(b, &s);
+      if (sec_type & ENCRYPT)
+      {
+        if (!crypt_valid_passphrase(APPLICATION_SMIME))
+          goto bail;
+        crypt_smime_getkeys(newhdr->env);
+        mutt_message(_("Decrypting message..."));
+      }
+
+      if (mutt_body_handler(b, &s) < 0)
+      {
+        mutt_error(_("Decryption failed."));
+        goto bail;
+      }
 
       newhdr->security |= sec_type;
       b->type = TYPETEXT;
