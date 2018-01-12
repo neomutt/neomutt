@@ -174,7 +174,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         if (flags & CH_DECODE)
         {
           if (!address_header_decode(&this_one))
-            rfc2047_decode(&this_one);
+            mutt_rfc2047_decode(&this_one);
           this_one_len = mutt_str_strlen(this_one);
 
           /* Convert CRLF line endings to LF */
@@ -291,7 +291,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     if (flags & CH_DECODE)
     {
       if (!address_header_decode(&this_one))
-        rfc2047_decode(&this_one);
+        mutt_rfc2047_decode(&this_one);
       this_one_len = mutt_str_strlen(this_one);
     }
 

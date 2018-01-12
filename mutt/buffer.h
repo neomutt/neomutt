@@ -40,6 +40,7 @@ struct Buffer
 
 #define MoreArgs(p) (*p->dptr && (*p->dptr != ';') && (*p->dptr != '#'))
 
+size_t         mutt_buffer_add(struct Buffer *buf, const char *s, size_t len);
 size_t         mutt_buffer_addch(struct Buffer *buf, char c);
 size_t         mutt_buffer_addstr(struct Buffer *buf, const char *s);
 struct Buffer *mutt_buffer_alloc(size_t size);

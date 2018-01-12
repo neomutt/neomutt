@@ -1283,13 +1283,6 @@ struct Option MuttVars[] = {
   ** UTF-8 encoded domains. (IDN only)
   */
 #endif /* HAVE_LIBIDN */
-  { "ignore_linear_white_space",    DT_BOOL, R_NONE, UL &IgnoreLinearWhiteSpace, 0 },
-  /*
-  ** .pp
-  ** This option replaces linear-white-space between encoded-word
-  ** and text to a single space to prevent the display of MIME-encoded
-  ** ``Subject:'' field from being divided into multiple lines.
-  */
   { "ignore_list_reply_to", DT_BOOL, R_NONE, UL &IgnoreListReplyTo, 0 },
   /*
   ** .pp
