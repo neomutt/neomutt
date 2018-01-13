@@ -4077,19 +4077,16 @@ msgid "esabmco"
 msgstr "zpjosa"
 
 #: ncrypt/crypt_gpgme.c:4956
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:4958
-#, fuzzy
 msgid "esabpc"
 msgstr "zpjoga"
 
 #: ncrypt/crypt_gpgme.c:4965
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
