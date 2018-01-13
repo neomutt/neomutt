@@ -300,6 +300,15 @@ msgstr "Skrzynka została usunięta."
 msgid "Mailbox deletion failed."
 msgstr "Skrzynka została usunięta."
 
+msgid "No PGP backend configured"
+msgstr ""
+
+msgid "No S/MIME backend configured"
+msgstr ""
+
+msgid "No crypto backend configured.  Disabling message security setting."
+msgstr ""
+
 #: browser.c:1678
 msgid "Mailbox not deleted."
 msgstr "Skrzynka nie została usunięta."
@@ -5223,8 +5232,9 @@ msgid "print the current entry"
 msgstr "wydrukuj obecną pozycję"
 
 #: opcodes.h:193
+#, fuzzy
 msgid "delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "usuń bieżący list"
 
 #: opcodes.h:194
 msgid "delete the current thread, bypassing the trash folder"
@@ -6370,11 +6380,14 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2009 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2014 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
+"Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Wielu innych twórców, nie wspomnianych tutaj,\n"
 "wniosło wiele nowego kodu, poprawek i sugestii.\n"
