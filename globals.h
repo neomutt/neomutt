@@ -282,6 +282,7 @@ WHERE short ImapPollTimeout;
 /* -- formerly in pgp.h -- */
 WHERE struct Regex *PgpGoodSign;
 WHERE struct Regex *PgpDecryptionOkay;
+WHERE char *PgpDefaultKey;
 WHERE char *PgpSignAs;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;
@@ -298,10 +299,10 @@ WHERE char *PgpVerifyKeyCommand;
 WHERE char *PgpListSecringCommand;
 WHERE char *PgpListPubringCommand;
 WHERE char *PgpGetkeysCommand;
-WHERE char *PgpSelfEncryptAs;
 
 /* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;
+WHERE char *SmimeSignAs;
 WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;
 WHERE char *SmimeKeys;
@@ -318,7 +319,6 @@ WHERE char *SmimePk7outCommand;
 WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
-WHERE char *SmimeSelfEncryptAs;
 
 #ifdef USE_NOTMUCH
 WHERE int NmOpenTimeout;

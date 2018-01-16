@@ -3049,8 +3049,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     if (hdr->security & SIGN)
     {
       fputc('S', msg->fp);
-      if (SmimeDefaultKey && *SmimeDefaultKey)
-        fprintf(msg->fp, "<%s>", SmimeDefaultKey);
+      if (SmimeSignAs && *SmimeSignAs)
+        fprintf(msg->fp, "<%s>", SmimeSignAs);
     }
     if (hdr->security & INLINE)
       fputc('I', msg->fp);

@@ -737,7 +737,7 @@ void imap_cachepath(struct ImapData *idata, const char *mailbox, char *dest, siz
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_get_literal_count(const char *buf, long *bytes)
+int imap_get_literal_count(const char *buf, unsigned int *bytes)
 {
   char *pc = NULL;
   char *pn = NULL;
@@ -750,7 +750,8 @@ int imap_get_literal_count(const char *buf, long *bytes)
   while (isdigit((unsigned char) *pc))
     pc++;
   *pc = '\0';
-  *bytes = atoi(pn);
+  if (mutt_atoui(pn, bytes) < 0)
+    return -1;
 
   return 0;
 }

@@ -816,14 +816,15 @@ void imap_logout_all(void)
  * Not explicitly buffered, relies on FILE buffering. NOTE: strips `\r` from
  * `\r\n`.  Apparently even literals use `\r\n`-terminated strings ?!
  */
-int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar)
+int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
+                      struct Progress *pbar)
 {
   char c;
   bool r = false;
 
   mutt_debug(2, "reading %ld bytes\n", bytes);
 
-  for (long pos = 0; pos < bytes; pos++)
+  for (unsigned long pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar(idata->conn, &c) != 1)
     {
@@ -883,7 +884,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
     if (h->index == INT_MAX)
     {
-      mutt_debug(2, "Expunging message UID %d.\n", HEADER_DATA(h)->uid);
+      mutt_debug(2, "Expunging message UID %u.\n", HEADER_DATA(h)->uid);
 
       h->active = false;
       idata->ctx->size -= h->content->length;
@@ -1669,7 +1670,7 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
       }
       status->uidvalidity = *(unsigned int *) uidvalidity;
       status->uidnext = uidnext ? *(unsigned int *) uidnext : 0;
-      mutt_debug(3, "hcache uidvalidity %d, uidnext %d\n", status->uidvalidity,
+      mutt_debug(3, "hcache uidvalidity %u, uidnext %u\n", status->uidvalidity,
                  status->uidnext);
     }
     mutt_hcache_free(hc, &uidvalidity);
@@ -2143,7 +2144,8 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_debug(3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
       pc = imap_next_word(pc);
-      idata->uid_validity = strtol(pc, NULL, 10);
+      if (mutt_atoui(pc, &idata->uid_validity) < 0)
+        goto fail;
       status->uidvalidity = idata->uid_validity;
     }
     else if (mutt_str_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
@@ -2151,7 +2153,8 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_debug(3, "Getting mailbox UIDNEXT\n");
       pc += 3;
       pc = imap_next_word(pc);
-      idata->uidnext = strtol(pc, NULL, 10);
+      if (mutt_atoui(pc, &idata->uidnext) < 0)
+        goto fail;
       status->uidnext = idata->uidnext;
     }
     else

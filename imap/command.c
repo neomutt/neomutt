@@ -40,6 +40,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -167,7 +168,8 @@ static void cmd_handle_fatal(struct ImapData *idata)
   {
     mx_fastclose_mailbox(idata->ctx);
     mutt_socket_close(idata->conn);
-    mutt_error(_("Mailbox closed"));
+    mutt_error(_("Mailbox %s@%s closed"), idata->conn->account.login,
+               idata->conn->account.host);
     mutt_sleep(1);
     idata->state = IMAP_DISCONNECTED;
   }
@@ -253,8 +255,7 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
-  exp_msn = atoi(s);
-  if (exp_msn < 1 || exp_msn > idata->max_msn)
+  if (mutt_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > idata->max_msn)
     return;
 
   h = idata->msn_index[exp_msn - 1];
@@ -299,8 +300,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 
   mutt_debug(3, "Handling FETCH\n");
 
-  msn = atoi(s);
-  if (msn < 1 || msn > idata->max_msn)
+  if (mutt_atoui(s, &msn) < 0 || msn < 1 || msn > idata->max_msn)
   {
     mutt_debug(3, "#1 FETCH response ignored for this message\n");
     return;
@@ -313,7 +313,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     return;
   }
 
-  mutt_debug(2, "Message UID %d updated\n", HEADER_DATA(h)->uid);
+  mutt_debug(2, "Message UID %u updated\n", HEADER_DATA(h)->uid);
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
@@ -346,7 +346,11 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     {
       s += 3;
       SKIPWS(s);
-      uid = (unsigned int) atoi(s);
+      if (mutt_atoui(s, &uid) < 0)
+      {
+        mutt_debug(2, "Illegal UID.  Skipping update.\n");
+        return;
+      }
       if (uid != HEADER_DATA(h)->uid)
       {
         mutt_debug(2, "FETCH UID vs MSN mismatch.  Skipping update.\n");
@@ -409,7 +413,7 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   struct ImapList *list = NULL;
   struct ImapList lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
-  long litlen;
+  unsigned int litlen;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
     list = (struct ImapList *) idata->cmddata;
@@ -610,7 +614,8 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && *s != '\0')
   {
-    uid = (unsigned int) atoi(s);
+    if (mutt_atoui(s, &uid) < 0)
+      continue;
     h = (struct Header *) mutt_hash_int_find(idata->uid_hash, uid);
     if (h)
       h->matched = true;
@@ -631,10 +636,11 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   char *value = NULL;
   struct Buffy *inc = NULL;
   struct ImapMbox mx;
-  int count;
+  unsigned long ulcount;
+  unsigned int count;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
-  long litlen;
+  unsigned int litlen;
   short new = 0;
   short new_msg_count = 0;
 
@@ -673,7 +679,15 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   while (*s && *s != ')')
   {
     value = imap_next_word(s);
-    count = strtol(value, &value, 10);
+
+    errno = 0;
+    ulcount = strtoul(value, &value, 10);
+    if (((errno == ERANGE) && (ulcount == ULONG_MAX)) || ((unsigned int) ulcount != ulcount))
+    {
+      mutt_debug(1, "Error parsing STATUS number\n");
+      return;
+    }
+    count = (unsigned int) ulcount;
 
     if (mutt_str_strncmp("MESSAGES", s, 8) == 0)
     {
@@ -695,7 +709,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   }
   mutt_debug(
       3,
-      "%s (UIDVALIDITY: %d, UIDNEXT: %d) %d messages, %d recent, %d unseen\n",
+      "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
       status->name, status->uidvalidity, status->uidnext, status->messages,
       status->recent, status->unseen);
 
@@ -733,7 +747,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
 
       if (value && (imap_mxcmp(mailbox, value) == 0))
       {
-        mutt_debug(3, "Found %s in buffy list (OV: %d ON: %d U: %d)\n", mailbox,
+        mutt_debug(3, "Found %s in buffy list (OV: %u ON: %u U: %d)\n", mailbox,
                    olduv, oldun, status->unseen);
 
         if (MailCheckRecent)
@@ -827,7 +841,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
       mutt_debug(2, "Handling EXISTS\n");
 
       /* new mail arrived */
-      count = atoi(pn);
+      mutt_atoui(pn, &count);
 
       if (!(idata->reopen & IMAP_EXPUNGE_PENDING) && count < idata->max_msn)
       {

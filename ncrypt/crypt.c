@@ -874,7 +874,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
       }
       OPT_PGP_CHECK_TRUST = false;
       if (PgpSelfEncrypt || (PgpEncryptSelf == MUTT_YES))
-        self_encrypt = PgpSelfEncryptAs;
+        self_encrypt = PgpDefaultKey;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
@@ -885,7 +885,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         return -1;
       }
       if (SmimeSelfEncrypt || (SmimeEncryptSelf == MUTT_YES))
-        self_encrypt = SmimeSelfEncryptAs;
+        self_encrypt = SmimeDefaultKey;
     }
   }
 

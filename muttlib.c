@@ -568,8 +568,8 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
 
 void mutt_pretty_size(char *s, size_t len, size_t n)
 {
-  if (n == 0)
-    mutt_str_strfcpy(s, "0K", len);
+  if (n < 1000)
+    snprintf(s, len, "%d", (int) n);
   else if (n < 10189) /* 0.1K - 9.9K */
     snprintf(s, len, "%3.1fK", (n < 103) ? 0.1 : n / 1024.0);
   else if (n < 1023949) /* 10K - 999K */
@@ -1592,5 +1592,61 @@ int mutt_inbox_cmp(const char *a, const char *b)
   if (mutt_str_strcasecmp(&b[min + 1], "inbox") == 0)
     return 1;
 
+  return 0;
+}
+
+/* NOTE: this function's return value breaks with the above three functions.
+ * The imap code lexes uint values out of a stream of characters without
+ * tokenization.  The above functions return -1 if there is input beyond
+ * the number.
+ *
+ * returns: 1 - successful conversion, with trailing characters
+ *          0 - successful conversion
+ *         -1 - invalid input
+ *         -2 - input out of range
+ */
+int mutt_atoui(const char *str, unsigned int *dst)
+{
+  int rc;
+  unsigned long res;
+  unsigned int tmp;
+  unsigned int *t = dst ? dst : &tmp;
+
+  *t = 0;
+
+  if ((rc = mutt_atoul(str, &res)) < 0)
+    return rc;
+  if ((unsigned int) res != res)
+    return -2;
+
+  *t = (unsigned int) res;
+  return rc;
+}
+
+/* NOTE: this function's return value is different from mutt_atol.
+ *
+ * returns: 1 - successful conversion, with trailing characters
+ *          0 - successful conversion
+ *         -1 - invalid input
+ */
+int mutt_atoul(const char *str, unsigned long *dst)
+{
+  unsigned long r;
+  unsigned long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  errno = 0;
+  *res = strtoul(str, &e, 10);
+  if (*res == ULONG_MAX && errno == ERANGE)
+    return -1;
+  if (e && *e != '\0')
+    return 1;
   return 0;
 }

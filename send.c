@@ -1290,7 +1290,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as"  and "smime_default_key" */
   char *pgp_signas = NULL;
-  char *smime_default_key = NULL;
+  char *smime_signas = NULL;
   char *tag = NULL, *err = NULL;
   char *ctype = NULL;
   char *finalpath = NULL;
@@ -1322,7 +1322,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if (WithCrypto & APPLICATION_PGP)
       pgp_signas = mutt_str_strdup(PgpSignAs);
     if (WithCrypto & APPLICATION_SMIME)
-      smime_default_key = mutt_str_strdup(SmimeDefaultKey);
+      smime_signas = mutt_str_strdup(SmimeSignAs);
   }
 
   /* Delay expansion of aliases until absolutely necessary--shouldn't
@@ -1835,9 +1835,9 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
         char *encrypt_as = NULL;
 
         if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
-          encrypt_as = PgpSelfEncryptAs;
+          encrypt_as = PgpDefaultKey;
         else if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
-          encrypt_as = SmimeSelfEncryptAs;
+          encrypt_as = SmimeDefaultKey;
         if (!(encrypt_as && *encrypt_as))
           encrypt_as = PostponeEncryptAs;
 
@@ -2201,8 +2201,8 @@ cleanup:
     }
     if (WithCrypto & APPLICATION_SMIME)
     {
-      FREE(&SmimeDefaultKey);
-      SmimeDefaultKey = smime_default_key;
+      FREE(&SmimeSignAs);
+      SmimeSignAs = smime_signas;
     }
   }
 
