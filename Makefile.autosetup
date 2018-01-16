@@ -311,7 +311,7 @@ uninstall: $(UNINSTALL_TARGETS)
 distclean: clean
 	$(RM) $(DEPFILES) conststrings.c config.h config.log doc/neomutt.1 \
 		Makefile po/Makefile contrib/Makefile doc/Makefile \
-		autosetup/jimsh0
+		test/Makefile autosetup/jimsh0
 
 ##############################################################################
 # include generated dependency files
@@ -323,5 +323,6 @@ distclean: clean
 include po/Makefile
 include contrib/Makefile
 include doc/Makefile
+include test/Makefile
 
 # vim: set ts=8 noexpandtab:

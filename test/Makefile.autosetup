@@ -1,0 +1,16 @@
+TEST_OBJS   = test/main.o \
+	      test/base64.o
+TEST_BINARY = test/neomutt-test$(EXEEXT)
+
+$(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+all-test: $(TEST_BINARY)
+
+clean-test:
+	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po)
+
+install-test:
+uninstall-test:
+
+# vim: set ts=8 noexpandtab:
