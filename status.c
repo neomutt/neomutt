@@ -33,7 +33,6 @@
 #include "context.h"
 #include "format_flags.h"
 #include "globals.h"
-#include "mbtable.h"
 #include "menu.h"
 #include "mutt_window.h"
 #include "muttlib.h"

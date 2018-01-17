@@ -36,6 +36,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "smime.h"

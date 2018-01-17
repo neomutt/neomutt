@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "sidebar.h"
 #include "buffy.h"
 #include "context.h"

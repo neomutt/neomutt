@@ -45,7 +45,6 @@
 #include "hcache/hcache.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mbtable.h"
 #include "menu.h"
 #include "mutt_curses.h"
 #include "mutt_history.h"
@@ -224,7 +223,7 @@ static void candidate(char *try, const char *src, char *dest, size_t dlen)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int check_charset(struct Option *opt, const char *val)
+static int check_charset(struct ConfigDef *opt, const char *val)
 {
   char *q = NULL, *s = mutt_str_strdup(val);
   int rc = 0;
@@ -339,7 +338,7 @@ static void esc_char(char c, char *p, char *buf, size_t buflen)
  * @param src    String to escape
  * @retval num Number of bytes written to the buffer
  */
-static size_t escape_string(char *buf, size_t buflen, const char *src)
+static size_t escape_string2(char *buf, size_t buflen, const char *src)
 {
   char *p = buf;
 
@@ -467,7 +466,7 @@ static void free_mbtable(struct MbTable **t)
  * free_opt - Free an Option
  * @param p Option to free
  */
-static void free_opt(struct Option *p)
+static void free_opt(struct ConfigDef *p)
 {
   switch (DTYPE(p->type))
   {
@@ -992,7 +991,7 @@ static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
  *
  * This function escapes and quotes the string value.
  */
-static void pretty_var(char *buf, size_t buflen, const char *option, const char *val)
+static void pretty_var2(char *buf, size_t buflen, const char *option, const char *val)
 {
   char *p = NULL;
 
@@ -1007,7 +1006,7 @@ static void pretty_var(char *buf, size_t buflen, const char *option, const char 
     *p++ = '=';
   if (p - buf < buflen)
     *p++ = '"';
-  p += escape_string(p, buflen - (p - buf) + 1, val); /* \0 terminate it */
+  p += escape_string2(p, buflen - (p - buf) + 1, val); /* \0 terminate it */
   if (p - buf < buflen)
     *p++ = '"';
   *p = '\0';
@@ -1064,7 +1063,7 @@ static void remove_from_stailq(struct ListHead *head, const char *str)
  * restore_default - Restore the default of an Option
  * @param p Option to reset
  */
-static void restore_default(struct Option *p)
+static void restore_default(struct ConfigDef *p)
 {
   switch (DTYPE(p->type))
   {
@@ -1164,7 +1163,7 @@ static void restore_default(struct Option *p)
  * set_default - Set the default/initial value of a config item
  * @param p Option to set
  */
-static void set_default(struct Option *p)
+static void set_default(struct ConfigDef *p)
 {
   switch (DTYPE(p->type))
   {
@@ -2129,7 +2128,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           val = myvar_get(myvar);
           if (val)
           {
-            pretty_var(err->data, err->dsize, myvar, val);
+            pretty_var2(err->data, err->dsize, myvar, val);
             break;
           }
           else
@@ -2161,7 +2160,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
           val = *((char **) MuttVars[idx].var);
 
         /* user requested the value of this variable */
-        pretty_var(err->data, err->dsize, MuttVars[idx].name, NONULL(val));
+        pretty_var2(err->data, err->dsize, MuttVars[idx].name, NONULL(val));
         break;
       }
       else
@@ -2260,7 +2259,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         /* user requested the value of this variable */
         struct Regex *ptr = *(struct Regex **) MuttVars[idx].var;
         const char *value = ptr ? ptr->pattern : NULL;
-        pretty_var(err->data, err->dsize, MuttVars[idx].name, NONULL(value));
+        pretty_var2(err->data, err->dsize, MuttVars[idx].name, NONULL(value));
         break;
       }
 
@@ -2535,8 +2534,8 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
     {
       if (query || (*s->dptr != '='))
       {
-        pretty_var(err->data, err->dsize, MuttVars[idx].name,
-                   NONULL((*(char **) MuttVars[idx].var)));
+        pretty_var2(err->data, err->dsize, MuttVars[idx].name,
+                    NONULL((*(char **) MuttVars[idx].var)));
         break;
       }
 
@@ -4068,7 +4067,7 @@ int mutt_init(bool skip_sys_rc, struct ListHead *commands)
  *
  * @note The caller must not free the Option.
  */
-bool mutt_option_get(const char *s, struct Option *opt)
+bool mutt_option_get(const char *s, struct ConfigDef *opt)
 {
   mutt_debug(2, " * mutt_option_get(%s)\n", s);
   int idx = mutt_option_index(s);
@@ -4126,7 +4125,7 @@ int mutt_option_index(const char *s)
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_option_set(const struct Option *val, struct Buffer *err)
+int mutt_option_set(const struct ConfigDef *val, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_option_set()\n");
   int idx = mutt_option_index(val->name);
@@ -4300,7 +4299,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
  * @retval 1 Success
  * @retval 0 Error
  */
-int mutt_option_to_string(const struct Option *opt, char *val, size_t len)
+int mutt_option_to_string(const struct ConfigDef *opt, char *val, size_t len)
 {
   mutt_debug(2, " * mutt_option_to_string(%s)\n", NONULL((char *) opt->var));
   int idx = mutt_option_index((const char *) opt->name);
@@ -4582,7 +4581,7 @@ int var_to_string(int idx, char *val, size_t len)
   else
     return 0;
 
-  escape_string(val, len - 1, tmp);
+  escape_string2(val, len - 1, tmp);
 
   return 1;
 }
@@ -5021,7 +5020,7 @@ int mutt_var_value_complete(char *buf, size_t buflen, int pos)
       myvarval = myvar_get(var);
       if (myvarval)
       {
-        pretty_var(pt, buflen - (pt - buf), var, myvarval);
+        pretty_var2(pt, buflen - (pt - buf), var, myvarval);
         return 1;
       }
       return 0; /* no such variable. */

@@ -190,18 +190,6 @@ enum MuttMisc
   MUTT_SAVE_OVERWRITE
 };
 
-/**
- * enum QuadOptionResponse - Possible values of a QuadOption
- */
-enum QuadOptionResponse
-{
-  MUTT_ABORT = -1,
-  MUTT_NO,
-  MUTT_YES,
-  MUTT_ASKNO,
-  MUTT_ASKYES
-};
-
 /* flags for parse_spam_list */
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2

@@ -32,6 +32,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "send.h"
@@ -718,7 +719,7 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
  * mutt_fetch_recips - Generate recpients for a reply email
  * @param out   Envelope to populate
  * @param in    Envelope of source email
- * @param flags Flags, e.g. SENDLISTREPLY
+ * @param flags Flags, e.g. SEND_LIST_REPLY
  * @retval  0 Success
  * @retval -1 Failure
  */

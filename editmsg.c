@@ -36,6 +36,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "email/email.h"
 #include "mutt.h"
 #include "context.h"

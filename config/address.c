@@ -38,8 +38,6 @@
 #include "set.h"
 #include "types.h"
 
-size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool display);
-
 /**
  * address_destroy - Destroy an Address object
  * @param cs   Config items
@@ -80,7 +78,7 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
   /* An empty address "" will be stored as NULL */
   if (var && value && (value[0] != '\0'))
   {
-    // addr = mutt_addr_parse_list(NULL, value);
+    addr = mutt_addr_parse_list(NULL, value);
   }
 
   int rc = CSR_SUCCESS;

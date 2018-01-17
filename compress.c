@@ -35,6 +35,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "config/lib.h"
 #include "compress.h"
 #include "context.h"
 #include "curs_lib.h"
