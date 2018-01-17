@@ -364,7 +364,4 @@ bool message_is_visible(struct Context *ctx, int index);
 int mutt_addrlist_to_intl(struct Address *a, char **err);
 int mutt_addrlist_to_local(struct Address *a);
 
-int mutt_atoui(const char *str, unsigned int *dst);
-int mutt_atoul(const char *str, unsigned long *dst);
-
 #endif /* _MUTT_PROTOS_H */

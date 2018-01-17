@@ -255,7 +255,7 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
-  if (mutt_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > idata->max_msn)
+  if (mutt_str_atoui(s, &exp_msn) < 0 || exp_msn < 1 || exp_msn > idata->max_msn)
     return;
 
   h = idata->msn_index[exp_msn - 1];
@@ -300,7 +300,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 
   mutt_debug(3, "Handling FETCH\n");
 
-  if (mutt_atoui(s, &msn) < 0 || msn < 1 || msn > idata->max_msn)
+  if (mutt_str_atoui(s, &msn) < 0 || msn < 1 || msn > idata->max_msn)
   {
     mutt_debug(3, "#1 FETCH response ignored for this message\n");
     return;
@@ -346,7 +346,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
     {
       s += 3;
       SKIPWS(s);
-      if (mutt_atoui(s, &uid) < 0)
+      if (mutt_str_atoui(s, &uid) < 0)
       {
         mutt_debug(2, "Illegal UID.  Skipping update.\n");
         return;
@@ -614,7 +614,7 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
 
   while ((s = imap_next_word((char *) s)) && *s != '\0')
   {
-    if (mutt_atoui(s, &uid) < 0)
+    if (mutt_str_atoui(s, &uid) < 0)
       continue;
     h = (struct Header *) mutt_hash_int_find(idata->uid_hash, uid);
     if (h)
@@ -841,7 +841,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
       mutt_debug(2, "Handling EXISTS\n");
 
       /* new mail arrived */
-      if (mutt_atoui(pn, &count) < 0)
+      if (mutt_str_atoui(pn, &count) < 0)
       {
         mutt_debug(1, "Malformed EXISTS: '%s'\n", pn);
       }
