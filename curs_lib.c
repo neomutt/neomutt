@@ -755,6 +755,9 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
  */
 void mutt_window_clrtoeol(struct MuttWindow *win)
 {
+  if (!win || !stdscr)
+    return;
+
   int row, col, curcol;
 
   if (win->col_offset + win->cols == COLS)

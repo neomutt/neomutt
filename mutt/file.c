@@ -555,6 +555,9 @@ int mutt_file_open(const char *path, int flags)
  */
 FILE *mutt_file_fopen(const char *path, const char *mode)
 {
+  if (!path || !mode)
+    return NULL;
+
   if (mode[0] == 'w')
   {
     int fd;
