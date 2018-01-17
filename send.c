@@ -265,7 +265,9 @@ static int edit_envelope(struct Envelope *en, int flags)
       return -1;
     if (ReplyWithXorig && (flags & (SENDREPLY | SENDLISTREPLY | SENDGROUPREPLY)) &&
         (edit_address(&en->from, "From: ") == -1))
+    {
       return -1;
+    }
   }
 
   if (en->subject)

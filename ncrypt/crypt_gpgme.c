@@ -199,8 +199,10 @@ static const char *crypt_keyid(struct CryptKeyInfo *k)
   {
     s = k->kobj->subkeys->keyid;
     if ((!PgpLongIds) && (strlen(s) == 16))
+    {
       /* Return only the short keyID.  */
       s += 8;
+    }
   }
 
   return s;

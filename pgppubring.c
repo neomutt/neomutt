@@ -394,7 +394,9 @@ static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buf, size_t l)
   {
     for (id = 0, i = SHA_DIGEST_LENGTH - 8 + k * 4;
          i < SHA_DIGEST_LENGTH + (k - 1) * 4; i++)
+    {
       id = (id << 8) + digest[i];
+    }
 
     snprintf((char *) scratch + k * 8, sizeof(scratch) - k * 8, "%08lX", id);
   }

@@ -81,8 +81,10 @@ int pgp_valid_passphrase(void)
   }
 
   if (now < PgpExptime)
+  {
     /* Use cached copy.  */
     return 1;
+  }
 
   pgp_void_passphrase();
 

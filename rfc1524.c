@@ -259,19 +259,25 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           /* this compare most occur before compose to match correctly */
           if (get_field_text(field + 12, entry ? &entry->composetypecommand : NULL,
                              type, filename, line))
+          {
             composecommand = true;
+          }
         }
         else if (mutt_str_strncasecmp(field, "compose", 7) == 0)
         {
           if (get_field_text(field + 7, entry ? &entry->composecommand : NULL,
                              type, filename, line))
+          {
             composecommand = true;
+          }
         }
         else if (mutt_str_strncasecmp(field, "print", 5) == 0)
         {
           if (get_field_text(field + 5, entry ? &entry->printcommand : NULL,
                              type, filename, line))
+          {
             printcommand = true;
+          }
         }
         else if (mutt_str_strncasecmp(field, "edit", 4) == 0)
         {

@@ -280,8 +280,10 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         snprintf(buf, buflen, fmt, trust_flags[uid->trust & 0x03]);
       }
       else if (!(uid->trust & 0x03))
+      {
         /* undefined trust */
         optional = 0;
+      }
       break;
     default:
       *buf = '\0';
@@ -451,11 +453,15 @@ static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, str
 
   if (addr->mailbox && u_addr->mailbox &&
       (mutt_str_strcasecmp(addr->mailbox, u_addr->mailbox) == 0))
+  {
     rc |= PGP_KV_ADDR;
+  }
 
   if (addr->personal && u_addr->personal &&
       (mutt_str_strcasecmp(addr->personal, u_addr->personal) == 0))
+  {
     rc |= PGP_KV_STRING;
+  }
 
   return rc;
 }
@@ -617,11 +623,13 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         /* XXX make error reporting more verbose */
 
         if (OPT_PGP_CHECK_TRUST)
+        {
           if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
           {
             mutt_error(_("This key can't be used: expired/disabled/revoked."));
             break;
           }
+        }
 
         if (OPT_PGP_CHECK_TRUST && (!pgp_id_is_valid(KeyTable[menu->current]) ||
                                     !pgp_id_is_strong(KeyTable[menu->current])))

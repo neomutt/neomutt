@@ -462,7 +462,9 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
                 p++;
               for (int i = pmatch[n].rm_so;
                    (i < pmatch[n].rm_eo) && (tlen < LONG_STRING - 1); i++)
+              {
                 dst[tlen++] = src[i];
+              }
             }
           }
           else
@@ -562,7 +564,9 @@ bool mutt_replacelist_match(struct ReplaceList *rl, char *buf, size_t buflen, co
             int idx;
             for (idx = pmatch[n].rm_so;
                  (idx < pmatch[n].rm_eo) && (tlen < buflen - 1); ++idx)
+            {
               buf[tlen++] = str[idx];
+            }
           }
           p = e; /* skip over the parsed integer */
         }

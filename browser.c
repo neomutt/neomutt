@@ -862,7 +862,9 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       struct NntpData *nntp_data = nserv->groups_list[i];
       if (nntp_data && (nntp_data->new || (nntp_data->subscribed &&
                                            (nntp_data->unread || !ShowOnlyUnread))))
+      {
         add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
+      }
     }
   }
   else

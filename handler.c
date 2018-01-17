@@ -1942,7 +1942,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
+      {
         fprintf(s->fpout, _("(use '%s' to view this part)"), keystroke);
+      }
       else
         fputs(_("(need 'view-attachments' bound to key!)"), s->fpout);
     }

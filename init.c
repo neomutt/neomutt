@@ -3313,8 +3313,10 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
     if (numtabs == 1 && NumMatched == 2)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
+    {
       /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+    }
 
     /* return the completed command */
     strncpy(buffer, Completed, len - spaces);
@@ -3368,8 +3370,10 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
     if (numtabs == 1 && NumMatched == 2)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
+    {
       /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+    }
 
     strncpy(pt, Completed, buffer + len - pt - spaces);
   }
@@ -3414,8 +3418,10 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
     if (numtabs == 1 && NumMatched == 2)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
+    {
       /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+    }
 
     strncpy(pt, Completed, buffer + len - pt - spaces);
   }
@@ -3568,8 +3574,10 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
     if (numtabs == 1 && NumMatched == 2)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
+    {
       /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+    }
 
     /* return the completed query */
     strncpy(pt, Completed, buffer + len - pt - spaces);
@@ -3621,8 +3629,10 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
   if (numtabs == 1 && NumMatched == 2)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
   else if (numtabs > 1 && NumMatched > 2)
+  {
     /* cycle thru all the matches */
     snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+  }
 
   /* return the completed query */
   strncpy(pt, Completed, buffer + len - pt);
@@ -4516,8 +4526,10 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
   if (numtabs == 1 && NumMatched == 2)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
   else if (numtabs > 1 && NumMatched > 2)
+  {
     /* cycle thru all the matches */
     snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
+  }
 
   /* return the completed label */
   strncpy(buffer, Completed, len - spaces);

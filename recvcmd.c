@@ -948,5 +948,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (ci_send_message(flags, tmphdr, tmpbody, NULL,
                       parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL)) == 0)
+  {
     mutt_set_flag(Context, hdr, MUTT_REPLIED, 1);
+  }
 }

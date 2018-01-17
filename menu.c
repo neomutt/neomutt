@@ -623,7 +623,9 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
       /* need to move the cursor? */
       if ((DIRECTION *
            (tmp = (menu->current - (menu->top + (neg ? (menu->pagelen - 1) - c : c))))) < 0)
+      {
         menu->current -= tmp;
+      }
 
       menu->redraw = REDRAW_INDEX;
     }
@@ -633,8 +635,10 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
       menu->redraw = REDRAW_MOTION;
     }
     else
+    {
       mutt_error(neg ? _("You are on the first page.") :
                        _("You are on the last page."));
+    }
 
     menu->current = MIN(menu->current, menu->max - 1);
     menu->current = MAX(menu->current, 0);

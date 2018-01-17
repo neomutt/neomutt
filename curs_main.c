@@ -1688,7 +1688,9 @@ int mutt_index_menu(void)
 
         if (mutt_pattern_func(MUTT_UNDELETE,
                               _("Undelete messages matching: ")) == 0)
+        {
           menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
+        }
         break;
 
       case OP_MAIN_UNTAG_PATTERN:
@@ -1766,6 +1768,7 @@ int mutt_index_menu(void)
           if (check == 0)
           {
             if (newhdr && Context->vcount != ovc)
+            {
               for (j = 0; j < Context->vcount; j++)
               {
                 if (Context->hdrs[Context->v2r[j]] == newhdr)
@@ -1774,6 +1777,7 @@ int mutt_index_menu(void)
                   break;
                 }
               }
+            }
             OPT_SEARCH_INVALID = true;
           }
           else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)

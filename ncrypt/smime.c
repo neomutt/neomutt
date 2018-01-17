@@ -130,8 +130,10 @@ int smime_valid_passphrase(void)
   time_t now = time(NULL);
 
   if (now < SmimeExptime)
+  {
     /* Use cached copy.  */
     return 1;
+  }
 
   smime_void_passphrase();
 
@@ -811,7 +813,9 @@ static void getkeys(char *mailbox)
   {
     if (mutt_str_strcasecmp(SmimeDefaultKey,
                             SmimeKeyToUse + mutt_str_strlen(SmimeKeys) + 1) == 0)
+    {
       return;
+    }
 
     smime_void_passphrase();
   }

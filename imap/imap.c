@@ -239,6 +239,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
     match = false;
     /* don't include pending expunged messages */
     if (hdrs[n]->active)
+    {
       switch (flag)
       {
         case MUTT_DELETED:
@@ -271,6 +272,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
             match = true;
           break;
       }
+    }
 
     if (match && (!changed || hdrs[n]->changed))
     {

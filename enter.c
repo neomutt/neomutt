@@ -318,7 +318,9 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
             state->curpos++;
             while (state->curpos < state->lastchar &&
                    COMB_CHAR(state->wbuf[state->curpos]))
+            {
               state->curpos++;
+            }
           }
           break;
 
@@ -343,7 +345,9 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
               state->curpos++;
             while (state->curpos < state->lastchar &&
                    !iswspace(state->wbuf[state->curpos]))
+            {
               state->curpos++;
+            }
           }
           break;
 

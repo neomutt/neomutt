@@ -681,7 +681,9 @@ char *imap_fix_path(struct ImapData *idata, const char *mailbox, char *path, siz
 
       while (*mailbox && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) ||
                           (delim && *mailbox == delim)))
+      {
         mailbox++;
+      }
       path[i] = delim;
     }
     else

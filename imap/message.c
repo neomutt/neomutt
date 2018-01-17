@@ -1123,7 +1123,9 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
           }
           if (imap_read_literal(msg->fp, idata, bytes,
                                 output_progress ? &progressbar : NULL) < 0)
+          {
             goto bail;
+          }
           /* pick up trailing line */
           rc = imap_cmd_step(idata);
           if (rc != IMAP_CMD_CONTINUE)

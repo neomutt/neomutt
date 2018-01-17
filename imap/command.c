@@ -758,8 +758,10 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
               new = (status->unseen > 0);
           }
           else if (!olduv && !oldun)
+          {
             /* first check per session, use recent. might need a flag for this. */
             new = (status->recent > 0);
+          }
           else
             new = (status->unseen > 0);
         }

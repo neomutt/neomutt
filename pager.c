@@ -1578,9 +1578,11 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         cnt = ch + 1;
     }
     if (!(flags & MUTT_PAGER_NSKIP))
+    {
       /* skip leading blanks on the next line too */
       while (*buf_ptr == ' ' || *buf_ptr == '\t')
         buf_ptr++;
+    }
   }
 
   if (*buf_ptr == '\r')
