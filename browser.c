@@ -1646,7 +1646,12 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           struct ImapMbox mx;
           int nentry = menu->current;
 
-          imap_parse_path(state.entry[nentry].name, &mx);
+          if (imap_parse_path(state.entry[nentry].name, &mx) < 0)
+          {
+            mutt_debug(1, "imap_parse_path failed\n");
+            mutt_error(_("Mailbox deletion failed."));
+            break;
+          }
           if (!mx.mbox)
           {
             mutt_error(_("Cannot delete root folder"));
