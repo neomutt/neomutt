@@ -140,7 +140,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
     }
     else if (wc < 0x20 || wc == 0x7f)
     {
-      if (2 > n)
+      if (n < 2)
         break;
       n -= 2;
       if (wc == '\033')
@@ -156,7 +156,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
     }
     else
     {
-      if (1 > n)
+      if (n < 1)
         break;
       n -= 1;
       fprintf(f, "?");

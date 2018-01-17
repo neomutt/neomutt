@@ -487,7 +487,7 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
   restore_char(&e->subject, d, off, convert);
   restore_int((unsigned int *) (&real_subj_off), d, off);
 
-  if (0 <= real_subj_off)
+  if (real_subj_off >= 0)
     e->real_subj = e->subject + real_subj_off;
   else
     e->real_subj = NULL;

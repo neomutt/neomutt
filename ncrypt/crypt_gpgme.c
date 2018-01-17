@@ -5081,8 +5081,8 @@ static int verify_sender(struct Header *h)
       for (uid = key->uids; uid && rc; uid = uid->next)
       {
         uid_length = strlen(uid->email);
-        if (1 && (uid->email[0] == '<') && (uid->email[uid_length - 1] == '>') &&
-            (uid_length == sender_length + 2))
+        if ((uid->email[0] == '<') && (uid->email[uid_length - 1] == '>') &&
+            (uid_length == (sender_length + 2)))
         {
           const char *at_sign = strchr(uid->email + 1, '@');
           if (!at_sign)

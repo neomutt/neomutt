@@ -185,7 +185,7 @@ static int ssl_set_verify_partial(SSL_CTX *ctx)
     if (param)
     {
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
-      if (0 == SSL_CTX_set1_param(ctx, param))
+      if (SSL_CTX_set1_param(ctx, param) == 0)
       {
         mutt_debug(2, "SSL_CTX_set1_param() failed.\n");
         rc = -1;
