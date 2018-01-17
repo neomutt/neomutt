@@ -162,6 +162,9 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   int offset, bytes, n;
   char tmp[LONG_STRING];
 
+  if (!msg || !buf || !bufmax || !buflen)
+    return buf;
+
   while ((msg = strtok(msg, " ,")) != NULL)
   {
     if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->msgcount)
