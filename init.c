@@ -412,11 +412,12 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               struct Envelope *e = Context->hdrs[i]->env;
               if (e && e->subject)
               {
-                e->real_subj =
-                    (ReplyRegexp &&
-                     (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0))) ?
-                        e->subject :
-                        e->subject + pmatch[0].rm_eo;
+                e->real_subj = e->subject;
+                if (ReplyRegexp &&
+                    (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0) == 0))
+                {
+                  e->subject += pmatch[0].rm_eo;
+                }
               }
             }
           }
