@@ -60,9 +60,6 @@
 #include "protos.h"
 #include "tags.h"
 #include "url.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
 #endif
@@ -563,26 +560,6 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   {
     *s++ = '~';
     memmove(s, s + len - 1, mutt_str_strlen(s + len - 1) + 1);
-  }
-}
-
-void mutt_pretty_size(char *s, size_t len, size_t n)
-{
-  if (n < 1000)
-    snprintf(s, len, "%d", (int) n);
-  else if (n < 10189) /* 0.1K - 9.9K */
-    snprintf(s, len, "%3.1fK", (n < 103) ? 0.1 : n / 1024.0);
-  else if (n < 1023949) /* 10K - 999K */
-  {
-    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(s, len, "%zuK", (n + 51) / 1024);
-  }
-  else if (n < 10433332) /* 1.0M - 9.9M */
-    snprintf(s, len, "%3.1fM", n / 1048576.0);
-  else /* 10M+ */
-  {
-    /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(s, len, "%zuM", (n + 52428) / 1048576);
   }
 }
 
@@ -1425,7 +1402,7 @@ const char *mutt_make_version(void)
 void mutt_encode_path(char *dest, size_t dlen, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_cs_convert_string(&p, Charset, "utf-8", 0);
+  int rc = mutt_ch_convert_string(&p, Charset, "utf-8", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
   mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
   FREE(&p);
@@ -1442,7 +1419,7 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
  */
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 {
-  char *xdg_env = getenv(xdg_env_vars[type]);
+  const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
   char *xdg = (xdg_env && *xdg_env) ? mutt_str_strdup(xdg_env) :
                                       mutt_str_strdup(xdg_defaults[type]);
   char *x = xdg; /* strsep() changes xdg, so free x instead later */

@@ -23,7 +23,7 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <limits.h>
+#include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
 #include <wctype.h>
@@ -33,10 +33,8 @@
 #include "globals.h"
 #include "history.h"
 #include "keymap.h"
-#include "mbyte.h"
 #include "mutt_curses.h"
 #include "opcodes.h"
-#include "options.h"
 #include "protos.h"
 
 /**

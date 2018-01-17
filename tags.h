@@ -23,9 +23,8 @@
 #ifndef _MUTT_TAG_H
 #define _MUTT_TAG_H
 
-#include <stddef.h>
 #include <stdbool.h>
-#include "mutt/queue.h"
+#include "mutt/mutt.h"
 
 extern char *HiddenTags;
 extern struct Hash *TagTransforms;

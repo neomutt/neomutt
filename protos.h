@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <wctype.h>
+#include "mutt.h"
 #include "format_flags.h"
 #include "options.h"
 
@@ -199,7 +200,6 @@ void mutt_perror_debug(const char *s);
 void mutt_prepare_envelope(struct Envelope *env, int final);
 void mutt_unprepare_envelope(struct Envelope *env);
 void mutt_pretty_mailbox(char *s, size_t buflen);
-void mutt_pretty_size(char *s, size_t len, size_t n);
 void mutt_pipe_message(struct Header *h);
 void mutt_print_message(struct Header *h);
 void mutt_query_exit(void);

@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "filter.h"
 #include "mutt_curses.h"

@@ -35,7 +35,7 @@
 #include "group.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
-#include "mutt/regex3.h"
+#include "mutt/mutt.h"
 #include "mx.h"
 #include "options.h"
 #include "protos.h"
@@ -46,8 +46,6 @@
 #include "mutt_lua.h"
 #endif
 #endif
-
-struct Buffer;
 
 #ifndef _MAKEDOC
 /* flags to parse_set() */

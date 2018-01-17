@@ -52,9 +52,6 @@
 #include "sort.h"
 #include "tags.h"
 #include "thread.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/term.h>
 #elif defined(HAVE_NCURSES_NCURSES_H)
@@ -434,17 +431,17 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
 }
 
 static int main_change_folder(struct Menu *menu, int op, char *buf,
-                              size_t bufsz, int *oldcount, int *index_hint)
+                              size_t buflen, int *oldcount, int *index_hint)
 {
 #ifdef USE_NNTP
   if (OPT_NEWS)
   {
     OPT_NEWS = false;
-    nntp_expand_path(buf, bufsz, &CurrentNewsSrv->conn->account);
+    nntp_expand_path(buf, buflen, &CurrentNewsSrv->conn->account);
   }
   else
 #endif
-    mutt_expand_path(buf, bufsz);
+    mutt_expand_path(buf, buflen);
   if (mx_get_magic(buf) <= 0)
   {
     mutt_error(_("%s is not a mailbox."), buf);
@@ -528,7 +525,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
  */
 bool mutt_ts_capability(void)
 {
-  char *term = getenv("TERM");
+  const char *term = mutt_str_getenv("TERM");
   char *tcaps = NULL;
 #ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;

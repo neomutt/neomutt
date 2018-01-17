@@ -35,7 +35,7 @@ int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 char *nm_header_get_folder(struct Header *h);
 int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz);
-char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz);
+char *nm_uri_from_query(struct Context *ctx, char *buf, size_t buflen);
 bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
 
 void nm_query_window_backward(void);
@@ -45,7 +45,7 @@ void nm_longrun_init(struct Context *ctx, bool writable);
 void nm_longrun_done(struct Context *ctx);
 
 char *nm_get_description(struct Context *ctx);
-int nm_description_to_path(const char *desc, char *buf, size_t bufsz);
+int nm_description_to_path(const char *desc, char *buf, size_t buflen);
 
 int nm_record_message(struct Context *ctx, char *path, struct Header *h);
 

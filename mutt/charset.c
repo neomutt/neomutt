@@ -31,22 +31,22 @@
  *
  * | Function                       | Description
  * | :----------------------------- | :---------------------------------------------------------
- * | mutt_cs_canonical_charset()    | Canonicalise the charset of a string
- * | mutt_cs_charset_lookup()       | Look for a replacement character set
- * | mutt_cs_check_charset()        | Does iconv understand a character set?
- * | mutt_cs_chscmp()               | Are the names of two character sets equivalent?
- * | mutt_cs_convert_string()       | Convert a string between encodings
- * | mutt_cs_fgetconv()             | Convert a file's character set
- * | mutt_cs_fgetconvs()            | Convert a file's charset into a string buffer
- * | mutt_cs_fgetconv_close()       | Close an fgetconv handle
- * | mutt_cs_fgetconv_open()        | Prepare a file for charset conversion
- * | mutt_cs_get_default_charset()  | Get the default character set
- * | mutt_cs_iconv()                | Change the encoding of a string
- * | mutt_cs_iconv_lookup()         | Look for a replacement character set
- * | mutt_cs_iconv_open()           | Set up iconv for conversions
- * | mutt_cs_lookup_add()           | Add a new character set lookup
- * | mutt_cs_lookup_remove()        | Remove all the character set lookups
- * | mutt_cs_set_langinfo_charset() | Set the user's choice of character set
+ * | mutt_ch_canonical_charset()    | Canonicalise the charset of a string
+ * | mutt_ch_charset_lookup()       | Look for a replacement character set
+ * | mutt_ch_check_charset()        | Does iconv understand a character set?
+ * | mutt_ch_chscmp()               | Are the names of two character sets equivalent?
+ * | mutt_ch_convert_string()       | Convert a string between encodings
+ * | mutt_ch_fgetconv()             | Convert a file's character set
+ * | mutt_ch_fgetconvs()            | Convert a file's charset into a string buffer
+ * | mutt_ch_fgetconv_close()       | Close an fgetconv handle
+ * | mutt_ch_fgetconv_open()        | Prepare a file for charset conversion
+ * | mutt_ch_get_default_charset()  | Get the default character set
+ * | mutt_ch_iconv()                | Change the encoding of a string
+ * | mutt_ch_iconv_lookup()         | Look for a replacement character set
+ * | mutt_ch_iconv_open()           | Set up iconv for conversions
+ * | mutt_ch_lookup_add()           | Add a new character set lookup
+ * | mutt_ch_lookup_remove()        | Remove all the character set lookups
+ * | mutt_ch_set_langinfo_charset() | Set the user's choice of character set
  */
 
 #include "config.h"
@@ -268,7 +268,7 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
 }
 
 /**
- * mutt_cs_canonical_charset - Canonicalise the charset of a string
+ * mutt_ch_canonical_charset - Canonicalise the charset of a string
  * @param buf Buffer for canonical character set name
  * @param buflen Length of buffer
  * @param name Name to be canonicalised
@@ -276,7 +276,7 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
  * This first ties off any charset extension such as "//TRANSLIT",
  * canonicalizes the charset and re-adds the extension
  */
-void mutt_cs_canonical_charset(char *buf, size_t buflen, const char *name)
+void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 {
   char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
@@ -330,24 +330,24 @@ out:
 }
 
 /**
- * mutt_cs_chscmp - Are the names of two character sets equivalent?
+ * mutt_ch_chscmp - Are the names of two character sets equivalent?
  * @param cs1 First character set
  * @param cs2 Second character set
  * @retval num true if the names are equivalent
  *
- * Charsets may have extensions that mutt_cs_canonical_charset() leaves intact;
+ * Charsets may have extensions that mutt_ch_canonical_charset() leaves intact;
  * we expect 'cs2' to originate from neomutt code, not user input (i.e. 'cs2'
  * does _not_ have any extension) we simply check if the shorter string is a
  * prefix for the longer.
  */
-int mutt_cs_chscmp(const char *cs1, const char *cs2)
+int mutt_ch_chscmp(const char *cs1, const char *cs2)
 {
   if (!cs1 || !cs2)
     return 0;
 
   char buffer[STRING];
 
-  mutt_cs_canonical_charset(buffer, sizeof(buffer), cs1);
+  mutt_ch_canonical_charset(buffer, sizeof(buffer), cs1);
 
   int len1 = mutt_str_strlen(buffer);
   int len2 = mutt_str_strlen(cs2);
@@ -357,12 +357,12 @@ int mutt_cs_chscmp(const char *cs1, const char *cs2)
 }
 
 /**
- * mutt_cs_get_default_charset - Get the default character set
+ * mutt_ch_get_default_charset - Get the default character set
  * @retval ptr Name of the default character set
  *
  * @warning This returns a pointer to a static buffer.  Do not free it.
  */
-char *mutt_cs_get_default_charset(void)
+char *mutt_ch_get_default_charset(void)
 {
   static char fcharset[SHORT_STRING];
   const char *c = AssumedCharset;
@@ -378,17 +378,17 @@ char *mutt_cs_get_default_charset(void)
 }
 
 /**
- * mutt_cs_set_langinfo_charset - Set the user's choice of character set
+ * mutt_ch_set_langinfo_charset - Set the user's choice of character set
  *
  * Lookup the character map used by the user's locale and store it in Charset.
  */
-void mutt_cs_set_langinfo_charset(void)
+void mutt_ch_set_langinfo_charset(void)
 {
   char buf[LONG_STRING];
   char buf2[LONG_STRING];
 
   mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
-  mutt_cs_canonical_charset(buf2, sizeof(buf2), buf);
+  mutt_ch_canonical_charset(buf2, sizeof(buf2), buf);
 
   /* finally, set $charset */
   Charset = mutt_str_strdup(buf2);
@@ -397,7 +397,7 @@ void mutt_cs_set_langinfo_charset(void)
 }
 
 /**
- * mutt_cs_lookup_add - Add a new character set lookup
+ * mutt_ch_lookup_add - Add a new character set lookup
  * @param type    Type of character set, e.g. MUTT_LOOKUP_CHARSET 
  * @param pat     Pattern to match
  * @param replace Replacement string
@@ -407,7 +407,7 @@ void mutt_cs_set_langinfo_charset(void)
  *
  * Add a regex for a character set and a replacement name.
  */
-bool mutt_cs_lookup_add(enum LookupType type, const char *pat,
+bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
                         const char *replace, struct Buffer *err)
 {
   if (!pat || !replace)
@@ -435,11 +435,11 @@ bool mutt_cs_lookup_add(enum LookupType type, const char *pat,
 }
 
 /**
- * mutt_cs_lookup_remove - Remove all the character set lookups
+ * mutt_ch_lookup_remove - Remove all the character set lookups
  *
  * Empty the list of replacement character set names.
  */
-void mutt_cs_lookup_remove(void)
+void mutt_ch_lookup_remove(void)
 {
   struct Lookup *l = NULL;
   struct Lookup *tmp = NULL;
@@ -457,7 +457,7 @@ void mutt_cs_lookup_remove(void)
 }
 
 /**
- * mutt_cs_charset_lookup - Look for a replacement character set
+ * mutt_ch_charset_lookup - Look for a replacement character set
  * @param chs Character set to lookup
  * @retval ptr  Replacement character set (if a 'charset-hook' matches)
  * @retval NULL No matching hook
@@ -465,13 +465,13 @@ void mutt_cs_lookup_remove(void)
  * Look through all the 'charset-hook's.
  * If one matches return the replacement character set.
  */
-const char *mutt_cs_charset_lookup(const char *chs)
+const char *mutt_ch_charset_lookup(const char *chs)
 {
   return lookup_charset(MUTT_LOOKUP_CHARSET, chs);
 }
 
 /**
- * mutt_cs_iconv_open - Set up iconv for conversions
+ * mutt_ch_iconv_open - Set up iconv for conversions
  * @param tocode   Current character set
  * @param fromcode Target character set
  * @param flags    Flags, e.g. #MUTT_ICONV_HOOK_FROM
@@ -488,7 +488,7 @@ const char *mutt_cs_charset_lookup(const char *chs)
  * applied to tocode. Highlight note: The top-well-named MUTT_ICONV_HOOK_FROM
  * acts on charset-hooks, not at all on iconv-hooks.
  */
-iconv_t mutt_cs_iconv_open(const char *tocode, const char *fromcode, int flags)
+iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
@@ -498,23 +498,23 @@ iconv_t mutt_cs_iconv_open(const char *tocode, const char *fromcode, int flags)
   iconv_t cd;
 
   /* transform to MIME preferred charset names */
-  mutt_cs_canonical_charset(tocode1, sizeof(tocode1), tocode);
-  mutt_cs_canonical_charset(fromcode1, sizeof(fromcode1), fromcode);
+  mutt_ch_canonical_charset(tocode1, sizeof(tocode1), tocode);
+  mutt_ch_canonical_charset(fromcode1, sizeof(fromcode1), fromcode);
 
   /* maybe apply charset-hooks and recanonicalise fromcode,
    * but only when caller asked us to sanitize a potentially wrong
    * charset name incoming from the wild exterior. */
   if (flags & MUTT_ICONV_HOOK_FROM)
   {
-    tmp = mutt_cs_charset_lookup(fromcode1);
+    tmp = mutt_ch_charset_lookup(fromcode1);
     if (tmp)
-      mutt_cs_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
+      mutt_ch_canonical_charset(fromcode1, sizeof(fromcode1), tmp);
   }
 
   /* always apply iconv-hooks to suit system's iconv tastes */
-  tocode2 = mutt_cs_iconv_lookup(tocode1);
+  tocode2 = mutt_ch_iconv_lookup(tocode1);
   tocode2 = (tocode2) ? tocode2 : tocode1;
-  fromcode2 = mutt_cs_iconv_lookup(fromcode1);
+  fromcode2 = mutt_ch_iconv_lookup(fromcode1);
   fromcode2 = (fromcode2) ? fromcode2 : fromcode1;
 
   /* call system iconv with names it appreciates */
@@ -526,7 +526,7 @@ iconv_t mutt_cs_iconv_open(const char *tocode, const char *fromcode, int flags)
 }
 
 /**
- * mutt_cs_iconv - Change the encoding of a string
+ * mutt_ch_iconv - Change the encoding of a string
  * @param[in]     cd           Iconv conversion descriptor
  * @param[in,out] inbuf        Buffer to convert
  * @param[in,out] inbytesleft  Length of buffer to convert
@@ -540,7 +540,7 @@ iconv_t mutt_cs_iconv_open(const char *tocode, const char *fromcode, int flags)
  * If you're supplying inrepls, the source charset should be stateless;
  * if you're supplying an outrepl, the target charset should be.
  */
-size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
+size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
                      size_t *outbytesleft, const char **inrepls, const char *outrepl)
 {
   size_t rc = 0, ret1;
@@ -611,7 +611,7 @@ size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char *
 }
 
 /**
- * mutt_cs_iconv_lookup - Look for a replacement character set
+ * mutt_ch_iconv_lookup - Look for a replacement character set
  * @param chs Character set to lookup
  * @retval ptr  Replacement character set (if a 'iconv-hook' matches)
  * @retval NULL No matching hook
@@ -619,13 +619,13 @@ size_t mutt_cs_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char *
  * Look through all the 'iconv-hook's.
  * If one matches return the replacement character set.
  */
-const char *mutt_cs_iconv_lookup(const char *chs)
+const char *mutt_ch_iconv_lookup(const char *chs)
 {
   return lookup_charset(MUTT_LOOKUP_ICONV, chs);
 }
 
 /**
- * mutt_cs_convert_string - Convert a string between encodings
+ * mutt_ch_convert_string - Convert a string between encodings
  * @param[in,out] ps    String to convert
  * @param[in]     from  Current character set
  * @param[in]     to    Target character set
@@ -633,10 +633,10 @@ const char *mutt_cs_iconv_lookup(const char *chs)
  * @retval 0  Success
  * @retval -1 Error
  *
- * Parameter flags is given as-is to mutt_cs_iconv_open().
+ * Parameter flags is given as-is to mutt_ch_iconv_open().
  * See there for its meaning and usage policy.
  */
-int mutt_cs_convert_string(char **ps, const char *from, const char *to, int flags)
+int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags)
 {
   iconv_t cd;
   const char *repls[] = { "\357\277\275", "?", 0 };
@@ -645,7 +645,7 @@ int mutt_cs_convert_string(char **ps, const char *from, const char *to, int flag
   if (!s || !*s)
     return 0;
 
-  if (to && from && (cd = mutt_cs_iconv_open(to, from, flags)) != (iconv_t) -1)
+  if (to && from && (cd = mutt_ch_iconv_open(to, from, flags)) != (iconv_t) -1)
   {
     size_t len;
     const char *ib = NULL;
@@ -654,9 +654,9 @@ int mutt_cs_convert_string(char **ps, const char *from, const char *to, int flag
     const char **inrepls = NULL;
     char *outrepl = NULL;
 
-    if (mutt_cs_is_utf8(to))
+    if (mutt_ch_is_utf8(to))
       outrepl = "\357\277\275";
-    else if (mutt_cs_is_utf8(from))
+    else if (mutt_ch_is_utf8(from))
       inrepls = repls;
     else
       outrepl = "?";
@@ -667,7 +667,7 @@ int mutt_cs_convert_string(char **ps, const char *from, const char *to, int flag
     obl = MB_LEN_MAX * ibl;
     ob = buf = mutt_mem_malloc(obl + 1);
 
-    mutt_cs_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
+    mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close(cd);
 
     *ob = '\0';
@@ -683,7 +683,7 @@ int mutt_cs_convert_string(char **ps, const char *from, const char *to, int flag
 }
 
 /**
- * mutt_cs_check_charset - Does iconv understand a character set?
+ * mutt_ch_check_charset - Does iconv understand a character set?
  * @param cs     Character set to check
  * @param strict Check strictly by using iconv
  * @retval bool true if character set is valid
@@ -693,11 +693,11 @@ int mutt_cs_convert_string(char **ps, const char *from, const char *to, int flag
  * If `strict` is true, or the charset is not in #PreferredMIMENames, then
  * iconv() with be run.
  */
-bool mutt_cs_check_charset(const char *cs, bool strict)
+bool mutt_ch_check_charset(const char *cs, bool strict)
 {
   iconv_t cd;
 
-  if (mutt_cs_is_utf8(cs))
+  if (mutt_ch_is_utf8(cs))
     return true;
 
   if (!strict)
@@ -712,7 +712,7 @@ bool mutt_cs_check_charset(const char *cs, bool strict)
     }
   }
 
-  cd = mutt_cs_iconv_open(cs, cs, 0);
+  cd = mutt_ch_iconv_open(cs, cs, 0);
   if (cd != (iconv_t)(-1))
   {
     iconv_close(cd);
@@ -723,23 +723,23 @@ bool mutt_cs_check_charset(const char *cs, bool strict)
 }
 
 /**
- * mutt_cs_fgetconv_open - Prepare a file for charset conversion
+ * mutt_ch_fgetconv_open - Prepare a file for charset conversion
  * @param file  FILE ptr to prepare
  * @param from  Current character set
  * @param to    Destination character set
  * @param flags Flags, e.g. MUTT_ICONV_HOOK_FROM
  * @retval ptr fgetconv handle
  *
- * Parameter flags is given as-is to mutt_cs_iconv_open().
+ * Parameter flags is given as-is to mutt_ch_iconv_open().
  */
-struct FgetConv *mutt_cs_fgetconv_open(FILE *file, const char *from, const char *to, int flags)
+struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {
   struct FgetConv *fc = NULL;
   iconv_t cd = (iconv_t) -1;
   static const char *repls[] = { "\357\277\275", "?", 0 };
 
   if (from && to)
-    cd = mutt_cs_iconv_open(to, from, flags);
+    cd = mutt_ch_iconv_open(to, from, flags);
 
   if (cd != (iconv_t) -1)
   {
@@ -747,7 +747,7 @@ struct FgetConv *mutt_cs_fgetconv_open(FILE *file, const char *from, const char 
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
-    fc->inrepls = mutt_cs_is_utf8(to) ? repls : repls + 1;
+    fc->inrepls = mutt_ch_is_utf8(to) ? repls : repls + 1;
   }
   else
     fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
@@ -757,10 +757,10 @@ struct FgetConv *mutt_cs_fgetconv_open(FILE *file, const char *from, const char 
 }
 
 /**
- * mutt_cs_fgetconv_close - Close an fgetconv handle
+ * mutt_ch_fgetconv_close - Close an fgetconv handle
  * @param fc fgetconv handle
  */
-void mutt_cs_fgetconv_close(struct FgetConv **fc)
+void mutt_ch_fgetconv_close(struct FgetConv **fc)
 {
   if ((*fc)->cd != (iconv_t) -1)
     iconv_close((*fc)->cd);
@@ -768,7 +768,7 @@ void mutt_cs_fgetconv_close(struct FgetConv **fc)
 }
 
 /**
- * mutt_cs_fgetconv - Convert a file's character set
+ * mutt_ch_fgetconv - Convert a file's character set
  * @param fc FgetConv handle
  * @retval num Next character in the converted file
  * @retval EOF Error
@@ -777,7 +777,7 @@ void mutt_cs_fgetconv_close(struct FgetConv **fc)
  * Each call to this function will return one converted character.
  * The buffer is refilled automatically when empty.
  */
-int mutt_cs_fgetconv(struct FgetConv *fc)
+int mutt_ch_fgetconv(struct FgetConv *fc)
 {
   if (!fc)
     return EOF;
@@ -817,7 +817,7 @@ int mutt_cs_fgetconv(struct FgetConv *fc)
   if (fc->ibl)
   {
     size_t obl = sizeof(fc->bufo);
-    mutt_cs_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
+    mutt_ch_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
     if (fc->p < fc->ob)
       return (unsigned char) *(fc->p)++;
   }
@@ -828,7 +828,7 @@ int mutt_cs_fgetconv(struct FgetConv *fc)
 }
 
 /**
- * mutt_cs_fgetconvs - Convert a file's charset into a string buffer
+ * mutt_ch_fgetconvs - Convert a file's charset into a string buffer
  * @param buf    Buffer for result
  * @param buflen Length of buffer
  * @param fc     FgetConv handle
@@ -837,14 +837,14 @@ int mutt_cs_fgetconv(struct FgetConv *fc)
  *
  * Read a file into a buffer, converting the character set as it goes.
  */
-char *mutt_cs_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
+char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
 {
   int c;
   size_t r;
 
   for (r = 0; (r + 1) < buflen;)
   {
-    c = mutt_cs_fgetconv(fc);
+    c = mutt_ch_fgetconv(fc);
     if (c == EOF)
       break;
     buf[r++] = (char) c;

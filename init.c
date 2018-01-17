@@ -23,7 +23,6 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#include <fcntl.h>
 #include <inttypes.h>
 #include <limits.h>
 #include <pwd.h>
@@ -704,7 +703,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       }
       if (var)
       {
-        if ((env = getenv(var)) || (env = myvar_get(var)))
+        if ((env = mutt_str_getenv(var)) || (env = myvar_get(var)))
           mutt_buffer_addstr(dest, env);
         else if ((idx = mutt_option_index(var)) != -1)
         {
@@ -2133,7 +2132,7 @@ static int check_charset(struct Option *opt, const char *val)
   {
     if (!*p)
       continue;
-    if (!mutt_cs_check_charset(p, strict))
+    if (!mutt_ch_check_charset(p, strict))
     {
       rc = -1;
       break;
@@ -3037,7 +3036,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
       currentline = mutt_str_strdup(linebuf);
       if (!currentline)
         continue;
-      mutt_cs_convert_string(&currentline, ConfigCharset, Charset, 0);
+      mutt_ch_convert_string(&currentline, ConfigCharset, Charset, 0);
     }
     else
       currentline = linebuf;
@@ -3868,7 +3867,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
   struct passwd *pw = NULL;
   struct utsname utsname;
-  char *p, buffer[STRING];
+  const char *p = NULL;
+  char buffer[STRING];
   int need_pause = 0;
   struct Buffer err;
 
@@ -3891,7 +3891,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   /* on one of the systems I use, getcwd() does not return the same prefix
      as is listed in the passwd file */
-  p = getenv("HOME");
+  p = mutt_str_getenv("HOME");
   if (p)
     HomeDir = mutt_str_strdup(p);
 
@@ -3917,7 +3917,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       fputs(_("unable to determine home directory"), stderr);
       exit(1);
     }
-    p = getenv("USER");
+    p = mutt_str_getenv("USER");
     if (p)
       Username = mutt_str_strdup(p);
     else
@@ -3926,7 +3926,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       fputs(_("unable to determine username"), stderr);
       exit(1);
     }
-    Shell = mutt_str_strdup((p = getenv("SHELL")) ? p : "/bin/sh");
+    Shell = mutt_str_strdup((p = mutt_str_getenv("SHELL")) ? p : "/bin/sh");
   }
 
   /* Start up debugging mode if requested from cmdline */
@@ -3997,7 +3997,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 #endif
 
 #ifdef USE_NNTP
-  p = getenv("NNTPSERVER");
+  p = mutt_str_getenv("NNTPSERVER");
   if (p)
   {
     FREE(&NewsServer);
@@ -4010,10 +4010,10 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
 #endif
 
-  p = getenv("MAIL");
+  p = mutt_str_getenv("MAIL");
   if (p)
     SpoolFile = mutt_str_strdup(p);
-  else if ((p = getenv("MAILDIR")))
+  else if ((p = mutt_str_getenv("MAILDIR")))
     SpoolFile = mutt_str_strdup(p);
   else
   {
@@ -4025,7 +4025,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     SpoolFile = mutt_str_strdup(buffer);
   }
 
-  p = getenv("MAILCAPS");
+  p = mutt_str_getenv("MAILCAPS");
   if (p)
     MailcapPath = mutt_str_strdup(p);
   else
@@ -4036,19 +4036,19 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
         "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
   }
 
-  Tmpdir = mutt_str_strdup((p = getenv("TMPDIR")) ? p : "/tmp");
+  Tmpdir = mutt_str_strdup((p = mutt_str_getenv("TMPDIR")) ? p : "/tmp");
 
-  p = getenv("VISUAL");
+  p = mutt_str_getenv("VISUAL");
   if (!p)
   {
-    p = getenv("EDITOR");
+    p = mutt_str_getenv("EDITOR");
     if (!p)
       p = "vi";
   }
   Editor = mutt_str_strdup(p);
   Visual = mutt_str_strdup(p);
 
-  p = getenv("REPLYTO");
+  p = mutt_str_getenv("REPLYTO");
   if (p)
   {
     struct Buffer buf, token;
@@ -4064,11 +4064,11 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     FREE(&token.data);
   }
 
-  p = getenv("EMAIL");
+  p = mutt_str_getenv("EMAIL");
   if (p)
     From = mutt_addr_parse_list(NULL, p);
 
-  mutt_cs_set_langinfo_charset();
+  mutt_ch_set_langinfo_charset();
   mutt_set_charset(Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
@@ -4084,8 +4084,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
-  if (((p = getenv("LC_ALL")) != NULL && p[0]) || ((p = getenv("LANG")) != NULL && p[0]) ||
-      ((p = getenv("LC_CTYPE")) != NULL && p[0]))
+  if (((p = mutt_str_getenv("LC_ALL")) != NULL && p[0]) || ((p = mutt_str_getenv("LANG")) != NULL && p[0]) ||
+      ((p = mutt_str_getenv("LC_CTYPE")) != NULL && p[0]))
   {
     OPT_LOCALES = true;
   }
@@ -4116,7 +4116,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (STAILQ_EMPTY(&Muttrc))
   {
-    char *xdg_cfg_home = getenv("XDG_CONFIG_HOME");
+    const char *xdg_cfg_home = mutt_str_getenv("XDG_CONFIG_HOME");
 
     if (!xdg_cfg_home && HomeDir)
     {

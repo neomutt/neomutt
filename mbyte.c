@@ -23,14 +23,14 @@
 
 #include "config.h"
 #include <errno.h>
+#include <libintl.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
+#include <wctype.h>
 #include "mutt/mutt.h"
 #include "mbyte.h"
-#include "options.h"
-#include "protos.h"
 
 #ifndef EILSEQ
 #define EILSEQ EINVAL
@@ -42,9 +42,9 @@ void mutt_set_charset(char *charset)
 {
   char buffer[STRING];
 
-  mutt_cs_canonical_charset(buffer, sizeof(buffer), charset);
+  mutt_ch_canonical_charset(buffer, sizeof(buffer), charset);
 
-  if (mutt_cs_is_utf8(buffer))
+  if (mutt_ch_is_utf8(buffer))
   {
     Charset_is_utf8 = true;
     ReplacementChar = 0xfffd;

@@ -40,12 +40,11 @@
 #include "pattern.h"
 #include "protos.h"
 #include "tags.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
+
+struct Header;
 
 char *SearchBuffers[MENU_MAX];
 

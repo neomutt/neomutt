@@ -31,6 +31,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,7 +42,6 @@
 #include "mime.h"
 #include "options.h"
 #include "parameter.h"
-#include "protos.h"
 #include "rfc2047.h"
 
 /**
@@ -202,7 +202,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
     } while (par && (strcmp(par->attribute, attribute) == 0));
 
     if (encoded)
-      mutt_cs_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
     *head = mutt_param_new();
     (*head)->attribute = mutt_str_strdup(attribute);
     (*head)->value = value;
@@ -260,7 +260,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
 
       s = rfc2231_get_charset(p->value, charset, sizeof(charset));
       rfc2231_decode_one(p->value, s);
-      mutt_cs_convert_string(&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_ch_convert_string(&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       mutt_filter_unprintable(&p->value);
 
       *last = p;
@@ -335,7 +335,7 @@ int rfc2231_encode_string(char **pd)
     dlen = strlen(d);
   }
 
-  if (!mutt_cs_is_us_ascii(charset))
+  if (!mutt_ch_is_us_ascii(charset))
     encode = 1;
 
   for (s = d, slen = dlen; slen; s++, slen--)

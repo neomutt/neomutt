@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "keymap.h"

@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/mutt.h"
 #include "context.h"
@@ -168,7 +169,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_pretty_size(tmp, sizeof(tmp), Context ? Context->size : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->size : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
       else if (!Context || !Context->size)
@@ -179,7 +180,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       if (!optional)
       {
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        mutt_pretty_size(tmp, sizeof(tmp), Context ? Context->vsize : 0);
+        mutt_str_pretty_size(tmp, sizeof(tmp), Context ? Context->vsize : 0);
         snprintf(buf, buflen, fmt, tmp);
       }
       else if (!Context || !Context->pattern)

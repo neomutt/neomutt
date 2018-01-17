@@ -71,6 +71,8 @@
 #include "hcache/hcache.h"
 #endif
 
+struct BodyCache;
+
 /**
  * new_header_data - Create a new ImapHeaderData
  * @retval ptr New ImapHeaderData

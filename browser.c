@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <grp.h>
@@ -49,7 +48,6 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mbyte.h"
-#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -58,9 +56,6 @@
 #include "protos.h"
 #include "sort.h"
 #include "url.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
@@ -485,7 +480,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 's':
       if (folder->ff->local)
       {
-        mutt_pretty_size(fn, sizeof(fn), folder->ff->size);
+        mutt_str_pretty_size(fn, sizeof(fn), folder->ff->size);
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, fn);
       }
@@ -576,7 +571,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       {
         char *desc = mutt_str_strdup(folder->ff->nd->desc);
         if (NewsgroupsCharset && *NewsgroupsCharset)
-          mutt_cs_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
+          mutt_ch_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
         mutt_filter_unprintable(&desc);
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);

@@ -23,7 +23,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -47,9 +46,6 @@
 #include "sort.h"
 #include "tags.h"
 #include "thread.h"
-#ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
-#endif
 
 /**
  * enum FlagChars - Index into the FlagChars variable ($flag_chars)
@@ -575,7 +571,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
     case 'c':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_SIZE);
-      mutt_pretty_size(tmp, sizeof(tmp), (long) hdr->content->length);
+      mutt_str_pretty_size(tmp, sizeof(tmp), (long) hdr->content->length);
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       break;

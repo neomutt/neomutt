@@ -53,17 +53,12 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
 #endif
-
-struct Address;
 
 static const char *There_are_no_attachments = N_("There are no attachments.");
 
@@ -734,7 +729,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 
     case 'l': /* approx length of current message in bytes */
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      mutt_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
+      mutt_str_pretty_size(tmp, sizeof(tmp), menu ? cum_attachs_size(menu) : 0);
       snprintf(buf, buflen, fmt, tmp);
       break;
 

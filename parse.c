@@ -45,7 +45,6 @@
 #include "rfc2231.h"
 #include "url.h"
 
-struct Address;
 struct Context;
 
 /**
@@ -389,7 +388,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     if (!pc)
       mutt_param_set("charset",
                      (AssumedCharset && *AssumedCharset) ?
-                         (const char *) mutt_cs_get_default_charset() :
+                         (const char *) mutt_ch_get_default_charset() :
                          "us-ascii",
                      &ct->parameter);
   }

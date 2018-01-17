@@ -49,9 +49,6 @@
 #include "mutt_account.h"
 #include "options.h"
 #include "protos.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /**
  * add_folder - Format and add an IMAP folder to the browser

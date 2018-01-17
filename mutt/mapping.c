@@ -41,13 +41,17 @@
  * @param val ID to locate in map
  * @param map NULL-terminated map of strings and constants
  * @retval str  String matching ID
- * @retval NULL ID not found
+ * @retval NULL Error, or ID not found
  */
 const char *mutt_map_get_name(int val, const struct Mapping *map)
 {
-  for (int i = 0; map[i].name; i++)
+  if (!map)
+    return NULL;
+
+  for (size_t i = 0; map[i].name; i++)
     if (map[i].value == val)
       return map[i].name;
+
   return NULL;
 }
 
@@ -56,12 +60,16 @@ const char *mutt_map_get_name(int val, const struct Mapping *map)
  * @param name String to locate in map
  * @param map  NULL-terminated map of strings and constants
  * @retval num  ID matching string
- * @retval -1   String not found
+ * @retval -1   Error, or string not found
  */
 int mutt_map_get_value(const char *name, const struct Mapping *map)
 {
-  for (int i = 0; map[i].name; i++)
+  if (!name || !map)
+    return -1;
+
+  for (size_t i = 0; map[i].name; i++)
     if (mutt_str_strcasecmp(map[i].name, name) == 0)
       return map[i].value;
+
   return -1;
 }

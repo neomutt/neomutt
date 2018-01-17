@@ -25,6 +25,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/mutt.h"
 #include "rfc2047.h"
@@ -33,7 +34,6 @@
 #include "mbyte.h"
 #include "mime.h"
 #include "options.h"
-#include "protos.h"
 
 /* If you are debugging this file, comment out the following line. */
 /* #define NDEBUG */
@@ -60,7 +60,7 @@ static size_t convert_string(const char *f, size_t flen, const char *from,
   size_t obl, n;
   int e;
 
-  cd = mutt_cs_iconv_open(to, from, 0);
+  cd = mutt_ch_iconv_open(to, from, 0);
   if (cd == (iconv_t)(-1))
     return (size_t)(-1);
   obl = 4 * flen + 1;
@@ -116,7 +116,7 @@ int convert_nonmime_string(char **ps)
       return 0;
     }
   }
-  mutt_cs_convert_string(ps, (const char *) mutt_cs_get_default_charset(),
+  mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
                          Charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
@@ -180,7 +180,7 @@ char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
     if (dlen)
       *dlen = elen;
 
-    mutt_cs_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
+    mutt_ch_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
     mutt_str_replace(&tocode, canonical_buf);
   }
   return tocode;
@@ -276,7 +276,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
 
   if (fromcode)
   {
-    cd = mutt_cs_iconv_open(tocode, fromcode, 0);
+    cd = mutt_ch_iconv_open(tocode, fromcode, 0);
     assert(cd != (iconv_t)(-1));
     ib = d;
     ibl = dlen;
@@ -356,7 +356,7 @@ static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
 
   if (fromcode)
   {
-    cd = mutt_cs_iconv_open(tocode, fromcode, 0);
+    cd = mutt_ch_iconv_open(tocode, fromcode, 0);
     assert(cd != (iconv_t)(-1));
     ib = d;
     ibl = dlen;
@@ -493,7 +493,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   }
 
   /* Hack to avoid labelling 8-bit data as us-ascii. */
-  if (!icode && mutt_cs_is_us_ascii(tocode))
+  if (!icode && mutt_ch_is_us_ascii(tocode))
     tocode = "unknown-8bit";
 
   /* Adjust t0 for maximum length of line. */
@@ -737,7 +737,7 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
   }
 
   if (charset)
-    mutt_cs_convert_string(&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
+    mutt_ch_convert_string(&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
   mutt_filter_unprintable(&d0);
   mutt_str_strfcpy(d, d0, len);
   rc = 0;

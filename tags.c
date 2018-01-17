@@ -45,11 +45,8 @@
 #include "config.h"
 #include <stddef.h>
 #include <string.h>
-#include "mutt/hash.h"
-#include "mutt/queue.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "tags.h"
-#include "globals.h"
 
 char *HiddenTags;           /**< Private tags which should not be displayed */
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */

@@ -393,7 +393,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
-    mutt_cs_canonical_charset(chsbuf, sizeof(chsbuf),
+    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf),
                               Charset ? Charset : "us-ascii");
     mutt_addr_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
     fputs(buffer, out);

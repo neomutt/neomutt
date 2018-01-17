@@ -48,7 +48,6 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_socket.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -220,8 +219,8 @@ int main(int argc, char **argv, char **env)
 #ifdef ENABLE_NLS
   /* FIXME what about the LOCALES_HACK in mutt_init() [init.c] ? */
   {
-    char *domdir = getenv("TEXTDOMAINDIR");
-    if (domdir && domdir[0])
+    const char *domdir = mutt_str_getenv("TEXTDOMAINDIR");
+    if (domdir)
       bindtextdomain(PACKAGE, domdir);
     else
       bindtextdomain(PACKAGE, MUTTLOCALEDIR);

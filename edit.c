@@ -31,7 +31,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "address.h"
 #include "alias.h"
 #include "body.h"
@@ -42,9 +41,6 @@
 #include "mutt_curses.h"
 #include "options.h"
 #include "protos.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 /*
  * SLcurses_waddnstr() can't take a "const char *", so this is only

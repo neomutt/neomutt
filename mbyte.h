@@ -25,7 +25,6 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <wchar.h>
 
 void mutt_set_charset(char *charset);
 extern bool Charset_is_utf8;

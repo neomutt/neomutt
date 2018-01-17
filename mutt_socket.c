@@ -24,10 +24,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "mutt/queue.h"
 #include "conn/conn.h"
 #include "mutt_socket.h"
-#include "globals.h"
 #include "mutt_account.h"
 #include "protos.h"
 #include "url.h"

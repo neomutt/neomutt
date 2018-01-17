@@ -51,9 +51,6 @@
 #include "rfc1524.h"
 #include "rfc3676.h"
 #include "state.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
@@ -76,7 +73,7 @@ const int IndexHex[128] = {
 static void print_part_line(struct State *s, struct Body *b, int n)
 {
   char length[5];
-  mutt_pretty_size(length, sizeof(length), b->length);
+  mutt_str_pretty_size(length, sizeof(length), b->length);
   state_mark_attach(s);
   char *charset = mutt_param_get("charset", b->parameter);
   if (n != 0)
@@ -119,7 +116,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
   while (true)
   {
     ob = bufo, obl = sizeof(bufo);
-    mutt_cs_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");
+    mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, 0, "?");
     if (ob == bufo)
       break;
     state_prefix_put(bufo, ob - bufo, s);
@@ -929,16 +926,18 @@ static int text_enriched_handler(struct Body *a, struct State *s)
  */
 static int is_mmnoask(const char *buf)
 {
-  char tmp[LONG_STRING], *p = NULL, *q = NULL;
+  char *p = NULL;
+  const char *val = NULL;
+  char tmp[LONG_STRING], *q = NULL;
   int lng;
 
-  p = getenv("MM_NOASK");
-  if (p && *p)
+  val = mutt_str_getenv("MM_NOASK");
+  if (val)
   {
-    if (mutt_str_strcmp(p, "1") == 0)
+    if (mutt_str_strcmp(val, "1") == 0)
       return 1;
 
-    mutt_str_strfcpy(tmp, p, sizeof(tmp));
+    mutt_str_strfcpy(tmp, val, sizeof(tmp));
     p = tmp;
 
     while ((p = strtok(p, ",")) != NULL)
@@ -1526,7 +1525,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       length = mutt_param_get("length", b->parameter);
       if (length)
       {
-        mutt_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
+        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
         state_printf(s, _("(size %s bytes) "), pretty_size);
       }
       state_puts(_("has been deleted --]\n"), s);
@@ -1588,12 +1587,12 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   {
     char *charset = mutt_param_get("charset", b->parameter);
     if (!charset && AssumedCharset && *AssumedCharset)
-      charset = mutt_cs_get_default_charset();
+      charset = mutt_ch_get_default_charset();
     if (charset && Charset)
-      cd = mutt_cs_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
+      cd = mutt_ch_iconv_open(Charset, charset, MUTT_ICONV_HOOK_FROM);
   }
   else if (istext && b->charset)
-    cd = mutt_cs_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
+    cd = mutt_ch_iconv_open(Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
   fseeko(s->fpin, b->offset, SEEK_SET);
   switch (b->encoding)

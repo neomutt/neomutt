@@ -23,9 +23,10 @@
 #include "config.h"
 #include <limits.h>
 #include <stdarg.h>
+#include <wchar.h>
+#include "mutt/mutt.h"
 #include "state.h"
 #include "globals.h"
-#include "mbyte.h"
 
 void state_mark_attach(struct State *s)
 {
