@@ -1801,6 +1801,8 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout,
   ctx = create_gpgme_context(is_smime);
 
 restart:
+  if (a->length < 0)
+    return NULL;
   /* Make a data object from the body, create context etc. */
   ciphertext = file_to_data_object(s->fpin, a->offset, a->length);
   if (!ciphertext)
