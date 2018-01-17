@@ -617,9 +617,12 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           last->length = 0;
       }
 
-      /* Remove any trailing whitespace, up to the length of the boundary */
-      for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
-        buffer[i] = 0;
+      if (len > 0)
+      {
+        /* Remove any trailing whitespace, up to the length of the boundary */
+        for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
+          buffer[i] = 0;
+      }
 
       /* Check for the end boundary */
       if (mutt_str_strcmp(buffer + blen + 2, "--") == 0)
