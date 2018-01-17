@@ -1486,11 +1486,16 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (QuoteRegexp && regexec(QuoteRegexp->regex, (char *) fmt, 1, pmatch, 0) != 0)
+    if (QuoteRegexp && regexec(QuoteRegexp->regex, (char *) fmt, 1, pmatch, 0) == 0)
+    {
+      (*line_info)[n].quote =
+          classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
+                        pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
+    }
+    else
+    {
       goto out;
-    (*line_info)[n].quote =
-        classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
-                       pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
+    }
   }
 
   if ((flags & MUTT_SEARCH) && !(*line_info)[n].continuation &&
