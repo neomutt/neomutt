@@ -885,7 +885,7 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
   }
   else if (num < 10189) /* 0.1K - 9.9K */
   {
-    snprintf(buf, buflen, "%3.1fK", (num < 103) ? 0.1 : (num / 1024.0));
+    snprintf(buf, buflen, "%3.1fK", num / 1024.0);
   }
   else if (num < 1023949) /* 10K - 999K */
   {

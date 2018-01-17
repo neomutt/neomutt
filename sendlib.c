@@ -1315,7 +1315,7 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
     p = mutt_param_get("charset", b->parameter);
 
   if (p)
-    mutt_ch_canonical_charset(d, dlen, NONULL(p));
+    mutt_ch_canonical_charset(d, dlen, p);
   else
     mutt_str_strfcpy(d, "us-ascii", dlen);
 

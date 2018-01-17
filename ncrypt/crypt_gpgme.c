@@ -3739,8 +3739,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         putc(s[1], fp);
         putc(s[2], fp);
         putc(s[3], fp);
-        putc(is_pgp ? ' ' : ':', fp);
-        if (is_pgp && i == 4)
+        putc(' ', fp);
+        if (i == 4)
           putc(' ', fp);
       }
     }
