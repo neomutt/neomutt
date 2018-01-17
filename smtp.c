@@ -681,18 +681,20 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     FREE(&AuthMechs);
 
     /* send the sender's address */
-    rc = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
+    int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
     if (eightbit && mutt_bit_isset(Capabilities, EIGHTBITMIME))
     {
       mutt_str_strncat(buf, sizeof(buf), " BODY=8BITMIME", 15);
-      rc += 14;
+      len += 14;
     }
     if (DsnReturn && mutt_bit_isset(Capabilities, DSN))
-      rc += snprintf(buf + rc, sizeof(buf) - rc, " RET=%s", DsnReturn);
+      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", DsnReturn);
     if (mutt_bit_isset(Capabilities, SMTPUTF8) &&
         (address_uses_unicode(envfrom) || addresses_use_unicode(to) ||
          addresses_use_unicode(cc) || addresses_use_unicode(bcc)))
-      rc += snprintf(buf + rc, sizeof(buf) - rc, " SMTPUTF8");
+    {
+      snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
+    }
     mutt_str_strncat(buf, sizeof(buf), "\r\n", 3);
     if (mutt_socket_write(conn, buf) == -1)
     {
