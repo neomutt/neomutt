@@ -182,7 +182,8 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   }
   else
   {
-    ptr = mutt_mem_calloc(1, sizeof(struct Regex *));
+    ptr = mutt_mem_calloc(1, sizeof(struct Regex));
+    *(struct Regex **) MuttVars[idx].var = ptr;
   }
 
   bool not = false;
