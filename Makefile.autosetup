@@ -49,8 +49,7 @@ UNINSTALL_TARGETS=	@UNINSTALL_TARGETS@
 
 VPATH=		$(SRCDIR)
 
-ALL_FILES!=	(cd $(SRCDIR) && git ls-tree -r --name-only HEAD 2>/dev/null) \
-		| grep -v git_ver.h || true
+ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 
 ###############################################################################
 # neomutt
