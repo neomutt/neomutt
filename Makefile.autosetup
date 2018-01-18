@@ -60,7 +60,7 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
 		flags.o from.o group.o handler.o hdrline.o \
 		header.o help.o history.o hook.o init.o keymap.o main.o \
-		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_address.o \
+		mbox.o menu.o mh.o muttlib.o mutt_address.o \
 		mutt_socket.o tags.o mx.o \
 		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
@@ -93,7 +93,7 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o mutt/debug.o mutt/exit.o \
 		mutt/file.o mutt/hash.o mutt/idna.o mutt/list.o mutt/mapping.o mutt/mbyte.o mutt/md5.o \
-		mutt/memory.o mutt/message.o mutt/regex.o mutt/sha1.o mutt/signal.o mutt/string.o
+		mutt/memory.o mutt/message.o mutt/mime.o mutt/regex.o mutt/sha1.o mutt/signal.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)

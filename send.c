@@ -43,7 +43,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"

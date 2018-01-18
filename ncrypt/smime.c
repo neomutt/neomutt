@@ -44,7 +44,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"

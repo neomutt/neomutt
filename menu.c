@@ -32,7 +32,6 @@
 #include "context.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "opcodes.h"

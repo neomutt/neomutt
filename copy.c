@@ -35,7 +35,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"

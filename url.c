@@ -34,7 +34,6 @@
 #include "address.h"
 #include "envelope.h"
 #include "globals.h"
-#include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
 

@@ -26,11 +26,14 @@
 #include <iconv.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <wchar.h>
 
 struct Buffer;
 
 extern char *AssumedCharset;
 extern char *Charset;
+extern bool Charset_is_utf8;
+extern wchar_t ReplacementChar;
 
 /**
  * struct FgetConv - Cursor for converting a file's encoding
@@ -83,6 +86,7 @@ void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char 
 int              mutt_ch_chscmp(const char *cs1, const char *cs2);
 char *           mutt_ch_get_default_charset(void);
 void             mutt_ch_set_langinfo_charset(void);
+void             mutt_ch_set_charset(char *charset);
 
 bool             mutt_ch_lookup_add(enum LookupType type, const char *pat, const char *replace, struct Buffer *err);
 void             mutt_ch_lookup_remove(void);
@@ -92,6 +96,7 @@ iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, in
 size_t           mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
 const char *     mutt_ch_iconv_lookup(const char *chs);
 int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
+int              mutt_ch_convert_nonmime_string(char **ps);
 bool             mutt_ch_check_charset(const char *cs, bool strict);
 
 struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char *to, int flags);

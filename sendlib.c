@@ -49,7 +49,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -77,8 +76,6 @@
 #else
 #include <assert.h>
 #endif
-
-const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
 static void encode_quoted(struct FgetConv *fc, FILE *fout, int istext)
 {

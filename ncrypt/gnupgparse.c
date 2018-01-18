@@ -42,7 +42,6 @@
 #include "mutt.h"
 #include "filter.h"
 #include "globals.h"
-#include "mime.h"
 #include "ncrypt.h"
 #include "options.h"
 #include "pgpinvoke.h"

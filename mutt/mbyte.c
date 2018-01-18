@@ -29,18 +29,20 @@
  * | :---------------------- | :--------------------------------------------------
  * | #ReplacementChar        | When a Unicode character can't be displayed, use this instead
  *
- * | Function                | Description
- * | :---------------------- | :---------------------------------------------------------
- * | mutt_mb_charlen()       | Count the bytes in a (multibyte) character
- * | mutt_mb_get_initials()  | Turn a name into initials
- * | mutt_mb_is_lower()      | Does a multi-byte string contain only lowercase characters?
- * | mutt_mb_is_shell_char() | Is character not typically part of a pathname
- * | mutt_mb_mbstowcs()      | Convert a string from multibyte to wide characters
- * | mutt_mb_wcstombs()      | Convert a string from wide to multibyte characters
- * | mutt_mb_wcswidth()      | Measure the screen width of a string
- * | mutt_mb_wcwidth()       | Measure the screen width of a character
- * | mutt_mb_width()         | Measure a string's display width (in screen columns)
- * | mutt_mb_width_ceiling() | Keep the end of the string on-screen
+ * | Function                             | Description
+ * | :----------------------------------- | :---------------------------------------------------------
+ * | mutt_mb_charlen()                    | Count the bytes in a (multibyte) character
+ * | mutt_mb_filter_unprintable()         | Replace unprintable characters
+ * | mutt_mb_get_initials()               | Turn a name into initials
+ * | mutt_mb_is_display_corrupting_utf8() | Will this character corrupt the display?
+ * | mutt_mb_is_lower()                   | Does a multi-byte string contain only lowercase characters?
+ * | mutt_mb_is_shell_char()              | Is character not typically part of a pathname
+ * | mutt_mb_mbstowcs()                   | Convert a string from multibyte to wide characters
+ * | mutt_mb_wcstombs()                   | Convert a string from wide to multibyte characters
+ * | mutt_mb_wcswidth()                   | Measure the screen width of a string
+ * | mutt_mb_wcwidth()                    | Measure the screen width of a character
+ * | mutt_mb_width()                      | Measure a string's display width (in screen columns)
+ * | mutt_mb_width_ceiling()              | Keep the end of the string on-screen
  */
 
 #include "config.h"
@@ -51,16 +53,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+#include "buffer.h"
+#include "charset.h"
 #include "mbyte.h"
 #include "memory.h"
 #include "string2.h"
 
 bool OPT_LOCALES; /**< (pseudo) set if user has valid locale definition */
-
-/**
- * ReplacementChar - When a Unicode character can't be displayed, use this instead
- */
-wchar_t ReplacementChar = '?';
 
 /**
  * mutt_mb_charlen - Count the bytes in a (multibyte) character
@@ -384,4 +383,82 @@ bool mutt_mb_is_lower(const char *s)
   }
 
   return true;
+}
+
+/**
+ * mutt_mb_is_display_corrupting_utf8 - Will this character corrupt the display?
+ * @param wc Character to examine
+ * @retval true  Character would corrupt the display
+ * @retval false Character is safe to display
+ *
+ * @note This list isn't complete.
+ */
+bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
+{
+  if ((wc == (wchar_t) 0x00ad) || /* soft hyphen */
+      (wc == (wchar_t) 0x200e) || /* left-to-right mark */
+      (wc == (wchar_t) 0x200f) || /* right-to-left mark */
+      (wc == (wchar_t) 0xfeff))   /* zero width no-break space */
+  {
+    return true;
+  }
+
+  /* left-to-right isolate, right-to-left isolate, first strong isolate,
+   * pop directional isolate */
+  if ((wc >= (wchar_t) 0x2066) && (wc <= (wchar_t) 0x2069))
+    return true;
+
+  /* left-to-right embedding, right-to-left embedding, pop directional formatting,
+   * left-to-right override, right-to-left override */
+  if ((wc >= (wchar_t) 0x202a) && (wc <= (wchar_t) 0x202e))
+    return true;
+
+  return false;
+}
+
+/**
+ * mutt_mb_filter_unprintable - Replace unprintable characters
+ * @param[in,out] s String to modify
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ * Unprintable characters will be replaced with #ReplacementChar.
+ *
+ * @note The source string will be freed and a newly allocated string will be
+ * returned in its place.  The caller should free the returned string.
+ */
+int mutt_mb_filter_unprintable(char **s)
+{
+  struct Buffer *b = NULL;
+  wchar_t wc;
+  size_t k, k2;
+  char scratch[MB_LEN_MAX + 1];
+  char *p = *s;
+  mbstate_t mbstate1, mbstate2;
+
+  b = mutt_buffer_new();
+  if (!b)
+    return -1;
+  memset(&mbstate1, 0, sizeof(mbstate1));
+  memset(&mbstate2, 0, sizeof(mbstate2));
+  for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
+  {
+    if ((k == (size_t) -1) || (k == (size_t) -2))
+    {
+      k = 1;
+      memset(&mbstate1, 0, sizeof(mbstate1));
+      wc = ReplacementChar;
+    }
+    if (!IsWPrint(wc))
+      wc = '?';
+    else if (Charset_is_utf8 && mutt_mb_is_display_corrupting_utf8(wc))
+      continue;
+    k2 = wcrtomb(scratch, wc, &mbstate2);
+    scratch[k2] = '\0';
+    mutt_buffer_addstr(b, scratch);
+  }
+  FREE(s);
+  *s = b->data ? b->data : mutt_mem_calloc(1, 1);
+  FREE(&b);
+  return 0;
 }

@@ -41,7 +41,6 @@
 #include "filter.h"
 #include "globals.h"
 #include "keymap.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -56,19 +55,6 @@
 #define BUFO_SIZE 2000
 
 typedef int (*handler_t)(struct Body *b, struct State *s);
-
-// clang-format off
-const int IndexHex[128] = {
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-     0, 1, 2, 3,  4, 5, 6, 7,  8, 9,-1,-1, -1,-1,-1,-1,
-    -1,10,11,12, 13,14,15,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,10,11,12, 13,14,15,-1, -1,-1,-1,-1, -1,-1,-1,-1,
-    -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1
-};
-// clang-format on
 
 static void print_part_line(struct State *s, struct Body *b, int n)
 {

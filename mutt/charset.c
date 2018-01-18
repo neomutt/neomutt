@@ -27,26 +27,32 @@
  *
  * | Data                | Description
  * | :------------------ | :--------------------------------------------------
+ * | #Charset            | User's chosen character set
+ * | #Charset_is_utf8    | Is the user's current character set utf-8?
+ * | #lookup_charset     | Look for a preferred character set name
  * | #PreferredMIMENames | Lookup table of preferred charsets
+ * | #ReplacementChar    | When a Unicode character can't be displayed, use this instead
  *
  * | Function                       | Description
  * | :----------------------------- | :---------------------------------------------------------
- * | mutt_ch_canonical_charset()    | Canonicalise the charset of a string
- * | mutt_ch_charset_lookup()       | Look for a replacement character set
- * | mutt_ch_check_charset()        | Does iconv understand a character set?
- * | mutt_ch_chscmp()               | Are the names of two character sets equivalent?
- * | mutt_ch_convert_string()       | Convert a string between encodings
- * | mutt_ch_fgetconv()             | Convert a file's character set
- * | mutt_ch_fgetconvs()            | Convert a file's charset into a string buffer
- * | mutt_ch_fgetconv_close()       | Close an fgetconv handle
- * | mutt_ch_fgetconv_open()        | Prepare a file for charset conversion
- * | mutt_ch_get_default_charset()  | Get the default character set
- * | mutt_ch_iconv()                | Change the encoding of a string
- * | mutt_ch_iconv_lookup()         | Look for a replacement character set
- * | mutt_ch_iconv_open()           | Set up iconv for conversions
- * | mutt_ch_lookup_add()           | Add a new character set lookup
- * | mutt_ch_lookup_remove()        | Remove all the character set lookups
- * | mutt_ch_set_langinfo_charset() | Set the user's choice of character set
+ * | mutt_ch_canonical_charset()      | Canonicalise the charset of a string
+ * | mutt_ch_charset_lookup()         | Look for a replacement character set
+ * | mutt_ch_check_charset()          | Does iconv understand a character set?
+ * | mutt_ch_chscmp()                 | Are the names of two character sets equivalent?
+ * | mutt_ch_convert_nonmime_string() | XXX
+ * | mutt_ch_convert_string()         | Convert a string between encodings
+ * | mutt_ch_fgetconv()               | Convert a file's character set
+ * | mutt_ch_fgetconvs()              | Convert a file's charset into a string buffer
+ * | mutt_ch_fgetconv_close()         | Close an fgetconv handle
+ * | mutt_ch_fgetconv_open()          | Prepare a file for charset conversion
+ * | mutt_ch_get_default_charset()    | Get the default character set
+ * | mutt_ch_iconv()                  | Change the encoding of a string
+ * | mutt_ch_iconv_lookup()           | Look for a replacement character set
+ * | mutt_ch_iconv_open()             | Set up iconv for conversions
+ * | mutt_ch_lookup_add()             | Add a new character set lookup
+ * | mutt_ch_lookup_remove()          | Remove all the character set lookups
+ * | mutt_ch_set_charset()            | Update the records for a new character set
+ * | mutt_ch_set_langinfo_charset()   | Set the user's choice of character set
  */
 
 #include "config.h"
@@ -55,6 +61,7 @@
 #include <iconv.h>
 #include <langinfo.h>
 #include <limits.h>
+#include <libintl.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -72,6 +79,16 @@
 
 char *AssumedCharset; /**< Encoding schemes for messages without indication */
 char *Charset;        /**< User's choice of character set */
+
+/**
+ * ReplacementChar - When a Unicode character can't be displayed, use this instead
+ */
+wchar_t ReplacementChar = '?';
+
+/**
+ * Charset_is_utf8 - Is the user's current character set utf-8?
+ */
+bool Charset_is_utf8 = false;
 
 /**
  * struct Lookup - Regex to String lookup table
@@ -265,6 +282,49 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
       return l->replacement;
   }
   return NULL;
+}
+
+/**
+ * mutt_ch_convert_nonmime_string - Try to convert a string using a list of character sets
+ * @param ps[in,out] String to be converted
+ * @retval 0  Success
+ * @retval -1 Error
+ *
+ * Work through #AssumedCharset looking for a character set conversion that
+ * works.  Failing that, try mutt_ch_get_default_charset().
+ */
+int mutt_ch_convert_nonmime_string(char **ps)
+{
+  const char *c1 = NULL;
+
+  for (const char *c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
+  {
+    char *u = *ps;
+    char *s = NULL;
+    char *fromcode = NULL;
+    size_t n;
+    size_t ulen = mutt_str_strlen(*ps);
+
+    if (!u || !*u)
+      return 0;
+
+    c1 = strchr(c, ':');
+    n = c1 ? c1 - c : mutt_str_strlen(c);
+    if (!n)
+      return 0;
+    fromcode = mutt_mem_malloc(n + 1);
+    mutt_str_strfcpy(fromcode, c, n + 1);
+    s = mutt_str_substr_dup(u, u + ulen);
+    int m = mutt_ch_convert_string(&s, fromcode, Charset, 0);
+    FREE(&fromcode);
+    if (m == 0)
+    {
+      return 0;
+    }
+  }
+  mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
+                         Charset, MUTT_ICONV_HOOK_FROM);
+  return -1;
 }
 
 /**
@@ -857,4 +917,36 @@ char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
     return buf;
 
   return NULL;
+}
+
+/**
+ * mutt_ch_set_charset - Update the records for a new character set
+ * @param charset New character set
+ *
+ * Check if this chararacter set is utf-8 and pick a suitable replacement
+ * character for unprintable characters.
+ *
+ * @note This calls `bind_textdomain_codeset()` which will affect future
+ * message translations.
+ */
+void mutt_ch_set_charset(char *charset)
+{
+  char buffer[STRING];
+
+  mutt_ch_canonical_charset(buffer, sizeof(buffer), charset);
+
+  if (mutt_ch_is_utf8(buffer))
+  {
+    Charset_is_utf8 = true;
+    ReplacementChar = 0xfffd;
+  }
+  else
+  {
+    Charset_is_utf8 = false;
+    ReplacementChar = '?';
+  }
+
+#if defined(HAVE_BIND_TEXTDOMAIN_CODESET) && defined(ENABLE_NLS)
+  bind_textdomain_codeset(PACKAGE, buffer);
+#endif
 }

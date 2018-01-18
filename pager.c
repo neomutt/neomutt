@@ -45,7 +45,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -1264,7 +1263,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
         mutt_debug(3, "skip zero-width character U+%04X\n", (unsigned short) wc);
         continue;
       }
-      if (is_display_corrupting_utf8(wc))
+      if (mutt_mb_is_display_corrupting_utf8(wc))
       {
         mutt_debug(3, "filtered U+%04X\n", (unsigned short) wc);
         continue;

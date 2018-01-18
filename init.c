@@ -50,7 +50,6 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mbtable.h"
-#include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -2614,7 +2613,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           FREE((void *) MuttVars[idx].var);
           *((char **) MuttVars[idx].var) = mutt_str_strdup(tmp->data);
           if (mutt_str_strcmp(MuttVars[idx].name, "charset") == 0)
-            mutt_set_charset(Charset);
+            mutt_ch_set_charset(Charset);
 
           if ((mutt_str_strcmp(MuttVars[idx].name,
                                "show_multipart_alternative") == 0) &&
@@ -4082,7 +4081,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     From = mutt_addr_parse_list(NULL, p);
 
   mutt_ch_set_langinfo_charset();
-  mutt_set_charset(Charset);
+  mutt_ch_set_charset(Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
 
