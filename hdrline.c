@@ -900,7 +900,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
       if (i)
-        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, tags);
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);

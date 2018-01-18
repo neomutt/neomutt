@@ -285,12 +285,6 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     }
   }
 
-  if (u8len)
-  {
-    FREE(&buf);
-    return 0;
-  }
-
   if (base64)
   {
     if (k > 10)

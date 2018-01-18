@@ -182,7 +182,8 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   }
   else
   {
-    ptr = mutt_mem_calloc(1, sizeof(struct Regex *));
+    ptr = mutt_mem_calloc(1, sizeof(struct Regex));
+    *(struct Regex **) MuttVars[idx].var = ptr;
   }
 
   bool not = false;
@@ -411,11 +412,12 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               struct Envelope *e = Context->hdrs[i]->env;
               if (e && e->subject)
               {
-                e->real_subj =
-                    (ReplyRegexp &&
-                     (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0))) ?
-                        e->subject :
-                        e->subject + pmatch[0].rm_eo;
+                e->real_subj = e->subject;
+                if (ReplyRegexp &&
+                    (regexec(ReplyRegexp->regex, e->subject, 1, pmatch, 0) == 0))
+                {
+                  e->subject += pmatch[0].rm_eo;
+                }
               }
             }
           }
@@ -2453,7 +2455,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           restore_default(&MuttVars[idx]);
       }
     }
-    else if (!myvar && DTYPE(MuttVars[idx].type) == DT_BOOL)
+    else if (!myvar && (idx >= 0) && DTYPE(MuttVars[idx].type) == DT_BOOL)
     {
       if (*s->dptr == '=')
       {
@@ -2494,9 +2496,10 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       else
         *(bool *) MuttVars[idx].var = true;
     }
-    else if (myvar || DTYPE(MuttVars[idx].type) == DT_STRING ||
-             DTYPE(MuttVars[idx].type) == DT_PATH || DTYPE(MuttVars[idx].type) == DT_ADDRESS ||
-             DTYPE(MuttVars[idx].type) == DT_MBTABLE)
+    else if (myvar || ((idx >= 0) && ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
+                                      (DTYPE(MuttVars[idx].type) == DT_PATH) ||
+                                      (DTYPE(MuttVars[idx].type) == DT_ADDRESS) ||
+                                      (DTYPE(MuttVars[idx].type) == DT_MBTABLE))))
     {
       if (unset)
       {
@@ -2577,7 +2580,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           FREE(&myvar);
           myvar = "don't resort";
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_PATH)
+        else if ((idx >= 0) && DTYPE(MuttVars[idx].type) == DT_PATH)
         {
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0 && debugfile_cmdline)
           {
@@ -2595,7 +2598,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
             restart_debug();
         }
-        else if (DTYPE(MuttVars[idx].type) == DT_STRING)
+        else if ((idx >= 0) && DTYPE(MuttVars[idx].type) == DT_STRING)
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], tmp->data) < 0) |

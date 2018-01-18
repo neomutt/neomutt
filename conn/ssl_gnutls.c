@@ -823,7 +823,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
       case OP_MAX + 3: /* accept always */
         done = 0;
-        fp = fopen(CertificateFile, "a");
+        fp = mutt_file_fopen(CertificateFile, "a");
         if (fp)
         {
           /* save hostname if necessary */

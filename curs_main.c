@@ -708,7 +708,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
     int last;
   } *syntax = NULL;
 
-  if (!buf)
+  if (!buf || !stdscr)
     return;
 
   do

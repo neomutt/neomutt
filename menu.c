@@ -104,6 +104,9 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
   size_t n = mutt_str_strlen((char *) s);
   mbstate_t mbstate;
 
+  if (!stdscr)
+    return;
+
   memset(&mbstate, 0, sizeof(mbstate));
   while (*s)
   {

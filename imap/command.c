@@ -823,7 +823,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
 {
   char *s = NULL;
   char *pn = NULL;
-  unsigned int count;
+  unsigned int count = 0;
 
   s = imap_next_word(idata->buf);
   pn = imap_next_word(s);
@@ -841,7 +841,10 @@ static int cmd_handle_untagged(struct ImapData *idata)
       mutt_debug(2, "Handling EXISTS\n");
 
       /* new mail arrived */
-      mutt_atoui(pn, &count);
+      if (mutt_atoui(pn, &count) < 0)
+      {
+        mutt_debug(1, "Malformed EXISTS: '%s'\n", pn);
+      }
 
       if (!(idata->reopen & IMAP_EXPUNGE_PENDING) && count < idata->max_msn)
       {

@@ -1801,6 +1801,8 @@ static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout,
   ctx = create_gpgme_context(is_smime);
 
 restart:
+  if (a->length < 0)
+    return NULL;
   /* Make a data object from the body, create context etc. */
   ciphertext = file_to_data_object(s->fpin, a->offset, a->length);
   if (!ciphertext)
@@ -3739,8 +3741,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         putc(s[1], fp);
         putc(s[2], fp);
         putc(s[3], fp);
-        putc(is_pgp ? ' ' : ':', fp);
-        if (is_pgp && i == 4)
+        putc(' ', fp);
+        if (i == 4)
           putc(' ', fp);
       }
     }

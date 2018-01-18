@@ -300,7 +300,10 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
           {
             len = mutt_str_strlen(test_command) + STRING;
             mutt_mem_realloc(&test_command, len);
-            rfc1524_expand_command(a, a->filename, type, test_command, len);
+            if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
+            {
+              mutt_debug(1, "Command is expecting to be piped\n");
+            }
             if (mutt_system(test_command) != 0)
             {
               /* a non-zero exit code means test failed */

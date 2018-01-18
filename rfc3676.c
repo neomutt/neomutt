@@ -200,7 +200,7 @@ static void print_flowed_line(char *line, struct State *s, int ql,
   width = quote_width(s, ql);
   last = line[mutt_str_strlen(line) - 1];
 
-  mutt_debug(4, "f=f: line [%s], width = %ld, spaces = %lu\n", NONULL(line),
+  mutt_debug(4, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
              (long) width, fst->spaces);
 
   for (p = (char *) line, words = 0; (p = strsep(&line, " ")) != NULL;)
