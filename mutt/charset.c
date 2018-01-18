@@ -995,7 +995,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets,
     }
     slen = mutt_str_strlen(s);
 
-    if (!tocode || n < bestn)
+    if (!tocode || (n < bestn))
     {
       bestn = n;
       FREE(&tocode);

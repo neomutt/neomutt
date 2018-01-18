@@ -54,96 +54,96 @@
 
 #define CONTINUATION_BYTE(c) (((c) &0xc0) == 0x80)
 
-typedef size_t (*encoder_t)(char *s, const char *d, size_t dlen, const char *tocode);
+typedef size_t (*encoder_t)(char *str, const char *buf, size_t buflen, const char *tocode);
 
 /**
  * b_encoder - Base64 Encode a string
- * @param s      String to encode
- * @param d      Buffer for result
- * @param dlen   Length of buffer
+ * @param str    String to encode
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
  * @param tocode Character encoding
  * @retval num Number of bytes written to buffer
  */
-static size_t b_encoder(char *s, const char *d, size_t dlen, const char *tocode)
+static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
 {
-  char *s0 = s;
+  char *s0 = str;
 
-  memcpy(s, "=?", 2);
-  s += 2;
-  memcpy(s, tocode, strlen(tocode));
-  s += strlen(tocode);
-  memcpy(s, "?B?", 3);
-  s += 3;
+  memcpy(str, "=?", 2);
+  str += 2;
+  memcpy(str, tocode, strlen(tocode));
+  str += strlen(tocode);
+  memcpy(str, "?B?", 3);
+  str += 3;
 
-  while (dlen)
+  while (buflen)
   {
     char encoded[11];
     size_t ret;
-    size_t in_len = MIN(3, dlen);
+    size_t in_len = MIN(3, buflen);
 
-    ret = mutt_b64_encode(encoded, d, in_len, sizeof(encoded));
+    ret = mutt_b64_encode(encoded, buf, in_len, sizeof(encoded));
     for (size_t i = 0; i < ret; i++)
-      *s++ = encoded[i];
+      *str++ = encoded[i];
 
-    dlen -= in_len;
-    d += in_len;
+    buflen -= in_len;
+    buf += in_len;
   }
 
-  memcpy(s, "?=", 2);
-  s += 2;
-  return s - s0;
+  memcpy(str, "?=", 2);
+  str += 2;
+  return (str - s0);
 }
 
 /**
  * q_encoder - Quoted-printable Encode a string
- * @param s      String to encode
- * @param d      Buffer for result
- * @param dlen   Length of buffer
+ * @param str    String to encode
+ * @param buf    Buffer for result
+ * @param buflen Length of buffer
  * @param tocode Character encoding
  * @retval num Number of bytes written to buffer
  */
-static size_t q_encoder(char *s, const char *d, size_t dlen, const char *tocode)
+static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
 {
   static const char hex[] = "0123456789ABCDEF";
-  char *s0 = s;
+  char *s0 = str;
 
-  memcpy(s, "=?", 2);
-  s += 2;
-  memcpy(s, tocode, strlen(tocode));
-  s += strlen(tocode);
-  memcpy(s, "?Q?", 3);
-  s += 3;
-  while (dlen--)
+  memcpy(str, "=?", 2);
+  str += 2;
+  memcpy(str, tocode, strlen(tocode));
+  str += strlen(tocode);
+  memcpy(str, "?Q?", 3);
+  str += 3;
+  while (buflen--)
   {
-    unsigned char c = *d++;
+    unsigned char c = *buf++;
     if (c == ' ')
-      *s++ = '_';
-    else if (c >= 0x7f || c < 0x20 || c == '_' || strchr(MimeSpecials, c))
+      *str++ = '_';
+    else if ((c >= 0x7f) || (c < 0x20) || (c == '_') || strchr(MimeSpecials, c))
     {
-      *s++ = '=';
-      *s++ = hex[(c & 0xf0) >> 4];
-      *s++ = hex[c & 0x0f];
+      *str++ = '=';
+      *str++ = hex[(c & 0xf0) >> 4];
+      *str++ = hex[c & 0x0f];
     }
     else
-      *s++ = c;
+      *str++ = c;
   }
-  memcpy(s, "?=", 2);
-  s += 2;
-  return s - s0;
+  memcpy(str, "?=", 2);
+  str += 2;
+  return (str - s0);
 }
 
 /**
  * parse_encoded_word - Parse a string and report RFC2047 elements
- * @param[in]  s          String to parse
+ * @param[in]  str        String to parse
  * @param[out] enc        Content encoding found in the first RFC2047 word
  * @param[out] charset    Charset found in the first RFC2047 word
- * @param[out] charsetlen Lenght of the charset string found
+ * @param[out] charsetlen Length of the charset string found
  * @param[out] text       Start of the first RFC2047 encoded text
  * @param[out] textlen    Length of the encoded text found
  * @retval ptr Start of the RFC2047 encoded word
  * @retval NULL None was found
  */
-static char *parse_encoded_word(char *s, enum ContentEncoding *enc, char **charset,
+static char *parse_encoded_word(char *str, enum ContentEncoding *enc, char **charset,
                                 size_t *charsetlen, char **text, size_t *textlen)
 {
   static struct Regex *re = NULL;
@@ -163,22 +163,22 @@ static char *parse_encoded_word(char *s, enum ContentEncoding *enc, char **chars
     assert(re && "Something is wrong with your RE engine.");
   }
 
-  int rc = regexec(re->regex, s, nmatch, match, 0);
+  int rc = regexec(re->regex, str, nmatch, match, 0);
   if (rc != 0)
-  {
     return NULL;
-  }
 
   /* Charset */
-  *charset = s + match[1].rm_so;
+  *charset = str + match[1].rm_so;
   *charsetlen = match[1].rm_eo - match[1].rm_so;
 
   /* Encoding: either Q or B */
-  *enc = (s[match[2].rm_so] == 'Q' || s[match[2].rm_so] == 'q') ? ENCQUOTEDPRINTABLE : ENCBASE64;
+  *enc = ((str[match[2].rm_so] == 'Q') || (str[match[2].rm_so] == 'q')) ?
+             ENCQUOTEDPRINTABLE :
+             ENCBASE64;
 
-  *text = s + match[3].rm_so;
+  *text = str + match[3].rm_so;
   *textlen = match[3].rm_eo - match[3].rm_so;
-  return s + match[0].rm_so;
+  return (str + match[0].rm_so);
 }
 
 /**
@@ -203,7 +203,7 @@ static char *parse_encoded_word(char *s, enum ContentEncoding *enc, char **chars
 static size_t try_block(const char *d, size_t dlen, const char *fromcode,
                         const char *tocode, encoder_t *encoder, size_t *wlen)
 {
-  char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
+  char buf[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
   const char *ib = NULL;
   char *ob = NULL;
@@ -216,8 +216,8 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     assert(cd != (iconv_t)(-1));
     ib = d;
     ibl = dlen;
-    ob = buf1;
-    obl = sizeof(buf1) - strlen(tocode);
+    ob = buf;
+    obl = sizeof(buf) - strlen(tocode);
     if (iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
         iconv(cd, NULL, NULL, &ob, &obl) == (size_t)(-1))
     {
@@ -230,30 +230,31 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   }
   else
   {
-    if (dlen > sizeof(buf1) - strlen(tocode))
-      return sizeof(buf1) - strlen(tocode) + 1;
-    memcpy(buf1, d, dlen);
-    ob = buf1 + dlen;
+    if (dlen > (sizeof(buf) - strlen(tocode)))
+      return sizeof(buf) - strlen(tocode) + 1;
+    memcpy(buf, d, dlen);
+    ob = buf + dlen;
   }
 
   count = 0;
-  for (char *p = buf1; p < ob; p++)
+  for (char *p = buf; p < ob; p++)
   {
     unsigned char c = *p;
     assert(strchr(MimeSpecials, '?'));
-    if (c >= 0x7f || c < 0x20 || *p == '_' || (c != ' ' && strchr(MimeSpecials, *p)))
+    if ((c >= 0x7f) || (c < 0x20) || (*p == '_') ||
+        ((c != ' ') && strchr(MimeSpecials, *p)))
       count++;
   }
 
   len = ENCWORD_LEN_MIN - 2 + strlen(tocode);
-  len_b = len + (((ob - buf1) + 2) / 3) * 4;
-  len_q = len + (ob - buf1) + 2 * count;
+  len_b = len + (((ob - buf) + 2) / 3) * 4;
+  len_q = len + (ob - buf) + 2 * count;
 
   /* Apparently RFC1468 says to use B encoding for iso-2022-jp. */
   if (mutt_str_strcasecmp(tocode, "ISO-2022-JP") == 0)
     len_q = ENCWORD_LEN_MAX + 1;
 
-  if (len_b < len_q && len_b <= ENCWORD_LEN_MAX)
+  if ((len_b < len_q) && (len_b <= ENCWORD_LEN_MAX))
   {
     *encoder = b_encoder;
     *wlen = len_b;
@@ -271,20 +272,20 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
 
 /**
  * encode_block - Encode a block of text using an encoder
- * @param s        String to convert
- * @param d        Buffer for result
- * @param dlen     Buffer length
+ * @param str      String to convert
+ * @param buf      Buffer for result
+ * @param buflen   Buffer length
  * @param fromcode Original encoding
  * @param tocode   New encoding
  * @param encoder  Encoding function
  * @retval num Length of the encoded word
  *
- * Encode the data (d, dlen) into s using the encoder.
+ * Encode the data (buf, buflen) into str using the encoder.
  */
-static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
+static size_t encode_block(char *str, char *buf, size_t buflen, const char *fromcode,
                            const char *tocode, encoder_t encoder)
 {
-  char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
+  char tmp[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
   const char *ib = NULL;
   char *ob = NULL;
@@ -294,18 +295,18 @@ static size_t encode_block(char *s, char *d, size_t dlen, const char *fromcode,
   {
     cd = mutt_ch_iconv_open(tocode, fromcode, 0);
     assert(cd != (iconv_t)(-1));
-    ib = d;
-    ibl = dlen;
-    ob = buf1;
-    obl = sizeof(buf1) - strlen(tocode);
+    ib = buf;
+    ibl = buflen;
+    ob = tmp;
+    obl = sizeof(tmp) - strlen(tocode);
     n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
     n2 = iconv(cd, NULL, NULL, &ob, &obl);
     assert(n1 != (size_t)(-1) && n2 != (size_t)(-1));
     iconv_close(cd);
-    return (*encoder)(s, buf1, ob - buf1, tocode);
+    return (*encoder)(str, tmp, ob - tmp, tocode);
   }
   else
-    return (*encoder)(s, d, dlen, tocode);
+    return (*encoder)(str, buf, buflen, tocode);
 }
 
 /**
@@ -333,14 +334,14 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   n = dlen;
   while (true)
   {
-    assert(d + n > d);
+    assert(n > 0);
     nn = try_block(d, n, fromcode, tocode, encoder, wlen);
-    if (!nn && (col + *wlen <= ENCWORD_LEN_MAX + 1 || n <= 1))
+    if ((nn == 0) && ((col + *wlen) <= (ENCWORD_LEN_MAX + 1) || (n <= 1)))
       break;
     n = (nn ? nn : n) - 1;
     assert(n > 0);
     if (utf8)
-      while (n > 1 && CONTINUATION_BYTE(d[n]))
+      while ((n > 1) && CONTINUATION_BYTE(d[n]))
         n--;
   }
   return n;
@@ -370,7 +371,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
 /**
  * rfc2047_decode_word - Decode an RFC2047-encoded string
  * @param s   String to decode
- * @param len Lenfth of the string
+ * @param len Length of the string
  * @param enc Encoding type
  * @retval ptr Decoded string
  *
@@ -390,7 +391,7 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
       {
         mutt_buffer_addch(&buf, ' ');
       }
-      else if (*it == '=' && (!(it[1] & ~127) && hexval(it[1]) != -1) &&
+      else if ((*it == '=') && (!(it[1] & ~127) && hexval(it[1]) != -1) &&
                (!(it[2] & ~127) && hexval(it[2]) != -1))
       {
         mutt_buffer_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
@@ -458,9 +459,9 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
 
   /* Find earliest and latest things we must encode. */
   s0 = s1 = t0 = t1 = 0;
-  for (t = u; t < u + ulen; t++)
+  for (t = u; t < (u + ulen); t++)
   {
-    if ((*t & 0x80) || (*t == '=' && t[1] == '?' && (t == u || HSPACE(*(t - 1)))))
+    if ((*t & 0x80) || ((*t == '=') && (t[1] == '?') && ((t == u) || HSPACE(*(t - 1)))))
     {
       if (!t0)
         t0 = t;
@@ -475,9 +476,9 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   }
 
   /* If we have something to encode, include RFC822 specials */
-  if (t0 && s0 && s0 < t0)
+  if (t0 && s0 && (s0 < t0))
     t0 = s0;
-  if (t1 && s1 && s1 > t1)
+  if (t1 && s1 && (s1 > t1))
     t1 = s1;
 
   if (!t0)
@@ -520,17 +521,17 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
       continue;
     t = t0 + 1;
     if (icode)
-      while (t < u + ulen && CONTINUATION_BYTE(*t))
+      while ((t < (u + ulen)) && CONTINUATION_BYTE(*t))
         t++;
     if (!try_block(t0, t - t0, icode, tocode, &encoder, &wlen) &&
-        col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
+        ((col + (t0 - u) + wlen) <= (ENCWORD_LEN_MAX + 1)))
     {
       break;
     }
   }
 
   /* Adjust t1 until we can encode a character before a space. */
-  for (; t1 < u + ulen; t1++)
+  for (; t1 < (u + ulen); t1++)
   {
     if (!HSPACE(*t1))
       continue;
@@ -539,7 +540,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
       while (CONTINUATION_BYTE(*t))
         t--;
     if (!try_block(t, t1 - t, icode, tocode, &encoder, &wlen) &&
-        1 + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
+        ((1 + wlen + (u + ulen - t1)) <= (ENCWORD_LEN_MAX + 1)))
     {
       break;
     }
@@ -560,16 +561,16 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   {
     /* Find how much we can encode. */
     n = choose_block(t, t1 - t, col, icode, tocode, &encoder, &wlen);
-    if (n == t1 - t)
+    if (n == (t1 - t))
     {
       /* See if we can fit the us-ascii suffix, too. */
-      if (col + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
+      if ((col + wlen + (u + ulen - t1)) <= (ENCWORD_LEN_MAX + 1))
         break;
       n = t1 - t - 1;
       if (icode)
         while (CONTINUATION_BYTE(t[n]))
           n--;
-      assert(t + n >= t);
+      assert(n >= 0);
       if (!n)
       {
         /* This should only happen in the really stupid case where the
@@ -577,8 +578,8 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
            there is too much us-ascii stuff after it to use a single
            encoded word. We add the next word to the encoded region
            and try again. */
-        assert(t1 < u + ulen);
-        for (t1++; t1 < u + ulen && !HSPACE(*t1); t1++)
+        assert(t1 < (u + ulen));
+        for (t1++; (t1 < (u + ulen)) && !HSPACE(*t1); t1++)
           ;
         continue;
       }
@@ -667,8 +668,8 @@ void mutt_rfc2047_decode(char **pd)
   size_t textlen;            /* Length of encoded text                 */
 
   /* Keep some state in case the next decoded word is using the same charset
-   * and it happens to be split in the middle of a multibyte character. See
-   * https://github.com/neomutt/neomutt/issues/1015
+   * and it happens to be split in the middle of a multibyte character.
+   * See https://github.com/neomutt/neomutt/issues/1015
    */
   struct Buffer prev = { 0 }; /* Previously decoded word                */
   char *prev_charset = NULL;  /* Previously used charset                */
@@ -720,8 +721,8 @@ void mutt_rfc2047_decode(char **pd)
       {
         return;
       }
-      if (prev.data && (prev_charsetlen != charsetlen ||
-                        strncmp(prev_charset, charset, charsetlen) != 0))
+      if (prev.data && ((prev_charsetlen != charsetlen) ||
+                        (strncmp(prev_charset, charset, charsetlen) != 0)))
       {
         /* Different charset, convert the previous chunk and add it to the
          * final result */
