@@ -40,7 +40,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"

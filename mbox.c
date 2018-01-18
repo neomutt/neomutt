@@ -181,7 +181,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       {
         tmploc = loc + hdr->content->length;
 
-        if (0 < tmploc && tmploc < ctx->size)
+        if ((tmploc > 0) && (tmploc < ctx->size))
         {
           if (fseeko(ctx->fp, tmploc, SEEK_SET) != 0 ||
               fgets(buf, sizeof(buf) - 1, ctx->fp) == NULL ||
@@ -329,7 +329,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
         loc = ftello(ctx->fp);
         tmploc = loc + curhdr->content->length + 1;
 
-        if (0 < tmploc && tmploc < ctx->size)
+        if ((tmploc > 0) && (tmploc < ctx->size))
         {
           /*
            * check to see if the content-length looks valid.  we expect to
@@ -991,8 +991,10 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     goto bail;
   }
   else if (i < 0)
+  {
     /* fatal error */
     return -1;
+  }
 
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp(tempfile, sizeof(tempfile));

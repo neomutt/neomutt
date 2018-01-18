@@ -32,6 +32,8 @@
  * | mutt_str_atoi()               | Convert ASCII string to an integer
  * | mutt_str_atol()               | Convert ASCII string to a long
  * | mutt_str_atos()               | Convert ASCII string to a short
+ * | mutt_str_atoui()              | Convert ASCII string to an unsigned integer
+ * | mutt_str_atoul()              | Convert ASCII string to an unsigned long
  * | mutt_str_dequote_comment()    | Un-escape characters in an email address comment
  * | mutt_str_find_word()          | Find the next word (non-space)
  * | mutt_str_getenv()             | Get an environment variable
@@ -246,6 +248,71 @@ int mutt_str_atoi(const char *str, int *dst)
   return 0;
 }
 
+/**
+ * mutt_str_atoui - Convert ASCII string to an unsigned integer
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters 
+ * @retval  0 Successful conversion                           
+ * @retval -1 Invalid input                                   
+ * @retval -2 Input out of range                              
+ *
+ * @note
+ * This function's return value differs from the other functions.
+ * They return -1 if there is input beyond the number.
+ */
+int mutt_str_atoui(const char *str, unsigned int *dst)
+{
+  int rc;
+  unsigned long res = 0;
+  unsigned int tmp = 0;
+  unsigned int *t = dst ? dst : &tmp;
+
+  *t = 0;
+
+  rc = mutt_str_atoul(str, &res);
+  if (rc < 0)
+    return rc;
+  if ((unsigned int) res != res)
+    return -2;
+
+  *t = (unsigned int) res;
+  return rc;
+}
+
+/**
+ * mutt_str_atoul - Convert ASCII string to an unsigned long
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters 
+ * @retval  0 Successful conversion                           
+ * @retval -1 Invalid input                                   
+ *
+ * @note
+ * This function's return value differs from the other functions.
+ * They return -1 if there is input beyond the number.
+ */
+int mutt_str_atoul(const char *str, unsigned long *dst)
+{
+  unsigned long r = 0;
+  unsigned long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  errno = 0;
+  *res = strtoul(str, &e, 10);
+  if ((*res == ULONG_MAX) && (errno == ERANGE))
+    return -1;
+  if (e && (*e != '\0'))
+    return 1;
+  return 0;
+}
 /**
  * mutt_str_strdup - Copy a string, safely
  * @param s String to copy

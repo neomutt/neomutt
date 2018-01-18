@@ -935,7 +935,9 @@ int mutt_enter_fname_full(const char *prompt, char *buf, size_t blen, int buffy,
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (mutt_get_field_full(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                             multiple, files, numfiles) != 0)
+    {
       buf[0] = '\0';
+    }
     FREE(&pc);
 #ifdef USE_NOTMUCH
     if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))

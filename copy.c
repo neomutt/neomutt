@@ -35,7 +35,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -643,7 +642,9 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
     if (mutt_copy_header(fpin, hdr, fpout, chflags,
                          (chflags & CH_PREFIX) ? prefix : NULL) == -1)
+    {
       return -1;
+    }
 
     new_offset = ftello(fpout);
   }

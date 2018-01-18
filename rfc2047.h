@@ -29,7 +29,6 @@ struct Address;
 
 char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
                           size_t ulen, char **d, size_t *dlen);
-int convert_nonmime_string(char **ps);
 
 void rfc2047_encode_string(char **pd, int encode_specials, int col);
 void rfc2047_encode_addrlist(struct Address *addr, const char *tag);

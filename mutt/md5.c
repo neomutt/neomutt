@@ -282,12 +282,14 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
 #define alignof(type) offsetof(struct { char c; type x; }, x)
 #define UNALIGNED_P(p) (((size_t) p) % alignof(md5_uint32) != 0)
     if (UNALIGNED_P(buffer))
+    {
       while (len > 64)
       {
         mutt_md5_process_block(memcpy(ctx->buffer, buffer, 64), 64, ctx);
         buffer = (const char *) buffer + 64;
         len -= 64;
       }
+    }
     else
 #endif
     {

@@ -644,6 +644,8 @@ int pop_reconnect(struct Context *ctx)
 
     if (query_quadoption(PopReconnect,
                          _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
+    {
       return -1;
+    }
   }
 }

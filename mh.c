@@ -2137,11 +2137,13 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
           flags_changed = true;
 
       if (ctx->hdrs[i]->deleted == ctx->hdrs[i]->trash)
+      {
         if (ctx->hdrs[i]->deleted != p->h->deleted)
         {
           ctx->hdrs[i]->deleted = p->h->deleted;
           flags_changed = true;
         }
+      }
       ctx->hdrs[i]->trash = p->h->trash;
 
       /* this is a duplicate of an existing header, so remove it */

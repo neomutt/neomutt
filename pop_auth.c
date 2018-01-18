@@ -124,6 +124,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
     }
 
     if (!client_start)
+    {
       while (true)
       {
         rc = sasl_client_step(saslconn, buf, len, &interaction, &pc, &olen);
@@ -131,6 +132,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
           break;
         mutt_sasl_interact(interaction);
       }
+    }
     else
     {
       olen = client_start;
@@ -366,6 +368,7 @@ int pop_authenticate(struct PopData *pop_data)
         {
           ret = authenticator->authenticate(pop_data, method);
           if (ret == POP_A_SOCKET)
+          {
             switch (pop_connect(pop_data))
             {
               case 0:
@@ -376,6 +379,7 @@ int pop_authenticate(struct PopData *pop_data)
               case -2:
                 ret = POP_A_FAILURE;
             }
+          }
 
           if (ret != POP_A_UNAVAIL)
             attempts++;
@@ -404,6 +408,7 @@ int pop_authenticate(struct PopData *pop_data)
     {
       ret = authenticator->authenticate(pop_data, authenticator->method);
       if (ret == POP_A_SOCKET)
+      {
         switch (pop_connect(pop_data))
         {
           case 0:
@@ -414,6 +419,7 @@ int pop_authenticate(struct PopData *pop_data)
           case -2:
             ret = POP_A_FAILURE;
         }
+      }
 
       if (ret != POP_A_UNAVAIL)
         attempts++;

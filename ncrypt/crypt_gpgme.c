@@ -53,7 +53,6 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"
@@ -199,8 +198,10 @@ static const char *crypt_keyid(struct CryptKeyInfo *k)
   {
     s = k->kobj->subkeys->keyid;
     if ((!PgpLongIds) && (strlen(s) == 16))
+    {
       /* Return only the short keyID.  */
       s += 8;
+    }
   }
 
   return s;
@@ -5081,8 +5082,8 @@ static int verify_sender(struct Header *h)
       for (uid = key->uids; uid && rc; uid = uid->next)
       {
         uid_length = strlen(uid->email);
-        if (1 && (uid->email[0] == '<') && (uid->email[uid_length - 1] == '>') &&
-            (uid_length == sender_length + 2))
+        if ((uid->email[0] == '<') && (uid->email[uid_length - 1] == '>') &&
+            (uid_length == (sender_length + 2)))
         {
           const char *at_sign = strchr(uid->email + 1, '@');
           if (!at_sign)

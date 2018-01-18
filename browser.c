@@ -47,7 +47,7 @@
 #include "globals.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mbyte.h"
+#include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -572,7 +572,7 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
         char *desc = mutt_str_strdup(folder->ff->nd->desc);
         if (NewsgroupsCharset && *NewsgroupsCharset)
           mutt_ch_convert_string(&desc, NewsgroupsCharset, Charset, MUTT_ICONV_HOOK_FROM);
-        mutt_filter_unprintable(&desc);
+        mutt_mb_filter_unprintable(&desc);
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, desc);
@@ -862,7 +862,9 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
       struct NntpData *nntp_data = nserv->groups_list[i];
       if (nntp_data && (nntp_data->new || (nntp_data->subscribed &&
                                            (nntp_data->unread || !ShowOnlyUnread))))
+      {
         add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
+      }
     }
   }
   else

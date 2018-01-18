@@ -49,7 +49,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
@@ -77,8 +76,6 @@
 #else
 #include <assert.h>
 #endif
-
-const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
 static void encode_quoted(struct FgetConv *fc, FILE *fout, int istext)
 {
@@ -749,13 +746,17 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
         }
       }
       else if (cd[i] == (iconv_t)(-1) && score[i] == (size_t)(-1))
+      {
         /* Special case for conversion to UTF-8 */
         update_content_info(&infos[i], &states[i], bufu, ubl1);
+      }
     }
 
     if (ibl)
+    {
       /* Save unused input */
       memmove(bufi, ib, ibl);
+    }
     else if (!ubl1 && ib < bufi + sizeof(bufi))
     {
       ret = 0;

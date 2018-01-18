@@ -45,7 +45,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -523,7 +522,9 @@ void mutt_print_message(struct Header *h)
 
   if (query_quadoption(Print,
                        h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
+  {
     return;
+  }
 
   if (pipe_message(h, PrintCommand, PrintDecode, 1, PrintSplit, "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));

@@ -681,7 +681,9 @@ char *imap_fix_path(struct ImapData *idata, const char *mailbox, char *path, siz
 
       while (*mailbox && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) ||
                           (delim && *mailbox == delim)))
+      {
         mailbox++;
+      }
       path[i] = delim;
     }
     else
@@ -750,7 +752,7 @@ int imap_get_literal_count(const char *buf, unsigned int *bytes)
   while (isdigit((unsigned char) *pc))
     pc++;
   *pc = '\0';
-  if (mutt_atoui(pn, bytes) < 0)
+  if (mutt_str_atoui(pn, bytes) < 0)
     return -1;
 
   return 0;

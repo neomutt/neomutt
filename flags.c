@@ -326,7 +326,9 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int b
    */
   if (h->searched && (changed != h->changed || deleted != ctx->deleted ||
                       tagged != ctx->tagged || flagged != ctx->flagged))
+  {
     h->searched = false;
+  }
 }
 
 /**

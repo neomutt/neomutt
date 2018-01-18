@@ -67,7 +67,10 @@ enum ContentDisposition
 
 /* MIME encoding/decoding global vars */
 
-extern const int IndexHex[];
+extern const int IndexHex[128];
+extern const char *const BodyTypes[];
+extern const char *const BodyEncodings[];
+extern const char MimeSpecials[];
 
 #define hexval(c) IndexHex[(unsigned int) (c)]
 
@@ -76,14 +79,8 @@ extern const int IndexHex[];
    ((x)->type == TYPEMESSAGE && ((strcasecmp((x)->subtype, "rfc822") == 0) ||  \
                                  (strcasecmp((x)->subtype, "news") == 0))))
 
-extern const char *BodyTypes[];
-extern const char *BodyEncodings[];
-
 #define TYPE(X)                                                                \
   ((X->type == TYPEOTHER) && (X->xtype != NULL) ? X->xtype : BodyTypes[(X->type)])
 #define ENCODING(X) BodyEncodings[(X)]
-
-/* other MIME-related global variables */
-extern const char MimeSpecials[];
 
 #endif /* _MUTT_MIME_H */

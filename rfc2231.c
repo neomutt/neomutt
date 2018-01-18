@@ -38,8 +38,6 @@
 #include "mutt/mutt.h"
 #include "rfc2231.h"
 #include "globals.h"
-#include "mbyte.h"
-#include "mime.h"
 #include "options.h"
 #include "parameter.h"
 #include "rfc2047.h"
@@ -248,7 +246,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
       if (Rfc2047Parameters && p->value && strstr(p->value, "=?"))
         rfc2047_decode(&p->value);
       else if (AssumedCharset && *AssumedCharset)
-        convert_nonmime_string(&p->value);
+        mutt_ch_convert_nonmime_string(&p->value);
 
       *last = p;
       last = &p->next;
@@ -261,7 +259,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
       s = rfc2231_get_charset(p->value, charset, sizeof(charset));
       rfc2231_decode_one(p->value, s);
       mutt_ch_convert_string(&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
-      mutt_filter_unprintable(&p->value);
+      mutt_mb_filter_unprintable(&p->value);
 
       *last = p;
       last = &p->next;

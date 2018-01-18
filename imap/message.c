@@ -330,7 +330,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
     {
       s += 3;
       SKIPWS(s);
-      if (mutt_atoui(s, &h->data->uid) < 0)
+      if (mutt_str_atoui(s, &h->data->uid) < 0)
         return -1;
 
       s = imap_next_word(s);
@@ -410,7 +410,7 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
 
   /* skip to message number */
   buf = imap_next_word(buf);
-  if (mutt_atoui(buf, &h->data->msn) < 0)
+  if (mutt_str_atoui(buf, &h->data->msn) < 0)
     return rc;
 
   /* find FETCH tag */
@@ -1101,7 +1101,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
         if (mutt_str_strncasecmp("UID", pc, 3) == 0)
         {
           pc = imap_next_word(pc);
-          if (mutt_atoui(pc, &uid) < 0)
+          if (mutt_str_atoui(pc, &uid) < 0)
             goto bail;
           if (uid != HEADER_DATA(h)->uid)
             mutt_error(_(
@@ -1123,7 +1123,9 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
           }
           if (imap_read_literal(msg->fp, idata, bytes,
                                 output_progress ? &progressbar : NULL) < 0)
+          {
             goto bail;
+          }
           /* pick up trailing line */
           rc = imap_cmd_step(idata);
           if (rc != IMAP_CMD_CONTINUE)

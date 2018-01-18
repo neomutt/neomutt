@@ -24,6 +24,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "protos.h"

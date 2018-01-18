@@ -40,7 +40,6 @@
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
@@ -105,7 +104,7 @@ void mutt_update_tree(struct AttachCtx *actx)
   {
     rindex = actx->v2r[vindex];
     actx->idx[rindex]->num = vindex;
-    if (2 * (actx->idx[rindex]->level + 2) < sizeof(buf))
+    if ((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf))
     {
       if (actx->idx[rindex]->level)
       {
@@ -127,7 +126,7 @@ void mutt_update_tree(struct AttachCtx *actx)
     else
       actx->idx[rindex]->tree = mutt_str_strdup(buf);
 
-    if (2 * (actx->idx[rindex]->level + 2) < sizeof(buf) && actx->idx[rindex]->level)
+    if ((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf) && actx->idx[rindex]->level)
     {
       s = buf + 2 * (actx->idx[rindex]->level - 1);
       *s++ = (actx->idx[rindex]->content->next) ? '\005' : '\006';

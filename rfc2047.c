@@ -31,8 +31,6 @@
 #include "rfc2047.h"
 #include "address.h"
 #include "globals.h"
-#include "mbyte.h"
-#include "mime.h"
 #include "options.h"
 
 /* If you are debugging this file, comment out the following line. */
@@ -83,42 +81,6 @@ static size_t convert_string(const char *f, size_t flen, const char *from,
   iconv_close(cd);
 
   return n;
-}
-
-int convert_nonmime_string(char **ps)
-{
-  const char *c1 = NULL;
-
-  for (const char *c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
-  {
-    char *u = *ps;
-    char *s = NULL;
-    char *fromcode = NULL;
-    size_t m, n;
-    size_t ulen = mutt_str_strlen(*ps);
-    size_t slen;
-
-    if (!u || !*u)
-      return 0;
-
-    c1 = strchr(c, ':');
-    n = c1 ? c1 - c : mutt_str_strlen(c);
-    if (!n)
-      return 0;
-    fromcode = mutt_mem_malloc(n + 1);
-    mutt_str_strfcpy(fromcode, c, n + 1);
-    m = convert_string(u, ulen, fromcode, Charset, &s, &slen);
-    FREE(&fromcode);
-    if (m != (size_t)(-1))
-    {
-      FREE(ps);
-      *ps = s;
-      return 0;
-    }
-  }
-  mutt_ch_convert_string(ps, (const char *) mutt_ch_get_default_charset(),
-                         Charset, MUTT_ICONV_HOOK_FROM);
-  return -1;
 }
 
 char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
@@ -738,7 +700,7 @@ static int rfc2047_decode_word(char *d, const char *s, size_t len)
 
   if (charset)
     mutt_ch_convert_string(&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
-  mutt_filter_unprintable(&d0);
+  mutt_mb_filter_unprintable(&d0);
   mutt_str_strfcpy(d, d0, len);
   rc = 0;
 error_out_0:
@@ -831,7 +793,7 @@ void rfc2047_decode(char **pd)
         n = mutt_str_strlen(s);
         t = mutt_mem_malloc(n + 1);
         mutt_str_strfcpy(t, s, n + 1);
-        convert_nonmime_string(&t);
+        mutt_ch_convert_nonmime_string(&t);
         tlen = mutt_str_strlen(t);
         strncpy(d, t, tlen);
         d += tlen;

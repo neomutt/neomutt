@@ -529,7 +529,9 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
   {
     if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
                                tmp->regex.not))
+    {
       mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
+    }
   }
 }
 

@@ -1184,11 +1184,15 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         htmp = NULL;
         if (flags & MUTT_FORMAT_TREE && (hdr->thread->prev && hdr->thread->prev->message &&
                                          hdr->thread->prev->message->env->x_label))
+        {
           htmp = hdr->thread->prev->message;
+        }
         else if (flags & MUTT_FORMAT_TREE &&
                  (hdr->thread->parent && hdr->thread->parent->message &&
                   hdr->thread->parent->message->env->x_label))
+        {
           htmp = hdr->thread->parent->message;
+        }
         if (htmp && (mutt_str_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
           i = 0;
       }

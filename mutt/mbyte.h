@@ -30,7 +30,6 @@
 #include <wctype.h>
 
 extern bool OPT_LOCALES;
-extern wchar_t ReplacementChar;
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char) (c)) || ((unsigned char) (c) >= 0xa0))
@@ -52,5 +51,7 @@ int    mutt_mb_wcswidth(const wchar_t *s, size_t n);
 int    mutt_mb_wcwidth(wchar_t wc);
 size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1);
 int    mutt_mb_width(const char *str, int col, bool display);
+int    mutt_mb_filter_unprintable(char **s);
+bool   mutt_mb_is_display_corrupting_utf8(wchar_t wc);
 
 #endif /* _MUTT_MBYTE_H */

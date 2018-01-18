@@ -36,7 +36,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "parameter.h"
@@ -722,11 +721,15 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
 
     /* some idiotic clients break their message-ids between lines */
     if (s == p)
+    {
       /* step past another whitespace */
       s = p + 1;
+    }
     else if (o)
+    {
       /* more than two lines, give up */
       s = o = onull = NULL;
+    }
     else
     {
       /* remember the first line, start looking for the second */

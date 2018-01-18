@@ -96,17 +96,6 @@ WHERE int CurrentMenu;
 WHERE struct Alias *Aliases;
 WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
 
-#ifdef MAIN_C
-const char *const BodyTypes[] = {
-    "x-unknown", "audio",     "application", "image", "message",
-    "model",     "multipart", "text",        "video", "*",
-};
-const char *const BodyEncodings[] = {
-    "x-unknown", "7bit",   "8bit",        "quoted-printable",
-    "base64",    "binary", "x-uuencoded",
-};
-#endif
-
 /* All the variables below are backing for config items */
 
 WHERE struct Address *EnvelopeFromAddress;
