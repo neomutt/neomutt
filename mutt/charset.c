@@ -287,7 +287,7 @@ static const char *lookup_charset(enum LookupType type, const char *cs)
 
 /**
  * mutt_ch_convert_nonmime_string - Try to convert a string using a list of character sets
- * @param ps[in,out] String to be converted
+ * @param[in,out] ps String to be converted
  * @retval 0  Success
  * @retval -1 Error
  *

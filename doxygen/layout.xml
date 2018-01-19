@@ -15,7 +15,7 @@
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>
     <tab type="usergroup" url="pages.html" title="Libraries">
-	<tab type="pages" visible="yes" title="Libraries" intro="These libraries contain are an attempt to make NeoMutt more modular."/>
+      <tab type="pages" visible="yes" title="Libraries" intro="These libraries contain are an attempt to make NeoMutt more modular."/>
     </tab>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
