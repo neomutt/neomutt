@@ -3,6 +3,7 @@
 #define NEOMUTT_TEST_LIST \
   NEOMUTT_TEST_ITEM(test_base64_encode) \
   NEOMUTT_TEST_ITEM(test_base64_decode) \
+  NEOMUTT_TEST_ITEM(test_base64_lengths) \
   NEOMUTT_TEST_ITEM(test_rfc2047) \
 
 #define NEOMUTT_TEST_ITEM(x) void x(void);
