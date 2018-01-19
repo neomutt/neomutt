@@ -29,7 +29,5 @@
 
 void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 void mutt_rfc2047_decode(char **pd);
-char *mutt_rfc2047_choose_charset(const char *fromcode, const char *charsets,
-                                  char *u, size_t ulen, char **d, size_t *dlen);
 
 #endif /* _MUTT_LIB_RFC2047_H */

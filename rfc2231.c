@@ -325,7 +325,7 @@ int rfc2231_encode_string(char **pd)
     return 0;
 
   if (!Charset || !SendCharset ||
-      !(charset = mutt_rfc2047_choose_charset(Charset, SendCharset, *pd, strlen(*pd), &d, &dlen)))
+      !(charset = mutt_ch_choose(Charset, SendCharset, *pd, strlen(*pd), &d, &dlen)))
   {
     charset = mutt_str_strdup(Charset ? Charset : "unknown-8bit");
     FREE(&d);

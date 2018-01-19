@@ -29,7 +29,6 @@
  *
  * | Function                      | Description
  * | :---------------------------- | :-----------------------------------------
- * | mutt_rfc2047_choose_charset() | Figure the best charset to encode a string
  * | mutt_rfc2047_decode()         | Decode any RFC2047-encoded header fields
  * | mutt_rfc2047_encode()         | RFC-2047-encode a string
  */
@@ -493,7 +492,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   tocode = fromcode;
   if (icode)
   {
-    tocode1 = mutt_rfc2047_choose_charset(icode, charsets, u, ulen, 0, 0);
+    tocode1 = mutt_ch_choose(icode, charsets, u, ulen, 0, 0);
     if (tocode1)
       tocode = tocode1;
     else
@@ -622,82 +621,6 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   *e = buf;
   *elen = buflen + 1;
   return rc;
-}
-
-/**
- * mutt_rfc2047_choose_charset - Figure the best charset to encode a string
- * @param[in] fromcode Original charset of the string
- * @param[in] charsets Colon-separated list of potential charsets to use
- * @param[in] u        String to encode
- * @param[in] ulen     Length of the string to encode
- * @param[out] d       If not NULL, point it to the converted string
- * @param[out] dlen    If not NULL, point it to the length of the d string
- * @retval ptr  Best performing charset
- * @retval NULL None could be found
- */
-char *mutt_rfc2047_choose_charset(const char *fromcode, const char *charsets,
-                                  char *u, size_t ulen, char **d, size_t *dlen)
-{
-  char canonical_buf[LONG_STRING];
-  char *e = NULL, *tocode = NULL;
-  size_t elen = 0, bestn = 0;
-  const char *q = NULL;
-
-  for (const char *p = charsets; p; p = q ? q + 1 : 0)
-  {
-    char *s = NULL, *t = NULL;
-    size_t slen, n;
-
-    q = strchr(p, ':');
-
-    n = q ? q - p : strlen(p);
-    if (!n)
-      continue;
-
-    t = mutt_mem_malloc(n + 1);
-    memcpy(t, p, n);
-    t[n] = '\0';
-
-    s = mutt_str_substr_dup(u, u + ulen);
-    if (mutt_ch_convert_string(&s, fromcode, t, 0))
-    {
-      FREE(&t);
-      FREE(&s);
-      continue;
-    }
-    slen = mutt_str_strlen(s);
-
-    if (!tocode || n < bestn)
-    {
-      bestn = n;
-      FREE(&tocode);
-      tocode = t;
-      if (d)
-      {
-        FREE(&e);
-        e = s;
-      }
-      else
-        FREE(&s);
-      elen = slen;
-    }
-    else
-    {
-      FREE(&t);
-      FREE(&s);
-    }
-  }
-  if (tocode)
-  {
-    if (d)
-      *d = e;
-    if (dlen)
-      *dlen = elen;
-
-    mutt_ch_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
-    mutt_str_replace(&tocode, canonical_buf);
-  }
-  return tocode;
 }
 
 /**
