@@ -379,12 +379,12 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
  */
 static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding enc)
 {
-  struct Buffer buf = { 0 };
   const char *it = s;
   const char *end = s + len;
 
   if (enc == ENCQUOTEDPRINTABLE)
   {
+    struct Buffer buf = { 0 };
     for (; it < end; ++it)
     {
       if (*it == '_')
@@ -402,33 +402,24 @@ static char *rfc2047_decode_word(const char *s, size_t len, enum ContentEncoding
         mutt_buffer_addch(&buf, *it);
       }
     }
+    mutt_buffer_addch(&buf, '\0');
+    return buf.data;
   }
   else if (enc == ENCBASE64)
   {
-    int c, b = 0, k = 0;
-
-    for (; it < end; ++it)
+    char *out = mutt_mem_malloc(3 * len / 4 + 1);
+    int dlen = mutt_b64_decode(out, it);
+    if (dlen == -1)
     {
-      if (*it == '=')
-        break;
-      if ((*it & ~127) || (c = base64val(*it)) == -1)
-        continue;
-      if (k + 6 >= 8)
-      {
-        k -= 2;
-        mutt_buffer_addch(&buf, b | (c >> k));
-        b = c << (8 - k);
-      }
-      else
-      {
-        b |= c << (k + 2);
-        k += 6;
-      }
+      FREE(&out);
+      return NULL;
     }
+    out[dlen] = '\0';
+    return out;
   }
 
-  mutt_buffer_addch(&buf, '\0');
-  return buf.data;
+  assert(0); /* The enc parameter has an invalid value */
+  return NULL;
 }
 
 /**
@@ -738,7 +729,8 @@ void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *c
  * @param[in,out] pd  String to be decoded, and resulting decoded string
  *
  * Try to decode anything that looks like a valid RFC2047 encoded header field,
- * ignoring RFC822 parsing rules
+ * ignoring RFC822 parsing rules. If decoding fails, for example due to an
+ * invalid base64 string, the original input is left untouched.
  */
 void mutt_rfc2047_decode(char **pd)
 {
@@ -799,7 +791,12 @@ void mutt_rfc2047_decode(char **pd)
     if (beg)
     {
       /* Some encoded text was found */
+      text[textlen] = '\0';
       char *decoded = rfc2047_decode_word(text, textlen, enc);
+      if (decoded == NULL)
+      {
+        return;
+      }
       if (prev.data && (prev_charsetlen != charsetlen ||
                         strncmp(prev_charset, charset, charsetlen) != 0))
       {
@@ -809,6 +806,7 @@ void mutt_rfc2047_decode(char **pd)
       }
 
       mutt_buffer_addstr(&prev, decoded);
+      FREE(&decoded);
       prev_charset = charset;
       prev_charsetlen = charsetlen;
       s = text + textlen + 2; /* Skip final ?= */
