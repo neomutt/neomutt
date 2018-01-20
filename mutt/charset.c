@@ -939,7 +939,7 @@ void mutt_ch_set_charset(char *charset)
   if (mutt_ch_is_utf8(buffer))
   {
     Charset_is_utf8 = true;
-    ReplacementChar = 0xfffd;
+    ReplacementChar = 0xfffd; /* replacement character */
   }
   else
   {
