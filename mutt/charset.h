@@ -104,6 +104,9 @@ void             mutt_ch_fgetconv_close(struct FgetConv **fc);
 int              mutt_ch_fgetconv(struct FgetConv *fc);
 char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 
+char *           mutt_ch_choose(const char *fromcode, const char *charsets,
+                                char *u, size_t ulen, char **d, size_t *dlen);
+
 #define mutt_ch_is_utf8(a)     mutt_ch_chscmp(a, "utf-8")
 #define mutt_ch_is_us_ascii(a) mutt_ch_chscmp(a, "us-ascii")
 

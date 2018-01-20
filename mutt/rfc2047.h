@@ -1,9 +1,11 @@
 /**
  * @file
- * RFC2047 MIME extensions routines
+ * RFC2047 MIME extensions encoding / decoding routines
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,15 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_RFC2047_H
-#define _MUTT_RFC2047_H
+#ifndef _MUTT_LIB_RFC2047_H
+#define _MUTT_LIB_RFC2047_H
 
-#include <stddef.h>
+#define mutt_rfc2047_encode_32(a, b) mutt_rfc2047_encode(a, NULL, 32, b);
 
-struct Address;
+void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+void mutt_rfc2047_decode(char **pd);
 
-void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
-void rfc2047_decode_addrlist(struct Address *a);
-
-#endif /* _MUTT_RFC2047_H */
-
+#endif /* _MUTT_LIB_RFC2047_H */

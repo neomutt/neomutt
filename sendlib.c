@@ -2209,7 +2209,7 @@ static void encode_headers(struct ListHead *h)
     if (!tmp)
       continue;
 
-    rfc2047_encode_string32(&tmp);
+    mutt_rfc2047_encode_32(&tmp, SendCharset);
     mutt_mem_realloc(&np->data, mutt_str_strlen(np->data) + 2 + mutt_str_strlen(tmp) + 1);
 
     sprintf(np->data + i, ": %s", NONULL(tmp));
@@ -2687,7 +2687,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
     if (!OPT_NEWS_SEND || MimeSubject)
 #endif
     {
-      rfc2047_encode_string32(&env->subject);
+      mutt_rfc2047_encode_32(&env->subject, SendCharset);
     }
   encode_headers(&env->userhdrs);
 }
@@ -2697,7 +2697,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   struct ListNode *item;
   STAILQ_FOREACH(item, &env->userhdrs, entries)
   {
-    rfc2047_decode(&item->data);
+    mutt_rfc2047_decode(&item->data);
   }
 
   mutt_addr_free(&env->mail_followup_to);
@@ -2708,7 +2708,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   rfc2047_decode_addrlist(env->bcc);
   rfc2047_decode_addrlist(env->from);
   rfc2047_decode_addrlist(env->reply_to);
-  rfc2047_decode(&env->subject);
+  mutt_rfc2047_decode(&env->subject);
 }
 
 static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
