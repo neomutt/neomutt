@@ -2917,12 +2917,12 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see $$wrap.
   */
-  { "reply_regexp",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
+  { "reply_regexp",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*" },
   /*
   ** .pp
   ** A regular expression used to recognize reply messages when threading
-  ** and replying. The default value corresponds to the English "Re:" and
-  ** the German "Aw:".
+  ** and replying. The default value corresponds to the English "Re:", the
+  ** German "Aw:" and the Swedish "Sv:".
   */
   { "reply_self",       DT_BOOL, R_NONE, UL &ReplySelf, 0 },
   /*
