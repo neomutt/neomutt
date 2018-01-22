@@ -29,6 +29,24 @@ static const struct
     , "ė"
     , "=?utf-8?B?xJc=?="
   },
+  {
+    /* Make sure spaces after an encoded word are kept */
+      "=?utf-8?B?6IGq5piO55qE?=    Hello"
+    , "聪明的    Hello"
+    , "=?utf-8?B?6IGq5piO55qE?=    Hello"
+  },
+  {
+    /* Make sure spaces before an encoded word are kept */
+      "Hello    =?utf-8?B?6IGq5piO55qE?="
+    , "Hello    聪明的"
+    , "Hello    =?utf-8?B?6IGq5piO55qE?="
+  },
+  {
+    /* Make sure spaces between encoded words are kept */
+      "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
+    , "聪明的    聪明的"
+    , "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
+  }
 };
 
 void test_rfc2047(void)
