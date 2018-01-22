@@ -1,19 +1,20 @@
 #define TEST_NO_MAIN
 #include "acutest.h"
 
-#include "mutt/rfc2047.h"
 #include "mutt/charset.h"
 #include "mutt/memory.h"
+#include "mutt/rfc2047.h"
 #include "mutt/string2.h"
 
 #include <locale.h>
 
 static const struct
 {
-    const char *original; /* the string as received in the original email */
-    const char *decoded;  /* the expected plain-text string               */
-    const char *encoded;  /* the string as it's encoded by NeoMutt        */
+  const char *original; /* the string as received in the original email */
+  const char *decoded;  /* the expected plain-text string               */
+  const char *encoded;  /* the string as it's encoded by NeoMutt        */
 } test_data[] =
+    /* clang-format off */
 {
   {
     /* The string is split in the middle of a multi-byte sequence */
@@ -48,6 +49,7 @@ static const struct
     , "=?utf-8?B?6IGq5piO55qEICAgIOiBquaYjueahA==?="
   }
 };
+/* clang-format on */
 
 void test_rfc2047(void)
 {
@@ -60,27 +62,30 @@ void test_rfc2047(void)
     char *s = mutt_str_strdup(test_data[i].original);
     mutt_rfc2047_decode(&s);
     TEST_CHECK_(strcmp(s, test_data[i].decoded) == 0,
-        "\nIteration: %zu"
-        "\nExpected : |%s|"
-        "\nActual   : |%s|", i, test_data[i].decoded, s);
+                "\nIteration: %zu"
+                "\nExpected : |%s|"
+                "\nActual   : |%s|",
+                i, test_data[i].decoded, s);
     FREE(&s);
 
     /* encode the expected result */
     s = mutt_str_strdup(test_data[i].decoded);
     mutt_rfc2047_encode(&s, NULL, 0, "utf-8");
     TEST_CHECK_(strcmp(s, test_data[i].encoded) == 0,
-        "\nIteration: %zu"
-        "\nExpected : |%s|"
-        "\nActual   : |%s|", i, test_data[i].encoded, s);
+                "\nIteration: %zu"
+                "\nExpected : |%s|"
+                "\nActual   : |%s|",
+                i, test_data[i].encoded, s);
     FREE(&s);
 
     /* decode the encoded result */
     s = mutt_str_strdup(test_data[i].encoded);
     mutt_rfc2047_decode(&s);
     TEST_CHECK_(strcmp(s, test_data[i].decoded) == 0,
-        "\nIteration: %zu"
-        "\nExpected : |%s|"
-        "\nActual   : |%s|", i, test_data[i].decoded, s);
+                "\nIteration: %zu"
+                "\nExpected : |%s|"
+                "\nActual   : |%s|",
+                i, test_data[i].decoded, s);
     FREE(&s);
   }
 }
