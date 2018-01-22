@@ -33,7 +33,7 @@ static const struct
 
 void test_rfc2047(void)
 {
-  setlocale(LC_ALL, "");
+  setlocale(LC_ALL, "en_US.UTF-8");
   Charset = "utf-8";
 
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
@@ -42,24 +42,27 @@ void test_rfc2047(void)
     char *s = mutt_str_strdup(test_data[i].original);
     mutt_rfc2047_decode(&s);
     TEST_CHECK_(strcmp(s, test_data[i].decoded) == 0,
-        "\nExpected: |%s|"
-        "\nActual  : |%s|", test_data[i].decoded, s);
+        "\nIteration: %zu"
+        "\nExpected : |%s|"
+        "\nActual   : |%s|", i, test_data[i].decoded, s);
     FREE(&s);
 
     /* encode the expected result */
     s = mutt_str_strdup(test_data[i].decoded);
     mutt_rfc2047_encode(&s, NULL, 0, "utf-8");
     TEST_CHECK_(strcmp(s, test_data[i].encoded) == 0,
-        "\nExpected: |%s|"
-        "\nActual  : |%s|", test_data[i].encoded, s);
+        "\nIteration: %zu"
+        "\nExpected : |%s|"
+        "\nActual   : |%s|", i, test_data[i].encoded, s);
     FREE(&s);
 
     /* decode the encoded result */
     s = mutt_str_strdup(test_data[i].encoded);
     mutt_rfc2047_decode(&s);
     TEST_CHECK_(strcmp(s, test_data[i].decoded) == 0,
-        "\nExpected: |%s|"
-        "\nActual  : |%s|", test_data[i].decoded, s);
+        "\nIteration: %zu"
+        "\nExpected : |%s|"
+        "\nActual   : |%s|", i, test_data[i].decoded, s);
     FREE(&s);
   }
 }
