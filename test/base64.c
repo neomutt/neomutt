@@ -12,17 +12,33 @@ void test_base64_encode(void)
 {
   char buffer[16];
   size_t len = mutt_b64_encode(buffer, clear, sizeof(clear) - 1, sizeof(buffer));
-  TEST_CHECK_(len == sizeof(encoded) - 1, "Expected %zu, got %zu", sizeof(encoded) - 1, len);
-  TEST_CHECK_(strcmp(buffer, encoded) == 0, "Expected %s, got %s", encoded, buffer);
+  if (!TEST_CHECK(len == sizeof(encoded) - 1))
+  {
+    TEST_MSG("Expected: %zu", sizeof(encoded) - 1);
+    TEST_MSG("Actual  : %zu", len);
+  }
+  if (!TEST_CHECK(strcmp(buffer, encoded) == 0))
+  {
+    TEST_MSG("Expected: %zu", encoded);
+    TEST_MSG("Actual  : %zu", buffer);
+  }
 }
 
 void test_base64_decode(void)
 {
   char buffer[16];
   int len = mutt_b64_decode(buffer, encoded);
-  TEST_CHECK_(len == sizeof(clear) - 1, "Expected %zu, got %zu", sizeof(clear) - 1, len);
+  if (!TEST_CHECK(len == sizeof(clear) - 1))
+  {
+    TEST_MSG("Expected: %zu", sizeof(clear) - 1);
+    TEST_MSG("Actual  : %zu", len);
+  }
   buffer[len] = '\0';
-  TEST_CHECK_(strcmp(buffer, clear) == 0, "Expected %s, got %s", clear, buffer);
+  if (!TEST_CHECK(strcmp(buffer, clear) == 0))
+  {
+    TEST_MSG("Expected: %s", clear);
+    TEST_MSG("Actual  : %s", buffer);
+  }
 }
 
 void test_base64_lengths(void)
@@ -35,22 +51,42 @@ void test_base64_lengths(void)
 
   /* Encoding a zero-length string should fail */
   enclen = mutt_b64_encode(out1, in, 0, 32);
-  TEST_CHECK_(enclen == 0, "Expected %zu, got %zu", 0, enclen);
+  if (!TEST_CHECK(enclen == 0))
+  {
+    TEST_MSG("Expected: %zu", 0);
+    TEST_MSG("Actual  : %zu", enclen);
+  }
 
   /* Decoding a zero-length string should fail, too */
   out1[0] = '\0';
   declen = mutt_b64_decode(out2, out1);
-  TEST_CHECK_(declen == -1, "Expected %zu, got %zu", -1, declen);
+  if (!TEST_CHECK(declen == -1))
+  {
+    TEST_MSG("Expected: %zu", -1);
+    TEST_MSG("Actual  : %zu", declen);
+  }
 
   /* Encode one to eight bytes, check the lengths of the returned string */
   for (size_t i = 1; i <= 8; ++i)
   {
     enclen = mutt_b64_encode(out1, in, i, 32);
     size_t exp = ((i + 2) / 3) << 2;
-    TEST_CHECK_(enclen == exp, "Expected %zu, got %zu", exp, enclen);
+    if (!TEST_CHECK(enclen == exp))
+    {
+      TEST_MSG("Expected: %zu", exp);
+      TEST_MSG("Actual  : %zu", enclen);
+    }
     declen = mutt_b64_decode(out2, out1);
-    TEST_CHECK_(declen == i, "Expected %zu, got %zu", i, declen);
+    if (!TEST_CHECK(declen == i))
+    {
+      TEST_MSG("Expected: %zu", i);
+      TEST_MSG("Actual  : %zu", declen);
+    }
     out2[declen] = '\0';
-    TEST_CHECK(strncmp(out2, in, i) == 0);
+    if (!TEST_CHECK(strncmp(out2, in, i) == 0))
+    {
+      TEST_MSG("Expected: %s", in);
+      TEST_MSG("Actual  : %s", out2);
+    }
   }
 }

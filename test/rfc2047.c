@@ -61,31 +61,34 @@ void test_rfc2047(void)
     /* decode the original string */
     char *s = mutt_str_strdup(test_data[i].original);
     mutt_rfc2047_decode(&s);
-    TEST_CHECK_(strcmp(s, test_data[i].decoded) == 0,
-                "\nIteration: %zu"
-                "\nExpected : |%s|"
-                "\nActual   : |%s|",
-                i, test_data[i].decoded, s);
+    if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
+    {
+      TEST_MSG("Iteration: %zu", i);
+      TEST_MSG("Expected : %s", test_data[i].decoded);
+      TEST_MSG("Actual   : %s", s);
+    }
     FREE(&s);
 
     /* encode the expected result */
     s = mutt_str_strdup(test_data[i].decoded);
     mutt_rfc2047_encode(&s, NULL, 0, "utf-8");
-    TEST_CHECK_(strcmp(s, test_data[i].encoded) == 0,
-                "\nIteration: %zu"
-                "\nExpected : |%s|"
-                "\nActual   : |%s|",
-                i, test_data[i].encoded, s);
+    if (!TEST_CHECK(strcmp(s, test_data[i].encoded) == 0))
+    {
+      TEST_MSG("Iteration: %zu", i);
+      TEST_MSG("Expected : %s", test_data[i].encoded);
+      TEST_MSG("Actual   : %s", s);
+    }
     FREE(&s);
 
     /* decode the encoded result */
     s = mutt_str_strdup(test_data[i].encoded);
     mutt_rfc2047_decode(&s);
-    TEST_CHECK_(strcmp(s, test_data[i].decoded) == 0,
-                "\nIteration: %zu"
-                "\nExpected : |%s|"
-                "\nActual   : |%s|",
-                i, test_data[i].decoded, s);
+    if (!TEST_CHECK(strcmp(s, test_data[i].decoded) == 0))
+    {
+      TEST_MSG("Iteration: %zu", i);
+      TEST_MSG("Expected : %s", test_data[i].decoded);
+      TEST_MSG("Actual   : %s", s);
+    }
     FREE(&s);
   }
 }
