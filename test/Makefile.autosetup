@@ -4,6 +4,10 @@ TEST_OBJS   = test/main.o \
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
+.PHONY: test
+test: $(TEST_BINARY)
+	$(TEST_BINARY)
+
 $(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
 	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
 
