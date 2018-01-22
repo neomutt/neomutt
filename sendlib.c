@@ -2209,10 +2209,10 @@ static void encode_headers(struct ListHead *h)
     if (!tmp)
       continue;
 
-    mutt_rfc2047_encode_32(&tmp, SendCharset);
-    mutt_mem_realloc(&np->data, mutt_str_strlen(np->data) + 2 + mutt_str_strlen(tmp) + 1);
+    mutt_rfc2047_encode(&tmp, NULL, i + 2, SendCharset);
+    mutt_mem_realloc(&np->data, i + 2 + mutt_str_strlen(tmp) + 1);
 
-    sprintf(np->data + i, ": %s", NONULL(tmp));
+    sprintf(np->data + i + 2, "%s", tmp);
 
     FREE(&tmp);
   }
@@ -2687,7 +2687,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
     if (!OPT_NEWS_SEND || MimeSubject)
 #endif
     {
-      mutt_rfc2047_encode_32(&env->subject, SendCharset);
+      mutt_rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
     }
   encode_headers(&env->userhdrs);
 }

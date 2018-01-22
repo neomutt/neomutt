@@ -25,8 +25,6 @@
 #ifndef _MUTT_LIB_RFC2047_H
 #define _MUTT_LIB_RFC2047_H
 
-#define mutt_rfc2047_encode_32(a, b) mutt_rfc2047_encode(a, NULL, 32, b);
-
 void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
 void mutt_rfc2047_decode(char **pd);
 

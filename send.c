@@ -1135,7 +1135,7 @@ void mutt_encode_descriptions(struct Body *b, short recurse)
   {
     if (t->description)
     {
-      mutt_rfc2047_encode_32(&t->description, SendCharset);
+      mutt_rfc2047_encode(&t->description, NULL, sizeof("Content-Description:"), SendCharset);
     }
     if (recurse && t->parts)
       mutt_encode_descriptions(t->parts, recurse);
