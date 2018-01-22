@@ -37,7 +37,7 @@ static const struct
   },
   {
     /* Make sure spaces before an encoded word are kept */
-      "Hello    =?utf-8?B?6IGq5piO55qE?="
+      "=?UTF-8?Q?Hello____=E8=81=AA=E6=98=8E=E7=9A=84?=" /* Roundcube style */
     , "Hello    聪明的"
     , "Hello    =?utf-8?B?6IGq5piO55qE?="
   },
