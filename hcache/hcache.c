@@ -606,12 +606,8 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     unsigned char m[16]; /* binary md5sum */
     char name[_POSIX_PATH_MAX];
     snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
-    mutt_md5_buf(name, strlen(name), &m);
-    snprintf(name, sizeof(name),
-             "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-             m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10],
-             m[11], m[12], m[13], m[14], m[15]);
-
+    mutt_md5_buf(name, strlen(name), m);
+    mutt_md5_toascii(m, name);
     rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
   }
 

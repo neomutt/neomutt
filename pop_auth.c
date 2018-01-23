@@ -237,9 +237,7 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
   mutt_md5_process_bytes(pop_data->conn->account.pass,
                          strlen(pop_data->conn->account.pass), &ctx);
   mutt_md5_finish_ctx(&ctx, digest);
-
-  for (size_t i = 0; i < sizeof(digest); i++)
-    sprintf(hash + 2 * i, "%02x", digest[i]);
+  mutt_md5_toascii(digest, hash);
 
   /* Send APOP command to server */
   snprintf(buf, sizeof(buf), "APOP %s %s\r\n", pop_data->conn->account.user, hash);

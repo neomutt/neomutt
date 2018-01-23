@@ -34,6 +34,7 @@
  * | mutt_md5_process_block() | Process a block with MD5
  * | mutt_md5_process_bytes() | Process a block of data
  * | mutt_md5_read_ctx()      | Read from the context into a buffer
+ * | mutt_md5_toascii()       | Produce an ASCII MD5 digest from a buffer
  */
 
 /* md5.c - Functions to compute MD5 message digest of files or memory blocks
@@ -315,16 +316,16 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
 
 /**
  * mutt_md5_buf - Calculate the MD5 hash of a buffer
- * @param buffer   Buffer to hash
- * @param len      Length of buffer
- * @param resblock Buffer for result
+ * @param buffer  Buffer to hash
+ * @param len     Length of buffer
+ * @param resbuf  Buffer for result
  * @retval ptr Results buffer
  *
  * Compute MD5 message digest for LEN bytes beginning at Buffer.  The result is
  * always in little endian byte order, so that a byte-wise output yields to the
  * wanted ASCII representation of the message digest.
  */
-void *mutt_md5_buf(const char *buffer, size_t len, void *resblock)
+void *mutt_md5_buf(const char *buffer, size_t len, void *resbuf)
 {
   struct Md5Ctx ctx;
 
@@ -335,7 +336,7 @@ void *mutt_md5_buf(const char *buffer, size_t len, void *resblock)
   mutt_md5_process_bytes(buffer, len, &ctx);
 
   /* Put result in desired memory area. */
-  return mutt_md5_finish_ctx(&ctx, resblock);
+  return mutt_md5_finish_ctx(&ctx, resbuf);
 }
 
 /**
@@ -414,3 +415,10 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
   }
 }
 
+void mutt_md5_toascii(const void *resbuf, char *digest)
+{
+  const unsigned char *c = resbuf;
+  sprintf(digest, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+          c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10],
+          c[11], c[12], c[13], c[14], c[15]);
+}
