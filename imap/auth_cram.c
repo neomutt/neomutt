@@ -163,14 +163,8 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
    */
   hmac_md5(idata->conn->account.pass, obuf, hmac_response);
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
-  snprintf(
-      obuf, sizeof(obuf),
-      "%s %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-      idata->conn->account.user, hmac_response[0], hmac_response[1],
-      hmac_response[2], hmac_response[3], hmac_response[4], hmac_response[5],
-      hmac_response[6], hmac_response[7], hmac_response[8], hmac_response[9],
-      hmac_response[10], hmac_response[11], hmac_response[12],
-      hmac_response[13], hmac_response[14], hmac_response[15]);
+  int off = snprintf(obuf, sizeof(obuf), "%s ", idata->conn->account.user);
+  mutt_md5_toascii(hmac_response, obuf + off);
   mutt_debug(2, "CRAM response: %s\n", obuf);
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
