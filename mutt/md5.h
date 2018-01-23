@@ -48,9 +48,6 @@ struct Md5Ctx
 void *mutt_md5_buf(const char *buffer, size_t len, void *resblock);
 void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
 void  mutt_md5_init_ctx(struct Md5Ctx *ctx);
-void  mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx);
 void  mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
-void *mutt_md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf);
-int   mutt_md5_stream(FILE *stream, void *resblock);
 
 #endif /* _MUTT_MD5_H */
