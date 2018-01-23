@@ -47,6 +47,7 @@
 #include <time.h>
 #include "date.h"
 #include "debug.h"
+#include "memory.h"
 #include "string2.h"
 
 /* theoretically time_t can be float but it is integer on most (if not all) systems */
@@ -55,6 +56,8 @@
 #define TM_YEAR_MAX                                                            \
   (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
 #define TM_YEAR_MIN (1970 - (TM_YEAR_MAX - 1970) - 1)
+
+// clang-format off
 
 /**
  * Weekdays - Day of the week (abbreviated)
@@ -67,11 +70,10 @@ static const char *const Weekdays[] = {
  * Months - Months of the year (abbreviated)
  */
 static const char *const Months[] = {
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-  "Aug", "Sep", "Oct", "Nov", "Dec", "ERR",
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
-// clang-format off
 /**
  * TimeZones - Lookup table of Time Zones
  *
@@ -249,7 +251,7 @@ time_t mutt_date_make_time(struct tm *t, int local)
 {
   time_t g;
 
-  static const int AccumDaysPerMonth[12] = {
+  static const int AccumDaysPerMonth[mutt_array_size(Months)] = {
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334,
   };
 
@@ -271,7 +273,7 @@ time_t mutt_date_make_time(struct tm *t, int local)
     return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
-  g = AccumDaysPerMonth[t->tm_mon % 12];
+  g = AccumDaysPerMonth[t->tm_mon % mutt_array_size(Months)];
 
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
@@ -313,7 +315,7 @@ time_t mutt_date_make_time(struct tm *t, int local)
  */
 void mutt_date_normalize_time(struct tm *tm)
 {
-  static const char DaysPerMonth[12] = {
+  static const char DaysPerMonth[mutt_array_size(Months)] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
   };
   int leap;
@@ -414,7 +416,7 @@ char *mutt_date_make_date(char *buf, size_t buflen)
  */
 int mutt_date_check_month(const char *s)
 {
-  for (int i = 0; i < 12; i++)
+  for (int i = 0; i < mutt_array_size(Months); i++)
     if (mutt_str_strncasecmp(s, Months[i], 3) == 0)
       return i;
 
@@ -434,7 +436,7 @@ bool mutt_date_is_day_name(const char *s)
   if ((strlen(s) < 3) || !*(s + 3) || !ISSPACE(*(s + 3)))
     return false;
 
-  for (int i = 0; i < 7; i++)
+  for (int i = 0; i < mutt_array_size(Weekdays); i++)
     if (mutt_str_strncasecmp(s, Weekdays[i], 3) == 0)
       return true;
 
@@ -553,8 +555,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
           struct Tz *tz = NULL;
 
           /* This is safe to do: A pointer to a struct equals a pointer to its first element */
-          tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct Tz),
-                       sizeof(struct Tz),
+          tz = bsearch(ptz, TimeZones, mutt_array_size(TimeZones), sizeof(struct Tz),
                        (int (*)(const void *, const void *)) mutt_str_strcasecmp);
 
           if (tz)
