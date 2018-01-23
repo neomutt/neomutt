@@ -32,6 +32,13 @@
 #include "options.h"
 #include "protos.h"
 
+short History;
+char *HistoryFile;
+bool  HistoryRemoveDups;
+short SaveHistory;
+
+#define HC_FIRST HC_CMD
+
 /* This history ring grows from 0..History, with last marking the
  * where new entries go:
  *         0        the oldest entry in the ring

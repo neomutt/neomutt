@@ -115,7 +115,6 @@ WHERE bool HideMissing;
 WHERE bool HideThreadSubject;
 WHERE bool HideTopLimited;
 WHERE bool HideTopMissing;
-WHERE bool HistoryRemoveDups;
 WHERE bool HonorDisposition;
 WHERE bool IgnoreListReplyTo;
 #ifdef USE_IMAP

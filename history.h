@@ -25,6 +25,11 @@
 
 #include <stdbool.h>
 
+extern short History;
+extern char *HistoryFile;
+extern bool  HistoryRemoveDups;
+extern short SaveHistory;
+
 /**
  * enum HistoryClass - Type to differentiate different histories
  */
@@ -40,8 +45,6 @@ enum HistoryClass
   /* insert new items here to keep history file working */
   HC_LAST
 };
-
-#define HC_FIRST HC_CMD
 
 void mutt_init_history(void);
 void mutt_read_histfile(void);
