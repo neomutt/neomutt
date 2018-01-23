@@ -556,26 +556,6 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
 }
 
 /**
- * tls_make_date - Create a TLS date string
- * @param t   Time to convert
- * @param s   Buffer for the string
- * @param len Length of the buffer
- * @retval ptr Pointer to s
- */
-static char *tls_make_date(time_t t, char *s, size_t len)
-{
-  struct tm *l = gmtime(&t);
-
-  if (l)
-    snprintf(s, len, "%s, %d %s %d %02d:%02d:%02d UTC", Weekdays[l->tm_wday], l->tm_mday,
-             Months[l->tm_mon], l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec);
-  else
-    mutt_str_strfcpy(s, _("[invalid date]"), len);
-
-  return s;
-}
-
-/**
  * tls_check_one_certificate - Check a GnuTLS certificate
  * @param certdata List of GnuTLS certificates
  * @param certstat GnuTLS certificate status
@@ -755,12 +735,12 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   snprintf(menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
 
   t = gnutls_x509_crt_get_activation_time(cert);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"),
-           tls_make_date(t, datestr, 30));
+  mutt_date_make_tls(datestr, sizeof(datestr), t);
+  snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"), datestr);
 
   t = gnutls_x509_crt_get_expiration_time(cert);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"),
-           tls_make_date(t, datestr, 30));
+  mutt_date_make_tls(datestr, sizeof(datestr), t);
+  snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"), datestr);
 
   fpbuf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
