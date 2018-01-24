@@ -7,7 +7,10 @@
   NEOMUTT_TEST_ITEM(test_base64_encode)                                        \
   NEOMUTT_TEST_ITEM(test_base64_decode)                                        \
   NEOMUTT_TEST_ITEM(test_base64_lengths)                                       \
-  NEOMUTT_TEST_ITEM(test_rfc2047)
+  NEOMUTT_TEST_ITEM(test_rfc2047)                                              \
+  NEOMUTT_TEST_ITEM(test_md5)                                                  \
+  NEOMUTT_TEST_ITEM(test_md5_ctx)                                              \
+  NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)
 
 /******************************************************************************
  * You probably don't need to touch what follows.

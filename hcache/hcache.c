@@ -606,12 +606,8 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     unsigned char m[16]; /* binary md5sum */
     char name[_POSIX_PATH_MAX];
     snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
-    mutt_md5_buf(name, strlen(name), &m);
-    snprintf(name, sizeof(name),
-             "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-             m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10],
-             m[11], m[12], m[13], m[14], m[15]);
-
+    mutt_md5(name, m);
+    mutt_md5_toascii(m, name);
     rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
   }
 
@@ -758,14 +754,14 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     /* Mix in user's spam list */
     for (spam = SpamList; spam; spam = spam->next)
     {
-      mutt_md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
-      mutt_md5_process_bytes(spam->template, strlen(spam->template), &ctx);
+      mutt_md5_process(spam->regex->pattern, &ctx);
+      mutt_md5_process(spam->template, &ctx);
     }
 
     /* Mix in user's nospam list */
     for (nospam = NoSpamList; nospam; nospam = nospam->next)
     {
-      mutt_md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
+      mutt_md5_process(nospam->regex->pattern, &ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */
