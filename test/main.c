@@ -9,6 +9,7 @@
   NEOMUTT_TEST_ITEM(test_base64_lengths)                                       \
   NEOMUTT_TEST_ITEM(test_rfc2047)                                              \
   NEOMUTT_TEST_ITEM(test_md5)                                                  \
+  NEOMUTT_TEST_ITEM(test_md5_bytes)                                            \
   NEOMUTT_TEST_ITEM(test_md5_buffer)
 
 /******************************************************************************

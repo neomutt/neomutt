@@ -33,6 +33,7 @@
  * | mutt_md5_init_ctx()      | Initialise the MD5 computation
  * | mutt_md5_process_block() | Process a block with MD5
  * | mutt_md5_process_bytes() | Process a block of data
+ * | mutt_md5_process()       | Process a string
  * | mutt_md5_read_ctx()      | Read from the context into a buffer
  * | mutt_md5_toascii()       | Produce an ASCII MD5 digest from a buffer
  */
@@ -337,6 +338,16 @@ void *mutt_md5_buf(const char *buffer, size_t len, void *resbuf)
 
   /* Put result in desired memory area. */
   return mutt_md5_finish_ctx(&ctx, resbuf);
+}
+
+/**
+ * mutt_md5_process - Process a NULL-terminated string
+ * @param s    String to process
+ * @param ctx  MD5 context
+ */
+void mutt_md5_process(const char *s, struct Md5Ctx *ctx)
+{
+  mutt_md5_process_bytes(s, strlen(s), ctx);
 }
 
 /**

@@ -22,7 +22,7 @@ static const struct
 };
 /* clang-format on */
 
-void test_md5(void)
+void test_md5_bytes(void)
 {
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
   {
@@ -31,6 +31,26 @@ void test_md5(void)
     char digest[33];
     mutt_md5_init_ctx(&ctx);
     mutt_md5_process_bytes(test_data[i].text, strlen(test_data[i].text), &ctx);
+    mutt_md5_finish_ctx(&ctx, buf);
+    mutt_md5_toascii(buf, digest);
+    if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))
+    {
+      TEST_MSG("Iteration: %zu", i);
+      TEST_MSG("Expected : %s", test_data[i].hash);
+      TEST_MSG("Actual   : %s", digest);
+    }
+  }
+}
+
+void test_md5(void)
+{
+  for (size_t i = 0; i < mutt_array_size(test_data); ++i)
+  {
+    struct Md5Ctx ctx;
+    unsigned char buf[16];
+    char digest[33];
+    mutt_md5_init_ctx(&ctx);
+    mutt_md5_process(test_data[i].text, &ctx);
     mutt_md5_finish_ctx(&ctx, buf);
     mutt_md5_toascii(buf, digest);
     if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))

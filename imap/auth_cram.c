@@ -58,10 +58,9 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
   unsigned char secret[MD5_BLOCK_LEN + 1];
   unsigned char hash_passwd[MD5_DIGEST_LEN];
-  size_t secret_len, chal_len;
+  size_t secret_len;
 
   secret_len = strlen(password);
-  chal_len = strlen(challenge);
 
   /* passwords longer than MD5_BLOCK_LEN bytes are substituted with their MD5
    * digests */
@@ -88,7 +87,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   /* inner hash: challenge and ipadded secret */
   mutt_md5_init_ctx(&ctx);
   mutt_md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
-  mutt_md5_process_bytes(challenge, chal_len, &ctx);
+  mutt_md5_process(challenge, &ctx);
   mutt_md5_finish_ctx(&ctx, response);
 
   /* outer hash: inner hash and opadded secret */

@@ -754,14 +754,14 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     /* Mix in user's spam list */
     for (spam = SpamList; spam; spam = spam->next)
     {
-      mutt_md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
-      mutt_md5_process_bytes(spam->template, strlen(spam->template), &ctx);
+      mutt_md5_process(spam->regex->pattern, &ctx);
+      mutt_md5_process(spam->template, &ctx);
     }
 
     /* Mix in user's nospam list */
     for (nospam = NoSpamList; nospam; nospam = nospam->next)
     {
-      mutt_md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
+      mutt_md5_process(nospam->regex->pattern, &ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */
