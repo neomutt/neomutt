@@ -663,7 +663,7 @@ void mutt_rfc2047_decode(char **pd)
   char *beg;                 /* Begin of encoded word                  */
   enum ContentEncoding enc;  /* ENCBASE64 or ENCQUOTEDPRINTABLE        */
   char *charset;             /* Which charset                          */
-  size_t charsetlen;         /* Lenght of the charset                  */
+  size_t charsetlen;         /* Length of the charset                  */
   char *text;                /* Encoded text                           */
   size_t textlen;            /* Length of encoded text                 */
 

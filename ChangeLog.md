@@ -689,7 +689,7 @@
   - 22 resource leaks
 * Translations
   - Update translations
-  - Update the german translation (#397)
+  - Update the German translation (#397)
 * Docs
   - fix typo in notmuch example
   - remove duplicate "default" in the sidebar intro

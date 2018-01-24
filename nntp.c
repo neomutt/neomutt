@@ -67,7 +67,7 @@ static int nntp_connect_error(struct NntpServer *nserv)
 /**
  * nntp_capabilities - Get capabilities
  * @retval -1 Error, connection is closed
- * @retval  0 Mode is reader, capabilities setted up
+ * @retval  0 Mode is reader, capabilities set up
  * @retval  1 Need to switch to reader mode
  */
 static int nntp_capabilities(struct NntpServer *nserv)

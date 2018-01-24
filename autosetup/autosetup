@@ -464,7 +464,7 @@ proc options-add {opts {header ""}} {
 				set defaultvalue [dict get $autosetup(options-defaults) $name]
 				dict set autosetup(optdefault) $name $defaultvalue
 			} elseif {![info exists defaultvalue]} {
-				# For backward compatiblity, if ":name" was given, use name as both
+				# For backward compatibility, if ":name" was given, use name as both
 				# the display text and the default value, but only if the user
 				# specified the option without the value
 				set defaultvalue $value
