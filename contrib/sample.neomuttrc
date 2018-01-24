@@ -67,7 +67,7 @@ set postponed=+postponed	# mailbox to store postponed messages in
 #set print=ask-yes		# ask me if I really want to print messages
 set print_command=/bin/false	# how to print things (I like to save trees)
 set noprompt_after	# ask me for a command after the external pager exits
-#set quote_regexp="^ *[a-zA-Z]*[>:#}]"	# how to catch quoted text
+#set quote_regex="^ *[a-zA-Z]*[>:#}]"	# how to catch quoted text
 set read_inc=25			# show progress when reading a mailbox
 #set recall			# prompt to recall postponed messages
 set record=+outbox		# default location to save outgoing mail

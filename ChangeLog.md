@@ -951,9 +951,9 @@
 * Features
   - nntp: use safe_{fopen,fclose}
   - nntp: fix resource leak
-  - forgotten-attachment: Ignore lines matching quote_regexp.
+  - forgotten-attachment: Ignore lines matching quote_regex.
   - forgotten-attachment: Fix checking logic.
-  - forgotten-attachment: Update docs regarding $quote_regexp.
+  - forgotten-attachment: Update docs regarding $quote_regex.
   - notmuch: Add a fake "Folder" header to viewed emails
   - sidebar: consider description when using whitelist
   - skip-quoted: skip to body

@@ -324,7 +324,7 @@ WHERE char *NmQueryWindowCurrentSearch;
 /* These variables are backing for config items */
 WHERE struct Regex *GecosMask;
 WHERE struct Regex *Mask;
-WHERE struct Regex *QuoteRegexp;
+WHERE struct Regex *QuoteRegex;
 WHERE struct Regex *ReplyRegexp;
 WHERE struct Regex *Smileys;
 
