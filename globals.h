@@ -325,7 +325,7 @@ WHERE char *NmQueryWindowCurrentSearch;
 WHERE struct Regex *GecosMask;
 WHERE struct Regex *Mask;
 WHERE struct Regex *QuoteRegex;
-WHERE struct Regex *ReplyRegexp;
+WHERE struct Regex *ReplyRegex;
 WHERE struct Regex *Smileys;
 
 #endif /* _MUTT_GLOBALS_H */

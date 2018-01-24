@@ -2918,7 +2918,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Also see $$wrap.
   */
-  { "reply_regexp",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*" },
+  { "reply_regex",     DT_REGEX,   R_INDEX|R_RESORT, UL &ReplyRegex, UL "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*" },
   /*
   ** .pp
   ** A regular expression used to recognize reply messages when threading
@@ -4407,6 +4407,7 @@ struct Option MuttVars[] = {
   { "post_indent_str",        DT_SYNONYM, R_NONE, UL "post_indent_string",       0 },
   { "print_cmd",              DT_SYNONYM, R_NONE, UL "print_command",            0 },
   { "quote_regexp",           DT_SYNONYM, R_NONE, UL "quote_regex",              0 },
+  { "reply_regexp",           DT_SYNONYM, R_NONE, UL "reply_regex",              0 },
   { "smime_self_encrypt_as",  DT_SYNONYM, R_NONE, UL "smime_default_key",        0 },
   { "xterm_icon",             DT_SYNONYM, R_NONE, UL "ts_icon_format",           0 },
   { "xterm_set_titles",       DT_SYNONYM, R_NONE, UL "ts_enabled",               0 },

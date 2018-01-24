@@ -266,7 +266,7 @@ set   encode_from                       # "From " in the beginning of a line tri
 set   nowait_key                        # Return immediately from external programs
 set   forward_format="[fwd] %s (from: %a)"      # A different subject for forwarded messages
 set   nobeep                            # Shut up. ;-)
-set   reply_regexp="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"    # A regular expression to detect replies
+set   reply_regex="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"    # A regular expression to detect replies
 set   header                            # Include the message header when replying.
 set   ignore_list_reply_to              # Ignore Reply-To headers pointing to mailing lists.
 set   norfc2047_parameters              # Sometimes, I get mails which use a bogus encoding for
