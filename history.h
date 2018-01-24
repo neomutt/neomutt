@@ -46,13 +46,13 @@ enum HistoryClass
   HC_LAST
 };
 
-void mutt_init_history(void);
-void mutt_read_histfile(void);
-void mutt_history_add(enum HistoryClass hclass, const char *s, bool save);
-char *mutt_history_next(enum HistoryClass hclass);
-char *mutt_history_prev(enum HistoryClass hclass);
-void mutt_reset_history_state(enum HistoryClass hclass);
-bool mutt_history_at_scratch(enum HistoryClass hclass);
-void mutt_history_save_scratch(enum HistoryClass hclass, const char *s);
+void  mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);
+bool  mutt_hist_at_scratch(enum HistoryClass hclass);
+void  mutt_hist_init(void);
+char *mutt_hist_next(enum HistoryClass hclass);
+char *mutt_hist_prev(enum HistoryClass hclass);
+void  mutt_hist_read_file(void);
+void  mutt_hist_reset_state(enum HistoryClass hclass);
+void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 
 #endif /* _MUTT_HISTORY_H */

@@ -120,7 +120,7 @@ static void init_history(struct History *h)
   h->last = 0;
 }
 
-void mutt_read_histfile(void)
+void mutt_hist_read_file(void)
 {
   FILE *f = NULL;
   int line = 0, hclass, read;
@@ -148,7 +148,7 @@ void mutt_read_histfile(void)
     if (p)
     {
       mutt_ch_convert_string(&p, "utf-8", Charset, 0);
-      mutt_history_add(hclass, p, false);
+      mutt_hist_add(hclass, p, false);
       FREE(&p);
     }
   }
@@ -390,7 +390,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
     h->hist[dest--] = NULL;
 }
 
-void mutt_init_history(void)
+void mutt_hist_init(void)
 {
   if (History == OldSize)
     return;
@@ -401,7 +401,7 @@ void mutt_init_history(void)
   OldSize = History;
 }
 
-void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
+void mutt_hist_add(enum HistoryClass hclass, const char *s, bool save)
 {
   int prev;
   struct History *h = get_history(hclass);
@@ -433,7 +433,7 @@ void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
   h->cur = h->last; /* reset to the last entry */
 }
 
-char *mutt_history_next(enum HistoryClass hclass)
+char *mutt_hist_next(enum HistoryClass hclass)
 {
   int next;
   struct History *h = get_history(hclass);
@@ -455,7 +455,7 @@ char *mutt_history_next(enum HistoryClass hclass)
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
 }
 
-char *mutt_history_prev(enum HistoryClass hclass)
+char *mutt_hist_prev(enum HistoryClass hclass)
 {
   int prev;
   struct History *h = get_history(hclass);
@@ -477,7 +477,7 @@ char *mutt_history_prev(enum HistoryClass hclass)
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
 }
 
-void mutt_reset_history_state(enum HistoryClass hclass)
+void mutt_hist_reset_state(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
 
@@ -487,7 +487,7 @@ void mutt_reset_history_state(enum HistoryClass hclass)
   h->cur = h->last;
 }
 
-bool mutt_history_at_scratch(enum HistoryClass hclass)
+bool mutt_hist_at_scratch(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
 
@@ -497,7 +497,7 @@ bool mutt_history_at_scratch(enum HistoryClass hclass)
   return h->cur == h->last;
 }
 
-void mutt_history_save_scratch(enum HistoryClass hclass, const char *s)
+void mutt_hist_save_scratch(enum HistoryClass hclass, const char *s)
 {
   struct History *h = get_history(hclass);
 
