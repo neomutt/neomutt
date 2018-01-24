@@ -2418,7 +2418,7 @@ int mutt_index_menu(void)
       case OP_DECRYPT_SAVE:
         if (!WithCrypto)
           break;
-      /* fall thru */
+      /* fallthrough */
       case OP_COPY_MESSAGE:
       case OP_SAVE:
       case OP_DECODE_COPY:

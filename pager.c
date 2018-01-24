@@ -1258,6 +1258,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
 
     if (Charset_is_utf8)
     {
+      /* zero width space, zero width no-break space */
       if (wc == 0x200B || wc == 0xFEFF)
       {
         mutt_debug(3, "skip zero-width character U+%04X\n", (unsigned short) wc);
@@ -1315,10 +1316,14 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
       last_special = special;
     }
 
+    /* no-break space, narrow no-break space */
     if (IsWPrint(wc) || (Charset_is_utf8 && (wc == 0x00A0 || wc == 0x202F)))
     {
       if (wc == ' ')
+      {
         space = ch;
+      }
+      /* no-break space, narrow no-break space */
       else if (Charset_is_utf8 && (wc == 0x00A0 || wc == 0x202F))
       {
         /* Convert non-breaking space to normal space. The local variable

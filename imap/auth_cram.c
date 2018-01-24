@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_crap IMAP CRAM-MD5 authentication method
+ * @page imap_auth_cram IMAP CRAM-MD5 authentication method
  *
  * IMAP CRAM-MD5 authentication method
  *

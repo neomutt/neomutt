@@ -2454,7 +2454,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           restore_default(&MuttVars[idx]);
       }
     }
-    else if (!myvar && (idx >= 0) && DTYPE(MuttVars[idx].type) == DT_BOOL)
+    else if (!myvar && (idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_BOOL))
     {
       if (*s->dptr == '=')
       {
@@ -2579,7 +2579,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           FREE(&myvar);
           myvar = "don't resort";
         }
-        else if ((idx >= 0) && DTYPE(MuttVars[idx].type) == DT_PATH)
+        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_PATH))
         {
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0 && debugfile_cmdline)
           {
@@ -2597,7 +2597,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
             restart_debug();
         }
-        else if ((idx >= 0) && DTYPE(MuttVars[idx].type) == DT_STRING)
+        else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_STRING))
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
                check_charset(&MuttVars[idx], tmp->data) < 0) |
@@ -2638,7 +2638,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_REGEX)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_REGEX))
     {
       if (query || *s->dptr != '=')
       {
@@ -3313,7 +3313,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
     {
-      /* cycle thru all the matches */
+      /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
     }
 
@@ -3370,7 +3370,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
     {
-      /* cycle thru all the matches */
+      /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
     }
 
@@ -3418,7 +3418,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
     {
-      /* cycle thru all the matches */
+      /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
     }
 
@@ -3574,7 +3574,7 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
     {
-      /* cycle thru all the matches */
+      /* cycle through all the matches */
       snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
     }
 
@@ -3629,7 +3629,7 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
   else if (numtabs > 1 && NumMatched > 2)
   {
-    /* cycle thru all the matches */
+    /* cycle through all the matches */
     snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
   }
 
@@ -4526,7 +4526,7 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
   else if (numtabs > 1 && NumMatched > 2)
   {
-    /* cycle thru all the matches */
+    /* cycle through all the matches */
     snprintf(Completed, sizeof(Completed), "%s", Matches[(numtabs - 2) % NumMatched]);
   }
 

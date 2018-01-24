@@ -36,7 +36,7 @@
  *
  * The hcache_open function has the purpose of opening a backend-specific
  * connection to the database file specified by the path parameter. Backends
- * MUST return non-NULL specific context informations on success. This will be
+ * MUST return non-NULL specific context information on success. This will be
  * stored in the ctx member of the header_cache_t structure and passed on to
  * all other backend-specific functions (see below).
  */

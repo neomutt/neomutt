@@ -136,7 +136,7 @@ us=Cannot combine -c and -r arguments\n
 
 #Untested
 [PGPK_IS_SEPERATE]
-us=pgpk is a seperate program, not a symlink to pgp!\n
+us=pgpk is a separate program, not a symlink to pgp!\n
 
 #Untested
 [UNKNOWN_SYMLINK]
@@ -376,7 +376,7 @@ us="I/O error during call to ftell(): %s"
 
 #Untested
 [PGPERR_PRECEDING_ASSOCIATED_WITH]
-us="The preceeding error was associated with:  "
+us="The preceding error was associated with:  "
 
 #Untested
 [NOT_PGP_KEYFILE]
@@ -882,7 +882,7 @@ us=You cannot disable an axiomatic key.  Use pgpk -e to change your\n\
 trust of this key, first.\n
 
 [RETRIEVING_URL]
-us="Retreiving %s:/%s:%i%s\n"
+us="Retrieving %s:/%s:%i%s\n"
 
 [ADD_THESE_KEYS]
 us="\nAdd these keys to your keyring? [Y/n] "
