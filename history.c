@@ -103,7 +103,7 @@ static struct History *get_history(enum HistoryClass hclass)
 
 static void init_history(struct History *h)
 {
-  if (OldSize)
+  if (OldSize != 0)
   {
     if (h->hist)
     {
@@ -113,7 +113,7 @@ static void init_history(struct History *h)
     }
   }
 
-  if (History)
+  if (History != 0)
     h->hist = mutt_mem_calloc(History + 1, sizeof(char *));
 
   h->cur = 0;
@@ -157,19 +157,19 @@ void mutt_hist_read_file(void)
   FREE(&linebuf);
 }
 
-static int dup_hash_dec(struct Hash *dup_hash, char *s)
+static int dup_hash_dec(struct Hash *dup_hash, char *str)
 {
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = mutt_hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
     return -1;
 
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(dup_hash, s, NULL);
+    mutt_hash_delete(dup_hash, str, NULL);
     return 0;
   }
 
@@ -178,16 +178,16 @@ static int dup_hash_dec(struct Hash *dup_hash, char *s)
   return count;
 }
 
-static int dup_hash_inc(struct Hash *dup_hash, char *s)
+static int dup_hash_inc(struct Hash *dup_hash, char *str)
 {
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = mutt_hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
   {
     count = 1;
-    mutt_hash_insert(dup_hash, s, (void *) count);
+    mutt_hash_insert(dup_hash, str, (void *) count);
     return count;
   }
 
@@ -300,13 +300,13 @@ cleanup:
       mutt_hash_destroy(&dup_hashes[hclass]);
 }
 
-static void save_history(enum HistoryClass hclass, const char *s)
+static void save_history(enum HistoryClass hclass, const char *str)
 {
   static int n = 0;
   FILE *f = NULL;
   char *tmp = NULL;
 
-  if (!s || !*s) /* This shouldn't happen, but it's safer. */
+  if (!str || !*str) /* This shouldn't happen, but it's safer. */
     return;
 
   f = fopen(HistoryFile, "a");
@@ -316,7 +316,7 @@ static void save_history(enum HistoryClass hclass, const char *s)
     return;
   }
 
-  tmp = mutt_str_strdup(s);
+  tmp = mutt_str_strdup(str);
   mutt_ch_convert_string(&tmp, Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
@@ -348,19 +348,19 @@ static void save_history(enum HistoryClass hclass, const char *s)
  * When removing dups, we want the created "blanks" to be right below the
  * resulting h->last position.  See the comment section above 'struct History'.
  */
-static void remove_history_dups(enum HistoryClass hclass, const char *s)
+static void remove_history_dups(enum HistoryClass hclass, const char *str)
 {
   int source, dest, old_last;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
   /* Remove dups from 0..last-1 compacting up. */
   source = dest = 0;
   while (source < h->last)
   {
-    if (!mutt_str_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], str))
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -379,7 +379,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
   source = dest = History;
   while (source > old_last)
   {
-    if (!mutt_str_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], str))
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];
@@ -401,17 +401,16 @@ void mutt_hist_init(void)
   OldSize = History;
 }
 
-void mutt_hist_add(enum HistoryClass hclass, const char *s, bool save)
+void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
 {
-  int prev;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
-  if (*s)
+  if (*str)
   {
-    prev = h->last - 1;
+    int prev = h->last - 1;
     if (prev < 0)
       prev = History;
 
@@ -419,13 +418,13 @@ void mutt_hist_add(enum HistoryClass hclass, const char *s, bool save)
      *  - lines beginning by a space
      *  - repeated lines
      */
-    if (*s != ' ' && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], s) != 0)))
+    if ((*str != ' ') && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], str) != 0)))
     {
       if (HistoryRemoveDups)
-        remove_history_dups(hclass, s);
-      if (save && SaveHistory)
-        save_history(hclass, s);
-      mutt_str_replace(&h->hist[h->last++], s);
+        remove_history_dups(hclass, str);
+      if (save && (SaveHistory != 0))
+        save_history(hclass, str);
+      mutt_str_replace(&h->hist[h->last++], str);
       if (h->last > History)
         h->last = 0;
     }
@@ -435,13 +434,12 @@ void mutt_hist_add(enum HistoryClass hclass, const char *s, bool save)
 
 char *mutt_hist_next(enum HistoryClass hclass)
 {
-  int next;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return ""; /* disabled */
 
-  next = h->cur;
+  int next = h->cur;
   do
   {
     next++;
@@ -452,18 +450,17 @@ char *mutt_hist_next(enum HistoryClass hclass)
   } while (h->hist[next] == NULL);
 
   h->cur = next;
-  return (h->hist[h->cur] ? h->hist[h->cur] : "");
+  return NONULL(h->hist[h->cur]);
 }
 
 char *mutt_hist_prev(enum HistoryClass hclass)
 {
-  int prev;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return ""; /* disabled */
 
-  prev = h->cur;
+  int prev = h->cur;
   do
   {
     prev--;
@@ -474,14 +471,14 @@ char *mutt_hist_prev(enum HistoryClass hclass)
   } while (h->hist[prev] == NULL);
 
   h->cur = prev;
-  return (h->hist[h->cur] ? h->hist[h->cur] : "");
+  return NONULL(h->hist[h->cur]);
 }
 
 void mutt_hist_reset_state(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
   h->cur = h->last;
@@ -494,17 +491,17 @@ bool mutt_hist_at_scratch(enum HistoryClass hclass)
   if (!History || !h)
     return false; /* disabled */
 
-  return h->cur == h->last;
+  return (h->cur == h->last);
 }
 
-void mutt_hist_save_scratch(enum HistoryClass hclass, const char *s)
+void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
 {
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
-  /* Don't check if s has a value because the scratch buffer may contain
+  /* Don't check if str has a value because the scratch buffer may contain
    * an old garbage value that should be overwritten */
-  mutt_str_replace(&h->hist[h->last], s);
+  mutt_str_replace(&h->hist[h->last], str);
 }
