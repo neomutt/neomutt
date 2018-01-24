@@ -66,7 +66,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
    * digests */
   if (secret_len > MD5_BLOCK_LEN)
   {
-    mutt_md5_buf(password, secret_len, hash_passwd);
+    mutt_md5_bytes(password, secret_len, hash_passwd);
     mutt_str_strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
   }

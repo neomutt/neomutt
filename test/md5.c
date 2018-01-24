@@ -68,7 +68,7 @@ void test_md5_buffer(void)
   {
     unsigned char buf[16];
     char digest[33];
-    mutt_md5_buf(test_data[i].text, strlen(test_data[i].text), buf);
+    mutt_md5(test_data[i].text, buf);
     mutt_md5_toascii(buf, digest);
     if (!TEST_CHECK(strcmp(test_data[i].hash, digest) == 0))
     {
