@@ -245,23 +245,23 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
       {
         case OP_EDITOR_HISTORY_UP:
           state->curpos = state->lastchar;
-          if (mutt_history_at_scratch(hclass))
+          if (mutt_hist_at_scratch(hclass))
           {
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
-            mutt_history_save_scratch(hclass, buf);
+            mutt_hist_save_scratch(hclass, buf);
           }
-          replace_part(state, 0, mutt_history_prev(hclass));
+          replace_part(state, 0, mutt_hist_prev(hclass));
           redraw = MUTT_REDRAW_INIT;
           break;
 
         case OP_EDITOR_HISTORY_DOWN:
           state->curpos = state->lastchar;
-          if (mutt_history_at_scratch(hclass))
+          if (mutt_hist_at_scratch(hclass))
           {
             mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
-            mutt_history_save_scratch(hclass, buf);
+            mutt_hist_save_scratch(hclass, buf);
           }
-          replace_part(state, 0, mutt_history_next(hclass));
+          replace_part(state, 0, mutt_hist_next(hclass));
           redraw = MUTT_REDRAW_INIT;
           break;
 
@@ -592,7 +592,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
               {
                 mutt_pretty_mailbox(buf, buflen);
                 if (!pass)
-                  mutt_history_add(hclass, buf, true);
+                  mutt_hist_add(hclass, buf, true);
                 rc = 0;
                 goto bye;
               }
@@ -711,7 +711,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
         /* Convert from wide characters */
         mutt_mb_wcstombs(buf, buflen, state->wbuf, state->lastchar);
         if (!pass)
-          mutt_history_add(hclass, buf, true);
+          mutt_hist_add(hclass, buf, true);
 
         if (multiple)
         {
@@ -747,7 +747,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
 
 bye:
 
-  mutt_reset_history_state(hclass);
+  mutt_hist_reset_state(hclass);
   FREE(&tempbuf);
   return rc;
 }

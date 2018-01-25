@@ -2769,7 +2769,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (*ptr < 0)
           *ptr = 0;
-        mutt_init_history();
+        mutt_hist_init();
       }
       else if (mutt_str_strcmp(MuttVars[idx].name, "debug_level") == 0)
       {
@@ -4109,7 +4109,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
     Suspend = false;
 #endif
 
-  mutt_init_history();
+  mutt_hist_init();
 
   /* RFC2368, "4. Unsafe headers"
    * The creator of a mailto URL cannot expect the resolver of a URL to
@@ -4228,7 +4228,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   mutt_file_mkdir(Tmpdir, S_IRWXU);
 
-  mutt_read_histfile();
+  mutt_hist_read_file();
 
 #ifdef USE_NOTMUCH
   if (VirtualSpoolfile)

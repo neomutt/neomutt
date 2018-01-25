@@ -20,6 +20,72 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page history Read/write command history from/to a file
+ *
+ * Read/write command history from/to a file.
+ *
+ * | Data               | Description
+ * | :----------------- | :--------------------------------------------------
+ * | #History           | Number of history entries stored in memory
+ * | #HistoryFile       | File in which to store all the histories
+ * | #HistoryRemoveDups | Remove duplicate history entries
+ * | #SaveHistory       | Number of history entries, per category, stored on disk
+ *
+ * | Function                 | Description
+ * | :----------------------- | :---------------------------------------------------------
+ * | mutt_hist_add()          | Add a string to a history
+ * | mutt_hist_at_scratch()   | Is the current History position at the 'scratch' place?
+ * | mutt_hist_init()         | Create a set of empty History ring buffers
+ * | mutt_hist_next()         | Get the next string in a History
+ * | mutt_hist_prev()         | Get the previous string in a History
+ * | mutt_hist_read_file()    | Read the History from a file
+ * | mutt_hist_reset_state()  | Move the 'current' position to the end of the History
+ * | mutt_hist_save_scratch() | Save a temporary string to the History
+ *
+ * This history ring grows from 0..History, with last marking the
+ * where new entries go:
+ * ```
+ *         0        the oldest entry in the ring
+ *         1        entry
+ *         ...
+ *         x-1      most recently entered text
+ *  last-> x        NULL  (this will be overwritten next)
+ *         x+1      NULL
+ *         ...
+ *         History  NULL
+ * ```
+ * Once the array fills up, it is used as a ring.  last points where a new
+ * entry will go.  Older entries are "up", and wrap around:
+ * ```
+ *         0        entry
+ *         1        entry
+ *         ...
+ *         y-1      most recently entered text
+ *  last-> y        entry (this will be overwritten next)
+ *         y+1      the oldest entry in the ring
+ *         ...
+ *         History  entry
+ * ```
+ * When $history_remove_dups is set, duplicate entries are scanned and removed
+ * each time a new entry is added.  In order to preserve the history ring size,
+ * entries 0..last are compacted up.  Entries last+1..History are
+ * compacted down:
+ * ```
+ *         0        entry
+ *         1        entry
+ *         ...
+ *         z-1      most recently entered text
+ *  last-> z        entry (this will be overwritten next)
+ *         z+1      NULL
+ *         z+2      NULL
+ *         ...
+ *                  the oldest entry in the ring
+ *                  next oldest entry
+ *         History  entry
+ * ```
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdint.h>
@@ -32,47 +98,12 @@
 #include "options.h"
 #include "protos.h"
 
-/* This history ring grows from 0..History, with last marking the
- * where new entries go:
- *         0        the oldest entry in the ring
- *         1        entry
- *         ...
- *         x-1      most recently entered text
- *  last-> x        NULL  (this will be overwritten next)
- *         x+1      NULL
- *         ...
- *         History NULL
- *
- * Once the array fills up, it is used as a ring.  last points where a new
- * entry will go.  Older entries are "up", and wrap around:
- *         0        entry
- *         1        entry
- *         ...
- *         y-1      most recently entered text
- *  last-> y        entry (this will be overwritten next)
- *         y+1      the oldest entry in the ring
- *         ...
- *         History entry
- *
- * When $history_remove_dups is set, duplicate entries are scanned and removed
- * each time a new entry is added.  In order to preserve the history ring size,
- * entries 0..last are compacted up.  Entries last+1..History are
- * compacted down:
- *         0        entry
- *         1        entry
- *         ...
- *         z-1      most recently entered text
- *  last-> z        entry (this will be overwritten next)
- *         z+1      NULL
- *         z+2      NULL
- *         ...
- *                  the oldest entry in the ring
- *                  next oldest entry
- *         History entry
- */
+#define HC_FIRST HC_CMD
 
 /**
  * struct History - Saved list of user-entered commands/searches
+ *
+ * This is a ring buffer of strings.
  */
 struct History
 {
@@ -83,9 +114,19 @@ struct History
 
 /* global vars used for the string-history routines */
 
+short History;          /**< Number of history entries stored in memory */
+char *HistoryFile;      /**< File in which to store all the histories */
+bool HistoryRemoveDups; /**< Remove duplicate history entries */
+short SaveHistory; /**< Number of history entries, per category, stored on disk */
+
 static struct History Histories[HC_LAST];
 static int OldSize = 0;
 
+/**
+ * get_history - Get a particular history
+ * @param hclass Type of history to find
+ * @retval ptr History ring buffer
+ */
 static struct History *get_history(enum HistoryClass hclass)
 {
   if (hclass >= HC_LAST)
@@ -94,9 +135,15 @@ static struct History *get_history(enum HistoryClass hclass)
   return &Histories[hclass];
 }
 
+/**
+ * init_history - Set up a new History ring buffer
+ * @param h History to populate
+ *
+ * If the History already has entries, they will be freed.
+ */
 static void init_history(struct History *h)
 {
-  if (OldSize)
+  if (OldSize != 0)
   {
     if (h->hist)
     {
@@ -106,63 +153,36 @@ static void init_history(struct History *h)
     }
   }
 
-  if (History)
+  if (History != 0)
     h->hist = mutt_mem_calloc(History + 1, sizeof(char *));
 
   h->cur = 0;
   h->last = 0;
 }
 
-void mutt_read_histfile(void)
-{
-  FILE *f = NULL;
-  int line = 0, hclass, read;
-  char *linebuf = NULL, *p = NULL;
-  size_t buflen;
-
-  f = fopen(HistoryFile, "r");
-  if (!f)
-    return;
-
-  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
-  {
-    read = 0;
-    if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
-        *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
-    {
-      mutt_error(_("Bad history file format (line %d)"), line);
-      break;
-    }
-    /* silently ignore too high class (probably newer neomutt) */
-    if (hclass >= HC_LAST)
-      continue;
-    *p = '\0';
-    p = mutt_str_strdup(linebuf + read);
-    if (p)
-    {
-      mutt_ch_convert_string(&p, "utf-8", Charset, 0);
-      mutt_history_add(hclass, p, false);
-      FREE(&p);
-    }
-  }
-
-  mutt_file_fclose(&f);
-  FREE(&linebuf);
-}
-
-static int dup_hash_dec(struct Hash *dup_hash, char *s)
+/**
+ * dup_hash_dec - Decrease the refcount of a history string
+ * @param dup_hash Hash Table containing unique history strings
+ * @param str      String to find
+ * @retval  0 String was deleted from the Hash Table
+ * @retval >0 Refcount of string
+ * @retval -1 Error, string not found
+ *
+ * If the string's refcount is 1, then the string will be deleted.
+ */
+static int dup_hash_dec(struct Hash *dup_hash, char *str)
 {
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = mutt_hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
     return -1;
 
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(dup_hash, s, NULL);
+    mutt_hash_delete(dup_hash, str, NULL);
     return 0;
   }
 
@@ -171,16 +191,24 @@ static int dup_hash_dec(struct Hash *dup_hash, char *s)
   return count;
 }
 
-static int dup_hash_inc(struct Hash *dup_hash, char *s)
+/**
+ * dup_hash_inc - Increase the refcount of a history string
+ * @param dup_hash Hash Table containing unique history strings
+ * @param str      String to find
+ * @retval num Refcount of string
+ *
+ * If the string isn't found it will be added to the Hash Table.
+ */
+static int dup_hash_inc(struct Hash *dup_hash, char *str)
 {
   struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = mutt_hash_find_elem(dup_hash, s);
+  elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
   {
     count = 1;
-    mutt_hash_insert(dup_hash, s, (void *) count);
+    mutt_hash_insert(dup_hash, str, (void *) count);
     return count;
   }
 
@@ -190,6 +218,9 @@ static int dup_hash_inc(struct Hash *dup_hash, char *s)
   return count;
 }
 
+/**
+ * shrink_histfile - Read, de-dupe and write the history file
+ */
 static void shrink_histfile(void)
 {
   char tmpfname[_POSIX_PATH_MAX];
@@ -293,13 +324,18 @@ cleanup:
       mutt_hash_destroy(&dup_hashes[hclass]);
 }
 
-static void save_history(enum HistoryClass hclass, const char *s)
+/**
+ * save_history - Save one history string to a file
+ * @param hclass History type
+ * @param str    String to save
+ */
+static void save_history(enum HistoryClass hclass, const char *str)
 {
   static int n = 0;
   FILE *f = NULL;
   char *tmp = NULL;
 
-  if (!s || !*s) /* This shouldn't happen, but it's safer. */
+  if (!str || !*str) /* This shouldn't happen, but it's safer. */
     return;
 
   f = fopen(HistoryFile, "a");
@@ -309,17 +345,17 @@ static void save_history(enum HistoryClass hclass, const char *s)
     return;
   }
 
-  tmp = mutt_str_strdup(s);
+  tmp = mutt_str_strdup(str);
   mutt_ch_convert_string(&tmp, Charset, "utf-8", 0);
 
   /* Format of a history item (1 line): "<histclass>:<string>|".
-     We add a '|' in order to avoid lines ending with '\'. */
+   * We add a '|' in order to avoid lines ending with '\'. */
   fprintf(f, "%d:", (int) hclass);
   for (char *p = tmp; *p; p++)
   {
     /* Don't copy \n as a history item must fit on one line. The string
-       shouldn't contain such a character anyway, but as this can happen
-       in practice, we must deal with that. */
+     * shouldn't contain such a character anyway, but as this can happen
+     * in practice, we must deal with that. */
     if (*p != '\n')
       putc((unsigned char) *p, f);
   }
@@ -337,23 +373,27 @@ static void save_history(enum HistoryClass hclass, const char *s)
 
 /**
  * remove_history_dups - De-dupe the history
+ * @param hclass History to de-dupe
+ * @param str    String to find
+ *
+ * If the string is found, it is removed from the history.
  *
  * When removing dups, we want the created "blanks" to be right below the
  * resulting h->last position.  See the comment section above 'struct History'.
  */
-static void remove_history_dups(enum HistoryClass hclass, const char *s)
+static void remove_history_dups(enum HistoryClass hclass, const char *str)
 {
   int source, dest, old_last;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
   /* Remove dups from 0..last-1 compacting up. */
   source = dest = 0;
   while (source < h->last)
   {
-    if (!mutt_str_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], str))
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -372,7 +412,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
   source = dest = History;
   while (source > old_last)
   {
-    if (!mutt_str_strcmp(h->hist[source], s))
+    if (!mutt_str_strcmp(h->hist[source], str))
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];
@@ -383,7 +423,13 @@ static void remove_history_dups(enum HistoryClass hclass, const char *s)
     h->hist[dest--] = NULL;
 }
 
-void mutt_init_history(void)
+/**
+ * mutt_hist_init - Create a set of empty History ring buffers
+ *
+ * This just creates empty histories.
+ * To fill them, call mutt_hist_read_file().
+ */
+void mutt_hist_init(void)
 {
   if (History == OldSize)
     return;
@@ -394,17 +440,22 @@ void mutt_init_history(void)
   OldSize = History;
 }
 
-void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
+/**
+ * mutt_hist_add - Add a string to a history
+ * @param hclass History to add to
+ * @param str    String to add
+ * @param save   Should the changes be saved to file immediately?
+ */
+void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save)
 {
-  int prev;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
-  if (*s)
+  if (*str)
   {
-    prev = h->last - 1;
+    int prev = h->last - 1;
     if (prev < 0)
       prev = History;
 
@@ -412,13 +463,13 @@ void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
      *  - lines beginning by a space
      *  - repeated lines
      */
-    if (*s != ' ' && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], s) != 0)))
+    if ((*str != ' ') && (!h->hist[prev] || (mutt_str_strcmp(h->hist[prev], str) != 0)))
     {
       if (HistoryRemoveDups)
-        remove_history_dups(hclass, s);
-      if (save && SaveHistory)
-        save_history(hclass, s);
-      mutt_str_replace(&h->hist[h->last++], s);
+        remove_history_dups(hclass, str);
+      if (save && (SaveHistory != 0))
+        save_history(hclass, str);
+      mutt_str_replace(&h->hist[h->last++], str);
       if (h->last > History)
         h->last = 0;
     }
@@ -426,15 +477,21 @@ void mutt_history_add(enum HistoryClass hclass, const char *s, bool save)
   h->cur = h->last; /* reset to the last entry */
 }
 
-char *mutt_history_next(enum HistoryClass hclass)
+/**
+ * mutt_hist_next - Get the next string in a History
+ * @param hclass History to choose
+ * @retval ptr Next string
+ *
+ * If there is no next string, and empty string will be returned.
+ */
+char *mutt_hist_next(enum HistoryClass hclass)
 {
-  int next;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return ""; /* disabled */
 
-  next = h->cur;
+  int next = h->cur;
   do
   {
     next++;
@@ -445,18 +502,24 @@ char *mutt_history_next(enum HistoryClass hclass)
   } while (h->hist[next] == NULL);
 
   h->cur = next;
-  return (h->hist[h->cur] ? h->hist[h->cur] : "");
+  return NONULL(h->hist[h->cur]);
 }
 
-char *mutt_history_prev(enum HistoryClass hclass)
+/**
+ * mutt_hist_prev - Get the previous string in a History
+ * @param hclass History to choose
+ * @retval ptr Previous string
+ *
+ * If there is no previous string, and empty string will be returned.
+ */
+char *mutt_hist_prev(enum HistoryClass hclass)
 {
-  int prev;
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return ""; /* disabled */
 
-  prev = h->cur;
+  int prev = h->cur;
   do
   {
     prev--;
@@ -467,37 +530,105 @@ char *mutt_history_prev(enum HistoryClass hclass)
   } while (h->hist[prev] == NULL);
 
   h->cur = prev;
-  return (h->hist[h->cur] ? h->hist[h->cur] : "");
+  return NONULL(h->hist[h->cur]);
 }
 
-void mutt_reset_history_state(enum HistoryClass hclass)
+/**
+ * mutt_hist_reset_state - Move the 'current' position to the end of the History
+ * @param hclass History to reset
+ *
+ * After calling mutt_hist_next() and mutt_hist_prev(), this function resets
+ * the current position ('cur' pointer).
+ */
+void mutt_hist_reset_state(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
   h->cur = h->last;
 }
 
-bool mutt_history_at_scratch(enum HistoryClass hclass)
+/**
+ * mutt_hist_read_file - Read the History from a file
+ *
+ * The file #HistoryFile is read and parsed into separate History ring buffers.
+ */
+void mutt_hist_read_file(void)
+{
+  FILE *f = NULL;
+  int line = 0, hclass, read;
+  char *linebuf = NULL, *p = NULL;
+  size_t buflen;
+
+  f = fopen(HistoryFile, "r");
+  if (!f)
+    return;
+
+  while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, 0)) != NULL)
+  {
+    read = 0;
+    if (sscanf(linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
+        *(p = linebuf + strlen(linebuf) - 1) != '|' || hclass < 0)
+    {
+      mutt_error(_("Bad history file format (line %d)"), line);
+      break;
+    }
+    /* silently ignore too high class (probably newer neomutt) */
+    if (hclass >= HC_LAST)
+      continue;
+    *p = '\0';
+    p = mutt_str_strdup(linebuf + read);
+    if (p)
+    {
+      mutt_ch_convert_string(&p, "utf-8", Charset, 0);
+      mutt_hist_add(hclass, p, false);
+      FREE(&p);
+    }
+  }
+
+  mutt_file_fclose(&f);
+  FREE(&linebuf);
+}
+
+/**
+ * mutt_hist_at_scratch - Is the current History position at the 'scratch' place?
+ * @param hclass History to use
+ * @retval true History is at 'scratch' place
+ *
+ * The last entry in the history is used as a 'scratch' area.
+ * It can be overwritten as the user types and edits.
+ *
+ * To get (back) to the scratch area, call mutt_hist_next(), mutt_hist_prev()
+ * or mutt_hist_reset_state().
+ */
+bool mutt_hist_at_scratch(enum HistoryClass hclass)
 {
   struct History *h = get_history(hclass);
 
   if (!History || !h)
     return false; /* disabled */
 
-  return h->cur == h->last;
+  return (h->cur == h->last);
 }
 
-void mutt_history_save_scratch(enum HistoryClass hclass, const char *s)
+/**
+ * mutt_hist_save_scratch - Save a temporary string to the History
+ * @param hclass History to alter
+ * @param str    String to set
+ *
+ * Write a 'scratch' string into the History's current position.
+ * This is useful to preserver a user's edits.
+ */
+void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
 {
   struct History *h = get_history(hclass);
 
-  if (!History || !h)
+  if ((History == 0) || !h)
     return; /* disabled */
 
-  /* Don't check if s has a value because the scratch buffer may contain
+  /* Don't check if str has a value because the scratch buffer may contain
    * an old garbage value that should be overwritten */
-  mutt_str_replace(&h->hist[h->last], s);
+  mutt_str_replace(&h->hist[h->last], str);
 }
