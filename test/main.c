@@ -10,7 +10,8 @@
   NEOMUTT_TEST_ITEM(test_rfc2047)                                              \
   NEOMUTT_TEST_ITEM(test_md5)                                                  \
   NEOMUTT_TEST_ITEM(test_md5_ctx)                                              \
-  NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)
+  NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)                                        \
+  NEOMUTT_TEST_ITEM(test_string_strfcpy)
 
 /******************************************************************************
  * You probably don't need to touch what follows.

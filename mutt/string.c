@@ -675,16 +675,16 @@ void mutt_str_remove_trailing_ws(char *s)
  * @param dest Buffer for the result
  * @param src  String to copy
  * @param dlen Length of buffer
- * @retval ptr Destination buffer
+ * @retval len Destination string length
  */
-char *mutt_str_strfcpy(char *dest, const char *src, size_t dlen)
+size_t mutt_str_strfcpy(char *dest, const char *src, size_t dlen)
 {
   char *dest0 = dest;
   while ((--dlen > 0) && (*src != '\0'))
     *dest++ = *src++;
 
   *dest = '\0';
-  return dest0;
+  return dest - dest0;
 }
 
 /**
