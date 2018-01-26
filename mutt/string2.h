@@ -95,7 +95,7 @@ char *      mutt_str_strlower(char *s);
 int         mutt_str_strncasecmp(const char *a, const char *b, size_t l);
 char *      mutt_str_strncat(char *d, size_t l, const char *s, size_t sl);
 int         mutt_str_strncmp(const char *a, const char *b, size_t l);
-char *      mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen);
+size_t      mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen);
 char *      mutt_str_substr_cpy(char *dest, const char *begin, const char *end, size_t destlen);
 char *      mutt_str_substr_dup(const char *begin, const char *end);
 const char *mutt_str_sysexit(int e);

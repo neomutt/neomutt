@@ -718,9 +718,9 @@ int mutt_str_is_email_wsp(char c)
  * @param src  String to copy
  * @param size Maximum number of characters to copy
  * @param dlen Length of buffer
- * @retval ptr Destination buffer
+ * @retval len Destination string length
  */
-char *mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen)
+size_t mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen)
 {
   if (dlen > size)
     dlen = size - 1;
