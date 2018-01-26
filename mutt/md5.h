@@ -51,6 +51,6 @@ void  mutt_md5_init_ctx     (struct Md5Ctx *ctx);
 void  mutt_md5_process      (const char *string,             struct Md5Ctx *ctx);
 void  mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
 void *mutt_md5_finish_ctx   (struct Md5Ctx *ctx, void *resbuf);
-void  mutt_md5_toascii      (const void *resbuf, char *digest);
+void  mutt_md5_toascii      (const void *digest, char *resbuf);
 
 #endif /* _MUTT_MD5_H */

@@ -28,19 +28,15 @@
  *
  * | Function                 | Description
  * | :----------------------- | :----------------------------------------------------
- * | mutt_md5_bytes()         | Calculate the MD5 hash of a buffer
  * | mutt_md5()               | Calculate the MD5 hash of a NULL-terminated string
+ * | mutt_md5_buf()           | Calculate the MD5 hash of a buffer
  * | mutt_md5_finish_ctx()    | Process the remaining bytes in the buffer
  * | mutt_md5_init_ctx()      | Initialise the MD5 computation
+ * | mutt_md5_process()       | Process a NULL-terminated string
  * | mutt_md5_process_block() | Process a block with MD5
  * | mutt_md5_process_bytes() | Process a block of data
- * | mutt_md5_process()       | Process a string
  * | mutt_md5_read_ctx()      | Read from the context into a buffer
- * | mutt_md5_toascii()       | Produce an ASCII MD5 digest from a buffer
- */
-
-/* md5.c - Functions to compute MD5 message digest of files or memory blocks
- * according to the definition of MD5 in RFC1321 from April 1992.
+ * | mutt_md5_toascii()       | Convert a binary MD5 digest into ASCII Hexadecimal
  */
 
 #include "config.h"
@@ -317,7 +313,7 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
 }
 
 /**
- * mutt_md5 - Calculate the MD5 hash of a NULL-termianted string
+ * mutt_md5 - Calculate the MD5 hash of a NULL-terminated string
  * @param s      String to hash
  * @param resbuf Buffer for result
  */
@@ -437,10 +433,17 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
   }
 }
 
-void mutt_md5_toascii(const void *resbuf, char *digest)
+/**
+ * mutt_md5_toascii - Convert a binary MD5 digest into ASCII Hexadecimal
+ * @param digest Binary MD5 digest
+ * @param resbuf Buffer for the ASCII result
+ *
+ * @note refbuf must be at least 33 bytes long.
+ */
+void mutt_md5_toascii(const void *digest, char *resbuf)
 {
-  const unsigned char *c = resbuf;
-  sprintf(digest, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+  const unsigned char *c = digest;
+  sprintf(resbuf, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
           c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10],
           c[11], c[12], c[13], c[14], c[15]);
 }
