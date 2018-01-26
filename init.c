@@ -3647,12 +3647,17 @@ int var_to_string(int idx, char *val, size_t len)
 
   tmp[0] = '\0';
 
-  if ((DTYPE(MuttVars[idx].type) == DT_STRING) ||
-      (DTYPE(MuttVars[idx].type) == DT_PATH) || (DTYPE(MuttVars[idx].type) == DT_REGEX))
+  if ((DTYPE(MuttVars[idx].type) == DT_STRING) || (DTYPE(MuttVars[idx].type) == DT_PATH))
   {
     mutt_str_strfcpy(tmp, NONULL(*((char **) MuttVars[idx].var)), sizeof(tmp));
     if (DTYPE(MuttVars[idx].type) == DT_PATH)
       mutt_pretty_mailbox(tmp, sizeof(tmp));
+  }
+  else if (DTYPE(MuttVars[idx].type) == DT_REGEX)
+  {
+    struct Regex *r = *(struct Regex **) MuttVars[idx].var;
+    if (r)
+      mutt_str_strfcpy(tmp, NONULL(r->pattern), sizeof(tmp));
   }
   else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
   {
