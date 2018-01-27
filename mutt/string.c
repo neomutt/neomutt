@@ -674,13 +674,13 @@ void mutt_str_remove_trailing_ws(char *s)
  * mutt_str_strfcpy - Copy a string into a buffer (guaranteeing NUL-termination)
  * @param dest Buffer for the result
  * @param src  String to copy
- * @param dlen Length of buffer
- * @retval len Destination string length
+ * @param dsize size of destination buffer (includes null byte)
+ * @retval len Destination string length (excludes null byte)
  */
-size_t mutt_str_strfcpy(char *dest, const char *src, size_t dlen)
+size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
 {
   char *dest0 = dest;
-  while ((--dlen > 0) && (*src != '\0'))
+  while ((--dsize > 0) && (*src != '\0'))
     *dest++ = *src++;
 
   *dest = '\0';
@@ -716,15 +716,15 @@ int mutt_str_is_email_wsp(char c)
  * mutt_str_strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
  * @param dest Buffer for the result
  * @param src  String to copy
- * @param size Maximum number of characters to copy
- * @param dlen Length of buffer
- * @retval len Destination string length
+ * @param size Maximum number of characters to copy (includes null byte)
+ * @param dsize size of destination buffer (includes null byte)
+ * @retval len Destination string length (excludes null byte)
  */
-size_t mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen)
+size_t mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dsize)
 {
-  if (dlen > size)
-    dlen = size - 1;
-  return mutt_str_strfcpy(dest, src, dlen);
+  if (dsize > size)
+    dsize = size;
+  return mutt_str_strfcpy(dest, src, dsize);
 }
 
 /**
