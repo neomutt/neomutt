@@ -723,7 +723,7 @@ int mutt_str_is_email_wsp(char c)
 size_t mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen)
 {
   if (dlen > size)
-    dlen = size - 1;
+    dlen = size;
   return mutt_str_strfcpy(dest, src, dlen);
 }
 
