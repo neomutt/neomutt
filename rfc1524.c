@@ -558,7 +558,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
       if (lmatch)
         *left = 0;
       else
-        mutt_str_strnfcpy(left, nametemplate, sizeof(left), i);
+        mutt_str_strnfcpy(left, nametemplate, i, sizeof(left));
 
       if (rmatch)
         *right = 0;

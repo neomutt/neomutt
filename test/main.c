@@ -11,7 +11,8 @@
   NEOMUTT_TEST_ITEM(test_md5)                                                  \
   NEOMUTT_TEST_ITEM(test_md5_ctx)                                              \
   NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)                                        \
-  NEOMUTT_TEST_ITEM(test_string_strfcpy)
+  NEOMUTT_TEST_ITEM(test_string_strfcpy)                                       \
+  NEOMUTT_TEST_ITEM(test_string_strnfcpy)
 
 /******************************************************************************
  * You probably don't need to touch what follows.
