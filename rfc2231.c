@@ -50,7 +50,7 @@ struct Rfc2231Parameter
   char *attribute;
   char *value;
   int index;
-  int encoded;
+  bool encoded;
   struct Rfc2231Parameter *next;
 };
 
@@ -164,7 +164,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
   char charset[STRING];
   char *value = NULL;
   char *valp = NULL;
-  int encoded;
+  bool encoded;
 
   size_t l, vl;
 
@@ -176,7 +176,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
     mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
 
     encoded = par->encoded;
-    if (encoded != 0)
+    if (encoded)
       valp = rfc2231_get_charset(par->value, charset, sizeof(charset));
     else
       valp = par->value;
@@ -220,7 +220,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
   char *s = NULL, *t = NULL;
   char charset[STRING];
 
-  int encoded;
+  bool encoded;
   int index;
   bool dirty = false; /* set to 1 when we may have created
                        * empty parameters. */
