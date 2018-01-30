@@ -174,12 +174,20 @@ int url_parse(struct Url *u, char *src)
 
   src += 2;
 
-  t = strchr(src, '?');
-  if (t)
+  /* Notmuch and mailto schemes can include a query */
+#ifdef USE_NOTMUCH
+  if ((u->scheme == U_NOTMUCH) || (u->scheme == U_MAILTO))
+#else
+  if (u->scheme == U_MAILTO)
+#endif
   {
-    *t++ = '\0';
-    if (parse_query_string(u, t) < 0)
-      goto err;
+    t = strrchr(src, '?');
+    if (t)
+    {
+      *t++ = '\0';
+      if (parse_query_string(u, t) < 0)
+        goto err;
+    }
   }
 
   u->path = strchr(src, '/');
