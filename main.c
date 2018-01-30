@@ -47,7 +47,9 @@
 #include "keymap.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
+#include "myvar.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -67,7 +69,6 @@
 #endif
 
 char **envlist = NULL;
-void start_debug(void);
 
 void mutt_exit(int code)
 {
@@ -263,12 +264,14 @@ int main(int argc, char **argv, char **env)
   extern int optind;
   int double_dash = argc, nargc = 1;
   int rc = 1;
+  bool repeat_error = false;
+
+  MuttLogger = log_disp_terminal;
 
   /* sanity check against stupid administrators */
-
   if (getegid() != getgid())
   {
-    fprintf(stderr, "%s: I don't want to run with privileges!\n", argv[0]);
+    mutt_error("%s: I don't want to run with privileges!", argv[0]);
     goto main_exit;
   }
 
@@ -285,9 +288,6 @@ int main(int argc, char **argv, char **env)
     textdomain(PACKAGE);
   }
 #endif
-
-  mutt_message = mutt_error; /* send messages to stderr, too */
-  mutt_perror = mutt_perror_debug;
 
   int out = 0;
   if (mutt_randbuf(&out, sizeof(out)) < 0)
@@ -437,6 +437,7 @@ int main(int argc, char **argv, char **env)
 
   if (version > 0)
   {
+    log_queue_flush(log_disp_terminal);
     if (version == 1)
       print_version();
     else
@@ -452,20 +453,27 @@ int main(int argc, char **argv, char **env)
   if (dfile)
   {
     set_default_value("debug_file", (intptr_t) mutt_str_strdup(dfile));
+    mutt_str_replace(&DebugFile, dfile);
   }
-  reset_value("debug_file");
 
   if (dlevel)
   {
     short num = 0;
-    if ((mutt_str_atos(dlevel, &num) < 0) || (num < 0) || (num > 5))
+    if ((mutt_str_atos(dlevel, &num) < 0) || (num < LL_MESSAGE) || (num > LL_DEBUG5))
     {
       mutt_error(_("Error: value '%s' is invalid for -d."), dlevel);
       goto main_exit;
     }
     set_default_value("debug_level", (intptr_t) num);
+    DebugLevel = num;
   }
-  reset_value("debug_level");
+
+  if (dlevel)
+    mutt_log_start();
+  else
+    LogAllowDebugSet = true;
+
+  MuttLogger = log_disp_queue;
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
@@ -503,8 +511,13 @@ int main(int argc, char **argv, char **env)
    * before calling the init_pair() function to set the color scheme.  */
   if (!OPT_NO_CURSES)
   {
-    rc = start_curses();
-    if (rc != 0)
+    int crc = start_curses();
+    /* Now that curses is set up, we drop back to normal screen mode.
+     * This simplifies displaying error messages to the user.
+     * The first call to refresh() will swap us back to curses screen mode. */
+    endwin();
+
+    if (crc != 0)
       goto main_curses;
 
     /* check whether terminal status is supported (must follow curses init) */
@@ -521,7 +534,14 @@ int main(int argc, char **argv, char **env)
     reset_value("debug_level");
   if (dfile)
     reset_value("debug_file");
-  start_debug();
+
+  if (mutt_log_start() < 0)
+  {
+    mutt_perror("log file");
+    goto main_exit;
+  }
+
+  LogAllowDebugSet = true;
 
   mutt_list_free(&commands);
 
@@ -567,7 +587,7 @@ int main(int argc, char **argv, char **env)
       else
       {
         rc = 1;
-        mutt_message("%s", np->data);
+        printf("%s\n", np->data);
       }
     }
     mutt_list_free(&alias_queries);
@@ -578,8 +598,9 @@ int main(int argc, char **argv, char **env)
   {
     NORMAL_COLOR;
     clear();
-    mutt_error = mutt_curses_error;
-    mutt_message = mutt_curses_message;
+    MuttLogger = log_disp_curses;
+    log_queue_flush(log_disp_curses);
+    log_queue_set_max_size(100);
   }
 
   /* Create the Folder directory if it doesn't exist. */
@@ -619,9 +640,10 @@ int main(int argc, char **argv, char **env)
   {
     if (!OPT_NO_CURSES)
       mutt_flushinp();
-    ci_send_message(SENDPOSTPONED, NULL, NULL, NULL, NULL);
-    mutt_free_windows();
-    mutt_endwin();
+    if (ci_send_message(SENDPOSTPONED, NULL, NULL, NULL, NULL) == 0)
+      rc = 0;
+    log_queue_empty();
+    repeat_error = true;
   }
   else if (subject || msg || sendflags || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || optind < argc)
@@ -838,6 +860,10 @@ int main(int argc, char **argv, char **env)
     }
 
     rv = ci_send_message(sendflags, msg, bodyfile, NULL, NULL);
+    /* We WANT the "Mail sent." and any possible, later error */
+    log_queue_empty();
+    if (ErrorBuf[0])
+      mutt_message("%s", ErrorBuf);
 
     if (edit_infile)
     {
@@ -972,6 +998,7 @@ int main(int argc, char **argv, char **env)
     mutt_folder_hook(folder);
     mutt_startup_shutdown_hook(MUTT_STARTUPHOOK);
 
+    repeat_error = true;
     Context = mx_open_mailbox(
         folder, ((flags & MUTT_RO) || ReadOnly) ? MUTT_READONLY : 0, NULL);
     if (Context || !explicit_folder)
@@ -989,18 +1016,20 @@ int main(int argc, char **argv, char **env)
 #ifdef USE_SASL
     mutt_sasl_done();
 #endif
+    log_queue_empty();
+    mutt_log_stop();
     mutt_free_opts();
     mutt_free_windows();
-    mutt_endwin();
-    puts(ErrorBuf);
   }
 
 main_ok:
   rc = 0;
 main_curses:
   mutt_endwin();
+  log_queue_flush(log_disp_terminal);
+  mutt_log_stop();
   /* Repeat the last message to the user */
-  if (ErrorBuf[0])
+  if (repeat_error && ErrorBuf[0])
     puts(ErrorBuf);
 main_exit:
   return rc;

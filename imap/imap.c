@@ -96,6 +96,7 @@
 #include "message.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"
 #include "options.h"
@@ -815,6 +816,10 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
 {
   char c;
   bool r = false;
+  struct Buffer *buf = NULL;
+
+  if (DebugLevel >= IMAP_LOG_LTRL)
+    buf = mutt_buffer_alloc(bytes + 10);
 
   mutt_debug(2, "reading %ld bytes\n", bytes);
 
@@ -825,6 +830,7 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
       mutt_debug(1, "error during read, %ld bytes read\n", pos);
       idata->status = IMAP_FATAL;
 
+      mutt_buffer_free(&buf);
       return -1;
     }
 
@@ -843,10 +849,15 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
 
     if (pbar && !(pos % 1024))
       mutt_progress_update(pbar, pos, -1);
-    if (debuglevel >= IMAP_LOG_LTRL)
-      fputc(c, debugfile);
+    if (DebugLevel >= IMAP_LOG_LTRL)
+      mutt_buffer_addch(buf, c);
   }
 
+  if (DebugLevel >= IMAP_LOG_LTRL)
+  {
+    mutt_debug(IMAP_LOG_LTRL, "\n%s", buf->data);
+    mutt_buffer_free(&buf);
+  }
   return 0;
 }
 
@@ -2180,7 +2191,7 @@ static int imap_open_mailbox(struct Context *ctx)
   }
 
   /* dump the mailbox flags we've found */
-  if (debuglevel > 2)
+  if (DebugLevel > 2)
   {
     if (STAILQ_EMPTY(&idata->flags))
       mutt_debug(3, "No folder flags found\n");

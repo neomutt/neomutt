@@ -45,7 +45,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
-#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"
@@ -380,62 +379,6 @@ void mutt_query_exit(void)
   mutt_clear_error();
   mutt_curs_set(-1);
   SigInt = 0;
-}
-
-static void curses_message(int error, const char *fmt, va_list ap)
-{
-  char scratch[LONG_STRING];
-
-  vsnprintf(scratch, sizeof(scratch), fmt, ap);
-
-  /* Only pause if this is a message following an error */
-  if (!error && OPT_MSG_ERR)
-    error_pause();
-
-  mutt_debug(1, "%s\n", scratch);
-  mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, MuttMessageWindow->cols,
-                     FMT_LEFT, 0, scratch, sizeof(scratch), 0);
-
-  if (!OPT_KEEP_QUIET)
-  {
-    if (error)
-      BEEP();
-    SETCOLOR(error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
-    mutt_window_mvaddstr(MuttMessageWindow, 0, 0, ErrorBuf);
-    NORMAL_COLOR;
-    mutt_window_clrtoeol(MuttMessageWindow);
-    mutt_refresh();
-  }
-
-  if (error)
-  {
-    OPT_MSG_ERR = true;
-    if (gettimeofday(&LastError, NULL) < 0)
-      mutt_debug(1, "gettimeofday failed: %d\n", errno);
-  }
-  else
-  {
-    OPT_MSG_ERR = false;
-    LastError.tv_sec = 0;
-  }
-}
-
-void mutt_curses_error(const char *fmt, ...)
-{
-  va_list ap;
-
-  va_start(ap, fmt);
-  curses_message(1, fmt, ap);
-  va_end(ap);
-}
-
-void mutt_curses_message(const char *fmt, ...)
-{
-  va_list ap;
-
-  va_start(ap, fmt);
-  curses_message(0, fmt, ap);
-  va_end(ap);
 }
 
 void mutt_progress_init(struct Progress *progress, const char *msg,

@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "buffer.h"
-#include "debug.h"
+#include "logging.h"
 #include "mbyte.h"
 #include "memory.h"
 #include "message.h"

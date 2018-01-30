@@ -1933,7 +1933,9 @@ static void pager_menu_redraw(struct Menu *pager_menu)
                              rd->search_flag | (rd->flags & MUTT_PAGER_NOWRAP),
                          &rd->quote_list, &rd->q_level, &rd->force_redraw,
                          &rd->search_re, rd->pager_window) > 0)
+        {
           rd->lines++;
+        }
         rd->curline++;
         mutt_window_move(rd->pager_window, rd->lines, 0);
       }
@@ -2042,7 +2044,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it
-                                         * while inside the pager... */
+                            * while inside the pager... */
   int index_hint = 0;      /* used to restore cursor position */
   int oldcount = -1;
   int check;

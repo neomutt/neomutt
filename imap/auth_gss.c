@@ -41,6 +41,7 @@
 #include "auth.h"
 #include "globals.h"
 #include "mutt_account.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "options.h"
 #include "protos.h"
@@ -129,7 +130,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
     mutt_debug(2, "Couldn't get service name for [%s]\n", buf1);
     return IMAP_AUTH_UNAVAIL;
   }
-  else if (debuglevel >= 2)
+  else if (DebugLevel >= 2)
   {
     gss_display_name(&min_stat, target_name, &request_buf, &mech_name);
     mutt_debug(2, "Using service name [%s]\n", (char *) request_buf.value);

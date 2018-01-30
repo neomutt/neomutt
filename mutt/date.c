@@ -33,7 +33,7 @@
 #include <string.h>
 #include <time.h>
 #include "date.h"
-#include "debug.h"
+#include "logging.h"
 #include "memory.h"
 #include "string2.h"
 

@@ -53,7 +53,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <time.h>
-#include "mutt/debug.h"
+#include "mutt/logging.h"
 #include "mutt/memory.h"
 #include "mutt/message.h"
 #include "mutt/string2.h"

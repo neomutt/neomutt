@@ -52,7 +52,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/debug.h"
 #include "mutt/file.h"
 #include "mutt/memory.h"
 #include "mutt/message.h"

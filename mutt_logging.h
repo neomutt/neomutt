@@ -23,11 +23,17 @@
 #ifndef _LOGGING2_H
 #define _LOGGING2_H
 
-#include <sys/time.h>
+#include <time.h>
 
-extern struct timeval LastError;
+extern short DebugLevel;
+extern char *DebugFile;
+extern bool LogAllowDebugSet;
 
-void mutt_clear_error(void);
-void error_pause(void);
+int log_disp_curses(time_t stamp, const char *file, int line, const char *function, int level, ...);
+
+int  mutt_log_start(void);
+void mutt_log_stop(void);
+int mutt_log_set_level(int level, bool verbose);
+int mutt_log_set_file(const char *file, bool verbose);
 
 #endif /* _LOGGING2_H */

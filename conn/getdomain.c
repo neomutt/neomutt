@@ -36,7 +36,7 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/debug.h"
+#include "mutt/logging.h"
 #include "mutt/memory.h"
 #include "mutt/string2.h"
 
@@ -109,7 +109,7 @@ int getdnsdomainname(char *d, size_t len)
   {
     mutt_str_strfcpy(d, ++p, len);
     rc = 0;
-    mutt_debug(1, "%s\n", d);
+    mutt_debug(1, "Hostname: %s\n", d);
     freeaddrinfo(h);
   }
 

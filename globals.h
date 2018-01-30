@@ -234,9 +234,6 @@ WHERE short NntpPoll;
 WHERE short NntpContext;
 #endif
 
-WHERE short DebugLevel;
-WHERE char *DebugFile;
-
 WHERE short MenuContext;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;

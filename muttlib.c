@@ -1511,37 +1511,6 @@ size_t mutt_realpath(char *buf)
   return mutt_str_strfcpy(buf, s, PATH_MAX);
 }
 
-char debugfilename[_POSIX_PATH_MAX];
-FILE *debugfile = NULL;
-int debuglevel;
-char *debugfile_cmdline = NULL;
-int debuglevel_cmdline;
-
-int mutt_debug_real(const char *function, const char *file, int line, int level, ...)
-{
-  va_list ap;
-  time_t now = time(NULL);
-  static char buf[23] = "";
-  static time_t last = 0;
-  int ret = 0;
-
-  if ((debuglevel < level) || !debugfile)
-    return 0;
-
-  if (now > last)
-  {
-    ret += strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
-    last = now;
-  }
-  ret += fprintf(debugfile, "[%s] %s() ", buf, function);
-
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  ret += vfprintf(debugfile, fmt, ap);
-  va_end(ap);
-  return ret;
-}
-
 /**
  * mutt_inbox_cmp - do two folders share the same path and one is an inbox
  * @param a First path

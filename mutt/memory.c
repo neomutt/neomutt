@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "memory.h"
 #include "exit.h"
+#include "logging.h"
 #include "message.h"
 
 /**

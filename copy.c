@@ -256,7 +256,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           ++x;
           if (mutt_str_strncasecmp(buf, np->data, mutt_str_strlen(np->data)) == 0)
           {
-            mutt_debug(2, "Reorder: %s matches %s\n", np->data, buf);
+            mutt_debug(2, "Reorder: %s matches %s", np->data, buf);
             break;
           }
         }
