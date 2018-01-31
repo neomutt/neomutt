@@ -1509,16 +1509,22 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             }
             else
 #endif
-                if (examine_directory(menu, &state, LastDir, prefix) == -1)
             {
-              /* try to restore the old values */
-              mutt_str_strfcpy(LastDir, OldLastDir, sizeof(LastDir));
               if (examine_directory(menu, &state, LastDir, prefix) == -1)
               {
-                mutt_str_strfcpy(LastDir, NONULL(HomeDir), sizeof(LastDir));
-                goto bail;
+                /* try to restore the old values */
+                mutt_str_strfcpy(LastDir, OldLastDir, sizeof(LastDir));
+                if (examine_directory(menu, &state, LastDir, prefix) == -1)
+                {
+                  mutt_str_strfcpy(LastDir, NONULL(HomeDir), sizeof(LastDir));
+                  goto bail;
+                }
               }
+              /* resolve paths navigated from GUI */
+              if (mutt_realpath(LastDir) == 0)
+                break;
             }
+
             browser_highlight_default(&state, menu);
             init_menu(&state, menu, title, sizeof(title), buffy);
             if (GotoSwapper[0])
@@ -1686,6 +1692,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         break;
 #endif
 
+      case OP_GOTO_PARENT:
       case OP_CHANGE_DIRECTORY:
 
 #ifdef USE_NNTP
@@ -1707,7 +1714,16 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           }
         }
 
-        if (mutt_get_field(_("Chdir to: "), buf, sizeof(buf), MUTT_FILE) == 0 && buf[0])
+        if (i == OP_CHANGE_DIRECTORY)
+        {
+          int ret = mutt_get_field(_("Chdir to: "), buf, sizeof(buf), MUTT_FILE);
+          if (ret != 0)
+            break;
+        }
+        else if (i == OP_GOTO_PARENT)
+          mutt_get_parent_path(buf, buf, sizeof(buf));
+
+        if (buf[0])
         {
           buffy = 0;
           mutt_expand_path(buf, sizeof(buf));
@@ -1735,6 +1751,12 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               mutt_file_concat_path(tmp, LastDir, buf, sizeof(tmp));
               mutt_str_strfcpy(buf, tmp, sizeof(buf));
             }
+            /* Resolve path from <chdir>
+             * Avoids buildup such as /a/b/../../c
+             * Symlinks are always unraveled to keep code simple */
+            if (mutt_realpath(buf) == 0)
+              break;
+
             if (stat(buf, &st) == 0)
             {
               if (S_ISDIR(st.st_mode))

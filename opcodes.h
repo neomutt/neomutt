@@ -43,6 +43,7 @@
   _fmt(OP_BUFFY_LIST,                     N_("list mailboxes with new mail")) \
   _fmt(OP_CATCHUP,                        N_("mark all articles in newsgroup as read")) \
   _fmt(OP_CHANGE_DIRECTORY,               N_("change directories")) \
+  _fmt(OP_GOTO_PARENT,                    N_("go to parent directory")) \
   _fmt(OP_CHECK_NEW,                      N_("check mailboxes for new mail")) \
   _fmt(OP_COMPOSE_ATTACH_FILE,            N_("attach file(s) to this message")) \
   _fmt(OP_COMPOSE_ATTACH_MESSAGE,         N_("attach message(s) to this message")) \
