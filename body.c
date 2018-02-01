@@ -27,7 +27,6 @@
 #include "mutt/mutt.h"
 #include "body.h"
 #include "header.h"
-#include "parameter.h"
 #include "protos.h"
 
 struct Body *mutt_new_body(void)

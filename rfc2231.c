@@ -39,8 +39,6 @@
 #include "rfc2231.h"
 #include "globals.h"
 #include "options.h"
-#include "parameter.h"
-#include "rfc2047.h"
 
 /**
  * struct Rfc2231Parameter - MIME section parameter

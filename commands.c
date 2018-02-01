@@ -51,7 +51,6 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pager.h"
-#include "parameter.h"
 #include "protos.h"
 #include "sort.h"
 #ifdef USE_IMAP

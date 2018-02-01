@@ -38,7 +38,6 @@
 #include "mailbox.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"

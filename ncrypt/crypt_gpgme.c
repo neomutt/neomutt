@@ -59,7 +59,6 @@
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
-#include "parameter.h"
 #include "protos.h"
 #include "sort.h"
 #include "state.h"

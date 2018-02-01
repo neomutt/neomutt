@@ -49,7 +49,6 @@
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "state.h"
 

@@ -55,7 +55,6 @@
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "tags.h"
 #include "url.h"

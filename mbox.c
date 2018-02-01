@@ -46,7 +46,6 @@
 #include "mutt_curses.h"
 #include "mx.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "sort.h"
 #include "thread.h"
