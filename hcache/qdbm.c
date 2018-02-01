@@ -26,8 +26,7 @@
 /**
  * @page hc_qdbm QDBM
  *
- * This module implements the header cache functionality using a Quick DataBase
- * Manager file as a backend.
+ * Use a Quick DataBase Manager file as a header cache backend.
  */
 
 #include "config.h"

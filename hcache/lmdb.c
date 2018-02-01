@@ -26,8 +26,7 @@
 /**
  * @page hc_lmdb LMDB
  *
- * This module implements the header cache functionality using a Lightning
- * Memory-Mapped Database file as a backend.
+ * Use a Lightning Memory-Mapped Database file as a header cache backend.
  */
 
 #include "config.h"

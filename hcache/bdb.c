@@ -26,8 +26,7 @@
 /**
  * @page hc_bdb Berkeley DB
  *
- * This module implements the header cache functionality using a Berkeley DB
- * file as a backend.
+ * Use a Berkeley DB file as a header cache backend.
  */
 
 #include "config.h"

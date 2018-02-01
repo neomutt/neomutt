@@ -26,8 +26,7 @@
 /**
  * @page hc_tc Tokyo Cabinet
  *
- * This module implements the header cache functionality using a Tokyo Cabinet
- * file as a backend.
+ * Use a a Tokyo Cabinet file as a header cache backend.
  */
 
 #include "config.h"

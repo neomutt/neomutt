@@ -26,8 +26,7 @@
 /**
  * @page hc_kc Kyoto Cabinet
  *
- * This module implements the header cache functionality using a Kyoto Cabinet
- * file as a backend.
+ * Use a Kyoto Cabinet file as a header cache backend.
  */
 
 #include "config.h"
