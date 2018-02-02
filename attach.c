@@ -154,11 +154,11 @@ int mutt_compose_attachment(struct Body *a)
           b = mutt_read_mime_header(fp, 0);
           if (b)
           {
-            if (b->parameter)
+            if (!TAILQ_EMPTY(&b->parameter))
             {
               mutt_param_free(&a->parameter);
               a->parameter = b->parameter;
-              b->parameter = NULL;
+              TAILQ_INIT(&b->parameter);
             }
             if (b->description)
             {

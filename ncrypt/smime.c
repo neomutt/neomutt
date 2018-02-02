@@ -1440,8 +1440,8 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   t = mutt_new_body();
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-mime");
-  mutt_param_set("name", "smime.p7m", &t->parameter);
-  mutt_param_set("smime-type", "enveloped-data", &t->parameter);
+  mutt_param_set(&t->parameter, "name", "smime.p7m");
+  mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
   t->encoding = ENCBASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISPATTACH;
@@ -1599,10 +1599,10 @@ struct Body *smime_sign_message(struct Body *a)
   mutt_generate_boundary(&t->parameter);
 
   micalg = openssl_md_to_smime_micalg(SmimeSignDigestAlg);
-  mutt_param_set("micalg", micalg, &t->parameter);
+  mutt_param_set(&t->parameter, "micalg", micalg);
   FREE(&micalg);
 
-  mutt_param_set("protocol", "application/x-pkcs7-signature", &t->parameter);
+  mutt_param_set(&t->parameter, "protocol", "application/x-pkcs7-signature");
 
   t->parts = a;
   a = t;

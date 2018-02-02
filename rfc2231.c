@@ -52,21 +52,16 @@ struct Rfc2231Parameter
   struct Rfc2231Parameter *next;
 };
 
-static void purge_empty_parameters(struct Parameter **headp)
+static void purge_empty_parameters(struct ParameterList *p)
 {
-  struct Parameter *p = NULL, *q = NULL, **last = NULL;
-
-  for (last = headp, p = *headp; p; p = q)
+  struct Parameter *np, *tmp;
+  TAILQ_FOREACH_SAFE(np, p, entries, tmp)
   {
-    q = p->next;
-    if (!p->attribute || !p->value)
+    if (!np->attribute || !np->value)
     {
-      *last = q;
-      p->next = NULL;
-      mutt_param_free(&p);
+      TAILQ_REMOVE(p, np, entries);
+      mutt_param_free_one(&np);
     }
-    else
-      last = &p->next;
   }
 }
 
@@ -154,8 +149,9 @@ static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
 /**
  * rfc2231_join_continuations - process continuation parameters
  */
-static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Parameter *par)
+static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Parameter *par)
 {
+  struct Parameter *np;
   struct Rfc2231Parameter *q = NULL;
 
   char attribute[STRING];
@@ -199,19 +195,16 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
 
     if (encoded)
       mutt_ch_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
-    *head = mutt_param_new();
-    (*head)->attribute = mutt_str_strdup(attribute);
-    (*head)->value = value;
-    head = &(*head)->next;
+
+    np = mutt_param_new();
+    np->attribute = mutt_str_strdup(attribute);
+    np->value = value;
+    TAILQ_INSERT_HEAD(p, np, entries);
   }
 }
 
-void rfc2231_decode_parameters(struct Parameter **headp)
+void rfc2231_decode_parameters(struct ParameterList *p)
 {
-  struct Parameter *head = NULL;
-  struct Parameter **last = NULL;
-  struct Parameter *p = NULL, *q = NULL;
-
   struct Rfc2231Parameter *conthead = NULL;
   struct Rfc2231Parameter *conttmp = NULL;
 
@@ -222,16 +215,15 @@ void rfc2231_decode_parameters(struct Parameter **headp)
   int index;
   bool dirty = false; /* set to 1 when we may have created
                        * empty parameters. */
-  if (!headp)
+  if (!p)
     return;
 
-  purge_empty_parameters(headp);
+  purge_empty_parameters(p);
 
-  for (last = &head, p = *headp; p; p = q)
+  struct Parameter *np;
+  TAILQ_FOREACH(np, p, entries)
   {
-    q = p->next;
-
-    s = strchr(p->attribute, '*');
+    s = strchr(np->attribute, '*');
     if (!s)
     {
       /*
@@ -241,28 +233,19 @@ void rfc2231_decode_parameters(struct Parameter **headp)
        * Internet Gateways.  So we actually decode it.
        */
 
-      if (Rfc2047Parameters && p->value && strstr(p->value, "=?"))
-        mutt_rfc2047_decode(&p->value);
+      if (Rfc2047Parameters && np->value && strstr(np->value, "=?"))
+        mutt_rfc2047_decode(&np->value);
       else if (AssumedCharset && *AssumedCharset)
-        mutt_ch_convert_nonmime_string(&p->value);
-
-      *last = p;
-      last = &p->next;
-      p->next = NULL;
+        mutt_ch_convert_nonmime_string(&np->value);
     }
     else if (*(s + 1) == '\0')
     {
       *s = '\0';
 
-      s = rfc2231_get_charset(p->value, charset, sizeof(charset));
-      rfc2231_decode_one(p->value, s);
-      mutt_ch_convert_string(&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
-      mutt_mb_filter_unprintable(&p->value);
-
-      *last = p;
-      last = &p->next;
-      p->next = NULL;
-
+      s = rfc2231_get_charset(np->value, charset, sizeof(charset));
+      rfc2231_decode_one(np->value, s);
+      mutt_ch_convert_string(&np->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+      mutt_mb_filter_unprintable(&np->value);
       dirty = true;
     }
     else
@@ -277,13 +260,13 @@ void rfc2231_decode_parameters(struct Parameter **headp)
       index = atoi(s);
 
       conttmp = rfc2231_new_parameter();
-      conttmp->attribute = p->attribute;
-      conttmp->value = p->value;
+      conttmp->attribute = np->attribute;
+      conttmp->value = np->value;
       conttmp->encoded = encoded;
       conttmp->index = index;
 
-      p->attribute = NULL;
-      p->value = NULL;
+      np->attribute = NULL;
+      np->value = NULL;
       FREE(&p);
 
       rfc2231_list_insert(&conthead, conttmp);
@@ -292,14 +275,12 @@ void rfc2231_decode_parameters(struct Parameter **headp)
 
   if (conthead)
   {
-    rfc2231_join_continuations(last, conthead);
+    rfc2231_join_continuations(p, conthead);
     dirty = true;
   }
 
-  *headp = head;
-
   if (dirty)
-    purge_empty_parameters(headp);
+    purge_empty_parameters(p);
 }
 
 int rfc2231_encode_string(char **pd)

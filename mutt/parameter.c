@@ -27,9 +27,10 @@
  *
  * | Function                | Description
  * | :---------------------- | :------------------------------
- * | mutt_param_cmp_strict() | Strictly compare two Parameters
+ * | mutt_param_cmp_strict() | Strictly compare two ParameterLists
  * | mutt_param_delete()     | Delete a matching Parameter
- * | mutt_param_free()       | Free a Parameter
+ * | mutt_param_free()       | Free a ParameterList
+ * | mutt_param_free_one()   | Free a Parameter
  * | mutt_param_get()        | Find a matching Parameter
  * | mutt_param_new()        | Create a new Parameter
  * | mutt_param_set()        | Set a Parameter
@@ -50,117 +51,151 @@ struct Parameter *mutt_param_new(void)
 }
 
 /**
- * mutt_param_free - Free a Parameter
+ * mutt_param_free_one - Free a Parameter
  * @param p Parameter to free
  */
-void mutt_param_free(struct Parameter **p)
+void mutt_param_free_one(struct Parameter **p)
 {
-  struct Parameter *t = *p;
-  struct Parameter *o = NULL;
+  FREE(&(*p)->attribute);
+  FREE(&(*p)->value);
+  FREE(p);
+}
 
-  while (t)
+/**
+ * mutt_param_free - Free a ParameterList
+ * @param p ParameterList to free
+ */
+void mutt_param_free(struct ParameterList *p)
+{
+  if (!p)
+    return;
+
+  struct Parameter *np = TAILQ_FIRST(p), *next = NULL;
+  while (np)
   {
-    FREE(&t->attribute);
-    FREE(&t->value);
-    o = t;
-    t = t->next;
-    FREE(&o);
+    next = TAILQ_NEXT(np, entries);
+    mutt_param_free_one(&np);
+    np = next;
   }
-  *p = 0;
+  TAILQ_INIT(p);
 }
 
 /**
  * mutt_param_get - Find a matching Parameter
+ * @param p ParameterList
  * @param s String to match
- * @param p Parameter list
  * @retval ptr Matching Parameter
  * @retval NULL No match
  */
-char *mutt_param_get(const char *s, struct Parameter *p)
+char *mutt_param_get(const struct ParameterList *p, const char *s)
 {
-  for (; p; p = p->next)
-    if (mutt_str_strcasecmp(s, p->attribute) == 0)
-      return p->value;
+  if (!p)
+    return NULL;
+
+  struct Parameter *np;
+  TAILQ_FOREACH(np, p, entries)
+  {
+    if (mutt_str_strcasecmp(s, np->attribute) == 0)
+      return np->value;
+  }
 
   return NULL;
 }
 
 /**
  * mutt_param_set - Set a Parameter
+ * @param[in]  p         ParameterList
  * @param[in]  attribute Attribute to match
  * @param[in]  value     Value to set
- * @param[out] p         Parameter that was set
  *
  * @note If value is NULL, the Parameter will be deleted
  *
  * @note If a matching Parameter isn't found a new one will be allocated.
  *       The new Parameter will be inserted at the front of the list.
  */
-void mutt_param_set(const char *attribute, const char *value, struct Parameter **p)
+void mutt_param_set(struct ParameterList* p, const char *attribute, const char *value)
 {
-  struct Parameter *q = NULL;
+  if (!p)
+    return;
 
   if (!value)
   {
-    mutt_param_delete(attribute, p);
+    mutt_param_delete(p, attribute);
     return;
   }
 
-  for (q = *p; q; q = q->next)
+  struct Parameter *np;
+  TAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_str_strcasecmp(attribute, q->attribute) == 0)
+    if (mutt_str_strcasecmp(attribute, np->attribute) == 0)
     {
-      mutt_str_replace(&q->value, value);
+      mutt_str_replace(&np->value, value);
       return;
     }
   }
 
-  q = mutt_param_new();
-  q->attribute = mutt_str_strdup(attribute);
-  q->value = mutt_str_strdup(value);
-  q->next = *p;
-  *p = q;
+  np = mutt_param_new();
+  np->attribute = mutt_str_strdup(attribute);
+  np->value = mutt_str_strdup(value);
+  TAILQ_INSERT_HEAD(p, np, entries);
 }
 
 /**
  * mutt_param_delete - Delete a matching Parameter
+ * @param[in[  p         ParameterList
  * @param[in]  attribute Attribute to match
- * @param[out] p         Parameter after the deleted Parameter
  */
-void mutt_param_delete(const char *attribute, struct Parameter **p)
+void mutt_param_delete(struct ParameterList *p, const char *attribute)
 {
-  for (struct Parameter *q = *p; q; p = &q->next, q = q->next)
+  if (!p)
+    return;
+
+  struct Parameter *np;
+  TAILQ_FOREACH(np, p, entries)
   {
-    if (mutt_str_strcasecmp(attribute, q->attribute) == 0)
+    if (mutt_str_strcasecmp(attribute, np->attribute) == 0)
     {
-      *p = q->next;
-      q->next = NULL;
-      mutt_param_free(&q);
+      TAILQ_REMOVE(p, np, entries);
+      mutt_param_free_one(&np);
       return;
     }
   }
 }
 
 /**
- * mutt_param_cmp_strict - Strictly compare two Parameters
+ * mutt_param_cmp_strict - Strictly compare two ParameterLists
  * @param p1 First parameter
  * @param p2 Second parameter
  * @retval true Parameters are strictly identical
  */
-int mutt_param_cmp_strict(const struct Parameter *p1, const struct Parameter *p2)
+int mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2)
 {
-  while (p1 && p2)
+  if (!p1 && !p2)
   {
-    if ((mutt_str_strcmp(p1->attribute, p2->attribute) != 0) ||
-        (mutt_str_strcmp(p1->value, p2->value) != 0))
+    return 0;
+  }
+
+  if ((p1 == NULL) ^ (p2 == NULL))
+  {
+    return 1;
+  }
+
+  struct Parameter *np1 = TAILQ_FIRST(p1);
+  struct Parameter *np2 = TAILQ_FIRST(p2);
+
+  while (np1 && np2)
+  {
+    if ((mutt_str_strcmp(np1->attribute, np2->attribute) != 0) ||
+        (mutt_str_strcmp(np1->value, np2->value) != 0))
     {
       return 0;
     }
 
-    p1 = p1->next;
-    p2 = p2->next;
+    np1 = TAILQ_NEXT(np1, entries);
+    np2 = TAILQ_NEXT(np2, entries);
   }
-  if (p1 || p2)
+
+  if (np1 || np2)
     return 0;
 
   return 1;

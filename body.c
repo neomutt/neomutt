@@ -35,6 +35,7 @@ struct Body *mutt_new_body(void)
 
   p->disposition = DISPATTACH;
   p->use_disp = true;
+  TAILQ_INIT(&p->parameter);
   return p;
 }
 
@@ -48,8 +49,6 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
 
   char tmp[_POSIX_PATH_MAX];
   struct Body *b = NULL;
-
-  struct Parameter *par = NULL, **ppar = NULL;
 
   bool use_disp;
 
@@ -72,6 +71,7 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   b = *tgt;
 
   memcpy(b, src, sizeof(struct Body));
+  TAILQ_INIT(&b->parameter);
   b->parts = NULL;
   b->next = NULL;
 
@@ -101,11 +101,13 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
     b->hdr = NULL;
 
   /* copy parameters */
-  for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
+  struct Parameter *np, *new;
+  TAILQ_FOREACH(np, &src->parameter, entries)
   {
-    *ppar = mutt_param_new();
-    (*ppar)->attribute = mutt_str_strdup(par->attribute);
-    (*ppar)->value = mutt_str_strdup(par->value);
+      new = mutt_param_new();
+      new->attribute = mutt_str_strdup(np->attribute);
+      new->value = mutt_str_strdup(np->value);
+      TAILQ_INSERT_HEAD(&b->parameter, new, entries);
   }
 
   mutt_stamp_attachment(b);
@@ -122,8 +124,7 @@ void mutt_free_body(struct Body **p)
     b = a;
     a = a->next;
 
-    if (b->parameter)
-      mutt_param_free(&b->parameter);
+    mutt_param_free(&b->parameter);
     if (b->filename)
     {
       if (b->unlink)

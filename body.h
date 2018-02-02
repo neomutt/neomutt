@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#include "mutt/parameter.h"
+
 /**
  * struct Body - The body of an email
  */
@@ -34,7 +36,7 @@ struct Body
 {
   char *xtype;                  /**< content-type if x-unknown */
   char *subtype;                /**< content-type subtype */
-  struct Parameter *parameter;  /**< parameters of the content-type */
+  struct ParameterList parameter;  /**< parameters of the content-type */
   char *description;            /**< content-description */
   char *form_name;              /**< Content-Disposition form-data name param */
   long hdr_offset;              /**< offset in stream where the headers begin.

@@ -342,7 +342,7 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
   (*b)->destroy = used;
 }
 
-static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
+static unsigned char *dump_parameter(struct ParameterList *p, unsigned char *d,
                                      int *off, bool convert)
 {
   unsigned int counter = 0;
@@ -350,11 +350,11 @@ static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
 
   d = dump_int(0xdeadbeef, d, off);
 
-  while (p)
+  struct Parameter *np;
+  TAILQ_FOREACH(np, p, entries)
   {
-    d = dump_char(p->attribute, d, off, false);
-    d = dump_char(p->value, d, off, convert);
-    p = p->next;
+    d = dump_char(np->attribute, d, off, false);
+    d = dump_char(np->value, d, off, convert);
     counter++;
   }
 
@@ -363,23 +363,22 @@ static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
   return d;
 }
 
-static void restore_parameter(struct Parameter **p, const unsigned char *d,
+static void restore_parameter(struct ParameterList *p, const unsigned char *d,
                               int *off, bool convert)
 {
   unsigned int counter;
 
   restore_int(&counter, d, off);
 
+  struct Parameter *np;
   while (counter)
   {
-    *p = mutt_mem_malloc(sizeof(struct Parameter));
-    restore_char(&(*p)->attribute, d, off, false);
-    restore_char(&(*p)->value, d, off, convert);
-    p = &(*p)->next;
+    np = mutt_param_new();
+    restore_char(&np->attribute, d, off, false);
+    restore_char(&np->value, d, off, convert);
+    TAILQ_INSERT_TAIL(p, np, entries);
     counter--;
   }
-
-  *p = NULL;
 }
 
 static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool convert)
@@ -403,7 +402,7 @@ static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool
   d = dump_char(nb.xtype, d, off, false);
   d = dump_char(nb.subtype, d, off, false);
 
-  d = dump_parameter(nb.parameter, d, off, convert);
+  d = dump_parameter(&nb.parameter, d, off, convert);
 
   d = dump_char(nb.description, d, off, convert);
   d = dump_char(nb.form_name, d, off, convert);
@@ -421,6 +420,7 @@ static void restore_body(struct Body *c, const unsigned char *d, int *off, bool 
   restore_char(&c->xtype, d, off, false);
   restore_char(&c->subtype, d, off, false);
 
+  TAILQ_INIT(&c->parameter);
   restore_parameter(&c->parameter, d, off, convert);
 
   restore_char(&c->description, d, off, convert);

@@ -60,7 +60,7 @@ static void print_part_line(struct State *s, struct Body *b, int n)
   char length[5];
   mutt_str_pretty_size(length, sizeof(length), b->length);
   state_mark_attach(s);
-  char *charset = mutt_param_get("charset", b->parameter);
+  char *charset = mutt_param_get(&b->parameter, "charset");
   if (n != 0)
     state_printf(s, _("[-- Alternative Type #%d: "), n);
   else
@@ -1024,7 +1024,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     b = mutt_new_body();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
-        s->fpin, mutt_param_get("boundary", a->parameter), (long) st.st_size,
+        s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
         (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
@@ -1286,7 +1286,7 @@ static int multipart_handler(struct Body *a, struct State *s)
     b = mutt_new_body();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
-        s->fpin, mutt_param_get("boundary", a->parameter), (long) st.st_size,
+        s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
         (mutt_str_strcasecmp("digest", a->subtype) == 0));
   }
   else
@@ -1477,7 +1477,7 @@ static int external_body_handler(struct Body *b, struct State *s)
   const char *expiration = NULL;
   time_t expire;
 
-  access_type = mutt_param_get("access-type", b->parameter);
+  access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -1492,7 +1492,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       return -1;
   }
 
-  expiration = mutt_param_get("expiration", b->parameter);
+  expiration = mutt_param_get(&b->parameter, "expiration");
   if (expiration)
     expire = mutt_date_parse_date(expiration, NULL);
   else
@@ -1507,7 +1507,7 @@ static int external_body_handler(struct Body *b, struct State *s)
 
       state_mark_attach(s);
       state_printf(s, _("[-- This %s/%s attachment "), TYPE(b->parts), b->parts->subtype);
-      length = mutt_param_get("length", b->parameter);
+      length = mutt_param_get(&b->parameter, "length");
       if (length)
       {
         mutt_str_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
@@ -1570,7 +1570,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
 
   if (istext && s->flags & MUTT_CHARCONV)
   {
-    char *charset = mutt_param_get("charset", b->parameter);
+    char *charset = mutt_param_get(&b->parameter, "charset");
     if (!charset && AssumedCharset && *AssumedCharset)
       charset = mutt_ch_get_default_charset();
     if (charset && Charset)
@@ -1831,7 +1831,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_pgp_handler;
       else if (ReflowText &&
-               (mutt_str_strcasecmp("flowed", mutt_param_get("format", b->parameter)) == 0))
+               (mutt_str_strcasecmp("flowed", mutt_param_get(&b->parameter, "format")) == 0))
       {
         handler = rfc3676_handler;
       }
@@ -1865,7 +1865,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     }
     else if (WithCrypto && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {
-      p = mutt_param_get("protocol", b->parameter);
+      p = mutt_param_get(&b->parameter, "protocol");
 
       if (!p)
         mutt_error(_("Error: multipart/signed has no protocol."));

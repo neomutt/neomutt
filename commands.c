@@ -958,7 +958,6 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
   char tmp[STRING];
-  struct Parameter *p = NULL;
 
   char charset[STRING];
   char *cp = NULL;
@@ -967,21 +966,19 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   short type_changed = 0;
   short structure_changed = 0;
 
-  cp = mutt_param_get("charset", b->parameter);
+  cp = mutt_param_get(&b->parameter, "charset");
   mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
   mutt_str_strfcpy(obuf, buf, sizeof(obuf));
-  if (b->parameter)
+  if (!TAILQ_EMPTY(&b->parameter))
   {
-    size_t l;
-
-    for (p = b->parameter; p; p = p->next)
+    size_t l = strlen(buf);
+    struct Parameter *np;
+    TAILQ_FOREACH(np, &b->parameter, entries)
     {
-      l = strlen(buf);
-
-      mutt_addr_cat(tmp, sizeof(tmp), p->value, MimeSpecials);
-      snprintf(buf + l, sizeof(buf) - l, "; %s=%s", p->attribute, tmp);
+      mutt_addr_cat(tmp, sizeof(tmp), np->value, MimeSpecials);
+      l += snprintf(buf + l, sizeof(buf) - l, "; %s=%s", np->attribute, tmp);
     }
   }
 
@@ -996,7 +993,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = mutt_str_strcasecmp(tmp, obuf);
-  charset_changed = mutt_str_strcasecmp(charset, mutt_param_get("charset", b->parameter));
+  charset_changed = mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 
@@ -1004,7 +1001,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     int r;
     snprintf(tmp, sizeof(tmp), _("Convert to %s upon sending?"),
-             mutt_param_get("charset", b->parameter));
+             mutt_param_get(&b->parameter, "charset"));
     r = mutt_yesorno(tmp, !b->noconv);
     if (r != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
@@ -1020,7 +1017,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
     if (type_changed)
       mutt_sleep(1);
     mutt_message(_("Character set changed to %s; %s."),
-                 mutt_param_get("charset", b->parameter),
+                 mutt_param_get(&b->parameter, "charset"),
                  b->noconv ? _("not converting") : _("converting"));
   }
 

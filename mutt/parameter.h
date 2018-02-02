@@ -23,6 +23,13 @@
 #ifndef _MUTT_PARAMETER_H
 #define _MUTT_PARAMETER_H
 
+#include "queue.h"
+
+/**
+ * struct ParameterList - List of parameters.
+ */
+TAILQ_HEAD(ParameterList, Parameter);
+
 /**
  * struct Parameter - Attribute associated with a MIME part
  */
@@ -30,14 +37,15 @@ struct Parameter
 {
   char *attribute;
   char *value;
-  struct Parameter *next;
+  TAILQ_ENTRY(Parameter) entries;
 };
 
 struct Parameter *mutt_param_new(void);
-int               mutt_param_cmp_strict(const struct Parameter *p1, const struct Parameter *p2);
-void              mutt_param_delete(const char *attribute, struct Parameter **p);
-void              mutt_param_free(struct Parameter **p);
-char *            mutt_param_get(const char *s, struct Parameter *p);
-void              mutt_param_set(const char *attribute, const char *value, struct Parameter **p);
+int               mutt_param_cmp_strict(const struct ParameterList *p1, const struct ParameterList *p2);
+void              mutt_param_delete(struct ParameterList *p, const char *attribute);
+void              mutt_param_free(struct ParameterList *p);
+void              mutt_param_free_one(struct Parameter **p);
+char *            mutt_param_get(const struct ParameterList *p, const char *s);
+void              mutt_param_set(struct ParameterList *p, const char *attribute, const char *value);
 
 #endif /* _MUTT_PARAMETER_H */

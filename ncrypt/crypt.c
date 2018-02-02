@@ -156,7 +156,7 @@ int mutt_protect(struct Header *msg, char *keylist)
       }
     }
     else if (!mutt_str_strcasecmp("flowed",
-                                  mutt_param_get("format", msg->content->parameter)))
+                                  mutt_param_get(&msg->content->parameter, "format")))
     {
       if ((query_quadoption(PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
@@ -316,7 +316,7 @@ int mutt_is_multipart_signed(struct Body *b)
     return 0;
   }
 
-  p = mutt_param_get("protocol", b->parameter);
+  p = mutt_param_get(&b->parameter, "protocol");
   if (!p)
     return 0;
 
@@ -351,7 +351,7 @@ int mutt_is_multipart_encrypted(struct Body *b)
 
     if (!b || b->type != TYPEMULTIPART || !b->subtype ||
         (mutt_str_strcasecmp(b->subtype, "encrypted") != 0) ||
-        !(p = mutt_param_get("protocol", b->parameter)) ||
+        !(p = mutt_param_get(&b->parameter, "protocol")) ||
         (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
       return 0;
 
@@ -445,14 +445,14 @@ int mutt_is_application_pgp(struct Body *m)
     if ((mutt_str_strcasecmp(m->subtype, "pgp") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "x-pgp-message") == 0))
     {
-      p = mutt_param_get("x-action", m->parameter);
+      p = mutt_param_get(&m->parameter, "x-action");
       if (p && ((mutt_str_strcasecmp(p, "sign") == 0) ||
                 (mutt_str_strcasecmp(p, "signclear") == 0)))
       {
         t |= PGPSIGN;
       }
 
-      p = mutt_param_get("format", m->parameter);
+      p = mutt_param_get(&m->parameter, "format");
       if (p && (mutt_str_strcasecmp(p, "keys-only") == 0))
       {
         t |= PGPKEY;
@@ -470,9 +470,9 @@ int mutt_is_application_pgp(struct Body *m)
   }
   else if (m->type == TYPETEXT && (mutt_str_strcasecmp("plain", m->subtype) == 0))
   {
-    if (((p = mutt_param_get("x-mutt-action", m->parameter)) ||
-         (p = mutt_param_get("x-action", m->parameter)) ||
-         (p = mutt_param_get("action", m->parameter))) &&
+    if (((p = mutt_param_get(&m->parameter, "x-mutt-action")) ||
+         (p = mutt_param_get(&m->parameter, "x-action")) ||
+         (p = mutt_param_get(&m->parameter, "action"))) &&
         (mutt_str_strncasecmp("pgp-sign", p, 8) == 0))
       t |= PGPSIGN;
     else if (p && (mutt_str_strncasecmp("pgp-encrypt", p, 11) == 0))
@@ -501,7 +501,7 @@ int mutt_is_application_smime(struct Body *m)
     if ((mutt_str_strcasecmp(m->subtype, "x-pkcs7-mime") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "pkcs7-mime") == 0))
     {
-      t = mutt_param_get("smime-type", m->parameter);
+      t = mutt_param_get(&m->parameter, "smime-type");
       if (t)
       {
         if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
@@ -522,7 +522,7 @@ int mutt_is_application_smime(struct Body *m)
     else if (mutt_str_strcasecmp(m->subtype, "octet-stream") != 0)
       return 0;
 
-    t = mutt_param_get("name", m->parameter);
+    t = mutt_param_get(&m->parameter, "name");
 
     if (!t)
       t = m->d_filename;
@@ -973,7 +973,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(s, _("[-- Error: "
                       "Unknown multipart/signed protocol %s! --]\n\n"),
-                 mutt_param_get("protocol", b->parameter));
+                 mutt_param_get(&b->parameter, "protocol"));
     return mutt_body_handler(a, s);
   }
 
