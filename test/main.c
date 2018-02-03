@@ -1,5 +1,4 @@
 #include "acutest.h"
-
 /******************************************************************************
  * Add your test cases to this list.
  *****************************************************************************/
@@ -12,7 +11,8 @@
   NEOMUTT_TEST_ITEM(test_md5_ctx)                                              \
   NEOMUTT_TEST_ITEM(test_md5_ctx_bytes)                                        \
   NEOMUTT_TEST_ITEM(test_string_strfcpy)                                       \
-  NEOMUTT_TEST_ITEM(test_string_strnfcpy)
+  NEOMUTT_TEST_ITEM(test_string_strnfcpy)                                      \
+  NEOMUTT_TEST_ITEM(test_file_tidy_path)
 
 /******************************************************************************
  * You probably don't need to touch what follows.
