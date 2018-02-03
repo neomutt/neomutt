@@ -486,23 +486,154 @@ void mutt_mktemp_full(char *s, size_t slen, const char *prefix,
 }
 
 /**
+ * mutt_file_tidy_path - Tidy a path with optional symlink resolution
+ * @param buf Buffer containing path
+ * @param rsym Boolean specifying whether to resolve symlinks
+ * @retval len String length of resolved path
+ * @retval 0   Error, buf is not overwritten
+ *
+ * Resolve and overwrite the path in buf.
+ *
+ * @note Size of buf should be at least PATH_MAX bytes.
+ */
+size_t mutt_file_tidy_path(char *buf, bool rsym)
+{
+  char s[PATH_MAX];
+
+  if (rsym)
+  {
+    char *rp = realpath(buf, s);
+    if (rp)
+      return mutt_str_strfcpy(buf, rp, PATH_MAX);
+    else
+      return mutt_str_strlen(buf);
+  }
+  else
+  {
+    size_t len = 0;
+
+    /* cleanup path - the below "if" migrated from mutt_pretty_mailbox() */
+    if (strstr(buf, "//") || strstr(buf, "/./"))
+    {
+      /* first attempt to collapse the pathname, this is more
+       * lightweight than realpath() and doesn't resolve links
+       */
+      char *q = buf, *r = buf;
+      while (*r)
+      {
+        if ((r[0] == '/') && (r[1] == '/'))
+        {
+          *q++ = '/';
+          r += 2;
+        }
+        else if ((r[0] == '/') && (r[1] == '.') && (r[2] == '/'))
+        {
+          *q++ = '/';
+          r += 3;
+        }
+        else
+          *q++ = *r++;
+      }
+      *q = 0;
+    }
+
+    /* Fix any combo of parent paths. This works by tracking directory
+     * portions via pointers. These pointers are updated as parent paths
+     * are encountered.
+     */
+    if (strstr(buf, ".."))
+    {
+      // How many levels of directories to track
+      const size_t MUTT_PATH_MAX_DEPTH = 100;
+      // The directory level tracker (array of pointers)
+      /* This tracks which substrings of the path belong to which depth in
+       * the directory tree.
+       */
+      char *level[MUTT_PATH_MAX_DEPTH];
+      /* The following loop works such that if a parent directory is encountered,
+       * then the current level n is decremented so that the next path substring
+       * will replace the previous one in the level array. Otherwise, the
+       * level is incremented.
+       *
+       * Given the current nature of the loop, if a parent directory is
+       * encountered last, the level n will be one lower than the actual
+       * "current" level. Otherwise, the level will be one higher than "current".
+       * So, some adjusting is necessary after the loop exits. This could
+       * possibly be optimized out with a different loop design.
+       */
+      bool parent_last = false;
+      char *r = buf; // iterator
+      size_t n = 0;  // current level
+
+      while ((r = strchr(r, '/')) && (r[1] != '\0'))
+      {
+        if ((r[1] == '.') && (r[2] == '.') && ((r[3] == '/') || (r[3] == '\0')))
+        {
+          // decrease dir level -- next path will go to this level
+          if (n > 0)
+            n--;
+          parent_last = true;
+        }
+        else
+        {
+          level[n] = r;
+          if (n < MUTT_PATH_MAX_DEPTH)
+            n++;
+          parent_last = false;
+        }
+        r++;
+      }
+
+      r = buf; // iterator from start of path
+
+      if (parent_last && (n == 0)) // The parent of root, is simply root
+      {
+        r[0] = '/';
+        r[1] = '\0';
+      }
+      else
+      {
+        for (int i = 0; i < n; i++) // iterate through tracked dir hierarchy
+        {
+          *(r++) = level[i][0]; // write the first character ('/')
+          // write the path component until '/' or end-of-string
+          for (char *j = &level[i][1]; (*j != '/') && (*j != '\0'); j++)
+            *(r++) = *j;
+        }
+        r[0] = '\0';
+      }
+    }
+
+    /* Let's cut off the trailing / if it exists and we're not at the root
+     * Note: doing this because the browser GUI is a lil' buggy and if it
+     * sees a path '/a/b/' going to the parent only changes it to '/a/b',
+     * causing the user to have press '..' twice. Honestly, this should be
+     * fixed in the browser but I don't mind removing trailing slashes
+     * from all paths that come through this (non-symlinking) code-path.
+     */
+    len = strlen(buf);
+    if ((len > 1) && (buf[len - 1] == '/'))
+      buf[--len] = '\0';
+
+    return len;
+  }
+}
+
+/**
  * mutt_pretty_mailbox - Shorten a mailbox path using '~' or '='
+ * @param buf    Buffer containing mailbox name to be shortened
+ * @param buflen Length of the buffer
  *
  * Collapse the pathname using ~ or = when possible
  */
-void mutt_pretty_mailbox(char *s, size_t buflen)
+void mutt_pretty_mailbox(char *buf, size_t buflen)
 {
-  char *p = s, *q = s;
-  size_t len;
-  enum UrlScheme scheme;
-  char tmp[PATH_MAX];
-
-  scheme = url_check_scheme(s);
+  enum UrlScheme scheme = url_check_scheme(buf);
 
 #ifdef USE_IMAP
   if (scheme == U_IMAP || scheme == U_IMAPS)
   {
-    imap_pretty_mailbox(s);
+    imap_pretty_mailbox(buf);
     return;
   }
 #endif
@@ -512,54 +643,26 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
     return;
 #endif
 
-  /* if s is an url, only collapse path component */
-  if (scheme != U_UNKNOWN)
-  {
-    p = strchr(s, ':') + 1;
-    if (strncmp(p, "//", 2) == 0)
-      q = strchr(p + 2, '/');
-    if (!q)
-      q = strchr(p, '\0');
-    p = q;
-  }
+  /* The non-symlink realpath impl that was here has been consolidated without
+   * URL parsing into the non-symlinking code-path of mutt_file_tidy_path()
+   */
+  mutt_file_tidy_path(buf, BrowserResolveSymlinks);
 
-  /* cleanup path */
-  if (strstr(p, "//") || strstr(p, "/./"))
-  {
-    /* first attempt to collapse the pathname, this is more
-     * lightweight than realpath() and doesn't resolve links
-     */
-    while (*p)
-    {
-      if (*p == '/' && p[1] == '/')
-      {
-        *q++ = '/';
-        p += 2;
-      }
-      else if (p[0] == '/' && p[1] == '.' && p[2] == '/')
-      {
-        *q++ = '/';
-        p += 3;
-      }
-      else
-        *q++ = *p++;
-    }
-    *q = 0;
-  }
-  else if (strstr(p, "..") && (scheme == U_UNKNOWN || scheme == U_FILE) && realpath(p, tmp))
-    mutt_str_strfcpy(p, tmp, buflen - (p - s));
+  /* Collapse pathname using ~ or = if possible. These are illegal for local
+   * filesystem calls so they are not migrated to mutt_file_tidy_path()
+   */
+  size_t len = mutt_str_strlen(Folder);
 
-  len = mutt_str_strlen(Folder);
-  if ((mutt_str_strncmp(s, Folder, len) == 0) && s[len] == '/')
+  if ((mutt_str_strncmp(buf, Folder, len) == 0) && ((buf[len] == '/') || (buf[len] == '\0')))
   {
-    *s++ = '=';
-    memmove(s, s + len, mutt_str_strlen(s + len) + 1);
+    *buf++ = '=';
+    memmove(buf, buf + len, mutt_str_strlen(buf + len) + 1);
   }
-  else if ((mutt_str_strncmp(s, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
-           s[len] == '/')
+  else if ((mutt_str_strncmp(buf, HomeDir, (len = mutt_str_strlen(HomeDir))) == 0) &&
+           ((buf[len] == '/') || (buf[len] == '\0')))
   {
-    *s++ = '~';
-    memmove(s, s + len - 1, mutt_str_strlen(s + len - 1) + 1);
+    *buf++ = '~';
+    memmove(buf, buf + len - 1, mutt_str_strlen(buf + len - 1) + 1);
   }
 }
 

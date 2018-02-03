@@ -393,6 +393,18 @@ struct Option MuttVars[] = {
   ** doesn't make intuitive sense.  In those cases, it may be
   ** desirable to \fIunset\fP this variable.
   */
+  { "browser_resolve_symlinks", DT_BOOL, R_NONE, &BrowserResolveSymlinks, 0 },
+  /*
+  ** .pp
+  ** When this variable is \fIset\fP, the Neomutt browser will resolve directory
+  ** symlinks. For example, let's pretend you have a symlink `/a/b/c -> /d/e`.
+  ** When this variable is \fIset\fP, navigating to /a/b/c in the browser will cause
+  ** the directory to resolve as /d/e. Any further directory traversal will be from
+  ** /d/e. For instance, when you go to the parent directory you will end up at /d.
+  ** With this option \fIunset\fP, navigating to /a/b/c will reveal the contents of
+  ** /d/e, but the directory is seen as /a/b/c. So in this case, going to the parent
+  ** directory will bring you to /a/b
+  */
 #ifdef USE_NNTP
   { "catchup_newsgroup", DT_QUAD, R_NONE, &CatchupNewsgroup, MUTT_ASKYES },
   /*

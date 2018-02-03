@@ -198,7 +198,7 @@ void mutt_parse_part(FILE *fp, struct Body *b);
 void mutt_perror_debug(const char *s);
 void mutt_prepare_envelope(struct Envelope *env, int final);
 void mutt_unprepare_envelope(struct Envelope *env);
-void mutt_pretty_mailbox(char *s, size_t buflen);
+void mutt_pretty_mailbox(char *buf, size_t buflen);
 void mutt_pipe_message(struct Header *h);
 void mutt_print_message(struct Header *h);
 void mutt_query_exit(void);
@@ -338,7 +338,7 @@ int mutt_save_confirm(const char *s, struct stat *st);
 
 void mutt_browser_select_dir(char *f);
 void mutt_get_parent_path(char *output, char *path, size_t olen);
-size_t mutt_realpath(char *buf);
+size_t mutt_file_tidy_path(char *buf, bool rsym);
 
 #define MUTT_RANDTAG_LEN 16
 void mutt_rand_base32(void *out, size_t len);
