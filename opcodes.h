@@ -109,6 +109,7 @@
   _fmt(OP_EDITOR_FORWARD_WORD,            N_("move the cursor to the end of the word")) \
   _fmt(OP_EDITOR_HISTORY_DOWN,            N_("scroll down through the history list")) \
   _fmt(OP_EDITOR_HISTORY_UP,              N_("scroll up through the history list")) \
+  _fmt(OP_EDITOR_HISTORY_SEARCH,          N_("search through the history list")) \
   _fmt(OP_EDITOR_KILL_EOL,                N_("delete chars from cursor to end of line")) \
   _fmt(OP_EDITOR_KILL_EOW,                N_("delete chars from the cursor to the end of the word")) \
   _fmt(OP_EDITOR_KILL_LINE,               N_("delete all chars on the line")) \

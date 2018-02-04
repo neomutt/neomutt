@@ -536,6 +536,7 @@ const struct Binding OpEditor[] = { /* map: editor */
   { "buffy-cycle",           OP_EDITOR_BUFFY_CYCLE,          " " },
   { "history-up",            OP_EDITOR_HISTORY_UP,           NULL },
   { "history-down",          OP_EDITOR_HISTORY_DOWN,         NULL },
+  { "history-search",	       OP_EDITOR_HISTORY_SEARCH,	     "\022" },
   { "transpose-chars",       OP_EDITOR_TRANSPOSE_CHARS,      NULL },
   { NULL,                    0,                              NULL },
 };

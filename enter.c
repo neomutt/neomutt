@@ -263,6 +263,15 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           redraw = MUTT_REDRAW_INIT;
           break;
 
+        case OP_EDITOR_HISTORY_SEARCH:
+          state->curpos = state->lastchar;
+          mutt_mb_wcstombs(buf, buflen, state->wbuf, state->curpos);
+          mutt_history_complete(buf, buflen, hclass);
+          replace_part(state, 0, buf);
+          rc = 1;
+          goto bye;
+          break;
+
         case OP_EDITOR_BACKSPACE:
           if (state->curpos == 0)
             BEEP();
