@@ -6587,6 +6587,12 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 "Pas de backend crypto configuré. Désactivation de la sécurité du message."
 
+msgid "History '%s'"
+msgstr "Historique '%s'"
+
+msgid "search through the history list"
+msgstr "rechercher dans l'historique"
+
 #, fuzzy
 #~ msgid "DEBUG was not defined during compilation. -d Ignored.\n"
 #~ msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
