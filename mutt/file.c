@@ -34,8 +34,8 @@
  * | mutt_file_chmod_add_stat()    | Add permissions to a file
  * | mutt_file_chmod_rm()          | Remove permissions from a file
  * | mutt_file_chmod_rm_stat()     | Remove permissions from a file
- * | mutt_file_concatn_path()      | Concatenate directory and filename
  * | mutt_file_concat_path()       | Join a directory name and a filename
+ * | mutt_file_concatn_path()      | Concatenate directory and filename
  * | mutt_file_copy_bytes()        | Copy some content from one file to another
  * | mutt_file_copy_stream()       | Copy the contents of one file into another
  * | mutt_file_decrease_mtime()    | Decrease a file's modification time by 1 second
@@ -56,8 +56,8 @@
  * | mutt_file_sanitize_regex()    | Escape any regex-magic characters in a string
  * | mutt_file_set_mtime()         | Set the modification time of one file from another
  * | mutt_file_symlink()           | Create a symlink
- * | mutt_file_touch_atime()       | Set the access time to current time
  * | mutt_file_to_absolute_path()  | Convert relative filepath to an absolute path
+ * | mutt_file_touch_atime()       | Set the access time to current time
  * | mutt_file_unlink()            | Delete a file, carefully
  * | mutt_file_unlink_empty()      | Delete a file if it's empty
  * | mutt_file_unlock()            | Unlock a file previously locked by mutt_file_lock()
@@ -1262,7 +1262,6 @@ void mutt_file_unlink_empty(const char *path)
  * note on access(2) use: No dangling symlink problems here due to
  * mutt_file_fopen().
  */
-
 int mutt_file_rename(char *oldfile, char *newfile)
 {
   FILE *ofp = NULL, *nfp = NULL;
