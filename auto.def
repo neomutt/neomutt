@@ -323,15 +323,18 @@ if {[get-define want-doc]} {
     user-error "Unable to find xsltproc"
   }
 
-  set dtd_tmp "test.xml"
-  msg-checking "Checking Docbook DTDs are installed..."
-  writefile $dtd_tmp "<?xml version=\"1.0\" standalone=\"no\"?> <!DOCTYPE book PUBLIC \"-//OASIS//DTD DocBook XML V4.2//EN\" \"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd\"> <book></book>"
-  if {[catch {exec xsltproc --nonet doc/html.xsl $dtd_tmp > /dev/null} out]} {
-    exec rm -f $dtd_tmp
-    msg-result "no"
-    user-error "Install Docbook DTDs, or './configure --disable-doc'"
+  msg-checking "Checking for DocBook DTDs..."
+  set book {
+    <?xml version="1.0" standalone="no"?>
+    <!DOCTYPE book PUBLIC
+      "-//OASIS//DTD DocBook XML V4.2//EN"
+      "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+    ><book/>
   }
-  exec rm -f $dtd_tmp
+  if {[catch {exec xsltproc --nonet doc/html.xsl << $book}]} {
+    msg-result "no"
+    user-error "Install DocBook DTDs, or './configure --disable-doc'"
+  }
   msg-result "yes"
 
   define BUILD_DOC
