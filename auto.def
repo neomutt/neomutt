@@ -324,20 +324,8 @@ if {[get-define want-doc]} {
   }
 
   msg-checking "Checking for DocBook DTDs..."
-
-  writefile xslt_test.xsl {<?xml version="1.0"?>
-    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-      <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
-    </xsl:stylesheet>}
-
-  writefile xslt_test.xml {<?xml version="1.0" standalone="no"?>
-    <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
-    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
-    <book />}
-
-  set err [catch {exec xsltproc --nonet xslt_test.xsl xslt_test.xml}]
-  file delete -- xslt_test.xsl xslt_test.xml
-  if {$err} {
+  set res [exec xmlcatalog --shell << {public "-//OASIS//DTD DocBook XML V4.2//EN"}]
+  if {[string match {> No entry*} $res]} {
     msg-result "no"
     user-error "Install DocBook DTDs or './configure --disable-doc'"
   }
