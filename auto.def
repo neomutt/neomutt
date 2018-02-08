@@ -335,13 +335,13 @@ if {[get-define want-doc]} {
     "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
     <book />}
 
-  if {[catch {exec xsltproc --nonet xslt_test.xsl xslt_test.xml}]} {
+  set err [catch {exec xsltproc --nonet xslt_test.xsl xslt_test.xml}]
+  file delete -- xslt_test.xsl xslt_test.xml
+  if {$err} {
     msg-result "no"
-    exec rm -f xslt_test.xsl xslt_test.xml
     user-error "Install DocBook DTDs or './configure --disable-doc'"
   }
   msg-result "yes"
-  exec rm -f xslt_test.xsl xslt_test.xml
 
   define BUILD_DOC
 }
