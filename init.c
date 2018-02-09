@@ -693,21 +693,13 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
 static void free_opt(struct Option *p)
 {
-  struct Regex **pp = NULL;
-
   switch (DTYPE(p->type))
   {
     case DT_ADDRESS:
       mutt_addr_free((struct Address **) p->var);
       break;
     case DT_REGEX:
-      pp = (struct Regex **) p->var;
-      FREE(&(*pp)->pattern);
-      if ((*pp)->regex)
-      {
-        regfree((*pp)->regex);
-        FREE(&(*pp)->regex);
-      }
+      mutt_regex_free((struct Regex **) p->var);
       break;
     case DT_PATH:
     case DT_STRING:
