@@ -378,7 +378,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               if (e && e->subject)
               {
                 e->real_subj = e->subject;
-                if (ReplyRegex &&
+                if (ReplyRegex && ReplyRegex->regex &&
                     (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
                 {
                   e->subject += pmatch[0].rm_eo;
@@ -2604,7 +2604,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
             struct Envelope *e = Context->hdrs[i]->env;
             if (e && e->subject)
             {
-              e->real_subj = (ReplyRegex &&
+              e->real_subj = (ReplyRegex && ReplyRegex->regex &&
                               (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0))) ?
                                  e->subject :
                                  e->subject + pmatch[0].rm_eo;

@@ -1280,7 +1280,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
       mutt_rfc2047_decode(&e->subject);
 
-      if (ReplyRegex && (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
+      if (ReplyRegex && ReplyRegex->regex && (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
         e->real_subj = e->subject + pmatch[0].rm_eo;
       else
         e->real_subj = e->subject;

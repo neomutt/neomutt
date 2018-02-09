@@ -1237,7 +1237,7 @@ static int is_reply(struct Header *reply, struct Header *orig)
 static int search_attach_keyword(char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
-  if (!AttachKeyword || !QuoteRegex)
+  if (!AttachKeyword || !AttachKeyword->regex || !QuoteRegex || !QuoteRegex->regex)
     return 0;
 
   FILE *attf = mutt_file_fopen(filename, "r");

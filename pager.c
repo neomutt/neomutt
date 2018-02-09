@@ -841,9 +841,9 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (QuoteRegex && regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+  else if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
   {
-    if (Smileys && (regexec(Smileys->regex, buf, 1, smatch, 0) == 0))
+    if (Smileys && Smileys->regex && (regexec(Smileys->regex, buf, 1, smatch, 0) == 0))
     {
       if (smatch[0].rm_so > 0)
       {
@@ -853,7 +853,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         c = buf[smatch[0].rm_so];
         buf[smatch[0].rm_so] = 0;
 
-        if (QuoteRegex && regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+        if (regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
         {
           if (q_classify && line_info[n].quote == NULL)
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
@@ -1490,7 +1490,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (QuoteRegex && regexec(QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0)
+    if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0)
     {
       (*line_info)[n].quote =
           classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,

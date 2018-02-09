@@ -730,7 +730,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       if (prefix && *prefix && (strncmp(prefix, nntp_data->group, strlen(prefix)) != 0))
         continue;
-      if (Mask && !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
+      if (Mask && Mask->regex && !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
         continue;
       add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
     }
@@ -788,7 +788,7 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       {
         continue;
       }
-      if (Mask && !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
+      if (Mask && Mask->regex && !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
         continue;
 
       mutt_file_concat_path(buffer, d, de->d_name, sizeof(buffer));
@@ -1814,7 +1814,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           }
           else
           {
-            if (Mask)
+            if (Mask && Mask->regex)
             {
               regfree(Mask->regex);
               FREE(&Mask->regex);

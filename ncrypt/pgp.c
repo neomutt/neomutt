@@ -187,7 +187,7 @@ static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 {
   int rc = -1;
 
-  if (PgpGoodSign)
+  if (PgpGoodSign && PgpGoodSign->regex)
   {
     char *line = NULL;
     int lineno = 0;
@@ -231,7 +231,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
 {
   int rc = -1;
 
-  if (PgpDecryptionOkay)
+  if (PgpDecryptionOkay && PgpDecryptionOkay->regex)
   {
     char *line = NULL;
     int lineno = 0;
