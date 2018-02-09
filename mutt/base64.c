@@ -30,14 +30,14 @@
  * @note RFC3548 obsoletes RFC2045.
  * @note RFC4648 obsoletes RFC3548.
  *
- * | Data               | Description
- * | :----------------- | :--------------------------------------------------
- * | #Index_64          | Lookup table for Base64 encoding characters
+ * | Data              | Description
+ * | :---------------- | :--------------------------------------------------
+ * | #Index64          | Lookup table for Base64 encoding characters
  *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | mutt_b64_decode()  | convert null-terminated base64 string to raw bytes
- * | mutt_b64_encode()  | convert raw bytes to null-terminated base64 string
+ * | Function          | Description
+ * | :---------------- | :-------------------------------------------------
+ * | mutt_b64_encode() | Convert raw bytes to null-terminated base64 string
+ * | mutt_b64_decode() | Convert null-terminated base64 string to raw bytes
  */
 
 #include "config.h"
@@ -58,7 +58,7 @@ static const char B64Chars[64] = {
 
 // clang-format off
 /**
- * Index_64 - Lookup table for Base64 encoding characters
+ * Index64 - Lookup table for Base64 encoding characters
  *
  * @note This is very similar to the table in imap/utf7.c
  *
@@ -66,7 +66,7 @@ static const char B64Chars[64] = {
  * * utf7 A-Za-z0-9+,
  * * mime A-Za-z0-9+/
  */
-const int Index_64[128] = {
+const int Index64[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,62, -1,-1,-1,63,
@@ -79,7 +79,7 @@ const int Index_64[128] = {
 // clang-format on
 
 /**
- * mutt_b64_encode - convert raw bytes to null-terminated base64 string
+ * mutt_b64_encode - Convert raw bytes to null-terminated base64 string
  * @param out  Output buffer for the base64 encoded string
  * @param cin  Input  buffer for the raw bytes
  * @param len  Length of the input buffer
@@ -125,7 +125,7 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
 }
 
 /**
- * mutt_b64_decode - convert null-terminated base64 string to raw bytes
+ * mutt_b64_decode - Convert null-terminated base64 string to raw bytes
  * @param out Output buffer for the raw bytes
  * @param in  Input  buffer for the null-terminated base64-encoded string
  * @retval n Number of bytes written on success

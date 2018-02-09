@@ -32,7 +32,6 @@
 #include "compress.h"
 #include "context.h"
 #include "format_flags.h"
-#include "globals.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
@@ -613,7 +612,7 @@ static int comp_close_mailbox(struct Context *ctx)
   if (!ctx->append)
   {
     /* If the file was removed, remove the compressed folder too */
-    if ((access(ctx->path, F_OK) != 0) && !option(OPT_SAVE_EMPTY))
+    if ((access(ctx->path, F_OK) != 0) && !SaveEmpty)
     {
       remove(ctx->realpath);
     }

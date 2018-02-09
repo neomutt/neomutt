@@ -25,26 +25,33 @@
  *
  * Each source file in the library provides a group of related functions.
  *
+ * | File             | Description        |
+ * | :--------------- | :----------------- |
+ * | mutt/base64.c    | @subpage base64    |
+ * | mutt/buffer.c    | @subpage buffer    |
+ * | mutt/charset.c   | @subpage charset   |
+ * | mutt/date.c      | @subpage date      |
+ * | mutt/debug.c     | @subpage debug     |
+ * | mutt/exit.c      | @subpage exit      |
+ * | mutt/file.c      | @subpage file      |
+ * | mutt/hash.c      | @subpage hash      |
+ * | mutt/idna.c      | @subpage idna      |
+ * | mutt/list.c      | @subpage list      |
+ * | mutt/mapping.c   | @subpage mapping   |
+ * | mutt/mbyte.c     | @subpage mbyte     |
+ * | mutt/md5.c       | @subpage md5       |
+ * | mutt/memory.c    | @subpage memory    |
+ * | mutt/message.c   | @subpage message   |
+ * | mutt/mime.c      | @subpage mime      |
+ * | mutt/parameter.c | @subpage parameter |
+ * | mutt/regex.c     | @subpage regex     |
+ * | mutt/rfc2047.c   | @subpage rfc2047   |
+ * | mutt/sha1.c      | @subpage sha1      |
+ * | mutt/signal.c    | @subpage signal    |
+ * | mutt/string.c    | @subpage string    |
+ *
  * @note The library is self-contained -- some files may depend on others in
  *       the library, but none depends on source from outside.
- *
- * -# @subpage base64
- * -# @subpage buffer
- * -# @subpage charset
- * -# @subpage date
- * -# @subpage debug
- * -# @subpage exit
- * -# @subpage file
- * -# @subpage hash
- * -# @subpage list
- * -# @subpage mapping
- * -# @subpage mbyte
- * -# @subpage md5
- * -# @subpage memory
- * -# @subpage message
- * -# @subpage sha1
- * -# @subpage signal
- * -# @subpage string
  */
 
 #ifndef _MUTT_MUTT_H
@@ -58,12 +65,17 @@
 #include "exit.h"
 #include "file.h"
 #include "hash.h"
+#include "idna2.h"
 #include "list.h"
 #include "mapping.h"
 #include "mbyte.h"
 #include "md5.h"
 #include "memory.h"
 #include "message.h"
+#include "mime.h"
+#include "parameter.h"
+#include "regex3.h"
+#include "rfc2047.h"
 #include "sha1.h"
 #include "signal2.h"
 #include "string2.h"

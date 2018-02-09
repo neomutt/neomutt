@@ -25,16 +25,12 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "address.h"
 #include "alias.h"
 #include "body.h"
@@ -43,7 +39,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 
@@ -114,7 +109,8 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, in
   char tmp[LONG_STRING];
   struct stat sb;
 
-  if ((f = fopen(path, "r")))
+  f = fopen(path, "r");
+  if (f)
   {
     fstat(fileno(f), &sb);
     buf = be_snarf_data(f, buf, max, len, 0, sb.st_size, 0);
@@ -166,6 +162,9 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   int offset, bytes, n;
   char tmp[LONG_STRING];
 
+  if (!msg || !buf || !bufmax || !buflen)
+    return buf;
+
   while ((msg = strtok(msg, " ,")) != NULL)
   {
     if (mutt_str_atoi(msg, &n) == 0 && n > 0 && n <= Context->msgcount)
@@ -214,7 +213,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("To: ");
     tmp[0] = '\0';
-    rfc822_write_address(tmp, sizeof(tmp), env->to, 1);
+    mutt_addr_write(tmp, sizeof(tmp), env->to, true);
     addstr(tmp);
     addch('\n');
   }
@@ -222,7 +221,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
-    rfc822_write_address(tmp, sizeof(tmp), env->cc, 1);
+    mutt_addr_write(tmp, sizeof(tmp), env->cc, true);
     addstr(tmp);
     addch('\n');
   }
@@ -230,7 +229,7 @@ static void be_print_header(struct Envelope *env)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
-    rfc822_write_address(tmp, sizeof(tmp), env->bcc, 1);
+    mutt_addr_write(tmp, sizeof(tmp), env->bcc, true);
     addstr(tmp);
     addch('\n');
   }
@@ -257,7 +256,7 @@ static void be_edit_header(struct Envelope *e, int force)
   addstr("To: ");
   tmp[0] = '\0';
   mutt_addrlist_to_local(e->to);
-  rfc822_write_address(tmp, sizeof(tmp), e->to, 0);
+  mutt_addr_write(tmp, sizeof(tmp), e->to, false);
   if (!e->to || force)
   {
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
@@ -267,7 +266,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->to = mutt_expand_aliases(e->to);
       mutt_addrlist_to_intl(e->to, NULL); /* XXX - IDNA error reporting? */
       tmp[0] = '\0';
-      rfc822_write_address(tmp, sizeof(tmp), e->to, 1);
+      mutt_addr_write(tmp, sizeof(tmp), e->to, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
   }
@@ -287,12 +286,12 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if ((!e->cc && option(OPT_ASKCC)) || force)
+  if ((!e->cc && Askcc) || force)
   {
     addstr("Cc: ");
     tmp[0] = '\0';
     mutt_addrlist_to_local(e->cc);
-    rfc822_write_address(tmp, sizeof(tmp), e->cc, 0);
+    mutt_addr_write(tmp, sizeof(tmp), e->cc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 4, 0) == 0)
     {
       mutt_addr_free(&e->cc);
@@ -300,7 +299,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->cc = mutt_expand_aliases(e->cc);
       tmp[0] = '\0';
       mutt_addrlist_to_intl(e->cc, NULL);
-      rfc822_write_address(tmp, sizeof(tmp), e->cc, 1);
+      mutt_addr_write(tmp, sizeof(tmp), e->cc, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 4, tmp);
     }
     else
@@ -308,12 +307,12 @@ static void be_edit_header(struct Envelope *e, int force)
     addch('\n');
   }
 
-  if (option(OPT_ASKBCC) || force)
+  if (Askbcc || force)
   {
     addstr("Bcc: ");
     tmp[0] = '\0';
     mutt_addrlist_to_local(e->bcc);
-    rfc822_write_address(tmp, sizeof(tmp), e->bcc, 0);
+    mutt_addr_write(tmp, sizeof(tmp), e->bcc, false);
     if (mutt_enter_string(tmp, sizeof(tmp), 5, 0) == 0)
     {
       mutt_addr_free(&e->bcc);
@@ -321,7 +320,7 @@ static void be_edit_header(struct Envelope *e, int force)
       e->bcc = mutt_expand_aliases(e->bcc);
       mutt_addrlist_to_intl(e->bcc, NULL);
       tmp[0] = '\0';
-      rfc822_write_address(tmp, sizeof(tmp), e->bcc, 1);
+      mutt_addr_write(tmp, sizeof(tmp), e->bcc, true);
       mutt_window_mvaddstr(MuttMessageWindow, 0, 5, tmp);
     }
     else
@@ -459,7 +458,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
             buf = NULL;
             bufmax = buflen = 0;
 
-            if (option(OPT_EDIT_HEADERS))
+            if (EditHeaders)
             {
               mutt_env_to_local(msg->env);
               mutt_edit_headers(NONULL(Visual), path, msg, NULL, 0);

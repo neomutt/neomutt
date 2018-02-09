@@ -36,7 +36,6 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #include "state.h"
@@ -124,7 +123,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   char prompt[STRING];
   char buf[HUGE_STRING];
   char *err = NULL;
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   int ret = 0;
   int p = 0;
 
@@ -171,25 +170,25 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
     return;
 
-  adr = mutt_addr_parse_list(adr, buf);
-  if (!adr)
+  addr = mutt_addr_parse_list(addr, buf);
+  if (!addr)
   {
     mutt_error(_("Error parsing address!"));
     return;
   }
 
-  adr = mutt_expand_aliases(adr);
+  addr = mutt_expand_aliases(addr);
 
-  if (mutt_addrlist_to_intl(adr, &err) < 0)
+  if (mutt_addrlist_to_intl(addr, &err) < 0)
   {
     mutt_error(_("Bad IDN: '%s'"), err);
     FREE(&err);
-    mutt_addr_free(&adr);
+    mutt_addr_free(&addr);
     return;
   }
 
   buf[0] = 0;
-  rfc822_write_address(buf, sizeof(buf), adr, 1);
+  mutt_addr_write(buf, sizeof(buf), addr, true);
 
 #define EXTRA_SPACE (15 + 7 + 2)
   /*
@@ -207,9 +206,9 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   else
     mutt_str_strcat(prompt, sizeof(prompt), "?");
 
-  if (query_quadoption(OPT_BOUNCE, prompt) != MUTT_YES)
+  if (query_quadoption(Bounce, prompt) != MUTT_YES)
   {
-    mutt_addr_free(&adr);
+    mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
     mutt_message(p ? _("Message not bounced.") : _("Messages not bounced."));
     return;
@@ -218,13 +217,13 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   mutt_window_clearline(MuttMessageWindow, 0);
 
   if (cur)
-    ret = mutt_bounce_message(fp, cur->hdr, adr);
+    ret = mutt_bounce_message(fp, cur->hdr, addr);
   else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
       if (actx->idx[i]->content->tagged)
-        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->hdr, adr))
+        if (mutt_bounce_message(actx->idx[i]->fp, actx->idx[i]->content->hdr, addr))
           ret = 1;
     }
   }
@@ -235,7 +234,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     mutt_error(p ? _("Error bouncing message!") :
                    _("Error bouncing messages!"));
 
-  mutt_addr_free(&adr);
+  mutt_addr_free(&addr);
 }
 
 /**
@@ -328,27 +327,28 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
   return parent;
 }
 
-static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *_prefix)
+static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *prefix)
 {
   int chflags = CH_DECODE;
-  char prefix[SHORT_STRING];
+  char prefix2[SHORT_STRING];
 
-  if (option(OPT_WEED))
+  if (Weed)
     chflags |= CH_WEED | CH_REORDER;
 
   if (quote)
   {
-    if (_prefix)
-      mutt_str_strfcpy(prefix, _prefix, sizeof(prefix));
-    else if (!option(OPT_TEXT_FLOWED))
-      mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
+    if (prefix)
+      mutt_str_strfcpy(prefix2, prefix, sizeof(prefix2));
+    else if (!TextFlowed)
+      mutt_make_string_flags(prefix2, sizeof(prefix2), NONULL(IndentString),
+                             Context, hdr, 0);
     else
-      mutt_str_strfcpy(prefix, ">", sizeof(prefix));
+      mutt_str_strfcpy(prefix2, ">", sizeof(prefix2));
 
     chflags |= CH_PREFIX;
   }
 
-  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix : NULL);
+  mutt_copy_header(ifp, hdr, ofp, chflags, quote ? prefix2 : NULL);
 }
 
 /**
@@ -430,16 +430,16 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   /* prepare the prefix here since we'll need it later. */
 
-  if (option(OPT_FORWARD_QUOTE))
+  if (ForwardQuote)
   {
-    if (!option(OPT_TEXT_FLOWED))
+    if (!TextFlowed)
       mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
                              Context, parent_hdr, 0);
     else
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
   }
 
-  include_header(option(OPT_FORWARD_QUOTE), parent_fp, parent_hdr, tmpfp, prefix);
+  include_header(ForwardQuote, parent_fp, parent_hdr, tmpfp, prefix);
 
   /*
    * Now, we have prepared the first part of the message body: The
@@ -450,7 +450,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
    */
 
   if ((!cur || mutt_can_decode(cur)) &&
-      (rc = query_quadoption(OPT_MIME_FORWARD, _("Forward as attachments?"))) == MUTT_YES)
+      (rc = query_quadoption(MimeForward, _("Forward as attachments?"))) == MUTT_YES)
   {
     mime_fwd_all = true;
   }
@@ -466,9 +466,10 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    if ((rc = query_quadoption(OPT_MIME_FORWARD_REST,
-                               _("Can't decode all tagged attachments.  "
-                                 "MIME-forward the others?"))) == MUTT_ABORT)
+    rc = query_quadoption(
+        MimeForwardRest,
+        _("Can't decode all tagged attachments.  MIME-forward the others?"));
+    if (rc == MUTT_ABORT)
       goto bail;
     else if (rc == MUTT_NO)
       mime_fwd_any = false;
@@ -478,10 +479,10 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 
   memset(&st, 0, sizeof(st));
 
-  if (option(OPT_FORWARD_QUOTE))
+  if (ForwardQuote)
     st.prefix = prefix;
   st.flags = MUTT_CHARCONV;
-  if (option(OPT_WEED))
+  if (Weed)
     st.flags |= MUTT_WEED;
   st.fpout = tmpfp;
 
@@ -589,8 +590,8 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 
   tmpbody[0] = '\0';
 
-  if ((rc = query_quadoption(OPT_MIME_FORWARD,
-                             _("Forward MIME encapsulated?"))) == MUTT_NO)
+  rc = query_quadoption(MimeForward, _("Forward MIME encapsulated?"));
+  if (rc == MUTT_NO)
   {
     /* no MIME encapsulation */
 
@@ -603,16 +604,16 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
       return;
     }
 
-    if (option(OPT_FORWARD_QUOTE))
+    if (ForwardQuote)
     {
       chflags |= CH_PREFIX;
       cmflags |= MUTT_CM_PREFIX;
     }
 
-    if (option(OPT_FORWARD_DECODE))
+    if (ForwardDecode)
     {
       cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-      if (option(OPT_WEED))
+      if (Weed)
       {
         chflags |= CH_WEED | CH_REORDER;
         cmflags |= MUTT_CM_WEED;
@@ -788,9 +789,9 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur)
 
   mutt_make_attribution(Context, cur, tmpfp);
 
-  if (!option(OPT_HEADER))
+  if (!Header)
     cmflags |= MUTT_CM_NOHEADER;
-  if (option(OPT_WEED))
+  if (Weed)
   {
     chflags |= CH_WEED;
     cmflags |= MUTT_CM_WEED;
@@ -820,9 +821,9 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
-    set_option(OPT_NEWS_SEND);
+    OPT_NEWS_SEND = true;
   else
-    unset_option(OPT_NEWS_SEND);
+    OPT_NEWS_SEND = false;
 #endif
 
   if (!check_all_msg(actx, cur, false))
@@ -843,9 +844,10 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    if ((rc = query_quadoption(OPT_MIME_FORWARD_REST,
-                               _("Can't decode all tagged attachments.  "
-                                 "MIME-encapsulate the others?"))) == MUTT_ABORT)
+    rc = query_quadoption(MimeForwardRest,
+                          _("Can't decode all tagged attachments.  "
+                            "MIME-encapsulate the others?"));
+    if (rc == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)
       mime_reply_any = true;
@@ -892,7 +894,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     memset(&st, 0, sizeof(struct State));
     st.fpout = tmpfp;
 
-    if (!option(OPT_TEXT_FLOWED))
+    if (!TextFlowed)
       mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString),
                              Context, parent_hdr, 0);
     else
@@ -901,10 +903,10 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     st.prefix = prefix;
     st.flags = MUTT_CHARCONV;
 
-    if (option(OPT_WEED))
+    if (Weed)
       st.flags |= MUTT_WEED;
 
-    if (option(OPT_HEADER))
+    if (Header)
       include_header(1, parent_fp, parent_hdr, tmpfp, prefix);
 
     if (cur)
@@ -946,5 +948,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (ci_send_message(flags, tmphdr, tmpbody, NULL,
                       parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL)) == 0)
+  {
     mutt_set_flag(Context, hdr, MUTT_REPLIED, 1);
+  }
 }

@@ -1409,7 +1409,8 @@ int main(int argc, char *argv[])
   int c;
   FILE *f = NULL;
 
-  if ((Progname = strrchr(argv[0], '/')))
+  Progname = strrchr(argv[0], '/');
+  if (Progname)
     Progname++;
   else
     Progname = argv[0];

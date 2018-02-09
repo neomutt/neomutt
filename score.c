@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
@@ -51,13 +52,13 @@ static struct Score *ScoreList = NULL;
 
 void mutt_check_rescore(struct Context *ctx)
 {
-  if (option(OPT_NEED_RESCORE) && option(OPT_SCORE))
+  if (OPT_NEED_RESCORE && Score)
   {
     if ((Sort & SORT_MASK) == SORT_SCORE || (SortAux & SORT_MASK) == SORT_SCORE)
     {
-      set_option(OPT_NEED_RESORT);
+      OPT_NEED_RESORT = true;
       if ((Sort & SORT_MASK) == SORT_THREADS)
-        set_option(OPT_SORT_SUBTHREADS);
+        OPT_SORT_SUBTHREADS = true;
     }
 
     /* must redraw the index since the user might have %N in it */
@@ -70,7 +71,7 @@ void mutt_check_rescore(struct Context *ctx)
       ctx->hdrs[i]->pair = 0;
     }
   }
-  unset_option(OPT_NEED_RESCORE);
+  OPT_NEED_RESCORE = false;
 }
 
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
@@ -135,7 +136,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
     mutt_str_strfcpy(err->data, _("Error: score: invalid number"), err->dsize);
     return -1;
   }
-  set_option(OPT_NEED_RESCORE);
+  OPT_NEED_RESCORE = true;
   return 0;
 }
 
@@ -206,6 +207,6 @@ int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
       }
     }
   }
-  set_option(OPT_NEED_RESCORE);
+  OPT_NEED_RESCORE = true;
   return 0;
 }

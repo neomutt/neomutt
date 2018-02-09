@@ -38,16 +38,10 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
-#include "mutt/date.h"
-#include "mutt/debug.h"
-#include "mutt/file.h"
-#include "mutt/memory.h"
-#include "mutt/message.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "mutt.h"
 #include "account.h"
 #include "conn_globals.h"
@@ -55,7 +49,6 @@
 #include "keymap.h"
 #include "mutt_account.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
 #include "opcodes.h"
 #include "options.h"
 #include "protos.h"
@@ -318,7 +311,8 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
-  if ((fp = fopen(CertificateFile, "r")))
+  fp = fopen(CertificateFile, "r");
+  if (fp)
   {
     if (REGCOMP(&preg,
                 "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
@@ -468,7 +462,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
     return -1;
   }
 
-  if (option(OPT_SSL_VERIFY_DATES) != MUTT_NO)
+  if (SslVerifyDates != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time(cert) < time(NULL))
       *certerr |= CERTERR_EXPIRED;
@@ -476,7 +470,7 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && option(OPT_SSL_VERIFY_HOST) != MUTT_NO &&
+  if (chainidx == 0 && SslVerifyHost != MUTT_NO &&
       !gnutls_x509_crt_check_hostname(cert, hostname) &&
       !tls_check_stored_hostname(certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;
@@ -562,26 +556,6 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
 }
 
 /**
- * tls_make_date - Create a TLS date string
- * @param t   Time to convert
- * @param s   Buffer for the string
- * @param len Length of the buffer
- * @retval ptr Pointer to s
- */
-static char *tls_make_date(time_t t, char *s, size_t len)
-{
-  struct tm *l = gmtime(&t);
-
-  if (l)
-    snprintf(s, len, "%s, %d %s %d %02d:%02d:%02d UTC", Weekdays[l->tm_wday], l->tm_mday,
-             Months[l->tm_mon], l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec);
-  else
-    mutt_str_strfcpy(s, _("[invalid date]"), len);
-
-  return s;
-}
-
-/**
  * tls_check_one_certificate - Check a GnuTLS certificate
  * @param certdata List of GnuTLS certificates
  * @param certstat GnuTLS certificate status
@@ -661,30 +635,42 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   buflen = sizeof(dn_common_name);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0, 0,
                                     dn_common_name, &buflen) != 0)
+  {
     dn_common_name[0] = '\0';
+  }
   buflen = sizeof(dn_email);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_PKCS9_EMAIL, 0, 0, dn_email, &buflen) != 0)
     dn_email[0] = '\0';
   buflen = sizeof(dn_organization);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATION_NAME, 0,
                                     0, dn_organization, &buflen) != 0)
+  {
     dn_organization[0] = '\0';
+  }
   buflen = sizeof(dn_organizational_unit);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATIONAL_UNIT_NAME,
                                     0, 0, dn_organizational_unit, &buflen) != 0)
+  {
     dn_organizational_unit[0] = '\0';
+  }
   buflen = sizeof(dn_locality);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_LOCALITY_NAME, 0, 0,
                                     dn_locality, &buflen) != 0)
+  {
     dn_locality[0] = '\0';
+  }
   buflen = sizeof(dn_province);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_STATE_OR_PROVINCE_NAME,
                                     0, 0, dn_province, &buflen) != 0)
+  {
     dn_province[0] = '\0';
+  }
   buflen = sizeof(dn_country);
   if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COUNTRY_NAME, 0, 0,
                                     dn_country, &buflen) != 0)
+  {
     dn_country[0] = '\0';
+  }
 
   snprintf(menu->dialog[row++], SHORT_STRING, "   %s  %s", dn_common_name, dn_email);
   snprintf(menu->dialog[row++], SHORT_STRING, "   %s", dn_organization);
@@ -699,31 +685,45 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   buflen = sizeof(dn_common_name);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0,
                                            0, dn_common_name, &buflen) != 0)
+  {
     dn_common_name[0] = '\0';
+  }
   buflen = sizeof(dn_email);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_PKCS9_EMAIL, 0, 0,
                                            dn_email, &buflen) != 0)
+  {
     dn_email[0] = '\0';
+  }
   buflen = sizeof(dn_organization);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATION_NAME,
                                            0, 0, dn_organization, &buflen) != 0)
+  {
     dn_organization[0] = '\0';
+  }
   buflen = sizeof(dn_organizational_unit);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATIONAL_UNIT_NAME,
                                            0, 0, dn_organizational_unit, &buflen) != 0)
+  {
     dn_organizational_unit[0] = '\0';
+  }
   buflen = sizeof(dn_locality);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_LOCALITY_NAME,
                                            0, 0, dn_locality, &buflen) != 0)
+  {
     dn_locality[0] = '\0';
+  }
   buflen = sizeof(dn_province);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_STATE_OR_PROVINCE_NAME,
                                            0, 0, dn_province, &buflen) != 0)
+  {
     dn_province[0] = '\0';
+  }
   buflen = sizeof(dn_country);
   if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_COUNTRY_NAME,
                                            0, 0, dn_country, &buflen) != 0)
+  {
     dn_country[0] = '\0';
+  }
 
   snprintf(menu->dialog[row++], SHORT_STRING, "   %s  %s", dn_common_name, dn_email);
   snprintf(menu->dialog[row++], SHORT_STRING, "   %s", dn_organization);
@@ -735,12 +735,12 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   snprintf(menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
 
   t = gnutls_x509_crt_get_activation_time(cert);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"),
-           tls_make_date(t, datestr, 30));
+  mutt_date_make_tls(datestr, sizeof(datestr), t);
+  snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"), datestr);
 
   t = gnutls_x509_crt_get_expiration_time(cert);
-  snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"),
-           tls_make_date(t, datestr, 30));
+  mutt_date_make_tls(datestr, sizeof(datestr), t);
+  snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"), datestr);
 
   fpbuf[0] = '\0';
   tls_fingerprint(GNUTLS_DIG_SHA, fpbuf, sizeof(fpbuf), certdata);
@@ -817,7 +817,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu->help = helpstr;
 
   done = 0;
-  set_option(OPT_IGNORE_MACRO_EVENTS);
+  OPT_IGNORE_MACRO_EVENTS = true;
   while (!done)
   {
     switch (mutt_menu_loop(menu))
@@ -829,7 +829,8 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
       case OP_MAX + 3: /* accept always */
         done = 0;
-        if ((fp = fopen(CertificateFile, "a")))
+        fp = mutt_file_fopen(CertificateFile, "a");
+        if (fp)
         {
           /* save hostname if necessary */
           if (certerr & CERTERR_HOSTNAME)
@@ -862,13 +863,13 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
           mutt_message(_("Certificate saved"));
           mutt_sleep(0);
         }
-      /* fall through */
+      /* fallthrough */
       case OP_MAX + 2: /* accept once */
         done = 2;
         break;
     }
   }
-  unset_option(OPT_IGNORE_MACRO_EVENTS);
+  OPT_IGNORE_MACRO_EVENTS = false;
   mutt_pop_current_menu(menu);
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
@@ -1006,7 +1007,8 @@ static void tls_get_client_cert(struct Connection *conn)
   }
   cn += 3;
 
-  if ((cnend = strstr(dn, ",EMAIL=")))
+  cnend = strstr(dn, ",EMAIL=");
+  if (cnend)
     *cnend = '\0';
 
   /* if we are using a client cert, SASL may expect an external auth name */
@@ -1042,22 +1044,22 @@ static int tls_set_priority(struct TlsSockData *data)
   else
     mutt_str_strcat(priority, priority_size, "NORMAL");
 
-  if (!option(OPT_SSL_USE_TLSV1_2))
+  if (!SslUseTlsv12)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.2");
   }
-  if (!option(OPT_SSL_USE_TLSV1_1))
+  if (!SslUseTlsv11)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.1");
   }
-  if (!option(OPT_SSL_USE_TLSV1))
+  if (!SslUseTlsv1)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-TLS1.0");
   }
-  if (!option(OPT_SSL_USE_SSLV3))
+  if (!SslUseSslv3)
   {
     nproto--;
     mutt_str_strcat(priority, priority_size, ":-VERS-SSL3.0");
@@ -1094,13 +1096,13 @@ static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */
 
-  if (option(OPT_SSL_USE_TLSV1_2))
+  if (SslUseTlsv12)
     protocol_priority[nproto++] = GNUTLS_TLS1_2;
-  if (option(OPT_SSL_USE_TLSV1_1))
+  if (SslUseTlsv11)
     protocol_priority[nproto++] = GNUTLS_TLS1_1;
-  if (option(OPT_SSL_USE_TLSV1))
+  if (SslUseTlsv1)
     protocol_priority[nproto++] = GNUTLS_TLS1;
-  if (option(OPT_SSL_USE_SSLV3))
+  if (SslUseSslv3)
     protocol_priority[nproto++] = GNUTLS_SSL3;
   protocol_priority[nproto] = 0;
 
@@ -1172,7 +1174,8 @@ static int tls_negotiate(struct Connection *conn)
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
 #endif
 
-  if ((err = gnutls_init(&data->state, GNUTLS_CLIENT)))
+  err = gnutls_init(&data->state, GNUTLS_CLIENT);
+  if (err)
   {
     mutt_error("gnutls_handshake: %s", gnutls_strerror(err));
     mutt_sleep(2);
@@ -1233,7 +1236,7 @@ static int tls_negotiate(struct Connection *conn)
 
   tls_get_client_cert(conn);
 
-  if (!option(OPT_NO_CURSES))
+  if (!OPT_NO_CURSES)
   {
     mutt_message(_("SSL/TLS connection using %s (%s/%s/%s)"),
                  gnutls_protocol_get_name(gnutls_protocol_get_version(data->state)),

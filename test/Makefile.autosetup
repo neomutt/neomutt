@@ -1,0 +1,24 @@
+TEST_OBJS   = test/main.o \
+	      test/base64.o \
+	      test/rfc2047.o \
+	      test/md5.o \
+	      test/string.o
+
+TEST_BINARY = test/neomutt-test$(EXEEXT)
+
+.PHONY: test
+test: $(TEST_BINARY)
+	$(TEST_BINARY)
+
+$(TEST_BINARY): $(TEST_OBJS) $(MUTTLIBS)
+	$(CC) -o $@ $(TEST_OBJS) $(MUTTLIBS) $(LDFLAGS) $(LIBS)
+
+all-test: $(TEST_BINARY)
+
+clean-test:
+	$(RM) $(TEST_BINARY) $(TEST_OBJS) $(TEST_OBJS:.o=.Po)
+
+install-test:
+uninstall-test:
+
+# vim: set ts=8 noexpandtab:

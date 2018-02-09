@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2007 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-2007,2017 Brendan Cully <brendan@kublai.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -26,33 +26,36 @@
  *
  * IMAP network mailbox
  *
- * -# @subpage imap_imap
- * -# @subpage imap_auth_anon
- * -# @subpage imap_auth
- * -# @subpage imap_auth_crap
- * -# @subpage imap_auth_gss
- * -# @subpage imap_auth_login
- * -# @subpage imap_auth_plain
- * -# @subpage imap_auth_sasl
- * -# @subpage imap_browse
- * -# @subpage imap_command
- * -# @subpage imap_message
- * -# @subpage imap_utf7
- * -# @subpage imap_util
+ * | File              | Description              |
+ * | :---------------- | :----------------------- |
+ * | imap/imap.c       | @subpage imap_imap       |
+ * | imap/auth_anon.c  | @subpage imap_auth_anon  |
+ * | imap/auth.c       | @subpage imap_auth       |
+ * | imap/auth_cram.c  | @subpage imap_auth_cram  |
+ * | imap/auth_gss.c   | @subpage imap_auth_gss   |
+ * | imap/auth_login.c | @subpage imap_auth_login |
+ * | imap/auth_plain.c | @subpage imap_auth_plain |
+ * | imap/auth_sasl.c  | @subpage imap_auth_sasl  |
+ * | imap/browse.c     | @subpage imap_browse     |
+ * | imap/command.c    | @subpage imap_command    |
+ * | imap/message.c    | @subpage imap_message    |
+ * | imap/utf7.c       | @subpage imap_utf7       |
+ * | imap/util.c       | @subpage imap_util       |
  */
 
 #ifndef _IMAP_IMAP_H
 #define _IMAP_IMAP_H
 
+#include "conn/conn.h"
+#include "mutt_account.h"
 #include <stddef.h>
 #include <sys/types.h>
-#include "mutt_account.h"
 
-struct Header;
-struct Pattern;
-struct Context;
-struct Message;
 struct BrowserState;
+struct Context;
+struct Header;
+struct Message;
+struct Pattern;
 
 /**
  * struct ImapMbox - An IMAP mailbox

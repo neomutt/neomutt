@@ -26,8 +26,7 @@
 /**
  * @page hc_gdbm GDMB
  *
- * This module implements the header cache functionality using a GNU dbm file
- * as a backend.
+ * Use a GNU dbm file as a header cache backend.
  */
 
 #include "config.h"

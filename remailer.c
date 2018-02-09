@@ -27,6 +27,7 @@
 #include "config.h"
 #include <fcntl.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -678,7 +679,8 @@ void mix_make_chain(struct ListHead *chainhead)
   {
     for (int i = 0; i < chain->cl; i++)
     {
-      if ((j = chain->ch[i]))
+      j = chain->ch[i];
+      if (j != 0)
         t = type2_list[j]->shortname;
       else
         t = "*";
@@ -758,14 +760,14 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
 
-  if (!option(OPT_NO_CURSES))
+  if (!OPT_NO_CURSES)
     mutt_endwin(NULL);
 
   i = mutt_system(cmd);
   if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
-    if (!option(OPT_NO_CURSES))
+    if (!OPT_NO_CURSES)
     {
       mutt_any_key_to_continue(NULL);
       mutt_error(_("Error sending message."));

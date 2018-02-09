@@ -25,7 +25,6 @@
 
 #include <stdio.h>
 
-struct Body;
 struct Header;
 struct Context;
 

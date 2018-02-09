@@ -203,7 +203,7 @@ static bool pgpring_string_matches_hint(const char *s, const char *hints[], int 
 static void pgp_make_pgp2_fingerprint(unsigned char *buf, unsigned char *digest)
 {
   struct Md5Ctx ctx;
-  unsigned int size = 0;
+  size_t size = 0;
 
   mutt_md5_init_ctx(&ctx);
 
@@ -230,7 +230,7 @@ static char *binary_fingerprint_to_string(unsigned char *buf, size_t length)
 
   pf = fingerprint = mutt_mem_malloc((length * 2) + 1);
 
-  for (int i = 0; i < length; i++)
+  for (size_t i = 0; i < length; i++)
   {
     sprintf(pf, "%02X", buf[i]);
     pf += 2;
@@ -394,7 +394,9 @@ static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buf, size_t l)
   {
     for (id = 0, i = SHA_DIGEST_LENGTH - 8 + k * 4;
          i < SHA_DIGEST_LENGTH + (k - 1) * 4; i++)
+    {
       id = (id << 8) + digest[i];
+    }
 
     snprintf((char *) scratch + k * 8, sizeof(scratch) - k * 8, "%08lX", id);
   }
@@ -841,8 +843,9 @@ int main(int argc, char *const argv[])
   short version = 2;
   short secring = 0;
 
-  const char *_kring = NULL;
-  char *env_pgppath = NULL, *env_home = NULL;
+  const char *tmp_kring = NULL;
+  const char *env_pgppath = NULL;
+  const char *env_home = NULL;
 
   char pgppath[_POSIX_PATH_MAX];
   char kring[_POSIX_PATH_MAX];
@@ -865,7 +868,7 @@ int main(int argc, char *const argv[])
 
       case 'k':
       {
-        _kring = optarg;
+        tmp_kring = optarg;
         break;
       }
 
@@ -892,13 +895,14 @@ int main(int argc, char *const argv[])
     }
   }
 
-  if (_kring)
-    mutt_str_strfcpy(kring, _kring, sizeof(kring));
+  if (tmp_kring)
+    mutt_str_strfcpy(kring, tmp_kring, sizeof(kring));
   else
   {
-    if ((env_pgppath = getenv("PGPPATH")))
+    env_pgppath = mutt_str_getenv("PGPPATH");
+    if (env_pgppath)
       mutt_str_strfcpy(pgppath, env_pgppath, sizeof(pgppath));
-    else if ((env_home = getenv("HOME")))
+    else if ((env_home = mutt_str_getenv("HOME")))
       snprintf(pgppath, sizeof(pgppath), "%s/.pgp", env_home);
     else
     {

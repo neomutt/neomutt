@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
@@ -31,12 +30,10 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "address.h"
-#include "context.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
@@ -45,10 +42,11 @@
 #include "compress.h"
 #endif
 
+struct Context;
+
 /**
  * struct Hook - A list of user hooks
  */
-static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 struct Hook
 {
   int type;                /**< hook type */
@@ -57,6 +55,7 @@ struct Hook
   struct Pattern *pattern; /**< used for fcc,save,send-hook */
   TAILQ_ENTRY(Hook) entries;
 };
+static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static int current_hook_type = 0;
 
@@ -215,25 +214,31 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
 
-  if (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_SAVEHOOK | MUTT_FCCHOOK |
-              MUTT_MESSAGEHOOK | MUTT_REPLYHOOK))
+  if (data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK))
   {
-    if ((pat = mutt_pattern_comp(
-             pattern.data, (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_FCCHOOK)) ? 0 : MUTT_FULL_MSG,
-             err)) == NULL)
+    /* These are managed separately by the charset code */
+    enum LookupType type = (data & MUTT_CHARSETHOOK) ? MUTT_LOOKUP_CHARSET : MUTT_LOOKUP_ICONV;
+    if (!mutt_ch_lookup_add(type, pattern.data, command.data, err))
+      goto error;
+    FREE(&pattern.data);
+    FREE(&command.data);
+    return 0;
+  }
+  else if (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_SAVEHOOK |
+                   MUTT_FCCHOOK | MUTT_MESSAGEHOOK | MUTT_REPLYHOOK))
+  {
+    pat = mutt_pattern_comp(
+        pattern.data,
+        (data & (MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_FCCHOOK)) ? 0 : MUTT_FULL_MSG, err);
+    if (!pat)
       goto error;
   }
   else if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
     rx = mutt_mem_malloc(sizeof(regex_t));
-#ifdef MUTT_CRYPTHOOK
-    if ((rc = REGCOMP(rx, NONULL(pattern.data),
-                      ((data & (MUTT_CRYPTHOOK | MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0))) != 0)
-#else
-    if ((rc = REGCOMP(rx, NONULL(pattern.data),
-                      (data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK)) ? REG_ICASE : 0)) != 0)
-#endif /* MUTT_CRYPTHOOK */
+    rc = REGCOMP(rx, NONULL(pattern.data), ((data & MUTT_CRYPTHOOK) ? REG_ICASE : 0));
+    if (rc != 0)
     {
       regerror(rc, rx, err->data, err->dsize);
       FREE(&rx);
@@ -258,6 +263,9 @@ error:
   return -1;
 }
 
+/**
+ * delete_hook - XXX
+ */
 static void delete_hook(struct Hook *h)
 {
   FREE(&h->command);
@@ -306,6 +314,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
         return -1;
       }
       delete_hooks(0);
+      mutt_ch_lookup_remove();
     }
     else
     {
@@ -315,6 +324,11 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
       {
         snprintf(err->data, err->dsize, _("unhook: unknown hook type: %s"), buf->data);
         return -1;
+      }
+      if (type & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK))
+      {
+        mutt_ch_lookup_remove();
+        return 0;
       }
       if (current_hook_type == type)
       {
@@ -367,6 +381,9 @@ void mutt_folder_hook(const char *path)
   current_hook_type = 0;
 }
 
+/**
+ * mutt_find_hook - XXX
+ */
 char *mutt_find_hook(int type, const char *pat)
 {
   struct Hook *tmp = NULL;
@@ -401,6 +418,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
       continue;
 
     if (hook->type & type)
+    {
       if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
           hook->regex.not)
       {
@@ -418,6 +436,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
          * so the cache has to be wiped */
         memset(&cache, 0, sizeof(cache));
       }
+    }
   }
   FREE(&token.data);
   FREE(&err.data);
@@ -439,12 +458,14 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
       continue;
 
     if (hook->type & type)
+    {
       if ((mutt_pattern_exec(hook->pattern, 0, ctx, hdr, &cache) > 0) ^
           hook->regex.not)
       {
         mutt_make_string(path, pathlen, hook->command, ctx, hdr);
         return 0;
       }
+    }
   }
 
   return -1;
@@ -456,23 +477,23 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
-    struct Address *adr = NULL;
+    struct Address *addr = NULL;
     struct Envelope *env = hdr->env;
-    bool fromMe = mutt_addr_is_user(env->from);
+    bool from_me = mutt_addr_is_user(env->from);
 
-    if (!fromMe && env->reply_to && env->reply_to->mailbox)
-      adr = env->reply_to;
-    else if (!fromMe && env->from && env->from->mailbox)
-      adr = env->from;
+    if (!from_me && env->reply_to && env->reply_to->mailbox)
+      addr = env->reply_to;
+    else if (!from_me && env->from && env->from->mailbox)
+      addr = env->from;
     else if (env->to && env->to->mailbox)
-      adr = env->to;
+      addr = env->to;
     else if (env->cc && env->cc->mailbox)
-      adr = env->cc;
+      addr = env->cc;
     else
-      adr = NULL;
-    if (adr)
+      addr = NULL;
+    if (addr)
     {
-      mutt_safe_path(tmp, sizeof(tmp), adr);
+      mutt_safe_path(tmp, sizeof(tmp), addr);
       snprintf(path, pathlen, "=%s", tmp);
     }
   }
@@ -480,37 +501,24 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 
 void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 {
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   char buf[_POSIX_PATH_MAX];
   struct Envelope *env = hdr->env;
 
   if (addr_hook(path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
   {
-    if ((option(OPT_SAVE_NAME) || option(OPT_FORCE_NAME)) && (env->to || env->cc || env->bcc))
+    if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
     {
-      adr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
-      mutt_safe_path(buf, sizeof(buf), adr);
+      addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
+      mutt_safe_path(buf, sizeof(buf), addr);
       mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
-      if (!option(OPT_FORCE_NAME) && mx_access(path, W_OK) != 0)
+      if (!ForceName && mx_access(path, W_OK) != 0)
         mutt_str_strfcpy(path, NONULL(Record), pathlen);
     }
     else
       mutt_str_strfcpy(path, NONULL(Record), pathlen);
   }
   mutt_pretty_mailbox(path, pathlen);
-}
-
-static char *string_hook(const char *match, int hook)
-{
-  struct Hook *tmp = NULL;
-
-  TAILQ_FOREACH(tmp, &Hooks, entries)
-  {
-    if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
-                               tmp->regex.not))
-      return tmp->command;
-  }
-  return NULL;
 }
 
 static void list_hook(struct ListHead *matches, const char *match, int hook)
@@ -521,23 +529,15 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
   {
     if ((tmp->type & hook) && ((match && regexec(tmp->regex.regex, match, 0, NULL, 0) == 0) ^
                                tmp->regex.not))
+    {
       mutt_list_insert_tail(matches, mutt_str_strdup(tmp->command));
+    }
   }
 }
 
-char *mutt_charset_hook(const char *chs)
+void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 {
-  return string_hook(chs, MUTT_CHARSETHOOK);
-}
-
-char *mutt_iconv_hook(const char *chs)
-{
-  return string_hook(chs, MUTT_ICONVHOOK);
-}
-
-void mutt_crypt_hook(struct ListHead *list, struct Address *adr)
-{
-  list_hook(list, adr->mailbox, MUTT_CRYPTHOOK);
+  list_hook(list, addr->mailbox, MUTT_CRYPTHOOK);
 }
 
 #ifdef USE_SOCKET

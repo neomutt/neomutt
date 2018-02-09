@@ -19,11 +19,28 @@ set crypt_replysign = yes
 set crypt_replysignencrypted = yes
 set crypt_verify_sig = yes
 
-# Section A: Key Management.
 
-# The (default) keyfile for signing/decrypting.  Uncomment the following
+# Section A: Key Management
+
+# The default keyfile for encryption (used by $smime_self_encrypt and
+# $postpone_encrypt).
+#
+# It will also be used for decryption unless
+# $smime_decrypt_use_default_key is unset.
+#
+# It will additionally be used for signing unless $smime_sign_as is
+# set to a key.
+#
+# Unless your key does not have encryption capability, uncomment this
 # line and replace the keyid with your own.
-set smime_default_key="12345678.0"
+#
+# set smime_default_key="12345678.0"
+
+# If you have a separate signing key, or your key _only_ has signing
+# capability, uncomment this line and replace the keyid with your
+# signing keyid.
+#
+# set smime_sign_as="87654321.0"
 
 # Uncomment to make neomutt ask what key to use when trying to decrypt a message.
 # It will use the default key above (if that was set) else.
@@ -56,7 +73,7 @@ set smime_import_cert_command="/usr/lib/neomutt/smime_keys add_cert %f"
 
 
 
-# Sction B: Outgoing messages
+# Section B: Outgoing messages
 
 # Algorithm to use for encryption.
 # valid choices are aes128, aes192, aes256, rc2-40, rc2-64, rc2-128, des, des3
@@ -74,7 +91,7 @@ set smime_sign_command="openssl smime -sign -md %d -signer %c -inkey %k -passin 
 
 
 
-#Section C: Incoming messages
+# Section C: Incoming messages
 
 # Decrypt a message.  Output is a MIME entity.
 set smime_decrypt_command="openssl smime -decrypt -passin stdin -inform DER -in %f -inkey %k -recip %c"

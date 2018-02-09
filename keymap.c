@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "keymap.h"
@@ -130,7 +131,7 @@ int LastKey;
 
 struct Keymap *Keymaps[MENU_MAX];
 
-static struct Keymap *alloc_keys(int len, keycode_t *keys)
+static struct Keymap *alloc_keys(size_t len, keycode_t *keys)
 {
   struct Keymap *p = NULL;
 
@@ -169,13 +170,13 @@ static int parse_fkey(char *s)
  */
 static int parse_keycode(const char *s)
 {
-  char *endChar = NULL;
-  long int result = strtol(s + 1, &endChar, 8);
+  char *end_char = NULL;
+  long int result = strtol(s + 1, &end_char, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
-  while (ISSPACE(*endChar))
-    endChar++;
+  while (ISSPACE(*end_char))
+    end_char++;
   /* negative keycodes don't make sense, also detect overflow */
-  if (*endChar != '>' || result < 0 || result == LONG_MAX)
+  if (*end_char != '>' || result < 0 || result == LONG_MAX)
   {
     return -1;
   }
@@ -183,9 +184,10 @@ static int parse_keycode(const char *s)
   return result;
 }
 
-static int parsekeys(const char *str, keycode_t *d, int max)
+static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 {
-  int n, len = max;
+  int n;
+  size_t len = max;
   char buf[SHORT_STRING];
   char c;
   char *s = NULL, *t = NULL;
@@ -245,7 +247,8 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
   int retval = 0;
   struct Keymap *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
-  int len, pos = 0, lastpos = 0;
+  size_t len;
+  size_t pos = 0, lastpos = 0;
 
   len = parsekeys(s, buf, MAX_SEQ);
 
@@ -492,6 +495,7 @@ int km_dokey(int menu)
       if (ImapKeepalive >= i)
         imap_keepalive();
       else
+      {
         while (ImapKeepalive && ImapKeepalive < i)
         {
           timeout(ImapKeepalive * 1000);
@@ -506,6 +510,7 @@ int km_dokey(int menu)
           i -= ImapKeepalive;
           imap_keepalive();
         }
+      }
     }
 #endif
 
@@ -541,7 +546,8 @@ int km_dokey(int menu)
       {
         /* check generic menu */
         bindings = OpGeneric;
-        if ((func = get_func(bindings, tmp.op)))
+        func = get_func(bindings, tmp.op);
+        if (func)
           return tmp.op;
       }
 
@@ -583,7 +589,7 @@ int km_dokey(int menu)
       if (map->op != OP_MACRO)
         return map->op;
 
-      if (option(OPT_IGNORE_MACRO_EVENTS))
+      if (OPT_IGNORE_MACRO_EVENTS)
       {
         mutt_error(_("Macros are currently disabled."));
         return -1;
@@ -617,7 +623,8 @@ static const char *km_keyname(int c)
   static char buf[10];
   const char *p = NULL;
 
-  if ((p = mutt_map_get_name(c, KeyNames)))
+  p = mutt_map_get_name(c, KeyNames);
+  if (p)
     return p;
 
   if (c < 256 && c > -128 && iscntrl((unsigned char) c))

@@ -51,15 +51,11 @@
 #include "address.h"
 #include "backend.h"
 #include "body.h"
-#include "mutt_charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "hcache.h"
 #include "hcache/hcversion.h"
 #include "header.h"
-#include "mbyte.h"
-#include "mutt_regex.h"
-#include "parameter.h"
 #include "protos.h"
 #include "tags.h"
 
@@ -182,7 +178,7 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
   if (convert && !mutt_str_is_ascii(c, size))
   {
     p = mutt_str_substr_dup(c, c + size);
-    if (mutt_convert_string(&p, Charset, "utf-8", 0) == 0)
+    if (mutt_ch_convert_string(&p, Charset, "utf-8", 0) == 0)
     {
       c = p;
       size = mutt_str_strlen(c) + 1;
@@ -221,7 +217,7 @@ static void restore_char(char **c, const unsigned char *d, int *off, bool conver
   if (convert && !mutt_str_is_ascii(*c, size))
   {
     char *tmp = mutt_str_strdup(*c);
-    if (mutt_convert_string(&tmp, "utf-8", Charset, 0) == 0)
+    if (mutt_ch_convert_string(&tmp, "utf-8", Charset, 0) == 0)
     {
       mutt_str_replace(c, tmp);
     }
@@ -346,7 +342,7 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
   (*b)->destroy = used;
 }
 
-static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
+static unsigned char *dump_parameter(struct ParameterList *p, unsigned char *d,
                                      int *off, bool convert)
 {
   unsigned int counter = 0;
@@ -354,11 +350,11 @@ static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
 
   d = dump_int(0xdeadbeef, d, off);
 
-  while (p)
+  struct Parameter *np;
+  TAILQ_FOREACH(np, p, entries)
   {
-    d = dump_char(p->attribute, d, off, false);
-    d = dump_char(p->value, d, off, convert);
-    p = p->next;
+    d = dump_char(np->attribute, d, off, false);
+    d = dump_char(np->value, d, off, convert);
     counter++;
   }
 
@@ -367,23 +363,22 @@ static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d,
   return d;
 }
 
-static void restore_parameter(struct Parameter **p, const unsigned char *d,
+static void restore_parameter(struct ParameterList *p, const unsigned char *d,
                               int *off, bool convert)
 {
   unsigned int counter;
 
   restore_int(&counter, d, off);
 
+  struct Parameter *np;
   while (counter)
   {
-    *p = mutt_mem_malloc(sizeof(struct Parameter));
-    restore_char(&(*p)->attribute, d, off, false);
-    restore_char(&(*p)->value, d, off, convert);
-    p = &(*p)->next;
+    np = mutt_param_new();
+    restore_char(&np->attribute, d, off, false);
+    restore_char(&np->value, d, off, convert);
+    TAILQ_INSERT_TAIL(p, np, entries);
     counter--;
   }
-
-  *p = NULL;
 }
 
 static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool convert)
@@ -407,7 +402,7 @@ static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool
   d = dump_char(nb.xtype, d, off, false);
   d = dump_char(nb.subtype, d, off, false);
 
-  d = dump_parameter(nb.parameter, d, off, convert);
+  d = dump_parameter(&nb.parameter, d, off, convert);
 
   d = dump_char(nb.description, d, off, convert);
   d = dump_char(nb.form_name, d, off, convert);
@@ -425,6 +420,7 @@ static void restore_body(struct Body *c, const unsigned char *d, int *off, bool 
   restore_char(&c->xtype, d, off, false);
   restore_char(&c->subtype, d, off, false);
 
+  TAILQ_INIT(&c->parameter);
   restore_parameter(&c->parameter, d, off, convert);
 
   restore_char(&c->description, d, off, convert);
@@ -489,7 +485,7 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
   restore_char(&e->subject, d, off, convert);
   restore_int((unsigned int *) (&real_subj_off), d, off);
 
-  if (0 <= real_subj_off)
+  if (real_subj_off >= 0)
     e->real_subj = e->subject + real_subj_off;
   else
     e->real_subj = NULL;
@@ -609,12 +605,8 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     unsigned char m[16]; /* binary md5sum */
     char name[_POSIX_PATH_MAX];
     snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
-    mutt_md5_buf(name, strlen(name), &m);
-    snprintf(name, sizeof(name),
-             "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-             m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10],
-             m[11], m[12], m[13], m[14], m[15]);
-
+    mutt_md5(name, m);
+    mutt_md5_toascii(m, name);
     rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
   }
 
@@ -761,14 +753,14 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
     /* Mix in user's spam list */
     for (spam = SpamList; spam; spam = spam->next)
     {
-      mutt_md5_process_bytes(spam->regex->pattern, strlen(spam->regex->pattern), &ctx);
-      mutt_md5_process_bytes(spam->template, strlen(spam->template), &ctx);
+      mutt_md5_process(spam->regex->pattern, &ctx);
+      mutt_md5_process(spam->template, &ctx);
     }
 
     /* Mix in user's nospam list */
     for (nospam = NoSpamList; nospam; nospam = nospam->next)
     {
-      mutt_md5_process_bytes(nospam->regex->pattern, strlen(nospam->regex->pattern), &ctx);
+      mutt_md5_process(nospam->regex->pattern, &ctx);
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */

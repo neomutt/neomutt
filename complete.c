@@ -27,6 +27,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
+#include "conn/conn.h"
 #include "globals.h"
 #include "options.h"
 #include "protos.h"
@@ -64,7 +65,7 @@ int mutt_complete(char *s, size_t slen)
   mutt_debug(2, "completing %s\n", s);
 
 #ifdef USE_NNTP
-  if (option(OPT_NEWS))
+  if (OPT_NEWS)
   {
     struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int n = 0;
@@ -148,7 +149,8 @@ int mutt_complete(char *s, size_t slen)
       mutt_str_strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
     else
       mutt_str_strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
-    if ((p = strrchr(s, '/')))
+    p = strrchr(s, '/');
+    if (p)
     {
       char buf[_POSIX_PATH_MAX];
       if (mutt_file_concatn_path(buf, sizeof(buf), exp_dirpart, strlen(exp_dirpart),
@@ -166,7 +168,8 @@ int mutt_complete(char *s, size_t slen)
   }
   else
   {
-    if ((p = strrchr(s, '/')))
+    p = strrchr(s, '/');
+    if (p)
     {
       if (p == s) /* absolute path */
       {

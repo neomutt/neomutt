@@ -25,6 +25,7 @@ neomutt
 pgpewrap
 pgpring
 txt2c
+test/neomutt-test
 
 # ./configure
 config.h

@@ -1,9 +1,11 @@
 /**
  * @file
- * Convert strings between multibyte and utf8 encodings
+ * RFC2047 MIME extensions encoding / decoding routines
  *
  * @authors
- * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,16 +22,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NEOMUTT_MBYTE_H
-#define _NEOMUTT_MBYTE_H
+#ifndef _MUTT_LIB_RFC2047_H
+#define _MUTT_LIB_RFC2047_H
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <wchar.h>
+void mutt_rfc2047_encode(char **pd, const char *specials, int col, const char *charsets);
+void mutt_rfc2047_decode(char **pd);
 
-void mutt_set_charset(char *charset);
-extern bool Charset_is_utf8;
-bool is_display_corrupting_utf8(wchar_t wc);
-int mutt_filter_unprintable(char **s);
-
-#endif /* _NEOMUTT_MBYTE_H */
+#endif /* _MUTT_LIB_RFC2047_H */

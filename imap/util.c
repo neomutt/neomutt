@@ -69,6 +69,7 @@
 #include <netdb.h>
 #include <netinet/in.h>
 #include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,7 +79,6 @@
 #include "imap_private.h"
 #include "mutt/mutt.h"
 #include "conn/conn.h"
-#include "mutt.h"
 #include "bcache.h"
 #include "context.h"
 #include "globals.h"
@@ -445,7 +445,8 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
       /* walk past closing '}' */
       mx->mbox = mutt_str_strdup(c + 1);
 
-    if ((c = strrchr(tmp, '@')))
+    c = strrchr(tmp, '@');
+    if (c)
     {
       *c = '\0';
       mutt_str_strfcpy(mx->account.user, tmp, sizeof(mx->account.user));
@@ -680,7 +681,9 @@ char *imap_fix_path(struct ImapData *idata, const char *mailbox, char *path, siz
 
       while (*mailbox && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox)) ||
                           (delim && *mailbox == delim)))
+      {
         mailbox++;
+      }
       path[i] = delim;
     }
     else
@@ -736,7 +739,7 @@ void imap_cachepath(struct ImapData *idata, const char *mailbox, char *dest, siz
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_get_literal_count(const char *buf, long *bytes)
+int imap_get_literal_count(const char *buf, unsigned int *bytes)
 {
   char *pc = NULL;
   char *pn = NULL;
@@ -749,7 +752,8 @@ int imap_get_literal_count(const char *buf, long *bytes)
   while (isdigit((unsigned char) *pc))
     pc++;
   *pc = '\0';
-  *bytes = atoi(pn);
+  if (mutt_str_atoui(pn, bytes) < 0)
+    return -1;
 
   return 0;
 }
@@ -973,10 +977,10 @@ int imap_wait_keepalive(pid_t pid)
   sigset_t oldmask;
   int rc;
 
-  bool imap_passive = option(OPT_IMAP_PASSIVE);
+  bool imap_passive = ImapPassive;
 
-  set_option(OPT_IMAP_PASSIVE);
-  set_option(OPT_KEEP_QUIET);
+  ImapPassive = true;
+  OPT_KEEP_QUIET = true;
 
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
 
@@ -1003,9 +1007,9 @@ int imap_wait_keepalive(pid_t pid)
   sigaction(SIGALRM, &oldalrm, NULL);
   sigprocmask(SIG_SETMASK, &oldmask, NULL);
 
-  unset_option(OPT_KEEP_QUIET);
+  OPT_KEEP_QUIET = false;
   if (!imap_passive)
-    unset_option(OPT_IMAP_PASSIVE);
+    ImapPassive = false;
 
   return rc;
 }

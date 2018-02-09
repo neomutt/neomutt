@@ -29,36 +29,18 @@
  * This module defines the user-visible header cache API, which is used within
  * neomutt to cache and restore mail header data.
  *
- * @note This library isn't completely independent.
- * Dependencies:
- * - \ref mutt
- * - Global variables
- *   * Charset
- *   * Charset_is_utf8
- *   * HeaderCacheBackend
- *   * HeaderCachePageSize
- *   * Options
- *   * SpamList
- *   * NoSpamList
- * - Neomutt functions
- *   * mutt_convert_string()
- *   * mutt_encode_path()
- *   * mutt_new_body()
- *   * mutt_env_new()
- *   * mutt_sleep()
- *   * mx_lock_file()
- *   * mx_unlock_file()
- *
  * @subpage hc_hcache
  *
  * Backends:
  *
- * -# @subpage hc_bdb
- * -# @subpage hc_gdbm
- * -# @subpage hc_kc
- * -# @subpage hc_lmdb
- * -# @subpage hc_qdbm
- * -# @subpage hc_tc
+ * | File          | Description      |
+ * | :------------ | :--------------- |
+ * | hcache/bdb.c  | @subpage hc_bdb  |
+ * | hcache/gdbm.c | @subpage hc_gdbm |
+ * | hcache/kc.c   | @subpage hc_kc   |
+ * | hcache/lmdb.c | @subpage hc_lmdb |
+ * | hcache/qdbm.c | @subpage hc_qdbm |
+ * | hcache/tc.c   | @subpage hc_tc   |
  */
 
 #ifndef _MUTT_HCACHE_H

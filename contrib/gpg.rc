@@ -8,7 +8,7 @@
 #   the "loopback" argument in instances where "--passphrase-fd" is
 #   used.
 #
-# The gpg-2comp found in some comments comes from
+# Some of the older commented-out versions of the commands use gpg-2comp from:
 #   http://70t.de/download/gpg-2comp.tar.gz
 #
 # %p    The empty string when no passphrase is needed,
@@ -24,11 +24,34 @@
 #       file's name.
 #
 # %a    In "signing" contexts, this expands to the value of the
-#       configuration variable $pgp_sign_as.  You probably need to
+#       configuration variable $pgp_sign_as, if set, otherwise
+#       $pgp_default_key.  You probably need to
 #       use this within a conditional % sequence.
 #
 # %r    In many contexts, neomutt passes key IDs to pgp.  %r expands to
 #       a list of key IDs.
+
+# Section A: Key Management
+
+# The default key for encryption (used by $pgp_self_encrypt and
+# $postpone_encrypt).
+#
+# It will also be used for signing unless $pgp_sign_as is set to a
+# key.
+#
+# Unless your key does not have encryption capability, uncomment this
+# line and replace the keyid with your own.
+#
+# set pgp_default_key="0x12345678"
+
+# If you have a separate signing key, or your key _only_ has signing
+# capability, uncomment this line and replace the keyid with your
+# signing keyid.
+#
+# set pgp_sign_as="0x87654321"
+
+
+# Section B: Commands
 
 # Note that we explicitly set the comment armor header since GnuPG, when used
 # in some localiaztion environments, generates 8bit data in that header, thereby
@@ -62,13 +85,13 @@ set pgp_clearsign_command="gpg %?p?--pinentry-mode loopback --passphrase-fd 0? -
 #
 # set pgp_encrypt_only_command="/usr/lib/neomutt/pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 #
-set pgp_encrypt_only_command="/usr/lib/neomutt/pgpewrap gpg --batch --quiet --no-verbose --output - --textmode --armor -- --recipient %r -- --encrypt %f"
+set pgp_encrypt_only_command="/usr/lib/neomutt/pgpewrap gpg --batch --quiet --no-verbose --output - --textmode --armor --encrypt -- --recipient %r -- %f"
 
 # Create an encrypted and signed attachment (note that some users include the --always-trust option here)
 # 
 # set pgp_encrypt_sign_command="/usr/lib/neomutt/pgpewrap gpg-2comp %?p?--passphrase-fd 0? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 #
-set pgp_encrypt_sign_command="/usr/lib/neomutt/pgpewrap gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - %?a?--local-user %a? --armor -- --recipient %r -- --sign --encrypt %f"
+set pgp_encrypt_sign_command="/usr/lib/neomutt/pgpewrap gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - %?a?--local-user %a? --armor --sign --encrypt -- --recipient %r -- %f"
 
 # Import a key into the public key ring
 #

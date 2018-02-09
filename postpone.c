@@ -30,6 +30,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
+#include "conn/conn.h"
 #include "mutt.h"
 #include "body.h"
 #include "context.h"
@@ -39,12 +40,10 @@
 #include "header.h"
 #include "keymap.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_menu.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "sort.h"
 #include "state.h"
@@ -143,7 +142,7 @@ int mutt_num_postponed(int force)
   if (LastModify < st.st_mtime)
   {
 #ifdef USE_NNTP
-    int optnews = option(OPT_NEWS);
+    int optnews = OPT_NEWS;
 #endif
     LastModify = st.st_mtime;
 
@@ -151,7 +150,7 @@ int mutt_num_postponed(int force)
       return (PostCount = 0);
 #ifdef USE_NNTP
     if (optnews)
-      unset_option(OPT_NEWS);
+      OPT_NEWS = false;
 #endif
     if (mx_open_mailbox(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
       PostCount = 0;
@@ -160,7 +159,7 @@ int mutt_num_postponed(int force)
     mx_fastclose_mailbox(&ctx);
 #ifdef USE_NNTP
     if (optnews)
-      set_option(OPT_NEWS);
+      OPT_NEWS = true;
 #endif
   }
 
@@ -219,7 +218,7 @@ static struct Header *select_msg(void)
         mutt_set_flag(PostContext, PostContext->hdrs[menu->current],
                       MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
         PostCount = PostContext->msgcount - PostContext->deleted;
-        if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
+        if (Resolve && menu->current < menu->max - 1)
         {
           menu->oldcurrent = menu->current;
           menu->current++;
@@ -319,10 +318,10 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   PostCount = PostContext->msgcount - PostContext->deleted;
 
   /* avoid the "purge deleted messages" prompt */
-  opt_delete = quadoption(OPT_DELETE);
-  set_quadoption(OPT_DELETE, MUTT_YES);
+  opt_delete = Delete;
+  Delete = MUTT_YES;
   mx_close_mailbox(PostContext, NULL);
-  set_quadoption(OPT_DELETE, opt_delete);
+  Delete = opt_delete;
 
   FREE(&PostContext);
 
@@ -399,7 +398,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
     FREE(&np);
   }
 
-  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+  if (CryptOpportunisticEncrypt)
     crypt_opportunistic_encrypt(hdr);
 
   return code;
@@ -515,7 +514,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
   if ((WithCrypto & APPLICATION_SMIME) && (crypt_app == APPLICATION_SMIME) &&
       (flags & SIGN) && (set_empty_signas || *sign_as))
   {
-    mutt_str_replace(&SmimeDefaultKey, sign_as);
+    mutt_str_replace(&SmimeSignAs, sign_as);
   }
 
   return flags;
@@ -580,17 +579,12 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   {
     newhdr->security |= sec_type;
     if (!crypt_valid_passphrase(sec_type))
-      goto err;
+      goto bail;
 
     mutt_message(_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime(fp, &bfp, newhdr->content, &b) == -1) || b == NULL)
     {
-    err:
-      mx_close_message(ctx, &msg);
-      mutt_env_free(&newhdr->env);
-      mutt_free_body(&newhdr->content);
-      mutt_error(_("Decryption failed."));
-      return -1;
+      goto bail;
     }
 
     mutt_free_body(&newhdr->content);
@@ -608,7 +602,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP) &&
-        (mutt_str_strcasecmp(mutt_param_get("protocol", newhdr->content->parameter),
+        (mutt_str_strcasecmp(mutt_param_get(&newhdr->content->parameter, "protocol"),
                              "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
@@ -659,7 +653,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     if (b->type == TYPETEXT)
     {
-      if (mutt_str_strcasecmp("yes", mutt_param_get("x-mutt-noconv", b->parameter)) == 0)
+      if (mutt_str_strcasecmp("yes", mutt_param_get(&b->parameter, "x-mutt-noconv")) == 0)
         b->noconv = true;
       else
       {
@@ -667,7 +661,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
         b->noconv = false;
       }
 
-      mutt_param_delete("x-mutt-noconv", &b->parameter);
+      mutt_param_delete(&b->parameter, "x-mutt-noconv");
     }
 
     mutt_adv_mktemp(file, sizeof(file));
@@ -678,18 +672,41 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     if ((WithCrypto & APPLICATION_PGP) &&
         ((sec_type = mutt_is_application_pgp(b)) & (ENCRYPT | SIGN)))
     {
-      mutt_body_handler(b, &s);
+      if (sec_type & ENCRYPT)
+      {
+        if (!crypt_valid_passphrase(APPLICATION_PGP))
+          goto bail;
+        mutt_message(_("Decrypting message..."));
+      }
+
+      if (mutt_body_handler(b, &s) < 0)
+      {
+        mutt_error(_("Decryption failed."));
+        goto bail;
+      }
 
       newhdr->security |= sec_type;
 
       b->type = TYPETEXT;
       mutt_str_replace(&b->subtype, "plain");
-      mutt_param_delete("x-action", &b->parameter);
+      mutt_param_delete(&b->parameter, "x-action");
     }
     else if ((WithCrypto & APPLICATION_SMIME) &&
              ((sec_type = mutt_is_application_smime(b)) & (ENCRYPT | SIGN)))
     {
-      mutt_body_handler(b, &s);
+      if (sec_type & ENCRYPT)
+      {
+        if (!crypt_valid_passphrase(APPLICATION_SMIME))
+          goto bail;
+        crypt_smime_getkeys(newhdr->env);
+        mutt_message(_("Decrypting message..."));
+      }
+
+      if (mutt_body_handler(b, &s) < 0)
+      {
+        mutt_error(_("Decryption failed."));
+        goto bail;
+      }
 
       newhdr->security |= sec_type;
       b->type = TYPETEXT;
@@ -723,7 +740,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
   {
-    if (option(OPT_SMIME_IS_DEFAULT))
+    if (SmimeIsDefault)
       newhdr->security &= ~APPLICATION_PGP;
     else
       newhdr->security &= ~APPLICATION_SMIME;

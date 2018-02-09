@@ -71,7 +71,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!option(OPT_CRYPT_USE_GPGME))
+      (!CryptUseGpgme)
 #else
       1
 #endif
@@ -82,7 +82,7 @@ void crypt_init(void)
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
   if (
 #ifdef CRYPT_BACKEND_GPGME
-      (!option(OPT_CRYPT_USE_GPGME))
+      (!CryptUseGpgme)
 #else
       1
 #endif
@@ -90,7 +90,7 @@ void crypt_init(void)
     crypto_module_register(&crypt_mod_smime_classic);
 #endif
 
-  if (option(OPT_CRYPT_USE_GPGME))
+  if (CryptUseGpgme)
   {
 #ifdef CRYPT_BACKEND_GPGME
     crypto_module_register(&crypt_mod_pgp_gpgme);
@@ -124,6 +124,24 @@ void crypt_invoke_message(int type)
     mutt_message(_("Invoking PGP..."));
   else if ((WithCrypto & APPLICATION_SMIME) && (type & APPLICATION_SMIME))
     mutt_message(_("Invoking S/MIME..."));
+}
+
+/* Returns 1 if a module backend is registered for the type */
+int crypt_has_module_backend(int type)
+{
+  if ((WithCrypto & APPLICATION_PGP) && (type & APPLICATION_PGP) &&
+      crypto_module_lookup(APPLICATION_PGP))
+  {
+    return 1;
+  }
+
+  if ((WithCrypto & APPLICATION_SMIME) && (type & APPLICATION_SMIME) &&
+      crypto_module_lookup(APPLICATION_SMIME))
+  {
+    return 1;
+  }
+
+  return 0;
 }
 
 /*
@@ -222,10 +240,10 @@ struct Body *crypt_pgp_make_key_attachment(char *tempf)
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
+char *crypt_pgp_findkeys(struct Address *addrlist, int oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, findkeys))
-    return (CRYPT_MOD_CALL(PGP, findkeys))(adrlist, oppenc_mode);
+    return (CRYPT_MOD_CALL(PGP, findkeys))(addrlist, oppenc_mode);
 
   return NULL;
 }
@@ -367,10 +385,10 @@ int crypt_smime_verify_sender(struct Header *h)
  * It returns NULL if any of the keys can not be found.  If oppenc_mode is
  * true, only keys that can be determined without prompting will be used.
  */
-char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode)
+char *crypt_smime_findkeys(struct Address *addrlist, int oppenc_mode)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, findkeys))
-    return (CRYPT_MOD_CALL(SMIME, findkeys))(adrlist, oppenc_mode);
+    return (CRYPT_MOD_CALL(SMIME, findkeys))(addrlist, oppenc_mode);
 
   return NULL;
 }

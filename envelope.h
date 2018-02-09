@@ -24,7 +24,7 @@
 #define _MUTT_ENVELOPE_H
 
 #include <stdbool.h>
-#include "mutt/list.h"
+#include "mutt/mutt.h"
 
 /**
  * struct Envelope - The header of an email
@@ -68,5 +68,7 @@ bool             mutt_env_cmp_strict(const struct Envelope *e1, const struct Env
 void             mutt_env_free(struct Envelope **p);
 void             mutt_env_merge(struct Envelope *base, struct Envelope **extra);
 struct Envelope *mutt_env_new(void);
+int              mutt_env_to_intl(struct Envelope *env, char **tag, char **err);
+void             mutt_env_to_local(struct Envelope *e);
 
 #endif /* _MUTT_ENVELOPE_H */

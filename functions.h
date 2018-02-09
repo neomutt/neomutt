@@ -472,6 +472,7 @@ const struct Binding OpAlias[] = { /* map: alias */
 /* The file browser */
 const struct Binding OpBrowser[] = { /* map: browser */
   { "change-dir",            OP_CHANGE_DIRECTORY,            "c" },
+  { "goto-parent",           OP_GOTO_PARENT,                 "p" },
   { "display-filename",      OP_BROWSER_TELL,                "@" },
   { "enter-mask",            OP_ENTER_MASK,                  "m" },
   { "sort",                  OP_SORT,                        "o" },

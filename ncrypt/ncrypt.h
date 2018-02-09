@@ -137,4 +137,7 @@ int crypt_smime_verify_sender(struct Header *h);
 int crypt_smime_send_menu(struct Header *msg);
 void crypt_init(void);
 
+/* Returns 1 if a module backend is registered for the type */
+int crypt_has_module_backend(int type);
+
 #endif /* _NCRYPT_NCRYPT_H */

@@ -76,7 +76,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     unsigned long data, enum FormatFlag flags)
 {
-  char fmt[SHORT_STRING], adr[SHORT_STRING];
+  char fmt[SHORT_STRING], addr[SHORT_STRING];
   struct Alias *alias = (struct Alias *) data;
 
   switch (op)
@@ -93,10 +93,10 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       snprintf(buf, buflen, fmt, alias->num + 1);
       break;
     case 'r':
-      adr[0] = '\0';
-      rfc822_write_address(adr, sizeof(adr), alias->addr, 1);
+      addr[0] = '\0';
+      mutt_addr_write(addr, sizeof(addr), alias->addr, true);
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, adr);
+      snprintf(buf, buflen, fmt, addr);
       break;
     case 't':
       buf[0] = alias->tagged ? '*' : ' ';
@@ -248,7 +248,7 @@ new_aliases:
         {
           AliasTable[menu->current]->del = (op == OP_DELETE);
           menu->redraw |= REDRAW_CURRENT;
-          if (option(OPT_RESOLVE) && menu->current < menu->max - 1)
+          if (Resolve && menu->current < menu->max - 1)
           {
             menu->current++;
             menu->redraw |= REDRAW_INDEX;
@@ -269,14 +269,14 @@ new_aliases:
   {
     if (AliasTable[i]->tagged)
     {
-      rfc822_write_address(buf, buflen, AliasTable[i]->addr, 1);
+      mutt_addr_write(buf, buflen, AliasTable[i]->addr, true);
       t = -1;
     }
   }
 
   if (t != -1)
   {
-    rfc822_write_address(buf, buflen, AliasTable[t]->addr, 1);
+    mutt_addr_write(buf, buflen, AliasTable[t]->addr, true);
   }
 
   mutt_pop_current_menu(menu);

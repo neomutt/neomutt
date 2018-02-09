@@ -24,9 +24,8 @@
 #ifndef _MUTT_LIST_H
 #define _MUTT_LIST_H
 
-#include <string.h>
 #include <stdbool.h>
-#include "mutt/queue.h"
+#include "queue.h"
 
 /**
  * struct ListNode - A List node for strings

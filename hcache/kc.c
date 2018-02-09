@@ -26,8 +26,7 @@
 /**
  * @page hc_kc Kyoto Cabinet
  *
- * This module implements the header cache functionality using a Kyoto Cabinet
- * file as a backend.
+ * Use a Kyoto Cabinet file as a header cache backend.
  */
 
 #include "config.h"
@@ -45,7 +44,7 @@ static void *hcache_kyotocabinet_open(const char *path)
 
   printfresult =
       snprintf(kcdbpath, sizeof(kcdbpath), "%s#type=kct#opts=%s#rcomp=lex",
-               path, option(OPT_HEADER_CACHE_COMPRESS) ? "lc" : "l");
+               path, HeaderCacheCompress ? "lc" : "l");
   if ((printfresult < 0) || (printfresult >= sizeof(kcdbpath)))
   {
     return NULL;

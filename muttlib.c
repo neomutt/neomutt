@@ -26,9 +26,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <pwd.h>
 #include <regex.h>
@@ -48,29 +45,24 @@
 #include "address.h"
 #include "alias.h"
 #include "body.h"
-#include "mutt_charset.h"
 #include "envelope.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_regex.h"
-#include "tags.h"
-
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
+#include "tags.h"
 #include "url.h"
-#ifdef USE_IMAP
-#include "imap/imap.h"
-#endif
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
+#endif
+#ifdef USE_IMAP
+#include "imap/imap.h"
 #endif
 
 static const char *xdg_env_vars[] = {
@@ -117,42 +109,6 @@ void mutt_adv_mktemp(char *s, size_t l)
   }
 }
 
-int mutt_remove_from_regex_list(struct RegexList **l, const char *str)
-{
-  struct RegexList *p = NULL, *last = NULL;
-  int rc = -1;
-
-  if (mutt_str_strcmp("*", str) == 0)
-  {
-    mutt_free_regex_list(l); /* ``unCMD *'' means delete all current entries */
-    rc = 0;
-  }
-  else
-  {
-    p = *l;
-    last = NULL;
-    while (p)
-    {
-      if (mutt_str_strcasecmp(str, p->regex->pattern) == 0)
-      {
-        mutt_free_regex(&p->regex);
-        if (last)
-          last->next = p->next;
-        else
-          (*l) = p->next;
-        FREE(&p);
-        rc = 0;
-      }
-      else
-      {
-        last = p;
-        p = p->next;
-      }
-    }
-  }
-  return rc;
-}
-
 /**
  * mutt_matches_ignore - Does the string match the ignore list
  *
@@ -195,10 +151,12 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         else
         {
           struct passwd *pw = NULL;
-          if ((t = strchr(s + 1, '/')))
+          t = strchr(s + 1, '/');
+          if (t)
             *t = 0;
 
-          if ((pw = getpwnam(s + 1)))
+          pw = getpwnam(s + 1);
+          if (pw)
           {
             mutt_str_strfcpy(p, pw->pw_dir, sizeof(p));
             if (t)
@@ -254,7 +212,8 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         struct Header *h = NULL;
         struct Address *alias = NULL;
 
-        if ((alias = mutt_lookup_alias(s + 1)))
+        alias = mutt_lookup_alias(s + 1);
+        if (alias)
         {
           h = mutt_new_header();
           h->env = mutt_env_new();
@@ -361,9 +320,9 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  if (GecosMask.regex)
+  if (GecosMask)
   {
-    if (regexec(GecosMask.regex, pw->pw_gecos, 1, pat_match, 0) == 0)
+    if (regexec(GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
       mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
                        MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
   }
@@ -602,26 +561,6 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
   }
 }
 
-void mutt_pretty_size(char *s, size_t len, LOFF_T n)
-{
-  if (n == 0)
-    mutt_str_strfcpy(s, "0K", len);
-  else if (n < 10189) /* 0.1K - 9.9K */
-    snprintf(s, len, "%3.1fK", (n < 103) ? 0.1 : n / 1024.0);
-  else if (n < 1023949) /* 10K - 999K */
-  {
-    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(s, len, OFF_T_FMT "K", (n + 51) / 1024);
-  }
-  else if (n < 10433332) /* 1.0M - 9.9M */
-    snprintf(s, len, "%3.1fM", n / 1048576.0);
-  else /* 10M+ */
-  {
-    /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(s, len, OFF_T_FMT "M", (n + 52428) / 1048576);
-  }
-}
-
 void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src)
 {
   char tmp[LONG_STRING];
@@ -761,11 +700,12 @@ void mutt_save_path(char *d, size_t dsize, struct Address *a)
   if (a && a->mailbox)
   {
     mutt_str_strfcpy(d, a->mailbox, dsize);
-    if (!option(OPT_SAVE_ADDRESS))
+    if (!SaveAddress)
     {
       char *p = NULL;
 
-      if ((p = strpbrk(d, "%@")))
+      p = strpbrk(d, "%@");
+      if (p)
         *p = 0;
     }
     mutt_str_strlower(d);
@@ -780,103 +720,6 @@ void mutt_safe_path(char *s, size_t l, struct Address *a)
   for (char *p = s; *p; p++)
     if ((*p == '/') || ISSPACE(*p) || !IsPrint((unsigned char) *p))
       *p = '_';
-}
-
-/**
- * mutt_apply_replace - Apply replacements to a buffer
- *
- * Note this function uses a fixed size buffer of LONG_STRING and so
- * should only be used for visual modifications, such as disp_subj.
- */
-char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist)
-{
-  struct ReplaceList *l = NULL;
-  static regmatch_t *pmatch = NULL;
-  static int nmatch = 0;
-  static char twinbuf[2][LONG_STRING];
-  int switcher = 0;
-  char *p = NULL;
-  int n;
-  size_t cpysize, tlen;
-  char *src = NULL, *dst = NULL;
-
-  if (dbuf && dlen)
-    dbuf[0] = '\0';
-
-  if (sbuf == NULL || *sbuf == '\0' || (dbuf && !dlen))
-    return dbuf;
-
-  twinbuf[0][0] = '\0';
-  twinbuf[1][0] = '\0';
-  src = twinbuf[switcher];
-  dst = src;
-
-  mutt_str_strfcpy(src, sbuf, LONG_STRING);
-
-  for (l = rlist; l; l = l->next)
-  {
-    /* If this pattern needs more matches, expand pmatch. */
-    if (l->nmatch > nmatch)
-    {
-      mutt_mem_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
-      nmatch = l->nmatch;
-    }
-
-    if (regexec(l->regex->regex, src, l->nmatch, pmatch, 0) == 0)
-    {
-      tlen = 0;
-      switcher ^= 1;
-      dst = twinbuf[switcher];
-
-      mutt_debug(5, "%s matches %s\n", src, l->regex->pattern);
-
-      /* Copy into other twinbuf with substitutions */
-      if (l->template)
-      {
-        for (p = l->template; *p && (tlen < LONG_STRING - 1);)
-        {
-          if (*p == '%')
-          {
-            p++;
-            if (*p == 'L')
-            {
-              p++;
-              cpysize = MIN(pmatch[0].rm_so, LONG_STRING - tlen - 1);
-              strncpy(&dst[tlen], src, cpysize);
-              tlen += cpysize;
-            }
-            else if (*p == 'R')
-            {
-              p++;
-              cpysize = MIN(strlen(src) - pmatch[0].rm_eo, LONG_STRING - tlen - 1);
-              strncpy(&dst[tlen], &src[pmatch[0].rm_eo], cpysize);
-              tlen += cpysize;
-            }
-            else
-            {
-              n = strtoul(p, &p, 10);             /* get subst number */
-              while (isdigit((unsigned char) *p)) /* skip subst token */
-                p++;
-              for (int i = pmatch[n].rm_so;
-                   (i < pmatch[n].rm_eo) && (tlen < LONG_STRING - 1); i++)
-                dst[tlen++] = src[i];
-            }
-          }
-          else
-            dst[tlen++] = *p++;
-        }
-      }
-      dst[tlen] = '\0';
-      mutt_debug(5, "subst %s\n", dst);
-    }
-    src = dst;
-  }
-
-  if (dbuf)
-    mutt_str_strfcpy(dbuf, dst, dlen);
-  else
-    dbuf = mutt_str_strdup(dst);
-  return dbuf;
 }
 
 /**
@@ -907,7 +750,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
   prefix[0] = '\0';
   buflen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
   col += wlen;
 
   if ((flags & MUTT_FORMAT_NOFILTER) == 0)
@@ -974,7 +817,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
+      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
       pid = mutt_create_filter(command->data, NULL, &filter, NULL);
       if (pid != -1)
       {
@@ -1057,20 +900,25 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         /* %?x?y&z? to %<x?y&z> where y and z are nestable */
         char *p = (char *) src;
         *p = '<';
+        /* skip over "x" */
         for (; *p && *p != '?'; p++)
           ;
         /* nothing */
         if (*p == '?')
-        {
           p++;
-        }
+        /* fix up the "y&z" section */
         for (; *p && *p != '?'; p++)
-          ;
-        /* nothing */
-        if (*p == '?')
         {
-          *p = '>';
+          /* escape '<' and '>' to work inside nested-if */
+          if ((*p == '<') || (*p == '>'))
+          {
+            memmove(p + 2, p, mutt_str_strlen(p) + 1);
+            *p++ = '\\';
+            *p++ = '\\';
+          }
         }
+        if (*p == '?')
+          *p = '>';
       }
 
       if (*src == '<')
@@ -1246,8 +1094,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           }
           else if (soft && pad < 0)
           {
-            int offset =
-                ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPT_ARROW_CURSOR)) ? 3 : 0;
+            int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate buf for length computation in mutt_wstr_trunc() */
             *wptr = 0;
@@ -1265,7 +1112,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               col++;
             }
           }
-          if (len + wlen > buflen)
+          if ((len + wlen) > buflen)
             len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
           memcpy(wptr, tmp, len);
           wptr += len;
@@ -1330,7 +1177,8 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
               *p = '_';
         }
 
-        if ((len = mutt_str_strlen(tmp)) + wlen > buflen)
+        len = mutt_str_strlen(tmp);
+        if ((len + wlen) > buflen)
           len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
 
         memcpy(wptr, tmp, len);
@@ -1409,7 +1257,11 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
   FILE *f = NULL;
   struct stat s;
 
-  int len = mutt_str_strlen(path);
+  size_t len = mutt_str_strlen(path);
+  if (len == 0)
+  {
+    return NULL;
+  }
 
   if (path[len - 1] == '|')
   {
@@ -1462,7 +1314,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if (magic > 0 && !mx_access(s, W_OK))
   {
-    if (option(OPT_CONFIRMAPPEND))
+    if (Confirmappend)
     {
       snprintf(tmp, sizeof(tmp), _("Append messages to %s?"), s);
       rc = mutt_yesorno(tmp, MUTT_YES);
@@ -1497,7 +1349,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      if (option(OPT_CONFIRMCREATE))
+      if (Confirmcreate)
       {
         snprintf(tmp, sizeof(tmp), _("Create %s?"), s);
         rc = mutt_yesorno(tmp, MUTT_YES);
@@ -1507,7 +1359,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
           ret = -1;
       }
 
-      /* user confirmed with MUTT_YES or set OPT_CONFIRMCREATE */
+      /* user confirmed with MUTT_YES or set Confirmcreate */
       if (ret == 0)
       {
         /* create dir recursively */
@@ -1545,163 +1397,10 @@ const char *mutt_make_version(void)
   return vstring;
 }
 
-struct Regex *mutt_compile_regex(const char *s, int flags)
-{
-  struct Regex *pp = mutt_mem_calloc(1, sizeof(struct Regex));
-  pp->pattern = mutt_str_strdup(s);
-  pp->regex = mutt_mem_calloc(1, sizeof(regex_t));
-  if (REGCOMP(pp->regex, NONULL(s), flags) != 0)
-    mutt_free_regex(&pp);
-
-  return pp;
-}
-
-void mutt_free_regex(struct Regex **pp)
-{
-  FREE(&(*pp)->pattern);
-  regfree((*pp)->regex);
-  FREE(&(*pp)->regex);
-  FREE(pp);
-}
-
-void mutt_free_regex_list(struct RegexList **list)
-{
-  struct RegexList *p = NULL;
-
-  if (!list)
-    return;
-  while (*list)
-  {
-    p = *list;
-    *list = (*list)->next;
-    mutt_free_regex(&p->regex);
-    FREE(&p);
-  }
-}
-
-void mutt_free_replace_list(struct ReplaceList **list)
-{
-  struct ReplaceList *p = NULL;
-
-  if (!list)
-    return;
-  while (*list)
-  {
-    p = *list;
-    *list = (*list)->next;
-    mutt_free_regex(&p->regex);
-    FREE(&p->template);
-    FREE(&p);
-  }
-}
-
-bool mutt_match_regex_list(const char *s, struct RegexList *l)
-{
-  if (!s)
-    return false;
-
-  for (; l; l = l->next)
-  {
-    if (regexec(l->regex->regex, s, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
-    {
-      mutt_debug(5, "%s matches %s\n", s, l->regex->pattern);
-      return true;
-    }
-  }
-
-  return false;
-}
-
-/**
- * mutt_match_spam_list - Does a string match a spam pattern
- * @param s        String to check
- * @param l        List of spam patterns
- * @param text     Buffer to save match
- * @param textsize Buffer length
- * @retval true if \a s matches a pattern in \a l
- * @retval false otherwise
- *
- * Match a string against the patterns defined by the 'spam' command and output
- * the expanded format into `text` when there is a match.  If textsize<=0, the
- * match is performed but the format is not expanded and no assumptions are made
- * about the value of `text` so it may be NULL.
- */
-bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize)
-{
-  static regmatch_t *pmatch = NULL;
-  static int nmatch = 0;
-  int tlen = 0;
-  char *p = NULL;
-
-  if (!s)
-    return false;
-
-  for (; l; l = l->next)
-  {
-    /* If this pattern needs more matches, expand pmatch. */
-    if (l->nmatch > nmatch)
-    {
-      mutt_mem_realloc(&pmatch, l->nmatch * sizeof(regmatch_t));
-      nmatch = l->nmatch;
-    }
-
-    /* Does this pattern match? */
-    if (regexec(l->regex->regex, s, (size_t) l->nmatch, (regmatch_t *) pmatch, (int) 0) == 0)
-    {
-      mutt_debug(5, "%s matches %s\n", s, l->regex->pattern);
-      mutt_debug(5, "%d subs\n", (int) l->regex->regex->re_nsub);
-
-      /* Copy template into text, with substitutions. */
-      for (p = l->template; *p && tlen < textsize - 1;)
-      {
-        /* backreference to pattern match substring, eg. %1, %2, etc) */
-        if (*p == '%')
-        {
-          char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
-          int n;
-
-          p++; /* skip over % char */
-          n = strtol(p, &e, 10);
-          /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
-           * should not strictly be necessary since add_to_spam_list() finds the largest value, and
-           * the static array above is always large enough based on that value. */
-          if (e != p && n >= 0 && n <= l->nmatch && pmatch[n].rm_so != -1)
-          {
-            /* copy as much of the substring match as will fit in the output buffer, saving space for
-             * the terminating nul char */
-            int idx;
-            for (idx = pmatch[n].rm_so;
-                 (idx < pmatch[n].rm_eo) && (tlen < textsize - 1); ++idx)
-              text[tlen++] = s[idx];
-          }
-          p = e; /* skip over the parsed integer */
-        }
-        else
-        {
-          text[tlen++] = *p++;
-        }
-      }
-      /* tlen should always be less than textsize except when textsize<=0
-       * because the bounds checks in the above code leave room for the
-       * terminal nul char.   This should avoid returning an unterminated
-       * string to the caller.  When textsize<=0 we make no assumption about
-       * the validity of the text pointer. */
-      if (tlen < textsize)
-      {
-        text[tlen] = '\0';
-        mutt_debug(5, "\"%s\"\n", text);
-      }
-      return true;
-    }
-  }
-
-  return false;
-}
-
 void mutt_encode_path(char *dest, size_t dlen, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_convert_string(&p, Charset, "utf-8", 0);
+  int rc = mutt_ch_convert_string(&p, Charset, "utf-8", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
   mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
   FREE(&p);
@@ -1718,7 +1417,7 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
  */
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 {
-  char *xdg_env = getenv(xdg_env_vars[type]);
+  const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
   char *xdg = (xdg_env && *xdg_env) ? mutt_str_strdup(xdg_env) :
                                       mutt_str_strdup(xdg_defaults[type]);
   char *x = xdg; /* strsep() changes xdg, so free x instead later */
@@ -1766,6 +1465,10 @@ void mutt_get_parent_path(char *output, char *path, size_t olen)
     mutt_str_strfcpy(output, path, olen);
     int n = mutt_str_strlen(output);
 
+    /* remove any final trailing '/' */
+    if (output[n - 1] == '/')
+      output[n - 1] = '\0';
+
     /* Remove everything until the next slash */
     for (n--; ((n >= 0) && (output[n] != '/')); n--)
       ;
@@ -1778,6 +1481,26 @@ void mutt_get_parent_path(char *output, char *path, size_t olen)
       output[1] = '\0';
     }
   }
+}
+
+/**
+ * mutt_realpath - resolve path, unraveling symlinks
+ * @param buf Buffer containing path
+ * @retval len String length of resolved path
+ * @retval 0   Error, buf is not overwritten
+ *
+ * Resolve and overwrite the path in buf.
+ *
+ * @note Size of buf should be at least PATH_MAX bytes.
+ */
+size_t mutt_realpath(char *buf)
+{
+  char s[PATH_MAX];
+
+  if (realpath(buf, s) == NULL)
+    return 0;
+
+  return mutt_str_strfcpy(buf, s, PATH_MAX);
 }
 
 char debugfilename[_POSIX_PATH_MAX];
@@ -1870,3 +1593,4 @@ int mutt_inbox_cmp(const char *a, const char *b)
 
   return 0;
 }
+

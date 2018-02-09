@@ -50,7 +50,7 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo * k);
 
 int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
-char *pgp_find_keys(struct Address *adrlist, int oppenc_mode);
+char *pgp_find_keys(struct Address *addrlist, int oppenc_mode);
 
 int pgp_application_pgp_handler(struct Body *m, struct State *s);
 int pgp_encrypted_handler(struct Body *a, struct State *s);

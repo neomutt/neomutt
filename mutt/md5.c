@@ -28,23 +28,20 @@
  *
  * | Function                 | Description
  * | :----------------------- | :----------------------------------------------------
+ * | mutt_md5()               | Calculate the MD5 hash of a NULL-terminated string
  * | mutt_md5_buf()           | Calculate the MD5 hash of a buffer
  * | mutt_md5_finish_ctx()    | Process the remaining bytes in the buffer
  * | mutt_md5_init_ctx()      | Initialise the MD5 computation
+ * | mutt_md5_process()       | Process a NULL-terminated string
  * | mutt_md5_process_block() | Process a block with MD5
  * | mutt_md5_process_bytes() | Process a block of data
  * | mutt_md5_read_ctx()      | Read from the context into a buffer
- * | mutt_md5_stream()        | Compute MD5 message digest for bytes read from a file
- */
-
-/* md5.c - Functions to compute MD5 message digest of files or memory blocks
- * according to the definition of MD5 in RFC1321 from April 1992.
+ * | mutt_md5_toascii()       | Convert a binary MD5 digest into ASCII Hexadecimal
  */
 
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include "md5.h"
 
@@ -60,259 +57,6 @@
 /* This array contains the bytes used to pad the buffer to the next
    64-byte boundary.  (RFC1321, 3.1: Step 1)  */
 static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ... */ };
-
-/**
- * mutt_md5_init_ctx - Initialise the MD5 computation
- * @param ctx MD5 context
- *
- * RFC1321, 3.3: Step 3
- */
-void mutt_md5_init_ctx(struct Md5Ctx *ctx)
-{
-  ctx->A = 0x67452301;
-  ctx->B = 0xefcdab89;
-  ctx->C = 0x98badcfe;
-  ctx->D = 0x10325476;
-
-  ctx->total[0] = ctx->total[1] = 0;
-  ctx->buflen = 0;
-}
-
-/**
- * set_uint32 - Write a 32 bit number
- * @param cp Destination for data
- * @param v  Value to write
- *
- * Copy the 4 byte value from v into the memory location pointed to by *cp, If
- * your architecture allows unaligned access this is equivalent to
- * `*(md5_uint32*) cp = v`
- */
-static inline void set_uint32(char *cp, md5_uint32 v)
-{
-  memcpy(cp, &v, sizeof(v));
-}
-
-/**
- * mutt_md5_read_ctx - Read from the context into a buffer
- * @param ctx    MD5 context
- * @param resbuf Buffer for result
- * @retval ptr Results buffer
- *
- * Put result from CTX in first 16 bytes following RESBUF.
- * The result must be in little endian byte order.
- */
-void *mutt_md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf)
-{
-  char *r = resbuf;
-
-  set_uint32(r + 0 * sizeof(ctx->A), SWAP(ctx->A));
-  set_uint32(r + 1 * sizeof(ctx->B), SWAP(ctx->B));
-  set_uint32(r + 2 * sizeof(ctx->C), SWAP(ctx->C));
-  set_uint32(r + 3 * sizeof(ctx->D), SWAP(ctx->D));
-
-  return resbuf;
-}
-
-/**
- * mutt_md5_finish_ctx - Process the remaining bytes in the buffer
- * @param ctx    MD5 context
- * @param resbuf Buffer for result
- * @retval ptr Results buffer
- *
- * Process the remaining bytes in the internal buffer and the usual prologue
- * according to the standard and write the result to RESBUF.
- */
-void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
-{
-  /* Take yet unprocessed bytes into account. */
-  md5_uint32 bytes = ctx->buflen;
-  size_t size = (bytes < 56) ? 64 / 4 : 64 * 2 / 4;
-
-  /* Now count remaining bytes. */
-  ctx->total[0] += bytes;
-  if (ctx->total[0] < bytes)
-    ctx->total[1]++;
-
-  /* Put the 64-bit file length in *bits* at the end of the buffer. */
-  ctx->buffer[size - 2] = SWAP(ctx->total[0] << 3);
-  ctx->buffer[size - 1] = SWAP((ctx->total[1] << 3) | (ctx->total[0] >> 29));
-
-  memcpy(&((char *) ctx->buffer)[bytes], fillbuf, (size - 2) * 4 - bytes);
-
-  /* Process last bytes. */
-  mutt_md5_process_block(ctx->buffer, size * 4, ctx);
-
-  return mutt_md5_read_ctx(ctx, resbuf);
-}
-
-/**
- * mutt_md5_stream - Compute MD5 message digest for bytes read from a file
- * @param stream   File to read
- * @param resblock Buffer for result
- * @retval 0 Success
- * @retval 1 Error
- *
- * The resulting message digest number will be written into the 16 bytes
- * beginning at RESBLOCK.
- */
-int mutt_md5_stream(FILE *stream, void *resblock)
-{
-  struct Md5Ctx ctx;
-  char buffer[BLOCKSIZE + 72];
-  size_t sum;
-
-  /* Initialize the computation context. */
-  mutt_md5_init_ctx(&ctx);
-
-  /* Iterate over full file contents. */
-  while (true)
-  {
-    /* We read the file in blocks of BLOCKSIZE bytes.  One call of the
-     * computation function processes the whole buffer so that with the next
-     * round of the loop another block can be read. */
-    size_t n;
-    sum = 0;
-
-    /* Read block.  Take care for partial reads. */
-    while (true)
-    {
-      n = fread(buffer + sum, 1, BLOCKSIZE - sum, stream);
-
-      sum += n;
-
-      if (sum == BLOCKSIZE)
-        break;
-
-      if (n == 0)
-      {
-        /* Check for the error flag IFF N == 0, so that we don't exit the loop
-         * after a partial read due to e.g., EAGAIN or EWOULDBLOCK. */
-        if (ferror(stream))
-          return 1;
-        goto process_partial_block;
-      }
-
-      /* We've read at least one byte, so ignore errors.  But always check for
-       * EOF, since feof may be true even though N > 0.  Otherwise, we could
-       * end up calling fread after EOF. */
-      if (feof(stream))
-        goto process_partial_block;
-    }
-
-    /* Process buffer with BLOCKSIZE bytes.
-     * Note that BLOCKSIZE % 64 == 0 */
-    mutt_md5_process_block(buffer, BLOCKSIZE, &ctx);
-  }
-
-process_partial_block:
-
-  /* Process any remaining bytes. */
-  if (sum > 0)
-    mutt_md5_process_bytes(buffer, sum, &ctx);
-
-  /* Construct result in desired memory. */
-  mutt_md5_finish_ctx(&ctx, resblock);
-  return 0;
-}
-
-/**
- * mutt_md5_buf - Calculate the MD5 hash of a buffer
- * @param buffer   Buffer to hash
- * @param len      Length of buffer
- * @param resblock Buffer for result
- * @retval ptr Results buffer
- *
- * Compute MD5 message digest for LEN bytes beginning at Buffer.  The result is
- * always in little endian byte order, so that a byte-wise output yields to the
- * wanted ASCII representation of the message digest.
- */
-void *mutt_md5_buf(const char *buffer, size_t len, void *resblock)
-{
-  struct Md5Ctx ctx;
-
-  /* Initialize the computation context. */
-  mutt_md5_init_ctx(&ctx);
-
-  /* Process whole buffer but last len % 64 bytes. */
-  mutt_md5_process_bytes(buffer, len, &ctx);
-
-  /* Put result in desired memory area. */
-  return mutt_md5_finish_ctx(&ctx, resblock);
-}
-
-/**
- * mutt_md5_process_bytes - Process a block of data
- * @param buffer Buffer to process
- * @param len    Length of buffer
- * @param ctx    MD5 context
- *
- * Starting with the result of former calls of this function (or the
- * initialization function update the context for the next LEN bytes starting
- * at Buffer.  It is NOT required that LEN is a multiple of 64.
- */
-void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
-{
-  /* When we already have some bits in our internal buffer concatenate both
-   * inputs first. */
-  if (ctx->buflen != 0)
-  {
-    size_t left_over = ctx->buflen;
-    size_t add = (128 - left_over) > len ? len : (128 - left_over);
-
-    memcpy(&((char *) ctx->buffer)[left_over], buffer, add);
-    ctx->buflen += add;
-
-    if (ctx->buflen > 64)
-    {
-      mutt_md5_process_block(ctx->buffer, ctx->buflen & ~63, ctx);
-
-      ctx->buflen &= 63;
-      /* The regions in the following copy operation cannot overlap. */
-      memcpy(ctx->buffer, &((char *) ctx->buffer)[(left_over + add) & ~63], ctx->buflen);
-    }
-
-    buffer = (const char *) buffer + add;
-    len -= add;
-  }
-
-  /* Process available complete blocks. */
-  if (len >= 64)
-  {
-#if !defined(_STRING_ARCH_unaligned)
-#define alignof(type) offsetof(struct { char c; type x; }, x)
-#define UNALIGNED_P(p) (((size_t) p) % alignof(md5_uint32) != 0)
-    if (UNALIGNED_P(buffer))
-      while (len > 64)
-      {
-        mutt_md5_process_block(memcpy(ctx->buffer, buffer, 64), 64, ctx);
-        buffer = (const char *) buffer + 64;
-        len -= 64;
-      }
-    else
-#endif
-    {
-      mutt_md5_process_block(buffer, len & ~63, ctx);
-      buffer = (const char *) buffer + (len & ~63);
-      len &= 63;
-    }
-  }
-
-  /* Move remaining bytes in internal buffer. */
-  if (len > 0)
-  {
-    size_t left_over = ctx->buflen;
-
-    memcpy(&((char *) ctx->buffer)[left_over], buffer, len);
-    left_over += len;
-    if (left_over >= 64)
-    {
-      mutt_md5_process_block(ctx->buffer, 64, ctx);
-      left_over -= 64;
-      memcpy(ctx->buffer, &ctx->buffer[16], left_over);
-    }
-    ctx->buflen = left_over;
-  }
-}
 
 /* These are the four functions used in the four steps of the MD5 algorithm
    and defined in the RFC1321.  The first function is a little bit optimized
@@ -332,7 +76,7 @@ void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
  * Process LEN bytes of Buffer, accumulating context into CTX.
  * LEN must be a multiple of 64.
  */
-void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
+static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
 {
   md5_uint32 correct_words[16];
   const md5_uint32 *words = buffer;
@@ -482,4 +226,224 @@ void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
   ctx->B = B;
   ctx->C = C;
   ctx->D = D;
+}
+
+/**
+ * set_uint32 - Write a 32 bit number
+ * @param cp Destination for data
+ * @param v  Value to write
+ *
+ * Copy the 4 byte value from v into the memory location pointed to by *cp, If
+ * your architecture allows unaligned access this is equivalent to
+ * `*(md5_uint32*) cp = v`
+ */
+static inline void set_uint32(char *cp, md5_uint32 v)
+{
+  memcpy(cp, &v, sizeof(v));
+}
+
+/**
+ * mutt_md5_read_ctx - Read from the context into a buffer
+ * @param ctx    MD5 context
+ * @param resbuf Buffer for result
+ * @retval ptr Results buffer
+ *
+ * Put result from CTX in first 16 bytes following RESBUF.
+ * The result must be in little endian byte order.
+ */
+static void *mutt_md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf)
+{
+  char *r = resbuf;
+
+  set_uint32(r + 0 * sizeof(ctx->A), SWAP(ctx->A));
+  set_uint32(r + 1 * sizeof(ctx->B), SWAP(ctx->B));
+  set_uint32(r + 2 * sizeof(ctx->C), SWAP(ctx->C));
+  set_uint32(r + 3 * sizeof(ctx->D), SWAP(ctx->D));
+
+  return resbuf;
+}
+
+/**
+ * mutt_md5_init_ctx - Initialise the MD5 computation
+ * @param ctx MD5 context
+ *
+ * RFC1321, 3.3: Step 3
+ */
+void mutt_md5_init_ctx(struct Md5Ctx *ctx)
+{
+  ctx->A = 0x67452301;
+  ctx->B = 0xefcdab89;
+  ctx->C = 0x98badcfe;
+  ctx->D = 0x10325476;
+
+  ctx->total[0] = ctx->total[1] = 0;
+  ctx->buflen = 0;
+}
+
+/**
+ * mutt_md5_finish_ctx - Process the remaining bytes in the buffer
+ * @param ctx    MD5 context
+ * @param resbuf Buffer for result
+ * @retval ptr Results buffer
+ *
+ * Process the remaining bytes in the internal buffer and the usual prologue
+ * according to the standard and write the result to RESBUF.
+ */
+void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
+{
+  /* Take yet unprocessed bytes into account. */
+  md5_uint32 bytes = ctx->buflen;
+  size_t size = (bytes < 56) ? 64 / 4 : 64 * 2 / 4;
+
+  /* Now count remaining bytes. */
+  ctx->total[0] += bytes;
+  if (ctx->total[0] < bytes)
+    ctx->total[1]++;
+
+  /* Put the 64-bit file length in *bits* at the end of the buffer. */
+  ctx->buffer[size - 2] = SWAP(ctx->total[0] << 3);
+  ctx->buffer[size - 1] = SWAP((ctx->total[1] << 3) | (ctx->total[0] >> 29));
+
+  memcpy(&((char *) ctx->buffer)[bytes], fillbuf, (size - 2) * 4 - bytes);
+
+  /* Process last bytes. */
+  mutt_md5_process_block(ctx->buffer, size * 4, ctx);
+
+  return mutt_md5_read_ctx(ctx, resbuf);
+}
+
+/**
+ * mutt_md5 - Calculate the MD5 hash of a NULL-terminated string
+ * @param s      String to hash
+ * @param resbuf Buffer for result
+ */
+void *mutt_md5(const char *s, void *resbuf)
+{
+  return mutt_md5_bytes(s, strlen(s), resbuf);
+}
+
+/**
+ * mutt_md5_buf - Calculate the MD5 hash of a buffer
+ * @param buffer  Buffer to hash
+ * @param len     Length of buffer
+ * @param resbuf  Buffer for result
+ * @retval ptr Results buffer
+ *
+ * Compute MD5 message digest for LEN bytes beginning at Buffer.  The result is
+ * always in little endian byte order, so that a byte-wise output yields to the
+ * wanted ASCII representation of the message digest.
+ */
+void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf)
+{
+  struct Md5Ctx ctx;
+
+  /* Initialize the computation context. */
+  mutt_md5_init_ctx(&ctx);
+
+  /* Process whole buffer but last len % 64 bytes. */
+  mutt_md5_process_bytes(buffer, len, &ctx);
+
+  /* Put result in desired memory area. */
+  return mutt_md5_finish_ctx(&ctx, resbuf);
+}
+
+/**
+ * mutt_md5_process - Process a NULL-terminated string
+ * @param s    String to process
+ * @param ctx  MD5 context
+ */
+void mutt_md5_process(const char *s, struct Md5Ctx *ctx)
+{
+  mutt_md5_process_bytes(s, strlen(s), ctx);
+}
+
+/**
+ * mutt_md5_process_bytes - Process a block of data
+ * @param buffer Buffer to process
+ * @param len    Length of buffer
+ * @param ctx    MD5 context
+ *
+ * Starting with the result of former calls of this function (or the
+ * initialization function update the context for the next LEN bytes starting
+ * at Buffer.  It is NOT required that LEN is a multiple of 64.
+ */
+void mutt_md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
+{
+  /* When we already have some bits in our internal buffer concatenate both
+   * inputs first. */
+  if (ctx->buflen != 0)
+  {
+    size_t left_over = ctx->buflen;
+    size_t add = (128 - left_over) > len ? len : (128 - left_over);
+
+    memcpy(&((char *) ctx->buffer)[left_over], buffer, add);
+    ctx->buflen += add;
+
+    if (ctx->buflen > 64)
+    {
+      mutt_md5_process_block(ctx->buffer, ctx->buflen & ~63, ctx);
+
+      ctx->buflen &= 63;
+      /* The regions in the following copy operation cannot overlap. */
+      memcpy(ctx->buffer, &((char *) ctx->buffer)[(left_over + add) & ~63], ctx->buflen);
+    }
+
+    buffer = (const char *) buffer + add;
+    len -= add;
+  }
+
+  /* Process available complete blocks. */
+  if (len >= 64)
+  {
+#if !defined(_STRING_ARCH_unaligned)
+#define alignof(type) offsetof(struct { char c; type x; }, x)
+#define UNALIGNED_P(p) (((size_t) p) % alignof(md5_uint32) != 0)
+    if (UNALIGNED_P(buffer))
+    {
+      while (len > 64)
+      {
+        mutt_md5_process_block(memcpy(ctx->buffer, buffer, 64), 64, ctx);
+        buffer = (const char *) buffer + 64;
+        len -= 64;
+      }
+    }
+    else
+#endif
+    {
+      mutt_md5_process_block(buffer, len & ~63, ctx);
+      buffer = (const char *) buffer + (len & ~63);
+      len &= 63;
+    }
+  }
+
+  /* Move remaining bytes in internal buffer. */
+  if (len > 0)
+  {
+    size_t left_over = ctx->buflen;
+
+    memcpy(&((char *) ctx->buffer)[left_over], buffer, len);
+    left_over += len;
+    if (left_over >= 64)
+    {
+      mutt_md5_process_block(ctx->buffer, 64, ctx);
+      left_over -= 64;
+      memcpy(ctx->buffer, &ctx->buffer[16], left_over);
+    }
+    ctx->buflen = left_over;
+  }
+}
+
+/**
+ * mutt_md5_toascii - Convert a binary MD5 digest into ASCII Hexadecimal
+ * @param digest Binary MD5 digest
+ * @param resbuf Buffer for the ASCII result
+ *
+ * @note refbuf must be at least 33 bytes long.
+ */
+void mutt_md5_toascii(const void *digest, char *resbuf)
+{
+  const unsigned char *c = digest;
+  sprintf(resbuf, "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+          c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], c[9], c[10],
+          c[11], c[12], c[13], c[14], c[15]);
 }

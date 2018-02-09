@@ -12,11 +12,11 @@ use system cc cc-lib mutt-gettext mutt-iconv
 ###############################################################################
 # Names and versions
 define PACKAGE          "neomutt"
-define PACKAGE_VERSION  "20171027"
+define PACKAGE_VERSION  "20171215"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po doc contrib}
+set subdirs {po doc contrib test}
 ###############################################################################
 
 ###############################################################################
@@ -322,6 +322,27 @@ if {[get-define want-doc]} {
   if {![cc-check-progs xsltproc]} {
     user-error "Unable to find xsltproc"
   }
+
+  msg-checking "Checking for DocBook DTDs..."
+
+  writefile xslt_test.xsl {<?xml version="1.0"?>
+    <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+      <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
+    </xsl:stylesheet>}
+
+  writefile xslt_test.xml {<?xml version="1.0" standalone="no"?>
+    <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+    "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+    <book />}
+
+  set err [catch {exec xsltproc --nonet xslt_test.xsl xslt_test.xml}]
+  file delete -- xslt_test.xsl xslt_test.xml
+  if {$err} {
+    msg-result "no"
+    user-error "Install DocBook DTDs or './configure --disable-doc'"
+  }
+  msg-result "yes"
+
   define BUILD_DOC
 }
 if {[get-define want-full-doc]} {define MAKEDOC_FULL}

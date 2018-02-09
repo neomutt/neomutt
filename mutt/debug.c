@@ -50,7 +50,6 @@ int mutt_debug_real(const char *function, const char *file, int line, int level,
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  vfprintf(stderr, fmt, ap);
   int ret = vfprintf(stderr, fmt, ap);
   va_end(ap);
   return ret;

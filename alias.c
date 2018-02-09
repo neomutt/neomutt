@@ -23,9 +23,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,13 +31,11 @@
 #include <wctype.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
-#include "mutt_charset.h"
+#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 
@@ -123,7 +118,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
     last->next = NULL;
   }
 
-  if (option(OPT_USE_DOMAIN) && (fqdn = mutt_fqdn(1)))
+  if (UseDomain && (fqdn = mutt_fqdn(1)))
   {
     /* now qualify all local addresses */
     mutt_addr_qualify(head, fqdn);
@@ -188,7 +183,7 @@ static void write_safe_address(FILE *fp, char *s)
 
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
 {
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
   char *pfx = NULL;
 
   if (mutt_addr_is_user(env->from))
@@ -196,29 +191,29 @@ struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
     if (env->to && !mutt_is_mail_list(env->to))
     {
       pfx = "To";
-      adr = env->to;
+      addr = env->to;
     }
     else
     {
       pfx = "Cc";
-      adr = env->cc;
+      addr = env->cc;
     }
   }
   else if (env->reply_to && !mutt_is_mail_list(env->reply_to))
   {
     pfx = "Reply-To";
-    adr = env->reply_to;
+    addr = env->reply_to;
   }
   else
   {
-    adr = env->from;
+    addr = env->from;
     pfx = "From";
   }
 
   if (pfxp)
     *pfxp = pfx;
 
-  return adr;
+  return addr;
 }
 
 static void recode_buf(char *buf, size_t buflen)
@@ -230,7 +225,7 @@ static void recode_buf(char *buf, size_t buflen)
   s = mutt_str_strdup(buf);
   if (!s)
     return;
-  if (mutt_convert_string(&s, Charset, ConfigCharset, 0) == 0)
+  if (mutt_ch_convert_string(&s, Charset, ConfigCharset, 0) == 0)
     mutt_str_strfcpy(buf, s, buflen);
   FREE(&s);
 }
@@ -281,28 +276,29 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
   return rc;
 }
 
-void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
+void mutt_create_alias(struct Envelope *cur, struct Address *iaddr)
 {
   struct Alias *new = NULL, *t = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
   char *err = NULL;
   char fixed[LONG_STRING];
   FILE *rc = NULL;
-  struct Address *adr = NULL;
+  struct Address *addr = NULL;
 
   if (cur)
   {
-    adr = mutt_get_address(cur, NULL);
+    addr = mutt_get_address(cur, NULL);
   }
-  else if (iadr)
+  else if (iaddr)
   {
-    adr = iadr;
+    addr = iaddr;
   }
 
-  if (adr && adr->mailbox)
+  if (addr && addr->mailbox)
   {
-    mutt_str_strfcpy(tmp, adr->mailbox, sizeof(tmp));
-    if ((pc = strchr(tmp, '@')))
+    mutt_str_strfcpy(tmp, addr->mailbox, sizeof(tmp));
+    pc = strchr(tmp, '@');
+    if (pc)
       *pc = '\0';
   }
   else
@@ -338,14 +334,14 @@ retry_name:
   new = mutt_mem_calloc(1, sizeof(struct Alias));
   new->name = mutt_str_strdup(buf);
 
-  mutt_addrlist_to_local(adr);
+  mutt_addrlist_to_local(addr);
 
-  if (adr && adr->mailbox)
-    mutt_str_strfcpy(buf, adr->mailbox, sizeof(buf));
+  if (addr && addr->mailbox)
+    mutt_str_strfcpy(buf, addr->mailbox, sizeof(buf));
   else
     buf[0] = '\0';
 
-  mutt_addrlist_to_intl(adr, NULL);
+  mutt_addrlist_to_intl(addr, NULL);
 
   do
   {
@@ -366,8 +362,8 @@ retry_name:
     }
   } while (!new->addr);
 
-  if (adr && adr->personal && !mutt_is_mail_list(adr))
-    mutt_str_strfcpy(buf, adr->personal, sizeof(buf));
+  if (addr && addr->personal && !mutt_is_mail_list(addr))
+    mutt_str_strfcpy(buf, addr->personal, sizeof(buf));
   else
     buf[0] = '\0';
 
@@ -379,7 +375,7 @@ retry_name:
   new->addr->personal = mutt_str_strdup(buf);
 
   buf[0] = '\0';
-  rfc822_write_address(buf, sizeof(buf), new->addr, 1);
+  mutt_addr_write(buf, sizeof(buf), new->addr, true);
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
@@ -389,7 +385,8 @@ retry_name:
 
   mutt_alias_add_reverse(new);
 
-  if ((t = Aliases))
+  t = Aliases;
+  if (t)
   {
     while (t->next)
       t = t->next;
@@ -402,7 +399,8 @@ retry_name:
   if (mutt_get_field(_("Save to file: "), buf, sizeof(buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path(buf, sizeof(buf));
-  if ((rc = fopen(buf, "a+")))
+  rc = fopen(buf, "a+");
+  if (rc)
   {
     /* terminate existing file with \n if necessary */
     if (fseek(rc, 0, SEEK_END))
@@ -430,7 +428,7 @@ retry_name:
     recode_buf(buf, sizeof(buf));
     fprintf(rc, "alias %s ", buf);
     buf[0] = '\0';
-    rfc822_write_address(buf, sizeof(buf), new->addr, 0);
+    mutt_addr_write(buf, sizeof(buf), new->addr, false);
     recode_buf(buf, sizeof(buf));
     write_safe_address(rc, buf);
     fputc('\n', rc);
@@ -492,7 +490,7 @@ void mutt_alias_delete_reverse(struct Alias *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      mutt_hash_delete(ReverseAliases, ap->mailbox, ap, NULL);
+      mutt_hash_delete(ReverseAliases, ap->mailbox, ap);
   }
 }
 
@@ -664,10 +662,10 @@ bool mutt_addr_is_user(struct Address *addr)
     return true;
   }
 
-  if (mutt_match_regex_list(addr->mailbox, Alternates))
+  if (mutt_regexlist_match(Alternates, addr->mailbox))
   {
     mutt_debug(5, "yes, %s matched by alternates.\n", addr->mailbox);
-    if (mutt_match_regex_list(addr->mailbox, UnAlternates))
+    if (mutt_regexlist_match(UnAlternates, addr->mailbox))
       mutt_debug(5, "but, %s matched by unalternates.\n", addr->mailbox);
     else
       return true;

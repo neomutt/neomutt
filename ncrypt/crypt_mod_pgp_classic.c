@@ -57,9 +57,9 @@ static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
   return pgp_application_pgp_handler(m, s);
 }
 
-static char *crypt_mod_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
+static char *crypt_mod_pgp_findkeys(struct Address *addrlist, int oppenc_mode)
 {
-  return pgp_find_keys(adrlist, oppenc_mode);
+  return pgp_find_keys(addrlist, oppenc_mode);
 }
 
 static struct Body *crypt_mod_pgp_sign_message(struct Body *a)

@@ -26,8 +26,7 @@
 /**
  * @page hc_qdbm QDBM
  *
- * This module implements the header cache functionality using a Quick DataBase
- * Manager file as a backend.
+ * Use a Quick DataBase Manager file as a header cache backend.
  */
 
 #include "config.h"
@@ -42,7 +41,7 @@ static void *hcache_qdbm_open(const char *path)
 {
   int flags = VL_OWRITER | VL_OCREAT;
 
-  if (option(OPT_HEADER_CACHE_COMPRESS))
+  if (HeaderCacheCompress)
     flags |= VL_OZCOMP;
 
   return vlopen(path, flags, VL_CMPLEX);

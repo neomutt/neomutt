@@ -1,8 +1,10 @@
 /**
  * @file
- * Encode the compilation options as a C-string
+ * Handling of international domain names
  *
  * @authors
+ * Copyright (C) 2003,2005 Thomas Roessler <roessler@does-not-exist.org>
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -18,39 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_IDNA_H
+#define _MUTT_IDNA_H
+
 #include <stdbool.h>
-#include <stdio.h>
 
-#define PER_LINE 12
+extern bool IdnDecode;
+extern bool IdnEncode;
 
-static void txt2c(char *sym, FILE *fp)
-{
-  unsigned char buf[PER_LINE];
-  int sz = 0;
+#define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 
-  printf("unsigned char %s[] = {\n", sym);
-  while (true)
-  {
-    sz = fread(buf, sizeof(unsigned char), PER_LINE, fp);
-    if (sz == 0)
-      break;
-    printf("\t");
-    for (int i = 0; i < sz; i++)
-      printf("0x%02x, ", buf[i]);
-    printf("\n");
-  }
+int   mutt_idna_to_ascii_lz(const char *input, char **output, int flags);
+char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags);
+char *mutt_idna_local_to_intl(const char *user, const char *domain);
 
-  printf("\t0x00\n};\n");
-}
-
-int main(int argc, char *argv[])
-{
-  if (argc != 2)
-  {
-    fprintf(stderr, "usage: %s symbol <textfile >textfile.c\n", argv[0]);
-    return 2;
-  }
-
-  txt2c(argv[1], stdin);
-  return 0;
-}
+#endif /* _MUTT_IDNA_H */

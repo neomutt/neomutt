@@ -26,7 +26,6 @@
 #include <signal.h>
 #include "mutt/mutt.h"
 #include "where.h"
-#include "mutt_regex.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */
@@ -41,6 +40,64 @@ WHERE struct Context *Context;
 WHERE char ErrorBuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
+WHERE char *HomeDir;
+WHERE char *ShortHostname;
+
+WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
+
+WHERE short TSSupported;
+WHERE char *Username;
+
+WHERE char *CurrentFolder;
+WHERE char *LastFolder;
+
+WHERE const char *GitVer;
+
+WHERE struct Hash *Groups;
+WHERE struct Hash *ReverseAliases;
+WHERE struct Hash *TagTransforms;
+WHERE struct Hash *TagFormats;
+
+WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
+WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
+WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
+WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
+WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
+WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
+WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
+WHERE struct ListHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
+WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
+WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
+WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
+
+WHERE struct RegexList *Alternates;
+WHERE struct RegexList *UnAlternates;
+WHERE struct RegexList *MailLists;
+WHERE struct RegexList *UnMailLists;
+WHERE struct RegexList *SubscribedLists;
+WHERE struct RegexList *UnSubscribedLists;
+WHERE struct ReplaceList *SpamList;
+WHERE struct RegexList *NoSpamList;
+WHERE struct ReplaceList *SubjectRegexList;
+
+WHERE unsigned short Counter;
+
+#ifdef USE_SIDEBAR
+WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
+#endif
+
+/* flags for received signals */
+WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
+WHERE SIG_ATOMIC_VOLATILE_T SigInt;
+WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
+
+WHERE int CurrentMenu;
+
+WHERE struct Alias *Aliases;
+WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
+
+/* All the variables below are backing for config items */
+
 WHERE struct Address *EnvelopeFromAddress;
 WHERE struct Address *From;
 
@@ -51,7 +108,7 @@ WHERE char *Attribution;
 WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
-WHERE struct Regex AttachKeyword;
+WHERE struct Regex *AttachKeyword;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
 WHERE char *ContentType;
@@ -70,9 +127,7 @@ WHERE char *ForwardFormat;
 WHERE char *Hostname;
 WHERE struct MbTable *FromChars;
 WHERE char *IndexFormat;
-WHERE char *HistoryFile;
-WHERE char *HomeDir;
-WHERE char *ShortHostname;
+
 #ifdef USE_IMAP
 WHERE char *ImapAuthenticators;
 WHERE char *ImapDelimChars;
@@ -111,7 +166,6 @@ WHERE char *Mixmaster;
 WHERE char *MixEntryFormat;
 #endif
 
-WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
 #ifdef USE_NNTP
 WHERE char *GroupIndexFormat;
 WHERE char *Inews;
@@ -171,49 +225,9 @@ WHERE struct MbTable *FlagChars;
 WHERE char *Trash;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
-WHERE short TSSupported;
-WHERE char *Username;
 WHERE char *Visual;
 
-WHERE char *CurrentFolder;
-WHERE char *LastFolder;
-
-WHERE const char *GitVer;
-
-WHERE struct Hash *Groups;
-WHERE struct Hash *ReverseAliases;
-WHERE struct Hash *TagFormats;
-
-WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
-WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
-WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
-WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
-WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
-WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
-WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
-WHERE struct ListHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
-WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
-WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
-WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
-
-WHERE struct RegexList *Alternates;
-WHERE struct RegexList *UnAlternates;
-WHERE struct RegexList *MailLists;
-WHERE struct RegexList *UnMailLists;
-WHERE struct RegexList *SubscribedLists;
-WHERE struct RegexList *UnSubscribedLists;
-WHERE struct ReplaceList *SpamList;
-WHERE struct RegexList *NoSpamList;
-WHERE struct ReplaceList *SubjectRegexList;
-
-/* bit vector for the yes/no/ask variable type */
-#ifdef MAIN_C
-unsigned char QuadOptions[(OPT_QUAD_MAX * 2 + 7) / 8];
-#else
-extern unsigned char QuadOptions[];
-#endif
-
-WHERE unsigned short Counter;
+WHERE char *HiddenTags;
 
 #ifdef USE_NNTP
 WHERE short NntpPoll;
@@ -223,13 +237,11 @@ WHERE short NntpContext;
 WHERE short DebugLevel;
 WHERE char *DebugFile;
 
-WHERE short History;
 WHERE short MenuContext;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
 WHERE short ReadInc;
 WHERE short ReflowWrap;
-WHERE short SaveHistory;
 WHERE short SendmailWait;
 WHERE short SleepTime;
 WHERE short SkipQuotedOffset;
@@ -244,29 +256,19 @@ WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
 
 #ifdef USE_SIDEBAR
+WHERE short SidebarComponentDepth;
 WHERE short SidebarWidth;
-WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
 #endif
-
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
 WHERE short ImapPipelineDepth;
 WHERE short ImapPollTimeout;
 #endif
 
-/* flags for received signals */
-WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
-WHERE SIG_ATOMIC_VOLATILE_T SigInt;
-WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
-
-WHERE int CurrentMenu;
-
-WHERE struct Alias *Aliases;
-WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
-
 /* -- formerly in pgp.h -- */
-WHERE struct Regex PgpGoodSign;
-WHERE struct Regex PgpDecryptionOkay;
+WHERE struct Regex *PgpGoodSign;
+WHERE struct Regex *PgpDecryptionOkay;
+WHERE char *PgpDefaultKey;
 WHERE char *PgpSignAs;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;
@@ -283,10 +285,10 @@ WHERE char *PgpVerifyKeyCommand;
 WHERE char *PgpListSecringCommand;
 WHERE char *PgpListPubringCommand;
 WHERE char *PgpGetkeysCommand;
-WHERE char *PgpSelfEncryptAs;
 
 /* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;
+WHERE char *SmimeSignAs;
 WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;
 WHERE char *SmimeKeys;
@@ -303,7 +305,6 @@ WHERE char *SmimePk7outCommand;
 WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
-WHERE char *SmimeSelfEncryptAs;
 
 #ifdef USE_NOTMUCH
 WHERE int NmOpenTimeout;
@@ -320,15 +321,11 @@ WHERE int NmQueryWindowCurrentPosition;
 WHERE char *NmQueryWindowCurrentSearch;
 #endif
 
-#ifdef MAIN_C
-const char *const BodyTypes[] = {
-    "x-unknown", "audio",     "application", "image", "message",
-    "model",     "multipart", "text",        "video", "*",
-};
-const char *const BodyEncodings[] = {
-    "x-unknown", "7bit",   "8bit",        "quoted-printable",
-    "base64",    "binary", "x-uuencoded",
-};
-#endif
+/* These variables are backing for config items */
+WHERE struct Regex *GecosMask;
+WHERE struct Regex *Mask;
+WHERE struct Regex *QuoteRegex;
+WHERE struct Regex *ReplyRegex;
+WHERE struct Regex *Smileys;
 
 #endif /* _MUTT_GLOBALS_H */

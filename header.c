@@ -21,7 +21,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -36,7 +35,6 @@
 #include "context.h"
 #include "envelope.h"
 #include "globals.h"
-#include "mutt_idna.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -130,7 +128,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
      we can simply compare strings as we don't generate References for
      multiple Message-Ids in IRT anyways */
 #ifdef USE_NNTP
-  if (!option(OPT_NEWS_SEND))
+  if (!OPT_NEWS_SEND)
 #endif
     if (!STAILQ_EMPTY(&msg->env->in_reply_to) &&
         (STAILQ_EMPTY(&n->in_reply_to) ||
@@ -191,7 +189,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
         path[l] = '\0';
 
         mutt_expand_path(path, sizeof(path));
-        if ((body2 = mutt_make_file_attach(path)))
+        body2 = mutt_make_file_attach(path);
+        if (body2)
         {
           body2->description = mutt_str_strdup(p);
           for (parts = msg->content; parts->next; parts = parts->next)
@@ -236,7 +235,7 @@ static void label_ref_dec(struct Context *ctx, char *label)
   count = (uintptr_t) elem->data;
   if (count <= 1)
   {
-    mutt_hash_delete(ctx->label_hash, label, NULL, NULL);
+    mutt_hash_delete(ctx->label_hash, label, NULL);
     return;
   }
 

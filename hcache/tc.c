@@ -26,8 +26,7 @@
 /**
  * @page hc_tc Tokyo Cabinet
  *
- * This module implements the header cache functionality using a Tokyo Cabinet
- * file as a backend.
+ * Use a a Tokyo Cabinet file as a header cache backend.
  */
 
 #include "config.h"
@@ -43,7 +42,7 @@ static void *hcache_tokyocabinet_open(const char *path)
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (option(OPT_HEADER_CACHE_COMPRESS))
+  if (HeaderCacheCompress)
     tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
     return db;

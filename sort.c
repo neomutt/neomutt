@@ -21,10 +21,10 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
 #include "sort.h"
 #include "address.h"
 #include "body.h"
@@ -32,7 +32,6 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "mutt_idna.h"
 #include "options.h"
 #include "protos.h"
 #include "thread.h"
@@ -50,11 +49,11 @@ static int perform_auxsort(int retval, const void *a, const void *b)
 {
   /* If the items compared equal by the main sort
    * and we're not already doing an 'aux' sort...  */
-  if ((retval == 0) && AuxSort && !option(OPT_AUX_SORT))
+  if ((retval == 0) && AuxSort && !OPT_AUX_SORT)
   {
-    set_option(OPT_AUX_SORT);
+    OPT_AUX_SORT = true;
     retval = AuxSort(a, b);
-    unset_option(OPT_AUX_SORT);
+    OPT_AUX_SORT = false;
   }
   /* If the items still match, use their index positions
    * to maintain a stable sort order */
@@ -117,7 +116,7 @@ const char *mutt_get_name(struct Address *a)
 
   if (a)
   {
-    if (option(OPT_REVERSE_ALIAS) && (ali = alias_reverse_lookup(a)) && ali->personal)
+    if (ReverseAlias && (ali = alias_reverse_lookup(a)) && ali->personal)
       return ali->personal;
     else if (a->personal)
       return a->personal;
@@ -309,7 +308,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
   struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
 
-  unset_option(OPT_NEED_RESORT);
+  OPT_NEED_RESORT = false;
 
   if (!ctx)
     return;
@@ -328,16 +327,16 @@ void mutt_sort_headers(struct Context *ctx, int init)
   if (!ctx->quiet)
     mutt_message(_("Sorting mailbox..."));
 
-  if (option(OPT_NEED_RESCORE) && option(OPT_SCORE))
+  if (OPT_NEED_RESCORE && Score)
   {
     for (int i = 0; i < ctx->msgcount; i++)
       mutt_score_message(ctx, ctx->hdrs[i], 1);
   }
-  unset_option(OPT_NEED_RESCORE);
+  OPT_NEED_RESCORE = false;
 
-  if (option(OPT_RESORT_INIT))
+  if (OPT_RESORT_INIT)
   {
-    unset_option(OPT_RESORT_INIT);
+    OPT_RESORT_INIT = false;
     init = 1;
   }
 
@@ -349,14 +348,14 @@ void mutt_sort_headers(struct Context *ctx, int init)
     AuxSort = NULL;
     /* if $sort_aux changed after the mailbox is sorted, then all the
        subthreads need to be resorted */
-    if (option(OPT_SORT_SUBTHREADS))
+    if (OPT_SORT_SUBTHREADS)
     {
       int i = Sort;
       Sort = SortAux;
       if (ctx->tree)
         ctx->tree = mutt_sort_subthreads(ctx->tree, 1);
       Sort = i;
-      unset_option(OPT_SORT_SUBTHREADS);
+      OPT_SORT_SUBTHREADS = false;
     }
     mutt_sort_threads(ctx, init);
   }

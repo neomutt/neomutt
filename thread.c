@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include <limits.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -64,7 +65,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
   struct MuttThread *tmp = NULL, *tree = hdr->thread;
 
   /* if the user disabled subject hiding, display it */
-  if (!option(OPT_HIDE_THREAD_SUBJECT))
+  if (!HideThreadSubject)
     return 1;
 
   /* if our subject is different from our parent's, display it */
@@ -147,8 +148,8 @@ static void linearize_tree(struct Context *ctx)
 static void calculate_visibility(struct Context *ctx, int *max_depth)
 {
   struct MuttThread *tmp = NULL, *tree = ctx->tree;
-  int hide_top_missing = option(OPT_HIDE_TOP_MISSING) && !option(OPT_HIDE_MISSING);
-  int hide_top_limited = option(OPT_HIDE_TOP_LIMITED) && !option(OPT_HIDE_LIMITED);
+  int hide_top_missing = HideTopMissing && !HideMissing;
+  int hide_top_limited = HideTopLimited && !HideLimited;
   int depth = 0;
 
   /* we walk each level backwards to make it easier to compute next_subtree_visible */
@@ -185,13 +186,13 @@ static void calculate_visibility(struct Context *ctx, int *max_depth)
       else
       {
         tree->visible = false;
-        tree->deep = !option(OPT_HIDE_LIMITED);
+        tree->deep = !HideLimited;
       }
     }
     else
     {
       tree->visible = false;
-      tree->deep = !option(OPT_HIDE_MISSING);
+      tree->deep = !HideMissing;
     }
     tree->next_subtree_visible =
         tree->next && (tree->next->next_subtree_visible || tree->next->subtree_visible);
@@ -262,7 +263,7 @@ void mutt_draw_tree(struct Context *ctx)
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
   char corner = (Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
   char vtee = (Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
-  int depth = 0, start_depth = 0, max_depth = 0, width = option(OPT_NARROW_TREE) ? 1 : 2;
+  int depth = 0, start_depth = 0, max_depth = 0, width = NarrowTree ? 1 : 2;
   struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
 
   /* Do the visibility calculations and free the old thread chars.
@@ -278,9 +279,9 @@ void mutt_draw_tree(struct Context *ctx)
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
       if (depth && start_depth == depth)
         myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
-      else if (parent->message && !option(OPT_HIDE_LIMITED))
+      else if (parent->message && !HideLimited)
         myarrow[0] = MUTT_TREE_HIDDEN;
-      else if (!parent->message && !option(OPT_HIDE_MISSING))
+      else if (!parent->message && !HideMissing)
         myarrow[0] = MUTT_TREE_MISSING;
       else
         myarrow[0] = vtee;
@@ -390,14 +391,13 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
     if (dateptr)
     {
-      thisdate = option(OPT_THREAD_RECEIVED) ? cur->message->received :
-                                               cur->message->date_sent;
+      thisdate = ThreadReceived ? cur->message->received : cur->message->date_sent;
       if (!*dateptr || thisdate < *dateptr)
         *dateptr = thisdate;
     }
 
     env = cur->message->env;
-    if (env->real_subj && ((env->real_subj != env->subject) || (!option(OPT_SORT_RE))))
+    if (env->real_subj && ((env->real_subj != env->subject) || (!SortRe)))
     {
       struct ListNode *np;
       STAILQ_FOREACH(np, subjects, entries)
@@ -447,11 +447,9 @@ static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *c
           !tmp->fake_thread &&             /* don't match pseudo threads */
           tmp->message->subject_changed && /* only match interesting replies */
           !is_descendant(tmp, cur) &&      /* don't match in the same thread */
-          (date >= (option(OPT_THREAD_RECEIVED) ? tmp->message->received :
-                                                  tmp->message->date_sent)) &&
-          (!last || (option(OPT_THREAD_RECEIVED) ?
-                         (last->message->received < tmp->message->received) :
-                         (last->message->date_sent < tmp->message->date_sent))) &&
+          (date >= (ThreadReceived ? tmp->message->received : tmp->message->date_sent)) &&
+          (!last || (ThreadReceived ? (last->message->received < tmp->message->received) :
+                                      (last->message->date_sent < tmp->message->date_sent))) &&
           tmp->message->env->real_subj &&
           (mutt_str_strcmp(np->data, tmp->message->env->real_subj) == 0))
       {
@@ -604,7 +602,7 @@ void mutt_clear_threads(struct Context *ctx)
   ctx->tree = NULL;
 
   if (ctx->thread_hash)
-    mutt_hash_destroy(&ctx->thread_hash, *free);
+    mutt_hash_destroy(&ctx->thread_hash);
 }
 
 static int compare_threads(const void *a, const void *b)
@@ -782,6 +780,11 @@ static void check_subjects(struct Context *ctx, int init)
   }
 }
 
+void thread_hash_destructor(int type, void *obj, intptr_t data)
+{
+  FREE(&obj);
+}
+
 void mutt_sort_threads(struct Context *ctx, int init)
 {
   struct Header *cur = NULL;
@@ -801,7 +804,10 @@ void mutt_sort_threads(struct Context *ctx, int init)
     init = 1;
 
   if (init)
+  {
     ctx->thread_hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+    mutt_hash_set_destructor(ctx->thread_hash, thread_hash_destructor, 0);
+  }
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
@@ -821,7 +827,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
 
     if (!cur->thread)
     {
-      if ((!init || option(OPT_DUPLICATE_THREADS)) && cur->env->message_id)
+      if ((!init || DuplicateThreads) && cur->env->message_id)
         thread = mutt_hash_find(ctx->thread_hash, cur->env->message_id);
       else
         thread = NULL;
@@ -865,7 +871,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
       }
       else
       {
-        new = (option(OPT_DUPLICATE_THREADS) ? thread : NULL);
+        new = (DuplicateThreads ? thread : NULL);
 
         thread = mutt_mem_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
@@ -992,7 +998,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
 
   check_subjects(ctx, init);
 
-  if (!option(OPT_STRICT_THREADS))
+  if (!StrictThreads)
     pseudo_threads(ctx);
 
   if (ctx->tree)

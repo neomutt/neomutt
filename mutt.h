@@ -29,12 +29,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include "where.h"
 
-struct ReplaceList;
-struct RegexList;
-struct State;
 struct ListHead;
-struct TagHead;
 struct Mapping;
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
@@ -232,49 +229,6 @@ enum QuadOptionResponse
   MUTT_ASKYES
 };
 
-/**
- * enum QuadOptionVars - Index of all QuadOptions
- */
-enum QuadOptionVars
-{
-  OPT_ABORT_UNMODIFIED,
-  OPT_BOUNCE,
-  OPT_COPY,
-  OPT_DELETE,
-  OPT_FORWARD_EDIT,
-  OPT_FCC_ATTACH,
-  OPT_INCLUDE,
-  OPT_HONOR_FOLLOWUP_TO,
-  OPT_MIME_FORWARD,
-  OPT_MIME_FORWARD_REST,
-  OPT_MOVE,
-  OPT_PGP_MIME_AUTO, /* ask to revert to PGP/MIME when inline fails */
-  OPT_SMIME_ENCRYPT_SELF,
-  OPT_PGP_ENCRYPT_SELF,
-#ifdef USE_POP
-  OPT_POP_DELETE,
-  OPT_POP_RECONNECT,
-#endif
-  OPT_POSTPONE,
-  OPT_PRINT,
-  OPT_QUIT,
-  OPT_REPLY_TO,
-  OPT_RECALL,
-#ifdef USE_SSL
-  OPT_SSL_STARTTLS,
-#endif
-  OPT_ABORT_NOSUBJECT,
-  OPT_CRYPT_VERIFY_SIG, /* verify PGP signatures */
-#ifdef USE_NNTP
-  OPT_POST_MODERATED,
-  OPT_CATCHUP_NEWSGROUP,
-  OPT_FOLLOWUP_TO_POSTER,
-#endif
-  OPT_ABORT_NOATTACH, /* forgotten attachment detector */
-  /* THIS MUST BE THE LAST VALUE. */
-  OPT_QUAD_MAX,
-};
-
 /* flags to ci_send_message() */
 #define SENDREPLY        (1 << 0)
 #define SENDGROUPREPLY   (1 << 1)
@@ -303,12 +257,7 @@ enum QuadOptionVars
 #define MUTT_SPAM   1
 #define MUTT_NOSPAM 2
 
-void mutt_free_regex_list(struct RegexList **list);
-void mutt_free_replace_list(struct ReplaceList **list);
 bool mutt_matches_ignore(const char *s);
-
-/* add an element to a list */
-int mutt_remove_from_regex_list(struct RegexList **l, const char *str);
 
 void mutt_init(int skip_sys_rc, struct ListHead *commands);
 
@@ -350,5 +299,43 @@ extern FILE *debugfile;
 extern int debuglevel;
 extern char *debugfile_cmdline;
 extern int debuglevel_cmdline;
+
+/* All the variables below are backing for config items */
+
+/* Quad-options */
+WHERE unsigned char AbortUnmodified;
+WHERE unsigned char Bounce;
+WHERE unsigned char Copy;
+WHERE unsigned char Delete;
+WHERE unsigned char ForwardEdit;
+WHERE unsigned char FccAttach;
+WHERE unsigned char Include;
+WHERE unsigned char HonorFollowupTo;
+WHERE unsigned char MimeForward;
+WHERE unsigned char MimeForwardRest;
+WHERE unsigned char Move;
+WHERE unsigned char PgpMimeAuto; /* ask to revert to PGP/MIME when inline fails */
+WHERE unsigned char SmimeEncryptSelf;
+WHERE unsigned char PgpEncryptSelf;
+#ifdef USE_POP
+WHERE unsigned char PopDelete;
+WHERE unsigned char PopReconnect;
+#endif
+WHERE unsigned char Postpone;
+WHERE unsigned char Print;
+WHERE unsigned char Quit;
+WHERE unsigned char ReplyTo;
+WHERE unsigned char Recall;
+#ifdef USE_SSL
+WHERE unsigned char SslStarttls;
+#endif
+WHERE unsigned char AbortNosubject;
+WHERE unsigned char CryptVerifySig; /* verify PGP signatures */
+#ifdef USE_NNTP
+WHERE unsigned char PostModerated;
+WHERE unsigned char CatchupNewsgroup;
+WHERE unsigned char FollowupToPoster;
+#endif
+WHERE unsigned char AbortNoattach; /* forgotten attachment detector */
 
 #endif /* _MUTT_H */

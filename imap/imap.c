@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2009,2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2009,2012,2017 Brendan Cully <brendan@kublai.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -239,6 +239,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
     match = false;
     /* don't include pending expunged messages */
     if (hdrs[n]->active)
+    {
       switch (flag)
       {
         case MUTT_DELETED:
@@ -271,6 +272,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
             match = true;
           break;
       }
+    }
 
     if (match && (!changed || hdrs[n]->changed))
     {
@@ -389,7 +391,7 @@ static int get_mailbox(const char *path, struct ImapData **hidata, char *buf, si
     mutt_debug(1, "Error parsing %s\n", path);
     return -1;
   }
-  if (!(*hidata = imap_conn_find(&(mx.account), option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0)) ||
+  if (!(*hidata = imap_conn_find(&(mx.account), ImapPassive ? MUTT_IMAP_CONN_NONEW : 0)) ||
       (*hidata)->state < IMAP_AUTHENTICATED)
   {
     FREE(&mx.mbox);
@@ -652,7 +654,7 @@ int imap_access(const char *path)
   if (imap_parse_path(path, &mx))
     return -1;
 
-  idata = imap_conn_find(&mx.account, option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0);
+  idata = imap_conn_find(&mx.account, ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
   if (!idata)
   {
     FREE(&mx.mbox);
@@ -761,8 +763,7 @@ int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
 
   if (!ctx || !ctx->data)
   {
-    idata = imap_conn_find(&mx->account,
-                           option(OPT_IMAP_PASSIVE) ? MUTT_IMAP_CONN_NONEW : 0);
+    idata = imap_conn_find(&mx->account, ImapPassive ? MUTT_IMAP_CONN_NONEW : 0);
     if (!idata)
     {
       FREE(&mx->mbox);
@@ -817,14 +818,15 @@ void imap_logout_all(void)
  * Not explicitly buffered, relies on FILE buffering. NOTE: strips `\r` from
  * `\r\n`.  Apparently even literals use `\r\n`-terminated strings ?!
  */
-int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar)
+int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
+                      struct Progress *pbar)
 {
   char c;
   bool r = false;
 
   mutt_debug(2, "reading %ld bytes\n", bytes);
 
-  for (long pos = 0; pos < bytes; pos++)
+  for (unsigned long pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar(idata->conn, &c) != 1)
     {
@@ -884,7 +886,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
     if (h->index == INT_MAX)
     {
-      mutt_debug(2, "Expunging message UID %d.\n", HEADER_DATA(h)->uid);
+      mutt_debug(2, "Expunging message UID %u.\n", HEADER_DATA(h)->uid);
 
       h->active = false;
       idata->ctx->size -= h->content->length;
@@ -903,7 +905,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
         FREE(&idata->cache[cacheno].path);
       }
 
-      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
+      mutt_hash_int_delete(idata->uid_hash, HEADER_DATA(h)->uid, h);
 
       imap_free_header_data((struct ImapHeaderData **) &h->data);
     }
@@ -1026,7 +1028,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
     /* get root delimiter, '/' as default */
     idata->delim = '/';
     imap_exec(idata, "LIST \"\" \"\"", IMAP_CMD_QUEUE);
-    if (option(OPT_IMAP_CHECK_SUBSCRIBED))
+    if (ImapCheckSubscribed)
       imap_exec(idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
     /* we may need the root delimiter before we open a mailbox */
     imap_exec(idata, NULL, IMAP_CMD_FAIL_OK);
@@ -1065,14 +1067,13 @@ int imap_open_connection(struct ImapData *idata)
     }
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
-    if (!idata->conn->ssf &&
-        (option(OPT_SSL_FORCE_TLS) || mutt_bit_isset(idata->capabilities, STARTTLS)))
+    if (!idata->conn->ssf && (SslForceTls || mutt_bit_isset(idata->capabilities, STARTTLS)))
     {
       int rc;
 
-      if (option(OPT_SSL_FORCE_TLS))
+      if (SslForceTls)
         rc = MUTT_YES;
-      else if ((rc = query_quadoption(OPT_SSL_STARTTLS,
+      else if ((rc = query_quadoption(SslStarttls,
                                       _("Secure connection with TLS?"))) == MUTT_ABORT)
       {
         goto err_close_conn;
@@ -1100,7 +1101,7 @@ int imap_open_connection(struct ImapData *idata)
       }
     }
 
-    if (option(OPT_SSL_FORCE_TLS) && !idata->conn->ssf)
+    if (SslForceTls && !idata->conn->ssf)
     {
       mutt_error(_("Encrypted connection unavailable"));
       mutt_sleep(1);
@@ -1412,7 +1413,7 @@ int imap_check(struct ImapData *idata, int force)
   int result = 0;
 
   /* try IDLE first, unless force is set */
-  if (!force && option(OPT_IMAP_IDLE) && mutt_bit_isset(idata->capabilities, IDLE) &&
+  if (!force && ImapIdle && mutt_bit_isset(idata->capabilities, IDLE) &&
       (idata->state != IMAP_IDLE || time(NULL) >= idata->lastread + ImapKeepalive))
   {
     if (imap_cmd_idle(idata) < 0)
@@ -1607,7 +1608,8 @@ int imap_status(char *path, int queue)
     imap_exec(idata, buf, 0);
 
   queued = 0;
-  if ((status = imap_mboxcache_get(idata, mbox, 0)))
+  status = imap_mboxcache_get(idata, mbox, 0);
+  if (status)
     return status->messages;
 
   return 0;
@@ -1670,7 +1672,7 @@ struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, 
       }
       status->uidvalidity = *(unsigned int *) uidvalidity;
       status->uidnext = uidnext ? *(unsigned int *) uidnext : 0;
-      mutt_debug(3, "hcache uidvalidity %d, uidnext %d\n", status->uidvalidity,
+      mutt_debug(3, "hcache uidvalidity %u, uidnext %u\n", status->uidvalidity,
                  status->uidnext);
     }
     mutt_hcache_free(hc, &uidvalidity);
@@ -1763,7 +1765,7 @@ int imap_subscribe(char *path, bool subscribe)
   if (!*buf)
     mutt_str_strfcpy(buf, "INBOX", sizeof(buf));
 
-  if (option(OPT_IMAP_CHECK_SUBSCRIBED))
+  if (ImapCheckSubscribed)
   {
     mutt_buffer_init(&token);
     mutt_buffer_init(&err);
@@ -1847,8 +1849,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
     list[0] = '\0';
 
   /* fire off command */
-  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"",
-           option(OPT_IMAP_LIST_SUBSCRIBED) ? "LSUB" : "LIST", list);
+  snprintf(buf, sizeof(buf), "%s \"\" \"%s%%\"", ImapListSubscribed ? "LSUB" : "LIST", list);
 
   imap_cmd_start(idata, buf);
 
@@ -1986,7 +1987,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
         break;
       mutt_debug(3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (option(OPT_CONFIRMCREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
@@ -2145,7 +2146,8 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_debug(3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
       pc = imap_next_word(pc);
-      idata->uid_validity = strtol(pc, NULL, 10);
+      if (mutt_str_atoui(pc, &idata->uid_validity) < 0)
+        goto fail;
       status->uidvalidity = idata->uid_validity;
     }
     else if (mutt_str_strncasecmp("OK [UIDNEXT", pc, 11) == 0)
@@ -2153,7 +2155,8 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_debug(3, "Getting mailbox UIDNEXT\n");
       pc += 3;
       pc = imap_next_word(pc);
-      idata->uidnext = strtol(pc, NULL, 10);
+      if (mutt_str_atoui(pc, &idata->uidnext) < 0)
+        goto fail;
       status->uidnext = idata->uidnext;
     }
     else
@@ -2281,7 +2284,7 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
     return -1;
 
   snprintf(buf, sizeof(buf), _("Create %s?"), mailbox);
-  if (option(OPT_CONFIRMCREATE) && mutt_yesorno(buf, 1) != MUTT_YES)
+  if (Confirmcreate && mutt_yesorno(buf, 1) != MUTT_YES)
     return -1;
 
   if (imap_create_mailbox(idata, mailbox) < 0)
@@ -2328,7 +2331,7 @@ static int imap_close_mailbox(struct Context *ctx)
     mutt_list_free(&idata->flags);
     idata->ctx = NULL;
 
-    mutt_hash_destroy(&idata->uid_hash, NULL);
+    mutt_hash_destroy(&idata->uid_hash);
     FREE(&idata->msn_index);
     idata->msn_index_size = 0;
     idata->max_msn = 0;
@@ -2433,8 +2436,9 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
   {
-    if ((rc = imap_exec_msgset(idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
-                               MUTT_DELETED, 1, 0)) < 0)
+    rc = imap_exec_msgset(idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
+                          MUTT_DELETED, 1, 0);
+    if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
       mutt_sleep(1);
@@ -2583,7 +2587,7 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
     idata->state = IMAP_AUTHENTICATED;
   }
 
-  if (option(OPT_MESSAGE_CACHE_CLEAN))
+  if (MessageCacheClean)
     imap_cache_clean(idata);
 
   rc = 0;

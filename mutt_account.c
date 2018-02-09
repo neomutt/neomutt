@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
+#include "conn/conn.h"
 #include "mutt_account.h"
 #include "globals.h"
 #include "options.h"
@@ -205,7 +205,7 @@ int mutt_account_getuser(struct Account *account)
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
     mutt_str_strfcpy(account->user, NntpUser, sizeof(account->user));
 #endif
-  else if (option(OPT_NO_CURSES))
+  else if (OPT_NO_CURSES)
     return -1;
   /* prompt (defaults to unix username), copy into account->user */
   else
@@ -289,7 +289,7 @@ int mutt_account_getpass(struct Account *account)
   else if ((account->type == MUTT_ACCT_TYPE_NNTP) && NntpPass)
     mutt_str_strfcpy(account->pass, NntpPass, sizeof(account->pass));
 #endif
-  else if (option(OPT_NO_CURSES))
+  else if (OPT_NO_CURSES)
     return -1;
   else
   {

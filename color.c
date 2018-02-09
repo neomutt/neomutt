@@ -34,7 +34,6 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
@@ -399,8 +398,7 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 ||
-        (*col >= COLORS && !option(OPT_NO_CURSES) && has_colors()))
+    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !OPT_NO_CURSES && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;
@@ -531,7 +529,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   if (
 #ifdef HAVE_COLOR
       /* we're running without curses */
-      option(OPT_NO_CURSES) || /* we're parsing an uncolor command, and have no colors */
+      OPT_NO_CURSES || /* we're parsing an uncolor command, and have no colors */
       (parse_uncolor && !has_colors())
       /* we're parsing an unmono command, and have colors */
       || (!parse_uncolor && has_colors())
@@ -566,7 +564,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   else if (object == MT_COLOR_INDEX_TAG)
     do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
 
-  if (do_cache && !option(OPT_NO_CURSES))
+  if (do_cache && !OPT_NO_CURSES)
   {
     mutt_set_menu_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
@@ -653,11 +651,21 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
       for (int i = 0; Context && i < Context->msgcount; i++)
         Context->hdrs[i]->pair = 0;
     }
-    else if ((r = REGCOMP(&tmp->regex, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)
+    else
     {
-      regerror(r, &tmp->regex, err->data, err->dsize);
-      free_color_line(tmp, 1);
-      return -1;
+      int flags = 0;
+      if (sensitive)
+        flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
+      else
+        flags = REG_ICASE;
+
+      r = REGCOMP(&tmp->regex, s, flags);
+      if (r != 0)
+      {
+        regerror(r, &tmp->regex, err->data, err->dsize);
+        free_color_line(tmp, 1);
+        return -1;
+      }
     }
     tmp->pattern = mutt_str_strdup(s);
     tmp->match = match;
@@ -863,7 +871,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
 #ifdef HAVE_COLOR
 #ifdef HAVE_USE_DEFAULT_COLORS
-  if (!option(OPT_NO_CURSES) && has_colors()
+  if (!OPT_NO_CURSES && has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
       && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
       use_default_colors() != OK)
@@ -977,7 +985,7 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   bool dry_run = false;
 
-  if (option(OPT_NO_CURSES) || !has_colors())
+  if (OPT_NO_CURSES || !has_colors())
     dry_run = true;
 
   return parse_color(buf, s, err, parse_color_pair, dry_run);
@@ -991,10 +999,10 @@ int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
   bool dry_run = false;
 
 #ifdef HAVE_COLOR
-  if (option(OPT_NO_CURSES) || has_colors())
+  if (OPT_NO_CURSES || has_colors())
     dry_run = true;
 #else
-  if (option(OPT_NO_CURSES))
+  if (OPT_NO_CURSES)
     dry_run = true;
 #endif
 

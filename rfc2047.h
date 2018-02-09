@@ -27,16 +27,8 @@
 
 struct Address;
 
-char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
-                          size_t ulen, char **d, size_t *dlen);
-int convert_nonmime_string(char **ps);
-
-void rfc2047_encode_string(char **pd, int encode_specials, int col);
-void rfc2047_encode_adrlist(struct Address *addr, const char *tag);
-
-#define rfc2047_encode_string32(a) rfc2047_encode_string(a, 0, 32);
-
-void rfc2047_decode(char **pd);
-void rfc2047_decode_adrlist(struct Address *a);
+void rfc2047_encode_addrlist(struct Address *addr, const char *tag);
+void rfc2047_decode_addrlist(struct Address *a);
 
 #endif /* _MUTT_RFC2047_H */
+

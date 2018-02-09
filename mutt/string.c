@@ -32,8 +32,11 @@
  * | mutt_str_atoi()               | Convert ASCII string to an integer
  * | mutt_str_atol()               | Convert ASCII string to a long
  * | mutt_str_atos()               | Convert ASCII string to a short
+ * | mutt_str_atoui()              | Convert ASCII string to an unsigned integer
+ * | mutt_str_atoul()              | Convert ASCII string to an unsigned long
  * | mutt_str_dequote_comment()    | Un-escape characters in an email address comment
  * | mutt_str_find_word()          | Find the next word (non-space)
+ * | mutt_str_getenv()             | Get an environment variable
  * | mutt_str_is_ascii()           | Is a string ASCII (7-bit)?
  * | mutt_str_is_email_wsp()       | Is this a whitespace character (for an email header)
  * | mutt_str_lws_len()            | Measure the linear-white-space at the beginning of a string
@@ -68,8 +71,10 @@
 #include <ctype.h>
 #include <errno.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "debug.h"
 #include "memory.h"
 #include "string2.h"
@@ -243,6 +248,71 @@ int mutt_str_atoi(const char *str, int *dst)
   return 0;
 }
 
+/**
+ * mutt_str_atoui - Convert ASCII string to an unsigned integer
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters 
+ * @retval  0 Successful conversion                           
+ * @retval -1 Invalid input                                   
+ * @retval -2 Input out of range                              
+ *
+ * @note
+ * This function's return value differs from the other functions.
+ * They return -1 if there is input beyond the number.
+ */
+int mutt_str_atoui(const char *str, unsigned int *dst)
+{
+  int rc;
+  unsigned long res = 0;
+  unsigned int tmp = 0;
+  unsigned int *t = dst ? dst : &tmp;
+
+  *t = 0;
+
+  rc = mutt_str_atoul(str, &res);
+  if (rc < 0)
+    return rc;
+  if ((unsigned int) res != res)
+    return -2;
+
+  *t = (unsigned int) res;
+  return rc;
+}
+
+/**
+ * mutt_str_atoul - Convert ASCII string to an unsigned long
+ * @param[in]  str String to read
+ * @param[out] dst Store the result
+ * @retval  1 Successful conversion, with trailing characters 
+ * @retval  0 Successful conversion                           
+ * @retval -1 Invalid input                                   
+ *
+ * @note
+ * This function's return value differs from the other functions.
+ * They return -1 if there is input beyond the number.
+ */
+int mutt_str_atoul(const char *str, unsigned long *dst)
+{
+  unsigned long r = 0;
+  unsigned long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  errno = 0;
+  *res = strtoul(str, &e, 10);
+  if ((*res == ULONG_MAX) && (errno == ERANGE))
+    return -1;
+  if (e && (*e != '\0'))
+    return 1;
+  return 0;
+}
 /**
  * mutt_str_strdup - Copy a string, safely
  * @param s String to copy
@@ -602,19 +672,22 @@ void mutt_str_remove_trailing_ws(char *s)
 
 /**
  * mutt_str_strfcpy - Copy a string into a buffer (guaranteeing NUL-termination)
- * @param dest Buffer for the result
- * @param src  String to copy
- * @param dlen Length of buffer
- * @retval ptr Destination buffer
+ * @param dest  Buffer for the result
+ * @param src   String to copy
+ * @param dsize Destination buffer size
+ * @retval len Destination string length
  */
-char *mutt_str_strfcpy(char *dest, const char *src, size_t dlen)
+size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
 {
+  if (dsize == 0)
+    return 0;
+
   char *dest0 = dest;
-  while ((--dlen > 0) && (*src != '\0'))
+  while ((--dsize > 0) && (*src != '\0'))
     *dest++ = *src++;
 
   *dest = '\0';
-  return dest0;
+  return dest - dest0;
 }
 
 /**
@@ -644,17 +717,15 @@ int mutt_str_is_email_wsp(char c)
 
 /**
  * mutt_str_strnfcpy - Copy a limited string into a buffer (guaranteeing NUL-termination)
- * @param dest Buffer for the result
- * @param src  String to copy
- * @param size Maximum number of characters to copy
- * @param dlen Length of buffer
- * @retval ptr Destination buffer
+ * @param dest  Buffer for the result
+ * @param src   String to copy
+ * @param n     Maximum number of characters to copy
+ * @param dsize Destination buffer size
+ * @retval len Destination string length
  */
-char *mutt_str_strnfcpy(char *dest, char *src, size_t size, size_t dlen)
+size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize)
 {
-  if (dlen > size)
-    dlen = size - 1;
-  return mutt_str_strfcpy(dest, src, dlen);
+  return mutt_str_strfcpy(dest, src, MIN(n + 1, dsize));
 }
 
 /**
@@ -866,4 +937,56 @@ const char *mutt_str_find_word(const char *src)
   while (p && *p && !strchr(" \t\n", *p))
     p++;
   return p;
+}
+
+/**
+ * mutt_str_pretty_size - Display an abbreviated size, e.g. 3.4K
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param num    Number to abbreviate
+ */
+void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
+{
+  if (num < 1000)
+  {
+    snprintf(buf, buflen, "%d", (int) num);
+  }
+  else if (num < 10189) /* 0.1K - 9.9K */
+  {
+    snprintf(buf, buflen, "%3.1fK", num / 1024.0);
+  }
+  else if (num < 1023949) /* 10K - 999K */
+  {
+    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
+    snprintf(buf, buflen, "%zuK", (num + 51) / 1024);
+  }
+  else if (num < 10433332) /* 1.0M - 9.9M */
+  {
+    snprintf(buf, buflen, "%3.1fM", num / 1048576.0);
+  }
+  else /* 10M+ */
+  {
+    /* (10433332 + 52428) / 1048576 = 10 */
+    snprintf(buf, buflen, "%zuM", (num + 52428) / 1048576);
+  }
+}
+
+/**
+ * mutt_str_getenv - Get an environment variable
+ * @param name Environment variable to get
+ * @retval ptr Value of variable
+ * @retval NULL Variable isn't set, or is empty
+ *
+ * @warning The caller must not free the returned pointer.
+ */
+const char *mutt_str_getenv(const char *name)
+{
+  if (!name)
+    return NULL;
+
+  const char *val = getenv(name);
+  if (val && (val[0] != '\0'))
+      return val;
+
+  return NULL;
 }

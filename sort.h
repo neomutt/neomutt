@@ -24,7 +24,7 @@
 #define _MUTT_SORT_H
 
 #include "where.h"
-#include "mutt/mapping.h"
+#include "mutt/mutt.h"
 
 struct Address;
 struct Context;
@@ -73,6 +73,11 @@ sort_t *mutt_get_sort_func(int method);
 void mutt_sort_headers(struct Context *ctx, int init);
 int mutt_select_sort(int reverse);
 
+extern const struct Mapping SortMethods[];
+
+const char *mutt_get_name(struct Address *a);
+
+/* These variables are backing for config items */
 WHERE short SortBrowser;
 WHERE short Sort;
 WHERE short SortAux; /* auxiliary sorting method */
@@ -81,9 +86,5 @@ WHERE short SidebarSortMethod;
 
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys;
-
-extern const struct Mapping SortMethods[];
-
-const char *mutt_get_name(struct Address *a);
 
 #endif /* _MUTT_SORT_H */

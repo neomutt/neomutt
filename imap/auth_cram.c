@@ -21,7 +21,7 @@
  */
 
 /**
- * @page imap_auth_crap IMAP CRAM-MD5 authentication method
+ * @page imap_auth_cram IMAP CRAM-MD5 authentication method
  *
  * IMAP CRAM-MD5 authentication method
  *
@@ -58,16 +58,15 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
   unsigned char secret[MD5_BLOCK_LEN + 1];
   unsigned char hash_passwd[MD5_DIGEST_LEN];
-  unsigned int secret_len, chal_len;
+  size_t secret_len;
 
   secret_len = strlen(password);
-  chal_len = strlen(challenge);
 
   /* passwords longer than MD5_BLOCK_LEN bytes are substituted with their MD5
    * digests */
   if (secret_len > MD5_BLOCK_LEN)
   {
-    mutt_md5_buf(password, secret_len, hash_passwd);
+    mutt_md5_bytes(password, secret_len, hash_passwd);
     mutt_str_strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
   }
@@ -88,7 +87,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   /* inner hash: challenge and ipadded secret */
   mutt_md5_init_ctx(&ctx);
   mutt_md5_process_bytes(ipad, MD5_BLOCK_LEN, &ctx);
-  mutt_md5_process_bytes(challenge, chal_len, &ctx);
+  mutt_md5_process(challenge, &ctx);
   mutt_md5_finish_ctx(&ctx, response);
 
   /* outer hash: inner hash and opadded secret */
@@ -163,14 +162,8 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
    */
   hmac_md5(idata->conn->account.pass, obuf, hmac_response);
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
-  snprintf(
-      obuf, sizeof(obuf),
-      "%s %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-      idata->conn->account.user, hmac_response[0], hmac_response[1],
-      hmac_response[2], hmac_response[3], hmac_response[4], hmac_response[5],
-      hmac_response[6], hmac_response[7], hmac_response[8], hmac_response[9],
-      hmac_response[10], hmac_response[11], hmac_response[12],
-      hmac_response[13], hmac_response[14], hmac_response[15]);
+  int off = snprintf(obuf, sizeof(obuf), "%s ", idata->conn->account.user);
+  mutt_md5_toascii(hmac_response, obuf + off);
   mutt_debug(2, "CRAM response: %s\n", obuf);
 
   /* ibuf must be long enough to store the base64 encoding of obuf,

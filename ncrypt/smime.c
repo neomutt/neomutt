@@ -23,9 +23,6 @@
  */
 
 #include "config.h"
-#ifdef ENABLE_NLS
-#include <libintl.h>
-#endif
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -34,6 +31,7 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
+#include "smime.h"
 #include "address.h"
 #include "alias.h"
 #include "body.h"
@@ -46,15 +44,12 @@
 #include "globals.h"
 #include "header.h"
 #include "keymap.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
-#include "smime.h"
 #include "state.h"
 
 /**
@@ -133,8 +128,10 @@ int smime_valid_passphrase(void)
   time_t now = time(NULL);
 
   if (now < SmimeExptime)
+  {
     /* Use cached copy.  */
     return 1;
+  }
 
   smime_void_passphrase();
 
@@ -756,7 +753,8 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
     if (mutt_get_field(prompt, resp, sizeof(resp), MUTT_CLEAR) != 0)
       return NULL;
 
-    if ((key = smime_get_key_by_str(resp, abilities, public)))
+    key = smime_get_key_by_str(resp, abilities, public);
+    if (key)
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
@@ -813,7 +811,9 @@ static void getkeys(char *mailbox)
   {
     if (mutt_str_strcasecmp(SmimeDefaultKey,
                             SmimeKeyToUse + mutt_str_strlen(SmimeKeys) + 1) == 0)
+    {
       return;
+    }
 
     smime_void_passphrase();
   }
@@ -830,7 +830,7 @@ void smime_getkeys(struct Envelope *env)
   struct Address *t = NULL;
   bool found = false;
 
-  if (option(OPT_SMIME_DECRYPT_USE_DEFAULT_KEY) && SmimeDefaultKey && *SmimeDefaultKey)
+  if (SmimeDecryptUseDefaultKey && SmimeDefaultKey && *SmimeDefaultKey)
   {
     snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
 
@@ -870,7 +870,7 @@ void smime_getkeys(struct Envelope *env)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
+char *smime_find_keys(struct Address *addrlist, int oppenc_mode)
 {
   struct SmimeKey *key = NULL;
   char *keyID = NULL, *keylist = NULL;
@@ -878,7 +878,7 @@ char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
   size_t keylist_used = 0;
   struct Address *p = NULL, *q = NULL;
 
-  for (p = adrlist; p; p = p->next)
+  for (p = addrlist; p; p = p->next)
   {
     char buf[LONG_STRING];
 
@@ -938,9 +938,9 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   }
   mutt_file_unlink(tmpfname);
 
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr),
-                             certificate, NULL, NULL, NULL, NULL, NULL, NULL,
-                             SmimeGetCertEmailCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), certificate,
+                        NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertEmailCommand);
+  if (thepid == -1)
   {
     mutt_message(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1034,8 +1034,9 @@ static char *smime_extract_certificate(char *infile)
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
      extract the full set of certificates directly.
   */
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), infile, NULL,
-                             NULL, NULL, NULL, NULL, NULL, SmimePk7outCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), infile,
+                        NULL, NULL, NULL, NULL, NULL, NULL, SmimePk7outCommand);
+  if (thepid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1074,8 +1075,9 @@ static char *smime_extract_certificate(char *infile)
 
   /* Step 2: Extract the certificates from a PKCS#7 structure.
    */
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), pk7out, NULL,
-                             NULL, NULL, NULL, NULL, NULL, SmimeGetCertCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, fileno(fpout), fileno(fperr), pk7out,
+                        NULL, NULL, NULL, NULL, NULL, NULL, SmimeGetCertCommand);
+  if (thepid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1137,8 +1139,9 @@ static char *smime_extract_signer_certificate(char *infile)
 
   /* Extract signer's certificate
    */
-  if ((thepid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fperr), infile, NULL, NULL, NULL,
-                             NULL, certfile, NULL, SmimeGetSignerCertCommand)) == -1)
+  thepid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fperr), infile, NULL, NULL,
+                        NULL, NULL, certfile, NULL, SmimeGetSignerCertCommand);
+  if (thepid == -1)
   {
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
@@ -1201,7 +1204,7 @@ void smime_invoke_import(char *infile, char *mailbox)
   mutt_file_unlink(tmpfname);
 
   buf[0] = '\0';
-  if (option(OPT_SMIME_ASK_CERT_LABEL))
+  if (SmimeAskCertLabel)
   {
     if ((mutt_get_field(_("Label for certificate: "), buf, sizeof(buf), 0) != 0) ||
         (buf[0] == 0))
@@ -1213,13 +1216,14 @@ void smime_invoke_import(char *infile, char *mailbox)
   }
 
   mutt_endwin(NULL);
-  if ((certfile = smime_extract_certificate(infile)))
+  certfile = smime_extract_certificate(infile);
+  if (certfile)
   {
     mutt_endwin(NULL);
 
-    if ((thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout),
-                               fileno(fperr), certfile, NULL, NULL, NULL, NULL,
-                               NULL, NULL, SmimeImportCertCommand)) == -1)
+    thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout), fileno(fperr), certfile,
+                          NULL, NULL, NULL, NULL, NULL, NULL, SmimeImportCertCommand);
+    if (thepid == -1)
     {
       mutt_message(_("Error: unable to create OpenSSL subprocess!"));
       return;
@@ -1282,7 +1286,8 @@ int smime_verify_sender(struct Header *h)
 
   if (mbox)
   {
-    if ((certfile = smime_extract_signer_certificate(tempfname)))
+    certfile = smime_extract_signer_certificate(tempfname);
+    if (certfile)
     {
       mutt_file_unlink(tempfname);
       if (smime_handle_cert_email(certfile, mbox, 0, NULL, NULL))
@@ -1350,8 +1355,8 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   if (!smimeerr)
   {
     mutt_perror(smimeerrfile);
-    mutt_file_fclose(&fpout);
     mutt_file_unlink(tempfile);
+    mutt_file_fclose(&fpout);
     return NULL;
   }
   mutt_file_unlink(smimeerrfile);
@@ -1370,7 +1375,8 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   *certfile = '\0';
   for (cert_start = certlist; cert_start; cert_start = cert_end)
   {
-    if ((cert_end = strchr(cert_start, ' ')))
+    cert_end = strchr(cert_start, ' ');
+    if (cert_end)
       *cert_end = '\0';
     if (*cert_start)
     {
@@ -1388,13 +1394,14 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   mutt_write_mime_body(a, fptmp);
   mutt_file_fclose(&fptmp);
 
-  if ((thepid = smime_invoke_encrypt(&smimein, NULL, NULL, -1, fileno(fpout),
-                                     fileno(smimeerr), smimeinfile, certfile)) == -1)
+  thepid = smime_invoke_encrypt(&smimein, NULL, NULL, -1, fileno(fpout),
+                                fileno(smimeerr), smimeinfile, certfile);
+  if (thepid == -1)
   {
+    mutt_file_unlink(tempfile);
+    mutt_file_fclose(&fpout);
     mutt_file_fclose(&smimeerr);
     mutt_file_unlink(smimeinfile);
-    mutt_file_unlink(certfile);
-    mutt_file_fclose(&fpout);
     return NULL;
   }
 
@@ -1402,7 +1409,6 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
 
   mutt_wait_filter(thepid);
   mutt_file_unlink(smimeinfile);
-  mutt_file_unlink(certfile);
 
   fflush(fpout);
   rewind(fpout);
@@ -1434,8 +1440,8 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   t = mutt_new_body();
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-mime");
-  mutt_param_set("name", "smime.p7m", &t->parameter);
-  mutt_param_set("smime-type", "enveloped-data", &t->parameter);
+  mutt_param_set(&t->parameter, "name", "smime.p7m");
+  mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
   t->encoding = ENCBASE64; /* The output of OpenSSL SHOULD be binary */
   t->use_disp = true;
   t->disposition = DISPATTACH;
@@ -1487,11 +1493,13 @@ struct Body *smime_sign_message(struct Body *a)
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  struct SmimeKey *default_key = NULL;
+  char *signas = NULL;
+  struct SmimeKey *signas_key = NULL;
   char *intermediates = NULL;
   char *micalg = NULL;
 
-  if (!SmimeDefaultKey)
+  signas = (SmimeSignAs && *SmimeSignAs) ? SmimeSignAs : SmimeDefaultKey;
+  if (!signas || !*signas)
   {
     mutt_error(_("Can't sign: No key specified. Use Sign As."));
     return NULL;
@@ -1522,24 +1530,24 @@ struct Body *smime_sign_message(struct Body *a)
   mutt_write_mime_body(a, sfp);
   mutt_file_fclose(&sfp);
 
-  snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
+  snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), signas);
 
   snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
-           NONULL(SmimeCertificates), SmimeDefaultKey);
+           NONULL(SmimeCertificates), signas);
 
-  default_key = smime_get_key_by_hash(SmimeDefaultKey, 1);
-  if ((!default_key) || (mutt_str_strcmp("?", default_key->issuer) == 0))
-    intermediates = SmimeDefaultKey; /* so openssl won't complain in any case */
+  signas_key = smime_get_key_by_hash(signas, 1);
+  if ((!signas_key) || (!mutt_str_strcmp("?", signas_key->issuer)))
+    intermediates = signas; /* so openssl won't complain in any case */
   else
-    intermediates = default_key->issuer;
+    intermediates = signas_key->issuer;
 
   snprintf(SmimeIntermediateToUse, sizeof(SmimeIntermediateToUse), "%s/%s",
            NONULL(SmimeCertificates), intermediates);
 
-  smime_free_key(&default_key);
+  smime_free_key(&signas_key);
 
-  if ((thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1,
-                                  fileno(smimeout), -1, filetosign)) == -1)
+  thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1, fileno(smimeout), -1, filetosign);
+  if (thepid == -1)
   {
     mutt_perror(_("Can't open OpenSSL subprocess!"));
     mutt_file_fclose(&smimeout);
@@ -1591,10 +1599,10 @@ struct Body *smime_sign_message(struct Body *a)
   mutt_generate_boundary(&t->parameter);
 
   micalg = openssl_md_to_smime_micalg(SmimeSignDigestAlg);
-  mutt_param_set("micalg", micalg, &t->parameter);
+  mutt_param_set(&t->parameter, "micalg", micalg);
   FREE(&micalg);
 
-  mutt_param_set("protocol", "application/x-pkcs7-signature", &t->parameter);
+  mutt_param_set(&t->parameter, "protocol", "application/x-pkcs7-signature");
 
   t->parts = a;
   a = t;
@@ -1644,8 +1652,8 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   LOFF_T tmpoffset = 0;
   size_t tmplength = 0;
-  int origType = sigbdy->type;
-  char *savePrefix = NULL;
+  int orig_type = sigbdy->type;
+  char *save_prefix = NULL;
 
   snprintf(signedfile, sizeof(signedfile), "%s.sig", tempfile);
 
@@ -1666,7 +1674,7 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   /* if we are decoding binary bodies, we don't want to prefix each
    * line with the prefix or else the data will get corrupted.
    */
-  savePrefix = s->prefix;
+  save_prefix = s->prefix;
   s->prefix = NULL;
 
   mutt_decode_attachment(sigbdy, s);
@@ -1681,9 +1689,9 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   s->fpin = fopen(signedfile, "r");
 
   /* restore the prefix */
-  s->prefix = savePrefix;
+  s->prefix = save_prefix;
 
-  sigbdy->type = origType;
+  sigbdy->type = orig_type;
 
   mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
   smimeerr = mutt_file_fopen(smimeerrfile, "w+");
@@ -1696,8 +1704,9 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   crypt_current_time(s, "OpenSSL");
 
-  if ((thepid = smime_invoke_verify(NULL, &smimeout, NULL, -1, -1, fileno(smimeerr),
-                                    tempfile, signedfile, 0)) != -1)
+  thepid = smime_invoke_verify(NULL, &smimeout, NULL, -1, -1, fileno(smimeerr),
+                               tempfile, signedfile, 0);
+  if (thepid != -1)
   {
     fflush(smimeout);
     mutt_file_fclose(&smimeout);
@@ -1746,9 +1755,9 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
  *
  * This can either be a signed or an encrypted message.
  */
-static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *outFile)
+static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
-  int len = 0;
+  size_t len = 0;
   int c;
   char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX], errfile[_POSIX_PATH_MAX];
@@ -1865,8 +1874,8 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeout);
     rewind(smimeout);
 
-    if (outFile)
-      fpout = outFile;
+    if (out_file)
+      fpout = out_file;
     else
     {
       mutt_mktemp(tmptmpfname, sizeof(tmptmpfname));
@@ -1912,7 +1921,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     smimeout = NULL;
     mutt_file_unlink(outfile);
 
-    if (!outFile)
+    if (!out_file)
     {
       mutt_file_fclose(&fpout);
       mutt_file_unlink(tmptmpfname);
@@ -1957,7 +1966,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   struct State s;
   LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
-  int origType = b->type;
+  int orig_type = b->type;
   FILE *tmpfp = NULL;
   int rc = 0;
 
@@ -2010,7 +2019,7 @@ int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **c
   (*cur)->badsig = b->badsig;
 
 bail:
-  b->type = origType;
+  b->type = orig_type;
   b->length = tmplength;
   b->offset = tmpoffset;
   mutt_file_fclose(&tmpfp);
@@ -2041,7 +2050,7 @@ int smime_send_menu(struct Header *msg)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT))
+  if (CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT))
   {
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
@@ -2054,7 +2063,7 @@ int smime_send_menu(struct Header *msg)
    * Opportunistic encryption option is set, but is toggled off
    * for this message.
    */
-  else if (option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT))
+  else if (CryptOpportunisticEncrypt)
   {
     /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
@@ -2154,27 +2163,19 @@ int smime_send_menu(struct Header *msg)
       break;
 
       case 's': /* (s)ign */
+        msg->security &= ~ENCRYPT;
+        msg->security |= SIGN;
+        break;
+
       case 'S': /* (s)ign in oppenc mode */
-        if (!SmimeDefaultKey)
-        {
-          if ((key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0)))
-          {
-            mutt_str_replace(&SmimeDefaultKey, key->hash);
-            smime_free_key(&key);
-          }
-          else
-            break;
-        }
-        if (choices[choice - 1] == 's')
-          msg->security &= ~ENCRYPT;
         msg->security |= SIGN;
         break;
 
       case 'a': /* sign (a)s */
-
-        if ((key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0)))
+        key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
+        if (key)
         {
-          mutt_str_replace(&SmimeDefaultKey, key->hash);
+          mutt_str_replace(&SmimeSignAs, key->hash);
           smime_free_key(&key);
 
           msg->security |= SIGN;

@@ -22,7 +22,7 @@
 #define _MUTT_URL_H
 
 #include <stddef.h>
-#include "mutt/queue.h"
+#include "mutt/mutt.h"
 
 struct Envelope;
 

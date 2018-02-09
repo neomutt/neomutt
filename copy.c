@@ -35,9 +35,7 @@
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_curses.h"
-#include "mutt_idna.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -176,7 +174,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         if (flags & CH_DECODE)
         {
           if (!address_header_decode(&this_one))
-            rfc2047_decode(&this_one);
+            mutt_rfc2047_decode(&this_one);
           this_one_len = mutt_str_strlen(this_one);
 
           /* Convert CRLF line endings to LF */
@@ -278,7 +276,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       }
       else
       {
-        int blen = mutt_str_strlen(buf);
+        size_t blen = mutt_str_strlen(buf);
 
         mutt_mem_realloc(&this_one, this_one_len + blen + sizeof(char));
         strcat(this_one + this_one_len, buf);
@@ -293,7 +291,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
     if (flags & CH_DECODE)
     {
       if (!address_header_decode(&this_one))
-        rfc2047_decode(&this_one);
+        mutt_rfc2047_decode(&this_one);
       this_one_len = mutt_str_strlen(this_one);
     }
 
@@ -394,7 +392,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
-    mutt_cs_canonical_charset(chsbuf, sizeof(chsbuf),
+    mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf),
                               Charset ? Charset : "us-ascii");
     mutt_addr_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
     fputs(buffer, out);
@@ -455,7 +453,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_header_get_folder(h);
-    if (folder && !(option(OPT_WEED) && mutt_matches_ignore("folder")))
+    if (folder && !(Weed && mutt_matches_ignore("folder")))
     {
       char buf[LONG_STRING];
       mutt_str_strfcpy(buf, folder, sizeof(buf));
@@ -468,7 +466,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   }
 #endif
   char *tags = driver_tags_get(&h->tags);
-  if (tags && !(option(OPT_WEED) && mutt_matches_ignore("tags")))
+  if (tags && !(Weed && mutt_matches_ignore("tags")))
   {
     fputs("Tags: ", out);
     fputs(tags, out);
@@ -559,7 +557,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
   if (flags & MUTT_CM_PREFIX)
   {
-    if (option(OPT_TEXT_FLOWED))
+    if (TextFlowed)
       mutt_str_strfcpy(prefix, ">", sizeof(prefix));
     else
       mutt_make_string_flags(prefix, sizeof(prefix), NONULL(IndentString), Context, hdr, 0);
@@ -644,7 +642,9 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
     if (mutt_copy_header(fpin, hdr, fpout, chflags,
                          (chflags & CH_PREFIX) ? prefix : NULL) == -1)
+    {
       return -1;
+    }
 
     new_offset = ftello(fpout);
   }
@@ -760,6 +760,8 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
 
   msg = mx_open_message(src, hdr->msgno);
   if (!msg)
+    return -1;
+  if (!hdr->content)
     return -1;
   r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
@@ -896,7 +898,7 @@ static void format_address_header(char **h, struct Address *a)
   char cbuf[STRING];
   char c2buf[STRING];
   char *p = NULL;
-  int l, linelen, buflen, cbuflen, c2buflen, plen;
+  size_t l, linelen, buflen, cbuflen, c2buflen, plen;
 
   linelen = mutt_str_strlen(*h);
   plen = linelen;
@@ -908,7 +910,7 @@ static void format_address_header(char **h, struct Address *a)
     struct Address *tmp = a->next;
     a->next = NULL;
     *buf = *cbuf = *c2buf = '\0';
-    l = rfc822_write_address(buf, sizeof(buf), a, 0);
+    l = mutt_addr_write(buf, sizeof(buf), a, false);
     a->next = tmp;
 
     if (count && linelen + l > 74)
@@ -952,7 +954,7 @@ static void format_address_header(char **h, struct Address *a)
 static int address_header_decode(char **h)
 {
   char *s = *h;
-  int l;
+  size_t l;
   bool rp = false;
 
   struct Address *a = NULL;
@@ -1026,7 +1028,7 @@ static int address_header_decode(char **h)
     return 0;
 
   mutt_addrlist_to_local(a);
-  rfc2047_decode_adrlist(a);
+  rfc2047_decode_addrlist(a);
   for (cur = a; cur; cur = cur->next)
     if (cur->personal)
       mutt_str_dequote_comment(cur->personal);

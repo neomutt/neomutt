@@ -661,7 +661,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
 
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     resp[0] = '\0';
-    if (option(OPT_NO_CURSES) || mutt_get_field(prompt, resp, sizeof(resp), 0))
+    if (OPT_NO_CURSES || mutt_get_field(prompt, resp, sizeof(resp), 0))
       return SASL_FAIL;
 
     interaction->len = mutt_str_strlen(resp) + 1;
@@ -721,7 +721,7 @@ void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
   conn->conn_poll = mutt_sasl_conn_poll;
 }
 
-/*
+/**
  * mutt_sasl_done - Invoke when processing is complete.
  *
  * This is a cleanup function, used to free all memory used by the library.

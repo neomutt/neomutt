@@ -29,7 +29,6 @@
 #include "mutt/mutt.h"
 
 struct Address;
-struct Buffer;
 struct Header;
 struct Context;
 

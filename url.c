@@ -34,7 +34,6 @@
 #include "address.h"
 #include "envelope.h"
 #include "globals.h"
-#include "mime.h"
 #include "protos.h"
 #include "rfc2047.h"
 
@@ -105,10 +104,12 @@ static int parse_query_string(struct Url *u, char *src)
   while (src && *src)
   {
     qs = mutt_mem_calloc(1, sizeof(struct UrlQueryString));
-    if ((k = strchr(src, '&')))
+    k = strchr(src, '&');
+    if (k)
       *k = '\0';
 
-    if ((v = strchr(src, '=')))
+    v = strchr(src, '=');
+    if (v)
     {
       *v = '\0';
       qs->value = v + 1;
@@ -173,23 +174,35 @@ int url_parse(struct Url *u, char *src)
 
   src += 2;
 
-  if ((t = strchr(src, '?')))
+  /* Notmuch and mailto schemes can include a query */
+#ifdef USE_NOTMUCH
+  if ((u->scheme == U_NOTMUCH) || (u->scheme == U_MAILTO))
+#else
+  if (u->scheme == U_MAILTO)
+#endif
   {
-    *t++ = '\0';
-    if (parse_query_string(u, t) < 0)
-      goto err;
+    t = strrchr(src, '?');
+    if (t)
+    {
+      *t++ = '\0';
+      if (parse_query_string(u, t) < 0)
+        goto err;
+    }
   }
 
-  if ((u->path = strchr(src, '/')))
+  u->path = strchr(src, '/');
+  if (u->path)
     *u->path++ = '\0';
 
   if (u->path && url_pct_decode(u->path) < 0)
     goto err;
 
-  if ((t = strrchr(src, '@')))
+  t = strrchr(src, '@');
+  if (t)
   {
     *t = '\0';
-    if ((p = strchr(src, ':')))
+    p = strchr(src, ':');
+    if (p)
     {
       *p = '\0';
       u->pass = p + 1;
@@ -213,7 +226,8 @@ int url_parse(struct Url *u, char *src)
   else
     t = src;
 
-  if ((p = strchr(t, ':')))
+  p = strchr(t, ':');
+  if (p)
   {
     int num;
     *p++ = '\0';
@@ -284,7 +298,7 @@ void url_pct_encode(char *dst, size_t l, const char *src)
  */
 int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 {
-  long l;
+  size_t l;
 
   if (u->scheme == U_UNKNOWN)
     return -1;
@@ -295,7 +309,8 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
   {
     if (!(flags & U_PATH))
       mutt_str_strcat(dest, len, "//");
-    len -= (l = strlen(dest));
+    l = strlen(dest);
+    len -= l;
     dest += l;
 
     if (u->user && (u->user[0] || !(flags & U_PATH)))
@@ -312,7 +327,8 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
       else
         snprintf(dest, len, "%s@", str);
 
-      len -= (l = strlen(dest));
+      l = strlen(dest);
+      len -= l;
       dest += l;
     }
 
@@ -321,7 +337,8 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
     else
       snprintf(dest, len, "%s", u->host);
 
-    len -= (l = strlen(dest));
+    l = strlen(dest);
+    len -= l;
     dest += l;
 
     if (u->port)
@@ -354,7 +371,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
   if (!tmp)
     return -1;
 
-  if ((headers = strchr(tmp, '?')))
+  headers = strchr(tmp, '?');
+  if (headers)
     *headers++ = '\0';
 
   if (url_pct_decode(tmp) < 0)
@@ -366,7 +384,8 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   for (; tag; tag = strtok_r(NULL, "&", &p))
   {
-    if ((value = strchr(tag, '=')))
+    value = strchr(tag, '=');
+    if (value)
       *value++ = '\0';
     if (!value || !*value)
       continue;
@@ -409,16 +428,16 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
   }
 
   /* RFC2047 decode after the RFC822 parsing */
-  rfc2047_decode_adrlist(e->from);
-  rfc2047_decode_adrlist(e->to);
-  rfc2047_decode_adrlist(e->cc);
-  rfc2047_decode_adrlist(e->bcc);
-  rfc2047_decode_adrlist(e->reply_to);
-  rfc2047_decode_adrlist(e->mail_followup_to);
-  rfc2047_decode_adrlist(e->return_path);
-  rfc2047_decode_adrlist(e->sender);
-  rfc2047_decode(&e->x_label);
-  rfc2047_decode(&e->subject);
+  rfc2047_decode_addrlist(e->from);
+  rfc2047_decode_addrlist(e->to);
+  rfc2047_decode_addrlist(e->cc);
+  rfc2047_decode_addrlist(e->bcc);
+  rfc2047_decode_addrlist(e->reply_to);
+  rfc2047_decode_addrlist(e->mail_followup_to);
+  rfc2047_decode_addrlist(e->return_path);
+  rfc2047_decode_addrlist(e->sender);
+  mutt_rfc2047_decode(&e->x_label);
+  mutt_rfc2047_decode(&e->subject);
 
   rc = 0;
 

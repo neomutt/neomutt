@@ -124,6 +124,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
     }
 
     if (!client_start)
+    {
       while (true)
       {
         rc = sasl_client_step(saslconn, buf, len, &interaction, &pc, &olen);
@@ -131,6 +132,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
           break;
         mutt_sasl_interact(interaction);
       }
+    }
     else
     {
       olen = client_start;
@@ -231,13 +233,10 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
 
   /* Compute the authentication hash to send to the server */
   mutt_md5_init_ctx(&ctx);
-  mutt_md5_process_bytes(pop_data->timestamp, strlen(pop_data->timestamp), &ctx);
-  mutt_md5_process_bytes(pop_data->conn->account.pass,
-                         strlen(pop_data->conn->account.pass), &ctx);
+  mutt_md5_process(pop_data->timestamp, &ctx);
+  mutt_md5_process(pop_data->conn->account.pass, &ctx);
   mutt_md5_finish_ctx(&ctx, digest);
-
-  for (size_t i = 0; i < sizeof(digest); i++)
-    sprintf(hash + 2 * i, "%02x", digest[i]);
+  mutt_md5_toascii(digest, hash);
 
   /* Send APOP command to server */
   snprintf(buf, sizeof(buf), "APOP %s %s\r\n", pop_data->conn->account.user, hash);
@@ -296,8 +295,7 @@ static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *metho
     snprintf(buf, sizeof(buf), "PASS %s\r\n", pop_data->conn->account.pass);
     ret = pop_query_d(pop_data, buf, sizeof(buf),
                       /* don't print the password unless we're at the ungodly debugging level */
-                      debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" :
-                                                        NULL);
+                      debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" : NULL);
   }
 
   switch (ret)
@@ -367,6 +365,7 @@ int pop_authenticate(struct PopData *pop_data)
         {
           ret = authenticator->authenticate(pop_data, method);
           if (ret == POP_A_SOCKET)
+          {
             switch (pop_connect(pop_data))
             {
               case 0:
@@ -377,11 +376,12 @@ int pop_authenticate(struct PopData *pop_data)
               case -2:
                 ret = POP_A_FAILURE;
             }
+          }
 
           if (ret != POP_A_UNAVAIL)
             attempts++;
           if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-              (ret == POP_A_FAILURE && !option(OPT_POP_AUTH_TRY_ALL)))
+              (ret == POP_A_FAILURE && !PopAuthTryAll))
           {
             comma = NULL;
             break;
@@ -405,6 +405,7 @@ int pop_authenticate(struct PopData *pop_data)
     {
       ret = authenticator->authenticate(pop_data, authenticator->method);
       if (ret == POP_A_SOCKET)
+      {
         switch (pop_connect(pop_data))
         {
           case 0:
@@ -415,11 +416,11 @@ int pop_authenticate(struct PopData *pop_data)
           case -2:
             ret = POP_A_FAILURE;
         }
+      }
 
       if (ret != POP_A_UNAVAIL)
         attempts++;
-      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-          (ret == POP_A_FAILURE && !option(OPT_POP_AUTH_TRY_ALL)))
+      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET || (ret == POP_A_FAILURE && !PopAuthTryAll))
       {
         break;
       }

@@ -31,16 +31,16 @@
  * | mutt_env_free()       | Free an Envelope
  * | mutt_env_merge()      | Merge the headers of two Envelopes
  * | mutt_env_new()        | Create a new Envelope
+ * | mutt_env_to_intl()    | Convert an Envelope's Address fields to Punycode format
+ * | mutt_env_to_local()   | Convert an Envelope's Address fields to local format
  */
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/buffer.h"
-#include "mutt/memory.h"
-#include "mutt/queue.h"
-#include "mutt/string2.h"
+#include "mutt/mutt.h"
 #include "envelope.h"
 #include "address.h"
+#include "protos.h"
 
 /**
  * mutt_env_new - Create a new Envelope
@@ -196,3 +196,59 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
       return false;
   }
 }
+
+/**
+ * mutt_env_to_local - Convert an Envelope's Address fields to local format
+ * @param e Envelope to modify
+ *
+ * Run mutt_addrlist_to_local() on each of the Address fields in the Envelope.
+ */
+void mutt_env_to_local(struct Envelope *e)
+{
+  mutt_addrlist_to_local(e->return_path);
+  mutt_addrlist_to_local(e->from);
+  mutt_addrlist_to_local(e->to);
+  mutt_addrlist_to_local(e->cc);
+  mutt_addrlist_to_local(e->bcc);
+  mutt_addrlist_to_local(e->reply_to);
+  mutt_addrlist_to_local(e->mail_followup_to);
+}
+
+/* Note that `a' in the `env->a' expression is macro argument, not
+ * "real" name of an `env' compound member.  Real name will be substituted
+ * by preprocessor at the macro-expansion time.
+ * Note that #a escapes and double quotes the argument.
+ */
+#define H_TO_INTL(a)                                                           \
+  if (mutt_addrlist_to_intl(env->a, err) && !e)                                \
+  {                                                                            \
+    if (tag)                                                                   \
+      *tag = #a;                                                               \
+    e = 1;                                                                     \
+    err = NULL;                                                                \
+  }
+
+/**
+ * mutt_env_to_intl - Convert an Envelope's Address fields to Punycode format
+ * @param[in]  env Envelope to modify
+ * @param[out] tag Name of the failed field
+ * @param[out] err Failed address
+ * @retval 0 Success, all addresses converted
+ * @retval 1 Error, tag and err will be set
+ *
+ * Run mutt_addrlist_to_intl() on each of the Address fields in the Envelope.
+ */
+int mutt_env_to_intl(struct Envelope *env, char **tag, char **err)
+{
+  int e = 0;
+  H_TO_INTL(return_path);
+  H_TO_INTL(from);
+  H_TO_INTL(to);
+  H_TO_INTL(cc);
+  H_TO_INTL(bcc);
+  H_TO_INTL(reply_to);
+  H_TO_INTL(mail_followup_to);
+  return e;
+}
+
+#undef H_TO_INTL

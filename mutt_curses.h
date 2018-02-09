@@ -81,7 +81,7 @@
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
-    if (option(OPT_BEEP))                                                       \
+    if (Beep)                                                       \
       beep();                                                                  \
   } while (0)
 
@@ -213,13 +213,13 @@ struct Progress
   unsigned short flags;
   const char *msg;
   long pos;
-  long size;
+  size_t size;
   unsigned int timestamp;
   char sizestr[SHORT_STRING];
 };
 
 void mutt_progress_init(struct Progress *progress, const char *msg,
-                        unsigned short flags, unsigned short inc, long size);
+                        unsigned short flags, unsigned short inc, size_t size);
 /* If percent is positive, it is displayed as percentage, otherwise
  * percentage is calculated from progress->size and pos if progress
  * was initialized with positive size, otherwise no percentage is shown */
@@ -309,6 +309,10 @@ void ci_start_color(void);
 #endif
 
 /* reset the color to the normal terminal color as defined by 'color normal ...' */
-#define NORMAL_COLOR SETCOLOR(MT_COLOR_NORMAL)
+#ifdef HAVE_BKGDSET
+#define NORMAL_COLOR bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ')
+#else
+#define NORMAL_COLOR attrset(ColorDefs[MT_COLOR_NORMAL])
+#endif
 
 #endif /* _MUTT_CURSES_H */

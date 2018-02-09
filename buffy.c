@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2016 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <utime.h>
 #include "mutt/mutt.h"
-#include "mutt.h"
+#include "conn/conn.h"
 #include "buffy.h"
 #include "context.h"
 #include "envelope.h"
@@ -146,7 +146,8 @@ static int test_new_folder(const char *path)
   if (typ != MUTT_MBOX && typ != MUTT_MMDF)
     return 0;
 
-  if ((f = fopen(path, "rb")))
+  f = fopen(path, "rb");
+  if (f)
   {
     rc = test_last_status_new(f);
     mutt_file_fclose(&f);
@@ -204,7 +205,7 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the mailbox, then we know there is no recent mail.
    */
-  if (check_new && option(OPT_MAIL_CHECK_RECENT))
+  if (check_new && MailCheckRecent)
   {
     if (stat(path, &sb) == 0 && sb.st_mtime < mailbox->last_visited)
     {
@@ -244,7 +245,7 @@ static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
         mailbox->msg_unread++;
       if (check_new)
       {
-        if (option(OPT_MAIL_CHECK_RECENT))
+        if (MailCheckRecent)
         {
           snprintf(msgpath, sizeof(msgpath), "%s/%s", path, de->d_name);
           /* ensure this message was received since leaving this mailbox */
@@ -285,7 +286,7 @@ static int buffy_maildir_check(struct Buffy *mailbox, bool check_stats)
 
   rc = buffy_maildir_check_dir(mailbox, "new", check_new, check_stats);
 
-  check_new = !rc && option(OPT_MAILDIR_CHECK_CUR);
+  check_new = !rc && MaildirCheckCur;
   if (check_new || check_stats)
     if (buffy_maildir_check_dir(mailbox, "cur", check_new, check_stats))
       rc = 1;
@@ -306,7 +307,7 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, bool check_s
   int new_or_changed;
   struct Context ctx;
 
-  if (option(OPT_CHECK_MBOX_SIZE))
+  if (CheckMboxSize)
     new_or_changed = sb->st_size > mailbox->size;
   else
     new_or_changed = sb->st_mtime > sb->st_atime ||
@@ -315,13 +316,13 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, bool check_s
 
   if (new_or_changed)
   {
-    if (!option(OPT_MAIL_CHECK_RECENT) || sb->st_mtime > mailbox->last_visited)
+    if (!MailCheckRecent || sb->st_mtime > mailbox->last_visited)
     {
       rc = 1;
       mailbox->new = true;
     }
   }
-  else if (option(OPT_CHECK_MBOX_SIZE))
+  else if (CheckMboxSize)
   {
     /* some other program has deleted mail from the folder */
     mailbox->size = (off_t) sb->st_size;
@@ -438,7 +439,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
 #endif
     }
   }
-  else if (option(OPT_CHECK_MBOX_SIZE) && Context && Context->path)
+  else if (CheckMboxSize && Context && Context->path)
     tmp->size = (off_t) sb.st_size; /* update the size of current folder */
 
 #ifdef USE_SIDEBAR
@@ -488,7 +489,7 @@ void mutt_buffy_cleanup(const char *buf, struct stat *st)
 {
   struct utimbuf ut;
 
-  if (option(OPT_CHECK_MBOX_SIZE))
+  if (CheckMboxSize)
   {
     struct Buffy *b = mutt_find_mailbox(buf);
     if (b && !b->new)
@@ -616,8 +617,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
        * reading it), the size is set to 0 so that later when we check we see
        * that it increased. without check_mbox_size we probably don't care.
        */
-      if (option(OPT_CHECK_MBOX_SIZE) && stat((*b)->path, &sb) == 0 &&
-          !test_new_folder((*b)->path))
+      if (CheckMboxSize && stat((*b)->path, &sb) == 0 && !test_new_folder((*b)->path))
       {
         /* some systems out there don't have an off_t type */
         (*b)->size = (off_t) sb.st_size;
@@ -715,7 +715,7 @@ int mutt_buffy_check(bool force)
   if (!force && (t - BuffyTime < MailCheck))
     return BuffyCount;
 
-  if (option(OPT_MAIL_CHECK_STATS) && (t - BuffyStatsTime >= MailCheckStatsInterval))
+  if (MailCheckStats && (t - BuffyStatsTime >= MailCheckStatsInterval))
   {
     check_stats = true;
     BuffyStatsTime = t;

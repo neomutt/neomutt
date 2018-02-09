@@ -32,22 +32,17 @@
 #include "mutt.h"
 #include "address.h"
 #include "body.h"
-#include "mutt_charset.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "mailbox.h"
-#include "mime.h"
-#include "mutt_regex.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
 #include "url.h"
 
-struct Address;
 struct Context;
 
 /**
@@ -151,9 +146,9 @@ int mutt_check_encoding(const char *c)
     return ENCOTHER;
 }
 
-static struct Parameter *parse_parameters(const char *s)
+static void parse_parameters(struct ParameterList *param, const char *s)
 {
-  struct Parameter *head = NULL, *cur = NULL, *new = NULL;
+  struct Parameter *new = NULL;
   char buffer[LONG_STRING];
   const char *p = NULL;
   size_t i;
@@ -243,13 +238,7 @@ static struct Parameter *parse_parameters(const char *s)
                    new->attribute ? new->attribute : "", new->value ? new->value : "");
 
         /* Add this parameter to the list */
-        if (head)
-        {
-          cur->next = new;
-          cur = cur->next;
-        }
-        else
-          head = cur = new;
+        TAILQ_INSERT_HEAD(param, new, entries);
       }
     }
     else
@@ -271,8 +260,7 @@ static struct Parameter *parse_parameters(const char *s)
 
 bail:
 
-  rfc2231_decode_parameters(&head);
-  return head;
+  rfc2231_decode_parameters(param);
 }
 
 int mutt_check_mime_type(const char *s)
@@ -320,23 +308,26 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     *pc++ = 0;
     while (*pc && ISSPACE(*pc))
       pc++;
-    ct->parameter = parse_parameters(pc);
+    parse_parameters(&ct->parameter, pc);
 
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    if ((pc = mutt_param_get("name", ct->parameter)) && !ct->filename)
+    pc = mutt_param_get(&ct->parameter, "name");
+    if (pc && !ct->filename)
       ct->filename = mutt_str_strdup(pc);
 
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
-    if ((pc = mutt_param_get("conversions", ct->parameter)))
+    pc = mutt_param_get(&ct->parameter, "conversions");
+    if (pc)
       ct->encoding = mutt_check_encoding(pc);
 #endif
   }
 
   /* Now get the subtype */
-  if ((subtype = strchr(s, '/')))
+  subtype = strchr(s, '/');
+  if (subtype)
   {
     *subtype++ = '\0';
     for (pc = subtype; *pc && !ISSPACE(*pc) && *pc != ';'; pc++)
@@ -384,19 +375,19 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   /* Default character set for text types. */
   if (ct->type == TYPETEXT)
   {
-    pc = mutt_param_get("charset", ct->parameter);
+    pc = mutt_param_get(&ct->parameter, "charset");
     if (!pc)
-      mutt_param_set("charset",
-                         (AssumedCharset && *AssumedCharset) ?
-                             (const char *) mutt_cs_get_default_charset() :
-                             "us-ascii",
-                         &ct->parameter);
+      mutt_param_set(&ct->parameter, "charset",
+                     (AssumedCharset && *AssumedCharset) ?
+                         (const char *) mutt_ch_get_default_charset() :
+                         "us-ascii");
   }
 }
 
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
-  struct Parameter *parms = NULL;
+  struct ParameterList parms;
+  TAILQ_INIT(&parms);
 
   if (mutt_str_strncasecmp("inline", s, 6) == 0)
     ct->disposition = DISPINLINE;
@@ -410,9 +401,12 @@ static void parse_content_disposition(const char *s, struct Body *ct)
   if (s)
   {
     s = mutt_str_skip_email_wsp(s + 1);
-    if ((s = mutt_param_get("filename", (parms = parse_parameters(s)))))
+    parse_parameters(&parms, s);
+    s = mutt_param_get(&parms, "filename");
+    if (s)
       mutt_str_replace(&ct->filename, s);
-    if ((s = mutt_param_get("name", parms)))
+    s = mutt_param_get(&parms, "name");
+    if (s)
       ct->form_name = mutt_str_strdup(s);
     mutt_param_free(&parms);
   }
@@ -439,7 +433,8 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
   while (*(line = mutt_read_rfc822_line(fp, line, &linelen)) != 0)
   {
     /* Find the value of the current header */
-    if ((c = strchr(line, ':')))
+    c = strchr(line, ':');
+    if (c)
     {
       *c = 0;
       c = mutt_str_skip_email_wsp(c + 1);
@@ -466,7 +461,7 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
       else if (mutt_str_strcasecmp("description", line + 8) == 0)
       {
         mutt_str_replace(&p->description, c);
-        rfc2047_decode(&p->description);
+        mutt_rfc2047_decode(&p->description);
       }
     }
 #ifdef SUN_ATTACHMENT
@@ -477,11 +472,11 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
       else if (mutt_str_strcasecmp("encoding-info", line + 6) == 0)
         p->encoding = mutt_check_encoding(c);
       else if (mutt_str_strcasecmp("content-lines", line + 6) == 0)
-        mutt_param_set("content-lines", c, &(p->parameter));
+        mutt_param_set(&p->parameter, "content-lines", c);
       else if (mutt_str_strcasecmp("data-description", line + 6) == 0)
       {
         mutt_str_replace(&p->description, c);
-        rfc2047_decode(&p->description);
+        mutt_rfc2047_decode(&p->description);
       }
     }
 #endif
@@ -509,7 +504,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
         bound = "--------";
       else
 #endif
-        bound = mutt_param_get("boundary", b->parameter);
+        bound = mutt_param_get(&b->parameter, "boundary");
 
       fseeko(fp, b->offset, SEEK_SET);
       b->parts = mutt_parse_multipart(fp, bound, b->offset + b->length,
@@ -583,10 +578,9 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 #ifdef SUN_ATTACHMENT
   int lines;
 #endif
-  int blen, len, crlf = 0;
+  size_t blen, len, crlf;
   char buffer[LONG_STRING];
   struct Body *head = NULL, *last = NULL, *new = NULL;
-  int i;
   bool final = false; /* did we see the ending boundary? */
 
   if (!boundary)
@@ -615,9 +609,12 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
           last->length = 0;
       }
 
-      /* Remove any trailing whitespace, up to the length of the boundary */
-      for (i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
-        buffer[i] = 0;
+      if (len > 0)
+      {
+        /* Remove any trailing whitespace, up to the length of the boundary */
+        for (size_t i = len - 1; ISSPACE(buffer[i]) && i >= blen + 2; i--)
+          buffer[i] = 0;
+      }
 
       /* Check for the end boundary */
       if (mutt_str_strcmp(buffer + blen + 2, "--") == 0)
@@ -630,9 +627,9 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
         new = mutt_read_mime_header(fp, digest);
 
 #ifdef SUN_ATTACHMENT
-        if (mutt_param_get("content-lines", new->parameter))
+        if (mutt_param_get(&new->parameter, "content-lines"))
         {
-          if (mutt_str_atoi(mutt_param_get("content-lines", new->parameter), &lines) < 0)
+          if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
             if (ftello(fp) >= end_off || fgets(buffer, LONG_STRING, fp) == NULL)
@@ -717,11 +714,15 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
 
     /* some idiotic clients break their message-ids between lines */
     if (s == p)
+    {
       /* step past another whitespace */
       s = p + 1;
+    }
     else if (o)
+    {
       /* more than two lines, give up */
       s = o = onull = NULL;
+    }
     else
     {
       /* remember the first line, start looking for the second */
@@ -746,7 +747,8 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
     if (cur->content->parts)
       break; /* The message was parsed earlier. */
 
-    if ((msg = mx_open_message(ctx, cur->msgno)))
+    msg = mx_open_message(ctx, cur->msgno);
+    if (msg)
     {
       mutt_parse_part(msg->fp, cur->content);
 
@@ -823,7 +825,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
           if (hdr)
           {
             mutt_str_replace(&hdr->content->description, p);
-            rfc2047_decode(&hdr->content->description);
+            mutt_rfc2047_decode(&hdr->content->description);
           }
           matched = 1;
         }
@@ -1037,7 +1039,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
                 hdr->replied = true;
                 break;
               case 'O':
-                hdr->old = option(OPT_MARK_OLD) ? true : false;
+                hdr->old = MarkOld ? true : false;
                 break;
               case 'R':
                 hdr->read = true;
@@ -1127,11 +1129,11 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
     /* restore the original line */
     line[strlen(line)] = ':';
 
-    if (!(weed && option(OPT_WEED) && mutt_matches_ignore(line)))
+    if (!(weed && Weed && mutt_matches_ignore(line)))
     {
       struct ListNode *np = mutt_list_insert_tail(&e->userhdrs, mutt_str_strdup(line));
       if (do_2047)
-        rfc2047_decode(&np->data);
+        mutt_rfc2047_decode(&np->data);
     }
   }
 
@@ -1206,9 +1208,9 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
     *buf = '\0';
 
-    if (mutt_match_spam_list(line, SpamList, buf, sizeof(buf)))
+    if (mutt_replacelist_match(SpamList, buf, sizeof(buf), line))
     {
-      if (!mutt_match_regex_list(line, NoSpamList))
+      if (!mutt_regexlist_match(NoSpamList, line))
       {
         /* if spam tag already exists, figure out how to amend it */
         if (e->spam && *buf)
@@ -1262,23 +1264,23 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     hdr->content->offset = ftello(f);
 
     /* do RFC2047 decoding */
-    rfc2047_decode_adrlist(e->from);
-    rfc2047_decode_adrlist(e->to);
-    rfc2047_decode_adrlist(e->cc);
-    rfc2047_decode_adrlist(e->bcc);
-    rfc2047_decode_adrlist(e->reply_to);
-    rfc2047_decode_adrlist(e->mail_followup_to);
-    rfc2047_decode_adrlist(e->return_path);
-    rfc2047_decode_adrlist(e->sender);
-    rfc2047_decode_adrlist(e->x_original_to);
+    rfc2047_decode_addrlist(e->from);
+    rfc2047_decode_addrlist(e->to);
+    rfc2047_decode_addrlist(e->cc);
+    rfc2047_decode_addrlist(e->bcc);
+    rfc2047_decode_addrlist(e->reply_to);
+    rfc2047_decode_addrlist(e->mail_followup_to);
+    rfc2047_decode_addrlist(e->return_path);
+    rfc2047_decode_addrlist(e->sender);
+    rfc2047_decode_addrlist(e->x_original_to);
 
     if (e->subject)
     {
       regmatch_t pmatch[1];
 
-      rfc2047_decode(&e->subject);
+      mutt_rfc2047_decode(&e->subject);
 
-      if (regexec(ReplyRegexp.regex, e->subject, 1, pmatch, 0) == 0)
+      if (ReplyRegex && (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
         e->real_subj = e->subject + pmatch[0].rm_eo;
       else
         e->real_subj = e->subject;

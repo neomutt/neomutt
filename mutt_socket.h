@@ -23,10 +23,11 @@
 #ifndef _MUTT_SOCKET_H
 #define _MUTT_SOCKET_H
 
-#include "mutt/queue.h"
+#include "mutt/mutt.h"
 #include "conn/conn.h"
 
 struct Account;
+struct Connection;
 
 /* logging levels */
 #define MUTT_SOCK_LOG_CMD  2

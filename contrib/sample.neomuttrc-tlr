@@ -234,7 +234,7 @@ set   print=ask-no                      # Don't waste paper
 set   print_command="enscript -2Gr -Email"      # Two columns, landscape, fancy header.
 set   print_split=yes                   # Invoke enscript once per message
 set   quit=yes                          # Don't ask me whether or not I want to quit.
-set   quote_regexp="^ *[a-zA-Z]*[>|][>:|]*"     # Recognize quotes in the pager.
+set   quote_regex="^ *[a-zA-Z]*[>|][>:|]*"     # Recognize quotes in the pager.
 set   read_inc=50                       # Progress indicator when reading folders.
 set   recall=ask-no                     # When I say "compose", ask me whether I want to continue
                                         # composing a postponed message.
@@ -266,7 +266,7 @@ set   encode_from                       # "From " in the beginning of a line tri
 set   nowait_key                        # Return immediately from external programs
 set   forward_format="[fwd] %s (from: %a)"      # A different subject for forwarded messages
 set   nobeep                            # Shut up. ;-)
-set   reply_regexp="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"    # A regular expression to detect replies
+set   reply_regex="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"    # A regular expression to detect replies
 set   header                            # Include the message header when replying.
 set   ignore_list_reply_to              # Ignore Reply-To headers pointing to mailing lists.
 set   norfc2047_parameters              # Sometimes, I get mails which use a bogus encoding for

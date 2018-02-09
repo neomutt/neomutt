@@ -23,9 +23,9 @@
 #ifndef _MUTT_RFC2231_H
 #define _MUTT_RFC2231_H
 
-struct Parameter;
+struct ParameterList;
 
-void rfc2231_decode_parameters(struct Parameter **headp);
+void rfc2231_decode_parameters(struct ParameterList *p);
 int rfc2231_encode_string(char **pd);
 
 #endif /* _MUTT_RFC2231_H */

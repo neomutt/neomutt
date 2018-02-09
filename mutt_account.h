@@ -25,8 +25,7 @@
 #ifndef _MUTT_ACCOUNT_H
 #define _MUTT_ACCOUNT_H
 
-#include "conn/conn.h"
-
+struct Account;
 struct Url;
 
 /**

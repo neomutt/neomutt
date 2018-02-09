@@ -222,7 +222,7 @@ struct ImapData
   unsigned int seqno;
   time_t lastread; /**< last time we read a command for the server */
   char *buf;
-  unsigned int blen;
+  size_t blen;
 
   /* If nonzero, we can send UTF-8, and the server will use UTF8 rather
    * than mUTF7 */
@@ -255,7 +255,7 @@ struct ImapData
   unsigned int uid_validity;
   unsigned int uidnext;
   struct Header **msn_index;   /**< look up headers by (MSN-1) */
-  unsigned int msn_index_size; /**< allocation size */
+  size_t msn_index_size;       /**< allocation size */
   unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
@@ -279,7 +279,7 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
 int imap_open_connection(struct ImapData *idata);
 void imap_close_connection(struct ImapData *idata);
 struct ImapData *imap_conn_find(const struct Account *account, int flags);
-int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar);
+int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes, struct Progress *pbar);
 void imap_expunge_mailbox(struct ImapData *idata);
 void imap_logout(struct ImapData **idata);
 int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
@@ -324,7 +324,7 @@ struct ImapData *imap_new_idata(void);
 void imap_free_idata(struct ImapData **idata);
 char *imap_fix_path(struct ImapData *idata, const char *mailbox, char *path, size_t plen);
 void imap_cachepath(struct ImapData *idata, const char *mailbox, char *dest, size_t dlen);
-int imap_get_literal_count(const char *buf, long *bytes);
+int imap_get_literal_count(const char *buf, unsigned int *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);

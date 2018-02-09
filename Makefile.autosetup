@@ -32,11 +32,13 @@ LIBBINFILES+=	$(SRCDIR)/contrib/smime_keys
 @endif
 
 # paths
+prefix=		@prefix@
 bindir=		@BINDIR@
 datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
 mandir=		@mandir@
 libdir=		@libdir@
+libexecdir=		@libexecdir@
 sysconfdir=	@SYSCONFDIR@
 
 # targets for specific subdirectories
@@ -47,21 +49,20 @@ UNINSTALL_TARGETS=	@UNINSTALL_TARGETS@
 
 VPATH=		$(SRCDIR)
 
-ALL_FILES!=	(cd $(SRCDIR) && git ls-tree -r --name-only HEAD 2>/dev/null) \
-		| grep -v git_ver.h || true
+ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
-		browser.o buffy.o mutt_charset.o color.o commands.o complete.o \
+		browser.o buffy.o color.o commands.o complete.o \
 		compose.o compress.o conststrings.o copy.o curs_lib.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
 		flags.o from.o group.o handler.o hdrline.o \
 		header.o help.o history.o hook.o init.o keymap.o main.o \
-		mbox.o mbyte.o menu.o mh.o muttlib.o mutt_address.o mutt_idna.o \
+		mbox.o menu.o mh.o muttlib.o mutt_address.o \
 		mutt_socket.o tags.o mx.o \
-		newsrc.o nntp.o pager.o parameter.o parse.o pattern.o pop.o \
+		newsrc.o nntp.o pager.o parse.o pattern.o pop.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
 		rfc1524.o rfc2047.o rfc2231.o rfc3676.o address.o \
 		safe_asprintf.o score.o send.o sendlib.o sidebar.o mutt_signal.o \
@@ -90,9 +91,13 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 ###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
-LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o mutt/debug.o mutt/exit.o \
-		mutt/file.o mutt/hash.o mutt/list.o mutt/mapping.o mutt/mbyte.o mutt/md5.o \
-		mutt/memory.o mutt/message.o mutt/sha1.o mutt/signal.o mutt/string.o
+LIBMUTTOBJS=	mutt/base64.o mutt/buffer.o mutt/charset.o mutt/date.o \
+		mutt/debug.o mutt/exit.o \
+		mutt/file.o mutt/hash.o mutt/idna.o mutt/list.o \
+		mutt/mapping.o mutt/mbyte.o mutt/md5.o \
+		mutt/memory.o mutt/message.o mutt/mime.o mutt/parameter.o \
+		mutt/regex.o mutt/sha1.o mutt/signal.o mutt/string.o \
+		mutt/rfc2047.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
@@ -268,13 +273,13 @@ git_ver.h: $(ALL_FILES)
 
 hcache/hcversion.h:	$(SRCDIR)/mutt.h $(SRCDIR)/address.h \
 			$(SRCDIR)/mutt/list.h $(SRCDIR)/mutt/buffer.h \
-			$(SRCDIR)/parameter.h $(SRCDIR)/body.h \
+			$(SRCDIR)/mutt/parameter.h $(SRCDIR)/body.h \
 			$(SRCDIR)/envelope.h $(SRCDIR)/header.h \
 			$(SRCDIR)/hcache/hcachever.sh \
 			$(PWD)/hcache
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
 	echo '#include "address.h"'; echo '#include "mutt/list.h"'; \
-	echo '#include "mutt/buffer.h"'; echo '#include "parameter.h"'; \
+	echo '#include "mutt/buffer.h"'; echo '#include "mutt/parameter.h"'; \
 	echo '#include "body.h"'; echo '#include "envelope.h"'; \
 	echo '#include "header.h"';) | $(CPP) $(CFLAGS) - | \
 	sh $(SRCDIR)/hcache/hcachever.sh hcache/hcversion.h
@@ -290,9 +295,9 @@ install: all $(INSTALL_TARGETS)
 	for f in $(BINFILES); do \
 		$(INSTALL) $$f $(DESTDIR)$(bindir)/`basename $$f`; \
 	done
-	$(MKDIR_P) $(DESTDIR)$(libdir)/$(PACKAGE)
+	$(MKDIR_P) $(DESTDIR)$(libexecdir)/$(PACKAGE)
 	for f in $(LIBBINFILES); do \
-		$(INSTALL) $$f $(DESTDIR)$(libdir)/$(PACKAGE)/`basename $$f`; \
+		$(INSTALL) $$f $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f`; \
 	done
 
 # uninstall
@@ -302,14 +307,14 @@ uninstall: $(UNINSTALL_TARGETS)
 		$(RM) $(DESTDIR)$(bindir)/`basename $$f`; \
 	done
 	for f in $(LIBBINFILES); do \
-		$(RM) $(DESTDIR)$(libdir)/$(PACKAGE)/`basename $$f`; \
+		$(RM) $(DESTDIR)$(libexecdir)/$(PACKAGE)/`basename $$f`; \
 	done
 
 # distclean
 distclean: clean
 	$(RM) $(DEPFILES) conststrings.c config.h config.log doc/neomutt.1 \
 		Makefile po/Makefile contrib/Makefile doc/Makefile \
-		autosetup/jimsh0
+		test/Makefile autosetup/jimsh0
 
 ##############################################################################
 # include generated dependency files
@@ -321,5 +326,6 @@ distclean: clean
 include po/Makefile
 include contrib/Makefile
 include doc/Makefile
+include test/Makefile
 
 # vim: set ts=8 noexpandtab:

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -162,11 +163,13 @@ static struct Hash *new_hash(int nelem)
  * union_hash_insert - Insert into a hash table using a union as a key
  * @param table     Hash table to update
  * @param key       Key to hash on
+ * @param type      Data type
  * @param data      Data to associate with `key'
  * @retval -1 on error
  * @retval >=0 on success, index into the hash table
  */
-static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
+static struct HashElem *union_hash_insert(struct Hash *table, union HashKey key,
+                                          int type, void *data)
 {
   struct HashElem *ptr = NULL;
   unsigned int h;
@@ -175,6 +178,7 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
   h = table->gen_hash(key, table->nelem);
   ptr->key = key;
   ptr->data = data;
+  ptr->type = type;
 
   if (table->allow_dups)
   {
@@ -184,14 +188,15 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
   else
   {
     struct HashElem *tmp = NULL, *last = NULL;
+    int r;
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
     {
-      int r = table->cmp_key(tmp->key, key);
+      r = table->cmp_key(tmp->key, key);
       if (r == 0)
       {
         FREE(&ptr);
-        return -1;
+        return NULL;
       }
       if (r > 0)
         break;
@@ -202,7 +207,7 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
       table->table[h] = ptr;
     ptr->next = tmp;
   }
-  return h;
+  return ptr;
 }
 
 /**
@@ -249,13 +254,11 @@ static void *union_hash_find(const struct Hash *table, union HashKey key)
  * @param table   Hash table to use
  * @param key     Key (either string or integer)
  * @param data    Private data to match (or NULL for any match)
- * @param destroy Callback function to free the HashElem's data
  */
-static void union_hash_delete(struct Hash *table, union HashKey key,
-                              const void *data, void (*destroy)(void *))
+static void union_hash_delete(struct Hash *table, union HashKey key, const void *data)
 {
   int hash;
-  struct HashElem *ptr = NULL, **last = NULL;
+  struct HashElem *ptr, **last;
 
   if (!table)
     return;
@@ -266,11 +269,11 @@ static void union_hash_delete(struct Hash *table, union HashKey key,
 
   while (ptr)
   {
-    if (((data == ptr->data) || !data) && table->cmp_key(ptr->key, key) == 0)
+    if ((data == ptr->data || !data) && table->cmp_key(ptr->key, key) == 0)
     {
       *last = ptr->next;
-      if (destroy)
-        destroy(ptr->data);
+      if (table->destroy)
+        table->destroy(ptr->type, ptr->data, table->dest_data);
       if (table->strdup_keys)
         FREE(&ptr->key.strkey);
       FREE(&ptr);
@@ -327,6 +330,20 @@ struct Hash *mutt_hash_int_create(int nelem, int flags)
   return table;
 }
 
+void mutt_hash_set_destructor(struct Hash *hash, hash_destructor fn, intptr_t fn_data)
+{
+  hash->destroy = fn;
+  hash->dest_data = fn_data;
+}
+
+struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey,
+                                        int type, void *data)
+{
+  union HashKey key;
+  key.strkey = table->strdup_keys ? mutt_str_strdup(strkey) : strkey;
+  return union_hash_insert(table, key, type, data);
+}
+
 /**
  * mutt_hash_insert - Add a new element to the Hash table (with string keys)
  * @param table  Hash table (with string keys)
@@ -335,11 +352,9 @@ struct Hash *mutt_hash_int_create(int nelem, int flags)
  * @retval -1 on error
  * @retval >=0 on success, index into the hash table
  */
-int mutt_hash_insert(struct Hash *table, const char *strkey, void *data)
+struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *data)
 {
-  union HashKey key;
-  key.strkey = table->strdup_keys ? mutt_str_strdup(strkey) : strkey;
-  return union_hash_insert(table, key, data);
+  return mutt_hash_typed_insert(table, strkey, -1, data);
 }
 
 /**
@@ -350,11 +365,11 @@ int mutt_hash_insert(struct Hash *table, const char *strkey, void *data)
  * @retval -1 on error
  * @retval >=0 on success, index into the hash table
  */
-int mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data)
+struct HashElem *mutt_hash_int_insert(struct Hash *table, unsigned int intkey, void *data)
 {
   union HashKey key;
   key.intkey = intkey;
-  return union_hash_insert(table, key, data);
+  return union_hash_insert(table, key, -1, data);
 }
 
 /**
@@ -422,14 +437,12 @@ struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *str
  * @param table   Hash table to use
  * @param strkey  String key to match
  * @param data    Private data to match (or NULL for any match)
- * @param destroy Callback function to free the HashElem's data
  */
-void mutt_hash_delete(struct Hash *table, const char *strkey, const void *data,
-                      void (*destroy)(void *))
+void mutt_hash_delete(struct Hash *table, const char *strkey, const void *data)
 {
   union HashKey key;
   key.strkey = strkey;
-  union_hash_delete(table, key, data, destroy);
+  union_hash_delete(table, key, data);
 }
 
 /**
@@ -437,22 +450,19 @@ void mutt_hash_delete(struct Hash *table, const char *strkey, const void *data,
  * @param table   Hash table to use
  * @param intkey  Integer key to match
  * @param data    Private data to match (or NULL for any match)
- * @param destroy Callback function to free the HashElem's data
  */
-void mutt_hash_int_delete(struct Hash *table, unsigned int intkey,
-                          const void *data, void (*destroy)(void *))
+void mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data)
 {
   union HashKey key;
   key.intkey = intkey;
-  union_hash_delete(table, key, data, destroy);
+  union_hash_delete(table, key, data);
 }
 
 /**
  * mutt_hash_destroy - Destroy a hash table
  * @param ptr     Pointer to the hash table to be freed
- * @param destroy Function to call to free the ->data member (optional)
  */
-void mutt_hash_destroy(struct Hash **ptr, void (*destroy)(void *))
+void mutt_hash_destroy(struct Hash **ptr)
 {
   struct Hash *pptr = NULL;
   struct HashElem *elem = NULL, *tmp = NULL;
@@ -467,8 +477,8 @@ void mutt_hash_destroy(struct Hash **ptr, void (*destroy)(void *))
     {
       tmp = elem;
       elem = elem->next;
-      if (destroy)
-        destroy(tmp->data);
+      if (pptr->destroy)
+        pptr->destroy(tmp->type, tmp->data, pptr->dest_data);
       if (pptr->strdup_keys)
         FREE(&tmp->key.strkey);
       FREE(&tmp);

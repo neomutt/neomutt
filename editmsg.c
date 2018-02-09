@@ -241,7 +241,7 @@ bail:
     mutt_set_flag(Context, cur, MUTT_PURGE, 1);
     mutt_set_flag(Context, cur, MUTT_READ, 1);
 
-    if (option(OPT_DELETE_UNTAG))
+    if (DeleteUntag)
       mutt_set_flag(Context, cur, MUTT_TAG, 0);
   }
   else if (rc == -1)

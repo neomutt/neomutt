@@ -44,11 +44,9 @@
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
-#include "mime.h"
 #include "mutt_curses.h"
 #include "ncrypt.h"
 #include "options.h"
-#include "parameter.h"
 #include "protos.h"
 #include "state.h"
 
@@ -65,7 +63,7 @@ void crypt_current_time(struct State *s, char *app_name)
   if (!WithCrypto)
     return;
 
-  if (option(OPT_CRYPT_TIMESTAMP))
+  if (CryptTimestamp)
   {
     t = time(NULL);
     strftime(p, sizeof(p), _(" (current time: %c)"), localtime(&t));
@@ -148,7 +146,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     if ((msg->content->type != TYPETEXT) ||
         (mutt_str_strcasecmp(msg->content->subtype, "plain") != 0))
     {
-      if (query_quadoption(OPT_PGP_MIME_AUTO,
+      if (query_quadoption(PgpMimeAuto,
                            _("Inline PGP can't be used with attachments.  "
                              "Revert to PGP/MIME?")) != MUTT_YES)
       {
@@ -158,9 +156,9 @@ int mutt_protect(struct Header *msg, char *keylist)
       }
     }
     else if (!mutt_str_strcasecmp("flowed",
-                                  mutt_param_get("format", msg->content->parameter)))
+                                  mutt_param_get(&msg->content->parameter, "format")))
     {
-      if ((query_quadoption(OPT_PGP_MIME_AUTO,
+      if ((query_quadoption(PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
                               "Revert to PGP/MIME?"))) != MUTT_YES)
       {
@@ -183,7 +181,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption(
-              OPT_PGP_MIME_AUTO,
+              PgpMimeAuto,
               _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent."));
@@ -202,7 +200,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   if ((WithCrypto & APPLICATION_PGP))
     tmp_pgp_pbody = msg->content;
 
-  if (option(OPT_CRYPT_USE_PKA) && (msg->security & SIGN))
+  if (CryptUsePka && (msg->security & SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
@@ -235,7 +233,7 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-        (!(flags & ENCRYPT) || option(OPT_PGP_RETAINABLE_SIGS)))
+        (!(flags & ENCRYPT) || PgpRetainableSigs))
     {
       tmp_pbody = crypt_pgp_sign_message(msg->content);
       if (!tmp_pbody)
@@ -318,7 +316,7 @@ int mutt_is_multipart_signed(struct Body *b)
     return 0;
   }
 
-  p = mutt_param_get("protocol", b->parameter);
+  p = mutt_param_get(&b->parameter, "protocol");
   if (!p)
     return 0;
 
@@ -353,7 +351,7 @@ int mutt_is_multipart_encrypted(struct Body *b)
 
     if (!b || b->type != TYPEMULTIPART || !b->subtype ||
         (mutt_str_strcasecmp(b->subtype, "encrypted") != 0) ||
-        !(p = mutt_param_get("protocol", b->parameter)) ||
+        !(p = mutt_param_get(&b->parameter, "protocol")) ||
         (mutt_str_strcasecmp(p, "application/pgp-encrypted") != 0))
       return 0;
 
@@ -447,13 +445,15 @@ int mutt_is_application_pgp(struct Body *m)
     if ((mutt_str_strcasecmp(m->subtype, "pgp") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "x-pgp-message") == 0))
     {
-      if ((p = mutt_param_get("x-action", m->parameter)) &&
-          ((mutt_str_strcasecmp(p, "sign") == 0) ||
-           (mutt_str_strcasecmp(p, "signclear") == 0)))
+      p = mutt_param_get(&m->parameter, "x-action");
+      if (p && ((mutt_str_strcasecmp(p, "sign") == 0) ||
+                (mutt_str_strcasecmp(p, "signclear") == 0)))
+      {
         t |= PGPSIGN;
+      }
 
-      if ((p = mutt_param_get("format", m->parameter)) &&
-          (mutt_str_strcasecmp(p, "keys-only") == 0))
+      p = mutt_param_get(&m->parameter, "format");
+      if (p && (mutt_str_strcasecmp(p, "keys-only") == 0))
       {
         t |= PGPKEY;
       }
@@ -470,9 +470,9 @@ int mutt_is_application_pgp(struct Body *m)
   }
   else if (m->type == TYPETEXT && (mutt_str_strcasecmp("plain", m->subtype) == 0))
   {
-    if (((p = mutt_param_get("x-mutt-action", m->parameter)) ||
-         (p = mutt_param_get("x-action", m->parameter)) ||
-         (p = mutt_param_get("action", m->parameter))) &&
+    if (((p = mutt_param_get(&m->parameter, "x-mutt-action")) ||
+         (p = mutt_param_get(&m->parameter, "x-action")) ||
+         (p = mutt_param_get(&m->parameter, "action"))) &&
         (mutt_str_strncasecmp("pgp-sign", p, 8) == 0))
       t |= PGPSIGN;
     else if (p && (mutt_str_strncasecmp("pgp-encrypt", p, 11) == 0))
@@ -489,7 +489,7 @@ int mutt_is_application_pgp(struct Body *m)
 int mutt_is_application_smime(struct Body *m)
 {
   char *t = NULL;
-  int len;
+  size_t len;
   bool complain = false;
 
   if (!m)
@@ -501,7 +501,8 @@ int mutt_is_application_smime(struct Body *m)
     if ((mutt_str_strcasecmp(m->subtype, "x-pkcs7-mime") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "pkcs7-mime") == 0))
     {
-      if ((t = mutt_param_get("smime-type", m->parameter)))
+      t = mutt_param_get(&m->parameter, "smime-type");
+      if (t)
       {
         if (mutt_str_strcasecmp(t, "enveloped-data") == 0)
           return SMIMEENCRYPT;
@@ -521,7 +522,7 @@ int mutt_is_application_smime(struct Body *m)
     else if (mutt_str_strcasecmp(m->subtype, "octet-stream") != 0)
       return 0;
 
-    t = mutt_param_get("name", m->parameter);
+    t = mutt_param_get(&m->parameter, "name");
 
     if (!t)
       t = m->d_filename;
@@ -685,7 +686,7 @@ void convert_to_7bit(struct Body *a)
         a->encoding = ENC7BIT;
         convert_to_7bit(a->parts);
       }
-      else if ((WithCrypto & APPLICATION_PGP) && option(OPT_PGP_STRICT_ENC))
+      else if ((WithCrypto & APPLICATION_PGP) && PgpStrictEnc)
         convert_to_7bit(a->parts);
     }
     else if (a->type == TYPEMESSAGE &&
@@ -699,7 +700,7 @@ void convert_to_7bit(struct Body *a)
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
     else if (a->content && a->encoding != ENCBASE64 &&
-             (a->content->from || (a->content->space && option(OPT_PGP_STRICT_ENC))))
+             (a->content->from || (a->content->space && PgpStrictEnc)))
     {
       a->encoding = ENCQUOTEDPRINTABLE;
     }
@@ -725,7 +726,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   }
 
   if ((WithCrypto & APPLICATION_PGP))
-    set_option(OPT_DONT_HANDLE_PGP_KEYS);
+    OPT_DONT_HANDLE_PGP_KEYS = true;
 
   if (!h)
   {
@@ -822,7 +823,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   mutt_file_unlink(tempfname);
 
   if ((WithCrypto & APPLICATION_PGP))
-    unset_option(OPT_DONT_HANDLE_PGP_KEYS);
+    OPT_DONT_HANDLE_PGP_KEYS = false;
 }
 
 /**
@@ -836,7 +837,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
  */
 int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 {
-  struct Address *adrlist = NULL, *last = NULL;
+  struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);
   char *self_encrypt = NULL;
   size_t keylist_size;
@@ -849,15 +850,15 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     return 0;
 
   if ((WithCrypto & APPLICATION_PGP))
-    set_option(OPT_PGP_CHECK_TRUST);
+    OPT_PGP_CHECK_TRUST = true;
 
-  last = mutt_addr_append(&adrlist, msg->env->to, false);
-  last = mutt_addr_append(last ? &last : &adrlist, msg->env->cc, false);
-  mutt_addr_append(last ? &last : &adrlist, msg->env->bcc, false);
+  last = mutt_addr_append(&addrlist, msg->env->to, false);
+  last = mutt_addr_append(last ? &last : &addrlist, msg->env->cc, false);
+  mutt_addr_append(last ? &last : &addrlist, msg->env->bcc, false);
 
   if (fqdn)
-    mutt_addr_qualify(adrlist, fqdn);
-  adrlist = mutt_remove_duplicates(adrlist);
+    mutt_addr_qualify(addrlist, fqdn);
+  addrlist = mutt_remove_duplicates(addrlist);
 
   *keylist = NULL;
 
@@ -865,26 +866,26 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   {
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
     {
-      *keylist = crypt_pgp_findkeys(adrlist, oppenc_mode);
+      *keylist = crypt_pgp_findkeys(addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addr_free(&adrlist);
+        mutt_addr_free(&addrlist);
         return -1;
       }
-      unset_option(OPT_PGP_CHECK_TRUST);
-      if (option(OPT_PGP_SELF_ENCRYPT) || (quadoption(OPT_PGP_ENCRYPT_SELF) == MUTT_YES))
-        self_encrypt = PgpSelfEncryptAs;
+      OPT_PGP_CHECK_TRUST = false;
+      if (PgpSelfEncrypt || (PgpEncryptSelf == MUTT_YES))
+        self_encrypt = PgpDefaultKey;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      *keylist = crypt_smime_findkeys(adrlist, oppenc_mode);
+      *keylist = crypt_smime_findkeys(addrlist, oppenc_mode);
       if (!*keylist)
       {
-        mutt_addr_free(&adrlist);
+        mutt_addr_free(&addrlist);
         return -1;
       }
-      if (option(OPT_SMIME_SELF_ENCRYPT) || (quadoption(OPT_SMIME_ENCRYPT_SELF) == MUTT_YES))
-        self_encrypt = SmimeSelfEncryptAs;
+      if (SmimeSelfEncrypt || (SmimeEncryptSelf == MUTT_YES))
+        self_encrypt = SmimeDefaultKey;
     }
   }
 
@@ -895,7 +896,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
 
-  mutt_addr_free(&adrlist);
+  mutt_addr_free(&addrlist);
 
   return 0;
 }
@@ -913,7 +914,7 @@ void crypt_opportunistic_encrypt(struct Header *msg)
   if (!WithCrypto)
     return;
 
-  if (!(option(OPT_CRYPT_OPPORTUNISTIC_ENCRYPT) && (msg->security & OPPENCRYPT)))
+  if (!(CryptOpportunisticEncrypt && (msg->security & OPPENCRYPT)))
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
@@ -972,7 +973,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(s, _("[-- Error: "
                       "Unknown multipart/signed protocol %s! --]\n\n"),
-                 mutt_param_get("protocol", b->parameter));
+                 mutt_param_get(&b->parameter, "protocol"));
     return mutt_body_handler(a, s);
   }
 
@@ -1102,7 +1103,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   size_t hexdigits;
 
   /* User input may be partial name, fingerprint or short or long key ID,
-   * independent of OPT_PGP_LONG_IDS.
+   * independent of PgpLongIds.
    * Fingerprint without spaces is 40 hex digits (SHA-1) or 32 hex digits (MD5).
    * Strip leading "0x" for key ID detection and prepare pl and ps to indicate
    * if an ID was found and to simplify logic in the key loop's inner

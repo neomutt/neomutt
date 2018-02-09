@@ -83,7 +83,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
   FILE *f = NULL;
   int rc, index;
-  long length;
+  size_t length;
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX];
 
@@ -99,7 +99,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   rc = pop_query(pop_data, buf, sizeof(buf));
   if (rc == 0)
   {
-    sscanf(buf, "+OK %d %ld", &index, &length);
+    sscanf(buf, "+OK %d %zu", &index, &length);
 
     snprintf(buf, sizeof(buf), "TOP %d 0\r\n", h->refno);
     rc = pop_fetch_data(pop_data, buf, NULL, fetch_message, f);
@@ -327,7 +327,8 @@ static int pop_fetch_headers(struct Context *ctx)
       if (!ctx->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
-      if ((data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
+      data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
+      if (data)
       {
         char *uidl = mutt_str_strdup(ctx->hdrs[i]->data);
         int refno = ctx->hdrs[i]->refno;
@@ -382,7 +383,7 @@ static int pop_fetch_headers(struct Context *ctx)
       {
         if (bcached)
           ctx->hdrs[i]->read = true;
-        else if (option(OPT_MARK_OLD))
+        else if (MarkOld)
           ctx->hdrs[i]->old = true;
       }
       else
@@ -413,7 +414,7 @@ static int pop_fetch_headers(struct Context *ctx)
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache
    */
-  if (option(OPT_MESSAGE_CACHE_CLEAN))
+  if (MessageCacheClean)
     mutt_bcache_list(pop_data->bcache, msg_cache_check, (void *) ctx);
 
   mutt_clear_error();
@@ -557,7 +558,8 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   unsigned short bcache = 1;
 
   /* see if we already have the message in body cache */
-  if ((msg->fp = mutt_bcache_get(pop_data->bcache, h->data)))
+  msg->fp = mutt_bcache_get(pop_data->bcache, h->data);
+  if (msg->fp)
     return 0;
 
   /*
@@ -664,7 +666,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
 
   /* we replace envelop, key in subj_hash has to be updated as well */
   if (ctx->subj_hash && h->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h, NULL);
+    mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h);
   mutt_label_hash_remove(ctx, h);
   mutt_env_free(&h->env);
   h->env = mutt_read_rfc822_header(msg->fp, h, 0, 0);
@@ -882,7 +884,7 @@ void pop_fetch_mail(void)
   sscanf(buffer, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if (msgs > 0 && option(OPT_POP_LAST))
+  if (msgs > 0 && PopLast)
   {
     mutt_str_strfcpy(buffer, "LAST\r\n", sizeof(buffer));
     ret = pop_query(pop_data, buffer, sizeof(buffer));
@@ -901,8 +903,7 @@ void pop_fetch_mail(void)
   if (mx_open_mailbox(NONULL(SpoolFile), MUTT_APPEND, &ctx) == NULL)
     goto finish;
 
-  delanswer =
-      query_quadoption(OPT_POP_DELETE, _("Delete messages from server?"));
+  delanswer = query_quadoption(PopDelete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf), _("Reading new messages (%d bytes)..."), bytes);
   mutt_message("%s", msgbuf);

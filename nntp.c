@@ -26,6 +26,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "conn/conn.h"
@@ -66,7 +67,7 @@ static int nntp_connect_error(struct NntpServer *nserv)
 /**
  * nntp_capabilities - Get capabilities
  * @retval -1 Error, connection is closed
- * @retval  0 Mode is reader, capabilities setted up
+ * @retval  0 Mode is reader, capabilities set up
  * @retval  1 Need to switch to reader mode
  */
 static int nntp_capabilities(struct NntpServer *nserv)
@@ -298,7 +299,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
             off = colon + 1 - nserv->overview_fmt;
           if (strcasecmp(nserv->overview_fmt + b, "Bytes:") == 0)
           {
-            int len = strlen(nserv->overview_fmt + b);
+            size_t len = strlen(nserv->overview_fmt + b);
             mutt_str_strfcpy(nserv->overview_fmt + b, "Content-Length:", len + 1);
             off = b + len;
           }
@@ -674,12 +675,12 @@ int nntp_open_connection(struct NntpServer *nserv)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || option(OPT_SSL_FORCE_TLS)))
+  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || SslForceTls))
   {
     if (nserv->use_tls == 0)
       nserv->use_tls =
-          option(OPT_SSL_FORCE_TLS) ||
-                  query_quadoption(OPT_SSL_STARTTLS,
+          SslForceTls ||
+                  query_quadoption(SslStarttls,
                                    _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
               1;
@@ -1010,7 +1011,7 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
       continue;
 
     nntp_article_status(ctx, hdr, grp, anum);
-    if (hdr && !NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
+    if (!NHDR(hdr)->article_num && (mutt_str_strcmp(nntp_data->group, grp) == 0))
       NHDR(hdr)->article_num = anum;
   }
   FREE(&buf);
@@ -1250,7 +1251,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 #endif
 
   /* fetch list of articles */
-  if (option(OPT_NNTP_LISTGROUP) && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
+  if (NntpListgroup && nntp_data->nserv->hasLISTGROUP && !nntp_data->deleted)
   {
     if (!ctx->quiet)
       mutt_message(_("Fetching list of articles..."));
@@ -1347,7 +1348,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
     /* fallback to fetch overview */
     else if (nntp_data->nserv->hasOVER || nntp_data->nserv->hasXOVER)
-      if (option(OPT_NNTP_LISTGROUP) && nntp_data->nserv->hasLISTGROUP)
+      if (NntpListgroup && nntp_data->nserv->hasLISTGROUP)
         break;
       else
         continue;
@@ -1425,7 +1426,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     first_over = current + 1;
   }
 
-  if (!option(OPT_NNTP_LISTGROUP) || !nntp_data->nserv->hasLISTGROUP)
+  if (!NntpListgroup || !nntp_data->nserv->hasLISTGROUP)
     current = first_over;
 
   /* fetch overview information */
@@ -1496,7 +1497,7 @@ static int nntp_open_mailbox(struct Context *ctx)
   }
 
   mutt_bit_unset(ctx->rights, MUTT_ACL_INSERT);
-  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUBSCRIBED))
+  if (!nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
     ctx->readonly = true;
 
   /* select newsgroup */
@@ -1517,7 +1518,7 @@ static int nntp_open_mailbox(struct Context *ctx)
       nntp_data->deleted = true;
       nntp_active_save_cache(nserv);
     }
-    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !option(OPT_SAVE_UNSUBSCRIBED))
+    if (nntp_data->newsrc_ent && !nntp_data->subscribed && !SaveUnsubscribed)
     {
       FREE(&nntp_data->newsrc_ent);
       nntp_data->newsrc_len = 0;
@@ -1542,7 +1543,7 @@ static int nntp_open_mailbox(struct Context *ctx)
     nntp_data->deleted = false;
 
     /* get description if empty */
-    if (option(OPT_NNTP_LOAD_DESCRIPTION) && !nntp_data->desc)
+    if (NntpLoadDescription && !nntp_data->desc)
     {
       if (get_description(nntp_data, NULL, NULL) < 0)
       {
@@ -1556,8 +1557,7 @@ static int nntp_open_mailbox(struct Context *ctx)
 
   time(&nserv->check_time);
   ctx->data = nntp_data;
-  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed ||
-                             option(OPT_SAVE_UNSUBSCRIBED)))
+  if (!nntp_data->bcache && (nntp_data->newsrc_ent || nntp_data->subscribed || SaveUnsubscribed))
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */
@@ -1681,9 +1681,9 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   /* replace envelope with new one
    * hash elements must be updated because pointers will be changed */
   if (ctx->id_hash && hdr->env->message_id)
-    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr, NULL);
+    mutt_hash_delete(ctx->id_hash, hdr->env->message_id, hdr);
   if (ctx->subj_hash && hdr->env->real_subj)
-    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr, NULL);
+    mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr);
 
   mutt_env_free(&hdr->env);
   hdr->env = mutt_read_rfc822_header(msg->fp, hdr, 0, 0);
@@ -1779,7 +1779,10 @@ int nntp_post(const char *msg)
     }
     if (mutt_socket_write_d(nntp_data->nserv->conn, buf[1] == '.' ? buf : buf + 1,
                             -1, MUTT_SOCK_LOG_HDR) < 0)
+    {
+      mutt_file_fclose(&fp);
       return nntp_connect_error(nntp_data->nserv);
+    }
   }
   mutt_file_fclose(&fp);
 
@@ -2012,9 +2015,9 @@ static int check_mailbox(struct Context *ctx)
   if (ret == MUTT_REOPENED)
   {
     if (ctx->subj_hash)
-      mutt_hash_destroy(&ctx->subj_hash, NULL);
+      mutt_hash_destroy(&ctx->subj_hash);
     if (ctx->id_hash)
-      mutt_hash_destroy(&ctx->id_hash, NULL);
+      mutt_hash_destroy(&ctx->id_hash);
     mutt_clear_threads(ctx);
 
     ctx->vcount = 0;
@@ -2242,12 +2245,12 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
     if (data && data->deleted && !data->newsrc_ent)
     {
       nntp_delete_group_cache(data);
-      mutt_hash_delete(nserv->groups_hash, data->group, NULL, nntp_data_free);
+      mutt_hash_delete(nserv->groups_hash, data->group, NULL);
       nserv->groups_list[i] = NULL;
     }
   }
 
-  if (option(OPT_NNTP_LOAD_DESCRIPTION))
+  if (NntpLoadDescription)
     rc = get_description(&nntp_data, "*", _("Loading descriptions..."));
 
   nntp_active_save_cache(nserv);
@@ -2277,7 +2280,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     return -1;
 
   /* check subscribed newsgroups for new articles */
-  if (option(OPT_SHOW_NEW_NEWS))
+  if (ShowNewNews)
   {
     mutt_message(_("Checking for new messages..."));
     for (i = 0; i < nserv->groups_num; i++)
@@ -2343,7 +2346,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     }
 
     /* loading descriptions */
-    if (option(OPT_NNTP_LOAD_DESCRIPTION))
+    if (NntpLoadDescription)
     {
       unsigned int count = 0;
       struct Progress progress;

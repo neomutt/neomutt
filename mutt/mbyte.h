@@ -26,10 +26,10 @@
 #include <stddef.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <wchar.h>
 #include <wctype.h>
 
 extern bool OPT_LOCALES;
-extern wchar_t ReplacementChar;
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char) (c)) || ((unsigned char) (c) >= 0xa0))
@@ -43,6 +43,7 @@ extern wchar_t ReplacementChar;
 
 int    mutt_mb_charlen(const char *s, int *width);
 bool   mutt_mb_get_initials(const char *name, char *buf, int buflen);
+bool   mutt_mb_is_lower(const char *s);
 bool   mutt_mb_is_shell_char(wchar_t ch);
 size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf);
 void   mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
@@ -50,5 +51,7 @@ int    mutt_mb_wcswidth(const wchar_t *s, size_t n);
 int    mutt_mb_wcwidth(wchar_t wc);
 size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1);
 int    mutt_mb_width(const char *str, int col, bool display);
+int    mutt_mb_filter_unprintable(char **s);
+bool   mutt_mb_is_display_corrupting_utf8(wchar_t wc);
 
 #endif /* _MUTT_MBYTE_H */

@@ -71,6 +71,8 @@
 #include "hcache/hcache.h"
 #endif
 
+struct BodyCache;
+
 /**
  * new_header_data - Create a new ImapHeaderData
  * @retval ptr New ImapHeaderData
@@ -260,7 +262,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     else if (mutt_str_strncasecmp("old", s, 3) == 0)
     {
       s += 3;
-      hd->old = option(OPT_MARK_OLD) ? true : false;
+      hd->old = MarkOld ? true : false;
     }
     else
     {
@@ -328,7 +330,8 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
     {
       s += 3;
       SKIPWS(s);
-      h->data->uid = (unsigned int) atoi(s);
+      if (mutt_str_atoui(s, &h->data->uid) < 0)
+        return -1;
 
       s = imap_next_word(s);
     }
@@ -359,7 +362,8 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       while (isdigit((unsigned char) *s))
         *ptmp++ = *s++;
       *ptmp = '\0';
-      h->content_length = atoi(tmp);
+      if (mutt_str_atol(tmp, &h->content_length) < 0)
+        return -1;
     }
     else if ((mutt_str_strncasecmp("BODY", s, 4) == 0) ||
              (mutt_str_strncasecmp("RFC822.HEADER", s, 13) == 0))
@@ -395,7 +399,7 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
 static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf, FILE *fp)
 {
   struct ImapData *idata = NULL;
-  long bytes;
+  unsigned int bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
   int parse_rc;
 
@@ -406,7 +410,8 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
 
   /* skip to message number */
   buf = imap_next_word(buf);
-  h->data->msn = atoi(buf);
+  if (mutt_str_atoui(buf, &h->data->msn) < 0)
+    return rc;
 
   /* find FETCH tag */
   buf = imap_next_word(buf);
@@ -471,9 +476,9 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
  *
  * Mapping from Message Sequence Number to Header
  */
-static void alloc_msn_index(struct ImapData *idata, unsigned int msn_count)
+static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
 {
-  unsigned int new_size;
+  size_t new_size;
 
   if (msn_count <= idata->msn_index_size)
     return;
@@ -532,7 +537,7 @@ static void generate_seqset(struct Buffer *b, struct ImapData *idata,
       {
         case 1: /* single: convert to a range */
           state = 2;
-        /* fall through */
+        /* fallthrough */
         case 2: /* extend range ending */
           range_end = msn;
           break;
@@ -1003,9 +1008,9 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc = NULL;
-  long bytes;
+  unsigned int bytes;
   struct Progress progressbar;
-  int uid;
+  unsigned int uid;
   int cacheno;
   struct ImapCache *cache = NULL;
   bool read;
@@ -1019,7 +1024,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   idata = ctx->data;
   h = ctx->hdrs[msgno];
 
-  if ((msg->fp = msg_cache_get(idata, h)))
+  msg->fp = msg_cache_get(idata, h);
+  if (msg->fp)
   {
     if (HEADER_DATA(h)->parsed)
       return 0;
@@ -1045,7 +1051,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   }
 
   /* This function is called in a few places after endwin()
-   * e.g. _mutt_pipe_message(). */
+   * e.g. mutt_pipe_message(). */
   output_progress = !isendwin();
   if (output_progress)
     mutt_message(_("Fetching message..."));
@@ -1071,7 +1077,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 
   snprintf(buf, sizeof(buf), "UID FETCH %u %s", HEADER_DATA(h)->uid,
            (mutt_bit_isset(idata->capabilities, IMAP4REV1) ?
-                (option(OPT_IMAP_PEEK) ? "BODY.PEEK[]" : "BODY[]") :
+                (ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
                 "RFC822"));
 
   imap_cmd_start(idata, buf);
@@ -1095,7 +1101,8 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
         if (mutt_str_strncasecmp("UID", pc, 3) == 0)
         {
           pc = imap_next_word(pc);
-          uid = atoi(pc);
+          if (mutt_str_atoui(pc, &uid) < 0)
+            goto bail;
           if (uid != HEADER_DATA(h)->uid)
             mutt_error(_(
                 "The message index is incorrect. Try reopening the mailbox."));
@@ -1116,7 +1123,9 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
           }
           if (imap_read_literal(msg->fp, idata, bytes,
                                 output_progress ? &progressbar : NULL) < 0)
+          {
             goto bail;
+          }
           /* pick up trailing line */
           rc = imap_cmd_step(idata);
           if (rc != IMAP_CMD_CONTINUE)
@@ -1510,7 +1519,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
         break;
       mutt_debug(3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      if (option(OPT_CONFIRMCREATE) && mutt_yesorno(prompt, 1) != MUTT_YES)
+      if (Confirmcreate && mutt_yesorno(prompt, 1) != MUTT_YES)
       {
         mutt_clear_error();
         goto out;
@@ -1539,7 +1548,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
 
         mutt_set_flag(ctx, ctx->hdrs[i], MUTT_DELETE, 1);
         mutt_set_flag(ctx, ctx->hdrs[i], MUTT_PURGE, 1);
-        if (option(OPT_DELETE_UNTAG))
+        if (DeleteUntag)
           mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, 0);
       }
     }
@@ -1547,7 +1556,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
     {
       mutt_set_flag(ctx, h, MUTT_DELETE, 1);
       mutt_set_flag(ctx, h, MUTT_PURGE, 1);
-      if (option(OPT_DELETE_UNTAG))
+      if (DeleteUntag)
         mutt_set_flag(ctx, h, MUTT_TAG, 0);
     }
   }

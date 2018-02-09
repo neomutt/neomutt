@@ -26,12 +26,12 @@
 .ft
 .fi
 ..
-.TH muttrc 5 "September 2002" Unix "User Manuals"
+.TH neomuttrc 5 "September 2002" Unix "User Manuals"
 .SH NAME
-muttrc \- Configuration file for the Mutt Mail User Agent
+neomuttrc \- Configuration file for the Mutt Mail User Agent
 .SH DESCRIPTION
 .PP
-A mutt configuration file consists of a series of \(lqcommands\(rq.
+A neomutt configuration file consists of a series of \(lqcommands\(rq.
 Each line of the file may contain one or more commands.  When
 multiple commands are used, they must be separated by a semicolon
 (\(lq\fB;\fP\(rq).
@@ -115,9 +115,9 @@ display to messages matching a group.
 \fBunalternates\fP [\fB * \fP | \fIregex\fP [ \fIregex\fP [ ... ]] ]
 .fi
 .IP
-\fBalternates\fP is used to inform mutt about alternate addresses
+\fBalternates\fP is used to inform neomutt about alternate addresses
 where you receive mail; you can use regular expressions to specify
-alternate addresses.  This affects mutt's idea about messages
+alternate addresses.  This affects neomutt's idea about messages
 from you, and messages addressed to you.  \fBunalternates\fP removes
 a regular expression from the list of known alternates. The \fB-group\fP flag
 causes all of the subsequent regular expressions to be added to the named group.
@@ -128,7 +128,7 @@ causes all of the subsequent regular expressions to be added to the named group.
 .fi
 .IP
 \fBalternative_order\fP command permits you to define an order of preference which is
-used by mutt to determine which part of a
+used by neomutt to determine which part of a
 \fBmultipart/alternative\fP body to display.
 A subtype of \(lq\fB*\fP\(rq matches any subtype, as does an empty
 subtype.   \fBunalternative_order\fP removes entries from the
@@ -140,7 +140,7 @@ as an argument.
 \fBunauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 .fi
 .IP
-This commands permits you to specify that mutt should automatically
+This commands permits you to specify that neomutt should automatically
 convert the given MIME types to text/plain when displaying messages.
 For this to work, there must be a
 .BR mailcap (5)
@@ -155,7 +155,7 @@ matches any subtype, as does an empty subtype.
 .fi
 .IP
 This command permits you to define a list of "data" MIME content
-types for which mutt will try to determine the actual file type from
+types for which neomutt will try to determine the actual file type from
 the file name, and not use a
 .BR mailcap (5)
 entry given for the original MIME type.  For instance, you may add
@@ -184,7 +184,7 @@ to adjust configuration settings to different IMAP or POP servers.
 \fBcharset-hook\fP \fIalias\fP \fIcharset\fP
 This command defines an alias for a character set.  This is useful
 to properly display messages which are tagged with a character set
-name not known to mutt.
+name not known to neomutt.
 .TP
 \fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
 This command defines a system-specific name for a character set.
@@ -200,7 +200,7 @@ In this specific case, you'd put this into your configuration file:
 .B "iconv-hook iso-8859-1 8859-1"
 .TP
 \fBmessage-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
-Before mutt displays (or formats for replying or forwarding) a
+Before neomutt displays (or formats for replying or forwarding) a
 message which matches the given \fIpattern\fP (or, when it is
 preceded by an exclamation mark, does not match the \fIpattern\fP),
 the given \fIcommand\fP is executed.  When multiple
@@ -212,15 +212,15 @@ Run a command periodically when Mutt checks for new mail.
 This hook is called every $timeout seconds.
 .TP
 \fBstartup-hook\fP \fIcommand\fP
-Before mutt opens the first mailbox when first starting, mutt will run the
+Before neomutt opens the first mailbox when first starting, mutt will run the
 startup hook for the given \fIcommand\fP.
 .TP
 \fBshutdown-hook\fP \fIcommand\fP
-Before mutt is about to exit, and before the mailbox is closed, mutt will run
+Before neomutt is about to exit, and before the mailbox is closed, mutt will run
 the shutdown hook for the given \fIcommand\fP.
 .TP
 \fBfolder-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
-When mutt enters a folder which matches \fIregex\fP (or, when
+When neomutt enters a folder which matches \fIregex\fP (or, when
 \fIregex\fP is preceded by an exclamation mark, does not match
 \fIregex\fP), the given \fIcommand\fP is executed.
 .IP
@@ -297,7 +297,7 @@ it from the list of subscribed mailing lists. The \fB-group\fP flag
 adds all of the subsequent regular expressions to the named group.
 .TP
 \fBmbox-hook\fP [\fB!\fP]\fIregex\fP \fImailbox\fP
-When mutt changes to a mail folder which matches \fIregex\fP,
+When neomutt changes to a mail folder which matches \fIregex\fP,
 \fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
 messages will be moved to that folder when the mail folder is left.
 .IP
@@ -325,7 +325,7 @@ the messages you compose.  \fBunmy_hdr\fP will remove the given
 user-defined headers.
 .TP
 \fBhdr_order\fP \fIheader1\fP \fIheader2\fP [ ... ]
-With this command, you can specify an order in which mutt will
+With this command, you can specify an order in which neomutt will
 attempt to present headers to you when viewing messages.
 .TP
 \fBsave-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
@@ -437,7 +437,7 @@ The given file will be evaluated as a configuration file.
 .fi
 .IP
 These commands define spam-detection patterns from external spam
-filters, so that mutt can sort, limit, and search on
+filters, so that neomutt can sort, limit, and search on
 ``spam tags'' or ``spam attributes'', or display them
 in the index. See the Mutt manual for details.
 .TP
@@ -459,13 +459,13 @@ the generated message.  By default the list contains
 mailto links from mailing lists.
 .SH PATTERNS
 .PP
-In various places with mutt, including some of the above mentioned
+In various places with neomutt, including some of the above mentioned
 \fBhook\fP commands, you can specify patterns to match messages.
 .SS Constructing Patterns
 .PP
 A simple pattern consists of an operator of the form
 \(lq\fB~\fP\fIcharacter\fP\(rq, possibly followed by a parameter
-against which mutt is supposed to match the object specified by
+against which neomutt is supposed to match the object specified by
 this operator.  For some \fIcharacter\fPs, the \fB~\fP may be
 replaced by another character to alter the behavior of the match.
 These are described in the list of operators, below.
@@ -478,12 +478,12 @@ hat (\(lq\fB^\fP\(rq) character to such a pattern to indicate that
 .PP
 You can construct complex patterns by combining simple patterns with
 logical operators.  Logical AND is specified by simply concatenating
-two simple patterns, for instance \(lq~C mutt-dev ~s bug\(rq.
+two simple patterns, for instance \(lq~C neomutt-dev ~s bug\(rq.
 Logical OR is specified by inserting a vertical bar (\(lq\fB|\fP\(rq)
-between two patterns, for instance \(lq~C mutt-dev | ~s bug\(rq.
+between two patterns, for instance \(lq~C neomutt-dev | ~s bug\(rq.
 Additionally, you can negate a pattern by prepending a bang
 (\(lq\fB!\fP\(rq) character.  For logical grouping, use braces
-(\(lq()\(rq). Example: \(lq!(~t mutt|~c mutt) ~f elkins\(rq.
+(\(lq()\(rq). Example: \(lq!(~t neomutt|~c mutt) ~f elkins\(rq.
 .SS Simple Patterns
 .PP
 Mutt understands the following simple patterns:
@@ -665,12 +665,12 @@ followed by a year specifications.  Omitted fields default to the
 current month and year.
 .PP
 Mutt understands either two or four digit year specifications.  When
-given a two-digit year, mutt will interpret values less than 70 as
+given a two-digit year, neomutt will interpret values less than 70 as
 lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938,
 and \(lq00\(rq is interpreted as 2000), and values
 greater than or equal to 70 as lying in the 20th century.
 .PP
-Note that this behavior \fIis\fP Y2K compliant, but that mutt
+Note that this behavior \fIis\fP Y2K compliant, but that neomutt
 \fIdoes\fP have a Y2.07K problem.
 .PP
 If a date range consists of a single date, the operator in question

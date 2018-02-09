@@ -64,6 +64,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -75,7 +76,6 @@
 #include <string.h>
 #include <sys/file.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <utime.h>
 #include "file.h"
@@ -555,6 +555,9 @@ int mutt_file_open(const char *path, int flags)
  */
 FILE *mutt_file_fopen(const char *path, const char *mode)
 {
+  if (!path || !mode)
+    return NULL;
+
   if (mode[0] == 'w')
   {
     int fd;
@@ -849,10 +852,10 @@ int mutt_file_mkdir(const char *path, mode_t mode)
   }
 
   errno = 0;
-  char _path[PATH_MAX];
+  char tmp_path[PATH_MAX];
   const size_t len = strlen(path);
 
-  if (len >= sizeof(_path))
+  if (len >= sizeof(tmp_path))
   {
     errno = ENAMETOOLONG;
     return -1;
@@ -863,9 +866,9 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return 0;
 
   /* Create a mutable copy */
-  mutt_str_strfcpy(_path, path, sizeof(_path));
+  mutt_str_strfcpy(tmp_path, path, sizeof(tmp_path));
 
-  for (char *p = _path + 1; *p; p++)
+  for (char *p = tmp_path + 1; *p; p++)
   {
     if (*p != '/')
       continue;
@@ -873,13 +876,13 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     /* Temporarily truncate the path */
     *p = '\0';
 
-    if ((mkdir(_path, S_IRWXU | S_IRWXG | S_IRWXO) != 0) && (errno != EEXIST))
+    if ((mkdir(tmp_path, S_IRWXU | S_IRWXG | S_IRWXO) != 0) && (errno != EEXIST))
       return -1;
 
     *p = '/';
   }
 
-  if ((mkdir(_path, mode) != 0) && (errno != EEXIST))
+  if ((mkdir(tmp_path, mode) != 0) && (errno != EEXIST))
     return -1;
 
   return 0;
@@ -897,14 +900,14 @@ int mutt_file_mkdir(const char *path, mode_t mode)
 time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
 {
   struct utimbuf utim;
-  struct stat _st;
+  struct stat st2;
   time_t mtime;
 
   if (!st)
   {
-    if (stat(f, &_st) == -1)
+    if (stat(f, &st2) == -1)
       return -1;
-    st = &_st;
+    st = &st2;
   }
 
   mtime = st->st_mtime;
@@ -928,7 +931,7 @@ time_t mutt_file_decrease_mtime(const char *f, struct stat *st)
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
  *
- * mutt_file_dirname() returns a static string which must not be free()'d.
+ * @warning mutt_file_dirname() returns a static string which must not be free()'d.
  */
 const char *mutt_file_dirname(const char *p)
 {
@@ -971,7 +974,7 @@ void mutt_file_touch_atime(int f)
 }
 
 /**
- * mutt_file_chmod - change permissions of a file
+ * mutt_file_chmod - Set permissions of a file
  * @param path Filename
  * @param mode the permissions to set
  * @retval int same as chmod(2)
@@ -984,7 +987,7 @@ int mutt_file_chmod(const char *path, mode_t mode)
 }
 
 /**
- * mutt_file_chmod_add - add permissions to a file
+ * mutt_file_chmod_add - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
  * @retval int same as chmod(2)
@@ -1005,7 +1008,7 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
 }
 
 /**
- * mutt_file_chmod_add_stat - add permissions to a file
+ * mutt_file_chmod_add_stat - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
  * @param st   struct stat for the file (optional)
@@ -1024,19 +1027,19 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
  */
 int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
 {
-  struct stat _st;
+  struct stat st2;
 
   if (!st)
   {
-    if (stat(path, &_st) == -1)
+    if (stat(path, &st2) == -1)
       return -1;
-    st = &_st;
+    st = &st2;
   }
   return chmod(path, st->st_mode | mode);
 }
 
 /**
- * mutt_file_chmod_rm - remove permissions from a file
+ * mutt_file_chmod_rm - Remove permissions from a file
  * @param path Filename
  * @param mode the permissions to remove
  * @retval int same as chmod(2)
@@ -1057,7 +1060,7 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
 }
 
 /**
- * mutt_file_chmod_rm_stat - remove permissions from a file
+ * mutt_file_chmod_rm_stat - Remove permissions from a file
  * @param path Filename
  * @param mode the permissions to remove
  * @param st   struct stat for the file (optional)
@@ -1076,13 +1079,13 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
  */
 int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
 {
-  struct stat _st;
+  struct stat st2;
 
   if (!st)
   {
-    if (stat(path, &_st) == -1)
+    if (stat(path, &st2) == -1)
       return -1;
-    st = &_st;
+    st = &st2;
   }
   return chmod(path, st->st_mode & ~mode);
 }

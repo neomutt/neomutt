@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include <fcntl.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
@@ -41,7 +40,7 @@
  */
 void mutt_resize_screen(void)
 {
-  char *cp = NULL;
+  const char *cp = NULL;
   int fd;
   struct winsize w;
 #ifdef HAVE_RESIZETERM
@@ -62,13 +61,13 @@ void mutt_resize_screen(void)
   }
   if (SLtt_Screen_Rows <= 0)
   {
-    cp = getenv("LINES");
+    cp = mutt_str_getenv("LINES");
     if (cp && (mutt_str_atoi(cp, &SLtt_Screen_Rows) < 0))
       SLtt_Screen_Rows = 24;
   }
   if (SLtt_Screen_Cols <= 0)
   {
-    cp = getenv("COLUMNS");
+    cp = mutt_str_getenv("COLUMNS");
     if (cp && (mutt_str_atoi(cp, &SLtt_Screen_Cols) < 0))
       SLtt_Screen_Cols = 80;
   }

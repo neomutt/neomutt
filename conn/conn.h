@@ -25,14 +25,16 @@
  *
  * Manage external connections.
  *
- * -# @subpage conn_globals
- * -# @subpage conn_getdomain
- * -# @subpage conn_sasl
- * -# @subpage conn_sasl_plain
- * -# @subpage conn_socket
- * -# @subpage conn_ssl
- * -# @subpage conn_ssl_gnutls
- * -# @subpage conn_tunnel
+ * | File                | Description              |
+ * | :------------------ | :----------------------- |
+ * | conn/conn_globals.c | @subpage conn_globals    |
+ * | conn/getdomain.c    | @subpage conn_getdomain  |
+ * | conn/sasl.c         | @subpage conn_sasl       |
+ * | conn/sasl_plain.c   | @subpage conn_sasl_plain |
+ * | conn/socket.c       | @subpage conn_socket     |
+ * | conn/ssl.c          | @subpage conn_ssl        |
+ * | conn/ssl_gnutls.c   | @subpage conn_ssl_gnutls |
+ * | conn/tunnel.c       | @subpage conn_tunnel     |
  */
 
 #ifndef _CONN_CONN_H
@@ -41,14 +43,14 @@
 #include "account.h"
 #include "conn_globals.h"
 #include "connection.h"
+#include "sasl_plain.h"
+#include "socket.h"
+#include "tunnel.h"
 #ifdef USE_SASL
 #include "sasl.h"
 #endif
-#include "sasl_plain.h"
-#include "socket.h"
 #ifdef USE_SSL
 #include "ssl.h"
 #endif
-#include "tunnel.h"
 
 #endif /* _CONN_CONN_H */

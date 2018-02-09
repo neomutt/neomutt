@@ -37,16 +37,13 @@ struct Tz
   bool zoccident;         /**< True if west of UTC, False if East */
 };
 
-extern const char *const Weekdays[];
-extern const char *const Months[];
-extern const struct Tz TimeZones[];
-
 int     mutt_date_check_month(const char *s);
 bool    mutt_date_is_day_name(const char *s);
 time_t  mutt_date_local_tz(time_t t);
 char   *mutt_date_make_date(char *buf, size_t buflen);
 int     mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp);
 time_t  mutt_date_make_time(struct tm *t, int local);
+int     mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp);
 void    mutt_date_normalize_time(struct tm *tm);
 time_t  mutt_date_parse_date(const char *s, struct Tz *tz_out);
 time_t  mutt_date_parse_imap(char *s);

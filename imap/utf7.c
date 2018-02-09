@@ -35,19 +35,18 @@
 #include <string.h>
 #include "imap_private.h"
 #include "mutt/mutt.h"
-#include "mutt_charset.h"
 #include "globals.h"
 
 // clang-format off
 /**
- * Index_64u - Lookup table for Base64 encoding/decoding
+ * Index64u - Lookup table for Base64 encoding/decoding
  *
  * This is very similar to the table in lib/lib_base64.c
  * Encoding chars:
  *   utf7 A-Za-z0-9+,
  *   mime A-Za-z0-9+/
  */
-const int Index_64u[128] = {
+const int Index64u[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,62, 63,-1,-1,-1,
@@ -110,7 +109,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
       k = 10;
       for (; u7len; u7++, u7len--)
       {
-        if ((*u7 & 0x80) || (b = Index_64u[(int) *u7]) == -1)
+        if ((*u7 & 0x80) || (b = Index64u[(int) *u7]) == -1)
           break;
         if (k > 0)
         {
@@ -123,8 +122,10 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
           if (ch < 0x80)
           {
             if (0x20 <= ch && ch < 0x7f)
+            {
               /* Printable US-ASCII */
               goto bail;
+            }
             *p++ = ch;
           }
           else if (ch < 0x800)
@@ -143,18 +144,26 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
         }
       }
       if (ch || k < 6)
+      {
         /* Non-zero or too many extra bits */
         goto bail;
+      }
       if (!u7len || *u7 != '-')
+      {
         /* BASE64 not properly terminated */
         goto bail;
+      }
       if (u7len > 2 && u7[1] == '&' && u7[2] != '-')
+      {
         /* Adjacent BASE64 sections */
         goto bail;
+      }
     }
     else if (*u7 < 0x20 || *u7 >= 0x7f)
+    {
       /* Not printable US-ASCII */
       goto bail;
+    }
     else
       *p++ = *u7;
   }
@@ -286,12 +295,6 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
     }
   }
 
-  if (u8len)
-  {
-    FREE(&buf);
-    return 0;
-  }
-
   if (base64)
   {
     if (k > 10)
@@ -322,7 +325,7 @@ void imap_utf_encode(struct ImapData *idata, char **s)
   if (Charset)
   {
     char *t = mutt_str_strdup(*s);
-    if (t && !mutt_convert_string(&t, Charset, "utf-8", 0))
+    if (t && !mutt_ch_convert_string(&t, Charset, "utf-8", 0))
     {
       FREE(s);
       if (idata->unicode)
@@ -350,7 +353,7 @@ void imap_utf_decode(struct ImapData *idata, char **s)
     else
       t = utf7_to_utf8(*s, strlen(*s), 0, 0);
 
-    if (t && !mutt_convert_string(&t, "utf-8", Charset, 0))
+    if (t && !mutt_ch_convert_string(&t, "utf-8", Charset, 0))
     {
       FREE(s);
       *s = t;
