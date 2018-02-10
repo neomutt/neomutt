@@ -320,7 +320,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  if (GecosMask)
+  if (GecosMask && GecosMask->regex)
   {
     if (regexec(GecosMask->regex, pw->pw_gecos, 1, pat_match, 0) == 0)
       mutt_str_strfcpy(dest, pw->pw_gecos + pat_match[0].rm_so,
