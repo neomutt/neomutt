@@ -267,7 +267,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       np->attribute = NULL;
       np->value = NULL;
-      FREE(&p);
+      FREE(&np);
 
       rfc2231_list_insert(&conthead, conttmp);
     }
