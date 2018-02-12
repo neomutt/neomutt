@@ -69,7 +69,7 @@ char **envlist = NULL;
 
 void mutt_exit(int code)
 {
-  mutt_endwin(NULL);
+  mutt_endwin();
   exit(code);
 }
 
@@ -528,7 +528,7 @@ int main(int argc, char **argv, char **env)
       mutt_flushinp();
     ci_send_message(SENDPOSTPONED, NULL, NULL, NULL, NULL);
     mutt_free_windows();
-    mutt_endwin(NULL);
+    mutt_endwin();
   }
   else if (subject || msg || sendflags || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || optind < argc)
@@ -554,8 +554,7 @@ int main(int argc, char **argv, char **env)
       {
         if (url_parse_mailto(msg->env, &bodytext, argv[i]) < 0)
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           fputs(_("Failed to parse mailto: link\n"), stderr);
           exit(1);
         }
@@ -566,8 +565,7 @@ int main(int argc, char **argv, char **env)
 
     if (!draft_file && Autoedit && !msg->env->to && !msg->env->cc)
     {
-      if (!OPT_NO_CURSES)
-        mutt_endwin(NULL);
+      mutt_endwin();
       fputs(_("No recipients specified.\n"), stderr);
       exit(1);
     }
@@ -606,8 +604,7 @@ int main(int argc, char **argv, char **env)
           fin = fopen(expanded_infile, "r");
           if (!fin)
           {
-            if (!OPT_NO_CURSES)
-              mutt_endwin(NULL);
+            mutt_endwin();
             perror(expanded_infile);
             exit(1);
           }
@@ -627,8 +624,7 @@ int main(int argc, char **argv, char **env)
         fout = mutt_file_fopen(tempfile, "w");
         if (!fout)
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           perror(tempfile);
           mutt_file_fclose(&fin);
           FREE(&tempfile);
@@ -647,8 +643,7 @@ int main(int argc, char **argv, char **env)
         fin = fopen(tempfile, "r");
         if (!fin)
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           perror(tempfile);
           FREE(&tempfile);
           exit(1);
@@ -746,8 +741,7 @@ int main(int argc, char **argv, char **env)
           msg->content = a = mutt_make_file_attach(np->data);
         if (!a)
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           fprintf(stderr, _("%s: unable to attach file.\n"), np->data);
           mutt_list_free(&attach);
           exit(1);
@@ -766,16 +760,14 @@ int main(int argc, char **argv, char **env)
       {
         if (truncate(expanded_infile, 0) == -1)
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           perror(expanded_infile);
           exit(1);
         }
         fout = mutt_file_fopen(expanded_infile, "a");
         if (!fout)
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           perror(expanded_infile);
           exit(1);
         }
@@ -798,8 +790,7 @@ int main(int argc, char **argv, char **env)
         fputc('\n', fout);
         if ((mutt_write_mime_body(msg->content, fout) == -1))
         {
-          if (!OPT_NO_CURSES)
-            mutt_endwin(NULL);
+          mutt_endwin();
           mutt_file_fclose(&fout);
           exit(1);
         }
@@ -817,8 +808,7 @@ int main(int argc, char **argv, char **env)
     }
 
     mutt_free_windows();
-    if (!OPT_NO_CURSES)
-      mutt_endwin(NULL);
+    mutt_endwin();
 
     if (rv != 0)
       exit(1);
@@ -829,7 +819,8 @@ int main(int argc, char **argv, char **env)
     {
       if (!mutt_buffy_check(false))
       {
-        mutt_endwin(_("No mailbox with new mail."));
+        mutt_endwin();
+        puts(_("No mailbox with new mail."));
         exit(1);
       }
       folder[0] = '\0';
@@ -844,7 +835,8 @@ int main(int argc, char **argv, char **env)
         CurrentNewsSrv = nntp_select_server(NewsServer, false);
         if (!CurrentNewsSrv)
         {
-          mutt_endwin(ErrorBuf);
+          mutt_endwin();
+          puts(ErrorBuf);
           exit(1);
         }
       }
@@ -852,14 +844,15 @@ int main(int argc, char **argv, char **env)
 #endif
           if (!Incoming)
       {
-        mutt_endwin(_("No incoming mailboxes defined."));
+        mutt_endwin();
+        puts(_("No incoming mailboxes defined."));
         exit(1);
       }
       folder[0] = '\0';
       mutt_select_file(folder, sizeof(folder), MUTT_SEL_FOLDER | MUTT_SEL_BUFFY, NULL, NULL);
       if (folder[0] == '\0')
       {
-        mutt_endwin(NULL);
+        mutt_endwin();
         exit(0);
       }
     }
@@ -892,10 +885,12 @@ int main(int argc, char **argv, char **env)
       switch (mx_check_empty(folder))
       {
         case -1:
-          mutt_endwin(strerror(errno));
+          mutt_endwin();
+          puts(strerror(errno));
           exit(1);
         case 1:
-          mutt_endwin(_("Mailbox is empty."));
+          mutt_endwin();
+          puts(_("Mailbox is empty."));
           exit(1);
       }
     }
@@ -922,7 +917,8 @@ int main(int argc, char **argv, char **env)
 #endif
     mutt_free_opts();
     mutt_free_windows();
-    mutt_endwin(ErrorBuf);
+    mutt_endwin();
+    puts(ErrorBuf);
   }
 
   exit(0);

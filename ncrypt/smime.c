@@ -967,7 +967,7 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
 
   if (rc == -1)
   {
-    mutt_endwin(NULL);
+    mutt_endwin();
     mutt_file_copy_stream(fperr, stdout);
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     rc = 1;
@@ -1157,7 +1157,7 @@ static char *smime_extract_signer_certificate(char *infile)
   empty = (fgetc(fpout) == EOF);
   if (empty)
   {
-    mutt_endwin(NULL);
+    mutt_endwin();
     mutt_file_copy_stream(fperr, stdout);
     mutt_any_key_to_continue(NULL);
     mutt_file_fclose(&fpout);
@@ -1212,11 +1212,11 @@ void smime_invoke_import(char *infile, char *mailbox)
     }
   }
 
-  mutt_endwin(NULL);
+  mutt_endwin();
   certfile = smime_extract_certificate(infile);
   if (certfile)
   {
-    mutt_endwin(NULL);
+    mutt_endwin();
 
     thepid = smime_invoke(&smimein, NULL, NULL, -1, fileno(fpout), fileno(fperr), certfile,
                           NULL, NULL, NULL, NULL, NULL, NULL, SmimeImportCertCommand);

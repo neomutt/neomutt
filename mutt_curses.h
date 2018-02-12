@@ -114,7 +114,7 @@ struct Event
 
 struct Event mutt_getch(void);
 
-void mutt_endwin(const char *msg);
+void mutt_endwin(void);
 void mutt_flushinp(void);
 void mutt_refresh(void);
 void mutt_resize_screen(void);

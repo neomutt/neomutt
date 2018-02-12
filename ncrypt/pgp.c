@@ -801,7 +801,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
     return;
   }
 
-  mutt_endwin(NULL);
+  mutt_endwin();
   OPT_DONT_HANDLE_PGP_KEYS = true;
 
   for (; top; top = top->next)

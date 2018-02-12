@@ -1264,7 +1264,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
     char *p = mutt_str_strdup(path);
 
     p[len - 1] = 0;
-    mutt_endwin(NULL);
+    mutt_endwin();
     *thepid = mutt_create_filter(p, NULL, &f, NULL);
     FREE(&p);
   }
