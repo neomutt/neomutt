@@ -742,7 +742,7 @@ size_t mutt_str_lws_len(const char *s, size_t n)
   const char *p = s;
   size_t len = n;
 
-  if (n <= 0)
+  if (n == 0)
     return 0;
 
   for (; p < (s + n); p++)
@@ -754,7 +754,7 @@ size_t mutt_str_lws_len(const char *s, size_t n)
     }
   }
 
-  if (strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
+  if (len != 0 && strchr("\r\n", *(p - 1))) /* LWS doesn't end with CRLF */
     len = 0;
   return len;
 }
