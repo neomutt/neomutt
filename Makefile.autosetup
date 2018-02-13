@@ -69,8 +69,7 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		smtp.o sort.o state.o status.o system.o thread.o url.o \
 		version.o
 
-@if HAVE_WCSCASECMP
-@else
+@if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
 @if HAVE_RESIZETERM
@@ -165,7 +164,6 @@ LIBHCACHEOBJS=	hcache/hcache.o
 CLEANFILES+=	$(LIBHCACHE) $(LIBHCACHEOBJS)
 MUTTLIBS+=	$(LIBHCACHE)
 ALLOBJS+=	$(LIBHCACHEOBJS)
-@endif
 @if HAVE_BDB
 LIBHCACHEOBJS+=	hcache/bdb.o
 @endif
@@ -184,6 +182,7 @@ LIBHCACHEOBJS+=	hcache/qdbm.o
 @if HAVE_TC
 LIBHCACHEOBJS+=	hcache/tc.o
 @endif
+@endif # USE_HCACHE
 
 ###############################################################################
 # pgpewrap

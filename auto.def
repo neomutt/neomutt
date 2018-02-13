@@ -6,6 +6,8 @@ if {![catch {exec uname} out] && $out eq {Linux}} {
   define defaultprefix /usr
 }
 
+autosetup-require-version 0.6.8
+
 # Standard autosetup modules and our own modules
 use system cc cc-lib mutt-gettext mutt-iconv
 

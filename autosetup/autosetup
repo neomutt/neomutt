@@ -81,6 +81,8 @@ proc main {argv} {
 	set autosetup(optionhelp) {}
 	set autosetup(showhelp) 0
 
+	use util
+
 	# Parse options
 	use getopt
 
@@ -745,6 +747,18 @@ proc is-defined {name} {
 	info exists ::define($name)
 }
 
+# @is-define-set name
+#
+# Returns 1 if the given variable is defined and is set
+# to a value other than "" or 0
+#
+proc is-define-set {name} {
+	if {[get-define $name] in {0 ""}} {
+		return 0
+	}
+	return 1
+}
+
 # @all-defines
 #
 # Returns a dictionary (name, value list) of all defined variables.
@@ -1040,7 +1054,6 @@ proc maybe-show-timestamp {} {
 # A fatal error is generated if the current version is less than that required.
 #
 proc autosetup-require-version {required} {
-	use util
 	if {[compare-versions $::autosetup(version) $required] < 0} {
 		user-error "autosetup version $required is required, but this is $::autosetup(version)"
 	}
@@ -1841,8 +1854,7 @@ proc autosetup_create_configure {shared} {
 	if {$shared} {
 		writefile configure \
 {#!/bin/sh
-# Note that WRAPPER is set here purely to detect an autosetup-created script
-WRAPPER="-"; "autosetup" "$@"
+WRAPPER="$0"; export WRAPPER; "autosetup" "$@"
 }
 	} else {
 		writefile configure \
@@ -2344,6 +2356,16 @@ proc prefix {pre list} {
 		lappend result $pre$p
 	}
 	return $result
+}
+
+# @lpop list
+#
+# Removes the last entry from the given list and returns it.
+proc lpop {listname} {
+	upvar $listname list
+	set val [lindex $list end]
+	set list [lrange $list 0 end-1]
+	return $val
 }
 }
 
