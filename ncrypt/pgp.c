@@ -507,7 +507,6 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         if (could_not_decrypt && !(s->flags & MUTT_DISPLAY))
         {
           mutt_error(_("Could not decrypt PGP message"));
-          mutt_sleep(1);
           rc = -1;
           goto out;
         }
@@ -1084,7 +1083,6 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
   else
   {
     mutt_error(_("Could not decrypt PGP message"));
-    mutt_sleep(2);
     /* void the passphrase, even if it's not necessarily the problem */
     pgp_void_passphrase();
     rc = -1;

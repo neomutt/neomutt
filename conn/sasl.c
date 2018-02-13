@@ -607,7 +607,6 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
   if (rc != SASL_OK)
   {
     mutt_error(_("Error allocating SASL connection"));
-    mutt_sleep(2);
     return -1;
   }
 

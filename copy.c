@@ -611,7 +611,6 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       {
         mutt_error("The length calculation was wrong by %ld bytes", fail);
         new_length += fail;
-        mutt_sleep(1);
       }
 
       /* Update original message if we are sync'ing a mailfolder */

@@ -60,7 +60,6 @@ static int nntp_connect_error(struct NntpServer *nserv)
 {
   nserv->status = NNTP_NONE;
   mutt_error(_("Server closed connection!"));
-  mutt_sleep(2);
   return -1;
 }
 
@@ -163,7 +162,6 @@ static int nntp_capabilities(struct NntpServer *nserv)
   mutt_socket_close(conn);
   nserv->status = NNTP_BYE;
   mutt_error(_("Server doesn't support reader mode."));
-  mutt_sleep(2);
   return -1;
 }
 
@@ -363,7 +361,6 @@ static int nntp_auth(struct NntpServer *nserv)
       if (!a)
       {
         mutt_error(_("No authenticators available"));
-        mutt_sleep(2);
         break;
       }
 
@@ -582,7 +579,6 @@ static int nntp_auth(struct NntpServer *nserv)
       }
 
       mutt_error(_("%s authentication failed."), method);
-      mutt_sleep(2);
       break;
     }
     break;
@@ -594,7 +590,6 @@ static int nntp_auth(struct NntpServer *nserv)
   if (conn->fd < 0)
   {
     mutt_error(_("Server closed connection!"));
-    mutt_sleep(2);
   }
   else
     mutt_socket_close(conn);
@@ -630,7 +625,6 @@ int nntp_open_connection(struct NntpServer *nserv)
     mutt_socket_close(conn);
     mutt_str_remove_trailing_ws(buf);
     mutt_error("%s", buf);
-    mutt_sleep(2);
     return -1;
   }
 
@@ -657,7 +651,6 @@ int nntp_open_connection(struct NntpServer *nserv)
     {
       mutt_socket_close(conn);
       mutt_error(_("Could not switch to reader mode."));
-      mutt_sleep(2);
       return -1;
     }
 
@@ -695,7 +688,6 @@ int nntp_open_connection(struct NntpServer *nserv)
       {
         nserv->use_tls = 0;
         mutt_error("STARTTLS: %s", buf);
-        mutt_sleep(2);
       }
       else if (mutt_ssl_starttls(conn))
       {
@@ -703,7 +695,6 @@ int nntp_open_connection(struct NntpServer *nserv)
         nserv->status = NNTP_NONE;
         mutt_socket_close(nserv->conn);
         mutt_error(_("Could not negotiate TLS connection"));
-        mutt_sleep(2);
         return -1;
       }
       else
@@ -748,7 +739,6 @@ int nntp_open_connection(struct NntpServer *nserv)
     {
       mutt_socket_close(conn);
       mutt_error(_("Could not switch to reader mode."));
-      mutt_sleep(2);
       return -1;
     }
   }
@@ -972,7 +962,6 @@ static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
   if (rc > 0)
   {
     mutt_error("%s: %s", cmd, buf);
-    mutt_sleep(2);
   }
   return rc;
 }
@@ -1263,7 +1252,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     if (rc > 0)
     {
       mutt_error("LISTGROUP: %s", buf);
-      mutt_sleep(2);
     }
     if (rc == 0)
     {
@@ -1364,7 +1352,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       if (!fp)
       {
         mutt_perror(tempfile);
-        mutt_sleep(2);
         unlink(tempfile);
         rc = -1;
         break;
@@ -1383,7 +1370,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
         if (mutt_str_strncmp("423", buf, 3) != 0)
         {
           mutt_error("HEAD: %s", buf);
-          mutt_sleep(2);
           break;
         }
 
@@ -1438,7 +1424,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     if (rc > 0)
     {
       mutt_error("%s: %s", cmd, buf);
-      mutt_sleep(2);
     }
   }
 
@@ -1473,7 +1458,6 @@ static int nntp_open_mailbox(struct Context *ctx)
   {
     url_free(&url);
     mutt_error(_("%s is an invalid newsgroup specification!"), ctx->path);
-    mutt_sleep(2);
     return -1;
   }
 
@@ -1492,7 +1476,6 @@ static int nntp_open_mailbox(struct Context *ctx)
   {
     nntp_newsrc_close(nserv);
     mutt_error(_("Newsgroup %s not found on the server."), group);
-    mutt_sleep(2);
     return -1;
   }
 
@@ -1525,7 +1508,6 @@ static int nntp_open_mailbox(struct Context *ctx)
       nntp_delete_group_cache(nntp_data);
       nntp_newsrc_update(nserv);
     }
-    mutt_sleep(2);
   }
 
   /* parse newsgroup info */
@@ -1535,7 +1517,6 @@ static int nntp_open_mailbox(struct Context *ctx)
     {
       nntp_newsrc_close(nserv);
       mutt_error("GROUP: %s", buf);
-      mutt_sleep(2);
       return -1;
     }
     nntp_data->first_message = first;
@@ -2221,7 +2202,6 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
     if (rc > 0)
     {
       mutt_error("LIST: %s", buf);
-      mutt_sleep(2);
     }
     return -1;
   }
@@ -2324,7 +2304,6 @@ int nntp_check_new_groups(struct NntpServer *nserv)
     if (rc > 0)
     {
       mutt_error("NEWGROUPS: %s", buf);
-      mutt_sleep(2);
     }
     return -1;
   }

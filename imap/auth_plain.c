@@ -75,7 +75,6 @@ enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
   else if (rc == IMAP_CMD_NO)
   {
     mutt_error(_("Login failed."));
-    mutt_sleep(2);
     res = IMAP_AUTH_FAILURE;
   }
 

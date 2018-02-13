@@ -315,6 +315,5 @@ err_abort_cmd:
 
 bail:
   mutt_error(_("GSSAPI authentication failed."));
-  mutt_sleep(2);
   return IMAP_AUTH_FAILURE;
 }

@@ -558,7 +558,6 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
           mutt_debug(1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile, errno,
                      strerror(errno));
           mutt_perror(pagerfile);
-          mutt_sleep(1);
           goto return_error;
         }
         decode_state.fpin = fp;
@@ -823,7 +822,6 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if (!s.fpout)
       {
         mutt_perror("fopen");
-        mutt_sleep(2);
         return -1;
       }
       fseeko((s.fpin = fp), m->offset, SEEK_SET);
@@ -832,7 +830,6 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if (mutt_file_fsync_close(&s.fpout) != 0)
       {
         mutt_perror("fclose");
-        mutt_sleep(2);
         return -1;
       }
     }

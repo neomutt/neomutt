@@ -71,7 +71,6 @@ int pop_parse_path(const char *path, struct Account *acct)
     url_free(&url);
     FREE(&c);
     mutt_error(_("Invalid POP URL: %s\n"), path);
-    mutt_sleep(1);
     return -1;
   }
 
@@ -343,12 +342,10 @@ int pop_open_connection(struct PopData *pop_data)
       if (rc != 0)
       {
         mutt_error("%s", pop_data->err_msg);
-        mutt_sleep(2);
       }
       else if (mutt_ssl_starttls(pop_data->conn))
       {
         mutt_error(_("Could not negotiate TLS connection"));
-        mutt_sleep(2);
         return -2;
       }
       else
@@ -369,7 +366,6 @@ int pop_open_connection(struct PopData *pop_data)
   if (SslForceTls && !pop_data->conn->ssf)
   {
     mutt_error(_("Encrypted connection unavailable"));
-    mutt_sleep(1);
     return -2;
   }
 #endif
@@ -400,7 +396,6 @@ int pop_open_connection(struct PopData *pop_data)
   if (rc == -2)
   {
     mutt_error("%s", pop_data->err_msg);
-    mutt_sleep(2);
     return rc;
   }
 
@@ -411,7 +406,6 @@ int pop_open_connection(struct PopData *pop_data)
 err_conn:
   pop_data->status = POP_DISCONNECTED;
   mutt_error(_("Server closed connection!"));
-  mutt_sleep(2);
   return -1;
 }
 
@@ -628,7 +622,6 @@ int pop_reconnect(struct Context *ctx)
       if (ret == -2)
       {
         mutt_error("%s", pop_data->err_msg);
-        mutt_sleep(2);
       }
     }
     if (ret == 0)

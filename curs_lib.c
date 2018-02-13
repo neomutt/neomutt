@@ -45,6 +45,7 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "mutt_menu.h"
 #include "opcodes.h"
 #include "options.h"
@@ -213,13 +214,6 @@ int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags)
   return rc;
 }
 
-void mutt_clear_error(void)
-{
-  ErrorBuf[0] = 0;
-  if (!OPT_NO_CURSES)
-    mutt_window_clearline(MuttMessageWindow, 0);
-}
-
 void mutt_edit_file(const char *editor, const char *data)
 {
   char cmd[LONG_STRING];
@@ -229,7 +223,6 @@ void mutt_edit_file(const char *editor, const char *data)
   if (mutt_system(cmd) != 0)
   {
     mutt_error(_("Error running \"%s\"!"), cmd);
-    mutt_sleep(2);
   }
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
@@ -398,6 +391,10 @@ static void curses_message(int error, const char *fmt, va_list ap)
 
   vsnprintf(scratch, sizeof(scratch), fmt, ap);
 
+  /* Only pause if this is a message following an error */
+  if (!error && OPT_MSG_ERR)
+    error_pause();
+
   mutt_debug(1, "%s\n", scratch);
   mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, MuttMessageWindow->cols,
                      FMT_LEFT, 0, scratch, sizeof(scratch), 0);
@@ -414,9 +411,16 @@ static void curses_message(int error, const char *fmt, va_list ap)
   }
 
   if (error)
+  {
     OPT_MSG_ERR = true;
+    if (gettimeofday(&LastError, NULL) < 0)
+      mutt_debug(1, "gettimeofday failed: %d\n", errno);
+  }
   else
+  {
     OPT_MSG_ERR = false;
+    LastError.tv_sec = 0;
+  }
 }
 
 void mutt_curses_error(const char *fmt, ...)

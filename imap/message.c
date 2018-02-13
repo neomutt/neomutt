@@ -489,7 +489,6 @@ static void alloc_msn_index(struct ImapData *idata, size_t msn_count)
   if (msn_count >= (UINT_MAX / sizeof(struct Header *)))
   {
     mutt_error(_("Integer overflow -- can't allocate memory."));
-    sleep(1);
     mutt_exit(1);
   }
 
@@ -662,7 +661,6 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   else
   { /* Unable to fetch headers for lower versions */
     mutt_error(_("Unable to fetch headers from this IMAP server version."));
-    mutt_sleep(2); /* pause a moment to let the user see the error */
     goto error_out_0;
   }
 
@@ -673,7 +671,6 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   if (!fp)
   {
     mutt_error(_("Could not create temporary file %s"), tempfile);
-    mutt_sleep(2);
     goto error_out_0;
   }
   unlink(tempfile);
@@ -1333,7 +1330,6 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
     SKIPWS(pc);
     pc = imap_next_word(pc);
     mutt_error("%s", pc);
-    mutt_sleep(1);
     mutt_file_fclose(&fp);
     goto fail;
   }
@@ -1372,7 +1368,6 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
     SKIPWS(pc);
     pc = imap_next_word(pc);
     mutt_error("%s", pc);
-    mutt_sleep(1);
     goto fail;
   }
 

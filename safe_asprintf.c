@@ -49,7 +49,6 @@ int safe_asprintf(char **strp, const char *fmt, ...)
   if (n < 0)
   {
     mutt_error(_("Out of memory!"));
-    sleep(1);
     mutt_exit(1);
   }
 

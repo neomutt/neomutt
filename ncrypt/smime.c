@@ -757,7 +757,6 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
       return key;
 
     mutt_error(_("No matching keys found for \"%s\""), resp);
-    mutt_sleep(0);
   }
 }
 

@@ -167,7 +167,6 @@ static void cmd_handle_fatal(struct ImapData *idata)
     mutt_socket_close(idata->conn);
     mutt_error(_("Mailbox %s@%s closed"), idata->conn->account.login,
                idata->conn->account.host);
-    mutt_sleep(1);
     idata->state = IMAP_DISCONNECTED;
   }
 
@@ -898,7 +897,6 @@ static int cmd_handle_untagged(struct ImapData *idata)
     s += 3;
     SKIPWS(s);
     mutt_error("%s", s);
-    mutt_sleep(2);
     cmd_handle_fatal(idata);
 
     return -1;
@@ -909,7 +907,6 @@ static int cmd_handle_untagged(struct ImapData *idata)
 
     /* Display the warning message from the server */
     mutt_error("%s", s + 3);
-    mutt_sleep(2);
   }
 
   return 0;
@@ -1128,7 +1125,6 @@ int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
       (mutt_socket_poll(idata->conn, ImapPollTimeout)) == 0)
   {
     mutt_error(_("Connection to %s timed out"), idata->conn->account.host);
-    mutt_sleep(2);
     cmd_handle_fatal(idata);
     return -1;
   }
@@ -1223,7 +1219,6 @@ int imap_cmd_idle(struct ImapData *idata)
   if ((ImapPollTimeout > 0) && (mutt_socket_poll(idata->conn, ImapPollTimeout)) == 0)
   {
     mutt_error(_("Connection to %s timed out"), idata->conn->account.host);
-    mutt_sleep(2);
     cmd_handle_fatal(idata);
     return -1;
   }

@@ -266,7 +266,6 @@ void ci_bounce_message(struct Header *h)
     if (!h->env->from)
     {
       mutt_error(_("Warning: message contains no From: header"));
-      mutt_sleep(2);
     }
   }
   else if (Context)
@@ -276,7 +275,6 @@ void ci_bounce_message(struct Header *h)
       if (message_is_tagged(Context, rc) && !Context->hdrs[rc]->env->from)
       {
         mutt_error(_("Warning: message contains no From: header"));
-        mutt_sleep(2);
         break;
       }
     }
