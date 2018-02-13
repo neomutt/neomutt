@@ -43,7 +43,7 @@ void mutt_resize_screen(void)
   const char *cp = NULL;
   int fd;
   struct winsize w;
-#ifdef HAVE_RESIZETERM
+#if !defined(USE_SLANG_CURSES)
   int SLtt_Screen_Rows, SLtt_Screen_Cols;
 #endif
 

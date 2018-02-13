@@ -181,7 +181,6 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
 
   do
   {
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (SigWinch)
     {
       SigWinch = 0;
@@ -189,7 +188,6 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
       clearok(stdscr, TRUE);
       mutt_current_menu_redraw();
     }
-#endif
     mutt_window_clearline(MuttMessageWindow, 0);
     SETCOLOR(MT_COLOR_PROMPT);
     addstr((char *) field); /* cast to get around bad prototypes */
@@ -233,10 +231,8 @@ void mutt_edit_file(const char *editor, const char *data)
     mutt_error(_("Error running \"%s\"!"), cmd);
     mutt_sleep(2);
   }
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
-#endif
   keypad(stdscr, true);
   clearok(stdscr, true);
 }
@@ -282,7 +278,6 @@ int mutt_yesorno(const char *msg, int def)
     if (redraw || SigWinch)
     {
       redraw = false;
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
       if (SigWinch)
       {
         SigWinch = 0;
@@ -290,7 +285,6 @@ int mutt_yesorno(const char *msg, int def)
         clearok(stdscr, TRUE);
         mutt_current_menu_redraw();
       }
-#endif
       if (MuttMessageWindow->cols)
       {
         prompt_lines = (msg_wid + answer_string_wid + MuttMessageWindow->cols - 1) /
@@ -1061,7 +1055,6 @@ int mutt_multi_choice(char *prompt, char *letters)
     if (redraw || SigWinch)
     {
       redraw = false;
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
       if (SigWinch)
       {
         SigWinch = 0;
@@ -1069,7 +1062,6 @@ int mutt_multi_choice(char *prompt, char *letters)
         clearok(stdscr, TRUE);
         mutt_current_menu_redraw();
       }
-#endif
       if (MuttMessageWindow->cols)
       {
         prompt_lines = (mutt_strwidth(prompt) + MuttMessageWindow->cols - 1) /

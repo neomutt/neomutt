@@ -168,7 +168,6 @@ struct AnsiAttr
 
 static short InHelp = 0;
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
 /**
  * struct Resize - Keep track of screen resizing
  */
@@ -178,7 +177,6 @@ static struct Resize
   int search_compiled;
   int search_back;
 } *Resize = NULL;
-#endif
 
 #define NUM_SIG_LINES 4
 
@@ -1743,18 +1741,14 @@ static void pager_menu_redraw(struct Menu *pager_menu)
   struct PagerRedrawData *rd = pager_menu->redraw_data;
   int i, j;
   char buffer[LONG_STRING];
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   int err;
-#endif
 
   if (!rd)
     return;
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
-#if !(defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM))
     mutt_reflow_windows();
-#endif
     NORMAL_COLOR;
     /* clear() doesn't optimize screen redraws */
     move(0, 0);
@@ -1810,7 +1804,6 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       NORMAL_COLOR;
     }
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (Resize)
     {
       rd->search_compiled = Resize->search_compiled;
@@ -1835,7 +1828,6 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
       FREE(&Resize);
     }
-#endif
 
     if (IsHeader(rd->extra) && PagerIndexLines)
     {
@@ -2249,7 +2241,6 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       }
     }
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (SigWinch)
     {
       SigWinch = 0;
@@ -2281,7 +2272,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       }
       continue;
     }
-#endif
+
     if (ch < 0)
     {
       ch = 0;

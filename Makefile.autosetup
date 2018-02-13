@@ -66,14 +66,11 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		pop_auth.o pop_lib.o postpone.o query.o recvattach.o recvcmd.o \
 		rfc1524.o rfc2047.o rfc2231.o rfc3676.o address.o \
 		safe_asprintf.o score.o send.o sendlib.o sidebar.o mutt_signal.o \
-		smtp.o sort.o state.o status.o system.o thread.o url.o \
+		resize.o smtp.o sort.o state.o status.o system.o thread.o url.o \
 		version.o
 
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
-@endif
-@if HAVE_RESIZE
-NEOMUTTOBJS+=	resize.o
 @endif
 @if USE_NOTMUCH
 NEOMUTTOBJS+=	mutt_notmuch.o

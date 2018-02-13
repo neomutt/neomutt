@@ -132,9 +132,7 @@ void mutt_sig_init(sig_handler_t sig_fn, sig_handler_t exit_fn)
   sigaction(SIGCONT, &act, NULL);
   sigaction(SIGTSTP, &act, NULL);
   sigaction(SIGINT, &act, NULL);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   sigaction(SIGWINCH, &act, NULL);
-#endif
 
   /* POSIX doesn't allow us to ignore SIGCHLD,
    * so we just install a dummy handler for it */
@@ -162,9 +160,7 @@ void mutt_sig_block(void)
   sigaddset(&Sigset, SIGHUP);
   sigaddset(&Sigset, SIGTSTP);
   sigaddset(&Sigset, SIGINT);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   sigaddset(&Sigset, SIGWINCH);
-#endif
   sigprocmask(SIG_BLOCK, &Sigset, 0);
   SignalsBlocked = true;
 }
