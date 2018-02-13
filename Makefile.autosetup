@@ -72,7 +72,7 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
 @endif
-@if HAVE_RESIZETERM
+@if HAVE_RESIZE
 NEOMUTTOBJS+=	resize.o
 @endif
 @if USE_NOTMUCH

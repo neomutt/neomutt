@@ -506,6 +506,9 @@ switch [opt-val with-ui ncurses] {
         cc-check-function-in-lib $f $ncurses_lib
       }
       cc-check-functions use_extended_names
+      if {[have-feature RESIZETERM]} {
+        define-feature RESIZE
+      }
     }
 
     if {[have-feature start_color]} {
@@ -525,7 +528,7 @@ switch [opt-val with-ui ncurses] {
     }
     define USE_SLANG_CURSES
     define-feature COLOR
-    define-feature RESIZETERM
+    define-feature RESIZE
   }
 
   default {
