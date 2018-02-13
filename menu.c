@@ -301,9 +301,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 
 void menu_redraw_full(struct Menu *menu)
 {
-#if !(defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM))
   mutt_reflow_windows();
-#endif
   NORMAL_COLOR;
   /* clear() doesn't optimize screen redraws */
   move(0, 0);
@@ -1171,14 +1169,12 @@ int mutt_menu_loop(struct Menu *menu)
 
     mutt_curs_set(1);
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (SigWinch)
     {
       mutt_resize_screen();
       SigWinch = 0;
       clearok(stdscr, true); /* force complete redraw */
     }
-#endif
 
     if (i < 0)
     {

@@ -86,18 +86,14 @@ static void sighandler(int sig)
       if (!IsEndwin)
         refresh();
       mutt_curs_set(-1);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
       /* We don't receive SIGWINCH when suspended; however, no harm is done by
        * just assuming we received one, and triggering the 'resize' anyway. */
       SigWinch = 1;
-#endif
       break;
 
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     case SIGWINCH:
       SigWinch = 1;
       break;
-#endif
 
     case SIGINT:
       SigInt = 1;
@@ -146,9 +142,7 @@ void mutt_signal_init(void)
   sigaction(SIGCONT, &act, NULL);
   sigaction(SIGTSTP, &act, NULL);
   sigaction(SIGINT, &act, NULL);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
   sigaction(SIGWINCH, &act, NULL);
-#endif
 
   /* POSIX doesn't allow us to ignore SIGCHLD,
    * so we just install a dummy handler for it
@@ -186,9 +180,7 @@ void mutt_block_signals(void)
     sigaddset(&Sigset, SIGHUP);
     sigaddset(&Sigset, SIGTSTP);
     sigaddset(&Sigset, SIGINT);
-#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     sigaddset(&Sigset, SIGWINCH);
-#endif
     sigprocmask(SIG_BLOCK, &Sigset, 0);
     OPT_SIGNALS_BLOCKED = true;
   }

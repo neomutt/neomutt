@@ -250,11 +250,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "pgp", 0 },
 #endif
-#ifdef HAVE_RESIZETERM
-  { "resizeterm", 1 },
-#else
-  { "resizeterm", 0 },
-#endif
 #ifdef USE_SASL
   { "sasl", 1 },
 #else
@@ -376,7 +371,7 @@ void print_version(void)
 #ifdef NCURSES_VERSION
   printf("\nncurses: %s (compiled with %s)", curses_version(), NCURSES_VERSION);
 #elif defined(USE_SLANG_CURSES)
-  printf("\nslang: %d", SLANG_VERSION);
+  printf("\nslang: %s", SLANG_VERSION_STRING);
 #endif
 
 #ifdef _LIBICONV_VERSION
