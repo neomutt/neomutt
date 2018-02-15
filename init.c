@@ -183,7 +183,7 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
     return 0;
   }
 
-  struct Regex *rnew = mutt_regex_create(tmp->data, MuttVars[idx].flags, err);
+  struct Regex *rnew = mutt_regex_create(tmp->data, MuttVars[idx].type, err);
   if (!rnew)
     return 1;
 
@@ -1945,7 +1945,7 @@ static void restore_default(struct Option *p)
       if (*ptr)
         mutt_regex_free(ptr);
 
-      *ptr = mutt_regex_create((const char *) p->initial, p->flags, NULL);
+      *ptr = mutt_regex_create((const char *) p->initial, p->type, NULL);
       break;
     }
   }
