@@ -220,8 +220,8 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
   purge_empty_parameters(p);
 
-  struct Parameter *np;
-  TAILQ_FOREACH(np, p, entries)
+  struct Parameter *np, *tmp;
+  TAILQ_FOREACH_SAFE(np, p, entries, tmp)
   {
     s = strchr(np->attribute, '*');
     if (!s)
@@ -267,6 +267,7 @@ void rfc2231_decode_parameters(struct ParameterList *p)
 
       np->attribute = NULL;
       np->value = NULL;
+      TAILQ_REMOVE(p, np, entries);
       FREE(&np);
 
       rfc2231_list_insert(&conthead, conttmp);
