@@ -83,6 +83,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
 int  log_queue_add(struct LogLine *ll);
 void log_queue_empty(void);
 void log_queue_flush(log_dispatcher_t disp);
+int  log_queue_save(FILE *fp);
 void log_queue_set_max_size(int size);
 
 void log_file_close(bool verbose);

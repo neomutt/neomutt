@@ -47,6 +47,7 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "pager.h"
 #include "pattern.h"
 #include "protos.h"
 #include "sort.h"
@@ -1488,6 +1489,25 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_FULL;
         break;
 #endif /* USE_POP */
+
+      case OP_SHOW_MESSAGES:
+      {
+        char tempfile[PATH_MAX];
+        mutt_mktemp(tempfile, sizeof(tempfile));
+
+        FILE *fp = mutt_file_fopen(tempfile, "a+");
+        if (!fp)
+        {
+          mutt_perror("fopen");
+          break;
+        }
+
+        log_queue_save(fp);
+        mutt_file_fclose(&fp);
+
+        mutt_do_pager("messages", tempfile, MUTT_PAGER_LOGS, NULL);
+        break;
+      }
 
       case OP_HELP:
 

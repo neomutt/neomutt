@@ -171,6 +171,8 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   }
 
   log_disp_file(stamp, file, line, function, level, "%s", buf);
+  if (stamp == 0)
+    log_disp_queue(stamp, file, line, function, level, "%s", buf);
 
   /* Don't display debugging message on screen */
   if (level > LL_MESSAGE)

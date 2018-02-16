@@ -343,6 +343,36 @@ void log_queue_flush(log_dispatcher_t disp)
 }
 
 /**
+ * log_queue_save - Save the contents of the queue to a temporary file
+ * @param fp Open file handle
+ * @retval num Number of lines written to the file
+ *
+ * The queue is written to a temporary file.  The format is:
+ * * `[HH:MM:SS]<LEVEL> FORMATTED-MESSAGE`
+ *
+ * @note The caller should free the returned string and delete the file.
+ */
+int log_queue_save(FILE *fp)
+{
+  if (!fp)
+    return 0;
+
+  char buf[32];
+  int count = 0;
+  struct LogLine *ll = NULL;
+  STAILQ_FOREACH(ll, &LogQueue, entries)
+  {
+    strftime(buf, sizeof(buf), "%H:%M:%S", localtime(&ll->time));
+    fprintf(fp, "[%s]<%c> %s", buf, LevelAbbr[ll->level + 3], ll->message);
+    if (ll->level <= 0)
+      fputs("\n", fp);
+    count++;
+  }
+
+  return count;
+}
+
+/**
  * log_disp_queue - Save a log line to an internal queue
  * @param stamp    Unix time
  * @param file     Source file

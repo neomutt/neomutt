@@ -163,6 +163,7 @@ enum ColorId
   MT_COLOR_SB_INDICATOR,
   MT_COLOR_SB_SPOOLFILE,
 #endif
+  MT_COLOR_MESSAGE_LOG,
   /* please no non-MT_COLOR_INDEX objects after this point */
   MT_COLOR_INDEX,
   MT_COLOR_INDEX_AUTHOR,
