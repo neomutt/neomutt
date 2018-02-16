@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
+#include <stdbool.h>
 
 struct stat;
 extern char *Tmpdir;
@@ -65,6 +66,7 @@ void        mutt_file_sanitize_filename(char *f, short slash);
 int         mutt_file_sanitize_regex(char *dest, size_t destlen, const char *src);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_symlink(const char *oldpath, const char *newpath);
+size_t      mutt_file_tidy_path(char *buf, bool rsym);
 int         mutt_file_to_absolute_path(char *path, const char *reference);
 void        mutt_file_touch_atime(int f);
 void        mutt_file_unlink(const char *s);

@@ -338,7 +338,6 @@ int mutt_save_confirm(const char *s, struct stat *st);
 
 void mutt_browser_select_dir(char *f);
 void mutt_get_parent_path(char *output, char *path, size_t olen);
-size_t mutt_file_tidy_path(char *buf, bool rsym);
 
 #define MUTT_RANDTAG_LEN 16
 void mutt_rand_base32(void *out, size_t len);
