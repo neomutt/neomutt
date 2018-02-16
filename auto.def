@@ -74,6 +74,7 @@ options {
 # Header cache
   bdb=0                     => "Use BerkeleyDB for the header cache"
   with-bdb:path             => "Location of BerkeleyDB"
+  with-bdb-version:version  => "Version of BerkeleyDB"
   gdbm=0                    => "Use GNU dbm for the header cache"
   with-gdbm:path            => "Location of GNU dbm"
   kyotocabinet=0            => "Use KyotoCabinet for the header cache"
@@ -637,7 +638,7 @@ if {[get-define want-idn]} {
 ###############################################################################
 # Header cache - bdb
 if {[get-define want-bdb]} {
-  set bdb_versions { 5.3 6.2 4.8 } ;# Will be checked in order
+  set bdb_versions [opt-val with-bdb-version { 5.3 6.2 4.8 }] ;# Will be checked in order
   set bdb_prefix [opt-val with-bdb $prefix]
 
   foreach ver $bdb_versions {
