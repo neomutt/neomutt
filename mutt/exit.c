@@ -31,7 +31,7 @@
  */
 
 #include "config.h"
-#include <unistd.h>
+#include <stdlib.h>
 
 /**
  * mutt_exit - Leave NeoMutt NOW
@@ -42,5 +42,5 @@
  */
 void mutt_exit(int code)
 {
-  _exit(code);
+  exit(code);
 }
