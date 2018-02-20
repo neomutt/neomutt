@@ -259,7 +259,7 @@ enum QuadOptionResponse
 
 bool mutt_matches_ignore(const char *s);
 
-void mutt_init(int skip_sys_rc, struct ListHead *commands);
+int mutt_init(int skip_sys_rc, struct ListHead *commands);
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */

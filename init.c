@@ -25,7 +25,6 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
-#include <pwd.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -3664,13 +3663,13 @@ int mutt_query_variables(struct ListHead *queries)
     snprintf(command, sizeof(command), "set ?%s\n", np->data);
     if (mutt_parse_rc_line(command, &token, &err) == -1)
     {
-      fprintf(stderr, "%s\n", err.data);
+      mutt_error("%s", err.data);
       FREE(&token.data);
       FREE(&err.data);
 
       return 1;
     }
-    printf("%s\n", err.data);
+    mutt_message("%s", err.data);
   }
 
   FREE(&token.data);
@@ -3701,19 +3700,19 @@ int mutt_dump_variables(int hide_sensitive)
 
     if (hide_sensitive && IS_SENSITIVE(MuttVars[i]))
     {
-      printf("%s='***'\n", MuttVars[i].name);
+      mutt_message("%s='***'\n", MuttVars[i].name);
       continue;
     }
     snprintf(command, sizeof(command), "set ?%s\n", MuttVars[i].name);
     if (mutt_parse_rc_line(command, &token, &err) == -1)
     {
-      fprintf(stderr, "%s\n", err.data);
+      mutt_message("%s", err.data);
       FREE(&token.data);
       FREE(&err.data);
 
       return 1;
     }
-    printf("%s\n", err.data);
+    mutt_message("%s", err.data);
   }
 
   FREE(&token.data);
@@ -3735,7 +3734,7 @@ static int execute_commands(struct ListHead *p)
   {
     if (mutt_parse_rc_line(np->data, &token, &err) == -1)
     {
-      fprintf(stderr, _("Error in command line: %s\n"), err.data);
+      mutt_error(_("Error in command line: %s"), err.data);
       FREE(&token.data);
       FREE(&err.data);
 
@@ -3784,9 +3783,8 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   return NULL;
 }
 
-void mutt_init(int skip_sys_rc, struct ListHead *commands)
+int mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
-  struct passwd *pw = NULL;
   struct utsname utsname;
   const char *p = NULL;
   char buffer[STRING];
@@ -3809,46 +3807,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
-
-  /* on one of the systems I use, getcwd() does not return the same prefix
-     as is listed in the passwd file */
-  p = mutt_str_getenv("HOME");
-  if (p)
-    HomeDir = mutt_str_strdup(p);
-
-  /* Get some information about the user */
-  pw = getpwuid(getuid());
-  if (pw)
-  {
-    char rnbuf[STRING];
-
-    Username = mutt_str_strdup(pw->pw_name);
-    if (!HomeDir)
-      HomeDir = mutt_str_strdup(pw->pw_dir);
-
-    RealName = mutt_str_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
-    Shell = mutt_str_strdup(pw->pw_shell);
-    endpwent();
-  }
-  else
-  {
-    if (!HomeDir)
-    {
-      mutt_endwin();
-      fputs(_("unable to determine home directory"), stderr);
-      exit(1);
-    }
-    p = mutt_str_getenv("USER");
-    if (p)
-      Username = mutt_str_strdup(p);
-    else
-    {
-      mutt_endwin();
-      fputs(_("unable to determine username"), stderr);
-      exit(1);
-    }
-    Shell = mutt_str_strdup((p = mutt_str_getenv("SHELL")) ? p : "/bin/sh");
-  }
 
   /* Start up debugging mode if requested from cmdline */
   if (debuglevel_cmdline > 0)
@@ -3876,9 +3834,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
    */
   if ((uname(&utsname)) == -1)
   {
-    mutt_endwin();
-    perror(_("unable to determine nodename via uname()"));
-    exit(1);
+    mutt_perror(_("unable to determine nodename via uname()"));
+    return 1;
   }
 
   /* some systems report the FQDN instead of just the hostname */
@@ -4063,10 +4020,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
       np->data = mutt_str_strdup(buffer);
       if (access(np->data, F_OK))
       {
-        mutt_endwin();
-        snprintf(buffer, sizeof(buffer), "%s: %s", np->data, strerror(errno));
-        puts(buffer);
-        exit(1);
+        mutt_perror(np->data);
+        return 1;
       }
     }
   }
@@ -4117,8 +4072,6 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
   {
     if (np->data)
     {
-      if (!OPT_NO_CURSES)
-        endwin();
       if (source_rc(np->data, &err) != 0)
       {
         fputs(err.data, stderr);
@@ -4133,8 +4086,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (need_pause && !OPT_NO_CURSES)
   {
-    if (mutt_any_key_to_continue(NULL) == -1)
-      mutt_exit(1);
+    if (mutt_any_key_to_continue(NULL) == 'q')
+      return 1;
   }
 
   mutt_file_mkdir(Tmpdir, S_IRWXU);
@@ -4158,6 +4111,7 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 #endif
 
   FREE(&err.data);
+  return 0;
 }
 
 int mutt_get_hook_type(const char *name)

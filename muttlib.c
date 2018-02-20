@@ -407,7 +407,7 @@ static void mutt_randbuf(void *out, size_t len)
   if (len > 1048576)
   {
     mutt_error(_("mutt_randbuf len=%zu"), len);
-    exit(1);
+    mutt_exit(1);
   }
 /* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
 #if defined(SYS_getrandom) && defined(__linux__)
@@ -427,14 +427,14 @@ static void mutt_randbuf(void *out, size_t len)
     if (!frandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
-      exit(1);
+      mutt_exit(1);
     }
     setbuf(frandom, NULL);
   }
   if (fread(out, 1, len, frandom) != len)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
-    exit(1);
+    mutt_exit(1);
   }
 }
 

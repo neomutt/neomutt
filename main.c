@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>
+#include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -120,12 +121,10 @@ static void usage(void)
          "  -z            exit immediately if there are no messages in the mailbox\n"
          "  -Z            open the first folder with new message, exit immediately if none\n"
          "  -h            this help message"));
-
-  exit(0);
 }
 // clang-format on
 
-static void start_curses(void)
+static int start_curses(void)
 {
   km_init(); /* must come before mutt_init */
 
@@ -143,8 +142,8 @@ static void start_curses(void)
 #endif
   if (!initscr())
   {
-    puts(_("Error initializing terminal."));
-    exit(1);
+    mutt_error(_("Error initializing terminal."));
+    return 1;
   }
   /* slang requires the signal handlers to be set after initializing */
   mutt_signal_init();
@@ -161,6 +160,7 @@ static void start_curses(void)
 #endif
   init_extended_keys();
   mutt_reflow_windows();
+  return 0;
 }
 
 #define MUTT_IGNORE (1 << 0)  /* -z */
@@ -171,6 +171,59 @@ static void start_curses(void)
 #ifdef USE_NNTP
 #define MUTT_NEWS (1 << 5) /* -g and -G */
 #endif
+
+static int get_user_info(void)
+{
+  const char *p = NULL;
+
+  p = mutt_str_getenv("HOME");
+  if (p)
+    HomeDir = mutt_str_strdup(p);
+
+  /* Get some information about the user */
+  struct passwd *pw = getpwuid(getuid());
+  if (pw)
+  {
+    char rnbuf[STRING];
+
+    Username = mutt_str_strdup(pw->pw_name);
+    if (!HomeDir)
+      HomeDir = mutt_str_strdup(pw->pw_dir);
+
+    RealName = mutt_str_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
+    Shell = mutt_str_strdup(pw->pw_shell);
+    endpwent();
+  }
+
+  if (!Username)
+  {
+    p = mutt_str_getenv("USER");
+    if (p)
+      Username = mutt_str_strdup(p);
+  }
+
+  if (!Username)
+  {
+    mutt_error(_("unable to determine username"));
+    return 1;
+  }
+
+  if (!HomeDir)
+  {
+    mutt_error(_("unable to determine home directory"));
+    return 1;
+  }
+
+  if (!Shell)
+  {
+    p = mutt_str_getenv("SHELL");
+    if (!p)
+      p = "/bin/sh";
+    Shell = mutt_str_strdup(p);
+  }
+
+  return 0;
+}
 
 /**
  * main - Start NeoMutt
@@ -206,13 +259,14 @@ int main(int argc, char **argv, char **env)
   extern char *optarg;
   extern int optind;
   int double_dash = argc, nargc = 1;
+  int rc = 1;
 
   /* sanity check against stupid administrators */
 
   if (getegid() != getgid())
   {
     fprintf(stderr, "%s: I don't want to run with privileges!\n", argv[0]);
-    exit(1);
+    goto main_exit;
   }
 
   setlocale(LC_ALL, "");
@@ -295,8 +349,8 @@ int main(int argc, char **argv, char **env)
         case 'd':
           if (mutt_str_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
           {
-            fprintf(stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
-            return 1;
+            mutt_error(_("Error: value '%s' is invalid for -d."), optarg);
+            goto main_exit;
           }
           printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
           break;
@@ -373,6 +427,7 @@ int main(int argc, char **argv, char **env)
           break;
         default:
           usage();
+          goto main_ok;
       }
     }
   }
@@ -383,16 +438,18 @@ int main(int argc, char **argv, char **env)
   optind = 1;
   argc = nargc;
 
-  switch (version)
+  if (version > 0)
   {
-    case 0:
-      break;
-    case 1:
+    if (version == 1)
       print_version();
-      exit(0);
-    default:
+    else
       print_copyright();
-      exit(0);
+    goto main_ok;
+  }
+
+  if (get_user_info() != 0)
+  {
+    goto main_exit;
   }
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
@@ -431,14 +488,19 @@ int main(int argc, char **argv, char **env)
    * before calling the init_pair() function to set the color scheme.  */
   if (!OPT_NO_CURSES)
   {
-    start_curses();
+    rc = start_curses();
+    if (rc != 0)
+      goto main_curses;
 
     /* check whether terminal status is supported (must follow curses init) */
     TSSupported = mutt_ts_capability();
   }
 
   /* set defaults and read init files */
-  mutt_init(flags & MUTT_NOSYSRC, &commands);
+  rc = mutt_init(flags & MUTT_NOSYSRC, &commands);
+  if (rc != 0)
+    goto main_curses;
+
   mutt_list_free(&commands);
 
   /* Initialize crypto backends.  */
@@ -451,15 +513,19 @@ int main(int argc, char **argv, char **env)
   {
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&queries, mutt_str_strdup(argv[optind]));
-    return mutt_query_variables(&queries);
+    rc = mutt_query_variables(&queries);
+    goto main_curses;
   }
 
   if (dump_variables)
-    return mutt_dump_variables(hide_sensitive);
+  {
+    rc = mutt_dump_variables(hide_sensitive);
+    goto main_curses;
+  }
 
   if (!STAILQ_EMPTY(&alias_queries))
   {
-    int rc = 0;
+    rc = 0;
     struct Address *a = NULL;
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&alias_queries, mutt_str_strdup(argv[optind]));
@@ -476,11 +542,11 @@ int main(int argc, char **argv, char **env)
       else
       {
         rc = 1;
-        printf("%s\n", np->data);
+        mutt_message("%s", np->data);
       }
     }
     mutt_list_free(&alias_queries);
-    return rc;
+    goto main_curses;
   }
 
   if (!OPT_NO_CURSES)
@@ -520,7 +586,9 @@ int main(int argc, char **argv, char **env)
   }
 
   if (batch_mode)
-    exit(0);
+  {
+    goto main_ok;
+  }
 
   if (sendflags & SENDPOSTPONED)
   {
@@ -554,9 +622,8 @@ int main(int argc, char **argv, char **env)
       {
         if (url_parse_mailto(msg->env, &bodytext, argv[i]) < 0)
         {
-          mutt_endwin();
-          fputs(_("Failed to parse mailto: link\n"), stderr);
-          exit(1);
+          mutt_error(_("Failed to parse mailto: link"));
+          goto main_curses;
         }
       }
       else
@@ -565,9 +632,8 @@ int main(int argc, char **argv, char **env)
 
     if (!draft_file && Autoedit && !msg->env->to && !msg->env->cc)
     {
-      mutt_endwin();
-      fputs(_("No recipients specified.\n"), stderr);
-      exit(1);
+      mutt_error(_("No recipients specified."));
+      goto main_curses;
     }
 
     if (subject)
@@ -592,8 +658,8 @@ int main(int argc, char **argv, char **env)
         {
           if (edit_infile)
           {
-            fputs(_("Cannot use -E flag with stdin\n"), stderr);
-            exit(1);
+            mutt_error(_("Cannot use -E flag with stdin"));
+            goto main_curses;
           }
           fin = stdin;
         }
@@ -604,9 +670,8 @@ int main(int argc, char **argv, char **env)
           fin = fopen(expanded_infile, "r");
           if (!fin)
           {
-            mutt_endwin();
-            perror(expanded_infile);
-            exit(1);
+            mutt_perror(expanded_infile);
+            goto main_curses;
           }
         }
       }
@@ -624,11 +689,10 @@ int main(int argc, char **argv, char **env)
         fout = mutt_file_fopen(tempfile, "w");
         if (!fout)
         {
-          mutt_endwin();
-          perror(tempfile);
           mutt_file_fclose(&fin);
+          mutt_perror(tempfile);
           FREE(&tempfile);
-          exit(1);
+          goto main_curses;
         }
         if (fin)
         {
@@ -643,10 +707,9 @@ int main(int argc, char **argv, char **env)
         fin = fopen(tempfile, "r");
         if (!fin)
         {
-          mutt_endwin();
-          perror(tempfile);
+          mutt_perror(tempfile);
           FREE(&tempfile);
-          exit(1);
+          goto main_curses;
         }
       }
       /* If editing the infile, keep it around afterwards so
@@ -675,8 +738,8 @@ int main(int argc, char **argv, char **env)
         context_hdr->content = mutt_new_body();
         if (fstat(fileno(fin), &st) != 0)
         {
-          perror(draft_file);
-          exit(1);
+          mutt_perror(draft_file);
+          goto main_curses;
         }
         context_hdr->content->length = st.st_size;
 
@@ -741,10 +804,9 @@ int main(int argc, char **argv, char **env)
           msg->content = a = mutt_make_file_attach(np->data);
         if (!a)
         {
-          mutt_endwin();
-          fprintf(stderr, _("%s: unable to attach file.\n"), np->data);
+          mutt_error(_("%s: unable to attach file."), np->data);
           mutt_list_free(&attach);
-          exit(1);
+          goto main_curses;
         }
       }
       mutt_list_free(&attach);
@@ -760,16 +822,14 @@ int main(int argc, char **argv, char **env)
       {
         if (truncate(expanded_infile, 0) == -1)
         {
-          mutt_endwin();
-          perror(expanded_infile);
-          exit(1);
+          mutt_perror(expanded_infile);
+          goto main_curses;
         }
         fout = mutt_file_fopen(expanded_infile, "a");
         if (!fout)
         {
-          mutt_endwin();
-          perror(expanded_infile);
-          exit(1);
+          mutt_perror(expanded_infile);
+          goto main_curses;
         }
 
         /* If the message was sent or postponed, these will already
@@ -790,9 +850,8 @@ int main(int argc, char **argv, char **env)
         fputc('\n', fout);
         if ((mutt_write_mime_body(msg->content, fout) == -1))
         {
-          mutt_endwin();
           mutt_file_fclose(&fout);
-          exit(1);
+          goto main_curses;
         }
         mutt_file_fclose(&fout);
       }
@@ -808,10 +867,9 @@ int main(int argc, char **argv, char **env)
     }
 
     mutt_free_windows();
-    mutt_endwin();
 
     if (rv != 0)
-      exit(1);
+      goto main_curses;
   }
   else
   {
@@ -819,9 +877,8 @@ int main(int argc, char **argv, char **env)
     {
       if (!mutt_buffy_check(false))
       {
-        mutt_endwin();
-        puts(_("No mailbox with new mail."));
-        exit(1);
+        mutt_message(_("No mailbox with new mail."));
+        goto main_curses;
       }
       folder[0] = '\0';
       mutt_buffy(folder, sizeof(folder));
@@ -834,26 +891,20 @@ int main(int argc, char **argv, char **env)
         OPT_NEWS = true;
         CurrentNewsSrv = nntp_select_server(NewsServer, false);
         if (!CurrentNewsSrv)
-        {
-          mutt_endwin();
-          puts(ErrorBuf);
-          exit(1);
-        }
+          goto main_curses;
       }
       else
 #endif
           if (!Incoming)
       {
-        mutt_endwin();
-        puts(_("No incoming mailboxes defined."));
-        exit(1);
+        mutt_error(_("No incoming mailboxes defined."));
+        goto main_curses;
       }
       folder[0] = '\0';
       mutt_select_file(folder, sizeof(folder), MUTT_SEL_FOLDER | MUTT_SEL_BUFFY, NULL, NULL);
       if (folder[0] == '\0')
       {
-        mutt_endwin();
-        exit(0);
+        goto main_ok;
       }
     }
 
@@ -885,13 +936,11 @@ int main(int argc, char **argv, char **env)
       switch (mx_check_empty(folder))
       {
         case -1:
-          mutt_endwin();
-          puts(strerror(errno));
-          exit(1);
+          mutt_perror(folder);
+          goto main_curses;
         case 1:
-          mutt_endwin();
-          puts(_("Mailbox is empty."));
-          exit(1);
+          mutt_error(_("Mailbox is empty."));
+          goto main_curses;
       }
     }
 
@@ -921,5 +970,13 @@ int main(int argc, char **argv, char **env)
     puts(ErrorBuf);
   }
 
-  exit(0);
+main_ok:
+  rc = 0;
+main_curses:
+  mutt_endwin();
+  /* Repeat the last message to the user */
+  if (ErrorBuf[0])
+    puts(ErrorBuf);
+main_exit:
+  return rc;
 }

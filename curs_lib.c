@@ -150,10 +150,8 @@ struct Event mutt_getch(void)
   if (ch == ERR)
   {
     if (!isatty(0))
-    {
-      endwin();
-      exit(1);
-    }
+      mutt_exit(1);
+
     return timeout;
   }
 
@@ -377,8 +375,7 @@ void mutt_query_exit(void)
     timeout(-1); /* restore blocking operation */
   if (mutt_yesorno(_("Exit NeoMutt?"), MUTT_YES) == MUTT_YES)
   {
-    endwin();
-    exit(1);
+    mutt_exit(1);
   }
   mutt_clear_error();
   mutt_curs_set(-1);
