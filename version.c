@@ -35,6 +35,15 @@
 #elif defined(HAVE_IDN_STRINGPREP_H)
 #include <idn/stringprep.h>
 #endif
+#ifdef HAVE_IDN2_H
+#include <idn2.h>
+#elif defined(HAVE_IDN_IDN2_H)
+#include <idn/idn2.h>
+#elif defined(HAVE_IDNA_H)
+#include <idna.h>
+#elif defined(HAVE_IDN_IDNA_H)
+#include <idn/idna.h>
+#endif
 
 /* #include "protos.h" */
 const char *mutt_make_version(void);
@@ -377,7 +386,9 @@ void print_version(void)
   printf("\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
 #endif
 
-#ifdef HAVE_LIBIDN
+#ifdef HAVE_IDN2_H
+  printf("\nlibidn: %s (compiled with %s)", idn2_check_version(NULL), IDN2_VERSION);
+#elif defined(HAVE_LIBIDN)
   printf("\nlibidn: %s (compiled with %s)", stringprep_check_version(NULL), STRINGPREP_VERSION);
 #endif
 

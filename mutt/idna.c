@@ -35,7 +35,11 @@
 #include "logging.h"
 #include "memory.h"
 #include "string2.h"
-#ifdef HAVE_IDNA_H
+#ifdef HAVE_IDN2_H
+#include <idn2.h>
+#elif defined(HAVE_IDN_IDN2_H)
+#include <idn/idn2.h>
+#elif defined(HAVE_IDNA_H)
 #include <idna.h>
 #elif defined(HAVE_IDN_IDNA_H)
 #include <idn/idna.h>

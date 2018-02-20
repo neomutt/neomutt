@@ -71,6 +71,8 @@ options {
 # IDN
   idn=1                     => "Disable GNU libidn for internationalized domain names"
   with-idn:path             => "Location of GNU libidn"
+  idn2=0                    => "Enable GNU libidn2 for internationalized domain names"
+  with-idn2:path            => "Location of GNU libidn2"
 # Header cache
   bdb=0                     => "Use BerkeleyDB for the header cache"
   with-bdb:path             => "Location of BerkeleyDB"
@@ -100,7 +102,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     bdb doc everything fcntl flock fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn kyotocabinet lmdb locales-fix lua mixmaster nls
+    homespool idn idn2 kyotocabinet lmdb locales-fix lua mixmaster nls
     notmuch pgp qdbm sasl smime ssl tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
@@ -110,7 +112,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster
+    bdb gdbm gnutls gpgme gss homespool idn idn2 kyotocabinet lmdb lua mixmaster
     ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -621,6 +623,9 @@ if {[get-define want-ssl] && ![get-define want-gnutls]} {
 
 ###############################################################################
 # GNU libidn
+if {[get-define want-idn] && [get-define want-idn2]} {
+  user-error "Cannot specify both --idn and --idn2"
+}
 if {[get-define want-idn]} {
   set idn_prefix [opt-val with-idn $prefix]
   set sprep 0
@@ -640,6 +645,24 @@ if {[get-define want-idn]} {
     cc-check-functions idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z
     cc-check-functions idna_to_ascii_from_utf8 idna_to_ascii_8z
     cc-check-functions idna_to_ascii_lz idna_to_ascii_from_locale
+  }
+} elseif {[get-define want-idn2]} {
+  set idn_prefix [opt-val with-idn2 $prefix]
+  cc-with [list -cflags -I$idn_prefix/include -libs -L$idn_prefix/lib] {
+    set idn2 [cc-check-includes idn2.h]
+    incr idn2 [cc-check-includes idn/idn2.h]
+    set lu8  [cc-check-function-in-lib idn2_lookup_u8 idn2]
+    if {$idn2 == 0 || $lu8 == 0} {
+      user-error "Unable to find GNU libidn2"
+    }
+    define-feature libidn
+    define-append CFLAGS -I$idn_prefix/include
+    define-append LDFLAGS -L$idn_prefix/lib
+    cc-with {-includes "idn2.h idn/idn2.h"} {
+      cc-check-defines idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z
+      cc-check-defines idna_to_ascii_from_utf8 idna_to_ascii_8z
+      cc-check-defines idna_to_ascii_lz idna_to_ascii_from_locale
+    }
   }
 }
 
