@@ -175,12 +175,9 @@ int mutt_regexlist_add(struct RegexList **rl, const char *str, int flags, struct
     t = mutt_regexlist_new();
     t->regex = rx;
     if (last)
-    {
       last->next = t;
-      last = last->next;
-    }
     else
-      *rl = last = t;
+      *rl = t;
   }
   else /* duplicate */
     mutt_regex_free(&rx);

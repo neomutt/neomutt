@@ -61,7 +61,6 @@ init.c
 keymap.c
 main.c
 mbox.c
-mbyte.c
 menu.c
 mh.c
 mutt/base64.c
@@ -79,7 +78,10 @@ mutt/mbyte.c
 mutt/md5.c
 mutt/memory.c
 mutt/message.c
+mutt/mime.c
+mutt/parameter.c
 mutt/regex.c
+mutt/rfc2047.c
 mutt/sha1.c
 mutt/signal.c
 mutt/string.c
@@ -111,7 +113,6 @@ newsrc.c
 nntp.c
 opcodes.h
 pager.c
-parameter.c
 parse.c
 pattern.c
 pgpewrap.c

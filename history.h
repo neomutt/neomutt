@@ -54,5 +54,6 @@ char *mutt_hist_prev(enum HistoryClass hclass);
 void  mutt_hist_read_file(void);
 void  mutt_hist_reset_state(enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
+void  mutt_history_complete(char *buf, size_t buflen, enum HistoryClass hclass);
 
 #endif /* _MUTT_HISTORY_H */

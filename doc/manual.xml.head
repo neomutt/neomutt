@@ -1319,6 +1319,13 @@ color sidebar_divider   color8  default
                 <entry>recall next string from history</entry>
               </row>
               <row>
+                <entry>^R</entry>
+                <entry>
+                  <literal>&lt;history-search&gt;</literal>
+                </entry>
+                <entry>use current input to search history</entry>
+              </row>
+              <row>
                 <entry>&lt;BackSpace&gt;</entry>
                 <entry>
                   <literal>&lt;backspace&gt;</literal>
