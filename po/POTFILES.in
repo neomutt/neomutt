@@ -67,17 +67,16 @@ mutt/base64.c
 mutt/buffer.c
 mutt/charset.c
 mutt/date.c
-mutt/debug.c
 mutt/exit.c
 mutt/file.c
 mutt/hash.c
 mutt/idna.c
 mutt/list.c
+mutt/logging.c
 mutt/mapping.c
 mutt/mbyte.c
 mutt/md5.c
 mutt/memory.c
-mutt/message.c
 mutt/mime.c
 mutt/parameter.c
 mutt/regex.c
@@ -88,6 +87,7 @@ mutt/string.c
 muttlib.c
 mutt_account.c
 mutt_address.c
+mutt_logging.c
 mutt_lua.c
 mutt_notmuch.c
 mutt_signal.c

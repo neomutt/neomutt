@@ -2682,8 +2682,8 @@ msgstr "%s: tundmatu käsk"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Viga käsureal: %s\n"
+msgid "Error in command line: %s"
+msgstr "Viga käsureal: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2940,7 +2940,7 @@ msgstr "Viga terminali initsialiseerimisel."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr ""
 
 #: main.c:319
@@ -2959,21 +2959,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s ei ole. Loon selle?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
+msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Saajaid ei ole määratud.\n"
+msgid "No recipients specified."
+msgstr "Saajaid ei ole määratud."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: faili ei saa lisada.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: faili ei saa lisada."
 
 #: main.c:844
 msgid "No mailbox with new mail."

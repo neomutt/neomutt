@@ -2651,8 +2651,8 @@ msgstr "%s：未知命令"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "命令行有错：%s\n"
+msgid "Error in command line: %s"
+msgstr "命令行有错：%s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2873,8 +2873,8 @@ msgstr "初始化终端时出错。"
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "错误：变量'%s'对于 -d 来说无效。\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "错误：变量'%s'对于 -d 来说无效。"
 
 #: main.c:319
 #, c-format
@@ -2892,21 +2892,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。创建它吗？"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "解析 mailto: 链接失败\n"
+msgid "Failed to parse mailto: link"
+msgstr "解析 mailto: 链接失败"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "没有指定接收者。\n"
+msgid "No recipients specified."
+msgstr "没有指定接收者。"
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "不能够使用 -E 选项在stdin情况下\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "不能够使用 -E 选项在stdin情况下"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s：无法附加文件。\n"
+msgid "%s: unable to attach file."
+msgstr "%s：无法附加文件。"
 
 #: main.c:844
 msgid "No mailbox with new mail."

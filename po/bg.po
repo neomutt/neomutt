@@ -2704,8 +2704,8 @@ msgstr "%s: непозната команда"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Грешка в командния ред: %s\n"
+msgid "Error in command line: %s"
+msgstr "Грешка в командния ред: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2965,7 +2965,7 @@ msgstr "Грешка при инициализация на терминала."
 
 #: main.c:316
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr "Грешка: '%s' е невалиден IDN."
 
 #: main.c:319
@@ -2984,21 +2984,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s не съществува. Да бъде ли създаден?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
+msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Не са указани получатели.\n"
+msgid "No recipients specified."
+msgstr "Не са указани получатели."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: грешка при прилагане на файла.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: грешка при прилагане на файла."
 
 #: main.c:844
 msgid "No mailbox with new mail."

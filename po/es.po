@@ -2710,8 +2710,8 @@ msgstr "%s: comando desconocido"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Error en línea de comando: %s\n"
+msgid "Error in command line: %s"
+msgstr "Error en línea de comando: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2959,8 +2959,8 @@ msgstr "Error al inicializar la terminal."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Error: valor '%s' es inválido para -d.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Error: valor '%s' es inválido para -d."
 
 #: main.c:319
 #, c-format
@@ -2978,21 +2978,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s no existe. ¿Crearlo?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Fallo al interpretar enlace mailto:\n"
+msgid "Failed to parse mailto: link"
+msgstr "Fallo al interpretar enlace mailto:"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "No hay destinatario.\n"
+msgid "No recipients specified."
+msgstr "No hay destinatario."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "No se puede usar -E con la salida estándar\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "No se puede usar -E con la salida estándar"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: imposible adjuntar archivo.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: imposible adjuntar archivo."
 
 #: main.c:844
 msgid "No mailbox with new mail."

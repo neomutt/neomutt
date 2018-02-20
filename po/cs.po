@@ -2621,8 +2621,8 @@ msgstr "Příkaz %s není znám."
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Chyba %s na příkazovém řádku\n"
+msgid "Error in command line: %s"
+msgstr "Chyba %s na příkazovém řádku"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2846,8 +2846,8 @@ msgstr "Chyba při inicializaci terminálu."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Chyba: pro -d není „%s“ platná hodnota.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Chyba: pro -d není „%s“ platná hodnota."
 
 #: main.c:319
 #, c-format
@@ -2865,21 +2865,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s neexistuje. Mám ho vytvořit?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
+msgid "Failed to parse mailto: link"
+msgstr "Rozebrání odkazu mailto: se nezdařilo"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Nejsou specifikováni žádní příjemci.\n"
+msgid "No recipients specified."
+msgstr "Nejsou specifikováni žádní příjemci."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "Přepínač -E nelze se standardním vstupem použít\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "Přepínač -E nelze se standardním vstupem použít"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "Soubor %s nelze připojit.\n"
+msgid "%s: unable to attach file."
+msgstr "Soubor %s nelze připojit."
 
 #: main.c:844
 msgid "No mailbox with new mail."

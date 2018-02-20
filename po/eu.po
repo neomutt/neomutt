@@ -2646,8 +2646,8 @@ msgstr "%s: komando ezezaguna"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Komando lerroan errorea: %s\n"
+msgid "Error in command line: %s"
+msgstr "Komando lerroan errorea: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2867,7 +2867,7 @@ msgstr "Errorea terminala abiaraztekoan."
 
 #: main.c:316
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr "Errorea: '%s' IDN okerra da."
 
 #: main.c:319
@@ -2886,21 +2886,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s ez da existitzen. Sortu?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Huts maito: lotura analizatzean\n"
+msgid "Failed to parse mailto: link"
+msgstr "Huts maito: lotura analizatzean"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Ez da jasotzailerik eman.\n"
+msgid "No recipients specified."
+msgstr "Ez da jasotzailerik eman."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: ezin da fitxategia txertatu.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: ezin da fitxategia txertatu."
 
 #: main.c:844
 msgid "No mailbox with new mail."

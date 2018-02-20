@@ -2678,8 +2678,8 @@ msgstr "%s: 알 수 없는 명령어"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "명령어 오류: %s\n"
+msgid "Error in command line: %s"
+msgstr "명령어 오류: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2931,7 +2931,7 @@ msgstr "터미널 초기화 오류."
 
 #: main.c:316
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr "오류: '%s'는 잘못된 IDN."
 
 #: main.c:319
@@ -2950,21 +2950,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s가 없음. 만들까요?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
+msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "수신자가 지정되지 않음.\n"
+msgid "No recipients specified."
+msgstr "수신자가 지정되지 않음."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: 파일을 첨부할 수 없음.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: 파일을 첨부할 수 없음."
 
 #: main.c:844
 msgid "No mailbox with new mail."
