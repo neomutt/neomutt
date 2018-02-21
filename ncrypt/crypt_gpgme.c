@@ -2577,9 +2577,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           if (gpg_err_code(err) == GPG_ERR_NO_DATA)
           {
             /* Decrypt verify can't handle signed only messages. */
-            err = (gpgme_data_seek(armored_data, 0, SEEK_SET) == -1) ?
-                      gpgme_error_from_errno(errno) :
-                      0;
+            gpgme_data_seek(armored_data, 0, SEEK_SET);
             /* Must release plaintext so that we supply an
                          uninitialized object. */
             gpgme_data_release(plaintext);

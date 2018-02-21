@@ -74,10 +74,10 @@ extern const char MimeSpecials[];
 
 #define hexval(c) IndexHex[(unsigned int) (c)]
 
-#define is_multipart(x)                                                        \
-  ((x)->type == TYPEMULTIPART ||                                               \
-   ((x)->type == TYPEMESSAGE && ((strcasecmp((x)->subtype, "rfc822") == 0) ||  \
-                                 (strcasecmp((x)->subtype, "news") == 0))))
+#define is_multipart(x)                                                             \
+  (((x)->type == TYPEMULTIPART) || (((x)->type == TYPEMESSAGE) && ((x)->subtype) && \
+                                    ((strcasecmp((x)->subtype, "rfc822") == 0) ||   \
+                                     (strcasecmp((x)->subtype, "news") == 0))))
 
 #define TYPE(X)                                                                \
   ((X->type == TYPEOTHER) && (X->xtype != NULL) ? X->xtype : BodyTypes[(X->type)])
