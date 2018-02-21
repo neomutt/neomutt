@@ -574,7 +574,11 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   else if (object == MT_COLOR_INDEX_TAG)
     do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
 
-  if (do_cache && !OPT_NO_CURSES)
+  bool is_index = ((object == MT_COLOR_INDEX) || (object == MT_COLOR_INDEX_AUTHOR) ||
+                   (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
+                   (object == MT_COLOR_INDEX_TAG));
+
+  if (is_index && do_cache && !OPT_NO_CURSES)
   {
     mutt_set_menu_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
@@ -655,9 +659,6 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
         free_color_line(tmp, 1);
         return -1;
       }
-      /* force re-caching of index colors */
-      for (int i = 0; Context && i < Context->msgcount; i++)
-        Context->hdrs[i]->pair = 0;
     }
     else
     {
@@ -687,6 +688,13 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
 #endif
     tmp->pair = attr;
     STAILQ_INSERT_HEAD(top, tmp, entries);
+  }
+
+  /* force re-caching of index colors */
+  if (is_index)
+  {
+    for (int i = 0; Context && i < Context->msgcount; i++)
+      Context->hdrs[i]->pair = 0;
   }
 
   return 0;
