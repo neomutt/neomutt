@@ -1178,7 +1178,7 @@ static char *smime_extract_signer_certificate(char *infile)
 /**
  * smime_invoke_import - Add a certificate and update index file (externally)
  */
-void smime_invoke_import(char *infile, char *mailbox)
+void smime_invoke_import(char *infile, char *UNUSED(mailbox))
 {
   char tmpfname[_POSIX_PATH_MAX], *certfile = NULL, buf[STRING];
   FILE *smimein = NULL, *fpout = NULL, *fperr = NULL;

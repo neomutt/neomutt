@@ -543,7 +543,7 @@ void mutt_update_mailbox(struct Buffy *b)
 }
 
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
-                         unsigned long data, struct Buffer *err)
+                         unsigned long data, struct Buffer *UNUSED(err))
 {
   struct Buffy **b = NULL;
   char buf[_POSIX_PATH_MAX];
@@ -634,7 +634,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 }
 
 int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
-                           unsigned long data, struct Buffer *err)
+                           unsigned long data, struct Buffer *UNUSED(err))
 {
   char buf[_POSIX_PATH_MAX];
   bool clear_all = false;

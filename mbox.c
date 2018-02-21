@@ -507,21 +507,21 @@ static int mbox_close_mailbox(struct Context *ctx)
   return 0;
 }
 
-static int mbox_open_message(struct Context *ctx, struct Message *msg, int msgno)
+static int mbox_open_message(struct Context *ctx, struct Message *msg, int UNUSED(msgno))
 {
   msg->fp = ctx->fp;
 
   return 0;
 }
 
-static int mbox_close_message(struct Context *ctx, struct Message *msg)
+static int mbox_close_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   msg->fp = NULL;
 
   return 0;
 }
 
-static int mbox_commit_message(struct Context *ctx, struct Message *msg)
+static int mbox_commit_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   if (fputc('\n', msg->fp) == EOF)
     return -1;
@@ -535,7 +535,7 @@ static int mbox_commit_message(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
-static int mmdf_commit_message(struct Context *ctx, struct Message *msg)
+static int mmdf_commit_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   if (fputs(MMDF_SEP, msg->fp) == EOF)
     return -1;
@@ -549,7 +549,8 @@ static int mmdf_commit_message(struct Context *ctx, struct Message *msg)
   return 0;
 }
 
-static int mbox_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
+static int mbox_open_new_message(struct Message *msg, struct Context *dest,
+                                 struct Header *UNUSED(hdr))
 {
   msg->fp = dest->fp;
   return 0;

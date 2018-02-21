@@ -1306,7 +1306,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 /**
  * count_body_parts_check - Compares mime types to the ok and except lists
  */
-static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool dflt)
+static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool CONDIT(dflt))
 {
   struct AttachMatch *a = NULL;
 

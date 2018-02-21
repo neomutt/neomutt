@@ -47,7 +47,7 @@
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *UNUSED(method))
 {
   int rc;
   enum ImapAuthRes res = IMAP_AUTH_SUCCESS;

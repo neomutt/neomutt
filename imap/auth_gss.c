@@ -98,7 +98,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
  * @param method Name of this authentication method
  * @retval enum Result, e.g. #IMAP_AUTH_SUCCESS
  */
-enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *UNUSED(method))
 {
   gss_buffer_desc request_buf, send_token;
   gss_buffer_t sec_token;

@@ -1613,7 +1613,7 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
  * all trailing spaces to improve interoperability; if $text_flowed is unset,
  * simply verbatim copy input
  */
-static int text_plain_handler(struct Body *b, struct State *s)
+static int text_plain_handler(struct Body *UNUSED(b), struct State *s)
 {
   char *buf = NULL;
   size_t l = 0, sz = 0;

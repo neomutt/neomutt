@@ -151,7 +151,7 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   return data.data;
 }
 
-static void hcache_bdb_free(void *vctx, void **data)
+static void hcache_bdb_free(void *UNUSED(vctx), void **data)
 {
   FREE(data);
 }

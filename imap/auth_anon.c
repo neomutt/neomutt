@@ -49,7 +49,7 @@
  *
  * this is basically a stripped-down version of the cram-md5 method.
  */
-enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *UNUSED(method))
 {
   int rc;
 

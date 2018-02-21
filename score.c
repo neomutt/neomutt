@@ -74,8 +74,8 @@ void mutt_check_rescore(struct Context *ctx)
   OPT_NEED_RESCORE = false;
 }
 
-int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                     struct Buffer *err)
+int mutt_parse_score(struct Buffer *buf, struct Buffer *s,
+                     unsigned long UNUSED(data), struct Buffer *err)
 {
   struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
@@ -170,8 +170,8 @@ void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
     mutt_set_flag_update(ctx, hdr, MUTT_FLAG, 1, upd_ctx);
 }
 
-int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data,
-                       struct Buffer *err)
+int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
+                       unsigned long UNUSED(data), struct Buffer *UNUSED(err))
 {
   struct Score *tmp = NULL, *last = NULL;
 

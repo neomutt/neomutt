@@ -1221,7 +1221,7 @@ static int parse_overview_line(char *line, void *data)
 /**
  * nntp_fetch_headers - Fetch headers
  */
-static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
+static int nntp_fetch_headers(struct Context *ctx, void *CONDIT(hc), anum_t first,
                               anum_t last, int restore)
 {
   struct NntpData *nntp_data = ctx->data;
@@ -1717,7 +1717,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
 /**
  * nntp_close_message - Close message
  */
-static int nntp_close_message(struct Context *ctx, struct Message *msg)
+static int nntp_close_message(struct Context *UNUSED(ctx), struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
 }
@@ -2068,7 +2068,7 @@ static int check_mailbox(struct Context *ctx)
  * @retval  0             No change
  * @retval -1             Lost connection
  */
-static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
+static int nntp_check_mailbox(struct Context *ctx, int *UNUSED(index_hint))
 {
   int ret = check_mailbox(ctx);
   if (ret == 0)
@@ -2083,7 +2083,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 /**
  * nntp_sync_mailbox - Save changes to .newsrc and cache
  */
-static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
+static int nntp_sync_mailbox(struct Context *ctx, int *UNUSED(index_hint))
 {
   struct NntpData *nntp_data = ctx->data;
   int rc;

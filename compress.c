@@ -349,10 +349,11 @@ static char *escape_path(char *src)
  * | \%f     | Compressed file
  * | \%t     | Plaintext, temporary file
  */
-static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                       char op, const char *src, const char *prec,
-                                       const char *if_str, const char *else_str,
-                                       unsigned long data, enum FormatFlag flags)
+static const char *
+compress_format_str(char *buf, size_t buflen, size_t UNUSED(col), int UNUSED(cols),
+                    char op, const char *src, const char *UNUSED(prec),
+                    const char *UNUSED(if_str), const char *UNUSED(else_str),
+                    unsigned long data, enum FormatFlag UNUSED(flags))
 {
   if (!buf || (data == 0))
     return src;

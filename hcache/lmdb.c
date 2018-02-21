@@ -191,7 +191,7 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   return data.mv_data;
 }
 
-static void hcache_lmdb_free(void *vctx, void **data)
+static void hcache_lmdb_free(void *UNUSED(vctx), void **UNUSED(data))
 {
   /* LMDB data is owned by the database */
 }

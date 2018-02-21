@@ -784,7 +784,7 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
  * @retval 0 on success
  * @retval -1 on error
  */
-static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
+static int append_message(struct Context *dest, FILE *fpin, struct Context *CONDIT(src),
                           struct Header *hdr, int flags, int chflags)
 {
   char buf[STRING];

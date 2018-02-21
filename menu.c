@@ -784,7 +784,7 @@ static void menu_prev_entry(struct Menu *menu)
     mutt_error(_("You are on the first entry."));
 }
 
-static int default_color(int i)
+static int default_color(int UNUSED(i))
 {
   return ColorDefs[MT_COLOR_NORMAL];
 }

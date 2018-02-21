@@ -349,7 +349,7 @@ static void ssl_dprint_err_stack(void)
  * @retval >0 Success, number of chars written to buf
  * @retval  0 Error
  */
-static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
+static int ssl_passwd_cb(char *buf, int size, int UNUSED(rwflag), void *userdata)
 {
   struct Account *account = (struct Account *) userdata;
 
@@ -370,7 +370,7 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
  * @param conn Connection to a server
  * @retval -1 Always
  */
-static int ssl_socket_open_err(struct Connection *conn)
+static int ssl_socket_open_err(struct Connection *UNUSED(conn))
 {
   mutt_error(_("SSL disabled due to the lack of entropy"));
   mutt_sleep(2);

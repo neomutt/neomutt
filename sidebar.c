@@ -116,8 +116,9 @@ enum SidebarSrc
  * | \%t     | Number of tagged messages
  * | \%!     | 'n!' Flagged messages
  */
-static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
+static const char *sidebar_format_str(char *buf, size_t buflen, size_t col,
+                                      int UNUSED(cols), char op,
+                                      const char *src, const char *prec,
                                       const char *if_str, const char *else_str,
                                       unsigned long data, enum FormatFlag flags)
 {

@@ -533,7 +533,7 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   return true;
 }
 
-static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
+static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *UNUSED(err))
 {
   char *tmp = NULL;
   bool do_exclusive = false;

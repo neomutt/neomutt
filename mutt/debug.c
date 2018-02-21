@@ -33,6 +33,7 @@
 #include "config.h"
 #include <stdarg.h>
 #include <stdio.h>
+#include "debug.h"
 
 /**
  * mutt_debug_real - Output some debugging information
@@ -45,7 +46,8 @@
  * This stub function ignores the logging level and outputs all information to
  * stderr.
  */
-int mutt_debug_real(const char *function, const char *file, int line, int level, ...)
+int mutt_debug_real(const char *UNUSED(function), const char *UNUSED(file),
+                    int UNUSED(line), int level, ...)
 {
   va_list ap;
   va_start(ap, level);
