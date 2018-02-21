@@ -2374,9 +2374,8 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
   if (!ctx || !msg)
     return 1;
   struct Header *cur = ctx->hdrs[msgno];
-  char *folder = ctx->path;
   char path[_POSIX_PATH_MAX];
-  folder = nm_header_get_folder(cur);
+  char *folder = nm_header_get_folder(cur);
 
   snprintf(path, sizeof(path), "%s/%s", folder, cur->path);
 

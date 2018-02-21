@@ -484,7 +484,6 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   bool unusable = false;
 
   keymax = 0;
-  KeyTable = NULL;
 
   for (i = 0, kp = keys; kp; kp = kp->next)
   {

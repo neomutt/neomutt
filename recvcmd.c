@@ -503,7 +503,6 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     {
       if (mutt_copy_body(fp, last, cur) == -1)
         goto bail;
-      last = &((*last)->next);
     }
   }
   else

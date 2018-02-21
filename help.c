@@ -225,7 +225,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   split = (MuttIndexWindow->cols < 40);
   if (split)
   {
-    col_a = col = 0;
+    col = 0;
     col_b = LONG_STRING;
     fputc('\n', f);
   }

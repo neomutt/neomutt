@@ -245,8 +245,6 @@ static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
 
   while (len > 0)
   {
-    last = 0;
-
     /*
      * It's ok to use a fixed size buffer for input, even if the line turns
      * out to be longer than this.  Just process the line in chunks.  This

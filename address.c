@@ -495,7 +495,7 @@ void mutt_addr_free(struct Address **p)
  */
 struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
 {
-  int ws_pending, nl;
+  int ws_pending;
   const char *ps = NULL;
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
@@ -508,9 +508,6 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
     last = last->next;
 
   ws_pending = mutt_str_is_email_wsp(*s);
-  nl = mutt_str_strlen(s);
-  if (nl)
-    nl = s[nl - 1] == '\n';
 
   s = mutt_str_skip_email_wsp(s);
   while (*s)
