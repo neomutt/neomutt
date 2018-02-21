@@ -826,7 +826,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
 void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
 {
-  struct State state;
+  struct State state = { 0 };
 
   pid_t thepid;
   if (query_quadoption(Print,
@@ -839,7 +839,6 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if (!can_print(actx, top, tag))
       return;
     mutt_endwin(NULL);
-    memset(&state, 0, sizeof(struct State));
     thepid = mutt_create_filter(NONULL(PrintCommand), &state.fpout, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fpout);

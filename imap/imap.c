@@ -225,14 +225,12 @@ static void set_flag(struct ImapData *idata, int aclbit, int flag,
 static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
                         bool changed, bool invert, int *pos)
 {
-  struct Header **hdrs = idata->ctx->hdrs;
   int count = 0;      /* number of messages in message set */
   bool match = false; /* whether current message matches flag condition */
   unsigned int setstart = 0; /* start of current message range */
   int n;
   bool started = false;
-
-  hdrs = idata->ctx->hdrs;
+  struct Header **hdrs = idata->ctx->hdrs;
 
   for (n = *pos; n < idata->ctx->msgcount && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
   {

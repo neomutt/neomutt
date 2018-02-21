@@ -341,7 +341,7 @@ void mutt_browser_select_dir(char *f);
 void mutt_get_parent_path(char *output, char *path, size_t olen);
 size_t mutt_realpath(char *buf);
 
-#define MUTT_RANDTAG_LEN (16)
+#define MUTT_RANDTAG_LEN 16
 void mutt_rand_base32(void *out, size_t len);
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);

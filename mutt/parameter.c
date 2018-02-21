@@ -142,7 +142,7 @@ void mutt_param_set(struct ParameterList* p, const char *attribute, const char *
 
 /**
  * mutt_param_delete - Delete a matching Parameter
- * @param[in[  p         ParameterList
+ * @param[in]  p         ParameterList
  * @param[in]  attribute Attribute to match
  */
 void mutt_param_delete(struct ParameterList *p, const char *attribute)

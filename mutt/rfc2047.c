@@ -27,10 +27,10 @@
  *
  * RFC2047 MIME extensions encoding / decoding routines.
  *
- * | Function                      | Description
- * | :---------------------------- | :-----------------------------------------
- * | mutt_rfc2047_decode()         | Decode any RFC2047-encoded header fields
- * | mutt_rfc2047_encode()         | RFC-2047-encode a string
+ * | Function              | Description
+ * | :-------------------- | :-----------------------------------------
+ * | mutt_rfc2047_decode() | Decode any RFC2047-encoded header fields
+ * | mutt_rfc2047_encode() | RFC-2047-encode a string
  */
 
 #include "config.h"
@@ -442,7 +442,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   size_t bufpos, buflen;
   char *u = NULL, *t0 = NULL, *t1 = NULL, *t = NULL;
   char *s0 = NULL, *s1 = NULL;
-  size_t ulen, r, n, wlen;
+  size_t ulen, r, n, wlen = 0;
   encoder_t encoder;
   char *tocode1 = NULL;
   const char *tocode = NULL;

@@ -42,6 +42,7 @@
  * | mutt_str_lws_len()            | Measure the linear-white-space at the beginning of a string
  * | mutt_str_lws_rlen()           | Measure the linear-white-space at the end of a string
  * | mutt_str_next_word()          | Find the next word in a string
+ * | mutt_str_pretty_size()        | Display an abbreviated size, e.g. 3.4K
  * | mutt_str_remove_trailing_ws() | Trim trailing whitespace from a string
  * | mutt_str_replace()            | Replace one string with another
  * | mutt_str_rstrnstr()           | Find last instance of a substring

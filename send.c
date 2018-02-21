@@ -1798,7 +1798,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if (killfrom)
     {
       mutt_addr_free(&msg->env->from);
-      killfrom = false;
     }
   }
 

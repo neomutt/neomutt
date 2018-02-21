@@ -1116,9 +1116,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             len = mutt_wstr_trunc(tmp, buflen - wlen, cols - col, NULL);
           memcpy(wptr, tmp, len);
           wptr += len;
-          wlen += len;
-          col += wid;
-          src += pl;
         }
         break; /* skip rest of input */
       }
@@ -1144,7 +1141,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
             col += pw;
             c--;
           }
-          src += pl;
         }
         break; /* skip rest of input */
       }

@@ -1416,7 +1416,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;
-  unsigned char *buf_ptr = buf;
+  unsigned char *buf_ptr = NULL;
   int ch, vch, col, cnt, b_read;
   int buf_ready = 0;
   bool change_last = false;

@@ -2948,7 +2948,9 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (post)
     set_noconv_flags(hdr->content, 1);
 
+#ifdef RECORD_FOLDER_HOOK
   mutt_folder_hook(path);
+#endif
   if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
   {
     mutt_debug(1, "unable to open mailbox %s in append-mode, aborting.\n", path);
@@ -3139,10 +3141,12 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     set_noconv_flags(hdr->content, 0);
 
 done:
+#ifdef RECORD_FOLDER_HOOK
   /* We ran a folder hook for the destination mailbox,
    * now we run it for the user's current mailbox */
   if (Context && Context->path)
     mutt_folder_hook(Context->path);
+#endif
 
   return rc;
 }
