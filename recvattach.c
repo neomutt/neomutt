@@ -829,9 +829,8 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
   struct State state = { 0 };
 
   pid_t thepid;
-  if (query_quadoption(Print,
-                       tag ? _("Print tagged attachment(s)?") :
-                             _("Print attachment?")) != MUTT_YES)
+  if (query_quadoption(Print, tag ? _("Print tagged attachment(s)?") :
+                                    _("Print attachment?")) != MUTT_YES)
     return;
 
   if (!AttachSplit)
@@ -908,7 +907,7 @@ int mutt_attach_display_loop(struct Menu *menu, int op, struct Header *hdr,
     {
       case OP_DISPLAY_HEADERS:
         Weed = !Weed;
-      /* fallthrough */
+        /* fallthrough */
 
       case OP_VIEW_ATTACH:
         op = mutt_view_attachment(CURATTACH->fp, CURATTACH->content, MUTT_REGULAR, hdr, actx);

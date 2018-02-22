@@ -839,7 +839,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   }
   else if (check_sig(buf, line_info, n - 1) == 0)
     line_info[n].type = MT_COLOR_SIGNATURE;
-  else if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
+  else if (QuoteRegex && QuoteRegex->regex &&
+           regexec(QuoteRegex->regex, buf, 1, pmatch, 0) == 0)
   {
     if (Smileys && Smileys->regex && (regexec(Smileys->regex, buf, 1, smatch, 0) == 0))
     {
@@ -1488,11 +1489,12 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
         (*last)--;
       goto out;
     }
-    if (QuoteRegex && QuoteRegex->regex && regexec(QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0)
+    if (QuoteRegex && QuoteRegex->regex &&
+        regexec(QuoteRegex->regex, (char *) fmt, 1, pmatch, 0) == 0)
     {
       (*line_info)[n].quote =
           classify_quote(quote_list, (char *) fmt + pmatch[0].rm_so,
-                        pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
+                         pmatch[0].rm_eo - pmatch[0].rm_so, force_redraw, q_level);
     }
     else
     {
@@ -1671,7 +1673,10 @@ static int up_n_lines(int nlines, struct Line *info, int cur, int hiding)
 }
 
 static const struct Mapping PagerHelp[] = {
-  { N_("Exit"), OP_EXIT }, { N_("PrevPg"), OP_PREV_PAGE }, { N_("NextPg"), OP_NEXT_PAGE }, { NULL, 0 },
+  { N_("Exit"), OP_EXIT },
+  { N_("PrevPg"), OP_PREV_PAGE },
+  { N_("NextPg"), OP_NEXT_PAGE },
+  { NULL, 0 },
 };
 static const struct Mapping PagerHelpExtra[] = {
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
@@ -2451,8 +2456,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
           break;
         }
-      /* no previous search pattern */
-      /* fallthrough */
+        /* no previous search pattern */
+        /* fallthrough */
 
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
@@ -2703,7 +2708,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         km_error_key(MENU_PAGER);
         break;
 
-      /* --------------------------------------------------------------------
+        /* --------------------------------------------------------------------
          * The following are operations on the current message rather than
          * adjusting the view of the message.
          */

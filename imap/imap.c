@@ -2094,8 +2094,7 @@ static int imap_open_mailbox(struct Context *ctx)
   }
   FREE(&pmx.mbox);
 
-  snprintf(bufout, sizeof(bufout), "%s %s",
-           ctx->readonly ? "EXAMINE" : "SELECT", buf);
+  snprintf(bufout, sizeof(bufout), "%s %s", ctx->readonly ? "EXAMINE" : "SELECT", buf);
 
   idata->state = IMAP_SELECTED;
 

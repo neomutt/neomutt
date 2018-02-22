@@ -103,12 +103,12 @@ static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx
     md5_uint32 C_save = C;
     md5_uint32 D_save = D;
 
-/* First round: using the given function, the context and a constant the next
- * context is computed.  Because the algorithms processing unit is a 32-bit
- * word and it is determined to work on words in little endian byte order we
- * perhaps have to change the byte order before the computation.  To reduce the
- * work for the next steps we store the swapped words in the array
- * CORRECT_WORDS. */
+    /* First round: using the given function, the context and a constant the
+     * next context is computed.  Because the algorithms processing unit is a
+     * 32-bit word and it is determined to work on words in little endian byte
+     * order we perhaps have to change the byte order before the computation.
+     * To reduce the work for the next steps we store the swapped words in the
+     * array CORRECT_WORDS. */
 
 #define OP(a, b, c, d, s, T)                                                   \
   do                                                                           \

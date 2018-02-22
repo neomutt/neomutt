@@ -155,8 +155,7 @@ int mutt_protect(struct Header *msg, char *keylist)
         return -1;
       }
     }
-    else if (!mutt_str_strcasecmp("flowed",
-                                  mutt_param_get(&msg->content->parameter, "format")))
+    else if (!mutt_str_strcasecmp("flowed", mutt_param_get(&msg->content->parameter, "format")))
     {
       if ((query_quadoption(PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
@@ -971,8 +970,9 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   if (!signed_type)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
-    state_printf(s, _("[-- Error: "
-                      "Unknown multipart/signed protocol %s! --]\n\n"),
+    state_printf(s,
+                 _("[-- Error: "
+                   "Unknown multipart/signed protocol %s! --]\n\n"),
                  mutt_param_get(&b->parameter, "protocol"));
     return mutt_body_handler(a, s);
   }
@@ -1049,8 +1049,9 @@ int mutt_signed_handler(struct Body *a, struct State *s)
             continue;
           }
 
-          state_printf(s, _("[-- Warning: "
-                            "We can't verify %s/%s signatures. --]\n\n"),
+          state_printf(s,
+                       _("[-- Warning: "
+                         "We can't verify %s/%s signatures. --]\n\n"),
                        TYPE(signatures[i]), signatures[i]->subtype);
         }
       }

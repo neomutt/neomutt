@@ -48,7 +48,7 @@ static void curses_signal_handler(int sig)
       if (!IsEndwin)
         endwin();
       kill(0, SIGSTOP);
-    /* fallthrough */
+      /* fallthrough */
 
     case SIGCONT:
       if (!IsEndwin)

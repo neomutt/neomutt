@@ -633,8 +633,7 @@ static void menu_length_jump(struct Menu *menu, int jumplen)
     }
     else
     {
-      mutt_error(neg ? _("You are on the first page.") :
-                       _("You are on the last page."));
+      mutt_error(neg ? _("You are on the first page.") : _("You are on the last page."));
     }
 
     menu->current = MIN(menu->current, menu->max - 1);

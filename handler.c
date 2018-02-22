@@ -398,9 +398,9 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-/* ----------------------------------------------------------------------------
- * A (not so) minimal implementation of RFC1563.
- */
+  /* ----------------------------------------------------------------------------
+   * A (not so) minimal implementation of RFC1563.
+   */
 
 #define INDENT_SIZE 4
 
@@ -1551,8 +1551,7 @@ static int external_body_handler(struct Body *b, struct State *s)
       state_printf(s, _("[-- This %s/%s attachment is not included, --]\n"),
                    TYPE(b->parts), b->parts->subtype);
       state_mark_attach(s);
-      state_printf(
-          s, _("[-- and the indicated access-type %s is unsupported --]\n"), access_type);
+      state_printf(s, _("[-- and the indicated access-type %s is unsupported --]\n"), access_type);
       mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
@@ -1829,7 +1828,8 @@ int mutt_body_handler(struct Body *b, struct State *s)
       if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_pgp_handler;
       else if (ReflowText &&
-               (mutt_str_strcasecmp("flowed", mutt_param_get(&b->parameter, "format")) == 0))
+               (mutt_str_strcasecmp("flowed",
+                                    mutt_param_get(&b->parameter, "format")) == 0))
       {
         handler = rfc3676_handler;
       }
@@ -1884,8 +1884,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
     if (b->encoding != ENC7BIT && b->encoding != ENC8BIT && b->encoding != ENCBINARY)
     {
-      mutt_debug(1,
-                 "Bad encoding type %d for multipart entity, assuming 7 bit\n", b->encoding);
+      mutt_debug(1, "Bad encoding type %d for multipart entity, assuming 7 bit\n", b->encoding);
       b->encoding = ENC7BIT;
     }
   }

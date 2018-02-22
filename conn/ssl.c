@@ -824,7 +824,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
   /* did we find a name matching hostname? */
   bool match_found;
 
-/* Check if 'hostname' matches the one of the subjectAltName extensions of
+  /* Check if 'hostname' matches the one of the subjectAltName extensions of
    * type DNS or the Common Name (CN). */
 
 #ifdef HAVE_LIBIDN
@@ -992,8 +992,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
              x509_get_part(x509_issuer, part[u]));
 
   row++;
-  snprintf(menu->dialog[row++], SHORT_STRING, "%s",
-           _("This certificate is valid"));
+  snprintf(menu->dialog[row++], SHORT_STRING, "%s", _("This certificate is valid"));
   snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"),
            asn1time_to_string(X509_get_notBefore(cert)));
   snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"),

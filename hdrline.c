@@ -226,7 +226,10 @@ static const char *make_from_prefix(enum FieldType disp)
   /* need 2 bytes at the end, one for the space, another for NUL */
   static char padded[8];
   static const char *long_prefixes[DISP_NUM] = {
-        [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ", [DISP_FROM] = "",
+    [DISP_TO] = "To ",
+    [DISP_CC] = "Cc ",
+    [DISP_BCC] = "Bcc ",
+    [DISP_FROM] = "",
   };
 
   if (!FromChars || !FromChars->chars || (FromChars->len == 0))
@@ -519,7 +522,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           break;
         }
       }
-    /* fallthrough */
+      /* fallthrough */
 
     case 'a':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
@@ -551,8 +554,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         /* break if 'K' returns nothing */
         break;
       }
-    /* if 'B' returns nothing */
-    /* fallthrough */
+      /* if 'B' returns nothing */
+      /* fallthrough */
 
     case 'b':
       if (ctx)

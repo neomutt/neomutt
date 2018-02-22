@@ -75,7 +75,7 @@ void crypt_init(void)
 #else
       1
 #endif
-          )
+  )
     crypto_module_register(&crypt_mod_pgp_classic);
 #endif
 
@@ -86,7 +86,7 @@ void crypt_init(void)
 #else
       1
 #endif
-          )
+  )
     crypto_module_register(&crypt_mod_smime_classic);
 #endif
 

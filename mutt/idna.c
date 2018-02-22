@@ -165,8 +165,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 
     if (mutt_ch_convert_string(&reversed_user, Charset, "utf-8", 0) == -1)
     {
-      mutt_debug(
-          1, "Not reversible. Charset conv to utf-8 failed for user = '%s'.\n", reversed_user);
+      mutt_debug(1, "Not reversible. Charset conv to utf-8 failed for user = '%s'.\n",
+                 reversed_user);
       goto cleanup;
     }
 
@@ -180,10 +180,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 
     if (mutt_ch_convert_string(&reversed_domain, Charset, "utf-8", 0) == -1)
     {
-      mutt_debug(
-          1,
-          "Not reversible. Charset conv to utf-8 failed for domain = '%s'.\n",
-          reversed_domain);
+      mutt_debug(1, "Not reversible. Charset conv to utf-8 failed for domain = '%s'.\n",
+                 reversed_domain);
       goto cleanup;
     }
 
@@ -196,8 +194,8 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
     {
       if (idna_to_ascii_8z(reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       {
-        mutt_debug(
-            1, "Not reversible. idna_to_ascii_8z failed for domain = '%s'.\n", reversed_domain);
+        mutt_debug(1, "Not reversible. idna_to_ascii_8z failed for domain = '%s'.\n",
+                   reversed_domain);
         goto cleanup;
       }
       mutt_str_replace(&reversed_domain, tmp);

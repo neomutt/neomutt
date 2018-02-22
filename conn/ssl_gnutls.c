@@ -314,8 +314,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
   fp = fopen(CertificateFile, "r");
   if (fp)
   {
-    if (REGCOMP(&preg,
-                "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
+    if (REGCOMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
                 REG_ICASE) != 0)
     {
       mutt_file_fclose(&fp);

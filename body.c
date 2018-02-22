@@ -104,10 +104,10 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   struct Parameter *np, *new;
   TAILQ_FOREACH(np, &src->parameter, entries)
   {
-      new = mutt_param_new();
-      new->attribute = mutt_str_strdup(np->attribute);
-      new->value = mutt_str_strdup(np->value);
-      TAILQ_INSERT_HEAD(&b->parameter, new, entries);
+    new = mutt_param_new();
+    new->attribute = mutt_str_strdup(np->attribute);
+    new->value = mutt_str_strdup(np->value);
+    TAILQ_INSERT_HEAD(&b->parameter, new, entries);
   }
 
   mutt_stamp_attachment(b);

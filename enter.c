@@ -469,7 +469,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
           {
             goto self_insert;
           }
-        /* fallthrough */
+          /* fallthrough */
 
         case OP_EDITOR_COMPLETE:
         case OP_EDITOR_COMPLETE_QUERY:

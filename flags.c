@@ -395,8 +395,8 @@ int mutt_change_flag(struct Header *h, int bf)
   int i, flag;
   struct Event event;
 
-  mutt_window_mvprintw(MuttMessageWindow, 0, 0, "%s? (D/N/O/r/*/!): ",
-                       bf ? _("Set flag") : _("Clear flag"));
+  mutt_window_mvprintw(MuttMessageWindow, 0, 0,
+                       "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
   mutt_window_clrtoeol(MuttMessageWindow);
 
   event = mutt_getch();

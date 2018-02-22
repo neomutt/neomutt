@@ -734,18 +734,17 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
         if (!h.data->uid)
         {
-          mutt_debug(2, "skipping hcache FETCH response for message number %d "
-                        "missing a UID\n",
+          mutt_debug(2,
+                     "skipping hcache FETCH response for message number %d "
+                     "missing a UID\n",
                      h.data->msn);
           continue;
         }
 
         if (h.data->msn < 1 || h.data->msn > msn_end)
         {
-          mutt_debug(
-              1,
-              "skipping hcache FETCH response for unknown message number %d\n",
-              h.data->msn);
+          mutt_debug(1, "skipping hcache FETCH response for unknown message number %d\n",
+                     h.data->msn);
           continue;
         }
 
@@ -863,8 +862,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
         if (h.data->msn < 1 || h.data->msn > fetch_msn_end)
         {
-          mutt_debug(1,
-                     "skipping FETCH response for unknown message number %d\n",
+          mutt_debug(1, "skipping FETCH response for unknown message number %d\n",
                      h.data->msn);
           continue;
         }

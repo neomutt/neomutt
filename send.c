@@ -582,8 +582,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   if ((flags & (SENDLISTREPLY | SENDGROUPREPLY)) && in->mail_followup_to)
   {
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
-             in->mail_followup_to->mailbox,
-             in->mail_followup_to->next ? ",..." : "");
+             in->mail_followup_to->mailbox, in->mail_followup_to->next ? ",..." : "");
 
     hmfupto = query_quadoption(HonorFollowupTo, prompt);
     if (hmfupto == MUTT_ABORT)
@@ -1872,10 +1871,9 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       mutt_prepare_envelope(msg->env, 0);
       mutt_env_to_intl(msg->env, NULL, NULL); /* Handle bad IDNAs the next time. */
 
-      if (!Postponed ||
-          mutt_write_fcc(NONULL(Postponed), msg,
-                         (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL,
-                         1, fcc, NULL) < 0)
+      if (!Postponed || mutt_write_fcc(NONULL(Postponed), msg,
+                                       (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL,
+                                       1, fcc, NULL) < 0)
       {
         msg->content = mutt_remove_multipart(msg->content);
         decode_descriptions(msg->content);
@@ -2016,7 +2014,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
   mutt_expand_path(fcc, sizeof(fcc));
 
-/* Don't save a copy when we are in batch-mode, and the FCC
+  /* Don't save a copy when we are in batch-mode, and the FCC
    * folder is on an IMAP server: This would involve possibly lots
    * of user interaction, which is not available in batch mode.
    *

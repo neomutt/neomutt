@@ -1040,9 +1040,8 @@ static int try_bind(char *key, int menu, char *func,
   }
   if (err)
   {
-    snprintf(err->data, err->dsize,
-             _("Function '%s' not available for menu '%s'"), func,
-             mutt_map_get_name(menu, Menus));
+    snprintf(err->data, err->dsize, _("Function '%s' not available for menu '%s'"),
+             func, mutt_map_get_name(menu, Menus));
   }
   return -1; /* Couldn't find an existing function with this name */
 }
@@ -1257,8 +1256,7 @@ void mutt_what_key(void)
 {
   int ch;
 
-  mutt_window_mvprintw(MuttMessageWindow, 0, 0,
-                       _("Enter keys (^G to abort): "));
+  mutt_window_mvprintw(MuttMessageWindow, 0, 0, _("Enter keys (^G to abort): "));
   do
   {
     ch = getch();

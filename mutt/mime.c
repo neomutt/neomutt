@@ -56,16 +56,16 @@ const int IndexHex[128] = {
  * BodyTypes - Common MIME body types
  */
 const char *const BodyTypes[] = {
-    "x-unknown", "audio",     "application", "image", "message",
-    "model",     "multipart", "text",        "video", "*",
+  "x-unknown", "audio",     "application", "image", "message",
+  "model",     "multipart", "text",        "video", "*",
 };
 
 /**
  * BodyEncodings - Common MIME body encodings
  */
 const char *const BodyEncodings[] = {
-    "x-unknown", "7bit",   "8bit",        "quoted-printable",
-    "base64",    "binary", "x-uuencoded",
+  "x-unknown", "7bit",   "8bit",        "quoted-printable",
+  "base64",    "binary", "x-uuencoded",
 };
 
 /**

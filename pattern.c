@@ -248,11 +248,11 @@ enum RangeType
 };
 
 static struct RangeRegex range_regexes[] = {
-      [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
-      [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
-      [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0 },
-      [RANGE_K_GT] = {.raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0 },
-      [RANGE_K_BARE] = {.raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0 },
+  [RANGE_K_REL] = { .raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
+  [RANGE_K_ABS] = { .raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
+  [RANGE_K_LT] = { .raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0 },
+  [RANGE_K_GT] = { .raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0 },
+  [RANGE_K_BARE] = { .raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0 },
 };
 
 #define KILO 1024
@@ -633,11 +633,11 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
 {
   char *context_loc = NULL;
   const char *context_req_chars[] = {
-        [RANGE_K_REL] = ".0123456789",
-        [RANGE_K_ABS] = ".",
-        [RANGE_K_LT] = "",
-        [RANGE_K_GT] = "",
-        [RANGE_K_BARE] = ".",
+    [RANGE_K_REL] = ".0123456789",
+    [RANGE_K_ABS] = ".",
+    [RANGE_K_LT] = "",
+    [RANGE_K_GT] = "",
+    [RANGE_K_BARE] = ".",
   };
 
   /* First decide if we're going to need the context at all.

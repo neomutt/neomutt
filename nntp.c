@@ -679,9 +679,8 @@ int nntp_open_connection(struct NntpServer *nserv)
   {
     if (nserv->use_tls == 0)
       nserv->use_tls =
-          SslForceTls ||
-                  query_quadoption(SslStarttls,
-                                   _("Secure connection with TLS?")) == MUTT_YES ?
+          SslForceTls || query_quadoption(SslStarttls,
+                                          _("Secure connection with TLS?")) == MUTT_YES ?
               2 :
               1;
     if (nserv->use_tls == 2)
