@@ -217,7 +217,7 @@ bool mutt_regexlist_match(struct RegexList *rl, const char *str)
 
   for (; rl; rl = rl->next)
   {
-    if (!rl->regex || rl->regex->regex)
+    if (!rl->regex || !rl->regex->regex)
       continue;
     if (regexec(rl->regex->regex, str, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
     {
