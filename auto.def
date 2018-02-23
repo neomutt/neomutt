@@ -327,7 +327,7 @@ if {[get-define want-doc]} {
   }
 
   msg-checking "Checking for DocBook DTDs..."
-  set res [exec xmlcatalog --shell << {public "-//OASIS//DTD DocBook XML V4.2//EN"}]
+  set res [exec xmlcatalog --shell << {PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"}]
   if {[string match {> No entry*} $res]} {
     msg-result "no"
     user-error "Install DocBook DTDs or './configure --disable-doc'"
