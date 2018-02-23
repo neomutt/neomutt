@@ -1,5 +1,6 @@
 ## NeoMutt Contributors
 Adam Borowski <kilobyte@angband.pl>                             Adam Borowski <kilobyte@angband.pl>                      # @kilobyte
+Aleksa Sarai <cyphar@cyphar.com>                                Aleksa Sarai <cyphar@cyphar.com>                         # @cyphar
 Andreas Rammhold <andreas@rammhold.de>                          Andreas Rammhold <andreas@rammhold.de>                   # @andir
 André Berger <ab@andreberger.eu>                                André Berger <ab@andreberger.eu>                         # @hvkls
 André Berger <andre.berger@web.de>                              André Berger <andre.berger@web.de>                       # @hvkls
@@ -8,6 +9,7 @@ Anton Rieger <seishinryohosha@jikken.de>                        seishinryohosha 
 Antonio Radici <antonio@dyne.org>                               Antonio Radici <antonio@dyne.org>                        # @aradici
 Antonio Radici <antonio@dyne.org>                               Unknown <antonio@dyne.org>                               # @aradici
 Austin Ray <austin.duke.ray@gmail.com>                          Austin Ray <austin.duke.ray@gmail.com>                   # @austin-ray
+Benjamin Mako Hill <mako@atdot.cc>                              Benjamin Mako Hill <mako@atdot.cc>                       # @makoshark
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Bernard 'Guyzmo' Pratz <guyzmo+github+pub@m0g.net>       # @guyzmo
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Bernard Pratz <guyzmo+github+pub@m0g.net>                # @guyzmo
 Bernard Pratz <guyzmo+github+pub@m0g.net>                       Guyzmo <guyzmo+github+pub@m0g.net>                       # @guyzmo
@@ -51,15 +53,19 @@ Jonathan Perkin <jperkin@netbsd.org>                            Jonathan Perkin 
 Joshua Jordi <dracogoyle@gmail.com>                             Jakkin <dracogoyle@gmail.com>                            # @jakkinstewart
 Joshua Jordi <dracogoyle@gmail.com>                             Joshua Jordi <JakkinStewart@users.noreply.github.com>    # @jakkinstewart
 Julian Andres Klode <jak@jak-linux.org>                         Julian Andres Klode <jak@jak-linux.org>                  # @julian-klode
+Justin Vasel <justin.vasel@gmail.com>                           Justin Vasel <justin.vasel@gmail.com>                    # @justinvasel
 Karel Zak <kzak@redhat.com>                                     Karel Zak <kzak@redhat.com>                              # @karelzak
 Kevin Decherf <kevin@kdecherf.com>                              Kevin Decherf <kevin@kdecherf.com>                       # @kdecherf
 Kevin Velghe <kevin@paretje.be>                                 Kevin Velghe <kevin@paretje.be>                          # @paretje
 Larry Rosenman <larryrtx@gmail.com>                             Larry Rosenman <larryrtx@gmail.com>                      # @lrosenman
+Leo Lundgren <leo@finalresort.org>                              Leo R. Lundgren <leo@finalresort.org>                    # @rawtaz
 Manos Pitsidianakis <el13635@mail.ntua.gr>                      Manos Pitsidianakis <el13635@mail.ntua.gr>               # @epilys
 Marcin Rajner <mrajner@gik.pw.edu.pl>                           Marcin Rajner lenovo <mrajner@gik.pw.edu.pl>             # @mrajner
 Marco Hinz <mh.codebro@gmail.com>                               Marco Hinz <mh.codebro@gmail.com>                        # @mhinz
+Marius Gedminas <marius@gedmin.as>                              Marius Gedminas <marius@gedmin.as>                       # @mgedmin
 Mehdi Abaakouk <sileht@sileht.net>                              Mehdi ABAAKOUK <sileht@sileht.net>                       # @sileht
 Mehdi Abaakouk <sileht@sileht.net>                              Mehdi Abaakouk <sileht@sileht.net>                       # @sileht
+Michael Bazzinotti <mbazzinotti@gmail.com>                      Michael J. Bazzinotti <mbazzinotti@gmail.com>            # @bazzinotti
 ng0 <ng0@infotropique.org>                                      ng0 <ng0@infotropique.org>                               # @ng-0
 Nicolas Bock <nicolasbock@gmail.com>                            Nicolas Bock <nicolasbock@gmail.com>                     # @nicolasbock
 Peter Hogg <pm@pig-monkey.com>                                  Pig Monkey <pm@pig-monkey.com>                           # @pigmonkey
@@ -84,6 +90,7 @@ Stefan Assmann <sassmann@kpanic.de>                             Stefan Assmann <
 Stefan Bühler <stbuehler@web.de>                                Stefan Bühler <stbuehler@web.de>                         # @stbuehler
 Stephen Gilles <sgilles@math.umd.edu>                           S. Gilles <sgilles@math.umd.edu>                         #
 Steven Ragnarök <steven@nuclearsandwich.com>                    Steven! Ragnarök <steven@nuclearsandwich.com>            # @nuclearsandwich
+Theo Jepsen <theojepsen@gmail.com>                              Theo <theojepsen@g-m-a-i-l-dotcom>                       # @theojepsen
 Thomas Adam <thomas@xteddy.org>                                 Thomas Adam <thomas@xteddy.org>                          # @thomasadam
 Thomas Klausner <wiz@netbsd.org>                                Thomas Klausner <wiz@netbsd.org>                         # @0-wiz-0
 Tobias Angele <toogley@mailbox.org>                             Tobias Angele <toogley@mailbox.org>                      # @toogley
@@ -178,6 +185,7 @@ Gary Johnson <garyjohn@spk.agilent.com>                         Gary Johnson <ga
 Gary Johnson <garyjohn@spk.agilent.com>                         Gary Johnson <unknown>
 Gero Treuner <gerotick@faveve.uni-stuttgart.de>                 Gero Treuner <gerotick@faveve.uni-stuttgart.de>
 Gregory Shapiro <dev.mutt.org@g.gshapiro.net>                   Gregory Shapiro <dev.mutt.org@g.gshapiro.net>
+Grzegorz Szymaszek <gszymaszek@short.pl>                        Grzegorz Szymaszek <gszymaszek@short.pl>
 Guilhem Moulin <guilhem@guilhem.org>                            Guilhem Moulin <guilhem@guilhem.org>
 guns <self@sungpae.com>                                         guns <self@sungpae.com>
 H.N.Caldwell <unknown>                                          hncaldwell <unknown>
@@ -217,6 +225,7 @@ Kevin McCarthy <kevin@8t8.us>                                   Kevin McCarthy <
 Kevin Scannell <kscanne@gmail.com>                              Kevin Scannell <kscanne@gmail.com>
 Kevin Scannell <kscanne@gmail.com>                              Kevin Scannell <scannell@slu.edu>
 Kimihiro Nonaka <nonakap@gmail.com>                             NONAKA Kimihiro <nonakap@gmail.com>
+Konstantin Stephan <pigleich3@gmx.net>                          Konstantin Stephan <pigleich3@gmx.net>
 Kyle Wheeler <kyle@memoryhole.net>                              Kyle Wheeler <kyle-mutt-dev@memoryhole.net>
 Kyle Wheeler <kyle@memoryhole.net>                              Kyle Wheeler <kyle@memoryhole.net>
 Kyle Wheeler <kyle@memoryhole.net>                              Kyle Wheeler <unknown>

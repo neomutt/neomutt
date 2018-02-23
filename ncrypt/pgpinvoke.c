@@ -152,10 +152,9 @@ static void mutt_pgp_command(char *buf, size_t buflen,
  * Glue.
  */
 
-static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
-                        int pgpoutfd, int pgperrfd, short need_passphrase,
-                        const char *fname, const char *sig_fname,
-                        const char *ids, const char *format)
+static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd, int pgpoutfd,
+                        int pgperrfd, short need_passphrase, const char *fname,
+                        const char *sig_fname, const char *ids, const char *format)
 {
   struct PgpCommandContext cctx;
   char cmd[HUGE_STRING];

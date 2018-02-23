@@ -366,8 +366,9 @@ int mutt_replacelist_add(struct ReplaceList **rl, const char *pat,
 
   if (t->nmatch > t->regex->regex->re_nsub)
   {
-    snprintf(err->data, err->dsize, "%s", _("Not enough subexpressions for "
-                                            "template"));
+    snprintf(err->data, err->dsize, "%s",
+             _("Not enough subexpressions for "
+               "template"));
     mutt_replacelist_remove(rl, pat);
     return -1;
   }

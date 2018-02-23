@@ -707,11 +707,9 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
     if (*s && *s != ')')
       s = imap_next_word(s);
   }
-  mutt_debug(
-      3,
-      "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
-      status->name, status->uidvalidity, status->uidnext, status->messages,
-      status->recent, status->unseen);
+  mutt_debug(3, "%s (UIDVALIDITY: %u, UIDNEXT: %u) %d messages, %d recent, %d unseen\n",
+             status->name, status->uidvalidity, status->uidnext,
+             status->messages, status->recent, status->unseen);
 
   /* caller is prepared to handle the result herself */
   if (idata->cmddata && idata->cmdtype == IMAP_CT_STATUS)

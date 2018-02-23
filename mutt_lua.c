@@ -154,9 +154,10 @@ static int lua_mutt_set(lua_State *l)
       if ((opt.var != MUTT_YES) && (opt.var != MUTT_NO) &&
           (opt.var != MUTT_ASKYES) && (opt.var != MUTT_ASKNO))
       {
-        luaL_error(l, "Invalid opt for quad option %s (one of "
-                      "mutt.QUAD_YES, mutt.QUAD_NO, mutt.QUAD_ASKYES, "
-                      "mutt.QUAD_ASKNO",
+        luaL_error(l,
+                   "Invalid opt for quad option %s (one of "
+                   "mutt.QUAD_YES, mutt.QUAD_NO, mutt.QUAD_ASKYES, "
+                   "mutt.QUAD_ASKNO",
                    param);
         rc = -1;
       }
@@ -320,8 +321,7 @@ static void lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
   char buf[LONG_STRING];
-  snprintf(buf, LONG_STRING,
-           "mutt.command.%s = function (...); mutt.call('%s', ...); end",
+  snprintf(buf, LONG_STRING, "mutt.command.%s = function (...); mutt.call('%s', ...); end",
            cmd->name, cmd->name);
   (void) luaL_dostring(l, buf);
 }

@@ -336,7 +336,8 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
        * even when they aren't needed.
        */
 
-      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) && (strcmp(buffer, tmp) == 0))
+      if ((mutt_str_strcasecmp(np->attribute, "boundary") == 0) &&
+          (strcmp(buffer, tmp) == 0))
         snprintf(buffer, sizeof(buffer), "\"%s\"", tmp);
 
       FREE(&tmp);
@@ -967,8 +968,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
     mutt_param_set(&b->parameter, "charset",
                    (!info->hibin ? "us-ascii" :
-                                   Charset && !mutt_ch_is_us_ascii(Charset)
-                                   ? Charset : "unknown-8bit"));
+                                   Charset && !mutt_ch_is_us_ascii(Charset) ? Charset : "unknown-8bit"));
 
   return info;
 }

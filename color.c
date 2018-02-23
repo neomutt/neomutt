@@ -537,7 +537,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
       /* We don't even have colors compiled in */
       parse_uncolor
 #endif
-          )
+  )
   {
     /* just eat the command, but don't do anything real about it */
     do
@@ -871,7 +871,8 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
 #ifdef HAVE_COLOR
 #ifdef HAVE_USE_DEFAULT_COLORS
-  if (!OPT_NO_CURSES && has_colors()
+  if (!OPT_NO_CURSES &&
+      has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
       && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
       use_default_colors() != OK)

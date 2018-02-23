@@ -400,7 +400,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 #ifdef EOPNOTSUPP
         || errno == EOPNOTSUPP
 #endif
-        )
+    )
     {
       mutt_debug(1, "trying rename...\n");
       if (rename(src, target) == -1)

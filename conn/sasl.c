@@ -115,8 +115,9 @@ static int getnameinfo_err(int ret)
       err = SASL_FAIL; /* no real equivalent */
       break;
     case EAI_SYSTEM:
-      mutt_debug(1, "A system error occurred.  The error code can be found in "
-                    "errno(%d,%s)).\n",
+      mutt_debug(1,
+                 "A system error occurred.  The error code can be found in "
+                 "errno(%d,%s)).\n",
                  errno, strerror(errno));
       err = SASL_FAIL; /* no real equivalent */
       break;

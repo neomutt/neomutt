@@ -321,8 +321,7 @@ static void dump_menu(FILE *f, int menu)
       {
         b = help_lookup_function(map->op, menu);
         format_line(f, 0, buf, b ? b->name : "UNKNOWN",
-                    b ? _(HelpStrings[b->op]) :
-                        _("ERROR: please report this bug"));
+                    b ? _(HelpStrings[b->op]) : _("ERROR: please report this bug"));
       }
     }
   }

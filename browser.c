@@ -337,8 +337,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         else
         {
           tnow = time(NULL);
-          t_fmt =
-              tnow - folder->ff->mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
+          t_fmt = tnow - folder->ff->mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
         if (!do_locales)
@@ -730,7 +729,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
         continue;
       if (prefix && *prefix && (strncmp(prefix, nntp_data->group, strlen(prefix)) != 0))
         continue;
-      if (Mask && Mask->regex && !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
+      if (Mask && Mask->regex &&
+          !((regexec(Mask->regex, nntp_data->group, 0, NULL, 0) == 0) ^ Mask->not))
         continue;
       add_folder(menu, state, nntp_data->group, NULL, NULL, NULL, nntp_data);
     }
@@ -788,7 +788,8 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
       {
         continue;
       }
-      if (Mask && Mask->regex && !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
+      if (Mask && Mask->regex &&
+          !((regexec(Mask->regex, de->d_name, 0, NULL, 0) == 0) ^ Mask->not))
         continue;
 
       mutt_file_concat_path(buffer, d, de->d_name, sizeof(buffer));
@@ -1411,7 +1412,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #ifdef USE_IMAP
             || state.entry[menu->current].inferiors
 #endif
-            )
+        )
         {
           /* make sure this isn't a MH or maildir mailbox */
           if (buffy)
@@ -1433,7 +1434,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #ifdef USE_IMAP
               || state.entry[menu->current].inferiors
 #endif
-              )
+          )
           {
             /* save the old directory */
             mutt_str_strfcpy(OldLastDir, LastDir, sizeof(OldLastDir));
@@ -1548,7 +1549,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
 #endif
         else
           mutt_file_concat_path(f, LastDir, state.entry[menu->current].name, flen);
-      /* fallthrough */
+        /* fallthrough */
 
       case OP_EXIT:
 

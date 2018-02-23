@@ -844,8 +844,7 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
   if (!MoreArgs(s))
   {
-    snprintf(err->data, err->dsize, _("%s: too few arguments"),
-             (data ? "ifndef" : "ifdef"));
+    snprintf(err->data, err->dsize, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
     return -1;
   }
   mutt_extract_token(tmp, s, MUTT_TOKEN_SPACE);
@@ -1307,8 +1306,8 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             goto bail;
           if (mutt_addrlist_to_intl(addr, &estr))
           {
-            snprintf(err->data, err->dsize,
-                     _("%sgroup: warning: bad IDN '%s'.\n"), data == 1 ? "un" : "", estr);
+            snprintf(err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
+                     data == 1 ? "un" : "", estr);
             mutt_addr_free(&addr);
             FREE(&estr);
             goto bail;
@@ -2336,8 +2335,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (query || unset || inv)
       {
-        snprintf(err->data, err->dsize, "%s",
-                 _("prefix is illegal with reset"));
+        snprintf(err->data, err->dsize, "%s", _("prefix is illegal with reset"));
         return -1;
       }
 
@@ -2351,8 +2349,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (CurrentMenu == MENU_PAGER)
         {
-          snprintf(err->data, err->dsize, "%s",
-                   _("Not available in this menu."));
+          snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));
           return -1;
         }
         for (idx = 0; MuttVars[idx].name; idx++)
@@ -2379,8 +2376,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (unset || inv || query)
         {
-          snprintf(err->data, err->dsize, "%s",
-                   _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
           return -1;
         }
 
@@ -2392,16 +2388,15 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           unset = 1;
         else
         {
-          snprintf(err->data, err->dsize, "%s",
-                   _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
           return -1;
         }
       }
 
       if (query)
       {
-        snprintf(err->data,
-                 err->dsize, *(bool *) MuttVars[idx].var ? _("%s is set") : _("%s is unset"),
+        snprintf(err->data, err->dsize,
+                 *(bool *) MuttVars[idx].var ? _("%s is set") : _("%s is unset"),
                  tmp->data);
         return 0;
       }
@@ -2523,8 +2518,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
               /* $charset can't be empty, others can */
               ((strcmp(MuttVars[idx].name, "charset") == 0) && !*tmp->data))
           {
-            snprintf(err->data, err->dsize,
-                     _("Invalid value for option %s: \"%s\""),
+            snprintf(err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
                      MuttVars[idx].name, tmp->data);
             return -1;
           }
@@ -2538,9 +2532,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
                                "show_multipart_alternative") == 0) &&
               !valid_show_multipart_alternative(tmp->data))
           {
-            snprintf(err->data, err->dsize,
-                     _("Invalid value for name %s: \"%s\""), MuttVars[idx].name,
-                     tmp->data);
+            snprintf(err->data, err->dsize, _("Invalid value for name %s: \"%s\""),
+                     MuttVars[idx].name, tmp->data);
             return -1;
           }
         }
@@ -2571,8 +2564,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       if (OPT_ATTACH_MSG &&
           (mutt_str_strcmp(MuttVars[idx].name, "reply_regex") == 0))
       {
-        snprintf(err->data, err->dsize,
-                 "Operation not permitted when in attach-message mode.");
+        snprintf(err->data, err->dsize, "Operation not permitted when in attach-message mode.");
         r = -1;
         break;
       }
@@ -3043,8 +3035,7 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
 
     if (source_rc(path, err) < 0)
     {
-      snprintf(err->data, err->dsize,
-               _("source: file %s could not be sourced."), path);
+      snprintf(err->data, err->dsize, _("source: file %s could not be sourced."), path);
       return -1;
     }
 
@@ -3768,7 +3759,9 @@ static int execute_commands(struct ListHead *p)
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
-    "neomuttrc", "muttrc", NULL,
+    "neomuttrc",
+    "muttrc",
+    NULL,
   };
 
   const char *locations[][2] = {
@@ -4020,7 +4013,8 @@ void mutt_init(int skip_sys_rc, struct ListHead *commands)
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
-  if (((p = mutt_str_getenv("LC_ALL")) != NULL && p[0]) || ((p = mutt_str_getenv("LANG")) != NULL && p[0]) ||
+  if (((p = mutt_str_getenv("LC_ALL")) != NULL && p[0]) ||
+      ((p = mutt_str_getenv("LANG")) != NULL && p[0]) ||
       ((p = mutt_str_getenv("LC_CTYPE")) != NULL && p[0]))
   {
     OPT_LOCALES = true;

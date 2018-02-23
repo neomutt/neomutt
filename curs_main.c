@@ -1181,9 +1181,9 @@ int mutt_index_menu(void)
 
     switch (op)
     {
-      /* ----------------------------------------------------------------------
-       * movement commands
-       */
+        /* ----------------------------------------------------------------------
+         * movement commands
+         */
 
       case OP_BOTTOM_PAGE:
         menu_bottom_page(menu);
@@ -1232,7 +1232,7 @@ int mutt_index_menu(void)
       case OP_GET_PARENT:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-      /* fallthrough */
+        /* fallthrough */
 
       case OP_GET_MESSAGE:
         CHECK_IN_MAILBOX;
@@ -1463,7 +1463,7 @@ int mutt_index_menu(void)
 
         break;
 
-      /* --------------------------------------------------------------------
+        /* --------------------------------------------------------------------
          * `index' specific commands
          */
 
@@ -1652,10 +1652,11 @@ int mutt_index_menu(void)
         {
           mutt_set_flag(Context, CURHDR, MUTT_TAG, !CURHDR->tagged);
 
-          Context->last_tag =
-              CURHDR->tagged ? CURHDR : ((Context->last_tag == CURHDR && !CURHDR->tagged) ?
-                                             NULL :
-                                             Context->last_tag);
+          Context->last_tag = CURHDR->tagged ?
+                                  CURHDR :
+                                  ((Context->last_tag == CURHDR && !CURHDR->tagged) ?
+                                       NULL :
+                                       Context->last_tag);
 
           menu->redraw |= REDRAW_STATUS;
           if (Resolve && menu->current < Context->vcount - 1)
@@ -1707,7 +1708,7 @@ int mutt_index_menu(void)
         }
         break;
 
-/* --------------------------------------------------------------------
+        /* --------------------------------------------------------------------
          * The following operations can be performed inside of the pager.
          */
 
@@ -2772,9 +2773,9 @@ int mutt_index_menu(void)
         collapse_all(menu, 1);
         break;
 
-      /* --------------------------------------------------------------------
-       * These functions are invoked directly from the internal-pager
-       */
+        /* --------------------------------------------------------------------
+         * These functions are invoked directly from the internal-pager
+         */
 
       case OP_BOUNCE_MESSAGE:
 
@@ -3174,7 +3175,7 @@ int mutt_index_menu(void)
       case OP_FORWARD_TO_GROUP:
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-      /* fallthrough */
+        /* fallthrough */
 
       case OP_POST:
         CHECK_ATTACH;

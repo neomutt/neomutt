@@ -1058,8 +1058,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
 
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol",
-                 use_smime ? "application/pkcs7-signature" :
-                             "application/pgp-signature");
+                 use_smime ? "application/pkcs7-signature" : "application/pgp-signature");
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */
   if (!get_micalg(ctx, use_smime, buf, sizeof(buf)))
@@ -1573,9 +1572,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       ; /* No state information so no way to print anything. */
     else if (err)
     {
-      snprintf(buf, sizeof(buf),
-               _("Error getting key information for KeyID %s: %s\n"), fpr,
-               gpgme_strerror(err));
+      snprintf(buf, sizeof(buf), _("Error getting key information for KeyID %s: %s\n"),
+               fpr, gpgme_strerror(err));
       state_puts(buf, s);
       anybad = true;
     }

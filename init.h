@@ -2276,7 +2276,7 @@ struct Option MuttVars[] = {
   ** (e.g. simply signed and ascii armored text).
   ** (PGP only)
   */
-  { "pgp_default_key",		DT_STRING,	 R_NONE, UL &PgpDefaultKey, 0 },
+  { "pgp_default_key",    DT_STRING,   R_NONE, UL &PgpDefaultKey, 0 },
   /*
   ** .pp
   ** This is the default key-pair to use for PGP operations.  It will be
@@ -4402,7 +4402,7 @@ struct Option MuttVars[] = {
   { "pgp_replyencrypt",       DT_SYNONYM, R_NONE, UL "crypt_replyencrypt",       0 },
   { "pgp_replysign",          DT_SYNONYM, R_NONE, UL "crypt_replysign",          0 },
   { "pgp_replysignencrypted", DT_SYNONYM, R_NONE, UL "crypt_replysignencrypted", 0 },
-  { "pgp_self_encrypt_as",	  DT_SYNONYM, R_NONE, UL "pgp_default_key",          0 },
+  { "pgp_self_encrypt_as",    DT_SYNONYM, R_NONE, UL "pgp_default_key",          0 },
   { "pgp_verify_sig",         DT_SYNONYM, R_NONE, UL "crypt_verify_sig",         0 },
   { "post_indent_str",        DT_SYNONYM, R_NONE, UL "post_indent_string",       0 },
   { "print_cmd",              DT_SYNONYM, R_NONE, UL "print_command",            0 },

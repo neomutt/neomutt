@@ -330,7 +330,9 @@ static int mbox_parse_mailbox(struct Context *ctx)
         /* The test below avoids a potential integer overflow if the
          * content-length is huge (thus necessarily invalid).
          */
-        tmploc = (curhdr->content->length < ctx->size) ? (loc + curhdr->content->length + 1) : -1;
+        tmploc = (curhdr->content->length < ctx->size) ?
+                     (loc + curhdr->content->length + 1) :
+                     -1;
 
         if ((tmploc > 0) && (tmploc < ctx->size))
         {
@@ -342,8 +344,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
               fgets(buf, sizeof(buf), ctx->fp) == NULL ||
               (mutt_str_strncmp("From ", buf, 5) != 0))
           {
-            mutt_debug(1,
-                       "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
+            mutt_debug(1, "bad content-length in message %d (cl=" OFF_T_FMT ")\n",
                        curhdr->index, curhdr->content->length);
             mutt_debug(1, "\tLINE: %s", buf);
             /* nope, return the previous position */

@@ -519,8 +519,7 @@ void mutt_print_message(struct Header *h)
     return;
   }
 
-  if (query_quadoption(Print,
-                       h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
+  if (query_quadoption(Print, h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
   {
     return;
   }
@@ -528,8 +527,7 @@ void mutt_print_message(struct Header *h)
   if (pipe_message(h, PrintCommand, PrintDecode, 1, PrintSplit, "\f") == 0)
     mutt_message(h ? _("Message printed") : _("Messages printed"));
   else
-    mutt_message(h ? _("Message could not be printed") :
-                     _("Messages could not be printed"));
+    mutt_message(h ? _("Message could not be printed") : _("Messages could not be printed"));
 }
 
 int mutt_select_sort(int reverse)
@@ -765,12 +763,10 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   struct stat st;
 
   snprintf(prompt, sizeof(prompt),
-           decode ? (delete ? _("Decode-save%s to mailbox") :
-                              _("Decode-copy%s to mailbox")) :
-                    (decrypt ? (delete ? _("Decrypt-save%s to mailbox") :
-                                         _("Decrypt-copy%s to mailbox")) :
-                               (delete ? _("Save%s to mailbox") :
-                                         _("Copy%s to mailbox"))),
+           decode ?
+               (delete ? _("Decode-save%s to mailbox") : _("Decode-copy%s to mailbox")) :
+               (decrypt ? (delete ? _("Decrypt-save%s to mailbox") : _("Decrypt-copy%s to mailbox")) :
+                          (delete ? _("Save%s to mailbox") : _("Copy%s to mailbox"))),
            h ? "" : _(" tagged"));
 
   if (h)
@@ -993,7 +989,8 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
   snprintf(tmp, sizeof(tmp), "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = mutt_str_strcasecmp(tmp, obuf);
-  charset_changed = mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset"));
+  charset_changed =
+      mutt_str_strcasecmp(charset, mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 

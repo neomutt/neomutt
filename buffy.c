@@ -91,8 +91,7 @@ static int fseek_last_message(FILE *f)
     /* 'i' is Index into `buffer' for scanning.  */
     for (int i = bytes_read; i >= 0; i--)
     {
-      if (mutt_str_strncmp(buffer + i, "\n\nFrom ",
-                           mutt_str_strlen("\n\nFrom ")) == 0)
+      if (mutt_str_strncmp(buffer + i, "\n\nFrom ", mutt_str_strlen("\n\nFrom ")) == 0)
       { /* found it - go to the beginning of the From */
         fseeko(f, pos + i + 2, SEEK_SET);
         return 0;

@@ -129,8 +129,7 @@ int mutt_check_encoding(const char *c)
     return ENC8BIT;
   else if (mutt_str_strncasecmp("binary", c, sizeof("binary") - 1) == 0)
     return ENCBINARY;
-  else if (mutt_str_strncasecmp("quoted-printable", c,
-                                sizeof("quoted-printable") - 1) == 0)
+  else if (mutt_str_strncasecmp("quoted-printable", c, sizeof("quoted-printable") - 1) == 0)
   {
     return ENCQUOTEDPRINTABLE;
   }
@@ -1280,7 +1279,8 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
       mutt_rfc2047_decode(&e->subject);
 
-      if (ReplyRegex && ReplyRegex->regex && (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
+      if (ReplyRegex && ReplyRegex->regex &&
+          (regexec(ReplyRegex->regex, e->subject, 1, pmatch, 0) == 0))
         e->real_subj = e->subject + pmatch[0].rm_eo;
       else
         e->real_subj = e->subject;

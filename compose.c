@@ -311,8 +311,7 @@ static void redraw_crypt_lines(struct Header *msg)
       (msg->security & ENCRYPT) && SmimeEncryptWith && *SmimeEncryptWith)
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-    mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s",
-                         _("Encrypt with: "));
+    mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
     NORMAL_COLOR;
     printw("%s", NONULL(SmimeEncryptWith));
   }
@@ -1543,7 +1542,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         }
         else if (i == MUTT_ABORT)
           break; /* abort */
-      /* fallthrough */
+        /* fallthrough */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
 

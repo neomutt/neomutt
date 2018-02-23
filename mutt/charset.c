@@ -61,8 +61,8 @@
 #include <errno.h>
 #include <iconv.h>
 #include <langinfo.h>
-#include <limits.h>
 #include <libintl.h>
+#include <limits.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -459,7 +459,7 @@ void mutt_ch_set_langinfo_charset(void)
 
 /**
  * mutt_ch_lookup_add - Add a new character set lookup
- * @param type    Type of character set, e.g. MUTT_LOOKUP_CHARSET 
+ * @param type    Type of character set, e.g. MUTT_LOOKUP_CHARSET
  * @param pat     Pattern to match
  * @param replace Replacement string
  * @param err     Buffer for error message
@@ -690,7 +690,7 @@ const char *mutt_ch_iconv_lookup(const char *chs)
  * @param[in,out] ps    String to convert
  * @param[in]     from  Current character set
  * @param[in]     to    Target character set
- * @param[in]     flags Flags, e.g. 
+ * @param[in]     flags Flags, e.g.
  * @retval 0  Success
  * @retval -1 Error
  *
@@ -963,8 +963,8 @@ void mutt_ch_set_charset(char *charset)
  * @retval ptr  Best performing charset
  * @retval NULL None could be found
  */
-char *mutt_ch_choose(const char *fromcode, const char *charsets,
-                     char *u, size_t ulen, char **d, size_t *dlen)
+char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
+                     size_t ulen, char **d, size_t *dlen)
 {
   char canonical_buf[LONG_STRING];
   char *e = NULL, *tocode = NULL;
@@ -1027,4 +1027,3 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets,
   }
   return tocode;
 }
-

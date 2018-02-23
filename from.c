@@ -77,8 +77,9 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
       p = strchr(p + 4, ' ');
       if (!p)
       {
-        mutt_debug(1, "error parsing what appears to be a pipermail-style "
-                      "obscured return_path: %s\n",
+        mutt_debug(1,
+                   "error parsing what appears to be a pipermail-style "
+                   "obscured return_path: %s\n",
                    s);
         return 0;
       }

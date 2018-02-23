@@ -112,11 +112,11 @@ struct NmCtxData
 {
   notmuch_database_t *db;
 
-  struct Url db_url;           /**< Parsed view url of the Notmuch database */
-  char *db_url_holder;         /**< The storage string used by db_url, we keep it
+  struct Url db_url;   /**< Parsed view url of the Notmuch database */
+  char *db_url_holder; /**< The storage string used by db_url, we keep it
                                 *   to be able to free db_url */
-  char *db_query;              /**< Previous query */
-  int db_limit;                /**< Maximum number of results to return */
+  char *db_query;      /**< Previous query */
+  int db_limit;        /**< Maximum number of results to return */
   enum NmQueryType query_type; /**< Messages or Threads */
 
   struct Progress progress; /**< A progress bar */
@@ -491,9 +491,8 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
     st = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY,
                                &db);
 #else
-    db = notmuch_database_open(filename,
-                               writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
-                                          NOTMUCH_DATABASE_MODE_READ_ONLY);
+    db = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
+                                                    NOTMUCH_DATABASE_MODE_READ_ONLY);
 #endif
     if (db || !NmOpenTimeout || ((ct / 2) > NmOpenTimeout))
       break;
@@ -1579,8 +1578,7 @@ done:
     mutt_message(_("No more messages in the thread."));
 
   data->oldmsgcount = 0;
-  mutt_debug(1,
-             "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
+  mutt_debug(1, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
              rc, ctx->msgcount);
   return rc;
 }

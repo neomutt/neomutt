@@ -323,18 +323,18 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
       if (n != TYPEOTHER)
       {
         snprintf(type, len, "%s/%s",
-                 n == TYPEAUDIO ?
-                     "audio" :
-                     n == TYPEAPPLICATION ?
-                     "application" :
-                     n == TYPEIMAGE ?
-                     "image" :
-                     n == TYPEMESSAGE ?
-                     "message" :
-                     n == TYPEMODEL ? "model" :
-                                      n == TYPEMULTIPART ?
-                                      "multipart" :
-                                      n == TYPETEXT ? "text" : n == TYPEVIDEO ? "video" : "other",
+                 n == TYPEAUDIO ? "audio" :
+                                  n == TYPEAPPLICATION ?
+                                  "application" :
+                                  n == TYPEIMAGE ?
+                                  "image" :
+                                  n == TYPEMESSAGE ?
+                                  "message" :
+                                  n == TYPEMODEL ?
+                                  "model" :
+                                  n == TYPEMULTIPART ?
+                                  "multipart" :
+                                  n == TYPETEXT ? "text" : n == TYPEVIDEO ? "video" : "other",
                  tmp.subtype);
         mutt_debug(1, "\"%s\" -> %s\n", b->filename, type);
       }

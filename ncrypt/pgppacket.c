@@ -169,7 +169,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
       case 1:
         bytes = 2;
-      /* fallthrough */
+        /* fallthrough */
 
       case 2:
       {

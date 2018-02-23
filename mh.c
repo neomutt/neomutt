@@ -2538,8 +2538,7 @@ int maildir_check_empty(const char *path)
     /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs
      */
-    snprintf(realpath, sizeof(realpath), "%s/%s", path,
-             iter == 0 ? "cur" : "new");
+    snprintf(realpath, sizeof(realpath), "%s/%s", path, iter == 0 ? "cur" : "new");
     dp = opendir(realpath);
     if (!dp)
       return -1;
