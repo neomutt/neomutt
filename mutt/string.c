@@ -272,6 +272,7 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
     return 1;
   return 0;
 }
+
 /**
  * mutt_str_strdup - Copy a string, safely
  * @param s String to copy

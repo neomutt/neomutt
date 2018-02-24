@@ -252,9 +252,9 @@ int main(int argc, char **argv, char **env)
      */
     for (; optind < argc; optind++)
     {
-      if (argv[optind][0] == '-' && argv[optind][1] != '\0')
+      if ((argv[optind][0] == '-') && (argv[optind][1] != '\0'))
       {
-        if (argv[optind][1] == '-' && argv[optind][2] == '\0')
+        if ((argv[optind][1] == '-') && (argv[optind][2] == '\0'))
           double_dash = optind; /* quit outer loop after getopt */
         break;                  /* drop through to getopt */
       }
@@ -411,7 +411,7 @@ int main(int argc, char **argv, char **env)
   mutt_init_windows();
 
   /* This must come before mutt_init() because curses needs to be started
-     before calling the init_pair() function to set the color scheme.  */
+   * before calling the init_pair() function to set the color scheme.  */
   if (!OPT_NO_CURSES)
   {
     start_curses();
@@ -436,6 +436,7 @@ int main(int argc, char **argv, char **env)
       mutt_list_insert_tail(&queries, mutt_str_strdup(argv[optind]));
     return mutt_query_variables(&queries);
   }
+
   if (dump_variables)
     return mutt_dump_variables(hide_sensitive);
 
@@ -489,13 +490,13 @@ int main(int argc, char **argv, char **env)
 #ifdef USE_NNTP
     skip |= mx_is_nntp(fpath);
 #endif
-    if (!skip && stat(fpath, &sb) == -1 && errno == ENOENT)
+    if (!skip && (stat(fpath, &sb) == -1) && (errno == ENOENT))
     {
       char msg2[STRING];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
-        if (mkdir(fpath, 0700) == -1 && errno != EEXIST)
+        if ((mkdir(fpath, 0700) == -1) && (errno != EEXIST))
           mutt_error(_("Can't create %s: %s."), Folder, strerror(errno));
       }
     }
@@ -660,7 +661,7 @@ int main(int argc, char **argv, char **env)
         context_hdr = mutt_new_header();
         context_hdr->offset = 0;
         context_hdr->content = mutt_new_body();
-        if (fstat(fileno(fin), &st))
+        if (fstat(fileno(fin), &st) != 0)
         {
           perror(draft_file);
           exit(1);
@@ -802,7 +803,7 @@ int main(int argc, char **argv, char **env)
     if (!OPT_NO_CURSES)
       mutt_endwin(NULL);
 
-    if (rv)
+    if (rv != 0)
       exit(1);
   }
   else
@@ -814,7 +815,7 @@ int main(int argc, char **argv, char **env)
         mutt_endwin(_("No mailbox with new mail."));
         exit(1);
       }
-      folder[0] = 0;
+      folder[0] = '\0';
       mutt_buffy(folder, sizeof(folder));
     }
     else if (flags & MUTT_SELECT)
@@ -837,9 +838,9 @@ int main(int argc, char **argv, char **env)
         mutt_endwin(_("No incoming mailboxes defined."));
         exit(1);
       }
-      folder[0] = 0;
+      folder[0] = '\0';
       mutt_select_file(folder, sizeof(folder), MUTT_SEL_FOLDER | MUTT_SEL_BUFFY, NULL, NULL);
-      if (!folder[0])
+      if (folder[0] == '\0')
       {
         mutt_endwin(NULL);
         exit(0);

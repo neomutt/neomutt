@@ -1676,6 +1676,7 @@ static const struct Mapping PagerHelp[] = {
   { N_("NextPg"), OP_NEXT_PAGE },
   { NULL, 0 },
 };
+
 static const struct Mapping PagerHelpExtra[] = {
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
   { N_("Del"), OP_DELETE },

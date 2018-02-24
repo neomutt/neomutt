@@ -265,7 +265,6 @@ struct ImapData
   header_cache_t *hcache;
 #endif
 };
-/* I wish that were called IMAP_CONTEXT :( */
 
 /* -- private IMAP functions -- */
 /* imap.c */
