@@ -3,7 +3,7 @@
   - browser: `<goto-parent>` function bound to "p"
   - editor: `<history-search>` function bound to "Ctrl-r"
   - Cygwin support: https://www.neomutt.org/distro/cygwin
-  - OpenSUSE support: https://www.neomutt.org/distro/suse
+  - openSUSE support: https://www.neomutt.org/distro/suse
   - Upstream Homebrew support: Very soon - https://www.neomutt.org/distro/homebrew
 * Bug Fixes
   - gmail server-size search
@@ -19,7 +19,7 @@
   - Updated French translation
 * Website
   - Installation guide for Cygwin
-  - Installation guide for OpenSUSE
+  - Installation guide for openSUSE
   - Installation guide for CRUX
 * Build
   - check that DTDs are installed

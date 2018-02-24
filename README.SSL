@@ -1,9 +1,9 @@
-IMAP/SSL in mutt
+IMAP/SSL in neomutt
 ================
 
 Compilation
 -----------
-If you want to have SSL support in mutt, you need to install OpenSSL
+If you want to have SSL support in neomutt, you need to install OpenSSL
 (http://www.openssl.org) libraries and headers before compiling.
 OpenSSL versions 0.9.3 through 1.0.1c have been tested.
 
@@ -29,7 +29,7 @@ or
 	mailboxes imaps://localhost/inbox
 	mailboxes imaps://localhost:994/inbox
 
-If you get errors about lack of entropy, it means that Mutt was unable
+If you get errors about lack of entropy, it means that NeoMutt was unable
 to find a source of random data to initialize SSL library with. Should
 this happen, you need to generate the data yourself and save it in a
 file pointed by $entropy_file or $RANDFILE (environment) variables or
@@ -40,10 +40,10 @@ generates unpredictable output, for example 'ps aluxww' in Linux, and
 calculating the MD5-sum from the output and saving it in a file.
 
 ** Note: The contents of the file pointed by $RANDFILE environment
-** variable (or ~/.rnd if unset) will be overwritten every time Mutt
+** variable (or ~/.rnd if unset) will be overwritten every time NeoMutt
 ** is run so don't put anything you can't afford to lose in that file.
 
-The files Mutt will try to use to initialize SSL library with are files
+The files NeoMutt will try to use to initialize SSL library with are files
 pointed by $entropy_file and $RANDFILE (or ~/.rnd if unset.) If your
 OpenSSL is version 0.9.5 or later, the previous files can also be EGD
 sockets (see http://www.lothar.com/tech/crypto/ for more information
@@ -66,7 +66,7 @@ can also be saved so that further connections to the server are
 automatically accepted.
 
 If OpenSSL was built with support for ServerNameIndication (SNI) and TLS
-is used in the negotiation, mutt will send its idea of the server-name
+is used in the negotiation, neomutt will send its idea of the server-name
 as part of the TLS negotiation.  This allows the server to select an
 appropriate certificate, in the event that one server handles multiple
 hostnames with different certificates.
@@ -75,7 +75,7 @@ If your organization has several equivalent IMAP-servers, each of them
 should have a unique certificate which is signed with a common
 certificate.  If you want to use all of those servers, you don't need to
 save each server certificate on the first connect.  Instead, you can get
-the signer certificate and save it instead.  That way, mutt will
+the signer certificate and save it instead.  That way, neomutt will
 automatically accept all certificates signed with the saved certificate.
 
 System-wide certificates are by default considered trusted when checking
@@ -90,7 +90,7 @@ certificates each time you connect to a server, you have set this
 variable to some reasonable value.
 
 For example:
-	set certificate_file=~/.mutt/certificates
+	set certificate_file=~/.neomutt/certificates
 
 
 Troubleshooting
@@ -119,4 +119,4 @@ Tommi.Komulainen@iki.fi
 
 Updated by:
   Jeremy Katz <katzj@linuxpower.org>
-  Phil Pennock <mutt-dev@spodhuis.org>
+  Phil Pennock <neomutt-dev@spodhuis.org>

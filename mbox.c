@@ -1218,7 +1218,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 
     char savefile[_POSIX_PATH_MAX];
 
-    snprintf(savefile, sizeof(savefile), "%s/mutt.%s-%s-%u", NONULL(Tmpdir),
+    snprintf(savefile, sizeof(savefile), "%s/neomutt.%s-%s-%u", NONULL(Tmpdir),
              NONULL(Username), NONULL(ShortHostname), (unsigned int) getpid());
     rename(tempfile, savefile);
     mutt_sig_unblock();

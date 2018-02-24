@@ -1,4 +1,4 @@
-                     USING PGP FROM WITHIN MUTT
+                     USING PGP FROM WITHIN NEOMUTT
 
 
 WARNING: The configuration interface has completely changed as of
@@ -9,12 +9,12 @@ WARNING: The configuration interface has completely changed as of
                             USERS' GUIDE
 
 
-How do I use mutt with PGP, PGP5, or GnuPG?
+How do I use neomutt with PGP, PGP5, or GnuPG?
 -------------------------------------------
 
 Go to the contrib subdirectory of the source tree.  You'll find
 three files there, pgp2.rc, pgp5.rc, and gpg.rc.  These files
-contain ready-to-use configurations for using mutt with pgp2, pgp5,
+contain ready-to-use configurations for using neomutt with pgp2, pgp5,
 and gpg.
 
 Include one of these files with your ~/.muttrc, and things should
@@ -28,10 +28,10 @@ given to the PGP binaries match your needs.
 Frequently Asked Questions and Tips
 -----------------------------------
 
-Q: "People are sending PGP messages which mutt doesn't
+Q: "People are sending PGP messages which neomutt doesn't
     recognize.  What can I do?"
 
-The new way is to leave headers alone and use mutt's
+The new way is to leave headers alone and use neomutt's
 check-traditional-pgp function, which can detect PGP messages at
 run-time, and adjust content-types.
 
@@ -96,7 +96,7 @@ if (/^$BPGPS/:b && /^$EPGPS/:b)
 
 Q: "I don't like that PGP/MIME stuff, but want to use the
     old way of PGP-signing my mails.  Can't you include
-    that with mutt?"
+    that with neomutt?"
 
 The old answer to this question used to be this:
 
@@ -113,7 +113,7 @@ The old answer to this question used to be this:
 
 There's a new answer, though: Set the $pgp_autoinline
 configuration variable (it's a quad-option) to something different
-from "no" (that's the default).  Mutt will then try to use
+from "no" (that's the default).  NeoMutt will then try to use
 application/pgp wherever it makes sense.  In particular, it does
 not make any sense with multiparts, or non-ASCII or non-text bodies.
 In all other cases, PGP/MIME is used unconditionally.
@@ -127,7 +127,7 @@ Q: "I don't like all the ^Gs and various other verbosity
 
 Roland Rosenfeld <roland@spinnaker.rhein.de> has found a quite
 elegant solution to this problem: PGP has some pretty good foreign
-language support.  So we just introduce a language called "mutt"
+language support.  So we just introduce a language called "neomutt"
 which contains empty strings for the messages we don't want to see.
 To use this, copy either language.txt or language50.txt (depending
 on what PGP version you are using) to your $PGPPATH.  Make sure the
@@ -157,7 +157,7 @@ or exim.
 Auxiliary Programs
 ------------------
 
-Mutt needs two auxiliary programs for its PGP support: pgpewrap and
+NeoMutt needs two auxiliary programs for its PGP support: pgpewrap and
 pgpring.
 
 
@@ -165,7 +165,7 @@ pgpring.
 
 pgpring is a key ring dumper.  It extracts information from PGP's
 binary key ring and emits it in an (almost) readable output format
-understood by mutt's key selection routines.  This output format
+understood by neomutt's key selection routines.  This output format
 mimics the one used by the GNU Privacy Guard (GPG).
 
 You'll need this program with PGP 2 and PGP 5.
@@ -203,14 +203,14 @@ will execute:
         pgpe file -r a -r b -r c
 
 This script is needed with PGP 5 and with GPG, since their command
-line interfaces can't be properly served by mutt's format mechanism.
+line interfaces can't be properly served by neomutt's format mechanism.
 
 
 
 The Configuration Interface
 ---------------------------
 
-As usual within mutt, the configuration interface for the PGP
+As usual within neomutt, the configuration interface for the PGP
 commands relies on printf-like formats.  For all PGP commands, the
 following %-sequences are defined.
 
@@ -230,7 +230,7 @@ following %-sequences are defined.
         configuration variable $pgp_sign_as.  You probably need to
         use this within a conditional % sequence.
 
-  %r    In many contexts, mutt passes key IDs to pgp.  %r expands to
+  %r    In many contexts, neomutt passes key IDs to pgp.  %r expands to
         a list of key IDs.
 
 The following command formats are defined:

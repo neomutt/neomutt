@@ -906,7 +906,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
     else
     {
       h->index = i;
-      /* Mutt has several places where it turns off h->active as a
+      /* NeoMutt has several places where it turns off h->active as a
        * hack.  For example to avoid FLAG updates, or to exclude from
        * imap_exec_msgset.
        *

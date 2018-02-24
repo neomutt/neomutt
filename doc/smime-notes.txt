@@ -1,4 +1,4 @@
-How to use mutt's S/MIME capabilities
+How to use neomutt's S/MIME capabilities
 
 - Add the contents of contrib/smime.rc to your .muttrc. Don't worry about
   changing the smime_default_key line at this point -- you'll change it later.
@@ -23,7 +23,7 @@ How to use mutt's S/MIME capabilities
       provided when you exported the certificate.
 
     * When it asks for a "PEM pass phrase", make up a new password. Every
-      time you sign or decrypt a message, mutt will ask for the PEM pass
+      time you sign or decrypt a message, neomutt will ask for the PEM pass
       phrase.
 
     * Finally, when the script asks for a label, enter an easy-to-remember
@@ -41,7 +41,7 @@ How to use mutt's S/MIME capabilities
 - You probably want to import trusted root certificates from Mozilla or
   the system. This makes you trust anything that was ultimately signed by
   one of them. You can use "smime_keys add_root" to do so, or just download
-  https://curl.haxx.se/ca/cacert.pem into the place you point mutt's
+  https://curl.haxx.se/ca/cacert.pem into the place you point neomutt's
   smime_ca_location variable to.
 
 
@@ -71,7 +71,7 @@ mailbox, keyid, label, id of the intermediate certificate and keyflags.
       (verification failed), r: revoked, e: expired, u: unverified, v:
       successfully verified and finally t: trusted, in case it was
       successfully verified and you chose to trust the certificate (the
-      script will ask you). Mutt will not use invalid, revoked or expired
+      script will ask you). NeoMutt will not use invalid, revoked or expired
       certificates for signing or encryption. It will ask for confirmation
       before using unverified certificates, and finally it will issue a
       warning before using successfully verified but untrusted certificates.
@@ -83,10 +83,10 @@ Key retrieval is done obviously by searching the index file for a given
 mailbox. If none is found, the user is presented a list of available keys
 and asked to select one of those.
 
-The certificate and key directories specified in muttrc have to exist. Mutt
+The certificate and key directories specified in muttrc have to exist. NeoMutt
 will not create them. If you wish to sign messages yourself, note that this
-mutt does not address any PKCS10 or PKCS12 issues (yet?); that is, you have
-to get a valid certificate outside of mutt. (See above)
+neomutt does not address any PKCS10 or PKCS12 issues (yet?); that is, you have
+to get a valid certificate outside of neomutt. (See above)
 
 
 

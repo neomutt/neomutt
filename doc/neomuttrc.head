@@ -1,5 +1,5 @@
 #
-# System configuration file for Mutt
+# System configuration file for NeoMutt
 #
 
 # Default list of header fields to weed when displaying.
@@ -23,9 +23,9 @@ macro index,pager,attach,compose \cb "\
 "call urlview to extract URLs out of a message"
 
 # Show documentation when pressing F1
-macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show Mutt documentation"
+macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show NeoMutt documentation"
 
-# show the incoming mailboxes list (just like "mutt -y") and back when pressing "y"
+# show the incoming mailboxes list (just like "neomutt -y") and back when pressing "y"
 macro index,pager y "<change-folder>?" "show incoming mailboxes list"
 bind browser y exit
 
@@ -34,7 +34,7 @@ bind browser y exit
 # close-hook  '\.gz$' "gzip --stdout              '%t' >  '%f'"
 # append-hook '\.gz$' "gzip --stdout              '%t' >> '%f'"
 
-# If Mutt is unable to determine your site's domain name correctly, you can
+# If NeoMutt is unable to determine your site's domain name correctly, you can
 # set the default here.
 #
 # set hostname=cs.hmc.edu
@@ -71,11 +71,11 @@ mime_lookup application/octet-stream
 
 ## Qualify any MIME part with an "attachment" disposition, EXCEPT for
 ## text/x-vcard and application/pgp parts. (PGP parts are already known
-## to mutt, and can be searched for with ~g, ~G, and ~k.)
+## to neomutt, and can be searched for with ~g, ~G, and ~k.)
 ##
 ## I've added x-pkcs7 to this, since it functions (for S/MIME)
 ## analogously to PGP signature attachments. S/MIME isn't supported
-## in a stock mutt build, but we can still treat it specially here.
+## in a stock neomutt build, but we can still treat it specially here.
 ##
 attachments   +A */.*
 attachments   -A text/x-vcard application/pgp.*
@@ -87,7 +87,7 @@ attachments   -A application/x-pkcs7-.*
 ##
 attachments   +I text/plain
 
-## These two lines make Mutt qualify MIME containers.  (So, for example,
+## These two lines make NeoMutt qualify MIME containers.  (So, for example,
 ## a message/rfc822 forward will count as an attachment.)  The first
 ## line is unnecessary if you already have "attach-allow */.*", of
 ## course.  These are off by default!  The MIME elements contained

@@ -28,7 +28,7 @@ sorted through them, fixed them up and documented them.
 | Encrypt-to-Self      | Save a self-encrypted copy of emails
 | Fmemopen             | Replace some temporary files with memory buffers
 | Forgotten Attachment | Alert user when (s)he forgets to attach a file to an outgoing email.
-| Global Hooks         | Define actions to run globally within Mutt
+| Global Hooks         | Define actions to run globally within NeoMutt
 | Ifdef                | Conditional config options
 | Index Color          | Custom rules for theming the email index
 | Initials Expando     | Expando for author's initials
@@ -56,8 +56,8 @@ sorted through them, fixed them up and documented them.
 | ---------------------- | ---------------------------------------------
 | Header Cache Benchmark | Script to test the speed of the header cache
 | Keybase                | Keybase Integration
-| Useful programs        | List of useful programs interacting with mutt
-| Vi Keys                | Easy and clean Vi-keys for Mutt
+| Useful programs        | List of useful programs interacting with NeoMutt
+| Vi Keys                | Easy and clean Vi-keys for NeoMutt
 | Vim Syntax             | Vim Syntax File
 
 ## Where is NeoMutt?

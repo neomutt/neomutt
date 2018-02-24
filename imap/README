@@ -1,4 +1,4 @@
-IMAP in mutt should be considered beta quality. For the most part it
+IMAP in neomutt should be considered beta quality. For the most part it
 works well, but it is still not quite as stable or as full-featured
 as some of the other drivers. I believe it is now acceptable for
 daily use (and that's how I use it now, currently against Cyrus 1.6.24 and
@@ -10,21 +10,21 @@ IMAP folder with multiple clients is not supported - it may work, but
 no guarantees. There are still several non-critical known bugs, see
 http://bugs.guug.de/ for the current list.
 
-You may also be disappointed in mutt's handling of very large IMAP mailboxes.
-To build the message index mutt must fetch a subset of headers from every
+You may also be disappointed in neomutt's handling of very large IMAP mailboxes.
+To build the message index neomutt must fetch a subset of headers from every
 message in the mailbox, which costs time and network traffic linear to the
 number of messages in your mailbox.
 
-Nevertheless in general mutt is quite a fast and fully-featured IMAP client.
+Nevertheless in general neomutt is quite a fast and fully-featured IMAP client.
 It tries to be polite to IMAP servers as well, opening few connections and
 avoiding needless polls of the server, unlike certain other popular IMAP
 clients by certain large corporations :)
 
-Mutt supports almost all official authentication and security protocols for
+NeoMutt supports almost all official authentication and security protocols for
 IMAP, including SSL/TLS, native CRAM-MD5 and GSSAPI routines, and a SASL
 plugin which can handle just about everything else.
 
-Please report bugs to mutt-dev@mutt.org and/or brendan@kublai.com. Version,
+Please report bugs to neomutt-dev@neomutt.org and/or brendan@kublai.com. Version,
 options, stack-trace and .neomuttdebug files are a plus.
 
 Brendan Cully <brendan@kublai.com>
