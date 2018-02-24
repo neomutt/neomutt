@@ -218,7 +218,7 @@ GNU General Public License for more details.
 .BR sendmail (1),
 .BR smail (1).
 .PP
-Neomutt Home Page: http://www.neomutt.org/
+Neomutt Home Page: https://www.neomutt.org
 .PP
 The Neomutt manual
 .SH AUTHOR

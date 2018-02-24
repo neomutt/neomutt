@@ -65,12 +65,12 @@ sorted through them, fixed them up and documented them.
 - Source Code:     https://github.com/neomutt/neomutt
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
-- Website:         http://www.neomutt.org/
+- Website:         https://www.neomutt.org
 - IRC:             irc://irc.freenode.net/neomutt - please be patient.
   We're a small group, so our answer might take some time.
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
-- Development:     http://www.neomutt.org/dev.html
+- Development:     https://www.neomutt.org/dev.html
 
 ## NeoMutt Developers
 
@@ -124,5 +124,5 @@ author Michael Elkins and all the people that have contributed to Mutt during
 its long history, see the Acknowledgements section of the user manual for a
 detailed list.
 
-http://www.neomutt.org/guide/miscellany.html#acknowledgements
+https://www.neomutt.org/guide/miscellany.html#acknowledgements
 

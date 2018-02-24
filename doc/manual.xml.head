@@ -29,7 +29,7 @@
     <sect1 id="homepage">
       <title>NeoMutt Home Page</title>
       <para>The homepage can be found at
-      <ulink url="https://www.neomutt.org/">https://www.neomutt.org/</ulink>.</para>
+      <ulink url="https://www.neomutt.org">https://www.neomutt.org</ulink>.</para>
     </sect1>
 
     <sect1 id="mailinglists">
@@ -178,7 +178,7 @@
     There are many other features which are described elsewhere in the manual.
     There is even more information available in the NeoMutt FAQ and various web
     pages. See the
-    <ulink url="http://www.neomutt.org/">NeoMutt homepage</ulink> for more
+    <ulink url="https://www.neomutt.org">NeoMutt homepage</ulink> for more
     details.</para>
     <para>The keybindings described in this section are the defaults as
     distributed. Your local system administrator may have altered the defaults
@@ -12830,7 +12830,7 @@ color index_tags green default
         <itemizedlist>
           <listitem>
             <para>For more information, see:
-            <ulink url="https://notmuchmail.org/">
+            <ulink url="https://notmuchmail.org">
             https://notmuchmail.org/</ulink></para>
           </listitem>
           <listitem>
