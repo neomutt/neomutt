@@ -36,8 +36,8 @@
 #define N_(a) a
 #endif
 
-void (*mutt_error)  (const char *format, ...);
-void (*mutt_message)(const char *format, ...);
-void (*mutt_perror) (const char *message);
+extern void (*mutt_error)  (const char *format, ...);
+extern void (*mutt_message)(const char *format, ...);
+extern void (*mutt_perror) (const char *message);
 
 #endif /* _MUTT_MESSAGE_H */
