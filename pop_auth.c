@@ -27,7 +27,6 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "address.h"
 #include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"

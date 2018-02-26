@@ -30,7 +30,6 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "body.h"
 #include "envelope.h"
 #include "globals.h"

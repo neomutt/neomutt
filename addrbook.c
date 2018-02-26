@@ -26,7 +26,6 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
 #include "format_flags.h"
 #include "globals.h"

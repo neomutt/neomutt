@@ -32,7 +32,6 @@
 #include "mutt/mutt.h"
 #include "conn/conn.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
 #include "attach.h"
 #include "body.h"

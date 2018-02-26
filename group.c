@@ -25,7 +25,6 @@
 #include <stdlib.h>
 #include "mutt/mutt.h"
 #include "group.h"
-#include "address.h"
 #include "globals.h"
 #include "protos.h"
 

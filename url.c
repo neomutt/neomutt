@@ -31,7 +31,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "url.h"
-#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "protos.h"

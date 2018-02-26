@@ -34,7 +34,6 @@
 #include <time.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
 #include "body.h"
 #include "content.h"

@@ -27,6 +27,7 @@
  *
  * | File             | Description        |
  * | :--------------- | :----------------- |
+ * | mutt/address.c   | @subpage address   |
  * | mutt/base64.c    | @subpage base64    |
  * | mutt/buffer.c    | @subpage buffer    |
  * | mutt/charset.c   | @subpage charset   |
@@ -57,6 +58,7 @@
 #ifndef _MUTT_MUTT_H
 #define _MUTT_MUTT_H
 
+#include "address.h"
 #include "base64.h"
 #include "buffer.h"
 #include "charset.h"
