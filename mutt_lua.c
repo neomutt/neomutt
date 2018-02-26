@@ -32,7 +32,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "mutt_lua.h"
-#include "address.h"
 #include "globals.h"
 #include "mailbox.h"
 #include "mbtable.h"

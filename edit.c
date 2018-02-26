@@ -31,7 +31,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/mutt.h"
-#include "address.h"
 #include "alias.h"
 #include "body.h"
 #include "context.h"

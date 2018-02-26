@@ -37,7 +37,6 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "body.h"
 #include "buffy.h"
 #include "content.h"

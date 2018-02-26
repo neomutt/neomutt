@@ -29,7 +29,6 @@
 #include <unistd.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"

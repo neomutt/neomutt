@@ -22,9 +22,9 @@
  */
 
 #include "config.h"
+#include "mutt/address.h"
 #include "mutt/charset.h"
 #include "mutt/rfc2047.h"
-#include "address.h"
 #include "globals.h"
 
 #include <string.h>

@@ -29,7 +29,6 @@
 #include <sys/types.h>
 #include "mutt/mutt.h"
 #include "mutt.h"
-#include "address.h"
 #include "alias.h"
 #include "envelope.h"
 #include "filter.h"

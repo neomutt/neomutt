@@ -38,7 +38,6 @@
 #include "mutt/mutt.h"
 #include "mutt.h"
 #include "init.h"
-#include "address.h"
 #include "alias.h"
 #include "context.h"
 #include "envelope.h"

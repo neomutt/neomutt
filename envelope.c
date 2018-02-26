@@ -39,7 +39,6 @@
 #include <stddef.h>
 #include "mutt/mutt.h"
 #include "envelope.h"
-#include "address.h"
 #include "protos.h"
 
 /**
