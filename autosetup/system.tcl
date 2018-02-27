@@ -48,6 +48,7 @@ module-options [subst -noc -nob {
 	sysconfdir:
 	sharedstatedir:
 	localstatedir:
+	runstatedir:
 	maintainer-mode=0
 	dependency-tracking=0
 	silent-rules=0
@@ -332,6 +333,7 @@ if {$prefix ne {/usr}} {
 define sysconfdir $sysconfdir
 
 define localstatedir [opt-str localstatedir o /var]
+define runstatedir [opt-str runstatedir o /run]
 
 define SHELL [get-env SHELL [find-an-executable sh bash ksh]]
 
