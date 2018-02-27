@@ -585,6 +585,7 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   {
     /* An existing file or a non-existing path not ending with a slash */
     snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
+    mutt_encode_path(hcpath, sizeof(hcpath), hcpath);
     return hcpath;
   }
 
