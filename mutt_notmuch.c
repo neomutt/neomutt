@@ -482,19 +482,24 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
   notmuch_database_t *db = NULL;
   int ct = 0;
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
+  char *msg = NULL;
 
   mutt_debug(1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
   do
   {
-#ifdef NOTMUCH_API_3
+#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+    st = notmuch_database_open_verbose(
+        filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY,
+        &db, &msg);
+#elif defined(NOTMUCH_API_3)
     st = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY,
                                &db);
 #else
     db = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
                                                     NOTMUCH_DATABASE_MODE_READ_ONLY);
 #endif
-    if (db || !NmOpenTimeout || ((ct / 2) > NmOpenTimeout))
+    if ((st == NOTMUCH_STATUS_FILE_ERROR) || db || !NmOpenTimeout || ((ct / 2) > NmOpenTimeout))
       break;
 
     if (verbose && ct && ((ct % 2) == 0))
@@ -506,10 +511,22 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
   if (verbose)
   {
     if (!db)
-      mutt_error(_("Cannot open notmuch database: %s: %s"), filename,
-                 st ? notmuch_status_to_string(st) : _("unknown reason"));
+    {
+      if (msg)
+      {
+        mutt_error(msg);
+        FREE(&msg);
+      }
+      else
+      {
+        mutt_error(_("Cannot open notmuch database: %s: %s"), filename,
+                   st ? notmuch_status_to_string(st) : _("unknown reason"));
+      }
+    }
     else if (ct > 1)
+    {
       mutt_clear_error();
+    }
   }
   return db;
 }
