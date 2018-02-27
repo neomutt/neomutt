@@ -79,6 +79,8 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host, path,
                  (*path && path[plen - 1] == '/') ? "" : "/");
 
+  mutt_encode_path(dst, dstlen, dst);
+
   mutt_debug(3, "rc: %d, path: '%s'\n", len, dst);
 
   if (len < 0 || (size_t) len >= dstlen - 1)

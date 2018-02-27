@@ -609,6 +609,8 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
     rc = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/", name, suffix);
   }
 
+  mutt_encode_path(hcpath, sizeof(hcpath), hcpath);
+
   if (rc < 0) /* namer or fprintf failed.. should not happen */
     return path;
 
@@ -710,15 +712,12 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
 static char *get_foldername(const char *folder)
 {
   char *p = NULL;
-  char path[_POSIX_PATH_MAX];
-
-  mutt_encode_path(path, sizeof(path), folder);
 
   /* if the folder is local, canonify the path to avoid
    * to ensure equivalent paths share the hcache */
   p = mutt_mem_malloc(PATH_MAX + 1);
-  if (!realpath(path, p))
-    mutt_str_replace(&p, path);
+  if (!realpath(folder, p))
+    mutt_str_replace(&p, folder);
 
   return p;
 }
