@@ -2974,6 +2974,11 @@ color sidebar_divider   color8  default
       <para>When NeoMutt starts up it looks for two configuration files -- one
       <quote>system</quote> file and one
       <quote>user</quote> file.</para>
+      <para>NeoMutt first reads the system configuration file, then the user
+      configuration file. The two files are merged in the sense that "last
+      setting wins". That is, if a setting is defined in both files, the user
+      configuration file's value for that setting is the one that takes
+      precedence and becomes effective.</para>
       <para>NeoMutt searches for several different file names when looking for
       config. It looks for NeoMutt config files before Mutt config files and
       versioned config before plain config. For example:</para>
