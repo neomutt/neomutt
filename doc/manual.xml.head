@@ -7823,7 +7823,7 @@ subjectrx '\[rt #[0-9]+\] *' '%L%R'
 
 subjectrx '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
 # Strip out annoying [listname] prefixes in subjects
-subjectrx '\[[^\]]*\]:? *' '%L%R'
+subjectrx '\[[^]]*\]:? *' '%L%R'
 </screen>
       </example>
     </sect1>
