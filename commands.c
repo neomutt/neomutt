@@ -755,7 +755,6 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
  */
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {
-  int need_buffy_cleanup;
   int need_passphrase = 0, app = 0;
   char prompt[SHORT_STRING], buf[_POSIX_PATH_MAX];
   struct Context ctx;
@@ -923,7 +922,7 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
       }
     }
 
-    need_buffy_cleanup = (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF);
+    const int need_buffy_cleanup = (ctx.magic == MUTT_MBOX || ctx.magic == MUTT_MMDF);
 
     mx_close_mailbox(&ctx, NULL);
 
