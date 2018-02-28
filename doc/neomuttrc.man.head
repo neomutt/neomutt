@@ -440,6 +440,27 @@ These commands define spam-detection patterns from external spam
 filters, so that neomutt can sort, limit, and search on
 ``spam tags'' or ``spam attributes'', or display them
 in the index. See the Mutt manual for details.
+.PP
+.nf
+\fBsubjectrx\fP \fIpattern\fP \fIreplacement\fP
+\fBunsubjectrx\fP [ \fB*\fP | \fIpattern\fP ]
+.fi
+.IP
+\fBsubjectrx\fP specifies a regular expression \fIpattern\fP which, if
+detected in a message subject, causes the subject to be replaced with
+the \fIreplacement\fP value. The \fIreplacement\fP is subject to
+substitutions in the same way as for the \fBspam\fP command: %L for
+the text to the left of the match, %R for text to the right of the
+match, and %1 for the first subgroup in the match (etc). If you simply
+want to erase the match, set it to \(lq%L%R\(rq. Any number of
+\fBsubjectrx\fP commands may coexist.
+.IP
+Note this well: the \fIreplacement\fP value replaces the entire
+subject, not just the match!
+.IP
+\fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the
+substitution list. If \fB*\fP is used as the pattern, all
+substitutions will be removed.
 .TP
 \fBunhook\fP [\fB * \fP | \fIhook-type\fP ]
 This command will remove all hooks of a given type, or all hooks
