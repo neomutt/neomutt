@@ -593,7 +593,6 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 
 static void compose_menu_redraw(struct Menu *menu)
 {
-  char buf[LONG_STRING];
   struct ComposeRedrawData *rd = menu->redraw_data;
 
   if (!rd)
@@ -612,6 +611,7 @@ static void compose_menu_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
+    char buf[LONG_STRING];
     compose_status_line(buf, sizeof(buf), 0, MuttStatusWindow->cols, menu,
                         NONULL(ComposeFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
@@ -777,7 +777,6 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   struct AttachPtr *new = NULL;
   int i, close = 0;
   int r = -1; /* return value */
-  int op = 0;
   int loop = 1;
   int fcc_set = 0; /* has the user edited the Fcc: field ? */
   struct Context *ctx = NULL, *this = NULL;
@@ -820,7 +819,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 #ifdef USE_NNTP
     OPT_NEWS = false; /* for any case */
 #endif
-    switch (op = mutt_menu_loop(menu))
+    const int op = mutt_menu_loop(menu);
+    switch (op)
     {
       case OP_COMPOSE_EDIT_FROM:
         edit_address_list(HDR_FROM, &msg->env->from);
