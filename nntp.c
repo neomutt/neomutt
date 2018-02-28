@@ -849,7 +849,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
     struct Progress progress;
 
     if (msg)
-      mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, ReadInc, -1);
+      mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, ReadInc, 0);
 
     mutt_str_strfcpy(buf, query, sizeof(buf));
     if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
