@@ -52,8 +52,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   struct Url url;
   int len;
 
-  if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen ||
-      !mailbox || !*mailbox)
+  if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
     return -1;
 
   /* make up a Url we can turn into a string */
@@ -70,9 +69,10 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
     return -1;
   }
 
-  size_t mailboxlen = strlen(mailbox);
-  len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host, mailbox,
-                 (mailbox[mailboxlen - 1] == '/') ? "" : "/");
+  size_t mailboxlen = mutt_str_strlen(mailbox);
+  len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host,
+                 NONULL(mailbox),
+                 (mailboxlen != 0 && mailbox[mailboxlen - 1] == '/') ? "" : "/");
 
   mutt_encode_path(dst, dstlen, dst);
 
