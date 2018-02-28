@@ -534,6 +534,7 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
   if (*c == '/')
     *c = '\0';
   mutt_expand_path(dst, dstlen);
+  mutt_encode_path(dst, dstlen, dst);
 }
 
 /**
