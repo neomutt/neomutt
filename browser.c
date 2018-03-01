@@ -849,7 +849,6 @@ static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 {
   struct stat s;
-  char buffer[LONG_STRING];
 
 #ifdef USE_NNTP
   if (OPT_NEWS)
@@ -887,6 +886,7 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
         tmp->msg_unread = Context->unread;
       }
 
+      char buffer[LONG_STRING];
       mutt_str_strfcpy(buffer, tmp->path, sizeof(buffer));
       mutt_pretty_mailbox(buffer, sizeof(buffer));
 
@@ -1564,9 +1564,9 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             for (int j = 0, k = 0; j < state.entrylen; j++)
             {
               struct FolderFile ff = state.entry[j];
-              char full[_POSIX_PATH_MAX];
               if (ff.tagged)
               {
+                char full[_POSIX_PATH_MAX];
                 mutt_file_concat_path(full, LastDir, ff.name, sizeof(full));
                 mutt_expand_path(full, sizeof(full));
                 tfiles[k++] = mutt_str_strdup(full);
