@@ -595,7 +595,6 @@ static bool hostname_match(const char *hostname, const char *certname)
  */
 static int ssl_init(void)
 {
-  char path[_POSIX_PATH_MAX];
   static bool init_complete = false;
 
   if (init_complete)
@@ -604,6 +603,7 @@ static int ssl_init(void)
   if (!HAVE_ENTROPY())
   {
     /* load entropy from files */
+    char path[_POSIX_PATH_MAX];
     add_entropy(EntropyFile);
     add_entropy(RAND_file_name(path, sizeof(path)));
 
@@ -1126,12 +1126,6 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
   X509 *cert = NULL;
   SSL *ssl = NULL;
   int skip_mode;
-#ifdef HAVE_SSL_PARTIAL_CHAIN
-  static int last_pos = 0;
-  static X509 *last_cert = NULL;
-  unsigned char last_cert_md[EVP_MAX_MD_SIZE];
-  unsigned int last_cert_mdlen;
-#endif
 
   ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
   if (!ssl)
@@ -1169,8 +1163,12 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
    */
   if (SslVerifyPartialChains)
   {
+    static int last_pos = 0;
+    static X509 *last_cert = NULL;
     if (skip_mode && preverify_ok && (pos == last_pos) && last_cert)
     {
+      unsigned char last_cert_md[EVP_MAX_MD_SIZE];
+      unsigned int last_cert_mdlen;
       if (X509_digest(last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
           compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
