@@ -52,7 +52,6 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
   if (!mutt_date_is_day_name(s))
   {
     const char *p = NULL;
-    size_t len;
     short q = 0;
 
     for (p = s; *p && (q || !ISSPACE(*p)); p++)
@@ -87,7 +86,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 
     if (path)
     {
-      len = (size_t)(p - s);
+      size_t len = (size_t)(p - s);
       if (len + 1 > pathlen)
         len = pathlen - 1;
       memcpy(path, s, len);
