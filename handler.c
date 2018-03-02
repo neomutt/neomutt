@@ -346,7 +346,6 @@ static unsigned char decode_byte(char ch)
 static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
-  char linelen;
   char *pt = NULL;
   char bufi[BUFI_SIZE];
   size_t k = 0;
@@ -370,9 +369,9 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
     if (mutt_str_strncmp(tmps, "end", 3) == 0)
       break;
     pt = tmps;
-    linelen = decode_byte(*pt);
+    const unsigned char linelen = decode_byte(*pt);
     pt++;
-    for (char c = 0; c < linelen;)
+    for (unsigned char c = 0; c < linelen;)
     {
       for (char l = 2; l <= 6; l += 2)
       {
