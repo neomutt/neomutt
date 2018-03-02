@@ -4302,32 +4302,28 @@ msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Vælg algoritme-familie: 1: DES, 2: RC2, 3: AES, eller r(y)d? "
 
 #: ncrypt/smime.c:2107
-msgid "drac"
-msgstr "dray"
+msgid "123c"
+msgstr "123y"
 
 #: ncrypt/smime.c:2110
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
 #: ncrypt/smime.c:2110
-msgid "dt"
-msgstr "dt"
+msgid "12"
+msgstr "12"
 
 #: ncrypt/smime.c:2123
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
 #: ncrypt/smime.c:2123
-msgid "468"
-msgstr "468"
+msgid "123"
+msgstr "123"
 
 #: ncrypt/smime.c:2139
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
-
-#: ncrypt/smime.c:2139
-msgid "895"
-msgstr "895"
 
 #: newsrc.c:610
 msgid "Loading list of groups from cache..."

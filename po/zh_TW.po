@@ -4480,7 +4480,7 @@ msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr ""
 
 #: ncrypt/smime.c:2107
-msgid "drac"
+msgid "123c"
 msgstr ""
 
 #: ncrypt/smime.c:2110
@@ -4488,7 +4488,7 @@ msgid "1: DES, 2: Triple-DES "
 msgstr ""
 
 #: ncrypt/smime.c:2110
-msgid "dt"
+msgid "12"
 msgstr ""
 
 #: ncrypt/smime.c:2123
@@ -4496,15 +4496,11 @@ msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr ""
 
 #: ncrypt/smime.c:2123
-msgid "468"
+msgid "123"
 msgstr ""
 
 #: ncrypt/smime.c:2139
 msgid "1: AES128, 2: AES192, 3: AES256 "
-msgstr ""
-
-#: ncrypt/smime.c:2139
-msgid "895"
 msgstr ""
 
 #: newsrc.c:610
