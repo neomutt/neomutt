@@ -195,7 +195,7 @@ msgstr "Nevím, jak mám toto vytisknout!"
 #: bcache.c:164
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "Cesta je příliš dlouhá: %s%s%s"
 
 #: bcache.c:172
 #, fuzzy, c-format
@@ -213,7 +213,7 @@ msgstr "Změnit adresář"
 
 #: browser.c:72
 msgid "Goto"
-msgstr ""
+msgstr "Jít na"
 
 #: browser.c:73 browser.c:85
 msgid "Mask"
@@ -221,7 +221,7 @@ msgstr "Maska"
 
 #: browser.c:81
 msgid "List"
-msgstr ""
+msgstr "Seznam"
 
 #: browser.c:82
 #, fuzzy
@@ -1435,7 +1435,7 @@ msgstr "Skupině"
 
 #: curs_main.c:837 pager.c:1691
 msgid "Post"
-msgstr ""
+msgstr "Poslat"
 
 #: curs_main.c:838 pager.c:1692
 #, fuzzy
@@ -1639,14 +1639,12 @@ msgid "Open newsgroup"
 msgstr ""
 
 #: curs_main.c:2221
-#, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Ukončit NeoMutt bez uložení změn?"
 
 #: curs_main.c:2237
-#, fuzzy
 msgid "Cannot break thread"
-msgstr "Vlákna nelze spojit"
+msgstr "Vlákno nelze rozdělit"
 
 #: curs_main.c:2240 curs_main.c:2278 curs_main.c:2738 curs_main.c:2770
 #: flags.c:350 thread.c:1076 thread.c:1132 thread.c:1200
@@ -2704,7 +2702,7 @@ msgstr "prázdný sled kláves"
 #: keymap.c:1043
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "Funkce '%s' není v menu '%s' dostupná"
 
 #: keymap.c:1112
 msgid "bind: too many arguments"
@@ -3167,7 +3165,7 @@ msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
 #: mutt_notmuch.c:262
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "Rozebrání dotazu pro notmuch se nezdařilo: %s"
 
 #: mutt_notmuch.c:366
 msgid ""
@@ -3178,12 +3176,12 @@ msgstr ""
 #: mutt_notmuch.c:421
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
+msgstr "Rozebrání limitu pro notmuch : se nezdařilo %s"
 
 #: mutt_notmuch.c:501
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Čekám na zamknutí pomocí funkce fcntl… %d"
+msgstr "Čekám na zamknutí notmuch databáze… (%d s)"
 
 #: mutt_notmuch.c:509
 #, c-format
@@ -3211,14 +3209,14 @@ msgid "Can't write to virtual folder."
 msgstr "Složku koš nelze otevřít"
 
 #: mutt_socket.c:103
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL není dostupné"
+msgstr "SSL není dostupné, nelze se spojit s %s"
 
 #: mx.c:496
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Hledání bylo přerušeno."
+msgstr "Čtení z %s bylo přerušeno…"
 
 #: mx.c:596
 msgid "message(s) not deleted"
