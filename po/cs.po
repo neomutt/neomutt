@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-03-18 23:11+0000\n"
+"POT-Creation-Date: 2018-03-18 23:51+0000\n"
 "PO-Revision-Date: 2017-02-13 21:09+01:00\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -191,7 +191,7 @@ msgstr "Nevím, jak mám toto vytisknout!"
 #: bcache.c:161
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "Cesta je příliš dlouhá: %s%s%s"
 
 #: bcache.c:169
 #, fuzzy, c-format
@@ -209,7 +209,7 @@ msgstr "Změnit adresář"
 
 #: browser.c:72
 msgid "Goto"
-msgstr ""
+msgstr "Jít na"
 
 #: browser.c:73 browser.c:85
 msgid "Mask"
@@ -217,7 +217,7 @@ msgstr "Maska"
 
 #: browser.c:81
 msgid "List"
-msgstr ""
+msgstr "Seznam"
 
 #: browser.c:82
 #, fuzzy
@@ -1419,7 +1419,7 @@ msgstr "Skupině"
 
 #: curs_main.c:839 pager.c:1723
 msgid "Post"
-msgstr ""
+msgstr "Poslat"
 
 #: curs_main.c:840 pager.c:1724
 #, fuzzy
@@ -1623,14 +1623,12 @@ msgid "Open newsgroup"
 msgstr ""
 
 #: curs_main.c:2241
-#, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Ukončit NeoMutt bez uložení změn?"
 
 #: curs_main.c:2257
-#, fuzzy
 msgid "Cannot break thread"
-msgstr "Vlákna nelze spojit"
+msgstr "Vlákno nelze rozdělit"
 
 #: curs_main.c:2260 curs_main.c:2298 curs_main.c:2758 curs_main.c:2790
 #: flags.c:350 thread.c:1076 thread.c:1132 thread.c:1200
@@ -2644,7 +2642,7 @@ msgstr "%s: prázdný sled kláves"
 #: keymap.c:1043
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "Funkce '%s' není v menu '%s' dostupná"
 
 #: keymap.c:1170
 msgid "macro: empty key sequence"
@@ -3113,7 +3111,7 @@ msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
 #: mutt_notmuch.c:262
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "Rozebrání dotazu pro notmuch se nezdařilo: %s"
 
 #: mutt_notmuch.c:366
 msgid ""
@@ -3124,12 +3122,12 @@ msgstr ""
 #: mutt_notmuch.c:421
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
+msgstr "Rozebrání limitu pro notmuch : se nezdařilo %s"
 
 #: mutt_notmuch.c:507
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Čekám na zamknutí pomocí funkce fcntl… %d"
+msgstr "Čekám na zamknutí notmuch databáze… (%d s)"
 
 #: mutt_notmuch.c:523
 #, c-format
@@ -3157,14 +3155,14 @@ msgid "Can't write to virtual folder."
 msgstr "Složku koš nelze otevřít"
 
 #: mutt_socket.c:103
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL není dostupné"
+msgstr "SSL není dostupné, nelze se spojit s %s"
 
 #: mx.c:495
 #, fuzzy, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Hledání bylo přerušeno."
+msgstr "Čtení z %s bylo přerušeno…"
 
 #: mx.c:595
 msgid "message(s) not deleted"
@@ -6312,21 +6310,49 @@ msgstr "Přeloženo s volbami:"
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
 
+#~ msgid "Cannot create filter"
+#~ msgstr "Nelze vytvořit filtr"
+
+#~ msgid "Missing arguments."
+#~ msgstr "Chybí argumenty."
+
+#~ msgid "color: too few arguments"
+#~ msgstr "color: příliš málo argumentů"
+
+#~ msgid "mono: too few arguments"
+#~ msgstr "mono: příliš málo argumentů"
+
+#~ msgid "too few arguments"
+#~ msgstr "příliš málo argumentů"
+
+#, fuzzy
+#~ msgid "finish: too many arguments"
+#~ msgstr "push: příliš mnoho argumentů"
+
+#~ msgid "push: too many arguments"
+#~ msgstr "push: příliš mnoho argumentů"
+
+#~ msgid "bind: too many arguments"
+#~ msgstr "bind: příliš mnoho argumentů"
+
+#~ msgid "macro: too many arguments"
+#~ msgstr "macro: příliš mnoho argumentů"
+
 #, fuzzy
 #~ msgid "Debugging at file %s.\n"
 #~ msgstr "Úroveň ladění je %d.\n"
 
+#~ msgid "source: too many arguments"
+#~ msgstr "source: příliš mnoho argumentů"
+
 #~ msgid "score: too few arguments"
 #~ msgstr "skóre: příliš málo argumentů"
 
-#, fuzzy
-#~ msgid "restore_default(%s): error in regex: %s\n"
-#~ msgstr "mutt_restore_default(%s): chybný regulární výraz %s\n"
+#~ msgid "score: too many arguments"
+#~ msgstr "skóre: příliš mnoho argumentů"
 
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -d Ignored.\n"
-#~ msgstr "při překladu programu nebylo 'DEBUG' definováno. Ignoruji.\n"
+#~ msgid "No recipients are specified!"
+#~ msgstr "Nejsou zadáni příjemci!"
 
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -l Ignored.\n"
-#~ msgstr "při překladu programu nebylo 'DEBUG' definováno. Ignoruji.\n"
+#~ msgid "No recipients were specified."
+#~ msgstr "Nebyli zadání příjemci."
