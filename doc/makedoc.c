@@ -905,7 +905,6 @@ static int handle_docline(char *l, FILE *out, int docstat)
     {
       bool output_dollar = false;
       char *ref = NULL;
-      char save;
 
       s++;
       if (*s == '$')
@@ -924,7 +923,7 @@ static int handle_docline(char *l, FILE *out, int docstat)
           s++;
 
         docstat = commit_buf(buf, &d, out, docstat);
-        save = *s;
+        const char save = *s;
         *s = '\0';
         print_ref(out, output_dollar, ref);
         *s = save;
