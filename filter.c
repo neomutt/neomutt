@@ -57,7 +57,6 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
                             int fdin, int fdout, int fderr)
 {
   int pin[2], pout[2], perr[2], thepid;
-  char columns[11];
 
   if (in)
   {
@@ -144,6 +143,7 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
 
     if (MuttIndexWindow && (MuttIndexWindow->cols > 0))
     {
+      char columns[11];
       snprintf(columns, sizeof(columns), "%d", MuttIndexWindow->cols);
       mutt_envlist_set("COLUMNS", columns, 1);
     }
