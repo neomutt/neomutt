@@ -83,7 +83,6 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
 {
-  size_t len;
   char *pbuf = buf;
 
   for (int i = 0; items[i].name && buflen > 2; i++)
@@ -95,7 +94,7 @@ char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping
       buflen -= 2;
     }
     mutt_make_help(pbuf, buflen, _(items[i].name), menu, items[i].value);
-    len = mutt_str_strlen(pbuf);
+    const size_t len = mutt_str_strlen(pbuf);
     pbuf += len;
     buflen -= len;
   }
@@ -106,7 +105,6 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
 {
   int n = maxwidth;
   wchar_t wc;
-  int w;
   size_t k;
   size_t len = mutt_str_strlen(*macro);
   mbstate_t mbstate1, mbstate2;
@@ -123,7 +121,8 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
       wc = ReplacementChar;
     }
     /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
-    if (IsWPrint(wc) && (w = wcwidth(wc)) >= 0)
+    const int w = wcwidth(wc);
+    if (IsWPrint(wc) && w  >= 0)
     {
       if (w > n)
         break;
@@ -200,10 +199,9 @@ static int get_wrapped_width(const char *t, size_t wid)
 
 static int pad(FILE *f, int col, int i)
 {
-  char fmt[32] = "";
-
   if (col < i)
   {
+    char fmt[32] = "";
     snprintf(fmt, sizeof(fmt), "%%-%ds", i - col);
     fprintf(f, fmt, "");
     return i;
@@ -215,9 +213,8 @@ static int pad(FILE *f, int col, int i)
 static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, const char *t3)
 {
   int col;
-  int col_a, col_b;
+  int col_b;
   bool split;
-  int n;
 
   fputs(t1, f);
 
@@ -231,7 +228,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   }
   else
   {
-    col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
+    const int col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
     col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
     col = pad(f, mutt_strwidth(t1), col_a);
   }
@@ -266,7 +263,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   {
     while (*t3)
     {
-      n = MuttIndexWindow->cols - col;
+      int n = MuttIndexWindow->cols - col;
 
       if (ismacro >= 0)
       {
