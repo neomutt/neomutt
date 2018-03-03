@@ -2281,20 +2281,17 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
-  int query, unset, inv, reset, r = 0;
-  int idx = -1;
-  const char *p = NULL;
-  char scratch[_POSIX_PATH_MAX];
-  char *myvar = NULL;
+  int r = 0;
 
   while (MoreArgs(s))
   {
-    /* reset state variables */
-    query = 0;
-    unset = data & MUTT_SET_UNSET;
-    inv = data & MUTT_SET_INV;
-    reset = data & MUTT_SET_RESET;
-    myvar = NULL;
+    int query = 0;
+    int unset = data & MUTT_SET_UNSET;
+    int inv = data & MUTT_SET_INV;
+    int reset = data & MUTT_SET_RESET;
+    int idx = -1;
+    const char *p = NULL;
+    const char *myvar = NULL;
 
     if (*s->dptr == '?')
     {
@@ -2504,6 +2501,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
            * so cast to 'void*' is okay */
           FREE((void *) MuttVars[idx].var);
 
+          char scratch[_POSIX_PATH_MAX];
           mutt_str_strfcpy(scratch, tmp->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
           *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
@@ -2884,7 +2882,7 @@ static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
   FILE *f = NULL;
-  int line = 0, rc = 0, conv = 0, line_rc, warnings = 0;
+  int line = 0, rc = 0, line_rc, warnings = 0;
   struct Buffer token;
   char *linebuf = NULL;
   char *currentline = NULL;
@@ -2942,7 +2940,7 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
   mutt_buffer_init(&token);
   while ((linebuf = mutt_file_read_line(linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
   {
-    conv = ConfigCharset && (*ConfigCharset) && Charset;
+    const int conv = ConfigCharset && (*ConfigCharset) && Charset;
     if (conv)
     {
       currentline = mutt_str_strdup(linebuf);
@@ -3119,14 +3117,12 @@ static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
 
 static void matches_ensure_morespace(int current)
 {
-  int base_space, extra_space, space;
-
   if (current > MatchesListsize - 2)
   {
-    base_space = MAX(NUMVARS, NUMCOMMANDS) + 1;
-    extra_space = MatchesListsize - base_space;
+    int base_space = MAX(NUMVARS, NUMCOMMANDS) + 1;
+    int extra_space = MatchesListsize - base_space;
     extra_space *= 2;
-    space = base_space + extra_space;
+    const int space = base_space + extra_space;
     mutt_mem_realloc(&Matches, space * sizeof(char *));
     memset(&Matches[current + 1], 0, space - current);
     MatchesListsize = space;
@@ -3341,14 +3337,13 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
 
 int mutt_var_value_complete(char *buffer, size_t len, int pos)
 {
-  char var[STRING], *pt = buffer;
-  int spaces;
+  char *pt = buffer;
 
   if (buffer[0] == 0)
     return 0;
 
   SKIPWS(buffer);
-  spaces = buffer - pt;
+  const int spaces = buffer - pt;
 
   pt = buffer + pos - spaces;
   while ((pt > buffer) && !isspace((unsigned char) *pt))
@@ -3362,7 +3357,7 @@ int mutt_var_value_complete(char *buffer, size_t len, int pos)
     int idx;
     char val[LONG_STRING];
     const char *myvarval = NULL;
-
+    char var[STRING];
     mutt_str_strfcpy(var, pt, sizeof(var));
     /* ignore the trailing '=' when comparing */
     int vlen = mutt_str_strlen(var);
