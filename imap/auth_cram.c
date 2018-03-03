@@ -57,7 +57,6 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   struct Md5Ctx ctx;
   unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
   unsigned char secret[MD5_BLOCK_LEN + 1];
-  unsigned char hash_passwd[MD5_DIGEST_LEN];
   size_t secret_len;
 
   secret_len = strlen(password);
@@ -66,6 +65,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
    * digests */
   if (secret_len > MD5_BLOCK_LEN)
   {
+    unsigned char hash_passwd[MD5_DIGEST_LEN];
     mutt_md5_bytes(password, secret_len, hash_passwd);
     mutt_str_strfcpy((char *) secret, (char *) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
