@@ -112,40 +112,40 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 
 static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
 {
-  int c, ch;
+  if (!istext)
+  {
+    mutt_file_copy_bytes(s->fpin, s->fpout, len);
+    return;
+  }
+
+  state_set_prefix(s);
+
+  int c;
   char bufi[BUFI_SIZE];
   size_t l = 0;
-
-  if (istext)
+  while ((c = fgetc(s->fpin)) != EOF && len--)
   {
-    state_set_prefix(s);
-
-    while ((c = fgetc(s->fpin)) != EOF && len--)
+    if (c == '\r' && len)
     {
-      if (c == '\r' && len)
+      const int ch = fgetc(s->fpin);
+      if (ch == '\n')
       {
-        ch = fgetc(s->fpin);
-        if (ch == '\n')
-        {
-          c = ch;
-          len--;
-        }
-        else
-          ungetc(ch, s->fpin);
+        c = ch;
+        len--;
       }
-
-      bufi[l++] = c;
-      if (l == sizeof(bufi))
-        convert_to_state(cd, bufi, &l, s);
+      else
+        ungetc(ch, s->fpin);
     }
 
-    convert_to_state(cd, bufi, &l, s);
-    convert_to_state(cd, 0, 0, s);
-
-    state_reset_prefix(s);
+    bufi[l++] = c;
+    if (l == sizeof(bufi))
+      convert_to_state(cd, bufi, &l, s);
   }
-  else
-    mutt_file_copy_bytes(s->fpin, s->fpout, len);
+
+  convert_to_state(cd, bufi, &l, s);
+  convert_to_state(cd, 0, 0, s);
+
+  state_reset_prefix(s);
 }
 
 static int qp_decode_triple(char *s, char *d)
