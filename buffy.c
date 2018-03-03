@@ -832,13 +832,12 @@ int mutt_buffy_notify(void)
  */
 void mutt_buffy(char *s, size_t slen)
 {
-  int pass, found = 0;
-
   mutt_expand_path(s, slen);
 
   if (mutt_buffy_check(false))
   {
-    for (pass = 0; pass < 2; pass++)
+    int found = 0;
+    for (int pass = 0; pass < 2; pass++)
     {
       for (struct Buffy *b = Incoming; b; b = b->next)
       {

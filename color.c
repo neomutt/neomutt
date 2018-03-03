@@ -245,10 +245,6 @@ int mutt_alloc_color(int fg, int bg)
   struct ColorList *p = ColorList;
   int i;
 
-#ifdef USE_SLANG_CURSES
-  char fgc[SHORT_STRING], bgc[SHORT_STRING];
-#endif
-
   /* check to see if this color is already allocated to save space */
   while (p)
   {
@@ -291,8 +287,11 @@ int mutt_alloc_color(int fg, int bg)
 
 #ifdef USE_SLANG_CURSES
   if (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
+  {
+    char fgc[SHORT_STRING], bgc[SHORT_STRING];
     SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
                    get_color_name(bgc, sizeof(bgc), bg));
+  }
   else
 #elif defined(HAVE_USE_DEFAULT_COLORS)
   if (fg == COLOR_DEFAULT)
@@ -633,12 +632,10 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
   }
   else
   {
-    int r;
-    char buf[LONG_STRING];
-
     tmp = new_color_line();
     if (is_index)
     {
+      char buf[LONG_STRING];
       mutt_str_strfcpy(buf, NONULL(s), sizeof(buf));
       mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
       tmp->color_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, err);
@@ -659,7 +656,7 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
       else
         flags = REG_ICASE;
 
-      r = REGCOMP(&tmp->regex, s, flags);
+      const int r = REGCOMP(&tmp->regex, s, flags);
       if (r != 0)
       {
         regerror(r, &tmp->regex, err->data, err->dsize);
@@ -688,7 +685,6 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
                         struct Buffer *err)
 {
   int q_level = 0;
-  char *eptr = NULL;
 
   if (!MoreArgs(s))
   {
@@ -701,6 +697,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
   {
     if (buf->data[6])
     {
+      char *eptr = NULL;
       *ql = strtol(buf->data + 6, &eptr, 10);
       if (*eptr || q_level < 0)
       {

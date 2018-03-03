@@ -382,10 +382,8 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
-  char tmp[128];
   struct Url url;
   char *c = NULL;
-  int n;
 
   if (!ImapPort)
   {
@@ -435,6 +433,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
   {
     url_free(&url);
     FREE(&c);
+    char tmp[128];
     if (sscanf(path, "{%127[^}]}", tmp) != 1)
       return -1;
 
@@ -454,7 +453,7 @@ int imap_parse_path(const char *path, struct ImapMbox *mx)
       mx->account.flags |= MUTT_ACCT_USER;
     }
 
-    n = sscanf(tmp, "%127[^:/]%127s", mx->account.host, tmp);
+    const int n = sscanf(tmp, "%127[^:/]%127s", mx->account.host, tmp);
     if (n < 1)
     {
       mutt_debug(1, "NULL host in %s\n", path);

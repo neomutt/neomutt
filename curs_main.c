@@ -236,10 +236,10 @@ static int ci_previous_undeleted(int msgno)
  */
 static int ci_first_message(void)
 {
-  int old = -1;
 
   if (Context && Context->msgcount)
   {
+    int old = -1;
     for (int i = 0; i < Context->vcount; i++)
     {
       if (!Context->hdrs[Context->v2r[i]]->read &&
@@ -606,7 +606,6 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
     return;
 
   enum FormatFlag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
-  int edgemsgno, reverse = Sort & SORT_REVERSE;
   struct MuttThread *tmp = NULL;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
@@ -616,6 +615,8 @@ void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num)
       flag |= MUTT_FORMAT_FORCESUBJ;
     else
     {
+      const int reverse = Sort & SORT_REVERSE;
+      int edgemsgno;
       if (reverse)
       {
         if (menu->top + menu->pagelen > menu->max)
@@ -844,8 +845,6 @@ struct Mapping IndexNewsHelp[] = {
 
 static void index_menu_redraw(struct Menu *menu)
 {
-  char buf[LONG_STRING];
-
   if (menu->redraw & REDRAW_FULL)
   {
     menu_redraw_full(menu);
@@ -877,6 +876,7 @@ static void index_menu_redraw(struct Menu *menu)
 
   if (menu->redraw & REDRAW_STATUS)
   {
+    char buf[LONG_STRING];
     menu_status_line(buf, sizeof(buf), menu, NONULL(StatusFormat));
     mutt_window_move(MuttStatusWindow, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
@@ -1746,7 +1746,7 @@ int mutt_index_menu(void)
         {
           int ovc = Context->vcount;
           int oc = Context->msgcount;
-          int check, newidx;
+          int check;
           struct Header *newhdr = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
@@ -1754,7 +1754,7 @@ int mutt_index_menu(void)
           {
             /* threads may be reordered, so figure out what header the cursor
              * should be on. #3092 */
-            newidx = menu->current;
+            int newidx = menu->current;
             if (CURHDR->deleted)
               newidx = ci_next_undeleted(menu->current);
             if (newidx < 0)
@@ -1891,12 +1891,12 @@ int mutt_index_menu(void)
 
         if (tag)
         {
-          char msgbuf[STRING];
           struct Progress progress;
           int px;
 
           if (!Context->quiet)
           {
+            char msgbuf[STRING];
             snprintf(msgbuf, sizeof(msgbuf), _("Update tags..."));
             mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, 1, Context->tagged);
           }
@@ -3113,7 +3113,6 @@ int mutt_index_menu(void)
         CHECK_VISIBLE;
         if (CURHDR->env->message_id)
         {
-          char str[STRING], macro[STRING];
           char buf2[128];
 
           buf2[0] = '\0';
@@ -3123,6 +3122,7 @@ int mutt_index_menu(void)
           if (!mutt_get_field(_("Enter macro stroke: "), buf2, sizeof(buf2), MUTT_CLEAR) &&
               buf2[0])
           {
+            char str[STRING], macro[STRING];
             snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf2);
             snprintf(macro, sizeof(macro), "<search>~i \"%s\"\n", CURHDR->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a

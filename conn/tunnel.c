@@ -69,7 +69,6 @@ static int tunnel_socket_open(struct Connection *conn)
   int pid;
   int rc;
   int pin[2], pout[2];
-  int devnull;
 
   tunnel = mutt_mem_malloc(sizeof(struct TunnelData));
   conn->sockdata = tunnel;
@@ -98,7 +97,7 @@ static int tunnel_socket_open(struct Connection *conn)
   if (pid == 0)
   {
     mutt_sig_unblock_system(0);
-    devnull = open("/dev/null", O_RDWR);
+    const int devnull = open("/dev/null", O_RDWR);
     if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
         dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
     {

@@ -376,7 +376,6 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
  */
 int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
 {
-  char buffer[SHORT_STRING];
 
   if (h->env)
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0) |
@@ -388,6 +387,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
   if (flags & CH_TXTPLAIN)
   {
     char chsbuf[SHORT_STRING];
+    char buffer[SHORT_STRING];
     fputs("MIME-Version: 1.0\n", out);
     fputs("Content-Transfer-Encoding: 8bit\n", out);
     fputs("Content-Type: text/plain; charset=", out);
@@ -501,14 +501,13 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
-  int ch;
 
   if (b->deleted)
   {
     fseeko(fp, b->offset, SEEK_SET);
     for (long l = b->length; l; l--)
     {
-      ch = getc(fp);
+      const int ch = getc(fp);
       if (ch == EOF)
         break;
       if (ch == '\n')
@@ -896,7 +895,7 @@ static void format_address_header(char **h, struct Address *a)
   char cbuf[STRING];
   char c2buf[STRING];
   char *p = NULL;
-  size_t l, linelen, buflen, cbuflen, c2buflen, plen;
+  size_t linelen, buflen, plen;
 
   linelen = mutt_str_strlen(*h);
   plen = linelen;
@@ -908,7 +907,7 @@ static void format_address_header(char **h, struct Address *a)
     struct Address *tmp = a->next;
     a->next = NULL;
     *buf = *cbuf = *c2buf = '\0';
-    l = mutt_addr_write(buf, sizeof(buf), a, false);
+    const size_t l = mutt_addr_write(buf, sizeof(buf), a, false);
     a->next = tmp;
 
     if (count && linelen + l > 74)
@@ -932,8 +931,8 @@ static void format_address_header(char **h, struct Address *a)
       strcpy(c2buf, ",");
     }
 
-    cbuflen = mutt_str_strlen(cbuf);
-    c2buflen = mutt_str_strlen(c2buf);
+    const size_t cbuflen = mutt_str_strlen(cbuf);
+    const size_t c2buflen = mutt_str_strlen(c2buf);
     buflen += l + cbuflen + c2buflen;
     mutt_mem_realloc(h, buflen);
     p = *h;

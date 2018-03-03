@@ -75,17 +75,14 @@
  */
 static int socket_preconnect(void)
 {
-  int rc;
-  int save_errno;
-
   if (mutt_str_strlen(Preconnect))
   {
     mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
-    rc = mutt_system(Preconnect);
+    const int rc = mutt_system(Preconnect);
     mutt_debug(2, "Preconnect result: %d\n", rc);
     if (rc != 0)
     {
-      save_errno = errno;
+      const int save_errno = errno;
       mutt_perror(_("Preconnect command failed."));
       mutt_sleep(1);
 
@@ -203,7 +200,6 @@ int mutt_socket_close(struct Connection *conn)
  */
 int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int dbg)
 {
-  int rc;
   int sent = 0;
 
   mutt_debug(dbg, "%d> %s", conn->fd, buf);
@@ -219,7 +215,7 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
 
   while (sent < len)
   {
-    rc = conn->conn_write(conn, buf + sent, len - sent);
+    const int rc = conn->conn_write(conn, buf + sent, len - sent);
     if (rc < 0)
     {
       mutt_debug(1, "error writing (%s), closing socket\n", strerror(errno));
@@ -431,9 +427,8 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {
   fd_set rfds;
-  unsigned long wait_millis, post_t_millis;
+  unsigned long wait_millis;
   struct timeval tv, pre_t, post_t;
-  int rc;
 
   if (conn->fd < 0)
     return -1;
@@ -449,7 +444,7 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
     FD_SET(conn->fd, &rfds);
 
     gettimeofday(&pre_t, NULL);
-    rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
+    const int rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
     gettimeofday(&post_t, NULL);
 
     if (rc > 0 || (rc < 0 && errno != EINTR))
@@ -459,7 +454,7 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
       mutt_query_exit();
 
     wait_millis += (pre_t.tv_sec * 1000UL) + (pre_t.tv_usec / 1000);
-    post_t_millis = (post_t.tv_sec * 1000UL) + (post_t.tv_usec / 1000);
+    const unsigned long post_t_millis = (post_t.tv_sec * 1000UL) + (post_t.tv_usec / 1000);
     if (wait_millis <= post_t_millis)
       return 0;
     wait_millis -= post_t_millis;
@@ -475,7 +470,6 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 int raw_socket_open(struct Connection *conn)
 {
   int rc;
-  int fd;
 
   char *host_idna = NULL;
 
@@ -532,7 +526,7 @@ int raw_socket_open(struct Connection *conn)
   rc = -1;
   for (cur = res; cur != NULL; cur = cur->ai_next)
   {
-    fd = socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol);
+    int fd = socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol);
     if (fd >= 0)
     {
       rc = socket_connect(fd, cur->ai_addr);
@@ -592,7 +586,7 @@ int raw_socket_open(struct Connection *conn)
   for (int i = 0; he->h_addr_list[i] != NULL; i++)
   {
     memcpy(&sin.sin_addr, he->h_addr_list[i], he->h_length);
-    fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
+    int fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
 
     if (fd >= 0)
     {

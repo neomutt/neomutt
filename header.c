@@ -47,7 +47,6 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   const char *p = NULL;
   FILE *ifp = NULL, *ofp = NULL;
   int i;
-  bool keep;
   struct Envelope *n = NULL;
   time_t mtime;
   struct stat st;
@@ -153,7 +152,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct ListNode *np, *tmp;
   STAILQ_FOREACH_SAFE(np, &msg->env->userhdrs, entries, tmp)
   {
-    keep = true;
+    bool keep = true;
 
     if (fcc && (mutt_str_strncasecmp("fcc:", np->data, 4) == 0))
     {
@@ -169,11 +168,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     {
       struct Body *body2 = NULL;
       struct Body *parts = NULL;
-      size_t l = 0;
 
       p = mutt_str_skip_email_wsp(np->data + 7);
       if (*p)
       {
+        size_t l = 0;
         for (; *p && *p != ' ' && *p != '\t'; p++)
         {
           if (*p == '\\')

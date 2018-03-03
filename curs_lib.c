@@ -730,12 +730,10 @@ static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
 
 int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
 {
-  va_list ap;
-  int rc;
-
-  rc = mutt_window_move(win, row, col);
+  int rc = mutt_window_move(win, row, col);
   if (rc != ERR)
   {
+    va_list ap;
     va_start(ap, fmt);
     rc = vw_printw(stdscr, fmt, ap);
     va_end(ap);
@@ -754,14 +752,13 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
   if (!win || !stdscr)
     return;
 
-  int row, col, curcol;
-
   if (win->col_offset + win->cols == COLS)
     clrtoeol();
   else
   {
+    int row, col;
     getyx(stdscr, row, col);
-    curcol = col;
+    int curcol = col;
     while (curcol < win->col_offset + win->cols)
     {
       addch(' ');
@@ -1336,7 +1333,6 @@ void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *
 void mutt_paddstr(int n, const char *s)
 {
   wchar_t wc;
-  int w;
   size_t k;
   size_t len = mutt_str_strlen(s);
   mbstate_t mbstate;
@@ -1353,7 +1349,7 @@ void mutt_paddstr(int n, const char *s)
     }
     if (!IsWPrint(wc))
       wc = '?';
-    w = wcwidth(wc);
+    const int w = wcwidth(wc);
     if (w >= 0)
     {
       if (w > n)

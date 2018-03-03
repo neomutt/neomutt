@@ -145,7 +145,6 @@ static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   struct TlsSockData *data = conn->sockdata;
-  int ret;
   size_t sent = 0;
 
   if (!data)
@@ -157,7 +156,7 @@ static int tls_socket_write(struct Connection *conn, const char *buf, size_t len
 
   do
   {
-    ret = gnutls_record_send(data->state, buf + sent, len - sent);
+    const int ret = gnutls_record_send(data->state, buf + sent, len - sent);
     if (ret < 0)
     {
       if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
@@ -302,7 +301,6 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
  */
 static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hostname)
 {
-  char buf[80];
   FILE *fp = NULL;
   char *linestr = NULL;
   size_t linestrsize;
@@ -321,6 +319,7 @@ static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hos
       return 0;
     }
 
+    char buf[80];
     buf[0] = '\0';
     tls_fingerprint(GNUTLS_DIG_MD5, buf, sizeof(buf), cert);
     while ((linestr = mutt_file_read_line(linestr, &linestrsize, fp, &linenum, 0)) != NULL)
@@ -362,7 +361,6 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   gnutls_datum_t cert;
   unsigned char *ptr = NULL;
   FILE *fd1 = NULL;
-  int ret;
   gnutls_datum_t b64_data;
   unsigned char *b64_data_data = NULL;
   struct stat filestat;
@@ -386,7 +384,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
 
   do
   {
-    ret = gnutls_pem_base64_decode_alloc(NULL, &b64_data, &cert);
+    const int ret = gnutls_pem_base64_decode_alloc(NULL, &b64_data, &cert);
     if (ret != 0)
     {
       FREE(&b64_data_data);

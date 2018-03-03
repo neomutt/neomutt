@@ -133,20 +133,17 @@ static struct ImapCommand *cmd_new(struct ImapData *idata)
  */
 static int cmd_queue(struct ImapData *idata, const char *cmdstr, int flags)
 {
-  struct ImapCommand *cmd = NULL;
-  int rc;
-
   if (cmd_queue_full(idata))
   {
     mutt_debug(3, "Draining IMAP command pipeline\n");
 
-    rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
+    const int rc = imap_exec(idata, NULL, IMAP_CMD_FAIL_OK | (flags & IMAP_CMD_POLL));
 
     if (rc < 0 && rc != -2)
       return rc;
   }
 
-  cmd = cmd_new(idata);
+  struct ImapCommand *cmd = cmd_new(idata);
   if (!cmd)
     return IMAP_CMD_BAD;
 
@@ -636,8 +633,6 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   char *value = NULL;
   struct Buffy *inc = NULL;
   struct ImapMbox mx;
-  unsigned long ulcount;
-  unsigned int count;
   struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
   unsigned int litlen;
@@ -681,13 +676,13 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
     value = imap_next_word(s);
 
     errno = 0;
-    ulcount = strtoul(value, &value, 10);
+    const unsigned long ulcount = strtoul(value, &value, 10);
     if (((errno == ERANGE) && (ulcount == ULONG_MAX)) || ((unsigned int) ulcount != ulcount))
     {
       mutt_debug(1, "Error parsing STATUS number\n");
       return;
     }
-    count = (unsigned int) ulcount;
+    const unsigned int count = (unsigned int) ulcount;
 
     if (mutt_str_strncmp("MESSAGES", s, 8) == 0)
     {
