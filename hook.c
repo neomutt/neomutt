@@ -475,7 +475,6 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
   *path = '\0';
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
-    char tmp[_POSIX_PATH_MAX];
     struct Address *addr = NULL;
     struct Envelope *env = hdr->env;
     bool from_me = mutt_addr_is_user(env->from);
@@ -492,6 +491,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
       addr = NULL;
     if (addr)
     {
+      char tmp[_POSIX_PATH_MAX];
       mutt_safe_path(tmp, sizeof(tmp), addr);
       snprintf(path, pathlen, "=%s", tmp);
     }
@@ -500,15 +500,13 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 
 void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 {
-  struct Address *addr = NULL;
-  char buf[_POSIX_PATH_MAX];
-  struct Envelope *env = hdr->env;
-
   if (addr_hook(path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
   {
+    struct Envelope *env = hdr->env;
     if ((SaveName || ForceName) && (env->to || env->cc || env->bcc))
     {
-      addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
+      struct Address *addr = env->to ? env->to : (env->cc ? env->cc : env->bcc);
+      char buf[_POSIX_PATH_MAX];
       mutt_safe_path(buf, sizeof(buf), addr);
       mutt_file_concat_path(path, NONULL(Folder), buf, pathlen);
       if (!ForceName && mx_access(path, W_OK) != 0)
