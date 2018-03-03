@@ -652,7 +652,6 @@ static const char *km_keyname(int c)
 
 int km_expand_key(char *s, size_t len, struct Keymap *map)
 {
-  size_t l;
   int p = 0;
 
   if (!map)
@@ -661,7 +660,8 @@ int km_expand_key(char *s, size_t len, struct Keymap *map)
   while (true)
   {
     mutt_str_strfcpy(s, km_keyname(map->keys[p]), len);
-    len -= (l = mutt_str_strlen(s));
+    const size_t l = mutt_str_strlen(s);
+    len -= l;
 
     if (++p >= map->len || !len)
       return 1;
