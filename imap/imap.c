@@ -146,9 +146,6 @@ static int check_capabilities(struct ImapData *idata)
  */
 static char *get_flags(struct ListHead *hflags, char *s)
 {
-  char *flag_word = NULL;
-  char ctmp;
-
   /* sanity-check string */
   if (mutt_str_strncasecmp("FLAGS", s, 5) != 0)
   {
@@ -168,10 +165,10 @@ static char *get_flags(struct ListHead *hflags, char *s)
   {
     s++;
     SKIPWS(s);
-    flag_word = s;
+    const char* flag_word = s;
     while (*s && (*s != ')') && !ISSPACE(*s))
       s++;
-    ctmp = *s;
+    const char ctmp = *s;
     *s = '\0';
     if (*flag_word)
       mutt_list_insert_tail(hflags, mutt_str_strdup(flag_word));
@@ -226,7 +223,6 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
                         bool changed, bool invert, int *pos)
 {
   int count = 0;      /* number of messages in message set */
-  bool match = false; /* whether current message matches flag condition */
   unsigned int setstart = 0; /* start of current message range */
   int n;
   bool started = false;
@@ -234,7 +230,7 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
 
   for (n = *pos; n < idata->ctx->msgcount && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
   {
-    match = false;
+    bool match = false; /* whether current message matches flag condition */
     /* don't include pending expunged messages */
     if (hdrs[n]->active)
     {
