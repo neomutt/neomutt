@@ -384,12 +384,18 @@ void mutt_free_color(int fg, int bg)
 static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struct Buffer *err)
 {
   char *eptr = NULL;
-  int is_bright = 0;
+  int is_alert = 0, is_bright = 0;
 
   if (mutt_str_strncasecmp(s, "bright", 6) == 0)
   {
     is_bright = 1;
     s += 6;
+  }
+  else if (mutt_str_strncasecmp(s, "alert", 5) == 0)
+  {
+    is_alert = 1;
+    is_bright = 1;
+    s += 5;
   }
 
   /* allow aliases for xterm color resources */
@@ -411,7 +417,12 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 
   if (is_bright)
   {
-    if (is_fg)
+    if (is_alert)
+    {
+      *attr |= A_BOLD;
+      *attr |= A_BLINK;
+    }
+    else if (is_fg)
     {
       *attr |= A_BOLD;
     }
