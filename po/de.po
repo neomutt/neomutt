@@ -1417,7 +1417,7 @@ msgstr "Antworte an"
 
 #: curs_main.c:1002
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Mailbox wurde verändert. Status-Indikatoren könnten veraltet sein."
+msgstr "Mailbox wurde extern verändert. Status-Indikatoren nun ggf. inkorrekt."
 
 #: curs_main.c:1009 pager.c:2200
 msgid "New mail in this mailbox."
@@ -1425,7 +1425,7 @@ msgstr "Neue Nachrichten in dieser Mailbox."
 
 #: curs_main.c:1024
 msgid "Mailbox was externally modified."
-msgstr "Mailbox wurde von außen verändert."
+msgstr "Mailbox wurde extern verändert."
 
 #: curs_main.c:1145
 msgid "No tagged messages."
