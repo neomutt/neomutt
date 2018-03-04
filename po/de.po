@@ -1421,7 +1421,7 @@ msgstr "Antworte an"
 
 #: curs_main.c:1003
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Mailbox wurde verändert. Status-Indikatoren könnten veraltet sein."
+msgstr "Mailbox wurde extern verändert. Status-Indikatoren nun ggf. inkorrekt."
 
 #: curs_main.c:1010 pager.c:2232
 msgid "New mail in this mailbox."
@@ -1429,7 +1429,7 @@ msgstr "Neue Nachrichten in dieser Mailbox."
 
 #: curs_main.c:1025
 msgid "Mailbox was externally modified."
-msgstr "Mailbox wurde von außen verändert."
+msgstr "Mailbox wurde extern verändert."
 
 #: curs_main.c:1146
 msgid "No tagged messages."
@@ -6275,55 +6275,3 @@ msgstr "Standard Einstellungen:"
 msgid "Compile options:"
 msgstr "Einstellungen bei der Kompilierung:"
 
-#~ msgid "Cannot create filter"
-#~ msgstr "Kann Filter nicht erzeugen"
-
-#~ msgid "Missing arguments."
-#~ msgstr "Fehlende Parameter."
-
-#~ msgid "color: too few arguments"
-#~ msgstr "color: Zu wenige Parameter"
-
-#~ msgid "mono: too few arguments"
-#~ msgstr "mono: Zu wenige Parameter"
-
-#~ msgid "too few arguments"
-#~ msgstr "Zu wenige Parameter"
-
-#~ msgid "finish: too many arguments"
-#~ msgstr "finish: Zu viele Argumente"
-
-#~ msgid "set debug_file ignored, it has been overridden by the cmdline"
-#~ msgstr ""
-#~ "set debug_file ignoriert, Einstellung per Kommandozeile überschrieben"
-
-#~ msgid "set debug_level ignored, it has been overridden by the cmdline"
-#~ msgstr ""
-#~ "set debug_level ignoriert, Einstellung per Kommandozeile überschrieben"
-
-#~ msgid "push: too many arguments"
-#~ msgstr "push: Zu viele Argumente"
-
-#~ msgid "bind: too many arguments"
-#~ msgstr "bind: Zu viele Argumente"
-
-#~ msgid "macro: too many arguments"
-#~ msgstr "macro: Zu viele Parameter"
-
-#~ msgid "Debugging at file %s.\n"
-#~ msgstr "Debugging von Datei %s.\n"
-
-#~ msgid "source: too many arguments"
-#~ msgstr "source: Zu viele Argumente"
-
-#~ msgid "score: too few arguments"
-#~ msgstr "score: Zu wenige Parameter"
-
-#~ msgid "score: too many arguments"
-#~ msgstr "score: Zu viele Parameter"
-
-#~ msgid "No recipients are specified!"
-#~ msgstr "Es wurden keine Empfänger angegeben!"
-
-#~ msgid "No recipients were specified."
-#~ msgstr "Es wurden keine Empfänger angegeben."
