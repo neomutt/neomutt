@@ -4197,7 +4197,9 @@ folder-hook work "set sort=threads"
       <emphasis>foreground</emphasis> can optionally be prefixed with the
       keyword
       <literal>bright</literal> to make the foreground color boldfaced (e.g.,
-      <literal>brightred</literal>).</para>
+      <literal>brightred</literal>).
+      <literal>alert</literal> to make a blinking/alert color (e.g.,
+      <literal>alertred</literal>).</para>
       <para>If your terminal supports it, the special keyword
       <emphasis>default</emphasis> can be used as a transparent color. The value
       <emphasis>brightdefault</emphasis> is also valid. If NeoMutt is linked
