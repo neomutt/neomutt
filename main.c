@@ -507,7 +507,6 @@ int main(int argc, char **argv, char **env)
   {
     struct stat sb;
     char fpath[_POSIX_PATH_MAX];
-    char msg2[STRING];
 
     mutt_str_strfcpy(fpath, Folder, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
@@ -521,6 +520,7 @@ int main(int argc, char **argv, char **env)
 #endif
     if (!skip && stat(fpath, &sb) == -1 && errno == ENOENT)
     {
+      char msg2[STRING];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
@@ -546,7 +546,6 @@ int main(int argc, char **argv, char **env)
   {
     FILE *fin = NULL;
     FILE *fout = NULL;
-    char buf[LONG_STRING];
     char *tempfile = NULL, *infile = NULL;
     char *bodytext = NULL, *bodyfile = NULL;
     int rv = 0;
@@ -632,6 +631,7 @@ int main(int argc, char **argv, char **env)
        */
       if (!edit_infile)
       {
+        char buf[LONG_STRING];
         mutt_mktemp(buf, sizeof(buf));
         tempfile = mutt_str_strdup(buf);
 
