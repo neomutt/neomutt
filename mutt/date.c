@@ -24,19 +24,6 @@
  * @page date Time and date handling routines
  *
  * Some commonly used time and date functions.
- *
- * | Function                   | Description
- * | :------------------------- | :--------------------------------------------------
- * | mutt_date_check_month()    | Is the string a valid month name
- * | mutt_date_is_day_name()    | Is the string a valid day name
- * | mutt_date_local_tz()       | Calculate the local timezone in seconds east of UTC
- * | mutt_date_make_date()      | Write a date in RFC822 format to a buffer
- * | mutt_date_make_imap()      | Format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz
- * | mutt_date_make_time()      | Convert `struct tm` to `time_t`
- * | mutt_date_make_tls()       | Format date in TLS certificate verification style
- * | mutt_date_normalize_time() | Fix the contents of a struct tm
- * | mutt_date_parse_date()     | Parse a date string in RFC822 format
- * | mutt_date_parse_imap()     | Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  */
 
 #include "config.h"

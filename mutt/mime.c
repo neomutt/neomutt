@@ -24,13 +24,6 @@
  * @page mime Constants and macros for managing MIME encoding
  *
  * Constants and macros for managing MIME encoding.
- *
- * | Data           | Description
- * | :------------- | :--------------------------------------------------
- * | #BodyEncodings | Common MIME body encodings
- * | #BodyTypes     | Common MIME body types
- * | #IndexHex      | Lookup table for ASCII hex digits
- * | #MimeSpecials  | Characters that need special treatment in MIME
  */
 
 #include "config.h"

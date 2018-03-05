@@ -26,12 +26,6 @@
  * Display informational messages for the user.
  *
  * These library stubs print the messages to stdout/stderr.
- *
- * | Function          | Description
- * | :---------------- | :--------------------------------------------
- * | default_error()   | Display an error message
- * | default_message() | Display an informative message
- * | default_perror()  | Lookup a standard error message (using errno)
  */
 
 #include "config.h"

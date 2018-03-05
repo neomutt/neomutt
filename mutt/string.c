@@ -24,48 +24,6 @@
  * @page string String manipulation functions
  *
  * Lots of commonly-used string manipulation routines.
- *
- * | Function                      | Description
- * | :---------------------------- | :---------------------------------------------------------
- * | mutt_str_adjust()             | Shrink-to-fit a string
- * | mutt_str_append_item()        | Add string to another separated by sep
- * | mutt_str_atoi()               | Convert ASCII string to an integer
- * | mutt_str_atol()               | Convert ASCII string to a long
- * | mutt_str_atos()               | Convert ASCII string to a short
- * | mutt_str_atoui()              | Convert ASCII string to an unsigned integer
- * | mutt_str_atoul()              | Convert ASCII string to an unsigned long
- * | mutt_str_dequote_comment()    | Un-escape characters in an email address comment
- * | mutt_str_find_word()          | Find the next word (non-space)
- * | mutt_str_getenv()             | Get an environment variable
- * | mutt_str_is_ascii()           | Is a string ASCII (7-bit)?
- * | mutt_str_is_email_wsp()       | Is this a whitespace character (for an email header)
- * | mutt_str_lws_len()            | Measure the linear-white-space at the beginning of a string
- * | mutt_str_lws_rlen()           | Measure the linear-white-space at the end of a string
- * | mutt_str_next_word()          | Find the next word in a string
- * | mutt_str_pretty_size()        | Display an abbreviated size, e.g. 3.4K
- * | mutt_str_remove_trailing_ws() | Trim trailing whitespace from a string
- * | mutt_str_replace()            | Replace one string with another
- * | mutt_str_rstrnstr()           | Find last instance of a substring
- * | mutt_str_skip_email_wsp()     | Skip over whitespace as defined by RFC5322
- * | mutt_str_skip_whitespace()    | Find the first non-whitespace character in a string
- * | mutt_str_strcasecmp()         | Compare two strings ignoring case, safely
- * | mutt_str_strcat()             | Concatenate two strings
- * | mutt_str_strchrnul()          | Find first occurrence of character in string
- * | mutt_str_strcmp()             | Compare two strings, safely
- * | mutt_str_strcoll()            | Collate two strings (compare using locale), safely
- * | mutt_str_strdup()             | Copy a string, safely
- * | mutt_str_strfcpy()            | Copy a string into a buffer (guaranteeing NUL-termination)
- * | mutt_str_stristr()            | Find first occurrence of string (ignoring case)
- * | mutt_str_strlen()             | Calculate the length of a string, safely
- * | mutt_str_strlower()           | convert all characters in the string to lowercase
- * | mutt_str_strncasecmp()        | Compare two strings ignoring case (to a maximum), safely
- * | mutt_str_strncat()            | Concatenate two strings
- * | mutt_str_strncmp()            | Compare two strings (to a maximum), safely
- * | mutt_str_strnfcpy()           | Copy a limited string into a buffer (guaranteeing NUL-termination)
- * | mutt_str_substr_cpy()         | Copy a sub-string into a buffer
- * | mutt_str_substr_dup()         | Duplicate a sub-string
- * | mutt_str_sysexit()            | Return a string matching an error code
- * | mutt_str_word_casecmp()       | Find word a in word list b
  */
 
 #include "config.h"
@@ -941,7 +899,7 @@ const char *mutt_str_find_word(const char *src)
 }
 
 /**
- * mutt_str_pretty_size - Display an abbreviated size, e.g. 3.4K
+ * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
  * @param buf    Buffer for the result
  * @param buflen Length of the buffer
  * @param num    Number to abbreviate

@@ -24,21 +24,6 @@
  * @page mbyte Multi-byte String manipulation functions
  *
  * Some commonly-used multi-byte string manipulation routines.
- *
- * | Function                             | Description
- * | :----------------------------------- | :---------------------------------------------------------
- * | mutt_mb_charlen()                    | Count the bytes in a (multibyte) character
- * | mutt_mb_filter_unprintable()         | Replace unprintable characters
- * | mutt_mb_get_initials()               | Turn a name into initials
- * | mutt_mb_is_display_corrupting_utf8() | Will this character corrupt the display?
- * | mutt_mb_is_lower()                   | Does a multi-byte string contain only lowercase characters?
- * | mutt_mb_is_shell_char()              | Is character not typically part of a pathname
- * | mutt_mb_mbstowcs()                   | Convert a string from multibyte to wide characters
- * | mutt_mb_wcstombs()                   | Convert a string from wide to multibyte characters
- * | mutt_mb_wcswidth()                   | Measure the screen width of a string
- * | mutt_mb_wcwidth()                    | Measure the screen width of a character
- * | mutt_mb_width()                      | Measure a string's display width (in screen columns)
- * | mutt_mb_width_ceiling()              | Keep the end of the string on-screen
  */
 
 #include "config.h"

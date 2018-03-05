@@ -25,18 +25,6 @@
  * @page md5 Calculate the MD5 checksum of a buffer
  *
  * Calculate the MD5 cryptographic hash of a string, according to RFC1321.
- *
- * | Function                 | Description
- * | :----------------------- | :----------------------------------------------------
- * | mutt_md5()               | Calculate the MD5 hash of a NULL-terminated string
- * | mutt_md5_buf()           | Calculate the MD5 hash of a buffer
- * | mutt_md5_finish_ctx()    | Process the remaining bytes in the buffer
- * | mutt_md5_init_ctx()      | Initialise the MD5 computation
- * | mutt_md5_process()       | Process a NULL-terminated string
- * | mutt_md5_process_block() | Process a block with MD5
- * | mutt_md5_process_bytes() | Process a block of data
- * | mutt_md5_read_ctx()      | Read from the context into a buffer
- * | mutt_md5_toascii()       | Convert a binary MD5 digest into ASCII Hexadecimal
  */
 
 #include "config.h"

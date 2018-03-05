@@ -25,40 +25,6 @@
  * @page address Representation of an email address
  *
  * Representation of an email address
- *
- * | Data             | Description
- * | :--------------- | :--------------------------------------------------
- * | #AddressError    | An out-of-band error code
- * | #AddressErrors   | Messages for the error codes in #AddressError
- * | #AddressSpecials | Characters with special meaning for email addresses
- *
- * | Function                     | Description
- * | :--------------------------- | :---------------------------------------------------------
- * | mutt_addr_append()           | Append one list of addresses onto another
- * | mutt_addr_cat()              | Copy a string and escape the specified characters
- * | mutt_addr_cmp()              | Compare two e-mail addresses
- * | mutt_addr_cmp_strict()       | Strictly compare two Address lists
- * | mutt_addr_copy()             | Copy the real address
- * | mutt_addr_copy_list()        | Copy a list of addresses
- * | mutt_addr_for_display()      | Convert an Address for display purposes
- * | mutt_addr_free()             | Free a list of Addresses
- * | mutt_addr_has_recips()       | Count the number of Addresses with valid recipients
- * | mutt_addr_is_intl()          | Does the Address have IDN components
- * | mutt_addr_is_local()         | Does the Address have NO IDN components
- * | mutt_addr_mbox_to_udomain()  | Split a mailbox name into user and domain
- * | mutt_addr_new()              | Create a new Address
- * | mutt_addr_parse_list()       | Parse a list of email addresses
- * | mutt_addr_parse_list2()      | Parse a list of email addresses
- * | mutt_addr_qualify()          | Expand local names in an Address list using a hostname
- * | mutt_addr_remove_from_list() | Remove an Address from a list
- * | mutt_addr_search()           | Search for an e-mail address in a list
- * | mutt_addr_set_intl()         | Mark an Address as having IDN components
- * | mutt_addr_set_local()        | Mark an Address as having NO IDN components
- * | mutt_addr_valid_msgid()      | Is this a valid Message ID?
- * | mutt_addr_write()            | Write an Address to a buffer
- * | mutt_addr_write_single()     | Write a single Address to a buffer
- * | mutt_addrlist_to_intl()      | Convert an Address list to Punycode
- * | mutt_addrlist_to_local()     | Convert an Address list from Punycode
  */
 
 #include "config.h"

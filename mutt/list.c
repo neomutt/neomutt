@@ -25,17 +25,6 @@
  * @page list Singly-linked list type
  *
  * Singly-linked list of strings.
- *
- * | Function                 | Description
- * | :----------------------- | :-----------------------------------------
- * | mutt_list_clear()        | Free a list, but NOT its strings
- * | mutt_list_compare()      | Compare two string lists
- * | mutt_list_find()         | Find a string in a List
- * | mutt_list_free()         | Free a List AND its strings
- * | mutt_list_insert_after() | Insert a string after a given ListNode
- * | mutt_list_insert_head()  | Insert a string at the beginning of a List
- * | mutt_list_insert_tail()  | Append a string to the end of a List
- * | mutt_list_match()        | Is the string in the list (see notes)
  */
 
 #include "config.h"

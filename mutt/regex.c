@@ -24,23 +24,6 @@
  * @page regex Manage regular expressions
  *
  * Manage regular expressions.
- *
- * | Function                  | Description
- * | :------------------------ | :------------------------------------------
- * | mutt_regex_compile()      | Create an Regex from a string
- * | mutt_regex_create()       | Create an Regex from a string
- * | mutt_regex_free()         | Free a Regex object
- * | mutt_regexlist_add()      | Compile a regex string and add it to a list
- * | mutt_regexlist_free()     | Free a RegexList object
- * | mutt_regexlist_match()    | Does a string match any Regex in the list?
- * | mutt_regexlist_new()      | Create a new RegexList
- * | mutt_regexlist_remove()   | Remove a Regex from a list
- * | mutt_replacelist_add()    | Add a pattern and a template to a list
- * | mutt_replacelist_apply()  | Apply replacements to a buffer
- * | mutt_replacelist_free()   | Free a ReplaceList object
- * | mutt_replacelist_match()  | Does a string match a pattern?
- * | mutt_replacelist_new()    | Create a new ReplaceList
- * | mutt_replacelist_remove() | Remove a pattern from a list
  */
 
 #include "config.h"

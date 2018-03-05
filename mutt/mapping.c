@@ -25,11 +25,6 @@
  * @page mapping Map between a string and a constant
  *
  * Map a string to a constant and vice versa.
- *
- * | Function             | Description
- * | :------------------- | :-------------------------------
- * | mutt_map_get_name()  | Lookup a string for a constant
- * | mutt_map_get_value() | Lookup the constant for a string
  */
 
 #include <stddef.h>

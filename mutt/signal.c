@@ -24,17 +24,6 @@
  * @page signal Signal handling
  *
  * Signal handling
- *
- * | Function                   | Description
- * | :------------------------- | :---------------------------------------------------------
- * | mutt_sig_allow_interrupt() | Allow/disallow Ctrl-C (SIGINT)
- * | mutt_sig_block()           | Block signals during critical operations
- * | mutt_sig_block_system()    | Block signals before calling exec()
- * | mutt_sig_empty_handler()   | Dummy signal handler
- * | mutt_sig_exit_handler()    | Notify the user and shutdown gracefully
- * | mutt_sig_init()            | Initialise the signal handling
- * | mutt_sig_unblock()         | Restore previously blocked signals
- * | mutt_sig_unblock_system()  | Restore previously blocked signals
  */
 
 #include "config.h"
