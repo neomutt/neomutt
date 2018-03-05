@@ -486,15 +486,13 @@ int mutt_is_application_pgp(struct Body *m)
 
 int mutt_is_application_smime(struct Body *m)
 {
-  char *t = NULL;
-  size_t len;
-  bool complain = false;
-
   if (!m)
     return 0;
 
   if ((m->type & TYPEAPPLICATION) && m->subtype)
   {
+    char *t = NULL;
+    bool complain = false;
     /* S/MIME MIME types don't need x- anymore, see RFC2311 */
     if ((mutt_str_strcasecmp(m->subtype, "x-pkcs7-mime") == 0) ||
         (mutt_str_strcasecmp(m->subtype, "pkcs7-mime") == 0))
@@ -536,7 +534,7 @@ int mutt_is_application_smime(struct Body *m)
 
     /* no .p7c, .p10 support yet. */
 
-    len = mutt_str_strlen(t) - 4;
+    size_t len = mutt_str_strlen(t) - 4;
     if (len > 0 && *(t + len) == '.')
     {
       len++;
@@ -600,14 +598,12 @@ int crypt_query(struct Body *m)
 
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
-    int u, v, w;
-
-    u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
-    w = 0;                         /* Bits set in any part  */
+    int u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
+    int w = 0;                         /* Bits set in any part  */
 
     for (struct Body *b = m->parts; b; b = b->next)
     {
-      v = crypt_query(b);
+      const int v = crypt_query(b);
       u &= v;
       w |= v;
     }
@@ -628,7 +624,6 @@ int crypt_query(struct Body *m)
 int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
   FILE *fp = NULL;
-  int c;
   bool hadcr;
   size_t bytes;
 
@@ -647,7 +642,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   hadcr = false;
   while (bytes > 0)
   {
-    c = fgetc(s->fpin);
+    const int c = fgetc(s->fpin);
     if (c == EOF)
       break;
 
@@ -838,7 +833,6 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   struct Address *addrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);
   char *self_encrypt = NULL;
-  size_t keylist_size;
 
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.
@@ -889,7 +883,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 
   if (!oppenc_mode && self_encrypt && *self_encrypt)
   {
-    keylist_size = mutt_str_strlen(*keylist);
+    const size_t keylist_size = mutt_str_strlen(*keylist);
     mutt_mem_realloc(keylist, keylist_size + mutt_str_strlen(self_encrypt) + 2);
     sprintf(*keylist + keylist_size, " %s", self_encrypt);
   }
@@ -951,14 +945,12 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
  */
 int mutt_signed_handler(struct Body *a, struct State *s)
 {
-  char tempfile[_POSIX_PATH_MAX];
   int signed_type;
   bool inconsistent = false;
 
   struct Body *b = a;
   struct Body **signatures = NULL;
   int sigcnt = 0;
-  bool goodsig = true;
   int rc = 0;
 
   if (!WithCrypto)
@@ -1022,7 +1014,9 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 
     if (sigcnt)
     {
+      char tempfile[_POSIX_PATH_MAX];
       mutt_mktemp(tempfile, sizeof(tempfile));
+      bool goodsig = true;
       if (crypt_write_signed(a, s, tempfile) == 0)
       {
         for (int i = 0; i < sigcnt; i++)
