@@ -2301,7 +2301,6 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   int rc = 0;
-  char msgbuf[STRING];
   struct Progress progress;
   char *uri = ctx->path;
   bool changed = false;
@@ -2314,6 +2313,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     /* all is in this function so we don't use data->progress here */
+    char msgbuf[STRING];
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }
