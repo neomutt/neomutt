@@ -227,16 +227,12 @@ int mutt_file_fsync_close(FILE **f)
  */
 void mutt_file_unlink(const char *s)
 {
-  int fd;
-  FILE *f = NULL;
   struct stat sb, sb2;
-  char buf[2048];
-
   /* Defend against symlink attacks */
 
   if ((lstat(s, &sb) == 0) && S_ISREG(sb.st_mode))
   {
-    fd = open(s, O_RDWR | O_NOFOLLOW);
+    const int fd = open(s, O_RDWR | O_NOFOLLOW);
     if (fd < 0)
       return;
 
@@ -247,10 +243,11 @@ void mutt_file_unlink(const char *s)
       return;
     }
 
-    f = fdopen(fd, "r+");
+    FILE *f = fdopen(fd, "r+");
     if (f)
     {
       unlink(s);
+      char buf[2048];
       memset(buf, 0, sizeof(buf));
       while (sb.st_size > 0)
       {
@@ -272,12 +269,10 @@ void mutt_file_unlink(const char *s)
  */
 int mutt_file_copy_bytes(FILE *in, FILE *out, size_t size)
 {
-  char buf[2048];
-  size_t chunk;
-
   while (size > 0)
   {
-    chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
+    char buf[2048];
+    size_t chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
     chunk = fread(buf, 1, chunk, in);
     if (chunk < 1)
       break;
