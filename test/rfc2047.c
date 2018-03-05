@@ -53,7 +53,13 @@ static const struct
 
 void test_rfc2047(void)
 {
-  setlocale(LC_ALL, "en_US.UTF-8");
+  if (!TEST_CHECK(setlocale(LC_ALL, "en_US.UTF-8") != NULL) || 
+                  setlocale(LC_ALL, "C.UTF-8") != NULL)
+  {
+    TEST_MSG("Cannot set locale to (en_US|C).UTF-8");
+    return;
+  }
+
   Charset = "utf-8";
 
   for (size_t i = 0; i < mutt_array_size(test_data); ++i)
