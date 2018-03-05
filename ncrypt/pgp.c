@@ -704,7 +704,6 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   FILE *fp = NULL, *pgpout = NULL, *pgperr = NULL;
   pid_t thepid;
   int badsig = -1;
-  int rv;
 
   snprintf(sigfile, sizeof(sigfile), "%s.asc", tempfile);
 
@@ -743,7 +742,7 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
     if (pgp_copy_checksig(pgperr, s->fpout) >= 0)
       badsig = 0;
 
-    rv = mutt_wait_filter(thepid);
+    const int rv = mutt_wait_filter(thepid);
     if (rv)
       badsig = -1;
 
@@ -827,7 +826,6 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *pgptmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
-  size_t len;
   char pgperrfile[_POSIX_PATH_MAX];
   char pgptmpfile[_POSIX_PATH_MAX];
   pid_t thepid;
@@ -883,7 +881,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
    */
   while (fgets(buf, sizeof(buf) - 1, pgpout) != NULL)
   {
-    len = mutt_str_strlen(buf);
+    size_t len = mutt_str_strlen(buf);
     if (len > 1 && buf[len - 2] == '\r')
       strcpy(buf + len - 2, "\n");
     fputs(buf, fpout);
@@ -1660,7 +1658,6 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
 int pgp_send_menu(struct Header *msg)
 {
   struct PgpKeyInfo *p = NULL;
-  char input_signas[SHORT_STRING];
   char *prompt = NULL, *letters = NULL, *choices = NULL;
   char promptbuf[LONG_STRING];
   int choice;
@@ -1805,6 +1802,7 @@ int pgp_send_menu(struct Header *msg)
         p = pgp_ask_for_key(_("Sign as: "), NULL, 0, PGP_SECRING);
         if (p)
         {
+          char input_signas[SHORT_STRING];
           snprintf(input_signas, sizeof(input_signas), "0x%s", pgp_fpr_or_lkeyid(p));
           mutt_str_replace(&PgpSignAs, input_signas);
           pgp_free_key(&p);
