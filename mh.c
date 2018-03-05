@@ -111,13 +111,10 @@ static inline struct MhData *mh_data(struct Context *ctx)
 
 static void mhs_alloc(struct MhSequences *mhs, int i)
 {
-  int j;
-  int newmax;
-
   if (i > mhs->max || !mhs->flags)
   {
-    newmax = i + 128;
-    j = mhs->flags ? mhs->max + 1 : 0;
+    const int newmax = i + 128;
+    int j = mhs->flags ? mhs->max + 1 : 0;
     mutt_mem_realloc(&mhs->flags, sizeof(mhs->flags[0]) * (newmax + 1));
     while (j <= newmax)
       mhs->flags[j++] = 0;
@@ -1340,8 +1337,6 @@ static int maildir_open_mailbox(struct Context *ctx)
 
 static int maildir_open_mailbox_append(struct Context *ctx, int flags)
 {
-  char tmp[_POSIX_PATH_MAX];
-
   if (flags & MUTT_APPENDNEW)
   {
     if (mkdir(ctx->path, S_IRWXU))
@@ -1350,6 +1345,7 @@ static int maildir_open_mailbox_append(struct Context *ctx, int flags)
       return -1;
     }
 
+    char tmp[_POSIX_PATH_MAX];
     snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
     if (mkdir(tmp, S_IRWXU))
     {
@@ -1391,9 +1387,6 @@ static int mh_open_mailbox(struct Context *ctx)
 
 static int mh_open_mailbox_append(struct Context *ctx, int flags)
 {
-  char tmp[_POSIX_PATH_MAX];
-  int i;
-
   if (flags & MUTT_APPENDNEW)
   {
     if (mkdir(ctx->path, S_IRWXU))
@@ -1402,8 +1395,9 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
       return -1;
     }
 
+    char tmp[_POSIX_PATH_MAX];
     snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", ctx->path);
-    i = creat(tmp, S_IRWXU);
+    const int i = creat(tmp, S_IRWXU);
     if (i == -1)
     {
       mutt_perror(tmp);
@@ -1764,9 +1758,6 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
 
   int rc;
   bool restore = true;
-  char oldpath[_POSIX_PATH_MAX];
-  char newpath[_POSIX_PATH_MAX];
-  char partpath[_POSIX_PATH_MAX];
 
   long old_body_offset = h->content->offset;
   long old_body_length = h->content->length;
@@ -1779,6 +1770,8 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   rc = mutt_copy_message_ctx(dest->fp, ctx, h, MUTT_CM_UPDATE, CH_UPDATE | CH_UPDATE_LEN);
   if (rc == 0)
   {
+    char oldpath[_POSIX_PATH_MAX];
+    char partpath[_POSIX_PATH_MAX];
     snprintf(oldpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
     mutt_str_strfcpy(partpath, h->path, _POSIX_PATH_MAX);
 
@@ -1812,6 +1805,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
 
     if (ctx->magic == MUTT_MH && rc == 0)
     {
+      char newpath[_POSIX_PATH_MAX];
       snprintf(newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
       rc = mutt_file_safe_rename(newpath, oldpath);
       if (rc == 0)
@@ -1914,11 +1908,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc)
 int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #endif
 {
-#ifdef USE_HCACHE
-  const char *key = NULL;
-  size_t keylen;
-#endif
-  char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
+  char path[_POSIX_PATH_MAX];
   struct Header *h = ctx->hdrs[msgno];
 
   if (h->deleted && (ctx->magic != MUTT_MAILDIR || !MaildirTrash))
@@ -1929,6 +1919,8 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #ifdef USE_HCACHE
       if (hc)
       {
+        const char *key;
+        size_t keylen;
         if (ctx->magic == MUTT_MH)
         {
           key = h->path;
@@ -1949,6 +1941,7 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
       /* MH just moves files out of the way when you delete them */
       if (*h->path != ',')
       {
+        char tmp[_POSIX_PATH_MAX];
         snprintf(tmp, sizeof(tmp), "%s/,%s", ctx->path, h->path);
         unlink(tmp);
         rename(path, tmp);
@@ -1974,6 +1967,8 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #ifdef USE_HCACHE
   if (hc && h->changed)
   {
+    const char *key;
+    size_t keylen;
     if (ctx->magic == MUTT_MH)
     {
       key = h->path;
@@ -2009,20 +2004,16 @@ static char *maildir_canon_filename(char *dest, const char *src, size_t l)
 
 static void maildir_update_tables(struct Context *ctx, int *index_hint)
 {
-  short old_sort;
-  int old_count;
-  int i, j;
-
   if (Sort != SORT_ORDER)
   {
-    old_sort = Sort;
+    const short old_sort = Sort;
     Sort = SORT_ORDER;
     mutt_sort_headers(ctx, 1);
     Sort = old_sort;
   }
 
-  old_count = ctx->msgcount;
-  for (i = 0, j = 0; i < old_count; i++)
+  const int old_count = ctx->msgcount;
+  for (int i = 0, j = 0; i < old_count; i++)
   {
     if (ctx->hdrs[i]->active && index_hint && *index_hint == i)
       *index_hint = j;
