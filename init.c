@@ -648,7 +648,6 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
     {
       const char *env = NULL;
       char *var = NULL;
-      int idx;
 
       if (*tok->dptr == '{')
       {
@@ -669,6 +668,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
       }
       if (var)
       {
+        int idx;
         if ((env = mutt_str_getenv(var)) || (env = myvar_get(var)))
           mutt_buffer_addstr(dest, env);
         else if ((idx = mutt_option_index(var)) != -1)
@@ -1414,7 +1414,6 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
 {
   struct AttachMatch *a = NULL;
   char *tmp = NULL;
-  int major;
   char *minor = NULL;
 
   do
@@ -1439,7 +1438,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
     {
       minor = "unknown";
     }
-    major = mutt_check_mime_type(tmp);
+    const int major = mutt_check_mime_type(tmp);
 
     struct ListNode *np, *tmp2;
     STAILQ_FOREACH_SAFE(np, head, entries, tmp2)
@@ -2184,7 +2183,6 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 {
   int query, unset, len;
   char *name = NULL, **save = NULL, **envp = envlist;
-  int count = 0;
 
   query = 0;
   unset = data & MUTT_SET_UNSET;
@@ -2234,7 +2232,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 
   if (unset)
   {
-    count = 0;
+    int count = 0;
     while (envp && *envp)
     {
       if ((mutt_str_strncmp(tmp->data, *envp, len) == 0) && (*envp)[len] == '=')
