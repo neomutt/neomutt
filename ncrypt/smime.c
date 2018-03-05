@@ -1112,7 +1112,7 @@ static char *smime_extract_certificate(char *infile)
 static char *smime_extract_signer_certificate(char *infile)
 {
   FILE *fpout = NULL, *fperr = NULL;
-  char pk7out[_POSIX_PATH_MAX], certfile[_POSIX_PATH_MAX];
+  char certfile[_POSIX_PATH_MAX];
   char tmpfname[_POSIX_PATH_MAX];
   pid_t thepid;
   int empty;
@@ -1144,7 +1144,6 @@ static char *smime_extract_signer_certificate(char *infile)
     mutt_any_key_to_continue(_("Error: unable to create OpenSSL subprocess!"));
     mutt_file_fclose(&fperr);
     mutt_file_fclose(&fpout);
-    mutt_file_unlink(pk7out);
     mutt_file_unlink(certfile);
     return NULL;
   }
