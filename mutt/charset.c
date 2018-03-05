@@ -604,7 +604,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
 size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
                      size_t *outbytesleft, const char **inrepls, const char *outrepl)
 {
-  size_t rc = 0, ret1;
+  size_t rc = 0;
   const char *ib = *inbuf;
   size_t ibl = *inbytesleft;
   char *ob = *outbuf;
@@ -612,7 +612,7 @@ size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char *
 
   while (true)
   {
-    ret1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
+    const size_t ret1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
     if (ret1 != (size_t) -1)
       rc += ret1;
     if (ibl && obl && errno == EILSEQ)
@@ -900,12 +900,10 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
  */
 char *mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc)
 {
-  int c;
   size_t r;
-
   for (r = 0; (r + 1) < buflen;)
   {
-    c = mutt_ch_fgetconv(fc);
+    const int c = mutt_ch_fgetconv(fc);
     if (c == EOF)
       break;
     buf[r++] = (char) c;
@@ -966,7 +964,6 @@ void mutt_ch_set_charset(char *charset)
 char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
                      size_t ulen, char **d, size_t *dlen)
 {
-  char canonical_buf[LONG_STRING];
   char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
   const char *q = NULL;
@@ -1022,6 +1019,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     if (dlen)
       *dlen = elen;
 
+    char canonical_buf[LONG_STRING];
     mutt_ch_canonical_charset(canonical_buf, sizeof(canonical_buf), tocode);
     mutt_str_replace(&tocode, canonical_buf);
   }
