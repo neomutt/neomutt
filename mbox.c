@@ -105,7 +105,6 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   struct Header *hdr = NULL;
   struct stat sb;
   struct Progress progress;
-  char msgbuf[STRING];
 
   if (stat(ctx->path, &sb) == -1)
   {
@@ -120,6 +119,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
   if (!ctx->quiet)
   {
+    char msgbuf[STRING];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), ctx->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
@@ -259,7 +259,6 @@ static int mbox_parse_mailbox(struct Context *ctx)
   int count = 0, lines = 0;
   LOFF_T loc;
   struct Progress progress;
-  char msgbuf[STRING];
 
   /* Save information about the folder at the time we opened it. */
   if (stat(ctx->path, &sb) == -1)
@@ -277,6 +276,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 
   if (!ctx->quiet)
   {
+    char msgbuf[STRING];
     snprintf(msgbuf, sizeof(msgbuf), _("Reading %s..."), ctx->path);
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
@@ -783,7 +783,6 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
 static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct stat st;
-  char buffer[LONG_STRING];
   bool unlock = false;
   bool modified = false;
 
@@ -823,6 +822,7 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
        * see the message separator at *exactly* what used to be the end of the
        * folder.
        */
+      char buffer[LONG_STRING];
       if (fseeko(ctx->fp, ctx->size, SEEK_SET) != 0)
         mutt_debug(1, "#1 fseek() failed\n");
       if (fgets(buffer, sizeof(buffer), ctx->fp) != NULL)
