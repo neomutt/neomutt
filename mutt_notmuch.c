@@ -486,18 +486,19 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
 
   mutt_debug(1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
+
+  const notmuch_database_mode_t mode = writable
+    ? NOTMUCH_DATABASE_MODE_READ_WRITE
+    : NOTMUCH_DATABASE_MODE_READ_ONLY;
+
   do
   {
-#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
-    st = notmuch_database_open_verbose(
-        filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY,
-        &db, &msg);
+#if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
+    st = notmuch_database_open_verbose(filename, mode, &db, &msg);
 #elif defined(NOTMUCH_API_3)
-    st = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY,
-                               &db);
+    st = notmuch_database_open(filename, mode, &db);
 #else
-    db = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
-                                                    NOTMUCH_DATABASE_MODE_READ_ONLY);
+    db = notmuch_database_open(filename, mode);
 #endif
     if ((st == NOTMUCH_STATUS_FILE_ERROR) || db || !NmOpenTimeout || ((ct / 2) > NmOpenTimeout))
       break;
