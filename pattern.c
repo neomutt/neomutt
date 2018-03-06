@@ -1773,7 +1773,6 @@ static void quote_simple(char *tmp, size_t len, const char *p)
  */
 void mutt_check_simple(char *s, size_t len, const char *simple)
 {
-  char tmp[LONG_STRING];
   bool do_simple = true;
 
   for (char *p = s; p && *p; p++)
@@ -1817,6 +1816,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
       mutt_str_strfcpy(s, "~U", len);
     else
     {
+      char tmp[LONG_STRING];
       quote_simple(tmp, sizeof(tmp), s);
       mutt_expand_fmt(s, len, simple, tmp);
     }
@@ -2008,15 +2008,11 @@ bail:
 
 int mutt_search_command(int cur, int op)
 {
-  char buf[STRING];
-  char temp[LONG_STRING];
-  int incr;
-  struct Header *h = NULL;
   struct Progress progress;
-  const char *msg = NULL;
 
   if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
+    char buf[STRING];
     mutt_str_strfcpy(buf, *LastSearch ? LastSearch : "", sizeof(buf));
     if (mutt_get_field((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
                            _("Search for: ") :
@@ -2032,6 +2028,7 @@ int mutt_search_command(int cur, int op)
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
+    char temp[LONG_STRING];
     mutt_str_strfcpy(temp, buf, sizeof(temp));
     mutt_check_simple(temp, sizeof(temp), NONULL(SimpleSearch));
 
@@ -2069,7 +2066,7 @@ int mutt_search_command(int cur, int op)
     OPT_SEARCH_INVALID = false;
   }
 
-  incr = (OPT_SEARCH_REVERSE) ? -1 : 1;
+  int incr = (OPT_SEARCH_REVERSE) ? -1 : 1;
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
@@ -2078,6 +2075,7 @@ int mutt_search_command(int cur, int op)
 
   for (int i = cur + incr, j = 0; j != Context->vcount; j++)
   {
+    const char *msg = NULL;
     mutt_progress_update(&progress, j, -1);
     if (i > Context->vcount - 1)
     {
@@ -2102,7 +2100,7 @@ int mutt_search_command(int cur, int op)
       }
     }
 
-    h = Context->hdrs[Context->v2r[i]];
+    struct Header *h = Context->hdrs[Context->v2r[i]];
     if (h->searched)
     {
       /* if we've already evaluated this message, use the cached value */
