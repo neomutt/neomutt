@@ -305,8 +305,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                                      unsigned long data, enum FormatFlag flags)
 {
   char fn[SHORT_STRING], fmt[SHORT_STRING], permission[11];
-  char date[SHORT_STRING], *t_fmt = NULL;
-  time_t tnow;
+  char *t_fmt = NULL;
   struct Folder *folder = (struct Folder *) data;
   struct passwd *pw = NULL;
   struct group *gr = NULL;
@@ -336,12 +335,13 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
         else
         {
-          tnow = time(NULL);
+          time_t tnow = time(NULL);
           t_fmt = tnow - folder->ff->mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
         if (!do_locales)
           setlocale(LC_TIME, "C");
+        char date[SHORT_STRING];
         strftime(date, sizeof(date), t_fmt, localtime(&folder->ff->mtime));
         if (!do_locales)
           setlocale(LC_TIME, "");
