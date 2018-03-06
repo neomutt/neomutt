@@ -106,14 +106,9 @@ static void pgpring_dump_signatures(struct PgpSignature *sig)
 
 static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
 {
-  struct PgpUid *uid = NULL;
-  bool first;
-  struct tm *tp = NULL;
-  time_t t;
-
-  for (; p; p = p->next)
+  for (struct tm *tp = NULL; p; p = p->next)
   {
-    first = true;
+    bool first = true;
 
     if (p->flags & KEYFLAG_SECRET)
     {
@@ -137,7 +132,7 @@ static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
     if (p->flags & KEYFLAG_DISABLED)
       putchar('d');
 
-    for (uid = p->address; uid; uid = uid->next, first = false)
+    for (struct PgpUid *uid = p->address; uid; uid = uid->next, first = false)
     {
       if (!first)
       {
@@ -152,7 +147,7 @@ static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
         else
           putchar(gnupg_trustletter(uid->trust));
 
-        t = p->gen_time;
+        const time_t t = p->gen_time;
         tp = gmtime(&t);
 
         printf(":%d:%d:%s:%04d-%02d-%02d::::", p->keylen, p->numalg, p->keyid,
@@ -336,11 +331,9 @@ static void pgp_make_pgp3_fingerprint(unsigned char *buf, size_t l, unsigned cha
 
 static void skip_bignum(unsigned char *buf, size_t l, size_t j, size_t *toff, size_t n)
 {
-  size_t len;
-
   do
   {
-    len = (buf[j] << 8) + buf[j + 1];
+    const size_t len = (buf[j] << 8) + buf[j + 1];
     j += (len + 7) / 8 + 2;
   } while (j <= l && --n > 0);
 
@@ -465,14 +458,11 @@ static int pgp_parse_pgp2_sig(unsigned char *buf, size_t l,
 static int pgp_parse_pgp3_sig(unsigned char *buf, size_t l,
                               struct PgpKeyInfo *p, struct PgpSignature *s)
 {
-  unsigned char sigtype;
-  unsigned char skt;
   time_t sig_gen_time = -1;
   long validity = -1;
   long key_validity = -1;
   unsigned long signerid1 = 0;
   unsigned long signerid2 = 0;
-  size_t ml;
   size_t j;
   short have_critical_spks = 0;
 
@@ -481,25 +471,22 @@ static int pgp_parse_pgp3_sig(unsigned char *buf, size_t l,
 
   j = 2;
 
-  sigtype = buf[j++];
+  const unsigned char sigtype = buf[j++];
   j += 2; /* pkalg, hashalg */
 
   for (short ii = 0; ii < 2; ii++)
   {
-    size_t skl;
-    size_t nextone;
-
-    ml = (buf[j] << 8) + buf[j + 1];
+    size_t ml = (buf[j] << 8) + buf[j + 1];
     j += 2;
 
     if (j + ml > l)
       break;
 
-    nextone = j;
+    size_t nextone = j;
     while (ml)
     {
       j = nextone;
-      skl = buf[j++];
+      size_t skl = buf[j++];
       if (!--ml)
         break;
 
@@ -515,7 +502,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buf, size_t l,
       ml -= skl;
 
       nextone = j + skl;
-      skt = buf[j++];
+      const unsigned char skt = buf[j++];
 
       switch (skt & 0x7f)
       {
@@ -623,7 +610,6 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
 {
   unsigned char *buf = NULL;
   unsigned char pt = 0;
-  unsigned char last_pt;
   size_t l = 0;
   short err = 0;
 
@@ -640,7 +626,7 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
 
   while (!err && (buf = pgp_read_packet(fp, &l)) != NULL)
   {
-    last_pt = pt;
+    unsigned char last_pt = pt;
     pt = buf[0] & 0x3f;
 
     /* check if we have read the complete key block. */
@@ -767,16 +753,14 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
 
 static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhints)
 {
-  FILE *rfp = NULL;
   fpos_t pos, keypos;
 
   unsigned char *buf = NULL;
-  unsigned char pt = 0;
   size_t l = 0;
 
   short err = 0;
 
-  rfp = fopen(ringfile, "r");
+  FILE *rfp = fopen(ringfile, "r");
   if (!rfp)
   {
     char *error_buf = NULL;
@@ -795,7 +779,7 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
 
   while (!err && (buf = pgp_read_packet(rfp, &l)) != NULL)
   {
-    pt = buf[0] & 0x3f;
+    const unsigned char pt = buf[0] & 0x3f;
 
     if (l < 1)
       continue;
@@ -844,10 +828,6 @@ int main(int argc, char *const argv[])
   short secring = 0;
 
   const char *tmp_kring = NULL;
-  const char *env_pgppath = NULL;
-  const char *env_home = NULL;
-
-  char pgppath[_POSIX_PATH_MAX];
   char kring[_POSIX_PATH_MAX];
 
   while ((c = getopt(argc, argv, "f25sk:S")) != EOF)
@@ -899,7 +879,9 @@ int main(int argc, char *const argv[])
     mutt_str_strfcpy(kring, tmp_kring, sizeof(kring));
   else
   {
-    env_pgppath = mutt_str_getenv("PGPPATH");
+    const char *env_home = NULL;
+    char pgppath[_POSIX_PATH_MAX];
+    const char *env_pgppath = mutt_str_getenv("PGPPATH");
     if (env_pgppath)
       mutt_str_strfcpy(pgppath, env_pgppath, sizeof(pgppath));
     else if ((env_home = mutt_str_getenv("HOME")))
