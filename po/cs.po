@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-02-22 15:08+0000\n"
-"PO-Revision-Date: 2018-03-02 16:07+0100\n"
+"PO-Revision-Date: 2018-03-06 15:18+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -198,12 +198,12 @@ msgid "Path too long: %s%s%s"
 msgstr "Cesta je příliš dlouhá: %s%s%s"
 
 #: bcache.c:172
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "%s není adresářem."
+msgstr "Cache se zprávami %s není adresářem."
 
 #: bcache.c:180
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s %s"
 msgstr "%s nelze vytvořit: %s"
 
@@ -224,14 +224,12 @@ msgid "List"
 msgstr "Seznam"
 
 #: browser.c:82
-#, fuzzy
 msgid "Subscribe"
-msgstr "%s přihlášeno"
+msgstr "Přihlásit"
 
 #: browser.c:83
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "%s odhlášeno"
+msgstr "Odhlásit"
 
 #: browser.c:84 curs_main.c:839
 msgid "Catchup"
@@ -243,9 +241,9 @@ msgid "%s is not a directory."
 msgstr "%s není adresářem."
 
 #: browser.c:1049
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed newsgroups"
-msgstr "%s přihlášeno"
+msgstr "Diskusní skupiny přihlášeny"
 
 #: browser.c:1051
 #, c-format
@@ -749,9 +747,8 @@ msgid "Descrip"
 msgstr "Popis"
 
 #: compose.c:168
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Věc nebyla zadána."
+msgstr "Skupiny"
 
 #: compose.c:245
 msgid "Not supported"
@@ -1033,7 +1030,7 @@ msgstr "Chyba při nastavování jména uživatele vnějšího SASL mechanismu"
 
 #: conn/socket.c:89
 msgid "Preconnect command failed."
-msgstr "příkaz před spojením selhal"
+msgstr "Příkaz před spojením selhal."
 
 #: conn/socket.c:280
 #, c-format
@@ -1181,7 +1178,7 @@ msgstr "otvs"
 
 #: conn/ssl.c:1037
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy, (s)kip "
+msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy, pře(s)kočit"
 
 #: conn/ssl.c:1039 conn/ssl_gnutls.c:790
 msgid "(r)eject, accept (o)nce, (a)ccept always"
@@ -1189,7 +1186,7 @@ msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy "
 
 #: conn/ssl.c:1044
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(o)dmítnout, akceptovat pouze (t)eď, (s)kip "
+msgstr "(o)dmítnout, akceptovat pouze (t)eď, pře(s)kočit"
 
 #: conn/ssl.c:1046 conn/ssl_gnutls.c:801
 msgid "(r)eject, accept (o)nce"
@@ -1321,7 +1318,7 @@ msgstr "Všechny dostupné protokoly pro TLS/SSL byly zakázány"
 #: conn/ssl_gnutls.c:1117
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
-"Explicitní výběr šifrovacích algoritmů pomoc $ssl_ciphers není podporován"
+"Explicitní výběr šifrovacích algoritmů pomocí $ssl_ciphers není podporován"
 
 #: conn/ssl_gnutls.c:1240
 #, c-format
@@ -1460,9 +1457,8 @@ msgid "Nothing to do."
 msgstr "Není co dělat"
 
 #: curs_main.c:1248
-#, fuzzy
 msgid "Enter Message-Id: "
-msgstr "Zadejte ID klíče: "
+msgstr "Zadejte Message-Id: "
 
 #: curs_main.c:1258
 msgid "Article has no parent reference."
@@ -1565,23 +1561,20 @@ msgid "Logged out of IMAP servers."
 msgstr "Odhlášeno z IMAP serverů."
 
 #: curs_main.c:1833
-#, fuzzy
 msgid "No virtual folder, aborting."
-msgstr "Věc není specifikována, zrušeno."
+msgstr "Virtuální složka není specifikována, zrušeno."
 
 #: curs_main.c:1841
 msgid "Failed to read thread, aborting."
 msgstr ""
 
 #: curs_main.c:1873 mx.c:1390 mx.c:1402
-#, fuzzy
 msgid "Folder doesn't support tagging, aborting."
-msgstr "SMTP server nepodporuje autentizaci"
+msgstr "Složka nepodporuje značky, zrušeno."
 
 #: curs_main.c:1888
-#, fuzzy
 msgid "No tag specified, aborting."
-msgstr "Věc není specifikována, zrušeno."
+msgstr "Značka není specifikována, zrušeno."
 
 #: curs_main.c:1900
 #, c-format
@@ -1593,9 +1586,8 @@ msgid "Failed to modify tags, aborting."
 msgstr ""
 
 #: curs_main.c:1978
-#, fuzzy
 msgid "No query, aborting."
-msgstr "Věc není specifikována, zrušeno."
+msgstr "Dotaz není specifikován, zrušeno."
 
 #: curs_main.c:1982 curs_main.c:2002 curs_main.c:2021
 msgid "Failed to create query, aborting."
@@ -1614,9 +1606,8 @@ msgid "Open mailbox in read-only mode"
 msgstr "Otevřít schránku pouze pro čtení"
 
 #: curs_main.c:2056
-#, fuzzy
 msgid "Open virtual folder"
-msgstr "otevřít jinou složku"
+msgstr "Otevřít virtuální složku"
 
 #: curs_main.c:2059
 msgid "Open mailbox"
@@ -1650,7 +1641,7 @@ msgstr "Vlákna nejsou podporována."
 
 #: curs_main.c:2253
 msgid "Thread broken"
-msgstr "Vlákno rozbito"
+msgstr "Vlákno rozděleno"
 
 #: curs_main.c:2265
 msgid "Thread cannot be broken, message is not part of a thread"
@@ -1663,7 +1654,7 @@ msgstr "Vlákna nelze spojit"
 
 #: curs_main.c:2280
 msgid "No Message-ID: header available to link thread"
-msgstr "Pro spojení vláken chybí hlavička Message-ID:"
+msgstr "Pro spojení vláken chybí hlavička Message-ID"
 
 #: curs_main.c:2282
 msgid "First, please tag a message to be linked here"
@@ -2247,9 +2238,9 @@ msgid "Mailbox renamed."
 msgstr "Schránka přejmenována."
 
 #: imap/command.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Schránka uzavřena."
+msgstr "Schránka %s@%s uzavřena"
 
 #: imap/command.c:1135 imap/command.c:1230
 #, fuzzy, c-format
@@ -2540,7 +2531,7 @@ msgstr "Nesprávná hodnota přepínače %s: „%s“"
 #: init.c:2633
 #, c-format
 msgid "%s: invalid mailbox type"
-msgstr "%s je nesprávný typ schránky."
+msgstr "%s je nesprávný typ schránky"
 
 #: init.c:2664
 #, c-format
@@ -2595,9 +2586,9 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
 
 #: init.c:3006
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warnings in %s"
-msgstr "source: chyby v %s"
+msgstr "source: %d varování v %s"
 
 #: init.c:3030 mutt_lua.c:417
 #, c-format
@@ -2644,14 +2635,13 @@ msgid "Too many arguments"
 msgstr "Příliš mnoho argumentů"
 
 #: init.c:4318
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "%s přihlášeno"
+msgstr "Nelze přihlásit do %s"
 
 #: init.c:4334 init.c:4388
-#, fuzzy
 msgid "No folder specified"
-msgstr "Věc nebyla zadána."
+msgstr "Složka nebyla zadána"
 
 #: init.c:4372
 #, fuzzy, c-format
@@ -3154,9 +3144,9 @@ msgid "source: too many arguments"
 msgstr "source: příliš mnoho argumentů"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
+msgstr "rozebrání URI pro notmuch se nezdařilo: %s"
 
 #: mutt_notmuch.c:262
 #, c-format
@@ -3170,12 +3160,12 @@ msgid ""
 msgstr ""
 
 #: mutt_notmuch.c:421
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Rozebrání limitu pro notmuch se nezdařilo: %s"
+msgstr "rozebrání limitu pro notmuch se nezdařilo: %s"
 
 #: mutt_notmuch.c:501
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "Čekám na zamknutí notmuch databáze… (%d s)"
 
@@ -3185,7 +3175,6 @@ msgid "Cannot open notmuch database: %s: %s"
 msgstr ""
 
 #: mutt_notmuch.c:510
-#, fuzzy
 msgid "unknown reason"
 msgstr "neznámá chyba"
 
@@ -3742,44 +3731,36 @@ msgstr "[Nelze zobrazit ID tohoto uživatele (neplatné DN)]"
 #. * GPGME key selection menu (bound to "c" in the key selection menu).
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3605
-#, fuzzy
 msgid "Name: "
-msgstr "Jméno .....: "
+msgstr "Jméno: "
 
 #: ncrypt/crypt_gpgme.c:3605
-#, fuzzy
 msgid "Valid From: "
-msgstr "Platný od .: %s\n"
+msgstr "Platný od:"
 
 #: ncrypt/crypt_gpgme.c:3605
-#, fuzzy
 msgid "Valid To: "
-msgstr "Platný do .: %s\n"
+msgstr "Platný do:"
 
 #: ncrypt/crypt_gpgme.c:3606
-#, fuzzy
 msgid "Key Type: "
-msgstr "Účel klíče : "
+msgstr "Druh klíče : "
 
 #: ncrypt/crypt_gpgme.c:3606
-#, fuzzy
 msgid "Key Usage: "
 msgstr "Účel klíče : "
 
 #: ncrypt/crypt_gpgme.c:3606
-#, fuzzy
 msgid "Serial-No: "
-msgstr "Sériové č. : 0x%s\n"
+msgstr "Sériové č.:"
 
 #: ncrypt/crypt_gpgme.c:3607
-#, fuzzy
 msgid "Issued By: "
-msgstr "Vydal .....: "
+msgstr "Vydal: "
 
 #: ncrypt/crypt_gpgme.c:3607
-#, fuzzy
 msgid "Subkey: "
-msgstr "Podklíč ...: 0x%s"
+msgstr "Podklíč: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
@@ -3790,9 +3771,9 @@ msgstr "[Neplatný]"
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3703 ncrypt/crypt_gpgme.c:3841
-#, fuzzy, c-format
+#, c-format
 msgid "%s, %lu bit %s\n"
-msgstr "Druh klíče : %s, %lu bit %s\n"
+msgstr "%s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3711 ncrypt/crypt_gpgme.c:3848
@@ -4424,9 +4405,9 @@ msgid "Server doesn't support reader mode."
 msgstr "SMTP server nepodporuje autentizaci"
 
 #: nntp.c:583
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed."
-msgstr "SASL ověření se nezdařilo."
+msgstr "%s ověření se nezdařilo."
 
 #: nntp.c:658 nntp.c:749
 #, fuzzy
@@ -4434,14 +4415,13 @@ msgid "Could not switch to reader mode."
 msgstr "Dočasnou poštovní složku nelze vytvořit: %s"
 
 #: nntp.c:672
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s. %s"
-msgstr "Připojuji se k %s…"
+msgstr "Připojeno k %s. %s"
 
 #: nntp.c:673
-#, fuzzy
 msgid "Posting is ok."
-msgstr "Není co dělat"
+msgstr "Odesílání je ok."
 
 #: nntp.c:673
 msgid "Posting is NOT ok."
@@ -4478,9 +4458,9 @@ msgid "Article %d not found on the server."
 msgstr ""
 
 #: nntp.c:1762 nntp.c:1795
-#, fuzzy, c-format
+#, c-format
 msgid "Can't post article: %s"
-msgstr "Chyba při volání funkce stat pro %s"
+msgstr "Nelze odeslat zprávu: %s"
 
 #: nntp.c:1866 nntp.c:2284 pop.c:804 pop.c:871
 msgid "Checking for new messages..."
@@ -4492,14 +4472,12 @@ msgid "Loading list of groups from server %s..."
 msgstr "Odstraňuji zprávy ze serveru…"
 
 #: nntp.c:2253 nntp.c:2353
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "Probíhá přihlašování…"
+msgstr "Načítám popisy…"
 
 #: nntp.c:2274
-#, fuzzy
 msgid "Checking for new newsgroups..."
-msgstr "Hledám nové zprávy…"
+msgstr "Hledám nové zprávy v diskusních skupinách…"
 
 #: nntp.c:2513
 msgid ""
@@ -4577,9 +4555,8 @@ msgid "change directories"
 msgstr "změnit adresáře"
 
 #: opcodes.h:46
-#, fuzzy
 msgid "go to parent directory"
-msgstr "%s není adresářem."
+msgstr "jít do nadřazeného adresáře"
 
 #: opcodes.h:47
 msgid "check mailboxes for new mail"
@@ -4639,9 +4616,8 @@ msgid "edit attachment using mailcap entry"
 msgstr "editovat přílohu za použití položky mailcap"
 
 #: opcodes.h:61
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "editovat CC seznam"
+msgstr "editovat seznam diskusních skupin"
 
 #: opcodes.h:62
 msgid "edit the Reply-To field"
@@ -4995,14 +4971,12 @@ msgid "open a different folder in read only mode"
 msgstr "otevřít jinou složku pouze pro čtení"
 
 #: opcodes.h:148
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "otevřít jinou složku"
+msgstr "otevřít jinou diskusní skupinu"
 
 #: opcodes.h:149
-#, fuzzy
 msgid "open a different newsgroup in read only mode"
-msgstr "otevřít jinou složku pouze pro čtení"
+msgstr "otevřít jinou diskusní skupinu pouze pro čtení"
 
 #: opcodes.h:150
 msgid "clear a status flag from a message"
@@ -5165,9 +5139,8 @@ msgid "pipe message/attachment to a shell command"
 msgstr "poslat zprávu/přílohu rourou do příkazu shellu"
 
 #: opcodes.h:190
-#, fuzzy
 msgid "post message to newsgroup"
-msgstr "ID zprávy ze značky neexistuje."
+msgstr "odeslat zprávu do diskusní skupiny"
 
 #: opcodes.h:191
 msgid "move to the previous entry"
@@ -5272,9 +5245,8 @@ msgid "sort messages in reverse order"
 msgstr "seřadit zprávy v opačném pořadí"
 
 #: opcodes.h:216
-#, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "odznačit zprávy shodující se se vzorem"
+msgstr "přihlásit do diskusních skupin vyhovujících vzoru"
 
 #: opcodes.h:217
 msgid "tag the current entry"
@@ -5301,9 +5273,8 @@ msgid "toggle a message's 'new' flag"
 msgstr "přepnout zprávě příznak 'nová'"
 
 #: opcodes.h:223
-#, fuzzy
 msgid "toggle view of read messages"
-msgstr "přeskočit na předchozí novou nebo nepřečtenou zprávu"
+msgstr "přepnout zobrazování přečtených zpráv"
 
 #: opcodes.h:224
 msgid "toggle whether the mailbox will be rewritten"
@@ -5334,9 +5305,8 @@ msgid "undelete all messages in subthread"
 msgstr "obnovit všechny zprávy v podvláknu"
 
 #: opcodes.h:231
-#, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "odznačit zprávy shodující se se vzorem"
+msgstr "odhlásit z diskusních skupin vyhovujících vzoru"
 
 #: opcodes.h:232
 msgid "show the NeoMutt version number and date"
@@ -5353,16 +5323,15 @@ msgstr "zobrazit MIME přílohy"
 #: opcodes.h:235
 #, fuzzy
 msgid "show the raw message"
-msgstr "editovat přímo tělo zprávy"
+msgstr "zobrazit celou zprávu"
 
 #: opcodes.h:236
 msgid "display the keycode for a key press"
 msgstr "zobraz kód stisknuté klávesy"
 
 #: opcodes.h:237
-#, fuzzy
 msgid "limit view to current thread"
-msgstr "označit toto vlákno"
+msgstr "omezit zobrazení na současné vlákno"
 
 #: opcodes.h:238
 msgid "show currently active limit pattern"
@@ -5381,9 +5350,8 @@ msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #: opcodes.h:242
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "Jste na první zprávě."
+msgstr "změnit (notmuch/imap) značky a schovat zprávu"
 
 #: opcodes.h:245
 msgid "make decrypted copy and delete"
@@ -5430,9 +5398,8 @@ msgid "send the message through a mixmaster remailer chain"
 msgstr "odeslat zprávu pomocí řetězu remailerů typu mixmaster"
 
 #: opcodes.h:265
-#, fuzzy
 msgid "open a different virtual folder"
-msgstr "otevřít jinou složku"
+msgstr "otevřít jinou virtuální složku"
 
 #: opcodes.h:266
 msgid "generate virtual folder from query"
@@ -5447,9 +5414,8 @@ msgid "shifts virtual folder time window backwards"
 msgstr ""
 
 #: opcodes.h:269
-#, fuzzy
 msgid "read entire thread of the current message"
-msgstr "vytvořit horkou klávesu pro současnou zprávu"
+msgstr "načíst celé vlákno současné zprávy"
 
 #: opcodes.h:275
 msgid "attach a PGP public key"
@@ -5504,9 +5470,8 @@ msgid "move the highlight to previous mailbox with new mail"
 msgstr "přesunout zvýraznění na další schránku s novou poštou"
 
 #: opcodes.h:290
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "přepnout, zda procházet schránky nebo všechny soubory"
+msgstr "přepnout, zda procházet schránky nebo virtuální složku"
 
 #: opcodes.h:291
 msgid "make the sidebar (in)visible"
@@ -5518,11 +5483,11 @@ msgstr "zobrazit menu S/MIME"
 
 #: pager.c:1677
 msgid "PrevPg"
-msgstr "Přstr"
+msgstr "PřStr"
 
 #: pager.c:1678
 msgid "NextPg"
-msgstr "Dlstr"
+msgstr "DlStr"
 
 #: pager.c:1682
 msgid "View Attachm."
@@ -5581,9 +5546,8 @@ msgid "Invalid relative date: %s"
 msgstr "Chybné relativní datum: %s"
 
 #: pattern.c:655 pattern.c:762
-#, fuzzy
 msgid "No current message"
-msgstr "Žádné nepřečtené zprávy."
+msgstr "Žádné vybraná zpráva"
 
 #: pattern.c:783
 msgid "No Context"
@@ -5597,10 +5561,9 @@ msgstr "Chyba při otevírání schránky"
 #: pattern.c:972
 #, fuzzy
 msgid "Error re-opening memstream"
-msgstr "Chyba při otevírání schránky"
+msgstr "Chyba při opětovném otevírání memstream"
 
 #: pattern.c:981
-#, fuzzy
 msgid "Error opening /dev/null"
 msgstr "Nelze otevřít /dev/null"
 
@@ -5902,9 +5865,8 @@ msgid "Can't delete attachment from POP server."
 msgstr "Z POP serveru nelze mazat přílohy."
 
 #: recvattach.c:1267
-#, fuzzy
 msgid "Can't delete attachment from news server."
-msgstr "Z POP serveru nelze mazat přílohy."
+msgstr "Nelze smazat přílohu ze serveru diskusních skupin."
 
 #: recvattach.c:1274
 msgid "Deletion of attachments from encrypted messages is unsupported."
@@ -6127,7 +6089,6 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
 #: send.c:1818
-#, fuzzy
 msgid "Article not posted."
 msgstr "Zpráva nebyla odeslána."
 
@@ -6152,14 +6113,12 @@ msgid "No subject specified."
 msgstr "Věc nebyla zadána."
 
 #: send.c:1935
-#, fuzzy
 msgid "No newsgroup specified."
-msgstr "Věc nebyla zadána."
+msgstr "Nezadány žádné diskusní skupiny."
 
 #: send.c:1942
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "editovat položku „transfer-encoding“ přílohy"
+msgstr "Žádné přílohy, zrušit odeslání?"
 
 #: send.c:1948
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
@@ -6204,9 +6163,8 @@ msgid "%s isn't a regular file."
 msgstr "%s není řádným souborem."
 
 #: sendlib.c:1099
-#, fuzzy
 msgid "Could not find any mime.types file."
-msgstr "Zprávu nelze odeslat."
+msgstr "Nemohu nalézt žádný mime.types soubor."
 
 #: sendlib.c:1179
 #, c-format
@@ -6273,7 +6231,7 @@ msgstr "SMTP relace selhala: chyba při zápisu"
 
 #: smtp.c:733
 msgid "Invalid server response"
-msgstr "Nesprávná odpověď serveru"
+msgstr "Neplatná odpověď serveru"
 
 #: sort.c:328
 msgid "Sorting mailbox..."
@@ -6300,7 +6258,6 @@ msgid "Parent message is not visible in this limited view."
 msgstr "Rodičovská zpráva není v omezeném zobrazení viditelná."
 
 #: version.c:63
-#, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -6362,13 +6319,12 @@ msgstr ""
 "„neomutt -vv“.\n"
 
 #: version.c:401
-#, fuzzy
 msgid ""
 "\n"
 "Default options:"
 msgstr ""
 "\n"
-"Přeloženo s volbami:"
+"Výchzí volby:"
 
 #: version.c:404
 msgid ""
