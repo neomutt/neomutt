@@ -260,27 +260,22 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
  */
 static int pop_fetch_headers(struct Context *ctx)
 {
-  int i, ret, old_count, new_count, deleted;
-  bool hcached = false, bcached;
   struct PopData *pop_data = (struct PopData *) ctx->data;
   struct Progress progress;
 
 #ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-  void *data = NULL;
-
-  hc = pop_hcache_open(pop_data, ctx->path);
+  header_cache_t *hc = pop_hcache_open(pop_data, ctx->path);
 #endif
 
   time(&pop_data->check_time);
   pop_data->clear_cache = false;
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
     ctx->hdrs[i]->refno = -1;
 
-  old_count = ctx->msgcount;
-  ret = pop_fetch_data(pop_data, "UIDL\r\n", NULL, fetch_uidl, ctx);
-  new_count = ctx->msgcount;
+  const int old_count = ctx->msgcount;
+  int ret = pop_fetch_data(pop_data, "UIDL\r\n", NULL, fetch_uidl, ctx);
+  const int new_count = ctx->msgcount;
   ctx->msgcount = old_count;
 
   if (pop_data->cmd_uidl == 2)
@@ -308,6 +303,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
   if (ret == 0)
   {
+    int i, deleted;
     for (i = 0, deleted = 0; i < old_count; i++)
     {
       if (ctx->hdrs[i]->refno == -1)
@@ -322,12 +318,13 @@ static int pop_fetch_headers(struct Context *ctx)
       mutt_sleep(2);
     }
 
+    bool hcached = false;
     for (i = old_count; i < new_count; i++)
     {
       if (!ctx->quiet)
         mutt_progress_update(&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
-      data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
+      void *data = mutt_hcache_fetch(hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
       if (data)
       {
         char *uidl = mutt_str_strdup(ctx->hdrs[i]->data);
@@ -376,7 +373,8 @@ static int pop_fetch_headers(struct Context *ctx)
        *        - if we also have a body: read
        *        - if we don't have a body: new
        */
-      bcached = (mutt_bcache_exists(pop_data->bcache, ctx->hdrs[i]->data) == 0);
+      const bool bcached =
+          (mutt_bcache_exists(pop_data->bcache, ctx->hdrs[i]->data) == 0);
       ctx->hdrs[i]->old = false;
       ctx->hdrs[i]->read = false;
       if (hcached)
@@ -405,7 +403,7 @@ static int pop_fetch_headers(struct Context *ctx)
 
   if (ret < 0)
   {
-    for (i = ctx->msgcount; i < new_count; i++)
+    for (int i = ctx->msgcount; i < new_count; i++)
       mutt_free_header(&ctx->hdrs[i]);
     return ret;
   }
@@ -426,7 +424,6 @@ static int pop_fetch_headers(struct Context *ctx)
  */
 static int pop_open_mailbox(struct Context *ctx)
 {
-  int ret;
   char buf[LONG_STRING];
   struct Connection *conn = NULL;
   struct Account acct;
@@ -481,7 +478,7 @@ static int pop_open_mailbox(struct Context *ctx)
 
     mutt_message(_("Fetching list of messages..."));
 
-    ret = pop_fetch_headers(ctx);
+    const int ret = pop_fetch_headers(ctx);
 
     if (ret >= 0)
       return 0;
@@ -547,7 +544,6 @@ static int pop_close_mailbox(struct Context *ctx)
  */
 static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
-  int ret;
   void *uidl = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
@@ -624,7 +620,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
 
     snprintf(buf, sizeof(buf), "RETR %d\r\n", h->refno);
 
-    ret = pop_fetch_data(pop_data, buf, &progressbar, fetch_message, msg->fp);
+    const int ret = pop_fetch_data(pop_data, buf, &progressbar, fetch_message, msg->fp);
     if (ret == 0)
       break;
 
