@@ -83,23 +83,21 @@ static const char *xdg_defaults[] = {
  */
 void mutt_adv_mktemp(char *s, size_t l)
 {
-  char prefix[_POSIX_PATH_MAX];
-  char *suffix = NULL;
-  struct stat sb;
-
   if (s[0] == '\0')
   {
     mutt_mktemp(s, l);
   }
   else
   {
+    char prefix[_POSIX_PATH_MAX];
     mutt_str_strfcpy(prefix, s, sizeof(prefix));
     mutt_file_sanitize_filename(prefix, 1);
     snprintf(s, l, "%s/%s", NONULL(Tmpdir), prefix);
+    struct stat sb;
     if (lstat(s, &sb) == -1 && errno == ENOENT)
       return;
 
-    suffix = strrchr(prefix, '.');
+    char *suffix = strrchr(prefix, '.');
     if (suffix)
     {
       *suffix = 0;
@@ -628,8 +626,6 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                          size_t flen, int *append, char **directory)
 {
-  int rc = 0;
-  char tmp[_POSIX_PATH_MAX];
   struct stat st;
 
   mutt_str_strfcpy(fname, path, flen);
@@ -639,6 +635,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     return -1;
   if (S_ISDIR(st.st_mode))
   {
+    int rc = 0;
     if (directory)
     {
       switch (mutt_multi_choice
@@ -667,6 +664,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
     else if ((rc = mutt_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (rc == MUTT_NO) ? 1 : -1;
 
+    char tmp[_POSIX_PATH_MAX];
     mutt_str_strfcpy(tmp, mutt_file_basename(NONULL(attname)), sizeof(tmp));
     if (mutt_get_field(_("File under directory: "), tmp, sizeof(tmp),
                        MUTT_FILE | MUTT_CLEAR) != 0 ||
@@ -742,7 +740,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   size_t wlen, count, len, wid;
   pid_t pid;
   FILE *filter = NULL;
-  int n;
   char *recycler = NULL;
 
   char src2[STRING];
@@ -759,7 +756,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     int off = -1;
 
     /* Do not consider filters if no pipe at end */
-    n = mutt_str_strlen(src);
+    int n = mutt_str_strlen(src);
     if (n > 1 && src[n - 1] == '|')
     {
       /* Scan backwards for backslashes */
@@ -1123,7 +1120,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       else if (ch == '|')
       {
         /* pad to EOL */
-        int pl, pw, c;
+        int pl, pw;
         pl = mutt_mb_charlen(src, &pw);
         if (pl <= 0)
           pl = pw = 1;
@@ -1131,7 +1128,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         /* see if there's room to add content, else ignore */
         if (col < cols && wlen < buflen)
         {
-          c = (cols - col) / pw;
+          int c = (cols - col) / pw;
           if (c > 0 && wlen + (c * pl) > buflen)
             c = ((signed) (buflen - wlen)) / pl;
           while (c > 0)

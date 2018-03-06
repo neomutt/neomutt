@@ -328,14 +328,13 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
 static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
                            const char *tocode, encoder_t *encoder, size_t *wlen)
 {
-  size_t n, nn;
-  int utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
+  const int utf8 = fromcode && (mutt_str_strcasecmp(fromcode, "utf-8") == 0);
 
-  n = dlen;
+  size_t n = dlen;
   while (true)
   {
     assert(n > 0);
-    nn = try_block(d, n, fromcode, tocode, encoder, wlen);
+    const size_t nn = try_block(d, n, fromcode, tocode, encoder, wlen);
     if ((nn == 0) && ((col + *wlen) <= (ENCWORD_LEN_MAX + 1) || (n <= 1)))
       break;
     n = (nn ? nn : n) - 1;
@@ -442,7 +441,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   size_t bufpos, buflen;
   char *u = NULL, *t0 = NULL, *t1 = NULL, *t = NULL;
   char *s0 = NULL, *s1 = NULL;
-  size_t ulen, r, n, wlen = 0;
+  size_t ulen, r, wlen = 0;
   encoder_t encoder;
   char *tocode1 = NULL;
   const char *tocode = NULL;
@@ -560,7 +559,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   while (true)
   {
     /* Find how much we can encode. */
-    n = choose_block(t, t1 - t, col, icode, tocode, &encoder, &wlen);
+    size_t n = choose_block(t, t1 - t, col, icode, tocode, &encoder, &wlen);
     if (n == (t1 - t))
     {
       /* See if we can fit the us-ascii suffix, too. */

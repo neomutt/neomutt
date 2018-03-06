@@ -189,11 +189,10 @@ static struct HashElem *union_hash_insert(struct Hash *table, union HashKey key,
   else
   {
     struct HashElem *tmp = NULL, *last = NULL;
-    int r;
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
     {
-      r = table->cmp_key(tmp->key, key);
+      const int r = table->cmp_key(tmp->key, key);
       if (r == 0)
       {
         FREE(&ptr);

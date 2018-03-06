@@ -771,12 +771,12 @@ static void getkeys(char *mailbox)
 {
   struct SmimeKey *key = NULL;
   char *k = NULL;
-  char buf[STRING];
 
   key = smime_get_key_by_addr(mailbox, KEYFLAG_CANENCRYPT, 0, 1);
 
   if (!key)
   {
+    char buf[STRING];
     snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), mailbox);
     key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, 0);
   }
@@ -879,13 +879,12 @@ char *smime_find_keys(struct Address *addrlist, int oppenc_mode)
 
   for (p = addrlist; p; p = p->next)
   {
-    char buf[LONG_STRING];
-
     q = p;
 
     key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, 1, !oppenc_mode);
     if (!key && !oppenc_mode)
     {
+      char buf[LONG_STRING];
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, 1);
     }
@@ -1463,15 +1462,13 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
  */
 static char *openssl_md_to_smime_micalg(char *md)
 {
-  char *micalg = NULL;
-  size_t l;
-
   if (!md)
     return 0;
 
+  char *micalg = NULL;
   if (mutt_str_strncasecmp("sha", md, 3) == 0)
   {
-    l = strlen(md) + 2;
+    const size_t l = strlen(md) + 2;
     micalg = mutt_mem_malloc(l);
     snprintf(micalg, l, "sha-%s", md + 3);
   }
@@ -1756,12 +1753,8 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
  */
 static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *out_file)
 {
-  size_t len = 0;
-  int c;
-  char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX], errfile[_POSIX_PATH_MAX];
   char tmpfname[_POSIX_PATH_MAX];
-  char tmptmpfname[_POSIX_PATH_MAX];
   FILE *smimeout = NULL, *smimein = NULL, *smimeerr = NULL;
   FILE *tmpfp = NULL, *tmpfp_buffer = NULL, *fpout = NULL;
   struct stat info;
@@ -1850,7 +1843,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeerr);
     rewind(smimeerr);
 
-    c = fgetc(smimeerr);
+    const int c = fgetc(smimeerr);
     if (c != EOF)
     {
       ungetc(c, smimeerr);
@@ -1873,6 +1866,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     fflush(smimeout);
     rewind(smimeout);
 
+    char tmptmpfname[_POSIX_PATH_MAX];
     if (out_file)
       fpout = out_file;
     else
@@ -1887,9 +1881,10 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
         return NULL;
       }
     }
+    char buf[HUGE_STRING];
     while (fgets(buf, sizeof(buf) - 1, smimeout) != NULL)
     {
-      len = mutt_str_strlen(buf);
+      const size_t len = mutt_str_strlen(buf);
       if (len > 1 && buf[len - 2] == '\r')
       {
         buf[len - 2] = '\n';
