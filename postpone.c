@@ -188,13 +188,11 @@ static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 
 static struct Header *select_msg(void)
 {
-  struct Menu *menu = NULL;
-  int i, r = -1;
+  int r = -1;
   bool done = false;
   char helpstr[LONG_STRING];
-  short orig_sort;
 
-  menu = mutt_new_menu(MENU_POST);
+  struct Menu *menu = mutt_new_menu(MENU_POST);
   menu->make_entry = post_entry;
   menu->max = PostContext->msgcount;
   menu->title = _("Postponed Messages");
@@ -205,12 +203,13 @@ static struct Header *select_msg(void)
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * Sort variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
-  orig_sort = Sort;
+  const short orig_sort = Sort;
   Sort = SORT_ORDER;
 
   while (!done)
   {
-    switch (i = mutt_menu_loop(menu))
+    const int i = mutt_menu_loop(menu);
+    switch (i)
     {
       case OP_DELETE:
       case OP_UNDELETE:
