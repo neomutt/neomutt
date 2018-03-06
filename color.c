@@ -684,8 +684,6 @@ static int add_pattern(struct ColorLineHead *top, const char *s, int sensitive, 
 static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
                         struct Buffer *err)
 {
-  int q_level = 0;
-
   if (!MoreArgs(s))
   {
     mutt_str_strfcpy(err->data, _("Missing arguments."), err->dsize);
@@ -699,7 +697,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
     {
       char *eptr = NULL;
       *ql = strtol(buf->data + 6, &eptr, 10);
-      if (*eptr || q_level < 0)
+      if (*eptr || *ql < 0)
       {
         snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
         return -1;

@@ -141,10 +141,9 @@ int mutt_compose_attachment(struct Body *a)
         if (r != -1 && entry->composetypecommand)
         {
           struct Body *b = NULL;
-          FILE *fp = NULL, *tfp = NULL;
           char tempfile[_POSIX_PATH_MAX];
 
-          fp = mutt_file_fopen(a->filename, "r");
+          FILE *fp = mutt_file_fopen(a->filename, "r");
           if (!fp)
           {
             mutt_perror(_("Failure to open file to parse headers."));
@@ -178,7 +177,7 @@ int mutt_compose_attachment(struct Body *a)
             fseeko(fp, b->offset, SEEK_SET);
             mutt_free_body(&b);
             mutt_mktemp(tempfile, sizeof(tempfile));
-            tfp = mutt_file_fopen(tempfile, "w");
+            FILE *tfp = mutt_file_fopen(tempfile, "w");
             if (!tfp)
             {
               mutt_perror(_("Failure to open file to strip headers."));
@@ -369,7 +368,6 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
-  bool is_message = false;
   bool use_mailcap = false;
   bool use_pipe = false;
   bool use_pager = true;
@@ -381,7 +379,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
   int rc = -1;
   bool unlink_tempfile = false;
 
-  is_message = mutt_is_message_type(a->type, a->subtype);
+  bool is_message = mutt_is_message_type(a->type, a->subtype);
   if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
       !crypt_valid_passphrase(a->hdr->security))
   {
@@ -692,9 +690,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
   {
     /* send case */
 
-    FILE *ifp = NULL, *ofp = NULL;
+    FILE *ofp = NULL;
 
-    ifp = fopen(b->filename, "r");
+    FILE *ifp = fopen(b->filename, "r");
     if (!ifp)
     {
       mutt_perror("fopen");
@@ -776,13 +774,12 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       /* message type attachments are written to mail folders. */
 
       char buf[HUGE_STRING];
-      struct Header *hn = NULL;
       struct Context ctx;
       struct Message *msg = NULL;
       int chflags = 0;
       int r = -1;
 
-      hn = m->hdr;
+      struct Header *hn = m->hdr;
       hn->msgno = hdr->msgno; /* required for MH/maildir */
       hn->read = true;
 
@@ -847,16 +844,14 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
     /* In send mode, just copy file */
 
-    FILE *ofp = NULL, *nfp = NULL;
-
-    ofp = fopen(m->filename, "r");
+    FILE *ofp = fopen(m->filename, "r");
     if (!ofp)
     {
       mutt_perror("fopen");
       return -1;
     }
 
-    nfp = save_attachment_open(path, flags);
+    FILE *nfp = save_attachment_open(path, flags);
     if (!nfp)
     {
       mutt_perror("fopen");
@@ -995,12 +990,11 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
     char command[_POSIX_PATH_MAX + STRING];
-    struct Rfc1524MailcapEntry *entry = NULL;
     int piped = false;
 
     mutt_debug(2, "Using mailcap...\n");
 
-    entry = rfc1524_new_entry();
+    struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
     rfc1524_mailcap_lookup(a, type, entry, MUTT_PRINT);
     if (rfc1524_expand_filename(entry->nametemplate, a->filename, newfile, sizeof(newfile)))
     {
