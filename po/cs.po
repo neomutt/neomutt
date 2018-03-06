@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-03-18 23:51+0000\n"
-"PO-Revision-Date: 2017-02-13 21:09+01:00\n"
+"PO-Revision-Date: 2018-03-02 16:07+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -420,7 +420,7 @@ msgstr "Nelze vytvořit zobrazovací filtr"
 
 #: commands.c:166
 msgid "Could not copy message"
-msgstr "Nelze kopírovat zprávu."
+msgstr "Nelze kopírovat zprávu"
 
 #: commands.c:201
 msgid "S/MIME signature successfully verified."
@@ -654,9 +654,8 @@ msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:119
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Odepsat"
+msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:121 compose.c:946
@@ -694,15 +693,13 @@ msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142
-#, fuzzy
 msgid "Followup-To: "
-msgstr "Odepsat %s%s?"
+msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
-#, fuzzy
 msgid "X-Comment-To: "
-msgstr "editovat položku 'Reply-To'"
+msgstr ""
 
 #: compose.c:149 compose.c:165
 msgid "Send"
@@ -838,7 +835,7 @@ msgstr "Otevřít schránku, z níž se připojí zpráva"
 #: compose.c:1126
 #, c-format
 msgid "Unable to open mailbox %s"
-msgstr "Schránku %s nelze otevřít."
+msgstr "Schránku %s nelze otevřít"
 
 #: compose.c:1134
 msgid "No messages in that folder."
@@ -903,7 +900,7 @@ msgstr "Hodnota %s položky „Content-Type“ je neznámá."
 #: compose.c:1449
 #, c-format
 msgid "Can't create file %s"
-msgstr "Soubor %s nelze vytvořit."
+msgstr "Soubor %s nelze vytvořit"
 
 #: compose.c:1458
 msgid "What we have here is a failure to make an attachment"
@@ -1586,7 +1583,7 @@ msgstr "Věc není specifikována, zrušeno."
 
 #: curs_main.c:2002 curs_main.c:2022 curs_main.c:2041
 msgid "Failed to create query, aborting."
-msgstr ""
+msgstr "Nezdařílo se vytvořit dotaz, zrušeno."
 
 #: curs_main.c:2011 curs_main.c:2030
 msgid "Windowed queries disabled."
@@ -3031,12 +3028,12 @@ msgstr ""
 #: muttlib.c:429
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "otevření /dev/urandom: %s"
 
 #: muttlib.c:436
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "čtení /dev/urandom: %s"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
@@ -3122,7 +3119,7 @@ msgstr ""
 #: mutt_notmuch.c:421
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Rozebrání limitu pro notmuch : se nezdařilo %s"
+msgstr "Rozebrání limitu pro notmuch se nezdařilo: %s"
 
 #: mutt_notmuch.c:507
 #, fuzzy, c-format
@@ -4603,9 +4600,8 @@ msgid "edit the Reply-To field"
 msgstr "editovat položku 'Reply-To'"
 
 #: opcodes.h:64
-#, fuzzy
 msgid "edit the Followup-To field"
-msgstr "editovat položku 'Reply-To'"
+msgstr "editovat položku Followup-To"
 
 #: opcodes.h:65
 #, fuzzy
@@ -5948,7 +5944,7 @@ msgstr "'type2.list' pro mixmaster nelze získat."
 
 #: remailer.c:529
 msgid "Select a remailer chain."
-msgstr "Vyberte řetěz remailerů"
+msgstr "Vyberte řetěz remailerů."
 
 #: remailer.c:591
 #, c-format
