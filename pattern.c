@@ -891,14 +891,16 @@ static int patmatch(const struct Pattern *pat, const char *buf)
 
 static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 {
-  struct Message *msg = NULL;
-  struct State s;
+  int match = 0;
+  struct Message *msg = mx_open_message(ctx, msgno);
+  if (!msg)
+  {
+    return match;
+  }
+
   FILE *fp = NULL;
   long lng = 0;
-  int match = 0;
   struct Header *h = ctx->hdrs[msgno];
-  char *buf = NULL;
-  size_t blen;
 #ifdef USE_FMEMOPEN
   char *temp = NULL;
   size_t tempsize;
@@ -907,141 +909,138 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   struct stat st;
 #endif
 
-  msg = mx_open_message(ctx, msgno);
-  if (msg)
+  if (ThoroughSearch)
   {
-    if (ThoroughSearch)
+    /* decode the header / body */
+    struct State s;
+    memset(&s, 0, sizeof(s));
+    s.fpin = msg->fp;
+    s.flags = MUTT_CHARCONV;
+#ifdef USE_FMEMOPEN
+    s.fpout = open_memstream(&temp, &tempsize);
+    if (!s.fpout)
     {
-      /* decode the header / body */
-      memset(&s, 0, sizeof(s));
-      s.fpin = msg->fp;
-      s.flags = MUTT_CHARCONV;
-#ifdef USE_FMEMOPEN
-      s.fpout = open_memstream(&temp, &tempsize);
-      if (!s.fpout)
+      mutt_perror(_("Error opening memstream"));
+      return 0;
+    }
+#else
+    mutt_mktemp(tempfile, sizeof(tempfile));
+    s.fpout = mutt_file_fopen(tempfile, "w+");
+    if (!s.fpout)
+    {
+      mutt_perror(tempfile);
+      return 0;
+    }
+#endif
+
+    if (pat->op != MUTT_BODY)
+      mutt_copy_header(msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL);
+
+    if (pat->op != MUTT_HEADER)
+    {
+      mutt_parse_mime_message(ctx, h);
+
+      if (WithCrypto && (h->security & ENCRYPT) && !crypt_valid_passphrase(h->security))
       {
-        mutt_perror(_("Error opening memstream"));
+        mx_close_message(ctx, &msg);
+        if (s.fpout)
+        {
+          mutt_file_fclose(&s.fpout);
+#ifdef USE_FMEMOPEN
+          FREE(&temp);
+#else
+          unlink(tempfile);
+#endif
+        }
         return 0;
       }
-#else
-      mutt_mktemp(tempfile, sizeof(tempfile));
-      s.fpout = mutt_file_fopen(tempfile, "w+");
-      if (!s.fpout)
+
+      fseeko(msg->fp, h->offset, SEEK_SET);
+      mutt_body_handler(h->content, &s);
+    }
+
+#ifdef USE_FMEMOPEN
+    fclose(s.fpout);
+    lng = tempsize;
+
+    if (tempsize)
+    {
+      fp = fmemopen(temp, tempsize, "r");
+      if (!fp)
       {
-        mutt_perror(tempfile);
+        mutt_perror(_("Error re-opening memstream"));
         return 0;
       }
-#endif
-
-      if (pat->op != MUTT_BODY)
-        mutt_copy_header(msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL);
-
-      if (pat->op != MUTT_HEADER)
-      {
-        mutt_parse_mime_message(ctx, h);
-
-        if (WithCrypto && (h->security & ENCRYPT) && !crypt_valid_passphrase(h->security))
-        {
-          mx_close_message(ctx, &msg);
-          if (s.fpout)
-          {
-            mutt_file_fclose(&s.fpout);
-#ifdef USE_FMEMOPEN
-            FREE(&temp);
-#else
-            unlink(tempfile);
-#endif
-          }
-          return 0;
-        }
-
-        fseeko(msg->fp, h->offset, SEEK_SET);
-        mutt_body_handler(h->content, &s);
-      }
-
-#ifdef USE_FMEMOPEN
-      fclose(s.fpout);
-      lng = tempsize;
-
-      if (tempsize)
-      {
-        fp = fmemopen(temp, tempsize, "r");
-        if (!fp)
-        {
-          mutt_perror(_("Error re-opening memstream"));
-          return 0;
-        }
-      }
-      else
-      { /* fmemopen cannot handle empty buffers */
-        fp = mutt_file_fopen("/dev/null", "r");
-        if (!fp)
-        {
-          mutt_perror(_("Error opening /dev/null"));
-          return 0;
-        }
-      }
-#else
-      fp = s.fpout;
-      fflush(fp);
-      fseek(fp, 0, SEEK_SET);
-      fstat(fileno(fp), &st);
-      lng = (long) st.st_size;
-#endif
     }
     else
-    {
-      /* raw header / body */
-      fp = msg->fp;
-      if (pat->op != MUTT_BODY)
+    { /* fmemopen cannot handle empty buffers */
+      fp = mutt_file_fopen("/dev/null", "r");
+      if (!fp)
       {
-        fseeko(fp, h->offset, SEEK_SET);
-        lng = h->content->offset - h->offset;
-      }
-      if (pat->op != MUTT_HEADER)
-      {
-        if (pat->op == MUTT_BODY)
-          fseeko(fp, h->content->offset, SEEK_SET);
-        lng += h->content->length;
+        mutt_perror(_("Error opening /dev/null"));
+        return 0;
       }
     }
-
-    blen = STRING;
-    buf = mutt_mem_malloc(blen);
-
-    /* search the file "fp" */
-    while (lng > 0)
-    {
-      if (pat->op == MUTT_HEADER)
-      {
-        buf = mutt_read_rfc822_line(fp, buf, &blen);
-        if (*buf == '\0')
-          break;
-      }
-      else if (fgets(buf, blen - 1, fp) == NULL)
-        break; /* don't loop forever */
-      if (patmatch(pat, buf) == 0)
-      {
-        match = 1;
-        break;
-      }
-      lng -= mutt_str_strlen(buf);
-    }
-
-    FREE(&buf);
-
-    mx_close_message(ctx, &msg);
-
-    if (ThoroughSearch)
-    {
-      mutt_file_fclose(&fp);
-#ifdef USE_FMEMOPEN
-      if (tempsize)
-        FREE(&temp);
 #else
-      unlink(tempfile);
+    fp = s.fpout;
+    fflush(fp);
+    fseek(fp, 0, SEEK_SET);
+    fstat(fileno(fp), &st);
+    lng = (long) st.st_size;
 #endif
+  }
+  else
+  {
+    /* raw header / body */
+    fp = msg->fp;
+    if (pat->op != MUTT_BODY)
+    {
+      fseeko(fp, h->offset, SEEK_SET);
+      lng = h->content->offset - h->offset;
     }
+    if (pat->op != MUTT_HEADER)
+    {
+      if (pat->op == MUTT_BODY)
+        fseeko(fp, h->content->offset, SEEK_SET);
+      lng += h->content->length;
+    }
+  }
+
+  size_t blen = STRING;
+  char *buf = mutt_mem_malloc(blen);
+
+  /* search the file "fp" */
+  while (lng > 0)
+  {
+    if (pat->op == MUTT_HEADER)
+    {
+      buf = mutt_read_rfc822_line(fp, buf, &blen);
+      if (*buf == '\0')
+        break;
+    }
+    else if (fgets(buf, blen - 1, fp) == NULL)
+      break; /* don't loop forever */
+    if (patmatch(pat, buf) == 0)
+    {
+      match = 1;
+      break;
+    }
+    lng -= mutt_str_strlen(buf);
+  }
+
+  FREE(&buf);
+
+  mx_close_message(ctx, &msg);
+
+  if (ThoroughSearch)
+  {
+    mutt_file_fclose(&fp);
+#ifdef USE_FMEMOPEN
+    if (tempsize)
+      FREE(&temp);
+#else
+    unlink(tempfile);
+#endif
   }
 
   return match;
