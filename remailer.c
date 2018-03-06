@@ -225,15 +225,14 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
 static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
 {
-  short c, r, oc;
-  struct Coord *coords = NULL;
+  short c, r;
 
   if (!chain->cl)
     return;
 
   mutt_mem_realloc(coordsp, sizeof(struct Coord) * chain->cl);
 
-  coords = *coordsp;
+  struct Coord *coords = *coordsp;
 
   if (i)
   {
@@ -248,7 +247,7 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **
 
   for (; i < chain->cl; i++)
   {
-    oc = c;
+    short oc = c;
     c += strlen(type2_list[chain->ch[i]]->shortname) + 2;
 
     if (c >= MuttIndexWindow->cols)
@@ -495,9 +494,7 @@ void mix_make_chain(struct ListHead *chainhead)
   struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
   bool loop = true;
-  int op;
 
-  int j;
   char *t = NULL;
 
   type2_list = mix_type2_list(&ttll);
@@ -557,7 +554,8 @@ void mix_make_chain(struct ListHead *chainhead)
 
     c_old = c_cur;
 
-    switch ((op = mutt_menu_loop(menu)))
+    const int op = mutt_menu_loop(menu);
+    switch (op)
     {
       case OP_REDRAW:
       {
@@ -678,7 +676,7 @@ void mix_make_chain(struct ListHead *chainhead)
   {
     for (int i = 0; i < chain->cl; i++)
     {
-      j = chain->ch[i];
+      const int j = chain->ch[i];
       if (j != 0)
         t = type2_list[j]->shortname;
       else
