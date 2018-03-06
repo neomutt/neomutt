@@ -432,7 +432,7 @@ int mutt_mb_filter_unprintable(char **s)
     }
     if (!IsWPrint(wc))
       wc = '?';
-    else if (Charset_is_utf8 && mutt_mb_is_display_corrupting_utf8(wc))
+    else if (CharsetIsUtf8 && mutt_mb_is_display_corrupting_utf8(wc))
       continue;
     k2 = wcrtomb(scratch, wc, &mbstate2);
     scratch[k2] = '\0';

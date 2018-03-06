@@ -57,9 +57,9 @@ char *Charset;        /**< Config: User's choice of character set */
 wchar_t ReplacementChar = '?';
 
 /**
- * Charset_is_utf8 - Is the user's current character set utf-8?
+ * CharsetIsUtf8 - Is the user's current character set utf-8?
  */
-bool Charset_is_utf8 = false;
+bool CharsetIsUtf8 = false;
 
 /**
  * struct Lookup - Regex to String lookup table
@@ -906,12 +906,12 @@ void mutt_ch_set_charset(char *charset)
 
   if (mutt_ch_is_utf8(buffer))
   {
-    Charset_is_utf8 = true;
+    CharsetIsUtf8 = true;
     ReplacementChar = 0xfffd; /* replacement character */
   }
   else
   {
-    Charset_is_utf8 = false;
+    CharsetIsUtf8 = false;
     ReplacementChar = '?';
   }
 

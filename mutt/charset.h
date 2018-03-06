@@ -32,7 +32,7 @@ struct Buffer;
 
 extern char *AssumedCharset;
 extern char *Charset;
-extern bool Charset_is_utf8;
+extern bool CharsetIsUtf8;
 extern wchar_t ReplacementChar;
 
 /**
