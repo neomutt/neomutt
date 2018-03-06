@@ -1337,44 +1337,46 @@ static int maildir_open_mailbox(struct Context *ctx)
 
 static int maildir_open_mailbox_append(struct Context *ctx, int flags)
 {
-  if (flags & MUTT_APPENDNEW)
+  if (!(flags & MUTT_APPENDNEW))
   {
-    if (mkdir(ctx->path, S_IRWXU))
-    {
-      mutt_perror(ctx->path);
-      return -1;
-    }
+    return 0;
+  }
 
-    char tmp[_POSIX_PATH_MAX];
+  if (mkdir(ctx->path, S_IRWXU))
+  {
+    mutt_perror(ctx->path);
+    return -1;
+  }
+
+  char tmp[_POSIX_PATH_MAX];
+  snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
+  if (mkdir(tmp, S_IRWXU))
+  {
+    mutt_perror(tmp);
+    rmdir(ctx->path);
+    return -1;
+  }
+
+  snprintf(tmp, sizeof(tmp), "%s/new", ctx->path);
+  if (mkdir(tmp, S_IRWXU))
+  {
+    mutt_perror(tmp);
     snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
-    if (mkdir(tmp, S_IRWXU))
-    {
-      mutt_perror(tmp);
-      rmdir(ctx->path);
-      return -1;
-    }
+    rmdir(tmp);
+    rmdir(ctx->path);
+    return -1;
+  }
 
+  snprintf(tmp, sizeof(tmp), "%s/tmp", ctx->path);
+  if (mkdir(tmp, S_IRWXU))
+  {
+    mutt_perror(tmp);
+    snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
+    rmdir(tmp);
     snprintf(tmp, sizeof(tmp), "%s/new", ctx->path);
-    if (mkdir(tmp, S_IRWXU))
-    {
-      mutt_perror(tmp);
-      snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
-      rmdir(tmp);
-      rmdir(ctx->path);
-      return -1;
-    }
-
-    snprintf(tmp, sizeof(tmp), "%s/tmp", ctx->path);
-    if (mkdir(tmp, S_IRWXU))
-    {
-      mutt_perror(tmp);
-      snprintf(tmp, sizeof(tmp), "%s/cur", ctx->path);
-      rmdir(tmp);
-      snprintf(tmp, sizeof(tmp), "%s/new", ctx->path);
-      rmdir(tmp);
-      rmdir(ctx->path);
-      return -1;
-    }
+    rmdir(tmp);
+    rmdir(ctx->path);
+    return -1;
   }
 
   return 0;
@@ -1387,25 +1389,27 @@ static int mh_open_mailbox(struct Context *ctx)
 
 static int mh_open_mailbox_append(struct Context *ctx, int flags)
 {
-  if (flags & MUTT_APPENDNEW)
+  if (!(flags & MUTT_APPENDNEW))
   {
-    if (mkdir(ctx->path, S_IRWXU))
-    {
-      mutt_perror(ctx->path);
-      return -1;
-    }
-
-    char tmp[_POSIX_PATH_MAX];
-    snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", ctx->path);
-    const int i = creat(tmp, S_IRWXU);
-    if (i == -1)
-    {
-      mutt_perror(tmp);
-      rmdir(ctx->path);
-      return -1;
-    }
-    close(i);
+    return 0;
   }
+
+  if (mkdir(ctx->path, S_IRWXU))
+  {
+    mutt_perror(ctx->path);
+    return -1;
+  }
+
+  char tmp[_POSIX_PATH_MAX];
+  snprintf(tmp, sizeof(tmp), "%s/.mh_sequences", ctx->path);
+  const int i = creat(tmp, S_IRWXU);
+  if (i == -1)
+  {
+    mutt_perror(tmp);
+    rmdir(ctx->path);
+    return -1;
+  }
+  close(i);
 
   return 0;
 }
