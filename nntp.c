@@ -256,7 +256,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
       nserv->overview_fmt = OverviewFmt;
     else
     {
-      int chunk, cont = 0;
+      int cont = 0;
       size_t buflen = 2 * LONG_STRING, off = 0, b = 0;
 
       if (nserv->overview_fmt)
@@ -271,7 +271,8 @@ static int nntp_attempt_features(struct NntpServer *nserv)
           mutt_mem_realloc(&nserv->overview_fmt, buflen);
         }
 
-        chunk = mutt_socket_readln(nserv->overview_fmt + off, buflen - off, conn);
+        const int chunk =
+            mutt_socket_readln(nserv->overview_fmt + off, buflen - off, conn);
         if (chunk < 0)
         {
           FREE(&nserv->overview_fmt);
@@ -835,7 +836,7 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
  * funct(NULL, *data) if rewind(*data) needs, exits when fail or done:
  */
 static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen,
-                            char *msg, int (*funct)(char *, void *), void *data)
+                            const char *msg, int (*funct)(char *, void *), void *data)
 {
   int done = false;
   int rc;
@@ -1595,15 +1596,11 @@ static int nntp_open_mailbox(struct Context *ctx)
 static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->data;
-  struct NntpAcache *acache = NULL;
   struct Header *hdr = ctx->hdrs[msgno];
-  char buf[_POSIX_PATH_MAX];
   char article[16];
-  char *fetch_msg = _("Fetching message...");
-  int rc;
 
   /* try to get article from cache */
-  acache = &nntp_data->acache[hdr->index % NNTP_ACACHE_LEN];
+  struct NntpAcache *acache = &nntp_data->acache[hdr->index % NNTP_ACACHE_LEN];
   if (acache->path)
   {
     if (acache->index == hdr->index)
@@ -1628,11 +1625,13 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
   }
   else
   {
+    char buf[_POSIX_PATH_MAX];
     /* don't try to fetch article from removed newsgroup */
     if (nntp_data->deleted)
       return -1;
 
     /* create new cache file */
+    const char *fetch_msg = _("Fetching message...");
     mutt_message(fetch_msg);
     msg->fp = mutt_bcache_put(nntp_data->bcache, article);
     if (!msg->fp)
@@ -1653,7 +1652,8 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
     /* fetch message to cache file */
     snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
              NHDR(hdr)->article_num ? article : hdr->env->message_id);
-    rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), fetch_msg, fetch_tempfile, msg->fp);
+    const int rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), fetch_msg,
+                                    fetch_tempfile, msg->fp);
     if (rc)
     {
       mutt_file_fclose(&msg->fp);
@@ -1727,9 +1727,7 @@ static int nntp_close_message(struct Context *ctx, struct Message *msg)
 int nntp_post(const char *msg)
 {
   struct NntpData *nntp_data, nntp_tmp;
-  FILE *fp = NULL;
   char buf[LONG_STRING];
-  size_t len;
 
   if (Context && Context->magic == MUTT_NNTP)
     nntp_data = Context->data;
@@ -1744,7 +1742,7 @@ int nntp_post(const char *msg)
     nntp_data->group = NULL;
   }
 
-  fp = mutt_file_fopen(msg, "r");
+  FILE *fp = mutt_file_fopen(msg, "r");
   if (!fp)
   {
     mutt_perror(msg);
@@ -1768,7 +1766,7 @@ int nntp_post(const char *msg)
   buf[1] = '\0';
   while (fgets(buf + 1, sizeof(buf) - 2, fp))
   {
-    len = strlen(buf);
+    size_t len = strlen(buf);
     if (buf[len - 1] == '\n')
     {
       buf[len - 1] = '\r';
@@ -1856,7 +1854,6 @@ static int check_mailbox(struct Context *ctx)
   struct NntpData *nntp_data = ctx->data;
   struct NntpServer *nserv = nntp_data->nserv;
   time_t now = time(NULL);
-  int i, j;
   int rc, ret = 0;
   void *hc = NULL;
 
@@ -1880,7 +1877,7 @@ static int check_mailbox(struct Context *ctx)
   /* articles have been renumbered, remove all headers */
   if (nntp_data->last_message < nntp_data->last_loaded)
   {
-    for (i = 0; i < ctx->msgcount; i++)
+    for (int i = 0; i < ctx->msgcount; i++)
       mutt_free_header(&ctx->hdrs[i]);
     ctx->msgcount = 0;
     ctx->tagged = 0;
@@ -1913,7 +1910,8 @@ static int check_mailbox(struct Context *ctx)
 #endif
 
     /* update flags according to .newsrc */
-    for (i = j = 0; i < ctx->msgcount; i++)
+    int j = 0;
+    for (int i = 0; i < ctx->msgcount; i++)
     {
       bool flagged = false;
       anum = NHDR(ctx->hdrs[i])->article_num;
