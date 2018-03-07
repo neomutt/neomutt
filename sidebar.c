@@ -605,15 +605,11 @@ static int select_page_up(void)
  */
 static bool prepare_sidebar(int page_size)
 {
-  struct SbEntry *opn_entry = NULL, *hil_entry = NULL;
-
   if (!EntryCount || (page_size <= 0))
     return false;
 
-  if (OpnIndex >= 0)
-    opn_entry = Entries[OpnIndex];
-  if (HilIndex >= 0)
-    hil_entry = Entries[HilIndex];
+  const struct SbEntry *opn_entry = (OpnIndex >= 0) ? Entries[OpnIndex] : NULL;
+  const struct SbEntry *hil_entry = (HilIndex >= 0) ? Entries[HilIndex] : NULL;
 
   update_entries_visibility();
   sort_entries();
