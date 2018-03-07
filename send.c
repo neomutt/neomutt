@@ -377,10 +377,9 @@ static void process_user_header(struct Envelope *env)
 
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 {
-  char buffer[LONG_STRING];
-
   if (ForwardAttributionIntro)
   {
+    char buffer[LONG_STRING];
     setlocale(LC_TIME, NONULL(AttributionLocale));
     mutt_make_string(buffer, sizeof(buffer), ForwardAttributionIntro, ctx, cur);
     setlocale(LC_TIME, "");
@@ -391,10 +390,9 @@ void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
 {
-  char buffer[LONG_STRING];
-
   if (ForwardAttributionTrailer)
   {
+    char buffer[LONG_STRING];
     setlocale(LC_TIME, NONULL(AttributionLocale));
     mutt_make_string(buffer, sizeof(buffer), ForwardAttributionTrailer, ctx, cur);
     setlocale(LC_TIME, "");
@@ -443,9 +441,9 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 
 void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 {
-  char buffer[LONG_STRING];
   if (Attribution)
   {
+    char buffer[LONG_STRING];
     setlocale(LC_TIME, NONULL(AttributionLocale));
     mutt_make_string(buffer, sizeof(buffer), Attribution, ctx, cur);
     setlocale(LC_TIME, "");
@@ -456,9 +454,9 @@ void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 
 void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
 {
-  char buffer[STRING];
   if (PostIndentString)
   {
+    char buffer[STRING];
     mutt_make_string(buffer, sizeof(buffer), PostIndentString, ctx, cur);
     fputs(buffer, out);
     fputc('\n', out);
@@ -574,12 +572,12 @@ static int default_to(struct Address **to, struct Envelope *env, int flags, int 
 
 int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 {
-  char prompt[STRING];
   struct Address *tmp = NULL;
   int hmfupto = -1;
 
   if ((flags & (SENDLISTREPLY | SENDGROUPREPLY)) && in->mail_followup_to)
   {
+    char prompt[STRING];
     snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
              in->mail_followup_to->mailbox, in->mail_followup_to->next ? ",..." : "");
 
