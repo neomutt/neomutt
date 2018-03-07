@@ -278,17 +278,13 @@ static bool addresses_use_unicode(const struct Address *a)
 
 static int smtp_fill_account(struct Account *account)
 {
-  static unsigned short SmtpPort = 0;
-
-  struct servent *service = NULL;
   struct Url url;
-  char *urlstr = NULL;
 
   account->flags = 0;
   account->port = 0;
   account->type = MUTT_ACCT_TYPE_SMTP;
 
-  urlstr = mutt_str_strdup(SmtpUrl);
+  char *urlstr = mutt_str_strdup(SmtpUrl);
   url_parse(&url, urlstr);
   if ((url.scheme != U_SMTP && url.scheme != U_SMTPS) || !url.host ||
       mutt_account_fromurl(account, &url) < 0)
@@ -311,9 +307,10 @@ static int smtp_fill_account(struct Account *account)
       account->port = SMTPS_PORT;
     else
     {
+      static unsigned short SmtpPort = 0;
       if (!SmtpPort)
       {
-        service = getservbyname("smtp", "tcp");
+        struct servent *service = getservbyname("smtp", "tcp");
         if (service)
           SmtpPort = ntohs(service->s_port);
         else
