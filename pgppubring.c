@@ -458,8 +458,6 @@ static int pgp_parse_pgp2_sig(unsigned char *buf, size_t l,
 static int pgp_parse_pgp3_sig(unsigned char *buf, size_t l,
                               struct PgpKeyInfo *p, struct PgpSignature *s)
 {
-  time_t sig_gen_time = -1;
-  long validity = -1;
   long key_validity = -1;
   unsigned long signerid1 = 0;
   unsigned long signerid2 = 0;
@@ -507,22 +505,11 @@ static int pgp_parse_pgp3_sig(unsigned char *buf, size_t l,
       switch (skt & 0x7f)
       {
         case 2: /* creation time */
-        {
-          if (skl < 4)
-            break;
-          sig_gen_time = 0;
-          for (int i = 0; i < 4; i++)
-            sig_gen_time = (sig_gen_time << 8) + buf[j++];
-
-          break;
-        }
         case 3: /* expiration time */
         {
           if (skl < 4)
             break;
-          validity = 0;
-          for (int i = 0; i < 4; i++)
-            validity = (validity << 8) + buf[j++];
+          j += 4;
           break;
         }
         case 9: /* key expiration time */
