@@ -267,9 +267,9 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
 int rfc3676_handler(struct Body *a, struct State *s)
 {
   char *buf = NULL, *t = NULL;
-  unsigned int quotelevel = 0, newql = 0, sigsep = 0;
-  int buf_off = 0, delsp = 0, fixed = 0;
-  size_t buf_len = 0, sz = 0;
+  unsigned int quotelevel = 0;
+  int delsp = 0;
+  size_t sz = 0;
   struct FlowedState fst;
 
   memset(&fst, 0, sizeof(fst));
@@ -287,8 +287,8 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
   while ((buf = mutt_file_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
-    buf_len = mutt_str_strlen(buf);
-    newql = get_quote_level(buf);
+    const size_t buf_len = mutt_str_strlen(buf);
+    const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
      * changes (should not but can happen, see RFC3676, sec. 4.5.)
@@ -297,18 +297,18 @@ int rfc3676_handler(struct Body *a, struct State *s)
       flush_par(s, &fst);
 
     quotelevel = newql;
-    buf_off = newql;
+    int buf_off = newql;
 
     /* respect sender's space-stuffing by removing one leading space */
     if (buf[buf_off] == ' ')
       buf_off++;
 
     /* test for signature separator */
-    sigsep = (mutt_str_strcmp(buf + buf_off, "-- ") == 0);
+    const unsigned int sigsep = (mutt_str_strcmp(buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
+    const int fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */
@@ -322,7 +322,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
     /* for DelSp=yes, we need to strip one SP prior to CRLF on flowed lines */
     if (delsp && !fixed)
-      buf[--buf_len] = '\0';
+      buf[buf_len - 1] = '\0';
 
     print_flowed_line(buf + buf_off, s, quotelevel, &fst, fixed);
   }

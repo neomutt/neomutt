@@ -175,17 +175,9 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
 static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
                                  struct Rfc1524MailcapEntry *entry, int opt)
 {
-  FILE *fp = NULL;
   char *buf = NULL;
-  size_t buflen;
   char *ch = NULL;
-  char *field = NULL;
   int found = false;
-  int copiousoutput;
-  int composecommand;
-  int editcommand;
-  int printcommand;
-  int btlen;
   int line = 0;
 
   /* rfc1524 mailcap file is of the format:
@@ -203,11 +195,12 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
   ch = strchr(type, '/');
   if (!ch)
     return false;
-  btlen = ch - type;
+  const int btlen = ch - type;
 
-  fp = fopen(filename, "r");
+  FILE *fp = fopen(filename, "r");
   if (fp)
   {
+    size_t buflen;
     while (!found && (buf = mutt_file_read_line(buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
     {
       /* ignore comments */
@@ -224,17 +217,17 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         continue;
 
       /* next field is the viewcommand */
-      field = ch;
+      char *field = ch;
       ch = get_field(ch);
       if (entry)
         entry->command = mutt_str_strdup(field);
 
       /* parse the optional fields */
       found = true;
-      copiousoutput = false;
-      composecommand = false;
-      editcommand = false;
-      printcommand = false;
+      bool copiousoutput = false;
+      bool composecommand = false;
+      bool editcommand = false;
+      bool printcommand = false;
 
       while (ch)
       {
@@ -299,11 +292,10 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
            * if this is the right entry.
            */
           char *test_command = NULL;
-          size_t len;
 
           if (get_field_text(field + 4, &test_command, type, filename, line) && test_command)
           {
-            len = mutt_str_strlen(test_command) + STRING;
+            const size_t len = mutt_str_strlen(test_command) + STRING;
             mutt_mem_realloc(&test_command, len);
             if (rfc1524_expand_command(a, a->filename, type, test_command, len) == 1)
             {
@@ -407,7 +399,6 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
                            struct Rfc1524MailcapEntry *entry, int opt)
 {
   char path[_POSIX_PATH_MAX];
-  int x;
   int found = false;
   char *curr = MailcapPath;
 
@@ -427,7 +418,7 @@ int rfc1524_mailcap_lookup(struct Body *a, char *type,
 
   while (!found && *curr)
   {
-    x = 0;
+    int x = 0;
     while (*curr && *curr != ':' && x < sizeof(path) - 1)
     {
       path[x++] = *curr;

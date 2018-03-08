@@ -291,13 +291,13 @@ static struct CompileOptions comp_opts[] = {
  */
 static void print_compile_options(struct CompileOptions *co)
 {
-  size_t len, used = 2;
+  size_t used = 2;
   bool tty = stdout ? isatty(fileno(stdout)) : false;
 
   printf("  ");
   for (int i = 0; co[i].name; i++)
   {
-    len = strlen(co[i].name) + 2; /* +/- and a space */
+    const size_t len = strlen(co[i].name) + 2; /* +/- and a space */
     if ((used + len) > SCREEN_WIDTH)
     {
       used = 2;

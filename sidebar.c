@@ -398,19 +398,18 @@ static void update_entries_visibility(void)
 static void unsort_entries(void)
 {
   struct Buffy *cur = Incoming;
-  int i = 0, j;
-  struct SbEntry *tmp = NULL;
+  int i = 0;
 
   while (cur && (i < EntryCount))
   {
-    j = i;
+    int j = i;
     while ((j < EntryCount) && (Entries[j]->buffy != cur))
       j++;
     if (j < EntryCount)
     {
       if (j != i)
       {
-        tmp = Entries[i];
+        struct SbEntry *tmp = Entries[i];
         Entries[i] = Entries[j];
         Entries[j] = tmp;
       }
@@ -607,7 +606,6 @@ static int select_page_up(void)
 static bool prepare_sidebar(int page_size)
 {
   struct SbEntry *opn_entry = NULL, *hil_entry = NULL;
-  int page_entries;
 
   if (!EntryCount || (page_size <= 0))
     return false;
@@ -650,7 +648,7 @@ static bool prepare_sidebar(int page_size)
     while (BotIndex < HilIndex)
     {
       TopIndex = BotIndex + 1;
-      page_entries = 0;
+      int page_entries = 0;
       while (page_entries < page_size)
       {
         BotIndex++;
@@ -1128,8 +1126,6 @@ void mutt_sb_set_open_buffy(void)
  */
 void mutt_sb_notify_mailbox(struct Buffy *b, int created)
 {
-  int del_index;
-
   if (!b)
     return;
 
@@ -1157,6 +1153,7 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
   }
   else
   {
+    int del_index;
     for (del_index = 0; del_index < EntryCount; del_index++)
       if (Entries[del_index]->buffy == b)
         break;

@@ -311,9 +311,6 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
   struct Header *msg = NULL;
   struct Entry *QueryTable = NULL;
   struct Query *queryp = NULL;
-  int i, done = 0;
-  int op;
-  char helpstr[LONG_STRING];
   char title[STRING];
 
   if (!results)
@@ -334,6 +331,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     menu->search = query_search;
     menu->tag = query_tag;
     menu->title = title;
+    char helpstr[LONG_STRING];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
     mutt_push_current_menu(menu);
 
@@ -343,12 +341,15 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
     menu->data = QueryTable = mutt_mem_calloc(menu->max, sizeof(struct Entry));
 
+    int i;
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
 
+    int done = 0;
     while (!done)
     {
-      switch ((op = mutt_menu_loop(menu)))
+      const int op = mutt_menu_loop(menu);
+      switch (op)
       {
         case OP_QUERY_APPEND:
         case OP_QUERY:

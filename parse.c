@@ -56,7 +56,6 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
   char *buf = line;
   int ch;
   size_t offset = 0;
-  size_t len = 0;
 
   while (true)
   {
@@ -67,7 +66,7 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
       return line;
     }
 
-    len = mutt_str_strlen(buf);
+    const size_t len = mutt_str_strlen(buf);
     if (!len)
       return line;
 
@@ -573,10 +572,6 @@ struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent)
  */
 struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
 {
-#ifdef SUN_ATTACHMENT
-  int lines;
-#endif
-  size_t blen, len, crlf;
   char buffer[LONG_STRING];
   struct Body *head = NULL, *last = NULL, *new = NULL;
   bool final = false; /* did we see the ending boundary? */
@@ -587,12 +582,12 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
     return NULL;
   }
 
-  blen = mutt_str_strlen(boundary);
+  const size_t blen = mutt_str_strlen(boundary);
   while (ftello(fp) < end_off && fgets(buffer, LONG_STRING, fp) != NULL)
   {
-    len = mutt_str_strlen(buffer);
+    const size_t len = mutt_str_strlen(buffer);
 
-    crlf = (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
+    const size_t crlf = (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
 
     if (buffer[0] == '-' && buffer[1] == '-' &&
         (mutt_str_strncmp(buffer + 2, boundary, blen) == 0))
@@ -627,6 +622,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 #ifdef SUN_ATTACHMENT
         if (mutt_param_get(&new->parameter, "content-lines"))
         {
+          int lines;
           if (mutt_str_atoi(mutt_param_get(&new->parameter, "content-lines"), &lines) < 0)
             lines = 0;
           for (; lines; lines--)
@@ -1339,17 +1335,15 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
 static int count_body_parts(struct Body *body, int flags)
 {
   int count = 0;
-  bool shallcount, shallrecurse;
-  struct Body *bp = NULL;
 
   if (!body)
     return 0;
 
-  for (bp = body; bp != NULL; bp = bp->next)
+  for (struct Body *bp = body; bp != NULL; bp = bp->next)
   {
     /* Initial disposition is to count and not to recurse this part. */
-    shallcount = true; /* default */
-    shallrecurse = false;
+    bool shallcount = true; /* default */
+    bool shallrecurse = false;
 
     mutt_debug(5, "desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
                bp->description ? bp->description : ("none"),

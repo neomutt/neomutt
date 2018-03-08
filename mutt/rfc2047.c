@@ -204,7 +204,6 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
                         const char *tocode, encoder_t *encoder, size_t *wlen)
 {
   char buf[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
-  iconv_t cd;
   const char *ib = NULL;
   char *ob = NULL;
   size_t ibl, obl;
@@ -212,7 +211,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
 
   if (fromcode)
   {
-    cd = mutt_ch_iconv_open(tocode, fromcode, 0);
+    iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, 0);
     assert(cd != (iconv_t)(-1));
     ib = d;
     ibl = dlen;

@@ -865,10 +865,9 @@ void mutt_buffy(char *s, size_t slen)
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen)
 {
-  bool found = false;
-
   if (mutt_buffy_check(false))
   {
+    bool found = false;
     for (int pass = 0; pass < 2; pass++)
     {
       for (struct Buffy *b = Incoming; b; b = b->next)

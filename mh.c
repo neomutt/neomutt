@@ -1908,11 +1908,11 @@ int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc)
 int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #endif
 {
-  char path[_POSIX_PATH_MAX];
   struct Header *h = ctx->hdrs[msgno];
 
   if (h->deleted && (ctx->magic != MUTT_MAILDIR || !MaildirTrash))
   {
+    char path[_POSIX_PATH_MAX];
     snprintf(path, sizeof(path), "%s/%s", ctx->path, h->path);
     if (ctx->magic == MUTT_MAILDIR || (MhPurge && ctx->magic == MUTT_MH))
     {

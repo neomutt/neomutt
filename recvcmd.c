@@ -564,7 +564,6 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 
-  int cmflags = 0;
   int chflags = CH_XMIT;
 
   if (cur)
@@ -601,6 +600,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
       return;
     }
 
+    int cmflags = 0;
     if (ForwardQuote)
     {
       chflags |= CH_PREFIX;
@@ -664,13 +664,11 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
 void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
                          struct Body *cur, int flags)
 {
-  short nattach;
-
   if (check_all_msg(actx, cur, false))
     attach_forward_msgs(fp, actx, cur, flags);
   else
   {
-    nattach = count_tagged(actx);
+    const short nattach = count_tagged(actx);
     attach_forward_bodies(fp, hdr, actx, cur, nattach);
   }
 }
@@ -814,7 +812,6 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   FILE *tmpfp = NULL;
 
   char prefix[SHORT_STRING];
-  int rc;
 
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
@@ -841,9 +838,9 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
   if (nattach > 1 && !check_can_decode(actx, cur))
   {
-    rc = query_quadoption(MimeForwardRest,
-                          _("Can't decode all tagged attachments.  "
-                            "MIME-encapsulate the others?"));
+    const int rc = query_quadoption(MimeForwardRest,
+                                    _("Can't decode all tagged attachments.  "
+                                      "MIME-encapsulate the others?"));
     if (rc == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)

@@ -96,13 +96,12 @@ void mutt_update_tree(struct AttachCtx *actx)
 {
   char buf[STRING];
   char *s = NULL;
-  int rindex;
 
   mutt_update_v2r(actx);
 
   for (int vindex = 0; vindex < actx->vcount; vindex++)
   {
-    rindex = actx->v2r[vindex];
+    const int rindex = actx->v2r[vindex];
     actx->idx[rindex]->num = vindex;
     if ((2 * (actx->idx[rindex]->level + 2)) < sizeof(buf))
     {
@@ -178,7 +177,6 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
                               unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING];
-  char tmp[SHORT_STRING];
   char charset[SHORT_STRING];
   struct AttachPtr *aptr = (struct AttachPtr *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -344,6 +342,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols,
 
       if (!optional)
       {
+        char tmp[SHORT_STRING];
         mutt_str_pretty_size(tmp, sizeof(tmp), l);
         mutt_format_s(buf, buflen, prec, tmp);
       }
@@ -455,7 +454,6 @@ static int query_save_attachment(FILE *fp, struct Body *body,
 {
   char *prompt = NULL;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
-  int is_message;
   int append = 0;
   int rc;
 
@@ -489,9 +487,9 @@ static int query_save_attachment(FILE *fp, struct Body *body,
     prompt = NULL;
     mutt_expand_path(buf, sizeof(buf));
 
-    is_message = (fp && body->hdr && body->encoding != ENCBASE64 &&
-                  body->encoding != ENCQUOTEDPRINTABLE &&
-                  mutt_is_message_type(body->type, body->subtype));
+    const int is_message = (fp && body->hdr && body->encoding != ENCBASE64 &&
+                            body->encoding != ENCQUOTEDPRINTABLE &&
+                            mutt_is_message_type(body->type, body->subtype));
 
     if (is_message)
     {
@@ -626,10 +624,10 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bool filter)
 {
   char tfile[_POSIX_PATH_MAX];
-  char warning[STRING + _POSIX_PATH_MAX];
 
   if (filter)
   {
+    char warning[STRING + _POSIX_PATH_MAX];
     snprintf(warning, sizeof(warning),
              _("WARNING!  You are about to overwrite %s, continue?"), body->filename);
     if (mutt_yesorno(warning, MUTT_NO) != MUTT_YES)

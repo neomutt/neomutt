@@ -302,18 +302,11 @@ static void encode_8bit(struct FgetConv *fc, FILE *fout)
 
 int mutt_write_mime_header(struct Body *a, FILE *f)
 {
-  char buffer[STRING];
-  char *t = NULL;
-  char *fn = NULL;
-  size_t len;
-  int tmplen;
-  int encode;
-
   fprintf(f, "Content-Type: %s/%s", TYPE(a), a->subtype);
 
   if (!TAILQ_EMPTY(&a->parameter))
   {
-    len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
+    size_t len = 25 + mutt_str_strlen(a->subtype); /* approximate len. of content-type */
 
     struct Parameter *np;
     TAILQ_FOREACH(np, &a->parameter, entries)
@@ -325,9 +318,10 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       fputc(';', f);
 
+      char buffer[STRING];
       buffer[0] = 0;
       tmp = mutt_str_strdup(np->value);
-      encode = rfc2231_encode_string(&tmp);
+      const int encode = rfc2231_encode_string(&tmp);
       mutt_addr_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
 
       /* Dirty hack to make messages readable by Outlook Express
@@ -341,7 +335,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       FREE(&tmp);
 
-      tmplen = mutt_str_strlen(buffer) + mutt_str_strlen(np->attribute) + 1;
+      const int tmplen = mutt_str_strlen(buffer) + mutt_str_strlen(np->attribute) + 1;
 
       if (len + tmplen + 2 > 76)
       {
@@ -373,7 +367,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
       if (a->use_disp)
       {
-        fn = a->d_filename;
+        char *fn = a->d_filename;
         if (!fn)
           fn = a->filename;
 
@@ -382,15 +376,16 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
           char *tmp = NULL;
 
           /* Strip off the leading path... */
-          t = strrchr(fn, '/');
+          char *t = strrchr(fn, '/');
           if (t)
             t++;
           else
             t = fn;
 
+          char buffer[STRING];
           buffer[0] = 0;
           tmp = mutt_str_strdup(t);
-          encode = rfc2231_encode_string(&tmp);
+          const int encode = rfc2231_encode_string(&tmp);
           mutt_addr_cat(buffer, sizeof(buffer), tmp, MimeSpecials);
           FREE(&tmp);
           fprintf(f, "; filename%s=%s", encode ? "*" : "", buffer);
@@ -420,21 +415,20 @@ static bool write_as_text_part(struct Body *b)
 
 int mutt_write_mime_body(struct Body *a, FILE *f)
 {
-  char *p, boundary[SHORT_STRING];
-  char send_charset[SHORT_STRING];
   FILE *fpin = NULL;
   struct FgetConv *fc = NULL;
 
   if (a->type == TYPEMULTIPART)
   {
     /* First, find the boundary to use */
-    p = mutt_param_get(&a->parameter, "boundary");
+    const char *p = mutt_param_get(&a->parameter, "boundary");
     if (!p)
     {
       mutt_debug(1, "no boundary parameter found!\n");
       mutt_error(_("No boundary parameter found! [report this error]"));
       return -1;
     }
+    char boundary[SHORT_STRING];
     mutt_str_strfcpy(boundary, p, sizeof(boundary));
 
     for (struct Body *t = a->parts; t; t = t->next)
@@ -467,8 +461,11 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
+  {
+    char send_charset[SHORT_STRING];
     fc = mutt_ch_fgetconv_open(
         fpin, a->charset, mutt_get_body_charset(send_charset, sizeof(send_charset), a), 0);
+  }
   else
     fc = mutt_ch_fgetconv_open(fpin, 0, 0, 0);
 
@@ -672,23 +669,17 @@ static void update_content_info(struct Content *info, struct ContentState *s,
 static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
                               const char **tocodes, int *tocode, struct Content *info)
 {
-  iconv_t cd1, *cd = NULL;
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
-  const char *ib = NULL, *ub = NULL;
-  char *ob = NULL;
-  size_t ibl, obl, ubl, ubl1, n, ret;
-  struct Content *infos = NULL;
-  struct ContentState *states = NULL;
-  size_t *score = NULL;
+  size_t ret;
 
-  cd1 = mutt_ch_iconv_open("utf-8", fromcode, 0);
+  const iconv_t cd1 = mutt_ch_iconv_open("utf-8", fromcode, 0);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
-  cd = mutt_mem_calloc(ncodes, sizeof(iconv_t));
-  score = mutt_mem_calloc(ncodes, sizeof(size_t));
-  states = mutt_mem_calloc(ncodes, sizeof(struct ContentState));
-  infos = mutt_mem_calloc(ncodes, sizeof(struct Content));
+  iconv_t *cd = mutt_mem_calloc(ncodes, sizeof(iconv_t));
+  size_t *score = mutt_mem_calloc(ncodes, sizeof(size_t));
+  struct ContentState *states = mutt_mem_calloc(ncodes, sizeof(struct ContentState));
+  struct Content *infos = mutt_mem_calloc(ncodes, sizeof(struct Content));
 
   for (int i = 0; i < ncodes; i++)
   {
@@ -703,17 +694,17 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   }
 
   rewind(file);
-  ibl = 0;
+  size_t ibl = 0;
   while (true)
   {
     /* Try to fill input buffer */
-    n = fread(bufi + ibl, 1, sizeof(bufi) - ibl, file);
+    size_t n = fread(bufi + ibl, 1, sizeof(bufi) - ibl, file);
     ibl += n;
 
     /* Convert to UTF-8 */
-    ib = bufi;
-    ob = bufu;
-    obl = sizeof(bufu);
+    const char *ib = bufi;
+    char *ob = bufu;
+    size_t obl = sizeof(bufu);
     n = iconv(cd1, (ICONV_CONST char **) (ibl ? &ib : 0), &ibl, &ob, &obl);
     assert(n == (size_t)(-1) || !n);
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
@@ -722,15 +713,15 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
       ret = (size_t)(-1);
       break;
     }
-    ubl1 = ob - bufu;
+    const size_t ubl1 = ob - bufu;
 
     /* Convert from UTF-8 */
     for (int i = 0; i < ncodes; i++)
     {
       if (cd[i] != (iconv_t)(-1) && score[i] != (size_t)(-1))
       {
-        ub = bufu;
-        ubl = ubl1;
+        const char *ub = bufu;
+        size_t ubl = ubl1;
         ob = bufo;
         obl = sizeof(bufo);
         n = iconv(cd[i], (ICONV_CONST char **) ((ibl || ubl) ? &ub : 0), &ubl, &ob, &obl);
@@ -904,7 +895,6 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
   char *fromcode = NULL;
   char *tocode = NULL;
   char buffer[100];
-  char chsbuf[STRING];
   size_t r;
 
   struct stat sb;
@@ -946,6 +936,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
     {
       if (!chs)
       {
+        char chsbuf[STRING];
         mutt_ch_canonical_charset(chsbuf, sizeof(chsbuf), tocode);
         mutt_param_set(&b->parameter, "charset", chsbuf);
       }
@@ -1245,10 +1236,9 @@ cleanup:
  */
 static void set_encoding(struct Body *b, struct Content *info)
 {
-  char send_charset[SHORT_STRING];
-
   if (b->type == TYPETEXT)
   {
+    char send_charset[SHORT_STRING];
     char *chsname = mutt_get_body_charset(send_charset, sizeof(send_charset), b);
     if ((info->lobin && (mutt_str_strncasecmp(chsname, "iso-2022", 8) != 0)) ||
         info->linemax > 990 || (info->from && EncodeFrom))
@@ -1609,7 +1599,6 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
   struct Address *tmp = NULL;
   char buf[LONG_STRING];
   int count = 0;
-  size_t len;
 
   while (addr)
   {
@@ -1617,7 +1606,7 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
     addr->next = NULL;
     buf[0] = 0;
     mutt_addr_write(buf, sizeof(buf), addr, display);
-    len = mutt_str_strlen(buf);
+    size_t len = mutt_str_strlen(buf);
     if (count && linelen + len > 74)
     {
       fputs("\n\t", fp);
@@ -1724,10 +1713,10 @@ static int print_val(FILE *fp, const char *pfx, const char *value, int flags, si
 static int fold_one_header(FILE *fp, const char *tag, const char *value,
                            const char *pfx, int wraplen, int flags)
 {
-  const char *p = value, *next = NULL, *sp = NULL;
+  const char *p = value;
   char buf[HUGE_STRING] = "";
-  int first = 1, enc, col = 0, w, l = 0, fold;
-  bool display = (flags & CH_DISPLAY);
+  int first = 1, col = 0, l = 0;
+  const bool display = (flags & CH_DISPLAY);
 
   mutt_debug(4, "pfx=[%s], tag=[%s], flags=%d value=[%s]\n", pfx, tag, flags, NONULL(value));
 
@@ -1737,19 +1726,19 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
 
   while (p && *p)
   {
-    fold = 0;
+    int fold = 0;
 
     /* find the next word and place it in `buf'. it may start with
      * whitespace we can fold before */
-    next = mutt_str_find_word(p);
+    const char *next = mutt_str_find_word(p);
     l = MIN(sizeof(buf) - 1, next - p);
     memcpy(buf, p, l);
     buf[l] = 0;
 
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
-    w = mutt_mb_width(buf, col, display);
-    enc = (mutt_str_strncmp(buf, "=?", 2) == 0);
+    const int w = mutt_mb_width(buf, col, display);
+    const int enc = (mutt_str_strncmp(buf, "=?", 2) == 0);
 
     mutt_debug(5, "word=[%s], col=%d, w=%d, next=[0x0%x]\n", buf, col, w, *next);
 
@@ -1790,7 +1779,7 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value,
      * current line width
      * XXX this covers ASCII space only, for display we probably
      * XXX want something like iswspace() here */
-    sp = next;
+    const char *sp = next;
     while (*sp && (*sp == ' ' || *sp == '\t'))
       sp++;
     if (*sp == '\n')
@@ -2479,7 +2468,6 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   char **args = NULL;
   size_t argslen = 0, argsmax = 0;
   char **extra_args = NULL;
-  size_t extra_argslen = 0, extra_argsmax = 0;
   int i;
 
 #ifdef USE_NNTP
@@ -2540,11 +2528,13 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   if (!OPT_NEWS_SEND)
   {
 #endif
+    size_t extra_argslen = 0;
     /* If Sendmail contained a "--", we save the recipients to append to
    * args after other possible options added below. */
     if (ps)
     {
       ps = NULL;
+      size_t extra_argsmax = 0;
       while ((ps = strtok(ps, " ")))
       {
         if (extra_argslen == extra_argsmax)
@@ -2647,8 +2637,6 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
  */
 void mutt_prepare_envelope(struct Envelope *env, int final)
 {
-  char buffer[LONG_STRING];
-
   if (final)
   {
     if (env->bcc && !(env->to || env->cc))
@@ -2661,6 +2649,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
       env->to->group = 1;
       env->to->next = mutt_addr_new();
 
+      char buffer[LONG_STRING];
       buffer[0] = 0;
       mutt_addr_cat(buffer, sizeof(buffer), "undisclosed-recipients", AddressSpecials);
 
@@ -2715,7 +2704,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
 {
   int rc = 0;
   FILE *f = NULL;
-  char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
+  char tempfile[_POSIX_PATH_MAX];
   struct Message *msg = NULL;
 
   if (!h)
@@ -2738,6 +2727,7 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
   f = mutt_file_fopen(tempfile, "w");
   if (f)
   {
+    char date[SHORT_STRING];
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
     char *msgid_str = NULL;
 

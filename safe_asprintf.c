@@ -68,14 +68,13 @@ int safe_asprintf(char **strp, const char *fmt, ...)
 int safe_asprintf(char **strp, const char *fmt, ...)
 {
   int rlen = STRING;
-  int n;
 
   *strp = mutt_mem_malloc(rlen);
   while (true)
   {
     va_list ap;
     va_start(ap, fmt);
-    n = vsnprintf(*strp, rlen, fmt, ap);
+    const int n = vsnprintf(*strp, rlen, fmt, ap);
     va_end(ap);
     if (n < 0)
     {

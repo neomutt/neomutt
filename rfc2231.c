@@ -120,11 +120,10 @@ static void rfc2231_list_insert(struct Rfc2231Parameter **list, struct Rfc2231Pa
 {
   struct Rfc2231Parameter **last = list;
   struct Rfc2231Parameter *p = *list;
-  int c;
 
   while (p)
   {
-    c = strcmp(par->attribute, p->attribute);
+    const int c = strcmp(par->attribute, p->attribute);
     if ((c < 0) || (c == 0 && par->index <= p->index))
       break;
 
@@ -151,25 +150,18 @@ static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
  */
 static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Parameter *par)
 {
-  struct Parameter *np;
-  struct Rfc2231Parameter *q = NULL;
-
   char attribute[STRING];
   char charset[STRING];
-  char *value = NULL;
-  char *valp = NULL;
-  bool encoded;
-
-  size_t l, vl;
 
   while (par)
   {
-    value = NULL;
-    l = 0;
+    char *value = NULL;
+    size_t l = 0;
 
     mutt_str_strfcpy(attribute, par->attribute, sizeof(attribute));
 
-    encoded = par->encoded;
+    const bool encoded = par->encoded;
+    char *valp;
     if (encoded)
       valp = rfc2231_get_charset(par->value, charset, sizeof(charset));
     else
@@ -180,13 +172,13 @@ static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Pa
       if (encoded && par->encoded)
         rfc2231_decode_one(par->value, valp);
 
-      vl = strlen(par->value);
+      const size_t vl = strlen(par->value);
 
       mutt_mem_realloc(&value, l + vl + 1);
       strcpy(value + l, par->value);
       l += vl;
 
-      q = par->next;
+      struct Rfc2231Parameter *q = par->next;
       rfc2231_free_parameter(&par);
       par = q;
       if (par)
@@ -196,7 +188,7 @@ static void rfc2231_join_continuations(struct ParameterList *p, struct Rfc2231Pa
     if (encoded)
       mutt_ch_convert_string(&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-    np = mutt_param_new();
+    struct Parameter *np = mutt_param_new();
     np->attribute = mutt_str_strdup(attribute);
     np->value = value;
     TAILQ_INSERT_HEAD(p, np, entries);

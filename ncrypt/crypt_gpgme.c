@@ -695,7 +695,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
 
 static void free_recipient_set(gpgme_key_t **p_rset)
 {
-  gpgme_key_t *rset, k;
+  gpgme_key_t *rset;
 
   if (!p_rset)
     return;
@@ -706,7 +706,7 @@ static void free_recipient_set(gpgme_key_t **p_rset)
 
   while (*rset)
   {
-    k = *rset;
+    gpgme_key_t k = *rset;
     gpgme_key_unref(k);
     rset++;
   }

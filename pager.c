@@ -1275,14 +1275,12 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
     if (IsWPrint(wc))
     {
       wchar_t wc1;
-      mbstate_t mbstate1;
-      size_t k1, k2;
-
-      mbstate1 = mbstate;
-      k1 = mbrtowc(&wc1, (char *) buf + ch + k, cnt - ch - k, &mbstate1);
+      mbstate_t mbstate1 = mbstate;
+      size_t k1 = mbrtowc(&wc1, (char *) buf + ch + k, cnt - ch - k, &mbstate1);
       while ((k1 != (size_t)(-2)) && (k1 != (size_t)(-1)) && (k1 > 0) && (wc1 == '\b'))
       {
-        k2 = mbrtowc(&wc1, (char *) buf + ch + k + k1, cnt - ch - k - k1, &mbstate1);
+        const size_t k2 =
+            mbrtowc(&wc1, (char *) buf + ch + k + k1, cnt - ch - k - k1, &mbstate1);
         if ((k2 == (size_t)(-2)) || (k2 == (size_t)(-1)) || (k2 == 0) || (!IsWPrint(wc1)))
           break;
 
@@ -1744,9 +1742,7 @@ struct PagerRedrawData
 static void pager_menu_redraw(struct Menu *pager_menu)
 {
   struct PagerRedrawData *rd = pager_menu->redraw_data;
-  int i, j;
   char buffer[LONG_STRING];
-  int err;
 
   if (!rd)
     return;
@@ -1815,7 +1811,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       if (rd->search_compiled)
       {
         int flags = mutt_mb_is_lower(rd->searchbuf) ? REG_ICASE : 0;
-        err = REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
+        const int err = REGCOMP(&rd->search_re, rd->searchbuf, REG_NEWLINE | flags);
         if (err != 0)
         {
           regerror(err, &rd->search_re, buffer, sizeof(buffer));
@@ -1875,10 +1871,10 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     if (!(rd->flags & MUTT_PAGER_RETWINCH))
     {
       rd->lines = -1;
-      for (i = 0; i <= rd->topline; i++)
+      for (int i = 0; i <= rd->topline; i++)
         if (!rd->line_info[i].continuation)
           rd->lines++;
-      for (i = 0; i < rd->max_line; i++)
+      for (int i = 0; i < rd->max_line; i++)
       {
         rd->line_info[i].offset = 0;
         rd->line_info[i].type = -1;
@@ -1895,8 +1891,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       rd->last_line = 0;
       rd->topline = 0;
     }
-    i = -1;
-    j = -1;
+    int i = -1;
+    int j = -1;
     while (display_line(rd->fp, &rd->last_pos, &rd->line_info, ++i, &rd->last_line,
                         &rd->max_line, rd->has_types | rd->search_flag | (rd->flags & MUTT_PAGER_NOWRAP),
                         &rd->quote_list, &rd->q_level, &rd->force_redraw,
