@@ -356,9 +356,8 @@ msgid "Unsubscribe pattern: "
 msgstr "Odhlásit odběr zpráv dle vzoru: "
 
 #: browser.c:2134
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Souborové masce nevyhovuje žádný soubor."
+msgstr "Masce nevyhovují žádné diskusní skupiny"
 
 #: buffy.c:760
 msgid "New mail in "
@@ -1149,9 +1148,9 @@ msgid "MD5 Fingerprint: %s"
 msgstr "Otisk MD5 klíče: %s"
 
 #: conn/ssl.c:1004
-#, fuzzy, c-format
+#, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
+msgstr "Kontrola SSL certifikátu (certifikát %zu z %zu v řetězu)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -1770,7 +1769,6 @@ msgid "No message ID to macro."
 msgstr "ID zprávy ze značky neexistuje."
 
 #: curs_main.c:3205 pager.c:2973 recvattach.c:1379
-#, fuzzy
 msgid "Reply by mail as poster prefers?"
 msgstr "Odpovědět e-mailem dle návrhu autora?"
 
@@ -2017,7 +2015,7 @@ msgstr ""
 #: handler.c:1669
 #, fuzzy
 msgid "Unable to open memory stream!"
-msgstr "Dočasný soubor nelze otevřít!"
+msgstr "Memstream nelze otevřít!"
 
 #: handler.c:1678
 msgid "Unable to open temporary file!"
@@ -6253,54 +6251,3 @@ msgstr "Výchzí volby:"
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
 
-#~ msgid "Cannot create filter"
-#~ msgstr "Nelze vytvořit filtr"
-
-#~ msgid "Missing arguments."
-#~ msgstr "Chybí argumenty."
-
-#~ msgid "color: too few arguments"
-#~ msgstr "color: příliš málo argumentů"
-
-#~ msgid "mono: too few arguments"
-#~ msgstr "mono: příliš málo argumentů"
-
-#~ msgid "too few arguments"
-#~ msgstr "příliš málo argumentů"
-
-#, fuzzy
-#~ msgid "finish: too many arguments"
-#~ msgstr "push: příliš mnoho argumentů"
-
-#~ msgid "set debug_file ignored, it has been overridden by the cmdline"
-#~ msgstr "set debug_file ignorováno, bylo zadáno z příkazové řádky"
-
-#~ msgid "set debug_level ignored, it has been overridden by the cmdline"
-#~ msgstr "set debug_level ignorováno, bylo zadáno z příkazové řádky"
-
-#~ msgid "push: too many arguments"
-#~ msgstr "push: příliš mnoho argumentů"
-
-#~ msgid "bind: too many arguments"
-#~ msgstr "bind: příliš mnoho argumentů"
-
-#~ msgid "macro: too many arguments"
-#~ msgstr "macro: příliš mnoho argumentů"
-
-#~ msgid "Debugging at file %s.\n"
-#~ msgstr "Ladicí soubor %s.\n"
-
-#~ msgid "source: too many arguments"
-#~ msgstr "source: příliš mnoho argumentů"
-
-#~ msgid "score: too few arguments"
-#~ msgstr "skóre: příliš málo argumentů"
-
-#~ msgid "score: too many arguments"
-#~ msgstr "skóre: příliš mnoho argumentů"
-
-#~ msgid "No recipients are specified!"
-#~ msgstr "Nejsou zadáni příjemci!"
-
-#~ msgid "No recipients were specified."
-#~ msgstr "Nebyli zadání příjemci."
