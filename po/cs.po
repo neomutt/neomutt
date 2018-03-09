@@ -659,7 +659,7 @@ msgstr "Opověd na: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:121 compose.c:946
 msgid "Fcc: "
-msgstr ""
+msgstr "Kopie do souboru: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:124
@@ -5846,7 +5846,7 @@ msgstr ""
 
 #: remailer.c:159
 msgid "<random>"
-msgstr ""
+msgstr "<náhodný>"
 
 #: remailer.c:478
 msgid "Append"
