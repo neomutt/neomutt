@@ -860,7 +860,7 @@ msgstr "Aktuální příloha bude převedena."
 
 #: compose.c:1289
 msgid "Invalid encoding."
-msgstr "Nesprávné kódování."
+msgstr "Neplatné kódování."
 
 #: compose.c:1313
 msgid "Save a copy of this message?"
@@ -1087,7 +1087,7 @@ msgstr "[nelze spočítat]"
 
 #: conn/ssl.c:458
 msgid "[invalid date]"
-msgstr "[chybné datum]"
+msgstr "[neplatné datum]"
 
 #: conn/ssl.c:517
 msgid "Server certificate is not yet valid"
@@ -1421,7 +1421,7 @@ msgstr "Poslat"
 #: curs_main.c:840 pager.c:1724
 #, fuzzy
 msgid "Followup"
-msgstr "Odepsat %s%s?"
+msgstr "Odepsat"
 
 #: curs_main.c:1003
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -1491,7 +1491,7 @@ msgstr "Tato zpráva není viditelná."
 
 #: curs_main.c:1463
 msgid "Invalid message number."
-msgstr "Číslo zprávy není správné."
+msgstr "Číslo zprávy je neplatné."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1477 curs_main.c:2872 pager.c:2830
@@ -1830,7 +1830,7 @@ msgstr ""
 #: edit.c:201
 #, c-format
 msgid "%d: invalid message number.\n"
-msgstr "Číslo zprávy (%d) není správné.\n"
+msgstr "Číslo zprávy (%d) je neplatné.\n"
 
 #: edit.c:344
 msgid "(End message with a . on a line by itself)\n"
@@ -2088,9 +2088,9 @@ msgid "Bad history file format (line %d)"
 msgstr "Špatný formát souboru s historií (řádek %d)"
 
 #: history.c:680
-#, fuzzy, c-format
+#, c-format
 msgid "History '%s'"
-msgstr "Dotaz na „%s“"
+msgstr "Historie „%s“"
 
 #: hook.c:117
 msgid "current mailbox shortcut '^' is unset"
@@ -2170,7 +2170,7 @@ msgstr "SASL ověření se nezdařilo."
 #: imap/browse.c:213 imap/imap.c:2035
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr "%s není platná IMAP cesta"
+msgstr "%s je neplatná IMAP cesta"
 
 #: imap/browse.c:225
 msgid "Getting folder list..."
@@ -2221,7 +2221,6 @@ msgid "Connection to %s timed out"
 msgstr "Vypršel časový limit spojení k %s"
 
 #: imap/imap.c:130
-#, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Tento IMAP server je zastaralý. NeoMutt s ním nebude fungovat."
 
@@ -2426,7 +2425,7 @@ msgstr "Současné nastavení příloh:"
 
 #: init.c:1529
 msgid "attachments: invalid disposition"
-msgstr "přílohy: chybná dispozice"
+msgstr "přílohy: neplatná dispozice"
 
 #: init.c:1545
 msgid "unattachments: no disposition"
@@ -2434,7 +2433,7 @@ msgstr "nepřílohy: chybí dispozice"
 
 #: init.c:1572
 msgid "unattachments: invalid disposition"
-msgstr "nepřílohy: chybná dispozice"
+msgstr "nepřílohy: neplatná dispozice"
 
 #: init.c:1706
 msgid "alias: no address"
@@ -2479,22 +2478,22 @@ msgstr "%s je nastaveno"
 #: init.c:2459
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
-msgstr "Nesprávná hodnota přepínače %s: „%s“"
+msgstr "Neplatná hodnota přepínače %s: „%s“"
 
 #: init.c:2473
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for name %s: \"%s\""
-msgstr "Nesprávná hodnota přepínače %s: „%s“"
+msgstr "Neplatné jméno přepínače %s: „%s“"
 
 #: init.c:2571
 #, c-format
 msgid "%s: invalid mailbox type"
-msgstr "%s je nesprávný typ schránky"
+msgstr "%s je neplatný typ schránky"
 
 #: init.c:2602
 #, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: nesprávná hodnota (%s)"
+msgstr "%s: neplatná hodnota (%s)"
 
 #: init.c:2603
 msgid "format error"
@@ -2507,12 +2506,12 @@ msgstr "přetečení čísla"
 #: init.c:2666
 #, c-format
 msgid "%s: invalid value"
-msgstr "Hodnota %s je nesprávná."
+msgstr "Hodnota %s je neplatná"
 
 #: init.c:2757
 #, fuzzy, c-format
 msgid "%s: invalid backend"
-msgstr "Hodnota %s je nesprávná."
+msgstr "Backend %s je neplatný"
 
 #: init.c:2765
 #, c-format
@@ -2525,9 +2524,9 @@ msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s na řádku %d: %s"
 
 #: init.c:2900
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Chyba v %s na řádku %d: %s"
+msgstr "Varování v %s na řádku %d: %s"
 
 #: init.c:2925
 #, c-format
@@ -2552,7 +2551,7 @@ msgstr "source: chyba na %s"
 #: init.c:2967
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced."
-msgstr "Zprávy nelze vytisknout"
+msgstr "source: soubor %s nelze vložit"
 
 #: init.c:3026
 #, c-format
@@ -2772,7 +2771,7 @@ msgstr "domovský adresář nelze určit"
 #: main.c:471
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
-msgstr "Chyba: pro -d není „%s“ platná hodnota."
+msgstr "Chyba: pro -d je „%s“ neplatná hodnota."
 
 #: main.c:632
 #, c-format
@@ -2792,9 +2791,9 @@ msgid "Cannot use -E flag with stdin"
 msgstr "Přepínač -E nelze se standardním vstupem použít"
 
 #: main.c:804
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse message template: %s"
-msgstr "Soubor se zprávou nelze otevřít: %s"
+msgstr "Soubor se šablonou zprávy nelze rozebrat: %s"
 
 #: main.c:869
 #, c-format
@@ -2872,7 +2871,7 @@ msgstr "Přeskočit na: "
 
 #: menu.c:550
 msgid "Invalid index number."
-msgstr "Nesprávné indexové číslo."
+msgstr "Neplatné indexové číslo."
 
 #: menu.c:554 menu.c:575 menu.c:643 menu.c:686 menu.c:700 menu.c:711 menu.c:722
 #: menu.c:733 menu.c:746 menu.c:759 menu.c:1290
@@ -2941,9 +2940,8 @@ msgid "Could not flush message to disk"
 msgstr "Zprávu nebylo možné bezpečně uložit (flush) na disk"
 
 #: mh.c:1635
-#, fuzzy
 msgid "md_commit_message(): unable to set time on file"
-msgstr "při volání _maildir_commit_message(): nelze nastavit čas na souboru"
+msgstr "md_commit_message(): nelze nastavit čas na souboru"
 
 #: mutt/file.c:1105
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2964,19 +2962,19 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Čekám na pokus o zamknutí pomocí funkce flock… %d"
 
 #: mutt/logging.c:105
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "Soubor se zprávou nelze otevřít: %s"
+msgstr "Zavření souboru se záznamem ladění: %s"
 
 #: mutt/logging.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Úroveň ladění je %d.\n"
+msgstr "Úroveň ladění je %d to souboru '%s'"
 
 #: mutt/logging.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Úroveň ladění je %d.\n"
+msgstr "Úroveň ladění je %d do souboru '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
@@ -3065,7 +3063,6 @@ msgid "Append messages to %s?"
 msgstr "Připojit zprávy do %s?"
 
 #: muttlib.c:1330
-#, fuzzy
 msgid "Can't save message to news server."
 msgstr "Nelze uložit zprávu na server diskusních skupin."
 
@@ -3237,7 +3234,6 @@ msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr "E-mail neodeslán: PGP v textu nelze použít s přílohami."
 
 #: ncrypt/crypt.c:160
-#, fuzzy
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr "PGP v textu nelze použít s format=flowed. Použít PGP/MIME?"
 
@@ -3962,7 +3958,6 @@ msgstr ""
 
 #. L10N: S/MIME options
 #: ncrypt/crypt_gpgme.c:4935
-#, fuzzy
 msgid "esabpc"
 msgstr "rpjogn"
 
@@ -4163,7 +4158,7 @@ msgstr "Odvolaný   "
 
 #: ncrypt/smime.c:379
 msgid "Invalid   "
-msgstr "Není platný   "
+msgstr "Neplatný   "
 
 #: ncrypt/smime.c:382
 msgid "Unknown   "
@@ -4331,7 +4326,7 @@ msgstr "Není definován žádný server diskusních skupin!"
 #: newsrc.c:977
 #, c-format
 msgid "%s is an invalid news server specification!"
-msgstr "%s není platné zadání serveru diskusních skupin!"
+msgstr "%s je neplatné zadání serveru diskusních skupin!"
 
 #: nntp.c:63 nntp.c:593 pop.c:966 pop_lib.c:408
 msgid "Server closed connection!"
@@ -4373,7 +4368,7 @@ msgid "Fetching list of articles..."
 msgstr "Stahuji seznam článků…"
 
 #: nntp.c:1461
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid newsgroup specification!"
 msgstr "%s je neplatné upřesnění diskusních skupin!"
 
@@ -4426,9 +4421,8 @@ msgid "null operation"
 msgstr "nulová operace"
 
 #: opcodes.h:30
-#, fuzzy
 msgid "show messages"
-msgstr "seřadit zprávy"
+msgstr "zobrazit zprávy"
 
 #: opcodes.h:31
 msgid "end of conditional execution (noop)"
@@ -4511,7 +4505,6 @@ msgid "attach message(s) to this message"
 msgstr "připojit zprávy k této zprávě"
 
 #: opcodes.h:51
-#, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "připojit článek k této zprávě"
 
@@ -4568,7 +4561,6 @@ msgid "edit the Followup-To field"
 msgstr "editovat položku Followup-To"
 
 #: opcodes.h:65
-#, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "editovat položku 'X-Comment-To'"
 
@@ -4829,7 +4821,7 @@ msgstr "přepnout zprávě příznak důležitosti"
 #: opcodes.h:129
 #, fuzzy
 msgid "followup to newsgroup"
-msgstr "Odepsat %s%s?"
+msgstr "odepsat do disusní skupiny"
 
 #: opcodes.h:130
 msgid "forward to newsgroup"
@@ -5470,12 +5462,12 @@ msgstr "Prázdný výraz"
 #: pattern.c:170
 #, c-format
 msgid "Invalid day of month: %s"
-msgstr "Nesprávné datum dne (%s)."
+msgstr "Neplatný den v měsící: %s"
 
 #: pattern.c:184
 #, c-format
 msgid "Invalid month: %s"
-msgstr "Měsíc %s není správný."
+msgstr "Neplatný měsíc: %s"
 
 #: pattern.c:365
 #, c-format
@@ -5522,7 +5514,7 @@ msgstr "neshodují se závorky: %s"
 #: pattern.c:1250
 #, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: nesprávný modifikátor vzoru"
+msgstr "%c: neplatný modifikátor vzoru"
 
 #: pattern.c:1256
 #, c-format
@@ -5600,7 +5592,7 @@ msgstr "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
 #: pop.c:434 pop.c:839
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr "%s není platná POP cesta"
+msgstr "%s je neplatná POP cesta"
 
 #: pop.c:477
 msgid "Fetching list of messages..."
@@ -5646,7 +5638,7 @@ msgstr "Ověřuji (SASL)…"
 
 #: pop_auth.c:226
 msgid "POP timestamp is invalid!"
-msgstr "Časové razítko POP protokolu není platné!"
+msgstr "Časové razítko POP protokolu je neplatné!"
 
 #: pop_auth.c:230
 msgid "Authenticating (APOP)..."
@@ -5950,7 +5942,7 @@ msgstr "pro typ %s nebyla nalezena položka v mailcapu"
 
 #: score.c:136
 msgid "Error: score: invalid number"
-msgstr "Chyba: skóre: nesprávné číslo"
+msgstr "Chyba: skóre: neplatné číslo"
 
 #: send.c:292
 msgid "No subject, abort?"
