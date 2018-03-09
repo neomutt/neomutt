@@ -8,6 +8,9 @@
 #
 # macro (stroke) → značka
 # mailbox → schránka
+# folder - složka
+# tag - značka
+# flag - příznak
 #
 msgid ""
 msgstr ""
@@ -22,9 +25,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.0.6\n"
-"X-Poedit-Basepath: ../../../../../../../home/dsterba/labs/gits/neomutt/po\n"
-"X-Poedit-SearchPath-0: .\n"
 
 #: addrbook.c:43 browser.c:70 browser.c:80 history.c:120 pager.c:1707
 #: postpone.c:56 query.c:66 recvattach.c:68
@@ -630,32 +630,32 @@ msgstr "Nejsou žádné přílohy."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:109
 msgid "From: "
-msgstr ""
+msgstr "Od: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:111 send.c:255
 msgid "To: "
-msgstr ""
+msgstr "Komu: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:113 send.c:257
 msgid "Cc: "
-msgstr ""
+msgstr "Kopie: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:115 send.c:259
 msgid "Bcc: "
-msgstr ""
+msgstr "Slepá kopie: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:117 compose.c:929 send.c:291
 msgid "Subject: "
-msgstr ""
+msgstr "Předmět: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:119
 msgid "Reply-To: "
-msgstr ""
+msgstr "Opověd na: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:121 compose.c:946
@@ -665,12 +665,12 @@ msgstr ""
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:124
 msgid "Mix: "
-msgstr "Mix: "
+msgstr "Mix(Master): "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:127
 msgid "Security: "
-msgstr ""
+msgstr "Zabezpečení: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -699,7 +699,7 @@ msgstr ""
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
 msgid "X-Comment-To: "
-msgstr ""
+msgstr "X-Comment-To: "
 
 #: compose.c:149 compose.c:165
 msgid "Send"
@@ -3015,7 +3015,7 @@ msgstr "Zachycen signál %d… Končím.\n"
 #: muttlib.c:409
 #, c-format
 msgid "mutt_randbuf len=%zu"
-msgstr ""
+msgstr "mutt_randbuf len=%zu"
 
 #: muttlib.c:429
 #, c-format
@@ -3090,7 +3090,7 @@ msgstr "Heslo pro %s@%s: "
 #: mutt_lua.c:396
 #, c-format
 msgid "%s: %s"
-msgstr ""
+msgstr "%s: %s"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1705 mutt_notmuch.c:1893
 #, c-format
