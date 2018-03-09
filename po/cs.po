@@ -404,7 +404,7 @@ msgstr "%s: příliš mnoho argumentů"
 
 #: color.c:899
 msgid "default colors not supported"
-msgstr "implicitní barvy nejsou podporovány"
+msgstr "výchozí barvy nejsou podporovány"
 
 #: commands.c:99
 msgid "Verify PGP signature?"
@@ -775,7 +775,7 @@ msgstr " (příležitostné šifrování)"
 
 #: compose.c:297 compose.c:306
 msgid "<default>"
-msgstr "<implicitní>"
+msgstr "<výchozí>"
 
 #: compose.c:313
 msgid "Encrypt with: "
@@ -783,7 +783,7 @@ msgstr "Zašifrovat pomocí: "
 
 #: compose.c:332
 msgid "<no chain defined>"
-msgstr ""
+msgstr "<řetěz nedefinován>"
 
 #: compose.c:369
 #, c-format
@@ -922,16 +922,18 @@ msgid "Message written."
 msgstr "Zpráva uložena."
 
 #: compose.c:1601
+#, fuzzy
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Není nakonfigurován PGP backend"
 
 #: compose.c:1609
 msgid "S/MIME already selected. Clear and continue ? "
 msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
 #: compose.c:1635
+#, fuzzy
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Není nakonfigurován S/MIME backend"
 
 #: compose.c:1643
 msgid "PGP already selected. Clear and continue ? "
@@ -1199,8 +1201,9 @@ msgstr "Kontrola certifikátu stroje selhala: %s"
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
 #: conn/ssl.c:1273 conn/ssl_gnutls.c:1168
+#, fuzzy
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Varování: nepodařilo se nastavit TLS SNI jméno stroje"
 
 #: conn/ssl.c:1284
 msgid "I/O error"
@@ -1220,7 +1223,7 @@ msgstr "Nelze vytvořit kontext SSL"
 
 #: conn/ssl.c:1381 conn/ssl.c:1481
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Varování: chyba při zapínání ssl_verify_partial_chains"
 
 #: conn/ssl_gnutls.c:117 conn/ssl_gnutls.c:149
 msgid "Error: no TLS socket open"
@@ -1327,7 +1330,7 @@ msgstr "Chyba při komunikaci tunelem s %s (%s)"
 
 #: copy.c:694
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Pro zprávu není k dispozici Žádný dešifrovací nástroj"
 
 #: curs_lib.c:233
 msgid "yes"
@@ -1577,12 +1580,13 @@ msgid "Failed to create query, aborting."
 msgstr "Nezdařílo se vytvořit dotaz, zrušeno."
 
 #: curs_main.c:2011 curs_main.c:2030
+#, fuzzy
 msgid "Windowed queries disabled."
-msgstr ""
+msgstr "Dotazy do okna nejsou povoleny."
 
 #: curs_main.c:2016 curs_main.c:2035
 msgid "No notmuch vfolder currently loaded."
-msgstr ""
+msgstr "Není natažena žádná virtuální složka (notmuch)."
 
 #: curs_main.c:2073
 msgid "Open mailbox in read-only mode"
@@ -1918,11 +1922,11 @@ msgstr "Vypnout příznak"
 #: handler.c:65
 #, c-format
 msgid "[-- Alternative Type #%d: "
-msgstr ""
+msgstr "[-- Alternativní typ #%d: "
 
 #: handler.c:67
 msgid "[-- Type: "
-msgstr ""
+msgstr "[-- Typ: "
 
 #: handler.c:68
 #, c-format
@@ -2021,7 +2025,7 @@ msgstr "Dočasný soubor nelze otevřít!"
 
 #: handler.c:1728
 msgid "failed to re-open memstream!"
-msgstr ""
+msgstr "chyba pří opakovaném otevření memstreamu!"
 
 #: handler.c:1861
 msgid "Error: multipart/signed has no protocol."
@@ -3408,7 +3412,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:1244
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Pozor: Jeden z klíčů byl zneplatněn\n"
+msgstr "Pozor: Jeden z klíčů byl odvolán\n"
 
 #: ncrypt/crypt_gpgme.c:1253
 msgid "Warning: The key used to create the signature expired at: "
@@ -3936,7 +3940,6 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4911
-#, fuzzy
 msgid "esabpco"
 msgstr "rpjognl"
 
@@ -3951,7 +3954,6 @@ msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4920
-#, fuzzy
 msgid "esabmco"
 msgstr "rpjomnl"
 
@@ -3973,7 +3975,6 @@ msgstr ""
 
 #. L10N: PGP options
 #: ncrypt/crypt_gpgme.c:4944
-#, fuzzy
 msgid "esabmc"
 msgstr "rpjomn"
 
@@ -4073,7 +4074,6 @@ msgstr ""
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1737
-#, fuzzy
 msgid "esabico"
 msgstr "rpjoinl"
 
@@ -4085,7 +4085,6 @@ msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1746
-#, fuzzy
 msgid "esabco"
 msgstr "rpjonl"
 
@@ -4099,7 +4098,6 @@ msgstr "PGP šif(r)ovat, (p)odepsat, podp (j)ako, (o)bojí, formát %s, či (n)i
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #: ncrypt/pgp.c:1765
-#, fuzzy
 msgid "esabic"
 msgstr "rpjoin"
 
@@ -4110,7 +4108,6 @@ msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic? "
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1773
-#, fuzzy
 msgid "esabc"
 msgstr "rpjon"
 
@@ -4121,7 +4118,7 @@ msgstr "Získávám PGP klíč…"
 #: ncrypt/pgpkey.c:515
 msgid "All matching keys are expired, revoked, or disabled."
 msgstr ""
-"Všem vyhovujícím klíčům vypršela platnost, byly zneplatněny nebo zakázány."
+"Všem vyhovujícím klíčům vypršela platnost, byly odvolány nebo zakázány."
 
 #: ncrypt/pgpkey.c:555
 #, c-format
@@ -4281,7 +4278,6 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:2064
-#, fuzzy
 msgid "eswabco"
 msgstr "rpmjonl"
 
@@ -4295,7 +4291,6 @@ msgstr ""
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2076
-#, fuzzy
 msgid "eswabc"
 msgstr "rpmjon"
 
@@ -4478,12 +4473,10 @@ msgid "display the currently selected file's name"
 msgstr "zobrazit jméno zvoleného souboru"
 
 #: opcodes.h:41
-#, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "přihlásit aktuální schránku (pouze IMAP)"
 
 #: opcodes.h:42
-#, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "odhlásit aktuální schránku (pouze IMAP)"
 
@@ -4493,11 +4486,11 @@ msgstr "přepnout zobrazení všech/přihlášených schránkek (IMAP)"
 
 #: opcodes.h:44
 msgid "list mailboxes with new mail"
-msgstr "zobraz schránky, které obsahují novou poštu"
+msgstr "zobrazit schránky, které obsahují novou poštu"
 
 #: opcodes.h:45
 msgid "mark all articles in newsgroup as read"
-msgstr "označ všechny články ve skupině jako přečtené"
+msgstr "označit všechny články ve skupině jako přečtené"
 
 #: opcodes.h:46
 msgid "change directories"
@@ -4626,9 +4619,8 @@ msgid "rename/move an attached file"
 msgstr "přejmenovat/přesunout přiložený soubor"
 
 #: opcodes.h:77
-#, fuzzy
 msgid "compose a new message to the sender"
-msgstr "sestavit novou zprávu"
+msgstr "sepsat novou zprávu pro odesílatele"
 
 #: opcodes.h:78
 msgid "send the message"
@@ -4712,7 +4704,7 @@ msgstr "přidat, změnit nebo smazat štítek zprávy"
 
 #: opcodes.h:98
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr "upravit celou zprávu (edit a edit-raw-message se chvoají stejně)"
+msgstr "upravit celou zprávu (edit a edit-raw-message se chovají stejně)"
 
 #: opcodes.h:99
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
@@ -5130,9 +5122,8 @@ msgid "recall a postponed message"
 msgstr "vrátit se k odložené zprávě"
 
 #: opcodes.h:202
-#, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "Vlákno obsahuje nepřečtené zprávy."
+msgstr "znovu sestavit vlákno obsahující aktuální zprávu"
 
 #: opcodes.h:203
 msgid "clear and redraw the screen"
@@ -5256,7 +5247,7 @@ msgstr "odhlásit z diskusních skupin vyhovujících vzoru"
 
 #: opcodes.h:233
 msgid "show the NeoMutt version number and date"
-msgstr "Vypíše označení verze a datum"
+msgstr "vypsat označení verze a datum"
 
 #: opcodes.h:234
 msgid "view attachment using mailcap entry if necessary"
@@ -5352,12 +5343,14 @@ msgid "generate virtual folder from query"
 msgstr "vytvoř virtuální složku z dotazu"
 
 #: opcodes.h:268
+#, fuzzy
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "posune dopředu časové okno virtuální složky"
 
 #: opcodes.h:269
+#, fuzzy
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "posune dozadu časové okno virtuální složky"
 
 #: opcodes.h:270
 msgid "read entire thread of the current message"
@@ -5497,12 +5490,12 @@ msgstr "Žádné vybraná zpráva"
 
 #: pattern.c:782
 msgid "No Context"
-msgstr ""
+msgstr "Chybí kontext"
 
 #: pattern.c:923
 #, fuzzy
 msgid "Error opening memstream"
-msgstr "Chyba při otevírání schránky"
+msgstr "Chyba při otevírání memstreamu"
 
 #: pattern.c:971
 #, fuzzy
@@ -5536,7 +5529,7 @@ msgstr "%c: nesprávný modifikátor vzoru"
 #: pattern.c:1256
 #, c-format
 msgid "%c: not supported in this mode"
-msgstr "V tomto režimu není %c podporováno."
+msgstr "V tomto režimu není %c podporováno"
 
 #: pattern.c:1269
 msgid "missing parameter"
@@ -6279,6 +6272,12 @@ msgstr "Přeloženo s volbami:"
 #~ msgid "finish: too many arguments"
 #~ msgstr "push: příliš mnoho argumentů"
 
+#~ msgid "set debug_file ignored, it has been overridden by the cmdline"
+#~ msgstr "set debug_file ignorováno, bylo zadáno z příkazové řádky"
+
+#~ msgid "set debug_level ignored, it has been overridden by the cmdline"
+#~ msgstr "set debug_level ignorováno, bylo zadáno z příkazové řádky"
+
 #~ msgid "push: too many arguments"
 #~ msgstr "push: příliš mnoho argumentů"
 
@@ -6289,7 +6288,7 @@ msgstr "Přeloženo s volbami:"
 #~ msgstr "macro: příliš mnoho argumentů"
 
 #~ msgid "Debugging at file %s.\n"
-#~ msgstr "Ladící soubor %s.\n"
+#~ msgstr "Ladicí soubor %s.\n"
 
 #~ msgid "source: too many arguments"
 #~ msgstr "source: příliš mnoho argumentů"
