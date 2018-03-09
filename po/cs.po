@@ -232,7 +232,7 @@ msgstr "Odhlásit"
 
 #: browser.c:84 curs_main.c:841
 msgid "Catchup"
-msgstr ""
+msgstr "Označit za přečtené"
 
 #: browser.c:766 browser.c:1780
 #, c-format
@@ -247,7 +247,7 @@ msgstr "Diskusní skupiny přihlášeny"
 #: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Diskusní skupiny na serveru [%s]"
 
 #: browser.c:1060
 #, c-format
@@ -314,7 +314,6 @@ msgstr "Souborová maska: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1871
-#, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
 "count, or do(n)'t sort? "
@@ -322,16 +321,17 @@ msgstr "Obrácené řazení dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1874
-#, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
 "do(n)'t sort? "
-msgstr "Řadit dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
+msgstr ""
+"Řadit dle (d)ata, (p)ísmena, (v)elikosti, popi(s)u, poč(t)u, počtu n(o)vých "
+"či (n)eřadit?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1877
 msgid "dazecwn"
-msgstr ""
+msgstr "dpvston"
 
 #: browser.c:1982
 msgid "New file name: "
@@ -712,17 +712,17 @@ msgstr "Zrušit"
 #. L10N: compose menu help line entry
 #: compose.c:152
 msgid "To"
-msgstr ""
+msgstr "Komu"
 
 #. L10N: compose menu help line entry
 #: compose.c:154
 msgid "CC"
-msgstr ""
+msgstr "Kopie"
 
 #. L10N: compose menu help line entry
 #: compose.c:156 compose.c:168
 msgid "Subj"
-msgstr ""
+msgstr "Věc"
 
 #: compose.c:157 compose.c:169 compose.c:1026
 msgid "Attach file"
@@ -1447,7 +1447,7 @@ msgstr "Zadejte Message-Id: "
 
 #: curs_main.c:1259
 msgid "Article has no parent reference."
-msgstr ""
+msgstr "Článek neobsahuje odkaz na jiný nadřazený."
 
 #: curs_main.c:1283
 msgid "Message is not visible in limited view."
@@ -1766,12 +1766,14 @@ msgid "No message ID to macro."
 msgstr "ID zprávy ze značky neexistuje."
 
 #: curs_main.c:3205 pager.c:2973 recvattach.c:1379
+#, fuzzy
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "Odpovědět e-mailem dle návrhu autora?"
 
 #: curs_main.c:3208 pager.c:2939 pager.c:2951 pager.c:2976
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
+"Publikování do této skupiny není povoleno, může být moderována. Pokračovat?"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3273 pager.c:3132
@@ -1892,7 +1894,7 @@ msgstr "Zpráva nebyla změněna!"
 
 #: editmsg.c:163
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Zpráva ze schránky v režimu pro čtení byla upravena!.Ignoruji změny."
 
 #: editmsg.c:179
 #, c-format
@@ -1923,9 +1925,9 @@ msgid "[-- Type: "
 msgstr ""
 
 #: handler.c:68
-#, fuzzy, c-format
+#, c-format
 msgid "%s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Typ: %s/%s, Kódování: %s, Velikost: %s --]\n"
+msgstr "%s/%s%s%s, Kódování: %s, Velikost: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
@@ -2582,9 +2584,9 @@ msgid "No folder specified"
 msgstr "Složka nebyla zadána"
 
 #: init.c:4236
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "%s odhlášeno"
+msgstr "Nelze odhlásit odběr %s"
 
 #: keymap.c:283 keymap.c:291
 #, c-format
@@ -2650,7 +2652,6 @@ msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Znak = %s, Osmičkově = %o, Desítkově = %d"
 
 #: main.c:84
-#, fuzzy
 msgid ""
 "usage: neomutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       neomutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2665,11 +2666,10 @@ msgid ""
 "       neomutt -v[v]\n"
 msgstr ""
 "Použití: neomutt [<přepínače>] [-z] [-f <soubor> | -yZ]\n"
-"         neomutt [<přepínače>] [-Ex] [-Hi <soubor>] [-s <věc>] [-bc <adr>]\n"
-"              [-a <soubor> […] --] <adr> […]\n"
-"         neomutt [<přepínače>] [-x] [-s <věc>] [-bc <adr>] [-a <soubor> […] "
-"--]\n"
-"              <adr> […] < zpráva\n"
+"         neomutt [<přepínače>] [-Ex] [-Hi <soubor>] [-s <věc>] [-bc <adr>] [-"
+"a <soubor> [...] --] <adr> [...]\n"
+"         neomutt [<přepínače>] [-x] [-s <věc>] [-bc <adr>] [-a <soubor> "
+"[...] --] <adr> [...] < message\n"
 "         neomutt [<přepínače>] -p\n"
 "         neomutt [<přepínače>] -A <alias> […]\n"
 "         neomutt [<přepínače>] -Q <dotaz> […]\n"
@@ -2677,7 +2677,6 @@ msgstr ""
 "         neomutt -v[v]\n"
 
 #: main.c:94
-#, fuzzy
 msgid ""
 "options:\n"
 "  -A <alias>    expand the given alias\n"
@@ -2692,18 +2691,19 @@ msgid ""
 msgstr ""
 "Přepínače:\n"
 "  -A <alias>    expanduje zadaný alias\n"
-"  -a <soubor> […] --    připojí ke zprávě soubor(y)\n"
+"  -a <soubor> [...] --    připojí ke zprávě soubor(y)\n"
 "                seznam souborů musí být ukončen řetězcem „--“\n"
 "  -b <adresa>   určuje adresu pro utajenou kopii (BCC)\n"
 "  -c <adresa>   určuje adresu pro kopii (CC)\n"
-"  -D            na standardní výstup vypíše hodnoty všech proměnných"
+"  -D            na standardní výstup vypíše hodnoty všech proměnných\n"
+"  -D -S         podobné jako -D, navíc schová hodnoty citlivých proměnných\n"
+"  -B            dávkový režim (nespustí se uživatelské rozhraní)"
 
 #: main.c:103
 msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
 msgstr "  -d <úroveň>   ladící informace zapisuje do ~/.neomuttdebug0"
 
 #: main.c:105
-#, fuzzy
 msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
@@ -3119,7 +3119,7 @@ msgstr "Čekám na zamknutí notmuch databáze… (%d s)"
 #: mutt_notmuch.c:523
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "Nelze otevřít notmuch databázi: %s: %s"
 
 #: mutt_notmuch.c:524
 msgid "unknown reason"
@@ -3144,7 +3144,7 @@ msgid "SSL is unavailable, cannot connect to %s"
 msgstr "SSL není dostupné, nelze se spojit s %s"
 
 #: mx.c:495
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
 msgstr "Čtení z %s bylo přerušeno…"
 
@@ -3158,7 +3158,7 @@ msgstr "Složku koš nelze otevřít"
 
 #: mx.c:668
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "Označit všechny články za přečtené?"
 
 #: mx.c:712
 #, c-format
@@ -3354,7 +3354,7 @@ msgstr "chyba při přetáčení datového objektu: %s\n"
 
 #: ncrypt/crypt_gpgme.c:622
 msgid "[tempfile]"
-msgstr ""
+msgstr "[dočasný soubor]"
 
 #: ncrypt/crypt_gpgme.c:628 ncrypt/crypt_gpgme.c:683
 #, c-format
@@ -4106,7 +4106,7 @@ msgstr "rpjoin"
 #. L10N: PGP options
 #: ncrypt/pgp.c:1771
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic?"
+msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic? "
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1773
@@ -4329,23 +4329,22 @@ msgstr "1: AES128, 2: AES192, 3: AES256 "
 
 #: newsrc.c:604
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "Načítám seznam skupin z cache…"
 
 #: newsrc.c:963
 msgid "No news server defined!"
 msgstr "Není definován žádný server diskusních skupin!"
 
 #: newsrc.c:977
-#, fuzzy, c-format
+#, c-format
 msgid "%s is an invalid news server specification!"
-msgstr "%s není platná POP cesta"
+msgstr "%s není platné zadání serveru diskusních skupin!"
 
 #: nntp.c:63 nntp.c:593 pop.c:966 pop_lib.c:408
 msgid "Server closed connection!"
 msgstr "Server uzavřel spojení!"
 
 #: nntp.c:165
-#, fuzzy
 msgid "Server doesn't support reader mode."
 msgstr "Server nepodporuje režim pro klienty."
 
@@ -4355,7 +4354,6 @@ msgid "%s authentication failed."
 msgstr "%s ověření se nezdařilo."
 
 #: nntp.c:654 nntp.c:742
-#, fuzzy
 msgid "Could not switch to reader mode."
 msgstr "Nepodařilo se přepnout do režimu pro klienty."
 
@@ -4366,11 +4364,11 @@ msgstr "Připojeno k %s. %s"
 
 #: nntp.c:668
 msgid "Posting is ok."
-msgstr "Odesílání je ok."
+msgstr "Publikování je povoleno."
 
 #: nntp.c:668
 msgid "Posting is NOT ok."
-msgstr ""
+msgstr "Publikování NENÍ povoleno."
 
 #: nntp.c:792
 #, c-format
@@ -4427,6 +4425,8 @@ msgstr "Hledám nové zprávy v diskusních skupinách…"
 msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
+"Nepodařilo se nalézt poďřízený článek, protože server nepodporuje příkaz "
+"XPAT."
 
 #: opcodes.h:29
 msgid "null operation"
@@ -4854,19 +4854,16 @@ msgid "select the current entry"
 msgstr "zvolit aktuální položku"
 
 #: opcodes.h:133
-#, fuzzy
 msgid "get all children of the current message"
-msgstr "vytvořit horkou klávesu pro současnou zprávu"
+msgstr "získat všechny podřazené zprávy"
 
 #: opcodes.h:134
-#, fuzzy
 msgid "get message with Message-Id"
-msgstr "editovat zprávu i s hlavičkami"
+msgstr "získat zprávu s Message-Id"
 
 #: opcodes.h:135
-#, fuzzy
 msgid "get parent of the current message"
-msgstr "vytvořit horkou klávesu pro současnou zprávu"
+msgstr "získat nadřazenou zprávu"
 
 #: opcodes.h:136
 msgid "reply to all recipients"
@@ -5038,7 +5035,7 @@ msgstr "označit zprávy shodující se se vzorem"
 
 #: opcodes.h:178
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "schovat z NeoMuttu, nezpisovat na disk"
 
 #: opcodes.h:179
 msgid "undelete messages matching a pattern"
@@ -5795,7 +5792,7 @@ msgstr "Vytisknout přílohu?"
 
 #: recvattach.c:888
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr ""
+msgstr "Úprava typu souboru rozšifrovaných příloh není podporována"
 
 #: recvattach.c:1035
 msgid "Can't decrypt encrypted message!"
@@ -6291,9 +6288,8 @@ msgstr "Přeloženo s volbami:"
 #~ msgid "macro: too many arguments"
 #~ msgstr "macro: příliš mnoho argumentů"
 
-#, fuzzy
 #~ msgid "Debugging at file %s.\n"
-#~ msgstr "Úroveň ladění je %d.\n"
+#~ msgstr "Ladící soubor %s.\n"
 
 #~ msgid "source: too many arguments"
 #~ msgstr "source: příliš mnoho argumentů"
