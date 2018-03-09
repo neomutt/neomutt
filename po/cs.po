@@ -688,12 +688,12 @@ msgstr "Podepsat jako: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:140
 msgid "Newsgroups: "
-msgstr ""
+msgstr "Diskusní sk.:"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142
 msgid "Followup-To: "
-msgstr ""
+msgstr "Followup-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
@@ -921,18 +921,16 @@ msgid "Message written."
 msgstr "Zpráva uložena."
 
 #: compose.c:1601
-#, fuzzy
 msgid "No PGP backend configured"
-msgstr "Není nakonfigurován PGP backend"
+msgstr "Není nakonfigurováno a přeloženo s podporou PGP"
 
 #: compose.c:1609
 msgid "S/MIME already selected. Clear and continue ? "
 msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
 #: compose.c:1635
-#, fuzzy
 msgid "No S/MIME backend configured"
-msgstr "Není nakonfigurován S/MIME backend"
+msgstr "Není nakonfigurováno a přeložčno s podporou S/MIME"
 
 #: compose.c:1643
 msgid "PGP already selected. Clear and continue ? "
@@ -1200,7 +1198,6 @@ msgstr "Kontrola certifikátu stroje selhala: %s"
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
 #: conn/ssl.c:1273 conn/ssl_gnutls.c:1168
-#, fuzzy
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Varování: nepodařilo se nastavit TLS SNI jméno stroje"
 
@@ -1419,7 +1416,6 @@ msgid "Post"
 msgstr "Poslat"
 
 #: curs_main.c:840 pager.c:1724
-#, fuzzy
 msgid "Followup"
 msgstr "Odepsat"
 
@@ -1579,7 +1575,6 @@ msgid "Failed to create query, aborting."
 msgstr "Nezdařílo se vytvořit dotaz, zrušeno."
 
 #: curs_main.c:2011 curs_main.c:2030
-#, fuzzy
 msgid "Windowed queries disabled."
 msgstr "Dotazy do okna nejsou povoleny."
 
@@ -2013,7 +2008,6 @@ msgstr ""
 "[-- není podporována --]\n"
 
 #: handler.c:1669
-#, fuzzy
 msgid "Unable to open memory stream!"
 msgstr "Memstream nelze otevřít!"
 
@@ -2509,7 +2503,7 @@ msgid "%s: invalid value"
 msgstr "Hodnota %s je neplatná"
 
 #: init.c:2757
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid backend"
 msgstr "Backend %s je neplatný"
 
@@ -2549,7 +2543,7 @@ msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
 #: init.c:2967
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced."
 msgstr "source: soubor %s nelze vložit"
 
@@ -2594,8 +2588,7 @@ msgstr "Nelze odhlásit odběr %s"
 msgid ""
 "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
 "neomutt.org/guide/configuration.html#bind-warnings"
-msgstr ""
-"Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
+msgstr "Zkratka „%s“ překryje „%s“. Nejdříve zkuste: 'bind %s %s noop' https://"
 "neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:594
@@ -2628,7 +2621,7 @@ msgstr "%s: prázdný sled kláves"
 #: keymap.c:1043
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr "Funkce '%s' není v menu '%s' dostupná"
+msgstr "Funkce „%s“ není v menu „%s“ dostupná"
 
 #: keymap.c:1170
 msgid "macro: empty key sequence"
@@ -2969,12 +2962,12 @@ msgstr "Zavření souboru se záznamem ladění: %s"
 #: mutt/logging.c:135
 #, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Úroveň ladění je %d to souboru '%s'"
+msgstr "Úroveň ladění je %d do souboru „%s“"
 
 #: mutt/logging.c:186
 #, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Úroveň ladění je %d do souboru '%s'"
+msgstr "Úroveň ladění je %d do souboru „%s“"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
@@ -4819,13 +4812,12 @@ msgid "toggle a message's 'important' flag"
 msgstr "přepnout zprávě příznak důležitosti"
 
 #: opcodes.h:129
-#, fuzzy
 msgid "followup to newsgroup"
-msgstr "odepsat do disusní skupiny"
+msgstr "odepsat do diskusní skupiny"
 
 #: opcodes.h:130
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "přeposlat do diskusní skupiny"
 
 #: opcodes.h:131
 msgid "forward a message with comments"
@@ -5248,9 +5240,8 @@ msgid "show MIME attachments"
 msgstr "zobrazit MIME přílohy"
 
 #: opcodes.h:236
-#, fuzzy
 msgid "show the raw message"
-msgstr "zobrazit celou zprávu"
+msgstr "zobrazit úplnou zprávu"
 
 #: opcodes.h:237
 msgid "display the keycode for a key press"
@@ -5333,14 +5324,12 @@ msgid "generate virtual folder from query"
 msgstr "vytvoř virtuální složku z dotazu"
 
 #: opcodes.h:268
-#, fuzzy
 msgid "shifts virtual folder time window forwards"
-msgstr "posune dopředu časové okno virtuální složky"
+msgstr "posune dopředu časový rozsah virtuální složky"
 
 #: opcodes.h:269
-#, fuzzy
 msgid "shifts virtual folder time window backwards"
-msgstr "posune dozadu časové okno virtuální složky"
+msgstr "posune dozadu časový rozsah virtuální složky"
 
 #: opcodes.h:270
 msgid "read entire thread of the current message"
@@ -5483,12 +5472,10 @@ msgid "No Context"
 msgstr "Chybí kontext"
 
 #: pattern.c:923
-#, fuzzy
 msgid "Error opening memstream"
 msgstr "Chyba při otevírání memstreamu"
 
 #: pattern.c:971
-#, fuzzy
 msgid "Error re-opening memstream"
 msgstr "Chyba při opětovném otevírání memstream"
 
@@ -6007,7 +5994,7 @@ msgstr "Nezměněná zpráva byla zahozena."
 
 #: send.c:1774
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "Neni nakonfigurováno s podporou šifrování. Vypínám nastavení bezpečnosti."
 
 #: send.c:1812
 msgid "Article not posted."
