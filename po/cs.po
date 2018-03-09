@@ -358,9 +358,8 @@ msgid "Unsubscribe pattern: "
 msgstr "Odhlásit odběr zpráv dle vzoru: "
 
 #: browser.c:2134
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Souborové masce nevyhovuje žádný soubor."
+msgstr "Masce nevyhovují žádné diskusní skupiny"
 
 #: buffy.c:760
 msgid "New mail in "
@@ -1163,9 +1162,9 @@ msgid "MD5 Fingerprint: %s"
 msgstr "Otisk MD5 klíče: %s"
 
 #: conn/ssl.c:1010
-#, fuzzy, c-format
+#, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
+msgstr "Kontrola SSL certifikátu (certifikát %zu z %zu v řetězu)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -1784,7 +1783,6 @@ msgid "No message ID to macro."
 msgstr "ID zprávy ze značky neexistuje."
 
 #: curs_main.c:3185 pager.c:2941 recvattach.c:1381
-#, fuzzy
 msgid "Reply by mail as poster prefers?"
 msgstr "Odpovědět e-mailem dle návrhu autora?"
 
@@ -2031,7 +2029,7 @@ msgstr ""
 #: handler.c:1670
 #, fuzzy
 msgid "Unable to open memory stream!"
-msgstr "Dočasný soubor nelze otevřít!"
+msgstr "Memstream nelze otevřít!"
 
 #: handler.c:1679
 msgid "Unable to open temporary file!"
