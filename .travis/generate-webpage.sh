@@ -144,16 +144,16 @@ function html_footer()
 	echo "  </tbody>"
 	echo "</table>"
 	echo "<br>"
-	echo "Last updated: $(date +%F)"
+	echo "Last updated: $(date '+%F %R')"
 }
 
 
-[ $# = 0 ] && ARGS="*.po" || ARGS="$@"
+[ $# = 0 ] && ARGS="*.po" || ARGS="$*"
 
 html_header
 for i in $ARGS; do
 	echo -ne "${i%.po}:\t"
-	msgfmt --statistics -c -o /dev/null $i 2>&1
+	msgfmt --statistics -c -o /dev/null "$i" 2>&1
 done \
 	| grep -wv "en_GB" \
 	| sed 's/ \(message\|translation\)s*\.*//g' \

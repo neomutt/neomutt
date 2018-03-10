@@ -26,7 +26,9 @@ env:
   - DEPLOY_FILE="translate.html"
 
 script:
-- for i in po/*.po; do P=${i##*/}; echo -ne "${P%.po}:\t"; msgfmt --statistics -c -o /dev/null $i; done
+- .travis/stats.sh po/*.po
+
+after_success:
 - .travis/prep.sh
 - eval "$(ssh-agent -s)"
 - ssh-add .travis/travis-deploy-github.pem
