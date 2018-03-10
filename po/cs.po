@@ -939,7 +939,6 @@ msgstr "Zpráva uložena."
 #, fuzzy
 msgid "No PGP backend configured"
 msgstr "Není nakonfigurován PGP backend"
-msgstr ""
 
 #: compose.c:1609
 msgid "S/MIME already selected. Clear and continue ? "
