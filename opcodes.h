@@ -67,7 +67,10 @@
   _fmt(OP_CREATE_MAILBOX,                 N_("create a new mailbox (IMAP only)")) \
   _fmt(OP_EDIT_TYPE,                      N_("edit attachment content type")) \
   _fmt(OP_COMPOSE_GET_ATTACHMENT,         N_("get a temporary copy of an attachment")) \
+  _fmt(OP_COMPOSE_GROUP_ALTS,             N_("group tagged attachments as multipart/alternative")) \
   _fmt(OP_COMPOSE_ISPELL,                 N_("run ispell on the message")) \
+  _fmt(OP_COMPOSE_MOVE_UP,                N_("move an attachment up in the attachment list")) \
+  _fmt(OP_COMPOSE_MOVE_DOWN,              N_("move an attachment down in the attachment list")) \
   _fmt(OP_COMPOSE_NEW_MIME,               N_("compose new attachment using mailcap entry")) \
   _fmt(OP_COMPOSE_TOGGLE_RECODE,          N_("toggle recoding of this attachment")) \
   _fmt(OP_COMPOSE_POSTPONE_MESSAGE,       N_("save this message to send later")) \
