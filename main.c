@@ -278,17 +278,9 @@ int main(int argc, char **argv, char **env)
         case 'a':
           mutt_list_insert_tail(&attach, mutt_str_strdup(optarg));
           break;
-
-        case 'F':
-          /* mutt_str_replace (&Muttrc, optarg); */
-          mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
+        case 'B':
+          batch_mode = true;
           break;
-
-        case 'f':
-          mutt_str_strfcpy(folder, optarg, sizeof(folder));
-          explicit_folder = true;
-          break;
-
         case 'b':
         case 'c':
           if (!msg)
@@ -300,15 +292,9 @@ int main(int argc, char **argv, char **env)
           else
             msg->env->cc = mutt_addr_parse_list(msg->env->cc, optarg);
           break;
-
         case 'D':
           dump_variables = true;
           break;
-
-        case 'B':
-          batch_mode = true;
-          break;
-
         case 'd':
           if (mutt_str_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
           {
@@ -317,92 +303,77 @@ int main(int argc, char **argv, char **env)
           }
           printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
           break;
-
         case 'E':
           edit_infile = true;
           break;
-
         case 'e':
           mutt_list_insert_tail(&commands, mutt_str_strdup(optarg));
           break;
-
-        case 'H':
-          draft_file = optarg;
+        case 'F':
+          mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
-
-        case 'i':
-          include_file = optarg;
+        case 'f':
+          mutt_str_strfcpy(folder, optarg, sizeof(folder));
+          explicit_folder = true;
           break;
-
-        case 'l':
-          debugfile_cmdline = optarg;
-          printf(_("Debugging at file %s.\n"), debugfile_cmdline);
-          break;
-
-        case 'm':
-          /* should take precedence over .neomuttrc setting, so save it for later */
-          new_magic = optarg;
-          break;
-
-        case 'n':
-          flags |= MUTT_NOSYSRC;
-          break;
-
-        case 'p':
-          sendflags |= SENDPOSTPONED;
-          break;
-
-        case 'Q':
-          mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
-          break;
-
-        case 'R':
-          flags |= MUTT_RO; /* read-only mode */
-          break;
-
-        case 'S':
-          hide_sensitive = true;
-          break;
-
-        case 's':
-          subject = optarg;
-          break;
-
-        case 'v':
-          version++;
-          break;
-
-        case 'x': /* mailx compatible send mode */
-          sendflags |= SENDMAILX;
-          break;
-
-        case 'y': /* My special hack mode */
-          flags |= MUTT_SELECT;
-          break;
-
 #ifdef USE_NNTP
         case 'g': /* Specify a news server */
         {
           char buf[LONG_STRING];
-
           snprintf(buf, sizeof(buf), "set news_server=%s", optarg);
           mutt_list_insert_tail(&commands, mutt_str_strdup(buf));
         }
           /* fallthrough */
-
         case 'G': /* List of newsgroups */
           flags |= MUTT_SELECT | MUTT_NEWS;
           break;
 #endif
-
-        case 'z':
-          flags |= MUTT_IGNORE;
+        case 'H':
+          draft_file = optarg;
           break;
-
+        case 'i':
+          include_file = optarg;
+          break;
+        case 'l':
+          debugfile_cmdline = optarg;
+          printf(_("Debugging at file %s.\n"), debugfile_cmdline);
+          break;
+        case 'm':
+          new_magic = optarg;
+          break;
+        case 'n':
+          flags |= MUTT_NOSYSRC;
+          break;
+        case 'p':
+          sendflags |= SENDPOSTPONED;
+          break;
+        case 'Q':
+          mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
+          break;
+        case 'R':
+          flags |= MUTT_RO; /* read-only mode */
+          break;
+        case 'S':
+          hide_sensitive = true;
+          break;
+        case 's':
+          subject = optarg;
+          break;
+        case 'v':
+          version++;
+          break;
+        case 'x': /* mailx compatible send mode */
+          sendflags |= SENDMAILX;
+          break;
+        case 'y': /* My special hack mode */
+          flags |= MUTT_SELECT;
+          break;
         case 'Z':
           flags |= MUTT_BUFFY | MUTT_IGNORE;
           break;
-
+        case 'z':
+          flags |= MUTT_IGNORE;
+          break;
         default:
           usage();
       }
