@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-03-18 23:51+0000\n"
-"PO-Revision-Date: 2018-03-01 22:19+0100\n"
+"PO-Revision-Date: 2018-03-13 16:40+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -189,7 +189,7 @@ msgstr "Nie wiem jak to wydrukować!"
 #: bcache.c:161
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "Ścieżka za długa: %s%s%s"
 
 #: bcache.c:169
 #, c-format
@@ -207,7 +207,7 @@ msgstr "Zmień katalog"
 
 #: browser.c:72
 msgid "Goto"
-msgstr ""
+msgstr "Idź do"
 
 #: browser.c:73 browser.c:85
 msgid "Mask"
@@ -215,7 +215,7 @@ msgstr "Wzorzec"
 
 #: browser.c:81
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: browser.c:82
 msgid "Subscribe"
@@ -242,7 +242,7 @@ msgstr "Zasubskrybowano grupę dyskusyjną"
 #: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Listy dyskusyjne na serwersze [%s]"
 
 #: browser.c:1060
 #, c-format
@@ -448,7 +448,7 @@ msgstr "Wprowadź polecenie: "
 
 #: commands.c:268 commands.c:277 recvcmd.c:141 recvcmd.c:153
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Ostrzeżenie: wiadomość nie zawiera pola From: w nagłówku"
 
 #: commands.c:284 recvcmd.c:162
 msgid "Bounce message to: "
@@ -749,7 +749,7 @@ msgstr "Podpisz"
 
 #: compose.c:267
 msgid "None"
-msgstr ""
+msgstr "Żaden"
 
 #: compose.c:276
 msgid " (inline PGP)"
@@ -777,7 +777,7 @@ msgstr "Zaszyfruj używając: "
 
 #: compose.c:332
 msgid "<no chain defined>"
-msgstr ""
+msgstr "<nie zdefiniowany łańcuch>"
 
 #: compose.c:369
 #, c-format
@@ -917,7 +917,7 @@ msgstr "List został zapisany."
 
 #: compose.c:1601
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Nie skonfigurowano beckendu PGP"
 
 #: compose.c:1609
 msgid "S/MIME already selected. Clear and continue ? "
@@ -925,7 +925,7 @@ msgstr "Wybrano już S/MIME. Anulować wybór S/MIME i kontynuować? "
 
 #: compose.c:1635
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Nie skonfigurowano beckendu S/MIME"
 
 #: compose.c:1643
 msgid "PGP already selected. Clear and continue ? "
@@ -938,11 +938,11 @@ msgstr "Nie można zablokować skrzynki pocztowej!"
 #: compress.c:474 compress.c:544 compress.c:696
 #, c-format
 msgid "Decompressing %s"
-msgstr ""
+msgstr "Rozpakowuje %s"
 
 #: compress.c:483
 msgid "Can't identify the contents of the compressed file"
-msgstr ""
+msgstr "Nie rozpoznano zawartości skompresowanego pliku"
 
 #: compress.c:490 compress.c:565
 #, c-format
@@ -952,7 +952,7 @@ msgstr ""
 #: compress.c:526 compress.c:811
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr ""
+msgstr "Nie można dołączyć bez ustawienia append-hook lub close-hook : %s"
 
 #: compress.c:547
 #, c-format
@@ -981,6 +981,7 @@ msgstr "Błąd. Zachowano plik tymczasowy: %s"
 #: compress.c:857
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
+"Nie można zsynchronizować skompresowanego pliku bez ustawienia close-hook"
 
 #: compress.c:879
 #, c-format
@@ -1143,7 +1144,7 @@ msgstr "Odcisk MD5: %s"
 #: conn/ssl.c:1004
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
-msgstr ""
+msgstr "Sprawdzanie certyfikatu SSL (certyfikat %zu z %zu w łańcuchu)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -1194,7 +1195,7 @@ msgstr "Sprawdzenie hosta certyfikatu nie powiodło się: %s"
 #. * the correct certificate if it supports multiple hosts.
 #: conn/ssl.c:1273 conn/ssl_gnutls.c:1168
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Ostrzeżenie: nieudane ustawienie TLS SNI host name"
 
 #: conn/ssl.c:1284
 msgid "I/O error"
@@ -1244,6 +1245,8 @@ msgstr "Błąd przetwarzana certyfikatu"
 #: conn/ssl_gnutls.c:588
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
+"Ostrzeżenie: certyfikat serwera został podpisany przy pomocy "
+"niezabezpieczonego algorytmu"
 
 #: conn/ssl_gnutls.c:740
 msgid "WARNING: Server certificate is not yet valid"
@@ -1268,7 +1271,7 @@ msgstr "Ostrzeżenie: certyfikat nie został podpisany przez CA"
 #: conn/ssl_gnutls.c:768
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr ""
+msgstr "Sprawdzanie certyfikatu SSL (certyfikat %d z %d w łańcuchu)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:
@@ -1454,11 +1457,12 @@ msgstr "Pobieranie %s z serwera... "
 #: curs_main.c:1299
 #, c-format
 msgid "Article %s not found on the server."
-msgstr ""
+msgstr "Artykuł %s nie został odnaleziony na serwerze."
 
 #: curs_main.c:1318
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
+"Brak identyfikatora wiadomości (Message-ID).Zaniechano wykonanie polecenia"
 
 #: curs_main.c:1322 imap/message.c:803 nntp.c:1287 pop.c:301
 msgid "Fetching message headers..."
@@ -1534,7 +1538,7 @@ msgstr "Odznacz pasujące listy: "
 
 #: curs_main.c:1753
 msgid "Logged out of IMAP servers."
-msgstr ""
+msgstr "Wylogowano z serwera IMAP."
 
 #: curs_main.c:1853
 msgid "No virtual folder, aborting."
@@ -1575,7 +1579,7 @@ msgstr ""
 
 #: curs_main.c:2016 curs_main.c:2035
 msgid "No notmuch vfolder currently loaded."
-msgstr ""
+msgstr "Żaden notmach vfolder nie jest obecnie załadowany."
 
 #: curs_main.c:2073
 msgid "Open mailbox in read-only mode"
@@ -1599,7 +1603,7 @@ msgstr "Otwórz grupę dyskusyjną tylko do odczytu"
 
 #: curs_main.c:2138
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Otwórz listę dyskusyjną"
 
 #: curs_main.c:2241
 msgid "Exit NeoMutt without saving?"
@@ -1759,11 +1763,13 @@ msgstr "Brak identyfikatora makra."
 
 #: curs_main.c:3205 pager.c:2973 recvattach.c:1379
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "Odpowiedzieć przy pomocy maila zgodnie z życzeniem nadawcy?"
 
 #: curs_main.c:3208 pager.c:2939 pager.c:2951 pager.c:2976
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
+"Dodawanie postów w tej grupie jest niedozwolone, możliwa moderacja. "
+"Kontynuować?"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3273 pager.c:3132
@@ -2219,7 +2225,7 @@ msgstr "Nie podano nazwy nagłówka: %s"
 #: imap/imap.c:535
 #, c-format
 msgid "Server-side custom search not supported: %s"
-msgstr ""
+msgstr "Wyszukiwanie użytkownika nie jest wspierane przez serwer: %s"
 
 #: imap/imap.c:713
 #, c-format
@@ -2771,7 +2777,7 @@ msgstr "Nie wskazano adresatów listu."
 
 #: main.c:717
 msgid "Cannot use -E flag with stdin"
-msgstr ""
+msgstr "Nie można użyć przełącznika -E wraz ze stdin"
 
 #: main.c:804
 #, fuzzy, c-format
@@ -3100,7 +3106,7 @@ msgstr "Oczekiwanie na notmuch DB... (%d sec)"
 #: mutt_notmuch.c:523
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "Nie można otworzyć bazy notmuch: %s: %s"
 
 #: mutt_notmuch.c:524
 msgid "unknown reason"
@@ -3139,7 +3145,7 @@ msgstr "Nie można otworzyć folderu trash"
 
 #: mx.c:668
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "Zaznaczyć wszystkie artykuły jako przeczytane?"
 
 #: mx.c:712
 #, c-format
@@ -3985,7 +3991,7 @@ msgstr ""
 
 #: ncrypt/pgp.c:799
 msgid "Internal error.  Please submit a bug report."
-msgstr ""
+msgstr "Błąd wewnętrzny. Proszę zgłosić ten wyjątek."
 
 #: ncrypt/pgp.c:866
 msgid ""
@@ -4309,12 +4315,12 @@ msgstr ""
 
 #: newsrc.c:963
 msgid "No news server defined!"
-msgstr ""
+msgstr "Nie zdefiniowano serwer wiadomości"
 
 #: newsrc.c:977
 #, c-format
 msgid "%s is an invalid news server specification!"
-msgstr "%s jest nieprawidłową spefyfikacją serwera wiadomości!"
+msgstr "%s jest nieprawidłową specyfikacją serwera wiadomości!"
 
 #: nntp.c:63 nntp.c:593 pop.c:966 pop_lib.c:408
 msgid "Server closed connection!"
@@ -4363,17 +4369,17 @@ msgstr "%s jest błędną specyfikacją grupy dyskusyjnej!"
 #: nntp.c:1479
 #, c-format
 msgid "Newsgroup %s not found on the server."
-msgstr ""
+msgstr "Lista dyskusyjna %s nie została znaleziona na serwerze."
 
 #: nntp.c:1499
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
-msgstr ""
+msgstr "Lista dyskusyjna %s została skasowana z serwera."
 
 #: nntp.c:1650
 #, c-format
 msgid "Article %d not found on the server."
-msgstr ""
+msgstr "Artykuł %d nie został odnaleziony na serwerze."
 
 #: nntp.c:1742 nntp.c:1775
 #, c-format
@@ -4470,7 +4476,7 @@ msgstr "pokaż skrzynki z nową pocztą"
 
 #: opcodes.h:45
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "oznacz wszystkie artykuły w liście dyskusyjnej jako przeczytane"
 
 #: opcodes.h:46
 msgid "change directories"
@@ -4678,7 +4684,7 @@ msgstr "wyświetl list"
 
 #: opcodes.h:97
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "dodaj, zmień albo skasuj etykietę listu"
 
 #: opcodes.h:98
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
@@ -4906,7 +4912,7 @@ msgstr "wymuszą pobranie poczty z serwera IMAP"
 
 #: opcodes.h:154
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "wyloguj z wszystkich serwerów IMAP"
 
 #: opcodes.h:155
 msgid "retrieve mail from POP server"
@@ -5202,7 +5208,7 @@ msgstr "przejdź na początek strony"
 
 #: opcodes.h:228
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "oznacz wszystkie artykuły w liście dyskusyjnej jako nieprzeczytane"
 
 #: opcodes.h:229
 msgid "undelete the current entry"
@@ -5326,7 +5332,7 @@ msgstr ""
 
 #: opcodes.h:270
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "przeczytaj cały wątek tego listu"
 
 #: opcodes.h:276
 msgid "attach a PGP public key"
@@ -5354,7 +5360,7 @@ msgstr "użyj starej wersji PGP"
 
 #: opcodes.h:284
 msgid "move the highlight to next mailbox"
-msgstr ""
+msgstr "przenieś zaznaczone do następnej skrzynki"
 
 #: opcodes.h:285
 msgid "move the highlight to next mailbox with new mail"
@@ -5924,7 +5930,7 @@ msgstr "brak wpisu w 'mailcap' dla typu %s"
 
 #: score.c:136
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Błąd: score: błędna liczba"
 
 #: send.c:292
 msgid "No subject, abort?"
@@ -6037,7 +6043,7 @@ msgstr "Wysyłanie w tle."
 
 #: send.c:2149
 msgid "Article posted."
-msgstr ""
+msgstr "Artykuł został opublikowany."
 
 #: send.c:2150
 msgid "Mail sent."
@@ -6068,7 +6074,7 @@ msgstr "Nie można otworzyć %s"
 
 #: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
-msgstr ""
+msgstr "$senmail musi być ustawione aby wysłać list."
 
 #: sendlib.c:2605
 #, c-format
@@ -6126,7 +6132,7 @@ msgstr "Sesja SMTP nie powiodła się: błąd zapisu"
 
 #: smtp.c:721
 msgid "Invalid server response"
-msgstr ""
+msgstr "Nieprawidłowa odpowiedź serwera"
 
 #: sort.c:327
 msgid "Sorting mailbox..."
@@ -6227,51 +6233,3 @@ msgstr "Domyślne opcje:"
 msgid "Compile options:"
 msgstr "Parametry kompilacji:"
 
-#~ msgid "Cannot create filter"
-#~ msgstr "Nie można utworzyć filtru"
-
-#~ msgid "Missing arguments."
-#~ msgstr "Brakuje argumentów."
-
-#~ msgid "color: too few arguments"
-#~ msgstr "color: za mało argumentów"
-
-#~ msgid "mono: too few arguments"
-#~ msgstr "mono: za mało argumentów"
-
-#~ msgid "too few arguments"
-#~ msgstr "za mało argumentów"
-
-#~ msgid "finish: too many arguments"
-#~ msgstr "finish: zbyt wiele argumentów"
-
-#~ msgid "set debug_level ignored, it has been overridden by the cmdline"
-#~ msgstr ""
-#~ "ustawienie debug_level zignorowane, zostało nadpisane przez linię poleceń"
-
-#~ msgid "push: too many arguments"
-#~ msgstr "push: zbyt wiele argumentów"
-
-#~ msgid "bind: too many arguments"
-#~ msgstr "bind: zbyt wiele argumentów"
-
-#~ msgid "macro: too many arguments"
-#~ msgstr "macro: zbyt wiele argumentów"
-
-#~ msgid "Debugging at file %s.\n"
-#~ msgstr "Diagnozuję błędy w pliku %s.\n"
-
-#~ msgid "source: too many arguments"
-#~ msgstr "source: zbyt wiele argumentów"
-
-#~ msgid "score: too few arguments"
-#~ msgstr "score: za mało argumentów"
-
-#~ msgid "score: too many arguments"
-#~ msgstr "score: zbyt wiele argumentów"
-
-#~ msgid "No recipients are specified!"
-#~ msgstr "Nie wskazano adresatów!"
-
-#~ msgid "No recipients were specified."
-#~ msgstr "Nie wskazano adresatów!"
