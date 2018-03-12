@@ -192,6 +192,8 @@ int main(int argc, char **argv, char **env)
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
   struct ListHead queries = STAILQ_HEAD_INITIALIZER(queries);
   struct ListHead alias_queries = STAILQ_HEAD_INITIALIZER(alias_queries);
+  struct ListHead cc_list = STAILQ_HEAD_INITIALIZER(cc_list);
+  struct ListHead bcc_list = STAILQ_HEAD_INITIALIZER(bcc_list);
   int sendflags = 0;
   int flags = 0;
   int version = 0;
@@ -282,15 +284,10 @@ int main(int argc, char **argv, char **env)
           batch_mode = true;
           break;
         case 'b':
+          mutt_list_insert_tail(&bcc_list, mutt_str_strdup(optarg));
+          break;
         case 'c':
-          if (!msg)
-            msg = mutt_new_header();
-          if (!msg->env)
-            msg->env = mutt_env_new();
-          if (i == 'b')
-            msg->env->bcc = mutt_addr_parse_list(msg->env->bcc, optarg);
-          else
-            msg->env->cc = mutt_addr_parse_list(msg->env->cc, optarg);
+          mutt_list_insert_tail(&cc_list, mutt_str_strdup(optarg));
           break;
         case 'D':
           dump_variables = true;
@@ -396,6 +393,26 @@ int main(int argc, char **argv, char **env)
     default:
       print_copyright();
       exit(0);
+  }
+
+  if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
+  {
+    msg = mutt_new_header();
+    msg->env = mutt_env_new();
+
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &bcc_list, entries)
+    {
+      msg->env->bcc = mutt_addr_parse_list(msg->env->bcc, np->data);
+    }
+
+    STAILQ_FOREACH(np, &cc_list, entries)
+    {
+      msg->env->cc = mutt_addr_parse_list(msg->env->cc, np->data);
+    }
+
+    mutt_list_free(&bcc_list);
+    mutt_list_free(&cc_list);
   }
 
   /* Check for a batch send. */
