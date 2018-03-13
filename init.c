@@ -460,7 +460,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
           * so cast to 'void*' is okay */
         FREE((void *) MuttVars[idx].var);
-        *((char **) MuttVars[idx].var) = mutt_str_strdup(*(char **) val->var);
+        *((char **) MuttVars[idx].var) = mutt_str_strdup((char *) val->var);
       }
       break;
       case DT_BOOL:
