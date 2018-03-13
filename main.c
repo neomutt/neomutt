@@ -207,13 +207,13 @@ static int get_user_info(void)
   if (!Username)
   {
     mutt_error(_("unable to determine username"));
-    return 1;
+    return 1; // TEST05: neomutt (unset $USER, delete user from /etc/passwd)
   }
 
   if (!HomeDir)
   {
     mutt_error(_("unable to determine home directory"));
-    return 1;
+    return 1; // TEST06: neomutt (unset $HOME, delete user from /etc/passwd)
   }
 
   if (!Shell)
@@ -272,7 +272,7 @@ int main(int argc, char **argv, char **env)
   if (getegid() != getgid())
   {
     mutt_error("%s: I don't want to run with privileges!", argv[0]);
-    goto main_exit;
+    goto main_exit; // TEST01: neomutt (as root, chgrp mail neomutt; chmod +s neomutt)
   }
 
   setlocale(LC_ALL, "");
@@ -291,7 +291,7 @@ int main(int argc, char **argv, char **env)
 
   int out = 0;
   if (mutt_randbuf(&out, sizeof(out)) < 0)
-    goto main_exit;
+    goto main_exit; // TEST02: neomutt (as root on non-Linux OS, rename /dev/urandom)
 
   umask(077);
 
@@ -424,7 +424,7 @@ int main(int argc, char **argv, char **env)
           break;
         default:
           usage();
-          goto main_ok;
+          goto main_ok; // TEST03: neomutt -9
       }
     }
   }
@@ -442,7 +442,7 @@ int main(int argc, char **argv, char **env)
       print_version();
     else
       print_copyright();
-    goto main_ok;
+    goto main_ok; // TEST04: neomutt -v
   }
 
   if (get_user_info() != 0)
@@ -462,7 +462,7 @@ int main(int argc, char **argv, char **env)
     if ((mutt_str_atos(dlevel, &num) < 0) || (num < LL_MESSAGE) || (num > LL_DEBUG5))
     {
       mutt_error(_("Error: value '%s' is invalid for -d."), dlevel);
-      goto main_exit;
+      goto main_exit; // TEST07: neomutt -d xyz
     }
     set_default_value("debug_level", (intptr_t) num);
     DebugLevel = num;
@@ -518,7 +518,7 @@ int main(int argc, char **argv, char **env)
     endwin();
 
     if (crc != 0)
-      goto main_curses;
+      goto main_curses; // TEST08: can't test -- fake term?
 
     /* check whether terminal status is supported (must follow curses init) */
     TSSupported = mutt_ts_capability();
@@ -565,7 +565,7 @@ int main(int argc, char **argv, char **env)
   if (dump_variables)
   {
     rc = mutt_dump_variables(hide_sensitive);
-    goto main_curses;
+    goto main_curses; // TEST18: neomutt -D
   }
 
   if (!STAILQ_EMPTY(&alias_queries))
@@ -587,11 +587,11 @@ int main(int argc, char **argv, char **env)
       else
       {
         rc = 1;
-        printf("%s\n", np->data);
+        printf("%s\n", np->data); // TEST19: neomutt -A unknown
       }
     }
     mutt_list_free(&alias_queries);
-    goto main_curses;
+    goto main_curses; // TEST20: neomutt -A alias
   }
 
   if (!OPT_NO_CURSES)
@@ -626,14 +626,14 @@ int main(int argc, char **argv, char **env)
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if ((mkdir(fpath, 0700) == -1) && (errno != EEXIST))
-          mutt_error(_("Can't create %s: %s."), Folder, strerror(errno));
+          mutt_error(_("Can't create %s: %s."), Folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)
       }
     }
   }
 
   if (batch_mode)
   {
-    goto main_ok;
+    goto main_ok; // TEST22: neomutt -B
   }
 
   if (sendflags & SENDPOSTPONED)
@@ -642,6 +642,8 @@ int main(int argc, char **argv, char **env)
       mutt_flushinp();
     if (ci_send_message(SENDPOSTPONED, NULL, NULL, NULL, NULL) == 0)
       rc = 0;
+    // TEST23: neomutt -p (postponed message, cancel)
+    // TEST24: neomutt -p (no postponed message)
     log_queue_empty();
     repeat_error = true;
   }
@@ -670,7 +672,7 @@ int main(int argc, char **argv, char **env)
         if (url_parse_mailto(msg->env, &bodytext, argv[i]) < 0)
         {
           mutt_error(_("Failed to parse mailto: link"));
-          goto main_curses;
+          goto main_curses; // TEST25: neomutt mailto:
         }
       }
       else
@@ -680,7 +682,7 @@ int main(int argc, char **argv, char **env)
     if (!draft_file && Autoedit && !msg->env->to && !msg->env->cc)
     {
       mutt_error(_("No recipients specified."));
-      goto main_curses;
+      goto main_curses; // TEST26: neomutt -s test (with autoedit=yes)
     }
 
     if (subject)
@@ -706,7 +708,7 @@ int main(int argc, char **argv, char **env)
           if (edit_infile)
           {
             mutt_error(_("Cannot use -E flag with stdin"));
-            goto main_curses;
+            goto main_curses; // TEST27: neomutt -E -H -
           }
           fin = stdin;
         }
@@ -718,7 +720,7 @@ int main(int argc, char **argv, char **env)
           if (!fin)
           {
             mutt_perror(expanded_infile);
-            goto main_curses;
+            goto main_curses; // TEST28: neomutt -E -H missing
           }
         }
       }
@@ -739,7 +741,7 @@ int main(int argc, char **argv, char **env)
           mutt_file_fclose(&fin);
           mutt_perror(tempfile);
           FREE(&tempfile);
-          goto main_curses;
+          goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
         if (fin)
         {
@@ -756,7 +758,7 @@ int main(int argc, char **argv, char **env)
         {
           mutt_perror(tempfile);
           FREE(&tempfile);
-          goto main_curses;
+          goto main_curses; // TEST30: can't test
         }
       }
       /* If editing the infile, keep it around afterwards so
@@ -786,7 +788,7 @@ int main(int argc, char **argv, char **env)
         if (fstat(fileno(fin), &st) != 0)
         {
           mutt_perror(draft_file);
-          goto main_curses;
+          goto main_curses; // TEST31: can't test
         }
         context_hdr->content->length = st.st_size;
 
@@ -853,7 +855,7 @@ int main(int argc, char **argv, char **env)
         {
           mutt_error(_("%s: unable to attach file."), np->data);
           mutt_list_free(&attach);
-          goto main_curses;
+          goto main_curses; // TEST32: neomutt john@example.com -a missing
         }
       }
       mutt_list_free(&attach);
@@ -874,13 +876,13 @@ int main(int argc, char **argv, char **env)
         if (truncate(expanded_infile, 0) == -1)
         {
           mutt_perror(expanded_infile);
-          goto main_curses;
+          goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
         fout = mutt_file_fopen(expanded_infile, "a");
         if (!fout)
         {
           mutt_perror(expanded_infile);
-          goto main_curses;
+          goto main_curses; // TEST34: can't test
         }
 
         /* If the message was sent or postponed, these will already
@@ -902,7 +904,7 @@ int main(int argc, char **argv, char **env)
         if ((mutt_write_mime_body(msg->content, fout) == -1))
         {
           mutt_file_fclose(&fout);
-          goto main_curses;
+          goto main_curses; // TEST35: can't test
         }
         mutt_file_fclose(&fout);
       }
@@ -920,7 +922,7 @@ int main(int argc, char **argv, char **env)
     mutt_free_windows();
 
     if (rv != 0)
-      goto main_curses;
+      goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
   }
   else
   {
@@ -929,7 +931,7 @@ int main(int argc, char **argv, char **env)
       if (!mutt_buffy_check(false))
       {
         mutt_message(_("No mailbox with new mail."));
-        goto main_curses;
+        goto main_curses; // TEST37: neomutt -Z (no new mail)
       }
       folder[0] = '\0';
       mutt_buffy(folder, sizeof(folder));
@@ -942,20 +944,20 @@ int main(int argc, char **argv, char **env)
         OPT_NEWS = true;
         CurrentNewsSrv = nntp_select_server(NewsServer, false);
         if (!CurrentNewsSrv)
-          goto main_curses;
+          goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
       else
 #endif
           if (!Incoming)
       {
         mutt_error(_("No incoming mailboxes defined."));
-        goto main_curses;
+        goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
       folder[0] = '\0';
       mutt_select_file(folder, sizeof(folder), MUTT_SEL_FOLDER | MUTT_SEL_BUFFY, NULL, NULL);
       if (folder[0] == '\0')
       {
-        goto main_ok;
+        goto main_ok; // TEST40: neomutt -y (quit selection)
       }
     }
 
@@ -988,10 +990,10 @@ int main(int argc, char **argv, char **env)
       {
         case -1:
           mutt_perror(folder);
-          goto main_curses;
+          goto main_curses; // TEST41: neomutt -z -f missing
         case 1:
           mutt_error(_("Mailbox is empty."));
-          goto main_curses;
+          goto main_curses; // TEST42: neomutt -z -f /dev/null
       }
     }
 
@@ -1020,6 +1022,8 @@ int main(int argc, char **argv, char **env)
     mutt_log_stop();
     mutt_free_opts();
     mutt_free_windows();
+    // TEST43: neomutt (no change to mailbox)
+    // TEST44: neomutt (change mailbox)
   }
 
 main_ok:

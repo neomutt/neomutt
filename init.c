@@ -3602,7 +3602,7 @@ int mutt_query_variables(struct ListHead *queries)
       FREE(&token.data);
       FREE(&err.data);
 
-      return 1;
+      return 1; // TEST15: neomutt -Q missing
     }
     mutt_message("%s", err.data);
   }
@@ -3610,7 +3610,7 @@ int mutt_query_variables(struct ListHead *queries)
   FREE(&token.data);
   FREE(&err.data);
 
-  return 0;
+  return 0; // TEST16: neomutt -Q charset
 }
 
 /**
@@ -3645,7 +3645,7 @@ int mutt_dump_variables(int hide_sensitive)
       FREE(&token.data);
       FREE(&err.data);
 
-      return 1;
+      return 1; // TEST17: can't test
     }
     mutt_message("%s", err.data);
   }
@@ -3753,7 +3753,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   if ((uname(&utsname)) == -1)
   {
     mutt_perror(_("unable to determine nodename via uname()"));
-    return 1;
+    return 1; // TEST09: can't test
   }
 
   /* some systems report the FQDN instead of just the hostname */
@@ -3939,7 +3939,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
       if (access(np->data, F_OK))
       {
         mutt_perror(np->data);
-        return 1;
+        return 1; // TEST10: neomutt -F missing
       }
     }
   }
@@ -3978,7 +3978,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
       if (source_rc(buffer, &err) != 0)
       {
         mutt_error("%s", err.data);
-        need_pause = 1;
+        need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)
       }
     }
   }
@@ -3992,19 +3992,19 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
       if (source_rc(np->data, &err) != 0)
       {
         mutt_error("%s", err.data);
-        need_pause = 1;
+        need_pause = 1; // TEST12: neomutt (error in ~/.neomuttrc)
       }
     }
   }
 
   if (execute_commands(commands) != 0)
-    need_pause = 1;
+    need_pause = 1; // TEST13: neomutt -e broken
 
   if (need_pause && !OPT_NO_CURSES)
   {
     log_queue_flush(log_disp_terminal);
     if (mutt_any_key_to_continue(NULL) == 'q')
-      return 1;
+      return 1; // TEST14: neomutt -e broken (press 'q')
   }
 
   mutt_file_mkdir(Tmpdir, S_IRWXU);
