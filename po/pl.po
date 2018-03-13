@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-03-06 15:22+0100\n"
-"PO-Revision-Date: 2018-03-12 17:59+0100\n"
+"PO-Revision-Date: 2018-03-13 16:40+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -2847,7 +2847,7 @@ msgstr "Nie wskazano adresatów listu.\n"
 
 #: main.c:609
 msgid "Cannot use -E flag with stdin\n"
-msgstr "Nie można użyć przełącznika -E wraz ze stdin"
+msgstr "Nie można użyć przełącznika -E wraz ze stdin\n"
 
 #: main.c:762
 #, c-format
