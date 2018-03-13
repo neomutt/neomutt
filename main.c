@@ -285,7 +285,11 @@ int main(int argc, char **argv, char **env)
 
   mutt_message = mutt_error; /* send messages to stderr, too */
   mutt_perror = mutt_perror_debug;
-  (void) mutt_rand32();
+
+  int out = 0;
+  if (mutt_randbuf(&out, sizeof(out)) < 0)
+    goto main_exit;
+
   umask(077);
 
   /* Init envlist */

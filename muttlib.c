@@ -402,12 +402,12 @@ bool mutt_is_text_part(struct Body *b)
 
 static FILE *frandom;
 
-static void mutt_randbuf(void *out, size_t len)
+int mutt_randbuf(void *out, size_t len)
 {
   if (len > 1048576)
   {
     mutt_error(_("mutt_randbuf len=%zu"), len);
-    mutt_exit(1);
+    return -1;
   }
 /* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
 #if defined(SYS_getrandom) && defined(__linux__)
@@ -417,25 +417,27 @@ static void mutt_randbuf(void *out, size_t len)
     ret = syscall(SYS_getrandom, out, len, 0, 0, 0, 0);
   } while ((ret == -1) && (errno == EINTR));
   if (ret == len)
-    return;
-/* let's try urandom in case we're on an old kernel, or the user has
-   * configured selinux, seccomp or something to not allow getrandom */
+    return 0;
 #endif
+  /* let's try urandom in case we're on an old kernel, or the user has
+   * configured selinux, seccomp or something to not allow getrandom */
   if (!frandom)
   {
     frandom = fopen("/dev/urandom", "rb");
     if (!frandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
-      mutt_exit(1);
+      return -1;
     }
     setbuf(frandom, NULL);
   }
   if (fread(out, 1, len, frandom) != len)
   {
     mutt_error(_("read /dev/urandom: %s"), strerror(errno));
-    mutt_exit(1);
+    return -1;
   }
+
+  return 0;
 }
 
 static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
@@ -444,24 +446,27 @@ void mutt_rand_base32(void *out, size_t len)
 {
   uint8_t *p = out;
 
-  mutt_randbuf(p, len);
+  if (mutt_randbuf(p, len) < 0)
+    mutt_exit(1);
   for (size_t pos = 0; pos < len; pos++)
     p[pos] = base32[p[pos] % 32];
 }
 
 uint32_t mutt_rand32(void)
 {
-  uint32_t ret;
+  uint32_t ret = 0;
 
-  mutt_randbuf(&ret, sizeof(ret));
+  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+    mutt_exit(1);
   return ret;
 }
 
 uint64_t mutt_rand64(void)
 {
-  uint64_t ret;
+  uint64_t ret = 0;
 
-  mutt_randbuf(&ret, sizeof(ret));
+  if (mutt_randbuf(&ret, sizeof(ret)) < 0)
+    mutt_exit(1);
   return ret;
 }
 

@@ -345,6 +345,7 @@ size_t mutt_realpath(char *buf);
 void mutt_rand_base32(void *out, size_t len);
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
+int mutt_randbuf(void *out, size_t len);
 
 struct Address *alias_reverse_lookup(struct Address *a);
 
