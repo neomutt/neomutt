@@ -1331,54 +1331,36 @@ int mutt_index_menu(void)
         if (isdigit(LastKey))
           mutt_unget_event(LastKey, 0);
         buf[0] = 0;
-        if (mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0 || !buf[0])
+        if ((mutt_get_field(_("Jump to message: "), buf, sizeof(buf), 0) != 0) ||
+            (buf[0] == '\0'))
         {
-          if (menu->menu == MENU_PAGER)
-          {
-            op = OP_DISPLAY_MESSAGE;
-            continue;
-          }
-          break;
+          mutt_error(_("Nothing to do."));
         }
-
-        if (mutt_str_atoi(buf, &i) < 0)
-        {
+        else if (mutt_str_atoi(buf, &i) < 0)
           mutt_error(_("Argument must be a message number."));
-          break;
+        else if ((i < 1) || (i >= Context->msgcount))
+          mutt_error(_("Invalid message number."));
+        else if (!message_is_visible(Context, i - 1))
+          mutt_error(_("That message is not visible."));
+        else
+        {
+          struct Header *hdr = Context->hdrs[i - 1];
+
+          if (mutt_messages_in_thread(Context, hdr, 1) != 1)
+          {
+            mutt_uncollapse_thread(Context, hdr);
+            mutt_set_virtual(Context);
+          }
+          menu->current = hdr->virtual;
         }
 
-        if (i > 0 && i <= Context->msgcount)
+        if (menu->menu == MENU_PAGER)
         {
-          for (j = i - 1; j < Context->msgcount; j++)
-          {
-            if (Context->hdrs[j]->virtual != -1)
-              break;
-          }
-          if (j >= Context->msgcount)
-          {
-            for (j = i - 2; j >= 0; j--)
-            {
-              if (Context->hdrs[j]->virtual != -1)
-                break;
-            }
-          }
-
-          if (j >= 0)
-          {
-            menu->current = Context->hdrs[j]->virtual;
-            if (menu->menu == MENU_PAGER)
-            {
-              op = OP_DISPLAY_MESSAGE;
-              continue;
-            }
-            else
-              menu->redraw = REDRAW_MOTION;
-          }
-          else
-            mutt_error(_("That message is not visible."));
+          op = OP_DISPLAY_MESSAGE;
+          continue;
         }
         else
-          mutt_error(_("Invalid message number."));
+          menu->redraw = REDRAW_FULL;
 
         break;
 
