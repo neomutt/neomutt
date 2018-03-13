@@ -364,4 +364,7 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 bool message_is_tagged(struct Context *ctx, int index);
 bool message_is_visible(struct Context *ctx, int index);
 
+bool set_default_value(const char *name, intptr_t value);
+void reset_value(const char *name);
+
 #endif /* _MUTT_PROTOS_H */

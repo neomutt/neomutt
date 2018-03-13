@@ -67,6 +67,7 @@
 #endif
 
 char **envlist = NULL;
+void start_debug(void);
 
 void mutt_exit(int code)
 {
@@ -240,6 +241,8 @@ int main(int argc, char **argv, char **env)
   char *include_file = NULL;
   char *draft_file = NULL;
   char *new_magic = NULL;
+  char *dlevel = NULL;
+  char *dfile = NULL;
   struct Header *msg = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
@@ -351,12 +354,7 @@ int main(int argc, char **argv, char **env)
           dump_variables = true;
           break;
         case 'd':
-          if (mutt_str_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
-          {
-            mutt_error(_("Error: value '%s' is invalid for -d."), optarg);
-            goto main_exit;
-          }
-          printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
+          dlevel = optarg;
           break;
         case 'E':
           edit_infile = true;
@@ -373,11 +371,7 @@ int main(int argc, char **argv, char **env)
           break;
 #ifdef USE_NNTP
         case 'g': /* Specify a news server */
-        {
-          char buf[LONG_STRING];
-          snprintf(buf, sizeof(buf), "set news_server=%s", optarg);
-          mutt_list_insert_tail(&commands, mutt_str_strdup(buf));
-        }
+          set_default_value("news_server", (intptr_t) mutt_str_strdup(optarg));
           /* fallthrough */
         case 'G': /* List of newsgroups */
           flags |= MUTT_SELECT | MUTT_NEWS;
@@ -390,8 +384,7 @@ int main(int argc, char **argv, char **env)
           include_file = optarg;
           break;
         case 'l':
-          debugfile_cmdline = optarg;
-          printf(_("Debugging at file %s.\n"), debugfile_cmdline);
+          dfile = optarg;
           break;
         case 'm':
           new_magic = optarg;
@@ -456,6 +449,24 @@ int main(int argc, char **argv, char **env)
     goto main_exit;
   }
 
+  if (dfile)
+  {
+    set_default_value("debug_file", (intptr_t) mutt_str_strdup(dfile));
+  }
+  reset_value("debug_file");
+
+  if (dlevel)
+  {
+    short num = 0;
+    if ((mutt_str_atos(dlevel, &num) < 0) || (num < 0) || (num > 5))
+    {
+      mutt_error(_("Error: value '%s' is invalid for -d."), dlevel);
+      goto main_exit;
+    }
+    set_default_value("debug_level", (intptr_t) num);
+  }
+  reset_value("debug_level");
+
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
     msg = mutt_new_header();
@@ -505,13 +516,23 @@ int main(int argc, char **argv, char **env)
   if (rc != 0)
     goto main_curses;
 
+  /* The command line overrides the config */
+  if (dlevel)
+    reset_value("debug_level");
+  if (dfile)
+    reset_value("debug_file");
+  start_debug();
+
   mutt_list_free(&commands);
 
   /* Initialize crypto backends.  */
   crypt_init();
 
   if (new_magic)
+  {
     mx_set_magic(new_magic);
+    set_default_value("mbox_type", (intptr_t) MboxType);
+  }
 
   if (!STAILQ_EMPTY(&queries))
   {

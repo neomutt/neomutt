@@ -1899,11 +1899,7 @@ static void restore_default(struct Option *p)
       break;
     case DT_PATH:
       FREE((char **) p->var);
-      char *init = NULL;
-      if (mutt_str_strcmp(p->name, "debug_file") == 0 && debugfile_cmdline)
-        init = debugfile_cmdline;
-      else
-        init = (char *) p->initial;
+      char *init = (char *) p->initial;
       if (init)
       {
         char path[_POSIX_PATH_MAX];
@@ -1929,10 +1925,7 @@ static void restore_default(struct Option *p)
     case DT_NUMBER:
     case DT_SORT:
     case DT_MAGIC:
-      if (mutt_str_strcmp(p->name, "debug_level") == 0 && debuglevel_cmdline)
-        *((short *) p->var) = debuglevel_cmdline;
-      else
-        *((short *) p->var) = p->initial;
+      *((short *) p->var) = p->initial;
       break;
     case DT_REGEX:
     {
@@ -2075,7 +2068,7 @@ char **mutt_envlist(void)
  *
  * This method prepares and opens a new debug file for mutt_debug.
  */
-static void start_debug(void)
+void start_debug(void)
 {
   if (!DebugFile)
     return;
@@ -3808,23 +3801,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
 
-  /* Start up debugging mode if requested from cmdline */
-  if (debuglevel_cmdline > 0)
-  {
-    debuglevel = debuglevel_cmdline;
-    if (debugfile_cmdline)
-    {
-      DebugFile = mutt_str_strdup(debugfile_cmdline);
-    }
-    else
-    {
-      int i = mutt_option_index("debug_file");
-      if ((i >= 0) && (MuttVars[i].initial != 0))
-        DebugFile = mutt_str_strdup((const char *) MuttVars[i].initial);
-    }
-    start_debug();
-  }
-
   /* And about the host... */
 
   /*
@@ -4399,4 +4375,29 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
   strncpy(buffer, Completed, len - spaces);
 
   return 1;
+}
+
+bool set_default_value(const char *name, intptr_t value)
+{
+  if (!name)
+    return false;
+
+  int idx = mutt_option_index(name);
+  if (!idx)
+    return false;
+
+  MuttVars[idx].initial = value;
+  return true;
+}
+
+void reset_value(const char *name)
+{
+  if (!name)
+    return;
+
+  int idx = mutt_option_index(name);
+  if (!idx)
+    return;
+
+  restore_default(&MuttVars[idx]);
 }
