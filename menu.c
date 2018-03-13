@@ -132,7 +132,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_LLCORNER);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\224"); /* WACS_LLCORNER */
             else
               addch(ACS_LLCORNER);
@@ -145,7 +145,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_ULCORNER);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\214"); /* WACS_ULCORNER */
             else
               addch(ACS_ULCORNER);
@@ -158,7 +158,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_LTEE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\234"); /* WACS_LTEE */
             else
               addch(ACS_LTEE);
@@ -171,7 +171,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_HLINE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\200"); /* WACS_HLINE */
             else
               addch(ACS_HLINE);
@@ -184,7 +184,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_VLINE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\202"); /* WACS_VLINE */
             else
               addch(ACS_VLINE);
@@ -197,7 +197,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_TTEE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\254"); /* WACS_TTEE */
             else
               addch(ACS_TTEE);
@@ -210,7 +210,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
             else
               add_wch(WACS_BTEE);
 #else
-            else if (Charset_is_utf8)
+            else if (CharsetIsUtf8)
               addstr("\342\224\264"); /* WACS_BTEE */
             else
               addch(ACS_BTEE);

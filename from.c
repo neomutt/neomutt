@@ -70,7 +70,7 @@ int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
     if (q || !*p)
       return 0;
 
-    /* pipermail archives have the return_path obscured such as "me at mutt.org" */
+    /* pipermail archives have the return_path obscured such as "me at neomutt.org" */
     if (mutt_str_strncasecmp(p, " at ", 4) == 0)
     {
       p = strchr(p + 4, ' ');

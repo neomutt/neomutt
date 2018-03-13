@@ -1255,7 +1255,7 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
     if (k == 0)
       k = 1;
 
-    if (Charset_is_utf8)
+    if (CharsetIsUtf8)
     {
       /* zero width space, zero width no-break space */
       if (wc == 0x200B || wc == 0xFEFF)
@@ -1314,14 +1314,14 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
     }
 
     /* no-break space, narrow no-break space */
-    if (IsWPrint(wc) || (Charset_is_utf8 && (wc == 0x00A0 || wc == 0x202F)))
+    if (IsWPrint(wc) || (CharsetIsUtf8 && (wc == 0x00A0 || wc == 0x202F)))
     {
       if (wc == ' ')
       {
         space = ch;
       }
       /* no-break space, narrow no-break space */
-      else if (Charset_is_utf8 && (wc == 0x00A0 || wc == 0x202F))
+      else if (CharsetIsUtf8 && (wc == 0x00A0 || wc == 0x202F))
       {
         /* Convert non-breaking space to normal space. The local variable
          * `space' is not set here so that the caller of this function won't
@@ -1676,6 +1676,7 @@ static const struct Mapping PagerHelp[] = {
   { N_("NextPg"), OP_NEXT_PAGE },
   { NULL, 0 },
 };
+
 static const struct Mapping PagerHelpExtra[] = {
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
   { N_("Del"), OP_DELETE },

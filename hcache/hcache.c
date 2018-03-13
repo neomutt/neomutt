@@ -627,7 +627,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
 {
   unsigned char *d = NULL;
   struct Header nh;
-  bool convert = !Charset_is_utf8;
+  bool convert = !CharsetIsUtf8;
 
   *off = 0;
   d = lazy_malloc(sizeof(union Validate));
@@ -685,7 +685,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
   struct Header *h = mutt_new_header();
-  bool convert = !Charset_is_utf8;
+  bool convert = !CharsetIsUtf8;
 
   /* skip validate */
   off += sizeof(union Validate);

@@ -252,9 +252,9 @@ int main(int argc, char **argv, char **env)
      */
     for (; optind < argc; optind++)
     {
-      if (argv[optind][0] == '-' && argv[optind][1] != '\0')
+      if ((argv[optind][0] == '-') && (argv[optind][1] != '\0'))
       {
-        if (argv[optind][1] == '-' && argv[optind][2] == '\0')
+        if ((argv[optind][1] == '-') && (argv[optind][2] == '\0'))
           double_dash = optind; /* quit outer loop after getopt */
         break;                  /* drop through to getopt */
       }
@@ -278,17 +278,9 @@ int main(int argc, char **argv, char **env)
         case 'a':
           mutt_list_insert_tail(&attach, mutt_str_strdup(optarg));
           break;
-
-        case 'F':
-          /* mutt_str_replace (&Muttrc, optarg); */
-          mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
+        case 'B':
+          batch_mode = true;
           break;
-
-        case 'f':
-          mutt_str_strfcpy(folder, optarg, sizeof(folder));
-          explicit_folder = true;
-          break;
-
         case 'b':
         case 'c':
           if (!msg)
@@ -300,15 +292,9 @@ int main(int argc, char **argv, char **env)
           else
             msg->env->cc = mutt_addr_parse_list(msg->env->cc, optarg);
           break;
-
         case 'D':
           dump_variables = true;
           break;
-
-        case 'B':
-          batch_mode = true;
-          break;
-
         case 'd':
           if (mutt_str_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
           {
@@ -317,92 +303,77 @@ int main(int argc, char **argv, char **env)
           }
           printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
           break;
-
         case 'E':
           edit_infile = true;
           break;
-
         case 'e':
           mutt_list_insert_tail(&commands, mutt_str_strdup(optarg));
           break;
-
-        case 'H':
-          draft_file = optarg;
+        case 'F':
+          mutt_list_insert_tail(&Muttrc, mutt_str_strdup(optarg));
           break;
-
-        case 'i':
-          include_file = optarg;
+        case 'f':
+          mutt_str_strfcpy(folder, optarg, sizeof(folder));
+          explicit_folder = true;
           break;
-
-        case 'l':
-          debugfile_cmdline = optarg;
-          printf(_("Debugging at file %s.\n"), debugfile_cmdline);
-          break;
-
-        case 'm':
-          /* should take precedence over .neomuttrc setting, so save it for later */
-          new_magic = optarg;
-          break;
-
-        case 'n':
-          flags |= MUTT_NOSYSRC;
-          break;
-
-        case 'p':
-          sendflags |= SENDPOSTPONED;
-          break;
-
-        case 'Q':
-          mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
-          break;
-
-        case 'R':
-          flags |= MUTT_RO; /* read-only mode */
-          break;
-
-        case 'S':
-          hide_sensitive = true;
-          break;
-
-        case 's':
-          subject = optarg;
-          break;
-
-        case 'v':
-          version++;
-          break;
-
-        case 'x': /* mailx compatible send mode */
-          sendflags |= SENDMAILX;
-          break;
-
-        case 'y': /* My special hack mode */
-          flags |= MUTT_SELECT;
-          break;
-
 #ifdef USE_NNTP
         case 'g': /* Specify a news server */
         {
           char buf[LONG_STRING];
-
           snprintf(buf, sizeof(buf), "set news_server=%s", optarg);
           mutt_list_insert_tail(&commands, mutt_str_strdup(buf));
         }
           /* fallthrough */
-
         case 'G': /* List of newsgroups */
           flags |= MUTT_SELECT | MUTT_NEWS;
           break;
 #endif
-
-        case 'z':
-          flags |= MUTT_IGNORE;
+        case 'H':
+          draft_file = optarg;
           break;
-
+        case 'i':
+          include_file = optarg;
+          break;
+        case 'l':
+          debugfile_cmdline = optarg;
+          printf(_("Debugging at file %s.\n"), debugfile_cmdline);
+          break;
+        case 'm':
+          new_magic = optarg;
+          break;
+        case 'n':
+          flags |= MUTT_NOSYSRC;
+          break;
+        case 'p':
+          sendflags |= SENDPOSTPONED;
+          break;
+        case 'Q':
+          mutt_list_insert_tail(&queries, mutt_str_strdup(optarg));
+          break;
+        case 'R':
+          flags |= MUTT_RO; /* read-only mode */
+          break;
+        case 'S':
+          hide_sensitive = true;
+          break;
+        case 's':
+          subject = optarg;
+          break;
+        case 'v':
+          version++;
+          break;
+        case 'x': /* mailx compatible send mode */
+          sendflags |= SENDMAILX;
+          break;
+        case 'y': /* My special hack mode */
+          flags |= MUTT_SELECT;
+          break;
         case 'Z':
           flags |= MUTT_BUFFY | MUTT_IGNORE;
           break;
-
+        case 'z':
+          flags |= MUTT_IGNORE;
+          break;
         default:
           usage();
       }
@@ -440,7 +411,7 @@ int main(int argc, char **argv, char **env)
   mutt_init_windows();
 
   /* This must come before mutt_init() because curses needs to be started
-     before calling the init_pair() function to set the color scheme.  */
+   * before calling the init_pair() function to set the color scheme.  */
   if (!OPT_NO_CURSES)
   {
     start_curses();
@@ -465,6 +436,7 @@ int main(int argc, char **argv, char **env)
       mutt_list_insert_tail(&queries, mutt_str_strdup(argv[optind]));
     return mutt_query_variables(&queries);
   }
+
   if (dump_variables)
     return mutt_dump_variables(hide_sensitive);
 
@@ -518,13 +490,13 @@ int main(int argc, char **argv, char **env)
 #ifdef USE_NNTP
     skip |= mx_is_nntp(fpath);
 #endif
-    if (!skip && stat(fpath, &sb) == -1 && errno == ENOENT)
+    if (!skip && (stat(fpath, &sb) == -1) && (errno == ENOENT))
     {
       char msg2[STRING];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Folder);
       if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
-        if (mkdir(fpath, 0700) == -1 && errno != EEXIST)
+        if ((mkdir(fpath, 0700) == -1) && (errno != EEXIST))
           mutt_error(_("Can't create %s: %s."), Folder, strerror(errno));
       }
     }
@@ -689,7 +661,7 @@ int main(int argc, char **argv, char **env)
         context_hdr = mutt_new_header();
         context_hdr->offset = 0;
         context_hdr->content = mutt_new_body();
-        if (fstat(fileno(fin), &st))
+        if (fstat(fileno(fin), &st) != 0)
         {
           perror(draft_file);
           exit(1);
@@ -831,7 +803,7 @@ int main(int argc, char **argv, char **env)
     if (!OPT_NO_CURSES)
       mutt_endwin(NULL);
 
-    if (rv)
+    if (rv != 0)
       exit(1);
   }
   else
@@ -843,7 +815,7 @@ int main(int argc, char **argv, char **env)
         mutt_endwin(_("No mailbox with new mail."));
         exit(1);
       }
-      folder[0] = 0;
+      folder[0] = '\0';
       mutt_buffy(folder, sizeof(folder));
     }
     else if (flags & MUTT_SELECT)
@@ -866,9 +838,9 @@ int main(int argc, char **argv, char **env)
         mutt_endwin(_("No incoming mailboxes defined."));
         exit(1);
       }
-      folder[0] = 0;
+      folder[0] = '\0';
       mutt_select_file(folder, sizeof(folder), MUTT_SEL_FOLDER | MUTT_SEL_BUFFY, NULL, NULL);
-      if (!folder[0])
+      if (folder[0] == '\0')
       {
         mutt_endwin(NULL);
         exit(0);

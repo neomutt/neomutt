@@ -38,7 +38,7 @@ exitVar = ''
 print("Type help to learn how to use me.")
 
 while exitVar.lower() != 'quit':
-    inputStuffs = input('mutt#: ')
+    inputStuffs = input('neomutt#: ')
     if (inputStuffs.lower() == 'help'):
         helpfunc()
 

@@ -69,6 +69,8 @@ void            mutt_addr_free(struct Address **p);
 int             mutt_addr_has_recips(struct Address *a);
 bool            mutt_addr_is_intl(struct Address *a);
 bool            mutt_addr_is_local(struct Address *a);
+int             mutt_addrlist_to_intl(struct Address *a, char **err);
+int             mutt_addrlist_to_local(struct Address *a);
 int             mutt_addr_mbox_to_udomain(const char *mbox, char **user, char **domain);
 struct Address *mutt_addr_new(void);
 struct Address *mutt_addr_parse_list2(struct Address *p, const char *s);

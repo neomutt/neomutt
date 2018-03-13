@@ -6522,7 +6522,7 @@ msgstr ""
 
 #: version.c:84
 msgid ""
-"To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
+"To learn more about NeoMutt, visit: https://www.neomutt.org\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
 "    https://github.com/neomutt/neomutt/issues\n"
 "or send an email to: <neomutt-devel@neomutt.org>\n"

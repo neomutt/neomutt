@@ -24,43 +24,6 @@
  * @page file File management functions
  *
  * Commonly used file/dir management routines.
- *
- * | Function                      | Description
- * | :---------------------------- | :-----------------------------------------------------------
- * | mutt_file_basename()          | Find the last component for a pathname
- * | mutt_file_check_empty()       | Is the mailbox empty
- * | mutt_file_chmod()             | Set permissions of a file
- * | mutt_file_chmod_add()         | Add permissions to a file
- * | mutt_file_chmod_add_stat()    | Add permissions to a file
- * | mutt_file_chmod_rm()          | Remove permissions from a file
- * | mutt_file_chmod_rm_stat()     | Remove permissions from a file
- * | mutt_file_concat_path()       | Join a directory name and a filename
- * | mutt_file_concatn_path()      | Concatenate directory and filename
- * | mutt_file_copy_bytes()        | Copy some content from one file to another
- * | mutt_file_copy_stream()       | Copy the contents of one file into another
- * | mutt_file_decrease_mtime()    | Decrease a file's modification time by 1 second
- * | mutt_file_dirname()           | Return a path up to, but not including, the final '/'
- * | mutt_file_fclose()            | Close a FILE handle (and NULL the pointer)
- * | mutt_file_fopen()             | Call fopen() safely
- * | mutt_file_fsync_close()       | Flush the data, before closing a file (and NULL the pointer)
- * | mutt_file_lock()              | (try to) lock a file
- * | mutt_file_mkdir()             | Recursively create directories
- * | mutt_file_open()              | Open a file
- * | mutt_file_quote_filename()    | Quote a filename to survive the shell's quoting rules
- * | mutt_file_read_keyword()      | Read a keyword from a file
- * | mutt_file_read_line()         | Read a line from a file
- * | mutt_file_rename()            | Rename a file
- * | mutt_file_rmtree()            | Recursively remove a directory
- * | mutt_file_safe_rename()       | NFS-safe renaming of files
- * | mutt_file_sanitize_filename() | Replace unsafe characters in a filename
- * | mutt_file_sanitize_regex()    | Escape any regex-magic characters in a string
- * | mutt_file_set_mtime()         | Set the modification time of one file from another
- * | mutt_file_symlink()           | Create a symlink
- * | mutt_file_to_absolute_path()  | Convert relative filepath to an absolute path
- * | mutt_file_touch_atime()       | Set the access time to current time
- * | mutt_file_unlink()            | Delete a file, carefully
- * | mutt_file_unlink_empty()      | Delete a file if it's empty
- * | mutt_file_unlock()            | Unlock a file previously locked by mutt_file_lock()
  */
 
 #include "config.h"

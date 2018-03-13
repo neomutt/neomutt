@@ -386,7 +386,7 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
   omask = umask(mh_umask(dest));
   while (true)
   {
-    snprintf(path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%" PRIu64, dest->path,
+    snprintf(path, _POSIX_PATH_MAX, "%s/.neomutt-%s-%d-%" PRIu64, dest->path,
              NONULL(ShortHostname), (int) getpid(), mutt_rand64());
     fd = open(path, O_WRONLY | O_EXCL | O_CREAT, 0666);
     if (fd == -1)

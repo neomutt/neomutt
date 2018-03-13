@@ -24,12 +24,6 @@
  * @page idna Handling of international domain names
  *
  * Handling of international domain names
- *
- * | Function                  | Description
- * | :------------------------ | :---------------------------------------------------------
- * | mutt_idna_intl_to_local() | Convert an email's domain from Punycode
- * | mutt_idna_local_to_intl() | Convert an email's domain to Punycode
- * | mutt_idna_to_ascii_lz()   | Convert a domain to Punycode
  */
 
 #include "config.h"

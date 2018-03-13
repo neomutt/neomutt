@@ -6,14 +6,14 @@
 .BR mailcap (5),
 .BR maildir (5),
 .BR mbox (5),
-.BR mutt (1),
+.BR neomutt (1),
 .BR printf (3),
 .BR regex (7),
 .BR strftime (3)
 .PP
 The Neomutt Manual
 .PP
-The Neomutt home page: http://www.neomutt.org/
+The Neomutt home page: https://www.neomutt.org
 .SH AUTHOR
 .PP
 Michael Elkins, and others.  Use <neomutt-devel@neomutt.org> to contact

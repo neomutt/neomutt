@@ -10,23 +10,23 @@ Notes
   or
 	S-Lang, ftp://space.mit.edu/pub/davis/slang/
 
-- Mutt needs an implementation of the iconv API for character set
+- NeoMutt needs an implementation of the iconv API for character set
   conversions.  A free one can be found under the following URL:
 
 	http://www.gnu.org/software/libiconv/
 
-- For building the manual, mutt needs the DocBook XSL stylesheets
+- For building the manual, neomutt needs the DocBook XSL stylesheets
   as well as the DocBook DTD as of version 4.2 installed locally.
 
 
 Installation
 ============
 
-Installing Mutt is rather painless through the use of the GNU
-autoconf package.  Simply untar the Mutt distribution, and run the
+Installing NeoMutt is rather painless through the use of the GNU
+autoconf package.  Simply untar the NeoMutt distribution, and run the
 ``configure'' script.  If you have obtained the distribution from
 the Mercurial repository, run the ``prepare'' script with the same command
-line parameters you would pass to configure.  It will set up mutt's
+line parameters you would pass to configure.  It will set up neomutt's
 build environment and add the files which are present in the tar
 balls, but not in the Mercurial repository.
 
@@ -35,7 +35,7 @@ needs to know in order to compile.  However, there are a few options
 to ``configure'' to help it out, or change the default behavior:
 
 --prefix=DIR
-	install Mutt in DIR instead of /usr/local
+	install NeoMutt in DIR instead of /usr/local
 
 --with-curses=DIR
 	use the curses lib in DIR/lib.  If you have ncurses, ``configure''
@@ -46,7 +46,7 @@ to ``configure'' to help it out, or change the default behavior:
 	use the S-Lang library instead of ncurses.  This library seems to
 	work better for some people because it is less picky about proper
 	termcap entries than ncurses.  It is recommended that you use at
-	*least* version 0.99-38 with Mutt.
+	*least* version 0.99-38 with NeoMutt.
 
 --with-mailpath=DIR
 	specify where the spool mailboxes are located on your system
@@ -76,25 +76,25 @@ to ``configure'' to help it out, or change the default behavior:
 	Use the Cyrus SASL library for IMAP or POP authentication. This
 	library provides generic support for several authentication methods,
 	and more may be added by the system administrator without recompiling
-	mutt. SASL may also be able to encrypt your mail session even if
+	neomutt. SASL may also be able to encrypt your mail session even if
 	SSL is not available.
 
 --disable-nls
-	This switch disables mutt's native language support.
+	This switch disables neomutt's native language support.
 
 --enable-flock
 	use flock() to lock files.
 
 --disable-fcntl
-	by default, Mutt uses fcntl() to lock files.  Over NFS this can
+	by default, NeoMutt uses fcntl() to lock files.  Over NFS this can
 	result in poor performance on read/write.
 
 --enable-locales-fix
 	on some systems, the result of isprint() can't be used reliably
 	to decide which characters are printable, even if you set the
-	LANG environment variable.  If you set this option, Mutt will
+	LANG environment variable.  If you set this option, NeoMutt will
 	assume all characters in the ISO-8859-* range are printable.  If
-	you leave it unset, Mutt will attempt to use isprint() if either
+	you leave it unset, NeoMutt will attempt to use isprint() if either
 	of the environment variables LANG, LC_ALL or LC_CTYPE is set,
 	and will revert to the ISO-8859-* range if they aren't.
 	If you need --enable-locales-fix then you will probably need
@@ -103,22 +103,22 @@ to ``configure'' to help it out, or change the default behavior:
 	LC_ALL or LC_CTYPE instead).
 
 --without-wc-funcs
-	by default Mutt uses the functions mbrtowc(), wctomb() and
+	by default NeoMutt uses the functions mbrtowc(), wctomb() and
 	wcwidth() provided by the system, when they are available.
-	With this option Mutt will use its own version of those
+	With this option NeoMutt will use its own version of those
 	functions, which should work with 8-bit display charsets, UTF-8,
 	euc-jp or shift_jis, even if the system doesn't normally support
 	those multibyte charsets.
 
-	If you find Mutt is displaying non-ascii characters as octal
+	If you find NeoMutt is displaying non-ascii characters as octal
 	escape sequences (e.g. \243), even though you have set LANG and
 	LC_CTYPE correctly, then you might find you can solve the problem
 	with either or both of --enable-locales-fix and --without-wc-funcs.
 
 Once ``configure'' has completed, simply type ``make install.''
 
-Mutt should compile cleanly (without errors) and you should end up with a
-binary called ``mutt.''  If you get errors about undefined symbols like
+NeoMutt should compile cleanly (without errors) and you should end up with a
+binary called ``neomutt.''  If you get errors about undefined symbols like
 A_NORMAL or KEY_MIN, then you probably don't have a SysV compliant curses
 library.  You should install either ncurses or S-Lang (see above), and then
 run the ``configure'' script again.
@@ -130,10 +130,10 @@ Please note that "VPATH" builds currently only work with GNU make (gmake).
 Character set support
 =====================
 
-Mutt no longer contains functions for doing character set conversion.
+NeoMutt no longer contains functions for doing character set conversion.
 Instead, it expects the iconv functions (iconv_open, iconv,
 iconv_close) to be provided. Most up-to-date systems provide these
-functions, often as part of the C library. If you are installing Mutt
+functions, often as part of the C library. If you are installing NeoMutt
 on a system which does not have them, it is recommended that you
 install Bruno Haible's portable libiconv library, which you can obtain
 from:
@@ -146,21 +146,21 @@ version of iconv.
 
 
 If you decide to use your system's iconv implementation, you may
-need to tell mutt about implementation-defined names for some
+need to tell neomutt about implementation-defined names for some
 character sets.  Sample configuration files for various systems can
 be found in the directory contrib/iconv/ in this source
 distribution, and will be installed in the samples/iconv directory
-as part of mutt's documentation.
+as part of neomutt's documentation.
 
 In order to use these sample configuration files, just put a line
 like
 
-     source /usr/local/doc/mutt/samples/iconv/iconv.osf1-4.0d.rc
+     source /usr/local/doc/neomutt/samples/iconv/iconv.osf1-4.0d.rc
 
 into your system's global Muttrc, which normally resides in /etc or
 /usr/local/etc.
 
 
-If you really want to, you can configure Mutt --disable-iconv, but
+If you really want to, you can configure NeoMutt --disable-iconv, but
 there will then be no character set conversion.
 

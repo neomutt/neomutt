@@ -25,23 +25,6 @@
  * @page hash Hash table data structure
  *
  * Hash table data structure.
- *
- * | Function                   | Description
- * | :------------------------- | :---------------------------------------------------------
- * | mutt_hash_create()         | Create a new Hash table (with string keys)
- * | mutt_hash_delete()         | Remove an element from a Hash table
- * | mutt_hash_destroy()        | Destroy a hash table
- * | mutt_hash_find()           | Find the HashElem data in a Hash table element using a key
- * | mutt_hash_find_bucket()    | Find the HashElem in a Hash table element using a key
- * | mutt_hash_find_elem()      | Find the HashElem in a Hash table element using a key
- * | mutt_hash_insert()         | Add a new element to the Hash table (with string keys)
- * | mutt_hash_int_create()     | Create a new Hash table (with integer keys)
- * | mutt_hash_int_delete()     | Remove an element from a Hash table
- * | mutt_hash_int_find()       | Find the HashElem data in a Hash table element using a key
- * | mutt_hash_int_insert()     | Add a new element to the Hash table (with integer keys)
- * | mutt_hash_set_destructor() | Set the destructor for a Hash Table
- * | mutt_hash_typed_insert()   | XXX
- * | mutt_hash_walk()           | Iterate through all the HashElem's in a Hash table
  */
 
 #include "config.h"

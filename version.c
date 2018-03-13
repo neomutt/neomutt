@@ -81,7 +81,7 @@ static const char *Obtaining =
        "02110-1301, USA.\n");
 
 static const char *ReachingUs =
-    N_("To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
+    N_("To learn more about NeoMutt, visit: https://www.neomutt.org\n"
        "If you find a bug in NeoMutt, please raise an issue at:\n"
        "    https://github.com/neomutt/neomutt/issues\n"
        "or send an email to: <neomutt-devel@neomutt.org>\n");

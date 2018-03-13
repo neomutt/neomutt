@@ -24,10 +24,6 @@
  * @page exit Leave the program NOW
  *
  * The default behaviour on a critical error is to notify the user, then stop.
- *
- * | Function    | Description
- * | :---------- | :----------------
- * | mutt_exit() | Leave NeoMutt NOW
  */
 
 #include "config.h"

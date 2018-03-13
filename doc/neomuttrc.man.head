@@ -28,7 +28,7 @@
 ..
 .TH neomuttrc 5 "September 2002" Unix "User Manuals"
 .SH NAME
-neomuttrc \- Configuration file for the Mutt Mail User Agent
+neomuttrc \- Configuration file for the NeoMutt Mail User Agent
 .SH DESCRIPTION
 .PP
 A neomutt configuration file consists of a series of \(lqcommands\(rq.
@@ -173,7 +173,7 @@ Valid maps are:
 .BR pager ", " pgp ", " postpone ", "
 .BR mix .
 .IP
-For more information on keys and functions, please consult the Mutt
+For more information on keys and functions, please consult the NeoMutt
 Manual. Note that the function name is to be specified without
 angle brackets.
 .TP
@@ -208,15 +208,15 @@ the given \fIcommand\fP is executed.  When multiple
 which they occur in the configuration file.
 .TP
 \fBtimeout-hook\fP \fIcommand\fP
-Run a command periodically when Mutt checks for new mail.
+Run a command periodically when NeoMutt checks for new mail.
 This hook is called every $timeout seconds.
 .TP
 \fBstartup-hook\fP \fIcommand\fP
-Before neomutt opens the first mailbox when first starting, mutt will run the
+Before neomutt opens the first mailbox when first starting, neomutt will run the
 startup hook for the given \fIcommand\fP.
 .TP
 \fBshutdown-hook\fP \fIcommand\fP
-Before neomutt is about to exit, and before the mailbox is closed, mutt will run
+Before neomutt is about to exit, and before the mailbox is closed, neomutt will run
 the shutdown hook for the given \fIcommand\fP.
 .TP
 \fBfolder-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
@@ -284,7 +284,7 @@ the above mentioned list of ignored headers.
 \fBunsubscribe\fP \fIregex\fP [ \fIregex\fP ... ]
 .fi
 .IP
-Mutt maintains two lists of mailing list address patterns, a list of
+NeoMutt maintains two lists of mailing list address patterns, a list of
 subscribed mailing lists, and a list of known mailing lists.  All
 subscribed mailing lists are known.  Patterns use regular expressions.
 .IP
@@ -382,7 +382,7 @@ a recipient.
 .IP
 These commands provide a way to handle compressed folders. The given
 \fBregex\fP specifies which folders are taken as compressed (e.g.
-"\fI\\\\.gz$\fP"). The commands tell Mutt how to uncompress a folder
+"\fI\\\\.gz$\fP"). The commands tell NeoMutt how to uncompress a folder
 (\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a
 compressed mail to a compressed folder (\fBappend-hook\fP). The
 \fIcommand\fP string is the
@@ -405,7 +405,7 @@ This command adds the named \fIstring\fP to the keyboard buffer.
 These commands are used to set and manipulate configuration
 variables.
 .IP
-Mutt knows four basic types of variables: boolean, number, string
+NeoMutt knows four basic types of variables: boolean, number, string
 and quadoption.  Boolean variables can be \fBset\fP (true),
 \fBunset\fP (false), or \fBtoggle\fPd. Number variables can be assigned
 a positive integer value.
@@ -439,7 +439,7 @@ The given file will be evaluated as a configuration file.
 These commands define spam-detection patterns from external spam
 filters, so that neomutt can sort, limit, and search on
 ``spam tags'' or ``spam attributes'', or display them
-in the index. See the Mutt manual for details.
+in the index. See the NeoMutt manual for details.
 .PP
 .nf
 \fBsubjectrx\fP \fIpattern\fP \fIreplacement\fP
@@ -473,7 +473,7 @@ can be any of the \fB-hook\fP commands documented above.
 .fi
 .IP
 These commands allow the user to modify the list of allowed header
-fields in a \fImailto:\fP URL that Mutt will include in the
+fields in a \fImailto:\fP URL that NeoMutt will include in the
 the generated message.  By default the list contains
 \fBsubject\fP and \fBbody\fP, as specified by RFC2368; and
 \fBcc\fP, \fBin-reply-to\fP, and \fBreferences\fP to aid with
@@ -507,7 +507,7 @@ Additionally, you can negate a pattern by prepending a bang
 (\(lq()\(rq). Example: \(lq!(~t neomutt|~c mutt) ~f elkins\(rq.
 .SS Simple Patterns
 .PP
-Mutt understands the following simple patterns:
+NeoMutt understands the following simple patterns:
 .P
 .PD 0
 .TP 12
@@ -685,7 +685,7 @@ two-digit date, optionally followed by a two-digit month, optionally
 followed by a year specifications.  Omitted fields default to the
 current month and year.
 .PP
-Mutt understands either two or four digit year specifications.  When
+NeoMutt understands either two or four digit year specifications.  When
 given a two-digit year, neomutt will interpret values less than 70 as
 lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938,
 and \(lq00\(rq is interpreted as 2000), and values

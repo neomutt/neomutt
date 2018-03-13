@@ -24,36 +24,6 @@
  * @page charset Conversion between different character encodings
  *
  * Conversion between different character encodings
- *
- * | Data                | Description
- * | :------------------ | :--------------------------------------------------
- * | #AssumedCharset     | Encoding schemes for messages without indication
- * | #Charset            | User's choice of character set
- * | #Charset_is_utf8    | Is the user's current character set utf-8?
- * | #PreferredMIMENames | Lookup table of preferred charsets
- * | #ReplacementChar    | When a Unicode character can't be displayed, use this instead
- *
- * | Function                       | Description
- * | :----------------------------- | :---------------------------------------------------------
- * | mutt_ch_canonical_charset()      | Canonicalise the charset of a string
- * | mutt_ch_charset_lookup()         | Look for a replacement character set
- * | mutt_ch_check_charset()          | Does iconv understand a character set?
- * | mutt_ch_choose()                 | Figure the best charset to encode a string
- * | mutt_ch_chscmp()                 | Are the names of two character sets equivalent?
- * | mutt_ch_convert_nonmime_string() | Try to convert a string using a list of character sets
- * | mutt_ch_convert_string()         | Convert a string between encodings
- * | mutt_ch_fgetconv()               | Convert a file's character set
- * | mutt_ch_fgetconv_close()         | Close an fgetconv handle
- * | mutt_ch_fgetconv_open()          | Prepare a file for charset conversion
- * | mutt_ch_fgetconvs()              | Convert a file's charset into a string buffer
- * | mutt_ch_get_default_charset()    | Get the default character set
- * | mutt_ch_iconv()                  | Change the encoding of a string
- * | mutt_ch_iconv_lookup()           | Look for a replacement character set
- * | mutt_ch_iconv_open()             | Set up iconv for conversions
- * | mutt_ch_lookup_add()             | Add a new character set lookup
- * | mutt_ch_lookup_remove()          | Remove all the character set lookups
- * | mutt_ch_set_charset()            | Update the records for a new character set
- * | mutt_ch_set_langinfo_charset()   | Set the user's choice of character set
  */
 
 #include "config.h"
@@ -78,8 +48,8 @@
 #define EILSEQ EINVAL
 #endif
 
-char *AssumedCharset; /**< Encoding schemes for messages without indication */
-char *Charset;        /**< User's choice of character set */
+char *AssumedCharset; /**< Config: Encoding schemes for messages without indication */
+char *Charset;        /**< Config: User's choice of character set */
 
 /**
  * ReplacementChar - When a Unicode character can't be displayed, use this instead
@@ -87,9 +57,9 @@ char *Charset;        /**< User's choice of character set */
 wchar_t ReplacementChar = '?';
 
 /**
- * Charset_is_utf8 - Is the user's current character set utf-8?
+ * CharsetIsUtf8 - Is the user's current character set utf-8?
  */
-bool Charset_is_utf8 = false;
+bool CharsetIsUtf8 = false;
 
 /**
  * struct Lookup - Regex to String lookup table
@@ -936,12 +906,12 @@ void mutt_ch_set_charset(char *charset)
 
   if (mutt_ch_is_utf8(buffer))
   {
-    Charset_is_utf8 = true;
+    CharsetIsUtf8 = true;
     ReplacementChar = 0xfffd; /* replacement character */
   }
   else
   {
-    Charset_is_utf8 = false;
+    CharsetIsUtf8 = false;
     ReplacementChar = '?';
   }
 

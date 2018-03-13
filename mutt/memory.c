@@ -27,13 +27,6 @@
  *
  * @note If any of the allocators fail, the user is notified and the program is
  *       stopped immediately.
- *
- * | Function           | Description
- * | :----------------- | :-----------------------------------
- * | mutt_mem_calloc()  | Allocate zeroed memory on the heap
- * | mutt_mem_free()    | Release memory allocated on the heap
- * | mutt_mem_malloc()  | Allocate memory on the heap
- * | mutt_mem_realloc() | Resize a block of memory on the heap
  */
 
 #include "config.h"

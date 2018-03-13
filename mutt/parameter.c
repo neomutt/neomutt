@@ -24,16 +24,6 @@
  * @page parameter Store attributes associated with a MIME part
  *
  * Store attributes associated with a MIME part
- *
- * | Function                | Description
- * | :---------------------- | :------------------------------
- * | mutt_param_cmp_strict() | Strictly compare two ParameterLists
- * | mutt_param_delete()     | Delete a matching Parameter
- * | mutt_param_free()       | Free a ParameterList
- * | mutt_param_free_one()   | Free a Parameter
- * | mutt_param_get()        | Find a matching Parameter
- * | mutt_param_new()        | Create a new Parameter
- * | mutt_param_set()        | Set a Parameter
  */
 
 #include "config.h"

@@ -28,7 +28,7 @@ sorted through them, fixed them up and documented them.
 | Encrypt-to-Self      | Save a self-encrypted copy of emails
 | Fmemopen             | Replace some temporary files with memory buffers
 | Forgotten Attachment | Alert user when (s)he forgets to attach a file to an outgoing email.
-| Global Hooks         | Define actions to run globally within Mutt
+| Global Hooks         | Define actions to run globally within NeoMutt
 | Ifdef                | Conditional config options
 | Index Color          | Custom rules for theming the email index
 | Initials Expando     | Expando for author's initials
@@ -56,8 +56,8 @@ sorted through them, fixed them up and documented them.
 | ---------------------- | ---------------------------------------------
 | Header Cache Benchmark | Script to test the speed of the header cache
 | Keybase                | Keybase Integration
-| Useful programs        | List of useful programs interacting with mutt
-| Vi Keys                | Easy and clean Vi-keys for Mutt
+| Useful programs        | List of useful programs interacting with NeoMutt
+| Vi Keys                | Easy and clean Vi-keys for NeoMutt
 | Vim Syntax             | Vim Syntax File
 
 ## Where is NeoMutt?
@@ -65,12 +65,12 @@ sorted through them, fixed them up and documented them.
 - Source Code:     https://github.com/neomutt/neomutt
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
-- Website:         http://www.neomutt.org/
+- Website:         https://www.neomutt.org
 - IRC:             irc://irc.freenode.net/neomutt - please be patient.
   We're a small group, so our answer might take some time.
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
-- Development:     http://www.neomutt.org/dev.html
+- Development:     https://www.neomutt.org/dev.html
 
 ## NeoMutt Developers
 
@@ -124,5 +124,5 @@ author Michael Elkins and all the people that have contributed to Mutt during
 its long history, see the Acknowledgements section of the user manual for a
 detailed list.
 
-http://www.neomutt.org/guide/miscellany.html#acknowledgements
+https://www.neomutt.org/guide/miscellany.html#acknowledgements
 

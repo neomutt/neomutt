@@ -24,10 +24,6 @@
  * @page debug Debug messages
  *
  * Output debugging messages, suitable for a developer.
- *
- * | Function          | Description
- * | :---------------- | :--------------------------------
- * | mutt_debug_real() | Output some debugging information
  */
 
 #include "config.h"
