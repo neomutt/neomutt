@@ -1430,6 +1430,11 @@ int mutt_index_menu(void)
 
         if (i > 0 && i <= Context->msgcount)
         {
+          int msg = mutt_parent_message(Context, Context->hdrs[i], 1);
+          msg = Context->v2r[msg];
+          mutt_uncollapse_thread(Context, Context->hdrs[msg]);
+          mutt_set_virtual(Context);
+
           for (j = i - 1; j < Context->msgcount; j++)
           {
             if (Context->hdrs[j]->virtual != -1)
@@ -1453,7 +1458,7 @@ int mutt_index_menu(void)
               continue;
             }
             else
-              menu->redraw = REDRAW_MOTION;
+              menu->redraw = REDRAW_FULL;
           }
           else
             mutt_error(_("That message is not visible."));
