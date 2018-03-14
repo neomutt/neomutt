@@ -1102,6 +1102,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         struct Body *group = mutt_body_new();
         group->type = TYPEMULTIPART;
         group->subtype = mutt_str_strdup("alternative");
+        group->disposition = DISPINLINE;
 
         struct Body *alts = NULL;
         /* group tagged message into a multipart/alternative */
@@ -1111,6 +1112,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (bptr->tagged)
           {
             bptr->tagged = false;
+            bptr->disposition = DISPINLINE;
 
             /* for first match, set group desc according to match */
 #define ALTS_TAG "Alternatives for \"%s\""
