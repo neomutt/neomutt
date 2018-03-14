@@ -1423,7 +1423,8 @@ int mutt_index_menu(void)
         else
         {
           struct Header *hdr = Context->hdrs[i - 1];
-          if (hdr->virtual != mutt_parent_message(Context, hdr, 1))
+
+          if (mutt_messages_in_thread(Context, hdr, 1) != 1)
           {
             mutt_uncollapse_thread(Context, hdr);
             mutt_set_virtual(Context);
