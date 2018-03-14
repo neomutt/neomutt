@@ -1394,9 +1394,18 @@ const char *mutt_make_version(void)
 void mutt_encode_path(char *dest, size_t dlen, const char *src)
 {
   char *p = mutt_str_strdup(src);
-  int rc = mutt_ch_convert_string(&p, Charset, "utf-8", 0);
+  int rc = mutt_ch_convert_string(&p, Charset, "us-ascii", 0);
   /* `src' may be NULL, such as when called from the pop3 driver. */
-  mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
+  size_t len = mutt_str_strfcpy(dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
+
+  /* convert the path to POSIX "Portable Filename Character Set" */
+  for (size_t i = 0; i < len; ++i)
+  {
+    if (!isalnum(dest[i]) && !strchr("/.-_", dest[i]))
+    {
+      dest[i] = '_';
+    }
+  }
   FREE(&p);
 }
 

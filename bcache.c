@@ -49,7 +49,6 @@ struct BodyCache
 static int bcache_path(struct Account *account, const char *mailbox, char *dst, size_t dstlen)
 {
   char host[STRING];
-  char path[_POSIX_PATH_MAX];
   struct Url url;
   int len;
 
@@ -70,14 +69,12 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
     return -1;
   }
 
-  mutt_encode_path(path, sizeof(path), NONULL(mailbox));
+  size_t mailboxlen = mutt_str_strlen(mailbox);
+  len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host,
+                 NONULL(mailbox),
+                 (mailboxlen != 0 && mailbox[mailboxlen - 1] == '/') ? "" : "/");
 
-  int plen = mutt_str_strlen(path);
-  if (plen == 0)
-    return -1;
-
-  len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host, path,
-                 (*path && path[plen - 1] == '/') ? "" : "/");
+  mutt_encode_path(dst, dstlen, dst);
 
   mutt_debug(3, "rc: %d, path: '%s'\n", len, dst);
 
