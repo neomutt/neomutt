@@ -4,10 +4,16 @@
 PACKAGE=	@PACKAGE@
 PACKAGE_VERSION=@PACKAGE_VERSION@
 
+# Build-time compiler and flags. These are used for building executables that
+# are only used at build-time, e.g., doc/makedoc. These are different from CC /
+# CFLAGS / LDFLAGS because the host and target systems might be different.
+CC_FOR_BUILD=		@CC_FOR_BUILD@
+CFLAGS_FOR_BUILD=	@CFLAGS_FOR_BUILD@ $(EXTRA_CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD=	@LDFLAGS_FOR_BUILD@ $(EXTRA_LDFLAGS_FOR_BUILD)
+
 PWD=		@PWD@
 AR=		@AR@
 CC=		@CC@
-CC_FOR_BUILD=	@CC_FOR_BUILD@ @CFLAGS_FOR_BUILD@
 CPP=		@CPP@
 CFLAGS=		@CPPFLAGS@ @CFLAGS@ -I. -I@top_srcdir@ -Wall $(EXTRA_CFLAGS)
 LDFLAGS=	@LDFLAGS@ $(EXTRA_LDFLAGS)
