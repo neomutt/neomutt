@@ -3256,10 +3256,10 @@ msgstr ""
 
 #: ncrypt/crypt.c:1012
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1053

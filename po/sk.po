@@ -3375,8 +3375,9 @@ msgid ""
 msgstr "[--Chyba: neznámy multipart/signet protokol %s! --].\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr "[--Chyba: Nekonzistentná multipart/signet štruktúra! --].\n"
 

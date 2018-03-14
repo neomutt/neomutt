@@ -3413,8 +3413,9 @@ msgid ""
 msgstr "[-- Erro: protocolo multiparte/asinado %s descoñecido --]\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr "[-- Erro: estructura multiparte/asinada inconsistente --]\n"
 

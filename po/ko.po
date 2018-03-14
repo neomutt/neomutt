@@ -3384,8 +3384,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
 "[-- 오류: 일치하지 않는 multipart/signed 구조! --]\n"
