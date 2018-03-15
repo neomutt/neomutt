@@ -1,7 +1,8 @@
-MAKEDOC_CPP = $(CC_FOR_BUILD) -D_MAKEDOC -E -C -I.
+MAKEDOC_CPP = $(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -D_MAKEDOC -E -C -I.
 
 doc/makedoc$(EXEEXT): $(SRCDIR)/doc/makedoc.c
-	$(CC_FOR_BUILD) -I. -o $@ $(SRCDIR)/doc/makedoc.c
+	$(CC_FOR_BUILD) -I. $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \
+	    -o $@ $(SRCDIR)/doc/makedoc.c
 
 doc/neomuttrc: $(SRCDIR)/init.h doc/makedoc$(EXEEXT) $(SRCDIR)/doc/neomuttrc.head
 	sed -e 's,@docdir@,$(docdir),' $(SRCDIR)/doc/neomuttrc.head \
