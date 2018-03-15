@@ -5113,6 +5113,7 @@ int smime_gpgme_verify_sender(struct Header *h)
 
 void mutt_gpgme_set_sender(const char *sender)
 {
+  mutt_debug(2, "setting to: %s\n", sender);
   FREE(&current_sender);
   current_sender = mutt_str_strdup(sender);
 }
