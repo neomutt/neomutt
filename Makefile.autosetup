@@ -32,7 +32,6 @@ LIBBINFILES+=	$(SRCDIR)/contrib/smime_keys
 @endif
 
 # paths
-prefix=		@prefix@
 bindir=		@BINDIR@
 datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
