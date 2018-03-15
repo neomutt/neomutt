@@ -792,7 +792,13 @@ int main(int argc, char **argv, char **env)
         }
         context_hdr->content->length = st.st_size;
 
-        mutt_prepare_template(fin, NULL, msg, context_hdr, 0);
+        if (mutt_prepare_template(fin, NULL, msg, context_hdr, 0) < 0)
+        {
+          mutt_error(_("Cannot parse message template: %s"), draft_file);
+          mutt_env_free(&opts_env);
+          mutt_free_header(&context_hdr);
+          goto main_curses;
+        }
 
         /* Scan for neomutt header to set ResumeDraftFiles */
         struct ListNode *np, *tmp;
