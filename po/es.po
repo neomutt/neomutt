@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-03-18 23:11+0000\n"
+"POT-Creation-Date: 2018-03-18 23:51+0000\n"
 "PO-Revision-Date: 2016-11-28 19:29+0100\n"
 "Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
@@ -283,9 +283,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Suprimir sólo está soportado para buzones IMAP"
 
 #: browser.c:1661 browser.c:1687
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "El buzón fue suprimido."
+msgstr ""
 
 #: browser.c:1666
 #, fuzzy
@@ -641,12 +640,12 @@ msgstr "No hay archivos adjuntos."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:109
 msgid "From: "
-msgstr ""
+msgstr "De: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:111 send.c:255
 msgid "To: "
-msgstr ""
+msgstr "Para: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:113 send.c:257
@@ -661,7 +660,7 @@ msgstr ""
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:117 compose.c:929 send.c:291
 msgid "Subject: "
-msgstr ""
+msgstr "Asunto: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:119
@@ -776,7 +775,7 @@ msgstr "Ninguna"
 #: compose.c:276
 #, fuzzy
 msgid " (inline PGP)"
-msgstr "(continuar)\n"
+msgstr "(continuar)"
 
 #: compose.c:278
 msgid " (PGP/MIME)"
@@ -1595,24 +1594,21 @@ msgid "Failed to read thread, aborting."
 msgstr "Fallo al leer el hilo, abortando."
 
 #: curs_main.c:1893 mx.c:1386 mx.c:1398
-#, fuzzy
 msgid "Folder doesn't support tagging, aborting."
-msgstr "El servidor no soporta modo lectura."
+msgstr ""
 
 #: curs_main.c:1908
-#, fuzzy
 msgid "No tag specified, aborting."
-msgstr "Sin asunto, cancelando."
+msgstr ""
 
 #: curs_main.c:1920
-#, fuzzy, c-format
+#, c-format
 msgid "Update tags..."
-msgstr "Actualizando etiquetas..."
+msgstr ""
 
 #: curs_main.c:1957
-#, fuzzy
 msgid "Failed to modify tags, aborting."
-msgstr "Fallo al modificar etiquetas, abortando."
+msgstr ""
 
 #: curs_main.c:1998
 #, fuzzy
@@ -2176,9 +2172,9 @@ msgid "Bad history file format (line %d)"
 msgstr "Formato de archivo de historial inválido (línea %d)"
 
 #: history.c:680
-#, fuzzy, c-format
+#, c-format
 msgid "History '%s'"
-msgstr "Indagar '%s'"
+msgstr ""
 
 #: hook.c:117
 msgid "current mailbox shortcut '^' is unset"
@@ -2186,7 +2182,7 @@ msgstr "el atajo '^' no está definido"
 
 #: hook.c:128
 msgid "mailbox shortcut expanded to empty regex"
-msgstr "atajo expandido a expresión regular vacía"
+msgstr ""
 
 #: hook.c:141
 msgid "badly formatted command string"
@@ -2302,9 +2298,9 @@ msgid "Mailbox renamed."
 msgstr "Buzón creado."
 
 #: imap/command.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Buzón cerrado"
+msgstr ""
 
 #: imap/command.c:1127 imap/command.c:1221
 #, fuzzy, c-format
@@ -2426,14 +2422,12 @@ msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr ""
 
 #: imap/imap.c:2620
-#, fuzzy
 msgid "IMAP server doesn't support custom flags"
-msgstr "El servidor SMTP no soporta autentificación"
+msgstr ""
 
 #: imap/imap.c:2664
-#, fuzzy
 msgid "Invalid IMAP flags"
-msgstr "Mes inválido: %s"
+msgstr ""
 
 #: imap/message.c:491 mx.c:1262
 msgid "Integer overflow -- can't allocate memory."
@@ -2587,9 +2581,9 @@ msgid "Invalid value for option %s: \"%s\""
 msgstr "Día inválido del mes: %s"
 
 #: init.c:2473
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for name %s: \"%s\""
-msgstr "Día inválido del mes: %s"
+msgstr ""
 
 #: init.c:2571
 #, c-format
@@ -2684,19 +2678,18 @@ msgid "out of arguments"
 msgstr "Faltan parámetros"
 
 #: init.c:4182
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "Suscribiendo a %s..."
+msgstr ""
 
 #: init.c:4198 init.c:4252
-#, fuzzy
 msgid "No folder specified"
-msgstr "Asunto no fue especificado."
+msgstr ""
 
 #: init.c:4236
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Desuscribiendo de %s..."
+msgstr ""
 
 #: keymap.c:283 keymap.c:291
 #, c-format
@@ -2872,7 +2865,7 @@ msgstr ""
 "  -H <archivo>  especifica un archivo para obtener una cabecera\n"
 "  -i <archivo>  especifica un archivo a incluir en la respuesta\n"
 "  -m <tipo>     especifica un tipo de buzón\n"
-"  -n            produce que NeoMutt no lea el archivo neomuttrc del sistema\n"
+"  -n            produce que NeoMutt no lea el archivo NeoMuttrc del sistema\n"
 "  -p            continuar un mensaje pospuesto\n"
 "  -R            abrir un buzón en modo de solo-lectura\n"
 "  -s <asunto>   especifica el asunto (necesita comillas si contiene "
@@ -3071,9 +3064,8 @@ msgid "Could not flush message to disk"
 msgstr "No se pudo enviar el mensaje."
 
 #: mh.c:1635
-#, fuzzy
 msgid "md_commit_message(): unable to set time on file"
-msgstr "_maildir_commit_message(): incapaz de asignar fecha al archivo"
+msgstr ""
 
 #: mutt/file.c:1105
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -3119,7 +3111,7 @@ msgstr "¡Sin memoria!"
 #: mutt/regex.c:292
 #, c-format
 msgid "Bad regex: %s"
-msgstr "Expresión regular incorrecta: %s"
+msgstr ""
 
 #: mutt/regex.c:353
 #, fuzzy
@@ -3274,9 +3266,9 @@ msgid "Can't write to virtual folder."
 msgstr "No se pudo agregar a la carpeta: %s"
 
 #: mutt_socket.c:103
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr "SSL no está disponible."
+msgstr ""
 
 #: mx.c:495
 #, fuzzy, c-format
@@ -3298,9 +3290,9 @@ msgid "Mark all articles read?"
 msgstr "¿Marcar todos los artículos como leídos?"
 
 #: mx.c:712
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read messages to %s?"
-msgstr "¿Mover mensajes leidos a %s?"
+msgstr ""
 
 #: mx.c:729 mx.c:1033
 #, c-format
@@ -3624,7 +3616,7 @@ msgstr ""
 #: ncrypt/crypt_gpgme.c:1464 ncrypt/crypt_gpgme.c:1469
 #: ncrypt/crypt_gpgme.c:3593
 msgid "aka: "
-msgstr " alias .........: "
+msgstr "alias: "
 
 #: ncrypt/crypt_gpgme.c:1479
 msgid "KeyID "
@@ -4716,9 +4708,8 @@ msgid "change directories"
 msgstr "cambiar directorio"
 
 #: opcodes.h:47
-#, fuzzy
 msgid "go to parent directory"
-msgstr "%s no es un directorio."
+msgstr ""
 
 #: opcodes.h:48
 msgid "check mailboxes for new mail"
@@ -4989,9 +4980,8 @@ msgid "scroll up through the history list"
 msgstr "mover hacia atrás en el historial de comandos"
 
 #: opcodes.h:113
-#, fuzzy
 msgid "search through the history list"
-msgstr "mover hacia atrás en el historial de comandos"
+msgstr ""
 
 #: opcodes.h:114
 msgid "delete chars from cursor to end of line"
@@ -5064,7 +5054,7 @@ msgstr "reenviar a grupo de noticias"
 
 #: opcodes.h:131
 msgid "forward a message with comments"
-msgstr "Reenviar el mensaje con comentrarios"
+msgstr "reenviar el mensaje con comentrarios"
 
 #: opcodes.h:132
 msgid "select the current entry"
@@ -5502,9 +5492,8 @@ msgid "show MIME attachments"
 msgstr "mostrar archivos adjuntos tipo MIME"
 
 #: opcodes.h:236
-#, fuzzy
 msgid "show the raw message"
-msgstr "editar el mensaje completo"
+msgstr ""
 
 #: opcodes.h:237
 msgid "display the keycode for a key press"
@@ -5532,9 +5521,8 @@ msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #: opcodes.h:243
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "Está en el primer mensaje."
+msgstr ""
 
 #: opcodes.h:246
 msgid "make decrypted copy and delete"
@@ -5718,7 +5706,6 @@ msgstr "No hay mas texto citado."
 msgid "No more unquoted text after quoted text."
 msgstr "No hay mas texto sin citar bajo el texto citado."
 
-# boundary es un parámetro definido por el estándar MIME
 #: parse.c:581
 msgid "multipart message has no boundary parameter!"
 msgstr "¡mensaje multiparte no tiene parámetro boundary!"
@@ -6116,17 +6103,17 @@ msgstr "No se pudo abrir el archivo temporal %s"
 
 #: recvcmd.c:449
 msgid "Forward as attachments?"
-msgstr "¿Adelatar como archivos adjuntos?"
+msgstr "¿Reenviar como archivos adjuntos?"
 
 #: recvcmd.c:467
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
-"No se pudieron decodificar todos los archivos adjuntos marcados.  ¿Adelantar "
-"los otros por MIME?"
+"No se pudieron decodificar todos los archivos adjuntos marcados.  ¿Reenviar "
+"los otros como MIME?"
 
 #: recvcmd.c:587
 msgid "Forward MIME encapsulated?"
-msgstr "¿Adelantar con encapsulado MIME?"
+msgstr "¿Reenviar con encapsulado MIME?"
 
 #: recvcmd.c:596 recvcmd.c:864
 #, c-format
@@ -6273,7 +6260,7 @@ msgstr "¡No se pudieron incluir todos los mensajes pedidos!"
 
 #: send.c:853
 msgid "Forward as attachment?"
-msgstr "¿Adelatar como archivo adjunto?"
+msgstr "¿Reenviar como archivo adjunto?"
 
 #: send.c:858
 msgid "Preparing forwarded message..."
@@ -6471,13 +6458,10 @@ msgid "Parent message is not visible in this limited view."
 msgstr "El mensaje anterior no es visible en vista limitada"
 
 #: version.c:63
-#, fuzzy
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Muchos otros que no son mencionados aquí han contribuido con\n"
-"código, parches y sugerencias.\n"
 
 #: version.c:67
 msgid ""
@@ -6530,21 +6514,3 @@ msgstr "Opciones especificadas al compilar:"
 msgid "Compile options:"
 msgstr "Opciones especificadas al compilar:"
 
-#, fuzzy
-#~ msgid "Debugging at file %s.\n"
-#~ msgstr "Modo debug a nivel %d.\n"
-
-#~ msgid "score: too few arguments"
-#~ msgstr "score: faltan parámetros"
-
-#, fuzzy
-#~ msgid "restore_default(%s): error in regex: %s\n"
-#~ msgstr "mutt_restore_default(%s): error en expresión regular: %s\n"
-
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -d Ignored.\n"
-#~ msgstr "DEBUG no fue definido al compilar.  Ignorado.\n"
-
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -l Ignored.\n"
-#~ msgstr "DEBUG no fue definido al compilar.  Ignorado.\n"
