@@ -82,6 +82,9 @@
 #define ISPELL "ispell"
 #endif
 
+/* This option is deprecated */
+bool IgnoreLinearWhiteSpace = false;
+
 struct Option MuttVars[] = {
   /*++*/
 
@@ -4378,9 +4381,10 @@ struct Option MuttVars[] = {
   */
   /*--*/
 
-  { "pgp_encrypt_self",   DT_QUAD,    R_NONE,  UL &PgpEncryptSelf,   MUTT_NO },
-  { "smime_encrypt_self", DT_QUAD,    R_NONE,  UL &SmimeEncryptSelf, MUTT_NO },
-  { "wrapmargin",         DT_NUMBER,  R_PAGER, UL &Wrap,             0 },
+  { "ignore_linear_white_space", DT_BOOL,   R_NONE,  UL &IgnoreLinearWhiteSpace, 0       },
+  { "pgp_encrypt_self",          DT_QUAD,   R_NONE,  UL &PgpEncryptSelf,         MUTT_NO },
+  { "smime_encrypt_self",        DT_QUAD,   R_NONE,  UL &SmimeEncryptSelf,       MUTT_NO },
+  { "wrapmargin",                DT_NUMBER, R_PAGER, UL &Wrap,                   0       },
   /*
   ** .pp
   ** (DEPRECATED) Equivalent to setting $$wrap with a negative value.

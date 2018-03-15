@@ -20,7 +20,7 @@
 .TH neomutt 1 "January 2009" Unix "User Manuals"
 .SH NAME
 neomutt \- The Neomutt Mail User Agent
-.SH SYNOPSIS
+.SH SYNTAX
 .PP
 .B neomutt
 [\-GnRyzZ]
