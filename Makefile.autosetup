@@ -65,7 +65,7 @@ NEOMUTTOBJS=	mutt_account.o addrbook.o alias.o attach.o bcache.o body.o \
 		compose.o compress.o conststrings.o copy.o curs_lib.o \
 		curs_main.o edit.o editmsg.o enter.o envelope.o filter.o \
 		flags.o from.o group.o handler.o hdrline.o \
-		header.o help.o history.o hook.o init.o keymap.o main.o \
+		header.o help.o history.o hook.o init.o keymap.o mutt_logging.o main.o \
 		mbox.o menu.o mh.o muttlib.o \
 		mutt_socket.o tags.o mx.o \
 		newsrc.o nntp.o pager.o parse.o pattern.o pop.o \
@@ -94,10 +94,10 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/address.o mutt/base64.o mutt/buffer.o mutt/charset.o \
-		mutt/date.o mutt/debug.o mutt/exit.o \
-		mutt/file.o mutt/hash.o mutt/idna.o mutt/list.o \
+		mutt/date.o mutt/exit.o \
+		mutt/file.o mutt/hash.o mutt/idna.o mutt/list.o mutt/logging.o \
 		mutt/mapping.o mutt/mbyte.o mutt/md5.o \
-		mutt/memory.o mutt/message.o mutt/mime.o mutt/parameter.o \
+		mutt/memory.o mutt/mime.o mutt/parameter.o \
 		mutt/regex.o mutt/sha1.o mutt/signal.o mutt/string.o \
 		mutt/rfc2047.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)

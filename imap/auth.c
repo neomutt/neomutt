@@ -130,7 +130,6 @@ int imap_authenticate(struct ImapData *idata)
   if (r == IMAP_AUTH_UNAVAIL)
   {
     mutt_error(_("No authenticators available"));
-    mutt_sleep(1);
   }
 
   return r;

@@ -139,7 +139,6 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     if (!cur->hdr->env->from)
     {
       mutt_error(_("Warning: message contains no From: header"));
-      mutt_sleep(2);
       mutt_clear_error();
     }
   }
@@ -152,7 +151,6 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
         if (!actx->idx[i]->content->hdr->env->from)
         {
           mutt_error(_("Warning: message contains no From: header"));
-          mutt_sleep(2);
           mutt_clear_error();
           break;
         }

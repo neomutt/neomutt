@@ -27,6 +27,7 @@
 
 #define OPS_CORE(_fmt) \
   _fmt(OP_NULL,                           N_("null operation")) \
+  _fmt(OP_SHOW_MESSAGES,                  N_("show messages")) \
   _fmt(OP_END_COND,                       N_("end of conditional execution (noop)")) \
   _fmt(OP_ATTACH_VIEW_MAILCAP,            N_("force viewing of attachment using mailcap")) \
   _fmt(OP_ATTACH_VIEW_TEXT,               N_("view attachment as text")) \

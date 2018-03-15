@@ -31,8 +31,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "charset.h"
-#include "debug.h"
 #include "idna2.h"
+#include "logging.h"
 #include "memory.h"
 #include "string2.h"
 #ifdef HAVE_IDNA_H

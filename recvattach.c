@@ -729,7 +729,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   if (!filter && !AttachSplit)
   {
-    mutt_endwin(NULL);
+    mutt_endwin();
     thepid = mutt_create_filter(buf, &state.fpout, NULL, NULL);
     pipe_attachment_list(buf, actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fpout);
@@ -835,7 +835,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
   {
     if (!can_print(actx, top, tag))
       return;
-    mutt_endwin(NULL);
+    mutt_endwin();
     thepid = mutt_create_filter(NONULL(PrintCommand), &state.fpout, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fpout);

@@ -133,7 +133,7 @@ int mutt_compose_attachment(struct Body *a)
       {
         int r;
 
-        mutt_endwin(NULL);
+        mutt_endwin();
         r = mutt_system(command);
         if (r == -1)
           mutt_error(_("Error running \"%s\"!"), command);
@@ -266,7 +266,7 @@ int mutt_edit_attachment(struct Body *a)
       }
       else
       {
-        mutt_endwin(NULL);
+        mutt_endwin();
         if (mutt_system(command) == -1)
         {
           mutt_error(_("Error running \"%s\"!"), command);
@@ -474,7 +474,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     int tempfd = -1, pagerfd = -1;
 
     if (!use_pager)
-      mutt_endwin(NULL);
+      mutt_endwin();
 
     if (use_pager || use_pipe)
     {
@@ -558,7 +558,6 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
           mutt_debug(1, "mutt_file_fopen(%s) errno=%d %s\n", pagerfile, errno,
                      strerror(errno));
           mutt_perror(pagerfile);
-          mutt_sleep(1);
           goto return_error;
         }
         decode_state.fpin = fp;
@@ -659,7 +658,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
     }
   }
 
-  mutt_endwin(NULL);
+  mutt_endwin();
 
   if (fp)
   {
@@ -823,7 +822,6 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if (!s.fpout)
       {
         mutt_perror("fopen");
-        mutt_sleep(2);
         return -1;
       }
       fseeko((s.fpin = fp), m->offset, SEEK_SET);
@@ -832,7 +830,6 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       if (mutt_file_fsync_close(&s.fpout) != 0)
       {
         mutt_perror("fclose");
-        mutt_sleep(2);
         return -1;
       }
     }
@@ -1021,7 +1018,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     mutt_str_strfcpy(command, entry->printcommand, sizeof(command));
     piped = rfc1524_expand_command(a, newfile, type, command, sizeof(command));
 
-    mutt_endwin(NULL);
+    mutt_endwin();
 
     /* interactive program */
     if (piped)
@@ -1095,7 +1092,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
       mutt_debug(2, "successfully opened %s read-only\n", newfile);
 
-      mutt_endwin(NULL);
+      mutt_endwin();
       thepid = mutt_create_filter(NONULL(PrintCommand), &fpout, NULL, NULL);
       if (thepid < 0)
       {

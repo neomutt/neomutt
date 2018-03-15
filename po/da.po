@@ -2611,8 +2611,8 @@ msgstr "%s: Ukendt kommando"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Fejl i kommandolinje: %s\n"
+msgid "Error in command line: %s"
+msgstr "Fejl i kommandolinje: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2835,8 +2835,8 @@ msgstr "Kan ikke klargøre terminal."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Fejl: 'værdien \"%s\" er ugyldig til -d.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Fejl: 'værdien \"%s\" er ugyldig til -d."
 
 #: main.c:319
 #, c-format
@@ -2854,21 +2854,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s findes ikke. Opret?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Kunne ikke fortolke mailto:-link\n"
+msgid "Failed to parse mailto: link"
+msgstr "Kunne ikke fortolke mailto:-link"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Ingen angivelse af modtagere.\n"
+msgid "No recipients specified."
+msgstr "Ingen angivelse af modtagere."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "Kan ikke bruge tilvalget -E sammen med standardinddata\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "Kan ikke bruge tilvalget -E sammen med standardinddata"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: kan ikke vedlægge fil.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: kan ikke vedlægge fil."
 
 #: main.c:844
 msgid "No mailbox with new mail."

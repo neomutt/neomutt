@@ -2654,8 +2654,8 @@ msgstr "%s: bilinmeyen komut"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Komut satırında hata: %s\n"
+msgid "Error in command line: %s"
+msgstr "Komut satırında hata: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2866,7 +2866,7 @@ msgstr "Uçbirim ilklendirilirken hata oluştu."
 
 #: main.c:316
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr "Hata: '%s' hatalı bir IDN."
 
 #: main.c:319
@@ -2885,21 +2885,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s yok. Yaratılsın mı?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
+msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Herhangi bir alıcı belirtilmemiş.\n"
+msgid "No recipients specified."
+msgstr "Herhangi bir alıcı belirtilmemiş."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: dosya eklenemedi.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: dosya eklenemedi."
 
 #: main.c:844
 msgid "No mailbox with new mail."

@@ -2766,8 +2766,8 @@ msgstr "%s: L’ordre no és coneguda."
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Error a la línia d’ordres: %s\n"
+msgid "Error in command line: %s"
+msgstr "Error a la línia d’ordres: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -3002,8 +3002,8 @@ msgstr "Error en inicialitzar el terminal."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s"
 
 #: main.c:319
 #, c-format
@@ -3024,21 +3024,21 @@ msgstr "«%s» no existeix.  Voleu crear-lo?"
 
 # Es refereix a l’esquema d’URL.  ivb
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
+msgid "Failed to parse mailto: link"
+msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:»."
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "No s’ha indicat cap destinatari.\n"
+msgid "No recipients specified."
+msgstr "No s’ha indicat cap destinatari."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard.\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard."
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: No s’ha pogut adjuntar el fitxer.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: No s’ha pogut adjuntar el fitxer."
 
 #: main.c:844
 msgid "No mailbox with new mail."

@@ -2611,8 +2611,8 @@ msgstr "%s: невідома команда"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Помилка командного рядку: %s\n"
+msgid "Error in command line: %s"
+msgstr "Помилка командного рядку: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2834,8 +2834,8 @@ msgstr "Помилка ініціалізації терміналу."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Помилка: значення \"%s\" некорректне для -d.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Помилка: значення \"%s\" некорректне для -d."
 
 #: main.c:319
 #, c-format
@@ -2853,21 +2853,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s не існує. Створити його?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Неможливо розібрати почилання mailto:\n"
+msgid "Failed to parse mailto: link"
+msgstr "Неможливо розібрати почилання mailto:"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Отримувачів не вказано.\n"
+msgid "No recipients specified."
+msgstr "Отримувачів не вказано."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "Неможливо використовувати -E з stdin\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "Неможливо використовувати -E з stdin"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: неможливо додати файл.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: неможливо додати файл."
 
 #: main.c:844
 msgid "No mailbox with new mail."

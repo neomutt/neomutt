@@ -757,8 +757,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
              (np == STAILQ_FIRST(chain)) ? " -l " : ",", cd_quoted);
   }
 
-  if (!OPT_NO_CURSES)
-    mutt_endwin(NULL);
+  mutt_endwin();
 
   i = mutt_system(cmd);
   if (i != 0)

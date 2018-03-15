@@ -507,7 +507,6 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         if (could_not_decrypt && !(s->flags & MUTT_DISPLAY))
         {
           mutt_error(_("Could not decrypt PGP message"));
-          mutt_sleep(1);
           rc = -1;
           goto out;
         }
@@ -801,7 +800,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
     return;
   }
 
-  mutt_endwin(NULL);
+  mutt_endwin();
   OPT_DONT_HANDLE_PGP_KEYS = true;
 
   for (; top; top = top->next)
@@ -1084,7 +1083,6 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
   else
   {
     mutt_error(_("Could not decrypt PGP message"));
-    mutt_sleep(2);
     /* void the passphrase, even if it's not necessarily the problem */
     pgp_void_passphrase();
     rc = -1;

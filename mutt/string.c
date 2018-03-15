@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "debug.h"
+#include "logging.h"
 #include "memory.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H

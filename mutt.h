@@ -259,7 +259,7 @@ enum QuadOptionResponse
 
 bool mutt_matches_ignore(const char *s);
 
-void mutt_init(int skip_sys_rc, struct ListHead *commands);
+int mutt_init(int skip_sys_rc, struct ListHead *commands);
 
 /* flag to mutt_pattern_comp() */
 #define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
@@ -293,12 +293,6 @@ int mutt_inbox_cmp(const char *a, const char *b);
 const char *mutt_str_sysexit(int e);
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
-
-extern char debugfilename[_POSIX_PATH_MAX];
-extern FILE *debugfile;
-extern int debuglevel;
-extern char *debugfile_cmdline;
-extern int debuglevel_cmdline;
 
 /* All the variables below are backing for config items */
 

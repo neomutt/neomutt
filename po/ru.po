@@ -2629,8 +2629,8 @@ msgstr "%s: неизвестная команда"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Ошибка в командной строке: %s\n"
+msgid "Error in command line: %s"
+msgstr "Ошибка в командной строке: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2854,8 +2854,8 @@ msgstr "Ошибка инициализации терминала."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Ошибка: неверное значение \"%s\" для -d.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Ошибка: неверное значение \"%s\" для -d."
 
 #: main.c:319
 #, c-format
@@ -2873,21 +2873,21 @@ msgid "%s does not exist. Create it?"
 msgstr "Каталог %s не существует.  Создать?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Не удалось распознать ссылку mailto:\n"
+msgid "Failed to parse mailto: link"
+msgstr "Не удалось распознать ссылку mailto:"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Адресаты не указаны.\n"
+msgid "No recipients specified."
+msgstr "Адресаты не указаны."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "Невозможно использовать ключ -E с stdin\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "Невозможно использовать ключ -E с stdin"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: не удалось вложить файл.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: не удалось вложить файл."
 
 #: main.c:844
 msgid "No mailbox with new mail."

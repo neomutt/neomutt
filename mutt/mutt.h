@@ -32,17 +32,16 @@
  * | mutt/buffer.c    | @subpage buffer    |
  * | mutt/charset.c   | @subpage charset   |
  * | mutt/date.c      | @subpage date      |
- * | mutt/debug.c     | @subpage debug     |
  * | mutt/exit.c      | @subpage exit      |
  * | mutt/file.c      | @subpage file      |
  * | mutt/hash.c      | @subpage hash      |
  * | mutt/idna.c      | @subpage idna      |
  * | mutt/list.c      | @subpage list      |
+ * | mutt/logging.c   | @subpage logging   |
  * | mutt/mapping.c   | @subpage mapping   |
  * | mutt/mbyte.c     | @subpage mbyte     |
  * | mutt/md5.c       | @subpage md5       |
  * | mutt/memory.c    | @subpage memory    |
- * | mutt/message.c   | @subpage message   |
  * | mutt/mime.c      | @subpage mime      |
  * | mutt/parameter.c | @subpage parameter |
  * | mutt/regex.c     | @subpage regex     |
@@ -63,12 +62,12 @@
 #include "buffer.h"
 #include "charset.h"
 #include "date.h"
-#include "debug.h"
 #include "exit.h"
 #include "file.h"
 #include "hash.h"
 #include "idna2.h"
 #include "list.h"
+#include "logging.h"
 #include "mapping.h"
 #include "mbyte.h"
 #include "md5.h"

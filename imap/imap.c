@@ -96,6 +96,7 @@
 #include "message.h"
 #include "mutt_account.h"
 #include "mutt_curses.h"
+#include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "mx.h"
 #include "options.h"
@@ -127,8 +128,6 @@ static int check_capabilities(struct ImapData *idata)
   {
     mutt_error(
         _("This IMAP server is ancient. NeoMutt does not work with it."));
-    mutt_sleep(2); /* pause a moment to let the user see the error */
-
     return -1;
   }
 
@@ -817,6 +816,10 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
 {
   char c;
   bool r = false;
+  struct Buffer *buf = NULL;
+
+  if (DebugLevel >= IMAP_LOG_LTRL)
+    buf = mutt_buffer_alloc(bytes + 10);
 
   mutt_debug(2, "reading %ld bytes\n", bytes);
 
@@ -827,6 +830,7 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
       mutt_debug(1, "error during read, %ld bytes read\n", pos);
       idata->status = IMAP_FATAL;
 
+      mutt_buffer_free(&buf);
       return -1;
     }
 
@@ -845,10 +849,15 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
 
     if (pbar && !(pos % 1024))
       mutt_progress_update(pbar, pos, -1);
-    if (debuglevel >= IMAP_LOG_LTRL)
-      fputc(c, debugfile);
+    if (DebugLevel >= IMAP_LOG_LTRL)
+      mutt_buffer_addch(buf, c);
   }
 
+  if (DebugLevel >= IMAP_LOG_LTRL)
+  {
+    mutt_debug(IMAP_LOG_LTRL, "\n%s", buf->data);
+    mutt_buffer_free(&buf);
+  }
   return 0;
 }
 
@@ -1082,7 +1091,6 @@ int imap_open_connection(struct ImapData *idata)
           if (mutt_ssl_starttls(idata->conn))
           {
             mutt_error(_("Could not negotiate TLS connection"));
-            mutt_sleep(1);
             goto err_close_conn;
           }
           else
@@ -1098,7 +1106,6 @@ int imap_open_connection(struct ImapData *idata)
     if (SslForceTls && !idata->conn->ssf)
     {
       mutt_error(_("Encrypted connection unavailable"));
-      mutt_sleep(1);
       goto err_close_conn;
     }
 #endif
@@ -2169,7 +2176,6 @@ static int imap_open_mailbox(struct Context *ctx)
     s = imap_next_word(idata->buf); /* skip seq */
     s = imap_next_word(s);          /* Skip response */
     mutt_error("%s", s);
-    mutt_sleep(2);
     goto fail;
   }
 
@@ -2185,7 +2191,7 @@ static int imap_open_mailbox(struct Context *ctx)
   }
 
   /* dump the mailbox flags we've found */
-  if (debuglevel > 2)
+  if (DebugLevel > 2)
   {
     if (STAILQ_EMPTY(&idata->flags))
       mutt_debug(3, "No folder flags found\n");
@@ -2218,7 +2224,6 @@ static int imap_open_mailbox(struct Context *ctx)
   if (count && (imap_read_headers(idata, 1, count) < 0))
   {
     mutt_error(_("Error opening mailbox"));
-    mutt_sleep(1);
     goto fail;
   }
 
@@ -2434,7 +2439,6 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
-      mutt_sleep(1);
       goto out;
     }
 
@@ -2658,7 +2662,6 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
         *checker == 93)                     // ]
     {
       mutt_error(_("Invalid IMAP flags"));
-      mutt_sleep(2);
       return 0;
     }
 

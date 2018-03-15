@@ -2621,8 +2621,8 @@ msgstr "%s: 不明なコマンド"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "コマンドラインでエラー: %s\n"
+msgid "Error in command line: %s"
+msgstr "コマンドラインでエラー: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2844,8 +2844,8 @@ msgstr "端末初期化エラー"
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "エラー: 値 '%s' は -d には不正。\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "エラー: 値 '%s' は -d には不正。"
 
 #: main.c:319
 #, c-format
@@ -2863,21 +2863,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s が存在しない。作成?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "\"mailto:\" リンクの解析に失敗\n"
+msgid "Failed to parse mailto: link"
+msgstr "\"mailto:\" リンクの解析に失敗"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "受信者が指定されていない。\n"
+msgid "No recipients specified."
+msgstr "受信者が指定されていない。"
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "標準入力には -E フラグを使用できない\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "標準入力には -E フラグを使用できない"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: ファイルを添付できない。\n"
+msgid "%s: unable to attach file."
+msgstr "%s: ファイルを添付できない。"
 
 #: main.c:844
 msgid "No mailbox with new mail."

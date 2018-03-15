@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include "memory.h"
 #include "exit.h"
+#include "logging.h"
 #include "message.h"
 
 /**
@@ -58,7 +59,6 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
   if (nmemb > (SIZE_MAX / size))
   {
     mutt_error(_("Integer overflow -- can't allocate memory!"));
-    sleep(1);
     mutt_exit(1);
   }
 
@@ -66,7 +66,6 @@ void *mutt_mem_calloc(size_t nmemb, size_t size)
   if (!p)
   {
     mutt_error(_("Out of memory!"));
-    sleep(1);
     mutt_exit(1);
   }
   return p;
@@ -108,7 +107,6 @@ void *mutt_mem_malloc(size_t size)
   if (!p)
   {
     mutt_error(_("Out of memory!"));
-    sleep(1);
     mutt_exit(1);
   }
   return p;
@@ -143,7 +141,6 @@ void mutt_mem_realloc(void *ptr, size_t size)
   if (!r)
   {
     mutt_error(_("Out of memory!"));
-    sleep(1);
     mutt_exit(1);
   }
 

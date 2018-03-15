@@ -2689,8 +2689,8 @@ msgstr "%s: ismeretlen parancs"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Hibás parancssor: %s\n"
+msgid "Error in command line: %s"
+msgstr "Hibás parancssor: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2956,7 +2956,7 @@ msgstr "Hiba a terminál inicializálásakor."
 
 #: main.c:316
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr "Hiba: '%s' hibás IDN."
 
 #: main.c:319
@@ -2975,21 +2975,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s nem létezik. Létrehozzam?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
+msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Nincs címzett megadva.\n"
+msgid "No recipients specified."
+msgstr "Nincs címzett megadva."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: nem tudom csatolni a fájlt.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: nem tudom csatolni a fájlt."
 
 #: main.c:844
 msgid "No mailbox with new mail."

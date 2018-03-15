@@ -1,9 +1,9 @@
 /**
  * @file
- * Debug messages
+ * Mutt Logging
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,10 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_DEBUG_H
-#define _MUTT_DEBUG_H
+#ifndef _LOGGING2_H
+#define _LOGGING2_H
 
-int mutt_debug_real(const char *function, const char *file, int line, int level, ...);
-#define mutt_debug(LEVEL, ...) mutt_debug_real(__func__, __FILE__, __LINE__, LEVEL, __VA_ARGS__)
+#include <time.h>
 
-#endif /* _MUTT_DEBUG_H */
+extern short DebugLevel;
+extern char *DebugFile;
+extern bool LogAllowDebugSet;
+
+int log_disp_curses(time_t stamp, const char *file, int line, const char *function, int level, ...);
+
+int  mutt_log_start(void);
+void mutt_log_stop(void);
+int mutt_log_set_level(int level, bool verbose);
+int mutt_log_set_file(const char *file, bool verbose);
+
+#endif /* _LOGGING2_H */

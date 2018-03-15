@@ -2620,8 +2620,8 @@ msgstr "%s: onbekend commando"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Fout in opdrachtregel: %s\n"
+msgid "Error in command line: %s"
+msgstr "Fout in opdrachtregel: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2845,8 +2845,8 @@ msgstr "Kan terminal niet initialiseren."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Fout: waarde '%s' is een ongeldig voor optie '-d'.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Fout: waarde '%s' is een ongeldig voor optie '-d'."
 
 #: main.c:319
 #, c-format
@@ -2864,21 +2864,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s bestaat niet. Aanmaken?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Kan mailto: koppeling niet verwerken\n"
+msgid "Failed to parse mailto: link"
+msgstr "Kan mailto: koppeling niet verwerken"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Geen ontvangers opgegeven.\n"
+msgid "No recipients specified."
+msgstr "Geen ontvangers opgegeven."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "Optie '-E' gaat niet samen met standaardinvoer\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "Optie '-E' gaat niet samen met standaardinvoer"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: kan bestand niet bijvoegen.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: kan bestand niet bijvoegen."
 
 #: main.c:844
 msgid "No mailbox with new mail."

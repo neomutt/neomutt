@@ -169,7 +169,10 @@ int mutt_protect(struct Header *msg, char *keylist)
     {
       /* they really want to send it inline... go for it */
       if (!isendwin())
-        mutt_endwin(_("Invoking PGP..."));
+      {
+        mutt_endwin();
+        puts(_("Invoking PGP..."));
+      }
       pbody = crypt_pgp_traditional_encryptsign(msg->content, flags, keylist);
       if (pbody)
       {
@@ -191,7 +194,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   }
 
   if (!isendwin())
-    mutt_endwin(NULL);
+    mutt_endwin();
 
   if ((WithCrypto & APPLICATION_SMIME))
     tmp_smime_pbody = msg->content;
@@ -742,7 +745,8 @@ void crypt_extract_keys_from_messages(struct Header *h)
         mutt_copy_message_ctx(fpout, Context, hi, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
 
-        mutt_endwin(_("Trying to extract PGP keys...\n"));
+        mutt_endwin();
+        puts(_("Trying to extract PGP keys...\n"));
         crypt_pgp_invoke_import(tempfname);
       }
 
@@ -763,7 +767,8 @@ void crypt_extract_keys_from_messages(struct Header *h)
         mbox = tmp ? tmp->mailbox : NULL;
         if (mbox)
         {
-          mutt_endwin(_("Trying to extract S/MIME certificates...\n"));
+          mutt_endwin();
+          puts(_("Trying to extract S/MIME certificates...\n"));
           crypt_smime_invoke_import(tempfname, mbox);
           tmp = NULL;
         }
@@ -781,7 +786,8 @@ void crypt_extract_keys_from_messages(struct Header *h)
       {
         mutt_copy_message_ctx(fpout, Context, h, MUTT_CM_DECODE | MUTT_CM_CHARCONV, 0);
         fflush(fpout);
-        mutt_endwin(_("Trying to extract PGP keys...\n"));
+        mutt_endwin();
+        puts(_("Trying to extract PGP keys...\n"));
         crypt_pgp_invoke_import(tempfname);
       }
 

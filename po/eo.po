@@ -2609,8 +2609,8 @@ msgstr "%s: nekonata komando"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Eraro en komandlinio: %s\n"
+msgid "Error in command line: %s"
+msgstr "Eraro en komandlinio: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2832,8 +2832,8 @@ msgstr "Eraro dum startigo de la terminalo."
 
 #: main.c:316
 #, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Eraro: valoro '%s' ne validas por '-d'.\n"
+msgid "Error: value '%s' is invalid for -d."
+msgstr "Eraro: valoro '%s' ne validas por '-d'."
 
 #: main.c:319
 #, c-format
@@ -2851,21 +2851,21 @@ msgid "%s does not exist. Create it?"
 msgstr "%s ne ekzistas.  Ĉu krei ĝin?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
-msgstr "Malsukcesis analizi 'mailto:'-ligon\n"
+msgid "Failed to parse mailto: link"
+msgstr "Malsukcesis analizi 'mailto:'-ligon"
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Nenia ricevonto specifita.\n"
+msgid "No recipients specified."
+msgstr "Nenia ricevonto specifita."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
-msgstr "Ne eblas uzi opcio '-E' kun ĉefenigujo\n"
+msgid "Cannot use -E flag with stdin"
+msgstr "Ne eblas uzi opcio '-E' kun ĉefenigujo"
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: ne eblas aldoni dosieron.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: ne eblas aldoni dosieron."
 
 #: main.c:844
 msgid "No mailbox with new mail."

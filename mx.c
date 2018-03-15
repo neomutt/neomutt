@@ -1260,7 +1260,6 @@ void mx_alloc_memory(struct Context *ctx)
   if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
   {
     mutt_error(_("Integer overflow -- can't allocate memory."));
-    sleep(1);
     mutt_exit(1);
   }
 

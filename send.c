@@ -204,8 +204,6 @@ static int edit_address(struct Address **a, /* const */ char *field)
     if (idna_ok != 0)
     {
       mutt_error(_("Error: '%s' is a bad IDN."), err);
-      mutt_refresh();
-      mutt_sleep(2);
       FREE(&err);
     }
   } while (idna_ok != 0);
@@ -1774,7 +1772,6 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   {
     mutt_error(_(
         "No crypto backend configured.  Disabling message security setting."));
-    mutt_sleep(1);
     msg->security = 0;
   }
 

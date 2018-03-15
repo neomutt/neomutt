@@ -92,6 +92,7 @@ const struct Binding OpGeneric[] = { /* map: generic */
 };
 
 const struct Binding OpMain[] = { /* map: index */
+  { "show-messages",             OP_SHOW_MESSAGES,                  "M" },
   { "create-alias",              OP_CREATE_ALIAS,                   "a" },
   { "bounce-message",            OP_BOUNCE_MESSAGE,                 "b" },
   { "break-thread",              OP_MAIN_BREAK_THREAD,              "#" },

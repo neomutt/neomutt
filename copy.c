@@ -256,7 +256,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           ++x;
           if (mutt_str_strncasecmp(buf, np->data, mutt_str_strlen(np->data)) == 0)
           {
-            mutt_debug(2, "Reorder: %s matches %s\n", np->data, buf);
+            mutt_debug(2, "Reorder: %s matches %s", np->data, buf);
             break;
           }
         }
@@ -611,7 +611,6 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       {
         mutt_error("The length calculation was wrong by %ld bytes", fail);
         new_length += fail;
-        mutt_sleep(1);
       }
 
       /* Update original message if we are sync'ing a mailfolder */

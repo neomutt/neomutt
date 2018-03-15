@@ -2659,8 +2659,8 @@ msgstr "%s: ordú anaithnid"
 
 #: init.c:3746
 #, c-format
-msgid "Error in command line: %s\n"
-msgstr "Earráid ar líne ordaithe: %s\n"
+msgid "Error in command line: %s"
+msgstr "Earráid ar líne ordaithe: %s"
 
 #: init.c:3846
 msgid "unable to determine home directory"
@@ -2871,7 +2871,7 @@ msgstr "Earráid agus teirminéal á thúsú."
 
 #: main.c:316
 #, fuzzy, c-format
-msgid "Error: value '%s' is invalid for -d.\n"
+msgid "Error: value '%s' is invalid for -d."
 msgstr "Earráid: Is drochIDN é '%s'."
 
 #: main.c:319
@@ -2890,21 +2890,21 @@ msgid "%s does not exist. Create it?"
 msgstr "Níl a leithéid de %s ann.  Cruthaigh?"
 
 #: main.c:572
-msgid "Failed to parse mailto: link\n"
+msgid "Failed to parse mailto: link"
 msgstr ""
 
 #: main.c:584
-msgid "No recipients specified.\n"
-msgstr "Níor sonraíodh aon fhaighteoir.\n"
+msgid "No recipients specified."
+msgstr "Níor sonraíodh aon fhaighteoir."
 
 #: main.c:610
-msgid "Cannot use -E flag with stdin\n"
+msgid "Cannot use -E flag with stdin"
 msgstr ""
 
 #: main.c:763
 #, c-format
-msgid "%s: unable to attach file.\n"
-msgstr "%s: ní féidir an comhad a cheangal.\n"
+msgid "%s: unable to attach file."
+msgstr "%s: ní féidir an comhad a cheangal."
 
 #: main.c:844
 msgid "No mailbox with new mail."
