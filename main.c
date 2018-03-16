@@ -455,6 +455,13 @@ int main(int argc, char **argv, char **env)
     set_default_value("debug_file", (intptr_t) mutt_str_strdup(dfile));
     mutt_str_replace(&DebugFile, dfile);
   }
+  else
+  {
+    /* Make sure that the DebugFile has a value */
+    LogAllowDebugSet = true;
+    reset_value("debug_file");
+    LogAllowDebugSet = false;
+  }
 
   if (dlevel)
   {
