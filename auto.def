@@ -86,7 +86,7 @@ options {
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
 # System
-  sysroot:path              => "Target system root"
+  with-sysroot:path         => "Target system root"
 # Enable all options
   everything=0              => "Enable all options"
 }
@@ -295,7 +295,7 @@ define USE_SOCKET
 define SUN_ATTACHMENT
 ###############################################################################
 
-set prefix [opt-val sysroot][get-define prefix]
+set prefix [opt-val with-sysroot][get-define prefix]
 
 ###############################################################################
 # Everything
