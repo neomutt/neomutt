@@ -295,7 +295,7 @@ define USE_SOCKET
 define SUN_ATTACHMENT
 ###############################################################################
 
-set prefix [opt-val sysroot {}][get-define prefix]
+set prefix [opt-val sysroot][get-define prefix]
 
 ###############################################################################
 # Everything
