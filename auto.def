@@ -85,6 +85,8 @@ options {
   with-qdbm:path            => "Location of QDBM"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
+# System
+  with-sysroot:path         => "Target system root"
 # Enable all options
   everything=0              => "Enable all options"
 }
@@ -294,7 +296,7 @@ define USE_SOCKET
 define SUN_ATTACHMENT
 ###############################################################################
 
-set prefix [get-define prefix]
+set prefix [opt-val with-sysroot][get-define prefix]
 
 ###############################################################################
 # Everything
