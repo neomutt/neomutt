@@ -21,10 +21,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * NOTE
- *
- * This code used to be the parser for GnuPG's output.
+/* NOTE: This code used to be the parser for GnuPG's output.
  *
  * Nowadays, we are using an external pubring lister with PGP which mimics
  * gpg's output format.

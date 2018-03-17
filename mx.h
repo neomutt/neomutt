@@ -21,11 +21,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * This header file contains prototypes for internal functions used by the
- * generic mailbox api.  None of these functions should be called directly.
- */
-
 #ifndef _MUTT_MX_H
 #define _MUTT_MX_H
 

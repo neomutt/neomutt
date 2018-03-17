@@ -24,15 +24,6 @@
  * @page envelope Representation of an email header (envelope)
  *
  * Representation of an email header (envelope)
- *
- * | Function              | Description
- * | :-------------------- | :---------------------------------
- * | mutt_env_cmp_strict() | Strictly compare two Envelopes
- * | mutt_env_free()       | Free an Envelope
- * | mutt_env_merge()      | Merge the headers of two Envelopes
- * | mutt_env_new()        | Create a new Envelope
- * | mutt_env_to_intl()    | Convert an Envelope's Address fields to Punycode format
- * | mutt_env_to_local()   | Convert an Envelope's Address fields to local format
  */
 
 #include "config.h"

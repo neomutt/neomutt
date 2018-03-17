@@ -25,10 +25,6 @@
  * @page conn_tunnel Support for network tunnelling
  *
  * Support for network tunnelling
- *
- * | Function                   | Description
- * | :------------------------- | :-----------------------------------
- * | mutt_tunnel_socket_setup() | setups tunnel connection functions.
  */
 
 #include "config.h"

@@ -35,13 +35,6 @@
  * write. Thinking about it, the abstraction problem is that there is more in
  * Connection than there needs to be. Ideally it would have only (void*)data
  * and methods.
- *
- * | Function               | Description
- * | :--------------------- | :-----------------------------------
- * | mutt_sasl_client_new() | wrapper for sasl_client_new
- * | mutt_sasl_done()       | Invoke when processing is complete.
- * | mutt_sasl_interact()   | Perform an SASL interaction with the user
- * | mutt_sasl_setup_conn() | Set up an SASL connection
  */
 
 #include "config.h"

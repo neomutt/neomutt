@@ -24,11 +24,6 @@
  * @page conn_ssl Handling of OpenSSL encryption
  *
  * Handling of OpenSSL encryption
- *
- * | Function                | Description
- * | :---------------------- | :-----------------------------------
- * | mutt_ssl_socket_setup() | Set up the socket multiplexor
- * | mutt_ssl_starttls()     | Negotiate TLS over an already opened connection
  */
 
 #include "config.h"

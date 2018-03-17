@@ -20,10 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * This file is named mutt_menu.h so it doesn't collide with ncurses menu.h
- */
-
 #ifndef _MUTT_MENU_H
 #define _MUTT_MENU_H
 

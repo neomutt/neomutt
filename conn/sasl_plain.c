@@ -24,10 +24,6 @@
  * @page conn_sasl_plain SASL plain authentication support
  *
  * SASL plain authentication support
- *
- * | Function              | Description
- * | :-------------------- | :-----------------------------------
- * | mutt_sasl_plain_msg() | Create an SASL command
  */
 
 #include "config.h"

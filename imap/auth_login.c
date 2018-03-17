@@ -24,10 +24,6 @@
  * @page imap_auth_login IMAP login authentication method
  *
  * IMAP login authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_login()  | Plain LOGIN support
  */
 
 #include "config.h"

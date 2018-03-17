@@ -25,10 +25,6 @@
  * @page imap_auth_plain IMAP plain authentication method
  *
  * IMAP plain authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_plain()  | SASL PLAIN support
  */
 
 #include "config.h"

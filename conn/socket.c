@@ -26,21 +26,6 @@
  * @page conn_socket Low-level socket handling
  *
  * Low-level socket handling
- *
- * | Function               | Description
- * | :--------------------- | :-----------------------------------
- * | mutt_socket_close()    | Close a socket
- * | mutt_socket_open()     | Simple wrapper
- * | mutt_socket_poll()     | Checks whether reads would block
- * | mutt_socket_readchar() | simple read buffering to speed things up
- * | mutt_socket_readln_d() | Read a line from a socket
- * | mutt_socket_write_d()  | Write data to a socket
- * | raw_socket_close()     | Close a socket
- * | raw_socket_open()      | Open a socket
- * | raw_socket_poll()      | Checks whether reads would block
- * | raw_socket_read()      | Read data from a socket
- * | raw_socket_write()     | Write data to a socket
- * | socket_new_conn()      | allocate and initialise a new connection
  */
 
 #include "config.h"

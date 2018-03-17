@@ -26,10 +26,6 @@
  * @page imap_auth IMAP authenticator multiplexor
  *
  * IMAP authenticator multiplexor
- *
- * | Function            | Description
- * | :------------------ | :-------------------------------------------------
- * | imap_authenticate() | Authenticate to an IMAP server
  */
 
 #include "config.h"

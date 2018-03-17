@@ -20,10 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Mixmaster support for NeoMutt
- */
-
 #include "config.h"
 #include <fcntl.h>
 #include <limits.h>

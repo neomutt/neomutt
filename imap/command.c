@@ -26,16 +26,6 @@
  * @page imap_command Send/receive commands to/from an IMAP server
  *
  * Send/receive commands to/from an IMAP server
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_cmd_finish()  | Attempt to perform cleanup
- * | imap_cmd_idle()    | Enter the IDLE state
- * | imap_cmd_start()   | Given an IMAP command, send it to the server
- * | imap_cmd_step()    | Reads server responses from an IMAP command
- * | imap_cmd_trailer() | Extra information after tagged command response if any
- * | imap_code()        | Was the command successful
- * | imap_exec()        | Execute a command and wait for the response from the server
  */
 
 #include "config.h"

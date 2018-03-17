@@ -24,37 +24,25 @@
  * @page conn_globals Connection Global Variables
  *
  * These global variables are private to the connection library.
- *
- * | Global Variable        | NeoMutt Config
- * | :--------------------- | :------------------------
- * | #CertificateFile       | $certificate_file
- * | #ConnectTimeout        | $connect_timeout
- * | #EntropyFile           | $entropy_file
- * | #Preconnect            | $preconnect
- * | #SslCaCertificatesFile | $ssl_ca_certificates_file
- * | #SslCiphers            | $ssl_ciphers
- * | #SslClientCert         | $ssl_client_cert
- * | #SslMinDhPrimeBits     | $ssl_min_dh_prime_bits
- * | #Tunnel                | $tunnel
  */
 
 #include "config.h"
 #include <stdio.h>
 
-short ConnectTimeout = 0; /**< Config: $connect_timeout */
+short ConnectTimeout = 0; /**< Config: Timeout for a network connection (for IMAP, POP or SMTP) */
 
 #ifdef USE_SSL
-const char *CertificateFile = NULL; /**< Config: $certificate_file */
-const char *EntropyFile = NULL;     /**< Config: $entropy_file */
-const char *SslCiphers = NULL;      /**< Config: $ssl_ciphers */
-const char *SslClientCert = NULL;   /**< Config: $ssl_client_cert */
+const char *CertificateFile = NULL; /**< Config: File containing trusted certificates */
+const char *EntropyFile = NULL;     /**< Config: File containing random data to initialise SSL */
+const char *SslCiphers = NULL;      /**< Config: Ciphers to use when using SSL */
+const char *SslClientCert = NULL;   /**< Config: File containing client certificates */
 #ifdef USE_SSL_GNUTLS
-const char *SslCaCertificatesFile = NULL; /**< Config: $ssl_ca_certificates_file */
-short SslMinDhPrimeBits = 0;              /**< Config: $ssl_min_dh_prime_bits */
+const char *SslCaCertificatesFile = NULL; /**< Config: File containing trusted CA certificates */
+short SslMinDhPrimeBits = 0;              /**< Config: Minimum keysize for Diffie-Hellman key exchange */
 #endif
 #endif
 
 #ifdef USE_SOCKET
-const char *Preconnect = NULL; /**< Config: $preconnect */
-const char *Tunnel = NULL;     /**< Config: $tunnel */
+const char *Preconnect = NULL; /**< Config: Shell command to run before making a connection */
+const char *Tunnel = NULL;     /**< Config: Shell command to establish a tunnel */
 #endif

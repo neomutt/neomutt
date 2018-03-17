@@ -25,19 +25,6 @@
  * @page imap_message Manage IMAP messages
  *
  * Manage IMAP messages
- *
- * | Function                | Description
- * | :---------------------- | :-------------------------------------------------
- * | imap_append_message()   | Write an email back to the server
- * | imap_cache_clean()      | Delete all the entries in the message cache
- * | imap_cache_del()        | Delete an email from the body cache
- * | imap_close_message()    | Close an email
- * | imap_commit_message()   | Save changes to an email
- * | imap_copy_messages()    | Server COPY messages to another folder
- * | imap_fetch_message()    | Fetch an email from an IMAP server
- * | imap_free_header_data() | free ImapHeader structure
- * | imap_read_headers()     | Read headers from the server
- * | imap_set_flags()        | fill the message header according to the server flags
  */
 
 #include "config.h"

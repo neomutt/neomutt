@@ -24,11 +24,6 @@
  * @page imap_utf7 UTF-7 Manipulation
  *
  * Convert strings to/from utf7/utf8
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_utf_decode()  | Decode email from UTF-8 to local charset
- * | imap_utf_encode()  | Encode email from local charset to UTF-8
  */
 
 #include "config.h"

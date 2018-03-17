@@ -20,13 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Yet another MIME encoding for header data.  This time, it's
- * parameters, specified in RFC2231, and modeled after the
- * encoding used in URLs.
+/* Yet another MIME encoding for header data.  This time, it's parameters,
+ * specified in RFC2231, and modeled after the encoding used in URLs.
  *
- * Additionally, continuations and encoding are mixed in an, errrm,
- * interesting manner.
+ * Additionally, continuations and encoding are mixed in an, errrm, interesting
+ * manner.
  */
 
 #include "config.h"

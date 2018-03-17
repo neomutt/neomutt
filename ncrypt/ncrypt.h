@@ -21,11 +21,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-   Common definitions and prototypes for the crypt functions. They are
-   all defined in crypt.c and cryptglue.c
-*/
-
 #ifndef _NCRYPT_NCRYPT_H
 #define _NCRYPT_NCRYPT_H
 

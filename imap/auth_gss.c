@@ -24,10 +24,6 @@
  * @page imap_auth_gss IMAP GSS authentication method
  *
  * IMAP GSS authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_gss()    | GSS Authentication support
  */
 
 #include "config.h"

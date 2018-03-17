@@ -22,11 +22,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * This file contains routines specific to MH and ``maildir'' style
- * mailboxes.
- */
-
 #include "config.h"
 #include <ctype.h>
 #include <dirent.h>

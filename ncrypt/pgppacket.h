@@ -20,9 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Definitions for a rudimentary PGP packet parser which is shared
- * by neomutt proper and the PGP public key ring lister.
+/* Definitions for a rudimentary PGP packet parser which is shared by neomutt
+ * proper and the PGP public key ring lister.
  */
 
 #ifndef _NCRYPT_PGPPACKET_H

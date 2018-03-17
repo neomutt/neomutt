@@ -20,10 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * Mixmaster support for NeoMutt
- */
-
 #ifndef _MUTT_REMAILER_H
 #define _MUTT_REMAILER_H
 

@@ -25,11 +25,6 @@
  * @page conn_ssl_gnutls Handling of GnuTLS encryption
  *
  * Handling of GnuTLS encryption
- *
- * | Function                | Description
- * | :---------------------- | :-----------------------------------
- * | mutt_ssl_socket_setup() | Set up SSL socket mulitplexor
- * | mutt_ssl_starttls()     | Set up TLS multiplexor
  */
 
 #include "config.h"

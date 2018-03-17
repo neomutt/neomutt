@@ -25,24 +25,6 @@
  *
  * Read/write command history from/to a file.
  *
- * | Data               | Description
- * | :----------------- | :--------------------------------------------------
- * | #History           | Number of history entries stored in memory
- * | #HistoryFile       | File in which to store all the histories
- * | #HistoryRemoveDups | Remove duplicate history entries
- * | #SaveHistory       | Number of history entries, per category, stored on disk
- *
- * | Function                 | Description
- * | :----------------------- | :---------------------------------------------------------
- * | mutt_hist_add()          | Add a string to a history
- * | mutt_hist_at_scratch()   | Is the current History position at the 'scratch' place?
- * | mutt_hist_init()         | Create a set of empty History ring buffers
- * | mutt_hist_next()         | Get the next string in a History
- * | mutt_hist_prev()         | Get the previous string in a History
- * | mutt_hist_read_file()    | Read the History from a file
- * | mutt_hist_reset_state()  | Move the 'current' position to the end of the History
- * | mutt_hist_save_scratch() | Save a temporary string to the History
- *
  * This history ring grows from 0..History, with last marking the
  * where new entries go:
  * ```

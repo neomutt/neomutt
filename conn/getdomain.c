@@ -24,10 +24,6 @@
  * @page conn_getdomain DNS lookups
  *
  * DNS lookups
- *
- * | Function           | Description
- * | :----------------- | :-----------------------------------
- * | getdnsdomainname() | Lookup the host's name using DNS
  */
 
 #include "config.h"

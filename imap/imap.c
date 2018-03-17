@@ -27,47 +27,9 @@
  *
  * Support for IMAP4rev1, with the occasional nod to IMAP 4.
  *
- * | Function                     | Description
- * | :--------------------------- | :-------------------------------------------------
- * | imap_access()                | Check permissions on an IMAP mailbox
- * | imap_buffy_check()           | Check for new mail in subscribed folders
- * | imap_check()                 | Check for new mail
- * | imap_check_mailbox()         | use the NOOP or IDLE command to poll for new mail
- * | imap_close_connection()      | Close an IMAP connection
- * | imap_complete()              | Try to complete an IMAP folder path
- * | imap_conn_find()             | Find an open IMAP connection
- * | imap_create_mailbox()        | Create a new mailbox
- * | imap_delete_mailbox()        | Delete a mailbox
- * | imap_exec_msgset()           | Prepare commands for all messages matching conditions
- * | imap_expunge_mailbox()       | Purge messages from the server
- * | imap_fast_trash()            | Use server COPY command to copy deleted messages to trash
- * | imap_has_flag()              | Does the flag exist in the list
- * | imap_logout()                | Gracefully log out of server
- * | imap_logout_all()            | close all open connections
- * | imap_mboxcache_free()        | Free the cached ImapStatus
- * | imap_mboxcache_get()         | Open an hcache for a mailbox
- * | imap_open_connection()       | Open an IMAP connection
- * | imap_read_literal()          | Read bytes bytes from server into file
- * | imap_rename_mailbox()        | Rename a mailbox
- * | imap_search()                | Find a matching mailbox
- * | imap_status()                | Get the status of a mailbox
- * | imap_subscribe()             | Subscribe to a mailbox
- * | imap_sync_message_for_copy() | Update server to reflect the flags of a single message
- *
- * | Data               | Description
- * | :----------------- | :--------------------------------------------------
- * | #mx_comp_ops       | Mailbox callback functions
- *
- * | Function                    | Description
- * | :-------------------------- | :-------------------------------------------------
- * | imap_check_mailbox_reopen() | Check for new mail (reopen mailbox if necessary)
- * | imap_close_mailbox()        | Clean up IMAP data in Context
- * | imap_commit_message_tags()  | Add/Change/Remove flags from headers
- * | imap_edit_message_tags()    | Prompt and validate new messages tags
- * | imap_open_mailbox()         | Open an IMAP mailbox
- * | imap_open_mailbox_append()  | Open an IMAP mailbox to append
- * | imap_open_new_message()     | Open an IMAP message
- * | imap_sync_mailbox()         | Sync all the changes to the server
+ * | Data         | Description
+ * | :----------- | :-------------------------
+ * | #mx_imap_ops | Mailbox callback functions
  */
 
 #include "config.h"
@@ -2778,7 +2740,7 @@ static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char 
 }
 
 /**
- * mx_comp_ops - Mailbox callback functions
+ * mx_imap_ops - Mailbox callback functions
  */
 struct MxOps mx_imap_ops = {
   .open = imap_open_mailbox,

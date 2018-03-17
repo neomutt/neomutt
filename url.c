@@ -20,10 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * A simple URL parser.
- */
-
 #include "config.h"
 #include <ctype.h>
 #include <stdio.h>

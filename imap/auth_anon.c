@@ -24,10 +24,6 @@
  * @page imap_auth_anon IMAP anonymous authentication method
  *
  * IMAP anonymous authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_anon()   | Authenticate anonymously
  */
 
 #include "config.h"

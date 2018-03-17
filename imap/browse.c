@@ -25,12 +25,6 @@
  * @page imap_browse Mailbox browser
  *
  * GUI select an IMAP mailbox from a list
- *
- * | Function              | Description
- * | :-------------------- | :-------------------------------------------------
- * | imap_browse()         | IMAP hook into the folder browser
- * | imap_mailbox_create() | Create a new IMAP mailbox
- * | imap_mailbox_rename() | Rename a mailbox
  */
 
 #include "config.h"

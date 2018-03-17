@@ -24,10 +24,6 @@
  * @page imap_auth_sasl IMAP SASL authentication method
  *
  * IMAP SASL authentication method
- *
- * | Function           | Description
- * | :----------------- | :-------------------------------------------------
- * | imap_auth_sasl()   | Default authenticator if available
  */
 
 #include "config.h"

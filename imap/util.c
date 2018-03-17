@@ -26,41 +26,6 @@
  * @page imap_util IMAP helper functions
  *
  * IMAP helper functions
- *
- * | Function                 | Description
- * | :----------------------- | :-------------------------------------------------
- * | imap_account_match()     | Compare two Accounts
- * | imap_allow_reopen()      | Allow re-opening a folder upon expunge
- * | imap_cachepath()         | Generate a cache path for a mailbox
- * | imap_clean_path()        | Cleans an IMAP path using imap_fix_path
- * | imap_continue()          | display a message and ask the user if they want to go on
- * | imap_disallow_reopen()   | Disallow re-opening a folder upon expunge
- * | imap_error()             | show an error and abort
- * | imap_expand_path()       | Canonicalise an IMAP path
- * | imap_fix_path()          | Fix up the imap path
- * | imap_free_idata()        | Release and clear storage in an ImapData structure
- * | imap_get_literal_count() | write number of bytes in an IMAP literal into bytes
- * | imap_get_parent()        | Get an IMAP folder's parent
- * | imap_get_parent_path()   | Get the path of the parent folder
- * | imap_get_qualifier()     | Get the qualifier from a tagged response
- * | imap_hcache_close()      | Close the header cache
- * | imap_hcache_del()        | Delete an item from the header cache
- * | imap_hcache_get()        | Get a header cache entry by its UID
- * | imap_hcache_namer()      | Generate a filename for the header cache
- * | imap_hcache_open()       | Open a header cache
- * | imap_hcache_put()        | Add an entry to the header cache
- * | imap_keepalive()         | poll the current folder to keep the connection alive
- * | imap_munge_mbox_name()   | Quote awkward characters in a mailbox name
- * | imap_mxcmp()             | Compare mailbox names, giving priority to INBOX
- * | imap_new_idata()         | Allocate and initialise a new ImapData structure
- * | imap_next_word()         | Find where the next IMAP word begins
- * | imap_parse_path()        | Parse an IMAP mailbox name into name,host,port
- * | imap_pretty_mailbox()    | Prettify an IMAP mailbox name
- * | imap_qualify_path()      | Make an absolute IMAP folder target
- * | imap_quote_string()      | quote string according to IMAP rules
- * | imap_unmunge_mbox_name() | Remove quoting from a mailbox name
- * | imap_unquote_string()    | equally stupid unquoting routine
- * | imap_wait_keepalive()    | Wait for a process to change state
  */
 
 #include "config.h"

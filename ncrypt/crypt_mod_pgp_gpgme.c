@@ -20,10 +20,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-    This is a crypto module wrapping the gpgme based pgp code.
- */
-
 #include "config.h"
 #include <stdio.h>
 #include "crypt_gpgme.h"

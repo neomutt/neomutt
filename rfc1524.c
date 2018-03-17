@@ -20,14 +20,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * rfc1524 defines a format for the Multimedia Mail Configuration, which
- * is the standard mailcap file format under Unix which specifies what
- * external programs should be used to view/compose/edit multimedia files
- * based on content type.
+/* RFC1524 defines a format for the Multimedia Mail Configuration, which is the
+ * standard mailcap file format under Unix which specifies what external
+ * programs should be used to view/compose/edit multimedia files based on
+ * content type.
  *
  * This file contains various functions for implementing a fair subset of
- * rfc1524.
+ * RFC1524.
  */
 
 #include "config.h"
