@@ -4,15 +4,16 @@
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Marcus Brito <marcus@visaotec.com.br>, 2000
+# Thiago Costa de Paiva <tecepe@tecepe.eng.br>, 2018
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-03-18 23:11+0000\n"
+"POT-Creation-Date: 2018-03-18 23:51+0000\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
-"Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
-"Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
+"Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
+"Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,11 +47,11 @@ msgstr "Ajuda"
 
 #: addrbook.c:183
 msgid "You have no aliases!"
-msgstr "Você não tem apelidos!"
+msgstr "Sua lista de contatos está vazia!"
 
 #: addrbook.c:190
 msgid "Aliases"
-msgstr "Apelidos"
+msgstr "Contatos"
 
 #. L10N: prompt to add a new alias
 #: alias.c:311
@@ -59,11 +60,11 @@ msgstr "Apelidar como: "
 
 #: alias.c:317
 msgid "You already have an alias defined with that name!"
-msgstr "Você já tem um apelido definido com aquele nome!"
+msgstr "Já existe um apelido definido com aquele nome!"
 
 #: alias.c:323
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Aviso: Este apelido pode não funcionar. Consertar?"
 
 #: alias.c:347
 msgid "Address: "
@@ -72,11 +73,11 @@ msgstr "Endereço: "
 #: alias.c:358 send.c:206
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Erro: '%s' não é uma boa IDN."
 
 #: alias.c:368
 msgid "Personal name: "
-msgstr "Nome pessoal:"
+msgstr "Nome:"
 
 #: alias.c:377
 #, c-format
@@ -86,25 +87,23 @@ msgstr "[%s =%s] Aceita?"
 #: alias.c:397 recvattach.c:478 recvattach.c:502 recvattach.c:516
 #: recvattach.c:530 recvattach.c:566
 msgid "Save to file: "
-msgstr "Salvar em arquivo:"
+msgstr "Salvar no arquivo: "
 
 #: alias.c:412
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Erro ao ler mensagem!"
+msgstr "Erro ao ler o arquivo de contatos"
 
 #: alias.c:436
 msgid "Alias added."
 msgstr "Apelido adicionado."
 
 #: alias.c:444
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Erro ao tentar exibir arquivo"
+msgstr "Erro ao localizer arquivo de contatos"
 
 #: attach.c:118 attach.c:252 attach.c:434 attach.c:1002
 msgid "Can't match nametemplate, continue?"
-msgstr "Não pude casar o nome, continuo?"
+msgstr "Não pude associar o modelo de nomeação, continuo?"
 
 #: attach.c:130
 #, c-format
@@ -127,58 +126,57 @@ msgid "Failure to open file to strip headers."
 msgstr "Erro ao abrir o arquivo para retirar cabeçalhos."
 
 #: attach.c:193
-#, fuzzy
 msgid "Failure to rename file."
-msgstr "Erro ao abrir o arquivo para interpretar os cabeçalhos."
+msgstr "Falha ao renomear arquivo."
 
 #: attach.c:204
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
 msgstr ""
-"Nenhuma entrada de composição no mailcap para %s, criando entrada vazia."
+"Nenhuma entrada de composição 'mailcap' para %s, criando arquivo vazio."
 
 #: attach.c:264
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
-msgstr "Entrada de edição no mailcap requer %%s"
+msgstr "Entrada de edição 'mailcap' requer %%s"
 
 #: attach.c:286
 #, c-format
 msgid "No mailcap edit entry for %s"
-msgstr "Nenhuma entrada de edição no mailcap para %s"
+msgstr "Nenhuma entrada de edição 'mailcap' para %s"
 
 #: attach.c:401
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr "Nenhuma entrada no mailcap de acordo encontrada. Exibindo como texto."
+msgstr "Nenhuma entrada 'mailcap' associada. Exibindo como texto."
 
 #: attach.c:414
 msgid "MIME type not defined.  Cannot view attachment."
-msgstr "Tipo MIME não definido. Não é possível visualizar o anexo."
+msgstr "Tipo MIME não definido. Não foi possível exibir o anexo."
 
 #: attach.c:505 attach.c:680 attach.c:713 attach.c:1037 attach.c:1099
 #: handler.c:1396 ncrypt/pgpkey.c:595 ncrypt/pgpkey.c:781
 msgid "Can't create filter"
-msgstr "Não foi possível criar um filtro"
+msgstr "Não foi possível criar filtro"
 
 #: attach.c:513
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---Comando: %-20.20s Descrição: %s"
 
 #: attach.c:516
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---Commando: %-30.30s Anexos: %s"
 
 #: attach.c:595
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s: %s"
-msgstr "-- Anexos"
+msgstr "-- Anexos: %s: %s"
 
 #: attach.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s"
-msgstr "-- Anexos"
+msgstr "-- Anexos: %s"
 
 #: attach.c:861 attach.c:869
 msgid "Write fault!"
@@ -191,17 +189,17 @@ msgstr "Eu não sei como imprimir isto!"
 #: bcache.c:161
 #, c-format
 msgid "Path too long: %s%s%s"
-msgstr ""
+msgstr "Caminho longo demais: %s%s%s"
 
 #: bcache.c:169
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "%s não é um diretório."
+msgstr "Cachê de mensagens não é um diretório: %s."
 
 #: bcache.c:177
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s %s"
-msgstr "Não é possível criar %s: %s"
+msgstr "Não é possível criar %s %s"
 
 #: browser.c:71
 msgid "Chdir"
@@ -209,7 +207,7 @@ msgstr "Diretório"
 
 #: browser.c:72
 msgid "Goto"
-msgstr ""
+msgstr "Ir para"
 
 #: browser.c:73 browser.c:85
 msgid "Mask"
@@ -217,17 +215,15 @@ msgstr "Máscara"
 
 #: browser.c:81
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: browser.c:82
-#, fuzzy
 msgid "Subscribe"
-msgstr "Assinando %s..."
+msgstr "Inscrever"
 
 #: browser.c:83
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "Cancelando assinatura de %s..."
+msgstr "Desinscrever"
 
 #: browser.c:84 curs_main.c:841
 msgid "Catchup"
@@ -239,19 +235,19 @@ msgid "%s is not a directory."
 msgstr "%s não é um diretório."
 
 #: browser.c:1049
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed newsgroups"
-msgstr "Assinando %s..."
+msgstr "Grupo de notícias inscrito"
 
 #: browser.c:1051
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Grupo de notícias no servidor [%s]"
 
 #: browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
-msgstr "Caixas [%d]"
+msgstr "Caixas de mensagens [%d]"
 
 #: browser.c:1067
 #, c-format
@@ -260,52 +256,48 @@ msgstr "Diretório [%s], Máscara de arquivos: %s"
 
 #: browser.c:1121
 msgid "Can't attach a directory!"
-msgstr "Não é possível anexar um diretório"
+msgstr "Não é possível anexar um diretório!"
 
 #: browser.c:1405 browser.c:1854 browser.c:1993
 msgid "No files match the file mask"
 msgstr "Nenhum arquivo casa com a máscara"
 
 #: browser.c:1608
-#, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "A remoção só é possível para caixar IMAP"
+msgstr "Criação de caixa de mensagens somente em IMAP"
 
 #: browser.c:1630
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "A remoção só é possível para caixar IMAP"
+msgstr "Renomeação de caixa de mensagens somente em IMAP"
 
 #: browser.c:1651
 msgid "Delete is only supported for IMAP mailboxes"
-msgstr "A remoção só é possível para caixar IMAP"
+msgstr "Remoção de caixa de mensagens somente em IMAP"
 
 #: browser.c:1661 browser.c:1687
-#, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "Caixa de correio removida."
+msgstr "A remoção da caixa de mensagens falhou."
 
 #: browser.c:1666
-#, fuzzy
 msgid "Cannot delete root folder"
-msgstr "Não é possível criar o filtro."
+msgstr "Não é possível remover a pasta raíz"
 
 #: browser.c:1669
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
-msgstr "Deseja mesmo remover a caixa \"%s\"?"
+msgstr "Deseja mesmo remover a caixa de mensagens\"%s\"?"
 
 #: browser.c:1683
 msgid "Mailbox deleted."
-msgstr "Caixa de correio removida."
+msgstr "Caixa de mensagens removida."
 
 #: browser.c:1690
 msgid "Mailbox not deleted."
-msgstr "Caixa de correio não removida."
+msgstr "Caixa de mensagens não removida."
 
 #: browser.c:1720
 msgid "Chdir to: "
-msgstr "Mudar para: "
+msgstr "Ir para diretório: "
 
 #: browser.c:1770 browser.c:1848
 msgid "Error scanning directory."
@@ -317,24 +309,26 @@ msgstr "Máscara de arquivos: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1871
-#, fuzzy
 msgid ""
 "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
 "count, or do(n)'t sort? "
-msgstr "Ordem inversa por (d)ata, (a)lfa, (t)amanho ou (n)ão ordenar? "
+msgstr ""
+"Ordenação reversa por (d)data, (a)alfa, (z)tamanho, (e)descrição, "
+"(c)contagem, (w)novas ou (n)sem ordenação? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1874
-#, fuzzy
 msgid ""
 "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
 "do(n)'t sort? "
-msgstr "Ordenar por (d)ata, (a)lfa, (t)amanho ou (n)ão ordenar? "
+msgstr ""
+"Ordenação por (d)data, (a)alfa, (z)tamanho, (e)descrição, (c)contagem, "
+"(w)novas ou (n)sem ordenação? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1877
 msgid "dazecwn"
-msgstr ""
+msgstr "dazecwn"
 
 #: browser.c:1982
 msgid "New file name: "
@@ -342,51 +336,49 @@ msgstr "Nome do novo arquivo: "
 
 #: browser.c:2010
 msgid "Can't view a directory"
-msgstr "Não é possível visualizar um diretório"
+msgstr "Não é possível exibir um diretório"
 
 #: browser.c:2028
 msgid "Error trying to view file"
 msgstr "Erro ao tentar exibir arquivo"
 
 #: browser.c:2113
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribe pattern: "
-msgstr "Assinando %s..."
+msgstr "Padrão para inscrição: "
 
 #: browser.c:2115
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribe pattern: "
-msgstr "Cancelando assinatura de %s..."
+msgstr "Padrão para desinscrição: "
 
 #: browser.c:2134
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Nenhum arquivo casa com a máscara"
+msgstr "Nenhum grupo de notícias coincide com a máscara"
 
 #: buffy.c:760
-#, fuzzy
 msgid "New mail in "
-msgstr "Novas mensagens em %s"
+msgstr "Nova mensagem em "
 
 #: color.c:408
 #, c-format
 msgid "%s: color not supported by term"
-msgstr "%s: o terminal não aceita cores"
+msgstr "%s: cor não suportada pelo terminal"
 
 #: color.c:414
 #, c-format
 msgid "%s: no such color"
-msgstr "%s: não existe tal cor"
+msgstr "%s: cor inválida"
 
 #: color.c:511 color.c:721 color.c:743 color.c:749
 #, c-format
 msgid "%s: no such object"
-msgstr "%s: não existe tal objeto"
+msgstr "%s: objeto inválido"
 
 #: color.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "%s: command valid only for index, body, header objects"
-msgstr "%s: comando válido apenas para o objeto índice"
+msgstr "%s: comando válido apenas para objetos de índice, corpo e cabeçalho"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
 #: color.c:865 hook.c:88 hook.c:101 init.c:845 init.c:2136 init.c:2212
@@ -398,7 +390,7 @@ msgstr "%s: poucos argumentos"
 #: color.c:821
 #, c-format
 msgid "%s: no such attribute"
-msgstr "%s: não existe tal atributo"
+msgstr "%s: atributo inexistente"
 
 #: color.c:874 color.c:931 hook.c:107 init.c:760 init.c:4173 init.c:4227
 #: keymap.c:967 keymap.c:1112 keymap.c:1181 mutt_lua.c:421 score.c:96
@@ -419,41 +411,36 @@ msgid "Could not create temporary file!"
 msgstr "Não foi possível criar um arquivo temporário!"
 
 #: commands.c:136
-#, fuzzy
 msgid "Cannot create display filter"
-msgstr "Não é possível criar o filtro."
+msgstr "Não é possível filtro de exibição."
 
 #: commands.c:166
-#, fuzzy
 msgid "Could not copy message"
-msgstr "Não foi possível enviar a mensagem."
+msgstr "Não foi possível copiar a mensagem."
 
 #: commands.c:201
-#, fuzzy
 msgid "S/MIME signature successfully verified."
 msgstr "Assinatura S/MIME verificada com sucesso."
 
 #: commands.c:203
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "Certificado S/MIME do titular não coincide com o remetente."
 
 #: commands.c:206 commands.c:216
 msgid "Warning: Part of this message has not been signed."
-msgstr ""
+msgstr "Aviso: parte desta mensagem não foi assinada."
 
 #: commands.c:208
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "Assinatura PGP verificada com sucesso."
+msgstr "Assinatura S/MIME NÃO pode ser verificada."
 
 #: commands.c:214
 msgid "PGP signature successfully verified."
 msgstr "Assinatura PGP verificada com sucesso."
 
 #: commands.c:218
-#, fuzzy
 msgid "PGP signature could NOT be verified."
-msgstr "Assinatura PGP verificada com sucesso."
+msgstr "Assinatura PGP NÃO pode ser verificada."
 
 #: commands.c:243
 msgid "Command: "
@@ -461,7 +448,7 @@ msgstr "Comando: "
 
 #: commands.c:268 commands.c:277 recvcmd.c:141 recvcmd.c:153
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Aviso: mensagem não contém cabeçalho 'From: ' (remetente)."
 
 #: commands.c:284 recvcmd.c:162
 msgid "Bounce message to: "
@@ -478,49 +465,46 @@ msgstr "Erro ao interpretar endereço!"
 #: commands.c:303 recvcmd.c:181
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "IDN inválido: '%s'"
 
 #: commands.c:314 recvcmd.c:195
 #, c-format
 msgid "Bounce message to %s"
-msgstr "Repetir mensagem para %s"
+msgstr "Replicar mensagem para %s"
 
 #: commands.c:314 recvcmd.c:195
 #, c-format
 msgid "Bounce messages to %s"
-msgstr "Repetir mensagens para %s"
+msgstr "Replicar mensagens para %s"
 
 #: commands.c:329 recvcmd.c:210
-#, fuzzy
 msgid "Message not bounced."
-msgstr "Mensagem repetida."
+msgstr "Mensagem réplica não enviada."
 
 #: commands.c:329 recvcmd.c:210
 #, fuzzy
 msgid "Messages not bounced."
-msgstr "Mensagens repetidas."
+msgstr "Mensagens replicadas."
 
 #: commands.c:339 recvcmd.c:229
 msgid "Message bounced."
-msgstr "Mensagem repetida."
+msgstr "Mensagem replicada."
 
 #: commands.c:339 recvcmd.c:229
 msgid "Messages bounced."
-msgstr "Mensagens repetidas."
+msgstr "Mensagens replicadas."
 
 #: commands.c:407 commands.c:449 commands.c:469
-#, fuzzy
 msgid "Can't create filter process"
-msgstr "Não foi possível criar um filtro"
+msgstr "Não foi possível criar processo de filtragem"
 
 #: commands.c:501
 msgid "Pipe to command: "
-msgstr "Passar por cano ao comando: "
+msgstr "Alimentar (pipe) comando: "
 
 #: commands.c:515
-#, fuzzy
 msgid "No printing command has been defined."
-msgstr "Nenhuma caixa de mensagem para recebimento definida."
+msgstr "Nenhum commando para impressão foi definido."
 
 #: commands.c:519
 msgid "Print message?"
@@ -539,14 +523,12 @@ msgid "Messages printed"
 msgstr "Mensagens impressas"
 
 #: commands.c:527
-#, fuzzy
 msgid "Message could not be printed"
-msgstr "Mensagem impressa"
+msgstr "Mensagem não pôde ser impressa"
 
 #: commands.c:527
-#, fuzzy
 msgid "Messages could not be printed"
-msgstr "Mensagens impressas"
+msgstr "Mensagens não puderam ser impressas"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:536
@@ -6555,12 +6537,52 @@ msgstr "Opções de compilação:"
 msgid "Compile options:"
 msgstr "Opções de compilação:"
 
+#~ msgid "Cannot create filter"
+#~ msgstr "Não foi possível criar filtro"
+
+#~ msgid "Missing arguments."
+#~ msgstr "Faltam argumentos."
+
+#~ msgid "color: too few arguments"
+#~ msgstr "cor: poucos argumentos"
+
+#~ msgid "mono: too few arguments"
+#~ msgstr "mono: poucos argumentos"
+
+#~ msgid "too few arguments"
+#~ msgstr "poucos argumentos"
+
+#, fuzzy
+#~ msgid "finish: too many arguments"
+#~ msgstr "push: muitos argumentos"
+
+#~ msgid "push: too many arguments"
+#~ msgstr "push: muitos argumentos"
+
+#~ msgid "bind: too many arguments"
+#~ msgstr "bind: muitos argumentos"
+
+#~ msgid "macro: too many arguments"
+#~ msgstr "macro: muitos argumentos"
+
 #, fuzzy
 #~ msgid "Debugging at file %s.\n"
 #~ msgstr "Depurando no nível %d.\n"
 
+#~ msgid "source: too many arguments"
+#~ msgstr "source: muitos argumentos"
+
 #~ msgid "score: too few arguments"
 #~ msgstr "score: poucos argumentos"
+
+#~ msgid "score: too many arguments"
+#~ msgstr "score: muitos argumentos"
+
+#~ msgid "No recipients are specified!"
+#~ msgstr "Nenhum destinatário está especificado!"
+
+#~ msgid "No recipients were specified."
+#~ msgstr "Nenhum destinatário foi especificado."
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"
