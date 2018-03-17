@@ -35,15 +35,15 @@ srcdir_DOCFILES = $(SRCDIR)/doc/PGP-Notes.txt \
 		  $(SRCDIR)/README.md \
 		  $(SRCDIR)/README.SSL
 
-all-doc: 	$(CHUNKED_DOCFILES) \
-    		doc/index.html \
+all-doc:	$(CHUNKED_DOCFILES) \
+		doc/index.html \
 		doc/manual.html \
 		doc/manual.txt \
 		doc/neomuttrc \
 		doc/neomuttrc.man
 
 doc/manual.html:	doc/manual.xml \
-    			$(SRCDIR)/doc/html.xsl \
+			$(SRCDIR)/doc/html.xsl \
 			$(SRCDIR)/doc/neomutt.xsl \
 			$(SRCDIR)/doc/neomutt.css
 	xsltproc --nonet -o $@ $(SRCDIR)/doc/html.xsl doc/manual.xml
@@ -58,13 +58,13 @@ doc/manual.txt: doc/manual.html
 $(CHUNKED_DOCFILES): doc/index.html
 
 doc/index.html: $(SRCDIR)/doc/chunk.xsl \
-    		$(SRCDIR)/doc/neomutt.xsl \
+		$(SRCDIR)/doc/neomutt.xsl \
 		$(SRCDIR)/doc/neomutt.css \
 		doc/manual.xml
 	xsltproc --nonet -o doc/ $(SRCDIR)/doc/chunk.xsl doc/manual.xml > /dev/null 2>&1
 
 doc/neomuttrc.man:	doc/makedoc$(EXEEXT) \
-    		$(SRCDIR)/init.h \
+		$(SRCDIR)/init.h \
 		$(SRCDIR)/doc/neomuttrc.man.head \
 		$(SRCDIR)/doc/neomuttrc.man.tail
 	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m | \
@@ -130,11 +130,11 @@ validate-doc: doc/manual.xml
 	xmllint --noout --noblanks --postvalid doc/manual.xml
 
 spellcheck-doc:
-	-aspell -d american --mode=sgml  --encoding=utf-8 -p \
+	-aspell -d american --mode=sgml --encoding=utf-8 -p \
 	    doc/neomutt.pwl check doc/manual.xml.head
 	-aspell -d american --mode=nroff --encoding=utf-8 -p \
 	    doc/neomutt.pwl check doc/neomuttrc.man.head
-	-aspell -d american --mode=ccpp  --encoding=utf-8 -p \
+	-aspell -d american --mode=ccpp --encoding=utf-8 -p \
 	    doc/neomutt.pwl check init.h
 
 sortcheck-doc: doc/manual.xml

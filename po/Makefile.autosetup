@@ -2,17 +2,17 @@
 
 MSGID_BUGS_ADDRESS = @BUGS_ADDRESS@
 GMSGFMT		= @MSGFMT@
-localedir 	= @MUTTLOCALEDIR@
-XGETTEXT 	= @XGETTEXT@
+localedir	= @MUTTLOCALEDIR@
+XGETTEXT	= @XGETTEXT@
 XGETTEXT_OPTIONS= --keyword=_ --keyword=N_ --no-wrap --add-comments=L10N
-MSGMERGE 	= @MSGMERGE@
+MSGMERGE	= @MSGMERGE@
 MSGMERGE_UPDATE = @MSGMERGE@ --update
 
-MOFILES		=  po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
-		   po/en_GB.mo po/eo.mo po/es.mo po/et.mo po/eu.mo po/fr.mo \
-		   po/ga.mo po/gl.mo po/hu.mo po/id.mo po/it.mo po/ja.mo \
-		   po/ko.mo po/lt.mo po/nl.mo po/pl.mo po/pt_BR.mo po/ru.mo \
-		   po/sk.mo po/sv.mo po/tr.mo po/uk.mo po/zh_CN.mo po/zh_TW.mo
+MOFILES		= po/bg.mo po/ca.mo po/cs.mo po/da.mo po/de.mo po/el.mo \
+		  po/en_GB.mo po/eo.mo po/es.mo po/et.mo po/eu.mo po/fr.mo \
+		  po/ga.mo po/gl.mo po/hu.mo po/id.mo po/it.mo po/ja.mo \
+		  po/ko.mo po/lt.mo po/nl.mo po/pl.mo po/pt_BR.mo po/ru.mo \
+		  po/sk.mo po/sv.mo po/tr.mo po/uk.mo po/zh_CN.mo po/zh_TW.mo
 POTFILE		= po/$(PACKAGE).pot
 
 all-po:	$(MOFILES)
@@ -51,7 +51,7 @@ update-po: clean-po
 
 $(PACKAGE).pot-update:
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(SRCDIR) \
-	    $(XGETTEXT_OPTIONS)  \
+	    $(XGETTEXT_OPTIONS) \
 	    --files-from=po/POTFILES.in \
 	    --copyright-holder='$(COPYRIGHT_HOLDER)' \
 	    --package-name="$(PACKAGE)" \
