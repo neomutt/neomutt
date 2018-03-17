@@ -532,61 +532,60 @@ msgstr "Mensagens não puderam ser impressas"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:536
-#, fuzzy
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
 "s(p)am/(l)abel?: "
 msgstr ""
-"Ordem-Rev (d)ata/(f)rm/(r)eceb/(a)sst/(p)ara/dis(c)/de(s)ord/(t)am/r(e)fs?: "
+"Ordem rev (d)data/(f)remet/(r)receb/(s)assun/(o)para/(t)thread/(u)sem ordem/"
+"(z)tamanho/(c)pontos/(p)spam/(l)label?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:540
-#, fuzzy
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/"
 "(l)abel?: "
 msgstr ""
-"Ordem (d)ata/(f)rm/(r)eceb/(a)sst/(p)ara/dis(c)/de(s)ord/(t)am/r(e)fs?: "
+"Sort (d)data/(f)remet/(r)receb/(s)assun/(o)para/(t)thread/(u)sem ordem/"
+"(z)tamanho/(c)pontos/(p)spam/(l)label?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:544
-#, fuzzy
 msgid "dfrsotuzcpl"
-msgstr "dfrapcste"
+msgstr "dfrsotuzcpl"
 
 #: commands.c:607
 msgid "Shell command: "
 msgstr "Comando do shell: "
 
 #: commands.c:763
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-save%s to mailbox"
-msgstr "%s%s para caixa de mensagens"
+msgstr "Decodificar-salvar%s para caixa de mensagens"
 
 #: commands.c:763
-#, fuzzy, c-format
+#, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "%s%s para caixa de mensagens"
+msgstr "Decodificar-copiar%s para caixa de mensagens"
 
 #: commands.c:764
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-save%s to mailbox"
-msgstr "%s%s para caixa de mensagens"
+msgstr "Desencriptar-salvar%s para caixa de mensagens"
 
 #: commands.c:764
-#, fuzzy, c-format
+#, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "%s%s para caixa de mensagens"
+msgstr "Desencriptar-copiar%s para caixa de mensagens"
 
 #: commands.c:765
-#, fuzzy, c-format
+#, c-format
 msgid "Save%s to mailbox"
-msgstr "%s%s para caixa de mensagens"
+msgstr "Salvar%s na caixa de mensagens"
 
 #: commands.c:765
-#, fuzzy, c-format
+#, c-format
 msgid "Copy%s to mailbox"
-msgstr "%s%s para caixa de mensagens"
+msgstr "Copiar%s na caixa de mensagens"
 
 #: commands.c:766
 msgid " tagged"
@@ -600,25 +599,25 @@ msgstr "Copiando para %s..."
 #: commands.c:996
 #, c-format
 msgid "Convert to %s upon sending?"
-msgstr ""
+msgstr "Converter para %s após enviar?"
 
 #: commands.c:1007
-#, fuzzy, c-format
+#, c-format
 msgid "Content-Type changed to %s."
-msgstr "Conectando a %s..."
+msgstr "Tipo de conteúdo (Content-Type) alterado para %s."
 
 #: commands.c:1012
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; %s."
-msgstr "O conjunto de caracteres %s é desconhecido."
+msgstr "Conjunto de caracteres alterado para %s; %s."
 
 #: commands.c:1014
 msgid "not converting"
-msgstr ""
+msgstr "não convertendo"
 
 #: commands.c:1014
 msgid "converting"
-msgstr ""
+msgstr "convertendo"
 
 #: compose.c:61
 msgid "There are no attachments."
@@ -651,9 +650,8 @@ msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:119
-#, fuzzy
 msgid "Reply-To: "
-msgstr "Responder"
+msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:121 compose.c:946
@@ -668,7 +666,7 @@ msgstr ""
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:127
 msgid "Security: "
-msgstr ""
+msgstr "Segurança: "
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -691,15 +689,13 @@ msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142
-#, fuzzy
 msgid "Followup-To: "
-msgstr "Responder para %s%s?"
+msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
-#, fuzzy
 msgid "X-Comment-To: "
-msgstr "edita o campo Reply-To"
+msgstr ""
 
 #: compose.c:149 compose.c:165
 msgid "Send"
@@ -712,17 +708,17 @@ msgstr "Cancelar"
 #. L10N: compose menu help line entry
 #: compose.c:152
 msgid "To"
-msgstr ""
+msgstr "To (para)"
 
 #. L10N: compose menu help line entry
 #: compose.c:154
 msgid "CC"
-msgstr ""
+msgstr "CC (cópia)"
 
 #. L10N: compose menu help line entry
 #: compose.c:156 compose.c:168
 msgid "Subj"
-msgstr ""
+msgstr "Subj (assunto)"
 
 #: compose.c:157 compose.c:169 compose.c:1026
 msgid "Attach file"
@@ -733,14 +729,12 @@ msgid "Descrip"
 msgstr "Descrição"
 
 #: compose.c:167
-#, fuzzy
 msgid "Newsgroups"
-msgstr "Nenhum assunto especificado."
+msgstr "Grupo de notícias"
 
 #: compose.c:244
-#, fuzzy
 msgid "Not supported"
-msgstr "Não é possível marcar."
+msgstr "Não suportado"
 
 #: compose.c:251
 msgid "Sign, Encrypt"
@@ -756,37 +750,35 @@ msgstr "Assinar"
 
 #: compose.c:267
 msgid "None"
-msgstr ""
+msgstr "Vazio (none)"
 
 #: compose.c:276
-#, fuzzy
 msgid " (inline PGP)"
-msgstr "(continuar)\n"
+msgstr "(PGP incorporado)"
 
 #: compose.c:278
 msgid " (PGP/MIME)"
-msgstr ""
+msgstr " (PGP/MIME)"
 
 #: compose.c:281
 msgid " (S/MIME)"
-msgstr ""
+msgstr " (S/MIME)"
 
 #: compose.c:285
 msgid " (OppEnc mode)"
-msgstr ""
+msgstr " (modo OppEnc)"
 
 #: compose.c:297 compose.c:306
 msgid "<default>"
 msgstr "<padrão>"
 
 #: compose.c:313
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Encriptar"
+msgstr "Encriptar com: "
 
 #: compose.c:332
 msgid "<no chain defined>"
-msgstr ""
+msgstr "<cadeia indefinida>"
 
 #: compose.c:369
 #, c-format
@@ -805,16 +797,16 @@ msgstr "-- Anexos"
 #: compose.c:475
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Aviso: '%s' é uma IDN inválida."
 
 #: compose.c:494
 msgid "You may not delete the only attachment."
-msgstr "Você não pode apagar o único anexo."
+msgstr "Você não pode remover o único anexo."
 
 #: compose.c:975 send.c:1904
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "IDN inválida em \"%s\": '%s'"
 
 #: compose.c:1037
 msgid "Attaching selected files..."
@@ -827,17 +819,16 @@ msgstr "Não foi possível anexar %s!"
 
 #: compose.c:1072
 msgid "Open mailbox to attach message from"
-msgstr "Abrir caixa para anexar mensagem de"
+msgstr "Abrir caixa para obter mensagem a ser anexada"
 
 #: compose.c:1082
-#, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "Abrir caixa para anexar mensagem de"
+msgstr "Abrir grupo de notícias para obter mensagem a ser anexada"
 
 #: compose.c:1126
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to open mailbox %s"
-msgstr "Não foi possível travar a caixa de mensagens!"
+msgstr "Não foi possível abrir a caixa de mensagens %s"
 
 #: compose.c:1134
 msgid "No messages in that folder."
@@ -872,9 +863,8 @@ msgid "Save a copy of this message?"
 msgstr "Salvar uma cópia desta mensagem?"
 
 #: compose.c:1369
-#, fuzzy
 msgid "Send attachment with name: "
-msgstr "ver anexo como texto"
+msgstr "Enviar anexo com o nome: "
 
 #: compose.c:1386
 msgid "Rename to: "
@@ -883,9 +873,9 @@ msgstr "Renomear para: "
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
 #: compose.c:1393 editmsg.c:107 editmsg.c:143 sendlib.c:907
-#, fuzzy, c-format
+#, c-format
 msgid "Can't stat %s: %s"
-msgstr "Impossível consultar: %s"
+msgstr "Impossível aplicar 'stat' em %s: %s"
 
 #: compose.c:1419
 msgid "New file: "
@@ -893,12 +883,12 @@ msgstr "Novo arquivo: "
 
 #: compose.c:1434
 msgid "Content-Type is of the form base/sub"
-msgstr "Content-Type é da forma base/sub"
+msgstr "Tipo de conteúdo (Content-Type) é da forma base/sub"
 
 #: compose.c:1441
 #, c-format
 msgid "Unknown Content-Type %s"
-msgstr "Content-Type %s desconhecido"
+msgstr "Tipo de conteúdo (Content-Type) %s desconhecido"
 
 #: compose.c:1449
 #, c-format
@@ -928,19 +918,19 @@ msgstr "Mensgem gravada."
 
 #: compose.c:1601
 msgid "No PGP backend configured"
-msgstr ""
+msgstr "Nenhum sistema PGP configurado"
 
 #: compose.c:1609
 msgid "S/MIME already selected. Clear and continue ? "
-msgstr ""
+msgstr "S/MIME já selecionado. Remover e continuar? "
 
 #: compose.c:1635
 msgid "No S/MIME backend configured"
-msgstr ""
+msgstr "Nenum sistema S/MIME configurado"
 
 #: compose.c:1643
 msgid "PGP already selected. Clear and continue ? "
-msgstr ""
+msgstr "PGP já selecionado. Remover e continuar?"
 
 #: compress.c:470 compress.c:537 compress.c:692 compress.c:867 mbox.c:983
 msgid "Unable to lock mailbox!"
@@ -949,40 +939,41 @@ msgstr "Não foi possível travar a caixa de mensagens!"
 #: compress.c:474 compress.c:544 compress.c:696
 #, c-format
 msgid "Decompressing %s"
-msgstr ""
+msgstr "Descompactando %s"
 
 #: compress.c:483
 msgid "Can't identify the contents of the compressed file"
-msgstr ""
+msgstr "Não foi possível identificar os conteúdos do arquivo comprimido"
 
 #: compress.c:490 compress.c:565
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr ""
+msgstr "Ops da caixa de mensagens não encontrado para caixa do tipo %d"
 
 #: compress.c:526 compress.c:811
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
 msgstr ""
+"Não é possível incluir sem os comandos 'append-hook' ou 'close-hook': %s"
 
 #: compress.c:547
-#, fuzzy, c-format
+#, c-format
 msgid "Compress command failed: %s"
-msgstr "comando de pré-conexão falhou"
+msgstr "Comando de compressão falhou: %s"
 
 #: compress.c:558
 msgid "Unsupported mailbox type for appending."
-msgstr ""
+msgstr "Inclusão não disponível para esse tipo de caixa de mensagens."
 
 #: compress.c:633
-#, fuzzy, c-format
+#, c-format
 msgid "Compressed-appending to %s..."
-msgstr "Copiando para %s..."
+msgstr "Compactar-incluir para %s..."
 
 #: compress.c:638
-#, fuzzy, c-format
+#, c-format
 msgid "Compressing %s..."
-msgstr "Copiando para %s..."
+msgstr "Compactando %s..."
 
 #: compress.c:645 editmsg.c:248
 #, c-format
@@ -991,48 +982,46 @@ msgstr "Erro. Preservando o arquivo temporário: %s"
 
 #: compress.c:857
 msgid "Can't sync a compressed file without a close-hook"
-msgstr ""
+msgstr "Impossível sincronizar o arquivo compactado sem o comando 'close-hook'"
 
 #: compress.c:879
-#, fuzzy, c-format
+#, c-format
 msgid "Compressing %s"
-msgstr "Copiando para %s..."
+msgstr "Compactando %s"
 
 #: conn/sasl.c:576
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Perfil SASL desconhecido"
 
 #: conn/sasl.c:609
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "erro no padrão em: %s"
+msgstr "Erro ao alocar conexão SASL"
 
 #: conn/sasl.c:619
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Erro ao configurar as propriedades de segurança SASL"
 
 #: conn/sasl.c:629
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "Erro ao configurar a força de segurança externa SASL"
 
 #: conn/sasl.c:638
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Erro ao configurar nome de usuário externo SASL"
 
 #: conn/socket.c:86
-#, fuzzy
 msgid "Preconnect command failed."
-msgstr "comando de pré-conexão falhou"
+msgstr "Comando de pré-conexão falhou."
 
 #: conn/socket.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s closed"
-msgstr "Conectando a %s..."
+msgstr "Conexão a %s fechada"
 
 #: conn/socket.c:367 conn/socket.c:398
-#, fuzzy, c-format
+#, c-format
 msgid "Error talking to %s (%s)"
-msgstr "Conectando a %s"
+msgstr "Erro ao se comunicar com %s (%s)"
 
 #: conn/socket.c:374 conn/socket.c:405
 #, fuzzy, c-format
