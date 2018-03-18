@@ -2081,24 +2081,12 @@ msgid "<UNKNOWN>"
 msgstr "<unbekannt>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Allgemeine Tastenbelegungen:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Allgemeine Tastenbelegungen:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Funktionen ohne Bindung an Taste:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Funktionen ohne Bindung an Taste:"
 
 #: help.c:387
 #, c-format
@@ -2457,14 +2445,8 @@ msgstr "attachments: keine disposition"
 
 #: init.c:1502
 #, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
-msgstr ""
-"\n"
-"Aktuelle Einstellung für Anhänge:\n"
-"\n"
+msgid "Current attachments settings:"
+msgstr "Aktuelle Einstellung für Anhänge:"
 
 #: init.c:1532
 msgid "attachments: invalid disposition"
@@ -4099,13 +4081,13 @@ msgstr "Kann PGP-Subprozess nicht erzeugen!"
 msgid "Can't invoke PGP"
 msgstr "Kann PGP nicht aufrufen"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6351,20 +6333,12 @@ msgstr ""
 "`neomutt -vv' für weitere Details.\n"
 
 #: version.c:401
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Standard Einstellungen:"
+msgid "Default options:"
+msgstr "Standard Einstellungen:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Einstellungen bei der Kompilierung:"
+msgid "Compile options:"
+msgstr "Einstellungen bei der Kompilierung:"
 
 #~ msgid "restore_default(%s): error in regex: %s\n"
 #~ msgstr "restore_default(%s): Fehler in regulärem Ausdruck: %s\n"

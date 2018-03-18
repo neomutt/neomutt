@@ -369,11 +369,11 @@ void mutt_help(int menu)
     dump_menu(f, menu);
     if (menu != MENU_EDITOR && menu != MENU_PAGER)
     {
-      fputs(_("\nGeneric bindings:\n\n"), f);
+      fprintf(f, "\n%s\n\n", _("Generic bindings:"));
       dump_menu(f, MENU_GENERIC);
     }
 
-    fputs(_("\nUnbound functions:\n\n"), f);
+    fprintf(f, "\n%s\n\n", _("Unbound functions:"));
     if (funcs)
       dump_unbound(f, funcs, Keymaps[menu], NULL);
     if (menu != MENU_PAGER)

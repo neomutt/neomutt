@@ -2191,24 +2191,12 @@ msgid "<UNKNOWN>"
 msgstr "<INCONNU>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Affectations génériques :\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Affectations génériques :"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Fonctions non affectées :\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Fonctions non affectées :"
 
 # , c-format
 #: help.c:387
@@ -2585,10 +2573,7 @@ msgstr "attachments : pas de disposition"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "éditer la description de l'attachement"
 
 #: init.c:1532
@@ -4279,13 +4264,13 @@ msgstr "Impossible d'ouvrir le sous-processus PGP !"
 msgid "Can't invoke PGP"
 msgstr "Impossible d'invoquer PGP"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "pgp/mIme"
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6585,20 +6570,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Options de compilation :"
+msgid "Default options:"
+msgstr "Options de compilation :"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Options de compilation :"
+msgid "Compile options:"
+msgstr "Options de compilation :"
 
 # , c-format
 #, fuzzy

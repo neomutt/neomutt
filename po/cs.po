@@ -2095,24 +2095,12 @@ msgid "<UNKNOWN>"
 msgstr "<NEZNÁMÝ>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Obecně platné:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Obecně platné:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Nesvázané funkce:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Nesvázané funkce:"
 
 #: help.c:387
 #, c-format
@@ -2470,10 +2458,7 @@ msgstr "přílohy: chybí dispozice"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "editovat popis přílohy"
 
 #: init.c:1532
@@ -4105,13 +4090,13 @@ msgstr "PGP proces nelze spustit!"
 msgid "Can't invoke PGP"
 msgstr "PGP nelze spustit."
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6374,20 +6359,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Přeloženo s volbami:"
+msgid "Default options:"
+msgstr "Přeloženo s volbami:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Přeloženo s volbami:"
+msgid "Compile options:"
+msgstr "Přeloženo s volbami:"
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"

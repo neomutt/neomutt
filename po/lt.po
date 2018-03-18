@@ -2130,22 +2130,12 @@ msgid "<UNKNOWN>"
 msgstr "<NEŽINOMAS>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Bendri susiejimai:\n"
+msgid "Generic bindings:"
+msgstr "Bendri susiejimai:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Nesusietos funkcijos:\n"
+msgid "Unbound functions:"
+msgstr "Nesusietos funkcijos:"
 
 #: help.c:387
 #, c-format
@@ -2510,10 +2500,7 @@ msgstr "taisyti priedo aprašymą"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "taisyti priedo aprašymą"
 
 #: init.c:1532
@@ -4201,13 +4188,13 @@ msgstr "Negaliu atidaryti PGP vaikinio proceso!"
 msgid "Can't invoke PGP"
 msgstr "Negaliu kviesti PGP"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr ""
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6519,20 +6506,12 @@ msgstr ""
 "tikromis sąlygomis; rašyk 'neomutt -vv' dėl smulkmenų.\n"
 
 #: version.c:401
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Įprastos parinktys:"
+msgid "Default options:"
+msgstr "Įprastos parinktys:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Kompiliavimo parinktys:"
+msgid "Compile options:"
+msgstr "Kompiliavimo parinktys:"
 
 #~ msgid "restore_default(%s): error in regex: %s\n"
 #~ msgstr "restore_default(%s): klaida regex'e: %s\n"

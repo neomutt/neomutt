@@ -2126,24 +2126,12 @@ msgid "<UNKNOWN>"
 msgstr "<BİLİNMİYOR>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Genel tuş atamaları:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Genel tuş atamaları:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Herhangi bir tuş atanmamış işlevler:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Herhangi bir tuş atanmamış işlevler:"
 
 #: help.c:387
 #, c-format
@@ -2502,10 +2490,7 @@ msgstr "ekler: dispozisyon yok"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "ek açıklamasını düzenle"
 
 #: init.c:1532
@@ -4150,13 +4135,13 @@ msgstr "PGP alt süreci açılamıyor!"
 msgid "Can't invoke PGP"
 msgstr "PGP çalıştırılamıyor"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6456,20 +6441,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"İnşa seçenekleri:"
+msgid "Default options:"
+msgstr "İnşa seçenekleri:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"İnşa seçenekleri:"
+msgid "Compile options:"
+msgstr "İnşa seçenekleri:"
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"

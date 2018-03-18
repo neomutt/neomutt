@@ -1496,7 +1496,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
   {
     mutt_endwin();
     fflush(stdout);
-    printf(_("\nCurrent attachments settings:\n\n"));
+    printf("\n%s\n\n", _("Current attachments settings:"));
     print_attach_list(&AttachAllow, '+', "A");
     print_attach_list(&AttachExclude, '-', "A");
     print_attach_list(&InlineAllow, '+', "I");

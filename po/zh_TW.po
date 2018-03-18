@@ -2164,24 +2164,12 @@ msgid "<UNKNOWN>"
 msgstr "<不明的>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"標準功能定義：\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "標準功能定義："
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"未被定義的功能：\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "未被定義的功能："
 
 #: help.c:387
 #, c-format
@@ -2548,10 +2536,7 @@ msgstr "編輯附件的說明"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "編輯附件的說明"
 
 #: init.c:1532
@@ -4248,13 +4233,13 @@ msgstr "無法開啟 PGP 子程序！"
 msgid "Can't invoke PGP"
 msgstr "不能執行 PGP"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr ""
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6560,20 +6545,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"編譯選項："
+msgid "Default options:"
+msgstr "編譯選項："
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"編譯選項："
+msgid "Compile options:"
+msgstr "編譯選項："
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"

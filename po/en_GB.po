@@ -2064,24 +2064,12 @@ msgid "<UNKNOWN>"
 msgstr "<UNKNOWN>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Generic bindings:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Generic bindings:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Unbound functions:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Unbound functions:"
 
 #: help.c:387
 #, c-format
@@ -2434,14 +2422,8 @@ msgstr "attachments: no disposition"
 
 #: init.c:1502
 #, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
-msgstr ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
+msgstr "Current attachments settings:"
 
 #: init.c:1532
 msgid "attachments: invalid disposition"
@@ -4053,13 +4035,13 @@ msgstr "Can't open PGP subprocess!"
 msgid "Can't invoke PGP"
 msgstr "Can't invoke PGP"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6272,20 +6254,12 @@ msgstr ""
 "under certain conditions; type `neomutt -vv' for details.\n"
 
 #: version.c:401
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Default options:"
+msgid "Default options:"
+msgstr "Default options:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Compile options:"
+msgid "Compile options:"
+msgstr "Compile options:"
 
 #~ msgid "restore_default(%s): error in regex: %s\n"
 #~ msgstr "restore_default(%s): error in regex: %s\n"

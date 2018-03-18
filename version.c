@@ -398,10 +398,10 @@ void print_version(void)
   rstrip_in_place((char *) cc_cflags);
   printf("\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
 
-  puts(_("\nDefault options:"));
+  printf("\n%s\n", _("Default options:"));
   print_compile_options(comp_opts_default);
 
-  puts(_("\nCompile options:"));
+  printf("\n%s\n", _("Compile options:"));
   print_compile_options(comp_opts);
 
 #ifdef DOMAIN

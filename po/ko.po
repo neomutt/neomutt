@@ -2144,24 +2144,12 @@ msgid "<UNKNOWN>"
 msgstr "<알수 없음>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"기본 글쇠 정의:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "기본 글쇠 정의:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"글쇠가 정의되지 않은 기능:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "글쇠가 정의되지 않은 기능:"
 
 #: help.c:387
 #, c-format
@@ -2525,10 +2513,7 @@ msgstr "첨부물 설명 편집"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "첨부물 설명 편집"
 
 #: init.c:1532
@@ -4215,13 +4200,13 @@ msgstr "PGP 하부 프로세스를 열 수 없음!"
 msgid "Can't invoke PGP"
 msgstr "PGP를 실행하지 못함"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr ""
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6497,20 +6482,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"컴파일 선택사항:"
+msgid "Default options:"
+msgstr "컴파일 선택사항:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"컴파일 선택사항:"
+msgid "Compile options:"
+msgstr "컴파일 선택사항:"
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"

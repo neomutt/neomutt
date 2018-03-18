@@ -2153,24 +2153,12 @@ msgid "<UNKNOWN>"
 msgstr "<ISMERETLEN>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Alap billentyűkombinációk:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Alap billentyűkombinációk:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Billentyűkombináció nélküli parancsok:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Billentyűkombináció nélküli parancsok:"
 
 #: help.c:387
 #, c-format
@@ -2536,10 +2524,7 @@ msgstr "melléklet-leírás szerkesztése"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "melléklet-leírás szerkesztése"
 
 #: init.c:1532
@@ -4244,13 +4229,13 @@ msgstr "PGP alfolyamatot nem lehet megnyitni"
 msgid "Can't invoke PGP"
 msgstr "PGP-t nem tudom meghívni"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr ""
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6544,20 +6529,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Fordítási opciók:"
+msgid "Default options:"
+msgstr "Fordítási opciók:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Fordítási opciók:"
+msgid "Compile options:"
+msgstr "Fordítási opciók:"
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"

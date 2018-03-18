@@ -2087,24 +2087,12 @@ msgid "<UNKNOWN>"
 msgstr "<UKENDT>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Almene tastetildelinger:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Almene tastetildelinger:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Funktioner uden tastetildelinger:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Funktioner uden tastetildelinger:"
 
 #: help.c:387
 #, c-format
@@ -2460,10 +2448,7 @@ msgstr "vedlæg bilag: ingen beskrivelse"
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "ret brevdelens beskrivelse"
 
 #: init.c:1532
@@ -4083,13 +4068,13 @@ msgstr "Kan ikke åbne PGP-delproces!"
 msgid "Can't invoke PGP"
 msgstr "Kan ikke starte PGP"
 
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6353,20 +6338,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Tilvalg ved oversættelsen:"
+msgid "Default options:"
+msgstr "Tilvalg ved oversættelsen:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Tilvalg ved oversættelsen:"
+msgid "Compile options:"
+msgstr "Tilvalg ved oversættelsen:"
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"

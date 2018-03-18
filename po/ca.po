@@ -2226,24 +2226,12 @@ msgid "<UNKNOWN>"
 msgstr "<DESCONEGUT>"
 
 #: help.c:375
-msgid ""
-"\n"
-"Generic bindings:\n"
-"\n"
-msgstr ""
-"\n"
-"Vincles genèrics:\n"
-"\n"
+msgid "Generic bindings:"
+msgstr "Vincles genèrics:"
 
 #: help.c:379
-msgid ""
-"\n"
-"Unbound functions:\n"
-"\n"
-msgstr ""
-"\n"
-"Funcions no vinculades:\n"
-"\n"
+msgid "Unbound functions:"
+msgstr "Funcions no vinculades:"
 
 # ivb (2001/12/08)
 # ivb  El noms dels menús no estan traduïts.
@@ -2605,10 +2593,7 @@ msgstr "attachments: No s’ha indicat la disposició."
 
 #: init.c:1502
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Current attachments settings:\n"
-"\n"
+msgid "Current attachments settings:"
 msgstr "Edita la descripció d’una adjunció."
 
 #: init.c:1532
@@ -4361,14 +4346,14 @@ msgid "Can't invoke PGP"
 msgstr "No s’ha pogut invocar PGP."
 
 # Ull!  La mateixa clau que «en línia».  ivb
-#. L10N: These next string MUST have the same highlighted letter
+#. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 # Ull!  La mateixa clau que «PGP/MIME».  ivb
-#. L10N: These previous string MUST have the same highlighted letter
+#. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1692
 msgid "(i)nline"
@@ -6726,20 +6711,12 @@ msgstr ""
 
 #: version.c:401
 #, fuzzy
-msgid ""
-"\n"
-"Default options:"
-msgstr ""
-"\n"
-"Opcions de compilació:"
+msgid "Default options:"
+msgstr "Opcions de compilació:"
 
 #: version.c:404
-msgid ""
-"\n"
-"Compile options:"
-msgstr ""
-"\n"
-"Opcions de compilació:"
+msgid "Compile options:"
+msgstr "Opcions de compilació:"
 
 #, fuzzy
 #~ msgid "restore_default(%s): error in regex: %s\n"
