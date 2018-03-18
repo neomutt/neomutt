@@ -1513,7 +1513,7 @@ msgstr "Limitar a mensagens que casem com: "
 
 #: curs_main.c:1588
 msgid "To view all messages, limit to \"all\"."
-msgstr ""
+msgstr "Para exibir todas as mensagens, restrinja para \"all\"."
 
 #: curs_main.c:1600 pager.c:2330
 msgid "Quit NeoMutt?"
@@ -1525,9 +1525,8 @@ msgstr "Marcar mensagens que casem com: "
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1706 curs_main.c:3303 pager.c:3149
-#, fuzzy
 msgid "Cannot undelete message(s)"
-msgstr "Nenhuma mensagem não removida."
+msgstr "Não pude restaurar mensagem(ns)."
 
 #: curs_main.c:1709
 msgid "Undelete messages matching: "
@@ -1538,125 +1537,115 @@ msgid "Untag messages matching: "
 msgstr "Desmarcar mensagens que casem com: "
 
 #: curs_main.c:1753
-#, fuzzy
 msgid "Logged out of IMAP servers."
-msgstr "Fechando a conexão com o servidor IMAP..."
+msgstr "Conexões com os servidores IMAP encerradas."
 
 #: curs_main.c:1853
-#, fuzzy
 msgid "No virtual folder, aborting."
-msgstr "Sem assunto, cancelado."
+msgstr "Não há pasta virtual, cancelado."
 
 #: curs_main.c:1861
 msgid "Failed to read thread, aborting."
-msgstr ""
+msgstr "Falha ao accessar thread, cancelado."
 
 #: curs_main.c:1893 mx.c:1386 mx.c:1398
 msgid "Folder doesn't support tagging, aborting."
-msgstr ""
+msgstr "Pasta não tem suporte a tags, cancelado."
 
 #: curs_main.c:1908
-#, fuzzy
 msgid "No tag specified, aborting."
-msgstr "Sem assunto, cancelado."
+msgstr "Nenhuma marcação, cancelado."
 
 #: curs_main.c:1920
 #, c-format
 msgid "Update tags..."
-msgstr ""
+msgstr "Atualizando marcas..."
 
 #: curs_main.c:1957
 msgid "Failed to modify tags, aborting."
-msgstr ""
+msgstr "Falha ao modificar marcas, cancelado."
 
 #: curs_main.c:1998
-#, fuzzy
 msgid "No query, aborting."
-msgstr "Sem assunto, cancelado."
+msgstr "Nenhuma consulta, cancelado."
 
 #: curs_main.c:2002 curs_main.c:2022 curs_main.c:2041
 msgid "Failed to create query, aborting."
-msgstr ""
+msgstr "Falha ao criar consulta, cancelado."
 
 #: curs_main.c:2011 curs_main.c:2030
 msgid "Windowed queries disabled."
-msgstr ""
+msgstr "Consultas restritas desabilitadas."
 
 #: curs_main.c:2016 curs_main.c:2035
 msgid "No notmuch vfolder currently loaded."
-msgstr ""
+msgstr "Nenhuma pasta virtual do notmuch carregada."
 
 #: curs_main.c:2073
 msgid "Open mailbox in read-only mode"
-msgstr "Abrir caixa somente para leitura"
+msgstr "Abrir caixa de mensagens somente para leitura"
 
 #: curs_main.c:2076
-#, fuzzy
 msgid "Open virtual folder"
-msgstr "abre uma pasta diferente"
+msgstr "Abrir pasta virtual"
 
 #: curs_main.c:2079
 msgid "Open mailbox"
-msgstr "Abrir caixa de correio"
+msgstr "Abrir caixa de mensagens"
 
 #: curs_main.c:2089
-#, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Nenhuma caixa com novas mensagens."
 
 #: curs_main.c:2136
-#, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "Abrir caixa somente para leitura"
+msgstr "Abrir grupo de notícias em modo somente leitura"
 
 #: curs_main.c:2138
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Abrir grupo de notícias"
 
 #: curs_main.c:2241
-#, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Sair do NeoMutt sem salvar alterações?"
 
 #: curs_main.c:2257
-#, fuzzy
 msgid "Cannot break thread"
-msgstr "Não é possível criar o filtro."
+msgstr "Não pude quebrar a thread."
 
 #: curs_main.c:2260 curs_main.c:2298 curs_main.c:2758 curs_main.c:2790
 #: flags.c:350 thread.c:1076 thread.c:1132 thread.c:1200
 msgid "Threading is not enabled."
-msgstr "Separar discussões não está ativado."
+msgstr "Visualização por threads não está habilitado."
 
 #: curs_main.c:2273
 msgid "Thread broken"
-msgstr ""
+msgstr "Thread quebrada"
 
 #: curs_main.c:2285
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "A thread não pode ser quebrada, mensagem não faz parte de uma thread"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2295
 msgid "Cannot link threads"
-msgstr ""
+msgstr "Não pude unir threads"
 
 #: curs_main.c:2300
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Nenhum cabeçalho Message-ID disponível para vincular thread"
 
 #: curs_main.c:2302
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "salva esta mensagem para ser enviada depois"
+msgstr "Primeiro, por favor marque mensagem a ser vinculada aqui"
 
 #: curs_main.c:2313
 msgid "Threads linked"
-msgstr ""
+msgstr "Threads vinculadas"
 
 #: curs_main.c:2316
 msgid "No thread linked"
-msgstr ""
+msgstr "Nenhuma thread vinculada"
 
 #: curs_main.c:2352 curs_main.c:2378
 msgid "You are on the last message."
@@ -1679,35 +1668,30 @@ msgid "Search wrapped to bottom."
 msgstr "A pesquisa passou para o final."
 
 #: curs_main.c:2547
-#, fuzzy
 msgid "No new messages in this limited view."
-msgstr "A mensagem pai não está visível nesta visão limitada"
+msgstr "Nenhuma mensagem nova nesta visão restringida."
 
 #: curs_main.c:2549
-#, fuzzy
 msgid "No new messages."
-msgstr "Nenhuma mensagem nova"
+msgstr "Não há mensagens novas."
 
 #: curs_main.c:2554
-#, fuzzy
 msgid "No unread messages in this limited view."
-msgstr "A mensagem pai não está visível nesta visão limitada"
+msgstr "Nenhuma mensagem não lida nesta visão restringida."
 
 #: curs_main.c:2556
-#, fuzzy
 msgid "No unread messages."
-msgstr "Nenhuma mensagem não lida"
+msgstr "Não há mensagens não lidas"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2574
-#, fuzzy
 msgid "Cannot flag message"
-msgstr "mostra uma mensagem"
+msgstr "Não pude sinalizar mensagem"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2613 pager.c:3112
 msgid "Cannot toggle new"
-msgstr ""
+msgstr "Não pude alternar sinalização de leitura"
 
 #: curs_main.c:2690
 msgid "No more threads."
@@ -1718,89 +1702,79 @@ msgid "You are on the first thread."
 msgstr "Você está na primeira discussão."
 
 #: curs_main.c:2776
-#, fuzzy
 msgid "Thread contains unread or flagged messages."
-msgstr "A discussão contém mensagens não lidas."
+msgstr "A discussão contém mensagens sinalizadas ou não lidas."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2826 pager.c:2796
-#, fuzzy
 msgid "Cannot delete message"
-msgstr "Nenhuma mensagem não removida."
+msgstr "Não é possível apagar mensagem"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2938
-#, fuzzy
 msgid "Cannot edit message"
-msgstr "Não foi possível gravar a mensagem"
+msgstr "Não é possível editar mensagem"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:3000 pager.c:3212
-#, fuzzy, c-format
+#, c-format
 msgid "%d labels changed."
-msgstr "A caixa de mensagens não sofreu mudanças"
+msgstr "%d rótulos alterados."
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
 #: curs_main.c:3007 pager.c:3216
-#, fuzzy
 msgid "No labels changed."
-msgstr "A caixa de mensagens não sofreu mudanças"
+msgstr "Nenhum rótulo foi alterado."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3106
-#, fuzzy
 msgid "Cannot mark message(s) as read"
-msgstr "pula para a mensagem pai na discussão"
+msgstr "Não é possível marcar mensagem(ns) como lida(s)."
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
 #: curs_main.c:3142
-#, fuzzy
 msgid "Enter macro stroke: "
-msgstr "Entre a keyID para %s: "
+msgstr "Entre com sequência de teclas para atalho da macro: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
 #: curs_main.c:3150
-#, fuzzy
 msgid "message hotkey"
-msgstr "Mensagem adiada."
+msgstr "descrição do atalho"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
 #: curs_main.c:3155
-#, fuzzy, c-format
+#, c-format
 msgid "Message bound to %s."
-msgstr "Mensagem repetida."
+msgstr "Mensagem atrelada a %s."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3163
-#, fuzzy
 msgid "No message ID to macro."
-msgstr "Nenhuma mensagem naquela pasta."
+msgstr "Nenhuma Id de mensagem para macro."
 
 #: curs_main.c:3205 pager.c:2973 recvattach.c:1379
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "Responder mensagem de acordo com a preferencia do rementente?"
 
 #: curs_main.c:3208 pager.c:2939 pager.c:2951 pager.c:2976
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "Não é permitido postar neste grupo, pode ser moderado. Continuar?"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3273 pager.c:3132
-#, fuzzy
 msgid "Cannot undelete message"
-msgstr "Nenhuma mensagem não removida."
+msgstr "Não é possível restaurar mensagem."
 
 #: edit.c:49
-#, fuzzy
 msgid ""
 "~~              insert a line beginning with a single ~\n"
 "~b users        add users to the Bcc: field\n"
@@ -1821,17 +1795,8 @@ msgstr ""
 "~m mensagens    inclui e cita as mensagens\n"
 "~M mensagens    o mesmo que ~m, mas também inclui os cabeçalhos\n"
 "~p              imprime a mensagem\n"
-"~q              grava o arquivo e sai do editor\n"
-"~r arquivo      lê um arquivo no editor\n"
-"~t usuários     adiciona os usuários ao campo To:\n"
-"~u              volta à linha anterior\n"
-"~w arquivo      escreve a mensagem no arquivo\n"
-"~x              cancela as mudanças e sai do editor\n"
-"?               esta mensagagem\n"
-".               sozinho em uma linha termina a mensagem\n"
 
 #: edit.c:60
-#, fuzzy
 msgid ""
 "~q              write file and quit editor\n"
 "~r file         read a file into the editor\n"
@@ -1843,22 +1808,14 @@ msgid ""
 "~?              this message\n"
 ".               on a line by itself ends input\n"
 msgstr ""
-"~~              insere uma linha com um único ~\n"
-"~b usuários     adiciona os usuários ao campo Bcc:\n"
-"~c usuários     adiciona os usuários ao campo Cc:\n"
-"~f mensagens    inclui as mensagens\n"
-"~F mensagens    o mesmo que ~f, mas também inclui os cabeçalhos\n"
-"~h              edita o cabeçalho da mensagem\n"
-"~m mensagens    inclui e cita as mensagens\n"
-"~M mensagens    o mesmo que ~m, mas também inclui os cabeçalhos\n"
-"~p              imprime a mensagem\n"
 "~q              grava o arquivo e sai do editor\n"
 "~r arquivo      lê um arquivo no editor\n"
 "~t usuários     adiciona os usuários ao campo To:\n"
 "~u              volta à linha anterior\n"
+"~v              edita a mensagem com editor $visual\n"
 "~w arquivo      escreve a mensagem no arquivo\n"
 "~x              cancela as mudanças e sai do editor\n"
-"?               esta mensagagem\n"
+"~?              esta mensagagem\n"
 ".               sozinho em uma linha termina a mensagem\n"
 
 #: edit.c:201
@@ -1898,7 +1855,7 @@ msgstr "Nenhuma linha na mensagem.\n"
 #: edit.c:465
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "IDN inválida e %s: '%s'\n"
 
 #: edit.c:485
 #, c-format
@@ -1908,17 +1865,17 @@ msgstr "%s: comando de editor desconhecido (~? para ajuda)\n"
 #: editmsg.c:87
 #, c-format
 msgid "could not create temporary folder: %s"
-msgstr "Não foi possível criar o arquivo temporário: %s"
+msgstr "Não foi possível criar pasta temporária: %s"
 
 #: editmsg.c:100
 #, c-format
 msgid "could not write temporary mail folder: %s"
-msgstr "Não foi possível criar a caixa temporária: %s"
+msgstr "Não foi possível gravar a caixa temporária: %s"
 
 #: editmsg.c:119
 #, fuzzy, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "Não foi possível criar a caixa temporária: %s"
+msgstr "Não foi possível truncar a caixa temporária: %s"
 
 #: editmsg.c:149
 msgid "Message file is empty!"
@@ -1931,6 +1888,7 @@ msgstr "Mensagem não modificada!"
 #: editmsg.c:163
 msgid "Message of read-only mailbox modified! Ignoring changes."
 msgstr ""
+"Mensagem modificada em mailbox em modo somente leitura! Alterações ignoradas."
 
 #: editmsg.c:179
 #, c-format
@@ -1945,25 +1903,25 @@ msgstr "Não é possível anexar à pasta: %s"
 
 #: flags.c:399
 msgid "Set flag"
-msgstr "Atribui marca"
+msgstr "Atribui sinalização"
 
 #: flags.c:399
 msgid "Clear flag"
-msgstr "Limpa marca"
+msgstr "Remove sinalização"
 
 #: handler.c:65
 #, c-format
 msgid "[-- Alternative Type #%d: "
-msgstr ""
+msgstr "[-- Tipo alternativo #%d: "
 
 #: handler.c:67
 msgid "[-- Type: "
-msgstr ""
+msgstr "[-- Tipo: "
 
 #: handler.c:68
-#, fuzzy, c-format
+#, c-format
 msgid "%s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Tipo: %s/%s, Codificação: %s, Tamanho: %s --]\n"
+msgstr "%s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
@@ -1974,11 +1932,11 @@ msgstr ""
 #: handler.c:1292
 #, c-format
 msgid "[-- Attachment #%d"
-msgstr "[-- Anexo No.%d"
+msgstr "[-- Anexo #%d"
 
 #: handler.c:1314
 msgid "One or more parts of this message could not be displayed"
-msgstr ""
+msgstr "Uma ou mais partes dessa mensagem não puderam ser exibidas"
 
 #: handler.c:1367
 #, c-format
@@ -1991,9 +1949,9 @@ msgid "Invoking autoview command: %s"
 msgstr "Executando comando de autovisualização: %s"
 
 #: handler.c:1400
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Can't run %s. --]\n"
-msgstr "[-- em %s --]\n"
+msgstr "[-- Impossível executar %s --]\n"
 
 #: handler.c:1419 handler.c:1440
 #, c-format
@@ -2003,7 +1961,7 @@ msgstr "[-- Saída de erro da autovisualização de %s --]\n"
 #: handler.c:1478
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
-"[-- Erro: message/external-body não tem nenhum parâmetro access-type --]\n"
+"[-- Erro: message/external-body não tem parâmetro de tipo de accesso --]\n"
 
 #: handler.c:1500
 #, c-format
@@ -2025,23 +1983,22 @@ msgid "[-- on %s --]\n"
 msgstr "[-- em %s --]\n"
 
 #: handler.c:1518
-#, fuzzy, c-format
+#, c-format
 msgid "[-- name: %s --]\n"
-msgstr "[-- em %s --]\n"
+msgstr "[-- nome: %s --]\n"
 
 #: handler.c:1530 handler.c:1545
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
-msgstr "[-- Este anexo %s/%s "
+msgstr "[-- Este anexo %s/%s não está incluso, --]\n"
 
 #: handler.c:1532
-#, fuzzy
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Este anexo %s/%s não está includído, e --]\n"
-"[-- a fonte externa indicada já expirou.   --]\n"
+"[-- e a fonte externa indicada já --]\n"
+"[-- expirou. --]\n"
 
 #: handler.c:1548
 #, fuzzy, c-format
@@ -6508,61 +6465,3 @@ msgstr "Opções de compilação:"
 msgid "Compile options:"
 msgstr "Opções de compilação:"
 
-#~ msgid "Cannot create filter"
-#~ msgstr "Não foi possível criar filtro"
-
-#~ msgid "Missing arguments."
-#~ msgstr "Faltam argumentos."
-
-#~ msgid "color: too few arguments"
-#~ msgstr "cor: poucos argumentos"
-
-#~ msgid "mono: too few arguments"
-#~ msgstr "mono: poucos argumentos"
-
-#~ msgid "too few arguments"
-#~ msgstr "poucos argumentos"
-
-#, fuzzy
-#~ msgid "finish: too many arguments"
-#~ msgstr "push: muitos argumentos"
-
-#~ msgid "push: too many arguments"
-#~ msgstr "push: muitos argumentos"
-
-#~ msgid "bind: too many arguments"
-#~ msgstr "bind: muitos argumentos"
-
-#~ msgid "macro: too many arguments"
-#~ msgstr "macro: muitos argumentos"
-
-#, fuzzy
-#~ msgid "Debugging at file %s.\n"
-#~ msgstr "Depurando no nível %d.\n"
-
-#~ msgid "source: too many arguments"
-#~ msgstr "source: muitos argumentos"
-
-#~ msgid "score: too few arguments"
-#~ msgstr "score: poucos argumentos"
-
-#~ msgid "score: too many arguments"
-#~ msgstr "score: muitos argumentos"
-
-#~ msgid "No recipients are specified!"
-#~ msgstr "Nenhum destinatário está especificado!"
-
-#~ msgid "No recipients were specified."
-#~ msgstr "Nenhum destinatário foi especificado."
-
-#, fuzzy
-#~ msgid "restore_default(%s): error in regex: %s\n"
-#~ msgstr "mutt_restore_default: erro na expressão regular: %s\n"
-
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -d Ignored.\n"
-#~ msgstr "DEBUG não foi definido durante a compilação. Ignorado.\n"
-
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -l Ignored.\n"
-#~ msgstr "DEBUG não foi definido durante a compilação. Ignorado.\n"
