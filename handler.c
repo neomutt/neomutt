@@ -1177,6 +1177,88 @@ static int alternative_handler(struct Body *a, struct State *s)
   return rc;
 }
 
+static int multilingual_handler(struct Body *a, struct State *s)
+{
+  struct Body *choice = NULL;
+  struct Body *b = NULL;
+  bool mustfree = false;
+  int rc = 0;
+  struct Body *first_multilingual_part = NULL;
+  struct Body *zxx_part = NULL;
+  char *prefered_languages;
+  char *lang;
+
+  mutt_debug(2, "RFC8255 >> entering in handler multilingual handler\n");
+  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  {
+    struct stat st;
+    mustfree = true;
+    fstat(fileno(s->fpin), &st);
+    b = mutt_new_body();
+    b->length = (long) st.st_size;
+    b->parts = mutt_parse_multipart(
+        s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
+        (mutt_str_strcasecmp("digest", a->subtype) == 0));
+  }
+  else
+    b = a;
+
+  a = b;
+
+  if (a->parts)
+    b = a->parts;
+  else
+    b = a;
+
+  mutt_debug(2, "RFC8255 >> prefered_languages set in config to '%s'\n", PreferedLanguages);
+  prefered_languages = mutt_str_strdup(PreferedLanguages);
+  lang = strtok(prefered_languages, ",");
+
+  while(lang != NULL)
+    {
+      while (b)
+	{
+	  if (mutt_can_decode(b)) {
+
+	    if((b->language != NULL) && (first_multilingual_part == NULL))
+	      first_multilingual_part = b;
+
+	    if((b->language != NULL) && (strcmp("zxx",  b->language) == 0))
+	      zxx_part = b;
+
+	    mutt_debug(2, "RFC8255 >> comparing configuration prefered_language='%s' to mail part content-language='%s'\n", lang, b->language);
+	    if((lang != NULL) && (b->language != NULL) && (strcmp(lang,  b->language) == 0)) {
+	      mutt_debug(2, "RFC8255 >> prefered_language='%s' matches content-language='%s' >> part selected to be displayed\n", lang, b->language);
+	      choice = b;
+	      break;
+	    }
+	  }
+
+	  b = b->next;
+	}
+
+      if(choice)
+	break;
+
+      lang = strtok(NULL, ",");
+    }
+
+  if (choice)
+    mutt_body_handler(choice, s);
+  else
+    {
+      if(zxx_part != NULL)
+	mutt_body_handler(zxx_part, s);
+      else
+	mutt_body_handler(first_multilingual_part, s);
+    }
+
+  if (mustfree)
+    mutt_free_body(&a);
+
+  return rc;
+}
+
 /**
  * message_handler - handles message/rfc822 body parts
  */
@@ -1856,6 +1938,10 @@ int mutt_body_handler(struct Body *b, struct State *s)
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
     {
       handler = alternative_handler;
+    } else if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
+        (mutt_str_strcasecmp("multilingual", b->subtype) == 0))
+    {
+      handler = multilingual_handler;
     }
     else if ((WithCrypto != 0) && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {

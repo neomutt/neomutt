@@ -2757,6 +2757,12 @@ struct Option MuttVars[] = {
   ** remote machine without having to enter a password.
   */
 #endif /* USE_SOCKET */
+  { "prefered_languages", DT_STRING, R_NONE, UL &PreferedLanguages, UL 0 },
+  /*
+  ** .pp
+  ** RFC8255 : user prefered languages to be search in parts and display
+  ** Ex. : prefered_languages="en,fr,de"
+  */
   { "print",            DT_QUAD, R_NONE, UL &Print, MUTT_ASKNO },
   /*
   ** .pp

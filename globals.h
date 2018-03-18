@@ -238,6 +238,7 @@ WHERE short NntpContext;
 WHERE short MenuContext;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
+WHERE char *PreferedLanguages;
 WHERE short ReadInc;
 WHERE short ReflowWrap;
 WHERE short SendmailWait;
