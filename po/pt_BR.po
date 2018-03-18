@@ -227,7 +227,7 @@ msgstr "Desinscrever"
 
 #: browser.c:84 curs_main.c:841
 msgid "Catchup"
-msgstr ""
+msgstr "Catchup"
 
 #: browser.c:766 browser.c:1780
 #, c-format
@@ -1016,7 +1016,7 @@ msgstr "Comando de pré-conexão falhou."
 #: conn/socket.c:275
 #, c-format
 msgid "Connection to %s closed"
-msgstr "Conexão a %s fechada"
+msgstr "Conexão com %s encerrada"
 
 #: conn/socket.c:367 conn/socket.c:398
 #, c-format
@@ -1024,24 +1024,24 @@ msgid "Error talking to %s (%s)"
 msgstr "Erro ao se comunicar com %s (%s)"
 
 #: conn/socket.c:374 conn/socket.c:405
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Conectando a %s..."
+msgstr "A conexão com %s foi cancelada"
 
 #: conn/socket.c:494 conn/socket.c:552
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "IDN \"%s\" inválida."
 
 #: conn/socket.c:502 conn/socket.c:560
-#, fuzzy, c-format
+#, c-format
 msgid "Looking up %s..."
-msgstr "Copiando para %s..."
+msgstr "Procurando em %s..."
 
 #: conn/socket.c:512 conn/socket.c:570
-#, fuzzy, c-format
+#, c-format
 msgid "Could not find the host \"%s\""
-msgstr "Não foi possível encontrar o endereço do servidor %s."
+msgstr "Não foi possível encontrar o servidor \"%s\""
 
 #: conn/socket.c:517 conn/socket.c:576
 #, c-format
@@ -1049,9 +1049,9 @@ msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
 #: conn/socket.c:601
-#, fuzzy, c-format
+#, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "Não foi possível abrir %s"
+msgstr "Não foi possível conectar com %s (%s)."
 
 #: conn/socket.c:602 conn/ssl.c:1290 curs_lib.c:769 mutt_logging.c:168
 msgid "unknown error"
@@ -1060,16 +1060,16 @@ msgstr "erro desconhecido"
 #: conn/ssl.c:221
 #, c-format
 msgid "Filling entropy pool: %s...\n"
-msgstr ""
+msgstr "Completando reserva de entropia: %s...\n"
 
 #: conn/ssl.c:227
 #, c-format
 msgid "%s has insecure permissions!"
-msgstr ""
+msgstr "%s tem permissões não seguras!"
 
 #: conn/ssl.c:373
 msgid "SSL disabled due to the lack of entropy"
-msgstr ""
+msgstr "SSL desabilitado devido à falta de entropia"
 
 #: conn/ssl.c:414
 msgid "Unknown"
@@ -1081,37 +1081,33 @@ msgid "[unable to calculate]"
 msgstr "[impossível calcular]"
 
 #: conn/ssl.c:458
-#, fuzzy
 msgid "[invalid date]"
-msgstr "%s: valor inválido"
+msgstr "[data inválida]"
 
 #: conn/ssl.c:517
 msgid "Server certificate is not yet valid"
-msgstr ""
+msgstr "Certificado do servidar ainda não é válido"
 
 #: conn/ssl.c:526
-#, fuzzy
 msgid "Server certificate has expired"
-msgstr "Este certificado foi emitido por:"
+msgstr "O certificado do servidor expirou"
 
 #: conn/ssl.c:618
 msgid "Failed to find enough entropy on your system"
-msgstr ""
+msgstr "Não há entropia suficiente no seu sistema"
 
 #: conn/ssl.c:864
-#, fuzzy
 msgid "cannot get certificate subject"
-msgstr "Não foi possível obter o certificado do servidor remoto"
+msgstr "não pude obter o objeto certificado"
 
 #: conn/ssl.c:873 conn/ssl.c:881
-#, fuzzy
 msgid "cannot get certificate common name"
-msgstr "Não foi possível obter o certificado do servidor remoto"
+msgstr "não pude obter o nome comum certificado "
 
 #: conn/ssl.c:896
 #, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr ""
+msgstr "titular certificado não coincide hostname %s"
 
 #: conn/ssl.c:973 conn/ssl_gnutls.c:616
 msgid "This certificate belongs to:"
@@ -1122,34 +1118,35 @@ msgid "This certificate was issued by:"
 msgstr "Este certificado foi emitido por:"
 
 #: conn/ssl.c:989 conn/ssl_gnutls.c:719
-#, fuzzy, c-format
+#, c-format
 msgid "This certificate is valid"
-msgstr "Este certificado foi emitido por:"
+msgstr "Este certificado é válido"
 
 #: conn/ssl.c:990 conn/ssl_gnutls.c:723
 #, c-format
 msgid "   from %s"
-msgstr ""
+msgstr "   de %s"
 
 #: conn/ssl.c:992 conn/ssl_gnutls.c:727
 #, c-format
 msgid "     to %s"
-msgstr ""
+msgstr "     para %s"
 
 #: conn/ssl.c:998 conn/ssl_gnutls.c:731
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Impressão digital: %s"
+msgstr "Impressão digital SHA1: %s"
 
 #: conn/ssl.c:1001 conn/ssl_gnutls.c:734
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Impressão digital: %s"
+msgstr "Impressão digital MD5: %s"
 
 #: conn/ssl.c:1004
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
+"Verificação de certificado SSL (certificado %zu de %zu no encadeamento)"
 
 #. L10N:
 #. * These four letters correspond to the choices in the next four strings:
@@ -1159,25 +1156,23 @@ msgstr ""
 #.
 #: conn/ssl.c:1027
 msgid "roas"
-msgstr ""
+msgstr "roas"
 
 #: conn/ssl.c:1031
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)ejeitar, (a)ceitar uma vez, aceitar (s)empre"
+msgstr "r)rejeitar, o)aceitar uma vez, a)aceitar sempre, s)pular"
 
 #: conn/ssl.c:1033 conn/ssl_gnutls.c:775
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(r)ejeitar, (a)ceitar uma vez, aceitar (s)empre"
+msgstr "r)rejeitar, o)aceitar uma vez, a)aceitar sempre"
 
 #: conn/ssl.c:1038
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)ejeitar, (a)ceitar uma vez"
+msgstr "r)rejeitar, o)aceitar uma vez, s)pular"
 
 #: conn/ssl.c:1040 conn/ssl_gnutls.c:786
 msgid "(r)eject, accept (o)nce"
-msgstr "(r)ejeitar, (a)ceitar uma vez"
+msgstr "r)rejeitar, o)aceitar uma vez"
 
 #: conn/ssl.c:1044 conn/ssl_gnutls.c:797 ncrypt/crypt_gpgme.c:4227
 #: ncrypt/pgpkey.c:538 ncrypt/smime.c:417
@@ -1193,96 +1188,90 @@ msgid "Certificate saved"
 msgstr "Certificado salvo"
 
 #: conn/ssl.c:1194
-#, fuzzy, c-format
+#, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Certificado salvo"
+msgstr "Verificação de certifcado do host falhou: %s"
 
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
 #: conn/ssl.c:1273 conn/ssl_gnutls.c:1168
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Aviso: não pude configurar nome TLS SNI do host"
 
 #: conn/ssl.c:1284
 msgid "I/O error"
-msgstr ""
+msgstr "Erro de entrada e saída"
 
 #: conn/ssl.c:1293
-#, fuzzy, c-format
+#, c-format
 msgid "SSL failed: %s"
-msgstr "Login falhou."
+msgstr "SSL falhou: %s"
 
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
 #: conn/ssl.c:1324
-#, fuzzy
 msgid "Unable to create SSL context"
-msgstr "[-- Erro: não foi possível criar o subprocesso do OpenSSL! --]\n"
+msgstr "Não foi possível criar contexto SSL"
 
 #: conn/ssl.c:1381 conn/ssl.c:1481
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Aviso: erro ao habilitar ssl_verify_partial_chains"
 
 #: conn/ssl_gnutls.c:117 conn/ssl_gnutls.c:149
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Erro: não há socket TLS aberto"
 
 #: conn/ssl_gnutls.c:237 conn/ssl_gnutls.c:881 conn/ssl_gnutls.c:890
 msgid "Unable to get certificate from peer"
-msgstr "Não foi possível obter o certificado do servidor remoto"
+msgstr "Não foi possível obter o certificado da outra ponta"
 
 #: conn/ssl_gnutls.c:242
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Erro ao verificar certificado (%s)"
 
 #: conn/ssl_gnutls.c:249
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "Certificado salvo"
+msgstr "Certificado não é X.509"
 
 #: conn/ssl_gnutls.c:441 conn/ssl_gnutls.c:597
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Erro ao inicializar terminal."
+msgstr "Erro ao inicializar dados do certificado gnutls"
 
 #: conn/ssl_gnutls.c:447 conn/ssl_gnutls.c:603
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Erro so processar dados do certificado"
 
 #: conn/ssl_gnutls.c:588
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
+msgstr "Aviso: o certificado do servidor foi assindado com algoritmo inseguro"
 
 #: conn/ssl_gnutls.c:740
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Este certificado foi emitido por:"
+msgstr "AVISO: o certificado do servidor ainda não é válido"
 
 #: conn/ssl_gnutls.c:746
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Este certificado foi emitido por:"
+msgstr "AVISO: o certificado do servidor expirou"
 
 #: conn/ssl_gnutls.c:752
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Este certificado foi emitido por:"
+msgstr "AVISO: o certificado do servidor foi revogado"
 
 #: conn/ssl_gnutls.c:758
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "AVISO: hostname do servidor não coincide com certificado"
 
 #: conn/ssl_gnutls.c:764
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr ""
+msgstr "AVISO: signatário do certificado do servidor não é CA"
 
 #: conn/ssl_gnutls.c:768
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr ""
+msgstr "Verificação de certificado SSL (certificado %d de %d no encadeamento)"
 
 #. L10N:
 #. * These three letters correspond to the choices in the string:
@@ -1292,7 +1281,7 @@ msgstr ""
 #.
 #: conn/ssl_gnutls.c:782
 msgid "roa"
-msgstr "ras"
+msgstr "roa"
 
 #. L10N:
 #. * These two letters correspond to the choices in the string:
@@ -1302,39 +1291,40 @@ msgstr "ras"
 #.
 #: conn/ssl_gnutls.c:793
 msgid "ro"
-msgstr "ra"
+msgstr "ro"
 
 #: conn/ssl_gnutls.c:1051 conn/ssl_gnutls.c:1091
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Todos protocolos disponíveis para TLS/SSL estão desativados"
 
 #: conn/ssl_gnutls.c:1098
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
+"Algorithms criptográficos selecionados via $ssl_ciphers não são suportados"
 
 #: conn/ssl_gnutls.c:1216
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "Conexão SSL usando %s"
+msgstr "Conexão SSL/TLS usando %s (%s/%s/%s)"
 
 #: conn/tunnel.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Conectando a %s..."
+msgstr "Conectando com \"%s\"..."
 
 #: conn/tunnel.c:161
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Tunel para %s retornou erro %d (%s)"
 
 #: conn/tunnel.c:185 conn/tunnel.c:207
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Conectando a %s"
+msgstr "Erro de tunel ao comunicar com %s: %s"
 
 #: copy.c:694
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Não há mecanismo disponível para decriptar a mensagem"
 
 #: curs_lib.c:233
 msgid "yes"
@@ -1358,7 +1348,7 @@ msgstr " ('?' para uma lista): "
 
 #: curs_main.c:79 curs_main.c:1139
 msgid "No mailbox is open."
-msgstr "Nenhuma caixa aberta."
+msgstr "Nenhuma caixa de mensagens aberta."
 
 #: curs_main.c:80
 msgid "There are no messages."
@@ -1370,18 +1360,17 @@ msgstr "Esta caixa é somente para leitura."
 
 #: curs_main.c:83 pager.c:73 recvattach.c:1134
 msgid "Function not permitted in attach-message mode."
-msgstr "Função não permitida no modo anexar-mensagem."
+msgstr "Função não permitida no modo de anexar mensagem (attach-message)."
 
 #: curs_main.c:84
-#, fuzzy
 msgid "No visible messages."
-msgstr "Nenhuma mensagem nova"
+msgstr "Nenhuma mensagem visível"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
 #: curs_main.c:129 pager.c:108
 #, c-format
 msgid "%s: Operation not permitted by ACL"
-msgstr ""
+msgstr "%s: ACL não permite operação"
 
 #: curs_main.c:287
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -1389,16 +1378,16 @@ msgstr "Não é possível ativar escrita em uma caixa somente para leitura!"
 
 #: curs_main.c:294
 msgid "Changes to folder will be written on folder exit."
-msgstr "Mudanças na pasta serão escritas na saída."
+msgstr "Mudanças na pasta serão gravadas ao sair dela."
 
 #: curs_main.c:299
 msgid "Changes to folder will not be written."
-msgstr "Mudanças na pasta não serão escritas"
+msgstr "Mudanças na pasta não serão gravadas"
 
 #: curs_main.c:448 mx.c:356 mx.c:460
 #, c-format
 msgid "%s is not a mailbox."
-msgstr "%s não é uma caixa de correio."
+msgstr "%s não é uma caixa de mensagens."
 
 #: curs_main.c:822 curs_main.c:835
 msgid "Quit"
@@ -1410,7 +1399,7 @@ msgstr "Salvar"
 
 #: curs_main.c:826 query.c:67
 msgid "Mail"
-msgstr "Msg"
+msgstr "Mensagem"
 
 #: curs_main.c:827 pager.c:1716
 msgid "Reply"
@@ -1422,12 +1411,11 @@ msgstr "Grupo"
 
 #: curs_main.c:839 pager.c:1723
 msgid "Post"
-msgstr ""
+msgstr "Postagem"
 
 #: curs_main.c:840 pager.c:1724
-#, fuzzy
 msgid "Followup"
-msgstr "Responder para %s%s?"
+msgstr "Seguimento"
 
 #: curs_main.c:1003
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -1447,47 +1435,42 @@ msgid "No tagged messages."
 msgstr "Nenhuma mensagem marcada."
 
 #: curs_main.c:1150 menu.c:1160
-#, fuzzy
 msgid "Nothing to do."
-msgstr "Conectando a %s..."
+msgstr "Nada a fazer"
 
 #: curs_main.c:1249
-#, fuzzy
 msgid "Enter Message-Id: "
-msgstr "Entre a keyID para %s: "
+msgstr "Entre com a id da mensagem (Message-Id): "
 
 #: curs_main.c:1259
 msgid "Article has no parent reference."
-msgstr ""
+msgstr "Artigo não tem referência no nível acima"
 
 #: curs_main.c:1283
-#, fuzzy
 msgid "Message is not visible in limited view."
-msgstr "A mensagem pai não está visível nesta visão limitada"
+msgstr "Mensagem não está visível nesta visão restringida"
 
 #: curs_main.c:1289
-#, fuzzy, c-format
+#, c-format
 msgid "Fetching %s from server..."
-msgstr "Apagando mensagens do servidor..."
+msgstr "Obtendo %s do servidor..."
 
 #: curs_main.c:1299
 #, c-format
 msgid "Article %s not found on the server."
-msgstr ""
+msgstr "Artigo %s não foi encontrado no servidor."
 
 #: curs_main.c:1318
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Nenhuma id de mensagem (Message-Id). Impossível executar operação."
 
 #: curs_main.c:1322 imap/message.c:803 nntp.c:1287 pop.c:301
-#, fuzzy
 msgid "Fetching message headers..."
-msgstr "Obtendo cabeçalhos das mensagens... [%d de %d]"
+msgstr "Obtendo cabeçalhos das mensagens..."
 
 #: curs_main.c:1396
-#, fuzzy
 msgid "No deleted messages found in the thread."
-msgstr "apaga todas as mensagens na discussão"
+msgstr "Nenhuma mensagem removida foi encontrada nesta thread"
 
 #: curs_main.c:1416
 msgid "Jump to message: "
@@ -1507,13 +1490,12 @@ msgstr "Número de mensagem inválido."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1477 curs_main.c:2872 pager.c:2830
-#, fuzzy
 msgid "Cannot delete message(s)"
-msgstr "Nenhuma mensagem não removida."
+msgstr "Não pude remover mensagem(ns)"
 
 #: curs_main.c:1480
 msgid "Delete messages matching: "
-msgstr "Apagar mensagens que casem com: "
+msgstr "Apagar mensagens que coincidam: "
 
 #: curs_main.c:1521
 msgid "No limit pattern is in effect."
