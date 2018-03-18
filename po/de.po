@@ -2759,7 +2759,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2771,7 +2771,7 @@ msgstr ""
 "enthalten sind)\n"
 "  -v            Version und einkompilierte Konfiguration anzeigen\n"
 "  -x            Simuliert mailx beim Versenden von Mails\n"
-"  -y            Starte NeoMutt mit einer Mailbox aus der `mailboxes' Liste\n"
+"  -y            Starte NeoMutt mit einer Mailbox aus der 'mailboxes' Liste\n"
 "  -z            Nur starten, wenn neue Nachrichten in der Mailbox liegen\n"
 "  -Z            Die erste Mailbox mit neuen Nachrichten öffnen, andernfalls "
 "beenden\n"
@@ -3374,23 +3374,23 @@ msgstr "Kann Temporärdatei nicht erzeugen"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "Fehler beim Hinzufügen des Empfängers `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "Fehler beim Hinzufügen des Empfängers '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "Geheimer Schlüssel `%s' nicht gefunden: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "Geheimer Schlüssel '%s' nicht gefunden: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "mehrdeutige Angabe des geheimen Schlüssels `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "mehrdeutige Angabe des geheimen Schlüssels '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "Fehler beim Setzen des geheimen Schlüssels `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "Fehler beim Setzen des geheimen Schlüssels '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, c-format
@@ -6264,15 +6264,15 @@ msgstr ""
 #: version.c:91
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins und andere.\n"
-"NeoMutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `neomutt -vv', um\n"
+"NeoMutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie 'neomutt -vv', um\n"
 "weitere Details darüber zu erfahren. NeoMutt ist freie Software. \n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
-"`neomutt -vv' für weitere Details.\n"
+"'neomutt -vv' für weitere Details.\n"
 
 #: version.c:401
 msgid "Default options:"

@@ -2792,7 +2792,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2803,7 +2803,7 @@ msgstr ""
 "  -s <tytuł>    podaj tytuł (musi być w apostrofach, jeśli zawiera spacje)\n"
 "  -v            pokaż wersję i wkompilowane parametry\n"
 "  -x            symuluj zachowanie mailx\n"
-"  -y            wybierz skrzynkę podaną w twojej liście `mailboxes'\n"
+"  -y            wybierz skrzynkę podaną w twojej liście 'mailboxes'\n"
 "  -z            wyjdź natychmiast jeśli brak nowych listów w skrzynce\n"
 "  -Z            otwórz pierwszą skrzynkę z nowym listem i wyjdź jeśli brak "
 "nowych\n"
@@ -3413,23 +3413,23 @@ msgstr "Nie można utworzyć pliku tymczasowego"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "Błąd dodawania odbiorcy `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "Błąd dodawania odbiorcy '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "Klucz tajny `%s' nie został odnaleziony: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "Klucz tajny '%s' nie został odnaleziony: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "Niejednoznaczne określenie klucza tajnego `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "Niejednoznaczne określenie klucza tajnego '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "Błąd obsługi klucza tajnego `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "Błąd obsługi klucza tajnego '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, c-format
@@ -6355,9 +6355,9 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins i inni.\n"
 "Program nie jest objęty ŻADNĄ gwarancją; szczegóły poznasz pisząc 'neomutt -"

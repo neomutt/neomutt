@@ -762,7 +762,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
           rset[rset_n++] = key;
         else
         {
-          mutt_error(_("error adding recipient `%s': %s\n"), buf, gpgme_strerror(err));
+          mutt_error(_("error adding recipient '%s': %s\n"), buf, gpgme_strerror(err));
           rset[rset_n] = NULL;
           free_recipient_set(&rset);
           gpgme_release(context);
@@ -803,7 +803,7 @@ static int set_signer(gpgme_ctx_t ctx, int for_smime)
   if (err)
   {
     gpgme_release(listctx);
-    mutt_error(_("secret key `%s' not found: %s\n"), signid, gpgme_strerror(err));
+    mutt_error(_("secret key '%s' not found: %s\n"), signid, gpgme_strerror(err));
     return -1;
   }
   err = gpgme_op_keylist_next(listctx, &key2);
@@ -812,7 +812,7 @@ static int set_signer(gpgme_ctx_t ctx, int for_smime)
     gpgme_key_unref(key);
     gpgme_key_unref(key2);
     gpgme_release(listctx);
-    mutt_error(_("ambiguous specification of secret key `%s'\n"), signid);
+    mutt_error(_("ambiguous specification of secret key '%s'\n"), signid);
     return -1;
   }
   gpgme_op_keylist_end(listctx);
@@ -823,7 +823,7 @@ static int set_signer(gpgme_ctx_t ctx, int for_smime)
   gpgme_key_unref(key);
   if (err)
   {
-    mutt_error(_("error setting secret key `%s': %s\n"), signid, gpgme_strerror(err));
+    mutt_error(_("error setting secret key '%s': %s\n"), signid, gpgme_strerror(err));
     return -1;
   }
   return 0;
@@ -4390,7 +4390,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
   for (k = keys; k; k = k->next)
   {
-    mutt_debug(5, "  looking at key: %s `%.15s'\n", crypt_keyid(k), k->uid);
+    mutt_debug(5, "  looking at key: %s '%.15s'\n", crypt_keyid(k), k->uid);
 
     if (abilities && !(k->flags & abilities))
     {

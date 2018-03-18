@@ -2845,7 +2845,7 @@ msgstr ""
 "espacios)\n"
 "  -v            muestra versión y opciones definidas al compilar\n"
 "  -x            simula el modo de envío mailx\n"
-"  -y            selecciona un buzón especificado en su lista `mailboxes'\n"
+"  -y            selecciona un buzón especificado en su lista 'mailboxes'\n"
 "  -z            salir inmediatamente si no hay mensajes en el buzón\n"
 "  -Z            abrir la primera carpeta con mensajes nuevos, salir si no "
 "hay\n"
@@ -2859,7 +2859,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2890,7 +2890,7 @@ msgstr ""
 "espacios)\n"
 "  -v            muestra versión y opciones definidas al compilar\n"
 "  -x            simula el modo de envío mailx\n"
-"  -y            selecciona un buzón especificado en su lista `mailboxes'\n"
+"  -y            selecciona un buzón especificado en su lista 'mailboxes'\n"
 "  -z            salir inmediatamente si no hay mensajes en el buzón\n"
 "  -Z            abrir la primera carpeta con mensajes nuevos, salir si no "
 "hay\n"
@@ -3503,23 +3503,23 @@ msgstr "No se pudo crear archivo temporal"
 
 #: ncrypt/crypt_gpgme.c:769
 #, fuzzy, c-format
-msgid "error adding recipient `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
 msgstr "error en patrón en: %s"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "clave secreta `%s' no encontrada: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "clave secreta '%s' no encontrada: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "Especificación ambigua de la clave secreta `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "Especificación ambigua de la clave secreta '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "error seleccionando la clave secreta `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "error seleccionando la clave secreta '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, fuzzy, c-format
@@ -6508,14 +6508,14 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins y otros.\n"
 "NeoMutt viene con ABSOLUTAMENTE NINGUNA GARANTÍA; para obtener detalles\n"
-"teclee `neomutt -vv'. NeoMutt es software libre, puede redistribuirlo\n"
-"bajo ciertas condiciones; teclee `neomutt -vv' para más detalles.\n"
+"teclee 'neomutt -vv'. NeoMutt es software libre, puede redistribuirlo\n"
+"bajo ciertas condiciones; teclee 'neomutt -vv' para más detalles.\n"
 
 #: version.c:401
 #, fuzzy

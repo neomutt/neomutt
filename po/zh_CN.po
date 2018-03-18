@@ -2794,7 +2794,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2805,7 +2805,7 @@ msgstr ""
 "  -s <主题>     指定一个标题 (如果有空白的话必须被包括在引号中)\n"
 "  -v            显示版本和编译时的定义\n"
 "  -x            模拟 mailx 寄送模式\n"
-"  -y            选择一个被指定在您`mailboxes'清单中的信箱\n"
+"  -y            选择一个被指定在您'mailboxes'清单中的信箱\n"
 "  -z            如果在信箱中没有信件的话，立即退出\n"
 "  -Z            打开第一个附有新信件的资料夹，如果没有的话立即离开\n"
 "  -h            本帮助消息"
@@ -3410,23 +3410,23 @@ msgstr "无法建立暂存档"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "添加接收方`%s'时出错：%s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "添加接收方'%s'时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "未找到密钥`%s'：%s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "未找到密钥'%s'：%s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "密钥`%s'的说明有歧义\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "密钥'%s'的说明有歧义\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "设置密钥`%s'时出错：%s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "设置密钥'%s'时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, c-format
@@ -6326,14 +6326,14 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins 与其他人。\n"
-"NeoMutt 不提供任何保证：请键入 `neomutt -vv' 以获取详细信息。\n"
+"NeoMutt 不提供任何保证：请键入 'neomutt -vv' 以获取详细信息。\n"
 "NeoMutt 是自由软件, 欢迎您在某些条件下\n"
-"重新发行它；请键入 `neomutt -vv' 以获取详细信息。\n"
+"重新发行它；请键入 'neomutt -vv' 以获取详细信息。\n"
 
 #: version.c:401
 #, fuzzy

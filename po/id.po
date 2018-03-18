@@ -2784,7 +2784,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2795,7 +2795,7 @@ msgstr ""
 "  -s <subj>     subjek surat (harus dikutip jika mengandung spasi)\n"
 "  -v            tunjukkan versi dan definisi saat compile\n"
 "  -x            simulasi mailx untuk mengirim surat\n"
-"  -y            pilih kotak surat yg ada di daftar `mailboxes'\n"
+"  -y            pilih kotak surat yg ada di daftar 'mailboxes'\n"
 "  -z            langsung keluar jika tidak ada surat di kotak surat\n"
 "  -Z            buka folder pertama dg surat baru, langsung keluar jika "
 "tidak ada\n"
@@ -3403,23 +3403,23 @@ msgstr "Tidak bisa membuat file sementara"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "error saat menambah penerima `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "error saat menambah penerima '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "kunci rahasia `%s' tidak ditemukan: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "kunci rahasia '%s' tidak ditemukan: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "lebih dari satu kunci rahasia yang cocok dengan `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "lebih dari satu kunci rahasia yang cocok dengan '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "error saat memasang `%s' sebagai kunci rahasia: %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "error saat memasang '%s' sebagai kunci rahasia: %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, c-format
@@ -6352,9 +6352,9 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Hak Cipta (C) 1996-2016 Michael R. Elkins dan kawan-kawan.\n"
 "NeoMutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'neomutt -vv'.\n"

@@ -2838,7 +2838,7 @@ msgstr ""
 "  -v            δείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
 "  -x            εξομοιώστε την κατάσταση αποστολής mailx\n"
 "  -y            διαλέξτε ένα γραμματοκιβώτιο από την λίστα "
-"`γραμματοκιβωτίων'\n"
+"'γραμματοκιβωτίων'\n"
 "  -z            εγκατάλειψη αμέσως εάν δεν υπάρχουν μηνύματα στο "
 "γραμματοκιβώτιο\n"
 "  -Z            ανοίξτε τον πρώτο φάκελο με νέο μήνυμα, βγείτε εάν δεν "
@@ -2853,7 +2853,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2893,7 +2893,7 @@ msgstr ""
 "  -v            δείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
 "  -x            εξομοιώστε την κατάσταση αποστολής mailx\n"
 "  -y            διαλέξτε ένα γραμματοκιβώτιο από την λίστα "
-"`γραμματοκιβωτίων'\n"
+"'γραμματοκιβωτίων'\n"
 "  -z            εγκατάλειψη αμέσως εάν δεν υπάρχουν μηνύματα στο "
 "γραμματοκιβώτιο\n"
 "  -Z            ανοίξτε τον πρώτο φάκελο με νέο μήνυμα, βγείτε εάν δεν "
@@ -3509,22 +3509,22 @@ msgstr "Αδυναμία δημιουργίας προσωρινού αρχεί�
 
 #: ncrypt/crypt_gpgme.c:769
 #, fuzzy, c-format
-msgid "error adding recipient `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
 msgstr "σφάλμα στο μοντέλο στο: %s"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
+msgid "secret key '%s' not found: %s\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:844
@@ -6461,16 +6461,16 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins και άλλοι.\n"
 "Το NeoMutt έρχεται ΑΠΟΚΛΕΙΣΤΙΚΑ ΧΩΡΙΣ ΕΓΓΥΗΣΗ; για λεπτομέρειες πατήστε "
-"`neomutt -vv'.\n"
+"'neomutt -vv'.\n"
 "Το NeoMutt είναι ελεύθερο λογισμικό, και ευχαρίστως μπορείτε να το "
 "επαναδιανέμετε\n"
-"υπό ορισμένους όρους; γράψτε `neomutt -vv' για λεπτομέρειες.\n"
+"υπό ορισμένους όρους; γράψτε 'neomutt -vv' για λεπτομέρειες.\n"
 
 #: version.c:401
 #, fuzzy

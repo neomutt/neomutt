@@ -1744,7 +1744,7 @@ msgstr "ラベルは変更されなかった。"
 msgid "Cannot mark message(s) as read"
 msgstr "メッセージを既読にマークできない"
 
-# つまり ~a とすれば後から `a で戻ってこられるという機能の a の部分。
+# つまり ~a とすれば後から 'a で戻ってこられるという機能の a の部分。
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
@@ -2765,7 +2765,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2776,7 +2776,7 @@ msgstr ""
 "  -s <題名>     題名の指定 (空白がある場合には引用符でくくること)\n"
 "  -v            バージョンとコンパイル時指定の表示\n"
 "  -x            mailx 送信モードのシミュレート\n"
-"  -y            指定された `mailboxes' リストの中からのメールボックスの選択\n"
+"  -y            指定された 'mailboxes' リストの中からのメールボックスの選択\n"
 "  -z            メールボックス中にメッセージが無ければすぐに終了\n"
 "  -Z            新着メッセージが無ければすぐに終了\n"
 "  -h            このヘルプメッセージ"
@@ -3385,22 +3385,22 @@ msgstr "一時ファイルを作成できない"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
 msgstr "受信者 %s の追加でエラー: %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
+msgid "secret key '%s' not found: %s\n"
 msgstr "秘密鍵 %s が見付からない: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
 msgstr "秘密鍵の指定があいまい: %s\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
 msgstr "秘密鍵 %s 設定中にエラー: %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
@@ -6267,9 +6267,9 @@ msgstr ""
 #: version.c:91
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 
 #: version.c:401

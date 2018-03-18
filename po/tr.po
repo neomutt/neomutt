@@ -2786,7 +2786,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -3412,23 +3412,23 @@ msgstr "Geçici dosya oluşturulamıyor"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "`%s' alıcısı eklenirken hata: %s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "'%s' alıcısı eklenirken hata: %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "`%s' gizli anahtarı bulunamadı: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "'%s' gizli anahtarı bulunamadı: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "`%s' gizli anahtarının özellikleri belirsiz\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "'%s' gizli anahtarının özellikleri belirsiz\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "`%s' gizli anahtarı ayarlanırken hata: %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "'%s' gizli anahtarı ayarlanırken hata: %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, fuzzy, c-format
@@ -6370,9 +6370,9 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Telif hakkı (C) 1996-2016 Michael R. Elkins ve diğerleri.\n"
 "NeoMutt HİÇBİR GARANTİ vadetmez; daha fazla bilgi için 'neomutt -vv'\n"

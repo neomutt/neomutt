@@ -150,7 +150,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
   const char *p = NULL;
   size_t i;
 
-  mutt_debug(2, "`%s'\n", s);
+  mutt_debug(2, "'%s'\n", s);
 
   while (*s)
   {
@@ -231,7 +231,7 @@ static void parse_parameters(struct ParameterList *param, const char *s)
       {
         new->value = mutt_str_strdup(buffer);
 
-        mutt_debug(2, "parse_parameter: `%s' = `%s'\n",
+        mutt_debug(2, "parse_parameter: '%s' = `%s'\n",
                    new->attribute ? new->attribute : "", new->value ? new->value : "");
 
         /* Add this parameter to the list */

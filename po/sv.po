@@ -2785,7 +2785,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -3406,23 +3406,23 @@ msgstr "Kan inte skapa tillfällig fil"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "fel vid tilläggning av mottagare `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "fel vid tilläggning av mottagare '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "hemlig nyckel `%s' hittades inte: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "hemlig nyckel '%s' hittades inte: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "otydlig specifikation av hemlig nyckel `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "otydlig specifikation av hemlig nyckel '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "fel vid sättning av hemlig nyckel `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "fel vid sättning av hemlig nyckel '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, c-format
@@ -6355,14 +6355,14 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Upphovsrätt (C) 1996-2016 Michael R. Elkins med fler.\n"
-"NeoMutt levereras HELT UTAN GARANTI; för detaljer kör `neomutt -vv'.\n"
+"NeoMutt levereras HELT UTAN GARANTI; för detaljer kör 'neomutt -vv'.\n"
 "NeoMutt är fri mjukvara, och du är välkommen att sprida det vidare\n"
-"under vissa villkor; kör `neomutt -vv' för detaljer.\n"
+"under vissa villkor; kör 'neomutt -vv' för detaljer.\n"
 
 #: version.c:401
 #, fuzzy

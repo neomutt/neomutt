@@ -2915,7 +2915,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -3584,22 +3584,22 @@ msgstr "No s’ha pogut crear un fitxer temporal."
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
 msgstr "Error en afegir el destinatari «%s»: %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
+msgid "secret key '%s' not found: %s\n"
 msgstr "No s’ha trobat la clau secreta «%s»: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
 msgstr "L’especificació de la clau secreta «%s» és ambigua.\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
 msgstr "Error en establir la clau secreta «%s»: %s\n"
 
 # PKA és la notació, no la signatura.  ivb
@@ -6634,9 +6634,9 @@ msgstr ""
 #: version.c:91
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright © 1996-2016 Michael R. Elkins i d’altres.\n"
 "NeoMutt s’ofereix SENSE CAP GARANTIA; useu «neomutt -vv» per a obtenir-ne "

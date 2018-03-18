@@ -2843,7 +2843,7 @@ msgstr ""
 "интервали)\n"
 "  -v            показва версията и дефинициите, използвани при компилация\n"
 "  -x            симулира mailx изпращане\n"
-"  -y            избор на файл от листа `mailboxes'\n"
+"  -y            избор на файл от листа 'mailboxes'\n"
 "  -z            незабавен изход от програмата, ако в пощенската кутия няма "
 "писма\n"
 "  -Z            отваряне на първата пощенска кутия с нови писма или "
@@ -2858,7 +2858,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2895,7 +2895,7 @@ msgstr ""
 "интервали)\n"
 "  -v            показва версията и дефинициите, използвани при компилация\n"
 "  -x            симулира mailx изпращане\n"
-"  -y            избор на файл от листа `mailboxes'\n"
+"  -y            избор на файл от листа 'mailboxes'\n"
 "  -z            незабавен изход от програмата, ако в пощенската кутия няма "
 "писма\n"
 "  -Z            отваряне на първата пощенска кутия с нови писма или "
@@ -3507,22 +3507,22 @@ msgstr "Грешка при създаване на временен файл"
 
 #: ncrypt/crypt_gpgme.c:769
 #, fuzzy, c-format
-msgid "error adding recipient `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
 msgstr "грешка в шаблона при: %s"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
+msgid "secret key '%s' not found: %s\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:844
@@ -6464,15 +6464,15 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Авторско право (C) 1996-2016 Michael R. Elkins и други.\n"
-"NeoMutt няма АБСОЛЮТНО НИКАКВА ГАРАНЦИЯ; за подробности напишете `neomutt -"
+"NeoMutt няма АБСОЛЮТНО НИКАКВА ГАРАНЦИЯ; за подробности напишете 'neomutt -"
 "vv'.\n"
 "NeoMutt е свободен софтуер и може да бъде разпространяван\n"
-"при определени условия; напишете `neomutt -vv' за повече подробности.\n"
+"при определени условия; напишете 'neomutt -vv' за повече подробности.\n"
 
 #: version.c:401
 #, fuzzy

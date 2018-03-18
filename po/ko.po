@@ -2815,7 +2815,7 @@ msgstr ""
 "  -s <제목>     제목 지정 (공백이 있을 경우 인용 부호 사용)\n"
 "  -v            버젼, 컴파일 옵션 보기\n"
 "  -x            mailx 전송 방식 흉내내기\n"
-"  -y            `메일함'의 목록 중 메일함 지정\n"
+"  -y            '메일함'의 목록 중 메일함 지정\n"
 "  -z            메일함에 메일이 없으면 즉시 끝내기\n"
 "  -Z            새 메일이 있는 첫번째 메일함 열기, 없을 경우 끝냄\n"
 "  -h            현재 도움말"
@@ -2828,7 +2828,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -2863,7 +2863,7 @@ msgstr ""
 "  -s <제목>     제목 지정 (공백이 있을 경우 인용 부호 사용)\n"
 "  -v            버젼, 컴파일 옵션 보기\n"
 "  -x            mailx 전송 방식 흉내내기\n"
-"  -y            `메일함'의 목록 중 메일함 지정\n"
+"  -y            '메일함'의 목록 중 메일함 지정\n"
 "  -z            메일함에 메일이 없으면 즉시 끝내기\n"
 "  -Z            새 메일이 있는 첫번째 메일함 열기, 없을 경우 끝냄\n"
 "  -h            현재 도움말"
@@ -3297,7 +3297,7 @@ msgstr "%d개 보관, %d개 삭제"
 #: mx.c:1011
 #, c-format
 msgid " Press '%s' to toggle write"
-msgstr " 쓰기 상태 바꾸기; `%s'를 누르세요"
+msgstr " 쓰기 상태 바꾸기; '%s'를 누르세요"
 
 #: mx.c:1013
 msgid "Use 'toggle-write' to re-enable write!"
@@ -3468,22 +3468,22 @@ msgstr "임시 파일을 만들 수 없음"
 
 #: ncrypt/crypt_gpgme.c:769
 #, fuzzy, c-format
-msgid "error adding recipient `%s': %s\n"
+msgid "error adding recipient '%s': %s\n"
 msgstr "패턴 오류: %s"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
+msgid "secret key '%s' not found: %s\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:844
@@ -6410,9 +6410,9 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins 외.\n"
 "NeoMutt은 어떠한 책임도 지지 않습니다; 자세한 사항은 'neomutt -vv'를 확인하시"

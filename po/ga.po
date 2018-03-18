@@ -888,7 +888,7 @@ msgstr "Athainmnigh go: "
 #: compose.c:1394 editmsg.c:107 editmsg.c:143 sendlib.c:918
 #, c-format
 msgid "Can't stat %s: %s"
-msgstr "ní féidir %s a `stat': %s"
+msgstr "ní féidir %s a 'stat': %s"
 
 #: compose.c:1420
 msgid "New file: "
@@ -1666,7 +1666,7 @@ msgstr ""
 
 #: curs_main.c:2280
 msgid "No Message-ID: header available to link thread"
-msgstr "Gan cheanntásc `Message-ID:'; ní féidir an snáithe a nasc"
+msgstr "Gan cheanntásc 'Message-ID:'; ní féidir an snáithe a nasc"
 
 #: curs_main.c:2282
 msgid "First, please tag a message to be linked here"
@@ -2789,7 +2789,7 @@ msgid ""
 "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
 "  -v            show version and compile-time definitions\n"
 "  -x            simulate the mailx send mode\n"
-"  -y            select a mailbox specified in your `mailboxes' list\n"
+"  -y            select a mailbox specified in your 'mailboxes' list\n"
 "  -z            exit immediately if there are no messages in the mailbox\n"
 "  -Z            open the first folder with new message, exit immediately if "
 "none\n"
@@ -3413,23 +3413,23 @@ msgstr "Ní féidir comhad sealadach a chruthú"
 
 #: ncrypt/crypt_gpgme.c:769
 #, c-format
-msgid "error adding recipient `%s': %s\n"
-msgstr "earráid agus faighteoir `%s' á chur leis: %s\n"
+msgid "error adding recipient '%s': %s\n"
+msgstr "earráid agus faighteoir '%s' á chur leis: %s\n"
 
 #: ncrypt/crypt_gpgme.c:810
 #, c-format
-msgid "secret key `%s' not found: %s\n"
-msgstr "eochair rúnda `%s' gan aimsiú: %s\n"
+msgid "secret key '%s' not found: %s\n"
+msgstr "eochair rúnda '%s' gan aimsiú: %s\n"
 
 #: ncrypt/crypt_gpgme.c:819
 #, c-format
-msgid "ambiguous specification of secret key `%s'\n"
-msgstr "sonrú débhríoch d'eochair rúnda `%s'\n"
+msgid "ambiguous specification of secret key '%s'\n"
+msgstr "sonrú débhríoch d'eochair rúnda '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:830
 #, c-format
-msgid "error setting secret key `%s': %s\n"
-msgstr "earráid agus eochair rúnda á shocrú `%s': %s\n"
+msgid "error setting secret key '%s': %s\n"
+msgstr "earráid agus eochair rúnda á shocrú '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:844
 #, fuzzy, c-format
@@ -4473,7 +4473,7 @@ msgstr ""
 #: nntp.c:1762 nntp.c:1795
 #, fuzzy, c-format
 msgid "Can't post article: %s"
-msgstr "ní féidir %s a `stat': %s"
+msgstr "ní féidir %s a 'stat': %s"
 
 #: nntp.c:1866 nntp.c:2284 pop.c:804 pop.c:871
 msgid "Checking for new messages..."
@@ -6370,15 +6370,15 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+"NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
-"under certain conditions; type `neomutt -vv' for details.\n"
+"under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright © 1996-2016 Michael R. Elkins agus daoine eile.\n"
-"Níl baránta AR BITH le NeoMutt; iontráil `neomutt -vv' chun tuilleadh\n"
+"Níl baránta AR BITH le NeoMutt; iontráil 'neomutt -vv' chun tuilleadh\n"
 "eolais a fháil.  Is saorbhogearra é NeoMutt: is féidir leat é\n"
 "a athdháileadh, agus fáilte, ach de réir coinníollacha áirithe.\n"
-"Iontráil `neomutt -vv' chun tuilleadh eolais a fháil.\n"
+"Iontráil 'neomutt -vv' chun tuilleadh eolais a fháil.\n"
 
 #: version.c:401
 #, fuzzy

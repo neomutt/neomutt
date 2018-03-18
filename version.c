@@ -89,9 +89,9 @@ static const char *ReachingUs =
 // clang-format off
 static const char *Notice =
     N_("Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-       "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+       "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
        "NeoMutt is free software, and you are welcome to redistribute it\n"
-       "under certain conditions; type `neomutt -vv' for details.\n");
+       "under certain conditions; type 'neomutt -vv' for details.\n");
 // clang-format on
 
 /**
