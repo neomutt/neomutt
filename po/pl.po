@@ -393,26 +393,10 @@ msgstr "%s: polecenia mogą dotyczyć tylko obiektów indeksu"
 msgid "%s: too few arguments"
 msgstr "%s: za mało argumentów"
 
-#: color.c:695 color.c:720
-msgid "Missing arguments."
-msgstr "Brakuje argumentów."
-
-#: color.c:752 color.c:763
-msgid "color: too few arguments"
-msgstr "color: za mało argumentów"
-
-#: color.c:787
-msgid "mono: too few arguments"
-msgstr "mono: za mało argumentów"
-
 #: color.c:807
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: nie ma takiego atrybutu"
-
-#: color.c:851 hook.c:89 hook.c:102 init.c:2195 init.c:2270 keymap.c:1024
-msgid "too few arguments"
-msgstr "za mało argumentów"
 
 #: color.c:860 color.c:917 hook.c:108
 msgid "too many arguments"

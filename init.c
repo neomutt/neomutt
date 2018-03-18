@@ -2133,7 +2133,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
     return -1;
   }
 
@@ -2209,7 +2209,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "setenv");
     return -1;
   }
 

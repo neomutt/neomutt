@@ -391,26 +391,10 @@ msgstr "%s: commando is alleen geldig voor index, body en headerobjecten"
 msgid "%s: too few arguments"
 msgstr "%s: te weinig argumenten"
 
-#: color.c:695 color.c:720
-msgid "Missing arguments."
-msgstr "Ontbrekende argumenten."
-
-#: color.c:752 color.c:763
-msgid "color: too few arguments"
-msgstr "color: te weinig argumenten"
-
-#: color.c:787
-msgid "mono: too few arguments"
-msgstr "mono: te weinig argumenten"
-
 #: color.c:807
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: onbekend attribuut"
-
-#: color.c:851 hook.c:89 hook.c:102 init.c:2195 init.c:2270 keymap.c:1024
-msgid "too few arguments"
-msgstr "te weinig argumenten"
 
 #: color.c:860 color.c:917 hook.c:108
 msgid "too many arguments"
