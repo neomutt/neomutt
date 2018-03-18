@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -68,12 +69,22 @@ static int ColorQuoteSize;
 #define COLOR_DEFAULT (-2)
 #define COLOR_UNSET UINT32_MAX
 
+#define GET_COLOR_VALUE(v) ((v) & 0xffffff)
+
+/*
+ * Flags for the high 8bits of the color value.
+ *
+ * Note that no flag means it's a palette color.
+ */
+#define RGB24              (1u << 24)
+
 /**
  * struct ColorList - A set of colors
  */
 struct ColorList
 {
-  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits. */
+  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
+   * Use the upper 8 bits to store flags.  */
   uint32_t fg;
   uint32_t bg;
   short index;
@@ -234,6 +245,12 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
 {
   static const char *const missing[3] = { "brown", "lightgray", "default" };
 
+  if (val & RGB24)
+  {
+    assert(snprintf(dest, destlen, "#%06X", GET_COLOR_VALUE(val)) == 7);
+    return dest;
+  }
+
   switch (val)
   {
     case COLOR_YELLOW:
@@ -274,6 +291,9 @@ static char *get_color_name(char *dest, size_t destlen, uint32_t val)
  */
 int mutt_alloc_color(uint32_t fg, uint32_t bg)
 {
+#ifdef USE_SLANG_CURSES
+  char fgc[128], bgc[128];
+#endif
   struct ColorList *p = ColorList;
   int i;
 
@@ -318,21 +338,22 @@ int mutt_alloc_color(uint32_t fg, uint32_t bg)
   p->fg = fg;
 
 #ifdef USE_SLANG_CURSES
-  if ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT))
-  {
-    char fgc[128], bgc[128];
-    SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
-                   get_color_name(bgc, sizeof(bgc), bg));
-  }
-  else
-#elif defined(HAVE_USE_DEFAULT_COLORS)
+  /*
+   * If using s-lang always use SLtt_set_color which allows using truecolor
+   * values. Note that I couldn't figure out if s-lang somehow reports
+   * truecolor support.
+   */
+  SLtt_set_color(i, NULL, get_color_name(fgc, sizeof(fgc), fg),
+                 get_color_name(bgc, sizeof(bgc), bg));
+#else
+#ifdef HAVE_USE_DEFAULT_COLORS
   if (fg == COLOR_DEFAULT)
     fg = COLOR_UNSET;
   if (bg == COLOR_DEFAULT)
     bg = COLOR_UNSET;
 #endif
-
-    init_pair(i, fg, bg);
+  init_pair(i, fg, bg);
+#endif
 
   mutt_debug(LL_DEBUG3, "Color pairs used so far: %d\n", UserColors);
 
@@ -481,6 +502,19 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
       return -1;
     }
   }
+#ifdef HAVE_DIRECTCOLOR
+  else if (*s == '#')
+  {
+    s += 1;
+    *col = strtoul(s, &eptr, 16);
+    if (!*s || *eptr || (*col == COLOR_UNSET && !OptNoCurses && has_colors()))
+    {
+      snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
+      return -1;
+    }
+    *col |= RGB24;
+  }
+#endif
   else if ((*col = mutt_map_get_value(s, Colors)) == -1)
   {
     mutt_buffer_printf(err, _("%s: no such color"), s);
@@ -498,7 +532,7 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
     {
       if ((COLORS >= 16) && is_light)
       {
-        if ((*col >= 0) && (*col <= 7))
+        if (*col <= 7)
         {
           /* Advance the color 0-7 by 8 to get the light version */
           *col += 8;
@@ -509,11 +543,11 @@ static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg,
         *attr |= A_BOLD;
       }
     }
-    else
+    else if (!(*col & RGB24))
     {
       if (COLORS >= 16)
       {
-        if ((*col >= 0) && (*col <= 7))
+        if (*col <= 7)
         {
           /* Advance the color 0-7 by 8 to get the light version */
           *col += 8;

@@ -592,6 +592,7 @@ switch [opt-val with-ui ncurses] {
     }
     define USE_SLANG_CURSES
     define-feature COLOR
+    define-feature DIRECTCOLOR
   }
 
   default {
