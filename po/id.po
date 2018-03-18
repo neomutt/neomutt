@@ -156,10 +156,6 @@ msgstr "Tidak ada jenis yang cocok di file mailcap. Ditampilkan sebagai teks."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Jenis MIME tidak didefinisikan. Tidak bisa melihat lampiran."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Tidak bisa membuat filter"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2687,8 +2683,8 @@ msgid "%s: no such menu"
 msgstr "%s: tidak ada menu begitu"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "urutan tombol kosong"
+msgid "%s: null key sequence"
+msgstr "%s: urutan tombol kosong"
 
 #: keymap.c:1043
 #, c-format
@@ -6155,14 +6151,6 @@ msgstr "Surat tidak dikirim."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Surat ditunda."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Tidak ada penerima yang disebutkan!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Tidak ada penerima yang disebutkan."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

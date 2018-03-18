@@ -201,10 +201,6 @@ msgstr "No hi ha cap entrada adequada a «mailcap».  Es visualitza com a text."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "No s’ha definit el tipus MIME.  No es pot veure l’adjunció."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "No s’ha pogut crear el filtre."
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2794,8 +2790,8 @@ msgid "%s: no such menu"
 msgstr "%s: El menú no existeix."
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "La seqüència de tecles és nul·la."
+msgid "%s: null key sequence"
+msgstr "%s: La seqüència de tecles és nul·la."
 
 #: keymap.c:1043
 #, c-format
@@ -6422,14 +6418,6 @@ msgstr "No s’ha enviat el missatge."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "S’ha posposat el missatge."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "No s’ha indicat cap destinatari."
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "No s’ha indicat cap destinatari."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

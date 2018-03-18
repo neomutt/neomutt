@@ -154,10 +154,6 @@ msgstr "Sobivat mailcap kirjet pole. Käsitlen tekstina."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME tüüp ei ole defineeritud. Lisa ei saa vaadata."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Filtri loomine ebaõnnestus"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2716,8 +2712,8 @@ msgid "%s: no such menu"
 msgstr "%s: sellist menüüd ei ole"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "tühi klahvijärjend"
+msgid "%s: null key sequence"
+msgstr "%s: tühi klahvijärjend"
 
 #: keymap.c:1043
 #, c-format
@@ -6227,14 +6223,6 @@ msgstr "Kirja ei saadetud."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Teade jäeti postitusootele."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Kirja saajaid pole määratud!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Kirja saajaid ei määratud!"
 
 #: send.c:1919
 msgid "No subject, abort sending?"

@@ -151,10 +151,6 @@ msgstr "mailcap に一致エントリがない。テキストとして表示中�
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME 形式が定義されていない。添付ファイルを表示できない。"
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "フィルタを作成できない"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2653,8 +2649,8 @@ msgid "%s: no such menu"
 msgstr "%s というメニューはない"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "キーシーケンスがない"
+msgid "%s: null key sequence"
+msgstr "%s: キーシーケンスがない"
 
 #: keymap.c:1043
 #, c-format
@@ -6063,14 +6059,6 @@ msgstr "メールは送信されなかった。"
 #: send.c:1884
 msgid "Message postponed."
 msgstr "メッセージは書きかけで保留された。"
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "受信者が指定されていない!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "受信者が指定されていなかった。"
 
 #: send.c:1919
 msgid "No subject, abort sending?"

@@ -1014,7 +1014,7 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummen
 
     if (!*buf.data)
     {
-      mutt_str_strfcpy(err->data, _("null key sequence"), err->dsize);
+      mutt_buffer_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
     else if (MoreArgs(s))
       return buf.data;

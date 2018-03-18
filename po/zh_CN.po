@@ -155,10 +155,6 @@ msgstr "没有发现匹配的 mailcap 条目。以文本方式显示。"
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME 类型未定义。无法显示附件。"
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "无法创建过滤器"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2686,8 +2682,8 @@ msgid "%s: no such menu"
 msgstr "%s：没有这个选单"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "空的键值序列"
+msgid "%s: null key sequence"
+msgstr "%s: 空的键值序列"
 
 #: keymap.c:1043
 #, c-format
@@ -6119,14 +6115,6 @@ msgstr "信件没有寄出。"
 #: send.c:1884
 msgid "Message postponed."
 msgstr "信件被延迟寄出。"
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "没有指定接收者！"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "没有已指定的接收者。"
 
 #: send.c:1919
 msgid "No subject, abort sending?"

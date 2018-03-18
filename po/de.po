@@ -158,10 +158,6 @@ msgstr "Es gibt keinen passenden Mailcap-Eintrag. Anzeige als Text."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Undefinierter MIME-Typ. Kann Anhang nicht anzeigen."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Kann Filter nicht erzeugen"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2644,8 +2640,8 @@ msgid "%s: no such menu"
 msgstr "Menü \"%s\" existiert nicht"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "Leere Tastenfolge"
+msgid "%s: null key sequence"
+msgstr "%s: Leere Tastenfolge"
 
 #: keymap.c:1043
 #, c-format
@@ -6053,14 +6049,6 @@ msgstr "Artikel nicht veröffentlicht."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Nachricht zurückgestellt."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Es wurden keine Empfänger angegeben!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Es wurden keine Empfänger angegeben!"
 
 #: send.c:1919
 msgid "No subject, abort sending?"

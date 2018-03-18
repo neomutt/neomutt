@@ -155,10 +155,6 @@ msgstr "Odpovídající položka v mailcapu nebyla nalezena. Zobrazuji jako text
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME typ není definován, nelze zobrazit přílohu."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Nelze vytvořit filtr"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2653,8 +2649,8 @@ msgid "%s: no such menu"
 msgstr "menu %s neexistuje"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "prázdný sled kláves"
+msgid "%s: null key sequence"
+msgstr "%s: prázdný sled kláves"
 
 #: keymap.c:1043
 #, c-format
@@ -6084,14 +6080,6 @@ msgstr "Zpráva nebyla odeslána."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Zpráva byla odložena."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Nejsou zadáni příjemci!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Nebyli zadání příjemci."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

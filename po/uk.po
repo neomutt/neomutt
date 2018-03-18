@@ -154,10 +154,6 @@ msgstr "Не знайдено відомостей у mailcap. Показано 
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Тип MIME не визначено. Неможливо показати додаток."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Неможливо створити фільтр"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2643,8 +2639,8 @@ msgid "%s: no such menu"
 msgstr "меню \"%s\" не існує"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "порожня послідовність клавіш"
+msgid "%s: null key sequence"
+msgstr "%s: порожня послідовність клавіш"
 
 #: keymap.c:1043
 #, c-format
@@ -6052,14 +6048,6 @@ msgstr "Лист не відправлено."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Лист залишено для подальшої відправки."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Не вказано отримувачів!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Отримувачів не було вказано."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

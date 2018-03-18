@@ -151,10 +151,6 @@ msgstr "No matching mailcap entry found.  Viewing as text."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME type not defined.  Cannot view attachment."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Cannot create filter"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2618,8 +2614,8 @@ msgid "%s: no such menu"
 msgstr "%s: no such menu"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "null key sequence"
+msgid "%s: null key sequence"
+msgstr "%s: null key sequence"
 
 #: keymap.c:1043
 #, c-format
@@ -5980,14 +5976,6 @@ msgstr "Article not posted."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Message postponed."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "No recipients are specified!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "No recipients were specified."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

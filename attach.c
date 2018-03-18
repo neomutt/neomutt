@@ -502,7 +502,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
         if (tempfd != -1)
           close(tempfd);
 
-        mutt_error(_("Cannot create filter"));
+        mutt_error(_("Can't create filter"));
         goto return_error;
       }
 

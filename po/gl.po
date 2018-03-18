@@ -158,10 +158,6 @@ msgstr ""
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Tipo MIME non definido. Non se pode ver-lo ficheiro adxunto."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Non se puido crea-lo filtro"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2743,8 +2739,8 @@ msgid "%s: no such menu"
 msgstr "%s: non hai tal menú"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "secuencia de teclas nula"
+msgid "%s: null key sequence"
+msgstr "%s: secuencia de teclas nula"
 
 #: keymap.c:1043
 #, c-format
@@ -6294,14 +6290,6 @@ msgstr "Mensaxe non enviada."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Mensaxe posposta."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "¡Non se especificaron destinatarios!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Non se especificaron destinatarios."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

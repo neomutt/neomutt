@@ -154,10 +154,6 @@ msgstr "Neradau tinkamo mailcap įrašo.  Rodau kaip tekstą."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME tipas neapibrėžtas.  Negaliu parodyti priedo."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Negaliu sukurti filtro"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2699,8 +2695,8 @@ msgid "%s: no such menu"
 msgstr "%s: nėra tokio meniu"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "nulinė klavišų seka"
+msgid "%s: null key sequence"
+msgstr "%s: nulinė klavišų seka"
 
 #: keymap.c:1043
 #, c-format
@@ -6247,14 +6243,6 @@ msgstr "Laiškas neišsiųstas."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Laiškas atidėtas."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Nenurodyti jokie gavėjai!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Nebuvo nurodyti jokie gavėjai."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

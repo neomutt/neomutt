@@ -152,10 +152,6 @@ msgstr "Ez da pareko mailcap sarrerarik aurkitu.  Testu bezala bistarazten."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME mota ezarri gabe.  Ezin da gehigarria erakutsi."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Ezin da iragazkia sortu"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2679,8 +2675,8 @@ msgid "%s: no such menu"
 msgstr "%s: ez da menurik"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "baloigabeko sekuentzi gakoa"
+msgid "%s: null key sequence"
+msgstr "%s: baloigabeko sekuentzi gakoa"
 
 #: keymap.c:1043
 #, c-format
@@ -6138,14 +6134,6 @@ msgstr "Eposta ez da bidali."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Mezua atzeraturik."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Ez da hartzailerik eman!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Ez zen hartzailerik eman."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

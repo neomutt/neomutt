@@ -160,10 +160,6 @@ msgstr ""
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Недефиниран MIME тип. Приложението не може да бъде показано."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Филтърът не може да бъде създаден"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2738,8 +2734,8 @@ msgid "%s: no such menu"
 msgstr "%s:  няма такова меню"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "празна последователност от клавиши"
+msgid "%s: null key sequence"
+msgstr "%s: празна последователност от клавиши"
 
 #: keymap.c:1043
 #, c-format
@@ -6267,14 +6263,6 @@ msgstr "Писмото не е изпратено."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Писмото е записано като чернова."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Не са указани получатели!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Не са указани получатели."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

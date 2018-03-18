@@ -152,10 +152,6 @@ msgstr "Geen geschikte mailcap-entry gevonden.  Weergave als normale tekst."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME-type is niet gedefinieerd.  Kan bijlage niet weergeven."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Filter kan niet worden aangemaakt"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2652,8 +2648,8 @@ msgid "%s: no such menu"
 msgstr "%s: onbekend menu"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "lege toetsenvolgorde"
+msgid "%s: null key sequence"
+msgstr "%s: lege toetsenvolgorde"
 
 #: keymap.c:1043
 #, c-format
@@ -6085,14 +6081,6 @@ msgstr "Bericht niet verstuurd."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Bericht uitgesteld."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Er zijn geen geadresseerden opgegeven!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Er werden geen geadresseerden opgegeven!"
 
 #: send.c:1919
 msgid "No subject, abort sending?"

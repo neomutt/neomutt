@@ -156,10 +156,6 @@ msgstr "mailcap 항목에서 일치하는 것을 찾을 수 없음. text로 보�
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "정의되지 않은 MIME 형식. 첨부물을 볼 수 없음."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "필터를 만들 수 없음"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2712,8 +2708,8 @@ msgid "%s: no such menu"
 msgstr "%s: 그런 메뉴 없음"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "공백 글쇠 시퀀스"
+msgid "%s: null key sequence"
+msgstr "%s: 공백 글쇠 시퀀스"
 
 #: keymap.c:1043
 #, c-format
@@ -6215,14 +6211,6 @@ msgstr "보내지 않음."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "발송 연기됨."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "수신자가 지정되지 않음!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "수신자가 지정되지 않음."
 
 #: send.c:1919
 msgid "No subject, abort sending?"

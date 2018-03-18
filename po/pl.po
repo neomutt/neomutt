@@ -155,10 +155,6 @@ msgstr "Brak odpowiedniego wpisu w 'mailcap'. Wyświetlony jako tekst."
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Typ MIME nie został zdefiniowany. Nie można wyświetlić załącznika."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Nie można utworzyć filtru"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2686,8 +2682,8 @@ msgid "%s: no such menu"
 msgstr "%s: nie ma takiego menu"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "pusta sekwencja klawiszy"
+msgid "%s: null key sequence"
+msgstr "%s: pusta sekwencja klawiszy"
 
 #: keymap.c:1043
 #, c-format
@@ -6142,14 +6138,6 @@ msgstr "List nie został wysłany."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "List odłożono."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Nie wskazano adresatów!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Nie wskazano adresatów!"
 
 #: send.c:1919
 msgid "No subject, abort sending?"

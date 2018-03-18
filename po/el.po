@@ -157,10 +157,6 @@ msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Απει�
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "Ο τύπος MIME δεν έχει οριστεί. Αδυναμία εμφάνισης προσαρτήσεως."
 
-#: attach.c:509
-msgid "Cannot create filter"
-msgstr "Αδυναμία δημιουργίας φίλτρου"
-
 #: attach.c:517
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
@@ -2730,8 +2726,8 @@ msgid "%s: no such menu"
 msgstr "%s: δεν υπάρχει τέτοιο μενού"
 
 #: keymap.c:1017
-msgid "null key sequence"
-msgstr "κενή ακολουθία πλήκτρων"
+msgid "%s: null key sequence"
+msgstr "%s: κενή ακολουθία πλήκτρων"
 
 #: keymap.c:1043
 #, c-format
@@ -6263,14 +6259,6 @@ msgstr "Το γράμμα δεν εστάλη."
 #: send.c:1884
 msgid "Message postponed."
 msgstr "Το μήνυμα ανεβλήθη."
-
-#: send.c:1898
-msgid "No recipients are specified!"
-msgstr "Δεν έχουν καθοριστεί παραλήπτες!"
-
-#: send.c:1903
-msgid "No recipients were specified."
-msgstr "Δεν καθορίστηκαν παραλήπτες."
 
 #: send.c:1919
 msgid "No subject, abort sending?"
