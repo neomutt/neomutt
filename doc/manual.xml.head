@@ -15356,6 +15356,19 @@ folder-hook ^pop 'set read_inc=1'</screen>
         <listitem>
           <cmdsynopsis>
             <command>
+              <link linkend="append-hook">append-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">pattern</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">shell-command</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
               <link linkend="attachments">attachments</link>
             </command>
             <arg choice="plain">
@@ -15372,19 +15385,6 @@ folder-hook ^pop 'set read_inc=1'</screen>
             </arg>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
-            </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
-              <link linkend="append-hook">append-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -15438,19 +15438,6 @@ folder-hook ^pop 'set read_inc=1'</screen>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">charset</replaceable>
-            </arg>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
-              <link linkend="iconv-hook">iconv-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">charset</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">local-charset</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -15538,19 +15525,6 @@ folder-hook ^pop 'set read_inc=1'</screen>
                 <replaceable>pattern</replaceable>
               </arg>
             </group>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
-              <link linkend="open-hook">open-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
-            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -15685,7 +15659,22 @@ folder-hook ^pop 'set read_inc=1'</screen>
         </listitem>
         <listitem>
           <cmdsynopsis>
-            <command>ifdef</command>
+            <command>
+              <link linkend="iconv-hook">iconv-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">charset</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">local-charset</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="ifdef">ifdef</link>
+            </command>
             <arg choice="plain">
               <replaceable class="parameter">item</replaceable>
             </arg>
@@ -15958,10 +15947,36 @@ folder-hook ^pop 'set read_inc=1'</screen>
         <listitem>
           <cmdsynopsis>
             <command>
+              <link linkend="open-hook">open-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">pattern</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">shell-command</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
               <link linkend="push">push</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">string</replaceable>
+            </arg>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="reply-hook">reply-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">[!]pattern</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -16000,19 +16015,6 @@ folder-hook ^pop 'set read_inc=1'</screen>
                 <replaceable class="parameter">pattern</replaceable>
               </arg>
             </group>
-          </cmdsynopsis>
-        </listitem>
-        <listitem>
-          <cmdsynopsis>
-            <command>
-              <link linkend="reply-hook">reply-hook</link>
-            </command>
-            <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
-            </arg>
-            <arg choice="plain">
-              <replaceable class="parameter">command</replaceable>
-            </arg>
           </cmdsynopsis>
         </listitem>
         <listitem>
