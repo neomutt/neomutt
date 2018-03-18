@@ -25,6 +25,7 @@
 
 #include "config.h"
 
+// clang-format off
 #define OPS_CORE(_fmt) \
   _fmt(OP_NULL,                           N_("null operation")) \
   _fmt(OP_SHOW_MESSAGES,                  N_("show messages")) \
@@ -310,5 +311,6 @@ enum mutt_ops {
 #undef DEFINE_OPS
   OP_MAX,
 };
+// clang-format on
 
 #endif /* _MUTT_OPCODES_H */
