@@ -1185,7 +1185,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
   int rc = 0;
   struct Body *first_multilingual_part = NULL;
   struct Body *zxx_part = NULL;
-  char *prefered_languages;
+  char *preferred_languages;
   char *lang;
 
   mutt_debug(2, "RFC8255 >> entering in handler multilingual handler\n");
@@ -1210,9 +1210,9 @@ static int multilingual_handler(struct Body *a, struct State *s)
   else
     b = a;
 
-  mutt_debug(2, "RFC8255 >> prefered_languages set in config to '%s'\n", PreferedLanguages);
-  prefered_languages = mutt_str_strdup(PreferedLanguages);
-  lang = strtok(prefered_languages, ",");
+  mutt_debug(2, "RFC8255 >> preferred_languages set in config to '%s'\n", PreferredLanguages);
+  preferred_languages = mutt_str_strdup(PreferredLanguages);
+  lang = strtok(preferred_languages, ",");
 
   while(lang != NULL)
     {
@@ -1226,9 +1226,9 @@ static int multilingual_handler(struct Body *a, struct State *s)
 	    if((b->language != NULL) && (strcmp("zxx",  b->language) == 0))
 	      zxx_part = b;
 
-	    mutt_debug(2, "RFC8255 >> comparing configuration prefered_language='%s' to mail part content-language='%s'\n", lang, b->language);
+	    mutt_debug(2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n", lang, b->language);
 	    if((lang != NULL) && (b->language != NULL) && (strcmp(lang,  b->language) == 0)) {
-	      mutt_debug(2, "RFC8255 >> prefered_language='%s' matches content-language='%s' >> part selected to be displayed\n", lang, b->language);
+	      mutt_debug(2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n", lang, b->language);
 	      choice = b;
 	      break;
 	    }
