@@ -26,9 +26,9 @@
 struct Buffer;
 
 void ci_start_color(void);
-int  mutt_alloc_color(int fg, int bg);
-int  mutt_combine_color(int fg_attr, int bg_attr);
-void mutt_free_color(int fg, int bg);
+int  mutt_alloc_color(uint32_t fg, uint32_t bg);
+int  mutt_combine_color(uint32_t fg_attr, uint32_t bg_attr);
+void mutt_free_color(uint32_t fg, uint32_t bg);
 void mutt_free_colors(void);
 enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);

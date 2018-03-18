@@ -66,14 +66,16 @@ static int ColorQuoteSize;
 #ifdef HAVE_COLOR
 
 #define COLOR_DEFAULT (-2)
+#define COLOR_UNSET UINT32_MAX
 
 /**
  * struct ColorList - A set of colors
  */
 struct ColorList
 {
-  short fg;
-  short bg;
+  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits. */
+  uint32_t fg;
+  uint32_t bg;
   short index;
   short count;
   struct ColorList *next;
@@ -162,8 +164,9 @@ static struct ColorLine *new_color_line(void)
 {
   struct ColorLine *p = mutt_mem_calloc(1, sizeof(struct ColorLine));
 
-  p->fg = -1;
-  p->bg = -1;
+  p->fg = COLOR_UNSET;
+  p->bg = COLOR_UNSET;
+
   return p;
 }
 
@@ -178,7 +181,7 @@ static void free_color_line(struct ColorLine *tmp, bool free_colors)
     return;
 
 #ifdef HAVE_COLOR
-  if (free_colors && (tmp->fg != -1) && (tmp->bg != -1))
+  if (free_colors && (tmp->fg != COLOR_UNSET) && (tmp->bg != COLOR_UNSET))
     mutt_free_color(tmp->fg, tmp->bg);
 #endif
 
@@ -227,7 +230,7 @@ void ci_start_color(void)
  * @param val     Colour ID to look up
  * @retval ptr Pointer to the results buffer
  */
-static char *get_color_name(char *dest, size_t destlen, int val)
+static char *get_color_name(char *dest, size_t destlen, uint32_t val)
 {
   static const char *const missing[3] = { "brown", "lightgray", "default" };
 
@@ -258,6 +261,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
   /* Sigh. If we got this far, the color is of the form 'colorN'
    * Slang can handle this itself, so just return 'colorN' */
   snprintf(dest, destlen, "color%d", val);
+
   return dest;
 }
 #endif
@@ -268,7 +272,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
  * @param bg Background colour ID
  * @retval num Combined colour pair
  */
-int mutt_alloc_color(int fg, int bg)
+int mutt_alloc_color(uint32_t fg, uint32_t bg)
 {
   struct ColorList *p = ColorList;
   int i;
@@ -323,9 +327,9 @@ int mutt_alloc_color(int fg, int bg)
   else
 #elif defined(HAVE_USE_DEFAULT_COLORS)
   if (fg == COLOR_DEFAULT)
-    fg = -1;
+    fg = COLOR_UNSET;
   if (bg == COLOR_DEFAULT)
-    bg = -1;
+    bg = COLOR_UNSET;
 #endif
 
     init_pair(i, fg, bg);
@@ -343,7 +347,7 @@ int mutt_alloc_color(int fg, int bg)
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mutt_lookup_color(short pair, short *fg, short *bg)
+static int mutt_lookup_color(short pair, uint32_t *fg, uint32_t *bg)
 {
   struct ColorList *p = ColorList;
 
@@ -368,10 +372,10 @@ static int mutt_lookup_color(short pair, short *fg, short *bg)
  * @param bg_attr Colour pair of background to use
  * @retval num Colour pair of combined colour
  */
-int mutt_combine_color(int fg_attr, int bg_attr)
+int mutt_combine_color(uint32_t fg_attr, uint32_t bg_attr)
 {
-  short fg = COLOR_DEFAULT;
-  short bg = COLOR_DEFAULT;
+  uint32_t fg = COLOR_DEFAULT;
+  uint32_t bg = COLOR_DEFAULT;
 
   mutt_lookup_color(fg_attr, &fg, NULL);
   mutt_lookup_color(bg_attr, NULL, &bg);
@@ -388,7 +392,7 @@ int mutt_combine_color(int fg_attr, int bg_attr)
  *
  * If there are no more users, the resource will be freed.
  */
-void mutt_free_color(int fg, int bg)
+void mutt_free_color(uint32_t fg, uint32_t bg)
 {
   struct ColorList *q = NULL;
 
@@ -443,7 +447,7 @@ void mutt_free_color(int fg, int bg)
  *
  * Parse a colour name, such as "red", "brightgreen", "color123".
  */
-static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, struct Buffer *err)
+static int parse_color_name(const char *s, uint32_t *col, int *attr, bool is_fg, struct Buffer *err)
 {
   char *eptr = NULL;
   bool is_alert = false, is_bright = false, is_light = false;
@@ -470,8 +474,8 @@ static int parse_color_name(const char *s, int *col, int *attr, bool is_fg, stru
   if ((clen = mutt_str_startswith(s, "color", CASE_IGNORE)))
   {
     s += clen;
-    *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || (*col < 0) || ((*col >= COLORS) && !OptNoCurses && has_colors()))
+    *col = strtoul(s, &eptr, 10);
+    if (!*s || *eptr || ((*col >= COLORS) && !OptNoCurses && has_colors()))
     {
       mutt_buffer_printf(err, _("%s: color not supported by term"), s);
       return -1;
@@ -717,7 +721,7 @@ enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
  * @retval enum e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
-                                      bool sensitive, int fg, int bg, int attr,
+                                      bool sensitive, uint32_t fg, uint32_t bg, int attr,
                                       struct Buffer *err, bool is_index, int match)
 {
   /* is_index used to store compiled pattern
@@ -743,7 +747,7 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
   if (tmp)
   {
 #ifdef HAVE_COLOR
-    if ((fg != -1) && (bg != -1))
+    if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     {
       if ((tmp->fg != fg) || (tmp->bg != bg))
       {
@@ -792,7 +796,7 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
     tmp->pattern = mutt_str_strdup(s);
     tmp->match = match;
 #ifdef HAVE_COLOR
-    if ((fg != -1) && (bg != -1))
+    if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     {
       tmp->fg = fg;
       tmp->bg = bg;
@@ -823,8 +827,8 @@ static enum CommandResult add_pattern(struct ColorLineHead *top, const char *s,
  * @retval  0 Success
  * @retval -1 Error
  */
-static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
-                        struct Buffer *err)
+static int parse_object(struct Buffer *buf, struct Buffer *s, uint32_t *o,
+                        uint32_t *ql, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {
@@ -838,8 +842,8 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
     if (buf->data[6])
     {
       char *eptr = NULL;
-      *ql = strtol(buf->data + 6, &eptr, 10);
-      if (*eptr || (*ql < 0))
+      *ql = strtoul(buf->data + 6, &eptr, 10);
+      if (*eptr || (*ql == COLOR_UNSET))
       {
         mutt_buffer_printf(err, _("%s: no such object"), buf->data);
         return -1;
@@ -887,16 +891,16 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
  * @retval  0 Success
  * @retval -1 Error
  */
-typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, int *fg,
-                                 int *bg, int *attr, struct Buffer *err);
+typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
+                                 uint32_t *bg, int *attr, struct Buffer *err);
 
 #ifdef HAVE_COLOR
 
 /**
  * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t
  */
-static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
-                            int *bg, int *attr, struct Buffer *err)
+static int parse_color_pair(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
+                            uint32_t *bg, int *attr, struct Buffer *err)
 {
   while (true)
   {
@@ -947,13 +951,13 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t
  */
-static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
-                           int *bg, int *attr, struct Buffer *err)
+static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, uint32_t *fg,
+                           uint32_t *bg, int *attr, struct Buffer *err)
 {
   if (fg)
-    *fg = -1;
+    *fg = COLOR_UNSET;
   if (bg)
-    *bg = -1;
+    *bg = COLOR_UNSET;
 
   if (!MoreArgs(s))
   {
@@ -994,7 +998,7 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
 static int fgbgattr_to_color(int fg, int bg, int attr)
 {
 #ifdef HAVE_COLOR
-  if ((fg != -1) && (bg != -1))
+  if ((fg != COLOR_UNSET) && (bg != COLOR_UNSET))
     return attr | mutt_alloc_color(fg, bg);
   else
 #endif
@@ -1018,7 +1022,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                       struct Buffer *err, parser_callback_t callback,
                                       bool dry_run, bool color)
 {
-  int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0, match = 0;
+  int attr = 0;
+  uint32_t fg = 0, bg = 0, object = 0, q_level = 0, match = 0;
   enum CommandResult rc = MUTT_CMD_SUCCESS;
 
   if (parse_object(buf, s, &object, &q_level, err) == -1)

@@ -182,8 +182,8 @@ struct ColorLine
   char *pattern;
   struct Pattern *color_pattern; /**< compiled pattern to speed up index color
                                       calculation */
-  short fg;
-  short bg;
+  uint32_t fg;
+  uint32_t bg;
   int pair;
   STAILQ_ENTRY(ColorLine) entries;
 
