@@ -401,8 +401,8 @@ msgid "%s: no such attribute"
 msgstr "%s. sellist atribuuti pole"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "liiga palju argumente"
+msgid "%s: too many arguments"
+msgstr "%s: liiga palju argumente"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2464,11 +2464,6 @@ msgstr "%s: tundmatu järjestamise meetod"
 msgid "%s: Unknown type."
 msgstr "%s: tundmatu tüüp"
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: liiga palju argumente"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2676,11 +2671,6 @@ msgstr ""
 msgid "out of arguments"
 msgstr "liiga vähe argumente"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "liiga palju argumente"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2720,10 +2710,6 @@ msgstr "Klahv ei ole seotud."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klahv ei ole seotud. Abiinfo saamiseks vajutage '%s'."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: liiga palju argumente"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2738,17 +2724,9 @@ msgstr "tühi klahvijärjend"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: iiga palju argumente"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "makro: tühi klahvijärjend"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "makro: liiga palju argumente"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3219,10 +3197,6 @@ msgstr "%s@%s parool: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: liiga palju argumente"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, c-format
@@ -6175,10 +6149,6 @@ msgstr "Tüübil %s puudub mailcap kirje"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: liiga vähe argumente"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: liiga palju argumente"
 
 #: score.c:136
 msgid "Error: score: invalid number"

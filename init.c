@@ -757,7 +757,7 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
 {
   if (MoreArgs(s))
   {
-    snprintf(err->data, err->dsize, _("finish: too many arguments"));
+    mutt_buffer_printf(err, _("%s: too many arguments"), "finish");
     return -1;
   }
 
@@ -4170,7 +4170,7 @@ static int parse_subscribe_to(struct Buffer *b, struct Buffer *s,
 
     if (MoreArgs(s))
     {
-      mutt_buffer_addstr(err, _("Too many arguments"));
+      mutt_buffer_printf(err, _("%s: too many arguments"), "subscribe-to");
       return -1;
     }
 
@@ -4224,7 +4224,7 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s,
 
     if (MoreArgs(s))
     {
-      mutt_buffer_addstr(err, _("Too many arguments"));
+      mutt_buffer_printf(err, _("%s: too many arguments"), "unsubscribe-from");
       return -1;
     }
 

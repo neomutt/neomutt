@@ -399,8 +399,8 @@ msgid "%s: no such attribute"
 msgstr "Atribut %s není definován."
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "příliš mnoho argumentů"
+msgid "%s: too many arguments"
+msgstr "%s: příliš mnoho argumentů"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2407,11 +2407,6 @@ msgstr "metoda %s pro řazení není známa"
 msgid "%s: Unknown type."
 msgstr "neznámý typ %s"
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: příliš mnoho argumentů"
-
 #: init.c:1021 init.c:1029 init.c:1052
 msgid "not enough arguments"
 msgstr "příliš málo argumentů"
@@ -2613,11 +2608,6 @@ msgstr "-group: chybí jméno skupiny"
 msgid "out of arguments"
 msgstr "příliš málo argumentů"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "příliš mnoho argumentů"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2657,10 +2647,6 @@ msgstr "Klávesa není svázána s žádnou funkcí."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klávesa není svázána. Stiskněte „%s“ pro nápovědu."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: příliš mnoho argumentů"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2675,17 +2661,9 @@ msgstr "prázdný sled kláves"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: příliš mnoho argumentů"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: sled kláves je prázdný"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: příliš mnoho argumentů"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3123,10 +3101,6 @@ msgstr "Heslo pro %s@%s: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: příliš mnoho argumentů"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, fuzzy, c-format
@@ -6032,10 +6006,6 @@ msgstr "pro typ %s nebyla nalezena položka v mailcapu"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "skóre: příliš málo argumentů"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "skóre: příliš mnoho argumentů"
 
 #: score.c:136
 msgid "Error: score: invalid number"

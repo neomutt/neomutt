@@ -402,8 +402,8 @@ msgid "%s: no such attribute"
 msgstr "%s: 속성 없음."
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "인수가 너무 많음"
+msgid "%s: too many arguments"
+msgstr "%s: 인수가 너무 많음"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2460,11 +2460,6 @@ msgstr "%s: 알 수 없는 정렬 방법"
 msgid "%s: Unknown type."
 msgstr "%s: 알 수 없는 형식"
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: 인수가 너무 많음"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2672,11 +2667,6 @@ msgstr ""
 msgid "out of arguments"
 msgstr "인수가 부족함"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "인수가 너무 많음"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2716,10 +2706,6 @@ msgstr "정의되지 않은 글쇠."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "정의되지 않은 글쇠. 도움말 보기는 '%s'"
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: 인수가 너무 많음"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2734,17 +2720,9 @@ msgstr "공백 글쇠 시퀀스"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: 인수가 너무 많음"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: 빈 글쇠 시퀀스"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: 인수가 너무 많음"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3210,10 +3188,6 @@ msgstr "%s@%s의 암호: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: 인수가 너무 많음"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, c-format
@@ -6163,10 +6137,6 @@ msgstr "%s 형식을 mailcap 항목에서 찾을 수 없음"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: 너무 적은 인자"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: 너무 많은 인자"
 
 #: score.c:136
 msgid "Error: score: invalid number"

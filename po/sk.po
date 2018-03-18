@@ -397,8 +397,8 @@ msgid "%s: no such attribute"
 msgstr "%s: vlastnosť nenájdená"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "príliš veľa argumentov"
+msgid "%s: too many arguments"
+msgstr "%s: príliš veľa argumentov"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2454,11 +2454,6 @@ msgstr "%s: neznáma metóda triedenia"
 msgid "%s: Unknown type."
 msgstr "%s: neznáma hodnota"
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: príliš veľa parametrov"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2666,11 +2661,6 @@ msgstr ""
 msgid "out of arguments"
 msgstr "príliš málo argumentov"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "príliš veľa argumentov"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2710,10 +2700,6 @@ msgstr "Klávesa nie je viazaná."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klávesa nie je viazaná. Stlačte '%s' pre nápovedu."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: príliš veľa parametrov"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2728,17 +2714,9 @@ msgstr "prázdna postupnosť kláves"
 msgid "Function '%s' not available for menu '%s'"
 msgstr "Pre správu nebol nájdený dešifrovací program."
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: príliš veľa parametrov"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: prázdna postupnosť kláves"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "makro: príliš veľa parametrov"
 
 #: keymap.c:1218
 #, fuzzy
@@ -3202,10 +3180,6 @@ msgstr "Heslo pre %s@%s: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "zdroj: príliš veľa argumentov"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, c-format
@@ -6193,10 +6167,6 @@ msgstr "položka mailcap-u pre typ %s nenájdená"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: príliš málo parametrov"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: príliš veľa parametrov"
 
 #: score.c:136
 msgid "Error: score: invalid number"

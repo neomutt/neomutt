@@ -403,8 +403,8 @@ msgid "%s: no such attribute"
 msgstr "%s：沒有這個屬性"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "太多參數"
+msgid "%s: too many arguments"
+msgstr "%s: 太多參數"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2483,11 +2483,6 @@ msgstr "%s：不明的排序方式"
 msgid "%s: Unknown type."
 msgstr "%s：不明的種類"
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push：太多引數"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2695,11 +2690,6 @@ msgstr ""
 msgid "out of arguments"
 msgstr "太少參數"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "太多參數"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2739,10 +2729,6 @@ msgstr "這個鍵還未被定義功能。"
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "這個鍵還未被定義功能。 按 '%s' 以取得說明。"
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push：太多引數"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2757,17 +2743,9 @@ msgstr "空的鍵值序列"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind：太多引數"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro：空的鍵值序列"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro：引數太多"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3226,10 +3204,6 @@ msgstr "%s@%s 的密碼："
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source：太多引數"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, c-format
@@ -6227,10 +6201,6 @@ msgstr "沒有發現類型 %s 的 mailcap 紀錄"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "分數：太少的引數"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "分數：太多的引數"
 
 #: score.c:136
 msgid "Error: score: invalid number"

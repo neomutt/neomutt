@@ -401,8 +401,8 @@ msgid "%s: no such attribute"
 msgstr "%s: attributo inesistente"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "troppi argomenti"
+msgid "%s: too many arguments"
+msgstr "%s: troppi argomenti"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2433,11 +2433,6 @@ msgstr "%s: metodo di ordinamento sconosciuto"
 msgid "%s: Unknown type."
 msgstr "%s: tipo sconosciuto."
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: troppi argomenti"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2639,11 +2634,6 @@ msgstr "-group: nessun nome per il gruppo"
 msgid "out of arguments"
 msgstr ""
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "troppi argomenti"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2683,10 +2673,6 @@ msgstr "Il tasto non è assegnato."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Il tasto non è assegnato.  Premere '%s' per l'aiuto."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: troppi argomenti"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2701,17 +2687,9 @@ msgstr "sequenza di tasti nulla"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: troppi argomenti"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: sequenza di tasti nulla"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: troppi argomenti"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3146,10 +3124,6 @@ msgstr "Password per %s@%s: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: troppi argomenti"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, fuzzy, c-format
@@ -6074,10 +6048,6 @@ msgstr "La voce di mailcap per il tipo %s non è stata trovata"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: troppo pochi argomenti"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: troppi argomenti"
 
 #: score.c:136
 msgid "Error: score: invalid number"

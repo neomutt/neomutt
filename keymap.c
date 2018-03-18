@@ -964,7 +964,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("push: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "push");
     r = -1;
   }
   else
@@ -1109,7 +1109,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, 0);
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("bind: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
     r = -1;
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
@@ -1178,7 +1178,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
       if (MoreArgs(s))
       {
-        mutt_str_strfcpy(err->data, _("macro: too many arguments"), err->dsize);
+        mutt_buffer_printf(err, _("%s: too many arguments"), "macro");
       }
       else
       {

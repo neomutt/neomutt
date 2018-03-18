@@ -451,11 +451,9 @@ msgstr "%s: L’atribut no existeix."
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "Sobren arguments."
+msgid "%s: too many arguments"
+msgstr "%s: Sobren arguments."
 
-# ivb (2001/12/08)
-# ivb  També apareix com a error aïllat.
 #: color.c:885
 msgid "default colors not supported"
 msgstr "No es permet l’ús de colors per defecte."
@@ -2539,11 +2537,6 @@ msgstr "%s: El mètode d’ordenació no és conegut."
 msgid "%s: Unknown type."
 msgstr "%s: El tipus no és conegut."
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: Sobren arguments."
-
 #: init.c:1021 init.c:1029 init.c:1052
 msgid "not enough arguments"
 msgstr "Manquen arguments."
@@ -2756,13 +2749,6 @@ msgstr "-group: No s’ha indicat el nom del grup."
 msgid "out of arguments"
 msgstr "Manquen arguments."
 
-# ivb (2001/12/08)
-# ivb  També apareix com a error aïllat.
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "Sobren arguments."
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2802,10 +2788,6 @@ msgstr "La tecla no està vinculada."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "La tecla no està vinculada.  Premeu «%s» per a obtenir ajuda."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: Sobren arguments."
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2820,17 +2802,9 @@ msgstr "La seqüència de tecles és nul·la."
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: Sobren arguments."
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: La seqüència de tecles és buida."
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: Sobren arguments."
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3298,10 +3272,6 @@ msgstr "Contrasenya per a «%s@%s»: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: Sobren arguments."
 
 # Es refereix a l’esquema d’URL.  ivb
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
@@ -6369,10 +6339,6 @@ msgstr "No s’ha trobat cap entrada pel tipus «%s» a «mailcap»"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: Manquen arguments."
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: Sobren arguments."
 
 # És un error com els anteriors.  ivb
 #: score.c:136

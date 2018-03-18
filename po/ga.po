@@ -401,8 +401,8 @@ msgid "%s: no such attribute"
 msgstr "%s: níl a leithéid d'aitreabúid ann"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "an iomarca argóintí"
+msgid "%s: too many arguments"
+msgstr "%s: an iomarca argóintí"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2446,11 +2446,6 @@ msgstr "%s: modh shórtála anaithnid"
 msgid "%s: Unknown type."
 msgstr "%s: Cineál anaithnid."
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: an iomarca argóintí"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2652,11 +2647,6 @@ msgstr "-group: gan ainm grúpa"
 msgid "out of arguments"
 msgstr "níl go leor argóintí ann"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "an iomarca argóintí"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2696,10 +2686,6 @@ msgstr "Eochair gan cheangal."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Eochair gan cheangal.  Brúigh '%s' chun cabhrú a fháil."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: an iomarca argóintí"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2714,17 +2700,9 @@ msgstr "seicheamh neamhbhailí"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: an iomarca argóintí"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macra: seicheamh folamh eochrach"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: an iomarca argóintí"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3152,10 +3130,6 @@ msgstr "Focal faire do %s@%s: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: an iomarca argóintí"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, c-format
@@ -6105,10 +6079,6 @@ msgstr "níor aimsíodh iontráil mailcap don chineál %s"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: níl go leor argóintí ann"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: an iomarca argóintí"
 
 #: score.c:136
 msgid "Error: score: invalid number"

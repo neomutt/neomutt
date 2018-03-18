@@ -396,8 +396,8 @@ msgid "%s: no such attribute"
 msgstr "%s: tokio atributo nėra"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "per daug argumentų"
+msgid "%s: too many arguments"
+msgstr "%s: per daug argumentų"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2448,11 +2448,6 @@ msgstr "%s: nežinomas rikiavimo metodas"
 msgid "%s: Unknown type."
 msgstr "%s: nežinomas tipas."
 
-#: init.c:762
-#, c-format
-msgid "finish: too many arguments"
-msgstr "finish: per daug argumentų"
-
 #: init.c:1021 init.c:1029 init.c:1052
 msgid "not enough arguments"
 msgstr "per mažai argumentų"
@@ -2659,11 +2654,6 @@ msgstr ""
 msgid "out of arguments"
 msgstr "per mažai argumentų"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "per daug argumentų"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2703,10 +2693,6 @@ msgstr "Klavišas nėra susietas."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klavišas nėra susietas.  Spausk '%s' dėl pagalbos."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: per daug argumentų"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2721,17 +2707,9 @@ msgstr "nulinė klavišų seka"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: per daug argumentų"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: tuščia klavišų seka"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: per daug argumentų"
 
 #: keymap.c:1218
 #, fuzzy
@@ -3190,10 +3168,6 @@ msgstr "%s@%s slaptažodis: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: per daug argumentų"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, c-format
@@ -6193,10 +6167,6 @@ msgstr "mailcap įrašas tipui %s nerastas"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: per mažai argumentų"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: per daug argumentų"
 
 #: score.c:136
 msgid "Error: score: invalid number"

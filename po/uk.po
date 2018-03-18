@@ -399,8 +399,8 @@ msgid "%s: no such attribute"
 msgstr "%s: такого атрібуту немає"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "забагато аргументів"
+msgid "%s: too many arguments"
+msgstr "%s: забагато аргументів"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2399,11 +2399,6 @@ msgstr "%s: невідомий метод сортування"
 msgid "%s: Unknown type."
 msgstr "%s: Невідомий тип"
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: забагато аргументів"
-
 #: init.c:1021 init.c:1029 init.c:1052
 msgid "not enough arguments"
 msgstr "замало аргументів"
@@ -2603,11 +2598,6 @@ msgstr "-group: не вказано імені групи"
 msgid "out of arguments"
 msgstr "замало аргументів"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "забагато аргументів"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2647,10 +2637,6 @@ msgstr "Клавішу не призначено."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Клавішу не призначено. Натисніть \"%s\" для підказки."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: забагато аргументів"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2665,17 +2651,9 @@ msgstr "порожня послідовність клавіш"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: забагато аргументів"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: порожня послідовність клавіш"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: забагато аргументів"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3110,10 +3088,6 @@ msgstr "Пароль для %s@%s: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: забагато аргументів"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, fuzzy, c-format
@@ -6000,10 +5974,6 @@ msgstr "запису для типу %s в mailcap не знайдено"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: замало аргументів"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: забагато аргументів"
 
 #: score.c:136
 msgid "Error: score: invalid number"

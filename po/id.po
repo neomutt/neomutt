@@ -401,8 +401,8 @@ msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
 #: color.c:860 color.c:917 hook.c:108
-msgid "too many arguments"
-msgstr "parameternya terlalu banyak"
+msgid "%s: too many arguments"
+msgstr "%s: parameternya terlalu banyak"
 
 #: color.c:885
 msgid "default colors not supported"
@@ -2441,11 +2441,6 @@ msgstr "%s: metoda pengurutan tidak dikenali"
 msgid "%s: Unknown type."
 msgstr "%s: Jenis tidak dikenali."
 
-#: init.c:762
-#, fuzzy, c-format
-msgid "finish: too many arguments"
-msgstr "push: parameter terlalu banyak"
-
 #: init.c:1021 init.c:1029 init.c:1052
 #, fuzzy
 msgid "not enough arguments"
@@ -2647,11 +2642,6 @@ msgstr "-group: tidak ada nama group"
 msgid "out of arguments"
 msgstr "parameternya kurang"
 
-#: init.c:4309 init.c:4363
-#, fuzzy
-msgid "Too many arguments"
-msgstr "parameternya terlalu banyak"
-
 #: init.c:4318
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
@@ -2691,10 +2681,6 @@ msgstr "Tombol itu tidak ditentukan untuk apa."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Tombol itu tidak ditentukan untuk apa. Tekan '%s' utk bantuan."
 
-#: keymap.c:967
-msgid "push: too many arguments"
-msgstr "push: parameter terlalu banyak"
-
 #: keymap.c:1002
 #, c-format
 msgid "%s: no such menu"
@@ -2709,17 +2695,9 @@ msgstr "urutan tombol kosong"
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1112
-msgid "bind: too many arguments"
-msgstr "bind: parameter terlalu banyak"
-
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: urutan tombol kosong"
-
-#: keymap.c:1181
-msgid "macro: too many arguments"
-msgstr "macro: parameter terlalu banyak"
 
 #: keymap.c:1218
 msgid "exec: no arguments"
@@ -3144,10 +3122,6 @@ msgstr "Password utk %s@%s: "
 #, c-format
 msgid "%s: %s"
 msgstr ""
-
-#: mutt_lua.c:422
-msgid "source: too many arguments"
-msgstr "source: parameter terlalu banyak"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1687 mutt_notmuch.c:1875
 #, fuzzy, c-format
@@ -6103,10 +6077,6 @@ msgstr "entry mailcap untuk jenis %s tidak ditemukan"
 #: score.c:87
 msgid "score: too few arguments"
 msgstr "score: parameternya kurang"
-
-#: score.c:96
-msgid "score: too many arguments"
-msgstr "score: parameternya terlalu banyak"
 
 #: score.c:136
 msgid "Error: score: invalid number"
