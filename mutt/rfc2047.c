@@ -558,7 +558,6 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
       if (icode)
         while (CONTINUATION_BYTE(t[n]))
           n--;
-      assert(n >= 0);
       if (!n)
       {
         /* This should only happen in the really stupid case where the
