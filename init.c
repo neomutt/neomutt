@@ -4337,7 +4337,7 @@ void reset_value(const char *name)
     return;
 
   int idx = mutt_option_index(name);
-  if (!idx)
+  if (idx < 0)
     return;
 
   restore_default(&MuttVars[idx]);
