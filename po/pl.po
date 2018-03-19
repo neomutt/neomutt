@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-03-18 23:51+0000\n"
-"PO-Revision-Date: 2018-03-13 16:40+0100\n"
+"PO-Revision-Date: 2018-03-19 09:22+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
@@ -2780,9 +2780,9 @@ msgid "Cannot use -E flag with stdin"
 msgstr "Nie można użyć przełącznika -E wraz ze stdin"
 
 #: main.c:804
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse message template: %s"
-msgstr "Nie można otworzyć pliku listu: %s"
+msgstr "Nie można dopasować szablonu wiadomości: %s"
 
 #: main.c:869
 #, c-format
@@ -2952,19 +2952,19 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Oczekiwanie na blokadę typu 'flock'... %d"
 
 #: mutt/logging.c:105
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "Nie można otworzyć pliku listu: %s"
+msgstr "Zamknięto plik log: %s"
 
 #: mutt/logging.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Diagnostyka błędów na poziomie %d.\n"
+msgstr "Diagnostyka błędów na poziomie %d do pliku '%s'"
 
 #: mutt/logging.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Diagnostyka błędów na poziomie %d.\n"
+msgstr "Zapisywanie logu na poziomie %d do pliku '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
@@ -4413,9 +4413,8 @@ msgid "null operation"
 msgstr "pusta operacja"
 
 #: opcodes.h:30
-#, fuzzy
 msgid "show messages"
-msgstr "uszereguj listy"
+msgstr "pokaż listy"
 
 #: opcodes.h:31
 msgid "end of conditional execution (noop)"
