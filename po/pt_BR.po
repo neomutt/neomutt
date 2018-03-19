@@ -4095,7 +4095,7 @@ msgstr "esabco"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1759
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr ""
 "e)encriptar com PGP, s)assinar, a)assinar como, b)ambos, %s format, ou c)limpar? "
@@ -4287,7 +4287,6 @@ msgstr "eswabco"
 
 #. L10N: S/MIME options
 #: ncrypt/smime.c:2073
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
@@ -5378,48 +5377,40 @@ msgid "move the highlight to next mailbox"
 msgstr ""
 
 #: opcodes.h:285
-#, fuzzy
 msgid "move the highlight to next mailbox with new mail"
-msgstr "Nenhuma caixa com novas mensagens."
+msgstr "seleciona próxima caixa com novas mensagens"
 
 #: opcodes.h:286
-#, fuzzy
 msgid "open highlighted mailbox"
-msgstr "Reabrindo caixa de mensagens..."
+msgstr "abre caixa destacada"
 
 #: opcodes.h:287
-#, fuzzy
 msgid "scroll the sidebar down 1 page"
-msgstr "passa meia página"
+msgstr "avança barra lateral em uma página"
 
 #: opcodes.h:288
-#, fuzzy
 msgid "scroll the sidebar up 1 page"
-msgstr "volta meia página"
+msgstr "retrocede barra lateral em uma página"
 
 #: opcodes.h:289
-#, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "anda até a página anterior"
+msgstr "seleciona caixa anterior"
 
 #: opcodes.h:290
-#, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "Nenhuma caixa com novas mensagens."
+msgstr "seleciona caixa anterior com mensagens novas"
 
 #: opcodes.h:291
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "troca entre pesquisar em caixas ou em todos os arquivos"
+msgstr "alterna entre caixas reais e virtuais"
 
 #: opcodes.h:292
 msgid "make the sidebar (in)visible"
 msgstr ""
 
 #: opcodes.h:295
-#, fuzzy
 msgid "show S/MIME options"
-msgstr "mostra as opções do S/MIME"
+msgstr "mostra opções S/MIME"
 
 #: pager.c:1708
 msgid "PrevPg"
@@ -5467,9 +5458,8 @@ msgid "Error in expression: %s"
 msgstr "Erro na expressão: %s"
 
 #: pattern.c:91 pattern.c:412
-#, fuzzy
 msgid "Empty expression"
-msgstr "erro na expressão"
+msgstr "Expressão vazia"
 
 #: pattern.c:170
 #, c-format
@@ -5482,33 +5472,29 @@ msgid "Invalid month: %s"
 msgstr "Mês inválido: %s"
 
 #: pattern.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid relative date: %s"
-msgstr "Mês inválido: %s"
+msgstr "Data relativa inválida: %s"
 
 #: pattern.c:654 pattern.c:761
-#, fuzzy
 msgid "No current message"
-msgstr "Nenhuma mensagem não lida"
+msgstr "Nenhuma mensagem atual"
 
 #: pattern.c:782
 msgid "No Context"
 msgstr ""
 
 #: pattern.c:923
-#, fuzzy
 msgid "Error opening memstream"
-msgstr "Erro ao gravar a caixa!"
+msgstr "Erro ao abrir o fluxo para memória"
 
 #: pattern.c:971
-#, fuzzy
 msgid "Error re-opening memstream"
-msgstr "Erro ao gravar a caixa!"
+msgstr "Erro ao abrir novamente o fluxo para memória"
 
 #: pattern.c:980
-#, fuzzy
 msgid "Error opening /dev/null"
-msgstr "Não foi possível abrir /dev/null"
+msgstr "Erro ao abrir /dev/null"
 
 #: pattern.c:1142 pattern.c:1313
 #, c-format
@@ -5516,24 +5502,24 @@ msgid "error in pattern at: %s"
 msgstr "erro no padrão em: %s"
 
 #: pattern.c:1169
-#, fuzzy, c-format
+#, c-format
 msgid "missing pattern: %s"
-msgstr "faltam parâmetros"
+msgstr "faltam padrão: %s"
 
 #: pattern.c:1188
-#, fuzzy, c-format
+#, c-format
 msgid "mismatched brackets: %s"
 msgstr "parêntese sem um corresponente: %s"
 
 #: pattern.c:1250
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: comando inválido"
+msgstr "%c: padrão de modificação inválido"
 
 #: pattern.c:1256
 #, c-format
 msgid "%c: not supported in this mode"
-msgstr "%c: não é possível neste modo"
+msgstr "%c: não há suporte neste modo"
 
 #: pattern.c:1269
 msgid "missing parameter"
@@ -5570,9 +5556,8 @@ msgid "No messages matched criteria."
 msgstr "Nenhuma mensagem casa com o critério"
 
 #: pattern.c:2072
-#, fuzzy
 msgid "Searching..."
-msgstr "Salvando..."
+msgstr "Buscando..."
 
 #: pattern.c:2086
 msgid "Search hit bottom without finding match"
@@ -5587,19 +5572,16 @@ msgid "Search interrupted."
 msgstr "Busca interrompida."
 
 #: pop.c:122 pop_lib.c:243
-#, fuzzy
 msgid "Command TOP is not supported by server."
-msgstr "Não é possível marcar."
+msgstr "Não há suporte para o comando TOP neste servidor"
 
 #: pop.c:149
-#, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "Não foi possível criar um arquivo temporário"
+msgstr "Incapaz de gravar cabeçalho no arquivo temporário"
 
 #: pop.c:296 pop_lib.c:245
-#, fuzzy
 msgid "Command UIDL is not supported by server."
-msgstr "Não é possível marcar."
+msgstr "Não há suporte para o comando UIDL neste servidor"
 
 #: pop.c:317
 #, c-format
@@ -5612,19 +5594,16 @@ msgid "%s is an invalid POP path"
 msgstr ""
 
 #: pop.c:477
-#, fuzzy
 msgid "Fetching list of messages..."
-msgstr "Obtendo mensagem..."
+msgstr "Obtendo lista de mensagens..."
 
 #: pop.c:638
-#, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "Não foi possível criar um arquivo temporário"
+msgstr "Incapaz de gravar mensagem para o arquivo temporário"
 
 #: pop.c:712
-#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "Marcando %d mensagens como removidas..."
+msgstr "Marcando mensagens como apagadas..."
 
 #: pop.c:823
 msgid "POP host is not defined."
@@ -5635,9 +5614,8 @@ msgid "No new mail in POP mailbox."
 msgstr "Nenhuma mensagem nova no servidor POP."
 
 #: pop.c:894
-#, fuzzy
 msgid "Delete messages from server?"
-msgstr "Apagando mensagens do servidor..."
+msgstr "Apagar mensagens do servidor?"
 
 #: pop.c:896
 #, c-format
@@ -5654,58 +5632,50 @@ msgid "%s [%d of %d messages read]"
 msgstr "%s [%d de %d mensagens lidas]"
 
 #: pop_auth.c:90
-#, fuzzy
 msgid "Authenticating (SASL)..."
-msgstr "Autenticando (CRAM-MD5)..."
+msgstr "Autenticando (SASL)..."
 
 #: pop_auth.c:226
 msgid "POP timestamp is invalid!"
 msgstr ""
 
 #: pop_auth.c:230
-#, fuzzy
 msgid "Authenticating (APOP)..."
-msgstr "Autenticando (CRAM-MD5)..."
+msgstr "Autenticando (APOP)..."
 
 #: pop_auth.c:250
-#, fuzzy
 msgid "APOP authentication failed."
-msgstr "Autenticação GSSAPI falhou."
+msgstr "Autenticação APOP falhou."
 
 #: pop_auth.c:286
-#, fuzzy
 msgid "Command USER is not supported by server."
-msgstr "Não é possível marcar."
+msgstr "Não há suporte para o comando USER neste servidor."
 
 #: pop_lib.c:73
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid POP URL: %s\n"
-msgstr "Mês inválido: %s"
+msgstr "URL POP inválida: %s\n"
 
 #: pop_lib.c:241
-#, fuzzy
 msgid "Unable to leave messages on server."
-msgstr "Apagando mensagens do servidor..."
+msgstr "Incapaz de deixar mensagens no servidor."
 
 #: pop_lib.c:272
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting to server: %s"
-msgstr "Conectando a %s"
+msgstr "Erro ao conectar com servidor: %s"
 
 #: pop_lib.c:424
-#, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Fechando a conexão com o servidor IMAP..."
+msgstr "Fechando conexão com servidor POP..."
 
 #: pop_lib.c:615
-#, fuzzy
 msgid "Verifying message indexes..."
-msgstr "Gravando mensagem em %s..."
+msgstr "Verificando índices de mensagens..."
 
 #: pop_lib.c:636
-#, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Fechando a conexão com o servidor IMAP..."
+msgstr "Conexão perdida. Reconectar com servidor POP?"
 
 #: postpone.c:198
 msgid "Postponed Messages"
@@ -5716,24 +5686,20 @@ msgid "No postponed messages."
 msgstr "Nenhuma mensagem adiada."
 
 #: postpone.c:442 postpone.c:463 postpone.c:496
-#, fuzzy
 msgid "Illegal crypto header"
-msgstr "Cabeçalho de PGP ilegal"
+msgstr "Cabeçalho cripto ilegal"
 
 #: postpone.c:482
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Cabeçalho de S/MIME ilegal"
+msgstr "Cabeçalho S/MIME ilegal"
 
 #: postpone.c:583 postpone.c:680 postpone.c:703
-#, fuzzy
 msgid "Decrypting message..."
-msgstr "Obtendo mensagem..."
+msgstr "Desencriptando mensagem..."
 
 #: postpone.c:685 postpone.c:708
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Login falhou."
+msgstr "Desencriptação falhou."
 
 #: query.c:68
 msgid "New Query"
@@ -5794,7 +5760,7 @@ msgid "Pipe to: "
 msgstr "Passar por cano a: "
 
 #: recvattach.c:761
-#, fuzzy, c-format
+#, c-format
 msgid "I don't know how to print %s attachments!"
 msgstr "Eu não sei como imprimir anexos %s!"
 
@@ -5811,39 +5777,34 @@ msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
 #: recvattach.c:1035
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Não foi encontrada nenhuma mensagem marcada."
+msgstr "Incapaz de desencriptar mensagem encriptada!"
 
 #: recvattach.c:1164
 msgid "Attachments"
 msgstr "Anexos"
 
 #: recvattach.c:1202
-#, fuzzy
 msgid "There are no subparts to show!"
-msgstr "Não há anexos."
+msgstr "Não existem sub-partes a serem exibidas!"
 
 #: recvattach.c:1256
-#, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "obtém mensagens do servidor POP"
+msgstr "Incapaz de apagar anexos do servidor POP"
 
 #: recvattach.c:1265
-#, fuzzy
 msgid "Can't delete attachment from news server."
-msgstr "obtém mensagens do servidor POP"
+msgstr "Incapaz de apagar anexos do servidor de notícias"
 
 #: recvattach.c:1272
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Deleção de anexos de mensagens PGP não é suportada"
+msgstr "Deleção de anexos de mensagens encriptadas não é suportada"
 
 #: recvattach.c:1278
-#, fuzzy
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "Deleção de anexos de mensagens PGP não é suportada"
+msgstr ""
+"Deleção de anexos de mensagens assinadas podem invalidar a assinatura."
 
 #: recvattach.c:1296 recvattach.c:1311
 msgid "Only deletion of multipart attachments is supported."
@@ -5854,14 +5815,12 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "Você só pode repetir partes message/rfc822"
 
 #: recvcmd.c:231
-#, fuzzy
 msgid "Error bouncing message!"
-msgstr "Erro ao enviar mensagem."
+msgstr "Erro ao replicar mensagem!"
 
 #: recvcmd.c:231
-#, fuzzy
 msgid "Error bouncing messages!"
-msgstr "Erro ao enviar mensagem."
+msgstr "Erro ao replicar mensagens!"
 
 #: recvcmd.c:420
 #, c-format
@@ -5869,9 +5828,8 @@ msgid "Can't open temporary file %s."
 msgstr "Não foi possível abrir o arquivo temporário %s."
 
 #: recvcmd.c:449
-#, fuzzy
 msgid "Forward as attachments?"
-msgstr "mostra anexos MIME"
+msgstr "Encaminhar como anexo?"
 
 #: recvcmd.c:467
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
@@ -6028,9 +5986,8 @@ msgid "Could not include all requested messages!"
 msgstr "Não foi possível incluir todas as mensagens solicitadas!"
 
 #: send.c:853
-#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Imprimir anexo?"
+msgstr "Encaminar como anexo?"
 
 #: send.c:858
 msgid "Preparing forwarded message..."
@@ -6041,9 +5998,8 @@ msgid "Recall postponed message?"
 msgstr "Editar mensagem adiada?"
 
 #: send.c:1608
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Preparando mensagem encaminhada..."
+msgstr "Editar mensagem encaminhada?"
 
 #: send.c:1658
 msgid "Abort unmodified message?"
@@ -6058,9 +6014,8 @@ msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
 #: send.c:1812
-#, fuzzy
 msgid "Article not posted."
-msgstr "Mensagem não enviada."
+msgstr "Artigo não postado."
 
 #: send.c:1878
 msgid "Message postponed."
@@ -6075,14 +6030,12 @@ msgid "No subject specified."
 msgstr "Nenhum assunto especificado."
 
 #: send.c:1929
-#, fuzzy
 msgid "No newsgroup specified."
-msgstr "Nenhum assunto especificado."
+msgstr "Nenhum grupo de notícias especificado."
 
 #: send.c:1936
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "edita o código de transferência do anexo"
+msgstr "Sem anexos, cancelar envio?"
 
 #: send.c:1942
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
@@ -6093,9 +6046,8 @@ msgid "Sending message..."
 msgstr "Enviando mensagem..."
 
 #: send.c:2035
-#, fuzzy
 msgid "Save attachments in Fcc?"
-msgstr "ver anexo como texto"
+msgstr "Salvar anexos em Fcc?"
 
 #: send.c:2142
 msgid "Could not send the message."
@@ -6123,14 +6075,13 @@ msgid "%s no longer exists!"
 msgstr "%s não mais existe!"
 
 #: sendlib.c:913
-#, fuzzy, c-format
+#, c-format
 msgid "%s isn't a regular file."
-msgstr "%s não é uma caixa de correio."
+msgstr "%s não é um arquivo comum"
 
 #: sendlib.c:1089
-#, fuzzy
 msgid "Could not find any mime.types file."
-msgstr "Não foi possível enviar a mensagem."
+msgstr "Incapaz de encontrar qualquer arquivo mime.types."
 
 #: sendlib.c:1169
 #, c-format
@@ -6156,29 +6107,28 @@ msgid "Bad IDN %s while preparing resent-from."
 msgstr ""
 
 #: smtp.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: %s"
-msgstr "Login falhou."
+msgstr "Sessão SMTP falhou: %s"
 
 #: smtp.c:184
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "Login falhou."
+msgstr "Sessão SMTP falhou: incapaz de abrir %s"
 
 #: smtp.c:293
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "Mês inválido: %s"
+msgstr "URL SMTP inválida: %s"
 
 #: smtp.c:484
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed, trying next method"
-msgstr "Autenticação GSSAPI falhou."
+msgstr "Autenticação %s falhou, tentando próximo método"
 
 #: smtp.c:500 smtp.c:518
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Autenticação GSSAPI falhou."
+msgstr "Autenticação SASL falhou."
 
 #: smtp.c:618
 msgid "SMTP server does not support authentication"
@@ -6218,14 +6168,12 @@ msgid "Parent message is not available."
 msgstr "A mensagem pai não está disponível."
 
 #: thread.c:1159
-#, fuzzy
 msgid "Root message is not visible in this limited view."
-msgstr "A mensagem pai não está visível nesta visão limitada"
+msgstr "A mensagem raiz não está visível nesta visão restringida"
 
 #: thread.c:1161
-#, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "A mensagem pai não está visível nesta visão limitada"
+msgstr "A mensagem pai não está visível nesta visão restringida"
 
 #: version.c:63
 msgid ""
@@ -6263,7 +6211,6 @@ msgid ""
 msgstr ""
 
 #: version.c:91
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -6271,17 +6218,13 @@ msgid ""
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins e outros.\n"
-"NeoMutt vem sem NENHUMA GARANTIA; para mais detalhes digite 'neomutt -vv'.\n"
+"NeoMutt vem ABSOLUTAMENTE SEM GARANTIAS; para mais detalhes digite 'neomutt -vv'.\n"
 "NeoMutt é um programa livre, e você é encorajado a redistribuí-lo\n"
 "sob certas condições; digite 'neomutt -vv' para os detalhes.\n"
-"\n"
-"Tradução para a língua portuguesa:\n"
-"Marcus Brito <marcus@visaotec.com.br>\n"
 
 #: version.c:401
-#, fuzzy
 msgid "Default options:"
-msgstr "Opções de compilação:"
+msgstr "Opções pré-definidas:"
 
 #: version.c:404
 msgid "Compile options:"
