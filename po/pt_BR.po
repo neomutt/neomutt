@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2018-03-19 09:53+0000\n"
-"PO-Revision-Date: 2000-03-05 01:14-0300\n"
+"PO-Revision-Date: 2018-03-19 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -625,42 +625,42 @@ msgstr "Não há anexos."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:109
 msgid "From: "
-msgstr ""
+msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:111 send.c:255
 msgid "To: "
-msgstr ""
+msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:113 send.c:257
 msgid "Cc: "
-msgstr ""
+msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:115 send.c:259
 msgid "Bcc: "
-msgstr ""
+msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:117 compose.c:929 send.c:291
 msgid "Subject: "
-msgstr ""
+msgstr "Subject: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:119
 msgid "Reply-To: "
-msgstr ""
+msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:121 compose.c:946
 msgid "Fcc: "
-msgstr ""
+msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:124
 msgid "Mix: "
-msgstr ""
+msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:127
@@ -684,17 +684,17 @@ msgstr "Assinar como: "
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:140
 msgid "Newsgroups: "
-msgstr ""
+msgstr "Newsgroups: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:142
 msgid "Followup-To: "
-msgstr ""
+msgstr "Followup-To"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:144
 msgid "X-Comment-To: "
-msgstr ""
+msgstr "X-Comment-To: "
 
 #: compose.c:149 compose.c:165
 msgid "Send"
@@ -2654,6 +2654,17 @@ msgid ""
 "       neomutt [<options>] -D [-S]\n"
 "       neomutt -v[v]\n"
 msgstr ""
+"uso:   neomutt [<opções>] [-z] [-f <arquivo> | -yZ]\n"
+"       neomutt [<opções>] [-Ex] [-Hi <arquivo>] [-s <assunto>] [-bc <endereço>] [-a "
+"<arquivo> [...] --] <endereço> [...]\n"
+"       neomutt [<opções>] [-x] [-s <assunto>] [-bc <endereço>] [-a <arquivo> [...] "
+"--] <endereço> [...] < mensagem\n"
+"       neomutt [<opções>] -p\n"
+"       neomutt [<opções>] -A <contato> [...]\n"
+"       neomutt [<opções>] -Q <consulta> [...]\n"
+"       neomutt [<opções>] -B\n"
+"       neomutt [<opções>] -D [-S]\n"
+"       neomutt -v[v]\n"
 
 #: main.c:94
 msgid ""
@@ -2668,13 +2679,21 @@ msgid ""
 "  -D -S         like -D, but hide the value of sensitive variables\n"
 "  -B            run in batch mode (do not start the ncurses UI)"
 msgstr ""
+"opções:\n"
+"  -A <contato>  expande um determinado contato\n"
+"  -a <arquivo> [...] --   anexa arquivo na mensagem\n"
+"        a lista de arquivos deve ser terminada com a sequência \"--\""
+"  -b <endereço> especifica endereço para cópia oculta (BCC)\n"
+"  -c <endereço> especifica endereço para cópia (CC)\n"
+"  -D            imprime conteúdo de todas as variáveis para stdout\n"
+"  -D -S         mesmo que -D, mas oculta conteúdo de variáveis sensíveis\n"
+"  -B            executa no modo 'batch' (não inicia interface ncurses)"
 
 #: main.c:103
 msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
 msgstr "  -d <nível>    registra saída de debug em ~/.neomuttdebug0"
 
 #: main.c:105
-#, fuzzy
 msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
@@ -2688,38 +2707,19 @@ msgid ""
 "  -n            causes NeoMutt not to read the system neomuttrc\n"
 "  -p            recall a postponed message"
 msgstr ""
-"uso: neomutt [ -nRzZ ] [ -e <cmd> ] [ -F <arq> ] [ -m <tipo> ] [ -f <arq> ]\n"
-"       neomutt [ -nx ] [ -e <cmd> ] [ -a <arq> ] [ -F <arq> ] [ -H <arq> ] "
-"[ -i <arq> ] [ -s <asst> ] [ -b <end> ] [ -c <end> ] <end> [ ... ]\n"
-"       neomutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
-"       neomutt -v[v]\n"
-"\n"
-"opções:\n"
-"  -a <arquivo>  anexa um arquivo à mensagem\n"
-"  -b <endereço> especifica um endereço de cópia escondica (BCC)\n"
-"  -c <endereço> especifica um endereço de cópia (CC)\n"
-"  -e <comando>  especifica um comando a ser executado depois a "
-"inicialização\n"
-"  -f <arquivo>  especifica qual caixa de mensagens abrir\n"
-"  -F <arquivo>  especifica um arquivo neomuttrc alternativo\n"
-"  -H <arquivo>  especifica um rascunho de onde ler cabeçalhos\n"
-"  -i <arquivo>  especifica um arquivo que o NeoMutt deve incluir na "
-"resposta\n"
-"  -m <tipo>     especifica o tipo padrão de caixa de mensagens\n"
-"  -n            faz com que o NeoMutt não leia o neomuttrc do sistema\n"
-"  -p            edita uma mensagem adiada\n"
-"  -R            abre a caixa de mensagens em modo de somente leitura\n"
-"  -s <assunto>  especifica um assunto (entre aspas se tiver espaços)\n"
-"  -v            mostra a versão e definições de compilação\n"
-"  -x            simula o modo de envio do mailx\n"
-"  -y            escolhe uma caixa na sua lista 'mailboxes'\n"
-"  -z            sai imediatamente se não houverem mensagens na caixa\n"
-"  -Z            abre a primeira pasta com novas mensagens, sai se não "
-"houver\n"
-"  -h            esta mensagem de ajuda"
+"  -E            edita rascunho (-H) ou inclui (-i) arquivo\n"
+"  -e <comando>  especifica comando a ser executado depois da inicialização\n"
+"  -f <arquivo>  especifica caixa de mensagens a ser lida\n"
+"  -F <arquivo>  especifica arquivo neomuttrc alternativo\n"
+"  -g <servidor> especifica servidor de notícias (se compilado com NNTP)\n"
+"  -G            seleciona grupo de notícias (se compilado com NNTP)\n"
+"  -H <arquivo>  especifica arquivo de rascunho que proverá cabeçalho e corpo\n"
+"  -i <arquivo>  especifica arquivo a ser incluído no corpo\n"
+"  -m <tipo>     especifica tipo de caixa usado por padrão\n"
+"  -n            faz com que NeoMutt não use o neomuttrc do sistema\n"
+"  -p            revoca uma mensagem adiada"
 
 #: main.c:117
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -2732,28 +2732,9 @@ msgid ""
 "none\n"
 "  -h            this help message"
 msgstr ""
-"uso: neomutt [ -nRzZ ] [ -e <cmd> ] [ -F <arq> ] [ -m <tipo> ] [ -f <arq> ]\n"
-"       neomutt [ -nx ] [ -e <cmd> ] [ -a <arq> ] [ -F <arq> ] [ -H <arq> ] "
-"[ -i <arq> ] [ -s <asst> ] [ -b <end> ] [ -c <end> ] <end> [ ... ]\n"
-"       neomutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
-"       neomutt -v[v]\n"
-"\n"
-"opções:\n"
-"  -a <arquivo>  anexa um arquivo à mensagem\n"
-"  -b <endereço> especifica um endereço de cópia escondica (BCC)\n"
-"  -c <endereço> especifica um endereço de cópia (CC)\n"
-"  -e <comando>  especifica um comando a ser executado depois a "
-"inicialização\n"
-"  -f <arquivo>  especifica qual caixa de mensagens abrir\n"
-"  -F <arquivo>  especifica um arquivo neomuttrc alternativo\n"
-"  -H <arquivo>  especifica um rascunho de onde ler cabeçalhos\n"
-"  -i <arquivo>  especifica um arquivo que o NeoMutt deve incluir na "
-"resposta\n"
-"  -m <tipo>     especifica o tipo padrão de caixa de mensagens\n"
-"  -n            faz com que o NeoMutt não leia o neomuttrc do sistema\n"
-"  -p            edita uma mensagem adiada\n"
+"  -Q <variável> consulta uma variável d configuração\n"
 "  -R            abre a caixa de mensagens em modo de somente leitura\n"
-"  -s <assunto>  especifica um assunto (entre aspas se tiver espaços)\n"
+"  -s <assunto>  especifica um assunto (entre aspas se contiver espaços)\n"
 "  -v            mostra a versão e definições de compilação\n"
 "  -x            simula o modo de envio do mailx\n"
 "  -y            escolhe uma caixa na sua lista 'mailboxes'\n"
@@ -3018,12 +2999,12 @@ msgstr "Sinal %d recebido... Saindo.\n"
 #: muttlib.c:409
 #, c-format
 msgid "mutt_randbuf len=%zu"
-msgstr ""
+msgstr "mutt_randbuf tamanho=%zu"
 
 #: muttlib.c:429
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "abre /dev/urandom: %s"
 
 #: muttlib.c:436
 #, c-format
@@ -3909,11 +3890,11 @@ msgstr "Chave do PGP 0x%s."
 
 #: ncrypt/crypt_gpgme.c:4838
 msgid "GPGME: OpenPGP protocol not available"
-msgstr ""
+msgstr "GPGME: protocolo OpenPGP indisponível"
 
 #: ncrypt/crypt_gpgme.c:4846
 msgid "GPGME: CMS protocol not available"
-msgstr ""
+msgstr "GPGME: protocolo CMS indisponível"
 
 #: ncrypt/crypt_gpgme.c:4884
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
@@ -3983,7 +3964,7 @@ msgstr "esabmc"
 
 #: ncrypt/crypt_gpgme.c:5095
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "Falha ao verificar remetente"
 
 #: ncrypt/crypt_gpgme.c:5098
 msgid "Failed to figure out sender"
@@ -4007,7 +3988,7 @@ msgstr ""
 
 #: ncrypt/pgp.c:799
 msgid "Internal error.  Please submit a bug report."
-msgstr ""
+msgstr "Erro interno. Por favor submeta um relatório de problema (bug report)."
 
 #: ncrypt/pgp.c:866
 msgid ""
@@ -4033,13 +4014,13 @@ msgstr "Não foi possível executar o PGP"
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1680
 msgid "PGP/M(i)ME"
-msgstr ""
+msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1686
 msgid "(i)nline"
-msgstr ""
+msgstr "i)incorporado"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #: ncrypt/pgp.c:1700
@@ -4150,15 +4131,15 @@ msgstr "Entre com a senha do S/MIME:"
 
 #: ncrypt/smime.c:364
 msgid "Trusted   "
-msgstr ""
+msgstr "Confiável   "
 
 #: ncrypt/smime.c:367
 msgid "Verified  "
-msgstr ""
+msgstr "Verificado  "
 
 #: ncrypt/smime.c:370
 msgid "Unverified"
-msgstr ""
+msgstr "Não verificado"
 
 #: ncrypt/smime.c:373
 msgid "Expired   "
@@ -4166,7 +4147,7 @@ msgstr "Expirou   "
 
 #: ncrypt/smime.c:376
 msgid "Revoked   "
-msgstr ""
+msgstr "Revogado   "
 
 #: ncrypt/smime.c:379
 msgid "Invalid   "
@@ -4192,7 +4173,7 @@ msgstr "Entre com a keyID: "
 #: ncrypt/smime.c:893
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Nenhum certificado (válido) encontrado para %s."
 
 #: ncrypt/smime.c:942 ncrypt/smime.c:971 ncrypt/smime.c:1038
 #: ncrypt/smime.c:1079 ncrypt/smime.c:1143 ncrypt/smime.c:1224
@@ -4213,11 +4194,11 @@ msgstr "nenhuma caixa de mensagens (mbox)"
 
 #: ncrypt/smime.c:1431 ncrypt/smime.c:1581
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Nenhuma saída proveniente do OpenSSL..."
 
 #: ncrypt/smime.c:1498
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
+msgstr "Incapaz de assinar: nenhuma chave especificada. Use 'assinar como'."
 
 #: ncrypt/smime.c:1546
 msgid "Can't open OpenSSL subprocess!"
@@ -4299,35 +4280,35 @@ msgstr "eswabc"
 
 #: ncrypt/smime.c:2096
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
+msgstr "Escolha uma família de algorítimos: 1)DES, 2)RC2, 3)AES, or c)limpar? "
 
 #: ncrypt/smime.c:2099
 msgid "123c"
-msgstr ""
+msgstr "123c"
 
 #: ncrypt/smime.c:2102
 msgid "1: DES, 2: Triple-DES "
-msgstr ""
+msgstr "1)DES, 2)Triple-DES "
 
 #: ncrypt/smime.c:2102
 msgid "12"
-msgstr ""
+msgstr "12"
 
 #: ncrypt/smime.c:2115
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
-msgstr ""
+msgstr "1)RC2-40, 2)RC2-64, 3)RC2-128 "
 
 #: ncrypt/smime.c:2115 ncrypt/smime.c:2131
 msgid "123"
-msgstr ""
+msgstr "123"
 
 #: ncrypt/smime.c:2131
 msgid "1: AES128, 2: AES192, 3: AES256 "
-msgstr ""
+msgstr "1)AES128, 2)AES192, 3)AES256 "
 
 #: newsrc.c:604
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "Carregando lista de grupos do cachê..."
 
 #: newsrc.c:963
 msgid "No news server defined!"
@@ -4336,7 +4317,7 @@ msgstr "Nenhum servidor de notícias configurado!"
 #: newsrc.c:977
 #, c-format
 msgid "%s is an invalid news server specification!"
-msgstr ""
+msgstr "%s é uma especificação inválida para servidor de notícias!"
 
 #: nntp.c:63 nntp.c:593 pop.c:966 pop_lib.c:408
 msgid "Server closed connection!"
@@ -4344,7 +4325,7 @@ msgstr "O servidor fechou a conexão!"
 
 #: nntp.c:165
 msgid "Server doesn't support reader mode."
-msgstr ""
+msgstr "Servidor não oferece suporte a modo leitura."
 
 #: nntp.c:582
 #, c-format
@@ -4366,7 +4347,7 @@ msgstr "Postagem está ok"
 
 #: nntp.c:668
 msgid "Posting is NOT ok."
-msgstr ""
+msgstr "Postagem NÃO está ok."
 
 #: nntp.c:792
 #, c-format
@@ -4380,22 +4361,22 @@ msgstr "Obtendo lista de artigos..."
 #: nntp.c:1461
 #, c-format
 msgid "%s is an invalid newsgroup specification!"
-msgstr ""
+msgstr "%s é uma especificação inválida para grupo de notícias!"
 
 #: nntp.c:1479
 #, c-format
 msgid "Newsgroup %s not found on the server."
-msgstr ""
+msgstr "Grupo de notícias %s não encontrado no servidor."
 
 #: nntp.c:1499
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
-msgstr ""
+msgstr "Grupo de notícias %s foi removido do servidor."
 
 #: nntp.c:1650
 #, c-format
 msgid "Article %d not found on the server."
-msgstr ""
+msgstr "Artigo %d não encontrado no servidor."
 
 #: nntp.c:1742 nntp.c:1775
 #, c-format
@@ -4422,7 +4403,7 @@ msgstr "Verificando por novos grupos de notícias..."
 #: nntp.c:2491
 msgid ""
 "Unable to find child articles because server does not support XPAT command."
-msgstr ""
+msgstr "Incapaz de encontrar artigos filhos pois o servidor não oferece suporte para o comando XPAT."
 
 #: opcodes.h:29
 msgid "null operation"
@@ -4434,7 +4415,7 @@ msgstr "exibe mensagens"
 
 #: opcodes.h:31
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "fim da execução condicional (noop)"
 
 #: opcodes.h:32
 msgid "force viewing of attachment using mailcap"
@@ -4458,7 +4439,7 @@ msgstr "re-envia uma mensagem para outro usuário"
 
 #: opcodes.h:37
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "permuta posição da pasta atual com $folder se existente"
 
 #: opcodes.h:38
 msgid "select a new file in this directory"
@@ -4490,7 +4471,7 @@ msgstr "lista caixas com novos emails"
 
 #: opcodes.h:45
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "marca todos artigos no grupo de notícias como lidos"
 
 #: opcodes.h:46
 msgid "change directories"
@@ -4698,15 +4679,15 @@ msgstr "mostra uma mensagem"
 
 #: opcodes.h:97
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "adciona, altera, ou apaga rótulo da mensagem"
 
 #: opcodes.h:98
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "edita mensagem bruta ('edit' e 'edit-raw-message- são sinônimos)"
 
 #: opcodes.h:99
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
+msgstr "edita mensagem bruta se caixa não está em modo somente leitura, caso contrário exibe"
 
 #: opcodes.h:100
 msgid "delete the char in front of the cursor"
@@ -4786,11 +4767,11 @@ msgstr "põe a próxima tecla digitada entre aspas"
 
 #: opcodes.h:119
 msgid "transpose character under cursor with previous"
-msgstr ""
+msgstr "transpor caracter sob cursor com o anterior"
 
 #: opcodes.h:120
 msgid "capitalize the word"
-msgstr ""
+msgstr "converte primeira letra da palavra para maiúscula"
 
 #: opcodes.h:121
 msgid "convert the word to lower case"
@@ -4798,7 +4779,7 @@ msgstr "converte palavra para minúsculas"
 
 #: opcodes.h:122
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "converte paralavra para maiúsculas"
 
 #: opcodes.h:123
 msgid "enter a neomuttrc command"
@@ -4830,7 +4811,7 @@ msgstr "relatório para grupo de notícias"
 
 #: opcodes.h:130
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "encaminha para grupo de notícias"
 
 #: opcodes.h:131
 msgid "forward a message with comments"
@@ -4882,7 +4863,7 @@ msgstr "responde à lista de email especificada"
 
 #: opcodes.h:143
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "carrega lista de todos os grupos de notícias de um servidor NNTP"
 
 #: opcodes.h:144
 msgid "execute a macro"
@@ -4894,7 +4875,7 @@ msgstr "compõe uma nova mensagem eletrônica"
 
 #: opcodes.h:146
 msgid "break the thread in two"
-msgstr ""
+msgstr "quebra a thread"
 
 #: opcodes.h:147
 msgid "open a different folder"
@@ -4926,7 +4907,7 @@ msgstr "obtenção forçada de mensagens do servidor IMAP"
 
 #: opcodes.h:154
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "sai de todos os servidores IMAP"
 
 #: opcodes.h:155
 msgid "retrieve mail from POP server"
@@ -5022,7 +5003,7 @@ msgstr "marca mensagens que casem com um padrão"
 
 #: opcodes.h:178
 msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
+msgstr "remove do NeoMutt, não toca o disco"
 
 #: opcodes.h:179
 msgid "undelete messages matching a pattern"
@@ -5094,11 +5075,11 @@ msgstr "imprime a entrada atual"
 
 #: opcodes.h:196
 msgid "delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "remove item atual, ignorando lixeira"
 
 #: opcodes.h:197
 msgid "delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "remove thread atual, ignorando lixeira"
 
 #: opcodes.h:198
 msgid "query external program for addresses"
@@ -5222,7 +5203,7 @@ msgstr "anda até o topo da página"
 
 #: opcodes.h:228
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "marca todos os artigos de um grupo de notícias como não lidos"
 
 #: opcodes.h:229
 msgid "undelete the current entry"
@@ -5258,7 +5239,7 @@ msgstr "exibe mensagem integral"
 
 #: opcodes.h:237
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "mostra código para uma tecla pressionada"
 
 #: opcodes.h:238
 msgid "limit view to current thread"
@@ -5278,7 +5259,7 @@ msgstr "abre/fecha todas as discussões"
 
 #: opcodes.h:242
 msgid "modify (notmuch/imap) tags"
-msgstr ""
+msgstr "modifica rótulos (notmuch/imap)"
 
 #: opcodes.h:243
 msgid "modify (notmuch/imap) tags and then hide message"
@@ -5334,19 +5315,19 @@ msgstr "abre uma pasta virtual diferente"
 
 #: opcodes.h:267
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "gera pasta virtual a partir de consulta"
 
 #: opcodes.h:268
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "desloca janela de tempo da pasta virtual para frente"
 
 #: opcodes.h:269
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "desloca janela de tempo da pasta virtual para trás"
 
 #: opcodes.h:270
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "lê thread inteira da mensagem atual"
 
 #: opcodes.h:276
 msgid "attach a PGP public key"
@@ -5370,11 +5351,11 @@ msgstr "vê a identificação de usuário da chave"
 
 #: opcodes.h:281
 msgid "check for classic PGP"
-msgstr ""
+msgstr "verifica PGP clássico"
 
 #: opcodes.h:284
 msgid "move the highlight to next mailbox"
-msgstr ""
+msgstr "destaca próxima caixa de mensagens"
 
 #: opcodes.h:285
 msgid "move the highlight to next mailbox with new mail"
@@ -5406,7 +5387,7 @@ msgstr "alterna entre caixas reais e virtuais"
 
 #: opcodes.h:292
 msgid "make the sidebar (in)visible"
-msgstr ""
+msgstr "alterna exibição da barra lateral"
 
 #: opcodes.h:295
 msgid "show S/MIME options"
@@ -5482,7 +5463,7 @@ msgstr "Nenhuma mensagem atual"
 
 #: pattern.c:782
 msgid "No Context"
-msgstr ""
+msgstr "Sem Contexto"
 
 #: pattern.c:923
 msgid "Error opening memstream"
@@ -5536,7 +5517,7 @@ msgstr "padrão vazio"
 
 #: pattern.c:1584 pattern.c:1587
 msgid "error: server custom search only supported with IMAP."
-msgstr ""
+msgstr "erro: busca personalizada no servidor somente suportada com IMAP."
 
 #: pattern.c:1751
 #, c-format
@@ -5586,12 +5567,12 @@ msgstr "Não há suporte para o comando UIDL neste servidor"
 #: pop.c:317
 #, c-format
 msgid "%d messages have been lost. Try reopening the mailbox."
-msgstr ""
+msgstr "%d mensagens foram perdidas. Tente abrir a caixa de mensagens novamente."
 
 #: pop.c:434 pop.c:839
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s é um caminho POP inválido"
 
 #: pop.c:477
 msgid "Fetching list of messages..."
@@ -5637,7 +5618,7 @@ msgstr "Autenticando (SASL)..."
 
 #: pop_auth.c:226
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "Registro inválido de tempo (timestamp) POP!"
 
 #: pop_auth.c:230
 msgid "Authenticating (APOP)..."
@@ -5774,7 +5755,7 @@ msgstr "Imprimir anexo?"
 
 #: recvattach.c:888
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr ""
+msgstr "Não há suporte para alterações estruturais em anexos desencriptados."
 
 #: recvattach.c:1035
 msgid "Can't decrypt encrypted message!"
@@ -5862,7 +5843,7 @@ msgstr ""
 
 #: remailer.c:159
 msgid "<random>"
-msgstr ""
+msgstr "<aleatório>"
 
 #: remailer.c:478
 msgid "Append"
@@ -5946,7 +5927,7 @@ msgstr "entrada no mailcap para o tipo %s não foi encontrada."
 
 #: score.c:136
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Erro: pontos: número inválido"
 
 #: send.c:292
 msgid "No subject, abort?"
@@ -6011,7 +5992,7 @@ msgstr "Mensagem não modificada cancelada."
 
 #: send.c:1774
 msgid "No crypto backend configured.  Disabling message security setting."
-msgstr ""
+msgstr "Nenhum sistema (backend) configurado para cripto. Desabilitando configurações de segurança de mensagens."
 
 #: send.c:1812
 msgid "Article not posted."
@@ -6039,7 +6020,7 @@ msgstr "Sem anexos, cancelar envio?"
 
 #: send.c:1942
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
-msgstr ""
+msgstr "Mensagem contém texto coincidindo com \"$attach_keyword\". Envio cancelado."
 
 #: send.c:2003 smtp.c:189
 msgid "Sending message..."
@@ -6059,7 +6040,7 @@ msgstr "Enviando em segundo plano."
 
 #: send.c:2149
 msgid "Article posted."
-msgstr ""
+msgstr "Artigo postado."
 
 #: send.c:2150
 msgid "Mail sent."
@@ -6090,7 +6071,7 @@ msgstr "Não foi possível abrir %s"
 
 #: sendlib.c:2496
 msgid "$sendmail must be set in order to send mail."
-msgstr ""
+msgstr "$sendmail deve estar configurado a fim de se enviar mensagens."
 
 #: sendlib.c:2605
 #, c-format
@@ -6104,7 +6085,7 @@ msgstr "Saída do processo de entrega"
 #: sendlib.c:2796
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "IDN %s inválida durante preparação remetente re-enviado."
 
 #: smtp.c:140
 #, c-format
@@ -6132,23 +6113,23 @@ msgstr "Autenticação SASL falhou."
 
 #: smtp.c:618
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "Servidor SMTP não oferece suporte à autenticação"
 
 #: smtp.c:650
 msgid "No from address given"
-msgstr ""
+msgstr "Endereço remetente não foi fornecido"
 
 #: smtp.c:717
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "Sessão SMTP falhou: erro de acesso"
 
 #: smtp.c:719
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "Sessão SMTP falhou: erro de escrita"
 
 #: smtp.c:721
 msgid "Invalid server response"
-msgstr ""
+msgstr "Resposta inválida do servidor"
 
 #: sort.c:327
 msgid "Sorting mailbox..."
@@ -6180,6 +6161,8 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
+"Muitos outros, aqui não mencionados, contribuiram código, correções,\n"
+"e sugestões.\n"
 
 #: version.c:67
 msgid ""
@@ -6193,6 +6176,15 @@ msgid ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 msgstr ""
+"    Este programa é software livre; você pode redistribuí-lo e/ou modificá-lo\n"
+"    sob os termos da Licença Pública Geral (GPL) GNU como publicado pela\n"
+"    Free Software Fundation; tanto a versão 2 da licença, ou\n"
+"    (a sua escolha) qualquer versão posterior.\n"
+"\n"
+"    Este programa é distribuido com a expectativa de ser útil,\n"
+"    mas SEM QUALQUER GARANTIA; até mesmo sem a garantia implícita de\n"
+"    COMERCIALIZAÇÃO ou ADEQUAÇÃO PARA UM PROPÓSITO PARTICULAR. Veja a\n"
+"    Licença Pública Geral (GPL) GNU para maiores detalhes.\n" 
 
 #: version.c:78
 msgid ""
@@ -6201,6 +6193,10 @@ msgid ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
 "02110-1301, USA.\n"
 msgstr ""
+"    Você deve ter recebido uma copia da Licença Pública Geral (GPL) GNU\n"
+"    junto com este programa; se não, escreva para a Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Bostom, MA  "
+"    02110-1301, USA.\n"
 
 #: version.c:84
 msgid ""
@@ -6209,6 +6205,10 @@ msgid ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
+"Para saber mais sobre o NeoMutt, visite: https://www.neomutt.org\n"
+"Se você encontrar um problema no NeoMutt, por favor crie um 'issue' em:\n"
+"    https://github.com/neomutt/neomutt/issues\n"
+"ou envie um email para: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:91
 msgid ""
