@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-03-19 02:09+0000\n"
+"POT-Creation-Date: 2018-03-19 09:53+0000\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
@@ -3500,7 +3500,7 @@ msgstr "criado: "
 #: ncrypt/crypt_gpgme.c:1567
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
-msgstr "Erro ao obter informação importante para KeyID %s: %s\n"
+msgstr "Erro ao obter informação da chave para KeyID %s: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1574 ncrypt/crypt_gpgme.c:1589
 msgid "Good signature from:"
@@ -3565,11 +3565,11 @@ msgstr "Erro ao extrair dados da chave!\n"
 #: ncrypt/crypt_gpgme.c:2581
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Erro: decriptação/verificação falhou: %s\n"
 
 #: ncrypt/crypt_gpgme.c:2626
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Erro: copiar dados falhou\n"
 
 #: ncrypt/crypt_gpgme.c:2647 ncrypt/pgp.c:522
 msgid ""
@@ -3592,22 +3592,16 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2677 ncrypt/pgp.c:568
-#, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- FIM DE MENSAGEM DO PGP --]\n"
+msgstr "[-- FIM DE MENSAGEM DO PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2679 ncrypt/pgp.c:575
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FIM DE BLOCO DE CHAVE PÚBLICA DO PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2681 ncrypt/pgp.c:577
-#, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr ""
-"\n"
-"[-- FIM DE MENSAGEM ASSINADA POR PGP --]\n"
+msgstr "[-- FIM DE MENSAGEM ASSINADA POR PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2704 ncrypt/pgp.c:611
 msgid ""
@@ -3621,12 +3615,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Erro: não foi possível criar um arquivo temporário! --]\n"
 
 #: ncrypt/crypt_gpgme.c:2752
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir estão encriptados com PGP/MIME --]\n"
+"[-- Os dados a seguir estão assinados e encriptados com PGP/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2754 ncrypt/pgp.c:1056
@@ -3638,73 +3631,57 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2776
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fim dos dados encriptados com PGP/MIME --]\n"
+msgstr "[-- Fim dos dados assinados e encriptados com PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2777 ncrypt/pgp.c:1076
-#, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fim dos dados encriptados com PGP/MIME --]\n"
+msgstr "[-- Fim dos dados encriptados com PGP/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2782 ncrypt/pgp.c:572 ncrypt/pgp.c:1081
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "Assinatura PGP verificada com sucesso."
+msgstr "Mensagem PGP decriptada com sucesso."
 
 #: ncrypt/crypt_gpgme.c:2786 ncrypt/pgp.c:509 ncrypt/pgp.c:570
 #: ncrypt/pgp.c:1085
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "Não foi possível enviar a mensagem."
+msgstr "Incapaz de decriptar mensagem PGP"
 
 #: ncrypt/crypt_gpgme.c:2829
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir estão assinados --]\n"
+"[-- Os dados a seguir estão assinados com S/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2830
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir estão encriptados com PGP/MIME --]\n"
+"[-- Os dados a seguir estão encriptados com S/MIME --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2860
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Fim dos dados assinados --]\n"
+msgstr "[-- Fim dos dados assinados com S/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:2861
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fim dos dados encriptados com S/MIME --]\n"
+msgstr "[-- Fim dos dados encriptados com S/MIME --]\n"
 
 #: ncrypt/crypt_gpgme.c:3491
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[Incapaz de exibir esta ID de usuário (codificação desconhecida)]"
 
 #: ncrypt/crypt_gpgme.c:3493
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[Incapaz de exibir esta ID de usuário (codificação inválida)]"
 
 #: ncrypt/crypt_gpgme.c:3498
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[Incapaz de exibir esta ID de usuário (DN inválido)]"
 
 #. L10N:
 #. * The following are the headers for the "verify key" output from the
@@ -3712,105 +3689,96 @@ msgstr ""
 #. * They will be automatically aligned.
 #: ncrypt/crypt_gpgme.c:3593
 msgid "Name: "
-msgstr ""
+msgstr "Nome: "
 
 #: ncrypt/crypt_gpgme.c:3593
-#, fuzzy
 msgid "Valid From: "
-msgstr "Mês inválido: %s"
+msgstr "'From:' validado "
 
 #: ncrypt/crypt_gpgme.c:3593
-#, fuzzy
 msgid "Valid To: "
-msgstr "Mês inválido: %s"
+msgstr "'To:' validado "
 
 #: ncrypt/crypt_gpgme.c:3594
 msgid "Key Type: "
-msgstr ""
+msgstr "Tipo de chave: "
 
 #: ncrypt/crypt_gpgme.c:3594
 msgid "Key Usage: "
-msgstr ""
+msgstr "Uso da chave: "
 
 #: ncrypt/crypt_gpgme.c:3594
 msgid "Serial-No: "
-msgstr ""
+msgstr "No. serial: "
 
 #: ncrypt/crypt_gpgme.c:3595
 msgid "Issued By: "
-msgstr ""
+msgstr "Emitido por: "
 
 #: ncrypt/crypt_gpgme.c:3595
-#, fuzzy
 msgid "Subkey: "
-msgstr "Key ID: 0x%s"
+msgstr "Sub-chave: "
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3647 ncrypt/crypt_gpgme.c:3787
-#, fuzzy
 msgid "[Invalid]"
-msgstr "Mês inválido: %s"
+msgstr "[Inválido]"
 
 #. L10N: This is printed after "Key Type: " and looks like this:
 #. *       PGP, 2048 bit RSA
 #: ncrypt/crypt_gpgme.c:3690 ncrypt/crypt_gpgme.c:3828
 #, c-format
 msgid "%s, %lu bit %s\n"
-msgstr ""
+msgstr "%s, %lu bit %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3698 ncrypt/crypt_gpgme.c:3835
-#, fuzzy
 msgid "encryption"
-msgstr "Encriptar"
+msgstr "encriptação"
 
 #: ncrypt/crypt_gpgme.c:3699 ncrypt/crypt_gpgme.c:3705
 #: ncrypt/crypt_gpgme.c:3836 ncrypt/crypt_gpgme.c:3841
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3704 ncrypt/crypt_gpgme.c:3840
 msgid "signing"
-msgstr ""
+msgstr "assinando"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3710 ncrypt/crypt_gpgme.c:3845
-#, fuzzy
 msgid "certification"
-msgstr "Certificado salvo"
+msgstr "certificação"
 
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3781
 msgid "[Revoked]"
-msgstr ""
+msgstr "[Revogado]"
 
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3793
-#, fuzzy
 msgid "[Expired]"
-msgstr "Sair  "
+msgstr "[Expirado]"
 
 #. L10N: describes a subkey
 #: ncrypt/crypt_gpgme.c:3799
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Desabilitado]"
 
 #: ncrypt/crypt_gpgme.c:3872
-#, fuzzy
 msgid "Collecting data..."
-msgstr "Conectando a %s..."
+msgstr "Coletando dados..."
 
 #: ncrypt/crypt_gpgme.c:3897
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Conectando a %s"
+msgstr "Erro ao procurar emissor da chave: %s\n"
 
 #: ncrypt/crypt_gpgme.c:3906
-#, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
-msgstr "Erro na linha de comando: %s\n"
+msgstr "Erro: cadeia de certificação longa demais - parando aqui\n"
 
 #: ncrypt/crypt_gpgme.c:3916 ncrypt/pgpkey.c:605
 #, c-format
@@ -3818,24 +3786,23 @@ msgid "Key ID: 0x%s"
 msgstr "Key ID: 0x%s"
 
 #: ncrypt/crypt_gpgme.c:4003
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "Login falhou."
+msgstr "gpgme_new falhou: %s"
 
 #: ncrypt/crypt_gpgme.c:4041 ncrypt/crypt_gpgme.c:4092
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start falhou: %s"
 
 #: ncrypt/crypt_gpgme.c:4080 ncrypt/crypt_gpgme.c:4122
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next falhou: %s"
 
 #: ncrypt/crypt_gpgme.c:4199
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Esta chave não pode ser usada: expirada/desabilitada/revogada."
+msgstr "Todas chaves coincidentes estão expiradas/revogadas."
 
 #: ncrypt/crypt_gpgme.c:4229 ncrypt/pgpkey.c:540 ncrypt/smime.c:419
 msgid "Select  "
@@ -3846,68 +3813,61 @@ msgid "Check key  "
 msgstr "Verificar chave  "
 
 #: ncrypt/crypt_gpgme.c:4247
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "Chaves do PGP que casam com \"%s\"."
+msgstr "Chaves PGP e S/MIME que coincidem"
 
 #: ncrypt/crypt_gpgme.c:4249
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "Chaves do PGP que casam com \"%s\"."
+msgstr "Chaves PGP que coincidem"
 
 #: ncrypt/crypt_gpgme.c:4251
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "Chaves do S/MIME que casam com \"%s\"."
+msgstr "Chaves do S/MIME que coincidem"
 
 #: ncrypt/crypt_gpgme.c:4253
-#, fuzzy
 msgid "keys matching"
-msgstr "Chaves do PGP que casam com \"%s\"."
+msgstr "Chaves que coincidem"
 
 #. L10N:
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
 #: ncrypt/crypt_gpgme.c:4260
-#, fuzzy, c-format
+#, c-format
 msgid "%s <%s>."
-msgstr "%s [%s]\n"
+msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
 #: ncrypt/crypt_gpgme.c:4264
-#, fuzzy, c-format
+#, c-format
 msgid "%s \"%s\"."
-msgstr "%s [%s]\n"
+msgstr "%s \"%s\"."
 
 #: ncrypt/crypt_gpgme.c:4291 ncrypt/pgpkey.c:625
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Esta chave não pode ser usada: expirada/desabilitada/revogada."
 
 #: ncrypt/crypt_gpgme.c:4304 ncrypt/pgpkey.c:637 ncrypt/smime.c:449
-#, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Esta chave não pode ser usada: expirada/desabilitada/revogada."
+msgstr "ID expirada/desabilitada/revogada."
 
 #: ncrypt/crypt_gpgme.c:4312 ncrypt/pgpkey.c:642 ncrypt/smime.c:452
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "ID tem validade indefinida."
 
 #: ncrypt/crypt_gpgme.c:4315 ncrypt/pgpkey.c:645
-#, fuzzy
 msgid "ID is not valid."
-msgstr "Este ID não é de confiança."
+msgstr "ID inválida."
 
 #: ncrypt/crypt_gpgme.c:4318 ncrypt/pgpkey.c:648
-#, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Este ID é de baixa confiança."
+msgstr "ID é valida apenas marginalmente."
 
 #: ncrypt/crypt_gpgme.c:4327 ncrypt/pgpkey.c:652 ncrypt/smime.c:459
-#, fuzzy, c-format
+#, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s Você realmente quer usá-lo?"
+msgstr "%s Você realmente quer usar esta chave?"
 
 #: ncrypt/crypt_gpgme.c:4381 ncrypt/crypt_gpgme.c:4491 ncrypt/pgpkey.c:857
 #: ncrypt/pgpkey.c:980
@@ -3918,7 +3878,7 @@ msgstr "Procurando por chaves que casam com \"%s\"..."
 #: ncrypt/crypt_gpgme.c:4605 ncrypt/pgpkey.c:725 ncrypt/smime.c:759
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr ""
+msgstr "Nenhuma chave coincidente encontrada para \"%s\""
 
 #: ncrypt/crypt_gpgme.c:4652 ncrypt/pgp.c:1263
 #, c-format
@@ -3936,9 +3896,9 @@ msgid "Please enter the key ID: "
 msgstr "Por favor entre o key ID: "
 
 #: ncrypt/crypt_gpgme.c:4776
-#, fuzzy, c-format
+#, c-format
 msgid "Error exporting key: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "Erro ao exportar chave: %s\n"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -6422,65 +6382,3 @@ msgstr "Opções de compilação:"
 msgid "Compile options:"
 msgstr "Opções de compilação:"
 
-#~ msgid "Cannot create filter"
-#~ msgstr "Não foi possível criar filtro"
-
-#~ msgid "Missing arguments."
-#~ msgstr "Faltam argumentos."
-
-#~ msgid "color: too few arguments"
-#~ msgstr "cor: poucos argumentos"
-
-#~ msgid "mono: too few arguments"
-#~ msgstr "mono: poucos argumentos"
-
-#~ msgid "too few arguments"
-#~ msgstr "poucos argumentos"
-
-#~ msgid "finish: too many arguments"
-#~ msgstr "finalização: muitos argumentos"
-
-#~ msgid "set debug_file ignored, it has been overridden by the cmdline"
-#~ msgstr "Configuração debug_file ignorada, sobrescrita na linha de comando"
-
-#~ msgid "set debug_level ignored, it has been overridden by the cmdline"
-#~ msgstr "configuração debug_level ignorada, sobrescrita na linha de comando"
-
-#~ msgid "push: too many arguments"
-#~ msgstr "push: muitos argumentos"
-
-#~ msgid "bind: too many arguments"
-#~ msgstr "bind: muitos argumentos"
-
-#~ msgid "macro: too many arguments"
-#~ msgstr "macro: muitos argumentos"
-
-#~ msgid "Debugging at file %s.\n"
-#~ msgstr "Depurando no arquivo %s.\n"
-
-#~ msgid "source: too many arguments"
-#~ msgstr "fonte: muitos argumentos"
-
-#~ msgid "score: too few arguments"
-#~ msgstr "score: poucos argumentos"
-
-#~ msgid "score: too many arguments"
-#~ msgstr "score: muitos argumentos"
-
-#~ msgid "No recipients are specified!"
-#~ msgstr "Nenhum destinatário está especificado!"
-
-#~ msgid "No recipients were specified."
-#~ msgstr "Nenhum destinatário foi especificado."
-
-#, fuzzy
-#~ msgid "restore_default(%s): error in regex: %s\n"
-#~ msgstr "mutt_restore_default: erro na expressão regular: %s\n"
-
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -d Ignored.\n"
-#~ msgstr "DEBUG não foi definido durante a compilação. Ignorado.\n"
-
-#, fuzzy
-#~ msgid "DEBUG was not defined during compilation. -l Ignored.\n"
-#~ msgstr "DEBUG não foi definido durante a compilação. Ignorado.\n"
