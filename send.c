@@ -407,7 +407,7 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
   mutt_parse_mime_message(ctx, cur);
   mutt_message_hook(ctx, cur, MUTT_MESSAGEHOOK);
 
-  if (WithCrypto && (cur->security & ENCRYPT) && ForwardDecode)
+  if ((WithCrypto != 0) && (cur->security & ENCRYPT) && ForwardDecode)
   {
     /* make sure we have the user's passphrase before proceeding... */
     if (!crypt_valid_passphrase(cur->security))
@@ -466,7 +466,7 @@ static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
 
-  if (WithCrypto && (cur->security & ENCRYPT))
+  if ((WithCrypto != 0) && (cur->security & ENCRYPT))
   {
     /* make sure we have the user's passphrase before proceeding... */
     if (!crypt_valid_passphrase(cur->security))
@@ -903,11 +903,12 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
       return -1;
   }
   /* if (WithCrypto && (flags & SENDKEY)) */
-  else if ((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY))
+  else if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & SENDKEY))
   {
     struct Body *b = NULL;
 
-    if ((WithCrypto & APPLICATION_PGP) && (b = crypt_pgp_make_key_attachment(NULL)) == NULL)
+    if (((WithCrypto & APPLICATION_PGP) != 0) &&
+        (b = crypt_pgp_make_key_attachment(NULL)) == NULL)
       return -1;
 
     b->next = msg->content;
@@ -1202,7 +1203,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
      * so fix that here */
     if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
     {
-      if ((WithCrypto & APPLICATION_SMIME) && SmimeIsDefault)
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && SmimeIsDefault)
         msg->security |= APPLICATION_SMIME;
       else if (WithCrypto & APPLICATION_PGP)
         msg->security |= APPLICATION_PGP;
@@ -1578,7 +1579,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   if (msg->env->from && !msg->env->from->personal && !(flags & (SENDRESEND | SENDPOSTPONED)))
     msg->env->from->personal = mutt_str_strdup(RealName);
 
-  if (!((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY)))
+  if (!(((WithCrypto & APPLICATION_PGP) != 0) && (flags & SENDKEY)))
     mutt_file_fclose(&tempfp);
 
   if (flags & SENDMAILX)
@@ -1678,7 +1679,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
    * This is done after allowing the user to edit the message so that security
    * settings can be configured with send2-hook and $edit_headers.
    */
-  if (WithCrypto && (msg->security == 0) &&
+  if ((WithCrypto != 0) && (msg->security == 0) &&
       !(flags & (SENDBATCH | SENDMAILX | SENDPOSTPONED | SENDRESEND)))
   {
     if (CryptAutosign)
@@ -1691,7 +1692,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->security |= SIGN;
     if (CryptReplysignencrypted && cur && (cur->security & ENCRYPT))
       msg->security |= SIGN;
-    if ((WithCrypto & APPLICATION_PGP) &&
+    if (((WithCrypto & APPLICATION_PGP) != 0) &&
         ((msg->security & (ENCRYPT | SIGN)) || CryptOpportunisticEncrypt))
     {
       if (PgpAutoinline)
@@ -1713,11 +1714,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
        */
       if (cur)
       {
-        if ((WithCrypto & APPLICATION_PGP) && CryptAutopgp && (cur->security & APPLICATION_PGP))
+        if (((WithCrypto & APPLICATION_PGP) != 0) && CryptAutopgp &&
+            (cur->security & APPLICATION_PGP))
         {
           msg->security |= APPLICATION_PGP;
         }
-        else if ((WithCrypto & APPLICATION_SMIME) && CryptAutosmime &&
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) && CryptAutosmime &&
                  (cur->security & APPLICATION_SMIME))
         {
           msg->security |= APPLICATION_SMIME;
@@ -1730,15 +1732,15 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
        */
       if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
       {
-        if ((WithCrypto & APPLICATION_SMIME) && CryptAutosmime && SmimeIsDefault)
+        if (((WithCrypto & APPLICATION_SMIME) != 0) && CryptAutosmime && SmimeIsDefault)
         {
           msg->security |= APPLICATION_SMIME;
         }
-        else if ((WithCrypto & APPLICATION_PGP) && CryptAutopgp)
+        else if (((WithCrypto & APPLICATION_PGP) != 0) && CryptAutopgp)
         {
           msg->security |= APPLICATION_PGP;
         }
-        else if ((WithCrypto & APPLICATION_SMIME) && CryptAutosmime)
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) && CryptAutosmime)
         {
           msg->security |= APPLICATION_SMIME;
         }
@@ -1821,13 +1823,13 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (msg->content->next)
         msg->content = mutt_make_multipart(msg->content);
 
-      if (WithCrypto && PostponeEncrypt && (msg->security & ENCRYPT))
+      if ((WithCrypto != 0) && PostponeEncrypt && (msg->security & ENCRYPT))
       {
         char *encrypt_as = NULL;
 
-        if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
+        if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
           encrypt_as = PgpDefaultKey;
-        else if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
+        else if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
           encrypt_as = SmimeDefaultKey;
         if (!(encrypt_as && *encrypt_as))
           encrypt_as = PostponeEncryptAs;
@@ -2028,14 +2030,14 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     struct Body *save_sig = NULL;
     struct Body *save_parts = NULL;
 
-    if (WithCrypto && (msg->security & (ENCRYPT | SIGN)) && FccClear)
+    if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) && FccClear)
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
     if (query_quadoption(FccAttach, _("Save attachments in Fcc?")) != MUTT_YES &&
         msg->content->type == TYPEMULTIPART)
     {
-      if (WithCrypto && (msg->security & (ENCRYPT | SIGN)) &&
+      if ((WithCrypto != 0) && (msg->security & (ENCRYPT | SIGN)) &&
           ((mutt_str_strcmp(msg->content->subtype, "encrypted") == 0) ||
            (mutt_str_strcmp(msg->content->subtype, "signed") == 0)))
       {
@@ -2087,7 +2089,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
     msg->content = tmpbody;
 
-    if (WithCrypto && save_sig)
+    if ((WithCrypto != 0) && save_sig)
     {
       /* cleanup the second signature structures */
       if (save_content->parts)
@@ -2101,7 +2103,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       msg->content->parts->next = save_sig;
       msg->content->parts->parts->next = save_parts;
     }
-    else if (WithCrypto && save_content)
+    else if ((WithCrypto != 0) && save_content)
     {
       /* destroy the new encrypted body. */
       mutt_free_body(&save_content);
@@ -2154,10 +2156,10 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 #endif
   }
 
-  if (WithCrypto && (msg->security & ENCRYPT))
+  if ((WithCrypto != 0) && (msg->security & ENCRYPT))
     FREE(&pgpkeylist);
 
-  if (WithCrypto && free_clear_content)
+  if ((WithCrypto != 0) && free_clear_content)
     mutt_free_body(&clear_content);
 
   /* set 'replied' flag only if the user didn't change/remove

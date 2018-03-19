@@ -940,7 +940,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
     {
       mutt_parse_mime_message(ctx, h);
 
-      if (WithCrypto && (h->security & ENCRYPT) && !crypt_valid_passphrase(h->security))
+      if ((WithCrypto != 0) && (h->security & ENCRYPT) && !crypt_valid_passphrase(h->security))
       {
         mx_close_message(ctx, &msg);
         if (s.fpout)

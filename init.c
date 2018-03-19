@@ -405,7 +405,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
             map = SortBrowserMethods;
             break;
           case DT_SORT_KEYS:
-            if ((WithCrypto & APPLICATION_PGP))
+            if (WithCrypto & APPLICATION_PGP)
               map = SortKeyMethods;
             break;
           case DT_SORT_AUX:
@@ -2692,7 +2692,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           map = SortBrowserMethods;
           break;
         case DT_SORT_KEYS:
-          if ((WithCrypto & APPLICATION_PGP))
+          if (WithCrypto & APPLICATION_PGP)
             map = SortKeyMethods;
           break;
         case DT_SORT_AUX:
@@ -3530,7 +3530,7 @@ int var_to_string(int idx, char *val, size_t len)
         map = SortBrowserMethods;
         break;
       case DT_SORT_KEYS:
-        if ((WithCrypto & APPLICATION_PGP))
+        if (WithCrypto & APPLICATION_PGP)
           map = SortKeyMethods;
         else
           map = SortMethods;

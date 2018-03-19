@@ -270,14 +270,14 @@ static void redraw_crypt_lines(struct Header *msg)
 
   if ((msg->security & (ENCRYPT | SIGN)))
   {
-    if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
     {
       if ((msg->security & INLINE))
         addstr(_(" (inline PGP)"));
       else
         addstr(_(" (PGP/MIME)"));
     }
-    else if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
       addstr(_(" (S/MIME)"));
   }
 
@@ -288,8 +288,8 @@ static void redraw_crypt_lines(struct Header *msg)
   mutt_window_move(MuttIndexWindow, HDR_CRYPTINFO, 0);
   mutt_window_clrtoeol(MuttIndexWindow);
 
-  if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP) &&
-      (msg->security & SIGN))
+  if (((WithCrypto & APPLICATION_PGP) != 0) &&
+      (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
@@ -297,8 +297,8 @@ static void redraw_crypt_lines(struct Header *msg)
     printw("%s", PgpSignAs ? PgpSignAs : _("<default>"));
   }
 
-  if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME) &&
-      (msg->security & SIGN))
+  if (((WithCrypto & APPLICATION_SMIME) != 0) &&
+      (msg->security & APPLICATION_SMIME) && (msg->security & SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
     printw("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
@@ -306,7 +306,7 @@ static void redraw_crypt_lines(struct Header *msg)
     printw("%s", SmimeSignAs ? SmimeSignAs : _("<default>"));
   }
 
-  if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME) &&
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME) &&
       (msg->security & ENCRYPT) && SmimeEncryptWith && *SmimeEncryptWith)
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
@@ -1601,7 +1601,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           mutt_error(_("No PGP backend configured"));
           break;
         }
-        if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
+        if (((WithCrypto & APPLICATION_SMIME) != 0) && (msg->security & APPLICATION_SMIME))
         {
           if (msg->security & (ENCRYPT | SIGN))
           {
@@ -1636,7 +1636,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
           break;
         }
 
-        if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
+        if (((WithCrypto & APPLICATION_PGP) != 0) && (msg->security & APPLICATION_PGP))
         {
           if (msg->security & (ENCRYPT | SIGN))
           {

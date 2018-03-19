@@ -3047,7 +3047,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
       case OP_DECRYPT_COPY:
-        if (!WithCrypto && ch == OP_DECRYPT_COPY)
+        if (!(WithCrypto != 0) && ch == OP_DECRYPT_COPY)
         {
           ch = -1;
           break;

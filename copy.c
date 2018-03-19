@@ -664,17 +664,17 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
     if (flags & MUTT_CM_REPLYING)
       s.flags |= MUTT_REPLYING;
 
-    if (WithCrypto && flags & MUTT_CM_VERIFY)
+    if ((WithCrypto != 0) && flags & MUTT_CM_VERIFY)
       s.flags |= MUTT_VERIFY;
 
     rc = mutt_body_handler(body, &s);
   }
-  else if (WithCrypto && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
+  else if ((WithCrypto != 0) && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
     struct Body *cur = NULL;
     FILE *fp = NULL;
 
-    if ((WithCrypto & APPLICATION_PGP) && (flags & MUTT_CM_DECODE_PGP) &&
+    if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & MUTT_CM_DECODE_PGP) &&
         (hdr->security & APPLICATION_PGP) && hdr->content->type == TYPEMULTIPART)
     {
       if (crypt_pgp_decrypt_mime(fpin, &fp, hdr->content, &cur))
@@ -682,7 +682,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
       fputs("MIME-Version: 1.0\n", fpout);
     }
 
-    if ((WithCrypto & APPLICATION_SMIME) && (flags & MUTT_CM_DECODE_SMIME) &&
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (flags & MUTT_CM_DECODE_SMIME) &&
         (hdr->security & APPLICATION_SMIME) && hdr->content->type == TYPEAPPLICATION)
     {
       if (crypt_smime_decrypt_mime(fpin, &fp, hdr->content, &cur))

@@ -380,8 +380,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
   bool unlink_tempfile = false;
 
   bool is_message = mutt_is_message_type(a->type, a->subtype);
-  if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
-      !crypt_valid_passphrase(a->hdr->security))
+  if ((WithCrypto != 0) && is_message && a->hdr &&
+      (a->hdr->security & ENCRYPT) && !crypt_valid_passphrase(a->hdr->security))
   {
     return rc;
   }
