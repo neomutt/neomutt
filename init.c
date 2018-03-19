@@ -4324,7 +4324,7 @@ bool set_default_value(const char *name, intptr_t value)
     return false;
 
   int idx = mutt_option_index(name);
-  if (!idx)
+  if (idx < 0)
     return false;
 
   MuttVars[idx].initial = value;
