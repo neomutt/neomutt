@@ -2471,9 +2471,9 @@ msgid "Invalid value for option %s: \"%s\""
 msgstr "Valor inválido para opção %s: \"%s\""
 
 #: init.c:2473
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for name %s: \"%s\""
-msgstr "Dia do mês inválido: %s"
+msgstr "Valor inválido para nome %s: \"%s\""
 
 #: init.c:2571
 #, c-format
@@ -2481,17 +2481,17 @@ msgid "%s: invalid mailbox type"
 msgstr "%s: tipo de caixa inválido"
 
 #: init.c:2602
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: valor inválido"
+msgstr "%s: valor inválido (%s)"
 
 #: init.c:2603
 msgid "format error"
-msgstr ""
+msgstr "erro de formato"
 
 #: init.c:2603
 msgid "number overflow"
-msgstr ""
+msgstr "transbordo (overflow) numérico"
 
 #: init.c:2666
 #, c-format
@@ -2499,9 +2499,9 @@ msgid "%s: invalid value"
 msgstr "%s: valor inválido"
 
 #: init.c:2757
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid backend"
-msgstr "%s: valor inválido"
+msgstr "%s: sistema (backend) inválido"
 
 #: init.c:2765
 #, c-format
@@ -2514,9 +2514,9 @@ msgid "Error in %s, line %d: %s"
 msgstr "Erro em %s, linha %d: %s"
 
 #: init.c:2900
-#, fuzzy, c-format
+#, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Erro em %s, linha %d: %s"
+msgstr "Aviso em %s, linha %d: %s"
 
 #: init.c:2925
 #, c-format
@@ -2526,12 +2526,12 @@ msgstr "source: erros em %s"
 #: init.c:2926
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr ""
+msgstr "fonte: leitura interrompida devido ao excesso de erros em %s"
 
 #: init.c:2935
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warnings in %s"
-msgstr "source: erros em %s"
+msgstr "fonte: %d avisos em %s"
 
 #: init.c:2959 mutt_lua.c:416
 #, c-format
@@ -2539,9 +2539,9 @@ msgid "source: error at %s"
 msgstr "source: erro em %s"
 
 #: init.c:2967
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced."
-msgstr "Mensagens impressas"
+msgstr "fonte: arquivo %s não pôde ser importado."
 
 #: init.c:3026
 #, c-format
@@ -2554,33 +2554,30 @@ msgid "Error in command line: %s"
 msgstr "Erro na linha de comando: %s"
 
 #: init.c:3755
-#, fuzzy
 msgid "unable to determine nodename via uname()"
-msgstr "não foi possível determinar o nome do usuário"
+msgstr "não foi possível determinar nodename via uname()"
 
 #: init.c:4049
 msgid "-group: no group name"
-msgstr ""
+msgstr "-group: sem nome de grupo"
 
 #: init.c:4059
-#, fuzzy
 msgid "out of arguments"
-msgstr "poucos argumentos"
+msgstr "argumentos insuficientes"
 
 #: init.c:4182
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "Assinando %s..."
+msgstr "Incapaz de inscrever em %s"
 
 #: init.c:4198 init.c:4252
-#, fuzzy
 msgid "No folder specified"
-msgstr "Nenhum assunto especificado."
+msgstr "Nenhuma pasta especificada"
 
 #: init.c:4236
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Cancelando assinatura de %s..."
+msgstr "Incapaz de desinscrever de %s"
 
 #: keymap.c:283 keymap.c:291
 #, c-format
@@ -2588,10 +2585,12 @@ msgid ""
 "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
 "neomutt.org/guide/configuration.html#bind-warnings"
 msgstr ""
+"Associação '%s' irá apelidar '%s'  Antes, tente: 'bind %s %s noop' https://"
+"neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:594
 msgid "Macros are currently disabled."
-msgstr ""
+msgstr "No momento, macros estão desabilitadas."
 
 #: keymap.c:601
 msgid "Macro loop detected."
@@ -2614,36 +2613,34 @@ msgstr "%s: não existe tal menu"
 #: keymap.c:1017
 #, c-format
 msgid "%s: null key sequence"
-msgstr "%s: seqüência de teclas nula"
+msgstr "%s: sequência de teclas nula"
 
 #: keymap.c:1043
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "Função '%s' não disponível no menu '%s'"
 
 #: keymap.c:1170
 msgid "macro: empty key sequence"
 msgstr "macro: seqüência de teclas vazia"
 
 #: keymap.c:1218
-#, fuzzy
 msgid "exec: no arguments"
-msgstr "exec: poucos argumentos"
+msgstr "exec: sem argumentos"
 
 #: keymap.c:1238
-#, fuzzy, c-format
+#, c-format
 msgid "%s: no such function"
-msgstr "%s: não existe tal função no mapa"
+msgstr "%s: não existe tal função"
 
 #: keymap.c:1259
-#, fuzzy
 msgid "Enter keys (^G to abort): "
-msgstr "Entre a keyID para %s: "
+msgstr "Entre com as teclas (^G para cancelar): "
 
 #: keymap.c:1265
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr ""
+msgstr "Char = %s, Octal = %o, Decimal = %d"
 
 #: main.c:84
 msgid ""
@@ -2676,7 +2673,7 @@ msgstr ""
 
 #: main.c:103
 msgid "  -d <level>    log debugging output to ~/.neomuttdebug0"
-msgstr ""
+msgstr "  -d <nível>    registra saída de debug em ~/.neomuttdebug0"
 
 #: main.c:105
 #, fuzzy
@@ -2782,7 +2779,7 @@ msgstr "não foi possível determinar o diretório do usuário"
 #: main.c:471
 #, c-format
 msgid "Error: value '%s' is invalid for -d."
-msgstr ""
+msgstr "Erro: valor '%s' é inválido para -d."
 
 #: main.c:632
 #, c-format
@@ -2791,7 +2788,7 @@ msgstr "%s não existe. Devo criá-lo?"
 
 #: main.c:681
 msgid "Failed to parse mailto: link"
-msgstr ""
+msgstr "Falha ao interpretar link 'mailto:'"
 
 #: main.c:691 send.c:1892 send.c:1897
 msgid "No recipients specified."
@@ -2799,7 +2796,7 @@ msgstr "Nenhum destinatário foi especificado."
 
 #: main.c:717
 msgid "Cannot use -E flag with stdin"
-msgstr ""
+msgstr "Incapaz de usar flag -E com stdin"
 
 #: main.c:804
 #, fuzzy, c-format
@@ -2817,7 +2814,7 @@ msgstr "Nenhuma caixa com novas mensagens."
 
 #: main.c:966
 msgid "No incoming mailboxes defined."
-msgstr "Nenhuma caixa de mensagem para recebimento definida."
+msgstr "Nenhuma caixa de entrada definida."
 
 #: main.c:1008
 msgid "Mailbox is empty."
@@ -2835,7 +2832,7 @@ msgstr "A caixa de mensagens está corrompida!"
 #: mbox.c:482
 #, c-format
 msgid "Couldn't lock %s\n"
-msgstr "Não foi possível travar %s\n"
+msgstr "Incapaz de travar %s\n"
 
 #: mbox.c:531 mbox.c:545
 msgid "Can't write message"
@@ -2865,9 +2862,8 @@ msgid "Writing %s..."
 msgstr "Gravando %s..."
 
 #: mbox.c:1183
-#, fuzzy
 msgid "Committing changes..."
-msgstr "Compilando padrão de busca..."
+msgstr "Aplicando mudanças..."
 
 #: mbox.c:1218
 #, c-format
@@ -2893,11 +2889,11 @@ msgstr "Nenhuma entrada."
 
 #: menu.c:572
 msgid "You cannot scroll down farther."
-msgstr "Você não pode mais descer."
+msgstr "Você não pode mais rolar para baixo."
 
 #: menu.c:590
 msgid "You cannot scroll up farther."
-msgstr "Você não pode mais subir"
+msgstr "Você não pode mais rolar para cima"
 
 #: menu.c:636
 msgid "You are on the first page."
@@ -2921,7 +2917,7 @@ msgstr "Procurar por: "
 
 #: menu.c:942 pager.c:2499 pattern.c:2018
 msgid "Reverse search for: "
-msgstr "Procurar de trás para frente por: "
+msgstr "Busca reversa por: "
 
 #: menu.c:993 pager.c:2449 pager.c:2472 pager.c:2601 pattern.c:2139
 msgid "Not found."
@@ -2937,25 +2933,24 @@ msgstr "A busca não está implementada neste menu."
 
 #: menu.c:1259
 msgid "Jumping is not implemented for dialogs."
-msgstr "O pulo não está implementado em diálogos."
+msgstr "O pulo não está implementado em 'dialogs'."
 
 #: menu.c:1293
 msgid "Tagging is not supported."
 msgstr "Não é possível marcar."
 
 #: mh.c:1275
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "Selecionando %s..."
+msgstr "Analisando %s..."
 
 #: mh.c:1595 mh.c:1683
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "Não foi possível enviar a mensagem."
+msgstr "Incapaz descarregar mensagem para o disco."
 
 #: mh.c:1635
 msgid "md_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "md_commit_message(): incapaz de configurar tempo no arquivo"
 
 #: mutt/file.c:1105
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2992,7 +2987,7 @@ msgstr "Depurando no nível %d.\n"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Transbordo (overflow) de inteiros -- incapaz de alocar memória!"
 
 #: mutt/memory.c:68 mutt/memory.c:109 mutt/memory.c:143 safe_asprintf.c:51
 msgid "Out of memory!"
@@ -3001,11 +2996,11 @@ msgstr "Acabou a memória!"
 #: mutt/regex.c:292
 #, c-format
 msgid "Bad regex: %s"
-msgstr ""
+msgstr "Regex inválida: %s"
 
 #: mutt/regex.c:353
 msgid "Not enough subexpressions for template"
-msgstr ""
+msgstr "Sub-expressões insuficientes para modelo"
 
 #: mutt/signal.c:67 signal.c:54
 #, c-format
@@ -3035,26 +3030,25 @@ msgstr ""
 #: muttlib.c:436
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "ler /dev/urandom: %s"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:650
-#, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "O arquivo é um diretório, salvar lá?"
+msgstr "O caminho é um diretório, salvar ali dentro? [y)sim, n)não, a)todos]"
 
 #: muttlib.c:650
 msgid "yna"
-msgstr ""
+msgstr "yna"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:669
 msgid "File is a directory, save under it?"
-msgstr "O arquivo é um diretório, salvar lá?"
+msgstr "O caminho é um diretório, salvar ali dentro?"
 
 #: muttlib.c:674
 msgid "File under directory: "
@@ -3062,16 +3056,15 @@ msgstr "Arquivo no diretório: "
 
 #: muttlib.c:684
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Arquivo existe, (s)obrescreve, (a)nexa ou (c)ancela?"
+msgstr "Arquivo existe, o)sobrescreve, a)concatena ou c)cancela?"
 
 #: muttlib.c:684
 msgid "oac"
-msgstr "sac"
+msgstr "oac"
 
 #: muttlib.c:1309
-#, fuzzy
 msgid "Can't save message to POP mailbox."
-msgstr "Gravar mensagem na caixa"
+msgstr "Incapaz de gravar mensagem na caixa do tipo POP"
 
 #: muttlib.c:1318
 #, c-format
@@ -3079,9 +3072,8 @@ msgid "Append messages to %s?"
 msgstr "Anexa mensagens a %s?"
 
 #: muttlib.c:1330
-#, fuzzy
 msgid "Can't save message to news server."
-msgstr "Apagando mensagens do servidor..."
+msgstr "Incapaz de gravar mensagem no servidor de notícias"
 
 #: muttlib.c:1339
 #, c-format
@@ -3090,9 +3082,9 @@ msgstr "%s não é uma caixa de mensagens!"
 
 #. L10N: Example: Username at myhost.com
 #: mutt_account.c:214
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Renomear para: "
+msgstr "Nome de usuário em %s: "
 
 #: mutt_account.c:296
 #, c-format
@@ -3102,87 +3094,84 @@ msgstr "Senha para %s@%s: "
 #: mutt_lua.c:396
 #, c-format
 msgid "%s: %s"
-msgstr ""
+msgstr "%s: %s"
 
 #: mutt_notmuch.c:204 mutt_notmuch.c:1705 mutt_notmuch.c:1893
 #, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr ""
+msgstr "falha ao interpretar uri do notmuch: %s"
 
 #: mutt_notmuch.c:262
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "falha ao interpretar consulta do tipo notmuch: %s"
 
 #: mutt_notmuch.c:366
 msgid ""
 "Invalid nm_query_window_timebase value (valid values are: hour, day, week, "
 "month or year)."
 msgstr ""
+"Valor nm_query_window_timebase inválido (valores aceitos são: hour, day, "
+"week, month ou year)."
 
 #: mutt_notmuch.c:421
 #, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr ""
+msgstr "Falha ao interpretar limite do notmuch: %s"
 
 #: mutt_notmuch.c:507
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Esperando pela trava fcntl... %d"
+msgstr "Esperando pelo BD do notmuch... (%d sec)"
 
 #: mutt_notmuch.c:523
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "Incapaz de abrir banco de dados do notmuch: %s: %s"
 
 #: mutt_notmuch.c:524
-#, fuzzy
 msgid "unknown reason"
-msgstr "erro desconhecido"
+msgstr "razão desconhecida"
 
 #: mutt_notmuch.c:908
-#, fuzzy, c-format
+#, c-format
 msgid "Reading messages..."
-msgstr "Enviando mensagem..."
+msgstr "Obtendo mensagens..."
 
 #: mutt_notmuch.c:1596
-#, fuzzy
 msgid "No more messages in the thread."
-msgstr "A mensagem pai não está visível nesta visão limitada"
+msgstr "Não há mais mensagens nessa thread."
 
 #: mutt_notmuch.c:2426
-#, fuzzy
 msgid "Can't write to virtual folder."
-msgstr "Não é possível anexar à pasta: %s"
+msgstr "Incapaz de gravar na pasta virtual."
 
 #: mutt_socket.c:103
 #, c-format
 msgid "SSL is unavailable, cannot connect to %s"
-msgstr ""
+msgstr "SSL indisponível, incapaz de connectar a %s"
 
 #: mx.c:495
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Busca interrompida."
+msgstr "Aquisição de %s interrompida..."
 
 #: mx.c:595
-#, fuzzy
 msgid "message(s) not deleted"
-msgstr "Marcando %d mensagens como removidas..."
+msgstr "mensagem(ns) não apagadas"
 
 #: mx.c:632
-#, fuzzy
 msgid "Can't open trash folder"
-msgstr "Não é possível anexar à pasta: %s"
+msgstr "Incapaz de acessar lixeira"
 
 #: mx.c:668
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "Marcar todos artigos como lidos?"
 
 #: mx.c:712
-#, fuzzy, c-format
+#, c-format
 msgid "Move %d read messages to %s?"
-msgstr "Mover mensagens lidas para %s?"
+msgstr "Mover %d mensagens lidas para %s?"
 
 #: mx.c:729 mx.c:1033
 #, c-format
@@ -3228,40 +3217,40 @@ msgid "Mailbox is marked unwritable. %s"
 msgstr "A caixa está marcada como não gravável. %s"
 
 #: mx.c:1080
-#, fuzzy
 msgid "Mailbox checkpointed."
-msgstr "Caixa de correio removida."
+msgstr "Ponto de controle feito para caixa de mensagens."
 
 #: ncrypt/crypt.c:68
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (tempo atual: %c)"
 
 #: ncrypt/crypt.c:73
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Saída do PGP a seguir (hora atual: "
+msgstr "[-- saída %s segue%s --]\n"
 
 #: ncrypt/crypt.c:89
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "Senha do PGP esquecida."
+msgstr "Senha(s) esquecida(s)."
 
 #: ncrypt/crypt.c:149
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
+msgstr "PGP incorporado não pode ser usado com anexos. Reverter para PGP/MIME?"
 
 #: ncrypt/crypt.c:153
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
+msgstr "Email não enviado: PGP incorporado não pode ser usado com anexos."
 
 #: ncrypt/crypt.c:160
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
 msgstr ""
+"PGP incorporado não pode ser usado com format=flowed. Reverter para PGP/MIME?"
 
 #: ncrypt/crypt.c:164
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr ""
+"Email não enviado: PGP incorporado não pode ser usado com format=flowed."
 
 #: ncrypt/crypt.c:174 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:586
 #: ncrypt/pgpkey.c:776
@@ -3271,6 +3260,7 @@ msgstr "Executando PGP..."
 #: ncrypt/crypt.c:186
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
+"Mensagem não pode ser enviada de forma incorporada. Reverter para PGP/MIME?"
 
 #: ncrypt/crypt.c:188 send.c:1815
 msgid "Mail not sent."
@@ -3278,15 +3268,15 @@ msgstr "Mensagem não enviada."
 
 #: ncrypt/crypt.c:534
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "Mensagens S/MIME sem dicas no conteúdo não são suportadas."
 
 #: ncrypt/crypt.c:749 ncrypt/crypt.c:790
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Tentando extrair chaves PGP...\n"
 
 #: ncrypt/crypt.c:771 ncrypt/crypt.c:811
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Tentando extrair certificados S/MIME...\n"
 
 #: ncrypt/crypt.c:971
 #, c-format
@@ -3311,11 +3301,10 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Aviso: Não foi possível verificar %s de %s assinaturas. --]\n"
+"[-- Aviso: Não foi possível verificar %s/%s assinaturas. --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1064
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3328,11 +3317,10 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Aviso: Não foi possível encontrar nenhuma assinatura. --]\n"
+"[-- Aviso: Não foi possível encontrar assinatura alguma. --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1075
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3342,47 +3330,46 @@ msgstr ""
 
 #: ncrypt/cryptglue.c:99
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
+msgstr "\"crypt_use_gpgme\" configurado mas não compilado com suporte a GPGME."
 
 #: ncrypt/cryptglue.c:126
-#, fuzzy
 msgid "Invoking S/MIME..."
 msgstr "Executando S/MIME..."
 
 #: ncrypt/crypt_gpgme.c:468
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao criar contexto gpgme: %s\n"
 
 #: ncrypt/crypt_gpgme.c:477
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "erro ao habilitar protocolo CMS: %s\n"
 
 #: ncrypt/crypt_gpgme.c:498
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao criar objeto de dados gpgme: %s\n"
 
 #: ncrypt/crypt_gpgme.c:566 ncrypt/crypt_gpgme.c:587 ncrypt/crypt_gpgme.c:1645
 #: ncrypt/crypt_gpgme.c:2390
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao alocar objeto de dados: %s\n"
 
 #: ncrypt/crypt_gpgme.c:606
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao retroceder objeto de dados: %s\n"
 
 #: ncrypt/crypt_gpgme.c:622
 msgid "[tempfile]"
-msgstr ""
+msgstr "[arquivo temporário]"
 
 #: ncrypt/crypt_gpgme.c:628 ncrypt/crypt_gpgme.c:683
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao acessar objeto de dados: %s\n"
 
 #: ncrypt/crypt_gpgme.c:657 ncrypt/crypt_gpgme.c:3869 ncrypt/pgpkey.c:582
 #: ncrypt/pgpkey.c:762
@@ -3390,94 +3377,92 @@ msgid "Can't create temporary file"
 msgstr "Não foi possível criar um arquivo temporário"
 
 #: ncrypt/crypt_gpgme.c:765
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient '%s': %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao adicionar destinatário '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:806
 #, c-format
 msgid "secret key '%s' not found: %s\n"
-msgstr ""
+msgstr "chave secreta '%s' não encontrada: %s\n"
 
 #: ncrypt/crypt_gpgme.c:815
 #, c-format
 msgid "ambiguous specification of secret key '%s'\n"
-msgstr ""
+msgstr "especificação ambígua da chave secreta '%s'\n"
 
 #: ncrypt/crypt_gpgme.c:826
 #, c-format
 msgid "error setting secret key '%s': %s\n"
-msgstr ""
+msgstr "erro ao configurar chave secreta '%s': %s\n"
 
 #: ncrypt/crypt_gpgme.c:840
-#, fuzzy, c-format
+#, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao configurar notação de assinatura PKA: %s\n"
 
 #: ncrypt/crypt_gpgme.c:895
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao encriptar dados: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1023
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "erro no padrão em: %s"
+msgstr "erro ao assinar dados: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1034
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr ""
+"$pgp_sign_as desconfigurado e sem chave pré-definida em ~/.gnupg/gpg.conf"
 
 #: ncrypt/crypt_gpgme.c:1244
 msgid "Warning: One of the keys has been revoked\n"
-msgstr ""
+msgstr "Aviso: Uma das chaves foi revogada\n"
 
 #: ncrypt/crypt_gpgme.c:1253
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "Aviso: A chave usada para criar a assinatura expirou em: "
 
 #: ncrypt/crypt_gpgme.c:1260
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Este certificado foi emitido por:"
+msgstr "Aviso: Ao menos uma chave de certificação expirou\n"
 
 #: ncrypt/crypt_gpgme.c:1276
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Aviso: A assinatura expirou em: "
 
 #: ncrypt/crypt_gpgme.c:1282
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "Incapaz de verificar devido à ausência de chave ou certificado\n"
 
 #: ncrypt/crypt_gpgme.c:1288
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "A mensagem pai não está disponível."
+msgstr "CRL indisponível\n"
 
 #: ncrypt/crypt_gpgme.c:1294
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "CRL disponível é antigo demais\n"
 
 #: ncrypt/crypt_gpgme.c:1299
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "Uma exigência das diretrizes não foi atendida\n"
 
 #: ncrypt/crypt_gpgme.c:1308
 msgid "A system error occurred"
-msgstr ""
+msgstr "Ocorreu um erro de sistema"
 
 #: ncrypt/crypt_gpgme.c:1339
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr ""
+msgstr "AVISO: registro PKA não coincide endereço do signatário: "
 
 #: ncrypt/crypt_gpgme.c:1347
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "Endereço PKA verificado do signatário é: "
 
 #: ncrypt/crypt_gpgme.c:1361 ncrypt/crypt_gpgme.c:3594
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "Impressão digital: %s"
+msgstr "Impressão digital: "
 
 #: ncrypt/crypt_gpgme.c:1424
 msgid ""
@@ -6455,6 +6440,9 @@ msgstr "Opções de compilação:"
 #~ msgid "set debug_file ignored, it has been overridden by the cmdline"
 #~ msgstr "Configuração debug_file ignorada, sobrescrita na linha de comando"
 
+#~ msgid "set debug_level ignored, it has been overridden by the cmdline"
+#~ msgstr "configuração debug_level ignorada, sobrescrita na linha de comando"
+
 #~ msgid "push: too many arguments"
 #~ msgstr "push: muitos argumentos"
 
@@ -6464,12 +6452,11 @@ msgstr "Opções de compilação:"
 #~ msgid "macro: too many arguments"
 #~ msgstr "macro: muitos argumentos"
 
-#, fuzzy
 #~ msgid "Debugging at file %s.\n"
-#~ msgstr "Depurando no nível %d.\n"
+#~ msgstr "Depurando no arquivo %s.\n"
 
 #~ msgid "source: too many arguments"
-#~ msgstr "source: muitos argumentos"
+#~ msgstr "fonte: muitos argumentos"
 
 #~ msgid "score: too few arguments"
 #~ msgstr "score: poucos argumentos"
