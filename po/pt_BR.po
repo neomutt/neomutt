@@ -3469,95 +3469,98 @@ msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
+"AVISO: Não temos indicação alguma se a chave pertence à pessoa nomeada "
+"conforme mostrado acima\n"
 
 #: ncrypt/crypt_gpgme.c:1431
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "AVISO: A chave não pertence à pessoa nomeada conforme mostrado acima\n"
 
 #: ncrypt/crypt_gpgme.c:1435
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
+"AVISO: Não é garantido que a chave pertença à pessoa nomeada conforme "
+"mostrado acima\n"
 
 #: ncrypt/crypt_gpgme.c:1464 ncrypt/crypt_gpgme.c:1469
 #: ncrypt/crypt_gpgme.c:3593
 msgid "aka: "
-msgstr ""
+msgstr "aka: "
 
 #: ncrypt/crypt_gpgme.c:1479
 msgid "KeyID "
-msgstr ""
+msgstr "KeyID "
 
 #: ncrypt/crypt_gpgme.c:1488 ncrypt/crypt_gpgme.c:1493
-#, fuzzy
 msgid "created: "
-msgstr "Criar %s?"
+msgstr "criado: "
 
 #: ncrypt/crypt_gpgme.c:1567
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
-msgstr ""
+msgstr "Erro ao obter informação importante para KeyID %s: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1574 ncrypt/crypt_gpgme.c:1589
 msgid "Good signature from:"
-msgstr ""
+msgstr "Assinatura válida de:"
 
 #: ncrypt/crypt_gpgme.c:1581
 msgid "*BAD* signature from:"
-msgstr ""
+msgstr "Assinatura *INVÁLIDA* de:"
 
 #: ncrypt/crypt_gpgme.c:1597
 msgid "Problem signature from:"
-msgstr ""
+msgstr "Assinatura problemática de:"
 
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
 #: ncrypt/crypt_gpgme.c:1604
 msgid "               expires: "
-msgstr ""
+msgstr "                    expira: "
 
 #: ncrypt/crypt_gpgme.c:1653 ncrypt/crypt_gpgme.c:1878
 #: ncrypt/crypt_gpgme.c:2605
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Início da informação da assinatura --]\n"
 
 #: ncrypt/crypt_gpgme.c:1664
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "Erro na linha de comando: %s\n"
+msgstr "Erro: verificação falhou: %s\n"
 
 #: ncrypt/crypt_gpgme.c:1715
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Inicia Notação (assinado por: %s) ***\n"
 
 #: ncrypt/crypt_gpgme.c:1734
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Finaliza Notação ***\n"
 
 #: ncrypt/crypt_gpgme.c:1742 ncrypt/crypt_gpgme.c:1892
 #: ncrypt/crypt_gpgme.c:2617
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
+"[-- Fim da informação da assinatura --]\n"
 "\n"
-"[-- Fim dos dados assinados --]\n"
 
 #: ncrypt/crypt_gpgme.c:1847
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- Erro: fim de arquivo inesperado! --]\n"
+msgstr ""
+"[-- Erro: decriptação falhou: %s --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:2396
-#, fuzzy
 msgid "Error extracting key data!\n"
-msgstr "erro no padrão em: %s"
+msgstr "Erro ao extrair dados da chave!\n"
 
 #: ncrypt/crypt_gpgme.c:2581
 #, c-format
