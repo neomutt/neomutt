@@ -2535,7 +2535,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_MAGIC))
     {
       if (query || *s->dptr != '=')
       {
@@ -2573,7 +2573,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_NUMBER)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_NUMBER))
     {
       short *ptr = (short *) MuttVars[idx].var;
       short val;
@@ -2637,7 +2637,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
 #endif
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_QUAD))
     {
       if (query)
       {
@@ -2679,7 +2679,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           *(unsigned char *) MuttVars[idx].var = MUTT_YES;
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_SORT)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_SORT))
     {
       const struct Mapping *map = NULL;
 
@@ -2733,7 +2733,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
     }
 #ifdef USE_HCACHE
-    else if (DTYPE(MuttVars[idx].type) == DT_HCACHE)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_HCACHE))
     {
       if (query || (*s->dptr != '='))
       {
