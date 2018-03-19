@@ -659,7 +659,8 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, bo
 
 static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 {
-  FILE *ifp = NULL;
+  if (!state || !state->fpout)
+    return;
 
   if (fp)
   {
@@ -670,7 +671,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   }
   else
   {
-    ifp = fopen(b->filename, "r");
+    FILE *ifp = fopen(b->filename, "r");
     if (!ifp)
     {
       mutt_perror("fopen");
@@ -802,6 +803,12 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           mutt_mktemp(newfile, sizeof(newfile));
           if (mutt_decode_save_attachment(fp, top, newfile, MUTT_PRINTING, 0) == 0)
           {
+            if (!state->fpout)
+            {
+              mutt_error("BUG in print_attachment_list().  Please report this. ");
+              return;
+            }
+
             ifp = fopen(newfile, "r");
             if (ifp)
             {
