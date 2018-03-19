@@ -2771,9 +2771,9 @@ msgid "Cannot use -E flag with stdin"
 msgstr "Cannot use -E flag with stdin"
 
 #: main.c:804
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot parse message template: %s"
-msgstr "Can't open message file: %s"
+msgstr "Cannot parse message template: %s"
 
 #: main.c:869
 #, c-format
@@ -2941,19 +2941,19 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Waiting for flock attempt... %d"
 
 #: mutt/logging.c:105
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "Can't open message file: %s"
+msgstr "Closed log file: %s"
 
 #: mutt/logging.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Debugging at level %d.\n"
+msgstr "Debugging at level %d to file '%s'"
 
 #: mutt/logging.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Debugging at level %d.\n"
+msgstr "Logging at level %d to file '%s'"
 
 #: mutt/memory.c:61
 msgid "Integer overflow -- can't allocate memory!"
@@ -4391,9 +4391,8 @@ msgid "null operation"
 msgstr "null operation"
 
 #: opcodes.h:30
-#, fuzzy
 msgid "show messages"
-msgstr "sort messages"
+msgstr "show messages"
 
 #: opcodes.h:31
 msgid "end of conditional execution (noop)"
