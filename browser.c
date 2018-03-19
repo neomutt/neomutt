@@ -1822,7 +1822,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             }
             else
             {
-              Mask = mutt_mem_calloc(1, sizeof(struct Regex *));
+              Mask = mutt_mem_calloc(1, sizeof(struct Regex));
             }
             mutt_str_replace(&Mask->pattern, buf);
             Mask->regex = rx;
