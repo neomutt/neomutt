@@ -1241,6 +1241,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
 	break;
 
       lang = strtok(NULL, ",");
+
+      if (a->parts)
+	b = a->parts;
+      else
+	b = a;
     }
 
   if (choice)
