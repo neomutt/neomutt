@@ -75,6 +75,13 @@ like sh and bash: Prepend the name of the variable by a dollar
 .SH COMMANDS
 .PP
 .nf
+\fBaccount-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
+.fi
+.IP
+This hook is executed whenever you access a remote mailbox. Useful
+to adjust configuration settings to different IMAP or POP servers.
+.PP
+.nf
 \fBalias\fP [\fB-group\fP \fIname\fP [...]] \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP [ ... ]]
 \fBunalias\fP [\fB * \fP | \fIkey\fP ]
 .fi
@@ -87,28 +94,6 @@ Name)\(rq.
 all aliases when \(lq\fB*\fP\(rq is used as an argument. The optional
 \fB-group\fP argument to \fBalias\fP causes the aliased address(es) to be
 added to the named \fIgroup\fP.
-.PP
-.nf
-\fBgroup\fP [\fB-group\fP \fIname\fP] [\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]
-\fBungroup\fP [\fB-group\fP \fIname\fP ] [ \fB*\fP | [[\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]]
-.fi
-.IP
-\fBgroup\fP is used to directly add either addresses or regular expressions to
-the specified group or groups. The different categories of arguments to the
-\fBgroup\fP command can be in any order. The flags \fI-rx\fP and \fI-addr\fP
-specify what the following strings (that cannot begin with a hyphen) should be
-interpreted as: either a regular expression or an email address, respectively.
-\fBungroup\fP is used to remove addresses or regular expressions from the
-specified group or groups. The syntax is similar to the \fBgroup\fP command,
-however the special character \fB*\fP can be used to empty a group of all of
-its contents.
-.IP
-These address groups can also be created implicitly by the \fBalias\fP, \fBlists\fP,
-\fBsubscribe\fP and \fBalternates\fP commands by specifying the optional \fI-group\fP
-option.
-.IP
-Once defined, these address groups can be used in patterns to search for and limit the
-display to messages matching a group.
 .PP
 .nf
 \fBalternates\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP [ ... ]]
@@ -136,6 +121,24 @@ ordered list or deletes the entire list when \(lq\fB*\fP\(rq is used
 as an argument.
 .PP
 .nf
+\fBappend-hook\fP \fIregex\fP "\fIcommand\fP"
+\fBclose-hook\fP \fIregex\fP "\fIcommand\fP"
+\fBopen-hook\fP \fIregex\fP "\fIcommand\fP"
+.fi
+.IP
+These commands provide a way to handle compressed folders. The given
+\fBregex\fP specifies which folders are taken as compressed (e.g.
+"\fI\\\\.gz$\fP"). The commands tell NeoMutt how to uncompress a folder
+(\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a
+compressed mail to a compressed folder (\fBappend-hook\fP). The
+\fIcommand\fP string is the
+.BR printf (3)
+like format string, and it should accept two parameters: \fB%f\fP,
+which is replaced with the (compressed) folder name, and \fB%t\fP
+which is replaced with the name of the temporary folder to which to
+write.
+.PP
+.nf
 \fBauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 \fBunauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 .fi
@@ -150,18 +153,9 @@ flag set.  A subtype of \(lq\fB*\fP\(rq
 matches any subtype, as does an empty subtype.
 .PP
 .nf
-\fBmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
-\fBunmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
+\fBbind\fP \fImap1,map2,...\fP \fIkey\fP \fIfunction\fP
 .fi
 .IP
-This command permits you to define a list of "data" MIME content
-types for which neomutt will try to determine the actual file type from
-the file name, and not use a
-.BR mailcap (5)
-entry given for the original MIME type.  For instance, you may add
-the \fBapplication/octet-stream\fP MIME type to this list.
-.TP
-\fBbind\fP \fImap1,map2,...\fP \fIkey\fP \fIfunction\fP
 This command binds the given \fIkey\fP for the given \fImap\fP or maps
 to the given \fIfunction\fP. Multiple maps may be specified by
 separating them with commas (no whitespace is allowed).
@@ -176,61 +170,14 @@ Valid maps are:
 For more information on keys and functions, please consult the NeoMutt
 Manual. Note that the function name is to be specified without
 angle brackets.
-.TP
-\fBaccount-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
-This hook is executed whenever you access a remote mailbox. Useful
-to adjust configuration settings to different IMAP or POP servers.
-.TP
+.PP
+.nf
 \fBcharset-hook\fP \fIalias\fP \fIcharset\fP
+.fi
+.IP
 This command defines an alias for a character set.  This is useful
 to properly display messages which are tagged with a character set
 name not known to neomutt.
-.TP
-\fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
-This command defines a system-specific name for a character set.
-This is useful when your system's
-.BR iconv (3)
-implementation does not understand MIME character set names (such as
-.BR iso-8859-1 ),
-but instead insists on being fed with implementation-specific
-character set names (such as
-.BR 8859-1 ).
-In this specific case, you'd put this into your configuration file:
-.IP
-.B "iconv-hook iso-8859-1 8859-1"
-.TP
-\fBmessage-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
-Before neomutt displays (or formats for replying or forwarding) a
-message which matches the given \fIpattern\fP (or, when it is
-preceded by an exclamation mark, does not match the \fIpattern\fP),
-the given \fIcommand\fP is executed.  When multiple
-\fBmessage-hook\fPs match, they are  executed  in  the order in
-which they occur in the configuration file.
-.TP
-\fBtimeout-hook\fP \fIcommand\fP
-Run a command periodically when NeoMutt checks for new mail.
-This hook is called every $timeout seconds.
-.TP
-\fBstartup-hook\fP \fIcommand\fP
-Before neomutt opens the first mailbox when first starting, neomutt will run the
-startup hook for the given \fIcommand\fP.
-.TP
-\fBshutdown-hook\fP \fIcommand\fP
-Before neomutt is about to exit, and before the mailbox is closed, neomutt will run
-the shutdown hook for the given \fIcommand\fP.
-.TP
-\fBfolder-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
-When neomutt enters a folder which matches \fIregex\fP (or, when
-\fIregex\fP is preceded by an exclamation mark, does not match
-\fIregex\fP), the given \fIcommand\fP is executed.
-.IP
-When several \fBfolder-hook\fPs match a given mail folder, they are
-executed in the order given in the configuration file.
-.TP
-\fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
-This command binds the given \fIsequence\fP of keys to the given
-\fIkey\fP in the given \fImap\fP or maps.  For valid maps, see \fBbind\fP. To
-specify multiple maps, put only a comma between the maps.
 .PP
 .nf
 \fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fIregex\fP ]
@@ -260,16 +207,95 @@ Valid colors include:
 .BR cyan ", " yellow ", " red ", " default ", " color\fIN\fP .
 .PP
 .nf
-\fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregex\fP ]
-\fBmono\fP index \fIattribute\fP [ \fIpattern\fP ]
+\fBcrypt-hook\fP \fIregex\fP \fIkey-id\fP
 .fi
 .IP
-For terminals which don't support color, you can still assign
-attributes to objects.  Valid attributes include:
-.BR none ", " bold ", " underline ", "
-.BR reverse ", and " standout .
-.TP
-[\fBun\fP]\fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
+The crypt-hook command provides a method by which you can
+specify the ID of the public key to be used when encrypting messages
+to a certain recipient.  The meaning of "key ID" is to be taken
+broadly: This can be a different e-mail address, a numerical key ID,
+or even just an arbitrary search string.
+You may use multiple
+\fBcrypt-hook\fPs with the same \fIregex\fP; multiple matching
+\fBcrypt-hook\fPs result in the use of multiple \fIkey-id\fPs for
+a recipient.
+.PP
+.nf
+\fBfcc-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
+\fBsave-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
+\fBfcc-save-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
+.ni
+.IP
+\fBfcc-hook\fP: When an outgoing message matches \fIpattern\fP, the default file
+name for storing a copy (fcc) will be the given \fIfilename\fP.
+.IP
+\fBsave-hook\fP: When a message matches \fIpattern\fP, the default file name when
+saving it will be the given \fIfilename\fP.
+.IP
+\fBfcc-save-hook\fP: This command is an abbreviation for identical \fBfcc-hook\fP and
+\fBsave-hook\fP commands.
+.PP
+.nf
+\fBfolder-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
+.fi
+.IP
+When neomutt enters a folder which matches \fIregex\fP (or, when
+\fIregex\fP is preceded by an exclamation mark, does not match
+\fIregex\fP), the given \fIcommand\fP is executed.
+.IP
+When several \fBfolder-hook\fPs match a given mail folder, they are
+executed in the order given in the configuration file.
+.PP
+.nf
+\fBgroup\fP [\fB-group\fP \fIname\fP] [\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]
+\fBungroup\fP [\fB-group\fP \fIname\fP ] [ \fB*\fP | [[\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]]
+.fi
+.IP
+\fBgroup\fP is used to directly add either addresses or regular expressions to
+the specified group or groups. The different categories of arguments to the
+\fBgroup\fP command can be in any order. The flags \fI-rx\fP and \fI-addr\fP
+specify what the following strings (that cannot begin with a hyphen) should be
+interpreted as: either a regular expression or an email address, respectively.
+\fBungroup\fP is used to remove addresses or regular expressions from the
+specified group or groups. The syntax is similar to the \fBgroup\fP command,
+however the special character \fB*\fP can be used to empty a group of all of
+its contents.
+.IP
+These address groups can also be created implicitly by the \fBalias\fP, \fBlists\fP,
+\fBsubscribe\fP and \fBalternates\fP commands by specifying the optional \fI-group\fP
+option.
+.IP
+Once defined, these address groups can be used in patterns to search for and limit the
+display to messages matching a group.
+.PP
+.nf
+\fBhdr_order\fP \fIheader1\fP \fIheader2\fP [ ... ]
+.fi
+.IP
+With this command, you can specify an order in which neomutt will
+attempt to present headers to you when viewing messages.
+.PP
+.nf
+\fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
+.fi
+.IP
+This command defines a system-specific name for a character set.
+This is useful when your system's
+.BR iconv (3)
+implementation does not understand MIME character set names (such as
+.BR iso-8859-1 ),
+but instead insists on being fed with implementation-specific
+character set names (such as
+.BR 8859-1 ).
+In this specific case, you'd put this into your configuration file:
+.IP
+.B "iconv-hook iso-8859-1 8859-1"
+.PP
+.nf
+\fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
+\fBunignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
+.fi
+.IP
 The \fBignore\fP command permits you to specify header fields which
 you usually don't wish to see.  Any header field whose tag
 \fIbegins\fP with an \(lqignored\(rq pattern will be ignored.
@@ -295,13 +321,14 @@ list from the lists of known and subscribed mailing lists.  The
 and subscribed mailing lists.  The \fBunsubscribe\fP command removes
 it from the list of subscribed mailing lists. The \fB-group\fP flag
 adds all of the subsequent regular expressions to the named group.
-.TP
-\fBmbox-hook\fP [\fB!\fP]\fIregex\fP \fImailbox\fP
-When neomutt changes to a mail folder which matches \fIregex\fP,
-\fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
-messages will be moved to that folder when the mail folder is left.
+.PP
+.nf
+\fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
+.fi
 .IP
-The first matching \fBmbox-hook\fP applies.
+This command binds the given \fIsequence\fP of keys to the given
+\fIkey\fP in the given \fImap\fP or maps.  For valid maps, see \fBbind\fP. To
+specify multiple maps, put only a comma between the maps.
 .PP
 .nf
 \fBmailboxes\fP \fIfilename\fP [ \fIfilename\fP ... ]
@@ -316,6 +343,61 @@ can receive mail.  If "\fB*\fP" is specified as the file name, the
 list is emptied.
 .PP
 .nf
+\fBmailto_allow\fP \fIheader-field\fP [ ... ]
+\fBunmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
+.fi
+.IP
+These commands allow the user to modify the list of allowed header
+fields in a \fImailto:\fP URL that NeoMutt will include in the
+the generated message.  By default the list contains
+\fBsubject\fP and \fBbody\fP, as specified by RFC2368; and
+\fBcc\fP, \fBin-reply-to\fP, and \fBreferences\fP to aid with
+mailto links from mailing lists.
+.PP
+.nf
+\fBmbox-hook\fP [\fB!\fP]\fIregex\fP \fImailbox\fP
+.fi
+.IP
+When neomutt changes to a mail folder which matches \fIregex\fP,
+\fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
+messages will be moved to that folder when the mail folder is left.
+.IP
+The first matching \fBmbox-hook\fP applies.
+.PP
+.nf
+\fBmessage-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+.fi
+.IP
+Before neomutt displays (or formats for replying or forwarding) a
+message which matches the given \fIpattern\fP (or, when it is
+preceded by an exclamation mark, does not match the \fIpattern\fP),
+the given \fIcommand\fP is executed.  When multiple
+\fBmessage-hook\fPs match, they are  executed  in  the order in
+which they occur in the configuration file.
+.PP
+.nf
+\fBmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
+\fBunmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
+.fi
+.IP
+This command permits you to define a list of "data" MIME content
+types for which neomutt will try to determine the actual file type from
+the file name, and not use a
+.BR mailcap (5)
+entry given for the original MIME type.  For instance, you may add
+the \fBapplication/octet-stream\fP MIME type to this list.
+.PP
+.nf
+\fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregex\fP ]
+\fBmono\fP index \fIattribute\fP [ \fIpattern\fP ]
+.fi
+.IP
+For terminals which don't support color, you can still assign
+attributes to objects.  Valid attributes include:
+.BR none ", " bold ", " underline ", "
+.BR reverse ", and " standout .
+.PP
+.nf
 \fBmy_hdr\fP \fIstring\fP
 \fBunmy_hdr\fP \fIfield\fP
 .fi
@@ -323,29 +405,35 @@ list is emptied.
 Using \fBmy_hdr\fP, you can define headers which will be added to
 the messages you compose.  \fBunmy_hdr\fP will remove the given
 user-defined headers.
-.TP
-\fBhdr_order\fP \fIheader1\fP \fIheader2\fP [ ... ]
-With this command, you can specify an order in which neomutt will
-attempt to present headers to you when viewing messages.
-.TP
-\fBsave-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
-When a message matches \fIpattern\fP, the default file name when
-saving it will be the given \fIfilename\fP.
-.TP
-\fBfcc-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
-When an outgoing message matches \fIpattern\fP, the default file
-name for storing a copy (fcc) will be the given \fIfilename\fP.
-.TP
-\fBfcc-save-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
-This command is an abbreviation for identical \fBfcc-hook\fP and
-\fBsave-hook\fP commands.
-.TP
+.PP
+.nf
+\fBpush\fP \fIstring\fP
+.fi
+.IP
+This command adds the named \fIstring\fP to the keyboard buffer.
+.PP
+.nf
+\fBreply-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+.fi
+.IP
+When replying to a message matching \fIpattern\fP, \fIcommand\fP is
+executed.  When multiple \fBreply-hook\fPs match, they are executed
+in the order in which they occur in the configuration file, but all
+\fBreply-hook\fPs are matched and executed before \fBsend-hook\fPs,
+regardless of their order in the configuration file.
+.PP
+.nf
 \fBsend-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+.fi
+.IP
 When composing a message matching \fIpattern\fP, \fIcommand\fP is
 executed.  When multiple \fBsend-hook\fPs match, they are executed
 in the order in which they occur in the configuration file.
-.TP
+.PP
+.nf
 \fBsend2-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+.fi
+.IP
 Whenever a message matching \fIpattern\fP is changed (either by
 editing it or by using the compose menu), \fIcommand\fP
 is executed. When multiple \fBsend2-hook\fPs match, they are
@@ -355,51 +443,12 @@ message's from header is changed.
 .IP
 \fBsend2-hook\fP execution is not triggered by use of
 \fBenter-command\fP from the compose menu.
-.TP
-\fBreply-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
-When replying to a message matching \fIpattern\fP, \fIcommand\fP is
-executed.  When multiple \fBreply-hook\fPs match, they are executed
-in the order in which they occur in the configuration file, but all
-\fBreply-hook\fPs are matched and executed before \fBsend-hook\fPs,
-regardless of their order in the configuration file.
-.TP
-\fBcrypt-hook\fP \fIregex\fP \fIkey-id\fP
-The crypt-hook command provides a method by which you can
-specify the ID of the public key to be used when encrypting messages
-to a certain recipient.  The meaning of "key ID" is to be taken
-broadly: This can be a different e-mail address, a numerical key ID,
-or even just an arbitrary search string.
-You may use multiple
-\fBcrypt-hook\fPs with the same \fIregex\fP; multiple matching
-\fBcrypt-hook\fPs result in the use of multiple \fIkey-id\fPs for
-a recipient.
-.PP
-.nf
-\fBopen-hook\fP \fIregex\fP "\fIcommand\fP"
-\fBclose-hook\fP \fIregex\fP "\fIcommand\fP"
-\fBappend-hook\fP \fIregex\fP "\fIcommand\fP"
-.fi
-.IP
-These commands provide a way to handle compressed folders. The given
-\fBregex\fP specifies which folders are taken as compressed (e.g.
-"\fI\\\\.gz$\fP"). The commands tell NeoMutt how to uncompress a folder
-(\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a
-compressed mail to a compressed folder (\fBappend-hook\fP). The
-\fIcommand\fP string is the
-.BR printf (3)
-like format string, and it should accept two parameters: \fB%f\fP,
-which is replaced with the (compressed) folder name, and \fB%t\fP
-which is replaced with the name of the temporary folder to which to
-write.
-.TP
-\fBpush\fP \fIstring\fP
-This command adds the named \fIstring\fP to the keyboard buffer.
 .PP
 .nf
 \fBset\fP [\fBno\fP|\fBinv\fP|\fB&\fP|\fB?\fP]\fIvariable\fP[=\fIvalue\fP] [ ... ]
-\fBtoggle\fP \fIvariable\fP [ ... ]
 \fBunset\fP \fIvariable\fP [ ... ]
 \fBreset\fP \fIvariable\fP [ ... ]
+\fBtoggle\fP \fIvariable\fP [ ... ]
 .fi
 .IP
 These commands are used to set and manipulate configuration
@@ -427,8 +476,18 @@ default answer of \(lqno.\(rq
 The \fBreset\fP command resets all given variables to the compile
 time defaults.  If you reset the special variable \fBall\fP, all
 variables will reset to their compile time defaults.
-.TP
+.PP
+.nf
+\fBshutdown-hook\fP \fIcommand\fP
+.fi
+.IP
+Before neomutt is about to exit, and before the mailbox is closed, neomutt will run
+the shutdown hook for the given \fIcommand\fP.
+.PP
+.nf
 \fBsource\fP \fIfilename\fP
+.fi
+.IP
 The given file will be evaluated as a configuration file.
 .PP
 .nf
@@ -440,6 +499,13 @@ These commands define spam-detection patterns from external spam
 filters, so that neomutt can sort, limit, and search on
 ``spam tags'' or ``spam attributes'', or display them
 in the index. See the NeoMutt manual for details.
+.PP
+.nf
+\fBstartup-hook\fP \fIcommand\fP
+.fi
+.IP
+Before neomutt opens the first mailbox when first starting, neomutt will run the
+startup hook for the given \fIcommand\fP.
 .PP
 .nf
 \fBsubjectrx\fP \fIpattern\fP \fIreplacement\fP
@@ -461,23 +527,22 @@ subject, not just the match!
 \fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the
 substitution list. If \fB*\fP is used as the pattern, all
 substitutions will be removed.
-.TP
+.PP
+.nf
+\fBtimeout-hook\fP \fIcommand\fP
+.fi
+.IP
+Run a command periodically when NeoMutt checks for new mail.
+This hook is called every $timeout seconds.
+.PP
+.nf
 \fBunhook\fP [\fB * \fP | \fIhook-type\fP ]
+.fi
+.IP
 This command will remove all hooks of a given type, or all hooks
 when \(lq\fB*\fP\(rq is used as an argument.  \fIhook-type\fP
 can be any of the \fB-hook\fP commands documented above.
 .PP
-.nf
-\fBmailto_allow\fP \fIheader-field\fP [ ... ]
-\fBunmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
-.fi
-.IP
-These commands allow the user to modify the list of allowed header
-fields in a \fImailto:\fP URL that NeoMutt will include in the
-the generated message.  By default the list contains
-\fBsubject\fP and \fBbody\fP, as specified by RFC2368; and
-\fBcc\fP, \fBin-reply-to\fP, and \fBreferences\fP to aid with
-mailto links from mailing lists.
 .SH PATTERNS
 .PP
 In various places with neomutt, including some of the above mentioned
