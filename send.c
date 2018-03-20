@@ -1229,25 +1229,25 @@ static int is_reply(struct Header *reply, struct Header *orig)
          mutt_list_find(&orig->env->in_reply_to, reply->env->message_id);
 }
 
-static int search_attach_keyword(char *filename)
+static bool search_attach_keyword(char *filename)
 {
-  /* Search for the regex in AttachKeyword within a file */
-  if (!AttachKeyword || !AttachKeyword->regex || !QuoteRegex || !QuoteRegex->regex)
-    return 0;
+  /* Search for the regex in AbortNoattachRegex within a file */
+  if (!AbortNoattachRegex || !AbortNoattachRegex->regex || !QuoteRegex || !QuoteRegex->regex)
+    return false;
 
   FILE *attf = mutt_file_fopen(filename, "r");
   if (!attf)
-    return 0;
+    return false;
 
   char *inputline = mutt_mem_malloc(LONG_STRING);
-  int found = 0;
+  bool found = false;
   while (!feof(attf))
   {
     fgets(inputline, LONG_STRING, attf);
     if (regexec(QuoteRegex->regex, inputline, 0, NULL, 0) != 0 &&
-        regexec(AttachKeyword->regex, inputline, 0, NULL, 0) == 0)
+        regexec(AbortNoattachRegex->regex, inputline, 0, NULL, 0) == 0)
     {
-      found = 1;
+      found = true;
       break;
     }
   }
@@ -1933,7 +1933,10 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   }
 #endif
 
-  if (AbortNoattach != MUTT_NO && !msg->content->next &&
+  if (!(flags & SENDBATCH) &&
+      (AbortNoattach != MUTT_NO) && !msg->content->next &&
+      (msg->content->type == TYPETEXT) &&
+      (mutt_str_strcasecmp (msg->content->subtype, "plain") == 0) &&
       search_attach_keyword(msg->content->filename) &&
       query_quadoption(AbortNoattach, _("No attachments, cancel sending?")) != MUTT_NO)
   {
@@ -1941,7 +1944,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     if (AbortNoattach == MUTT_YES)
     {
       mutt_error(_(
-          "Message contains text matching \"$attach_keyword\". Not sending."));
+          "Message contains text matching \"$abort_noattach_regex\". Not sending."));
     }
     goto main_loop;
   }

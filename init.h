@@ -92,15 +92,27 @@ struct Option MuttVars[] = {
   { "abort_noattach", DT_QUAD, R_NONE, UL &AbortNoattach, MUTT_NO },
   /*
   ** .pp
-  ** If set to \fIyes\fP, when composing messages containing the regular expression
-  ** specified by $attach_keyword and no attachments ** are given, composition
-  ** will be aborted. If set to \fIno\fP, composing ** messages as such will never
-  ** be aborted.
+  ** If set to \fIyes\fP, when composing messages containing the regular
+  ** expression specified by $$abort_noattach_regex and no attachments are
+  ** given, composition will be aborted. If set to \fIno\fP, composing messages
+  ** as such will never be aborted.
   ** .pp
   ** Example:
   ** .ts
-  ** set attach_keyword = "\\<attach(|ed|ments?)\\>"
+  ** set abort_noattach_regex = "\\<attach(|ed|ments?)\\>"
   ** .te
+  */
+  { "abort_noattach_regex",  DT_REGEX,  R_NONE, UL &AbortNoattachRegex, UL "\\<(attach|attached|attachments?)\\>" },
+  /*
+  ** .pp
+  ** Specifies a regular expression to match against the body of the message, to
+  ** determine if an attachment was mentioned but mistakenly forgotten.  If it
+  ** matches, $$abort_noattach will be consulted to determine if message sending
+  ** will be aborted.
+  ** .pp
+  ** Like other regular expressions in NeoMutt, the search is case sensitive
+  ** if the pattern contains at least one upper case letter, and case
+  ** insensitive otherwise.
   */
   { "abort_nosubject",  DT_QUAD, R_NONE, UL &AbortNosubject, MUTT_ASKYES },
   /*
@@ -274,13 +286,6 @@ struct Option MuttVars[] = {
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
-  */
-  { "attach_keyword",  DT_REGEX,  R_NONE, UL &AttachKeyword, UL "\\<(attach|attached|attachments?)\\>" },
-  /*
-  ** .pp
-  ** If $abort_noattach is not set to no, then the body of the message
-  ** will be scanned for this regular expression, and if found, you will
-  ** be prompted if there are no attachments.
   */
   { "attach_sep",       DT_STRING,  R_NONE, UL &AttachSep, UL "\n" },
   /*
@@ -4394,6 +4399,8 @@ struct Option MuttVars[] = {
   ** (DEPRECATED) Equivalent to setting $$wrap with a negative value.
   */
 
+  { "abort_noattach_regexp",  DT_SYNONYM, R_NONE, UL "abort_noattach_regex",     0 },
+  { "attach_keyword",         DT_SYNONYM, R_NONE, UL "abort_noattach_regex",     0 },
   { "edit_hdrs",              DT_SYNONYM, R_NONE, UL "edit_headers",             0 },
   { "envelope_from",          DT_SYNONYM, R_NONE, UL "use_envelope_from",        0 },
   { "forw_decode",            DT_SYNONYM, R_NONE, UL "forward_decode",           0 },

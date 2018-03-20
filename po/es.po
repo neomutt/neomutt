@@ -6315,9 +6315,9 @@ msgid "No attachments, cancel sending?"
 msgstr "editar la codificación del archivo adjunto"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
-"El mensaje contiene texto que coincide con \"$attach_keyword\". No se envía."
+"El mensaje contiene texto que coincide con \"$abort_noattach_regex\". No se envía."
 
 #: send.c:2005 smtp.c:189
 msgid "Sending message..."

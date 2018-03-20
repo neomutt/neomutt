@@ -109,7 +109,6 @@ WHERE char *Attribution;
 WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
-WHERE struct Regex *AttachKeyword;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
 WHERE char *ContentType;
@@ -320,6 +319,7 @@ WHERE char *NmQueryWindowCurrentSearch;
 #endif
 
 /* These variables are backing for config items */
+WHERE struct Regex *AbortNoattachRegex;
 WHERE struct Regex *GecosMask;
 WHERE struct Regex *Mask;
 WHERE struct Regex *QuoteRegex;

@@ -6083,7 +6083,7 @@ msgid "No attachments, cancel sending?"
 msgstr "添付ファイルの content-trasfer-encoding を編集"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
 #: send.c:2005 smtp.c:189

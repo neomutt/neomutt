@@ -10782,7 +10782,7 @@ set smime_default_key = "SMIME-KEY"
             <tbody>
               <row>
                 <entry>
-                  <literal>attach_keyword</literal>
+                  <literal>abort_noattach_regex</literal>
                 </entry>
                 <entry>regular expression</entry>
                 <entry>
@@ -10813,7 +10813,7 @@ set smime_default_key = "SMIME-KEY"
 # no attachments added. This is meant to ensure that the user does not forget
 # to attach a file after promising to do so in the mail.
 
-# Ask if the user wishes to abort sending if $attach_keyword is found in the
+# Ask if the user wishes to abort sending if $abort_noattach_regex is found in the
 # body, but no attachments have been added
 # It can be set to:
 #    "yes"     : always abort
@@ -10822,13 +10822,13 @@ set smime_default_key = "SMIME-KEY"
 set abort_noattach = no
 <emphasis role="comment"># Search for the following regular expression in the body of the email
 # English: attach, attached, attachment, attachments</emphasis>
-set attach_keyword = "\\&lt;attach(|ed|ments?)\\&gt;"
+set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
 <emphasis role="comment"># Nederlands:
-# set attach_keyword = "\\&lt;(bijvoegen|bijgevoegd|bijlage|bijlagen)\\&gt;"
+# set abort_noattach_regex = "\\&lt;(bijvoegen|bijgevoegd|bijlage|bijlagen)\\&gt;"
 # Deutsch:
-# set attach_keyword = "\\&lt;(anhängen|angehängt|anhang|anhänge|hängt an)\\&gt;"
+# set abort_noattach_regex = "\\&lt;(anhängen|angehängt|anhang|anhänge|hängt an)\\&gt;"
 # Français:
-# set attach_keyword = "\\&lt;(attaché|attachés|attache|attachons|joint|jointe|joints|jointes|joins|joignons)\\&gt;"
+# set abort_noattach_regex = "\\&lt;(attaché|attachés|attache|attachons|joint|jointe|joints|jointes|joins|joignons)\\&gt;"
 # vim: syntax=neomuttrc</emphasis>
 </screen>
       </sect2>
