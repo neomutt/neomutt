@@ -233,6 +233,7 @@ int mutt_log_start(void)
     return -1;
 
   log_file_set_filename(name, false);
+  FREE(&name);
 
   /* This will trigger the file creation */
   if (log_file_set_level(DebugLevel, true) < 1)
@@ -290,6 +291,7 @@ int mutt_log_set_file(const char *file, bool verbose)
     return 0;
 
   log_file_set_filename(name, verbose);
+  FREE(&name);
   mutt_str_replace(&DebugFile, file);
 
   return 0;

@@ -482,7 +482,9 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
   notmuch_database_t *db = NULL;
   int ct = 0;
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
+#if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
   char *msg = NULL;
+#endif
 
   mutt_debug(1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
@@ -513,12 +515,14 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
   {
     if (!db)
     {
+#if LIBNOTMUCH_CHECK_VERSION(4, 2, 0)
       if (msg)
       {
         mutt_error(msg);
         FREE(&msg);
       }
       else
+#endif
       {
         mutt_error(_("Cannot open notmuch database: %s: %s"), filename,
                    st ? notmuch_status_to_string(st) : _("unknown reason"));

@@ -1254,11 +1254,11 @@ int mutt_can_decode(struct Body *a)
         return 1;
     }
   }
-  else if (WithCrypto && a->type == TYPEAPPLICATION)
+  else if ((WithCrypto != 0) && a->type == TYPEAPPLICATION)
   {
-    if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(a))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(a))
       return 1;
-    if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(a))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(a))
       return 1;
   }
 
@@ -1574,23 +1574,27 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      decode_quoted(
-          s, b->length,
-          istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)), cd);
+      decode_quoted(s, b->length,
+                    istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                               mutt_is_application_pgp(b)),
+                    cd);
       break;
     case ENCBASE64:
-      mutt_decode_base64(
-          s, b->length,
-          istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)), cd);
+      mutt_decode_base64(s, b->length,
+                         istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                                    mutt_is_application_pgp(b)),
+                         cd);
       break;
     case ENCUUENCODED:
-      decode_uuencoded(
-          s, b->length,
-          istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)), cd);
+      decode_uuencoded(s, b->length,
+                       istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                                  mutt_is_application_pgp(b)),
+                       cd);
       break;
     default:
       decode_xbit(s, b->length,
-                  istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)),
+                  istext || (((WithCrypto & APPLICATION_PGP) != 0) &&
+                             mutt_is_application_pgp(b)),
                   cd);
       break;
   }
@@ -1817,7 +1821,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       /* avoid copying this part twice since removing the transfer-encoding is
        * the only operation needed.
        */
-      if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
+      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
         handler = crypt_pgp_application_pgp_handler;
       else if (ReflowText &&
                (mutt_str_strcasecmp("flowed",
@@ -1853,7 +1857,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     {
       handler = alternative_handler;
     }
-    else if (WithCrypto && (mutt_str_strcasecmp("signed", b->subtype) == 0))
+    else if ((WithCrypto != 0) && (mutt_str_strcasecmp("signed", b->subtype) == 0))
     {
       p = mutt_param_get(&b->parameter, "protocol");
 
@@ -1880,16 +1884,16 @@ int mutt_body_handler(struct Body *b, struct State *s)
       b->encoding = ENC7BIT;
     }
   }
-  else if (WithCrypto && b->type == TYPEAPPLICATION)
+  else if ((WithCrypto != 0) && b->type == TYPEAPPLICATION)
   {
     if (OPT_DONT_HANDLE_PGP_KEYS && (mutt_str_strcasecmp("pgp-keys", b->subtype) == 0))
     {
       /* pass raw part through for key extraction */
       plaintext = true;
     }
-    else if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
+    else if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
       handler = crypt_pgp_application_pgp_handler;
-    else if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(b))
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(b))
       handler = crypt_smime_application_smime_handler;
   }
 

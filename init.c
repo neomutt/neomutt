@@ -405,7 +405,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
             map = SortBrowserMethods;
             break;
           case DT_SORT_KEYS:
-            if ((WithCrypto & APPLICATION_PGP))
+            if (WithCrypto & APPLICATION_PGP)
               map = SortKeyMethods;
             break;
           case DT_SORT_AUX:
@@ -2535,7 +2535,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_MAGIC))
     {
       if (query || *s->dptr != '=')
       {
@@ -2573,7 +2573,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_NUMBER)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_NUMBER))
     {
       short *ptr = (short *) MuttVars[idx].var;
       short val;
@@ -2637,7 +2637,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
 #endif
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_QUAD))
     {
       if (query)
       {
@@ -2679,7 +2679,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           *(unsigned char *) MuttVars[idx].var = MUTT_YES;
       }
     }
-    else if (DTYPE(MuttVars[idx].type) == DT_SORT)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_SORT))
     {
       const struct Mapping *map = NULL;
 
@@ -2692,7 +2692,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           map = SortBrowserMethods;
           break;
         case DT_SORT_KEYS:
-          if ((WithCrypto & APPLICATION_PGP))
+          if (WithCrypto & APPLICATION_PGP)
             map = SortKeyMethods;
           break;
         case DT_SORT_AUX:
@@ -2733,7 +2733,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
     }
 #ifdef USE_HCACHE
-    else if (DTYPE(MuttVars[idx].type) == DT_HCACHE)
+    else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_HCACHE))
     {
       if (query || (*s->dptr != '='))
       {
@@ -3530,7 +3530,7 @@ int var_to_string(int idx, char *val, size_t len)
         map = SortBrowserMethods;
         break;
       case DT_SORT_KEYS:
-        if ((WithCrypto & APPLICATION_PGP))
+        if (WithCrypto & APPLICATION_PGP)
           map = SortKeyMethods;
         else
           map = SortMethods;
@@ -4324,7 +4324,7 @@ bool set_default_value(const char *name, intptr_t value)
     return false;
 
   int idx = mutt_option_index(name);
-  if (!idx)
+  if (idx < 0)
     return false;
 
   MuttVars[idx].initial = value;
@@ -4337,7 +4337,7 @@ void reset_value(const char *name)
     return;
 
   int idx = mutt_option_index(name);
-  if (!idx)
+  if (idx < 0)
     return;
 
   restore_default(&MuttVars[idx]);

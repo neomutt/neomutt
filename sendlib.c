@@ -410,7 +410,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 static bool write_as_text_part(struct Body *b)
 {
   return (mutt_is_text_part(b) ||
-          ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)));
+          (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b)));
 }
 
 int mutt_write_mime_body(struct Body *a, FILE *f)
@@ -445,7 +445,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
   }
 
   /* This is pretty gross, but it's the best solution for now... */
-  if ((WithCrypto & APPLICATION_PGP) && a->type == TYPEAPPLICATION &&
+  if (((WithCrypto & APPLICATION_PGP) != 0) && a->type == TYPEAPPLICATION &&
       (mutt_str_strcmp(a->subtype, "pgp-encrypted") == 0))
   {
     fputs("Version: 1\n", f);
@@ -1381,27 +1381,27 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
     cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-    if ((WithCrypto & APPLICATION_PGP))
+    if (WithCrypto & APPLICATION_PGP)
       pgp &= ~PGPENCRYPT;
-    if ((WithCrypto & APPLICATION_SMIME))
+    if (WithCrypto & APPLICATION_SMIME)
       pgp &= ~SMIMEENCRYPT;
   }
-  else if (WithCrypto && ForwardDecrypt && (hdr->security & ENCRYPT))
+  else if ((WithCrypto != 0) && ForwardDecrypt && (hdr->security & ENCRYPT))
   {
-    if ((WithCrypto & APPLICATION_PGP) && mutt_is_multipart_encrypted(hdr->content))
+    if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_multipart_encrypted(hdr->content))
     {
       chflags |= CH_MIME | CH_NONEWLINE;
       cmflags = MUTT_CM_DECODE_PGP;
       pgp &= ~PGPENCRYPT;
     }
-    else if ((WithCrypto & APPLICATION_PGP) &&
+    else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              (mutt_is_application_pgp(hdr->content) & PGPENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       pgp &= ~PGPENCRYPT;
     }
-    else if ((WithCrypto & APPLICATION_SMIME) &&
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              mutt_is_application_smime(hdr->content) & SMIMEENCRYPT)
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
@@ -3005,7 +3005,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     fprintf(msg->fp, "%s", mutt_date_make_date(buf, sizeof(buf)));
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
-  if ((WithCrypto & APPLICATION_PGP) && post && (hdr->security & APPLICATION_PGP))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && post && (hdr->security & APPLICATION_PGP))
   {
     fputs("X-Mutt-PGP: ", msg->fp);
     if (hdr->security & ENCRYPT)
@@ -3024,7 +3024,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   }
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
-  if ((WithCrypto & APPLICATION_SMIME) && post && (hdr->security & APPLICATION_SMIME))
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && post && (hdr->security & APPLICATION_SMIME))
   {
     fputs("X-Mutt-SMIME: ", msg->fp);
     if (hdr->security & ENCRYPT)

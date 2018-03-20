@@ -757,7 +757,7 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
   regmatch_t pmatch[1], smatch[1];
   bool found;
   bool null_rx;
-  int offset, i;
+  int offset, i = 0;
 
   if (n == 0 || ISHEADER(line_info[n - 1].type))
   {
@@ -1018,16 +1018,6 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     } while (found || null_rx);
     if (nl > 0)
       buf[nl] = '\n';
-  }
-
-  if (line_info[n].type == MT_COLOR_MESSAGE_LOG)
-  {
-    line_info[n].chunks = 1;
-    line_info[n].syntax = mutt_mem_calloc(1, sizeof(struct Syntax));
-
-    (line_info[n].syntax)[i].color = MT_COLOR_ERROR;
-    (line_info[n].syntax)[i].first = 5;
-    (line_info[n].syntax)[i].last = 10;
   }
 }
 
@@ -3057,7 +3047,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_DECODE_SAVE:
       case OP_DECODE_COPY:
       case OP_DECRYPT_COPY:
-        if (!WithCrypto && ch == OP_DECRYPT_COPY)
+        if (!(WithCrypto != 0) && ch == OP_DECRYPT_COPY)
         {
           ch = -1;
           break;

@@ -354,7 +354,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       */
       code |= SENDPOSTPONEDFCC;
     }
-    else if ((WithCrypto & APPLICATION_PGP) &&
+    else if (((WithCrypto & APPLICATION_PGP) != 0) &&
              ((mutt_str_strncmp("Pgp:", np->data, 4) == 0) /* this is generated
                                                         * by old neomutt versions
                                                         */
@@ -363,7 +363,7 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
     }
-    else if ((WithCrypto & APPLICATION_SMIME) &&
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              (mutt_str_strncmp("X-Mutt-SMIME:", np->data, 13) == 0))
     {
       hdr->security = mutt_parse_crypt_hdr(strchr(np->data, ':') + 1, 1, APPLICATION_SMIME);
@@ -499,18 +499,18 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
   }
 
   /* the cryptalg field must not be empty */
-  if ((WithCrypto & APPLICATION_SMIME) && *smime_cryptalg)
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && *smime_cryptalg)
     mutt_str_replace(&SmimeEncryptWith, smime_cryptalg);
 
   /* Set {Smime,Pgp}SignAs, if desired. */
 
-  if ((WithCrypto & APPLICATION_PGP) && (crypt_app == APPLICATION_PGP) &&
+  if (((WithCrypto & APPLICATION_PGP) != 0) && (crypt_app == APPLICATION_PGP) &&
       (flags & SIGN) && (set_empty_signas || *sign_as))
   {
     mutt_str_replace(&PgpSignAs, sign_as);
   }
 
-  if ((WithCrypto & APPLICATION_SMIME) && (crypt_app == APPLICATION_SMIME) &&
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && (crypt_app == APPLICATION_SMIME) &&
       (flags & SIGN) && (set_empty_signas || *sign_as))
   {
     mutt_str_replace(&SmimeSignAs, sign_as);
@@ -573,7 +573,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
   /* decrypt pgp/mime encoded messages */
 
-  if ((WithCrypto & APPLICATION_PGP) &&
+  if (((WithCrypto & APPLICATION_PGP) != 0) &&
       (sec_type = mutt_is_multipart_encrypted(newhdr->content)))
   {
     newhdr->security |= sec_type;
@@ -597,15 +597,15 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
    * resending messages
    */
 
-  if (WithCrypto && mutt_is_multipart_signed(newhdr->content))
+  if ((WithCrypto != 0) && mutt_is_multipart_signed(newhdr->content))
   {
     newhdr->security |= SIGN;
-    if ((WithCrypto & APPLICATION_PGP) &&
+    if (((WithCrypto & APPLICATION_PGP) != 0) &&
         (mutt_str_strcasecmp(
              mutt_param_get(&newhdr->content->parameter, "protocol"),
              "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
-    else if ((WithCrypto & APPLICATION_SMIME))
+    else if (WithCrypto & APPLICATION_SMIME)
       newhdr->security |= APPLICATION_SMIME;
 
     /* destroy the signature */
@@ -670,7 +670,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
     if (!s.fpout)
       goto bail;
 
-    if ((WithCrypto & APPLICATION_PGP) &&
+    if (((WithCrypto & APPLICATION_PGP) != 0) &&
         ((sec_type = mutt_is_application_pgp(b)) & (ENCRYPT | SIGN)))
     {
       if (sec_type & ENCRYPT)
@@ -692,7 +692,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       mutt_str_replace(&b->subtype, "plain");
       mutt_param_delete(&b->parameter, "x-action");
     }
-    else if ((WithCrypto & APPLICATION_SMIME) &&
+    else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              ((sec_type = mutt_is_application_smime(b)) & (ENCRYPT | SIGN)))
     {
       if (sec_type & ENCRYPT)
@@ -732,7 +732,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
   /* Fix encryption flags. */
 
   /* No inline if multipart. */
-  if (WithCrypto && (newhdr->security & INLINE) && newhdr->content->next)
+  if ((WithCrypto != 0) && (newhdr->security & INLINE) && newhdr->content->next)
     newhdr->security &= ~INLINE;
 
   /* Do we even support multiple mechanisms? */

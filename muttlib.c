@@ -360,9 +360,9 @@ bool mutt_needs_mailcap(struct Body *m)
         return false;
       break;
     case TYPEAPPLICATION:
-      if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(m))
+      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(m))
         return false;
-      if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(m))
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
         return false;
       break;
 
@@ -379,7 +379,7 @@ bool mutt_is_text_part(struct Body *b)
   int t = b->type;
   char *s = b->subtype;
 
-  if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
     return false;
 
   if (t == TYPETEXT)
@@ -391,7 +391,7 @@ bool mutt_is_text_part(struct Body *b)
       return true;
   }
 
-  if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
+  if (((WithCrypto & APPLICATION_PGP) != 0) && t == TYPEAPPLICATION)
   {
     if (mutt_str_strcasecmp("pgp-keys", s) == 0)
       return true;

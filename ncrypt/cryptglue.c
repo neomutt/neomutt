@@ -120,22 +120,22 @@ void crypt_init(void)
  */
 void crypt_invoke_message(int type)
 {
-  if ((WithCrypto & APPLICATION_PGP) && (type & APPLICATION_PGP))
+  if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP))
     mutt_message(_("Invoking PGP..."));
-  else if ((WithCrypto & APPLICATION_SMIME) && (type & APPLICATION_SMIME))
+  else if (((WithCrypto & APPLICATION_SMIME) != 0) && (type & APPLICATION_SMIME))
     mutt_message(_("Invoking S/MIME..."));
 }
 
 /* Returns 1 if a module backend is registered for the type */
 int crypt_has_module_backend(int type)
 {
-  if ((WithCrypto & APPLICATION_PGP) && (type & APPLICATION_PGP) &&
+  if (((WithCrypto & APPLICATION_PGP) != 0) && (type & APPLICATION_PGP) &&
       crypto_module_lookup(APPLICATION_PGP))
   {
     return 1;
   }
 
-  if ((WithCrypto & APPLICATION_SMIME) && (type & APPLICATION_SMIME) &&
+  if (((WithCrypto & APPLICATION_SMIME) != 0) && (type & APPLICATION_SMIME) &&
       crypto_module_lookup(APPLICATION_SMIME))
   {
     return 1;

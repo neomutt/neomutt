@@ -795,10 +795,10 @@ void km_init(void)
   create_bindings(OpQuery, MENU_QUERY);
   create_bindings(OpAlias, MENU_ALIAS);
 
-  if ((WithCrypto & APPLICATION_PGP))
+  if (WithCrypto & APPLICATION_PGP)
     create_bindings(OpPgp, MENU_PGP);
 
-  if ((WithCrypto & APPLICATION_SMIME))
+  if (WithCrypto & APPLICATION_SMIME)
     create_bindings(OpSmime, MENU_SMIME);
 
 #ifdef CRYPT_BACKEND_GPGME
