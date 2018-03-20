@@ -1891,12 +1891,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     {
       if (!(flags & SENDBATCH))
       {
-        mutt_error(_("No recipients are specified!"));
+        mutt_error(_("No recipients specified."));
         goto main_loop;
       }
       else
       {
-        puts(_("No recipients were specified."));
+        puts(_("No recipients specified."));
         goto cleanup;
       }
     }

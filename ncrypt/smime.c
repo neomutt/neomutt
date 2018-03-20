@@ -2096,10 +2096,10 @@ int smime_send_menu(struct Header *msg)
           switch (mutt_multi_choice(_("Choose algorithm family:"
                                       " 1: DES, 2: RC2, 3: AES,"
                                       " or (c)lear? "),
-                                    _("drac")))
+                                    _("123c")))
           {
             case 1:
-              switch (choice = mutt_multi_choice(_("1: DES, 2: Triple-DES "), _("dt")))
+              switch (choice = mutt_multi_choice(_("1: DES, 2: Triple-DES "), _("12")))
               {
                 case 1:
                   mutt_str_replace(&SmimeEncryptWith, "des");
@@ -2112,7 +2112,7 @@ int smime_send_menu(struct Header *msg)
 
             case 2:
               switch (choice = mutt_multi_choice(
-                          _("1: RC2-40, 2: RC2-64, 3: RC2-128 "), _("468")))
+                          _("1: RC2-40, 2: RC2-64, 3: RC2-128 "), _("123")))
               {
                 case 1:
                   mutt_str_replace(&SmimeEncryptWith, "rc2-40");
@@ -2128,7 +2128,7 @@ int smime_send_menu(struct Header *msg)
 
             case 3:
               switch (choice = mutt_multi_choice(
-                          _("1: AES128, 2: AES192, 3: AES256 "), _("895")))
+                          _("1: AES128, 2: AES192, 3: AES256 "), _("123")))
               {
                 case 1:
                   mutt_str_replace(&SmimeEncryptWith, "aes128");

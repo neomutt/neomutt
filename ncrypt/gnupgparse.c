@@ -142,7 +142,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
   else
     memset(&tmp, 0, sizeof(tmp));
 
-  mutt_debug(2, "buf = `%s'\n", buf);
+  mutt_debug(2, "buf = '%s'\n", buf);
 
   for (p = buf; p; p = pend)
   {

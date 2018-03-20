@@ -119,7 +119,7 @@ static void usage(void)
          "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
          "  -v            show version and compile-time definitions\n"
          "  -x            simulate the mailx send mode\n"
-         "  -y            select a mailbox specified in your `mailboxes' list\n"
+         "  -y            select a mailbox specified in your 'mailboxes' list\n"
          "  -z            exit immediately if there are no messages in the mailbox\n"
          "  -Z            open the first folder with new message, exit immediately if none\n"
          "  -h            this help message"));

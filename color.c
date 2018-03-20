@@ -705,7 +705,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
 {
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("Missing arguments."), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
     return -1;
   }
 
@@ -731,7 +731,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
   {
     if (!MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("Missing arguments."), err->dsize);
+      mutt_buffer_printf(err, _("%s: too few arguments"), "color");
       return -1;
     }
 
@@ -763,7 +763,7 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
 {
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("color: too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
     return -1;
   }
 
@@ -774,7 +774,7 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("color: too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "color");
     return -1;
   }
 
@@ -798,7 +798,7 @@ static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
 
   if (!MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("mono: too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), "mono");
     return -1;
   }
 
@@ -842,7 +842,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
  *        mono  OBJECT ATTR [ REGEX ]
  */
 static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
-                       parser_callback_t callback, bool dry_run)
+                       parser_callback_t callback, bool dry_run, bool color)
 {
   int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0;
   int r = 0, match = 0;
@@ -862,7 +862,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
   {
     if (!MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+      mutt_buffer_printf(err, _("%s: too few arguments"), color ? "color" : "mono");
       return -1;
     }
 
@@ -871,7 +871,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
   if (MoreArgs(s) && (object != MT_COLOR_STATUS))
   {
-    mutt_str_strfcpy(err->data, _("too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
     return -1;
   }
 
@@ -928,7 +928,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
     if (MoreArgs(s))
     {
-      mutt_str_strfcpy(err->data, _("too many arguments"), err->dsize);
+      mutt_buffer_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
       return -1;
     }
 
@@ -1003,7 +1003,7 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
   if (OPT_NO_CURSES || !has_colors())
     dry_run = true;
 
-  return parse_color(buf, s, err, parse_color_pair, dry_run);
+  return parse_color(buf, s, err, parse_color_pair, dry_run, true);
 }
 
 #endif
@@ -1021,5 +1021,5 @@ int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
     dry_run = true;
 #endif
 
-  return parse_color(buf, s, err, parse_attr_spec, dry_run);
+  return parse_color(buf, s, err, parse_attr_spec, dry_run, false);
 }

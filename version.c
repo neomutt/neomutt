@@ -89,9 +89,9 @@ static const char *ReachingUs =
 // clang-format off
 static const char *Notice =
     N_("Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
-       "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type `neomutt -vv'.\n"
+       "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
        "NeoMutt is free software, and you are welcome to redistribute it\n"
-       "under certain conditions; type `neomutt -vv' for details.\n");
+       "under certain conditions; type 'neomutt -vv' for details.\n");
 // clang-format on
 
 /**
@@ -398,10 +398,10 @@ void print_version(void)
   rstrip_in_place((char *) cc_cflags);
   printf("\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
 
-  puts(_("\nDefault options:"));
+  printf("\n%s\n", _("Default options:"));
   print_compile_options(comp_opts_default);
 
-  puts(_("\nCompile options:"));
+  printf("\n%s\n", _("Compile options:"));
   print_compile_options(comp_opts);
 
 #ifdef DOMAIN

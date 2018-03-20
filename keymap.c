@@ -964,7 +964,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, MUTT_TOKEN_CONDENSE);
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("push: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "push");
     r = -1;
   }
   else
@@ -977,7 +977,7 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
  *
  * Expects to see: <menu-string>,<menu-string>,... <key-string>
  */
-char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, struct Buffer *err)
+static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, struct Buffer *err, bool bind)
 {
   struct Buffer buf;
   int i = 0;
@@ -1014,14 +1014,14 @@ char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, str
 
     if (!*buf.data)
     {
-      mutt_str_strfcpy(err->data, _("null key sequence"), err->dsize);
+      mutt_buffer_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
     else if (MoreArgs(s))
       return buf.data;
   }
   else
   {
-    mutt_str_strfcpy(err->data, _("too few arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too few arguments"), bind ? "bind" : "macro");
   }
 error:
   FREE(&buf.data);
@@ -1101,7 +1101,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   char *key = NULL;
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
 
-  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
+  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
   if (!key)
     return -1;
 
@@ -1109,7 +1109,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
   mutt_extract_token(buf, s, 0);
   if (MoreArgs(s))
   {
-    mutt_str_strfcpy(err->data, _("bind: too many arguments"), err->dsize);
+    mutt_buffer_printf(err, _("%s: too many arguments"), "bind");
     r = -1;
   }
   else if (mutt_str_strcasecmp("noop", buf->data) == 0)
@@ -1159,7 +1159,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
   char *seq = NULL;
   char *key = NULL;
 
-  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err);
+  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
   if (!key)
     return -1;
 
@@ -1178,7 +1178,7 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 
       if (MoreArgs(s))
       {
-        mutt_str_strfcpy(err->data, _("macro: too many arguments"), err->dsize);
+        mutt_buffer_printf(err, _("%s: too many arguments"), "macro");
       }
       else
       {
