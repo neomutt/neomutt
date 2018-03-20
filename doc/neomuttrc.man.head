@@ -139,6 +139,25 @@ which is replaced with the name of the temporary folder to which to
 write.
 .PP
 .nf
+\fBattachments\fP [\fB + \fP | \fB-\fP ]\fIdisposition\fP \fImime-type\fP
+\fBunattachments\fP [\fB + \fP | \fB-\fP ]\fIdisposition\fP \fImime-type\fP
+.fi
+.IP
+You can make your message index display the number of qualifying attachments in
+each message, or search for messages by attachment count. You also can
+configure what kinds of attachments qualify for this feature with the
+\fBattachments\fP and \fBunattachments\fP commands.
+.IP
+\fIdisposition\fP is the attachment's Content-Disposition type \(em either
+inline or attachment. You can abbreviate this to \fBI\fP or \fBA\fP.
+.IP
+\fImime-type\fP is the MIME type of the attachment you want the command to
+affect. A MIME type is always of the format \fBmajor/minor\fP. The major part
+of \fImime-type\fP must be literal text (or the special token \(lq\fB*\fP\(rq,
+but the minor part may be a regular expression. (Therefore, \(lq\fB*/.*\fP\(rq
+matches any MIME type.)
+.PP
+.nf
 \fBauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 \fBunauto_view\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 .fi
@@ -221,6 +240,15 @@ You may use multiple
 a recipient.
 .PP
 .nf
+\fBexec\fP \fIfunction\fP [ \fIfunction\fP ... ]
+.ni
+.IP
+This command can be used to execute any function. Functions are listed in the
+function reference.
+.IP
+\(lq\fBexec\fP \fIfunction\fP\(rq is equivalent to \(lq\fBpush <\fP\fIfunction\fP\fB>\fP\(rq.
+.PP
+.nf
 \fBfcc-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
 \fBsave-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
 \fBfcc-save-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
@@ -269,11 +297,16 @@ Once defined, these address groups can be used in patterns to search for and lim
 display to messages matching a group.
 .PP
 .nf
-\fBhdr_order\fP \fIheader1\fP \fIheader2\fP [ ... ]
+\fBhdr_order\fP \fIheader\fP [ \fIheader\fP ... ]
+\fBunhdr_order\fP [ \fB*\fP | \fIheader\fP ... ]
 .fi
 .IP
-With this command, you can specify an order in which neomutt will
-attempt to present headers to you when viewing messages.
+With the \fBhdr_order\fP command you can specify an order in which NeoMutt will
+attempt to present these headers to you when viewing messages.
+.IP
+\(lq\fBunhdr_order *\fP\(rq will clear all previous headers from the order
+list, thus removing the header order effects set by the system-wide startup
+file.
 .PP
 .nf
 \fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
@@ -292,8 +325,27 @@ In this specific case, you'd put this into your configuration file:
 .B "iconv-hook iso-8859-1 8859-1"
 .PP
 .nf
+\fBifdef\fP \fIsymbol\fP "\fIconfig-command\fP [ \fIargs\fP ... ]"
+\fBifndef\fP \fIsymbol\fP "\fIconfig-command\fP [ \fIargs\fP ... ]"
+\fBfinish\fP
+.fi
+.IP
+The \fBifdef\fP feature introduces three new commands to NeoMutt and allow you
+to share one config file between versions of NeoMutt that may have different
+features compiled in.
+.IP
+Here a \fIsymbol\fP can be a
+.BR $variable ", " <function> ", " command " or " compile-time
+.BR symbol ", "
+such as \(lq\fBimap\fP\(rq. A list of compile-time \fIsymbol\fPs can be seen in
+the output of the command \(lq\fBneomutt -v\fP\(rq (in the
+\(lq\fBCompile options\fP\(rq section).
+.IP
+\fBfinish\fP is particularly useful when combined with \fBifndef\fP.
+.PP
+.nf
 \fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
-\fBunignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
+\fBunignore\fP [ \fB*\fP | \fIpattern\fP ... ]
 .fi
 .IP
 The \fBignore\fP command permits you to specify header fields which
@@ -304,10 +356,10 @@ The \fBunignore\fP command permits you to define exceptions from
 the above mentioned list of ignored headers.
 .PP
 .nf
-\fBlists\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP ... ]
-\fBunlists\fP \fIregex\fP [ \fIregex\fP ... ]
-\fBsubscribe\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP ... ]
-\fBunsubscribe\fP \fIregex\fP [ \fIregex\fP ... ]
+\fBlists\fP [ \fB-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
+\fBunlists\fP [ \fB-group\fP \fIname\fP ... ] [ \fB*\fP | \fIregex\fP ... ]
+\fBsubscribe\fP [ \fB-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
+\fBunsubscribe\fP [ \fB-group\fP \fIname\fP ... ] [ \fB*\fP | \fIregex\fP ... ]
 .fi
 .IP
 NeoMutt maintains two lists of mailing list address patterns, a list of
@@ -323,32 +375,32 @@ it from the list of subscribed mailing lists. The \fB-group\fP flag
 adds all of the subsequent regular expressions to the named group.
 .PP
 .nf
-\fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
+\fBmacro\fP \fImenu\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
 .fi
 .IP
 This command binds the given \fIsequence\fP of keys to the given
-\fIkey\fP in the given \fImap\fP or maps.  For valid maps, see \fBbind\fP. To
-specify multiple maps, put only a comma between the maps.
+\fIkey\fP in the given \fImenu\fP or menus.  For valid menus, see \fBbind\fP. To
+specify multiple menus, put only a comma between the menus.
 .PP
 .nf
-\fBmailboxes\fP \fIfilename\fP [ \fIfilename\fP ... ]
-\fBunmailboxes\fP [ \fB*\fP | \fIfilename\fP ... ]
+\fBmailboxes\fP \fImailbox\fP [ \fImailbox\fP ... ]
+\fBunmailboxes\fP [ \fB*\fP | \fImailbox\fP ... ]
 .fi
 .IP
 The \fBmailboxes\fP specifies folders which can receive mail and which will
 be checked for new messages.  When changing folders, pressing space
 will cycle through folders with new mail.  The \fBunmailboxes\fP
 command is used to remove a file name from the list of folders which
-can receive mail.  If "\fB*\fP" is specified as the file name, the
+can receive mail.  If \(lq\fB*\fP\(rq is specified as the file name, the
 list is emptied.
 .PP
 .nf
-\fBmailto_allow\fP \fIheader-field\fP [ ... ]
+\fBmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
 \fBunmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
 .fi
 .IP
-These commands allow the user to modify the list of allowed header
-fields in a \fImailto:\fP URL that NeoMutt will include in the
+These commands allow the user to modify the list of allowed \fIheader-field\fPs
+in a \fImailto:\fP URL that NeoMutt will include in the
 the generated message.  By default the list contains
 \fBsubject\fP and \fBbody\fP, as specified by RFC2368; and
 \fBcc\fP, \fBin-reply-to\fP, and \fBreferences\fP to aid with
@@ -376,11 +428,11 @@ the given \fIcommand\fP is executed.  When multiple
 which they occur in the configuration file.
 .PP
 .nf
-\fBmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
-\fBunmime_lookup\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
+\fBmime_lookup\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
+\fBunmime_lookup\fP [ \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
 .fi
 .IP
-This command permits you to define a list of "data" MIME content
+This command permits you to define a list of \(lqdata\(rq MIME content
 types for which neomutt will try to determine the actual file type from
 the file name, and not use a
 .BR mailcap (5)
@@ -389,7 +441,8 @@ the \fBapplication/octet-stream\fP MIME type to this list.
 .PP
 .nf
 \fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregex\fP ]
-\fBmono\fP index \fIattribute\fP [ \fIpattern\fP ]
+\fBmono\fP \fIindex\fP \fIattribute\fP [ \fIpattern\fP ]
+\fBunmono\fP [ \fIindex\fP | \fIheader\fP | \fIbody\fP ] [ \fB*\fP | \fIpattern\fP ... ]
 .fi
 .IP
 For terminals which don't support color, you can still assign
@@ -399,7 +452,7 @@ attributes to objects.  Valid attributes include:
 .PP
 .nf
 \fBmy_hdr\fP \fIstring\fP
-\fBunmy_hdr\fP \fIfield\fP
+\fBunmy_hdr\fP [ \fB*\fP | \fIfield\fP ... ]
 .fi
 .IP
 Using \fBmy_hdr\fP, you can define headers which will be added to
@@ -421,6 +474,21 @@ executed.  When multiple \fBreply-hook\fPs match, they are executed
 in the order in which they occur in the configuration file, but all
 \fBreply-hook\fPs are matched and executed before \fBsend-hook\fPs,
 regardless of their order in the configuration file.
+.PP
+.nf
+\fBscore\fP \fIpattern\fP \fIvalue\fP
+\fBunscore\fP [ \fB*\fP | \fIpattern\fP ... ]
+.fi
+.IP
+The \fBscore\fP command adds \fIvalue\fP to a message's score if \fIpattern\fP
+matches it. \fIpattern\fP is a string in the format described in the patterns
+section. \fIvalue\fP is a positive or negative integer. A message's final score
+is the sum total of all matching score entries.
+.IP
+The \fBunscore\fP command removes score entries from the list. You must specify
+the same \fIpattern\fP specified in the \fBscore\fP command for it to be
+removed. The \fIpattern\fP \(lq\fB*\fP\(rq is a special token which means to
+clear the list of all score entries.
 .PP
 .nf
 \fBsend-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
@@ -478,11 +546,35 @@ time defaults.  If you reset the special variable \fBall\fP, all
 variables will reset to their compile time defaults.
 .PP
 .nf
+\fBsetenv\fP [\fB?\fP]\fIvariable\fP [ \fIvalue\fP ]
+\fBunsetenv\fP \fIvariable\fP
+.fi
+.IP
+You can alter the environment that NeoMutt passes on to its child processes
+using the \(lq\fBsetenv\fP\(rq and \(lq\fBunsetenv\fP\(rq operators.
+.IP
+You can also query current environment \fIvalue\fPs by prefixing a
+\(lq\fB?\fP\(rq character.
+.PP
+.nf
 \fBshutdown-hook\fP \fIcommand\fP
 .fi
 .IP
 Before neomutt is about to exit, and before the mailbox is closed, neomutt will run
 the shutdown hook for the given \fIcommand\fP.
+.PP
+.nf
+\fBsidebar_whitelist\fP \fImailbox\fP [ \fImailbox\fP ...]
+\fBunsidebar_whitelist\fP [ \fB*\fP | \fImailbox\fP ... ]
+.fi
+.IP
+This command specifies \fImailboxe\fPs that will always be displayed in the
+sidebar, even if \fB$sidebar_new_mail_only\fP is set and the \fImailbox\fP does
+not contain new mail.
+.IP
+The \(lq\fBunsidebar_whitelist\fP\(rq command is used to remove
+a \fImailbox\fP from the list of whitelisted mailboxes. Use
+\(lq\fBunsidebar_whitelist *\fP\(rq to remove all mailboxes.
 .PP
 .nf
 \fBsource\fP \fIfilename\fP
@@ -492,12 +584,13 @@ The given file will be evaluated as a configuration file.
 .PP
 .nf
 \fBspam\fP \fIpattern\fP \fIformat\fP
-\fBnospam\fP \fIpattern\fP
+\fBnospam\fP [ \fB*\fP | \fIpattern\fP ]
 .fi
 .IP
 These commands define spam-detection patterns from external spam
-filters, so that neomutt can sort, limit, and search on
-``spam tags'' or ``spam attributes'', or display them
+filters, so that neomutt can
+.BR sort ", " limit ", and " search
+on \(lqspam tags\(rq or \(lqspam attributes\(rq, or \fBdisplay\fP them
 in the index. See the NeoMutt manual for details.
 .PP
 .nf
