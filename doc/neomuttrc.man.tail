@@ -11,9 +11,9 @@
 .BR regex (7),
 .BR strftime (3)
 .PP
-The Neomutt Manual
+The NeoMutt Manual
 .PP
-The Neomutt home page: https://www.neomutt.org
+The NeoMutt home page: https://www.neomutt.org
 .SH AUTHOR
 .PP
 Michael Elkins, and others.  Use <neomutt-devel@neomutt.org> to contact
