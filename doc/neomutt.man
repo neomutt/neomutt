@@ -19,7 +19,7 @@
 .\"
 .TH neomutt 1 "January 2009" Unix "User Manuals"
 .SH NAME
-neomutt \- The Neomutt Mail User Agent
+neomutt \- The NeoMutt Mail User Agent
 .SH SYNTAX
 .PP
 .B neomutt
@@ -65,13 +65,13 @@ neomutt \- The Neomutt Mail User Agent
 \-D [\-S]
 .SH DESCRIPTION
 .PP
-Neomutt is a small but very powerful text based program for reading and sending electronic
+NeoMutt is a small but very powerful text based program for reading and sending electronic
 mail under unix operating systems, including support for color terminals, MIME,
 OpenPGP, and a threaded sorting mode.
 .PP
 .I Note:
 .IR
-This manual page gives a brief overview of neomutt's command line
+This manual page gives a brief overview of NeoMutt's command line
 options. You should find a copy of the full manual in @docdir@, in
 text, HTML, and/or PDF format.
 .SH OPTIONS
@@ -107,9 +107,9 @@ Specify which mailbox to load.
 .IP "-F \fIneomuttrc\fP"
 Specify an initialization file to read instead of ~/.neomuttrc
 .IP "-g \fIserver\fP"
-Start Neomutt with a listing of subscribed newsgroups at specified news server.
+Start NeoMutt with a listing of subscribed newsgroups at specified news server.
 .IP "-G"
-Start Neomutt with a listing of subscribed newsgroups.
+Start NeoMutt with a listing of subscribed newsgroups.
 .IP "-h"
 Display help.
 .IP "-H \fIdraft\fP"
@@ -120,7 +120,7 @@ Specify a file to include into the body of a message.
 .IP "-m \fItype\fP       "
 specify a default mailbox type for newly created folders.
 .IP "-n"
-Causes Neomutt to bypass the system configuration file.
+Causes NeoMutt to bypass the system configuration file.
 .IP "-p"
 Resume a postponed message.
 .IP "-Q \fIquery\fP"
@@ -132,19 +132,19 @@ Open a mailbox in \fIread-only\fP mode.
 .IP "-s \fIsubject\fP"
 Specify the subject of the message.
 .IP "-v"
-Display the Neomutt version number and compile-time definitions.
+Display the NeoMutt version number and compile-time definitions.
 .IP "-vv"
 Display license and copyright information.
 .IP "-x"
 Emulate the mailx compose mode.
 .IP "-y"
-Start Neomutt with a listing of all mailboxes specified by the \fImailboxes\fP
+Start NeoMutt with a listing of all mailboxes specified by the \fImailboxes\fP
 command.
 .IP "-z"
-When used with \-f, causes Neomutt not to start if there are no messages in the
+When used with \-f, causes NeoMutt not to start if there are no messages in the
 mailbox.
 .IP "-Z"
-Causes Neomutt to open the first mailbox specified by the \fImailboxes\fP
+Causes NeoMutt to open the first mailbox specified by the \fImailboxes\fP
 command which contains new mail.
 .IP "--"
 Treat remaining arguments as \fIaddr\fP even if they start with a dash.
@@ -170,7 +170,7 @@ Path to search for mailcap files.
 If this variable is set, mailcap are always used without prompting first.
 .IP "PGPPATH"
 Directory in which the user's PGP public keyring can be found.  When used with
-the original PGP program, neomutt and
+the original PGP program, NeoMutt and
 .B pgpring (1)
 rely on this being set.
 .IP "TMPDIR"
@@ -186,7 +186,7 @@ User configuration file.
 .IP "@sysconfdir@/neomuttrc"
 System-wide configuration file.
 .IP "/tmp/neomuttXXXXXX"
-Temporary files created by Neomutt.
+Temporary files created by NeoMutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
 .IP "@sysconfdir@/mailcap"
@@ -196,7 +196,7 @@ User's personal mapping between MIME types and file extensions.
 .IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
 .IP "@docdir@/manual.txt"
-The Neomutt manual.
+The NeoMutt manual.
 .SH BUGS
 .PP
 See https://github.com/neomutt/neomutt/issues
@@ -218,9 +218,9 @@ GNU General Public License for more details.
 .BR sendmail (1),
 .BR smail (1).
 .PP
-Neomutt Home Page: https://www.neomutt.org
+The NeoMutt Manual
 .PP
-The Neomutt manual
+NeoMutt home page: https://www.neomutt.org
 .SH AUTHOR
 .PP
 Michael Elkins, and others.  Use <neomutt-devel@neomutt.org> to contact
