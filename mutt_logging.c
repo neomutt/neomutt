@@ -45,6 +45,10 @@ char *DebugFile = NULL;  /**< Log file name */
 const int NumOfLogs = 5; /**< How many log files to rotate */
 bool LogAllowDebugSet = false;
 
+#define S_TO_NS  1000000000UL
+#define S_TO_US  1000000UL
+#define US_TO_NS 1000UL
+
 /**
  * micro_elapsed - Number of microseconds between two timevals
  * @param begin Begin time
@@ -57,7 +61,8 @@ static long micro_elapsed(const struct timeval *begin, const struct timeval *end
   if ((begin->tv_sec == 0) && (end->tv_sec != 0))
     return LONG_MAX;
 
-  return ((end->tv_sec - begin->tv_sec) * 1000000) + (end->tv_usec - begin->tv_usec);
+  return ((end->tv_sec - begin->tv_sec) * S_TO_US) +
+         (end->tv_usec - begin->tv_usec);
 }
 
 /**
@@ -68,6 +73,7 @@ static long micro_elapsed(const struct timeval *begin, const struct timeval *end
 static void error_pause(void)
 {
   struct timeval now = { 0 };
+  unsigned long sleep = SleepTime * S_TO_NS;
 
   if (gettimeofday(&now, NULL) < 0)
   {
@@ -76,11 +82,12 @@ static void error_pause(void)
   }
 
   long micro = micro_elapsed(&LastError, &now);
-  if (micro >= 1000000)
+  if ((micro * US_TO_NS) >= sleep)
     return;
 
-  struct timespec wait = { 0 };
-  wait.tv_nsec = 1000000000 - (micro * 10);
+  struct timespec wait = {
+    .tv_nsec = sleep - (micro * US_TO_NS),
+  };
 
   mutt_refresh();
   nanosleep(&wait, NULL);
