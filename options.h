@@ -28,32 +28,31 @@
 
 /* pseudo options */
 
-WHERE bool OPT_AUX_SORT;           /**< (pseudo) using auxiliary sort function */
-WHERE bool OPT_FORCE_REFRESH;      /**< (pseudo) refresh even during macros */
-WHERE bool OPT_NO_CURSES;          /**< (pseudo) when sending in batch mode */
-WHERE bool OPT_SEARCH_REVERSE;     /**< (pseudo) used by ci_search_command */
-WHERE bool OPT_MSG_ERR;            /**< (pseudo) used by mutt_error/mutt_message */
-WHERE bool OPT_SEARCH_INVALID;     /**< (pseudo) used to invalidate the search pat */
-WHERE bool OPT_SIGNALS_BLOCKED;    /**< (pseudo) using by mutt_block_signals () */
-WHERE bool OPT_SYS_SIGNALS_BLOCKED; /**< (pseudo) using by mutt_block_signals_system () */
-WHERE bool OPT_NEED_RESORT;        /**< (pseudo) used to force a re-sort */
-WHERE bool OPT_RESORT_INIT;        /**< (pseudo) used to force the next resort to be from scratch */
-WHERE bool OPT_VIEW_ATTACH;        /**< (pseudo) signals that we are viewing attachments */
-WHERE bool OPT_SORT_SUBTHREADS;    /**< (pseudo) used when $sort_aux changes */
-WHERE bool OPT_NEED_RESCORE;       /**< (pseudo) set when the `score' command is used */
-WHERE bool OPT_ATTACH_MSG;         /**< (pseudo) used by attach-message */
-WHERE bool OPT_HIDE_READ;          /**< (pseudo) whether or not hide read messages */
-WHERE bool OPT_KEEP_QUIET;         /**< (pseudo) shut up the message and refresh functions while we are executing an external program.  */
-WHERE bool OPT_MENU_CALLER;        /**< (pseudo) tell menu to give caller a take */
-WHERE bool OPT_REDRAW_TREE;        /**< (pseudo) redraw the thread tree */
-WHERE bool OPT_PGP_CHECK_TRUST;     /**< (pseudo) used by pgp_select_key () */
+WHERE bool OPT_ATTACH_MSG;           /**< (pseudo) used by attach-message */
+WHERE bool OPT_AUX_SORT;             /**< (pseudo) using auxiliary sort function */
 WHERE bool OPT_DONT_HANDLE_PGP_KEYS; /**< (pseudo) used to extract PGP keys */
-WHERE bool OPT_IGNORE_MACRO_EVENTS; /**< (pseudo) don't process macro/push/exec events while set */
-
+WHERE bool OPT_FORCE_REFRESH;        /**< (pseudo) refresh even during macros */
+WHERE bool OPT_HIDE_READ;            /**< (pseudo) whether or not hide read messages */
+WHERE bool OPT_IGNORE_MACRO_EVENTS;  /**< (pseudo) don't process macro/push/exec events while set */
+WHERE bool OPT_KEEP_QUIET;           /**< (pseudo) shut up the message and refresh functions while we are executing an external program.  */
+WHERE bool OPT_MENU_CALLER;          /**< (pseudo) tell menu to give caller a take */
+WHERE bool OPT_MSG_ERR;              /**< (pseudo) used by mutt_error/mutt_message */
+WHERE bool OPT_NEED_RESCORE;         /**< (pseudo) set when the `score' command is used */
+WHERE bool OPT_NEED_RESORT;          /**< (pseudo) used to force a re-sort */
 #ifdef USE_NNTP
-WHERE bool OPT_NEWS;              /**< (pseudo) used to change reader mode */
-WHERE bool OPT_NEWS_SEND;          /**< (pseudo) used to change behavior when posting */
+WHERE bool OPT_NEWS;                 /**< (pseudo) used to change reader mode */
+WHERE bool OPT_NEWS_SEND;            /**< (pseudo) used to change behavior when posting */
 #endif
+WHERE bool OPT_NO_CURSES;            /**< (pseudo) when sending in batch mode */
+WHERE bool OPT_PGP_CHECK_TRUST;      /**< (pseudo) used by pgp_select_key () */
+WHERE bool OPT_REDRAW_TREE;          /**< (pseudo) redraw the thread tree */
+WHERE bool OPT_RESORT_INIT;          /**< (pseudo) used to force the next resort to be from scratch */
+WHERE bool OPT_SEARCH_INVALID;       /**< (pseudo) used to invalidate the search pat */
+WHERE bool OPT_SEARCH_REVERSE;       /**< (pseudo) used by ci_search_command */
+WHERE bool OPT_SIGNALS_BLOCKED;      /**< (pseudo) using by mutt_block_signals () */
+WHERE bool OPT_SORT_SUBTHREADS;      /**< (pseudo) used when $sort_aux changes */
+WHERE bool OPT_SYS_SIGNALS_BLOCKED;  /**< (pseudo) using by mutt_block_signals_system () */
+WHERE bool OPT_VIEW_ATTACH;          /**< (pseudo) signals that we are viewing attachments */
 
 #define mutt_bit_set(v, n)    v[n / 8] |= (1 << (n % 8))
 #define mutt_bit_unset(v, n)  v[n / 8] &= ~(1 << (n % 8))
