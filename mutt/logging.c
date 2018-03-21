@@ -208,7 +208,8 @@ void log_file_set_version(const char *version)
 }
 
 /**
- * log_file_running - XXX
+ * log_file_running - Is the log file running?
+ * @retval true If the log file is running
  */
 bool log_file_running(void)
 {
