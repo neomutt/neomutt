@@ -31,6 +31,7 @@
 #include "config.h"
 #include <assert.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <string.h>
 #include "rfc2047.h"
 #include "base64.h"

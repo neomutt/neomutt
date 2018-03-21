@@ -28,8 +28,10 @@
 
 #include "config.h"
 #include <stddef.h>
-#include "mutt/mutt.h"
 #include "parameter.h"
+#include "memory.h"
+#include "queue.h"
+#include "string2.h"
 
 /**
  * mutt_param_new - Create a new Parameter
