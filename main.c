@@ -877,7 +877,7 @@ int main(int argc, char **argv, char **env)
     rv = ci_send_message(sendflags, msg, bodyfile, NULL, NULL);
     /* We WANT the "Mail sent." and any possible, later error */
     log_queue_empty();
-    if (ErrorBuf[0])
+    if (ErrorBufMessage)
       mutt_message("%s", ErrorBuf);
 
     if (edit_infile)
@@ -1046,7 +1046,7 @@ main_curses:
   log_queue_flush(log_disp_terminal);
   mutt_log_stop();
   /* Repeat the last message to the user */
-  if (repeat_error && ErrorBuf[0])
+  if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
   return rc;

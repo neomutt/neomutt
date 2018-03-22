@@ -737,7 +737,7 @@ void mutt_window_getyx(struct MuttWindow *win, int *y, int *x)
 
 void mutt_show_error(void)
 {
-  if (OPT_KEEP_QUIET)
+  if (OPT_KEEP_QUIET || !ErrorBufMessage)
     return;
 
   SETCOLOR(OPT_MSG_ERR ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);

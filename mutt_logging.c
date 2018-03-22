@@ -140,7 +140,7 @@ void mutt_clear_error(void)
   if (OPT_MSG_ERR)
     error_pause();
 
-  ErrorBuf[0] = 0;
+  ErrorBufMessage = false;
   if (!OPT_NO_CURSES)
     mutt_window_clearline(MuttMessageWindow, 0);
 }
@@ -180,20 +180,26 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     ret += snprintf(buf2, len, ": %s (errno = %d)", p, errno);
   }
 
-  log_disp_file(stamp, file, line, function, level, "%s", buf);
-  if (stamp == 0)
-    log_disp_queue(stamp, file, line, function, level, "%s", buf);
+  bool dupe = (strcmp(buf, ErrorBuf) == 0);
+  if (!dupe)
+  {
+    /* Only log unique messages */
+    log_disp_file(stamp, file, line, function, level, "%s", buf);
+    if (stamp == 0)
+      log_disp_queue(stamp, file, line, function, level, "%s", buf);
+  }
 
   /* Don't display debugging message on screen */
   if (level > LL_MESSAGE)
     return 0;
 
   /* Only pause if this is a message following an error */
-  if ((level > LL_ERROR) && OPT_MSG_ERR)
+  if ((level > LL_ERROR) && OPT_MSG_ERR && !dupe)
     error_pause();
 
   mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, MuttMessageWindow->cols,
                      FMT_LEFT, 0, buf, sizeof(buf), 0);
+  ErrorBufMessage = true;
 
   if (!OPT_KEEP_QUIET)
   {
@@ -206,7 +212,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     mutt_refresh();
   }
 
-  if (level <= LL_ERROR)
+  if ((level <= LL_ERROR) && !dupe)
   {
     OPT_MSG_ERR = true;
     if (gettimeofday(&LastError, NULL) < 0)

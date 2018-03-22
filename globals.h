@@ -37,6 +37,7 @@
 
 WHERE struct Context *Context;
 
+WHERE bool ErrorBufMessage;
 WHERE char ErrorBuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
