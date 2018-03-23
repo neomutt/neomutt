@@ -250,7 +250,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
        s += l, destlen -= l)
   {
     int bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
-    bad = bad || (!dry && l > destlen);           /* too few room for mb char */
+    bad = bad || (!dry && l > destlen); /* too few room for mb char */
     if (l == 1)
       bad = bad || (strchr("-_+=.", *s) == NULL && !iswalnum(wc));
     else

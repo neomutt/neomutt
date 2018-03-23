@@ -489,9 +489,8 @@ static notmuch_database_t *do_database_open(const char *filename, bool writable,
   mutt_debug(1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", NmOpenTimeout);
 
-  const notmuch_database_mode_t mode = writable
-    ? NOTMUCH_DATABASE_MODE_READ_WRITE
-    : NOTMUCH_DATABASE_MODE_READ_ONLY;
+  const notmuch_database_mode_t mode =
+      writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY;
 
   do
   {

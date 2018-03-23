@@ -1898,25 +1898,25 @@ static void restore_default(struct Option *p)
       *((struct MbTable **) p->var) = parse_mbtable((char *) p->initial);
       break;
     case DT_PATH:
+    {
+      char *init = (char *) p->initial;
+      if (mutt_str_strcmp(p->name, "debug_file") == 0)
       {
-        char *init = (char *) p->initial;
-        if (mutt_str_strcmp(p->name, "debug_file") == 0)
-        {
-          mutt_log_set_file(init, true);
-        }
-        else
-        {
-          FREE((char **) p->var);
-          if (init)
-          {
-            char path[_POSIX_PATH_MAX];
-            mutt_str_strfcpy(path, init, sizeof(path));
-            mutt_expand_path(path, sizeof(path));
-            *((char **) p->var) = mutt_str_strdup(path);
-          }
-        }
-        break;
+        mutt_log_set_file(init, true);
       }
+      else
+      {
+        FREE((char **) p->var);
+        if (init)
+        {
+          char path[_POSIX_PATH_MAX];
+          mutt_str_strfcpy(path, init, sizeof(path));
+          mutt_expand_path(path, sizeof(path));
+          *((char **) p->var) = mutt_str_strdup(path);
+        }
+      }
+      break;
+    }
     case DT_ADDRESS:
       mutt_addr_free((struct Address **) p->var);
       if (p->initial)

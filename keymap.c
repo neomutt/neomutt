@@ -977,7 +977,8 @@ int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data,
  *
  * Expects to see: <menu-string>,<menu-string>,... <key-string>
  */
-static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, struct Buffer *err, bool bind)
+static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
+                          int *nummenus, struct Buffer *err, bool bind)
 {
   struct Buffer buf;
   int i = 0;

@@ -45,8 +45,8 @@ char *DebugFile = NULL;  /**< Log file name */
 const int NumOfLogs = 5; /**< How many log files to rotate */
 bool LogAllowDebugSet = false;
 
-#define S_TO_NS  1000000000UL
-#define S_TO_US  1000000UL
+#define S_TO_NS 1000000000UL
+#define S_TO_US 1000000UL
 #define US_TO_NS 1000UL
 
 /**
@@ -61,8 +61,7 @@ static long micro_elapsed(const struct timeval *begin, const struct timeval *end
   if ((begin->tv_sec == 0) && (end->tv_sec != 0))
     return LONG_MAX;
 
-  return ((end->tv_sec - begin->tv_sec) * S_TO_US) +
-         (end->tv_usec - begin->tv_usec);
+  return ((end->tv_sec - begin->tv_sec) * S_TO_US) + (end->tv_usec - begin->tv_usec);
 }
 
 /**
@@ -267,7 +266,7 @@ void mutt_log_stop(void)
 }
 
 /**
- * mutt_log_set_level - Change the logging level 
+ * mutt_log_set_level - Change the logging level
  * @param level Logging level
  * @param verbose If true, then log the event
  * @retval  0 Success

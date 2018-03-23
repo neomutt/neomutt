@@ -1,7 +1,7 @@
 TEST_OBJS   = test/main.o \
 	      test/base64.o \
-	      test/rfc2047.o \
 	      test/md5.o \
+	      test/rfc2047.o \
 	      test/string.o
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)

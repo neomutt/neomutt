@@ -6184,7 +6184,7 @@ msgstr ""
 "    Este programa é distribuido com a expectativa de ser útil,\n"
 "    mas SEM QUALQUER GARANTIA; até mesmo sem a garantia implícita de\n"
 "    COMERCIALIZAÇÃO ou ADEQUAÇÃO PARA UM PROPÓSITO PARTICULAR. Veja a\n"
-"    Licença Pública Geral (GPL) GNU para maiores detalhes.\n" 
+"    Licença Pública Geral (GPL) GNU para maiores detalhes.\n"
 
 #: version.c:78
 msgid ""

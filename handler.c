@@ -503,7 +503,7 @@ static void enriched_wrap(struct EnrichedState *stte)
     }
 
     const int extra = stte->wrap_margin - stte->line_len - stte->indent_len -
-            (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE);
+                      (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE);
     if (extra > 0)
     {
       if (stte->tag_level[RICH_CENTER])
