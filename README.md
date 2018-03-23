@@ -90,15 +90,16 @@ Jasper Adriaanse, Jelle van der Waa, Jenya Sovetkin, Johannes Frankenau,
 Johannes Weißl, Jonathan Perkin, Joshua Jordi, Julian Andres Klode, Karel Zak,
 Kevin Decherf, Kevin Velghe, Kurt Jaeger, Leo Lundgren, Leonardo Schenkel,
 Leonidas Spyropoulos, Manos Pitsidianakis, Marcin Rajner, Marco Hinz,
-Marius Gedminas, Matteo Vescovi, Mehdi Abaakouk, Michael Bazzinotti, ng0,
-Nicolas Bock, Olaf Lessenich, Peter Hogg, Peter Lewis, Phil Pennock,
-Philipp Marek, Pierre-Elliott Bécue, Pietro Cerutti, r3lgar, Regid Ichira,
-Reis Radomil, Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente,
+Marius Gedminas, Mateusz Piotrowski, Matteo Vescovi, Mehdi Abaakouk,
+Michael Bazzinotti, ng0, Nicolas Bock, Olaf Lessenich, parazyd, Perry Thompson,
+Peter Hogg, Peter Lewis, Phil Pennock, Philipp Marek, Pierre-Elliott Bécue,
+Pietro Cerutti, r3lgar, Regid Ichira, Reis Radomil, Riad Wahby,
+Richard Hartmann, Richard Russon, Roger Pau Monne, Rubén Llorente,
 Santiago Torres, Serge Gebhardt, sharktamer, Shi Lee, somini, Stefan Assmann,
-Stefan Bühler, Stephen Gilles, Steven Ragnarök, Sven Guckes, Theo Jepsen,
-Thomas Adam, Thomas Klausner, Thomas Schneider, Tobias Angele, Udo Schweigert,
-Vsevolod Volkov, Werner Fink, Wieland Hoffmann, William Pettersson,
-Yoshiki Vázquez Baeza, Zero King.
+Stefan Bühler, Stephen Gilles, Steve Bennett, Steven Ragnarök, Sven Guckes,
+Theo Jepsen, Thiago Costa de Paiva, Thomas Adam, Thomas Klausner,
+Thomas Schneider, Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink,
+Wieland Hoffmann, William Pettersson, Yoshiki Vázquez Baeza, Zero King.
 
 ## Original Patch Authors
 
