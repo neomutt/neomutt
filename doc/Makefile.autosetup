@@ -67,9 +67,11 @@ doc/neomuttrc.man:	doc/makedoc$(EXEEXT) \
 		$(SRCDIR)/init.h \
 		$(SRCDIR)/doc/neomuttrc.man.head \
 		$(SRCDIR)/doc/neomuttrc.man.tail
-	$(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m | \
-		cat $(SRCDIR)/doc/neomuttrc.man.head - \
-		$(SRCDIR)/doc/neomuttrc.man.tail > $@
+	( sed -e "/^\.TH/s/@TS_MAN_CONF@/$(TS_MAN_CONF)/" \
+	    $(SRCDIR)/doc/neomuttrc.man.head && \
+	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m | \
+	    cat - $(SRCDIR)/doc/neomuttrc.man.tail \
+	) > $@
 
 doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h $(SRCDIR)/opcodes.h \
 		$(SRCDIR)/doc/manual.xml.head $(SRCDIR)/functions.h \

@@ -56,6 +56,10 @@ VPATH=		$(SRCDIR)
 
 ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
 
+# timestamps
+TS_MAN_CONF=	@TS_MAN_CONF@
+TS_MAN_MAIN=	@TS_MAN_MAIN@
+
 ###############################################################################
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
