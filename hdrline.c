@@ -1250,7 +1250,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           ch = "P";
         else if ((WithCrypto != 0) && (hdr->security & SIGN))
           ch = "s";
-        else if (((WithCrypto & APPLICATION_PGP) != 0) && (hdr->security & PGPKEY))
+        else if (((WithCrypto & APPLICATION_PGP) != 0) && ((hdr->security & PGPKEY) == PGPKEY))
           ch = "K";
         else
           ch = " ";
