@@ -429,17 +429,14 @@ if {[get-define want-notmuch]} {
   }
   define USE_NOTMUCH
   msg-checking "Checking for Notmuch API version 3..."
-  if {[cctest -includes {notmuch.h} \
-              -code {
-                notmuch_database_open("/path",
-                                      NOTMUCH_DATABASE_MODE_READ_ONLY,
-                                      (notmuch_database_t**)NULL);
-              }]} {
+  if {[cctest -includes {notmuch.h} -libs {-lnotmuch} -link 1 \
+      -code { notmuch_database_open(NULL, 0, NULL); }]} {
     define NOTMUCH_API_3
     msg-result "yes"
   } else {
     msg-result "no"
   }
+  cc-check-function-in-lib notmuch_database_index_file notmuch
 }
 
 ###############################################################################

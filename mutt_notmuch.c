@@ -1425,7 +1425,11 @@ static int rename_filename(struct NmCtxData *data, const char *old,
     return -1;
 
   mutt_debug(2, "nm: rename: add '%s'\n", new);
+#ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+  st = notmuch_database_index_file(db, new, NULL, &msg);
+#else
   st = notmuch_database_add_message(db, new, &msg);
+#endif
 
   if ((st != NOTMUCH_STATUS_SUCCESS) && (st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID))
   {
@@ -1460,7 +1464,11 @@ static int rename_filename(struct NmCtxData *data, const char *old,
         {
           mutt_debug(2, "nm: rename dup %s -> %s\n", path, newpath);
           notmuch_database_remove_message(db, path);
+#ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+          notmuch_database_index_file(db, newpath, NULL, NULL);
+#else
           notmuch_database_add_message(db, newpath, NULL);
+#endif
         }
       }
       notmuch_message_destroy(msg);
@@ -2007,7 +2015,11 @@ int nm_record_message(struct Context *ctx, char *path, struct Header *h)
   if (trans < 0)
     goto done;
 
+#ifdef HAVE_NOTMUCH_DATABASE_INDEX_FILE
+  st = notmuch_database_index_file(db, path, NULL, &msg);
+#else
   st = notmuch_database_add_message(db, path, &msg);
+#endif
 
   if ((st != NOTMUCH_STATUS_SUCCESS) && (st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID))
   {
