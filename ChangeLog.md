@@ -1,3 +1,38 @@
+2018-03-23  Richard Russon  <rich@flatcap.org>
+* Features
+  - unify logging/messaging
+  - add alert (blink) colors
+* Contrib
+  - Vim syntax for NeoMutt log files
+* Bug Fixes
+  - Fix progress bar range
+  - notmuch: stop if db open fails
+  - Improve index color cache flushing behavior
+  - lua: fix crash when setting a string
+* Translations
+  - Update Czech translation (100%)
+  - Update German translation (100%)
+  - Update Polish translation (94%)
+  - Update Portuguese (BR) translation (100%)
+  - Update Spanish translation (64%)
+  - Update Turkish translation (75%)
+  - Merge simliar messages
+* Docs
+  - Clarify precedence of settings in config files
+  - Fix subjectrx example in the manual
+* Website
+  - Update Gentoo distro page
+  - Devel: Static analysis
+* Build
+  - Support —with-sysroot configure arg
+  - Expose EXTRA_CFLAGS_FOR_BUILD and EXTRA_LDFLAGS_FOR_BUIlD
+  - Update to latest autosetup
+  - Make sure git_ver.h doesn't eat random 'g's out of tag names
+* Code
+  - Refactor to reduce complexity
+  - Refactor to reduce variables' scope
+  - Sort functions/config to make docs more legible
+
 2018-02-23  Richard Russon  <rich@flatcap.org>
 * Features
   - browser: `<goto-parent>` function bound to "p"
