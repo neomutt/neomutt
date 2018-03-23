@@ -177,6 +177,29 @@ if {1} {
   proc yesno val {
     expr {$val ? "yes" : "no"}
   }
+
+  # Recent author timestamp of file(s) as UTC, use PACKAGE_VERSION as fallback
+  proc get-author-date {format args} {
+    set oldpwd [pwd]
+    cd $::autosetup(srcdir)
+
+    if {$args eq "" || [catch {
+        set fd [open "|git log -1 --format=%at master -- $args" r]
+        gets $fd epoch
+        close $fd}] || $epoch eq ""
+    } {
+      #user-notice "No author timestamp found, falling back to PACKAGE_VERSION..."
+      if {![set pkgdate [get-define PACKAGE_VERSION]] || [catch {
+          set epoch [clock scan $pkgdate -format {%Y%m%d} -timezone :UTC]}]
+      } {
+        autosetup-error "Cannot get or parse PACKAGE_VERSION as date!"
+      }
+    }
+    cd $oldpwd
+
+
+    return [clock format $epoch -format $format -timezone :UTC]
+  }
 }
 ###############################################################################
 
@@ -916,6 +939,12 @@ foreach dir $subdirs {
   define-append UNINSTALL_TARGETS uninstall-$dir
   make-template $dir/Makefile.autosetup $dir/Makefile
 }
+
+###############################################################################
+# Provide timestamps (UTC) based on most recent author date or PACKAGE_VERSION
+# doc/neomuttrc.man, doc/neomutt.1
+define TS_MAN_CONF [get-author-date "%Y-%m-%d" init.h doc/neomuttrc.man.head doc/neomuttrc.man.tail]
+define TS_MAN_MAIN [get-author-date "%Y-%m-%d" doc/neomutt.man]
 
 ###############################################################################
 # Generate Makefile and config.h
