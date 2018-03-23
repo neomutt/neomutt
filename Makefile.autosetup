@@ -43,7 +43,7 @@ datadir=	@PKGDATADIR@
 docdir=		@PKGDOCDIR@
 mandir=		@mandir@
 libdir=		@libdir@
-libexecdir=		@libexecdir@
+libexecdir=	@libexecdir@
 sysconfdir=	@SYSCONFDIR@
 
 # targets for specific subdirectories
