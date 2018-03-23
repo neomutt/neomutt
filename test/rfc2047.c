@@ -53,7 +53,7 @@ static const struct
 
 void test_rfc2047(void)
 {
-  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) || 
+  if (!TEST_CHECK((setlocale(LC_ALL, "en_US.UTF-8") != NULL) ||
                   (setlocale(LC_ALL, "C.UTF-8") != NULL)))
   {
     TEST_MSG("Cannot set locale to (en_US|C).UTF-8");

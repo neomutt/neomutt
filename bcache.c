@@ -70,8 +70,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   }
 
   size_t mailboxlen = mutt_str_strlen(mailbox);
-  len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host,
-                 NONULL(mailbox),
+  len = snprintf(dst, dstlen - 1, "%s/%s%s%s", MessageCachedir, host, NONULL(mailbox),
                  (mailboxlen != 0 && mailbox[mailboxlen - 1] == '/') ? "" : "/");
 
   mutt_encode_path(dst, dstlen, dst);

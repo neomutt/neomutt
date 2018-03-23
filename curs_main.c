@@ -237,7 +237,6 @@ static int ci_previous_undeleted(int msgno)
  */
 static int ci_first_message(void)
 {
-
   if (Context && Context->msgcount)
   {
     int old = -1;

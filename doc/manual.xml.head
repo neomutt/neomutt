@@ -2713,13 +2713,13 @@ color sidebar_divider   color8  default
         <para>Once you have successfully finished the key selection, the
         message will be encrypted using the selected public keys when sent
         out.</para>
-	<para>
-	To ensure you can view encrypted messages you have sent, you
-	may wish to set <link linkend="pgp-self-encrypt">$pgp_self_encrypt</link>
-	and <link linkend="pgp-default-key">$pgp_default_key</link> for PGP, or
-	<link linkend="smime-self-encrypt">$smime_self_encrypt</link>
-	and <link linkend="smime-default-key">$smime_default_key</link> for S/MIME.
-	</para>
+        <para>
+        To ensure you can view encrypted messages you have sent, you
+        may wish to set <link linkend="pgp-self-encrypt">$pgp_self_encrypt</link>
+        and <link linkend="pgp-default-key">$pgp_default_key</link> for PGP, or
+        <link linkend="smime-self-encrypt">$smime_self_encrypt</link>
+        and <link linkend="smime-default-key">$smime_default_key</link> for S/MIME.
+        </para>
         <para>Most fields of the entries in the key selection menu (see also
         <link linkend="pgp-entry-format">$pgp_entry_format</link>) have obvious
         meanings. But some explanations on the capabilities, flags, and

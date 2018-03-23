@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20180223\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2018-03-18 23:11+0000\n"
+"POT-Creation-Date: 2018-03-23 13:17+0000\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -21,28 +21,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: addrbook.c:43 browser.c:70 browser.c:80 history.c:120 pager.c:1707
+#: addrbook.c:43 browser.c:70 browser.c:80 history.c:102 pager.c:1697
 #: postpone.c:56 query.c:66 recvattach.c:68
 msgid "Exit"
 msgstr "Esci"
 
-#: addrbook.c:43 curs_main.c:823 curs_main.c:836 pager.c:1715 pager.c:1725
+#: addrbook.c:43 curs_main.c:822 curs_main.c:835 pager.c:1705 pager.c:1715
 #: postpone.c:57
 msgid "Del"
 msgstr "Canc"
 
-#: addrbook.c:44 curs_main.c:824 curs_main.c:837 postpone.c:58
+#: addrbook.c:44 curs_main.c:823 curs_main.c:836 postpone.c:58
 msgid "Undel"
 msgstr "DeCanc"
 
-#: addrbook.c:44 history.c:121
+#: addrbook.c:44 history.c:103
 msgid "Select"
 msgstr "Seleziona"
 
 #: addrbook.c:45 browser.c:74 browser.c:86 compose.c:159 compose.c:171
-#: conn/ssl.c:1046 conn/ssl_gnutls.c:799 curs_main.c:829 curs_main.c:842
-#: history.c:123 ncrypt/crypt_gpgme.c:4233 ncrypt/pgpkey.c:544
-#: ncrypt/smime.c:421 pager.c:2151 postpone.c:59 query.c:71 recvattach.c:69
+#: conn/ssl.c:1041 conn/ssl_gnutls.c:794 curs_main.c:828 curs_main.c:841
+#: history.c:105 ncrypt/crypt_gpgme.c:4233 ncrypt/pgpkey.c:544
+#: ncrypt/smime.c:421 pager.c:2141 postpone.c:59 query.c:71 recvattach.c:69
 msgid "Help"
 msgstr "Aiuto"
 
@@ -113,7 +113,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "La voce compose di mailcap richiede %%s"
 
 #: attach.c:139 attach.c:272 commands.c:235 compose.c:1562 compress.c:434
-#: curs_lib.c:222 curs_lib.c:816 curs_main.c:1018 curs_main.c:1061 pager.c:2276
+#: curs_lib.c:222 curs_lib.c:816 curs_main.c:1017 curs_main.c:1060 pager.c:2266
 #: sendlib.c:1446
 #, c-format
 msgid "Error running \"%s\"!"
@@ -189,17 +189,17 @@ msgstr "Errore di scrittura!"
 msgid "I don't know how to print that!"
 msgstr "Non so come stamparlo!"
 
-#: bcache.c:161
+#: bcache.c:160
 #, c-format
 msgid "Path too long: %s%s%s"
 msgstr ""
 
-#: bcache.c:169
+#: bcache.c:168
 #, fuzzy, c-format
 msgid "Message cache isn't a directory: %s."
 msgstr "%s non è una directory."
 
-#: bcache.c:177
+#: bcache.c:176
 #, fuzzy, c-format
 msgid "Can't create %s %s"
 msgstr "Impossibile creare %s: %s."
@@ -230,7 +230,7 @@ msgstr "Iscritto a %s"
 msgid "Unsubscribe"
 msgstr "Sottoscrizione rimossa da %s..."
 
-#: browser.c:84 curs_main.c:841
+#: browser.c:84 curs_main.c:840
 msgid "Catchup"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgstr "%s: comando valido solo per gli oggetti index, body, header"
 
 #: color.c:534 color.c:708 color.c:734 color.c:766 color.c:777 color.c:801
 #: color.c:865 hook.c:88 hook.c:101 init.c:845 init.c:2136 init.c:2212
-#: keymap.c:1024 score.c:87
+#: keymap.c:1025 score.c:87
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: troppo pochi argomenti"
@@ -399,7 +399,7 @@ msgid "%s: no such attribute"
 msgstr "%s: attributo inesistente"
 
 #: color.c:874 color.c:931 hook.c:107 init.c:760 init.c:4173 init.c:4227
-#: keymap.c:967 keymap.c:1112 keymap.c:1181 mutt_lua.c:421 score.c:96
+#: keymap.c:967 keymap.c:1113 keymap.c:1182 mutt_lua.c:421 score.c:96
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: troppi argomenti"
@@ -558,65 +558,65 @@ msgstr ""
 msgid "Shell command: "
 msgstr "Comando della shell: "
 
-#: commands.c:763
+#: commands.c:764
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Decodifica e salva nella mailbox%s"
 
-#: commands.c:763
+#: commands.c:764
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Decodifica e copia nella mailbox%s"
 
-#: commands.c:764
+#: commands.c:765
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Decifra e salva nella mailbox%s"
 
-#: commands.c:764
+#: commands.c:765
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Decifra e copia nella mailbox%s"
 
-#: commands.c:765
+#: commands.c:766
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Salva nella mailbox%s"
 
-#: commands.c:765
+#: commands.c:766
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Copia nella mailbox%s"
 
-#: commands.c:766
+#: commands.c:767
 msgid " tagged"
 msgstr " i messaggi segnati"
 
-#: commands.c:832
+#: commands.c:834
 #, c-format
 msgid "Copying to %s..."
 msgstr "Copio in %s..."
 
-#: commands.c:996
+#: commands.c:998
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Convertire in %s al momento dell'invio?"
 
-#: commands.c:1007
+#: commands.c:1009
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Il Content-Type è stato cambiato in %s."
 
-#: commands.c:1012
+#: commands.c:1014
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Il set di caratteri è stato cambiato in %s; %s."
 
-#: commands.c:1014
+#: commands.c:1016
 msgid "not converting"
 msgstr "non convertito"
 
-#: commands.c:1014
+#: commands.c:1016
 msgid "converting"
 msgstr "convertito"
 
@@ -679,7 +679,7 @@ msgstr ""
 #. * Since it shares the row with "Encrypt with:", it should not be longer
 #. * than 15-20 character cells.
 #.
-#: compose.c:137 ncrypt/crypt_gpgme.c:4969 ncrypt/pgp.c:1800
+#: compose.c:137 ncrypt/crypt_gpgme.c:4969 ncrypt/pgp.c:1798
 #: ncrypt/smime.c:2167
 msgid "Sign as: "
 msgstr "Firma come: "
@@ -706,7 +706,7 @@ msgstr "modifica il campo Reply-To"
 msgid "Send"
 msgstr "Spedisci"
 
-#: compose.c:150 compose.c:166 remailer.c:479
+#: compose.c:150 compose.c:166 remailer.c:475
 msgid "Abort"
 msgstr "Abbandona"
 
@@ -809,7 +809,7 @@ msgstr "Attenzione: '%s' non è un IDN valido."
 msgid "You may not delete the only attachment."
 msgstr "Non si può cancellare l'unico allegato."
 
-#: compose.c:975 send.c:1904
+#: compose.c:975 send.c:1906
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN non valido in \"%s\": '%s'"
@@ -996,161 +996,161 @@ msgstr ""
 msgid "Compressing %s"
 msgstr "Copio in %s..."
 
-#: conn/sasl.c:576
+#: conn/sasl.c:569
 msgid "Unknown SASL profile"
 msgstr "Profilo SASL sconosciuto"
 
-#: conn/sasl.c:609
+#: conn/sasl.c:602
 msgid "Error allocating SASL connection"
 msgstr "Errore nell'allocare la connessione SASL"
 
-#: conn/sasl.c:619
+#: conn/sasl.c:612
 msgid "Error setting SASL security properties"
 msgstr "Errore nell'impostare le proprietà di sicurezza SASL"
 
-#: conn/sasl.c:629
+#: conn/sasl.c:622
 msgid "Error setting SASL external security strength"
 msgstr ""
 
-#: conn/sasl.c:638
+#: conn/sasl.c:631
 msgid "Error setting SASL external user name"
 msgstr "Errore nell'impostare il nome utente SASL esterno"
 
-#: conn/socket.c:86
+#: conn/socket.c:71
 msgid "Preconnect command failed."
 msgstr "Comando di preconnessione fallito."
 
-#: conn/socket.c:275
+#: conn/socket.c:260
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Connessione a %s chiusa."
 
-#: conn/socket.c:367 conn/socket.c:398
+#: conn/socket.c:352 conn/socket.c:383
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Errore di comunicazione con %s (%s)"
 
-#: conn/socket.c:374 conn/socket.c:405
+#: conn/socket.c:359 conn/socket.c:390
 #, fuzzy, c-format
 msgid "Connection to %s has been aborted"
 msgstr "Connessione a %s chiusa."
 
-#: conn/socket.c:494 conn/socket.c:552
+#: conn/socket.c:479 conn/socket.c:537
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "IDN \"%s\" non valido."
 
-#: conn/socket.c:502 conn/socket.c:560
+#: conn/socket.c:487 conn/socket.c:545
 #, c-format
 msgid "Looking up %s..."
 msgstr "Ricerca di %s..."
 
-#: conn/socket.c:512 conn/socket.c:570
+#: conn/socket.c:497 conn/socket.c:555
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Impossibile trovare l'host \"%s\"."
 
-#: conn/socket.c:517 conn/socket.c:576
+#: conn/socket.c:502 conn/socket.c:561
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Connessione a %s..."
 
-#: conn/socket.c:601
+#: conn/socket.c:586
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Impossibile connettersi a %s (%s)."
 
-#: conn/socket.c:602 conn/ssl.c:1290 curs_lib.c:769 mutt_logging.c:168
+#: conn/socket.c:587 conn/ssl.c:1285 curs_lib.c:769 mutt_logging.c:177
 msgid "unknown error"
 msgstr "errore sconosciuto"
 
-#: conn/ssl.c:221
+#: conn/ssl.c:216
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Riempimento del pool di entropia: %s...\n"
 
-#: conn/ssl.c:227
+#: conn/ssl.c:222
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s ha permessi insicuri!"
 
-#: conn/ssl.c:373
+#: conn/ssl.c:368
 #, fuzzy
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL disabilitato a causa della mancanza di entropia"
 
-#: conn/ssl.c:414
+#: conn/ssl.c:409
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: conn/ssl.c:433 conn/ssl_gnutls.c:273
+#: conn/ssl.c:428 conn/ssl_gnutls.c:268
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[impossibile da calcolare]"
 
-#: conn/ssl.c:458
+#: conn/ssl.c:453
 msgid "[invalid date]"
 msgstr "[data non valida]"
 
-#: conn/ssl.c:517
+#: conn/ssl.c:512
 msgid "Server certificate is not yet valid"
 msgstr "Il certificato del server non è ancora valido"
 
-#: conn/ssl.c:526
+#: conn/ssl.c:521
 msgid "Server certificate has expired"
 msgstr "Il certificato del server è scaduto"
 
-#: conn/ssl.c:618
+#: conn/ssl.c:613
 msgid "Failed to find enough entropy on your system"
 msgstr "Impossibile trovare abbastanza entropia nel sistema"
 
-#: conn/ssl.c:864
+#: conn/ssl.c:859
 msgid "cannot get certificate subject"
 msgstr "impossibile ottenere il soggetto del certificato"
 
-#: conn/ssl.c:873 conn/ssl.c:881
+#: conn/ssl.c:868 conn/ssl.c:876
 msgid "cannot get certificate common name"
 msgstr "Impossibile ottenere il nome comune del certificato"
 
-#: conn/ssl.c:896
+#: conn/ssl.c:891
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "il proprietario del certificato non corrisponde al nome host %s"
 
-#: conn/ssl.c:973 conn/ssl_gnutls.c:616
+#: conn/ssl.c:968 conn/ssl_gnutls.c:611
 msgid "This certificate belongs to:"
 msgstr "Questo certificato appartiene a:"
 
-#: conn/ssl.c:981 conn/ssl_gnutls.c:666
+#: conn/ssl.c:976 conn/ssl_gnutls.c:661
 msgid "This certificate was issued by:"
 msgstr "Questo certificato è stato emesso da:"
 
-#: conn/ssl.c:989 conn/ssl_gnutls.c:719
+#: conn/ssl.c:984 conn/ssl_gnutls.c:714
 #, c-format
 msgid "This certificate is valid"
 msgstr "Questo certificato è valido"
 
-#: conn/ssl.c:990 conn/ssl_gnutls.c:723
+#: conn/ssl.c:985 conn/ssl_gnutls.c:718
 #, c-format
 msgid "   from %s"
 msgstr "   da %s"
 
-#: conn/ssl.c:992 conn/ssl_gnutls.c:727
+#: conn/ssl.c:987 conn/ssl_gnutls.c:722
 #, c-format
 msgid "     to %s"
 msgstr "     a %s"
 
-#: conn/ssl.c:998 conn/ssl_gnutls.c:731
+#: conn/ssl.c:993 conn/ssl_gnutls.c:726
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Fingerprint SHA1: %s"
 
-#: conn/ssl.c:1001 conn/ssl_gnutls.c:734
+#: conn/ssl.c:996 conn/ssl_gnutls.c:729
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Fingerprint MD5: %s"
 
-#: conn/ssl.c:1004
+#: conn/ssl.c:999
 #, fuzzy, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Verifica del certificato SSL (certificato %d di %d nella catena)"
@@ -1161,42 +1161,42 @@ msgstr "Verifica del certificato SSL (certificato %d di %d nella catena)"
 #. * These prompts are the interactive certificate confirmation prompts for
 #. * an OpenSSL connection.
 #.
-#: conn/ssl.c:1027
+#: conn/ssl.c:1022
 msgid "roas"
 msgstr ""
 
-#: conn/ssl.c:1031
+#: conn/ssl.c:1026
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(r)ifiuta, accetta questa v(o)lta, (a)ccetta sempre"
 
-#: conn/ssl.c:1033 conn/ssl_gnutls.c:775
+#: conn/ssl.c:1028 conn/ssl_gnutls.c:770
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ifiuta, accetta questa v(o)lta, (a)ccetta sempre"
 
-#: conn/ssl.c:1038
+#: conn/ssl.c:1033
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(r)ifiuta, accetta questa v(o)lta"
 
-#: conn/ssl.c:1040 conn/ssl_gnutls.c:786
+#: conn/ssl.c:1035 conn/ssl_gnutls.c:781
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ifiuta, accetta questa v(o)lta"
 
-#: conn/ssl.c:1044 conn/ssl_gnutls.c:797 ncrypt/crypt_gpgme.c:4227
+#: conn/ssl.c:1039 conn/ssl_gnutls.c:792 ncrypt/crypt_gpgme.c:4227
 #: ncrypt/pgpkey.c:538 ncrypt/smime.c:417
 msgid "Exit  "
 msgstr "Esci  "
 
-#: conn/ssl.c:1074 conn/ssl_gnutls.c:842
+#: conn/ssl.c:1069 conn/ssl_gnutls.c:837
 msgid "Warning: Couldn't save certificate"
 msgstr "Attenzione: impossibile salvare il certificato"
 
-#: conn/ssl.c:1078 conn/ssl_gnutls.c:846
+#: conn/ssl.c:1073 conn/ssl_gnutls.c:841
 msgid "Certificate saved"
 msgstr "Certificato salvato"
 
-#: conn/ssl.c:1194
+#: conn/ssl.c:1189
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Verifica nome host del certificato fallita: %s"
@@ -1204,15 +1204,15 @@ msgstr "Verifica nome host del certificato fallita: %s"
 #. L10N: This is a warning when trying to set the host name for
 #. * TLS Server Name Indication (SNI).  This allows the server to present
 #. * the correct certificate if it supports multiple hosts.
-#: conn/ssl.c:1273 conn/ssl_gnutls.c:1168
+#: conn/ssl.c:1268 conn/ssl_gnutls.c:1163
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/ssl.c:1284
+#: conn/ssl.c:1279
 msgid "I/O error"
 msgstr "errore di I/O"
 
-#: conn/ssl.c:1293
+#: conn/ssl.c:1288
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL fallito: %s"
@@ -1220,68 +1220,68 @@ msgstr "SSL fallito: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/ssl.c:1324
+#: conn/ssl.c:1319
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Errore: impossibile creare il sottoprocesso di OpenSSL!"
 
-#: conn/ssl.c:1381 conn/ssl.c:1481
+#: conn/ssl.c:1376 conn/ssl.c:1476
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
-#: conn/ssl_gnutls.c:117 conn/ssl_gnutls.c:149
+#: conn/ssl_gnutls.c:112 conn/ssl_gnutls.c:144
 msgid "Error: no TLS socket open"
 msgstr "Errore: nessun socket TLS aperto"
 
-#: conn/ssl_gnutls.c:237 conn/ssl_gnutls.c:881 conn/ssl_gnutls.c:890
+#: conn/ssl_gnutls.c:232 conn/ssl_gnutls.c:876 conn/ssl_gnutls.c:885
 msgid "Unable to get certificate from peer"
 msgstr "Impossibile ottenere il certificato dal peer"
 
-#: conn/ssl_gnutls.c:242
+#: conn/ssl_gnutls.c:237
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Errore nella verifica del certificato (%s)"
 
-#: conn/ssl_gnutls.c:249
+#: conn/ssl_gnutls.c:244
 msgid "Certificate is not X.509"
 msgstr "Il certificato non è X.509"
 
-#: conn/ssl_gnutls.c:441 conn/ssl_gnutls.c:597
+#: conn/ssl_gnutls.c:436 conn/ssl_gnutls.c:592
 msgid "Error initialising gnutls certificate data"
 msgstr "Errore nell'inizializzazione dei dati del certificato gnutls"
 
-#: conn/ssl_gnutls.c:447 conn/ssl_gnutls.c:603
+#: conn/ssl_gnutls.c:442 conn/ssl_gnutls.c:598
 msgid "Error processing certificate data"
 msgstr "Errore nell'analisi dei dati del certificato"
 
-#: conn/ssl_gnutls.c:588
+#: conn/ssl_gnutls.c:583
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 "Attenzione: il certificato del server è stato firmato con un algoritmo non "
 "sicuro"
 
-#: conn/ssl_gnutls.c:740
+#: conn/ssl_gnutls.c:735
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "ATTENZIONE: il certificato del server non è ancora valido"
 
-#: conn/ssl_gnutls.c:746
+#: conn/ssl_gnutls.c:741
 msgid "WARNING: Server certificate has expired"
 msgstr "ATTENZIONE: il certificato del server è scaduto"
 
-#: conn/ssl_gnutls.c:752
+#: conn/ssl_gnutls.c:747
 msgid "WARNING: Server certificate has been revoked"
 msgstr "ATTENZIONE: il certificato del server è stato revocato"
 
-#: conn/ssl_gnutls.c:758
+#: conn/ssl_gnutls.c:753
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "ATTENZIONE: il nome host del server non corrisponde al certificato"
 
-#: conn/ssl_gnutls.c:764
+#: conn/ssl_gnutls.c:759
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr ""
 "ATTENZIONE: il firmatario del certificato del server non è una CA valida"
 
-#: conn/ssl_gnutls.c:768
+#: conn/ssl_gnutls.c:763
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr "Verifica del certificato SSL (certificato %d di %d nella catena)"
@@ -1292,7 +1292,7 @@ msgstr "Verifica del certificato SSL (certificato %d di %d nella catena)"
 #. * This is an interactive certificate confirmation prompt for
 #. * a GNUTLS connection.
 #.
-#: conn/ssl_gnutls.c:782
+#: conn/ssl_gnutls.c:777
 msgid "roa"
 msgstr "roa"
 
@@ -1302,39 +1302,39 @@ msgstr "roa"
 #. * These is an interactive certificate confirmation prompt for
 #. * a GNUTLS connection.
 #.
-#: conn/ssl_gnutls.c:793
+#: conn/ssl_gnutls.c:788
 msgid "ro"
 msgstr "ro"
 
-#: conn/ssl_gnutls.c:1051 conn/ssl_gnutls.c:1091
+#: conn/ssl_gnutls.c:1046 conn/ssl_gnutls.c:1086
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Disabilitati tutti i protocolli di connessione disponibili per TLS/SSL"
 
-#: conn/ssl_gnutls.c:1098
+#: conn/ssl_gnutls.c:1093
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
-#: conn/ssl_gnutls.c:1216
+#: conn/ssl_gnutls.c:1211
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Connessione SSL/TLS con %s (%s/%s/%s)"
 
-#: conn/tunnel.c:76
+#: conn/tunnel.c:72
 #, c-format
 msgid "Connecting with \"%s\"..."
 msgstr "Connessione a \"%s\"..."
 
-#: conn/tunnel.c:161
+#: conn/tunnel.c:157
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
 msgstr "Il tunnel verso %s ha restituito l'errore %d (%s)"
 
-#: conn/tunnel.c:185 conn/tunnel.c:207
+#: conn/tunnel.c:181 conn/tunnel.c:203
 #, c-format
 msgid "Tunnel error talking to %s: %s"
 msgstr "Errore del tunnel nella comunicazione con %s: %s"
 
-#: copy.c:694
+#: copy.c:693
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -1358,7 +1358,7 @@ msgstr "Premere un tasto per continuare..."
 msgid " ('?' for list): "
 msgstr " ('?' per la lista): "
 
-#: curs_main.c:79 curs_main.c:1139
+#: curs_main.c:79 curs_main.c:1138
 msgid "No mailbox is open."
 msgstr "Nessuna mailbox aperta."
 
@@ -1370,7 +1370,7 @@ msgstr "Non ci sono messaggi."
 msgid "Mailbox is read-only."
 msgstr "La mailbox è di sola lettura."
 
-#: curs_main.c:83 pager.c:73 recvattach.c:1134
+#: curs_main.c:83 pager.c:73 recvattach.c:1142
 msgid "Function not permitted in attach-message mode."
 msgstr "Funzione non permessa nella modalità attach-message."
 
@@ -1384,378 +1384,378 @@ msgstr "Non ci sono messaggi visibili."
 msgid "%s: Operation not permitted by ACL"
 msgstr "Impossibile %s: operazione non permessa dalle ACL"
 
-#: curs_main.c:287
+#: curs_main.c:286
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Impossibile (dis)abilitare la scrittura a una mailbox di sola lettura!"
 
-#: curs_main.c:294
+#: curs_main.c:293
 msgid "Changes to folder will be written on folder exit."
 msgstr "I cambiamenti al folder saranno scritti all'uscita dal folder."
 
-#: curs_main.c:299
+#: curs_main.c:298
 msgid "Changes to folder will not be written."
 msgstr "I cambiamenti al folder non saranno scritti."
 
-#: curs_main.c:448 mx.c:356 mx.c:460
+#: curs_main.c:447 mx.c:356 mx.c:460
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s non è una mailbox."
 
-#: curs_main.c:822 curs_main.c:835
+#: curs_main.c:821 curs_main.c:834
 msgid "Quit"
 msgstr "Esci"
 
-#: curs_main.c:825 curs_main.c:838 recvattach.c:68
+#: curs_main.c:824 curs_main.c:837 recvattach.c:68
 msgid "Save"
 msgstr "Salva"
 
-#: curs_main.c:826 query.c:67
+#: curs_main.c:825 query.c:67
 msgid "Mail"
 msgstr "Mail"
 
-#: curs_main.c:827 pager.c:1716
+#: curs_main.c:826 pager.c:1706
 msgid "Reply"
 msgstr "Rispondi"
 
-#: curs_main.c:828
+#: curs_main.c:827
 msgid "Group"
 msgstr "Gruppo"
 
-#: curs_main.c:839 pager.c:1723
+#: curs_main.c:838 pager.c:1713
 msgid "Post"
 msgstr ""
 
 # FIXME - come tradurre questo messaggio?
-#: curs_main.c:840 pager.c:1724
+#: curs_main.c:839 pager.c:1714
 #, fuzzy
 msgid "Followup"
 msgstr "Inviare un Follow-up a %s%s?"
 
-#: curs_main.c:1003
+#: curs_main.c:1002
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "La mailbox è stata modificata dall'esterno.  I flag possono essere sbagliati."
 
-#: curs_main.c:1010 pager.c:2232
+#: curs_main.c:1009 pager.c:2222
 msgid "New mail in this mailbox."
 msgstr "C'è nuova posta in questa mailbox."
 
-#: curs_main.c:1025
+#: curs_main.c:1024
 msgid "Mailbox was externally modified."
 msgstr "La mailbox è stata modificata dall'esterno."
 
-#: curs_main.c:1146
+#: curs_main.c:1145
 msgid "No tagged messages."
 msgstr "Nessun messaggio segnato."
 
-#: curs_main.c:1150 menu.c:1160
+#: curs_main.c:1149 menu.c:1160
 msgid "Nothing to do."
 msgstr "Niente da fare."
 
-#: curs_main.c:1249
+#: curs_main.c:1248
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Inserire il keyID: "
 
-#: curs_main.c:1259
+#: curs_main.c:1258
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1283
+#: curs_main.c:1282
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata."
 
-#: curs_main.c:1289
+#: curs_main.c:1288
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Cancellazione dei messaggi dal server..."
 
-#: curs_main.c:1299
+#: curs_main.c:1298
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1318
+#: curs_main.c:1317
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1322 imap/message.c:803 nntp.c:1287 pop.c:301
+#: curs_main.c:1321 imap/message.c:790 nntp.c:1287 pop.c:301
 msgid "Fetching message headers..."
 msgstr "Scaricamento header dei messaggi..."
 
-#: curs_main.c:1396
+#: curs_main.c:1395
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "cancella tutti i messaggi nel thread"
 
-#: curs_main.c:1416
+#: curs_main.c:1415
 msgid "Jump to message: "
 msgstr "Salta al messaggio: "
 
-#: curs_main.c:1428
+#: curs_main.c:1427
 msgid "Argument must be a message number."
 msgstr "L'argomento deve essere il numero di un messaggio."
 
-#: curs_main.c:1460
+#: curs_main.c:1459
 msgid "That message is not visible."
 msgstr "Questo messaggio non è visibile."
 
-#: curs_main.c:1463
+#: curs_main.c:1462
 msgid "Invalid message number."
 msgstr "Numero del messaggio non valido."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1477 curs_main.c:2872 pager.c:2830
+#: curs_main.c:1476 curs_main.c:2871 pager.c:2820
 #, fuzzy
 msgid "Cannot delete message(s)"
 msgstr "ripristina messaggio(i)"
 
-#: curs_main.c:1480
+#: curs_main.c:1479
 msgid "Delete messages matching: "
 msgstr "Cancella i messaggi corrispondenti a: "
 
-#: curs_main.c:1521
+#: curs_main.c:1520
 msgid "No limit pattern is in effect."
 msgstr "Non è attivo alcun modello limitatore."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1526
+#: curs_main.c:1525
 #, c-format
 msgid "Limit: %s"
 msgstr "Limita: %s"
 
-#: curs_main.c:1564
+#: curs_main.c:1563
 msgid "Limit to messages matching: "
 msgstr "Limita ai messaggi corrispondenti a: "
 
-#: curs_main.c:1588
+#: curs_main.c:1587
 msgid "To view all messages, limit to \"all\"."
 msgstr "Per visualizzare tutti i messaggi, limitare ad \"all\"."
 
-#: curs_main.c:1600 pager.c:2330
+#: curs_main.c:1599 pager.c:2320
 msgid "Quit NeoMutt?"
 msgstr "Uscire da NeoMutt?"
 
-#: curs_main.c:1696
+#: curs_main.c:1695
 msgid "Tag messages matching: "
 msgstr "Segna i messaggi corrispondenti a: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1706 curs_main.c:3303 pager.c:3149
+#: curs_main.c:1705 curs_main.c:3302 pager.c:3139
 #, fuzzy
 msgid "Cannot undelete message(s)"
 msgstr "ripristina messaggio(i)"
 
-#: curs_main.c:1709
+#: curs_main.c:1708
 msgid "Undelete messages matching: "
 msgstr "Ripristina i messaggi corrispondenti a: "
 
-#: curs_main.c:1719
+#: curs_main.c:1718
 msgid "Untag messages matching: "
 msgstr "Togli il segno ai messaggi corrispondenti a: "
 
-#: curs_main.c:1753
+#: curs_main.c:1752
 msgid "Logged out of IMAP servers."
 msgstr "Sessione con i server IMAP terminata."
 
-#: curs_main.c:1853
+#: curs_main.c:1852
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Nessun oggetto, abbandonato."
 
-#: curs_main.c:1861
+#: curs_main.c:1860
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1893 mx.c:1386 mx.c:1398
+#: curs_main.c:1892 mx.c:1386 mx.c:1398
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting."
 msgstr "Il server SMTP non supporta l'autenticazione"
 
-#: curs_main.c:1908
+#: curs_main.c:1907
 #, fuzzy
 msgid "No tag specified, aborting."
 msgstr "Nessun oggetto, abbandonato."
 
-#: curs_main.c:1920
+#: curs_main.c:1919
 #, c-format
 msgid "Update tags..."
 msgstr ""
 
-#: curs_main.c:1957
+#: curs_main.c:1956
 msgid "Failed to modify tags, aborting."
 msgstr ""
 
-#: curs_main.c:1998
+#: curs_main.c:1997
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Nessun oggetto, abbandonato."
 
-#: curs_main.c:2002 curs_main.c:2022 curs_main.c:2041
+#: curs_main.c:2001 curs_main.c:2021 curs_main.c:2040
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:2011 curs_main.c:2030
+#: curs_main.c:2010 curs_main.c:2029
 msgid "Windowed queries disabled."
 msgstr ""
 
-#: curs_main.c:2016 curs_main.c:2035
+#: curs_main.c:2015 curs_main.c:2034
 msgid "No notmuch vfolder currently loaded."
 msgstr ""
 
-#: curs_main.c:2073
+#: curs_main.c:2072
 msgid "Open mailbox in read-only mode"
 msgstr "Apri la mailbox in sola lettura"
 
-#: curs_main.c:2076
+#: curs_main.c:2075
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "apri un altro folder"
 
-#: curs_main.c:2079
+#: curs_main.c:2078
 msgid "Open mailbox"
 msgstr "Apri la mailbox"
 
-#: curs_main.c:2089
+#: curs_main.c:2088
 msgid "No mailboxes have new mail"
 msgstr "Nessuna mailbox con nuova posta."
 
-#: curs_main.c:2136
+#: curs_main.c:2135
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Apri la mailbox in sola lettura"
 
-#: curs_main.c:2138
+#: curs_main.c:2137
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2241
+#: curs_main.c:2240
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Uscire da NeoMutt senza salvare?"
 
-#: curs_main.c:2257
+#: curs_main.c:2256
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "collega thread"
 
-#: curs_main.c:2260 curs_main.c:2298 curs_main.c:2758 curs_main.c:2790
+#: curs_main.c:2259 curs_main.c:2297 curs_main.c:2757 curs_main.c:2789
 #: flags.c:350 thread.c:1076 thread.c:1132 thread.c:1200
 msgid "Threading is not enabled."
 msgstr "Il threading non è attivo."
 
-#: curs_main.c:2273
+#: curs_main.c:2272
 msgid "Thread broken"
 msgstr "Thread corrotto"
 
-#: curs_main.c:2285
+#: curs_main.c:2284
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 "Il thread non può essere corrotto, il messaggio non fa parte di un thread"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2295
+#: curs_main.c:2294
 #, fuzzy
 msgid "Cannot link threads"
 msgstr "collega thread"
 
-#: curs_main.c:2300
+#: curs_main.c:2299
 msgid "No Message-ID: header available to link thread"
 msgstr "Nessun header Message-ID: disponibile per collegare il thread"
 
-#: curs_main.c:2302
+#: curs_main.c:2301
 msgid "First, please tag a message to be linked here"
 msgstr "Segnare prima il messaggio da collegare qui"
 
-#: curs_main.c:2313
+#: curs_main.c:2312
 msgid "Threads linked"
 msgstr "Thread collegati"
 
-#: curs_main.c:2316
+#: curs_main.c:2315
 msgid "No thread linked"
 msgstr "Nessun thread collegato"
 
-#: curs_main.c:2352 curs_main.c:2378
+#: curs_main.c:2351 curs_main.c:2377
 msgid "You are on the last message."
 msgstr "Sei all'ultimo messaggio."
 
-#: curs_main.c:2360 curs_main.c:2405
+#: curs_main.c:2359 curs_main.c:2404
 msgid "No undeleted messages."
 msgstr "Nessun messaggio ripristinato."
 
-#: curs_main.c:2397 curs_main.c:2423
+#: curs_main.c:2396 curs_main.c:2422
 msgid "You are on the first message."
 msgstr "Sei al primo messaggio."
 
-#: curs_main.c:2495 menu.c:975 pager.c:2452 pattern.c:2083
+#: curs_main.c:2494 menu.c:975 pager.c:2442 pattern.c:2083
 msgid "Search wrapped to top."
 msgstr "La ricerca è ritornata all'inizio."
 
-#: curs_main.c:2504 pager.c:2475 pattern.c:2094
+#: curs_main.c:2503 pager.c:2465 pattern.c:2094
 msgid "Search wrapped to bottom."
 msgstr "La ricerca è ritornata al fondo."
 
-#: curs_main.c:2547
+#: curs_main.c:2546
 #, fuzzy
 msgid "No new messages in this limited view."
 msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata."
 
-#: curs_main.c:2549
+#: curs_main.c:2548
 #, fuzzy
 msgid "No new messages."
 msgstr "Non ci sono nuovi messaggi"
 
-#: curs_main.c:2554
+#: curs_main.c:2553
 #, fuzzy
 msgid "No unread messages in this limited view."
 msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata."
 
-#: curs_main.c:2556
+#: curs_main.c:2555
 #, fuzzy
 msgid "No unread messages."
 msgstr "Non ci sono messaggi non letti"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2574
+#: curs_main.c:2573
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "aggiungi flag al messaggio"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2613 pager.c:3112
+#: curs_main.c:2612 pager.c:3102
 #, fuzzy
 msgid "Cannot toggle new"
 msgstr "(dis)abilita nuovo"
 
-#: curs_main.c:2690
+#: curs_main.c:2689
 msgid "No more threads."
 msgstr "Non ci sono altri thread."
 
-#: curs_main.c:2692
+#: curs_main.c:2691
 msgid "You are on the first thread."
 msgstr "Sei al primo thread."
 
-#: curs_main.c:2776
+#: curs_main.c:2775
 #, fuzzy
 msgid "Thread contains unread or flagged messages."
 msgstr "Il thread contiene messaggi non letti."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2826 pager.c:2796
+#: curs_main.c:2825 pager.c:2786
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "ripristina messaggio"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2938
+#: curs_main.c:2937
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "Impossibile scrivere il messaggio"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:3000 pager.c:3212
+#: curs_main.c:2999 pager.c:3202
 #, fuzzy, c-format
 msgid "%d labels changed."
 msgstr "La mailbox non è stata modificata."
@@ -1763,13 +1763,13 @@ msgstr "La mailbox non è stata modificata."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:3007 pager.c:3216
+#: curs_main.c:3006 pager.c:3206
 #, fuzzy
 msgid "No labels changed."
 msgstr "La mailbox non è stata modificata."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3106
+#: curs_main.c:3105
 #, fuzzy
 msgid "Cannot mark message(s) as read"
 msgstr "segna messaggio(i) come letto(i)"
@@ -1777,14 +1777,14 @@ msgstr "segna messaggio(i) come letto(i)"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3142
+#: curs_main.c:3141
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Inserire il keyID: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3150
+#: curs_main.c:3149
 #, fuzzy
 msgid "message hotkey"
 msgstr "Il messaggio è stato rimandato."
@@ -1792,28 +1792,28 @@ msgstr "Il messaggio è stato rimandato."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3155
+#: curs_main.c:3154
 #, fuzzy, c-format
 msgid "Message bound to %s."
 msgstr "Messaggio rimbalzato."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3163
+#: curs_main.c:3162
 #, fuzzy
 msgid "No message ID to macro."
 msgstr "In questo folder non ci sono messaggi."
 
-#: curs_main.c:3205 pager.c:2973 recvattach.c:1379
+#: curs_main.c:3204 pager.c:2963 recvattach.c:1388
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3208 pager.c:2939 pager.c:2951 pager.c:2976
+#: curs_main.c:3207 pager.c:2929 pager.c:2941 pager.c:2966
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3273 pager.c:3132
+#: curs_main.c:3272 pager.c:3122
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "ripristina messaggio"
@@ -2049,39 +2049,39 @@ msgstr ""
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- e il l'access-type %s indicato non è gestito --]\n"
 
-#: handler.c:1669
+#: handler.c:1673
 #, fuzzy
 msgid "Unable to open memory stream!"
 msgstr "Impossibile aprire il file temporaneo!"
 
-#: handler.c:1678
+#: handler.c:1682
 msgid "Unable to open temporary file!"
 msgstr "Impossibile aprire il file temporaneo!"
 
-#: handler.c:1728
+#: handler.c:1732
 #, fuzzy
 msgid "failed to re-open memstream!"
 msgstr "Impossibile aprire il file temporaneo!"
 
-#: handler.c:1861
+#: handler.c:1865
 msgid "Error: multipart/signed has no protocol."
 msgstr "Errore: multipart/signed non ha protocollo."
 
-#: handler.c:1910
+#: handler.c:1914
 msgid "[-- This is an attachment "
 msgstr "[-- Questo è un allegato "
 
-#: handler.c:1912
+#: handler.c:1916
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s non è gestito "
 
-#: handler.c:1920
+#: handler.c:1924
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(usa '%s' per vederlo)"
 
-#: handler.c:1923
+#: handler.c:1927
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' deve essere assegnato a un tasto!)"
 
@@ -2116,16 +2116,16 @@ msgstr "Funzioni non assegnate:"
 msgid "Help for %s"
 msgstr "Aiuto per %s"
 
-#: history.c:122 query.c:70
+#: history.c:104 query.c:70
 msgid "Search"
 msgstr "Cerca"
 
-#: history.c:261 history.c:304 history.c:587
+#: history.c:243 history.c:286 history.c:569
 #, c-format
 msgid "Bad history file format (line %d)"
 msgstr "Formato del file della cronologia errato (riga %d)"
 
-#: history.c:680
+#: history.c:662
 #, fuzzy, c-format
 msgid "History '%s'"
 msgstr "Ricerca '%s'"
@@ -2156,266 +2156,266 @@ msgstr "unhook: tipo di hook sconosciuto: %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: impossibile cancellare un %s dentro un %s."
 
-#: imap/auth.c:132 nntp.c:364 pop_auth.c:436 smtp.c:504 smtp.c:559
+#: imap/auth.c:128 nntp.c:364 pop_auth.c:436 smtp.c:504 smtp.c:559
 msgid "No authenticators available"
 msgstr "Non ci sono autenticatori disponibili."
 
-#: imap/auth_anon.c:65
+#: imap/auth_anon.c:61
 msgid "Authenticating (anonymous)..."
 msgstr "Autenticazione in corso (anonimo)..."
 
-#: imap/auth_anon.c:95
+#: imap/auth_anon.c:91
 msgid "Anonymous authentication failed."
 msgstr "L'autenticazione anonima è fallita."
 
-#: imap/auth_cram.c:116
+#: imap/auth_cram.c:112
 msgid "Authenticating (CRAM-MD5)..."
 msgstr "Autenticazione in corso (CRAM-MD5)..."
 
-#: imap/auth_cram.c:189
+#: imap/auth_cram.c:185
 msgid "CRAM-MD5 authentication failed."
 msgstr "Autenticazione CRAM-MD5 fallita."
 
-#: imap/auth_gss.c:158
+#: imap/auth_gss.c:154
 msgid "Authenticating (GSSAPI)..."
 msgstr "Autenticazione in corso (GSSAPI)..."
 
-#: imap/auth_gss.c:318
+#: imap/auth_gss.c:314
 msgid "GSSAPI authentication failed."
 msgstr "Autenticazione GSSAPI fallita."
 
-#: imap/auth_login.c:61
+#: imap/auth_login.c:57
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN non è abilitato su questo server."
 
-#: imap/auth_login.c:70 imap/auth_plain.c:61 pop_auth.c:266
+#: imap/auth_login.c:66 imap/auth_plain.c:57 pop_auth.c:266
 msgid "Logging in..."
 msgstr "Faccio il login..."
 
-#: imap/auth_login.c:90 imap/auth_plain.c:77 pop_auth.c:306
+#: imap/auth_login.c:86 imap/auth_plain.c:73 pop_auth.c:306
 msgid "Login failed."
 msgstr "Login fallito."
 
-#: imap/auth_sasl.c:127 nntp.c:394 nntp.c:460 smtp.c:387
+#: imap/auth_sasl.c:123 nntp.c:394 nntp.c:460 smtp.c:387
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autenticazione in corso (%s)..."
 
-#: imap/auth_sasl.c:257 pop_auth.c:189
+#: imap/auth_sasl.c:253 pop_auth.c:189
 msgid "SASL authentication failed."
 msgstr "Autenticazione SASL fallita."
 
-#: imap/browse.c:213 imap/imap.c:2035
+#: imap/browse.c:207 imap/imap.c:1997
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s non è un percorso IMAP valido"
 
-#: imap/browse.c:225
+#: imap/browse.c:219
 msgid "Getting folder list..."
 msgstr "Scarico la lista dei folder..."
 
-#: imap/browse.c:342
+#: imap/browse.c:336
 msgid "No such folder"
 msgstr "Folder inesistente"
 
-#: imap/browse.c:399
+#: imap/browse.c:393
 msgid "Create mailbox: "
 msgstr "Crea la mailbox: "
 
-#: imap/browse.c:404 imap/browse.c:464
+#: imap/browse.c:398 imap/browse.c:458
 msgid "Mailbox must have a name."
 msgstr "La mailbox deve avere un nome."
 
-#: imap/browse.c:411
+#: imap/browse.c:405
 msgid "Mailbox created."
 msgstr "Mailbox creata."
 
-#: imap/browse.c:452
+#: imap/browse.c:446
 #, fuzzy
 msgid "Cannot rename root folder"
 msgstr "Impossibile eliminare la cartella radice"
 
-#: imap/browse.c:456
+#: imap/browse.c:450
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Rinomina la mailbox %s in: "
 
-#: imap/browse.c:472
+#: imap/browse.c:466
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Impossibile rinominare: %s"
 
-#: imap/browse.c:476
+#: imap/browse.c:470
 msgid "Mailbox renamed."
 msgstr "Mailbox rinominata."
 
-#: imap/command.c:168
+#: imap/command.c:158
 #, fuzzy, c-format
 msgid "Mailbox %s@%s closed"
 msgstr "Mailbox chiusa"
 
-#: imap/command.c:1127 imap/command.c:1221
+#: imap/command.c:1117 imap/command.c:1211
 #, fuzzy, c-format
 msgid "Connection to %s timed out"
 msgstr "Connessione a %s chiusa."
 
-#: imap/imap.c:130
+#: imap/imap.c:92
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "Questo server IMAP è troppo vecchio, neomutt non può usarlo."
 
-#: imap/imap.c:505
+#: imap/imap.c:467
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Ricerca header senza nome dell'header: %s"
 
-#: imap/imap.c:535
+#: imap/imap.c:497
 #, c-format
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/imap.c:713
+#: imap/imap.c:675
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "CREATE fallito: %s"
 
-#: imap/imap.c:794
+#: imap/imap.c:756
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Chiusura della connessione a %s..."
 
-#: imap/imap.c:1080 nntp.c:678 pop_lib.c:329 smtp.c:590
+#: imap/imap.c:1042 nntp.c:678 pop_lib.c:329 smtp.c:590
 msgid "Secure connection with TLS?"
 msgstr "Vuoi usare TLS per rendere sicura la connessione?"
 
-#: imap/imap.c:1093 nntp.c:698 pop_lib.c:348 smtp.c:603
+#: imap/imap.c:1055 nntp.c:698 pop_lib.c:348 smtp.c:603
 msgid "Could not negotiate TLS connection"
 msgstr "Impossibile negoziare la connessione TLS"
 
-#: imap/imap.c:1108 pop_lib.c:368
+#: imap/imap.c:1070 pop_lib.c:368
 msgid "Encrypted connection unavailable"
 msgstr "Connessione cifrata non disponibile"
 
-#: imap/imap.c:1758
+#: imap/imap.c:1720
 msgid "Bad mailbox name"
 msgstr "Nome della mailbox non valido"
 
-#: imap/imap.c:1782
+#: imap/imap.c:1744
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Iscrizione a %s..."
 
-#: imap/imap.c:1784
+#: imap/imap.c:1746
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Rimozione della sottoscrizione da %s..."
 
-#: imap/imap.c:1794 init.c:4187
+#: imap/imap.c:1756 init.c:4187
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Iscritto a %s"
 
-#: imap/imap.c:1796 init.c:4241
+#: imap/imap.c:1758 init.c:4241
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Sottoscrizione rimossa da %s..."
 
-#: imap/imap.c:1975 imap/message.c:1477
+#: imap/imap.c:1937 imap/message.c:1464
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copia di %d messaggi in %s..."
 
-#: imap/imap.c:1990 imap/imap.c:2284 imap/message.c:1514 muttlib.c:1353
+#: imap/imap.c:1952 imap/imap.c:2246 imap/message.c:1501 muttlib.c:1353
 #, c-format
 msgid "Create %s?"
 msgstr "Creare %s?"
 
-#: imap/imap.c:2070 nntp.c:1488
+#: imap/imap.c:2032 nntp.c:1488
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleziono %s..."
 
-#: imap/imap.c:2226
+#: imap/imap.c:2188
 msgid "Error opening mailbox"
 msgstr "Errore durante l'apertura della mailbox"
 
-#: imap/imap.c:2441
+#: imap/imap.c:2403
 msgid "Expunge failed"
 msgstr "Expunge fallito"
 
-#: imap/imap.c:2452
+#: imap/imap.c:2414
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Segno cancellati %d messaggi..."
 
-#: imap/imap.c:2484
+#: imap/imap.c:2446
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Salvataggio dei messaggi modificati... [%d/%d]"
 
-#: imap/imap.c:2538
+#: imap/imap.c:2500
 msgid "Error saving flags. Close anyway?"
 msgstr "Errore nel salvare le flag. Chiudere comunque?"
 
-#: imap/imap.c:2546
+#: imap/imap.c:2508
 msgid "Error saving flags"
 msgstr "Errore nel salvataggio delle flag"
 
-#: imap/imap.c:2568
+#: imap/imap.c:2530
 msgid "Expunging messages from server..."
 msgstr "Cancellazione dei messaggi dal server..."
 
-#: imap/imap.c:2574
+#: imap/imap.c:2536
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE fallito"
 
-#: imap/imap.c:2620
+#: imap/imap.c:2582
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "Il server SMTP non supporta l'autenticazione"
 
-#: imap/imap.c:2664
+#: imap/imap.c:2626
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Non valido   "
 
-#: imap/message.c:491 mx.c:1262
+#: imap/message.c:478 mx.c:1262
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Overflow intero -- impossibile allocare memoria."
 
-#: imap/message.c:663
+#: imap/message.c:650
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Impossibile scaricare gli header da questa versione del server IMAP."
 
-#: imap/message.c:673
+#: imap/message.c:660
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Impossibile creare il file temporaneo %s"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:708
+#: imap/message.c:695
 msgid "Evaluating cache..."
 msgstr "Analisi della cache..."
 
-#: imap/message.c:1052 imap/message.c:1116 nntp.c:1616 pop.c:598
+#: imap/message.c:1039 imap/message.c:1103 nntp.c:1616 pop.c:598
 msgid "Fetching message..."
 msgstr "Scaricamento messaggio..."
 
-#: imap/message.c:1103 pop.c:594
+#: imap/message.c:1090 pop.c:594
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "L'indice dei messaggi non è corretto; provare a riaprire la mailbox."
 
-#: imap/message.c:1298
+#: imap/message.c:1285
 msgid "Uploading message..."
 msgstr "Invio messaggio..."
 
-#: imap/message.c:1481
+#: imap/message.c:1468
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copia messaggio %d in %s..."
 
-#: imap/util.c:596
+#: imap/util.c:561
 msgid "Continue?"
 msgstr "Continuare?"
 
@@ -2657,39 +2657,39 @@ msgstr "Il tasto non è assegnato."
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Il tasto non è assegnato.  Premere '%s' per l'aiuto."
 
-#: keymap.c:1002
+#: keymap.c:1003
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: menù inesistente"
 
-#: keymap.c:1017
+#: keymap.c:1018
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: sequenza di tasti nulla"
 
-#: keymap.c:1043
+#: keymap.c:1044
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1170
+#: keymap.c:1171
 msgid "macro: empty key sequence"
 msgstr "macro: sequenza di tasti nulla"
 
-#: keymap.c:1218
+#: keymap.c:1219
 msgid "exec: no arguments"
 msgstr "exec: non ci sono argomenti"
 
-#: keymap.c:1238
+#: keymap.c:1239
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: la funzione non esiste"
 
-#: keymap.c:1259
+#: keymap.c:1260
 msgid "Enter keys (^G to abort): "
 msgstr "Inserisci i tasti (^G per annullare): "
 
-#: keymap.c:1265
+#: keymap.c:1266
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Car = %s, Ottale = %o, Decimale = %d"
@@ -2821,7 +2821,7 @@ msgstr "%s non esiste. Crearlo?"
 msgid "Failed to parse mailto: link"
 msgstr "Impossibile analizzare il collegamento mailto:"
 
-#: main.c:691 send.c:1892 send.c:1897
+#: main.c:691 send.c:1894 send.c:1899
 msgid "No recipients specified."
 msgstr "Nessun destinatario specificato."
 
@@ -2851,7 +2851,7 @@ msgstr "Non è stata definita una mailbox di ingresso."
 msgid "Mailbox is empty."
 msgstr "La mailbox è vuota."
 
-#: mbox.c:123 mbox.c:280 mh.c:1295 mx.c:478
+#: mbox.c:123 mbox.c:280 mh.c:1290 mx.c:478
 #, c-format
 msgid "Reading %s..."
 msgstr "Lettura di %s..."
@@ -2885,7 +2885,7 @@ msgstr "Errore fatale!  Impossibile riaprire la mailbox!"
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: mbox modified, but no modified messages! (segnala questo bug)"
 
-#: mbox.c:1053 mh.c:2337 mutt_notmuch.c:2317 mx.c:562
+#: mbox.c:1053 mh.c:2332 mutt_notmuch.c:2320 mx.c:562
 #, c-format
 msgid "Writing %s..."
 msgstr "Scrittura di %s..."
@@ -2940,15 +2940,15 @@ msgstr "Sei all'ultima voce."
 msgid "You are on the first entry."
 msgstr "Sei alla prima voce."
 
-#: menu.c:941 pager.c:2498 pattern.c:2017
+#: menu.c:941 pager.c:2488 pattern.c:2017
 msgid "Search for: "
 msgstr "Cerca: "
 
-#: menu.c:942 pager.c:2499 pattern.c:2018
+#: menu.c:942 pager.c:2489 pattern.c:2018
 msgid "Reverse search for: "
 msgstr "Cerca all'indietro: "
 
-#: menu.c:993 pager.c:2449 pager.c:2472 pager.c:2601 pattern.c:2139
+#: menu.c:993 pager.c:2439 pager.c:2462 pager.c:2591 pattern.c:2139
 msgid "Not found."
 msgstr "Non trovato."
 
@@ -2968,16 +2968,16 @@ msgstr "I salti non sono implementati per i dialog."
 msgid "Tagging is not supported."
 msgstr "Non è possibile segnare un messaggio."
 
-#: mh.c:1275
+#: mh.c:1270
 #, c-format
 msgid "Scanning %s..."
 msgstr "Scansione di %s..."
 
-#: mh.c:1595 mh.c:1683
+#: mh.c:1590 mh.c:1678
 msgid "Could not flush message to disk"
 msgstr "Impossibile salvare il messaggio su disco"
 
-#: mh.c:1635
+#: mh.c:1630
 #, fuzzy
 msgid "md_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message():·impossibile impostare l'orario del file"
@@ -3128,7 +3128,7 @@ msgstr "Password per %s@%s: "
 msgid "%s: %s"
 msgstr ""
 
-#: mutt_notmuch.c:204 mutt_notmuch.c:1705 mutt_notmuch.c:1893
+#: mutt_notmuch.c:204 mutt_notmuch.c:1708 mutt_notmuch.c:1896
 #, fuzzy, c-format
 msgid "failed to parse notmuch uri: %s"
 msgstr "Impossibile analizzare il collegamento mailto:\n"
@@ -3149,32 +3149,32 @@ msgstr ""
 msgid "failed to parse notmuch limit: %s"
 msgstr "Impossibile analizzare il collegamento mailto:\n"
 
-#: mutt_notmuch.c:507
+#: mutt_notmuch.c:508
 #, fuzzy, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "In attesa del lock fcntl... %d"
 
-#: mutt_notmuch.c:523
+#: mutt_notmuch.c:526
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
 msgstr ""
 
-#: mutt_notmuch.c:524
+#: mutt_notmuch.c:527
 #, fuzzy
 msgid "unknown reason"
 msgstr "errore sconosciuto"
 
-#: mutt_notmuch.c:908
+#: mutt_notmuch.c:911
 #, fuzzy, c-format
 msgid "Reading messages..."
 msgstr "Invio il messaggio..."
 
-#: mutt_notmuch.c:1596
+#: mutt_notmuch.c:1599
 #, fuzzy
 msgid "No more messages in the thread."
 msgstr "Il messaggio padre non è visibil in questa visualizzazione limitata."
 
-#: mutt_notmuch.c:2426
+#: mutt_notmuch.c:2429
 #, fuzzy
 msgid "Can't write to virtual folder."
 msgstr "Impossibile accodare al folder: %s"
@@ -3287,7 +3287,7 @@ msgstr "Il messaggio non può essere inviato in linea.  Riutilizzare PGP/MIME?"
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
 msgstr ""
 
-#: ncrypt/crypt.c:174 ncrypt/cryptglue.c:124 ncrypt/pgpkey.c:586
+#: ncrypt/crypt.c:174 ncrypt/cryptglue.c:123 ncrypt/pgpkey.c:586
 #: ncrypt/pgpkey.c:776
 msgid "Invoking PGP..."
 msgstr "Eseguo PGP..."
@@ -3296,23 +3296,23 @@ msgstr "Eseguo PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Il messaggio non può essere inviato in linea.  Riutilizzare PGP/MIME?"
 
-#: ncrypt/crypt.c:188 send.c:1815
+#: ncrypt/crypt.c:188 send.c:1817
 msgid "Mail not sent."
 msgstr "Il messaggio non è stato inviato."
 
-#: ncrypt/crypt.c:534
+#: ncrypt/crypt.c:535
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "I messaggi S/MIME senza suggerimenti del contenuto non sono gestiti."
 
-#: ncrypt/crypt.c:749 ncrypt/crypt.c:790
+#: ncrypt/crypt.c:750 ncrypt/crypt.c:791
 msgid "Trying to extract PGP keys...\n"
 msgstr "Cerco di estrarre le chiavi PGP...\n"
 
-#: ncrypt/crypt.c:771 ncrypt/crypt.c:811
+#: ncrypt/crypt.c:772 ncrypt/crypt.c:812
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Cerco di estrarre i certificati S/MIME...\n"
 
-#: ncrypt/crypt.c:971
+#: ncrypt/crypt.c:972
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -3321,7 +3321,7 @@ msgstr ""
 "[-- Errore: protocollo multipart/signed %s sconosciuto! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1011
+#: ncrypt/crypt.c:1012
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -3329,7 +3329,7 @@ msgstr ""
 "[-- Errore: struttura multipart/signed incoerente! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1052
+#: ncrypt/crypt.c:1053
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -3338,7 +3338,7 @@ msgstr ""
 "[-- Attenzione: impossibile verificare firme %s/%s. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1064
+#: ncrypt/crypt.c:1065
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -3346,7 +3346,7 @@ msgstr ""
 "[-- I seguenti dati sono firmati --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1069
+#: ncrypt/crypt.c:1070
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -3354,7 +3354,7 @@ msgstr ""
 "[-- Attenzione: non è stata trovata alcuna firma. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1075
+#: ncrypt/crypt.c:1076
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -3362,12 +3362,12 @@ msgstr ""
 "\n"
 "[-- Fine dei dati firmati --]\n"
 
-#: ncrypt/cryptglue.c:99
+#: ncrypt/cryptglue.c:98
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
 msgstr ""
 "\"crypt_use_gpgme\" impostato ma non compilato con il supporto a GPGME."
 
-#: ncrypt/cryptglue.c:126
+#: ncrypt/cryptglue.c:125
 msgid "Invoking S/MIME..."
 msgstr "Richiamo S/MIME..."
 
@@ -3603,7 +3603,7 @@ msgstr "Errore: decifratura/verifica fallita: %s\n"
 msgid "Error: copy data failed\n"
 msgstr "Errore: copia dei dati fallita\n"
 
-#: ncrypt/crypt_gpgme.c:2647 ncrypt/pgp.c:522
+#: ncrypt/crypt_gpgme.c:2647 ncrypt/pgp.c:520
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -3611,11 +3611,11 @@ msgstr ""
 "[-- INIZIO DEL MESSAGGIO PGP --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2649 ncrypt/pgp.c:524
+#: ncrypt/crypt_gpgme.c:2649 ncrypt/pgp.c:522
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- INIZIO DEL BLOCCO DELLA CHIAVE PUBBLICA --]\n"
 
-#: ncrypt/crypt_gpgme.c:2651 ncrypt/pgp.c:526
+#: ncrypt/crypt_gpgme.c:2651 ncrypt/pgp.c:524
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -3623,19 +3623,19 @@ msgstr ""
 "[-- INIZIO DEL MESSAGGIO FIRMATO CON PGP --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2677 ncrypt/pgp.c:568
+#: ncrypt/crypt_gpgme.c:2677 ncrypt/pgp.c:566
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- FINE DEL MESSAGGIO PGP --]\n"
 
-#: ncrypt/crypt_gpgme.c:2679 ncrypt/pgp.c:575
+#: ncrypt/crypt_gpgme.c:2679 ncrypt/pgp.c:573
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FINE DEL BLOCCO DELLA CHIAVE PUBBLICA --]\n"
 
-#: ncrypt/crypt_gpgme.c:2681 ncrypt/pgp.c:577
+#: ncrypt/crypt_gpgme.c:2681 ncrypt/pgp.c:575
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- FINE DEL MESSAGGIO FIRMATO CON PGP --]\n"
 
-#: ncrypt/crypt_gpgme.c:2704 ncrypt/pgp.c:611
+#: ncrypt/crypt_gpgme.c:2704 ncrypt/pgp.c:609
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -3643,7 +3643,7 @@ msgstr ""
 "[-- Errore: impossibile trovare l'inizio del messaggio di PGP! --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2739 ncrypt/crypt_gpgme.c:2816 ncrypt/pgp.c:1044
+#: ncrypt/crypt_gpgme.c:2739 ncrypt/crypt_gpgme.c:2816 ncrypt/pgp.c:1042
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Errore: impossibile creare il file temporaneo! --]\n"
 
@@ -3655,7 +3655,7 @@ msgstr ""
 "[-- I seguenti dati sono firmati e cifrati con PGP/MIME  --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2754 ncrypt/pgp.c:1056
+#: ncrypt/crypt_gpgme.c:2754 ncrypt/pgp.c:1054
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -3667,16 +3667,16 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Fine dei dati firmati e cifrati con PGP/MIME  --]\n"
 
-#: ncrypt/crypt_gpgme.c:2777 ncrypt/pgp.c:1076
+#: ncrypt/crypt_gpgme.c:2777 ncrypt/pgp.c:1074
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Fine dei dati cifrati con PGP/MIME  --]\n"
 
-#: ncrypt/crypt_gpgme.c:2782 ncrypt/pgp.c:572 ncrypt/pgp.c:1081
+#: ncrypt/crypt_gpgme.c:2782 ncrypt/pgp.c:570 ncrypt/pgp.c:1079
 msgid "PGP message successfully decrypted."
 msgstr "Messaggio PGP decifrato con successo."
 
-#: ncrypt/crypt_gpgme.c:2786 ncrypt/pgp.c:509 ncrypt/pgp.c:570
-#: ncrypt/pgp.c:1085
+#: ncrypt/crypt_gpgme.c:2786 ncrypt/pgp.c:507 ncrypt/pgp.c:568
+#: ncrypt/pgp.c:1083
 msgid "Could not decrypt PGP message"
 msgstr "Impossibile decifrare il messaggio PGP"
 
@@ -3922,12 +3922,12 @@ msgstr "Ricerca chiavi corrispondenti a \"%s\"..."
 msgid "No matching keys found for \"%s\""
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4652 ncrypt/pgp.c:1263
+#: ncrypt/crypt_gpgme.c:4652 ncrypt/pgp.c:1261
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Uso il keyID \"%s\" per %s?"
 
-#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgp.c:1312 ncrypt/smime.c:779
+#: ncrypt/crypt_gpgme.c:4703 ncrypt/pgp.c:1310 ncrypt/smime.c:779
 #: ncrypt/smime.c:887
 #, c-format
 msgid "Enter keyID for %s: "
@@ -4039,15 +4039,15 @@ msgstr "Errore nella verifica del mittente"
 msgid "Failed to figure out sender"
 msgstr "Errore nel rilevamento del mittente"
 
-#: ncrypt/pgp.c:88
+#: ncrypt/pgp.c:86
 msgid "Enter PGP passphrase:"
 msgstr "Inserisci la passphrase di PGP:"
 
-#: ncrypt/pgp.c:450
+#: ncrypt/pgp.c:448
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Errore: impossibile creare il sottoprocesso PGP --]\n"
 
-#: ncrypt/pgp.c:487 ncrypt/pgp.c:753 ncrypt/pgp.c:910
+#: ncrypt/pgp.c:485 ncrypt/pgp.c:751 ncrypt/pgp.c:908
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4055,11 +4055,11 @@ msgstr ""
 "[-- Fine dell'output di PGP --]\n"
 "\n"
 
-#: ncrypt/pgp.c:799
+#: ncrypt/pgp.c:797
 msgid "Internal error.  Please submit a bug report."
 msgstr ""
 
-#: ncrypt/pgp.c:866
+#: ncrypt/pgp.c:864
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -4067,32 +4067,32 @@ msgstr ""
 "[-- Errore: non è stato possibile creare un sottoprocesso PGP! --]\n"
 "\n"
 
-#: ncrypt/pgp.c:897 ncrypt/pgp.c:922
+#: ncrypt/pgp.c:895 ncrypt/pgp.c:920
 msgid "Decryption failed"
 msgstr "Decifratura fallita"
 
-#: ncrypt/pgp.c:1138
+#: ncrypt/pgp.c:1136
 msgid "Can't open PGP subprocess!"
 msgstr "Impossibile aprire il sottoprocesso PGP!"
 
-#: ncrypt/pgp.c:1582
+#: ncrypt/pgp.c:1580
 msgid "Can't invoke PGP"
 msgstr "Impossibile eseguire PGP"
 
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1680
+#: ncrypt/pgp.c:1678
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1686
+#: ncrypt/pgp.c:1684
 msgid "(i)nline"
 msgstr "(i)n linea"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1700
+#: ncrypt/pgp.c:1698
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -4100,23 +4100,23 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1706
+#: ncrypt/pgp.c:1704
 msgid "saico"
 msgstr "escba"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1712
+#: ncrypt/pgp.c:1710
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, (a)nnullare? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1714
+#: ncrypt/pgp.c:1712
 msgid "saco"
 msgstr "escba"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1731
+#: ncrypt/pgp.c:1729
 #, fuzzy, c-format
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
@@ -4126,23 +4126,23 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1737
+#: ncrypt/pgp.c:1735
 msgid "esabico"
 msgstr "escba"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1743
+#: ncrypt/pgp.c:1741
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, (a)nnullare? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1746
+#: ncrypt/pgp.c:1744
 msgid "esabco"
 msgstr "escba"
 
 #. L10N: PGP options (inline)
-#: ncrypt/pgp.c:1759
+#: ncrypt/pgp.c:1757
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr ""
@@ -4150,17 +4150,17 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1765
+#: ncrypt/pgp.c:1763
 msgid "esabic"
 msgstr "escba"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1771
+#: ncrypt/pgp.c:1769
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, (a)nnullare? "
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1773
+#: ncrypt/pgp.c:1771
 msgid "esabc"
 msgstr ""
 
@@ -4484,18 +4484,13 @@ msgid ""
 "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
-#: opcodes.h:29
+#: opcodes.h:30
 msgid "null operation"
 msgstr "operazione nulla"
 
-#: opcodes.h:30
-#, fuzzy
-msgid "show messages"
-msgstr "ordina i messaggi"
-
 #: opcodes.h:31
-msgid "end of conditional execution (noop)"
-msgstr "fine dell'esecuzione condizionata (noop)"
+msgid "toggle display of subparts"
+msgstr "(dis)attiva la visualizzazione delle sottoparti"
 
 #: opcodes.h:32
 msgid "force viewing of attachment using mailcap"
@@ -4506,134 +4501,133 @@ msgid "view attachment as text"
 msgstr "visualizza l'allegato come se fosse testo"
 
 #: opcodes.h:34
-msgid "toggle display of subparts"
-msgstr "(dis)attiva la visualizzazione delle sottoparti"
-
-#: opcodes.h:35
 msgid "move to the bottom of the page"
 msgstr "spostati in fondo alla pagina"
 
-#: opcodes.h:36
+#: opcodes.h:35
 msgid "remail a message to another user"
 msgstr "rispedisci un messaggio a un altro utente"
 
-#: opcodes.h:37
+#: opcodes.h:36
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: opcodes.h:38
+#: opcodes.h:37
 msgid "select a new file in this directory"
 msgstr "seleziona un nuovo file in questa directory"
 
-#: opcodes.h:39
-msgid "view file"
-msgstr "guarda il file"
-
-#: opcodes.h:40
-msgid "display the currently selected file's name"
-msgstr "mostra il nome del file attualmente selezionato"
-
-#: opcodes.h:41
+#: opcodes.h:38
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "iscrizione alla mailbox corrente (solo IMAP)"
 
-#: opcodes.h:42
+#: opcodes.h:39
+msgid "display the currently selected file's name"
+msgstr "mostra il nome del file attualmente selezionato"
+
+#: opcodes.h:40
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "mostra tutte le mailbox/solo sottoscritte (solo IMAP)"
+
+#: opcodes.h:41
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "rimuove sottoscrizione dalla mailbox corrente (solo IMAP)"
 
-#: opcodes.h:43
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "mostra tutte le mailbox/solo sottoscritte (solo IMAP)"
+#: opcodes.h:42
+msgid "view file"
+msgstr "guarda il file"
 
-#: opcodes.h:44
+#: opcodes.h:43
 msgid "list mailboxes with new mail"
 msgstr "elenca le mailbox con nuova posta"
 
-#: opcodes.h:45
+#: opcodes.h:44
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: opcodes.h:46
+#: opcodes.h:45
 msgid "change directories"
 msgstr "cambia directory"
 
-#: opcodes.h:47
-#, fuzzy
-msgid "go to parent directory"
-msgstr "%s non è una directory."
-
-#: opcodes.h:48
+#: opcodes.h:46
 msgid "check mailboxes for new mail"
 msgstr "controlla se c'è nuova posta nella mailbox"
 
-#: opcodes.h:49
+#: opcodes.h:47
 msgid "attach file(s) to this message"
 msgstr "allega uno o più file a questo messaggio"
 
-#: opcodes.h:50
+#: opcodes.h:48
 msgid "attach message(s) to this message"
 msgstr "allega uno o più messaggi a questo messaggio"
 
-#: opcodes.h:51
+#: opcodes.h:49
 #, fuzzy
 msgid "attach news article(s) to this message"
 msgstr "allega uno o più file a questo messaggio"
 
-#: opcodes.h:52
+#: opcodes.h:50
 msgid "edit the BCC list"
 msgstr "modifica la lista dei BCC"
 
-#: opcodes.h:53
+#: opcodes.h:51
 msgid "edit the CC list"
 msgstr "modifica la lista dei CC"
 
-#: opcodes.h:54
+#: opcodes.h:52
 msgid "edit attachment description"
 msgstr "modifica la descrizione dell'allegato"
 
-#: opcodes.h:55
+#: opcodes.h:53
 msgid "edit attachment transfer-encoding"
 msgstr "modifica il transfer-encoding dell'allegato"
 
-#: opcodes.h:56
+#: opcodes.h:54
 msgid "enter a file to save a copy of this message in"
 msgstr "inserisci un file in cui salvare una coppia di questo messagio"
 
-#: opcodes.h:57
+#: opcodes.h:55
 msgid "edit the file to be attached"
 msgstr "modifica il file da allegare"
 
-#: opcodes.h:58
+#: opcodes.h:56
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "modifica il campo Reply-To"
+
+#: opcodes.h:57
 msgid "edit the from field"
 msgstr "modifica il campo from"
 
-#: opcodes.h:59
+#: opcodes.h:58
 msgid "edit the message with headers"
 msgstr "modifica il messaggio insieme agli header"
 
-#: opcodes.h:60
+#: opcodes.h:59
 msgid "edit the message"
 msgstr "modifica il messaggio"
 
-#: opcodes.h:61
+#: opcodes.h:60
 msgid "edit attachment using mailcap entry"
 msgstr "modifica l'allegato usando la voce di mailcap"
 
-#: opcodes.h:62
+#: opcodes.h:61
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "modifica la lista dei CC"
 
-#: opcodes.h:63
+#: opcodes.h:62
 msgid "edit the Reply-To field"
 msgstr "modifica il campo Reply-To"
 
+#: opcodes.h:63
+msgid "edit the subject of this message"
+msgstr "modifica il Subject di questo messaggio"
+
 #: opcodes.h:64
-#, fuzzy
-msgid "edit the Followup-To field"
-msgstr "modifica il campo Reply-To"
+msgid "edit the TO list"
+msgstr "modifica la lista dei TO"
 
 #: opcodes.h:65
 #, fuzzy
@@ -4641,292 +4635,293 @@ msgid "edit the X-Comment-To field"
 msgstr "modifica il campo Reply-To"
 
 #: opcodes.h:66
-msgid "edit the subject of this message"
-msgstr "modifica il Subject di questo messaggio"
-
-#: opcodes.h:67
-msgid "edit the TO list"
-msgstr "modifica la lista dei TO"
-
-#: opcodes.h:68
-msgid "create a new mailbox (IMAP only)"
-msgstr "crea una nuova mailbox (solo IMAP)"
-
-#: opcodes.h:69
-msgid "edit attachment content type"
-msgstr "modifica il tipo di allegato"
-
-#: opcodes.h:70
 msgid "get a temporary copy of an attachment"
 msgstr "prendi una copia temporanea di un allegato"
 
-#: opcodes.h:71
+#: opcodes.h:67
 msgid "run ispell on the message"
 msgstr "esegui ispell sul messaggio"
 
-#: opcodes.h:72
+#: opcodes.h:68
 msgid "compose new attachment using mailcap entry"
 msgstr "componi un nuovo allegato usando la voce di mailcap"
 
-#: opcodes.h:73
-msgid "toggle recoding of this attachment"
-msgstr "(dis)abilita la ricodifica di questo allegato"
-
-#: opcodes.h:74
+#: opcodes.h:69
 msgid "save this message to send later"
 msgstr "salva questo messaggio per inviarlo in seguito"
 
-#: opcodes.h:75
+#: opcodes.h:70
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "modifica il transfer-encoding dell'allegato"
 
-#: opcodes.h:76
+#: opcodes.h:71
 msgid "rename/move an attached file"
 msgstr "rinomina/sposta un file allegato"
 
-#: opcodes.h:77
+#: opcodes.h:72
+msgid "send the message"
+msgstr "spedisce il messaggio"
+
+#: opcodes.h:73
+msgid "toggle disposition between inline/attachment"
+msgstr "cambia la disposizione tra inline e attachment"
+
+#: opcodes.h:74
+msgid "toggle recoding of this attachment"
+msgstr "(dis)abilita la ricodifica di questo allegato"
+
+#: opcodes.h:75
+msgid "toggle whether to delete file after sending it"
+msgstr "(dis)attiva se cancellare il file dopo averlo spedito"
+
+#: opcodes.h:76
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "componi un nuovo messaggio"
 
-#: opcodes.h:78
-msgid "send the message"
-msgstr "spedisce il messaggio"
-
-#: opcodes.h:79
-msgid "toggle disposition between inline/attachment"
-msgstr "cambia la disposizione tra inline e attachment"
-
-#: opcodes.h:80
-msgid "toggle whether to delete file after sending it"
-msgstr "(dis)attiva se cancellare il file dopo averlo spedito"
-
-#: opcodes.h:81
+#: opcodes.h:77
 msgid "update an attachment's encoding info"
 msgstr "aggiorna le informazioni sulla codifica di un allegato"
 
-#: opcodes.h:82
+#: opcodes.h:78
 msgid "write the message to a folder"
 msgstr "scrivi il messaggio in un folder"
 
-#: opcodes.h:83
+#: opcodes.h:79
 msgid "copy a message to a file/mailbox"
 msgstr "copia un messaggio in un file/mailbox"
 
-#: opcodes.h:84
+#: opcodes.h:80
 msgid "create an alias from a message sender"
 msgstr "crea un alias dal mittente del messaggio"
 
-#: opcodes.h:85
+#: opcodes.h:81
+msgid "create a new mailbox (IMAP only)"
+msgstr "crea una nuova mailbox (solo IMAP)"
+
+#: opcodes.h:82
 msgid "move entry to bottom of screen"
 msgstr "muovi la voce in fondo allo schermo"
 
-#: opcodes.h:86
+#: opcodes.h:83
 msgid "move entry to middle of screen"
 msgstr "muovi al voce in mezzo allo schermo"
 
-#: opcodes.h:87
+#: opcodes.h:84
 msgid "move entry to top of screen"
 msgstr "muovi la voce all'inizio dello schermo"
 
-#: opcodes.h:88
+#: opcodes.h:85
 msgid "make decoded (text/plain) copy"
 msgstr "fai una copia decodificata (text/plain)"
 
-#: opcodes.h:89
+#: opcodes.h:86
 msgid "make decoded copy (text/plain) and delete"
 msgstr "fai una copia decodificata (text/plain) e cancellalo"
 
-#: opcodes.h:90
+#: opcodes.h:87
 msgid "delete the current entry"
 msgstr "cancella la voce corrente"
 
-#: opcodes.h:91
+#: opcodes.h:88
 msgid "delete the current mailbox (IMAP only)"
 msgstr "cancella la mailbox corrente (solo IMAP)"
 
-#: opcodes.h:92
+#: opcodes.h:89
 msgid "delete all messages in subthread"
 msgstr "cancella tutti i messaggi nel subthread"
 
-#: opcodes.h:93
+#: opcodes.h:90
 msgid "delete all messages in thread"
 msgstr "cancella tutti i messaggi nel thread"
 
-#: opcodes.h:94
+#: opcodes.h:91
 msgid "display full address of sender"
 msgstr "visualizza l'indirizzo completo del mittente"
 
-#: opcodes.h:95
+#: opcodes.h:92
 msgid "display message and toggle header weeding"
 msgstr "visualizza il messaggio e (dis)attiva la rimozione degli header"
 
-#: opcodes.h:96
+#: opcodes.h:93
 msgid "display a message"
 msgstr "visualizza un messaggio"
 
-#: opcodes.h:97
-msgid "add, change, or delete a message's label"
-msgstr ""
-
-#: opcodes.h:98
-msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
-
-#: opcodes.h:99
-msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
-msgstr ""
-
-#: opcodes.h:100
+#: opcodes.h:94
 msgid "delete the char in front of the cursor"
 msgstr "cancella il carattere davanti al cursore"
 
-#: opcodes.h:101
+#: opcodes.h:95
 msgid "move the cursor one character to the left"
 msgstr "sposta il cursore di un carattere a sinistra"
 
-#: opcodes.h:102
+#: opcodes.h:96
 msgid "move the cursor to the beginning of the word"
 msgstr "sposta il cursore all'inizio della parola"
 
-#: opcodes.h:103
+#: opcodes.h:97
 msgid "jump to the beginning of the line"
 msgstr "salta all'inizio della riga"
 
-#: opcodes.h:104
+#: opcodes.h:98
 msgid "cycle among incoming mailboxes"
 msgstr "passa alla mailbox di ingresso successiva"
 
-#: opcodes.h:105
+#: opcodes.h:99
+msgid "capitalize the word"
+msgstr "rendi maiuscola la prima lettera"
+
+#: opcodes.h:100
 msgid "complete filename or alias"
 msgstr "completa il nome del file o l'alias"
 
-#: opcodes.h:106
+#: opcodes.h:101
 msgid "complete address with query"
 msgstr "completa l'indirizzo con una ricerca"
 
-#: opcodes.h:107
+#: opcodes.h:102
 msgid "delete the char under the cursor"
 msgstr "cancella il carattere sotto il cursore"
 
-#: opcodes.h:108
+#: opcodes.h:103
+msgid "convert the word to lower case"
+msgstr "rendi minuscola la parola"
+
+#: opcodes.h:104
 msgid "jump to the end of the line"
 msgstr "salta alla fine della riga"
 
-#: opcodes.h:109
+#: opcodes.h:105
 msgid "move the cursor one character to the right"
 msgstr "sposta il cursore di un carattere a destra"
 
-#: opcodes.h:110
+#: opcodes.h:106
 msgid "move the cursor to the end of the word"
 msgstr "sposta il cursore alla fine della parola"
 
-#: opcodes.h:111
+#: opcodes.h:107
 msgid "scroll down through the history list"
 msgstr "spostati in basso attraverso l'history"
 
-#: opcodes.h:112
-msgid "scroll up through the history list"
-msgstr "spostati in alto attraverso l'history"
-
-#: opcodes.h:113
+#: opcodes.h:108
 #, fuzzy
 msgid "search through the history list"
 msgstr "spostati in alto attraverso l'history"
 
-#: opcodes.h:114
+#: opcodes.h:109
+msgid "scroll up through the history list"
+msgstr "spostati in alto attraverso l'history"
+
+#: opcodes.h:110
 msgid "delete chars from cursor to end of line"
 msgstr "cancella i caratteri dal cursore alla fine della riga"
 
-#: opcodes.h:115
+#: opcodes.h:111
 msgid "delete chars from the cursor to the end of the word"
 msgstr "cancella i caratteri dal cursore alla fine della parola"
 
-#: opcodes.h:116
+#: opcodes.h:112
 msgid "delete all chars on the line"
 msgstr "cancella tutti i caratteri sulla riga"
 
-#: opcodes.h:117
+#: opcodes.h:113
 msgid "delete the word in front of the cursor"
 msgstr "cancella la parola davanti al cursore"
 
-#: opcodes.h:118
+#: opcodes.h:114
 msgid "quote the next typed key"
 msgstr "proteggi il successivo tasto digitato"
 
-#: opcodes.h:119
+#: opcodes.h:115
 msgid "transpose character under cursor with previous"
 msgstr "scambia il carattere sotto il cursore con il precedente"
 
-#: opcodes.h:120
-msgid "capitalize the word"
-msgstr "rendi maiuscola la prima lettera"
-
-#: opcodes.h:121
-msgid "convert the word to lower case"
-msgstr "rendi minuscola la parola"
-
-#: opcodes.h:122
+#: opcodes.h:116
 msgid "convert the word to upper case"
 msgstr "rendi maiuscola la parola"
 
-#: opcodes.h:123
+#: opcodes.h:117
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: opcodes.h:118
+msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
+msgstr ""
+
+#: opcodes.h:119
+msgid "edit the raw message (edit and edit-raw-message are synonyms)"
+msgstr ""
+
+#: opcodes.h:120
+msgid "edit attachment content type"
+msgstr "modifica il tipo di allegato"
+
+#: opcodes.h:121
+msgid "end of conditional execution (noop)"
+msgstr "fine dell'esecuzione condizionata (noop)"
+
+#: opcodes.h:122
 msgid "enter a neomuttrc command"
 msgstr "inserisci un comando di neomuttrc"
 
-#: opcodes.h:124
+#: opcodes.h:123
 msgid "enter a file mask"
 msgstr "inserisci la maschera dei file"
 
-#: opcodes.h:125
+#: opcodes.h:124
 msgid "exit this menu"
 msgstr "esci da questo menù"
 
-#: opcodes.h:126
+#: opcodes.h:125
 msgid "filter attachment through a shell command"
 msgstr "filtra l'allegato attraverso un comando della shell"
 
-#: opcodes.h:127
+#: opcodes.h:126
 msgid "move to the first entry"
 msgstr "spostati alla prima voce"
 
-#: opcodes.h:128
+#: opcodes.h:127
 msgid "toggle a message's 'important' flag"
 msgstr "(dis)attiva il flag 'importante' del messaggio"
 
 # FIXME - come tradurre questo messaggio?
-#: opcodes.h:129
+#: opcodes.h:128
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Inviare un Follow-up a %s%s?"
+
+#: opcodes.h:129
+msgid "forward a message with comments"
+msgstr "inoltra un messaggio con i commenti"
 
 #: opcodes.h:130
 msgid "forward to newsgroup"
 msgstr ""
 
 #: opcodes.h:131
-msgid "forward a message with comments"
-msgstr "inoltra un messaggio con i commenti"
-
-#: opcodes.h:132
 msgid "select the current entry"
 msgstr "seleziona la voce corrente"
 
-#: opcodes.h:133
+#: opcodes.h:132
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Sei al primo messaggio."
 
-#: opcodes.h:134
+#: opcodes.h:133
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "modifica il messaggio insieme agli header"
 
-#: opcodes.h:135
+#: opcodes.h:134
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Sei al primo messaggio."
+
+#: opcodes.h:135
+#, fuzzy
+msgid "go to parent directory"
+msgstr "%s non è una directory."
 
 #: opcodes.h:136
 msgid "reply to all recipients"
@@ -4953,460 +4948,459 @@ msgid "move to the last entry"
 msgstr "spostati all'ultima voce"
 
 #: opcodes.h:142
-msgid "reply to specified mailing list"
-msgstr "rispondi alla mailing list indicata"
-
-#: opcodes.h:143
-msgid "load list of all newsgroups from NNTP server"
-msgstr ""
-
-#: opcodes.h:144
-msgid "execute a macro"
-msgstr "esegui una macro"
-
-#: opcodes.h:145
-msgid "compose a new mail message"
-msgstr "componi un nuovo messaggio"
-
-#: opcodes.h:146
-msgid "break the thread in two"
-msgstr "dividi il thread in due parti"
-
-#: opcodes.h:147
-msgid "open a different folder"
-msgstr "apri un altro folder"
-
-#: opcodes.h:148
-msgid "open a different folder in read only mode"
-msgstr "apri un altro folder in sola lettura"
-
-#: opcodes.h:149
-#, fuzzy
-msgid "open a different newsgroup"
-msgstr "apri un altro folder"
-
-#: opcodes.h:150
-#, fuzzy
-msgid "open a different newsgroup in read only mode"
-msgstr "apri un altro folder in sola lettura"
-
-#: opcodes.h:151
-msgid "clear a status flag from a message"
-msgstr "cancella il flag di stato da un messaggio"
-
-#: opcodes.h:152
-msgid "delete messages matching a pattern"
-msgstr "cancella i messaggi corrispondenti al modello"
-
-#: opcodes.h:153
-msgid "force retrieval of mail from IMAP server"
-msgstr "recupera la posta dal server IMAP"
-
-#: opcodes.h:154
-msgid "logout from all IMAP servers"
-msgstr "termina la sessione con tutti i server IMAP"
-
-#: opcodes.h:155
-msgid "retrieve mail from POP server"
-msgstr "recupera la posta dal server POP"
-
-#: opcodes.h:156
-msgid "show only messages matching a pattern"
-msgstr "mostra solo i messaggi corrispondenti al modello"
-
-#: opcodes.h:157
-msgid "link tagged message to the current one"
-msgstr "collega il messaggio segnato con quello attuale"
-
-#: opcodes.h:158
-msgid "open next mailbox with new mail"
-msgstr "apri la mailbox successiva con nuova posta"
-
-#: opcodes.h:159
-msgid "jump to the next new message"
-msgstr "salta al successivo nuovo messaggio"
-
-#: opcodes.h:160
-msgid "jump to the next new or unread message"
-msgstr "salta al successivo messaggio nuovo o non letto"
-
-#: opcodes.h:161
-msgid "jump to the next subthread"
-msgstr "salta al subthread successivo"
-
-#: opcodes.h:162
-msgid "jump to the next thread"
-msgstr "salta al thread successivo"
-
-#: opcodes.h:163
-msgid "move to the next undeleted message"
-msgstr "salta al messaggio de-cancellato successivo"
-
-#: opcodes.h:164
-msgid "jump to the next unread message"
-msgstr "salta al successivo messaggio non letto"
-
-#: opcodes.h:165
-msgid "jump to parent message in thread"
-msgstr "salta al messaggio padre nel thread"
-
-#: opcodes.h:166
-msgid "jump to previous thread"
-msgstr "salta al thread precedente"
-
-#: opcodes.h:167
-msgid "jump to previous subthread"
-msgstr "salta al thread seguente"
-
-#: opcodes.h:168
-msgid "move to the previous undeleted message"
-msgstr "salta al precedente messaggio de-cancellato"
-
-#: opcodes.h:169
-msgid "jump to the previous new message"
-msgstr "salta al precedente messaggio nuovo"
-
-#: opcodes.h:170
-msgid "jump to the previous new or unread message"
-msgstr "salta al precedente messaggio nuovo o non letto"
-
-#: opcodes.h:171
-msgid "jump to the previous unread message"
-msgstr "salta al precedente messaggio non letto"
-
-#: opcodes.h:172
-msgid "mark the current thread as read"
-msgstr "segna il thread corrente come già letto"
-
-#: opcodes.h:173
-msgid "mark the current subthread as read"
-msgstr "segna il subthread corrente come già letto"
-
-#: opcodes.h:174
-#, fuzzy
-msgid "jump to root message in thread"
-msgstr "salta al messaggio padre nel thread"
-
-#: opcodes.h:175
-msgid "set a status flag on a message"
-msgstr "imposta un flag di stato su un messaggio"
-
-#: opcodes.h:176
-msgid "save changes to mailbox"
-msgstr "salva i cambiamenti nella mailbox"
-
-#: opcodes.h:177
-msgid "tag messages matching a pattern"
-msgstr "segna i messaggi corrispondenti al modello"
-
-#: opcodes.h:178
-msgid "delete from NeoMutt, don't touch on disk"
-msgstr ""
-
-#: opcodes.h:179
-msgid "undelete messages matching a pattern"
-msgstr "de-cancella i messaggi corrispondenti al modello"
-
-#: opcodes.h:180
-msgid "untag messages matching a pattern"
-msgstr "togli il segno ai messaggi corrispondenti al modello"
-
-#: opcodes.h:181
-#, fuzzy
-msgid "create a hotkey macro for the current message"
-msgstr "Sei al primo messaggio."
-
-#: opcodes.h:182
-msgid "move to the middle of the page"
-msgstr "spostati in mezzo alla pagina"
-
-#: opcodes.h:183
-msgid "move to the next entry"
-msgstr "spostati alla voce successiva"
-
-#: opcodes.h:184
-msgid "scroll down one line"
-msgstr "spostati una riga in basso"
-
-#: opcodes.h:185
-msgid "move to the next page"
-msgstr "spostati alla pagina successiva"
-
-#: opcodes.h:186
-msgid "jump to the bottom of the message"
-msgstr "salta in fondo al messaggio"
-
-#: opcodes.h:187
-msgid "toggle display of quoted text"
-msgstr "(dis)attiva la visualizzazione del testo citato"
-
-#: opcodes.h:188
-msgid "skip beyond quoted text"
-msgstr "salta oltre il testo citato"
-
-#: opcodes.h:189
-msgid "jump to the top of the message"
-msgstr "salta all'inizio del messaggio"
-
-#: opcodes.h:190
-msgid "pipe message/attachment to a shell command"
-msgstr "manda un messaggio/allegato a un comando della shell con una pipe"
-
-#: opcodes.h:191
-#, fuzzy
-msgid "post message to newsgroup"
-msgstr "Rimbalza il messaggio a %s"
-
-#: opcodes.h:192
-msgid "move to the previous entry"
-msgstr "spostati alla voce precedente"
-
-#: opcodes.h:193
-msgid "scroll up one line"
-msgstr "spostati in alto di una riga"
-
-#: opcodes.h:194
-msgid "move to the previous page"
-msgstr "spostati alla pagina precedente"
-
-#: opcodes.h:195
-msgid "print the current entry"
-msgstr "stampa la voce corrente"
-
-#: opcodes.h:196
-msgid "delete the current entry, bypassing the trash folder"
-msgstr ""
-
-#: opcodes.h:197
-msgid "delete the current thread, bypassing the trash folder"
-msgstr ""
-
-#: opcodes.h:198
-msgid "query external program for addresses"
-msgstr "chiedi gli indirizzi a un programma esterno"
-
-#: opcodes.h:199
-msgid "append new query results to current results"
-msgstr "aggiungi i risultati della nuova ricerca ai risultati attuali"
-
-#: opcodes.h:200
-msgid "save changes to mailbox and quit"
-msgstr "salva i cambiamenti alla mailbox ed esci"
-
-#: opcodes.h:201
-msgid "recall a postponed message"
-msgstr "richiama un messaggio rimandato"
-
-#: opcodes.h:202
-#, fuzzy
-msgid "reconstruct thread containing current message"
-msgstr "Il thread contiene messaggi non letti."
-
-#: opcodes.h:203
-msgid "clear and redraw the screen"
-msgstr "cancella e ridisegna lo schermo"
-
-#: opcodes.h:204
-msgid "{internal}"
-msgstr "{internal}"
-
-#: opcodes.h:205
-msgid "rename the current mailbox (IMAP only)"
-msgstr "rinomina la mailbox corrente (solo IMAP)"
-
-#: opcodes.h:206
-msgid "reply to a message"
-msgstr "rispondi a un messaggio"
-
-#: opcodes.h:207
-msgid "use the current message as a template for a new one"
-msgstr "usa il messaggio corrente come modello per uno nuovo"
-
-#: opcodes.h:208
-msgid "save message/attachment to a mailbox/file"
-msgstr "salva messaggio/allegato in una mailbox/file"
-
-#: opcodes.h:209
-msgid "search for a regular expression"
-msgstr "cerca una espressione regolare"
-
-#: opcodes.h:210
-msgid "search backwards for a regular expression"
-msgstr "cerca all'indietro una espressione regolare"
-
-#: opcodes.h:211
-msgid "search for next match"
-msgstr "cerca la successiva corrispondenza"
-
-#: opcodes.h:212
-msgid "search for next match in opposite direction"
-msgstr "cerca la successiva corrispondenza nella direzione opposta"
-
-#: opcodes.h:213
-msgid "toggle search pattern coloring"
-msgstr "(dis)attiva la colorazione del modello cercato"
-
-#: opcodes.h:214
-msgid "invoke a command in a subshell"
-msgstr "esegui un comando in una subshell"
-
-#: opcodes.h:215
-msgid "sort messages"
-msgstr "ordina i messaggi"
-
-#: opcodes.h:216
-msgid "sort messages in reverse order"
-msgstr "ordina i messaggi in ordine inverso"
-
-#: opcodes.h:217
-#, fuzzy
-msgid "subscribe to newsgroups matching a pattern"
-msgstr "togli il segno ai messaggi corrispondenti al modello"
-
-#: opcodes.h:218
-msgid "tag the current entry"
-msgstr "segna la voce corrente"
-
-#: opcodes.h:219
-msgid "apply next function to tagged messages"
-msgstr "applica la funzione successiva ai messaggi segnati"
-
-#: opcodes.h:220
-msgid "apply next function ONLY to tagged messages"
-msgstr "applica la successiva funzione SOLO ai messaggi segnati"
-
-#: opcodes.h:221
-msgid "tag the current subthread"
-msgstr "segna il subthread corrente"
-
-#: opcodes.h:222
-msgid "tag the current thread"
-msgstr "segna il thread corrente"
-
-#: opcodes.h:223
-msgid "toggle a message's 'new' flag"
-msgstr "(dis)attiva il flag 'nuovo' di un messaggio"
-
-#: opcodes.h:224
-#, fuzzy
-msgid "toggle view of read messages"
-msgstr "salta al precedente messaggio nuovo o non letto"
-
-#: opcodes.h:225
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "(dis)attiva se la mailbox sarà riscritta"
-
-#: opcodes.h:226
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "(dis)attiva se visualizzare le mailbox o tutti i file"
-
-#: opcodes.h:227
-msgid "move to the top of the page"
-msgstr "spostati all'inizio della pagina"
-
-#: opcodes.h:228
-msgid "mark all articles in newsgroup as unread"
-msgstr ""
-
-#: opcodes.h:229
-msgid "undelete the current entry"
-msgstr "de-cancella la voce corrente"
-
-#: opcodes.h:230
-msgid "undelete all messages in thread"
-msgstr "de-cancella tutti i messaggi nel thread"
-
-#: opcodes.h:231
-msgid "undelete all messages in subthread"
-msgstr "de-cancella tutti i messaggi nel subthread"
-
-#: opcodes.h:232
-#, fuzzy
-msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "togli il segno ai messaggi corrispondenti al modello"
-
-#: opcodes.h:233
-msgid "show the NeoMutt version number and date"
-msgstr "mostra il numero di versione e la data di NeoMutt"
-
-#: opcodes.h:234
-msgid "view attachment using mailcap entry if necessary"
-msgstr "visualizza l'allegato usando se necessario la voce di mailcap"
-
-#: opcodes.h:235
-msgid "show MIME attachments"
-msgstr "mostra gli allegati MIME"
-
-#: opcodes.h:236
-#, fuzzy
-msgid "show the raw message"
-msgstr "modifica il messaggio grezzo"
-
-#: opcodes.h:237
-msgid "display the keycode for a key press"
-msgstr "mostra il keycode per un tasto premuto"
-
-#: opcodes.h:238
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "segna il thread corrente"
 
-#: opcodes.h:239
-msgid "show currently active limit pattern"
-msgstr "mostra il modello limitatore attivo"
+#: opcodes.h:143
+msgid "reply to specified mailing list"
+msgstr "rispondi alla mailing list indicata"
 
-#: opcodes.h:240
-msgid "collapse/uncollapse current thread"
-msgstr "(de)comprimi il thread corrente"
+#: opcodes.h:144
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
 
-#: opcodes.h:241
+#: opcodes.h:145
+msgid "execute a macro"
+msgstr "esegui una macro"
+
+#: opcodes.h:146
+msgid "compose a new mail message"
+msgstr "componi un nuovo messaggio"
+
+#: opcodes.h:147
+msgid "break the thread in two"
+msgstr "dividi il thread in due parti"
+
+#: opcodes.h:148
+msgid "open a different folder"
+msgstr "apri un altro folder"
+
+#: opcodes.h:149
+msgid "open a different folder in read only mode"
+msgstr "apri un altro folder in sola lettura"
+
+#: opcodes.h:150
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "apri un altro folder"
+
+#: opcodes.h:151
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "apri un altro folder in sola lettura"
+
+#: opcodes.h:152
+msgid "clear a status flag from a message"
+msgstr "cancella il flag di stato da un messaggio"
+
+#: opcodes.h:153
 msgid "collapse/uncollapse all threads"
 msgstr "(de)comprimi tutti i thread"
 
-#: opcodes.h:242
+#: opcodes.h:154
+msgid "collapse/uncollapse current thread"
+msgstr "(de)comprimi il thread corrente"
+
+#: opcodes.h:155
+msgid "delete messages matching a pattern"
+msgstr "cancella i messaggi corrispondenti al modello"
+
+#: opcodes.h:156
+msgid "retrieve mail from POP server"
+msgstr "recupera la posta dal server POP"
+
+#: opcodes.h:157
+msgid "force retrieval of mail from IMAP server"
+msgstr "recupera la posta dal server IMAP"
+
+#: opcodes.h:158
+msgid "logout from all IMAP servers"
+msgstr "termina la sessione con tutti i server IMAP"
+
+#: opcodes.h:159
+msgid "show only messages matching a pattern"
+msgstr "mostra solo i messaggi corrispondenti al modello"
+
+#: opcodes.h:160
+msgid "link tagged message to the current one"
+msgstr "collega il messaggio segnato con quello attuale"
+
+#: opcodes.h:161
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
-#: opcodes.h:243
+#: opcodes.h:162
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Sei al primo messaggio."
 
-#: opcodes.h:246
-msgid "make decrypted copy and delete"
-msgstr "fai una copia decodificata e cancellalo"
+#: opcodes.h:163
+msgid "jump to the next new message"
+msgstr "salta al successivo nuovo messaggio"
+
+#: opcodes.h:164
+msgid "jump to the next new or unread message"
+msgstr "salta al successivo messaggio nuovo o non letto"
+
+#: opcodes.h:165
+msgid "jump to the next subthread"
+msgstr "salta al subthread successivo"
+
+#: opcodes.h:166
+msgid "jump to the next thread"
+msgstr "salta al thread successivo"
+
+#: opcodes.h:167
+msgid "move to the next undeleted message"
+msgstr "salta al messaggio de-cancellato successivo"
+
+#: opcodes.h:168
+msgid "jump to the next unread message"
+msgstr "salta al successivo messaggio non letto"
+
+#: opcodes.h:169
+msgid "open next mailbox with new mail"
+msgstr "apri la mailbox successiva con nuova posta"
+
+#: opcodes.h:170
+msgid "jump to parent message in thread"
+msgstr "salta al messaggio padre nel thread"
+
+#: opcodes.h:171
+msgid "jump to the previous new message"
+msgstr "salta al precedente messaggio nuovo"
+
+#: opcodes.h:172
+msgid "jump to the previous new or unread message"
+msgstr "salta al precedente messaggio nuovo o non letto"
+
+#: opcodes.h:173
+msgid "jump to previous subthread"
+msgstr "salta al thread seguente"
+
+#: opcodes.h:174
+msgid "jump to previous thread"
+msgstr "salta al thread precedente"
+
+#: opcodes.h:175
+msgid "move to the previous undeleted message"
+msgstr "salta al precedente messaggio de-cancellato"
+
+#: opcodes.h:176
+msgid "jump to the previous unread message"
+msgstr "salta al precedente messaggio non letto"
+
+#: opcodes.h:177
+msgid "delete from NeoMutt, don't touch on disk"
+msgstr ""
+
+#: opcodes.h:178
+msgid "mark the current subthread as read"
+msgstr "segna il subthread corrente come già letto"
+
+#: opcodes.h:179
+msgid "mark the current thread as read"
+msgstr "segna il thread corrente come già letto"
+
+#: opcodes.h:180
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "salta al messaggio padre nel thread"
+
+#: opcodes.h:181
+msgid "set a status flag on a message"
+msgstr "imposta un flag di stato su un messaggio"
+
+#: opcodes.h:182
+msgid "show currently active limit pattern"
+msgstr "mostra il modello limitatore attivo"
+
+#: opcodes.h:183
+msgid "save changes to mailbox"
+msgstr "salva i cambiamenti nella mailbox"
+
+#: opcodes.h:184
+msgid "tag messages matching a pattern"
+msgstr "segna i messaggi corrispondenti al modello"
+
+#: opcodes.h:185
+msgid "undelete messages matching a pattern"
+msgstr "de-cancella i messaggi corrispondenti al modello"
+
+#: opcodes.h:186
+msgid "untag messages matching a pattern"
+msgstr "togli il segno ai messaggi corrispondenti al modello"
+
+#: opcodes.h:187
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Sei al primo messaggio."
+
+#: opcodes.h:188
+msgid "move to the middle of the page"
+msgstr "spostati in mezzo alla pagina"
+
+#: opcodes.h:189
+msgid "move to the next entry"
+msgstr "spostati alla voce successiva"
+
+#: opcodes.h:190
+msgid "scroll down one line"
+msgstr "spostati una riga in basso"
+
+#: opcodes.h:191
+msgid "move to the next page"
+msgstr "spostati alla pagina successiva"
+
+#: opcodes.h:192
+msgid "jump to the bottom of the message"
+msgstr "salta in fondo al messaggio"
+
+#: opcodes.h:193
+msgid "toggle display of quoted text"
+msgstr "(dis)attiva la visualizzazione del testo citato"
+
+#: opcodes.h:194
+msgid "skip beyond quoted text"
+msgstr "salta oltre il testo citato"
+
+#: opcodes.h:195
+msgid "jump to the top of the message"
+msgstr "salta all'inizio del messaggio"
+
+#: opcodes.h:196
+msgid "pipe message/attachment to a shell command"
+msgstr "manda un messaggio/allegato a un comando della shell con una pipe"
+
+#: opcodes.h:197
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Rimbalza il messaggio a %s"
+
+#: opcodes.h:198
+msgid "move to the previous entry"
+msgstr "spostati alla voce precedente"
+
+#: opcodes.h:199
+msgid "scroll up one line"
+msgstr "spostati in alto di una riga"
+
+#: opcodes.h:200
+msgid "move to the previous page"
+msgstr "spostati alla pagina precedente"
+
+#: opcodes.h:201
+msgid "print the current entry"
+msgstr "stampa la voce corrente"
+
+#: opcodes.h:202
+msgid "delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: opcodes.h:203
+msgid "delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: opcodes.h:204
+msgid "query external program for addresses"
+msgstr "chiedi gli indirizzi a un programma esterno"
+
+#: opcodes.h:205
+msgid "append new query results to current results"
+msgstr "aggiungi i risultati della nuova ricerca ai risultati attuali"
+
+#: opcodes.h:206
+msgid "save changes to mailbox and quit"
+msgstr "salva i cambiamenti alla mailbox ed esci"
+
+#: opcodes.h:207
+msgid "recall a postponed message"
+msgstr "richiama un messaggio rimandato"
+
+#: opcodes.h:208
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Il thread contiene messaggi non letti."
+
+#: opcodes.h:209
+msgid "clear and redraw the screen"
+msgstr "cancella e ridisegna lo schermo"
+
+#: opcodes.h:210
+msgid "{internal}"
+msgstr "{internal}"
+
+#: opcodes.h:211
+msgid "rename the current mailbox (IMAP only)"
+msgstr "rinomina la mailbox corrente (solo IMAP)"
+
+#: opcodes.h:212
+msgid "reply to a message"
+msgstr "rispondi a un messaggio"
+
+#: opcodes.h:213
+msgid "use the current message as a template for a new one"
+msgstr "usa il messaggio corrente come modello per uno nuovo"
+
+#: opcodes.h:214
+msgid "save message/attachment to a mailbox/file"
+msgstr "salva messaggio/allegato in una mailbox/file"
+
+#: opcodes.h:215
+msgid "search for a regular expression"
+msgstr "cerca una espressione regolare"
+
+#: opcodes.h:216
+msgid "search for next match"
+msgstr "cerca la successiva corrispondenza"
+
+#: opcodes.h:217
+msgid "search for next match in opposite direction"
+msgstr "cerca la successiva corrispondenza nella direzione opposta"
+
+#: opcodes.h:218
+msgid "search backwards for a regular expression"
+msgstr "cerca all'indietro una espressione regolare"
+
+#: opcodes.h:219
+msgid "toggle search pattern coloring"
+msgstr "(dis)attiva la colorazione del modello cercato"
+
+#: opcodes.h:220
+msgid "invoke a command in a subshell"
+msgstr "esegui un comando in una subshell"
+
+#: opcodes.h:221
+#, fuzzy
+msgid "show messages"
+msgstr "ordina i messaggi"
+
+#: opcodes.h:222
+msgid "sort messages"
+msgstr "ordina i messaggi"
+
+#: opcodes.h:223
+msgid "sort messages in reverse order"
+msgstr "ordina i messaggi in ordine inverso"
+
+#: opcodes.h:224
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "togli il segno ai messaggi corrispondenti al modello"
+
+#: opcodes.h:225
+msgid "tag the current entry"
+msgstr "segna la voce corrente"
+
+#: opcodes.h:226
+msgid "apply next function to tagged messages"
+msgstr "applica la funzione successiva ai messaggi segnati"
+
+#: opcodes.h:227
+msgid "apply next function ONLY to tagged messages"
+msgstr "applica la successiva funzione SOLO ai messaggi segnati"
+
+#: opcodes.h:228
+msgid "tag the current subthread"
+msgstr "segna il subthread corrente"
+
+#: opcodes.h:229
+msgid "tag the current thread"
+msgstr "segna il thread corrente"
+
+#: opcodes.h:230
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "(dis)attiva se visualizzare le mailbox o tutti i file"
+
+#: opcodes.h:231
+msgid "toggle a message's 'new' flag"
+msgstr "(dis)attiva il flag 'nuovo' di un messaggio"
+
+#: opcodes.h:232
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "salta al precedente messaggio nuovo o non letto"
+
+#: opcodes.h:233
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "(dis)attiva se la mailbox sarà riscritta"
+
+#: opcodes.h:234
+msgid "move to the top of the page"
+msgstr "spostati all'inizio della pagina"
+
+#: opcodes.h:235
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: opcodes.h:236
+msgid "undelete the current entry"
+msgstr "de-cancella la voce corrente"
+
+#: opcodes.h:237
+msgid "undelete all messages in subthread"
+msgstr "de-cancella tutti i messaggi nel subthread"
+
+#: opcodes.h:238
+msgid "undelete all messages in thread"
+msgstr "de-cancella tutti i messaggi nel thread"
+
+#: opcodes.h:239
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "togli il segno ai messaggi corrispondenti al modello"
+
+#: opcodes.h:240
+msgid "show the NeoMutt version number and date"
+msgstr "mostra il numero di versione e la data di NeoMutt"
+
+#: opcodes.h:241
+msgid "view attachment using mailcap entry if necessary"
+msgstr "visualizza l'allegato usando se necessario la voce di mailcap"
+
+#: opcodes.h:242
+msgid "show MIME attachments"
+msgstr "mostra gli allegati MIME"
+
+#: opcodes.h:243
+#, fuzzy
+msgid "show the raw message"
+msgstr "modifica il messaggio grezzo"
+
+#: opcodes.h:244
+msgid "display the keycode for a key press"
+msgstr "mostra il keycode per un tasto premuto"
 
 #: opcodes.h:247
 msgid "make decrypted copy"
 msgstr "fai una copia decodificata"
 
 #: opcodes.h:248
-msgid "wipe passphrase(s) from memory"
-msgstr "cancella la/le passphrase dalla memoria"
+msgid "make decrypted copy and delete"
+msgstr "fai una copia decodificata e cancellalo"
 
 #: opcodes.h:249
 msgid "extract supported public keys"
 msgstr "estra le chiavi pubbliche PGP"
 
-#: opcodes.h:253
-#, fuzzy
-msgid "accept the chain constructed"
-msgstr "Accetta la catena costruita"
+#: opcodes.h:250
+msgid "wipe passphrase(s) from memory"
+msgstr "cancella la/le passphrase dalla memoria"
 
 #: opcodes.h:254
+msgid "send the message through a mixmaster remailer chain"
+msgstr "invia il messaggio attraverso una catena di remailer mixmaster"
+
+#: opcodes.h:255
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "Accoda un remailer alla catena"
 
-#: opcodes.h:255
-#, fuzzy
-msgid "insert a remailer into the chain"
-msgstr "Inserisce un remailer nella catena"
-
 #: opcodes.h:256
 #, fuzzy
-msgid "delete a remailer from the chain"
-msgstr "Elimina un remailer dalla catena"
+msgid "select the next element of the chain"
+msgstr "Seleziona il successivo elemento della catena"
 
 #: opcodes.h:257
 #, fuzzy
@@ -5415,138 +5409,144 @@ msgstr "Seleziona l'elemento precedente della catena"
 
 #: opcodes.h:258
 #, fuzzy
-msgid "select the next element of the chain"
-msgstr "Seleziona il successivo elemento della catena"
+msgid "delete a remailer from the chain"
+msgstr "Elimina un remailer dalla catena"
 
 #: opcodes.h:259
-msgid "send the message through a mixmaster remailer chain"
-msgstr "invia il messaggio attraverso una catena di remailer mixmaster"
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Inserisce un remailer nella catena"
 
-#: opcodes.h:266
+#: opcodes.h:260
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Accetta la catena costruita"
+
+#: opcodes.h:267
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "apri un altro folder"
 
-#: opcodes.h:267
-msgid "generate virtual folder from query"
-msgstr ""
-
 #: opcodes.h:268
-msgid "shifts virtual folder time window forwards"
-msgstr ""
-
-#: opcodes.h:269
-msgid "shifts virtual folder time window backwards"
-msgstr ""
-
-#: opcodes.h:270
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: opcodes.h:276
-msgid "attach a PGP public key"
-msgstr "allega una chiave pubblica PGP"
+#: opcodes.h:269
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: opcodes.h:270
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: opcodes.h:271
+msgid "shifts virtual folder time window forwards"
+msgstr ""
 
 #: opcodes.h:277
-msgid "show PGP options"
-msgstr "mostra le opzioni PGP"
-
-#: opcodes.h:278
-msgid "mail a PGP public key"
-msgstr "spedisci una chiave pubblica PGP"
-
-#: opcodes.h:279
-msgid "verify a PGP public key"
-msgstr "verifica una chiave pubblica PGP"
-
-#: opcodes.h:280
-msgid "view the key's user id"
-msgstr "visualizza la chiave dell'user id"
-
-#: opcodes.h:281
 msgid "check for classic PGP"
 msgstr "controlla firma PGP tradizionale"
 
-#: opcodes.h:284
+#: opcodes.h:278
+msgid "attach a PGP public key"
+msgstr "allega una chiave pubblica PGP"
+
+#: opcodes.h:279
+msgid "show PGP options"
+msgstr "mostra le opzioni PGP"
+
+#: opcodes.h:280
+msgid "mail a PGP public key"
+msgstr "spedisci una chiave pubblica PGP"
+
+#: opcodes.h:281
+msgid "verify a PGP public key"
+msgstr "verifica una chiave pubblica PGP"
+
+#: opcodes.h:282
+msgid "view the key's user id"
+msgstr "visualizza la chiave dell'user id"
+
+#: opcodes.h:285
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: opcodes.h:285
+#: opcodes.h:286
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "apri la mailbox successiva con nuova posta"
 
-#: opcodes.h:286
+#: opcodes.h:287
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Riapro la mailbox..."
 
-#: opcodes.h:287
+#: opcodes.h:288
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "sposta verso il basso di 1/2 pagina"
 
-#: opcodes.h:288
+#: opcodes.h:289
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "sposta verso l'alto di 1/2 pagina"
 
-#: opcodes.h:289
+#: opcodes.h:290
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "spostati alla pagina precedente"
 
-#: opcodes.h:290
+#: opcodes.h:291
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "apri la mailbox successiva con nuova posta"
 
-#: opcodes.h:291
+#: opcodes.h:292
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "(dis)attiva se visualizzare le mailbox o tutti i file"
 
-#: opcodes.h:292
+#: opcodes.h:293
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: opcodes.h:295
+#: opcodes.h:296
 msgid "show S/MIME options"
 msgstr "mostra le opzioni S/MIME"
 
-#: pager.c:1708
+#: pager.c:1698
 msgid "PrevPg"
 msgstr "PgPrec"
 
-#: pager.c:1709
+#: pager.c:1699
 msgid "NextPg"
 msgstr "PgSucc"
 
-#: pager.c:1714
+#: pager.c:1704
 msgid "View Attachm."
 msgstr "Vedi Allegato"
 
-#: pager.c:1717 pager.c:1726
+#: pager.c:1707 pager.c:1716
 msgid "Next"
 msgstr "Succ"
 
-#: pager.c:2346 pager.c:2377 pager.c:2411 pager.c:2731
+#: pager.c:2336 pager.c:2367 pager.c:2401 pager.c:2721
 msgid "Bottom of message is shown."
 msgstr "Il messaggio finisce qui."
 
-#: pager.c:2363 pager.c:2384 pager.c:2391 pager.c:2399
+#: pager.c:2353 pager.c:2374 pager.c:2381 pager.c:2389
 msgid "Top of message is shown."
 msgstr "L'inizio del messaggio è questo."
 
-#: pager.c:2647
+#: pager.c:2637
 msgid "Help is currently being shown."
 msgstr "L'help è questo."
 
-#: pager.c:2695
+#: pager.c:2685
 msgid "No more quoted text."
 msgstr "Non c'è altro testo citato."
 
-#: pager.c:2710
+#: pager.c:2700
 msgid "No more unquoted text after quoted text."
 msgstr "Non c'è altro testo non citato dopo quello citato."
 
@@ -5857,63 +5857,63 @@ msgstr "ATTENZIONE!  %s sta per essere sovrascritto, continuare?"
 msgid "Attachment filtered."
 msgstr "Allegato filtrato."
 
-#: recvattach.c:723
+#: recvattach.c:724
 msgid "Filter through: "
 msgstr "Filtra attraverso: "
 
-#: recvattach.c:723
+#: recvattach.c:724
 msgid "Pipe to: "
 msgstr "Manda con una pipe a: "
 
-#: recvattach.c:761
+#: recvattach.c:762
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments!"
 msgstr "Non so come stampare %s allegati!"
 
-#: recvattach.c:830
+#: recvattach.c:838
 msgid "Print tagged attachment(s)?"
 msgstr "Stampare gli allegati segnati?"
 
-#: recvattach.c:831
+#: recvattach.c:839
 msgid "Print attachment?"
 msgstr "Stampare l'allegato?"
 
-#: recvattach.c:888
+#: recvattach.c:896
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
-#: recvattach.c:1035
+#: recvattach.c:1043
 msgid "Can't decrypt encrypted message!"
 msgstr "Impossibile decifrare il messaggio cifrato!"
 
-#: recvattach.c:1164
+#: recvattach.c:1172
 msgid "Attachments"
 msgstr "Allegati"
 
-#: recvattach.c:1202
+#: recvattach.c:1210
 msgid "There are no subparts to show!"
 msgstr "Non ci sono sottoparti da visualizzare!"
 
-#: recvattach.c:1256
+#: recvattach.c:1265
 msgid "Can't delete attachment from POP server."
 msgstr "Impossibile cancellare l'allegato dal server POP"
 
-#: recvattach.c:1265
+#: recvattach.c:1274
 #, fuzzy
 msgid "Can't delete attachment from news server."
 msgstr "Impossibile cancellare l'allegato dal server POP"
 
-#: recvattach.c:1272
+#: recvattach.c:1281
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "La cancellazione di allegati da messaggi cifrati non è gestita."
 
-#: recvattach.c:1278
+#: recvattach.c:1287
 #, fuzzy
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "La cancellazione di allegati da messaggi cifrati non è gestita."
 
-#: recvattach.c:1296 recvattach.c:1311
+#: recvattach.c:1305 recvattach.c:1320
 msgid "Only deletion of multipart attachments is supported."
 msgstr "È gestita solo la cancellazione degli allegati multiparte."
 
@@ -5965,86 +5965,86 @@ msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 "Impossibile decodificare tutti gli allegati segnati. Uso MIME per gli altri?"
 
-#: remailer.c:159
+#: remailer.c:155
 msgid "<random>"
 msgstr ""
 
-#: remailer.c:478
+#: remailer.c:474
 msgid "Append"
 msgstr "Accoda"
 
-#: remailer.c:478
+#: remailer.c:474
 msgid "Insert"
 msgstr "Inserisce"
 
-#: remailer.c:479
+#: remailer.c:475
 msgid "Delete"
 msgstr "Cancella"
 
-#: remailer.c:480
+#: remailer.c:476
 msgid "OK"
 msgstr "OK"
 
-#: remailer.c:503
+#: remailer.c:499
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Non trovo type2.list di mixmaster!"
 
-#: remailer.c:529
+#: remailer.c:525
 msgid "Select a remailer chain."
 msgstr "Seleziona una catena di remailer."
 
-#: remailer.c:591
+#: remailer.c:587
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Errore: %s non può essere usato come remailer finale di una catena."
 
-#: remailer.c:621
+#: remailer.c:617
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Le catene mixmaster sono limitate a %d elementi."
 
-#: remailer.c:643
+#: remailer.c:639
 msgid "The remailer chain is already empty."
 msgstr "La catena di remailer è già vuota."
 
-#: remailer.c:653
+#: remailer.c:649
 msgid "You already have the first chain element selected."
 msgstr "Hai già selezionato il primo elemento della catena."
 
-#: remailer.c:663
+#: remailer.c:659
 msgid "You already have the last chain element selected."
 msgstr "Hai già selezionato l'ultimo elemento della catena."
 
-#: remailer.c:704
+#: remailer.c:700
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster non accetta header Cc o Bcc."
 
-#: remailer.c:728
+#: remailer.c:724
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 "Impostare la variabile hostname ad un valore corretto quando si usa "
 "mixmaster!"
 
-#: remailer.c:765
+#: remailer.c:761
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Errore nell'invio del messaggio, il figlio è uscito con %d.\n"
 
-#: remailer.c:769
+#: remailer.c:765
 msgid "Error sending message."
 msgstr "Errore durante l'invio del messaggio."
 
-#: rfc1524.c:169
+#: rfc1524.c:168
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Voce impropriamente formattata per il tipo %s in \"%s\", linea %d"
 
-#: rfc1524.c:413
+#: rfc1524.c:412
 msgid "No mailcap path specified"
 msgstr "Il percorso di mailcap non è stato specificato"
 
-#: rfc1524.c:441
+#: rfc1524.c:440
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "La voce di mailcap per il tipo %s non è stata trovata"
@@ -6099,78 +6099,78 @@ msgstr "Inoltro come allegato?"
 msgid "Preparing forwarded message..."
 msgstr "Preparo il messaggio inoltrato..."
 
-#: send.c:1305
+#: send.c:1306
 msgid "Recall postponed message?"
 msgstr "Richiamare il messaggio rimandato?"
 
-#: send.c:1608
+#: send.c:1609
 msgid "Edit forwarded message?"
 msgstr "Modificare il messaggio da inoltrare?"
 
-#: send.c:1658
+#: send.c:1659
 msgid "Abort unmodified message?"
 msgstr "Abbandonare il messaggio non modificato?"
 
-#: send.c:1660
+#: send.c:1661
 msgid "Aborted unmodified message."
 msgstr "Ho abbandonato il messaggio non modificato."
 
-#: send.c:1774
+#: send.c:1776
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send.c:1812
+#: send.c:1814
 #, fuzzy
 msgid "Article not posted."
 msgstr "Il messaggio non è stato inviato."
 
-#: send.c:1878
+#: send.c:1880
 msgid "Message postponed."
 msgstr "Il messaggio è stato rimandato."
 
-#: send.c:1913
+#: send.c:1915
 msgid "No subject, abort sending?"
 msgstr "Nessun oggetto, abbandonare l'invio?"
 
-#: send.c:1917 send.c:1923
+#: send.c:1919 send.c:1925
 msgid "No subject specified."
 msgstr "Non è stato specificato un oggetto."
 
-#: send.c:1929
+#: send.c:1931
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Non è stato specificato un oggetto."
 
-#: send.c:1936
+#: send.c:1938
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "modifica il transfer-encoding dell'allegato"
 
-#: send.c:1942
+#: send.c:1944
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
 msgstr ""
 
-#: send.c:2003 smtp.c:189
+#: send.c:2005 smtp.c:189
 msgid "Sending message..."
 msgstr "Invio il messaggio..."
 
-#: send.c:2035
+#: send.c:2037
 msgid "Save attachments in Fcc?"
 msgstr "Salvare l'allegato in Fcc?"
 
-#: send.c:2142
+#: send.c:2144
 msgid "Could not send the message."
 msgstr "Impossibile spedire il messaggio."
 
-#: send.c:2148
+#: send.c:2150
 msgid "Sending in background."
 msgstr "Invio in background."
 
-#: send.c:2149
+#: send.c:2151
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2150
+#: send.c:2152
 msgid "Mail sent."
 msgstr "Messaggio spedito."
 

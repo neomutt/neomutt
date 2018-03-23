@@ -14,7 +14,7 @@ use system cc cc-lib mutt-gettext mutt-iconv
 ###############################################################################
 # Names and versions
 define PACKAGE          "neomutt"
-define PACKAGE_VERSION  "20180223"
+define PACKAGE_VERSION  "20180323"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
@@ -110,7 +110,7 @@ if {1} {
   # relative --enable-opt to true. This allows "--with-opt=/usr" to be used as
   # a shortcut for "--opt --with-opt=/usr".
   foreach opt {
-    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster 
+    bdb gdbm gnutls gpgme gss homespool idn kyotocabinet lmdb lua mixmaster
     ncurses nls notmuch qdbm sasl slang ssl tokyocabinet
   } {
     if {[opt-val with-$opt] ne {}} {
@@ -301,7 +301,7 @@ set prefix [opt-val with-sysroot][get-define prefix]
 ###############################################################################
 # Everything
 if {[get-define want-everything]} {
-  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb 
+  foreach opt {gpgme pgp smime notmuch lua tokyocabinet kyotocabinet bdb
                gdbm qdbm lmdb} {
     define want-$opt
     append conf_options "--$opt "

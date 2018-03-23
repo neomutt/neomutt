@@ -122,7 +122,7 @@ static int print_macro(FILE *f, int maxwidth, const char **macro)
     }
     /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
     const int w = wcwidth(wc);
-    if (IsWPrint(wc) && w  >= 0)
+    if (IsWPrint(wc) && w >= 0)
     {
       if (w > n)
         break;

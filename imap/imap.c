@@ -126,7 +126,7 @@ static char *get_flags(struct ListHead *hflags, char *s)
   {
     s++;
     SKIPWS(s);
-    const char* flag_word = s;
+    const char *flag_word = s;
     while (*s && (*s != ')') && !ISSPACE(*s))
       s++;
     const char ctmp = *s;
@@ -183,7 +183,7 @@ static void set_flag(struct ImapData *idata, int aclbit, int flag,
 static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
                         bool changed, bool invert, int *pos)
 {
-  int count = 0;      /* number of messages in message set */
+  int count = 0;             /* number of messages in message set */
   unsigned int setstart = 0; /* start of current message range */
   int n;
   bool started = false;

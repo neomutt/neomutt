@@ -33,16 +33,16 @@ short ConnectTimeout = 0; /**< Config: Timeout for a network connection (for IMA
 
 #ifdef USE_SSL
 const char *CertificateFile = NULL; /**< Config: File containing trusted certificates */
-const char *EntropyFile = NULL;     /**< Config: File containing random data to initialise SSL */
-const char *SslCiphers = NULL;      /**< Config: Ciphers to use when using SSL */
-const char *SslClientCert = NULL;   /**< Config: File containing client certificates */
+const char *EntropyFile = NULL; /**< Config: File containing random data to initialise SSL */
+const char *SslCiphers = NULL; /**< Config: Ciphers to use when using SSL */
+const char *SslClientCert = NULL; /**< Config: File containing client certificates */
 #ifdef USE_SSL_GNUTLS
 const char *SslCaCertificatesFile = NULL; /**< Config: File containing trusted CA certificates */
-short SslMinDhPrimeBits = 0;              /**< Config: Minimum keysize for Diffie-Hellman key exchange */
+short SslMinDhPrimeBits = 0; /**< Config: Minimum keysize for Diffie-Hellman key exchange */
 #endif
 #endif
 
 #ifdef USE_SOCKET
 const char *Preconnect = NULL; /**< Config: Shell command to run before making a connection */
-const char *Tunnel = NULL;     /**< Config: Shell command to establish a tunnel */
+const char *Tunnel = NULL; /**< Config: Shell command to establish a tunnel */
 #endif
