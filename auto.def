@@ -18,7 +18,7 @@ define PACKAGE_VERSION  "20180323"
 define BUGS_ADDRESS     "neomutt-devel@neomutt.org"
 
 # Subdirectories that contain additional Makefile.autosetup files
-set subdirs {po doc contrib test}
+set subdirs {po contrib test}
 ###############################################################################
 
 ###############################################################################
@@ -891,7 +891,6 @@ make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
 # Generate doc/neomutt.1
 define bindir [get-define BINDIR]
 define docdir [get-define PKGDOCDIR]
-make-template doc/neomutt.man doc/neomutt.1
 
 ###############################################################################
 # Print a summary
