@@ -253,7 +253,7 @@ int log_disp_file(time_t stamp, const char *file, int line,
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  ret = vfprintf(LogFileFP, fmt, ap);
+  ret += vfprintf(LogFileFP, fmt, ap);
   va_end(ap);
 
   if (level == LL_PERROR)

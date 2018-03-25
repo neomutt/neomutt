@@ -981,7 +981,6 @@ static void tls_get_client_cert(struct Connection *conn)
     mutt_debug(1, "no CN found in DN\n");
     goto err_dn;
   }
-  cn += 3;
 
   cnend = strstr(dn, ",EMAIL=");
   if (cnend)

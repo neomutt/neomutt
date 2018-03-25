@@ -2204,7 +2204,6 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           /* fatal error occurred */
           FREE(&Context);
           pager_menu->redraw = REDRAW_FULL;
-          ch = -1;
           break;
         }
       }
@@ -2244,7 +2243,6 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             if (extra->hdr != Context->hdrs[Context->v2r[rd.index->current]])
             {
               extra->hdr = Context->hdrs[Context->v2r[rd.index->current]];
-              ch = -1;
               break;
             }
           }

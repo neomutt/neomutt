@@ -654,6 +654,7 @@ int main(int argc, char **argv, char **env)
     // TEST24: neomutt -p (no postponed message)
     log_queue_empty();
     repeat_error = true;
+    goto main_curses;
   }
   else if (subject || msg || sendflags || draft_file || include_file ||
            !STAILQ_EMPTY(&attach) || optind < argc)

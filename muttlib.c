@@ -820,7 +820,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && ArrowCursor) ? 3 : 0;
       pid = mutt_create_filter(command->data, NULL, &filter, NULL);
       if (pid != -1)
       {
