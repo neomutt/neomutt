@@ -532,8 +532,7 @@ int main(int argc, char **argv, char **env)
   }
 
   /* set defaults and read init files */
-  rc = mutt_init(flags & MUTT_NOSYSRC, &commands);
-  if (rc != 0)
+  if (mutt_init(flags & MUTT_NOSYSRC, &commands) != 0)
     goto main_curses;
 
   /* The command line overrides the config */
