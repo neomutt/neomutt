@@ -3279,8 +3279,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
 "[-- Fehler: Inkonsistente multipart/signed Struktur! --]\n"
@@ -6060,9 +6061,9 @@ msgid "No attachments, cancel sending?"
 msgstr "Keine Anhänge vorhanden, Senden abbrechen?"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
-"Nachricht enthält, der \"$attach_keyword\" entspricht. Versand abgebrochen."
+"Nachricht enthält, der \"$abort_noattach_regex\" entspricht. Versand abgebrochen."
 
 #: send.c:2005 smtp.c:189
 msgid "Sending message..."

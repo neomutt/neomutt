@@ -3270,8 +3270,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
 "[-- Chyba: Chybná struktura zprávy typu multipart/signed! --]\n"
@@ -6023,8 +6024,8 @@ msgid "No attachments, cancel sending?"
 msgstr "Žádné přílohy, zrušit odeslání?"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
-msgstr "Zpráva obsahuje text odpovídající „$attach_keyword“. Neodesílám."
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
+msgstr "Zpráva obsahuje text odpovídající „$abort_noattach_regex“. Neodesílám."
 
 #: send.c:2005 smtp.c:189
 msgid "Sending message..."

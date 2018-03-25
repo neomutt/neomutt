@@ -1395,14 +1395,14 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
       pgp &= ~PGPENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&
-             (mutt_is_application_pgp(hdr->content) & PGPENCRYPT))
+             ((mutt_is_application_pgp(hdr->content) & PGPENCRYPT) == PGPENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       pgp &= ~PGPENCRYPT;
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
-             mutt_is_application_smime(hdr->content) & SMIMEENCRYPT)
+             ((mutt_is_application_smime(hdr->content) & SMIMEENCRYPT) == SMIMEENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
       cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;

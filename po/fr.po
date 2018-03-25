@@ -3466,10 +3466,10 @@ msgstr ""
 
 #: ncrypt/crypt.c:1012
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- Erreur : Structure multipart/signed incohérente ! --]\n"
+"[-- Erreur : Signature multipart/signed manquante ou mauvais format ! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1053
@@ -6305,13 +6305,12 @@ msgid "No newsgroup specified."
 msgstr "Pas d'objet (Subject) spécifié."
 
 #: send.c:1938
-#, fuzzy
 msgid "No attachments, cancel sending?"
-msgstr "éditer le transfer-encoding de l'attachement"
+msgstr "Pas d'attachements, abandonner l'envoi ?"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
-msgstr ""
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
+msgstr "L'attachement référencé dans le message est manquant"
 
 #: send.c:2005 smtp.c:189
 msgid "Sending message..."

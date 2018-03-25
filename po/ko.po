@@ -3384,8 +3384,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
 "[-- 오류: 일치하지 않는 multipart/signed 구조! --]\n"
@@ -6235,7 +6236,7 @@ msgid "No attachments, cancel sending?"
 msgstr "첨부물 전송 부호화 방법 편집"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
 #: send.c:2005 smtp.c:189

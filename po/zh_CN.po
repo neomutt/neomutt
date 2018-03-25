@@ -3325,8 +3325,9 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1012
+#, fuzzy
 msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
 "[-- 错误：不一致的 multipart/signed 结构！ --]\n"
@@ -6137,8 +6138,8 @@ msgid "No attachments, cancel sending?"
 msgstr "编辑附件的传输编码"
 
 #: send.c:1944
-msgid "Message contains text matching \"$attach_keyword\". Not sending."
-msgstr "信件内容匹配 \"$attach_keyword\". 没有发送"
+msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
+msgstr "信件内容匹配 \"$abort_noattach_regex\". 没有发送"
 
 #: send.c:2005 smtp.c:189
 msgid "Sending message..."

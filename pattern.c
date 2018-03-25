@@ -1710,7 +1710,7 @@ int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
     case MUTT_PGP_KEY:
       if (!(WithCrypto & APPLICATION_PGP))
         break;
-      return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
+      return (pat->not ^ ((h->security & PGPKEY) == PGPKEY));
     case MUTT_XLABEL:
       if (!h->env)
         return 0;
