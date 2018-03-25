@@ -189,8 +189,8 @@ if {1} {
         close $fd}] || $epoch eq ""
     } {
       #user-notice "No author timestamp found, falling back to PACKAGE_VERSION..."
-      if {![set pkgdate [get-define PACKAGE_VERSION]] || [catch {
-          set epoch [clock scan $pkgdate -format {%Y%m%d} -timezone :UTC]}]
+      if {[catch {clock scan [get-define PACKAGE_VERSION] \
+                  -format {%Y%m%d} -timezone :UTC} epoch]
       } {
         autosetup-error "Cannot get or parse PACKAGE_VERSION as date!"
       }
