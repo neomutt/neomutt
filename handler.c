@@ -1185,11 +1185,11 @@ static int multilingual_handler(struct Body *a, struct State *s)
   int rc = 0;
   struct Body *first_multilingual_part = NULL;
   struct Body *zxx_part = NULL;
-  char *preferred_languages;
   char *lang;
 
   mutt_debug(2, "RFC8255 >> entering in handler multilingual handler\n");
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     struct stat st;
     mustfree = true;
@@ -1211,52 +1211,55 @@ static int multilingual_handler(struct Body *a, struct State *s)
     b = a;
 
   mutt_debug(2, "RFC8255 >> preferred_languages set in config to '%s'\n", PreferredLanguages);
-  preferred_languages = mutt_str_strdup(PreferredLanguages);
+  char *preferred_languages = mutt_str_strdup(PreferredLanguages);
   lang = strtok(preferred_languages, ",");
 
-  while(lang != NULL)
+  while (lang)
+  {
+    while (b)
     {
-      while (b)
-	{
-	  if (mutt_can_decode(b)) {
+      if (mutt_can_decode(b))
+      {
+        if (b->language && !first_multilingual_part)
+          first_multilingual_part = b;
 
-	    if((b->language != NULL) && (first_multilingual_part == NULL))
-	      first_multilingual_part = b;
+        if (b->language && (strcmp("zxx", b->language) == 0))
+          zxx_part = b;
 
-	    if((b->language != NULL) && (strcmp("zxx",  b->language) == 0))
-	      zxx_part = b;
+        mutt_debug(2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n",
+                   lang, b->language);
+        if (lang && b->language && (strcmp(lang, b->language) == 0))
+        {
+          mutt_debug(2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n",
+                     lang, b->language);
+          choice = b;
+          break;
+        }
+      }
 
-	    mutt_debug(2, "RFC8255 >> comparing configuration preferred_language='%s' to mail part content-language='%s'\n", lang, b->language);
-	    if((lang != NULL) && (b->language != NULL) && (strcmp(lang,  b->language) == 0)) {
-	      mutt_debug(2, "RFC8255 >> preferred_language='%s' matches content-language='%s' >> part selected to be displayed\n", lang, b->language);
-	      choice = b;
-	      break;
-	    }
-	  }
-
-	  b = b->next;
-	}
-
-      if(choice)
-	break;
-
-      lang = strtok(NULL, ",");
-
-      if (a->parts)
-	b = a->parts;
-      else
-	b = a;
+      b = b->next;
     }
+
+    if (choice)
+      break;
+
+    lang = strtok(NULL, ",");
+
+    if (a->parts)
+      b = a->parts;
+    else
+      b = a;
+  }
 
   if (choice)
     mutt_body_handler(choice, s);
   else
-    {
-      if(zxx_part != NULL)
-	mutt_body_handler(zxx_part, s);
-      else
-	mutt_body_handler(first_multilingual_part, s);
-    }
+  {
+    if (zxx_part)
+      mutt_body_handler(zxx_part, s);
+    else
+      mutt_body_handler(first_multilingual_part, s);
+  }
 
   if (mustfree)
     mutt_free_body(&a);
@@ -1943,8 +1946,9 @@ int mutt_body_handler(struct Body *b, struct State *s)
         (mutt_str_strcasecmp("alternative", b->subtype) == 0))
     {
       handler = alternative_handler;
-    } else if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
-        (mutt_str_strcasecmp("multilingual", b->subtype) == 0))
+    }
+    else if ((mutt_str_strcmp("inline", ShowMultipartAlternative) != 0) &&
+             (mutt_str_strcasecmp("multilingual", b->subtype) == 0))
     {
       handler = multilingual_handler;
     }
