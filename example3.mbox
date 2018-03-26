@@ -1,0 +1,99 @@
+From Nik@example.com Wed Mar 14 11:38:17 2018
+From: Nik@example.com
+To: Nathaniel@example.com
+Subject: Example of a message in Spanish and English
+Date: Thu, 7 Apr 2017 20:55:00 +0100
+MIME-Version: 1.0
+Content-Type: multipart/multilingual;
+        boundary="01189998819991197253"
+
+--01189998819991197253
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+This is a message in multiple languages.  It says the
+same thing in each language.  If you can read it in one language,
+you can ignore the other translations. The other translations may
+be presented as attachments or grouped together.
+
+Este es un mensaje en varios idiomas. Dice lo mismo en
+cada idioma. Si puede leerlo en un idioma, puede ignorar las otras
+traducciones. Las otras traducciones pueden presentarse como
+archivos adjuntos o agrupados.
+
+--01189998819991197253
+Content-Type: message/rfc822
+Content-Language: en
+Content-Translation-Type: original
+Content-Disposition: inline
+
+Subject: Example of a message in Spanish and English
+Content-Type: multipart/alternative;
+        boundary="72530118999911999881"; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+--72530118999911999881
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+Hello, this message content is provided in your language.
+
+--72530118999911999881
+Content-Type: text/html; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+<html><body>Hello, this message content is <b>provided</b> in
+<i>your</i> language.</body></html>
+
+--72530118999911999881--
+--01189998819991197253
+Content-Type: message/rfc822
+Content-Language: es
+Content-Translation-Type: human
+Content-Disposition: inline
+
+Subject: =?UTF-8?Q?Ejemplo_pr=C3=A1ctico_de_mensaje_?=
+ =?UTF-8?Q?en_espa=C3=B1ol_e_ingl=C3=A9s?=
+Content-Type: multipart/alternative;
+        boundary="53011899989991197281"; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+--53011899989991197281
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+Hola, el contenido de este mensaje esta disponible en su idioma.
+
+--53011899989991197281
+Content-Type: text/html; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+<html><body>Hola, el contenido de este <b>mensaje</b> <i>esta</i>
+disponible en su idioma.</body></html>
+
+--53011899989991197281--
+--01189998819991197253
+Content-Type: message/rfc822; name="Icon"
+Content-Language: zxx
+Content-Disposition: inline
+
+Content-Type: multipart/mixed;
+        boundary="99911972530118999881"; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+--99911972530118999881
+
+Content-Type: image/png; name="icon.png"
+Content-Disposition: inline
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAKQ2lDQ1BJQ0MgUHJvZmlsZ
+QAASA2dlndUU1... shortened for brevity ...7yxfd1SNsEy+OXr76qr
+997zF2hvZYeDEP5ftGV6Xzx2o9MAAAAASUVORK5CYII=
+
+--99911972530118999881--
+--01189998819991197253--

@@ -1,0 +1,64 @@
+From Nik@example.com Wed Mar 14 11:38:17 2018
+From: Nik@example.com
+To: Nathaniel@example.com
+Subject: Example of a message in Spanish and English
+Date: Thu, 7 Apr 2017 21:08:00 +0100
+MIME-Version: 1.0
+Content-Type: multipart/multilingual;
+        boundary="01189998819991197253"
+
+--01189998819991197253
+Content-Type: text/plain; charset="UTF-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+This is a message in multiple languages.  It says the
+same thing in each language.  If you can read it in one language,
+you can ignore the other translations. The other translations may
+be presented as attachments or grouped together.
+
+Este es un mensaje en varios idiomas. Dice lo mismo en
+cada idioma. Si puede leerlo en un idioma, puede ignorar las otras
+traducciones. Las otras traducciones pueden presentarse como
+archivos adjuntos o agrupados.
+
+--01189998819991197253
+Content-Type: message/rfc822
+Content-Language: en
+Content-Translation-Type: original
+Content-Disposition: inline
+
+Subject: Example of a message in Spanish and English
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Hello, this message content is provided in your language.
+
+--01189998819991197253
+Content-Type: message/rfc822
+Content-Language: es-ES
+Content-Translation-Type: human
+Content-Disposition: inline
+
+Subject: =?UTF-8?Q?Ejemplo_pr=C3=A1ctico_de_mensaje_?=
+ =?UTF-8?Q?en_espa=C3=B1ol_e_ingl=C3=A9s?=
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Hola, el contenido de este mensaje esta disponible en su idioma.
+
+--01189998819991197253
+Content-Type: message/rfc822; name="Icon"
+Content-Language: zxx
+Content-Disposition: inline
+
+Content-Type: image/png; name="icon.png"
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAKQ2lDQ1BJQ0MgUHJvZmlsZ
+QAASA2dlndUU1... shortened for brevity ...7yxfd1SNsEy+OXr76qr
+997zF2hvZYeDEP5ftGV6Xzx2o9MAAAAASUVORK5CYII=
+
+--01189998819991197253--

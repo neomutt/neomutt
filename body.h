@@ -36,6 +36,7 @@ struct Body
 {
   char *xtype;                  /**< content-type if x-unknown */
   char *subtype;                /**< content-type subtype */
+  char *language;               /**< content-language (RFC8255) */
   struct ParameterList parameter;  /**< parameters of the content-type */
   char *description;            /**< content-description */
   char *form_name;              /**< Content-Disposition form-data name param */
