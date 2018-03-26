@@ -187,15 +187,10 @@ if {1} {
         gets $fd epoch
         close $fd}] || $epoch eq ""
     } {
-      #user-notice "No author timestamp found, falling back to PACKAGE_VERSION..."
-      if {[catch {clock scan [get-define PACKAGE_VERSION] \
-                  -format {%Y%m%d} -timezone :UTC} epoch]
-      } {
-        autosetup-error "Cannot get or parse PACKAGE_VERSION as date!"
-      }
+      set epoch [clock scan \
+                   [get-define PACKAGE_VERSION] -format {%Y%m%d} -timezone :UTC]
     }
     cd $oldpwd
-
 
     return [clock format $epoch -format $format -timezone :UTC]
   }
