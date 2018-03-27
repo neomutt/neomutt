@@ -261,8 +261,14 @@ static void ssl_err(struct SslSockData *data, int err)
 
   switch (e)
   {
-    case SSL_ERROR_ZERO_RETURN:
-      errmsg = "SSL connection closed";
+    case SSL_ERROR_SYSCALL:
+      errmsg = "I/O error";
+      break;
+    case SSL_ERROR_WANT_ACCEPT:
+      errmsg = "retry accept";
+      break;
+    case SSL_ERROR_WANT_CONNECT:
+      errmsg = "retry connect";
       break;
     case SSL_ERROR_WANT_READ:
       errmsg = "retry read";
@@ -270,17 +276,11 @@ static void ssl_err(struct SslSockData *data, int err)
     case SSL_ERROR_WANT_WRITE:
       errmsg = "retry write";
       break;
-    case SSL_ERROR_WANT_CONNECT:
-      errmsg = "retry connect";
-      break;
-    case SSL_ERROR_WANT_ACCEPT:
-      errmsg = "retry accept";
-      break;
     case SSL_ERROR_WANT_X509_LOOKUP:
       errmsg = "retry x509 lookup";
       break;
-    case SSL_ERROR_SYSCALL:
-      errmsg = "I/O error";
+    case SSL_ERROR_ZERO_RETURN:
+      errmsg = "SSL connection closed";
       break;
     case SSL_ERROR_SSL:
       sslerr = ERR_get_error();

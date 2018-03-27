@@ -1188,44 +1188,44 @@ int mutt_index_menu(void)
       case OP_BOTTOM_PAGE:
         menu_bottom_page(menu);
         break;
-      case OP_FIRST_ENTRY:
-        menu_first_entry(menu);
-        break;
-      case OP_MIDDLE_PAGE:
-        menu_middle_page(menu);
-        break;
-      case OP_HALF_UP:
-        menu_half_up(menu);
-        break;
-      case OP_HALF_DOWN:
-        menu_half_down(menu);
-        break;
-      case OP_NEXT_LINE:
-        menu_next_line(menu);
-        break;
-      case OP_PREV_LINE:
-        menu_prev_line(menu);
-        break;
-      case OP_NEXT_PAGE:
-        menu_next_page(menu);
-        break;
-      case OP_PREV_PAGE:
-        menu_prev_page(menu);
-        break;
-      case OP_LAST_ENTRY:
-        menu_last_entry(menu);
-        break;
-      case OP_TOP_PAGE:
-        menu_top_page(menu);
-        break;
-      case OP_CURRENT_TOP:
-        menu_current_top(menu);
+      case OP_CURRENT_BOTTOM:
+        menu_current_bottom(menu);
         break;
       case OP_CURRENT_MIDDLE:
         menu_current_middle(menu);
         break;
-      case OP_CURRENT_BOTTOM:
-        menu_current_bottom(menu);
+      case OP_CURRENT_TOP:
+        menu_current_top(menu);
+        break;
+      case OP_FIRST_ENTRY:
+        menu_first_entry(menu);
+        break;
+      case OP_HALF_DOWN:
+        menu_half_down(menu);
+        break;
+      case OP_HALF_UP:
+        menu_half_up(menu);
+        break;
+      case OP_LAST_ENTRY:
+        menu_last_entry(menu);
+        break;
+      case OP_MIDDLE_PAGE:
+        menu_middle_page(menu);
+        break;
+      case OP_NEXT_LINE:
+        menu_next_line(menu);
+        break;
+      case OP_NEXT_PAGE:
+        menu_next_page(menu);
+        break;
+      case OP_PREV_LINE:
+        menu_prev_line(menu);
+        break;
+      case OP_PREV_PAGE:
+        menu_prev_page(menu);
+        break;
+      case OP_TOP_PAGE:
+        menu_top_page(menu);
         break;
 
 #ifdef USE_NNTP

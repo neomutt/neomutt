@@ -185,23 +185,23 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         switch (*p)
         { /* look only at the first letter */
-          case 'e':
-            flags |= KEYFLAG_EXPIRED;
-            break;
-          case 'r':
-            flags |= KEYFLAG_REVOKED;
-            break;
           case 'd':
             flags |= KEYFLAG_DISABLED;
             break;
-          case 'n':
-            trust = 1;
+          case 'e':
+            flags |= KEYFLAG_EXPIRED;
+            break;
+          case 'f':
+            trust = 3;
             break;
           case 'm':
             trust = 2;
             break;
-          case 'f':
-            trust = 3;
+          case 'n':
+            trust = 1;
+            break;
+          case 'r':
+            flags |= KEYFLAG_REVOKED;
             break;
           case 'u':
             trust = 3;

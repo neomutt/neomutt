@@ -417,9 +417,54 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
   {
     switch (*p)
     {
+      case 'c':
+      case 'C':
+        q = smime_cryptalg;
+
+        if (*(p + 1) == '<')
+        {
+          for (p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
+               *q++ = *p++)
+            ;
+
+          if (*p != '>')
+          {
+            mutt_error(_("Illegal S/MIME header"));
+            return 0;
+          }
+        }
+
+        *q = '\0';
+        break;
+
       case 'e':
       case 'E':
         flags |= ENCRYPT;
+        break;
+
+      case 'i':
+      case 'I':
+        flags |= INLINE;
+        break;
+
+      /* This used to be the micalg parameter.
+       *
+       * It's no longer needed, so we just skip the parameter in order
+       * to be able to recall old messages.
+       */
+      case 'm':
+      case 'M':
+        if (*(p + 1) == '<')
+        {
+          for (p += 2; *p && *p != '>'; p++)
+            ;
+          if (*p != '>')
+          {
+            mutt_error(_("Illegal crypto header"));
+            return 0;
+          }
+        }
+
         break;
 
       case 'o':
@@ -445,51 +490,6 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
         }
 
         *q = '\0';
-        break;
-
-      /* This used to be the micalg parameter.
-       *
-       * It's no longer needed, so we just skip the parameter in order
-       * to be able to recall old messages.
-       */
-      case 'm':
-      case 'M':
-        if (*(p + 1) == '<')
-        {
-          for (p += 2; *p && *p != '>'; p++)
-            ;
-          if (*p != '>')
-          {
-            mutt_error(_("Illegal crypto header"));
-            return 0;
-          }
-        }
-
-        break;
-
-      case 'c':
-      case 'C':
-        q = smime_cryptalg;
-
-        if (*(p + 1) == '<')
-        {
-          for (p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
-               *q++ = *p++)
-            ;
-
-          if (*p != '>')
-          {
-            mutt_error(_("Illegal S/MIME header"));
-            return 0;
-          }
-        }
-
-        *q = '\0';
-        break;
-
-      case 'i':
-      case 'I':
-        flags |= INLINE;
         break;
 
       default:

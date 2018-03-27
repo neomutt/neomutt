@@ -1029,14 +1029,14 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
           {
             switch (*p)
             {
-              case 'r':
-                hdr->replied = true;
-                break;
               case 'O':
                 hdr->old = MarkOld ? true : false;
                 break;
               case 'R':
                 hdr->read = true;
+                break;
+              case 'r':
+                hdr->replied = true;
                 break;
             }
             p++;

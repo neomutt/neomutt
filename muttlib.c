@@ -1192,17 +1192,17 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         break;
       switch (*src)
       {
+        case 'f':
+          *wptr = '\f';
+          break;
         case 'n':
           *wptr = '\n';
-          break;
-        case 't':
-          *wptr = '\t';
           break;
         case 'r':
           *wptr = '\r';
           break;
-        case 'f':
-          *wptr = '\f';
+        case 't':
+          *wptr = '\t';
           break;
         case 'v':
           *wptr = '\v';

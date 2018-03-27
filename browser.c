@@ -211,14 +211,14 @@ static int browser_compare(const void *a, const void *b)
 
   switch (SortBrowser & SORT_MASK)
   {
-    case SORT_DATE:
-      return browser_compare_date(a, b);
-    case SORT_SIZE:
-      return browser_compare_size(a, b);
-    case SORT_DESC:
-      return browser_compare_desc(a, b);
     case SORT_COUNT:
       return browser_compare_count(a, b);
+    case SORT_DATE:
+      return browser_compare_date(a, b);
+    case SORT_DESC:
+      return browser_compare_desc(a, b);
+    case SORT_SIZE:
+      return browser_compare_size(a, b);
     case SORT_UNREAD:
       return browser_compare_count_new(a, b);
     case SORT_SUBJECT:
@@ -606,6 +606,25 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, folder->ff->new ? 'N' : 'u');
       break;
 
+    case 'n':
+      if (Context && Context->data == folder->ff->nd)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, Context->new);
+      }
+      else if (MarkOld && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
+               folder->ff->nd->last_cached <= folder->ff->nd->last_message)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->nd->last_message - folder->ff->nd->last_cached);
+      }
+      else
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->nd->unread);
+      }
+      break;
+
     case 's':
       if (flags & MUTT_FORMAT_OPTIONAL)
       {
@@ -620,25 +639,6 @@ static const char *group_index_format_str(char *buf, size_t buflen, size_t col, 
       {
         snprintf(fmt, sizeof(fmt), "%%%sd", prec);
         snprintf(buf, buflen, fmt, Context->unread);
-      }
-      else
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->nd->unread);
-      }
-      break;
-
-    case 'n':
-      if (Context && Context->data == folder->ff->nd)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, Context->new);
-      }
-      else if (MarkOld && folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
-               folder->ff->nd->last_cached <= folder->ff->nd->last_message)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->nd->last_message - folder->ff->nd->last_cached);
       }
       else
       {
@@ -1298,11 +1298,11 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
            */
           switch (mx_get_magic(CurrentFolder))
           {
-            case MUTT_MBOX:
-            case MUTT_MMDF:
-            case MUTT_MH:
-            case MUTT_MAILDIR:
             case MUTT_IMAP:
+            case MUTT_MAILDIR:
+            case MUTT_MBOX:
+            case MUTT_MH:
+            case MUTT_MMDF:
               if (Folder)
                 mutt_str_strfcpy(LastDir, NONULL(Folder), sizeof(LastDir));
               else if (SpoolFile)
