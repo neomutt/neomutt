@@ -149,6 +149,7 @@ static int lua_mutt_set(lua_State *l)
       FREE(&opt.var);
       break;
     case DT_QUAD:
+    {
       opt.var = (long) lua_tointeger(l, -1);
       if ((opt.var != MUTT_YES) && (opt.var != MUTT_NO) &&
           (opt.var != MUTT_ASKYES) && (opt.var != MUTT_ASKNO))
@@ -161,8 +162,11 @@ static int lua_mutt_set(lua_State *l)
         rc = -1;
       }
       else
+      {
         rc = mutt_option_set(&opt, &err);
+      }
       break;
+    }
     case DT_MAGIC:
       if (mx_set_magic(lua_tostring(l, -1)))
       {
@@ -186,8 +190,7 @@ static int lua_mutt_set(lua_State *l)
       break;
     }
     case DT_BOOL:
-      opt.var = (long) lua_toboolean(l, -1);
-      rc = mutt_option_set(&opt, &err);
+      *(bool *) opt.var = lua_toboolean(l, -1);
       break;
     default:
       luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", opt.type, param);
@@ -235,7 +238,7 @@ static int lua_mutt_get(lua_State *l)
         }
         return 1;
       case DT_QUAD:
-        lua_pushinteger(l, opt.var);
+        lua_pushinteger(l, *(unsigned char *) opt.var);
         return 1;
       case DT_REGEX:
       case DT_MAGIC:
@@ -254,7 +257,7 @@ static int lua_mutt_get(lua_State *l)
         lua_pushinteger(l, (signed short) *((unsigned long *) opt.var));
         return 1;
       case DT_BOOL:
-        lua_pushboolean(l, opt.var);
+        lua_pushboolean(l, *((bool *) opt.var));
         return 1;
       default:
         luaL_error(l, "NeoMutt parameter type %d unknown for %s", opt.type, param);

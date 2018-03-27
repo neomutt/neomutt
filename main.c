@@ -508,6 +508,8 @@ int main(int argc, char **argv, char **env)
   {
     OPT_NO_CURSES = true;
     sendflags = SENDBATCH;
+    MuttLogger = log_disp_terminal;
+    log_queue_flush(log_disp_terminal);
   }
 
   /* Always create the mutt_windows because batch mode has some shared code

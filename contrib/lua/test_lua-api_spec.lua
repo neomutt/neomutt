@@ -61,7 +61,7 @@ describe('lua API', function()
     end)
 
     it('works with DT_PATH', function()
-      test_config_type("alias_file", "contrib/lua/test_lua-api_runner.muttrc", "/dev/null")
+      test_config_type("alias_file", "contrib/lua/test_lua-api_runner.neomuttrc", "/dev/null")
     end)
 
     it('works with DT_MAGIC', function()
