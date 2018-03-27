@@ -1159,8 +1159,6 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         group->next = NULL;
         mutt_generate_boundary(&group->parameter);
 
-        /* msg->content = NULL; */
-
         struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
         gptr->content = group;
         update_idx(menu, actx, gptr);
