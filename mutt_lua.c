@@ -144,15 +144,16 @@ static int lua_mutt_set(lua_State *l)
     case DT_PATH:
     case DT_SORT:
     case DT_STRING:
-      opt.var = (long) mutt_str_strdup(lua_tostring(l, -1));
+      opt.var = mutt_str_strdup(lua_tostring(l, -1));
       rc = mutt_option_set(&opt, &err);
       FREE(&opt.var);
       break;
     case DT_QUAD:
     {
-      opt.var = (long) lua_tointeger(l, -1);
-      if ((opt.var != MUTT_YES) && (opt.var != MUTT_NO) &&
-          (opt.var != MUTT_ASKYES) && (opt.var != MUTT_ASKNO))
+      long num = lua_tointeger(l, -1);
+      opt.var = (void *) num;
+      if ((num != MUTT_YES) && (num != MUTT_NO) &&
+          (num != MUTT_ASKYES) && (num != MUTT_ASKNO))
       {
         luaL_error(l,
                    "Invalid opt for quad option %s (one of "
@@ -179,7 +180,7 @@ static int lua_mutt_set(lua_State *l)
       lua_Integer i = lua_tointeger(l, -1);
       if ((i > SHRT_MIN) && (i < SHRT_MAX))
       {
-        opt.var = lua_tointeger(l, -1);
+        opt.var = (void *) lua_tointeger(l, -1);
         rc = mutt_option_set(&opt, &err);
       }
       else

@@ -61,11 +61,11 @@ struct Buffer;
  */
 struct Option
 {
-  const char  *name;      /**< user-visible name */
-  unsigned int type;      /**< variable type, e.g. *DT_STRING */
-  short        flags;     /**< notification flags, e.g. R_PAGER */
-  intptr_t     var;       /**< pointer to the global variable */
-  intptr_t     initial;   /**< initial value */
+  const char   *name;      /**< User-visible name */
+  unsigned int  type;      /**< Variable type, e.g. #DT_STRING */
+  short         flags;     /**< Notification flags, e.g. #R_PAGER */
+  void         *var;       /**< Pointer to the global variable */
+  intptr_t      initial;   /**< Initial value */
 };
 
 int mutt_option_to_string(const struct Option *opt, char *val, size_t len);

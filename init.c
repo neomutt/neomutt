@@ -218,7 +218,7 @@ int mutt_option_index(const char *s)
   for (int i = 0; MuttVars[i].name; i++)
     if (mutt_str_strcmp(s, MuttVars[i].name) == 0)
       return (MuttVars[i].type == DT_SYNONYM ?
-                  mutt_option_index((char *) MuttVars[i].var) :
+                  mutt_option_index((char *) MuttVars[i].initial) :
                   i);
   return -1;
 }
@@ -469,10 +469,10 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
           *(bool *) MuttVars[idx].var = false;
         break;
       case DT_QUAD:
-        *(short *) MuttVars[idx].var = val->var;
+        *(short *) MuttVars[idx].var = (long) val->var;
         break;
       case DT_NUMBER:
-        *(short *) MuttVars[idx].var = val->var;
+        *(short *) MuttVars[idx].var = (long) val->var;
         break;
       default:
         return -1;
