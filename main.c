@@ -424,6 +424,7 @@ int main(int argc, char **argv, char **env)
           break;
         default:
           usage();
+          OPT_NO_CURSES = true;
           goto main_ok; // TEST03: neomutt -9
       }
     }
@@ -442,6 +443,7 @@ int main(int argc, char **argv, char **env)
       print_version();
     else
       print_copyright();
+    OPT_NO_CURSES = true;
     goto main_ok; // TEST04: neomutt -v
   }
 
