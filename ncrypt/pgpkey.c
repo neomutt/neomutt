@@ -836,6 +836,9 @@ static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
                                     enum PgpRing keyring, int oppenc_mode)
 {
+  if (!a)
+    return NULL;
+
   struct Address *r = NULL, *p = NULL;
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
@@ -848,13 +851,13 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
   struct PgpKeyInfo **last = &matches;
   struct PgpUid *q = NULL;
 
-  if (a && a->mailbox)
+  if (a->mailbox)
     pgp_add_string_to_hints(&hints, a->mailbox);
-  if (a && a->personal)
+  if (a->personal)
     pgp_add_string_to_hints(&hints, a->personal);
 
   if (!oppenc_mode)
-    mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
+    mutt_message(_("Looking for keys matching \"%s\"..."), a->mailbox);
   keys = pgp_get_candidates(keyring, &hints);
 
   mutt_list_free(&hints);
