@@ -1201,7 +1201,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
     {
       init_state(&state, NULL);
       state.imap_browse = true;
-      if (!imap_browse(f, &state))
+      if (imap_browse(f, &state) == 0)
       {
         mutt_str_strfcpy(LastDir, state.folder, sizeof(LastDir));
         browser_sort(&state);
@@ -1609,7 +1609,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           break;
         }
 
-        if (!imap_mailbox_create(LastDir))
+        if (imap_mailbox_create(LastDir) == 0)
         {
           /* TODO: find a way to detect if the new folder would appear in
            *   this window, and insert it without starting over. */
@@ -1669,7 +1669,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), mx.mbox);
           if (mutt_yesorno(msg, MUTT_NO) == MUTT_YES)
           {
-            if (!imap_delete_mailbox(Context, &mx))
+            if (imap_delete_mailbox(Context, &mx) == 0)
             {
               /* free the mailbox from the browser */
               FREE(&((state.entry)[nentry].name));

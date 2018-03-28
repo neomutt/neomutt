@@ -49,7 +49,7 @@ int getdnsdomainname(char *d, size_t len)
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
   char node[STRING];
-  if (gethostname(node, sizeof(node)))
+  if (gethostname(node, sizeof(node)) != 0)
     return rc;
 
   struct addrinfo hints;

@@ -605,7 +605,7 @@ static int trash_append(struct Context *ctx)
 #ifdef USE_IMAP
   if (Context->magic == MUTT_IMAP && mx_is_imap(Trash))
   {
-    if (!imap_fast_trash(Context, Trash))
+    if (imap_fast_trash(Context, Trash) == 0)
       return 0;
   }
 #endif

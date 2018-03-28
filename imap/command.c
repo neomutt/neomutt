@@ -443,7 +443,7 @@ static void cmd_parse_list(struct ImapData *idata, char *s)
   /* Name */
   s = imap_next_word(s);
   /* Notes often responds with literals here. We need a real tokenizer. */
-  if (!imap_get_literal_count(s, &litlen))
+  if (imap_get_literal_count(s, &litlen) == 0)
   {
     if (imap_cmd_step(idata) != IMAP_CMD_CONTINUE)
     {
@@ -631,7 +631,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   mailbox = imap_next_word(s);
 
   /* We need a real tokenizer. */
-  if (!imap_get_literal_count(mailbox, &litlen))
+  if (imap_get_literal_count(mailbox, &litlen) == 0)
   {
     if (imap_cmd_step(idata) != IMAP_CMD_CONTINUE)
     {

@@ -727,7 +727,7 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
 
     *o = MT_COLOR_QUOTED;
   }
-  else if (!mutt_str_strcasecmp(buf->data, "compose"))
+  else if (mutt_str_strcasecmp(buf->data, "compose") == 0)
   {
     if (!MoreArgs(s))
     {

@@ -954,7 +954,7 @@ int main(int argc, char *argv[], char *envp[])
   {
     if (flags & MUTT_BUFFY)
     {
-      if (!mutt_buffy_check(false))
+      if (mutt_buffy_check(false) == 0)
       {
         mutt_message(_("No mailbox with new mail."));
         goto main_curses; // TEST37: neomutt -Z (no new mail)

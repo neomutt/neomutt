@@ -387,7 +387,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   source = dest = 0;
   while (source < h->last)
   {
-    if (!mutt_str_strcmp(h->hist[source], str))
+    if (mutt_str_strcmp(h->hist[source], str) == 0)
       FREE(&h->hist[source++]);
     else
       h->hist[dest++] = h->hist[source++];
@@ -406,7 +406,7 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
   source = dest = History;
   while (source > old_last)
   {
-    if (!mutt_str_strcmp(h->hist[source], str))
+    if (mutt_str_strcmp(h->hist[source], str) == 0)
       FREE(&h->hist[source--]);
     else
       h->hist[dest--] = h->hist[source--];

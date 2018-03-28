@@ -46,6 +46,7 @@
 #include "conn/conn.h"
 #include "mutt.h"
 #include "imap.h"
+#include "auth.h"
 #include "bcache.h"
 #include "body.h"
 #include "buffy.h"
@@ -412,7 +413,7 @@ static int do_search(const struct Pattern *search, int allpats)
  */
 static int compile_search(struct Context *ctx, const struct Pattern *pat, struct Buffer *buf)
 {
-  if (!do_search(pat, 0))
+  if (do_search(pat, 0) == 0)
     return 0;
 
   if (pat->not)
@@ -971,7 +972,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
     imap_open_connection(idata);
   if (idata->state == IMAP_CONNECTED)
   {
-    if (!imap_authenticate(idata))
+    if (imap_authenticate(idata) == IMAP_AUTH_SUCCESS)
     {
       idata->state = IMAP_AUTHENTICATED;
       FREE(&idata->capstr);
@@ -1678,7 +1679,7 @@ int imap_search(struct Context *ctx, const struct Pattern *pat)
   for (int i = 0; i < ctx->msgcount; i++)
     ctx->hdrs[i]->matched = false;
 
-  if (!do_search(pat, 1))
+  if (do_search(pat, 1) == 0)
     return 0;
 
   mutt_buffer_init(&buf);
@@ -1891,7 +1892,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   }
 
   /* check that the save-to folder is in the same account */
-  if (!mutt_account_match(&(idata->conn->account), &(mx.account)))
+  if (mutt_account_match(&(idata->conn->account), &(mx.account)) == 0)
   {
     mutt_debug(3, "%s not same server as %s\n", dest, ctx->path);
     return 1;

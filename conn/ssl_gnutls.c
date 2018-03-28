@@ -572,7 +572,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   gnutls_datum_t pemdata;
   int row, done, ret;
 
-  if (!tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert))
+  if (tls_check_preauth(certdata, certstat, hostname, idx, &certerr, &savedcert) == 0)
     return 1;
 
   /* skip signers if insecure algorithm was used */
@@ -1196,7 +1196,7 @@ static int tls_negotiate(struct Connection *conn)
     goto fail;
   }
 
-  if (!tls_check_certificate(conn))
+  if (tls_check_certificate(conn) == 0)
     goto fail;
 
   /* set Security Strength Factor (SSF) for SASL */

@@ -197,7 +197,7 @@ int mutt_display_message(struct Header *cur)
     {
       if (cur->security & GOODSIGN)
       {
-        if (!crypt_smime_verify_sender(cur))
+        if (crypt_smime_verify_sender(cur) == 0)
           mutt_message(_("S/MIME signature successfully verified."));
         else
           mutt_error(_("S/MIME certificate owner does not match sender."));
