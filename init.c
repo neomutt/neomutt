@@ -281,7 +281,7 @@ static struct MbTable *parse_mbtable(const char *s)
 
   t = mutt_mem_calloc(1, sizeof(struct MbTable));
   slen = mutt_str_strlen(s);
-  if (!slen)
+  if (slen == 0)
     return t;
 
   t->orig_str = mutt_str_strdup(s);

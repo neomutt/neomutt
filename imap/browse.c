@@ -331,7 +331,7 @@ int imap_browse(char *path, struct BrowserState *state)
   if (browse_add_list_result(idata, buf, state, 0))
     goto fail;
 
-  if (!state->entrylen)
+  if (state->entrylen == 0)
   {
     mutt_error(_("No such folder"));
     goto fail;

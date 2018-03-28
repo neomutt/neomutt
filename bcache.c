@@ -52,7 +52,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   struct Url url;
   int len;
 
-  if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
+  if (!account || !MessageCachedir || !*MessageCachedir || !dst || (dstlen == 0))
     return -1;
 
   /* make up a Url we can turn into a string */

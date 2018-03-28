@@ -1400,7 +1400,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
     {
       case OP_GENERIC_SELECT_ENTRY:
 
-        if (!state.entrylen)
+        if (state.entrylen == 0)
         {
           mutt_error(_("No files match the file mask"));
           break;
@@ -1849,7 +1849,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
               goto bail;
             }
             kill_prefix = 0;
-            if (!state.entrylen)
+            if (state.entrylen == 0)
             {
               mutt_error(_("No files match the file mask"));
               break;
@@ -1988,7 +1988,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         break;
 
       case OP_BROWSER_VIEW_FILE:
-        if (!state.entrylen)
+        if (state.entrylen == 0)
         {
           mutt_error(_("No files match the file mask"));
           break;
@@ -2129,7 +2129,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             menu->redraw = REDRAW_FULL;
             j = 0;
           }
-          else if (!state.entrylen)
+          else if (state.entrylen == 0)
           {
             mutt_error(_("No newsgroups match the mask"));
             break;
