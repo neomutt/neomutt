@@ -208,7 +208,8 @@ void log_file_set_version(const char *version)
 }
 
 /**
- * log_file_running - XXX
+ * log_file_running - Is the log file running?
+ * @retval true If the log file is running
  */
 bool log_file_running(void)
 {
@@ -253,7 +254,7 @@ int log_disp_file(time_t stamp, const char *file, int line,
   va_list ap;
   va_start(ap, level);
   const char *fmt = va_arg(ap, const char *);
-  ret = vfprintf(LogFileFP, fmt, ap);
+  ret += vfprintf(LogFileFP, fmt, ap);
   va_end(ap);
 
   if (level == LL_PERROR)

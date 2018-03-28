@@ -712,18 +712,15 @@ void maildir_parse_flags(struct Header *h, const char *path)
       switch (*p)
       {
         case 'F':
-
           h->flagged = true;
           break;
 
-        case 'S': /* seen */
-
-          h->read = true;
+        case 'R': /* replied */
+          h->replied = true;
           break;
 
-        case 'R': /* replied */
-
-          h->replied = true;
+        case 'S': /* seen */
+          h->read = true;
           break;
 
         case 'T': /* trashed */

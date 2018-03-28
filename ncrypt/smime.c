@@ -360,23 +360,23 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
   char *truststate = NULL;
   switch (this->trust)
   {
-    case 't':
-      truststate = N_("Trusted   ");
-      break;
-    case 'v':
-      truststate = N_("Verified  ");
-      break;
-    case 'u':
-      truststate = N_("Unverified");
-      break;
     case 'e':
       truststate = N_("Expired   ");
+      break;
+    case 'i':
+      truststate = N_("Invalid   ");
       break;
     case 'r':
       truststate = N_("Revoked   ");
       break;
-    case 'i':
-      truststate = N_("Invalid   ");
+    case 't':
+      truststate = N_("Trusted   ");
+      break;
+    case 'u':
+      truststate = N_("Unverified");
+      break;
+    case 'v':
+      truststate = N_("Verified  ");
       break;
     default:
       truststate = N_("Unknown   ");
@@ -443,9 +443,9 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
         {
           switch (table[menu->current]->trust)
           {
+            case 'e':
             case 'i':
             case 'r':
-            case 'e':
               s = N_("ID is expired/disabled/revoked.");
               break;
             case 'u':
@@ -2082,9 +2082,54 @@ int smime_send_menu(struct Header *msg)
   {
     switch (choices[choice - 1])
     {
+      case 'a': /* sign (a)s */
+        key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
+        if (key)
+        {
+          mutt_str_replace(&SmimeSignAs, key->hash);
+          smime_free_key(&key);
+
+          msg->security |= SIGN;
+
+          /* probably need a different passphrase */
+          crypt_smime_void_passphrase();
+        }
+
+        break;
+
+      case 'b': /* (b)oth */
+        msg->security |= (ENCRYPT | SIGN);
+        break;
+
+      case 'c': /* (c)lear */
+        msg->security &= ~(ENCRYPT | SIGN);
+        break;
+
+      case 'C':
+        msg->security &= ~SIGN;
+        break;
+
       case 'e': /* (e)ncrypt */
         msg->security |= ENCRYPT;
         msg->security &= ~SIGN;
+        break;
+
+      case 'O': /* oppenc mode on */
+        msg->security |= OPPENCRYPT;
+        crypt_opportunistic_encrypt(msg);
+        break;
+
+      case 'o': /* oppenc mode off */
+        msg->security &= ~OPPENCRYPT;
+        break;
+
+      case 'S': /* (s)ign in oppenc mode */
+        msg->security |= SIGN;
+        break;
+
+      case 's': /* (s)ign */
+        msg->security &= ~ENCRYPT;
+        msg->security |= SIGN;
         break;
 
       case 'w': /* encrypt (w)ith */
@@ -2153,51 +2198,6 @@ int smime_send_menu(struct Header *msg)
         } while (choice == -1);
       }
       break;
-
-      case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
-        break;
-
-      case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
-        break;
-
-      case 'a': /* sign (a)s */
-        key = smime_ask_for_key(_("Sign as: "), KEYFLAG_CANSIGN, 0);
-        if (key)
-        {
-          mutt_str_replace(&SmimeSignAs, key->hash);
-          smime_free_key(&key);
-
-          msg->security |= SIGN;
-
-          /* probably need a different passphrase */
-          crypt_smime_void_passphrase();
-        }
-
-        break;
-
-      case 'b': /* (b)oth */
-        msg->security |= (ENCRYPT | SIGN);
-        break;
-
-      case 'c': /* (c)lear */
-        msg->security &= ~(ENCRYPT | SIGN);
-        break;
-
-      case 'C':
-        msg->security &= ~SIGN;
-        break;
-
-      case 'O': /* oppenc mode on */
-        msg->security |= OPPENCRYPT;
-        crypt_opportunistic_encrypt(msg);
-        break;
-
-      case 'o': /* oppenc mode off */
-        msg->security &= ~OPPENCRYPT;
-        break;
     }
   }
 

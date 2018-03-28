@@ -375,29 +375,29 @@ static void process_user_header(struct Envelope *env)
 
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 {
-  if (ForwardAttributionIntro)
-  {
-    char buffer[LONG_STRING];
-    setlocale(LC_TIME, NONULL(AttributionLocale));
-    mutt_make_string(buffer, sizeof(buffer), ForwardAttributionIntro, ctx, cur);
-    setlocale(LC_TIME, "");
-    fputs(buffer, fp);
-    fputs("\n\n", fp);
-  }
+  if (!ForwardAttributionIntro || !fp)
+    return;
+
+  char buffer[LONG_STRING];
+  setlocale(LC_TIME, NONULL(AttributionLocale));
+  mutt_make_string(buffer, sizeof(buffer), ForwardAttributionIntro, ctx, cur);
+  setlocale(LC_TIME, "");
+  fputs(buffer, fp);
+  fputs("\n\n", fp);
 }
 
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
 {
-  if (ForwardAttributionTrailer)
-  {
-    char buffer[LONG_STRING];
-    setlocale(LC_TIME, NONULL(AttributionLocale));
-    mutt_make_string(buffer, sizeof(buffer), ForwardAttributionTrailer, ctx, cur);
-    setlocale(LC_TIME, "");
-    fputc('\n', fp);
-    fputs(buffer, fp);
-    fputc('\n', fp);
-  }
+  if (!ForwardAttributionTrailer || !fp)
+    return;
+
+  char buffer[LONG_STRING];
+  setlocale(LC_TIME, NONULL(AttributionLocale));
+  mutt_make_string(buffer, sizeof(buffer), ForwardAttributionTrailer, ctx, cur);
+  setlocale(LC_TIME, "");
+  fputc('\n', fp);
+  fputs(buffer, fp);
+  fputc('\n', fp);
 }
 
 static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
@@ -439,26 +439,26 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 
 void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 {
-  if (Attribution)
-  {
-    char buffer[LONG_STRING];
-    setlocale(LC_TIME, NONULL(AttributionLocale));
-    mutt_make_string(buffer, sizeof(buffer), Attribution, ctx, cur);
-    setlocale(LC_TIME, "");
-    fputs(buffer, out);
-    fputc('\n', out);
-  }
+  if (!Attribution || !out)
+    return;
+
+  char buffer[LONG_STRING];
+  setlocale(LC_TIME, NONULL(AttributionLocale));
+  mutt_make_string(buffer, sizeof(buffer), Attribution, ctx, cur);
+  setlocale(LC_TIME, "");
+  fputs(buffer, out);
+  fputc('\n', out);
 }
 
 void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
 {
-  if (PostIndentString)
-  {
-    char buffer[STRING];
-    mutt_make_string(buffer, sizeof(buffer), PostIndentString, ctx, cur);
-    fputs(buffer, out);
-    fputc('\n', out);
-  }
+  if (!PostIndentString || !out)
+    return;
+
+  char buffer[STRING];
+  mutt_make_string(buffer, sizeof(buffer), PostIndentString, ctx, cur);
+  fputs(buffer, out);
+  fputc('\n', out);
 }
 
 static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)

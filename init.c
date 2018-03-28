@@ -531,20 +531,20 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
           mutt_buffer_addch(dest, (toupper((unsigned char) *tok->dptr) - '@') & 0x7f);
           tok->dptr++;
           break;
-        case 'r':
-          mutt_buffer_addch(dest, '\r');
-          break;
-        case 'n':
-          mutt_buffer_addch(dest, '\n');
-          break;
-        case 't':
-          mutt_buffer_addch(dest, '\t');
+        case 'e':
+          mutt_buffer_addch(dest, '\033');
           break;
         case 'f':
           mutt_buffer_addch(dest, '\f');
           break;
-        case 'e':
-          mutt_buffer_addch(dest, '\033');
+        case 'n':
+          mutt_buffer_addch(dest, '\n');
+          break;
+        case 'r':
+          mutt_buffer_addch(dest, '\r');
+          break;
+        case 't':
+          mutt_buffer_addch(dest, '\t');
           break;
         default:
           if (isdigit((unsigned char) ch) && isdigit((unsigned char) *tok->dptr) &&
@@ -2688,15 +2688,15 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         case DT_SORT_ALIAS:
           map = SortAliasMethods;
           break;
+        case DT_SORT_AUX:
+          map = SortAuxMethods;
+          break;
         case DT_SORT_BROWSER:
           map = SortBrowserMethods;
           break;
         case DT_SORT_KEYS:
           if (WithCrypto & APPLICATION_PGP)
             map = SortKeyMethods;
-          break;
-        case DT_SORT_AUX:
-          map = SortAuxMethods;
           break;
         case DT_SORT_SIDEBAR:
           map = SortSidebarMethods;

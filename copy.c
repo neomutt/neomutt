@@ -957,6 +957,34 @@ static int address_header_decode(char **h)
 
   switch (tolower((unsigned char) *s))
   {
+    case 'b':
+    {
+      if (mutt_str_strncasecmp(s, "bcc:", 4) != 0)
+        return 0;
+      l = 4;
+      break;
+    }
+    case 'c':
+    {
+      if (mutt_str_strncasecmp(s, "cc:", 3) != 0)
+        return 0;
+      l = 3;
+      break;
+    }
+    case 'f':
+    {
+      if (mutt_str_strncasecmp(s, "from:", 5) != 0)
+        return 0;
+      l = 5;
+      break;
+    }
+    case 'm':
+    {
+      if (mutt_str_strncasecmp(s, "mail-followup-to:", 17) != 0)
+        return 0;
+      l = 17;
+      break;
+    }
     case 'r':
     {
       if (mutt_str_strncasecmp(s, "return-path:", 12) == 0)
@@ -972,27 +1000,6 @@ static int address_header_decode(char **h)
       }
       return 0;
     }
-    case 'f':
-    {
-      if (mutt_str_strncasecmp(s, "from:", 5) != 0)
-        return 0;
-      l = 5;
-      break;
-    }
-    case 'c':
-    {
-      if (mutt_str_strncasecmp(s, "cc:", 3) != 0)
-        return 0;
-      l = 3;
-      break;
-    }
-    case 'b':
-    {
-      if (mutt_str_strncasecmp(s, "bcc:", 4) != 0)
-        return 0;
-      l = 4;
-      break;
-    }
     case 's':
     {
       if (mutt_str_strncasecmp(s, "sender:", 7) != 0)
@@ -1005,13 +1012,6 @@ static int address_header_decode(char **h)
       if (mutt_str_strncasecmp(s, "to:", 3) != 0)
         return 0;
       l = 3;
-      break;
-    }
-    case 'm':
-    {
-      if (mutt_str_strncasecmp(s, "mail-followup-to:", 17) != 0)
-        return 0;
-      l = 17;
       break;
     }
     default:

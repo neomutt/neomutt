@@ -57,7 +57,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method)
   size_t bufsize = 0;
   const char *mech = NULL;
   const char *pc = NULL;
-  unsigned int len, olen;
+  unsigned int len = 0, olen;
   bool client_start;
 
   if (mutt_sasl_client_new(idata->conn, &saslconn) < 0)

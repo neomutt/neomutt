@@ -536,8 +536,23 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
   {
     switch (*s)
     {
+      case 'a':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_ADMIN);
+        break;
+      case 'e':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_EXPUNGE);
+        break;
+      case 'i':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_INSERT);
+        break;
+      case 'k':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
+        break;
       case 'l':
         mutt_bit_set(idata->ctx->rights, MUTT_ACL_LOOKUP);
+        break;
+      case 'p':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_POST);
         break;
       case 'r':
         mutt_bit_set(idata->ctx->rights, MUTT_ACL_READ);
@@ -545,29 +560,14 @@ static void cmd_parse_myrights(struct ImapData *idata, const char *s)
       case 's':
         mutt_bit_set(idata->ctx->rights, MUTT_ACL_SEEN);
         break;
-      case 'w':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_WRITE);
-        break;
-      case 'i':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_INSERT);
-        break;
-      case 'p':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_POST);
-        break;
-      case 'a':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_ADMIN);
-        break;
-      case 'k':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_CREATE);
-        break;
-      case 'x':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELMX);
-        break;
       case 't':
         mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELETE);
         break;
-      case 'e':
-        mutt_bit_set(idata->ctx->rights, MUTT_ACL_EXPUNGE);
+      case 'w':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_WRITE);
+        break;
+      case 'x':
+        mutt_bit_set(idata->ctx->rights, MUTT_ACL_DELMX);
         break;
 
       /* obsolete rights */

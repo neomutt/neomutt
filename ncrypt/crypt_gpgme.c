@@ -386,10 +386,10 @@ static int crypt_id_is_strong(struct CryptKeyInfo *key)
 
   switch (key->validity)
   {
-    case GPGME_VALIDITY_UNKNOWN:
-    case GPGME_VALIDITY_UNDEFINED:
-    case GPGME_VALIDITY_NEVER:
     case GPGME_VALIDITY_MARGINAL:
+    case GPGME_VALIDITY_NEVER:
+    case GPGME_VALIDITY_UNDEFINED:
+    case GPGME_VALIDITY_UNKNOWN:
       is_strong = 0;
       break;
 
@@ -3007,20 +3007,20 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
       {
         switch (key->validity)
         {
-          case GPGME_VALIDITY_UNDEFINED:
-            s = "q";
-            break;
-          case GPGME_VALIDITY_NEVER:
-            s = "n";
+          case GPGME_VALIDITY_FULL:
+            s = "f";
             break;
           case GPGME_VALIDITY_MARGINAL:
             s = "m";
             break;
-          case GPGME_VALIDITY_FULL:
-            s = "f";
+          case GPGME_VALIDITY_NEVER:
+            s = "n";
             break;
           case GPGME_VALIDITY_ULTIMATE:
             s = "u";
+            break;
+          case GPGME_VALIDITY_UNDEFINED:
+            s = "q";
             break;
           case GPGME_VALIDITY_UNKNOWN:
           default:
@@ -4202,14 +4202,14 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
 
   switch (PgpSortKeys & SORT_MASK)
   {
+    case SORT_ADDRESS:
+      f = crypt_compare_address;
+      break;
     case SORT_DATE:
       f = crypt_compare_date;
       break;
     case SORT_KEYID:
       f = crypt_compare_keyid;
-      break;
-    case SORT_ADDRESS:
-      f = crypt_compare_address;
       break;
     case SORT_TRUST:
     default:
@@ -4307,10 +4307,6 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
             warn_s = "??";
             switch (key_table[menu->current]->validity)
             {
-              case GPGME_VALIDITY_UNKNOWN:
-              case GPGME_VALIDITY_UNDEFINED:
-                warn_s = N_("ID has undefined validity.");
-                break;
               case GPGME_VALIDITY_NEVER:
                 warn_s = N_("ID is not valid.");
                 break;
@@ -4319,6 +4315,10 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
                 break;
               case GPGME_VALIDITY_FULL:
               case GPGME_VALIDITY_ULTIMATE:
+                break;
+              case GPGME_VALIDITY_UNKNOWN:
+              case GPGME_VALIDITY_UNDEFINED:
+                warn_s = N_("ID has undefined validity.");
                 break;
             }
           }
@@ -4951,20 +4951,6 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
   {
     switch (choices[choice - 1])
     {
-      case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
-        break;
-
-      case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
-        break;
-
-      case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
-        break;
-
       case 'a': /* sign (a)s */
         p = crypt_ask_for_key(_("Sign as: "), NULL, KEYFLAG_CANSIGN,
                               is_smime ? APPLICATION_SMIME : APPLICATION_PGP, NULL);
@@ -4983,8 +4969,21 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
         msg->security |= (ENCRYPT | SIGN);
         break;
 
-      case 'p': /* (p)gp or s/(m)ime */
-      case 'm':
+      case 'C':
+        msg->security &= ~SIGN;
+        break;
+
+      case 'c': /* (c)lear */
+        msg->security &= ~(ENCRYPT | SIGN);
+        break;
+
+      case 'e': /* (e)ncrypt */
+        msg->security |= ENCRYPT;
+        msg->security &= ~SIGN;
+        break;
+
+      case 'm': /* (p)gp or s/(m)ime */
+      case 'p':
         is_smime = !is_smime;
         if (is_smime)
         {
@@ -4999,14 +4998,6 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
         crypt_opportunistic_encrypt(msg);
         break;
 
-      case 'c': /* (c)lear */
-        msg->security &= ~(ENCRYPT | SIGN);
-        break;
-
-      case 'C':
-        msg->security &= ~SIGN;
-        break;
-
       case 'O': /* oppenc mode on */
         msg->security |= OPPENCRYPT;
         crypt_opportunistic_encrypt(msg);
@@ -5014,6 +5005,15 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
 
       case 'o': /* oppenc mode off */
         msg->security &= ~OPPENCRYPT;
+        break;
+
+      case 'S': /* (s)ign in oppenc mode */
+        msg->security |= SIGN;
+        break;
+
+      case 's': /* (s)ign */
+        msg->security &= ~ENCRYPT;
+        msg->security |= SIGN;
         break;
     }
   }

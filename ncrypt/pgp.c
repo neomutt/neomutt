@@ -1778,20 +1778,6 @@ int pgp_send_menu(struct Header *msg)
   {
     switch (choices[choice - 1])
     {
-      case 'e': /* (e)ncrypt */
-        msg->security |= ENCRYPT;
-        msg->security &= ~SIGN;
-        break;
-
-      case 's': /* (s)ign */
-        msg->security &= ~ENCRYPT;
-        msg->security |= SIGN;
-        break;
-
-      case 'S': /* (s)ign in oppenc mode */
-        msg->security |= SIGN;
-        break;
-
       case 'a': /* sign (a)s */
         OPT_PGP_CHECK_TRUST = false;
 
@@ -1813,12 +1799,21 @@ int pgp_send_menu(struct Header *msg)
         msg->security |= (ENCRYPT | SIGN);
         break;
 
+      case 'C':
+        msg->security &= ~SIGN;
+        break;
+
       case 'c': /* (c)lear     */
         msg->security &= ~(ENCRYPT | SIGN);
         break;
 
-      case 'C':
+      case 'e': /* (e)ncrypt */
+        msg->security |= ENCRYPT;
         msg->security &= ~SIGN;
+        break;
+
+      case 'i': /* toggle (i)nline */
+        msg->security ^= INLINE;
         break;
 
       case 'O': /* oppenc mode on */
@@ -1830,8 +1825,13 @@ int pgp_send_menu(struct Header *msg)
         msg->security &= ~OPPENCRYPT;
         break;
 
-      case 'i': /* toggle (i)nline */
-        msg->security ^= INLINE;
+      case 'S': /* (s)ign in oppenc mode */
+        msg->security |= SIGN;
+        break;
+
+      case 's': /* (s)ign */
+        msg->security &= ~ENCRYPT;
+        msg->security |= SIGN;
         break;
     }
   }

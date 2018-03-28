@@ -217,7 +217,6 @@ static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
           if (hdrs[n]->replied != HEADER_DATA(hdrs[n])->replied)
             match = invert ^ hdrs[n]->replied;
           break;
-
         case MUTT_TAG:
           if (hdrs[n]->tagged)
             match = true;

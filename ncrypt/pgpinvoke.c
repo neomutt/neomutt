@@ -65,18 +65,6 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
 
   switch (op)
   {
-    case 'r':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
-      }
-      else if (!cctx->ids)
-        optional = 0;
-      break;
-    }
-
     case 'a':
     {
       if (!optional)
@@ -88,19 +76,6 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         optional = 0;
       break;
     }
-
-    case 's':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
-      }
-      else if (!cctx->sig_fname)
-        optional = 0;
-      break;
-    }
-
     case 'f':
     {
       if (!optional)
@@ -112,7 +87,6 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         optional = 0;
       break;
     }
-
     case 'p':
     {
       if (!optional)
@@ -121,6 +95,28 @@ static const char *fmt_pgp_command(char *buf, size_t buflen, size_t col, int col
         snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
       }
       else if (!cctx->need_passphrase || pgp_use_gpg_agent())
+        optional = 0;
+      break;
+    }
+    case 'r':
+    {
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
+      }
+      else if (!cctx->ids)
+        optional = 0;
+      break;
+    }
+    case 's':
+    {
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
+      }
+      else if (!cctx->sig_fname)
         optional = 0;
       break;
     }

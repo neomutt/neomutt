@@ -160,6 +160,71 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
 
   switch (tolower(op))
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, key->algorithm);
+      }
+      break;
+    case 'c':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
+      }
+      else if (!(kflags & (KEYFLAG_ABILITIES)))
+        optional = 0;
+      break;
+    case 'f':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, pgp_flags(kflags));
+      }
+      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
+        optional = 0;
+      break;
+    case 'k':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, pgp_this_keyid(key));
+      }
+      break;
+    case 'l':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, key->keylen);
+      }
+      break;
+    case 'n':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, entry->num);
+      }
+      break;
+    case 't':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
+        snprintf(buf, buflen, fmt, trust_flags[uid->trust & 0x03]);
+      }
+      else if (!(uid->trust & 0x03))
+      {
+        /* undefined trust */
+        optional = 0;
+      }
+      break;
+    case 'u':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
+        snprintf(buf, buflen, fmt, NONULL(uid->addr));
+      }
+      break;
     case '[':
 
     {
@@ -218,71 +283,6 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
         src = cp + 1;
     }
     break;
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, entry->num);
-      }
-      break;
-    case 'k':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, pgp_this_keyid(key));
-      }
-      break;
-    case 'u':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(uid->addr));
-      }
-      break;
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, key->algorithm);
-      }
-      break;
-    case 'l':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, key->keylen);
-      }
-      break;
-    case 'f':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, pgp_flags(kflags));
-      }
-      else if (!(kflags & (KEYFLAG_RESTRICTIONS)))
-        optional = 0;
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
-      }
-      else if (!(kflags & (KEYFLAG_ABILITIES)))
-        optional = 0;
-      break;
-    case 't':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, trust_flags[uid->trust & 0x03]);
-      }
-      else if (!(uid->trust & 0x03))
-      {
-        /* undefined trust */
-        optional = 0;
-      }
-      break;
     default:
       *buf = '\0';
   }
@@ -518,14 +518,14 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
   switch (PgpSortKeys & SORT_MASK)
   {
+    case SORT_ADDRESS:
+      f = pgp_compare_address;
+      break;
     case SORT_DATE:
       f = pgp_compare_date;
       break;
     case SORT_KEYID:
       f = pgp_compare_keyid;
-      break;
-    case SORT_ADDRESS:
-      f = pgp_compare_address;
       break;
     case SORT_TRUST:
     default:
@@ -836,6 +836,9 @@ static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
                                     enum PgpRing keyring, int oppenc_mode)
 {
+  if (!a)
+    return NULL;
+
   struct Address *r = NULL, *p = NULL;
   struct ListHead hints = STAILQ_HEAD_INITIALIZER(hints);
 
@@ -848,13 +851,13 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
   struct PgpKeyInfo **last = &matches;
   struct PgpUid *q = NULL;
 
-  if (a && a->mailbox)
+  if (a->mailbox)
     pgp_add_string_to_hints(&hints, a->mailbox);
-  if (a && a->personal)
+  if (a->personal)
     pgp_add_string_to_hints(&hints, a->personal);
 
   if (!oppenc_mode)
-    mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
+    mutt_message(_("Looking for keys matching \"%s\"..."), a->mailbox);
   keys = pgp_get_candidates(keyring, &hints);
 
   mutt_list_free(&hints);

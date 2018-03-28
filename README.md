@@ -1,10 +1,12 @@
 # This is the NeoMutt Project
 
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/neomutt/COPYRIGHT)
+[![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
+[![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
+[![Contributors](https://img.shields.io/badge/Contributors-115-orange.svg)](#contributors)
+[![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/master/COPYRIGHT)
 [![Travis branch](https://api.travis-ci.org/neomutt/neomutt.svg?branch=neomutt)](https://travis-ci.org/neomutt/neomutt)
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt)
-[![In Progress](https://badge.waffle.io/neomutt/neomutt.svg?label=status:in-progress&title=In%20Progress)](http://waffle.io/neomutt/neomutt)
-[![Ready](https://badge.waffle.io/neomutt/neomutt.svg?label=status:ready&title=Ready)](http://waffle.io/neomutt/neomutt)
 
 ## What is NeoMutt?
 
@@ -72,58 +74,145 @@ sorted through them, fixed them up and documented them.
   and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     https://www.neomutt.org/dev.html
 
-## NeoMutt Developers
+## Contributors
 
 Here's a list of everyone who's helped NeoMutt:
 
-Adam Borowski, Alad Wenter, Aleksa Sarai, Alex Pearce, Alok Singh, Ander Punnar,
-Andreas Rammhold, André Berger, Anton Rieger, Antonio Radici, Austin Ray,
-Baptiste Daroussin, Benjamin Mako Hill, Bernard Pratz, Bletchley Park, Bo Yu,
-Bryan Bennett, Chris Czettel, Chris Salzberg, Christian Dröge, Christoph Berg,
-cinder88, Clemens Lang, Damien Riegel, Darshit Shah, David Sterba,
-Dimitrios Semitsoglou-Tsiapos, Doug Stone-Weaver, Edward Betts,
-Elimar Riesebieter, Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati,
-Fabrice Bellet, Faidon Liambotis, Federico Kircheis, Florian Klink,
-Floyd Anderson, František Hájik, Guillaume Brogi, Hugo Barrera, Ian Zimmerman,
-Ismaël Bouya, Ivan Tham, Jack Stratton, Jakub Jindra, Jakub Wilk,
-Jasper Adriaanse, Jelle van der Waa, Jenya Sovetkin, Johannes Frankenau,
-Johannes Weißl, Jonathan Perkin, Joshua Jordi, Julian Andres Klode, Karel Zak,
-Kevin Decherf, Kevin Velghe, Kurt Jaeger, Leo Lundgren, Leonardo Schenkel,
-Leonidas Spyropoulos, Manos Pitsidianakis, Marcin Rajner, Marco Hinz,
-Marius Gedminas, Mateusz Piotrowski, Matteo Vescovi, Mehdi Abaakouk,
-Michael Bazzinotti, ng0, Nicolas Bock, Olaf Lessenich, parazyd, Perry Thompson,
-Peter Hogg, Peter Lewis, Phil Pennock, Philipp Marek, Pierre-Elliott Bécue,
-Pietro Cerutti, r3lgar, Regid Ichira, Reis Radomil, Riad Wahby,
-Richard Hartmann, Richard Russon, Roger Pau Monne, Rubén Llorente,
-Santiago Torres, Serge Gebhardt, sharktamer, Shi Lee, somini, Stefan Assmann,
-Stefan Bühler, Stephen Gilles, Steve Bennett, Steven Ragnarök, Sven Guckes,
-Theo Jepsen, Thiago Costa de Paiva, Thomas Adam, Thomas Klausner,
-Thomas Schneider, Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink,
-Wieland Hoffmann, William Pettersson, Yoshiki Vázquez Baeza, Zero King.
+[Adam Borowski](https://github.com/kilobyte "kilobyte"),
+[Alad Wenter](https://github.com/AladW "AladW"),
+[Aleksa Sarai](https://github.com/cyphar "cyphar"),
+[Alex Pearce](https://github.com/alexpearce "alexpearce"),
+[Alok Singh](https://github.com/Alok "Alok"),
+[Ander Punnar](https://github.com/4nd3r "4nd3r"),
+[Andreas Rammhold](https://github.com/andir "andir"),
+[André Berger](https://github.com/hvkls "hvkls"),
+[Anton Rieger](https://github.com/seishinryohosha "seishinryohosha"),
+[Antonio Radici](https://github.com/aradici "aradici"),
+[Austin Ray](https://github.com/Austin-Ray "Austin-Ray"),
+[Baptiste Daroussin](https://github.com/bapt "bapt"),
+[Benjamin Mako Hill](https://github.com/makoshark "makoshark"),
+[Bernard Pratz](https://github.com/guyzmo "guyzmo"),
+[Bletchley Park](https://github.com/libBletchley "libBletchley"),
+[Bo Yu](https://github.com/yuzibo "yuzibo"),
+[Bryan Bennett](https://github.com/bbenne10 "bbenne10"),
+[Chris Czettel](https://github.com/christopher-john-czettel "christopher-john-czettel"),
+[Chris Salzberg](https://github.com/shioyama "shioyama"),
+[Christian Dröge](https://github.com/cdroege "cdroege"),
+[Christoph Berg](https://github.com/ChristophBerg "ChristophBerg"),
+[cinder88](https://github.com/cinder88 "cinder88"),
+[Clemens Lang](https://github.com/neverpanic "neverpanic"),
+[Damien Riegel](https://github.com/d-k-c "d-k-c"),
+[Darshit Shah](https://github.com/darnir "darnir"),
+[David Sterba](https://github.com/kdave "kdave"),
+[Dimitrios Semitsoglou-Tsiapos](https://github.com/dset0x "dset0x"),
+[Doug Stone-Weaver](https://github.com/doweaver "doweaver"),
+[Edward Betts](https://github.com/EdwardBetts "EdwardBetts"),
+[Elimar Riesebieter](https://github.com/riesebie "riesebie"),
+[Evgeni Golov](https://github.com/evgeni "evgeni"),
+[Fabian Groffen](https://github.com/grobian "grobian"),
+[Fabio Locati](https://github.com/Fale "Fale"),
+[Fabrice Bellet](https://github.com/fbellet "fbellet"),
+[Faidon Liambotis](https://github.com/paravoid "paravoid"),
+[Federico Kircheis](https://github.com/fekir "fekir"),
+[Florian Klink](https://github.com/flokli "flokli"),
+[Floyd Anderson](https://github.com/floand "floand"),
+[František Hájik](https://github.com/ferkohajik "ferkohajik"),
+[Guillaume Brogi](https://github.com/guiniol "guiniol"),
+[Hugo Barrera](https://github.com/WhyNotHugo "WhyNotHugo"),
+[Ian Zimmerman](https://github.com/nobrowser "nobrowser"),
+[Ismaël Bouya](https://github.com/immae "immae"),
+[Ivan Tham](https://github.com/pickfire "pickfire"),
+[Jack Stratton](https://github.com/phroa "phroa"),
+[Jakub Jindra](https://github.com/jindraj "jindraj"),
+[Jakub Wilk](https://github.com/jwilk "jwilk"),
+[Jasper Adriaanse](https://github.com/jasperla "jasperla"),
+[Jelle van der Waa](https://github.com/jelly "jelly"),
+[Jenya Sovetkin](https://github.com/esovetkin "esovetkin"),
+[Johannes Frankenau](https://github.com/tsuflux "tsuflux"),
+[Johannes Weißl](https://github.com/weisslj "weisslj"),
+[Jonathan Perkin](https://github.com/jperkin "jperkin"),
+[Joshua Jordi](https://github.com/JakkinStewart "JakkinStewart"),
+[Julian Andres Klode](https://github.com/julian-klode "julian-klode"),
+[Justin Vasel](https://github.com/justinvasel "justinvasel"),
+[Karel Zak](https://github.com/karelzak "karelzak"),
+[Kevin Decherf](https://github.com/Kdecherf "Kdecherf"),
+[Kevin Velghe](https://github.com/paretje "paretje"),
+[Kurt Jaeger](https://github.com/opsec "opsec"),
+[Larry Rosenman](https://github.com/lrosenman "lrosenman"),
+[Leo Lundgren](https://github.com/rawtaz "rawtaz"),
+[Leonardo Schenkel](https://github.com/lbschenkel "lbschenkel"),
+[Leonidas Spyropoulos](https://github.com/inglor "inglor"),
+[Manos Pitsidianakis](https://github.com/epilys "epilys"),
+[Marcin Rajner](https://github.com/mrajner "mrajner"),
+[Marco Hinz](https://github.com/mhinz "mhinz"),
+[Marius Gedminas](https://github.com/mgedmin "mgedmin"),
+[Mateusz Piotrowski](https://github.com/0mp "0mp"),
+[Matteo Vescovi](https://github.com/mfvescovi "mfvescovi"),
+[Mehdi Abaakouk](https://github.com/sileht "sileht"),
+[Michael Bazzinotti](https://github.com/bazzinotti "bazzinotti"),
+[ng0](https://github.com/ng-0 "ng-0"),
+[Nicolas Bock](https://github.com/nicolasbock "nicolasbock"),
+[Olaf Lessenich](https://github.com/xai "xai"),
+[parazyd](https://github.com/parazyd "parazyd"),
+[Perry Thompson](https://github.com/rypervenche "rypervenche"),
+[Peter Hogg](https://github.com/pigmonkey "pigmonkey"),
+[Peter Lewis](https://github.com/petelewis "petelewis"),
+[Phil Pennock](https://github.com/philpennock "philpennock"),
+[Philipp Marek](https://github.com/phmarek "phmarek"),
+[Pierre-Elliott Bécue](https://github.com/P-EB "P-EB"),
+[Pietro Cerutti](https://github.com/gahr "gahr"),
+[r3lgar](https://github.com/r3lgar "r3lgar"),
+Regid Ichira,
+[Reis Radomil](https://github.com/reisradomil "reisradomil"),
+[Riad Wahby](https://github.com/kwantam "kwantam"),
+[Richard Hartmann](https://github.com/RichiH "RichiH"),
+[Richard Russon](https://github.com/flatcap "flatcap"),
+[Roger Pau Monne](https://github.com/royger "royger"),
+Rubén Llorente,
+[Santiago Torres](https://github.com/SantiagoTorres "SantiagoTorres"),
+[Serge Gebhardt](https://github.com/sgeb "sgeb"),
+[sharktamer](https://github.com/sharktamer "sharktamer"),
+[Shi Lee](https://github.com/rtlanceroad "rtlanceroad"),
+[somini](https://github.com/somini "somini"),
+[Stefan Assmann](https://github.com/sassmann "sassmann"),
+[Stefan Bühler](https://github.com/stbuehler "stbuehler"),
+[Stephen Gilles](https://github.com/s-gilles "s-gilles"),
+[Steve Bennett](https://github.com/msteveb "msteveb"),
+[Steven Ragnarök](https://github.com/nuclearsandwich "nuclearsandwich"),
+[Sven Guckes](https://github.com/guckes "guckes"),
+[Theo Jepsen](https://github.com/theojepsen "theojepsen"),
+[Thiago Costa de Paiva](https://github.com/tecepe "tecepe"),
+[Thomas Adam](https://github.com/ThomasAdam "ThomasAdam"),
+[Thomas Klausner](https://github.com/0-wiz-0 "0-wiz-0"),
+[Thomas Schneider](https://github.com/qsx "qsx"),
+[Tobias Angele](https://github.com/toogley "toogley"),
+Udo Schweigert,
+Vsevolod Volkov,
+[Werner Fink](https://github.com/bitstreamout "bitstreamout"),
+[Wieland Hoffmann](https://github.com/mineo "mineo"),
+[William Pettersson](https://github.com/WPettersson "WPettersson"),
+[Yoshiki Vázquez Baeza](https://github.com/ElDeveloper "ElDeveloper"),
+[Zero King](https://github.com/l2dy "l2dy").
 
-## Original Patch Authors
+### Patch Authors
 
 Without the original patch authors, there would be nothing.
 So, a Big Thank You to:
 
 Aaron Schrab, Alain Penders, Benjamin Kuperman, Cedric Duval, Chris Mason,
-Christian Aichinger, Christoph Berg, Christoph Rissner, David Champion,
-David Riebenbauer, David Sterba, David Wilson, Don Zickus, Elimar Riesebieter,
-Eric Davis, Evgeni Golov, Fabian Groffen, Felix von Leitner, Jan Synacek,
+Christian Aichinger, Christoph Rissner, David Champion, David Riebenbauer,
+David Wilson, Don Zickus, Eric Davis, Felix von Leitner, Jan Synacek,
 Jason DeTiberus, Jeremiah Foster, Jeremy Katz, Josh Poimboeuf, Julius Plenz,
-Justin Hibbits, Karel Zak, Kirill Shutemov, Luke Macken, Mantas Mikulenas,
-Matteo Vescovi, Patrick Brisbin, Paul Miller, Phil Pennock,
-Philippe Le Brouster, Richard Russon, Rocco Rutte, Roland Rosenfeld, Sami Farin,
-Stefan Assmann, Stefan Kuhn, Steve Kemp, Terry Chan, Thomas Glanzmann,
-Thomer Gil, Tim Stoakes, Tyler Earnest, Victor Manuel Jaquez Leal,
-Vincent Lefevre, Vladimir Marek, Vsevolod Volkov.
+Justin Hibbits, Kirill Shutemov, Luke Macken, Mantas Mikulenas, Patrick Brisbin,
+Paul Miller, Philippe Le Brouster, Rocco Rutte, Roland Rosenfeld, Sami Farin,
+Stefan Kuhn, Steve Kemp, Terry Chan, Thomas Glanzmann, Thomer Gil, Tim Stoakes,
+Tyler Earnest, Victor Manuel Jaquez Leal, Vincent Lefevre, Vladimir Marek.
 
-## Original Mutt Authors
+### Mutt
 
-And of course, we should thank the original Mutt authors, including the original
-author Michael Elkins and all the people that have contributed to Mutt during
-its long history, see the Acknowledgements section of the user manual for a
-detailed list.
+NeoMutt is a fork of Mutt.
+
+Mutt was created by **Michael Elkins** and is now maintained by **Kevin McCarthy**.
 
 https://www.neomutt.org/guide/miscellany.html#acknowledgements
 
