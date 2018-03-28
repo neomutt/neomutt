@@ -26,10 +26,6 @@
  * @page imap_imap IMAP network mailbox
  *
  * Support for IMAP4rev1, with the occasional nod to IMAP 4.
- *
- * | Data         | Description
- * | :----------- | :-------------------------
- * | #mx_imap_ops | Mailbox callback functions
  */
 
 #include "config.h"

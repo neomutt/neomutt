@@ -1720,8 +1720,8 @@ int pgp_send_menu(struct Header *msg)
   else if (CryptOpportunisticEncrypt)
   {
     /* When the message is not selected for signing or encryption, the toggle
-    * between PGP/MIME and Traditional doesn't make sense.
-    */
+     * between PGP/MIME and Traditional doesn't make sense.
+     */
     if (msg->security & (ENCRYPT | SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),

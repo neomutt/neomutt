@@ -1685,14 +1685,14 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
       }
 #endif
       /* decoding the attachment changes the size and offset, so save a copy
-        * of the "real" values now, and restore them after processing
-        */
+       * of the "real" values now, and restore them after processing
+       */
       tmplength = b->length;
       tmpoffset = b->offset;
 
       /* if we are decoding binary bodies, we don't want to prefix each
-        * line with the prefix or else the data will get corrupted.
-        */
+       * line with the prefix or else the data will get corrupted.
+       */
       save_prefix = s->prefix;
       s->prefix = NULL;
 

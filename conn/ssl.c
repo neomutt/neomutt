@@ -479,8 +479,8 @@ static bool compare_certificates(X509 *cert, X509 *peercert,
   unsigned int mdlen;
 
   /* Avoid CPU-intensive digest calculation if the certificates are
-    * not even remotely equal.
-    */
+   * not even remotely equal.
+   */
   if (X509_subject_name_cmp(cert, peercert) != 0 || X509_issuer_name_cmp(cert, peercert) != 0)
     return false;
 

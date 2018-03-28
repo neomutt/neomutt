@@ -260,7 +260,7 @@ void ci_bounce_message(struct Header *h)
   int rc;
 
   /* RFC5322 mandates a From: header, so warn before bouncing
-  * messages without one */
+   * messages without one */
   if (h)
   {
     if (!h->env->from)

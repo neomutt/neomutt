@@ -891,10 +891,10 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
       && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
       use_default_colors() != OK)
   /* the case of the tree object is special, because a non-default
-       * fg color of the tree element may be combined dynamically with
-       * the default bg color of an index line, not necessarily defined in
-       * a rc file.
-       */
+   * fg color of the tree element may be combined dynamically with
+   * the default bg color of an index line, not necessarily defined in
+   * a rc file.
+   */
   {
     mutt_str_strfcpy(err->data, _("default colors not supported"), err->dsize);
     return -1;
