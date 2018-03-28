@@ -429,7 +429,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   int rc = 0;
   char *buf = NULL;
   size_t bufpos, buflen;
-  char *u = NULL, *t0 = NULL, *t1 = NULL, *t = NULL;
+  char *t0 = NULL, *t1 = NULL, *t = NULL;
   char *s0 = NULL, *s1 = NULL;
   size_t ulen, r, wlen = 0;
   encoder_t encoder = NULL;
@@ -438,7 +438,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
   char *icode = "utf-8";
 
   /* Try to convert to UTF-8. */
-  u = mutt_str_substr_dup(d, d + dlen);
+  char *u = mutt_str_substr_dup(d, d + dlen);
   if (mutt_ch_convert_string(&u, fromcode, icode, 0))
   {
     rc = 1;

@@ -221,9 +221,8 @@ static void pgp_make_pgp2_fingerprint(unsigned char *buf, unsigned char *digest)
 
 static char *binary_fingerprint_to_string(unsigned char *buf, size_t length)
 {
-  char *fingerprint = NULL, *pf = NULL;
-
-  pf = fingerprint = mutt_mem_malloc((length * 2) + 1);
+  char *fingerprint = mutt_mem_malloc((length * 2) + 1);
+  char *pf = fingerprint;
 
   for (size_t i = 0; i < length; i++)
   {
@@ -343,7 +342,6 @@ static void skip_bignum(unsigned char *buf, size_t l, size_t j, size_t *toff, si
 
 static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buf, size_t l)
 {
-  struct PgpKeyInfo *p = NULL;
   unsigned char alg;
   unsigned char digest[SHA_DIGEST_LENGTH];
   unsigned char scratch[LONG_STRING];
@@ -353,7 +351,7 @@ static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buf, size_t l)
   short len;
   size_t j;
 
-  p = pgp_new_keyinfo();
+  struct PgpKeyInfo *p = pgp_new_keyinfo();
   j = 2;
 
   for (i = 0; i < 4; i++)
@@ -763,11 +761,8 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
   FILE *rfp = fopen(ringfile, "r");
   if (!rfp)
   {
-    char *error_buf = NULL;
-    size_t error_buf_len;
-
-    error_buf_len = sizeof("fopen: ") - 1 + strlen(ringfile) + 1;
-    error_buf = mutt_mem_malloc(error_buf_len);
+    size_t error_buf_len = sizeof("fopen: ") - 1 + strlen(ringfile) + 1;
+    char *error_buf = mutt_mem_malloc(error_buf_len);
     snprintf(error_buf, error_buf_len, "fopen: %s", ringfile);
     perror(error_buf);
     FREE(&error_buf);
@@ -797,13 +792,11 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
 
       if (pgpring_string_matches_hint(tmp, hints, nhints))
       {
-        struct PgpKeyInfo *p = NULL;
-
         fsetpos(rfp, &keypos);
 
         /* Not bailing out here would lead us into an endless loop. */
 
-        p = pgp_parse_keyblock(rfp);
+        struct PgpKeyInfo *p = pgp_parse_keyblock(rfp);
         if (!p)
           err = 1;
 

@@ -65,9 +65,7 @@ static void purge_empty_parameters(struct ParameterList *p)
 
 static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
 {
-  char *t = NULL, *u = NULL;
-
-  t = strchr(value, '\'');
+  char *t = strchr(value, '\'');
   if (!t)
   {
     charset[0] = '\0';
@@ -77,7 +75,7 @@ static char *rfc2231_get_charset(char *value, char *charset, size_t chslen)
   *t = '\0';
   mutt_str_strfcpy(charset, value, chslen);
 
-  u = strchr(t + 1, '\'');
+  char *u = strchr(t + 1, '\'');
   if (u)
     return u + 1;
   else

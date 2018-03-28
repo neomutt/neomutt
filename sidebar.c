@@ -916,9 +916,8 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     }
     else if (maildir_is_prefix && SidebarFolderIndent)
     {
-      const char *tmp_folder_name = NULL;
       int lastsep = 0;
-      tmp_folder_name = b->path + maildirlen + 1;
+      const char *tmp_folder_name = b->path + maildirlen + 1;
       int tmplen = (int) mutt_str_strlen(tmp_folder_name) - 1;
       for (int i = 0; i < tmplen; i++)
       {

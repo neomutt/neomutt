@@ -361,12 +361,10 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
  */
 static void cmd_parse_capability(struct ImapData *idata, char *s)
 {
-  char *bracket = NULL;
-
   mutt_debug(3, "Handling CAPABILITY\n");
 
   s = imap_next_word(s);
-  bracket = strchr(s, ']');
+  char *bracket = strchr(s, ']');
   if (bracket)
     *bracket = '\0';
   FREE(&idata->capstr);
@@ -618,7 +616,6 @@ static void cmd_parse_search(struct ImapData *idata, const char *s)
  */
 static void cmd_parse_status(struct ImapData *idata, char *s)
 {
-  char *mailbox = NULL;
   char *value = NULL;
   struct Buffy *inc = NULL;
   struct ImapMbox mx;
@@ -628,7 +625,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   short new = 0;
   short new_msg_count = 0;
 
-  mailbox = imap_next_word(s);
+  char *mailbox = imap_next_word(s);
 
   /* We need a real tokenizer. */
   if (imap_get_literal_count(mailbox, &litlen) == 0)
@@ -805,12 +802,9 @@ static void cmd_parse_enabled(struct ImapData *idata, const char *s)
  */
 static int cmd_handle_untagged(struct ImapData *idata)
 {
-  char *s = NULL;
-  char *pn = NULL;
   unsigned int count = 0;
-
-  s = imap_next_word(idata->buf);
-  pn = imap_next_word(s);
+  char *s = imap_next_word(idata->buf);
+  char *pn = imap_next_word(s);
 
   if ((idata->state >= IMAP_SELECTED) && isdigit((unsigned char) *s))
   {

@@ -314,9 +314,7 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
  */
 struct Connection *socket_new_conn(void)
 {
-  struct Connection *conn = NULL;
-
-  conn = mutt_mem_calloc(1, sizeof(struct Connection));
+  struct Connection *conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
   return conn;

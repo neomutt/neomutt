@@ -378,18 +378,11 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
 {
   bool mime_fwd_all = false;
   bool mime_fwd_any = true;
-  struct AttachPtr *parent = NULL;
   struct Header *parent_hdr = NULL;
   FILE *parent_fp = NULL;
-  struct Header *tmphdr = NULL;
-  struct Body **last = NULL;
   char tmpbody[_POSIX_PATH_MAX];
-  FILE *tmpfp = NULL;
-
   char prefix[STRING];
-
   int rc = 0;
-
   struct State st;
 
   /*
@@ -398,7 +391,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
    * putting the following lines into an if block.
    */
 
-  parent = find_parent(actx, cur, nattach);
+  struct AttachPtr *parent = find_parent(actx, cur, nattach);
   if (parent)
   {
     parent_hdr = parent->content->hdr;
@@ -410,12 +403,12 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     parent_fp = actx->root_fp;
   }
 
-  tmphdr = mutt_header_new();
+  struct Header *tmphdr = mutt_header_new();
   tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
   mutt_mktemp(tmpbody, sizeof(tmpbody));
-  tmpfp = mutt_file_fopen(tmpbody, "w");
+  FILE *tmpfp = mutt_file_fopen(tmpbody, "w");
   if (!tmpfp)
   {
     mutt_error(_("Can't open temporary file %s."), tmpbody);
@@ -484,7 +477,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   st.fpout = tmpfp;
 
   /* where do we append new MIME parts? */
-  last = &tmphdr->content;
+  struct Body **last = &tmphdr->content;
 
   if (cur)
   {

@@ -35,12 +35,9 @@ static int read_material(size_t material, size_t *used, FILE *fp)
 {
   if (*used + material >= plen)
   {
-    unsigned char *p = NULL;
-    size_t nplen;
+    size_t nplen = *used + material + CHUNKSIZE;
 
-    nplen = *used + material + CHUNKSIZE;
-
-    p = realloc(pbuf, nplen);
+    unsigned char *p = realloc(pbuf, nplen);
     if (!p)
     {
       perror("realloc");

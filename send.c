@@ -85,9 +85,9 @@ static void append_signature(FILE *f)
  */
 struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
 {
-  struct Address *top = NULL, *p = NULL, *prev = NULL;
+  struct Address *p = NULL, *prev = NULL;
 
-  top = b;
+  struct Address *top = b;
   while (b)
   {
     for (p = a; p; p = p->next)
@@ -1057,7 +1057,6 @@ struct Address *mutt_default_from(void)
 static int send_message(struct Header *msg)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *tempfp = NULL;
   int i;
 #ifdef USE_SMTP
   short old_write_bcc;
@@ -1065,7 +1064,7 @@ static int send_message(struct Header *msg)
 
   /* Write out the message in MIME form. */
   mutt_mktemp(tempfile, sizeof(tempfile));
-  tempfp = mutt_file_fopen(tempfile, "w");
+  FILE *tempfp = mutt_file_fopen(tempfile, "w");
   if (!tempfp)
     return -1;
 
@@ -1154,9 +1153,7 @@ static void decode_descriptions(struct Body *b)
 
 static void fix_end_of_file(const char *data)
 {
-  FILE *fp = NULL;
-
-  fp = mutt_file_fopen(data, "a+");
+  FILE *fp = mutt_file_fopen(data, "a+");
   if (!fp)
     return;
   if (fseek(fp, -1, SEEK_END) >= 0)
@@ -1232,7 +1229,8 @@ static int is_reply(struct Header *reply, struct Header *orig)
 static bool search_attach_keyword(char *filename)
 {
   /* Search for the regex in AbortNoattachRegex within a file */
-  if (!AbortNoattachRegex || !AbortNoattachRegex->regex || !QuoteRegex || !QuoteRegex->regex)
+  if (!AbortNoattachRegex || !AbortNoattachRegex->regex || !QuoteRegex ||
+      !QuoteRegex->regex)
     return false;
 
   FILE *attf = mutt_file_fopen(filename, "r");
@@ -1886,8 +1884,9 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 #ifdef USE_NNTP
   if (!(flags & SENDNEWS))
 #endif
-    if (!mutt_addr_has_recips(msg->env->to) && !mutt_addr_has_recips(msg->env->cc) &&
-        !mutt_addr_has_recips(msg->env->bcc))
+    if ((mutt_addr_has_recips(msg->env->to) == 0) &&
+        (mutt_addr_has_recips(msg->env->cc) == 0) &&
+        (mutt_addr_has_recips(msg->env->bcc) == 0))
     {
       if (!(flags & SENDBATCH))
       {
@@ -1933,18 +1932,17 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
   }
 #endif
 
-  if (!(flags & SENDBATCH) &&
-      (AbortNoattach != MUTT_NO) && !msg->content->next &&
-      (msg->content->type == TYPETEXT) &&
-      (mutt_str_strcasecmp (msg->content->subtype, "plain") == 0) &&
+  if (!(flags & SENDBATCH) && (AbortNoattach != MUTT_NO) &&
+      !msg->content->next && (msg->content->type == TYPETEXT) &&
+      (mutt_str_strcasecmp(msg->content->subtype, "plain") == 0) &&
       search_attach_keyword(msg->content->filename) &&
       query_quadoption(AbortNoattach, _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
     if (AbortNoattach == MUTT_YES)
     {
-      mutt_error(_(
-          "Message contains text matching \"$abort_noattach_regex\". Not sending."));
+      mutt_error(_("Message contains text matching "
+                   "\"$abort_noattach_regex\". Not sending."));
     }
     goto main_loop;
   }

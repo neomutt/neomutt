@@ -55,15 +55,13 @@
 int pop_parse_path(const char *path, struct Account *acct)
 {
   struct Url url;
-  char *c = NULL;
-  struct servent *service = NULL;
 
   /* Defaults */
   acct->flags = 0;
   acct->type = MUTT_ACCT_TYPE_POP;
   acct->port = 0;
 
-  c = mutt_str_strdup(path);
+  char *c = mutt_str_strdup(path);
   url_parse(&url, c);
 
   if ((url.scheme != U_POP && url.scheme != U_POPS) || !url.host ||
@@ -78,7 +76,7 @@ int pop_parse_path(const char *path, struct Account *acct)
   if (url.scheme == U_POPS)
     acct->flags |= MUTT_ACCT_SSL;
 
-  service = getservbyname(url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
+  struct servent *service = getservbyname(url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
   if (!acct->port)
   {
     if (service)
@@ -100,14 +98,12 @@ int pop_parse_path(const char *path, struct Account *acct)
  */
 static void pop_error(struct PopData *pop_data, char *msg)
 {
-  char *t = NULL, *c = NULL, *c2 = NULL;
-
-  t = strchr(pop_data->err_msg, '\0');
-  c = msg;
+  char *t = strchr(pop_data->err_msg, '\0');
+  char *c = msg;
 
   if (mutt_str_strncmp(msg, "-ERR ", 5) == 0)
   {
-    c2 = mutt_str_skip_email_wsp(msg + 5);
+    char *c2 = mutt_str_skip_email_wsp(msg + 5);
 
     if (*c2)
       c = c2;

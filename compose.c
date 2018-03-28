@@ -776,8 +776,6 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char fname[_POSIX_PATH_MAX];
-  struct Menu *menu = NULL;
-  struct AttachCtx *actx = NULL;
   struct AttachPtr *new = NULL;
   int i, close = 0;
   int r = -1; /* return value */
@@ -800,7 +798,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   rd.msg = msg;
   rd.fcc = fcc;
 
-  menu = mutt_menu_new(MENU_COMPOSE);
+  struct Menu *menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
   menu->make_entry = snd_entry;
   menu->tag = mutt_tag_attach;
@@ -814,7 +812,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   menu->redraw_data = &rd;
   mutt_menu_push_current(menu);
 
-  actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
+  struct AttachCtx *actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = msg;
   mutt_update_compose_menu(actx, menu, 1);
 
@@ -1023,20 +1021,17 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
       case OP_COMPOSE_ATTACH_FILE:
       {
-        char *prompt = NULL, **files = NULL;
-        int error, numfiles;
-
+        char *prompt = _("Attach file");
+        int numfiles = 0;
+        char **files = NULL;
         fname[0] = 0;
-        prompt = _("Attach file");
-        numfiles = 0;
-        files = NULL;
 
         if (mutt_enter_fname_full(prompt, fname, sizeof(fname), 0, 1, &files,
                                   &numfiles, MUTT_SEL_MULTI) == -1 ||
             *fname == '\0')
           break;
 
-        error = 0;
+        int error = 0;
         if (numfiles > 1)
           mutt_message(_("Attaching selected files..."));
         for (i = 0; i < numfiles; i++)
@@ -1070,10 +1065,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
       case OP_COMPOSE_ATTACH_NEWS_MESSAGE:
 #endif
       {
-        char *prompt = NULL;
-
+        char *prompt = _("Open mailbox to attach message from");
         fname[0] = 0;
-        prompt = _("Open mailbox to attach message from");
 
 #ifdef USE_NNTP
         OPT_NEWS = false;

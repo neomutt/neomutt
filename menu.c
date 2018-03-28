@@ -879,18 +879,14 @@ void mutt_menu_pop_current(struct Menu *menu)
 
 void mutt_menu_set_current_redraw(int redraw)
 {
-  struct Menu *current_menu = NULL;
-
-  current_menu = get_current_menu();
+  struct Menu *current_menu = get_current_menu();
   if (current_menu)
     current_menu->redraw |= redraw;
 }
 
 void mutt_menu_set_current_redraw_full(void)
 {
-  struct Menu *current_menu = NULL;
-
-  current_menu = get_current_menu();
+  struct Menu *current_menu = get_current_menu();
   if (current_menu)
     current_menu->redraw = REDRAW_FULL;
 }
@@ -909,9 +905,7 @@ void mutt_menu_set_redraw_full(int menu_type)
 
 void mutt_menu_current_redraw()
 {
-  struct Menu *current_menu = NULL;
-
-  current_menu = get_current_menu();
+  struct Menu *current_menu = get_current_menu();
   if (current_menu)
   {
     if (menu_redraw(current_menu) == OP_REDRAW)

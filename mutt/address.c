@@ -57,7 +57,7 @@ static void free_address(struct Address **a)
     return;
   FREE(&(*a)->personal);
   FREE(&(*a)->mailbox);
-  FREE(&(*a));
+  FREE(a);
 }
 
 /**
@@ -412,11 +412,10 @@ struct Address *mutt_addr_new(void)
  */
 int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
 {
-  struct Address *p = NULL, *last = NULL, *t = NULL;
   int rc = -1;
 
-  p = *a;
-  last = NULL;
+  struct Address *p = *a;
+  struct Address *last = NULL;
   while (p)
   {
     if (mutt_str_strcasecmp(mailbox, p->mailbox) == 0)
@@ -425,7 +424,7 @@ int mutt_addr_remove_from_list(struct Address **a, const char *mailbox)
         last->next = p->next;
       else
         (*a) = p->next;
-      t = p;
+      struct Address *t = p;
       p = p->next;
       free_address(&t);
       rc = 0;
@@ -469,11 +468,11 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
   const char *ps = NULL;
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
-  struct Address *cur = NULL, *last = NULL;
+  struct Address *cur = NULL;
 
   AddressError = 0;
 
-  last = top;
+  struct Address *last = top;
   while (last && last->next)
     last = last->next;
 
@@ -630,17 +629,14 @@ struct Address *mutt_addr_parse_list(struct Address *top, const char *s)
  */
 struct Address *mutt_addr_parse_list2(struct Address *p, const char *s)
 {
-  const char *q = NULL;
-
   /* check for a simple whitespace separated list of addresses */
-  q = strpbrk(s, "\"<>():;,\\");
+  const char *q = strpbrk(s, "\"<>():;,\\");
   if (!q)
   {
     char tmp[HUGE_STRING];
-    char *r = NULL;
 
     mutt_str_strfcpy(tmp, s, sizeof(tmp));
-    r = tmp;
+    char *r = tmp;
     while ((r = strtok(r, " \t")) != NULL)
     {
       p = mutt_addr_parse_list(p, r);
@@ -1127,7 +1123,6 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
     if (buflen == 0)
       goto done;
     *pbuf++ = ';';
-    buflen--;
   }
 done:
   /* no need to check for length here since we already save space at the

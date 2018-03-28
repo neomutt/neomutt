@@ -751,15 +751,12 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
                           int flags, int chflags)
 {
-  struct Message *msg = NULL;
-  int r;
-
-  msg = mx_open_message(src, hdr->msgno);
+  struct Message *msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
   if (!hdr->content)
     return -1;
-  r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
+  int r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "failed to detect EOF!\n");
@@ -814,13 +811,10 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 int mutt_append_message(struct Context *dest, struct Context *src,
                         struct Header *hdr, int cmflags, int chflags)
 {
-  struct Message *msg = NULL;
-  int r;
-
-  msg = mx_open_message(src, hdr->msgno);
+  struct Message *msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
+  int r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
   mx_close_message(src, &msg);
   return r;
 }

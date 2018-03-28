@@ -149,7 +149,6 @@ static int setup_paths(struct Context *ctx)
     return -1;
 
   char tmppath[_POSIX_PATH_MAX];
-  FILE *tmpfp = NULL;
 
   /* Setup the right paths */
   FREE(&ctx->realpath);
@@ -159,7 +158,7 @@ static int setup_paths(struct Context *ctx)
   mutt_mktemp(tmppath, sizeof(tmppath));
   ctx->path = mutt_str_strdup(tmppath);
 
-  tmpfp = mutt_file_fopen(ctx->path, "w");
+  FILE *tmpfp = mutt_file_fopen(ctx->path, "w");
   if (!tmpfp)
     return -1;
 

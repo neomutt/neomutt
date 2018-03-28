@@ -152,8 +152,7 @@ static int lua_mutt_set(lua_State *l)
     {
       long num = lua_tointeger(l, -1);
       opt.var = (void *) num;
-      if ((num != MUTT_YES) && (num != MUTT_NO) &&
-          (num != MUTT_ASKYES) && (num != MUTT_ASKNO))
+      if ((num != MUTT_YES) && (num != MUTT_NO) && (num != MUTT_ASKYES) && (num != MUTT_ASKNO))
       {
         luaL_error(l,
                    "Invalid opt for quad option %s (one of "

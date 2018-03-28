@@ -105,11 +105,10 @@ static char **be_snarf_data(FILE *f, char **buf, int *bufmax, int *buflen,
 
 static char **be_snarf_file(const char *path, char **buf, int *max, int *len, int verbose)
 {
-  FILE *f = NULL;
   char tmp[LONG_STRING];
   struct stat sb;
 
-  f = fopen(path, "r");
+  FILE *f = fopen(path, "r");
   if (f)
   {
     fstat(fileno(f), &sb);
@@ -131,9 +130,7 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, in
 
 static int be_barf_file(const char *path, char **buf, int buflen)
 {
-  FILE *f = NULL;
-
-  f = fopen(path, "w");
+  FILE *f = fopen(path, "w");
   if (!f)
   {
     addstr(strerror(errno));

@@ -158,18 +158,12 @@ static short pgp_mic_from_packet(unsigned char *p, size_t len)
 
 static short pgp_find_hash(const char *fname)
 {
-  FILE *in = NULL;
-  FILE *out = NULL;
-
   char tempfile[_POSIX_PATH_MAX];
-
-  unsigned char *p = NULL;
   size_t l;
-
   short rc = -1;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  out = mutt_file_fopen(tempfile, "w+");
+  FILE *out = mutt_file_fopen(tempfile, "w+");
   if (!out)
   {
     mutt_perror(tempfile);
@@ -177,7 +171,7 @@ static short pgp_find_hash(const char *fname)
   }
   unlink(tempfile);
 
-  in = fopen(fname, "r");
+  FILE *in = fopen(fname, "r");
   if (!in)
   {
     mutt_perror(fname);
@@ -187,7 +181,7 @@ static short pgp_find_hash(const char *fname)
   pgp_dearmor(in, out);
   rewind(out);
 
-  p = pgp_read_packet(out, &l);
+  unsigned char *p = pgp_read_packet(out, &l);
   if (p)
   {
     rc = pgp_mic_from_packet(p, l);

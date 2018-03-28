@@ -43,9 +43,7 @@
  */
 struct Buffer *mutt_buffer_new(void)
 {
-  struct Buffer *b = NULL;
-
-  b = mutt_mem_malloc(sizeof(struct Buffer));
+  struct Buffer *b = mutt_mem_malloc(sizeof(struct Buffer));
 
   mutt_buffer_init(b);
 

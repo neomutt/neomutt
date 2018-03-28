@@ -143,16 +143,13 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
                                  unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING];
-  struct PgpEntry *entry = NULL;
-  struct PgpUid *uid = NULL;
-  struct PgpKeyInfo *key = NULL, *pkey = NULL;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
-  entry = (struct PgpEntry *) data;
-  uid = entry->uid;
-  key = uid->parent;
-  pkey = pgp_principal_key(key);
+  struct PgpEntry *entry = (struct PgpEntry *) data;
+  struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
 
   if (isupper((unsigned char) op))
     key = pkey;
@@ -229,15 +226,14 @@ static const char *pgp_entry_fmt(char *buf, size_t buflen, size_t col, int cols,
     case '[':
 
     {
-      const char *cp = NULL;
-      char buf2[SHORT_STRING], *p = NULL;
+      char buf2[SHORT_STRING];
       int do_locales;
       struct tm *tm = NULL;
       size_t len;
 
-      p = buf;
+      char *p = buf;
 
-      cp = src;
+      const char *cp = src;
       if (*cp == '!')
       {
         do_locales = 0;
@@ -740,10 +736,9 @@ struct Body *pgp_make_key_attachment(char *tempf)
   FILE *devnull = NULL;
   struct stat sb;
   pid_t thepid;
-  struct PgpKeyInfo *key = NULL;
   OPT_PGP_CHECK_TRUST = false;
 
-  key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
+  struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
   if (!key)
     return NULL;
@@ -809,14 +804,11 @@ struct Body *pgp_make_key_attachment(char *tempf)
 
 static void pgp_add_string_to_hints(struct ListHead *hints, const char *str)
 {
-  char *scratch = NULL;
-  char *t = NULL;
-
-  scratch = mutt_str_strdup(str);
+  char *scratch = mutt_str_strdup(str);
   if (!scratch)
     return;
 
-  for (t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
+  for (char *t = strtok(scratch, " ,.:\"()<>\n"); t; t = strtok(NULL, " ,.:\"()<>\n"))
   {
     if (strlen(t) > 3)
       mutt_list_insert_tail(hints, mutt_str_strdup(t));

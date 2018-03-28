@@ -176,9 +176,7 @@ static int start_curses(void)
 
 static int get_user_info(void)
 {
-  const char *p = NULL;
-
-  p = mutt_str_getenv("HOME");
+  const char *p = mutt_str_getenv("HOME");
   if (p)
     HomeDir = mutt_str_strdup(p);
 
@@ -795,7 +793,6 @@ int main(int argc, char *argv[], char *envp[])
        */
       if (draft_file)
       {
-        struct Header *context_hdr = NULL;
         struct Envelope *opts_env = msg->env;
         struct stat st;
 
@@ -804,7 +801,7 @@ int main(int argc, char *argv[], char *envp[])
         /* Set up a "context" header with just enough information so that
          * mutt_prepare_template() can parse the message in fin.
          */
-        context_hdr = mutt_header_new();
+        struct Header *context_hdr = mutt_header_new();
         context_hdr->offset = 0;
         context_hdr->content = mutt_body_new();
         if (fstat(fileno(fin), &st) != 0)

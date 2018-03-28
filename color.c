@@ -340,9 +340,9 @@ int mutt_combine_color(int fg_attr, int bg_attr)
 
 void mutt_free_color(int fg, int bg)
 {
-  struct ColorList *p = NULL, *q = NULL;
+  struct ColorList *q = NULL;
 
-  p = ColorList;
+  struct ColorList *p = ColorList;
   while (p)
   {
     if (p->fg == fg && p->bg == bg)

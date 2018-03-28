@@ -1463,10 +1463,7 @@ static void run_mime_type_query(struct Body *att)
 
 struct Body *mutt_make_file_attach(const char *path)
 {
-  struct Body *att = NULL;
-  struct Content *info = NULL;
-
-  att = mutt_body_new();
+  struct Body *att = mutt_body_new();
   att->filename = mutt_str_strdup(path);
 
   if (MimeTypeQueryCommand && *MimeTypeQueryCommand && MimeTypeQueryFirst)
@@ -1483,7 +1480,7 @@ struct Body *mutt_make_file_attach(const char *path)
     run_mime_type_query(att);
   }
 
-  info = mutt_get_content_info(path, att);
+  struct Content *info = mutt_get_content_info(path, att);
   if (!info)
   {
     mutt_body_free(&att);
@@ -1553,9 +1550,7 @@ static bool check_boundary(const char *boundary, struct Body *b)
 
 struct Body *mutt_make_multipart(struct Body *b)
 {
-  struct Body *new = NULL;
-
-  new = mutt_body_new();
+  struct Body *new = mutt_body_new();
   new->type = TYPEMULTIPART;
   new->subtype = mutt_str_strdup("mixed");
   new->encoding = get_toplevel_encoding(b);
@@ -2237,15 +2232,13 @@ static char *gen_msgid(void)
 {
   char buf[SHORT_STRING];
   time_t now;
-  struct tm *tm = NULL;
-  const char *fqdn = NULL;
   unsigned char rndid[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
   rndid[MUTT_RANDTAG_LEN] = 0;
   now = time(NULL);
-  tm = gmtime(&now);
-  fqdn = mutt_fqdn(0);
+  struct tm *tm = gmtime(&now);
+  const char *fqdn = mutt_fqdn(0);
   if (!fqdn)
     fqdn = NONULL(ShortHostname);
 
@@ -2272,8 +2265,7 @@ static void alarm_handler(int sig)
 static int send_msg(const char *path, char **args, const char *msg, char **tempfile)
 {
   sigset_t set;
-  int fd, st;
-  pid_t pid, ppid;
+  int st;
 
   mutt_sig_block_system();
 
@@ -2290,13 +2282,13 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     *tempfile = mutt_str_strdup(tmp);
   }
 
-  pid = fork();
+  pid_t pid = fork();
   if (pid == 0)
   {
     struct sigaction act, oldalrm;
 
     /* save parent's ID before setsid() */
-    ppid = getppid();
+    pid_t ppid = getppid();
 
     /* we want the delivery to continue even after the main process dies,
      * so we put ourselves into another session right away
@@ -2306,10 +2298,10 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     /* next we close all open files */
     close(0);
 #ifdef OPEN_MAX
-    for (fd = tempfile ? 1 : 3; fd < OPEN_MAX; fd++)
+    for (int fd = tempfile ? 1 : 3; fd < OPEN_MAX; fd++)
       close(fd);
 #elif defined(_POSIX_OPEN_MAX)
-    for (fd = tempfile ? 1 : 3; fd < _POSIX_OPEN_MAX; fd++)
+    for (int fd = tempfile ? 1 : 3; fd < _POSIX_OPEN_MAX; fd++)
       close(fd);
 #else
     if (tempfile)
@@ -2600,9 +2592,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   {
     if (i != S_BKG)
     {
-      const char *e = NULL;
-
-      e = mutt_str_sysexit(i);
+      const char *e = mutt_str_sysexit(i);
       mutt_error(_("Error sending message, child exited %d (%s)."), i, NONULL(e));
       if (childout)
       {
@@ -2769,14 +2759,13 @@ static int bounce_message(FILE *fp, struct Header *h, struct Address *to,
 
 int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 {
-  struct Address *from = NULL, *resent_to = NULL;
   const char *fqdn = mutt_fqdn(1);
   char resent_from[STRING];
   int ret;
   char *err = NULL;
 
   resent_from[0] = '\0';
-  from = mutt_default_from();
+  struct Address *from = mutt_default_from();
 
   /*
    * mutt_default_from() does not use $realname if the real name is not set
@@ -2809,7 +2798,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * function is called, since the user receives confirmation of the address
    * list being bounced to.
    */
-  resent_to = mutt_addr_copy_list(to, false);
+  struct Address *resent_to = mutt_addr_copy_list(to, false);
   rfc2047_encode_addrlist(resent_to, "Resent-To");
 
   ret = bounce_message(fp, h, resent_to, resent_from, from);
@@ -2889,18 +2878,16 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
 {
   char fcc_tok[_POSIX_PATH_MAX];
   char fcc_expanded[_POSIX_PATH_MAX];
-  char *tok = NULL;
-  int status;
 
   mutt_str_strfcpy(fcc_tok, path, sizeof(fcc_tok));
 
-  tok = strtok(fcc_tok, ",");
+  char *tok = strtok(fcc_tok, ",");
   if (!tok)
     return -1;
 
   mutt_debug(1, "Fcc: initial mailbox = '%s'\n", tok);
   /* mutt_expand_path already called above for the first token */
-  status = mutt_write_fcc(tok, hdr, msgid, post, fcc, finalpath);
+  int status = mutt_write_fcc(tok, hdr, msgid, post, fcc, finalpath);
   if (status != 0)
     return status;
 

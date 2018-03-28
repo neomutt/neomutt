@@ -446,7 +446,6 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 
   if (Context)
   {
-    int check;
     char *new_last_folder = NULL;
 
 #ifdef USE_COMPRESSED
@@ -457,7 +456,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
       new_last_folder = mutt_str_strdup(Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
-    check = mx_close_mailbox(Context, index_hint);
+    int check = mx_close_mailbox(Context, index_hint);
     if (check != 0)
     {
       if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
@@ -833,14 +832,13 @@ int mutt_index_menu(void)
   int newcount = -1;
   int oldcount = -1;
   int rc = -1;
-  struct Menu *menu = NULL;
   char *cp = NULL; /* temporary variable. */
   int index_hint;  /* used to restore cursor position */
   bool do_buffy_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OPT_ATTACH_MSG;
 
-  menu = mutt_menu_new(MENU_MAIN);
+  struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->make_entry = index_make_entry;
   menu->color = index_color;
   menu->current = ci_first_message();

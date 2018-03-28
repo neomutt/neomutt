@@ -167,9 +167,7 @@ static char *pgp_fingerprint(struct PgpKeyInfo *k)
  */
 char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
 {
-  char *fingerprint = NULL;
-
-  fingerprint = pgp_fingerprint(k);
+  char *fingerprint = pgp_fingerprint(k);
   return fingerprint ? fingerprint : pgp_long_keyid(k);
 }
 
@@ -271,15 +269,13 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
   char buf[HUGE_STRING];
   bool complete, armor_header;
 
-  struct FgetConv *fc = NULL;
-
   rewind(fpin);
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
    * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
    */
-  fc = mutt_ch_fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
+  struct FgetConv *fc = mutt_ch_fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
   for (complete = true, armor_header = true; mutt_ch_fgetconvs(buf, sizeof(buf), fc) != NULL;
        complete = (strchr(buf, '\n') != NULL))
@@ -698,13 +694,13 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int just_one)
 int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
-  FILE *fp = NULL, *pgpout = NULL, *pgperr = NULL;
+  FILE *pgpout = NULL, *pgperr = NULL;
   pid_t thepid;
   int badsig = -1;
 
   snprintf(sigfile, sizeof(sigfile), "%s.asc", tempfile);
 
-  fp = mutt_file_fopen(sigfile, "w");
+  FILE *fp = mutt_file_fopen(sigfile, "w");
   if (!fp)
   {
     mutt_perror(sigfile);
@@ -764,11 +760,10 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
   struct State s;
-  FILE *tempfp = NULL;
   char tempfname[_POSIX_PATH_MAX];
 
   mutt_mktemp(tempfname, sizeof(tempfname));
-  tempfp = mutt_file_fopen(tempfname, "w");
+  FILE *tempfp = mutt_file_fopen(tempfname, "w");
   if (!tempfp)
   {
     mutt_perror(tempfname);
@@ -820,7 +815,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
     return NULL;
 
   char buf[LONG_STRING];
-  FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *pgptmp = NULL;
+  FILE *pgpin = NULL, *pgpout = NULL, *pgptmp = NULL;
   struct stat info;
   struct Body *tattach = NULL;
   char pgperrfile[_POSIX_PATH_MAX];
@@ -829,7 +824,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   int rv;
 
   mutt_mktemp(pgperrfile, sizeof(pgperrfile));
-  pgperr = mutt_file_fopen(pgperrfile, "w+");
+  FILE *pgperr = mutt_file_fopen(pgperrfile, "w+");
   if (!pgperr)
   {
     mutt_perror(pgperrfile);
@@ -1030,12 +1025,12 @@ bail:
 int pgp_encrypted_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *fpout = NULL, *fpin = NULL;
+  FILE *fpin = NULL;
   struct Body *tattach = NULL;
   int rc = 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = mutt_file_fopen(tempfile, "w+");
+  FILE *fpout = mutt_file_fopen(tempfile, "w+");
   if (!fpout)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -1101,7 +1096,7 @@ struct Body *pgp_sign_message(struct Body *a)
   struct Body *t = NULL;
   char buffer[LONG_STRING];
   char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
-  FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *fp = NULL, *sfp = NULL;
+  FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *sfp = NULL;
   bool err = false;
   bool empty = true;
   pid_t thepid;
@@ -1109,7 +1104,7 @@ struct Body *pgp_sign_message(struct Body *a)
   convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(sigfile, sizeof(sigfile));
-  fp = mutt_file_fopen(sigfile, "w");
+  FILE *fp = mutt_file_fopen(sigfile, "w");
   if (!fp)
   {
     return NULL;
@@ -1353,14 +1348,14 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
-  FILE *pgpin = NULL, *pgperr = NULL, *fpout = NULL, *fptmp = NULL;
+  FILE *pgpin = NULL, *pgperr = NULL, *fptmp = NULL;
   struct Body *t = NULL;
   int err = 0;
   int empty = 0;
   pid_t thepid;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  fpout = mutt_file_fopen(tempfile, "w+");
+  FILE *fpout = mutt_file_fopen(tempfile, "w+");
   if (!fpout)
   {
     mutt_perror(tempfile);

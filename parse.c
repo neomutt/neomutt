@@ -292,14 +292,11 @@ int mutt_check_mime_type(const char *s)
 
 void mutt_parse_content_type(char *s, struct Body *ct)
 {
-  char *pc = NULL;
-  char *subtype = NULL;
-
   FREE(&ct->subtype);
   mutt_param_free(&ct->parameter);
 
   /* First extract any existing parameters */
-  pc = strchr(s, ';');
+  char *pc = strchr(s, ';');
   if (pc)
   {
     *pc++ = 0;
@@ -323,7 +320,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   }
 
   /* Now get the subtype */
-  subtype = strchr(s, '/');
+  char *subtype = strchr(s, '/');
   if (subtype)
   {
     *subtype++ = '\0';
@@ -542,12 +539,10 @@ void mutt_parse_part(FILE *fp, struct Body *b)
  */
 struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 {
-  struct Body *msg = NULL;
-
   parent->hdr = mutt_header_new();
   parent->hdr->offset = ftello(fp);
   parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, 0, 0);
-  msg = parent->hdr->content;
+  struct Body *msg = parent->hdr->content;
 
   /* ignore the length given in the content-length since it could be wrong
      and we already have the info to calculate the correct length */

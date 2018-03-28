@@ -309,11 +309,10 @@ int mutt_ch_convert_nonmime_string(char **ps)
  */
 void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 {
-  char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
 
   mutt_str_strfcpy(in, name, sizeof(in));
-  ext = strchr(in, '/');
+  char *ext = strchr(in, '/');
   if (ext)
     *ext++ = '\0';
 
@@ -349,7 +348,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   mutt_str_strfcpy(buf, scratch, buflen);
 
   /* for cosmetics' sake, transform to lowercase. */
-  for (p = buf; *p; p++)
+  for (char *p = buf; *p; p++)
     *p = tolower(*p);
 
 out:
@@ -767,13 +766,14 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *file, const char *from, const char 
 {
   struct FgetConv *fc = NULL;
   iconv_t cd = (iconv_t) -1;
-  static const char *repls[] = { "\357\277\275", "?", 0 };
 
   if (from && to)
     cd = mutt_ch_iconv_open(to, from, flags);
 
   if (cd != (iconv_t) -1)
   {
+    static const char *repls[] = { "\357\277\275", "?", 0 };
+
     fc = mutt_mem_malloc(sizeof(struct FgetConv));
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;

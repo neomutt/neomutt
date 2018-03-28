@@ -757,11 +757,10 @@ static int update_header_tags(struct Header *h, notmuch_message_t *msg)
 static int update_message_path(struct Header *h, const char *path)
 {
   struct NmHdrData *data = h->data;
-  char *p = NULL;
 
   mutt_debug(2, "nm: path update requested path=%s, (%s)\n", path, data->virtual_id);
 
-  p = strrchr(path, '/');
+  char *p = strrchr(path, '/');
   if (p && ((p - path) > 3) &&
       ((strncmp(p - 3, "cur", 3) == 0) || (strncmp(p - 3, "new", 3) == 0) ||
        (strncmp(p - 3, "tmp", 3) == 0)))
@@ -1311,10 +1310,9 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
   char filename[_POSIX_PATH_MAX];
   char suffix[_POSIX_PATH_MAX];
   char folder[_POSIX_PATH_MAX];
-  char *p = NULL;
 
   mutt_str_strfcpy(folder, old, sizeof(folder));
-  p = strrchr(folder, '/');
+  char *p = strrchr(folder, '/');
   if (p)
   {
     *p = '\0';
@@ -1800,15 +1798,12 @@ done:
 
 bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr)
 {
-  char *orig_str = NULL;
   char *new_str = NULL;
   struct NmCtxData *data = get_ctxdata(ctx);
-  notmuch_database_t *db = NULL;
-  notmuch_query_t *q = NULL;
   bool result = false;
 
-  db = get_db(data, false);
-  orig_str = get_query_string(data, true);
+  notmuch_database_t *db = get_db(data, false);
+  char *orig_str = get_query_string(data, true);
 
   if (!db || !orig_str)
     return false;
@@ -1818,7 +1813,7 @@ bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr)
 
   mutt_debug(2, "nm: checking if message is still queried: %s\n", new_str);
 
-  q = notmuch_query_create(db, new_str);
+  notmuch_query_t *q = notmuch_query_create(db, new_str);
 
   switch (data->query_type)
   {

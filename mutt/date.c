@@ -444,7 +444,6 @@ bool mutt_date_is_day_name(const char *s)
 time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 {
   int count = 0;
-  char *t = NULL;
   int hour, min, sec;
   struct tm tm;
   int i;
@@ -463,7 +462,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
   mutt_str_strfcpy(scratch, s, sizeof(scratch));
 
   /* kill the day of the week, if it exists. */
-  t = strchr(scratch, ',');
+  char *t = strchr(scratch, ',');
   if (t)
     t++;
   else
@@ -539,11 +538,10 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
         }
         else
         {
-          struct Tz *tz = NULL;
-
           /* This is safe to do: A pointer to a struct equals a pointer to its first element */
-          tz = bsearch(ptz, TimeZones, mutt_array_size(TimeZones), sizeof(struct Tz),
-                       (int (*)(const void *, const void *)) mutt_str_strcasecmp);
+          struct Tz *tz =
+              bsearch(ptz, TimeZones, mutt_array_size(TimeZones), sizeof(struct Tz),
+                      (int (*)(const void *, const void *)) mutt_str_strcasecmp);
 
           if (tz)
           {

@@ -1175,12 +1175,11 @@ int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
 {
   struct Header **hdrs = NULL;
   short oldsort;
-  struct Buffer *cmd = NULL;
   int pos;
   int rc;
   int count = 0;
 
-  cmd = mutt_buffer_new();
+  struct Buffer *cmd = mutt_buffer_new();
   if (!cmd)
   {
     mutt_debug(1, "unable to allocate buffer\n");
@@ -1870,7 +1869,6 @@ int imap_complete(char *dest, size_t dlen, char *path)
  */
 int imap_fast_trash(struct Context *ctx, char *dest)
 {
-  struct ImapData *idata = NULL;
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
@@ -1880,7 +1878,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   struct Buffer *sync_cmd = NULL;
   int err_continue = MUTT_NO;
 
-  idata = ctx->data;
+  struct ImapData *idata = ctx->data;
 
   if (imap_parse_path(dest, &mx))
   {
@@ -2131,9 +2129,8 @@ static int imap_open_mailbox(struct Context *ctx)
 
   if (rc == IMAP_CMD_NO)
   {
-    char *s = NULL;
-    s = imap_next_word(idata->buf); /* skip seq */
-    s = imap_next_word(s);          /* Skip response */
+    char *s = imap_next_word(idata->buf); /* skip seq */
+    s = imap_next_word(s);                /* Skip response */
     mutt_error("%s", s);
     goto fail;
   }
@@ -2257,9 +2254,7 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
  */
 static int imap_close_mailbox(struct Context *ctx)
 {
-  struct ImapData *idata = NULL;
-
-  idata = ctx->data;
+  struct ImapData *idata = ctx->data;
   /* Check to see if the mailbox is actually open */
   if (!idata)
     return 0;
@@ -2367,14 +2362,13 @@ static int imap_check_mailbox_reopen(struct Context *ctx, int *index_hint)
  */
 int imap_sync_mailbox(struct Context *ctx, int expunge)
 {
-  struct ImapData *idata = NULL;
   struct Context *appendctx = NULL;
   struct Header *h = NULL;
   struct Header **hdrs = NULL;
   int oldsort;
   int rc;
 
-  idata = ctx->data;
+  struct ImapData *idata = ctx->data;
 
   if (idata->state < IMAP_SELECTED)
   {
@@ -2660,11 +2654,10 @@ static int imap_edit_message_tags(struct Context *ctx, const char *tags, char *b
  */
 static int imap_commit_message_tags(struct Context *ctx, struct Header *h, char *tags)
 {
-  struct ImapData *idata = NULL;
   struct Buffer *cmd = NULL;
   char uid[11];
 
-  idata = ctx->data;
+  struct ImapData *idata = ctx->data;
 
   if (*tags == '\0')
     tags = NULL;

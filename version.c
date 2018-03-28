@@ -334,9 +334,7 @@ static char *rstrip_in_place(char *s)
   if (!s)
     return NULL;
 
-  char *p = NULL;
-
-  p = &s[strlen(s)];
+  char *p = &s[strlen(s)];
   if (p == s)
     return s;
   p--;

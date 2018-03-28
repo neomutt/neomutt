@@ -155,11 +155,8 @@ static struct Hash *new_hash(int nelem)
 static struct HashElem *union_hash_insert(struct Hash *table, union HashKey key,
                                           int type, void *data)
 {
-  struct HashElem *ptr = NULL;
-  unsigned int h;
-
-  ptr = mutt_mem_malloc(sizeof(struct HashElem));
-  h = table->gen_hash(key, table->nelem);
+  struct HashElem *ptr = mutt_mem_malloc(sizeof(struct HashElem));
+  unsigned int h = table->gen_hash(key, table->nelem);
   ptr->key = key;
   ptr->data = data;
   ptr->type = type;

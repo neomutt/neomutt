@@ -293,9 +293,7 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
  */
 static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
 {
-  sasl_callback_t *callback = NULL;
-
-  callback = MuttSaslCallbacks;
+  sasl_callback_t *callback = MuttSaslCallbacks;
 
   callback->id = SASL_CB_USER;
   callback->proc = (int (*)(void)) mutt_sasl_cb_authname;
@@ -336,12 +334,9 @@ static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
  */
 static int mutt_sasl_conn_open(struct Connection *conn)
 {
-  struct SaslData *sasldata = NULL;
-  int rc;
-
-  sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
-  rc = (sasldata->msasl_open)(conn);
+  int rc = (sasldata->msasl_open)(conn);
   conn->sockdata = sasldata;
 
   return rc;
@@ -358,10 +353,7 @@ static int mutt_sasl_conn_open(struct Connection *conn)
  */
 static int mutt_sasl_conn_close(struct Connection *conn)
 {
-  struct SaslData *sasldata = NULL;
-  int rc;
-
-  sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
@@ -376,7 +368,7 @@ static int mutt_sasl_conn_close(struct Connection *conn)
   FREE(&sasldata);
 
   /* call underlying close */
-  rc = (conn->conn_close)(conn);
+  int rc = (conn->conn_close)(conn);
 
   return rc;
 }
@@ -391,12 +383,10 @@ static int mutt_sasl_conn_close(struct Connection *conn)
  */
 static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
 {
-  struct SaslData *sasldata = NULL;
   int rc;
-
   unsigned int olen;
 
-  sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
 
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
@@ -460,13 +450,11 @@ out:
  */
 static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t len)
 {
-  struct SaslData *sasldata = NULL;
   int rc;
-
   const char *pbuf = NULL;
   unsigned int olen, plen;
 
-  sasldata = (struct SaslData *) conn->sockdata;
+  struct SaslData *sasldata = (struct SaslData *) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
 
   /* encode data, if necessary */

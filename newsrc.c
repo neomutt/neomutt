@@ -228,13 +228,12 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
   line = mutt_mem_malloc(sb.st_size + 1);
   while (sb.st_size && fgets(line, sb.st_size + 1, nserv->newsrc_fp))
   {
-    char *b = NULL, *h = NULL, *p = NULL;
+    char *b = NULL, *h = NULL;
     unsigned int j = 1;
     bool subs = false;
-    struct NntpData *nntp_data = NULL;
 
     /* find end of newsgroup name */
-    p = strpbrk(line, ":!");
+    char *p = strpbrk(line, ":!");
     if (!p)
       continue;
 
@@ -244,7 +243,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     *p++ = '\0';
 
     /* get newsgroup data */
-    nntp_data = nntp_data_find(nserv, line);
+    struct NntpData *nntp_data = nntp_data_find(nserv, line);
     FREE(&nntp_data->newsrc_ent);
 
     /* count number of entries */
@@ -587,11 +586,10 @@ static int active_get_cache(struct NntpServer *nserv)
   char buf[HUGE_STRING];
   char file[_POSIX_PATH_MAX];
   time_t t;
-  FILE *fp = NULL;
 
   cache_expand(file, sizeof(file), &nserv->conn->account, ".active");
   mutt_debug(1, "Parsing %s\n", file);
-  fp = mutt_file_fopen(file, "r");
+  FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return -1;
 

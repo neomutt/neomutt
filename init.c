@@ -275,12 +275,11 @@ static void free_mbtable(struct MbTable **t)
 
 static struct MbTable *parse_mbtable(const char *s)
 {
-  struct MbTable *t = NULL;
   size_t slen, k;
   mbstate_t mbstate;
   char *d = NULL;
 
-  t = mutt_mem_calloc(1, sizeof(struct MbTable));
+  struct MbTable *t = mutt_mem_calloc(1, sizeof(struct MbTable));
   slen = mutt_str_strlen(s);
   if (slen == 0)
     return t;
@@ -1813,10 +1812,9 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 {
   struct ListNode *n = NULL;
   size_t keylen;
-  char *p = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
-  p = strpbrk(buf->data, ": \t");
+  char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
   {
     mutt_str_strfcpy(err->data, _("invalid header field"), err->dsize);
@@ -3724,7 +3722,6 @@ static bool get_hostname(void)
 
 int mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
-  const char *p = NULL;
   char buffer[LONG_STRING];
   int need_pause = 0;
   struct Buffer err;
@@ -3746,7 +3743,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
 
-  p = mutt_str_getenv("MAIL");
+  const char *p = mutt_str_getenv("MAIL");
   if (p)
     SpoolFile = mutt_str_strdup(p);
   else if ((p = mutt_str_getenv("MAILDIR")))
