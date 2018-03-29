@@ -2348,7 +2348,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       }
 
       /* execvpe is a glibc extension */
-      /* execvpe (path, args, mutt_envlist ()); */
+      /* execvpe (path, args, mutt_envlist_getlist()); */
       execvp(path, args);
       _exit(S_ERR);
     }

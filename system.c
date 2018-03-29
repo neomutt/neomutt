@@ -80,7 +80,7 @@ int mutt_system(const char *cmd)
     sigaction(SIGTSTP, &act, NULL);
     sigaction(SIGCONT, &act, NULL);
 
-    execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist());
+    execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist_getlist());
     _exit(127); /* execl error */
   }
   else if (thepid != -1)
