@@ -3646,11 +3646,85 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   return NULL;
 }
 
+/**
+ * get_hostname - Find the Fully-Qualified Domain Name
+ * @retval true  Success
+ * @retval false Error, failed to find any name
+ *
+ * Use several methods to try to find the Fully-Qualified domain name of this host.
+ * If the user has already configured a hostname, this function will use it.
+ */
+static bool get_hostname(void)
+{
+  char *str = NULL;
+  struct utsname utsname;
+
+  if (Hostname)
+  {
+    str = Hostname;
+  }
+  else
+  {
+    /* The call to uname() shouldn't fail, but if it does, the system is horribly
+     * broken, and the system's networking configuration is in an unreliable
+     * state.  We should bail.  */
+    if ((uname(&utsname)) == -1)
+    {
+      mutt_perror(_("unable to determine nodename via uname()"));
+      return false; // TEST09: can't test
+    }
+
+    str = utsname.nodename;
+  }
+
+  /* some systems report the FQDN instead of just the hostname */
+  char *dot = strchr(str, '.');
+  if (dot)
+    ShortHostname = mutt_str_substr_dup(str, dot);
+  else
+    ShortHostname = mutt_str_strdup(str);
+
+  if (!Hostname)
+  {
+    /* now get FQDN.  Use configured domain first, DNS next, then uname */
+#ifdef DOMAIN
+    /* we have a compile-time domain name, use that for Hostname */
+    Hostname = mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
+    sprintf((char *) Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
+#else
+    Hostname = getmailname();
+    if (!Hostname)
+    {
+      char buffer[LONG_STRING];
+      if (getdnsdomainname(buffer, sizeof(buffer)) == 0)
+      {
+        Hostname = mutt_mem_malloc(mutt_str_strlen(buffer) + mutt_str_strlen(ShortHostname) + 2);
+        sprintf((char *) Hostname, "%s.%s", NONULL(ShortHostname), buffer);
+      }
+      else
+      {
+        /* DNS failed, use the nodename.  Whether or not the nodename had a '.'
+         * in it, we can use the nodename as the FQDN.  On hosts where DNS is
+         * not being used, e.g. small network that relies on hosts files, a
+         * short host name is all that is required for SMTP to work correctly.
+         * It could be wrong, but we've done the best we can, at this point the
+         * onus is on the user to provide the correct hostname if the nodename
+         * won't work in their network.  */
+        Hostname = mutt_str_strdup(utsname.nodename);
+      }
+    }
+#endif
+  }
+  if (Hostname)
+    set_default_value("hostname", (intptr_t) mutt_str_strdup(Hostname));
+
+  return true;
+}
+
 int mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
-  struct utsname utsname;
   const char *p = NULL;
-  char buffer[STRING];
+  char buffer[LONG_STRING];
   int need_pause = 0;
   struct Buffer err;
 
@@ -3670,55 +3744,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
-
-  /* And about the host... */
-
-  /*
-   * The call to uname() shouldn't fail, but if it does, the system is horribly
-   * broken, and the system's networking configuration is in an unreliable
-   * state.  We should bail.
-   */
-  if ((uname(&utsname)) == -1)
-  {
-    mutt_perror(_("unable to determine nodename via uname()"));
-    return 1; // TEST09: can't test
-  }
-
-  /* some systems report the FQDN instead of just the hostname */
-  p = strchr(utsname.nodename, '.');
-  if (p)
-    ShortHostname = mutt_str_substr_dup(utsname.nodename, p);
-  else
-    ShortHostname = mutt_str_strdup(utsname.nodename);
-
-/* now get FQDN.  Use configured domain first, DNS next, then uname */
-#ifdef DOMAIN
-  /* we have a compile-time domain name, use that for Hostname */
-  Hostname = mutt_mem_malloc(mutt_str_strlen(DOMAIN) + mutt_str_strlen(ShortHostname) + 2);
-  sprintf(Hostname, "%s.%s", NONULL(ShortHostname), DOMAIN);
-#else
-  Hostname = getmailname();
-  if (!Hostname)
-  {
-    if (!(getdnsdomainname(buffer, sizeof(buffer))))
-    {
-      Hostname =
-          mutt_mem_malloc(mutt_str_strlen(buffer) + mutt_str_strlen(ShortHostname) + 2);
-      sprintf(Hostname, "%s.%s", NONULL(ShortHostname), buffer);
-    }
-    else
-    {
-      /* DNS failed, use the nodename.  Whether or not the nodename had a '.' in
-       * it, we can use the nodename as the FQDN.  On hosts where DNS is not
-       * being used, e.g. small network that relies on hosts files, a short host
-       * name is all that is required for SMTP to work correctly.  It could be
-       * wrong, but we've done the best we can, at this point the onus is on the
-       * user to provide the correct hostname if the nodename won't work in their
-       * network.  */
-      Hostname = mutt_str_strdup(utsname.nodename);
-    }
-  }
-#endif
 
 #ifdef USE_NNTP
   p = mutt_str_getenv("NNTPSERVER");
@@ -3927,6 +3952,9 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (execute_commands(commands) != 0)
     need_pause = 1; // TEST13: neomutt -e broken
+
+  if (!get_hostname())
+    return 1;
 
   if (need_pause && !OPT_NO_CURSES)
   {
