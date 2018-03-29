@@ -124,8 +124,6 @@ static void myvar_del(const char *var)
 static char **nm_tags;
 #endif
 
-extern char **envlist;
-
 #ifndef DOMAIN
 /**
  * getmailname - Try to retrieve the FQDN from mailname files
@@ -2070,66 +2068,13 @@ static bool valid_show_multipart_alternative(const char *val)
           (mutt_str_strcmp(val, "info") == 0) || !val || (*val == 0));
 }
 
-char **mutt_envlist(void)
-{
-  return envlist;
-}
-
-/**
- * mutt_envlist_set - Helper function for parse_setenv()
- * @param name      Name of the environment variable
- * @param value     Value the envionment variable should have
- * @param overwrite Whether the environment variable should be overwritten
- *
- * It's broken out because some other parts of neomutt (filter.c) need
- * to set/overwrite environment variables in envlist before execing.
- */
-void mutt_envlist_set(const char *name, const char *value, bool overwrite)
-{
-  char **envp = envlist;
-  char work[LONG_STRING];
-  int count, len;
-
-  len = mutt_str_strlen(name);
-
-  /* Look for current slot to overwrite */
-  count = 0;
-  while (envp && *envp)
-  {
-    if ((mutt_str_strncmp(name, *envp, len) == 0) && (*envp)[len] == '=')
-    {
-      if (!overwrite)
-        return;
-      break;
-    }
-    envp++;
-    count++;
-  }
-
-  /* Format var=value string */
-  snprintf(work, sizeof(work), "%s=%s", NONULL(name), NONULL(value));
-
-  /* If slot found, overwrite */
-  if (envp && *envp)
-    mutt_str_replace(envp, work);
-
-  /* If not found, add new slot */
-  else
-  {
-    mutt_mem_realloc(&envlist, sizeof(char *) * (count + 2));
-    envlist[count] = mutt_str_strdup(work);
-    envlist[count + 1] = NULL;
-  }
-}
-
 static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
-  int query, unset, len;
-  char *name = NULL, **save = NULL, **envp = envlist;
+  char **envp = mutt_envlist_getlist();
 
-  query = 0;
-  unset = data & MUTT_SET_UNSET;
+  bool query = false;
+  bool unset = data & MUTT_SET_UNSET;
 
   if (!MoreArgs(s))
   {
@@ -2139,17 +2084,17 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 
   if (*s->dptr == '?')
   {
-    query = 1;
+    query = true;
     s->dptr++;
   }
 
   /* get variable name */
   mutt_extract_token(tmp, s, MUTT_TOKEN_EQUAL);
-  len = strlen(tmp->data);
+  int len = strlen(tmp->data);
 
   if (query)
   {
-    int found = 0;
+    bool found = false;
     while (envp && *envp)
     {
       /* This will display all matches for "^QUERY" */
@@ -2158,7 +2103,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
         if (!found)
         {
           mutt_endwin();
-          found = 1;
+          found = true;
         }
         puts(*envp);
       }
@@ -2177,25 +2122,8 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
 
   if (unset)
   {
-    int count = 0;
-    while (envp && *envp)
-    {
-      if ((mutt_str_strncmp(tmp->data, *envp, len) == 0) && (*envp)[len] == '=')
-      {
-        /* shuffle down */
-        save = envp++;
-        while (*envp)
-        {
-          *save++ = *envp++;
-          count++;
-        }
-        *save = NULL;
-        mutt_mem_realloc(&envlist, sizeof(char *) * (count + 1));
-        return 0;
-      }
-      envp++;
-      count++;
-    }
+    if (mutt_envlist_unset(tmp->data))
+      return 0;
     return -1;
   }
 
@@ -2213,7 +2141,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
     return -1;
   }
 
-  name = mutt_str_strdup(tmp->data);
+  char *name = mutt_str_strdup(tmp->data);
   mutt_extract_token(tmp, s, 0);
   mutt_envlist_set(name, tmp->data, true);
   FREE(&name);

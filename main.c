@@ -68,8 +68,6 @@
 #include "nntp.h"
 #endif
 
-char **envlist = NULL;
-
 void mutt_exit(int code)
 {
   mutt_endwin();
@@ -235,7 +233,7 @@ static int get_user_info(void)
  * @retval 0 on success
  * @retval 1 on error
  */
-int main(int argc, char **argv, char **env)
+int main(int argc, char *argv[], char *envp[])
 {
   char folder[_POSIX_PATH_MAX] = "";
   char *subject = NULL;
@@ -295,16 +293,7 @@ int main(int argc, char **argv, char **env)
 
   umask(077);
 
-  /* Init envlist */
-  {
-    char **srcp, **dstp;
-    int count = 0;
-    for (srcp = env; srcp && *srcp; srcp++)
-      count++;
-    envlist = mutt_mem_calloc(count + 1, sizeof(char *));
-    for (srcp = env, dstp = envlist; srcp && *srcp; srcp++, dstp++)
-      *dstp = mutt_str_strdup(*srcp);
-  }
+  mutt_envlist_init(envp);
 
   for (optind = 1; optind < double_dash;)
   {
@@ -1053,5 +1042,6 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  mutt_envlist_free();
   return rc;
 }

@@ -91,11 +91,11 @@ ALLOBJS+=	$(NEOMUTTOBJS)
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/address.o mutt/base64.o mutt/buffer.o mutt/charset.o \
-		mutt/date.o mutt/exit.o mutt/file.o mutt/hash.o mutt/idna.o \
-		mutt/list.o mutt/logging.o mutt/mapping.o mutt/mbyte.o \
-		mutt/md5.o mutt/memory.o mutt/mime.o mutt/parameter.o \
-		mutt/regex.o mutt/rfc2047.o mutt/sha1.o mutt/signal.o \
-		mutt/string.o
+		mutt/date.o mutt/envlist.o mutt/exit.o mutt/file.o mutt/hash.o \
+		mutt/idna.o mutt/list.o mutt/logging.o mutt/mapping.o \
+		mutt/mbyte.o mutt/md5.o mutt/memory.o mutt/mime.o \
+		mutt/parameter.o mutt/regex.o mutt/rfc2047.o mutt/sha1.o \
+		mutt/signal.o mutt/string.o
 CLEANFILES+=	$(LIBMUTT) $(LIBMUTTOBJS)
 MUTTLIBS+=	$(LIBMUTT)
 ALLOBJS+=	$(LIBMUTTOBJS)
