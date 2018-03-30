@@ -40,7 +40,8 @@ all-doc:	$(CHUNKED_DOCFILES) \
 		doc/manual.html \
 		doc/manual.txt \
 		doc/neomuttrc \
-		doc/neomuttrc.man
+		doc/neomutt.1 \
+		doc/neomuttrc.5 \
 
 doc/manual.html:	doc/manual.xml \
 			$(SRCDIR)/doc/html.xsl \
@@ -63,14 +64,19 @@ doc/index.html: $(SRCDIR)/doc/chunk.xsl \
 		doc/manual.xml
 	xsltproc --nonet -o doc/ $(SRCDIR)/doc/chunk.xsl doc/manual.xml > /dev/null 2>&1
 
-doc/neomuttrc.man:	doc/makedoc$(EXEEXT) \
+doc/neomuttrc.5:	doc/makedoc$(EXEEXT) \
 		$(SRCDIR)/init.h \
 		$(SRCDIR)/doc/neomuttrc.man.head \
 		$(SRCDIR)/doc/neomuttrc.man.tail
-	( sed -e "/^\.TH/s/@TS_MAN_CONF@/$(TS_MAN_CONF)/" \
+	( sed -e "/^\.TH/s/@MAN_DATE@/$(PACKAGE_DATE)/" \
 	    $(SRCDIR)/doc/neomuttrc.man.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m | \
 	    cat - $(SRCDIR)/doc/neomuttrc.man.tail \
+	) > $@
+
+doc/neomutt.1:
+	( sed -e "/^\.TH/s/@MAN_DATE@/$(PACKAGE_DATE)/" \
+	    $(SRCDIR)/doc/neomutt.man \
 	) > $@
 
 doc/manual.xml:	doc/makedoc$(EXEEXT) $(SRCDIR)/init.h $(SRCDIR)/opcodes.h \
@@ -89,7 +95,7 @@ install-doc: all-doc
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 doc/neomutt.1 $(DESTDIR)$(mandir)/man1/neomutt.1
-	$(INSTALL) -m 644 doc/neomuttrc.man $(DESTDIR)$(mandir)/man5/neomuttrc.5
+	$(INSTALL) -m 644 doc/neomuttrc.5 $(DESTDIR)$(mandir)/man5/neomuttrc.5
 	$(INSTALL) -m 644 $(SRCDIR)/doc/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys_$(PACKAGE).1
 	$(INSTALL) -m 644 $(SRCDIR)/doc/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap_$(PACKAGE).1
 	$(INSTALL) -m 644 $(SRCDIR)/doc/pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring_$(PACKAGE).1
@@ -123,7 +129,7 @@ uninstall-doc:
 	$(RM) $(DESTDIR)$(docdir)/mime.types
 
 clean-doc:
-	$(RM) doc/*.html doc/neomuttrc.man \
+	$(RM) doc/*.html doc/neomuttrc.5 doc/neomutt.1 \
 	    doc/makedoc$(EXEEXT) doc/makedoc.o \
 	    doc/makedoc.Po doc/manual.txt doc/manual.xml \
 	    doc/neomuttrc
