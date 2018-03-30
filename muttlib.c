@@ -1425,8 +1425,7 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
 int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 {
   const char *xdg_env = mutt_str_getenv(xdg_env_vars[type]);
-  char *xdg = (xdg_env && *xdg_env) ? mutt_str_strdup(xdg_env) :
-                                      mutt_str_strdup(xdg_defaults[type]);
+  char *xdg = xdg_env ? mutt_str_strdup(xdg_env) : mutt_str_strdup(xdg_defaults[type]);
   char *x = xdg; /* strsep() changes xdg, so free x instead later */
   char *token = NULL;
   int rc = 0;

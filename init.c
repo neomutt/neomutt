@@ -3796,9 +3796,8 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
-  if (((p = mutt_str_getenv("LC_ALL")) != NULL && p[0]) ||
-      ((p = mutt_str_getenv("LANG")) != NULL && p[0]) ||
-      ((p = mutt_str_getenv("LC_CTYPE")) != NULL && p[0]))
+  if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
+      (p = mutt_str_getenv("LC_CTYPE")))
   {
     OPT_LOCALES = true;
   }
