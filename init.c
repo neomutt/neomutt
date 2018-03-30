@@ -3760,17 +3760,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     SpoolFile = mutt_str_strdup(buffer);
   }
 
-  p = mutt_str_getenv("MAILCAPS");
-  if (p)
-    MailcapPath = mutt_str_strdup(p);
-  else
-  {
-    /* Default search path from RFC1524 */
-    MailcapPath = mutt_str_strdup(
-        "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR
-        "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
-  }
-
   Tmpdir = mutt_str_strdup((p = mutt_str_getenv("TMPDIR")) ? p : "/tmp");
 
   p = mutt_str_getenv("VISUAL");
@@ -3941,6 +3930,11 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (!get_hostname())
     return 1;
+
+  /* "$mailcap_path" precedence: environment, config file, code */
+  const char *env_mc = mutt_str_getenv("MAILCAPS");
+  if (env_mc)
+    mutt_str_replace(&MailcapPath, env_mc);
 
   if (need_pause && !OPT_NO_CURSES)
   {

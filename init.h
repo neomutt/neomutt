@@ -1685,12 +1685,16 @@ struct Option MuttVars[] = {
   ** .pp
   ** When $$mail_check_stats is \fIset\fP, this variable configures
   ** how often (in seconds) NeoMutt will update message counts.
+  ** .pp
+  ** The default search path is from RFC1524.
   */
-  { "mailcap_path",     DT_STRING,  R_NONE, &MailcapPath, 0 },
+  { "mailcap_path",     DT_STRING,  R_NONE, &MailcapPath, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap" },
   /*
   ** .pp
   ** This variable specifies which files to consult when attempting to
   ** display MIME bodies not directly supported by NeoMutt.
+  ** .pp
+  ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
   */
   { "mailcap_sanitize", DT_BOOL, R_NONE, &MailcapSanitize, 1 },
   /*
