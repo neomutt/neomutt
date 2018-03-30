@@ -72,7 +72,7 @@ OpenPGP, and a threaded sorting mode.
 .I Note:
 .IR
 This manual page gives a brief overview of NeoMutt's command line
-options. You should find a copy of the full manual in @docdir@, in
+options. You should find a copy of the full manual in @MAN_DOCDIR@, in
 text, HTML, and/or PDF format.
 .SH OPTIONS
 .PP
@@ -183,19 +183,19 @@ Specifies the editor to use when composing messages.
 .PP
 .IP "~/.neomuttrc or ~/.neomutt/neomuttrc"
 User configuration file.
-.IP "@sysconfdir@/neomuttrc"
+.IP "@MAN_SYSCONFDIR@/neomuttrc"
 System-wide configuration file.
 .IP "/tmp/neomuttXXXXXX"
 Temporary files created by NeoMutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
-.IP "@sysconfdir@/mailcap"
+.IP "@MAN_SYSCONFDIR@/mailcap"
 System definition for handling non-text MIME types.
 .IP "~/.mime.types"
 User's personal mapping between MIME types and file extensions.
-.IP "@sysconfdir@/mime.types"
+.IP "@MAN_SYSCONFDIR@/mime.types"
 System mapping between MIME types and file extensions.
-.IP "@docdir@/manual.txt"
+.IP "@MAN_DOCDIR@/manual.txt"
 The NeoMutt manual.
 .SH BUGS
 .PP
