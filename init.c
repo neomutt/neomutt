@@ -3760,8 +3760,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     SpoolFile = mutt_str_strdup(buffer);
   }
 
-  Tmpdir = mutt_str_strdup((p = mutt_str_getenv("TMPDIR")) ? p : "/tmp");
-
   p = mutt_str_getenv("VISUAL");
   if (!p)
   {
@@ -3935,6 +3933,11 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   const char *env_mc = mutt_str_getenv("MAILCAPS");
   if (env_mc)
     mutt_str_replace(&MailcapPath, env_mc);
+
+  /* "$tmpdir" precedence: environment, config file, code */
+  const char *env_tmp = mutt_str_getenv("TMPDIR");
+  if (env_tmp)
+    mutt_str_replace(&Tmpdir, env_tmp);
 
   if (need_pause && !OPT_NO_CURSES)
   {

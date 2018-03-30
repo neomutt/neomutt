@@ -4155,7 +4155,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** A value of zero or less will cause NeoMutt to never time out.
   */
-  { "tmpdir",           DT_PATH, R_NONE, &Tmpdir, 0 },
+  { "tmpdir",           DT_PATH, R_NONE, &Tmpdir, IP "/tmp" },
   /*
   ** .pp
   ** This variable allows you to specify where NeoMutt will place its
