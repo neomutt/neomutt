@@ -3760,16 +3760,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     SpoolFile = mutt_str_strdup(buffer);
   }
 
-  p = mutt_str_getenv("VISUAL");
-  if (!p)
-  {
-    p = mutt_str_getenv("EDITOR");
-    if (!p)
-      p = "vi";
-  }
-  Editor = mutt_str_strdup(p);
-  Visual = mutt_str_strdup(p);
-
   p = mutt_str_getenv("REPLYTO");
   if (p)
   {
@@ -3938,6 +3928,16 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   const char *env_tmp = mutt_str_getenv("TMPDIR");
   if (env_tmp)
     mutt_str_replace(&Tmpdir, env_tmp);
+
+  /* "$visual", "$editor" precedence: environment, config file, code */
+  const char *env_ed = mutt_str_getenv("VISUAL");
+  if (!env_ed)
+    env_ed = mutt_str_getenv("EDITOR");
+  if (env_ed)
+  {
+    mutt_str_replace(&Editor, env_ed);
+    mutt_str_replace(&Visual, env_ed);
+  }
 
   if (need_pause && !OPT_NO_CURSES)
   {

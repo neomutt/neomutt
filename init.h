@@ -813,7 +813,7 @@ struct Option MuttVars[] = {
   ** \fBNote\fP that changes made to the References: and Date: headers are
   ** ignored for interoperability reasons.
   */
-  { "editor",           DT_PATH, R_NONE, &Editor, 0 },
+  { "editor",           DT_PATH, R_NONE, &Editor, IP "vi" },
   /*
   ** .pp
   ** This variable specifies which editor is used by NeoMutt.
@@ -4310,11 +4310,13 @@ struct Option MuttVars[] = {
   ** virtual-mailboxes) as a spool file.
   */
 #endif
-  { "visual",           DT_PATH, R_NONE, &Visual, 0 },
+  { "visual",           DT_PATH, R_NONE, &Visual, IP "vi" },
   /*
   ** .pp
   ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
   ** given in the built-in editor.
+  ** .pp
+  ** $$visual is overridden by the environment variable \fC$$$VISUAL\fP.
   */
   { "wait_key",         DT_BOOL, R_NONE, &WaitKey, 1 },
   /*
