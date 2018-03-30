@@ -176,24 +176,6 @@ if {1} {
   proc yesno val {
     expr {$val ? "yes" : "no"}
   }
-
-  # Recent author timestamp of file(s) as UTC, use PACKAGE_VERSION as fallback
-  proc get-author-date {format args} {
-    set oldpwd [pwd]
-    cd $::autosetup(srcdir)
-
-    if {$args eq "" || [catch {
-        set fd [open "|git log -1 --format=%at master -- $args" r]
-        gets $fd epoch
-        close $fd}] || $epoch eq ""
-    } {
-      set epoch [clock scan \
-                   [get-define PACKAGE_VERSION] -format {%Y%m%d} -timezone :UTC]
-    }
-    cd $oldpwd
-
-    return [clock format $epoch -format $format -timezone :UTC]
-  }
 }
 ###############################################################################
 
@@ -902,8 +884,8 @@ foreach dir $subdirs {
 ###############################################################################
 # Provide timestamps (UTC) based on most recent author date or PACKAGE_VERSION
 # doc/neomuttrc.man, doc/neomutt.1
-define TS_MAN_CONF [get-author-date "%Y-%m-%d" init.h doc/neomuttrc.man.head doc/neomuttrc.man.tail]
-define TS_MAN_MAIN [get-author-date "%Y-%m-%d" doc/neomutt.man]
+define PACKAGE_DATE \
+  [regsub {(....)(..)(..)} [get-define PACKAGE_VERSION] {\1-\2-\3}]
 
 ###############################################################################
 # Generate Makefile and config.h
@@ -915,7 +897,6 @@ make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
 # Generate doc/neomutt.1
 define bindir [get-define BINDIR]
 define docdir [get-define PKGDOCDIR]
-make-template doc/neomutt.man doc/neomutt.1
 
 ###############################################################################
 # Print a summary

@@ -26,7 +26,7 @@
 .ft
 .fi
 ..
-.TH neomuttrc 5 "@TS_MAN_CONF@" Unix "User Manuals"
+.TH neomuttrc 5 "@MAN_DATE@" Unix "User Manuals"
 .SH NAME
 neomuttrc \- Configuration file for the NeoMutt Mail User Agent
 .SH DESCRIPTION

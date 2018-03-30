@@ -3,6 +3,7 @@
 
 PACKAGE=	@PACKAGE@
 PACKAGE_VERSION=@PACKAGE_VERSION@
+PACKAGE_DATE=	@PACKAGE_DATE@
 
 # Build-time compiler and flags. These are used for building executables that
 # are only used at build-time, e.g., doc/makedoc. These are different from CC /
@@ -55,10 +56,6 @@ UNINSTALL_TARGETS=	@UNINSTALL_TARGETS@
 VPATH=		$(SRCDIR)
 
 ALL_FILES!=	(cd $(SRCDIR) && git ls-files 2>/dev/null) || true
-
-# timestamps
-TS_MAN_CONF=	@TS_MAN_CONF@
-TS_MAN_MAIN=	@TS_MAN_MAIN@
 
 ###############################################################################
 # neomutt
