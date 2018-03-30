@@ -3745,20 +3745,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
 
-#ifdef USE_NNTP
-  p = mutt_str_getenv("NNTPSERVER");
-  if (p)
-  {
-    FREE(&NewsServer);
-    NewsServer = mutt_str_strdup(p);
-  }
-  else
-  {
-    p = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
-    NewsServer = mutt_str_strdup(p);
-  }
-#endif
-
   p = mutt_str_getenv("MAIL");
   if (p)
     SpoolFile = mutt_str_strdup(p);
