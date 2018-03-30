@@ -26,7 +26,8 @@ macro index,pager,attach,compose \cb "\
 macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show NeoMutt documentation"
 
 # show the incoming mailboxes list (just like "neomutt -y") and back when pressing "y"
-macro index,pager y "<change-folder>?" "show incoming mailboxes list"
+macro index y "<change-folder>?" "show incoming mailboxes list"
+macro pager y "<exit><change-folder>?" "show incoming mailboxes list"
 bind browser y exit
 
 # Handler for gzip compressed mailboxes
