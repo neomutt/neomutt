@@ -470,44 +470,49 @@ if {[get-define want-fmemopen]} {
 switch [opt-val with-ui ncurses] {
   ncurses {
     define-append CFLAGS -DNCURSES_WIDECHAR
-    # Locate the library defining waddnwstr()
     set ncurses_prefix [opt-val with-ncurses $prefix]
+
     cc-with [list -libs -L$ncurses_prefix/lib] {
+
+      # Locate the library defining tgetent()
+      # This must be done *before* checking for ncurses functions, see
+      # https://github.com/neomutt/neomutt/issues/1118
+      foreach tinfo_lib {tinfow tinfo} {
+        if {[cc-check-function-in-lib tgetent $tinfo_lib]} {
+          break
+        }
+      }
+
+      # Locate the library defining waddnwstr()
       foreach ncurses_lib {ncursesw ncurses curses} {
         if {[cc-check-function-in-lib waddnwstr $ncurses_lib]} {
           break
         }
       }
-    }
-    if {![have-feature waddnwstr]} {
-      user-error "Unable to find ncursesw library"
-    }
 
-    # Locate the directory containing ncurses.h
-    # See https://github.com/neomutt/neomutt/pull/679
-    set found 0
-    cc-with [list -cflags -I$ncurses_prefix/include] {
-      foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
-        if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
-            [cc-check-includes ${ncurses_inc}curses.h]} {
-          set found 1
-          break
-        }
+      if {![have-feature waddnwstr] || ![have-feature tgetent]} {
+        user-error "Unable to find ncursesw library"
       }
-    }
-    if {!$found} {
-      user-error "Unable to find ncurses headers"
-    }
 
-    cc-with [list -libs -L$ncurses_prefix/lib] {
-      if {![cc-check-function-in-lib tgetent $ncurses_lib]} {
-        cc-check-function-in-lib tgetent tinfo
-      }
       foreach f {start_color typeahead bkgdset curs_set meta use_default_colors} {
         cc-check-function-in-lib $f $ncurses_lib
       }
       cc-check-functions use_extended_names
     }
+
+    # Locate the directory containing ncurses.h
+    # See https://github.com/neomutt/neomutt/pull/679
+    apply {{ncurses_prefix} {
+      cc-with [list -cflags -I$ncurses_prefix/include] {
+        foreach ncurses_inc {ncursesw/ ncurses/ curses/ {}} {
+          if {[cc-check-includes ${ncurses_inc}ncurses.h] ||
+              [cc-check-includes ${ncurses_inc}curses.h]} {
+            return
+          }
+        }
+        user-error "Unable to find ncurses headers"
+      }
+    }} $ncurses_prefix
 
     if {[have-feature start_color]} {
       define-feature COLOR
