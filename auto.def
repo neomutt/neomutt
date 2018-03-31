@@ -474,17 +474,20 @@ switch [opt-val with-ui ncurses] {
 
     cc-with [list -libs -L$ncurses_prefix/lib] {
 
+      set tinfo_libs   {tinfow tinfo}
+      set ncurses_libs {ncursesw ncurses curses}
+
       # Locate the library defining tgetent()
       # This must be done *before* checking for ncurses functions, see
       # https://github.com/neomutt/neomutt/issues/1118
-      foreach tinfo_lib {tinfow tinfo} {
+      foreach tinfo_lib [concat $tinfo_libs $ncurses_libs] {
         if {[cc-check-function-in-lib tgetent $tinfo_lib]} {
           break
         }
       }
 
       # Locate the library defining waddnwstr()
-      foreach ncurses_lib {ncursesw ncurses curses} {
+      foreach ncurses_lib $ncurses_libs {
         if {[cc-check-function-in-lib waddnwstr $ncurses_lib]} {
           break
         }
