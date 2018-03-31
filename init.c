@@ -3780,7 +3780,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   if (p)
     From = mutt_addr_parse_list(NULL, p);
 
-  mutt_ch_set_langinfo_charset();
+  Charset = mutt_ch_get_langinfo_charset();
   mutt_ch_set_charset(Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
