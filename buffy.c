@@ -124,7 +124,7 @@ static int test_last_status_new(FILE *f)
     return 0;
 
   hdr = mutt_header_new();
-  tmp_envelope = mutt_read_rfc822_header(f, hdr, 0, 0);
+  tmp_envelope = mutt_rfc822_read_header(f, hdr, 0, 0);
   if (!(hdr->read || hdr->old))
     result = 1;
 

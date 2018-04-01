@@ -1134,7 +1134,7 @@ static int parse_overview_line(char *line, void *data)
 
   /* parse header */
   hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
-  hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
+  hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
   hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
   mutt_file_fclose(&fp);
@@ -1387,7 +1387,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
       /* parse header */
       hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
-      hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
+      hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
       hdr->received = hdr->date_sent;
       mutt_file_fclose(&fp);
       unlink(tempfile);
@@ -1667,7 +1667,7 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
     mutt_hash_delete(ctx->subj_hash, hdr->env->real_subj, hdr);
 
   mutt_env_free(&hdr->env);
-  hdr->env = mutt_read_rfc822_header(msg->fp, hdr, 0, 0);
+  hdr->env = mutt_rfc822_read_header(msg->fp, hdr, 0, 0);
 
   if (ctx->id_hash && hdr->env->message_id)
     mutt_hash_insert(ctx->id_hash, hdr->env->message_id, hdr);
@@ -2391,7 +2391,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
     mx_alloc_memory(ctx);
   hdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
-  hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
+  hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
   mutt_file_fclose(&fp);
   unlink(tempfile);
 

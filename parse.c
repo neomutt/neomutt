@@ -45,13 +45,13 @@
 struct Context;
 
 /**
- * mutt_read_rfc822_line - Read a header line from a file
+ * mutt_rfc822_read_line - Read a header line from a file
  *
  * Reads an arbitrarily long header field, and looks ahead for continuation
  * lines.  ``line'' must point to a dynamically allocated string; it is
  * increased if more space is required to fit the whole line.
  */
-char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
+char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
 {
   char *buf = line;
   int ch;
@@ -427,7 +427,7 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest)
   p->type = digest ? TYPEMESSAGE : TYPETEXT;
   p->disposition = DISPINLINE;
 
-  while (*(line = mutt_read_rfc822_line(fp, line, &linelen)) != 0)
+  while (*(line = mutt_rfc822_read_line(fp, line, &linelen)) != 0)
   {
     /* Find the value of the current header */
     c = strchr(line, ':');
@@ -513,7 +513,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
       {
         fseeko(fp, b->offset, SEEK_SET);
         if (mutt_is_message_type(b->type, b->subtype))
-          b->parts = mutt_parse_message_rfc822(fp, b);
+          b->parts = mutt_rfc822_parse_message(fp, b);
         else if (mutt_str_strcasecmp(b->subtype, "external-body") == 0)
           b->parts = mutt_read_mime_header(fp, 0);
         else
@@ -534,19 +534,19 @@ void mutt_parse_part(FILE *fp, struct Body *b)
 }
 
 /**
- * mutt_parse_message_rfc822 - parse a Message/RFC822 body
+ * mutt_rfc822_parse_message - parse a Message/RFC822 body
  * @param fp     stream to read from
  * @param parent info about the message/rfc822 body part
  *
  * NOTE: this assumes that `parent->length' has been set!
  */
-struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent)
+struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
 {
   struct Body *msg = NULL;
 
   parent->hdr = mutt_header_new();
   parent->hdr->offset = ftello(fp);
-  parent->hdr->env = mutt_read_rfc822_header(fp, parent->hdr, 0, 0);
+  parent->hdr->env = mutt_rfc822_read_header(fp, parent->hdr, 0, 0);
   msg = parent->hdr->content;
 
   /* ignore the length given in the content-length since it could be wrong
@@ -756,7 +756,7 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
   cur->attach_valid = false;
 }
 
-int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
+int mutt_rfc822_parse_line(struct Envelope *e, struct Header *hdr, char *line,
                            char *p, short user_hdrs, short weed, short do_2047)
 {
   int matched = 0;
@@ -1135,7 +1135,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
 }
 
 /**
- * mutt_read_rfc822_header - parses an RFC822 header
+ * mutt_rfc822_read_header - parses an RFC822 header
  * @param f         Stream to read from
  * @param hdr       Header structure of current message (optional)
  * @param user_hdrs If set, store user headers
@@ -1147,7 +1147,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
  *
  * Caller should free the Envelope using mutt_env_free().
  */
-struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
+struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
                                          short user_hdrs, short weed)
 {
   struct Envelope *e = mutt_env_new();
@@ -1176,7 +1176,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
   while ((loc = ftello(f)) != -1)
   {
-    line = mutt_read_rfc822_line(f, line, &linelen);
+    line = mutt_rfc822_read_line(f, line, &linelen);
     if (*line == '\0')
       break;
     p = strpbrk(line, ": \t");
@@ -1247,7 +1247,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     if (!*p)
       continue; /* skip empty header fields */
 
-    mutt_parse_rfc822_line(e, hdr, line, p, user_hdrs, weed, 1);
+    mutt_rfc822_parse_line(e, hdr, line, p, user_hdrs, weed, 1);
   }
 
   FREE(&line);

@@ -129,7 +129,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
     case 0:
     {
       rewind(f);
-      h->env = mutt_read_rfc822_header(f, h, 0, 0);
+      h->env = mutt_rfc822_read_header(f, h, 0, 0);
       h->content->length = length - h->content->offset + 1;
       rewind(f);
       while (!feof(f))
@@ -658,7 +658,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
     mutt_hash_delete(ctx->subj_hash, h->env->real_subj, h);
   mutt_label_hash_remove(ctx, h);
   mutt_env_free(&h->env);
-  h->env = mutt_read_rfc822_header(msg->fp, h, 0, 0);
+  h->env = mutt_rfc822_read_header(msg->fp, h, 0, 0);
   if (ctx->subj_hash && h->env->real_subj)
     mutt_hash_insert(ctx->subj_hash, h->env->real_subj, h);
   mutt_label_hash_add(ctx, h);

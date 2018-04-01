@@ -1196,7 +1196,7 @@ static int message_handler(struct Body *a, struct State *s)
     fstat(fileno(s->fpin), &st);
     b = mutt_body_new();
     b->length = (LOFF_T) st.st_size;
-    b->parts = mutt_parse_message_rfc822(s->fpin, b);
+    b->parts = mutt_rfc822_parse_message(s->fpin, b);
   }
   else
     b = a;

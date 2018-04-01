@@ -1075,10 +1075,10 @@ static int send_message(struct Header *msg)
     WriteBcc = false;
 #endif
 #ifdef MIXMASTER
-  mutt_write_rfc822_header(tempfp, msg->env, msg->content, 0, !STAILQ_EMPTY(&msg->chain));
+  mutt_rfc822_write_header(tempfp, msg->env, msg->content, 0, !STAILQ_EMPTY(&msg->chain));
 #endif
 #ifndef MIXMASTER
-  mutt_write_rfc822_header(tempfp, msg->env, msg->content, 0, 0);
+  mutt_rfc822_write_header(tempfp, msg->env, msg->content, 0, 0);
 #endif
 #ifdef USE_SMTP
   if (old_write_bcc)
