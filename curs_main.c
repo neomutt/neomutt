@@ -50,6 +50,7 @@
 #include "options.h"
 #include "pager.h"
 #include "pattern.h"
+#include "progress.h"
 #include "protos.h"
 #include "sort.h"
 #include "tags.h"

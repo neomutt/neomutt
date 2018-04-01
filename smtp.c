@@ -39,6 +39,7 @@
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "options.h"
+#include "progress.h"
 #include "protos.h"
 #include "url.h"
 #ifdef USE_SASL

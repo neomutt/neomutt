@@ -39,6 +39,7 @@
 #include "mutt_socket.h"
 #include "options.h"
 #include "pop.h"
+#include "progress.h"
 #include "protos.h"
 #include "url.h"
 

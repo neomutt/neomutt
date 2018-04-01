@@ -67,7 +67,7 @@ NEOMUTTOBJS=	addrbook.o alias.o attach.o bcache.o body.o browser.o buffy.o \
 		main.o mbox.o menu.o mh.o muttlib.o mutt_account.o \
 		mutt_logging.o mutt_signal.o mutt_socket.o mutt_window.o mx.o newsrc.o \
 		nntp.o pager.o parse.o pattern.o pop.o pop_auth.o pop_lib.o \
-		postpone.o query.o recvattach.o recvcmd.o resize.o rfc1524.o \
+		postpone.o progress.o query.o recvattach.o recvcmd.o resize.o rfc1524.o \
 		rfc2047.o rfc2231.o rfc3676.o safe_asprintf.o score.o send.o \
 		sendlib.o sidebar.o smtp.o sort.o state.o status.o system.o \
 		tags.o terminal.o thread.o url.o version.o

@@ -51,6 +51,7 @@
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
 #include "options.h"
+#include "progress.h"
 #include "protos.h"
 #include "state.h"
 #include "tags.h"

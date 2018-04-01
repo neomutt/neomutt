@@ -52,6 +52,7 @@
 #include "mutt_socket.h"
 #include "mx.h"
 #include "options.h"
+#include "progress.h"
 #include "protos.h"
 #include "tags.h"
 #ifdef USE_HCACHE

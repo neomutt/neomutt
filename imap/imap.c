@@ -60,6 +60,7 @@
 #include "mx.h"
 #include "options.h"
 #include "pattern.h"
+#include "progress.h"
 #include "protos.h"
 #include "sort.h"
 #include "tags.h"
