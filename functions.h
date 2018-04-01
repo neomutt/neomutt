@@ -436,6 +436,7 @@ const struct Binding OpCompose[] = { /* map: compose */
 #endif
   { "edit-from",             OP_COMPOSE_EDIT_FROM,           "\033f" },
   { "edit-headers",          OP_COMPOSE_EDIT_HEADERS,        "E" },
+  { "edit-language",         OP_COMPOSE_EDIT_LANGUAGE,       "\014" },
   { "edit-message",          OP_COMPOSE_EDIT_MESSAGE,        "e" },
   { "edit-mime",             OP_COMPOSE_EDIT_MIME,           "m" },
 #ifdef USE_NNTP
@@ -452,6 +453,7 @@ const struct Binding OpCompose[] = { /* map: compose */
   { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006" },
   { "get-attachment",        OP_COMPOSE_GET_ATTACHMENT,      "G" },
   { "group-alternatives",    OP_COMPOSE_GROUP_ALTS,          "&" },
+  { "group-multilingual",    OP_COMPOSE_GROUP_LINGUAL,       "^" },
   { "ispell",                OP_COMPOSE_ISPELL,              "i" },
 #ifdef MIXMASTER
   { "mix",                   OP_COMPOSE_MIX,                 "M" },

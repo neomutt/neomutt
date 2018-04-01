@@ -355,6 +355,9 @@ int mutt_write_mime_header(struct Body *a, FILE *f)
 
   fputc('\n', f);
 
+  if (a->language)
+    fprintf(f, "Content-Language: %s\n", a->language);
+
   if (a->description)
     fprintf(f, "Content-Description: %s\n", a->description);
 

@@ -1189,7 +1189,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
   struct Body *b = NULL;
   bool mustfree = false;
   int rc = 0;
-  struct Body *first_multilingual_part = NULL;
+  struct Body *first_part = NULL;
   struct Body *zxx_part = NULL;
   char *lang;
 
@@ -1226,8 +1226,8 @@ static int multilingual_handler(struct Body *a, struct State *s)
     {
       if (mutt_can_decode(b))
       {
-        if (b->language && !first_multilingual_part)
-          first_multilingual_part = b;
+        if (!first_part)
+          first_part = b;
 
         if (b->language && (mutt_str_strcmp("zxx", b->language) == 0))
           zxx_part = b;
@@ -1264,7 +1264,7 @@ static int multilingual_handler(struct Body *a, struct State *s)
     if (zxx_part)
       mutt_body_handler(zxx_part, s);
     else
-      mutt_body_handler(first_multilingual_part, s);
+      mutt_body_handler(first_part, s);
   }
 
   if (mustfree)
