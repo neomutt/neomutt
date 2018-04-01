@@ -1146,6 +1146,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
             for (int j = i; j < actx->idxlen - 1; j++)
             {
               actx->idx[j] = actx->idx[j + 1];
+              actx->idx[j + 1] = NULL; /* for debug reason */
             }
             actx->idxlen--;
           }
@@ -1159,15 +1160,15 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         group->next = NULL;
         mutt_generate_boundary(&group->parameter);
 
-        struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
-        gptr->content = group;
-        update_idx(menu, actx, gptr);
-
         /* if no group desc yet, make one up */
         if (!group->description)
           group->description = mutt_str_strdup("unknown alternative group");
+
+        struct AttachPtr *gptr = mutt_mem_calloc(1, sizeof(struct AttachPtr));
+        gptr->content = group;
+        update_idx(menu, actx, gptr);
       }
-        menu->redraw = 1;
+        menu->redraw = REDRAW_INDEX;
         break;
 
       case OP_COMPOSE_ATTACH_FILE:
