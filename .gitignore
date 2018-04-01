@@ -24,7 +24,6 @@ hcache/hcversion.h
 neomutt
 pgpewrap
 pgpring
-txt2c
 test/neomutt-test
 
 # ./configure
