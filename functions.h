@@ -202,7 +202,7 @@ const struct Binding OpMain[] = { /* map: index */
   { "save-message",              OP_SAVE,                           "s" },
   { "set-flag",                  OP_MAIN_SET_FLAG,                  "w" },
   { "show-limit",                OP_MAIN_SHOW_LIMIT,                "\033l" },
-  { "show-messages",             OP_SHOW_MESSAGES,                  "M" },
+  { "show-log-messages",         OP_SHOW_LOG_MESSAGES,              "M" },
   { "show-version",              OP_VERSION,                        "V" },
 #ifdef USE_SIDEBAR
   { "sidebar-next",              OP_SIDEBAR_NEXT,                   NULL },

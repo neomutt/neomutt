@@ -1408,7 +1408,7 @@ int mutt_index_menu(void)
         break;
 #endif /* USE_POP */
 
-      case OP_SHOW_MESSAGES:
+      case OP_SHOW_LOG_MESSAGES:
       {
         char tempfile[PATH_MAX];
         mutt_mktemp(tempfile, sizeof(tempfile));
