@@ -1367,7 +1367,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
     if (examine_directory(NULL, &state, LastDir, prefix) == -1)
       goto bail;
   }
-  menu = mutt_new_menu(MENU_FOLDER);
+  menu = mutt_menu_new(MENU_FOLDER);
   menu->make_entry = folder_entry;
   menu->search = select_file_search;
   menu->title = title;
@@ -1390,7 +1390,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
                                  OPT_NEWS ? FolderNewsHelp :
 #endif
                                             FolderHelp);
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   init_menu(&state, menu, title, sizeof(title), buffy);
 
@@ -2202,7 +2202,7 @@ bail:
 
   if (menu)
   {
-    mutt_pop_current_menu(menu);
+    mutt_menu_pop_current(menu);
     mutt_menu_destroy(&menu);
   }
 

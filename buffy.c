@@ -444,7 +444,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
   if ((orig_new != tmp->new) || (orig_count != tmp->msg_count) ||
       (orig_unread != tmp->msg_unread) || (orig_flagged != tmp->msg_flagged))
   {
-    mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
   }
 #endif
 

@@ -544,12 +544,12 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PGP, OP_HELP);
   strcat(helpstr, buf);
 
-  menu = mutt_new_menu(MENU_PGP);
+  menu = mutt_menu_new(MENU_PGP);
   menu->max = i;
   menu->make_entry = pgp_entry;
   menu->help = helpstr;
   menu->data = KeyTable;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   if (p)
     snprintf(buf, sizeof(buf), _("PGP keys matching <%s>."), p->mailbox);
@@ -670,7 +670,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   FREE(&KeyTable);
 

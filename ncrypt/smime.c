@@ -422,13 +422,13 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   strcat(helpstr, buf);
 
   /* Create the menu */
-  menu = mutt_new_menu(MENU_SMIME);
+  menu = mutt_menu_new(MENU_SMIME);
   menu->max = table_index;
   menu->make_entry = smime_entry;
   menu->help = helpstr;
   menu->data = table;
   menu->title = title;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
   /* sorting keys might be done later - TODO */
 
   mutt_clear_error();
@@ -474,7 +474,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   FREE(&table);
 

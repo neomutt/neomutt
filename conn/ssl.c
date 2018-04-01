@@ -952,12 +952,12 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
   char helpstr[LONG_STRING];
   char buf[STRING];
   char title[STRING];
-  struct Menu *menu = mutt_new_menu(MENU_GENERIC);
+  struct Menu *menu = mutt_menu_new(MENU_GENERIC);
   int done, row;
   FILE *fp = NULL;
   int ALLOW_SKIP = 0; /**< All caps tells Coverity that this is effectively a preproc condition */
 
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   menu->max = mutt_array_size(part) * 2 + 10;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
@@ -1088,7 +1088,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
     }
   }
   OPT_IGNORE_MACRO_EVENTS = false;
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   mutt_debug(2, "done=%d\n", done);
   return (done == 2);

@@ -754,7 +754,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
         if ((inc->new != new) || (inc->msg_count != status->messages) ||
             (inc->msg_unread != status->unseen))
         {
-          mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+          mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
         }
 #endif
         inc->new = new;

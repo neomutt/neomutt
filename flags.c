@@ -316,7 +316,7 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int b
   {
     mutt_set_header_color(ctx, h);
 #ifdef USE_SIDEBAR
-    mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 #endif
   }
 

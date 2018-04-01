@@ -112,7 +112,7 @@ void mutt_need_hard_redraw(void)
 {
   keypad(stdscr, true);
   clearok(stdscr, true);
-  mutt_set_current_menu_redraw_full();
+  mutt_menu_set_current_redraw_full();
 }
 
 struct Event mutt_getch(void)
@@ -184,7 +184,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
       SigWinch = 0;
       mutt_resize_screen();
       clearok(stdscr, TRUE);
-      mutt_current_menu_redraw();
+      mutt_menu_current_redraw();
     }
     mutt_window_clearline(MuttMessageWindow, 0);
     SETCOLOR(MT_COLOR_PROMPT);
@@ -273,7 +273,7 @@ int mutt_yesorno(const char *msg, int def)
         SigWinch = 0;
         mutt_resize_screen();
         clearok(stdscr, TRUE);
-        mutt_current_menu_redraw();
+        mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)
       {
@@ -284,7 +284,7 @@ int mutt_yesorno(const char *msg, int def)
       if (prompt_lines != MuttMessageWindow->rows)
       {
         reflow_message_window_rows(prompt_lines);
-        mutt_current_menu_redraw();
+        mutt_menu_current_redraw();
       }
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
@@ -342,7 +342,7 @@ int mutt_yesorno(const char *msg, int def)
   if (MuttMessageWindow->rows != 1)
   {
     reflow_message_window_rows(1);
-    mutt_current_menu_redraw();
+    mutt_menu_current_redraw();
   }
   else
     mutt_window_clearline(MuttMessageWindow, 0);
@@ -618,9 +618,9 @@ void mutt_reflow_windows(void)
   }
 #endif
 
-  mutt_set_current_menu_redraw_full();
+  mutt_menu_set_current_redraw_full();
   /* the pager menu needs this flag set to recalc line_info */
-  mutt_set_current_menu_redraw(REDRAW_FLOW);
+  mutt_menu_set_current_redraw(REDRAW_FLOW);
 }
 
 static void reflow_message_window_rows(int mw_rows)
@@ -643,7 +643,7 @@ static void reflow_message_window_rows(int mw_rows)
 
   /* We don't also set REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */
-  mutt_set_current_menu_redraw_full();
+  mutt_menu_set_current_redraw_full();
 }
 
 int mutt_window_move(struct MuttWindow *win, int row, int col)
@@ -996,7 +996,7 @@ int mutt_multi_choice(char *prompt, char *letters)
         SigWinch = 0;
         mutt_resize_screen();
         clearok(stdscr, TRUE);
-        mutt_current_menu_redraw();
+        mutt_menu_current_redraw();
       }
       if (MuttMessageWindow->cols)
       {
@@ -1007,7 +1007,7 @@ int mutt_multi_choice(char *prompt, char *letters)
       if (prompt_lines != MuttMessageWindow->rows)
       {
         reflow_message_window_rows(prompt_lines);
-        mutt_current_menu_redraw();
+        mutt_menu_current_redraw();
       }
 
       SETCOLOR(MT_COLOR_PROMPT);
@@ -1049,7 +1049,7 @@ int mutt_multi_choice(char *prompt, char *letters)
   if (MuttMessageWindow->rows != 1)
   {
     reflow_message_window_rows(1);
-    mutt_current_menu_redraw();
+    mutt_menu_current_redraw();
   }
   else
     mutt_window_clearline(MuttMessageWindow, 0);

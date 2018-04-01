@@ -4233,12 +4233,12 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
   mutt_make_help(buf, sizeof(buf), _("Help"), menu_to_use, OP_HELP);
   strcat(helpstr, buf);
 
-  menu = mutt_new_menu(menu_to_use);
+  menu = mutt_menu_new(menu_to_use);
   menu->max = i;
   menu->make_entry = crypt_entry;
   menu->help = helpstr;
   menu->data = key_table;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   {
     const char *ts = NULL;
@@ -4345,7 +4345,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   FREE(&key_table);
 

@@ -192,13 +192,13 @@ static struct Header *select_msg(void)
   bool done = false;
   char helpstr[LONG_STRING];
 
-  struct Menu *menu = mutt_new_menu(MENU_POST);
+  struct Menu *menu = mutt_menu_new(MENU_POST);
   menu->make_entry = post_entry;
   menu->max = PostContext->msgcount;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_POST, PostponeHelp);
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * Sort variable may indicate something different.   Sorting has to be
@@ -245,7 +245,7 @@ static struct Header *select_msg(void)
   }
 
   Sort = orig_sort;
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }

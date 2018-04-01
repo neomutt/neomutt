@@ -919,7 +919,7 @@ int mutt_index_menu(void)
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = OPT_ATTACH_MSG;
 
-  menu = mutt_new_menu(MENU_MAIN);
+  menu = mutt_menu_new(MENU_MAIN);
   menu->make_entry = index_make_entry;
   menu->color = index_color;
   menu->current = ci_first_message();
@@ -930,7 +930,7 @@ int mutt_index_menu(void)
 #endif
                                                                      IndexHelp);
   menu->custom_menu_redraw = index_menu_redraw;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   if (!attach_msg)
     mutt_buffy_check(true); /* force the buffy check after we enter the folder */
@@ -2206,7 +2206,7 @@ int mutt_index_menu(void)
         int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
         /* If we are returning to the pager via an index menu redirection, we
-         * need to reset the menu->menu.  Otherwise mutt_pop_current_menu() will
+         * need to reset the menu->menu.  Otherwise mutt_menu_pop_current() will
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->menu = MENU_MAIN;
 
@@ -3385,7 +3385,7 @@ int mutt_index_menu(void)
       break;
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   return close;
 }

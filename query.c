@@ -326,14 +326,14 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
   {
     snprintf(title, sizeof(title), _("Query '%s'"), buf);
 
-    menu = mutt_new_menu(MENU_QUERY);
+    menu = mutt_menu_new(MENU_QUERY);
     menu->make_entry = query_entry;
     menu->search = query_search;
     menu->tag = query_tag;
     menu->title = title;
     char helpstr[LONG_STRING];
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-    mutt_push_current_menu(menu);
+    mutt_menu_push_current(menu);
 
     /* count the number of results */
     for (queryp = results; queryp; queryp = queryp->next)
@@ -380,15 +380,15 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               }
 
               menu->current = 0;
-              mutt_pop_current_menu(menu);
+              mutt_menu_pop_current(menu);
               mutt_menu_destroy(&menu);
-              menu = mutt_new_menu(MENU_QUERY);
+              menu = mutt_menu_new(MENU_QUERY);
               menu->make_entry = query_entry;
               menu->search = query_search;
               menu->tag = query_tag;
               menu->title = title;
               menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_QUERY, QueryHelp);
-              mutt_push_current_menu(menu);
+              mutt_menu_push_current(menu);
 
               /* count the number of results */
               for (queryp = results; queryp; queryp = queryp->next)
@@ -533,7 +533,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
 
     free_query(&results);
     FREE(&QueryTable);
-    mutt_pop_current_menu(menu);
+    mutt_menu_pop_current(menu);
     mutt_menu_destroy(&menu);
   }
 }
