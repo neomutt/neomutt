@@ -43,6 +43,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -3276,7 +3277,7 @@ int mutt_index_menu(void)
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         SidebarVisible = !SidebarVisible;
-        mutt_reflow_windows();
+        mutt_window_reflow();
         break;
 
       case OP_SIDEBAR_TOGGLE_VIRTUAL:

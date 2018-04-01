@@ -50,6 +50,7 @@
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "mx.h"
 #include "myvar.h"
 #include "ncrypt/ncrypt.h"
@@ -1967,7 +1968,7 @@ static void restore_default(struct Option *p)
   if (p->flags & R_TREE)
     OPT_REDRAW_TREE = true;
   if (p->flags & R_REFLOW)
-    mutt_reflow_windows();
+    mutt_window_reflow();
 #ifdef USE_SIDEBAR
   if (p->flags & R_SIDEBAR)
     mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
@@ -2715,7 +2716,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       if (MuttVars[idx].flags & R_TREE)
         OPT_REDRAW_TREE = true;
       if (MuttVars[idx].flags & R_REFLOW)
-        mutt_reflow_windows();
+        mutt_window_reflow();
 #ifdef USE_SIDEBAR
       if (MuttVars[idx].flags & R_SIDEBAR)
         mutt_menu_set_current_redraw(REDRAW_SIDEBAR);

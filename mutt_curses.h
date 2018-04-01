@@ -226,48 +226,6 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
  * was initialized with positive size, otherwise no percentage is shown */
 void mutt_progress_update(struct Progress *progress, long pos, int percent);
 
-/**
- * struct MuttWindow - A division of the screen
- *
- * Windows for different parts of the screen
- */
-struct MuttWindow
-{
-  int rows;
-  int cols;
-  int row_offset;
-  int col_offset;
-};
-
-extern struct MuttWindow *MuttHelpWindow;
-extern struct MuttWindow *MuttIndexWindow;
-extern struct MuttWindow *MuttStatusWindow;
-extern struct MuttWindow *MuttMessageWindow;
-#ifdef USE_SIDEBAR
-extern struct MuttWindow *MuttSidebarWindow;
-#endif
-
-void mutt_init_windows(void);
-void mutt_free_windows(void);
-void mutt_reflow_windows(void);
-int mutt_window_move(struct MuttWindow *win, int row, int col);
-int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch);
-int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str);
-int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...);
-void mutt_window_clrtoeol(struct MuttWindow *win);
-void mutt_window_clearline(struct MuttWindow *win, int row);
-void mutt_window_getyx(struct MuttWindow *win, int *y, int *x);
-
-static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
-{
-  if (wrap < 0)
-    return win->cols > -wrap ? win->cols + wrap : win->cols;
-  else if (wrap)
-    return wrap < win->cols ? wrap : win->cols;
-  else
-    return win->cols;
-}
-
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];

@@ -43,6 +43,7 @@
 #include "mutt_account.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
+#include "mutt_window.h"
 #include "mx.h"
 #include "nntp.h"
 #include "options.h"

@@ -34,6 +34,7 @@
 #include "globals.h"
 #include "header.h"
 #include "mutt_curses.h"
+#include "mutt_window.h"
 #include "options.h"
 #include "protos.h"
 #include "state.h"

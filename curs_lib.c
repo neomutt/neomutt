@@ -46,6 +46,7 @@
 #include "header.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pager.h"
@@ -75,16 +76,6 @@ static struct Event *MacroEvents;
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
 static struct Event *UngetKeyEvents;
-
-struct MuttWindow *MuttHelpWindow = NULL;
-struct MuttWindow *MuttIndexWindow = NULL;
-struct MuttWindow *MuttStatusWindow = NULL;
-struct MuttWindow *MuttMessageWindow = NULL;
-#ifdef USE_SIDEBAR
-struct MuttWindow *MuttSidebarWindow = NULL;
-#endif
-
-static void reflow_message_window_rows(int mw_rows);
 
 void mutt_refresh(void)
 {
@@ -191,7 +182,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
     addstr((char *) field); /* cast to get around bad prototypes */
     NORMAL_COLOR;
     mutt_refresh();
-    mutt_window_getyx(MuttMessageWindow, NULL, &x);
+    mutt_window_getxy(MuttMessageWindow, &x, NULL);
     ret = mutt_enter_string_full(buf, buflen, x, complete, multiple, files, numfiles, es);
   } while (ret == 1);
   mutt_window_clearline(MuttMessageWindow, 0);
@@ -283,7 +274,7 @@ int mutt_yesorno(const char *msg, int def)
       }
       if (prompt_lines != MuttMessageWindow->rows)
       {
-        reflow_message_window_rows(prompt_lines);
+        mutt_window_reflow_message_rows(prompt_lines);
         mutt_menu_current_redraw();
       }
 
@@ -341,7 +332,7 @@ int mutt_yesorno(const char *msg, int def)
 
   if (MuttMessageWindow->rows != 1)
   {
-    reflow_message_window_rows(1);
+    mutt_window_reflow_message_rows(1);
     mutt_menu_current_redraw();
   }
   else
@@ -549,190 +540,6 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
 out:
   if (pos >= progress->size)
     mutt_clear_error();
-}
-
-void mutt_init_windows(void)
-{
-  MuttHelpWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttIndexWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttStatusWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-  MuttMessageWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-#ifdef USE_SIDEBAR
-  MuttSidebarWindow = mutt_mem_calloc(1, sizeof(struct MuttWindow));
-#endif
-}
-
-void mutt_free_windows(void)
-{
-  FREE(&MuttHelpWindow);
-  FREE(&MuttIndexWindow);
-  FREE(&MuttStatusWindow);
-  FREE(&MuttMessageWindow);
-#ifdef USE_SIDEBAR
-  FREE(&MuttSidebarWindow);
-#endif
-}
-
-void mutt_reflow_windows(void)
-{
-  if (OPT_NO_CURSES)
-    return;
-
-  mutt_debug(2, "entering\n");
-
-  MuttStatusWindow->rows = 1;
-  MuttStatusWindow->cols = COLS;
-  MuttStatusWindow->row_offset = StatusOnTop ? 0 : LINES - 2;
-  MuttStatusWindow->col_offset = 0;
-
-  memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(struct MuttWindow));
-  if (!Help)
-    MuttHelpWindow->rows = 0;
-  else
-    MuttHelpWindow->row_offset = StatusOnTop ? LINES - 2 : 0;
-
-  memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(struct MuttWindow));
-  MuttMessageWindow->row_offset = LINES - 1;
-
-  memcpy(MuttIndexWindow, MuttStatusWindow, sizeof(struct MuttWindow));
-  MuttIndexWindow->rows = MAX(
-      LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
-  MuttIndexWindow->row_offset =
-      StatusOnTop ? MuttStatusWindow->rows : MuttHelpWindow->rows;
-
-#ifdef USE_SIDEBAR
-  if (SidebarVisible)
-  {
-    memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
-    MuttSidebarWindow->cols = SidebarWidth;
-    MuttIndexWindow->cols -= SidebarWidth;
-
-    if (SidebarOnRight)
-    {
-      MuttSidebarWindow->col_offset = COLS - SidebarWidth;
-    }
-    else
-    {
-      MuttIndexWindow->col_offset += SidebarWidth;
-    }
-  }
-#endif
-
-  mutt_menu_set_current_redraw_full();
-  /* the pager menu needs this flag set to recalc line_info */
-  mutt_menu_set_current_redraw(REDRAW_FLOW);
-}
-
-static void reflow_message_window_rows(int mw_rows)
-{
-  MuttMessageWindow->rows = mw_rows;
-  MuttMessageWindow->row_offset = LINES - mw_rows;
-
-  MuttStatusWindow->row_offset = StatusOnTop ? 0 : LINES - mw_rows - 1;
-
-  if (Help)
-    MuttHelpWindow->row_offset = StatusOnTop ? LINES - mw_rows - 1 : 0;
-
-  MuttIndexWindow->rows = MAX(
-      LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
-
-#ifdef USE_SIDEBAR
-  if (SidebarVisible)
-    MuttSidebarWindow->rows = MuttIndexWindow->rows;
-#endif
-
-  /* We don't also set REDRAW_FLOW because this function only
-   * changes rows and is a temporary adjustment. */
-  mutt_menu_set_current_redraw_full();
-}
-
-int mutt_window_move(struct MuttWindow *win, int row, int col)
-{
-  return move(win->row_offset + row, win->col_offset + col);
-}
-
-int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch)
-{
-  return mvaddch(win->row_offset + row, win->col_offset + col, ch);
-}
-
-int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
-{
-  return mvaddstr(win->row_offset + row, win->col_offset + col, str);
-}
-
-#ifdef USE_SLANG_CURSES
-static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
-{
-  char buf[LONG_STRING];
-
-  (void) SLvsnprintf(buf, sizeof(buf), (char *) fmt, ap);
-  SLcurses_waddnstr(win, buf, -1);
-  return 0;
-}
-#endif
-
-int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
-{
-  int rc = mutt_window_move(win, row, col);
-  if (rc != ERR)
-  {
-    va_list ap;
-    va_start(ap, fmt);
-    rc = vw_printw(stdscr, fmt, ap);
-    va_end(ap);
-  }
-
-  return rc;
-}
-
-/**
- * mutt_window_clrtoeol - Clear to the end of the line
- *
- * Assumes the cursor has already been positioned within the window.
- */
-void mutt_window_clrtoeol(struct MuttWindow *win)
-{
-  if (!win || !stdscr)
-    return;
-
-  if (win->col_offset + win->cols == COLS)
-    clrtoeol();
-  else
-  {
-    int row, col;
-    getyx(stdscr, row, col);
-    int curcol = col;
-    while (curcol < win->col_offset + win->cols)
-    {
-      addch(' ');
-      curcol++;
-    }
-    move(row, col);
-  }
-}
-
-void mutt_window_clearline(struct MuttWindow *win, int row)
-{
-  mutt_window_move(win, row, 0);
-  mutt_window_clrtoeol(win);
-}
-
-/**
- * mutt_window_getyx - Get the cursor position in the window
- *
- * Assumes the current position is inside the window.  Otherwise it will
- * happily return negative or values outside the window boundaries
- */
-void mutt_window_getyx(struct MuttWindow *win, int *y, int *x)
-{
-  int row, col;
-
-  getyx(stdscr, row, col);
-  if (y)
-    *y = row - win->row_offset;
-  if (x)
-    *x = col - win->col_offset;
 }
 
 void mutt_show_error(void)
@@ -1006,7 +813,7 @@ int mutt_multi_choice(char *prompt, char *letters)
       }
       if (prompt_lines != MuttMessageWindow->rows)
       {
-        reflow_message_window_rows(prompt_lines);
+        mutt_window_reflow_message_rows(prompt_lines);
         mutt_menu_current_redraw();
       }
 
@@ -1048,7 +855,7 @@ int mutt_multi_choice(char *prompt, char *letters)
   }
   if (MuttMessageWindow->rows != 1)
   {
-    reflow_message_window_rows(1);
+    mutt_window_reflow_message_rows(1);
     mutt_menu_current_redraw();
   }
   else

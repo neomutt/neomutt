@@ -45,6 +45,7 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "ncrypt.h"
 #include "opcodes.h"
 #include "options.h"

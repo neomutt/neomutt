@@ -37,6 +37,7 @@
 #include "globals.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "mx.h"
 #include "opcodes.h"
 #include "options.h"

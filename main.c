@@ -49,6 +49,7 @@
 #include "mutt_curses.h"
 #include "mutt_logging.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "myvar.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
@@ -160,7 +161,7 @@ static int start_curses(void)
   meta(stdscr, true);
 #endif
   init_extended_keys();
-  mutt_reflow_windows();
+  mutt_window_reflow();
   return 0;
 }
 
@@ -509,7 +510,7 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Always create the mutt_windows because batch mode has some shared code
    * paths that end up referencing them. */
-  mutt_init_windows();
+  mutt_window_init();
 
   /* This must come before mutt_init() because curses needs to be started
    * before calling the init_pair() function to set the color scheme.  */
@@ -946,7 +947,7 @@ int main(int argc, char *argv[], char *envp[])
       FREE(&tempfile);
     }
 
-    mutt_free_windows();
+    mutt_window_free();
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
@@ -1048,7 +1049,7 @@ int main(int argc, char *argv[], char *envp[])
     log_queue_empty();
     mutt_log_stop();
     mutt_free_opts();
-    mutt_free_windows();
+    mutt_window_free();
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
   }

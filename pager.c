@@ -47,6 +47,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "mx.h"
 #include "ncrypt/ncrypt.h"
 #include "opcodes.h"
@@ -1774,7 +1775,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
   if (pager_menu->redraw & REDRAW_FULL)
   {
-    mutt_reflow_windows();
+    mutt_window_reflow();
     NORMAL_COLOR;
     /* clear() doesn't optimize screen redraws */
     move(0, 0);
@@ -2292,7 +2293,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       }
       else
       {
-        /* note: mutt_resize_screen() -> mutt_reflow_windows() sets
+        /* note: mutt_resize_screen() -> mutt_window_reflow() sets
          * REDRAW_FULL and REDRAW_FLOW */
         ch = 0;
       }
@@ -3237,7 +3238,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
         SidebarVisible = !SidebarVisible;
-        mutt_reflow_windows();
+        mutt_window_reflow();
         break;
 #endif
 

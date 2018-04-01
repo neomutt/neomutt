@@ -34,6 +34,7 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_window.h"
 #include "opcodes.h"
 #include "options.h"
 #include "pattern.h"
@@ -301,7 +302,7 @@ static void menu_pad_string(struct Menu *menu, char *buf, size_t buflen)
 
 void menu_redraw_full(struct Menu *menu)
 {
-  mutt_reflow_windows();
+  mutt_window_reflow();
   NORMAL_COLOR;
   /* clear() doesn't optimize screen redraws */
   move(0, 0);
