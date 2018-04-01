@@ -1044,7 +1044,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
     return NULL;
   }
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEMULTIPART;
   t->subtype = mutt_str_strdup("signed");
   t->encoding = ENC7BIT;
@@ -1065,7 +1065,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   t->parts = a;
   a = t;
 
-  t->parts->next = mutt_new_body();
+  t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPEAPPLICATION;
   if (use_smime)
@@ -1137,7 +1137,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
   if (!outfile)
     return NULL;
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEMULTIPART;
   t->subtype = mutt_str_strdup("encrypted");
   t->encoding = ENC7BIT;
@@ -1147,12 +1147,12 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol", "application/pgp-encrypted");
 
-  t->parts = mutt_new_body();
+  t->parts = mutt_body_new();
   t->parts->type = TYPEAPPLICATION;
   t->parts->subtype = mutt_str_strdup("pgp-encrypted");
   t->parts->encoding = ENC7BIT;
 
-  t->parts->next = mutt_new_body();
+  t->parts->next = mutt_body_new();
   t->parts->next->type = TYPEAPPLICATION;
   t->parts->next->subtype = mutt_str_strdup("octet-stream");
   t->parts->next->encoding = ENC7BIT;
@@ -1204,7 +1204,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
   if (!outfile)
     return NULL;
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
@@ -2135,7 +2135,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
     bb->offset = saved_b_offset;
     mutt_file_fclose(&tmpfp);
     rewind(*fpout);
-    mutt_free_body(cur);
+    mutt_body_free(cur);
     *cur = tmp_b;
   }
   return *cur ? 0 : -1;
@@ -2778,7 +2778,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
           s);
     }
 
-    mutt_free_body(&tattach);
+    mutt_body_free(&tattach);
     mutt_message(_("PGP message successfully decrypted."));
   }
   else
@@ -2862,7 +2862,7 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
                         s);
     }
 
-    mutt_free_body(&tattach);
+    mutt_body_free(&tattach);
   }
 
   mutt_file_fclose(&fpout);
@@ -4781,7 +4781,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   if (!tempf)
     goto bail;
 
-  att = mutt_new_body();
+  att = mutt_body_new();
   /* tempf is a newly allocated string, so this is correct: */
   att->filename = tempf;
   att->unlink = true;

@@ -701,7 +701,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   h->env = mutt_env_new();
   restore_envelope(h->env, d, &off, convert);
 
-  h->content = mutt_new_body();
+  h->content = mutt_body_new();
   restore_body(h->content, d, &off, convert);
 
   restore_char(&h->maildir_flags, d, &off, convert);

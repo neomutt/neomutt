@@ -586,7 +586,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       goto bail;
     }
 
-    mutt_free_body(&newhdr->content);
+    mutt_body_free(&newhdr->content);
     newhdr->content = b;
 
     mutt_clear_error();
@@ -609,7 +609,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
       newhdr->security |= APPLICATION_SMIME;
 
     /* destroy the signature */
-    mutt_free_body(&newhdr->content->parts->next);
+    mutt_body_free(&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart(newhdr->content);
   }
 
@@ -724,7 +724,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
 
     mutt_stamp_attachment(b);
 
-    mutt_free_body(&b->parts);
+    mutt_body_free(&b->parts);
     if (b->hdr)
       b->hdr->content = NULL; /* avoid dangling pointer */
   }
@@ -760,7 +760,7 @@ bail:
   if (rc == -1)
   {
     mutt_env_free(&newhdr->env);
-    mutt_free_body(&newhdr->content);
+    mutt_body_free(&newhdr->content);
   }
 
   return rc;

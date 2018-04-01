@@ -1227,7 +1227,7 @@ cleanup:
     return;
   }
   a->length = sb.st_size;
-  mutt_free_body(&a->parts);
+  mutt_body_free(&a->parts);
   a->hdr->content = NULL;
 }
 
@@ -1362,7 +1362,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   if (!fp)
     return NULL;
 
-  body = mutt_new_body();
+  body = mutt_body_new();
   body->type = TYPEMESSAGE;
   body->subtype = mutt_str_strdup("rfc822");
   body->filename = mutt_str_strdup(buffer);
@@ -1465,7 +1465,7 @@ struct Body *mutt_make_file_attach(const char *path)
   struct Body *att = NULL;
   struct Content *info = NULL;
 
-  att = mutt_new_body();
+  att = mutt_body_new();
   att->filename = mutt_str_strdup(path);
 
   if (MimeTypeQueryCommand && *MimeTypeQueryCommand && MimeTypeQueryFirst)
@@ -1485,7 +1485,7 @@ struct Body *mutt_make_file_attach(const char *path)
   info = mutt_get_content_info(path, att);
   if (!info)
   {
-    mutt_free_body(&att);
+    mutt_body_free(&att);
     return NULL;
   }
 
@@ -1554,7 +1554,7 @@ struct Body *mutt_make_multipart(struct Body *b)
 {
   struct Body *new = NULL;
 
-  new = mutt_new_body();
+  new = mutt_body_new();
   new->type = TYPEMULTIPART;
   new->subtype = mutt_str_strdup("mixed");
   new->encoding = get_toplevel_encoding(b);
@@ -1583,7 +1583,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
     t = b;
     b = b->parts;
     t->parts = NULL;
-    mutt_free_body(&t);
+    mutt_body_free(&t);
   }
   return b;
 }

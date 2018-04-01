@@ -2021,7 +2021,7 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
           if (b)
           {
             mutt_view_attachment(NULL, b, MUTT_REGULAR, NULL, NULL);
-            mutt_free_body(&b);
+            mutt_body_free(&b);
             menu->redraw = REDRAW_FULL;
           }
           else

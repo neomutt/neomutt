@@ -790,7 +790,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   mutt_file_fclose(&tempfp);
   mutt_file_fclose(&devnull);
 
-  att = mutt_new_body();
+  att = mutt_body_new();
   att->filename = mutt_str_strdup(tempf);
   att->unlink = true;
   att->use_disp = false;

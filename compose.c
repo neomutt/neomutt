@@ -507,7 +507,7 @@ static int delete_attachment(struct AttachCtx *actx, int x)
 
   idx[rindex]->content->next = NULL;
   idx[rindex]->content->parts = NULL;
-  mutt_free_body(&(idx[rindex]->content));
+  mutt_body_free(&(idx[rindex]->content));
   FREE(&idx[rindex]->tree);
   FREE(&idx[rindex]);
   for (; rindex < actx->idxlen - 1; rindex++)
@@ -1535,7 +1535,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
               /* avoid freeing other attachments */
               actx->idx[i]->content->next = NULL;
               actx->idx[i]->content->parts = NULL;
-              mutt_free_body(&actx->idx[i]->content);
+              mutt_body_free(&actx->idx[i]->content);
             }
           }
           r = -1;

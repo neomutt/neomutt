@@ -359,7 +359,7 @@ static struct Body **copy_problematic_attachments(struct Body **last,
   {
     if (actx->idx[i]->content->tagged && (force || !mutt_can_decode(actx->idx[i]->content)))
     {
-      if (mutt_copy_body(actx->idx[i]->fp, last, actx->idx[i]->content) == -1)
+      if (mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->content) == -1)
         return NULL; /* XXXXX - may lead to crashes */
       last = &((*last)->next);
     }
@@ -497,7 +497,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     }
     else
     {
-      if (mutt_copy_body(fp, last, cur) == -1)
+      if (mutt_body_copy(fp, last, cur) == -1)
         goto bail;
     }
   }
@@ -640,14 +640,14 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   {
     last = &tmphdr->content;
     if (cur)
-      mutt_copy_body(fp, last, cur);
+      mutt_body_copy(fp, last, cur);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged)
         {
-          mutt_copy_body(actx->idx[i]->fp, last, actx->idx[i]->content);
+          mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->content);
           last = &((*last)->next);
         }
       }
@@ -910,7 +910,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
         state_putc('\n', &st);
       }
       else
-        mutt_copy_body(fp, &tmphdr->content, cur);
+        mutt_body_copy(fp, &tmphdr->content, cur);
     }
     else
     {

@@ -1381,7 +1381,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
      */
     if (!(flags & SENDDRAFTFILE))
     {
-      pbody = mutt_new_body();
+      pbody = mutt_body_new();
       pbody->next = msg->content; /* don't kill command-line attachments */
       msg->content = pbody;
 
@@ -2097,10 +2097,10 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       /* cleanup the second signature structures */
       if (save_content->parts)
       {
-        mutt_free_body(&save_content->parts->next);
+        mutt_body_free(&save_content->parts->next);
         save_content->parts = NULL;
       }
-      mutt_free_body(&save_content);
+      mutt_body_free(&save_content);
 
       /* restore old signature and attachments */
       msg->content->parts->next = save_sig;
@@ -2109,7 +2109,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     else if ((WithCrypto != 0) && save_content)
     {
       /* destroy the new encrypted body. */
-      mutt_free_body(&save_content);
+      mutt_body_free(&save_content);
     }
   }
 
@@ -2127,12 +2127,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       else if ((msg->security & ENCRYPT) ||
                ((msg->security & SIGN) && msg->content->type == TYPEAPPLICATION))
       {
-        mutt_free_body(&msg->content); /* destroy PGP data */
+        mutt_body_free(&msg->content); /* destroy PGP data */
         msg->content = clear_content;  /* restore clear text. */
       }
       else if ((msg->security & SIGN) && msg->content->type == TYPEMULTIPART)
       {
-        mutt_free_body(&msg->content->parts->next); /* destroy sig */
+        mutt_body_free(&msg->content->parts->next); /* destroy sig */
         msg->content = mutt_remove_multipart(msg->content);
       }
 
@@ -2163,7 +2163,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     FREE(&pgpkeylist);
 
   if ((WithCrypto != 0) && free_clear_content)
-    mutt_free_body(&clear_content);
+    mutt_body_free(&clear_content);
 
   /* set 'replied' flag only if the user didn't change/remove
      In-Reply-To: and References: headers during edit */

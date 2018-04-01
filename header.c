@@ -359,7 +359,7 @@ void mutt_free_header(struct Header **h)
   if (!h || !*h)
     return;
   mutt_env_free(&(*h)->env);
-  mutt_free_body(&(*h)->content);
+  mutt_body_free(&(*h)->content);
   FREE(&(*h)->maildir_flags);
   FREE(&(*h)->tree);
   FREE(&(*h)->path);

@@ -416,7 +416,7 @@ static void parse_content_disposition(const char *s, struct Body *ct)
  */
 struct Body *mutt_read_mime_header(FILE *fp, int digest)
 {
-  struct Body *p = mutt_new_body();
+  struct Body *p = mutt_body_new();
   char *c = NULL;
   char *line = mutt_mem_malloc(LONG_STRING);
   size_t linelen = LONG_STRING;
@@ -638,7 +638,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 
         if (new->offset > end_off)
         {
-          mutt_free_body(&new);
+          mutt_body_free(&new);
           break;
         }
         if (head)
@@ -1161,7 +1161,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
   {
     if (!hdr->content)
     {
-      hdr->content = mutt_new_body();
+      hdr->content = mutt_body_new();
 
       /* set the defaults from RFC1521 */
       hdr->content->type = TYPETEXT;
@@ -1448,7 +1448,7 @@ int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
   hdr->attach_valid = true;
 
   if (!keep_parts)
-    mutt_free_body(&hdr->content->parts);
+    mutt_body_free(&hdr->content->parts);
 
   return hdr->attach_total;
 }

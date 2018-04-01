@@ -1818,7 +1818,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     h->lines = old_hdr_lines;
   }
 
-  mutt_free_body(&h->content->parts);
+  mutt_body_free(&h->content->parts);
   return rc;
 }
 

@@ -1007,7 +1007,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
 
         secured = !crypt_smime_decrypt_mime(outer_fp, &new_fp, outer_new_body, &new_body);
 
-        mutt_free_body(&outer_new_body);
+        mutt_body_free(&outer_new_body);
         mutt_file_fclose(&outer_fp);
       }
 

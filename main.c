@@ -804,7 +804,7 @@ int main(int argc, char *argv[], char *envp[])
          */
         context_hdr = mutt_new_header();
         context_hdr->offset = 0;
-        context_hdr->content = mutt_new_body();
+        context_hdr->content = mutt_body_new();
         if (fstat(fileno(fin), &st) != 0)
         {
           mutt_perror(draft_file);

@@ -1433,7 +1433,7 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
     return NULL;
   }
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-mime");
   mutt_param_set(&t->parameter, "name", "smime.p7m");
@@ -1583,7 +1583,7 @@ struct Body *smime_sign_message(struct Body *a)
     return NULL; /* fatal error while signing */
   }
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEMULTIPART;
   t->subtype = mutt_str_strdup("signed");
   t->encoding = ENC7BIT;
@@ -1601,7 +1601,7 @@ struct Body *smime_sign_message(struct Body *a)
   t->parts = a;
   a = t;
 
-  t->parts->next = mutt_new_body();
+  t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("x-pkcs7-signature");

@@ -1104,7 +1104,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
        * if the user accesses it later.
        */
       new_offset[i - first].body = ftello(fp) - ctx->hdrs[i]->content->length + offset;
-      mutt_free_body(&ctx->hdrs[i]->content->parts);
+      mutt_body_free(&ctx->hdrs[i]->content->parts);
 
       switch (ctx->magic)
       {
