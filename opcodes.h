@@ -218,7 +218,7 @@
   _fmt(OP_SEARCH_REVERSE,                 N_("search backwards for a regular expression")) \
   _fmt(OP_SEARCH_TOGGLE,                  N_("toggle search pattern coloring")) \
   _fmt(OP_SHELL_ESCAPE,                   N_("invoke a command in a subshell")) \
-  _fmt(OP_SHOW_MESSAGES,                  N_("show messages")) \
+  _fmt(OP_SHOW_MESSAGES,                  N_("show log (and debug) messages")) \
   _fmt(OP_SORT,                           N_("sort messages")) \
   _fmt(OP_SORT_REVERSE,                   N_("sort messages in reverse order")) \
   _fmt(OP_SUBSCRIBE_PATTERN,              N_("subscribe to newsgroups matching a pattern")) \
