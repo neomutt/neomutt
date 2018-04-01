@@ -46,7 +46,6 @@ WHERE char *ShortHostname;
 
 WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
 
-WHERE short TSSupported;
 WHERE char *Username;
 
 WHERE char *CurrentFolder;

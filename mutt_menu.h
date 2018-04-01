@@ -119,9 +119,6 @@ void menu_redraw_sidebar(struct Menu *menu);
 #endif
 void menu_redraw_status(struct Menu *menu);
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p);
-bool mutt_ts_capability(void);
-void mutt_ts_status(char *str);
-void mutt_ts_icon(char *str);
 void menu_top_page(struct Menu *menu);
 
 void         mutt_menu_current_redraw(void);

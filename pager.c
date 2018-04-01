@@ -53,6 +53,7 @@
 #include "options.h"
 #include "protos.h"
 #include "sort.h"
+#include "terminal.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -2017,7 +2018,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       mutt_draw_statusline(rd->pager_status_window->cols, bn, sizeof(bn));
     }
     NORMAL_COLOR;
-    if (TsEnabled && TSSupported && rd->index)
+    if (TsEnabled && TsSupported && rd->index)
     {
       menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(TSStatusFormat));
       mutt_ts_status(buffer);

@@ -70,7 +70,7 @@ NEOMUTTOBJS=	addrbook.o alias.o attach.o bcache.o body.o browser.o buffy.o \
 		postpone.o query.o recvattach.o recvcmd.o resize.o rfc1524.o \
 		rfc2047.o rfc2231.o rfc3676.o safe_asprintf.o score.o send.o \
 		sendlib.o sidebar.o smtp.o sort.o state.o status.o system.o \
-		tags.o thread.o url.o version.o
+		tags.o terminal.o thread.o url.o version.o
 
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o

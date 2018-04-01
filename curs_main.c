@@ -52,14 +52,8 @@
 #include "protos.h"
 #include "sort.h"
 #include "tags.h"
+#include "terminal.h"
 #include "thread.h"
-#ifdef HAVE_NCURSESW_NCURSES_H
-#include <ncursesw/term.h>
-#elif defined(HAVE_NCURSES_NCURSES_H)
-#include <ncurses/term.h>
-#elif !defined(USE_SLANG_CURSES)
-#include <term.h>
-#endif
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -144,10 +138,6 @@ static const char *NoVisible = N_("No visible messages.");
 
 #define CAN_COLLAPSE(header)                                                   \
   ((CollapseUnread || !UNREAD(header)) && (CollapseFlagged || !FLAGGED(header)))
-
-/* de facto standard escapes for tsl/fsl */
-static char *tsl = "\033]0;";
-static char *fsl = "\007";
 
 /**
  * collapse/uncollapse all threads
@@ -519,77 +509,6 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
 }
 
 /**
- * mutt_ts_capability - Check terminal capabilities
- *
- * terminal status capability check. terminfo must have been initialized.
- */
-bool mutt_ts_capability(void)
-{
-  const char *term = mutt_str_getenv("TERM");
-  char *tcaps = NULL;
-#ifdef HAVE_USE_EXTENDED_NAMES
-  int tcapi;
-#endif
-  char **termp = NULL;
-  char *known[] = {
-    "color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
-    "putty",       "rxvt",   "screen", "xterm", NULL,
-  };
-
-  /* If tsl is set, then terminfo says that status lines work. */
-  tcaps = tigetstr("tsl");
-  if (tcaps && tcaps != (char *) -1 && *tcaps)
-  {
-    /* update the static defns of tsl/fsl from terminfo */
-    tsl = tcaps;
-
-    tcaps = tigetstr("fsl");
-    if (tcaps && tcaps != (char *) -1 && *tcaps)
-      fsl = tcaps;
-
-    return true;
-  }
-
-/* If XT (boolean) is set, then this terminal supports the standard escape. */
-/* Beware: tigetflag returns -1 if XT is invalid or not a boolean. */
-#ifdef HAVE_USE_EXTENDED_NAMES
-  use_extended_names(true);
-  tcapi = tigetflag("XT");
-  if (tcapi == 1)
-    return true;
-#endif /* HAVE_USE_EXTENDED_NAMES */
-
-  /* Check term types that are known to support the standard escape without
-   * necessarily asserting it in terminfo. */
-  for (termp = known; termp; termp++)
-  {
-    if (term && *termp && (mutt_str_strncasecmp(term, *termp, strlen(*termp)) != 0))
-      return true;
-  }
-
-  /* not supported */
-  return false;
-}
-
-void mutt_ts_status(char *str)
-{
-  /* If empty, do not set.  To clear, use a single space. */
-  if (str == NULL || *str == '\0')
-    return;
-  fprintf(stderr, "%s%s%s", tsl, str, fsl);
-}
-
-void mutt_ts_icon(char *str)
-{
-  /* If empty, do not set.  To clear, use a single space. */
-  if (str == NULL || *str == '\0')
-    return;
-
-  /* icon setting is not supported in terminfo, so hardcode the escape - yuck */
-  fprintf(stderr, "\033]1;%s\007", str);
-}
-
-/**
  * index_make_entry - Format a menu item for the index list
  * @param[out] buf    Buffer in which to save string
  * @param[in]  buflen Buffer length
@@ -883,7 +802,7 @@ static void index_menu_redraw(struct Menu *menu)
     mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
     NORMAL_COLOR;
     menu->redraw &= ~REDRAW_STATUS;
-    if (TsEnabled && TSSupported)
+    if (TsEnabled && TsSupported)
     {
       menu_status_line(buf, sizeof(buf), menu, NONULL(TSStatusFormat));
       mutt_ts_status(buf);

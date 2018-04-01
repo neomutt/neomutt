@@ -53,6 +53,7 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
+#include "terminal.h"
 #include "url.h"
 #include "version.h"
 #ifdef ENABLE_NLS
@@ -524,7 +525,7 @@ int main(int argc, char *argv[], char *envp[])
       goto main_curses; // TEST08: can't test -- fake term?
 
     /* check whether terminal status is supported (must follow curses init) */
-    TSSupported = mutt_ts_capability();
+    TsSupported = mutt_ts_capability();
   }
 
   /* set defaults and read init files */
