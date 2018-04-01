@@ -544,7 +544,7 @@ struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent)
 {
   struct Body *msg = NULL;
 
-  parent->hdr = mutt_new_header();
+  parent->hdr = mutt_header_new();
   parent->hdr->offset = ftello(fp);
   parent->hdr->env = mutt_read_rfc822_header(fp, parent->hdr, 0, 0);
   msg = parent->hdr->content;

@@ -118,8 +118,9 @@ struct Header
   char *maildir_flags; /**< unknown maildir flags */
 };
 
+void           mutt_header_free(struct Header **h);
+struct Header *mutt_header_new(void);
+
 int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
-struct Header *mutt_new_header(void);
-void mutt_free_header(struct Header **h);
 
 #endif /* _MUTT_HEADER_H */

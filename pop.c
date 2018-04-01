@@ -186,7 +186,7 @@ static int fetch_uidl(char *line, void *data)
       mx_alloc_memory(ctx);
 
     ctx->msgcount++;
-    ctx->hdrs[i] = mutt_new_header();
+    ctx->hdrs[i] = mutt_header_new();
     ctx->hdrs[i]->data = mutt_str_strdup(line);
   }
   else if (ctx->hdrs[i]->index != index - 1)
@@ -340,7 +340,7 @@ static int pop_fetch_headers(struct Context *ctx)
          */
         struct Header *h = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
-        mutt_free_header(&ctx->hdrs[i]);
+        mutt_header_free(&ctx->hdrs[i]);
         ctx->hdrs[i] = h;
         ctx->hdrs[i]->refno = refno;
         ctx->hdrs[i]->index = index;
@@ -403,7 +403,7 @@ static int pop_fetch_headers(struct Context *ctx)
   if (ret < 0)
   {
     for (int i = ctx->msgcount; i < new_count; i++)
-      mutt_free_header(&ctx->hdrs[i]);
+      mutt_header_free(&ctx->hdrs[i]);
     return ret;
   }
 

@@ -859,7 +859,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           continue;
         }
 
-        ctx->hdrs[idx] = mutt_new_header();
+        ctx->hdrs[idx] = mutt_header_new();
 
         idata->max_msn = MAX(idata->max_msn, h.data->msn);
         idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];

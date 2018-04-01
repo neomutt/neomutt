@@ -354,7 +354,7 @@ void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
     label_ref_dec(ctx, hdr->env->x_label);
 }
 
-void mutt_free_header(struct Header **h)
+void mutt_header_free(struct Header **h)
 {
   if (!h || !*h)
     return;
@@ -375,7 +375,7 @@ void mutt_free_header(struct Header **h)
   FREE(h);
 }
 
-struct Header *mutt_new_header(void)
+struct Header *mutt_header_new(void)
 {
   struct Header *h = mutt_mem_calloc(1, sizeof(struct Header));
 #ifdef MIXMASTER

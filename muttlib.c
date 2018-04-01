@@ -213,12 +213,12 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         alias = mutt_lookup_alias(s + 1);
         if (alias)
         {
-          h = mutt_new_header();
+          h = mutt_header_new();
           h->env = mutt_env_new();
           h->env->from = h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
           h->env->from = h->env->to = NULL;
-          mutt_free_header(&h);
+          mutt_header_free(&h);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
             recurse = true;

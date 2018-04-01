@@ -538,7 +538,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   mutt_hash_destroy(&ctx->label_hash);
   mutt_clear_threads(ctx);
   for (int i = 0; i < ctx->msgcount; i++)
-    mutt_free_header(&ctx->hdrs[i]);
+    mutt_header_free(&ctx->hdrs[i]);
   FREE(&ctx->hdrs);
   FREE(&ctx->v2r);
   FREE(&ctx->path);
@@ -982,7 +982,7 @@ void mx_update_tables(struct Context *ctx, bool committing)
        */
       if (ctx->last_tag == ctx->hdrs[i])
         ctx->last_tag = NULL;
-      mutt_free_header(&ctx->hdrs[i]);
+      mutt_header_free(&ctx->hdrs[i]);
     }
   }
   ctx->msgcount = j;

@@ -110,7 +110,7 @@ void mutt_hcache_free(header_cache_t *h, void **data);
  * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
  * @retval Pointer to the restored header (cannot be NULL)
  * @note The returned Header must be free'd by caller code with
- *       mutt_free_header().
+ *       mutt_header_free().
  */
 struct Header *mutt_hcache_restore(const unsigned char *d);
 

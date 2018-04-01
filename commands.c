@@ -1027,7 +1027,7 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     structure_changed = 1;
     b->hdr->content = NULL;
-    mutt_free_header(&b->hdr);
+    mutt_header_free(&b->hdr);
   }
 
   if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))

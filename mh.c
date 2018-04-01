@@ -672,7 +672,7 @@ static void maildir_free_entry(struct Maildir **md)
 
   FREE(&(*md)->canon_fname);
   if ((*md)->h)
-    mutt_free_header(&(*md)->h);
+    mutt_header_free(&(*md)->h);
 
   FREE(md);
 }
@@ -783,7 +783,7 @@ struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname,
   struct stat st;
 
   if (!h)
-    h = mutt_new_header();
+    h = mutt_header_new();
   h->env = mutt_read_rfc822_header(f, h, 0, 0);
 
   fstat(fileno(f), &st);
@@ -863,7 +863,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
     /* FOO - really ignore the return value? */
     mutt_debug(2, "queueing %s\n", de->d_name);
 
-    h = mutt_new_header();
+    h = mutt_header_new();
     h->old = is_old;
     if (ctx->magic == MUTT_MAILDIR)
       maildir_parse_flags(h, de->d_name);
@@ -1197,7 +1197,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
       struct Header *h = mutt_hcache_restore((unsigned char *) data);
       h->old = p->h->old;
       h->path = mutt_str_strdup(p->h->path);
-      mutt_free_header(&p->h);
+      mutt_header_free(&p->h);
       p->h = h;
       if (ctx->magic == MUTT_MAILDIR)
         maildir_parse_flags(p->h, fn);
@@ -1224,7 +1224,7 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
 #endif
       }
       else
-        mutt_free_header(&p->h);
+        mutt_header_free(&p->h);
 #ifdef USE_HCACHE
     }
     mutt_hcache_free(hc, &data);
@@ -2134,7 +2134,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
       ctx->hdrs[i]->trash = p->h->trash;
 
       /* this is a duplicate of an existing header, so remove it */
-      mutt_free_header(&p->h);
+      mutt_header_free(&p->h);
     }
     /* This message was not in the list of messages we just scanned.
      * Check to see if we have enough information to know if the
@@ -2276,7 +2276,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
         if (maildir_update_flags(ctx, ctx->hdrs[i], p->h))
           flags_changed = true;
 
-      mutt_free_header(&p->h);
+      mutt_header_free(&p->h);
     }
     else /* message has disappeared */
       occult = true;

@@ -1020,7 +1020,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q,
   }
   if (init_header(h, newpath ? newpath : path, msg) != 0)
   {
-    mutt_free_header(&h);
+    mutt_header_free(&h);
     mutt_debug(1, "nm: failed to append header!\n");
     goto done;
   }

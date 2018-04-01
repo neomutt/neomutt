@@ -1170,7 +1170,7 @@ static void fix_end_of_file(const char *data)
 
 int mutt_compose_to_sender(struct Header *hdr)
 {
-  struct Header *msg = mutt_new_header();
+  struct Header *msg = mutt_header_new();
 
   msg->env = mutt_env_new();
   if (!hdr)
@@ -1189,11 +1189,11 @@ int mutt_compose_to_sender(struct Header *hdr)
 
 int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
 {
-  struct Header *msg = mutt_new_header();
+  struct Header *msg = mutt_header_new();
 
   if (mutt_prepare_template(fp, ctx, msg, cur, 1) < 0)
   {
-    mutt_free_header(&msg);
+    mutt_header_free(&msg);
     return -1;
   }
 
@@ -1326,7 +1326,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
   if (!msg)
   {
-    msg = mutt_new_header();
+    msg = mutt_header_new();
 
     if (flags == SENDPOSTPONED)
     {
@@ -2203,7 +2203,7 @@ cleanup:
 
   mutt_file_fclose(&tempfp);
   if (!(flags & SENDNOFREEHEADER))
-    mutt_free_header(&msg);
+    mutt_header_free(&msg);
 
   FREE(&finalpath);
   return rc;

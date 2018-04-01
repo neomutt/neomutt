@@ -145,7 +145,7 @@ void mutt_body_free(struct Body **p)
     {
       /* Don't free twice (b->hdr->content = b->parts) */
       b->hdr->content = NULL;
-      mutt_free_header(&b->hdr);
+      mutt_header_free(&b->hdr);
     }
 
     if (b->parts)

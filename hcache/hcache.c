@@ -686,7 +686,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
 struct Header *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  struct Header *h = mutt_new_header();
+  struct Header *h = mutt_header_new();
   bool convert = !CharsetIsUtf8;
 
   /* skip validate */

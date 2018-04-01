@@ -955,7 +955,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     m->encoding = saved_encoding;
     if (saved_parts)
     {
-      mutt_free_header(&m->hdr);
+      mutt_header_free(&m->hdr);
       m->parts = saved_parts;
       m->hdr = saved_hdr;
     }
