@@ -2771,9 +2771,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_CREATE_ALIAS:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         if (IsMsgAttach(extra))
-          mutt_create_alias(extra->bdy->hdr->env, NULL);
+          mutt_alias_create(extra->bdy->hdr->env, NULL);
         else
-          mutt_create_alias(extra->hdr->env, NULL);
+          mutt_alias_create(extra->hdr->env, NULL);
         break;
 
       case OP_PURGE_MESSAGE:

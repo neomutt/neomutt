@@ -210,7 +210,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         struct Header *h = NULL;
         struct Address *alias = NULL;
 
-        alias = mutt_lookup_alias(s + 1);
+        alias = mutt_alias_lookup(s + 1);
         if (alias)
         {
           h = mutt_header_new();

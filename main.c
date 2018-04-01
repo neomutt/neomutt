@@ -596,7 +596,7 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      a = mutt_lookup_alias(np->data);
+      a = mutt_alias_lookup(np->data);
       if (a)
       {
         /* output in machine-readable form */

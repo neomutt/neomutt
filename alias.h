@@ -41,11 +41,12 @@ struct Alias
   short num;
 };
 
-struct Address *mutt_lookup_alias(const char *s);
+void            mutt_alias_create(struct Envelope *cur, struct Address *iaddr);
+void            mutt_alias_free(struct Alias **p);
+struct Address *mutt_alias_lookup(const char *s);
+
 struct Address *mutt_expand_aliases(struct Address *a);
 void mutt_expand_aliases_env(struct Envelope *env);
 struct Address *mutt_get_address(struct Envelope *env, char **pfxp);
-void mutt_create_alias(struct Envelope *cur, struct Address *iaddr);
-void mutt_free_alias(struct Alias **p);
 
 #endif /* _MUTT_ALIAS_H */

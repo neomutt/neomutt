@@ -441,13 +441,13 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               }
             }
 
-            mutt_create_alias(NULL, naddr);
+            mutt_alias_create(NULL, naddr);
             mutt_addr_free(&naddr);
           }
           else
           {
             struct Address *a = result_to_addr(QueryTable[menu->current].data);
-            mutt_create_alias(NULL, a);
+            mutt_alias_create(NULL, a);
             mutt_addr_free(&a);
           }
           break;

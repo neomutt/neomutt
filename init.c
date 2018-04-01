@@ -1660,7 +1660,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
         mutt_set_current_menu_redraw_full();
       }
       else
-        mutt_free_alias(&Aliases);
+        mutt_alias_free(&Aliases);
       break;
     }
     else
@@ -1681,7 +1681,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
           else
             Aliases = tmp->next;
           tmp->next = NULL;
-          mutt_free_alias(&tmp);
+          mutt_alias_free(&tmp);
           break;
         }
         last = tmp;
