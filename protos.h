@@ -178,7 +178,6 @@ void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_free_color(int fg, int bg);
-void mutt_free_enter_state(struct EnterState **esp);
 void mutt_help(int menu);
 void mutt_check_lookup_list(struct Body *b, char *type, size_t len);
 void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out);

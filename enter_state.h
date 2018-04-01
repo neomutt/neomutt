@@ -39,7 +39,9 @@ struct EnterState
   int tabs;
 };
 
-static inline struct EnterState *mutt_new_enter_state(void)
+void mutt_enter_state_free(struct EnterState **esp);
+
+static inline struct EnterState *mutt_enter_state_new(void)
 {
   return mutt_mem_calloc(1, sizeof(struct EnterState));
 }

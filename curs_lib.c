@@ -175,7 +175,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
   int ret;
   int x;
 
-  struct EnterState *es = mutt_new_enter_state();
+  struct EnterState *es = mutt_enter_state_new();
 
   do
   {
@@ -195,7 +195,7 @@ int mutt_get_field_full(const char *field, char *buf, size_t buflen,
     ret = mutt_enter_string_full(buf, buflen, x, complete, multiple, files, numfiles, es);
   } while (ret == 1);
   mutt_window_clearline(MuttMessageWindow, 0);
-  mutt_free_enter_state(&es);
+  mutt_enter_state_free(&es);
 
   return ret;
 }
