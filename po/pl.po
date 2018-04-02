@@ -161,12 +161,12 @@ msgstr "Nie można utworzyć filtra"
 #: attach.c:513
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---Polecenie: %-20.20s Opis: %s"
 
 #: attach.c:516
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---Polecenie: %-30.30s Załącznik: %s"
 
 #: attach.c:595
 #, c-format
@@ -634,42 +634,42 @@ msgstr "Brak załączników."
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:110
 msgid "From: "
-msgstr ""
+msgstr "Od: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:112 send.c:255
 msgid "To: "
-msgstr ""
+msgstr "Do: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:114 send.c:257
 msgid "Cc: "
-msgstr ""
+msgstr "Kopia: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:116 send.c:259
 msgid "Bcc: "
-msgstr ""
+msgstr "Ukryta kopia: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:118 compose.c:935 send.c:291
 msgid "Subject: "
-msgstr ""
+msgstr "Temat: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:120
 msgid "Reply-To: "
-msgstr ""
+msgstr "Odpowiedź do:"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:952
 msgid "Fcc: "
-msgstr ""
+msgstr "Zapisz w: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:125
 msgid "Mix: "
-msgstr ""
+msgstr "Mix: "
 
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:128
@@ -716,17 +716,17 @@ msgstr "Anuluj"
 #. L10N: compose menu help line entry
 #: compose.c:153
 msgid "To"
-msgstr ""
+msgstr "Adresat"
 
 #. L10N: compose menu help line entry
 #: compose.c:155
 msgid "CC"
-msgstr ""
+msgstr "Kopia"
 
 #. L10N: compose menu help line entry
 #: compose.c:157 compose.c:169
 msgid "Subj"
-msgstr ""
+msgstr "Temat"
 
 #: compose.c:158 compose.c:170 compose.c:1028
 msgid "Attach file"
@@ -762,7 +762,7 @@ msgstr "Żaden"
 
 #: compose.c:277
 msgid " (inline PGP)"
-msgstr ""
+msgstr " (PGP w treści)"
 
 #: compose.c:279
 msgid " (PGP/MIME)"
@@ -770,11 +770,11 @@ msgstr ""
 
 #: compose.c:282
 msgid " (S/MIME)"
-msgstr ""
+msgstr " (S/MIME)"
 
 #: compose.c:286
 msgid " (OppEnc mode)"
-msgstr ""
+msgstr " (tryb OppEnc)"
 
 #: compose.c:298 compose.c:307
 msgid "<default>"
@@ -3246,7 +3246,7 @@ msgstr "Inline PGP nie może zostać użyte do załączników. Użyć PGP/MIME
 
 #: ncrypt/crypt.c:159
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
+msgstr "Nie wysłano listu: PGP w treści nie może być używane z załącznikami."
 
 #: ncrypt/crypt.c:166
 msgid "Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"
@@ -3255,7 +3255,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:170
 msgid "Mail not sent: inline PGP can't be used with format=flowed."
-msgstr ""
+msgstr "Nie wysłano listu: PGP w treści nie może być używane z format=flowed."
 
 #: ncrypt/crypt.c:180 ncrypt/cryptglue.c:125 ncrypt/pgpkey.c:589
 #: ncrypt/pgpkey.c:778
@@ -3420,6 +3420,8 @@ msgstr "Błąd podpisania danych: %s\n"
 #: ncrypt/crypt_gpgme.c:1038
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr ""
+"ani zmienna $pgp_sign_as nie jest ustawiona, ani nie zdefiniowano domyślnego "
+"klucza w ~/.gnupg/gpg.conf"
 
 #: ncrypt/crypt_gpgme.c:1238
 msgid "Warning: One of the keys has been revoked\n"
@@ -3491,11 +3493,11 @@ msgstr ""
 #: ncrypt/crypt_gpgme.c:1457 ncrypt/crypt_gpgme.c:1462
 #: ncrypt/crypt_gpgme.c:3572
 msgid "aka: "
-msgstr ""
+msgstr "znany także jako: "
 
 #: ncrypt/crypt_gpgme.c:1472
 msgid "KeyID "
-msgstr ""
+msgstr "Identyfikator klucza "
 
 #: ncrypt/crypt_gpgme.c:1481 ncrypt/crypt_gpgme.c:1486
 msgid "created: "
@@ -3735,7 +3737,7 @@ msgstr "[Błędny]"
 #: ncrypt/crypt_gpgme.c:3669 ncrypt/crypt_gpgme.c:3807
 #, c-format
 msgid "%s, %lu bit %s\n"
-msgstr ""
+msgstr "%s, %lu bitów %s\n"
 
 #. L10N: value in Key Usage: field
 #: ncrypt/crypt_gpgme.c:3677 ncrypt/crypt_gpgme.c:3814
