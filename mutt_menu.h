@@ -134,7 +134,7 @@ void         mutt_menu_set_redraw_full(int menu_type);
 void         mutt_menu_set_redraw(int menu_type, int redraw);
 
 /* used in both the index and pager index to make an entry. */
-void index_make_entry(char *s, size_t l, struct Menu *menu, int num);
+void index_make_entry(char *buf, size_t buflen, struct Menu *menu, int num);
 int index_color(int index_no);
 
 #endif /* _MUTT_MENU_H */

@@ -47,7 +47,7 @@
 #include "mutt_notmuch.h"
 #endif
 
-static int address_header_decode(char **str);
+static int address_header_decode(char **h);
 static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
 
 /**

@@ -288,12 +288,12 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 int imap_authenticate(struct ImapData *idata);
 
 /* command.c */
-int imap_cmd_start(struct ImapData *idata, const char *cmd);
+int imap_cmd_start(struct ImapData *idata, const char *cmdstr);
 int imap_cmd_step(struct ImapData *idata);
 void imap_cmd_finish(struct ImapData *idata);
 bool imap_code(const char *s);
 const char *imap_cmd_trailer(struct ImapData *idata);
-int imap_exec(struct ImapData *idata, const char *cmd, int flags);
+int imap_exec(struct ImapData *idata, const char *cmdstr, int flags);
 int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
@@ -328,7 +328,7 @@ char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
 void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path);
-void imap_quote_string(char *dest, size_t slen, const char *src);
+void imap_quote_string(char *dest, size_t dlen, const char *src);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
 void imap_unmunge_mbox_name(struct ImapData *idata, char *s);

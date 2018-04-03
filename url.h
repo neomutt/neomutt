@@ -85,6 +85,6 @@ void url_free(struct Url *u);
 int url_tostring(struct Url *u, char *dest, size_t len, int flags);
 int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int url_pct_decode(char *s);
-void url_pct_encode(char *dest, size_t len, const char *src);
+void url_pct_encode(char *dst, size_t l, const char *src);
 
 #endif /* _MUTT_URL_H */

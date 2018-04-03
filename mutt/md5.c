@@ -305,9 +305,9 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
  * @param s      String to hash
  * @param resbuf Buffer for result
  */
-void *mutt_md5(const char *s, void *resbuf)
+void *mutt_md5(const char *string, void *resbuf)
 {
-  return mutt_md5_bytes(s, strlen(s), resbuf);
+  return mutt_md5_bytes(string, strlen(string), resbuf);
 }
 
 /**
@@ -340,9 +340,9 @@ void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf)
  * @param s    String to process
  * @param ctx  MD5 context
  */
-void mutt_md5_process(const char *s, struct Md5Ctx *ctx)
+void mutt_md5_process(const char *string, struct Md5Ctx *ctx)
 {
-  mutt_md5_process_bytes(s, strlen(s), ctx);
+  mutt_md5_process_bytes(string, strlen(string), ctx);
 }
 
 /**
