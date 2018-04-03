@@ -899,7 +899,7 @@ static int generate_body(FILE *tempfp, struct Header *msg, int flags,
         }
       }
     }
-    else if (i == -1)
+    else
       return -1;
   }
   /* if (WithCrypto && (flags & SENDKEY)) */

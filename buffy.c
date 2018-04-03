@@ -353,7 +353,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
   int orig_count, orig_unread, orig_flagged;
 #endif
 
-  sb.st_size = 0;
+  memset(&sb, 0, sizeof (sb));
 
 #ifdef USE_SIDEBAR
   orig_new = tmp->new;
@@ -664,7 +664,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       /* Decide whether to delete all normal mailboxes or all virtual */
       bool virt = (((*b)->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
       bool norm = (((*b)->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
-      bool clear_this = clear_all && (virt | norm);
+      bool clear_this = clear_all && (virt || norm);
 
       if (clear_this || (mutt_str_strcasecmp(buf, (*b)->path) == 0) ||
           (mutt_str_strcasecmp(buf, (*b)->desc) == 0))

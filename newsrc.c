@@ -691,7 +691,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
   char buf[16];
   bool old = false;
   void *hdata = NULL;
-  anum_t first, last;
+  anum_t first = 0, last = 0;
 
   if (!hc)
     return;
