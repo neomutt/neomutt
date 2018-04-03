@@ -661,11 +661,11 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
 
   snprintf(title, sizeof(title), _("History '%s'"), buf);
 
-  menu = mutt_new_menu(MENU_GENERIC);
+  menu = mutt_menu_new(MENU_GENERIC);
   menu->make_entry = history_entry;
   menu->title = title;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_GENERIC, HistoryHelp);
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   menu->max = match_count;
   menu->data = matches;
@@ -684,7 +684,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
 }
 

@@ -144,7 +144,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 
       if (ctx->msgcount == ctx->hdrmax)
         mx_alloc_memory(ctx);
-      ctx->hdrs[ctx->msgcount] = hdr = mutt_new_header();
+      ctx->hdrs[ctx->msgcount] = hdr = mutt_header_new();
       hdr->offset = loc;
       hdr->index = ctx->msgcount;
 
@@ -169,7 +169,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
       else
         hdr->received = t - mutt_date_local_tz(t);
 
-      hdr->env = mutt_read_rfc822_header(ctx->fp, hdr, 0, 0);
+      hdr->env = mutt_rfc822_read_header(ctx->fp, hdr, 0, 0);
 
       loc = ftello(ctx->fp);
       if (loc < 0)
@@ -309,12 +309,12 @@ static int mbox_parse_mailbox(struct Context *ctx)
       if (ctx->msgcount == ctx->hdrmax)
         mx_alloc_memory(ctx);
 
-      curhdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
+      curhdr = ctx->hdrs[ctx->msgcount] = mutt_header_new();
       curhdr->received = t - mutt_date_local_tz(t);
       curhdr->offset = loc;
       curhdr->index = ctx->msgcount;
 
-      curhdr->env = mutt_read_rfc822_header(ctx->fp, curhdr, 0, 0);
+      curhdr->env = mutt_rfc822_read_header(ctx->fp, curhdr, 0, 0);
 
       /* if we know how long this message is, either just skip over the body,
        * or if we don't know how many lines there are, count them now (this will
@@ -633,7 +633,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   if (ctx->readonly)
   {
     for (i = 0; i < ctx->msgcount; i++)
-      mutt_free_header(&(ctx->hdrs[i])); /* nothing to do! */
+      mutt_header_free(&(ctx->hdrs[i])); /* nothing to do! */
     FREE(&ctx->hdrs);
   }
   else
@@ -679,7 +679,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   {
     /* free the old headers */
     for (j = 0; j < old_msgcount; j++)
-      mutt_free_header(&(old_hdrs[j]));
+      mutt_header_free(&(old_hdrs[j]));
     FREE(&old_hdrs);
 
     ctx->quiet = false;
@@ -749,7 +749,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
         mutt_set_flag(ctx, ctx->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
 
         /* we don't need this header any more */
-        mutt_free_header(&(old_hdrs[j]));
+        mutt_header_free(&(old_hdrs[j]));
       }
     }
 
@@ -758,7 +758,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
     {
       if (old_hdrs[j])
       {
-        mutt_free_header(&(old_hdrs[j]));
+        mutt_header_free(&(old_hdrs[j]));
         msg_mod = true;
       }
     }
@@ -1104,7 +1104,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
        * if the user accesses it later.
        */
       new_offset[i - first].body = ftello(fp) - ctx->hdrs[i]->content->length + offset;
-      mutt_free_body(&ctx->hdrs[i]->content->parts);
+      mutt_body_free(&ctx->hdrs[i]->content->parts);
 
       switch (ctx->magic)
       {

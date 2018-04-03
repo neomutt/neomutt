@@ -507,7 +507,7 @@ static int delete_attachment(struct AttachCtx *actx, int x)
 
   idx[rindex]->content->next = NULL;
   idx[rindex]->content->parts = NULL;
-  mutt_free_body(&(idx[rindex]->content));
+  mutt_body_free(&(idx[rindex]->content));
   FREE(&idx[rindex]->tree);
   FREE(&idx[rindex]);
   for (; rindex < actx->idxlen - 1; rindex++)
@@ -799,7 +799,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   rd.msg = msg;
   rd.fcc = fcc;
 
-  menu = mutt_new_menu(MENU_COMPOSE);
+  menu = mutt_menu_new(MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
   menu->make_entry = snd_entry;
   menu->tag = mutt_tag_attach;
@@ -811,7 +811,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
     menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_COMPOSE, ComposeHelp);
   menu->custom_menu_redraw = compose_menu_redraw;
   menu->redraw_data = &rd;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = msg;
@@ -1535,7 +1535,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
               /* avoid freeing other attachments */
               actx->idx[i]->content->next = NULL;
               actx->idx[i]->content->parts = NULL;
-              mutt_free_body(&actx->idx[i]->content);
+              mutt_body_free(&actx->idx[i]->content);
             }
           }
           r = -1;
@@ -1670,7 +1670,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
 
   if (actx->idxlen)

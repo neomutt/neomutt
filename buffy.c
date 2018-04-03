@@ -123,13 +123,13 @@ static int test_last_status_new(FILE *f)
   if (fseek_last_message(f) == -1)
     return 0;
 
-  hdr = mutt_new_header();
-  tmp_envelope = mutt_read_rfc822_header(f, hdr, 0, 0);
+  hdr = mutt_header_new();
+  tmp_envelope = mutt_rfc822_read_header(f, hdr, 0, 0);
   if (!(hdr->read || hdr->old))
     result = 1;
 
   mutt_env_free(&tmp_envelope);
-  mutt_free_header(&hdr);
+  mutt_header_free(&hdr);
 
   return result;
 }
@@ -444,7 +444,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
   if ((orig_new != tmp->new) || (orig_count != tmp->msg_count) ||
       (orig_unread != tmp->msg_unread) || (orig_flagged != tmp->msg_flagged))
   {
-    mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
   }
 #endif
 

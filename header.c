@@ -60,7 +60,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   }
 
   mutt_env_to_local(msg->env);
-  mutt_write_rfc822_header(ofp, msg->env, NULL, 1, 0);
+  mutt_rfc822_write_header(ofp, msg->env, NULL, 1, 0);
   fputc('\n', ofp); /* tie off the header. */
 
   /* now copy the body of the message. */
@@ -115,7 +115,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
     return;
   }
 
-  n = mutt_read_rfc822_header(ifp, NULL, 1, 0);
+  n = mutt_rfc822_read_header(ifp, NULL, 1, 0);
   while ((i = fread(buffer, 1, sizeof(buffer), ifp)) > 0)
     fwrite(buffer, 1, i, ofp);
   mutt_file_fclose(&ofp);
@@ -354,12 +354,12 @@ void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
     label_ref_dec(ctx, hdr->env->x_label);
 }
 
-void mutt_free_header(struct Header **h)
+void mutt_header_free(struct Header **h)
 {
   if (!h || !*h)
     return;
   mutt_env_free(&(*h)->env);
-  mutt_free_body(&(*h)->content);
+  mutt_body_free(&(*h)->content);
   FREE(&(*h)->maildir_flags);
   FREE(&(*h)->tree);
   FREE(&(*h)->path);
@@ -375,7 +375,7 @@ void mutt_free_header(struct Header **h)
   FREE(h);
 }
 
-struct Header *mutt_new_header(void)
+struct Header *mutt_header_new(void)
 {
   struct Header *h = mutt_mem_calloc(1, sizeof(struct Header));
 #ifdef MIXMASTER

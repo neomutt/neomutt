@@ -62,8 +62,8 @@ void mutt_check_rescore(struct Context *ctx)
     }
 
     /* must redraw the index since the user might have %N in it */
-    mutt_set_menu_redraw_full(MENU_MAIN);
-    mutt_set_menu_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_PAGER);
 
     for (int i = 0; ctx && i < ctx->msgcount; i++)
     {

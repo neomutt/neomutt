@@ -1860,7 +1860,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
       {
         /* only allocate the space if/when we need the index.
            Initialise the menu as per the main index */
-        rd->index = mutt_new_menu(MENU_MAIN);
+        rd->index = mutt_menu_new(MENU_MAIN);
         rd->index->make_entry = index_make_entry;
         rd->index->color = index_color;
         rd->index->max = Context ? Context->vcount : 0;
@@ -2147,10 +2147,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   rd.pager_status_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
   rd.pager_window = mutt_mem_calloc(1, sizeof(struct MuttWindow));
 
-  pager_menu = mutt_new_menu(MENU_PAGER);
+  pager_menu = mutt_menu_new(MENU_PAGER);
   pager_menu->custom_menu_redraw = pager_menu_redraw;
   pager_menu->redraw_data = &rd;
-  mutt_push_current_menu(pager_menu);
+  mutt_menu_push_current(pager_menu);
 
   while (ch != -1)
   {
@@ -2771,9 +2771,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_CREATE_ALIAS:
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         if (IsMsgAttach(extra))
-          mutt_create_alias(extra->bdy->hdr->env, NULL);
+          mutt_alias_create(extra->bdy->hdr->env, NULL);
         else
-          mutt_create_alias(extra->hdr->env, NULL);
+          mutt_alias_create(extra->hdr->env, NULL);
         break;
 
       case OP_PURGE_MESSAGE:
@@ -3278,7 +3278,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     rd.search_compiled = 0;
   }
   FREE(&rd.line_info);
-  mutt_pop_current_menu(pager_menu);
+  mutt_menu_pop_current(pager_menu);
   mutt_menu_destroy(&pager_menu);
   if (rd.index)
     mutt_menu_destroy(&rd.index);

@@ -115,7 +115,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
   int rc;
-  struct EnterState *es = mutt_new_enter_state();
+  struct EnterState *es = mutt_enter_state_new();
   do
   {
     if (SigWinch)
@@ -126,7 +126,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
     }
     rc = mutt_enter_string_full(buf, buflen, col, flags, 0, NULL, NULL, es);
   } while (rc == 1);
-  mutt_free_enter_state(&es);
+  mutt_enter_state_free(&es);
   return rc;
 }
 
@@ -758,7 +758,7 @@ bye:
   return rc;
 }
 
-void mutt_free_enter_state(struct EnterState **esp)
+void mutt_enter_state_free(struct EnterState **esp)
 {
   if (!esp)
     return;

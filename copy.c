@@ -629,7 +629,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
           Context->vsize -= body->length - new_length;
 
         body->length = new_length;
-        mutt_free_body(&body->parts);
+        mutt_body_free(&body->parts);
       }
 
       return 0;
@@ -702,10 +702,10 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
     if (mutt_file_copy_bytes(fp, fpout, cur->length) == -1)
     {
       mutt_file_fclose(&fp);
-      mutt_free_body(&cur);
+      mutt_body_free(&cur);
       return -1;
     }
-    mutt_free_body(&cur);
+    mutt_body_free(&cur);
     mutt_file_fclose(&fp);
   }
   else
@@ -735,7 +735,7 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
   if ((flags & MUTT_CM_UPDATE) && (flags & MUTT_CM_NOHEADER) == 0 && new_offset != -1)
   {
     body->offset = new_offset;
-    mutt_free_body(&body->parts);
+    mutt_body_free(&body->parts);
   }
 
   return rc;

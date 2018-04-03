@@ -95,46 +95,46 @@ struct Menu
   int tagged;     /**< number of tagged entries */
 };
 
-void mutt_menu_init(void);
+int  menu_redraw(struct Menu *menu);
+void menu_bottom_page(struct Menu *menu);
+void menu_check_recenter(struct Menu *menu);
+void menu_current_bottom(struct Menu *menu);
+void menu_current_middle(struct Menu *menu);
+void menu_current_top(struct Menu *menu);
+void menu_first_entry(struct Menu *menu);
+void menu_half_down(struct Menu *menu);
+void menu_half_up(struct Menu *menu);
+void menu_last_entry(struct Menu *menu);
+void menu_middle_page(struct Menu *menu);
+void menu_next_line(struct Menu *menu);
+void menu_next_page(struct Menu *menu);
+void menu_prev_line(struct Menu *menu);
+void menu_prev_page(struct Menu *menu);
+void menu_redraw_current(struct Menu *menu);
 void menu_redraw_full(struct Menu *menu);
+void menu_redraw_index(struct Menu *menu);
+void menu_redraw_motion(struct Menu *menu);
 #ifdef USE_SIDEBAR
 void menu_redraw_sidebar(struct Menu *menu);
 #endif
-void menu_redraw_index(struct Menu *menu);
 void menu_redraw_status(struct Menu *menu);
-void menu_redraw_motion(struct Menu *menu);
-void menu_redraw_current(struct Menu *menu);
-int menu_redraw(struct Menu *menu);
-void menu_first_entry(struct Menu *menu);
-void menu_last_entry(struct Menu *menu);
-void menu_top_page(struct Menu *menu);
-void menu_bottom_page(struct Menu *menu);
-void menu_middle_page(struct Menu *menu);
-void menu_next_page(struct Menu *menu);
-void menu_prev_page(struct Menu *menu);
-void menu_next_line(struct Menu *menu);
-void menu_prev_line(struct Menu *menu);
-void menu_half_up(struct Menu *menu);
-void menu_half_down(struct Menu *menu);
-void menu_current_top(struct Menu *menu);
-void menu_current_middle(struct Menu *menu);
-void menu_current_bottom(struct Menu *menu);
-void menu_check_recenter(struct Menu *menu);
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p);
 bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
+void menu_top_page(struct Menu *menu);
 
-struct Menu *mutt_new_menu(int menu);
-void mutt_menu_destroy(struct Menu **p);
-void mutt_push_current_menu(struct Menu *menu);
-void mutt_pop_current_menu(struct Menu *menu);
-void mutt_set_current_menu_redraw(int redraw);
-void mutt_set_current_menu_redraw_full(void);
-void mutt_set_menu_redraw(int menu_type, int redraw);
-void mutt_set_menu_redraw_full(int menu_type);
-void mutt_current_menu_redraw(void);
-int mutt_menu_loop(struct Menu *menu);
+void         mutt_menu_current_redraw(void);
+void         mutt_menu_destroy(struct Menu **p);
+void         mutt_menu_init(void);
+int          mutt_menu_loop(struct Menu *menu);
+struct Menu *mutt_menu_new(int menu);
+void         mutt_menu_pop_current(struct Menu *menu);
+void         mutt_menu_push_current(struct Menu *menu);
+void         mutt_menu_set_current_redraw_full(void);
+void         mutt_menu_set_current_redraw(int redraw);
+void         mutt_menu_set_redraw_full(int menu_type);
+void         mutt_menu_set_redraw(int menu_type, int redraw);
 
 /* used in both the index and pager index to make an entry. */
 void index_make_entry(char *s, size_t l, struct Menu *menu, int num);

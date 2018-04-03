@@ -1074,7 +1074,7 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
       state_attach_puts(_("[-- End of PGP/MIME encrypted data --]\n"), s);
     }
 
-    mutt_free_body(&tattach);
+    mutt_body_free(&tattach);
     /* clear 'Invoking...' message, since there's no error */
     mutt_message(_("PGP message successfully decrypted."));
   }
@@ -1192,7 +1192,7 @@ struct Body *pgp_sign_message(struct Body *a)
     return NULL; /* fatal error while signing */
   }
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEMULTIPART;
   t->subtype = mutt_str_strdup("signed");
   t->encoding = ENC7BIT;
@@ -1206,7 +1206,7 @@ struct Body *pgp_sign_message(struct Body *a)
   t->parts = a;
   a = t;
 
-  t->parts->next = mutt_new_body();
+  t->parts->next = mutt_body_new();
   t = t->parts->next;
   t->type = TYPEAPPLICATION;
   t->subtype = mutt_str_strdup("pgp-signature");
@@ -1448,7 +1448,7 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
     return NULL;
   }
 
-  t = mutt_new_body();
+  t = mutt_body_new();
   t->type = TYPEMULTIPART;
   t->subtype = mutt_str_strdup("encrypted");
   t->encoding = ENC7BIT;
@@ -1458,12 +1458,12 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   mutt_generate_boundary(&t->parameter);
   mutt_param_set(&t->parameter, "protocol", "application/pgp-encrypted");
 
-  t->parts = mutt_new_body();
+  t->parts = mutt_body_new();
   t->parts->type = TYPEAPPLICATION;
   t->parts->subtype = mutt_str_strdup("pgp-encrypted");
   t->parts->encoding = ENC7BIT;
 
-  t->parts->next = mutt_new_body();
+  t->parts->next = mutt_body_new();
   t->parts->next->type = TYPEAPPLICATION;
   t->parts->next->subtype = mutt_str_strdup("octet-stream");
   t->parts->next->encoding = ENC7BIT;
@@ -1627,7 +1627,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
     return NULL;
   }
 
-  b = mutt_new_body();
+  b = mutt_body_new();
 
   b->encoding = ENC7BIT;
 

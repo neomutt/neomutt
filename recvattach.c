@@ -1007,7 +1007,7 @@ static void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Header 
 
         secured = !crypt_smime_decrypt_mime(outer_fp, &new_fp, outer_new_body, &new_body);
 
-        mutt_free_body(&outer_new_body);
+        mutt_body_free(&outer_new_body);
         mutt_file_fclose(&outer_fp);
       }
 
@@ -1168,12 +1168,12 @@ void mutt_view_attachments(struct Header *hdr)
   if (!msg)
     return;
 
-  menu = mutt_new_menu(MENU_ATTACH);
+  menu = mutt_menu_new(MENU_ATTACH);
   menu->title = _("Attachments");
   menu->make_entry = attach_entry;
   menu->tag = mutt_tag_attach;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ATTACH, AttachHelp);
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   actx = mutt_mem_calloc(sizeof(struct AttachCtx), 1);
   actx->hdr = hdr;
@@ -1430,7 +1430,7 @@ void mutt_view_attachments(struct Header *hdr)
 
         mutt_free_attach_context(&actx);
 
-        mutt_pop_current_menu(menu);
+        mutt_menu_pop_current(menu);
         mutt_menu_destroy(&menu);
         return;
     }

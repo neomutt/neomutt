@@ -1657,10 +1657,10 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
       {
         for (tmp = Aliases; tmp; tmp = tmp->next)
           tmp->del = true;
-        mutt_set_current_menu_redraw_full();
+        mutt_menu_set_current_redraw_full();
       }
       else
-        mutt_free_alias(&Aliases);
+        mutt_alias_free(&Aliases);
       break;
     }
     else
@@ -1672,7 +1672,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
           if (CurrentMenu == MENU_ALIAS)
           {
             tmp->del = true;
-            mutt_set_current_menu_redraw_full();
+            mutt_menu_set_current_redraw_full();
             break;
           }
 
@@ -1681,7 +1681,7 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s,
           else
             Aliases = tmp->next;
           tmp->next = NULL;
-          mutt_free_alias(&tmp);
+          mutt_alias_free(&tmp);
           break;
         }
         last = tmp;
@@ -1733,7 +1733,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     /* override the previous value */
     mutt_addr_free(&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
-      mutt_set_current_menu_redraw_full();
+      mutt_menu_set_current_redraw_full();
   }
 
   mutt_extract_token(buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
@@ -1950,13 +1950,13 @@ static void restore_default(struct Option *p)
   }
 
   if (p->flags & R_INDEX)
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
   if (p->flags & R_PAGER)
-    mutt_set_menu_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw_full(MENU_PAGER);
   if (p->flags & R_PAGER_FLOW)
   {
-    mutt_set_menu_redraw_full(MENU_PAGER);
-    mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
+    mutt_menu_set_redraw_full(MENU_PAGER);
+    mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
   }
   if (p->flags & R_RESORT_SUB)
     OPT_SORT_SUBTHREADS = true;
@@ -1970,10 +1970,10 @@ static void restore_default(struct Option *p)
     mutt_reflow_windows();
 #ifdef USE_SIDEBAR
   if (p->flags & R_SIDEBAR)
-    mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+    mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 #endif
   if (p->flags & R_MENU)
-    mutt_set_current_menu_redraw_full();
+    mutt_menu_set_current_redraw_full();
 }
 
 static void esc_char(char c, char *p, char *dst, size_t len)
@@ -2221,7 +2221,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
         for (idx = 0; MuttVars[idx].name; idx++)
           restore_default(&MuttVars[idx]);
-        mutt_set_current_menu_redraw_full();
+        mutt_menu_set_current_redraw_full();
         OPT_SORT_SUBTHREADS = true;
         OPT_NEED_RESORT = true;
         OPT_RESORT_INIT = true;
@@ -2698,13 +2698,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     if (!myvar)
     {
       if (MuttVars[idx].flags & R_INDEX)
-        mutt_set_menu_redraw_full(MENU_MAIN);
+        mutt_menu_set_redraw_full(MENU_MAIN);
       if (MuttVars[idx].flags & R_PAGER)
-        mutt_set_menu_redraw_full(MENU_PAGER);
+        mutt_menu_set_redraw_full(MENU_PAGER);
       if (MuttVars[idx].flags & R_PAGER_FLOW)
       {
-        mutt_set_menu_redraw_full(MENU_PAGER);
-        mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
+        mutt_menu_set_redraw_full(MENU_PAGER);
+        mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
       }
       if (MuttVars[idx].flags & R_RESORT_SUB)
         OPT_SORT_SUBTHREADS = true;
@@ -2718,10 +2718,10 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         mutt_reflow_windows();
 #ifdef USE_SIDEBAR
       if (MuttVars[idx].flags & R_SIDEBAR)
-        mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+        mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 #endif
       if (MuttVars[idx].flags & R_MENU)
-        mutt_set_current_menu_redraw_full();
+        mutt_menu_set_current_redraw_full();
     }
   }
   return r;

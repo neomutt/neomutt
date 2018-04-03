@@ -600,12 +600,12 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     return 0;
   }
 
-  menu = mutt_new_menu(MENU_GENERIC);
+  menu = mutt_menu_new(MENU_GENERIC);
   menu->max = 25;
   menu->dialog = mutt_mem_calloc(1, menu->max * sizeof(char *));
   for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = mutt_mem_calloc(1, SHORT_STRING * sizeof(char));
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   row = 0;
   mutt_str_strfcpy(menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
@@ -848,7 +848,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     }
   }
   OPT_IGNORE_MACRO_EVENTS = false;
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
 

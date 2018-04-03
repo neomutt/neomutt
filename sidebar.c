@@ -1040,7 +1040,7 @@ void mutt_sb_change_mailbox(int op)
     default:
       return;
   }
-  mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }
 
 /**
@@ -1173,7 +1173,7 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
       Entries[del_index] = Entries[del_index + 1];
   }
 
-  mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }
 
 /**
@@ -1207,5 +1207,5 @@ void mutt_sb_toggle_virtual(void)
     }
   }
 
-  mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
+  mutt_menu_set_current_redraw(REDRAW_SIDEBAR);
 }

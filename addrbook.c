@@ -184,12 +184,12 @@ void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
     return;
   }
 
-  menu = mutt_new_menu(MENU_ALIAS);
+  menu = mutt_menu_new(MENU_ALIAS);
   menu->make_entry = alias_entry;
   menu->tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_ALIAS, AliasHelp);
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
 new_aliases:
 
@@ -278,7 +278,7 @@ new_aliases:
     mutt_addr_write(buf, buflen, AliasTable[t]->addr, true);
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   FREE(&AliasTable);
 }

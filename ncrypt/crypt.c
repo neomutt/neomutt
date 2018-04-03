@@ -268,7 +268,7 @@ int mutt_protect(struct Header *msg, char *keylist)
            which tmp_smime_pbody->parts after signing. */
         tmp_smime_pbody->parts = tmp_smime_pbody->parts->next;
         msg->content->next = NULL;
-        mutt_free_body(&tmp_smime_pbody);
+        mutt_body_free(&tmp_smime_pbody);
       }
       pbody = tmp_pbody;
     }
@@ -284,7 +284,7 @@ int mutt_protect(struct Header *msg, char *keylist)
           /* remove the outer multipart layer */
           tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);
           /* get rid of the signature */
-          mutt_free_body(&tmp_pgp_pbody->next);
+          mutt_body_free(&tmp_pgp_pbody->next);
         }
 
         return -1;
@@ -297,7 +297,7 @@ int mutt_protect(struct Header *msg, char *keylist)
       if (flags != msg->security)
       {
         tmp_pgp_pbody = mutt_remove_multipart(tmp_pgp_pbody);
-        mutt_free_body(&tmp_pgp_pbody->next);
+        mutt_body_free(&tmp_pgp_pbody->next);
       }
     }
   }

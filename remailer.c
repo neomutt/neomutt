@@ -518,7 +518,7 @@ void mix_make_chain(struct ListHead *chainhead)
 
   mix_screen_coordinates(type2_list, &coords, chain, 0);
 
-  menu = mutt_new_menu(MENU_MIX);
+  menu = mutt_menu_new(MENU_MIX);
   menu->max = ttll;
   menu->make_entry = mix_entry;
   menu->tag = NULL;
@@ -526,7 +526,7 @@ void mix_make_chain(struct ListHead *chainhead)
   menu->data = type2_list;
   menu->help = mutt_compile_help(helpstr, sizeof(helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
-  mutt_push_current_menu(menu);
+  mutt_menu_push_current(menu);
 
   while (loop)
   {
@@ -663,7 +663,7 @@ void mix_make_chain(struct ListHead *chainhead)
     }
   }
 
-  mutt_pop_current_menu(menu);
+  mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
 
   /* construct the remailer list */

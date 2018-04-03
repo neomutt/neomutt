@@ -359,7 +359,7 @@ static struct Body **copy_problematic_attachments(struct Body **last,
   {
     if (actx->idx[i]->content->tagged && (force || !mutt_can_decode(actx->idx[i]->content)))
     {
-      if (mutt_copy_body(actx->idx[i]->fp, last, actx->idx[i]->content) == -1)
+      if (mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->content) == -1)
         return NULL; /* XXXXX - may lead to crashes */
       last = &((*last)->next);
     }
@@ -409,7 +409,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     parent_fp = actx->root_fp;
   }
 
-  tmphdr = mutt_new_header();
+  tmphdr = mutt_header_new();
   tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, parent_hdr);
 
@@ -418,7 +418,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
   if (!tmpfp)
   {
     mutt_error(_("Can't open temporary file %s."), tmpbody);
-    mutt_free_header(&tmphdr);
+    mutt_header_free(&tmphdr);
     return;
   }
 
@@ -497,7 +497,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachCtx
     }
     else
     {
-      if (mutt_copy_body(fp, last, cur) == -1)
+      if (mutt_body_copy(fp, last, cur) == -1)
         goto bail;
     }
   }
@@ -539,7 +539,7 @@ bail:
     mutt_file_unlink(tmpbody);
   }
 
-  mutt_free_header(&tmphdr);
+  mutt_header_free(&tmphdr);
 }
 
 /**
@@ -578,7 +578,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     }
   }
 
-  tmphdr = mutt_new_header();
+  tmphdr = mutt_header_new();
   tmphdr->env = mutt_env_new();
   mutt_make_forward_subject(tmphdr->env, Context, curhdr);
 
@@ -594,7 +594,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
     if (!tmpfp)
     {
       mutt_error(_("Can't create %s."), tmpbody);
-      mutt_free_header(&tmphdr);
+      mutt_header_free(&tmphdr);
       return;
     }
 
@@ -640,21 +640,21 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *c
   {
     last = &tmphdr->content;
     if (cur)
-      mutt_copy_body(fp, last, cur);
+      mutt_body_copy(fp, last, cur);
     else
     {
       for (short i = 0; i < actx->idxlen; i++)
       {
         if (actx->idx[i]->content->tagged)
         {
-          mutt_copy_body(actx->idx[i]->fp, last, actx->idx[i]->content);
+          mutt_body_copy(actx->idx[i]->fp, last, actx->idx[i]->content);
           last = &((*last)->next);
         }
       }
     }
   }
   else
-    mutt_free_header(&tmphdr);
+    mutt_header_free(&tmphdr);
 
   ci_send_message(flags, tmphdr, *tmpbody ? tmpbody : NULL, NULL, curhdr);
 }
@@ -847,13 +847,13 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   else if (nattach == 1)
     mime_reply_any = true;
 
-  tmphdr = mutt_new_header();
+  tmphdr = mutt_header_new();
   tmphdr->env = mutt_env_new();
 
   if (attach_reply_envelope_defaults(
           tmphdr->env, actx, parent_hdr ? parent_hdr : (cur ? cur->hdr : NULL), flags) == -1)
   {
-    mutt_free_header(&tmphdr);
+    mutt_header_free(&tmphdr);
     return;
   }
 
@@ -862,7 +862,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
   if (!tmpfp)
   {
     mutt_error(_("Can't create %s."), tmpbody);
-    mutt_free_header(&tmphdr);
+    mutt_header_free(&tmphdr);
     return;
   }
 
@@ -910,7 +910,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
         state_putc('\n', &st);
       }
       else
-        mutt_copy_body(fp, &tmphdr->content, cur);
+        mutt_body_copy(fp, &tmphdr->content, cur);
     }
     else
     {
@@ -930,7 +930,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
     if (mime_reply_any && !cur &&
         copy_problematic_attachments(&tmphdr->content, actx, 0) == NULL)
     {
-      mutt_free_header(&tmphdr);
+      mutt_header_free(&tmphdr);
       mutt_file_fclose(&tmpfp);
       return;
     }

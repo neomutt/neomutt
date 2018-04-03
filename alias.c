@@ -38,7 +38,7 @@
 #include "options.h"
 #include "protos.h"
 
-struct Address *mutt_lookup_alias(const char *s)
+struct Address *mutt_alias_lookup(const char *s)
 {
   struct Alias *t = Aliases;
 
@@ -58,7 +58,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn
   {
     if (!a->group && !a->personal && a->mailbox && strchr(a->mailbox, '@') == NULL)
     {
-      t = mutt_lookup_alias(a->mailbox);
+      t = mutt_alias_lookup(a->mailbox);
 
       if (t)
       {
@@ -275,7 +275,7 @@ int check_alias_name(const char *s, char *dest, size_t destlen)
   return rc;
 }
 
-void mutt_create_alias(struct Envelope *cur, struct Address *iaddr)
+void mutt_alias_create(struct Envelope *cur, struct Address *iaddr)
 {
   struct Alias *new = NULL, *t = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
@@ -312,7 +312,7 @@ retry_name:
     return;
 
   /* check to see if the user already has an alias defined */
-  if (mutt_lookup_alias(buf))
+  if (mutt_alias_lookup(buf))
   {
     mutt_error(_("You already have an alias defined with that name!"));
     return;
@@ -346,7 +346,7 @@ retry_name:
   {
     if (mutt_get_field(_("Address: "), buf, sizeof(buf), 0) != 0 || !buf[0])
     {
-      mutt_free_alias(&new);
+      mutt_alias_free(&new);
       return;
     }
 
@@ -367,7 +367,7 @@ retry_name:
 
   if (mutt_get_field(_("Personal name: "), buf, sizeof(buf), 0) != 0)
   {
-    mutt_free_alias(&new);
+    mutt_alias_free(&new);
     return;
   }
   new->addr->personal = mutt_str_strdup(buf);
@@ -377,7 +377,7 @@ retry_name:
   snprintf(prompt, sizeof(prompt), _("[%s = %s] Accept?"), new->name, buf);
   if (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES)
   {
-    mutt_free_alias(&new);
+    mutt_alias_free(&new);
     return;
   }
 
@@ -583,7 +583,7 @@ int mutt_alias_complete(char *s, size_t buflen)
         Aliases = a_cur->next;
 
       a_cur->next = NULL;
-      mutt_free_alias(&a_cur);
+      mutt_alias_free(&a_cur);
 
       if (a_list)
         a_cur = a_list;
@@ -673,7 +673,7 @@ bool mutt_addr_is_user(struct Address *addr)
   return false;
 }
 
-void mutt_free_alias(struct Alias **p)
+void mutt_alias_free(struct Alias **p)
 {
   struct Alias *t = NULL;
 

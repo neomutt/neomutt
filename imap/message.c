@@ -859,7 +859,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           continue;
         }
 
-        ctx->hdrs[idx] = mutt_new_header();
+        ctx->hdrs[idx] = mutt_header_new();
 
         idata->max_msn = MAX(idata->max_msn, h.data->msn);
         idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];
@@ -883,10 +883,10 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
           maxuid = h.data->uid;
 
         rewind(fp);
-        /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
+        /* NOTE: if Date: header is missing, mutt_rfc822_read_header depends
          *   on h.received being set */
-        ctx->hdrs[idx]->env = mutt_read_rfc822_header(fp, ctx->hdrs[idx], 0, 0);
-        /* content built as a side-effect of mutt_read_rfc822_header */
+        ctx->hdrs[idx]->env = mutt_rfc822_read_header(fp, ctx->hdrs[idx], 0, 0);
+        /* content built as a side-effect of mutt_rfc822_read_header */
         ctx->hdrs[idx]->content->length = h.content_length;
         ctx->size += h.content_length;
 
@@ -1156,10 +1156,10 @@ parsemsg:
   /* It may be that the Status header indicates a message is read, but the
    * IMAP server doesn't know the message has been \Seen. So we capture
    * the server's notion of 'read' and if it differs from the message info
-   * picked up in mutt_read_rfc822_header, we mark the message (and context
+   * picked up in mutt_rfc822_read_header, we mark the message (and context
    * changed). Another possibility: ignore Status on IMAP? */
   read = h->read;
-  newenv = mutt_read_rfc822_header(msg->fp, h, 0, 0);
+  newenv = mutt_rfc822_read_header(msg->fp, h, 0, 0);
   mutt_env_merge(h->env, &newenv);
 
   /* see above. We want the new status in h->read, so we unset it manually

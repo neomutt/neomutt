@@ -1011,7 +1011,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     struct stat st;
     mustfree = true;
     fstat(fileno(s->fpin), &st);
-    b = mutt_new_body();
+    b = mutt_body_new();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
         s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
@@ -1172,7 +1172,7 @@ static int alternative_handler(struct Body *a, struct State *s)
   }
 
   if (mustfree)
-    mutt_free_body(&a);
+    mutt_body_free(&a);
 
   return rc;
 }
@@ -1194,9 +1194,9 @@ static int message_handler(struct Body *a, struct State *s)
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
   {
     fstat(fileno(s->fpin), &st);
-    b = mutt_new_body();
+    b = mutt_body_new();
     b->length = (LOFF_T) st.st_size;
-    b->parts = mutt_parse_message_rfc822(s->fpin, b);
+    b->parts = mutt_rfc822_parse_message(s->fpin, b);
   }
   else
     b = a;
@@ -1220,7 +1220,7 @@ static int message_handler(struct Body *a, struct State *s)
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
-    mutt_free_body(&b);
+    mutt_body_free(&b);
 
   return rc;
 }
@@ -1275,7 +1275,7 @@ static int multipart_handler(struct Body *a, struct State *s)
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
   {
     fstat(fileno(s->fpin), &st);
-    b = mutt_new_body();
+    b = mutt_body_new();
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart(
         s->fpin, mutt_param_get(&a->parameter, "boundary"), (long) st.st_size,
@@ -1323,7 +1323,7 @@ static int multipart_handler(struct Body *a, struct State *s)
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
-    mutt_free_body(&b);
+    mutt_body_free(&b);
 
   /* make failure of a single part non-fatal */
   if (rc < 0)

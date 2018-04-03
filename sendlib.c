@@ -1192,7 +1192,7 @@ void mutt_message_to_7bit(struct Body *a, FILE *fp)
     goto cleanup;
 
   fseeko(fpin, a->offset, SEEK_SET);
-  a->parts = mutt_parse_message_rfc822(fpin, a);
+  a->parts = mutt_rfc822_parse_message(fpin, a);
 
   transform_to_7bit(a->parts, fpin);
 
@@ -1227,7 +1227,7 @@ cleanup:
     return;
   }
   a->length = sb.st_size;
-  mutt_free_body(&a->parts);
+  mutt_body_free(&a->parts);
   a->hdr->content = NULL;
 }
 
@@ -1362,7 +1362,7 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   if (!fp)
     return NULL;
 
-  body = mutt_new_body();
+  body = mutt_body_new();
   body->type = TYPEMESSAGE;
   body->subtype = mutt_str_strdup("rfc822");
   body->filename = mutt_str_strdup(buffer);
@@ -1415,10 +1415,10 @@ struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, i
   fflush(fp);
   rewind(fp);
 
-  body->hdr = mutt_new_header();
+  body->hdr = mutt_header_new();
   body->hdr->offset = 0;
   /* we don't need the user headers here */
-  body->hdr->env = mutt_read_rfc822_header(fp, body->hdr, 0, 0);
+  body->hdr->env = mutt_rfc822_read_header(fp, body->hdr, 0, 0);
   if (WithCrypto)
     body->hdr->security = pgp;
   mutt_update_encoding(body);
@@ -1465,7 +1465,7 @@ struct Body *mutt_make_file_attach(const char *path)
   struct Body *att = NULL;
   struct Content *info = NULL;
 
-  att = mutt_new_body();
+  att = mutt_body_new();
   att->filename = mutt_str_strdup(path);
 
   if (MimeTypeQueryCommand && *MimeTypeQueryCommand && MimeTypeQueryFirst)
@@ -1485,7 +1485,7 @@ struct Body *mutt_make_file_attach(const char *path)
   info = mutt_get_content_info(path, att);
   if (!info)
   {
-    mutt_free_body(&att);
+    mutt_body_free(&att);
     return NULL;
   }
 
@@ -1554,7 +1554,7 @@ struct Body *mutt_make_multipart(struct Body *b)
 {
   struct Body *new = NULL;
 
-  new = mutt_new_body();
+  new = mutt_body_new();
   new->type = TYPEMULTIPART;
   new->subtype = mutt_str_strdup("mixed");
   new->encoding = get_toplevel_encoding(b);
@@ -1583,7 +1583,7 @@ struct Body *mutt_remove_multipart(struct Body *b)
     t = b;
     b = b->parts;
     t->parts = NULL;
-    mutt_free_body(&t);
+    mutt_body_free(&t);
   }
   return b;
 }
@@ -2007,7 +2007,7 @@ out:
  *               anonymous remailer chains.
  */
 
-int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
+int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
                              struct Body *attach, int mode, int privacy)
 {
   char buffer[LONG_STRING];
@@ -2976,10 +2976,10 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
     goto done;
   }
 
-  /* post == 1 => postpone message. Set mode = -1 in mutt_write_rfc822_header()
-   * post == 0 => Normal mode. Set mode = 0 in mutt_write_rfc822_header()
+  /* post == 1 => postpone message. Set mode = -1 in mutt_rfc822_write_header()
+   * post == 0 => Normal mode. Set mode = 0 in mutt_rfc822_write_header()
    * */
-  mutt_write_rfc822_header(msg->fp, hdr->env, hdr->content, post ? -post : 0, 0);
+  mutt_rfc822_write_header(msg->fp, hdr->env, hdr->content, post ? -post : 0, 0);
 
   /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
@@ -2999,7 +2999,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   if (f.magic == MUTT_MMDF || f.magic == MUTT_MBOX)
     fprintf(msg->fp, "Status: RO\n");
 
-  /* mutt_write_rfc822_header() only writes out a Date: header with
+  /* mutt_rfc822_write_header() only writes out a Date: header with
    * mode == 0, i.e. _not_ postponement; so write out one ourself */
   if (post)
     fprintf(msg->fp, "%s", mutt_date_make_date(buf, sizeof(buf)));

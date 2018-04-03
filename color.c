@@ -515,7 +515,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   if (object > MT_COLOR_INDEX_SUBJECT)
   { /* uncolor index column */
     ColorDefs[object] = 0;
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
     return 0;
   }
 
@@ -580,7 +580,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
 
   if (is_index && do_cache && !OPT_NO_CURSES)
   {
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
     for (int i = 0; Context && i < Context->msgcount; i++)
       Context->hdrs[i]->pair = 0;
@@ -937,27 +937,27 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
   else if (object == MT_COLOR_INDEX)
   {
     r = add_pattern(&ColorIndexList, buf->data, 1, fg, bg, attr, err, 1, match);
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
     r = add_pattern(&ColorIndexAuthorList, buf->data, 1, fg, bg, attr, err, 1, match);
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
     r = add_pattern(&ColorIndexFlagsList, buf->data, 1, fg, bg, attr, err, 1, match);
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
     r = add_pattern(&ColorIndexSubjectList, buf->data, 1, fg, bg, attr, err, 1, match);
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_TAG)
   {
     r = add_pattern(&ColorIndexTagList, buf->data, 1, fg, bg, attr, err, 1, match);
-    mutt_set_menu_redraw_full(MENU_MAIN);
+    mutt_menu_set_redraw_full(MENU_MAIN);
   }
   else if (object == MT_COLOR_QUOTED)
   {
@@ -987,7 +987,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
   {
     ColorDefs[object] = fgbgattr_to_color(fg, bg, attr);
     if (object > MT_COLOR_INDEX_AUTHOR)
-      mutt_set_menu_redraw_full(MENU_MAIN);
+      mutt_menu_set_redraw_full(MENU_MAIN);
   }
 
   return r;

@@ -1021,13 +1021,13 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   if (!is_multipart(b) && b->parts)
   {
     structure_changed = 1;
-    mutt_free_body(&b->parts);
+    mutt_body_free(&b->parts);
   }
   if (!mutt_is_message_type(b->type, b->subtype) && b->hdr)
   {
     structure_changed = 1;
     b->hdr->content = NULL;
-    mutt_free_header(&b->hdr);
+    mutt_header_free(&b->hdr);
   }
 
   if (fp && !b->parts && (is_multipart(b) || mutt_is_message_type(b->type, b->subtype)))

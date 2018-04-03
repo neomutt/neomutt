@@ -478,7 +478,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {
-    msg = mutt_new_header();
+    msg = mutt_header_new();
     msg->env = mutt_env_new();
 
     struct ListNode *np = NULL;
@@ -596,7 +596,7 @@ int main(int argc, char *argv[], char *envp[])
     struct ListNode *np;
     STAILQ_FOREACH(np, &alias_queries, entries)
     {
-      a = mutt_lookup_alias(np->data);
+      a = mutt_alias_lookup(np->data);
       if (a)
       {
         /* output in machine-readable form */
@@ -681,7 +681,7 @@ int main(int argc, char *argv[], char *envp[])
       mutt_flushinp();
 
     if (!msg)
-      msg = mutt_new_header();
+      msg = mutt_header_new();
     if (!msg->env)
       msg->env = mutt_env_new();
 
@@ -802,9 +802,9 @@ int main(int argc, char *argv[], char *envp[])
         /* Set up a "context" header with just enough information so that
          * mutt_prepare_template() can parse the message in fin.
          */
-        context_hdr = mutt_new_header();
+        context_hdr = mutt_header_new();
         context_hdr->offset = 0;
-        context_hdr->content = mutt_new_body();
+        context_hdr->content = mutt_body_new();
         if (fstat(fileno(fin), &st) != 0)
         {
           mutt_perror(draft_file);
@@ -816,7 +816,7 @@ int main(int argc, char *argv[], char *envp[])
         {
           mutt_error(_("Cannot parse message template: %s"), draft_file);
           mutt_env_free(&opts_env);
-          mutt_free_header(&context_hdr);
+          mutt_header_free(&context_hdr);
           goto main_curses;
         }
 
@@ -842,7 +842,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_str_replace(&msg->env->subject, opts_env->subject);
 
         mutt_env_free(&opts_env);
-        mutt_free_header(&context_hdr);
+        mutt_header_free(&context_hdr);
       }
       /* Editing the include_file: pass it directly in.
        * Note that SENDNOFREEHEADER is set above so it isn't unlinked.
@@ -923,7 +923,7 @@ int main(int argc, char *argv[], char *envp[])
           mutt_env_to_intl(msg->env, NULL, NULL);
         }
 
-        mutt_write_rfc822_header(fout, msg->env, msg->content, -1, 0);
+        mutt_rfc822_write_header(fout, msg->env, msg->content, -1, 0);
         if (ResumeEditedDraftFiles)
           fprintf(fout, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fout);
@@ -935,7 +935,7 @@ int main(int argc, char *argv[], char *envp[])
         mutt_file_fclose(&fout);
       }
 
-      mutt_free_header(&msg);
+      mutt_header_free(&msg);
     }
 
     /* !edit_infile && draft_file will leave the tempfile around */
