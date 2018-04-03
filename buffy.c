@@ -383,8 +383,8 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
         if (stat(tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
             (!tmp->magic && (tmp->magic = mx_get_magic(tmp->path)) <= 0))
     {
-      /* if the mailbox still doesn't exist, set the newly created flag to
-         * be ready for when it does. */
+      /* if the mailbox still doesn't exist, set the newly created flag to be
+       * ready for when it does. */
       tmp->newly_created = true;
       tmp->magic = 0;
       tmp->size = 0;
@@ -392,8 +392,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
     }
   }
 
-  /* check to see if the folder is the currently selected folder
-     * before polling */
+  /* check to see if the folder is the currently selected folder before polling */
   if (!Context || !Context->path ||
       ((tmp->magic == MUTT_IMAP ||
 #ifdef USE_NNTP

@@ -154,7 +154,7 @@ int mutt_protect(struct Header *msg, char *keylist)
         return -1;
       }
     }
-    else if (!mutt_str_strcasecmp("flowed", mutt_param_get(&msg->content->parameter, "format")))
+    else if (mutt_str_strcasecmp("flowed", mutt_param_get(&msg->content->parameter, "format")) == 0)
     {
       if ((query_quadoption(PgpMimeAuto,
                             _("Inline PGP can't be used with format=flowed.  "
@@ -365,7 +365,7 @@ int mutt_is_multipart_encrypted(struct Body *b)
 
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 {
-  if (!mutt_is_multipart_encrypted(b))
+  if (mutt_is_multipart_encrypted(b) == 0)
     return 0;
 
   b = b->parts;

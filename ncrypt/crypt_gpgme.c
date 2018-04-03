@@ -1056,7 +1056,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
                  use_smime ? "application/pkcs7-signature" : "application/pgp-signature");
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */
-  if (!get_micalg(ctx, use_smime, buf, sizeof(buf)))
+  if (get_micalg(ctx, use_smime, buf, sizeof(buf)) == 0)
     mutt_param_set(&t->parameter, "micalg", buf);
   else if (use_smime)
     mutt_param_set(&t->parameter, "micalg", "sha1");
@@ -2026,7 +2026,7 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
   size_t saved_b_length;
   int saved_b_type;
 
-  if (!mutt_is_application_smime(b))
+  if (mutt_is_application_smime(b) == 0)
     return -1;
 
   if (b->parts)

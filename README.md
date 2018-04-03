@@ -5,8 +5,9 @@
 [![Contributors](https://img.shields.io/badge/Contributors-115-orange.svg)](#contributors)
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/master/COPYRIGHT)
-[![Travis branch](https://api.travis-ci.org/neomutt/neomutt.svg?branch=neomutt)](https://travis-ci.org/neomutt/neomutt)
+[![Code build](https://img.shields.io/travis/neomutt/neomutt.svg?label=code)](https://travis-ci.org/neomutt/neomutt)
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt)
+[![Website build](https://img.shields.io/travis/neomutt/neomutt.github.io.svg?label=website)](https://travis-ci.org/neomutt/neomutt.github.io)
 
 ## What is NeoMutt?
 

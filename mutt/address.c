@@ -1035,7 +1035,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
   {
     if (strpbrk(addr->personal, AddressSpecials))
     {
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = '"';
       buflen--;
@@ -1046,19 +1046,19 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
           *pbuf++ = '\\';
           buflen--;
         }
-        if (!buflen)
+        if (buflen == 0)
           goto done;
         *pbuf++ = *pc;
         buflen--;
       }
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = '"';
       buflen--;
     }
     else
     {
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       mutt_str_strfcpy(pbuf, addr->personal, buflen);
       len = mutt_str_strlen(pbuf);
@@ -1066,7 +1066,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
       buflen -= len;
     }
 
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ' ';
     buflen--;
@@ -1074,7 +1074,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
 
   if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = '<';
     buflen--;
@@ -1082,7 +1082,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
 
   if (addr->mailbox)
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     if ((mutt_str_strcmp(addr->mailbox, "@") != 0) && !display)
     {
@@ -1104,7 +1104,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
 
     if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
     {
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = '>';
       buflen--;
@@ -1112,11 +1112,11 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
 
     if (addr->group)
     {
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = ':';
       buflen--;
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = ' ';
       buflen--;
@@ -1124,7 +1124,7 @@ void mutt_addr_write_single(char *buf, size_t buflen, struct Address *addr, bool
   }
   else
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ';';
     buflen--;
@@ -1161,11 +1161,11 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
 
     pbuf += len;
     buflen -= len;
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ',';
     buflen--;
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ' ';
     buflen--;
@@ -1187,11 +1187,11 @@ size_t mutt_addr_write(char *buf, size_t buflen, struct Address *addr, bool disp
        group terminator, add a comma to separate the addresses */
     if (addr->next && addr->next->mailbox && !addr->group)
     {
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = ',';
       buflen--;
-      if (!buflen)
+      if (buflen == 0)
         goto done;
       *pbuf++ = ' ';
       buflen--;

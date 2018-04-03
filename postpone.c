@@ -348,10 +348,10 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
       mutt_pretty_mailbox(fcc, fcclen);
 
       /* note that x-mutt-fcc was present.  we do this because we want to add a
-      * default fcc if the header was missing, but preserve the request of the
-      * user to not make a copy if the header field is present, but empty.
-      * see http://dev.mutt.org/trac/ticket/3653
-      */
+       * default fcc if the header was missing, but preserve the request of the
+       * user to not make a copy if the header field is present, but empty.
+       * see http://dev.mutt.org/trac/ticket/3653
+       */
       code |= SENDPOSTPONEDFCC;
     }
     else if (((WithCrypto & APPLICATION_PGP) != 0) &&

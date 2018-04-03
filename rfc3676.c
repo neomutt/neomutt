@@ -312,7 +312,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */
-    if ((fixed && (!fst.width || !buf_len)) || sigsep)
+    if ((fixed && ((fst.width == 0) || (buf_len == 0))) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
       flush_par(s, &fst);

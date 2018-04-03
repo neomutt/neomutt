@@ -1536,29 +1536,29 @@ struct Option MuttVars[] = {
   ** .dt %A .dd Reply-to address (if present; otherwise: address of author)
   ** .dt %b .dd Filename of the original message folder (think mailbox)
   ** .dt %B .dd The list to which the letter was sent, or else the folder name (%b).
-  ** .dt %c .dd Number of characters (bytes) in the message
   ** .dt %C .dd Current message number
-  ** .dt %d .dd Date and time of the message in the format specified by
-  **            $$date_format converted to sender's time zone
-  ** .dt %D .dd Date and time of the message in the format specified by
-  **            $$date_format converted to the local time zone
+  ** .dt %c .dd Number of characters (bytes) in the message
+  ** .dt %D .dd Date and time of message using $date_format and local timezone
+  ** .dt %d .dd Date and time of message using $date_format and sender's timezone
   ** .dt %e .dd Current message number in thread
   ** .dt %E .dd Number of messages in current thread
-  ** .dt %f .dd Sender (address + real name), either From: or Return-Path:
   ** .dt %F .dd Author name, or recipient name if the message is from you
+  ** .dt %f .dd Sender (address + real name), either From: or Return-Path:
   ** .dt %g .dd Newsgroup name (if compiled with NNTP support)
-  ** .dt %g .dd Message labels (e.g. notmuch tags)
+  ** .dt %g .dd Message tags (e.g. notmuch tags/imap flags)
+  ** .dt %Gx .dd Individual message tag (e.g. notmuch tags/imap flags)
   ** .dt %H .dd Spam attribute(s) of this message
   ** .dt %I .dd Initials of author
   ** .dt %i .dd Message-id of the current message
+  ** .dt %J .dd Message tags (if present, tree unfolded, and != parent's tags)
   ** .dt %K .dd The list to which the letter was sent (if any; otherwise: empty)
-  ** .dt %l .dd Number of lines in the message (does not work with maildir,
-  **            Mh, and possibly IMAP folders)
   ** .dt %L .dd If an address in the ``To:'' or ``Cc:'' header field matches an address
   **            Defined by the users ``$subscribe'' command, this displays
   **            "To <list-name>", otherwise the same as %F
-  ** .dt %m .dd Total number of message in the mailbox
+  ** .dt %l .dd Number of lines in the message (does not work with maildir,
+  **            Mh, and possibly IMAP folders)
   ** .dt %M .dd Number of hidden messages if the thread is collapsed
+  ** .dt %m .dd Total number of message in the mailbox
   ** .dt %N .dd Message score
   ** .dt %n .dd Author's real name (or address if missing)
   ** .dt %O .dd Original save folder where NeoMutt would formerly have
@@ -1566,29 +1566,29 @@ struct Option MuttVars[] = {
   **            If not sent to a list
   ** .dt %P .dd Progress indicator for the built-in pager (how much of the file has been displayed)
   ** .dt %q .dd Newsgroup name (if compiled with NNTP support)
-  ** .dt %r .dd Comma separated list of ``To:'' recipients
   ** .dt %R .dd Comma separated list of ``Cc:'' recipients
-  ** .dt %s .dd Subject of the message
+  ** .dt %r .dd Comma separated list of ``To:'' recipients
   ** .dt %S .dd Single character status of the message (``N''/``O''/``D''/``d''/``!''/``r''/``\(as'')
-  ** .dt %t .dd ``To:'' field (recipients)
+  ** .dt %s .dd Subject of the message
   ** .dt %T .dd The appropriate character from the $$to_chars string
+  ** .dt %t .dd ``To:'' field (recipients)
   ** .dt %u .dd User (login) name of the author
   ** .dt %v .dd First name of the author, or the recipient if the message is from you
   ** .dt %W .dd Name of organization of author (``Organization:'' field)
   ** .dt %x .dd ``X-Comment-To:'' field (if present and compiled with NNTP support)
-  ** .dt %X .dd Number of attachments
+  ** .dt %X .dd Number of MIME attachments
   **            (please see the ``$attachments'' section for possible speed effects)
-  ** .dt %y .dd ``X-Label:'' field, if present
   ** .dt %Y .dd ``X-Label:'' field, if present, and \fI(1)\fP not at part of a thread tree,
   **            \fI(2)\fP at the top of a thread, or \fI(3)\fP ``X-Label:'' is different from
   **            Preceding message's ``X-Label:''
+  ** .dt %y .dd ``X-Label:'' field, if present
   ** .dt %Z .dd A three character set of message status flags.
   **            The first character is new/read/replied flags (``n''/``o''/``r''/``O''/``N'').
   **            The second is deleted or encryption flags (``D''/``d''/``S''/``P''/``s''/``K'').
   **            The third is either tagged/flagged (``\(as''/``!''), or one of the characters
   **            Listed in $$to_chars.
-  ** .dt %zs .dd Message status flags
   ** .dt %zc .dd Message crypto flags
+  ** .dt %zs .dd Message status flags
   ** .dt %zt .dd Message tag flags
   ** .dt %{fmt} .dd the date and time of the message is converted to sender's
   **                time zone, and ``fmt'' is expanded by the library function

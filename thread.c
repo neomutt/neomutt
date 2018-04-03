@@ -634,7 +634,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
    * in reverse order so they're forwards
    */
   Sort ^= SORT_REVERSE;
-  if (!compare_threads(NULL, NULL))
+  if (compare_threads(NULL, NULL) == 0)
     return thread;
 
   top = thread;

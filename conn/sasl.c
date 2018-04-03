@@ -431,7 +431,7 @@ static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
         mutt_debug(1, "SASL decode failed: %s\n", sasl_errstring(rc, NULL, NULL));
         goto out;
       }
-    } while (!sasldata->blen);
+    } while (sasldata->blen == 0);
 
     olen = (sasldata->blen - sasldata->bpos > len) ? len :
                                                      sasldata->blen - sasldata->bpos;

@@ -72,7 +72,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (startpos < 0)
     return NULL;
 
-  if (!plen)
+  if (plen == 0)
   {
     plen = CHUNKSIZE;
     pbuf = mutt_mem_malloc(plen);

@@ -489,7 +489,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
               rc = 1;
               goto bye;
             }
-            if (!mutt_complete(buf, buflen))
+            if (mutt_complete(buf, buflen) == 0)
             {
               templen = state->lastchar - i;
               mutt_mem_realloc(&tempbuf, templen * sizeof(wchar_t));
@@ -609,7 +609,7 @@ int mutt_enter_string_full(char *buf, size_t buflen, int col, int flags, int mul
               goto bye;
             }
 
-            if (!mutt_complete(buf, buflen))
+            if (mutt_complete(buf, buflen) == 0)
             {
               templen = state->lastchar;
               mutt_mem_realloc(&tempbuf, templen * sizeof(wchar_t));

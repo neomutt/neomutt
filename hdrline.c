@@ -422,47 +422,48 @@ static bool thread_is_old(struct Context *ctx, struct Header *hdr)
  *
  * | Expando | Description
  * |:--------|:-----------------------------------------------------------------
- * | \%a     | Address of author
- * | \%A     | Reply-to address (if present; otherwise: address of author
- * | \%b     | Filename of the originating folder
+ * | \%a     | Address of the author
+ * | \%A     | Reply-to address (if present; otherwise: address of author)
+ * | \%b     | Filename of the original message folder (think mailbox)
  * | \%B     | The list to which the letter was sent, or else the folder name (%b).
  * | \%C     | Current message number
- * | \%c     | Size of message in bytes
+ * | \%c     | Number of characters (bytes) in the message
  * | \%D     | Date and time of message using $date_format and local timezone
  * | \%d     | Date and time of message using $date_format and sender's timezone
  * | \%e     | Current message number in thread
  * | \%E     | Number of messages in current thread
- * | \%f     | Entire from line
- * | \%F     | Like %n, unless from self
+ * | \%F     | Author name, or recipient name if the message is from you
+ * | \%f     | Sender (address + real name), either From: or Return-Path:
+ * | \%g     | Newsgroup name (if compiled with NNTP support)
  * | \%g     | Message tags (e.g. notmuch tags/imap flags)
  * | \%Gx    | Individual message tag (e.g. notmuch tags/imap flags)
  * | \%H     | Spam attribute(s) of this message
  * | \%I     | Initials of author
- * | \%i     | Message-id
+ * | \%i     | Message-id of the current message
  * | \%J     | Message tags (if present, tree unfolded, and != parent's tags)
  * | \%K     | The list to which the letter was sent (if any; otherwise: empty)
  * | \%L     | Like %F, except 'lists' are displayed first
  * | \%l     | Number of lines in the message
  * | \%M     | Number of hidden messages if the thread is collapsed
- * | \%m     | Number of messages in the mailbox
- * | \%n     | Name of author
- * | \%N     | Score
+ * | \%m     | Total number of message in the mailbox
+ * | \%N     | Message score
+ * | \%n     | Author's real name (or address if missing)
  * | \%O     | Like %L, except using address instead of name
- * | \%P     | Progress indicator for builtin pager
+ * | \%P     | Progress indicator for the built-in pager (how much of the file has been displayed)
  * | \%q     | Newsgroup name (if compiled with NNTP support)
  * | \%R     | Comma separated list of Cc: recipients
  * | \%r     | Comma separated list of To: recipients
- * | \%S     | Short message status (e.g., N/O/D/!/r/-)
- * | \%s     | Subject
- * | \%T     | $to_chars
+ * | \%S     | Single character status of the message (N/O/D/d/!/r/-)
+ * | \%s     | Subject of the message
+ * | \%T     | The appropriate character from the $$to_chars string
  * | \%t     | 'To:' field (recipients)
- * | \%u     | User (login) name of author
- * | \%v     | First name of author, unless from self
- * | \%W     | Where user is (organization)
+ * | \%u     | User (login) name of the author
+ * | \%v     | First name of the author, or the recipient if the message is from you
+ * | \%W     | Name of organization of author ('Organization:' field)
  * | \%x     | 'X-Comment-To:' field (if present and compiled with NNTP support)
  * | \%X     | Number of MIME attachments
- * | \%y     | 'X-Label:' field (if present)
  * | \%Y     | 'X-Label:' field (if present, tree unfolded, and != parent's x-label)
+ * | \%y     | 'X-Label:' field (if present)
  * | \%Z     | Combined message flags
  * | \%zc    | Message crypto flags
  * | \%zs    | Message status flags

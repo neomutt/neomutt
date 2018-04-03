@@ -172,7 +172,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       {
         if (flags & CH_DECODE)
         {
-          if (!address_header_decode(&this_one))
+          if (address_header_decode(&this_one) == 0)
             mutt_rfc2047_decode(&this_one);
           this_one_len = mutt_str_strlen(this_one);
 
@@ -289,7 +289,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   {
     if (flags & CH_DECODE)
     {
-      if (!address_header_decode(&this_one))
+      if (address_header_decode(&this_one) == 0)
         mutt_rfc2047_decode(&this_one);
       this_one_len = mutt_str_strlen(this_one);
     }

@@ -331,7 +331,7 @@ int imap_browse(char *path, struct BrowserState *state)
   if (browse_add_list_result(idata, buf, state, 0))
     goto fail;
 
-  if (!state->entrylen)
+  if (state->entrylen == 0)
   {
     mutt_error(_("No such folder"));
     goto fail;
@@ -393,7 +393,7 @@ int imap_mailbox_create(const char *folder)
   if (mutt_get_field(_("Create mailbox: "), buf, sizeof(buf), MUTT_FILE) < 0)
     goto fail;
 
-  if (!mutt_str_strlen(buf))
+  if (mutt_str_strlen(buf) == 0)
   {
     mutt_error(_("Mailbox must have a name."));
     goto fail;
@@ -453,7 +453,7 @@ int imap_mailbox_rename(const char *mailbox)
   if (mutt_get_field(buf, newname, sizeof(newname), MUTT_FILE) < 0)
     goto fail;
 
-  if (!mutt_str_strlen(newname))
+  if (mutt_str_strlen(newname) == 0)
   {
     mutt_error(_("Mailbox must have a name."));
     goto fail;

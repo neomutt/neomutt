@@ -760,14 +760,17 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 
 /**
  * mutt_compose_menu - Allow the user to edit the message envelope
+ * @param msg    Message to fill
+ * @param fcc    Buffer to save FCC
+ * @param fcclen Length of FCC buffer
+ * @param cur    Current message
+ * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
  * @retval  1 Message should be postponed
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Header *msg, /* structure for new message */
-                      char *fcc, /* where to save a copy of the message */
-                      size_t fcclen, struct Header *cur, /* current message */
-                      int flags)
+int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
+                      struct Header *cur, int flags)
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];

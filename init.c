@@ -281,7 +281,7 @@ static struct MbTable *parse_mbtable(const char *s)
 
   t = mutt_mem_calloc(1, sizeof(struct MbTable));
   slen = mutt_str_strlen(s);
-  if (!slen)
+  if (slen == 0)
     return t;
 
   t->orig_str = mutt_str_strdup(s);
@@ -447,7 +447,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         mutt_str_strfcpy(scratch, NONULL((const char *) val->var), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
         /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
-        * so cast to 'void*' is okay */
+         * so cast to 'void*' is okay */
         FREE((void *) MuttVars[idx].var);
         *((char **) MuttVars[idx].var) = mutt_str_strdup(scratch);
         break;
@@ -455,7 +455,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
       case DT_STRING:
       {
         /* MuttVars[idx].var is already 'char**' (or some 'void**') or...
-          * so cast to 'void*' is okay */
+         * so cast to 'void*' is okay */
         FREE((void *) MuttVars[idx].var);
         *((char **) MuttVars[idx].var) = mutt_str_strdup((char *) val->var);
       }
@@ -3073,7 +3073,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       return 0;
 
     /* NumMatched will _always_ be at least 1 since the initial
-      * user-typed string is always stored */
+     * user-typed string is always stored */
     if (numtabs == 1 && NumMatched == 2)
       snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
     else if (numtabs > 1 && NumMatched > 2)
@@ -3378,8 +3378,8 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
     complete_all_nm_tags(pt);
 
     /* All matches are stored. Longest non-ambiguous string is ""
-      * i.e. don't change 'buffer'. Fake successful return this time.
-      */
+     * i.e. don't change 'buffer'. Fake successful return this time.
+     */
     if (UserTyped[0] == 0)
       return true;
   }
@@ -3388,7 +3388,7 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int numtabs)
     return false;
 
   /* NumMatched will _always_ be at least 1 since the initial
-    * user-typed string is always stored */
+   * user-typed string is always stored */
   if (numtabs == 1 && NumMatched == 2)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
   else if (numtabs > 1 && NumMatched > 2)
@@ -3796,9 +3796,8 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
-  if (((p = mutt_str_getenv("LC_ALL")) != NULL && p[0]) ||
-      ((p = mutt_str_getenv("LANG")) != NULL && p[0]) ||
-      ((p = mutt_str_getenv("LC_CTYPE")) != NULL && p[0]))
+  if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
+      (p = mutt_str_getenv("LC_CTYPE")))
   {
     OPT_LOCALES = true;
   }
@@ -4242,7 +4241,7 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
     return 0;
 
   /* NumMatched will _always_ be at least 1 since the initial
-    * user-typed string is always stored */
+   * user-typed string is always stored */
   if (numtabs == 1 && NumMatched == 2)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
   else if (numtabs > 1 && NumMatched > 2)

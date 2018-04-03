@@ -512,7 +512,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
     if (icode)
       while ((t < (u + ulen)) && CONTINUATION_BYTE(*t))
         t++;
-    if (!try_block(t0, t - t0, icode, tocode, &encoder, &wlen) &&
+    if ((try_block(t0, t - t0, icode, tocode, &encoder, &wlen) == 0) &&
         ((col + (t0 - u) + wlen) <= (ENCWORD_LEN_MAX + 1)))
     {
       break;
@@ -528,7 +528,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
     if (icode)
       while (CONTINUATION_BYTE(*t))
         t--;
-    if (!try_block(t, t1 - t, icode, tocode, &encoder, &wlen) &&
+    if ((try_block(t, t1 - t, icode, tocode, &encoder, &wlen) == 0) &&
         ((1 + wlen + (u + ulen - t1)) <= (ENCWORD_LEN_MAX + 1)))
     {
       break;

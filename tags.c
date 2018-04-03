@@ -24,22 +24,6 @@
  * @page tags Driver based email tags
  *
  * Driver based email tags
- *
- * | Data           | Description
- * | :------------- | :--------------------------------------------------
- * | #HiddenTags    | Private tags which should not be displayed
- * | #TagTransforms | Lookup table of alternative tag names
- *
- * | Function                          | Description
- * | :-------------------------------- | :-----------------------------------------------
- * | driver_tags_free()                | Free tags from a header
- * | driver_tags_getter()              | Get transformed tags
- * | driver_tags_get_transformed()     | Get transformed tags
- * | driver_tags_get()                 | Get tags
- * | driver_tags_get_with_hidden()     | Get tags with hiddens
- * | driver_tags_get_transformed_for() | Get transformed tag for a tag name from a header
- * | driver_tags_add()                 | Add a tag to header
- * | driver_tags_replace()             | Replace all tags
  */
 
 #include "config.h"

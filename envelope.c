@@ -146,7 +146,7 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
     (*extra)->disp_subj = NULL;
   }
   /* spam and user headers should never be hashed, and the new envelope may
-    * have better values. Use new versions regardless. */
+   * have better values. Use new versions regardless. */
   mutt_buffer_free(&base->spam);
   mutt_list_free(&base->userhdrs);
   MOVE_ELEM(spam);
