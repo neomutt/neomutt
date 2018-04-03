@@ -1803,7 +1803,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
     fcc_error = false; /* reset value since we may have failed before */
     mutt_pretty_mailbox(fcc, sizeof(fcc));
     i = mutt_compose_menu(msg, fcc, sizeof(fcc), cur,
-                          (flags & SENDNOFREEHEADER ? MUTT_COMPOSE_NOFREEHEADER : 0));
+                          ((flags & SENDNOFREEHEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0));
     if (i == -1)
     {
 /* abort */

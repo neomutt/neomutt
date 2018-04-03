@@ -1629,7 +1629,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   b->type = TYPETEXT;
   b->subtype = mutt_str_strdup("plain");
 
-  mutt_param_set(&b->parameter, "x-action", flags & ENCRYPT ? "pgp-encrypted" : "pgp-signed");
+  mutt_param_set(&b->parameter, "x-action", (flags & ENCRYPT) ? "pgp-encrypted" : "pgp-signed");
   mutt_param_set(&b->parameter, "charset", send_charset);
 
   b->filename = mutt_str_strdup(pgpoutfile);

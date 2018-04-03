@@ -198,7 +198,7 @@ static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
     return IMAP_CMD_BAD;
 
   rc = mutt_socket_write_d(idata->conn, idata->cmdbuf->data, -1,
-                           flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
+                           (flags & IMAP_CMD_PASS) ? IMAP_LOG_PASS : IMAP_LOG_CMD);
   idata->cmdbuf->dptr = idata->cmdbuf->data;
 
   /* unidle when command queue is flushed */

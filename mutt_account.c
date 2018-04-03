@@ -294,7 +294,7 @@ int mutt_account_getpass(struct Account *account)
   else
   {
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
-             account->flags & MUTT_ACCT_LOGIN ? account->login : account->user,
+             (account->flags & MUTT_ACCT_LOGIN) ? account->login : account->user,
              account->host);
     account->pass[0] = '\0';
     if (mutt_get_password(prompt, account->pass, sizeof(account->pass)))

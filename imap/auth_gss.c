@@ -250,9 +250,9 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   buf_size = ntohl(*((long *) send_token.value));
   gss_release_buffer(&min_stat, &send_token);
   mutt_debug(2, "Unwrapped security level flags: %c%c%c\n",
-             server_conf_flags & GSS_AUTH_P_NONE ? 'N' : '-',
-             server_conf_flags & GSS_AUTH_P_INTEGRITY ? 'I' : '-',
-             server_conf_flags & GSS_AUTH_P_PRIVACY ? 'P' : '-');
+             (server_conf_flags & GSS_AUTH_P_NONE) ? 'N' : '-',
+             (server_conf_flags & GSS_AUTH_P_INTEGRITY) ? 'I' : '-',
+             (server_conf_flags & GSS_AUTH_P_PRIVACY) ? 'P' : '-');
   mutt_debug(2, "Maximum GSS token size is %ld\n", buf_size);
 
   /* agree to terms (hack!) */
