@@ -471,9 +471,9 @@ int nntp_newsrc_update(struct NntpServer *nserv)
       if (j)
         buf[off++] = ',';
       if (nntp_data->newsrc_ent[j].first == nntp_data->newsrc_ent[j].last)
-        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[j].first);
+        snprintf(buf + off, buflen - off, "%u", nntp_data->newsrc_ent[j].first);
       else if (nntp_data->newsrc_ent[j].first < nntp_data->newsrc_ent[j].last)
-        snprintf(buf + off, buflen - off, "%d-%d",
+        snprintf(buf + off, buflen - off, "%u-%u",
                  nntp_data->newsrc_ent[j].first, nntp_data->newsrc_ent[j].last);
       off += strlen(buf + off);
     }
@@ -639,7 +639,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
       buflen *= 2;
       mutt_mem_realloc(&buf, buflen);
     }
-    snprintf(buf + off, buflen - off, "%s %d %d %c%s%s\n", nntp_data->group,
+    snprintf(buf + off, buflen - off, "%s %u %u %c%s%s\n", nntp_data->group,
              nntp_data->last_message, nntp_data->first_message,
              nntp_data->allowed ? 'y' : 'n', nntp_data->desc ? " " : "",
              nntp_data->desc ? nntp_data->desc : "");
@@ -712,7 +712,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
         if (current >= nntp_data->first_message && current <= nntp_data->last_message)
           continue;
 
-        snprintf(buf, sizeof(buf), "%d", current);
+        snprintf(buf, sizeof(buf), "%u", current);
         mutt_debug(2, "mutt_hcache_delete %s\n", buf);
         mutt_hcache_delete(hc, buf, strlen(buf));
       }

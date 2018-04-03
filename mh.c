@@ -1709,7 +1709,7 @@ static int mh_commit_msg(struct Context *ctx, struct Message *msg,
   while (true)
   {
     hi++;
-    snprintf(tmp, sizeof(tmp), "%d", hi);
+    snprintf(tmp, sizeof(tmp), "%u", hi);
     snprintf(path, sizeof(path), "%s/%s", ctx->path, tmp);
     if (mutt_file_safe_rename(msg->path, path) == 0)
     {
