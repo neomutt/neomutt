@@ -592,11 +592,8 @@ struct ReplaceList *mutt_replacelist_new(void)
  */
 int mutt_replacelist_remove(struct ReplaceList **rl, const char *pat)
 {
-  struct ReplaceList *cur = NULL, *prev = NULL;
-  int nremoved = 0;
-
   /* Being first is a special case. */
-  cur = *rl;
+  struct ReplaceList *cur = *rl;
   if (!cur)
     return 0;
   if (cur->regex && (mutt_str_strcmp(cur->regex->pattern, pat) == 0))
@@ -608,7 +605,8 @@ int mutt_replacelist_remove(struct ReplaceList **rl, const char *pat)
     return 1;
   }
 
-  prev = cur;
+  int nremoved = 0;
+  struct ReplaceList *prev = cur;
   for (cur = prev->next; cur;)
   {
     if (mutt_str_strcmp(cur->regex->pattern, pat) == 0)

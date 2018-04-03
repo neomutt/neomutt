@@ -734,7 +734,6 @@ int mutt_addwch(wchar_t wc)
 void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
                         int justify, char pad_char, const char *s, size_t n, int arboreal)
 {
-  char *p = NULL;
   wchar_t wc;
   int w;
   size_t k, k2;
@@ -745,7 +744,7 @@ void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
   memset(&mbstate1, 0, sizeof(mbstate1));
   memset(&mbstate2, 0, sizeof(mbstate2));
   buflen--;
-  p = buf;
+  char *p = buf;
   for (; n && (k = mbrtowc(&wc, s, n, &mbstate1)); s += k, n -= k)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))

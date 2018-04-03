@@ -642,7 +642,6 @@ static int trash_append(struct Context *ctx)
 int mx_close_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
-  int check;
   struct Context f;
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
@@ -835,7 +834,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == MUTT_IMAP)
   {
-    check = imap_sync_mailbox(ctx, purge);
+    int check = imap_sync_mailbox(ctx, purge);
     if (check != 0)
     {
       ctx->closing = false;
@@ -857,7 +856,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
     if (ctx->changed || ctx->deleted)
     {
-      check = sync_mailbox(ctx, index_hint);
+      int check = sync_mailbox(ctx, index_hint);
       if (check != 0)
       {
         ctx->closing = false;

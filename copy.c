@@ -47,7 +47,7 @@
 #include "mutt_notmuch.h"
 #endif
 
-static int address_header_decode(char **str);
+static int address_header_decode(char **h);
 static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
 
 /**
@@ -320,7 +320,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
       if (flags & (CH_DECODE | CH_PREFIX))
       {
-        if (mutt_write_one_header(out, 0, headers[x], flags & CH_PREFIX ? prefix : 0,
+        if (mutt_write_one_header(out, 0, headers[x], (flags & CH_PREFIX) ? prefix : 0,
                                   mutt_window_wrap_cols(MuttIndexWindow, Wrap), flags) == -1)
         {
           error = true;
@@ -751,15 +751,12 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
                           int flags, int chflags)
 {
-  struct Message *msg = NULL;
-  int r;
-
-  msg = mx_open_message(src, hdr->msgno);
+  struct Message *msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
   if (!hdr->content)
     return -1;
-  r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
+  int r = mutt_copy_message_fp(fpout, msg->fp, hdr, flags, chflags);
   if ((r == 0) && (ferror(fpout) || feof(fpout)))
   {
     mutt_debug(1, "failed to detect EOF!\n");
@@ -814,13 +811,10 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
 int mutt_append_message(struct Context *dest, struct Context *src,
                         struct Header *hdr, int cmflags, int chflags)
 {
-  struct Message *msg = NULL;
-  int r;
-
-  msg = mx_open_message(src, hdr->msgno);
+  struct Message *msg = mx_open_message(src, hdr->msgno);
   if (!msg)
     return -1;
-  r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
+  int r = append_message(dest, msg->fp, src, hdr, cmflags, chflags);
   mx_close_message(src, &msg);
   return r;
 }

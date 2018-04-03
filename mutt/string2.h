@@ -62,7 +62,7 @@
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof(a) - 1)
 
 void        mutt_str_adjust(char **p);
-void        mutt_str_append_item(char **p, const char *item, int sep);
+void        mutt_str_append_item(char **str, const char *item, int sep);
 int         mutt_str_atoi(const char *str, int *dst);
 int         mutt_str_atol(const char *str, long *dst);
 int         mutt_str_atos(const char *str, short *dst);

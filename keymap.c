@@ -134,9 +134,7 @@ struct Keymap *Keymaps[MENU_MAX];
 
 static struct Keymap *alloc_keys(size_t len, keycode_t *keys)
 {
-  struct Keymap *p = NULL;
-
-  p = mutt_mem_calloc(1, sizeof(struct Keymap));
+  struct Keymap *p = mutt_mem_calloc(1, sizeof(struct Keymap));
   p->len = len;
   p->keys = mutt_mem_malloc(len * sizeof(keycode_t));
   memcpy(p->keys, keys, len * sizeof(keycode_t));
@@ -191,10 +189,10 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
   size_t len = max;
   char buf[SHORT_STRING];
   char c;
-  char *s = NULL, *t = NULL;
+  char *t = NULL;
 
   mutt_str_strfcpy(buf, str, sizeof(buf));
-  s = buf;
+  char *s = buf;
 
   while (*s && len)
   {
@@ -246,19 +244,18 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
 int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buffer *err)
 {
   int retval = 0;
-  struct Keymap *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
+  struct Keymap *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
-  size_t len;
   size_t pos = 0, lastpos = 0;
 
-  len = parsekeys(s, buf, MAX_SEQ);
+  size_t len = parsekeys(s, buf, MAX_SEQ);
 
-  map = alloc_keys(len, buf);
+  struct Keymap *map = alloc_keys(len, buf);
   map->op = op;
   map->macro = mutt_str_strdup(macro);
   map->descr = mutt_str_strdup(descr);
 
-  tmp = Keymaps[menu];
+  struct Keymap *tmp = Keymaps[menu];
 
   while (tmp)
   {
@@ -481,14 +478,13 @@ int km_dokey(int menu)
   struct Keymap *map = Keymaps[menu];
   int pos = 0;
   int n = 0;
-  int i;
 
   if (!map)
     return (retry_generic(menu, NULL, 0, 0));
 
   while (true)
   {
-    i = Timeout > 0 ? Timeout : 60;
+    int i = Timeout > 0 ? Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than Timeout allows */
     if (ImapKeepalive)
@@ -622,9 +618,8 @@ static void create_bindings(const struct Binding *map, int menu)
 static const char *km_keyname(int c)
 {
   static char buf[10];
-  const char *p = NULL;
 
-  p = mutt_map_get_name(c, KeyNames);
+  const char *p = mutt_map_get_name(c, KeyNames);
   if (p)
     return p;
 
@@ -905,10 +900,9 @@ void km_init(void)
 void km_error_key(int menu)
 {
   char buf[SHORT_STRING];
-  struct Keymap *key = NULL;
   int p, op;
 
-  key = km_find_func(menu, OP_HELP);
+  struct Keymap *key = km_find_func(menu, OP_HELP);
   if (!key && (menu != MENU_EDITOR) && (menu != MENU_PAGER))
     key = km_find_func(MENU_GENERIC, OP_HELP);
   if (!key)
@@ -983,13 +977,13 @@ static char *parse_keymap(int *menu, struct Buffer *s, int maxmenus,
 {
   struct Buffer buf;
   int i = 0;
-  char *p = NULL, *q = NULL;
+  char *q = NULL;
 
   mutt_buffer_init(&buf);
 
   /* menu name */
   mutt_extract_token(&buf, s, 0);
-  p = buf.data;
+  char *p = buf.data;
   if (MoreArgs(s))
   {
     while (i < maxmenus)
@@ -1097,10 +1091,9 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
   const struct Binding *bindings = NULL;
-  char *key = NULL;
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus;
 
-  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
+  char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, true);
   if (!key)
     return -1;
 
@@ -1156,9 +1149,8 @@ int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = -1, nummenus;
   char *seq = NULL;
-  char *key = NULL;
 
-  key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
+  char *key = parse_keymap(menu, s, mutt_array_size(menu), &nummenus, err, false);
   if (!key)
     return -1;
 

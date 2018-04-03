@@ -356,9 +356,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
         case OP_QUERY:
           if (mutt_get_field(_("Query: "), buf, buflen, 0) == 0 && buf[0])
           {
-            struct Query *newresults = NULL;
-
-            newresults = run_query(buf, 0);
+            struct Query *newresults = run_query(buf, 0);
 
             menu->redraw = REDRAW_FULL;
             if (newresults)

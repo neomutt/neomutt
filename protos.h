@@ -54,8 +54,8 @@ struct stat;
 struct passwd;
 
 #define mutt_make_string(A, B, C, D, E) mutt_make_string_flags(A, B, C, D, E, 0)
-void mutt_make_string_flags(char *dest, size_t destlen, const char *s, struct Context *ctx,
-                       struct Header *hdr, enum FormatFlag flags);
+void mutt_make_string_flags(char *buf, size_t buflen, const char *s,
+                            struct Context *ctx, struct Header *hdr, enum FormatFlag flags);
 
 /**
  * struct HdrFormatInfo - Data passed to index_format_str()
@@ -78,7 +78,7 @@ enum XdgType
 
 int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
 
-void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
+void mutt_make_string_info(char *buf, size_t buflen, int cols, const char *s,
                            struct HdrFormatInfo *hfi, enum FormatFlag flags);
 
 void mutt_free_opts(void);
@@ -171,8 +171,8 @@ void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const cha
 void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
 void mutt_fix_reply_recipients(struct Envelope *env);
 void mutt_folder_hook(const char *path);
-void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, int justify,
-                        char m_pad_char, const char *s, size_t n, int arboreal);
+void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width,
+                        int justify, char pad_char, const char *s, size_t n, int arboreal);
 void mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);

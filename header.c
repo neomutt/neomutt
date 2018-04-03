@@ -45,14 +45,13 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   char path[_POSIX_PATH_MAX]; /* tempfile used to edit headers + body */
   char buffer[LONG_STRING];
   const char *p = NULL;
-  FILE *ifp = NULL, *ofp = NULL;
   int i;
   struct Envelope *n = NULL;
   time_t mtime;
   struct stat st;
 
   mutt_mktemp(path, sizeof(path));
-  ofp = mutt_file_fopen(path, "w");
+  FILE *ofp = mutt_file_fopen(path, "w");
   if (!ofp)
   {
     mutt_perror(path);
@@ -64,7 +63,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   fputc('\n', ofp); /* tie off the header. */
 
   /* now copy the body of the message. */
-  ifp = fopen(body, "r");
+  FILE *ifp = fopen(body, "r");
   if (!ifp)
   {
     mutt_perror(body);
@@ -224,14 +223,11 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 
 static void label_ref_dec(struct Context *ctx, char *label)
 {
-  struct HashElem *elem = NULL;
-  uintptr_t count;
-
-  elem = mutt_hash_find_elem(ctx->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
   if (!elem)
     return;
 
-  count = (uintptr_t) elem->data;
+  uintptr_t count = (uintptr_t) elem->data;
   if (count <= 1)
   {
     mutt_hash_delete(ctx->label_hash, label, NULL);
@@ -244,10 +240,9 @@ static void label_ref_dec(struct Context *ctx, char *label)
 
 static void label_ref_inc(struct Context *ctx, char *label)
 {
-  struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = mutt_hash_find_elem(ctx->label_hash, label);
+  struct HashElem *elem = mutt_hash_find_elem(ctx->label_hash, label);
   if (!elem)
   {
     count = 1;

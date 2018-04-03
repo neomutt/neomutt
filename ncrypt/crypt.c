@@ -1099,7 +1099,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
                                         const char **ppl, const char **pps)
 {
   const char *ps = NULL, *pl = NULL, *phint = NULL;
-  char *pfcopy = NULL, *pf = NULL, *s1 = NULL, *s2 = NULL;
+  char *pfcopy = NULL, *s1 = NULL, *s2 = NULL;
   char c;
   int isid;
   size_t hexdigits;
@@ -1111,7 +1111,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
    * if an ID was found and to simplify logic in the key loop's inner
    * condition of the caller. */
 
-  pf = mutt_str_skip_whitespace(p);
+  char *pf = mutt_str_skip_whitespace(p);
   if (mutt_str_strncasecmp(pf, "0x", 2) == 0)
     pf += 2;
 

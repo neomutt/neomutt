@@ -471,7 +471,7 @@ static int mbox_open_mailbox(struct Context *ctx)
 
 static int mbox_open_mailbox_append(struct Context *ctx, int flags)
 {
-  ctx->fp = mutt_file_fopen(ctx->path, flags & MUTT_NEWFOLDER ? "w" : "a");
+  ctx->fp = mutt_file_fopen(ctx->path, (flags & MUTT_NEWFOLDER) ? "w" : "a");
   if (!ctx->fp)
   {
     mutt_perror(ctx->path);

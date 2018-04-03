@@ -66,7 +66,6 @@ void mutt_socket_free(struct Connection *conn)
  */
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
 {
-  struct Connection *conn = NULL;
   struct Url url;
   char hook[LONG_STRING];
 
@@ -76,7 +75,7 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
-  conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(&Connections);
+  struct Connection *conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(&Connections);
   while (conn)
   {
     if (mutt_account_match(account, &(conn->account)))

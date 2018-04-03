@@ -82,14 +82,13 @@ static int fetch_message(char *line, void *file)
  */
 static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
-  FILE *f = NULL;
   int rc, index;
   size_t length;
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX];
 
   mutt_mktemp(tempfile, sizeof(tempfile));
-  f = mutt_file_fopen(tempfile, "w+");
+  FILE *f = mutt_file_fopen(tempfile, "w+");
   if (!f)
   {
     mutt_perror(tempfile);
@@ -201,13 +200,10 @@ static int fetch_uidl(char *line, void *data)
 
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  struct Context *ctx = NULL;
-  struct PopData *pop_data = NULL;
-
-  ctx = (struct Context *) data;
+  struct Context *ctx = (struct Context *) data;
   if (!ctx)
     return -1;
-  pop_data = (struct PopData *) ctx->data;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
   if (!pop_data)
     return -1;
 

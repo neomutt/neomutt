@@ -167,14 +167,11 @@ static void init_history(struct History *h)
  */
 static int dup_hash_dec(struct Hash *dup_hash, char *str)
 {
-  struct HashElem *elem = NULL;
-  uintptr_t count;
-
-  elem = mutt_hash_find_elem(dup_hash, str);
+  struct HashElem *elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
     return -1;
 
-  count = (uintptr_t) elem->data;
+  uintptr_t count = (uintptr_t) elem->data;
   if (count <= 1)
   {
     mutt_hash_delete(dup_hash, str, NULL);
@@ -196,10 +193,9 @@ static int dup_hash_dec(struct Hash *dup_hash, char *str)
  */
 static int dup_hash_inc(struct Hash *dup_hash, char *str)
 {
-  struct HashElem *elem = NULL;
   uintptr_t count;
 
-  elem = mutt_hash_find_elem(dup_hash, str);
+  struct HashElem *elem = mutt_hash_find_elem(dup_hash, str);
   if (!elem)
   {
     count = 1;
@@ -219,7 +215,7 @@ static int dup_hash_inc(struct Hash *dup_hash, char *str)
 static void shrink_histfile(void)
 {
   char tmpfname[_POSIX_PATH_MAX];
-  FILE *f = NULL, *tmp = NULL;
+  FILE *tmp = NULL;
   int n[HC_LAST] = { 0 };
   int line, hclass, read;
   char *linebuf = NULL, *p = NULL;
@@ -227,7 +223,7 @@ static void shrink_histfile(void)
   bool regen_file = false;
   struct Hash *dup_hashes[HC_LAST] = { 0 };
 
-  f = fopen(HistoryFile, "r");
+  FILE *f = fopen(HistoryFile, "r");
   if (!f)
     return;
 
@@ -552,12 +548,11 @@ void mutt_hist_reset_state(enum HistoryClass hclass)
  */
 void mutt_hist_read_file(void)
 {
-  FILE *f = NULL;
   int line = 0, hclass, read;
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
 
-  f = fopen(HistoryFile, "r");
+  FILE *f = fopen(HistoryFile, "r");
   if (!f)
     return;
 

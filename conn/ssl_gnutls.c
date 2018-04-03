@@ -272,7 +272,7 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
     for (int i = 0; i < (int) n; i++)
     {
       char ch[8];
-      snprintf(ch, 8, "%02X%s", md[i], (i % 2 ? " " : ""));
+      snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
       mutt_str_strcat(s, l, ch);
     }
     s[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
@@ -288,15 +288,14 @@ static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *s, int l,
  */
 static int tls_check_stored_hostname(const gnutls_datum_t *cert, const char *hostname)
 {
-  FILE *fp = NULL;
   char *linestr = NULL;
-  size_t linestrsize;
+  size_t linestrsize = 0;
   int linenum = 0;
   regex_t preg;
   regmatch_t pmatch[3];
 
   /* try checking against names stored in stored certs file */
-  fp = fopen(CertificateFile, "r");
+  FILE *fp = fopen(CertificateFile, "r");
   if (fp)
   {
     if (REGCOMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
@@ -944,7 +943,6 @@ static int tls_check_certificate(struct Connection *conn)
 static void tls_get_client_cert(struct Connection *conn)
 {
   struct TlsSockData *data = conn->sockdata;
-  const gnutls_datum_t *crtdata = NULL;
   gnutls_x509_crt_t clientcrt;
   char *dn = NULL;
   char *cn = NULL;
@@ -952,7 +950,7 @@ static void tls_get_client_cert(struct Connection *conn)
   size_t dnlen;
 
   /* get our cert CN if we have one */
-  crtdata = gnutls_certificate_get_ours(data->state);
+  const gnutls_datum_t *crtdata = gnutls_certificate_get_ours(data->state);
   if (!crtdata)
     return;
 
@@ -1006,12 +1004,10 @@ err_crt:
 static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 4;
-  char *priority = NULL;
   size_t priority_size;
-  int err;
 
   priority_size = SHORT_STRING + mutt_str_strlen(SslCiphers);
-  priority = mutt_mem_malloc(priority_size);
+  char *priority = mutt_mem_malloc(priority_size);
 
   priority[0] = 0;
   if (SslCiphers)
@@ -1047,7 +1043,7 @@ static int tls_set_priority(struct TlsSockData *data)
     return -1;
   }
 
-  err = gnutls_priority_set_direct(data->state, priority, NULL);
+  int err = gnutls_priority_set_direct(data->state, priority, NULL);
   if (err < 0)
   {
     mutt_error("gnutls_priority_set_direct(%s): %s", priority, gnutls_strerror(err));
@@ -1111,12 +1107,9 @@ static int tls_set_priority(struct TlsSockData *data)
  */
 static int tls_negotiate(struct Connection *conn)
 {
-  struct TlsSockData *data = NULL;
-  int err;
-
-  data = mutt_mem_calloc(1, sizeof(struct TlsSockData));
+  struct TlsSockData *data = mutt_mem_calloc(1, sizeof(struct TlsSockData));
   conn->sockdata = data;
-  err = gnutls_certificate_allocate_credentials(&data->xcred);
+  int err = gnutls_certificate_allocate_credentials(&data->xcred);
   if (err < 0)
   {
     FREE(&conn->sockdata);

@@ -906,10 +906,9 @@ static int text_enriched_handler(struct Body *a, struct State *s)
 static int is_mmnoask(const char *buf)
 {
   char *p = NULL;
-  const char *val = NULL;
   char tmp[LONG_STRING], *q = NULL;
 
-  val = mutt_str_getenv("MM_NOASK");
+  const char *val = mutt_str_getenv("MM_NOASK");
   if (val)
   {
     if (mutt_str_strcmp(val, "1") == 0)
@@ -1027,11 +1026,10 @@ static int alternative_handler(struct Body *a, struct State *s)
   struct ListNode *np;
   STAILQ_FOREACH(np, &AlternativeOrderList, entries)
   {
-    char *c = NULL;
     int btlen; /* length of basetype */
     bool wild; /* do we have a wildcard to match all subtypes? */
 
-    c = strchr(np->data, '/');
+    char *c = strchr(np->data, '/');
     if (c)
     {
       wild = (c[1] == '*' && c[2] == 0);
@@ -1466,11 +1464,7 @@ static int autoview_handler(struct Body *a, struct State *s)
 
 static int external_body_handler(struct Body *b, struct State *s)
 {
-  const char *access_type = NULL;
-  const char *expiration = NULL;
-  time_t expire;
-
-  access_type = mutt_param_get(&b->parameter, "access-type");
+  const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
   {
     if (s->flags & MUTT_DISPLAY)
@@ -1485,7 +1479,8 @@ static int external_body_handler(struct Body *b, struct State *s)
       return -1;
   }
 
-  expiration = mutt_param_get(&b->parameter, "expiration");
+  const char *expiration = mutt_param_get(&b->parameter, "expiration");
+  time_t expire;
   if (expiration)
     expire = mutt_date_parse_date(expiration, NULL);
   else
@@ -1774,11 +1769,8 @@ static int run_decode_and_handler(struct Body *b, struct State *s,
 
 static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
-  int rc;
-  struct Body *octetstream = NULL;
-
-  octetstream = b->parts->next;
-  rc = crypt_pgp_encrypted_handler(octetstream, s);
+  struct Body *octetstream = b->parts->next;
+  int rc = crypt_pgp_encrypted_handler(octetstream, s);
   b->goodsig |= octetstream->goodsig;
 
   return rc;
@@ -1786,12 +1778,9 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 
 static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
-  int rc;
-  struct Body *octetstream = NULL;
-
-  octetstream = b->parts->next->next;
+  struct Body *octetstream = b->parts->next->next;
   /* exchange encodes the octet-stream, so re-run it through the decoder */
-  rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, 0);
+  int rc = run_decode_and_handler(octetstream, s, crypt_pgp_encrypted_handler, 0);
   b->goodsig |= octetstream->goodsig;
 
   return rc;

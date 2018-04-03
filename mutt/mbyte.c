@@ -287,11 +287,8 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
   wchar_t wc;
   mbstate_t st;
   size_t k;
-  wchar_t *wbuf = NULL;
-  size_t wbuflen;
-
-  wbuf = *pwbuf;
-  wbuflen = *pwbuflen;
+  wchar_t *wbuf = *pwbuf;
+  size_t wbuflen = *pwbuflen;
 
   while (*buf)
   {
@@ -410,14 +407,13 @@ bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
  */
 int mutt_mb_filter_unprintable(char **s)
 {
-  struct Buffer *b = NULL;
   wchar_t wc;
   size_t k, k2;
   char scratch[MB_LEN_MAX + 1];
   char *p = *s;
   mbstate_t mbstate1, mbstate2;
 
-  b = mutt_buffer_new();
+  struct Buffer *b = mutt_buffer_new();
   if (!b)
     return -1;
   memset(&mbstate1, 0, sizeof(mbstate1));

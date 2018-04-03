@@ -348,23 +348,21 @@ int url_tostring(struct Url *u, char *dest, size_t len, int flags)
 
 int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
-  char *t = NULL, *p = NULL;
-  char *tmp = NULL;
-  char *headers = NULL;
+  char *p = NULL;
   char *tag = NULL, *value = NULL;
 
   int rc = -1;
 
-  t = strchr(src, ':');
+  char *t = strchr(src, ':');
   if (!t)
     return -1;
 
   /* copy string for safe use of strtok() */
-  tmp = mutt_str_strdup(t + 1);
+  char *tmp = mutt_str_strdup(t + 1);
   if (!tmp)
     return -1;
 
-  headers = strchr(tmp, '?');
+  char *headers = strchr(tmp, '?');
   if (headers)
     *headers++ = '\0';
 

@@ -131,12 +131,10 @@ static int compare_to(const void *a, const void *b)
   struct Header **ppa = (struct Header **) a;
   struct Header **ppb = (struct Header **) b;
   char fa[SHORT_STRING];
-  const char *fb = NULL;
-  int result;
 
   mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->to), SHORT_STRING);
-  fb = mutt_get_name((*ppb)->env->to);
-  result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
+  const char *fb = mutt_get_name((*ppb)->env->to);
+  int result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
   result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }
@@ -146,12 +144,10 @@ static int compare_from(const void *a, const void *b)
   struct Header **ppa = (struct Header **) a;
   struct Header **ppb = (struct Header **) b;
   char fa[SHORT_STRING];
-  const char *fb = NULL;
-  int result;
 
   mutt_str_strfcpy(fa, mutt_get_name((*ppa)->env->from), SHORT_STRING);
-  fb = mutt_get_name((*ppb)->env->from);
-  result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
+  const char *fb = mutt_get_name((*ppb)->env->from);
+  int result = mutt_str_strncasecmp(fa, fb, SHORT_STRING);
   result = perform_auxsort(result, a, b);
   return (SORTCODE(result));
 }

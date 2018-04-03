@@ -208,13 +208,10 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
 
       case '@':
       {
-        struct Header *h = NULL;
-        struct Address *alias = NULL;
-
-        alias = mutt_alias_lookup(s + 1);
+        struct Address *alias = mutt_alias_lookup(s + 1);
         if (alias)
         {
-          h = mutt_header_new();
+          struct Header *h = mutt_header_new();
           h->env = mutt_env_new();
           h->env->from = h->env->to = alias;
           mutt_default_save(p, sizeof(p), h);
@@ -707,9 +704,7 @@ void mutt_save_path(char *d, size_t dsize, struct Address *a)
     mutt_str_strfcpy(d, a->mailbox, dsize);
     if (!SaveAddress)
     {
-      char *p = NULL;
-
-      p = strpbrk(d, "%@");
+      char *p = strpbrk(d, "%@");
       if (p)
         *p = 0;
     }
@@ -744,7 +739,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   char prefix[SHORT_STRING], tmp[LONG_STRING], *cp = NULL, *wptr = buf, ch;
   char if_str[SHORT_STRING], else_str[SHORT_STRING];
   size_t wlen, count, len, wid;
-  pid_t pid;
   FILE *filter = NULL;
   char *recycler = NULL;
 
@@ -775,7 +769,6 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     /* n-off is the number of backslashes. */
     if (off > 0 && ((n - off) % 2) == 0)
     {
-      struct Buffer *srcbuf = NULL, *word = NULL, *command = NULL;
       char srccopy[LONG_STRING];
       int i = 0;
 
@@ -785,10 +778,10 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
       srccopy[n - 1] = '\0';
 
       /* prepare BUFFERs */
-      srcbuf = mutt_buffer_from(srccopy);
+      struct Buffer *srcbuf = mutt_buffer_from(srccopy);
       srcbuf->dptr = srcbuf->data;
-      word = mutt_buffer_new();
-      command = mutt_buffer_new();
+      struct Buffer *word = mutt_buffer_new();
+      struct Buffer *command = mutt_buffer_new();
 
       /* Iterate expansions across successive arguments */
       do
@@ -821,7 +814,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid = mutt_create_filter(command->data, NULL, &filter, NULL);
+      pid_t pid = mutt_create_filter(command->data, NULL, &filter, NULL);
       if (pid != -1)
       {
         int rc;

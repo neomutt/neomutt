@@ -1030,8 +1030,6 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
 static void init_menu(struct BrowserState *state, struct Menu *menu,
                       char *title, size_t titlelen, bool buffy)
 {
-  char path[_POSIX_PATH_MAX];
-
   menu->max = state->entrylen;
 
   if (menu->current >= menu->max)
@@ -1062,6 +1060,7 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     }
     else
     {
+      char path[_POSIX_PATH_MAX];
       menu->is_mailbox_list = 0;
       mutt_str_strfcpy(path, LastDir, sizeof(path));
       mutt_pretty_mailbox(path, sizeof(path));
@@ -2013,12 +2012,11 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
         }
         else
         {
-          struct Body *b = NULL;
           char buf2[_POSIX_PATH_MAX];
 
           mutt_file_concat_path(buf2, LastDir, state.entry[menu->current].name,
                                 sizeof(buf2));
-          b = mutt_make_file_attach(buf2);
+          struct Body *b = mutt_make_file_attach(buf2);
           if (b)
           {
             mutt_view_attachment(NULL, b, MUTT_REGULAR, NULL, NULL);

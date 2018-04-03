@@ -175,7 +175,6 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
                                  struct Rfc1524MailcapEntry *entry, int opt)
 {
   char *buf = NULL;
-  char *ch = NULL;
   int found = false;
   int line = 0;
 
@@ -191,7 +190,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
    */
 
   /* find length of basetype */
-  ch = strchr(type, '/');
+  char *ch = strchr(type, '/');
   if (!ch)
     return false;
   const int btlen = ch - type;

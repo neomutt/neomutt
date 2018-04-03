@@ -267,7 +267,7 @@ static void print_fixed_line(const char *line, struct State *s, int ql, struct F
  */
 int rfc3676_handler(struct Body *a, struct State *s)
 {
-  char *buf = NULL, *t = NULL;
+  char *buf = NULL;
   unsigned int quotelevel = 0;
   int delsp = 0;
   size_t sz = 0;
@@ -276,7 +276,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   memset(&fst, 0, sizeof(fst));
 
   /* respect DelSp of RFC3676 only with f=f parts */
-  t = mutt_param_get(&a->parameter, "delsp");
+  char *t = mutt_param_get(&a->parameter, "delsp");
   if (t)
   {
     delsp = mutt_str_strlen(t) == 3 && (mutt_str_strncasecmp(t, "yes", 3) == 0);

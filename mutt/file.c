@@ -420,13 +420,12 @@ int mutt_file_safe_rename(const char *src, const char *target)
  */
 int mutt_file_rmtree(const char *path)
 {
-  DIR *dirp = NULL;
   struct dirent *de = NULL;
   char cur[LONG_STRING];
   struct stat statbuf;
   int rc = 0;
 
-  dirp = opendir(path);
+  DIR *dirp = opendir(path);
   if (!dirp)
   {
     mutt_debug(1, "error opening directory %s\n", path);
@@ -1301,10 +1300,7 @@ int mutt_file_to_absolute_path(char *path, const char *reference)
  */
 char *mutt_file_read_keyword(const char *file, char *buffer, size_t buflen)
 {
-  FILE *fp = NULL;
-  char *start = NULL;
-
-  fp = mutt_file_fopen(file, "r");
+  FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return NULL;
 
@@ -1315,7 +1311,7 @@ char *mutt_file_read_keyword(const char *file, char *buffer, size_t buflen)
     return NULL;
 
   SKIPWS(buffer);
-  start = buffer;
+  char *start = buffer;
 
   while (*buffer && !isspace(*buffer))
     buffer++;

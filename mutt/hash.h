@@ -75,7 +75,7 @@ struct HashElem *mutt_hash_find_bucket(const struct Hash *table, const char *str
 void *           mutt_hash_find(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_find_elem(const struct Hash *table, const char *strkey);
 struct HashElem *mutt_hash_insert(struct Hash *table, const char *strkey, void *data);
-void             mutt_hash_set_destructor(struct Hash *hash, hash_destructor fn, intptr_t fn_data);
+void             mutt_hash_set_destructor(struct Hash *table, hash_destructor fn, intptr_t fn_data);
 struct HashElem *mutt_hash_typed_insert(struct Hash *table, const char *strkey, int type, void *data);
 struct Hash *    mutt_hash_int_create(int nelem, int flags);
 void             mutt_hash_int_delete(struct Hash *table, unsigned int intkey, const void *data);

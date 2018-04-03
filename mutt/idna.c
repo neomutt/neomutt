@@ -123,18 +123,15 @@ static bool check_idn(char *domain)
  */
 char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 {
-  char *local_user = NULL, *local_domain = NULL, *mailbox = NULL;
+  char *mailbox = NULL;
   char *reversed_user = NULL, *reversed_domain = NULL;
   char *tmp = NULL;
-#ifdef HAVE_LIBIDN
-  bool is_idn_encoded = false;
-#endif /* HAVE_LIBIDN */
 
-  local_user = mutt_str_strdup(user);
-  local_domain = mutt_str_strdup(domain);
+  char *local_user = mutt_str_strdup(user);
+  char *local_domain = mutt_str_strdup(domain);
 
 #ifdef HAVE_LIBIDN
-  is_idn_encoded = check_idn(local_domain);
+  bool is_idn_encoded = check_idn(local_domain);
   if (is_idn_encoded && IdnDecode)
   {
     if (idna_to_unicode_8z8z(local_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
@@ -232,12 +229,11 @@ cleanup:
  */
 char *mutt_idna_local_to_intl(const char *user, const char *domain)
 {
-  char *intl_user = NULL, *intl_domain = NULL;
   char *mailbox = NULL;
   char *tmp = NULL;
 
-  intl_user = mutt_str_strdup(user);
-  intl_domain = mutt_str_strdup(domain);
+  char *intl_user = mutt_str_strdup(user);
+  char *intl_domain = mutt_str_strdup(domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
   if (mutt_ch_convert_string(&intl_user, Charset, "utf-8", 0) == -1)

@@ -107,7 +107,7 @@ static int need_display_subject(struct Context *ctx, struct Header *hdr)
 static void linearize_tree(struct Context *ctx)
 {
   struct MuttThread *tree = ctx->tree;
-  struct Header **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
+  struct Header **array = ctx->hdrs + ((Sort & SORT_REVERSE) ? ctx->msgcount - 1 : 0);
 
   while (tree)
   {
@@ -115,7 +115,7 @@ static void linearize_tree(struct Context *ctx)
       tree = tree->child;
 
     *array = tree->message;
-    array += Sort & SORT_REVERSE ? -1 : 1;
+    array += (Sort & SORT_REVERSE) ? -1 : 1;
 
     if (tree->child)
       tree = tree->child;
@@ -507,14 +507,11 @@ static void insert_message(struct MuttThread **new,
 
 static struct Hash *make_subj_hash(struct Context *ctx)
 {
-  struct Header *hdr = NULL;
-  struct Hash *hash = NULL;
-
-  hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+  struct Hash *hash = mutt_hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
-    hdr = ctx->hdrs[i];
+    struct Header *hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
       mutt_hash_insert(hash, hdr->env->real_subj, hdr);
   }
@@ -1390,14 +1387,11 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 
 struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
-  struct Header *hdr = NULL;
-  struct Hash *hash = NULL;
-
-  hash = mutt_hash_create(ctx->msgcount * 2, 0);
+  struct Hash *hash = mutt_hash_create(ctx->msgcount * 2, 0);
 
   for (int i = 0; i < ctx->msgcount; i++)
   {
-    hdr = ctx->hdrs[i];
+    struct Header *hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
       mutt_hash_insert(hash, hdr->env->message_id, hdr);
   }

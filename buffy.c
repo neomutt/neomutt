@@ -158,13 +158,11 @@ static int test_new_folder(const char *path)
 
 static struct Buffy *buffy_new(const char *path)
 {
-  struct Buffy *buffy = NULL;
   char rp[PATH_MAX] = "";
-  char *r = NULL;
 
-  buffy = mutt_mem_calloc(1, sizeof(struct Buffy));
+  struct Buffy *buffy = mutt_mem_calloc(1, sizeof(struct Buffy));
   mutt_str_strfcpy(buffy->path, path, sizeof(buffy->path));
-  r = realpath(path, rp);
+  char *r = realpath(path, rp);
   mutt_str_strfcpy(buffy->realpath, r ? rp : path, sizeof(buffy->realpath));
   buffy->next = NULL;
   buffy->magic = 0;
@@ -355,7 +353,7 @@ static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, bool check_st
   int orig_count, orig_unread, orig_flagged;
 #endif
 
-  sb.st_size = 0;
+  memset(&sb, 0, sizeof (sb));
 
 #ifdef USE_SIDEBAR
   orig_new = tmp->new;
@@ -666,7 +664,7 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
       /* Decide whether to delete all normal mailboxes or all virtual */
       bool virt = (((*b)->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
       bool norm = (((*b)->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
-      bool clear_this = clear_all && (virt | norm);
+      bool clear_this = clear_all && (virt || norm);
 
       if (clear_this || (mutt_str_strcasecmp(buf, (*b)->path) == 0) ||
           (mutt_str_strcasecmp(buf, (*b)->desc) == 0))
@@ -804,9 +802,7 @@ int mutt_buffy_list(void)
 
 void mutt_buffy_setnotified(const char *path)
 {
-  struct Buffy *buffy = NULL;
-
-  buffy = buffy_get(path);
+  struct Buffy *buffy = buffy_get(path);
   if (!buffy)
     return;
 

@@ -479,11 +479,8 @@ static const struct Mapping RemailerHelp[] = {
 
 void mix_make_chain(struct ListHead *chainhead)
 {
-  struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
   bool c_redraw = true;
-
-  struct Remailer **type2_list = NULL;
   size_t ttll = 0;
 
   struct Coord *coords = NULL;
@@ -494,14 +491,14 @@ void mix_make_chain(struct ListHead *chainhead)
 
   char *t = NULL;
 
-  type2_list = mix_type2_list(&ttll);
+  struct Remailer **type2_list = mix_type2_list(&ttll);
   if (!type2_list)
   {
     mutt_error(_("Can't get mixmaster's type2.list!"));
     return;
   }
 
-  chain = mutt_mem_calloc(1, sizeof(struct MixChain));
+  struct MixChain *chain = mutt_mem_calloc(1, sizeof(struct MixChain));
 
   struct ListNode *p;
   STAILQ_FOREACH(p, chainhead, entries)

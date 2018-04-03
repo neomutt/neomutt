@@ -275,12 +275,11 @@ static void free_mbtable(struct MbTable **t)
 
 static struct MbTable *parse_mbtable(const char *s)
 {
-  struct MbTable *t = NULL;
   size_t slen, k;
   mbstate_t mbstate;
   char *d = NULL;
 
-  t = mutt_mem_calloc(1, sizeof(struct MbTable));
+  struct MbTable *t = mutt_mem_calloc(1, sizeof(struct MbTable));
   slen = mutt_str_strlen(s);
   if (slen == 0)
     return t;
@@ -751,7 +750,7 @@ static void add_to_stailq(struct ListHead *head, const char *str)
  *
  * If the 'finish' command is found, we should stop reading the current file.
  */
-static int finish_source(struct Buffer *tmp, struct Buffer *s,
+static int finish_source(struct Buffer *buf, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
   if (MoreArgs(s))
@@ -782,22 +781,22 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
  * e.g.
  *      ifndef imap finish
  */
-static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
+static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
   bool res = 0;
   struct Buffer token;
 
   memset(&token, 0, sizeof(token));
-  mutt_extract_token(tmp, s, 0);
+  mutt_extract_token(buf, s, 0);
 
   /* is the item defined as a variable? */
-  res = (mutt_option_index(tmp->data) != -1);
+  res = (mutt_option_index(buf->data) != -1);
 
   /* is the item a compiled-in feature? */
   if (!res)
   {
-    res = feature_enabled(tmp->data);
+    res = feature_enabled(buf->data);
   }
 
   /* or a function? */
@@ -811,7 +810,7 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
       for (int j = 0; b[j].name; j++)
       {
-        if (mutt_str_strcmp(tmp->data, b[j].name) == 0)
+        if (mutt_str_strcmp(buf->data, b[j].name) == 0)
         {
           res = true;
           break;
@@ -825,7 +824,7 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   {
     for (int i = 0; Commands[i].name; i++)
     {
-      if (mutt_str_strcmp(tmp->data, Commands[i].name) == 0)
+      if (mutt_str_strcmp(buf->data, Commands[i].name) == 0)
       {
         res = true;
         break;
@@ -836,7 +835,7 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   /* or a my_ var? */
   if (!res)
   {
-    res = !!myvar_get(tmp->data);
+    res = !!myvar_get(buf->data);
   }
 
   if (!MoreArgs(s))
@@ -844,12 +843,12 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     snprintf(err->data, err->dsize, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
     return -1;
   }
-  mutt_extract_token(tmp, s, MUTT_TOKEN_SPACE);
+  mutt_extract_token(buf, s, MUTT_TOKEN_SPACE);
 
   /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
   if ((res && (data == 0)) || (!res && (data == 1)))
   {
-    int rc = mutt_parse_rc_line(tmp->data, &token, err);
+    int rc = mutt_parse_rc_line(buf->data, &token, err);
     if (rc == -1)
     {
       mutt_error("Error: %s", err->data);
@@ -1813,10 +1812,9 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 {
   struct ListNode *n = NULL;
   size_t keylen;
-  char *p = NULL;
 
   mutt_extract_token(buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
-  p = strpbrk(buf->data, ": \t");
+  char *p = strpbrk(buf->data, ": \t");
   if (!p || (*p != ':'))
   {
     mutt_str_strfcpy(err->data, _("invalid header field"), err->dsize);
@@ -2069,7 +2067,7 @@ static bool valid_show_multipart_alternative(const char *val)
           (mutt_str_strcmp(val, "info") == 0) || !val || (*val == 0));
 }
 
-static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
+static int parse_setenv(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
   char **envp = mutt_envlist_getlist();
@@ -2090,8 +2088,8 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
   }
 
   /* get variable name */
-  mutt_extract_token(tmp, s, MUTT_TOKEN_EQUAL);
-  int len = strlen(tmp->data);
+  mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL);
+  int len = strlen(buf->data);
 
   if (query)
   {
@@ -2099,7 +2097,7 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
     while (envp && *envp)
     {
       /* This will display all matches for "^QUERY" */
-      if (mutt_str_strncmp(tmp->data, *envp, len) == 0)
+      if (mutt_str_strncmp(buf->data, *envp, len) == 0)
       {
         if (!found)
         {
@@ -2117,13 +2115,13 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
       return 0;
     }
 
-    snprintf(err->data, err->dsize, _("%s is unset"), tmp->data);
+    snprintf(err->data, err->dsize, _("%s is unset"), buf->data);
     return -1;
   }
 
   if (unset)
   {
-    if (mutt_envlist_unset(tmp->data))
+    if (mutt_envlist_unset(buf->data))
       return 0;
     return -1;
   }
@@ -2142,15 +2140,15 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
     return -1;
   }
 
-  char *name = mutt_str_strdup(tmp->data);
-  mutt_extract_token(tmp, s, 0);
-  mutt_envlist_set(name, tmp->data, true);
+  char *name = mutt_str_strdup(buf->data);
+  mutt_extract_token(buf, s, 0);
+  mutt_envlist_set(name, buf->data, true);
   FREE(&name);
 
   return 0;
 }
 
-static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
+static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
   int r = 0;
@@ -2187,14 +2185,14 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     }
 
     /* get the variable name */
-    mutt_extract_token(tmp, s, MUTT_TOKEN_EQUAL);
+    mutt_extract_token(buf, s, MUTT_TOKEN_EQUAL);
 
-    if (mutt_str_strncmp("my_", tmp->data, 3) == 0)
-      myvar = tmp->data;
-    else if ((idx = mutt_option_index(tmp->data)) == -1 &&
-             !(reset && (mutt_str_strcmp("all", tmp->data) == 0)))
+    if (mutt_str_strncmp("my_", buf->data, 3) == 0)
+      myvar = buf->data;
+    else if ((idx = mutt_option_index(buf->data)) == -1 &&
+             !(reset && (mutt_str_strcmp("all", buf->data) == 0)))
     {
-      snprintf(err->data, err->dsize, _("%s: unknown variable"), tmp->data);
+      snprintf(err->data, err->dsize, _("%s: unknown variable"), buf->data);
       return -1;
     }
     SKIPWS(s->dptr);
@@ -2213,7 +2211,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         return -1;
       }
 
-      if (mutt_str_strcmp("all", tmp->data) == 0)
+      if (mutt_str_strcmp("all", buf->data) == 0)
       {
         if (CurrentMenu == MENU_PAGER)
         {
@@ -2249,10 +2247,10 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         }
 
         s->dptr++;
-        mutt_extract_token(tmp, s, 0);
-        if (mutt_str_strcasecmp("yes", tmp->data) == 0)
+        mutt_extract_token(buf, s, 0);
+        if (mutt_str_strcasecmp("yes", buf->data) == 0)
           unset = inv = 0;
-        else if (mutt_str_strcasecmp("no", tmp->data) == 0)
+        else if (mutt_str_strcasecmp("no", buf->data) == 0)
           unset = 1;
         else
         {
@@ -2265,7 +2263,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         snprintf(err->data, err->dsize,
                  *(bool *) MuttVars[idx].var ? _("%s is set") : _("%s is unset"),
-                 tmp->data);
+                 buf->data);
         return 0;
       }
 
@@ -2348,23 +2346,23 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
 
         if (myvar)
         {
-          /* myvar is a pointer to tmp and will be lost on extract_token */
+          /* myvar is a pointer to buf and will be lost on extract_token */
           myvar = mutt_str_strdup(myvar);
           myvar_del(myvar);
         }
 
-        mutt_extract_token(tmp, s, 0);
+        mutt_extract_token(buf, s, 0);
 
         if (myvar)
         {
-          myvar_set(myvar, tmp->data);
+          myvar_set(myvar, buf->data);
           FREE(&myvar);
           myvar = "don't resort";
         }
         else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_PATH))
         {
           char scratch[_POSIX_PATH_MAX];
-          mutt_str_strfcpy(scratch, tmp->data, sizeof(scratch));
+          mutt_str_strfcpy(scratch, buf->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
           if (mutt_str_strcmp(MuttVars[idx].name, "debug_file") == 0)
           {
@@ -2381,39 +2379,39 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         else if ((idx >= 0) && (DTYPE(MuttVars[idx].type) == DT_STRING))
         {
           if ((strstr(MuttVars[idx].name, "charset") &&
-               check_charset(&MuttVars[idx], tmp->data) < 0) |
+               check_charset(&MuttVars[idx], buf->data) < 0) |
               /* $charset can't be empty, others can */
-              ((strcmp(MuttVars[idx].name, "charset") == 0) && !*tmp->data))
+              ((strcmp(MuttVars[idx].name, "charset") == 0) && !*buf->data))
           {
             snprintf(err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
-                     MuttVars[idx].name, tmp->data);
+                     MuttVars[idx].name, buf->data);
             return -1;
           }
 
           FREE((void *) MuttVars[idx].var);
-          *((char **) MuttVars[idx].var) = mutt_str_strdup(tmp->data);
+          *((char **) MuttVars[idx].var) = mutt_str_strdup(buf->data);
           if (mutt_str_strcmp(MuttVars[idx].name, "charset") == 0)
             mutt_ch_set_charset(Charset);
 
           if ((mutt_str_strcmp(MuttVars[idx].name,
                                "show_multipart_alternative") == 0) &&
-              !valid_show_multipart_alternative(tmp->data))
+              !valid_show_multipart_alternative(buf->data))
           {
             snprintf(err->data, err->dsize, _("Invalid value for name %s: \"%s\""),
-                     MuttVars[idx].name, tmp->data);
+                     MuttVars[idx].name, buf->data);
             return -1;
           }
         }
         else if (DTYPE(MuttVars[idx].type) == DT_MBTABLE)
         {
           free_mbtable((struct MbTable **) MuttVars[idx].var);
-          *((struct MbTable **) MuttVars[idx].var) = parse_mbtable(tmp->data);
+          *((struct MbTable **) MuttVars[idx].var) = parse_mbtable(buf->data);
         }
         else
         {
           mutt_addr_free((struct Address **) MuttVars[idx].var);
           *((struct Address **) MuttVars[idx].var) =
-              mutt_addr_parse_list(NULL, tmp->data);
+              mutt_addr_parse_list(NULL, buf->data);
         }
       }
     }
@@ -2440,9 +2438,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       s->dptr++;
 
       /* copy the value of the string */
-      mutt_extract_token(tmp, s, 0);
+      mutt_extract_token(buf, s, 0);
 
-      if (parse_regex(idx, tmp, err))
+      if (parse_regex(idx, buf, err))
       {
         /* $reply_regex and $alternates require special treatment */
         if (Context && Context->msgcount &&
@@ -2494,10 +2492,10 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       s->dptr++;
 
       /* copy the value of the string */
-      mutt_extract_token(tmp, s, 0);
-      if (mx_set_magic(tmp->data))
+      mutt_extract_token(buf, s, 0);
+      if (mx_set_magic(buf->data))
       {
-        snprintf(err->data, err->dsize, _("%s: invalid mailbox type"), tmp->data);
+        snprintf(err->data, err->dsize, _("%s: invalid mailbox type"), buf->data);
         r = -1;
         break;
       }
@@ -2523,12 +2521,12 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       CHECK_PAGER;
       s->dptr++;
 
-      mutt_extract_token(tmp, s, 0);
-      rc = mutt_str_atos(tmp->data, (short *) &val);
+      mutt_extract_token(buf, s, 0);
+      rc = mutt_str_atos(buf->data, (short *) &val);
 
-      if (rc < 0 || !*tmp->data)
+      if (rc < 0 || !*buf->data)
       {
-        snprintf(err->data, err->dsize, _("%s: invalid value (%s)"), tmp->data,
+        snprintf(err->data, err->dsize, _("%s: invalid value (%s)"), buf->data,
                  rc == -1 ? _("format error") : _("number overflow"));
         r = -1;
         break;
@@ -2581,18 +2579,18 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       if (*s->dptr == '=')
       {
         s->dptr++;
-        mutt_extract_token(tmp, s, 0);
-        if (mutt_str_strcasecmp("yes", tmp->data) == 0)
+        mutt_extract_token(buf, s, 0);
+        if (mutt_str_strcasecmp("yes", buf->data) == 0)
           *(unsigned char *) MuttVars[idx].var = MUTT_YES;
-        else if (mutt_str_strcasecmp("no", tmp->data) == 0)
+        else if (mutt_str_strcasecmp("no", buf->data) == 0)
           *(unsigned char *) MuttVars[idx].var = MUTT_NO;
-        else if (mutt_str_strcasecmp("ask-yes", tmp->data) == 0)
+        else if (mutt_str_strcasecmp("ask-yes", buf->data) == 0)
           *(unsigned char *) MuttVars[idx].var = MUTT_ASKYES;
-        else if (mutt_str_strcasecmp("ask-no", tmp->data) == 0)
+        else if (mutt_str_strcasecmp("ask-no", buf->data) == 0)
           *(unsigned char *) MuttVars[idx].var = MUTT_ASKNO;
         else
         {
-          snprintf(err->data, err->dsize, _("%s: invalid value"), tmp->data);
+          snprintf(err->data, err->dsize, _("%s: invalid value"), buf->data);
           r = -1;
           break;
         }
@@ -2653,9 +2651,9 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
       CHECK_PAGER;
       s->dptr++;
-      mutt_extract_token(tmp, s, 0);
+      mutt_extract_token(buf, s, 0);
 
-      if (parse_sort((short *) MuttVars[idx].var, tmp->data, map, err) == -1)
+      if (parse_sort((short *) MuttVars[idx].var, buf->data, map, err) == -1)
       {
         r = -1;
         break;
@@ -2675,15 +2673,15 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       s->dptr++;
 
       /* copy the value of the string */
-      mutt_extract_token(tmp, s, 0);
-      if (mutt_hcache_is_valid_backend(tmp->data))
+      mutt_extract_token(buf, s, 0);
+      if (mutt_hcache_is_valid_backend(buf->data))
       {
         FREE((void *) MuttVars[idx].var);
-        *(char **) (MuttVars[idx].var) = mutt_str_strdup(tmp->data);
+        *(char **) (MuttVars[idx].var) = mutt_str_strdup(buf->data);
       }
       else
       {
-        snprintf(err->data, err->dsize, _("%s: invalid backend"), tmp->data);
+        snprintf(err->data, err->dsize, _("%s: invalid backend"), buf->data);
         r = -1;
         break;
       }
@@ -2876,19 +2874,19 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
 #undef MAXERRS
 
-static int parse_source(struct Buffer *tmp, struct Buffer *token,
+static int parse_source(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err)
 {
   char path[_POSIX_PATH_MAX];
 
   do
   {
-    if (mutt_extract_token(tmp, token, 0) != 0)
+    if (mutt_extract_token(buf, s, 0) != 0)
     {
-      snprintf(err->data, err->dsize, _("source: error at %s"), token->dptr);
+      snprintf(err->data, err->dsize, _("source: error at %s"), s->dptr);
       return -1;
     }
-    mutt_str_strfcpy(path, tmp->data, sizeof(path));
+    mutt_str_strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
 
     if (source_rc(path, err) < 0)
@@ -2897,7 +2895,7 @@ static int parse_source(struct Buffer *tmp, struct Buffer *token,
       return -1;
     }
 
-  } while (MoreArgs(token));
+  } while (MoreArgs(s));
 
   return 0;
 }
@@ -3724,7 +3722,6 @@ static bool get_hostname(void)
 
 int mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
-  const char *p = NULL;
   char buffer[LONG_STRING];
   int need_pause = 0;
   struct Buffer err;
@@ -3746,7 +3743,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
 
-  p = mutt_str_getenv("MAIL");
+  const char *p = mutt_str_getenv("MAIL");
   if (p)
     SpoolFile = mutt_str_strdup(p);
   else if ((p = mutt_str_getenv("MAILDIR")))
@@ -4009,10 +4006,10 @@ bail:
   return -1;
 }
 
-static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
+static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
                                 unsigned long data, struct Buffer *err)
 {
-  if (!b || !s)
+  if (!buf || !s)
     return -1;
 
   char *tmp = NULL;
@@ -4021,14 +4018,14 @@ static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
   {
     char *tag = NULL, *transform = NULL;
 
-    mutt_extract_token(b, s, 0);
-    if (b->data && *b->data)
-      tag = mutt_str_strdup(b->data);
+    mutt_extract_token(buf, s, 0);
+    if (buf->data && *buf->data)
+      tag = mutt_str_strdup(buf->data);
     else
       continue;
 
-    mutt_extract_token(b, s, 0);
-    transform = mutt_str_strdup(b->data);
+    mutt_extract_token(buf, s, 0);
+    transform = mutt_str_strdup(buf->data);
 
     /* avoid duplicates */
     tmp = mutt_hash_find(TagTransforms, tag);
@@ -4045,10 +4042,10 @@ static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
   return 0;
 }
 
-static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
+static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
-  if (!b || !s)
+  if (!buf || !s)
     return -1;
 
   char *tmp = NULL;
@@ -4057,14 +4054,14 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
   {
     char *tag = NULL, *format = NULL;
 
-    mutt_extract_token(b, s, 0);
-    if (b->data && *b->data)
-      tag = mutt_str_strdup(b->data);
+    mutt_extract_token(buf, s, 0);
+    if (buf->data && *buf->data)
+      tag = mutt_str_strdup(buf->data);
     else
       continue;
 
-    mutt_extract_token(b, s, 0);
-    format = mutt_str_strdup(b->data);
+    mutt_extract_token(buf, s, 0);
+    format = mutt_str_strdup(buf->data);
 
     /* avoid duplicates */
     tmp = mutt_hash_find(TagFormats, format);

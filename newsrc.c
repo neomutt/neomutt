@@ -228,13 +228,12 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
   line = mutt_mem_malloc(sb.st_size + 1);
   while (sb.st_size && fgets(line, sb.st_size + 1, nserv->newsrc_fp))
   {
-    char *b = NULL, *h = NULL, *p = NULL;
+    char *b = NULL, *h = NULL;
     unsigned int j = 1;
     bool subs = false;
-    struct NntpData *nntp_data = NULL;
 
     /* find end of newsgroup name */
-    p = strpbrk(line, ":!");
+    char *p = strpbrk(line, ":!");
     if (!p)
       continue;
 
@@ -244,7 +243,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
     *p++ = '\0';
 
     /* get newsgroup data */
-    nntp_data = nntp_data_find(nserv, line);
+    struct NntpData *nntp_data = nntp_data_find(nserv, line);
     FREE(&nntp_data->newsrc_ent);
 
     /* count number of entries */
@@ -472,9 +471,9 @@ int nntp_newsrc_update(struct NntpServer *nserv)
       if (j)
         buf[off++] = ',';
       if (nntp_data->newsrc_ent[j].first == nntp_data->newsrc_ent[j].last)
-        snprintf(buf + off, buflen - off, "%d", nntp_data->newsrc_ent[j].first);
+        snprintf(buf + off, buflen - off, "%u", nntp_data->newsrc_ent[j].first);
       else if (nntp_data->newsrc_ent[j].first < nntp_data->newsrc_ent[j].last)
-        snprintf(buf + off, buflen - off, "%d-%d",
+        snprintf(buf + off, buflen - off, "%u-%u",
                  nntp_data->newsrc_ent[j].first, nntp_data->newsrc_ent[j].last);
       off += strlen(buf + off);
     }
@@ -587,11 +586,10 @@ static int active_get_cache(struct NntpServer *nserv)
   char buf[HUGE_STRING];
   char file[_POSIX_PATH_MAX];
   time_t t;
-  FILE *fp = NULL;
 
   cache_expand(file, sizeof(file), &nserv->conn->account, ".active");
   mutt_debug(1, "Parsing %s\n", file);
-  fp = mutt_file_fopen(file, "r");
+  FILE *fp = mutt_file_fopen(file, "r");
   if (!fp)
     return -1;
 
@@ -641,7 +639,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
       buflen *= 2;
       mutt_mem_realloc(&buf, buflen);
     }
-    snprintf(buf + off, buflen - off, "%s %d %d %c%s%s\n", nntp_data->group,
+    snprintf(buf + off, buflen - off, "%s %u %u %c%s%s\n", nntp_data->group,
              nntp_data->last_message, nntp_data->first_message,
              nntp_data->allowed ? 'y' : 'n', nntp_data->desc ? " " : "",
              nntp_data->desc ? nntp_data->desc : "");
@@ -693,7 +691,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
   char buf[16];
   bool old = false;
   void *hdata = NULL;
-  anum_t first, last;
+  anum_t first = 0, last = 0;
 
   if (!hc)
     return;
@@ -714,7 +712,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
         if (current >= nntp_data->first_message && current <= nntp_data->last_message)
           continue;
 
-        snprintf(buf, sizeof(buf), "%d", current);
+        snprintf(buf, sizeof(buf), "%u", current);
         mutt_debug(2, "mutt_hcache_delete %s\n", buf);
         mutt_hcache_delete(hc, buf, strlen(buf));
       }

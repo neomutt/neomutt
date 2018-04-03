@@ -378,9 +378,7 @@ static void new_class_color(struct QClass *class, int *q_level)
 static void shift_class_colors(struct QClass *quote_list,
                                struct QClass *new_class, int index, int *q_level)
 {
-  struct QClass *q_list = NULL;
-
-  q_list = quote_list;
+  struct QClass *q_list = quote_list;
   new_class->index = -1;
 
   while (q_list)

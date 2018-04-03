@@ -661,10 +661,8 @@ void mutt_display_address(struct Envelope *env)
 {
   char *pfx = NULL;
   char buf[SHORT_STRING];
-  struct Address *addr = NULL;
 
-  addr = mutt_get_address(env, &pfx);
-
+  struct Address *addr = mutt_get_address(env, &pfx);
   if (!addr)
     return;
 
@@ -953,15 +951,13 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
   char tmp[STRING];
-
   char charset[STRING];
-  char *cp = NULL;
 
   short charset_changed = 0;
   short type_changed = 0;
   short structure_changed = 0;
 
-  cp = mutt_param_get(&b->parameter, "charset");
+  char *cp = mutt_param_get(&b->parameter, "charset");
   mutt_str_strfcpy(charset, NONULL(cp), sizeof(charset));
 
   snprintf(buf, sizeof(buf), "%s/%s", TYPE(b), b->subtype);
@@ -1050,13 +1046,12 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
 static int check_traditional_pgp(struct Header *h, int *redraw)
 {
-  struct Message *msg = NULL;
   int rc = 0;
 
   h->security |= PGP_TRADITIONAL_CHECKED;
 
   mutt_parse_mime_message(Context, h);
-  msg = mx_open_message(Context, h->msgno);
+  struct Message *msg = mx_open_message(Context, h->msgno);
   if (!msg)
     return 0;
   if (crypt_pgp_check_traditional(msg->fp, h->content, 0))
