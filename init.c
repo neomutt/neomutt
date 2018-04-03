@@ -3745,20 +3745,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   snprintf(AttachmentMarker, sizeof(AttachmentMarker), "\033]9;%" PRIu64 "\a",
            mutt_rand64());
 
-#ifdef USE_NNTP
-  p = mutt_str_getenv("NNTPSERVER");
-  if (p)
-  {
-    FREE(&NewsServer);
-    NewsServer = mutt_str_strdup(p);
-  }
-  else
-  {
-    p = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
-    NewsServer = mutt_str_strdup(p);
-  }
-#endif
-
   p = mutt_str_getenv("MAIL");
   if (p)
     SpoolFile = mutt_str_strdup(p);
@@ -3773,29 +3759,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 #endif
     SpoolFile = mutt_str_strdup(buffer);
   }
-
-  p = mutt_str_getenv("MAILCAPS");
-  if (p)
-    MailcapPath = mutt_str_strdup(p);
-  else
-  {
-    /* Default search path from RFC1524 */
-    MailcapPath = mutt_str_strdup(
-        "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR
-        "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
-  }
-
-  Tmpdir = mutt_str_strdup((p = mutt_str_getenv("TMPDIR")) ? p : "/tmp");
-
-  p = mutt_str_getenv("VISUAL");
-  if (!p)
-  {
-    p = mutt_str_getenv("EDITOR");
-    if (!p)
-      p = "vi";
-  }
-  Editor = mutt_str_strdup(p);
-  Visual = mutt_str_strdup(p);
 
   p = mutt_str_getenv("REPLYTO");
   if (p)
@@ -3817,7 +3780,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   if (p)
     From = mutt_addr_parse_list(NULL, p);
 
-  mutt_ch_set_langinfo_charset();
+  Charset = mutt_ch_get_langinfo_charset();
   mutt_ch_set_charset(Charset);
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
@@ -3955,6 +3918,26 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (!get_hostname())
     return 1;
+
+  /* "$mailcap_path" precedence: environment, config file, code */
+  const char *env_mc = mutt_str_getenv("MAILCAPS");
+  if (env_mc)
+    mutt_str_replace(&MailcapPath, env_mc);
+
+  /* "$tmpdir" precedence: environment, config file, code */
+  const char *env_tmp = mutt_str_getenv("TMPDIR");
+  if (env_tmp)
+    mutt_str_replace(&Tmpdir, env_tmp);
+
+  /* "$visual", "$editor" precedence: environment, config file, code */
+  const char *env_ed = mutt_str_getenv("VISUAL");
+  if (!env_ed)
+    env_ed = mutt_str_getenv("EDITOR");
+  if (env_ed)
+  {
+    mutt_str_replace(&Editor, env_ed);
+    mutt_str_replace(&Visual, env_ed);
+  }
 
   if (need_pause && !OPT_NO_CURSES)
   {

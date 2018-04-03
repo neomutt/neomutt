@@ -813,7 +813,7 @@ struct Option MuttVars[] = {
   ** \fBNote\fP that changes made to the References: and Date: headers are
   ** ignored for interoperability reasons.
   */
-  { "editor",           DT_PATH, R_NONE, &Editor, 0 },
+  { "editor",           DT_PATH, R_NONE, &Editor, IP "vi" },
   /*
   ** .pp
   ** This variable specifies which editor is used by NeoMutt.
@@ -1685,12 +1685,16 @@ struct Option MuttVars[] = {
   ** .pp
   ** When $$mail_check_stats is \fIset\fP, this variable configures
   ** how often (in seconds) NeoMutt will update message counts.
+  ** .pp
+  ** The default search path is from RFC1524.
   */
-  { "mailcap_path",     DT_STRING,  R_NONE, &MailcapPath, 0 },
+  { "mailcap_path",     DT_STRING,  R_NONE, &MailcapPath, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap" },
   /*
   ** .pp
   ** This variable specifies which files to consult when attempting to
   ** display MIME bodies not directly supported by NeoMutt.
+  ** .pp
+  ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
   */
   { "mailcap_sanitize", DT_BOOL, R_NONE, &MailcapSanitize, 1 },
   /*
@@ -4151,7 +4155,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** A value of zero or less will cause NeoMutt to never time out.
   */
-  { "tmpdir",           DT_PATH, R_NONE, &Tmpdir, 0 },
+  { "tmpdir",           DT_PATH, R_NONE, &Tmpdir, IP "/tmp" },
   /*
   ** .pp
   ** This variable allows you to specify where NeoMutt will place its
@@ -4306,11 +4310,13 @@ struct Option MuttVars[] = {
   ** virtual-mailboxes) as a spool file.
   */
 #endif
-  { "visual",           DT_PATH, R_NONE, &Visual, 0 },
+  { "visual",           DT_PATH, R_NONE, &Visual, IP "vi" },
   /*
   ** .pp
   ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
   ** given in the built-in editor.
+  ** .pp
+  ** $$visual is overridden by the environment variable \fC$$$VISUAL\fP.
   */
   { "wait_key",         DT_BOOL, R_NONE, &WaitKey, 1 },
   /*

@@ -242,6 +242,9 @@ int main(int argc, char *argv[], char *envp[])
   char *new_magic = NULL;
   char *dlevel = NULL;
   char *dfile = NULL;
+#ifdef USE_NNTP
+  char *cli_nntp = NULL;
+#endif
   struct Header *msg = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
@@ -360,7 +363,7 @@ int main(int argc, char *argv[], char *envp[])
           break;
 #ifdef USE_NNTP
         case 'g': /* Specify a news server */
-          set_default_value("news_server", (intptr_t) mutt_str_strdup(optarg));
+          cli_nntp = optarg;
           /* fallthrough */
         case 'G': /* List of newsgroups */
           flags |= MUTT_SELECT | MUTT_NEWS;
@@ -543,6 +546,23 @@ int main(int argc, char *argv[], char *envp[])
   LogAllowDebugSet = true;
 
   mutt_list_free(&commands);
+
+#ifdef USE_NNTP
+  /* "$news_server" precedence: command line, environment, config file, system file */
+  const char *env_nntp = NULL;
+  if (cli_nntp)
+    mutt_str_replace(&NewsServer, cli_nntp);
+  else if ((env_nntp = mutt_str_getenv("NNTPSERVER")))
+    mutt_str_replace(&NewsServer, env_nntp);
+  else if (!NewsServer)
+  {
+    char buffer[1024];
+    char *server = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
+    NewsServer = mutt_str_strdup(server);
+  }
+  if (NewsServer)
+    set_default_value("news_server", (intptr_t) mutt_str_strdup(NewsServer));
+#endif
 
   /* Initialize crypto backends.  */
   crypt_init();

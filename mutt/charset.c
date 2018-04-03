@@ -409,22 +409,22 @@ char *mutt_ch_get_default_charset(void)
 }
 
 /**
- * mutt_ch_set_langinfo_charset - Set the user's choice of character set
+ * mutt_ch_get_langinfo_charset - Get the user's choice of character set
+ * @retval ptr Charset string
  *
- * Lookup the character map used by the user's locale and store it in Charset.
+ * Get the canonical character set used by the user's locale.
+ * The caller must free the returned string.
  */
-void mutt_ch_set_langinfo_charset(void)
+char *mutt_ch_get_langinfo_charset(void)
 {
-  char buf[LONG_STRING];
-  char buf2[LONG_STRING];
+  char buf[LONG_STRING] = "";
 
-  mutt_str_strfcpy(buf, nl_langinfo(CODESET), sizeof(buf));
-  mutt_ch_canonical_charset(buf2, sizeof(buf2), buf);
+  mutt_ch_canonical_charset(buf, sizeof(buf), nl_langinfo(CODESET));
 
-  /* finally, set $charset */
-  Charset = mutt_str_strdup(buf2);
-  if (!Charset)
-    Charset = mutt_str_strdup("iso-8859-1");
+  if (buf[0] != '\0')
+    return mutt_str_strdup(buf);
+
+  return mutt_str_strdup("iso-8859-1");
 }
 
 /**
