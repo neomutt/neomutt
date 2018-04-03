@@ -894,11 +894,6 @@ make-template Makefile.autosetup Makefile
 make-config-header config.h -auto $auto_rep -bare $bare_rep -str $str_rep
 
 ###############################################################################
-# Generate doc/neomutt.1
-define bindir [get-define BINDIR]
-define docdir [get-define PKGDOCDIR]
-
-###############################################################################
 # Print a summary
 user-notice "Summary of build options:
 
