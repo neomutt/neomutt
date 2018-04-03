@@ -918,8 +918,8 @@ foreach dir $subdirs {
 }
 
 ###############################################################################
-# Provide timestamps (UTC) based on most recent author date or PACKAGE_VERSION
-# doc/neomuttrc.man, doc/neomutt.1
+# Define package timestamp (UTC) based on PACKAGE_VERSION for:
+# doc/neomuttrc.5, doc/neomutt.1
 define PACKAGE_DATE \
   [regsub {(....)(..)(..)} [get-define PACKAGE_VERSION] {\1-\2-\3}]
 
