@@ -414,9 +414,23 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
     h->hist[dest--] = NULL;
 }
 
-static const char *history_format_str(char *dest, size_t destlen, size_t col, int cols,
-                                      char op, const char *src, const char *fmt,
-                                      const char *ifstring, const char *elsestring,
+/**
+ * history_format_str - Format a string for the history list
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  col      Starting column
+ * @param[in]  cols     Number of screen columns
+ * @param[in]  op       printf-like operator, e.g. 't'
+ * @param[in]  src      printf-like format string
+ * @param[in]  prec     Field precision, e.g. "-3.4"
+ * @param[in]  if_str   If condition is met, display this string
+ * @param[in]  else_str Otherwise, display this string
+ * @param[in]  data     Pointer to the mailbox Context
+ * @param[in]  flags    Format flags
+ */
+static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
+                                      char op, const char *src, const char *prec,
+                                      const char *if_str, const char *else_str,
                                       unsigned long data, enum FormatFlag flags)
 {
   char *match = (char *) data;
@@ -424,21 +438,35 @@ static const char *history_format_str(char *dest, size_t destlen, size_t col, in
   switch (op)
   {
     case 's':
-      mutt_format_s(dest, destlen, fmt, match);
+      mutt_format_s(buf, buflen, prec, match);
       break;
   }
 
   return (src);
 }
 
-static void history_entry(char *s, size_t slen, struct Menu *m, int num)
+/**
+ * history_entry - Format a menu item for the history list
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  menu   Menu containing aliases
+ * @param[in]  num    Index into the menu
+ */
+static void history_entry(char *buf, size_t buflen, struct Menu *menu, int num)
 {
-  char *entry = ((char **) m->data)[num];
+  char *entry = ((char **) menu->data)[num];
 
-  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, "%s", history_format_str,
+  mutt_expando_format(buf, buflen, 0, MuttIndexWindow->cols, "%buf", history_format_str,
                       (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * history_menu - Select an item from a history list
+ * @param buf         Buffer in which to save string
+ * @param buflen      Buffer length
+ * @param matches     Items to choose from
+ * @param match_count Number of items
+ */
 static void history_menu(char *buf, size_t buflen, char **matches, int match_count)
 {
   struct Menu *menu;
@@ -475,6 +503,13 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
   mutt_menu_destroy(&menu);
 }
 
+/**
+ * search_history - Find matches in a history list
+ * @param[in]  search_buf String to find
+ * @param[in]  hclass     History list
+ * @param[out] matches    All the matching lines
+ * @retval num Number of matches found
+ */
 static int search_history(char *search_buf, enum HistoryClass hclass, char **matches)
 {
   struct History *h = get_history(hclass);
@@ -707,13 +742,16 @@ void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
   mutt_str_replace(&h->hist[h->last], str);
 }
 
+/**
+ * mutt_history_complete - Complete a string from a history list
+ * @param buf    Buffer in which to save string
+ * @param buflen Buffer length
+ * @param hclass History list to use
+ */
 void mutt_history_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 {
-  char **matches;
-  int match_count;
-
-  matches = mutt_mem_calloc(History, sizeof(char *));
-  match_count = search_history(buf, hclass, matches);
+  char **matches = mutt_mem_calloc(History, sizeof(char *));
+  int match_count = search_history(buf, hclass, matches);
   if (match_count)
   {
     if (match_count == 1)
