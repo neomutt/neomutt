@@ -534,6 +534,22 @@ static int search_history(char *search_buf, enum HistoryClass hclass, char **mat
 }
 
 /**
+ * mutt_hist_free - Free all the history lists
+ */
+void mutt_hist_free(void)
+{
+  for (enum HistoryClass hclass = HC_FIRST; hclass < HC_LAST; hclass++)
+  {
+    struct History *h = &Histories[hclass];
+    for (int i = 0; i < History; i++)
+    {
+      FREE(&h->hist[i]);
+    }
+    FREE(&Histories[hclass]);
+  }
+}
+
+/**
  * mutt_hist_init - Create a set of empty History ring buffers
  *
  * This just creates empty histories.

@@ -48,6 +48,7 @@ enum HistoryClass
 
 void  mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);
 bool  mutt_hist_at_scratch(enum HistoryClass hclass);
+void  mutt_hist_free(void);
 void  mutt_hist_init(void);
 char *mutt_hist_next(enum HistoryClass hclass);
 char *mutt_hist_prev(enum HistoryClass hclass);
