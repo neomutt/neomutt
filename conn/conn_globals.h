@@ -24,7 +24,7 @@
 #define _CONN_GLOBALS_H
 
 /* These variables are backing for config items */
-short ConnectTimeout;
+extern short ConnectTimeout;
 
 #ifdef USE_SSL
 extern const char *CertificateFile;
@@ -33,7 +33,7 @@ extern const char *SslCiphers;
 extern const char *SslClientCert;
 #ifdef USE_SSL_GNUTLS
 extern const char *SslCaCertificatesFile;
-short SslMinDhPrimeBits;
+extern short SslMinDhPrimeBits;
 #endif
 #endif
 
