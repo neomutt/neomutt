@@ -899,6 +899,11 @@ define docdir [get-define PKGDOCDIR]
 make-template doc/neomutt.man doc/neomutt.1
 
 ###############################################################################
+# Generate .clang_complete
+define cflags-one-per-line [string map {" " "\n"} [get-define CFLAGS]]
+make-template .clang_complete.in
+
+###############################################################################
 # Print a summary
 user-notice "Summary of build options:
 
