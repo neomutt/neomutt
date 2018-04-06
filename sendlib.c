@@ -972,7 +972,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b)
  *
  * Given a file at `path`, see if there is a registered MIME type.
  * Returns the major MIME type, and copies the subtype to ``d''.  First look
- * for ~/.mime.types, then look in a system mime.types if we can find one.
+ * in a system mime.types if we can find one, then look for ~/.mime.types.
  * The longest match is used so that we can match `ps.gz' when `gz' also
  * exists.
  */

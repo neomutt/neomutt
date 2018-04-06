@@ -9122,12 +9122,19 @@ macro pager \cb |urlview\n
         file is called <literal>mime.types</literal>.
       </para>
       <para>
-        When you add an attachment to your mail message, NeoMutt searches your
-        personal <literal>mime.types</literal> file at
-        <literal>$HOME/.mime.types</literal>, and then the system
+        When you add an attachment to your mail message, NeoMutt searches the
+        system <literal>mime.types</literal> file at
+        <literal>/etc/mime.types</literal>,
+        <literal>$SYSCONFDIR/mime.types</literal> or
+        <literal>$PKGDATADIR/mime.types</literal> and then your personal
         <literal>mime.types</literal> file at
-        <literal>/usr/local/share/neomutt/mime.types</literal> or
-        <literal>/etc/mime.types</literal>
+        <literal>$HOME/.mime.types</literal>.
+      </para>
+      <para>
+        Where <literal>$HOME</literal> is your home directory. The
+        <literal>$PKGDATADIR</literal> and the <literal>$SYSCONFDIR</literal>
+        directories depend on where NeoMutt is installed: the former is the
+        default for shared data, the latter for system configuration files.
       </para>
       <para>
         Each line starts with the full MIME type, followed by a space and
