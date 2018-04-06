@@ -2964,6 +2964,47 @@ color sidebar_divider   color8  default
       <para>See also the
       <link linkend="postpone">$postpone</link> quad-option.</para>
     </sect1>
+
+    <sect1 id="logging">
+      <title>Logging</title>
+      <para>NeoMutt has different types of logging/error messages</para>
+      <itemizedlist>
+        <listitem>Primitive Errors:
+          errors emitted by C library functions such
+          as <literal>fopen()</literal>.
+        </listitem>
+        <listitem>Errors
+        </listitem>
+        <listitem>Warnings
+        </listitem>
+        <listitem>Message:
+          Informational messages such as <literal>Sorting mailbox...</literal>.
+        </listitem>
+        <listitem>Debug:
+          Debug messages usually only interesting while debugging.
+        </listitem>
+      </itemizedlist>
+      <para>These log messages are shown in the command bar at the bottom of the
+      UI (usually below the status line) and errors are shown in a different
+      colour than the other message types. The colours used for displaying can
+      be adjusted with <literal>color error ...</literal> and <literal>color
+      message ...</literal>, respectively. See the <link linkend="color">
+      description of <literal>color</literal></link> for the precise syntax.
+      </para>
+      <para>The command bar shows only the last message. To show the last 100
+      messages (this includes all types of messages from debug to error) the
+      function <link linkend="tab-index-bindings"><literal>
+      &lt;show-log-messages&gt;</literal></link> can be used.</para>
+      <para>Debug messages are not shown by default. To enable them NeoMutt
+      must be compiled with <literal>+debug</literal>. Furthermore, the debug
+      log level must be set with the <link linkend="tab-commandline-options">
+      <literal>-d</literal> command line parameter</link> at startup. The
+      <literal>-d</literal> parameter expects a debug level which can range
+      from 1 to 5 and affects verbosity of the debug messages. A value of 2 is
+      recommended for the start. If debug logging is enabled, all log messages
+      (i.e.  errors, warnings, ..., debug) are additionally written to the file
+      <literal>~/.neomuttdebug0</literal>.</para>
+    </sect1>
   </chapter>
 
   <chapter id="configuration">
