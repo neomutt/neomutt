@@ -313,7 +313,7 @@ uninstall: $(UNINSTALL_TARGETS)
 distclean: clean
 	$(RM) $(DEPFILES) conststrings.c config.h config.log doc/neomutt.1 \
 		Makefile po/Makefile contrib/Makefile doc/Makefile \
-		test/Makefile autosetup/jimsh0
+		test/Makefile autosetup/jimsh0 .clang_complete
 
 ##############################################################################
 # include generated dependency files
