@@ -989,6 +989,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   unsigned int uid;
   int cacheno;
   struct ImapCache *cache = NULL;
+  bool retried = false;
   bool read;
   int rc;
 
@@ -1177,6 +1178,14 @@ parsemsg:
   mutt_clear_error();
   rewind(msg->fp);
   HEADER_DATA(h)->parsed = true;
+
+  /* retry message parse if cached message is empty */
+  if (!retried && ((h->lines == 0) || (h->content->length == 0)))
+  {
+    imap_cache_del(idata, h);
+    retried = true;
+    goto parsemsg;
+  }
 
   return 0;
 
