@@ -1368,6 +1368,12 @@ static int match_addrlist(struct Pattern *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
+/**
+ * match_reference - Match references against a Pattern
+ * @param pat  Pattern to match
+ * @param refs List of References
+ * @retval true One of the references matches
+ */
 static bool match_reference(struct Pattern *pat, struct ListHead *refs)
 {
   struct ListNode *np;

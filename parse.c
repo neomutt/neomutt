@@ -107,6 +107,11 @@ char *mutt_rfc822_read_line(FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
+/**
+ * parse_references - Parse references from an email header
+ * @param head List to receive the references
+ * @param s    String to parse
+ */
 static void parse_references(struct ListHead *head, char *s)
 {
   char *m = NULL;
@@ -1295,6 +1300,10 @@ struct Envelope *mutt_rfc822_read_header(FILE *f, struct Header *hdr,
 
 /**
  * count_body_parts_check - Compares mime types to the ok and except lists
+ * @param checklist List of AttachMatch
+ * @param b         Email Body
+ * @param dflt      Log whether the matches are OK, or Excluded
+ * @retval true Attachment should be counted
  */
 static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, bool dflt)
 {

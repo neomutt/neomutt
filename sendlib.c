@@ -1635,9 +1635,12 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
 
 /**
  * mutt_write_references - Add the message references to a list
+ * @param r    String List of references
+ * @param f    File to write to
+ * @param trim Trim the list to at most this many items
  *
- * need to write the list in reverse because they are stored in reverse order
- * when parsed to speed up threading
+ * Write the list in reverse because they are stored in reverse order when
+ * parsed to speed up threading.
  */
 void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 {
@@ -2173,6 +2176,12 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   return (ferror(fp) == 0 ? 0 : -1);
 }
 
+/**
+ * encode_headers - RFC2047-encode a list of headers
+ * @param h String List of headers
+ *
+ * The strings are encoded in-place.
+ */
 static void encode_headers(struct ListHead *h)
 {
   char *tmp = NULL;

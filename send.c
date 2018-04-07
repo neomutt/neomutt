@@ -611,6 +611,11 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   return 0;
 }
 
+/**
+ * add_references - Add the email's references to a list
+ * @param head List of references
+ * @param e    Envelope of message
+ */
 static void add_references(struct ListHead *head, struct Envelope *e)
 {
   struct ListHead *src;
@@ -623,6 +628,11 @@ static void add_references(struct ListHead *head, struct Envelope *e)
   }
 }
 
+/**
+ * add_message_id - Add the email's message ID to a list
+ * @param head List of message IDs
+ * @param e    Envelope of message
+ */
 static void add_message_id(struct ListHead *head, struct Envelope *e)
 {
   if (e->message_id)

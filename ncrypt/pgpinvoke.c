@@ -312,6 +312,19 @@ pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpi
                     NULL, uids, PgpVerifyKeyCommand);
 }
 
+/**
+ * pgp_invoke_list_keys - Find matching PGP Keys
+ * @param pgpin    File stream pointing to stdin for the command process, can be NULL
+ * @param pgpout   File stream pointing to stdout for the command process, can be NULL
+ * @param pgperr   File stream pointing to stderr for the command process, can be NULL
+ * @param pgpinfd  If `pgpin` is NULL and pgpin is not -1 then pgpin will be used as stdin for the command process
+ * @param pgpoutfd If `pgpout` is NULL and pgpout is not -1 then pgpout will be used as stdout for the command process
+ * @param pgperrfd If `pgperr` is NULL and pgperr is not -1 then pgperr will be used as stderr for the command process
+ * @param keyring  Keyring type, e.g. #PGP_SECRING
+ * @param hints    Match keys to these strings
+ * @retval n  pid of the created process
+ * @retval -1 on any error creating pipes or forking
+ */
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,
                            enum PgpRing keyring, struct ListHead *hints)

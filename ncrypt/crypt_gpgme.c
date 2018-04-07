@@ -3895,8 +3895,12 @@ leave:
 
 /**
  * list_to_pattern - Convert STailQ to GPGME-compatible pattern
+ * @param list List of strings to convert
+ * @retval ptr GPGME-compatible pattern
  *
  * We need to convert spaces in an item into a '+' and '%' into "%25".
+ *
+ * @note The caller must free the returned pattern
  */
 static char *list_to_pattern(struct ListHead *list)
 {
@@ -3952,6 +3956,11 @@ static char *list_to_pattern(struct ListHead *list)
 
 /**
  * get_candidates - Get a list of keys which are candidates for the selection
+ * @param hints  List of strings to match
+ * @param app    Application type, e.g. #APPLICATION_PGP
+ * @param secret If true, only match secret keys
+ * @retval ptr  Key List
+ * @retval NULL Error
  *
  * Select by looking at the HINTS list.
  */
@@ -4574,7 +4583,11 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
 
 /**
  * find_keys - Find keys of the recipients of the message
- * @retval NULL if any of the keys can not be found
+ * @param addrlist    Address List
+ * @param app         Application type, e.g. #APPLICATION_PGP
+ * @param oppenc_mode If true, use opportunistic encryption
+ * @retval ptr  Space-separated string of keys
+ * @retval NULL At least one of the keys can't be found
  *
  * If oppenc_mode is true, only keys that can be determined without prompting
  * will be used.

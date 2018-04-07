@@ -516,6 +516,12 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
   mutt_pretty_mailbox(path, pathlen);
 }
 
+/**
+ * list_hook - Find hook strings matching
+ * @param[out] matches List of hook strings
+ * @param[in]  match   String to match
+ * @param[in]  hook    Hook type, e.g. #MUTT_CRYPTHOOK
+ */
 static void list_hook(struct ListHead *matches, const char *match, int hook)
 {
   struct Hook *tmp = NULL;
@@ -530,6 +536,13 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
   }
 }
 
+/**
+ * mutt_crypt_hook - Find crypto hooks for an Address
+ * @param[out] list List of keys
+ * @param[in]  addr Address to match
+ *
+ * The crypt-hook associates keys with addresses.
+ */
 void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 {
   list_hook(list, addr->mailbox, MUTT_CRYPTHOOK);

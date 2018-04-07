@@ -268,6 +268,14 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   *a = NULL;
 }
 
+/**
+ * dump_stailq - Pack a STAILQ into a binary blob
+ * @param l       List to read from
+ * @param d       Binary blob to add to
+ * @param off     Offset into the blob
+ * @param convert If true, the strings will be converted to utf-8
+ * @retval ptr End of the newly packed binary
+ */
 static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off, bool convert)
 {
   unsigned int counter = 0;
@@ -287,6 +295,13 @@ static unsigned char *dump_stailq(struct ListHead *l, unsigned char *d, int *off
   return d;
 }
 
+/**
+ * restore_stailq - Unpack a STAILQ from a binary blob
+ * @param l       List to add to
+ * @param d       Binary blob to read from
+ * @param off     Offset into blob
+ * @param convert If true, the strings will be converted from utf-8
+ */
 static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off, bool convert)
 {
   unsigned int counter;

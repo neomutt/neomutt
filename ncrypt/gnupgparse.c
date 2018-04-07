@@ -375,6 +375,13 @@ bail:
   return NULL;
 }
 
+/**
+ * pgp_get_candidates - Find PGP keys matching a list of hints
+ * @param keyring PGP Keyring
+ * @param hints   List of strings to match
+ * @retval ptr  Key list
+ * @retval NULL Error
+ */
 struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct ListHead *hints)
 {
   FILE *fp = NULL;

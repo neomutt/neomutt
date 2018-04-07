@@ -1217,9 +1217,13 @@ struct Body *pgp_sign_message(struct Body *a)
 
 /**
  * pgp_find_keys - Find the keyids of the recipients of a message
+ * @param addrlist    Address List
+ * @param oppenc_mode If true, use opportunistic encryption
+ * @retval ptr  Space-separated string of keys
+ * @retval NULL At least one of the keys can't be found
  *
- * It returns NULL if any of the keys can not be found.  If oppenc_mode is
- * true, only keys that can be determined without prompting will be used.
+ * If oppenc_mode is true, only keys that can be determined without prompting
+ * will be used.
  */
 char *pgp_find_keys(struct Address *addrlist, int oppenc_mode)
 {

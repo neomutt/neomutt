@@ -319,6 +319,10 @@ static void redraw_crypt_lines(struct Header *msg)
 
 #ifdef MIXMASTER
 
+/**
+ * redraw_mix_line - Redraw the Mixmaster chain
+ * @param chain List of chain links
+ */
 static void redraw_mix_line(struct ListHead *chain)
 {
   char *t = NULL;

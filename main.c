@@ -174,6 +174,12 @@ static int start_curses(void)
 #define MUTT_NEWS (1 << 5) /* -g and -G */
 #endif
 
+/**
+ * get_user_info - Find the user's name, home and shell
+ * @param cs Config Set
+ * @retval 0 Success
+ * @retval 1 Error
+ */
 static int get_user_info(void)
 {
   const char *p = mutt_str_getenv("HOME");
@@ -229,7 +235,7 @@ static int get_user_info(void)
  * main - Start NeoMutt
  * @param argc Number of command line arguments
  * @param argv List of command line arguments
- * @param env  Copy of the environment
+ * @param envp Copy of the environment
  * @retval 0 on success
  * @retval 1 on error
  */

@@ -721,6 +721,13 @@ void mutt_free_opts(void)
   mutt_regexlist_free(&NoSpamList);
 }
 
+/**
+ * add_to_stailq - Add a string to a list
+ * @param head String list
+ * @param str  String to add
+ *
+ * @note Duplicate or empty strings will not be added
+ */
 static void add_to_stailq(struct ListHead *head, const char *str)
 {
   /* don't add a NULL or empty string to the list */
@@ -741,7 +748,7 @@ static void add_to_stailq(struct ListHead *head, const char *str)
 
 /**
  * finish_source - 'finish' command: stop processing current config file
- * @param tmp  Temporary space shared by all command handlers
+ * @param buf  Temporary space shared by all command handlers
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
  * @param err  Buffer for any error message
@@ -764,7 +771,7 @@ static int finish_source(struct Buffer *buf, struct Buffer *s,
 
 /**
  * parse_ifdef - 'ifdef' command: conditional config
- * @param tmp  Temporary space shared by all command handlers
+ * @param buf  Temporary space shared by all command handlers
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
  * @param err  Buffer for any error message
@@ -861,6 +868,13 @@ static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return 0;
 }
 
+/**
+ * remove_from_stailq - Remove an item, matching a string, from a List
+ * @param head Head of the List
+ * @param str  String to match
+ *
+ * @note The string comparison is case-insensitive
+ */
 static void remove_from_stailq(struct ListHead *head, const char *str)
 {
   if (mutt_str_strcmp("*", str) == 0)
@@ -1339,6 +1353,15 @@ static void attachments_clean(void)
     Context->hdrs[i]->attach_valid = false;
 }
 
+/**
+ * parse_attach_list - Parse the "attachments" command
+ * @param buf  Buffer for temporary storage
+ * @param s    Buffer containing the attachments command
+ * @param head List of AttachMatch to add to
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
                              struct ListHead *head, struct Buffer *err)
 {
@@ -1406,6 +1429,14 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_unattach_list - Parse the "unattachments" command
+ * @param buf  Buffer for temporary storage
+ * @param s    Buffer containing the unattachments command
+ * @param head List of AttachMatch to remove from
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
                                struct ListHead *head, struct Buffer *err)
 {
@@ -1461,6 +1492,13 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * print_attach_list - Print a list of attachments
+ * @param h    List of attachments
+ * @param op   Operation, e.g. '+', '-'
+ * @param name Attached/Inline, 'A', 'I'
+ * @retval 0 Always
+ */
 static int print_attach_list(struct ListHead *h, char op, char *name)
 {
   struct ListNode *np;
@@ -3506,6 +3544,9 @@ int var_to_string(int idx, char *val, size_t len)
 
 /**
  * mutt_query_variables - Implement the -Q command line flag
+ * @param queries List of query strings
+ * @retval 0 Success, all queries exist
+ * @retval 1 Error
  */
 int mutt_query_variables(struct ListHead *queries)
 {
@@ -3583,6 +3624,12 @@ int mutt_dump_variables(int hide_sensitive)
   return 0;
 }
 
+/**
+ * execute_commands - Execute a set of NeoMutt commands
+ * @param p List of command strings
+ * @retval  0 Success, all the commands succeeded
+ * @retval -1 Error
+ */
 static int execute_commands(struct ListHead *p)
 {
   struct Buffer err, token;
@@ -3720,6 +3767,13 @@ static bool get_hostname(void)
   return true;
 }
 
+/**
+ * mutt_init - Initialise NeoMutt
+ * @param skip_sys_rc If true, don't read the system config file
+ * @param commands    List of config commands to execute
+ * @retval 0 Success
+ * @retval 1 Error
+ */
 int mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
   char buffer[LONG_STRING];
