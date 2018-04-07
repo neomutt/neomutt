@@ -4109,11 +4109,14 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 }
 
 /**
- * crypt_add_string_to_hints - Add the string STR to the list HINTS
+ * crypt_add_string_to_hints - Split a string and add the parts to a List
+ * @param[in]  str   String to parse
+ * @param[out] hints List of string parts
  *
- * This list is later used to match addresses.
+ * The string str is split by whitespace and punctuation and the parts added to
+ * hints.  This list is later used to match addresses.
  */
-static void crypt_add_string_to_hints(struct ListHead *hints, const char *str)
+static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
 {
   char *scratch = mutt_str_strdup(str);
   if (!scratch)
@@ -4348,9 +4351,9 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   *forced_valid = 0;
 
   if (a && a->mailbox)
-    crypt_add_string_to_hints(&hints, a->mailbox);
+    crypt_add_string_to_hints(a->mailbox, &hints);
   if (a && a->personal)
-    crypt_add_string_to_hints(&hints, a->personal);
+    crypt_add_string_to_hints(a->personal, &hints);
 
   if (!oppenc_mode)
     mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
@@ -4467,7 +4470,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
   *forced_valid = 0;
 
   const char *pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
-  crypt_add_string_to_hints(&hints, phint);
+  crypt_add_string_to_hints(phint, &hints);
   struct CryptKeyInfo *keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
   mutt_list_free(&hints);
 
