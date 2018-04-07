@@ -56,6 +56,7 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
+#include "protos.h"
 #include "sidebar.h"
 #include "version.h"
 #ifdef USE_NOTMUCH
@@ -71,6 +72,25 @@
     snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));         \
     return -1;                                                                       \
   }
+
+/* LIFO designed to contain the list of config files that have been sourced and
+ * avoid cyclic sourcing */
+static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
+
+#define MAXERRS 128
+
+#define NUMVARS mutt_array_size(MuttVars)
+#define NUMCOMMANDS mutt_array_size(Commands)
+
+/* initial string that starts completion. No telling how much crap
+ * the user has typed so far. Allocate LONG_STRING just to be sure! */
+static char UserTyped[LONG_STRING] = { 0 };
+
+static int NumMatched = 0;             /* Number of matches for completion */
+static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
+static const char **Matches;
+/* this is a lie until mutt_init runs: */
+static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
 
 /**
  * struct MyVar - A user-set variable
@@ -705,6 +725,23 @@ static void free_opt(struct Option *p)
 }
 
 /**
+ * mutt_free_attachmatch - Free an AttachMatch
+ * @param am AttachMatch to free
+ *
+ * @note We don't free minor because it is either a pointer into major,
+ *       or a static string.
+ */
+void mutt_free_attachmatch(struct AttachMatch **am)
+{
+  if (!am || !*am)
+    return;
+
+  regfree(&(*am)->minor_regex);
+  FREE(&(*am)->major);
+  FREE(am);
+}
+
+/**
  * mutt_free_opts - clean up before quitting
  */
 void mutt_free_opts(void)
@@ -712,13 +749,59 @@ void mutt_free_opts(void)
   for (int i = 0; MuttVars[i].name; i++)
     free_opt(MuttVars + i);
 
+  FREE(&Matches);
+
+  mutt_alias_free(&Aliases);
+
   mutt_regexlist_free(&Alternates);
-  mutt_regexlist_free(&UnAlternates);
   mutt_regexlist_free(&MailLists);
-  mutt_regexlist_free(&UnMailLists);
-  mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnSubscribedLists);
   mutt_regexlist_free(&NoSpamList);
+  mutt_regexlist_free(&SubscribedLists);
+  mutt_regexlist_free(&UnAlternates);
+  mutt_regexlist_free(&UnMailLists);
+  mutt_regexlist_free(&UnSubscribedLists);
+
+  mutt_hash_destroy(&Groups);
+  mutt_hash_destroy(&ReverseAliases);
+  mutt_hash_destroy(&TagFormats);
+  mutt_hash_destroy(&TagTransforms);
+
+  /* Lists of strings */
+  mutt_list_free(&AlternativeOrderList);
+  mutt_list_free(&AutoViewList);
+  mutt_list_free(&HeaderOrderList);
+  mutt_list_free(&Ignore);
+  mutt_list_free(&MailToAllow);
+  mutt_list_free(&MimeLookupList);
+  mutt_list_free(&Muttrc);
+  mutt_list_free(&MuttrcStack);
+#ifdef USE_SIDEBAR
+  mutt_list_free(&SidebarWhitelist);
+#endif
+  mutt_list_free(&UnIgnore);
+  mutt_list_free(&UserHeader);
+
+  /* Lists of AttachMatch */
+  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+
+  mutt_free_colors();
+
+  FREE(&CurrentFolder);
+  FREE(&HomeDir);
+  FREE(&LastFolder);
+  FREE(&ShortHostname);
+  FREE(&Username);
+
+  mutt_replacelist_free(&SpamList);
+  mutt_replacelist_free(&SubjectRegexList);
+
+  mutt_delete_hooks(0);
+
+  mutt_hist_free();
+  mutt_free_keys();
 }
 
 /**
@@ -2764,12 +2847,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return r;
 }
 
-/* LIFO designed to contain the list of config files that have been sourced and
- * avoid cyclic sourcing */
-static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
-
-#define MAXERRS 128
-
 /**
  * source_rc - Read an initialization file
  * @param rcfile_path Path to initialization file
@@ -2904,6 +2981,8 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
   {
+    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+    FREE(&np->data);
     STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
   }
 
@@ -2998,19 +3077,6 @@ finish:
     FREE(&expn.data);
   return r;
 }
-
-#define NUMVARS mutt_array_size(MuttVars)
-#define NUMCOMMANDS mutt_array_size(Commands)
-
-/* initial string that starts completion. No telling how much crap
- * the user has typed so far. Allocate LONG_STRING just to be sure! */
-static char UserTyped[LONG_STRING] = { 0 };
-
-static int NumMatched = 0;             /* Number of matches for completion */
-static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
-static const char **Matches;
-/* this is a lie until mutt_init runs: */
-static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
 
 static void matches_ensure_morespace(int current)
 {

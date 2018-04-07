@@ -1260,3 +1260,28 @@ void mutt_what_key(void)
   mutt_flushinp();
   mutt_clear_error();
 }
+
+/**
+ * mutt_free_keys - Free the key maps
+ */
+void mutt_free_keys(void)
+{
+  struct Keymap *map = NULL;
+  struct Keymap *next = NULL;
+
+  for (int i = 0; i < MENU_MAX; i++)
+  {
+    for (map = Keymaps[i]; map; map = next)
+    {
+      next = map->next;
+
+      FREE(&map->macro);
+      FREE(&map->descr);
+      FREE(&map->keys);
+      FREE(&map);
+    }
+
+    Keymaps[i] = NULL;
+  }
+}
+

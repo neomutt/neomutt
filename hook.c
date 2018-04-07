@@ -278,12 +278,12 @@ static void delete_hook(struct Hook *h)
 }
 
 /**
- * delete_hooks - Delete matching hooks
+ * mutt_delete_hooks - Delete matching hooks
  * @param type
  * * Hook type to delete, e.g. #MUTT_SENDHOOK
  * * Or, 0 to delete all hooks
  */
-static void delete_hooks(int type)
+void mutt_delete_hooks(int type)
 {
   struct Hook *h = NULL;
   struct Hook *tmp = NULL;
@@ -312,7 +312,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                  _("unhook: Can't do unhook * from within a hook."));
         return -1;
       }
-      delete_hooks(0);
+      mutt_delete_hooks(0);
       mutt_ch_lookup_remove();
     }
     else
@@ -335,7 +335,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                  buf->data, buf->data);
         return -1;
       }
-      delete_hooks(type);
+      mutt_delete_hooks(type);
     }
   }
   return 0;

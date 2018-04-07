@@ -584,6 +584,7 @@ int main(int argc, char *argv[], char *envp[])
     for (; optind < argc; optind++)
       mutt_list_insert_tail(&queries, mutt_str_strdup(argv[optind]));
     rc = mutt_query_variables(&queries);
+    mutt_list_free(&queries);
     goto main_curses;
   }
 
@@ -1051,7 +1052,6 @@ int main(int argc, char *argv[], char *envp[])
 #endif
     log_queue_empty();
     mutt_log_stop();
-    mutt_free_opts();
     mutt_window_free();
     // TEST43: neomutt (no change to mailbox)
     // TEST44: neomutt (change mailbox)
@@ -1068,5 +1068,7 @@ main_curses:
     puts(ErrorBuf);
 main_exit:
   mutt_envlist_free();
+  mutt_free_opts();
+  mutt_free_keys();
   return rc;
 }

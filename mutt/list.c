@@ -114,6 +114,27 @@ void mutt_list_free(struct ListHead *h)
 }
 
 /**
+ * mutt_list_free_type - Free a List of type
+ * @param h Head of the List
+ * @param fn Function to free contents of ListNode
+ */
+void mutt_list_free_type(struct ListHead *h, list_free_t fn)
+{
+  if (!h || !fn)
+    return;
+
+  struct ListNode *np = STAILQ_FIRST(h), *next = NULL;
+  while (np)
+  {
+    next = STAILQ_NEXT(np, entries);
+    fn((void **) &np->data);
+    FREE(&np);
+    np = next;
+  }
+  STAILQ_INIT(h);
+}
+
+/**
  * mutt_list_clear - Free a list, but NOT its strings
  * @param h Head of the List
  *

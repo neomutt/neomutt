@@ -129,4 +129,6 @@ extern const struct Binding OpSmime[];
 extern const struct Binding OpMix[];
 #endif
 
+void mutt_free_keys(void);
+
 #endif /* _MUTT_KEYMAP_H */

@@ -541,11 +541,14 @@ void mutt_hist_free(void)
   for (enum HistoryClass hclass = HC_FIRST; hclass < HC_LAST; hclass++)
   {
     struct History *h = &Histories[hclass];
+    if (!h->hist)
+      continue;
+
     for (int i = 0; i < History; i++)
     {
       FREE(&h->hist[i]);
     }
-    FREE(&Histories[hclass]);
+    FREE(&h->hist);
   }
 }
 
