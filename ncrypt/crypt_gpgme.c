@@ -4250,7 +4250,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
              easy because gpgme provides more information */
-        if (OPT_PGP_CHECK_TRUST)
+        if (OptPgpCheckTrust)
         {
           if (!crypt_key_is_valid(key_table[menu->current]))
           {
@@ -4260,7 +4260,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (OPT_PGP_CHECK_TRUST && (!crypt_id_is_valid(key_table[menu->current]) ||
+        if (OptPgpCheckTrust && (!crypt_id_is_valid(key_table[menu->current]) ||
                                     !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
@@ -4723,7 +4723,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   char buf[LONG_STRING];
   struct stat sb;
 
-  OPT_PGP_CHECK_TRUST = false;
+  OptPgpCheckTrust = false;
 
   struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "), NULL, 0, APPLICATION_PGP, NULL);
   if (!key)

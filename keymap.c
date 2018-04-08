@@ -586,7 +586,7 @@ int km_dokey(int menu)
       if (map->op != OP_MACRO)
         return map->op;
 
-      if (OPT_IGNORE_MACRO_EVENTS)
+      if (OptIgnoreMacroEvents)
       {
         mutt_error(_("Macros are currently disabled."));
         return -1;

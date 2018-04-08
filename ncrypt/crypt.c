@@ -723,7 +723,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   }
 
   if (WithCrypto & APPLICATION_PGP)
-    OPT_DONT_HANDLE_PGP_KEYS = true;
+    OptDontHandlePgpKeys = true;
 
   if (!h)
   {
@@ -823,7 +823,7 @@ void crypt_extract_keys_from_messages(struct Header *h)
   mutt_file_unlink(tempfname);
 
   if (WithCrypto & APPLICATION_PGP)
-    OPT_DONT_HANDLE_PGP_KEYS = false;
+    OptDontHandlePgpKeys = false;
 }
 
 /**
@@ -849,7 +849,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
     return 0;
 
   if (WithCrypto & APPLICATION_PGP)
-    OPT_PGP_CHECK_TRUST = true;
+    OptPgpCheckTrust = true;
 
   last = mutt_addr_append(&addrlist, msg->env->to, false);
   last = mutt_addr_append(last ? &last : &addrlist, msg->env->cc, false);
@@ -871,7 +871,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         mutt_addr_free(&addrlist);
         return -1;
       }
-      OPT_PGP_CHECK_TRUST = false;
+      OptPgpCheckTrust = false;
       if (PgpSelfEncrypt || (PgpEncryptSelf == MUTT_YES))
         self_encrypt = PgpDefaultKey;
     }

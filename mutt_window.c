@@ -216,7 +216,7 @@ int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *f
  */
 void mutt_window_reflow(void)
 {
-  if (OPT_NO_CURSES)
+  if (OptNoCurses)
     return;
 
   mutt_debug(2, "entering\n");

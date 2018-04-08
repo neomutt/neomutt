@@ -794,7 +794,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
   }
 
   mutt_endwin();
-  OPT_DONT_HANDLE_PGP_KEYS = true;
+  OptDontHandlePgpKeys = true;
 
   for (; top; top = top->next)
   {
@@ -805,7 +805,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
       break;
   }
 
-  OPT_DONT_HANDLE_PGP_KEYS = false;
+  OptDontHandlePgpKeys = false;
 }
 
 static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
@@ -1774,7 +1774,7 @@ int pgp_send_menu(struct Header *msg)
     switch (choices[choice - 1])
     {
       case 'a': /* sign (a)s */
-        OPT_PGP_CHECK_TRUST = false;
+        OptPgpCheckTrust = false;
 
         p = pgp_ask_for_key(_("Sign as: "), NULL, 0, PGP_SECRING);
         if (p)

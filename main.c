@@ -416,7 +416,7 @@ int main(int argc, char *argv[], char *envp[])
           break;
         default:
           usage();
-          OPT_NO_CURSES = true;
+          OptNoCurses = true;
           goto main_ok; // TEST03: neomutt -9
       }
     }
@@ -435,7 +435,7 @@ int main(int argc, char *argv[], char *envp[])
       print_version();
     else
       print_copyright();
-    OPT_NO_CURSES = true;
+    OptNoCurses = true;
     goto main_ok; // TEST04: neomutt -v
   }
 
@@ -500,7 +500,7 @@ int main(int argc, char *argv[], char *envp[])
   if (!isatty(0) || !STAILQ_EMPTY(&queries) || !STAILQ_EMPTY(&alias_queries) ||
       dump_variables || batch_mode)
   {
-    OPT_NO_CURSES = true;
+    OptNoCurses = true;
     sendflags = SENDBATCH;
     MuttLogger = log_disp_terminal;
     log_queue_flush(log_disp_terminal);
@@ -512,7 +512,7 @@ int main(int argc, char *argv[], char *envp[])
 
   /* This must come before mutt_init() because curses needs to be started
    * before calling the init_pair() function to set the color scheme.  */
-  if (!OPT_NO_CURSES)
+  if (!OptNoCurses)
   {
     int crc = start_curses();
     /* Now that curses is set up, we drop back to normal screen mode.
@@ -613,7 +613,7 @@ int main(int argc, char *argv[], char *envp[])
     goto main_curses; // TEST20: neomutt -A alias
   }
 
-  if (!OPT_NO_CURSES)
+  if (!OptNoCurses)
   {
     NORMAL_COLOR;
     clear();
@@ -623,7 +623,7 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   /* Create the Folder directory if it doesn't exist. */
-  if (!OPT_NO_CURSES && Folder)
+  if (!OptNoCurses && Folder)
   {
     struct stat sb;
     char fpath[_POSIX_PATH_MAX];
@@ -657,7 +657,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (sendflags & SENDPOSTPONED)
   {
-    if (!OPT_NO_CURSES)
+    if (!OptNoCurses)
       mutt_flushinp();
     if (ci_send_message(SENDPOSTPONED, NULL, NULL, NULL, NULL) == 0)
       rc = 0;
@@ -677,7 +677,7 @@ int main(int argc, char *argv[], char *envp[])
     int rv = 0;
     char expanded_infile[_POSIX_PATH_MAX];
 
-    if (!OPT_NO_CURSES)
+    if (!OptNoCurses)
       mutt_flushinp();
 
     if (!msg)
@@ -966,7 +966,7 @@ int main(int argc, char *argv[], char *envp[])
 #ifdef USE_NNTP
       if (flags & MUTT_NEWS)
       {
-        OPT_NEWS = true;
+        OptNews = true;
         CurrentNewsSrv = nntp_select_server(NewsServer, false);
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
@@ -996,9 +996,9 @@ int main(int argc, char *argv[], char *envp[])
     }
 
 #ifdef USE_NNTP
-    if (OPT_NEWS)
+    if (OptNews)
     {
-      OPT_NEWS = false;
+      OptNews = false;
       nntp_expand_path(folder, sizeof(folder), &CurrentNewsSrv->conn->account);
     }
     else

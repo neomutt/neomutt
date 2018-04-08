@@ -2019,9 +2019,9 @@ int mutt_search_command(int cur, int op)
       return -1;
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
-      OPT_SEARCH_REVERSE = false;
+      OptSearchReverse = false;
     else
-      OPT_SEARCH_REVERSE = true;
+      OptSearchReverse = true;
 
     /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
@@ -2033,7 +2033,7 @@ int mutt_search_command(int cur, int op)
     {
       struct Buffer err;
       mutt_buffer_init(&err);
-      OPT_SEARCH_INVALID = true;
+      OptSearchInvalid = true;
       mutt_str_strfcpy(LastSearch, buf, sizeof(LastSearch));
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&SearchPattern);
@@ -2052,7 +2052,7 @@ int mutt_search_command(int cur, int op)
     }
   }
 
-  if (OPT_SEARCH_INVALID)
+  if (OptSearchInvalid)
   {
     for (int i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = false;
@@ -2060,10 +2060,10 @@ int mutt_search_command(int cur, int op)
     if (Context->magic == MUTT_IMAP && imap_search(Context, SearchPattern) < 0)
       return -1;
 #endif
-    OPT_SEARCH_INVALID = false;
+    OptSearchInvalid = false;
   }
 
-  int incr = (OPT_SEARCH_REVERSE) ? -1 : 1;
+  int incr = (OptSearchReverse) ? -1 : 1;
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 

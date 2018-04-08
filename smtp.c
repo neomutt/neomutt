@@ -383,7 +383,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  if (!OPT_NO_CURSES)
+  if (!OptNoCurses)
     mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;

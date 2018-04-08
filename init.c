@@ -1725,7 +1725,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     tmp->name = mutt_str_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
-      OPT_MENU_CALLER = true;
+      OptMenuCaller = true;
   }
   else
   {
@@ -1958,13 +1958,13 @@ static void restore_default(struct Option *p)
     mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
   }
   if (p->flags & R_RESORT_SUB)
-    OPT_SORT_SUBTHREADS = true;
+    OptSortSubthreads = true;
   if (p->flags & R_RESORT)
-    OPT_NEED_RESORT = true;
+    OptNeedResort = true;
   if (p->flags & R_RESORT_INIT)
-    OPT_RESORT_INIT = true;
+    OptResortInit = true;
   if (p->flags & R_TREE)
-    OPT_REDRAW_TREE = true;
+    OptRedrawTree = true;
   if (p->flags & R_REFLOW)
     mutt_window_reflow();
 #ifdef USE_SIDEBAR
@@ -2221,10 +2221,10 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         for (idx = 0; MuttVars[idx].name; idx++)
           restore_default(&MuttVars[idx]);
         mutt_menu_set_current_redraw_full();
-        OPT_SORT_SUBTHREADS = true;
-        OPT_NEED_RESORT = true;
-        OPT_RESORT_INIT = true;
-        OPT_REDRAW_TREE = true;
+        OptSortSubthreads = true;
+        OptNeedResort = true;
+        OptResortInit = true;
+        OptRedrawTree = true;
         return 0;
       }
       else
@@ -2426,7 +2426,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         break;
       }
 
-      if (OPT_ATTACH_MSG &&
+      if (OptAttachMsg &&
           (mutt_str_strcmp(MuttVars[idx].name, "reply_regex") == 0))
       {
         snprintf(err->data, err->dsize, "Operation not permitted when in attach-message mode.");
@@ -2706,13 +2706,13 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
       }
       if (MuttVars[idx].flags & R_RESORT_SUB)
-        OPT_SORT_SUBTHREADS = true;
+        OptSortSubthreads = true;
       if (MuttVars[idx].flags & R_RESORT)
-        OPT_NEED_RESORT = true;
+        OptNeedResort = true;
       if (MuttVars[idx].flags & R_RESORT_INIT)
-        OPT_RESORT_INIT = true;
+        OptResortInit = true;
       if (MuttVars[idx].flags & R_TREE)
-        OPT_REDRAW_TREE = true;
+        OptRedrawTree = true;
       if (MuttVars[idx].flags & R_REFLOW)
         mutt_window_reflow();
 #ifdef USE_SIDEBAR
@@ -3797,7 +3797,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
       (p = mutt_str_getenv("LC_CTYPE")))
   {
-    OPT_LOCALES = true;
+    OptLocales = true;
   }
 #endif
 
@@ -3936,7 +3936,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     mutt_str_replace(&Visual, env_ed);
   }
 
-  if (need_pause && !OPT_NO_CURSES)
+  if (need_pause && !OptNoCurses)
   {
     log_queue_flush(log_disp_terminal);
     if (mutt_any_key_to_continue(NULL) == 'q')

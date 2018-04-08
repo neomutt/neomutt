@@ -173,7 +173,7 @@ void mutt_signal_init(void)
  */
 void mutt_block_signals(void)
 {
-  if (!OPT_SIGNALS_BLOCKED)
+  if (!OptSignalsBlocked)
   {
     sigemptyset(&Sigset);
     sigaddset(&Sigset, SIGTERM);
@@ -182,7 +182,7 @@ void mutt_block_signals(void)
     sigaddset(&Sigset, SIGINT);
     sigaddset(&Sigset, SIGWINCH);
     sigprocmask(SIG_BLOCK, &Sigset, 0);
-    OPT_SIGNALS_BLOCKED = true;
+    OptSignalsBlocked = true;
   }
 }
 
@@ -191,10 +191,10 @@ void mutt_block_signals(void)
  */
 void mutt_unblock_signals(void)
 {
-  if (OPT_SIGNALS_BLOCKED)
+  if (OptSignalsBlocked)
   {
     sigprocmask(SIG_UNBLOCK, &Sigset, 0);
-    OPT_SIGNALS_BLOCKED = false;
+    OptSignalsBlocked = false;
   }
 }
 
@@ -202,7 +202,7 @@ void mutt_block_signals_system(void)
 {
   struct sigaction sa;
 
-  if (!OPT_SYS_SIGNALS_BLOCKED)
+  if (!OptSysSignalsBlocked)
   {
     /* POSIX: ignore SIGINT and SIGQUIT & block SIGCHLD  before exec */
     sa.sa_handler = SIG_IGN;
@@ -214,13 +214,13 @@ void mutt_block_signals_system(void)
     sigemptyset(&SigsetSys);
     sigaddset(&SigsetSys, SIGCHLD);
     sigprocmask(SIG_BLOCK, &SigsetSys, 0);
-    OPT_SYS_SIGNALS_BLOCKED = true;
+    OptSysSignalsBlocked = true;
   }
 }
 
 void mutt_unblock_signals_system(int catch)
 {
-  if (OPT_SYS_SIGNALS_BLOCKED)
+  if (OptSysSignalsBlocked)
   {
     sigprocmask(SIG_UNBLOCK, &SigsetSys, NULL);
     if (catch)
@@ -239,7 +239,7 @@ void mutt_unblock_signals_system(int catch)
       sigaction(SIGINT, &sa, NULL);
     }
 
-    OPT_SYS_SIGNALS_BLOCKED = false;
+    OptSysSignalsBlocked = false;
   }
 }
 

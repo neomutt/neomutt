@@ -579,14 +579,14 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
     else
     {
       /* Use built-in handler */
-      OPT_VIEW_ATTACH = true; /* disable the "use 'v' to view this part"
+      OptViewAttach = true; /* disable the "use 'v' to view this part"
                                    * message in case of error */
       if (mutt_decode_save_attachment(fp, a, pagerfile, MUTT_DISPLAY, 0))
       {
-        OPT_VIEW_ATTACH = false;
+        OptViewAttach = false;
         goto return_error;
       }
-      OPT_VIEW_ATTACH = false;
+      OptViewAttach = false;
     }
 
     if (a->description)

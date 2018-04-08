@@ -615,7 +615,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
         /* XXX make error reporting more verbose */
 
-        if (OPT_PGP_CHECK_TRUST)
+        if (OptPgpCheckTrust)
         {
           if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
           {
@@ -624,7 +624,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           }
         }
 
-        if (OPT_PGP_CHECK_TRUST && (!pgp_id_is_valid(KeyTable[menu->current]) ||
+        if (OptPgpCheckTrust && (!pgp_id_is_valid(KeyTable[menu->current]) ||
                                     !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
@@ -736,7 +736,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   FILE *devnull = NULL;
   struct stat sb;
   pid_t thepid;
-  OPT_PGP_CHECK_TRUST = false;
+  OptPgpCheckTrust = false;
 
   struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 

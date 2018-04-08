@@ -142,7 +142,7 @@ int mutt_num_postponed(int force)
   if (LastModify < st.st_mtime)
   {
 #ifdef USE_NNTP
-    int optnews = OPT_NEWS;
+    int optnews = OptNews;
 #endif
     LastModify = st.st_mtime;
 
@@ -150,7 +150,7 @@ int mutt_num_postponed(int force)
       return (PostCount = 0);
 #ifdef USE_NNTP
     if (optnews)
-      OPT_NEWS = false;
+      OptNews = false;
 #endif
     if (mx_open_mailbox(Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
       PostCount = 0;
@@ -159,7 +159,7 @@ int mutt_num_postponed(int force)
     mx_fastclose_mailbox(&ctx);
 #ifdef USE_NNTP
     if (optnews)
-      OPT_NEWS = true;
+      OptNews = true;
 #endif
   }
 
