@@ -4163,7 +4163,7 @@ bind index gg first-entry
       <cmdsynopsis>
         <command>folder-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]regex</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -5177,7 +5177,7 @@ unignore posted-to:
       <cmdsynopsis>
         <command>mbox-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]regex</replaceable>
+          <replaceable class="parameter">regex</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5346,7 +5346,7 @@ my_hdr Organization: A Really Big Company, Anytown, USA
       <cmdsynopsis>
         <command>save-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5392,7 +5392,7 @@ save-hook aol\\.com$ +spam
       <cmdsynopsis>
         <command>fcc-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5432,7 +5432,7 @@ save-hook aol\\.com$ +spam
       <cmdsynopsis>
         <command>fcc-save-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">mailbox</replaceable>
@@ -5457,21 +5457,21 @@ save-hook aol\\.com$ +spam
       <cmdsynopsis>
         <command>reply-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
         </arg>
         <command>send-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
         </arg>
         <command>send2-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -5556,7 +5556,7 @@ save-hook aol\\.com$ +spam
       <cmdsynopsis>
         <command>message-hook</command>
         <arg choice="plain">
-          <replaceable class="parameter">[!]pattern</replaceable>
+          <replaceable class="parameter">pattern</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">command</replaceable>
@@ -17170,7 +17170,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="fcc-hook">fcc-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -17183,7 +17183,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="fcc-save-hook">fcc-save-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -17196,7 +17196,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="folder-hook">folder-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]regex</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -17442,7 +17442,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mbox-hook">mbox-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]regex</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -17455,7 +17455,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="message-hook">message-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -17600,7 +17600,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="reply-hook">reply-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -17613,7 +17613,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="save-hook">save-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
@@ -17650,7 +17650,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="send-hook">send-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
@@ -17663,7 +17663,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="send2-hook">send2-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">[!]pattern</replaceable>
+              <replaceable class="parameter">pattern</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">command</replaceable>
