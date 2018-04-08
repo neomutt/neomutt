@@ -3695,7 +3695,7 @@ alternates -group me -group work address3
           <replaceable class="parameter">address</replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">address</replaceable>
+          <replaceable class="parameter">, address</replaceable>
         </arg>
         <command>unalias</command>
         <arg choice="opt" rep="repeat">
@@ -3798,6 +3798,9 @@ set alias_file=~/.mail_aliases
         <command>bind</command>
         <arg choice="plain">
           <replaceable class="parameter">map</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">,map</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">key</replaceable>
@@ -4240,6 +4243,9 @@ folder-hook work "set sort=threads"
         <command>macro</command>
         <arg choice="plain">
           <replaceable class="parameter">menu</replaceable>
+        </arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="parameter">,menu</replaceable>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">key</replaceable>
@@ -4777,7 +4783,7 @@ export COLORFGBG
         </arg>
         <command>mono</command>
         <arg choice="plain">
-          <option>index</option>
+          <option>index-object</option>
         </arg>
         <arg choice="plain">
           <replaceable class="parameter">attribute</replaceable>
@@ -6030,6 +6036,12 @@ set spam_separator=", "
                 <arg choice="plain">
                   <option>inv</option>
                 </arg>
+                <arg choice="plain">
+                  <option>&amp;</option>
+                </arg>
+                <arg choice="plain">
+                  <option>?</option>
+                </arg>
               </group>
               <replaceable class="parameter">variable</replaceable>
             </arg>
@@ -6295,8 +6307,8 @@ mailboxes $my_mx +mailbox3
       </para>
       <cmdsynopsis>
         <command>source</command>
-        <arg choice="plain" rep="repeat">
-          <replaceable class="parameter">file</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">filename</replaceable>
         </arg>
       </cmdsynopsis>
       <para>
@@ -9791,10 +9803,10 @@ application/ms-excel;   open.pl %s
       <cmdsynopsis>
         <command>auto_view</command>
         <arg choice="plain">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <command>unauto_view</command>
         <group choice="req">
@@ -9802,7 +9814,7 @@ application/ms-excel;   open.pl %s
             <replaceable>*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable>mimetype</replaceable>
+            <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
           </arg>
         </group>
       </cmdsynopsis>
@@ -9930,16 +9942,28 @@ alternative_order text/enriched text/plain text \
       </para>
       <cmdsynopsis>
         <command>attachments</command>
-        <arg choice="plain">
-          <replaceable>{ + | - }disposition</replaceable>
-        </arg>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable>+</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable>-</replaceable>
+          </arg>
+        </group>
+        <replaceable>disposition</replaceable>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
         <command>unattachments</command>
-        <arg choice="plain">
-          <replaceable>{ + | - }disposition</replaceable>
-        </arg>
+        <group choice="req">
+          <arg choice="plain">
+            <replaceable>+</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable>-</replaceable>
+          </arg>
+        </group>
+        <replaceable>disposition</replaceable>
         <arg choice="plain">
           <replaceable>mime-type</replaceable>
         </arg>
@@ -10048,10 +10072,10 @@ attachments  -I message/external-body
       <cmdsynopsis>
         <command>mime_lookup</command>
         <arg choice="plain">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <arg choice="opt" rep="repeat">
-          <replaceable>mimetype</replaceable>
+          <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
         </arg>
         <command>unmime_lookup</command>
         <group choice="req">
@@ -10059,7 +10083,7 @@ attachments  -I message/external-body
             <replaceable>*</replaceable>
           </arg>
           <arg choice="plain" rep="repeat">
-            <replaceable>mimetype</replaceable>
+            <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
           </arg>
         </group>
       </cmdsynopsis>
@@ -10893,24 +10917,24 @@ bind index,pager @ compose-to-sender
         <cmdsynopsis>
           <command>open-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">shell-command</replaceable>
+            <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
           </arg>
           <command>close-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">shell-command</replaceable>
+            <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
           </arg>
           <command>append-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">pattern</replaceable>
+            <replaceable class="parameter">regex</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">shell-command</replaceable>
+            <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
           </arg>
         </cmdsynopsis>
         <para>
@@ -11000,7 +11024,7 @@ bind index,pager @ compose-to-sender
 
         <sect3 id="open-hook">
           <title>Read from compressed mailbox</title>
-          <screen>open-hook regex shell-command</screen>
+          <screen>open-hook regex &quot;shell-command&quot;</screen>
           <para>
             If NeoMutt is unable to open a file, it then looks for
             <literal>open-hook</literal> that matches the filename.
@@ -11043,7 +11067,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
 
         <sect3 id="close-hook">
           <title>Write to a compressed mailbox</title>
-          <screen>close-hook regex shell-command</screen>
+          <screen>close-hook regex &quot;shell-command&quot;</screen>
           <para>
             When NeoMutt has finished with a compressed mail folder, it will
             look for a matching <literal>close-hook</literal> to recompress the
@@ -11098,7 +11122,7 @@ open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
 
         <sect3 id="append-hook">
           <title>Append to a compressed mailbox</title>
-          <screen>append-hook regex shell-command</screen>
+          <screen>append-hook regex &quot;shell-command&quot;</screen>
           <para>
             When NeoMutt wants to append an email to a compressed mail folder,
             it will look for a matching <literal>append-hook</literal>. This
@@ -12176,19 +12200,19 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
         <cmdsynopsis>
           <command>timeout-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">NEOMUTT-COMMAND</replaceable>
+            <replaceable class="parameter">command</replaceable>
           </arg>
         </cmdsynopsis>
         <cmdsynopsis>
           <command>startup-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">NEOMUTT-COMMAND</replaceable>
+            <replaceable class="parameter">command</replaceable>
           </arg>
         </cmdsynopsis>
         <cmdsynopsis>
           <command>shutdown-hook</command>
           <arg choice="plain">
-            <replaceable class="parameter">NEOMUTT-COMMAND</replaceable>
+            <replaceable class="parameter">command</replaceable>
           </arg>
         </cmdsynopsis>
       </sect2>
@@ -12280,9 +12304,9 @@ shutdown-hook 'exec sync-mailbox'
         </para>
 
 <screen>
-ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
-ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
-finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
+ifdef  symbol "config-command [args...]"  <emphasis role="comment"># If a symbol is defined</emphasis>
+ifndef symbol "config-command [args...]"  <emphasis role="comment"># If a symbol is not defined</emphasis>
+finish                                    <emphasis role="comment"># Finish reading the current file</emphasis>
 </screen>
 
         <para>
@@ -12316,16 +12340,16 @@ ifndef sidebar finish
             <replaceable class="parameter">symbol</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">"config-command
-            [args]"</replaceable>
+            <replaceable class="parameter">&quot;config-command
+              <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
           </arg>
           <command>ifndef</command>
           <arg choice="plain">
             <replaceable class="parameter">symbol</replaceable>
           </arg>
           <arg choice="plain">
-            <replaceable class="parameter">"config-command
-            [args]"</replaceable>
+            <replaceable class="parameter">&quot;config-command
+              <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
           </arg>
           <command>finish</command>
         </cmdsynopsis>
@@ -12341,8 +12365,8 @@ ifndef sidebar finish
 <emphasis role="comment"># one config file between versions of NeoMutt that may have different</emphasis>
 <emphasis role="comment"># features compiled in.</emphasis>
 
-<emphasis role="comment">#   ifdef  symbol config-command [args...]</emphasis>
-<emphasis role="comment">#   ifndef symbol config-command [args...]</emphasis>
+<emphasis role="comment">#   ifdef  symbol "config-command [args...]"</emphasis>
+<emphasis role="comment">#   ifndef symbol "config-command [args...]"</emphasis>
 <emphasis role="comment">#   finish</emphasis>
 <emphasis role="comment"># The 'ifdef' command tests whether NeoMutt understands the name of</emphasis>
 <emphasis role="comment"># a variable, function, command or compile-time symbol.</emphasis>
@@ -16850,7 +16874,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <replaceable class="parameter">address</replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable class="parameter">address</replaceable>
+              <replaceable class="parameter">, address</replaceable>
             </arg>
             <command>
               <link linkend="alias">unalias</link>
@@ -16907,10 +16931,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="alternative-order">alternative_order</link>
             </command>
             <arg choice="plain">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <command>
               <link linkend="alternative-order">unalternative_order</link>
@@ -16920,7 +16944,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>mimetype</replaceable>
+                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -16931,10 +16955,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="append-hook">append-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
+              <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -16943,18 +16967,30 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="attachments">attachments</link>
             </command>
-            <arg choice="plain">
-              <replaceable>{ + | - }disposition</replaceable>
-            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable>+</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable>-</replaceable>
+              </arg>
+            </group>
+            <replaceable>disposition</replaceable>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
             <command>
               <link linkend="attachments">unattachments</link>
             </command>
-            <arg choice="plain">
-              <replaceable>{ + | - }disposition</replaceable>
-            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable>+</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable>-</replaceable>
+              </arg>
+            </group>
+            <replaceable>disposition</replaceable>
             <arg choice="plain">
               <replaceable>mime-type</replaceable>
             </arg>
@@ -16966,10 +17002,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="auto-view">auto_view</link>
             </command>
             <arg choice="plain">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <command>
               <link linkend="auto-view">unauto_view</link>
@@ -16979,7 +17015,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>mimetype</replaceable>
+                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -16991,6 +17027,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <arg choice="plain">
               <replaceable class="parameter">map</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">,map</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">key</replaceable>
@@ -17019,10 +17058,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="close-hook">close-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
+              <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -17248,12 +17287,25 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="ifdef">ifdef</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">item</replaceable>
+              <replaceable class="parameter">symbol</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">"config-command
-              [args]"</replaceable>
+              <replaceable class="parameter">&quot;config-command
+                <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
             </arg>
+            <command>
+              <link linkend="ifdef">ifndef</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">symbol</replaceable>
+            </arg>
+            <arg choice="plain">
+              <replaceable class="parameter">&quot;config-command
+                <arg choice="opt" rep="repeat">args</arg>&quot;</replaceable>
+            </arg>
+            <command>
+              <link linkend="ifdef">finish</link>
+            </command>
           </cmdsynopsis>
         </listitem>
         <listitem>
@@ -17319,6 +17371,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <arg choice="plain">
               <replaceable class="parameter">menu</replaceable>
+            </arg>
+            <arg choice="opt" rep="repeat">
+              <replaceable class="parameter">,menu</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">key</replaceable>
@@ -17413,10 +17468,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mime-lookup">mime_lookup</link>
             </command>
             <arg choice="plain">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <arg choice="opt" rep="repeat">
-              <replaceable>mimetype</replaceable>
+              <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
             </arg>
             <command>
               <link linkend="mime-lookup">unmime_lookup</link>
@@ -17426,7 +17481,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable>*</replaceable>
               </arg>
               <arg choice="plain" rep="repeat">
-                <replaceable>mimetype</replaceable>
+                <replaceable>mime-type<arg choice="opt">/mime-subtype</arg></replaceable>
               </arg>
             </group>
           </cmdsynopsis>
@@ -17463,7 +17518,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="mono">mono</link>
             </command>
             <arg choice="plain">
-              <option>index</option>
+              <option>index-object</option>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">attribute</replaceable>
@@ -17476,7 +17531,7 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             </command>
             <group choice="req">
               <arg choice="plain">
-                <option>index</option>
+                <option>index-object</option>
               </arg>
               <arg choice="plain">
                 <option>header</option>
@@ -17522,10 +17577,10 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
               <link linkend="open-hook">open-hook</link>
             </command>
             <arg choice="plain">
-              <replaceable class="parameter">pattern</replaceable>
+              <replaceable class="parameter">regex</replaceable>
             </arg>
             <arg choice="plain">
-              <replaceable class="parameter">shell-command</replaceable>
+              <replaceable class="parameter">&quot;shell-command&quot;</replaceable>
             </arg>
           </cmdsynopsis>
         </listitem>
@@ -17629,6 +17684,12 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                   <arg choice="plain">
                     <option>inv</option>
                   </arg>
+                  <arg choice="plain">
+                    <option>&amp;</option>
+                  </arg>
+                  <arg choice="plain">
+                    <option>?</option>
+                  </arg>
                 </group>
                 <replaceable class="parameter">variable</replaceable>
               </arg>
@@ -17671,12 +17732,14 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="setenv">setenv</link>
             </command>
-            <arg choice="plain">
-              <replaceable class="parameter">[?]variable</replaceable>
-            </arg>
-            <arg choice="opt">
-              <replaceable class="parameter">value</replaceable>
-            </arg>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable class="parameter">?variable</replaceable>
+              </arg>
+              <arg choice="plain">
+                <replaceable class="parameter">variable value</replaceable>
+              </arg>
+            </group>
             <command>
               <link linkend="setenv">unsetenv</link>
             </command>
@@ -17812,6 +17875,28 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
                 <replaceable class="parameter">hook-type</replaceable>
               </arg>
             </group>
+          </cmdsynopsis>
+        </listitem>
+        <listitem>
+          <cmdsynopsis>
+            <command>
+              <link linkend="global-hooks">shutdown-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
+            </arg>
+            <command>
+              <link linkend="global-hooks">startup-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
+            </arg>
+            <command>
+              <link linkend="global-hooks">timeout-hook</link>
+            </command>
+            <arg choice="plain">
+              <replaceable class="parameter">command</replaceable>
+            </arg>
           </cmdsynopsis>
         </listitem>
       </itemizedlist>
