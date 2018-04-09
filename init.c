@@ -596,7 +596,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
     {
       FILE *fp = NULL;
       pid_t pid;
-      char *cmd = NULL, *ptr = NULL;
+      char *ptr = NULL;
       size_t expnlen;
       struct Buffer expn;
       int line = 0;
@@ -617,15 +617,19 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
         mutt_debug(1, "mismatched backticks\n");
         return -1;
       }
-      cmd = mutt_str_substr_dup(tok->dptr, pc);
-      pid = mutt_create_filter(cmd, NULL, &fp, NULL);
+      struct Buffer cmd;
+      mutt_buffer_init(&cmd);
+      *pc = '\0';
+      mutt_extract_token(&cmd, tok, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE);
+      *pc = '`';
+      pid = mutt_create_filter(cmd.data, NULL, &fp, NULL);
       if (pid < 0)
       {
         mutt_debug(1, "unable to fork command: %s\n", cmd);
-        FREE(&cmd);
+        FREE(&cmd.data);
         return -1;
       }
-      FREE(&cmd);
+      FREE(&cmd.data);
 
       tok->dptr = pc + 1;
 
@@ -2486,7 +2490,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         {
           /* myvar is a pointer to buf and will be lost on extract_token */
           myvar = mutt_str_strdup(myvar);
-          myvar_del(myvar);
         }
 
         mutt_extract_token(buf, s, 0);
