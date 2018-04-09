@@ -659,9 +659,9 @@ size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
  */
 char *mutt_str_skip_email_wsp(const char *s)
 {
-  if (s)
-    return (char *) (s + strspn(s, EMAIL_WSP));
-  return (char *) s;
+  if (!s)
+    return NULL;
+  return (char *) (s + strspn(s, EMAIL_WSP));
 }
 
 /**
