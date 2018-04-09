@@ -70,6 +70,10 @@
 #include "nntp.h"
 #endif
 
+/**
+ * mutt_exit - Leave NeoMutt NOW
+ * @param code Value to return to the calling environment
+ */
 void mutt_exit(int code)
 {
   mutt_endwin();
@@ -176,36 +180,31 @@ static int start_curses(void)
 
 /**
  * get_user_info - Find the user's name, home and shell
- * @param cs Config Set
  * @retval 0 Success
  * @retval 1 Error
+ *
+ * Find the login name, real name, home directory and shell.
  */
 static int get_user_info(void)
 {
-  const char *p = mutt_str_getenv("HOME");
-  if (p)
-    HomeDir = mutt_str_strdup(p);
+  Username = mutt_str_strdup(mutt_str_getenv("USER"));
+  HomeDir = mutt_str_strdup(mutt_str_getenv("HOME"));
+  Shell = mutt_str_strdup(mutt_str_getenv("SHELL"));
 
   /* Get some information about the user */
   struct passwd *pw = getpwuid(getuid());
   if (pw)
   {
-    char rnbuf[STRING];
-
-    Username = mutt_str_strdup(pw->pw_name);
+    if (!Username)
+      Username = mutt_str_strdup(pw->pw_name);
     if (!HomeDir)
       HomeDir = mutt_str_strdup(pw->pw_dir);
+    if (!Shell)
+      Shell = mutt_str_strdup(pw->pw_shell);
 
+    char rnbuf[STRING];
     RealName = mutt_str_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
-    Shell = mutt_str_strdup(pw->pw_shell);
     endpwent();
-  }
-
-  if (!Username)
-  {
-    p = mutt_str_getenv("USER");
-    if (p)
-      Username = mutt_str_strdup(p);
   }
 
   if (!Username)
@@ -221,12 +220,7 @@ static int get_user_info(void)
   }
 
   if (!Shell)
-  {
-    p = mutt_str_getenv("SHELL");
-    if (!p)
-      p = "/bin/sh";
-    Shell = mutt_str_strdup(p);
-  }
+    Shell = mutt_str_strdup("/bin/sh");
 
   return 0;
 }
@@ -554,13 +548,12 @@ int main(int argc, char *argv[], char *envp[])
   mutt_list_free(&commands);
 
 #ifdef USE_NNTP
-  /* "$news_server" precedence: command line, environment, config file, system file */
-  const char *env_nntp = NULL;
+  /* "$news_server" precedence: command line, config file, environment, system file */
   if (cli_nntp)
     mutt_str_replace(&NewsServer, cli_nntp);
-  else if ((env_nntp = mutt_str_getenv("NNTPSERVER")))
-    mutt_str_replace(&NewsServer, env_nntp);
-  else if (!NewsServer)
+  if (!NewsServer)
+    NewsServer = mutt_str_strdup(mutt_str_getenv("NNTPSERVER"));
+  if (!NewsServer)
   {
     char buffer[1024];
     char *server = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buffer, sizeof(buffer));
