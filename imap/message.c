@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <errno.h>
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -694,11 +693,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
     mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_MSG,
                        ReadInc, msn_end);
 
-    if (snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID FLAGS)", uidnext - 1) < 0)
-    {
-      mutt_error(_("Output error during UID FETCH 1:%u %s"), uidnext - 1, strerror(errno));
-      goto error_out_1;
-    }
+    snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID FLAGS)", uidnext - 1);
 
     imap_cmd_start(idata, buf);
 
