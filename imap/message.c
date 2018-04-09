@@ -1005,6 +1005,11 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   struct ImapData *idata = ctx->data;
   struct Header *h = ctx->hdrs[msgno];
 
+  /* static array of possible FETCH commands lets us avoid a mess of nested
+   * conditional operators later by indexing into it with our predicates */
+  static const char *fetch_cmds[][2] = {{"BODY.PEEK[]", "BODY[]"}, {"RFC822", "RFC822"}};
+  static const int pathlen = sizeof(buf);
+
   msg->fp = msg_cache_get(idata, h);
   if (msg->fp)
   {
@@ -1056,10 +1061,21 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
    * command handler */
   h->active = false;
 
-  snprintf(buf, sizeof(buf), "UID FETCH %u %s", HEADER_DATA(h)->uid,
-           (mutt_bit_isset(idata->capabilities, IMAP4REV1) ?
-                (ImapPeek ? "BODY.PEEK[]" : "BODY[]") :
-                "RFC822"));
+  /* the IMAP4REV1 predicate being true will always result in one of our two
+   * "RFC822" indices, otherwise the ImapPeek predicate determines, well, if
+   * we should PEEK. */
+  const char *fcmd= fetch_cmds[!!mutt_bit_isset(idata->capabilities, IMAP4REV1)][!!ImapPeek];
+  rc = snprintf(buf, sizeof(buf), "UID FETCH %u %s", HEADER_DATA(h)->uid, fcmd);
+  if (rc < 0)
+  {
+    mutt_error(_("Output error during \"%s %s\" %s"), HEADER_DATA(h)->uid, fcmd, strerror(errno));
+    goto bail;
+  }
+  else if (rc >= pathlen)
+  {
+    mutt_error(_("Command too long: %s %s"),  HEADER_DATA(h)->uid, fcmd);
+    goto bail;
+  }
 
   imap_cmd_start(idata, buf);
   do
