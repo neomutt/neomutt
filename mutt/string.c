@@ -669,7 +669,7 @@ char *mutt_str_skip_email_wsp(const char *s)
  * @param c Character to test
  * @retval boolean
  */
-int mutt_str_is_email_wsp(char c)
+bool mutt_str_is_email_wsp(char c)
 {
   return c && (strchr(EMAIL_WSP, c) != NULL);
 }
