@@ -654,7 +654,20 @@ const char *mutt_ch_iconv_lookup(const char *chs)
   return lookup_charset(MUTT_LOOKUP_ICONV, chs);
 }
 
-static int convert_string(char **ps, const char *from, const char *to, int flags)
+/**
+ * mutt_ch_convert_string - Convert a string between encodings
+ * @param[in,out] ps    String to convert
+ * @param[in]     from  Current character set
+ * @param[in]     to    Target character set
+ * @param[in]     flags Flags, e.g.
+ * @retval 0      Success
+ * @retval -1     Invalid arguments or failure to open an iconv channel
+ * @retval errno  Failure in iconv conversion
+ *
+ * Parameter flags is given as-is to mutt_ch_iconv_open().
+ * See there for its meaning and usage policy.
+ */
+int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags)
 {
   iconv_t cd;
   const char *repls[] = { "\357\277\275", "?", 0 };
@@ -702,24 +715,6 @@ static int convert_string(char **ps, const char *from, const char *to, int flags
 
   mutt_str_adjust(ps);
   return rc;
-}
-
-/**
- * mutt_ch_convert_string - Convert a string between encodings
- * @param[in,out] ps    String to convert
- * @param[in]     from  Current character set
- * @param[in]     to    Target character set
- * @param[in]     flags Flags, e.g.
- * @retval 0  Success
- * @retval -1 Error
- *
- * Parameter flags is given as-is to mutt_ch_iconv_open().
- * See there for its meaning and usage policy.
- */
-int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags)
-{
-  int rc = convert_string(ps, from, to, flags);
-  return rc == -1 ? -1 : 0;
 }
 
 /**
@@ -964,7 +959,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     t[n] = '\0';
 
     s = mutt_str_substr_dup(u, u + ulen);
-    if (convert_string(&s, fromcode, t, 0))
+    if (mutt_ch_convert_string(&s, fromcode, t, 0))
     {
       FREE(&t);
       FREE(&s);
