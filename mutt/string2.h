@@ -72,7 +72,7 @@ void        mutt_str_dequote_comment(char *s);
 const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);
 bool        mutt_str_is_ascii(const char *p, size_t len);
-int         mutt_str_is_email_wsp(char c);
+bool        mutt_str_is_email_wsp(char c);
 size_t      mutt_str_lws_len(const char *s, size_t n);
 size_t      mutt_str_lws_rlen(const char *s, size_t n);
 const char *mutt_str_next_word(const char *s);
