@@ -654,6 +654,56 @@ const char *mutt_ch_iconv_lookup(const char *chs)
   return lookup_charset(MUTT_LOOKUP_ICONV, chs);
 }
 
+static int convert_string(char **ps, const char *from, const char *to, int flags)
+{
+  iconv_t cd;
+  const char *repls[] = { "\357\277\275", "?", 0 };
+  char *s = *ps;
+
+  if (!s || !*s)
+    return 0;
+
+  if (!to || !from)
+    return -1;
+
+  cd = mutt_ch_iconv_open(to, from, flags);
+  if (cd == (iconv_t) -1)
+    return -1;
+
+  size_t len;
+  const char *ib = NULL;
+  char *buf = NULL, *ob = NULL;
+  size_t ibl, obl;
+  const char **inrepls = NULL;
+  char *outrepl = NULL;
+
+  if (mutt_ch_is_utf8(to))
+    outrepl = "\357\277\275";
+  else if (mutt_ch_is_utf8(from))
+    inrepls = repls;
+  else
+    outrepl = "?";
+
+  len = strlen(s);
+  ib = s;
+  ibl = len + 1;
+  obl = MB_LEN_MAX * ibl;
+  ob = buf = mutt_mem_malloc(obl + 1);
+
+  errno = 0;
+  mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
+  int rc = errno;
+  iconv_close(cd);
+
+  *ob = '\0';
+
+  FREE(ps);
+  *ps = buf;
+
+  mutt_str_adjust(ps);
+  return rc;
+}
+
 /**
  * mutt_ch_convert_string - Convert a string between encodings
  * @param[in,out] ps    String to convert
@@ -668,48 +718,8 @@ const char *mutt_ch_iconv_lookup(const char *chs)
  */
 int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags)
 {
-  iconv_t cd;
-  const char *repls[] = { "\357\277\275", "?", 0 };
-  char *s = *ps;
-
-  if (!s || !*s)
-    return 0;
-
-  if (to && from && (cd = mutt_ch_iconv_open(to, from, flags)) != (iconv_t) -1)
-  {
-    size_t len;
-    const char *ib = NULL;
-    char *buf = NULL, *ob = NULL;
-    size_t ibl, obl;
-    const char **inrepls = NULL;
-    char *outrepl = NULL;
-
-    if (mutt_ch_is_utf8(to))
-      outrepl = "\357\277\275";
-    else if (mutt_ch_is_utf8(from))
-      inrepls = repls;
-    else
-      outrepl = "?";
-
-    len = strlen(s);
-    ib = s;
-    ibl = len + 1;
-    obl = MB_LEN_MAX * ibl;
-    ob = buf = mutt_mem_malloc(obl + 1);
-
-    mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
-    iconv_close(cd);
-
-    *ob = '\0';
-
-    FREE(ps);
-    *ps = buf;
-
-    mutt_str_adjust(ps);
-    return 0;
-  }
-  else
-    return -1;
+  int rc = convert_string(ps, from, to, flags);
+  return rc == -1 ? -1 : 0;
 }
 
 /**
@@ -954,7 +964,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     t[n] = '\0';
 
     s = mutt_str_substr_dup(u, u + ulen);
-    if (mutt_ch_convert_string(&s, fromcode, t, 0))
+    if (convert_string(&s, fromcode, t, 0))
     {
       FREE(&t);
       FREE(&s);
