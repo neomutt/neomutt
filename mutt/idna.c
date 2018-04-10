@@ -142,10 +142,10 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 #endif /* HAVE_LIBIDN */
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_ch_convert_string(&local_user, "utf-8", Charset, 0))
+  if (mutt_ch_convert_string(&local_user, "utf-8", Charset, 0) != 0)
     goto cleanup;
 
-  if (mutt_ch_convert_string(&local_domain, "utf-8", Charset, 0))
+  if (mutt_ch_convert_string(&local_domain, "utf-8", Charset, 0) != 0)
     goto cleanup;
 
   /* make sure that we can convert back and come out with the same
@@ -154,7 +154,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
   {
     reversed_user = mutt_str_strdup(local_user);
 
-    if (mutt_ch_convert_string(&reversed_user, Charset, "utf-8", 0))
+    if (mutt_ch_convert_string(&reversed_user, Charset, "utf-8", 0) != 0)
     {
       mutt_debug(1, "Not reversible. Charset conv to utf-8 failed for user = '%s'.\n",
                  reversed_user);
@@ -169,7 +169,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, int flags)
 
     reversed_domain = mutt_str_strdup(local_domain);
 
-    if (mutt_ch_convert_string(&reversed_domain, Charset, "utf-8", 0))
+    if (mutt_ch_convert_string(&reversed_domain, Charset, "utf-8", 0) != 0)
     {
       mutt_debug(1, "Not reversible. Charset conv to utf-8 failed for domain = '%s'.\n",
                  reversed_domain);
@@ -236,10 +236,10 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
   char *intl_domain = mutt_str_strdup(domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_ch_convert_string(&intl_user, Charset, "utf-8", 0))
+  if (mutt_ch_convert_string(&intl_user, Charset, "utf-8", 0) != 0)
     goto cleanup;
 
-  if (mutt_ch_convert_string(&intl_domain, Charset, "utf-8", 0))
+  if (mutt_ch_convert_string(&intl_domain, Charset, "utf-8", 0) != 0)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN

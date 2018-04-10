@@ -959,7 +959,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     t[n] = '\0';
 
     s = mutt_str_substr_dup(u, u + ulen);
-    if (mutt_ch_convert_string(&s, fromcode, t, 0))
+    if (mutt_ch_convert_string(&s, fromcode, t, 0) != 0)
     {
       FREE(&t);
       FREE(&s);
