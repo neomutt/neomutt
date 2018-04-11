@@ -93,7 +93,7 @@ void             mutt_ch_lookup_remove(void);
 const char *     mutt_ch_charset_lookup(const char *chs);
 
 iconv_t          mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags);
-size_t           mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl);
+size_t           mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, const char **inrepls, const char *outrepl, int *iconverrno);
 const char *     mutt_ch_iconv_lookup(const char *chs);
 int              mutt_ch_convert_string(char **ps, const char *from, const char *to, int flags);
 int              mutt_ch_convert_nonmime_string(char **ps);
