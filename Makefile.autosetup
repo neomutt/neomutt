@@ -46,6 +46,7 @@ mandir=		@mandir@
 libdir=		@libdir@
 libexecdir=	@libexecdir@
 sysconfdir=	@SYSCONFDIR@
+textdomaindir=	@MUTTLOCALEDIR@
 
 # targets for specific subdirectories
 ALL_TARGETS=		@ALL_TARGETS@

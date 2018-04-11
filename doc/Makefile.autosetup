@@ -76,8 +76,10 @@ doc/neomuttrc.5:	doc/makedoc$(EXEEXT) \
 
 doc/neomutt.1:
 	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
-	      -e "s|@MAN_SYSCONFDIR@|$(sysconfdir)|g" \
+	      -e "s|@MAN_DATADIR@|$(datadir)|g" \
 	      -e "s|@MAN_DOCDIR@|$(docdir)|g" \
+	      -e "s|@MAN_SYSCONFDIR@|$(sysconfdir)|g" \
+	      -e "s|@MAN_TEXTDOMAINDIR@|$(textdomaindir)|g" \
 	    $(SRCDIR)/doc/neomutt.man \
 	) > $@
 

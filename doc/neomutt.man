@@ -1,4 +1,5 @@
-.\" -*-nroff-*-
+'\" t
+.\" -*- nroff -*-
 .\"
 .\"
 .\"     Copyright (C) 1996-2016 Michael R. Elkins <me@cs.hmc.edu>
@@ -18,210 +19,511 @@
 .\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .\"
 .TH neomutt 1 "@MAN_DATE@" Unix "User Manuals"
+.\" --------------------------------------------------------------------
 .SH NAME
-neomutt \- The NeoMutt Mail User Agent
+.\" --------------------------------------------------------------------
+neomutt \- The NeoMutt Mail User Agent (MUA)
+.
+.\" --------------------------------------------------------------------
 .SH SYNTAX
-.PP
-.B neomutt
-[\-GnRyzZ]
-[\-e \fIcmd\fP] [\-F \fIfile\fP] [\-g \fIserver\fP] [\-m \fItype\fP] [\-f \fIfile\fP]
-.PP
-.B neomutt
-[\-Enx]
-[\-e \fIcmd\fP]
-[\-F \fIfile\fP]
-[\-H \fIfile\fP]
-[\-i \fIfile\fP]
-[\-s \fIsubj\fP]
-[\-b \fIaddr\fP]
-[\-c \fIaddr\fP]
-[\-a \fIfile\fP [...] \-\-]
-\fIaddr|mailto_url\fP [...]
-.PP
-.B neomutt
-[\-nx]
-[\-e \fIcmd\fP]
-[\-F \fIfile\fP]
-[\-s \fIsubj\fP]
-[\-b \fIaddr\fP]
-[\-c \fIaddr\fP]
-[\-a \fIfile\fP [...] \-\-]
-\fIaddr|mailto_url\fP [...]
-< message
-.PP
-.B neomutt
-[\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-p
-.PP
-.B neomutt
-[\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-A \fIalias\fP
-.PP
-.B neomutt
-[\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-Q \fIquery\fP
-.PP
-.B neomutt
-\-v[v]
-.PP
-.B neomutt
-\-D [\-S]
+.\" --------------------------------------------------------------------
+.SY neomutt
+.OP \-GnRyZz
+.OP \-e command
+.OP \-F config
+.OP \-f mailbox
+.OP \-g server
+.OP \-m type
+.YS
+.
+.SY neomutt
+.OP \-Enx
+.OP \-e command
+.OP \-F config
+.OP \-H draft
+.OP \-i include
+.OP \-s subject
+.br
+.OP \-b address
+.OP \-c address
+.RB [ \-a
+.IR file " [" .\|.\|.\& ]
+.BR \-\- ]
+.IR address " [" .\|.\|.\& ]
+.YS
+.
+.SY neomutt
+.OP \-nx
+.OP \-e command
+.OP \-F config
+.OP \-s subject
+.OP \-b address
+.OP \-c address
+.br
+.RB [ \-a
+.IR file " [" .\|.\|.\& ]
+.BR \-\- ]
+.IR address " [" .\|.\|.\& "] < message"
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BI \-A " alias"
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BR \-B
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BR \-D " [" \-S ]
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BI \-p
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BI \-Q " variable"
+.YS
+.
+.SY neomutt
+.BR \-v [ v ]
+.YS
+.
+.\" --------------------------------------------------------------------
 .SH DESCRIPTION
+.\" --------------------------------------------------------------------
 .PP
-NeoMutt is a small but very powerful text based program for reading and sending electronic
-mail under unix operating systems, including support for color terminals, MIME,
-OpenPGP, and a threaded sorting mode.
+NeoMutt is a small but very powerful text based program for reading and sending
+electronic mail under Unix operating systems, including support for color
+terminals, MIME, OpenPGP, and a threaded sorting mode.
+.
 .PP
-.I Note:
-.IR
-This manual page gives a brief overview of NeoMutt's command line
-options. You should find a copy of the full manual in @MAN_DOCDIR@, in
-text, HTML, and/or PDF format.
+.B Note:
+This manual page gives a brief overview of NeoMutt's command line options. You
+should find a copy of the full manual in \fI@MAN_DOCDIR@\fP, in plain text,
+HTML, and/or PDF format.
+.
+.\" --------------------------------------------------------------------
 .SH OPTIONS
-.PP
-.IP "-A \fIalias\fP"
-An expanded version of the given alias is passed to stdout.
-.IP "-a \fIfile\fP [...]"
-Attach a file to your message using MIME.
-When attaching single or multiple files, separating filenames and recipient addresses with
-"\-\-" is mandatory, e.g. \fBneomutt \-a image.jpg \-\- addr1\fP or
-\fBneomutt \-a img.jpg *.png \-\- addr1 addr2\fP.
-The \-a option must be placed at the end of command line options.
-.IP "-b \fIaddress\fP"
-Specify a blind-carbon-copy (BCC) recipient
-.IP "-c \fIaddress\fP"
-Specify a carbon-copy (CC) recipient
-.IP "-d \fIlevel\fP"
-log debugging output to ~/.neomuttdebug0.
-\fILevel\fP can range from 1-5 and effects verbosity. A value of 2 is
-recommended.
-.IP "-D"
+.\" --------------------------------------------------------------------
+.TP
+.BI \-A " alias"
+An expanded version of the given \fIalias\fP is passed to stdout.
+.
+.TP
+.BI \-a " file \fR[\fP.\|.\|.\&\fR]\fP"
+Attach a \fIfile\fP to your message using MIME. When attaching single or
+multiple \fIfile\fPs, separating filenames and recipient addresses with
+\(lq\fB\-\-\fP\(rq is mandatory, e.g.:
+.RS
+.IP
+.EX
+.BI "neomutt \-a " "image.jpg " "\-\- " "address1 "
+.BI "neomutt \-a " "image.jpg *.png " "\-\- " "address1 address2 "
+.EE
+.RE
+.IP
+This \fB\-a\fP option must be placed at the end of command line options.
+.
+.TP
+.BI \-B
+Run in batch mode (do not start the ncurses UI).
+.
+.TP
+.BI \-b " address"
+Specify a blind-carbon-copy (BCC) recipient.
+.
+.TP
+.BI \-c " address"
+Specify a carbon-copy (CC) recipient.
+.
+.TP
+.BI \-D
 Print the value of all configuration options to stdout.
-.IP "-D -S"
-like -D but hide the value of sensitive variables
-.IP "-E"
-Causes the draft file specified by -H or include file specified by -i
-to be edited during message composition.
-.IP "-e \fIcommand\fP"
-Specify a configuration command to be run after processing of initialization
-files.
-.IP "-f \fImailbox\fP"
-Specify which mailbox to load.
-.IP "-F \fIneomuttrc\fP"
-Specify an initialization file to read instead of ~/.neomuttrc
-.IP "-g \fIserver\fP"
-Start NeoMutt with a listing of subscribed newsgroups at specified news server.
-.IP "-G"
+.
+.TP
+.BI \-D\ \-S
+Like \fB\-D\fP but hide the value of sensitive variables.
+.
+.TP
+.BI \-d " level"
+Log debugging output to file, by default to \fI~/.neomuttdebug0\fP, but see
+also configuration variables $debug_file and $debug_level in full manual. The
+\fIlevel\fP can range from 1\(em5 and affects verbosity. A value of 2 is
+recommended.
+.IP
+NeoMutt keeps up to five debug logs
+.RI ( ~/.neomuttdebug [ 0 - 4 ])
+before removing the oldest file on next invocation with this option.
+.
+.TP
+.BI \-E
+Edit the \fIdraft\fP (\fB\-H\fP) or \fIinclude\fP (\fB\-i\fP) file during
+message composition.
+.
+.TP
+.BI \-e " command"
+Specify a configuration \fIcommand\fP to be run after processing of
+initialization files.
+.
+.TP
+.BI \-F " config"
+Specify an alternative initialization file to read, see \fIFILES\fP section
+below for a list of regular configuration files.
+.
+.TP
+.BI \-f " mailbox"
+Specify which \fImailbox\fP to load.
+.
+.TP
+.BI \-G
 Start NeoMutt with a listing of subscribed newsgroups.
-.IP "-h"
+.
+.TP
+.BI \-g " server"
+Start NeoMutt with a listing of subscribed newsgroups at specified news
+\fIserver\fP.
+.
+.TP
+.BI \-H " draft"
+Specify a \fIdraft\fP file which contains header and body to use to send
+a message.
+.
+.TP
+.BI \-h
 Display help.
-.IP "-H \fIdraft\fP"
-Specify a draft file which contains header and body to use to send a
-message.
-.IP "-i \fIinclude\fP"
-Specify a file to include into the body of a message.
-.IP "-m \fItype\fP       "
-specify a default mailbox type for newly created folders.
-.IP "-n"
+.
+.TP
+.BI \-i " include"
+Specify a file to \fIinclude\fP into the body of a message.
+.
+.TP
+.BI \-m " type"
+Specify a default mailbox \fItype\fP for newly created folders.
+.
+.TP
+.BI \-n
 Causes NeoMutt to bypass the system configuration file.
-.IP "-p"
+.
+.TP
+.BI \-p
 Resume a postponed message.
-.IP "-Q \fIquery\fP"
-Query a configuration variables value.  The query is executed after
-all configuration files have been parsed, and any commands given on
-the command line have been executed.
-.IP "-R"
-Open a mailbox in \fIread-only\fP mode.
-.IP "-s \fIsubject\fP"
-Specify the subject of the message.
-.IP "-v"
+.
+.TP
+.BI \-Q " variable"
+Query a configuration \fIvariable\fP. The query is executed after all
+configuration files have been parsed, and any commands given on the command
+line have been executed.
+.
+.TP
+.BI \-R
+Open a mailbox in read-only mode.
+.
+.TP
+.BI \-s " subject"
+Specify the \fIsubject\fP of the message. Must be quoted when it contains
+spaces.
+.
+.TP
+.BI \-v
 Display the NeoMutt version number and compile-time definitions.
-.IP "-vv"
+.
+.TP
+.BI \-vv
 Display license and copyright information.
-.IP "-x"
+.
+.TP
+.BI \-x
 Emulate the mailx compose mode.
-.IP "-y"
-Start NeoMutt with a listing of all mailboxes specified by the \fImailboxes\fP
+.
+.TP
+.BI \-y
+Start NeoMutt with a listing of all mailboxes specified by the \fBmailboxes\fP
 command.
-.IP "-z"
-When used with \-f, causes NeoMutt not to start if there are no messages in the
-mailbox.
-.IP "-Z"
-Causes NeoMutt to open the first mailbox specified by the \fImailboxes\fP
+.
+.TP
+.BI \-Z
+Causes NeoMutt to open the first mailbox specified by the \fBmailboxes\fP
 command which contains new mail.
-.IP "--"
-Treat remaining arguments as \fIaddr\fP even if they start with a dash.
-See also "\-a" above.
+.
+.TP
+.BI \-z
+When used with option \fB\-f\fP, causes NeoMutt not to start if there are no
+messages in the mailbox.
+.
+.TP
+.BI \-\-
+Treat remaining arguments as \fIaddress\fP even if they start with a dash. See
+also option \fB\-a\fP above.
+.
+.\" --------------------------------------------------------------------
 .SH ENVIRONMENT
-.PP
-.IP "EDITOR"
-Specifies the editor to use if VISUAL is unset.
-.IP "EMAIL"
-The user's e-mail address.
-.IP "HOME"
+.\" --------------------------------------------------------------------
+.TP
+.SM
+.B EDITOR
+Specifies the editor to use if \fIVISUAL\fP is unset. Defaults to the \fBVi\fP
+editor if unset.
+.
+.TP
+.SM
+.B EGDSOCKET
+For OpenSSL since version 0.9.5, files, mentioned at \fIRANDFILE\fP below, can
+be Entropy Gathering Daemon (EGD) sockets. Also, and if exists,
+\fI~/.entropy\fP and \fI/tmp/entropy\fP will be used to initialize SSL library
+functions. Specified sockets must be owned by the user and have permission of
+600 (octal number representing).
+.
+.TP
+.SM
+.B EMAIL
+The user's email address.
+.
+.TP
+.SM
+.B HOME
 Full path of the user's home directory.
-.IP "MAIL"
+.
+.TP
+.SM
+.B MAIL
 Full path of the user's spool mailbox.
-.IP "MAILDIR"
-Full path of the user's spool mailbox if MAIL is unset.  Commonly used when the spool
-mailbox is a
-.B maildir (5)
+.
+.TP
+.SM
+.B MAILCAPS
+Path to search for mailcap files. If unset, a RFC1524 compliant search path
+that is extended with NeoMutt related paths (at position two and three):
+.\" .RS
+.\" .IP
+.RI \(dq \
+"$HOME/\:.mailcap" \:: \
+"@MAN_DATADIR@/\:mailcap" \:: \
+"@MAN_SYSCONFDIR@/\:mailcap" \:: \
+"/etc/\:mailcap" \:: \
+"/usr/\:etc/\:mailcap" \:: \
+"/usr/\:local/\:etc/\:mailcap" \(dq
+.\" .RE
+.\" .IP
+will be used instead.
+.
+.TP
+.SM
+.B MAILDIR
+Full path of the user's spool mailbox if \fIMAIL\fP is unset. Commonly used
+when the spool mailbox is a
+.BR maildir (5)
 folder.
-.IP "MAILCAPS"
-Path to search for mailcap files.
-.IP "MM_NOASK"
+.
+.TP
+.SM
+.B MM_NOASK
 If this variable is set, mailcap are always used without prompting first.
-.IP "PGPPATH"
-Directory in which the user's PGP public keyring can be found.  When used with
+.
+.TP
+.SM
+.B NNTPSERVER
+Similar to configuration variable $news_server, specifies the domain name or
+address of the default NNTP server to connect. If unset,
+\fI@MAN_SYSCONFDIR@/nntpserver\fP is used but can be overridden by command line
+option \fB\-g\fP.
+.
+.TP
+.SM
+.B PGPPATH
+Directory in which the user's PGP public keyring can be found. When used with
 the original PGP program, NeoMutt and
-.B pgpring (1)
+.BR pgpring (1)
 rely on this being set.
-.IP "TMPDIR"
-Directory in which temporary files are created.
-.IP "REPLYTO"
-Default Reply-To address.
-.IP "VISUAL"
+.
+.TP
+.SM
+.B RANDFILE
+Like configuration variable $entropy_file, defines a path to a file which
+includes random data that is used to initialize SSL library functions. If
+unset, \fI~/.rnd\fP is used. DO NOT store important data in the specified file.
+.
+.TP
+.SM
+.B REPLYTO
+When set, specifies the default Reply-To address.
+.
+.TP
+.SM
+.B TEXTDOMAINDIR
+Defines an absolute path corresponding to \fI@MAN_TEXTDOMAINDIR@\fP that will
+be recognised by GNU
+.BR gettext (1)
+and used for Native Language Support (NLS) if enabled.
+.
+.TP
+.SM
+.B TMPDIR
+Directory in which temporary files are created. Defaults to \fI/tmp\fP if
+unset. Configuration variable $tmpdir takes precedence over this one.
+.
+.TP
+.SM
+.B VISUAL
 Specifies the editor to use when composing messages.
+.
+.TP
+.SM
+.B XDG_CONFIG_DIRS
+Specifies a X Desktop Group (XDG) compliant location for the system-wide
+configuration file, as described in \fIFILES\fP section below. This variable
+defaults to \fI/etc/xdg\fP. Bypass loading with command line option \fB\-n\fP.
+.
+.TP
+.SM
+.B XDG_CONFIG_HOME
+Specifies a XDG compliant location for the user-specific configuration file, as
+described in \fIFILES\fP section below. This variable defaults to
+\fI$HOME/.config\fP. Can be overridden by command line option \fB\-F\fP.
+.
+.\" --------------------------------------------------------------------
 .SH FILES
+.\" --------------------------------------------------------------------
+.SS "\s-1Configuration files\s0"
+.\" --------------------------------------------------------------------
 .PP
-.IP "~/.neomuttrc or ~/.neomutt/neomuttrc"
-User configuration file.
-.IP "@MAN_SYSCONFDIR@/neomuttrc"
-System-wide configuration file.
-.IP "/tmp/neomuttXXXXXX"
-Temporary files created by NeoMutt.
-.IP "~/.mailcap"
-User definition for handling non-text MIME types.
-.IP "@MAN_SYSCONFDIR@/mailcap"
-System definition for handling non-text MIME types.
-.IP "~/.mime.types"
-User's personal mapping between MIME types and file extensions.
-.IP "@MAN_SYSCONFDIR@/mime.types"
-System mapping between MIME types and file extensions.
-.IP "@MAN_DOCDIR@/manual.txt"
-The NeoMutt manual.
+NeoMutt will read just the first found configuration file of system-wide and
+user-specific category, from the list below and in that order.
+.
+.PP
+But it allows building of a recursive configuration by using the \fBsource\fP
+command.
+.
+.PP
+.na
+.TS
+allbox tab(|);
+cb cb cb
+r li li .
+\0#N|system-wide|user-specific
+1|$XDG_CONFIG_DIRS/neomutt/neomuttrc|$XDG_CONFIG_HOME/neomutt/neomuttrc
+2|$XDG_CONFIG_DIRS/neomutt/Muttrc \fB*\fP\fR)\fP|$XDG_CONFIG_HOME/neomutt/muttrc
+3|@MAN_SYSCONFDIR@/neomuttrc|$XDG_CONFIG_HOME/mutt/neomuttrc
+4|@MAN_SYSCONFDIR@/Muttrc \fB*\fP\fR)\fP|$XDG_CONFIG_HOME/mutt/muttrc
+5|@MAN_DATADIR@/neomuttrc|~/.neomutt/neomuttrc
+6|@MAN_DATADIR@/Muttrc \fB*\fP\fR)\fP|~/.neomutt/muttrc
+.T&
+r c li .
+7|\(em|~/.mutt/neomuttrc
+8|\(em|~/.mutt/muttrc
+9|\(em|~/.neomuttrc
+10|\(em|~/.muttrc
+.T&
+l s s .
+\0\h'0m'\fB*\fP) Note the case of the filename
+.TE
+\p
+.ad
+.
+.SS "\s-1Other relevant files\s0"
+.\" --------------------------------------------------------------------
+.PP
+Unless otherwise stated, NeoMutt will process all grouped files in the order
+(from top to bottom) as they are specified in that listing.
+.
+.TP
+.IR "~/.mailcap"
+.TQ
+.IR "@MAN_SYSCONFDIR@/mailcap"
+User-specific and system-wide definitions for handling non-text MIME types,
+look at environment variable \fBMAILCAPS\fP above for additional search
+locations.
+.
+.TP
+.IR "~/.neomuttdebug0"
+Default user debug log file. For further details see command line option
+\fB\-d\fP above.
+.
+.TP
+.IR "/etc/mime.types"
+.TQ
+.IR "@MAN_SYSCONFDIR@/mime.types"
+.TQ
+.IR "@MAN_DATADIR@/mime.types"
+.TQ
+.IR "~/.mime.types"
+Description files for simple plain text mapping between MIME types and filename
+extensions. NeoMutt parses these files in the stated order while processing
+attachments to determine their MIME type.
+.
+.TP
+.IR "@MAN_DOCDIR@/manual." { html , pdf , txt }
+The full NeoMutt manual in HTML, PDF or plain text format.
+.
+.TP
+.IR "/tmp/neomutt-XXXX-XXXX-XXXX"
+Temporary files created by NeoMutt. For custom locations look at description of
+the environment variable \fBTMPDIR\fP above. Notice that the suffix
+\fI-XXXX-XXXX-XXXX\fP is just a placeholder for, e.g. hostname, user name/ID,
+process ID and/or other random data.
+.
+.\" --------------------------------------------------------------------
 .SH BUGS
+.\" --------------------------------------------------------------------
 .PP
-See https://github.com/neomutt/neomutt/issues
+See issue tracker at <https://github.com/neomutt/neomutt/issues>.
+.
+.\" --------------------------------------------------------------------
 .SH NO WARRANTIES
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-.SH SEE ALSO
+.\" --------------------------------------------------------------------
 .PP
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+.
+.\" --------------------------------------------------------------------
+.SH SEE ALSO
+.\"   - sorted by category and name
+.\" --------------------------------------------------------------------
+.PP
+.BR gettext (1),
+.BR msmtp (1),
+.BR notmuch (1),
+.BR pgpring (1),
+.BR sendmail (1),
+.BR smail (1),
+.BR RAND_egd (3),
 .BR curses (3),
+.BR ncurses (3),
 .BR mailcap (5),
 .BR maildir (5),
-.BR notmuch (1),
-.BR msmtp (1),
 .BR mbox (5),
-.BR neomuttrc (5),
-.BR ncurses (3),
-.BR sendmail (1),
-.BR smail (1).
+.BR neomuttrc (5).
+.
 .PP
-The NeoMutt Manual
-.PP
-NeoMutt home page: https://www.neomutt.org
+For further NeoMutt information:
+.RS 4
+.TP
+\(bu the full manual, see \fIFILES\fP section above
+.TQ
+\(bu the home page, <https://www.neomutt.org>
+.RE
+.
+.\" --------------------------------------------------------------------
 .SH AUTHOR
+.\" --------------------------------------------------------------------
 .PP
-Michael Elkins, and others.  Use <neomutt-devel@neomutt.org> to contact
-the developers.
+Michael Elkins, and others. Use <neomutt-devel@\:neomutt.org> to contact the
+developers.
+.
