@@ -104,6 +104,7 @@ void             mutt_ch_fgetconv_close(struct FgetConv **fc);
 int              mutt_ch_fgetconv(struct FgetConv *fc);
 char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 
+int              mutt_ch_check(const char *s, size_t slen, const char *from, const char *to);
 char *           mutt_ch_choose(const char *fromcode, const char *charsets,
                                 char *u, size_t ulen, char **d, size_t *dlen);
 
