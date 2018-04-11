@@ -686,12 +686,13 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
 
   size_t outlen = MB_LEN_MAX * slen;
   char *out = mutt_mem_malloc(outlen + 1);
+  char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, (size_t *) &outlen);
   if (convlen == -1)
     rc = errno;
 
-  FREE(&out);
+  FREE(&saved_out);
   iconv_close(cd);
   return rc;
 }
