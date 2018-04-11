@@ -684,7 +684,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
   if (cd == (iconv_t)-1)
     return -1;
 
-  const size_t outlen = MB_LEN_MAX * slen;
+  size_t outlen = MB_LEN_MAX * slen;
   char *out = mutt_mem_malloc(outlen + 1);
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, (size_t *) &outlen);
