@@ -564,6 +564,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
  * @param[in,out] outbytesleft Length of result buffer
  * @param[in]     inrepls      Input replacement characters
  * @param[in]     outrepl      Output replacement characters
+ * @param[out]    iconverrno   Errno if iconv() fails, 0 if it succeeds
  * @retval num Number of characters converted
  *
  * Like iconv, but keeps going even when the input is invalid
@@ -571,7 +572,8 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
  * if you're supplying an outrepl, the target charset should be.
  */
 size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf,
-                     size_t *outbytesleft, const char **inrepls, const char *outrepl)
+                     size_t *outbytesleft, const char **inrepls, const char *outrepl,
+                     int *iconverrno)
 {
   size_t rc = 0;
   const char *ib = *inbuf;
@@ -581,9 +583,13 @@ size_t mutt_ch_iconv(iconv_t cd, const char **inbuf, size_t *inbytesleft, char *
 
   while (true)
   {
+    errno = 0;
     const size_t ret1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
     if (ret1 != (size_t) -1)
       rc += ret1;
+    if (iconverrno)
+      *iconverrno = errno;
+
     if (ibl && obl && errno == EILSEQ)
     {
       if (inrepls)
@@ -660,8 +666,9 @@ const char *mutt_ch_iconv_lookup(const char *chs)
  * @param[in]     from  Current character set
  * @param[in]     to    Target character set
  * @param[in]     flags Flags, e.g.
- * @retval 0  Success
- * @retval -1 Error
+ * @retval 0      Success
+ * @retval -1     Invalid arguments or failure to open an iconv channel
+ * @retval errno  Failure in iconv conversion
  *
  * Parameter flags is given as-is to mutt_ch_iconv_open().
  * See there for its meaning and usage policy.
@@ -671,45 +678,48 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
   iconv_t cd;
   const char *repls[] = { "\357\277\275", "?", 0 };
   char *s = *ps;
+  int rc = 0;
 
   if (!s || !*s)
     return 0;
 
-  if (to && from && (cd = mutt_ch_iconv_open(to, from, flags)) != (iconv_t) -1)
-  {
-    size_t len;
-    const char *ib = NULL;
-    char *buf = NULL, *ob = NULL;
-    size_t ibl, obl;
-    const char **inrepls = NULL;
-    char *outrepl = NULL;
-
-    if (mutt_ch_is_utf8(to))
-      outrepl = "\357\277\275";
-    else if (mutt_ch_is_utf8(from))
-      inrepls = repls;
-    else
-      outrepl = "?";
-
-    len = strlen(s);
-    ib = s;
-    ibl = len + 1;
-    obl = MB_LEN_MAX * ibl;
-    ob = buf = mutt_mem_malloc(obl + 1);
-
-    mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
-    iconv_close(cd);
-
-    *ob = '\0';
-
-    FREE(ps);
-    *ps = buf;
-
-    mutt_str_adjust(ps);
-    return 0;
-  }
-  else
+  if (!to || !from)
     return -1;
+
+  cd = mutt_ch_iconv_open(to, from, flags);
+  if (cd == (iconv_t) -1)
+    return -1;
+
+  size_t len;
+  const char *ib = NULL;
+  char *buf = NULL, *ob = NULL;
+  size_t ibl, obl;
+  const char **inrepls = NULL;
+  char *outrepl = NULL;
+
+  if (mutt_ch_is_utf8(to))
+    outrepl = "\357\277\275";
+  else if (mutt_ch_is_utf8(from))
+    inrepls = repls;
+  else
+    outrepl = "?";
+
+  len = strlen(s);
+  ib = s;
+  ibl = len + 1;
+  obl = MB_LEN_MAX * ibl;
+  ob = buf = mutt_mem_malloc(obl + 1);
+
+  mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
+  iconv_close(cd);
+
+  *ob = '\0';
+
+  FREE(ps);
+  *ps = buf;
+
+  mutt_str_adjust(ps);
+  return rc;
 }
 
 /**
@@ -848,7 +858,7 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
   if (fc->ibl)
   {
     size_t obl = sizeof(fc->bufo);
-    mutt_ch_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0);
+    mutt_ch_iconv(fc->cd, (const char **) &fc->ib, &fc->ibl, &fc->ob, &obl, fc->inrepls, 0, NULL);
     if (fc->p < fc->ob)
       return (unsigned char) *(fc->p)++;
   }
@@ -954,7 +964,7 @@ char *mutt_ch_choose(const char *fromcode, const char *charsets, char *u,
     t[n] = '\0';
 
     s = mutt_str_substr_dup(u, u + ulen);
-    if (mutt_ch_convert_string(&s, fromcode, t, 0))
+    if (mutt_ch_convert_string(&s, fromcode, t, 0) != 0)
     {
       FREE(&t);
       FREE(&s);

@@ -439,7 +439,7 @@ static int rfc2047_encode(const char *d, size_t dlen, int col, const char *fromc
 
   /* Try to convert to UTF-8. */
   char *u = mutt_str_substr_dup(d, d + dlen);
-  if (mutt_ch_convert_string(&u, fromcode, icode, 0))
+  if (mutt_ch_convert_string(&u, fromcode, icode, 0) != 0)
   {
     rc = 1;
     icode = 0;
