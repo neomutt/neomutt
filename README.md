@@ -211,7 +211,15 @@ Tyler Earnest, Victor Manuel Jaquez Leal, Vincent Lefevre, Vladimir Marek.
 
 ### Mutt
 
-NeoMutt is a fork of Mutt.
+While NeoMutt is technically a fork of Mutt, the intention of the project is not to
+diverge from Mutt, but rather to act as a common ground for developers to improve Mutt.
+
+Collecting, sorting out and polishing patches to be incorporated upstream (into Mutt),
+as well as being a place to gather and encourage further collaboration while reducing
+redundant work, are among the main goals of NeoMutt. NeoMutt merges all changes from Mutt.
+
+More information is available on the [About](https://www.neomutt.org/about.html) page on
+the NeoMutt website.
 
 Mutt was created by **Michael Elkins** and is now maintained by **Kevin McCarthy**.
 
