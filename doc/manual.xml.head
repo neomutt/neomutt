@@ -2969,19 +2969,22 @@ color sidebar_divider   color8  default
       <title>Logging</title>
       <para>NeoMutt has different types of logging/error messages</para>
       <itemizedlist>
-        <listitem>Primitive Errors:
-          errors emitted by C library functions such
-          as <literal>fopen()</literal>.
+        <listitem>
+          <para>Primitive Errors: errors emitted by C library functions such as 
+          <literal>fopen()</literal>.</para>
         </listitem>
-        <listitem>Errors
+        <listitem>
+          <para>Errors</para>
         </listitem>
-        <listitem>Warnings
+        <listitem>
+          <para>Warnings</para>
         </listitem>
-        <listitem>Message:
-          Informational messages such as <literal>Sorting mailbox...</literal>.
+        <listitem>
+          <para>Message: Informational messages such as 
+          <literal>Sorting mailbox...</literal>.</para>
         </listitem>
-        <listitem>Debug:
-          Debug messages usually only interesting while debugging.
+        <listitem>
+          <para>Debug: Debug messages usually only interesting while debugging.</para>
         </listitem>
       </itemizedlist>
       <para>These log messages are shown in the command bar at the bottom of the
