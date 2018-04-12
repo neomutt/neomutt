@@ -3910,6 +3910,26 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     restore_default(&MuttVars[i]);
   }
 
+  /* "$mailcap_path" precedence: config file, environment, code */
+  const char *env_mc = mutt_str_getenv("MAILCAPS");
+  if (env_mc)
+    mutt_str_replace(&MailcapPath, env_mc);
+
+  /* "$tmpdir" precedence: config file, environment, code */
+  const char *env_tmp = mutt_str_getenv("TMPDIR");
+  if (env_tmp)
+    mutt_str_replace(&Tmpdir, env_tmp);
+
+  /* "$visual", "$editor" precedence: config file, environment, code */
+  const char *env_ed = mutt_str_getenv("VISUAL");
+  if (!env_ed)
+    env_ed = mutt_str_getenv("EDITOR");
+  if (env_ed)
+  {
+    mutt_str_replace(&Editor, env_ed);
+    mutt_str_replace(&Visual, env_ed);
+  }
+
   CurrentMenu = MENU_MAIN;
 
 #ifndef LOCALES_HACK
@@ -4035,26 +4055,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   if (!get_hostname())
     return 1;
-
-  /* "$mailcap_path" precedence: environment, config file, code */
-  const char *env_mc = mutt_str_getenv("MAILCAPS");
-  if (env_mc)
-    mutt_str_replace(&MailcapPath, env_mc);
-
-  /* "$tmpdir" precedence: environment, config file, code */
-  const char *env_tmp = mutt_str_getenv("TMPDIR");
-  if (env_tmp)
-    mutt_str_replace(&Tmpdir, env_tmp);
-
-  /* "$visual", "$editor" precedence: environment, config file, code */
-  const char *env_ed = mutt_str_getenv("VISUAL");
-  if (!env_ed)
-    env_ed = mutt_str_getenv("EDITOR");
-  if (env_ed)
-  {
-    mutt_str_replace(&Editor, env_ed);
-    mutt_str_replace(&Visual, env_ed);
-  }
 
   if (need_pause && !OptNoCurses)
   {
