@@ -56,6 +56,7 @@
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
+#include "protos.h"
 #include "sidebar.h"
 #include "version.h"
 #ifdef USE_NOTMUCH
@@ -71,6 +72,25 @@
     snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));         \
     return -1;                                                                       \
   }
+
+/* LIFO designed to contain the list of config files that have been sourced and
+ * avoid cyclic sourcing */
+static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
+
+#define MAXERRS 128
+
+#define NUMVARS mutt_array_size(MuttVars)
+#define NUMCOMMANDS mutt_array_size(Commands)
+
+/* initial string that starts completion. No telling how much crap
+ * the user has typed so far. Allocate LONG_STRING just to be sure! */
+static char UserTyped[LONG_STRING] = { 0 };
+
+static int NumMatched = 0;             /* Number of matches for completion */
+static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
+static const char **Matches;
+/* this is a lie until mutt_init runs: */
+static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
 
 /**
  * struct MyVar - A user-set variable
@@ -705,6 +725,23 @@ static void free_opt(struct Option *p)
 }
 
 /**
+ * mutt_free_attachmatch - Free an AttachMatch
+ * @param am AttachMatch to free
+ *
+ * @note We don't free minor because it is either a pointer into major,
+ *       or a static string.
+ */
+void mutt_free_attachmatch(struct AttachMatch **am)
+{
+  if (!am || !*am)
+    return;
+
+  regfree(&(*am)->minor_regex);
+  FREE(&(*am)->major);
+  FREE(am);
+}
+
+/**
  * mutt_free_opts - clean up before quitting
  */
 void mutt_free_opts(void)
@@ -712,15 +749,68 @@ void mutt_free_opts(void)
   for (int i = 0; MuttVars[i].name; i++)
     free_opt(MuttVars + i);
 
+  FREE(&Matches);
+
+  mutt_alias_free(&Aliases);
+
   mutt_regexlist_free(&Alternates);
-  mutt_regexlist_free(&UnAlternates);
   mutt_regexlist_free(&MailLists);
-  mutt_regexlist_free(&UnMailLists);
-  mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnSubscribedLists);
   mutt_regexlist_free(&NoSpamList);
+  mutt_regexlist_free(&SubscribedLists);
+  mutt_regexlist_free(&UnAlternates);
+  mutt_regexlist_free(&UnMailLists);
+  mutt_regexlist_free(&UnSubscribedLists);
+
+  mutt_hash_destroy(&Groups);
+  mutt_hash_destroy(&ReverseAliases);
+  mutt_hash_destroy(&TagFormats);
+  mutt_hash_destroy(&TagTransforms);
+
+  /* Lists of strings */
+  mutt_list_free(&AlternativeOrderList);
+  mutt_list_free(&AutoViewList);
+  mutt_list_free(&HeaderOrderList);
+  mutt_list_free(&Ignore);
+  mutt_list_free(&MailToAllow);
+  mutt_list_free(&MimeLookupList);
+  mutt_list_free(&Muttrc);
+  mutt_list_free(&MuttrcStack);
+#ifdef USE_SIDEBAR
+  mutt_list_free(&SidebarWhitelist);
+#endif
+  mutt_list_free(&UnIgnore);
+  mutt_list_free(&UserHeader);
+
+  /* Lists of AttachMatch */
+  mutt_list_free_type(&AttachAllow, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&AttachExclude, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&InlineAllow, (list_free_t) mutt_free_attachmatch);
+  mutt_list_free_type(&InlineExclude, (list_free_t) mutt_free_attachmatch);
+
+  mutt_free_colors();
+
+  FREE(&CurrentFolder);
+  FREE(&HomeDir);
+  FREE(&LastFolder);
+  FREE(&ShortHostname);
+  FREE(&Username);
+
+  mutt_replacelist_free(&SpamList);
+  mutt_replacelist_free(&SubjectRegexList);
+
+  mutt_delete_hooks(0);
+
+  mutt_hist_free();
+  mutt_free_keys();
 }
 
+/**
+ * add_to_stailq - Add a string to a list
+ * @param head String list
+ * @param str  String to add
+ *
+ * @note Duplicate or empty strings will not be added
+ */
 static void add_to_stailq(struct ListHead *head, const char *str)
 {
   /* don't add a NULL or empty string to the list */
@@ -741,7 +831,7 @@ static void add_to_stailq(struct ListHead *head, const char *str)
 
 /**
  * finish_source - 'finish' command: stop processing current config file
- * @param tmp  Temporary space shared by all command handlers
+ * @param buf  Temporary space shared by all command handlers
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
  * @param err  Buffer for any error message
@@ -764,7 +854,7 @@ static int finish_source(struct Buffer *buf, struct Buffer *s,
 
 /**
  * parse_ifdef - 'ifdef' command: conditional config
- * @param tmp  Temporary space shared by all command handlers
+ * @param buf  Temporary space shared by all command handlers
  * @param s    Current line of the config file
  * @param data data field from init.h:struct Command
  * @param err  Buffer for any error message
@@ -861,6 +951,13 @@ static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return 0;
 }
 
+/**
+ * remove_from_stailq - Remove an item, matching a string, from a List
+ * @param head Head of the List
+ * @param str  String to match
+ *
+ * @note The string comparison is case-insensitive
+ */
 static void remove_from_stailq(struct ListHead *head, const char *str)
 {
   if (mutt_str_strcmp("*", str) == 0)
@@ -1339,6 +1436,15 @@ static void attachments_clean(void)
     Context->hdrs[i]->attach_valid = false;
 }
 
+/**
+ * parse_attach_list - Parse the "attachments" command
+ * @param buf  Buffer for temporary storage
+ * @param s    Buffer containing the attachments command
+ * @param head List of AttachMatch to add to
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
                              struct ListHead *head, struct Buffer *err)
 {
@@ -1406,6 +1512,14 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * parse_unattach_list - Parse the "unattachments" command
+ * @param buf  Buffer for temporary storage
+ * @param s    Buffer containing the unattachments command
+ * @param head List of AttachMatch to remove from
+ * @param err  Buffer for error messages
+ * @retval 0 Always
+ */
 static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
                                struct ListHead *head, struct Buffer *err)
 {
@@ -1461,6 +1575,13 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
   return 0;
 }
 
+/**
+ * print_attach_list - Print a list of attachments
+ * @param h    List of attachments
+ * @param op   Operation, e.g. '+', '-'
+ * @param name Attached/Inline, 'A', 'I'
+ * @retval 0 Always
+ */
 static int print_attach_list(struct ListHead *h, char op, char *name)
 {
   struct ListNode *np;
@@ -1725,7 +1846,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
     tmp->name = mutt_str_strdup(buf->data);
     /* give the main addressbook code a chance */
     if (CurrentMenu == MENU_ALIAS)
-      OPT_MENU_CALLER = true;
+      OptMenuCaller = true;
   }
   else
   {
@@ -1958,13 +2079,13 @@ static void restore_default(struct Option *p)
     mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
   }
   if (p->flags & R_RESORT_SUB)
-    OPT_SORT_SUBTHREADS = true;
+    OptSortSubthreads = true;
   if (p->flags & R_RESORT)
-    OPT_NEED_RESORT = true;
+    OptNeedResort = true;
   if (p->flags & R_RESORT_INIT)
-    OPT_RESORT_INIT = true;
+    OptResortInit = true;
   if (p->flags & R_TREE)
-    OPT_REDRAW_TREE = true;
+    OptRedrawTree = true;
   if (p->flags & R_REFLOW)
     mutt_window_reflow();
 #ifdef USE_SIDEBAR
@@ -2221,10 +2342,10 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         for (idx = 0; MuttVars[idx].name; idx++)
           restore_default(&MuttVars[idx]);
         mutt_menu_set_current_redraw_full();
-        OPT_SORT_SUBTHREADS = true;
-        OPT_NEED_RESORT = true;
-        OPT_RESORT_INIT = true;
-        OPT_REDRAW_TREE = true;
+        OptSortSubthreads = true;
+        OptNeedResort = true;
+        OptResortInit = true;
+        OptRedrawTree = true;
         return 0;
       }
       else
@@ -2426,7 +2547,7 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         break;
       }
 
-      if (OPT_ATTACH_MSG &&
+      if (OptAttachMsg &&
           (mutt_str_strcmp(MuttVars[idx].name, "reply_regex") == 0))
       {
         snprintf(err->data, err->dsize, "Operation not permitted when in attach-message mode.");
@@ -2706,13 +2827,13 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
         mutt_menu_set_redraw(MENU_PAGER, REDRAW_FLOW);
       }
       if (MuttVars[idx].flags & R_RESORT_SUB)
-        OPT_SORT_SUBTHREADS = true;
+        OptSortSubthreads = true;
       if (MuttVars[idx].flags & R_RESORT)
-        OPT_NEED_RESORT = true;
+        OptNeedResort = true;
       if (MuttVars[idx].flags & R_RESORT_INIT)
-        OPT_RESORT_INIT = true;
+        OptResortInit = true;
       if (MuttVars[idx].flags & R_TREE)
-        OPT_REDRAW_TREE = true;
+        OptRedrawTree = true;
       if (MuttVars[idx].flags & R_REFLOW)
         mutt_window_reflow();
 #ifdef USE_SIDEBAR
@@ -2725,12 +2846,6 @@ static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
   }
   return r;
 }
-
-/* LIFO designed to contain the list of config files that have been sourced and
- * avoid cyclic sourcing */
-static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
-
-#define MAXERRS 128
 
 /**
  * source_rc - Read an initialization file
@@ -2866,6 +2981,8 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
   if (!ispipe && !STAILQ_EMPTY(&MuttrcStack))
   {
+    struct ListNode *np = STAILQ_FIRST(&MuttrcStack);
+    FREE(&np->data);
     STAILQ_REMOVE_HEAD(&MuttrcStack, entries);
   }
 
@@ -2960,19 +3077,6 @@ finish:
     FREE(&expn.data);
   return r;
 }
-
-#define NUMVARS mutt_array_size(MuttVars)
-#define NUMCOMMANDS mutt_array_size(Commands)
-
-/* initial string that starts completion. No telling how much crap
- * the user has typed so far. Allocate LONG_STRING just to be sure! */
-static char UserTyped[LONG_STRING] = { 0 };
-
-static int NumMatched = 0;             /* Number of matches for completion */
-static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
-static const char **Matches;
-/* this is a lie until mutt_init runs: */
-static int MatchesListsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
 
 static void matches_ensure_morespace(int current)
 {
@@ -3506,6 +3610,9 @@ int var_to_string(int idx, char *val, size_t len)
 
 /**
  * mutt_query_variables - Implement the -Q command line flag
+ * @param queries List of query strings
+ * @retval 0 Success, all queries exist
+ * @retval 1 Error
  */
 int mutt_query_variables(struct ListHead *queries)
 {
@@ -3583,6 +3690,12 @@ int mutt_dump_variables(int hide_sensitive)
   return 0;
 }
 
+/**
+ * execute_commands - Execute a set of NeoMutt commands
+ * @param p List of command strings
+ * @retval  0 Success, all the commands succeeded
+ * @retval -1 Error
+ */
 static int execute_commands(struct ListHead *p)
 {
   struct Buffer err, token;
@@ -3720,6 +3833,13 @@ static bool get_hostname(void)
   return true;
 }
 
+/**
+ * mutt_init - Initialise NeoMutt
+ * @param skip_sys_rc If true, don't read the system config file
+ * @param commands    List of config commands to execute
+ * @retval 0 Success
+ * @retval 1 Error
+ */
 int mutt_init(int skip_sys_rc, struct ListHead *commands)
 {
   char buffer[LONG_STRING];
@@ -3797,7 +3917,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   if ((p = mutt_str_getenv("LC_ALL")) || (p = mutt_str_getenv("LANG")) ||
       (p = mutt_str_getenv("LC_CTYPE")))
   {
-    OPT_LOCALES = true;
+    OptLocales = true;
   }
 #endif
 
@@ -3936,7 +4056,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     mutt_str_replace(&Visual, env_ed);
   }
 
-  if (need_pause && !OPT_NO_CURSES)
+  if (need_pause && !OptNoCurses)
   {
     log_queue_flush(log_disp_terminal);
     if (mutt_any_key_to_continue(NULL) == 'q')

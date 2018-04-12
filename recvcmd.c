@@ -807,9 +807,9 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachCtx *actx,
 
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
-    OPT_NEWS_SEND = true;
+    OptNewsSend = true;
   else
-    OPT_NEWS_SEND = false;
+    OptNewsSend = false;
 #endif
 
   if (!check_all_msg(actx, cur, false))

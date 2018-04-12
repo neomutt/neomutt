@@ -278,7 +278,7 @@ int mutt_str_atoul(const char *str, unsigned long *dst)
  * mutt_str_strdup - Copy a string, safely
  * @param str String to copy
  * @retval ptr  Copy of the string
- * @retval NULL if s was NULL
+ * @retval NULL if str was NULL
  */
 char *mutt_str_strdup(const char *str)
 {

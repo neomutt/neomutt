@@ -95,7 +95,7 @@ static struct Header *OldHdr = NULL;
   }
 
 #define CHECK_ATTACH                                                           \
-  if (OPT_ATTACH_MSG)                                                          \
+  if (OptAttachMsg)                                                          \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
@@ -2192,7 +2192,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
     bool do_new_mail = false;
 
-    if (Context && !OPT_ATTACH_MSG)
+    if (Context && !OptAttachMsg)
     {
       oldcount = Context ? Context->msgcount : 0;
       /* check for new mail */
@@ -2248,7 +2248,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           }
 
           pager_menu->redraw = REDRAW_FULL;
-          OPT_SEARCH_INVALID = true;
+          OptSearchInvalid = true;
         }
       }
 
@@ -2616,7 +2616,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         CHECK_MODE(IsHeader(extra))
         if (mutt_select_sort((ch == OP_SORT_REVERSE)) == 0)
         {
-          OPT_NEED_RESORT = true;
+          OptNeedResort = true;
           ch = -1;
           rc = OP_DISPLAY_MESSAGE;
         }
@@ -2857,11 +2857,11 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
 
         mutt_enter_command();
 
-        if (OPT_NEED_RESORT)
+        if (OptNeedResort)
         {
-          OPT_NEED_RESORT = false;
+          OptNeedResort = false;
           CHECK_MODE(IsHeader(extra));
-          OPT_NEED_RESORT = true;
+          OptNeedResort = true;
         }
 
         if (old_PagerIndexLines != PagerIndexLines)

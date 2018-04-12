@@ -127,7 +127,7 @@ static const char *NoVisible = N_("No visible messages.");
   }
 
 #define CHECK_ATTACH                                                           \
-  if (OPT_ATTACH_MSG)                                                          \
+  if (OptAttachMsg)                                                          \
   {                                                                            \
     mutt_flushinp();                                                           \
     mutt_error(_(Function_not_permitted_in_attach_message_mode));              \
@@ -426,9 +426,9 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
                               size_t buflen, int *oldcount, int *index_hint)
 {
 #ifdef USE_NNTP
-  if (OPT_NEWS)
+  if (OptNews)
   {
-    OPT_NEWS = false;
+    OptNews = false;
     nntp_expand_path(buf, buflen, &CurrentNewsSrv->conn->account);
   }
   else
@@ -463,7 +463,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
         update_index(menu, Context, check, *oldcount, *index_hint);
 
       FREE(&new_last_folder);
-      OPT_SEARCH_INVALID = true;
+      OptSearchInvalid = true;
       menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
       return 0;
     }
@@ -504,7 +504,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf,
   mutt_clear_error();
   mutt_buffy_check(true); /* force the buffy check after we have changed the folder */
   menu->redraw = REDRAW_FULL;
-  OPT_SEARCH_INVALID = true;
+  OptSearchInvalid = true;
 
   return 0;
 }
@@ -836,7 +836,7 @@ int mutt_index_menu(void)
   int index_hint;  /* used to restore cursor position */
   bool do_buffy_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
-  int attach_msg = OPT_ATTACH_MSG;
+  int attach_msg = OptAttachMsg;
 
   struct Menu *menu = mutt_menu_new(MENU_MAIN);
   menu->make_entry = index_make_entry;
@@ -872,17 +872,17 @@ int mutt_index_menu(void)
      * any 'op' below could do mutt_enter_command(), either here or
      * from any new menu launched, and change $sort/$sort_aux
      */
-    if (OPT_NEED_RESORT && Context && Context->msgcount && menu->current >= 0)
+    if (OptNeedResort && Context && Context->msgcount && menu->current >= 0)
       resort_index(menu);
 
     menu->max = Context ? Context->vcount : 0;
     oldcount = Context ? Context->msgcount : 0;
 
-    if (OPT_REDRAW_TREE && Context && Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
+    if (OptRedrawTree && Context && Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
     {
       mutt_draw_tree(Context);
       menu->redraw |= REDRAW_STATUS;
-      OPT_REDRAW_TREE = false;
+      OptRedrawTree = false;
     }
 
     if (Context)
@@ -911,7 +911,7 @@ int mutt_index_menu(void)
           menu->redraw = REDRAW_FULL;
         }
 
-        OPT_SEARCH_INVALID = true;
+        OptSearchInvalid = true;
       }
       else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED || check == MUTT_FLAGS)
       {
@@ -953,7 +953,7 @@ int mutt_index_menu(void)
         menu->redraw = REDRAW_FULL;
         menu->max = Context->vcount;
 
-        OPT_SEARCH_INVALID = true;
+        OptSearchInvalid = true;
       }
     }
 
@@ -1090,7 +1090,7 @@ int mutt_index_menu(void)
     }
 
 #ifdef USE_NNTP
-    OPT_NEWS = false; /* for any case */
+    OptNews = false; /* for any case */
 #endif
 
 #ifdef USE_NOTMUCH
@@ -1463,14 +1463,14 @@ int mutt_index_menu(void)
           {
             snprintf(buf2, sizeof(buf2), "!~R!~D~s%s",
                      Context->pattern ? Context->pattern : ".*");
-            OPT_HIDE_READ = true;
+            OptHideRead = true;
           }
           else
           {
             mutt_str_strfcpy(buf2, Context->pattern + 8, sizeof(buf2));
             if (!*buf2 || (strncmp(buf2, ".*", 2) == 0))
               snprintf(buf2, sizeof(buf2), "~A");
-            OPT_HIDE_READ = false;
+            OptHideRead = false;
           }
           FREE(&Context->pattern);
           Context->pattern = mutt_str_strdup(buf2);
@@ -1531,7 +1531,7 @@ int mutt_index_menu(void)
               update_index(menu, Context, check, oldcount, index_hint);
 
             menu->redraw = REDRAW_FULL; /* new mail arrived? */
-            OPT_SEARCH_INVALID = true;
+            OptSearchInvalid = true;
           }
         }
         break;
@@ -1564,7 +1564,7 @@ int mutt_index_menu(void)
           if (Context && Context->msgcount)
           {
             resort_index(menu);
-            OPT_SEARCH_INVALID = true;
+            OptSearchInvalid = true;
           }
           if (menu->menu == MENU_PAGER)
           {
@@ -1661,7 +1661,7 @@ int mutt_index_menu(void)
         {
           if (mx_close_mailbox(Context, &index_hint) != 0)
           {
-            OPT_SEARCH_INVALID = true;
+            OptSearchInvalid = true;
             menu->redraw = REDRAW_FULL;
             break;
           }
@@ -1669,7 +1669,7 @@ int mutt_index_menu(void)
         }
         imap_logout_all();
         mutt_message(_("Logged out of IMAP servers."));
-        OPT_SEARCH_INVALID = true;
+        OptSearchInvalid = true;
         menu->redraw = REDRAW_FULL;
         break;
 #endif
@@ -1715,7 +1715,7 @@ int mutt_index_menu(void)
                 }
               }
             }
-            OPT_SEARCH_INVALID = true;
+            OptSearchInvalid = true;
           }
           else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
             update_index(menu, Context, check, oc, index_hint);
@@ -1976,7 +1976,7 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
       case OP_MAIN_CHANGE_GROUP:
       case OP_MAIN_CHANGE_GROUP_READONLY:
-        OPT_NEWS = false;
+        OptNews = false;
 #endif
         if (attach_msg || ReadOnly ||
 #ifdef USE_NNTP
@@ -2046,7 +2046,7 @@ int mutt_index_menu(void)
 #ifdef USE_NNTP
           if (op == OP_MAIN_CHANGE_GROUP || op == OP_MAIN_CHANGE_GROUP_READONLY)
           {
-            OPT_NEWS = true;
+            OptNews = true;
             CurrentNewsSrv = nntp_select_server(NewsServer, false);
             if (!CurrentNewsSrv)
               break;
@@ -2108,7 +2108,7 @@ int mutt_index_menu(void)
         if (op == OP_DISPLAY_HEADERS)
           Weed = !Weed;
 
-        OPT_NEED_RESORT = false;
+        OptNeedResort = false;
 
         if ((Sort & SORT_MASK) == SORT_THREADS && CURHDR->collapsed)
         {
@@ -2132,7 +2132,7 @@ int mutt_index_menu(void)
         op = mutt_display_message(CURHDR);
         if (op < 0)
         {
-          OPT_NEED_RESORT = false;
+          OptNeedResort = false;
           break;
         }
 

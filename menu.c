@@ -474,10 +474,10 @@ static void menu_redraw_prompt(struct Menu *menu)
 {
   if (menu->dialog)
   {
-    if (OPT_MSG_ERR)
+    if (OptMsgErr)
     {
       mutt_sleep(1);
-      OPT_MSG_ERR = false;
+      OptMsgErr = false;
     }
 
     if (ErrorBufMessage)
@@ -1088,9 +1088,9 @@ int mutt_menu_loop(struct Menu *menu)
 
   while (true)
   {
-    if (OPT_MENU_CALLER)
+    if (OptMenuCaller)
     {
-      OPT_MENU_CALLER = false;
+      OptMenuCaller = false;
       return OP_NULL;
     }
 

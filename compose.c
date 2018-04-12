@@ -319,6 +319,10 @@ static void redraw_crypt_lines(struct Header *msg)
 
 #ifdef MIXMASTER
 
+/**
+ * redraw_mix_line - Redraw the Mixmaster chain
+ * @param chain List of chain links
+ */
 static void redraw_mix_line(struct ListHead *chain)
 {
   char *t = NULL;
@@ -404,7 +408,7 @@ static void draw_envelope(struct Header *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
-  if (!OPT_NEWS_SEND)
+  if (!OptNewsSend)
   {
 #endif
     draw_envelope_addr(HDR_TO, msg->env->to);
@@ -789,7 +793,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 #ifdef USE_NNTP
   int news = 0; /* is it a news article ? */
 
-  if (OPT_NEWS_SEND)
+  if (OptNewsSend)
     news++;
 #endif
 
@@ -819,7 +823,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
   while (loop)
   {
 #ifdef USE_NNTP
-    OPT_NEWS = false; /* for any case */
+    OptNews = false; /* for any case */
 #endif
     const int op = mutt_menu_loop(menu);
     switch (op)
@@ -1069,7 +1073,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         fname[0] = 0;
 
 #ifdef USE_NNTP
-        OPT_NEWS = false;
+        OptNews = false;
         if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
         {
           CurrentNewsSrv = nntp_select_server(NewsServer, false);
@@ -1077,7 +1081,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
             break;
 
           prompt = _("Open newsgroup to attach message from");
-          OPT_NEWS = true;
+          OptNews = true;
         }
 #endif
 
@@ -1094,7 +1098,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           break;
 
 #ifdef USE_NNTP
-        if (OPT_NEWS)
+        if (OptNews)
           nntp_expand_path(fname, sizeof(fname), &CurrentNewsSrv->conn->account);
         else
 #endif
@@ -1106,7 +1110,7 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
           if (!mx_is_pop(fname))
 #endif
 #ifdef USE_NNTP
-            if (!mx_is_nntp(fname) && !OPT_NEWS)
+            if (!mx_is_nntp(fname) && !OptNews)
 #endif
               /* check to make sure the file exists and is readable */
               if (access(fname, R_OK) == -1)
@@ -1137,10 +1141,10 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         old_sort_aux = SortAux;
 
         Context = ctx;
-        OPT_ATTACH_MSG = true;
+        OptAttachMsg = true;
         mutt_message(_("Tag the messages you want to attach!"));
         close = mutt_index_menu();
-        OPT_ATTACH_MSG = false;
+        OptAttachMsg = false;
 
         if (!Context)
         {

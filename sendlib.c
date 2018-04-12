@@ -1635,9 +1635,12 @@ void mutt_write_address_list(struct Address *addr, FILE *fp, int linelen, bool d
 
 /**
  * mutt_write_references - Add the message references to a list
+ * @param r    String List of references
+ * @param f    File to write to
+ * @param trim Trim the list to at most this many items
  *
- * need to write the list in reverse because they are stored in reverse order
- * when parsed to speed up threading
+ * Write the list in reverse because they are stored in reverse order when
+ * parsed to speed up threading.
  */
 void mutt_write_references(const struct ListHead *r, FILE *f, size_t trim)
 {
@@ -2037,7 +2040,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!OPT_NEWS_SEND)
+    if (!OptNewsSend)
 #endif
       fputs("To: \n", fp);
 
@@ -2048,7 +2051,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!OPT_NEWS_SEND)
+    if (!OptNewsSend)
 #endif
       fputs("Cc: \n", fp);
 
@@ -2062,24 +2065,24 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   }
   else if (mode > 0)
 #ifdef USE_NNTP
-    if (!OPT_NEWS_SEND)
+    if (!OptNewsSend)
 #endif
       fputs("Bcc: \n", fp);
 
 #ifdef USE_NNTP
   if (env->newsgroups)
     fprintf(fp, "Newsgroups: %s\n", env->newsgroups);
-  else if (mode == 1 && OPT_NEWS_SEND)
+  else if (mode == 1 && OptNewsSend)
     fputs("Newsgroups: \n", fp);
 
   if (env->followup_to)
     fprintf(fp, "Followup-To: %s\n", env->followup_to);
-  else if (mode == 1 && OPT_NEWS_SEND)
+  else if (mode == 1 && OptNewsSend)
     fputs("Followup-To: \n", fp);
 
   if (env->x_comment_to)
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
-  else if (mode == 1 && OPT_NEWS_SEND && XCommentTo)
+  else if (mode == 1 && OptNewsSend && XCommentTo)
     fputs("X-Comment-To: \n", fp);
 #endif
 
@@ -2102,7 +2105,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
 
   if (env->mail_followup_to)
 #ifdef USE_NNTP
-    if (!OPT_NEWS_SEND)
+    if (!OptNewsSend)
 #endif
     {
       fputs("Mail-Followup-To: ", fp);
@@ -2173,6 +2176,12 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env,
   return (ferror(fp) == 0 ? 0 : -1);
 }
 
+/**
+ * encode_headers - RFC2047-encode a list of headers
+ * @param h String List of headers
+ *
+ * The strings are encoded in-place.
+ */
 static void encode_headers(struct ListHead *h)
 {
   char *tmp = NULL;
@@ -2464,7 +2473,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   int i;
 
 #ifdef USE_NNTP
-  if (OPT_NEWS_SEND)
+  if (OptNewsSend)
   {
     char cmd[LONG_STRING];
 
@@ -2518,7 +2527,7 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
   }
 
 #ifdef USE_NNTP
-  if (!OPT_NEWS_SEND)
+  if (!OptNewsSend)
   {
 #endif
     size_t extra_argslen = 0;
@@ -2584,10 +2593,10 @@ int mutt_invoke_sendmail(struct Address *from, struct Address *to, struct Addres
    * and is set up to prompt using ncurses pinentry.  If we
    * mutt_endwin() it leaves other users staring at a blank screen.
    * So instead, just force a hard redraw on the next refresh. */
-  if (!OPT_NO_CURSES)
+  if (!OptNoCurses)
     mutt_need_hard_redraw();
 
-  i = send_msg(path, args, msg, OPT_NO_CURSES ? NULL : &childout);
+  i = send_msg(path, args, msg, OptNoCurses ? NULL : &childout);
   if (i != (EX_OK & 0xff))
   {
     if (i != S_BKG)
@@ -2663,7 +2672,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
 
   if (env->subject)
 #ifdef USE_NNTP
-    if (!OPT_NEWS_SEND || MimeSubject)
+    if (!OptNewsSend || MimeSubject)
 #endif
     {
       mutt_rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), SendCharset);
@@ -2790,7 +2799,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
   mutt_addr_write(resent_from, sizeof(resent_from), from, false);
 
 #ifdef USE_NNTP
-  OPT_NEWS_SEND = false;
+  OptNewsSend = false;
 #endif
 
   /*

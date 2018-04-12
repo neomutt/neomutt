@@ -302,7 +302,7 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
 
 /**
  * mutt_md5 - Calculate the MD5 hash of a NULL-terminated string
- * @param s      String to hash
+ * @param string String to hash
  * @param resbuf Buffer for result
  */
 void *mutt_md5(const char *string, void *resbuf)
@@ -337,8 +337,8 @@ void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf)
 
 /**
  * mutt_md5_process - Process a NULL-terminated string
- * @param s    String to process
- * @param ctx  MD5 context
+ * @param string String to process
+ * @param ctx    MD5 context
  */
 void mutt_md5_process(const char *string, struct Md5Ctx *ctx)
 {

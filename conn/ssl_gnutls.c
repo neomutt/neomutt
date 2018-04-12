@@ -795,7 +795,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   menu->help = helpstr;
 
   done = 0;
-  OPT_IGNORE_MACRO_EVENTS = true;
+  OptIgnoreMacroEvents = true;
   while (!done)
   {
     switch (mutt_menu_loop(menu))
@@ -846,7 +846,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
         break;
     }
   }
-  OPT_IGNORE_MACRO_EVENTS = false;
+  OptIgnoreMacroEvents = false;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   gnutls_x509_crt_deinit(cert);
@@ -1198,7 +1198,7 @@ static int tls_negotiate(struct Connection *conn)
 
   tls_get_client_cert(conn);
 
-  if (!OPT_NO_CURSES)
+  if (!OptNoCurses)
   {
     mutt_message(_("SSL/TLS connection using %s (%s/%s/%s)"),
                  gnutls_protocol_get_name(gnutls_protocol_get_version(data->state)),

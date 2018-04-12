@@ -48,6 +48,14 @@ struct Address *mutt_alias_lookup(const char *s)
   return NULL; /* no such alias */
 }
 
+/**
+ * expand_aliases_r - Expand aliases, recursively
+ * @param[in]  a    Address List
+ * @param[out] expn Alias List
+ * @retval ptr Address List with aliases expanded
+ *
+ * ListHead expn is used as temporary storage for already-expanded aliases.
+ */
 static struct Address *expand_aliases_r(struct Address *a, struct ListHead *expn)
 {
   struct Address *head = NULL, *last = NULL, *t = NULL, *w = NULL;

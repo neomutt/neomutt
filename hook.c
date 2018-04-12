@@ -278,12 +278,12 @@ static void delete_hook(struct Hook *h)
 }
 
 /**
- * delete_hooks - Delete matching hooks
+ * mutt_delete_hooks - Delete matching hooks
  * @param type
  * * Hook type to delete, e.g. #MUTT_SENDHOOK
  * * Or, 0 to delete all hooks
  */
-static void delete_hooks(int type)
+void mutt_delete_hooks(int type)
 {
   struct Hook *h = NULL;
   struct Hook *tmp = NULL;
@@ -312,7 +312,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                  _("unhook: Can't do unhook * from within a hook."));
         return -1;
       }
-      delete_hooks(0);
+      mutt_delete_hooks(0);
       mutt_ch_lookup_remove();
     }
     else
@@ -335,7 +335,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                  buf->data, buf->data);
         return -1;
       }
-      delete_hooks(type);
+      mutt_delete_hooks(type);
     }
   }
   return 0;
@@ -516,6 +516,12 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
   mutt_pretty_mailbox(path, pathlen);
 }
 
+/**
+ * list_hook - Find hook strings matching
+ * @param[out] matches List of hook strings
+ * @param[in]  match   String to match
+ * @param[in]  hook    Hook type, e.g. #MUTT_CRYPTHOOK
+ */
 static void list_hook(struct ListHead *matches, const char *match, int hook)
 {
   struct Hook *tmp = NULL;
@@ -530,6 +536,13 @@ static void list_hook(struct ListHead *matches, const char *match, int hook)
   }
 }
 
+/**
+ * mutt_crypt_hook - Find crypto hooks for an Address
+ * @param[out] list List of keys
+ * @param[in]  addr Address to match
+ *
+ * The crypt-hook associates keys with addresses.
+ */
 void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 {
   list_hook(list, addr->mailbox, MUTT_CRYPTHOOK);

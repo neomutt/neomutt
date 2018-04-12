@@ -472,7 +472,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
    * mutt_refresh() will think we are in the middle of a macro.  so set a
    * flag to indicate that we should really refresh the screen.
    */
-  OPT_FORCE_REFRESH = true;
+  OptForceRefresh = true;
 
   if (!ctx->quiet)
     mutt_message(_("Reading %s..."), ctx->path);
@@ -485,8 +485,8 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
     {
       /* avoid unnecessary work since the mailbox is completely unthreaded
          to begin with */
-      OPT_SORT_SUBTHREADS = false;
-      OPT_NEED_RESCORE = false;
+      OptSortSubthreads = false;
+      OptNeedRescore = false;
       mutt_sort_headers(ctx, 1);
     }
     if (!ctx->quiet)
@@ -501,7 +501,7 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
       FREE(&ctx);
   }
 
-  OPT_FORCE_REFRESH = false;
+  OptForceRefresh = false;
   return ctx;
 }
 

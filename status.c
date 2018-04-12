@@ -260,7 +260,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (Context)
       {
-        i = OPT_ATTACH_MSG ?
+        i = OptAttachMsg ?
                 3 :
                 ((Context->readonly || Context->dontwrite) ?
                      2 :

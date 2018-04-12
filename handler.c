@@ -1876,7 +1876,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   }
   else if ((WithCrypto != 0) && b->type == TYPEAPPLICATION)
   {
-    if (OPT_DONT_HANDLE_PGP_KEYS && (mutt_str_strcasecmp("pgp-keys", b->subtype) == 0))
+    if (OptDontHandlePgpKeys && (mutt_str_strcasecmp("pgp-keys", b->subtype) == 0))
     {
       /* pass raw part through for key extraction */
       plaintext = true;
@@ -1889,14 +1889,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
 
   /* only respect disposition == attachment if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!HonorDisposition || (b->disposition != DISPATTACH || OPT_VIEW_ATTACH)) &&
+  if ((!HonorDisposition || (b->disposition != DISPATTACH || OptViewAttach)) &&
       (plaintext || handler))
   {
     rc = run_decode_and_handler(b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
-  else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH && !OPT_VIEW_ATTACH &&
+  else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH && !OptViewAttach &&
                                          HonorDisposition && (plaintext || handler)))
   {
     state_mark_attach(s);
@@ -1904,7 +1904,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
       fputs(_("[-- This is an attachment "), s->fpout);
     else
       state_printf(s, _("[-- %s/%s is unsupported "), TYPE(b), b->subtype);
-    if (!OPT_VIEW_ATTACH)
+    if (!OptViewAttach)
     {
       char keystroke[SHORT_STRING];
 

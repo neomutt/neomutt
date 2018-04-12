@@ -40,7 +40,7 @@
 #include "memory.h"
 #include "string2.h"
 
-bool OPT_LOCALES; /**< (pseudo) set if user has valid locale definition */
+bool OptLocales; /**< (pseudo) set if user has valid locale definition */
 
 /**
  * mutt_mb_charlen - Count the bytes in a (multibyte) character

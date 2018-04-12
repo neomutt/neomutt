@@ -137,11 +137,11 @@ static const char *rotate_logs(const char *file, int count)
 void mutt_clear_error(void)
 {
   /* Make sure the error message has had time to be read */
-  if (OPT_MSG_ERR)
+  if (OptMsgErr)
     error_pause();
 
   ErrorBufMessage = false;
-  if (!OPT_NO_CURSES)
+  if (!OptNoCurses)
     mutt_window_clearline(MuttMessageWindow, 0);
 }
 
@@ -194,14 +194,14 @@ int log_disp_curses(time_t stamp, const char *file, int line,
     return 0;
 
   /* Only pause if this is a message following an error */
-  if ((level > LL_ERROR) && OPT_MSG_ERR && !dupe)
+  if ((level > LL_ERROR) && OptMsgErr && !dupe)
     error_pause();
 
   mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, MuttMessageWindow->cols,
                      FMT_LEFT, 0, buf, sizeof(buf), 0);
   ErrorBufMessage = true;
 
-  if (!OPT_KEEP_QUIET)
+  if (!OptKeepQuiet)
   {
     if (level == LL_ERROR)
       BEEP();
@@ -214,13 +214,13 @@ int log_disp_curses(time_t stamp, const char *file, int line,
 
   if ((level <= LL_ERROR) && !dupe)
   {
-    OPT_MSG_ERR = true;
+    OptMsgErr = true;
     if (gettimeofday(&LastError, NULL) < 0)
       mutt_debug(1, "gettimeofday failed: %d\n", errno);
   }
   else
   {
-    OPT_MSG_ERR = false;
+    OptMsgErr = false;
     LastError.tv_sec = 0;
   }
 

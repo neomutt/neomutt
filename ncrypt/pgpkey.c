@@ -615,7 +615,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
 
         /* XXX make error reporting more verbose */
 
-        if (OPT_PGP_CHECK_TRUST)
+        if (OptPgpCheckTrust)
         {
           if (!pgp_key_is_valid(KeyTable[menu->current]->parent))
           {
@@ -624,7 +624,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           }
         }
 
-        if (OPT_PGP_CHECK_TRUST && (!pgp_id_is_valid(KeyTable[menu->current]) ||
+        if (OptPgpCheckTrust && (!pgp_id_is_valid(KeyTable[menu->current]) ||
                                     !pgp_id_is_strong(KeyTable[menu->current])))
         {
           char *str = "";
@@ -736,7 +736,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   FILE *devnull = NULL;
   struct stat sb;
   pid_t thepid;
-  OPT_PGP_CHECK_TRUST = false;
+  OptPgpCheckTrust = false;
 
   struct PgpKeyInfo *key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
@@ -802,7 +802,15 @@ struct Body *pgp_make_key_attachment(char *tempf)
   return att;
 }
 
-static void pgp_add_string_to_hints(struct ListHead *hints, const char *str)
+/**
+ * pgp_add_string_to_hints - Split a string and add the parts to a List
+ * @param[in]  str   String to parse
+ * @param[out] hints List of string parts
+ *
+ * The string str is split by whitespace and punctuation and the parts added to
+ * hints.
+ */
+static void pgp_add_string_to_hints(const char *str, struct ListHead *hints)
 {
   char *scratch = mutt_str_strdup(str);
   if (!scratch)
@@ -845,9 +853,9 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
   struct PgpUid *q = NULL;
 
   if (a->mailbox)
-    pgp_add_string_to_hints(&hints, a->mailbox);
+    pgp_add_string_to_hints(a->mailbox, &hints);
   if (a->personal)
-    pgp_add_string_to_hints(&hints, a->personal);
+    pgp_add_string_to_hints(a->personal, &hints);
 
   if (!oppenc_mode)
     mutt_message(_("Looking for keys matching \"%s\"..."), a->mailbox);
@@ -976,7 +984,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyrin
   mutt_message(_("Looking for keys matching \"%s\"..."), p);
 
   pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
-  pgp_add_string_to_hints(&hints, phint);
+  pgp_add_string_to_hints(phint, &hints);
   keys = pgp_get_candidates(keyring, &hints);
   mutt_list_free(&hints);
 

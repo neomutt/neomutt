@@ -936,7 +936,7 @@ int imap_wait_keepalive(pid_t pid)
   bool imap_passive = ImapPassive;
 
   ImapPassive = true;
-  OPT_KEEP_QUIET = true;
+  OptKeepQuiet = true;
 
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
 
@@ -963,7 +963,7 @@ int imap_wait_keepalive(pid_t pid)
   sigaction(SIGALRM, &oldalrm, NULL);
   sigprocmask(SIG_SETMASK, &oldmask, NULL);
 
-  OPT_KEEP_QUIET = false;
+  OptKeepQuiet = false;
   if (!imap_passive)
     ImapPassive = false;
 

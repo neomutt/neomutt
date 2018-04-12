@@ -42,15 +42,15 @@
 int *ColorQuote = NULL;
 int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
-struct ColorLineHead ColorHdrList = STAILQ_HEAD_INITIALIZER(ColorHdrList);
-struct ColorLineHead ColorBodyList = STAILQ_HEAD_INITIALIZER(ColorBodyList);
 struct ColorLineHead ColorAttachList = STAILQ_HEAD_INITIALIZER(ColorAttachList);
-struct ColorLineHead ColorStatusList = STAILQ_HEAD_INITIALIZER(ColorStatusList);
-struct ColorLineHead ColorIndexList = STAILQ_HEAD_INITIALIZER(ColorIndexList);
+struct ColorLineHead ColorBodyList = STAILQ_HEAD_INITIALIZER(ColorBodyList);
+struct ColorLineHead ColorHdrList = STAILQ_HEAD_INITIALIZER(ColorHdrList);
 struct ColorLineHead ColorIndexAuthorList = STAILQ_HEAD_INITIALIZER(ColorIndexAuthorList);
 struct ColorLineHead ColorIndexFlagsList = STAILQ_HEAD_INITIALIZER(ColorIndexFlagsList);
+struct ColorLineHead ColorIndexList = STAILQ_HEAD_INITIALIZER(ColorIndexList);
 struct ColorLineHead ColorIndexSubjectList = STAILQ_HEAD_INITIALIZER(ColorIndexSubjectList);
 struct ColorLineHead ColorIndexTagList = STAILQ_HEAD_INITIALIZER(ColorIndexTagList);
+struct ColorLineHead ColorStatusList = STAILQ_HEAD_INITIALIZER(ColorStatusList);
 
 /* local to this file */
 static int ColorQuoteSize;
@@ -161,7 +161,7 @@ static void free_color_line(struct ColorLine *tmp, int free_colors)
     return;
 
 #ifdef HAVE_COLOR
-  if (free_colors && tmp->fg != -1 && tmp->bg != -1)
+  if (free_colors && (tmp->fg != -1) && (tmp->bg != -1))
     mutt_free_color(tmp->fg, tmp->bg);
 #endif
 
@@ -403,7 +403,7 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
   {
     s += 5;
     *col = strtol(s, &eptr, 10);
-    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !OPT_NO_CURSES && has_colors()))
+    if (!*s || *eptr || *col < 0 || (*col >= COLORS && !OptNoCurses && has_colors()))
     {
       snprintf(err->data, err->dsize, _("%s: color not supported by term"), s);
       return -1;
@@ -539,7 +539,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
   if (
 #ifdef HAVE_COLOR
       /* we're running without curses */
-      OPT_NO_CURSES || /* we're parsing an uncolor command, and have no colors */
+      OptNoCurses || /* we're parsing an uncolor command, and have no colors */
       (parse_uncolor && !has_colors())
       /* we're parsing an unmono command, and have colors */
       || (!parse_uncolor && has_colors())
@@ -578,7 +578,7 @@ static int parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long dat
                    (object == MT_COLOR_INDEX_FLAGS) || (object == MT_COLOR_INDEX_SUBJECT) ||
                    (object == MT_COLOR_INDEX_TAG));
 
-  if (is_index && do_cache && !OPT_NO_CURSES)
+  if (is_index && do_cache && !OptNoCurses)
   {
     mutt_menu_set_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
@@ -885,7 +885,7 @@ static int parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
 
 #ifdef HAVE_COLOR
 #ifdef HAVE_USE_DEFAULT_COLORS
-  if (!OPT_NO_CURSES &&
+  if (!OptNoCurses &&
       has_colors()
       /* delay use_default_colors() until needed, since it initializes things */
       && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT || object == MT_COLOR_TREE) &&
@@ -1000,7 +1000,7 @@ int mutt_parse_color(struct Buffer *buf, struct Buffer *s, unsigned long data,
 {
   bool dry_run = false;
 
-  if (OPT_NO_CURSES || !has_colors())
+  if (OptNoCurses || !has_colors())
     dry_run = true;
 
   return parse_color(buf, s, err, parse_color_pair, dry_run, true);
@@ -1014,12 +1014,49 @@ int mutt_parse_mono(struct Buffer *buf, struct Buffer *s, unsigned long data,
   bool dry_run = false;
 
 #ifdef HAVE_COLOR
-  if (OPT_NO_CURSES || has_colors())
+  if (OptNoCurses || has_colors())
     dry_run = true;
 #else
-  if (OPT_NO_CURSES)
+  if (OptNoCurses)
     dry_run = true;
 #endif
 
   return parse_color(buf, s, err, parse_attr_spec, dry_run, false);
+}
+
+/**
+ * mutt_free_color_list - Free a list of colours
+ * @param head ColorLine List
+ */
+static void mutt_free_color_list(struct ColorLineHead *head)
+{
+  struct ColorLine *np, *tmp;
+  STAILQ_FOREACH_SAFE(np, head, entries, tmp)
+  {
+    STAILQ_REMOVE(head, np, ColorLine, entries);
+    free_color_line(np, true);
+  }
+}
+
+void mutt_free_colors(void)
+{
+  mutt_free_color_list(&ColorAttachList);
+  mutt_free_color_list(&ColorBodyList);
+  mutt_free_color_list(&ColorHdrList);
+  mutt_free_color_list(&ColorIndexAuthorList);
+  mutt_free_color_list(&ColorIndexFlagsList);
+  mutt_free_color_list(&ColorIndexList);
+  mutt_free_color_list(&ColorIndexSubjectList);
+  mutt_free_color_list(&ColorIndexTagList);
+  mutt_free_color_list(&ColorStatusList);
+
+  struct ColorList *cl = ColorList;
+  struct ColorList *next = NULL;
+  while (cl)
+  {
+    next = cl->next;
+    FREE(&cl);
+    cl = next;
+  }
+  ColorList = NULL;
 }

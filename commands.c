@@ -235,7 +235,7 @@ int mutt_display_message(struct Header *cur)
     if (r == -1)
       mutt_error(_("Error running \"%s\"!"), buf);
     unlink(tempfile);
-    if (!OPT_NO_CURSES)
+    if (!OptNoCurses)
       keypad(stdscr, true);
     if (r != -1)
       mutt_set_flag(Context, cur, MUTT_READ, 1);
@@ -409,11 +409,11 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
       return 1;
     }
 
-    OPT_KEEP_QUIET = true;
+    OptKeepQuiet = true;
     pipe_msg(h, fpout, decode, print);
     mutt_file_fclose(&fpout);
     rc = mutt_wait_filter(thepid);
-    OPT_KEEP_QUIET = false;
+    OptKeepQuiet = false;
   }
   else
   {
@@ -450,7 +450,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
           mutt_perror(_("Can't create filter process"));
           return 1;
         }
-        OPT_KEEP_QUIET = true;
+        OptKeepQuiet = true;
         pipe_msg(Context->hdrs[i], fpout, decode, print);
         /* add the message separator */
         if (sep)
@@ -458,7 +458,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         mutt_file_fclose(&fpout);
         if (mutt_wait_filter(thepid) != 0)
           rc = 1;
-        OPT_KEEP_QUIET = false;
+        OptKeepQuiet = false;
       }
     }
     else
@@ -470,7 +470,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
         mutt_perror(_("Can't create filter process"));
         return 1;
       }
-      OPT_KEEP_QUIET = true;
+      OptKeepQuiet = true;
       for (int i = 0; i < Context->msgcount; i++)
       {
         if (!message_is_tagged(Context, i))
@@ -485,7 +485,7 @@ static int pipe_message(struct Header *h, char *cmd, int decode, int print,
       mutt_file_fclose(&fpout);
       if (mutt_wait_filter(thepid) != 0)
         rc = 1;
-      OPT_KEEP_QUIET = false;
+      OptKeepQuiet = false;
     }
   }
 

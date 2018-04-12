@@ -1043,7 +1043,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
   menu->help = helpstr;
 
   done = 0;
-  OPT_IGNORE_MACRO_EVENTS = true;
+  OptIgnoreMacroEvents = true;
   while (!done)
   {
     switch (mutt_menu_loop(menu))
@@ -1087,7 +1087,7 @@ static int interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, int
         break;
     }
   }
-  OPT_IGNORE_MACRO_EVENTS = false;
+  OptIgnoreMacroEvents = false;
   mutt_menu_pop_current(menu);
   mutt_menu_destroy(&menu);
   mutt_debug(2, "done=%d\n", done);

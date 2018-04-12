@@ -215,7 +215,7 @@ static int edit_envelope(struct Envelope *en, int flags)
   char buf[HUGE_STRING];
 
 #ifdef USE_NNTP
-  if (OPT_NEWS_SEND)
+  if (OptNewsSend)
   {
     if (en->newsgroups)
       mutt_str_strfcpy(buf, en->newsgroups, sizeof(buf));
@@ -611,6 +611,11 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   return 0;
 }
 
+/**
+ * add_references - Add the email's references to a list
+ * @param head List of references
+ * @param e    Envelope of message
+ */
 static void add_references(struct ListHead *head, struct Envelope *e)
 {
   struct ListHead *src;
@@ -623,6 +628,11 @@ static void add_references(struct ListHead *head, struct Envelope *e)
   }
 }
 
+/**
+ * add_message_id - Add the email's message ID to a list
+ * @param head List of message IDs
+ * @param e    Envelope of message
+ */
 static void add_message_id(struct ListHead *head, struct Envelope *e)
 {
   if (e->message_id)
@@ -691,7 +701,7 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
   add_message_id(&env->in_reply_to, curenv);
 
 #ifdef USE_NNTP
-  if (OPT_NEWS_SEND && XCommentTo && curenv->from)
+  if (OptNewsSend && XCommentTo && curenv->from)
     env->x_comment_to = mutt_str_strdup(mutt_get_name(curenv->from));
 #endif
 }
@@ -933,7 +943,7 @@ void mutt_set_followup_to(struct Envelope *e)
   if (!FollowupTo)
     return;
 #ifdef USE_NNTP
-  if (OPT_NEWS_SEND)
+  if (OptNewsSend)
   {
     if (!e->followup_to && e->newsgroups && (strrchr(e->newsgroups, ',')))
       e->followup_to = mutt_str_strdup(e->newsgroups);
@@ -1107,7 +1117,7 @@ static int send_message(struct Header *msg)
 
 #ifdef USE_SMTP
 #ifdef USE_NNTP
-  if (!OPT_NEWS_SEND)
+  if (!OptNewsSend)
 #endif
     if (SmtpUrl)
       return mutt_smtp_send(msg->env->from, msg->env->to, msg->env->cc, msg->env->bcc,
@@ -1291,9 +1301,9 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
 
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
-    OPT_NEWS_SEND = true;
+    OptNewsSend = true;
   else
-    OPT_NEWS_SEND = false;
+    OptNewsSend = false;
 #endif
 
   if (!flags && !msg && Recall != MUTT_NO && mutt_num_postponed(1))
@@ -1339,12 +1349,12 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       if (msg->env->newsgroups)
       {
         flags |= SENDNEWS;
-        OPT_NEWS_SEND = true;
+        OptNewsSend = true;
       }
       else
       {
         flags &= ~SENDNEWS;
-        OPT_NEWS_SEND = false;
+        OptNewsSend = false;
       }
 #endif
     }
@@ -2002,7 +2012,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       free_clear_content = true;
   }
 
-  if (!OPT_NO_CURSES && !(flags & SENDMAILX))
+  if (!OptNoCurses && !(flags & SENDMAILX))
     mutt_message(_("Sending message..."));
 
   mutt_prepare_envelope(msg->env, 1);
@@ -2146,7 +2156,7 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile,
       goto cleanup;
     }
   }
-  else if (!OPT_NO_CURSES && !(flags & SENDMAILX))
+  else if (!OptNoCurses && !(flags & SENDMAILX))
   {
     mutt_message(i != 0 ? _("Sending in background.") :
                           (flags & SENDNEWS) ? _("Article posted.") : /* USE_NNTP */

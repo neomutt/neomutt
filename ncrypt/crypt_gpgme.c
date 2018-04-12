@@ -3895,8 +3895,12 @@ leave:
 
 /**
  * list_to_pattern - Convert STailQ to GPGME-compatible pattern
+ * @param list List of strings to convert
+ * @retval ptr GPGME-compatible pattern
  *
  * We need to convert spaces in an item into a '+' and '%' into "%25".
+ *
+ * @note The caller must free the returned pattern
  */
 static char *list_to_pattern(struct ListHead *list)
 {
@@ -3952,6 +3956,11 @@ static char *list_to_pattern(struct ListHead *list)
 
 /**
  * get_candidates - Get a list of keys which are candidates for the selection
+ * @param hints  List of strings to match
+ * @param app    Application type, e.g. #APPLICATION_PGP
+ * @param secret If true, only match secret keys
+ * @retval ptr  Key List
+ * @retval NULL Error
  *
  * Select by looking at the HINTS list.
  */
@@ -4100,11 +4109,14 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, unsigned int 
 }
 
 /**
- * crypt_add_string_to_hints - Add the string STR to the list HINTS
+ * crypt_add_string_to_hints - Split a string and add the parts to a List
+ * @param[in]  str   String to parse
+ * @param[out] hints List of string parts
  *
- * This list is later used to match addresses.
+ * The string str is split by whitespace and punctuation and the parts added to
+ * hints.  This list is later used to match addresses.
  */
-static void crypt_add_string_to_hints(struct ListHead *hints, const char *str)
+static void crypt_add_string_to_hints(const char *str, struct ListHead *hints)
 {
   char *scratch = mutt_str_strdup(str);
   if (!scratch)
@@ -4250,7 +4262,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
       case OP_GENERIC_SELECT_ENTRY:
         /* FIXME make error reporting more verbose - this should be
              easy because gpgme provides more information */
-        if (OPT_PGP_CHECK_TRUST)
+        if (OptPgpCheckTrust)
         {
           if (!crypt_key_is_valid(key_table[menu->current]))
           {
@@ -4260,7 +4272,7 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           }
         }
 
-        if (OPT_PGP_CHECK_TRUST && (!crypt_id_is_valid(key_table[menu->current]) ||
+        if (OptPgpCheckTrust && (!crypt_id_is_valid(key_table[menu->current]) ||
                                     !crypt_id_is_strong(key_table[menu->current])))
         {
           const char *warn_s = NULL;
@@ -4339,9 +4351,9 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   *forced_valid = 0;
 
   if (a && a->mailbox)
-    crypt_add_string_to_hints(&hints, a->mailbox);
+    crypt_add_string_to_hints(a->mailbox, &hints);
   if (a && a->personal)
-    crypt_add_string_to_hints(&hints, a->personal);
+    crypt_add_string_to_hints(a->personal, &hints);
 
   if (!oppenc_mode)
     mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
@@ -4458,7 +4470,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(char *p, short abilities,
   *forced_valid = 0;
 
   const char *pfcopy = crypt_get_fingerprint_or_id(p, &phint, &pl, &ps);
-  crypt_add_string_to_hints(&hints, phint);
+  crypt_add_string_to_hints(phint, &hints);
   struct CryptKeyInfo *keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
   mutt_list_free(&hints);
 
@@ -4574,7 +4586,11 @@ static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
 
 /**
  * find_keys - Find keys of the recipients of the message
- * @retval NULL if any of the keys can not be found
+ * @param addrlist    Address List
+ * @param app         Application type, e.g. #APPLICATION_PGP
+ * @param oppenc_mode If true, use opportunistic encryption
+ * @retval ptr  Space-separated string of keys
+ * @retval NULL At least one of the keys can't be found
  *
  * If oppenc_mode is true, only keys that can be determined without prompting
  * will be used.
@@ -4723,7 +4739,7 @@ struct Body *pgp_gpgme_make_key_attachment(char *tempf)
   char buf[LONG_STRING];
   struct stat sb;
 
-  OPT_PGP_CHECK_TRUST = false;
+  OptPgpCheckTrust = false;
 
   struct CryptKeyInfo *key = crypt_ask_for_key(_("Please enter the key ID: "), NULL, 0, APPLICATION_PGP, NULL);
   if (!key)

@@ -477,6 +477,12 @@ static const struct Mapping RemailerHelp[] = {
   { N_("OK"), OP_MIX_USE },        { NULL, 0 },
 };
 
+/**
+ * mix_make_chain - Create a Mixmaster chain
+ * @param chainhead List if chain links
+ *
+ * Ask the user to select Mixmaster hosts to create a chain.
+ */
 void mix_make_chain(struct ListHead *chainhead)
 {
   int c_cur = 0, c_old = 0;
@@ -733,6 +739,13 @@ int mix_check_message(struct Header *msg)
   return 0;
 }
 
+/**
+ * mix_send_message - Send an email via Mixmaster
+ * @param chain    String list of hosts
+ * @param tempfile Temporary file containing email
+ * @retval -1  Error
+ * @retval >=0 Success (Mixmaster's return code)
+ */
 int mix_send_message(struct ListHead *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
@@ -757,7 +770,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   if (i != 0)
   {
     fprintf(stderr, _("Error sending message, child exited %d.\n"), i);
-    if (!OPT_NO_CURSES)
+    if (!OptNoCurses)
     {
       mutt_any_key_to_continue(NULL);
       mutt_error(_("Error sending message."));

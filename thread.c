@@ -370,12 +370,14 @@ void mutt_draw_tree(struct Context *ctx)
 }
 
 /**
- * make_subject_list - Create a list of all subjects in a thread
+ * make_subject_list - Create a sorted list of all subjects in a thread
+ * @param[out] subjects String List of subjects
+ * @param[in]  cur      Email Thread
+ * @param[out] dateptr  Earliest date found in thread
  *
- * since we may be trying to attach as a pseudo-thread a MuttThread that
- * has no message, we have to make a list of all the subjects of its
- * most immediate existing descendants.  we also note the earliest
- * date on any of the parents and put it in *dateptr.
+ * Since we may be trying to attach as a pseudo-thread a MuttThread that has no
+ * message, we have to make a list of all the subjects of its most immediate
+ * existing descendants.
  */
 static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur, time_t *dateptr)
 {
@@ -424,6 +426,9 @@ static void make_subject_list(struct ListHead *subjects, struct MuttThread *cur,
 
 /**
  * find_subject - Find the best possible match for a parent based on subject
+ * @param ctx Mailbox
+ * @param cur Email to match
+ * @retval ptr Best match for a parent
  *
  * If there are multiple matches, the one which was sent the latest, but before
  * the current message, is used.

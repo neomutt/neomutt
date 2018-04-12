@@ -44,8 +44,6 @@ WHERE char AttachmentMarker[STRING];
 WHERE char *HomeDir;
 WHERE char *ShortHostname;
 
-WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
-
 WHERE char *Username;
 
 WHERE char *CurrentFolder;
@@ -58,17 +56,25 @@ WHERE struct Hash *ReverseAliases;
 WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 
-WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
+/* Lists of strings */
 WHERE struct ListHead AlternativeOrderList INITVAL(STAILQ_HEAD_INITIALIZER(AlternativeOrderList));
-WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
-WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
-WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
-WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
+WHERE struct ListHead AutoViewList INITVAL(STAILQ_HEAD_INITIALIZER(AutoViewList));
 WHERE struct ListHead HeaderOrderList INITVAL(STAILQ_HEAD_INITIALIZER(HeaderOrderList));
 WHERE struct ListHead Ignore INITVAL(STAILQ_HEAD_INITIALIZER(Ignore));
 WHERE struct ListHead MailToAllow INITVAL(STAILQ_HEAD_INITIALIZER(MailToAllow));
 WHERE struct ListHead MimeLookupList INITVAL(STAILQ_HEAD_INITIALIZER(MimeLookupList));
+WHERE struct ListHead Muttrc INITVAL(STAILQ_HEAD_INITIALIZER(Muttrc));
+#ifdef USE_SIDEBAR
+WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
+#endif
 WHERE struct ListHead UnIgnore INITVAL(STAILQ_HEAD_INITIALIZER(UnIgnore));
+WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
+
+/* Lists of AttachMatch */
+WHERE struct ListHead AttachAllow INITVAL(STAILQ_HEAD_INITIALIZER(AttachAllow));
+WHERE struct ListHead AttachExclude INITVAL(STAILQ_HEAD_INITIALIZER(AttachExclude));
+WHERE struct ListHead InlineAllow INITVAL(STAILQ_HEAD_INITIALIZER(InlineAllow));
+WHERE struct ListHead InlineExclude INITVAL(STAILQ_HEAD_INITIALIZER(InlineExclude));
 
 WHERE struct RegexList *Alternates;
 WHERE struct RegexList *UnAlternates;
@@ -82,10 +88,6 @@ WHERE struct ReplaceList *SubjectRegexList;
 
 WHERE unsigned short Counter;
 
-#ifdef USE_SIDEBAR
-WHERE struct ListHead SidebarWhitelist INITVAL(STAILQ_HEAD_INITIALIZER(SidebarWhitelist));
-#endif
-
 /* flags for received signals */
 WHERE SIG_ATOMIC_VOLATILE_T SigAlrm;
 WHERE SIG_ATOMIC_VOLATILE_T SigInt;
@@ -94,7 +96,6 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch;
 WHERE int CurrentMenu;
 
 WHERE struct Alias *Aliases;
-WHERE struct ListHead UserHeader INITVAL(STAILQ_HEAD_INITIALIZER(UserHeader));
 
 /* All the variables below are backing for config items */
 
