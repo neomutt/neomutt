@@ -1,20 +1,33 @@
-.\" -*-nroff-*-
+.\" -*- nroff -*-
+.\" --------------------------------------------------------------------
 .SH SEE ALSO
+.\"   - sorted by category and name
+.\" --------------------------------------------------------------------
 .PP
 .BR iconv (1),
+.BR neomutt (1),
+.BR notmuch (1),
 .BR iconv (3),
+.BR printf (3),
+.BR strftime (3),
 .BR mailcap (5),
 .BR maildir (5),
 .BR mbox (5),
-.BR neomutt (1),
-.BR printf (3),
-.BR regex (7),
-.BR strftime (3)
+.BR regex (7).
+.
 .PP
-The NeoMutt Manual
-.PP
-The NeoMutt home page: https://www.neomutt.org
+For further NeoMutt information:
+.RS 4
+.TP
+.RI "\(bu the full manual, " "@MAN_DOCDIR@/manual." { html , pdf , txt }
+.TQ
+\(bu the home page, <https://www.neomutt.org>
+.RE
+.
+.\" --------------------------------------------------------------------
 .SH AUTHOR
+.\" --------------------------------------------------------------------
 .PP
-Michael Elkins, and others.  Use <neomutt-devel@neomutt.org> to contact
-the developers.
+Michael Elkins, and others. Use <neomutt-devel@\:neomutt.org> to contact the
+developers.
+.

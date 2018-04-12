@@ -1,5 +1,5 @@
 '\" t
-.\" -*-nroff-*-
+.\" -*- nroff -*-
 .\"
 .\"     Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
 .\"     Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
@@ -27,120 +27,135 @@
 .fi
 ..
 .TH neomuttrc 5 "@MAN_DATE@" Unix "User Manuals"
+.\" --------------------------------------------------------------------
 .SH NAME
-neomuttrc \- Configuration file for the NeoMutt Mail User Agent
+.\" --------------------------------------------------------------------
+neomuttrc \- Configuration file for the NeoMutt Mail User Agent (MUA)
+.
+.\" --------------------------------------------------------------------
 .SH DESCRIPTION
+.\" --------------------------------------------------------------------
 .PP
-A NeoMutt configuration file consists of a series of \(lqcommands\(rq.
-Each line of the file may contain one or more commands.  When
-multiple commands are used, they must be separated by a semicolon
-(\(lq\fB;\fP\(rq).
+A NeoMutt configuration file consists of a series of \(lqcommands\(rq. Each
+line of the file may contain one or more commands. When multiple commands are
+used, they must be separated by a semicolon (\(lq\fB;\fP\(rq).
+.
 .PP
-The hash mark, or pound sign (\(lq\fB#\fP\(rq), is used as a
-\(lqcomment\(rq character. You can use it to annotate your
-initialization file. All text after the comment character to the end
-of the line is ignored.
+The hash mark, or pound sign (\(lq\fB#\fP\(rq), is used as a \(lqcomment\(rq
+character. You can use it to annotate your initialization file. All text after
+the comment character to the end of the line is ignored.
+.
 .PP
-Single quotes (\(lq\fB'\fP\(rq) and double quotes (\(lq\fB"\fP\(rq)
-can be used to quote strings which contain spaces or other special
-characters.  The difference between the two types of quotes is
-similar to that of many popular shell programs, namely that a single
-quote is used to specify a literal string (one that is not
-interpreted for shell variables or quoting with a backslash [see
-next paragraph]), while double quotes indicate a string which
-should be evaluated.  For example, backticks are evaluated inside of
-double quotes, but not single quotes.
+Single quotes (\(lq\fB\(aq\fP\(rq) and double quotes (\(lq\fB\(dq\fP\(rq) can
+be used to quote strings which contain spaces or other special characters. The
+difference between the two types of quotes is similar to that of many popular
+shell programs, namely that a single quote is used to specify a literal string
+(one that is not interpreted for shell variables or quoting with a backslash
+[see next paragraph]), while double quotes indicate a string which should be
+evaluated. For example, backticks are evaluated inside of double quotes, but
+not single quotes.
+.
 .PP
-\fB\(rs\fP quotes the next character, just as in shells such as bash and zsh.
-For example, if want to put quotes (\(lq\fB"\fP\(rq) inside of a
-string, you can use \(lq\fB\(rs\fP\(rq to force the next character
-to be a literal instead of interpreted character.
+\(lq\fB\(rs\fP\(rq quotes the next character, just as in shells such as Bash
+and Zsh. For example, if you want to put quotes (\(lq\fB\(dq\fP\(rq) inside of
+a string, you can use \(lq\fB\(rs\fP\(rq to force the next character to be
+a literal instead of interpreted character.
+.
 .PP
 \(lq\fB\(rs\(rs\fP\(rq means to insert a literal \(lq\fB\(rs\fP\(rq into the
-line.  \(lq\fB\(rsn\fP\(rq and \(lq\fB\(rsr\fP\(rq have their usual
-C meanings of linefeed and carriage-return, respectively.
+line. \(lq\fB\(rsn\fP\(rq and \(lq\fB\(rsr\fP\(rq have their usual C meanings
+of line feed (LF) and carriage return (CR), respectively.
+.
 .PP
 A \(lq\fB\(rs\fP\(rq at the end of a line can be used to split commands over
-multiple lines, provided that the split points don't appear in the
-middle of command names.
+multiple lines, provided that the split points don't appear in the middle of
+command names.
+.
 .PP
 It is also possible to substitute the output of a Unix command in an
-initialization file.  This is accomplished by enclosing the command
-in backticks (\fB`\fP\fIcommand\fP\fB`\fP).
+initialization file. This is accomplished by enclosing the command in backticks
+(\fB\(ga\fP\fIcommand\fP\fB\(ga\fP).
+.
 .PP
-UNIX environment variables can be accessed like the way it is done in shells
-like sh and bash: Prepend the name of the variable by a dollar
+Unix environment variables can be accessed like the way it is done in shells
+like sh and Bash: Prepend the name of the variable by a dollar
 (\(lq\fB\(Do\fP\(rq) sign.
-.PP
+.
+.\" --------------------------------------------------------------------
 .SH COMMANDS
+.\" --------------------------------------------------------------------
+.SS "\s-1Configuration Commands\s0"
+.\" --------------------------------------------------------------------
+.PP
+The following are the commands understood by NeoMutt:
+.
 .PP
 .nf
-\fBaccount-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
+\fBaccount-hook\fP \fIregex\fP \fIcommand\fP
 .fi
 .IP
-This hook is executed whenever you access a remote mailbox. Useful
-to adjust configuration settings to different IMAP or POP servers.
+This hook is executed whenever you access a remote mailbox. Useful to adjust
+configuration settings to different IMAP or POP servers.
+.
 .PP
 .nf
-\fBalias\fP [\fB-group\fP \fIname\fP [...]] \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP [ ... ]]
-\fBunalias\fP [ \fB*\fP | \fIkey\fP ]
+\fBalias\fP [ \fB\-group\fP \fIname\fP ... ] \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP ... ]
+\fBunalias\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIkey\fP ... }
 .fi
 .IP
-\fBalias\fP defines an alias \fIkey\fP for the given addresses. Each
-\fIaddress\fP will be resolved into either an email address (user@example.com)
-or a named email address (User Name <user@example.com>). The address may be specified in either format, or in the format \(lquser@example.com (User
-Name)\(rq.
-\fBunalias\fP removes the alias corresponding to the given \fIkey\fP or
-all aliases when \(lq\fB*\fP\(rq is used as an argument. The optional
-\fB-group\fP argument to \fBalias\fP causes the aliased address(es) to be
-added to the named \fIgroup\fP.
+\fBalias\fP defines a surrogate \fIkey\fP for the given address(es). Each
+\fIaddress\fP will be resolved into either an email address
+(user@\:example.com) or a named email address (User Name <user@\:example.com>).
+The address may be specified in either format, or in the format
+\(lquser@\:example.com (User Name)\(rq.
+.IP
+\fBNote\fP: If you want to create an alias for more than one address, you
+\fBmust\fP separate the addresses with a comma (\(lq\fB,\fP\(rq).
+.IP
+\fBunalias\fP removes the alias corresponding to the given \fIkey\fP or all
+aliases when \(lq\fB*\fP\(rq is used as an argument.
+.IP
+The optional \fB\-group\fP flag causes the address(es) to be added to or
+removed from the \fIname\fPd group.
+.
 .PP
 .nf
-\fBalternates\fP [\fB-group\fP \fIname\fP] \fIregex\fP [ \fIregex\fP [ ... ]]
-\fBunalternates\fP [ \fB*\fP | \fIregex\fP [ \fIregex\fP [ ... ]] ]
+\fBalternates\fP [ \fB\-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
+\fBunalternates\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
 .fi
 .IP
-\fBalternates\fP is used to inform NeoMutt about alternate addresses
-where you receive mail; you can use regular expressions to specify
-alternate addresses.  This affects NeoMutt's idea about messages
-from you, and messages addressed to you.  \fBunalternates\fP removes
-a regular expression from the list of known alternates. The \fB-group\fP flag
-causes all of the subsequent regular expressions to be added to the named group.
+\fBalternates\fP is used to inform NeoMutt about alternate addresses where you
+receive mail; you can use regular expressions (\fIregex\fP) to specify
+alternate addresses. This affects NeoMutt's idea about messages from you, and
+messages addressed to you.
+.IP
+\fBunalternates\fP can be used to write exceptions to alternates patterns. To
+remove a regular expression from the alternates list, use the unalternates
+command with exactly the same \fIregex\fP or use \(lq\fB*\fP\(rq to remove all
+entries.
+.IP
+The optional \fB\-group\fP flag causes all of the subsequent regular expressions
+to be added to or removed from the \fIname\fPd group.
+.
 .PP
 .nf
-\fBalternative_order\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
-\fBunalternative_order\fP [ \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
+\fBalternative_order\fP \fImime-type\fP[/\fImime-subtype\fP] [ \fImime-type\fP[/\fImime-subtype\fP] ... ]
+\fBunalternative_order\fP { \fB*\fP | \fImime-type\fP[/\fImime-subtype\fP] ... }
 .fi
 .IP
-\fBalternative_order\fP command permits you to define an order of preference which is
-used by NeoMutt to determine which part of a
-\fBmultipart/alternative\fP body to display.
-A subtype of \(lq\fB*\fP\(rq matches any subtype, as does an empty
-subtype.   \fBunalternative_order\fP removes entries from the
-ordered list or deletes the entire list when \(lq\fB*\fP\(rq is used
-as an argument.
-.PP
-.nf
-\fBappend-hook\fP \fIregex\fP "\fIcommand\fP"
-\fBclose-hook\fP \fIregex\fP "\fIcommand\fP"
-\fBopen-hook\fP \fIregex\fP "\fIcommand\fP"
-.fi
+\fBalternative_order\fP command permits you to define an order of preference
+that is used by NeoMutt to determine which part of
+a \fBmultipart/\:alternative\fP body to display. A \fImime-subtype\fP of
+\(lq\fB*\fP\(rq matches any \fBmultipart/\:alternative\fP subtype, as does an
+empty \fImime-subtype\fP.
 .IP
-These commands provide a way to handle compressed folders. The given
-\fBregex\fP specifies which folders are taken as compressed (e.g.
-"\fI\\\\.gz$\fP"). The commands tell NeoMutt how to uncompress a folder
-(\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a
-compressed mail to a compressed folder (\fBappend-hook\fP). The
-\fIcommand\fP string is the
-.BR printf (3)
-like format string, and it should accept two parameters: \fB%f\fP,
-which is replaced with the (compressed) folder name, and \fB%t\fP
-which is replaced with the name of the temporary folder to which to
-write.
+\fBunalternative_order\fP removes entries from the ordered list or deletes the
+entire list when \(lq\fB*\fP\(rq is used as an argument.
+.
 .PP
 .nf
-\fBattachments\fP [ \fB+\fP | \fB-\fP ]\fIdisposition\fP \fImime-type\fP
-\fBunattachments\fP [ \fB+\fP | \fB-\fP ]\fIdisposition\fP \fImime-type\fP
+\fBattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP
+\fBunattachments\fP { \fB+\fP | \fB\-\fP }\fIdisposition\fP \fImime-type\fP
 .fi
 .IP
 You can make your message index display the number of qualifying attachments in
@@ -154,175 +169,245 @@ inline or attachment. You can abbreviate this to \fBI\fP or \fBA\fP.
 \fImime-type\fP is the MIME type of the attachment you want the command to
 affect. A MIME type is always of the format \fBmajor/minor\fP. The major part
 of \fImime-type\fP must be literal text (or the special token \(lq\fB*\fP\(rq,
-but the minor part may be a regular expression. (Therefore, \(lq\fB*/.*\fP\(rq
-matches any MIME type.)
+but the minor part may be a regular expression. Therefore, \(lq\fB*/.*\fP\(rq
+matches any MIME type.
+.
 .PP
 .nf
 \fBauto_view\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
-\fBunauto_view\fP [ \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
+\fBunauto_view\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
 .fi
 .IP
-This commands permits you to specify that NeoMutt should automatically
-convert the given MIME types to text/plain when displaying messages.
-For this to work, there must be a
+This commands permits you to specify that NeoMutt should automatically convert
+the given \fImime-type\fPs to text/plain when displaying messages. For this to work,
+there must be a
 .BR mailcap (5)
-entry for the given MIME type with the
-.B copiousoutput
-flag set.  A subtype of \(lq\fB*\fP\(rq
-matches any subtype, as does an empty subtype.
+entry for the given \fImime-type\fP with the \fBcopiousoutput\fP option set.
+A \fImime-subtype\fP of \(lq\fB*\fP\(rq matches any
+\fBmultipart/\:alternative\fP subtype, as does an empty \fImime-subtype\fP.
+.
 .PP
 .nf
-\fBbind\fP \fImenu1,menu2,...\fP \fIkey\fP \fIfunction\fP
+\fBbind\fP \fImap\fP[\fB,\fP\fImap\fP ... ] \fIkey\fP \fIfunction\fP
 .fi
 .IP
-This command binds the given \fIkey\fP for the given \fImenu\fP or \fImenu\fPs
-to the given \fIfunction\fP. Multiple menus may be specified by
-separating them with commas (no whitespace is allowed).
+This command allows you to change the default or define additional key bindings
+(operation invoked when pressing a key).
 .IP
-Valid maps are:
-.BR generic ", " alias ", " attach ", "
-.BR browser ", " editor ", "
-.BR index ", " compose ", "
-.BR pager ", " pgp ", " postpone ", "
-.BR mix .
+\fImap\fP specifies in which menu the binding belongs. Multiple \fImap\fPs may
+be specified by separating them with commas (no additional whitespace is
+allowed). The currently defined \fImap\fPs are:
+.BR alias ", " attach ", " browser ", " compose ", " editor ", " generic ", "
+.BR index ", " mix ", " pager ", " pgp ", " postpone ", " query " and " smime "."
 .IP
-For more information on keys and functions, please consult the NeoMutt
-Manual. Note that the function name is to be specified without
-angle brackets.
+\fIkey\fP is the key (or key sequence) you wish to bind, e.g.
+\(lq\fB\(rsCa\fP\(rq for control-A. In addition, \fIkey\fP may be specified as
+a three digit octal number prefixed with a \(lq\fB\(rs\fP\(rq or as a symbolic
+name. The \fB<what-key>\fP function can be used to explore keycode and
+symbolic names for the keys on your keyboard.
+.IP
+\fIfunction\fP specifies which action to take when key is pressed. Note that
+the function name is to be specified without angle brackets.
+.IP
+For more information on keys and functions, please consult the NeoMutt manual.
+.
 .PP
 .nf
 \fBcharset-hook\fP \fIalias\fP \fIcharset\fP
+\fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
 .fi
 .IP
-This command defines an alias for a character set.  This is useful
-to properly display messages which are tagged with a character set
-name not known to NeoMutt.
+\fBcharset-hook\fP defines an \fIalias\fP for a character set. This is useful to
+properly display messages which are tagged with a character set name not known
+to NeoMutt.
+.IP
+\fBiconv-hook\fP defines a system-specific name for a character set. This is
+useful when your system's
+.BR iconv (3)
+implementation does not understand MIME character set names (such as
+\fBiso-8859-1\fP), but instead insists on being fed with
+implementation-specific character set names (such as \fB8859-1\fP). In this
+specific case, you'd put \(lq\fBiconv-hook\fP\~iso-8859-1\~8859-1\(rq into your
+configuration file.
+.
 .PP
 .nf
-\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fIregex\fP ]
-\fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fIpattern\fP ]
-\fBuncolor\fP index \fIpattern\fP [ \fIpattern\fP ... ]
+\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP
+\fBcolor\fP { header | body } \fIforeground\fP \fIbackground\fP \fIregex\fP
+\fBcolor\fP index-object \fIforeground\fP \fIbackground\fP \fIpattern\fP
+\fBcolor\fP compose \fIcomposeobject\fP \fIforeground\fP \fIbackground\fP
+\fBuncolor\fP { index-object | header | body } { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
-If your terminal supports color, these commands can be used to
-assign \fIforeground\fP/\fIbackground\fP combinations to certain
-objects.  Valid objects are:
-.BR attachment ", " body ", " bold ", " error ", " header ", "
-.BR hdrdefault ", " index ", " indicator ", " markers ", "
-.BR message ", " normal ", " prompt ", " quoted ", " quoted\fIN\fP ", "
-.BR search ", " signature ", " status ", " tilde ", " tree ", "
-.BR underline .
-If the sidebar is enabled the following objects are also valid:
-.BR sidebar_divider ", " sidebar_flagged ", " sidebar_highlight ", "
-.BR sidebar_indicator ", " sidebar_new ", " sidebar_spoolfile .
-The
-.BR body " and " header
-objects allow you to restrict the colorization to a regular
-expression.  The \fBindex\fP object permits you to select colored
+If your terminal supports color, these commands can be used to assign
+\fIforeground\fP/\:\fIbackground\fP combinations to certain \fIobject\fPs. The
+currently defined \fIobject\fPs are:
+.BR attach_\:headers ", "
+.BR attachment ", "
+.BR body ", "
+.BR bold ", "
+.BR error ", "
+.BR hdrdefault ", "
+.BR header ", "
+.BR index ", "
+.BR index_\:author ", "
+.BR index_\:collapsed ", "
+.BR index_\:date ", "
+.BR index_\:flags ", "
+.BR index_\:label ", "
+.BR index_\:number ", "
+.BR index_\:size ", "
+.BR index_\:subject ", "
+.BR index_\:tag ", "
+.BR index_\:tags ", "
+.BR indicator ", "
+.BR markers ", "
+.BR message ", "
+.BR normal ", "
+.BR progress ", "
+.BR prompt ", "
+.BR quoted ", "
+.BR quoted\fIN\fP ", "
+.BR search ", "
+.BR signature ", "
+.BR status ", "
+.BR tilde ", "
+.BR tree ", "
+.BR underline "."
+.IP
+If the sidebar is enabled the following \fIobject\fPs are also valid:
+.BR sidebar_\:divider ", "
+.BR sidebar_\:flagged ", "
+.BR sidebar_\:highlight ", "
+.BR sidebar_\:indicator ", "
+.BR sidebar_\:new ", "
+.BR sidebar_\:ordinary ", "
+.BR sidebar_\:spoolfile "."
+.IP
+The \fBbody\fP and \fBheader\fP objects allow you to restrict the colorization
+to a regular expression. The \fBindex-object\fP permits you to select colored
 messages by pattern.
 .IP
+The \fBheader\fP and \fBbody\fP match \fIregex\fP in the header/body of
+a message, \fBindex-object\fP can match \fIpattern\fP in the message index.
+Note that IMAP server-side searches (=b, =B, =h) are not supported for color
+index patterns.
+.IP
 Valid colors include:
-.BR white ", " black ", " green ", " magenta ", " blue ", "
-.BR cyan ", " yellow ", " red ", " default ", " color\fIN\fP .
+.BR default ", "
+.BR black ", "
+.BR red ", "
+.BR green ", "
+.BR yellow ", "
+.BR blue ", "
+.BR magenta ", "
+.BR cyan ", "
+.BR white ", "
+.BR color\fIN\fP "."
+.IP
+The \fBuncolor\fP command can be applied to the index, header and body objects
+only. It removes entries from the list. You must specify the same \fIpattern\fP
+specified in the \fBcolor\fP command for it to be removed. The pattern
+\(lq\fB*\fP\(rq is a special token which means to clear the color list of all
+entries.
+.IP
+For further information on colorization, please consult the NeoMutt manual.
+.
 .PP
 .nf
-\fBcrypt-hook\fP \fIregex\fP \fIkey-id\fP
+\fBcrypt-hook\fP \fIregex\fP \fIkeyid\fP
 .fi
 .IP
-The crypt-hook command provides a method by which you can
-specify the ID of the public key to be used when encrypting messages
-to a certain recipient.  The meaning of \fIkey-id\fP is to be taken
-broadly: This can be a different e-mail address, a numerical \fIkey-id\fP,
-or even just an arbitrary search string.
-You may use multiple
-\fBcrypt-hook\fPs with the same \fIregex\fP; multiple matching
-\fBcrypt-hook\fPs result in the use of multiple \fIkey-id\fPs for
-a recipient.
+The crypt-hook command provides a method by which you can specify the ID of the
+public key to be used when encrypting messages to a certain recipient. The
+meaning of \fIkeyid\fP is to be taken broadly: This can be a different email
+address, a numerical \fIkeyid\fP, or even just an arbitrary search string. You
+may use multiple \fBcrypt-hook\fPs with the same \fIregex\fP; multiple matching
+\fBcrypt-hook\fPs result in the use of multiple \fIkeyid\fPs for a recipient.
+.
 .PP
 .nf
 \fBexec\fP \fIfunction\fP [ \fIfunction\fP ... ]
-.ni
-.IP
-This command can be used to execute any function. Functions are listed in the
-function reference.
-.IP
-\(lq\fBexec\fP \fIfunction\fP\(rq is equivalent to \(lq\fBpush <\fP\fIfunction\fP\fB>\fP\(rq.
-.PP
-.nf
-\fBfcc-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
-\fBsave-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
-\fBfcc-save-hook\fP [\fB!\fP]\fIpattern\fP \fIfilename\fP
-.ni
-.IP
-\fBfcc-hook\fP: When an outgoing message matches \fIpattern\fP, the default file
-name for storing a copy (fcc) will be the given \fIfilename\fP.
-.IP
-\fBsave-hook\fP: When a message matches \fIpattern\fP, the default file name when
-saving it will be the given \fIfilename\fP.
-.IP
-\fBfcc-save-hook\fP: This command is an abbreviation for identical \fBfcc-hook\fP and
-\fBsave-hook\fP commands.
-.PP
-.nf
-\fBfolder-hook\fP [\fB!\fP]\fIregex\fP \fIcommand\fP
 .fi
 .IP
-When NeoMutt enters a folder which matches \fIregex\fP (or, when
-\fIregex\fP is preceded by an exclamation mark, does not match
-\fIregex\fP), the given \fIcommand\fP is executed.
-.IP
-When several \fBfolder-hook\fPs match a given mail folder, they are
-executed in the order given in the configuration file.
+This command can be used to execute any \fIfunction\fP. Functions are listed in
+the function reference. \(lq\fBexec\fP \fIfunction\fP\(rq is equivalent to
+\(lq\fBpush\fP <\fIfunction\fP>\(rq.
+.
 .PP
 .nf
-\fBgroup\fP [\fB-group\fP \fIname\fP] [\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]
-\fBungroup\fP [\fB-group\fP \fIname\fP ] [ \fB*\fP | [[\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]]
+\fBfcc-save-hook\fP \fIpattern\fP \fImailbox\fP
+\fBfcc-hook\fP \fIpattern\fP \fImailbox\fP
+\fBsave-hook\fP \fIpattern\fP \fImailbox\fP
+.fi
+.IP
+\fBfcc-save-hook\fP is a shortcut, equivalent to doing both a \fBfcc-hook\fP
+and a \fBsave-hook\fP with its arguments, including %-expansion on
+\fImailbox\fP according to $index_format.
+.IP
+\fBfcc-hook\fP is used to save outgoing mail in a mailbox other than $record.
+NeoMutt searches the initial list of message recipients for the first matching
+\fIpattern\fP and uses \fImailbox\fP as the default \(lqFcc:\(rq mailbox. If no
+match is found the message will be saved to $record mailbox.
+.IP
+\fBsave-hook\fP is used to override the default mailbox used when saving
+messages. \fImailbox\fP will be used as the default if the message matches
+\fIpattern\fP.
+.IP
+To provide more flexibility and good defaults, NeoMutt applies the expandos of
+$index_format to \fImailbox\fP after it was expanded. See \fIPATTERNS\fP
+section below or consult section \(lq\fBMessage Matching in Hooks\fP\(rq in
+NeoMutt manual for information on the exact format of \fIpattern\fP.
+.
+.PP
+.nf
+\fBfolder-hook\fP \fIregex\fP \fIcommand\fP
+.fi
+.IP
+When NeoMutt enters a folder which matches \fIregex\fP (or, when \fIregex\fP is
+preceded by an exclamation mark, does not match \fIregex\fP), the given
+\fIcommand\fP is executed.
+.IP
+When several \fBfolder-hook\fPs match a given mail folder, they are executed in
+the order given in the configuration file.
+.
+.PP
+.nf
+\fBgroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB\-rx\fP \fIexpr\fP ... | \fB\-addr\fP \fIaddress\fP ... }
+\fBungroup\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fB\-rx\fP \fIexpr\fP ... | \fB\-addr\fP \fIaddress\fP ... }
 .fi
 .IP
 \fBgroup\fP is used to directly add either addresses or regular expressions to
 the specified group or groups. The different categories of arguments to the
-\fBgroup\fP command can be in any order. The flags \fI-rx\fP and \fI-addr\fP
+\fBgroup\fP command can be in any order. The flags \fB\-rx\fP and \fB\-addr\fP
 specify what the following strings (that cannot begin with a hyphen) should be
 interpreted as: either a regular expression or an email address, respectively.
+.IP
 \fBungroup\fP is used to remove addresses or regular expressions from the
 specified group or groups. The syntax is similar to the \fBgroup\fP command,
 however the special character \(lq\fB*\fP\(rq can be used to empty a group of
 all of its contents.
 .IP
-These address groups can also be created implicitly by the \fBalias\fP, \fBlists\fP,
-\fBsubscribe\fP and \fBalternates\fP commands by specifying the optional \fI-group\fP
-option.
+These address groups can also be created implicitly by the \fBalias\fP,
+\fBlists\fP, \fBsubscribe\fP and \fBalternates\fP commands by specifying the
+optional \fB\-group\fP option.
 .IP
-Once defined, these address groups can be used in patterns to search for and limit the
-display to messages matching a group.
+Once defined, these address groups can be used in patterns to search for and
+limit the display to messages matching a group.
+.
 .PP
 .nf
 \fBhdr_order\fP \fIheader\fP [ \fIheader\fP ... ]
-\fBunhdr_order\fP [ \fB*\fP | \fIheader\fP ... ]
+\fBunhdr_order\fP { \fB*\fP | \fIheader\fP ... }
 .fi
 .IP
 With the \fBhdr_order\fP command you can specify an order in which NeoMutt will
 attempt to present these headers to you when viewing messages.
 .IP
-\(lq\fBunhdr_order *\fP\(rq will clear all previous headers from the order
+\(lq\fBunhdr_order\~*\fP\(rq will clear all previous headers from the order
 list, thus removing the header order effects set by the system-wide startup
 file.
-.PP
-.nf
-\fBiconv-hook\fP \fIcharset\fP \fIlocal-charset\fP
-.fi
-.IP
-This command defines a system-specific name for a character set.
-This is useful when your system's
-.BR iconv (3)
-implementation does not understand MIME character set names (such as
-.BR iso-8859-1 ),
-but instead insists on being fed with implementation-specific
-character set names (such as
-.BR 8859-1 ).
-In this specific case, you'd put this into your configuration file:
-.IP
-.B "iconv-hook iso-8859-1 8859-1"
+.
 .PP
 .nf
 \fBifdef\fP \fIsymbol\fP "\fIconfig-command\fP [ \fIargs\fP ... ]"
@@ -335,571 +420,908 @@ to share one config file between versions of NeoMutt that may have different
 features compiled in.
 .IP
 Here a \fIsymbol\fP can be a
-.BR $variable ", " <function> ", " command " or " compile-time
-.BR symbol ", "
+.BR $variable ", <" function ">, " command " or " "compile-time symbol" ", "
 such as \(lq\fBimap\fP\(rq. A list of compile-time \fIsymbol\fPs can be seen in
-the output of the command \(lq\fBneomutt -v\fP\(rq (in the
+the output of the command \(lq\fBneomutt\~\-v\fP\(rq (in the
 \(lq\fBCompile options\fP\(rq section).
 .IP
 \fBfinish\fP is particularly useful when combined with \fBifndef\fP.
+.
 .PP
 .nf
 \fBignore\fP \fIpattern\fP [ \fIpattern\fP ... ]
-\fBunignore\fP [ \fB*\fP | \fIpattern\fP ... ]
+\fBunignore\fP { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
-The \fBignore\fP command permits you to specify header fields which
-you usually don't wish to see.  Any header field whose tag
-\fIbegins\fP with an \(lqignored\(rq pattern will be ignored.
+The \fBignore\fP command allows you to specify header fields which you don't
+normally want to see in the pager. You do not need to specify the full header
+field name. For example, \(lq\fBignore\fP content-\(rq will ignore all header
+fields that begin with the pattern \(lqcontent-\(rq, \(lq\fBignore\fP\~*\(rq
+will ignore all headers.
 .IP
-The \fBunignore\fP command permits you to define exceptions from
-the above mentioned list of ignored headers.
+To remove a previously added token from the list, use the \fBunignore\fP
+command. For example, \(lq\fBunignore\fP\~*\(rq will remove all tokens from the
+ignore list.
+.
 .PP
 .nf
-\fBlists\fP [ \fB-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
-\fBunlists\fP [ \fB-group\fP \fIname\fP ... ] [ \fB*\fP | \fIregex\fP ... ]
-\fBsubscribe\fP [ \fB-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
-\fBunsubscribe\fP [ \fB-group\fP \fIname\fP ... ] [ \fB*\fP | \fIregex\fP ... ]
+\fBlists\fP [ \fB\-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
+\fBunlists\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
+\fBsubscribe\fP [ \fB\-group\fP \fIname\fP ... ] \fIregex\fP [ \fIregex\fP ... ]
+\fBunsubscribe\fP [ \fB\-group\fP \fIname\fP ... ] { \fB*\fP | \fIregex\fP ... }
 .fi
 .IP
 NeoMutt maintains two lists of mailing list address patterns, a list of
-subscribed mailing lists, and a list of known mailing lists.  All
-subscribed mailing lists are known.  Patterns use regular expressions.
+subscribed mailing lists, and a list of known mailing lists. All subscribed
+mailing lists are known. Patterns use regular expressions.
 .IP
-The \fBlists\fP command adds a mailing list address to the list of
-known mailing lists.  The \fBunlists\fP command removes a mailing
-list from the lists of known and subscribed mailing lists.  The
-\fBsubscribe\fP command adds a mailing list to the lists of known
-and subscribed mailing lists.  The \fBunsubscribe\fP command removes
-it from the list of subscribed mailing lists. The \fB-group\fP flag
-adds all of the subsequent regular expressions to the named group.
+The \fBlists\fP command adds a mailing list address to the list of known
+mailing lists. The \fBunlists\fP command removes a mailing list from the lists
+of known and subscribed mailing lists.
+.IP
+The \fBsubscribe\fP command adds a mailing list to the lists of known and
+subscribed mailing lists. The \fBunsubscribe\fP command removes it from the
+list of subscribed mailing lists.
+.IP
+The \fB\-group\fP flag adds all of the subsequent regular expressions to the
+\fIname\fPd group.
+.
 .PP
 .nf
-\fBmacro\fP \fImenu\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
+\fBmacro\fP \fImenu\fP[\fB,\fP\fImenu\fP ... ] \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
 .fi
 .IP
-This command binds the given \fIsequence\fP of keys to the given
-\fIkey\fP in the given \fImenu\fP or menus.  For valid menus, see \fBbind\fP. To
-specify multiple menus, put only a comma between the menus.
+This command binds the given \fIsequence\fP of keys to the given \fIkey\fP in
+the given \fImenu\fP or menus. For currently defined menus, see \fBbind\fP
+command above. To specify multiple menus, put only a comma between the menus.
+.IP
+Optionally you can specify a descriptive text after \fIsequence\fP, which is
+shown in the help screens if they contain a \fIdescription\fP.
+.
 .PP
 .nf
 \fBmailboxes\fP \fImailbox\fP [ \fImailbox\fP ... ]
-\fBunmailboxes\fP [ \fB*\fP | \fImailbox\fP ... ]
+\fBunmailboxes\fP { \fB*\fP | \fImailbox\fP ... }
 .fi
 .IP
-The \fBmailboxes\fP specifies folders which can receive mail and which will
-be checked for new messages.  When changing folders, pressing space
-will cycle through folders with new mail.  The \fBunmailboxes\fP
-command is used to remove a file name from the list of folders which
-can receive mail.  If \(lq\fB*\fP\(rq is specified as the file name, the
-list is emptied.
+The \fBmailboxes\fP specifies folders which can receive mail and which will be
+checked for new messages. When changing folders, pressing space will cycle
+through folders with new mail.
+.IP
+The \fBunmailboxes\fP command is used to remove a file name from the list of
+folders which can receive mail. If \(lq\fB*\fP\(rq is specified as the file
+name, the list is emptied.
+.
 .PP
 .nf
-\fBmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
-\fBunmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
+\fBmailto_allow\fP { \fB*\fP | \fIheader-field\fP ... }
+\fBunmailto_allow\fP { \fB*\fP | \fIheader-field\fP ... }
 .fi
 .IP
-These commands allow the user to modify the list of allowed \fIheader-field\fPs
-in a \fImailto:\fP URL that NeoMutt will include in the
-the generated message.  By default the list contains
-\fBsubject\fP and \fBbody\fP, as specified by RFC2368; and
-\fBcc\fP, \fBin-reply-to\fP, and \fBreferences\fP to aid with
-mailto links from mailing lists.
+As a security measure, NeoMutt will only add user-approved \fIheader-field\fPs
+from a \fImailto:\fP URL. This is necessary since NeoMutt will handle certain
+\fIheader-field\fPs, such as \fBAttach\fP, in a special way. The
+\fBmailto_allow\fP and \fBunmailto_allow\fP commands allow the user to modify
+the list of approved headers.
+.IP
+NeoMutt initializes the default list to contain only the \fBSubject\fP and
+\fBBody\fP \fIheader-field\fPs, which are the only requirement specified by the
+\fImailto:\fP specification in RFC2368, and the \fBCc\fP, \fBIn-Reply-To\fP,
+\fBReferences\fP headers to aid with replies to mailing lists.
+.
 .PP
 .nf
-\fBmbox-hook\fP [\fB!\fP]\fIregex\fP \fImailbox\fP
+\fBmbox-hook\fP \fIregex\fP \fImailbox\fP
 .fi
 .IP
-When NeoMutt changes to a mail folder which matches \fIregex\fP,
-\fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
-messages will be moved to that folder when the mail folder is left.
+When NeoMutt changes to a mail folder which matches \fIregex\fP, \fImailbox\fP
+will be used as the \(lqmbox\(rq folder, i.e. read messages will be moved to
+that folder when the mail folder is left.
+.IP
+Note that execution of \fBmbox-hook\fPs is dependent on the $move configuration
+variable. If set to \(lqno\(rq (the default), \fBmbox-hook\fPs will not be
+executed.
 .IP
 The first matching \fBmbox-hook\fP applies.
+.
 .PP
 .nf
-\fBmessage-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+\fBmessage-hook\fP \fIpattern\fP \fIcommand\fP
 .fi
 .IP
-Before NeoMutt displays (or formats for replying or forwarding) a
-message which matches the given \fIpattern\fP (or, when it is
-preceded by an exclamation mark, does not match the \fIpattern\fP),
-the given \fIcommand\fP is executed.  When multiple
-\fBmessage-hook\fPs match, they are  executed  in  the order in
+Before NeoMutt displays (or formats for replying or forwarding) a message which
+matches the given \fIpattern\fP (or, when it is preceded by an exclamation
+mark, does not match the \fIpattern\fP), the given \fIcommand\fP is executed.
+When multiple \fBmessage-hook\fPs match, they are executed in the order in
 which they occur in the configuration file.
+.
 .PP
 .nf
 \fBmime_lookup\fP \fImime-type\fP[\fB/\fP\fImime-subtype\fP] [ \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
-\fBunmime_lookup\fP [ \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... ]
+\fBunmime_lookup\fP { \fB*\fP | \fImime-type\fP[\fB/\fP\fImime-subtype\fP] ... }
 .fi
 .IP
-This command permits you to define a list of \(lqdata\(rq MIME content
-types for which NeoMutt will try to determine the actual file type from
-the file name, and not use a
+This command permits you to define a list of \(lqdata\(rq MIME content types
+for which NeoMutt will try to determine the actual file type from the file
+name, and not use a
 .BR mailcap (5)
-entry given for the original MIME type.  For instance, you may add
-the \fBapplication/octet-stream\fP MIME type to this list.
+entry given for the original MIME type. For instance, you may add the
+\fBapplication/\:octet-stream\fP MIME type to this list.
+.IP
+In addition, the \fBunmime_lookup\fP command may be used to disable this
+feature for any particular MIME type if it had been set, for example in
+a global \fIneomuttrc\fP.
+.
 .PP
 .nf
-\fBmono\fP \fIobject\fP \fIattribute\fP [ \fIregex\fP ]
-\fBmono\fP \fIindex\fP \fIattribute\fP [ \fIpattern\fP ]
-\fBunmono\fP [ \fIindex\fP | \fIheader\fP | \fIbody\fP ] [ \fB*\fP | \fIpattern\fP ... ]
+\fBmono\fP \fIobject\fP \fIattribute\fP
+\fBmono\fP { header | body } \fIattribute\fP \fIregex\fP
+\fBmono\fP index-object \fIattribute\fP \fIpattern\fP
+\fBunmono\fP { index-object | header | body } { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
-For terminals which don't support color, you can still assign
-attributes to objects.  Valid attributes include:
-.BR none ", " bold ", " underline ", "
-.BR reverse ", and " standout .
+For terminals which don't support color, you can still assign \fIattribute\fPs
+to objects (see \fBcolor\fP command above). Valid attributes include:
+.BR none ", " bold ", " underline ", " reverse ", and " standout "."
+.
 .PP
 .nf
 \fBmy_hdr\fP \fIstring\fP
-\fBunmy_hdr\fP [ \fB*\fP | \fIfield\fP ... ]
+\fBunmy_hdr\fP { \fB*\fP | \fIfield\fP ... }
 .fi
 .IP
-Using \fBmy_hdr\fP, you can define headers which will be added to
-the messages you compose.  \fBunmy_hdr\fP will remove the given
-user-defined headers.
+Using \fBmy_hdr\fP, you can define headers which will be added to the messages
+you compose. \fBunmy_hdr\fP will remove the given user-defined headers.
+.
+.PP
+.nf
+\fBopen-hook\fP \fIregex\fP "\fIshell-command\fP"
+\fBclose-hook\fP \fIregex\fP "\fIshell-command\fP"
+\fBappend-hook\fP \fIregex\fP "\fIshell-command\fP"
+.fi
+.IP
+These commands provide a way to handle compressed folders. The given
+\fIregex\fP specifies which folders are taken as compressed (e.g.
+\(dq\fB\(rs.gz$\fP\(dq). The commands tell NeoMutt how to uncompress a folder
+(\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a compressed
+mail to a compressed folder (\fBappend-hook\fP). The \fIshell-command\fP is a
+.BR printf (3)
+like format string and must contain two placeholders for from (\fB%f\fP) and to
+(\fB%t\fP) filenames which should be placed inside single-quotes to prevent
+unintended shell expansions. Examples:
+.RS
+.IP
+.EX
+.BR append-hook " \(aq" "\(rs.gz$" "\(aq \(dqgzip \-\-stdout \(aq" "%t" "\(aq >> \(aq" "%f" "\(aq\(dq"
+.BR close-hook " \(aq" "\(rs.gz$" "\(aq \(dqgzip \-\-stdout \(aq" "%t" "\(aq > \(aq" "%f" "\(aq\(dq"
+.BR open-hook " \(aq" "\(rs.gz$" "\(aq \(dqgzip \-\-stdout \-\-decompress \(aq" "%f" "\(aq > \(aq" "%t" "\(aq\(dq"
+.EE
+.RE
+.
 .PP
 .nf
 \fBpush\fP \fIstring\fP
 .fi
 .IP
-This command adds the named \fIstring\fP to the keyboard buffer.
+This command adds the named \fIstring\fP to the beginning of the keyboard
+buffer. The string may contain control characters, key names and function names
+like the sequence string in the \fBmacro\fP command. You may use it to
+automatically run a sequence of commands at startup, or when entering certain
+folders.
+.IP
+For using functions, it's important to use angle brackets (\(lq<\(rq and
+\(lq>\(rq) to make NeoMutt recognize the input as a function name. Otherwise
+it will simulate individual just keystrokes.
+.
+.
 .PP
 .nf
-\fBreply-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+\fBreply-hook\fP \fIpattern\fP \fIcommand\fP
+\fBsend-hook\fP \fIpattern\fP \fIcommand\fP
+\fBsend2-hook\fP \fIpattern\fP \fIcommand\fP
 .fi
 .IP
-When replying to a message matching \fIpattern\fP, \fIcommand\fP is
-executed.  When multiple \fBreply-hook\fPs match, they are executed
-in the order in which they occur in the configuration file, but all
-\fBreply-hook\fPs are matched and executed before \fBsend-hook\fPs,
-regardless of their order in the configuration file.
+These commands can be used to execute arbitrary configuration commands based
+upon recipients of the message. \fIpattern\fP is used to match the message, see
+section \(lq\fBMessage Matching in Hooks\fP\(rq in manual for details.
+\fIcommand\fP is executed when \fIpattern\fP matches.
+.IP
+\fBreply-hook\fP is matched against the message you are replying to, instead of
+the message you are sending. \fBsend-hook\fP is matched against all messages,
+both new and replies. \fBNote\fP, \fBreply-hook\fPs are matched before the
+\fBsend-hook\fP, regardless of the order specified in the user's configuration
+file.
+.IP
+\fBsend2-hook\fP is matched every time a message is changed, either by editing
+it, or by using the compose menu to change its recipients or subject.
+\fBsend2-hook\fP is executed after \fBsend-hook\fP, and can, e.g., be used to
+set parameters such as the $sendmail variable depending on the message's sender
+address. \fBNote\fP, \fBsend-hook\fPs are only executed once after getting the
+initial list of recipients.
+.
 .PP
 .nf
 \fBscore\fP \fIpattern\fP \fIvalue\fP
-\fBunscore\fP [ \fB*\fP | \fIpattern\fP ... ]
+\fBunscore\fP { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
 The \fBscore\fP command adds \fIvalue\fP to a message's score if \fIpattern\fP
-matches it. \fIpattern\fP is a string in the format described in the patterns
-section. \fIvalue\fP is a positive or negative integer. A message's final score
-is the sum total of all matching score entries.
+matches it. \fIpattern\fP is a string in the format described in the
+\fIPATTERNS\fP section below. \fIvalue\fP is a positive or negative integer.
+A message's final score is the sum total of all matching score entries.
 .IP
 The \fBunscore\fP command removes score entries from the list. You must specify
 the same \fIpattern\fP specified in the \fBscore\fP command for it to be
-removed. The \fIpattern\fP \(lq\fB*\fP\(rq is a special token which means to
-clear the list of all score entries.
+removed. The pattern \(lq\fB*\fP\(rq is a special token which means to clear
+the list of all score entries.
+.
 .PP
 .nf
-\fBsend-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
+\fBset\fP { [ \fBno\fP | \fBinv\fP | \fB&\fP | \fB?\fP ]\fIvariable\fP | \fIvariable\fP=\fIvalue\fP } [ ... ]
+\fBunset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
+\fBreset\fP \fIvariable\fP  [ \fIvariable\fP ... ]
+\fBtoggle\fP \fIvariable\fP [ \fIvariable\fP ... ]
 .fi
 .IP
-When composing a message matching \fIpattern\fP, \fIcommand\fP is
-executed.  When multiple \fBsend-hook\fPs match, they are executed
-in the order in which they occur in the configuration file.
+These commands are used to set and manipulate configuration \fIvariable\fPs.
+.IP
+NeoMutt knows four basic types of \fIvariable\fPs: boolean, number, string and
+quadoption. Boolean \fIvariable\fPs can be \fBset\fP (true), \fBunset\fP
+(false), or \fBtoggle\fPd. Number \fIvariable\fPs can be assigned a positive
+integer \fIvalue\fP.
+.IP
+String \fIvariable\fPs consist of any number of printable characters and must
+be enclosed in quotes if they contain spaces or tabs. You may also use the
+escape sequences \(lq\fB\(rsn\fP\(rq and \(lq\fB\(rst\fP\(rq for newline and
+tab, respectively.
+.IP
+Quadoption \fIvariable\fPs are used to control whether or not to be prompted
+for certain actions, or to specify a default action. A \fIvalue\fP of \fByes\fP
+will cause the action to be carried out automatically as if you had answered
+\(lqyes\(rq to the question. Similarly, a \fIvalue\fP of \fBno\fP will cause
+the action to be carried out as if you had answered \(lqno\(rq.  A \fIvalue\fP
+of \fBask-yes\fP will cause a prompt with a default answer of \(lqyes\(rq and
+\fBask-no\fP will provide a default answer of \(lqno\(rq.
+.IP
+The \fBtoggle\fP command automatically prepends the \(lq\fBinv\fP\(rq prefix to
+all specified \fIvariable\fPs. The \fBunset\fP command automatically prepends
+the \(lq\fBno\fP\(rq prefix to all specified \fIvariable\fPs. If you use the
+command \fBset\fP and prefix the \fIvariable\fP with \(lq\fB&\fP\(rq this has
+the same behavior as the \fBreset\fP command.
+.IP
+The \fBreset\fP command resets all given \fIvariable\fPs to the compile time
+defaults. With the \fBreset\fP command there exists the special \fIvariable\fP
+\fBall\fP, which allows you to reset all \fIvariable\fPs to their system
+defaults.
+.IP
+Using the <\fBenter-command\fP> function, you can query the \fIvalue\fP of
+a \fIvariable\fP by prefixing the name of the \fIvariable\fP with a question
+mark: \(dq:\fBset\~?\fPallow_8bit\(dq.
+.
 .PP
 .nf
-\fBsend2-hook\fP [\fB!\fP]\fIpattern\fP \fIcommand\fP
-.fi
-.IP
-Whenever a message matching \fIpattern\fP is changed (either by
-editing it or by using the compose menu), \fIcommand\fP
-is executed. When multiple \fBsend2-hook\fPs match, they are
-executed in the order in which they occur in the configuration file.
-Possible applications include setting the $sendmail variable when a
-message's from header is changed.
-.IP
-\fBsend2-hook\fP execution is not triggered by use of
-\fBenter-command\fP from the compose menu.
-.PP
-.nf
-\fBset\fP [\fBno\fP|\fBinv\fP|\fB&\fP|\fB?\fP]\fIvariable\fP[=\fIvalue\fP] [ ... ]
-\fBunset\fP \fIvariable\fP [ ... ]
-\fBreset\fP \fIvariable\fP [ ... ]
-\fBtoggle\fP \fIvariable\fP [ ... ]
-.fi
-.IP
-These commands are used to set and manipulate configuration
-variables.
-.IP
-NeoMutt knows four basic types of variables: boolean, number, string
-and quadoption.  Boolean variables can be \fBset\fP (true),
-\fBunset\fP (false), or \fBtoggle\fPd. Number variables can be assigned
-a positive integer value.
-.IP
-String variables consist of any number of printable characters.
-Strings must be enclosed in quotes if they contain spaces or tabs.
-You may also use the \(lqC\(rq escape sequences \fB\\n\fP and
-\fB\\t\fP for newline and tab, respectively.
-.IP
-Quadoption variables are used to control whether or not to be
-prompted for certain actions, or to specify a default action.  A
-value of \fByes\fP will cause the action to be carried out automatically
-as if you had answered yes to the question.  Similarly, a value of
-\fBno\fP will cause the the action to be carried out as if you had
-answered \(lqno.\(rq A value of \fBask-yes\fP will cause a prompt
-with a default answer of \(lqyes\(rq and \fBask-no\fP will provide a
-default answer of \(lqno.\(rq
-.IP
-The \fBreset\fP command resets all given variables to the compile
-time defaults.  If you reset the special variable \fBall\fP, all
-variables will reset to their compile time defaults.
-.PP
-.nf
-\fBsetenv\fP [\fB?\fP]\fIvariable\fP [ \fIvalue\fP ]
+\fBsetenv\fP { \fB?\fP\fIvariable\fP | \fIvariable\fP \fIvalue\fP }
 \fBunsetenv\fP \fIvariable\fP
 .fi
 .IP
 You can alter the environment that NeoMutt passes on to its child processes
-using the \(lq\fBsetenv\fP\(rq and \(lq\fBunsetenv\fP\(rq operators.
+using the \fBsetenv\fP and \fBunsetenv\fP operators.
 .IP
 You can also query current environment \fIvalue\fPs by prefixing a
 \(lq\fB?\fP\(rq character.
-.PP
-.nf
-\fBshutdown-hook\fP \fIcommand\fP
-.fi
-.IP
-Before NeoMutt is about to exit, and before the mailbox is closed, NeoMutt will run
-the shutdown hook for the given \fIcommand\fP.
+.
 .PP
 .nf
 \fBsidebar_whitelist\fP \fImailbox\fP [ \fImailbox\fP ...]
-\fBunsidebar_whitelist\fP [ \fB*\fP | \fImailbox\fP ... ]
+\fBunsidebar_whitelist\fP { \fB*\fP | \fImailbox\fP ... }
 .fi
 .IP
-This command specifies \fImailboxe\fPs that will always be displayed in the
-sidebar, even if \fB$sidebar_new_mail_only\fP is set and the \fImailbox\fP does
-not contain new mail.
+The \fBsidebar_whitelist\fP command specifies \fImailbox\fPes that will always
+be displayed in the sidebar, even if $sidebar_new_mail_only is set and the
+\fImailbox\fP does not contain new mail.
 .IP
-The \(lq\fBunsidebar_whitelist\fP\(rq command is used to remove
-a \fImailbox\fP from the list of whitelisted mailboxes. Use
-\(lq\fBunsidebar_whitelist *\fP\(rq to remove all mailboxes.
+The \fBunsidebar_whitelist\fP command is used to remove a \fImailbox\fP from
+the list of whitelisted \fImailbox\fPes. Use
+\(lq\fBunsidebar_whitelist\~*\fP\(rq to remove all \fImailbox\fPes.
+.
 .PP
 .nf
 \fBsource\fP \fIfilename\fP
 .fi
 .IP
-The given file will be evaluated as a configuration file.
+This command allows the inclusion of initialization commands from other files.
+If the \fIfilename\fP begins with a tilde (\(lq~\(rq), it will be expanded to
+the path of your home directory.
+.IP
+If the \fIfilename\fP ends with a vertical bar (\(lq|\(rq), then \fIfilename\fP
+is considered to be an executable program from which to read input, (e.g.
+\(lq\fBsource\fP\~\fI~/\:bin/\:myscript\fP|\(rq).
+.
 .PP
 .nf
 \fBspam\fP \fIpattern\fP \fIformat\fP
-\fBnospam\fP [ \fB*\fP | \fIpattern\fP ]
+\fBnospam\fP { \fB*\fP | \fIpattern\fP }
 .fi
 .IP
-These commands define spam-detection patterns from external spam
-filters, so that NeoMutt can
-.BR sort ", " limit ", and " search
-on \(lqspam tags\(rq or \(lqspam attributes\(rq, or \fBdisplay\fP them
-in the index. See the NeoMutt manual for details.
-.PP
-.nf
-\fBstartup-hook\fP \fIcommand\fP
-.fi
+NeoMutt has generalized support for external spam-scoring filters. By defining
+your spam \fIpattern\fPs with the \fBspam\fP and \fBnospam\fP commands, you can
+limit, search, and sort your mail based on its spam attributes, as determined
+by the external filter. You also can display the spam attributes in your index
+display using the %H selector in the $index_format variable. (Tip: try
+\(dq%?H?[%H]\~?\(dq to display spam tags only when they are defined for a given
+message).
 .IP
-Before NeoMutt opens the first mailbox when first starting, NeoMutt will run the
-startup hook for the given \fIcommand\fP.
+For further information on spam-scoring filters, please consult the
+section \(lq\fBSpam Detection\fP\(rq in the NeoMutt manual.
+.
 .PP
 .nf
 \fBsubjectrx\fP \fIpattern\fP \fIreplacement\fP
-\fBunsubjectrx\fP [ \fB*\fP | \fIpattern\fP ]
+\fBunsubjectrx\fP { \fB*\fP | \fIpattern\fP }
 .fi
 .IP
-\fBsubjectrx\fP specifies a regular expression \fIpattern\fP which, if
-detected in a message subject, causes the subject to be replaced with
-the \fIreplacement\fP value. The \fIreplacement\fP is subject to
-substitutions in the same way as for the \fBspam\fP command: %L for
-the text to the left of the match, %R for text to the right of the
-match, and %1 for the first subgroup in the match (etc). If you simply
-want to erase the match, set it to \(lq%L%R\(rq. Any number of
-\fBsubjectrx\fP commands may coexist.
+The \fBsubjectrx\fP command specifies a regular expression \fIpattern\fP which,
+if detected in a message subject, causes the subject to be replaced with the
+\fIreplacement\fP value. The \fIreplacement\fP is subject to substitutions in
+the same way as for the \fBspam\fP command: %L for the text to the left of the
+match, %R for text to the right of the match, and %1 for the first subgroup in
+the match (etc). If you simply want to erase the match, set it to \(lq%L%R\(rq.
+Any number of \fBsubjectrx\fP commands may coexist.
 .IP
-Note this well: the \fIreplacement\fP value replaces the entire
-subject, not just the match!
+Note this well: the \fIreplacement\fP value replaces the entire subject, not
+just the match!
 .IP
-\fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the
-substitution list. If \(lq\fB*\fP\(rq is used as the pattern, all
-substitutions will be removed.
+\fBunsubjectrx\fP removes a given \fBsubjectrx\fP from the substitution list.
+If \(lq\fB*\fP\(rq is used as the pattern, all substitutions will be removed.
+.
 .PP
 .nf
 \fBtimeout-hook\fP \fIcommand\fP
+\fBstartup-hook\fP \fIcommand\fP
+\fBshutdown-hook\fP \fIcommand\fP
 .fi
 .IP
-Run a command periodically when NeoMutt checks for new mail.
-This hook is called every $timeout seconds.
+The \fBGlobal Hooks\fP feature introduces these hooks to NeoMutt. They are
+called when global events take place in NeoMutt. \fBstartup-hook\fP and
+\fBshutdown-hook\fP are most likely to be useful to users of
+.BR notmuch (1).
+.IP
+\fBtimeout-hook\fP runs a \fIcommand\fP periodically when NeoMutt checks for
+new mail. This hook is called every $timeout seconds.
+.IP
+Before NeoMutt opens the first mailbox when first starting, NeoMutt will run
+the \fBstartup-hook\fP for the given \fIcommand\fP.
+.IP
+Before NeoMutt is about to exit, and before the mailbox is closed, NeoMutt will
+run the \fBshutdown-hook\fP for the given \fIcommand\fP.
+.
 .PP
 .nf
-\fBunhook\fP [ \fB*\fP | \fIhook-type\fP ]
+\fBunhook\fP { \fB*\fP | \fIhook-type\fP }
 .fi
 .IP
-This command will remove all hooks of a given type, or all hooks
-when \(lq\fB*\fP\(rq is used as an argument.  \fIhook-type\fP
-can be any of the \fB-hook\fP commands documented above.
-.PP
+This command permits you to flush hooks you have previously defined. You can
+either remove all hooks by giving the \(lq\fB*\fP\(rq character as an argument,
+or you can remove all hooks of a specific \fIhook-type\fP by saying something
+like \(lq\fBunhook\fP\~\fIsend-hook\fP\(rq.
+.
+.\" --------------------------------------------------------------------
 .SH PATTERNS
+.\" --------------------------------------------------------------------
+.SS "\s-1Pattern Modifier\s0"
+.\" --------------------------------------------------------------------
 .PP
-In various places with NeoMutt, including some of the above mentioned
-\fBhook\fP commands, you can specify patterns to match messages.
-.SS Constructing Patterns
-.PP
-A simple pattern consists of an operator of the form
-\(lq\fB~\fP\fIcharacter\fP\(rq, possibly followed by a parameter
-against which NeoMutt is supposed to match the object specified by
-this operator.  For some \fIcharacter\fPs, the \fB~\fP may be
-replaced by another character to alter the behavior of the match.
-These are described in the list of operators, below.
-.PP
-With some of these operators, the object to be matched consists of
-several e-mail addresses.  In these cases, the object is matched if
-at least one of these e-mail addresses matches. You can prepend a
-hat (\(lq\fB^\fP\(rq) character to such a pattern to indicate that
-\fIall\fP addresses must match in order to match the object.
-.PP
-You can construct complex patterns by combining simple patterns with
-logical operators.  Logical AND is specified by simply concatenating
-two simple patterns, for instance \(lq~C neomutt-dev ~s bug\(rq.
-Logical OR is specified by inserting a vertical bar (\(lq\fB|\fP\(rq)
-between two patterns, for instance \(lq~C neomutt-dev | ~s bug\(rq.
-Additionally, you can negate a pattern by prepending a bang
-(\(lq\fB!\fP\(rq) character.  For logical grouping, use braces
-(\(lq()\(rq). Example: \(lq!(~t neomutt|~c mutt) ~f elkins\(rq.
-.SS Simple Patterns
-.PP
-NeoMutt understands the following simple patterns:
-.P
-.PD 0
-.TP 12
-~A
+Many of NeoMutt's commands allow you to specify a pattern to match messages
+.RB ( limit ", " tag-pattern ", " delete-pattern ", the above mentioned " hook
+commands etc.). The table \(lq\fBPattern modifiers\fP\(rq shows several ways to
+select messages.
+.
+.na
+.TS
+box tab(|);
+lb s | lb
+l s | lx .
+\0Pattern|Description
+_
+\0~A|T{
 all messages
-.TP
-~b \fIEXPR\fP
-messages which contain \fIEXPR\fP in the message body.
-.TP
-=b \fISTRING\fP
-messages which contain \fISTRING\fP in the message body. If IMAP is enabled, searches for \fISTRING\fP on the server, rather than downloading each message and searching it locally.
-.TP
-~B \fIEXPR\fP
-messages which contain \fIEXPR\fP in the whole message.
-.TP
-~c \fIEXPR\fP
-messages carbon-copied to \fIEXPR\fP
-.TP
-%c \fIGROUP\fP
+T}
+_
+\0=B \fISTRING\fP|T{
+messages which contain \fISTRING\fP in the whole message. If IMAP is enabled,
+searches for \fISTRING\fP on the server, rather than downloading each message
+and searching it locally.
+T}
+_
+\0=b \fISTRING\fP|T{
+messages which contain \fISTRING\fP in the message body. If IMAP is enabled,
+searches for \fISTRING\fP on the server, rather than downloading each message
+and searching it locally.
+T}
+_
+\0~B \fIEXPR\fP|T{
+messages which contain \fIEXPR\fP in the whole message
+T}
+_
+\0~b \fIEXPR\fP|T{
+messages which contain \fIEXPR\fP in the message body
+T}
+_
+\0%C \fIGROUP\fP|T{
+messages either \(lqTo:\(rq or \(lqCc:\(rq to any member of \fIGROUP\fP
+T}
+_
+\0%c \fIGROUP\fP|T{
 messages carbon-copied to any member of \fIGROUP\fP
-.TP
-~C \fIEXPR\fP
-messages either to: or cc: \fIEXPR\fP
-.TP
-%C \fIGROUP\fP
-messages either to: or cc: to any member of \fIGROUP\fP
-.TP
-~d \fIMIN\fP-\fIMAX\fP
-messages with \(lqdate-sent\(rq in a Date range
-.TP
-~D
+T}
+_
+\0~C \fIEXPR\fP|T{
+messages either \(lqTo:\(rq or \(lqCc:\(rq \fIEXPR\fP
+T}
+_
+\0~c \fIEXPR\fP|T{
+messages carbon-copied to \fIEXPR\fP
+T}
+_
+\0~D|T{
 deleted messages
-.TP
-~e \fIEXPR\fP
-messages which contain \fIEXPR\fP in the \(lqSender\(rq field
-.TP
-%e \fIGROUP\fP
-messages which contain a member of \fIGROUP\fP in the \(lqSender\(rq field
-.TP
-~E
+T}
+_
+\0~d \fIMIN\fP-\fIMAX\fP|T{
+messages with \(lqdate-sent\(rq in a date range
+T}
+_
+\0%e \fIGROUP\fP|T{
+messages which contain a member of \fIGROUP\fP in the \(lqSender:\(rq field
+T}
+_
+\0~E|T{
 expired messages
-.TP
-~f \fIEXPR\fP
-messages originating from \fIEXPR\fP
-.TP
-%f \fIGROUP\fP
+T}
+_
+\0~e \fIEXPR\fP|T{
+messages which contain \fIEXPR\fP in the \(lqSender:\(rq field
+T}
+_
+\0%f \fIGROUP\fP|T{
 messages originating from any member of \fIGROUP\fP
-.TP
-~F
+T}
+_
+\0~F|T{
 flagged messages
-.TP
-~g
-PGP signed messages
-.TP
-~G
-PGP encrypted messages
-.TP
-~h \fIEXPR\fP
+T}
+_
+\0~f \fIEXPR\fP|T{
+messages originating from \fIEXPR\fP
+T}
+_
+\0~G|T{
+cryptographically encrypted messages
+T}
+_
+\0~g|T{
+cryptographically signed messages
+T}
+_
+\0=h \fISTRING\fP|T{
+messages which contain \fISTRING\fP in the message header. If IMAP is enabled,
+searches for \fISTRING\fP on the server, rather than downloading each message
+and searching it locally; \fISTRING\fP must be of the form \(lqHeader:
+substring\(rq (see below).
+T}
+_
+\0~H \fIEXPR\fP|T{
+messages with spam attribute matching \fIEXPR\fP
+T}
+_
+\0~h \fIEXPR\fP|T{
 messages which contain \fIEXPR\fP in the message header
-.TP
-~H \fIEXPR\fP
-messages with spam tags matching \fIEXPR\fP
-.TP
-~i \fIEXPR\fP
-messages which match \fIEXPR\fP in the \(lqMessage-ID\(rq field
-.TP
-~k
+T}
+_
+\0~i \fIEXPR\fP|T{
+messages which match \fIEXPR\fP in the \(lqMessage-ID:\(rq field
+T}
+_
+\0~k|T{
 messages containing PGP key material
-.TP
-~l
-messages addressed to a known mailing list (defined by either \fBsubscribe\fP or \fBlist\fP)
-.TP
-~L \fIEXPR\fP
-messages either originated or received by \fIEXPR\fP
-.TP
-%L \fIGROUP\fP
+T}
+_
+\0%L \fIGROUP\fP|T{
 messages either originated or received by any member of \fIGROUP\fP
-.TP
-~m \fIMIN\fP-\fIMAX\fP
-message in the range \fIMIN\fP to \fIMAX\fP
-.TP
-~n \fIMIN\fP-\fIMAX\fP
-messages with a score in the range \fIMIN\fP to \fIMAX\fP
-.TP
-~N
+T}
+_
+\0~L \fIEXPR\fP|T{
+messages either originated or received by \fIEXPR\fP
+T}
+_
+\0~l|T{
+messages addressed to a known mailing list
+T}
+_
+\0~m <\fIMAX\fP|T{
+messages with numbers less than \fIMAX\fP \fB*\fP)
+T}
+_
+\0~m >\fIMIN\fP|T{
+messages with numbers greater than \fIMIN\fP \fB*\fP)
+T}
+_
+\0~m \fIMIN\fP,\fIMAX\fP|T{
+messages with offsets (from selected message) in the range \fIMIN\fP to
+\fIMAX\fP \fB*\fP)
+T}
+_
+\0~m \fIMIN\fP-\fIMAX\fP|T{
+message in the range \fIMIN\fP to \fIMAX\fP \fB*\fP)
+T}
+_
+\0~m \fIN\fP|T{
+just message number \fIN\fP \fB*\fP)
+T}
+_
+\0~N|T{
 new messages
-.TP
-~O
+T}
+_
+\0~n \fIMIN\fP-\fIMAX\fP|T{
+messages with a score in the range \fIMIN\fP to \fIMAX\fP \fB**\fP)
+T}
+_
+\0~O|T{
 old messages
-.TP
-~p
-messages addressed to you (as defined by \fBalternates\fP)
-.TP
-~P
-messages from you (as defined by \fBalternates\fP)
-.TP
-~Q
+T}
+_
+\0~P|T{
+messages from you (consults \fBalternates\fP)
+T}
+_
+\0~p|T{
+messages addressed to you (consults \fBalternates\fP)
+T}
+_
+\0~Q|T{
 messages which have been replied to
-.TP
-~r \fIMIN\fP-\fIMAX\fP
-messages with \(lqdate-received\(rq in a Date range
-.TP
-~R
+T}
+_
+\0~R|T{
 read messages
-.TP
-~s \fIEXPR\fP
-messages having \fIEXPR\fP in the \(lqSubject\(rq field.
-.TP
-~S
+T}
+_
+\0~r \fIMIN\fP-\fIMAX\fP|T{
+messages with \(lqdate-received\(rq in a date range
+T}
+_
+\0~S|T{
 superseded messages
-.TP
-~t \fIEXPR\fP
-messages addressed to \fIEXPR\fP
-.TP
-~T
+T}
+_
+\0~s \fIEXPR\fP|T{
+messages having \fIEXPR\fP in the \(lqSubject:\(rq field
+T}
+_
+\0~T|T{
 tagged messages
-.TP
-~u
-messages addressed to a subscribed mailing list (defined by \fBsubscribe\fP commands)
-.TP
-~U
+T}
+_
+\0~t \fIEXPR\fP|T{
+messages addressed to \fIEXPR\fP
+T}
+_
+\0~U|T{
 unread messages
-.TP
-~v
-message is part of a collapsed thread.
-.TP
-~V
+T}
+_
+\0~u|T{
+messages addressed to a subscribed mailing list
+T}
+_
+\0~V|T{
 cryptographically verified messages
-.TP
-~x \fIEXPR\fP
-messages which contain \fIEXPR\fP in the \(lqReferences\(rq or \(lqIn-Reply-To\(rq field
-.TP
-~X \fIMIN\fP-\fIMAX\fP
-messages with MIN - MAX attachments
-.TP
-~y \fIEXPR\fP
-messages which contain \fIEXPR\fP in the \(lqX-Label\(rq field
-.TP
-~z \fIMIN\fP-\fIMAX\fP
-messages with a size in the range \fIMIN\fP to \fIMAX\fP
-.TP
-~=
+T}
+_
+\0~v|T{
+message is part of a collapsed thread.
+T}
+_
+\0~X \fIMIN\fP-\fIMAX\fP|T{
+messages with \fIMIN\fP to \fIMAX\fP attachments \fB**\fP)
+T}
+_
+\0~x \fIEXPR\fP|T{
+messages which contain \fIEXPR\fP in the \(lqReferences:\(rq or
+\(lqIn-Reply-To:\(rq field
+T}
+_
+\0~y \fIEXPR\fP|T{
+messages which contain \fIEXPR\fP in their keywords
+T}
+_
+\0~z \fIMIN\fP-\fIMAX\fP|T{
+messages with a size in the range \fIMIN\fP to \fIMAX\fP \fB**\fP) \fB***\fP)
+T}
+_
+\0=/ \fISTRING\fP|T{
+IMAP custom server-side search for \fISTRING\fP. Currently only defined for
+Gmail. See section \(lq\fBGMail Patterns\fP\(rq in NeoMutt manual.
+T}
+_
+\0~=|T{
 duplicated messages (see $duplicate_threads)
-.TP
-~$
+T}
+_
+\0~#|T{
+broken threads (see $strict_threads)
+T}
+_
+\0~$|T{
 unreferenced message (requires threaded view)
-.TP
-~(PATTERN)
-messages in threads containing messages matching a certain pattern, e.g. all threads containing messages from you: ~(~P)
-.TP
-~<(PATTERN)
-messages whose immediate parent matches PATTERN, e.g. replies to your messages: ~<(~P)
-.TP
-~>(PATTERN)
-messages having an immediate child matching PATTERN, e.g. messages you replied to: ~>(~P)
-.PD 1
-.DT
-.PP
-In the above, \fIEXPR\fP is a regular expression.
-.PP
-With the \fB~d\fP, \fB~m\fP, \fB~n\fP, \fB~r\fP, \fB~X\fP, and \fB~z\fP operators, you can also
-specify ranges in the forms \fB<\fP\fIMAX\fP, \fB>\fP\fIMIN\fP,
-\fIMIN\fP\fB-\fP, and \fB-\fP\fIMAX\fP.
-.PP
-With the \fB~z\fP operator, the suffixes \(lqK\(rq and \(lqM\(rq are allowed to specify
+T}
+_
+\0~(\fIPATTERN\fP)|T{
+messages in threads containing messages matching \fIPATTERN\fP, e.g. all
+threads containing messages from you: ~(~P)
+T}
+_
+\0~<(\fIPATTERN\fP)|T{
+messages whose immediate parent matches \fIPATTERN\fP, e.g. replies to your
+messages: ~<(~P)
+T}
+_
+\0~>(\fIPATTERN\fP)|T{
+messages having an immediate child matching \fIPATTERN\fP, e.g. messages you
+replied to: ~>(~P)
+T}
+_
+.T&
+l s s .
+T{
+\0Where \fIEXPR\fP is a regular expression, and \fIGROUP\fP is an address group.
+T}
+.T&
+l l s .
+\p
+\0\h'2m'\fB*\fP)|T{
+The message number ranges (introduced by \(lq\fB~m\fP\(rq) are even
+more general and powerful than the other types of ranges. Read on and see
+section \(lq\fBMessage Ranges\fP\(rq in manual.
+T}
+\0\h'2m'\fB**\fP)|T{
+The forms \(lq<\fIMAX\fP\(rq, \(lq>\fIMIN\fP\(rq, \(lq\fIMIN\fP-\(rq and
+\(lq-\fIMAX\fP\(rq are allowed, too.
+T}
+\0\h'2m'\fB***\fP)|T{
+The suffixes \(lqK\(rq and \(lqM\(rq are allowed to specify
 kilobyte and megabyte respectively.
-.SS Matching dates
+T}
+.TE
+\p
+.ad
+.
 .PP
-The \fB~d\fP and \fB~r\fP operators are used to match date ranges,
-which are interpreted to be given in your local time zone.
+Special attention has to be paid when using regular expressions inside of
+patterns. Specifically, NeoMutt's parser for these patterns will strip one
+level of backslash (\(lq\fB\(rs\fP\(rq), which is normally used for quoting. If
+it is your intention to use a backslash in the regular expression, you will
+need to use two backslashes (\(lq\fB\(rs\(rs\fP\(rq) instead.
+.
 .PP
-A date is of the form
-\fIDD\fP[\fB/\fP\fIMM\fP[\fB/\fP[\fIcc\fP]\fIYY\fP]], that is, a
-two-digit date, optionally followed by a two-digit month, optionally
-followed by a year specifications.  Omitted fields default to the
-current month and year.
+You can force NeoMutt to treat \fIEXPR\fP as a simple \fISTRING\fP instead of
+a regular expression by using \(lq\fB=\fP\(rq instead of \(lq\fB~\fP\(rq in the
+pattern name. For example, \(lq\fB=b\~*.*\fP\(rq will find all messages that
+contain the literal \fISTRING\fP \(lq\fB*.*\fP\(rq. Simple substring matches
+are less powerful than regular expressions but can be considerably faster. This
+is especially true for IMAP folders, because substring matches can be performed
+on the server instead of by fetching every message. IMAP treats
+\(lq\fB=h\fP\(rq specially: it must be of the form
+\(lqHeader:\~\fIsubstring\fP\(rq and will \fBnot\fP partially match header
+names. The \fIsubstring\fP part may be omitted if you simply wish to find
+messages containing a particular header without regard to its value.
+.
 .PP
-NeoMutt understands either two or four digit year specifications.  When
-given a two-digit year, NeoMutt will interpret values less than 70 as
-lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938,
-and \(lq00\(rq is interpreted as 2000), and values
-greater than or equal to 70 as lying in the 20th century.
+Patterns matching lists of addresses (notably
+.BR c ", " C ", " p ", " P " and " t )
+match if there is at least one match in the whole list. If you want to make
+sure that all elements of that list match, you need to prefix your pattern with
+\(lq\fB^\fP\(rq.
+.
 .PP
-Note that this behavior \fIis\fP Y2K compliant, but that NeoMutt
-\fIdoes\fP have a Y2.07K problem.
+This example matches all mails which only has recipients from Germany.
+.IP
+Matching all addresses in address lists:
+.BI ^~C\~ \(rs.de$
+.
 .PP
-If a date range consists of a single date, the operator in question
-will match that precise date.  If the date range consists of a dash
-(\(lq\fB-\fP\(rq), followed by a date, this range will match any
-date before and up to the date given.  Similarly, a date followed by
-a dash matches the date given and any later point of time.  Two
-dates, separated by a dash, match any date which lies in the given
-range of time.
+You can restrict address pattern matching to aliases that you have defined with
+the \(lq\fB@\fP\(rq modifier. This example matches messages whose recipients
+are all from Germany \fBand\fP who are known to your alias list.
+.
+.IP
+Matching restricted to aliases:
+.BI ^@~C\~ \(rs.de$
+.
 .PP
-You can also modify any absolute date by giving an error range.  An
-error range consists of one of the characters
-.BR + ,
-.BR - ,
-.BR * ,
-followed by a positive number, followed by one of the unit
-characters
-.BR y ,
-.BR m ,
-.BR w ", or"
-.BR d ,
-specifying a unit of years, months, weeks, or days.
-.B +
-increases the maximum date matched by the given interval of time,
-.B -
-decreases the minimum date matched by the given interval of time, and
-.B *
-increases the maximum date and decreases the minimum date matched by
-the given interval of time.  It is possible to give multiple error
-margins, which cumulate.  Example:
-.B "1/1/2001-1w+2w*3d"
+To match any defined alias, use a regular expression that matches \fBany\fP
+string. This example matches messages whose senders are known aliases.
+.
+.IP
+Matching any defined alias:
+.BI @~f\~ .
+.
+.SS "\s-1Nesting and Boolean Operators\s0"
+.\" --------------------------------------------------------------------
 .PP
-You can also specify offsets relative to the current date.  An
-offset is specified as one of the characters
-.BR < ,
-.BR > ,
-.BR = ,
-followed by a positive number, followed by one of the unit
-characters
-.BR y ,
-.BR m ,
-.BR w ", or"
-.BR d .
-.B >
-matches dates which are older than the specified amount of time, an
-offset which begins with the character
-.B <
-matches dates which are more recent than the specified amount of time,
-and an offset which begins with the character
-.B =
-matches points of time which are precisely the given amount of time
-ago.
+Logical AND is performed by specifying more than one criterion.
+.IP
+For example:
+.BI ~t\~ work " ~f\~" elkins
+.
+.PP
+would select messages which contain the word \(lqwork\(rq in the list of
+recipients \fBand\fP that have the word \(lqelkins\(rq in the \(lqFrom:\(rq
+header field.
+.
+.PP
+NeoMutt also recognizes the following operators to create more complex
+search patterns:
+.
+.RS
+.TP 4
+\(bu \(lq\fB!\fP\(rq \(em logical NOT operator
+.TQ
+\(bu \(lq\fB|\fP\(rq \(em logical OR operator
+.TQ
+\(bu \(lq\fB()\fP\(rq \(em logical grouping operator
+.RE
+.
+.PP
+Here is an example illustrating a complex search pattern. This pattern will
+select all messages which do \fBnot\fP contain \(lqwork\(rq in the \(lqTo:\(rq
+\fBor\fP \(lqCc:\(rq field \fBand\fP which are from \(lqelkins\(rq.
+.
+.IP
+Using boolean operators in patterns:
+.BI !(~t\~ work |~c\~ work ") ~f\~" elkins
+.
+.PP
+Here is an example using white space in the regular expression (note the
+\(lq\fB\(aq\fP\(rq and \(lq\fB\(dq\fP\(rq delimiters). For this to match, the
+mail's subject must match the \(lq^Junk +From +Me$\(rq \fBand\fP it must be
+from either \(lqJim +Somebody\(rq \fBor\fP \(lqEd +SomeoneElse\(rq:
+.
+.IP
+Quoting regex:
+.na
+.IB \(aq ~s\~ "\(dq^Junk +From +Me$\(dq"
+.BI ~f\~( "\(dqJim +Somebody\(dq" | "\(dqEd +SomeoneElse\(dq" ) \(aq
+.ad
+.
+.PP
+\fBNote\fP: If a regular expression contains parenthesis, or a vertical bar
+(\(lq\fB|\fP\(rq), you must enclose the expression in double or single quotes
+since those characters are also used to separate different parts of NeoMutt's
+pattern language.
+.
+.IP
+For example:
+.BI ~f \~\(dquser@ ( home\(rs.org | work\(rs.com ) \(dq
+.
+.PP
+Without the quotes, the parenthesis wouldn't end. This would be separated to
+two OR'd patterns:
+.BI ~f \~user@(home\(rs.org
+.RI "and " work\(rs.com) ". They are never what you want."
+.
+.SS "\s-1Searching by Date\s0"
+.\" --------------------------------------------------------------------
+.PP
+NeoMutt supports two types of dates, \fBabsolute\fP and \fBrelative\fP for
+the \(lq\fB~d\fP\(rq and \(lq\fB~r\fP\(rq pattern.
+.
+.PP
+.nf
+.B Absolute Dates
+.fi
+Dates must be in
+.IR dd [/ mm [/[ CC ] YY ]]
+format (day, month, century and year \(em all parts, with the exception of day,
+are optional, defaulting to the current month and year). An example of a valid
+range of dates is:
+.
+.IP
+Limit to messages matching:
+.IR \fB~d\fP\~20 / 1 / 95 - 31 / 10
+.
+.PP
+When given a two-digit year, NeoMutt will interpret values less than \(lq70\(rq
+as lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938, and
+\(lq00\(rq is interpreted as 2000), and values greater than or equal to
+\(lq70\(rq as lying in the 20th century.
+.
+.PP
+If you omit the \fIMIN\fPimum (first) date, and just specify
+.RI - dd / mm / YY ,
+all messages before the given date will be selected. If you omit the
+\fIMAX\fPimum (second) date, and specify
+.IR dd / mm / YY -,
+all messages after the given date will be selected. If you specify a single
+date with no dash (\(lq\fB-\fP\(rq), only messages sent/received on the given
+date will be selected.
+.
+.PP
+You can add error margins to absolute dates. An error margin is a sign
+(\(lq\fB+\fP\(rq or \(lq\fB-\fP\(rq), followed by a digit, followed by one of
+the units in table \(lq\fBDate units\fP\(rq below. As a special case, you can
+replace the sign by a \(lq\fB*\fP\(rq character, which is equivalent to giving
+identical plus and minus error margins.
+.
+.\".TS
+.\"allbox tab(|);
+.\"cb cb
+.\"c l .
+.\"\0Unit|Description
+.\"\0d|Days
+.\"\0w|Weeks
+.\"\0m|Months
+.\"\0y|Years
+.\".TE
+.\"\p
+.\".
+.TS
+allbox center tab(|);
+lb c c c c
+lb l l l l .
+\0Date Unit|d|w|m|y
+\0Description|Days|Weeks|Months|Years
+.TE
+\p
+.
+.PP
+\fBExample\fP: To select any messages two weeks around January 15, 2001, you'd
+use the following pattern:
+.
+.IP
+Limit to messages matching:
+.IR \fB~d\fP\~15 / 1 / 2001 \fB*\fP 2 \fBw\fP
+.
+.PP
+It is possible to give multiple error margins:
+.
+.IP
+which cumulate:
+.IR \fB~d\fP\~1 / 1 / 2001 \fB-\fP 1 \fBw+\fP 2 \fBw*\fP 3 \fBd\fP
+.
+.PP
+.nf
+.B Relative Dates
+.fi
+This type of date is relative to the current date, and may be specified as:
+.
+.RS
+.TP 4
+\(bu \(lq\fB<\fP\fIoffset\fP\(rq for messages newer than \fIoffset\fP units
+.TQ
+\(bu \(lq\fB=\fP\fIoffset\fP\(rq for messages exactly \fIoffset\fP units old
+.TQ
+\(bu \(lq\fB>\fP\fIoffset\fP\(rq for messages older than \fIoffset\fP units
+.RE
+.
+.PP
+\fIoffset\fP is specified as a positive number with one of the units from table
+\(lq\fBDate units\fP\(rq.
+.
+.PP
+\fBExample\fP: To select messages less than 1 month old, you would use:
+.
+.IP
+Limit to messages matching:
+.BI ~d\~< 1 m
+.
+.PP
+\fBNote\fP: All dates used when searching are relative to the \fBlocal\fP time
+zone, so unless you change the setting of your $index_format to include
+a \(lq\fB%[...]\fP\(rq format, these are \fBnot\fP the dates shown in the main
+index.
+.
+.\" --------------------------------------------------------------------
 .SH CONFIGURATION VARIABLES
+.\" --------------------------------------------------------------------

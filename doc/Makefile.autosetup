@@ -68,10 +68,11 @@ doc/neomuttrc.5:	doc/makedoc$(EXEEXT) \
 		$(SRCDIR)/init.h \
 		$(SRCDIR)/doc/neomuttrc.man.head \
 		$(SRCDIR)/doc/neomuttrc.man.tail
-	( sed -e "/^\.TH/s/@MAN_DATE@/$(PACKAGE_DATE)/" \
+	( sed -e "/^\.TH/s|@MAN_DATE@|$(PACKAGE_DATE)|" \
 	    $(SRCDIR)/doc/neomuttrc.man.head && \
-	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m | \
-	    cat - $(SRCDIR)/doc/neomuttrc.man.tail \
+	    $(MAKEDOC_CPP) $(SRCDIR)/init.h | doc/makedoc$(EXEEXT) -m && \
+	    sed -e "s|@MAN_DOCDIR@|$(docdir)|g" \
+	      $(SRCDIR)/doc/neomuttrc.man.tail \
 	) > $@
 
 doc/neomutt.1:
