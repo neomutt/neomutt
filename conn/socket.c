@@ -49,9 +49,18 @@
 #include "globals.h"
 #include "options.h"
 #include "protos.h"
-#ifdef USE_SSL
+
+#include "socket.h"
 #include "ssl.h"
-#endif
+#include "tunnel.h"
+
+/* support for multiple socket connections */
+static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
+
+struct ConnectionList *mutt_socket_head(void)
+{
+  return &Connections;
+}
 
 /**
  * socket_preconnect - Execute a command before opening a socket
@@ -75,60 +84,6 @@ static int socket_preconnect(void)
   }
 
   return 0;
-}
-
-/**
- * socket_connect - set up to connect to a socket fd
- * @param fd File descriptor to connect with
- * @param sa Address info
- * @retval  0 Success
- * @retval >0 An errno, e.g. EPERM
- * @retval -1 Error
- */
-static int socket_connect(int fd, struct sockaddr *sa)
-{
-  int sa_size;
-  int save_errno;
-  sigset_t set;
-
-  if (sa->sa_family == AF_INET)
-    sa_size = sizeof(struct sockaddr_in);
-#ifdef HAVE_GETADDRINFO
-  else if (sa->sa_family == AF_INET6)
-    sa_size = sizeof(struct sockaddr_in6);
-#endif
-  else
-  {
-    mutt_debug(1, "Unknown address family!\n");
-    return -1;
-  }
-
-  if (ConnectTimeout > 0)
-    alarm(ConnectTimeout);
-
-  mutt_sig_allow_interrupt(1);
-
-  /* FreeBSD's connect() does not respect SA_RESTART, meaning
-   * a SIGWINCH will cause the connect to fail. */
-  sigemptyset(&set);
-  sigaddset(&set, SIGWINCH);
-  sigprocmask(SIG_BLOCK, &set, NULL);
-
-  save_errno = 0;
-
-  if (connect(fd, sa, sa_size) < 0)
-  {
-    save_errno = errno;
-    mutt_debug(2, "Connection failed. errno: %d...\n", errno);
-    SigInt = 0; /* reset in case we caught SIGINTR while in connect() */
-  }
-
-  if (ConnectTimeout > 0)
-    alarm(0);
-  mutt_sig_allow_interrupt(0);
-  sigprocmask(SIG_UNBLOCK, &set, NULL);
-
-  return save_errno;
 }
 
 /**
@@ -174,6 +129,32 @@ int mutt_socket_close(struct Connection *conn)
 }
 
 /**
+ * mutt_socket_read - read from a Connection
+ * @param conn Connection a server
+ * @param buf Buffer to store read data
+ * @param len length of the buffer
+ * @retval >0 Success, number of bytes read
+ * @retval -1 Error, see errno
+ */
+int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
+{
+  return conn->conn_read(conn, buf, len);
+}
+
+/**
+ * mutt_socket_write - write to a Connection
+ * @param conn Connection to a server
+ * @param buf Buffer with data to write
+ * @param len Length of data to write
+ * @retval >0 Number of bytes written
+ * @retval -1 Error
+ */
+int mutt_socket_write(struct Connection *conn, const char *buf, size_t len)
+{
+  return conn->conn_write(conn, buf, len);
+}
+
+/**
  * mutt_socket_write_d - Write data to a socket
  * @param conn Connection to a server
  * @param buf Buffer with data to write
@@ -193,9 +174,6 @@ int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int d
     mutt_debug(1, "attempt to write to closed connection\n");
     return -1;
   }
-
-  if (len < 0)
-    len = mutt_str_strlen(buf);
 
   while (sent < len)
   {
@@ -309,282 +287,54 @@ int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int 
 }
 
 /**
- * socket_new_conn - allocate and initialise a new connection
+ * mutt_socket_new - allocate and initialise a new connection
+ * @param type Type of the new Connection
  * @retval ptr New Connection
  */
-struct Connection *socket_new_conn(void)
+struct Connection *mutt_socket_new(enum ConnectionType type)
 {
   struct Connection *conn = mutt_mem_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
+
+  if (type == MUTT_CONNECTION_TUNNEL)
+  {
+    mutt_tunnel_socket_setup(conn);
+  }
+  else if (type == MUTT_CONNECTION_SSL)
+  {
+    int ret = mutt_ssl_socket_setup(conn);
+
+    if (ret < 0)
+      FREE(&conn);
+  }
+  else
+  {
+    conn->conn_read = raw_socket_read;
+    conn->conn_write = raw_socket_write;
+    conn->conn_open = raw_socket_open;
+    conn->conn_close = raw_socket_close;
+    conn->conn_poll = raw_socket_poll;
+  }
+
+  if (conn)
+    TAILQ_INSERT_HEAD(&Connections, conn, entries);
 
   return conn;
 }
 
 /**
- * raw_socket_close - Close a socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error, see errno
+ * mutt_socket_free - remove connection from connection list and free it
  */
-int raw_socket_close(struct Connection *conn)
+void mutt_socket_free(struct Connection *conn)
 {
-  return close(conn->fd);
-}
-
-/**
- * raw_socket_read - Read data from a socket
- * @param conn Connection to a server
- * @param buf Buffer to store the data
- * @param len Number of bytes to read
- * @retval >0 Success, number of bytes read
- * @retval -1 Error, see errno
- */
-int raw_socket_read(struct Connection *conn, char *buf, size_t len)
-{
-  int rc;
-
-  mutt_sig_allow_interrupt(1);
-  rc = read(conn->fd, buf, len);
-  if (rc == -1)
+  struct Connection *np = NULL;
+  TAILQ_FOREACH(np, &Connections, entries)
   {
-    mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
-    SigInt = 0;
-  }
-  mutt_sig_allow_interrupt(0);
-
-  if (SigInt)
-  {
-    mutt_error(_("Connection to %s has been aborted"), conn->account.host);
-    SigInt = 0;
-    rc = -1;
-  }
-
-  return rc;
-}
-
-/**
- * raw_socket_write - Write data to a socket
- * @param conn Connection to a server
- * @param buf Buffer to read into
- * @param count Number of bytes to read
- * @retval >0 Success, number of bytes written
- * @retval -1 Error, see errno
- */
-int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
-{
-  int rc;
-
-  mutt_sig_allow_interrupt(1);
-  rc = write(conn->fd, buf, count);
-  if (rc == -1)
-  {
-    mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
-    SigInt = 0;
-  }
-  mutt_sig_allow_interrupt(0);
-
-  if (SigInt)
-  {
-    mutt_error(_("Connection to %s has been aborted"), conn->account.host);
-    SigInt = 0;
-    rc = -1;
-  }
-
-  return rc;
-}
-
-/**
- * raw_socket_poll - Checks whether reads would block
- * @param conn Connection to a server
- * @param wait_secs How long to wait for a response
- * @retval >0 There is data to read
- * @retval  0 Read would block
- * @retval -1 Connection doesn't support polling
- */
-int raw_socket_poll(struct Connection *conn, time_t wait_secs)
-{
-  fd_set rfds;
-  unsigned long wait_millis;
-  struct timeval tv, pre_t, post_t;
-
-  if (conn->fd < 0)
-    return -1;
-
-  wait_millis = wait_secs * 1000UL;
-
-  while (true)
-  {
-    tv.tv_sec = wait_millis / 1000;
-    tv.tv_usec = (wait_millis % 1000) * 1000;
-
-    FD_ZERO(&rfds);
-    FD_SET(conn->fd, &rfds);
-
-    gettimeofday(&pre_t, NULL);
-    const int rc = select(conn->fd + 1, &rfds, NULL, NULL, &tv);
-    gettimeofday(&post_t, NULL);
-
-    if (rc > 0 || (rc < 0 && errno != EINTR))
-      return rc;
-
-    if (SigInt)
-      mutt_query_exit();
-
-    wait_millis += (pre_t.tv_sec * 1000UL) + (pre_t.tv_usec / 1000);
-    const unsigned long post_t_millis = (post_t.tv_sec * 1000UL) + (post_t.tv_usec / 1000);
-    if (wait_millis <= post_t_millis)
-      return 0;
-    wait_millis -= post_t_millis;
-  }
-}
-
-/**
- * raw_socket_open - Open a socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
- */
-int raw_socket_open(struct Connection *conn)
-{
-  int rc;
-
-  char *host_idna = NULL;
-
-#ifdef HAVE_GETADDRINFO
-  /* --- IPv4/6 --- */
-
-  /* "65536\0" */
-  char port[6];
-  struct addrinfo hints;
-  struct addrinfo *res = NULL;
-  struct addrinfo *cur = NULL;
-
-  /* we accept v4 or v6 STREAM sockets */
-  memset(&hints, 0, sizeof(hints));
-
-  if (UseIpv6)
-    hints.ai_family = AF_UNSPEC;
-  else
-    hints.ai_family = AF_INET;
-
-  hints.ai_socktype = SOCK_STREAM;
-
-  snprintf(port, sizeof(port), "%d", conn->account.port);
-
-#ifdef HAVE_LIBIDN
-  if (mutt_idna_to_ascii_lz(conn->account.host, &host_idna, 1) != 0)
-  {
-    mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
-    return -1;
-  }
-#else
-  host_idna = conn->account.host;
-#endif
-
-  if (!OptNoCurses)
-    mutt_message(_("Looking up %s..."), conn->account.host);
-
-  rc = getaddrinfo(host_idna, port, &hints, &res);
-
-#ifdef HAVE_LIBIDN
-  FREE(&host_idna);
-#endif
-
-  if (rc)
-  {
-    mutt_error(_("Could not find the host \"%s\""), conn->account.host);
-    return -1;
-  }
-
-  if (!OptNoCurses)
-    mutt_message(_("Connecting to %s..."), conn->account.host);
-
-  rc = -1;
-  for (cur = res; cur != NULL; cur = cur->ai_next)
-  {
-    int fd = socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol);
-    if (fd >= 0)
+    if (np == conn)
     {
-      rc = socket_connect(fd, cur->ai_addr);
-      if (rc == 0)
-      {
-        fcntl(fd, F_SETFD, FD_CLOEXEC);
-        conn->fd = fd;
-        break;
-      }
-      else
-        close(fd);
+      TAILQ_REMOVE(&Connections, np, entries);
+      FREE(&np);
+      return;
     }
   }
-
-  freeaddrinfo(res);
-
-#else
-  /* --- IPv4 only --- */
-
-  struct sockaddr_in sin;
-  struct hostent *he = NULL;
-
-  memset(&sin, 0, sizeof(sin));
-  sin.sin_port = htons(conn->account.port);
-  sin.sin_family = AF_INET;
-
-#ifdef HAVE_LIBIDN
-  if (mutt_idna_to_ascii_lz(conn->account.host, &host_idna, 1) != 0)
-  {
-    mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
-    return -1;
-  }
-#else
-  host_idna = conn->account.host;
-#endif
-
-  if (!OptNoCurses)
-    mutt_message(_("Looking up %s..."), conn->account.host);
-
-  he = gethostbyname(host_idna);
-
-#ifdef HAVE_LIBIDN
-  FREE(&host_idna);
-#endif
-
-  if (!he)
-  {
-    mutt_error(_("Could not find the host \"%s\""), conn->account.host);
-
-    return -1;
-  }
-
-  if (!OptNoCurses)
-    mutt_message(_("Connecting to %s..."), conn->account.host);
-
-  rc = -1;
-  for (int i = 0; he->h_addr_list[i] != NULL; i++)
-  {
-    memcpy(&sin.sin_addr, he->h_addr_list[i], he->h_length);
-    int fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
-
-    if (fd >= 0)
-    {
-      rc = socket_connect(fd, (struct sockaddr *) &sin);
-      if (rc == 0)
-      {
-        fcntl(fd, F_SETFD, FD_CLOEXEC);
-        conn->fd = fd;
-        break;
-      }
-      else
-        close(fd);
-    }
-  }
-
-#endif
-  if (rc)
-  {
-    mutt_error(_("Could not connect to %s (%s)."), conn->account.host,
-               (rc > 0) ? strerror(rc) : _("unknown error"));
-    return -1;
-  }
-
-  return 0;
 }

@@ -166,7 +166,7 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method)
    * plus the additional debris */
   mutt_b64_encode(ibuf, obuf, strlen(obuf), sizeof(ibuf) - 2);
   mutt_str_strcat(ibuf, sizeof(ibuf), "\r\n");
-  mutt_socket_write(idata->conn, ibuf);
+  mutt_socket_send(idata->conn, ibuf);
 
   do
     rc = imap_cmd_step(idata);

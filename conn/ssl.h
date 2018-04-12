@@ -28,6 +28,11 @@ struct Connection;
 
 int mutt_ssl_starttls(struct Connection *conn);
 int mutt_ssl_socket_setup(struct Connection *conn);
+#else
+static inline int mutt_ssl_socket_setup(struct Connection *conn)
+{
+  return -1;
+}
 #endif
 
 #endif /* _CONN_SSL_H */

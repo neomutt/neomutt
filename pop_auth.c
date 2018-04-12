@@ -99,7 +99,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *metho
   while (true)
   {
     mutt_str_strfcpy(buf + olen, "\r\n", bufsize - olen);
-    mutt_socket_write(pop_data->conn, buf);
+    mutt_socket_send(pop_data->conn, buf);
     if (mutt_socket_readln(inbuf, sizeof(inbuf), pop_data->conn) < 0)
     {
       sasl_dispose(&saslconn);

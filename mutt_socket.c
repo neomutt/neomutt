@@ -30,31 +30,6 @@
 #include "protos.h"
 #include "url.h"
 
-/* support for multiple socket connections */
-static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
-
-struct ConnectionList *mutt_socket_head(void)
-{
-  return &Connections;
-}
-
-/**
- * mutt_socket_free - remove connection from connection list and free it
- */
-void mutt_socket_free(struct Connection *conn)
-{
-  struct Connection *np = NULL;
-  TAILQ_FOREACH(np, &Connections, entries)
-  {
-    if (np == conn)
-    {
-      TAILQ_REMOVE(&Connections, np, entries);
-      FREE(&np);
-      return;
-    }
-  }
-}
-
 /**
  * mutt_conn_find - Find a connection from a list
  *
@@ -66,6 +41,7 @@ void mutt_socket_free(struct Connection *conn)
  */
 struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
 {
+  enum ConnectionType conn_type;
   struct Url url;
   char hook[LONG_STRING];
 
@@ -75,7 +51,7 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
   url_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
 
-  struct Connection *conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(&Connections);
+  struct Connection *conn = start ? TAILQ_NEXT(start, entries) : TAILQ_FIRST(mutt_socket_head());
   while (conn)
   {
     if (mutt_account_match(account, &(conn->account)))
@@ -83,35 +59,27 @@ struct Connection *mutt_conn_find(const struct Connection *start, const struct A
     conn = TAILQ_NEXT(conn, entries);
   }
 
-  conn = socket_new_conn();
-  memcpy(&conn->account, account, sizeof(struct Account));
-
-  TAILQ_INSERT_HEAD(&Connections, conn, entries);
-
   if (Tunnel && *Tunnel)
-    mutt_tunnel_socket_setup(conn);
+    conn_type = MUTT_CONNECTION_TUNNEL;
   else if (account->flags & MUTT_ACCT_SSL)
-  {
-#ifdef USE_SSL
-    if (mutt_ssl_socket_setup(conn) < 0)
-    {
-      mutt_socket_free(conn);
-      return NULL;
-    }
-#else
-    mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
-    mutt_socket_free(conn);
+    conn_type = MUTT_CONNECTION_SSL;
+  else
+    conn_type = MUTT_CONNECTION_SIMPLE;
 
-    return NULL;
-#endif
+  conn = mutt_socket_new(conn_type);
+  if (conn)
+  {
+    memcpy(&conn->account, account, sizeof(struct Account));
   }
   else
   {
-    conn->conn_read = raw_socket_read;
-    conn->conn_write = raw_socket_write;
-    conn->conn_open = raw_socket_open;
-    conn->conn_close = raw_socket_close;
-    conn->conn_poll = raw_socket_poll;
+    if (conn_type == MUTT_CONNECTION_SSL)
+    {
+#ifndef USE_SSL
+      /* that's probably why it failed */
+      mutt_error(_("SSL is unavailable, cannot connect to %s"), account->host);
+#endif
+    }
   }
 
   return conn;

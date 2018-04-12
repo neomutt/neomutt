@@ -87,7 +87,7 @@ static int nntp_capabilities(struct NntpServer *nserv)
   nserv->hasOVER = false;
   FREE(&nserv->authenticators);
 
-  if (mutt_socket_write(conn, "CAPABILITIES\r\n") < 0 ||
+  if (mutt_socket_send(conn, "CAPABILITIES\r\n") < 0 ||
       mutt_socket_readln(buf, sizeof(buf), conn) < 0)
   {
     return nntp_connect_error(nserv);
@@ -187,7 +187,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
   if (!nserv->hasCAPABILITIES)
   {
-    if (mutt_socket_write(conn, "DATE\r\n") < 0 ||
+    if (mutt_socket_send(conn, "DATE\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -195,7 +195,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasDATE = true;
 
-    if (mutt_socket_write(conn, "LISTGROUP\r\n") < 0 ||
+    if (mutt_socket_send(conn, "LISTGROUP\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -203,7 +203,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
     if (mutt_str_strncmp("500", buf, 3) != 0)
       nserv->hasLISTGROUP = true;
 
-    if (mutt_socket_write(conn, "LIST NEWSGROUPS +\r\n") < 0 ||
+    if (mutt_socket_send(conn, "LIST NEWSGROUPS +\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -223,7 +223,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   /* no LIST NEWSGROUPS, trying XGTITLE */
   if (!nserv->hasLIST_NEWSGROUPS)
   {
-    if (mutt_socket_write(conn, "XGTITLE\r\n") < 0 ||
+    if (mutt_socket_send(conn, "XGTITLE\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -235,7 +235,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   /* no OVER, trying XOVER */
   if (!nserv->hasOVER)
   {
-    if (mutt_socket_write(conn, "XOVER\r\n") < 0 ||
+    if (mutt_socket_send(conn, "XOVER\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -247,7 +247,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
   /* trying LIST OVERVIEW.FMT */
   if (nserv->hasOVER || nserv->hasXOVER)
   {
-    if (mutt_socket_write(conn, "LIST OVERVIEW.FMT\r\n") < 0 ||
+    if (mutt_socket_send(conn, "LIST OVERVIEW.FMT\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -394,7 +394,7 @@ static int nntp_auth(struct NntpServer *nserv)
       {
         mutt_message(_("Authenticating (%s)..."), method);
         snprintf(buf, sizeof(buf), "AUTHINFO USER %s\r\n", conn->account.user);
-        if (mutt_socket_write(conn, buf) < 0 ||
+        if (mutt_socket_send(conn, buf) < 0 ||
             mutt_socket_readln(buf, sizeof(buf), conn) < 0)
         {
           break;
@@ -410,7 +410,7 @@ static int nntp_auth(struct NntpServer *nserv)
           if (DebugLevel < MUTT_SOCK_LOG_FULL)
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO PASS *\n", conn->fd);
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
-          if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
+          if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln(buf, sizeof(buf), conn) < 0)
           {
             break;
@@ -501,7 +501,7 @@ static int nntp_auth(struct NntpServer *nserv)
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           }
           client_len = 0;
-          if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
+          if (mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0)
           {
             break;
@@ -565,7 +565,7 @@ static int nntp_auth(struct NntpServer *nserv)
           break;
         if (mutt_str_strncmp(inbuf, "383 ", 4) == 0)
         {
-          if (mutt_socket_write(conn, "*\r\n") < 0 ||
+          if (mutt_socket_send(conn, "*\r\n") < 0 ||
               mutt_socket_readln(inbuf, sizeof(inbuf), conn) < 0)
           {
             break;
@@ -638,7 +638,7 @@ int nntp_open_connection(struct NntpServer *nserv)
   /* tell news server to switch to mode reader if it isn't so */
   if (cap > 0)
   {
-    if (mutt_socket_write(conn, "MODE READER\r\n") < 0 ||
+    if (mutt_socket_send(conn, "MODE READER\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -681,7 +681,7 @@ int nntp_open_connection(struct NntpServer *nserv)
               1;
     if (nserv->use_tls == 2)
     {
-      if (mutt_socket_write(conn, "STARTTLS\r\n") < 0 ||
+      if (mutt_socket_send(conn, "STARTTLS\r\n") < 0 ||
           mutt_socket_readln(buf, sizeof(buf), conn) < 0)
       {
         return nntp_connect_error(nserv);
@@ -718,7 +718,7 @@ int nntp_open_connection(struct NntpServer *nserv)
   }
   else
   {
-    if (mutt_socket_write(conn, "STAT\r\n") < 0 ||
+    if (mutt_socket_send(conn, "STAT\r\n") < 0 ||
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
     {
       return nntp_connect_error(nserv);
@@ -771,11 +771,11 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
       int rc = 0;
 
       if (*line)
-        rc = mutt_socket_write(nserv->conn, line);
+        rc = mutt_socket_send(nserv->conn, line);
       else if (nntp_data->group)
       {
         snprintf(buf, sizeof(buf), "GROUP %s\r\n", nntp_data->group);
-        rc = mutt_socket_write(nserv->conn, buf);
+        rc = mutt_socket_send(nserv->conn, buf);
       }
       if (rc >= 0)
         rc = mutt_socket_readln(buf, sizeof(buf), nserv->conn);
@@ -803,7 +803,7 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
     if (nntp_data->group)
     {
       snprintf(buf, sizeof(buf), "GROUP %s\r\n", nntp_data->group);
-      if (mutt_socket_write(nserv->conn, buf) < 0 ||
+      if (mutt_socket_send(nserv->conn, buf) < 0 ||
           mutt_socket_readln(buf, sizeof(buf), nserv->conn) < 0)
       {
         return nntp_connect_error(nserv);
@@ -1752,8 +1752,8 @@ int nntp_post(const char *msg)
       len++;
       buf[len] = '\0';
     }
-    if (mutt_socket_write_d(nntp_data->nserv->conn, buf[1] == '.' ? buf : buf + 1,
-                            -1, MUTT_SOCK_LOG_HDR) < 0)
+    if (mutt_socket_send_d(nntp_data->nserv->conn,
+                           buf[1] == '.' ? buf : buf + 1, MUTT_SOCK_LOG_HDR) < 0)
     {
       mutt_file_fclose(&fp);
       return nntp_connect_error(nntp_data->nserv);
@@ -1762,8 +1762,8 @@ int nntp_post(const char *msg)
   mutt_file_fclose(&fp);
 
   if ((buf[strlen(buf) - 1] != '\n' &&
-       mutt_socket_write_d(nntp_data->nserv->conn, "\r\n", -1, MUTT_SOCK_LOG_HDR) < 0) ||
-      mutt_socket_write_d(nntp_data->nserv->conn, ".\r\n", -1, MUTT_SOCK_LOG_HDR) < 0 ||
+       mutt_socket_send_d(nntp_data->nserv->conn, "\r\n", MUTT_SOCK_LOG_HDR) < 0) ||
+      mutt_socket_send_d(nntp_data->nserv->conn, ".\r\n", MUTT_SOCK_LOG_HDR) < 0 ||
       mutt_socket_readln(buf, sizeof(buf), nntp_data->nserv->conn) < 0)
     return nntp_connect_error(nntp_data->nserv);
   if (buf[0] != '2')

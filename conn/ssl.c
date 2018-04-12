@@ -378,6 +378,7 @@ static int ssl_socket_open_err(struct Connection *conn)
 static int ssl_socket_close(struct Connection *conn)
 {
   struct SslSockData *data = conn->sockdata;
+
   if (data)
   {
     if (data->isopen)
@@ -698,12 +699,12 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
 }
 
 /**
- * tls_close - Close a TLS Connection
+ * ssl_socket_close_and_restore - Close an SSL Connection and restore Connnection callbacks
  * @param conn Connection to a server
  * @retval  0 Success
  * @retval -1 Error, see errno
  */
-static int tls_close(struct Connection *conn)
+static int ssl_socket_close_and_restore(struct Connection *conn)
 {
   int rc;
 
@@ -1293,167 +1294,53 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   return 0;
 }
 
-/**
- * ssl_socket_open - Open an SSL socket
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
- */
-static int ssl_socket_open(struct Connection *conn)
+static int ssl_setup(struct Connection *conn)
 {
-  struct SslSockData *data = NULL;
+  struct SslSockData *ssldata;
   int maxbits;
 
-  if (raw_socket_open(conn) < 0)
-    return -1;
+  ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
+  conn->sockdata = ssldata;
 
-  data = mutt_mem_calloc(1, sizeof(struct SslSockData));
-  conn->sockdata = data;
-
-  data->ctx = SSL_CTX_new(SSLv23_client_method());
-  if (!data->ctx)
+  ssldata->ctx = SSL_CTX_new(SSLv23_client_method());
+  if (!ssldata->ctx)
   {
     /* L10N: an SSL context is a data structure returned by the OpenSSL
              function SSL_CTX_new().  In this case it returned NULL: an
              error condition.  */
     mutt_error(_("Unable to create SSL context"));
     ssl_dprint_err_stack();
-    mutt_socket_close(conn);
-    return -1;
+    goto free_sasldata;
   }
 
-  /* disable SSL protocols as needed */
-  if (!SslUseTlsv1)
-  {
-    SSL_CTX_set_options(data->ctx, SSL_OP_NO_TLSv1);
-  }
-/* TLSv1.1/1.2 support was added in OpenSSL 1.0.1, but some OS distros such
-   * as Fedora 17 are on OpenSSL 1.0.0.
-   */
-#ifdef SSL_OP_NO_TLSv1_1
-  if (!SslUseTlsv11)
-  {
-    SSL_CTX_set_options(data->ctx, SSL_OP_NO_TLSv1_1);
-  }
-#endif
+    /* disable SSL protocols as needed */
 #ifdef SSL_OP_NO_TLSv1_2
   if (!SslUseTlsv12)
-  {
-    SSL_CTX_set_options(data->ctx, SSL_OP_NO_TLSv1_2);
-  }
+    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_2);
 #endif
-  if (!SslUseSslv2)
-  {
-    SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv2);
-  }
-  if (!SslUseSslv3)
-  {
-    SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv3);
-  }
 
-  if (SslUsesystemcerts)
-  {
-    if (!SSL_CTX_set_default_verify_paths(data->ctx))
-    {
-      mutt_debug(1, "Error setting default verify paths\n");
-      mutt_socket_close(conn);
-      return -1;
-    }
-  }
-
-  if (CertificateFile && !ssl_load_certificates(data->ctx))
-    mutt_debug(1, "Error loading trusted certificates\n");
-
-  ssl_get_client_cert(data, conn);
-
-  if (SslCiphers)
-  {
-    SSL_CTX_set_cipher_list(data->ctx, SslCiphers);
-  }
-
-  if (ssl_set_verify_partial(data->ctx))
-  {
-    mutt_error(_("Warning: error enabling ssl_verify_partial_chains"));
-  }
-
-  data->ssl = SSL_new(data->ctx);
-  SSL_set_fd(data->ssl, conn->fd);
-
-  if (ssl_negotiate(conn, data))
-  {
-    mutt_socket_close(conn);
-    return -1;
-  }
-
-  data->isopen = 1;
-
-  conn->ssf = SSL_CIPHER_get_bits(SSL_get_current_cipher(data->ssl), &maxbits);
-
-  return 0;
-}
-
-/**
- * mutt_ssl_starttls - Negotiate TLS over an already opened connection
- * @param conn Connection to a server
- * @retval  0 Success
- * @retval -1 Error
- *
- * TODO: Merge this code better with ssl_socket_open.
- */
-int mutt_ssl_starttls(struct Connection *conn)
-{
-  struct SslSockData *ssldata = NULL;
-  int maxbits;
-  long ssl_options = 0;
-
-  if (ssl_init())
-    goto bail;
-
-  ssldata = mutt_mem_calloc(1, sizeof(struct SslSockData));
-  /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
-   *
-   * However, we need to be able to negotiate amongst various TLS versions,
-   * which at present can only be done with the SSLv23_client_method;
-   * TLSv1_client_method gives us explicitly TLSv1.0, not 1.1 or 1.2 (True as
-   * of OpenSSL 1.0.1c)
-   */
-  ssldata->ctx = SSL_CTX_new(SSLv23_client_method());
-  if (!ssldata->ctx)
-  {
-    mutt_debug(1, "Error allocating SSL_CTX\n");
-    goto bail_ssldata;
-  }
-#ifdef SSL_OP_NO_TLSv1_2
-  if (!SslUseTlsv12)
-    ssl_options |= SSL_OP_NO_TLSv1_2;
-#endif
 #ifdef SSL_OP_NO_TLSv1_1
   if (!SslUseTlsv11)
-    ssl_options |= SSL_OP_NO_TLSv1_1;
+    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_1);
 #endif
+
 #ifdef SSL_OP_NO_TLSv1
   if (!SslUseTlsv1)
-    ssl_options |= SSL_OP_NO_TLSv1;
+    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1);
 #endif
-/* these are always set */
-#ifdef SSL_OP_NO_SSLv3
-  ssl_options |= SSL_OP_NO_SSLv3;
-#endif
-#ifdef SSL_OP_NO_SSLv2
-  ssl_options |= SSL_OP_NO_SSLv2;
-#endif
-  if (!SSL_CTX_set_options(ssldata->ctx, ssl_options))
-  {
-    mutt_debug(1, "Error setting options to %ld\n", ssl_options);
-    goto bail_ctx;
-  }
+
+  if (!SslUseSslv3)
+    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_SSLv3);
+
+  if (!SslUseSslv2)
+    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_SSLv2);
 
   if (SslUsesystemcerts)
   {
     if (!SSL_CTX_set_default_verify_paths(ssldata->ctx))
     {
       mutt_debug(1, "Error setting default verify paths\n");
-      goto bail_ctx;
+      goto free_ctx;
     }
   }
 
@@ -1464,11 +1351,7 @@ int mutt_ssl_starttls(struct Connection *conn)
 
   if (SslCiphers)
   {
-    if (!SSL_CTX_set_cipher_list(ssldata->ctx, SslCiphers))
-    {
-      mutt_debug(1, "Could not select preferred ciphers\n");
-      goto bail_ctx;
-    }
+    SSL_CTX_set_cipher_list(ssldata->ctx, SslCiphers);
   }
 
   if (ssl_set_verify_partial(ssldata->ctx))
@@ -1477,41 +1360,68 @@ int mutt_ssl_starttls(struct Connection *conn)
   }
 
   ssldata->ssl = SSL_new(ssldata->ctx);
-  if (!ssldata->ssl)
-  {
-    mutt_debug(1, "Error allocating SSL\n");
-    goto bail_ctx;
-  }
-
-  if (SSL_set_fd(ssldata->ssl, conn->fd) != 1)
-  {
-    mutt_debug(1, "Error setting fd\n");
-    goto bail_ssl;
-  }
+  SSL_set_fd(ssldata->ssl, conn->fd);
 
   if (ssl_negotiate(conn, ssldata))
-    goto bail_ssl;
+    goto free_ssl;
 
   ssldata->isopen = 1;
-
-  /* hmm. watch out if we're starting TLS over any method other than raw. */
-  conn->sockdata = ssldata;
-  conn->conn_read = ssl_socket_read;
-  conn->conn_write = ssl_socket_write;
-  conn->conn_close = tls_close;
-
   conn->ssf = SSL_CIPHER_get_bits(SSL_get_current_cipher(ssldata->ssl), &maxbits);
 
   return 0;
 
-bail_ssl:
+free_ssl:
   FREE(&ssldata->ssl);
-bail_ctx:
+free_ctx:
   FREE(&ssldata->ctx);
-bail_ssldata:
+free_sasldata:
   FREE(&ssldata);
-bail:
+
   return -1;
+}
+
+/**
+ * ssl_socket_open - Open an SSL socket
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static int ssl_socket_open(struct Connection *conn)
+{
+  int ret;
+
+  if (raw_socket_open(conn) < 0)
+    return -1;
+
+  ret = ssl_setup(conn);
+  if (ret)
+    raw_socket_close(conn);
+
+  return ret;
+}
+
+/**
+ * mutt_ssl_starttls - Negotiate TLS over an already opened connection
+ * @param conn Connection to a server
+ * @retval  0 Success
+ * @retval -1 Error
+ *
+ */
+int mutt_ssl_starttls(struct Connection *conn)
+{
+  int ret;
+
+  if (ssl_init())
+    return -1;
+
+  ret = ssl_setup(conn);
+
+  /* hmm. watch out if we're starting TLS over any method other than raw. */
+  conn->conn_read = ssl_socket_read;
+  conn->conn_write = ssl_socket_write;
+  conn->conn_close = ssl_socket_close_and_restore;
+
+  return ret;
 }
 
 /**

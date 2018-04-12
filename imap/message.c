@@ -1330,7 +1330,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   if (len)
     flush_buffer(buf, &len, idata->conn);
 
-  mutt_socket_write(idata->conn, "\r\n");
+  mutt_socket_send(idata->conn, "\r\n");
   mutt_file_fclose(&fp);
 
   do
