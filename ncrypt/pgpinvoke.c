@@ -20,8 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file contains the new pgp invocation code.  Note that this
- * is almost entirely format based.
+/**
+ * @page crypt_pgpinvoke Wrapper around calls to external PGP program
+ *
+ * This file contains the new pgp invocation code.
+ *
+ * @note This is almost entirely format based.
  */
 
 #include "config.h"

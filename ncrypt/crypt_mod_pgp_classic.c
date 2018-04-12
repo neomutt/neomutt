@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt_mod_pgp Wrappers for calls to CLI PGP
+ *
+ * Wrappers for calls to CLI PGP
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include "crypt_mod.h"

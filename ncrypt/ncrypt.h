@@ -21,6 +21,31 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page ncrypt Encrypt/decrypt/sign/verify emails
+ *
+ * Encrypt/decrypt/sign/verify emails
+ *
+ * | File                             | Description                          |
+ * | :------------------------------- | :----------------------------------- |
+ * | ncrypt/crypt.c                   | @subpage crypt_crypt                 |
+ * | ncrypt/cryptglue.c               | @subpage crypt_cryptglue             |
+ * | ncrypt/crypt_gpgme.c             | @subpage crypt_crypt_gpgme           |
+ * | ncrypt/crypt_mod.c               | @subpage crypt_crypt_mod             |
+ * | ncrypt/crypt_mod_pgp_classic.c   | @subpage crypt_crypt_mod_pgp         |
+ * | ncrypt/crypt_mod_pgp_gpgme.c     | @subpage crypt_crypt_mod_pgp_gpgme   |
+ * | ncrypt/crypt_mod_smime_classic.c | @subpage crypt_crypt_mod_smime       |
+ * | ncrypt/crypt_mod_smime_gpgme.c   | @subpage crypt_crypt_mod_smime_gpgme |
+ * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
+ * | ncrypt/pgp.c                     | @subpage crypt_pgp                   |
+ * | ncrypt/pgpinvoke.c               | @subpage crypt_pgpinvoke             |
+ * | ncrypt/pgpkey.c                  | @subpage crypt_pgpkey                |
+ * | ncrypt/pgplib.c                  | @subpage crypt_pgplib                |
+ * | ncrypt/pgpmicalg.c               | @subpage crypt_pgpmicalg             |
+ * | ncrypt/pgppacket.c               | @subpage crypt_pgppacket             |
+ * | ncrypt/smime.c                   | @subpage crypt_smime                 |
+ */
+
 #ifndef _NCRYPT_NCRYPT_H
 #define _NCRYPT_NCRYPT_H
 

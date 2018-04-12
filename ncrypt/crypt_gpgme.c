@@ -27,6 +27,12 @@
  * crypt_gpgme.c - GPGME based crypto operations
  */
 
+/**
+ * @page crypt_crypt_gpgme Wrapper for PGP/SMIME calls to GPGME
+ *
+ * Wrapper for PGP/SMIME calls to GPGME
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
@@ -2394,7 +2400,7 @@ void pgp_gpgme_invoke_import(const char *fname)
  *
  * strip the signature and PGP's dash-escaping.
  *
- * XXX - charset handling: We assume that it is safe to do character set
+ * XXX charset handling: We assume that it is safe to do character set
  * decoding first, dash decoding second here, while we do it the other way
  * around in the main handler.
  *
@@ -2514,7 +2520,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       }
       else
       {
-        /* XXX - we may wish to recode here */
+        /* XXX we may wish to recode here */
         if (s->prefix)
           state_puts(s->prefix, s);
         state_puts(buf, s);
@@ -2672,7 +2678,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
     else
     {
       /* A traditional PGP part may mix signed and unsigned content */
-      /* XXX - we may wish to recode here */
+      /* XXX we may wish to recode here */
       if (s->prefix)
         state_puts(s->prefix, s);
       state_puts(buf, s);

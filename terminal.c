@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page terminal Set the terminal title/icon
+ *
+ * Set the terminal title/icon
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>

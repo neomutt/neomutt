@@ -25,6 +25,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt Signing/encryption multiplexor
+ *
+ * Signing/encryption multiplexor
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <locale.h>

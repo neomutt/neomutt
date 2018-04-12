@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_smime SMIME helper routines
+ *
+ * SMIME helper routines
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>

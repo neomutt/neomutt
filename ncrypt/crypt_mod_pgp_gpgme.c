@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt_mod_pgp_gpgme Wrappers for calls to GPGME PGP
+ *
+ * Wrappers for calls to GPGME PGP
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include "crypt_gpgme.h"

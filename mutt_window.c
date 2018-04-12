@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page window Window management
+ *
+ * Window management
+ */
+
 #include "config.h"
 #include "globals.h"
 #include "mutt/logging.h"
