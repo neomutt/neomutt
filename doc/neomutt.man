@@ -147,11 +147,11 @@ Run in batch mode (do not start the ncurses UI).
 .
 .TP
 .BI \-b " address"
-Specify a blind-carbon-copy (BCC) recipient.
+Specify a blind-carbon-copy (Bcc) recipient.
 .
 .TP
 .BI \-c " address"
-Specify a carbon-copy (CC) recipient.
+Specify a carbon-copy (Cc) recipient.
 .
 .TP
 .BI \-D
@@ -207,7 +207,7 @@ a message.
 .
 .TP
 .BI \-h
-Display help.
+Display this help message.
 .
 .TP
 .BI \-i " include"
@@ -250,7 +250,9 @@ Display license and copyright information.
 .
 .TP
 .BI \-x
-Emulate the mailx compose mode.
+Simulate the
+.BR mailx (1)
+send mode.
 .
 .TP
 .BI \-y
@@ -498,6 +500,7 @@ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 .\" --------------------------------------------------------------------
 .PP
 .BR gettext (1),
+.BR mailx (1),
 .BR msmtp (1),
 .BR notmuch (1),
 .BR pgpring (1),
