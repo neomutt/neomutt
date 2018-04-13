@@ -91,6 +91,14 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
+.BI \-d " level"
+.BI \-l " file"
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
 .BI \-p
 .YS
 .
@@ -163,14 +171,13 @@ Like \fB\-D\fP but hide the value of sensitive variables.
 .
 .TP
 .BI \-d " level"
-Log debugging output to file, by default to \fI~/.neomuttdebug0\fP, but see
-also configuration variables $debug_file and $debug_level in full manual. The
-\fIlevel\fP can range from 1\(em5 and affects verbosity. A value of 2 is
+Log debugging output to file, by default to \fI~/.neomuttdebug0\fP. The
+\fIlevel\fP can range from 1\(en5 and affects verbosity. A value of 2 is
 recommended.
 .IP
-NeoMutt keeps up to five debug logs
-.RI ( ~/.neomuttdebug [ 0 - 4 ])
-before removing the oldest file on next invocation with this option.
+Using this option along with \fB\-l\fP is useful to log the early startup
+process (before reading any configuration and hence $debug_level and
+$debug_file).
 .
 .TP
 .BI \-E
@@ -212,6 +219,13 @@ Display this help message.
 .TP
 .BI \-i " include"
 Specify a file to \fIinclude\fP into the body of a message.
+.
+.TP
+.BI \-l " file"
+Overrule $debug_file or default setting with \fIfile\fP for debugging output.
+NeoMutt keeps up to five debug logs
+.RI "({ " file " | $debug_file | " ~/.neomuttdebug " }[" 0 - 4 ])
+before removing the oldest file.
 .
 .TP
 .BI \-m " type"
@@ -454,8 +468,8 @@ locations.
 .
 .TP
 .IR "~/.neomuttdebug0"
-Default user debug log file. For further details see command line option
-\fB\-d\fP above.
+User's default debug log file. For further details or customising file path see
+command line options \fB\-d\fP and \fB\-l\fP above.
 .
 .TP
 .IR "/etc/mime.types"
