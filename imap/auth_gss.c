@@ -75,6 +75,8 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
     if (GSS_ERROR(maj_stat))
       break;
     mutt_str_strfcpy(buf_maj, (char *) status_string.value, sizeof(buf_maj));
+    if (status_string.length < sizeof(buf_maj))
+      buf_maj[status_string.length] = '\0';
     gss_release_buffer(&min_stat, &status_string);
 
     maj_stat = gss_display_status(&min_stat, err_min, GSS_C_MECH_CODE,
@@ -82,6 +84,8 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
     if (!GSS_ERROR(maj_stat))
     {
       mutt_str_strfcpy(buf_min, (char *) status_string.value, sizeof(buf_min));
+      if (status_string.length < sizeof(buf_min))
+        buf_min[status_string.length] = '\0';
       gss_release_buffer(&min_stat, &status_string);
     }
   } while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
@@ -119,7 +123,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   /* get an IMAP service ticket for the server */
   snprintf(buf1, sizeof(buf1), "imap@%s", idata->conn->account.host);
   request_buf.value = buf1;
-  request_buf.length = strlen(buf1) + 1;
+  request_buf.length = strlen(buf1);
   maj_stat = gss_import_name(&min_stat, &request_buf, gss_nt_service_name, &target_name);
   if (maj_stat != GSS_S_COMPLETE)
   {
@@ -262,7 +266,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method)
   /* server decides if principal can log in as user */
   strncpy(buf1 + 4, idata->conn->account.user, sizeof(buf1) - 4);
   request_buf.value = buf1;
-  request_buf.length = 4 + strlen(idata->conn->account.user) + 1;
+  request_buf.length = 4 + strlen(idata->conn->account.user);
   maj_stat = gss_wrap(&min_stat, context, 0, GSS_C_QOP_DEFAULT, &request_buf,
                       &cflags, &send_token);
   if (maj_stat != GSS_S_COMPLETE)
