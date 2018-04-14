@@ -3669,7 +3669,7 @@ int mutt_dump_variables(int hide_sensitive)
 
     if (hide_sensitive && IS_SENSITIVE(MuttVars[i]))
     {
-      mutt_message("%s='***'\n", MuttVars[i].name);
+      mutt_message("%s='***'", MuttVars[i].name);
       continue;
     }
     snprintf(command, sizeof(command), "set ?%s\n", MuttVars[i].name);
