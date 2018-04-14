@@ -230,7 +230,7 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                       (flags & SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
   else
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
-                      fname, NULL, NULL, PgpClearSignCommand);
+                      fname, NULL, NULL, PgpClearsignCommand);
 }
 
 void pgp_invoke_import(const char *fname)

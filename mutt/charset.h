@@ -80,7 +80,7 @@ enum LookupType
 
 #define MUTT_ICONV_HOOK_FROM 1 /**< apply charset-hooks to fromcode */
 
-extern const struct MimeNames PreferredMIMENames[];
+extern const struct MimeNames PreferredMimeNames[];
 
 void             mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name);
 int              mutt_ch_chscmp(const char *cs1, const char *cs2);

@@ -77,7 +77,7 @@ static TAILQ_HEAD(LookupHead, Lookup) Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
 // clang-format off
 /**
- * PreferredMIMENames - Lookup table of preferred charsets
+ * PreferredMimeNames - Lookup table of preferred charsets
  *
  * The following list has been created manually from the data under:
  * http://www.isi.edu/in-notes/iana/assignments/character-sets
@@ -86,7 +86,7 @@ static TAILQ_HEAD(LookupHead, Lookup) Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
  * @note It includes only the subset of character sets for which a preferred
  * MIME name is given.
  */
-const struct MimeNames PreferredMIMENames[] =
+const struct MimeNames PreferredMimeNames[] =
 {
   { "ansi_x3.4-1968",        "us-ascii"      },
   { "iso-ir-6",              "us-ascii"      },
@@ -335,12 +335,12 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   else
     mutt_str_strfcpy(scratch, in, sizeof(scratch));
 
-  for (size_t i = 0; PreferredMIMENames[i].key; i++)
+  for (size_t i = 0; PreferredMimeNames[i].key; i++)
   {
-    if ((mutt_str_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
-        (mutt_str_strcasecmp(scratch, PreferredMIMENames[i].key) == 0))
+    if ((mutt_str_strcasecmp(scratch, PreferredMimeNames[i].key) == 0) ||
+        (mutt_str_strcasecmp(scratch, PreferredMimeNames[i].key) == 0))
     {
-      mutt_str_strfcpy(buf, PreferredMIMENames[i].pref, buflen);
+      mutt_str_strfcpy(buf, PreferredMimeNames[i].pref, buflen);
       goto out;
     }
   }
@@ -729,8 +729,8 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
  * @retval bool true if character set is valid
  *
  * If `strict` is false, then finding a matching character set in
- * #PreferredMIMENames will be enough.
- * If `strict` is true, or the charset is not in #PreferredMIMENames, then
+ * #PreferredMimeNames will be enough.
+ * If `strict` is true, or the charset is not in #PreferredMimeNames, then
  * iconv() with be run.
  */
 bool mutt_ch_check_charset(const char *cs, bool strict)
@@ -742,10 +742,10 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
 
   if (!strict)
   {
-    for (int i = 0; PreferredMIMENames[i].key; i++)
+    for (int i = 0; PreferredMimeNames[i].key; i++)
     {
-      if ((mutt_str_strcasecmp(PreferredMIMENames[i].key, cs) == 0) ||
-          (mutt_str_strcasecmp(PreferredMIMENames[i].pref, cs) == 0))
+      if ((mutt_str_strcasecmp(PreferredMimeNames[i].key, cs) == 0) ||
+          (mutt_str_strcasecmp(PreferredMimeNames[i].pref, cs) == 0))
       {
         return true;
       }

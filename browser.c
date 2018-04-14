@@ -1305,8 +1305,8 @@ void mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfi
             case MUTT_MMDF:
               if (Folder)
                 mutt_str_strfcpy(LastDir, NONULL(Folder), sizeof(LastDir));
-              else if (SpoolFile)
-                mutt_browser_select_dir(SpoolFile);
+              else if (Spoolfile)
+                mutt_browser_select_dir(Spoolfile);
               break;
             default:
               mutt_browser_select_dir(CurrentFolder);

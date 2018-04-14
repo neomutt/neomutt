@@ -1186,7 +1186,7 @@ struct Option MuttVars[] = {
   */
 #endif /* HAVE_QDBM */
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  { "header_cache_pagesize", DT_STRING, R_NONE, &HeaderCachePageSize, IP "16384" },
+  { "header_cache_pagesize", DT_STRING, R_NONE, &HeaderCachePagesize, IP "16384" },
   /*
   ** .pp
   ** When NeoMutt is compiled with either gdbm or bdb4 as the header cache backend,
@@ -2024,7 +2024,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** Character set of newsgroups descriptions.
   */
-  { "newsrc",           DT_PATH, R_NONE, &NewsRc, IP "~/.newsrc" },
+  { "newsrc",           DT_PATH, R_NONE, &Newsrc, IP "~/.newsrc" },
   /*
   ** .pp
   ** The file, containing info about subscribed newsgroups - names and
@@ -2266,7 +2266,7 @@ struct Option MuttVars[] = {
   ** subprocess failed.
   ** (PGP only)
   */
-  { "pgp_clearsign_command",    DT_STRING, R_NONE, &PgpClearSignCommand, 0 },
+  { "pgp_clearsign_command",    DT_STRING, R_NONE, &PgpClearsignCommand, 0 },
   /*
   ** .pp
   ** This format is used to create an old-style ``clearsigned'' PGP
@@ -2898,7 +2898,7 @@ struct Option MuttVars[] = {
   ** .pp
   ** If \fIset\fP, all folders are opened in read-only mode.
   */
-  { "realname",         DT_STRING,  R_BOTH, &RealName, 0 },
+  { "realname",         DT_STRING,  R_BOTH, &Realname, 0 },
   /*
   ** .pp
   ** This variable specifies what ``real'' or ``personal'' name should be used
@@ -3476,7 +3476,7 @@ struct Option MuttVars[] = {
   ** \fIset\fP by default.
   ** (S/MIME only)
   */
-  { "smime_ca_location",        DT_PATH, R_NONE, &SmimeCALocation, 0 },
+  { "smime_ca_location",        DT_PATH, R_NONE, &SmimeCaLocation, 0 },
   /*
   ** .pp
   ** This variable contains the name of either a directory, or a file which
@@ -3842,7 +3842,7 @@ struct Option MuttVars[] = {
   ** match will append to the previous, using this variable's value as a
   ** separator.
   */
-  { "spoolfile",        DT_PATH, R_NONE, &SpoolFile, 0 },
+  { "spoolfile",        DT_PATH, R_NONE, &Spoolfile, 0 },
   /*
   ** .pp
   ** If your spool mailbox is in a non-default place where NeoMutt cannot find
@@ -4207,14 +4207,14 @@ struct Option MuttVars[] = {
   ** Controls whether NeoMutt tries to set the terminal status line and icon name.
   ** Most terminal emulators emulate the status line in the window title.
   */
-  { "ts_icon_format",    DT_STRING,  R_BOTH, &TSIconFormat, IP "M%?n?AIL&ail?" },
+  { "ts_icon_format",    DT_STRING,  R_BOTH, &TsIconFormat, IP "M%?n?AIL&ail?" },
   /*
   ** .pp
   ** Controls the format of the icon title, as long as ``$$ts_enabled'' is set.
   ** This string is identical in formatting to the one used by
   ** ``$$status_format''.
   */
-  { "ts_status_format",  DT_STRING,   R_BOTH, &TSStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?" },
+  { "ts_status_format",  DT_STRING,   R_BOTH, &TsStatusFormat, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?" },
   /*
   ** .pp
   ** Controls the format of the terminal status line (or window title),

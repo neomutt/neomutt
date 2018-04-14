@@ -2784,7 +2784,7 @@ int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
    * upon message criteria.
    */
   if (!from->personal)
-    from->personal = mutt_str_strdup(RealName);
+    from->personal = mutt_str_strdup(Realname);
 
   if (fqdn)
     mutt_addr_qualify(from, fqdn);

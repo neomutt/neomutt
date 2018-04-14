@@ -835,7 +835,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else if (b->msg_flagged > 0)
       SETCOLOR(MT_COLOR_FLAGGED);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
-             (mutt_str_strcmp(b->path, SpoolFile) == 0))
+             (mutt_str_strcmp(b->path, Spoolfile) == 0))
     {
       SETCOLOR(MT_COLOR_SB_SPOOLFILE);
     }

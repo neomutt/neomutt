@@ -128,7 +128,7 @@ int mutt_complete(char *s, size_t slen)
   if (*s == '=' || *s == '+' || *s == '!')
   {
     if (*s == '!')
-      p = NONULL(SpoolFile);
+      p = NONULL(Spoolfile);
     else
       p = NONULL(Folder);
 
@@ -146,7 +146,7 @@ int mutt_complete(char *s, size_t slen)
     dirpart[0] = *s;
     dirpart[1] = '\0';
     if (*s == '!')
-      mutt_str_strfcpy(exp_dirpart, NONULL(SpoolFile), sizeof(exp_dirpart));
+      mutt_str_strfcpy(exp_dirpart, NONULL(Spoolfile), sizeof(exp_dirpart));
     else
       mutt_str_strfcpy(exp_dirpart, NONULL(Folder), sizeof(exp_dirpart));
     p = strrchr(s, '/');

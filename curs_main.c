@@ -805,9 +805,9 @@ static void index_menu_redraw(struct Menu *menu)
     menu->redraw &= ~REDRAW_STATUS;
     if (TsEnabled && TsSupported)
     {
-      menu_status_line(buf, sizeof(buf), menu, NONULL(TSStatusFormat));
+      menu_status_line(buf, sizeof(buf), menu, NONULL(TsStatusFormat));
       mutt_ts_status(buf);
-      menu_status_line(buf, sizeof(buf), menu, NONULL(TSIconFormat));
+      menu_status_line(buf, sizeof(buf), menu, NONULL(TsIconFormat));
       mutt_ts_icon(buf);
     }
   }

@@ -249,7 +249,7 @@ char *mutt_expand_path_regex(char *s, size_t slen, int regex)
         }
         else
         {
-          mutt_str_strfcpy(p, NONULL(SpoolFile), sizeof(p));
+          mutt_str_strfcpy(p, NONULL(Spoolfile), sizeof(p));
           tail = s + 1;
         }
       }

@@ -3865,9 +3865,9 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   const char *p = mutt_str_getenv("MAIL");
   if (p)
-    SpoolFile = mutt_str_strdup(p);
+    Spoolfile = mutt_str_strdup(p);
   else if ((p = mutt_str_getenv("MAILDIR")))
-    SpoolFile = mutt_str_strdup(p);
+    Spoolfile = mutt_str_strdup(p);
   else
   {
 #ifdef HOMESPOOL
@@ -3875,7 +3875,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 #else
     mutt_file_concat_path(buffer, MAILPATH, NONULL(Username), sizeof(buffer));
 #endif
-    SpoolFile = mutt_str_strdup(buffer);
+    Spoolfile = mutt_str_strdup(buffer);
   }
 
   p = mutt_str_getenv("REPLYTO");
@@ -4071,7 +4071,7 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
     {
       if (b->magic == MUTT_NOTMUCH)
       {
-        mutt_str_replace(&SpoolFile, b->path);
+        mutt_str_replace(&Spoolfile, b->path);
         mutt_sb_toggle_virtual();
         break;
       }
