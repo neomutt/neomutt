@@ -67,6 +67,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
   gss_buffer_desc status_string;
   char buf_maj[512];
   char buf_min[512];
+  size_t status_len;
 
   do
   {
@@ -74,18 +75,22 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
                                   GSS_C_NO_OID, &msg_ctx, &status_string);
     if (GSS_ERROR(maj_stat))
       break;
-    mutt_str_strfcpy(buf_maj, (char *) status_string.value, sizeof(buf_maj));
-    if (status_string.length < sizeof(buf_maj))
-      buf_maj[status_string.length] = '\0';
+    status_len = status_string.length;
+    if (status_len >= sizeof(buf_maj))
+      status_len = sizeof(buf_maj) - 1;
+    strncpy(buf_maj, (char *) status_string.value, status_len);
+    buf_maj[status_len] = '\0';
     gss_release_buffer(&min_stat, &status_string);
 
     maj_stat = gss_display_status(&min_stat, err_min, GSS_C_MECH_CODE,
                                   GSS_C_NULL_OID, &msg_ctx, &status_string);
     if (!GSS_ERROR(maj_stat))
     {
-      mutt_str_strfcpy(buf_min, (char *) status_string.value, sizeof(buf_min));
-      if (status_string.length < sizeof(buf_min))
-        buf_min[status_string.length] = '\0';
+      status_len = status_string.length;
+      if (status_len >= sizeof(buf_min))
+        status_len = sizeof(buf_min) - 1;
+      strncpy(buf_min, (char *) status_string.value, status_len);
+      buf_min[status_len] = '\0';
       gss_release_buffer(&min_stat, &status_string);
     }
   } while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
