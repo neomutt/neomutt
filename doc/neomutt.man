@@ -28,24 +28,15 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .SH SYNTAX
 .\" --------------------------------------------------------------------
 .SY neomutt
-.OP \-GnRyZz
-.OP \-e command
-.OP \-F config
-.OP \-f mailbox
-.OP \-g server
-.OP \-m type
-.YS
-.
-.SY neomutt
 .OP \-Enx
 .OP \-e command
 .OP \-F config
 .OP \-H draft
 .OP \-i include
-.OP \-s subject
 .br
 .OP \-b address
 .OP \-c address
+.OP \-s subject
 .RB [ \-a
 .IR file " [" .\|.\|.\& ]
 .BR \-\- ]
@@ -56,14 +47,22 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .OP \-nx
 .OP \-e command
 .OP \-F config
-.OP \-s subject
 .OP \-b address
 .OP \-c address
 .br
+.OP \-s subject
 .RB [ \-a
 .IR file " [" .\|.\|.\& ]
 .BR \-\- ]
 .IR address " [" .\|.\|.\& "] < message"
+.YS
+.
+.SY neomutt
+.OP \-nRy
+.OP \-e command
+.OP \-F config
+.OP \-f mailbox
+.OP \-m type
 .YS
 .
 .SY neomutt
@@ -99,6 +98,20 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
+.BI \-G
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BI \-g " server"
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
 .BI \-p
 .YS
 .
@@ -107,6 +120,21 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .OP \-e command
 .OP \-F config
 .BI \-Q " variable"
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BI \-Z
+.YS
+.
+.SY neomutt
+.OP \-n
+.OP \-e command
+.OP \-F config
+.BI \-z
+.OP \-f mailbox
 .YS
 .
 .SY neomutt
@@ -132,13 +160,12 @@ HTML, and/or PDF format.
 .\" --------------------------------------------------------------------
 .TP
 .BI \-A " alias"
-An expanded version of the given \fIalias\fP is passed to stdout.
+Print an expanded version of the given \fIalias\fP to stdout and exit.
 .
 .TP
 .BI \-a " file \fR[\fP.\|.\|.\&\fR]\fP"
-Attach a \fIfile\fP to your message using MIME. When attaching single or
-multiple \fIfile\fPs, separating filenames and recipient addresses with
-\(lq\fB\-\-\fP\(rq is mandatory, e.g.:
+Attach one or more \fIfile\fPs to a message. Must be given at last and separate
+attachment(s) from address(es) using the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RS
 .IP
 .EX
@@ -147,7 +174,6 @@ multiple \fIfile\fPs, separating filenames and recipient addresses with
 .EE
 .RE
 .IP
-This \fB\-a\fP option must be placed at the end of command line options.
 .
 .TP
 .BI \-B
@@ -155,24 +181,26 @@ Run in batch mode (do not start the ncurses UI).
 .
 .TP
 .BI \-b " address"
-Specify a blind-carbon-copy (Bcc) recipient.
+Specify a blind carbon copy (Bcc) recipient.
 .
 .TP
 .BI \-c " address"
-Specify a carbon-copy (Cc) recipient.
+Specify a carbon copy (Cc) recipient.
 .
 .TP
 .BI \-D
-Print the value of all configuration options to stdout.
+Dump all configuration variables as
+.RB \(aq name = value \(aq
+pair to stdout.
 .
 .TP
 .BI \-D\ \-S
-Like \fB\-D\fP but hide the value of sensitive variables.
+Like \fB\-D\fP, but hide the value of sensitive variables.
 .
 .TP
 .BI \-d " level"
-Log debugging output to file, by default to \fI~/.neomuttdebug0\fP. The
-\fIlevel\fP can range from 1\(en5 and affects verbosity. A value of 2 is
+Log debugging output to file (by default to \(dq\fI~/.neomuttdebug0\fP\(dq).
+The \fIlevel\fP can range from 1\(en5 and affects verbosity. A value of 2 is
 recommended.
 .IP
 Using this option along with \fB\-l\fP is useful to log the early startup
@@ -181,22 +209,22 @@ $debug_file).
 .
 .TP
 .BI \-E
-Edit the \fIdraft\fP (\fB\-H\fP) or \fIinclude\fP (\fB\-i\fP) file during
-message composition.
+Edit \fIdraft\fP (\fB\-H\fP) or \fIinclude\fP (\fB\-i\fP) file during message
+composition.
 .
 .TP
 .BI \-e " command"
-Specify a configuration \fIcommand\fP to be run after processing of
-initialization files.
+Specify a \fIcommand\fP to be run after initial program configuration.
 .
 .TP
 .BI \-F " config"
-Specify an alternative initialization file to read, see \fIFILES\fP section
-below for a list of regular configuration files.
+Specify an alternative initialization file to read.
+.IP
+See \fIFILES\fP section below for a list of regular configuration files.
 .
 .TP
 .BI \-f " mailbox"
-Specify which \fImailbox\fP to load.
+Specify a \fImailbox\fP (as defined with \fBmailboxes\fP command) to load.
 .
 .TP
 .BI \-G
@@ -204,63 +232,61 @@ Start NeoMutt with a listing of subscribed newsgroups.
 .
 .TP
 .BI \-g " server"
-Start NeoMutt with a listing of subscribed newsgroups at specified news
-\fIserver\fP.
+Like \fB\-G\fP, but start at specified news \fIserver\fP.
 .
 .TP
 .BI \-H " draft"
-Specify a \fIdraft\fP file which contains header and body to use to send
-a message.
+Specify a \fIdraft\fP file with header and body for message composing.
 .
 .TP
 .BI \-h
-Display this help message.
+Print this help message and exit.
 .
 .TP
 .BI \-i " include"
-Specify a file to \fIinclude\fP into the body of a message.
+Specify an \fIinclude\fP file to be embedded in the body of a message.
 .
 .TP
 .BI \-l " file"
-Overrule $debug_file or default setting with \fIfile\fP for debugging output.
-NeoMutt keeps up to five debug logs
+Specify a \fIfile\fP for debugging output.
+.IP
+This overrules $debug_file setting. NeoMutt keeps up to five debug logs
 .RI "({ " file " | $debug_file | " ~/.neomuttdebug " }[" 0 - 4 ])
-before removing the oldest file.
+before override the oldest file.
 .
 .TP
 .BI \-m " type"
-Specify a default mailbox \fItype\fP for newly created folders.
+Specify a default mailbox format \fItype\fP for newly created folders. The
+\fItype\fP is either MH, MMDF, Maildir or mbox (case-insensitive).
 .
 .TP
 .BI \-n
-Causes NeoMutt to bypass the system configuration file.
+Bypass loading of system-wide configuration file.
 .
 .TP
 .BI \-p
-Resume a postponed message.
+Resume a prior postponed message, if any.
 .
 .TP
 .BI \-Q " variable"
-Query a configuration \fIvariable\fP. The query is executed after all
-configuration files have been parsed, and any commands given on the command
-line have been executed.
+Query a configuration \fIvariable\fP after all configuration files and commands
+(\fB\-e\fP) have been processed and print its value to stdout.
 .
 .TP
 .BI \-R
-Open a mailbox in read-only mode.
+Open mailbox in read-only mode.
 .
 .TP
 .BI \-s " subject"
-Specify the \fIsubject\fP of the message. Must be quoted when it contains
-spaces.
+Specify a \fIsubject\fP (must be enclosed in quotes if it has spaces).
 .
 .TP
 .BI \-v
-Display the NeoMutt version number and compile-time definitions.
+Print the NeoMutt version and compile-time definitions and exit.
 .
 .TP
 .BI \-vv
-Display license and copyright information.
+Print the NeoMutt license and copyright information and exit.
 .
 .TP
 .BI \-x
@@ -270,23 +296,22 @@ send mode.
 .
 .TP
 .BI \-y
-Start NeoMutt with a listing of all mailboxes specified by the \fBmailboxes\fP
-command.
+Start NeoMutt with a listing of all defined mailboxes.
 .
 .TP
 .BI \-Z
-Causes NeoMutt to open the first mailbox specified by the \fBmailboxes\fP
-command which contains new mail.
+Open the first mailbox with new message or exit immediately with exit code 1 if
+none is found in all defined mailboxes.
 .
 .TP
 .BI \-z
-When used with option \fB\-f\fP, causes NeoMutt not to start if there are no
-messages in the mailbox.
+Open the first or specified (\fB\-f\fP) mailbox if it holds any message or exit
+immediately with exit code 1 otherwise.
 .
 .TP
 .BI \-\-
-Treat remaining arguments as \fIaddress\fP even if they start with a dash. See
-also option \fB\-a\fP above.
+Special argument forces NeoMutt to stop option parsing and treat remaining
+arguments as \fIaddress\fP even if they start with a hyphen.
 .
 .\" --------------------------------------------------------------------
 .SH ENVIRONMENT

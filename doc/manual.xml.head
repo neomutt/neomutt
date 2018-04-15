@@ -16777,7 +16777,7 @@ neomutt -a image.jpg *.png -- address1 address2
         </tgroup>
       </table>
       <para>
-        To read messages in a mailbox
+        To read messages in a mailbox or exit immediately
       </para>
       <cmdsynopsis>
         <command>neomutt</command>
@@ -16786,15 +16786,15 @@ neomutt -a image.jpg *.png -- address1 address2
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <replaceable>neomuttrc</replaceable>
+          <literal>config</literal>
         </arg>
         <arg choice="opt">
           <option>-m</option>
-          <replaceable>type</replaceable>
+          <literal>type</literal>
         </arg>
         <arg choice="opt">
           <option>-f</option>
-          <replaceable>mailbox</replaceable>
+          <literal>mailbox</literal>
         </arg>
       </cmdsynopsis>
       <para>
@@ -16803,31 +16803,41 @@ neomutt -a image.jpg *.png -- address1 address2
       <cmdsynopsis>
         <command>neomutt</command>
         <arg choice="opt">
-          <option>-En</option>
+          <option>-Enx</option>
         </arg>
         <arg choice="opt">
           <option>-F</option>
-          <replaceable>neomuttrc</replaceable>
+          <literal>config</literal>
+        </arg>
+        <arg choice="opt">
+          <option>-b</option>
+          <literal>address</literal>
         </arg>
         <arg choice="opt">
           <option>-c</option>
-          <replaceable>address</replaceable>
+          <literal>address</literal>
         </arg>
         <arg choice="opt">
-          <option>-Hi</option>
-          <replaceable>filename</replaceable>
+          <option>-H</option>
+          <literal>draft</literal>
+        </arg>
+        <arg choice="opt">
+          <option>-i</option>
+          <literal>include</literal>
         </arg>
         <arg choice="opt">
           <option>-s</option>
-          <replaceable>subject</replaceable>
+          <literal>subject</literal>
         </arg>
         <arg choice="opt">
-        <option>-a</option>
-        <replaceable>file</replaceable>
-        <arg choice="opt" rep="repeat" />--</arg>
-        <group choice="plain" rep="repeat">
+          <option>-a</option>
+          <literal>file</literal>
+          <arg choice="opt" rep="repeat" />
+          <option>--</option>
+        </arg>
+        <group choice="req" rep="repeat">
           <arg choice="plain">
-            <replaceable>address</replaceable>
+            <literal>address</literal>
           </arg>
           <arg choice="plain">
             <replaceable>mailto_url</replaceable>
@@ -16869,8 +16879,8 @@ neomutt -s "data set for run #2" professor@bigschool.edu &lt; ~/run2.dat
       <para>
         All files passed with <literal>-a</literal> <emphasis>file</emphasis>
         will be attached as a MIME part to the message. To attach a single or
-        several files, use <quote>--</quote> to separate files and recipient
-        addresses:
+        several files, use <literal>--</literal> to separate files and
+        recipient addresses:
       </para>
       <screen>neomutt -a image.png -- some@one.org</screen>
       <para>
