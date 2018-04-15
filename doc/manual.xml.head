@@ -3151,6 +3151,83 @@ color sidebar_divider   color8  default
           </tgroup>
         </table>
       </sect2>
+
+      <sect2 id="config-priority">
+        <title>Config Priority</title>
+        <para>
+          The majority of NeoMutt's config will be read from two files: the
+          system config in <literal>/etc</literal> and the user config in, e.g.
+          <literal>~/.neomuttrc</literal>
+        </para>
+
+        <para>
+          The last file that gets read will overwrite any settings from
+          previous config files.  This means that an administrator can set some
+          defaults which the user can override.
+        </para>
+
+        <para>
+          Additionally, there are a handful of config items which can be set
+          using an environment variable.  They have a lower priority than the
+          NeoMutt config files:
+          <link linkend="editor">$editor</link>, 
+          <link linkend="from">$from</link>, 
+          <link linkend="mailcap-path">$mailcap_path</link>, 
+          <link linkend="news-server">$news_server</link>, 
+          <link linkend="shell">shell</link>, 
+          <link linkend="spoolfile">$spoolfile</link>, 
+          <link linkend="tmpdir">$tmpdir</link>, 
+          <link linkend="visual">$visual</link>.
+        </para>
+
+        <para>
+          Finally, it's possible to <link linkend="commandline">set some
+            variables directly</link> on the command-line using the
+          <literal>-e</literal> option.
+        </para>
+
+        <table id="table-config-priority">
+          <title>Config Priority</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Priority</entry>
+                <entry>Where</entry>
+                <entry>Example</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Highest</entry>
+                <entry>Command line</entry>
+                <entry><literal>neomutt -e 'set from=&quot;John Doe &lt;john@example.com&gt;&quot;'</literal></entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry>User Config</entry>
+                <entry><literal>~/.neomuttrc</literal></entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry>System Config</entry>
+                <entry><literal>/etc/neomuttrc</literal></entry>
+              </row>
+              <row>
+                <entry></entry>
+                <entry>Environment</entry>
+                <entry><literal>export EDITOR=&quot;/usr/bin/vim&quot;</literal></entry>
+              </row>
+              <row>
+                <entry>Lowest</entry>
+                <entry>Built-in</entry>
+                <entry>Defaults hard-coded into NeoMutt</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+
+      </sect2>
     </sect1>
 
     <sect1 id="neomuttrc-syntax" xreflabel="Syntax of Initialization Files">
