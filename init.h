@@ -683,17 +683,30 @@ struct Option MuttVars[] = {
   { "debug_file", DT_PATH, R_NONE, &DebugFile, IP "~/.neomuttdebug" },
   /*
   ** .pp
-  ** The location prefix of the debug file, 0 is append to the debug file
-  ** Old debug files are renamed with the prefix 1, 2, 3 and 4.
-  ** See ``debug_level'' for more detail.
+  ** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
+  ** \fC$$debug_file\fP specifies the root of the filename.  NeoMutt will add ``0'' to the end.
+  ** Each time NeoMutt is run with logging enabled, the log files are rotated.
+  ** A maximum of five log files are kept, numbered 0 (most recent) to 4 (oldest).
+  ** .pp
+  ** This option can be enabled on the command line, ``neomutt -l mylog''
+  ** .pp
+  ** See also: \fC$$debug_level\fP
   */
   { "debug_level", DT_NUMBER, R_NONE, &DebugLevel, 0 },
   /*
   ** .pp
-  ** The debug level. Note: to debug the early startup process (before the
-  ** configuration is loaded), ``-d'' neomutt argument must be used.
-  ** debug_level/debug_file are ignored until it's read from the configuration
-  ** file.
+  ** Debug logging is controlled by the variables \fC$$debug_file\fP and \fC$$debug_level\fP.
+  ** .pp
+  ** The debug level controls how much information is saved to the log file.
+  ** If you have a problem with NeoMutt, then enabling logging may help find the cause.
+  ** Levels 1-3 will usually provide enough information for writing a bug report.
+  ** Levels 4,5 will be extremely verbose.
+  ** .pp
+  ** Warning: Logging at high levels may save private information to the file.
+  ** .pp
+  ** This option can be enabled on the command line, ``neomutt -d 2''
+  ** .pp
+  ** See also: \fC$$debug_file\fP
   */
   { "default_hook",     DT_STRING,  R_NONE, &DefaultHook, IP "~f %s !~P | (~P ~C %s)" },
   /*
@@ -1061,11 +1074,11 @@ struct Option MuttVars[] = {
   { "from",             DT_ADDRESS, R_NONE, &From, 0 },
   /*
   ** .pp
-  ** When \fIset\fP, this variable contains a default from address.  It
+  ** When \fIset\fP, this variable contains a default ``from'' address.  It
   ** can be overridden using ``$my_hdr'' (including from a ``$send-hook'') and
   ** $$reverse_name.  This variable is ignored if $$use_from is \fIunset\fP.
   ** .pp
-  ** This setting defaults to the contents of the environment variable \fC$$$EMAIL\fP.
+  ** If not specified, then it may be read from the environment variable \fC$$$EMAIL\fP.
   */
   { "from_chars",               DT_MBTABLE,    R_BOTH, &FromChars, 0 },
   /*
@@ -1299,13 +1312,9 @@ struct Option MuttVars[] = {
   ** as the domain part (after ``@'') for local email addresses as well as
   ** Message-Id headers.
   ** .pp
-  ** Its value is determined at startup as follows: the node's
-  ** hostname is first determined by the \fCuname(3)\fP function.  The
-  ** domain is then looked up using the \fCgethostname(2)\fP and
-  ** \fCgetaddrinfo(3)\fP functions.  If those calls are unable to
-  ** determine the domain, the full value returned by uname is used.
-  ** Optionally, NeoMutt can be compiled with a fixed domain name in
-  ** which case a detected one is not used.
+  ** If not specified in a config file, then NeoMutt will try to determine the hostname itself.
+  ** .pp
+  ** Optionally, NeoMutt can be compiled with a fixed domain name.
   ** .pp
   ** Also see $$use_domain and $$hidden_host.
   */
@@ -1685,8 +1694,6 @@ struct Option MuttVars[] = {
   ** .pp
   ** When $$mail_check_stats is \fIset\fP, this variable configures
   ** how often (in seconds) NeoMutt will update message counts.
-  ** .pp
-  ** The default search path is from RFC1524.
   */
   { "mailcap_path",     DT_STRING,  R_NONE, &MailcapPath, IP "~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap" },
   /*
@@ -1695,6 +1702,8 @@ struct Option MuttVars[] = {
   ** display MIME bodies not directly supported by NeoMutt.
   ** .pp
   ** $$mailcap_path is overridden by the environment variable \fC$$$MAILCAPS\fP.
+  ** .pp
+  ** The default search path is from RFC1524.
   */
   { "mailcap_sanitize", DT_BOOL, R_NONE, &MailcapSanitize, 1 },
   /*
@@ -1777,8 +1786,9 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
-  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overridden by the
-  ** \fC-m\fP command-line option.
+  ** ``mbox'', ``MMDF'', ``MH'' or ``Maildir''.
+  ** .pp
+  ** This can also be set using the \fC-m\fP command-line option.
   */
   { "menu_context",     DT_NUMBER,  R_NONE, &MenuContext, 0 },
   /*
@@ -2000,12 +2010,14 @@ struct Option MuttVars[] = {
   { "news_server",      DT_STRING, R_NONE, &NewsServer, 0 },
   /*
   ** .pp
-  ** This variable specifies domain name or address of NNTP server. It
-  ** defaults to the news server specified in the environment variable
-  ** $$$NNTPSERVER or contained in the file /etc/nntpserver.  You can also
-  ** specify username and an alternative port for each news server, ie:
+  ** This variable specifies domain name or address of NNTP server.
   ** .pp
-  ** [[s]news://][username[:password]@]server[:port]
+  ** You can also specify username and an alternative port for each news server,
+  ** e.g. \fC[[s]news://][username[:password]@]server[:port]\fP
+  ** .pp
+  ** This option can also be set using the command line option ``-g'', the
+  ** environment variable \fC$$$NNTPSERVER\fP, or putting the server name in the
+  ** file ``/etc/nntpserver''.
   */
   { "newsgroups_charset", DT_STRING, R_NONE, &NewsgroupsCharset, IP "utf-8" },
   /*
@@ -2892,9 +2904,8 @@ struct Option MuttVars[] = {
   ** This variable specifies what ``real'' or ``personal'' name should be used
   ** when sending messages.
   ** .pp
-  ** By default, this is the GECOS field from \fC/etc/passwd\fP.  Note that this
-  ** variable will \fInot\fP be used when the user has set a real name
-  ** in the $$from variable.
+  ** If not specified, then the user's ``real name'' will be read from \fC/etc/passwd\fP.
+  ** This option will not be used, if ``$$from'' is set.
   */
   { "recall",           DT_QUAD, R_NONE, &Recall, MUTT_ASKYES },
   /*
@@ -3206,8 +3217,8 @@ struct Option MuttVars[] = {
   { "shell",            DT_PATH, R_NONE, &Shell, 0 },
   /*
   ** .pp
-  ** Command to use when spawning a subshell.  By default, the user's login
-  ** shell from \fC/etc/passwd\fP is used.
+  ** Command to use when spawning a subshell.
+  ** If not specified, then the user's login shell from \fC/etc/passwd\fP is used.
   */
   { "show_multipart_alternative", DT_STRING, R_NONE, &ShowMultipartAlternative, 0 },
   /*
@@ -3835,9 +3846,10 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** If your spool mailbox is in a non-default place where NeoMutt cannot find
-  ** it, you can specify its location with this variable.  NeoMutt will
-  ** initially set this variable to the value of the environment
-  ** variable \fC$$$MAIL\fP or \fC$$$MAILDIR\fP if either is defined.
+  ** it, you can specify its location with this variable.
+  ** .pp
+  ** If not specified, then the environment variables \fC$$$MAIL\fP and
+  ** \fC$$$MAILDIR\fP will be checked.
   */
 #ifdef USE_SSL
 #ifdef USE_SSL_GNUTLS
@@ -4159,9 +4171,10 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** This variable allows you to specify where NeoMutt will place its
-  ** temporary files needed for displaying and composing messages.  If
-  ** this variable is not set, the environment variable \fC$$$TMPDIR\fP is
-  ** used.  If \fC$$$TMPDIR\fP is not set then ``\fC/tmp\fP'' is used.
+  ** temporary files needed for displaying and composing messages.
+  ** .pp
+  ** If this variable is not set, the environment variable \fC$$$TMPDIR\fP is
+  ** used.  Failing that, then ``\fC/tmp\fP'' is used.
   */
   { "to_chars",         DT_MBTABLE, R_BOTH, &ToChars, IP " +TCFL" },
   /*
@@ -4316,7 +4329,7 @@ struct Option MuttVars[] = {
   ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
   ** given in the built-in editor.
   ** .pp
-  ** $$visual is overridden by the environment variable \fC$$$VISUAL\fP.
+  ** $$visual is overridden by the environment variable \fC$$$VISUAL\fP or \fC$$$EDITOR\fP.
   */
   { "wait_key",         DT_BOOL, R_NONE, &WaitKey, 1 },
   /*
