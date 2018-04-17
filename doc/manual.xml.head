@@ -1,6 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<!--
+vim: ts=2 sw=2 sts=2 expandtab:
+-->
 <book>
   <bookinfo>
     <title>The NeoMutt E-Mail Client</title>
