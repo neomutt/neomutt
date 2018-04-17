@@ -22,7 +22,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file contains all of the PGP routines necessary to sign, encrypt,
+/**
+ * @page crypt_pgp PGP sign, encrypt, check routines
+ *
+ * This file contains all of the PGP routines necessary to sign, encrypt,
  * verify and decrypt PGP messages in either the new PGP/MIME format, or in the
  * older Application/Pgp format.  It also contains some code to cache the
  * user's passphrase for repeat use when decrypting or signing a message.
@@ -257,7 +260,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
 /**
  * pgp_copy_clearsigned - Copy a clearsigned message, stripping the signature
  *
- * XXX - charset handling: We assume that it is safe to do character set
+ * XXX charset handling: We assume that it is safe to do character set
  * decoding first, dash decoding second here, while we do it the other way
  * around in the main handler.
  *
@@ -369,7 +372,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
       }
       else
       {
-        /* XXX - we may wish to recode here */
+        /* XXX we may wish to recode here */
         if (s->prefix)
           state_puts(s->prefix, s);
         state_puts(buf, s);
@@ -574,7 +577,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
     else
     {
       /* A traditional PGP part may mix signed and unsigned content */
-      /* XXX - we may wish to recode here */
+      /* XXX we may wish to recode here */
       if (s->prefix)
         state_puts(s->prefix, s);
       state_puts(buf, s);
@@ -1101,7 +1104,7 @@ struct Body *pgp_sign_message(struct Body *a)
   bool empty = true;
   pid_t thepid;
 
-  convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(sigfile, sizeof(sigfile));
   FILE *fp = mutt_file_fopen(sigfile, "w");
@@ -1389,7 +1392,7 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   }
 
   if (sign)
-    convert_to_7bit(a);
+    crypt_convert_to_7bit(a);
 
   mutt_write_mime_header(a, fptmp);
   fputc('\n', fptmp);

@@ -20,8 +20,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This module peeks at a PGP signature and figures out the hash
- * algorithm.
+/**
+ * @page crypt_pgpmicalg Identify the hash algorithm from a PGP signature
+ *
+ * Identify the hash algorithm from a PGP signature
  */
 
 #include "config.h"

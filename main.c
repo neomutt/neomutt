@@ -203,7 +203,7 @@ static int get_user_info(void)
       Shell = mutt_str_strdup(pw->pw_shell);
 
     char rnbuf[STRING];
-    RealName = mutt_str_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
+    Realname = mutt_str_strdup(mutt_gecos_name(rnbuf, sizeof(rnbuf), pw));
     endpwent();
   }
 
@@ -988,8 +988,8 @@ int main(int argc, char *argv[], char *envp[])
 
     if (!folder[0])
     {
-      if (SpoolFile)
-        mutt_str_strfcpy(folder, NONULL(SpoolFile), sizeof(folder));
+      if (Spoolfile)
+        mutt_str_strfcpy(folder, NONULL(Spoolfile), sizeof(folder));
       else if (Folder)
         mutt_str_strfcpy(folder, NONULL(Folder), sizeof(folder));
       /* else no folder */

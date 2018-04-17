@@ -2019,9 +2019,9 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     NORMAL_COLOR;
     if (TsEnabled && TsSupported && rd->index)
     {
-      menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(TSStatusFormat));
+      menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(TsStatusFormat));
       mutt_ts_status(buffer);
-      menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(TSIconFormat));
+      menu_status_line(buffer, sizeof(buffer), rd->index, NONULL(TsIconFormat));
       mutt_ts_icon(buffer);
     }
   }

@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_smime SMIME helper routines
+ *
+ * SMIME helper routines
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -174,7 +180,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         char buf1[LONG_STRING], buf2[LONG_STRING];
         struct stat sb;
 
-        mutt_str_strfcpy(path, NONULL(SmimeCALocation), sizeof(path));
+        mutt_str_strfcpy(path, NONULL(SmimeCaLocation), sizeof(path));
         mutt_expand_path(path, sizeof(path));
         mutt_file_quote_filename(buf1, sizeof(buf1), path);
 
@@ -186,7 +192,7 @@ static const char *fmt_smime_command(char *buf, size_t buflen, size_t col, int c
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, buf2);
       }
-      else if (!SmimeCALocation)
+      else if (!SmimeCaLocation)
         optional = 0;
       break;
     }
@@ -1483,7 +1489,7 @@ struct Body *smime_sign_message(struct Body *a)
     return NULL;
   }
 
-  convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(filetosign, sizeof(filetosign));
   sfp = mutt_file_fopen(filetosign, "w+");

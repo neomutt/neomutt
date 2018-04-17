@@ -1044,7 +1044,7 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
   if (rc >= 0)
   {
     mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
-                        NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
+                        NONULL(Newsrc), nntp_format_str, (unsigned long) nserv, 0);
     mutt_expand_path(file, sizeof(file));
     nserv->newsrc_file = mutt_str_strdup(file);
     rc = nntp_newsrc_parse(nserv);

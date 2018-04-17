@@ -25,6 +25,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt Signing/encryption multiplexor
+ *
+ * Signing/encryption multiplexor
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <locale.h>
@@ -669,7 +675,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   return 0;
 }
 
-void convert_to_7bit(struct Body *a)
+void crypt_convert_to_7bit(struct Body *a)
 {
   if (!WithCrypto)
     return;
@@ -681,10 +687,10 @@ void convert_to_7bit(struct Body *a)
       if (a->encoding != ENC7BIT)
       {
         a->encoding = ENC7BIT;
-        convert_to_7bit(a->parts);
+        crypt_convert_to_7bit(a->parts);
       }
       else if (((WithCrypto & APPLICATION_PGP) != 0) && PgpStrictEnc)
-        convert_to_7bit(a->parts);
+        crypt_convert_to_7bit(a->parts);
     }
     else if (a->type == TYPEMESSAGE &&
              (mutt_str_strcasecmp(a->subtype, "delivery-status") != 0))

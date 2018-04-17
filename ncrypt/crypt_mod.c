@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt_mod Register crypto modules
+ *
+ * Register crypto modules
+ */
+
 #include "config.h"
 #include "mutt/mutt.h"
 #include "mutt/queue.h"

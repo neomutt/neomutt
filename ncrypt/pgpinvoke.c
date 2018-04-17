@@ -20,8 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* This file contains the new pgp invocation code.  Note that this
- * is almost entirely format based.
+/**
+ * @page crypt_pgpinvoke Wrapper around calls to external PGP program
+ *
+ * This file contains the new pgp invocation code.
+ *
+ * @note This is almost entirely format based.
  */
 
 #include "config.h"
@@ -230,7 +234,7 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                       (flags & SIGN) ? PgpEncryptSignCommand : PgpEncryptOnlyCommand);
   else
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
-                      fname, NULL, NULL, PgpClearSignCommand);
+                      fname, NULL, NULL, PgpClearsignCommand);
 }
 
 void pgp_invoke_import(const char *fname)

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_crypt_mod_smime Wrappers for calls to CLI SMIME
+ *
+ * Wrappers for calls to CLI SMIME
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include "crypt_mod.h"

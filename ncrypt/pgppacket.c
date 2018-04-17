@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page crypt_pgppacket Parse PGP data packets
+ *
+ * Parse PGP data packets
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
