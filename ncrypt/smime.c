@@ -1483,7 +1483,7 @@ struct Body *smime_sign_message(struct Body *a)
     return NULL;
   }
 
-  convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(filetosign, sizeof(filetosign));
   sfp = mutt_file_fopen(filetosign, "w+");

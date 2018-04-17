@@ -980,7 +980,7 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   gpgme_data_t message, signature;
   gpgme_sign_result_t sigres;
 
-  convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   message = body_to_data_object(a, 1);
   if (!message)
@@ -1116,7 +1116,7 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
     return NULL;
 
   if (sign)
-    convert_to_7bit(a);
+    crypt_convert_to_7bit(a);
   gpgme_data_t plaintext = body_to_data_object(a, 0);
   if (!plaintext)
   {

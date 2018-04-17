@@ -1101,7 +1101,7 @@ struct Body *pgp_sign_message(struct Body *a)
   bool empty = true;
   pid_t thepid;
 
-  convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
 
   mutt_mktemp(sigfile, sizeof(sigfile));
   FILE *fp = mutt_file_fopen(sigfile, "w");
@@ -1389,7 +1389,7 @@ struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
   }
 
   if (sign)
-    convert_to_7bit(a);
+    crypt_convert_to_7bit(a);
 
   mutt_write_mime_header(a, fptmp);
   fputc('\n', fptmp);
