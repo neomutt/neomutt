@@ -47,6 +47,8 @@
 #include "message.h"
 #include "string2.h"
 
+char *Tmpdir; /**< Temporary directory path */
+
 /* these characters must be escaped in regular expressions */
 static const char rx_special_chars[] = "^.[$()|*+?{\\";
 
@@ -847,6 +849,37 @@ int mutt_file_mkdir(const char *path, mode_t mode)
     return -1;
 
   return 0;
+}
+
+/**
+ * mutt_file_mkstemp_full - Create temporary file safely
+ * @param file Temp filename
+ * @param line Line number of caller
+ * @param func Function name
+ * @retval ptr FILE handle
+ * @retval NULL Error, see errno
+ *
+ * Create and immediately unlink a temp file using mkstemp().
+ */
+FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
+{
+  char name[PATH_MAX];
+
+  int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(Tmpdir));
+  if (n < 0)
+    return NULL;
+
+  int fd = mkstemp(name);
+  if (fd == -1)
+    return NULL;
+
+  FILE *fp = fdopen(fd, "w+");
+
+  if (unlink(name) && (errno != ENOENT))
+    return NULL;
+
+  MuttLogger(0, file, line, func, 1, "created temp file '%s'\n", name);
+  return fp;
 }
 
 /**

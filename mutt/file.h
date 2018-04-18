@@ -28,6 +28,7 @@
 #include <time.h>
 
 struct stat;
+extern char *Tmpdir;
 
 /* Flags for mutt_file_read_line() */
 #define MUTT_CONT (1 << 0) /**< \-continuation */
@@ -51,6 +52,8 @@ FILE *      mutt_file_fopen(const char *path, const char *mode);
 int         mutt_file_fsync_close(FILE **f);
 int         mutt_file_lock(int fd, int excl, int timeout);
 int         mutt_file_mkdir(const char *path, mode_t mode);
+FILE *      mutt_file_mkstemp_full(const char *file, int line, const char *func);
+#define     mutt_file_mkstemp() mutt_file_mkstemp_full(__FILE__, __LINE__, __func__)
 int         mutt_file_open(const char *path, int flags);
 size_t      mutt_file_quote_filename(char *d, size_t l, const char *f);
 char *      mutt_file_read_keyword(const char *file, char *buffer, size_t buflen);

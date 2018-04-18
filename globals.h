@@ -219,7 +219,6 @@ WHERE char *Spoolfile;
 WHERE char *SpamSeparator;
 WHERE struct MbTable *StatusChars;
 WHERE char *StatusFormat;
-WHERE char *Tmpdir;
 WHERE struct MbTable *ToChars;
 WHERE struct MbTable *FlagChars;
 WHERE char *Trash;
