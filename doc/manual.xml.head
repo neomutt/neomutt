@@ -307,14 +307,17 @@ vim: ts=2 sw=2 sts=2 expandtab:
         <para>
           <emphasis role="bold">Let's turn on the Sidebar:</emphasis>
         </para>
-        <screen>
+
+<screen>
 set sidebar_visible
 set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 </screen>
+
         <para>You will see something like this. A list of mailboxes on the
         left. A list of emails, from the selected mailbox, on the right.</para>
-        <screen>
+
+<screen>
 <emphasis role="indicator">Fruit [1]     3/8</emphasis>|  1    + Jan 24  Rhys Lee         (192)  Yew
 Animals [1]   2/6|  2    + Feb 11  Grace Hall       (167)  Ilama
 Cars            4|  3      Feb 23  Aimee Scott      (450)  Nectarine
@@ -326,6 +329,7 @@ Seas          1/7|  4    ! Feb 28  Summer Jackson   (264)  Lemon
                  |
                  |
 </screen>
+
         <para>This user has four mailboxes:
         <quote>Fruit</quote>,
         <quote>Cars</quote>,
@@ -346,7 +350,8 @@ Seas          1/7|  4    ! Feb 28  Summer Jackson   (264)  Lemon
           <literal>&lt;change-folder&gt;</literal>to the
           <quote>Animals</quote> mailbox. The Sidebar automatically updated the
           indicator to match.</para>
-          <screen>
+
+<screen>
 Fruit [1]     3/8|  1      Jan 03  Tia Gibson       (362)  Caiman
 <emphasis role="indicator">Animals [1]   2/6</emphasis>|  2    + Jan 22  Rhys Lee         ( 48)  Dolphin
 Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
@@ -358,17 +363,21 @@ Seas          1/7|  4      Sep 25  Grace Hall       ( 27)  Capybara
                  |
                  |
 </screen>
+
           <para>Let's map some functions:</para>
-          <screen>
-bind index,pager \CP sidebar-prev       <emphasis role="comment"># Ctrl-Shift-P - Previous Mailbox</emphasis>
-bind index,pager \CN sidebar-next       <emphasis role="comment"># Ctrl-Shift-N - Next Mailbox</emphasis>
-bind index,pager \CO sidebar-open       <emphasis role="comment"># Ctrl-Shift-O - Open Highlighted Mailbox</emphasis>
+
+<screen>
+bind index,pager \CP sidebar-prev       <emphasis role="comment"># Ctrl-Shift-P – Previous Mailbox</emphasis>
+bind index,pager \CN sidebar-next       <emphasis role="comment"># Ctrl-Shift-N – Next Mailbox</emphasis>
+bind index,pager \CO sidebar-open       <emphasis role="comment"># Ctrl-Shift-O – Open Highlighted Mailbox</emphasis>
 </screen>
+
           <para>Press
           <quote>Ctrl-Shift-N</quote>(Next mailbox) twice will move the Sidebar
           <emphasis role="bold">highlight</emphasis> to down to the
           <quote>Seas</quote> mailbox.</para>
-          <screen>
+
+<screen>
 Fruit [1]     3/8|  1      Jan 03  Tia Gibson       (362)  Caiman
 <emphasis role="indicator">Animals [1]   2/6</emphasis>|  2    + Jan 22  Rhys Lee         ( 48)  Dolphin
 Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
@@ -380,6 +389,7 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
                  |
                  |
 </screen>
+
           <note>
             <para>Functions
             <literal>&lt;sidebar-next&gt;</literal>and
@@ -392,7 +402,8 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
           <quote>Ctrl-Shift-O</quote>(
           <literal>&lt;sidebar-open&gt;</literal>) to open the highlighted
           mailbox.</para>
-          <screen>
+
+<screen>
 Fruit [1]     3/8|  1    ! Mar 07  Finley Jones     (139)  Molucca Sea
 Animals [1]   2/6|  2    + Mar 24  Summer Jackson   ( 25)  Arafura Sea
 Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
@@ -404,6 +415,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
                  |
                  |
 </screen>
+
         </sect3>
 
         <sect3 id="intro-sidebar-features">
@@ -537,10 +549,12 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
             <literal>$sidebar_visible</literal>. You can set this in your
             <quote>neomuttrc</quote>, or bind a key to the function
             <literal>&lt;sidebar-toggle-visible&gt;</literal>.</para>
-            <screen>
+
+<screen>
 set sidebar_visible                         <emphasis role="comment"># Make the Sidebar visible by default</emphasis>
 bind index,pager B sidebar-toggle-visible   <emphasis role="comment"># Use 'B' to switch the Sidebar on and off</emphasis>
 </screen>
+
             <para>Next, decide how wide you want the Sidebar to be. 25
             characters might be enough for the mailbox name and some numbers.
             Remember, you can hide/show the Sidebar at the press of
@@ -549,10 +563,12 @@ bind index,pager B sidebar-toggle-visible   <emphasis role="comment"># Use 'B' t
             default, Sidebar draws an ASCII line between it and the Index panel
             If your terminal supports it, you can use a Unicode line-drawing
             character.</para>
-            <screen>
+
+<screen>
 set sidebar_width = 25                  <emphasis role="comment"># Plenty of space</emphasis>
 set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line-drawing character</emphasis>
 </screen>
+
           </sect4>
 
           <sect4 id="intro-sidebar-format">
@@ -678,7 +694,8 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
             </table>
             <para>* = Can be optionally printed if nonzero</para>
             <para>† = To use this expandos, you must first:
-            <screen>set mail_check_stats</screen></para>
+            </para>
+            <screen>set mail_check_stats</screen>
             <para>‡ = Only applicable to the current folder</para>
             <para>Here are some examples. They show the number of (F)lagged,
             (N)ew and (S)ize.</para>
@@ -743,21 +760,26 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               <para>This example works well if your mailboxes have unique names
               after the last separator.</para>
               <para>Add some mailboxes of different depths.</para>
-              <screen>
+
+<screen>
 set folder="~/mail"
 mailboxes =fruit/apple          =fruit/banana          =fruit/cherry
 mailboxes =water/sea/sicily     =water/sea/archipelago =water/sea/sibuyan
 mailboxes =water/ocean/atlantic =water/ocean/pacific   =water/ocean/arctic
 </screen>
+
               <para>Shorten the names:</para>
-              <screen>
+
+<screen>
 set sidebar_short_path                  <emphasis role="comment"># Shorten mailbox names (truncate all subdirs)</emphasis>
 set sidebar_component_depth=1           <emphasis role="comment"># Shorten mailbox names (truncate 1 subdirs)</emphasis>
 set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everything up to the last or Nth / character</emphasis>
 </screen>
+
               <para>The screenshot below shows what the Sidebar would look like
               before and after shortening using <literal>sidebar_short_path</literal>.</para>
-              <screen>
+
+<screen>
 |fruit/apple                            |apple
 |fruit/banana                           |banana
 |fruit/cherry                           |cherry
@@ -768,9 +790,11 @@ set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everyt
 |water/ocean/pacific                    |pacific
 |water/ocean/arctic                     |arctic
 </screen>
+
               <para>The screenshot below shows what the Sidebar would look like
               before and after shortening using <literal>sidebar_component_depth=1</literal>.</para>
-              <screen>
+
+<screen>
 |fruit/apple                            |apple
 |fruit/banana                           |banana
 |fruit/cherry                           |cherry
@@ -781,6 +805,7 @@ set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everyt
 |water/ocean/pacific                    |ocean/pacific
 |water/ocean/arctic                     |ocean/arctic
 </screen>
+
             </sect5>
 
             <sect5 id="intro-sidebar-abbrev-ex2">
@@ -788,7 +813,8 @@ set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everyt
               <para>This example works well if you have lots of mailboxes which
               are arranged in a tree.</para>
               <para>Add some mailboxes of different depths.</para>
-              <screen>
+
+<screen>
 set folder="~/mail"
 mailboxes =fruit
 mailboxes =fruit/apple =fruit/banana =fruit/cherry
@@ -798,16 +824,20 @@ mailboxes =water/sea/sicily =water/sea/archipelago =water/sea/sibuyan
 mailboxes =water/ocean
 mailboxes =water/ocean/atlantic =water/ocean/pacific =water/ocean/arctic
 </screen>
+
               <para>Shorten the names:</para>
-              <screen>
+
+<screen>
 set sidebar_short_path                  <emphasis role="comment"># Shorten mailbox names</emphasis>
 set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everything up to the last / character</emphasis>
 set sidebar_folder_indent               <emphasis role="comment"># Indent folders whose names we've shortened</emphasis>
 set sidebar_indent_string="  "          <emphasis role="comment"># Indent with two spaces</emphasis>
 </screen>
+
               <para>The screenshot below shows what the Sidebar would look like
               before and after shortening.</para>
-              <screen>
+
+<screen>
 |fruit                                  |fruit
 |fruit/apple                            |  apple
 |fruit/banana                           |  banana
@@ -822,6 +852,7 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
 |water/ocean/pacific                    |    pacific
 |water/ocean/arctic                     |    arctic
 </screen>
+
               <para>Sometimes, it will be necessary to add mailboxes, that you
               don't use, to fill in part of the tree. This will trade vertical
               space for horizontal space (but it looks good).</para>
@@ -837,26 +868,29 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
             <para>If you want some mailboxes to be always visible, then use the
             <literal>sidebar_whitelist</literal> command. It takes a list of
             mailboxes as parameters.</para>
-            <screen>
+
+<screen>
 set sidebar_new_mail_only               <emphasis role="comment"># Only mailboxes with new/flagged email</emphasis>
 sidebar_whitelist fruit fruit/apple     <emphasis role="comment"># Always display these two mailboxes</emphasis>
 </screen>
+
           </sect4>
         </sect3>
 
         <sect3 id="intro-sidebar-colors">
           <title>Colors</title>
           <para>Here is a sample color scheme:</para>
-          <screen>
-color sidebar_indicator default color17         <emphasis role="comment"># Dark blue background</emphasis>
-color sidebar_highlight white   color238        <emphasis role="comment"># Grey background</emphasis>
-color sidebar_spoolfile yellow  default         <emphasis role="comment"># Yellow</emphasis>
-color sidebar_new       green   default         <emphasis role="comment"># Green</emphasis>
-color sidebar_ordinary  default default         <emphasis role="comment"># Default colors</emphasis>
-color sidebar_flagged   red     default         <emphasis role="comment"># Red</emphasis>
-color sidebar_divider   color8  default
-          <emphasis role="comment"># Dark grey</emphasis>
+
+<screen>
+color sidebar_indicator default color17     <emphasis role="comment"># Dark blue background</emphasis>
+color sidebar_highlight white   color238    <emphasis role="comment"># Grey background</emphasis>
+color sidebar_spoolfile yellow  default     <emphasis role="comment"># Yellow</emphasis>
+color sidebar_new       green   default     <emphasis role="comment"># Green</emphasis>
+color sidebar_ordinary  default default     <emphasis role="comment"># Default colors</emphasis>
+color sidebar_flagged   red     default     <emphasis role="comment"># Red</emphasis>
+color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey</emphasis>
 </screen>
+
           <para>There is a priority order when coloring Sidebar mailboxes. e.g.
           If a mailbox has new mail it will have the
           <literal>sidebar_new</literal> color, even if it also contains flagged
@@ -1778,10 +1812,14 @@ color sidebar_divider   color8  default
         sequences for character attributes. NeoMutt translates them into the
         correct color and character settings. The sequences NeoMutt supports
         are:</para>
-        <screen>\e[
-        <emphasis>Ps</emphasis>;
-        <emphasis>Ps</emphasis>;..
-        <emphasis>Ps</emphasis>;m</screen>
+
+<screen>
+\e[
+<emphasis>Ps</emphasis>;
+<emphasis>Ps</emphasis>;..
+<emphasis>Ps</emphasis>;m
+</screen>
+
         <para>where
         <emphasis>Ps</emphasis> can be one of the codes shown in
         <xref linkend="tab-ansi-esc" />.</para>
@@ -3254,8 +3292,11 @@ color sidebar_divider   color8  default
       the line is ignored.</para>
       <example id="ex-ec-comment">
         <title>Commenting configuration files</title>
-        <screen>my_hdr X-Disclaimer: Why are you listening to me?
-        <emphasis role="comment"># This is a comment</emphasis></screen>
+
+<screen>
+my_hdr X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># This is a comment</emphasis>
+</screen>
+
       </example>
       <para>Single quotes (
       <quote>'</quote>) and double quotes (
@@ -3292,11 +3333,13 @@ color sidebar_divider   color8  default
       out the first line only.</para>
       <example id="ex-rc-split">
         <title>Splitting long configuration commands over several lines</title>
-        <screen>
+
+<screen>
 set status_format="some very \
 long value split \
 over several lines"
 </screen>
+
       </example>
       <para>It is also possible to substitute the output of a Unix command in
       an initialization file. This is accomplished by enclosing the command in
@@ -3444,10 +3487,12 @@ over several lines"
         <command>alternates</command>
       </link>commands by specifying the optional
       <literal>-group</literal> option. For example,</para>
-      <screen>
+
+<screen>
 alternates -group me address1 address2
 alternates -group me -group work address3
 </screen>
+
       <para>would create a group named
       <quote>me</quote> which contains all your addresses and a group named
       <quote>work</quote> which contains only your work address
@@ -3516,10 +3561,12 @@ alternates -group me -group work address3
       <emphasis>group</emphasis>.</para>
       <para>To remove an alias or aliases (
       <quote>*</quote>means all aliases):</para>
-      <screen>
+
+<screen>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
 alias theguys manny, moe, jack
 </screen>
+
       <para>Unlike other mailers, NeoMutt doesn't require aliases to be defined in
       a special file. The
       <command>alias</command> command can appear anywhere in a configuration
@@ -3541,11 +3588,13 @@ alias theguys manny, moe, jack
       </link>this file too.</para>
       <example id="ex-alias-external">
         <title>Configuring external alias files</title>
-        <screen>
+
+<screen>
 source /usr/local/share/NeoMutt.aliases
 source ~/.mail_aliases
 set alias_file=~/.mail_aliases
 </screen>
+
       </example>
       <para>To use aliases, you merely use the alias at any place in NeoMutt where
       NeoMutt prompts for addresses, such as the
@@ -3844,17 +3893,23 @@ set alias_file=~/.mail_aliases
         <title>Warnings about Duplicated Bindings</title>
         <para>Due to a limitation of NeoMutt, creating key bindings, or macros,
         will overwrite existing mappings with similar, shorter, names.</para>
-        <screen>
+
+<screen>
 bind index g  group-reply
-bind index gg first-entry</screen>
+bind index gg first-entry
+</screen>
+
         <para>In this example, the <literal>g</literal> binding will be
         overwritten and cannot be used.  Newer versions of NeoMutt will warn the
         user about this.</para>
         <para>To avoid warnings on startup, first set the shorter binding to
         <literal>noop</literal> (no operation).</para>
-        <screen>
+
+<screen>
 bind index g  noop
-bind index gg first-entry</screen>
+bind index gg first-entry
+</screen>
+
       </sect2>
     </sect1>
 
@@ -3952,10 +4007,12 @@ bind index gg first-entry</screen>
       <quote>work</quote> in their name.</para>
       <example id="ex-folder-sorting">
         <title>Setting sort method based on mailbox name</title>
-        <screen>
+
+<screen>
 folder-hook . "set sort=date-sent"
 folder-hook work "set sort=threads"
 </screen>
+
       </example>
     </sect1>
 
@@ -4332,10 +4389,12 @@ folder-hook work "set sort=threads"
       <literal>$COLORFGBG</literal> environment variable to the default colors
       of your terminal for this to work; for example (for Bourne-like
       shells):</para>
-      <screen>
+
+<screen>
 set COLORFGBG="green;black"
 export COLORFGBG
 </screen>
+
       <note>
         <para>The
         <emphasis>S-Lang</emphasis> library requires you to use the
@@ -4499,13 +4558,15 @@ export COLORFGBG
         list.</para>
         <example id="ex-header-weeding">
           <title>Header weeding</title>
-          <screen>
+
+<screen>
 <emphasis role="comment"># Sven's draconian header weeding</emphasis>
 ignore *
 unignore from date subject to cc
 unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 </screen>
+
         </example>
       </sect2>
 
@@ -4858,7 +4919,11 @@ unignore posted-to:
       <literal>.neomuttrc</literal>.</para>
       <example id="ex-my-hdr">
         <title>Defining custom headers</title>
-        <screen>my_hdr Organization: A Really Big Company, Anytown, USA</screen>
+
+<screen>
+my_hdr Organization: A Really Big Company, Anytown, USA
+</screen>
+
       </example>
       <note>
         <para>Space characters are
@@ -4907,7 +4972,8 @@ unignore posted-to:
       <example id="ex-save-hook-exando">
         <title>Using %-expandos in
         <command>save-hook</command></title>
-        <screen>
+
+<screen>
 <emphasis role="comment"># default: save all to ~/Mail/&lt;author name&gt;</emphasis>
 save-hook . ~/Mail/%F
 <emphasis role="comment"># save from me@turing.cs.hmc.edu and me@cs.hmc.edu to $folder/elkins</emphasis>
@@ -4915,6 +4981,7 @@ save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
 <emphasis role="comment"># save from aol.com to $folder/spam</emphasis>
 save-hook aol\\.com$ +spam
 </screen>
+
       </example>
       <para>Also see the
       <link linkend="fcc-save-hook">
@@ -5100,10 +5167,12 @@ save-hook aol\\.com$ +spam
       <xref linkend="pattern-hook" />for information on the exact format of
       <emphasis>pattern</emphasis>.</para>
       <para>Example:</para>
-      <screen>
+
+<screen>
 message-hook ~A 'set pager=builtin'
 message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </screen>
+
     </sect1>
 
     <sect1 id="crypt-hook">
@@ -5260,9 +5329,11 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
       <emphasis>~()</emphasis>, will not work by default. A workaround is to push
       the scoring command in a folder hook. This will cause the mailbox to be
       rescored after it is opened and input starts being processed:</para>
-      <screen>
+
+<screen>
 folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
 </screen>
+
     </sect1>
 
     <sect1 id="spam">
@@ -5337,12 +5408,14 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
       <xref linkend="ex-spam" />.</para>
       <example id="ex-spam">
         <title>Configuring spam detection</title>
-        <screen>
+
+<screen>
 spam "X-DCC-.*-Metrics:.*(....)=many"         "90+/DCC-%1"
 spam "X-Spam-Status: Yes"                     "90+/SA"
 spam "X-PerlMX-Spam: .*Probability=([0-9]+)%" "%1/PM"
 set spam_separator=", "
 </screen>
+
       </example>
       <para>If then a message is received that DCC registered with
       <quote>many</quote> hits under the
@@ -5655,11 +5728,13 @@ set spam_separator=", "
           <example id="ex-myvar1">
             <title>Using user-defined variables for config file
             readability</title>
-            <screen>
+
+<screen>
 set my_cfgdir = $HOME/neomutt/config
 source $my_cfgdir/hooks $my_cfgdir/macros
 <emphasis role="comment"># more source commands...</emphasis>
 </screen>
+
           </example>
           <para>A custom variable can also be used in macros to backup the
           current value of another variable. In the following example, the
@@ -5672,13 +5747,15 @@ source $my_cfgdir/hooks $my_cfgdir/macros
           <example id="ex-myvar2">
             <title>Using user-defined variables for backing up other config
             option values</title>
-            <screen>
+
+<screen>
 macro pager ,x '\
 &lt;enter-command&gt;set my_delete=$delete&lt;enter&gt;\
 &lt;enter-command&gt;set delete=yes&lt;enter&gt;\
 ...\
 &lt;enter-command&gt;set delete=$my_delete&lt;enter&gt;'
 </screen>
+
           </example>
           <para>Since NeoMutt expands such values already when parsing the
           configuration file(s), the value of
@@ -5694,13 +5771,15 @@ macro pager ,x '\
           sign.</para>
           <example id="ex-myvar3">
             <title>Deferring user-defined variable expansion to runtime</title>
-            <screen>
+
+<screen>
 macro pager &lt;PageDown&gt; "\
 &lt;enter-command&gt; set my_old_pager_stop=\$pager_stop pager_stop&lt;Enter&gt;\
 &lt;next-page&gt;\
 &lt;enter-command&gt; set pager_stop=\$my_old_pager_stop&lt;Enter&gt;\
 &lt;enter-command&gt; unset my_old_pager_stop&lt;Enter&gt;"
 </screen>
+
           </example>
           <para>Note that there is a space between
           <literal>&lt;enter-command&gt;</literal>and the
@@ -5723,15 +5802,16 @@ macro pager &lt;PageDown&gt; "\
         <xref linkend="ex-myvar4" />demonstrates type conversions.</para>
         <example id="ex-myvar4">
           <title>Type conversions using variables</title>
-          <screen>
+
+<screen>
 set my_lines = "5"                <emphasis role="comment"># value is string "5"</emphasis>
 set pager_index_lines = $my_lines <emphasis role="comment"># value is integer 5</emphasis>
 set my_sort = "date-received"     <emphasis role="comment"># value is string "date-received"</emphasis>
 set sort = "last-$my_sort"        <emphasis role="comment"># value is sort last-date-received</emphasis>
 set my_inc = $read_inc            <emphasis role="comment"># value is string "10" (default of $read_inc)</emphasis>
-set my_foo = $my_inc
-          <emphasis role="comment"># value is string "10"</emphasis>
+set my_foo = $my_inc              <emphasis role="comment"># value is string "10"</emphasis>
 </screen>
+
         </example>
         <para>These assignments are all valid. If, however, the value of
         <literal>$my_lines</literal> would have been
@@ -5742,16 +5822,22 @@ set my_foo = $my_inc
         <para>Type conversion applies to all configuration commands which take
         arguments. But please note that every expanded value of a variable is
         considered just a single token. A working example is:</para>
-        <screen>
+
+<screen>
 set my_pattern = "~A"
 set my_number = "10"
 <emphasis role="comment"># same as: score ~A +10</emphasis>
-score $my_pattern +$my_number</screen>
+score $my_pattern +$my_number
+</screen>
+
         <para>What does
         <emphasis>not</emphasis> work is:</para>
-        <screen>
+
+<screen>
 set my_mx = "+mailbox1 +mailbox2"
-mailboxes $my_mx +mailbox3</screen>
+mailboxes $my_mx +mailbox3
+</screen>
+
         <para>because the value of
         <literal>$my_mx</literal> is interpreted as a single mailbox named
         <quote>+mailbox1 +mailbox2</quote> and not two distinct
@@ -5887,7 +5973,11 @@ mailboxes $my_mx +mailbox3</screen>
         <screen>%?n?%n new messages.?</screen>
         <para>You can also switch between two strings using the following
         construct:</para>
-        <screen>%?&lt;sequence_char&gt;?&lt;if_string&gt;&amp;&lt;else_string&gt;?</screen>
+
+<screen>
+%?&lt;sequence_char&gt;?&lt;if_string&gt;&amp;&lt;else_string&gt;?
+</screen>
+
         <para>If the value of
         <emphasis>sequence_char</emphasis> is non-zero,
         <emphasis>if_string</emphasis> will be expanded, otherwise
@@ -5895,10 +5985,12 @@ mailboxes $my_mx +mailbox3</screen>
         <para>The conditional sequences can also be nested by using the %&lt;
         and &gt; operators. The %? notation can still be used but requires
         quoting. For example:</para>
-        <screen>
+
+<screen>
 %&lt;x?true&amp;false&gt;
 %&lt;x?%&lt;y?%&lt;z?xyz&amp;xy&gt;&amp;x&gt;&amp;none&gt;
 </screen>
+
         <para>For more examples, see
         <xref linkend="nested-if" /></para>
       </sect2>
@@ -5945,7 +6037,11 @@ mailboxes $my_mx +mailbox3</screen>
               the character
               <literal>X</literal>. For example, filling the rest of the line
               with dashes is done by setting:</para>
-              <screen>set status_format = "%v on %h: %B: %?n?%n&amp;no? new messages %|-"</screen>
+
+<screen>
+set status_format = "%v on %h: %B: %?n?%n&amp;no? new messages %|-"
+</screen>
+
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -5962,7 +6058,11 @@ mailboxes $my_mx +mailbox3</screen>
               right and fill the gap with spaces, one might use (note the space
               after
               <literal>%&gt;</literal>):</para>
-              <screen>set status_format = "%B: %?n?%n&amp;no? new messages %&gt; (%v on %h)"</screen>
+
+<screen>
+set status_format = "%B: %?n?%n&amp;no? new messages %&gt; (%v on %h)"
+</screen>
+
             </listitem>
           </varlistentry>
           <varlistentry>
@@ -5982,7 +6082,11 @@ mailboxes $my_mx +mailbox3</screen>
               fits on screen, one might use (note two spaces after
               <literal>%*</literal>: the second ensures there's a space between
               the truncated right-hand side and the subject):</para>
-              <screen>set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
+
+<screen>
+set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
+</screen>
+
             </listitem>
           </varlistentry>
         </variablelist>
@@ -5998,11 +6102,13 @@ mailboxes $my_mx +mailbox3</screen>
         %&lt;[y?%&lt;[d?%[%H:%M]&amp;%[%m/%d]&gt;&amp;%[%y.%m]&gt;</literal>for
         the date in the
         <literal>$index_format</literal> will produce a display like:</para>
-        <screen>
+
+<screen>
    1   + 14.12 Grace Hall      (   13) Gulliver's Travels
    2   + 10/02 Callum Harrison (   48) Huckleberry Finn
    3     12:17 Rhys Lee        (   42) The Lord Of The Rings
 </screen>
+
       </sect2>
     </sect1>
 
@@ -7144,7 +7250,11 @@ mailboxes $my_mx +mailbox3</screen>
         <quote>^Junk +From +Me$</quote>and it must be from either
         <quote>Jim +Somebody</quote> or
         <quote>Ed +SomeoneElse</quote>:</para>
-        <screen>'~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'</screen>
+
+<screen>
+'~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
+</screen>
+
         <note>
           <para>If a regular expression contains parenthesis, or a vertical bar
           ("|"), you
@@ -7501,10 +7611,12 @@ mailboxes $my_mx +mailbox3</screen>
       <example id="ex-default-hook">
         <title>Specifying a
         <quote>default</quote> hook</title>
-        <screen>
+
+<screen>
 send-hook . 'unmy_hdr From:'
 send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 </screen>
+
       </example>
       <para>In
       <xref linkend="ex-default-hook" />, by default the value of
@@ -7539,7 +7651,11 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
         etc.).</para>
         <para>For example, if you wanted to set your return address based upon
         sending mail to a specific address, you could do something like:</para>
-        <screen>send-hook '~t ^user@work\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'</screen>
+
+<screen>
+send-hook '~t ^user@work\.com$' 'my_hdr From: John Smith &lt;user@host&gt;'
+</screen>
+
         <para>which would execute the given command when sending mail to
         <emphasis>user@work.com</emphasis>.</para>
         <para>However, it is not required that you write the pattern to match
@@ -7562,19 +7678,21 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
         <link linkend="shortcuts">mailbox shortcut</link> expansion on the
         regex parameter. There is some overlap between these, so special
         attention should be paid to the first character of the regex.</para>
-        <screen>
-# Here, ^ will expand to "the current mailbox" not "beginning of string":
+
+<screen>
+<emphasis role="comment"># Here, ^ will expand to "the current mailbox" not "beginning of string":</emphasis>
 folder-hook ^/home/user/Mail/bar "set sort=threads"
-# If you want ^ to be interpreted as "beginning of string", one workaround
-# is to enclose the regex in parenthesis:
+<emphasis role="comment"># If you want ^ to be interpreted as "beginning of string", one workaround</emphasis>
+<emphasis role="comment"># is to enclose the regex in parenthesis:</emphasis>
 folder-hook (^/home/user/Mail/bar) "set sort=threads"
-# This will expand to the default save folder for the alias "imap.example.com", which
-# is probably not what you want:
+<emphasis role="comment"># This will expand to the default save folder for the alias "imap.example.com", which</emphasis>
+<emphasis role="comment"># is probably not what you want:</emphasis>
 folder-hook @imap.example.com "set sort=threads"
-# A workaround is to use parenthesis or a backslash:
+<emphasis role="comment"># A workaround is to use parenthesis or a backslash:</emphasis>
 folder-hook (@imap.example.com) "set sort=threads"
 folder-hook '\@imap.example.com' "set sort=threads"
 </screen>
+
         <para>Keep in mind that mailbox shortcut expansion on the regex
         parameter takes place when the hook is initially parsed, not when the
         hook is matching against a mailbox. When NeoMutt starts up and is reading
@@ -7594,12 +7712,14 @@ folder-hook '\@imap.example.com' "set sort=threads"
       not shell-style!) You can also query current environment values by
       prefixing a
       <quote>?</quote>character.</para>
-      <screen>
+
+<screen>
 setenv TERM vt100
 setenv ORGANIZATION "The NeoMutt Development Team"
 unsetenv DISPLAY
 setenv ?LESS
 </screen>
+
     </sect1>
 
     <sect1 id="query">
@@ -7617,12 +7737,14 @@ setenv ?LESS
       addresses, return a non-zero exit code and a one line error
       message.</para>
       <para>An example multiple response output:</para>
-      <screen>
+
+<screen>
 Searching database ... 20 entries ... 3 matching:
 me@cs.hmc.edu           Michael Elkins  mutt dude
 blong@fiction.net       Brandon Long    mutt and more
 roessler@does-not-exist.org        Thomas Roessler mutt pgp
 </screen>
+
       <para>There are two mechanisms for accessing the query function of NeoMutt.
       One is to do a query from the index menu using the
       <literal>&lt;query&gt;</literal>function (default: Q). This will prompt
@@ -7938,17 +8060,17 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
       removed.</para>
       <example id="ex-subjectrx">
         <title>Subject Munging</title>
-        <screen>
-# Erase [rt #12345] tags from Request Tracker (RT) e-mails
+
+<screen>
+<emphasis role="comment"># Erase [rt #12345] tags from Request Tracker (RT) e-mails</emphasis>
 subjectrx '\[rt #[0-9]+\] *' '%L%R'
-# Servicedesk is another RT that sends more complex subjects.
-
-# Keep the ticket number.
-
+<emphasis role="comment"># Servicedesk is another RT that sends more complex subjects.</emphasis>
+<emphasis role="comment"># Keep the ticket number.</emphasis>
 subjectrx '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
-# Strip out annoying [listname] prefixes in subjects
+<emphasis role="comment"># Strip out annoying [listname] prefixes in subjects</emphasis>
 subjectrx '\[[^]]*\]:? *' '%L%R'
 </screen>
+
       </example>
     </sect1>
 
@@ -8132,10 +8254,12 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
       <ulink url="ftp://ftp.mutt.org/mutt/contrib/">
       ftp://ftp.mutt.org/mutt/contrib/</ulink>and the configuration
       commands:</para>
-      <screen>
+
+<screen>
 macro index \cb |urlview\n
 macro pager \cb |urlview\n
 </screen>
+
     </sect1>
 
     <sect1 id="misc-topics">
@@ -8248,10 +8372,12 @@ macro pager \cb |urlview\n
         <literal>application/pgp</literal>.</para>
         <para>NeoMutt will denote attachments with a couple lines describing them.
         These lines are of the form:</para>
-        <screen>
+
+<screen>
 [-- Attachment #1: Description --]
 [-- Type: text/plain, Encoding: 7bit, Size: 10000 --]
 </screen>
+
         <para>Where the
         <emphasis>Description</emphasis> is the description or filename given
         for the attachment, and the
@@ -8259,7 +8385,11 @@ macro pager \cb |urlview\n
         encodings.</para>
         <para>If NeoMutt cannot deal with a MIME type, it will display a message
         like:</para>
-        <screen>[-- image/gif is unsupported (use 'v' to view this part) --]</screen>
+
+<screen>
+[-- image/gif is unsupported (use 'v' to view this part) --]
+</screen>
+
       </sect2>
 
       <sect2 id="attach-menu">
@@ -8298,10 +8428,12 @@ macro pager \cb |urlview\n
         a list of tagged attachments. You can also modifying the attachment
         information, notably the type, encoding and description.</para>
         <para>Attachments appear as follows by default:</para>
-        <screen>
+
+<screen>
 - 1 [text/plain, 7bit, 1K]           /tmp/neomutt-euler-8082-0 &lt;no description&gt;
   2 [applica/x-gunzip, base64, 422K] ~/src/neomutt-0.85.tar.gz &lt;no description&gt;
 </screen>
+
         <para>The
         <quote>-</quote>denotes that NeoMutt will delete the file after sending
         (or postponing, or canceling) the message. It can be toggled with the
@@ -8347,11 +8479,13 @@ macro pager \cb |urlview\n
         <title>
           <literal>mime.types</literal>
         </title>
-        <screen>
+
+<screen>
 application/postscript          ps eps
 application/pgp                 pgp
 audio/x-aiff                    aif aifc aiff
 </screen>
+
       </example>
       <para>A sample
       <literal>mime.types</literal> file comes with the NeoMutt distribution, and
@@ -8581,10 +8715,12 @@ audio/x-aiff                    aif aifc aiff
         <para>Perhaps you wish to use lynx to view
         <literal>text/html</literal> files, and a pager on all other text
         formats, then you would use the following:</para>
-        <screen>
+
+<screen>
 text/html; lynx %s
 text/*; more
 </screen>
+
       </sect2>
 
       <sect2 id="secure-mailcap">
@@ -8614,10 +8750,12 @@ text/*; more
         following example (using
         <literal>$charset</literal> inside the backtick expansion is safe, since
         it is not itself subject to any further expansion):</para>
-        <screen>
+
+<screen>
 text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
         &amp;&amp; test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
 </screen>
+
       </sect2>
 
       <sect2 id="advanced-mailcap">
@@ -8652,7 +8790,11 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
                 the pager. Some programs make use of this environment variable
                 automatically. Others provide a command line argument that can
                 use this to set the output width:</para>
-                <screen>text/html; lynx -dump -width ${COLUMNS:-80} %s; copiousoutput</screen>
+
+<screen>
+text/html; lynx -dump -width ${COLUMNS:-80} %s; copiousoutput
+</screen>
+
                 <para>Note that when using the built-in pager,
                 <emphasis>only</emphasis> entries with this flag will be
                 considered a handler for a MIME type — all other entries will
@@ -8741,10 +8883,12 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
                 and NeoMutt continues searching for the right entry. Note that the
                 content-type must match before NeoMutt performs the test. For
                 example:</para>
-                <screen>
+
+<screen>
 text/html; firefox -remote 'openURL(%s)' ; test=RunningX
 text/html; lynx %s
 </screen>
+
                 <para>In this example, NeoMutt will run the program
                 <literal>RunningX</literal> which will return 0 if the X Window
                 manager is running, and non-zero if it isn't. If
@@ -8767,11 +8911,13 @@ text/html; lynx %s
           <literal>image/gif</literal>, and you have the following entries in
           your mailcap file, NeoMutt will search for an entry with the print
           command:</para>
-          <screen>
+
+<screen>
 image/*;        xv %s
-image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
+image/gif;      ; print=anytopnm %s | pnmtops | lpr; \
                 nametemplate=%s.gif
 </screen>
+
           <para>NeoMutt will skip the
           <literal>image/*</literal>entry and use the
           <literal>image/gif</literal> entry with the print command.</para>
@@ -8785,11 +8931,13 @@ image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
           <quote>m</quote> by default). In addition, you can then use the test
           feature to determine which viewer to use interactively depending on
           your environment.</para>
-          <screen>
+
+<screen>
 text/html;      firefox -remote 'openURL(%s)' ; test=RunningX
 text/html;      lynx %s; nametemplate=%s.html
 text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
+
           <para>For
           <link linkend="auto-view">
             <command>auto_view</command>
@@ -8881,22 +9029,25 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
       <sect2 id="mailcap-example">
         <title>Example Mailcap Files</title>
         <para>This mailcap file is fairly simple and standard:</para>
-        <screen>
+
+<screen>
 <emphasis role="comment"># I'm always running X :)</emphasis>
 video/*;        xanim %s &gt; /dev/null
 image/*;        xv %s &gt; /dev/null
 <emphasis role="comment"># I'm always running firefox (if my computer had more memory, maybe)</emphasis>
 text/html;      firefox -remote 'openURL(%s)'
 </screen>
+
         <para>This mailcap file shows quite a number of examples:</para>
-        <screen>
-<emphasis role="comment"># Use xanim to view all videos   Xanim produces a header on startup,
-# send that to /dev/null so I don't see it</emphasis>
+
+<screen>
+<emphasis role="comment"># Use xanim to view all videos Xanim produces a header on startup,</emphasis>
+<emphasis role="comment"># send that to /dev/null so I don't see it</emphasis>
 video/*;        xanim %s &gt; /dev/null
 <emphasis role="comment"># Send html to a running firefox by remote</emphasis>
 text/html;      firefox -remote 'openURL(%s)'; test=RunningFirefox
-<emphasis role="comment"># If I'm not running firefox but I am running X, start firefox on the
-# object</emphasis>
+<emphasis role="comment"># If I'm not running firefox but I am running X, start firefox on the</emphasis>
+<emphasis role="comment"># object</emphasis>
 text/html;      firefox %s; test=RunningX
 <emphasis role="comment"># Else use lynx to view it as text</emphasis>
 text/html;      lynx %s
@@ -8905,18 +9056,18 @@ text/html;      lynx -dump %s; copiousoutput
 <emphasis role="comment"># I use enscript to print text in two columns to a page</emphasis>
 text/*;         more %s; print=enscript -2Gr %s
 <emphasis role="comment"># Firefox adds a flag to tell itself to view jpegs internally</emphasis>
-image/jpeg;xv %s; x-mozilla-flags=internal
+image/jpeg;     xv %s; x-mozilla-flags=internal
 <emphasis role="comment"># Use xv to view images if I'm running X</emphasis>
 <emphasis role="comment"># In addition, this uses the \ to extend the line and set my editor</emphasis>
 <emphasis role="comment"># for images</emphasis>
-image/*;xv %s; test=RunningX; \
-        edit=xpaint %s
+image/*;        xv %s; test=RunningX; edit=xpaint %s
 <emphasis role="comment"># Convert images to text using the netpbm tools</emphasis>
-image/*;  (anytopnm %s | pnmscale -xysize 80 46 | ppmtopgm | pgmtopbm |
-pbmtoascii -1x2 ) 2&gt;&amp;1 ; copiousoutput
+image/*;        (anytopnm %s | pnmscale -xysize 80 46 | ppmtopgm | pgmtopbm | \
+                pbmtoascii -1x2) 2&gt;&amp;1 ; copiousoutput
 <emphasis role="comment"># Send excel spreadsheets to my NT box</emphasis>
-application/ms-excel; open.pl %s
+application/ms-excel;   open.pl %s
 </screen>
+
       </sect2>
     </sect1>
 
@@ -8955,21 +9106,25 @@ application/ms-excel; open.pl %s
       <command>auto_view</command> configuration command to list the
       content-types that you wish to view automatically. For instance, if you
       set it to:</para>
-      <screen>
+
+<screen>
 auto_view text/html application/x-gunzip \
   application/postscript image/gif application/x-tar-gz
 </screen>
+
       <para>...NeoMutt would try to find corresponding entries for rendering
       attachments of these types as text. A corresponding mailcap could look
       like:</para>
-      <screen>
-text/html;      lynx -dump %s; copiousoutput; nametemplate=%s.html
-image/*;        anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | \
-                pgmtopbm | pbmtoascii ; copiousoutput
+
+<screen>
+text/html;              lynx -dump %s; copiousoutput; nametemplate=%s.html
+image/*;                anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | \
+                        pgmtopbm | pbmtoascii ; copiousoutput
 application/x-gunzip;   gzcat; copiousoutput
-application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
+application/x-tar-gz;   gunzip -c %s | tar -tf - ; copiousoutput
 application/postscript; ps2ascii %s; copiousoutput
 </screen>
+
       <para>
       <command>unauto_view</command> can be used to remove previous entries from
       the
@@ -8998,10 +9153,12 @@ application/postscript; ps2ascii %s; copiousoutput
           available types is preferred. It consists of a number of MIME types
           in order, including support for implicit and explicit wildcards. For
           example:</para>
-          <screen>
+
+<screen>
 alternative_order text/enriched text/plain text \
   application/postscript image/*
 </screen>
+
         </listitem>
         <listitem>
           <para>Next, NeoMutt will check if any of the types have a defined
@@ -9102,59 +9259,50 @@ alternative_order text/enriched text/plain text \
       commented out define the default configuration of the lists.</para>
       <example id="ex-attach-count">
         <title>Attachment counting</title>
-        <screen>
-<emphasis role="comment">
-# Removing a pattern from a list removes that pattern literally. It
-# does not remove any type matching the pattern.
 
-#
-#  attachments   +A */.*
-#  attachments   +A image/jpeg
-#  unattachments +A */.*
-#
-# This leaves "attached" image/jpeg files on the allowed attachments
-# list. It does not remove all items, as you might expect, because the
-# second */.* is not a matching expression at this time.
+<screen>
+<emphasis role="comment"># Removing a pattern from a list removes that pattern literally. It</emphasis>
+<emphasis role="comment"># does not remove any type matching the pattern.</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment">#  attachments   +A */.*</emphasis>
+<emphasis role="comment">#  attachments   +A image/jpeg</emphasis>
+<emphasis role="comment">#  unattachments +A */.*</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># This leaves "attached" image/jpeg files on the allowed attachments</emphasis>
+<emphasis role="comment"># list. It does not remove all items, as you might expect, because the</emphasis>
+<emphasis role="comment"># second */.* is not a matching expression at this time.</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># Remember: "unattachments" only undoes what "attachments" has done!</emphasis>
+<emphasis role="comment"># It does not trigger any matching on actual messages.</emphasis>
+<emphasis role="comment"># Qualify any MIME part with an "attachment" disposition, EXCEPT for</emphasis>
+<emphasis role="comment"># text/x-vcard and application/pgp parts. (PGP parts are already known</emphasis>
+<emphasis role="comment"># to NeoMutt, and can be searched for with ~g, ~G, and ~k.)</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># I've added x-pkcs7 to this, since it functions (for S/MIME)</emphasis>
+<emphasis role="comment"># analogously to PGP signature attachments. S/MIME isn't supported</emphasis>
+<emphasis role="comment"># in a stock NeoMutt build, but we can still treat it specially here.</emphasis>
+<emphasis role="comment">#</emphasis>
+attachments  +A */.*
+attachments  -A text/x-vcard application/pgp.*
+attachments  -A application/x-pkcs7-.*
+<emphasis role="comment"># Discount all MIME parts with an "inline" disposition, unless they're</emphasis>
+<emphasis role="comment"># text/plain. (Why inline a text/plain part unless it's external to the</emphasis>
+<emphasis role="comment"># message flow?)</emphasis>
+attachments  +I text/plain
+<emphasis role="comment"># These two lines make NeoMutt qualify MIME containers. (So, for example,</emphasis>
+<emphasis role="comment"># a message/rfc822 forward will count as an attachment.) The first</emphasis>
+<emphasis role="comment"># line is unnecessary if you already have "attach-allow */.*", of</emphasis>
+<emphasis role="comment"># course. These are off by default! The MIME elements contained</emphasis>
+<emphasis role="comment"># within a message/* or multipart/* are still examined, even if the</emphasis>
+<emphasis role="comment"># containers themselves don't qualify.</emphasis>
 
-#
-# Remember: "unattachments" only undoes what "attachments" has done!
-
-# It does not trigger any matching on actual messages.
-
-# Qualify any MIME part with an "attachment" disposition, EXCEPT for
-# text/x-vcard and application/pgp parts. (PGP parts are already known
-# to NeoMutt, and can be searched for with ~g, ~G, and ~k.)
-#
-# I've added x-pkcs7 to this, since it functions (for S/MIME)
-# analogously to PGP signature attachments. S/MIME isn't supported
-# in a stock NeoMutt build, but we can still treat it specially here.
-
-#
-</emphasis>
-attachments   +A */.*
-attachments   -A text/x-vcard application/pgp.*
-attachments   -A application/x-pkcs7-.*
-<emphasis role="comment">
-# Discount all MIME parts with an "inline" disposition, unless they're
-# text/plain. (Why inline a text/plain part unless it's external to the
-# message flow?)
-</emphasis>
-attachments   +I text/plain
-<emphasis role="comment">
-# These two lines make NeoMutt qualify MIME containers.  (So, for example,
-# a message/rfc822 forward will count as an attachment.)  The first
-# line is unnecessary if you already have "attach-allow */.*", of
-# course.  These are off by default!  The MIME elements contained
-# within a message/* or multipart/* are still examined, even if the
-# containers themselves don't qualify.
-
-#attachments  +A message/.* multipart/.*
-#attachments  +I message/.* multipart/.*
-</emphasis>
+<emphasis role="comment">#attachments  +A message/.* multipart/.*</emphasis>
+<emphasis role="comment">#attachments  +I message/.* multipart/.*</emphasis>
 <emphasis role="comment">## You probably don't really care to know about deleted attachments.</emphasis>
-attachments   -A message/external-body
-attachments   -I message/external-body
+attachments  -A message/external-body
+attachments  -I message/external-body
 </screen>
+
       </example>
       <para>Entering the command
       <quote>
@@ -9198,7 +9346,11 @@ attachments   -I message/external-body
       rules in the mailcap file and according to any other configuration
       options (such as
       <command>auto_view</command>) specified. Common usage would be:</para>
-      <screen>mime_lookup application/octet-stream application/X-Lotus-Manuscript</screen>
+
+<screen>
+mime_lookup application/octet-stream application/X-Lotus-Manuscript
+</screen>
+
       <para>In addition, the
       <literal>unmime_lookup</literal> command may be used to disable this
       feature for any particular MIME type if it had been set, for example, in
@@ -9270,11 +9422,13 @@ attachments   -I message/external-body
         elsewhere.</para>
         <example id="ex-url">
           <title>URLs</title>
-          <screen>
+
+<screen>
 pops://host/
 imaps://user@host/INBOX/Sent
 smtp://user@host:587/
 </screen>
+
         </example>
       </sect2>
     </sect1>
@@ -9357,10 +9511,12 @@ smtp://user@host:587/
       <link linkend="mail-check">$mail_check</link> and
       <link linkend="timeout">$timeout</link> variables. Reasonable values
       are:</para>
-      <screen>
+
+<screen>
 set mail_check=90
 set timeout=15
 </screen>
+
       <para>with relatively good results even over slow modem lines.</para>
       <note>
         <para>Note that if you are using mbox as the mail store on UW servers
@@ -9508,12 +9664,14 @@ set timeout=15
         <command>account-hook</command>
       </link>was last used).</para>
       <para>Some examples:</para>
-      <screen>
+
+<screen>
 account-hook . 'unset imap_user; unset imap_pass; unset tunnel'
 account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
 account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
 account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
 </screen>
+
       <para>To manage multiple accounts with, for example, different values of
       <link linkend="record">$record</link> or sender addresses,
       <link linkend="folder-hook">
@@ -9524,12 +9682,14 @@ account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
       </link>command.</para>
       <example id="ex-multiaccount">
         <title>Managing multiple accounts</title>
-        <screen>
+
+<screen>
 mailboxes imap://user@host1/INBOX
 folder-hook imap://user@host1/ 'set folder=imap://host1/ ; set record=+INBOX/Sent'
 mailboxes imap://user@host2/INBOX
 folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sent'
 </screen>
+
       </example>
       <para>In example
       <xref linkend="ex-multiaccount" />the folders are defined using
@@ -9578,7 +9738,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         looking at possibly thousands of single files (since Maildir and MH use
         one file per message.)</para>
         <para>Header caching can be enabled by configuring one of the database
-        backends.  One of tokyocabinet, kyotocabinet, qdbm, gdbm, lmdb or
+        backends. One of tokyocabinet, kyotocabinet, qdbm, gdbm, lmdb or
         bdb.</para>
         <para>If enabled,
         <link linkend="header-cache">$header_cache</link> can be used to either
@@ -9723,31 +9883,33 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
 
       <sect2 id="attach-headers-color-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the attach-headers-color feature.
 
-# Color if the attachment is autoviewed</emphasis>
-color   attach_headers     brightgreen     default        "Autoview"
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the attach-headers-color feature.</emphasis>
+
+<emphasis role="comment"># Color if the attachment is autoviewed</emphasis>
+color   attach_headers     brightgreen     default    "Autoview"
 <emphasis role="comment"># Color only the brackets around the headers</emphasis>
-color   attach_headers     brightyellow    default        "^\\[--"
-color   attach_headers     brightyellow    default        "--]$"
+color   attach_headers     brightyellow    default    "^\\[--"
+color   attach_headers     brightyellow    default    "--]$"
 <emphasis role="comment"># Color the mime type and the size</emphasis>
-color   attach_headers     green           default        "Type: [a-z]+/[a-z0-9\-]+"
-color   attach_headers     green           default        "Size: [0-9\.]+[KM]"
+color   attach_headers     green           default    "Type: [a-z]+/[a-z0-9\-]+"
+color   attach_headers     green           default    "Size: [0-9\.]+[KM]"
 <emphasis role="comment"># Color GPGME signature checks</emphasis>
-color   attach_headers     brightgreen     default        "Good signature from.*"
-color   attach_headers     brightred       default        "Bad signature from.*"
-color   attach_headers     brightred       default        "BAD signature from.*"
-color   attach_headers     brightred       default        "Note: This key has expired!"
-color   attach_headers     brightmagenta   default        "Problem signature from.*"
-color   attach_headers     brightmagenta   default        "WARNING: This key is not certified with a trusted signature!"
-color   attach_headers     brightmagenta   default        "         There is no indication that the signature belongs to the owner."
-color   attach_headers     brightmagenta   default        "can't handle these multiple signatures"
-color   attach_headers     brightmagenta   default        "signature verification suppressed"
-color   attach_headers     brightmagenta   default        "invalid node with packet of type"
+color   attach_headers     brightgreen     default    "Good signature from.*"
+color   attach_headers     brightred       default    "Bad signature from.*"
+color   attach_headers     brightred       default    "BAD signature from.*"
+color   attach_headers     brightred       default    "Note: This key has expired!"
+color   attach_headers     brightmagenta   default    "Problem signature from.*"
+color   attach_headers     brightmagenta   default    "WARNING: This key is not certified with a trusted signature!"
+color   attach_headers     brightmagenta   default    "         There is no indication that the signature belongs to the owner."
+color   attach_headers     brightmagenta   default    "can't handle these multiple signatures"
+color   attach_headers     brightmagenta   default    "signature verification suppressed"
+color   attach_headers     brightmagenta   default    "invalid node with packet of type"
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="attach-headers-color-see-also">
@@ -9834,17 +9996,19 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
 
       <sect2 id="compose-to-sender-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the compose-to-sender feature.
 
-# --------------------------------------------------------------------------
-# FUNCTIONS - shown with an example mapping
-# --------------------------------------------------------------------------
-# Compose a new email (not a reply) to the sender</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the compose-to-sender feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Compose a new email (not a reply) to the sender</emphasis>
 bind index,pager @ compose-to-sender
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="compose-to-sender-known-bugs">
@@ -10005,7 +10169,11 @@ bind index,pager @ compose-to-sender
           <sect4 id="compress-open-hook-example">
             <title>Example of
             <literal>open-hook</literal></title>
-            <screen>open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"</screen>
+
+<screen>
+open-hook '\.gz$' "gzip --stdout --decompress '%f' &gt; '%t'"
+</screen>
+
             <itemizedlist>
               <listitem>
                 <para>NeoMutt finds a file,
@@ -10098,7 +10266,11 @@ bind index,pager @ compose-to-sender
           <sect4 id="compress-append-hook-example">
             <title>Example of
             <literal>append-hook</literal></title>
-            <screen>append-hook '\.gz$' "gzip --stdout '%t' &gt;&gt; '%f'"</screen>
+
+<screen>
+append-hook '\.gz$' "gzip --stdout '%t' &gt;&gt; '%f'"
+</screen>
+
             <itemizedlist>
               <listitem>
                 <para>NeoMutt wants to append an email to a folder,
@@ -10149,19 +10321,20 @@ bind index,pager @ compose-to-sender
 
       <sect2 id="compress-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the compress feature.
 
-# This feature adds three hooks to NeoMutt which allow it to
-# work with compressed, or encrypted, mailboxes.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the compress feature.</emphasis>
 
-# The hooks are of the form:
-#       open-hook   regex "shell-command"
-#       close-hook  regex "shell-command"
-#       append-hook regex "shell-command"
-# The 'append-hook' is optional.
+<emphasis role="comment"># This feature adds three hooks to NeoMutt which allow it to</emphasis>
+<emphasis role="comment"># work with compressed, or encrypted, mailboxes.</emphasis>
 
-# Handler for gzip compressed mailboxes</emphasis>
+<emphasis role="comment"># The hooks are of the form:</emphasis>
+<emphasis role="comment">#       open-hook   regex "shell-command"</emphasis>
+<emphasis role="comment">#       close-hook  regex "shell-command"</emphasis>
+<emphasis role="comment">#       append-hook regex "shell-command"</emphasis>
+<emphasis role="comment"># The 'append-hook' is optional.</emphasis>
+
+<emphasis role="comment"># Handler for gzip compressed mailboxes</emphasis>
 open-hook   '\.gz$' "gzip --stdout --decompress '%f' &gt;  '%t'"
 close-hook  '\.gz$' "gzip --stdout              '%t' &gt;  '%f'"
 append-hook '\.gz$' "gzip --stdout              '%t' &gt;&gt; '%f'"
@@ -10173,17 +10346,18 @@ append-hook '\.bz2$' "bzip2 --stdout              '%t' &gt;&gt; '%f'"
 open-hook   '\.xz$' "xz --stdout --decompress '%f' &gt;  '%t'"
 close-hook  '\.xz$' "xz --stdout              '%t' &gt;  '%f'"
 append-hook '\.xz$' "xz --stdout              '%t' &gt;&gt; '%f'"
-<emphasis role="comment"># Handler for pgp encrypted mailboxes
-# PGP does not support appending to an encrypted file</emphasis>
+<emphasis role="comment"># Handler for pgp encrypted mailboxes</emphasis>
+<emphasis role="comment"># PGP does not support appending to an encrypted file</emphasis>
 open-hook   '\.pgp$' "pgp -f &lt; '%f' &gt; '%t'"
 close-hook  '\.pgp$' "pgp -fe YourPgpUserIdOrKeyId &lt; '%t' &gt; '%f'"
-<emphasis role="comment"># Handler for gpg encrypted mailboxes
-# gpg does not support appending to an encrypted file</emphasis>
+<emphasis role="comment"># Handler for gpg encrypted mailboxes</emphasis>
+<emphasis role="comment"># gpg does not support appending to an encrypted file</emphasis>
 open-hook   '\.gpg$' "gpg --decrypt &lt; '%f' &gt; '%t'"
 close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &gt; '%f'"
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="compress-see-also">
@@ -10477,11 +10651,13 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
           <screen>%?[1m?%[%b %d]&amp;%[%Y-%m-%d]?</screen>
           <para>Reparsed a little, for clarity, you can see the test condition
           and the two format strings.</para>
-          <screen>
+
+<screen>
 %?[1m?        &amp;           ?
 
       %[%b %d] %[%Y-%m-%d]
 </screen>
+
         </sect3>
 
         <sect3 id="cond-date-example2">
@@ -10543,18 +10719,28 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
             </tgroup>
           </table>
           <para>The $index_format string would contain:</para>
-          <screen>%&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt;</screen>
+
+<screen>
+%&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt;
+</screen>
+
           <para>Reparsed a little, for clarity, you can see the test conditions
           and the four format strings.</para>
-          <screen>
+
+<screen>
 %&lt;[y?                                       &amp;%[%m/%y ]&gt;  Older
      %&lt;[m?                        &amp;%[%b %d]&gt;             This year
           %&lt;[d?         &amp;%[%a %d]&gt;                       This month
                %[%H:%M ]                                 Today
 </screen>
+
           <para>This a another view of the same example, with some whitespace
           for clarity.</para>
-          <screen>%&lt;[y? %&lt;[m? %&lt;[d? AAA &amp; BBB &gt; &amp; CCC &gt; &amp; DDD &gt;</screen>
+
+<screen>
+%&lt;[y? %&lt;[m? %&lt;[d? AAA &amp; BBB &gt; &amp; CCC &gt; &amp; DDD &gt;
+</screen>
+
           <literallayout>AAA = %[%H:%M ] BBB = %[%a %d] CCC = %[%b %d] DDD =
           %[%m/%y ]</literallayout>
         </sect3>
@@ -10569,23 +10755,26 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
 
       <sect2 id="cond-date-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the cond-date feature.
 
-#
-# The default index_format is:
-#       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
-#
-# We replace the date field '%{%b %d}', giving:</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the cond-date feature.</emphasis>
+
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># The default index_format is:</emphasis>
+<emphasis role="comment">#       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># We replace the date field '%{%b %d}', giving:</emphasis>
 set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt; %-15.15L (%?l?%4l&amp;%4c?) %s'
-<emphasis role="comment"># Test  Date Range  Format String  Example
-# --------------------------------------------
-# %[d   Today       %[%H:%M ]      12:34
-# %[m   This month  %[%a %d]       Thu 12
-# %[y   This year   %[%b %d]       Dec 10
-# -     Older       %[%m/%y ]      06/15
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># Test  Date Range  Format String  Example</emphasis>
+<emphasis role="comment"># --------------------------------------------</emphasis>
+<emphasis role="comment"># %[d   Today       %[%H:%M ]      12:34</emphasis>
+<emphasis role="comment"># %[m   This month  %[%a %d]       Thu 12</emphasis>
+<emphasis role="comment"># %[y   This year   %[%b %d]       Dec 10</emphasis>
+<emphasis role="comment">#  —    Older       %[%m/%y ]      06/15</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="cond-date-see-also">
@@ -10662,18 +10851,22 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
         <link linkend="smime-self-encrypt">$smime_self_encrypt</link>, then set
         <link linkend="smime-default-key">$smime_default_key</link> to your
         personal S/MIME key id.</para>
-        <screen>
+
+<screen>
 set smime_self_encrypt = yes
 set smime_default_key  = bb345e23.0
 </screen>
+
         <para>Or, if you use PGP,
         <link linkend="pgp-self-encrypt">$pgp_self_encrypt</link>, then set
         <link linkend="pgp-default-key">$pgp_default_key</link> to your personal
         PGP key id.</para>
-        <screen>
+
+<screen>
 set pgp_self_encrypt = yes
 set pgp_default_key  = A4AF18C5582473BD35A1E9CE78BB3D480042198E
 </screen>
+
         <para>If you have different key for signing, then you can set
         <link linkend="pgp-sign-as">$pgp_sign_as</link> or
         <link linkend="smime-sign-as">$smime_sign_as</link> respectively.</para>
@@ -10742,24 +10935,26 @@ set pgp_default_key  = A4AF18C5582473BD35A1E9CE78BB3D480042198E
 
       <sect2 id="encrypt-to-self-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the encrypt-to-self feature.
 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
-# Save a copy of outgoing email, encrypted to yourself</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the encrypt-to-self feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Save a copy of outgoing email, encrypted to yourself</emphasis>
 set pgp_self_encrypt = "yes"
 set pgp_default_key = "PGP-KEY"
-<emphasis role="comment"># set pgp_sign_as = "PGP-SIGNING-KEY"
+<emphasis role="comment"># set pgp_sign_as = "PGP-SIGNING-KEY"</emphasis>
 
-# Save a copy of outgoing email, encrypted to yourself</emphasis>
+<emphasis role="comment"># Save a copy of outgoing email, encrypted to yourself</emphasis>
 set smime_self_encrypt = "yes"
 set smime_default_key = "SMIME-KEY"
-<emphasis role="comment"># set smime_sign_as = "SMIME-SIGNING-KEY"
+<emphasis role="comment"># set smime_sign_as = "SMIME-SIGNING-KEY"</emphasis>
 
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="encrypt-to-self-known-bugs">
@@ -10929,32 +11124,35 @@ set smime_default_key = "SMIME-KEY"
 
       <sect2 id="forgotten-attachment-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the forgotten-attachment feature.
 
-# The 'forgotten-attachment' feature provides a new setting for NeoMutt that
-# alerts the user if the message body contains a certain regular expression but there are
-# no attachments added. This is meant to ensure that the user does not forget
-# to attach a file after promising to do so in the mail.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the forgotten-attachment feature.</emphasis>
 
-# Ask if the user wishes to abort sending if $abort_noattach_regex is found in the
-# body, but no attachments have been added
-# It can be set to:
-#    "yes"     : always abort
-#    "ask-yes" : ask whether to abort
-#    "no"      : send the mail</emphasis>
+<emphasis role="comment"># The 'forgotten-attachment' feature provides a new setting for NeoMutt that</emphasis>
+<emphasis role="comment"># alerts the user if the message body contains a certain regular expression but there are</emphasis>
+<emphasis role="comment"># no attachments added. This is meant to ensure that the user does not forget</emphasis>
+<emphasis role="comment"># to attach a file after promising to do so in the mail.</emphasis>
+
+<emphasis role="comment"># Ask if the user wishes to abort sending if $abort_noattach_regex is found in the</emphasis>
+<emphasis role="comment"># body, but no attachments have been added</emphasis>
+<emphasis role="comment"># It can be set to:</emphasis>
+<emphasis role="comment">#    "yes"     : always abort</emphasis>
+<emphasis role="comment">#    "ask-yes" : ask whether to abort</emphasis>
+<emphasis role="comment">#    "no"      : send the mail</emphasis>
 set abort_noattach = no
-<emphasis role="comment"># Search for the following regular expression in the body of the email
-# English: attach, attached, attachment, attachments</emphasis>
+<emphasis role="comment"># Search for the following regular expression in the body of the email</emphasis>
+<emphasis role="comment"># English: attach, attached, attachment, attachments</emphasis>
 set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
-<emphasis role="comment"># Nederlands:
-# set abort_noattach_regex = "\\&lt;(bijvoegen|bijgevoegd|bijlage|bijlagen)\\&gt;"
-# Deutsch:
-# set abort_noattach_regex = "\\&lt;(anhängen|angehängt|anhang|anhänge|hängt an)\\&gt;"
-# Français:
-# set abort_noattach_regex = "\\&lt;(attaché|attachés|attache|attachons|joint|jointe|joints|jointes|joins|joignons)\\&gt;"
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># Nederlands:</emphasis>
+<emphasis role="comment"># set abort_noattach_regex = "\\&lt;(bijvoegen|bijgevoegd|bijlage|bijlagen)\\&gt;"</emphasis>
+<emphasis role="comment"># Deutsch:</emphasis>
+<emphasis role="comment"># set abort_noattach_regex = "\\&lt;(anhängen|angehängt|anhang|anhänge|hängt an)\\&gt;"</emphasis>
+<emphasis role="comment"># Français:</emphasis>
+<emphasis role="comment"># set abort_noattach_regex = "\\&lt;(attaché|attachés|attache|attachons|joint|jointe|joints|jointes|joins|joignons)\\&gt;"</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="forgotten-attachment-see-also">
@@ -11087,21 +11285,23 @@ set abort_noattach_regex = "\\&lt;attach(|ed|ments?)\\&gt;"
 
       <sect2 id="global-hooks-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the global hooks feature.
 
-# --------------------------------------------------------------------------
-# COMMANDS - shown with an example argument
-# --------------------------------------------------------------------------
-# After $timeout seconds of inactivity, run this NeoMutt command</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the global hooks feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># COMMANDS – shown with an example argument</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># After $timeout seconds of inactivity, run this NeoMutt command</emphasis>
 timeout-hook 'exec sync-mailbox'
 <emphasis role="comment"># When NeoMutt first loads, run this NeoMutt command</emphasis>
 startup-hook 'exec sync-mailbox'
 <emphasis role="comment"># When NeoMutt quits, run this NeoMutt command</emphasis>
 shutdown-hook 'exec sync-mailbox'
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="timeout-see-also">
@@ -11157,11 +11357,13 @@ shutdown-hook 'exec sync-mailbox'
         <quote>ifdef</quote> feature introduces three new commands to NeoMutt and
         allow you to share one config file between versions of NeoMutt that may
         have different features compiled in.</para>
-        <screen>
+
+<screen>
 ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
 ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
 finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
 </screen>
+
         <para>Here a symbol can be a
         <link linkend="variables">$variable</link>,
         <link linkend="functions">&lt;function&gt;</link>,
@@ -11173,10 +11375,12 @@ finish                                  <emphasis role="comment"># Finish readin
         <para>
         <literal>finish</literal> is particularly useful when combined with
         <literal>ifndef</literal>. e.g.</para>
-        <screen>
+
+<screen>
 <emphasis role="comment"># Sidebar config file</emphasis>
 ifndef sidebar finish
 </screen>
+
       </sect2>
 
       <sect2 id="ifdef-commands">
@@ -11204,37 +11408,39 @@ ifndef sidebar finish
 
       <sect2 id="ifdef-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the ifdef feature.
 
-# This feature introduces three useful commands which allow you to share
-# one config file between versions of NeoMutt that may have different
-# features compiled in.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the ifdef feature.</emphasis>
 
-#   ifdef  symbol config-command [args...]
-#   ifndef symbol config-command [args...]
-#   finish
-# The 'ifdef' command tests whether NeoMutt understands the name of
-# a variable, function, command or compile-time symbol.
+<emphasis role="comment"># This feature introduces three useful commands which allow you to share</emphasis>
+<emphasis role="comment"># one config file between versions of NeoMutt that may have different</emphasis>
+<emphasis role="comment"># features compiled in.</emphasis>
 
-# If it does, then it executes a config command.
+<emphasis role="comment">#   ifdef  symbol config-command [args...]</emphasis>
+<emphasis role="comment">#   ifndef symbol config-command [args...]</emphasis>
+<emphasis role="comment">#   finish</emphasis>
+<emphasis role="comment"># The 'ifdef' command tests whether NeoMutt understands the name of</emphasis>
+<emphasis role="comment"># a variable, function, command or compile-time symbol.</emphasis>
 
-# The 'ifndef' command tests whether a symbol does NOT exist.
+<emphasis role="comment"># If it does, then it executes a config command.</emphasis>
 
-# The 'finish' command tells NeoMutt to stop reading current config file.
+<emphasis role="comment"># The 'ifndef' command tests whether a symbol does NOT exist.</emphasis>
 
-# If the 'trash' variable exists, set it.</emphasis>
+<emphasis role="comment"># The 'finish' command tells NeoMutt to stop reading current config file.</emphasis>
+
+<emphasis role="comment"># If the 'trash' variable exists, set it.</emphasis>
 ifdef trash 'set trash=~/Mail/trash'
 <emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
 ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
 <emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
 ifdef imap-fetch-mail 'source ~/.neomutt/imap.rc'
-<emphasis role="comment"># If the compile-time symbol 'sidebar' does not exist, then
-# stop reading the current config file.</emphasis>
+<emphasis role="comment"># If the compile-time symbol 'sidebar' does not exist, then</emphasis>
+<emphasis role="comment"># stop reading the current config file.</emphasis>
 ifndef sidebar finish
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="ifdef-known-bugs">
@@ -11304,7 +11510,8 @@ ifndef sidebar finish
         <literal>default</literal>, i.e. unset.</para>
         <para>The index objects can be themed using the
         <literal>color</literal> command. Some objects require a pattern.</para>
-        <screen>
+
+<screen>
 color index-object foreground background
 color index-object foreground background pattern
 </screen>
@@ -11390,21 +11597,22 @@ color index-object foreground background pattern
 
       <sect2 id="index-color-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the index-color feature.
 
-# Entire index line</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the index-color feature.</emphasis>
+
+<emphasis role="comment"># Entire index line</emphasis>
 color index white black '.*'
-<emphasis role="comment"># Author name, %A %a %F %L %n
-# Give the author column a dark grey background</emphasis>
+<emphasis role="comment"># Author name, %A %a %F %L %n</emphasis>
+<emphasis role="comment"># Give the author column a dark grey background</emphasis>
 color index_author default color234 '.*'
 <emphasis role="comment"># Highlight a particular from (~f)</emphasis>
 color index_author brightyellow color234 '~fRay Charles'
-<emphasis role="comment"># Message flags, %S %Z
-# Highlight the flags for flagged (~F) emails</emphasis>
+<emphasis role="comment"># Message flags, %S %Z</emphasis>
+<emphasis role="comment"># Highlight the flags for flagged (~F) emails</emphasis>
 color index_flags default red '~F'
-<emphasis role="comment"># Subject, %s
-# Look for a particular subject (~s)</emphasis>
+<emphasis role="comment"># Subject, %s</emphasis>
+<emphasis role="comment"># Look for a particular subject (~s)</emphasis>
 color index_subject brightcyan default '~s\(closes #[0-9]+\)'
 <emphasis role="comment"># Number of messages in a collapsed thread, %M</emphasis>
 color index_collapsed default brightblue
@@ -11417,8 +11625,9 @@ color index_number red default
 <emphasis role="comment"># Message size, %c %l</emphasis>
 color index_size cyan default
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="index-color-see-also">
@@ -11522,31 +11731,34 @@ color index_size cyan default
 
       <sect2 id="initials-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the initials feature.
 
-# The 'initials' feature has no config of its own.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the initials feature.</emphasis>
 
-# It adds an expando for an author's initials,
-# which can be used in the 'index_format' variable.
+<emphasis role="comment"># The 'initials' feature has no config of its own.</emphasis>
 
-# The default 'index_format' is:</emphasis>
+<emphasis role="comment"># It adds an expando for an author's initials,</emphasis>
+<emphasis role="comment"># which can be used in the 'index_format' variable.</emphasis>
+
+<emphasis role="comment"># The default 'index_format' is:</emphasis>
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
-<emphasis role="comment"># Where %L represents the author/recipient
-# This might look like:
-#       1   + Nov 17 David Bowie   Changesbowie    ( 689)
-#       2   ! Nov 17 Stevie Nicks  Rumours         ( 555)
-#       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)
-#       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)
-# Using the %I expando:</emphasis>
+<emphasis role="comment"># Where %L represents the author/recipient</emphasis>
+<emphasis role="comment"># This might look like:</emphasis>
+<emphasis role="comment">#       1   + Nov 17 David Bowie   Changesbowie    ( 689)</emphasis>
+<emphasis role="comment">#       2   ! Nov 17 Stevie Nicks  Rumours         ( 555)</emphasis>
+<emphasis role="comment">#       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)</emphasis>
+<emphasis role="comment">#       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)</emphasis>
+<emphasis role="comment"># Using the %I expando:</emphasis>
 set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
-<emphasis role="comment"># This might look like:
-#       1   + Nov 17 DB Changesbowie    ( 689)
-#       2   ! Nov 17 SN Rumours         ( 555)
-#       3   + Nov 16 JH Voodoo Child    ( 263)
-#       4   + Nov 16 DH Parallel Lines  ( 540)
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># This might look like:</emphasis>
+<emphasis role="comment">#       1   + Nov 17 DB Changesbowie    ( 689)</emphasis>
+<emphasis role="comment">#       2   ! Nov 17 SN Rumours         ( 555)</emphasis>
+<emphasis role="comment">#       3   + Nov 16 JH Voodoo Child    ( 263)</emphasis>
+<emphasis role="comment">#       4   + Nov 16 DH Parallel Lines  ( 540)</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="initials-see-also">
@@ -11722,14 +11934,16 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
 
       <sect2 id="limit-current-thread-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the limit-current-thread feature.
 
-# Limit view to current thread</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the limit-current-thread feature.</emphasis>
+
+<emphasis role="comment"># Limit view to current thread</emphasis>
 bind index &lt;esc&gt;L limit-current-thread
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="limit-current-thread-known-bugs">
@@ -11915,18 +12129,21 @@ bind index &lt;esc&gt;L limit-current-thread
         of refreshing the screen periodically.</para>
         <para>A simple nested condition might be: (Some whitespace has been
         introduced for clarity)</para>
-        <screen>
+
+<screen>
 %&lt;x? %&lt;y? XY &amp; X &gt; &amp; %&lt;y? Y &amp; NONE &gt; &gt;  Conditions
      %&lt;y? XY &amp; X &gt;                      x&gt;0
           XY                            x&gt;0,y&gt;0
                X                        x&gt;0,y=0
 </screen>
-        <screen>
+
+<screen>
 %&lt;x? %&lt;y? XY &amp; X &gt; &amp; %&lt;y? Y &amp; NONE &gt; &gt;  Conditions
                      %&lt;y? Y &amp; NONE &gt;    x=0
                           Y             x=0,y&gt;0
                               NONE      x=0,y=0
 </screen>
+
         <para>Equivalent to:</para>
         <literallayout>if (x &gt; 0) {
   if (y &gt; 0) {
@@ -11942,11 +12159,19 @@ bind index &lt;esc&gt;L limit-current-thread
   }
 }</literallayout>
         <para>Examples:</para>
-        <screen>set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'</screen>
+
+<screen>
+set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
+</screen>
+
         <literallayout>if a thread is folded display the number of messages (%M)
 else if we know how many lines in the message display lines in message (%l)
 else display the size of the message in bytes (%c)</literallayout>
-        <screen>set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'</screen>
+
+<screen>
+set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
+</screen>
+
         <literallayout>if a thread is folded display the number of messages (%M) and the subject (%s)
 else if we know how many lines are in the message display subject (%s) and the lines in message (%l)
 else display the subject (%s) and the size of the message in bytes (%c)</literallayout>
@@ -11968,31 +12193,34 @@ else display the subject (%s) and the size of the message in bytes (%c)</literal
 
       <sect2 id="nested-if-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the nested-if feature.
 
-# This feature uses the format: '%&lt;VAR?TRUE&amp;FALSE&gt;' for conditional
-# format strings that can be nested.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the nested-if feature.</emphasis>
 
-# Example 1
-# if a thread is folded
-#       display the number of messages (%M)
-# else if we know how many lines in the message
-#       display lines in message (%l)
-# else display the size of the message in bytes (%c)</emphasis>
+<emphasis role="comment"># This feature uses the format: '%&lt;VAR?TRUE&amp;FALSE&gt;' for conditional</emphasis>
+<emphasis role="comment"># format strings that can be nested.</emphasis>
+
+<emphasis role="comment"># Example 1</emphasis>
+<emphasis role="comment"># if a thread is folded</emphasis>
+<emphasis role="comment">#       display the number of messages (%M)</emphasis>
+<emphasis role="comment"># else if we know how many lines in the message</emphasis>
+<emphasis role="comment">#       display lines in message (%l)</emphasis>
+<emphasis role="comment"># else display the size of the message in bytes (%c)</emphasis>
 set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
-<emphasis role="comment"># Example 2
-# if a thread is folded
-#       display the number of messages (%M)
-#       display the subject (%s)
-# else if we know how many lines in the message
-#       display lines in message (%l)
-# else
-#       display the size of the message in bytes (%c)</emphasis>
+
+<emphasis role="comment"># Example 2</emphasis>
+<emphasis role="comment"># if a thread is folded</emphasis>
+<emphasis role="comment">#       display the number of messages (%M)</emphasis>
+<emphasis role="comment">#       display the subject (%s)</emphasis>
+<emphasis role="comment"># else if we know how many lines in the message</emphasis>
+<emphasis role="comment">#       display lines in message (%l)</emphasis>
+<emphasis role="comment"># else</emphasis>
+<emphasis role="comment">#       display the size of the message in bytes (%c)</emphasis>
 set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="nested-if-see-also">
@@ -12062,16 +12290,26 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
         <link linkend="status-format">$status_format</link>.</para>
         <note>
         <para>When the notification is sent, the folder of the new mail is no longer known.
-          This is a limitation of NeoMutt.  The `%f` expando will show the open folder.</para>
+          This is a limitation of NeoMutt. The `%f` expando will show the open folder.</para>
         </note>
         <para>For example in Linux you can use (most distributions already
         provide notify-send):</para>
-        <screen>set new_mail_command="notify-send --icon='/home/santiago/Pictures/neomutt.png' 'New Email' '%n new messages, %u unread.' &amp;"</screen>
+
+<screen>
+set new_mail_command="notify-send --icon='/home/santiago/Pictures/neomutt.png' \
+  'New Email' '%n new messages, %u unread.' &amp;"
+</screen>
+
         <para>And in OS X you will need to install a command line interface for
         Notification Center, for example
         <ulink url="https://github.com/julienXX/terminal-notifier">
         terminal-notifier</ulink>:</para>
-        <screen>set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"</screen>
+
+<screen>
+set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail' \
+  -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+</screen>
+
       </sect2>
 
       <sect2 id="new-mail-variables">
@@ -12102,21 +12340,26 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 
       <sect2 id="new-mail-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the new-mail feature.
 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
-# Set the command you want NeoMutt to execute upon the receipt of a new email</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the new-mail feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Set the command you want NeoMutt to execute upon the receipt of a new email</emphasis>
 set new_mail_command = ""
-<emphasis role="comment"># Linux example:
-# set new_command="notify-send --icon='/home/santiago/Pictures/neomutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"
-# OS X example:
-# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
-# --------------------------------------------------------------------------
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># Linux example:</emphasis>
+<emphasis role="comment"># set new_command="notify-send --icon='/home/santiago/Pictures/neomutt.png' \</emphasis>
+<emphasis role="comment">#   'New Email in %f' '%n new messages, %u unread.' &amp;"</emphasis>
+<emphasis role="comment"># OS X example:</emphasis>
+<emphasis role="comment"># set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' \</emphasis>
+<emphasis role="comment">#   -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="new-mail-see-also">
@@ -12558,12 +12801,13 @@ set new_mail_command = ""
 
       <sect2 id="nntp-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the nntp feature.
 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the nntp feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 set ask_follow_up = no
 set ask_x_comment_to = no
 set catchup_newsgroup = ask-yes
@@ -12587,10 +12831,10 @@ set save_unsubscribed = no
 set show_new_news = yes
 set show_only_unread = no
 set x_comment_to = no
-<emphasis role="comment"># --------------------------------------------------------------------------
-# FUNCTIONS - shown with an example mapping
-# --------------------------------------------------------------------------
-# mark all articles in newsgroup as read</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># mark all articles in newsgroup as read</emphasis>
 bind browser,index y catchup
 <emphasis role="comment"># open a different newsgroup</emphasis>
 bind index,pager i change-newsgroup
@@ -12620,17 +12864,19 @@ bind browser U unsubscribe-pattern
 bind index,pager \ei change-newsgroup-readonly
 <emphasis role="comment"># forward to newsgroup</emphasis>
 bind attach,index,pager \eF forward-to-group
-<emphasis role="comment"># get all children of the current message
-# bind index ??? get-children
-# get parent of the current message</emphasis>
+<emphasis role="comment"># get all children of the current message</emphasis>
+<emphasis role="comment"># bind index ??? get-children</emphasis>
+<emphasis role="comment"># get parent of the current message</emphasis>
 bind index \eG get-parent
-<emphasis role="comment"># reconstruct thread containing current message
-# bind index ??? reconstruct-thread
-# get message with Message-Id</emphasis>
+<emphasis role="comment"># reconstruct thread containing current message</emphasis>
+<emphasis role="comment"># bind index ??? reconstruct-thread</emphasis>
+<emphasis role="comment"># get message with Message-Id</emphasis>
 bind index \CG get-message
-<emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="nntp-known-bugs">
@@ -12838,67 +13084,70 @@ bind index \CG get-message
 
       <sect2 id="custom-tags-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the custom tags feature.
 
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
-# This variable specifies private notmuch tags which should not be printed
-# on screen (index, pager).</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the custom tags feature.</emphasis>
+
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># This variable specifies private notmuch tags which should not be printed</emphasis>
+<emphasis role="comment"># on screen (index, pager).</emphasis>
 set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
-<emphasis role="comment"># --------------------------------------------------------------------------
-# FUNCTIONS - shown with an example mapping
-# --------------------------------------------------------------------------
-# modify (notmuch/imap) tags</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># modify (notmuch/imap) tags</emphasis>
 bind index,pager \` modify-labels
 <emphasis role="comment"># modify (notmuch/imap) tag non-interactively.</emphasis>
 bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
-<emphasis role="comment"># modify labels and then hide message
-# bind index,pager ??? modify-labels-then-hide
-# --------------------------------------------------------------------------
-# COMMANDS - shown with an example
-# --------------------------------------------------------------------------
-# Replace some tags with icons
-# tag-transforms tag transformed-string { tag transformed-string ...}
-# tag-transforms "inbox"   "i"   \
-#                "unread"  "u"   \
-#                "replied" "↻ "  \
-#                "sent"    "➥ "  \
-#                "todo"    "T"   \
-#                "deleted" "DEL" \
-#                "invites" "CAL"
+<emphasis role="comment"># modify labels and then hide message</emphasis>
+<emphasis role="comment"># bind index,pager ??? modify-labels-then-hide</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># COMMANDS – shown with an example</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Replace some tags with icons</emphasis>
+<emphasis role="comment"># tag-transforms tag transformed-string { tag transformed-string ...}</emphasis>
+<emphasis role="comment"># tag-transforms "inbox"   "i"   \</emphasis>
+<emphasis role="comment">#                "unread"  "u"   \</emphasis>
+<emphasis role="comment">#                "replied" "↻ "  \</emphasis>
+<emphasis role="comment">#                "sent"    "➥ "  \</emphasis>
+<emphasis role="comment">#                "todo"    "T"   \</emphasis>
+<emphasis role="comment">#                "deleted" "DEL" \</emphasis>
+<emphasis role="comment">#                "invites" "CAL"</emphasis>
 
-# The formats must start with 'G' and the entire sequence is case sensitive.
-# tag-formats tag format-string { tag format-string ...}
-# tag-formats "inbox"   "GI" \
-#              "unread"  "GU" \
-#              "replied" "GR" \
-#              "sent"    "GS" \
-#              "todo"    "Gt" \
-#              "deleted" "GD" \
-#              "invites" "Gi"
+<emphasis role="comment"># The formats must start with 'G' and the entire sequence is case sensitive.</emphasis>
+<emphasis role="comment"># tag-formats tag format-string { tag format-string ...}</emphasis>
+<emphasis role="comment"># tag-formats "inbox"   "GI" \</emphasis>
+<emphasis role="comment">#             "unread"  "GU" \</emphasis>
+<emphasis role="comment">#             "replied" "GR" \</emphasis>
+<emphasis role="comment">#             "sent"    "GS" \</emphasis>
+<emphasis role="comment">#             "todo"    "Gt" \</emphasis>
+<emphasis role="comment">#             "deleted" "GD" \</emphasis>
+<emphasis role="comment">#             "invites" "Gi"</emphasis>
 
-# Now instead of using '%g' or '%J' in your $index_format, which lists all tags
-# in a non-deterministic order, you can something like the following which puts
-# a transformed tag name in a specific spot on the index line:
-# set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'
+<emphasis role="comment"># Now instead of using '%g' or '%J' in your $index_format, which lists all tags</emphasis>
+<emphasis role="comment"># in a non-deterministic order, you can something like the following which puts</emphasis>
+<emphasis role="comment"># a transformed tag name in a specific spot on the index line:</emphasis>
+<emphasis role="comment"># set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'</emphasis>
 
-# The %G formatting sequence may display all tags including tags hidden by
-# nm_hidden_tags.
-#
-# --------------------------------------------------------------------------
-# COLORS - some unpleasant examples are given
-# --------------------------------------------------------------------------
-# These symbols are added to the index-color feature:
-# an individual message tag, %G, uses tag name
-# this symbol uses a pattern</emphasis>
+<emphasis role="comment"># The %G formatting sequence may display all tags including tags hidden by</emphasis>
+<emphasis role="comment"># nm_hidden_tags.</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># COLORS – some unpleasant examples are given</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># These symbols are added to the index-color feature:</emphasis>
+<emphasis role="comment"># an individual message tag, %G, uses tag name</emphasis>
+<emphasis role="comment"># this symbol uses a pattern</emphasis>
 color index_tag red white "inbox"
-<emphasis role="comment"># the transformed message tags, %g
-# this symbol does not use a pattern</emphasis>
+<emphasis role="comment"># the transformed message tags, %g</emphasis>
+<emphasis role="comment"># this symbol does not use a pattern</emphasis>
 color index_tags green default
-<emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="custom-tags-credits">
@@ -12983,10 +13232,12 @@ color index_tags green default
           <para>If the "&lt;path&gt;" is not defined then
           <literal>$nm_default_uri</literal> or
           <literal>$folder</literal> is used, for example:</para>
-          <screen>
+
+<screen>
 set nm_default_uri = "notmuch:///home/foo/maildir"
 virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 </screen>
+
         </sect3>
 
         <sect3 id="notmuch-items">
@@ -13310,62 +13561,61 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 
       <sect2 id="notmuch-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the notmuch feature.
 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
-# This variable specifies notmuch query limit.</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the notmuch feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># This variable specifies notmuch query limit.</emphasis>
 set nm_db_limit = 0
-<emphasis role="comment"># This variable specifies the default Notmuch database in format:
-# notmuch://&lt;absolute path&gt;</emphasis>
+<emphasis role="comment"># This variable specifies the default Notmuch database in format:</emphasis>
+<emphasis role="comment"># notmuch://&lt;absolute path&gt;</emphasis>
 set nm_default_uri = ""
-<emphasis role="comment"># The messages tagged with these tags are excluded and not loaded
-# from notmuch DB to NeoMutt unless specified explicitly.</emphasis>
+<emphasis role="comment"># The messages tagged with these tags are excluded and not loaded</emphasis>
+<emphasis role="comment"># from notmuch DB to NeoMutt unless specified explicitly.</emphasis>
 set nm_exclude_tags = ""
 <emphasis role="comment"># This option specifies timeout for Notmuch database. Default is 5 seconds.</emphasis>
 set nm_open_timeout = 5
-<emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and
-# 'messages'.</emphasis>
+<emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and</emphasis>
+<emphasis role="comment"># 'messages'.</emphasis>
 set nm_query_type = messages
-<emphasis role="comment"># Add messages stored to the NeoMutt record (see $record in the NeoMutt docs) also to notmuch DB. If you reply to an email then the new email inherits tags from the original email.
-</emphasis>
+<emphasis role="comment"># Add messages stored to the NeoMutt record (see $record in the NeoMutt docs)</emphasis>
+<emphasis role="comment"># also to notmuch DB. If you reply to an email then the new email inherits</emphasis>
+<emphasis role="comment"># tags from the original email.</emphasis>
 set nm_record = no
-<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the NeoMutt record.
-
-example:
-set record = "~/sent-mails"
-set nm_record = yes
-set nm_record_tags = "-inbox,archive,me"
-</emphasis>
+<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the NeoMutt record.</emphasis>
+<emphasis role="comment"># example:</emphasis>
+<emphasis role="comment">#   set record = "~/sent-mails"</emphasis>
+<emphasis role="comment">#   set nm_record = yes</emphasis>
+<emphasis role="comment">#   set nm_record_tags = "-inbox,archive,me"</emphasis>
 set nm_record_tags = ""
 <emphasis role="comment"># This variable specifies notmuch tag which is used for unread messages.</emphasis>
 set nm_unread_tag = unread
-<emphasis role="comment"># This variable allows you to customize the file browser display for virtual
-# folders to your personal taste.
-# %C   current folder number
-# %f   folder name (description)
-# %m   number of messages in the mailbox *
-# %n   number of unread messages in the mailbox *
-# %N   N if mailbox has new mail, blank otherwise
-# %>X  right justify the rest of the string and pad with character ``X''
-# %|X  pad to the end of the line with character ``X''
-# %*X  soft-fill with character ``X'' as pad
-</emphasis>
+<emphasis role="comment"># This variable allows you to customize the file browser display for virtual</emphasis>
+<emphasis role="comment"># folders to your personal taste.</emphasis>
+<emphasis role="comment"># %C   current folder number</emphasis>
+<emphasis role="comment"># %f   folder name (description)</emphasis>
+<emphasis role="comment"># %m   number of messages in the mailbox *</emphasis>
+<emphasis role="comment"># %n   number of unread messages in the mailbox *</emphasis>
+<emphasis role="comment"># %N   N if mailbox has new mail, blank otherwise</emphasis>
+<emphasis role="comment"># %>X  right justify the rest of the string and pad with character ``X''</emphasis>
+<emphasis role="comment"># %|X  pad to the end of the line with character ``X''</emphasis>
+<emphasis role="comment"># %*X  soft-fill with character ``X'' as pad</emphasis>
 set vfolder_format = "%6n(%6N) %f"
-<emphasis role="comment"># When set, NeoMutt will use the first virtual mailbox (see virtual-mailboxes)
-# as a spoolfile.</emphasis>
+<emphasis role="comment"># When set, NeoMutt will use the first virtual mailbox (see virtual-mailboxes)</emphasis>
+<emphasis role="comment"># as a spoolfile.</emphasis>
 set virtual_spoolfile = no
-<emphasis role="comment"># setup time window preferences
-# first setup the duration, and then the time unit of that duration
-# when set to 0 (the default) the search window feature is disabled</emphasis>
+<emphasis role="comment"># setup time window preferences</emphasis>
+<emphasis role="comment"># first setup the duration, and then the time unit of that duration</emphasis>
+<emphasis role="comment"># when set to 0 (the default) the search window feature is disabled</emphasis>
 set nm_query_window_duration=2
 set nm_query_window_timebase="week" # or "hour", "day", "week", "month", "year"
-<emphasis role="comment"># --------------------------------------------------------------------------
-# FUNCTIONS - shown with an example mapping
-# --------------------------------------------------------------------------
-# open a different virtual folder</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># open a different virtual folder</emphasis>
 bind index,pager X change-vfolder
 <emphasis role="comment"># read entire thread of the current message</emphasis>
 bind index,pager + entire-thread
@@ -13374,18 +13624,20 @@ bind index,pager \eX vfolder-from-query
 <emphasis role="comment"># generate virtual folder from query with time window</emphasis>
 bind index,pager &lt; vfolder-window-backward
 bind index,pager &gt; vfolder-window-forward
-# toggle between mailboxes and virtual mailboxes
-# bind index,pager ??? sidebar-toggle-virtual
-# --------------------------------------------------------------------------
-# COMMANDS - shown with an example
-# --------------------------------------------------------------------------
-# virtual-mailboxes description notmuch-URI { description notmuch-URI ...}
-# virtual-mailboxes "Climbing" "notmuch://?query=climbing"
-# unvirtual-mailboxes { * | mailbox ...}
-#
-<emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># toggle between mailboxes and virtual mailboxes</emphasis>
+<emphasis role="comment"># bind index,pager ??? sidebar-toggle-virtual</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># COMMANDS – shown with an example</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># virtual-mailboxes description notmuch-URI { description notmuch-URI ...}</emphasis>
+<emphasis role="comment"># virtual-mailboxes "Climbing" "notmuch://?query=climbing"</emphasis>
+<emphasis role="comment"># unvirtual-mailboxes { * | mailbox ...}</emphasis>
+<emphasis role="comment">#</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="notmuch-see-also">
@@ -13559,18 +13811,20 @@ bind index,pager &gt; vfolder-window-forward
 
       <sect2 id="progress-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the progress feature.
 
-# The 'progress' feature provides clear visual feedback for
-# slow tasks, such as indexing a large folder over the net.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the progress feature.</emphasis>
 
-# Set the color of the progress bar
-# White text on a red background</emphasis>
+<emphasis role="comment"># The 'progress' feature provides clear visual feedback for</emphasis>
+<emphasis role="comment"># slow tasks, such as indexing a large folder over the net.</emphasis>
+
+<emphasis role="comment"># Set the color of the progress bar</emphasis>
+<emphasis role="comment"># White text on a red background</emphasis>
 color progress white red
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="progress-see-also">
@@ -13669,15 +13923,17 @@ color progress white red
 
       <sect2 id="quasi-delete-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the quasi-delete feature.
 
-# The 'quasi-delete' function marks an email that should be hidden
-# from the index, but NOT deleted.</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the quasi-delete feature.</emphasis>
+
+<emphasis role="comment"># The 'quasi-delete' function marks an email that should be hidden</emphasis>
+<emphasis role="comment"># from the index, but NOT deleted.</emphasis>
 bind index,pager Q quasi-delete
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="quasi-delete-see-also">
@@ -13761,18 +14017,20 @@ bind index,pager Q quasi-delete
 
       <sect2 id="reply-with-xorig-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the reply-with-xorig feature.
 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
-# Use X-Original-To header to reply when reverse is disabled or no alternate
-# is found.</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the reply-with-xorig feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Use X-Original-To header to reply when reverse is disabled or no alternate</emphasis>
+<emphasis role="comment"># is found.</emphasis>
 set reply_with_xorig = "yes"
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="reply-with-xorig-credits">
@@ -13812,11 +14070,13 @@ set reply_with_xorig = "yes"
           <para>This is for users who like their mailboxes in a fixed order,
           e.g. alphabetical, or unsorted (in the order of the config
           file).</para>
-          <screen>
+
+<screen>
 <emphasis role="comment"># Fixed order</emphasis>
 set sort_browser="alpha"
 set sort_browser="unsorted"
 </screen>
+
           <para>When you first start the browser, e.g.
           <literal>c?</literal>your current mailbox will be highlighted.</para>
           <para>When you navigate to a parent mailbox (
@@ -13831,11 +14091,13 @@ set sort_browser="unsorted"
           <para>This is for users who like their mailboxes sorted by a
           characteristic that changes, e.g. count of new mail, or the size of
           mailbox.</para>
-          <screen>
+
+<screen>
 <emphasis role="comment"># Variable order</emphasis>
 set sort_browser="reverse-count"
 set sort_browser="reverse-size"
 </screen>
+
           <para>When you first start the browser, e.g.
           <literal>c?</literal>the highlight will be on the first mailbox, e.g.
           the one with the most new mail.</para>
@@ -14298,86 +14560,87 @@ set sort_browser="reverse-size"
 
       <sect2 id="sidebar-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the sidebar feature.
 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
-# Should the Sidebar be shown?</emphasis>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the sidebar feature.</emphasis>
+
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># VARIABLES – shown with their default values</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Should the Sidebar be shown?</emphasis>
 set sidebar_visible = no
-<emphasis role="comment"># How wide should the Sidebar be in screen columns?
+<emphasis role="comment"># How wide should the Sidebar be in screen columns?</emphasis>
 
-# Note: Some characters, e.g. Chinese, take up two columns each.</emphasis>
+<emphasis role="comment"># Note: Some characters, e.g. Chinese, take up two columns each.</emphasis>
 set sidebar_width = 20
 <emphasis role="comment"># Should the mailbox paths be abbreviated?</emphasis>
 set sidebar_short_path = no
 <emphasis role="comment"># Number of top-level mailbox path subdirectories to truncate for display</emphasis>
 set sidebar_component_depth = 0
-<emphasis role="comment"># When abbreviating mailbox path names, use any of these characters as path
-# separators.  Only the part after the last separators will be shown.
-# For file folders '/' is good.  For IMAP folders, often '.' is useful.</emphasis>
+<emphasis role="comment"># When abbreviating mailbox path names, use any of these characters as path</emphasis>
+<emphasis role="comment"># separators. Only the part after the last separators will be shown.</emphasis>
+<emphasis role="comment"># For file folders '/' is good. For IMAP folders, often '.' is useful.</emphasis>
 set sidebar_delim_chars = '/.'
 <emphasis role="comment"># If the mailbox path is abbreviated, should it be indented?</emphasis>
 set sidebar_folder_indent = no
 <emphasis role="comment"># Indent mailbox paths with this string.</emphasis>
 set sidebar_indent_string = '  '
-<emphasis role="comment"># Make the Sidebar only display mailboxes that contain new, or flagged,
-# mail.</emphasis>
+<emphasis role="comment"># Make the Sidebar only display mailboxes that contain new, or flagged,</emphasis>
+<emphasis role="comment"># mail.</emphasis>
 set sidebar_new_mail_only = no
-<emphasis role="comment"># Any mailboxes that are whitelisted will always be visible, even if the
-# sidebar_new_mail_only option is enabled.</emphasis>
+<emphasis role="comment"># Any mailboxes that are whitelisted will always be visible, even if the</emphasis>
+<emphasis role="comment"># sidebar_new_mail_only option is enabled.</emphasis>
 sidebar_whitelist '/home/user/mailbox1'
 sidebar_whitelist '/home/user/mailbox2'
-<emphasis role="comment"># When searching for mailboxes containing new mail, should the search wrap
-# around when it reaches the end of the list?</emphasis>
+<emphasis role="comment"># When searching for mailboxes containing new mail, should the search wrap</emphasis>
+<emphasis role="comment"># around when it reaches the end of the list?</emphasis>
 set sidebar_next_new_wrap = no
 <emphasis role="comment"># Show the Sidebar on the right-hand side of the screen</emphasis>
 set sidebar_on_right = no
-<emphasis role="comment"># The character to use as the divider between the Sidebar and the other NeoMutt
-# panels.</emphasis>
+<emphasis role="comment"># The character to use as the divider between the Sidebar and the other NeoMutt</emphasis>
+<emphasis role="comment"># panels.</emphasis>
 set sidebar_divider_char = '|'
-<emphasis role="comment"># Enable extended buffy mode to calculate total, new, and flagged
-# message counts for each mailbox.</emphasis>
+<emphasis role="comment"># Enable extended buffy mode to calculate total, new, and flagged</emphasis>
+<emphasis role="comment"># message counts for each mailbox.</emphasis>
 set mail_check_stats
 <emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>
 set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
-<emphasis role="comment"># Sort the mailboxes in the Sidebar using this method:
-#       count    - total number of messages
-#       flagged  - number of flagged messages
-#       new      - number of new messages
-#       path     - mailbox path
-#       unsorted - do not sort the mailboxes</emphasis>
+<emphasis role="comment"># Sort the mailboxes in the Sidebar using this method:</emphasis>
+<emphasis role="comment">#       count    – total number of messages</emphasis>
+<emphasis role="comment">#       flagged  – number of flagged messages</emphasis>
+<emphasis role="comment">#       new      – number of new messages</emphasis>
+<emphasis role="comment">#       path     – mailbox path</emphasis>
+<emphasis role="comment">#       unsorted – do not sort the mailboxes</emphasis>
 set sidebar_sort_method = 'unsorted'
-<emphasis role="comment"># --------------------------------------------------------------------------
-# FUNCTIONS - shown with an example mapping
-# --------------------------------------------------------------------------
-# Move the highlight to the previous mailbox</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Move the highlight to the previous mailbox</emphasis>
 bind index,pager \Cp sidebar-prev
 <emphasis role="comment"># Move the highlight to the next mailbox</emphasis>
 bind index,pager \Cn sidebar-next
 <emphasis role="comment"># Open the highlighted mailbox</emphasis>
 bind index,pager \Co sidebar-open
-<emphasis role="comment"># Move the highlight to the previous page
-# This is useful if you have a LOT of mailboxes.</emphasis>
+<emphasis role="comment"># Move the highlight to the previous page</emphasis>
+<emphasis role="comment"># This is useful if you have a LOT of mailboxes.</emphasis>
 bind index,pager &lt;F3&gt; sidebar-page-up
-<emphasis role="comment"># Move the highlight to the next page
-# This is useful if you have a LOT of mailboxes.</emphasis>
+<emphasis role="comment"># Move the highlight to the next page</emphasis>
+<emphasis role="comment"># This is useful if you have a LOT of mailboxes.</emphasis>
 bind index,pager &lt;F4&gt; sidebar-page-down
-<emphasis role="comment"># Move the highlight to the previous mailbox containing new, or flagged,
-# mail.</emphasis>
+<emphasis role="comment"># Move the highlight to the previous mailbox containing new, or flagged,</emphasis>
+<emphasis role="comment"># mail.</emphasis>
 bind index,pager &lt;F5&gt; sidebar-prev-new
 <emphasis role="comment"># Move the highlight to the next mailbox containing new, or flagged, mail.</emphasis>
 bind index,pager &lt;F6&gt; sidebar-next-new
 <emphasis role="comment"># Toggle the visibility of the Sidebar.</emphasis>
 bind index,pager B sidebar-toggle-visible
-<emphasis role="comment"># --------------------------------------------------------------------------
-# COLORS - some unpleasant examples are given
-# --------------------------------------------------------------------------
-# Note: All color operations are of the form:
-#       color OBJECT FOREGROUND BACKGROUND
-# Color of the current, open, mailbox
-# Note: This is a general NeoMutt option which colors all selected items.</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># COLORS – some unpleasant examples are given</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+<emphasis role="comment"># Note: All color operations are of the form:</emphasis>
+<emphasis role="comment">#       color OBJECT FOREGROUND BACKGROUND</emphasis>
+<emphasis role="comment"># Color of the current, open, mailbox</emphasis>
+<emphasis role="comment"># Note: This is a general NeoMutt option which colors all selected items.</emphasis>
 color indicator cyan black
 <emphasis role="comment"># Color of the highlighted, but not open, mailbox.</emphasis>
 color sidebar_highlight black color8
@@ -14389,9 +14652,11 @@ color sidebar_flagged red black
 color sidebar_new green black
 <emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc.</emphasis>
 color sidebar_ordinary color245 default
-<emphasis role="comment"># --------------------------------------------------------------------------
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="sidebar-see-also">
@@ -14527,18 +14792,20 @@ color sidebar_ordinary color245 default
 
       <sect2 id="skip-quoted-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the skip-quoted feature.
 
-# The 'S' (skip-quoted) command scrolls the pager past the quoted text (usually
-# indented with '&gt; '.  Setting 'skip_quoted_offset' leaves some lines of quoted
-# text on screen for context.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the skip-quoted feature.</emphasis>
 
-# Show three quoted lines before the reply</emphasis>
+<emphasis role="comment"># The 'S' (skip-quoted) command scrolls the pager past the quoted text (usually</emphasis>
+<emphasis role="comment"># indented with '&gt; '. Setting 'skip_quoted_offset' leaves some lines of quoted</emphasis>
+<emphasis role="comment"># text on screen for context.</emphasis>
+
+<emphasis role="comment"># Show three quoted lines before the reply</emphasis>
 set skip_quoted_offset = 3
 
-        <emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="skip-quoted-known-bugs">
@@ -14643,44 +14910,48 @@ set skip_quoted_offset = 3
 
       <sect2 id="status-color-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the status-color feature.
 
-# The 'status-color' feature allows you to theme different parts of
-# the status bar (also when it's used by the index).
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the status-color feature.</emphasis>
 
-# For the examples below, set some defaults</emphasis>
-set status_format='-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
+<emphasis role="comment"># The 'status-color' feature allows you to theme different parts of</emphasis>
+<emphasis role="comment"># the status bar (also when it's used by the index).</emphasis>
+
+<emphasis role="comment"># For the examples below, set some defaults</emphasis>
+set status_format='-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? \
+  Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
 set sort=threads
 set sort_aux=last-date-received
-<emphasis role="comment"># 'status color' can take up to 2 extra parameters
-# color status foreground background [ regex [ num ]]
-# 0 extra parameters
-# Set the default color for the entire status line</emphasis>
+<emphasis role="comment"># 'status color' can take up to 2 extra parameters</emphasis>
+<emphasis role="comment"># color status foreground background [ regex [ num ]]</emphasis>
+<emphasis role="comment"># 0 extra parameters</emphasis>
+<emphasis role="comment"># Set the default color for the entire status line</emphasis>
 color status blue white
-<emphasis role="comment"># 1 extra parameter
-# Set the color for a matching pattern
-# color status foreground background regex
-# Highlight New, Deleted, or Flagged emails</emphasis>
+<emphasis role="comment"># 1 extra parameter</emphasis>
+<emphasis role="comment"># Set the color for a matching pattern</emphasis>
+<emphasis role="comment"># color status foreground background regex</emphasis>
+<emphasis role="comment"># Highlight New, Deleted, or Flagged emails</emphasis>
 color status brightred white '(New|Del|Flag):[0-9]+'
-<emphasis role="comment"># Highlight mailbox ordering if it's different from the default
-# First, highlight anything (*/*)</emphasis>
+<emphasis role="comment"># Highlight mailbox ordering if it's different from the default</emphasis>
+<emphasis role="comment"># First, highlight anything (*/*)</emphasis>
 color status brightred default '\([^)]+/[^)]+\)'
 <emphasis role="comment"># Then override the color for one specific case</emphasis>
-color status default   default '\(threads/last-date-received\)'
-<emphasis role="comment"># 2 extra parameters
-# Set the color for the nth submatch of a pattern
-# color status foreground background regex num
-# Highlight the contents of the []s but not the [] themselves</emphasis>
+color status default default '\(threads/last-date-received\)'
+<emphasis role="comment"># 2 extra parameters</emphasis>
+<emphasis role="comment"># Set the color for the nth submatch of a pattern</emphasis>
+<emphasis role="comment"># color status foreground background regex num</emphasis>
+<emphasis role="comment"># Highlight the contents of the []s but not the [] themselves</emphasis>
 color status red default '\[([^]]+)\]' 1
-<emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner
-# part in ()s
-# Highlight the mailbox</emphasis>
+<emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner</emphasis>
+<emphasis role="comment"># part in ()s</emphasis>
+<emphasis role="comment"># Highlight the mailbox</emphasis>
 color status brightwhite default 'NeoMutt: ([^ ]+)' 1
-<emphasis role="comment"># Search for 'NeoMutt: ' but only highlight what comes after it
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># Search for 'NeoMutt: ' but only highlight what comes after it</emphasis>
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="status-color-see-also">
@@ -14776,7 +15047,11 @@ color status brightwhite default 'NeoMutt: ([^ ]+)' 1
         <para>This has been tested against Exim 4.80, which optionally logs SNI
         and can perform vhosting.</para>
         <para>To verify TLS SNI support by a server, you can use:</para>
-        <screen>openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;</screen>
+
+<screen>
+openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
+</screen>
+
       </sect2>
 
       <sect2 id="tls-sni-known-bugs">
@@ -14906,23 +15181,25 @@ color status brightwhite default 'NeoMutt: ([^ ]+)' 1
 
       <sect2 id="trash-folder-neomuttrc">
         <title>neomuttrc</title>
-        <screen>
-<emphasis role="comment"># Example NeoMutt config file for the 'trash' feature.
 
-# This feature defines a new 'trash' folder.
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the 'trash' feature.</emphasis>
 
-# When mail is deleted it will be moved to this folder.
+<emphasis role="comment"># This feature defines a new 'trash' folder.</emphasis>
 
-# Folder in which to put deleted emails</emphasis>
+<emphasis role="comment"># When mail is deleted it will be moved to this folder.</emphasis>
+
+<emphasis role="comment"># Folder in which to put deleted emails</emphasis>
 set trash='+Trash'
 set trash='/home/flatcap/Mail/Trash'
-<emphasis role="comment"># The default delete key 'd' will move an email to the 'trash' folder
-# Bind 'D' to REALLY delete an email</emphasis>
+<emphasis role="comment"># The default delete key 'd' will move an email to the 'trash' folder</emphasis>
+<emphasis role="comment"># Bind 'D' to REALLY delete an email</emphasis>
 bind index D purge-message
-<emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.
+<emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.</emphasis>
 
-# vim: syntax=neomuttrc</emphasis>
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
 </screen>
+
       </sect2>
 
       <sect2 id="trash-folder-see-also">
@@ -15088,13 +15365,16 @@ bind index D purge-message
           tuned on on a folder-basis using
           <link linkend="folder-hook">
           <command>folder-hook</command>s</link>:</para>
-          <screen>
+
+<screen>
 <emphasis role="comment"># use very high $read_inc to speed up reading hcache'd maildirs</emphasis>
 folder-hook . 'set read_inc=1000'
 <emphasis role="comment"># use lower value for reading slower remote IMAP folders</emphasis>
 folder-hook ^imap 'set read_inc=100'
 <emphasis role="comment"># use even lower value for reading even slower remote POP folders</emphasis>
-folder-hook ^pop 'set read_inc=1'</screen>
+folder-hook ^pop 'set read_inc=1'
+</screen>
+
         </listitem>
       </orderedlist>
       <para>These settings work on a per-message basis. However, as messages
@@ -15331,7 +15611,11 @@ folder-hook ^pop 'set read_inc=1'</screen>
       <para>NeoMutt also supports a
       <quote>batch</quote> mode to send prepared messages. Simply redirect input
       from the file you wish to send. For example,</para>
-      <screen>neomutt -s "data set for run #2" professor@bigschool.edu &lt; ~/run2.dat</screen>
+
+<screen>
+neomutt -s "data set for run #2" professor@bigschool.edu &lt; ~/run2.dat
+</screen>
+
       <para>will send a message to
       <literal>&lt;professor@bigschool.edu&gt;</literal>with a subject of
       <quote>data set for run #2</quote>. In the body of the message will be
@@ -15368,7 +15652,11 @@ folder-hook ^pop 'set read_inc=1'</screen>
       <literal>mailto:</literal>schema as specified in RFC2368. This is useful
       when configuring a web browser to launch NeoMutt when clicking on mailto
       links.</para>
-      <screen>neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org</screen>
+
+<screen>
+neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
+</screen>
+
     </sect1>
 
     <sect1 id="commands">
