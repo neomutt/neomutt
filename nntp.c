@@ -1110,8 +1110,6 @@ static int parse_overview_line(char *line, void *data)
   struct Context *ctx = fc->ctx;
   struct NntpData *nntp_data = ctx->data;
   struct Header *hdr = NULL;
-  FILE *fp = NULL;
-  char tempfile[_POSIX_PATH_MAX];
   char *header = NULL, *field = NULL;
   bool save = true;
   anum_t anum;
@@ -1141,8 +1139,7 @@ static int parse_overview_line(char *line, void *data)
   }
 
   /* convert overview line to header */
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  fp = mutt_file_fopen(tempfile, "w+");
+  FILE *fp = mutt_file_mkstemp();
   if (!fp)
     return -1;
 
@@ -1156,7 +1153,6 @@ static int parse_overview_line(char *line, void *data)
       if (strstr(header, ":full") == NULL && fputs(header, fp) == EOF)
       {
         mutt_file_fclose(&fp);
-        unlink(tempfile);
         return -1;
       }
       header = strchr(header, '\0') + 1;
@@ -1168,7 +1164,6 @@ static int parse_overview_line(char *line, void *data)
     if (fputs(b, fp) == EOF || fputc('\n', fp) == EOF)
     {
       mutt_file_fclose(&fp);
-      unlink(tempfile);
       return -1;
     }
   }
@@ -1184,7 +1179,6 @@ static int parse_overview_line(char *line, void *data)
   hdr->env->newsgroups = mutt_str_strdup(nntp_data->group);
   hdr->received = hdr->date_sent;
   mutt_file_fclose(&fp);
-  unlink(tempfile);
 
 #ifdef USE_HCACHE
   if (fc->hc)
@@ -1397,14 +1391,10 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
     /* fetch header from server */
     else
     {
-      char tempfile[_POSIX_PATH_MAX];
-
-      mutt_mktemp(tempfile, sizeof(tempfile));
-      FILE *fp = mutt_file_fopen(tempfile, "w+");
+      FILE *fp = mutt_file_mkstemp();
       if (!fp)
       {
-        mutt_perror(tempfile);
-        unlink(tempfile);
+        mutt_perror("mutt_file_mkstemp() failed!");
         rc = -1;
         break;
       }
@@ -1414,7 +1404,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       if (rc)
       {
         mutt_file_fclose(&fp);
-        unlink(tempfile);
         if (rc < 0)
           break;
 
@@ -1441,7 +1430,6 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
       hdr->received = hdr->date_sent;
       mutt_file_fclose(&fp);
-      unlink(tempfile);
     }
 
     /* save header in context */
@@ -2447,15 +2435,12 @@ int nntp_check_new_groups(struct NntpServer *nserv)
 int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
   struct NntpData *nntp_data = ctx->data;
-  char tempfile[_POSIX_PATH_MAX];
   char buf[LONG_STRING];
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *fp = mutt_file_fopen(tempfile, "w+");
+  FILE *fp = mutt_file_mkstemp();
   if (!fp)
   {
-    mutt_perror(tempfile);
-    unlink(tempfile);
+    mutt_perror("mutt_file_mkstemp() failed!");
     return -1;
   }
 
@@ -2464,7 +2449,6 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   if (rc)
   {
     mutt_file_fclose(&fp);
-    unlink(tempfile);
     if (rc < 0)
       return -1;
     if (mutt_str_strncmp("430", buf, 3) == 0)
@@ -2480,7 +2464,6 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   hdr->data = mutt_mem_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_rfc822_read_header(fp, hdr, 0, 0);
   mutt_file_fclose(&fp);
-  unlink(tempfile);
 
   /* get article number */
   if (hdr->env->xref)
