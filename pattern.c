@@ -903,7 +903,6 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   char *temp = NULL;
   size_t tempsize;
 #else
-  char tempfile[_POSIX_PATH_MAX];
   struct stat st;
 #endif
 
@@ -922,11 +921,10 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
       return 0;
     }
 #else
-    mutt_mktemp(tempfile, sizeof(tempfile));
-    s.fpout = mutt_file_fopen(tempfile, "w+");
+    s.fpout = mutt_file_mkstemp();
     if (!s.fpout)
     {
-      mutt_perror(tempfile);
+      mutt_perror("mutt_file_mkstemp() failed");
       return 0;
     }
 #endif
@@ -946,8 +944,6 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
           mutt_file_fclose(&s.fpout);
 #ifdef USE_FMEMOPEN
           FREE(&temp);
-#else
-          unlink(tempfile);
 #endif
         }
         return 0;
@@ -1036,8 +1032,6 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 #ifdef USE_FMEMOPEN
     if (tempsize)
       FREE(&temp);
-#else
-    unlink(tempfile);
 #endif
   }
 

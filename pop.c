@@ -95,13 +95,11 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   int rc, index;
   size_t length;
   char buf[LONG_STRING];
-  char tempfile[_POSIX_PATH_MAX];
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  FILE *f = mutt_file_fopen(tempfile, "w+");
+  FILE *f = mutt_file_mkstemp();
   if (!f)
   {
-    mutt_perror(tempfile);
+    mutt_perror("mutt_file_mkstemp failed!");
     return -3;
   }
 
@@ -162,7 +160,6 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
   }
 
   mutt_file_fclose(&f);
-  unlink(tempfile);
   return rc;
 }
 
