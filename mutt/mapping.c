@@ -35,7 +35,7 @@
  * mutt_map_get_name - Lookup a string for a constant
  * @param val ID to locate in map
  * @param map NULL-terminated map of strings and constants
- * @retval str  String matching ID
+ * @retval ptr  String matching ID
  * @retval NULL Error, or ID not found
  */
 const char *mutt_map_get_name(int val, const struct Mapping *map)

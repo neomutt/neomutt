@@ -25,11 +25,6 @@
 #include <stdio.h>
 #include "mutt/mutt.h"
 
-/* NOTE: Currently there is no check in configure.ac for vasprintf(3).  the
- * undefined behavior of the error condition makes it difficult to write a safe
- * version using it.
- */
-
 /**
  * safe_asprintf - Wrapper for vasprintf()
  */

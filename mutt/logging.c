@@ -273,7 +273,7 @@ int log_disp_file(time_t stamp, const char *file, int line,
 /**
  * log_queue_add - Add a LogLine to the queue
  * @param ll LogLine to add
- * @retval num Number of entries in the queue
+ * @retval num Entries in the queue
  *
  * If #LogQueueMax is non-zero, the queue will be limited to this many items.
  */
@@ -346,7 +346,7 @@ void log_queue_flush(log_dispatcher_t disp)
 /**
  * log_queue_save - Save the contents of the queue to a temporary file
  * @param fp Open file handle
- * @retval num Number of lines written to the file
+ * @retval num Lines written to the file
  *
  * The queue is written to a temporary file.  The format is:
  * * `[HH:MM:SS]<LEVEL> FORMATTED-MESSAGE`

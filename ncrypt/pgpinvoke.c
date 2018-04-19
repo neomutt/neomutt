@@ -326,8 +326,8 @@ pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpi
  * @param pgperrfd If `pgperr` is NULL and pgperr is not -1 then pgperr will be used as stderr for the command process
  * @param keyring  Keyring type, e.g. #PGP_SECRING
  * @param hints    Match keys to these strings
- * @retval n  pid of the created process
- * @retval -1 on any error creating pipes or forking
+ * @retval num  PID of the created process
+ * @retval -1   Error creating pipes or forking
  */
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,

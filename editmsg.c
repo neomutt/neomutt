@@ -20,7 +20,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* simple, editor-based message editing */
+/**
+ * @page editmsg Prepare an email to be edited
+ *
+ * Prepare an email to be edited
+ */
 
 #include "config.h"
 #include <errno.h>
@@ -45,7 +49,7 @@
 /**
  * edit_or_view_one_message - Edit an email or view it in an external editor
  * @param edit true if the message should be editable. If false, changes
- *            to the massage (in the editor) will be ignored.
+ *            to the message (in the editor) will be ignored.
  * @param ctx Context
  * @param cur Header of email
  * @retval 1  Message not modified

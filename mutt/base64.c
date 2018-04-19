@@ -75,7 +75,7 @@ const int Index64[128] = {
  * @param cin  Input  buffer for the raw bytes
  * @param len  Length of the input buffer
  * @param olen Length of the output buffer
- * @retval n Length of the string written to the output buffer
+ * @retval num Length of the string written to the output buffer
  *
  * This function performs base64 encoding. The resulting string is guaranteed
  * to be null-terminated. The number of characters up to the terminating
@@ -119,8 +119,8 @@ size_t mutt_b64_encode(char *out, const char *cin, size_t len, size_t olen)
  * mutt_b64_decode - Convert null-terminated base64 string to raw bytes
  * @param out Output buffer for the raw bytes
  * @param in  Input  buffer for the null-terminated base64-encoded string
- * @retval n Number of bytes written on success
- * @retval -1 on error
+ * @retval num Success, bytes written
+ * @retval -1  Error
  *
  * This function performs base64 decoding. The resulting buffer is NOT
  * null-terminated. If the input buffer contains invalid base64 characters,

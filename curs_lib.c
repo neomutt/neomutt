@@ -941,7 +941,7 @@ void mutt_paddstr(int n, const char *s)
  * @param[in]  maxlen Maximum length of string in bytes
  * @param[in]  maxwid Maximum width in screen columns
  * @param[out] width  Save the truncated screen column width
- * @retval n Number of bytes to use
+ * @retval num Bytes to use
  *
  * See how many bytes to copy from string so it's at most maxlen bytes long and
  * maxwid columns wide
@@ -994,7 +994,7 @@ out:
 /**
  * mutt_strwidth - Measure a string's width in screen cells
  * @param s String to be measured
- * @retval n Number of screen cells string would use
+ * @retval num Screen cells string would use
  */
 int mutt_strwidth(const char *s)
 {
@@ -1036,7 +1036,7 @@ int mutt_strwidth(const char *s)
  * message_is_visible - Is a message in the index within limit
  * @param ctx   Open mailbox
  * @param index Message ID (index into `ctx->hdrs[]`
- * @retval bool True if the message is within limit
+ * @retval true The message is within limit
  *
  * If no limit is in effect, all the messages are visible.
  */
@@ -1052,7 +1052,7 @@ bool message_is_visible(struct Context *ctx, int index)
  * message_is_tagged - Is a message in the index tagged (and within limit)
  * @param ctx   Open mailbox
  * @param index Message ID (index into `ctx->hdrs[]`
- * @retval bool True if the message is both tagged and within limit
+ * @retval true The message is both tagged and within limit
  *
  * If a limit is in effect, the message must be visible within it.
  */

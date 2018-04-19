@@ -748,8 +748,8 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
 
 /**
  * mutt_save_message - Save an email
- * @retval 0 if the copy/save was successful
- * @retval -1 on error/abort
+ * @retval  0 Copy/save was successful
+ * @retval -1 Error/abort
  */
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {

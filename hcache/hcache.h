@@ -59,8 +59,8 @@ typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
  * @param folder Name of the folder containing the messages
  * @param namer  Optional (might be NULL) client-specific function to form the
  *               final name of the hcache database file.
- * @retval Pointer to a header_cache_t struct on success
- * @retval NULL otherwise
+ * @retval ptr  Success, header_cache_t struct
+ * @retval NULL Otherwise
  */
 header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer);
 
@@ -75,10 +75,12 @@ void mutt_hcache_close(header_cache_t *h);
  * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
- * @retval Pointer to the data if found and valid
- * @retval NULL otherwise
+ * @retval ptr  Succees, data if found and valid
+ * @retval NULL Otherwise
+ *
  * @note This function performs a check on the validity of the data found by
  *       comparing it with the crc value of the header_cache_t structure.
+ *
  * @note The returned pointer must be freed by calling mutt_hcache_free. This
  *       must be done before closing the header cache with mutt_hcache_close.
  */
@@ -89,8 +91,9 @@ void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
  * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
- * @retval Pointer to the data if found
- * @retval NULL otherwise
+ * @retval ptr  Success, the data if found
+ * @retval NULL Otherwise
+ *
  * @note This function does not perform any check on the validity of the data
  *       found.
  * @note The returned pointer must be freed by calling mutt_hcache_free. This
@@ -108,7 +111,8 @@ void mutt_hcache_free(header_cache_t *h, void **data);
 /**
  * mutt_hcache_restore - restore a Header from data retrieved from the cache
  * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw
- * @retval Pointer to the restored header (cannot be NULL)
+ * @retval ptr Success, the restored header (cannot be NULL)
+ *
  * @note The returned Header must be free'd by caller code with
  *       mutt_header_free().
  */
@@ -121,8 +125,8 @@ struct Header *mutt_hcache_restore(const unsigned char *d);
  * @param keylen      Length of the string pointed to by key
  * @param header      Message header to store
  * @param uidvalidity IMAP-specific UIDVALIDITY value, or 0 to use the current time
- * @retval 0 on success
- * @return A generic or backend-specific error code otherwise
+ * @retval 0   Success
+ * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
                       struct Header *header, unsigned int uidvalidity);
@@ -134,8 +138,8 @@ int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
  * @param keylen Length of the string pointed to by key
  * @param data   Payload to associate with key
  * @param dlen   Length of the buffer pointed to by the @a data parameter
- * @retval 0 on success
- * @return A generic or backend-specific error code otherwise
+ * @retval 0   success
+ * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
                           void *data, size_t dlen);
@@ -145,14 +149,15 @@ int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
  * @param h      Pointer to the header_cache_t structure got by mutt_hcache_open
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
- * @retval 0 on success
- * @return A generic or backend-specific error code otherwise
+ * @retval 0   Success
+ * @retval num Generic or backend-specific error code otherwise
  */
 int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_backend_list - get a list of backend identification strings
- * @retval Comma separated string describing the compiled-in backends
+ * @retval ptr Comma separated string describing the compiled-in backends
+ *
  * @note The returned string must be free'd by the caller
  */
 const char *mutt_hcache_backend_list(void);

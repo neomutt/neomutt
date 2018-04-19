@@ -1006,7 +1006,11 @@ static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
 }
 
 /**
- * fetch_tempfile - Write line to temporarily file
+ * fetch_tempfile - Write line to temporary file
+ * @param line Text to write
+ * @param data FILE pointer
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int fetch_tempfile(char *line, void *data)
 {

@@ -1066,7 +1066,7 @@ static struct Header *find_virtual(struct MuttThread *cur, int reverse)
  * @param hdr        Search from this message
  * @param dir        Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
- * @retval n Index into the virtual email table
+ * @retval num Index into the virtual email table
  */
 int mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 {

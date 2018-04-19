@@ -169,8 +169,8 @@ static int setup_paths(struct Context *ctx)
 /**
  * get_size - Get the size of a file
  * @param path File to measure
- * @retval n Size in bytes
- * @retval 0 On error
+ * @retval num Size in bytes
+ * @retval 0   Error
  */
 static int get_size(const char *path)
 {
@@ -206,8 +206,8 @@ static void store_size(const struct Context *ctx)
  * find_hook - Find a hook to match a path
  * @param type Type of hook, e.g. #MUTT_CLOSEHOOK
  * @param path Filename to test
- * @retval string Matching hook command
- * @retval NULL   No matches
+ * @retval ptr  Matching hook command
+ * @retval NULL No matches
  *
  * Each hook has a type and a pattern.
  * Find a command that matches the type and path supplied. e.g.
@@ -234,7 +234,7 @@ static const char *find_hook(int type, const char *path)
  * set_compress_info - Find the compress hooks for a mailbox
  * @param ctx Mailbox to examine
  * @retval ptr  CompressInfo Hook info for the mailbox's path
- * @retval NULL On error
+ * @retval NULL Error
  *
  * When a mailbox is opened, we check if there are any matching hooks.
  */
@@ -400,9 +400,9 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
 
 /**
  * execute_command - Run a system command
- * @param ctx         Mailbox to work with
- * @param command     Command string to execute
- * @param progress    Message to show the user
+ * @param ctx      Mailbox to work with
+ * @param command  Command string to execute
+ * @param progress Message to show the user
  * @retval 1 Success
  * @retval 0 Failure
  *

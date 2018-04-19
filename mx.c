@@ -116,7 +116,7 @@ static bool mutt_is_spool(const char *str)
 /**
  * mx_is_imap - Is this an IMAP mailbox
  * @param p Mailbox string to test
- * return boolean
+ * @retval true It is an IMAP mailbox
  */
 bool mx_is_imap(const char *p)
 {
@@ -141,7 +141,7 @@ bool mx_is_imap(const char *p)
 /**
  * mx_is_pop - Is this a POP mailbox
  * @param p Mailbox string to test
- * return boolean
+ * @retval true It is a POP mailbox
  */
 bool mx_is_pop(const char *p)
 {
@@ -162,7 +162,7 @@ bool mx_is_pop(const char *p)
 /**
  * mx_is_nntp - Is this an NNTP mailbox
  * @param p Mailbox string to test
- * return boolean
+ * @retval true It is an NNTP mailbox
  */
 bool mx_is_nntp(const char *p)
 {
@@ -181,9 +181,9 @@ bool mx_is_nntp(const char *p)
 
 #ifdef USE_NOTMUCH
 /**
- * mx_is_notmuch - Is this a notmuch mailbox
+ * mx_is_notmuch - Is this a Notmuch mailbox
  * @param p Mailbox string to test
- * return boolean
+ * @retval true It is a Notmuch mailbox
  */
 bool mx_is_notmuch(const char *p)
 {
@@ -203,9 +203,8 @@ bool mx_is_notmuch(const char *p)
 /**
  * mx_get_magic - Identify the type of mailbox
  * @param path Mailbox path to test
- * return
- * * -1 Error, can't identify mailbox
- * * >0 Success, e.g. #MUTT_IMAP
+ * @retval -1 Error, can't identify mailbox
+ * @retval >0 Success, e.g. #MUTT_IMAP
  */
 int mx_get_magic(const char *path)
 {
@@ -524,7 +523,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
   }
 
   /* never announce that a mailbox we've just left has new mail. #3290
-   * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
+   * TODO: really belongs in mx_close_mailbox, but this is a nice hook point */
   if (!ctx->peekonly)
     mutt_buffy_setnotified(ctx->path);
 
@@ -991,8 +990,8 @@ void mx_update_tables(struct Context *ctx, bool committing)
  * mx_sync_mailbox - Save changes to mailbox
  * @param[in]  ctx        Context
  * @param[out] index_hint Currently selected mailbox
- * @retval 0 on success
- * @retval -1 on error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -1119,10 +1118,9 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 /**
  * mx_open_new_message - Open a new message
  * @param dest  Destination mailbox
- * @param hdr   Message being copied (required for maildir support, because
- *              the filename depends on the message flags)
+ * @param hdr   Message being copied (required for maildir support, because the filename depends on the message flags)
  * @param flags Flags, e.g. #MUTT_SET_DRAFT
- * @retval ptr new Message
+ * @retval ptr New Message
  */
 struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
 {
@@ -1229,7 +1227,11 @@ int mx_commit_message(struct Message *msg, struct Context *ctx)
 }
 
 /**
- * mx_close_message - close a pointer to a message
+ * mx_close_message - Close a message
+ * @param ctx Mailbox
+ * @param msg Message to close
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mx_close_message(struct Context *ctx, struct Message **msg)
 {

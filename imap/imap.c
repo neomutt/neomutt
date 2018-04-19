@@ -173,10 +173,10 @@ static void set_flag(struct ImapData *idata, int aclbit, int flag,
  * @param[in]  changed Matched messages that have been altered
  * @param[in]  invert  Flag matches should be inverted
  * @param[out] pos     Cursor used for multiple calls to this function
- * @retval num Number of message in the set
+ * @retval num Messages in the set
  *
- * Note: headers must be in SORT_ORDER. See imap_exec_msgset() for args.
- * Pos is an opaque pointer a la strtok. It should be 0 at first call.
+ * @note Headers must be in SORT_ORDER. See imap_exec_msgset() for args.
+ * Pos is an opaque pointer a la strtok(). It should be 0 at first call.
  */
 static int make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
                         bool changed, bool invert, int *pos)
@@ -511,7 +511,7 @@ static int compile_search(struct Context *ctx, const struct Pattern *pat, struct
  * @param src   Source buffer
  * @param start Starting offset into string
  * @param dlen  Destination buffer length
- * @retval n Length of the common string
+ * @retval num Length of the common string
  *
  * Trim dest to the length of the longest prefix it shares with src.
  */
@@ -767,8 +767,10 @@ void imap_logout_all(void)
  * @retval  0 Success
  * @retval -1 Failure
  *
- * Not explicitly buffered, relies on FILE buffering. NOTE: strips `\r` from
- * `\r\n`.  Apparently even literals use `\r\n`-terminated strings ?!
+ * Not explicitly buffered, relies on FILE buffering.
+ *
+ * @note Strips `\r` from `\r\n`.
+ *       Apparently even literals use `\r\n`-terminated strings ?!
  */
 int imap_read_literal(FILE *fp, struct ImapData *idata, unsigned long bytes,
                       struct Progress *pbar)
@@ -1163,8 +1165,8 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
  * @param flag    flag type on which to filter, e.g. MUTT_REPLIED
  * @param changed include only changed messages in message set
  * @param invert  invert sense of flag, eg MUTT_READ matches unread messages
- * @retval n  Number of matched messages
- * @retval -1 Failure
+ * @retval num Matched messages
+ * @retval -1  Failure
  *
  * pre/post: commands are of the form "%s %s %s %s", tag, pre, message set, post
  * Prepares commands for all messages matching conditions
@@ -1245,7 +1247,8 @@ out:
  *
  * Update the IMAP server to reflect the flags for a single message before
  * performing a "UID COPY".
- * NOTE: This does not sync the "deleted" flag state, because it is not
+ *
+ * @note This does not sync the "deleted" flag state, because it is not
  *       desirable to propagate that flag into the copy.
  */
 int imap_sync_message_for_copy(struct ImapData *idata, struct Header *hdr,
@@ -1420,9 +1423,7 @@ int imap_check(struct ImapData *idata, int force)
 /**
  * imap_buffy_check - Check for new mail in subscribed folders
  * @param check_stats Check for message stats too
- * @retval 0   Failure
- *
- * @note Returns 0 on failure
+ * @retval 0 Failure
  *
  * Given a list of mailboxes rather than called once for each so that it can
  * batch the commands and save on round trips. Returns number of mailboxes with

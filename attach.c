@@ -350,9 +350,9 @@ void mutt_check_lookup_list(struct Body *b, char *type, size_t len)
  * @param flag   Option flag for how the attachment should be viewed
  * @param hdr    Message header for the current message. Can be NULL
  * @param actx   Attachment context
- * @retval 0  If the viewer is run and exited successfully
- * @retval -1 Error
- * @retval n  Return value of mutt_do_pager() when it is used
+ * @retval 0   If the viewer is run and exited successfully
+ * @retval -1  Error
+ * @retval num Return value of mutt_do_pager() when it is used
  *
  * flag can be one of: #MUTT_MAILCAP, #MUTT_REGULAR, #MUTT_AS_TEXT
  *
@@ -639,8 +639,8 @@ return_error:
 
 /**
  * mutt_pipe_attachment - Pipe an attachment to a command
- * @retval 1 on success
- * @retval 0 on error
+ * @retval 1 Success
+ * @retval 0 Error
  */
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
@@ -876,8 +876,8 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 
 /**
  * mutt_decode_save_attachment - Decode, then save an attachment
- * @retval 0 on success
- * @retval -1 on error
+ * @retval 0  Success
+ * @retval -1 Error
  */
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
 {

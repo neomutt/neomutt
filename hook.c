@@ -263,7 +263,8 @@ error:
 }
 
 /**
- * delete_hook - XXX
+ * delete_hook - Delete a Hook
+ * @param h Hook to delete
  */
 static void delete_hook(struct Hook *h)
 {
@@ -380,7 +381,12 @@ void mutt_folder_hook(const char *path)
 }
 
 /**
- * mutt_find_hook - XXX
+ * mutt_find_hook - Find a matching hook
+ * @param type Type, e.g. #MUTT_FOLDERHOOK
+ * @param pat  Pattern to match
+ * @retval ptr Command string
+ *
+ * @note The returned string must not be freed.
  */
 char *mutt_find_hook(int type, const char *pat)
 {

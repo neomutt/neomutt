@@ -27,10 +27,17 @@
 #include <time.h>
 #include "mutt/mutt.h"
 
-/*
- * A valid message separator looks like:
+/**
+ * is_from - Is a string a 'From' header line?
+ * @param[in]  s       String to test
+ * @param[out] path    Buffer for extracted path
+ * @param[in]  pathlen Length of buffer
+ * @param[out] tp      Extracted time
+ * @retval 1 Yes, it is
+ * @retval 0 No, it isn't
  *
- * From [ <return-path> ] <weekday> <month> <day> <time> [ <timezone> ] <year>
+ * A valid message separator looks like:
+ * `From [ <return-path> ] <weekday> <month> <day> <time> [ <timezone> ] <year>`
  */
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp)
 {

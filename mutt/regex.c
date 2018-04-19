@@ -588,7 +588,7 @@ struct ReplaceList *mutt_replacelist_new(void)
  * mutt_replacelist_remove - Remove a pattern from a list
  * @param rl  ReplaceList to modify
  * @param pat Pattern to remove
- * @retval num Number of matching patterns removed
+ * @retval num Matching patterns removed
  */
 int mutt_replacelist_remove(struct ReplaceList **rl, const char *pat)
 {

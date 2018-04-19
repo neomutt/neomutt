@@ -122,7 +122,7 @@ static const struct Tz TimeZones[] = {
  * compute_tz - Calculate the number of seconds east of UTC
  * @param g   Local time
  * @param utc UTC time
- * @retval number Seconds east of UTC
+ * @retval num Seconds east of UTC
  *
   * returns the seconds east of UTC given 'g' and its corresponding gmtime()
  * representation
@@ -413,7 +413,7 @@ int mutt_date_check_month(const char *s)
 /**
  * mutt_date_is_day_name - Is the string a valid day name
  * @param s String to check
- * @retval boolean
+ * @retval true It's a valid day name
  *
  * @note Only the first three characters are checked
  * @note The comparison is case insensitive
@@ -596,7 +596,7 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
  * @param buf       Buffer to store the results
  * @param buflen    Length of buffer
  * @param timestamp Time to format
- * @retval int Number of characters written to buf
+ * @retval num Characters written to buf
  *
  * Caller should provide a buffer of at least 27 bytes.
  */
@@ -617,7 +617,7 @@ int mutt_date_make_imap(char *buf, size_t buflen, time_t timestamp)
  * @param buf       Buffer to store the results
  * @param buflen    Length of buffer
  * @param timestamp Time to format
- * @retval int Number of characters written to buf
+ * @retval num Characters written to buf
  *
  * e.g., Mar 17 16:40:46 2016 UTC. The time is always in UTC.
  *
@@ -634,8 +634,8 @@ int mutt_date_make_tls(char *buf, size_t buflen, time_t timestamp)
 /**
  * mutt_date_parse_imap - Parse date of the form: DD-MMM-YYYY HH:MM:SS +ZZzz
  * @param s Date in string form
- * @retval 0      Error
- * @retval time_t Unix time
+ * @retval num Unix time
+ * @retval 0   Error
  */
 time_t mutt_date_parse_imap(char *s)
 {

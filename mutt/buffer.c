@@ -228,7 +228,7 @@ size_t mutt_buffer_addch(struct Buffer *buf, char c)
 /**
  * mutt_buffer_is_empty - Is the Buffer empty?
  * @param buf Buffer to inspect
- * @retval bool True, if Buffer is empty
+ * @retval true Buffer is empty
  */
 bool mutt_buffer_is_empty(const struct Buffer *buf)
 {

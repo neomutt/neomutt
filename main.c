@@ -230,8 +230,8 @@ static int get_user_info(void)
  * @param argc Number of command line arguments
  * @param argv List of command line arguments
  * @param envp Copy of the environment
- * @retval 0 on success
- * @retval 1 on error
+ * @retval 0 Success
+ * @retval 1 Error
  */
 int main(int argc, char *argv[], char *envp[])
 {

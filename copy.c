@@ -774,8 +774,8 @@ int mutt_copy_message_ctx(FILE *fpout, struct Context *src, struct Header *hdr,
  * @param hdr     message being copied
  * @param flags   mutt_open_copy_message() flags
  * @param chflags mutt_copy_header() flags
- * @retval 0 on success
- * @retval -1 on error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
                           struct Header *hdr, int flags, int chflags)
@@ -821,8 +821,12 @@ int mutt_append_message(struct Context *dest, struct Context *src,
 
 /**
  * copy_delete_attach - Copy a message, deleting marked attachments
- * @retval 0 on success
- * @retval -1 on failure
+ * @param b     Email Body
+ * @param fpin  FILE pointer to read from
+ * @param fpout FILE pointer to write to
+ * @param date  Date stamp
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * This function copies a message body, while deleting _in_the_copy_
  * any attachments which are marked for deletion.
@@ -880,7 +884,7 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
  * a buffer instead of writing to a stream.  mutt_write_address_list could be
  * re-used if we wouldn't store all the decoded headers in a huge array, first.
  *
- * XXX - fix that.
+ * TODO - fix that.
  */
 static void format_address_header(char **h, struct Address *a)
 {

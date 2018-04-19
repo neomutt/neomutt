@@ -200,7 +200,7 @@ int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *s
  * @param col Column to move to
  * @param fmt printf format string
  * @param ... printf arguments
- * @retval num Success, number of characters written
+ * @retval num Success, characters written
  * @retval ERR Error, move failed
  */
 int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)

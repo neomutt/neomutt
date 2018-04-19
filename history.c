@@ -508,7 +508,7 @@ static void history_menu(char *buf, size_t buflen, char **matches, int match_cou
  * @param[in]  search_buf String to find
  * @param[in]  hclass     History list
  * @param[out] matches    All the matching lines
- * @retval num Number of matches found
+ * @retval num Matches found
  */
 static int search_history(char *search_buf, enum HistoryClass hclass, char **matches)
 {

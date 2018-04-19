@@ -31,8 +31,8 @@
 /**
  * hcache_open_t - backend-specific routing to open the header cache database
  * @param path The path to the database file
- * @retval Pointer to backend-specific context on success
- * @retval NULL otherwise
+ * @retval ptr  Success, backend-specific context
+ * @retval NULL Otherwise
  *
  * The hcache_open function has the purpose of opening a backend-specific
  * connection to the database file specified by the path parameter. Backends
@@ -47,8 +47,8 @@ typedef void *(*hcache_open_t)(const char *path);
  * @param ctx    The backend-specific context retrieved via hcache_open
  * @param key    A message identification string
  * @param keylen The length of the string pointed to by key
- * @retval Pointer to the message's headers on success
- * @retval NULL otherwise
+ * @retval ptr  Success, message's headers
+ * @retval NULL Otherwise
  */
 typedef void *(*hcache_fetch_t)(void *ctx, const char *key, size_t keylen);
 
@@ -66,8 +66,8 @@ typedef void (*hcache_free_t)(void *ctx, void **data);
  * @param keylen  The length of the string pointed to by key
  * @param data    The message headers data
  * @param datalen The length of the string pointed to by data
- * @retval 0 on success
- * @retval a backend-specific error code otherwise
+ * @retval 0   Success
+ * @retval num Error, a backend-specific error code
  */
 typedef int (*hcache_store_t)(void *ctx, const char *key, size_t keylen,
                               void *data, size_t datalen);
@@ -77,8 +77,8 @@ typedef int (*hcache_store_t)(void *ctx, const char *key, size_t keylen,
  * @param ctx    The backend-specific context retrieved via hcache_open
  * @param key    A message identification string
  * @param keylen The length of the string pointed to by key
- * @retval 0 on success
- * @retval a backend-specific error code otherwise
+ * @retval 0   Success
+ * @retval num Error, a backend-specific error code
  */
 typedef int (*hcache_delete_t)(void *ctx, const char *key, size_t keylen);
 
@@ -94,8 +94,7 @@ typedef void (*hcache_close_t)(void **ctx);
 
 /**
  * hcache_backend_t - backend-specific identification string
- *
- * @retval String describing the currently used hcache backend
+ * @retval ptr String describing the currently used hcache backend
  */
 typedef const char *(*hcache_backend_t)(void);
 

@@ -71,7 +71,7 @@ static sasl_secret_t *secret_ptr = NULL;
 /**
  * getnameinfo_err - Convert a getaddrinfo() error code into an SASL error code
  * @param ret getaddrinfo() error code, e.g. EAI_AGAIN
- * @retval int SASL error code, e.g. SASL_FAIL
+ * @retval num SASL error code, e.g. SASL_FAIL
  */
 static int getnameinfo_err(int ret)
 {
@@ -128,7 +128,7 @@ static int getnameinfo_err(int ret)
  * @param addrlen Size of addr struct
  * @param out     Buffer for result
  * @param outlen  Length of buffer
- * @retval int SASL error code, e.g. SASL_BADPARAM
+ * @retval num SASL error code, e.g. SASL_BADPARAM
  *
  * utility function, copied from sasl2 sample code
  */
@@ -163,7 +163,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen, char *out,
  * @param context  Supplied context, always NULL
  * @param priority Debug level
  * @param message  Message
- * @retval int SASL_OK, always
+ * @retval num SASL_OK, always
  */
 static int mutt_sasl_cb_log(void *context, int priority, const char *message)
 {
@@ -174,7 +174,7 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
 
 /**
  * mutt_sasl_start - Initialise SASL library
- * @retval int SASL error code, e.g. SASL_OK
+ * @retval num SASL error code, e.g. SASL_OK
  *
  * Call before doing an SASL exchange - initialises library (if necessary).
  */
@@ -216,7 +216,7 @@ static int mutt_sasl_start(void)
  * @param[in]  id      Field to get.  SASL_CB_USER or SASL_CB_AUTHNAME
  * @param[out] result  Resulting string
  * @param[out] len     Length of result
- * @retval int SASL error code, e.g. SASL_FAIL
+ * @retval num SASL error code, e.g. SASL_FAIL
  */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned int *len)
 {
@@ -260,7 +260,7 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
  * @param[in]  context Account
  * @param[in]  id      SASL_CB_PASS
  * @param[out] psecret SASL secret
- * @retval int SASL error code, e.g SASL_FAIL
+ * @retval num SASL error code, e.g SASL_FAIL
  */
 static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
 {
@@ -627,7 +627,7 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 /**
  * mutt_sasl_interact - Perform an SASL interaction with the user
  * @param interaction Details of interaction
- * @retval int SASL error code: SASL_OK or SASL_FAIL
+ * @retval num SASL error code: SASL_OK or SASL_FAIL
  *
  * An example interaction might be asking the user for a password.
  */

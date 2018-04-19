@@ -229,8 +229,8 @@ int query_quadoption(int opt, const char *prompt)
 /**
  * mutt_option_index - Find the index (in rc_vars) of a variable name
  * @param s Variable name to search for
- * @retval -1 on error
- * @retval >0 on success
+ * @retval -1 Error
+ * @retval >0 Success
  */
 int mutt_option_index(const char *s)
 {

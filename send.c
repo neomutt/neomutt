@@ -821,8 +821,8 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
  * @param flags  compose mode
  * @param ctx    current mailbox
  * @param cur    current message
- * @retval 0 on success
- * @retval -1 on error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int generate_body(FILE *tempfp, struct Header *msg, int flags,
                          struct Context *ctx, struct Header *cur)

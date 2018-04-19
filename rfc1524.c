@@ -20,7 +20,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* RFC1524 defines a format for the Multimedia Mail Configuration, which is the
+/**
+ * @page rfc1524 RFC1524 Mailcap routines
+ *
+ * RFC1524 defines a format for the Multimedia Mail Configuration, which is the
  * standard mailcap file format under Unix which specifies what external
  * programs should be used to view/compose/edit multimedia files based on
  * content type.
@@ -53,9 +56,6 @@
  * by neomutt, and can probably just be done by piping the message to metamail
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
- *
- * In addition, this function returns a 0 if the command works on a file,
- * and 1 if the command works on a pipe.
  */
 int rfc1524_expand_command(struct Body *a, char *filename, char *type, char *command, int clen)
 {
@@ -386,8 +386,8 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * @param type   Text type in "type/subtype" format
  * @param entry  struct Rfc1524MailcapEntry to populate with results
  * @param opt    Type of mailcap entry to lookup
- * @retval 1 on success. If *entry is not NULL it populates it with the mailcap entry
- * @retval 0 if no matching entry is found
+ * @retval 1 Success. If *entry is not NULL it populates it with the mailcap entry
+ * @retval 0 No matching entry is found
  *
  * opt can be one of: #MUTT_EDIT, #MUTT_COMPOSE, #MUTT_PRINT, #MUTT_AUTOVIEW
  *

@@ -40,7 +40,12 @@ struct Body *mutt_body_new(void)
 }
 
 /**
- * mutt_body_copy - create a send-mode duplicate from a receive-mode body
+ * mutt_body_copy - Create a send-mode duplicate from a receive-mode body
+ * @param[in]  fp  FILE pointer to attachments
+ * @param[out] tgt New Body will be saved here
+ * @param[in]  src Source Body to copy
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src)
 {

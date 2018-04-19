@@ -334,7 +334,7 @@ static void print_compile_options(struct CompileOptions *co)
 /**
  * rstrip_in_place - Strip a trailing carriage return
  * @param s  String to be modified
- * @retval string The modified string
+ * @retval ptr The modified string
  *
  * The string has its last carriage return set to NUL.
  */

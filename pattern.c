@@ -1830,7 +1830,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
  * top_of_thread - Find the first email in the current thread
  * @param h Header of current email
  * @retval ptr  Success, email found
- * @retval NULL On error
+ * @retval NULL Error
  */
 static struct MuttThread *top_of_thread(struct Header *h)
 {

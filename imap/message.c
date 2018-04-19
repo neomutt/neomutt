@@ -114,8 +114,8 @@ static struct BodyCache *msg_cache_open(struct ImapData *idata)
  * msg_cache_get - Get the message cache entry for an email
  * @param idata Server data
  * @param h     Email header
- * @retval FILE* Success, handle of cache entry
- * @retval NULL  Failure
+ * @retval ptr  Success, handle of cache entry
+ * @retval NULL Failure
  */
 static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
 {
@@ -133,8 +133,8 @@ static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
  * msg_cache_put - Put an email into the message cache
  * @param idata Server data
  * @param h     Email header
- * @retval FILE* Success, handle of cache entry
- * @retval NULL  Failure
+ * @retval ptr  Success, handle of cache entry
+ * @retval NULL Failure
  */
 static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
 {

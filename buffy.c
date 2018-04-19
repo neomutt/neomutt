@@ -61,8 +61,8 @@ static short BuffyNotify = 0; /**< # of unnotified new boxes */
 
 /**
  * fseek_last_message - Find the last message in the file
- * @retval 0 on success
- * @retval -1 if no message found
+ * @retval  0 Success
+ * @retval -1 No message found
  */
 static int fseek_last_message(FILE *f)
 {

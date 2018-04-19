@@ -363,7 +363,8 @@ out:
  * mutt_ch_chscmp - Are the names of two character sets equivalent?
  * @param cs1 First character set
  * @param cs2 Second character set
- * @retval num true if the names are equivalent
+ * @retval 1 Names are equivalent
+ * @retval 0 Names differ 
  *
  * Charsets may have extensions that mutt_ch_canonical_charset() leaves intact;
  * we expect 'cs2' to originate from neomutt code, not user input (i.e. 'cs2'
@@ -432,8 +433,8 @@ char *mutt_ch_get_langinfo_charset(void)
  * @param pat     Pattern to match
  * @param replace Replacement string
  * @param err     Buffer for error message
- * @retval true, lookup added to list
- * @retval false, Regex string was invalid
+ * @retval true  Lookup added to list
+ * @retval false Regex string was invalid
  *
  * Add a regex for a character set and a replacement name.
  */
@@ -514,9 +515,13 @@ const char *mutt_ch_charset_lookup(const char *chs)
  * constant, or some value provided by the user; MUTT_ICONV_HOOK_FROM should be
  * used only when fromcode is unsure, taken from a possibly wrong incoming MIME
  * label, or such. Misusing MUTT_ICONV_HOOK_FROM leads to unwanted interactions
- * in some setups. Note: By design charset-hooks should never be, and are never,
- * applied to tocode. Highlight note: The top-well-named MUTT_ICONV_HOOK_FROM
- * acts on charset-hooks, not at all on iconv-hooks.
+ * in some setups.
+ *
+ * @note By design charset-hooks should never be, and are never, applied
+ * to tocode.
+ *
+ * @note The top-well-named MUTT_ICONV_HOOK_FROM acts on charset-hooks,
+ * not at all on iconv-hooks.
  */
 iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
 {
@@ -565,7 +570,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, int flags)
  * @param[in]     inrepls      Input replacement characters
  * @param[in]     outrepl      Output replacement characters
  * @param[out]    iconverrno   Errno if iconv() fails, 0 if it succeeds
- * @retval num Number of characters converted
+ * @retval num Characters converted
  *
  * Like iconv, but keeps going even when the input is invalid
  * If you're supplying inrepls, the source charset should be stateless;
@@ -726,7 +731,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, int flag
  * mutt_ch_check_charset - Does iconv understand a character set?
  * @param cs     Character set to check
  * @param strict Check strictly by using iconv
- * @retval bool true if character set is valid
+ * @retval true Character set is valid
  *
  * If `strict` is false, then finding a matching character set in
  * #PreferredMimeNames will be enough.
@@ -873,7 +878,7 @@ int mutt_ch_fgetconv(struct FgetConv *fc)
  * @param buf    Buffer for result
  * @param buflen Length of buffer
  * @param fc     FgetConv handle
- * @retval ptr  Result buffer on success
+ * @retval ptr  Success, result buffer
  * @retval NULL Error
  *
  * Read a file into a buffer, converting the character set as it goes.

@@ -333,7 +333,9 @@ void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int b
 }
 
 /**
- * mutt_thread_set_flag - Set a flag on an entire thread
+ * mutt_tag_set_flag - Set flag on tagged messages
+ * @param flag Flag to set, e.g. #MUTT_DELETE
+ * @param bf   true: set the flag; false: clear the flag
  */
 void mutt_tag_set_flag(int flag, int bf)
 {

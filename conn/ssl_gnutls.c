@@ -543,8 +543,8 @@ static int tls_check_preauth(const gnutls_datum_t *certdata,
  * @param hostname Hostname
  * @param idx      Index into certificate list
  * @param len      Length of certificate list
- * @retval 0  on failure
- * @retval >0 on success
+ * @retval 0  Failure
+ * @retval >0 Success
  */
 static int tls_check_one_certificate(const gnutls_datum_t *certdata,
                                      gnutls_certificate_status_t certstat,

@@ -557,8 +557,8 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
  * check_uidl - find message with this UIDL and set refno
  * @param line String containing UIDL
  * @param data POP data
- * @retval 0 on success
- * @retval -1 on error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 static int check_uidl(char *line, void *data)
 {
@@ -589,8 +589,8 @@ static int check_uidl(char *line, void *data)
 /**
  * pop_reconnect - reconnect and verify indexes if connection was lost
  * @param ctx Context
- * @retval 0 on success
- * @retval -1 on error
+ * @retval  0 Success
+ * @retval -1 Error
  */
 int pop_reconnect(struct Context *ctx)
 {

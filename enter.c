@@ -64,8 +64,9 @@ static int my_addwch(wchar_t wc)
 
 /**
  * replace_part - Search and replace on a buffer
- *
- * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
+ * @param state Current state of the input buffer
+ * @param from  Starting point for the replacement
+ * @param buf   Replacement string
  */
 static void replace_part(struct EnterState *state, size_t from, char *buf)
 {
@@ -100,7 +101,7 @@ static void replace_part(struct EnterState *state, size_t from, char *buf)
 }
 
 /**
- * mutt_enter_string_simple - Ask the user for a string
+ * mutt_enter_string - Ask the user for a string
  * @param buf    Buffer to store the string
  * @param buflen Buffer length
  * @param col    Initial cursor position
@@ -768,9 +769,3 @@ void mutt_enter_state_free(struct EnterState **esp)
   FREE(esp);
 }
 
-/*
- * TODO:
- * very narrow screen might crash it
- * sort out the input side
- * unprintable chars
- */

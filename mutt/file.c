@@ -64,7 +64,7 @@ static const char safe_chars[] =
  * compare_stat - Compare the struct stat's of two files/dirs
  * @param osb struct stat of the first file/dir
  * @param nsb struct stat of the second file/dir
- * @retval boolean
+ * @retval true They match
  *
  * This compares the device id (st_dev), inode number (st_ino) and special id
  * (st_rdev) of the files/dirs.
@@ -662,7 +662,7 @@ char *mutt_file_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
  * @param d Buffer for the result
  * @param l Length of buffer
  * @param f String to convert
- * @retval num Number of bytes written to the buffer
+ * @retval num Bytes written to the buffer
  *
  * From the Unix programming FAQ by way of Liviu.
  */
@@ -709,7 +709,7 @@ size_t mutt_file_quote_filename(char *d, size_t l, const char *f)
  * @param fname    Filename
  * @param fnamelen Filename length
  * @retval NULL Error
- * @retval ptr  Pointer to \a dst on success
+ * @retval ptr  Success, pointer to \a dst
  *
  * Write the concatenated pathname (dir + "/" + fname) into dst.
  * The slash is omitted when dir or fname is of 0 length.
@@ -938,7 +938,7 @@ void mutt_file_touch_atime(int f)
  * mutt_file_chmod - Set permissions of a file
  * @param path Filename
  * @param mode the permissions to set
- * @retval int same as chmod(2)
+ * @retval num Same as chmod(2)
  *
  * This is essentially chmod(path, mode), see chmod(2).
  */
@@ -951,7 +951,7 @@ int mutt_file_chmod(const char *path, mode_t mode)
  * mutt_file_chmod_add - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
- * @retval int same as chmod(2)
+ * @retval num Same as chmod(2)
  * @see   mutt_file_chmod_add_stat()
  *
  * Adds the given permissions to the file. Permissions not mentioned in mode
@@ -973,7 +973,7 @@ int mutt_file_chmod_add(const char *path, mode_t mode)
  * @param path Filename
  * @param mode the permissions to add
  * @param st   struct stat for the file (optional)
- * @retval int same as chmod(2)
+ * @retval num Same as chmod(2)
  * @see   mutt_file_chmod_add()
  *
  * Same as mutt_file_chmod_add() but saves a system call to stat() if a
@@ -1003,7 +1003,7 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
  * mutt_file_chmod_rm - Remove permissions from a file
  * @param path Filename
  * @param mode the permissions to remove
- * @retval int same as chmod(2)
+ * @retval num Same as chmod(2)
  * @see   mutt_file_chmod_rm_stat()
  *
  * Removes the given permissions from the file. Permissions not mentioned in
@@ -1025,7 +1025,7 @@ int mutt_file_chmod_rm(const char *path, mode_t mode)
  * @param path Filename
  * @param mode the permissions to remove
  * @param st   struct stat for the file (optional)
- * @retval int same as chmod(2)
+ * @retval num Same as chmod(2)
  * @see   mutt_file_chmod_rm()
  *
  * Same as mutt_file_chmod_rm() but saves a system call to stat() if a non-NULL
@@ -1056,8 +1056,8 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
  * @param fd      File descriptor to file
  * @param excl    If set, try to lock exclusively
  * @param timeout Retry after this time
- * @retval 0 on success
- * @retval -1 on failure
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * The type of file locking depends on how NeoMutt was compiled.
  * It could use fcntl() or flock() to perform the locking.
@@ -1220,7 +1220,7 @@ void mutt_file_unlink_empty(const char *path)
  * @retval 2 New file already exists
  * @retval 3 Some other error
  *
- * note on access(2) use: No dangling symlink problems here due to
+ * @note on access(2) use No dangling symlink problems here due to
  * mutt_file_fopen().
  */
 int mutt_file_rename(char *oldfile, char *newfile)
@@ -1251,10 +1251,11 @@ int mutt_file_rename(char *oldfile, char *newfile)
  * mutt_file_to_absolute_path - Convert relative filepath to an absolute path
  * @param path      Relative path
  * @param reference Absolute path that \a path is relative to
- * @retval true on success
- * @retval false otherwise
+ * @retval true  Success
+ * @retval false Failure
  *
  * Use POSIX functions to convert a path to absolute, relatively to another path
+ *
  * @note \a path should be at least of PATH_MAX length
  */
 int mutt_file_to_absolute_path(char *path, const char *reference)
@@ -1324,9 +1325,9 @@ char *mutt_file_read_keyword(const char *file, char *buffer, size_t buflen)
 /**
  * mutt_file_check_empty - Is the mailbox empty
  * @param path Path to mailbox
- * @retval 1 mailbox is not empty
- * @retval 0 mailbox is empty
- * @retval -1 on error
+ * @retval  1 Mailbox is not empty
+ * @retval  0 Mailbox is empty
+ * @retval -1 Error
  */
 int mutt_file_check_empty(const char *path)
 {

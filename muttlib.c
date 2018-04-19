@@ -622,9 +622,9 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
 
 /**
  * mutt_check_overwrite - Ask the user if overwriting is necessary
- * @retval  0 on success
- * @retval -1 on abort
- * @retval  1 on error
+ * @retval  0 Success
+ * @retval -1 Abort
+ * @retval  1 Error
  */
 int mutt_check_overwrite(const char *attname, const char *path, char *fname,
                          size_t flen, int *append, char **directory)
@@ -1486,7 +1486,7 @@ void mutt_get_parent_path(char *output, char *path, size_t olen)
 /**
  * mutt_realpath - resolve path, unraveling symlinks
  * @param buf Buffer containing path
- * @retval len String length of resolved path
+ * @retval num String length of resolved path
  * @retval 0   Error, buf is not overwritten
  *
  * Resolve and overwrite the path in buf.

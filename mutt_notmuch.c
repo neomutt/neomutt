@@ -152,7 +152,7 @@ static void free_hdrdata(struct NmHdrData *data)
 
 /**
  * free_ctxdata - Free data attached to the context
- * @param data A mailbox CONTEXT
+ * @param data Notmuch data
  *
  * The nm_ctxdata struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and
@@ -211,7 +211,7 @@ static struct NmCtxData *new_ctxdata(const char *uri)
 
 /**
  * init_context - Add Notmuch data to the Context
- * @param ctx A mailbox CONTEXT
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Error Bad format
  *
@@ -384,17 +384,17 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
 
 /**
  * get_query_string - builds the notmuch vfolder search string
- * @param data   internal notmuch context
- * @param window if true enable application of the window on the search string
- * @retval string Containing a notmuch search query
- * @retval NULL   If none can be generated
+ * @param data   Notmuch data
+ * @param window If true enable application of the window on the search string
+ * @retval ptr  String containing a notmuch search query
+ * @retval NULL If none can be generated
  *
  * This function parses the internal representation of a search, and returns
  * a search query string ready to be fed to the notmuch API, given the search
  * is valid.
  *
- * As a note, the window parameter here is here to decide contextually whether
- * we want to return a search query with window applied (for the actual search
+ * @note The window parameter here is here to decide contextually whether we
+ * want to return a search query with window applied (for the actual search
  * result in buffy) or not (for the count in the sidebar). It is not aimed at
  * enabling/disabling the feature.
  */
@@ -815,7 +815,7 @@ static void deinit_header(struct Header *h)
 /**
  * nm2mutt_message_id - converts notmuch message Id to neomutt message Id
  * @param id Notmuch ID to convert
- * @retval string NeoMutt message ID
+ * @retval ptr NeoMutt message ID
  *
  * Caller must free the NeoMutt Message ID
  */
@@ -1752,10 +1752,13 @@ void nm_query_window_backward(void)
 
 /**
  * nm_edit_message_tags - Prompt new messages tags
- *
- * @retval -1: error
- * @retval 0: no valid user input
- * @retval 1: buf set
+ * @param ctx    Mailbox
+ * @param tags   Existing tags (UNUSED)
+ * @param buf    Buffer for message tags
+ * @param buflen Length of buffer
+ * @retval -1 Error
+ * @retval 0  No valid user input
+ * @retval 1  Buffer set
  */
 static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf, size_t buflen)
 {
@@ -2096,7 +2099,7 @@ done:
 
 /**
  * nm_open_mailbox - Open a notmuch virtual mailbox
- * @param ctx A mailbox CONTEXT
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -2150,7 +2153,7 @@ static int nm_open_mailbox(struct Context *ctx)
 
 /**
  * nm_close_mailbox - Close a notmuch virtual mailbox
- * @param ctx A mailbox CONTEXT
+ * @param ctx Mailbox
  * @retval  0 Success
  * @retval -1 Error
  */
@@ -2177,13 +2180,13 @@ static int nm_close_mailbox(struct Context *ctx)
 
 /**
  * nm_check_mailbox - Check a notmuch mailbox for new mail
- * @param ctx         A mailbox CONTEXT
+ * @param ctx         Mailbox
  * @param index_hint  Remember our place in the index
  * @retval -1 Error
  * @retval  0 Success
- * @retval #MUTT_NEW_MAIL - new mail has arrived
- * @retval #MUTT_REOPENED - mailbox closed and reopened
- * @retval #MUTT_FLAGS - flags have changed
+ * @retval #MUTT_NEW_MAIL New mail has arrived
+ * @retval #MUTT_REOPENED Mailbox closed and reopened
+ * @retval #MUTT_FLAGS    Flags have changed
  */
 static int nm_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -2305,7 +2308,7 @@ done:
 
 /**
  * nm_sync_mailbox - Sync a notmuch mailbox
- * @param ctx        A mailbox CONTEXT
+ * @param ctx        Mailbox
  * @param index_hint Remember our place in the index
  */
 static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
@@ -2390,7 +2393,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * nm_open_message - Open a message from a notmuch mailbox
- * @param ctx   A mailbox CONTEXT
+ * @param ctx   Mailbox
  * @param msg   Message to open
  * @param msgno Index of message to open
  * @retval 0 Success
@@ -2419,7 +2422,7 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
 
 /**
  * nm_close_message - Close a message
- * @param ctx A mailbox CONTEXT
+ * @param ctx Mailbox
  * @param msg Message to close
  * @retval 0 Success
  * @retval 1 Error

@@ -147,7 +147,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  * @param buflen Buffer length
  * @param flags  Flags, e.g. MUTT_FORMAT_INDEX
  * @param color  Color, e.g. MT_COLOR_MESSAGE
- * @retval n Number of characters written
+ * @retval num Characters written
  *
  * The colors are stored as "magic" strings embedded in the text.
  */
@@ -214,7 +214,7 @@ static char *get_nth_wchar(struct MbTable *table, int index)
 /**
  * make_from_prefix - Create a prefix for an author field
  * @param disp   Type of field
- * @retval string Prefix string (do not free it)
+ * @retval ptr Prefix string (do not free it)
  *
  * If $from_chars is set, pick an appropriate character from it.
  * If not, use the default prefix: "To", "Cc", etc

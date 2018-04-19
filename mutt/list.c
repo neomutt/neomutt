@@ -156,7 +156,7 @@ void mutt_list_clear(struct ListHead *h)
  * mutt_list_match - Is the string in the list (see notes)
  * @param s String to match
  * @param h Head of the List
- * @return true String matches a List item (or List contains "*")
+ * @retval true String matches a List item (or List contains "*")
  *
  * This is a very specific function.  It searches a List of strings looking for
  * a match.  If the list contains a string "*", then it match any input string.
@@ -180,7 +180,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * mutt_list_compare - Compare two string lists
  * @param ah First string list
  * @param bh Second string list
- * @retval bool True if lists are identical
+ * @retval true Lists are identical
  *
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.

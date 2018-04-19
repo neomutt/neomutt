@@ -674,8 +674,8 @@ static bool prepare_sidebar(int page_size)
  * draw_divider - Draw a line between the sidebar and the rest of neomutt
  * @param num_rows   Height of the Sidebar
  * @param num_cols   Width of the Sidebar
- * @retval 0 Empty string
- * @retval n Character occupies n screen columns
+ * @retval 0   Empty string
+ * @retval num Character occupies n screen columns
  *
  * Draw a divider using characters from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.
@@ -1072,7 +1072,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
 
 /**
  * mutt_sb_get_highlight - Get the Buffy that's highlighted in the sidebar
- * @retval string Mailbox path
+ * @retval ptr Mailbox path
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
  */

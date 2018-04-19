@@ -260,8 +260,8 @@ static const char *crypt_fpr(struct CryptKeyInfo *k)
 /**
  * crypt_fpr_or_lkeyid - Find the fingerprint of a key
  * @param k Key to examine
- * @retval string fingerprint if available
- * @retval string otherwise the long keyid
+ * @retval ptr Fingerprint if available
+ * @retval ptr Otherwise the long keyid
  */
 static const char *crypt_fpr_or_lkeyid(struct CryptKeyInfo *k)
 {
@@ -788,7 +788,7 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
 
 /**
  * set_signer - Make sure that the correct signer is set
- * @retval 0 on success
+ * @retval 0 Success
  */
 static int set_signer(gpgme_ctx_t ctx, int for_smime)
 {
@@ -1911,7 +1911,7 @@ restart:
 
 /**
  * pgp_gpgme_decrypt_mime - Decrypt a PGP/MIME message
- * @retval 0 on success
+ * @retval 0 Success
  *
  * The message in FPIN and B and return a new body and the stream in CUR and
  * FPOUT.
@@ -2004,7 +2004,7 @@ bail:
 
 /**
  * smime_gpgme_decrypt_mime - Decrypt a S/MIME message
- * @retval 0 on success
+ * @retval 0 Success
  *
  * The message in FPIN and B and return a new body and
  * the stream in CUR and FPOUT.

@@ -217,9 +217,8 @@ int mutt_str_atoi(const char *str, int *dst)
  * @retval -1 Invalid input
  * @retval -2 Input out of range
  *
- * @note
- * This function's return value differs from the other functions.
- * They return -1 if there is input beyond the number.
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
  */
 int mutt_str_atoui(const char *str, unsigned int *dst)
 {
@@ -248,9 +247,8 @@ int mutt_str_atoui(const char *str, unsigned int *dst)
  * @retval  0 Successful conversion
  * @retval -1 Invalid input
  *
- * @note
- * This function's return value differs from the other functions.
- * They return -1 if there is input beyond the number.
+ * @note This function's return value differs from the other functions.
+ *       They return -1 if there is input beyond the number.
  */
 int mutt_str_atoul(const char *str, unsigned long *dst)
 {
@@ -634,7 +632,7 @@ void mutt_str_remove_trailing_ws(char *s)
  * @param dest  Buffer for the result
  * @param src   String to copy
  * @param dsize Destination buffer size
- * @retval len Destination string length
+ * @retval num Destination string length
  */
 size_t mutt_str_strfcpy(char *dest, const char *src, size_t dsize)
 {
@@ -667,7 +665,7 @@ char *mutt_str_skip_email_wsp(const char *s)
 /**
  * mutt_str_is_email_wsp - Is this a whitespace character (for an email header)
  * @param c Character to test
- * @retval boolean
+ * @retval true It is whitespcae
  */
 bool mutt_str_is_email_wsp(char c)
 {
@@ -680,7 +678,7 @@ bool mutt_str_is_email_wsp(char c)
  * @param src   String to copy
  * @param n     Maximum number of characters to copy
  * @param dsize Destination buffer size
- * @retval len Destination string length
+ * @retval num Destination string length
  */
 size_t mutt_str_strnfcpy(char *dest, const char *src, size_t n, size_t dsize)
 {
@@ -862,7 +860,7 @@ int mutt_str_word_casecmp(const char *a, const char *b)
  * mutt_str_is_ascii - Is a string ASCII (7-bit)?
  * @param p   String to examine
  * @param len Length of string
- * @retval bool True if there are no 8-bit chars
+ * @retval true There are no 8-bit chars
  */
 bool mutt_str_is_ascii(const char *p, size_t len)
 {

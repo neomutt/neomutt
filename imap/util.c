@@ -213,7 +213,7 @@ void imap_clean_path(char *path, size_t plen)
  * @param path Path for the header cache file
  * @param dest Buffer for result
  * @param dlen Length of buffer
- * @retval num Number of chars written to dest
+ * @retval num Chars written to dest
  */
 static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
 {
@@ -573,7 +573,7 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_new_idata - Allocate and initialise a new ImapData structure
- * @retval NULL on failure (no mem)
+ * @retval NULL Failure (no mem)
  * @retval ptr New ImapData
  */
 struct ImapData *imap_new_idata(void)
