@@ -32,7 +32,7 @@
 #include "mutt/mutt.h"
 #include "tags.h"
 
-char *HiddenTags;           /**< Private tags which should not be displayed */
+char *HiddenTags;           /**< Config: Private tags which should not be displayed */
 struct Hash *TagTransforms; /**< Lookup table of alternative tag names */
 
 /**
@@ -127,6 +127,7 @@ void driver_tags_free(struct TagHead *head)
 /**
  * driver_tags_get_transformed - Get transformed tags
  * @param[in] head List of tags
+ * @retval ptr String list of tags
  *
  * Return a new allocated string containing all tags separated by space with
  * transformation
@@ -139,6 +140,7 @@ char *driver_tags_get_transformed(struct TagHead *head)
 /**
  * driver_tags_get - Get tags
  * @param[in] head List of tags
+ * @retval ptr String list of tags
  *
  * Return a new allocated string containing all tags separated by space
  */
@@ -150,6 +152,7 @@ char *driver_tags_get(struct TagHead *head)
 /**
  * driver_tags_get_with_hidden - Get tags with hiddens
  * @param[in] head List of tags
+ * @retval ptr String list of tags
  *
  * Return a new allocated string containing all tags separated by space even
  * the hiddens.

@@ -1294,6 +1294,12 @@ static int ssl_negotiate(struct Connection *conn, struct SslSockData *ssldata)
   return 0;
 }
 
+/**
+ * ssl_setup - Set up SSL on the Connection
+ * @param conn Connection
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int ssl_setup(struct Connection *conn)
 {
   struct SslSockData *ssldata;

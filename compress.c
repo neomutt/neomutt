@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page compress Compressed mbox local mailbox type
+ *
+ * Compressed mbox local mailbox type
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdio.h>
@@ -441,6 +447,8 @@ static int execute_command(struct Context *ctx, const char *command, const char 
 /**
  * comp_open_mailbox - Open a compressed mailbox
  * @param ctx Mailbox to open
+ * @retval  0 Success
+ * @retval -1 Error
  *
  * Set up a compressed mailbox to be read.
  * Decompress the mailbox and set up the paths and hooks needed.
@@ -703,6 +711,11 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * comp_open_message - Delegated to mbox handler
+ * @param ctx   Mailbox
+ * @param msg   Message to open
+ * @param msgno Message number
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
@@ -723,6 +736,10 @@ static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno
 
 /**
  * comp_close_message - Delegated to mbox handler
+ * @param ctx Mailbox
+ * @param msg Message to close
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int comp_close_message(struct Context *ctx, struct Message *msg)
 {
@@ -743,6 +760,10 @@ static int comp_close_message(struct Context *ctx, struct Message *msg)
 
 /**
  * comp_commit_message - Delegated to mbox handler
+ * @param ctx Mailbox
+ * @param msg Message to commit
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int comp_commit_message(struct Context *ctx, struct Message *msg)
 {
@@ -763,6 +784,11 @@ static int comp_commit_message(struct Context *ctx, struct Message *msg)
 
 /**
  * comp_open_new_message - Delegated to mbox handler
+ * @param msg Message to commit
+ * @param ctx Mailbox
+ * @param hdr Email header
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int comp_open_new_message(struct Message *msg, struct Context *ctx, struct Header *hdr)
 {

@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page newsrc Read/parse/write an NNTP config file of subscribed newsgroups
+ *
+ * Read/parse/write an NNTP config file of subscribed newsgroups
+ */
+
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
@@ -58,6 +64,10 @@ struct BodyCache;
 
 /**
  * nntp_data_find - Find NntpData for given newsgroup or add it
+ * @param nserv NNTP server
+ * @param group Newsgroup
+ * @retval ptr  NNTP data
+ * @retval NULL Error
  */
 static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *group)
 {
@@ -87,6 +97,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
 
 /**
  * nntp_acache_free - Remove all temporarily cache files
+ * @param nntp_data NNTP data
  */
 void nntp_acache_free(struct NntpData *nntp_data)
 {
@@ -102,6 +113,7 @@ void nntp_acache_free(struct NntpData *nntp_data)
 
 /**
  * nntp_data_free - Free NntpData, used to destroy hash elements
+ * @param data NNTP data
  */
 void nntp_data_free(void *data)
 {
@@ -116,6 +128,12 @@ void nntp_data_free(void *data)
   FREE(&data);
 }
 
+/**
+ * nntp_hash_destructor - Free our hash table data
+ * @param type Type (UNUSED)
+ * @param obj  NNTP data
+ * @param data Data (UNUSED)
+ */
 void nntp_hash_destructor(int type, void *obj, intptr_t data)
 {
   nntp_data_free(obj);
@@ -123,6 +141,7 @@ void nntp_hash_destructor(int type, void *obj, intptr_t data)
 
 /**
  * nntp_newsrc_close - Unlock and close .newsrc file
+ * @param nserv NNTP server
  */
 void nntp_newsrc_close(struct NntpServer *nserv)
 {
@@ -136,6 +155,7 @@ void nntp_newsrc_close(struct NntpServer *nserv)
 
 /**
  * nntp_group_unread_stat - Count number of unread articles using .newsrc data
+ * @param nntp_data NNTP data
  */
 void nntp_group_unread_stat(struct NntpData *nntp_data)
 {
@@ -297,6 +317,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
 
 /**
  * nntp_newsrc_gen_entries - Generate array of .newsrc entries
+ * @param ctx Mailbox
  */
 void nntp_newsrc_gen_entries(struct Context *ctx)
 {
@@ -381,6 +402,10 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
 
 /**
  * update_file - Update file with new contents
+ * @param filename File to update
+ * @param buf      New context
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int update_file(char *filename, char *buf)
 {
@@ -428,6 +453,9 @@ static int update_file(char *filename, char *buf)
 
 /**
  * nntp_newsrc_update - Update .newsrc file
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int nntp_newsrc_update(struct NntpServer *nserv)
 {
@@ -504,6 +532,10 @@ int nntp_newsrc_update(struct NntpServer *nserv)
 
 /**
  * cache_expand - Make fully qualified cache file name
+ * @param dst    Buffer for filename
+ * @param dstlen Length of buffer
+ * @param acct   Account
+ * @param src    Path to add to the URL
  */
 static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *src)
 {
@@ -534,6 +566,9 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
 
 /**
  * nntp_expand_path - Make fully qualified url from newsgroup name
+ * @param line String containing newsgroup name
+ * @param len  Length of string
+ * @param acct Account to save result
  */
 void nntp_expand_path(char *line, size_t len, struct Account *acct)
 {
@@ -547,6 +582,9 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct)
 
 /**
  * nntp_add_group - Parse newsgroup
+ * @param line String to parse
+ * @param data NNTP data
+ * @retval 0 Always
  */
 int nntp_add_group(char *line, void *data)
 {
@@ -580,6 +618,9 @@ int nntp_add_group(char *line, void *data)
 
 /**
  * active_get_cache - Load list of all newsgroups from cache
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int active_get_cache(struct NntpServer *nserv)
 {
@@ -611,6 +652,9 @@ static int active_get_cache(struct NntpServer *nserv)
 
 /**
  * nntp_active_save_cache - Save list of all newsgroups to cache
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int nntp_active_save_cache(struct NntpServer *nserv)
 {
@@ -656,6 +700,10 @@ int nntp_active_save_cache(struct NntpServer *nserv)
 #ifdef USE_HCACHE
 /**
  * nntp_hcache_namer - Compose hcache file names
+ * @param path    Path of message
+ * @param dest    Buffer for filename
+ * @param destlen Length of buffer
+ * @retval num Characters written to buffer
  *
  * Used by mutt_hcache_open() to compose hcache file name
  */
@@ -666,6 +714,9 @@ static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
 
 /**
  * nntp_hcache_open - Open newsgroup hcache
+ * @param nntp_data NNTP data
+ * @retval ptr  Header cache
+ * @retval NULL Error
  */
 header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 {
@@ -685,6 +736,8 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 
 /**
  * nntp_hcache_update - Remove stale cached headers
+ * @param nntp_data NNTP data
+ * @param hc        Header cache
  */
 void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 {
@@ -732,6 +785,10 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 
 /**
  * nntp_bcache_delete - Remove bcache file
+ * @param id     Body cache ID
+ * @param bcache Body cache
+ * @param data   NNTP data
+ * @retval 0 Always
  */
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
@@ -751,6 +808,7 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
 
 /**
  * nntp_bcache_update - Remove stale cached messages
+ * @param nntp_data NNTP data
  */
 void nntp_bcache_update(struct NntpData *nntp_data)
 {
@@ -759,6 +817,7 @@ void nntp_bcache_update(struct NntpData *nntp_data)
 
 /**
  * nntp_delete_group_cache - Remove hcache and bcache of newsgroup
+ * @param nntp_data NNTP data
  */
 void nntp_delete_group_cache(struct NntpData *nntp_data)
 {
@@ -787,6 +846,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
 
 /**
  * nntp_clear_cache - Clear the NNTP cache
+ * @param nserv NNTP server
  *
  * Remove hcache and bcache of all unexistent and unsubscribed newsgroups
  */
@@ -938,6 +998,10 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 
 /**
  * nntp_select_server - Open a connection to an NNTP server
+ * @param server     Server URI
+ * @param leave_lock Leave the server locked?
+ * @retval ptr  NNTP server
+ * @retval NULL Error
  *
  * Automatically loads a newsrc into memory, if necessary.  Checks the
  * size/mtime of a newsrc file, if it doesn't match, load again.  Hmm, if a
@@ -1139,6 +1203,10 @@ struct NntpServer *nntp_select_server(char *server, bool leave_lock)
 
 /**
  * nntp_article_status - Get status of articles from .newsrc
+ * @param ctx   Mailbox
+ * @param hdr   Email Header
+ * @param group Newsgroup
+ * @param anum  Article number
  *
  * Full status flags are not supported by nntp, but we can fake some of them:
  * Read = a read message number is in the .newsrc
@@ -1178,6 +1246,10 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
 
 /**
  * mutt_newsgroup_subscribe - Subscribe newsgroup
+ * @param nserv NNTP server
+ * @param group Newsgroup
+ * @retval ptr  NNTP data
+ * @retval NULL Error
  */
 struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
 {
@@ -1200,6 +1272,10 @@ struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
 
 /**
  * mutt_newsgroup_unsubscribe - Unsubscribe newsgroup
+ * @param nserv NNTP server
+ * @param group Newsgroup
+ * @retval ptr  NNTP data
+ * @retval NULL Error
  */
 struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group)
 {
@@ -1223,6 +1299,10 @@ struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *grou
 
 /**
  * mutt_newsgroup_catchup - Catchup newsgroup
+ * @param nserv NNTP server
+ * @param group Newsgroup
+ * @retval ptr  NNTP data
+ * @retval NULL Error
  */
 struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
 {
@@ -1253,6 +1333,10 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
 
 /**
  * mutt_newsgroup_uncatchup - Uncatchup newsgroup
+ * @param nserv NNTP server
+ * @param group Newsgroup
+ * @retval ptr  NNTP data
+ * @retval NULL Error
  */
 struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 {
@@ -1289,6 +1373,8 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 
 /**
  * nntp_buffy - Get first newsgroup with new messages
+ * @param buf Buffer for result
+ * @param len Length of buffer
  */
 void nntp_buffy(char *buf, size_t len)
 {

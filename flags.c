@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page flags Manipulate the flags in an email header
+ *
+ * Manipulate the flags in an email header
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
@@ -37,6 +43,14 @@
 #include "sort.h"
 #include "thread.h"
 
+/**
+ * mutt_set_flag_update - Set a flag on an email
+ * @param ctx     Mailbox Context
+ * @param h       Email Header
+ * @param flag    Flag to set, e.g. #MUTT_DELETE
+ * @param bf      true: set the flag; false: clear the flag
+ * @param upd_ctx true: update the Context
+ */
 void mutt_set_flag_update(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx)
 {
   if (!ctx || !h)
@@ -344,6 +358,15 @@ void mutt_tag_set_flag(int flag, int bf)
       mutt_set_flag(Context, Context->hdrs[i], flag, bf);
 }
 
+/**
+ * mutt_thread_set_flag - Set a flag on an entire thread
+ * @param hdr       Email Header
+ * @param flag      Flag to set, e.g. #MUTT_DELETE
+ * @param bf        true: set the flag; false: clear the flag
+ * @param subthread If true apply to all of the thread
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
 {
   struct MuttThread *start = NULL, *cur = hdr->thread;
@@ -393,6 +416,13 @@ done:
   return 0;
 }
 
+/**
+ * mutt_change_flag - Change the flag on a Message
+ * @param h  Email Header
+ * @param bf true: set the flag; false: clear the flag
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_change_flag(struct Header *h, int bf)
 {
   int i, flag;

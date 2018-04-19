@@ -23,6 +23,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page sidebar GUI display the mailboxes in a side panel
+ *
+ * GUI display the mailboxes in a side panel
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -1113,6 +1119,8 @@ void mutt_sb_set_open_buffy(void)
 
 /**
  * mutt_sb_notify_mailbox - The state of a Buffy is about to change
+ * @param b       Folder
+ * @param created True if folder created, false if deleted
  *
  * We receive a notification:
  *      After a new Buffy has been created

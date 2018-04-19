@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page pop POP network mailbox
+ *
+ * POP network mailbox
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <limits.h>
@@ -59,6 +65,10 @@
 
 /**
  * fetch_message - write line to file
+ * @param line String to write
+ * @param file FILE pointer to write to
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int fetch_message(char *line, void *file)
 {
@@ -158,6 +168,10 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
 
 /**
  * fetch_uidl - parse UIDL
+ * @param line String to parse
+ * @param data Mailbox Context
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int fetch_uidl(char *line, void *data)
 {
@@ -198,6 +212,14 @@ static int fetch_uidl(char *line, void *data)
   return 0;
 }
 
+/**
+ * msg_cache_check - Check the Body Cache for an ID
+ * @param id     Cache ID
+ * @param bcache Body cache
+ * @param data   Mailbox Context
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
   struct Context *ctx = (struct Context *) data;
@@ -227,11 +249,24 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 }
 
 #ifdef USE_HCACHE
+/**
+ * pop_hcache_namer - Create a header cache filename for a POP mailbox
+ * @param path    Path of mailbox
+ * @param dest    Buffer for filename
+ * @param destlen Length of buffer
+ * @retval num Characters written to buffer
+ */
 static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
 {
   return snprintf(dest, destlen, "%s." HC_FEXT, path);
 }
 
+/**
+ * pop_hcache_open - Open the header cache
+ * @param pop_data POP server data
+ * @param path     Path to the mailbox
+ * @retval ptr Header cache
+ */
 static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *path)
 {
   struct Url url;
@@ -417,6 +452,9 @@ static int pop_fetch_headers(struct Context *ctx)
 
 /**
  * pop_open_mailbox - open POP mailbox, fetch only headers
+ * @param ctx Mailbox Context
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int pop_open_mailbox(struct Context *ctx)
 {
@@ -488,6 +526,7 @@ static int pop_open_mailbox(struct Context *ctx)
 
 /**
  * pop_clear_cache - delete all cached messages
+ * @param pop_data POP server data
  */
 static void pop_clear_cache(struct PopData *pop_data)
 {
@@ -508,6 +547,8 @@ static void pop_clear_cache(struct PopData *pop_data)
 
 /**
  * pop_close_mailbox - close POP mailbox
+ * @param ctx Mailbox Context
+ * @retval 0 Always
  */
 static int pop_close_mailbox(struct Context *ctx)
 {
@@ -536,6 +577,11 @@ static int pop_close_mailbox(struct Context *ctx)
 
 /**
  * pop_fetch_message - fetch message from POP server
+ * @param ctx   Mailbox Context
+ * @param msg   Message
+ * @param msgno Message number
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
@@ -681,6 +727,13 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   return 0;
 }
 
+/**
+ * pop_close_message - Close POP Message
+ * @param ctx Mailbox Context
+ * @param msg Message
+ * @retval 0   Success
+ * @retval EOF Error, see errno
+ */
 static int pop_close_message(struct Context *ctx, struct Message *msg)
 {
   return mutt_file_fclose(&msg->fp);
@@ -688,6 +741,10 @@ static int pop_close_message(struct Context *ctx, struct Message *msg)
 
 /**
  * pop_sync_mailbox - update POP mailbox, delete messages from server
+ * @param ctx        Mailbox Context
+ * @param index_hint Current Message
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -768,6 +825,10 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * pop_check_mailbox - Check for new messages and fetch headers
+ * @param ctx        Mailbox Context
+ * @param index_hint Current Message
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int pop_check_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -965,6 +1026,9 @@ fail:
   FREE(&pop_data);
 }
 
+/**
+ * mx_comp_ops - Mailbox callback functions
+ */
 struct MxOps mx_pop_ops = {
   .open = pop_open_mailbox,
   .open_append = NULL,

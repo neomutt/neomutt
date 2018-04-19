@@ -36,12 +36,12 @@
 #include <stdarg.h>
 #include <string.h>
 
-struct MuttWindow *MuttHelpWindow = NULL;
-struct MuttWindow *MuttIndexWindow = NULL;
-struct MuttWindow *MuttStatusWindow = NULL;
-struct MuttWindow *MuttMessageWindow = NULL;
+struct MuttWindow *MuttHelpWindow = NULL;    /**< Help Window */
+struct MuttWindow *MuttIndexWindow = NULL;   /**< Index Window */
+struct MuttWindow *MuttStatusWindow = NULL;  /**< Status Window */
+struct MuttWindow *MuttMessageWindow = NULL; /**< Message Window */
 #ifdef USE_SIDEBAR
-struct MuttWindow *MuttSidebarWindow = NULL;
+struct MuttWindow *MuttSidebarWindow = NULL; /**< Sidebar Window */
 #endif
 
 #ifdef USE_SLANG_CURSES
@@ -301,6 +301,9 @@ void mutt_window_reflow_message_rows(int mw_rows)
 
 /**
  * mutt_window_wrap_cols - Calculate the wrap column for a Window
+ * @param win  Window
+ * @param wrap Wrap config
+ * @retval num Column that text should be wrapped at
  *
  * The wrap variable can be negative, meaning there should be a right margin.
  */

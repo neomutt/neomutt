@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page filter Pass files through external commands (filters)
+ *
+ * Pass files through external commands (filters)
+ */
+
 #include "config.h"
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -198,6 +204,14 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
   return thepid;
 }
 
+/**
+ * mutt_create_filter - Set up filter program
+ * @param[in]  s   Command string
+ * @param[out] in  FILE pointer of stdin
+ * @param[out] out FILE pointer of stdout
+ * @param[out] err FILE pointer of stderr
+ * @retval num PID of filter
+ */
 pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err)
 {
   return (mutt_create_filter_fd(s, in, out, err, -1, -1, -1));

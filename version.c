@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page version Display version and copyright about NeoMutt
+ *
+ * Display version and copyright about NeoMutt
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -289,6 +295,7 @@ static struct CompileOptions comp_opts[] = {
 
 /**
  * print_compile_options - Print a list of enabled/disabled features
+ * @param co Array of compile options
  *
  * Two lists are generated and passed to this function:
  *

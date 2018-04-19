@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page status GUI display a user-configurable status line
+ *
+ * GUI display a user-configurable status line
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -39,6 +45,13 @@
 #include "mutt_notmuch.h"
 #endif
 
+/**
+ * get_sort_str - Get the sort method as a string
+ * @param buf    Buffer for the sort string
+ * @param buflen Length of the bufer
+ * @param method Sort method, e.g. #SORT_DATE
+ * @retval ptr Buffer pointer
+ */
 static char *get_sort_str(char *buf, size_t buflen, int method)
 {
   snprintf(buf, buflen, "%s%s%s", (method & SORT_REVERSE) ? "reverse-" : "",
@@ -356,6 +369,15 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   return src;
 }
 
+/**
+ * status_line - Create the status line
+ * @param[out] buf    Buffer in which to save string
+ * @param[in]  buflen Buffer length
+ * @param[in]  col    Starting column
+ * @param[in]  cols   Number of screen columns
+ * @param[in]  menu   Current menu
+ * @param[in]  p      Format string
+ */
 static void status_line(char *buf, size_t buflen, size_t col, int cols,
                         struct Menu *menu, const char *p)
 {
@@ -363,6 +385,13 @@ static void status_line(char *buf, size_t buflen, size_t col, int cols,
                       (unsigned long) menu, 0);
 }
 
+/**
+ * menu_status_line - Create the status line
+ * @param[out] buf      Buffer in which to save string
+ * @param[in]  buflen   Buffer length
+ * @param[in]  menu     Current menu
+ * @param[in]  p        Format string
+ */
 void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p)
 {
   mutt_expando_format(buf, buflen, 0,

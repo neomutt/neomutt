@@ -46,6 +46,13 @@
 
 /**
  * rfc1524_expand_command - Expand expandos in a command
+ * @param a        Email Body
+ * @param filename File containing the email text
+ * @param type     Type, e.g. "text/plain"
+ * @param command  Buffer containing command
+ * @param clen     Length of buffer
+ * @retval 0 Command works on a file
+ * @retval 1 Command works on a pipe
  *
  * The command semantics include the following:
  * %s is the filename that contains the mail body data
@@ -150,6 +157,16 @@ static char *get_field(char *s)
   return ch;
 }
 
+/**
+ * get_field_text - Get the matching text from a mailcap
+ * @param field    String to parse
+ * @param entry    Save the entry here
+ * @param type     Type, e.g. "text/plain"
+ * @param filename Mailcap filename
+ * @param line     Mailcap line
+ * @retval 1 Success
+ * @retval 0 Failure
+ */
 static int get_field_text(char *field, char **entry, char *type, char *filename, int line)
 {
   field = mutt_str_skip_whitespace(field);
@@ -171,6 +188,16 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
   }
 }
 
+/**
+ * rfc1524_mailcap_parse - Parse a mailcap entry
+ * @param a        Email Body
+ * @param filename Filename
+ * @param type     Type, e.g. "text/plain"
+ * @param entry    Entry, e.g. "compose"
+ * @param opt      Option, e.g. #MUTT_EDIT
+ * @retval 1 Success
+ * @retval 0 Failure
+ */
 static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
                                  struct Rfc1524MailcapEntry *entry, int opt)
 {

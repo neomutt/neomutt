@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page progress Progress bar
+ *
+ * Progress bar
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <stdarg.h>

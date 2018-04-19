@@ -1062,6 +1062,12 @@ static int tls_set_priority(struct TlsSockData *data)
 static int protocol_priority[] = { GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1,
                                    GNUTLS_SSL3, 0 };
 
+/**
+ * tls_set_priority - Set the priority of various protocols
+ * @param data TLS socket data
+ * @retval  0 Success
+ * @retval -1 Error
+ */
 static int tls_set_priority(struct TlsSockData *data)
 {
   size_t nproto = 0; /* number of tls/ssl protocols */

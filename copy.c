@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page copy Duplicate the structure of an entire email
+ *
+ * Duplicate the structure of an entire email
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <inttypes.h>
@@ -52,6 +58,14 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
 
 /**
  * mutt_copy_hdr - Copy header from one file to another
+ * @param in        FILE pointer to read from
+ * @param out       FILE pointer to write to
+ * @param off_start Offset to start from
+ * @param off_end   Offset to finish at
+ * @param flags     Flags (see below)
+ * @param prefix    Prefix for quoting headers
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * Ok, the only reason for not merging this with mutt_copy_header() below is to
  * avoid creating a Header structure in message_handler().  Also, this one will
@@ -351,6 +365,13 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
 /**
  * mutt_copy_header - Copy email header
+ * @param in     FILE pointer to read from
+ * @param h      Email Header
+ * @param out    FILE pointer to write to
+ * @param flags  Flags, see below
+ * @param prefix Prefix for quoting headers
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * flags:
  * * #CH_DECODE       RFC2047 header decoding
@@ -495,6 +516,11 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 
 /**
  * count_delete_lines - Count lines to be deleted in this email body
+ * @param fp      FILE pointer to read from
+ * @param b       Email Body
+ * @param length  Number of bytes to be deleted
+ * @param datelen Length of the date
+ * @retval num Number of lines to be deleted
  *
  * Count the number of lines and bytes to be deleted in this body
  */
@@ -534,6 +560,8 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  * @param hdr     Header of message being copied
  * @param flags   See below
  * @param chflags Flags to mutt_copy_header()
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * * #MUTT_CM_NOHEADER   don't copy header
  * * #MUTT_CM_PREFIX     quote header and body
@@ -744,6 +772,13 @@ int mutt_copy_message_fp(FILE *fpout, FILE *fpin, struct Header *hdr, int flags,
 
 /**
  * mutt_copy_message_ctx - Copy a message from a Context
+ * @param fpout   FILE pointer to write to
+ * @param src     Source mailbox
+ * @param hdr     Email Header
+ * @param flags   Flags, see: mutt_copy_message_fp()
+ * @param chflags Header flags, see: mutt_copy_header()
+ * @retval  0 Success
+ * @retval -1 Failure
  *
  * should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible
@@ -808,6 +843,16 @@ static int append_message(struct Context *dest, FILE *fpin, struct Context *src,
   return r;
 }
 
+/**
+ * mutt_append_message - Append a message
+ * @param dest    Destination Mailbox
+ * @param src     Source Mailbox
+ * @param hdr     Email Header
+ * @param cmflags mutt_open_copy_message() flags
+ * @param chflags mutt_copy_header() flags
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_append_message(struct Context *dest, struct Context *src,
                         struct Header *hdr, int cmflags, int chflags)
 {
@@ -879,12 +924,14 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
 
 /**
  * format_address_header - Write address headers to a buffer
+ * @param h Array of header strings
+ * @param a Email Address
  *
  * This function is the equivalent of mutt_write_address_list(), but writes to
  * a buffer instead of writing to a stream.  mutt_write_address_list could be
  * re-used if we wouldn't store all the decoded headers in a huge array, first.
  *
- * TODO - fix that.
+ * TODO fix that.
  */
 static void format_address_header(char **h, struct Address *a)
 {
@@ -945,6 +992,12 @@ static void format_address_header(char **h, struct Address *a)
   strcat(p + plen, "\n");
 }
 
+/**
+ * address_header_decode - Parse an email's headers
+ * @param h Array of header strings
+ * @retval 0 Success
+ * @retval 1 Failure
+ */
 static int address_header_decode(char **h)
 {
   char *s = *h;

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page pop_auth POP authentication
+ *
+ * POP authentication
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -42,6 +48,9 @@
 #ifdef USE_SASL
 /**
  * pop_auth_sasl - POP SASL authenticator
+ * @param pop_data POP Server data
+ * @param method   Authentication method
+ * @retval num Result, e.g. #POP_A_SUCCESS
  */
 static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *method)
 {
@@ -194,6 +203,8 @@ bail:
 
 /**
  * pop_apop_timestamp - Get the server timestamp for APOP authentication
+ * @param pop_data POP Server data
+ * @param buf      Timestamp string
  */
 void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 {
@@ -210,6 +221,9 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 
 /**
  * pop_auth_apop - APOP authenticator
+ * @param pop_data POP Server data
+ * @param method   Authentication method
+ * @retval num Result, e.g. #POP_A_SUCCESS
  */
 static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *method)
 {
@@ -254,6 +268,9 @@ static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *metho
 
 /**
  * pop_auth_user - USER authenticator
+ * @param pop_data POP Server data
+ * @param method   Authentication method
+ * @retval num Result, e.g. #POP_A_SUCCESS
  */
 static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *method)
 {
@@ -319,6 +336,8 @@ static const struct PopAuth pop_authenticators[] = {
 
 /**
  * pop_authenticate - Authenticate with a POP server
+ * @param pop_data POP Server data
+ * @retval num Result, e.g. #POP_A_SUCCESS
  * @retval  0 Successful
  * @retval -1 Connection lost
  * @retval -2 Login failed

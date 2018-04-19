@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page enter GUI ask the user to enter a string
+ *
+ * GUI ask the user to enter a string
+ */
+
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
@@ -50,6 +56,12 @@ enum RedrawFlags
 /* combining mark / non-spacing character */
 #define COMB_CHAR(wc) (IsWPrint(wc) && !wcwidth(wc))
 
+/**
+ * my_addwch - Display one wide character on screen
+ * @param wc Character to display
+ * @retval OK  Success
+ * @retval ERR Failure
+ */
 static int my_addwch(wchar_t wc)
 {
   int n = wcwidth(wc);
@@ -760,6 +772,10 @@ bye:
   return rc;
 }
 
+/**
+ * mutt_enter_state_free - Free an EnterState
+ * @param esp EnterState to free
+ */
 void mutt_enter_state_free(struct EnterState **esp)
 {
   if (!esp)

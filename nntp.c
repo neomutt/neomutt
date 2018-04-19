@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page nntp Usenet network mailbox type; talk to an NNTP server
+ *
+ * Usenet network mailbox type; talk to an NNTP server
+ */
+
 #include "config.h"
 #include <ctype.h>
 #include <limits.h>
@@ -58,6 +64,11 @@
 #include <sasl/saslutil.h>
 #endif
 
+/**
+ * nntp_connect_error - Signal a failed connection
+ * @param nserv NNTP server
+ * @retval -1 Always
+ */
 static int nntp_connect_error(struct NntpServer *nserv)
 {
   nserv->status = NNTP_NONE;
@@ -67,6 +78,7 @@ static int nntp_connect_error(struct NntpServer *nserv)
 
 /**
  * nntp_capabilities - Get capabilities
+ * @param nserv NNTP server
  * @retval -1 Error, connection is closed
  * @retval  0 Mode is reader, capabilities set up
  * @retval  1 Need to switch to reader mode
@@ -178,6 +190,9 @@ char *OverviewFmt = "Subject:\0"
 
 /**
  * nntp_attempt_features - Detect supported commands
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_attempt_features(struct NntpServer *nserv)
 {
@@ -317,6 +332,9 @@ static int nntp_attempt_features(struct NntpServer *nserv)
 
 /**
  * nntp_auth - Get login, password and authenticate
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_auth(struct NntpServer *nserv)
 {
@@ -600,6 +618,9 @@ static int nntp_auth(struct NntpServer *nserv)
 
 /**
  * nntp_open_connection - Connect to server, authenticate and get capabilities
+ * @param nserv NNTP server
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int nntp_open_connection(struct NntpServer *nserv)
 {
@@ -755,6 +776,11 @@ int nntp_open_connection(struct NntpServer *nserv)
 
 /**
  * nntp_query - Send data from buffer and receive answer to same buffer
+ * @param nntp_data NNTP server data
+ * @param line      Buffer containing data
+ * @param linelen   Length of buffer
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 {
@@ -819,6 +845,12 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 
 /**
  * nntp_fetch_lines - Read lines, calling a callback function for each
+ * @param nntp_data NNTP server data
+ * @param query     Query to match
+ * @param qlen      Length of query
+ * @param msg       Progess message (OPTIONAL)
+ * @param funct     Callback function
+ * @param data      Data for callback function
  * @retval  0 Success
  * @retval  1 Bad response (answer in query buffer)
  * @retval -1 Connection lost
@@ -903,6 +935,9 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
 
 /**
  * fetch_description - Parse newsgroup description
+ * @param line String to parse
+ * @param data NNTP Server
+ * @retval 0 Always
  */
 static int fetch_description(char *line, void *data)
 {
@@ -968,6 +1003,8 @@ static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
 
 /**
  * nntp_parse_xref - Parse cross-reference
+ * @param ctx Mailbox
+ * @param hdr Email header
  *
  * Update read flag and set article number if empty
  */
@@ -1041,6 +1078,9 @@ struct FetchCtx
 
 /**
  * fetch_numbers - Parse article number
+ * @param line Article number
+ * @param data FetchCtx
+ * @retval 0 Always
  */
 static int fetch_numbers(char *line, void *data)
 {
@@ -1059,6 +1099,10 @@ static int fetch_numbers(char *line, void *data)
 
 /**
  * parse_overview_line - Parse overview line
+ * @param line String to parse
+ * @param data FetchCtx
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int parse_overview_line(char *line, void *data)
 {
@@ -1211,6 +1255,13 @@ static int parse_overview_line(char *line, void *data)
 
 /**
  * nntp_fetch_headers - Fetch headers
+ * @param ctx     Mailbox
+ * @param hc      Header cache
+ * @param first   Number of first header to fetch
+ * @param last    Number of last header to fetch
+ * @param restore Restore message listed as deleted
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
                               anum_t last, int restore)
@@ -1440,6 +1491,9 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
 
 /**
  * nntp_open_mailbox - Open newsgroup
+ * @param ctx Mailbox
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_open_mailbox(struct Context *ctx)
 {
@@ -1574,6 +1628,11 @@ static int nntp_open_mailbox(struct Context *ctx)
 
 /**
  * nntp_open_message - Fetch message
+ * @param ctx   Mailbox
+ * @param msg   Message to fetch
+ * @param msgno Message number
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
@@ -1697,6 +1756,10 @@ static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno
 
 /**
  * nntp_close_message - Close message
+ * @param ctx Mailbox
+ * @param msg Message to close
+ * @retval 0   Success
+ * @retval EOF Error, see errno
  */
 static int nntp_close_message(struct Context *ctx, struct Message *msg)
 {
@@ -1705,6 +1768,9 @@ static int nntp_close_message(struct Context *ctx, struct Message *msg)
 
 /**
  * nntp_post - Post article
+ * @param msg Message to post
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int nntp_post(const char *msg)
 {
@@ -1780,6 +1846,8 @@ int nntp_post(const char *msg)
 
 /**
  * nntp_group_poll - Check newsgroup for new articles
+ * @param nntp_data   NNTP server data
+ * @param update_stat Update the stats?
  * @retval  1 New articles found
  * @retval  0 No change
  * @retval -1 Lost connection
@@ -1824,6 +1892,7 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
 
 /**
  * check_mailbox - Check current newsgroup for new articles
+ * @param ctx Mailbox
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
  * @retval #MUTT_NEW_MAIL New articles found
  * @retval  0             No change
@@ -2042,6 +2111,8 @@ static int check_mailbox(struct Context *ctx)
 
 /**
  * nntp_check_mailbox - Check current newsgroup for new articles
+ * @param ctx        Mailbox
+ * @param index_hint Current message (UNUSED)
  * @retval #MUTT_REOPENED Articles have been renumbered or removed from server
  * @retval #MUTT_NEW_MAIL New articles found
  * @retval  0             No change
@@ -2061,6 +2132,12 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * nntp_sync_mailbox - Save changes to .newsrc and cache
+ * @param ctx        Mailbox
+ * @param index_hint Current message (UNUSED)
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * @note May also return values from check_mailbox()
  */
 static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 {
@@ -2121,6 +2198,8 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 
 /**
  * nntp_close_mailbox - Free up memory associated with the newsgroup context
+ * @param ctx Mailbox
+ * @retval 0 Always
  */
 static int nntp_close_mailbox(struct Context *ctx)
 {
@@ -2143,6 +2222,10 @@ static int nntp_close_mailbox(struct Context *ctx)
 
 /**
  * nntp_date - Get date and time from server
+ * @param nserv NNTP server
+ * @param now   Server time
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 static int nntp_date(struct NntpServer *nserv, time_t *now)
 {
@@ -2178,6 +2261,10 @@ static int nntp_date(struct NntpServer *nserv, time_t *now)
 
 /**
  * nntp_active_fetch - Fetch list of all newsgroups from server
+ * @param nserv NNTP server
+ * @param new   Mark the groups as new
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int nntp_active_fetch(struct NntpServer *nserv, bool new)
 {
@@ -2240,6 +2327,7 @@ int nntp_active_fetch(struct NntpServer *nserv, bool new)
 
 /**
  * nntp_check_new_groups - Check for new groups/articles in subscribed groups
+ * @param nserv NNTP server
  * @retval  1 New groups found
  * @retval  0 No new groups
  * @retval -1 Error
@@ -2350,6 +2438,8 @@ int nntp_check_new_groups(struct NntpServer *nserv)
 
 /**
  * nntp_check_msgid - Fetch article by Message-ID
+ * @param ctx   Mailbox
+ * @param msgid Message ID
  * @retval  0 Success
  * @retval  1 No such article
  * @retval -1 Error
@@ -2430,6 +2520,9 @@ struct ChildCtx
 
 /**
  * fetch_children - Parse XPAT line
+ * @param line String to parse
+ * @param data ChildCtx
+ * @retval 0 Always
  */
 static int fetch_children(char *line, void *data)
 {
@@ -2452,6 +2545,10 @@ static int fetch_children(char *line, void *data)
 
 /**
  * nntp_check_children - Fetch children of article with the Message-ID
+ * @param ctx   Mailbox
+ * @param msgid Message ID to find
+ * @retval  0 Success
+ * @retval -1 Failure
  */
 int nntp_check_children(struct Context *ctx, const char *msgid)
 {

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page resize GUI handle the resizing of the screen
+ *
+ * GUI handle the resizing of the screen
+ */
+
 #include "config.h"
 #include <fcntl.h>
 #include <stdlib.h>

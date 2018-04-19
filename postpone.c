@@ -21,6 +21,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page postpone Save/restore and GUI list postponed emails
+ *
+ * Save/restore and GUI list postponed emails
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
@@ -166,6 +172,9 @@ int mutt_num_postponed(int force)
   return PostCount;
 }
 
+/**
+ * mutt_update_num_postponed - Force the update of the number of postponed messages
+ */
 void mutt_update_num_postponed(void)
 {
   UpdateNumPostponed = 1;
@@ -186,6 +195,10 @@ static void post_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                          MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * select_msg - Create a Menu to select a postponed message
+ * @retval ptr Email Header
+ */
 static struct Header *select_msg(void)
 {
   int r = -1;
@@ -402,6 +415,13 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
   return code;
 }
 
+/**
+ * mutt_parse_crypt_hdr - Parse a crypto header string
+ * @param p                Header string to parse
+ * @param set_empty_signas Allow an empty "Sign as"
+ * @param crypt_app App, e.g. #APPLICATION_PGP
+ * @retval num Flags, e.g. #ENCRYPT
+ */
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 {
   char smime_cryptalg[LONG_STRING] = "\0";

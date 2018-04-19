@@ -29,6 +29,11 @@ struct Connection;
 int mutt_ssl_starttls(struct Connection *conn);
 int mutt_ssl_socket_setup(struct Connection *conn);
 #else
+/**
+ * mutt_ssl_socket_setup - [Dummy] Set up the socket multiplexor
+ * @param conn Connection
+ * @retval -1 Failure
+ */
 static inline int mutt_ssl_socket_setup(struct Connection *conn)
 {
   return -1;

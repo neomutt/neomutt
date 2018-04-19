@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_signal Signal handling
+ *
+ * Signal handling
+ */
+
 #include "config.h"
 #include <errno.h>
 #include <signal.h>
@@ -84,6 +90,7 @@ static void curses_exit_handler(int sig)
 #ifdef USE_SLANG_CURSES
 /**
  * mutt_intr_hook - Workaround handler for slang
+ * @retval -1 Always
  */
 static int mutt_intr_hook(void)
 {

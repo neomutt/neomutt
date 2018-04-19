@@ -54,6 +54,12 @@ struct HcacheDbCtx
   char lockfile[_POSIX_PATH_MAX];
 };
 
+/**
+ * dbt_init
+ * @param dbt
+ * @param data
+ * @param len
+ */
 static void dbt_init(DBT *dbt, void *data, size_t len)
 {
   dbt->data = data;
@@ -62,6 +68,10 @@ static void dbt_init(DBT *dbt, void *data, size_t len)
   dbt->flags = DB_DBT_USERMEM;
 }
 
+/**
+ * dbt_empty_init
+ * @param dbt
+ */
 static void dbt_empty_init(DBT *dbt)
 {
   dbt->data = NULL;

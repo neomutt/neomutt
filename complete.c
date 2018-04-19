@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page complete String auto-completion routines
+ *
+ * String auto-completion routines
+ */
+
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>

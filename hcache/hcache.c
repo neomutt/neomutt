@@ -111,6 +111,11 @@ const struct HcacheOps *hcache_ops[] = {
   NULL,
 };
 
+/**
+ * hcache_get_backend_ops
+ * @param backend
+ * @retval ptr
+ */
 static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
 {
   const struct HcacheOps **ops = hcache_ops;
@@ -129,6 +134,11 @@ static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
 
 #define hcache_get_ops() hcache_get_backend_ops(HeaderCacheBackend)
 
+/**
+ * lazy_malloc
+ * @retval ptr
+ * @param siz
+ */
 static void *lazy_malloc(size_t siz)
 {
   if (siz < 4096)
@@ -137,6 +147,11 @@ static void *lazy_malloc(size_t siz)
   return mutt_mem_malloc(siz);
 }
 
+/**
+ * lazy_realloc
+ * @param ptr
+ * @param siz
+ */
 static void lazy_realloc(void *ptr, size_t siz)
 {
   void **p = (void **) ptr;
@@ -147,6 +162,13 @@ static void lazy_realloc(void *ptr, size_t siz)
   mutt_mem_realloc(ptr, siz);
 }
 
+/**
+ * dump_int
+ * @param i
+ * @param d
+ * @param off
+ * @retval ptr
+ */
 static unsigned char *dump_int(unsigned int i, unsigned char *d, int *off)
 {
   lazy_realloc(&d, *off + sizeof(int));
@@ -156,12 +178,27 @@ static unsigned char *dump_int(unsigned int i, unsigned char *d, int *off)
   return d;
 }
 
+/**
+ * restore_int
+ * @param i
+ * @param d
+ * @param off
+ */
 static void restore_int(unsigned int *i, const unsigned char *d, int *off)
 {
   memcpy(i, d + *off, sizeof(int));
   (*off) += sizeof(int);
 }
 
+/**
+ * dump_char_size
+ * @param c
+ * @param d
+ * @param off
+ * @param size
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
                                      ssize_t size, bool convert)
 {
@@ -195,11 +232,26 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
   return d;
 }
 
+/**
+ * dump_char
+ * @param c
+ * @param d
+ * @param off
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_char(char *c, unsigned char *d, int *off, bool convert)
 {
   return dump_char_size(c, d, off, mutt_str_strlen(c) + 1, convert);
 }
 
+/**
+ * restore_char
+ * @param c
+ * @param d
+ * @param off
+ * @param convert
+ */
 static void restore_char(char **c, const unsigned char *d, int *off, bool convert)
 {
   unsigned int size;
@@ -228,6 +280,14 @@ static void restore_char(char **c, const unsigned char *d, int *off, bool conver
   *off += size;
 }
 
+/**
+ * dump_address
+ * @param a
+ * @param d
+ * @param off
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off, bool convert)
 {
   unsigned int counter = 0;
@@ -249,6 +309,13 @@ static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off
   return d;
 }
 
+/**
+ * restore_address
+ * @param a
+ * @param d
+ * @param off
+ * @param convert
+ */
 static void restore_address(struct Address **a, const unsigned char *d, int *off, bool convert)
 {
   unsigned int counter;
@@ -317,6 +384,14 @@ static void restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
   }
 }
 
+/**
+ * dump_buffer
+ * @param b
+ * @param d
+ * @param off
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, bool convert)
 {
   if (!b)
@@ -335,6 +410,13 @@ static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, 
   return d;
 }
 
+/**
+ * restore_buffer
+ * @param b
+ * @param d
+ * @param off
+ * @param convert
+ */
 static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, bool convert)
 {
   unsigned int used;
@@ -356,6 +438,14 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
   (*b)->destroy = used;
 }
 
+/**
+ * dump_parameter
+ * @param p
+ * @param d
+ * @param off
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_parameter(struct ParameterList *p, unsigned char *d,
                                      int *off, bool convert)
 {
@@ -377,6 +467,13 @@ static unsigned char *dump_parameter(struct ParameterList *p, unsigned char *d,
   return d;
 }
 
+/**
+ * restore_parameter
+ * @param p
+ * @param d
+ * @param off
+ * @param convert
+ */
 static void restore_parameter(struct ParameterList *p, const unsigned char *d,
                               int *off, bool convert)
 {
@@ -395,6 +492,14 @@ static void restore_parameter(struct ParameterList *p, const unsigned char *d,
   }
 }
 
+/**
+ * dump_body
+ * @param c
+ * @param d
+ * @param off
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool convert)
 {
   struct Body nb;
@@ -426,6 +531,13 @@ static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, bool
   return d;
 }
 
+/**
+ * restore_body
+ * @param c
+ * @param d
+ * @param off
+ * @param convert
+ */
 static void restore_body(struct Body *c, const unsigned char *d, int *off, bool convert)
 {
   memcpy(c, d + *off, sizeof(struct Body));
@@ -443,6 +555,14 @@ static void restore_body(struct Body *c, const unsigned char *d, int *off, bool 
   restore_char(&c->d_filename, d, off, convert);
 }
 
+/**
+ * dump_envelope
+ * @param e
+ * @param d
+ * @param off
+ * @param convert
+ * @retval ptr
+ */
 static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *off, bool convert)
 {
   d = dump_address(e->return_path, d, off, convert);
@@ -482,6 +602,13 @@ static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *o
   return d;
 }
 
+/**
+ * restore_envelope
+ * @param e
+ * @param d
+ * @param off
+ * @param convert
+ */
 static void restore_envelope(struct Envelope *e, const unsigned char *d, int *off, bool convert)
 {
   int real_subj_off;
@@ -522,6 +649,12 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
 #endif
 }
 
+/**
+ * crc_matches
+ * @param d
+ * @param crc
+ * @retval num
+ */
 static int crc_matches(const char *d, unsigned int crc)
 {
   int off = sizeof(union Validate);
@@ -635,6 +768,11 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
 
 /**
  * hcache_dump - Serialise a Header object
+ * @param h
+ * @param header
+ * @param off
+ * @param uidvalidity
+ * @retval ptr
  *
  * This function transforms a header into a char so that it is useable by
  * db_store.
@@ -723,6 +861,11 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   return h;
 }
 
+/**
+ * get_foldername
+ * @param folder
+ * @retval ptr
+ */
 static char *get_foldername(const char *folder)
 {
   /* if the folder is local, canonify the path to avoid

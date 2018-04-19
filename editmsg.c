@@ -254,6 +254,15 @@ bail:
   return rc;
 }
 
+/**
+ * edit_or_view_message - Edit an email or view it in an external editor
+ * @param edit true: Edit the email; false: view the email
+ * @param ctx  Mailbox Context
+ * @param hdr  Email Header
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
+ */
 int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
 {
   if (hdr)
@@ -271,11 +280,27 @@ int edit_or_view_message(bool edit, struct Context *ctx, struct Header *hdr)
   return 0;
 }
 
+/**
+ * mutt_edit_message - Edit a message
+ * @param ctx Mailbox Context
+ * @param hdr Email Header
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
+ */
 int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 {
   return edit_or_view_message(true, ctx, hdr); /* true means edit */
 }
 
+/**
+ * mutt_view_message - Edit a message
+ * @param ctx Mailbox Context
+ * @param hdr Email Header
+ * @retval 1  Message not modified
+ * @retval 0  Message edited successfully
+ * @retval -1 Error
+ */
 int mutt_view_message(struct Context *ctx, struct Header *hdr)
 {
   return edit_or_view_message(false, ctx, hdr); /* false means only view */

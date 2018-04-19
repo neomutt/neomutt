@@ -60,6 +60,11 @@ struct HcacheLmdbCtx
   enum MdbTxnMode txn_mode;
 };
 
+/**
+ * mdb_get_r_txn
+ * @retval num
+ * @param ctx
+ */
 static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
 {
   int rc;
@@ -81,6 +86,11 @@ static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
   return rc;
 }
 
+/**
+ * mdb_get_w_txn
+ * @retval num
+ * @param ctx
+ */
 static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
 {
   int rc;

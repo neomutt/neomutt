@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page system Execute external programs
+ *
+ * Execute external programs
+ */
+
 #include "config.h"
 #include <signal.h>
 #include <stdlib.h>

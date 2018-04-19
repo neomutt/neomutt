@@ -57,6 +57,10 @@
 /* support for multiple socket connections */
 static struct ConnectionList Connections = TAILQ_HEAD_INITIALIZER(Connections);
 
+/**
+ * mutt_socket_head - Get the first socket
+ * @retval ptr First socket
+ */
 struct ConnectionList *mutt_socket_head(void)
 {
   return &Connections;

@@ -229,6 +229,8 @@ int log_disp_curses(time_t stamp, const char *file, int line,
 
 /**
  * mutt_log_start - Enable file logging
+ * @retval  0 Success, or already running
+ * @retval -1 Failed to start
  *
  * This also handles file rotation.
  */

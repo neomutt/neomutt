@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page mutt_socket NeoMutt connections
+ *
+ * NeoMutt connections
+ */
+
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
@@ -32,6 +38,9 @@
 
 /**
  * mutt_conn_find - Find a connection from a list
+ * @param start   First connection to try
+ * @param account Account to match
+ * @retval ptr Matching Connection
  *
  * find a connection off the list of connections whose account matches account.
  * If start is not null, only search for connections after the given connection

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page addrbook Address book handling aliases
+ *
+ * Address book handling aliases
+ */
+
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -121,6 +127,13 @@ static void alias_entry(char *buf, size_t buflen, struct Menu *menu, int num)
                       MUTT_FORMAT_ARROWCURSOR);
 }
 
+/**
+ * alias_tag - Tag some aliases
+ * @param menu Menu
+ * @param n    Current selection
+ * @param m    Current number of tagged aliases
+ * @retval num How man more aliases are now tagged?
+ */
 static int alias_tag(struct Menu *menu, int n, int m)
 {
   struct Alias *cur = ((struct Alias **) menu->data)[n];
@@ -131,6 +144,14 @@ static int alias_tag(struct Menu *menu, int n, int m)
   return cur->tagged - ot;
 }
 
+/**
+ * alias_sort_alias - Compare two Aliases
+ * @param a First  Alias to compare
+ * @param b Second Alias to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int alias_sort_alias(const void *a, const void *b)
 {
   struct Alias *pa = *(struct Alias **) a;
@@ -140,6 +161,14 @@ static int alias_sort_alias(const void *a, const void *b)
   return (RSORT(r));
 }
 
+/**
+ * address_sort_address - Compare two Addresses
+ * @param a First  Address to compare
+ * @param b Second Address to compare
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
+ */
 static int alias_sort_address(const void *a, const void *b)
 {
   struct Address *pa = (*(struct Alias **) a)->addr;
@@ -166,6 +195,12 @@ static int alias_sort_address(const void *a, const void *b)
   return (RSORT(r));
 }
 
+/**
+ * mutt_alias_menu - Display a menu of Aliases
+ * @param buf    Buffer for expanded aliases
+ * @param buflen Length of buffer
+ * @param aliases Alias List
+ */
 void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
 {
   struct Alias *aliasp = NULL;

@@ -20,6 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page hook Parse and execute user-defined hooks
+ *
+ * Parse and execute user-defined hooks
+ */
+
 #include "config.h"
 #include <limits.h>
 #include <regex.h>
@@ -58,6 +64,15 @@ static TAILQ_HEAD(HookHead, Hook) Hooks = TAILQ_HEAD_INITIALIZER(Hooks);
 
 static int current_hook_type = 0;
 
+/**
+ * mutt_parse_hook - Parse a hook command
+ * @param buf  Temporary Buffer
+ * @param s    Buffer containing command
+ * @param data Data from Command definition
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
@@ -299,6 +314,15 @@ void mutt_delete_hooks(int type)
   }
 }
 
+/**
+ * mutt_parse_unhook - Parse an unhook command
+ * @param buf  Temporary Buffer
+ * @param s    Buffer containing command
+ * @param data Data from Command definition
+ * @param err  Buffer for error messages
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
                       struct Buffer *err)
 {
@@ -342,6 +366,10 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
   return 0;
 }
 
+/**
+ * mutt_folder_hook - Perform a folder hook
+ * @param path Path to match
+ */
 void mutt_folder_hook(const char *path)
 {
   struct Hook *tmp = NULL;
@@ -403,6 +431,12 @@ char *mutt_find_hook(int type, const char *pat)
   return NULL;
 }
 
+/**
+ * mutt_message_hook - Perform a message hook
+ * @param ctx Mailbox Context
+ * @param hdr Email Header
+ * @param type Hook type, e.g. #MUTT_MESSAGEHOOK
+ */
 void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 {
   struct Buffer err, token;
@@ -447,6 +481,16 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
   current_hook_type = 0;
 }
 
+/**
+ * addr_hook - Perform an address hook (get a path)
+ * @param path    Buffer for path
+ * @param pathlen Length of buffer
+ * @param type    Type e.g. XXX
+ * @param ctx     Mailbox Context
+ * @param hdr     Email Header
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
 static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
                      struct Header *hdr)
 {
@@ -474,6 +518,12 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
   return -1;
 }
 
+/**
+ * mutt_default_save - Find the default save path for an email
+ * @param path    Buffer for the path
+ * @param pathlen Length of buffer
+ * @param hdr     Email Header
+ */
 void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 {
   *path = '\0';
@@ -502,6 +552,12 @@ void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
   }
 }
 
+/**
+ * mutt_select_fcc - Select the FCC path for an email
+ * @param path    Buffer for the path
+ * @param pathlen Length of the buffer
+ * @param hdr     Email Header
+ */
 void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 {
   if (addr_hook(path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
@@ -555,6 +611,10 @@ void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 }
 
 #ifdef USE_SOCKET
+/**
+ * mutt_account_hook - Perform an account hook
+ * @param url Account URL to match
+ */
 void mutt_account_hook(const char *url)
 {
   /* parsing commands with URLs in an account hook can cause a recursive

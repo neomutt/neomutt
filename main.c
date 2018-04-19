@@ -22,6 +22,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * @page main Command line processing
+ *
+ * Command line processing
+ */
+
 #define MAIN_C 1
 
 #include "config.h"
@@ -81,6 +87,9 @@ void mutt_exit(int code)
 }
 
 // clang-format off
+/**
+ * usage - Display NeoMutt command line
+ */
 static void usage(void)
 {
   puts(mutt_make_version());
