@@ -128,39 +128,40 @@ vim: ts=2 sw=2 sts=2 expandtab:
           </thead>
           <tbody>
             <row>
+              <entry><literal>printf(3)</literal></entry>
               <entry>
-                <literal>printf(3)</literal>
+                UNIX manual pages, execute <literal>man 3 printf</literal>
               </entry>
-              <entry>UNIX manual pages, execute
-              <literal>man 3 printf</literal></entry>
             </row>
             <row>
+              <entry><literal>&lt;PageUp&gt;</literal></entry>
               <entry>
-                <literal>&lt;PageUp&gt;</literal>
+                named keys
               </entry>
-              <entry>named keys</entry>
             </row>
             <row>
+              <entry><literal>&lt;create-alias&gt;</literal></entry>
               <entry>
-                <literal>&lt;create-alias&gt;</literal>
+                named NeoMutt function
               </entry>
-              <entry>named NeoMutt function</entry>
             </row>
             <row>
+              <entry><literal>^G</literal></entry>
               <entry>
-                <literal>^G</literal>
+                Control+G key combination
               </entry>
-              <entry>Control+G key combination</entry>
             </row>
             <row>
               <entry>$mail_check</entry>
-              <entry>NeoMutt configuration option</entry>
+              <entry>
+                NeoMutt configuration option
+              </entry>
             </row>
             <row>
+              <entry><literal>$HOME</literal></entry>
               <entry>
-                <literal>$HOME</literal>
+                environment variable
               </entry>
-              <entry>environment variable</entry>
             </row>
           </tbody>
         </tgroup>
@@ -737,70 +738,90 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                   <row>
                     <entry>%B</entry>
                     <entry></entry>
-                    <entry>Name of the mailbox</entry>
+                    <entry>
+                      Name of the mailbox
+                    </entry>
                   </row>
                   <row>
                     <entry>%S</entry>
                     <entry>* †</entry>
-                    <entry>Size of mailbox (total number of messages)</entry>
+                    <entry>
+                      Size of mailbox (total number of messages)
+                    </entry>
                   </row>
                   <row>
                     <entry>%F</entry>
                     <entry>* †</entry>
-                    <entry>Number of Flagged messages in the mailbox</entry>
+                    <entry>
+                      Number of Flagged messages in the mailbox
+                    </entry>
                   </row>
                   <row>
                     <entry>%N</entry>
                     <entry>* †</entry>
-                    <entry>Number of New messages in the mailbox</entry>
+                    <entry>
+                      Number of New messages in the mailbox
+                    </entry>
                   </row>
                   <row>
                     <entry>%n</entry>
                     <entry>*</entry>
-                    <entry>If there's new mail, display
-                    <quote>N</quote>, otherwise nothing</entry>
+                    <entry>
+                      If there's new mail, display <quote>N</quote>, otherwise
+                      nothing
+                    </entry>
                   </row>
                   <row>
                     <entry>%!</entry>
                     <entry></entry>
                     <entry>
-                    <quote>!</quote>: one flagged message;
-                    <quote>!!</quote>: two flagged messages;
-                    <quote>n!</quote>: n flagged messages (for n &gt; 2).
-                    Otherwise prints nothing.</entry>
+                      <quote>!</quote>: one flagged message; <quote>!!</quote>:
+                      two flagged messages; <quote>n!</quote>: n flagged
+                      messages (for n &gt; 2). Otherwise prints nothing.
+                    </entry>
                   </row>
                   <row>
                     <entry>%d</entry>
                     <entry>* ‡</entry>
-                    <entry>Number of deleted messages</entry>
+                    <entry>
+                      Number of deleted messages
+                    </entry>
                   </row>
                   <row>
                     <entry>%L</entry>
                     <entry>* ‡</entry>
-                    <entry>Number of messages after limiting</entry>
+                    <entry>
+                      Number of messages after limiting
+                    </entry>
                   </row>
                   <row>
                     <entry>%t</entry>
                     <entry>* ‡</entry>
-                    <entry>Number of tagged messages</entry>
+                    <entry>
+                      Number of tagged messages
+                    </entry>
                   </row>
                   <row>
                     <entry>%&gt;X</entry>
                     <entry></entry>
-                    <entry>Right justify the rest of the string and pad with
-                    <quote>X</quote></entry>
+                    <entry>
+                      Right justify the rest of the string and pad with
+                      <quote>X</quote>
+                    </entry>
                   </row>
                   <row>
                     <entry>%|X</entry>
                     <entry></entry>
-                    <entry>Pad to the end of the line with
-                    <quote>X</quote></entry>
+                    <entry>
+                      Pad to the end of the line with <quote>X</quote>
+                    </entry>
                   </row>
                   <row>
                     <entry>%*X</entry>
                     <entry></entry>
-                    <entry>Soft-fill with character
-                    <quote>X</quote> as pad</entry>
+                    <entry>
+                      Soft-fill with character <quote>X</quote> as pad
+                    </entry>
                   </row>
                 </tbody>
               </tgroup>
@@ -831,36 +852,20 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                 </thead>
                 <tbody>
                   <row>
-                    <entry>
-                      <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
-                    </entry>
-                    <entry>
-                      <screen>mailbox [F]            N/S</screen>
-                    </entry>
+                    <entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
+                    <entry><screen>mailbox [F]            N/S</screen></entry>
                   </row>
                   <row>
-                    <entry>
-                      <literal>%B%* %F:%N:%S</literal>
-                    </entry>
-                    <entry>
-                      <screen>mailbox              F:N:S</screen>
-                    </entry>
+                    <entry><literal>%B%* %F:%N:%S</literal></entry>
+                    <entry><screen>mailbox              F:N:S</screen></entry>
                   </row>
                   <row>
-                    <entry>
-                      <literal>%B %?N?(%N)?%* %S</literal>
-                    </entry>
-                    <entry>
-                      <screen>mailbox (N)              S</screen>
-                    </entry>
+                    <entry><literal>%B %?N?(%N)?%* %S</literal></entry>
+                    <entry><screen>mailbox (N)              S</screen></entry>
                   </row>
                   <row>
-                    <entry>
-                      <literal>%B%* ?F?%F/?%N</literal>
-                    </entry>
-                    <entry>
-                      <screen>mailbox                F/S</screen>
-                    </entry>
+                    <entry><literal>%B%* ?F?%F/?%N</literal></entry>
+                    <entry><screen>mailbox                F/S</screen></entry>
                   </row>
                 </tbody>
               </tgroup>
@@ -1059,45 +1064,32 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               <tbody>
                 <row>
                   <entry>Highest</entry>
-                  <entry>
-                    <literal>sidebar_indicator</literal>
-                  </entry>
+                  <entry><literal>sidebar_indicator</literal></entry>
                   <entry>Mailbox is open</entry>
                 </row>
                 <row>
                   <entry></entry>
-                  <entry>
-                    <literal>sidebar_highlight</literal>
-                  </entry>
+                  <entry><literal>sidebar_highlight</literal></entry>
                   <entry>Mailbox is highlighted</entry>
                 </row>
                 <row>
                   <entry></entry>
-                  <entry>
-                    <literal>sidebar_spoolfile</literal>
-                  </entry>
-                  <entry>Mailbox is the spoolfile (receives incoming
-                  mail)</entry>
+                  <entry><literal>sidebar_spoolfile</literal></entry>
+                  <entry>Mailbox is the spoolfile (receives incoming mail)</entry>
                 </row>
                 <row>
                   <entry></entry>
-                  <entry>
-                    <literal>sidebar_new</literal>
-                  </entry>
+                  <entry><literal>sidebar_new</literal></entry>
                   <entry>Mailbox contains new mail</entry>
                 </row>
                 <row>
                   <entry></entry>
-                  <entry>
-                    <literal>sidebar_flagged</literal>
-                  </entry>
+                  <entry><literal>sidebar_flagged</literal></entry>
                   <entry>Mailbox contains flagged mail</entry>
                 </row>
                 <row>
                   <entry>Lowest</entry>
-                  <entry>
-                    <literal>sidebar_ordinary</literal>
-                  </entry>
+                  <entry><literal>sidebar_ordinary</literal></entry>
                   <entry>Mailbox does not match above</entry>
                 </row>
               </tbody>
@@ -1127,68 +1119,36 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               </thead>
               <tbody>
                 <row>
-                  <entry>
-                    <literal>$sidebar_delim</literal>
-                  </entry>
-                  <entry>
-                    <literal>$sidebar_divider_char</literal>
-                  </entry>
+                  <entry><literal>$sidebar_delim</literal></entry>
+                  <entry><literal>$sidebar_divider_char</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>$sidebar_folderindent</literal>
-                  </entry>
-                  <entry>
-                    <literal>$sidebar_folder_indent</literal>
-                  </entry>
+                  <entry><literal>$sidebar_folderindent</literal></entry>
+                  <entry><literal>$sidebar_folder_indent</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>$sidebar_indentstr</literal>
-                  </entry>
-                  <entry>
-                    <literal>$sidebar_indent_string</literal>
-                  </entry>
+                  <entry><literal>$sidebar_indentstr</literal></entry>
+                  <entry><literal>$sidebar_indent_string</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>$sidebar_newmail_only</literal>
-                  </entry>
-                  <entry>
-                    <literal>$sidebar_new_mail_only</literal>
-                  </entry>
+                  <entry><literal>$sidebar_newmail_only</literal></entry>
+                  <entry><literal>$sidebar_new_mail_only</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>$sidebar_shortpath</literal>
-                  </entry>
-                  <entry>
-                    <literal>$sidebar_short_path</literal>
-                  </entry>
+                  <entry><literal>$sidebar_shortpath</literal></entry>
+                  <entry><literal>$sidebar_short_path</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>$sidebar_sort</literal>
-                  </entry>
-                  <entry>
-                    <literal>$sidebar_sort_method</literal>
-                  </entry>
+                  <entry><literal>$sidebar_sort</literal></entry>
+                  <entry><literal>$sidebar_sort_method</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>&lt;sidebar-scroll-down&gt;</literal>
-                  </entry>
-                  <entry>
-                    <literal>&lt;sidebar-page-down&gt;</literal>
-                  </entry>
+                  <entry><literal>&lt;sidebar-scroll-down&gt;</literal></entry>
+                  <entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>&lt;sidebar-scroll-up&gt;</literal>
-                  </entry>
-                  <entry>
-                    <literal>&lt;sidebar-page-up&gt;</literal>
-                  </entry>
+                  <entry><literal>&lt;sidebar-scroll-up&gt;</literal></entry>
+                  <entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
                 </row>
               </tbody>
             </tgroup>
@@ -1269,58 +1229,42 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           <tbody>
             <row>
               <entry>j or &lt;Down&gt;</entry>
-              <entry>
-                <literal>&lt;next-entry&gt;</literal>
-              </entry>
+              <entry><literal>&lt;next-entry&gt;</literal></entry>
               <entry>move to the next entry</entry>
             </row>
             <row>
               <entry>k or &lt;Up&gt;</entry>
-              <entry>
-                <literal>&lt;previous-entry&gt;</literal>
-              </entry>
+              <entry><literal>&lt;previous-entry&gt;</literal></entry>
               <entry>move to the previous entry</entry>
             </row>
             <row>
               <entry>z or &lt;PageDn&gt;</entry>
-              <entry>
-                <literal>&lt;page-down&gt;</literal>
-              </entry>
+              <entry><literal>&lt;page-down&gt;</literal></entry>
               <entry>go to the next page</entry>
             </row>
             <row>
               <entry>Z or &lt;PageUp&gt;</entry>
-              <entry>
-                <literal>&lt;page-up&gt;</literal>
-              </entry>
+              <entry><literal>&lt;page-up&gt;</literal></entry>
               <entry>go to the previous page</entry>
             </row>
             <row>
               <entry>= or &lt;Home&gt;</entry>
-              <entry>
-                <literal>&lt;first-entry&gt;</literal>
-              </entry>
+              <entry><literal>&lt;first-entry&gt;</literal></entry>
               <entry>jump to the first entry</entry>
             </row>
             <row>
               <entry>* or &lt;End&gt;</entry>
-              <entry>
-                <literal>&lt;last-entry&gt;</literal>
-              </entry>
+              <entry><literal>&lt;last-entry&gt;</literal></entry>
               <entry>jump to the last entry</entry>
             </row>
             <row>
               <entry>q</entry>
-              <entry>
-                <literal>&lt;quit&gt;</literal>
-              </entry>
+              <entry><literal>&lt;quit&gt;</literal></entry>
               <entry>exit the current menu</entry>
             </row>
             <row>
               <entry>?</entry>
-              <entry>
-                <literal>&lt;help&gt;</literal>
-              </entry>
+              <entry><literal>&lt;help&gt;</literal></entry>
               <entry>list all keybindings for the current menu</entry>
             </row>
           </tbody>
@@ -1340,44 +1284,32 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           <tbody>
             <row>
               <entry>J or &lt;Return&gt;</entry>
-              <entry>
-                <literal>&lt;next-line&gt;</literal>
-              </entry>
+              <entry><literal>&lt;next-line&gt;</literal></entry>
               <entry>scroll down one line</entry>
             </row>
             <row>
               <entry>&lt;Backspace&gt;</entry>
-              <entry>
-                <literal>&lt;previous-line&gt;</literal>
-              </entry>
+              <entry><literal>&lt;previous-line&gt;</literal></entry>
               <entry>scroll up one line</entry>
             </row>
             <row>
               <entry>K, &lt;Space&gt; or &lt;PageDn&gt;</entry>
-              <entry>
-                <literal>&lt;next-page&gt;</literal>
-              </entry>
+              <entry><literal>&lt;next-page&gt;</literal></entry>
               <entry>move to the next page</entry>
             </row>
             <row>
               <entry>- or &lt;PageUp&gt;</entry>
-              <entry>
-                <literal>&lt;previous-page&gt;</literal>
-              </entry>
+              <entry><literal>&lt;previous-page&gt;</literal></entry>
               <entry>move the previous page</entry>
             </row>
             <row>
               <entry>&lt;Home&gt;</entry>
-              <entry>
-                <literal>&lt;top&gt;</literal>
-              </entry>
+              <entry><literal>&lt;top&gt;</literal></entry>
               <entry>move to the top</entry>
             </row>
             <row>
               <entry>&lt;End&gt;</entry>
-              <entry>
-                <literal>&lt;bottom&gt;</literal>
-              </entry>
+              <entry><literal>&lt;bottom&gt;</literal></entry>
               <entry>move to the bottom</entry>
             </row>
           </tbody>
@@ -1411,149 +1343,107 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>^A or &lt;Home&gt;</entry>
-                <entry>
-                  <literal>&lt;bol&gt;</literal>
-                </entry>
+                <entry><literal>&lt;bol&gt;</literal></entry>
                 <entry>move to the start of the line</entry>
               </row>
               <row>
                 <entry>^B or &lt;Left&gt;</entry>
-                <entry>
-                  <literal>&lt;backward-char&gt;</literal>
-                </entry>
+                <entry><literal>&lt;backward-char&gt;</literal></entry>
                 <entry>move back one char</entry>
               </row>
               <row>
                 <entry>Esc B</entry>
-                <entry>
-                  <literal>&lt;backward-word&gt;</literal>
-                </entry>
+                <entry><literal>&lt;backward-word&gt;</literal></entry>
                 <entry>move back one word</entry>
               </row>
               <row>
                 <entry>^D or &lt;Delete&gt;</entry>
-                <entry>
-                  <literal>&lt;delete-char&gt;</literal>
-                </entry>
+                <entry><literal>&lt;delete-char&gt;</literal></entry>
                 <entry>delete the char under the cursor</entry>
               </row>
               <row>
                 <entry>^E or &lt;End&gt;</entry>
-                <entry>
-                  <literal>&lt;eol&gt;</literal>
-                </entry>
+                <entry><literal>&lt;eol&gt;</literal></entry>
                 <entry>move to the end of the line</entry>
               </row>
               <row>
                 <entry>^F or &lt;Right&gt;</entry>
-                <entry>
-                  <literal>&lt;forward-char&gt;</literal>
-                </entry>
+                <entry><literal>&lt;forward-char&gt;</literal></entry>
                 <entry>move forward one char</entry>
               </row>
               <row>
                 <entry>Esc F</entry>
-                <entry>
-                  <literal>&lt;forward-word&gt;</literal>
-                </entry>
+                <entry><literal>&lt;forward-word&gt;</literal></entry>
                 <entry>move forward one word</entry>
               </row>
               <row>
                 <entry>&lt;Tab&gt;</entry>
-                <entry>
-                  <literal>&lt;complete&gt;</literal>
-                </entry>
+                <entry><literal>&lt;complete&gt;</literal></entry>
                 <entry>complete filename, alias, or label</entry>
               </row>
               <row>
                 <entry>^T</entry>
-                <entry>
-                  <literal>&lt;complete-query&gt;</literal>
-                </entry>
+                <entry><literal>&lt;complete-query&gt;</literal></entry>
                 <entry>complete address with query</entry>
               </row>
               <row>
                 <entry>^K</entry>
-                <entry>
-                  <literal>&lt;kill-eol&gt;</literal>
-                </entry>
+                <entry><literal>&lt;kill-eol&gt;</literal></entry>
                 <entry>delete to the end of the line</entry>
               </row>
               <row>
                 <entry>Esc d</entry>
-                <entry>
-                  <literal>&lt;kill-eow&gt;</literal>
-                </entry>
+                <entry><literal>&lt;kill-eow&gt;</literal></entry>
                 <entry>delete to the end of the word</entry>
               </row>
               <row>
                 <entry>^W</entry>
-                <entry>
-                  <literal>&lt;kill-word&gt;</literal>
-                </entry>
+                <entry><literal>&lt;kill-word&gt;</literal></entry>
                 <entry>kill the word in front of the cursor</entry>
               </row>
               <row>
                 <entry>^U</entry>
-                <entry>
-                  <literal>&lt;kill-line&gt;</literal>
-                </entry>
+                <entry><literal>&lt;kill-line&gt;</literal></entry>
                 <entry>delete entire line</entry>
               </row>
               <row>
                 <entry>^V</entry>
-                <entry>
-                  <literal>&lt;quote-char&gt;</literal>
-                </entry>
+                <entry><literal>&lt;quote-char&gt;</literal></entry>
                 <entry>quote the next typed key</entry>
               </row>
               <row>
                 <entry>&lt;Up&gt;</entry>
-                <entry>
-                  <literal>&lt;history-up&gt;</literal>
-                </entry>
+                <entry><literal>&lt;history-up&gt;</literal></entry>
                 <entry>recall previous string from history</entry>
               </row>
               <row>
                 <entry>&lt;Down&gt;</entry>
-                <entry>
-                  <literal>&lt;history-down&gt;</literal>
-                </entry>
+                <entry><literal>&lt;history-down&gt;</literal></entry>
                 <entry>recall next string from history</entry>
               </row>
               <row>
                 <entry>^R</entry>
-                <entry>
-                  <literal>&lt;history-search&gt;</literal>
-                </entry>
+                <entry><literal>&lt;history-search&gt;</literal></entry>
                 <entry>use current input to search history</entry>
               </row>
               <row>
                 <entry>&lt;BackSpace&gt;</entry>
-                <entry>
-                  <literal>&lt;backspace&gt;</literal>
-                </entry>
+                <entry><literal>&lt;backspace&gt;</literal></entry>
                 <entry>kill the char in front of the cursor</entry>
               </row>
               <row>
                 <entry>Esc u</entry>
-                <entry>
-                  <literal>&lt;upcase-word&gt;</literal>
-                </entry>
+                <entry><literal>&lt;upcase-word&gt;</literal></entry>
                 <entry>convert word to upper case</entry>
               </row>
               <row>
                 <entry>Esc l</entry>
-                <entry>
-                  <literal>&lt;downcase-word&gt;</literal>
-                </entry>
+                <entry><literal>&lt;downcase-word&gt;</literal></entry>
                 <entry>convert word to lower case</entry>
               </row>
               <row>
                 <entry>Esc c</entry>
-                <entry>
-                  <literal>&lt;capitalize-word&gt;</literal>
-                </entry>
+                <entry><literal>&lt;capitalize-word&gt;</literal></entry>
                 <entry>capitalize the word</entry>
               </row>
               <row>
@@ -2028,37 +1918,47 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>0</entry>
-                <entry>All attributes off</entry>
+                <entry>
+                  All attributes off
+                </entry>
               </row>
               <row>
                 <entry>1</entry>
-                <entry>Bold on</entry>
+                <entry>
+                  Bold on
+                </entry>
               </row>
               <row>
                 <entry>4</entry>
-                <entry>Underline on</entry>
+                <entry>
+                  Underline on
+                </entry>
               </row>
               <row>
                 <entry>5</entry>
-                <entry>Blink on</entry>
+                <entry>
+                  Blink on
+                </entry>
               </row>
               <row>
                 <entry>7</entry>
-                <entry>Reverse video on</entry>
+                <entry>
+                  Reverse video on
+                </entry>
               </row>
               <row>
-                <entry>3
-                <emphasis>&lt;color&gt;</emphasis></entry>
-                <entry>Foreground color is
-                <emphasis>&lt;color&gt;</emphasis>(see
-                <xref linkend="tab-color" />)</entry>
+                <entry>3 <emphasis>&lt;color&gt;</emphasis></entry>
+                <entry>
+                  Foreground color is <emphasis>&lt;color&gt;</emphasis> (see
+                  <xref linkend="tab-color" />)
+                </entry>
               </row>
               <row>
-                <entry>4
-                <emphasis>&lt;color&gt;</emphasis></entry>
-                <entry>Background color is
-                <emphasis>&lt;color&gt;</emphasis>(see
-                <xref linkend="tab-color" />)</entry>
+                <entry>4 <emphasis>&lt;color&gt;</emphasis></entry>
+                <entry>
+                  Background color is <emphasis>&lt;color&gt;</emphasis> (see
+                  <xref linkend="tab-color" />)
+                </entry>
               </row>
             </tbody>
           </tgroup>
@@ -2163,100 +2063,72 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>^D</entry>
-                <entry>
-                  <literal>&lt;delete-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;delete-thread&gt;</literal></entry>
                 <entry>delete all messages in the current thread</entry>
               </row>
               <row>
                 <entry>^U</entry>
-                <entry>
-                  <literal>&lt;undelete-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;undelete-thread&gt;</literal></entry>
                 <entry>undelete all messages in the current thread</entry>
               </row>
               <row>
                 <entry>^N</entry>
-                <entry>
-                  <literal>&lt;next-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;next-thread&gt;</literal></entry>
                 <entry>jump to the start of the next thread</entry>
               </row>
               <row>
                 <entry>^P</entry>
-                <entry>
-                  <literal>&lt;previous-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;previous-thread&gt;</literal></entry>
                 <entry>jump to the start of the previous thread</entry>
               </row>
               <row>
                 <entry>^R</entry>
-                <entry>
-                  <literal>&lt;read-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;read-thread&gt;</literal></entry>
                 <entry>mark the current thread as read</entry>
               </row>
               <row>
                 <entry>Esc d</entry>
-                <entry>
-                  <literal>&lt;delete-subthread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;delete-subthread&gt;</literal></entry>
                 <entry>delete all messages in the current subthread</entry>
               </row>
               <row>
                 <entry>Esc u</entry>
-                <entry>
-                  <literal>&lt;undelete-subthread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;undelete-subthread&gt;</literal></entry>
                 <entry>undelete all messages in the current subthread</entry>
               </row>
               <row>
                 <entry>Esc n</entry>
-                <entry>
-                  <literal>&lt;next-subthread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;next-subthread&gt;</literal></entry>
                 <entry>jump to the start of the next subthread</entry>
               </row>
               <row>
                 <entry>Esc p</entry>
-                <entry>
-                  <literal>&lt;previous-subthread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;previous-subthread&gt;</literal></entry>
                 <entry>jump to the start of the previous subthread</entry>
               </row>
               <row>
                 <entry>Esc r</entry>
-                <entry>
-                  <literal>&lt;read-subthread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;read-subthread&gt;</literal></entry>
                 <entry>mark the current subthread as read</entry>
               </row>
               <row>
                 <entry>Esc t</entry>
-                <entry>
-                  <literal>&lt;tag-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;tag-thread&gt;</literal></entry>
                 <entry>toggle the tag on the current thread</entry>
               </row>
               <row>
                 <entry>Esc v</entry>
-                <entry>
-                  <literal>&lt;collapse-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;collapse-thread&gt;</literal></entry>
                 <entry>toggle collapse for the current thread</entry>
               </row>
               <row>
                 <entry>Esc V</entry>
-                <entry>
-                  <literal>&lt;collapse-all&gt;</literal>
-                </entry>
+                <entry><literal>&lt;collapse-all&gt;</literal></entry>
                 <entry>toggle collapse for all threads</entry>
               </row>
               <row>
                 <entry>P</entry>
-                <entry>
-                  <literal>&lt;parent-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;parent-message&gt;</literal></entry>
                 <entry>jump to parent message in thread</entry>
               </row>
             </tbody>
@@ -2291,8 +2163,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
         <variablelist>
           <varlistentry>
             <term>
-            <literal>&lt;create-alias&gt;</literal>
-            <anchor id="create-alias" />(default: a)</term>
+              <literal>&lt;create-alias&gt;</literal> (default: a)
+              <anchor id="create-alias" />
+            </term>
             <listitem>
               <para>
                 Creates a new alias based upon the current message (or prompts
@@ -2315,8 +2188,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;check-traditional-pgp&gt;</literal>
-            <anchor id="check-traditional-pgp" />(default: Esc P)</term>
+              <literal>&lt;check-traditional-pgp&gt;</literal> (default: Esc P)
+              <anchor id="check-traditional-pgp" />
+            </term>
             <listitem>
               <para>
                 This function will search the current message for content
@@ -2331,8 +2205,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;edit-raw-message&gt;</literal>
-            <anchor id="edit-raw-message" /></term>
+              <literal>&lt;edit-raw-message&gt;</literal>
+              <anchor id="edit-raw-message" />
+            </term>
             <listitem>
               <para>
                 This command (available in the index and pager) allows you to
@@ -2355,8 +2230,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;edit&gt;</literal>
-            <anchor id="edit" /></term>
+              <literal>&lt;edit&gt;</literal>
+              <anchor id="edit" />
+            </term>
             <listitem>
               <para>
                 Alias of
@@ -2367,8 +2243,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;edit-or-view-raw-message&gt;</literal>
-            <anchor id="edit-or-view-raw-message" />(default: e)</term>
+              <literal>&lt;edit-or-view-raw-message&gt;</literal> (default: e)
+              <anchor id="edit-or-view-raw-message" />
+            </term>
             <listitem>
               <para>
                 This command (available in the index and pager) is the same as
@@ -2380,9 +2257,11 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;edit-type&gt;</literal>
-            <anchor id="edit-type" />(default: ^E on the attachment menu, and
-            in the pager and index menus; ^T on the compose menu)</term>
+              <literal>&lt;edit-type&gt;</literal> (default: ^E on the
+              attachment menu, and in the pager and index menus; ^T on the
+              compose menu)
+              <anchor id="edit-type" />
+            </term>
             <listitem>
               <para>
                 This command is used to temporarily edit an attachment's
@@ -2404,9 +2283,10 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;enter-command&gt;</literal>
-            <anchor id="enter-command" />(default:
-            <quote>:</quote>)</term>
+              <literal>&lt;enter-command&gt;</literal> (default:
+              <quote>:</quote>)
+              <anchor id="enter-command" />
+            </term>
             <listitem>
               <para>
                 This command is used to execute any command you would normally
@@ -2419,8 +2299,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;extract-keys&gt;</literal>
-            <anchor id="extract-keys" />(default: ^K)</term>
+              <literal>&lt;extract-keys&gt;</literal> (default: ^K)
+              <anchor id="extract-keys" />
+            </term>
             <listitem>
               <para>
                 This command extracts PGP public keys from the current or
@@ -2430,8 +2311,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;forget-passphrase&gt;</literal>
-            <anchor id="forget-passphrase" />(default: ^F)</term>
+              <literal>&lt;forget-passphrase&gt;</literal> (default: ^F)
+              <anchor id="forget-passphrase" />
+            </term>
             <listitem>
               <para>
                 This command wipes the passphrase(s) from memory. It is useful,
@@ -2441,8 +2323,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;list-reply&gt;</literal>
-            <anchor id="list-reply" />(default: L)</term>
+              <literal>&lt;list-reply&gt;</literal> (default: L)
+              <anchor id="list-reply" />
+            </term>
             <listitem>
               <para>
                 Reply to the current or tagged message(s) by extracting any
@@ -2463,8 +2346,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;pipe-message&gt;</literal>
-            <anchor id="pipe-message" />(default: |)</term>
+              <literal>&lt;pipe-message&gt;</literal> (default: |)
+              <anchor id="pipe-message" />
+            </term>
             <listitem>
               <para>
                 Asks for an external Unix command and pipes the current or
@@ -2479,8 +2363,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;resend-message&gt;</literal>
-            <anchor id="resend-message" />(default: Esc e)</term>
+              <literal>&lt;resend-message&gt;</literal> (default: Esc e)
+              <anchor id="resend-message" />
+            </term>
             <listitem>
               <para>
                 NeoMutt takes the current message as a template for a new
@@ -2500,8 +2385,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;shell-escape&gt;</literal>
-            <anchor id="shell-escape" />(default: !)</term>
+              <literal>&lt;shell-escape&gt;</literal> (default: !)
+              <anchor id="shell-escape" />
+            </term>
             <listitem>
               <para>
                 Asks for an external Unix command and executes it. The
@@ -2516,8 +2402,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;toggle-quoted&gt;</literal>
-            <anchor id="toggle-quoted" />(default: T)</term>
+              <literal>&lt;toggle-quoted&gt;</literal> (default: T)
+              <anchor id="toggle-quoted" />
+            </term>
             <listitem>
               <para>
                 The pager uses the
@@ -2532,8 +2419,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;view-raw-message&gt;</literal>
-            <anchor id="view-raw-message" /></term>
+              <literal>&lt;view-raw-message&gt;</literal>
+              <anchor id="view-raw-message" />
+            </term>
             <listitem>
               <para>
                 This command (available in the index and pager) opens the raw
@@ -2551,8 +2439,9 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
           </varlistentry>
           <varlistentry>
             <term>
-            <literal>&lt;skip-quoted&gt;</literal>
-            <anchor id="skip-quoted" />(default: S)</term>
+              <literal>&lt;skip-quoted&gt;</literal> (default: S)
+              <anchor id="skip-quoted" />
+            </term>
             <listitem>
               <para>
                 This function will go to the next line of non-quoted text which
@@ -2589,51 +2478,37 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>m</entry>
-                <entry>
-                  <literal>&lt;compose&gt;</literal>
-                </entry>
+                <entry><literal>&lt;compose&gt;</literal></entry>
                 <entry>compose a new message</entry>
               </row>
               <row>
                 <entry>r</entry>
-                <entry>
-                  <literal>&lt;reply&gt;</literal>
-                </entry>
+                <entry><literal>&lt;reply&gt;</literal></entry>
                 <entry>reply to sender</entry>
               </row>
               <row>
                 <entry>g</entry>
-                <entry>
-                  <literal>&lt;group-reply&gt;</literal>
-                </entry>
+                <entry><literal>&lt;group-reply&gt;</literal></entry>
                 <entry>reply to all recipients</entry>
               </row>
               <row>
                 <entry>L</entry>
-                <entry>
-                  <literal>&lt;list-reply&gt;</literal>
-                </entry>
+                <entry><literal>&lt;list-reply&gt;</literal></entry>
                 <entry>reply to mailing list address</entry>
               </row>
               <row>
                 <entry>f</entry>
-                <entry>
-                  <literal>&lt;forward&gt;</literal>
-                </entry>
+                <entry><literal>&lt;forward&gt;</literal></entry>
                 <entry>forward message</entry>
               </row>
               <row>
                 <entry>b</entry>
-                <entry>
-                  <literal>&lt;bounce&gt;</literal>
-                </entry>
+                <entry><literal>&lt;bounce&gt;</literal></entry>
                 <entry>bounce (remail) message</entry>
               </row>
               <row>
                 <entry>Esc k</entry>
-                <entry>
-                  <literal>&lt;mail-key&gt;</literal>
-                </entry>
+                <entry><literal>&lt;mail-key&gt;</literal></entry>
                 <entry>mail a PGP public key to someone</entry>
               </row>
             </tbody>
@@ -2735,143 +2610,103 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>a</entry>
-                <entry>
-                  <literal>&lt;attach-file&gt;</literal>
-                </entry>
+                <entry><literal>&lt;attach-file&gt;</literal></entry>
                 <entry>attach a file</entry>
               </row>
               <row>
                 <entry>A</entry>
-                <entry>
-                  <literal>&lt;attach-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;attach-message&gt;</literal></entry>
                 <entry>attach message(s) to the message</entry>
               </row>
               <row>
                 <entry>Esc k</entry>
-                <entry>
-                  <literal>&lt;attach-key&gt;</literal>
-                </entry>
+                <entry><literal>&lt;attach-key&gt;</literal></entry>
                 <entry>attach a PGP public key</entry>
               </row>
               <row>
                 <entry>d</entry>
-                <entry>
-                  <literal>&lt;edit-description&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-description&gt;</literal></entry>
                 <entry>edit description on attachment</entry>
               </row>
               <row>
                 <entry>D</entry>
-                <entry>
-                  <literal>&lt;detach-file&gt;</literal>
-                </entry>
+                <entry><literal>&lt;detach-file&gt;</literal></entry>
                 <entry>detach a file</entry>
               </row>
               <row>
                 <entry>t</entry>
-                <entry>
-                  <literal>&lt;edit-to&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-to&gt;</literal></entry>
                 <entry>edit the To field</entry>
               </row>
               <row>
                 <entry>Esc f</entry>
-                <entry>
-                  <literal>&lt;edit-from&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-from&gt;</literal></entry>
                 <entry>edit the From field</entry>
               </row>
               <row>
                 <entry>r</entry>
-                <entry>
-                  <literal>&lt;edit-reply-to&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-reply-to&gt;</literal></entry>
                 <entry>edit the Reply-To field</entry>
               </row>
               <row>
                 <entry>c</entry>
-                <entry>
-                  <literal>&lt;edit-cc&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-cc&gt;</literal></entry>
                 <entry>edit the Cc field</entry>
               </row>
               <row>
                 <entry>b</entry>
-                <entry>
-                  <literal>&lt;edit-bcc&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-bcc&gt;</literal></entry>
                 <entry>edit the Bcc field</entry>
               </row>
               <row>
                 <entry>y</entry>
-                <entry>
-                  <literal>&lt;send-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;send-message&gt;</literal></entry>
                 <entry>send the message</entry>
               </row>
               <row>
                 <entry>s</entry>
-                <entry>
-                  <literal>&lt;edit-subject&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-subject&gt;</literal></entry>
                 <entry>edit the Subject</entry>
               </row>
               <row>
                 <entry>S</entry>
-                <entry>
-                  <literal>&lt;smime-menu&gt;</literal>
-                </entry>
+                <entry><literal>&lt;smime-menu&gt;</literal></entry>
                 <entry>select S/MIME options</entry>
               </row>
               <row>
                 <entry>f</entry>
-                <entry>
-                  <literal>&lt;edit-fcc&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-fcc&gt;</literal></entry>
                 <entry>specify an
                 <quote>Fcc</quote> mailbox</entry>
               </row>
               <row>
                 <entry>p</entry>
-                <entry>
-                  <literal>&lt;pgp-menu&gt;</literal>
-                </entry>
+                <entry><literal>&lt;pgp-menu&gt;</literal></entry>
                 <entry>select PGP options</entry>
               </row>
               <row>
                 <entry>P</entry>
-                <entry>
-                  <literal>&lt;postpone-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;postpone-message&gt;</literal></entry>
                 <entry>postpone this message until later</entry>
               </row>
               <row>
                 <entry>q</entry>
-                <entry>
-                  <literal>&lt;quit&gt;</literal>
-                </entry>
+                <entry><literal>&lt;quit&gt;</literal></entry>
                 <entry>quit (abort) sending the message</entry>
               </row>
               <row>
                 <entry>w</entry>
-                <entry>
-                  <literal>&lt;write-fcc&gt;</literal>
-                </entry>
+                <entry><literal>&lt;write-fcc&gt;</literal></entry>
                 <entry>write the message to a folder</entry>
               </row>
               <row>
                 <entry>i</entry>
-                <entry>
-                  <literal>&lt;ispell&gt;</literal>
-                </entry>
+                <entry><literal>&lt;ispell&gt;</literal></entry>
                 <entry>check spelling (if available on your system)</entry>
               </row>
               <row>
                 <entry>^F</entry>
-                <entry>
-                  <literal>&lt;forget-passphrase&gt;</literal>
-                </entry>
+                <entry><literal>&lt;forget-passphrase&gt;</literal></entry>
                 <entry>wipe passphrase(s) from memory</entry>
               </row>
             </tbody>
@@ -3044,8 +2879,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               </row>
               <row>
                 <entry>c</entry>
-                <entry>There are unknown critical self-signature
-                packets.</entry>
+                <entry>There are unknown critical self-signature packets.</entry>
               </row>
             </tbody>
           </tgroup>
@@ -3417,6 +3251,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
             <tbody>
               <row>
                 <entry>/etc/xdg/neomutt/neomuttrc</entry>
+                <entry></entry>
               </row>
               <row>
                 <entry>/etc/xdg/neomutt/Muttrc</entry>
@@ -3424,6 +3259,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               </row>
               <row>
                 <entry>/etc/neomuttrc</entry>
+                <entry></entry>
               </row>
               <row>
                 <entry>/etc/Muttrc</entry>
@@ -3431,6 +3267,7 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
               </row>
               <row>
                 <entry>/usr/share/neomutt/neomuttrc</entry>
+                <entry></entry>
               </row>
               <row>
                 <entry>/usr/share/neomutt/Muttrc</entry>
@@ -4272,6 +4109,7 @@ bind index gg first-entry
 
     <sect1 id="charset-hook">
       <title>Defining Aliases for Character Sets</title>
+      <anchor id="iconv-hook" />
       <para>
         Usage:
       </para>
@@ -4283,8 +4121,7 @@ bind index gg first-entry
         <arg choice="plain">
           <replaceable class="parameter">charset</replaceable>
         </arg>
-        <command>iconv-hook
-        <anchor id="iconv-hook" /></command>
+        <command>iconv-hook</command>
         <arg choice="plain">
           <replaceable class="parameter">charset</replaceable>
         </arg>
@@ -6944,56 +6781,79 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           <tbody>
             <row>
               <entry>[:alnum:]</entry>
-              <entry>Alphanumeric characters</entry>
+              <entry>
+                Alphanumeric characters
+              </entry>
             </row>
             <row>
               <entry>[:alpha:]</entry>
-              <entry>Alphabetic characters</entry>
+              <entry>
+                Alphabetic characters
+              </entry>
             </row>
             <row>
               <entry>[:blank:]</entry>
-              <entry>Space or tab characters</entry>
+              <entry>
+                Space or tab characters
+              </entry>
             </row>
             <row>
               <entry>[:cntrl:]</entry>
-              <entry>Control characters</entry>
+              <entry>
+                Control characters
+              </entry>
             </row>
             <row>
               <entry>[:digit:]</entry>
-              <entry>Numeric characters</entry>
+              <entry>
+                Numeric characters
+              </entry>
             </row>
             <row>
               <entry>[:graph:]</entry>
-              <entry>Characters that are both printable and visible. (A space
-              is printable, but not visible, while an
-              <quote>a</quote> is both)</entry>
+              <entry>
+                Characters that are both printable and visible. (A space is
+                printable, but not visible, while an <quote>a</quote> is both)
+              </entry>
             </row>
             <row>
               <entry>[:lower:]</entry>
-              <entry>Lower-case alphabetic characters</entry>
+              <entry>
+                Lower-case alphabetic characters
+              </entry>
             </row>
             <row>
               <entry>[:print:]</entry>
-              <entry>Printable characters (characters that are not control
-              characters)</entry>
+              <entry>
+                Printable characters (characters that are not control
+                characters)
+              </entry>
             </row>
             <row>
               <entry>[:punct:]</entry>
-              <entry>Punctuation characters (characters that are not letter,
-              digits, control characters, or space characters)</entry>
+              <entry>
+                Punctuation characters (characters that are not letter, digits,
+                control characters, or space characters)
+              </entry>
             </row>
             <row>
               <entry>[:space:]</entry>
-              <entry>Space characters (such as space, tab and formfeed, to name
-              a few)</entry>
+              <entry>
+                Space characters (such as space, tab and formfeed, to name
+                a few)
+              </entry>
             </row>
             <row>
               <entry>[:upper:]</entry>
-              <entry>Upper-case alphabetic characters</entry>
+              <entry>
+                Upper-case alphabetic characters
+              </entry>
             </row>
             <row>
               <entry>[:xdigit:]</entry>
-              <entry>Characters that are hexadecimal digits</entry>
+              <entry>
+                Characters that are hexadecimal digits
+              </entry>
             </row>
           </tbody>
         </tgroup>
@@ -7067,39 +6927,49 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           <tbody>
             <row>
               <entry>?</entry>
-              <entry>The preceding item is optional and matched at most
-              once</entry>
+              <entry>
+                The preceding item is optional and matched at most once
+              </entry>
             </row>
             <row>
               <entry>*</entry>
-              <entry>The preceding item will be matched zero or more
-              times</entry>
+              <entry>
+                The preceding item will be matched zero or more times
+              </entry>
             </row>
             <row>
               <entry>+</entry>
-              <entry>The preceding item will be matched one or more
-              times</entry>
+              <entry>
+                The preceding item will be matched one or more times
+              </entry>
             </row>
             <row>
               <entry>{n}</entry>
-              <entry>The preceding item is matched exactly
-              <emphasis>n</emphasis> times</entry>
+              <entry>
+                The preceding item is matched exactly <emphasis>n</emphasis>
+                times
+              </entry>
             </row>
             <row>
               <entry>{n,}</entry>
-              <entry>The preceding item is matched
-              <emphasis>n</emphasis> or more times</entry>
+              <entry>
+                The preceding item is matched <emphasis>n</emphasis> or more
+                times
+              </entry>
             </row>
             <row>
               <entry>{,m}</entry>
-              <entry>The preceding item is matched at most
-              <emphasis>m</emphasis> times</entry>
+              <entry>
+                The preceding item is matched at most <emphasis>m</emphasis>
+                times
+              </entry>
             </row>
             <row>
               <entry>{n,m}</entry>
-              <entry>The preceding item is matched at least
-              <emphasis>n</emphasis> times, but no more than
-              <emphasis>m</emphasis> times</entry>
+              <entry>
+                The preceding item is matched at least <emphasis>n</emphasis>
+                times, but no more than <emphasis>m</emphasis> times
+              </entry>
             </row>
           </tbody>
         </tgroup>
@@ -7139,39 +7009,53 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
           <tbody>
             <row>
               <entry>\\y</entry>
-              <entry>Matches the empty string at either the beginning or the
-              end of a word</entry>
+              <entry>
+                Matches the empty string at either the beginning or the end of
+                a word
+              </entry>
             </row>
             <row>
               <entry>\\B</entry>
-              <entry>Matches the empty string within a word</entry>
+              <entry>
+                Matches the empty string within a word
+              </entry>
             </row>
             <row>
               <entry>\\&lt;</entry>
-              <entry>Matches the empty string at the beginning of a
-              word</entry>
+              <entry>
+                Matches the empty string at the beginning of a word
+              </entry>
             </row>
             <row>
               <entry>\\&gt;</entry>
-              <entry>Matches the empty string at the end of a word</entry>
+              <entry>
+                Matches the empty string at the end of a word
+              </entry>
             </row>
             <row>
               <entry>\\w</entry>
-              <entry>Matches any word-constituent character (letter, digit, or
-              underscore)</entry>
+              <entry>
+                Matches any word-constituent character (letter, digit, or
+                underscore)
+              </entry>
             </row>
             <row>
               <entry>\\W</entry>
-              <entry>Matches any character that is not word-constituent</entry>
+              <entry>
+                Matches any character that is not word-constituent
+              </entry>
             </row>
             <row>
               <entry>\\`</entry>
-              <entry>Matches the empty string at the beginning of a buffer
-              (string)</entry>
+              <entry>
+                Matches the empty string at the beginning of a buffer (string)
+              </entry>
             </row>
             <row>
               <entry>\\'</entry>
-              <entry>Matches the empty string at the end of a buffer</entry>
+              <entry>
+                Matches the empty string at the end of a buffer
+              </entry>
             </row>
           </tbody>
         </tgroup>
@@ -7207,352 +7091,401 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
             <tbody>
               <row>
                 <entry>~A</entry>
-                <entry>all messages</entry>
+                <entry>
+                  all messages
+                </entry>
               </row>
               <row>
-                <entry>~b
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>EXPR</emphasis> in the message body</entry>
+                <entry>~b <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>EXPR</emphasis> in the
+                  message body
+                </entry>
               </row>
               <row>
-                <entry>=b
-                <emphasis>STRING</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>STRING</emphasis> in the message body. If IMAP is
-                enabled, searches for
-                <emphasis>STRING</emphasis> on the server, rather than
-                downloading each message and searching it locally.</entry>
+                <entry>=b <emphasis>STRING</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>STRING</emphasis> in the
+                  message body. If IMAP is enabled, searches for
+                  <emphasis>STRING</emphasis> on the server, rather than
+                  downloading each message and searching it locally.
+                </entry>
               </row>
               <row>
-                <entry>~B
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>EXPR</emphasis> in the whole message</entry>
+                <entry>~B <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>EXPR</emphasis> in the whole
+                  message
+                </entry>
               </row>
               <row>
-                <entry>=B
-                <emphasis>STRING</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>STRING</emphasis> in the whole message. If IMAP is
-                enabled, searches for
-                <emphasis>STRING</emphasis> on the server, rather than
-                downloading each message and searching it locally.</entry>
+                <entry>=B <emphasis>STRING</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>STRING</emphasis> in the
+                  whole message. If IMAP is enabled, searches for
+                  <emphasis>STRING</emphasis> on the server, rather than
+                  downloading each message and searching it locally.
+                </entry>
               </row>
               <row>
-                <entry>~c
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages carbon-copied to
-                <emphasis>EXPR</emphasis></entry>
+                <entry>~c <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages carbon-copied to <emphasis>EXPR</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>%c
-                <emphasis>GROUP</emphasis></entry>
-                <entry>messages carbon-copied to any member of
-                <emphasis>GROUP</emphasis></entry>
+                <entry>%c <emphasis>GROUP</emphasis></entry>
+                <entry>
+                  messages carbon-copied to any member of
+                  <emphasis>GROUP</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>~C
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages either to: or cc:
-                <emphasis>EXPR</emphasis></entry>
+                <entry>~C <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages either to: or cc: <emphasis>EXPR</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>%C
-                <emphasis>GROUP</emphasis></entry>
-                <entry>messages either to: or cc: to any member of
-                <emphasis>GROUP</emphasis></entry>
+                <entry>%C <emphasis>GROUP</emphasis></entry>
+                <entry>
+                  messages either to: or cc: to any member of
+                  <emphasis>GROUP</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>~d [
-                <emphasis>MIN</emphasis>]-[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with
-                <quote>date-sent</quote> in a Date range</entry>
+                <entry>~d [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with <quote>date-sent</quote> in a Date range
+                </entry>
               </row>
               <row>
                 <entry>~D</entry>
-                <entry>deleted messages</entry>
+                <entry>
+                  deleted messages
+                </entry>
               </row>
               <row>
-                <entry>~e
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which contains
-                <emphasis>EXPR</emphasis> in the
-                <quote>Sender</quote> field</entry>
+                <entry>~e <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contains <emphasis>EXPR</emphasis> in the
+                  <quote>Sender</quote> field
+                </entry>
               </row>
               <row>
-                <entry>%e
-                <emphasis>GROUP</emphasis></entry>
-                <entry>messages which contain a member of
-                <emphasis>GROUP</emphasis> in the
-                <quote>Sender</quote> field</entry>
+                <entry>%e <emphasis>GROUP</emphasis></entry>
+                <entry>
+                  messages which contain a member of <emphasis>GROUP</emphasis>
+                  in the <quote>Sender</quote> field
+                </entry>
               </row>
               <row>
                 <entry>~E</entry>
-                <entry>expired messages</entry>
+                <entry>
+                  expired messages
+                </entry>
               </row>
               <row>
                 <entry>~F</entry>
-                <entry>flagged messages</entry>
+                <entry>
+                  flagged messages
+                </entry>
               </row>
               <row>
-                <entry>~f
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages originating from
-                <emphasis>EXPR</emphasis></entry>
+                <entry>~f <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages originating from <emphasis>EXPR</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>%f
-                <emphasis>GROUP</emphasis></entry>
-                <entry>messages originating from any member of
-                <emphasis>GROUP</emphasis></entry>
+                <entry>%f <emphasis>GROUP</emphasis></entry>
+                <entry>
+                  messages originating from any member of
+                  <emphasis>GROUP</emphasis>
+                </entry>
               </row>
               <row>
                 <entry>~g</entry>
-                <entry>cryptographically signed messages</entry>
+                <entry>
+                  cryptographically signed messages
+                </entry>
               </row>
               <row>
                 <entry>~G</entry>
-                <entry>cryptographically encrypted messages</entry>
+                <entry>
+                  cryptographically encrypted messages
+                </entry>
               </row>
               <row>
-                <entry>~h
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>EXPR</emphasis> in the message header</entry>
+                <entry>~h <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>EXPR</emphasis> in the
+                  message header
+                </entry>
               </row>
               <row>
-                <entry>=h
-                <emphasis>STRING</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>STRING</emphasis> in the message header. If IMAP is
-                enabled, searches for
-                <emphasis>STRING</emphasis> on the server, rather than
-                downloading each message and searching it locally;
-                <emphasis>STRING</emphasis> must be of the form
-                <quote>header: substring</quote>(see below).</entry>
+                <entry>=h <emphasis>STRING</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>STRING</emphasis> in the
+                  message header. If IMAP is enabled, searches for
+                  <emphasis>STRING</emphasis> on the server, rather than
+                  downloading each message and searching it locally;
+                  <emphasis>STRING</emphasis> must be of the form
+                  <quote>header: substring</quote> (see below).
+                </entry>
               </row>
               <row>
-                <entry>~H
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages with a spam attribute matching
-                <emphasis>EXPR</emphasis></entry>
+                <entry>~H <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages with a spam attribute matching
+                  <emphasis>EXPR</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>~i
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which match
-                <emphasis>EXPR</emphasis> in the
-                <quote>Message-ID</quote> field</entry>
+                <entry>~i <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which match <emphasis>EXPR</emphasis> in the
+                  <quote>Message-ID</quote> field
+                </entry>
               </row>
               <row>
                 <entry>~k</entry>
-                <entry>messages which contain PGP key material</entry>
+                <entry>
+                  messages which contain PGP key material
+                </entry>
               </row>
               <row>
-                <entry>~L
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages either originated or received by
-                <emphasis>EXPR</emphasis></entry>
+                <entry>~L <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages either originated or received by
+                  <emphasis>EXPR</emphasis>
+                </entry>
               </row>
               <row>
-                <entry>%L
-                <emphasis>GROUP</emphasis></entry>
-                <entry>message either originated or received by any member of
-                <emphasis>GROUP</emphasis></entry>
+                <entry>%L <emphasis>GROUP</emphasis></entry>
+                <entry>
+                  message either originated or received by any member of
+                  <emphasis>GROUP</emphasis>
+                </entry>
               </row>
               <row>
                 <entry>~l</entry>
-                <entry>messages addressed to a known mailing list</entry>
+                <entry>
+                  messages addressed to a known mailing list
+                </entry>
               </row>
               <row>
-                <entry>~m [
-                <emphasis>MIN</emphasis>]-[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with numbers in the range
-                <emphasis>MIN</emphasis> to
-                <emphasis>MAX</emphasis>***)</entry>
+                <entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with numbers in the range <emphasis>MIN</emphasis>
+                  to <emphasis>MAX</emphasis>&#160;***)
+                </entry>
               </row>
               <row>
-                <entry>~m &lt;[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with numbers less than
-                <emphasis>MAX</emphasis>***)</entry>
+                <entry>~m &lt;[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with numbers less than <emphasis>MAX</emphasis>&#160;***)
+                </entry>
               </row>
               <row>
-                <entry>~m &gt;[
-                <emphasis>MIN</emphasis>]</entry>
-                <entry>messages with numbers greater than
-                <emphasis>MIN</emphasis>***)</entry>
+                <entry>~m &gt;[<emphasis>MIN</emphasis>]</entry>
+                <entry>
+                  messages with numbers greater than <emphasis>MIN</emphasis>
+                  ***)
+                </entry>
               </row>
               <row>
-                <entry>~m [
-                <emphasis>M</emphasis>]</entry>
-                <entry>just message number
-                <emphasis>M</emphasis>***)</entry>
+                <entry>~m [<emphasis>M</emphasis>]</entry>
+                <entry>
+                  just message number <emphasis>M</emphasis>&#160;***)
+                </entry>
               </row>
               <row>
-                <entry>~m [
-                <emphasis>MIN</emphasis>],[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with offsets (from selected message) in the
-                range
-                <emphasis>MIN</emphasis> to
-                <emphasis>MAX</emphasis>***)</entry>
+                <entry>~m [<emphasis>MIN</emphasis>],[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with offsets (from selected message) in the range
+                  <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis>&#160;***)
+                </entry>
               </row>
               <row>
-                <entry>~n [
-                <emphasis>MIN</emphasis>]-[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with a score in the range
-                <emphasis>MIN</emphasis> to
-                <emphasis>MAX</emphasis>*)</entry>
+                <entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with a score in the range <emphasis>MIN</emphasis>
+                  to <emphasis>MAX</emphasis>&#160;*)
+                </entry>
               </row>
               <row>
                 <entry>~N</entry>
-                <entry>new messages</entry>
+                <entry>
+                  new messages
+                </entry>
               </row>
               <row>
                 <entry>~O</entry>
-                <entry>old messages</entry>
+                <entry>
+                  old messages
+                </entry>
               </row>
               <row>
                 <entry>~p</entry>
-                <entry>messages addressed to you (consults
-                <command>alternates</command>)</entry>
+                <entry>
+                  messages addressed to you (consults
+                  <command>alternates</command>)
+                </entry>
               </row>
               <row>
                 <entry>~P</entry>
-                <entry>messages from you (consults
-                <command>alternates</command>)</entry>
+                <entry>
+                  messages from you (consults <command>alternates</command>)
+                </entry>
               </row>
               <row>
                 <entry>~Q</entry>
-                <entry>messages which have been replied to</entry>
+                <entry>
+                  messages which have been replied to
+                </entry>
               </row>
               <row>
-                <entry>~r [
-                <emphasis>MIN</emphasis>]-[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with
-                <quote>date-received</quote> in a Date range</entry>
+                <entry>~r [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with <quote>date-received</quote> in a Date range
+                </entry>
               </row>
               <row>
                 <entry>~R</entry>
-                <entry>read messages</entry>
+                <entry>
+                  read messages
+                </entry>
               </row>
               <row>
-                <entry>~s
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages having
-                <emphasis>EXPR</emphasis> in the
-                <quote>Subject</quote> field.</entry>
+                <entry>~s <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages having <emphasis>EXPR</emphasis> in the
+                  <quote>Subject</quote> field.
+                </entry>
               </row>
               <row>
                 <entry>~S</entry>
-                <entry>superseded messages</entry>
+                <entry>
+                  superseded messages
+                </entry>
               </row>
               <row>
-                <entry>~t
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages addressed to
-                <emphasis>EXPR</emphasis></entry>
+                <entry>~t <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages addressed to <emphasis>EXPR</emphasis>
+                </entry>
               </row>
               <row>
                 <entry>~T</entry>
-                <entry>tagged messages</entry>
+                <entry>
+                  tagged messages
+                </entry>
               </row>
               <row>
                 <entry>~u</entry>
-                <entry>messages addressed to a subscribed mailing list</entry>
+                <entry>
+                  messages addressed to a subscribed mailing list
+                </entry>
               </row>
               <row>
                 <entry>~U</entry>
-                <entry>unread messages</entry>
+                <entry>
+                  unread messages
+                </entry>
               </row>
               <row>
                 <entry>~v</entry>
-                <entry>messages part of a collapsed thread.</entry>
+                <entry>
+                  messages part of a collapsed thread.
+                </entry>
               </row>
               <row>
                 <entry>~V</entry>
-                <entry>cryptographically verified messages</entry>
+                <entry>
+                  cryptographically verified messages
+                </entry>
               </row>
               <row>
-                <entry>~x
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>EXPR</emphasis> in the
-                <quote>References</quote> or
-                <quote>In-Reply-To</quote> field</entry>
+                <entry>~x <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>EXPR</emphasis> in the
+                  <quote>References</quote> or <quote>In-Reply-To</quote> field
+                </entry>
               </row>
               <row>
-                <entry>~X [
-                <emphasis>MIN</emphasis>]-[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with
-                <emphasis>MIN</emphasis> to
-                <emphasis>MAX</emphasis> attachments *)</entry>
+                <entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with <emphasis>MIN</emphasis> to
+                  <emphasis>MAX</emphasis> attachments&#160;*)
+                </entry>
               </row>
               <row>
-                <entry>~y
-                <emphasis>EXPR</emphasis></entry>
-                <entry>messages which contain
-                <emphasis>EXPR</emphasis> in their keywords</entry>
+                <entry>~y <emphasis>EXPR</emphasis></entry>
+                <entry>
+                  messages which contain <emphasis>EXPR</emphasis> in their
+                  keywords
+                </entry>
               </row>
               <row>
-                <entry>~z [
-                <emphasis>MIN</emphasis>]-[
-                <emphasis>MAX</emphasis>]</entry>
-                <entry>messages with a size in the range
-                <emphasis>MIN</emphasis> to
-                <emphasis>MAX</emphasis>*) **)</entry>
+                <entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry>
+                <entry>
+                  messages with a size in the range <emphasis>MIN</emphasis> to
+                  <emphasis>MAX</emphasis>&#160;*)&#160;**)
+                </entry>
               </row>
               <row>
-                <entry>=/
-                <emphasis>STRING</emphasis></entry>
-                <entry>IMAP custom server-side search for
-                <emphasis>STRING</emphasis>. Currently only defined for Gmail.
-                See: <link linkend="gmail-patterns">GMail Patterns</link>
+                <entry>=/ <emphasis>STRING</emphasis></entry>
+                <entry>
+                  IMAP custom server-side search for
+                  <emphasis>STRING</emphasis>. Currently only defined for
+                  Gmail. See:
+                  <link linkend="gmail-patterns">GMail Patterns</link>
                 </entry>
               </row>
               <row>
                 <entry>~=</entry>
-                <entry>duplicated messages (see
-                <link linkend="duplicate-threads">
-                $duplicate_threads</link>)</entry>
+                <entry>
+                  duplicated messages (see
+                  <link linkend="duplicate-threads">$duplicate_threads</link>)
+                </entry>
               </row>
               <row>
                 <entry>~#</entry>
-                <entry>broken threads (see
-                  <link linkend="strict-threads">
-                    $strict_threads</link>)</entry>
+                <entry>
+                  broken threads (see
+                  <link linkend="strict-threads">$strict_threads</link>)
+                </entry>
               </row>
               <row>
                 <entry>~$</entry>
-                <entry>unreferenced messages (requires threaded view)</entry>
+                <entry>
+                  unreferenced messages (requires threaded view)
+                </entry>
               </row>
               <row>
-                <entry>~(
-                <emphasis>PATTERN</emphasis>)</entry>
-                <entry>messages in threads containing messages matching
-                <emphasis>PATTERN</emphasis>, e.g. all threads containing
-                messages from you: ~(~P)</entry>
+                <entry>~(<emphasis>PATTERN</emphasis>)</entry>
+                <entry>
+                  messages in threads containing messages matching
+                  <emphasis>PATTERN</emphasis>, e.g. all threads containing
+                  messages from you: ~(~P)
+                </entry>
               </row>
               <row>
-                <entry>~&lt;(
-                <emphasis>PATTERN</emphasis>)</entry>
-                <entry>messages whose immediate parent matches
-                <emphasis>PATTERN</emphasis>, e.g. replies to your messages:
-                ~&lt;(~P)</entry>
+                <entry>~&lt;(<emphasis>PATTERN</emphasis>)</entry>
+                <entry>
+                  messages whose immediate parent matches
+                  <emphasis>PATTERN</emphasis>, e.g. replies to your messages:
+                  ~&lt;(~P)
+                </entry>
               </row>
               <row>
-                <entry>~&gt;(
-                <emphasis>PATTERN</emphasis>)</entry>
-                <entry>messages having an immediate child matching
-                <emphasis>PATTERN</emphasis>, e.g. messages you replied to:
-                ~&gt;(~P)</entry>
+                <entry>~&gt;(<emphasis>PATTERN</emphasis>)</entry>
+                <entry>
+                  messages having an immediate child matching
+                  <emphasis>PATTERN</emphasis>, e.g. messages you replied to:
+                  ~&gt;(~P)
+                </entry>
               </row>
             </tbody>
           </tgroup>
@@ -7681,33 +7614,21 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </thead>
               <tbody>
                 <row>
-                  <entry>
-                    <literal>.</literal>
-                  </entry>
+                  <entry><literal>.</literal></entry>
                   <entry>Current / Highlighted</entry>
-                  <entry>
-                    <literal>~m -3,.</literal>
-                  </entry>
+                  <entry><literal>~m -3,.</literal></entry>
                   <entry>Previous 3 emails plus the highlighted one</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>$</literal>
-                  </entry>
+                  <entry><literal>$</literal></entry>
                   <entry>Last</entry>
-                  <entry>
-                    <literal>~m .,$</literal>
-                  </entry>
+                  <entry><literal>~m .,$</literal></entry>
                   <entry>Highlighted email and all the later ones</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>^</literal>
-                  </entry>
+                  <entry><literal>^</literal></entry>
                   <entry>First</entry>
-                  <entry>
-                    <literal>~m ^,1</literal>
-                  </entry>
+                  <entry><literal>~m ^,1</literal></entry>
                   <entry>Highlighted, next and all preceding ones</entry>
                 </row>
               </tbody>
@@ -7736,51 +7657,35 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
               </thead>
               <tbody>
                 <row>
-                  <entry>
-                    <literal>~m 3-10</literal>
-                  </entry>
+                  <entry><literal>~m 3-10</literal></entry>
                   <entry>Emails 3 to 10</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m -10</literal>
-                  </entry>
+                  <entry><literal>~m -10</literal></entry>
                   <entry>Emails 1 to 10</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m 10-</literal>
-                  </entry>
+                  <entry><literal>~m 10-</literal></entry>
                   <entry>Emails 10 to last</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m &lt;3</literal>
-                  </entry>
+                  <entry><literal>~m &lt;3</literal></entry>
                   <entry>First and second email</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m ^-2</literal>
-                  </entry>
+                  <entry><literal>~m ^-2</literal></entry>
                   <entry>First and second email</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m &gt;1</literal>
-                  </entry>
+                  <entry><literal>~m &gt;1</literal></entry>
                   <entry>Everything but first email</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m 2-$</literal>
-                  </entry>
+                  <entry><literal>~m 2-$</literal></entry>
                   <entry>Everything but first email</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>~m 2</literal>
-                  </entry>
+                  <entry><literal>~m 2</literal></entry>
                   <entry>Just the second email</entry>
                 </row>
               </tbody>
@@ -8095,16 +8000,19 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
                 <entry>
                   <literal>=/ "list:foo.example.org has:attachment is:important"</literal>
                 </entry>
-                <entry>the foo.example.org mailing-list per Gmail's
-                  definitions, and has an attachment, and has been marked as
-                  important</entry>
+                <entry>
+                  the foo.example.org mailing-list per Gmail's definitions, and
+                  has an attachment, and has been marked as important
+                </entry>
               </row>
               <row>
                 <entry>
                   <literal>=/ "{has:purple-star has:yellow-star} older_than:2m"</literal>
                 </entry>
-                <entry>is older than two months and has either a purple-star or
-                  a yellow-star</entry>
+                <entry>
+                  is older than two months and has either a purple-star or
+                  a yellow-star
+                </entry>
               </row>
             </tbody>
           </tgroup>
@@ -8531,59 +8439,54 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
           </thead>
           <tbody>
             <row>
+              <entry><literal>!</literal></entry>
               <entry>
-                <literal>!</literal>
+                your <link linkend="spoolfile">$spoolfile</link> (incoming)
+                mailbox
               </entry>
-              <entry>your
-              <link linkend="spoolfile">$spoolfile</link>(incoming)
-              mailbox</entry>
             </row>
             <row>
+              <entry><literal>&gt;</literal></entry>
               <entry>
-                <literal>&gt;</literal>
+                your <link linkend="mbox">$mbox</link> file
               </entry>
-              <entry>your
-              <link linkend="mbox">$mbox</link> file</entry>
             </row>
             <row>
+              <entry><literal>&lt;</literal></entry>
               <entry>
-                <literal>&lt;</literal>
+                your <link linkend="record">$record</link> file
               </entry>
-              <entry>your
-              <link linkend="record">$record</link> file</entry>
             </row>
             <row>
+              <entry><literal>^</literal></entry>
               <entry>
-                <literal>^</literal>
+                the current mailbox
               </entry>
-              <entry>the current mailbox</entry>
             </row>
             <row>
+              <entry><literal>-</literal> or <literal>!!</literal></entry>
               <entry>
-              <literal>-</literal>or
-              <literal>!!</literal></entry>
-              <entry>the file you've last visited</entry>
-            </row>
-            <row>
-              <entry>
-                <literal>~</literal>
+                the file you've last visited
               </entry>
-              <entry>your home directory</entry>
             </row>
             <row>
+              <entry><literal>~</literal></entry>
               <entry>
-              <literal>=</literal>or
-              <literal>+</literal></entry>
-              <entry>your
-              <link linkend="folder">$folder</link> directory</entry>
-            </row>
-            <row>
-              <entry>
-                <emphasis>@alias</emphasis>
+                your home directory
               </entry>
-              <entry>to the
-              <link linkend="save-hook">default save folder</link> as determined
-              by the address of the alias</entry>
+            </row>
+            <row>
+              <entry><literal>=</literal> or <literal>+</literal></entry>
+              <entry>
+                your <link linkend="folder">$folder</link> directory
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis>@alias</emphasis></entry>
+              <entry>
+                to the <link linkend="save-hook">default save folder</link> as
+                determined by the address of the alias
+              </entry>
             </row>
           </tbody>
         </tgroup>
@@ -9221,9 +9124,7 @@ macro pager \cb |urlview\n
         space-separated list of file extensions. For example you could use:
       </para>
       <example id="ex-mime-types">
-        <title>
-          <literal>mime.types</literal>
-        </title>
+        <title><literal>mime.types</literal></title>
 
 <screen>
 application/postscript          ps eps
@@ -9267,65 +9168,47 @@ audio/x-aiff                    aif aifc aiff
           </thead>
           <tbody>
             <row>
-              <entry>
-                <literal>application</literal>
-              </entry>
+              <entry><literal>application</literal></entry>
               <entry>yes</entry>
               <entry>General application data</entry>
             </row>
             <row>
-              <entry>
-                <literal>audio</literal>
-              </entry>
+              <entry><literal>audio</literal></entry>
               <entry>yes</entry>
               <entry>Audio data</entry>
             </row>
             <row>
-              <entry>
-                <literal>image</literal>
-              </entry>
+              <entry><literal>image</literal></entry>
               <entry>yes</entry>
               <entry>Image data</entry>
             </row>
             <row>
-              <entry>
-                <literal>message</literal>
-              </entry>
+              <entry><literal>message</literal></entry>
               <entry>yes</entry>
               <entry>Mail messages, message status information</entry>
             </row>
             <row>
-              <entry>
-                <literal>model</literal>
-              </entry>
+              <entry><literal>model</literal></entry>
               <entry>yes</entry>
               <entry>VRML and other modeling data</entry>
             </row>
             <row>
-              <entry>
-                <literal>multipart</literal>
-              </entry>
+              <entry><literal>multipart</literal></entry>
               <entry>yes</entry>
               <entry>Container for other MIME parts</entry>
             </row>
             <row>
-              <entry>
-                <literal>text</literal>
-              </entry>
+              <entry><literal>text</literal></entry>
               <entry>yes</entry>
               <entry>Text data</entry>
             </row>
             <row>
-              <entry>
-                <literal>video</literal>
-              </entry>
+              <entry><literal>video</literal></entry>
               <entry>yes</entry>
               <entry>Video data</entry>
             </row>
             <row>
-              <entry>
-                <literal>chemical</literal>
-              </entry>
+              <entry><literal>chemical</literal></entry>
               <entry>no</entry>
               <entry>Mostly molecular data</entry>
             </row>
@@ -10901,11 +10784,8 @@ color   attach_headers     brightmagenta   default    "invalid node with packet 
             <tbody>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;compose-to-sender&gt;</literal>
-                </entry>
-                <entry>compose a new email to the sender of the current
-                email</entry>
+                <entry><literal>&lt;compose-to-sender&gt;</literal></entry>
+                <entry>compose a new email to the sender of the current email</entry>
               </row>
             </tbody>
           </tgroup>
@@ -11044,33 +10924,40 @@ bind index,pager @ compose-to-sender
             <tbody>
               <row>
                 <entry>Open</entry>
-                <entry>-</entry>
-                <entry>-</entry>
-                <entry>Folder is readonly</entry>
+                <entry>—</entry>
+                <entry>—</entry>
+                <entry>
+                  Folder is readonly
+                </entry>
                 <entry>The folder is just a backup</entry>
               </row>
               <row>
                 <entry>Open</entry>
                 <entry>Close</entry>
-                <entry>-</entry>
-                <entry>Folder is read/write, but the entire folder must be
-                written if anything is changed</entry>
-                <entry>Your compression format doesn't support
-                appending</entry>
+                <entry>—</entry>
+                <entry>
+                  Folder is read/write, but the entire folder must be written
+                  if anything is changed
+                </entry>
+                <entry>Your compression format doesn't support appending</entry>
               </row>
               <row>
                 <entry>Open</entry>
                 <entry>Close</entry>
                 <entry>Append</entry>
-                <entry>Folder is read/write and emails can be efficiently added
-                to the end</entry>
+                <entry>
+                  Folder is read/write and emails can be efficiently added to
+                  the end
+                </entry>
                 <entry>Your compression format supports appending</entry>
               </row>
               <row>
                 <entry>Open</entry>
-                <entry>-</entry>
+                <entry>—</entry>
                 <entry>Append</entry>
-                <entry>Folder is readonly, but can be appended to</entry>
+                <entry>
+                  Folder is readonly, but can be appended to
+                </entry>
                 <entry>You want to store emails, but never change them</entry>
               </row>
             </tbody>
@@ -11449,30 +11336,22 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
             <tbody>
               <row>
                 <entry>Today</entry>
-                <entry>
-                  <literal>%H:%M</literal>
-                </entry>
+                <entry><literal>%H:%M</literal></entry>
                 <entry>13:23</entry>
               </row>
               <row>
                 <entry>This Month</entry>
-                <entry>
-                  <literal>%a %d</literal>
-                </entry>
+                <entry><literal>%a %d</literal></entry>
                 <entry>Thu 17</entry>
               </row>
               <row>
                 <entry>This Year</entry>
-                <entry>
-                  <literal>%b %d</literal>
-                </entry>
+                <entry><literal>%b %d</literal></entry>
                 <entry>Dec 10</entry>
               </row>
               <row>
                 <entry>Older than 1 Year</entry>
-                <entry>
-                  <literal>%m/%y</literal>
-                </entry>
+                <entry><literal>%m/%y</literal></entry>
                 <entry>06/14</entry>
               </row>
             </tbody>
@@ -11562,39 +11441,27 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>%[y</literal>
-                </entry>
+                <entry><literal>%[y</literal></entry>
                 <entry>This year</entry>
               </row>
               <row>
-                <entry>
-                  <literal>%[1y</literal>
-                </entry>
+                <entry><literal>%[1y</literal></entry>
                 <entry>This year</entry>
               </row>
               <row>
-                <entry>
-                  <literal>%[6m</literal>
-                </entry>
+                <entry><literal>%[6m</literal></entry>
                 <entry>In the last 6 months</entry>
               </row>
               <row>
-                <entry>
-                  <literal>%[w</literal>
-                </entry>
+                <entry><literal>%[w</literal></entry>
                 <entry>This week</entry>
               </row>
               <row>
-                <entry>
-                  <literal>%[d</literal>
-                </entry>
+                <entry><literal>%[d</literal></entry>
                 <entry>Today</entry>
               </row>
               <row>
-                <entry>
-                  <literal>%[4H</literal>
-                </entry>
+                <entry><literal>%[4H</literal></entry>
                 <entry>In the last 4 hours</entry>
               </row>
             </tbody>
@@ -11620,21 +11487,15 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
               </thead>
               <tbody>
                 <row>
-                  <entry>
-                    <literal>%[1m</literal>
-                  </entry>
+                  <entry><literal>%[1m</literal></entry>
                   <entry>This month</entry>
-                  <entry>
-                    <literal>%[%b %d]</literal>
-                  </entry>
+                  <entry><literal>%[%b %d]</literal></entry>
                   <entry>Dec 10</entry>
                 </row>
                 <row>
                   <entry></entry>
                   <entry>Older</entry>
-                  <entry>
-                    <literal>%[%Y-%m-%d]</literal>
-                  </entry>
+                  <entry><literal>%[%Y-%m-%d]</literal></entry>
                   <entry>2015-04-23</entry>
                 </row>
               </tbody>
@@ -11676,41 +11537,27 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
               </thead>
               <tbody>
                 <row>
-                  <entry>
-                    <literal>%[d</literal>
-                  </entry>
+                  <entry><literal>%[d</literal></entry>
                   <entry>Today</entry>
-                  <entry>
-                    <literal>%[%H:%M ]</literal>
-                  </entry>
+                  <entry><literal>%[%H:%M ]</literal></entry>
                   <entry>12:34</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>%[m</literal>
-                  </entry>
+                  <entry><literal>%[m</literal></entry>
                   <entry>This month</entry>
-                  <entry>
-                    <literal>%[%a %d]</literal>
-                  </entry>
+                  <entry><literal>%[%a %d]</literal></entry>
                   <entry>Thu 12</entry>
                 </row>
                 <row>
-                  <entry>
-                    <literal>%[y</literal>
-                  </entry>
+                  <entry><literal>%[y</literal></entry>
                   <entry>This year</entry>
-                  <entry>
-                    <literal>%[%b %d]</literal>
-                  </entry>
+                  <entry><literal>%[%b %d]</literal></entry>
                   <entry>Dec 10</entry>
                 </row>
                 <row>
                   <entry></entry>
                   <entry>Older</entry>
-                  <entry>
-                    <literal>%[%m/%y ]</literal>
-                  </entry>
+                  <entry><literal>%[%m/%y ]</literal></entry>
                   <entry>06/15</entry>
                 </row>
               </tbody>
@@ -11907,44 +11754,32 @@ set pgp_default_key  = A4AF18C5582473BD35A1E9CE78BB3D480042198E
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>pgp_default_key</literal>
-                </entry>
+                <entry><literal>pgp_default_key</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>pgp_self_encrypt</literal>
-                </entry>
+                <entry><literal>pgp_self_encrypt</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>pgp_sign_as</literal>
-                </entry>
+                <entry><literal>pgp_sign_as</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>smime_default_key</literal>
-                </entry>
+                <entry><literal>smime_default_key</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>smime_self_encrypt</literal>
-                </entry>
+                <entry><literal>smime_self_encrypt</literal></entry>
                 <entry>boolean</entry>
                 <entry><literal>yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>smime_sign_as</literal>
-                </entry>
+                <entry><literal>smime_sign_as</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
@@ -12143,18 +11978,12 @@ set smime_default_key = "SMIME-KEY"
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>abort_noattach_regex</literal>
-                </entry>
+                <entry><literal>abort_noattach_regex</literal></entry>
                 <entry>regular expression</entry>
-                <entry>
-                  <literal>\\&lt;(attach|attached|attachments?)\\&gt;</literal>
-                </entry>
+                <entry><literal>\\&lt;(attach|attached|attachments?)\\&gt;</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>abort_noattach</literal>
-                </entry>
+                <entry><literal>abort_noattach</literal></entry>
                 <entry>quadoption</entry>
                 <entry>
                   <literal>no</literal>
@@ -12625,65 +12454,47 @@ color index-object foreground background pattern
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>index</literal>
-                </entry>
+                <entry><literal>index</literal></entry>
                 <entry>yes</entry>
                 <entry>Entire index line</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_author</literal>
-                </entry>
+                <entry><literal>index_author</literal></entry>
                 <entry>yes</entry>
                 <entry>Author name, %A %a %F %L %n</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_collapsed</literal>
-                </entry>
+                <entry><literal>index_collapsed</literal></entry>
                 <entry>no</entry>
                 <entry>Number of messages in a collapsed thread, %M</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_date</literal>
-                </entry>
+                <entry><literal>index_date</literal></entry>
                 <entry>no</entry>
                 <entry>Date field</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_flags</literal>
-                </entry>
+                <entry><literal>index_flags</literal></entry>
                 <entry>yes</entry>
                 <entry>Message flags, %S %Z</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_label</literal>
-                </entry>
+                <entry><literal>index_label</literal></entry>
                 <entry>no</entry>
                 <entry>Message label, %y %Y</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_number</literal>
-                </entry>
+                <entry><literal>index_number</literal></entry>
                 <entry>no</entry>
                 <entry>Message number, %C</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_size</literal>
-                </entry>
+                <entry><literal>index_size</literal></entry>
                 <entry>no</entry>
                 <entry>Message size, %c %l</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_subject</literal>
-                </entry>
+                <entry><literal>index_subject</literal></entry>
                 <entry>yes</entry>
                 <entry>Subject, %s</entry>
               </row>
@@ -13060,9 +12871,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
             <tbody>
               <row>
                 <entry>index</entry>
-                <entry>
-                  <literal>&lt;limit-current-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;limit-current-thread&gt;</literal></entry>
                 <entry>Limit view to current thread</entry>
               </row>
             </tbody>
@@ -13538,9 +13347,7 @@ set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail' \
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>new_mail_command</literal>
-                </entry>
+                <entry><literal>new_mail_command</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
@@ -13672,201 +13479,119 @@ set new_mail_command = ""
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>ask_follow_up</literal>
-                </entry>
+                <entry><literal>ask_follow_up</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>ask_x_comment_to</literal>
-                </entry>
+                <entry><literal>ask_x_comment_to</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>catchup_newsgroup</literal>
-                </entry>
+                <entry><literal>catchup_newsgroup</literal></entry>
                 <entry>quad</entry>
-                <entry>
-                  <literal>ask-yes</literal>
-                </entry>
+                <entry><literal>ask-yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>followup_to_poster</literal>
-                </entry>
+                <entry><literal>followup_to_poster</literal></entry>
                 <entry>quad</entry>
-                <entry>
-                  <literal>ask-yes</literal>
-                </entry>
+                <entry><literal>ask-yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>group_index_format</literal>
-                </entry>
+                <entry><literal>group_index_format</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>%4C %M%N %5s %-45.45f %d</literal>
-                </entry>
+                <entry><literal>%4C %M%N %5s %-45.45f %d</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>inews</literal>
-                </entry>
+                <entry><literal>inews</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>mime_subject</literal>
-                </entry>
+                <entry><literal>mime_subject</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>yes</literal>
-                </entry>
+                <entry><literal>yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>newsgroups_charset</literal>
-                </entry>
+                <entry><literal>newsgroups_charset</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>utf-8</literal>
-                </entry>
+                <entry><literal>utf-8</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>newsrc</literal>
-                </entry>
+                <entry><literal>newsrc</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>~/.newsrc</literal>
-                </entry>
+                <entry><literal>~/.newsrc</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>news_cache_dir</literal>
-                </entry>
+                <entry><literal>news_cache_dir</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>~/.neomutt</literal>
-                </entry>
+                <entry><literal>~/.neomutt</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>news_server</literal>
-                </entry>
+                <entry><literal>news_server</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_authenticators</literal>
-                </entry>
+                <entry><literal>nntp_authenticators</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_context</literal>
-                </entry>
+                <entry><literal>nntp_context</literal></entry>
                 <entry>number</entry>
-                <entry>
-                  <literal>1000</literal>
-                </entry>
+                <entry><literal>1000</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_listgroup</literal>
-                </entry>
+                <entry><literal>nntp_listgroup</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>yes</literal>
-                </entry>
+                <entry><literal>yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_load_description</literal>
-                </entry>
+                <entry><literal>nntp_load_description</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>yes</literal>
-                </entry>
+                <entry><literal>yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_pass</literal>
-                </entry>
+                <entry><literal>nntp_pass</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_poll</literal>
-                </entry>
+                <entry><literal>nntp_poll</literal></entry>
                 <entry>number</entry>
-                <entry>
-                  <literal>60</literal>
-                </entry>
+                <entry><literal>60</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nntp_user</literal>
-                </entry>
+                <entry><literal>nntp_user</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>post_moderated</literal>
-                </entry>
+                <entry><literal>post_moderated</literal></entry>
                 <entry>quad</entry>
-                <entry>
-                  <literal>ask-yes</literal>
-                </entry>
+                <entry><literal>ask-yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>save_unsubscribed</literal>
-                </entry>
+                <entry><literal>save_unsubscribed</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>show_new_news</literal>
-                </entry>
+                <entry><literal>show_new_news</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>yes</literal>
-                </entry>
+                <entry><literal>yes</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>show_only_unread</literal>
-                </entry>
+                <entry><literal>show_only_unread</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>x_comment_to</literal>
-                </entry>
+                <entry><literal>x_comment_to</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
             </tbody>
           </tgroup>
@@ -13893,135 +13618,97 @@ set new_mail_command = ""
             <tbody>
               <row>
                 <entry>browser,index</entry>
-                <entry>
-                  <literal>&lt;catchup&gt;</literal>
-                </entry>
+                <entry><literal>&lt;catchup&gt;</literal></entry>
                 <entry>mark all articles in newsgroup as read</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;change-newsgroup&gt;</literal>
-                </entry>
+                <entry><literal>&lt;change-newsgroup&gt;</literal></entry>
                 <entry>open a different newsgroup</entry>
               </row>
               <row>
                 <entry>compose</entry>
-                <entry>
-                  <literal>&lt;edit-followup-to&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-followup-to&gt;</literal></entry>
                 <entry>edit the Followup-To field</entry>
               </row>
               <row>
                 <entry>compose</entry>
-                <entry>
-                  <literal>&lt;edit-newsgroups&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-newsgroups&gt;</literal></entry>
                 <entry>edit the newsgroups list</entry>
               </row>
               <row>
                 <entry>compose</entry>
-                <entry>
-                  <literal>&lt;edit-x-comment-to&gt;</literal>
-                </entry>
+                <entry><literal>&lt;edit-x-comment-to&gt;</literal></entry>
                 <entry>edit the X-Comment-To field</entry>
               </row>
               <row>
                 <entry>attach,index,pager</entry>
-                <entry>
-                  <literal>&lt;followup-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;followup-message&gt;</literal></entry>
                 <entry>followup to newsgroup</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;post-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;post-message&gt;</literal></entry>
                 <entry>post message to newsgroup</entry>
               </row>
               <row>
                 <entry>browser</entry>
-                <entry>
-                  <literal>&lt;reload-active&gt;</literal>
-                </entry>
+                <entry><literal>&lt;reload-active&gt;</literal></entry>
                 <entry>load list of all newsgroups from NNTP server</entry>
               </row>
               <row>
                 <entry>browser</entry>
-                <entry>
-                  <literal>&lt;subscribe&gt;</literal>
-                </entry>
+                <entry><literal>&lt;subscribe&gt;</literal></entry>
                 <entry>subscribe to current mbox (IMAP/NNTP only)</entry>
               </row>
               <row>
                 <entry>browser</entry>
-                <entry>
-                  <literal>&lt;subscribe-pattern&gt;</literal>
-                </entry>
+                <entry><literal>&lt;subscribe-pattern&gt;</literal></entry>
                 <entry>subscribe to newsgroups matching a pattern</entry>
               </row>
               <row>
                 <entry>browser</entry>
-                <entry>
-                  <literal>&lt;uncatchup&gt;</literal>
-                </entry>
+                <entry><literal>&lt;uncatchup&gt;</literal></entry>
                 <entry>mark all articles in newsgroup as unread</entry>
               </row>
               <row>
                 <entry>browser</entry>
-                <entry>
-                  <literal>&lt;unsubscribe&gt;</literal>
-                </entry>
+                <entry><literal>&lt;unsubscribe&gt;</literal></entry>
                 <entry>unsubscribe from current mbox (IMAP/NNTP only)</entry>
               </row>
               <row>
                 <entry>browser</entry>
-                <entry>
-                  <literal>&lt;unsubscribe-pattern&gt;</literal>
-                </entry>
+                <entry><literal>&lt;unsubscribe-pattern&gt;</literal></entry>
                 <entry>unsubscribe from newsgroups matching a pattern</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;change-newsgroup-readonly&gt;</literal>
-                </entry>
+                <entry><literal>&lt;change-newsgroup-readonly&gt;</literal></entry>
                 <entry>open a different newsgroup in read only mode</entry>
               </row>
               <row>
                 <entry>attach,index,pager</entry>
-                <entry>
-                  <literal>&lt;forward-to-group&gt;</literal>
-                </entry>
+                <entry><literal>&lt;forward-to-group&gt;</literal></entry>
                 <entry>forward to newsgroup</entry>
               </row>
               <row>
                 <entry>index</entry>
-                <entry>
-                  <literal>&lt;get-children&gt;</literal>
-                </entry>
+                <entry><literal>&lt;get-children&gt;</literal></entry>
                 <entry>get all children of the current message</entry>
               </row>
               <row>
                 <entry>index</entry>
-                <entry>
-                  <literal>&lt;get-parent&gt;</literal>
-                </entry>
+                <entry><literal>&lt;get-parent&gt;</literal></entry>
                 <entry>get parent of the current message</entry>
               </row>
               <row>
                 <entry>index</entry>
-                <entry>
-                  <literal>&lt;reconstruct-thread&gt;</literal>
-                </entry>
+                <entry><literal>&lt;reconstruct-thread&gt;</literal></entry>
                 <entry>reconstruct thread containing current message</entry>
               </row>
               <row>
                 <entry>index</entry>
-                <entry>
-                  <literal>&lt;get-message&gt;</literal>
-                </entry>
+                <entry><literal>&lt;get-message&gt;</literal></entry>
                 <entry>get message with Message-Id</entry>
               </row>
             </tbody>
@@ -14192,13 +13879,10 @@ bind index \CG get-message
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>hidden_tags</literal>
-                </entry>
+                <entry><literal>hidden_tags</literal></entry>
                 <entry>string</entry>
                 <entry>
-                  <literal>
-                  unread,draft,flagged,passed,replied,attachment,signed,encrypted</literal>
+                  <literal>unread,draft,flagged,passed,replied,attachment,signed,encrypted</literal>
                 </entry>
               </row>
             </tbody>
@@ -14226,29 +13910,26 @@ bind index \CG get-message
             <tbody>
               <row>
                 <entry>index,pager</entry>
+                <entry><literal>&lt;modify-labels&gt;</literal></entry>
                 <entry>
-                  <literal>&lt;modify-labels&gt;</literal>
+                  add, remove, or toggle tags: IMAP: edit the tags list
+                  Notmuch: [+]&lt;tag&gt; to add, -&lt;tag&gt; to remove,
+                  !&lt;tag&gt; to toggle(notmuch) tags. Note: Tab completion
+                  of tag names is available
                 </entry>
-                <entry>add, remove, or toggle tags:
-                  IMAP: edit the tags list
-                  Notmuch: [+]&lt;tag&gt; to add,
-                  -&lt;tag&gt; to remove, !&lt;tag&gt; to toggle(notmuch) tags.
-                  Note: Tab completion of tag names is available</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
+                <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
                 <entry>
-                  <literal>&lt;modify-labels-then-hide&gt;</literal>
+                  add, remove, or toggle tags IMAP: edit the tags list Notmuch:
+                  [+]&lt;tag&gt; to add, -&lt;tag&gt; to remove, !&lt;tag&gt;
+                  to toggle labels and then hide or unhide the message by
+                  changing the "quasi-deleted" to match if it would be shown
+                  when requerying. Normal redisplay rules apply here, so the
+                  user must call &lt;sync-mailbox&gt; for the changes to be
+                  displayed. Note: Tab completion of tag names is available.
                 </entry>
-                <entry>add, remove, or toggle tags
-                  IMAP: edit the tags list
-                  Notmuch: [+]&lt;tag&gt; to
-                  add, -&lt;tag&gt; to remove, !&lt;tag&gt; to toggle labels and
-                  then hide or unhide the message by changing the "quasi-deleted"
-                  to match if it would be shown when requerying.
-                  Normal redisplay rules apply here, so the user must call
-                  &lt;sync-mailbox&gt; for the changes to be displayed. Note:
-                  Tab completion of tag names is available.</entry>
               </row>
             </tbody>
           </tgroup>
@@ -14309,16 +13990,12 @@ bind index \CG get-message
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>index_tag</literal>
-                </entry>
+                <entry><literal>index_tag</literal></entry>
                 <entry>yes</entry>
                 <entry>an individual message tag, %G, uses tag name</entry>
               </row>
               <row>
-                <entry>
-                  <literal>index_tags</literal>
-                </entry>
+                <entry><literal>index_tags</literal></entry>
                 <entry>no</entry>
                 <entry>the transformed message tags, %g or %J</entry>
               </row>
@@ -14566,39 +14243,52 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
               <tbody>
                 <row>
                   <entry>%C</entry>
-                  <entry>current file number</entry>
+                  <entry>
+                    current file number
+                  </entry>
                 </row>
                 <row>
                   <entry>%f</entry>
-                  <entry>folder name (description)</entry>
+                  <entry>
+                    folder name (description)
+                  </entry>
                 </row>
                 <row>
                   <entry>%m</entry>
-                  <entry>number of messages in the mailbox *</entry>
+                  <entry>
+                    number of messages in the mailbox&#160;*
+                  </entry>
                 </row>
                 <row>
                   <entry>%n</entry>
-                  <entry>number of unread messages in the mailbox *</entry>
+                  <entry>
+                    number of unread messages in the mailbox&#160;*
+                  </entry>
                 </row>
                 <row>
                   <entry>%N</entry>
-                  <entry>N if mailbox has new mail, blank otherwise</entry>
+                  <entry>
+                    N if mailbox has new mail, blank otherwise
+                  </entry>
                 </row>
                 <row>
                   <entry>%&gt;X</entry>
-                  <entry>right justify the rest of the string and pad with
-                  character
-                  <quote>X</quote></entry>
+                  <entry>
+                    right justify the rest of the string and pad with character
+                    <quote>X</quote>
+                  </entry>
                 </row>
                 <row>
                   <entry>%|X</entry>
-                  <entry>pad to the end of the line with character
-                  <quote>X</quote></entry>
+                  <entry>
+                    pad to the end of the line with character <quote>X</quote>
+                  </entry>
                 </row>
                 <row>
                   <entry>%*X</entry>
-                  <entry>soft-fill with character
-                  <quote>X</quote> as pad</entry>
+                  <entry>
+                    soft-fill with character <quote>X</quote> as pad
+                  </entry>
                 </row>
               </tbody>
             </tgroup>
@@ -14628,88 +14318,54 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>nm_db_limit</literal>
-                </entry>
+                <entry><literal>nm_db_limit</literal></entry>
                 <entry>number</entry>
-                <entry>
-                  <literal>0</literal>
-                </entry>
+                <entry><literal>0</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_default_uri</literal>
-                </entry>
+                <entry><literal>nm_default_uri</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_exclude_tags</literal>
-                </entry>
+                <entry><literal>nm_exclude_tags</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_open_timeout</literal>
-                </entry>
+                <entry><literal>nm_open_timeout</literal></entry>
                 <entry>number</entry>
-                <entry>
-                  <literal>5</literal>
-                </entry>
+                <entry><literal>5</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_query_type</literal>
-                </entry>
+                <entry><literal>nm_query_type</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>messages</literal>
-                </entry>
+                <entry><literal>messages</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_record</literal>
-                </entry>
+                <entry><literal>nm_record</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_record_tags</literal>
-                </entry>
+                <entry><literal>nm_record_tags</literal></entry>
                 <entry>string</entry>
                 <entry>(empty)</entry>
               </row>
               <row>
-                <entry>
-                  <literal>nm_unread_tag</literal>
-                </entry>
+                <entry><literal>nm_unread_tag</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>unread</literal>
-                </entry>
+                <entry><literal>unread</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>vfolder_format</literal>
-                </entry>
+                <entry><literal>vfolder_format</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>%6n(%6N) %f</literal>
-                </entry>
+                <entry><literal>%6n(%6N) %f</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>virtual_spoolfile</literal>
-                </entry>
+                <entry><literal>virtual_spoolfile</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
             </tbody>
           </tgroup>
@@ -14740,53 +14396,50 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             <tbody>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;change-vfolder&gt;</literal>
-                </entry>
+                <entry><literal>&lt;change-vfolder&gt;</literal></entry>
                 <entry>
                   switch to another virtual folder, a new folder maybe be
                   specified by vfolder description (see virtual-mailboxes) or
-                  URI. the default is next vfolder with unread messages</entry>
-              </row>
-              <row>
-                <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;entire-thread&gt;</literal>
-                </entry>
-                <entry>read entire thread of the current message</entry>
-              </row>
-              <row>
-                <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-toggle-virtual&gt;</literal>
-                </entry>
-                <entry>toggle between mailboxes and virtual mailboxes</entry>
-              </row>
-              <row>
-                <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;vfolder-from-query&gt;</literal>
-                </entry>
-                <entry>
-                  generate virtual folder from notmuch search query.
-                  Note: TAB completion of 'tag:' names is available.
+                  URI. the default is next vfolder with unread messages
                 </entry>
               </row>
               <row>
                 <entry>index,pager</entry>
+                <entry><literal>&lt;entire-thread&gt;</literal></entry>
                 <entry>
-                  <literal>&lt;vfolder-window-forward&gt;</literal>
+                  read entire thread of the current message
                 </entry>
-                <entry>generate virtual folder by moving the query's time
-                window forward</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
+                <entry><literal>&lt;sidebar-toggle-virtual&gt;</literal></entry>
                 <entry>
-                  <literal>&lt;vfolder-window-backward&gt;</literal>
+                  toggle between mailboxes and virtual mailboxes
                 </entry>
-                <entry>generate virtual folder by moving the query's time
-                window backward</entry>
+              </row>
+              <row>
+                <entry>index,pager</entry>
+                <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
+                <entry>
+                  generate virtual folder from notmuch search query. Note: TAB
+                  completion of 'tag:' names is available.
+                </entry>
+              </row>
+              <row>
+                <entry>index,pager</entry>
+                <entry><literal>&lt;vfolder-window-forward&gt;</literal></entry>
+                <entry>
+                  generate virtual folder by moving the query's time window
+                  forward
+                </entry>
+              </row>
+              <row>
+                <entry>index,pager</entry>
+                <entry><literal>&lt;vfolder-window-backward&gt;</literal></entry>
+                <entry>
+                  generate virtual folder by moving the query's time window
+                  backward
+                </entry>
               </row>
             </tbody>
           </tgroup>
@@ -15132,9 +14785,7 @@ bind index,pager &gt; vfolder-window-forward
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>progress</literal>
-                </entry>
+                <entry><literal>progress</literal></entry>
                 <entry>default</entry>
                 <entry>Visual progress bar</entry>
               </row>
@@ -15262,9 +14913,7 @@ color progress white red
               <row>
                 <entry>index,pager</entry>
                 <entry>(none)</entry>
-                <entry>
-                  <literal>&lt;quasi-delete&gt;</literal>
-                </entry>
+                <entry><literal>&lt;quasi-delete&gt;</literal></entry>
                 <entry>delete from NeoMutt, don't touch on disk</entry>
               </row>
             </tbody>
@@ -15362,13 +15011,9 @@ bind index,pager Q quasi-delete
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>reply_with_xorig</literal>
-                </entry>
+                <entry><literal>reply_with_xorig</literal></entry>
                 <entry>Boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
             </tbody>
           </tgroup>
@@ -15578,120 +15223,68 @@ set sort_browser="reverse-size"
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>sidebar_delim_chars</literal>
-                </entry>
+                <entry><literal>sidebar_delim_chars</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>/.</literal>
-                </entry>
+                <entry><literal>/.</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_divider_char</literal>
-                </entry>
+                <entry><literal>sidebar_divider_char</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>|</literal>
-                </entry>
+                <entry><literal>|</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_folder_indent</literal>
-                </entry>
+                <entry><literal>sidebar_folder_indent</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_format</literal>
-                </entry>
+                <entry><literal>sidebar_format</literal></entry>
                 <entry>string</entry>
-                <entry>
-                  <literal>%B%* %n</literal>
-                </entry>
+                <entry><literal>%B%* %n</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_indent_string</literal>
-                </entry>
+                <entry><literal>sidebar_indent_string</literal></entry>
                 <entry>string</entry>
-                <entry>
-                <literal>&#160;&#160;</literal>(two spaces)</entry>
-              </row>
+                <entry><literal>&#160;&#160;</literal> (two spaces)</entry></row>
               <row>
-                <entry>
-                  <literal>sidebar_new_mail_only</literal>
-                </entry>
+                <entry><literal>sidebar_new_mail_only</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_next_new_wrap</literal>
-                </entry>
+                <entry><literal>sidebar_next_new_wrap</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_on_right</literal>
-                </entry>
+                <entry><literal>sidebar_on_right</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_short_path</literal>
-                </entry>
+                <entry><literal>sidebar_short_path</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_component_depth</literal>
-                </entry>
+                <entry><literal>sidebar_component_depth</literal></entry>
                 <entry>number</entry>
-                <entry>
-                  <literal>0</literal>
-                </entry>
+                <entry><literal>0</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_sort_method</literal>
-                </entry>
+                <entry><literal>sidebar_sort_method</literal></entry>
                 <entry>enum</entry>
-                <entry>
-                  <literal>unsorted</literal>
-                </entry>
+                <entry><literal>unsorted</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_visible</literal>
-                </entry>
+                <entry><literal>sidebar_visible</literal></entry>
                 <entry>boolean</entry>
-                <entry>
-                  <literal>no</literal>
-                </entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_width</literal>
-                </entry>
+                <entry><literal>sidebar_width</literal></entry>
                 <entry>number</entry>
-                <entry>
-                  <literal>20</literal>
-                </entry>
+                <entry><literal>20</literal></entry>
               </row>
             </tbody>
           </tgroup>
@@ -15723,59 +15316,42 @@ set sort_browser="reverse-size"
             <tbody>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-next&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-next&gt;</literal></entry>
                 <entry>Move the highlight to next mailbox</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-next-new&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-next-new&gt;</literal></entry>
                 <entry>Move the highlight to next mailbox with new mail</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-open&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-open&gt;</literal></entry>
                 <entry>Open highlighted mailbox</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-page-down&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
                 <entry>Scroll the Sidebar down 1 page</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-page-up&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
                 <entry>Scroll the Sidebar up 1 page</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-prev&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-prev&gt;</literal></entry>
                 <entry>Move the highlight to previous mailbox</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-prev-new&gt;</literal>
-                </entry>
-                <entry>Move the highlight to previous mailbox with new
-                mail</entry>
+                <entry><literal>&lt;sidebar-prev-new&gt;</literal></entry>
+                <entry>Move the highlight to previous mailbox with new mail</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
-                <entry>
-                  <literal>&lt;sidebar-toggle-visible&gt;</literal>
-                </entry>
+                <entry><literal>&lt;sidebar-toggle-visible&gt;</literal></entry>
                 <entry>Make the Sidebar (in)visible</entry>
               </row>
             </tbody>
@@ -15785,17 +15361,17 @@ set sort_browser="reverse-size"
 
       <sect2 id="sidebar-commands">
         <title>Commands</title>
+        <anchor id="sidebar-whitelist" />
+        <anchor id="unsidebar-whitelist" />
         <cmdsynopsis>
-          <command>sidebar_whitelist
-          <anchor id="sidebar-whitelist" /></command>
+          <command>sidebar_whitelist</command>
           <arg choice="plain">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
           <arg choice="opt" rep="repeat">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
-          <command>unsidebar_whitelist
-          <anchor id="unsidebar-whitelist" /></command>
+          <command>unsidebar_whitelist</command>
           <group choice="req">
             <arg choice="plain">
               <replaceable class="parameter">*</replaceable>
@@ -15833,55 +15409,54 @@ set sort_browser="reverse-size"
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>sidebar_divider</literal>
-                </entry>
+                <entry><literal>sidebar_divider</literal></entry>
                 <entry>default</entry>
-                <entry>The dividing line between the Sidebar and the
-                Index/Pager panels</entry>
+                <entry>
+                  The dividing line between the Sidebar and the Index/Pager
+                  panels
+                </entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_flagged</literal>
-                </entry>
+                <entry><literal>sidebar_flagged</literal></entry>
                 <entry>default</entry>
-                <entry>Mailboxes containing flagged mail</entry>
+                <entry>
+                  Mailboxes containing flagged mail
+                </entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_highlight</literal>
-                </entry>
+                <entry><literal>sidebar_highlight</literal></entry>
                 <entry>underline</entry>
-                <entry>Cursor to select a mailbox</entry>
+                <entry>
+                  Cursor to select a mailbox
+                </entry>
               </row>
               <row>
+                <entry><literal>sidebar_indicator</literal></entry>
+                <entry>neomutt <literal>indicator</literal></entry>
                 <entry>
-                  <literal>sidebar_indicator</literal>
+                  The mailbox open in the Index panel
                 </entry>
-                <entry>neomutt
-                <literal>indicator</literal></entry>
-                <entry>The mailbox open in the Index panel</entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_new</literal>
-                </entry>
+                <entry><literal>sidebar_new</literal></entry>
                 <entry>default</entry>
-                <entry>Mailboxes containing new mail</entry>
+                <entry>
+                  Mailboxes containing new mail
+                </entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_ordinary</literal>
-                </entry>
+                <entry><literal>sidebar_ordinary</literal></entry>
                 <entry>default</entry>
-                <entry>Mailboxes that have no new/flagged mails, etc.</entry>
+                <entry>
+                  Mailboxes that have no new/flagged mails, etc.
+                </entry>
               </row>
               <row>
-                <entry>
-                  <literal>sidebar_spoolfile</literal>
-                </entry>
+                <entry><literal>sidebar_spoolfile</literal></entry>
                 <entry>default</entry>
-                <entry>Mailbox that receives incoming mail</entry>
+                <entry>
+                  Mailbox that receives incoming mail
+                </entry>
               </row>
             </tbody>
           </tgroup>
@@ -15907,53 +15482,36 @@ set sort_browser="reverse-size"
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>alpha</literal>
-                </entry>
+                <entry><literal>alpha</literal></entry>
                 <entry>Alphabetically by path</entry>
               </row>
               <row>
-                <entry>
-                  <literal>count</literal>
-                </entry>
+                <entry><literal>count</literal></entry>
                 <entry>Total number of messages</entry>
               </row>
               <row>
-                <entry>
-                  <literal>flagged</literal>
-                </entry>
+                <entry><literal>flagged</literal></entry>
                 <entry>Number of flagged messages</entry>
               </row>
               <row>
-                <entry>
-                  <literal>name</literal>
-                </entry>
+                <entry><literal>name</literal></entry>
                 <entry>Alphabetically by path</entry>
               </row>
               <row>
-                <entry>
-                  <literal>new</literal>
-                </entry>
+                <entry><literal>new</literal></entry>
                 <entry>Number of unread messages</entry>
               </row>
               <row>
-                <entry>
-                  <literal>path</literal>
-                </entry>
+                <entry><literal>path</literal></entry>
                 <entry>Alphabetically by path</entry>
               </row>
               <row>
-                <entry>
-                  <literal>unread</literal>
-                </entry>
+                <entry><literal>unread</literal></entry>
                 <entry>Number of unread messages</entry>
               </row>
               <row>
-                <entry>
-                  <literal>unsorted</literal>
-                </entry>
-                <entry>Order of the
-                <literal>mailboxes</literal> command</entry>
+                <entry><literal>unsorted</literal></entry>
+                <entry>Order of the <literal>mailboxes</literal> command</entry>
               </row>
             </tbody>
           </tgroup>
@@ -16210,9 +15768,7 @@ color sidebar_ordinary color245 default
             </thead>
             <tbody>
               <row>
-                <entry>
-                  <literal>skip_quoted_offset</literal>
-                </entry>
+                <entry><literal>skip_quoted_offset</literal></entry>
                 <entry>number</entry>
                 <entry>0</entry>
               </row>
@@ -16345,9 +15901,7 @@ set skip_quoted_offset = 3
             <tbody>
               <row>
                 <entry>status</entry>
-                <entry>
-                  <literal>reverse</literal>
-                </entry>
+                <entry><literal>reverse</literal></entry>
                 <entry>Status bar</entry>
               </row>
             </tbody>
@@ -16649,11 +16203,10 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
               <row>
                 <entry>index,pager</entry>
                 <entry>(none)</entry>
+                <entry><literal>&lt;purge-message&gt;</literal></entry>
                 <entry>
-                  <literal>&lt;purge-message&gt;</literal>
+                  really delete the current entry, bypassing the trash folder
                 </entry>
-                <entry>really delete the current entry, bypassing the trash
-                folder</entry>
               </row>
             </tbody>
           </tgroup>
@@ -16972,112 +16525,158 @@ folder-hook ^pop 'set read_inc=1'
           <tbody>
             <row>
               <entry>-A</entry>
-              <entry>expand an alias</entry>
+              <entry>
+                expand an alias
+              </entry>
             </row>
             <row>
               <entry>-a</entry>
-              <entry>attach a file to a message</entry>
+              <entry>
+                attach a file to a message
+              </entry>
             </row>
             <row>
               <entry>-b</entry>
-              <entry>specify a blind carbon-copy (BCC) address</entry>
+              <entry>
+                specify a blind carbon-copy (Bcc) address
+              </entry>
             </row>
             <row>
               <entry>-c</entry>
-              <entry>specify a carbon-copy (Cc) address</entry>
+              <entry>
+                specify a carbon-copy (Cc) address
+              </entry>
             </row>
             <row>
               <entry>-d</entry>
-              <entry>log debugging output to ~/.neomuttdebug0 if NeoMutt was compiled
-              with <literal>+debug</literal>; it can range from 1-5 and affects
-              verbosity (a value of 2 is recommended)</entry>
+              <entry>
+                log debugging output to ~/.neomuttdebug0 if NeoMutt was
+                compiled with <literal>+debug</literal>; it can range from 1—5
+                and affects verbosity (a value of 2 is recommended)
+              </entry>
             </row>
             <row>
               <entry>-D</entry>
-              <entry>print the value of all NeoMutt variables to stdout</entry>
+              <entry>
+                print the value of all NeoMutt variables to stdout
+              </entry>
             </row>
             <row>
               <entry>-D -S</entry>
-              <entry>like -D but hide the value of sensitive variables</entry>
+              <entry>
+                like -D but hide the value of sensitive variables
+              </entry>
             </row>
             <row>
               <entry>-E</entry>
-              <entry>edit the draft (-H) or include (-i) file</entry>
+              <entry>
+                edit the draft (-H) or include (-i) file
+              </entry>
             </row>
             <row>
               <entry>-e</entry>
-              <entry>specify a config command to be run after initialization
-              files are read</entry>
+              <entry>
+                specify a config command to be run after initialization files
+                are read
+              </entry>
             </row>
             <row>
               <entry>-f</entry>
-              <entry>specify a mailbox to load</entry>
+              <entry>
+                specify a mailbox to load
+              </entry>
             </row>
             <row>
               <entry>-F</entry>
-              <entry>specify an alternate file to read initialization
-              commands</entry>
+              <entry>
+                specify an alternate file to read initialization commands
+              </entry>
             </row>
             <row>
               <entry>-h</entry>
-              <entry>print help on command line options</entry>
+              <entry>
+                print help on command line options
+              </entry>
             </row>
             <row>
               <entry>-H</entry>
-              <entry>specify a draft file from which to read a header and
-              body</entry>
+              <entry>
+                specify a draft file from which to read a header and body
+              </entry>
             </row>
             <row>
               <entry>-i</entry>
-              <entry>specify a file to include in a message composition</entry>
+              <entry>
+                specify a file to include in a message composition
+              </entry>
             </row>
             <row>
               <entry>-m</entry>
-              <entry>specify a default mailbox type</entry>
+              <entry>
+                specify a default mailbox type
+              </entry>
             </row>
             <row>
               <entry>-n</entry>
-              <entry>do not read the system neomuttrc</entry>
+              <entry>
+                do not read the system neomuttrc
+              </entry>
             </row>
             <row>
               <entry>-p</entry>
-              <entry>recall a postponed message</entry>
+              <entry>
+                recall a postponed message
+              </entry>
             </row>
             <row>
               <entry>-Q</entry>
-              <entry>query a configuration variable</entry>
+              <entry>
+                query a configuration variable
+              </entry>
             </row>
             <row>
               <entry>-R</entry>
-              <entry>open mailbox in read-only mode</entry>
+              <entry>
+                open mailbox in read-only mode
+              </entry>
             </row>
             <row>
               <entry>-s</entry>
-              <entry>specify a subject (enclose in quotes if it contains
-              spaces)</entry>
+              <entry>
+                specify a subject (enclose in quotes if it contains spaces)
+              </entry>
             </row>
             <row>
               <entry>-v</entry>
-              <entry>show version number and compile-time definitions</entry>
+              <entry>
+                show version number and compile-time definitions
+              </entry>
             </row>
             <row>
               <entry>-x</entry>
-              <entry>simulate the mailx(1) compose mode</entry>
+              <entry>
+                simulate the mailx(1) compose mode
+              </entry>
             </row>
             <row>
               <entry>-y</entry>
-              <entry>show a menu containing the files specified by the
-              <command>mailboxes</command> command</entry>
+              <entry>
+                show a menu containing the files specified by the
+                <command>mailboxes</command> command
+              </entry>
             </row>
             <row>
               <entry>-z</entry>
-              <entry>exit immediately if there are no messages in the
-              mailbox</entry>
+              <entry>
+                exit immediately if there are no messages in the mailbox
+              </entry>
             </row>
             <row>
               <entry>-Z</entry>
-              <entry>open the first folder with new message, exit immediately
-              if none</entry>
+              <entry>
+                open the first folder with new message, exit immediately if
+                none
+              </entry>
             </row>
           </tbody>
         </tgroup>
