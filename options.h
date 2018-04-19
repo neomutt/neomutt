@@ -76,6 +76,7 @@ WHERE bool Beep;
 WHERE bool BeepNew;
 WHERE bool BounceDelivered;
 WHERE bool BrailleFriendly;
+WHERE bool BrowserAbbreviateMailboxes;
 WHERE bool ChangeFolderNext;
 WHERE bool CheckMboxSize;
 WHERE bool CheckNew;

@@ -380,6 +380,19 @@ struct Option MuttVars[] = {
   ** follow these menus.  The option is \fIunset\fP by default because many
   ** visual terminals don't permit making the cursor invisible.
   */
+  { "browser_abbreviate_mailboxes", DT_BOOL, R_NONE, &BrowserAbbreviateMailboxes, 1 },
+  /*
+  ** .pp
+  ** When this variable is \fIset\fP, mutt will abbreviate mailbox
+  ** names in the browser mailbox list, using '~' and '='
+  ** shortcuts.
+  ** .pp
+  ** The default \fC"alpha"\fP setting of $$sort_browser uses
+  ** locale-based sorting (using \fCstrcoll(3)\fP), which ignores some
+  ** punctuation.  This can lead to some situations where the order
+  ** doesn't make intuitive sense.  In those cases, it may be
+  ** desirable to \fIunset\fP this variable.
+  */
 #ifdef USE_NNTP
   { "catchup_newsgroup", DT_QUAD, R_NONE, &CatchupNewsgroup, MUTT_ASKYES },
   /*

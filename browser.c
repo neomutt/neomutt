@@ -889,7 +889,8 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 
       char buffer[LONG_STRING];
       mutt_str_strfcpy(buffer, tmp->path, sizeof(buffer));
-      mutt_pretty_mailbox(buffer, sizeof(buffer));
+      if (BrowserAbbreviateMailboxes)
+        mutt_pretty_mailbox(buffer, sizeof(buffer));
 
 #ifdef USE_IMAP
       if (mx_is_imap(tmp->path))
