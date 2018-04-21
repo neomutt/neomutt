@@ -99,44 +99,44 @@ struct MyVar
 {
   char *name;
   char *value;
-  struct MyVar *next;
+  TAILQ_ENTRY(MyVar) entries;
 };
 
-static struct MyVar *MyVars;
+static TAILQ_HEAD(, MyVar) MyVars = TAILQ_HEAD_INITIALIZER(MyVars);
 
 void myvar_set(const char *var, const char *val)
 {
-  struct MyVar **cur = NULL;
+  struct MyVar *myv = NULL;
 
-  for (cur = &MyVars; *cur; cur = &((*cur)->next))
-    if (mutt_str_strcmp((*cur)->name, var) == 0)
-      break;
+  TAILQ_FOREACH(myv, &MyVars, entries)
+  {
+    if (mutt_str_strcmp(myv->name, var) == 0)
+    {
+      mutt_str_replace(&myv->value, val);
+      return;
+    }
+  }
 
-  if (!*cur)
-    *cur = mutt_mem_calloc(1, sizeof(struct MyVar));
-
-  if (!(*cur)->name)
-    (*cur)->name = mutt_str_strdup(var);
-
-  mutt_str_replace(&(*cur)->value, val);
+  myv = mutt_mem_calloc(1, sizeof(struct MyVar));
+  myv->name = mutt_str_strdup(var);
+  myv->value = mutt_str_strdup(val);
+  TAILQ_INSERT_TAIL(&MyVars, myv, entries);
 }
 
 static void myvar_del(const char *var)
 {
-  struct MyVar **cur = NULL;
-  struct MyVar *tmp = NULL;
+  struct MyVar *myv = NULL;
 
-  for (cur = &MyVars; *cur; cur = &((*cur)->next))
-    if (mutt_str_strcmp((*cur)->name, var) == 0)
-      break;
-
-  if (*cur)
+  TAILQ_FOREACH(myv, &MyVars, entries)
   {
-    tmp = (*cur)->next;
-    FREE(&(*cur)->name);
-    FREE(&(*cur)->value);
-    FREE(cur);
-    *cur = tmp;
+    if (mutt_str_strcmp(myv->name, var) == 0)
+    {
+      TAILQ_REMOVE(&MyVars, myv, entries);
+      FREE(&myv->name);
+      FREE(&myv->value);
+      FREE(&myv);
+      return;
+    }
   }
 }
 
@@ -3218,8 +3218,10 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
       memset(Completed, 0, sizeof(Completed));
       for (num = 0; MuttVars[num].name; num++)
         candidate(Completed, UserTyped, MuttVars[num].name, sizeof(Completed));
-      for (myv = MyVars; myv; myv = myv->next)
+      TAILQ_FOREACH(myv, &MyVars, entries)
+      {
         candidate(Completed, UserTyped, myv->name, sizeof(Completed));
+      }
       matches_ensure_morespace(NumMatched);
       Matches[NumMatched++] = UserTyped;
 
@@ -4308,11 +4310,13 @@ static int parse_unsubscribe_from(struct Buffer *b, struct Buffer *s,
 
 const char *myvar_get(const char *var)
 {
-  struct MyVar *cur = NULL;
+  struct MyVar *myv = NULL;
 
-  for (cur = MyVars; cur; cur = cur->next)
-    if (mutt_str_strcmp(cur->name, var) == 0)
-      return NONULL(cur->value);
+  TAILQ_FOREACH(myv, &MyVars, entries)
+  {
+    if (mutt_str_strcmp(myv->name, var) == 0)
+      return NONULL(myv->value);
+  }
 
   return NULL;
 }
