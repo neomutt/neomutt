@@ -3275,8 +3275,7 @@ msgstr ""
 "[-- Erro: Protocolo multipart/signed %s desconhecido! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1018
-#, fuzzy
+#: ncrypt/crypt.c:1012
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
