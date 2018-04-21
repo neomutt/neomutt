@@ -3281,7 +3281,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
 msgstr ""
-"[-- Erro: Estrutura multipart/signed inconsistente! --]\n"
+"[-- Erro: Assinatura \"multipart/signed\" omitida ou inconsistente! --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1060
