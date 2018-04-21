@@ -3131,21 +3131,31 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       </para>
       <itemizedlist>
         <listitem>
-          <para>Primitive Errors: errors emitted by C library functions such as 
-          <literal>fopen()</literal>.</para>
+          <para>
+            Primitive Errors: errors emitted by C library functions such as
+            <literal>fopen()</literal>.
+          </para>
         </listitem>
         <listitem>
-          <para>Errors</para>
+          <para>
+            Errors
+          </para>
         </listitem>
         <listitem>
-          <para>Warnings</para>
+          <para>
+            Warnings
+          </para>
         </listitem>
         <listitem>
-          <para>Message: Informational messages such as 
-          <literal>Sorting mailbox...</literal>.</para>
+          <para>
+            Message: Informational messages such as
+            <literal>Sorting mailbox...</literal>.
+          </para>
         </listitem>
         <listitem>
-          <para>Debug: Debug messages usually only interesting while debugging.</para>
+          <para>
+            Debug: Debug messages usually only interesting while debugging.
+          </para>
         </listitem>
       </itemizedlist>
       <para>
