@@ -3268,7 +3268,6 @@ msgstr ""
 "\n"
 
 #: ncrypt/crypt.c:1012
-#, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
 "\n"
