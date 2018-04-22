@@ -1955,24 +1955,50 @@ int mutt_body_handler(struct Body *b, struct State *s)
   else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH && !OptViewAttach &&
                                          HonorDisposition && (plaintext || handler)))
   {
-    state_mark_attach(s);
-    if (HonorDisposition && b->disposition == DISPATTACH)
-      fputs(_("[-- This is an attachment "), s->fpout);
-    else
-      state_printf(s, _("[-- %s/%s is unsupported "), TYPE(b), b->subtype);
+    const char *str = NULL;
+    char keystroke[SHORT_STRING];
+    keystroke[0] = '\0';
+
     if (!OptViewAttach)
     {
-      char keystroke[SHORT_STRING];
-
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
-        fprintf(s->fpout, _("(use '%s' to view this part)"), keystroke);
+        if (HonorDisposition && b->disposition == DISPATTACH)
+          /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
+             not be used in this translation!
+
+             %3$s expands to a keystroke/key binding, e.g. 'v'.
+           */
+          str = _(
+              "[-- This is an attachment (use '%3$s' to view this part) --]\n");
+        else
+          /* L10N: %s/%s is a MIME type, e.g. "text/plain".
+             The last %s expands to a keystroke/key binding, e.g. 'v'.
+           */
+          str =
+              _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n");
       }
       else
-        fputs(_("(need 'view-attachments' bound to key!)"), s->fpout);
+      {
+        if (HonorDisposition && b->disposition == DISPATTACH)
+          str = _("[-- This is an attachment (need 'view-attachments' bound to "
+                  "key!) --]\n");
+        else
+          /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
+          str = _("[-- %s/%s is unsupported (need 'view-attachments' bound to "
+                  "key!) --]\n");
+      }
     }
-    fputs(" --]\n", s->fpout);
+    else
+    {
+      if (HonorDisposition && b->disposition == DISPATTACH)
+        str = _("[-- This is an attachment --]\n");
+      else
+        /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
+        str = _("[-- %s/%s is unsupported --]\n");
+    }
+    state_printf(s, str, TYPE(b), b->subtype, keystroke);
   }
 
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
