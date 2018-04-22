@@ -112,9 +112,8 @@ static void usage(void)
          "  -c <address>  specify a carbon-copy (CC) address\n"
          "  -D            print the value of all variables to stdout\n"
          "  -D -S         like -D, but hide the value of sensitive variables\n"
-         "  -B            run in batch mode (do not start the ncurses UI)"));
-  puts(_("  -d <level>    log debugging output to ~/.neomuttdebug0"));
-  puts(_(
+         "  -B            run in batch mode (do not start the ncurses UI)\n"
+         "  -d <level>    log debugging output to ~/.neomuttdebug0\n"
          "  -E            edit the draft (-H) or include (-i) file\n"
          "  -e <command>  specify a command to be executed after initialization\n"
          "  -f <file>     specify which mailbox to read\n"
@@ -125,9 +124,8 @@ static void usage(void)
          "  -i <file>     specify a file which NeoMutt should include in the body\n"
          "  -m <type>     specify a default mailbox type\n"
          "  -n            causes NeoMutt not to read the system neomuttrc\n"
-         "  -p            recall a postponed message"));
-
-  puts(_("  -Q <variable> query a configuration variable\n"
+         "  -p            recall a postponed message\n"
+         "  -Q <variable> query a configuration variable\n"
          "  -R            open mailbox in read-only mode\n"
          "  -s <subj>     specify a subject (must be in quotes if it has spaces)\n"
          "  -v            show version and compile-time definitions\n"
