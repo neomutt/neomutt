@@ -128,6 +128,7 @@ int log_file_open(bool verbose)
   LogFileFP = mutt_file_fopen(LogFileName, "a+");
   if (!LogFileFP)
     return -1;
+  setvbuf(LogFileFP, NULL, _IOLBF, 0);
 
   fprintf(LogFileFP, "[%s] NeoMutt%s debugging at level %d\n", timestamp(0),
           NONULL(LogFileVersion), LogFileLevel);
