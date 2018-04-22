@@ -1467,6 +1467,9 @@ static int autoview_handler(struct Body *a, struct State *s)
 
 static int external_body_handler(struct Body *b, struct State *s)
 {
+  const char *str = NULL;
+  char strbuf[LONG_STRING]; // STRING might be too short but LONG_STRING should be large enough
+
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
   {
@@ -1494,23 +1497,62 @@ static int external_body_handler(struct Body *b, struct State *s)
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
       char *length = NULL;
+      char pretty_size[10];
 
-      state_mark_attach(s);
-      state_printf(s, _("[-- This %s/%s attachment "), TYPE(b->parts), b->parts->subtype);
       length = mutt_param_get(&b->parameter, "length");
       if (length)
       {
-        char pretty_size[10];
         mutt_str_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
-        state_printf(s, _("(size %s bytes) "), pretty_size);
+        if (expire != -1)
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+             expands to a date as returned by `mutt_date_parse_date()`.
+           */
+          str = _(
+              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
+              "[-- on %s --]\n");
+        }
+        else
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain".
+           */
+          str = _("[-- This %s/%s attachment (size %s bytes) has been deleted "
+                  "--]\n");
+        }
       }
-      state_puts(_("has been deleted --]\n"), s);
-
-      if (expire != -1)
+      else
       {
-        state_mark_attach(s);
-        state_printf(s, _("[-- on %s --]\n"), expiration);
+        pretty_size[0] = '\0';
+        if (expire != -1)
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+             expands to a date as returned by `mutt_date_parse_date()`.
+
+             Caution: Argument three %3$ is also defined but should not be used
+             in this translation!
+           */
+          str = _("[-- This %s/%s attachment has been deleted --]\n"
+                  "[-- on %4$s --]\n");
+        }
+        else
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain".
+           */
+          str = _("[-- This %s/%s attachment has been deleted --]\n");
+        }
       }
+
+      snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
+               pretty_size, expiration);
+      state_attach_puts(strbuf, s);
       if (b->parts->filename)
       {
         state_mark_attach(s);
