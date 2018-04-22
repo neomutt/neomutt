@@ -462,7 +462,7 @@ msgstr ""
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Levél visszaküldése. Címzett: "
-msgstr[1] "Levél visszaküldése. Címzett: "
+msgstr[1] "Kijelölt levelek visszaküldése. Címzett: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -6040,7 +6040,7 @@ msgstr "Csak levél/rfc222 részeket lehet visszaküldeni."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Hiba a levél újraküldésekor."
-msgstr[1] "Hiba a levél újraküldésekor."
+msgstr[1] "Hiba a levelek újraküldésekor."
 
 #: recvcmd.c:412
 #, c-format

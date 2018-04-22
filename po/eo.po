@@ -458,7 +458,7 @@ msgstr "Averto: mesaĝo malhavas 'From:'-ĉapaĵon"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Redirekti mesaĝon al: "
-msgstr[1] "Redirekti mesaĝon al: "
+msgstr[1] "Redirekti markitajn mesaĝojn al: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -474,21 +474,21 @@ msgstr "Malbona IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Redirekti mesaĝon al %s"
-msgstr[1] "Redirekti mesaĝon al %s"
+msgstr[1] "Redirekti mesaĝojn al %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Mesaĝo ne redirektita."
-msgstr[1] "Mesaĝo ne redirektita."
+msgstr[1] "Mesaĝoj ne redirektitaj."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Mesaĝo redirektita."
-msgstr[1] "Mesaĝo redirektita."
+msgstr[1] "Mesaĝoj redirektitaj."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5904,7 +5904,7 @@ msgstr "Vi povas redirekti nur message/rfc822-partojn."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Eraro dum redirektado de mesaĝo!"
-msgstr[1] "Eraro dum redirektado de mesaĝo!"
+msgstr[1] "Eraro dum redirektado de mesaĝoj!"
 
 #: recvcmd.c:412
 #, c-format

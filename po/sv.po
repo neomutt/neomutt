@@ -456,7 +456,7 @@ msgstr ""
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Återsänd meddelandet till: "
-msgstr[1] "Återsänd meddelandet till: "
+msgstr[1] "Återsänd märkta meddelanden till: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -472,21 +472,21 @@ msgstr "Felaktigt IDN: \"%s\""
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Återsänd meddelande till %s"
-msgstr[1] "Återsänd meddelande till %s"
+msgstr[1] "Återsänd meddelanden till %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Meddelande återsändes inte."
-msgstr[1] "Meddelande återsändes inte."
+msgstr[1] "Meddelanden återsändes inte."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Meddelande återsänt."
-msgstr[1] "Meddelande återsänt."
+msgstr[1] "Meddelanden återsända."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5975,7 +5975,7 @@ msgstr "Du kan bara återsända \"message/rfc822\"-delar."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Fel vid återsändning av meddelande!"
-msgstr[1] "Fel vid återsändning av meddelande!"
+msgstr[1] "Fel vid återsändning av meddelanden!"
 
 #: recvcmd.c:412
 #, c-format

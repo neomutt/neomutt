@@ -465,7 +465,7 @@ msgstr ""
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Διαβίβαση μηνύματος στον: "
-msgstr[1] "Διαβίβαση μηνύματος στον: "
+msgstr[1] "Διαβίβαση σημειωμένων μηνυμάτων στον: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -481,21 +481,21 @@ msgstr "Λανθασμένη διεθνής διεύθυνση IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Διαβίβαση μηνύματος στον %s"
-msgstr[1] "Διαβίβαση μηνύματος στον %s"
+msgstr[1] "Διαβίβαση μηνυμάτων στον %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Το μήνυμα δεν διαβιβάστηκε."
-msgstr[1] "Το μήνυμα δεν διαβιβάστηκε."
+msgstr[1] "Τα μηνύματα δεν διαβιβάστηκαν."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Το μήνυμα διαβιβάστηκε."
-msgstr[1] "Το μήνυμα διαβιβάστηκε."
+msgstr[1] "Τα μηνύματα διαβιβάστηκαν."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -6042,7 +6042,7 @@ msgstr "Μπορείτε να διαβιβάσετε μόνο μήνυμα/μέ�
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Σφάλμα κατά την μεταβίβαση του μηνύματος!"
-msgstr[1] "Σφάλμα κατά την μεταβίβαση του μηνύματος!"
+msgstr[1] "Σφάλμα κατά την μεταβίβαση των μηνυμάτων!"
 
 #: recvcmd.c:412
 #, c-format

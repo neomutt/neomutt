@@ -461,7 +461,7 @@ msgstr ""
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Peegelda teade aadressile: "
-msgstr[1] "Peegelda teade aadressile: "
+msgstr[1] "Peegelda märgitud teated aadressile: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -477,21 +477,21 @@ msgstr ""
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Peegelda teade aadressile %s"
-msgstr[1] "Peegelda teade aadressile %s"
+msgstr[1] "Peegelda teated aadressile %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Teade on peegeldatud."
-msgstr[1] "Teade on peegeldatud."
+msgstr[1] "Teated on peegeldatud."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Teade on peegeldatud."
-msgstr[1] "Teade on peegeldatud."
+msgstr[1] "Teated on peegeldatud."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"

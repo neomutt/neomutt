@@ -455,7 +455,7 @@ msgstr "警告: メッセージに From: ヘッダがない"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "メッセージの再送先: "
-msgstr[1] "メッセージの再送先: "
+msgstr[1] "タグ付きメッセージの再送先: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"

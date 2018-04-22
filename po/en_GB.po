@@ -453,7 +453,7 @@ msgstr "Warning: message contains no From: header"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Bounce message to: "
-msgstr[1] "Bounce message to: "
+msgstr[1] "Bounce tagged messages to: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -469,21 +469,21 @@ msgstr "Bad IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Bounce message to %s"
-msgstr[1] "Bounce message to %s"
+msgstr[1] "Bounce messages to %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Message not bounced."
-msgstr[1] "Message not bounced."
+msgstr[1] "Messages not bounced."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Message bounced."
-msgstr[1] "Message bounced."
+msgstr[1] "Messages bounced."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5804,7 +5804,7 @@ msgstr "You may only bounce message/rfc822 parts."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Error bouncing message!"
-msgstr[1] "Error bouncing message!"
+msgstr[1] "Error bouncing messages!"
 
 #: recvcmd.c:412
 #, c-format

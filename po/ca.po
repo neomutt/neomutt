@@ -511,7 +511,7 @@ msgstr "Avís: El missatge no té capçalera «From:»."
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Redirigeix el missatge a: "
-msgstr[1] "Redirigeix el missatge a: "
+msgstr[1] "Redirigeix els missatges marcats a: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -529,21 +529,21 @@ msgstr "L’IDN no és vàlid: %s"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Voleu redirigir el missatge a «%s»"
-msgstr[1] "Voleu redirigir el missatge a «%s»"
+msgstr[1] "Voleu redirigir els missatges a «%s»"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "No s’ha redirigit el missatge."
-msgstr[1] "No s’ha redirigit el missatge."
+msgstr[1] "No s’han redirigit els missatges."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "S’ha redirigit el missatge."
-msgstr[1] "S’ha redirigit el missatge."
+msgstr[1] "S’han redirigit els missatges."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -6217,7 +6217,7 @@ msgstr "Només es poden redirigir parts de tipus «message/rfc822»."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Error en redirigir el missatge."
-msgstr[1] "Error en redirigir el missatge."
+msgstr[1] "Error en redirigir els missatges."
 
 #: recvcmd.c:412
 #, c-format

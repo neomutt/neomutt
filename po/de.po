@@ -460,7 +460,7 @@ msgstr "Warnung: Nachricht enthält keine From: Kopfzeile"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Nachricht neu versenden an: "
-msgstr[1] "Nachricht neu versenden an: "
+msgstr[1] "Markierte Nachrichten neu versenden an: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -476,21 +476,21 @@ msgstr "Ungültige IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Nachricht neu an %s versenden"
-msgstr[1] "Nachricht neu an %s versenden"
+msgstr[1] "Nachrichten neu an %s versenden"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Nachricht nicht neu versandt."
-msgstr[1] "Nachricht nicht neu versandt."
+msgstr[1] "Nachrichten nicht neu versandt."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Nachricht neu versandt."
-msgstr[1] "Nachricht neu versandt."
+msgstr[1] "Nachrichten neu versandt."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5872,7 +5872,7 @@ msgstr "Nur message/rfc822-Anhänge können erneut versendet werden."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Fehler beim Weiterleiten der Nachricht!"
-msgstr[1] "Fehler beim Weiterleiten der Nachricht!"
+msgstr[1] "Fehler beim Weiterleiten der Nachrichten!"
 
 #: recvcmd.c:412
 #, c-format

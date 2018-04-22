@@ -488,7 +488,7 @@ msgstr "Attention : le message ne contient pas d'en-tête From:"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Renvoyer le message à : "
-msgstr[1] "Renvoyer le message à : "
+msgstr[1] "Renvoyer les messages marqués à : "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -505,21 +505,21 @@ msgstr "Mauvais IDN : '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Renvoyer le message à %s"
-msgstr[1] "Renvoyer le message à %s"
+msgstr[1] "Renvoyer les messages à %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Message non renvoyé."
-msgstr[1] "Message non renvoyé."
+msgstr[1] "Messages non renvoyés."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Message renvoyé."
-msgstr[1] "Message renvoyé."
+msgstr[1] "Messages renvoyés."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -6111,7 +6111,7 @@ msgstr "Vous ne pouvez renvoyer que des parties message/rfc822."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Erreur en renvoyant le message !"
-msgstr[1] "Erreur en renvoyant le message !"
+msgstr[1] "Erreur en renvoyant les messages !"
 
 #: recvcmd.c:412
 #, c-format

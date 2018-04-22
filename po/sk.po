@@ -457,8 +457,8 @@ msgstr "Upozornenie: Správa neobsahuje From: hlavičku."
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Presmerovať správu do: "
-msgstr[1] "Presmerovať správu do: "
-msgstr[2] "Presmerovať správu do: "
+msgstr[1] "Presmerovať označené správy do: "
+msgstr[2] "Presmerovať označené správy do: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -474,24 +474,24 @@ msgstr "Zlý IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Presmerovať správu do %s"
-msgstr[1] "Presmerovať správu do %s"
-msgstr[2] "Presmerovať správu do %s"
+msgstr[1] "Presmerovať správy do %s"
+msgstr[2] "Presmerovať správy do %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Správa nebola presmerovaná."
-msgstr[1] "Správa nebola presmerovaná."
-msgstr[2] "Správa nebola presmerovaná."
+msgstr[1] "Správy neboli presmerované."
+msgstr[2] "Správy neboli presmerované."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Správa bola presmerovaná."
-msgstr[1] "Správa bola presmerovaná."
-msgstr[2] "Správa bola presmerovaná."
+msgstr[1] "Správy boli presmerované."
+msgstr[2] "Správy boli presmerované."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"

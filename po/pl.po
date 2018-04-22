@@ -455,8 +455,8 @@ msgstr "Ostrzeżenie: wiadomość nie zawiera pola From: w nagłówku"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Wyślij kopię listu do: "
-msgstr[1] "Wyślij kopię listu do: "
-msgstr[2] "Wyślij kopię listu do: "
+msgstr[1] "Wyślij kopie zaznaczonych listów do: "
+msgstr[2] "Wyślij kopie zaznaczonych listów do: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -472,24 +472,24 @@ msgstr "Błędny IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Wyślij kopię listu do %s"
-msgstr[1] "Wyślij kopię listu do %s"
-msgstr[2] "Wyślij kopię listu do %s"
+msgstr[1] "Wyślij kopie listów do %s"
+msgstr[2] "Wyślij kopie listów do %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Kopia nie została wysłana."
-msgstr[1] "Kopia nie została wysłana."
-msgstr[2] "Kopia nie została wysłana."
+msgstr[1] "Kopie nie zostały wysłane."
+msgstr[2] "Kopie nie zostały wysłane."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Kopia została wysłana."
-msgstr[1] "Kopia została wysłana."
-msgstr[2] "Kopia została wysłana."
+msgstr[1] "Kopie zostały wysłane."
+msgstr[2] "Kopie zostały wysłane."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"

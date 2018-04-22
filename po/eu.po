@@ -456,7 +456,7 @@ msgstr ""
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Mezuak hona errebotatu: "
-msgstr[1] "Mezuak hona errebotatu: "
+msgstr[1] "Markatutako mezuak hona errebotatu: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -472,21 +472,21 @@ msgstr "IDN Okerra: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Mezua %s-ra errebotatu"
-msgstr[1] "Mezua %s-ra errebotatu"
+msgstr[1] "Mezuak %s-ra errebotatu"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Mezua ez da errebotatu."
-msgstr[1] "Mezua ez da errebotatu."
+msgstr[1] "Mezuak ez dira errebotatu."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Mezua errebotaturik."
-msgstr[1] "Mezua errebotaturik."
+msgstr[1] "Mezuak errebotaturik."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5972,7 +5972,7 @@ msgstr "Bakarrik message/rfc822 motako zatiak errebota ditzakezu."
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Errorea mezua errebotatzerakoan!"
-msgstr[1] "Errorea mezua errebotatzerakoan!"
+msgstr[1] "Errorea mezuak errebotatzerakoan!"
 
 #: recvcmd.c:412
 #, c-format

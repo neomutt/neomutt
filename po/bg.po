@@ -469,7 +469,7 @@ msgstr ""
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Препращане на писмото към: "
-msgstr[1] "Препращане на писмото към: "
+msgstr[1] "Препращане на маркираните писма към: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -492,14 +492,14 @@ msgstr[1] "Препращане на писмото към %s"
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Писмото не е препратено."
-msgstr[1] "Писмото не е препратено."
+msgstr[1] "Писмата не са препратени."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Писмото е препратено."
-msgstr[1] "Писмото е препратено."
+msgstr[1] "Писмата са препратени."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -6057,7 +6057,7 @@ msgstr "Може да изпращате отново само message/rfc822 ч
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Грешка при препращане на писмото!"
-msgstr[1] "Грешка при препращане на писмото!"
+msgstr[1] "Грешка при препращане на писмата!"
 
 #: recvcmd.c:412
 #, c-format

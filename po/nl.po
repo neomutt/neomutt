@@ -457,7 +457,7 @@ msgstr "Waarschuwing: bericht bevat geen 'From:'-kopregel"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Bericht doorsturen naar: "
-msgstr[1] "Bericht doorsturen naar: "
+msgstr[1] "Gemarkeerde berichten doorsturen naar: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -473,21 +473,21 @@ msgstr "Ongeldig IDN: '%s'"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Bericht doorsturen aan %s"
-msgstr[1] "Bericht doorsturen aan %s"
+msgstr[1] "Berichten doorsturen aan %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Bericht niet doorgestuurd."
-msgstr[1] "Bericht niet doorgestuurd."
+msgstr[1] "Berichten niet doorgestuurd."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Bericht doorgestuurd."
-msgstr[1] "Bericht doorgestuurd."
+msgstr[1] "Berichten doorgestuurd."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5919,7 +5919,7 @@ msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Er is een fout opgetreden tijdens het doorsturen van het bericht!"
-msgstr[1] "Er is een fout opgetreden tijdens het doorsturen van het bericht!"
+msgstr[1] "Er is een fout opgetreden tijdens het doorsturen van de berichten!"
 
 #: recvcmd.c:412
 #, c-format

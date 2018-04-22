@@ -458,8 +458,8 @@ msgstr "Pozor: zpráva neobsahuje hlavičku From:"
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Zaslat kopii zprávy na: "
-msgstr[1] "Zaslat kopii zprávy na: "
-msgstr[2] "Zaslat kopii zprávy na: "
+msgstr[1] "Zaslat kopii označených zpráv na: "
+msgstr[2] "Zaslat kopii označených zpráv na: "
 
 #: commands.c:303 recvcmd.c:172
 msgid "Error parsing address!"
@@ -475,24 +475,24 @@ msgstr "Chybné IDN: „%s“"
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Zaslat kopii zprávy na %s"
-msgstr[1] "Zaslat kopii zprávy na %s"
-msgstr[2] "Zaslat kopii zprávy na %s"
+msgstr[1] "Zaslat kopii zpráv na %s"
+msgstr[2] "Zaslat kopii zpráv na %s"
 
 #: commands.c:337 recvcmd.c:209
 #, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Kopie zprávy nebyla odeslána."
-msgstr[1] "Kopie zprávy nebyla odeslána."
-msgstr[2] "Kopie zprávy nebyla odeslána."
+msgstr[1] "Kopie zpráv nebyly odeslány."
+msgstr[2] "Kopie zpráv nebyly odeslány."
 
 #: commands.c:347 recvcmd.c:228
 #, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Kopie zprávy byla odeslána."
-msgstr[1] "Kopie zprávy byla odeslána."
-msgstr[2] "Kopie zprávy byla odeslána."
+msgstr[1] "Kopie zpráv byly odeslány."
+msgstr[2] "Kopie zpráv byly odeslány."
 
 #: commands.c:415 commands.c:457 commands.c:477
 msgid "Can't create filter process"
@@ -5859,8 +5859,8 @@ msgstr "Přeposílat v nezměněné podobě lze pouze části typu „message/rf
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Chyba při přeposílání zprávy!"
-msgstr[1] "Chyba při přeposílání zprávy!"
-msgstr[2] "Chyba při přeposílání zprávy!"
+msgstr[1] "Chyba při přeposílání zpráv!"
+msgstr[2] "Chyba při přeposílání zpráv!"
 
 #: recvcmd.c:412
 #, c-format
