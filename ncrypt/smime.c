@@ -453,17 +453,17 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
             case 'e':
             case 'i':
             case 'r':
-              s = _("ID is expired/disabled/revoked.");
+              s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
               break;
             case 'u':
-              s = _("ID has undefined validity.");
+              s = _("ID has undefined validity. Do you really want to use the key?");
               break;
             case 'v':
-              s = _("ID is not trusted.");
+              s = _("ID is not trusted. Do you really want to use the key?");
               break;
           }
 
-          snprintf(buf, sizeof(buf), _("%s Do you really want to use the key?"), s);
+          snprintf(buf, sizeof(buf), "%s", s);
 
           if (mutt_yesorno(buf, MUTT_NO) != MUTT_YES)
           {

@@ -4285,30 +4285,29 @@ static struct CryptKeyInfo *crypt_select_key(struct CryptKeyInfo *keys,
           char buf2[LONG_STRING];
 
           if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
-            warn_s = _("ID is expired/disabled/revoked.");
+            warn_s = _("ID is expired/disabled/revoked. Do you really want to use the key?");
           else
           {
             warn_s = "??";
             switch (key_table[menu->current]->validity)
             {
               case GPGME_VALIDITY_NEVER:
-                warn_s = _("ID is not valid.");
+                warn_s = _("ID is not valid. Do you really want to use the key?");
                 break;
               case GPGME_VALIDITY_MARGINAL:
-                warn_s = _("ID is only marginally valid.");
+                warn_s = _("ID is only marginally valid. Do you really want to use the key?");
                 break;
               case GPGME_VALIDITY_FULL:
               case GPGME_VALIDITY_ULTIMATE:
                 break;
               case GPGME_VALIDITY_UNKNOWN:
               case GPGME_VALIDITY_UNDEFINED:
-                warn_s = _("ID has undefined validity.");
+                warn_s = _("ID has undefined validity. Do you really want to use the key?");
                 break;
             }
           }
 
-          snprintf(buf2, sizeof(buf2),
-                   _("%s Do you really want to use the key?"), warn_s);
+          snprintf(buf2, sizeof(buf2), "%s", warn_s);
 
           if (mutt_yesorno(buf2, 0) != MUTT_YES)
           {
