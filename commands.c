@@ -1057,9 +1057,9 @@ int mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   {
     if (type_changed)
       mutt_sleep(1);
-    mutt_message(_("Character set changed to %s; %s."),
-                 mutt_param_get(&b->parameter, "charset"),
-                 b->noconv ? _("not converting") : _("converting"));
+    mutt_message(b->noconv ? _("Character set changed to %s; not converting.") :
+                             _("Character set changed to %s; converting."),
+                 mutt_param_get(&b->parameter, "charset"));
   }
 
   b->force_charset |= charset_changed ? 1 : 0;
