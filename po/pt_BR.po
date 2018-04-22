@@ -1876,12 +1876,13 @@ msgstr "Remove sinalização"
 #: handler.c:66
 #, fuzzy, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "%s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
+msgstr ""
+"[-- Tipo alternativo #%d: %s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
 
 #: handler.c:70
 #, fuzzy, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "%s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
+msgstr "[-- Tipo: %s/%s%s%s, Codificação: %s, Tamanho: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"

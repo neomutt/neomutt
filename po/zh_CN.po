@@ -1913,12 +1913,12 @@ msgstr "清除标记"
 #: handler.c:66
 #, fuzzy, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 形态:  %s/%s, 编码: %s, 大小: %s --]\n"
+msgstr "[-- 输入另一种 #%d: [-- 形态:  %s/%s, 编码: %s, 大小: %s --]\n"
 
 #: handler.c:70
 #, fuzzy, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- 形态:  %s/%s, 编码: %s, 大小: %s --]\n"
+msgstr "[-- 输入：[-- 形态:  %s/%s, 编码: %s, 大小: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"

@@ -1898,12 +1898,12 @@ msgstr "Bayrağı sil"
 #: handler.c:66
 #, fuzzy, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "%s/%s%s%s, Kodlama: %s, Boyut: %s --]\n"
+msgstr "[-- Alternative Type #%d: %s/%s%s%s, Kodlama: %s, Boyut: %s --]\n"
 
 #: handler.c:70
 #, fuzzy, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "%s/%s%s%s, Kodlama: %s, Boyut: %s --]\n"
+msgstr "[-- Type: %s/%s%s%s, Kodlama: %s, Boyut: %s --]\n"
 
 #: handler.c:1168
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
