@@ -2033,34 +2033,37 @@ msgstr "Fejl: \"multipart/signed\" har ingen \"protocol\"-parameter."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Denne %s/%s-del (på %s bytes) er blevet slettet --]\n"
+msgstr "[-- Dette er et bilag (brug '%3$s' for vise denne brevdel) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(brug '%s' for vise denne brevdel)"
+msgstr ""
+"[-- %s/%s er ikke understøttet (brug '%s' for vise denne brevdel) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' må tildeles en tast!)"
+msgstr "[-- Dette er et bilag ('view-attachments' må tildeles en tast!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' må tildeles en tast!)"
+msgstr ""
+"[-- %s/%s er ikke understøttet ('view-attachments' må tildeles en tast!) "
+"--]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Dette er et bilag "
+msgstr "[-- Dette er et bilag --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s er ikke understøttet "
+msgstr "[-- %s/%s er ikke understøttet --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

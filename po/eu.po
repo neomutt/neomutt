@@ -2064,34 +2064,34 @@ msgstr "Errorea: zati anitzeko sinadurak ez du protokolorik."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[--  %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
+msgstr "[--  %s/%s gehigarri hau ('%3$s' erabili zati hau ikusteko) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "('%s' erabili zati hau ikusteko)"
+msgstr "[-- %s/%s ez da onartzen ('%s' erabili zati hau ikusteko) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(lotu 'view-attachments' tekla bati!)"
+msgstr "[--  %s/%s gehigarri hau (lotu 'view-attachments' tekla bati!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(lotu 'view-attachments' tekla bati!)"
+msgstr "[-- %s/%s ez da onartzen (lotu 'view-attachments' tekla bati!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[--  %s/%s gehigarri hau "
+msgstr "[--  %s/%s gehigarri hau --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s ez da onartzen "
+msgstr "[-- %s/%s ez da onartzen --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

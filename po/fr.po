@@ -2127,37 +2127,43 @@ msgstr "Erreur : multipart/signed n'a pas de protocole."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
+msgstr ""
+"[-- Ceci est un attachement (utilisez '%3$s' pour voir cette partie) --]\n"
 
 # , c-format
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(utilisez '%s' pour voir cette partie)"
+msgstr ""
+"[-- %s/%s n'est pas disponible (utilisez '%s' pour voir cette partie) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
+msgstr ""
+"[-- Ceci est un attachement (la fonction 'view-attachments' doit être "
+"affectée à une touche !) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
+msgstr ""
+"[-- %s/%s n'est pas disponible (la fonction 'view-attachments' doit être "
+"affectée à une touche !) --]\n"
 
 # , c-format
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Ceci est un attachement "
+msgstr "[-- Ceci est un attachement --]\n"
 
 # , c-format
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s n'est pas disponible "
+msgstr "[-- %s/%s n'est pas disponible --]\n"
 
 # , c-format
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102

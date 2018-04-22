@@ -2037,35 +2037,40 @@ msgstr "Chyba: typ 'multipart/signed' bez informace o protokolu"
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr ""
-"[-- Tato příloha typu „%s/%s“ (o velikosti v bajtech: %s) byla smazána --]\n"
+msgstr "[-- Toto je příloha (pro zobrazení této části použijte „%3$s“) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(pro zobrazení této části použijte „%s“)"
+msgstr ""
+"[-- typ '%s/%s' není podporován (pro zobrazení této části použijte „%s“) "
+"--]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(je třeba svázat funkci „view-attachments“ s nějakou klávesou!)"
+msgstr ""
+"[-- Toto je příloha (je třeba svázat funkci „view-attachments“ s nějakou "
+"klávesou!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(je třeba svázat funkci „view-attachments“ s nějakou klávesou!)"
+msgstr ""
+"[-- typ '%s/%s' není podporován (je třeba svázat funkci „view-attachments“ s "
+"nějakou klávesou!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Toto je příloha "
+msgstr "[-- Toto je příloha --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- typ '%s/%s' není podporován "
+msgstr "[-- typ '%s/%s' není podporován --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

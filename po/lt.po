@@ -2085,34 +2085,38 @@ msgstr "Klaida: multipart/signed neturi protokolo."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Šis %s/%s priedas (dydis %s baitų) buvo ištrintas --]\n"
+msgstr "[-- Šis %s/%s priedas (naudok '%3$s' šiai daliai peržiūrėti) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(naudok '%s' šiai daliai peržiūrėti)"
+msgstr "[-- %s/%s yra nepalaikomas (naudok '%s' šiai daliai peržiūrėti) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' turi būti susietas su klavišu!)"
+msgstr ""
+"[-- Šis %s/%s priedas ('view-attachments' turi būti susietas su klavišu!) "
+"--]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' turi būti susietas su klavišu!)"
+msgstr ""
+"[-- %s/%s yra nepalaikomas ('view-attachments' turi būti susietas su "
+"klavišu!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Šis %s/%s priedas "
+msgstr "[-- Šis %s/%s priedas --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s yra nepalaikomas "
+msgstr "[-- %s/%s yra nepalaikomas --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

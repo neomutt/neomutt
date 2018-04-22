@@ -2074,34 +2074,34 @@ msgstr "오류: multipart/signed 프로토콜이 없음."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[ -- %s/%s 첨부물 (크기: %s 바이트) 삭제 되었음 --]\n"
+msgstr "[ -- %s/%s 첨부물 ('%3$s' 키: 부분 보기) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "('%s' 키: 부분 보기)"
+msgstr "[-- '%s/%s'는 지원되지 않음 ('%s' 키: 부분 보기) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "('첨부물 보기' 글쇠 정의가 필요함!)"
+msgstr "[ -- %s/%s 첨부물 ('첨부물 보기' 글쇠 정의가 필요함!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "('첨부물 보기' 글쇠 정의가 필요함!)"
+msgstr "[-- '%s/%s'는 지원되지 않음 ('첨부물 보기' 글쇠 정의가 필요함!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[ -- %s/%s 첨부물 "
+msgstr "[ -- %s/%s 첨부물 --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- '%s/%s'는 지원되지 않음 "
+msgstr "[-- '%s/%s'는 지원되지 않음 --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

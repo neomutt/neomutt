@@ -2025,34 +2025,41 @@ msgstr "Fehler: multipart/signed ohne \"protocol\"-Parameter."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Dieser %s/%s-Anhang (Größe %s Byte) wurde gelöscht --]\n"
+msgstr ""
+"[-- Dies ist ein Anhang ('%3$s' benutzen, um diesen Teil anzuzeigen) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "('%s' benutzen, um diesen Teil anzuzeigen)"
+msgstr ""
+"[-- %s/%s wird nicht unterstützt ('%s' benutzen, um diesen Teil anzuzeigen) "
+"--]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(Tastaturbindung für 'view-attachments' benötigt!)"
+msgstr ""
+"[-- Dies ist ein Anhang (Tastaturbindung für 'view-attachments' benötigt!) "
+"--]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(Tastaturbindung für 'view-attachments' benötigt!)"
+msgstr ""
+"[-- %s/%s wird nicht unterstützt (Tastaturbindung für 'view-attachments' "
+"benötigt!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Dies ist ein Anhang "
+msgstr "[-- Dies ist ein Anhang --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s wird nicht unterstützt "
+msgstr "[-- %s/%s wird nicht unterstützt --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

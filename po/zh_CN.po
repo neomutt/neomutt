@@ -2053,34 +2053,34 @@ msgstr "错误：multipart/signed 没有协议。"
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- 此 %s/%s 附件 (大小 %s 字节) 已经被删除 --]\n"
+msgstr "[-- 这是一个附件 (使用 '%3$s' 来显示这部份) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(使用 '%s' 来显示这部份)"
+msgstr "[-- %s/%s 尚未支持 (使用 '%s' 来显示这部份) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(需要将 'view-attachments' 绑定到键！)"
+msgstr "[-- 这是一个附件 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(需要将 'view-attachments' 绑定到键！)"
+msgstr "[-- %s/%s 尚未支持 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- 这是一个附件 "
+msgstr "[-- 这是一个附件 --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s 尚未支持 "
+msgstr "[-- %s/%s 尚未支持 --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

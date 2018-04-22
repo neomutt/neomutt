@@ -2057,34 +2057,38 @@ msgstr "Error: multipart/signed tidak punya protokol."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Lampiran %s/%s ini (ukuran %s bytes) telah dihapus --]\n"
+msgstr "[-- Lampiran %s/%s ini (gunakan '%3$s' untuk melihat bagian ini) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(gunakan '%s' untuk melihat bagian ini)"
+msgstr "[-- %s/%s tidak didukung (gunakan '%s' untuk melihat bagian ini) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(tombol untuk 'view-attachments' belum ditentukan!)"
+msgstr ""
+"[-- Lampiran %s/%s ini (tombol untuk 'view-attachments' belum ditentukan!) "
+"--]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(tombol untuk 'view-attachments' belum ditentukan!)"
+msgstr ""
+"[-- %s/%s tidak didukung (tombol untuk 'view-attachments' belum ditentukan!) "
+"--]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Lampiran %s/%s ini "
+msgstr "[-- Lampiran %s/%s ini --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s tidak didukung "
+msgstr "[-- %s/%s tidak didukung --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

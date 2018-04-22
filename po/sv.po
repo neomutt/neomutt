@@ -2064,34 +2064,38 @@ msgstr "Fel: \"multipart/signed\" har inget protokoll."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Den här %s/%s bilagan (storlek %s byte)har raderats --]\n"
+msgstr ""
+"[-- Den här %s/%s bilagan (använd \"%3$s\" för att visa den här delen) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(använd \"%s\" för att visa den här delen)"
+msgstr "[-- %s/%s stöds inte (använd \"%s\" för att visa den här delen) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(\"view-attachments\" måste knytas till tangent!)"
+msgstr ""
+"[-- Den här %s/%s bilagan (\"view-attachments\" måste knytas till tangent!) "
+"--]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(\"view-attachments\" måste knytas till tangent!)"
+msgstr ""
+"[-- %s/%s stöds inte (\"view-attachments\" måste knytas till tangent!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Den här %s/%s bilagan "
+msgstr "[-- Den här %s/%s bilagan --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s stöds inte "
+msgstr "[-- %s/%s stöds inte --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

@@ -2037,34 +2037,38 @@ msgstr "エラー: multipart/signed にプロトコルがない。"
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- この %s/%s 形式添付ファイル(%s バイト)は削除済み --]\n"
+msgstr "[-- 添付ファイル (このパートを表示するには '%3$s' を使用) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(このパートを表示するには '%s' を使用)"
+msgstr ""
+"[-- %s/%s 形式は未サポート (このパートを表示するには '%s' を使用) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(キーに 'view-attachments' を割り当てる必要がある!)"
+msgstr ""
+"[-- 添付ファイル (キーに 'view-attachments' を割り当てる必要がある!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(キーに 'view-attachments' を割り当てる必要がある!)"
+msgstr ""
+"[-- %s/%s 形式は未サポート (キーに 'view-attachments' を割り当てる必要があ"
+"る!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- 添付ファイル "
+msgstr "[-- 添付ファイル --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s 形式は未サポート "
+msgstr "[-- %s/%s 形式は未サポート --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

@@ -2040,34 +2040,39 @@ msgstr "Hata: \"multipart/signed\"e ait bir protokol yok."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Bu %s/%s eki(boyut %s bayt) silindi --]\n"
+msgstr "[-- Bu bir ek ('%3$s' ile bu bölümü görüntüleyebilirsiniz) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "('%s' ile bu bölümü görüntüleyebilirsiniz)"
+msgstr ""
+"[-- %s/%s desteklenmiyor ('%s' ile bu bölümü görüntüleyebilirsiniz) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' komutunun bir tuşa atanması gerekiyor!)"
+msgstr ""
+"[-- Bu bir ek ('view-attachments' komutunun bir tuşa atanması gerekiyor!) "
+"--]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' komutunun bir tuşa atanması gerekiyor!)"
+msgstr ""
+"[-- %s/%s desteklenmiyor ('view-attachments' komutunun bir tuşa atanması "
+"gerekiyor!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Bu bir ek "
+msgstr "[-- Bu bir ek --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s desteklenmiyor "
+msgstr "[-- %s/%s desteklenmiyor --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

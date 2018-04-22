@@ -2165,38 +2165,40 @@ msgstr "Error: La part «multipart/signed» no té paràmetre «protocol»."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr ""
-"[-- Aquesta adjunció de tipus «%s/%s» --]\n"
-"[-- (amb mida %s octets) ha estat esborrada --]\n"
+msgstr "[-- Açò és una adjunció. (Useu «%3$s» per a veure aquesta part.) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr " (Useu «%s» per a veure aquesta part.)"
+msgstr ""
+"[-- No es pot mostrar «%s/%s». (Useu «%s» per a veure aquesta part.) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr " (Vinculeu «view-attachents» a una tecla.)"
+msgstr ""
+"[-- Açò és una adjunció. (Vinculeu «view-attachents» a una tecla.) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr " (Vinculeu «view-attachents» a una tecla.)"
+msgstr ""
+"[-- No es pot mostrar «%s/%s». (Vinculeu «view-attachents» a una tecla.) "
+"--]\n"
 
 # Es concatenen amb una o cap de les següents i en acabant « --]».  ivb
 # Sí, la concatenació original està malament.  ivb
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Açò és una adjunció."
+msgstr "[-- Açò és una adjunció. --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- No es pot mostrar «%s/%s»."
+msgstr "[-- No es pot mostrar «%s/%s». --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

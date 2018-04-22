@@ -2041,34 +2041,41 @@ msgstr "Fout: multipart/signed zonder protocol-parameter."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Deze %s/%s bijlage (grootte %s bytes) werd gewist --]\n"
+msgstr ""
+"[-- Dit is een bijlage (gebruik '%3$s' om dit gedeelte weer te geven) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(gebruik '%s' om dit gedeelte weer te geven)"
+msgstr ""
+"[-- %s/%s wordt niet ondersteund (gebruik '%s' om dit gedeelte weer te "
+"geven) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' moet aan een toets gekoppeld zijn!)"
+msgstr ""
+"[-- Dit is een bijlage ('view-attachments' moet aan een toets gekoppeld "
+"zijn!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' moet aan een toets gekoppeld zijn!)"
+msgstr ""
+"[-- %s/%s wordt niet ondersteund ('view-attachments' moet aan een toets "
+"gekoppeld zijn!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Dit is een bijlage "
+msgstr "[-- Dit is een bijlage --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s wordt niet ondersteund "
+msgstr "[-- %s/%s wordt niet ondersteund --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

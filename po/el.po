@@ -2104,34 +2104,42 @@ msgstr "Σφάλμα: το πολυμερές/υπογεγραμμένο δεν 
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
+msgstr ""
+"[-- Αυτή η %s/%s προσάρτηση (χρησιμοποιήστε το '%3$s' για να δείτε αυτό το "
+"μέρος) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(χρησιμοποιήστε το '%s' για να δείτε αυτό το μέρος)"
+msgstr ""
+"[-- Το %s/%s δεν υποστηρίζεται (χρησιμοποιήστε το '%s' για να δείτε αυτό το "
+"μέρος) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(απαιτείται το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
+msgstr ""
+"[-- Αυτή η %s/%s προσάρτηση (απαιτείται το 'view-attachments' να είναι "
+"συνδεδεμένο με πλήκτρο! --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(απαιτείται το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
+msgstr ""
+"[-- Το %s/%s δεν υποστηρίζεται (απαιτείται το 'view-attachments' να είναι "
+"συνδεδεμένο με πλήκτρο! --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση "
+msgstr "[-- Αυτή η %s/%s προσάρτηση --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- Το %s/%s δεν υποστηρίζεται "
+msgstr "[-- Το %s/%s δεν υποστηρίζεται --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

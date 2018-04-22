@@ -2105,34 +2105,38 @@ msgstr "Erro: multipart/signed non ten protocolo."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Este adxunto %s/%s (tamaño %s bytes) foi borrado --]\n"
+msgstr "[-- Este adxunto %s/%s (use '%3$s' para ver esta parte) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(use '%s' para ver esta parte)"
+msgstr "[-- %s/%s non está soportado (use '%s' para ver esta parte) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(cómpre que 'view-attachments' esté vinculado a unha tecla!)"
+msgstr ""
+"[-- Este adxunto %s/%s (cómpre que 'view-attachments' esté vinculado a unha "
+"tecla!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(cómpre que 'view-attachments' esté vinculado a unha tecla!)"
+msgstr ""
+"[-- %s/%s non está soportado (cómpre que 'view-attachments' esté vinculado a "
+"unha tecla!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Este adxunto %s/%s "
+msgstr "[-- Este adxunto %s/%s --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s non está soportado "
+msgstr "[-- %s/%s non está soportado --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

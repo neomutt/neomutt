@@ -2060,34 +2060,40 @@ msgstr "Ошибка: тип multipart/signed требует наличия па
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Это вложение типа %s/%s (размер %s байтов) было удалено --]\n"
+msgstr "[-- Это вложение (используйте \"%3$s\" для просмотра этой части) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(используйте \"%s\" для просмотра этой части)"
+msgstr ""
+"[-- тип %s/%s не поддерживается (используйте \"%s\" для просмотра этой "
+"части) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(функция view-attachments не назначена ни одной клавише!)"
+msgstr ""
+"[-- Это вложение (функция view-attachments не назначена ни одной клавише!) "
+"--]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(функция view-attachments не назначена ни одной клавише!)"
+msgstr ""
+"[-- тип %s/%s не поддерживается (функция view-attachments не назначена ни "
+"одной клавише!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Это вложение "
+msgstr "[-- Это вложение --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- тип %s/%s не поддерживается "
+msgstr "[-- тип %s/%s не поддерживается --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

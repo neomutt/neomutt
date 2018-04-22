@@ -2097,34 +2097,42 @@ msgstr "Hiba: a többrészes/aláírt részhez nincs protokoll megadva."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Ez a %s/%s melléklet (mérete %s bájt) törölve lett --]\n"
+msgstr ""
+"[-- Ez a %s/%s melléklet (E rész megjelenítéséhez használja a(z) '%3$s'-t) "
+"--]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(E rész megjelenítéséhez használja a(z) '%s'-t)"
+msgstr ""
+"[-- %s/%s nincs támogatva (E rész megjelenítéséhez használja a(z) '%s'-t) "
+"--]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(a mellélet megtekintéshez billentyű lenyomás szükséges!)"
+msgstr ""
+"[-- Ez a %s/%s melléklet (a mellélet megtekintéshez billentyű lenyomás "
+"szükséges!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(a mellélet megtekintéshez billentyű lenyomás szükséges!)"
+msgstr ""
+"[-- %s/%s nincs támogatva (a mellélet megtekintéshez billentyű lenyomás "
+"szükséges!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Ez a %s/%s melléklet "
+msgstr "[-- Ez a %s/%s melléklet --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s nincs támogatva "
+msgstr "[-- %s/%s nincs támogatva --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

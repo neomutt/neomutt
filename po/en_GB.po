@@ -2009,34 +2009,35 @@ msgstr "Error: multipart/signed has no protocol."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
+msgstr "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(use '%s' to view this part)"
+msgstr "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(need 'view-attachments' bound to key!)"
+msgstr ""
+"[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(need 'view-attachments' bound to key!)"
+msgstr "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- This is an attachment "
+msgstr "[-- This is an attachment --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s is unsupported "
+msgstr "[-- %s/%s is unsupported --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

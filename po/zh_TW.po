@@ -2087,34 +2087,36 @@ msgstr "錯誤：multipart/signed 沒有通訊協定。"
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- 這個 %s/%s 附件 (%s 個位元組) 已經被刪除了 --]\n"
+msgstr "[-- 這個 %s/%s 附件 （按 '%3$s' 來顯示這部份） --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "（按 '%s' 來顯示這部份）"
+msgstr "[-- %s/%s 尚未支援 （按 '%s' 來顯示這部份） --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "（需要定義一個鍵給 'view-attachments' 來瀏覽附件！)"
+msgstr ""
+"[-- 這個 %s/%s 附件 （需要定義一個鍵給 'view-attachments' 來瀏覽附件！) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "（需要定義一個鍵給 'view-attachments' 來瀏覽附件！)"
+msgstr ""
+"[-- %s/%s 尚未支援 （需要定義一個鍵給 'view-attachments' 來瀏覽附件！) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- 這個 %s/%s 附件 "
+msgstr "[-- 這個 %s/%s 附件 --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s 尚未支援 "
+msgstr "[-- %s/%s 尚未支援 --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

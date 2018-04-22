@@ -2119,34 +2119,42 @@ msgstr "Earráid: Níl aon phrótacal le haghaidh multipart/signed."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- Bhí an t-iatán seo %s/%s (méid %s beart) scriosta --]\n"
+msgstr ""
+"[-- Bhí an t-iatán seo %s/%s (bain úsáid as '%3$s' chun na páirte seo a "
+"fheiceáil) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(bain úsáid as '%s' chun na páirte seo a fheiceáil)"
+msgstr ""
+"[-- %s/%s gan tacaíocht (bain úsáid as '%s' chun na páirte seo a fheiceáil) "
+"--]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(ní foláir 'view-attachments' a cheangal le heochair!)"
+msgstr ""
+"[-- Bhí an t-iatán seo %s/%s (ní foláir 'view-attachments' a cheangal le "
+"heochair!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(ní foláir 'view-attachments' a cheangal le heochair!)"
+msgstr ""
+"[-- %s/%s gan tacaíocht (ní foláir 'view-attachments' a cheangal le "
+"heochair!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- Bhí an t-iatán seo %s/%s "
+msgstr "[-- Bhí an t-iatán seo %s/%s --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s gan tacaíocht "
+msgstr "[-- %s/%s gan tacaíocht --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

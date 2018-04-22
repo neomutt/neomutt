@@ -2036,35 +2036,38 @@ msgstr "Błąd: multipart/signed nie ma protokołu."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr ""
-"[-- Ten załącznik typu %s/%s (o wielkości %s bajtów) został usunięty --]\n"
+msgstr "[-- To jest załącznik (użyj '%3$s' do oglądania tego fragmentu) --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(użyj '%s' do oglądania tego fragmentu)"
+msgstr ""
+"[-- typ %s/%s nie jest obsługiwany (użyj '%s' do oglądania tego fragmentu) "
+"--]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "(przypisz 'view-attachments' do klawisza!)"
+msgstr "[-- To jest załącznik (przypisz 'view-attachments' do klawisza!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "(przypisz 'view-attachments' do klawisza!)"
+msgstr ""
+"[-- typ %s/%s nie jest obsługiwany (przypisz 'view-attachments' do "
+"klawisza!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- To jest załącznik "
+msgstr "[-- To jest załącznik --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- typ %s/%s nie jest obsługiwany "
+msgstr "[-- typ %s/%s nie jest obsługiwany --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format

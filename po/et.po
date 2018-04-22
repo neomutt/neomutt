@@ -2091,34 +2091,36 @@ msgstr "Viga: multipart/signed teatel puudub protokoll."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "[-- See %s/%s lisa (maht %s baiti) on kustutatud --]\n"
+msgstr "[-- See %s/%s lisa (selle osa vaatamiseks kasutage '%3$s') --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
-msgstr "(selle osa vaatamiseks kasutage '%s')"
+msgstr "[-- %s/%s ei toetata (selle osa vaatamiseks kasutage '%s') --]\n"
 
 #: handler.c:1985
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' peab olema klahviga seotud!)"
+msgstr ""
+"[-- See %s/%s lisa ('view-attachments' peab olema klahviga seotud!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
-msgstr "('view-attachments' peab olema klahviga seotud!)"
+msgstr ""
+"[-- %s/%s ei toetata ('view-attachments' peab olema klahviga seotud!) --]\n"
 
 #: handler.c:1996
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[-- See %s/%s lisa "
+msgstr "[-- See %s/%s lisa --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
 #, fuzzy, c-format
 msgid "[-- %s/%s is unsupported --]\n"
-msgstr "[-- %s/%s ei toetata "
+msgstr "[-- %s/%s ei toetata --]\n"
 
 #: hcache/hcache.c:693 main.c:655 newsrc.c:1102
 #, c-format
