@@ -1084,29 +1084,26 @@ int mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st)
   return chmod(path, st->st_mode & ~mode);
 }
 
+#if defined(USE_FCNTL)
 /**
- * mutt_file_lock - (try to) lock a file
+ * mutt_file_lock - (try to) lock a file using fcntl()
  * @param fd      File descriptor to file
  * @param excl    If set, try to lock exclusively
  * @param timeout Retry after this time
  * @retval  0 Success
  * @retval -1 Failure
  *
- * The type of file locking depends on how NeoMutt was compiled.
- * It could use fcntl() or flock() to perform the locking.
+ * Use fcntl() to lock a file.
  *
  * Use mutt_file_unlock() to unlock the file.
  */
 int mutt_file_lock(int fd, int excl, int timeout)
 {
-#if defined(USE_FCNTL) || defined(USE_FLOCK)
   int count;
   int attempt;
   struct stat sb = { 0 }, prev_sb = { 0 };
-#endif
   int r = 0;
 
-#ifdef USE_FCNTL
   struct flock lck;
 
   memset(&lck, 0, sizeof(struct flock));
@@ -1143,9 +1140,53 @@ int mutt_file_lock(int fd, int excl, int timeout)
     mutt_message(_("Waiting for fcntl lock... %d"), ++attempt);
     sleep(1);
   }
-#endif /* USE_FCNTL */
 
-#ifdef USE_FLOCK
+  /* release any other locks obtained in this routine */
+  if (r != 0)
+  {
+    lck.l_type = F_UNLCK;
+    fcntl(fd, F_SETLK, &lck);
+  }
+
+  return r;
+}
+
+/**
+ * mutt_file_unlock - Unlock a file previously locked by mutt_file_lock()
+ * @param fd File descriptor to file
+ * @retval 0 Always
+ */
+int mutt_file_unlock(int fd)
+{
+  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
+
+  memset(&unlockit, 0, sizeof(struct flock));
+  unlockit.l_type = F_UNLCK;
+  unlockit.l_whence = SEEK_SET;
+  fcntl(fd, F_SETLK, &unlockit);
+
+  return 0;
+}
+#elif defined(USE_FLOCK)
+/**
+ * mutt_file_lock - (try to) lock a file using flock()
+ * @param fd      File descriptor to file
+ * @param excl    If set, try to lock exclusively
+ * @param timeout Retry after this time
+ * @retval  0 Success
+ * @retval -1 Failure
+ *
+ * Use flock() to lock a file.
+ *
+ * Use mutt_file_unlock() to unlock the file.
+ */
+int mutt_file_lock(int fd, int excl, int timeout)
+{
+  int count;
+  int attempt;
+  struct stat sb = { 0 }, prev_sb = { 0 };
+  int r = 0;
+
   count = 0;
   attempt = 0;
   while (flock(fd, (excl ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
@@ -1177,19 +1218,11 @@ int mutt_file_lock(int fd, int excl, int timeout)
     mutt_message(_("Waiting for flock attempt... %d"), ++attempt);
     sleep(1);
   }
-#endif /* USE_FLOCK */
 
   /* release any other locks obtained in this routine */
   if (r != 0)
   {
-#ifdef USE_FCNTL
-    lck.l_type = F_UNLCK;
-    fcntl(fd, F_SETLK, &lck);
-#endif /* USE_FCNTL */
-
-#ifdef USE_FLOCK
     flock(fd, LOCK_UN);
-#endif /* USE_FLOCK */
   }
 
   return r;
@@ -1202,21 +1235,12 @@ int mutt_file_lock(int fd, int excl, int timeout)
  */
 int mutt_file_unlock(int fd)
 {
-#ifdef USE_FCNTL
-  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
-
-  memset(&unlockit, 0, sizeof(struct flock));
-  unlockit.l_type = F_UNLCK;
-  unlockit.l_whence = SEEK_SET;
-  fcntl(fd, F_SETLK, &unlockit);
-#endif
-
-#ifdef USE_FLOCK
   flock(fd, LOCK_UN);
-#endif
-
   return 0;
 }
+#else
+#error "You must select a locking mechanism via USE_FCNTL or USE_FLOCK"
+#endif
 
 /**
  * mutt_file_unlink_empty - Delete a file if it's empty

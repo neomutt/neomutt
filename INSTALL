@@ -42,6 +42,12 @@ to ``configure'' to help it out, or change the default behavior:
 	will automatically look in /usr/include/ncurses for the include
 	files.
 
+--with-lock=(fcntl | flock)
+
+	select between fcntl() and flock() for file locking. Neomutt will
+	use fcntl() by default, but this can result in poor performance 
+	on NFS.
+
 --with-slang[=DIR]
 	use the S-Lang library instead of ncurses.  This library seems to
 	work better for some people because it is less picky about proper
@@ -81,13 +87,6 @@ to ``configure'' to help it out, or change the default behavior:
 
 --disable-nls
 	This switch disables neomutt's native language support.
-
---enable-flock
-	use flock() to lock files.
-
---disable-fcntl
-	by default, NeoMutt uses fcntl() to lock files.  Over NFS this can
-	result in poor performance on read/write.
 
 --enable-locales-fix
 	on some systems, the result of isprint() can't be used reliably

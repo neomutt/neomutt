@@ -32,8 +32,7 @@ options {
   doc=1                     => "Disable building the documentation"
   full-doc=0                => "Build the full documentation set"
   docdir:path               => "Documentation root"
-  flock=0                   => "Use flock() to lock files"
-  fcntl=1                   => "Do NOT use fcntl() to lock files"
+  with-lock:=fcntl          => "Select fcntl() or flock() to lock files"
   fmemopen=0                => "Use fmemopen() for temporary in-memory files"
   locales-fix=0             => "Enable locales fix"
   pgp=1                     => "Disable PGP support"
@@ -101,7 +100,7 @@ options {
 if {1} {
   # Keep sorted, please.
   foreach opt {
-    bdb doc everything fcntl flock fmemopen full-doc gdbm gnutls gpgme gss
+    bdb doc everything fmemopen full-doc gdbm gnutls gpgme gss
     homespool idn idn2 kyotocabinet lmdb locales-fix lua mixmaster nls
     notmuch pgp qdbm sasl smime ssl tokyocabinet
   } {
@@ -313,12 +312,21 @@ if {[get-define want-everything]} {
 }
 
 ###############################################################################
-# flock(1)
-if {[get-define want-flock]} {define USE_FLOCK}
+# Locking
+switch [opt-val with-lock fcntl] {
+  fcntl {
+    define USE_FCNTL
+  }
 
-###############################################################################
-# fcntl(1)
-if {[get-define want-fcntl]} {define USE_FCNTL}
+  flock {
+    define USE_FLOCK
+  }
+
+  default {
+    user-error "Invalid value for --with-lock=[opt-val with-lock], select fcntl\
+                or flock"
+  }
+}
 
 ###############################################################################
 # Locales fix

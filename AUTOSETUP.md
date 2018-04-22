@@ -55,7 +55,6 @@ section (it's actually a proc under the hood):
 ```
 options {
    smime=1                    => "Disable S/Mime"
-   flock=0                    => "Enable flock(1)"
    gpgme=0                    => "Enable GPGME"
    with-gpgme:path            => "Location of GPGME"
    with-mailpath:=/var/mail   => "Location of the spool mailboxes"
@@ -64,7 +63,7 @@ options {
 
 A user can configure the build to suit his needs by modifying the default
 values, e.g.,
-`./configure --disable-smime --enable-flock --gpgme --with-gpgme=/usr/local`.
+`./configure --disable-smime --gpgme --with-gpgme=/usr/local`.
 
 Within `auto.def`, option can be easily queried with `[opt-bool smime]` and
 `[opt-val with-gpgme $prefix]`, with the latter using `$prefix` if not value
