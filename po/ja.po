@@ -605,12 +605,12 @@ msgstr "Content-Typeを %s に変更した。"
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "文字セットを %s に変更した; %s。"
+msgstr "文字セットを %s に変更した; 変換なし。"
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "文字セットを %s に変更した; %s。"
+msgstr "文字セットを %s に変更した; 変換あり。"
 
 #: compose.c:62
 msgid "There are no attachments."

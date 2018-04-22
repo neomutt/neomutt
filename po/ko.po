@@ -602,12 +602,12 @@ msgstr "%s로 Content-Type이 바뀜."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "문자셋이 %s에서 %s로 바뀜."
+msgstr "문자셋이 %s에서 변환하지 않음로 바뀜."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "문자셋이 %s에서 %s로 바뀜."
+msgstr "문자셋이 %s에서 변환중로 바뀜."
 
 #: compose.c:62
 msgid "There are no attachments."

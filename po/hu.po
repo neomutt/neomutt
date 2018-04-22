@@ -617,12 +617,12 @@ msgstr "Tartalom-típus megváltoztatva %s-ra."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Karakterkészlet beállítva: %s; %s."
+msgstr "Karakterkészlet beállítva: %s; nem alakítom át."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Karakterkészlet beállítva: %s; %s."
+msgstr "Karakterkészlet beállítva: %s; átalakítom."
 
 #: compose.c:62
 msgid "There are no attachments."

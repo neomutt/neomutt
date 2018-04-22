@@ -601,12 +601,12 @@ msgstr "内容类型(Content-Type)改变为 %s。"
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "字符集改变为 %s；%s。"
+msgstr "字符集改变为 %s；不进行转换。"
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "字符集改变为 %s；%s。"
+msgstr "字符集改变为 %s；正在转换。"
 
 #: compose.c:62
 msgid "There are no attachments."

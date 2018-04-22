@@ -621,12 +621,12 @@ msgstr "Content-Type pakeistas į %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Koduotė pakeista į %s %s."
+msgstr "Koduotė pakeista į %s neperkoduojant."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Koduotė pakeista į %s %s."
+msgstr "Koduotė pakeista į %s perkoduojant."
 
 #: compose.c:62
 msgid "There are no attachments."

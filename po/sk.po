@@ -625,12 +625,12 @@ msgstr "Položka 'Content-Type' zmenená na %s..."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Znaková sada zmenená na %s; %s."
+msgstr "Znaková sada zmenená na %s; neprevádzam."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Znaková sada zmenená na %s; %s."
+msgstr "Znaková sada zmenená na %s; prevádzam."
 
 #: compose.c:62
 msgid "There are no attachments."

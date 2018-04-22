@@ -609,12 +609,12 @@ msgstr "Content-Type is veranderd naar %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Tekenset is veranderd naar %s; %s."
+msgstr "Tekenset is veranderd naar %s; niet converteren."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Tekenset is veranderd naar %s; %s."
+msgstr "Tekenset is veranderd naar %s; converteren."
 
 #: compose.c:62
 msgid "There are no attachments."

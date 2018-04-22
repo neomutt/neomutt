@@ -609,12 +609,12 @@ msgstr "\"Content-Type\" ændret til %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Tegnsæt ændret til %s; %s."
+msgstr "Tegnsæt ændret til %s; omdanner ikke."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Tegnsæt ændret til %s; %s."
+msgstr "Tegnsæt ændret til %s; omdanner."
 
 #: compose.c:62
 msgid "There are no attachments."

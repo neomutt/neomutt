@@ -614,12 +614,12 @@ msgstr "Sisu tüübiks on nüüd %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Kooditabeliks on nüüd %s; %s."
+msgstr "Kooditabeliks on nüüd %s; ei teisenda."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Kooditabeliks on nüüd %s; %s."
+msgstr "Kooditabeliks on nüüd %s; teisendan."
 
 #: compose.c:62
 msgid "There are no attachments."

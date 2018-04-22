@@ -655,12 +655,12 @@ msgstr "Athraíodh Content-Type go %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Athraíodh an tacar carachtar go %s; %s."
+msgstr "Athraíodh an tacar carachtar go %s; gan tiontú."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Athraíodh an tacar carachtar go %s; %s."
+msgstr "Athraíodh an tacar carachtar go %s; á tiontú."
 
 #: compose.c:62
 msgid "There are no attachments."

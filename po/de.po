@@ -612,12 +612,12 @@ msgstr "Content-Type in %s abgeändert."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Zeichensatz in %s abgeändert; %s."
+msgstr "Zeichensatz in %s abgeändert; nicht konvertiert."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Zeichensatz in %s abgeändert; %s."
+msgstr "Zeichensatz in %s abgeändert; konvertiert."
 
 #: compose.c:62
 msgid "There are no attachments."

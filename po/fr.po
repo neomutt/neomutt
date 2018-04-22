@@ -649,12 +649,12 @@ msgstr "Content-Type changé à %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Jeu de caractères changé à %s ; %s."
+msgstr "Jeu de caractères changé à %s ; pas de conversion."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Jeu de caractères changé à %s ; %s."
+msgstr "Jeu de caractères changé à %s ; conversion."
 
 #: compose.c:62
 msgid "There are no attachments."

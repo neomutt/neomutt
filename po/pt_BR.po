@@ -607,12 +607,12 @@ msgstr "Tipo de conteúdo (Content-Type) alterado para %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Conjunto de caracteres alterado para %s; %s."
+msgstr "Conjunto de caracteres alterado para %s; não convertendo."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Conjunto de caracteres alterado para %s; %s."
+msgstr "Conjunto de caracteres alterado para %s; convertendo."
 
 #: compose.c:62
 msgid "There are no attachments."

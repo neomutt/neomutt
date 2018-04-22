@@ -630,12 +630,12 @@ msgstr "Значение Content-Type изменено на %s."
 #: commands.c:1060
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting."
-msgstr "Установлена новая кодировка: %s; %s."
+msgstr "Установлена новая кодировка: %s; не перекодировать."
 
 #: commands.c:1061
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting."
-msgstr "Установлена новая кодировка: %s; %s."
+msgstr "Установлена новая кодировка: %s; перекодировать."
 
 #: compose.c:62
 msgid "There are no attachments."
