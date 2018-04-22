@@ -2019,7 +2019,9 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
+msgstr ""
+"[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
+"[-- στις %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2028,7 +2030,7 @@ msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνε
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
+msgstr "[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2043,7 +2045,9 @@ msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνε
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
+msgstr ""
+"[-- Αυτή η %s/%s προσάρτηση έχει διαγραφεί --]\n"
+"[-- στις %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2052,7 +2056,7 @@ msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνε
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
+msgstr "[-- Αυτή η %s/%s προσάρτηση έχει διαγραφεί --]\n"
 
 #: handler.c:1559
 #, c-format
@@ -2097,7 +2101,7 @@ msgstr "Σφάλμα: το πολυμερές/υπογεγραμμένο δεν 
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(χρησιμοποιήστε το '%s' για να δείτε αυτό το μέρος)"
+msgstr "[-- Αυτή η %s/%s προσάρτηση (μέγεθος %s bytes) έχει διαγραφεί --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format

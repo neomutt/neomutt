@@ -2021,7 +2021,9 @@ msgstr "[-- Erro: mensaxe/corpo externo non ten parámetro \"access-type\"--]\n"
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Este adxunto %s/%s "
+msgstr ""
+"[-- Este adxunto %s/%s (tamaño %s bytes) foi borrado --]\n"
+"[-- o %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2030,7 +2032,7 @@ msgstr "[-- Este adxunto %s/%s "
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Este adxunto %s/%s "
+msgstr "[-- Este adxunto %s/%s (tamaño %s bytes) foi borrado --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2045,7 +2047,9 @@ msgstr "[-- Este adxunto %s/%s "
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Este adxunto %s/%s "
+msgstr ""
+"[-- Este adxunto %s/%s foi borrado --]\n"
+"[-- o %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2054,7 +2058,7 @@ msgstr "[-- Este adxunto %s/%s "
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Este adxunto %s/%s "
+msgstr "[-- Este adxunto %s/%s foi borrado --]\n"
 
 #: handler.c:1559
 #, c-format
@@ -2101,7 +2105,7 @@ msgstr "Erro: multipart/signed non ten protocolo."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(use '%s' para ver esta parte)"
+msgstr "[-- Este adxunto %s/%s (tamaño %s bytes) foi borrado --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format

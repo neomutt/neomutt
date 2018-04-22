@@ -1965,7 +1965,9 @@ msgstr "[-- Помилка: message/external-body не має параметру
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Цей %s/%s додаток не включено, --]\n"
+msgstr ""
+"[-- Цей %s/%s додаток (розм. %s байт) було видалено --]\n"
+"[-- %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1974,7 +1976,7 @@ msgstr "[-- Цей %s/%s додаток не включено, --]\n"
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Цей %s/%s додаток не включено, --]\n"
+msgstr "[-- Цей %s/%s додаток (розм. %s байт) було видалено --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1989,7 +1991,9 @@ msgstr "[-- Цей %s/%s додаток не включено, --]\n"
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Цей %s/%s додаток не включено, --]\n"
+msgstr ""
+"[-- Цей %s/%s додаток було видалено --]\n"
+"[-- %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1998,7 +2002,7 @@ msgstr "[-- Цей %s/%s додаток не включено, --]\n"
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Цей %s/%s додаток не включено, --]\n"
+msgstr "[-- Цей %s/%s додаток було видалено --]\n"
 
 #: handler.c:1559
 #, c-format
@@ -2040,7 +2044,7 @@ msgstr "Помилка: немає протоколу для multipart/signed."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(використовуйте \"%s\" для перегляду цієї частини)"
+msgstr "[-- Цей %s/%s додаток (розм. %s байт) було видалено --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format

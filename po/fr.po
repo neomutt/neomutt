@@ -2039,7 +2039,9 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
+msgstr ""
+"[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
+"[-- le %s --]\n"
 
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
@@ -2049,7 +2051,7 @@ msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
+msgstr "[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
 
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
@@ -2065,7 +2067,9 @@ msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
+msgstr ""
+"[-- Cet attachement %s/%s a été effacé --]\n"
+"[-- le %4$s --]\n"
 
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
@@ -2075,7 +2079,7 @@ msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Cet attachement %s/%s n'est pas inclus, --]\n"
+msgstr "[-- Cet attachement %s/%s a été effacé --]\n"
 
 # , c-format
 #: handler.c:1559
@@ -2120,7 +2124,7 @@ msgstr "Erreur : multipart/signed n'a pas de protocole."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(utilisez '%s' pour voir cette partie)"
+msgstr "[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
 
 # , c-format
 #: handler.c:1980

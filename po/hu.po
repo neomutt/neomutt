@@ -2012,7 +2012,9 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
+msgstr ""
+"[-- Ez a %s/%s melléklet (mérete %s bájt) törölve lett --]\n"
+"[-- %s-on --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2021,7 +2023,7 @@ msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
+msgstr "[-- Ez a %s/%s melléklet (mérete %s bájt) törölve lett --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2036,7 +2038,9 @@ msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
+msgstr ""
+"[-- Ez a %s/%s melléklet  törölve lett --]\n"
+"[-- %4$s-on --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2045,7 +2049,7 @@ msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- A %s/%s melléklet nincs beágyazva, --]\n"
+msgstr "[-- Ez a %s/%s melléklet  törölve lett --]\n"
 
 #: handler.c:1559
 #, c-format
@@ -2090,7 +2094,7 @@ msgstr "Hiba: a többrészes/aláírt részhez nincs protokoll megadva."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(E rész megjelenítéséhez használja a(z) '%s'-t)"
+msgstr "[-- Ez a %s/%s melléklet (mérete %s bájt) törölve lett --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format

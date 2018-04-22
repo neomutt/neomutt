@@ -1979,7 +1979,9 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
+msgstr ""
+"[-- Den här %s/%s bilagan (storlek %s byte)har raderats --]\n"
+"[-- på %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1988,7 +1990,7 @@ msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
+msgstr "[-- Den här %s/%s bilagan (storlek %s byte)har raderats --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2003,7 +2005,9 @@ msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
+msgstr ""
+"[-- Den här %s/%s bilagan har raderats --]\n"
+"[-- på %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2012,7 +2016,7 @@ msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
+msgstr "[-- Den här %s/%s bilagan har raderats --]\n"
 
 #: handler.c:1559
 #, c-format
@@ -2057,7 +2061,7 @@ msgstr "Fel: \"multipart/signed\" har inget protokoll."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(använd \"%s\" för att visa den här delen)"
+msgstr "[-- Den här %s/%s bilagan (storlek %s byte)har raderats --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format

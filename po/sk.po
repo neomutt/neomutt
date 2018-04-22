@@ -1999,7 +1999,9 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Príloha %s/%s "
+msgstr ""
+"[-- Príloha %s/%s (veľkosť %s bytov) bola zmazaná --]\n"
+"[-- na %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2008,7 +2010,7 @@ msgstr "[-- Príloha %s/%s "
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Príloha %s/%s "
+msgstr "[-- Príloha %s/%s (veľkosť %s bytov) bola zmazaná --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2023,7 +2025,9 @@ msgstr "[-- Príloha %s/%s "
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Príloha %s/%s "
+msgstr ""
+"[-- Príloha %s/%s bola zmazaná --]\n"
+"[-- na %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2032,7 +2036,7 @@ msgstr "[-- Príloha %s/%s "
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Príloha %s/%s "
+msgstr "[-- Príloha %s/%s bola zmazaná --]\n"
 
 #: handler.c:1559
 #, fuzzy, c-format
@@ -2080,7 +2084,7 @@ msgstr "Chyba: multipart/signed nemá protokol."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(použite '%s' na prezeranie tejto časti)"
+msgstr "[-- Príloha %s/%s (veľkosť %s bytov) bola zmazaná --]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format

@@ -1980,7 +1980,9 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
+msgstr ""
+"[-- Questo allegato %s/%s (dimensioni %s byte) è stato cancellato -- ]\n"
+"[-- su %s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -1989,7 +1991,8 @@ msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
 #: handler.c:1523
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
+msgstr ""
+"[-- Questo allegato %s/%s (dimensioni %s byte) è stato cancellato -- ]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2004,7 +2007,9 @@ msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
-msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
+msgstr ""
+"[-- Questo allegato %s/%s è stato cancellato -- ]\n"
+"[-- su %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2013,7 +2018,7 @@ msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
 #: handler.c:1549
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Questo allegato %s/%s non è incluso, --]\n"
+msgstr "[-- Questo allegato %s/%s è stato cancellato -- ]\n"
 
 #: handler.c:1559
 #, c-format
@@ -2058,7 +2063,8 @@ msgstr "Errore: multipart/signed non ha protocollo."
 #: handler.c:1974
 #, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
-msgstr "(usa '%s' per vederlo)"
+msgstr ""
+"[-- Questo allegato %s/%s (dimensioni %s byte) è stato cancellato -- ]\n"
 
 #: handler.c:1980
 #, fuzzy, c-format
