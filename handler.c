@@ -1289,13 +1289,15 @@ static int multipart_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_printf(s, _("[-- Attachment #%d"), count);
       if (p->description || p->filename || p->form_name)
       {
-        state_puts(": ", s);
-        state_puts(p->description ? p->description : p->filename ? p->filename : p->form_name, s);
+        /* L10N: %s is the attachment description, filename or form_name. */
+        state_printf(s, _("[-- Attachment #%d: %s --]\n"), count,
+                     p->description ? p->description :
+                                      p->filename ? p->filename : p->form_name);
       }
-      state_puts(" --]\n", s);
+      else
+        state_printf(s, _("[-- Attachment #%d --]\n"), count);
       print_part_line(s, p, 0);
       if (!Weed)
       {
