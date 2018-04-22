@@ -1586,11 +1586,18 @@ static int external_body_handler(struct Body *b, struct State *s)
   {
     if (s->flags & MUTT_DISPLAY)
     {
-      state_mark_attach(s);
-      state_printf(s, _("[-- This %s/%s attachment is not included, --]\n"),
-                   TYPE(b->parts), b->parts->subtype);
-      state_mark_attach(s);
-      state_printf(s, _("[-- and the indicated access-type %s is unsupported --]\n"), access_type);
+      /* L10N: If the translation of this string is a multi line string, then
+         each line should start with "[-- " and end with " --]".
+         The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
+         access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
+         "LOCAL-FILE", "MAIL-SERVER".
+       */
+      snprintf(strbuf, sizeof(strbuf),
+               _("[-- This %s/%s attachment is not included, --]\n"
+                 "[-- and the indicated access-type %s is unsupported --]\n"),
+               TYPE(b->parts), b->parts->subtype, access_type);
+      state_attach_puts(strbuf, s);
+
       mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
