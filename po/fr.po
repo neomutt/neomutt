@@ -3147,13 +3147,13 @@ msgstr "Pas assez de sous-expressions pour la chaîne de format"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Signal %d... On quitte.\n"
+msgstr "Signal %d (%s) ... On quitte.\n"
 
 # , c-format
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Signal %d... On quitte.\n"
+msgstr "Signal %d ... On quitte.\n"
 
 #: muttlib.c:407
 #, c-format

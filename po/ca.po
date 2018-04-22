@@ -3159,7 +3159,7 @@ msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "S’ha rebut el senyal %d…  Eixint.\n"
+msgstr "S’ha rebut el senyal %d (%s)…  Eixint.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

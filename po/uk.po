@@ -3007,12 +3007,12 @@ msgstr "Недостатньо підвиразів для шаблону"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Отримано сигнал %d...  Виходжу.\n"
+msgstr "Отримано сигнал %d (%s) ...  Виходжу.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Отримано сигнал %d...  Виходжу.\n"
+msgstr "Отримано сигнал %d ...  Виходжу.\n"
 
 #: muttlib.c:407
 #, c-format

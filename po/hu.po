@@ -3060,7 +3060,7 @@ msgstr ""
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "%d jelzést kaptam...  Kilépek.\n"
+msgstr "%d (%s) jelzést kaptam...  Kilépek.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

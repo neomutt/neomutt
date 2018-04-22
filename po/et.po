@@ -3047,12 +3047,12 @@ msgstr ""
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Sain signaali %d...  Väljun.\n"
+msgstr "Sain signaali %d (%s) ...  Väljun.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Sain signaali %d...  Väljun.\n"
+msgstr "Sain signaali %d ...  Väljun.\n"
 
 #: muttlib.c:407
 #, c-format

@@ -2997,7 +2997,7 @@ msgstr "テンプレートに括弧が足りない"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "シグナル %d を受け取った。終了。\n"
+msgstr "シグナル %d (%s) を受け取った。終了。\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

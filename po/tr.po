@@ -2989,7 +2989,7 @@ msgstr ""
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Sinyal %d alındı...  Çıkılıyor.\n"
+msgstr "Sinyal %d (%s) alındı...  Çıkılıyor.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

@@ -2970,7 +2970,7 @@ msgstr "Sub-expressões insuficientes para modelo"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Sinal %d recebido... Saindo.\n"
+msgstr "Sinal %d (%s) recebido... Saindo.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

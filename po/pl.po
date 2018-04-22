@@ -2989,12 +2989,12 @@ msgstr "Zbyt mało podwyrażeń dla wzorca"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Otrzymano sygnał %d... Koniec pracy.\n"
+msgstr "Otrzymano sygnał %d (%s) ... Koniec pracy.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Otrzymano sygnał %d... Koniec pracy.\n"
+msgstr "Otrzymano sygnał %d ... Koniec pracy.\n"
 
 #: muttlib.c:407
 #, c-format

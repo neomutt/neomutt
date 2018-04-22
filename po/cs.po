@@ -2994,7 +2994,7 @@ msgstr "Na šablonu není dost podvýrazů"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Zachycen signál %d… Končím.\n"
+msgstr "Zachycen signál %d (%s)… Končím.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

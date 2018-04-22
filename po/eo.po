@@ -2986,12 +2986,12 @@ msgstr "Malsufiĉaj subesprimoj por ŝablono"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Ricevis signalon %d...  Eliras.\n"
+msgstr "Ricevis signalon %d (%s) ...  Eliras.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Ricevis signalon %d...  Eliras.\n"
+msgstr "Ricevis signalon %d ...  Eliras.\n"
 
 #: muttlib.c:407
 #, c-format

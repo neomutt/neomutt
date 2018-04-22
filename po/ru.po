@@ -3025,12 +3025,12 @@ msgstr "Не достаточно подвыражений для шаблона
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Получен сигнал %d...  Завершение работы.\n"
+msgstr "Получен сигнал %d (%s) ...  Завершение работы.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Получен сигнал %d...  Завершение работы.\n"
+msgstr "Получен сигнал %d ...  Завершение работы.\n"
 
 #: muttlib.c:407
 #, c-format

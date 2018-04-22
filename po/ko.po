@@ -3023,7 +3023,7 @@ msgstr ""
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "%d 신호 발견... 종료함.\n"
+msgstr "%d (%s) 신호 발견... 종료함.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

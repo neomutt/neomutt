@@ -3023,12 +3023,12 @@ msgstr ""
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Catturato il segnale %d...  in uscita.\n"
+msgstr "Catturato il segnale %d (%s) ...  in uscita.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Catturato il segnale %d...  in uscita.\n"
+msgstr "Catturato il segnale %d ...  in uscita.\n"
 
 #: muttlib.c:407
 #, c-format

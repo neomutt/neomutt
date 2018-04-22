@@ -3023,12 +3023,12 @@ msgstr "Inte tillräckligt med deluttryck för spam-mall"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Fångade signal %d...  Avslutar.\n"
+msgstr "Fångade signal %d (%s) ...  Avslutar.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
 msgid "Caught signal %d ...  Exiting.\n"
-msgstr "Fångade signal %d...  Avslutar.\n"
+msgstr "Fångade signal %d ...  Avslutar.\n"
 
 #: muttlib.c:407
 #, c-format

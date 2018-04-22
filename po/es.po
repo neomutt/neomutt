@@ -3070,7 +3070,7 @@ msgstr "Subexpresiones insuficientes para la plantilla de spam"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Señal %d recibida...  Saliendo.\n"
+msgstr "Señal %d (%s) recibida...  Saliendo.\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format

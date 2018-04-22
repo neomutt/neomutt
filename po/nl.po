@@ -2998,7 +2998,7 @@ msgstr "Niet genoeg subexpressies voor sjabloon"
 #: signal.c:58
 #, fuzzy, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
-msgstr "Signaal %d...\n"
+msgstr "Signaal %d (%s) ...\n"
 
 #: mutt/signal.c:73 signal.c:60
 #, fuzzy, c-format
