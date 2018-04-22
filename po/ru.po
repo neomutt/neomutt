@@ -3856,22 +3856,22 @@ msgstr "Этот ключ не может быть использован: пр�
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "%s Использовать этот ключ?"
+msgstr "ID просрочен, запрещен или отозван. Использовать этот ключ?"
 
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
 #, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "%s Использовать этот ключ?"
+msgstr "ID недействителен. Использовать этот ключ?"
 
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "%s Использовать этот ключ?"
+msgstr "ID действителен только частично. Использовать этот ключ?"
 
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "%s Использовать этот ключ?"
+msgstr "Степень доверия для ID не определена. Использовать этот ключ?"
 
 #: ncrypt/crypt_gpgme.c:4364 ncrypt/crypt_gpgme.c:4473 ncrypt/pgpkey.c:867
 #: ncrypt/pgpkey.c:990
@@ -4244,7 +4244,7 @@ msgstr "S/MIME-сертификаты, соответствующие \"%s\"."
 #: ncrypt/smime.c:511
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "%s Использовать этот ключ?"
+msgstr "ID недоверенный. Использовать этот ключ?"
 
 #: ncrypt/smime.c:795
 msgid "Enter keyID: "

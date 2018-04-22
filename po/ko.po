@@ -3883,22 +3883,22 @@ msgstr "이 키는 사용할 수 없습니다: 만기/사용중지/취소됨."
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
+msgstr "이 키는 만기/사용중지/취소됨. 이 키를 정말로 사용을 하겠습니까?"
 
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
 #, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
+msgstr "이 ID는 확실하지 않음. 이 키를 정말로 사용을 하겠습니까?"
 
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
+msgstr "이 ID는 신용도가 낮음. 이 키를 정말로 사용을 하겠습니까?"
 
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
+msgstr "ID의 인증자가 정의되지 않음. 이 키를 정말로 사용을 하겠습니까?"
 
 #: ncrypt/crypt_gpgme.c:4364 ncrypt/crypt_gpgme.c:4473 ncrypt/pgpkey.c:867
 #: ncrypt/pgpkey.c:990
@@ -4271,7 +4271,7 @@ msgstr "S/MIME 인증서가 \"%s\"와 일치."
 #: ncrypt/smime.c:511
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
+msgstr "이 ID는 확실하지 않음. 이 키를 정말로 사용을 하겠습니까?"
 
 #: ncrypt/smime.c:795
 msgid "Enter keyID: "

@@ -3805,22 +3805,22 @@ msgstr "Denne nøgle kan ikke bruges: udløbet/sat ud af kraft/tilbagekaldt."
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "%s Vil du virkelig anvende nøglen?"
+msgstr "Id er udløbet/ugyldig/ophævet. Vil du virkelig anvende nøglen?"
 
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
 #, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "%s Vil du virkelig anvende nøglen?"
+msgstr "Id er ikke bevist ægte. Vil du virkelig anvende nøglen?"
 
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "%s Vil du virkelig anvende nøglen?"
+msgstr "Id er kun bevist marginalt ægte. Vil du virkelig anvende nøglen?"
 
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "%s Vil du virkelig anvende nøglen?"
+msgstr "Ægthed af id er ubestemt. Vil du virkelig anvende nøglen?"
 
 #: ncrypt/crypt_gpgme.c:4364 ncrypt/crypt_gpgme.c:4473 ncrypt/pgpkey.c:867
 #: ncrypt/pgpkey.c:990
@@ -4202,7 +4202,7 @@ msgstr "S/MIME-certifikater som matcher \"%s\"."
 #: ncrypt/smime.c:511
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "%s Vil du virkelig anvende nøglen?"
+msgstr "Id er ikke betroet. Vil du virkelig anvende nøglen?"
 
 #: ncrypt/smime.c:795
 msgid "Enter keyID: "

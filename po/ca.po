@@ -4046,32 +4046,36 @@ msgstr ""
 "No es pot emprar aquesta clau: es troba expirada, inhabilitada o revocada."
 
 # ivb (2001/12/08)
-# ivb  Davant d’açò pot anar una de les quatre anteriors.
+# ivb  ABREUJAT!
+# ivb  Aquest ID es troba expirat, inhabilitat o revocat.
 #: ncrypt/crypt_gpgme.c:4288 ncrypt/pgpkey.c:640 ncrypt/smime.c:505
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "%s  Voleu realment emprar la clau?"
+msgstr "ID expirat/inhabilitat/revocat.  Voleu realment emprar la clau?"
 
 # ivb (2001/12/08)
-# ivb  Davant d’açò pot anar una de les quatre anteriors.
+# ivb  ABREUJAT!
+# ivb  Aquest ID no és vàlid.
 #: ncrypt/crypt_gpgme.c:4295 ncrypt/pgpkey.c:648
 #, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "%s  Voleu realment emprar la clau?"
+msgstr "L’ID no és vàlid.  Voleu realment emprar la clau?"
 
 # ivb (2001/12/08)
-# ivb  Davant d’açò pot anar una de les quatre anteriors.
+# ivb  ABREUJAT!
+# ivb  Aquest ID només és lleugerament vàlid.
 #: ncrypt/crypt_gpgme.c:4298 ncrypt/pgpkey.c:651
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "%s  Voleu realment emprar la clau?"
+msgstr "L’ID és lleugerament vàlid.  Voleu realment emprar la clau?"
 
-# ivb (2001/12/08)
-# ivb  Davant d’açò pot anar una de les quatre anteriors.
+# ivb (2002/02/02)
+# ivb  ABREUJAT! (Hei!  Hui és 2/2/2!)
+# ivb  Aquest ID té una validesa indefinida.
 #: ncrypt/crypt_gpgme.c:4305 ncrypt/pgpkey.c:645 ncrypt/smime.c:508
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "%s  Voleu realment emprar la clau?"
+msgstr "L’ID té una validesa indefinida.  Voleu realment emprar la clau?"
 
 #: ncrypt/crypt_gpgme.c:4364 ncrypt/crypt_gpgme.c:4473 ncrypt/pgpkey.c:867
 #: ncrypt/pgpkey.c:990
@@ -4465,12 +4469,13 @@ msgstr "Desconegut  "
 msgid "S/MIME certificates matching \"%s\"."
 msgstr "Certificats S/MIME que concorden amb «%s»."
 
-# ivb (2001/12/08)
-# ivb  Davant d’açò pot anar una de les quatre anteriors.
+# ivb (2015/08/29)
+# ivb  ABREUJAT!
+# ivb  Aquest ID no és de confiança.
 #: ncrypt/smime.c:511
 #, fuzzy
 msgid "ID is not trusted. Do you really want to use the key?"
-msgstr "%s  Voleu realment emprar la clau?"
+msgstr "L’ID no és de confiança.  Voleu realment emprar la clau?"
 
 #: ncrypt/smime.c:795
 msgid "Enter keyID: "
