@@ -1960,12 +1960,12 @@ msgstr ""
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Priedas #%d"
+msgstr "[-- Priedas #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Priedas #%d"
+msgstr "[-- Priedas #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

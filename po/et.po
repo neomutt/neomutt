@@ -1967,12 +1967,12 @@ msgstr "[-- Viga:  Multipart/Alternative osasid ei saa näidata! --]\n"
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Lisa #%d"
+msgstr "[-- Lisa #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Lisa #%d"
+msgstr "[-- Lisa #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

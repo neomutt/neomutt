@@ -1915,12 +1915,12 @@ msgstr ""
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Ek #%d"
+msgstr "[-- Ek #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Ek #%d"
+msgstr "[-- Ek #%d --]\n"
 
 #: handler.c:1316
 #, fuzzy

@@ -1992,13 +1992,13 @@ msgstr ""
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Attachement #%d"
+msgstr "[-- Attachement #%d: %s --]\n"
 
 # , c-format
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Attachement #%d"
+msgstr "[-- Attachement #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

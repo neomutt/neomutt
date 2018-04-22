@@ -1894,12 +1894,12 @@ msgstr ""
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Anexo #%d"
+msgstr "[-- Anexo #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Anexo #%d"
+msgstr "[-- Anexo #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

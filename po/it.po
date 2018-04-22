@@ -1939,12 +1939,12 @@ msgstr ""
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Allegato #%d"
+msgstr "[-- Allegato #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Allegato #%d"
+msgstr "[-- Allegato #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

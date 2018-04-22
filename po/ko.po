@@ -1950,12 +1950,12 @@ msgstr "[-- 오류:  Multipart/Alternative 부분을 표시 수 없음! --]\n"
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- 첨부물 #%d"
+msgstr "[-- 첨부물 #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- 첨부물 #%d"
+msgstr "[-- 첨부물 #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

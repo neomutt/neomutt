@@ -1961,12 +1961,12 @@ msgstr "[-- 錯誤： 無法顯示 Multipart/Alternative！ --]\n"
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- 附件 #%d"
+msgstr "[-- 附件 #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- 附件 #%d"
+msgstr "[-- 附件 #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"

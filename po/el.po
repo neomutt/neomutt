@@ -1977,12 +1977,12 @@ msgstr ""
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Προσάρτηση #%d"
+msgstr "[-- Προσάρτηση #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Προσάρτηση #%d"
+msgstr "[-- Προσάρτηση #%d --]\n"
 
 #: handler.c:1316
 #, fuzzy

@@ -1908,12 +1908,12 @@ msgstr "[-- Eraro: Neniu parto de Multipart/Alternative estis montrebla! --]\n"
 #: handler.c:1295
 #, fuzzy, c-format
 msgid "[-- Attachment #%d: %s --]\n"
-msgstr "[-- Parto #%d"
+msgstr "[-- Parto #%d: %s --]\n"
 
 #: handler.c:1300
 #, fuzzy, c-format
 msgid "[-- Attachment #%d --]\n"
-msgstr "[-- Parto #%d"
+msgstr "[-- Parto #%d --]\n"
 
 #: handler.c:1316
 msgid "One or more parts of this message could not be displayed"
