@@ -759,6 +759,10 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
         {
           if (!mutt_can_decode(top))
           {
+            /* L10N:
+               %s gets replaced by a MIME type, e.g. "text/plain" or
+               application/octet-stream.
+             */
             mutt_error(_("I don't know how to print %s attachments!"), type);
             return false;
           }
