@@ -368,25 +368,74 @@ static void smime_entry(char *buf, size_t buflen, struct Menu *menu, int num)
   switch (this->trust)
   {
     case 'e':
-      truststate = N_("Expired   ");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Expired   ");
       break;
     case 'i':
-      truststate = N_("Invalid   ");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Invalid   ");
       break;
     case 'r':
-      truststate = N_("Revoked   ");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Revoked   ");
       break;
     case 't':
-      truststate = N_("Trusted   ");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Trusted   ");
       break;
     case 'u':
-      truststate = N_("Unverified");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Unverified");
       break;
     case 'v':
-      truststate = N_("Verified  ");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Verified  ");
       break;
     default:
-      truststate = N_("Unknown   ");
+      /* L10N: Describes the trust state of a S/MIME key.
+         This translation must be padded with spaces to the right such that it
+         has the same length as the other translations.
+        
+         The translation strings which need to be padded are:
+         Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
+       */
+      truststate = _("Unknown   ");
   }
   snprintf(buf, buflen, " 0x%s %s %s %-35.35s %s", this->hash,
            smime_key_flags(this->flags), truststate, this->email, this->label);
