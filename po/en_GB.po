@@ -449,7 +449,6 @@ msgid "Warning: message contains no From: header"
 msgstr "Warning: message contains no From: header"
 
 #: commands.c:293 recvcmd.c:162
-#, fuzzy
 msgid "Bounce message to: "
 msgid_plural "Bounce tagged messages to: "
 msgstr[0] "Bounce message to: "
@@ -465,21 +464,19 @@ msgid "Bad IDN: '%s'"
 msgstr "Bad IDN: '%s'"
 
 #: commands.c:322 recvcmd.c:194
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s"
 msgid_plural "Bounce messages to %s"
 msgstr[0] "Bounce message to %s"
 msgstr[1] "Bounce messages to %s"
 
 #: commands.c:337 recvcmd.c:209
-#, fuzzy
 msgid "Message not bounced."
 msgid_plural "Messages not bounced."
 msgstr[0] "Message not bounced."
 msgstr[1] "Messages not bounced."
 
 #: commands.c:347 recvcmd.c:228
-#, fuzzy
 msgid "Message bounced."
 msgid_plural "Messages bounced."
 msgstr[0] "Message bounced."
@@ -498,21 +495,18 @@ msgid "No printing command has been defined."
 msgstr "No printing command has been defined."
 
 #: commands.c:541
-#, fuzzy
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Print message?"
 msgstr[1] "Print tagged messages?"
 
 #: commands.c:548
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Message printed"
 msgstr[1] "Messages printed"
 
 #: commands.c:550
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Message could not be printed"
@@ -546,42 +540,36 @@ msgid "Shell command: "
 msgstr "Shell command: "
 
 #: commands.c:801
-#, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
 msgstr[0] "Decode-save to mailbox"
 msgstr[1] "Decode-save tagged to mailbox"
 
 #: commands.c:803
-#, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
 msgstr[0] "Decrypt-save to mailbox"
 msgstr[1] "Decrypt-save tagged to mailbox"
 
 #: commands.c:805
-#, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
 msgstr[0] "Save to mailbox"
 msgstr[1] "Save tagged to mailbox"
 
 #: commands.c:810
-#, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
 msgstr[0] "Decode-copy to mailbox"
 msgstr[1] "Decode-copy tagged to mailbox"
 
 #: commands.c:812
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
 msgstr[0] "Decrypt-copy to mailbox"
 msgstr[1] "Decrypt-copy tagged to mailbox"
 
 #: commands.c:814
-#, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
 msgstr[0] "Copy to mailbox"
@@ -603,12 +591,12 @@ msgid "Content-Type changed to %s."
 msgstr "Content-Type changed to %s."
 
 #: commands.c:1060
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; not converting."
 msgstr "Character set changed to %s; not converting."
 
 #: commands.c:1061
-#, fuzzy, c-format
+#, c-format
 msgid "Character set changed to %s; converting."
 msgstr "Character set changed to %s; converting."
 
@@ -802,10 +790,9 @@ msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Bad IDN in \"%s\": '%s'"
 
 #: compose.c:1040
-#, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
-msgstr[0] "Attaching selected files..."
+msgstr[0] "Attaching selected file..."
 msgstr[1] "Attaching selected files..."
 
 #: compose.c:1053
@@ -1675,10 +1662,10 @@ msgstr "Cannot edit message"
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:2918 pager.c:3200
-#, fuzzy, c-format
+#, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
-msgstr[0] "%d labels changed."
+msgstr[0] "%d label changed."
 msgstr[1] "%d labels changed."
 
 #. L10N: This is displayed when editing an x-label, but no messages
@@ -1868,12 +1855,12 @@ msgid "Clear flag"
 msgstr "Clear flag"
 
 #: handler.c:66
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 
 #: handler.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 
@@ -1884,12 +1871,12 @@ msgstr ""
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1295
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Attachment #%d: %s --]\n"
 
 #: handler.c:1300
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Attachment #%d --]\n"
 
@@ -1922,7 +1909,7 @@ msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Error: message/external-body has no access-type parameter --]\n"
 
 #: handler.c:1514
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
@@ -1935,7 +1922,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1523
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 msgstr "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 
@@ -1948,7 +1935,6 @@ msgstr "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 #. in this translation!
 #.
 #: handler.c:1540
-#, fuzzy
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -1961,7 +1947,7 @@ msgstr ""
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
 #.
 #: handler.c:1549
-#, fuzzy, c-format
+#, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- This %s/%s attachment has been deleted --]\n"
 
@@ -1971,7 +1957,7 @@ msgid "[-- name: %s --]\n"
 msgstr "[-- name: %s --]\n"
 
 #: handler.c:1575
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
@@ -1982,7 +1968,7 @@ msgstr ""
 "[-- expired. --]\n"
 
 #: handler.c:1596
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
@@ -2007,35 +1993,32 @@ msgid "Error: multipart/signed has no protocol."
 msgstr "Error: multipart/signed has no protocol."
 
 #: handler.c:1974
-#, fuzzy
 msgid "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 msgstr "[-- This is an attachment (use '%3$s' to view this part) --]\n"
 
 #: handler.c:1980
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 
 #: handler.c:1985
-#, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 msgstr ""
 "[-- This is an attachment (need 'view-attachments' bound to key!) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1989
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 msgstr "[-- %s/%s is unsupported (need 'view-attachments' bound to key!) --]\n"
 
 #: handler.c:1996
-#, fuzzy
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- This is an attachment --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1999
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s is unsupported --]\n"
 
@@ -2296,18 +2279,18 @@ msgid "Expunge failed"
 msgstr "Expunge failed"
 
 #: imap/imap.c:2406
-#, fuzzy, c-format
+#, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Marking %d messages deleted..."
+msgstr[0] "Marking %d message deleted..."
 msgstr[1] "Marking %d messages deleted..."
 
 #. L10N: The plural is choosen by the last %d, i.e. the total number
 #: imap/imap.c:2441
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "Saving changed messages... [%d/%d]"
+msgstr[0] "Saving changed message... [%d/%d]"
 msgstr[1] "Saving changed messages... [%d/%d]"
 
 #: imap/imap.c:2497
@@ -2366,10 +2349,10 @@ msgid "Uploading message..."
 msgstr "Uploading message..."
 
 #: imap/message.c:1452
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Copying %d messages to %s..."
+msgstr[0] "Copying %d message to %s..."
 msgstr[1] "Copying %d messages to %s..."
 
 #: imap/message.c:1457
@@ -2986,12 +2969,12 @@ msgstr "Not enough subexpressions for template"
 
 #: mutt/signal.c:67 mutt/signal.c:69 mutt/signal.c:71 signal.c:54 signal.c:56
 #: signal.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d (%s) ...  Exiting.\n"
 msgstr "Caught signal %d (%s) ...  Exiting.\n"
 
 #: mutt/signal.c:73 signal.c:60
-#, fuzzy, c-format
+#, c-format
 msgid "Caught signal %d ...  Exiting.\n"
 msgstr "Caught signal %d ...  Exiting.\n"
 
@@ -5599,10 +5582,10 @@ msgid "Command UIDL is not supported by server."
 msgstr "Command UIDL is not supported by server."
 
 #: pop.c:347
-#, fuzzy, c-format
+#, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
-msgstr[0] "%d messages have been lost. Try reopening the mailbox."
+msgstr[0] "%d message has been lost. Try reopening the mailbox."
 msgstr[1] "%d messages have been lost. Try reopening the mailbox."
 
 #: pop.c:469 pop.c:897
@@ -5646,10 +5629,10 @@ msgstr "Error while writing mailbox!"
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. * the %d right before 'messages', i.e. the total number of messages.
 #: pop.c:1003
-#, fuzzy, c-format
+#, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
-msgstr[0] "%s [%d of %d messages read]"
+msgstr[0] "%s [%d of %d message read]"
 msgstr[1] "%s [%d of %d messages read]"
 
 #: pop_auth.c:99
@@ -5840,7 +5823,6 @@ msgid "You may only bounce message/rfc822 parts."
 msgstr "You may only bounce message/rfc822 parts."
 
 #: recvcmd.c:230
-#, fuzzy
 msgid "Error bouncing message!"
 msgid_plural "Error bouncing messages!"
 msgstr[0] "Error bouncing message!"
@@ -6202,7 +6184,6 @@ msgstr ""
 "and suggestions.\n"
 
 #: version.c:82
-#, fuzzy
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
