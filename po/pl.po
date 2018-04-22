@@ -508,24 +508,24 @@ msgstr "Polecenie drukowania nie zostało skonfigurowane."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Wydrukować list?"
-msgstr[1] "Wydrukować list?"
-msgstr[2] "Wydrukować list?"
+msgstr[1] "Wydrukować zaznaczone listy?"
+msgstr[2] "Wydrukować zaznaczone listy?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "List został wydrukowany"
-msgstr[1] "List został wydrukowany"
-msgstr[2] "List został wydrukowany"
+msgstr[1] "Listy zostały wydrukowane"
+msgstr[2] "Listy zostały wydrukowane"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "List nie został wydrukowany "
-msgstr[1] "List nie został wydrukowany "
-msgstr[2] "List nie został wydrukowany "
+msgstr[1] "Listy nie zostały wydrukowane"
+msgstr[2] "Listy nie zostały wydrukowane"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

@@ -504,7 +504,7 @@ msgstr "印刷コマンドが未定義。"
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "メッセージを印刷?"
-msgstr[1] "メッセージを印刷?"
+msgstr[1] "タグ付きメッセージを印刷?"
 
 #: commands.c:548
 #, fuzzy

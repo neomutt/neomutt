@@ -506,21 +506,21 @@ msgstr "Ingen udskrivningskommando er defineret."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Udskriv brev?"
-msgstr[1] "Udskriv brev?"
+msgstr[1] "Udskriv udvalgte breve?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Brevet er udskrevet"
-msgstr[1] "Brevet er udskrevet"
+msgstr[1] "Brevene er udskrevet"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Brevet kunne ikke udskrives"
-msgstr[1] "Brevet kunne ikke udskrives"
+msgstr[1] "Brevene kunne ikke udskrives"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

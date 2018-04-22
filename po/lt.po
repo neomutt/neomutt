@@ -509,24 +509,24 @@ msgstr "Spausdinimo komanda nebuvo apibrėžta."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Spausdinti laišką?"
-msgstr[1] "Spausdinti laišką?"
-msgstr[2] "Spausdinti laišką?"
+msgstr[1] "Spausdinti pažymėtus laiškus?"
+msgstr[2] "Spausdinti pažymėtus laiškus?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Laiškas atspausdintas"
-msgstr[1] "Laiškas atspausdintas"
-msgstr[2] "Laiškas atspausdintas"
+msgstr[1] "Laiškai atspausdinti"
+msgstr[2] "Laiškai atspausdinti"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Laiškas negalėjo būti atspausdintas"
-msgstr[1] "Laiškas negalėjo būti atspausdintas"
-msgstr[2] "Laiškas negalėjo būti atspausdintas"
+msgstr[1] "Laiškai negalėjo būti atspausdinti"
+msgstr[2] "Laiškai negalėjo būti atspausdinti"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

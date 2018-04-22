@@ -504,21 +504,21 @@ msgstr "Nenhum commando para impressão foi definido."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Imprimir mensagem?"
-msgstr[1] "Imprimir mensagem?"
+msgstr[1] "Imprimir mensagens marcadas?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Mensagem impressa"
-msgstr[1] "Mensagem impressa"
+msgstr[1] "Mensagens impressas"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Mensagem não pôde ser impressa"
-msgstr[1] "Mensagem não pôde ser impressa"
+msgstr[1] "Mensagens não puderam ser impressas"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

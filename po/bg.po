@@ -518,21 +518,21 @@ msgstr "Не е дефинирана команда за отпечатване"
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Желаете ли да отпечатате писмото?"
-msgstr[1] "Желаете ли да отпечатате писмото?"
+msgstr[1] "Желаете ли да отпечатате маркираните писма?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Писмото е отпечатано"
-msgstr[1] "Писмото е отпечатано"
+msgstr[1] "Писмата са отпечатани"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Писмото не е отпечатано"
-msgstr[1] "Писмото не е отпечатано"
+msgstr[1] "Писмата не са отпечатани"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

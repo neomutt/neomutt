@@ -518,24 +518,24 @@ msgstr "Команда для печати не определена."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Напечатать сообщение?"
-msgstr[1] "Напечатать сообщение?"
-msgstr[2] "Напечатать сообщение?"
+msgstr[1] "Напечатать отмеченные сообщения?"
+msgstr[2] "Напечатать отмеченные сообщения?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Сообщение напечатано"
-msgstr[1] "Сообщение напечатано"
-msgstr[2] "Сообщение напечатано"
+msgstr[1] "Сообщения напечатаны"
+msgstr[2] "Сообщения напечатаны"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Не удалось напечатать сообщение"
-msgstr[1] "Не удалось напечатать сообщение"
-msgstr[2] "Не удалось напечатать сообщение"
+msgstr[1] "Не удалось напечатать сообщения"
+msgstr[2] "Не удалось напечатать сообщения"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

@@ -509,21 +509,21 @@ msgstr "Kein Druck-Kommando definiert."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Nachricht drucken?"
-msgstr[1] "Nachricht drucken?"
+msgstr[1] "Ausgewählte Nachrichten drucken?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Nachricht gedruckt"
-msgstr[1] "Nachricht gedruckt"
+msgstr[1] "Nachrichten gedruckt"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Nachricht konnte nicht gedruckt werden"
-msgstr[1] "Nachricht konnte nicht gedruckt werden"
+msgstr[1] "Nachrichten konnten nicht gedruckt werden"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

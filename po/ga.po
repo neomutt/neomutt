@@ -522,10 +522,10 @@ msgstr "Níl aon ordú priontála sainmhínithe."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Priontáil teachtaireacht?"
-msgstr[1] "Priontáil teachtaireacht?"
-msgstr[2] "Priontáil teachtaireacht?"
-msgstr[3] "Priontáil teachtaireacht?"
-msgstr[4] "Priontáil teachtaireacht?"
+msgstr[1] "Priontáil teachtaireachtaí clibeáilte?"
+msgstr[2] "Priontáil teachtaireachtaí clibeáilte?"
+msgstr[3] "Priontáil teachtaireachtaí clibeáilte?"
+msgstr[4] "Priontáil teachtaireachtaí clibeáilte?"
 
 #: commands.c:548
 #, fuzzy
@@ -542,10 +542,10 @@ msgstr[4] "Priontáilte"
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Níorbh fhéidir an teachtaireacht a phriontáil"
-msgstr[1] "Níorbh fhéidir an teachtaireacht a phriontáil"
-msgstr[2] "Níorbh fhéidir an teachtaireacht a phriontáil"
-msgstr[3] "Níorbh fhéidir an teachtaireacht a phriontáil"
-msgstr[4] "Níorbh fhéidir an teachtaireacht a phriontáil"
+msgstr[1] "Níorbh fhéidir na teachtaireachtaí a phriontáil"
+msgstr[2] "Níorbh fhéidir na teachtaireachtaí a phriontáil"
+msgstr[3] "Níorbh fhéidir na teachtaireachtaí a phriontáil"
+msgstr[4] "Níorbh fhéidir na teachtaireachtaí a phriontáil"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

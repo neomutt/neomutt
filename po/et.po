@@ -510,21 +510,21 @@ msgstr "Trükkimise käsklust ei ole defineeritud."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Trükin teate?"
-msgstr[1] "Trükin teate?"
+msgstr[1] "Trükin märgitud teated?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Teade on trükitud"
-msgstr[1] "Teade on trükitud"
+msgstr[1] "Teated on trükitud"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Teadet ei saa trükkida"
-msgstr[1] "Teadet ei saa trükkida"
+msgstr[1] "Teateid ei saa trükkida"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

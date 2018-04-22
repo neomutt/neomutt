@@ -505,21 +505,21 @@ msgstr "Yazdırma komutu tanımlanmadı."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "İleti yazdırılsın mı?"
-msgstr[1] "İleti yazdırılsın mı?"
+msgstr[1] "İşaretlenen iletiler yazdırılsın mı?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "İleti yazdırıldı"
-msgstr[1] "İleti yazdırıldı"
+msgstr[1] "İletiler yazdırıldı"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "İleti yazdırılamadı"
-msgstr[1] "İleti yazdırılamadı"
+msgstr[1] "İletiler yazdırılamadı"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

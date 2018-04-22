@@ -507,21 +507,21 @@ msgstr "Neniu pres-komando estas difinita."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Ĉu presi mesaĝon?"
-msgstr[1] "Ĉu presi mesaĝon?"
+msgstr[1] "Ĉu presi markitajn mesaĝojn?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Mesaĝo presita"
-msgstr[1] "Mesaĝo presita"
+msgstr[1] "Mesaĝoj presitaj"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Ne eblis presi mesaĝon"
-msgstr[1] "Ne eblis presi mesaĝon"
+msgstr[1] "Ne eblis presi mesaĝojn"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

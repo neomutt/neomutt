@@ -506,21 +506,21 @@ msgstr "Er is geen printcommando gedefinieerd."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Bericht afdrukken?"
-msgstr[1] "Bericht afdrukken?"
+msgstr[1] "Geselecteerde berichten afdrukken?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Bericht is afgedrukt"
-msgstr[1] "Bericht is afgedrukt"
+msgstr[1] "Berichten zijn afgedrukt"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Bericht kon niet worden afgedrukt"
-msgstr[1] "Bericht kon niet worden afgedrukt"
+msgstr[1] "Berichten konden niet worden afgedrukt"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

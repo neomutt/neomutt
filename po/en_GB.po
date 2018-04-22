@@ -502,21 +502,21 @@ msgstr "No printing command has been defined."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Print message?"
-msgstr[1] "Print message?"
+msgstr[1] "Print tagged messages?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Message printed"
-msgstr[1] "Message printed"
+msgstr[1] "Messages printed"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Message could not be printed"
-msgstr[1] "Message could not be printed"
+msgstr[1] "Messages could not be printed"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

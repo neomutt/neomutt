@@ -511,7 +511,7 @@ msgstr "Nincs nyomtatási parancs megadva."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Kinyomtatod a levelet?"
-msgstr[1] "Kinyomtatod a levelet?"
+msgstr[1] "Kinyomtatod a kijelölt leveleket?"
 
 #: commands.c:548
 #, fuzzy
@@ -525,7 +525,7 @@ msgstr[1] "Levél kinyomtatva"
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "A levelet nem tudtam kinyomtatni"
-msgstr[1] "A levelet nem tudtam kinyomtatni"
+msgstr[1] "A leveleket nem tudtam kinyomtatni"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

@@ -510,21 +510,21 @@ msgstr "Non è stato definito un comando di stampa."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Stampare il messaggio?"
-msgstr[1] "Stampare il messaggio?"
+msgstr[1] "Stampare i messaggi segnati?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Messaggio stampato"
-msgstr[1] "Messaggio stampato"
+msgstr[1] "Messaggi stampati"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Impossibile stampare il messaggio"
-msgstr[1] "Impossibile stampare il messaggio"
+msgstr[1] "Impossibile stampare i messaggi"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

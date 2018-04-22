@@ -511,24 +511,24 @@ msgstr "Není definován žádný příkaz pro tisk."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Vytisknout zprávu?"
-msgstr[1] "Vytisknout zprávu?"
-msgstr[2] "Vytisknout zprávu?"
+msgstr[1] "Vytisknout označené zprávy?"
+msgstr[2] "Vytisknout označené zprávy?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Zpráva byla vytisknuta"
-msgstr[1] "Zpráva byla vytisknuta"
-msgstr[2] "Zpráva byla vytisknuta"
+msgstr[1] "Zprávy byly vytisknuty"
+msgstr[2] "Zprávy byly vytisknuty"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Zprávu nelze vytisknout"
-msgstr[1] "Zprávu nelze vytisknout"
-msgstr[2] "Zprávu nelze vytisknout"
+msgstr[1] "Zprávy nelze vytisknout"
+msgstr[2] "Zprávy nelze vytisknout"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

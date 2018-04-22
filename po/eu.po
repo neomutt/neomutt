@@ -505,21 +505,21 @@ msgstr "Ez da inprimatze komandorik ezarri."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Mezua inprimatu?"
-msgstr[1] "Mezua inprimatu?"
+msgstr[1] "Markatutako mezuak inprimatu?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Mezua inprimaturik"
-msgstr[1] "Mezua inprimaturik"
+msgstr[1] "Mezuak inprimaturik"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Ezin da mezua inprimatu"
-msgstr[1] "Ezin da mezua inprimatu"
+msgstr[1] "Ezin dira mezuak inprimatu"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

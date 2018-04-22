@@ -514,21 +514,21 @@ msgstr "Δεν έχει οριστεί εντολή εκτυπώσεως."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Εκτύπωση μηνύματος;"
-msgstr[1] "Εκτύπωση μηνύματος;"
+msgstr[1] "Εκτύπωση των σημειωμένων μηνυμάτων;"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Το μήνυμα εκτυπώθηκε"
-msgstr[1] "Το μήνυμα εκτυπώθηκε"
+msgstr[1] "Τα μηνύματα εκτυπώθηκαν"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Αδυναμία εκτύπωσης μηνύματος"
-msgstr[1] "Αδυναμία εκτύπωσης μηνύματος"
+msgstr[1] "Αδυναμία εκτύπωσης μηνυμάτων"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

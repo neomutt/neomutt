@@ -562,21 +562,21 @@ msgstr "No s’ha definit cap ordre d’impressió."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Voleu imprimir el missatge?"
-msgstr[1] "Voleu imprimir el missatge?"
+msgstr[1] "Voleu imprimir els misatges marcats?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "S’ha imprès el missatge."
-msgstr[1] "S’ha imprès el missatge."
+msgstr[1] "S’han imprès els missatges."
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "No s’ha pogut imprimir el missatge."
-msgstr[1] "No s’ha pogut imprimir el missatge."
+msgstr[1] "No s’han pogut imprimir els missatges."
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

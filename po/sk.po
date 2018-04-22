@@ -510,24 +510,24 @@ msgstr "Nebol nájdený príkaz na tlač."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Vytlačiť správu?"
-msgstr[1] "Vytlačiť správu?"
-msgstr[2] "Vytlačiť správu?"
+msgstr[1] "Vytlačiť označené správy?"
+msgstr[2] "Vytlačiť označené správy?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Správa bola vytlačené."
-msgstr[1] "Správa bola vytlačené."
-msgstr[2] "Správa bola vytlačené."
+msgstr[1] "Správy boli vytlačené."
+msgstr[2] "Správy boli vytlačené."
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Správa nemohla byť vytlačená."
-msgstr[1] "Správa nemohla byť vytlačená."
-msgstr[2] "Správa nemohla byť vytlačená."
+msgstr[1] "Správy nemohli byť vytlačené."
+msgstr[2] "Správy nemohli byť vytlačené."
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560

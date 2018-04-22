@@ -538,21 +538,21 @@ msgstr "Aucune commande d'impression n'a été définie."
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "Imprimer le message ?"
-msgstr[1] "Imprimer le message ?"
+msgstr[1] "Imprimer les messages marqués ?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Message imprimé"
-msgstr[1] "Message imprimé"
+msgstr[1] "Messages imprimés"
 
 #: commands.c:550
 #, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Le message n'a pas pu être imprimé"
-msgstr[1] "Le message n'a pas pu être imprimé"
+msgstr[1] "Les messages n'ont pas pu être imprimés"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: commands.c:560
