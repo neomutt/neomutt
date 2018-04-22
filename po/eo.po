@@ -6330,6 +6330,10 @@ msgstr ""
 "    sed SEN IA AJN GARANTIO; eĉ sen la implicita garantio de\n"
 "    KOMERCA KVALITO aŭ ADEKVATECO POR DIFINITA CELO. Vidu la\n"
 "    Ĝeneralan Publikan Rajtigilon de GNU por pli da detaloj.\n"
+"\n"
+"    Vi devus esti ricevinta kopion de la Ĝenerala Publika Rajtigilo de\n"
+"    GNU kun ĉi tiu programo; se ne, skribu al Free Software Foundation,\n"
+"    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, Usono.\n"
 
 #: version.c:98
 msgid ""

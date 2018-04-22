@@ -6283,6 +6283,11 @@ msgstr ""
 "    mas SEM QUALQUER GARANTIA; até mesmo sem a garantia implícita de\n"
 "    COMERCIALIZAÇÃO ou ADEQUAÇÃO PARA UM PROPÓSITO PARTICULAR. Veja a\n"
 "    Licença Pública Geral (GPL) GNU para maiores detalhes.\n"
+"\n"
+"    Você deve ter recebido uma copia da Licença Pública Geral (GPL) GNU\n"
+"    junto com este programa; se não, escreva para a Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Bostom, MA      "
+"02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

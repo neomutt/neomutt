@@ -6681,6 +6681,11 @@ msgstr ""
 "COMERCIABILITAT\n"
 "    o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR.  Vegeu la Llicència Pública\n"
 "    General GNU per a obtenir-ne més detalls.\n"
+"\n"
+"    Hauríeu d’haver rebut una còpia de la Llicència Pública General GNU\n"
+"    juntament amb aquest programa; en cas contrari, escriviu a la Free\n"
+"    Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,\n"
+"    MA  02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

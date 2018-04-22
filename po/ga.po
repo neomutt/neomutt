@@ -6509,6 +6509,11 @@ msgstr ""
 "    go fiú gan an barántas intuigthe d'INDÍOLTACHT nó FEILIÚNACHT D'FHEIDHM\n"
 "    AR LEITH.  Féach ar an GNU General Public License chun níos mó\n"
 "    sonraí a fháil.\n"
+"\n"
+"    Ba chóir go mbeifeá tar éis cóip den GNU General Public License a fháil\n"
+"    in éineacht leis an gclár seo; mura bhfuair, scríobh chuig an Free\n"
+"    Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
+"    Boston, MA 02110-1301 USA.\n"
 
 #: version.c:98
 msgid ""

@@ -6319,6 +6319,11 @@ msgstr ""
 "    nicht einmal die Garantie der MARKTREIFE oder EIGNUNG FÜR EINEN\n"
 "    BESTIMMTEN ZWECK. Entnehmen Sie alle weiteren Details der\n"
 "    GNU General Public License.\n"
+"\n"
+"    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
+"    diesem Programm erhalten haben; falls nicht, schreiben sie an die\n"
+"    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
+"    Boston, MA 02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

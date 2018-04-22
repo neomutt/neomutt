@@ -6298,6 +6298,11 @@ msgstr ""
 "   w tym gwarancji możliwości SPRZEDAŻY i PRZYDATNOŚCI DO KONKRETNYCH "
 "CELÓW.\n"
 "   Szczegóły znajdziesz w Powszechnej Licencji Publicznej GNU.\n"
+"\n"
+"    W dokumentacji tego programu powinna znajdować się kopia Powszechnej\n"
+"    Licencji Publicznej GNU. Jeśli tak nie jest, napisz do Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

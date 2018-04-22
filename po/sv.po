@@ -6407,6 +6407,11 @@ msgstr ""
 "    UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om\n"
 "    SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU\n"
 "    General Public License för ytterligare information.\n"
+"\n"
+"    Du bör ha fått en kopia av GNU General Public License\n"
+"    tillsammans med detta program. Om inte, skriv till Free Software \n"
+"    Foundation,Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

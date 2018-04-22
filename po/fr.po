@@ -6558,6 +6558,11 @@ msgstr ""
 "    mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de\n"
 "    QUALITÉ MARCHANDE ou d'ADÉQUATION À UN BESOIN PARTICULIER. Référez-vous\n"
 "    à la GNU General Public License pour plus de détails.\n"
+"\n"
+"    Vous devez avoir reçu un exemplaire de la GNU General Public License\n"
+"    avec ce programme ; si ce n'est pas le cas, écrivez à la Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

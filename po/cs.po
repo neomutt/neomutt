@@ -6290,6 +6290,10 @@ msgstr ""
 "    Program je šířen v naději, že bude užitečný, ale BEZ JAKÉKOLIV\n"
 "    ZÁRUKY a to ani záruky OBCHODOVATELNOSTI nebo VHODNOSTI PRO\n"
 "    JAKÝKOLIV ÚČEL. Více informací najdete v GNU GPL.\n"
+"\n"
+"    S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
+"    nestalo, obraťte se na Free Software Foundation, Inc.,\n"
+"    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

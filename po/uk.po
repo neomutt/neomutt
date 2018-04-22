@@ -6339,6 +6339,10 @@ msgstr ""
 "надаємо\n"
 "ЖОДНИХ ГАРАНТІЙ, включаючи гарантії придатності до будь-яких конкретних\n"
 "завдань. Більш детально дивіться GNU General Public License.\n"
+"\n"
+"Ви мали б отримати копію GNU General Public License разом з цією програмою\n"
+"Якщо це не так, звертайтесь до Free Software Foundation, Inc:\n"
+"51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

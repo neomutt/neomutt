@@ -6382,6 +6382,11 @@ msgstr ""
 "    но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ. Особо отметим, что отсутствует ГАРАНТИЯ\n"
 "    ПРИГОДНОСТИ ДЛЯ ВЫПОЛНЕНИЯ ОПРЕДЕЛЕННЫХ ЗАДАЧ. Более подробную\n"
 "    информацию вы можете найти в GNU General Public License.\n"
+"\n"
+"    Вы должны были получить копию GNU General Public License вместе с\n"
+"    этой программой. Если вы ее не получили, обратитесь во Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""

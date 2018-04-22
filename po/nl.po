@@ -6351,6 +6351,11 @@ msgstr ""
 "    maar ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garantie van\n"
 "    VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL.  Zie de GNU\n"
 "    Algemene Publieke Licentie voor meer details.\n"
+"\n"
+"    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen moeten\n"
+"    hebben samen met dit programma; indien dit niet zo is, schrijf naar de\n"
+"    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
+"    Boston, MA 02110-1301, USA.\n"
 
 #: version.c:98
 msgid ""
