@@ -259,11 +259,13 @@ void ci_bounce_message(struct Header *h)
   struct Address *addr = NULL;
   char *err = NULL;
   int rc;
+  int msgcount; // for L10N with ngettext
 
   /* RFC5322 mandates a From: header, so warn before bouncing
    * messages without one */
   if (h)
   {
+    msgcount = 1;
     if (!h->env->from)
     {
       mutt_error(_("Warning: message contains no From: header"));
@@ -271,20 +273,25 @@ void ci_bounce_message(struct Header *h)
   }
   else if (Context)
   {
+    msgcount = 0; // count the precise number of messages.
     for (rc = 0; rc < Context->msgcount; rc++)
     {
-      if (message_is_tagged(Context, rc) && !Context->hdrs[rc]->env->from)
+      if (message_is_tagged(Context, rc))
       {
-        mutt_error(_("Warning: message contains no From: header"));
-        break;
+        msgcount++;
+        if (!Context->hdrs[rc]->env->from)
+        {
+          mutt_error(_("Warning: message contains no From: header"));
+          break;
+        }
       }
     }
   }
-
-  if (h)
-    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
-    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    msgcount = 0;
+
+  mutt_str_strfcpy(prompt, ngettext("Bounce message to: ", "Bounce tagged messages to: ", msgcount),
+                   sizeof(prompt));
 
   rc = mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS);
   if (rc || !buf[0])
@@ -312,7 +319,7 @@ void ci_bounce_message(struct Header *h)
 
 #define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
-           (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
+           ngettext("Bounce message to %s", "Bounce messages to %s", msgcount), buf);
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
@@ -327,7 +334,7 @@ void ci_bounce_message(struct Header *h)
   {
     mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
-    mutt_message(h ? _("Message not bounced.") : _("Messages not bounced."));
+    mutt_message(ngettext("Message not bounced.", "Messages not bounced.", msgcount));
     return;
   }
 
@@ -337,7 +344,7 @@ void ci_bounce_message(struct Header *h)
   mutt_addr_free(&addr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
-    mutt_message(h ? _("Message bounced.") : _("Messages bounced."));
+    mutt_message(ngettext("Message bounced.", "Messages bounced.", msgcount));
 }
 
 static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
@@ -511,21 +518,37 @@ void mutt_pipe_message(struct Header *h)
 
 void mutt_print_message(struct Header *h)
 {
+  int i;
+  int msgcount; // for L10N with ngettext
+  if (h)
+    msgcount = 1;
+  else if (Context)
+  {
+    msgcount = 0; // count the precise number of messages.
+    for (i = 0; i < Context->msgcount; i++)
+      if (message_is_tagged(Context, i))
+        msgcount++;
+  }
+  else
+    msgcount = 0;
+
   if (Print && (!PrintCommand || !*PrintCommand))
   {
     mutt_message(_("No printing command has been defined."));
     return;
   }
 
-  if (query_quadoption(Print, h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
+  if (query_quadoption(Print, ngettext("Print message?", "Print tagged messages?",
+                                       msgcount)) != MUTT_YES)
   {
     return;
   }
 
   if (pipe_message(h, PrintCommand, PrintDecode, 1, PrintSplit, "\f") == 0)
-    mutt_message(h ? _("Message printed") : _("Messages printed"));
+    mutt_message(ngettext("Message printed", "Messages printed", msgcount));
   else
-    mutt_message(h ? _("Message could not be printed") : _("Messages could not be printed"));
+    mutt_message(ngettext("Message could not be printed",
+                          "Messages could not be printed", msgcount));
 }
 
 int mutt_select_sort(int reverse)
