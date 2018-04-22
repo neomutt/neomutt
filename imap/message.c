@@ -1449,7 +1449,8 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
         goto out;
       }
       else
-        mutt_message(_("Copying %d messages to %s..."), rc, mbox);
+        mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
+                     rc, mbox);
     }
     else
     {

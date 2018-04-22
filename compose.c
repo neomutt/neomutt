@@ -1037,7 +1037,8 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
 
         int error = 0;
         if (numfiles > 1)
-          mutt_message(_("Attaching selected files..."));
+          mutt_message(ngettext("Attaching selected file...",
+                                "Attaching selected files...", numfiles));
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
