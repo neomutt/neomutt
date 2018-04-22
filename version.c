@@ -87,13 +87,12 @@ static const char *License = N_(
     "    This program is distributed in the hope that it will be useful,\n"
     "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
     "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-    "    GNU General Public License for more details.\n");
-
-static const char *Obtaining =
-    N_("    You should have received a copy of the GNU General Public License\n"
-       "    along with this program; if not, write to the Free Software\n"
-       "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-       "02110-1301, USA.\n");
+    "    GNU General Public License for more details.\n"
+    "\n"
+    "    You should have received a copy of the GNU General Public License\n"
+    "    along with this program; if not, write to the Free Software\n"
+    "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+    "02110-1301, USA.\n");
 
 static const char *ReachingUs =
     N_("To learn more about NeoMutt, visit: https://www.neomutt.org\n"
@@ -451,7 +450,6 @@ void print_copyright(void)
   puts(Copyright);
   puts(_(Thanks));
   puts(_(License));
-  puts(_(Obtaining));
   puts(_(ReachingUs));
 }
 
