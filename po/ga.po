@@ -2085,6 +2085,7 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- Níor cuireadh an t-iatán seo %s/%s san áireamh, --]\n"
 "[-- agus tá an fhoinse sheachtrach sainithe --]\n"
 "[-- i ndiaidh dul as feidhm. --]\n"
 
@@ -2093,7 +2094,10 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- agus ní ghlacann leis an chineál shainithe rochtana %s --]\n"
+msgstr ""
+"[-- Níor cuireadh an t-iatán seo %s/%s san áireamh, --]\n"
+"[-- agus tá an fhoinse sheachtrach sainithe --]\n"
+"[-- i ndiaidh dul as feidhm. --]\n"
 
 #: handler.c:1725
 #, fuzzy

@@ -2003,15 +2003,20 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- この %s/%s 形式添付ファイルは含まれておらず、 --]\n"
 "[-- かつ、指定された外部のソースは期限が --]\n"
 "[-- 満了している。 --]\n"
 
+# 一行にしても大丈夫だと思うのだがなぁ……
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- かつ、指定された access-type %s は未サポート --]\n"
+msgstr ""
+"[-- この %s/%s 形式添付ファイルは含まれておらず、 --]\n"
+"[-- かつ、指定された外部のソースは期限が --]\n"
+"[-- 満了している。 --]\n"
 
 #: handler.c:1725
 #, fuzzy

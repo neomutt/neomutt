@@ -2063,6 +2063,7 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- A %s/%s melléklet nincs beágyazva, --]\n"
 "[-- és a jelzett külső forrás --]\n"
 "[-- megszűnt. --]\n"
 
@@ -2071,7 +2072,10 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- és a jelzett elérési-típus, %s nincs támogatva --]\n"
+msgstr ""
+"[-- A %s/%s melléklet nincs beágyazva, --]\n"
+"[-- és a jelzett külső forrás --]\n"
+"[-- megszűnt. --]\n"
 
 #: handler.c:1725
 #, fuzzy

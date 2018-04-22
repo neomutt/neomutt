@@ -2007,16 +2007,20 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- Deze %s/%s-bijlage is niet bijgesloten, --]\n"
 "[-- en de aangegeven externe bron --]\n"
 "[-- bestaat niet meer. --]\n"
 
-# FIXME: add a period?
+# FIXME: why the split?
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- en het access-type %s wordt niet ondersteund --]\n"
+msgstr ""
+"[-- Deze %s/%s-bijlage is niet bijgesloten, --]\n"
+"[-- en de aangegeven externe bron --]\n"
+"[-- bestaat niet meer. --]\n"
 
 #: handler.c:1725
 #, fuzzy

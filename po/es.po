@@ -2072,7 +2072,8 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Este archivo adjunto %s/%s no está incluido --]\n"
+"[-- Este archivo adjunto %s/%s [-- Este archivo adjunto %s/%s no está "
+"incluido --]\n"
 "[-- y la fuente externa indicada ha expirado. --]\n"
 
 #: handler.c:1596
@@ -2081,8 +2082,9 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Este archivo adjunto %s/%s no está incluido --]\n"
-"[-- y el tipo de acceso indicado %s no está soportado --]\n"
+"[-- Este archivo adjunto %s/%s [-- Este archivo adjunto %s/%s no está "
+"incluido --]\n"
+"[-- y la fuente externa indicada ha expirado. --]\n"
 
 #: handler.c:1725
 #, fuzzy

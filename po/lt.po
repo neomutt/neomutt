@@ -2062,7 +2062,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Šis %s/%s priedas neįtrauktas, --]\n"
-"[-- o nurodytas pasiekimo tipas %s yra nepalaikomas. --]\n"
+"[-- o nurodytas išorinis šaltinis išseko. --]\n"
 
 #: handler.c:1725
 #, fuzzy

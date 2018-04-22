@@ -1998,14 +1998,18 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- kaj la indikita ekstera fonto eksvalidiĝis. --]\n"
+msgstr ""
+"[-- Ĉi tiu %s/%s-parto ne estas inkluzivita, --]\n"
+"[-- kaj la indikita ekstera fonto eksvalidiĝis. --]\n"
 
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- kaj NeoMutt ne kapablas je la indikita alirmaniero %s. --]\n"
+msgstr ""
+"[-- Ĉi tiu %s/%s-parto ne estas inkluzivita, --]\n"
+"[-- kaj la indikita ekstera fonto eksvalidiĝis. --]\n"
 
 #: handler.c:1725
 #, fuzzy

@@ -2027,6 +2027,7 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- Это вложение типа %s/%s не было включено --]\n"
 "[-- в сообщение, и более не содержится в указанном --]\n"
 "[-- внешнем источнике. --]\n"
 
@@ -2035,7 +2036,10 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- в сообщение, и значение access-type %s не поддерживается --]\n"
+msgstr ""
+"[-- Это вложение типа %s/%s не было включено --]\n"
+"[-- в сообщение, и более не содержится в указанном --]\n"
+"[-- внешнем источнике. --]\n"
 
 #: handler.c:1725
 #, fuzzy

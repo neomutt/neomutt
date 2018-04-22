@@ -2030,6 +2030,7 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- %s/%s gehigarria ez dago gehiturik, --]\n"
 "[-- ezarritako kanpoko jatorria denboraz --]\n"
 "[-- kanpo dago. --]\n"
 
@@ -2038,7 +2039,10 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- eta ezarritako access type %s ez da onartzen --]\n"
+msgstr ""
+"[-- %s/%s gehigarria ez dago gehiturik, --]\n"
+"[-- ezarritako kanpoko jatorria denboraz --]\n"
+"[-- kanpo dago. --]\n"
 
 #: handler.c:1725
 #, fuzzy

@@ -2004,7 +2004,9 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- a udaný externí zdroj již není platný --]\n"
+msgstr ""
+"[-- Tato příloha typu '%s/%s' není přítomna, --]\n"
+"[-- a udaný externí zdroj již není platný --]\n"
 
 #: handler.c:1596
 #, fuzzy, c-format
@@ -2012,8 +2014,8 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- a udaná hodnota parametru 'access-type %s' --]\n"
-"[-- není podporována --]\n"
+"[-- Tato příloha typu '%s/%s' není přítomna, --]\n"
+"[-- a udaný externí zdroj již není platný --]\n"
 
 #: handler.c:1725
 msgid "Unable to open memory stream!"

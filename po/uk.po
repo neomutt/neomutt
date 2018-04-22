@@ -2015,14 +2015,18 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- і відповідне зовнішнє джерело видалено за давністю. --]\n"
+msgstr ""
+"[-- Цей %s/%s додаток не включено, --]\n"
+"[-- і відповідне зовнішнє джерело видалено за давністю. --]\n"
 
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- відповідний тип доступу %s не підтримується --]\n"
+msgstr ""
+"[-- Цей %s/%s додаток не включено, --]\n"
+"[-- і відповідне зовнішнє джерело видалено за давністю. --]\n"
 
 #: handler.c:1725
 #, fuzzy

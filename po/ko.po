@@ -2040,14 +2040,18 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- 지정된 외부 소스가 만기됨 --]\n"
+msgstr ""
+"[-- 이 %s/%s 첨부물은 포함되지 않음, --]\n"
+"[-- 지정된 외부 소스가 만기됨 --]\n"
 
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
+msgstr ""
+"[-- 이 %s/%s 첨부물은 포함되지 않음, --]\n"
+"[-- 지정된 외부 소스가 만기됨 --]\n"
 
 #: handler.c:1725
 #, fuzzy

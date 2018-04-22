@@ -2000,14 +2000,18 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- og den angivne eksterne kilde findes ikke mere. --]\n"
+msgstr ""
+"[-- Denne %s/%s-del er ikke medtaget, --]\n"
+"[-- og den angivne eksterne kilde findes ikke mere. --]\n"
 
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- og den angivne \"access-type\" %s er ikke understøttet --]\n"
+msgstr ""
+"[-- Denne %s/%s-del er ikke medtaget, --]\n"
+"[-- og den angivne eksterne kilde findes ikke mere. --]\n"
 
 #: handler.c:1725
 #, fuzzy

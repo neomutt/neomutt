@@ -2078,14 +2078,18 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
-msgstr "[-- а файлът, определен за прикачване вече не съществува. --]\n"
+msgstr ""
+"[-- Това %s/%s приложение не е включено в писмото, --]\n"
+"[-- а файлът, определен за прикачване вече не съществува. --]\n"
 
 #: handler.c:1596
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- а указаният метод на достъп %s не се подържа. --]\n"
+msgstr ""
+"[-- Това %s/%s приложение не е включено в писмото, --]\n"
+"[-- а файлът, определен за прикачване вече не съществува. --]\n"
 
 #: handler.c:1725
 #, fuzzy

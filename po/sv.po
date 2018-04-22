@@ -2030,6 +2030,7 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
+"[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
 "[-- och den angivna externa källan har --]\n"
 "[-- utgått. --]\n"
 
@@ -2038,7 +2039,10 @@ msgstr ""
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
+msgstr ""
+"[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
+"[-- och den angivna externa källan har --]\n"
+"[-- utgått. --]\n"
 
 #: handler.c:1725
 #, fuzzy
