@@ -777,16 +777,42 @@ int mutt_save_message_ctx(struct Header *h, int delete, int decode, int decrypt,
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {
   int need_passphrase = 0, app = 0;
-  char prompt[SHORT_STRING], buf[_POSIX_PATH_MAX];
+  char buf[_POSIX_PATH_MAX];
+  const char *prompt = NULL;
   struct Context ctx;
   struct stat st;
+  int msgcount; // for L10N with ngettext
 
-  snprintf(prompt, sizeof(prompt),
-           decode ?
-               (delete ? _("Decode-save%s to mailbox") : _("Decode-copy%s to mailbox")) :
-               (decrypt ? (delete ? _("Decrypt-save%s to mailbox") : _("Decrypt-copy%s to mailbox")) :
-                          (delete ? _("Save%s to mailbox") : _("Copy%s to mailbox"))),
-           h ? "" : _(" tagged"));
+  if (h)
+    msgcount = 1;
+  else if (Context)
+  {
+    msgcount = 0; // count the precise number of messages.
+    for (int i = 0; i < Context->msgcount; i++)
+      if (message_is_tagged(Context, i))
+        msgcount++;
+  }
+  else
+    msgcount = 0;
+
+  if (delete)
+  {
+    if (decode)
+      prompt = ngettext("Decode-save to mailbox", "Decode-save tagged to mailbox", msgcount);
+    else if (decrypt)
+      prompt = ngettext("Decrypt-save to mailbox", "Decrypt-save tagged to mailbox", msgcount);
+    else
+      prompt = ngettext("Save to mailbox", "Save tagged to mailbox", msgcount);
+  }
+  else
+  {
+    if (decode)
+      prompt = ngettext("Decode-copy to mailbox", "Decode-copy tagged to mailbox", msgcount);
+    else if (decrypt)
+      prompt = ngettext("Decrypt-copy to mailbox", "Decrypt-copy tagged to mailbox", msgcount);
+    else
+      prompt = ngettext("Copy to mailbox", "Copy tagged to mailbox", msgcount);
+  }
 
   if (h)
   {
