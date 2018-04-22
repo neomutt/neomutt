@@ -131,7 +131,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     return;
 
   /* one or more messages? */
-  p = (cur || count_tagged(actx) == 1);
+  p = cur ? 1 : count_tagged(actx);
 
   /* RFC5322 mandates a From: header, so warn before bouncing
    * messages without one */
@@ -159,10 +159,8 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
     }
   }
 
-  if (p)
-    mutt_str_strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
-  else
-    mutt_str_strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+  mutt_str_strfcpy(prompt, ngettext("Bounce message to: ", "Bounce tagged messages to: ", p),
+                   sizeof(prompt));
 
   buf[0] = '\0';
   if (mutt_get_field(prompt, buf, sizeof(buf), MUTT_ALIAS) || buf[0] == '\0')
@@ -193,7 +191,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
    * See commands.c.
    */
   snprintf(prompt, sizeof(prompt) - 4,
-           (p ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
+           ngettext("Bounce message to %s", "Bounce messages to %s", p), buf);
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
@@ -208,7 +206,7 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   {
     mutt_addr_free(&addr);
     mutt_window_clearline(MuttMessageWindow, 0);
-    mutt_message(p ? _("Message not bounced.") : _("Messages not bounced."));
+    mutt_message(ngettext("Message not bounced.", "Messages not bounced.", p));
     return;
   }
 
@@ -227,9 +225,9 @@ void mutt_attach_bounce(FILE *fp, struct AttachCtx *actx, struct Body *cur)
   }
 
   if (!ret)
-    mutt_message(p ? _("Message bounced.") : _("Messages bounced."));
+    mutt_message(ngettext("Message bounced.", "Messages bounced.", p));
   else
-    mutt_error(p ? _("Error bouncing message!") : _("Error bouncing messages!"));
+    mutt_error(ngettext("Error bouncing message!", "Error bouncing messages!", p));
 
   mutt_addr_free(&addr);
 }
