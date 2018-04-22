@@ -552,43 +552,43 @@ msgstr "Kabuk komutu: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Eposta kutusuna çözerek kaydedilecek%s"
-msgstr[1] "Eposta kutusuna çözerek kaydedilecek%s"
+msgstr[0] "Eposta kutusuna çözerek kaydedilecek"
+msgstr[1] "Eposta kutusuna çözerek kaydedilecek işaretliler"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Eposta kutusuna şifre çözerek kaydedilecek%s"
-msgstr[1] "Eposta kutusuna şifre çözerek kaydedilecek%s"
+msgstr[0] "Eposta kutusuna şifre çözerek kaydedilecek"
+msgstr[1] "Eposta kutusuna şifre çözerek kaydedilecek işaretliler"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Eposta kutusuna kaydedilecek%s"
-msgstr[1] "Eposta kutusuna kaydedilecek%s"
+msgstr[0] "Eposta kutusuna kaydedilecek"
+msgstr[1] "Eposta kutusuna kaydedilecek işaretliler"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Eposta kutusuna çözerek kopyalanacak%s"
-msgstr[1] "Eposta kutusuna çözerek kopyalanacak%s"
+msgstr[0] "Eposta kutusuna çözerek kopyalanacak"
+msgstr[1] "Eposta kutusuna çözerek kopyalanacak işaretliler"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Eposta kutusuna şifre çözerek kopyalanacak%s"
-msgstr[1] "Eposta kutusuna şifre çözerek kopyalanacak%s"
+msgstr[0] "Eposta kutusuna şifre çözerek kopyalanacak"
+msgstr[1] "Eposta kutusuna şifre çözerek kopyalanacak işaretliler"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Eposta kutusuna kopyalanacak%s"
-msgstr[1] "Eposta kutusuna kopyalanacak%s"
+msgstr[0] "Eposta kutusuna kopyalanacak"
+msgstr[1] "Eposta kutusuna kopyalanacak işaretliler"
 
 #: commands.c:882
 #, c-format

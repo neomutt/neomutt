@@ -558,43 +558,43 @@ msgstr "Käsurea käsk: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekodeeri-salvesta%s postkasti"
-msgstr[1] "Dekodeeri-salvesta%s postkasti"
+msgstr[0] "Dekodeeri-salvesta postkasti"
+msgstr[1] "Dekodeeri-salvesta märgitud postkasti"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dekrüpti-salvesta%s postkasti"
-msgstr[1] "Dekrüpti-salvesta%s postkasti"
+msgstr[0] "Dekrüpti-salvesta postkasti"
+msgstr[1] "Dekrüpti-salvesta märgitud postkasti"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Salvesta%s postkasti"
-msgstr[1] "Salvesta%s postkasti"
+msgstr[0] "Salvesta postkasti"
+msgstr[1] "Salvesta märgitud postkasti"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekodeeri-kopeeri%s postkasti"
-msgstr[1] "Dekodeeri-kopeeri%s postkasti"
+msgstr[0] "Dekodeeri-kopeeri postkasti"
+msgstr[1] "Dekodeeri-kopeeri märgitud postkasti"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dekrüpti-kopeeri%s postkasti"
-msgstr[1] "Dekrüpti-kopeeri%s postkasti"
+msgstr[0] "Dekrüpti-kopeeri postkasti"
+msgstr[1] "Dekrüpti-kopeeri märgitud postkasti"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopeeri%s postkasti"
-msgstr[1] "Kopeeri%s postkasti"
+msgstr[0] "Kopeeri postkasti"
+msgstr[1] "Kopeeri märgitud postkasti"
 
 #: commands.c:882
 #, c-format

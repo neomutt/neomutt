@@ -549,43 +549,43 @@ msgstr "Shell command: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decode-save%s to mailbox"
-msgstr[1] "Decode-save%s to mailbox"
+msgstr[0] "Decode-save to mailbox"
+msgstr[1] "Decode-save tagged to mailbox"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Decrypt-save%s to mailbox"
-msgstr[1] "Decrypt-save%s to mailbox"
+msgstr[0] "Decrypt-save to mailbox"
+msgstr[1] "Decrypt-save tagged to mailbox"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Save%s to mailbox"
-msgstr[1] "Save%s to mailbox"
+msgstr[0] "Save to mailbox"
+msgstr[1] "Save tagged to mailbox"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decode-copy%s to mailbox"
-msgstr[1] "Decode-copy%s to mailbox"
+msgstr[0] "Decode-copy to mailbox"
+msgstr[1] "Decode-copy tagged to mailbox"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Decrypt-copy%s to mailbox"
-msgstr[1] "Decrypt-copy%s to mailbox"
+msgstr[0] "Decrypt-copy to mailbox"
+msgstr[1] "Decrypt-copy tagged to mailbox"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copy%s to mailbox"
-msgstr[1] "Copy%s to mailbox"
+msgstr[0] "Copy to mailbox"
+msgstr[1] "Copy tagged to mailbox"
 
 #: commands.c:882
 #, c-format

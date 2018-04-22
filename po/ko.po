@@ -552,37 +552,37 @@ msgstr "쉘 명령어: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "복호화-저장%s 메일함으로"
+msgstr[0] "복호화-저장 메일함으로"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "해독-저장%s 메일함으로"
+msgstr[0] "해독-저장 메일함으로"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "저장%s 메일함으로"
+msgstr[0] "저장 메일함으로"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "복호화-복사%s 메일함으로"
+msgstr[0] "복호화-복사 메일함으로"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "해독-복사%s 메일함으로"
+msgstr[0] "해독-복사 메일함으로"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "복사%s 메일함으로"
+msgstr[0] "복사 메일함으로"
 
 #: commands.c:882
 #, c-format

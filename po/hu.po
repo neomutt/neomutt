@@ -561,43 +561,43 @@ msgstr "Shell parancs: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekódolás-mentés%s postafiókba"
-msgstr[1] "Dekódolás-mentés%s postafiókba"
+msgstr[0] "Dekódolás-mentés postafiókba"
+msgstr[1] "Dekódolás-mentés kijelölt postafiókba"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Visszafejtés-mentés%s postafiókba"
-msgstr[1] "Visszafejtés-mentés%s postafiókba"
+msgstr[0] "Visszafejtés-mentés postafiókba"
+msgstr[1] "Visszafejtés-mentés kijelölt postafiókba"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Mentés%s postafiókba"
-msgstr[1] "Mentés%s postafiókba"
+msgstr[0] "Mentés postafiókba"
+msgstr[1] "Mentés kijelölt postafiókba"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekódolás-másolás%s postafiókba"
-msgstr[1] "Dekódolás-másolás%s postafiókba"
+msgstr[0] "Dekódolás-másolás postafiókba"
+msgstr[1] "Dekódolás-másolás kijelölt postafiókba"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Visszafejtés-másolás%s postafiókba"
-msgstr[1] "Visszafejtés-másolás%s postafiókba"
+msgstr[0] "Visszafejtés-másolás postafiókba"
+msgstr[1] "Visszafejtés-másolás kijelölt postafiókba"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Másolás%s postafiókba"
-msgstr[1] "Másolás%s postafiókba"
+msgstr[0] "Másolás postafiókba"
+msgstr[1] "Másolás kijelölt postafiókba"
 
 #: commands.c:882
 #, c-format

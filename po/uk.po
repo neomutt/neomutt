@@ -562,49 +562,49 @@ msgstr "Команда системи: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Розкодувати і перенести%s до скриньки"
-msgstr[1] "Розкодувати і перенести%s до скриньки"
-msgstr[2] "Розкодувати і перенести%s до скриньки"
+msgstr[0] "Розкодувати і перенести до скриньки"
+msgstr[1] "Розкодувати і перенести виділені до скриньки"
+msgstr[2] "Розкодувати і перенести виділені до скриньки"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Розшифрувати і перенести%s до скриньки"
-msgstr[1] "Розшифрувати і перенести%s до скриньки"
-msgstr[2] "Розшифрувати і перенести%s до скриньки"
+msgstr[0] "Розшифрувати і перенести до скриньки"
+msgstr[1] "Розшифрувати і перенести виділені до скриньки"
+msgstr[2] "Розшифрувати і перенести виділені до скриньки"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Перенести%s до скриньки"
-msgstr[1] "Перенести%s до скриньки"
-msgstr[2] "Перенести%s до скриньки"
+msgstr[0] "Перенести до скриньки"
+msgstr[1] "Перенести виділені до скриньки"
+msgstr[2] "Перенести виділені до скриньки"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Розкодувати і копіювати%s до скриньки"
-msgstr[1] "Розкодувати і копіювати%s до скриньки"
-msgstr[2] "Розкодувати і копіювати%s до скриньки"
+msgstr[0] "Розкодувати і копіювати до скриньки"
+msgstr[1] "Розкодувати і копіювати виділені до скриньки"
+msgstr[2] "Розкодувати і копіювати виділені до скриньки"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Розшифрувати і копіювати%s до скриньки"
-msgstr[1] "Розшифрувати і копіювати%s до скриньки"
-msgstr[2] "Розшифрувати і копіювати%s до скриньки"
+msgstr[0] "Розшифрувати і копіювати до скриньки"
+msgstr[1] "Розшифрувати і копіювати виділені до скриньки"
+msgstr[2] "Розшифрувати і копіювати виділені до скриньки"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Копіювати%s до скриньки"
-msgstr[1] "Копіювати%s до скриньки"
-msgstr[2] "Копіювати%s до скриньки"
+msgstr[0] "Копіювати до скриньки"
+msgstr[1] "Копіювати виділені до скриньки"
+msgstr[2] "Копіювати виділені до скриньки"
 
 #: commands.c:882
 #, c-format

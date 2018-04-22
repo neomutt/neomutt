@@ -568,43 +568,43 @@ msgstr "Шел команда: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Декодиране и запис на%s в пощенска кутия"
-msgstr[1] "Декодиране и запис на%s в пощенска кутия"
+msgstr[0] "Декодиране и запис на в пощенска кутия"
+msgstr[1] "Декодиране и запис на маркиран в пощенска кутия"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Дешифриране и запис на%s в пощенска кутия"
-msgstr[1] "Дешифриране и запис на%s в пощенска кутия"
+msgstr[0] "Дешифриране и запис на в пощенска кутия"
+msgstr[1] "Дешифриране и запис на маркиран в пощенска кутия"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Запис на%s в пощенска кутия"
-msgstr[1] "Запис на%s в пощенска кутия"
+msgstr[0] "Запис на в пощенска кутия"
+msgstr[1] "Запис на маркиран в пощенска кутия"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Декодиране и копиране на%s в пощенска кутия"
-msgstr[1] "Декодиране и копиране на%s в пощенска кутия"
+msgstr[0] "Декодиране и копиране на в пощенска кутия"
+msgstr[1] "Декодиране и копиране на маркиран в пощенска кутия"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Дешифриране и запис на%s в пощенска кутия"
-msgstr[1] "Дешифриране и запис на%s в пощенска кутия"
+msgstr[0] "Дешифриране и запис на в пощенска кутия"
+msgstr[1] "Дешифриране и запис на маркиран в пощенска кутия"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Копиране на%s в пощенска кутия"
-msgstr[1] "Копиране на%s в пощенска кутия"
+msgstr[0] "Копиране на в пощенска кутия"
+msgstr[1] "Копиране на маркиран в пощенска кутия"
 
 #: commands.c:882
 #, c-format

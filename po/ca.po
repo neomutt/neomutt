@@ -610,48 +610,48 @@ msgstr "Ordre per a l’intèrpret: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Descodifica i desa%s a la bústia"
-msgstr[1] "Descodifica i desa%s a la bústia"
+msgstr[0] "Descodifica i desa a la bústia"
+msgstr[1] "Descodifica i desa els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Desxifra i desa%s a la bústia"
-msgstr[1] "Desxifra i desa%s a la bústia"
+msgstr[0] "Desxifra i desa a la bústia"
+msgstr[1] "Desxifra i desa els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Desa%s a la bústia"
-msgstr[1] "Desa%s a la bústia"
+msgstr[0] "Desa a la bústia"
+msgstr[1] "Desa els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Descodifica i copia%s a la bústia"
-msgstr[1] "Descodifica i copia%s a la bústia"
+msgstr[0] "Descodifica i copia a la bústia"
+msgstr[1] "Descodifica i copia els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Desxifra i copia%s a la bústia"
-msgstr[1] "Desxifra i copia%s a la bústia"
+msgstr[0] "Desxifra i copia a la bústia"
+msgstr[1] "Desxifra i copia els marcats a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copia%s a la bústia"
-msgstr[1] "Copia%s a la bústia"
+msgstr[0] "Copia a la bústia"
+msgstr[1] "Copia els marcats a la bústia"
 
 #: commands.c:882
 #, c-format

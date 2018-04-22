@@ -554,43 +554,43 @@ msgstr "Ŝelkomando: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Malkodita skribi%s al poŝtfako"
-msgstr[1] "Malkodita skribi%s al poŝtfako"
+msgstr[0] "Malkodita skribi al poŝtfako"
+msgstr[1] "Malkodita skribi markitajn al poŝtfako"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Malĉifrita skribi%s al poŝtfako"
-msgstr[1] "Malĉifrita skribi%s al poŝtfako"
+msgstr[0] "Malĉifrita skribi al poŝtfako"
+msgstr[1] "Malĉifrita skribi markitajn al poŝtfako"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Skribi%s al poŝtfako"
-msgstr[1] "Skribi%s al poŝtfako"
+msgstr[0] "Skribi al poŝtfako"
+msgstr[1] "Skribi markitajn al poŝtfako"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Malkodita kopii%s al poŝtfako"
-msgstr[1] "Malkodita kopii%s al poŝtfako"
+msgstr[0] "Malkodita kopii al poŝtfako"
+msgstr[1] "Malkodita kopii markitajn al poŝtfako"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Malĉifrita kopii%s al poŝtfako"
-msgstr[1] "Malĉifrita kopii%s al poŝtfako"
+msgstr[0] "Malĉifrita kopii al poŝtfako"
+msgstr[1] "Malĉifrita kopii markitajn al poŝtfako"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopii%s al poŝtfako"
-msgstr[1] "Kopii%s al poŝtfako"
+msgstr[0] "Kopii al poŝtfako"
+msgstr[1] "Kopii markitajn al poŝtfako"
 
 #: commands.c:882
 #, c-format

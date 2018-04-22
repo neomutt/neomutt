@@ -561,50 +561,50 @@ msgstr "Příkaz pro shell: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekódovat - uložit %s do schránky"
-msgstr[1] "Dekódovat - uložit %s do schránky"
-msgstr[2] "Dekódovat - uložit %s do schránky"
+msgstr[0] "Dekódovat - uložit  do schránky"
+msgstr[1] "Dekódovat - uložit  označené do schránky"
+msgstr[2] "Dekódovat - uložit  označené do schránky"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dešifrovat - uložit %s do schránky"
-msgstr[1] "Dešifrovat - uložit %s do schránky"
-msgstr[2] "Dešifrovat - uložit %s do schránky"
+msgstr[0] "Dešifrovat - uložit  do schránky"
+msgstr[1] "Dešifrovat - uložit  označené do schránky"
+msgstr[2] "Dešifrovat - uložit  označené do schránky"
 
 # XXX: Missing space before %s is not a typo
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Uložit%s do schránky"
-msgstr[1] "Uložit%s do schránky"
-msgstr[2] "Uložit%s do schránky"
+msgstr[0] "Uložit do schránky"
+msgstr[1] "Uložit označené do schránky"
+msgstr[2] "Uložit označené do schránky"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekódovat - zkopírovat %s do schránky"
-msgstr[1] "Dekódovat - zkopírovat %s do schránky"
-msgstr[2] "Dekódovat - zkopírovat %s do schránky"
+msgstr[0] "Dekódovat - zkopírovat  do schránky"
+msgstr[1] "Dekódovat - zkopírovat  označené do schránky"
+msgstr[2] "Dekódovat - zkopírovat  označené do schránky"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dešifrovat - zkopírovat %s do schránky"
-msgstr[1] "Dešifrovat - zkopírovat %s do schránky"
-msgstr[2] "Dešifrovat - zkopírovat %s do schránky"
+msgstr[0] "Dešifrovat - zkopírovat  do schránky"
+msgstr[1] "Dešifrovat - zkopírovat  označené do schránky"
+msgstr[2] "Dešifrovat - zkopírovat  označené do schránky"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Zkopírovat %s do schránky"
-msgstr[1] "Zkopírovat %s do schránky"
-msgstr[2] "Zkopírovat %s do schránky"
+msgstr[0] "Zkopírovat  do schránky"
+msgstr[1] "Zkopírovat  označené do schránky"
+msgstr[2] "Zkopírovat  označené do schránky"
 
 #: commands.c:882
 #, c-format

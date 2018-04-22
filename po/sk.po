@@ -563,49 +563,49 @@ msgstr "Príkaz shell-u: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekódovať-Uložiť%s do schránky"
-msgstr[1] "Dekódovať-Uložiť%s do schránky"
-msgstr[2] "Dekódovať-Uložiť%s do schránky"
+msgstr[0] "Dekódovať-Uložiť do schránky"
+msgstr[1] "Dekódovať-Uložiť označiť do schránky"
+msgstr[2] "Dekódovať-Uložiť označiť do schránky"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dešifrovať-Uložiť%s do schránky"
-msgstr[1] "Dešifrovať-Uložiť%s do schránky"
-msgstr[2] "Dešifrovať-Uložiť%s do schránky"
+msgstr[0] "Dešifrovať-Uložiť do schránky"
+msgstr[1] "Dešifrovať-Uložiť označiť do schránky"
+msgstr[2] "Dešifrovať-Uložiť označiť do schránky"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Uložiť%s do schránky"
-msgstr[1] "Uložiť%s do schránky"
-msgstr[2] "Uložiť%s do schránky"
+msgstr[0] "Uložiť do schránky"
+msgstr[1] "Uložiť označiť do schránky"
+msgstr[2] "Uložiť označiť do schránky"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekódovať-Skopírovať%s do schránky"
-msgstr[1] "Dekódovať-Skopírovať%s do schránky"
-msgstr[2] "Dekódovať-Skopírovať%s do schránky"
+msgstr[0] "Dekódovať-Skopírovať do schránky"
+msgstr[1] "Dekódovať-Skopírovať označiť do schránky"
+msgstr[2] "Dekódovať-Skopírovať označiť do schránky"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dešifrovať-Skopírovať%s do schránky"
-msgstr[1] "Dešifrovať-Skopírovať%s do schránky"
-msgstr[2] "Dešifrovať-Skopírovať%s do schránky"
+msgstr[0] "Dešifrovať-Skopírovať do schránky"
+msgstr[1] "Dešifrovať-Skopírovať označiť do schránky"
+msgstr[2] "Dešifrovať-Skopírovať označiť do schránky"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Skopírovať%s do schránky"
-msgstr[1] "Skopírovať%s do schránky"
-msgstr[2] "Skopírovať%s do schránky"
+msgstr[0] "Skopírovať do schránky"
+msgstr[1] "Skopírovať označiť do schránky"
+msgstr[2] "Skopírovať označiť do schránky"
 
 #: commands.c:882
 #, c-format

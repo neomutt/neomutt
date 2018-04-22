@@ -558,49 +558,49 @@ msgstr "Polecenie powłoki: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Dekoduj-zapisz%s do skrzynki"
-msgstr[1] "Dekoduj-zapisz%s do skrzynki"
-msgstr[2] "Dekoduj-zapisz%s do skrzynki"
+msgstr[0] "Dekoduj-zapisz do skrzynki"
+msgstr[1] "Dekoduj-zapisz zaznaczone do skrzynki"
+msgstr[2] "Dekoduj-zapisz zaznaczone do skrzynki"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Rozszyfruj-zapisz%s do skrzynki"
-msgstr[1] "Rozszyfruj-zapisz%s do skrzynki"
-msgstr[2] "Rozszyfruj-zapisz%s do skrzynki"
+msgstr[0] "Rozszyfruj-zapisz do skrzynki"
+msgstr[1] "Rozszyfruj-zapisz zaznaczone do skrzynki"
+msgstr[2] "Rozszyfruj-zapisz zaznaczone do skrzynki"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Zapisz%s do skrzynki"
-msgstr[1] "Zapisz%s do skrzynki"
-msgstr[2] "Zapisz%s do skrzynki"
+msgstr[0] "Zapisz do skrzynki"
+msgstr[1] "Zapisz zaznaczone do skrzynki"
+msgstr[2] "Zapisz zaznaczone do skrzynki"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Dekoduj-kopiuj%s do skrzynki"
-msgstr[1] "Dekoduj-kopiuj%s do skrzynki"
-msgstr[2] "Dekoduj-kopiuj%s do skrzynki"
+msgstr[0] "Dekoduj-kopiuj do skrzynki"
+msgstr[1] "Dekoduj-kopiuj zaznaczone do skrzynki"
+msgstr[2] "Dekoduj-kopiuj zaznaczone do skrzynki"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Rozszyfruj-kopiuj%s do skrzynki"
-msgstr[1] "Rozszyfruj-kopiuj%s do skrzynki"
-msgstr[2] "Rozszyfruj-kopiuj%s do skrzynki"
+msgstr[0] "Rozszyfruj-kopiuj do skrzynki"
+msgstr[1] "Rozszyfruj-kopiuj zaznaczone do skrzynki"
+msgstr[2] "Rozszyfruj-kopiuj zaznaczone do skrzynki"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiuj%s do skrzynki"
-msgstr[1] "Kopiuj%s do skrzynki"
-msgstr[2] "Kopiuj%s do skrzynki"
+msgstr[0] "Kopiuj do skrzynki"
+msgstr[1] "Kopiuj zaznaczone do skrzynki"
+msgstr[2] "Kopiuj zaznaczone do skrzynki"
 
 #: commands.c:882
 #, c-format

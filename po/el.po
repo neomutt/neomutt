@@ -564,43 +564,43 @@ msgstr "Εντολή φλοιού: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Αποκωδικοποίηση-αποθήκευση%s στο γραμματοκιβώτιο"
-msgstr[1] "Αποκωδικοποίηση-αποθήκευση%s στο γραμματοκιβώτιο"
+msgstr[0] "Αποκωδικοποίηση-αποθήκευση στο γραμματοκιβώτιο"
+msgstr[1] "Αποκωδικοποίηση-αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Αποκρυπτογράφηση-αποθήκευση%s στο γραμματοκιβώτιο"
-msgstr[1] "Αποκρυπτογράφηση-αποθήκευση%s στο γραμματοκιβώτιο"
+msgstr[0] "Αποκρυπτογράφηση-αποθήκευση στο γραμματοκιβώτιο"
+msgstr[1] "Αποκρυπτογράφηση-αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Αποθήκευση%s στο γραμματοκιβώτιο"
-msgstr[1] "Αποθήκευση%s στο γραμματοκιβώτιο"
+msgstr[0] "Αποθήκευση στο γραμματοκιβώτιο"
+msgstr[1] "Αποθήκευση σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Αποκωδικοποίηση-αντιγραφή%s στο γραμματοκιβώτιο"
-msgstr[1] "Αποκωδικοποίηση-αντιγραφή%s στο γραμματοκιβώτιο"
+msgstr[0] "Αποκωδικοποίηση-αντιγραφή στο γραμματοκιβώτιο"
+msgstr[1] "Αποκωδικοποίηση-αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Αποκρυπτογράφηση-αντιγραφή%s στο γραμματοκιβώτιο"
-msgstr[1] "Αποκρυπτογράφηση-αντιγραφή%s στο γραμματοκιβώτιο"
+msgstr[0] "Αποκρυπτογράφηση-αντιγραφή στο γραμματοκιβώτιο"
+msgstr[1] "Αποκρυπτογράφηση-αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Αντιγραφή%s στο γραμματοκιβώτιο"
-msgstr[1] "Αντιγραφή%s στο γραμματοκιβώτιο"
+msgstr[0] "Αντιγραφή στο γραμματοκιβώτιο"
+msgstr[1] "Αντιγραφή σημειωμένο στο γραμματοκιβώτιο"
 
 #: commands.c:882
 #, c-format

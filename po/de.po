@@ -556,43 +556,43 @@ msgstr "Shell-Kommando: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Speichere%s dekodiert in Mailbox"
-msgstr[1] "Speichere%s dekodiert in Mailbox"
+msgstr[0] "Speichere dekodiert in Mailbox"
+msgstr[1] "Speichere ausgewählte dekodiert in Mailbox"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Speichere%s entschlüsselt in Mailbox"
-msgstr[1] "Speichere%s entschlüsselt in Mailbox"
+msgstr[0] "Speichere entschlüsselt in Mailbox"
+msgstr[1] "Speichere ausgewählte entschlüsselt in Mailbox"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Speichere%s in Mailbox"
-msgstr[1] "Speichere%s in Mailbox"
+msgstr[0] "Speichere in Mailbox"
+msgstr[1] "Speichere ausgewählte in Mailbox"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Kopiere%s dekodiert in Mailbox"
-msgstr[1] "Kopiere%s dekodiert in Mailbox"
+msgstr[0] "Kopiere dekodiert in Mailbox"
+msgstr[1] "Kopiere ausgewählte dekodiert in Mailbox"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Kopiere%s entschlüsselt in Mailbox"
-msgstr[1] "Kopiere%s entschlüsselt in Mailbox"
+msgstr[0] "Kopiere entschlüsselt in Mailbox"
+msgstr[1] "Kopiere ausgewählte entschlüsselt in Mailbox"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiere%s in Mailbox"
-msgstr[1] "Kopiere%s in Mailbox"
+msgstr[0] "Kopiere in Mailbox"
+msgstr[1] "Kopiere ausgewählte in Mailbox"
 
 #: commands.c:882
 #, c-format

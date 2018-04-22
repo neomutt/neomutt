@@ -553,43 +553,43 @@ msgstr "Skalkommando: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Afkod-gem%s i brevbakke"
-msgstr[1] "Afkod-gem%s i brevbakke"
+msgstr[0] "Afkod-gem i brevbakke"
+msgstr[1] "Afkod-gem udvalgte i brevbakke"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Dekryptér-gem%s i brevbakke"
-msgstr[1] "Dekryptér-gem%s i brevbakke"
+msgstr[0] "Dekryptér-gem i brevbakke"
+msgstr[1] "Dekryptér-gem udvalgte i brevbakke"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Gem%s i brevbakke"
-msgstr[1] "Gem%s i brevbakke"
+msgstr[0] "Gem i brevbakke"
+msgstr[1] "Gem udvalgte i brevbakke"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Afkod-kopiér%s til brevbakke"
-msgstr[1] "Afkod-kopiér%s til brevbakke"
+msgstr[0] "Afkod-kopiér til brevbakke"
+msgstr[1] "Afkod-kopiér udvalgte til brevbakke"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Dekryptér-kopiér%s til brevbakke"
-msgstr[1] "Dekryptér-kopiér%s til brevbakke"
+msgstr[0] "Dekryptér-kopiér til brevbakke"
+msgstr[1] "Dekryptér-kopiér udvalgte til brevbakke"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiér%s til brevbakke"
-msgstr[1] "Kopiér%s til brevbakke"
+msgstr[0] "Kopiér til brevbakke"
+msgstr[1] "Kopiér udvalgte til brevbakke"
 
 #: commands.c:882
 #, c-format

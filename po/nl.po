@@ -553,43 +553,43 @@ msgstr "Shell-commando: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decoderen-opslaan%s in postvak"
-msgstr[1] "Decoderen-opslaan%s in postvak"
+msgstr[0] "Decoderen-opslaan in postvak"
+msgstr[1] "Decoderen-opslaan gemarkeerd in postvak"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Ontsleutelen-opslaan%s in postvak"
-msgstr[1] "Ontsleutelen-opslaan%s in postvak"
+msgstr[0] "Ontsleutelen-opslaan in postvak"
+msgstr[1] "Ontsleutelen-opslaan gemarkeerd in postvak"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Opslaan%s in postvak"
-msgstr[1] "Opslaan%s in postvak"
+msgstr[0] "Opslaan in postvak"
+msgstr[1] "Opslaan gemarkeerd in postvak"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decoderen-kopiëren%s naar postvak"
-msgstr[1] "Decoderen-kopiëren%s naar postvak"
+msgstr[0] "Decoderen-kopiëren naar postvak"
+msgstr[1] "Decoderen-kopiëren gemarkeerd naar postvak"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Ontsleutelen-kopiëren%s naar postvak"
-msgstr[1] "Ontsleutelen-kopiëren%s naar postvak"
+msgstr[0] "Ontsleutelen-kopiëren naar postvak"
+msgstr[1] "Ontsleutelen-kopiëren gemarkeerd naar postvak"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Kopiëren%s naar postvak"
-msgstr[1] "Kopiëren%s naar postvak"
+msgstr[0] "Kopiëren naar postvak"
+msgstr[1] "Kopiëren gemarkeerd naar postvak"
 
 #: commands.c:882
 #, c-format

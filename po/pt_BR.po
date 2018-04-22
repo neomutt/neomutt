@@ -551,43 +551,43 @@ msgstr "Comando do shell: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "Decodificar-salvar%s para caixa de mensagens"
-msgstr[1] "Decodificar-salvar%s para caixa de mensagens"
+msgstr[0] "Decodificar-salvar para caixa de mensagens"
+msgstr[1] "Decodificar-salvar marcada para caixa de mensagens"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "Desencriptar-salvar%s para caixa de mensagens"
-msgstr[1] "Desencriptar-salvar%s para caixa de mensagens"
+msgstr[0] "Desencriptar-salvar para caixa de mensagens"
+msgstr[1] "Desencriptar-salvar marcada para caixa de mensagens"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "Salvar%s na caixa de mensagens"
-msgstr[1] "Salvar%s na caixa de mensagens"
+msgstr[0] "Salvar na caixa de mensagens"
+msgstr[1] "Salvar marcada na caixa de mensagens"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "Decodificar-copiar%s para caixa de mensagens"
-msgstr[1] "Decodificar-copiar%s para caixa de mensagens"
+msgstr[0] "Decodificar-copiar para caixa de mensagens"
+msgstr[1] "Decodificar-copiar marcada para caixa de mensagens"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "Desencriptar-copiar%s para caixa de mensagens"
-msgstr[1] "Desencriptar-copiar%s para caixa de mensagens"
+msgstr[0] "Desencriptar-copiar para caixa de mensagens"
+msgstr[1] "Desencriptar-copiar marcada para caixa de mensagens"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "Copiar%s na caixa de mensagens"
-msgstr[1] "Copiar%s na caixa de mensagens"
+msgstr[0] "Copiar na caixa de mensagens"
+msgstr[1] "Copiar marcada na caixa de mensagens"
 
 #: commands.c:882
 #, c-format

@@ -559,49 +559,49 @@ msgstr "Shell komanda: "
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgid_plural "Decode-save tagged to mailbox"
-msgstr[0] "%s%s į dėžutę"
-msgstr[1] "%s%s į dėžutę"
-msgstr[2] "%s%s į dėžutę"
+msgstr[0] "%s į dėžutę"
+msgstr[1] " pažymėtus%s į dėžutę"
+msgstr[2] " pažymėtus%s į dėžutę"
 
 #: commands.c:803
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgid_plural "Decrypt-save tagged to mailbox"
-msgstr[0] "%s%s į dėžutę"
-msgstr[1] "%s%s į dėžutę"
-msgstr[2] "%s%s į dėžutę"
+msgstr[0] "%s į dėžutę"
+msgstr[1] " pažymėtus%s į dėžutę"
+msgstr[2] " pažymėtus%s į dėžutę"
 
 #: commands.c:805
 #, fuzzy
 msgid "Save to mailbox"
 msgid_plural "Save tagged to mailbox"
-msgstr[0] "%s%s į dėžutę"
-msgstr[1] "%s%s į dėžutę"
-msgstr[2] "%s%s į dėžutę"
+msgstr[0] "%s į dėžutę"
+msgstr[1] " pažymėtus%s į dėžutę"
+msgstr[2] " pažymėtus%s į dėžutę"
 
 #: commands.c:810
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgid_plural "Decode-copy tagged to mailbox"
-msgstr[0] "%s%s į dėžutę"
-msgstr[1] "%s%s į dėžutę"
-msgstr[2] "%s%s į dėžutę"
+msgstr[0] "%s į dėžutę"
+msgstr[1] " pažymėtus%s į dėžutę"
+msgstr[2] " pažymėtus%s į dėžutę"
 
 #: commands.c:812
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgid_plural "Decrypt-copy tagged to mailbox"
-msgstr[0] "%s%s į dėžutę"
-msgstr[1] "%s%s į dėžutę"
-msgstr[2] "%s%s į dėžutę"
+msgstr[0] "%s į dėžutę"
+msgstr[1] " pažymėtus%s į dėžutę"
+msgstr[2] " pažymėtus%s į dėžutę"
 
 #: commands.c:814
 #, fuzzy
 msgid "Copy to mailbox"
 msgid_plural "Copy tagged to mailbox"
-msgstr[0] "%s%s į dėžutę"
-msgstr[1] "%s%s į dėžutę"
-msgstr[2] "%s%s į dėžutę"
+msgstr[0] "%s į dėžutę"
+msgstr[1] " pažymėtus%s į dėžutę"
+msgstr[2] " pažymėtus%s į dėžutę"
 
 #: commands.c:882
 #, c-format
