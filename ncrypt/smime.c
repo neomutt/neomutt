@@ -2126,7 +2126,6 @@ int smime_send_menu(struct Header *msg)
         msg->security |= ENCRYPT;
         do
         {
-          /* I use "dra" because "123" is recognized anyway */
           switch (mutt_multi_choice(_("Choose algorithm family:"
                                       " 1: DES, 2: RC2, 3: AES,"
                                       " or (c)lear? "),
