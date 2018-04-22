@@ -637,22 +637,22 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
           char buf2[LONG_STRING];
 
           if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
-            str = N_("ID is expired/disabled/revoked.");
+            str = _("ID is expired/disabled/revoked.");
           else
             switch (KeyTable[menu->current]->trust & 0x03)
             {
               case 0:
-                str = N_("ID has undefined validity.");
+                str = _("ID has undefined validity.");
                 break;
               case 1:
-                str = N_("ID is not valid.");
+                str = _("ID is not valid.");
                 break;
               case 2:
-                str = N_("ID is only marginally valid.");
+                str = _("ID is only marginally valid.");
                 break;
             }
 
-          snprintf(buf2, sizeof(buf2), _("%s Do you really want to use the key?"), _(str));
+          snprintf(buf2, sizeof(buf2), _("%s Do you really want to use the key?"), str);
 
           if (mutt_yesorno(buf2, MUTT_NO) != MUTT_YES)
           {
