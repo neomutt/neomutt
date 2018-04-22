@@ -2096,8 +2096,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Níor cuireadh an t-iatán seo %s/%s san áireamh, --]\n"
-"[-- agus tá an fhoinse sheachtrach sainithe --]\n"
-"[-- i ndiaidh dul as feidhm. --]\n"
+"[-- agus ní ghlacann leis an chineál shainithe rochtana %s --]\n"
 
 #: handler.c:1725
 #, fuzzy

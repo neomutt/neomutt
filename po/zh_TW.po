@@ -2064,8 +2064,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- 這個 %s/%s 附件無法被附上, --]\n"
-"[-- 並且被指示的外部原始檔已 --]\n"
-"[-- 過期。 --]\n"
+"[-- 並且被指示的存取類型 (access-type) %s 不被支援 --]\n"
 
 #: handler.c:1725
 #, fuzzy

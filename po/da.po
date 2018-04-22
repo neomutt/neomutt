@@ -2011,7 +2011,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Denne %s/%s-del er ikke medtaget, --]\n"
-"[-- og den angivne eksterne kilde findes ikke mere. --]\n"
+"[-- og den angivne \"access-type\" %s er ikke understøttet --]\n"
 
 #: handler.c:1725
 #, fuzzy

@@ -2019,8 +2019,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Deze %s/%s-bijlage is niet bijgesloten, --]\n"
-"[-- en de aangegeven externe bron --]\n"
-"[-- bestaat niet meer. --]\n"
+"[-- en het access-type %s wordt niet ondersteund --]\n"
 
 #: handler.c:1725
 #, fuzzy

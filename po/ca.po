@@ -2142,7 +2142,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Aquesta adjunció de tipus «%s/%s» no s’inclou, --]\n"
-"[-- i la font externa indicada ha expirat. --]\n"
+"[-- i no es pot emprar el mètode d’accés indicat, «%s». --]\n"
 
 #: handler.c:1725
 #, fuzzy

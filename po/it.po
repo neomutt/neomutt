@@ -2043,8 +2043,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Questo allegato %s/%s non è incluso, --]\n"
-"[-- e l'origine esterna indicata è --]\n"
-"[-- scaduta. --]\n"
+"[-- e il l'access-type %s indicato non è gestito --]\n"
 
 #: handler.c:1725
 #, fuzzy

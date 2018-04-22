@@ -2034,8 +2034,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
-"[-- dan sumber eksternal yg disebutkan telah --]\n"
-"[-- kadaluwarsa. --]\n"
+"[-- dan tipe akses %s tsb tidak didukung --]\n"
 
 #: handler.c:1725
 #, fuzzy

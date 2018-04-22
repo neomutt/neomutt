@@ -2009,7 +2009,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Ĉi tiu %s/%s-parto ne estas inkluzivita, --]\n"
-"[-- kaj la indikita ekstera fonto eksvalidiĝis. --]\n"
+"[-- kaj NeoMutt ne kapablas je la indikita alirmaniero %s. --]\n"
 
 #: handler.c:1725
 #, fuzzy

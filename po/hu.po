@@ -2074,8 +2074,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- A %s/%s melléklet nincs beágyazva, --]\n"
-"[-- és a jelzett külső forrás --]\n"
-"[-- megszűnt. --]\n"
+"[-- és a jelzett elérési-típus, %s nincs támogatva --]\n"
 
 #: handler.c:1725
 #, fuzzy

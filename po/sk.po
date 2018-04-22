@@ -2061,8 +2061,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Príloha %s/%s nie je vložená v správe, --]\n"
-"[-- a označenému externému zdroju --]\n"
-"[-- vypršala platnosť. --]\n"
+"[-- a označený typ prístupu %s nie je podporovaný --]\n"
 
 #: handler.c:1725
 #, fuzzy

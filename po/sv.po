@@ -2041,8 +2041,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Den här %s/%s bilagan är inte inkluderad, --]\n"
-"[-- och den angivna externa källan har --]\n"
-"[-- utgått. --]\n"
+"[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
 #: handler.c:1725
 #, fuzzy

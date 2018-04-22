@@ -2068,7 +2068,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Seda %s/%s lisa ei ole kaasatud, --]\n"
-"[-- ja näidatud väline allikas on aegunud --]\n"
+"[-- ja näidatud juurdepääsu tüüpi %s ei toetata --]\n"
 
 #: handler.c:1725
 #, fuzzy

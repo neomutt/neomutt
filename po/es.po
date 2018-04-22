@@ -2084,7 +2084,7 @@ msgid ""
 msgstr ""
 "[-- Este archivo adjunto %s/%s [-- Este archivo adjunto %s/%s no está "
 "incluido --]\n"
-"[-- y la fuente externa indicada ha expirado. --]\n"
+"[-- y el tipo de acceso indicado %s no está soportado --]\n"
 
 #: handler.c:1725
 #, fuzzy

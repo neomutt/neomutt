@@ -2015,7 +2015,8 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Tato příloha typu '%s/%s' není přítomna, --]\n"
-"[-- a udaný externí zdroj již není platný --]\n"
+"[-- a udaná hodnota parametru 'access-type %s' --]\n"
+"[-- není podporována --]\n"
 
 #: handler.c:1725
 msgid "Unable to open memory stream!"

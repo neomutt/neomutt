@@ -2019,8 +2019,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Bu %s/%s eki eklenmiyor --]\n"
-"[-- ve belirtilen dış kaynak artık geçerli de --]\n"
-"[-- değil. --]\n"
+"[-- ve belirtilen %s erişim tipi de desteklenmiyor --]\n"
 
 #: handler.c:1725
 msgid "Unable to open memory stream!"

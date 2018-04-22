@@ -2030,8 +2030,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- 此 %s/%s 附件未被包含， --]\n"
-"[-- 并且其标明的外部源已 --]\n"
-"[-- 过期。 --]\n"
+"[-- 并且其标明的访问类型 %s 不被支持 --]\n"
 
 #: handler.c:1725
 #, fuzzy

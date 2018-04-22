@@ -2051,7 +2051,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- 이 %s/%s 첨부물은 포함되지 않음, --]\n"
-"[-- 지정된 외부 소스가 만기됨 --]\n"
+"[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
 #: handler.c:1725
 #, fuzzy

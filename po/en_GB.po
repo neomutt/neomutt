@@ -1988,8 +1988,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated access-type %s is unsupported --]\n"
 
 #: handler.c:1725
 msgid "Unable to open memory stream!"

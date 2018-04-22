@@ -2081,8 +2081,8 @@ msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Este adxunto %s/%s non está incluido --]\n"
-"[-- e a fonte externa indicada expirou--]\n"
+"[-- Este adxunto %s/%s non está incluido, --]\n"
+"[-- e o \"access-type\" %s indicado non está soportado --]\n"
 
 #: handler.c:1725
 #, fuzzy

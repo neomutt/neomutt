@@ -2004,8 +2004,7 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Dieser %s/%s-Anhang ist nicht in der Nachricht enthalten, --]\n"
-"[-- und die zugehörige externe Quelle --]\n"
-"[-- existiert nicht mehr. --]\n"
+"[-- und die angegebene Zugangsmethode %s wird nicht unterstützt --]\n"
 
 #: handler.c:1725
 msgid "Unable to open memory stream!"
