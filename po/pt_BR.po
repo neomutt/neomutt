@@ -3125,7 +3125,7 @@ msgstr "Mover %d mensagens lidas para %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Remover %d mensagem apagada?"
-msgstr[1] "Remover %d mensagem apagada?"
+msgstr[1] "Remover %d mensagens apagadas?"
 
 #: mx.c:793
 #, c-format

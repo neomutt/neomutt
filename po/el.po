@@ -3225,7 +3225,7 @@ msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο 
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Καθαρισμός %d διεγραμμένου μηνύματος;"
-msgstr[1] "Καθαρισμός %d διεγραμμένου μηνύματος;"
+msgstr[1] "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #: mx.c:793
 #, c-format

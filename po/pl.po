@@ -3142,8 +3142,8 @@ msgstr "Przenieść %d przeczytanych listów do %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Usunąć NIEODWOŁALNIE %d zaznaczony list?"
-msgstr[1] "Usunąć NIEODWOŁALNIE %d zaznaczony list?"
-msgstr[2] "Usunąć NIEODWOŁALNIE %d zaznaczony list?"
+msgstr[1] "Usunąć NIEODWOŁALNIE %d zaznaczone listy?"
+msgstr[2] "Usunąć NIEODWOŁALNIE %d zaznaczone listy?"
 
 #: mx.c:793
 #, c-format

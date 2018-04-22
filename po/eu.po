@@ -3183,7 +3183,7 @@ msgstr "Irakurritako mezuak %s-ra mugitu?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Ezabatutako %d mezua betirako ezabatu?"
-msgstr[1] "Ezabatutako %d mezua betirako ezabatu?"
+msgstr[1] "Ezabatutako %d mezuak betirako ezabatu?"
 
 #: mx.c:793
 #, c-format

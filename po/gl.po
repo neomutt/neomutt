@@ -3237,7 +3237,7 @@ msgstr "¿Mover mensaxes lidas a %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "¿Purgar %d mensaxe marcada como borrada?"
-msgstr[1] "¿Purgar %d mensaxe marcada como borrada?"
+msgstr[1] "¿Purgar %d mensaxes marcadas como borradas?"
 
 #: mx.c:793
 #, c-format

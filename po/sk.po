@@ -3221,8 +3221,8 @@ msgstr "Presunúť prečítané správy do %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Odstrániť %d zmazané správy?"
-msgstr[1] "Odstrániť %d zmazané správy?"
-msgstr[2] "Odstrániť %d zmazané správy?"
+msgstr[1] "Odstrániť %d zmazaných správ?"
+msgstr[2] "Odstrániť %d zmazaných správ?"
 
 #: mx.c:793
 #, c-format

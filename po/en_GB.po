@@ -3111,11 +3111,11 @@ msgid "Move %d read messages to %s?"
 msgstr "Move %d read messages to %s?"
 
 #: mx.c:771 mx.c:1077
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Purge %d deleted message?"
-msgstr[1] "Purge %d deleted message?"
+msgstr[1] "Purge %d deleted messages?"
 
 #: mx.c:793
 #, c-format

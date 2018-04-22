@@ -3144,7 +3144,7 @@ msgstr "Ĉu movi legitajn mesaĝojn al %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Ĉu forpurigi %d forviŝitan mesaĝon?"
-msgstr[1] "Ĉu forpurigi %d forviŝitan mesaĝon?"
+msgstr[1] "Ĉu forpurigi %d forviŝitajn mesaĝojn?"
 
 #: mx.c:793
 #, c-format

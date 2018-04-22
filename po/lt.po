@@ -3211,8 +3211,8 @@ msgstr "Perkelti skaitytus laiškus į %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Sunaikinti %d ištrintą laišką?"
-msgstr[1] "Sunaikinti %d ištrintą laišką?"
-msgstr[2] "Sunaikinti %d ištrintą laišką?"
+msgstr[1] "Sunaikinti %d ištrintus laiškus?"
+msgstr[2] "Sunaikinti %d ištrintus laiškus?"
 
 #: mx.c:793
 #, c-format

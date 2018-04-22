@@ -3314,7 +3314,7 @@ msgstr "Déplacer %d messages lus dans %s ?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Effacer %d message marqué à effacer ?"
-msgstr[1] "Effacer %d message marqué à effacer ?"
+msgstr[1] "Effacer %d messages marqués à effacer ?"
 
 # , c-format
 #: mx.c:793

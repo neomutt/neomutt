@@ -3183,7 +3183,7 @@ msgstr "Spostare i messaggi letti in %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Eliminare %d messaggio cancellato?"
-msgstr[1] "Eliminare %d messaggio cancellato?"
+msgstr[1] "Eliminare %d messaggi cancellati?"
 
 #: mx.c:793
 #, c-format

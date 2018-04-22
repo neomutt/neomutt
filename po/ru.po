@@ -3181,8 +3181,8 @@ msgstr "Переместить прочитанные сообщения в %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Вычистить %d удаленное сообщение?"
-msgstr[1] "Вычистить %d удаленное сообщение?"
-msgstr[2] "Вычистить %d удаленное сообщение?"
+msgstr[1] "Вычистить %d удаленных сообщений?"
+msgstr[2] "Вычистить %d удаленных сообщений?"
 
 #: mx.c:793
 #, c-format

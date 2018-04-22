@@ -3231,7 +3231,7 @@ msgstr ""
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "¿Expulsar %d mensaje suprimido?"
-msgstr[1] "¿Expulsar %d mensaje suprimido?"
+msgstr[1] "¿Expulsar %d mensajes suprimidos?"
 
 #: mx.c:793
 #, c-format

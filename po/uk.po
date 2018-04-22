@@ -3163,8 +3163,8 @@ msgstr "Перенести прочитані листи до %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Знищити %d видалений листі?"
-msgstr[1] "Знищити %d видалений листі?"
-msgstr[2] "Знищити %d видалений листі?"
+msgstr[1] "Знищити %d видалених листів?"
+msgstr[2] "Знищити %d видалених листів?"
 
 #: mx.c:793
 #, c-format

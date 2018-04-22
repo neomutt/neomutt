@@ -3144,7 +3144,7 @@ msgstr "Flyt læste breve til %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Fjern %d slettet brev?"
-msgstr[1] "Fjern %d slettet brev?"
+msgstr[1] "Fjern %d slettede breve?"
 
 #: mx.c:793
 #, c-format

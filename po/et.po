@@ -3209,7 +3209,7 @@ msgstr "Tõstan loetud teated postkasti %s?"
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Eemaldan %d kustutatud teate?"
-msgstr[1] "Eemaldan %d kustutatud teate?"
+msgstr[1] "Eemaldan %d kustutatud teadet?"
 
 #: mx.c:793
 #, c-format
