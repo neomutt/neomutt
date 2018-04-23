@@ -41,8 +41,7 @@ struct CryptModule
   struct CryptModuleSpecs *specs;
   STAILQ_ENTRY(CryptModule) entries;
 };
-STAILQ_HEAD(CryptModules, CryptModule)
-modules = STAILQ_HEAD_INITIALIZER(modules);
+STAILQ_HEAD(, CryptModule) modules = STAILQ_HEAD_INITIALIZER(modules);
 
 /**
  * crypto_module_register - Register a new crypto module

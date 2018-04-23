@@ -56,8 +56,6 @@ enum UrlScheme
  * The arguments in a URL are saved in a linked list.
  *
  */
-
-STAILQ_HEAD(UrlQueryStringHead, UrlQueryString);
 struct UrlQueryString
 {
   char *name;
@@ -76,7 +74,7 @@ struct Url
   char *host;
   unsigned short port;
   char *path;
-  struct UrlQueryStringHead query_strings;
+  STAILQ_HEAD(, UrlQueryString) query_strings;
 };
 
 enum UrlScheme url_check_scheme(const char *s);
