@@ -73,7 +73,7 @@ struct Lookup
   char *replacement;    /**< Alternative charset to use */
   TAILQ_ENTRY(Lookup) entries;
 };
-static TAILQ_HEAD(LookupHead, Lookup) Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
+static TAILQ_HEAD(, Lookup) Lookups = TAILQ_HEAD_INITIALIZER(Lookups);
 
 // clang-format off
 /**
