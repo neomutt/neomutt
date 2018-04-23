@@ -853,10 +853,10 @@ int mutt_file_mkdir(const char *path, mode_t mode)
 
 /**
  * mutt_file_mkstemp_full - Create temporary file safely
- * @param file Temp filename
- * @param line Line number of caller
- * @param func Function name
- * @retval ptr FILE handle
+ * @param file Source file of caller
+ * @param line Source line number of caller
+ * @param func Function name of caller
+ * @retval ptr  FILE handle
  * @retval NULL Error, see errno
  *
  * Create and immediately unlink a temp file using mkstemp().
