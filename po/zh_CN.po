@@ -196,12 +196,12 @@ msgstr ""
 #: bcache.c:168
 #, fuzzy, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "%s 不是目录"
+msgstr "消息缓存不是一个目录: %s."
 
 #: bcache.c:176
 #, fuzzy, c-format
 msgid "Can't create %s %s"
-msgstr "无法创建 %s: %s."
+msgstr "无法创建 %s %s."
 
 #: browser.c:72
 msgid "Chdir"
@@ -222,12 +222,12 @@ msgstr "列表"
 #: browser.c:83
 #, fuzzy
 msgid "Subscribe"
-msgstr "已订阅 %s..."
+msgstr "已订阅 "
 
 #: browser.c:84
 #, fuzzy
 msgid "Unsubscribe"
-msgstr "已取消订阅 %s..."
+msgstr "已取消订阅 "
 
 #: browser.c:85 curs_main.c:760
 msgid "Catchup"
@@ -241,7 +241,7 @@ msgstr "%s 不是目录"
 #: browser.c:1048
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
-msgstr "已订阅 %s..."
+msgstr "已订阅新闻组"
 
 #: browser.c:1050
 #, c-format
@@ -281,7 +281,7 @@ msgstr "只有 IMAP 信箱才支持删除"
 #: browser.c:1661 browser.c:1687
 #, fuzzy
 msgid "Mailbox deletion failed."
-msgstr "信箱已删除。"
+msgstr "信箱删除失败"
 
 #: browser.c:1666
 msgid "Cannot delete root folder"
@@ -348,17 +348,17 @@ msgstr "尝试显示文件出错"
 #: browser.c:2112
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
-msgstr "已订阅 %s..."
+msgstr "订阅模式"
 
 #: browser.c:2114
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
-msgstr "已取消订阅 %s..."
+msgstr "取消订阅模式"
 
 #: browser.c:2133
 #, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "没有文件与文件掩码相符"
+msgstr "没有新闻组与文件掩码相符"
 
 #: buffy.c:758
 msgid "New mail in "
@@ -541,7 +541,7 @@ msgstr ""
 #: commands.c:568
 #, fuzzy
 msgid "dfrsotuzcpl"
-msgstr "dfrsotuzcp"
+msgstr "dfrsotuzcpl"
 
 #: commands.c:631
 msgid "Shell command: "
@@ -641,7 +641,7 @@ msgstr ""
 #: compose.c:120
 #, fuzzy
 msgid "Reply-To: "
-msgstr "回覆"
+msgstr "回复给:"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:122 compose.c:952
@@ -656,7 +656,7 @@ msgstr "混合模式："
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
 #: compose.c:128
 msgid "Security: "
-msgstr ""
+msgstr "安全"
 
 #. L10N:
 #. * This string is used by the compose menu.
@@ -676,19 +676,19 @@ msgstr "选择身份签署："
 #: compose.c:141
 #, fuzzy
 msgid "Newsgroups: "
-msgstr "打开新闻组"
+msgstr "新闻组"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:143
 #, fuzzy
 msgid "Followup-To: "
-msgstr "发送后续信件到 %s%s？"
+msgstr "发送后续信件到: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: compose.c:145
 #, fuzzy
 msgid "X-Comment-To: "
-msgstr "编辑 Reply-To 栏位"
+msgstr "编辑评论 栏位"
 
 #: compose.c:150 compose.c:166
 msgid "Send"
@@ -701,17 +701,17 @@ msgstr "中断"
 #. L10N: compose menu help line entry
 #: compose.c:153
 msgid "To"
-msgstr ""
+msgstr "发送给"
 
 #. L10N: compose menu help line entry
 #: compose.c:155
 msgid "CC"
-msgstr ""
+msgstr "抄送"
 
 #. L10N: compose menu help line entry
 #: compose.c:157 compose.c:169
 msgid "Subj"
-msgstr ""
+msgstr "主题"
 
 #: compose.c:158 compose.c:170 compose.c:1028
 msgid "Attach file"
@@ -724,12 +724,12 @@ msgstr "描述"
 #: compose.c:168
 #, fuzzy
 msgid "Newsgroups"
-msgstr "打开新闻组"
+msgstr "新闻组"
 
 #: compose.c:245
 #, fuzzy
 msgid "Not supported"
-msgstr "不支持标记。"
+msgstr "不支持"
 
 #: compose.c:252
 msgid "Sign, Encrypt"
@@ -759,7 +759,7 @@ msgstr " (PGP/MIME)"
 #: compose.c:282
 #, fuzzy
 msgid " (S/MIME)"
-msgstr " (PGP/MIME)"
+msgstr " (S/MIME)"
 
 #: compose.c:286
 msgid " (OppEnc mode)"
@@ -823,12 +823,12 @@ msgstr "打开信箱并从中附加信件"
 #: compose.c:1084
 #, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "打开信箱并从中附加信件"
+msgstr "从附件中打开新闻组"
 
 #: compose.c:1128
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
-msgstr "无法锁住信箱！"
+msgstr "无法打开信箱 %s"
 
 #: compose.c:1136
 msgid "No messages in that folder."
@@ -865,7 +865,7 @@ msgstr "保存这封信件的副本吗？"
 #: compose.c:1371
 #, fuzzy
 msgid "Send attachment with name: "
-msgstr "将附件保存到 Fcc 吗？"
+msgstr "使用什么名字发送附件:"
 
 #: compose.c:1388
 msgid "Rename to: "
@@ -959,7 +959,7 @@ msgstr "没有append-hook或者close-hook不能够追加 : %s"
 #: compress.c:554
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
-msgstr "预连接命令失败。"
+msgstr "压缩命令失败。"
 
 #: compress.c:565
 msgid "Unsupported mailbox type for appending."
@@ -968,12 +968,12 @@ msgstr "不支持的信箱类型追加操作"
 #: compress.c:640
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
-msgstr "正在复制到 %s..."
+msgstr "正在压缩到 %s..."
 
 #: compress.c:645
 #, fuzzy, c-format
 msgid "Compressing %s..."
-msgstr "正在复制到 %s..."
+msgstr "正在压缩中 %s..."
 
 #: compress.c:652 editmsg.c:252
 #, c-format
@@ -987,7 +987,7 @@ msgstr "没有一个close-hook不能够同步一件压缩文件"
 #: compress.c:904
 #, fuzzy, c-format
 msgid "Compressing %s"
-msgstr "正在压缩中 %s..."
+msgstr "正在压缩中 %s"
 
 #: conn/sasl.c:557
 msgid "Unknown SASL profile"
@@ -1181,7 +1181,7 @@ msgstr "SSL 失败：%s"
 #: conn/ssl.c:1317
 #, fuzzy
 msgid "Unable to create SSL context"
-msgstr "错误：无法创建 OpenSSL 子进程！"
+msgstr "无法创建 SSL 上下文"
 
 #: conn/ssl.c:1365
 msgid "Warning: error enabling ssl_verify_partial_chains"
@@ -1385,7 +1385,7 @@ msgstr "发表"
 #: curs_main.c:759 pager.c:1714
 #, fuzzy
 msgid "Followup"
-msgstr "发送后续信件到 %s%s？"
+msgstr "发送后续信件到"
 
 #: curs_main.c:921
 msgid "Mailbox was externally modified.  Flags may be wrong."
@@ -1419,12 +1419,12 @@ msgstr "文本没有父索引"
 #: curs_main.c:1201
 #, fuzzy
 msgid "Message is not visible in limited view."
-msgstr "父信件在此限制视图中不可见。"
+msgstr "信件在此限制视图中不可见。"
 
 #: curs_main.c:1207
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
-msgstr "正在服务器上执行信件删除..."
+msgstr "正在服务器上执行信件更新..."
 
 #: curs_main.c:1217
 #, c-format
@@ -1442,7 +1442,7 @@ msgstr "正在取回信件标头..."
 #: curs_main.c:1314
 #, fuzzy
 msgid "No deleted messages found in the thread."
-msgstr "删除所有线索中的信件"
+msgstr "在该线程中没有发现被删除的信件"
 
 #: curs_main.c:1334
 msgid "Jump to message: "
@@ -1464,7 +1464,7 @@ msgstr "无效的信件编号。"
 #: curs_main.c:1395 curs_main.c:2790 pager.c:2818
 #, fuzzy
 msgid "Cannot delete message(s)"
-msgstr "反删除信件"
+msgstr "不能够删除信件"
 
 #: curs_main.c:1398
 msgid "Delete messages matching: "
@@ -1500,7 +1500,7 @@ msgstr "标记符合此样式的信件："
 #: curs_main.c:1624 curs_main.c:3221 pager.c:3137
 #, fuzzy
 msgid "Cannot undelete message(s)"
-msgstr "反删除信件"
+msgstr "删除信件"
 
 #: curs_main.c:1627
 msgid "Undelete messages matching: "
@@ -1513,12 +1513,12 @@ msgstr "反标记符合此样式的信件："
 #: curs_main.c:1671
 #, fuzzy
 msgid "Logged out of IMAP servers."
-msgstr "正在关闭与 IMAP 伺服器的连线..."
+msgstr "正在退出 IMAP 服务器."
 
 #: curs_main.c:1771
 #, fuzzy
 msgid "No virtual folder, aborting."
-msgstr "没有标题，正在中止。"
+msgstr "没有虚拟文件夹，正在中止。"
 
 #: curs_main.c:1779
 msgid "Failed to read thread, aborting."
@@ -1527,12 +1527,12 @@ msgstr "不能够读取thread，中止"
 #: curs_main.c:1811 mx.c:1458 mx.c:1475
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting."
-msgstr "SMTP 服务器不支持认证"
+msgstr "文件件不支持标签，正在终止"
 
 #: curs_main.c:1826
 #, fuzzy
 msgid "No tag specified, aborting."
-msgstr "没有标签，正在中止。"
+msgstr "没有特殊标签，正在中止。"
 
 #: curs_main.c:1838
 #, fuzzy, c-format
@@ -1568,7 +1568,7 @@ msgstr "用只读模式打开信箱"
 #: curs_main.c:1994
 #, fuzzy
 msgid "Open virtual folder"
-msgstr "打开另一个文件夹"
+msgstr "打开虚拟文件夹"
 
 #: curs_main.c:1997
 msgid "Open mailbox"
@@ -1581,7 +1581,7 @@ msgstr "没有信箱有新信件"
 #: curs_main.c:2054
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
-msgstr "用只读模式打开信箱"
+msgstr "用只读模式打开新闻组"
 
 #: curs_main.c:2056
 msgid "Open newsgroup"
@@ -1655,7 +1655,7 @@ msgstr "搜寻从结尾重新开始。"
 #: curs_main.c:2465
 #, fuzzy
 msgid "No new messages in this limited view."
-msgstr "父信件在此限制视图中不可见。"
+msgstr "没有新的信件在此限制视图中。"
 
 #: curs_main.c:2467
 #, fuzzy
@@ -1676,7 +1676,7 @@ msgstr "没有尚未读取的信件"
 #: curs_main.c:2492
 #, fuzzy
 msgid "Cannot flag message"
-msgstr "标记信件"
+msgstr "不能够标记信件"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2531 pager.c:3100
@@ -1707,7 +1707,7 @@ msgstr "反删除信件"
 #: curs_main.c:2856
 #, fuzzy
 msgid "Cannot edit message"
-msgstr "无法写入信件"
+msgstr "无法编辑信件"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
@@ -1715,7 +1715,7 @@ msgstr "无法写入信件"
 #, fuzzy, c-format
 msgid "%d label changed."
 msgid_plural "%d labels changed."
-msgstr[0] "信箱没有改变。"
+msgstr[0] "%d 标签改变。"
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
@@ -1723,13 +1723,13 @@ msgstr[0] "信箱没有改变。"
 #: curs_main.c:2925 pager.c:3204
 #, fuzzy
 msgid "No labels changed."
-msgstr "信箱没有改变。"
+msgstr "没有标签改变。"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3024
 #, fuzzy
 msgid "Cannot mark message(s) as read"
-msgstr "标记信件为已读"
+msgstr "不能够标记信件为已读"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
@@ -1744,7 +1744,7 @@ msgstr "请输入密钥 ID："
 #: curs_main.c:3068
 #, fuzzy
 msgid "message hotkey"
-msgstr "信件被延迟寄出。"
+msgstr "信件热键"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
