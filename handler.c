@@ -1998,6 +1998,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
         /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
         str = _("[-- %s/%s is unsupported --]\n");
     }
+    state_mark_attach(s);
     state_printf(s, str, TYPE(b), b->subtype, keystroke);
   }
 
