@@ -768,7 +768,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
   if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && MaildirTrash))
   {
     snprintf(buf, sizeof(buf),
-             ctx->deleted == 1 ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", ctx->deleted),
              ctx->deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)
@@ -1074,7 +1074,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
     char buf[SHORT_STRING];
 
     snprintf(buf, sizeof(buf),
-             ctx->deleted == 1 ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
+             ngettext("Purge %d deleted message?", "Purge %d deleted messages?", ctx->deleted),
              ctx->deleted);
     purge = query_quadoption(Delete, buf);
     if (purge == MUTT_ABORT)

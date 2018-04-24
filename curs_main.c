@@ -2915,7 +2915,7 @@ int mutt_index_menu(void)
           menu->redraw = REDRAW_FULL;
           /* L10N: This is displayed when the x-label on one or more
            * messages is edited. */
-          mutt_message(_("%d labels changed."), rc);
+          mutt_message(ngettext("%d label changed.", "%d labels changed.", rc), rc);
         }
         else
         {

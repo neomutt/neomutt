@@ -343,7 +343,10 @@ static int pop_fetch_headers(struct Context *ctx)
     }
     if (deleted > 0)
     {
-      mutt_error(_("%d messages have been lost. Try reopening the mailbox."), deleted);
+      mutt_error(
+          ngettext("%d message has been lost. Try reopening the mailbox.",
+                   "%d messages have been lost. Try reopening the mailbox.", deleted),
+          deleted);
     }
 
     bool hcached = false;
@@ -995,7 +998,11 @@ void pop_fetch_mail(void)
       break;
     }
 
-    mutt_message(_("%s [%d of %d messages read]"), msgbuf, i - last, msgs - last);
+    /* L10N: The plural is picked by the second numerical argument, i.e.
+     * the %d right before 'messages', i.e. the total number of messages. */
+    mutt_message(ngettext("%s [%d of %d message read]",
+                          "%s [%d of %d messages read]", msgs - last),
+                 msgbuf, i - last, msgs - last);
   }
 
   mx_close_mailbox(&ctx, NULL);

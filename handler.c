@@ -63,12 +63,13 @@ static void print_part_line(struct State *s, struct Body *b, int n)
   state_mark_attach(s);
   char *charset = mutt_param_get(&b->parameter, "charset");
   if (n != 0)
-    state_printf(s, _("[-- Alternative Type #%d: "), n);
+    state_printf(s, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+                 n, TYPE(b), b->subtype, charset ? "; charset=" : "",
+                 charset ? charset : "", ENCODING(b->encoding), length);
   else
-    state_printf(s, _("[-- Type: "));
-  state_printf(s, _("%s/%s%s%s, Encoding: %s, Size: %s --]\n"), TYPE(b),
-               b->subtype, charset ? "; charset=" : "", charset ? charset : "",
-               ENCODING(b->encoding), length);
+    state_printf(s, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+                 TYPE(b), b->subtype, charset ? "; charset=" : "",
+                 charset ? charset : "", ENCODING(b->encoding), length);
 }
 
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
@@ -1288,13 +1289,15 @@ static int multipart_handler(struct Body *a, struct State *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach(s);
-      state_printf(s, _("[-- Attachment #%d"), count);
       if (p->description || p->filename || p->form_name)
       {
-        state_puts(": ", s);
-        state_puts(p->description ? p->description : p->filename ? p->filename : p->form_name, s);
+        /* L10N: %s is the attachment description, filename or form_name. */
+        state_printf(s, _("[-- Attachment #%d: %s --]\n"), count,
+                     p->description ? p->description :
+                                      p->filename ? p->filename : p->form_name);
       }
-      state_puts(" --]\n", s);
+      else
+        state_printf(s, _("[-- Attachment #%d --]\n"), count);
       print_part_line(s, p, 0);
       if (!Weed)
       {
@@ -1464,6 +1467,9 @@ static int autoview_handler(struct Body *a, struct State *s)
 
 static int external_body_handler(struct Body *b, struct State *s)
 {
+  const char *str = NULL;
+  char strbuf[LONG_STRING]; // STRING might be too short but LONG_STRING should be large enough
+
   const char *access_type = mutt_param_get(&b->parameter, "access-type");
   if (!access_type)
   {
@@ -1491,23 +1497,62 @@ static int external_body_handler(struct Body *b, struct State *s)
     if (s->flags & (MUTT_DISPLAY | MUTT_PRINTING))
     {
       char *length = NULL;
+      char pretty_size[10];
 
-      state_mark_attach(s);
-      state_printf(s, _("[-- This %s/%s attachment "), TYPE(b->parts), b->parts->subtype);
       length = mutt_param_get(&b->parameter, "length");
       if (length)
       {
-        char pretty_size[10];
         mutt_str_pretty_size(pretty_size, sizeof(pretty_size), strtol(length, NULL, 10));
-        state_printf(s, _("(size %s bytes) "), pretty_size);
+        if (expire != -1)
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+             expands to a date as returned by `mutt_date_parse_date()`.
+           */
+          str = _(
+              "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
+              "[-- on %s --]\n");
+        }
+        else
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain".
+           */
+          str = _("[-- This %s/%s attachment (size %s bytes) has been deleted "
+                  "--]\n");
+        }
       }
-      state_puts(_("has been deleted --]\n"), s);
-
-      if (expire != -1)
+      else
       {
-        state_mark_attach(s);
-        state_printf(s, _("[-- on %s --]\n"), expiration);
+        pretty_size[0] = '\0';
+        if (expire != -1)
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
+             expands to a date as returned by `mutt_date_parse_date()`.
+
+             Caution: Argument three %3$ is also defined but should not be used
+             in this translation!
+           */
+          str = _("[-- This %s/%s attachment has been deleted --]\n"
+                  "[-- on %4$s --]\n");
+        }
+        else
+        {
+          /* L10N: If the translation of this string is a multi line string, then
+             each line should start with "[-- " and end with " --]".
+             The first "%s/%s" is a MIME type, e.g. "text/plain".
+           */
+          str = _("[-- This %s/%s attachment has been deleted --]\n");
+        }
       }
+
+      snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
+               pretty_size, expiration);
+      state_attach_puts(strbuf, s);
       if (b->parts->filename)
       {
         state_mark_attach(s);
@@ -1522,12 +1567,16 @@ static int external_body_handler(struct Body *b, struct State *s)
   {
     if (s->flags & MUTT_DISPLAY)
     {
-      state_mark_attach(s);
-      state_printf(s, _("[-- This %s/%s attachment is not included, --]\n"),
-                   TYPE(b->parts), b->parts->subtype);
-      state_attach_puts(_("[-- and the indicated external source has --]\n"
-                          "[-- expired. --]\n"),
-                        s);
+      /* L10N: If the translation of this string is a multi line string, then
+         each line should start with "[-- " and end with " --]".
+         The "%s/%s" is a MIME type, e.g. "text/plain".
+       */
+      snprintf(strbuf, sizeof(strbuf),
+               _("[-- This %s/%s attachment is not included, --]\n"
+                 "[-- and the indicated external source has --]\n"
+                 "[-- expired. --]\n"),
+               TYPE(b->parts), b->parts->subtype);
+      state_attach_puts(strbuf, s);
 
       mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
@@ -1537,11 +1586,18 @@ static int external_body_handler(struct Body *b, struct State *s)
   {
     if (s->flags & MUTT_DISPLAY)
     {
-      state_mark_attach(s);
-      state_printf(s, _("[-- This %s/%s attachment is not included, --]\n"),
-                   TYPE(b->parts), b->parts->subtype);
-      state_mark_attach(s);
-      state_printf(s, _("[-- and the indicated access-type %s is unsupported --]\n"), access_type);
+      /* L10N: If the translation of this string is a multi line string, then
+         each line should start with "[-- " and end with " --]".
+         The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
+         access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
+         "LOCAL-FILE", "MAIL-SERVER".
+       */
+      snprintf(strbuf, sizeof(strbuf),
+               _("[-- This %s/%s attachment is not included, --]\n"
+                 "[-- and the indicated access-type %s is unsupported --]\n"),
+               TYPE(b->parts), b->parts->subtype, access_type);
+      state_attach_puts(strbuf, s);
+
       mutt_copy_hdr(s->fpin, s->fpout, ftello(s->fpin), b->parts->offset,
                     (Weed ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_DISPLAY, NULL);
     }
@@ -1899,24 +1955,51 @@ int mutt_body_handler(struct Body *b, struct State *s)
   else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH && !OptViewAttach &&
                                          HonorDisposition && (plaintext || handler)))
   {
-    state_mark_attach(s);
-    if (HonorDisposition && b->disposition == DISPATTACH)
-      fputs(_("[-- This is an attachment "), s->fpout);
-    else
-      state_printf(s, _("[-- %s/%s is unsupported "), TYPE(b), b->subtype);
+    const char *str = NULL;
+    char keystroke[SHORT_STRING];
+    keystroke[0] = '\0';
+
     if (!OptViewAttach)
     {
-      char keystroke[SHORT_STRING];
-
       if (km_expand_key(keystroke, sizeof(keystroke),
                         km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
       {
-        fprintf(s->fpout, _("(use '%s' to view this part)"), keystroke);
+        if (HonorDisposition && b->disposition == DISPATTACH)
+          /* L10N: Caution: Arguments %1$s and %2$s are also defined but should
+             not be used in this translation!
+
+             %3$s expands to a keystroke/key binding, e.g. 'v'.
+           */
+          str = _(
+              "[-- This is an attachment (use '%3$s' to view this part) --]\n");
+        else
+          /* L10N: %s/%s is a MIME type, e.g. "text/plain".
+             The last %s expands to a keystroke/key binding, e.g. 'v'.
+           */
+          str =
+              _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n");
       }
       else
-        fputs(_("(need 'view-attachments' bound to key!)"), s->fpout);
+      {
+        if (HonorDisposition && b->disposition == DISPATTACH)
+          str = _("[-- This is an attachment (need 'view-attachments' bound to "
+                  "key!) --]\n");
+        else
+          /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
+          str = _("[-- %s/%s is unsupported (need 'view-attachments' bound to "
+                  "key!) --]\n");
+      }
     }
-    fputs(" --]\n", s->fpout);
+    else
+    {
+      if (HonorDisposition && b->disposition == DISPATTACH)
+        str = _("[-- This is an attachment --]\n");
+      else
+        /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
+        str = _("[-- %s/%s is unsupported --]\n");
+    }
+    state_mark_attach(s);
+    state_printf(s, str, TYPE(b), b->subtype, keystroke);
   }
 
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);

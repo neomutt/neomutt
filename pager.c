@@ -3197,7 +3197,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         {
           Context->changed = true;
           pager_menu->redraw = REDRAW_FULL;
-          mutt_message(_("%d labels changed."), rc);
+          mutt_message(ngettext("%d label changed.", "%d labels changed.", rc), rc);
         }
         else
         {

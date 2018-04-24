@@ -2403,7 +2403,9 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
       for (int i = 0; i < ctx->msgcount; i++)
         if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->changed)
           ctx->hdrs[i]->active = false;
-      mutt_message(_("Marking %d messages deleted..."), rc);
+      mutt_message(ngettext("Marking %d message deleted...",
+                            "Marking %d messages deleted...", rc),
+                   rc);
     }
   }
 
@@ -2435,7 +2437,10 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
       if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
           h->attach_del || h->xlabel_changed)
       {
-        mutt_message(_("Saving changed messages... [%d/%d]"), i + 1, ctx->msgcount);
+        /* L10N: The plural is choosen by the last %d, i.e. the total number */
+        mutt_message(ngettext("Saving changed message... [%d/%d]",
+                              "Saving changed messages... [%d/%d]", ctx->msgcount),
+                     i + 1, ctx->msgcount);
         if (!appendctx)
           appendctx = mx_open_mailbox(ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
         if (!appendctx)

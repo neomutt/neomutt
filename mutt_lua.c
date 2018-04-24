@@ -396,7 +396,7 @@ int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, str
   if (luaL_dostring(Lua, s->dptr))
   {
     mutt_debug(2, " * %s -> failure\n", s->dptr);
-    snprintf(err->data, err->dsize, _("%s: %s"), s->dptr, lua_tostring(Lua, -1));
+    snprintf(err->data, err->dsize, "%s: %s", s->dptr, lua_tostring(Lua, -1));
     /* pop error message from the stack */
     lua_pop(Lua, 1);
     return -1;
