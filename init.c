@@ -3905,6 +3905,13 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
 
   Matches = mutt_mem_calloc(MatchesListsize, sizeof(char *));
 
+  /* Set standard defaults */
+  for (int i = 0; MuttVars[i].name; i++)
+  {
+    set_default(&MuttVars[i]);
+    restore_default(&MuttVars[i]);
+  }
+
   /* "$mailcap_path" precedence: config file, environment, code */
   MailcapPath = mutt_str_strdup(mutt_str_getenv("MAILCAPS"));
 
@@ -3919,13 +3926,6 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   {
     mutt_str_replace(&Editor, env_ed);
     mutt_str_replace(&Visual, env_ed);
-  }
-
-  /* Set standard defaults */
-  for (int i = 0; MuttVars[i].name; i++)
-  {
-    set_default(&MuttVars[i]);
-    restore_default(&MuttVars[i]);
   }
 
   CurrentMenu = MENU_MAIN;
