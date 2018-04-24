@@ -15,8 +15,8 @@ vim: ts=2 sw=2 sts=2 expandtab:
     <releaseinfo>version @VERSION@</releaseinfo>
     <abstract>
       <para>
-        <quote>All mail clients suck. This one just sucks less.</quote> – me,
-        circa 1995
+        <quote>All mail clients suck. This one just sucks less.</quote>
+        &mdash; me, circa 1995
       </para>
     </abstract>
   </bookinfo>
@@ -462,8 +462,8 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
             <para>
               Functions <literal>&lt;sidebar-next&gt;</literal> and
               <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
-              <emphasis role="bold">highlight</emphasis>. They <emphasis
-                role="bold">do not</emphasis> change the open mailbox.
+              <emphasis role="bold">highlight</emphasis>. They
+              <emphasis role="bold">do not</emphasis> change the open mailbox.
             </para>
           </note>
           <para>
@@ -684,7 +684,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               Sidebar display. For an introduction, read
               <link linkend="index-format">format strings</link> including the
               section about
-              <link linkend="formatstrings-conditionals"> conditionals</link>.
+              <link linkend="formatstrings-conditionals">conditionals</link>.
             </para>
             <para>
               The default value is: <literal>%B%* %n</literal>
@@ -842,7 +842,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
             </para>
 
             <table>
-              <title>sidebar_format</title>
+              <title>sidebar_format examples</title>
               <tgroup cols="2">
                 <thead>
                   <row>
@@ -1212,8 +1212,8 @@ color sidebar_divider   color8  default     <emphasis role="comment"># Dark grey
       <title>Moving Around in Menus</title>
       <para>
         The most important navigation keys common to line- or entry-based menus
-        are shown in <xref linkend="tab-keys-nav-line" /> and in <xref
-          linkend="tab-keys-nav-page" /> for page-based menus.
+        are shown in <xref linkend="tab-keys-nav-line" /> and in
+        <xref linkend="tab-keys-nav-page" /> for page-based menus.
       </para>
 
       <table id="tab-keys-nav-line">
@@ -4179,9 +4179,10 @@ bind index gg first-entry
         executed in the order given in the <literal>.neomuttrc</literal>.
       </para>
       <para>
-        The regex parameter has <link linkend="shortcuts">mailbox
-          shortcut</link> expansion performed on the first character. See
-        <xref linkend="mailbox-hook" /> for more details.
+        The regex parameter has
+        <link linkend="shortcuts">mailbox shortcut</link> expansion performed
+        on the first character. See <xref linkend="mailbox-hook" /> for more
+        details.
       </para>
       <note>
         <para>
@@ -5340,6 +5341,9 @@ my_hdr Organization: A Really Big Company, Anytown, USA
 
     <sect1 id="default-save-mailbox">
       <title>Specify Default Fcc: and/or Save Mailbox</title>
+      <anchor id="fcc-save-hook" />
+      <anchor id="fcc-hook" />
+      <anchor id="save-hook" />
       <para>
         Usage:
       </para>
@@ -5366,15 +5370,14 @@ my_hdr Organization: A Really Big Company, Anytown, USA
           <replaceable class="parameter">mailbox</replaceable>
         </arg>
       </cmdsynopsis>
-      <para><anchor id="fcc-save-hook" />
+      <para>
         <command>fcc-save-hook</command> is a shortcut, equivalent to doing
         both a <link linkend="fcc-hook"><command>fcc-hook</command></link> and
         a <link linkend="save-hook"><command>save-hook</command></link> with
         its arguments, including %-expansion on <emphasis>mailbox</emphasis>
         according to <link linkend="index-format">$index_format</link>.
       </para>
-
-      <para><anchor id="fcc-hook" />
+      <para>
         <command>fcc-hook</command> is used to save outgoing mail in a mailbox
         other than <link linkend="record">$record</link>. NeoMutt searches the
         initial list of message recipients for the first matching
@@ -5387,14 +5390,14 @@ my_hdr Organization: A Really Big Company, Anytown, USA
         ...will save a copy of all messages going to the aol.com domain to the
         <quote>+spammers</quote> mailbox by default.
       </para>
-
-      <para><anchor id="save-hook" />
+      <para>
         <command>save-hook</command> is used to override the default mailbox
         used when saving messages. <emphasis>mailbox</emphasis> will be used
         as the default if the message matches <emphasis>pattern</emphasis>.
       </para>
       <example id="ex-save-hook-exando">
         <title>Using %-expandos in <command>save-hook</command></title>
+
 <screen>
 <emphasis role="comment"># default: save all to ~/Mail/&lt;author name&gt;</emphasis>
 save-hook . ~/Mail/%F
@@ -5403,13 +5406,14 @@ save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
 <emphasis role="comment"># save from aol.com to $folder/spam</emphasis>
 save-hook aol\\.com$ +spam
 </screen>
-      </example>
 
+      </example>
       <para>
         Also see the
         <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link>
         command.
-      </para><para>
+      </para>
+      <para>
         To provide more flexibility and good defaults, NeoMutt applies the
         expandos of <link linkend="index-format">$index_format</link> to
         <emphasis>mailbox</emphasis> after it was expanded. See
@@ -8028,7 +8032,7 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
         (Message marking is really just a shortcut for defining a macro that
         returns you to the current message by searching for its Message-ID.
         You can choose a different prefix by setting the
-        <link linkend="mark-macro-prefix"> $mark_macro_prefix</link> variable.)
+        <link linkend="mark-macro-prefix">$mark_macro_prefix</link> variable.)
       </para>
     </sect1>
 
@@ -8394,8 +8398,8 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
         more robust with concurrent clients writing the mailbox, but still may
         suffer from lost flags; message corruption is less likely to occur than
         with mbox/mmdf. It's usually slower to open compared to mbox/mmdf since
-        many small files have to be read (NeoMutt provides <xref
-          linkend="header-caching" /> to greatly speed this process up).
+        many small files have to be read (NeoMutt provides
+        <xref linkend="header-caching" /> to greatly speed this process up).
         Depending on the environment, MH is not very disk-space efficient.
       </para>
       <para>
@@ -9220,7 +9224,7 @@ audio/x-aiff                    aif aifc aiff
       </table>
       <para>
         MIME types are not arbitrary, they need to be assigned by
-        <ulink url="http://www.iana.org/assignments/media-types/"> IANA</ulink>.
+        <ulink url="http://www.iana.org/assignments/media-types/">IANA</ulink>.
       </para>
     </sect1>
 
@@ -9388,7 +9392,7 @@ text/*; more
           parameters can lead to security problems in general. NeoMutt tries to
           quote parameters in expansion of <literal>%s</literal> syntaxes
           properly, and avoids risky characters by substituting them, see the
-          <link linkend="mailcap-sanitize"> $mailcap_sanitize</link> variable.
+          <link linkend="mailcap-sanitize">$mailcap_sanitize</link> variable.
         </para>
         <para>
           Although NeoMutt's procedures to invoke programs with mailcap seem to
@@ -10239,7 +10243,7 @@ smtp://user@host:587/
         <xref linkend="url-syntax" /> for details) using the
         <literal>imap</literal> or <literal>imaps</literal> protocol.
         Alternatively, a pine-compatible notation is also supported, i.e.
-        <literal> {[username@]imapserver[:port][/ssl]}path/to/folder</literal>
+        <literal>{[username@]imapserver[:port][/ssl]}path/to/folder</literal>
       </para>
       <para>
         Note that not all servers use <quote>/</quote> as the hierarchy
@@ -10250,7 +10254,7 @@ smtp://user@host:587/
         When browsing folders on an IMAP server, you can toggle whether to look
         at only the folders you are subscribed to, or all folders with the
         <emphasis>toggle-subscribed</emphasis> command. See also the
-        <link linkend="imap-list-subscribed"> $imap_list_subscribed</link>
+        <link linkend="imap-list-subscribed">$imap_list_subscribed</link>
         variable.
       </para>
       <para>
@@ -14310,7 +14314,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
           </informaltable>
           <para>
             For an explanation of <quote>soft-fill</quote>, see the
-            <link linkend="index-format"> $index_format</link> documentation.
+            <link linkend="index-format">$index_format</link> documentation.
           </para>
           <para>
             * = can be optionally printed if nonzero

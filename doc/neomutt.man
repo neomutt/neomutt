@@ -535,9 +535,9 @@ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 .
 .\" --------------------------------------------------------------------
 .SH SEE ALSO
-.\"   - sorted by category and name
 .\" --------------------------------------------------------------------
 .PP
+.\" sorted by category and name
 .BR gettext (1),
 .BR mailx (1),
 .BR msmtp (1),

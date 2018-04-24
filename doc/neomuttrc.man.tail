@@ -1,9 +1,9 @@
 .\" -*- nroff -*-
 .\" --------------------------------------------------------------------
 .SH SEE ALSO
-.\"   - sorted by category and name
 .\" --------------------------------------------------------------------
 .PP
+.\" sorted by category and name
 .BR iconv (1),
 .BR neomutt (1),
 .BR notmuch (1),
