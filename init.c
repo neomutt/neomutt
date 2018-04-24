@@ -3913,10 +3913,14 @@ int mutt_init(int skip_sys_rc, struct ListHead *commands)
   }
 
   /* "$mailcap_path" precedence: config file, environment, code */
-  MailcapPath = mutt_str_strdup(mutt_str_getenv("MAILCAPS"));
+  const char *env_mc = mutt_str_getenv("MAILCAPS");
+  if (env_mc)
+    MailcapPath = mutt_str_strdup(env_mc);
 
   /* "$tmpdir" precedence: config file, environment, code */
-  Tmpdir = mutt_str_strdup(mutt_str_getenv("TMPDIR"));
+  const char *env_tmp = mutt_str_getenv("TMPDIR");
+  if (env_tmp)
+    Tmpdir = mutt_str_strdup(env_tmp);
 
   /* "$visual", "$editor" precedence: config file, environment, code */
   const char *env_ed = mutt_str_getenv("VISUAL");
