@@ -1526,15 +1526,14 @@ int mutt_compose_menu(struct Header *msg, char *fcc, size_t fcclen,
         buf[0] = 0; /* clear buffer first */
         if (CURATTACH->content->language)
           mutt_str_strfcpy(buf, CURATTACH->content->language, sizeof(buf));
-        if ((mutt_get_field("Content-Language: ", buf, sizeof(buf), 0) == 0) &&
-            mutt_mime_valid_language(buf))
+        if (mutt_get_field("Content-Language: ", buf, sizeof(buf), 0) == 0)
         {
           CURATTACH->content->language = mutt_str_strdup(buf);
           menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
           mutt_clear_error();
         }
         else
-          mutt_error(_("Invalid language, default to none."));
+          mutt_warning(_("Empty Content-Language"));
         mutt_message_hook(NULL, msg, MUTT_SEND2HOOK);
         break;
 

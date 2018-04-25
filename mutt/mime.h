@@ -72,10 +72,7 @@ enum ContentDisposition
 extern const int IndexHex[128];
 extern const char *const BodyTypes[];
 extern const char *const BodyEncodings[];
-extern const char *const BodyLanguages[];
 extern const char MimeSpecials[];
-
-bool mutt_mime_valid_language(const char *lang);
 
 #define hexval(c) IndexHex[(unsigned int) (c)]
 
